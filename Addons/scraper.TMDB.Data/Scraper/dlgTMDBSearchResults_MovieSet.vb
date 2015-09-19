@@ -40,7 +40,7 @@ Public Class dlgTMDBSearchResults_MovieSet
 
     Private _InfoCache As New Dictionary(Of String, MediaContainers.MovieSet)
     Private _PosterCache As New Dictionary(Of String, System.Drawing.Image)
-    Private _filterOptions As Structures.ScrapeOptions_MovieSet
+    Private _filterOptions As Structures.ScrapeOptions
 
     Private _nMovieSet As MediaContainers.MovieSet
 
@@ -59,7 +59,7 @@ Public Class dlgTMDBSearchResults_MovieSet
         _TMDB = TMDB
     End Sub
 
-    Public Overloads Function ShowDialog(ByRef nMovieSet As MediaContainers.MovieSet, ByVal sMovieSetTitle As String, ByVal filterOptions As Structures.ScrapeOptions_MovieSet) As Windows.Forms.DialogResult
+    Public Overloads Function ShowDialog(ByRef nMovieSet As MediaContainers.MovieSet, ByVal sMovieSetTitle As String, ByVal filterOptions As Structures.ScrapeOptions) As Windows.Forms.DialogResult
         Me.tmrWait.Enabled = False
         Me.tmrWait.Interval = 250
         Me.tmrLoad.Enabled = False
@@ -110,7 +110,7 @@ Public Class dlgTMDBSearchResults_MovieSet
     End Sub
 
     Private Sub btnVerify_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnVerify.Click
-        Dim pOpt As New Structures.ScrapeOptions_MovieSet
+        Dim pOpt As New Structures.ScrapeOptions
         pOpt = SetPreviewOptions()
         '' The rule is that if there is a tt is an IMDB otherwise is a TMDB
         _TMDB.GetSearchMovieSetInfoAsync(Me.txtTMDBID.Text, _nMovieSet, pOpt)
@@ -283,10 +283,10 @@ Public Class dlgTMDBSearchResults_MovieSet
         chkManual.Enabled = True
     End Sub
 
-    Private Function SetPreviewOptions() As Structures.ScrapeOptions_MovieSet
-        Dim aOpt As New Structures.ScrapeOptions_MovieSet
-        aOpt.bPlot = True
-        aOpt.bTitle = True
+    Private Function SetPreviewOptions() As Structures.ScrapeOptions
+        Dim aOpt As New Structures.ScrapeOptions
+        aOpt.bMainPlot = True
+        aOpt.bMainTitle = True
 
         Return aOpt
     End Function
@@ -304,7 +304,7 @@ Public Class dlgTMDBSearchResults_MovieSet
     End Sub
 
     Private Sub tmrLoad_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrLoad.Tick
-        Dim pOpt As New Structures.ScrapeOptions_MovieSet
+        Dim pOpt As New Structures.ScrapeOptions
         pOpt = SetPreviewOptions()
 
         Me.tmrWait.Stop()

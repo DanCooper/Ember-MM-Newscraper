@@ -28,7 +28,7 @@ Public Class dlgCustomScraperMovieSet
 
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
-    Private CustomUpdater As New Structures.CustomUpdaterStruct_MovieSet
+    Private CustomUpdater As New Structures.CustomUpdaterStruct
 
 #End Region 'Fields
 
@@ -42,7 +42,7 @@ Public Class dlgCustomScraperMovieSet
         Me.StartPosition = FormStartPosition.Manual
     End Sub
 
-    Public Overloads Function ShowDialog() As Structures.CustomUpdaterStruct_MovieSet
+    Public Overloads Function ShowDialog() As Structures.CustomUpdaterStruct
         If MyBase.ShowDialog() = Windows.Forms.DialogResult.OK Then
             Me.CustomUpdater.Canceled = False
         Else
@@ -207,12 +207,12 @@ Public Class dlgCustomScraperMovieSet
     End Sub
 
     Private Sub chkOptsPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsPlot.CheckedChanged
-        CustomUpdater.Options.bPlot = chkOptsPlot.Checked
+        CustomUpdater.Options.bMainPlot = chkOptsPlot.Checked
         CheckEnable()
     End Sub
 
     Private Sub chkOptsTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsTitle.CheckedChanged
-        CustomUpdater.Options.bTitle = chkOptsTitle.Checked
+        CustomUpdater.Options.bMainTitle = chkOptsTitle.Checked
         CheckEnable()
     End Sub
 

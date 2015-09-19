@@ -40,7 +40,7 @@ Public Class dlgTVDBSearchResults
 
     Private _InfoCache As New Dictionary(Of String, MediaContainers.TVShow)
     Private _PosterCache As New Dictionary(Of String, System.Drawing.Image)
-    Private _filterOptions As Structures.ScrapeOptions_TV
+    Private _filterOptions As Structures.ScrapeOptions
 
     Private _nShow As MediaContainers.TVShow
 
@@ -58,7 +58,7 @@ Public Class dlgTVDBSearchResults
         TVDB = _TVDB
     End Sub
 
-    Public Overloads Function ShowDialog(ByRef nShow As MediaContainers.TVShow, ByVal sShowTitle As String, ByVal sShowPath As String, ByVal filterOptions As Structures.ScrapeOptions_TV) As Windows.Forms.DialogResult
+    Public Overloads Function ShowDialog(ByRef nShow As MediaContainers.TVShow, ByVal sShowTitle As String, ByVal sShowPath As String, ByVal filterOptions As Structures.ScrapeOptions) As Windows.Forms.DialogResult
         Me.tmrWait.Enabled = False
         Me.tmrWait.Interval = 250
         Me.tmrLoad.Enabled = False
@@ -110,7 +110,7 @@ Public Class dlgTVDBSearchResults
     End Sub
 
     Private Sub btnVerify_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnVerify.Click
-        Dim pOpt As New Structures.ScrapeOptions_TV
+        Dim pOpt As New Structures.ScrapeOptions
         pOpt = SetPreviewOptions()
         '' The rule is that if there is a tt is an IMDB otherwise is a TVDB
         TVDB.GetSearchTVShowInfoAsync(Me.txtTVDBID.Text, _nShow, pOpt)
@@ -305,13 +305,13 @@ Public Class dlgTVDBSearchResults
         chkManual.Enabled = True
     End Sub
 
-    Private Function SetPreviewOptions() As Structures.ScrapeOptions_TV
-        Dim aOpt As New Structures.ScrapeOptions_TV
-        aOpt.bShowCreator = True
-        aOpt.bShowGenre = True
-        aOpt.bShowPlot = True
-        aOpt.bShowPremiered = True
-        aOpt.bShowTitle = True
+    Private Function SetPreviewOptions() As Structures.ScrapeOptions
+        Dim aOpt As New Structures.ScrapeOptions
+        aOpt.bMainCreator = True
+        aOpt.bMainGenre = True
+        aOpt.bMainPlot = True
+        aOpt.bMainPremiered = True
+        aOpt.bMainTitle = True
 
         Return aOpt
     End Function
@@ -332,7 +332,7 @@ Public Class dlgTVDBSearchResults
     End Sub
 
     Private Sub tmrLoad_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrLoad.Tick
-        Dim pOpt As New Structures.ScrapeOptions_TV
+        Dim pOpt As New Structures.ScrapeOptions
         pOpt = SetPreviewOptions()
 
         Me.tmrWait.Stop()

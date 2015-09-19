@@ -39,7 +39,7 @@ Public Class dlgIMDBSearchResults_TV
 
     Private _InfoCache As New Dictionary(Of String, MediaContainers.TVShow)
     Private _PosterCache As New Dictionary(Of String, System.Drawing.Image)
-    Private _filterOptions As Structures.ScrapeOptions_TV
+    Private _filterOptions As Structures.ScrapeOptions
 
     Private _nShow As MediaContainers.TVShow
 
@@ -57,7 +57,7 @@ Public Class dlgIMDBSearchResults_TV
         _IMDB = IMDB
     End Sub
 
-    Public Overloads Function ShowDialog(ByRef nShow As MediaContainers.TVShow, ByVal sShowTitle As String, ByVal sShowPath As String, ByVal filterOptions As Structures.ScrapeOptions_TV) As Windows.Forms.DialogResult
+    Public Overloads Function ShowDialog(ByRef nShow As MediaContainers.TVShow, ByVal sShowTitle As String, ByVal sShowPath As String, ByVal filterOptions As Structures.ScrapeOptions) As Windows.Forms.DialogResult
         Me.tmrWait.Enabled = False
         Me.tmrWait.Interval = 250
         Me.tmrLoad.Enabled = False
@@ -114,7 +114,7 @@ Public Class dlgIMDBSearchResults_TV
     End Sub
 
     Private Sub btnVerify_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnVerify.Click
-        Dim pOpt As New Structures.ScrapeOptions_TV
+        Dim pOpt As New Structures.ScrapeOptions
         pOpt = SetPreviewOptions()
         If Regex.IsMatch(Me.txtIMDBID.Text.Replace("tt", String.Empty), "\d\d\d\d\d\d\d") Then
             Me.pnlLoading.Visible = True
@@ -333,12 +333,12 @@ Public Class dlgIMDBSearchResults_TV
         chkManual.Enabled = True
     End Sub
 
-    Private Function SetPreviewOptions() As Structures.ScrapeOptions_TV
-        Dim aOpt As New Structures.ScrapeOptions_TV
-        aOpt.bShowGenre = True
-        aOpt.bShowPlot = True
-        aOpt.bShowPremiered = True
-        aOpt.bShowTitle = True
+    Private Function SetPreviewOptions() As Structures.ScrapeOptions
+        Dim aOpt As New Structures.ScrapeOptions
+        aOpt.bMainGenre = True
+        aOpt.bMainPlot = True
+        aOpt.bMainPremiered = True
+        aOpt.bMainTitle = True
 
         Return aOpt
     End Function
@@ -359,7 +359,7 @@ Public Class dlgIMDBSearchResults_TV
     End Sub
 
     Private Sub tmrLoad_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrLoad.Tick
-        Dim pOpt As New Structures.ScrapeOptions_TV
+        Dim pOpt As New Structures.ScrapeOptions
         pOpt = SetPreviewOptions()
 
         Me.tmrWait.Stop()

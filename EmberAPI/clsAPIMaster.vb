@@ -32,9 +32,9 @@ Public Class Master
 
     Public Shared CanScanDiscImage As Boolean
     Public Shared DB As New Database
-    Public Shared DefaultOptions_Movie As New Structures.ScrapeOptions_Movie
-    Public Shared DefaultOptions_MovieSet As New Structures.ScrapeOptions_MovieSet
-    Public Shared DefaultOptions_TV As New Structures.ScrapeOptions_TV
+    Public Shared DefaultOptions_Movie As New Structures.ScrapeOptions
+    Public Shared DefaultOptions_MovieSet As New Structures.ScrapeOptions
+    Public Shared DefaultOptions_TV As New Structures.ScrapeOptions
     Public Shared eLang As New Localization
     Public Shared eSettings As New Settings
     Public Shared isWindows As Boolean = Functions.CheckIfWindows

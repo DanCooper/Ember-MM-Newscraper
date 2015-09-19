@@ -214,7 +214,7 @@ Namespace TMDB
         ''' <param name="Options">Module settings<param>
         ''' <param name="IsSearch">Not used at moment</param>
         ''' <returns>True: success, false: no success</returns>
-        Public Function GetMovieInfo(ByVal strID As String, ByRef nMovie As MediaContainers.Movie, ByVal FullCrew As Boolean, ByVal GetPoster As Boolean, ByVal FilteredOptions As Structures.ScrapeOptions_Movie, ByVal IsSearch As Boolean) As Boolean
+        Public Function GetMovieInfo(ByVal strID As String, ByRef nMovie As MediaContainers.Movie, ByVal FullCrew As Boolean, ByVal GetPoster As Boolean, ByVal FilteredOptions As Structures.ScrapeOptions, ByVal IsSearch As Boolean) As Boolean
             If String.IsNullOrEmpty(strID) OrElse strID.Length < 2 Then Return False
 
             Dim Movie As TMDbLib.Objects.Movies.Movie
@@ -258,7 +258,7 @@ Namespace TMDB
             If bwTMDB.CancellationPending Or Movie Is Nothing Then Return Nothing
 
             'Cast (Actors)
-            If FilteredOptions.bCast Then
+            If FilteredOptions.bMainActors Then
                 If Movie.Credits IsNot Nothing AndAlso Movie.Credits.Cast IsNot Nothing Then
                     For Each aCast As TMDbLib.Objects.Movies.Cast In Movie.Credits.Cast
                         nMovie.Actors.Add(New MediaContainers.Person With {.Name = aCast.Name, _
@@ -272,7 +272,7 @@ Namespace TMDB
             If bwTMDB.CancellationPending Then Return Nothing
 
             'Certifications
-            If FilteredOptions.bCert Then
+            If FilteredOptions.bMainCert Then
                 If Movie.Releases IsNot Nothing AndAlso Movie.Releases.Countries IsNot Nothing AndAlso Movie.Releases.Countries.Count > 0 Then
                     For Each cCountry In Movie.Releases.Countries
                         If Not String.IsNullOrEmpty(cCountry.Certification) Then
@@ -290,7 +290,7 @@ Namespace TMDB
             If bwTMDB.CancellationPending Then Return Nothing
 
             'Collection ID
-            If FilteredOptions.bCollectionID Then
+            If FilteredOptions.bMainCollectionID Then
                 If Movie.BelongsToCollection Is Nothing OrElse (Movie.BelongsToCollection IsNot Nothing AndAlso Movie.BelongsToCollection.Count = 0) Then
                     If _SpecialSettings.FallBackEng AndAlso MovieE.BelongsToCollection IsNot Nothing AndAlso MovieE.BelongsToCollection.Count > 0 Then
                         nMovie.AddSet(Nothing, MovieE.BelongsToCollection.Item(0).Name, Nothing, CStr(MovieE.BelongsToCollection.Item(0).Id))
@@ -305,7 +305,7 @@ Namespace TMDB
             If bwTMDB.CancellationPending Then Return Nothing
 
             'Countries
-            If FilteredOptions.bCountry Then
+            If FilteredOptions.bMainCountry Then
                 If Movie.ProductionCountries IsNot Nothing AndAlso Movie.ProductionCountries.Count > 0 Then
                     For Each aContry As TMDbLib.Objects.Movies.ProductionCountry In Movie.ProductionCountries
                         nMovie.Countries.Add(aContry.Name)
@@ -316,13 +316,13 @@ Namespace TMDB
             If bwTMDB.CancellationPending Then Return Nothing
 
             'Director / Writer
-            If FilteredOptions.bDirector OrElse FilteredOptions.bWriters OrElse FilteredOptions.bFullCrew Then
+            If FilteredOptions.bMainDirector OrElse FilteredOptions.bMainWriters OrElse FilteredOptions.bMainFullCrew Then
                 If Movie.Credits IsNot Nothing AndAlso Movie.Credits.Crew IsNot Nothing Then
                     For Each aCrew As TMDbLib.Objects.General.Crew In Movie.Credits.Crew
-                        If FilteredOptions.bDirector AndAlso aCrew.Department = "Directing" AndAlso aCrew.Job = "Director" Then
+                        If FilteredOptions.bMainDirector AndAlso aCrew.Department = "Directing" AndAlso aCrew.Job = "Director" Then
                             nMovie.Directors.Add(aCrew.Name)
                         End If
-                        If FilteredOptions.bWriters AndAlso aCrew.Department = "Writing" AndAlso (aCrew.Job = "Author" OrElse aCrew.Job = "Screenplay" OrElse aCrew.Job = "Writer") Then
+                        If FilteredOptions.bMainWriters AndAlso aCrew.Department = "Writing" AndAlso (aCrew.Job = "Author" OrElse aCrew.Job = "Screenplay" OrElse aCrew.Job = "Writer") Then
                             nMovie.Credits.Add(aCrew.Name)
                         End If
                     Next
@@ -332,7 +332,7 @@ Namespace TMDB
             If bwTMDB.CancellationPending Then Return Nothing
 
             'Genres
-            If FilteredOptions.bGenre Then
+            If FilteredOptions.bMainGenre Then
                 Dim aGenres As System.Collections.Generic.List(Of TMDbLib.Objects.General.Genre) = Nothing
                 If Movie.Genres Is Nothing OrElse (Movie.Genres IsNot Nothing AndAlso Movie.Genres.Count = 0) Then
                     If _SpecialSettings.FallBackEng AndAlso MovieE.Genres IsNot Nothing AndAlso MovieE.Genres.Count > 0 Then
@@ -352,7 +352,7 @@ Namespace TMDB
             If bwTMDB.CancellationPending Then Return Nothing
 
             'OriginalTitle
-            If FilteredOptions.bOriginalTitle Then
+            If FilteredOptions.bMainOriginalTitle Then
                 If Movie.OriginalTitle Is Nothing OrElse (Movie.OriginalTitle IsNot Nothing AndAlso String.IsNullOrEmpty(Movie.OriginalTitle)) Then
                     If _SpecialSettings.FallBackEng AndAlso MovieE.OriginalTitle IsNot Nothing AndAlso Not String.IsNullOrEmpty(MovieE.OriginalTitle) Then
                         nMovie.OriginalTitle = MovieE.OriginalTitle
@@ -365,7 +365,7 @@ Namespace TMDB
             If bwTMDB.CancellationPending Then Return Nothing
 
             'Plot
-            If FilteredOptions.bPlot Then
+            If FilteredOptions.bMainPlot Then
                 If Movie.Overview Is Nothing OrElse (Movie.Overview IsNot Nothing AndAlso String.IsNullOrEmpty(Movie.Overview)) Then
                     If _SpecialSettings.FallBackEng AndAlso MovieE.Overview IsNot Nothing AndAlso Not String.IsNullOrEmpty(MovieE.Overview) Then
                         nMovie.Plot = MovieE.Overview
@@ -389,7 +389,7 @@ Namespace TMDB
             If bwTMDB.CancellationPending Then Return Nothing
 
             'Rating
-            If FilteredOptions.bRating Then
+            If FilteredOptions.bMainRating Then
                 nMovie.Rating = CStr(Movie.VoteAverage)
                 nMovie.Votes = CStr(Movie.VoteCount)
             End If
@@ -397,7 +397,7 @@ Namespace TMDB
             If bwTMDB.CancellationPending Then Return Nothing
 
             'ReleaseDate
-            If FilteredOptions.bRelease Then
+            If FilteredOptions.bMainRelease Then
                 Dim ScrapedDate As String = String.Empty
                 If Movie.ReleaseDate Is Nothing OrElse (Movie.ReleaseDate IsNot Nothing AndAlso String.IsNullOrEmpty(CStr(Movie.ReleaseDate))) Then
                     If _SpecialSettings.FallBackEng AndAlso MovieE.ReleaseDate IsNot Nothing AndAlso Not String.IsNullOrEmpty(CStr(MovieE.ReleaseDate)) Then
@@ -420,7 +420,7 @@ Namespace TMDB
             If bwTMDB.CancellationPending Then Return Nothing
 
             'Runtime
-            If FilteredOptions.bRuntime Then
+            If FilteredOptions.bMainRuntime Then
                 If Movie.Runtime Is Nothing OrElse Movie.Runtime = 0 Then
                     If _SpecialSettings.FallBackEng AndAlso MovieE.Runtime IsNot Nothing Then
                         nMovie.Runtime = CStr(MovieE.Runtime)
@@ -433,7 +433,7 @@ Namespace TMDB
             If bwTMDB.CancellationPending Then Return Nothing
 
             'Studios
-            If FilteredOptions.bStudio Then
+            If FilteredOptions.bMainStudio Then
                 If Movie.ProductionCompanies IsNot Nothing AndAlso Movie.ProductionCompanies.Count > 0 Then
                     For Each cStudio In Movie.ProductionCompanies
                         nMovie.Studios.Add(cStudio.Name)
@@ -444,7 +444,7 @@ Namespace TMDB
             If bwTMDB.CancellationPending Then Return Nothing
 
             'Tagline
-            If FilteredOptions.bTagline Then
+            If FilteredOptions.bMainTagline Then
                 If Movie.Tagline Is Nothing OrElse (Movie.Tagline IsNot Nothing AndAlso String.IsNullOrEmpty(Movie.Tagline)) Then
                     If _SpecialSettings.FallBackEng AndAlso MovieE.Tagline IsNot Nothing AndAlso Not String.IsNullOrEmpty(MovieE.Tagline) Then
                         nMovie.Tagline = MovieE.Tagline
@@ -457,7 +457,7 @@ Namespace TMDB
             If bwTMDB.CancellationPending Then Return Nothing
 
             'Title
-            If FilteredOptions.bTitle Then
+            If FilteredOptions.bMainTitle Then
                 If Movie.Title Is Nothing OrElse (Movie.Title IsNot Nothing AndAlso String.IsNullOrEmpty(Movie.Title)) Then
                     If _SpecialSettings.FallBackEng AndAlso MovieE.Title IsNot Nothing AndAlso Not String.IsNullOrEmpty(MovieE.Title) Then
                         nMovie.Title = MovieE.Title
@@ -470,7 +470,7 @@ Namespace TMDB
             If bwTMDB.CancellationPending Then Return Nothing
 
             'Trailer
-            If FilteredOptions.bTrailer Then
+            If FilteredOptions.bMainTrailer Then
                 Dim aTrailers As List(Of TMDbLib.Objects.General.Video) = Nothing
                 If Movie.Videos Is Nothing OrElse (Movie.Videos IsNot Nothing AndAlso Movie.Videos.Results.Count = 0) Then
                     If _SpecialSettings.FallBackEng AndAlso MovieE.Videos IsNot Nothing AndAlso MovieE.Videos.Results.Count > 0 Then
@@ -488,7 +488,7 @@ Namespace TMDB
             If bwTMDB.CancellationPending Then Return Nothing
 
             'Year
-            If FilteredOptions.bYear Then
+            If FilteredOptions.bMainYear Then
                 If Movie.ReleaseDate Is Nothing OrElse (Movie.ReleaseDate IsNot Nothing AndAlso String.IsNullOrEmpty(CStr(Movie.ReleaseDate))) Then
                     If _SpecialSettings.FallBackEng AndAlso MovieE.ReleaseDate IsNot Nothing AndAlso Not String.IsNullOrEmpty(CStr(MovieE.ReleaseDate)) Then
                         nMovie.Year = CStr(MovieE.ReleaseDate.Value.Year)
@@ -503,7 +503,7 @@ Namespace TMDB
             Return True
         End Function
 
-        Public Function GetMovieSetInfo(ByVal strID As String, ByRef DBMovieSet As MediaContainers.MovieSet, ByVal GetPoster As Boolean, ByVal FilteredOptions As Structures.ScrapeOptions_MovieSet, ByVal IsSearch As Boolean) As Boolean
+        Public Function GetMovieSetInfo(ByVal strID As String, ByRef DBMovieSet As MediaContainers.MovieSet, ByVal GetPoster As Boolean, ByVal FilteredOptions As Structures.ScrapeOptions, ByVal IsSearch As Boolean) As Boolean
             If String.IsNullOrEmpty(strID) OrElse Not Integer.TryParse(strID, 0) Then Return False
 
             Dim MovieSet As TMDbLib.Objects.Collections.Collection
@@ -526,7 +526,7 @@ Namespace TMDB
             If bwTMDB.CancellationPending Or MovieSet Is Nothing Then Return Nothing
 
             'Plot
-            If FilteredOptions.bPlot Then
+            If FilteredOptions.bMainPlot Then
                 If MovieSet.Overview Is Nothing OrElse (MovieSet.Overview IsNot Nothing AndAlso String.IsNullOrEmpty(MovieSet.Overview)) Then
                     If _SpecialSettings.FallBackEng AndAlso MovieSetE.Overview IsNot Nothing AndAlso Not String.IsNullOrEmpty(MovieSetE.Overview) Then
                         'nMovieSet.Plot = MovieSetE.Overview
@@ -550,7 +550,7 @@ Namespace TMDB
             End If
 
             'Title
-            If FilteredOptions.bTitle Then
+            If FilteredOptions.bMainTitle Then
                 If MovieSet.Name Is Nothing OrElse (MovieSet.Name IsNot Nothing AndAlso String.IsNullOrEmpty(MovieSet.Name)) Then
                     If _SpecialSettings.FallBackEng AndAlso MovieSetE.Name IsNot Nothing AndAlso Not String.IsNullOrEmpty(MovieSetE.Name) Then
                         'nMovieSet.Title = MovieSetE.Name
@@ -582,7 +582,7 @@ Namespace TMDB
         ''' <param name="Options">Module settings<param>
         ''' <param name="IsSearch">Not used at moment</param>
         ''' <returns>True: success, false: no success</returns>
-        Public Function GetTVShowInfo(ByVal strID As String, ByRef nShow As MediaContainers.TVShow, ByVal GetPoster As Boolean, ByVal FilteredOptions As Structures.ScrapeOptions_TV, ByVal IsSearch As Boolean, ByVal withEpisodes As Boolean) As Boolean
+        Public Function GetTVShowInfo(ByVal strID As String, ByRef nShow As MediaContainers.TVShow, ByVal GetPoster As Boolean, ByVal FilteredOptions As Structures.ScrapeOptions, ByVal IsSearch As Boolean, ByVal withEpisodes As Boolean) As Boolean
             If String.IsNullOrEmpty(strID) OrElse strID.Length < 2 Then Return False
 
             Dim Show As TMDbLib.Objects.TvShows.TvShow
@@ -617,7 +617,7 @@ Namespace TMDB
             If bwTMDB.CancellationPending Or Show Is Nothing Then Return Nothing
 
             'Cast (Actors)
-            If FilteredOptions.bShowActors Then
+            If FilteredOptions.bMainActors Then
                 If Show.Credits IsNot Nothing AndAlso Show.Credits.Cast IsNot Nothing Then
                     For Each aCast As TMDbLib.Objects.TvShows.Cast In Show.Credits.Cast
                         nShow.Actors.Add(New MediaContainers.Person With {.Name = aCast.Name, _
@@ -631,7 +631,7 @@ Namespace TMDB
             If bwTMDB.CancellationPending Then Return Nothing
 
             'Certifications
-            If FilteredOptions.bShowCert Then
+            If FilteredOptions.bMainCert Then
                 If Show.ContentRatings IsNot Nothing AndAlso Show.ContentRatings.Results IsNot Nothing AndAlso Show.ContentRatings.Results.Count > 0 Then
                     For Each aCountry In Show.ContentRatings.Results
                         If Not String.IsNullOrEmpty(aCountry.Rating) Then
@@ -649,7 +649,7 @@ Namespace TMDB
             If bwTMDB.CancellationPending Then Return Nothing
 
             'Countries
-            If FilteredOptions.bShowCountry Then
+            If FilteredOptions.bMainCountry Then
                 If Show.OriginCountry IsNot Nothing AndAlso Show.OriginCountry.Count > 0 Then
                     For Each aCountry As String In Show.OriginCountry
                         nShow.Countries.Add(aCountry)
@@ -660,7 +660,7 @@ Namespace TMDB
             If bwTMDB.CancellationPending Then Return Nothing
 
             'Created By
-            If FilteredOptions.bShowCreator Then
+            If FilteredOptions.bMainCreator Then
                 If Show.CreatedBy IsNot Nothing Then
                     For Each aCreator As TMDbLib.Objects.People.Person In Show.CreatedBy
                         nShow.Creators.Add(aCreator.Name)
@@ -671,7 +671,7 @@ Namespace TMDB
             If bwTMDB.CancellationPending Then Return Nothing
 
             'Genres
-            If FilteredOptions.bShowGenre Then
+            If FilteredOptions.bMainGenre Then
                 Dim aGenres As System.Collections.Generic.List(Of TMDbLib.Objects.General.Genre) = Nothing
                 If Show.Genres Is Nothing OrElse (Show.Genres IsNot Nothing AndAlso Show.Genres.Count = 0) Then
                     If _SpecialSettings.FallBackEng AndAlso ShowE.Genres IsNot Nothing AndAlso ShowE.Genres.Count > 0 Then
@@ -691,7 +691,7 @@ Namespace TMDB
             If bwTMDB.CancellationPending Then Return Nothing
 
             'OriginalTitle
-            If FilteredOptions.bShowOriginalTitle Then
+            If FilteredOptions.bMainOriginalTitle Then
                 If Show.OriginalName Is Nothing OrElse (Show.OriginalName IsNot Nothing AndAlso String.IsNullOrEmpty(Show.OriginalName)) Then
                     If _SpecialSettings.FallBackEng AndAlso ShowE.OriginalName IsNot Nothing AndAlso Not String.IsNullOrEmpty(ShowE.OriginalName) Then
                         nShow.OriginalTitle = ShowE.OriginalName
@@ -704,7 +704,7 @@ Namespace TMDB
             If bwTMDB.CancellationPending Then Return Nothing
 
             'Plot
-            If FilteredOptions.bShowPlot Then
+            If FilteredOptions.bMainPlot Then
                 If Show.Overview Is Nothing OrElse (Show.Overview IsNot Nothing AndAlso String.IsNullOrEmpty(Show.Overview)) Then
                     If _SpecialSettings.FallBackEng AndAlso ShowE.Overview IsNot Nothing AndAlso Not String.IsNullOrEmpty(ShowE.Overview) Then
                         nShow.Plot = ShowE.Overview
@@ -728,7 +728,7 @@ Namespace TMDB
             If bwTMDB.CancellationPending Then Return Nothing
 
             'Premiered
-            If FilteredOptions.bShowPremiered Then
+            If FilteredOptions.bMainPremiered Then
                 Dim ScrapedDate As String = String.Empty
                 If Show.FirstAirDate Is Nothing OrElse (Show.FirstAirDate IsNot Nothing AndAlso String.IsNullOrEmpty(CStr(Show.FirstAirDate))) Then
                     If _SpecialSettings.FallBackEng AndAlso ShowE.FirstAirDate IsNot Nothing AndAlso Not String.IsNullOrEmpty(CStr(ShowE.FirstAirDate)) Then
@@ -751,7 +751,7 @@ Namespace TMDB
             If bwTMDB.CancellationPending Then Return Nothing
 
             'Rating
-            If FilteredOptions.bShowRating Then
+            If FilteredOptions.bMainRating Then
                 nShow.Rating = CStr(Show.VoteAverage)
                 nShow.Votes = CStr(Show.VoteCount)
             End If
@@ -759,7 +759,7 @@ Namespace TMDB
             If bwTMDB.CancellationPending Then Return Nothing
 
             'Runtime
-            If FilteredOptions.bShowRuntime Then
+            If FilteredOptions.bMainRuntime Then
                 If Show.EpisodeRunTime Is Nothing OrElse Show.EpisodeRunTime.Count = 0 Then
                     If _SpecialSettings.FallBackEng AndAlso ShowE.EpisodeRunTime IsNot Nothing Then
                         nShow.Runtime = CStr(ShowE.EpisodeRunTime.Item(0))
@@ -772,7 +772,7 @@ Namespace TMDB
             If bwTMDB.CancellationPending Then Return Nothing
 
             'Studios
-            If FilteredOptions.bShowStudio Then
+            If FilteredOptions.bMainStudio Then
                 If Show.Networks IsNot Nothing AndAlso Show.Networks.Count > 0 Then
                     For Each aStudio In Show.Networks
                         nShow.Studios.Add(aStudio.Name)
@@ -783,7 +783,7 @@ Namespace TMDB
             If bwTMDB.CancellationPending Then Return Nothing
 
             'Title
-            If FilteredOptions.bShowTitle Then
+            If FilteredOptions.bMainTitle Then
                 If Show.Name Is Nothing OrElse (Show.Name IsNot Nothing AndAlso String.IsNullOrEmpty(Show.Name)) Then
                     If _SpecialSettings.FallBackEng AndAlso ShowE.Name IsNot Nothing AndAlso Not String.IsNullOrEmpty(ShowE.Name) Then
                         nShow.Title = ShowE.Name
@@ -821,7 +821,7 @@ Namespace TMDB
             Return True
         End Function
 
-        Public Sub GetTVSeasonInfo(ByRef nShow As MediaContainers.TVShow, ByRef ShowID As Integer, ByRef SeasonNumber As Integer, ByVal FilteredOptions As Structures.ScrapeOptions_TV, ByRef withEpisodes As Boolean)
+        Public Sub GetTVSeasonInfo(ByRef nShow As MediaContainers.TVShow, ByRef ShowID As Integer, ByRef SeasonNumber As Integer, ByVal FilteredOptions As Structures.ScrapeOptions, ByRef withEpisodes As Boolean)
             Dim nSeason As New MediaContainers.SeasonDetails
             Dim SeasonInfo As TMDbLib.Objects.TvShows.TvSeason = _TMDBApi.GetTvSeason(ShowID, SeasonNumber, TMDbLib.Objects.TvShows.TvSeasonMethods.Credits Or TMDbLib.Objects.TvShows.TvSeasonMethods.ExternalIds)
 
@@ -867,7 +867,7 @@ Namespace TMDB
             End If
         End Sub
 
-        Public Function GetTVEpisodeInfo(ByRef ShowID As Integer, ByVal Aired As String, ByRef FilteredOptions As Structures.ScrapeOptions_TV) As MediaContainers.EpisodeDetails
+        Public Function GetTVEpisodeInfo(ByRef ShowID As Integer, ByVal Aired As String, ByRef FilteredOptions As Structures.ScrapeOptions) As MediaContainers.EpisodeDetails
             Dim nEpisode As New MediaContainers.EpisodeDetails
             Dim ShowInfo As TMDbLib.Objects.TvShows.TvShow
 
@@ -884,7 +884,7 @@ Namespace TMDB
             Return Nothing
         End Function
 
-        Public Function GetTVEpisodeInfo(ByRef tmdbID As Integer, ByRef SeasonNumber As Integer, ByRef EpisodeNumber As Integer, ByRef FilteredOptions As Structures.ScrapeOptions_TV) As MediaContainers.EpisodeDetails
+        Public Function GetTVEpisodeInfo(ByRef tmdbID As Integer, ByRef SeasonNumber As Integer, ByRef EpisodeNumber As Integer, ByRef FilteredOptions As Structures.ScrapeOptions) As MediaContainers.EpisodeDetails
             Dim EpisodeInfo As TMDbLib.Objects.TvShows.TvEpisode = _TMDBApi.GetTvEpisode(tmdbID, SeasonNumber, EpisodeNumber, TMDbLib.Objects.TvShows.TvEpisodeMethods.Credits Or TMDbLib.Objects.TvShows.TvEpisodeMethods.ExternalIds)
 
             If EpisodeInfo Is Nothing OrElse EpisodeInfo.Id Is Nothing OrElse Not EpisodeInfo.Id > 0 Then
@@ -896,7 +896,7 @@ Namespace TMDB
             Return nEpisode
         End Function
 
-        Public Function GetTVEpisodeInfo(ByRef EpisodeInfo As TMDbLib.Objects.TvShows.TvEpisode, ByRef FilteredOptions As Structures.ScrapeOptions_TV) As MediaContainers.EpisodeDetails
+        Public Function GetTVEpisodeInfo(ByRef EpisodeInfo As TMDbLib.Objects.TvShows.TvEpisode, ByRef FilteredOptions As Structures.ScrapeOptions) As MediaContainers.EpisodeDetails
             Dim nEpisode As New MediaContainers.EpisodeDetails
 
             nEpisode.Scrapersource = "TMDB"
@@ -1044,7 +1044,7 @@ Namespace TMDB
             Return alStudio
         End Function
 
-        Public Function GetSearchMovieInfo(ByVal sMovieName As String, ByRef oDBMovie As Database.DBElement, ByRef nMovie As MediaContainers.Movie, ByVal iType As Enums.ScrapeType, ByVal FilteredOptions As Structures.ScrapeOptions_Movie) As MediaContainers.Movie
+        Public Function GetSearchMovieInfo(ByVal sMovieName As String, ByRef oDBMovie As Database.DBElement, ByRef nMovie As MediaContainers.Movie, ByVal iType As Enums.ScrapeType, ByVal FilteredOptions As Structures.ScrapeOptions) As MediaContainers.Movie
             Dim r As SearchResults_Movie = SearchMovie(sMovieName, CInt(If(Not String.IsNullOrEmpty(oDBMovie.Movie.Year), oDBMovie.Movie.Year, Nothing)))
             Dim b As Boolean = False
 
@@ -1084,7 +1084,7 @@ Namespace TMDB
             Return nMovie
         End Function
 
-        Public Function GetSearchMovieSetInfo(ByVal sMovieSetName As String, ByRef oDBMovieSet As Database.DBElement, ByRef nMovieSet As MediaContainers.MovieSet, ByVal iType As Enums.ScrapeType, ByVal FilteredOptions As Structures.ScrapeOptions_MovieSet) As MediaContainers.MovieSet
+        Public Function GetSearchMovieSetInfo(ByVal sMovieSetName As String, ByRef oDBMovieSet As Database.DBElement, ByRef nMovieSet As MediaContainers.MovieSet, ByVal iType As Enums.ScrapeType, ByVal FilteredOptions As Structures.ScrapeOptions) As MediaContainers.MovieSet
             Dim r As SearchResults_MovieSet = SearchMovieSet(sMovieSetName, Nothing)
             Dim b As Boolean = False
 
@@ -1121,7 +1121,7 @@ Namespace TMDB
             Return nMovieSet
         End Function
 
-        Public Function GetSearchTVShowInfo(ByVal sShowName As String, ByRef oDBTV As Database.DBElement, ByRef nShow As MediaContainers.TVShow, ByVal iType As Enums.ScrapeType, ByVal FilteredOptions As Structures.ScrapeOptions_TV) As MediaContainers.TVShow
+        Public Function GetSearchTVShowInfo(ByVal sShowName As String, ByRef oDBTV As Database.DBElement, ByRef nShow As MediaContainers.TVShow, ByVal iType As Enums.ScrapeType, ByVal FilteredOptions As Structures.ScrapeOptions) As MediaContainers.TVShow
             Dim r As SearchResults_TVShow = SearchTVShow(sShowName)
             Dim b As Boolean = False
 
@@ -1179,7 +1179,7 @@ Namespace TMDB
             Return ret
         End Function
 
-        Public Sub GetSearchMovieInfoAsync(ByVal tmdbID As String, ByVal Movie As MediaContainers.Movie, ByVal FilteredOptions As Structures.ScrapeOptions_Movie)
+        Public Sub GetSearchMovieInfoAsync(ByVal tmdbID As String, ByVal Movie As MediaContainers.Movie, ByVal FilteredOptions As Structures.ScrapeOptions)
             '' The rule is that if there is a tt is an IMDB otherwise is a TMDB
             If Not bwTMDB.IsBusy Then
                 bwTMDB.WorkerReportsProgress = False
@@ -1189,7 +1189,7 @@ Namespace TMDB
             End If
         End Sub
 
-        Public Sub GetSearchMovieSetInfoAsync(ByVal tmdbColID As String, ByVal MovieSet As MediaContainers.MovieSet, ByVal FilteredOptions As Structures.ScrapeOptions_MovieSet)
+        Public Sub GetSearchMovieSetInfoAsync(ByVal tmdbColID As String, ByVal MovieSet As MediaContainers.MovieSet, ByVal FilteredOptions As Structures.ScrapeOptions)
             '' The rule is that if there is a tt is an IMDB otherwise is a TMDB
             If Not bwTMDB.IsBusy Then
                 bwTMDB.WorkerReportsProgress = False
@@ -1199,7 +1199,7 @@ Namespace TMDB
             End If
         End Sub
 
-        Public Sub GetSearchTVShowInfoAsync(ByVal tmdbID As String, ByVal Show As MediaContainers.TVShow, ByVal FilteredOptions As Structures.ScrapeOptions_TV)
+        Public Sub GetSearchTVShowInfoAsync(ByVal tmdbID As String, ByVal Show As MediaContainers.TVShow, ByVal FilteredOptions As Structures.ScrapeOptions)
             '' The rule is that if there is a tt is an IMDB otherwise is a TMDB
             If Not bwTMDB.IsBusy Then
                 bwTMDB.WorkerReportsProgress = False
@@ -1209,7 +1209,7 @@ Namespace TMDB
             End If
         End Sub
 
-        Public Sub SearchMovieAsync(ByVal sMovie As String, ByVal filterOptions As Structures.ScrapeOptions_Movie, Optional ByVal sYear As String = "")
+        Public Sub SearchMovieAsync(ByVal sMovie As String, ByVal filterOptions As Structures.ScrapeOptions, Optional ByVal sYear As String = "")
             '' The rule is that if there is a tt is an IMDB otherwise is a TMDB
             Dim tYear As Integer = 0
 
@@ -1225,7 +1225,7 @@ Namespace TMDB
             End If
         End Sub
 
-        Public Sub SearchMovieSetAsync(ByVal sMovieSet As String, ByVal filterOptions As Structures.ScrapeOptions_MovieSet)
+        Public Sub SearchMovieSetAsync(ByVal sMovieSet As String, ByVal filterOptions As Structures.ScrapeOptions)
             '' The rule is that if there is a tt is an IMDB otherwise is a TMDB
             If Not bwTMDB.IsBusy Then
                 bwTMDB.WorkerReportsProgress = False
@@ -1235,7 +1235,7 @@ Namespace TMDB
             End If
         End Sub
 
-        Public Sub SearchTVShowAsync(ByVal sShow As String, ByVal filterOptions As Structures.ScrapeOptions_TV)
+        Public Sub SearchTVShowAsync(ByVal sShow As String, ByVal filterOptions As Structures.ScrapeOptions)
 
             If Not bwTMDB.IsBusy Then
                 bwTMDB.WorkerReportsProgress = False
@@ -1468,9 +1468,9 @@ Namespace TMDB
             Dim FullCrew As Boolean
             Dim Movie As MediaContainers.Movie
             Dim MovieSet As MediaContainers.MovieSet
-            Dim Options_Movie As Structures.ScrapeOptions_Movie
-            Dim Options_MovieSet As Structures.ScrapeOptions_MovieSet
-            Dim Options_TV As Structures.ScrapeOptions_TV
+            Dim Options_Movie As Structures.ScrapeOptions
+            Dim Options_MovieSet As Structures.ScrapeOptions
+            Dim Options_TV As Structures.ScrapeOptions
             Dim Parameter As String
             Dim Search As SearchType
             Dim TVShow As MediaContainers.TVShow

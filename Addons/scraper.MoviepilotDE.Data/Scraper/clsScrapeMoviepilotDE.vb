@@ -61,7 +61,7 @@ Namespace MoviepilotDE
             Return FSK
         End Function
 
-        Public Function GetMovieInfo(ByVal strOriginalTitle As String, ByVal strTitle As String, ByVal strYear As String, ByRef nMovie As MediaContainers.Movie, ByVal FilteredOptions As Structures.ScrapeOptions_Movie) As Boolean
+        Public Function GetMovieInfo(ByVal strOriginalTitle As String, ByVal strTitle As String, ByVal strYear As String, ByRef nMovie As MediaContainers.Movie, ByVal FilteredOptions As Structures.ScrapeOptions) As Boolean
             Try
                 nMovie.Clear()
                 nMovie.Scrapersource = "MOVIEPILOT"
@@ -80,16 +80,16 @@ Namespace MoviepilotDE
 
                     '....and use result to get the wanted information
                     If Not String.IsNullOrEmpty(HTML) Then
-                        If FilteredOptions.bCert Then
+                        If FilteredOptions.bMainCert Then
                             nMovie.Certifications.Add(GetCertification(HTML))
                         End If
 
-                        If FilteredOptions.bOutline OrElse FilteredOptions.bPlot Then
+                        If FilteredOptions.bMainOutline OrElse FilteredOptions.bMainPlot Then
                             Dim aResult As Results = GetPlotAndOutline(HTML)
-                            If FilteredOptions.bOutline Then
+                            If FilteredOptions.bMainOutline Then
                                 nMovie.Outline = aResult.strOutline
                             End If
-                            If FilteredOptions.bPlot Then
+                            If FilteredOptions.bMainPlot Then
                                 nMovie.Plot = aResult.strPlot
                             End If
                         End If

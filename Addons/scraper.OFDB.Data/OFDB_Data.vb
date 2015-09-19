@@ -29,7 +29,7 @@ Public Class OFDB_Data
 #Region "Fields"
 
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
-    Public Shared ConfigOptions As New Structures.ScrapeOptions_Movie
+    Public Shared ConfigScrapeOptions As New Structures.ScrapeOptions
     Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
     Public Shared _AssemblyName As String
 
@@ -105,11 +105,11 @@ Public Class OFDB_Data
         _setup = New frmSettingsHolder
         LoadSettings()
         _setup.chkEnabled.Checked = _ScraperEnabled
-        _setup.chkTitle.Checked = ConfigOptions.bTitle
-        _setup.chkOutline.Checked = ConfigOptions.bOutline
-        _setup.chkPlot.Checked = ConfigOptions.bPlot
-        _setup.chkGenre.Checked = ConfigOptions.bGenre
-        _setup.chkCertification.Checked = ConfigOptions.bCert
+        _setup.chkTitle.Checked = ConfigScrapeOptions.bMainTitle
+        _setup.chkOutline.Checked = ConfigScrapeOptions.bMainOutline
+        _setup.chkPlot.Checked = ConfigScrapeOptions.bMainPlot
+        _setup.chkGenre.Checked = ConfigScrapeOptions.bMainGenre
+        _setup.chkCertification.Checked = ConfigScrapeOptions.bMainCert
 
         _setup.orderChanged()
 
@@ -128,20 +128,20 @@ Public Class OFDB_Data
     End Function
 
     Sub LoadSettings()
-        ConfigOptions.bTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle", True)
-        ConfigOptions.bOutline = clsAdvancedSettings.GetBooleanSetting("DoOutline", True)
-        ConfigOptions.bPlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", True)
-        ConfigOptions.bGenre = clsAdvancedSettings.GetBooleanSetting("DoGenres", True)
-        ConfigOptions.bCert = clsAdvancedSettings.GetBooleanSetting("DoCert", False)
+        ConfigScrapeOptions.bMainTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle", True)
+        ConfigScrapeOptions.bMainOutline = clsAdvancedSettings.GetBooleanSetting("DoOutline", True)
+        ConfigScrapeOptions.bMainPlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", True)
+        ConfigScrapeOptions.bMainGenre = clsAdvancedSettings.GetBooleanSetting("DoGenres", True)
+        ConfigScrapeOptions.bMainCert = clsAdvancedSettings.GetBooleanSetting("DoCert", False)
     End Sub
 
     Sub SaveSettings()
         Using settings = New clsAdvancedSettings()
-            settings.SetBooleanSetting("DoTitle", ConfigOptions.bTitle)
-            settings.SetBooleanSetting("DoOutline", ConfigOptions.bOutline)
-            settings.SetBooleanSetting("DoPlot", ConfigOptions.bPlot)
-            settings.SetBooleanSetting("DoGenres", ConfigOptions.bGenre)
-            settings.SetBooleanSetting("DoCert", ConfigOptions.bCert)
+            settings.SetBooleanSetting("DoTitle", ConfigScrapeOptions.bMainTitle)
+            settings.SetBooleanSetting("DoOutline", ConfigScrapeOptions.bMainOutline)
+            settings.SetBooleanSetting("DoPlot", ConfigScrapeOptions.bMainPlot)
+            settings.SetBooleanSetting("DoGenres", ConfigScrapeOptions.bMainGenre)
+            settings.SetBooleanSetting("DoCert", ConfigScrapeOptions.bMainCert)
         End Using
     End Sub
 
@@ -150,11 +150,11 @@ Public Class OFDB_Data
     End Sub
 
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Data_Movie.SaveSetupScraper
-        ConfigOptions.bCert = _setup.chkCertification.Checked
-        ConfigOptions.bTitle = _setup.chkTitle.Checked
-        ConfigOptions.bOutline = _setup.chkOutline.Checked
-        ConfigOptions.bPlot = _setup.chkPlot.Checked
-        ConfigOptions.bGenre = _setup.chkGenre.Checked
+        ConfigScrapeOptions.bMainCert = _setup.chkCertification.Checked
+        ConfigScrapeOptions.bMainTitle = _setup.chkTitle.Checked
+        ConfigScrapeOptions.bMainOutline = _setup.chkOutline.Checked
+        ConfigScrapeOptions.bMainPlot = _setup.chkPlot.Checked
+        ConfigScrapeOptions.bMainGenre = _setup.chkGenre.Checked
         SaveSettings()
         If DoDispose Then
             RemoveHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
@@ -170,12 +170,12 @@ Public Class OFDB_Data
     ''' <param name="Options">What kind of data is being requested from the scrape(global scraper settings)</param>
     ''' <returns>Database.DBElement Object (nMovie) which contains the scraped data</returns>
     ''' <remarks></remarks>
-    Function Scraper(ByRef oDBMovie As Database.DBElement, ByRef nMovie As MediaContainers.Movie, ByRef Modifier As Structures.ScrapeModifier, ByRef Type As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions_Movie) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.Scraper
+    Function Scraper(ByRef oDBMovie As Database.DBElement, ByRef nMovie As MediaContainers.Movie, ByRef Modifier As Structures.ScrapeModifier, ByRef Type As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.Scraper
         logger.Trace("Started OFDB Scraper")
 
         LoadSettings()
 
-        Dim FilteredOptions As Structures.ScrapeOptions_Movie = Functions.MovieScrapeOptionsAndAlso(ScrapeOptions, ConfigOptions)
+        Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions)
 
         'datascraper needs imdb of movie!
         If String.IsNullOrEmpty(oDBMovie.Movie.ID) Then

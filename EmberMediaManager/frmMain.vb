@@ -2041,7 +2041,7 @@ Public Class frmMain
 
             If tScrapeItem.ScrapeModifier.MainNFO Then
                 bwMovieScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(253, "Scraping Data"), ":"))
-                If ModulesManager.Instance.ScrapeData_Movie(DBScrapeMovie, tScrapeItem.ScrapeModifier, Args.ScrapeType, Args.Options_Movie, Args.ScrapeList.Count = 1) Then
+                If ModulesManager.Instance.ScrapeData_Movie(DBScrapeMovie, tScrapeItem.ScrapeModifier, Args.ScrapeType, Args.ScrapeOptions, Args.ScrapeList.Count = 1) Then
                     Cancelled = True
                     If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
                         logger.Trace(String.Concat("Canceled scraping: ", OldListTitle))
@@ -2055,7 +2055,7 @@ Public Class frmMain
                                                                          tScrapeItem.ScrapeModifier.MainExtrathumbs Or tScrapeItem.ScrapeModifier.MainFanart Or tScrapeItem.ScrapeModifier.MainLandscape Or _
                                                                          tScrapeItem.ScrapeModifier.MainPoster Or tScrapeItem.ScrapeModifier.MainTheme Or tScrapeItem.ScrapeModifier.MainTrailer) Then
                     Dim tModifier As New Structures.ScrapeModifier With {.MainNFO = True}
-                    Dim tOptions As New Structures.ScrapeOptions_Movie 'set all values to false to not override any field. ID's are always determined.
+                    Dim tOptions As New Structures.ScrapeOptions 'set all values to false to not override any field. ID's are always determined.
                     If ModulesManager.Instance.ScrapeData_Movie(DBScrapeMovie, tModifier, Args.ScrapeType, tOptions, Args.ScrapeList.Count = 1) Then
                         Cancelled = True
                         If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
@@ -2357,7 +2357,7 @@ Public Class frmMain
 
             If tScrapeItem.ScrapeModifier.MainNFO Then
                 bwMovieSetScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(253, "Scraping Data"), ":"))
-                If ModulesManager.Instance.ScrapeData_MovieSet(DBScrapeMovieSet, tScrapeItem.ScrapeModifier, Args.ScrapeType, Args.Options_MovieSet, Args.ScrapeList.Count = 1) Then
+                If ModulesManager.Instance.ScrapeData_MovieSet(DBScrapeMovieSet, tScrapeItem.ScrapeModifier, Args.ScrapeType, Args.ScrapeOptions, Args.ScrapeList.Count = 1) Then
                     Cancelled = True
                     If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
                         logger.Trace(String.Concat("Canceled scraping: ", OldListTitle))
@@ -2370,7 +2370,7 @@ Public Class frmMain
                                                                          tScrapeItem.ScrapeModifier.MainClearLogo Or tScrapeItem.ScrapeModifier.MainDiscArt Or _
                                                                          tScrapeItem.ScrapeModifier.MainFanart Or tScrapeItem.ScrapeModifier.MainLandscape Or _
                                                                          tScrapeItem.ScrapeModifier.MainPoster) Then
-                    Dim tOpt As New Structures.ScrapeOptions_MovieSet 'all false value not to override any field
+                    Dim tOpt As New Structures.ScrapeOptions 'all false value not to override any field
                     If ModulesManager.Instance.ScrapeData_MovieSet(DBScrapeMovieSet, tScrapeItem.ScrapeModifier, Args.ScrapeType, tOpt, Args.ScrapeList.Count = 1) Then
                         Exit For
                     End If
@@ -2557,7 +2557,7 @@ Public Class frmMain
 
             If tScrapeItem.ScrapeModifier.MainNFO Then
                 bwTVScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(253, "Scraping Data"), ":"))
-                If ModulesManager.Instance.ScrapeData_TVShow(DBScrapeShow, tScrapeItem.ScrapeModifier, Args.ScrapeType, Args.Options_TV, Args.ScrapeList.Count = 1) Then
+                If ModulesManager.Instance.ScrapeData_TVShow(DBScrapeShow, tScrapeItem.ScrapeModifier, Args.ScrapeType, Args.ScrapeOptions, Args.ScrapeList.Count = 1) Then
                     Cancelled = True
                     If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
                         logger.Trace(String.Concat("Canceled scraping: ", OldListTitle))
@@ -2570,7 +2570,7 @@ Public Class frmMain
                                                                            tScrapeItem.ScrapeModifier.MainClearArt Or tScrapeItem.ScrapeModifier.MainClearLogo Or tScrapeItem.ScrapeModifier.MainExtrafanarts Or _
                                                                            tScrapeItem.ScrapeModifier.MainFanart Or tScrapeItem.ScrapeModifier.MainLandscape Or tScrapeItem.ScrapeModifier.MainPoster Or _
                                                                            tScrapeItem.ScrapeModifier.MainTheme) Then
-                    Dim tOpt As New Structures.ScrapeOptions_TV 'all false value not to override any field
+                    Dim tOpt As New Structures.ScrapeOptions 'all false value not to override any field
                     If ModulesManager.Instance.ScrapeData_TVShow(DBScrapeShow, tScrapeItem.ScrapeModifier, Args.ScrapeType, tOpt, Args.ScrapeList.Count = 1) Then
                         Exit For
                     End If
@@ -2731,7 +2731,7 @@ Public Class frmMain
 
             If tScrapeItem.ScrapeModifier.EpisodeNFO Then
                 bwTVEpisodeScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(253, "Scraping Data"), ":"))
-                If ModulesManager.Instance.ScrapeData_TVEpisode(DBScrapeEpisode, Args.Options_TV, Args.ScrapeList.Count = 1) Then
+                If ModulesManager.Instance.ScrapeData_TVEpisode(DBScrapeEpisode, Args.ScrapeOptions, Args.ScrapeList.Count = 1) Then
                     Cancelled = True
                     If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
                         logger.Trace(String.Concat("Canceled scraping: ", OldEpisodeTitle))
@@ -2744,7 +2744,7 @@ Public Class frmMain
                                                                          tScrapeItem.ScrapeModifier.MainClearArt Or tScrapeItem.ScrapeModifier.MainClearLogo Or tScrapeItem.ScrapeModifier.MainExtrafanarts Or _
                                                                          tScrapeItem.ScrapeModifier.MainFanart Or tScrapeItem.ScrapeModifier.MainLandscape Or tScrapeItem.ScrapeModifier.MainPoster Or _
                                                                          tScrapeItem.ScrapeModifier.MainTheme) Then
-                    Dim tOpt As New Structures.ScrapeOptions_TV 'all false value not to override any field
+                    Dim tOpt As New Structures.ScrapeOptions 'all false value not to override any field
                     If ModulesManager.Instance.ScrapeData_TVEpisode(DBScrapeEpisode, tOpt, Args.ScrapeList.Count = 1) Then
                         Exit For
                     End If
@@ -2877,7 +2877,7 @@ Public Class frmMain
 
             If tScrapeItem.ScrapeModifier.SeasonNFO Then
                 bwTVSeasonScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(253, "Scraping Data"), ":"))
-                If ModulesManager.Instance.ScrapeData_TVShow(DBScrapeSeason, tScrapeItem.ScrapeModifier, Args.ScrapeType, Args.Options_TV, Args.ScrapeList.Count = 1) Then
+                If ModulesManager.Instance.ScrapeData_TVShow(DBScrapeSeason, tScrapeItem.ScrapeModifier, Args.ScrapeType, Args.ScrapeOptions, Args.ScrapeList.Count = 1) Then
                     Cancelled = True
                     If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
                         logger.Trace(String.Concat("Canceled scraping: {0}: Season {1}", DBScrapeSeason.TVShow.Title, DBScrapeSeason.TVSeason.Season))
@@ -2888,7 +2888,7 @@ Public Class frmMain
                 ' if we do not have the tvshow ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
                 If String.IsNullOrEmpty(DBScrapeSeason.TVSeason.TVDB) AndAlso (tScrapeItem.ScrapeModifier.SeasonBanner Or tScrapeItem.ScrapeModifier.SeasonFanart Or _
                                                                                tScrapeItem.ScrapeModifier.SeasonLandscape Or tScrapeItem.ScrapeModifier.SeasonPoster) Then
-                    Dim tOpt As New Structures.ScrapeOptions_TV 'all false value not to override any field
+                    Dim tOpt As New Structures.ScrapeOptions 'all false value not to override any field
                     If ModulesManager.Instance.ScrapeData_TVShow(DBScrapeSeason, tScrapeItem.ScrapeModifier, Args.ScrapeType, tOpt, Args.ScrapeList.Count = 1) Then
                         Exit For
                     End If
@@ -6084,8 +6084,8 @@ doCancel:
             Me.dgvMovies.Rows(objCell.RowIndex).Selected = True
             Me.currRow_Movie = objCell.RowIndex
 
-            Dim scrapeOptions As New Structures.ScrapeOptions_Movie
-            scrapeOptions.bCollectionID = True
+            Dim scrapeOptions As New Structures.ScrapeOptions
+            scrapeOptions.bMainCollectionID = True
             Dim ScrapeModifier As New Structures.ScrapeModifier
             Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
             CreateScrapeList_Movie(Enums.ScrapeType.SingleField, scrapeOptions, ScrapeModifier)
@@ -11585,7 +11585,7 @@ doCancel:
                 Case "movie"
                     Me.SetControlsEnabled(False)
                     Using dlgCustomScraper As New dlgCustomScraperMovie
-                        Dim CustomScraper As Structures.CustomUpdaterStruct_Movie = Nothing
+                        Dim CustomScraper As Structures.CustomUpdaterStruct = Nothing
                         CustomScraper = dlgCustomScraper.ShowDialog()
                         If Not CustomScraper.Canceled Then
                             Me.CreateScrapeList_Movie(CustomScraper.ScrapeType, CustomScraper.Options, CustomScraper.ScrapeModifier)
@@ -11596,7 +11596,7 @@ doCancel:
                 Case "movieset"
                     Me.SetControlsEnabled(False)
                     Using dlgCustomScraper As New dlgCustomScraperMovieSet
-                        Dim CustomScraper As Structures.CustomUpdaterStruct_MovieSet = Nothing
+                        Dim CustomScraper As Structures.CustomUpdaterStruct = Nothing
                         CustomScraper = dlgCustomScraper.ShowDialog()
                         If Not CustomScraper.Canceled Then
                             Me.CreateScrapeList_MovieSet(CustomScraper.ScrapeType, CustomScraper.Options, CustomScraper.ScrapeModifier)
@@ -11607,7 +11607,7 @@ doCancel:
                 Case "tvshow"
                     Me.SetControlsEnabled(False)
                     Using dlgCustomScraper As New dlgCustomScraperTV
-                        Dim CustomScraper As Structures.CustomUpdaterStruct_TV = Nothing
+                        Dim CustomScraper As Structures.CustomUpdaterStruct = Nothing
                         CustomScraper = dlgCustomScraper.ShowDialog()
                         If Not CustomScraper.Canceled Then
                             Me.CreateScrapeList_TV(CustomScraper.ScrapeType, CustomScraper.Options, CustomScraper.ScrapeModifier)
@@ -11674,7 +11674,7 @@ doCancel:
         End If
     End Sub
 
-    Private Sub CreateScrapeList_Movie(ByVal sType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions_Movie, ByVal ScrapeModifier As Structures.ScrapeModifier)
+    Private Sub CreateScrapeList_Movie(ByVal sType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal ScrapeModifier As Structures.ScrapeModifier)
         Dim DataRowList As New List(Of DataRow)
         Dim ScrapeList As New List(Of ScrapeItem)
 
@@ -11819,7 +11819,7 @@ doCancel:
         Application.DoEvents()
         bwMovieScraper.WorkerSupportsCancellation = True
         bwMovieScraper.WorkerReportsProgress = True
-        bwMovieScraper.RunWorkerAsync(New Arguments With {.Options_Movie = ScrapeOptions, .ScrapeList = ScrapeList, .ScrapeType = sType})
+        bwMovieScraper.RunWorkerAsync(New Arguments With {.ScrapeOptions = ScrapeOptions, .ScrapeList = ScrapeList, .ScrapeType = sType})
     End Sub
 
     Private Sub InfoDownloaded_MovieSet(ByRef DBMovieSet As Database.DBElement)
@@ -11849,7 +11849,7 @@ doCancel:
         End If
     End Sub
 
-    Private Sub CreateScrapeList_MovieSet(ByVal sType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions_MovieSet, ByVal ScrapeModifier As Structures.ScrapeModifier)
+    Private Sub CreateScrapeList_MovieSet(ByVal sType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal ScrapeModifier As Structures.ScrapeModifier)
         Dim DataRowList As New List(Of DataRow)
         Dim ScrapeList As New List(Of ScrapeItem)
 
@@ -11979,7 +11979,7 @@ doCancel:
         Application.DoEvents()
         bwMovieSetScraper.WorkerSupportsCancellation = True
         bwMovieSetScraper.WorkerReportsProgress = True
-        bwMovieSetScraper.RunWorkerAsync(New Arguments With {.Options_MovieSet = ScrapeOptions, .ScrapeList = ScrapeList, .scrapeType = sType})
+        bwMovieSetScraper.RunWorkerAsync(New Arguments With {.ScrapeOptions = ScrapeOptions, .ScrapeList = ScrapeList, .scrapeType = sType})
     End Sub
 
     Private Sub InfoDownloaded_TV(ByRef DBTVShow As Database.DBElement)
@@ -12009,7 +12009,7 @@ doCancel:
         End If
     End Sub
 
-    Private Sub CreateScrapeList_TV(ByVal sType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions_TV, ByVal ScrapeModifier As Structures.ScrapeModifier)
+    Private Sub CreateScrapeList_TV(ByVal sType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal ScrapeModifier As Structures.ScrapeModifier)
         Dim DataRowList As New List(Of DataRow)
         Dim ScrapeList As New List(Of ScrapeItem)
 
@@ -12173,7 +12173,7 @@ doCancel:
         Application.DoEvents()
         bwTVScraper.WorkerSupportsCancellation = True
         bwTVScraper.WorkerReportsProgress = True
-        bwTVScraper.RunWorkerAsync(New Arguments With {.Options_TV = ScrapeOptions, .ScrapeList = ScrapeList, .scrapeType = sType})
+        bwTVScraper.RunWorkerAsync(New Arguments With {.ScrapeOptions = ScrapeOptions, .ScrapeList = ScrapeList, .scrapeType = sType})
     End Sub
 
     Private Sub InfoDownloaded_TVEpisode(ByRef DBTVEpisode As Database.DBElement)
@@ -12203,7 +12203,7 @@ doCancel:
         End If
     End Sub
 
-    Private Sub CreateScrapeList_TVEpisode(ByVal sType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions_TV, ByVal ScrapeModifier As Structures.ScrapeModifier)
+    Private Sub CreateScrapeList_TVEpisode(ByVal sType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal ScrapeModifier As Structures.ScrapeModifier)
         Dim DataRowList As New List(Of DataRow)
         Dim ScrapeList As New List(Of ScrapeItem)
 
@@ -12321,7 +12321,7 @@ doCancel:
         Application.DoEvents()
         bwTVEpisodeScraper.WorkerSupportsCancellation = True
         bwTVEpisodeScraper.WorkerReportsProgress = True
-        bwTVEpisodeScraper.RunWorkerAsync(New Arguments With {.Options_TV = ScrapeOptions, .ScrapeList = ScrapeList, .scrapeType = sType})
+        bwTVEpisodeScraper.RunWorkerAsync(New Arguments With {.ScrapeOptions = ScrapeOptions, .ScrapeList = ScrapeList, .scrapeType = sType})
     End Sub
 
     Private Sub InfoDownloaded_TVSeason(ByRef DBTVSeason As Database.DBElement)
@@ -12351,7 +12351,7 @@ doCancel:
         End If
     End Sub
 
-    Private Sub CreateScrapeList_TVSeason(ByVal sType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions_TV, ByVal ScrapeModifier As Structures.ScrapeModifier)
+    Private Sub CreateScrapeList_TVSeason(ByVal sType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal ScrapeModifier As Structures.ScrapeModifier)
         Dim DataRowList As New List(Of DataRow)
         Dim ScrapeList As New List(Of ScrapeItem)
 
@@ -12477,7 +12477,7 @@ doCancel:
         Application.DoEvents()
         bwTVSeasonScraper.WorkerSupportsCancellation = True
         bwTVSeasonScraper.WorkerReportsProgress = True
-        bwTVSeasonScraper.RunWorkerAsync(New Arguments With {.Options_TV = ScrapeOptions, .ScrapeList = ScrapeList, .scrapeType = sType})
+        bwTVSeasonScraper.RunWorkerAsync(New Arguments With {.ScrapeOptions = ScrapeOptions, .ScrapeList = ScrapeList, .scrapeType = sType})
     End Sub
 
     Function MyResolveEventHandler(ByVal sender As Object, ByVal args As ResolveEventArgs) As [Assembly]
@@ -12489,7 +12489,7 @@ doCancel:
         Return asm
     End Function
 
-    Private Sub NonScrape(ByVal sType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions_Movie)
+    Private Sub NonScrape(ByVal sType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions)
         Me.Cursor = Cursors.WaitCursor
 
         Select Case sType
@@ -12520,7 +12520,7 @@ doCancel:
 
         bwNonScrape.WorkerReportsProgress = True
         bwNonScrape.WorkerSupportsCancellation = True
-        bwNonScrape.RunWorkerAsync(New Arguments With {.ScrapeType = sType, .Options_Movie = ScrapeOptions})
+        bwNonScrape.RunWorkerAsync(New Arguments With {.ScrapeType = sType, .ScrapeOptions = ScrapeOptions})
     End Sub
 
     Private Sub cmnuMovieOpenFolder_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieOpenFolder.Click
@@ -14693,168 +14693,168 @@ doCancel:
     End Sub
 
     Private Sub cmnuMovieUpSelActors_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelActors.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions_Movie
-        cScrapeOptions.bCast = True
+        Dim cScrapeOptions As New Structures.ScrapeOptions
+        cScrapeOptions.bMainActors = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
         CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
 
     Private Sub cmnuMovieUpSelCert_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelCert.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions_Movie
-        cScrapeOptions.bCert = True
+        Dim cScrapeOptions As New Structures.ScrapeOptions
+        cScrapeOptions.bMainCert = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
         CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
 
     Private Sub cmnuMovieUpSelCollectionID_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelCollectionID.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions_Movie
-        cScrapeOptions.bCollectionID = True
+        Dim cScrapeOptions As New Structures.ScrapeOptions
+        cScrapeOptions.bMainCollectionID = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
         CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
 
     Private Sub cmnuMovieUpSelCountry_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelCountry.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions_Movie
-        cScrapeOptions.bCountry = True
+        Dim cScrapeOptions As New Structures.ScrapeOptions
+        cScrapeOptions.bMainCountry = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
         CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
 
     Private Sub cmnuMovieUpSelDirector_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelDirector.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions_Movie
-        cScrapeOptions.bDirector = True
+        Dim cScrapeOptions As New Structures.ScrapeOptions
+        cScrapeOptions.bMainDirector = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
         CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
 
     Private Sub cmnuMovieUpSelGenre_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelGenre.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions_Movie
-        cScrapeOptions.bGenre = True
+        Dim cScrapeOptions As New Structures.ScrapeOptions
+        cScrapeOptions.bMainGenre = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
         CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
 
     Private Sub cmnuMovieUpSelMPAA_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelMPAA.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions_Movie
-        cScrapeOptions.bMPAA = True
+        Dim cScrapeOptions As New Structures.ScrapeOptions
+        cScrapeOptions.bMainMPAA = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
         CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
 
     Private Sub cmnuMovieUpSelOriginalTitle_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelOriginalTitle.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions_Movie
-        cScrapeOptions.bOriginalTitle = True
+        Dim cScrapeOptions As New Structures.ScrapeOptions
+        cScrapeOptions.bMainOriginalTitle = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
         CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
 
     Private Sub cmnuMovieUpSelOutline_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelOutline.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions_Movie
-        cScrapeOptions.bOutline = True
+        Dim cScrapeOptions As New Structures.ScrapeOptions
+        cScrapeOptions.bMainOutline = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
         CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
 
     Private Sub cmnuMovieUpSelPlot_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelPlot.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions_Movie
-        cScrapeOptions.bPlot = True
+        Dim cScrapeOptions As New Structures.ScrapeOptions
+        cScrapeOptions.bMainPlot = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
         CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
 
     Private Sub cmnuMovieUpSelProducers_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelProducers.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions_Movie
-        cScrapeOptions.bProducers = True
+        Dim cScrapeOptions As New Structures.ScrapeOptions
+        cScrapeOptions.bMainProducers = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
         CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
 
     Private Sub cmnuMovieUpSelRating_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelRating.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions_Movie
-        cScrapeOptions.bRating = True
+        Dim cScrapeOptions As New Structures.ScrapeOptions
+        cScrapeOptions.bMainRating = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
         CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
 
     Private Sub cmnuMovieUpSelRelease_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelRelease.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions_Movie
-        cScrapeOptions.bRelease = True
+        Dim cScrapeOptions As New Structures.ScrapeOptions
+        cScrapeOptions.bMainRelease = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
         CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
 
     Private Sub cmnuMovieUpSelRuntime_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelRuntime.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions_Movie
-        cScrapeOptions.bRuntime = True
+        Dim cScrapeOptions As New Structures.ScrapeOptions
+        cScrapeOptions.bMainRuntime = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
         CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
 
     Private Sub cmnuMovieUpSelStudio_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelStudio.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions_Movie
-        cScrapeOptions.bStudio = True
+        Dim cScrapeOptions As New Structures.ScrapeOptions
+        cScrapeOptions.bMainStudio = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
         CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
 
     Private Sub cmnuMovieUpSelTagline_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelTagline.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions_Movie
-        cScrapeOptions.bTagline = True
+        Dim cScrapeOptions As New Structures.ScrapeOptions
+        cScrapeOptions.bMainTagline = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
         CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
 
     Private Sub cmnuMovieUpSelTitle_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelTitle.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions_Movie
-        cScrapeOptions.bTitle = True
+        Dim cScrapeOptions As New Structures.ScrapeOptions
+        cScrapeOptions.bMainTitle = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
         CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
 
     Private Sub cmnuMovieUpSelTop250_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelTop250.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions_Movie
-        cScrapeOptions.bTop250 = True
+        Dim cScrapeOptions As New Structures.ScrapeOptions
+        cScrapeOptions.bMainTop250 = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
         CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
 
     Private Sub cmnuMovieUpSelTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelTrailer.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions_Movie
-        cScrapeOptions.bTrailer = True
+        Dim cScrapeOptions As New Structures.ScrapeOptions
+        cScrapeOptions.bMainTrailer = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
         CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
 
     Private Sub cmnuMovieUpSelWriters_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelWriter.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions_Movie
-        cScrapeOptions.bWriters = True
+        Dim cScrapeOptions As New Structures.ScrapeOptions
+        cScrapeOptions.bMainWriters = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
         CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
 
     Private Sub cmnuMovieUpSelYear_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelYear.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions_Movie
-        cScrapeOptions.bYear = True
+        Dim cScrapeOptions As New Structures.ScrapeOptions
+        cScrapeOptions.bMainYear = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
         CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
@@ -17427,12 +17427,10 @@ doCancel:
         Dim ID As Integer
         Dim IsTV As Boolean
         Dim DBElement As Database.DBElement
-        Dim Options_Movie As Structures.ScrapeOptions_Movie
-        Dim Options_MovieSet As Structures.ScrapeOptions_MovieSet
-        Dim Options_TV As Structures.ScrapeOptions_TV
         Dim Path As String
         Dim pURL As String
         Dim ScrapeList As List(Of ScrapeItem)
+        Dim ScrapeOptions As Structures.ScrapeOptions
         Dim ScrapeType As Enums.ScrapeType
         Dim Season As Integer
         Dim setEnabled As Boolean
@@ -17453,8 +17451,7 @@ doCancel:
         Dim IsTV As Boolean
         Dim DBElement As Database.DBElement
         Dim MovieInSetPosters As List(Of MovieInSetPoster)
-        Dim ScrapeOptions_Movie As Structures.ScrapeOptions_Movie
-        Dim ScrapeOptions_MovieSet As Structures.ScrapeOptions_MovieSet
+        Dim ScrapeOptions As Structures.ScrapeOptions
         Dim Path As String
         Dim Result As Image
         Dim ScrapeType As Enums.ScrapeType

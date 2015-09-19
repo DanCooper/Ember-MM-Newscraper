@@ -1093,33 +1093,33 @@ Public Class Functions
         Return Math.Floor(diff.TotalSeconds)
     End Function
     ' TODO DOC Need appropriate header and tests
-    Public Shared Function LocksToOptions() As Structures.ScrapeOptions_Movie
-        Dim options As New Structures.ScrapeOptions_Movie
+    Public Shared Function LocksToOptions() As Structures.ScrapeOptions
+        Dim options As New Structures.ScrapeOptions
         With options
-            .bCast = True
-            .bCert = True
-            .bCollectionID = True
-            .bCountry = True
-            .bDirector = True
-            .bFullCrew = True
-            .bGenre = Not Master.eSettings.MovieLockGenre    'Dekker500 This used to just be =True
-            .bMPAA = True
-            .bMusicBy = True
-            .bOriginalTitle = True
-            .bOtherCrew = True
-            .bOutline = Not Master.eSettings.MovieLockOutline
-            .bPlot = Not Master.eSettings.MovieLockPlot
-            .bProducers = True
-            .bRating = Not Master.eSettings.MovieLockRating
-            .bRelease = True
-            .bRuntime = True
-            .bStudio = Not Master.eSettings.MovieLockStudio
-            .bTagline = Not Master.eSettings.MovieLockTagline
-            .bTitle = Not Master.eSettings.MovieLockTitle
-            .bTop250 = True
-            .bTrailer = Not Master.eSettings.MovieLockTrailer
-            .bWriters = True
-            .bYear = True
+            .bMainActors = True
+            .bMainCert = True
+            .bMainCollectionID = True
+            .bMainCountry = True
+            .bMainDirector = True
+            .bMainFullCrew = True
+            .bMainGenre = Not Master.eSettings.MovieLockGenre    'Dekker500 This used to just be =True
+            .bMainMPAA = True
+            .bMainMusicBy = True
+            .bMainOriginalTitle = True
+            .bMainOtherCrew = True
+            .bMainOutline = Not Master.eSettings.MovieLockOutline
+            .bMainPlot = Not Master.eSettings.MovieLockPlot
+            .bMainProducers = True
+            .bMainRating = Not Master.eSettings.MovieLockRating
+            .bMainRelease = True
+            .bMainRuntime = True
+            .bMainStudio = Not Master.eSettings.MovieLockStudio
+            .bMainTagline = Not Master.eSettings.MovieLockTagline
+            .bMainTitle = Not Master.eSettings.MovieLockTitle
+            .bMainTop250 = True
+            .bMainTrailer = Not Master.eSettings.MovieLockTrailer
+            .bMainWriters = True
+            .bMainYear = True
         End With
         Return options
     End Function
@@ -1132,35 +1132,31 @@ Public Class Functions
     Public Shared Sub CreateDefaultOptions()
         'TODO need proper unit test
         With Master.DefaultOptions_Movie
-            'TODO Dekker500 - These seem to be missing Add fields to Master!!!???
-            '.bLanguageA = Master.eSettings.FieldLanguageA
-            '.bLanguageV = Master.eSettings.FieldLanguageV
-            '.buseMPAAForFSK = Master.eSettings.UseMPAAForFSK
-            .bCast = Master.eSettings.MovieScraperCast
-            .bCert = Master.eSettings.MovieScraperCert
-            .bCollectionID = Master.eSettings.MovieScraperCollectionID
-            .bCountry = Master.eSettings.MovieScraperCountry
-            .bDirector = Master.eSettings.MovieScraperDirector
-            .bGenre = Master.eSettings.MovieScraperGenre
-            .bMPAA = Master.eSettings.MovieScraperMPAA
-            .bOriginalTitle = Master.eSettings.MovieScraperOriginalTitle
-            .bOutline = Master.eSettings.MovieScraperOutline
-            .bPlot = Master.eSettings.MovieScraperPlot
-            .bRating = Master.eSettings.MovieScraperRating
-            .bRelease = Master.eSettings.MovieScraperRelease
-            .bRuntime = Master.eSettings.MovieScraperRuntime
-            .bStudio = Master.eSettings.MovieScraperStudio
-            .bTagline = Master.eSettings.MovieScraperTagline
-            .bTitle = Master.eSettings.MovieScraperTitle
-            .bTop250 = Master.eSettings.MovieScraperTop250
-            .bTrailer = Master.eSettings.MovieScraperTrailer
-            .bWriters = Master.eSettings.MovieScraperCredits
-            .bYear = Master.eSettings.MovieScraperYear
+            .bMainActors = Master.eSettings.MovieScraperCast
+            .bMainCert = Master.eSettings.MovieScraperCert
+            .bMainCollectionID = Master.eSettings.MovieScraperCollectionID
+            .bMainCountry = Master.eSettings.MovieScraperCountry
+            .bMainDirector = Master.eSettings.MovieScraperDirector
+            .bMainGenre = Master.eSettings.MovieScraperGenre
+            .bMainMPAA = Master.eSettings.MovieScraperMPAA
+            .bMainOriginalTitle = Master.eSettings.MovieScraperOriginalTitle
+            .bMainOutline = Master.eSettings.MovieScraperOutline
+            .bMainPlot = Master.eSettings.MovieScraperPlot
+            .bMainRating = Master.eSettings.MovieScraperRating
+            .bMainRelease = Master.eSettings.MovieScraperRelease
+            .bMainRuntime = Master.eSettings.MovieScraperRuntime
+            .bMainStudio = Master.eSettings.MovieScraperStudio
+            .bMainTagline = Master.eSettings.MovieScraperTagline
+            .bMainTitle = Master.eSettings.MovieScraperTitle
+            .bMainTop250 = Master.eSettings.MovieScraperTop250
+            .bMainTrailer = Master.eSettings.MovieScraperTrailer
+            .bMainWriters = Master.eSettings.MovieScraperCredits
+            .bMainYear = Master.eSettings.MovieScraperYear
         End With
 
         With Master.DefaultOptions_MovieSet
-            .bPlot = Master.eSettings.MovieSetScraperPlot
-            .bTitle = Master.eSettings.MovieSetScraperTitle
+            .bMainPlot = Master.eSettings.MovieSetScraperPlot
+            .bMainTitle = Master.eSettings.MovieSetScraperTitle
         End With
 
         With Master.DefaultOptions_TV
@@ -1173,19 +1169,19 @@ Public Class Functions
             .bEpisodeRating = Master.eSettings.TVScraperEpisodeRating
             .bEpisodeRuntime = Master.eSettings.TVScraperEpisodeRuntime
             .bEpisodeTitle = Master.eSettings.TVScraperEpisodeTitle
-            .bShowActors = Master.eSettings.TVScraperShowActors
-            .bShowCert = Master.eSettings.TVScraperShowCert
-            .bShowEpisodeGuide = Master.eSettings.TVScraperShowEpiGuideURL
-            .bShowGenre = Master.eSettings.TVScraperShowGenre
-            .bShowMPAA = Master.eSettings.TVScraperShowMPAA
-            .bShowOriginalTitle = Master.eSettings.TVScraperShowOriginalTitle
-            .bShowPlot = Master.eSettings.TVScraperShowPlot
-            .bShowPremiered = Master.eSettings.TVScraperShowPremiered
-            .bShowRating = Master.eSettings.TVScraperShowRating
-            .bShowRuntime = Master.eSettings.TVScraperShowRuntime
-            .bShowStatus = Master.eSettings.TVScraperShowStatus
-            .bShowStudio = Master.eSettings.TVScraperShowStudio
-            .bShowTitle = Master.eSettings.TVScraperShowTitle
+            .bMainActors = Master.eSettings.TVScraperShowActors
+            .bMainCert = Master.eSettings.TVScraperShowCert
+            .bMainEpisodeGuide = Master.eSettings.TVScraperShowEpiGuideURL
+            .bMainGenre = Master.eSettings.TVScraperShowGenre
+            .bMainMPAA = Master.eSettings.TVScraperShowMPAA
+            .bMainOriginalTitle = Master.eSettings.TVScraperShowOriginalTitle
+            .bMainPlot = Master.eSettings.TVScraperShowPlot
+            .bMainPremiered = Master.eSettings.TVScraperShowPremiered
+            .bMainRating = Master.eSettings.TVScraperShowRating
+            .bMainRuntime = Master.eSettings.TVScraperShowRuntime
+            .bMainStatus = Master.eSettings.TVScraperShowStatus
+            .bMainStudio = Master.eSettings.TVScraperShowStudio
+            .bMainTitle = Master.eSettings.TVScraperShowTitle
         End With
     End Sub
     ''' <summary>
@@ -1436,58 +1432,8 @@ Public Class Functions
     ''' <param name="Options2">Secondary Structures.MovieScrapeOptions</param>
     ''' <returns>Structures.MovieScrapeOptions representing the AndAlso union of the two parameters</returns>
     ''' <remarks></remarks>
-    Public Shared Function MovieScrapeOptionsAndAlso(ByVal Options As Structures.ScrapeOptions_Movie, ByVal Options2 As Structures.ScrapeOptions_Movie) As Structures.ScrapeOptions_Movie
-        Dim filterOptions As New Structures.ScrapeOptions_Movie
-        filterOptions.bCast = Options.bCast AndAlso Options2.bCast
-        filterOptions.bCert = Options.bCert AndAlso Options2.bCert
-        filterOptions.bCollectionID = Options.bCollectionID AndAlso Options2.bCollectionID
-        filterOptions.bCountry = Options.bCountry AndAlso Options2.bCountry
-        filterOptions.bDirector = Options.bDirector AndAlso Options2.bDirector
-        filterOptions.bGenre = Options.bGenre AndAlso Options2.bGenre
-        filterOptions.bMPAA = Options.bMPAA AndAlso Options2.bMPAA
-        filterOptions.bOriginalTitle = Options.bOriginalTitle AndAlso Options2.bOriginalTitle
-        filterOptions.bOutline = Options.bOutline AndAlso Options2.bOutline
-        filterOptions.bPlot = Options.bPlot AndAlso Options2.bPlot
-        filterOptions.bRating = Options.bRating AndAlso Options2.bRating
-        filterOptions.bRelease = Options.bRelease AndAlso Options2.bRelease
-        filterOptions.bRuntime = Options.bRuntime AndAlso Options2.bRuntime
-        filterOptions.bStudio = Options.bStudio AndAlso Options2.bStudio
-        filterOptions.bTagline = Options.bTagline AndAlso Options2.bTagline
-        filterOptions.bTitle = Options.bTitle AndAlso Options2.bTitle
-        filterOptions.bTop250 = Options.bTop250 AndAlso Options2.bTop250
-        filterOptions.bTrailer = Options.bTrailer AndAlso Options2.bTrailer
-        filterOptions.bWriters = Options.bWriters AndAlso Options2.bWriters
-        filterOptions.bYear = Options.bYear AndAlso Options2.bYear
-        'workaround since following switches don't have global data scraper settings (IMDB only)
-        'may be cleaner to move those settings out from here and manage as IMDB only settings
-        filterOptions.bFullCrew = Options2.bFullCrew
-        filterOptions.bMusicBy = Options2.bMusicBy
-        filterOptions.bOtherCrew = Options2.bOtherCrew
-        filterOptions.bProducers = Options2.bProducers
-        Return filterOptions
-    End Function
-    ''' <summary>
-    ''' Determine the Structures.MovieSetScrapeOptions options that are in common between the two parameters
-    ''' </summary>
-    ''' <param name="Options">Base Structures.MovieSetScrapeOptions</param>
-    ''' <param name="Options2">Secondary Structures.MovieSetScrapeOptions</param>
-    ''' <returns>Structures.MovieSetScrapeOptions representing the AndAlso union of the two parameters</returns>
-    ''' <remarks></remarks>
-    Public Shared Function MovieSetScrapeOptionsAndAlso(ByVal Options As Structures.ScrapeOptions_MovieSet, ByVal Options2 As Structures.ScrapeOptions_MovieSet) As Structures.ScrapeOptions_MovieSet
-        Dim filterOptions As New Structures.ScrapeOptions_MovieSet
-        filterOptions.bPlot = Options.bPlot AndAlso Options2.bPlot
-        filterOptions.bTitle = Options.bTitle AndAlso Options2.bTitle
-        Return filterOptions
-    End Function
-    ''' <summary>
-    ''' Determine the Structures.TVScrapeOptions options that are in common between the two parameters
-    ''' </summary>
-    ''' <param name="Options">Base Structures.TVScrapeOptions</param>
-    ''' <param name="Options2">Secondary Structures.TVScrapeOptions</param>
-    ''' <returns>Structures.TVScrapeOptions representing the AndAlso union of the two parameters</returns>
-    ''' <remarks></remarks>
-    Public Shared Function TVScrapeOptionsAndAlso(ByVal Options As Structures.ScrapeOptions_TV, ByVal Options2 As Structures.ScrapeOptions_TV) As Structures.ScrapeOptions_TV
-        Dim filterOptions As New Structures.ScrapeOptions_TV
+    Public Shared Function ScrapeOptionsAndAlso(ByVal Options As Structures.ScrapeOptions, ByVal Options2 As Structures.ScrapeOptions) As Structures.ScrapeOptions
+        Dim filterOptions As New Structures.ScrapeOptions
         filterOptions.bEpisodeActors = Options.bEpisodeActors AndAlso Options2.bEpisodeActors
         filterOptions.bEpisodeAired = Options.bEpisodeAired AndAlso Options2.bEpisodeAired
         filterOptions.bEpisodeCredits = Options.bEpisodeCredits AndAlso Options2.bEpisodeCredits
@@ -1497,23 +1443,38 @@ Public Class Functions
         filterOptions.bEpisodeRating = Options.bEpisodeRating AndAlso Options2.bEpisodeRating
         filterOptions.bEpisodeRuntime = Options.bEpisodeRuntime AndAlso Options2.bEpisodeRuntime
         filterOptions.bEpisodeTitle = Options.bEpisodeTitle AndAlso Options2.bEpisodeTitle
+        filterOptions.bMainActors = Options.bMainActors AndAlso Options2.bMainActors
+        filterOptions.bMainCert = Options.bMainCert AndAlso Options2.bMainCert
+        filterOptions.bMainCollectionID = Options.bMainCollectionID AndAlso Options2.bMainCollectionID
+        filterOptions.bMainCountry = Options.bMainCountry AndAlso Options2.bMainCountry
+        filterOptions.bMainCreator = Options.bMainCreator AndAlso Options2.bMainCreator
+        filterOptions.bMainDirector = Options.bMainDirector AndAlso Options2.bMainDirector
+        filterOptions.bMainEpisodeGuide = Options.bMainEpisodeGuide AndAlso Options2.bMainEpisodeGuide
+        filterOptions.bMainGenre = Options.bMainGenre AndAlso Options2.bMainGenre
+        filterOptions.bMainMPAA = Options.bMainMPAA AndAlso Options2.bMainMPAA
+        filterOptions.bMainOriginalTitle = Options.bMainOriginalTitle AndAlso Options2.bMainOriginalTitle
+        filterOptions.bMainOutline = Options.bMainOutline AndAlso Options2.bMainOutline
+        filterOptions.bMainPlot = Options.bMainPlot AndAlso Options2.bMainPlot
+        filterOptions.bMainPremiered = Options.bMainPremiered AndAlso Options2.bMainPremiered
+        filterOptions.bMainRating = Options.bMainRating AndAlso Options2.bMainRating
+        filterOptions.bMainRelease = Options.bMainRelease AndAlso Options2.bMainRelease
+        filterOptions.bMainRuntime = Options.bMainRuntime AndAlso Options2.bMainRuntime
+        filterOptions.bMainStatus = Options.bMainStatus AndAlso Options2.bMainStatus
+        filterOptions.bMainStudio = Options.bMainStudio AndAlso Options2.bMainStudio
+        filterOptions.bMainTagline = Options.bMainTagline AndAlso Options2.bMainTagline
+        filterOptions.bMainTitle = Options.bMainTitle AndAlso Options2.bMainTitle
+        filterOptions.bMainTop250 = Options.bMainTop250 AndAlso Options2.bMainTop250
+        filterOptions.bMainTrailer = Options.bMainTrailer AndAlso Options2.bMainTrailer
+        filterOptions.bMainWriters = Options.bMainWriters AndAlso Options2.bMainWriters
+        filterOptions.bMainYear = Options.bMainYear AndAlso Options2.bMainYear
         filterOptions.bSeasonAired = Options.bSeasonAired AndAlso Options2.bSeasonAired
         filterOptions.bSeasonPlot = Options.bSeasonPlot AndAlso Options2.bSeasonPlot
-        filterOptions.bShowActors = Options.bShowActors AndAlso Options2.bShowActors
-        filterOptions.bShowCert = Options.bShowCert AndAlso Options2.bShowCert
-        filterOptions.bShowCountry = Options.bShowCountry AndAlso Options2.bShowCountry
-        filterOptions.bShowCreator = Options.bShowCreator AndAlso Options2.bShowCreator
-        filterOptions.bShowEpisodeGuide = Options.bShowEpisodeGuide AndAlso Options2.bShowEpisodeGuide
-        filterOptions.bShowGenre = Options.bShowGenre AndAlso Options2.bShowGenre
-        filterOptions.bShowMPAA = Options.bShowMPAA AndAlso Options2.bShowMPAA
-        filterOptions.bShowOriginalTitle = Options.bShowOriginalTitle AndAlso Options2.bShowOriginalTitle
-        filterOptions.bShowPlot = Options.bShowPlot AndAlso Options2.bShowPlot
-        filterOptions.bShowPremiered = Options.bShowPremiered AndAlso Options2.bShowPremiered
-        filterOptions.bShowRating = Options.bShowRating AndAlso Options2.bShowRating
-        filterOptions.bShowRuntime = Options.bShowRuntime AndAlso Options2.bShowRuntime
-        filterOptions.bShowStatus = Options.bShowStatus AndAlso Options2.bShowStatus
-        filterOptions.bShowStudio = Options.bShowStudio AndAlso Options2.bShowStudio
-        filterOptions.bShowTitle = Options.bShowTitle AndAlso Options2.bShowTitle
+        'workaround since following switches don't have global data scraper settings (IMDB only)
+        'may be cleaner to move those settings out from here and manage as IMDB only settings
+        filterOptions.bMainFullCrew = Options2.bMainFullCrew
+        filterOptions.bMainMusicBy = Options2.bMainMusicBy
+        filterOptions.bMainOtherCrew = Options2.bMainOtherCrew
+        filterOptions.bMainProducers = Options2.bMainProducers
         Return filterOptions
     End Function
 
@@ -1813,24 +1774,10 @@ Public Class Structures
 
 #Region "Nested Types"
 
-    Public Structure CustomUpdaterStruct_Movie
+    Public Structure CustomUpdaterStruct
         Dim Canceled As Boolean
-        Dim Options As ScrapeOptions_Movie
-        Dim ScrapeModifier As Structures.ScrapeModifier
-        Dim ScrapeType As Enums.ScrapeType
-    End Structure
-
-    Public Structure CustomUpdaterStruct_MovieSet
-        Dim Canceled As Boolean
-        Dim Options As ScrapeOptions_MovieSet
-        Dim ScrapeModifier As Structures.ScrapeModifier
-        Dim ScrapeType As Enums.ScrapeType
-    End Structure
-
-    Public Structure CustomUpdaterStruct_TV
-        Dim Canceled As Boolean
-        Dim Options As ScrapeOptions_TV
-        Dim ScrapeModifier As Structures.ScrapeModifier
+        Dim Options As ScrapeOptions
+        Dim ScrapeModifier As ScrapeModifier
         Dim ScrapeType As Enums.ScrapeType
     End Structure
     ''' <summary>
@@ -1917,52 +1864,11 @@ Public Class Structures
         Dim withSeasons As Boolean
     End Structure
     ''' <summary>
-    ''' Structure representing posible scrape fields for movies
+    ''' Structure representing posible scrape fields
     ''' </summary>
     ''' <remarks></remarks>
     <Serializable()> _
-    Public Structure ScrapeOptions_Movie
-        Dim bCast As Boolean
-        Dim bCert As Boolean
-        Dim bCollectionID As Boolean
-        Dim bDirector As Boolean
-        Dim bFullCrew As Boolean
-        Dim bGenre As Boolean
-        Dim bMPAA As Boolean
-        Dim bMusicBy As Boolean
-        Dim bOriginalTitle As Boolean
-        Dim bOtherCrew As Boolean
-        Dim bOutline As Boolean
-        Dim bPlot As Boolean
-        Dim bProducers As Boolean
-        Dim bRating As Boolean
-        Dim bRelease As Boolean
-        Dim bRuntime As Boolean
-        Dim bStatus As Boolean
-        Dim bStudio As Boolean
-        Dim bTagline As Boolean
-        Dim bTitle As Boolean
-        Dim bTop250 As Boolean
-        Dim bCountry As Boolean
-        Dim bTags As Boolean
-        Dim bTrailer As Boolean
-        Dim bWriters As Boolean
-        Dim bYear As Boolean
-    End Structure
-    ''' <summary>
-    ''' Structure representing posible scrape fields for moviesets
-    ''' </summary>
-    ''' <remarks></remarks>
-    <Serializable()> _
-    Public Structure ScrapeOptions_MovieSet
-        Dim bPlot As Boolean
-        Dim bTitle As Boolean
-    End Structure
-    ''' <summary>
-    ''' Structure representing possible scrape options for tv shows
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Structure ScrapeOptions_TV
+    Public Structure ScrapeOptions
         Dim bEpisodeActors As Boolean
         Dim bEpisodeAired As Boolean
         Dim bEpisodeCredits As Boolean
@@ -1972,23 +1878,37 @@ Public Class Structures
         Dim bEpisodeRating As Boolean
         Dim bEpisodeRuntime As Boolean
         Dim bEpisodeTitle As Boolean
+        Dim bMainActors As Boolean
+        Dim bMainCert As Boolean
+        Dim bMainCollectionID As Boolean
+        Dim bMainCreator As Boolean
+        Dim bMainDirector As Boolean
+        Dim bMainEpisodeGuide As Boolean
+        Dim bMainFullCrew As Boolean
+        Dim bMainGenre As Boolean
+        Dim bMainMPAA As Boolean
+        Dim bMainMusicBy As Boolean
+        Dim bMainOriginalTitle As Boolean
+        Dim bMainOtherCrew As Boolean
+        Dim bMainOutline As Boolean
+        Dim bMainPlot As Boolean
+        Dim bMainPremiered As Boolean
+        Dim bMainProducers As Boolean
+        Dim bMainRating As Boolean
+        Dim bMainRelease As Boolean
+        Dim bMainRuntime As Boolean
+        Dim bMainStatus As Boolean
+        Dim bMainStudio As Boolean
+        Dim bMainTagline As Boolean
+        Dim bMainTitle As Boolean
+        Dim bMainTop250 As Boolean
+        Dim bMainCountry As Boolean
+        Dim bMainTags As Boolean
+        Dim bMainTrailer As Boolean
+        Dim bMainWriters As Boolean
+        Dim bMainYear As Boolean
         Dim bSeasonAired As Boolean
         Dim bSeasonPlot As Boolean
-        Dim bShowActors As Boolean
-        Dim bShowCert As Boolean
-        Dim bShowCountry As Boolean
-        Dim bShowCreator As Boolean
-        Dim bShowEpisodeGuide As Boolean
-        Dim bShowGenre As Boolean
-        Dim bShowMPAA As Boolean
-        Dim bShowOriginalTitle As Boolean
-        Dim bShowPlot As Boolean
-        Dim bShowPremiered As Boolean
-        Dim bShowRating As Boolean
-        Dim bShowRuntime As Boolean
-        Dim bShowStatus As Boolean
-        Dim bShowStudio As Boolean
-        Dim bShowTitle As Boolean
     End Structure
 
     Public Structure SettingsResult

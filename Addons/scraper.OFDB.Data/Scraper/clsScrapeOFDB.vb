@@ -123,7 +123,7 @@ Namespace OFDB
             Return FullPlot
         End Function
 
-        Public Function GetMovieInfo(ByVal strIMDBID As String, ByRef nMovie As MediaContainers.Movie, ByVal FilteredOptions As Structures.ScrapeOptions_Movie) As Boolean
+        Public Function GetMovieInfo(ByVal strIMDBID As String, ByRef nMovie As MediaContainers.Movie, ByVal FilteredOptions As Structures.ScrapeOptions) As Boolean
             Try
                 nMovie.Clear()
                 nMovie.Scrapersource = "OFDB"
@@ -138,12 +138,12 @@ Namespace OFDB
                     If Not String.IsNullOrEmpty(HTML) Then
 
                         'Certification
-                        If FilteredOptions.bCert Then
+                        If FilteredOptions.bMainCert Then
                             nMovie.Certifications.Add(GetCertification(HTML))
                         End If
 
                         'Genres
-                        If FilteredOptions.bGenre Then
+                        If FilteredOptions.bMainGenre Then
                             Dim strGenrePattern As String = "itemprop=""genre"">(?<GENRE>.*?)<\/span>"
                             Dim gResult As MatchCollection = Regex.Matches(HTML, strGenrePattern, RegexOptions.Singleline)
                             For ctr As Integer = 0 To gResult.Count - 1
@@ -152,25 +152,25 @@ Namespace OFDB
                         End If
 
                         'Original Title
-                        If FilteredOptions.bOriginalTitle Then
+                        If FilteredOptions.bMainOriginalTitle Then
                             Dim strOriginalTitlePattern As String = "Originaltitel:.*?<b>(?<OTITLE>.*?)<\/b>"
                             nMovie.OriginalTitle = CleanTitle(Web.HttpUtility.HtmlDecode(Regex.Match(HTML, strOriginalTitlePattern, RegexOptions.Singleline).Groups(1).Value.ToString.Trim))
                         End If
 
                         'Outline
-                        If FilteredOptions.bOutline Then
+                        If FilteredOptions.bMainOutline Then
                             Dim strOutlinePattern As String = "Inhalt:.*?"">(?<OUTLINE>.*?)<a"
                             nMovie.Outline = Web.HttpUtility.HtmlDecode(Regex.Match(HTML, strOutlinePattern, RegexOptions.Singleline).Groups(1).Value.ToString.Trim)
                         End If
 
                         'Plot
-                        If FilteredOptions.bPlot Then
+                        If FilteredOptions.bMainPlot Then
                             Dim strPlotPattern As String = "<a href=""(?<URL>plot.*?)"""
                             nMovie.Plot = GetFullPlot(String.Concat("http://www.ofdb.de/", Regex.Match(HTML, strPlotPattern, RegexOptions.Singleline).Groups(1).Value))
                         End If
 
                         'Title
-                        If FilteredOptions.bTitle Then
+                        If FilteredOptions.bMainTitle Then
                             Dim strTitlePattern As String = "<td width=""99\%""><h1 itemprop=""name""><font face=""Arial,Helvetica,sans-serif"" size=""3""><b>([^<]+)</b></font></h1></td>"
                             nMovie.Title = CleanTitle(Web.HttpUtility.HtmlDecode(Regex.Match(HTML, strTitlePattern, RegexOptions.Singleline).Groups(1).Value.ToString.Trim))
                         End If

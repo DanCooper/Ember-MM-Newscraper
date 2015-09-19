@@ -28,7 +28,7 @@ Public Class dlgCustomScraperMovie
 
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
-    Private CustomUpdater As New Structures.CustomUpdaterStruct_Movie
+    Private CustomUpdater As New Structures.CustomUpdaterStruct
 
 #End Region 'Fields
 
@@ -42,7 +42,7 @@ Public Class dlgCustomScraperMovie
         Me.StartPosition = FormStartPosition.Manual
     End Sub
 
-    Public Overloads Function ShowDialog() As Structures.CustomUpdaterStruct_Movie
+    Public Overloads Function ShowDialog() As Structures.CustomUpdaterStruct
         If MyBase.ShowDialog() = Windows.Forms.DialogResult.OK Then
             Me.CustomUpdater.Canceled = False
         Else
@@ -348,117 +348,117 @@ Public Class dlgCustomScraperMovie
     End Sub
 
     Private Sub chkOptsCast_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsCast.CheckedChanged
-        CustomUpdater.Options.bCast = chkOptsCast.Checked
+        CustomUpdater.Options.bMainActors = chkOptsCast.Checked
         CheckEnable()
     End Sub
 
     Private Sub chkOptsCert_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsCert.CheckedChanged
-        CustomUpdater.Options.bCert = chkOptsCert.Checked
+        CustomUpdater.Options.bMainCert = chkOptsCert.Checked
         CheckEnable()
     End Sub
 
     Private Sub chkOptsCrew_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsCrew.CheckedChanged
-        CustomUpdater.Options.bOtherCrew = chkOptsCrew.Checked
+        CustomUpdater.Options.bMainOtherCrew = chkOptsCrew.Checked
         CheckEnable()
     End Sub
 
     Private Sub chkOptsDirector_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsDirector.CheckedChanged
-        CustomUpdater.Options.bDirector = chkOptsDirector.Checked
+        CustomUpdater.Options.bMainDirector = chkOptsDirector.Checked
         CheckEnable()
     End Sub
 
     Private Sub chkOptsGenre_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsGenre.CheckedChanged
-        CustomUpdater.Options.bGenre = chkOptsGenre.Checked
+        CustomUpdater.Options.bMainGenre = chkOptsGenre.Checked
         CheckEnable()
     End Sub
 
     Private Sub chkOptsMPAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsMPAA.CheckedChanged
-        CustomUpdater.Options.bMPAA = chkOptsMPAA.Checked
+        CustomUpdater.Options.bMainMPAA = chkOptsMPAA.Checked
         CheckEnable()
     End Sub
 
     Private Sub chkOptsMusicBy_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsMusicBy.CheckedChanged
-        CustomUpdater.Options.bMusicBy = chkOptsMusicBy.Checked
+        CustomUpdater.Options.bMainMusicBy = chkOptsMusicBy.Checked
         CheckEnable()
     End Sub
 
     Private Sub chkOptsOriginalTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsOriginalTitle.CheckedChanged
-        CustomUpdater.Options.bOriginalTitle = chkOptsOriginalTitle.Checked
+        CustomUpdater.Options.bMainOriginalTitle = chkOptsOriginalTitle.Checked
         CheckEnable()
     End Sub
 
     Private Sub chkOptsOutline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsOutline.CheckedChanged
-        CustomUpdater.Options.bOutline = chkOptsOutline.Checked
+        CustomUpdater.Options.bMainOutline = chkOptsOutline.Checked
         CheckEnable()
     End Sub
 
     Private Sub chkOptsPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsPlot.CheckedChanged
-        CustomUpdater.Options.bPlot = chkOptsPlot.Checked
+        CustomUpdater.Options.bMainPlot = chkOptsPlot.Checked
         CheckEnable()
     End Sub
 
     Private Sub chkOptsProducers_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsProducers.CheckedChanged
-        CustomUpdater.Options.bProducers = chkOptsProducers.Checked
+        CustomUpdater.Options.bMainProducers = chkOptsProducers.Checked
         CheckEnable()
     End Sub
 
     Private Sub chkOptsRating_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsRating.CheckedChanged
-        CustomUpdater.Options.bRating = chkOptsRating.Checked
+        CustomUpdater.Options.bMainRating = chkOptsRating.Checked
         CheckEnable()
     End Sub
 
     Private Sub chkOptsRelease_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsRelease.CheckedChanged
-        CustomUpdater.Options.bRelease = chkOptsRelease.Checked
+        CustomUpdater.Options.bMainRelease = chkOptsRelease.Checked
         CheckEnable()
     End Sub
 
     Private Sub chkOptsRuntime_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsRuntime.CheckedChanged
-        CustomUpdater.Options.bRuntime = chkOptsRuntime.Checked
+        CustomUpdater.Options.bMainRuntime = chkOptsRuntime.Checked
         CheckEnable()
     End Sub
 
     Private Sub chkOptsStudio_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsStudio.CheckedChanged
-        CustomUpdater.Options.bStudio = chkOptsStudio.Checked
+        CustomUpdater.Options.bMainStudio = chkOptsStudio.Checked
         CheckEnable()
     End Sub
 
     Private Sub chkOptsTagline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsTagline.CheckedChanged
-        CustomUpdater.Options.bTagline = chkOptsTagline.Checked
+        CustomUpdater.Options.bMainTagline = chkOptsTagline.Checked
         CheckEnable()
     End Sub
 
     Private Sub chkOptsTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsTitle.CheckedChanged
-        CustomUpdater.Options.bTitle = chkOptsTitle.Checked
+        CustomUpdater.Options.bMainTitle = chkOptsTitle.Checked
         CheckEnable()
     End Sub
 
     Private Sub chkOptsTop250_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsTop250.CheckedChanged
-        CustomUpdater.Options.bTop250 = chkOptsTop250.Checked
+        CustomUpdater.Options.bMainTop250 = chkOptsTop250.Checked
         CheckEnable()
     End Sub
 
     Private Sub chkOptsCountry_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsCountry.CheckedChanged
-        CustomUpdater.Options.bCountry = chkOptsCountry.Checked
+        CustomUpdater.Options.bMainCountry = chkOptsCountry.Checked
         CheckEnable()
     End Sub
 
     Private Sub chkOptsCollectionID_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsCollectionID.CheckedChanged
-        CustomUpdater.Options.bCollectionID = chkOptsCollectionID.Checked
+        CustomUpdater.Options.bMainCollectionID = chkOptsCollectionID.Checked
         CheckEnable()
     End Sub
 
     Private Sub chkOptsTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsTrailer.CheckedChanged
-        CustomUpdater.Options.bTrailer = chkOptsTrailer.Checked
+        CustomUpdater.Options.bMainTrailer = chkOptsTrailer.Checked
         CheckEnable()
     End Sub
 
     Private Sub chkOptsWriters_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsWriters.CheckedChanged
-        CustomUpdater.Options.bWriters = chkOptsWriters.Checked
+        CustomUpdater.Options.bMainWriters = chkOptsWriters.Checked
         CheckEnable()
     End Sub
 
     Private Sub chkOptsYear_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOptsYear.CheckedChanged
-        CustomUpdater.Options.bYear = chkOptsYear.Checked
+        CustomUpdater.Options.bMainYear = chkOptsYear.Checked
         CheckEnable()
     End Sub
 

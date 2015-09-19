@@ -1679,7 +1679,7 @@ Public Class dlgEditMovie
                     .btnPlayTrailer.Enabled = False
                 End If
 
-                .btnDLTrailer.Enabled = Master.DefaultOptions_Movie.bTrailer
+                .btnDLTrailer.Enabled = Master.DefaultOptions_Movie.bMainTrailer
 
                 If Me.tmpDBElement.Movie.Studios.Count > 0 Then
                     .txtStudio.Text = Me.tmpDBElement.Movie.Studio
