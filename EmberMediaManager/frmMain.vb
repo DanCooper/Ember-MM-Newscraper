@@ -11605,16 +11605,16 @@ doCancel:
                         End If
                     End Using
                 Case "tvshow"
-                    'Me.SetControlsEnabled(False)
-                    'Using dlgCustomScraper As New dlgCustomScraperTV
-                    '    Dim CustomScraper As Structures.CustomUpdaterStruct_TV = Nothing
-                    '    CustomScraper = dlgCustomScraper.ShowDialog()
-                    '    If Not CustomScraper.Canceled Then
-                    '        Me.CreateScrapeList_TV(CustomScraper.ScrapeType, CustomScraper.Options, CustomScraper.ScrapeModifier)
-                    '    Else
-                    '        Me.SetControlsEnabled(True)
-                    '    End If
-                    'End Using
+                    Me.SetControlsEnabled(False)
+                    Using dlgCustomScraper As New dlgCustomScraperTV
+                        Dim CustomScraper As Structures.CustomUpdaterStruct_TV = Nothing
+                        CustomScraper = dlgCustomScraper.ShowDialog()
+                        If Not CustomScraper.Canceled Then
+                            Me.CreateScrapeList_TV(CustomScraper.ScrapeType, CustomScraper.Options, CustomScraper.ScrapeModifier)
+                        Else
+                            Me.SetControlsEnabled(True)
+                        End If
+                    End Using
             End Select
         End If
     End Sub
