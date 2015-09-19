@@ -182,7 +182,7 @@ Namespace YouTube
                 Html = String.Empty
             End If
 
-            Dim Pattern As String = "<\/div><span class=""video-time.*?>(?<TIME>.*?)<.*?<a href=""(?<LINK>.*?)"".*?title=""(?<NAME>.*?)"""
+            Dim Pattern As String = clsAdvancedSettings.GetSetting("SearchOnYouTube", "<\/div><span class=""video-time.*?>(?<TIME>.*?)<.*?<a href=""(?<LINK>.*?)"".*?title=""(?<NAME>.*?)""")
 
             Try
                 Dim Result As MatchCollection = Regex.Matches(Html, Pattern, RegexOptions.Singleline, TimeSpan.FromSeconds(1))
