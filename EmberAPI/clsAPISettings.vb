@@ -7324,6 +7324,11 @@ Public Class Settings
             MovieMissingSubtitles OrElse MovieMissingTheme OrElse MovieMissingTrailer
     End Function
 
+    Public Function MovieNFOAnyEnabled() As Boolean
+        Return MovieNFOBoxee OrElse MovieNFOEden OrElse MovieNFOFrodo OrElse MovieNFONMJ OrElse MovieNFOYAMJ OrElse _
+            (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MovieNFOExpertBDMV) OrElse Not String.IsNullOrEmpty(MovieNFOExpertMulti) OrElse Not String.IsNullOrEmpty(MovieNFOExpertSingle) OrElse Not String.IsNullOrEmpty(MovieNFOExpertVTS)))
+    End Function
+
     Public Function MoviePosterAnyEnabled() As Boolean
         Return MoviePosterBoxee OrElse MoviePosterEden OrElse MoviePosterFrodo OrElse MoviePosterNMJ OrElse MoviePosterYAMJ OrElse _
             (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MoviePosterExpertBDMV) OrElse Not String.IsNullOrEmpty(MoviePosterExpertMulti) OrElse Not String.IsNullOrEmpty(MoviePosterExpertSingle) OrElse Not String.IsNullOrEmpty(MoviePosterExpertVTS)))
@@ -7378,6 +7383,10 @@ Public Class Settings
             MovieSetMissingFanart OrElse MovieSetMissingLandscape OrElse MovieSetMissingNFO OrElse MovieSetMissingPoster
     End Function
 
+    Public Function MovieSetNFOAnyEnabled() As Boolean
+        Return (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetNFOExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetNFOExpertSingle))))
+    End Function
+
     Public Function MovieSetPosterAnyEnabled() As Boolean
         Return (MovieSetPosterExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse _
             (MovieSetUseMSAA AndAlso MovieSetPosterMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse _
@@ -7413,13 +7422,18 @@ Public Class Settings
             (TVUseExpert AndAlso TVEpisodeActorThumbsExpert AndAlso Not String.IsNullOrEmpty(TVEpisodeActorThumbsExtExpert))
     End Function
 
+    Public Function TVEpisodeFanartAnyEnabled() As Boolean
+        Return (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVEpisodeFanartExpert))
+    End Function
+
+    Public Function TVEpisodeNFOAnyEnabled() As Boolean
+        'Return TVEpisodenfoBoxee OrElse TVEpisodenfoFrodo OrElse TVEpisodenfoYAMJ OrElse _
+        Return (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVEpisodeNFOExpert))
+    End Function
+
     Public Function TVEpisodePosterAnyEnabled() As Boolean
         Return TVEpisodePosterBoxee OrElse TVEpisodePosterFrodo OrElse TVEpisodePosterYAMJ OrElse _
             (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVEpisodePosterExpert))
-    End Function
-
-    Public Function TVEpisodeFanartAnyEnabled() As Boolean
-        Return (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVEpisodeFanartExpert))
     End Function
 
     Public Function TVSeasonBannerAnyEnabled() As Boolean
@@ -7486,6 +7500,11 @@ Public Class Settings
         Return TVShowMissingBanner OrElse TVShowMissingCharacterArt OrElse TVShowMissingClearArt OrElse TVShowMissingClearLogo OrElse _
             TVShowMissingEFanarts OrElse TVShowMissingFanart OrElse TVShowMissingLandscape OrElse TVShowMissingNFO OrElse _
             TVShowMissingPoster OrElse TVShowMissingTheme
+    End Function
+
+    Public Function TVShowNFOAnyEnabled() As Boolean
+        'Return TVShowNFOBoxee OrElse TVShowNFOFrodo OrElse TVShowNFOYAMJ OrElse _
+        Return (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowNFOExpert))
     End Function
 
     Public Function TVShowPosterAnyEnabled() As Boolean

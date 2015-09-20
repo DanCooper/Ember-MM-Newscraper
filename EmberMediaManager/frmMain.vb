@@ -11584,33 +11584,33 @@ doCancel:
             Select Case ContentType
                 Case "movie"
                     Me.SetControlsEnabled(False)
-                    Using dlgCustomScraper As New dlgCustomScraperMovie
+                    Using dlgCustomScraper As New dlgCustomScraper(Enums.ContentType.Movie)
                         Dim CustomScraper As Structures.CustomUpdaterStruct = Nothing
                         CustomScraper = dlgCustomScraper.ShowDialog()
                         If Not CustomScraper.Canceled Then
-                            Me.CreateScrapeList_Movie(CustomScraper.ScrapeType, CustomScraper.Options, CustomScraper.ScrapeModifier)
+                            Me.CreateScrapeList_Movie(CustomScraper.ScrapeType, CustomScraper.ScrapeOptions, CustomScraper.ScrapeModifier)
                         Else
                             Me.SetControlsEnabled(True)
                         End If
                     End Using
                 Case "movieset"
                     Me.SetControlsEnabled(False)
-                    Using dlgCustomScraper As New dlgCustomScraperMovieSet
+                    Using dlgCustomScraper As New dlgCustomScraper(Enums.ContentType.MovieSet)
                         Dim CustomScraper As Structures.CustomUpdaterStruct = Nothing
                         CustomScraper = dlgCustomScraper.ShowDialog()
                         If Not CustomScraper.Canceled Then
-                            Me.CreateScrapeList_MovieSet(CustomScraper.ScrapeType, CustomScraper.Options, CustomScraper.ScrapeModifier)
+                            Me.CreateScrapeList_MovieSet(CustomScraper.ScrapeType, CustomScraper.ScrapeOptions, CustomScraper.ScrapeModifier)
                         Else
                             Me.SetControlsEnabled(True)
                         End If
                     End Using
                 Case "tvshow"
                     Me.SetControlsEnabled(False)
-                    Using dlgCustomScraper As New dlgCustomScraperTV
+                    Using dlgCustomScraper As New dlgCustomScraper(Enums.ContentType.TV)
                         Dim CustomScraper As Structures.CustomUpdaterStruct = Nothing
                         CustomScraper = dlgCustomScraper.ShowDialog()
                         If Not CustomScraper.Canceled Then
-                            Me.CreateScrapeList_TV(CustomScraper.ScrapeType, CustomScraper.Options, CustomScraper.ScrapeModifier)
+                            Me.CreateScrapeList_TV(CustomScraper.ScrapeType, CustomScraper.ScrapeOptions, CustomScraper.ScrapeModifier)
                         Else
                             Me.SetControlsEnabled(True)
                         End If

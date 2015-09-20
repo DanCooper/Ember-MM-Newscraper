@@ -1776,7 +1776,7 @@ Public Class Structures
 
     Public Structure CustomUpdaterStruct
         Dim Canceled As Boolean
-        Dim Options As ScrapeOptions
+        Dim ScrapeOptions As ScrapeOptions
         Dim ScrapeModifier As ScrapeModifier
         Dim ScrapeType As Enums.ScrapeType
     End Structure

@@ -188,16 +188,10 @@
     <Compile Include="dlgAddEditActor.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgCustomScraperMovieSet.designer.vb">
-      <DependentUpon>dlgCustomScraperMovieSet.vb</DependentUpon>
+    <Compile Include="dlgCustomScraper.designer.vb">
+      <DependentUpon>dlgCustomScraper.vb</DependentUpon>
     </Compile>
-    <Compile Include="dlgCustomScraperMovieSet.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="dlgCustomScraperTV.designer.vb">
-      <DependentUpon>dlgCustomScraperTV.vb</DependentUpon>
-    </Compile>
-    <Compile Include="dlgCustomScraperTV.vb">
+    <Compile Include="dlgCustomScraper.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="dlgDeleteConfirm.Designer.vb">
@@ -350,12 +344,6 @@
     <Compile Include="dlgTVSource.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgCustomScraperMovie.designer.vb">
-      <DependentUpon>dlgCustomScraperMovie.vb</DependentUpon>
-    </Compile>
-    <Compile Include="dlgCustomScraperMovie.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="dlgWizard.Designer.vb">
       <DependentUpon>dlgWizard.vb</DependentUpon>
     </Compile>
@@ -403,11 +391,8 @@
     <EmbeddedResource Include="dlgAddEditActor.resx">
       <DependentUpon>dlgAddEditActor.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="dlgCustomScraperMovieSet.resx">
-      <DependentUpon>dlgCustomScraperMovieSet.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="dlgCustomScraperTV.resx">
-      <DependentUpon>dlgCustomScraperTV.vb</DependentUpon>
+    <EmbeddedResource Include="dlgCustomScraper.resx">
+      <DependentUpon>dlgCustomScraper.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgDeleteConfirm.resx">
       <DependentUpon>dlgDeleteConfirm.vb</DependentUpon>
@@ -488,9 +473,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="dlgTVSource.resx">
       <DependentUpon>dlgTVSource.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="dlgCustomScraperMovie.resx">
-      <DependentUpon>dlgCustomScraperMovie.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgWizard.resx">
       <DependentUpon>dlgWizard.vb</DependentUpon>
