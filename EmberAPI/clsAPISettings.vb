@@ -5870,6 +5870,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVShowNFOBoxee() As Boolean
+        Get
+            Return Settings._XMLSettings.TVShowNFOBoxee
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVShowNFOBoxee = value
+        End Set
+    End Property
+
     Public Property TVShowPosterBoxee() As Boolean
         Get
             Return Settings._XMLSettings.TVShowPosterBoxee
@@ -5888,12 +5897,30 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVShowNFOFrodo() As Boolean
+        Get
+            Return Settings._XMLSettings.TVShowNFOFrodo
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVShowNFOFrodo = value
+        End Set
+    End Property
+
     Public Property TVShowPosterFrodo() As Boolean
         Get
             Return Settings._XMLSettings.TVShowPosterFrodo
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.TVShowPosterFrodo = value
+        End Set
+    End Property
+
+    Public Property TVShowNFOYAMJ() As Boolean
+        Get
+            Return Settings._XMLSettings.TVShowNFOYAMJ
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVShowNFOYAMJ = value
         End Set
     End Property
 
@@ -6095,6 +6122,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVEpisodeNFOBoxee() As Boolean
+        Get
+            Return Settings._XMLSettings.TVEpisodeNFOBoxee
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVEpisodeNFOBoxee = value
+        End Set
+    End Property
+
     Public Property TVEpisodePosterBoxee() As Boolean
         Get
             Return Settings._XMLSettings.TVEpisodePosterBoxee
@@ -6113,12 +6149,30 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVEpisodeNFOFrodo() As Boolean
+        Get
+            Return Settings._XMLSettings.TVEpisodeNFOFrodo
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVEpisodeNFOFrodo = value
+        End Set
+    End Property
+
     Public Property TVEpisodePosterFrodo() As Boolean
         Get
             Return Settings._XMLSettings.TVEpisodePosterFrodo
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.TVEpisodePosterFrodo = value
+        End Set
+    End Property
+
+    Public Property TVEpisodeNFOYAMJ() As Boolean
+        Get
+            Return Settings._XMLSettings.TVEpisodeNFOYAMJ
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVEpisodeNFOYAMJ = value
         End Set
     End Property
 
@@ -6463,6 +6517,7 @@ Public Class Settings
         If Not (Master.eSettings.TVUseBoxee OrElse Master.eSettings.TVUseEden OrElse Master.eSettings.TVUseExpert OrElse Master.eSettings.TVUseFrodo OrElse Master.eSettings.TVUseYAMJ) Then
             Master.eSettings.TVUseFrodo = True
             Master.eSettings.TVEpisodeActorThumbsFrodo = True
+            Master.eSettings.TVEpisodeNFOFrodo = True
             Master.eSettings.TVEpisodePosterFrodo = True
             Master.eSettings.TVSeasonBannerFrodo = True
             Master.eSettings.TVSeasonFanartFrodo = True
@@ -6476,6 +6531,7 @@ Public Class Settings
             Master.eSettings.TVShowExtrafanartsFrodo = True
             Master.eSettings.TVShowFanartFrodo = True
             Master.eSettings.TVShowLandscapeExtended = True
+            Master.eSettings.TVShowNFOFrodo = True
             Master.eSettings.TVShowPosterFrodo = True
         End If
     End Sub
@@ -7427,8 +7483,8 @@ Public Class Settings
     End Function
 
     Public Function TVEpisodeNFOAnyEnabled() As Boolean
-        'Return TVEpisodenfoBoxee OrElse TVEpisodenfoFrodo OrElse TVEpisodenfoYAMJ OrElse _
-        Return (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVEpisodeNFOExpert))
+        Return TVEpisodeNFOBoxee OrElse TVEpisodeNFOFrodo OrElse TVEpisodeNFOYAMJ OrElse _
+            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVEpisodeNFOExpert))
     End Function
 
     Public Function TVEpisodePosterAnyEnabled() As Boolean
@@ -7503,8 +7559,8 @@ Public Class Settings
     End Function
 
     Public Function TVShowNFOAnyEnabled() As Boolean
-        'Return TVShowNFOBoxee OrElse TVShowNFOFrodo OrElse TVShowNFOYAMJ OrElse _
-        Return (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowNFOExpert))
+        Return TVShowNFOBoxee OrElse TVShowNFOFrodo OrElse TVShowNFOYAMJ OrElse _
+            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowNFOExpert))
     End Function
 
     Public Function TVShowPosterAnyEnabled() As Boolean

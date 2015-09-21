@@ -3509,6 +3509,7 @@ Public Class dlgSettings
             '*************** XBMC Frodo settings ***************
             Me.chkTVUseFrodo.Checked = .TVUseFrodo
             Me.chkTVEpisodeActorThumbsFrodo.Checked = .TVEpisodeActorThumbsFrodo
+            Me.chkTVEpisodeNFOFrodo.Checked = .TVEpisodeNFOFrodo
             Me.chkTVEpisodePosterFrodo.Checked = .TVEpisodePosterFrodo
             Me.chkTVSeasonBannerFrodo.Checked = .TVSeasonBannerFrodo
             Me.chkTVSeasonFanartFrodo.Checked = .TVSeasonFanartFrodo
@@ -3517,6 +3518,7 @@ Public Class dlgSettings
             Me.chkTVShowBannerFrodo.Checked = .TVShowBannerFrodo
             Me.chkTVShowExtrafanartsFrodo.Checked = .TVShowExtrafanartsFrodo
             Me.chkTVShowFanartFrodo.Checked = .TVShowFanartFrodo
+            Me.chkTVShowNFOFrodo.Checked = .TVShowNFOFrodo
             Me.chkTVShowPosterFrodo.Checked = .TVShowPosterFrodo
 
             '*************** XBMC Eden settings ****************
@@ -3545,12 +3547,14 @@ Public Class dlgSettings
 
             '****************** YAMJ settings ******************
             Me.chkTVUseYAMJ.Checked = .TVUseYAMJ
+            Me.chkTVEpisodeNFOYAMJ.Checked = .TVEpisodeNFOYAMJ
             Me.chkTVEpisodePosterYAMJ.Checked = .TVEpisodePosterYAMJ
             Me.chkTVSeasonBannerYAMJ.Checked = .TVSeasonBannerYAMJ
             Me.chkTVSeasonFanartYAMJ.Checked = .TVSeasonFanartYAMJ
             Me.chkTVSeasonPosterYAMJ.Checked = .TVSeasonPosterYAMJ
             Me.chkTVShowBannerYAMJ.Checked = .TVShowBannerYAMJ
             Me.chkTVShowFanartYAMJ.Checked = .TVShowFanartYAMJ
+            Me.chkTVShowNFOYAMJ.Checked = .TVShowNFOYAMJ
             Me.chkTVShowPosterYAMJ.Checked = .TVShowPosterYAMJ
 
             '****************** NMJ settings *******************
@@ -3559,10 +3563,12 @@ Public Class dlgSettings
 
             '***************** Boxee settings ******************
             Me.chkTVUseBoxee.Checked = .TVUseBoxee
+            Me.chkTVEpisodeNFOBoxee.Checked = .TVEpisodeNFOBoxee
             Me.chkTVEpisodePosterBoxee.Checked = .TVEpisodePosterBoxee
             Me.chkTVSeasonPosterBoxee.Checked = .TVSeasonPosterBoxee
             Me.chkTVShowBannerBoxee.Checked = .TVShowBannerBoxee
             Me.chkTVShowFanartBoxee.Checked = .TVShowFanartBoxee
+            Me.chkTVShowNFOBoxee.Checked = .TVShowNFOBoxee
             Me.chkTVShowPosterBoxee.Checked = .TVShowPosterBoxee
 
             '***************** Expert settings ******************
@@ -5302,6 +5308,7 @@ Public Class dlgSettings
             '*************** XBMC Frodo settings ***************
             .TVUseFrodo = Me.chkTVUseFrodo.Checked
             .TVEpisodeActorThumbsFrodo = Me.chkTVEpisodeActorThumbsFrodo.Checked
+            .TVEpisodeNFOFrodo = Me.chkTVEpisodeNFOFrodo.Checked
             .TVEpisodePosterFrodo = Me.chkTVEpisodePosterFrodo.Checked
             .TVSeasonBannerFrodo = Me.chkTVSeasonBannerFrodo.Checked
             .TVSeasonFanartFrodo = Me.chkTVSeasonFanartFrodo.Checked
@@ -5310,6 +5317,7 @@ Public Class dlgSettings
             .TVShowBannerFrodo = Me.chkTVShowBannerFrodo.Checked
             .TVShowExtrafanartsFrodo = Me.chkTVShowExtrafanartsFrodo.Checked
             .TVShowFanartFrodo = Me.chkTVShowFanartFrodo.Checked
+            .TVShowNFOFrodo = Me.chkTVShowNFOFrodo.Checked
             .TVShowPosterFrodo = Me.chkTVShowPosterFrodo.Checked
 
             '*************** XBMC Eden settings ****************
@@ -5338,12 +5346,14 @@ Public Class dlgSettings
 
             '****************** YAMJ settings ******************
             .TVUseYAMJ = Me.chkTVUseYAMJ.Checked
+            .TVEpisodeNFOYAMJ = Me.chkTVEpisodeNFOYAMJ.Checked
             .TVEpisodePosterYAMJ = Me.chkTVEpisodePosterYAMJ.Checked
             .TVSeasonBannerYAMJ = Me.chkTVSeasonBannerYAMJ.Checked
             .TVSeasonFanartYAMJ = Me.chkTVSeasonFanartYAMJ.Checked
             .TVSeasonPosterYAMJ = Me.chkTVSeasonPosterYAMJ.Checked
             .TVShowBannerYAMJ = Me.chkTVShowBannerYAMJ.Checked
             .TVShowFanartYAMJ = Me.chkTVShowFanartYAMJ.Checked
+            .TVShowNFOYAMJ = Me.chkTVShowNFOYAMJ.Checked
             .TVShowPosterYAMJ = Me.chkTVShowPosterYAMJ.Checked
 
             '****************** NMJ settings *******************
@@ -5352,10 +5362,12 @@ Public Class dlgSettings
 
             '***************** Boxee settings ******************
             .TVUseBoxee = Me.chkTVUseBoxee.Checked
+            .TVEpisodeNFOBoxee = Me.chkTVEpisodeNFOBoxee.Checked
             .TVEpisodePosterBoxee = Me.chkTVEpisodePosterBoxee.Checked
             .TVSeasonPosterBoxee = Me.chkTVSeasonPosterBoxee.Checked
             .TVShowBannerBoxee = Me.chkTVShowBannerBoxee.Checked
             .TVShowFanartBoxee = Me.chkTVShowFanartBoxee.Checked
+            .TVShowNFOBoxee = Me.chkTVShowNFOBoxee.Checked
             .TVShowPosterBoxee = Me.chkTVShowPosterBoxee.Checked
 
             '***************** Expert settings ******************
@@ -6011,8 +6023,8 @@ Public Class dlgSettings
 
         'NFO
         Dim strNFO As String = Master.eLang.GetString(150, "NFO")
-        Me.lblMovieSetNFOExpertParent.Text = strNFO
-        Me.lblMovieSetNFOExpertSingle.Text = strNFO
+        Me.lblMovieSetSourcesFileNamingExpertParentNFO.Text = strNFO
+        Me.lblMovieSetSourcesFileNamingExpertSingleNFO.Text = strNFO
         Me.lblMovieSourcesFileNamingBoxeeDefaultsNFO.Text = strNFO
         Me.lblMovieSourcesFileNamingExpertBDMVNFO.Text = strNFO
         Me.lblMovieSourcesFileNamingExpertMultiNFO.Text = strNFO
@@ -6022,6 +6034,7 @@ Public Class dlgSettings
         Me.lblMovieSourcesFileNamingXBMCDefaultsNFO.Text = strNFO
         Me.lblTVEpisodeNFOExpert.Text = strNFO
         Me.lblTVShowNFOExpert.Text = strNFO
+        Me.lblTVSourcesFilenamingXBMCDefaultsNFO.Text = strNFO
 
         'Only
         Dim strOnly As String = Master.eLang.GetString(145, "Only")
@@ -7033,23 +7046,29 @@ Public Class dlgSettings
     Private Sub chkTVUseBoxee_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVUseBoxee.CheckedChanged
         Me.SetApplyButton(True)
 
+        Me.chkTVEpisodeNFOBoxee.Enabled = Me.chkTVUseBoxee.Checked
         Me.chkTVEpisodePosterBoxee.Enabled = Me.chkTVUseBoxee.Checked
         Me.chkTVSeasonPosterBoxee.Enabled = Me.chkTVUseBoxee.Checked
         Me.chkTVShowBannerBoxee.Enabled = Me.chkTVUseBoxee.Checked
         Me.chkTVShowFanartBoxee.Enabled = Me.chkTVUseBoxee.Checked
+        Me.chkTVShowNFOBoxee.Enabled = Me.chkTVUseBoxee.Checked
         Me.chkTVShowPosterBoxee.Enabled = Me.chkTVUseBoxee.Checked
 
         If Not Me.chkTVUseBoxee.Checked Then
+            Me.chkTVEpisodeNFOBoxee.Checked = False
             Me.chkTVEpisodePosterBoxee.Checked = False
             Me.chkTVSeasonPosterBoxee.Checked = False
             Me.chkTVShowBannerBoxee.Checked = False
             Me.chkTVShowFanartBoxee.Checked = False
+            Me.chkTVShowNFOBoxee.Checked = False
             Me.chkTVShowPosterBoxee.Checked = False
         Else
+            Me.chkTVEpisodeNFOBoxee.Checked = True
             Me.chkTVEpisodePosterBoxee.Checked = True
             Me.chkTVSeasonPosterBoxee.Checked = True
             Me.chkTVShowBannerBoxee.Checked = True
             Me.chkTVShowFanartBoxee.Checked = True
+            Me.chkTVShowNFOBoxee.Checked = True
             Me.chkTVShowPosterBoxee.Checked = True
         End If
     End Sub
@@ -7058,6 +7077,7 @@ Public Class dlgSettings
         Me.SetApplyButton(True)
 
         Me.chkTVEpisodeActorThumbsFrodo.Enabled = Me.chkTVUseFrodo.Checked
+        Me.chkTVEpisodeNFOFrodo.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVEpisodePosterFrodo.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVSeasonBannerFrodo.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVSeasonFanartFrodo.Enabled = Me.chkTVUseFrodo.Checked
@@ -7076,11 +7096,13 @@ Public Class dlgSettings
         Me.chkTVShowFanartFrodo.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVShowLandscapeAD.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVShowLandscapeExtended.Enabled = Me.chkTVUseFrodo.Checked
+        Me.chkTVShowNFOFrodo.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVShowPosterFrodo.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVShowThemeTvTunesEnable.Enabled = Me.chkTVUseFrodo.Checked
 
         If Not Me.chkTVUseFrodo.Checked Then
             Me.chkTVEpisodeActorThumbsFrodo.Checked = False
+            Me.chkTVEpisodeNFOFrodo.Checked = False
             Me.chkTVEpisodePosterFrodo.Checked = False
             Me.chkTVSeasonBannerFrodo.Checked = False
             Me.chkTVSeasonFanartFrodo.Checked = False
@@ -7099,10 +7121,12 @@ Public Class dlgSettings
             Me.chkTVShowFanartFrodo.Checked = False
             Me.chkTVShowLandscapeAD.Checked = False
             Me.chkTVShowLandscapeExtended.Checked = False
+            Me.chkTVShowNFOFrodo.Checked = False
             Me.chkTVShowPosterFrodo.Checked = False
             Me.chkTVShowThemeTvTunesEnable.Checked = False
         Else
             Me.chkTVEpisodeActorThumbsFrodo.Checked = True
+            Me.chkTVEpisodeNFOFrodo.Checked = True
             Me.chkTVEpisodePosterFrodo.Checked = True
             Me.chkTVSeasonBannerFrodo.Checked = True
             Me.chkTVSeasonFanartFrodo.Checked = True
@@ -7116,6 +7140,7 @@ Public Class dlgSettings
             Me.chkTVShowExtrafanartsFrodo.Checked = True
             Me.chkTVShowFanartFrodo.Checked = True
             Me.chkTVShowLandscapeExtended.Checked = True
+            Me.chkTVShowNFOFrodo.Checked = True
             Me.chkTVShowPosterFrodo.Checked = True
         End If
     End Sub
@@ -7123,29 +7148,35 @@ Public Class dlgSettings
     Private Sub chkTVUseYAMJ_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVUseYAMJ.CheckedChanged
         Me.SetApplyButton(True)
 
+        Me.chkTVEpisodeNFOYAMJ.Enabled = Me.chkTVUseYAMJ.Checked
         Me.chkTVEpisodePosterYAMJ.Enabled = Me.chkTVUseYAMJ.Checked
         Me.chkTVSeasonBannerYAMJ.Enabled = Me.chkTVUseYAMJ.Checked
         Me.chkTVSeasonFanartYAMJ.Enabled = Me.chkTVUseYAMJ.Checked
         Me.chkTVSeasonPosterYAMJ.Enabled = Me.chkTVUseYAMJ.Checked
         Me.chkTVShowBannerYAMJ.Enabled = Me.chkTVUseYAMJ.Checked
         Me.chkTVShowFanartYAMJ.Enabled = Me.chkTVUseYAMJ.Checked
+        Me.chkTVShowNFOYAMJ.Enabled = Me.chkTVUseYAMJ.Checked
         Me.chkTVShowPosterYAMJ.Enabled = Me.chkTVUseYAMJ.Checked
 
         If Not Me.chkTVUseYAMJ.Checked Then
+            Me.chkTVEpisodeNFOYAMJ.Checked = False
             Me.chkTVEpisodePosterYAMJ.Checked = False
             Me.chkTVSeasonBannerYAMJ.Checked = False
             Me.chkTVSeasonFanartYAMJ.Checked = False
             Me.chkTVSeasonPosterYAMJ.Checked = False
             Me.chkTVShowBannerYAMJ.Checked = False
             Me.chkTVShowFanartYAMJ.Checked = False
+            Me.chkTVShowNFOYAMJ.Checked = False
             Me.chkTVShowPosterYAMJ.Checked = False
         Else
+            Me.chkTVEpisodeNFOYAMJ.Checked = True
             Me.chkTVEpisodePosterYAMJ.Checked = True
             Me.chkTVSeasonBannerYAMJ.Checked = True
             Me.chkTVSeasonFanartYAMJ.Checked = True
             Me.chkTVSeasonPosterYAMJ.Checked = True
             Me.chkTVShowBannerYAMJ.Checked = True
             Me.chkTVShowFanartYAMJ.Checked = True
+            Me.chkTVShowNFOYAMJ.Checked = True
             Me.chkTVShowPosterYAMJ.Checked = True
         End If
     End Sub
@@ -7555,6 +7586,10 @@ Public Class dlgSettings
         chkTVEpisodeActorThumbsFrodo.CheckedChanged, _
         chkTVEpisodeFanartOverwrite.CheckedChanged, _
         chkTVEpisodeFanartPrefSizeOnly.CheckedChanged, _
+        chkTVEpisodeNFOBoxee.CheckedChanged, _
+        chkTVEpisodeNFOFrodo.CheckedChanged, _
+        chkTVEpisodeNFONMJ.CheckedChanged, _
+        chkTVEpisodeNFOYAMJ.CheckedChanged, _
         chkTVEpisodePosterBoxee.CheckedChanged, _
         chkTVEpisodePosterFrodo.CheckedChanged, _
         chkTVEpisodePosterOverwrite.CheckedChanged, _
@@ -7652,6 +7687,10 @@ Public Class dlgSettings
         chkTVShowLandscapeAD.CheckedChanged, _
         chkTVShowLandscapeExtended.CheckedChanged, _
         chkTVShowLandscapeOverwrite.CheckedChanged, _
+        chkTVShowNFOBoxee.CheckedChanged, _
+        chkTVShowNFOFrodo.CheckedChanged, _
+        chkTVShowNFONMJ.CheckedChanged, _
+        chkTVShowNFOYAMJ.CheckedChanged, _
         chkTVShowPosterBoxee.CheckedChanged, _
         chkTVShowPosterFrodo.CheckedChanged, _
         chkTVShowPosterOverwrite.CheckedChanged, _

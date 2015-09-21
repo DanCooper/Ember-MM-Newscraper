@@ -1852,10 +1852,10 @@ Namespace FileUtils
 
                 Case Enums.ModifierType.EpisodeNFO
                     With Master.eSettings
-                        If .TVUseBoxee Then FilenameList.Add(String.Concat(fEpisodePath, ".nfo"))
+                        If .TVUseBoxee AndAlso .TVEpisodeNFOBoxee Then FilenameList.Add(String.Concat(fEpisodePath, ".nfo"))
                         If .TVUseEden Then FilenameList.Add(String.Concat(fEpisodePath, ".nfo"))
-                        If .TVUseFrodo Then FilenameList.Add(String.Concat(fEpisodePath, ".nfo"))
-                        If .TVUseYAMJ Then FilenameList.Add(String.Concat(fEpisodePath, ".nfo"))
+                        If .TVUseFrodo AndAlso .TVEpisodeNFOFrodo Then FilenameList.Add(String.Concat(fEpisodePath, ".nfo"))
+                        If .TVUseYAMJ AndAlso .TVEpisodeNFOYAMJ Then FilenameList.Add(String.Concat(fEpisodePath, ".nfo"))
                         If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVEpisodeNFOExpert) Then
                             For Each a In .TVEpisodeNFOExpert.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
                                 FilenameList.Add(Path.Combine(fEpisodeParentPath, a.Replace("<filename>", fEpisodeFileName)))
@@ -2136,7 +2136,9 @@ Namespace FileUtils
 
                 Case Enums.ModifierType.MainNFO
                     With Master.eSettings
-                        FilenameList.Add(Path.Combine(fShowPath, "tvshow.nfo"))
+                        If .TVUseBoxee AndAlso .TVShowNFOBoxee Then FilenameList.Add(Path.Combine(fShowPath, "tvshow.nfo"))
+                        If .TVUseFrodo AndAlso .TVShowNFOFrodo Then FilenameList.Add(Path.Combine(fShowPath, "tvshow.nfo"))
+                        If .TVUseYAMJ AndAlso .TVShowNFOYAMJ Then FilenameList.Add(Path.Combine(fShowPath, "tvshow.nfo"))
                         If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVShowNFOExpert) Then
                             For Each a In .TVShowNFOExpert.Split(New String() {","}, StringSplitOptions.RemoveEmptyEntries)
                                 FilenameList.Add(Path.Combine(fShowPath, a))
