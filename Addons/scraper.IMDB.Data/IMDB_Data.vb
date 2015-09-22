@@ -525,22 +525,22 @@ Public Class IMDB_Data
         End If
 
         'set new informations for following scrapers
-        If Not String.IsNullOrEmpty(nMovie.Title) Then
+        If nMovie.TitleSpecified Then
             oDBMovie.Movie.Title = nMovie.Title
         End If
-        If Not String.IsNullOrEmpty(nMovie.OriginalTitle) Then
+        If nMovie.OriginalTitleSpecified Then
             oDBMovie.Movie.OriginalTitle = nMovie.OriginalTitle
         End If
-        If Not String.IsNullOrEmpty(nMovie.Year) Then
+        If nMovie.YearSpecified Then
             oDBMovie.Movie.Year = nMovie.Year
         End If
-        If Not String.IsNullOrEmpty(nMovie.ID) Then
+        If nMovie.IDSpecified Then
             oDBMovie.Movie.ID = nMovie.ID
         End If
-        If Not String.IsNullOrEmpty(nMovie.IMDBID) Then
+        If nMovie.IMDBIDSpecified Then
             oDBMovie.Movie.IMDBID = nMovie.IMDBID
         End If
-        If Not String.IsNullOrEmpty(nMovie.TMDBID) Then
+        If nMovie.TMDBIDSpecified Then
             oDBMovie.Movie.TMDBID = nMovie.TMDBID
         End If
 

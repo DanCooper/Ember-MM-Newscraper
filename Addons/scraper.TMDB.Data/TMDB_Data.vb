@@ -645,22 +645,22 @@ Public Class TMDB_Data
         End If
 
         'set new informations for following scrapers
-        If Not String.IsNullOrEmpty(nMovie.Title) Then
+        If nMovie.TitleSpecified Then
             oDBElement.Movie.Title = nMovie.Title
         End If
-        If Not String.IsNullOrEmpty(nMovie.OriginalTitle) Then
+        If nMovie.OriginalTitleSpecified Then
             oDBElement.Movie.OriginalTitle = nMovie.OriginalTitle
         End If
-        If Not String.IsNullOrEmpty(nMovie.Year) Then
+        If nMovie.YearSpecified Then
             oDBElement.Movie.Year = nMovie.Year
         End If
-        If Not String.IsNullOrEmpty(nMovie.ID) Then
+        If nMovie.IDSpecified Then
             oDBElement.Movie.ID = nMovie.ID
         End If
-        If Not String.IsNullOrEmpty(nMovie.IMDBID) Then
+        If nMovie.IMDBIDSpecified Then
             oDBElement.Movie.IMDBID = nMovie.IMDBID
         End If
-        If Not String.IsNullOrEmpty(nMovie.TMDBID) Then
+        If nMovie.TMDBIDSpecified Then
             oDBElement.Movie.TMDBID = nMovie.TMDBID
         End If
 
@@ -716,10 +716,10 @@ Public Class TMDB_Data
         End If
 
         'set new informations for following scrapers
-        If Not String.IsNullOrEmpty(nMovieSet.Title) Then
+        If nMovieSet.TitleSpecified Then
             oDBElement.MovieSet.Title = nMovieSet.Title
         End If
-        If Not String.IsNullOrEmpty(nMovieSet.TMDB) Then
+        If nMovieSet.TMDBSpecified Then
             oDBElement.MovieSet.TMDB = nMovieSet.TMDB
         End If
 
@@ -790,16 +790,16 @@ Public Class TMDB_Data
         End If
 
         'set new informations for following scrapers
-        If Not String.IsNullOrEmpty(nShow.Title) Then
+        If nShow.TitleSpecified Then
             oDBElement.TVShow.Title = nShow.Title
         End If
-        If Not String.IsNullOrEmpty(nShow.TVDB) Then
+        If nShow.TVDBSpecified Then
             oDBElement.TVShow.TVDB = nShow.TVDB
         End If
-        If Not String.IsNullOrEmpty(nShow.IMDB) Then
+        If nShow.IMDBSpecified Then
             oDBElement.TVShow.IMDB = nShow.IMDB
         End If
-        If Not String.IsNullOrEmpty(nShow.TMDB) Then
+        If nShow.TMDBSpecified Then
             oDBElement.TVShow.TMDB = nShow.TMDB
         End If
 
@@ -829,6 +829,20 @@ Public Class TMDB_Data
             Else
                 nEpisode = Nothing
             End If
+        End If
+
+        'set new informations for following scrapers
+        If nEpisode.TitleSpecified Then
+            oDBElement.TVShow.Title = nEpisode.Title
+        End If
+        If nEpisode.TVDBSpecified Then
+            oDBElement.TVShow.TVDB = nEpisode.TVDB
+        End If
+        If nEpisode.IMDBSpecified Then
+            oDBElement.TVShow.IMDB = nEpisode.IMDB
+        End If
+        If nEpisode.TMDBSpecified Then
+            oDBElement.TVShow.TMDB = nEpisode.TMDB
         End If
 
         logger.Trace("Finished TMDB Scraper")

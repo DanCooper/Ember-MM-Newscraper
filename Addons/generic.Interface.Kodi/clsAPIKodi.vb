@@ -804,7 +804,7 @@ Namespace Kodi
 
                     'arrays
                     'Directors
-                    Dim mDirectorList As List(Of String) = If(uEpisode.TVEpisode.DirectorSpecified, uEpisode.TVEpisode.Directors, New List(Of String))
+                    Dim mDirectorList As List(Of String) = If(uEpisode.TVEpisode.DirectorsSpecified, uEpisode.TVEpisode.Directors, New List(Of String))
 
                     'Writers (Credits)
                     Dim mWriterList As List(Of String) = If(uEpisode.TVEpisode.CreditsSpecified, uEpisode.TVEpisode.Credits, New List(Of String))

@@ -287,13 +287,13 @@ Public Class TVDB_Data
         End If
 
         'set new informations for following scrapers
-        If Not String.IsNullOrEmpty(nShow.Title) Then
+        If nShow.TitleSpecified Then
             oDBTV.TVShow.Title = nShow.Title
         End If
-        If Not String.IsNullOrEmpty(nShow.TVDB) Then
+        If nShow.TVDBSpecified Then
             oDBTV.TVShow.TVDB = nShow.TVDB
         End If
-        If Not String.IsNullOrEmpty(nShow.IMDB) Then
+        If nShow.IMDBSpecified Then
             oDBTV.TVShow.IMDB = nShow.IMDB
         End If
 
@@ -321,6 +321,17 @@ Public Class TVDB_Data
             Else
                 nEpisode = Nothing
             End If
+        End If
+
+        'set new informations for following scrapers
+        If nEpisode.TitleSpecified Then
+            oDBTVEpisode.TVShow.Title = nEpisode.Title
+        End If
+        If nEpisode.TVDBSpecified Then
+            oDBTVEpisode.TVShow.TVDB = nEpisode.TVDB
+        End If
+        If nEpisode.IMDBSpecified Then
+            oDBTVEpisode.TVShow.IMDB = nEpisode.IMDB
         End If
 
         logger.Trace("Finished TVDB Scraper")

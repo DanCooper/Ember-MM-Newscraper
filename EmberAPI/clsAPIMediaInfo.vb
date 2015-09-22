@@ -105,7 +105,7 @@ Public Class MediaInfo
                                 Next
                             End If
                         Catch ex As Exception
-
+                            logger.Error(New StackFrame().GetMethod().Name, ex)
                         End Try
                     End If
                     If Master.eSettings.MovieLockLanguageA Then
@@ -123,7 +123,7 @@ Public Class MediaInfo
                             End If
 
                         Catch ex As Exception
-
+                            logger.Error(New StackFrame().GetMethod().Name, ex)
                         End Try
                     End If
                     miMovie.Movie.FileInfo = tinfo
@@ -177,7 +177,7 @@ Public Class MediaInfo
                                 Next
                             End If
                         Catch ex As Exception
-
+                            logger.Error(New StackFrame().GetMethod().Name, ex)
                         End Try
                     End If
                     If Master.eSettings.TVLockEpisodeLanguageA Then
@@ -195,10 +195,17 @@ Public Class MediaInfo
                             End If
 
                         Catch ex As Exception
-
+                            logger.Error(New StackFrame().GetMethod().Name, ex)
                         End Try
                     End If
                     miTV.TVEpisode.FileInfo = tinfo
+                End If
+                If miTV.TVEpisode.FileInfo.StreamDetails.Video.Count > 0 AndAlso Master.eSettings.TVScraperUseMDDuration Then
+                    Dim tVid As MediaInfo.Video = NFO.GetBestVideo(miTV.TVEpisode.FileInfo)
+                    'cocotus 29/02/2014, Added check to only save Runtime in nfo/moviedb if scraped Runtime <> 0! (=Error during Mediainfo Scan)
+                    If Not String.IsNullOrEmpty(tVid.Duration) AndAlso Not tVid.Duration.Trim = "0" Then
+                        miTV.TVEpisode.Runtime = MediaInfo.FormatDuration(tVid.Duration, Master.eSettings.TVScraperDurationRuntimeFormat)
+                    End If
                 End If
             End If
             If miTV.TVEpisode.FileInfo.StreamDetails.Video.Count = 0 AndAlso miTV.TVEpisode.FileInfo.StreamDetails.Audio.Count = 0 AndAlso miTV.TVEpisode.FileInfo.StreamDetails.Subtitle.Count = 0 Then

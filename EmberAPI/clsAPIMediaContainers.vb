@@ -104,7 +104,7 @@ Namespace MediaContainers
         <XmlIgnore()> _
         Public ReadOnly Property RuntimeSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._runtime)
+                Return Not String.IsNullOrEmpty(Me._runtime) AndAlso Not Me._runtime = "0"
             End Get
         End Property
 
@@ -138,7 +138,7 @@ Namespace MediaContainers
         <XmlIgnore()> _
         Public ReadOnly Property RatingSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._rating)
+                Return Not String.IsNullOrEmpty(Me._rating) AndAlso Not String.IsNullOrEmpty(Me._votes)
             End Get
         End Property
 
@@ -172,7 +172,7 @@ Namespace MediaContainers
         <XmlIgnore()> _
         Public ReadOnly Property VotesSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._votes)
+                Return Not String.IsNullOrEmpty(Me._votes) AndAlso Not String.IsNullOrEmpty(Me._rating)
             End Get
         End Property
 
@@ -372,7 +372,7 @@ Namespace MediaContainers
         End Property
 
         <XmlIgnore()> _
-        Public ReadOnly Property DirectorSpecified() As Boolean
+        Public ReadOnly Property DirectorsSpecified() As Boolean
             Get
                 Return Me._directors.Count > 0
             End Get
@@ -879,6 +879,13 @@ Namespace MediaContainers
         End Property
 
         <XmlIgnore()> _
+        Public ReadOnly Property IDSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me.MovieID.ID)
+            End Get
+        End Property
+
+        <XmlIgnore()> _
         Public Property IDMovieDB() As String
             Get
                 Return Me.MovieID.IDMovieDB
@@ -1043,7 +1050,7 @@ Namespace MediaContainers
         <XmlIgnore()> _
         Public ReadOnly Property RatingSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._rating)
+                Return Not String.IsNullOrEmpty(Me._rating) AndAlso Not String.IsNullOrEmpty(Me._votes)
             End Get
         End Property
 
@@ -1060,7 +1067,7 @@ Namespace MediaContainers
         <XmlIgnore()> _
         Public ReadOnly Property VotesSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._votes)
+                Return Not String.IsNullOrEmpty(Me._votes) AndAlso Not String.IsNullOrEmpty(Me._rating)
             End Get
         End Property
 
@@ -1341,7 +1348,7 @@ Namespace MediaContainers
         <XmlIgnore()> _
         Public ReadOnly Property RuntimeSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._runtime)
+                Return Not String.IsNullOrEmpty(Me._runtime) AndAlso Not Me._runtime = "0"
             End Get
         End Property
 
@@ -2699,7 +2706,7 @@ Namespace MediaContainers
         <XmlIgnore()> _
         Public ReadOnly Property RatingSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._rating)
+                Return Not String.IsNullOrEmpty(Me._rating) AndAlso Not String.IsNullOrEmpty(Me._votes)
             End Get
         End Property
 
@@ -2716,7 +2723,7 @@ Namespace MediaContainers
         <XmlIgnore()> _
         Public ReadOnly Property VotesSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._votes)
+                Return Not String.IsNullOrEmpty(Me._votes) AndAlso Not String.IsNullOrEmpty(Me._rating)
             End Get
         End Property
 
@@ -2964,7 +2971,7 @@ Namespace MediaContainers
         <XmlIgnore()> _
         Public ReadOnly Property RuntimeSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._runtime)
+                Return Not String.IsNullOrEmpty(Me._runtime) AndAlso Not Me._runtime = "0"
             End Get
         End Property
 
