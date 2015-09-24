@@ -957,8 +957,8 @@
   <string id="956">TV Show Poster</string>
   <string id="957">Show the ones with size:</string>
   <string id="958">Only if Plot Outline is empty</string>
-  <string id="959"></string>
-  <string id="960"></string>
+  <string id="959">with Seasons</string>
+  <string id="960">with Epsiodes</string>
   <string id="961">Season {0} Posters</string>
   <string id="962">Season {0} Fanart</string>
   <string id="963">TV Image Selection</string>
