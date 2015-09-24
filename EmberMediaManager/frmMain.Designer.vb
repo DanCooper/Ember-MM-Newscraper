@@ -215,8 +215,9 @@ Partial Class frmMain
         Me.mnuScrapeModifierPoster = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeModifierTheme = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeModifierTrailer = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuScrapeTypeSkip = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeTypeAsk = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeTypeSkip = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeSubmenuFilter = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieUpSel = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieUpSelActors = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieUpSelCert = New System.Windows.Forms.ToolStripMenuItem()
@@ -664,8 +665,8 @@ Partial Class frmMain
         Me.mnuScrapeSubmenuMissing = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeSubmenuNew = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeSubmenuMarked = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuScrapeSubmenuFilter = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeSubmenuCustom = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayScrapeMovies = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeMovieSets = New System.Windows.Forms.ToolStripDropDownButton()
         Me.mnuScrapeTVShows = New System.Windows.Forms.ToolStripDropDownButton()
         Me.mnuUpdate = New System.Windows.Forms.ToolStripSplitButton()
@@ -674,7 +675,6 @@ Partial Class frmMain
         Me.tsbMediaCenters = New System.Windows.Forms.ToolStripSplitButton()
         Me.cmnuTrayScrapeMovieSets = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayScrapeTVShows = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayScrapeMovies = New System.Windows.Forms.ToolStripMenuItem()
         Me.ilColumnIcons = New System.Windows.Forms.ImageList(Me.components)
         Me.tmrWait_Movie = New System.Windows.Forms.Timer(Me.components)
         Me.tmrLoad_Movie = New System.Windows.Forms.Timer(Me.components)
@@ -2818,7 +2818,7 @@ Partial Class frmMain
         '
         Me.mnuScrapeType.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuScrapeTypeAuto, Me.mnuScrapeTypeAsk, Me.mnuScrapeTypeSkip})
         Me.mnuScrapeType.Name = "mnuScrapeType"
-        Me.mnuScrapeType.OwnerItem = Me.mnuScrapeSubmenuFilter
+        Me.mnuScrapeType.OwnerItem = Me.mnuScrapeSubmenuMarked
         Me.mnuScrapeType.Size = New System.Drawing.Size(272, 70)
         '
         'mnuScrapeTypeAuto
@@ -2833,7 +2833,7 @@ Partial Class frmMain
         '
         Me.mnuScrapeModifier.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuScrapeModifierAll, Me.mnuScrapeModifierActorthumbs, Me.mnuScrapeModifierBanner, Me.mnuScrapeModifierCharacterArt, Me.mnuScrapeModifierClearArt, Me.mnuScrapeModifierClearLogo, Me.mnuScrapeModifierDiscArt, Me.mnuScrapeModifierExtrafanarts, Me.mnuScrapeModifierExtrathumbs, Me.mnuScrapeModifierFanart, Me.mnuScrapeModifierLandscape, Me.mnuScrapeModifierMetaData, Me.mnuScrapeModifierNFO, Me.mnuScrapeModifierPoster, Me.mnuScrapeModifierTheme, Me.mnuScrapeModifierTrailer})
         Me.mnuScrapeModifier.Name = "mnuScrapeModifier"
-        Me.mnuScrapeModifier.OwnerItem = Me.mnuScrapeTypeAsk
+        Me.mnuScrapeModifier.OwnerItem = Me.mnuScrapeTypeSkip
         Me.mnuScrapeModifier.Size = New System.Drawing.Size(179, 356)
         '
         'mnuScrapeModifierAll
@@ -2963,6 +2963,14 @@ Partial Class frmMain
         Me.mnuScrapeModifierTrailer.Tag = "trailer"
         Me.mnuScrapeModifierTrailer.Text = "Trailer Only"
         '
+        'mnuScrapeTypeAsk
+        '
+        Me.mnuScrapeTypeAsk.DropDown = Me.mnuScrapeModifier
+        Me.mnuScrapeTypeAsk.Name = "mnuScrapeTypeAsk"
+        Me.mnuScrapeTypeAsk.Size = New System.Drawing.Size(271, 22)
+        Me.mnuScrapeTypeAsk.Tag = "ask"
+        Me.mnuScrapeTypeAsk.Text = "Ask (Require Input If No Exact Match)"
+        '
         'mnuScrapeTypeSkip
         '
         Me.mnuScrapeTypeSkip.DropDown = Me.mnuScrapeModifier
@@ -2971,13 +2979,13 @@ Partial Class frmMain
         Me.mnuScrapeTypeSkip.Tag = "skip"
         Me.mnuScrapeTypeSkip.Text = "Skip (Skip If More Than One Match)"
         '
-        'mnuScrapeTypeAsk
+        'mnuScrapeSubmenuFilter
         '
-        Me.mnuScrapeTypeAsk.DropDown = Me.mnuScrapeModifier
-        Me.mnuScrapeTypeAsk.Name = "mnuScrapeTypeAsk"
-        Me.mnuScrapeTypeAsk.Size = New System.Drawing.Size(271, 22)
-        Me.mnuScrapeTypeAsk.Tag = "ask"
-        Me.mnuScrapeTypeAsk.Text = "Ask (Require Input If No Exact Match)"
+        Me.mnuScrapeSubmenuFilter.DropDown = Me.mnuScrapeType
+        Me.mnuScrapeSubmenuFilter.Name = "mnuScrapeSubmenuFilter"
+        Me.mnuScrapeSubmenuFilter.Size = New System.Drawing.Size(167, 22)
+        Me.mnuScrapeSubmenuFilter.Tag = "filter"
+        Me.mnuScrapeSubmenuFilter.Text = "Current Filter"
         '
         'cmnuMovieUpSel
         '
@@ -8134,8 +8142,8 @@ Partial Class frmMain
         '
         Me.mnuScrapeSubmenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuScrapeSubmenuAll, Me.mnuScrapeSubmenuMissing, Me.mnuScrapeSubmenuNew, Me.mnuScrapeSubmenuMarked, Me.mnuScrapeSubmenuFilter, Me.mnuScrapeSubmenuCustom})
         Me.mnuScrapeSubmenu.Name = "mnuScrapeSubmenu"
-        Me.mnuScrapeSubmenu.OwnerItem = Me.cmnuTrayScrapeMovies
-        Me.mnuScrapeSubmenu.Size = New System.Drawing.Size(168, 158)
+        Me.mnuScrapeSubmenu.OwnerItem = Me.cmnuTrayScrapeTVShows
+        Me.mnuScrapeSubmenu.Size = New System.Drawing.Size(168, 136)
         '
         'mnuScrapeSubmenuAll
         '
@@ -8169,20 +8177,21 @@ Partial Class frmMain
         Me.mnuScrapeSubmenuMarked.Tag = "marked"
         Me.mnuScrapeSubmenuMarked.Text = "Marked"
         '
-        'mnuScrapeSubmenuFilter
-        '
-        Me.mnuScrapeSubmenuFilter.DropDown = Me.mnuScrapeType
-        Me.mnuScrapeSubmenuFilter.Name = "mnuScrapeSubmenuFilter"
-        Me.mnuScrapeSubmenuFilter.Size = New System.Drawing.Size(167, 22)
-        Me.mnuScrapeSubmenuFilter.Tag = "filter"
-        Me.mnuScrapeSubmenuFilter.Text = "Current Filter"
-        '
         'mnuScrapeSubmenuCustom
         '
         Me.mnuScrapeSubmenuCustom.Name = "mnuScrapeSubmenuCustom"
         Me.mnuScrapeSubmenuCustom.Size = New System.Drawing.Size(167, 22)
         Me.mnuScrapeSubmenuCustom.Tag = "custom"
         Me.mnuScrapeSubmenuCustom.Text = "Custom Scraper..."
+        '
+        'cmnuTrayScrapeMovies
+        '
+        Me.cmnuTrayScrapeMovies.DropDown = Me.mnuScrapeSubmenu
+        Me.cmnuTrayScrapeMovies.Image = CType(resources.GetObject("cmnuTrayScrapeMovies.Image"), System.Drawing.Image)
+        Me.cmnuTrayScrapeMovies.Name = "cmnuTrayScrapeMovies"
+        Me.cmnuTrayScrapeMovies.Size = New System.Drawing.Size(194, 22)
+        Me.cmnuTrayScrapeMovies.Tag = "movie"
+        Me.cmnuTrayScrapeMovies.Text = "Scrape Movies"
         '
         'mnuScrapeMovieSets
         '
@@ -8254,20 +8263,11 @@ Partial Class frmMain
         'cmnuTrayScrapeTVShows
         '
         Me.cmnuTrayScrapeTVShows.DropDown = Me.mnuScrapeSubmenu
-        Me.cmnuTrayScrapeTVShows.Image = CType(resources.GetObject("cmnuTrayScrapeTVShows.Image"),System.Drawing.Image)
+        Me.cmnuTrayScrapeTVShows.Image = CType(resources.GetObject("cmnuTrayScrapeTVShows.Image"), System.Drawing.Image)
         Me.cmnuTrayScrapeTVShows.Name = "cmnuTrayScrapeTVShows"
         Me.cmnuTrayScrapeTVShows.Size = New System.Drawing.Size(194, 22)
         Me.cmnuTrayScrapeTVShows.Tag = "tvshow"
         Me.cmnuTrayScrapeTVShows.Text = "Scrape TV Shows"
-        '
-        'cmnuTrayScrapeMovies
-        '
-        Me.cmnuTrayScrapeMovies.DropDown = Me.mnuScrapeSubmenu
-        Me.cmnuTrayScrapeMovies.Image = CType(resources.GetObject("cmnuTrayScrapeMovies.Image"),System.Drawing.Image)
-        Me.cmnuTrayScrapeMovies.Name = "cmnuTrayScrapeMovies"
-        Me.cmnuTrayScrapeMovies.Size = New System.Drawing.Size(194, 22)
-        Me.cmnuTrayScrapeMovies.Tag = "movie"
-        Me.cmnuTrayScrapeMovies.Text = "Scrape Movies"
         '
         'ilColumnIcons
         '

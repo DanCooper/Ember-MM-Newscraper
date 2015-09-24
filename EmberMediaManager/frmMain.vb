@@ -17290,6 +17290,10 @@ doCancel:
         Functions.Launch(My.Resources.urlForumGer)
     End Sub
 
+    Private Sub mnuVersion_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuVersion.Click
+        Functions.Launch(My.Resources.urlReleaseThread)
+    End Sub
+
     Private Sub tmrAppExit_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrAppExit.Tick
         tmrAppExit.Enabled = False
         Me.Close()
