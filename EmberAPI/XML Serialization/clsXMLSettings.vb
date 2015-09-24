@@ -714,6 +714,7 @@ Partial Public Class clsXMLSettings
     '*************** XBMC Frodo settings ***************
     Private _tvusefrodo As Boolean
     Private _tvepisodeactorthumbsfrodo As Boolean
+    Private _tvepisodenfofrodo As Boolean
     Private _tvepisodeposterfrodo As Boolean
     Private _tvseasonbannerfrodo As Boolean
     Private _tvseasonfanartfrodo As Boolean
@@ -722,6 +723,7 @@ Partial Public Class clsXMLSettings
     Private _tvshowbannerfrodo As Boolean
     Private _tvshowextrafanartsfrodo As Boolean
     Private _tvshowfanartfrodo As Boolean
+    Private _tvshownfofrodo As Boolean
     Private _tvshowposterfrodo As Boolean
 
     '*************** XBMC Eden settings ****************
@@ -751,12 +753,14 @@ Partial Public Class clsXMLSettings
 
     '****************** YAMJ settings ******************
     Private _tvuseyamj As Boolean
+    Private _tvepisodenfoyamj As Boolean
     Private _tvepisodeposteryamj As Boolean
     Private _tvseasonbanneryamj As Boolean
     Private _tvseasonfanartyamj As Boolean
     Private _tvseasonposteryamj As Boolean
     Private _tvshowbanneryamj As Boolean
     Private _tvshowfanartyamj As Boolean
+    Private _tvshownfoyamj As Boolean
     Private _tvshowposteryamj As Boolean
 
     '****************** NMJ settings *******************
@@ -765,10 +769,12 @@ Partial Public Class clsXMLSettings
 
     '***************** Boxee settings ******************
     Private _tvuseboxee As Boolean
+    Private _tvepisodenfoboxee As Boolean
     Private _tvepisodeposterboxee As Boolean
     Private _tvseasonposterboxee As Boolean
     Private _tvshowbannerboxee As Boolean
     Private _tvshowfanartboxee As Boolean
+    Private _tvshownfoboxee As Boolean
     Private _tvshowposterboxee As Boolean
 
     '***************** Expert settings *****************
@@ -6775,6 +6781,15 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property TVShowNFOBoxee() As Boolean
+        Get
+            Return Me._tvshownfoboxee
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshownfoboxee = value
+        End Set
+    End Property
+
     Public Property TVShowPosterBoxee() As Boolean
         Get
             Return Me._tvshowposterboxee
@@ -6793,12 +6808,30 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property TVShowNFOFrodo() As Boolean
+        Get
+            Return Me._tvshownfofrodo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshownfofrodo = value
+        End Set
+    End Property
+
     Public Property TVShowPosterFrodo() As Boolean
         Get
             Return Me._tvshowposterfrodo
         End Get
         Set(ByVal value As Boolean)
             Me._tvshowposterfrodo = value
+        End Set
+    End Property
+
+    Public Property TVShowNFOYAMJ() As Boolean
+        Get
+            Return Me._tvshownfoyamj
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshownfoyamj = value
         End Set
     End Property
 
@@ -6991,6 +7024,15 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property TVEpisodeNFOBoxee() As Boolean
+        Get
+            Return Me._tvepisodenfoboxee
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvepisodenfoboxee = value
+        End Set
+    End Property
+
     Public Property TVEpisodePosterBoxee() As Boolean
         Get
             Return Me._tvepisodeposterboxee
@@ -7009,12 +7051,30 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property TVEpisodeNFOFrodo() As Boolean
+        Get
+            Return Me._tvepisodenfofrodo
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvepisodenfofrodo = value
+        End Set
+    End Property
+
     Public Property TVEpisodePosterFrodo() As Boolean
         Get
             Return Me._tvepisodeposterfrodo
         End Get
         Set(ByVal value As Boolean)
             Me._tvepisodeposterfrodo = value
+        End Set
+    End Property
+
+    Public Property TVEpisodeNFOYAMJ() As Boolean
+        Get
+            Return Me._tvepisodenfoyamj
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvepisodenfoyamj = value
         End Set
     End Property
 
