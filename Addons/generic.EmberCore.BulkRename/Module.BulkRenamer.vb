@@ -150,81 +150,87 @@ Public Class BulkRenamerModule
     End Function
 
     Private Sub cmnuRenamerAuto_Movie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRenamerAuto_Movie.Click
-        Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows(0).Index
-        Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListMovies.Item(0, indX).Value)
-        Dim DBElement As Database.DBElement = Master.DB.LoadMovieFromDB(ID, False)
-        If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBElement, True) Then
-            Cursor.Current = Cursors.WaitCursor
-            FileFolderRenamer.RenameSingle_Movie(DBElement, MySettings.FoldersPattern_Movies, MySettings.FilesPattern_Movies, False, True, True)
-            RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {ID}))
-            Cursor.Current = Cursors.Default
-        End If
+        Cursor.Current = Cursors.WaitCursor
+        For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows
+            Dim DBElement As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells("idMovie").Value), False)
+            If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBElement, True) Then
+                FileFolderRenamer.RenameSingle_Movie(DBElement, MySettings.FoldersPattern_Movies, MySettings.FilesPattern_Movies, False, True, True)
+                RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {Convert.ToInt64(sRow.Cells("idMovie").Value)}))
+            End If
+        Next
+        Cursor.Current = Cursors.Default
     End Sub
 
     Private Sub cmnuRenamerAuto_TVEpisode_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRenamerAuto_TVEpisode.Click
-        Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListTVEpisodes.SelectedRows(0).Index
-        Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListTVEpisodes.Item(0, indX).Value)
-        Dim DBElement As Database.DBElement = Master.DB.LoadTVEpisodeFromDB(ID, True, False)
-        If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(DBElement, True) Then
-            Cursor.Current = Cursors.WaitCursor
-            FileFolderRenamer.RenameSingle_Episode(DBElement, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, False, True, True)
-            RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {ID}))
-            Cursor.Current = Cursors.Default
-        End If
+        Cursor.Current = Cursors.WaitCursor
+        For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListTVEpisodes.SelectedRows
+            Dim DBElement As Database.DBElement = Master.DB.LoadTVEpisodeFromDB(Convert.ToInt64(sRow.Cells("idEpisode").Value), True)
+            If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(DBElement, True) Then
+                FileFolderRenamer.RenameSingle_Episode(DBElement, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, False, True, True)
+                RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {Convert.ToInt64(sRow.Cells("idEpisode").Value)}))
+            End If
+        Next
+        Cursor.Current = Cursors.Default
     End Sub
 
     Private Sub cmnuRenamerAuto_TVShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRenamerAuto_TVShow.Click
-        Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListTVShows.SelectedRows(0).Index
-        Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListTVShows.Item(0, indX).Value)
-        Dim DBElement As Database.DBElement = Master.DB.LoadTVShowFromDB(ID, False, False, False)
-        If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBElement, True) Then
-            Cursor.Current = Cursors.WaitCursor
-            FileFolderRenamer.RenameSingle_Show(DBElement, MySettings.FoldersPattern_Shows, False, True, True)
-            RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVShow, New List(Of Object)(New Object() {ID}))
-            Cursor.Current = Cursors.Default
-        End If
+        Cursor.Current = Cursors.WaitCursor
+        For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListTVShows.SelectedRows
+            Dim DBElement As Database.DBElement = Master.DB.LoadTVShowFromDB(Convert.ToInt64(sRow.Cells("idShow").Value), False, False, False)
+            If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBElement, True) Then
+                FileFolderRenamer.RenameSingle_Show(DBElement, MySettings.FoldersPattern_Shows, False, True, True)
+                RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVShow, New List(Of Object)(New Object() {Convert.ToInt64(sRow.Cells("idShow").Value)}))
+            End If
+        Next
+        Cursor.Current = Cursors.Default
     End Sub
 
     Private Sub cmnuRenamerManual_Movie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRenamerManual_Movie.Click
-        Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows(0).Index
-        Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListMovies.Item(0, indX).Value)
-        Dim DBElement As Database.DBElement = Master.DB.LoadMovieFromDB(ID, False)
-        If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBElement, True) Then
-            Using dRenameManual As New dlgRenameManual_Movie(DBElement)
-                Select Case dRenameManual.ShowDialog()
-                    Case Windows.Forms.DialogResult.OK
-                        RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {ID}))
-                End Select
-            End Using
-        End If
+        Cursor.Current = Cursors.WaitCursor
+        For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows
+            Dim DBElement As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells("idMovie").Value), False)
+            If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBElement, True) Then
+                Using dRenameManual As New dlgRenameManual_Movie(DBElement)
+                    Select Case dRenameManual.ShowDialog()
+                        Case Windows.Forms.DialogResult.OK
+                            RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {Convert.ToInt64(sRow.Cells("idMovie").Value)}))
+                    End Select
+                End Using
+            End If
+        Next
+        Cursor.Current = Cursors.Default
     End Sub
 
     Private Sub cmnuRenamerManual_TVEpisode_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRenamerManual_TVEpisode.Click
-        Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListTVEpisodes.SelectedRows(0).Index
-        Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListTVEpisodes.Item(0, indX).Value)
-        Dim DBElement As Database.DBElement = Master.DB.LoadTVEpisodeFromDB(ID, True, False)
-        If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(DBElement, True) Then
-            Using dRenameManual As New dlgRenameManual_TVEpisode(DBElement)
-                Select Case dRenameManual.ShowDialog()
-                    Case Windows.Forms.DialogResult.OK
-                        RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {ID}))
-                End Select
-            End Using
-        End If
+        Cursor.Current = Cursors.WaitCursor
+        For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListTVEpisodes.SelectedRows
+            Dim DBElement As Database.DBElement = Master.DB.LoadTVEpisodeFromDB(Convert.ToInt64(sRow.Cells("idEpisode").Value), True)
+            If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(DBElement, True) Then
+                Using dRenameManual As New dlgRenameManual_TVEpisode(DBElement)
+                    Select Case dRenameManual.ShowDialog()
+                        Case Windows.Forms.DialogResult.OK
+                            RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {Convert.ToInt64(sRow.Cells("idEpisode").Value)}))
+                    End Select
+                End Using
+            End If
+        Next
+        Cursor.Current = Cursors.Default
     End Sub
 
     Private Sub cmnuRenamerManual_TVShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuRenamerManual_TVShows.Click
-        Dim indX As Integer = ModulesManager.Instance.RuntimeObjects.MediaListTVShows.SelectedRows(0).Index
-        Dim ID As Integer = Convert.ToInt32(ModulesManager.Instance.RuntimeObjects.MediaListTVShows.Item(0, indX).Value)
-        Dim DBElement As Database.DBElement = Master.DB.LoadTVShowFromDB(ID, False, False, False)
-        If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBElement, True) Then
-            Using dRenameManual As New dlgRenameManual_TVShow(DBElement)
-                Select Case dRenameManual.ShowDialog()
-                    Case Windows.Forms.DialogResult.OK
-                        RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVShow, New List(Of Object)(New Object() {ID}))
-                End Select
-            End Using
-        End If
+        Cursor.Current = Cursors.WaitCursor
+        For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListTVShows.SelectedRows
+            Dim DBElement As Database.DBElement = Master.DB.LoadTVShowFromDB(Convert.ToInt64(sRow.Cells("idShow").Value), False, False, False)
+            If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBElement, True) Then
+                Using dRenameManual As New dlgRenameManual_TVShow(DBElement)
+                    Select Case dRenameManual.ShowDialog()
+                        Case Windows.Forms.DialogResult.OK
+                            RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVShow, New List(Of Object)(New Object() {Convert.ToInt64(sRow.Cells("idShow").Value)}))
+                    End Select
+                End Using
+            End If
+        Next
+        Cursor.Current = Cursors.Default
     End Sub
 
     Sub Disable()
