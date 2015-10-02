@@ -2234,7 +2234,7 @@ Public Class frmMain
                 If bwMovieScraper.CancellationPending Then Exit For
 
                 'ActorThumbs
-                If tScrapeItem.ScrapeModifier.MainActorthumbs AndAlso (Master.eSettings.MovieActorThumbsFrodo OrElse Master.eSettings.MovieActorThumbsEden) Then
+                If tScrapeItem.ScrapeModifier.MainActorthumbs AndAlso Master.eSettings.MovieActorThumbsAnyEnabled Then
                     If Not (Args.ScrapeType = Enums.ScrapeType.SingleScrape) Then
                         For Each act As MediaContainers.Person In DBScrapeMovie.Movie.Actors
                             Dim img As New Images
