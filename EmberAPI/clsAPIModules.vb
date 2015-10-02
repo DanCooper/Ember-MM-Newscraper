@@ -1145,6 +1145,9 @@ Public Class ModulesManager
 
                 'Merge scraperresults considering global datascraper settings
                 DBMovie = NFO.MergeDataScraperResults_Movie(DBMovie, ScrapedList, ScrapeType, ScrapeOptions)
+
+                'create cache paths for Actor Thumbs
+                DBMovie.Movie.CreateCachePaths_ActorsThumbs()
             End If
             Return ret.Cancelled
         Else
@@ -1275,6 +1278,14 @@ Public Class ModulesManager
 
                 'Merge scraperresults considering global datascraper settings
                 DBTV = NFO.MergeDataScraperResults_TV(DBTV, ScrapedList, ScrapeType, ScrapeOptions, ScrapeModifier.withEpisodes)
+
+                'create cache paths for Actor Thumbs
+                DBTV.TVShow.CreateCachePaths_ActorsThumbs()
+                If ScrapeModifier.withEpisodes Then
+                    For Each tEpisode As Database.DBElement In DBTV.Episodes
+                        tEpisode.TVEpisode.CreateCachePaths_ActorsThumbs()
+                    Next
+                End If
             End If
             Return ret.Cancelled
         Else
@@ -1316,6 +1327,9 @@ Public Class ModulesManager
 
                 'Merge scraperresults considering global datascraper settings
                 DBTV = NFO.MergeDataScraperResults_TVEpisode_Single(DBTV, ScrapedList, ScrapeOptions)
+
+                'create cache paths for Actor Thumbs
+                DBTV.TVEpisode.CreateCachePaths_ActorsThumbs()
             End If
             Return ret.Cancelled
         Else

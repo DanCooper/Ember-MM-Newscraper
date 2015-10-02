@@ -33,7 +33,6 @@ Public Class dlgEditTVShow
 
     Private tmpDBElement As New Database.DBElement
 
-    Private ActorThumbsHasChanged As Boolean = False
     Private lvwActorSorter As ListViewColumnSorter
     Private tmpRating As String
 
@@ -184,7 +183,6 @@ Public Class dlgEditTVShow
                 lvItem.SubItems.Add(eActor.Name)
                 lvItem.SubItems.Add(eActor.Role)
                 lvItem.SubItems.Add(eActor.ThumbURL)
-                ActorThumbsHasChanged = True
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -1012,7 +1010,6 @@ Public Class dlgEditTVShow
                 While Me.lvActors.SelectedItems.Count > 0
                     Me.lvActors.Items.Remove(Me.lvActors.SelectedItems(0))
                 End While
-                ActorThumbsHasChanged = True
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -1082,7 +1079,6 @@ Public Class dlgEditTVShow
                     lvwItem.SubItems(3).Text = eActor.ThumbURL
                     lvwItem.Selected = True
                     lvwItem.EnsureVisible()
-                    ActorThumbsHasChanged = True
                 End If
                 eActor = Nothing
             End If
@@ -1869,28 +1865,6 @@ Public Class dlgEditTVShow
                         addActor.Order = iOrder
                         iOrder += 1
                         Me.tmpDBElement.TVShow.Actors.Add(addActor)
-                    Next
-                End If
-
-                If ActorThumbsHasChanged Then
-                    For Each a In FileUtils.GetFilenameList.TVShow(tmpDBElement, Enums.ModifierType.MainActorThumbs)
-                        Dim tmpPath As String = Directory.GetParent(a.Replace("<placeholder>", "dummy")).FullName
-                        If Directory.Exists(tmpPath) Then
-                            FileUtils.Delete.DeleteDirectory(tmpPath)
-                        End If
-                    Next
-                End If
-
-                'Actor Thumbs
-                If ActorThumbsHasChanged Then
-                    For Each act As MediaContainers.Person In Me.tmpDBElement.TVShow.Actors
-                        Dim img As New Images
-                        img.FromWeb(act.ThumbURL)
-                        If img.Image IsNot Nothing Then
-                            act.ThumbPath = img.SaveAsTVShowActorThumb(act, Me.tmpDBElement)
-                        Else
-                            act.ThumbPath = String.Empty
-                        End If
                     Next
                 End If
 

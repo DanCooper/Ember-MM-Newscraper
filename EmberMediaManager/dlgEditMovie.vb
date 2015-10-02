@@ -40,7 +40,6 @@ Public Class dlgEditMovie
     Private fResults As New Containers.ImgResult
     Private isAborting As Boolean = False
     Private lvwActorSorter As ListViewColumnSorter
-    Private ActorThumbsHasChanged As Boolean = False
     Private pResults As New Containers.ImgResult
     Private PreviousFrameValue As Integer
     Private MovieTheme As New Themes With {.isEdit = True}
@@ -238,7 +237,6 @@ Public Class dlgEditMovie
                 lvItem.SubItems.Add(eActor.Name)
                 lvItem.SubItems.Add(eActor.Role)
                 lvItem.SubItems.Add(eActor.ThumbURL)
-                ActorThumbsHasChanged = True
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -1465,7 +1463,6 @@ Public Class dlgEditMovie
                 While Me.lvActors.SelectedItems.Count > 0
                     Me.lvActors.Items.Remove(Me.lvActors.SelectedItems(0))
                 End While
-                ActorThumbsHasChanged = True
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -1565,7 +1562,6 @@ Public Class dlgEditMovie
                     lvwItem.SubItems(3).Text = eActor.ThumbURL
                     lvwItem.Selected = True
                     lvwItem.EnsureVisible()
-                    ActorThumbsHasChanged = True
                 End If
                 eActor = Nothing
             End If
@@ -2589,18 +2585,6 @@ Public Class dlgEditMovie
                         addActor.Order = iOrder
                         iOrder += 1
                         Me.tmpDBElement.Movie.Actors.Add(addActor)
-                    Next
-                End If
-
-                If ActorThumbsHasChanged Then
-                    For Each act As MediaContainers.Person In Me.tmpDBElement.Movie.Actors
-                        Dim img As New Images
-                        img.FromWeb(act.ThumbURL)
-                        If img.Image IsNot Nothing Then
-                            act.ThumbPath = img.SaveAsMovieActorThumb(act, Directory.GetParent(Me.tmpDBElement.Filename).FullName, Me.tmpDBElement)
-                        Else
-                            act.ThumbPath = String.Empty
-                        End If
                     Next
                 End If
 

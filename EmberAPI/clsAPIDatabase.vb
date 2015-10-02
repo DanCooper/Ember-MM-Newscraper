@@ -3239,6 +3239,7 @@ Public Class Database
             If ToNFO Then NFO.SaveMovieToNFO(_movieDB)
             If ToDisk Then
                 _movieDB.ImagesContainer.SaveAllImages(_movieDB, Enums.ContentType.Movie)
+                _movieDB.Movie.SaveAllActorThumbs(_movieDB)
                 _movieDB.Trailer.SaveAllTrailers(_movieDB, Enums.ContentType.Movie)
             End If
 
@@ -4111,7 +4112,10 @@ Public Class Database
             'First let's save it to NFO, even because we will need the NFO path, also save Images
             'art Table be be linked later
             If ToNFO Then NFO.SaveTVEpToNFO(_episode)
-            If ToDisk Then _episode.ImagesContainer.SaveAllImages(_episode, Enums.ContentType.TVEpisode)
+            If ToDisk Then
+                _episode.ImagesContainer.SaveAllImages(_episode, Enums.ContentType.TVEpisode)
+                _episode.TVEpisode.SaveAllActorThumbs(_episode)
+            End If
 
             parTVShowID.Value = _episode.ShowID
             parNfoPath.Value = _episode.NfoPath
@@ -4502,7 +4506,10 @@ Public Class Database
             'Also Save Images to get ExtrafanartsPath
             'art Table be be linked later
             If ToNFO Then NFO.SaveTVShowToNFO(_show)
-            If ToDisk Then _show.ImagesContainer.SaveAllImages(_show, Enums.ContentType.TVShow)
+            If ToDisk Then
+                _show.ImagesContainer.SaveAllImages(_show, Enums.ContentType.TVShow)
+                _show.TVShow.SaveAllActorThumbs(_show)
+            End If
 
             parExtrafanartsPath.Value = _show.ExtrafanartsPath
             parNfoPath.Value = _show.NfoPath

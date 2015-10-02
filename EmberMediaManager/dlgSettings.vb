@@ -6370,9 +6370,6 @@ Public Class dlgSettings
         Dim strUseFolderName As String = Master.eLang.GetString(412, "Use Folder Name")
         Me.colMovieSourcesFolder.Text = strUseFolderName
 
-        'Votes
-        'Dim strVotes As String = Master.eLang.GetString(399, "Votes")
-
         'Writers
         Dim strWriters As String = Master.eLang.GetString(394, "Writers")
         Me.lblMovieScraperGlobalCredits.Text = strWriters

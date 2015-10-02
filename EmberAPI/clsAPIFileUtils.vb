@@ -880,6 +880,8 @@ Namespace FileUtils
         Public Shared Function Movie(ByVal DBElement As Database.DBElement, ByVal mType As Enums.ModifierType) As List(Of String)
             Dim FilenameList As New List(Of String)
 
+            If String.IsNullOrEmpty(DBElement.Filename) Then Return FilenameList
+
             Dim basePath As String = String.Empty
             Dim fPath As String = DBElement.Filename
             Dim fileName As String = Path.GetFileNameWithoutExtension(fPath)
@@ -1722,8 +1724,9 @@ Namespace FileUtils
         Public Shared Function MovieSet(ByVal DBElement As Database.DBElement, ByVal mType As Enums.ModifierType) As List(Of String)
             Dim FilenameList As New List(Of String)
 
-            Dim fSetTitle As String = DBElement.MovieSet.Title
+            If String.IsNullOrEmpty(DBElement.MovieSet.Title) Then Return FilenameList
 
+            Dim fSetTitle As String = DBElement.MovieSet.Title
             For Each Invalid As Char In Path.GetInvalidFileNameChars
                 fSetTitle = fSetTitle.Replace(Invalid, "-")
             Next
@@ -1828,6 +1831,8 @@ Namespace FileUtils
         Public Shared Function TVEpisode(ByVal DBElement As Database.DBElement, ByVal mType As Enums.ModifierType) As List(Of String)
             Dim FilenameList As New List(Of String)
 
+            If String.IsNullOrEmpty(DBElement.Filename) Then Return FilenameList
+
             Dim fEpisodeFileName As String = Path.GetFileNameWithoutExtension(DBElement.Filename)
             Dim fEpisodePath As String = FileUtils.Common.RemoveExtFromPath(DBElement.Filename)
             Dim fEpisodeParentPath As String = Directory.GetParent(DBElement.Filename).FullName
@@ -1884,6 +1889,8 @@ Namespace FileUtils
         Public Shared Function TVSeason(ByVal DBElement As Database.DBElement, ByVal mType As Enums.ModifierType) As List(Of String)
             Dim FilenameList As New List(Of String)
             Dim bInside As Boolean = False
+
+            If String.IsNullOrEmpty(DBElement.ShowPath) Then Return FilenameList
 
             Dim fEpisodePath As String = String.Empty
             Dim fSeasonPath As String = Functions.GetSeasonDirectoryFromShowPath(DBElement.ShowPath, DBElement.TVSeason.Season)
@@ -2006,6 +2013,8 @@ Namespace FileUtils
 
         Public Shared Function TVShow(ByVal DBElement As Database.DBElement, ByVal mType As Enums.ModifierType) As List(Of String)
             Dim FilenameList As New List(Of String)
+
+            If String.IsNullOrEmpty(DBElement.ShowPath) Then Return FilenameList
 
             Dim fShowPath As String = DBElement.ShowPath
             Dim fShowFolder As String = Path.GetFileName(fShowPath)

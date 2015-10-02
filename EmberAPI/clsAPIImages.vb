@@ -140,7 +140,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="mShow">Show database record from which the ShowPath is extracted</param>
     ''' <remarks></remarks>
-    Public Sub DeleteTVASBanners(ByVal mShow As Database.DBElement)
+    Public Shared Sub DeleteTVAllSeasonsBanners(ByVal mShow As Database.DBElement)
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
         Try
@@ -158,7 +158,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="mShow">Show database record from which the ShowPath is extracted</param>
     ''' <remarks></remarks>
-    Public Sub DeleteTVASFanarts(ByVal mShow As Database.DBElement)
+    Public Shared Sub DeleteTVAllSeasonsFanarts(ByVal mShow As Database.DBElement)
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
         Try
@@ -176,7 +176,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="mShow">Show database record from which the ShowPath is extracted</param>
     ''' <remarks></remarks>
-    Public Sub DeleteTVASLandscapes(ByVal mShow As Database.DBElement)
+    Public Shared Sub DeleteTVAllSeasonsLandscapes(ByVal mShow As Database.DBElement)
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
         Try
@@ -194,7 +194,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="mShow">Show database record from which the ShowPath is extracted</param>
     ''' <remarks></remarks>
-    Public Sub DeleteTVASPosters(ByVal mShow As Database.DBElement)
+    Public Shared Sub DeleteTVAllSeasonsPosters(ByVal mShow As Database.DBElement)
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return
 
         Try
@@ -1142,16 +1142,31 @@ Public Class Images
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
+
+    Public Shared Sub SaveMovieActorThumbs(ByVal mMovie As Database.DBElement)
+        'First, (Down)Load all actor thumbs from LocalFilePath or URL
+        For Each tActor As MediaContainers.Person In mMovie.Movie.Actors
+            tActor.Thumb.LoadAndCache(Enums.ContentType.Movie, True)
+        Next
+
+        'Secound, remove the old ones
+        Images.DeleteMovieActorThumbs(mMovie)
+
+        'Thirdly, save all actor thumbs
+        For Each tActor As MediaContainers.Person In mMovie.Movie.Actors
+            If tActor.Thumb.ImageOriginal.Image IsNot Nothing Then
+                tActor.Thumb.LocalFilePath = tActor.Thumb.ImageOriginal.SaveAsMovieActorThumb(mMovie, tActor)
+            End If
+        Next
+    End Sub
     ''' <summary>
     ''' Save the image as an actor thumbnail
     ''' </summary>
-    ''' <param name="actor"><c>MediaContainers.Person</c> representing the actor</param>
-    ''' <param name="fpath"><c>String</c> representing the movie path</param>
     ''' <param name="aMovie"><c>Database.DBElement</c> representing the movie being referred to</param>
+    ''' <param name="actor"><c>MediaContainers.Person</c> representing the actor</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieActorThumb(ByVal actor As MediaContainers.Person, ByVal fpath As String, ByVal aMovie As Database.DBElement) As String
-        'TODO 2013/11/26 Dekker500 - This should be re-factored to remove the fPath argument. All callers pass the same string derived from the provided DBMovie, so why do it twice?
+    Public Function SaveAsMovieActorThumb(ByVal aMovie As Database.DBElement, ByVal actor As MediaContainers.Person) As String
         Dim tPath As String = String.Empty
 
         For Each a In FileUtils.GetFilenameList.Movie(aMovie, Enums.ModifierType.MainActorThumbs)
@@ -1775,7 +1790,7 @@ Public Class Images
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVASBanner(ByVal mShow As Database.DBElement, Optional sURL As String = "") As String
+    Public Function SaveAsTVAllSeasonsBanner(ByVal mShow As Database.DBElement, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
 
         Dim doResize As Boolean = Master.eSettings.TVASBannerResize AndAlso (_image.Width > Master.eSettings.TVASBannerWidth OrElse _image.Height > Master.eSettings.TVASBannerHeight)
@@ -1824,7 +1839,7 @@ Public Class Images
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVASFanart(ByVal mShow As Database.DBElement, Optional sURL As String = "") As String
+    Public Function SaveAsTVAllSeasonsFanart(ByVal mShow As Database.DBElement, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
 
         Dim doResize As Boolean = Master.eSettings.TVASFanartResize AndAlso (_image.Width > Master.eSettings.TVASFanartWidth OrElse _image.Height > Master.eSettings.TVASFanartHeight)
@@ -1873,7 +1888,7 @@ Public Class Images
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVASLandscape(ByVal mShow As Database.DBElement, Optional sURL As String = "") As String
+    Public Function SaveAsTVAllSeasonsLandscape(ByVal mShow As Database.DBElement, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
 
         Try
@@ -1914,7 +1929,7 @@ Public Class Images
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVASPoster(ByVal mShow As Database.DBElement, Optional sURL As String = "") As String
+    Public Function SaveAsTVAllSeasonsPoster(ByVal mShow As Database.DBElement, Optional sURL As String = "") As String
         Dim strReturn As String = String.Empty
 
         Dim doResize As Boolean = Master.eSettings.TVASPosterResize AndAlso (_image.Width > Master.eSettings.TVASPosterWidth OrElse _image.Height > Master.eSettings.TVASPosterHeight)
@@ -1956,14 +1971,31 @@ Public Class Images
 
         Return strReturn
     End Function
+
+    Public Shared Sub SaveTVEpisodeActorThumbs(ByVal mEpisode As Database.DBElement)
+        'First, (Down)Load all actor thumbs from LocalFilePath or URL
+        For Each tActor As MediaContainers.Person In mEpisode.TVEpisode.Actors
+            tActor.Thumb.LoadAndCache(Enums.ContentType.TV, True)
+        Next
+
+        'Secound, remove the old ones
+        'Images.DeleteTVEpisodeActorThumbs(mEpisode) 'TODO: find a way to only remove actor thumbs that not needed in other episodes with same actor thumbs path
+
+        'Thirdly, save all actor thumbs
+        For Each tActor As MediaContainers.Person In mEpisode.TVEpisode.Actors
+            If tActor.Thumb.ImageOriginal.Image IsNot Nothing Then
+                tActor.Thumb.LocalFilePath = tActor.Thumb.ImageOriginal.SaveAsTVEpisodeActorThumb(mEpisode, tActor)
+            End If
+        Next
+    End Sub
     ''' <summary>
     ''' Save the image as an actor thumbnail
     ''' </summary>
-    ''' <param name="actor"><c>MediaContainers.Person</c> representing the actor</param>
     ''' <param name="mEpisode"><c>Database.DBElement</c> representing the episode being referred to</param>
+    ''' <param name="actor"><c>MediaContainers.Person</c> representing the actor</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVEpisodeActorThumb(ByVal actor As MediaContainers.Person, ByVal mEpisode As Database.DBElement) As String
+    Public Function SaveAsTVEpisodeActorThumb(ByVal mEpisode As Database.DBElement, ByVal actor As MediaContainers.Person) As String
         Dim tPath As String = String.Empty
 
         For Each a In FileUtils.GetFilenameList.TVEpisode(mEpisode, Enums.ModifierType.EpisodeActorThumbs)
@@ -2263,14 +2295,31 @@ Public Class Images
         End Try
         Return strReturn
     End Function
+
+    Public Shared Sub SaveTVShowActorThumbs(ByVal mShow As Database.DBElement)
+        'First, (Down)Load all actor thumbs from LocalFilePath or URL
+        For Each tActor As MediaContainers.Person In mShow.TVShow.Actors
+            tActor.Thumb.LoadAndCache(Enums.ContentType.TV, True)
+        Next
+
+        'Secound, remove the old ones
+        Images.DeleteTVShowActorThumbs(mShow)
+
+        'Thirdly, save all actor thumbs
+        For Each tActor As MediaContainers.Person In mShow.TVShow.Actors
+            If tActor.Thumb.ImageOriginal.Image IsNot Nothing Then
+                tActor.Thumb.LocalFilePath = tActor.Thumb.ImageOriginal.SaveAsTVShowActorThumb(mShow, tActor)
+            End If
+        Next
+    End Sub
     ''' <summary>
     ''' Save the image as an actor thumbnail
     ''' </summary>
-    ''' <param name="actor"><c>MediaContainers.Person</c> representing the actor</param>
     ''' <param name="mShow"><c>Database.DBElement</c> representing the show being referred to</param>
+    ''' <param name="actor"><c>MediaContainers.Person</c> representing the actor</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVShowActorThumb(ByVal actor As MediaContainers.Person, ByVal mShow As Database.DBElement) As String
+    Public Function SaveAsTVShowActorThumb(ByVal mShow As Database.DBElement, ByVal actor As MediaContainers.Person) As String
         Dim tPath As String = String.Empty
 
         For Each a In FileUtils.GetFilenameList.TVShow(mShow, Enums.ModifierType.MainActorThumbs)

@@ -652,6 +652,26 @@ Namespace MediaContainers
             End If
         End Sub
 
+        Public Sub CreateCachePaths_ActorsThumbs()
+            Dim sPath As String = Path.Combine(Master.TempPath, "Global")
+
+            For Each tActor As MediaContainers.Person In Me.Actors
+                tActor.Thumb.CacheOriginalPath = Path.Combine(sPath, String.Concat("actorthumbs", Path.DirectorySeparatorChar, Path.GetFileName(tActor.Thumb.URLOriginal)))
+                If Not String.IsNullOrEmpty(tActor.Thumb.URLThumb) Then
+                    tActor.Thumb.CacheThumbPath = Path.Combine(sPath, String.Concat("actorthumbs\_thumbs", Path.DirectorySeparatorChar, Path.GetFileName(tActor.Thumb.URLOriginal)))
+                End If
+            Next
+        End Sub
+
+        Public Sub SaveAllActorThumbs(ByRef DBElement As Database.DBElement)
+            If Me.ActorsSpecified Then
+                Images.SaveTVEpisodeActorThumbs(DBElement)
+            Else
+                'Images.DeleteTVEpisodeActorThumbs(DBElement) 'TODO: find a way to only remove actor thumbs that not needed in other episodes with same actor thumbs path
+                DBElement.ActorThumbs.Clear()
+            End If
+        End Sub
+
 #End Region 'Methods
 
     End Class
@@ -1883,6 +1903,17 @@ Namespace MediaContainers
             Me._ysets = New SetContainer
         End Sub
 
+        Public Sub CreateCachePaths_ActorsThumbs()
+            Dim sPath As String = Path.Combine(Master.TempPath, "Global")
+
+            For Each tActor As MediaContainers.Person In Me.Actors
+                tActor.Thumb.CacheOriginalPath = Path.Combine(sPath, String.Concat("actorthumbs", Path.DirectorySeparatorChar, Path.GetFileName(tActor.Thumb.URLOriginal)))
+                If Not String.IsNullOrEmpty(tActor.Thumb.URLThumb) Then
+                    tActor.Thumb.CacheThumbPath = Path.Combine(sPath, String.Concat("actorthumbs\_thumbs", Path.DirectorySeparatorChar, Path.GetFileName(tActor.Thumb.URLOriginal)))
+                End If
+            Next
+        End Sub
+
         Public Function CompareTo(ByVal other As Movie) As Integer Implements IComparable(Of Movie).CompareTo
             Dim retVal As Integer = (Me.Lev).CompareTo(other.Lev)
             If retVal = 0 Then
@@ -1902,6 +1933,15 @@ Namespace MediaContainers
             Dim tSet = From bSet As [Set] In Sets Where bSet.ID = SetID
             If tSet.Count > 0 Then
                 Sets.Remove(tSet(0))
+            End If
+        End Sub
+
+        Public Sub SaveAllActorThumbs(ByRef DBElement As Database.DBElement)
+            If Me.ActorsSpecified Then
+                Images.SaveMovieActorThumbs(DBElement)
+            Else
+                Images.DeleteMovieActorThumbs(DBElement)
+                DBElement.ActorThumbs.Clear()
             End If
         End Sub
 
@@ -2013,8 +2053,7 @@ Namespace MediaContainers
         Private _name As String
         Private _order As Integer
         Private _role As String
-        Private _thumbpath As String
-        Private _thumburl As String
+        Private _thumb As Image
         Private _tmdb As String
         Private _tvdb As String
 
@@ -2029,7 +2068,7 @@ Namespace MediaContainers
         Public Sub New(ByVal sName As String, ByVal sRole As String, ByVal sThumb As String)
             Me._name = sName
             Me._role = sRole
-            Me._thumburl = sThumb
+            Me._thumb.URLOriginal = sThumb
         End Sub
 
         Public Sub New()
@@ -2101,37 +2140,47 @@ Namespace MediaContainers
             End Get
         End Property
 
+        <XmlIgnore()> _
+        Public Property Thumb() As Image
+            Get
+                Return Me._thumb
+            End Get
+            Set(ByVal Value As Image)
+                Me._thumb = Value
+            End Set
+        End Property
+
         <XmlElement("thumb")> _
         Public Property ThumbURL() As String
             Get
-                Return Me._thumburl
+                Return Me._thumb.URLOriginal
             End Get
             Set(ByVal Value As String)
-                Me._thumburl = Value
+                Me._thumb.URLOriginal = Value
             End Set
         End Property
 
         <XmlIgnore()> _
         Public ReadOnly Property ThumbURLSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._thumburl)
+                Return Not String.IsNullOrEmpty(Me._thumb.URLOriginal)
             End Get
         End Property
 
         <XmlIgnore()> _
         Public Property ThumbPath() As String
             Get
-                Return Me._thumbpath
+                Return Me._thumb.LocalFilePath
             End Get
             Set(ByVal Value As String)
-                Me._thumbpath = Value
+                Me._thumb.LocalFilePath = Value
             End Set
         End Property
 
         <XmlIgnore()> _
         Public ReadOnly Property ThumbPathSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._thumbpath)
+                Return Not String.IsNullOrEmpty(Me._thumb.LocalFilePath)
             End Get
         End Property
 
@@ -2195,8 +2244,7 @@ Namespace MediaContainers
             Me._name = String.Empty
             Me._order = -1
             Me._role = String.Empty
-            Me._thumbpath = String.Empty
-            Me._thumburl = String.Empty
+            Me._thumb = New Image
             Me._tmdb = String.Empty
         End Sub
 
@@ -3183,12 +3231,32 @@ Namespace MediaContainers
             _votes = String.Empty
         End Sub
 
+        Public Sub CreateCachePaths_ActorsThumbs()
+            Dim sPath As String = Path.Combine(Master.TempPath, "Global")
+
+            For Each tActor As MediaContainers.Person In Me.Actors
+                tActor.Thumb.CacheOriginalPath = Path.Combine(sPath, String.Concat("actorthumbs", Path.DirectorySeparatorChar, Path.GetFileName(tActor.Thumb.URLOriginal)))
+                If Not String.IsNullOrEmpty(tActor.Thumb.URLThumb) Then
+                    tActor.Thumb.CacheThumbPath = Path.Combine(sPath, String.Concat("actorthumbs\_thumbs", Path.DirectorySeparatorChar, Path.GetFileName(tActor.Thumb.URLOriginal)))
+                End If
+            Next
+        End Sub
+
         Public Sub BlankId()
             Me._tvdb = Nothing
         End Sub
 
         Public Sub BlankBoxeeId()
             Me._boxeeTvDb = Nothing
+        End Sub
+
+        Public Sub SaveAllActorThumbs(ByRef DBElement As Database.DBElement)
+            If Me.ActorsSpecified Then
+                Images.SaveTVShowActorThumbs(DBElement)
+            Else
+                Images.DeleteTVShowActorThumbs(DBElement)
+                DBElement.ActorThumbs.Clear()
+            End If
         End Sub
 
 #End Region 'Methods
@@ -3571,7 +3639,7 @@ Namespace MediaContainers
             End Select
         End Sub
 
-        Public Sub Download(ByVal tContentType As Enums.ContentType, Optional needFullsize As Boolean = False)
+        Public Function LoadAndCache(ByVal tContentType As Enums.ContentType, Optional needFullsize As Boolean = False) As Boolean
             Dim doCache As Boolean = False
 
             Select Case tContentType
@@ -3583,7 +3651,7 @@ Namespace MediaContainers
                     doCache = Master.eSettings.TVImagesCacheEnabled
             End Select
 
-            If (Me.ImageOriginal.Image Is Nothing AndAlso needFullsize) OrElse Me.ImageThumb.Image Is Nothing Then
+            If Me.ImageOriginal.Image Is Nothing OrElse (Me.ImageThumb.Image Is Nothing AndAlso Not needFullsize) Then
                 If File.Exists(Me.LocalFilePath) Then
                     Me.ImageOriginal.FromFile(Me.LocalFilePath)
                 ElseIf File.Exists(Me.CacheThumbPath) AndAlso Not needFullsize Then
@@ -3606,7 +3674,13 @@ Namespace MediaContainers
                     End If
                 End If
             End If
-        End Sub
+
+            If Me.ImageOriginal.Image IsNot Nothing OrElse Me.ImageThumb.Image IsNot Nothing AndAlso Not needFullsize Then
+                Return True
+            Else
+                Return False
+            End If
+        End Function
 
         Public Function CompareTo(ByVal other As [Image]) As Integer Implements IComparable(Of [Image]).CompareTo
             Dim retVal As Integer = (Me.ShortLang).CompareTo(other.ShortLang)
@@ -3759,13 +3833,7 @@ Namespace MediaContainers
                     Case Enums.ContentType.Movie
 
                         'Movie Banner
-                        If .Banner.ImageOriginal.Image IsNot Nothing Then
-                            .Banner.LocalFilePath = .Banner.ImageOriginal.SaveAsMovieBanner(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.Banner.URLOriginal) Then
-                            .Banner.ImageOriginal.FromWeb(.Banner.URLOriginal)
-                            .Banner.LocalFilePath = .Banner.ImageOriginal.SaveAsMovieBanner(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.Banner.LocalFilePath) Then
-                            .Banner.ImageOriginal.FromFile(.Banner.LocalFilePath)
+                        If .Banner.LoadAndCache(Type, True) Then
                             .Banner.LocalFilePath = .Banner.ImageOriginal.SaveAsMovieBanner(DBElement)
                         Else
                             Images.DeleteMovieBanners(DBElement)
@@ -3773,13 +3841,7 @@ Namespace MediaContainers
                         End If
 
                         'Movie ClearArt
-                        If .ClearArt.ImageOriginal.Image IsNot Nothing Then
-                            .ClearArt.LocalFilePath = .ClearArt.ImageOriginal.SaveAsMovieClearArt(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.ClearArt.URLOriginal) Then
-                            .ClearArt.ImageOriginal.FromWeb(.ClearArt.URLOriginal)
-                            .ClearArt.LocalFilePath = .ClearArt.ImageOriginal.SaveAsMovieClearArt(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.ClearArt.LocalFilePath) Then
-                            .ClearArt.ImageOriginal.FromFile(.ClearArt.LocalFilePath)
+                        If .ClearArt.LoadAndCache(Type, True) Then
                             .ClearArt.LocalFilePath = .ClearArt.ImageOriginal.SaveAsMovieClearArt(DBElement)
                         Else
                             Images.DeleteMovieClearArts(DBElement)
@@ -3787,13 +3849,7 @@ Namespace MediaContainers
                         End If
 
                         'Movie ClearLogo
-                        If .ClearLogo.ImageOriginal.Image IsNot Nothing Then
-                            .ClearLogo.LocalFilePath = .ClearLogo.ImageOriginal.SaveAsMovieClearLogo(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.ClearLogo.URLOriginal) Then
-                            .ClearLogo.ImageOriginal.FromWeb(.ClearLogo.URLOriginal)
-                            .ClearLogo.LocalFilePath = .ClearLogo.ImageOriginal.SaveAsMovieClearLogo(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.ClearLogo.LocalFilePath) Then
-                            .ClearLogo.ImageOriginal.FromFile(.ClearLogo.LocalFilePath)
+                        If .ClearLogo.LoadAndCache(Type, True) Then
                             .ClearLogo.LocalFilePath = .ClearLogo.ImageOriginal.SaveAsMovieClearLogo(DBElement)
                         Else
                             Images.DeleteMovieClearLogos(DBElement)
@@ -3801,13 +3857,7 @@ Namespace MediaContainers
                         End If
 
                         'Movie DiscArt
-                        If .DiscArt.ImageOriginal.Image IsNot Nothing Then
-                            .DiscArt.LocalFilePath = .DiscArt.ImageOriginal.SaveAsMovieDiscArt(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.DiscArt.URLOriginal) Then
-                            .DiscArt.ImageOriginal.FromWeb(.DiscArt.URLOriginal)
-                            .DiscArt.LocalFilePath = .DiscArt.ImageOriginal.SaveAsMovieDiscArt(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.DiscArt.LocalFilePath) Then
-                            .DiscArt.ImageOriginal.FromFile(.DiscArt.LocalFilePath)
+                        If .DiscArt.LoadAndCache(Type, True) Then
                             .DiscArt.LocalFilePath = .DiscArt.ImageOriginal.SaveAsMovieDiscArt(DBElement)
                         Else
                             Images.DeleteMovieDiscArts(DBElement)
@@ -3833,13 +3883,7 @@ Namespace MediaContainers
                         End If
 
                         'Movie Fanart
-                        If .Fanart.ImageOriginal.Image IsNot Nothing Then
-                            .Fanart.LocalFilePath = .Fanart.ImageOriginal.SaveAsMovieFanart(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.Fanart.URLOriginal) Then
-                            .Fanart.ImageOriginal.FromWeb(.Fanart.URLOriginal)
-                            .Fanart.LocalFilePath = .Fanart.ImageOriginal.SaveAsMovieFanart(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.Fanart.LocalFilePath) Then
-                            .Fanart.ImageOriginal.FromFile(.Fanart.LocalFilePath)
+                        If .Fanart.LoadAndCache(Type, True) Then
                             .Fanart.LocalFilePath = .Fanart.ImageOriginal.SaveAsMovieFanart(DBElement)
                         Else
                             Images.DeleteMovieFanarts(DBElement)
@@ -3847,13 +3891,7 @@ Namespace MediaContainers
                         End If
 
                         'Movie Landscape
-                        If .Landscape.ImageOriginal.Image IsNot Nothing Then
-                            .Landscape.LocalFilePath = .Landscape.ImageOriginal.SaveAsMovieLandscape(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.Landscape.URLOriginal) Then
-                            .Landscape.ImageOriginal.FromWeb(.Landscape.URLOriginal)
-                            .Landscape.LocalFilePath = .Landscape.ImageOriginal.SaveAsMovieLandscape(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.Landscape.LocalFilePath) Then
-                            .Landscape.ImageOriginal.FromFile(.Landscape.LocalFilePath)
+                        If .Landscape.LoadAndCache(Type, True) Then
                             .Landscape.LocalFilePath = .Landscape.ImageOriginal.SaveAsMovieLandscape(DBElement)
                         Else
                             Images.DeleteMovieLandscapes(DBElement)
@@ -3861,13 +3899,7 @@ Namespace MediaContainers
                         End If
 
                         'Movie Poster
-                        If .Poster.ImageOriginal.Image IsNot Nothing Then
-                            .Poster.LocalFilePath = .Poster.ImageOriginal.SaveAsMoviePoster(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.Poster.URLOriginal) Then
-                            .Poster.ImageOriginal.FromWeb(.Poster.URLOriginal)
-                            .Poster.LocalFilePath = .Poster.ImageOriginal.SaveAsMoviePoster(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.Poster.LocalFilePath) Then
-                            .Poster.ImageOriginal.FromFile(.Poster.LocalFilePath)
+                        If .Poster.LoadAndCache(Type, True) Then
                             .Poster.LocalFilePath = .Poster.ImageOriginal.SaveAsMoviePoster(DBElement)
                         Else
                             Images.DeleteMoviePosters(DBElement)
@@ -3877,13 +3909,7 @@ Namespace MediaContainers
                     Case Enums.ContentType.MovieSet
 
                         'MovieSet Banner
-                        If .Banner.ImageOriginal.Image IsNot Nothing Then
-                            .Banner.LocalFilePath = .Banner.ImageOriginal.SaveAsMovieSetBanner(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.Banner.URLOriginal) Then
-                            .Banner.ImageOriginal.FromWeb(.Banner.URLOriginal)
-                            .Banner.LocalFilePath = .Banner.ImageOriginal.SaveAsMovieSetBanner(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.Banner.LocalFilePath) Then
-                            .Banner.ImageOriginal.FromFile(.Banner.LocalFilePath)
+                        If .Banner.LoadAndCache(Type, True) Then
                             .Banner.LocalFilePath = .Banner.ImageOriginal.SaveAsMovieSetBanner(DBElement)
                         Else
                             Images.DeleteMovieSetBanners(DBElement)
@@ -3891,13 +3917,7 @@ Namespace MediaContainers
                         End If
 
                         'MovieSet ClearArt
-                        If .ClearArt.ImageOriginal.Image IsNot Nothing Then
-                            .ClearArt.LocalFilePath = .ClearArt.ImageOriginal.SaveAsMovieSetClearArt(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.ClearArt.URLOriginal) Then
-                            .ClearArt.ImageOriginal.FromWeb(.ClearArt.URLOriginal)
-                            .ClearArt.LocalFilePath = .ClearArt.ImageOriginal.SaveAsMovieSetClearArt(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.ClearArt.LocalFilePath) Then
-                            .ClearArt.ImageOriginal.FromFile(.ClearArt.LocalFilePath)
+                        If .ClearArt.LoadAndCache(Type, True) Then
                             .ClearArt.LocalFilePath = .ClearArt.ImageOriginal.SaveAsMovieSetClearArt(DBElement)
                         Else
                             Images.DeleteMovieSetClearArts(DBElement)
@@ -3905,13 +3925,7 @@ Namespace MediaContainers
                         End If
 
                         'MovieSet ClearLogo
-                        If .ClearLogo.ImageOriginal.Image IsNot Nothing Then
-                            .ClearLogo.LocalFilePath = .ClearLogo.ImageOriginal.SaveAsMovieSetClearLogo(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.ClearLogo.URLOriginal) Then
-                            .ClearLogo.ImageOriginal.FromWeb(.ClearLogo.URLOriginal)
-                            .ClearLogo.LocalFilePath = .ClearLogo.ImageOriginal.SaveAsMovieSetClearLogo(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.ClearLogo.LocalFilePath) Then
-                            .ClearLogo.ImageOriginal.FromFile(.ClearLogo.LocalFilePath)
+                        If .ClearLogo.LoadAndCache(Type, True) Then
                             .ClearLogo.LocalFilePath = .ClearLogo.ImageOriginal.SaveAsMovieSetClearLogo(DBElement)
                         Else
                             Images.DeleteMovieSetClearLogos(DBElement)
@@ -3919,13 +3933,7 @@ Namespace MediaContainers
                         End If
 
                         'MovieSet DiscArt
-                        If .DiscArt.ImageOriginal.Image IsNot Nothing Then
-                            .DiscArt.LocalFilePath = .DiscArt.ImageOriginal.SaveAsMovieSetDiscArt(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.DiscArt.URLOriginal) Then
-                            .DiscArt.ImageOriginal.FromWeb(.DiscArt.URLOriginal)
-                            .DiscArt.LocalFilePath = .DiscArt.ImageOriginal.SaveAsMovieSetDiscArt(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.DiscArt.LocalFilePath) Then
-                            .DiscArt.ImageOriginal.FromFile(.DiscArt.LocalFilePath)
+                        If .DiscArt.LoadAndCache(Type, True) Then
                             .DiscArt.LocalFilePath = .DiscArt.ImageOriginal.SaveAsMovieSetDiscArt(DBElement)
                         Else
                             Images.DeleteMovieSetDiscArts(DBElement)
@@ -3933,13 +3941,7 @@ Namespace MediaContainers
                         End If
 
                         'MovieSet Fanart
-                        If .Fanart.ImageOriginal.Image IsNot Nothing Then
-                            .Fanart.LocalFilePath = .Fanart.ImageOriginal.SaveAsMovieSetFanart(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.Fanart.URLOriginal) Then
-                            .Fanart.ImageOriginal.FromWeb(.Fanart.URLOriginal)
-                            .Fanart.LocalFilePath = .Fanart.ImageOriginal.SaveAsMovieSetFanart(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.Fanart.LocalFilePath) Then
-                            .Fanart.ImageOriginal.FromFile(.Fanart.LocalFilePath)
+                        If .Fanart.LoadAndCache(Type, True) Then
                             .Fanart.LocalFilePath = .Fanart.ImageOriginal.SaveAsMovieSetFanart(DBElement)
                         Else
                             Images.DeleteMovieSetFanarts(DBElement)
@@ -3947,13 +3949,7 @@ Namespace MediaContainers
                         End If
 
                         'MovieSet Landscape
-                        If .Landscape.ImageOriginal.Image IsNot Nothing Then
-                            .Landscape.LocalFilePath = .Landscape.ImageOriginal.SaveAsMovieSetLandscape(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.Landscape.URLOriginal) Then
-                            .Landscape.ImageOriginal.FromWeb(.Landscape.URLOriginal)
-                            .Landscape.LocalFilePath = .Landscape.ImageOriginal.SaveAsMovieSetLandscape(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.Landscape.LocalFilePath) Then
-                            .Landscape.ImageOriginal.FromFile(.Landscape.LocalFilePath)
+                        If .Landscape.LoadAndCache(Type, True) Then
                             .Landscape.LocalFilePath = .Landscape.ImageOriginal.SaveAsMovieSetLandscape(DBElement)
                         Else
                             Images.DeleteMovieSetLandscapes(DBElement)
@@ -3961,13 +3957,7 @@ Namespace MediaContainers
                         End If
 
                         'MovieSet Poster
-                        If .Poster.ImageOriginal.Image IsNot Nothing Then
-                            .Poster.LocalFilePath = .Poster.ImageOriginal.SaveAsMovieSetPoster(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.Poster.URLOriginal) Then
-                            .Poster.ImageOriginal.FromWeb(.Poster.URLOriginal)
-                            .Poster.LocalFilePath = .Poster.ImageOriginal.SaveAsMovieSetPoster(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.Poster.LocalFilePath) Then
-                            .Poster.ImageOriginal.FromFile(.Poster.LocalFilePath)
+                        If .Poster.LoadAndCache(Type, True) Then
                             .Poster.LocalFilePath = .Poster.ImageOriginal.SaveAsMovieSetPoster(DBElement)
                         Else
                             Images.DeleteMovieSetPosters(DBElement)
@@ -3977,13 +3967,7 @@ Namespace MediaContainers
                     Case Enums.ContentType.TVEpisode
 
                         'Episode Fanart
-                        If .Fanart.ImageOriginal.Image IsNot Nothing Then
-                            .Fanart.LocalFilePath = .Fanart.ImageOriginal.SaveAsTVEpisodeFanart(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.Fanart.URLOriginal) Then
-                            .Fanart.ImageOriginal.FromWeb(.Fanart.URLOriginal)
-                            .Fanart.LocalFilePath = .Fanart.ImageOriginal.SaveAsTVEpisodeFanart(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.Fanart.LocalFilePath) Then
-                            .Fanart.ImageOriginal.FromFile(.Fanart.LocalFilePath)
+                        If .Fanart.LoadAndCache(Type, True) Then
                             .Fanart.LocalFilePath = .Fanart.ImageOriginal.SaveAsTVEpisodeFanart(DBElement)
                         Else
                             Images.DeleteTVEpisodeFanarts(DBElement)
@@ -3991,13 +3975,7 @@ Namespace MediaContainers
                         End If
 
                         'Episode Poster
-                        If .Poster.ImageOriginal.Image IsNot Nothing Then
-                            .Poster.LocalFilePath = .Poster.ImageOriginal.SaveAsTVEpisodePoster(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.Poster.URLOriginal) Then
-                            .Poster.ImageOriginal.FromWeb(.Poster.URLOriginal)
-                            .Poster.LocalFilePath = .Poster.ImageOriginal.SaveAsTVEpisodePoster(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.Poster.LocalFilePath) Then
-                            .Poster.ImageOriginal.FromFile(.Poster.LocalFilePath)
+                        If .Poster.LoadAndCache(Type, True) Then
                             .Poster.LocalFilePath = .Poster.ImageOriginal.SaveAsTVEpisodePoster(DBElement)
                         Else
                             Images.DeleteTVEpisodePosters(DBElement)
@@ -4007,30 +3985,16 @@ Namespace MediaContainers
                     Case Enums.ContentType.TVSeason
 
                         'Season Banner
-                        If .Banner.ImageOriginal.Image IsNot Nothing Then
+                        If .Banner.LoadAndCache(Type, True) Then
                             If DBElement.TVSeason.Season = 999 Then
-                                .Banner.LocalFilePath = .Banner.ImageOriginal.SaveAsTVASBanner(DBElement)
-                            Else
-                                .Banner.LocalFilePath = .Banner.ImageOriginal.SaveAsTVSeasonBanner(DBElement)
-                            End If
-                        ElseIf Not String.IsNullOrEmpty(.Banner.URLOriginal) Then
-                            .Banner.ImageOriginal.FromWeb(.Banner.URLOriginal)
-                            If DBElement.TVSeason.Season = 999 Then
-                                .Banner.LocalFilePath = .Banner.ImageOriginal.SaveAsTVASBanner(DBElement)
-                            Else
-                                .Banner.LocalFilePath = .Banner.ImageOriginal.SaveAsTVSeasonBanner(DBElement)
-                            End If
-                        ElseIf Not String.IsNullOrEmpty(.Banner.LocalFilePath) Then
-                            .Banner.ImageOriginal.FromFile(.Banner.LocalFilePath)
-                            If DBElement.TVSeason.Season = 999 Then
-                                .Banner.LocalFilePath = .Banner.ImageOriginal.SaveAsTVASBanner(DBElement)
+                                .Banner.LocalFilePath = .Banner.ImageOriginal.SaveAsTVAllSeasonsBanner(DBElement)
                             Else
                                 .Banner.LocalFilePath = .Banner.ImageOriginal.SaveAsTVSeasonBanner(DBElement)
                             End If
                         Else
                             If DBElement.TVSeason.Season = 999 Then
-                                .Banner.ImageOriginal.DeleteTVASBanners(DBElement)
-                                .Banner.LocalFilePath = String.Empty
+                                Images.DeleteTVAllSeasonsBanners(DBElement)
+                                .Banner = New Image
                             Else
                                 Images.DeleteTVSeasonBanners(DBElement)
                                 .Banner = New Image
@@ -4038,30 +4002,16 @@ Namespace MediaContainers
                         End If
 
                         'Season Fanart
-                        If .Fanart.ImageOriginal.Image IsNot Nothing Then
+                        If .Fanart.LoadAndCache(Type, True) Then
                             If DBElement.TVSeason.Season = 999 Then
-                                .Fanart.LocalFilePath = .Fanart.ImageOriginal.SaveAsTVASFanart(DBElement)
+                                .Fanart.LocalFilePath = .Fanart.ImageOriginal.SaveAsTVAllSeasonsFanart(DBElement)
                             Else
                                 .Fanart.LocalFilePath = .Fanart.ImageOriginal.SaveAsTVSeasonFanart(DBElement)
-                            End If
-                        ElseIf Not String.IsNullOrEmpty(.Fanart.URLOriginal) Then
-                            .Fanart.ImageOriginal.FromWeb(.Fanart.URLOriginal)
-                            If DBElement.TVSeason.Season = 999 Then
-                                .Fanart.LocalFilePath = .Fanart.ImageOriginal.SaveAsTVASFanart(DBElement)
-                            Else
-                                .Fanart.LocalFilePath = .Fanart.ImageOriginal.SaveAsTVSeasonFanart(DBElement)
-                            End If
-                        ElseIf Not String.IsNullOrEmpty(.Fanart.LocalFilePath) Then
-                            .Banner.ImageOriginal.FromFile(.Fanart.LocalFilePath)
-                            If DBElement.TVSeason.Season = 999 Then
-                                .Fanart.LocalFilePath = .Banner.ImageOriginal.SaveAsTVASFanart(DBElement)
-                            Else
-                                .Fanart.LocalFilePath = .Banner.ImageOriginal.SaveAsTVSeasonFanart(DBElement)
                             End If
                         Else
                             If DBElement.TVSeason.Season = 999 Then
-                                .Fanart.ImageOriginal.DeleteTVASFanarts(DBElement)
-                                .Fanart.LocalFilePath = String.Empty
+                                Images.DeleteTVAllSeasonsFanarts(DBElement)
+                                .Fanart = New Image
                             Else
                                 Images.DeleteTVSeasonFanarts(DBElement)
                                 .Fanart = New Image
@@ -4069,30 +4019,16 @@ Namespace MediaContainers
                         End If
 
                         'Season Landscape
-                        If .Landscape.ImageOriginal.Image IsNot Nothing Then
+                        If .Landscape.LoadAndCache(Type, True) Then
                             If DBElement.TVSeason.Season = 999 Then
-                                .Landscape.LocalFilePath = .Landscape.ImageOriginal.SaveAsTVASLandscape(DBElement)
-                            Else
-                                .Landscape.LocalFilePath = .Landscape.ImageOriginal.SaveAsTVSeasonLandscape(DBElement)
-                            End If
-                        ElseIf Not String.IsNullOrEmpty(.Landscape.URLOriginal) Then
-                            .Landscape.ImageOriginal.FromWeb(.Landscape.URLOriginal)
-                            If DBElement.TVSeason.Season = 999 Then
-                                .Landscape.LocalFilePath = .Landscape.ImageOriginal.SaveAsTVASLandscape(DBElement)
-                            Else
-                                .Landscape.LocalFilePath = .Landscape.ImageOriginal.SaveAsTVSeasonLandscape(DBElement)
-                            End If
-                        ElseIf Not String.IsNullOrEmpty(.Landscape.LocalFilePath) Then
-                            .Landscape.ImageOriginal.FromFile(.Landscape.LocalFilePath)
-                            If DBElement.TVSeason.Season = 999 Then
-                                .Landscape.LocalFilePath = .Landscape.ImageOriginal.SaveAsTVASLandscape(DBElement)
+                                .Landscape.LocalFilePath = .Landscape.ImageOriginal.SaveAsTVAllSeasonsLandscape(DBElement)
                             Else
                                 .Landscape.LocalFilePath = .Landscape.ImageOriginal.SaveAsTVSeasonLandscape(DBElement)
                             End If
                         Else
                             If DBElement.TVSeason.Season = 999 Then
-                                .Landscape.ImageOriginal.DeleteTVASLandscapes(DBElement)
-                                .Landscape.LocalFilePath = String.Empty
+                                Images.DeleteTVAllSeasonsLandscapes(DBElement)
+                                .Landscape = New Image
                             Else
                                 Images.DeleteTVSeasonLandscapes(DBElement)
                                 .Landscape = New Image
@@ -4100,30 +4036,16 @@ Namespace MediaContainers
                         End If
 
                         'Season Poster
-                        If .Poster.ImageOriginal.Image IsNot Nothing Then
+                        If .Poster.LoadAndCache(Type, True) Then
                             If DBElement.TVSeason.Season = 999 Then
-                                .Poster.LocalFilePath = .Poster.ImageOriginal.SaveAsTVASPoster(DBElement)
-                            Else
-                                .Poster.LocalFilePath = .Poster.ImageOriginal.SaveAsTVSeasonPoster(DBElement)
-                            End If
-                        ElseIf Not String.IsNullOrEmpty(.Poster.URLOriginal) Then
-                            .Poster.ImageOriginal.FromWeb(.Poster.URLOriginal)
-                            If DBElement.TVSeason.Season = 999 Then
-                                .Poster.LocalFilePath = .Poster.ImageOriginal.SaveAsTVASPoster(DBElement)
-                            Else
-                                .Poster.LocalFilePath = .Poster.ImageOriginal.SaveAsTVSeasonPoster(DBElement)
-                            End If
-                        ElseIf Not String.IsNullOrEmpty(.Poster.LocalFilePath) Then
-                            .Poster.ImageOriginal.FromFile(.Poster.LocalFilePath)
-                            If DBElement.TVSeason.Season = 999 Then
-                                .Poster.LocalFilePath = .Poster.ImageOriginal.SaveAsTVASPoster(DBElement)
+                                .Poster.LocalFilePath = .Poster.ImageOriginal.SaveAsTVAllSeasonsPoster(DBElement)
                             Else
                                 .Poster.LocalFilePath = .Poster.ImageOriginal.SaveAsTVSeasonPoster(DBElement)
                             End If
                         Else
                             If DBElement.TVSeason.Season = 999 Then
-                                .Poster.ImageOriginal.DeleteTVASPosters(DBElement)
-                                .Poster.LocalFilePath = String.Empty
+                                Images.DeleteTVAllSeasonsPosters(DBElement)
+                                .Poster = New Image
                             Else
                                 Images.DeleteTVSeasonPosters(DBElement)
                                 .Poster = New Image
@@ -4133,13 +4055,7 @@ Namespace MediaContainers
                     Case Enums.ContentType.TVShow
 
                         'Show Banner
-                        If .Banner.ImageOriginal.Image IsNot Nothing Then
-                            .Banner.LocalFilePath = .Banner.ImageOriginal.SaveAsTVShowBanner(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.Banner.URLOriginal) Then
-                            .Banner.ImageOriginal.FromWeb(.Banner.URLOriginal)
-                            .Banner.LocalFilePath = .Banner.ImageOriginal.SaveAsTVShowBanner(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.Banner.LocalFilePath) Then
-                            .Banner.ImageOriginal.FromFile(.Banner.LocalFilePath)
+                        If .Banner.LoadAndCache(Type, True) Then
                             .Banner.LocalFilePath = .Banner.ImageOriginal.SaveAsTVShowBanner(DBElement)
                         Else
                             Images.DeleteTVShowBanners(DBElement)
@@ -4147,13 +4063,7 @@ Namespace MediaContainers
                         End If
 
                         'Show CharacterArt
-                        If .CharacterArt.ImageOriginal.Image IsNot Nothing Then
-                            .CharacterArt.LocalFilePath = .CharacterArt.ImageOriginal.SaveAsTVShowCharacterArt(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.CharacterArt.URLOriginal) Then
-                            .CharacterArt.ImageOriginal.FromWeb(.CharacterArt.URLOriginal)
-                            .CharacterArt.LocalFilePath = .CharacterArt.ImageOriginal.SaveAsTVShowCharacterArt(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.CharacterArt.LocalFilePath) Then
-                            .CharacterArt.ImageOriginal.FromFile(.CharacterArt.LocalFilePath)
+                        If .CharacterArt.LoadAndCache(Type, True) Then
                             .CharacterArt.LocalFilePath = .CharacterArt.ImageOriginal.SaveAsTVShowCharacterArt(DBElement)
                         Else
                             Images.DeleteTVShowCharacterArts(DBElement)
@@ -4161,13 +4071,7 @@ Namespace MediaContainers
                         End If
 
                         'Show ClearArt
-                        If .ClearArt.ImageOriginal.Image IsNot Nothing Then
-                            .ClearArt.LocalFilePath = .ClearArt.ImageOriginal.SaveAsTVShowClearArt(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.ClearArt.URLOriginal) Then
-                            .ClearArt.ImageOriginal.FromWeb(.ClearArt.URLOriginal)
-                            .ClearArt.LocalFilePath = .ClearArt.ImageOriginal.SaveAsTVShowClearArt(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.ClearArt.LocalFilePath) Then
-                            .ClearArt.ImageOriginal.FromFile(.ClearArt.LocalFilePath)
+                        If .ClearArt.LoadAndCache(Type, True) Then
                             .ClearArt.LocalFilePath = .ClearArt.ImageOriginal.SaveAsTVShowClearArt(DBElement)
                         Else
                             Images.DeleteTVShowClearArts(DBElement)
@@ -4175,13 +4079,7 @@ Namespace MediaContainers
                         End If
 
                         'Show ClearLogo
-                        If .ClearLogo.ImageOriginal.Image IsNot Nothing Then
-                            .ClearLogo.LocalFilePath = .ClearLogo.ImageOriginal.SaveAsTVShowClearLogo(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.ClearLogo.URLOriginal) Then
-                            .ClearLogo.ImageOriginal.FromWeb(.ClearLogo.URLOriginal)
-                            .ClearLogo.LocalFilePath = .ClearLogo.ImageOriginal.SaveAsTVShowClearLogo(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.ClearLogo.LocalFilePath) Then
-                            .ClearLogo.ImageOriginal.FromFile(.ClearLogo.LocalFilePath)
+                        If .ClearLogo.LoadAndCache(Type, True) Then
                             .ClearLogo.LocalFilePath = .ClearLogo.ImageOriginal.SaveAsTVShowClearLogo(DBElement)
                         Else
                             Images.DeleteTVShowClearLogos(DBElement)
@@ -4198,13 +4096,7 @@ Namespace MediaContainers
                         End If
 
                         'Show Fanart
-                        If .Fanart.ImageOriginal.Image IsNot Nothing Then
-                            .Fanart.LocalFilePath = .Fanart.ImageOriginal.SaveAsTVShowFanart(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.Fanart.URLOriginal) Then
-                            .Fanart.ImageOriginal.FromWeb(.Fanart.URLOriginal)
-                            .Fanart.LocalFilePath = .Fanart.ImageOriginal.SaveAsTVShowFanart(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.Fanart.LocalFilePath) Then
-                            .Fanart.ImageOriginal.FromFile(.Fanart.LocalFilePath)
+                        If .Fanart.LoadAndCache(Type, True) Then
                             .Fanart.LocalFilePath = .Fanart.ImageOriginal.SaveAsTVShowFanart(DBElement)
                         Else
                             Images.DeleteTVShowFanarts(DBElement)
@@ -4212,13 +4104,7 @@ Namespace MediaContainers
                         End If
 
                         'Show Landscape
-                        If .Landscape.ImageOriginal.Image IsNot Nothing Then
-                            .Landscape.LocalFilePath = .Landscape.ImageOriginal.SaveAsTVShowLandscape(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.Landscape.URLOriginal) Then
-                            .Landscape.ImageOriginal.FromWeb(.Landscape.URLOriginal)
-                            .Landscape.LocalFilePath = .Landscape.ImageOriginal.SaveAsTVShowLandscape(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.Landscape.LocalFilePath) Then
-                            .Landscape.ImageOriginal.FromFile(.Landscape.LocalFilePath)
+                        If .Landscape.LoadAndCache(Type, True) Then
                             .Landscape.LocalFilePath = .Landscape.ImageOriginal.SaveAsTVShowLandscape(DBElement)
                         Else
                             Images.DeleteTVShowLandscapes(DBElement)
@@ -4226,13 +4112,7 @@ Namespace MediaContainers
                         End If
 
                         'Show Poster
-                        If .Poster.ImageOriginal.Image IsNot Nothing Then
-                            .Poster.LocalFilePath = .Poster.ImageOriginal.SaveAsTVShowPoster(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.Poster.URLOriginal) Then
-                            .Poster.ImageOriginal.FromWeb(.Poster.URLOriginal)
-                            .Poster.LocalFilePath = .Poster.ImageOriginal.SaveAsTVShowPoster(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.Poster.LocalFilePath) Then
-                            .Poster.ImageOriginal.FromFile(.Poster.LocalFilePath)
+                        If .Poster.LoadAndCache(Type, True) Then
                             .Poster.LocalFilePath = .Poster.ImageOriginal.SaveAsTVShowPoster(DBElement)
                         Else
                             Images.DeleteTVShowPosters(DBElement)
