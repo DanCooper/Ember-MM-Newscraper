@@ -525,23 +525,25 @@ Public Class IMDB_Data
         End If
 
         'set new informations for following scrapers
-        If nMovie.TitleSpecified Then
-            oDBMovie.Movie.Title = nMovie.Title
-        End If
-        If nMovie.OriginalTitleSpecified Then
-            oDBMovie.Movie.OriginalTitle = nMovie.OriginalTitle
-        End If
-        If nMovie.YearSpecified Then
-            oDBMovie.Movie.Year = nMovie.Year
-        End If
-        If nMovie.IDSpecified Then
-            oDBMovie.Movie.ID = nMovie.ID
-        End If
-        If nMovie.IMDBIDSpecified Then
-            oDBMovie.Movie.IMDBID = nMovie.IMDBID
-        End If
-        If nMovie.TMDBIDSpecified Then
-            oDBMovie.Movie.TMDBID = nMovie.TMDBID
+        If nMovie IsNot Nothing Then
+            If nMovie.TitleSpecified Then
+                oDBMovie.Movie.Title = nMovie.Title
+            End If
+            If nMovie.OriginalTitleSpecified Then
+                oDBMovie.Movie.OriginalTitle = nMovie.OriginalTitle
+            End If
+            If nMovie.YearSpecified Then
+                oDBMovie.Movie.Year = nMovie.Year
+            End If
+            If nMovie.IDSpecified Then
+                oDBMovie.Movie.ID = nMovie.ID
+            End If
+            If nMovie.IMDBIDSpecified Then
+                oDBMovie.Movie.IMDBID = nMovie.IMDBID
+            End If
+            If nMovie.TMDBIDSpecified Then
+                oDBMovie.Movie.TMDBID = nMovie.TMDBID
+            End If
         End If
 
         logger.Trace("Finished IMDB Scraper")
@@ -609,17 +611,19 @@ Public Class IMDB_Data
         End If
 
         'set new informations for following scrapers
-        If Not String.IsNullOrEmpty(nShow.Title) Then
-            oDBTV.TVShow.Title = nShow.Title
-        End If
-        If Not String.IsNullOrEmpty(nShow.TVDB) Then
-            oDBTV.TVShow.TVDB = nShow.TVDB
-        End If
-        If Not String.IsNullOrEmpty(nShow.IMDB) Then
-            oDBTV.TVShow.IMDB = nShow.IMDB
-        End If
-        If Not String.IsNullOrEmpty(nShow.TMDB) Then
-            oDBTV.TVShow.TMDB = nShow.TMDB
+        If nShow IsNot Nothing Then
+            If Not String.IsNullOrEmpty(nShow.Title) Then
+                oDBTV.TVShow.Title = nShow.Title
+            End If
+            If Not String.IsNullOrEmpty(nShow.TVDB) Then
+                oDBTV.TVShow.TVDB = nShow.TVDB
+            End If
+            If Not String.IsNullOrEmpty(nShow.IMDB) Then
+                oDBTV.TVShow.IMDB = nShow.IMDB
+            End If
+            If Not String.IsNullOrEmpty(nShow.TMDB) Then
+                oDBTV.TVShow.TMDB = nShow.TMDB
+            End If
         End If
 
         logger.Trace("Finished IMDB Scraper")

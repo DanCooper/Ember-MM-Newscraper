@@ -287,14 +287,16 @@ Public Class TVDB_Data
         End If
 
         'set new informations for following scrapers
-        If nShow.TitleSpecified Then
-            oDBTV.TVShow.Title = nShow.Title
-        End If
-        If nShow.TVDBSpecified Then
-            oDBTV.TVShow.TVDB = nShow.TVDB
-        End If
-        If nShow.IMDBSpecified Then
-            oDBTV.TVShow.IMDB = nShow.IMDB
+        If nShow IsNot Nothing Then
+            If nShow.TitleSpecified Then
+                oDBTV.TVShow.Title = nShow.Title
+            End If
+            If nShow.TVDBSpecified Then
+                oDBTV.TVShow.TVDB = nShow.TVDB
+            End If
+            If nShow.IMDBSpecified Then
+                oDBTV.TVShow.IMDB = nShow.IMDB
+            End If
         End If
 
         logger.Trace("Finished TVDB Scraper")
@@ -324,14 +326,16 @@ Public Class TVDB_Data
         End If
 
         'set new informations for following scrapers
-        If nEpisode.TitleSpecified Then
-            oDBTVEpisode.TVShow.Title = nEpisode.Title
-        End If
-        If nEpisode.TVDBSpecified Then
-            oDBTVEpisode.TVShow.TVDB = nEpisode.TVDB
-        End If
-        If nEpisode.IMDBSpecified Then
-            oDBTVEpisode.TVShow.IMDB = nEpisode.IMDB
+        If nEpisode IsNot Nothing Then
+            If nEpisode.TitleSpecified Then
+                oDBTVEpisode.TVEpisode.Title = nEpisode.Title
+            End If
+            If nEpisode.TVDBSpecified Then
+                oDBTVEpisode.TVEpisode.TVDB = nEpisode.TVDB
+            End If
+            If nEpisode.IMDBSpecified Then
+                oDBTVEpisode.TVEpisode.IMDB = nEpisode.IMDB
+            End If
         End If
 
         logger.Trace("Finished TVDB Scraper")
