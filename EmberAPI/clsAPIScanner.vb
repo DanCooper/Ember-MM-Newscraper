@@ -590,7 +590,7 @@ Public Class Scanner
             If(dInfo.FullName.IndexOf("\") >= 0, dInfo.FullName.Remove(0, dInfo.FullName.IndexOf("\")).Contains(":"), False) Then
                 Return False
             End If
-            For Each s As String In clsAdvancedSettings.GetSetting("NotValidDirIs", "extrathumbs|video_ts|bdmv|audio_ts|recycler|subs|subtitles|.trashes").Split(New String() {"|"}, StringSplitOptions.RemoveEmptyEntries)
+            For Each s As String In clsAdvancedSettings.GetSetting("NotValidDirIs", ".actors|extrafanarts|extrathumbs|video_ts|bdmv|audio_ts|recycler|subs|subtitles|.trashes").Split(New String() {"|"}, StringSplitOptions.RemoveEmptyEntries)
                 If dInfo.Name.ToLower = s Then Return False
             Next
             For Each s As String In clsAdvancedSettings.GetSetting("NotValidDirContains", "-trailer|[trailer|temporary files|(noscan)|$recycle.bin|lost+found|system volume information|sample").Split(New String() {"|"}, StringSplitOptions.RemoveEmptyEntries)
@@ -1011,9 +1011,17 @@ Public Class Scanner
                         For Each iSeason In SeasonList
                             Dim tmpSeason As Database.DBElement = DBTVShow.Seasons.FirstOrDefault(Function(f) f.TVSeason.Season = iSeason)
                             If tmpSeason Is Nothing OrElse tmpSeason.TVSeason Is Nothing Then
+                                'check if tvshow.nfo contains any season details
+                                Dim nfoSeason As MediaContainers.SeasonDetails = DBTVShow.TVShow.Seasons.Seasons.FirstOrDefault(Function(f) f.Season = iSeason)
                                 tmpSeason = New Database.DBElement
                                 tmpSeason.Filename = DBTVEpisode.Filename 'needed to check if the episode is inside a season folder or not
                                 tmpSeason.TVSeason = New MediaContainers.SeasonDetails With {.Season = iSeason}
+                                If nfoSeason IsNot Nothing Then
+                                    tmpSeason.TVSeason.Aired = nfoSeason.Aired
+                                    tmpSeason.TVSeason.Plot = nfoSeason.Plot
+                                    tmpSeason.TVSeason.TMDB = nfoSeason.TMDB
+                                    tmpSeason.TVSeason.TVDB = nfoSeason.TVDB
+                                End If
                                 tmpSeason = Master.DB.AddTVShowInfoToDBElement(tmpSeason, DBTVShow)
                                 GetTVSeasonFolderContents(tmpSeason)
                                 DBTVShow.Seasons.Add(tmpSeason)
