@@ -337,8 +337,14 @@ Namespace IMDB
                 'Trailer
                 If FilteredOptions.bMainTrailer Then
                     'Get first IMDB trailer if possible
-                    Dim trailers As List(Of String) = GetTrailers(nMovie.IMDBID)
-                    nMovie.Trailer = trailers.FirstOrDefault()
+                    Dim TrailerList As List(Of MediaContainers.Trailer) = EmberAPI.IMDb.Scraper.GetMovieTrailersByIMDBID(nMovie.IMDBID)
+                    If TrailerList.Count > 0 Then
+                        Dim sIMDb As New EmberAPI.IMDb.Scraper
+                        sIMDb.GetVideoLinks(TrailerList.Item(0).URLWebsite)
+                        If sIMDb.VideoLinks.Count > 0 Then
+                            nMovie.Trailer = sIMDb.VideoLinks.FirstOrDefault().Value.URL.ToString
+                        End If
+                    End If
                 End If
 
                 If bwIMDB.CancellationPending Then Return Nothing
@@ -360,30 +366,16 @@ Namespace IMDB
 
                     Dim rCast As MatchCollection = Regex.Matches(ActorsTable, TR_PATTERN)
 
-                    Dim Cast1 = From M In rCast _
-                                Let m1 = Regex.Match(Regex.Match(M.ToString, TD_PATTERN_1).ToString, HREF_PATTERN) _
-                                Let m2 = Regex.Match(M.ToString, TD_PATTERN_2).ToString _
-                                Let m3 = Regex.Match(Regex.Match(M.ToString, TD_PATTERN_3).ToString, IMG_PATTERN) _
-                                Select New MediaContainers.Person(Web.HttpUtility.HtmlDecode(m1.Groups("name").ToString.Trim), _
-                                Web.HttpUtility.HtmlDecode(m2.ToString.Trim), _
-                                If(m3.Groups("thumb").ToString.IndexOf("addtiny") > 0 OrElse m3.Groups("thumb").ToString.IndexOf("no_photo") > 0, String.Empty, Web.HttpUtility.HtmlDecode(m3.Groups("thumb").ToString.Trim).Replace("._SX23_SY30_.jpg", String.Concat("._", ThumbsSize, "_.jpg")))) Take 999999
-
-                    Dim Cast As List(Of MediaContainers.Person) = Cast1.ToList
-
-                    'Clean up the actors list
-                    For Each Ps As MediaContainers.Person In Cast
-                        For Each sMatch As Match In Regex.Matches(Ps.Role, HREF_PATTERN)
-                            Ps.Role = Ps.Role.Replace(sMatch.Value, sMatch.Groups("name").Value.ToString.Trim)
-                        Next
-                        ' Dim a_patterRegex = Regex.Match(Ps.Role, HREF_PATTERN)
-                        ' If a_patterRegex.Success Then Ps.Role = a_patterRegex.Groups("name").ToString.Trim
+                    For Each tCast In rCast
+                        Dim t1 = Regex.Match(Regex.Match(tCast.ToString, TD_PATTERN_1).ToString, HREF_PATTERN)
+                        Dim t2 = Regex.Match(Regex.Match(tCast.ToString, TD_PATTERN_2).ToString, HREF_PATTERN)
+                        Dim t3 = Regex.Match(Regex.Match(tCast.ToString, TD_PATTERN_3).ToString, IMG_PATTERN)
+                        Dim tActor As New MediaContainers.Person
+                        tActor.Name = Web.HttpUtility.HtmlDecode(t1.Groups("name").ToString.Trim)
+                        tActor.Role = Web.HttpUtility.HtmlDecode(t2.Groups("name").ToString.Trim)
+                        tActor.URLOriginal = If(t3.Groups("thumb").ToString.IndexOf("addtiny") > 0 OrElse t3.Groups("thumb").ToString.IndexOf("no_photo") > 0, String.Empty, Web.HttpUtility.HtmlDecode(t3.Groups("thumb").ToString.Trim).Replace("._SX23_SY30_.jpg", String.Concat("._", ThumbsSize, "_.jpg")))
+                        nMovie.Actors.Add(tActor)
                     Next
-
-                    'only update nMovie if scraped result is not empty/nothing!
-                    If Cast.Count > 0 Then
-                        nMovie.Actors = Cast
-                    End If
-
                 End If
 
                 If bwIMDB.CancellationPending Then Return Nothing
@@ -735,41 +727,26 @@ mPlot:          'Plot
                 End If
 
                 If bwIMDB.CancellationPending Then Return Nothing
-
+                
                 'Actors
                 If FilteredOptions.bMainActors Then
-                    'Find all cast of the tv show
+                    'Find all cast of the movie
                     'Match the table only 1 time
                     Dim ActorsTable As String = Regex.Match(HTML, ACTORTABLE_PATTERN).ToString
                     Dim ThumbsSize = clsAdvancedSettings.GetSetting("ActorThumbsSize", "SY275_SX400")
 
                     Dim rCast As MatchCollection = Regex.Matches(ActorsTable, TR_PATTERN)
 
-                    Dim Cast1 = From M In rCast _
-                                Let m1 = Regex.Match(Regex.Match(M.ToString, TD_PATTERN_1).ToString, HREF_PATTERN) _
-                                Let m2 = Regex.Match(M.ToString, TD_PATTERN_2).ToString _
-                                Let m3 = Regex.Match(Regex.Match(M.ToString, TD_PATTERN_3).ToString, IMG_PATTERN) _
-                                Select New MediaContainers.Person(Web.HttpUtility.HtmlDecode(m1.Groups("name").ToString.Trim), _
-                                Web.HttpUtility.HtmlDecode(m2.ToString.Trim), _
-                                If(m3.Groups("thumb").ToString.IndexOf("addtiny") > 0 OrElse m3.Groups("thumb").ToString.IndexOf("no_photo") > 0, String.Empty, Web.HttpUtility.HtmlDecode(m3.Groups("thumb").ToString.Trim).Replace("._SX23_SY30_.jpg", String.Concat("._", ThumbsSize, "_.jpg")))) Take 999999
-
-                    Dim Cast As List(Of MediaContainers.Person) = Cast1.ToList
-
-                    'Clean up the actors list
-                    For Each Ps As MediaContainers.Person In Cast
-                        For Each sMatch As Match In Regex.Matches(Ps.Role, HREF_PATTERN)
-                            Ps.Role = Ps.Role.Replace(sMatch.Value, sMatch.Groups("name").Value.ToString.Trim)
-                            Ps.Role = CleanRole(Ps.Role)
-                        Next
-                        ' Dim a_patterRegex = Regex.Match(Ps.Role, HREF_PATTERN)
-                        ' If a_patterRegex.Success Then Ps.Role = a_patterRegex.Groups("name").ToString.Trim
+                    For Each tCast In rCast
+                        Dim t1 = Regex.Match(Regex.Match(tCast.ToString, TD_PATTERN_1).ToString, HREF_PATTERN)
+                        Dim t2 = Regex.Match(Regex.Match(tCast.ToString, TD_PATTERN_2).ToString, HREF_PATTERN)
+                        Dim t3 = Regex.Match(Regex.Match(tCast.ToString, TD_PATTERN_3).ToString, IMG_PATTERN)
+                        Dim tActor As New MediaContainers.Person
+                        tActor.Name = Web.HttpUtility.HtmlDecode(t1.Groups("name").ToString.Trim)
+                        tActor.Role = Web.HttpUtility.HtmlDecode(t2.Groups("name").ToString.Trim)
+                        tActor.URLOriginal = If(t3.Groups("thumb").ToString.IndexOf("addtiny") > 0 OrElse t3.Groups("thumb").ToString.IndexOf("no_photo") > 0, String.Empty, Web.HttpUtility.HtmlDecode(t3.Groups("thumb").ToString.Trim).Replace("._SX23_SY30_.jpg", String.Concat("._", ThumbsSize, "_.jpg")))
+                        nShow.Actors.Add(tActor)
                     Next
-
-                    'only update nMovie if scraped result is not empty/nothing!
-                    If Cast.Count > 0 Then
-                        nShow.Actors = Cast
-                    End If
-
                 End If
 
                 If bwIMDB.CancellationPending Then Return Nothing
@@ -1647,76 +1624,6 @@ mPlot:          'Plot
             Next
 
             Return R
-        End Function
-
-        Public Function GetTrailers(imdbID As String) As List(Of String)
-            Dim TrailerList As New List(Of String)
-            Dim TrailerNumber As Integer = 0
-            Dim Links As MatchCollection
-            Dim trailerPage As String
-            Dim trailerUrl As String
-            Dim Link As Match
-            Dim currPage As Integer = 0
-
-            intHTTP = New HTTP
-            Dim _ImdbTrailerPage As String = String.Empty
-
-            _ImdbTrailerPage = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/tt", imdbID, "/videogallery/content_type-Trailer"))
-            If _ImdbTrailerPage.ToLower.Contains("page not found") Then
-                _ImdbTrailerPage = String.Empty
-            End If
-
-            If Not String.IsNullOrEmpty(_ImdbTrailerPage) Then
-                Link = Regex.Match(_ImdbTrailerPage, "of [0-9]{1,3}")
-
-                If Link.Success Then
-                    TrailerNumber = Convert.ToInt32(Link.Value.Substring(3))
-
-                    If TrailerNumber > 0 Then
-                        currPage = Convert.ToInt32(Math.Ceiling(TrailerNumber / 10))
-
-                        For i As Integer = 1 To currPage
-                            If Not i = 1 Then
-                                _ImdbTrailerPage = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/tt", imdbID, "/videogallery/content_type-Trailer?page=", i))
-                            End If
-
-                            Links = Regex.Matches(_ImdbTrailerPage, "screenplay/(vi[0-9]+)/")
-                            Dim linksCollection As String() = From m As Object In Links Select CType(m, Match).Value Distinct.ToArray()
-
-                            Links = Regex.Matches(_ImdbTrailerPage, "imdb/(vi[0-9]+)/")
-                            linksCollection = linksCollection.Concat(From m As Object In Links Select CType(m, Match).Value Distinct.ToArray()).ToArray
-
-                            For Each value As String In linksCollection
-                                If value.Contains("screenplay") Then
-                                    trailerPage = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/video/", value, "player"))
-                                    trailerUrl = Web.HttpUtility.UrlDecode(Regex.Match(trailerPage, "http.+mp4").Value)
-                                    If Not String.IsNullOrEmpty(trailerUrl) AndAlso intHTTP.IsValidURL(trailerUrl) Then
-                                        TrailerList.Add(trailerUrl)
-                                    End If
-                                Else
-                                    ''480p Trailer
-                                    'trailerPage = WebPage.DownloadData(String.Concat("http://", IMDBURL, "/video/", value, "player?uff=2"))
-                                    'trailerUrl = Web.HttpUtility.UrlDecode(Regex.Match(trailerPage, "http.+mp4").Value)
-                                    'If Not String.IsNullOrEmpty(trailerUrl) AndAlso WebPage.IsValidURL(trailerUrl) Then
-                                    '    Me._TrailerList.Add(trailerUrl)
-                                    'End If
-
-                                    ''720p Trailer
-                                    'trailerPage = WebPage.DownloadData(String.Concat("http://", IMDBURL, "/video/", value, "player?uff=3"))
-                                    'trailerUrl = Web.HttpUtility.UrlDecode(Regex.Match(trailerPage, "http.+mp4").Value)
-                                    'If Not String.IsNullOrEmpty(trailerUrl) AndAlso WebPage.IsValidURL(trailerUrl) Then
-                                    '    Me._TrailerList.Add(trailerUrl)
-                                    'End If
-                                End If
-                            Next
-                        Next
-                    End If
-                End If
-            End If
-            intHTTP.Dispose()
-            intHTTP = Nothing
-
-            Return TrailerList
         End Function
 
 #End Region 'Methods

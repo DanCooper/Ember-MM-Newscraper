@@ -2061,16 +2061,6 @@ Namespace MediaContainers
 
 #Region "Constructors"
 
-        Public Sub New(ByVal sName As String)
-            Me._name = sName
-        End Sub
-
-        Public Sub New(ByVal sName As String, ByVal sRole As String, ByVal sThumb As String)
-            Me._name = sName
-            Me._role = sRole
-            Me._thumb.URLOriginal = sThumb
-        End Sub
-
         Public Sub New()
             Me.Clean()
         End Sub

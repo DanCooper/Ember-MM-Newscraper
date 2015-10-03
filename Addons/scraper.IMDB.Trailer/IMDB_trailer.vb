@@ -154,11 +154,9 @@ Public Class IMDB_Trailer
         Dim tIMDBID As String = String.Empty
 
         If Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) Then
-            Dim tIMDBTrailer As New IMDB.Scraper(DBMovie.Movie.IMDBID)
+            Dim _scraper As New IMDBs.Scraper()
 
-            If tIMDBTrailer.TrailerList.Count > 0 Then
-                TrailerList = tIMDBTrailer.TrailerList
-            End If
+            TrailerList = _scraper.GetTrailers(DBMovie.Movie.IMDBID)
         End If
         logger.Trace("Finished scrape", New StackTrace().ToString())
         Return New Interfaces.ModuleResult With {.breakChain = False}

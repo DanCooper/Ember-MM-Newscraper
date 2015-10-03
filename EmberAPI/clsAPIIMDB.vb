@@ -60,6 +60,68 @@ Namespace IMDb
 
 #Region "Methods"
 
+        Public Shared Function GetMovieTrailersByIMDBID(ByVal strIMDBID As String) As List(Of MediaContainers.Trailer)
+            Dim TrailerList As New List(Of MediaContainers.Trailer)
+
+            Dim BaseURL As String = "http://www.imdb.com"
+            Dim SearchURL As String
+
+            Dim ImdbTrailerPage As String = String.Empty
+            Dim Trailers As MatchCollection
+            Dim TrailerDetails As Match
+            Dim TrailerDetailsPage As String
+            Dim TrailerDuration As String
+            Dim TrailerTitle As String
+            Dim sHTTP As New HTTP
+
+            Try
+                If Not String.IsNullOrEmpty(strIMDBID) Then
+                    Dim aPattern As String = "<div class=""article"">.*?<div class=""article"" id=""see_also"">"                                'Video Gallery results
+                    Dim tPattern As String = "imdb\/(vi[0-9]+)"                                                                                 'Specific trailer website
+                    Dim dPattern As String = "class=""vp-video-name"">(?<TITLE>.*?)<.*?class=""duration title-hover"">\((?<DURATION>.*?)\)"     'Trailer title and duration
+
+                    SearchURL = String.Concat(BaseURL, "/title/tt", strIMDBID, "/videogallery/content_type-trailer") 'IMDb trailer website of a specific movie, filtered by trailers only
+
+                    'download trailer website
+                    ImdbTrailerPage = sHTTP.DownloadData(SearchURL)
+                    sHTTP = Nothing
+
+                    If ImdbTrailerPage.ToLower.Contains("page not found") Then
+                        ImdbTrailerPage = String.Empty
+                    End If
+
+                    If Not String.IsNullOrEmpty(ImdbTrailerPage) Then
+                        'filter HTML to Video Gallery only
+                        Dim VideoGallery = Regex.Match(ImdbTrailerPage, aPattern, RegexOptions.IgnoreCase Or RegexOptions.Singleline)
+
+                        If VideoGallery.Success Then
+                            'search all trailer on trailer website
+                            Dim test = VideoGallery.Groups.Item(0).ToString
+                            Trailers = Regex.Matches(VideoGallery.Groups.Item(0).ToString, tPattern)
+                            Dim linksCollection As String() = From m As Object In Trailers Select CType(m, Match).Value Distinct.ToArray()
+
+                            For Each trailer As String In linksCollection
+                                'go to specific trailer website
+                                Dim URLWebsite As String = String.Concat(BaseURL, "/video/", trailer)
+                                sHTTP = New HTTP
+                                TrailerDetailsPage = sHTTP.DownloadData(String.Concat(URLWebsite, "/imdb/single"))
+                                sHTTP = Nothing
+                                TrailerDetails = Regex.Match(TrailerDetailsPage, dPattern, RegexOptions.IgnoreCase Or RegexOptions.Singleline)
+                                TrailerTitle = TrailerDetails.Groups("TITLE").Value.ToString.Trim
+                                TrailerDuration = TrailerDetails.Groups("DURATION").Value.ToString.Trim
+                                TrailerList.Add(New MediaContainers.Trailer With {.Title = TrailerTitle, .URLWebsite = URLWebsite, .Duration = TrailerDuration, .Scraper = "IMDB", .Source = "IMDB"})
+                            Next
+                        End If
+                    End If
+                End If
+
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+            End Try
+
+            Return TrailerList
+        End Function
+
         ''' <summary>
         ''' Fetches the list of valid video links for the given URL
         ''' </summary>
@@ -110,7 +172,8 @@ Namespace IMDb
             'Dim trailerTitle As String
             Dim Qualities As MatchCollection
 
-            Dim qPattern As String = "(http:\/\/www.imdb.com\/video\/imdb\/{0}\/imdb\/single\?format=.*?)&" 'Trailer qualities
+            Dim cPattern As String = "<div class=""vp-selected"">(?<CURRENT>.*?)<\/div>"                        'Current Trailer quality
+            Dim qPattern As String = "(http:\/\/www.imdb.com\/video\/imdb\/{0}\/imdb\/single\?format=.*?)&"     'other Trailer qualities
             Dim vPattern As String = "ffname"":""(?<QUAL>.*?)"".*?,""height.*?videoUrl"":""(?<LINK>.*?)"""
 
             Try
@@ -126,16 +189,15 @@ Namespace IMDb
 
                     If String.IsNullOrEmpty(Html.Trim) Then Return DownloadLinks
 
-                    ''go to specific trailer website
-                    'trailerTitle = Regex.Match(Html, nPattern).Groups(1).Value.ToString.Trim
-                    'If String.IsNullOrEmpty(trailerTitle) Then
-                    '    trailerTitle = Regex.Match(Html, mPattern).Groups(1).Value.ToString.Trim
-                    '    trailerTitle = trailerTitle.Replace("- IMDb", String.Empty).Trim
-                    'End If
+                    Dim trailerCollection As New List(Of String)
 
-                    'get all qualities of a specific trailer
+                    'add current quality
+                    trailerCollection.Add(String.Concat(url, "/imdb/single?format=", Regex.Match(Html, cPattern).Groups(1).Value.ToString))
+
+                    'get other qualities of a specific trailer
                     Qualities = Regex.Matches(Html, String.Format(qPattern, vID))
-                    Dim trailerCollection As String() = From m As Object In Qualities Select CType(m, Match).Groups(1).Value Distinct.ToArray()
+                    trailerCollection.AddRange(From m As Object In Qualities Select CType(m, Match).Groups(1).Value Distinct.ToList)
+
 
                     'get all download URLs of a specific trailer
                     For Each qual As String In trailerCollection
@@ -168,7 +230,7 @@ Namespace IMDb
                                     Link.FormatQuality = Enums.TrailerVideoQuality.UNKNOWN
                             End Select
 
-                            If Not String.IsNullOrEmpty(Link.URL) Then 'AndAlso sHTTP.IsValidURL(Link.URL) Then
+                            If Not String.IsNullOrEmpty(Link.URL) Then
                                 DownloadLinks.Add(Link)
                             End If
                         End If
