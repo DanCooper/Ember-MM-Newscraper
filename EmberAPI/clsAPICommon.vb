@@ -1092,37 +1092,6 @@ Public Class Functions
         Dim diff As System.TimeSpan = data - origin
         Return Math.Floor(diff.TotalSeconds)
     End Function
-    ' TODO DOC Need appropriate header and tests
-    Public Shared Function LocksToOptions() As Structures.ScrapeOptions
-        Dim options As New Structures.ScrapeOptions
-        With options
-            .bMainActors = True
-            .bMainCert = True
-            .bMainCollectionID = True
-            .bMainCountry = True
-            .bMainDirector = True
-            .bMainFullCrew = True
-            .bMainGenre = Not Master.eSettings.MovieLockGenre    'Dekker500 This used to just be =True
-            .bMainMPAA = True
-            .bMainMusicBy = True
-            .bMainOriginalTitle = True
-            .bMainOtherCrew = True
-            .bMainOutline = Not Master.eSettings.MovieLockOutline
-            .bMainPlot = Not Master.eSettings.MovieLockPlot
-            .bMainProducers = True
-            .bMainRating = Not Master.eSettings.MovieLockRating
-            .bMainRelease = True
-            .bMainRuntime = True
-            .bMainStudio = Not Master.eSettings.MovieLockStudio
-            .bMainTagline = Not Master.eSettings.MovieLockTagline
-            .bMainTitle = Not Master.eSettings.MovieLockTitle
-            .bMainTop250 = True
-            .bMainTrailer = Not Master.eSettings.MovieLockTrailer
-            .bMainWriters = True
-            .bMainYear = True
-        End With
-        Return options
-    End Function
     ''' <summary>
     ''' Create a collection of default Movie and TV scrape options
     ''' based off the currently selected options. 
@@ -1469,12 +1438,6 @@ Public Class Functions
         filterOptions.bMainYear = Options.bMainYear AndAlso Options2.bMainYear
         filterOptions.bSeasonAired = Options.bSeasonAired AndAlso Options2.bSeasonAired
         filterOptions.bSeasonPlot = Options.bSeasonPlot AndAlso Options2.bSeasonPlot
-        'workaround since following switches don't have global data scraper settings (IMDB only)
-        'may be cleaner to move those settings out from here and manage as IMDB only settings
-        filterOptions.bMainFullCrew = Options2.bMainFullCrew
-        filterOptions.bMainMusicBy = Options2.bMainMusicBy
-        filterOptions.bMainOtherCrew = Options2.bMainOtherCrew
-        filterOptions.bMainProducers = Options2.bMainProducers
         Return filterOptions
     End Function
 
@@ -1884,16 +1847,12 @@ Public Class Structures
         Dim bMainCreator As Boolean
         Dim bMainDirector As Boolean
         Dim bMainEpisodeGuide As Boolean
-        Dim bMainFullCrew As Boolean
         Dim bMainGenre As Boolean
         Dim bMainMPAA As Boolean
-        Dim bMainMusicBy As Boolean
         Dim bMainOriginalTitle As Boolean
-        Dim bMainOtherCrew As Boolean
         Dim bMainOutline As Boolean
         Dim bMainPlot As Boolean
         Dim bMainPremiered As Boolean
-        Dim bMainProducers As Boolean
         Dim bMainRating As Boolean
         Dim bMainRelease As Boolean
         Dim bMainRuntime As Boolean

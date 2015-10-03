@@ -148,16 +148,12 @@ Public Class IMDB_Data
         _setup_Movie.chkCast.Checked = ConfigScrapeOptions_Movie.bMainActors
         _setup_Movie.chkCertification.Checked = ConfigScrapeOptions_Movie.bMainCert
         _setup_Movie.chkCountry.Checked = ConfigScrapeOptions_Movie.bMainCountry
-        _setup_Movie.chkCrew.Checked = ConfigScrapeOptions_Movie.bMainOtherCrew
         _setup_Movie.chkDirector.Checked = ConfigScrapeOptions_Movie.bMainDirector
-        _setup_Movie.chkFullCrew.Checked = ConfigScrapeOptions_Movie.bMainFullCrew
         _setup_Movie.chkGenre.Checked = ConfigScrapeOptions_Movie.bMainGenre
         _setup_Movie.chkMPAA.Checked = ConfigScrapeOptions_Movie.bMainMPAA
-        _setup_Movie.chkMusicBy.Checked = ConfigScrapeOptions_Movie.bMainMusicBy
         _setup_Movie.chkOriginalTitle.Checked = ConfigScrapeOptions_Movie.bMainOriginalTitle
         _setup_Movie.chkOutline.Checked = ConfigScrapeOptions_Movie.bMainOutline
         _setup_Movie.chkPlot.Checked = ConfigScrapeOptions_Movie.bMainPlot
-        _setup_Movie.chkProducers.Checked = ConfigScrapeOptions_Movie.bMainProducers
         _setup_Movie.chkRating.Checked = ConfigScrapeOptions_Movie.bMainRating
         _setup_Movie.chkRelease.Checked = ConfigScrapeOptions_Movie.bMainRelease
         _setup_Movie.chkRuntime.Checked = ConfigScrapeOptions_Movie.bMainRuntime
@@ -242,15 +238,11 @@ Public Class IMDB_Data
         ConfigScrapeOptions_Movie.bMainCert = clsAdvancedSettings.GetBooleanSetting("DoCert", True)
         ConfigScrapeOptions_Movie.bMainCountry = clsAdvancedSettings.GetBooleanSetting("DoCountry", True)
         ConfigScrapeOptions_Movie.bMainDirector = clsAdvancedSettings.GetBooleanSetting("DoDirector", True)
-        ConfigScrapeOptions_Movie.bMainFullCrew = clsAdvancedSettings.GetBooleanSetting("DoFullCrews", True)
         ConfigScrapeOptions_Movie.bMainGenre = clsAdvancedSettings.GetBooleanSetting("DoGenres", True)
         ConfigScrapeOptions_Movie.bMainMPAA = clsAdvancedSettings.GetBooleanSetting("DoMPAA", True)
-        ConfigScrapeOptions_Movie.bMainMusicBy = clsAdvancedSettings.GetBooleanSetting("DoMusic", True)
         ConfigScrapeOptions_Movie.bMainOriginalTitle = clsAdvancedSettings.GetBooleanSetting("DoOriginalTitle", True)
-        ConfigScrapeOptions_Movie.bMainOtherCrew = clsAdvancedSettings.GetBooleanSetting("DoOtherCrews", True)
         ConfigScrapeOptions_Movie.bMainOutline = clsAdvancedSettings.GetBooleanSetting("DoOutline", True)
         ConfigScrapeOptions_Movie.bMainPlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", True)
-        ConfigScrapeOptions_Movie.bMainProducers = clsAdvancedSettings.GetBooleanSetting("DoProducers", True)
         ConfigScrapeOptions_Movie.bMainRating = clsAdvancedSettings.GetBooleanSetting("DoRating", True)
         ConfigScrapeOptions_Movie.bMainRelease = clsAdvancedSettings.GetBooleanSetting("DoRelease", True)
         ConfigScrapeOptions_Movie.bMainRuntime = clsAdvancedSettings.GetBooleanSetting("DoRuntime", True)
@@ -303,15 +295,11 @@ Public Class IMDB_Data
             settings.SetBooleanSetting("DoCert", ConfigScrapeOptions_Movie.bMainCert)
             settings.SetBooleanSetting("DoCountry", ConfigScrapeOptions_Movie.bMainCountry)
             settings.SetBooleanSetting("DoDirector", ConfigScrapeOptions_Movie.bMainDirector)
-            settings.SetBooleanSetting("DoFullCrews", ConfigScrapeOptions_Movie.bMainFullCrew)
             settings.SetBooleanSetting("DoGenres", ConfigScrapeOptions_Movie.bMainGenre)
             settings.SetBooleanSetting("DoMPAA", ConfigScrapeOptions_Movie.bMainMPAA)
-            settings.SetBooleanSetting("DoMusic", ConfigScrapeOptions_Movie.bMainMusicBy)
             settings.SetBooleanSetting("DoOriginalTitle", ConfigScrapeOptions_Movie.bMainOriginalTitle)
-            settings.SetBooleanSetting("DoOtherCrews", ConfigScrapeOptions_Movie.bMainOtherCrew)
             settings.SetBooleanSetting("DoOutline", ConfigScrapeOptions_Movie.bMainOutline)
             settings.SetBooleanSetting("DoPlot", ConfigScrapeOptions_Movie.bMainPlot)
-            settings.SetBooleanSetting("DoProducers", ConfigScrapeOptions_Movie.bMainProducers)
             settings.SetBooleanSetting("DoRating", ConfigScrapeOptions_Movie.bMainRating)
             settings.SetBooleanSetting("DoRelease", ConfigScrapeOptions_Movie.bMainRelease)
             settings.SetBooleanSetting("DoRuntime", ConfigScrapeOptions_Movie.bMainRuntime)
@@ -364,15 +352,11 @@ Public Class IMDB_Data
         ConfigScrapeOptions_Movie.bMainCert = _setup_Movie.chkCertification.Checked
         ConfigScrapeOptions_Movie.bMainCountry = _setup_Movie.chkCountry.Checked
         ConfigScrapeOptions_Movie.bMainDirector = _setup_Movie.chkDirector.Checked
-        ConfigScrapeOptions_Movie.bMainFullCrew = _setup_Movie.chkFullCrew.Checked
         ConfigScrapeOptions_Movie.bMainGenre = _setup_Movie.chkGenre.Checked
         ConfigScrapeOptions_Movie.bMainMPAA = _setup_Movie.chkMPAA.Checked
-        ConfigScrapeOptions_Movie.bMainMusicBy = _setup_Movie.chkMusicBy.Checked
         ConfigScrapeOptions_Movie.bMainOriginalTitle = _setup_Movie.chkOriginalTitle.Checked
-        ConfigScrapeOptions_Movie.bMainOtherCrew = _setup_Movie.chkCrew.Checked
         ConfigScrapeOptions_Movie.bMainOutline = _setup_Movie.chkOutline.Checked
         ConfigScrapeOptions_Movie.bMainPlot = _setup_Movie.chkPlot.Checked
-        ConfigScrapeOptions_Movie.bMainProducers = _setup_Movie.chkProducers.Checked
         ConfigScrapeOptions_Movie.bMainRating = _setup_Movie.chkRating.Checked
         ConfigScrapeOptions_Movie.bMainRelease = _setup_Movie.chkRelease.Checked
         ConfigScrapeOptions_Movie.bMainRuntime = _setup_Movie.chkRuntime.Checked
@@ -492,10 +476,10 @@ Public Class IMDB_Data
         If ScrapeModifier.MainNFO AndAlso Not ScrapeModifier.DoSearch Then
             If Not String.IsNullOrEmpty(oDBMovie.Movie.IMDBID) Then
                 'IMDB-ID already available -> scrape and save data into an empty movie container (nMovie)
-                _scraper.GetMovieInfo(oDBMovie.Movie.IMDBID, nMovie, FilteredOptions.bMainFullCrew, False, FilteredOptions, False, _SpecialSettings_Movie.FallBackWorldwide, _SpecialSettings_Movie.ForceTitleLanguage, _SpecialSettings_Movie.CountryAbbreviation, _SpecialSettings_Movie.StudiowithDistributors)
+                _scraper.GetMovieInfo(oDBMovie.Movie.IMDBID, nMovie, False, FilteredOptions, False, _SpecialSettings_Movie.FallBackWorldwide, _SpecialSettings_Movie.ForceTitleLanguage, _SpecialSettings_Movie.CountryAbbreviation, _SpecialSettings_Movie.StudiowithDistributors)
             ElseIf Not ScrapeType = Enums.ScrapeType.SingleScrape Then
                 'no IMDB-ID for movie --> search first!
-                _scraper.GetSearchMovieInfo(oDBMovie.Movie.Title, oDBMovie.Movie.Year, oDBMovie, nMovie, ScrapeType, FilteredOptions, FilteredOptions.bMainFullCrew, _SpecialSettings_Movie.FallBackWorldwide, _SpecialSettings_Movie.ForceTitleLanguage, _SpecialSettings_Movie.CountryAbbreviation, _SpecialSettings_Movie.StudiowithDistributors)
+                _scraper.GetSearchMovieInfo(oDBMovie.Movie.Title, oDBMovie.Movie.Year, oDBMovie, nMovie, ScrapeType, FilteredOptions, _SpecialSettings_Movie.FallBackWorldwide, _SpecialSettings_Movie.ForceTitleLanguage, _SpecialSettings_Movie.CountryAbbreviation, _SpecialSettings_Movie.StudiowithDistributors)
                 'if still no ID retrieved -> exit
                 If String.IsNullOrEmpty(nMovie.IMDBID) Then Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
             End If
@@ -513,7 +497,7 @@ Public Class IMDB_Data
             If String.IsNullOrEmpty(oDBMovie.Movie.IMDBID) AndAlso String.IsNullOrEmpty(oDBMovie.Movie.TMDBID) Then
                 Using dSearch As New dlgIMDBSearchResults_Movie(_SpecialSettings_Movie, _scraper)
                     If dSearch.ShowDialog(nMovie, oDBMovie.Movie.Title, oDBMovie.Movie.Year, oDBMovie.Filename, FilteredOptions) = Windows.Forms.DialogResult.OK Then
-                        _scraper.GetMovieInfo(nMovie.IMDBID, nMovie, FilteredOptions.bMainFullCrew, False, FilteredOptions, False, _SpecialSettings_Movie.FallBackWorldwide, _SpecialSettings_Movie.ForceTitleLanguage, _SpecialSettings_Movie.CountryAbbreviation, _SpecialSettings_Movie.StudiowithDistributors)
+                        _scraper.GetMovieInfo(nMovie.IMDBID, nMovie, False, FilteredOptions, False, _SpecialSettings_Movie.FallBackWorldwide, _SpecialSettings_Movie.ForceTitleLanguage, _SpecialSettings_Movie.CountryAbbreviation, _SpecialSettings_Movie.StudiowithDistributors)
                         'if a movie is found, set DoSearch back to "false" for following scrapers
                         ScrapeModifier.DoSearch = False
                     Else

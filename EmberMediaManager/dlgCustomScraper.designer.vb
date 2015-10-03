@@ -17,7 +17,6 @@ Partial Class dlgCustomScraper
     Friend WithEvents chkMainOptionsOutline As System.Windows.Forms.CheckBox
     Friend WithEvents chkMainOptionsPlot As System.Windows.Forms.CheckBox
     Friend WithEvents chkMainModifierPoster As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMainOptionsProducers As System.Windows.Forms.CheckBox
     Friend WithEvents chkMainOptionsRating As System.Windows.Forms.CheckBox
     Friend WithEvents chkMainOptionsReleaseDate As System.Windows.Forms.CheckBox
     Friend WithEvents chkMainOptionsRuntime As System.Windows.Forms.CheckBox
@@ -119,7 +118,6 @@ Partial Class dlgCustomScraper
         Me.btnMainScrapeOptionsNone = New System.Windows.Forms.Button()
         Me.chkMainOptionsTrailer = New System.Windows.Forms.CheckBox()
         Me.chkMainOptionsCountries = New System.Windows.Forms.CheckBox()
-        Me.chkMainOptionsProducers = New System.Windows.Forms.CheckBox()
         Me.chkMainOptionsTagline = New System.Windows.Forms.CheckBox()
         Me.chkMainOptionsStudios = New System.Windows.Forms.CheckBox()
         Me.chkMainOptionsTitle = New System.Windows.Forms.CheckBox()
@@ -700,7 +698,7 @@ Partial Class dlgCustomScraper
         Me.gbMainScrapeOptions.Location = New System.Drawing.Point(239, 99)
         Me.gbMainScrapeOptions.Name = "gbMainScrapeOptions"
         Me.tblMain.SetRowSpan(Me.gbMainScrapeOptions, 4)
-        Me.gbMainScrapeOptions.Size = New System.Drawing.Size(263, 349)
+        Me.gbMainScrapeOptions.Size = New System.Drawing.Size(263, 326)
         Me.gbMainScrapeOptions.TabIndex = 3
         Me.gbMainScrapeOptions.TabStop = False
         Me.gbMainScrapeOptions.Text = "Main Options"
@@ -720,7 +718,6 @@ Partial Class dlgCustomScraper
         Me.tblMainScrapeOptions.Controls.Add(Me.btnMainScrapeOptionsNone, 1, 0)
         Me.tblMainScrapeOptions.Controls.Add(Me.chkMainOptionsTrailer, 1, 10)
         Me.tblMainScrapeOptions.Controls.Add(Me.chkMainOptionsCountries, 0, 4)
-        Me.tblMainScrapeOptions.Controls.Add(Me.chkMainOptionsProducers, 1, 1)
         Me.tblMainScrapeOptions.Controls.Add(Me.chkMainOptionsTagline, 1, 7)
         Me.tblMainScrapeOptions.Controls.Add(Me.chkMainOptionsStudios, 1, 6)
         Me.tblMainScrapeOptions.Controls.Add(Me.chkMainOptionsTitle, 1, 8)
@@ -731,18 +728,18 @@ Partial Class dlgCustomScraper
         Me.tblMainScrapeOptions.Controls.Add(Me.chkMainOptionsCertifications, 0, 2)
         Me.tblMainScrapeOptions.Controls.Add(Me.chkMainOptionsCreators, 0, 5)
         Me.tblMainScrapeOptions.Controls.Add(Me.chkMainOptionsReleaseDate, 1, 3)
-        Me.tblMainScrapeOptions.Controls.Add(Me.chkMainOptionsRating, 1, 2)
         Me.tblMainScrapeOptions.Controls.Add(Me.chkMainOptionsPlot, 0, 12)
         Me.tblMainScrapeOptions.Controls.Add(Me.chkMainOptionsDirectors, 0, 6)
         Me.tblMainScrapeOptions.Controls.Add(Me.chkMainOptionsOutline, 0, 11)
         Me.tblMainScrapeOptions.Controls.Add(Me.chkMainOptionsEpisodeGuideURL, 0, 7)
         Me.tblMainScrapeOptions.Controls.Add(Me.chkMainOptionsGenres, 0, 8)
         Me.tblMainScrapeOptions.Controls.Add(Me.chkMainOptionsMPAA, 0, 9)
-        Me.tblMainScrapeOptions.Controls.Add(Me.chkMainOptionsPremiered, 0, 13)
+        Me.tblMainScrapeOptions.Controls.Add(Me.chkMainOptionsRating, 1, 2)
+        Me.tblMainScrapeOptions.Controls.Add(Me.chkMainOptionsPremiered, 1, 1)
         Me.tblMainScrapeOptions.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMainScrapeOptions.Location = New System.Drawing.Point(3, 18)
         Me.tblMainScrapeOptions.Name = "tblMainScrapeOptions"
-        Me.tblMainScrapeOptions.RowCount = 15
+        Me.tblMainScrapeOptions.RowCount = 14
         Me.tblMainScrapeOptions.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMainScrapeOptions.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMainScrapeOptions.RowStyles.Add(New System.Windows.Forms.RowStyle())
@@ -757,8 +754,8 @@ Partial Class dlgCustomScraper
         Me.tblMainScrapeOptions.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMainScrapeOptions.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMainScrapeOptions.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMainScrapeOptions.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMainScrapeOptions.Size = New System.Drawing.Size(257, 328)
+        Me.tblMainScrapeOptions.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblMainScrapeOptions.Size = New System.Drawing.Size(257, 305)
         Me.tblMainScrapeOptions.TabIndex = 25
         '
         'chkMainOptionsAll
@@ -846,17 +843,6 @@ Partial Class dlgCustomScraper
         Me.chkMainOptionsCountries.TabIndex = 21
         Me.chkMainOptionsCountries.Text = "Countries"
         Me.chkMainOptionsCountries.UseVisualStyleBackColor = True
-        '
-        'chkMainOptionsProducers
-        '
-        Me.chkMainOptionsProducers.AutoSize = True
-        Me.chkMainOptionsProducers.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkMainOptionsProducers.Location = New System.Drawing.Point(133, 32)
-        Me.chkMainOptionsProducers.Name = "chkMainOptionsProducers"
-        Me.chkMainOptionsProducers.Size = New System.Drawing.Size(77, 17)
-        Me.chkMainOptionsProducers.TabIndex = 17
-        Me.chkMainOptionsProducers.Text = "Producers"
-        Me.chkMainOptionsProducers.UseVisualStyleBackColor = True
         '
         'chkMainOptionsTagline
         '
@@ -1049,7 +1035,7 @@ Partial Class dlgCustomScraper
         '
         Me.chkMainOptionsPremiered.AutoSize = True
         Me.chkMainOptionsPremiered.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkMainOptionsPremiered.Location = New System.Drawing.Point(3, 308)
+        Me.chkMainOptionsPremiered.Location = New System.Drawing.Point(133, 32)
         Me.chkMainOptionsPremiered.Name = "chkMainOptionsPremiered"
         Me.chkMainOptionsPremiered.Size = New System.Drawing.Size(77, 17)
         Me.chkMainOptionsPremiered.TabIndex = 13
@@ -1243,7 +1229,7 @@ Partial Class dlgCustomScraper
         Me.gbSpecialScrapeModifier.Location = New System.Drawing.Point(3, 372)
         Me.gbSpecialScrapeModifier.Name = "gbSpecialScrapeModifier"
         Me.tblMain.SetRowSpan(Me.gbSpecialScrapeModifier, 2)
-        Me.gbSpecialScrapeModifier.Size = New System.Drawing.Size(230, 76)
+        Me.gbSpecialScrapeModifier.Size = New System.Drawing.Size(230, 73)
         Me.gbSpecialScrapeModifier.TabIndex = 4
         Me.gbSpecialScrapeModifier.TabStop = False
         Me.gbSpecialScrapeModifier.Text = "Special Modifiers"
@@ -1266,7 +1252,7 @@ Partial Class dlgCustomScraper
         Me.tblSpecialScrapeModifier.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSpecialScrapeModifier.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSpecialScrapeModifier.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSpecialScrapeModifier.Size = New System.Drawing.Size(224, 55)
+        Me.tblSpecialScrapeModifier.Size = New System.Drawing.Size(224, 52)
         Me.tblSpecialScrapeModifier.TabIndex = 0
         '
         'chkSpecialModifierAll

@@ -71,58 +71,10 @@ Public Class frmSettingsHolder_Movie
 
     Private Sub chkWriters_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkWriters.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
-        If Me.chkWriters.Checked = False Then
-            Me.chkFullCrew.Checked = False
-            Me.chkCrew.Checked = False
-            Me.chkMusicBy.Checked = False
-            Me.chkProducers.Checked = False
-            Me.gbScraperFieldsCredits.Enabled = False
-        Else
-            Me.chkFullCrew.Enabled = True
-            Me.chkCrew.Enabled = True
-            Me.chkMusicBy.Enabled = True
-            Me.chkProducers.Enabled = True
-            Me.gbScraperFieldsCredits.Enabled = True
-        End If
-    End Sub
-    Private Sub chkCrew_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCrew.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-        If Me.chkFullCrew.Checked AndAlso Me.chkCrew.Checked Then
-            Me.chkFullCrew.Checked = False
-        End If
     End Sub
 
     Private Sub chkDirector_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkDirector.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
-    End Sub
-    Private Sub chkMusicBy_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMusicBy.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-        If Me.chkFullCrew.Checked AndAlso Me.chkMusicBy.Checked Then
-            Me.chkFullCrew.Checked = False
-        End If
-    End Sub
-    Private Sub chkProducers_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkProducers.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-        If Me.chkFullCrew.Checked AndAlso Me.chkProducers.Checked Then
-            Me.chkFullCrew.Checked = False
-        End If
-    End Sub
-
-    Private Sub chkFullCrew_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFullCrew.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-
-        If Me.chkFullCrew.Checked Then
-            Me.chkProducers.Checked = False
-            Me.chkMusicBy.Checked = False
-            Me.chkCrew.Checked = False
-            Me.chkProducers.Enabled = False
-            Me.chkMusicBy.Enabled = False
-            Me.chkCrew.Enabled = False
-        Else
-            Me.chkProducers.Enabled = True
-            Me.chkMusicBy.Enabled = True
-            Me.chkCrew.Enabled = True
-        End If
     End Sub
 
     Private Sub chkGenre_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGenre.CheckedChanged
@@ -250,20 +202,16 @@ Public Class frmSettingsHolder_Movie
         Me.chkCertification.Text = Master.eLang.GetString(722, "Certification")
         Me.chkCountry.Text = Master.eLang.GetString(301, "Country")
         Me.chkCountryAbbreviation.Text = Master.eLang.GetString(1257, "Country-Tag: Save country abbreviation(s) instead of full name(s)")
-        Me.chkCrew.Text = Master.eLang.GetString(391, "Other Crew")
         Me.chkDirector.Text = Master.eLang.GetString(62, "Director")
         Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
         Me.chkFallBackworldwide.Text = Master.eLang.GetString(984, "Worldwide title as fallback")
-        Me.chkFullCrew.Text = Master.eLang.GetString(513, "Scrape Full Crew")
         Me.chkGenre.Text = Master.eLang.GetString(20, "Genre")
         Me.chkMPAA.Text = Master.eLang.GetString(401, "MPAA")
-        Me.chkMusicBy.Text = Master.eLang.GetString(392, "Music By")
         Me.chkOriginalTitle.Text = Master.eLang.GetString(302, "Original Title")
         Me.chkOutline.Text = Master.eLang.GetString(64, "Plot Outline")
         Me.chkPlot.Text = Master.eLang.GetString(65, "Plot")
         Me.chkPartialTitles.Text = Master.eLang.GetString(1183, "Partial Titles")
         Me.chkPopularTitles.Text = Master.eLang.GetString(1182, "Popular Titles")
-        Me.chkProducers.Text = Master.eLang.GetString(393, "Producers")
         Me.chkRating.Text = Master.eLang.GetString(400, "Rating")
         Me.chkRelease.Text = Master.eLang.GetString(57, "Release Date")
         Me.chkRuntime.Text = Master.eLang.GetString(396, "Runtime")
@@ -277,7 +225,6 @@ Public Class frmSettingsHolder_Movie
         Me.chkVideoTitles.Text = Master.eLang.GetString(1185, "Video Titles")
         Me.chkWriters.Text = Master.eLang.GetString(394, "Writers")
         Me.chkYear.Text = Master.eLang.GetString(278, "Year")
-        Me.gbScraperFieldsCredits.Text = Master.eLang.GetString(729, "Credits")
         Me.gbScraperFieldsOpts.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
         Me.gbScraperOpts.Text = Master.eLang.GetString(1186, "Scraper Options")
         Me.lblForceTitleLanguage.Text = Master.eLang.GetString(710, "Force Title Language:")

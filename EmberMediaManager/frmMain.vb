@@ -14696,14 +14696,6 @@ doCancel:
         CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
     End Sub
 
-    Private Sub cmnuMovieUpSelProducers_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelProducers.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions
-        cScrapeOptions.bMainProducers = True
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
-    End Sub
-
     Private Sub cmnuMovieUpSelRating_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelRating.Click
         Dim cScrapeOptions As New Structures.ScrapeOptions
         cScrapeOptions.bMainRating = True
@@ -16222,7 +16214,6 @@ doCancel:
                 .cmnuMovieUpSelOriginalTitle.Text = Master.eLang.GetString(302, "Original Title")
                 .cmnuMovieUpSelOutline.Text = Master.eLang.GetString(64, "Plot Outline")
                 .cmnuMovieUpSelPlot.Text = Master.eLang.GetString(65, "Plot")
-                .cmnuMovieUpSelProducers.Text = Master.eLang.GetString(393, "Producers")
                 .cmnuMovieUpSelRating.Text = Master.eLang.GetString(400, "Rating")
                 .cmnuMovieUpSelRelease.Text = Master.eLang.GetString(57, "Release Date")
                 .cmnuMovieUpSelRuntime.Text = Master.eLang.GetString(396, "Runtime")

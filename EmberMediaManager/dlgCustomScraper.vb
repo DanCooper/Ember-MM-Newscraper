@@ -221,7 +221,6 @@ Public Class dlgCustomScraper
         chkMainOptionsOutline.Checked = False
         chkMainOptionsPlot.Checked = False
         chkMainOptionsPremiered.Checked = False
-        chkMainOptionsProducers.Checked = False
         chkMainOptionsRating.Checked = False
         chkMainOptionsReleaseDate.Checked = False
         chkMainOptionsRuntime.Checked = False
@@ -348,8 +347,6 @@ Public Class dlgCustomScraper
                 chkMainOptionsPlot.Enabled = False
                 chkMainOptionsPremiered.Checked = Me.oMainPremieredAllowed
                 chkMainOptionsPremiered.Enabled = False
-                chkMainOptionsProducers.Checked = Me.oMainProducersAllowed
-                chkMainOptionsProducers.Enabled = False
                 chkMainOptionsRating.Checked = Me.oMainRatingAllowed
                 chkMainOptionsRating.Enabled = False
                 chkMainOptionsReleaseDate.Checked = Me.oMainReleaseDateAllowed
@@ -386,7 +383,6 @@ Public Class dlgCustomScraper
                 chkMainOptionsOutline.Enabled = Me.oMainOutlineAllowed
                 chkMainOptionsPlot.Enabled = Me.oMainPlotAllowed
                 chkMainOptionsPremiered.Enabled = Me.oMainPremieredAllowed
-                chkMainOptionsProducers.Enabled = Me.oMainProducersAllowed
                 chkMainOptionsRating.Enabled = Me.oMainRatingAllowed
                 chkMainOptionsReleaseDate.Enabled = Me.oMainReleaseDateAllowed
                 chkMainOptionsRuntime.Enabled = Me.oMainRuntimeAllowed
@@ -576,7 +572,6 @@ Public Class dlgCustomScraper
         CustomUpdater.ScrapeOptions.bMainOutline = chkMainModifierNFO.Checked AndAlso chkMainOptionsOutline.Checked
         CustomUpdater.ScrapeOptions.bMainPlot = chkMainModifierNFO.Checked AndAlso chkMainOptionsPlot.Checked
         CustomUpdater.ScrapeOptions.bMainPremiered = chkMainModifierNFO.Checked AndAlso chkMainOptionsPremiered.Checked
-        CustomUpdater.ScrapeOptions.bMainProducers = chkMainModifierNFO.Checked AndAlso chkMainOptionsProducers.Checked
         CustomUpdater.ScrapeOptions.bMainRating = chkMainModifierNFO.Checked AndAlso chkMainOptionsRating.Checked
         CustomUpdater.ScrapeOptions.bMainRelease = chkMainModifierNFO.Checked AndAlso chkMainOptionsReleaseDate.Checked
         CustomUpdater.ScrapeOptions.bMainRuntime = chkMainModifierNFO.Checked AndAlso chkMainOptionsRuntime.Checked
@@ -635,16 +630,12 @@ Public Class dlgCustomScraper
             CustomUpdater.ScrapeOptions.bMainCreator OrElse _
             CustomUpdater.ScrapeOptions.bMainDirector OrElse _
             CustomUpdater.ScrapeOptions.bMainEpisodeGuide OrElse _
-            CustomUpdater.ScrapeOptions.bMainFullCrew OrElse _
             CustomUpdater.ScrapeOptions.bMainGenre OrElse _
             CustomUpdater.ScrapeOptions.bMainMPAA OrElse _
-            CustomUpdater.ScrapeOptions.bMainMusicBy OrElse _
             CustomUpdater.ScrapeOptions.bMainOriginalTitle OrElse _
-            CustomUpdater.ScrapeOptions.bMainOtherCrew OrElse _
             CustomUpdater.ScrapeOptions.bMainOutline OrElse _
             CustomUpdater.ScrapeOptions.bMainPlot OrElse _
             CustomUpdater.ScrapeOptions.bMainPremiered OrElse _
-            CustomUpdater.ScrapeOptions.bMainProducers OrElse _
             CustomUpdater.ScrapeOptions.bMainRating OrElse _
             CustomUpdater.ScrapeOptions.bMainRelease OrElse _
             CustomUpdater.ScrapeOptions.bMainRuntime OrElse _
@@ -1043,7 +1034,7 @@ Public Class dlgCustomScraper
         chkMainOptionsOutline.Click, _
         chkMainOptionsPlot.Click, _
         chkMainOptionsPremiered.Click, _
-        chkMainOptionsProducers.Click, _
+ _
         chkMainOptionsRating.Click, _
         chkMainOptionsReleaseDate.Click, _
         chkMainOptionsRuntime.Click, _
@@ -1190,7 +1181,6 @@ Public Class dlgCustomScraper
         Me.chkMainOptionsOriginalTitle.Text = Master.eLang.GetString(302, "Original Title")
         Me.chkMainOptionsOutline.Text = Master.eLang.GetString(64, "Plot Outline")
         Me.chkMainOptionsPlot.Text = Master.eLang.GetString(65, "Plot")
-        Me.chkMainOptionsProducers.Text = Master.eLang.GetString(393, "Producers")
         Me.chkMainOptionsRating.Text = Master.eLang.GetString(400, "Rating")
         Me.chkMainOptionsReleaseDate.Text = Master.eLang.GetString(57, "Release Date")
         Me.chkMainOptionsRuntime.Text = Master.eLang.GetString(396, "Runtime")

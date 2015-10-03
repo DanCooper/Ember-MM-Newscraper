@@ -450,27 +450,12 @@ Public Class dlgIMDBSearchResults_Movie
 
     Private Function SetPreviewOptions() As Structures.ScrapeOptions
         Dim aOpt As New Structures.ScrapeOptions
-        aOpt.bMainActors = False
-        aOpt.bMainCert = False
-        aOpt.bMainCollectionID = False
-        aOpt.bMainCountry = False
         aOpt.bMainDirector = True
-        aOpt.bMainFullCrew = False
         aOpt.bMainGenre = True
-        aOpt.bMainMPAA = False
-        aOpt.bMainMusicBy = False
-        aOpt.bMainOtherCrew = False
         aOpt.bMainOutline = True
         aOpt.bMainPlot = True
-        aOpt.bMainProducers = False
-        aOpt.bMainRating = False
-        aOpt.bMainRuntime = False
-        aOpt.bMainStudio = False
         aOpt.bMainTagline = True
         aOpt.bMainTitle = True
-        aOpt.bMainTop250 = False
-        aOpt.bMainTrailer = False
-        aOpt.bMainWriters = False
         aOpt.bMainYear = True
 
         Return aOpt

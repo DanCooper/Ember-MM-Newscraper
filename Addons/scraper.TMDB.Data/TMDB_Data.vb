@@ -316,16 +316,11 @@ Public Class TMDB_Data
         ConfigScrapeOptions_Movie.bMainCollectionID = clsAdvancedSettings.GetBooleanSetting("DoCollectionID", True, , Enums.ContentType.Movie)
         ConfigScrapeOptions_Movie.bMainCountry = clsAdvancedSettings.GetBooleanSetting("DoCountry", True, , Enums.ContentType.Movie)
         ConfigScrapeOptions_Movie.bMainDirector = clsAdvancedSettings.GetBooleanSetting("DoDirector", True, , Enums.ContentType.Movie)
-        ConfigScrapeOptions_Movie.bMainFullCrew = clsAdvancedSettings.GetBooleanSetting("DoFullCrews", True, , Enums.ContentType.Movie)
-        ConfigScrapeOptions_Movie.bMainFullCrew = clsAdvancedSettings.GetBooleanSetting("FullCrew", True, , Enums.ContentType.Movie)
         ConfigScrapeOptions_Movie.bMainGenre = clsAdvancedSettings.GetBooleanSetting("DoGenres", True, , Enums.ContentType.Movie)
         ConfigScrapeOptions_Movie.bMainMPAA = clsAdvancedSettings.GetBooleanSetting("DoMPAA", True, , Enums.ContentType.Movie)
         ConfigScrapeOptions_Movie.bMainOriginalTitle = clsAdvancedSettings.GetBooleanSetting("DoOriginalTitle", True, , Enums.ContentType.Movie)
-        ConfigScrapeOptions_Movie.bMainMusicBy = clsAdvancedSettings.GetBooleanSetting("DoMusic", True, , Enums.ContentType.Movie)
-        ConfigScrapeOptions_Movie.bMainOtherCrew = clsAdvancedSettings.GetBooleanSetting("DoOtherCrews", True, , Enums.ContentType.Movie)
         ConfigScrapeOptions_Movie.bMainOutline = clsAdvancedSettings.GetBooleanSetting("DoOutline", True, , Enums.ContentType.Movie)
         ConfigScrapeOptions_Movie.bMainPlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", True, , Enums.ContentType.Movie)
-        ConfigScrapeOptions_Movie.bMainProducers = clsAdvancedSettings.GetBooleanSetting("DoProducers", True, , Enums.ContentType.Movie)
         ConfigScrapeOptions_Movie.bMainRating = clsAdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.ContentType.Movie)
         ConfigScrapeOptions_Movie.bMainRelease = clsAdvancedSettings.GetBooleanSetting("DoRelease", True, , Enums.ContentType.Movie)
         ConfigScrapeOptions_Movie.bMainRuntime = clsAdvancedSettings.GetBooleanSetting("DoRuntime", True, , Enums.ContentType.Movie)
@@ -391,16 +386,12 @@ Public Class TMDB_Data
             settings.SetBooleanSetting("DoCountry", ConfigScrapeOptions_Movie.bMainCountry, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoDirector", ConfigScrapeOptions_Movie.bMainDirector, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoFanart", ConfigScrapeModifier_Movie.MainFanart, , , Enums.ContentType.Movie)
-            settings.SetBooleanSetting("DoFullCrews", ConfigScrapeOptions_Movie.bMainFullCrew, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoGenres", ConfigScrapeOptions_Movie.bMainGenre, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoMPAA", ConfigScrapeOptions_Movie.bMainMPAA, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoOriginalTitle", ConfigScrapeOptions_Movie.bMainOriginalTitle, , , Enums.ContentType.Movie)
-            settings.SetBooleanSetting("DoMusic", ConfigScrapeOptions_Movie.bMainMusicBy, , , Enums.ContentType.Movie)
-            settings.SetBooleanSetting("DoOtherCrews", ConfigScrapeOptions_Movie.bMainOtherCrew, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoOutline", ConfigScrapeOptions_Movie.bMainOutline, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoPlot", ConfigScrapeOptions_Movie.bMainPlot, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoPoster", ConfigScrapeModifier_Movie.MainPoster, , , Enums.ContentType.Movie)
-            settings.SetBooleanSetting("DoProducers", ConfigScrapeOptions_Movie.bMainProducers, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoRating", ConfigScrapeOptions_Movie.bMainRating, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoRelease", ConfigScrapeOptions_Movie.bMainRelease, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoRuntime", ConfigScrapeOptions_Movie.bMainRuntime, , , Enums.ContentType.Movie)
@@ -412,7 +403,6 @@ Public Class TMDB_Data
             settings.SetBooleanSetting("DoWriters", ConfigScrapeOptions_Movie.bMainWriters, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoYear", ConfigScrapeOptions_Movie.bMainYear, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("FallBackEn", _SpecialSettings_Movie.FallBackEng, , , Enums.ContentType.Movie)
-            settings.SetBooleanSetting("FullCrew", ConfigScrapeOptions_Movie.bMainFullCrew, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("GetAdultItems", _SpecialSettings_Movie.GetAdultItems, , , Enums.ContentType.Movie)
             settings.SetSetting("APIKey", _setup_Movie.txtApiKey.Text, , , Enums.ContentType.Movie)
         End Using
@@ -462,15 +452,11 @@ Public Class TMDB_Data
         ConfigScrapeOptions_Movie.bMainCollectionID = _setup_Movie.chkCollectionID.Checked
         ConfigScrapeOptions_Movie.bMainCountry = _setup_Movie.chkCountry.Checked
         ConfigScrapeOptions_Movie.bMainDirector = _setup_Movie.chkDirector.Checked
-        ConfigScrapeOptions_Movie.bMainFullCrew = True
         ConfigScrapeOptions_Movie.bMainGenre = _setup_Movie.chkGenre.Checked
         ConfigScrapeOptions_Movie.bMainMPAA = _setup_Movie.chkCertification.Checked
         ConfigScrapeOptions_Movie.bMainOriginalTitle = _setup_Movie.chkOriginalTitle.Checked
-        ConfigScrapeOptions_Movie.bMainMusicBy = False
-        ConfigScrapeOptions_Movie.bMainOtherCrew = False
         ConfigScrapeOptions_Movie.bMainOutline = _setup_Movie.chkPlot.Checked
         ConfigScrapeOptions_Movie.bMainPlot = _setup_Movie.chkPlot.Checked
-        ConfigScrapeOptions_Movie.bMainProducers = _setup_Movie.chkDirector.Checked
         ConfigScrapeOptions_Movie.bMainRating = _setup_Movie.chkRating.Checked
         ConfigScrapeOptions_Movie.bMainRelease = _setup_Movie.chkRelease.Checked
         ConfigScrapeOptions_Movie.bMainRuntime = _setup_Movie.chkRuntime.Checked
@@ -607,10 +593,10 @@ Public Class TMDB_Data
         If ScrapeModifier.MainNFO AndAlso Not ScrapeModifier.DoSearch Then
             If Not String.IsNullOrEmpty(oDBElement.Movie.ID) Then
                 'IMDB-ID already available -> scrape and save data into an empty movie container (nMovie)
-                _scraper.GetMovieInfo(oDBElement.Movie.ID, nMovie, FilteredOptions.bMainFullCrew, False, FilteredOptions, False)
+                _scraper.GetMovieInfo(oDBElement.Movie.ID, nMovie, False, FilteredOptions, False)
             ElseIf Not String.IsNullOrEmpty(oDBElement.Movie.TMDBID) Then
                 'TMDB-ID already available -> scrape and save data into an empty movie container (nMovie)
-                _scraper.GetMovieInfo(oDBElement.Movie.TMDBID, nMovie, FilteredOptions.bMainFullCrew, False, FilteredOptions, False)
+                _scraper.GetMovieInfo(oDBElement.Movie.TMDBID, nMovie, False, FilteredOptions, False)
             ElseIf Not ScrapeType = Enums.ScrapeType.SingleScrape Then
                 'no IMDB-ID or TMDB-ID for movie --> search first and try to get ID!
                 If Not String.IsNullOrEmpty(oDBElement.Movie.Title) Then
@@ -633,7 +619,7 @@ Public Class TMDB_Data
             If String.IsNullOrEmpty(oDBElement.Movie.ID) AndAlso String.IsNullOrEmpty(oDBElement.Movie.TMDBID) Then
                 Using dSearch As New dlgTMDBSearchResults_Movie(_SpecialSettings_Movie, _scraper)
                     If dSearch.ShowDialog(nMovie, oDBElement.Movie.Title, oDBElement.Filename, FilteredOptions, oDBElement.Movie.Year) = Windows.Forms.DialogResult.OK Then
-                        _scraper.GetMovieInfo(nMovie.TMDBID, nMovie, FilteredOptions.bMainFullCrew, False, FilteredOptions, False)
+                        _scraper.GetMovieInfo(nMovie.TMDBID, nMovie, False, FilteredOptions, False)
                         'if a movie is found, set DoSearch back to "false" for following scrapers
                         ScrapeModifier.DoSearch = False
                     Else

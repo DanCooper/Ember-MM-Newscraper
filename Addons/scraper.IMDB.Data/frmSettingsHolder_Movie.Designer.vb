@@ -34,12 +34,6 @@ Partial Class frmSettingsHolder_Movie
         Me.tblSettingsMain = New System.Windows.Forms.TableLayoutPanel()
         Me.gbScraperFieldsOpts = New System.Windows.Forms.GroupBox()
         Me.tblScraperFieldsOpts = New System.Windows.Forms.TableLayoutPanel()
-        Me.gbScraperFieldsCredits = New System.Windows.Forms.GroupBox()
-        Me.tblScraperFieldsCredits = New System.Windows.Forms.TableLayoutPanel()
-        Me.chkProducers = New System.Windows.Forms.CheckBox()
-        Me.chkFullCrew = New System.Windows.Forms.CheckBox()
-        Me.chkMusicBy = New System.Windows.Forms.CheckBox()
-        Me.chkCrew = New System.Windows.Forms.CheckBox()
         Me.chkOriginalTitle = New System.Windows.Forms.CheckBox()
         Me.chkTagline = New System.Windows.Forms.CheckBox()
         Me.chkPlot = New System.Windows.Forms.CheckBox()
@@ -54,9 +48,9 @@ Partial Class frmSettingsHolder_Movie
         Me.chkRuntime = New System.Windows.Forms.CheckBox()
         Me.chkTrailer = New System.Windows.Forms.CheckBox()
         Me.chkGenre = New System.Windows.Forms.CheckBox()
-        Me.chkCast = New System.Windows.Forms.CheckBox()
-        Me.chkDirector = New System.Windows.Forms.CheckBox()
         Me.chkWriters = New System.Windows.Forms.CheckBox()
+        Me.chkDirector = New System.Windows.Forms.CheckBox()
+        Me.chkCast = New System.Windows.Forms.CheckBox()
         Me.chkCountry = New System.Windows.Forms.CheckBox()
         Me.chkStudio = New System.Windows.Forms.CheckBox()
         Me.chkStudiowithDistributors = New System.Windows.Forms.CheckBox()
@@ -82,8 +76,6 @@ Partial Class frmSettingsHolder_Movie
         Me.tblSettingsMain.SuspendLayout()
         Me.gbScraperFieldsOpts.SuspendLayout()
         Me.tblScraperFieldsOpts.SuspendLayout()
-        Me.gbScraperFieldsCredits.SuspendLayout()
-        Me.tblScraperFieldsCredits.SuspendLayout()
         Me.gbScraperOpts.SuspendLayout()
         Me.tblScraperOpts.SuspendLayout()
         Me.pnlSettingBottom.SuspendLayout()
@@ -217,7 +209,7 @@ Partial Class frmSettingsHolder_Movie
         Me.gbScraperFieldsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbScraperFieldsOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbScraperFieldsOpts.Name = "gbScraperFieldsOpts"
-        Me.gbScraperFieldsOpts.Size = New System.Drawing.Size(482, 182)
+        Me.gbScraperFieldsOpts.Size = New System.Drawing.Size(475, 182)
         Me.gbScraperFieldsOpts.TabIndex = 3
         Me.gbScraperFieldsOpts.TabStop = False
         Me.gbScraperFieldsOpts.Text = "Scraper Fields - Scraper specific"
@@ -225,13 +217,12 @@ Partial Class frmSettingsHolder_Movie
         'tblScraperFieldsOpts
         '
         Me.tblScraperFieldsOpts.AutoSize = True
-        Me.tblScraperFieldsOpts.ColumnCount = 5
+        Me.tblScraperFieldsOpts.ColumnCount = 4
         Me.tblScraperFieldsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblScraperFieldsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblScraperFieldsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblScraperFieldsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblScraperFieldsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblScraperFieldsOpts.Controls.Add(Me.gbScraperFieldsCredits, 3, 0)
+        Me.tblScraperFieldsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkOriginalTitle, 0, 1)
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkTagline, 0, 6)
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkPlot, 0, 4)
@@ -264,97 +255,8 @@ Partial Class frmSettingsHolder_Movie
         Me.tblScraperFieldsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperFieldsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperFieldsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperFieldsOpts.Size = New System.Drawing.Size(476, 161)
+        Me.tblScraperFieldsOpts.Size = New System.Drawing.Size(469, 161)
         Me.tblScraperFieldsOpts.TabIndex = 1
-        '
-        'gbScraperFieldsCredits
-        '
-        Me.gbScraperFieldsCredits.AutoSize = True
-        Me.gbScraperFieldsCredits.Controls.Add(Me.tblScraperFieldsCredits)
-        Me.gbScraperFieldsCredits.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbScraperFieldsCredits.Location = New System.Drawing.Point(350, 3)
-        Me.gbScraperFieldsCredits.Name = "gbScraperFieldsCredits"
-        Me.tblScraperFieldsOpts.SetRowSpan(Me.gbScraperFieldsCredits, 6)
-        Me.gbScraperFieldsCredits.Size = New System.Drawing.Size(123, 132)
-        Me.gbScraperFieldsCredits.TabIndex = 79
-        Me.gbScraperFieldsCredits.TabStop = False
-        Me.gbScraperFieldsCredits.Text = "Credits"
-        '
-        'tblScraperFieldsCredits
-        '
-        Me.tblScraperFieldsCredits.AutoSize = True
-        Me.tblScraperFieldsCredits.ColumnCount = 2
-        Me.tblScraperFieldsCredits.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblScraperFieldsCredits.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblScraperFieldsCredits.Controls.Add(Me.chkProducers, 0, 3)
-        Me.tblScraperFieldsCredits.Controls.Add(Me.chkFullCrew, 0, 0)
-        Me.tblScraperFieldsCredits.Controls.Add(Me.chkMusicBy, 0, 2)
-        Me.tblScraperFieldsCredits.Controls.Add(Me.chkCrew, 0, 1)
-        Me.tblScraperFieldsCredits.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblScraperFieldsCredits.Location = New System.Drawing.Point(3, 18)
-        Me.tblScraperFieldsCredits.Name = "tblScraperFieldsCredits"
-        Me.tblScraperFieldsCredits.RowCount = 5
-        Me.tblScraperFieldsCredits.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperFieldsCredits.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperFieldsCredits.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperFieldsCredits.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperFieldsCredits.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperFieldsCredits.Size = New System.Drawing.Size(117, 111)
-        Me.tblScraperFieldsCredits.TabIndex = 2
-        '
-        'chkProducers
-        '
-        Me.chkProducers.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkProducers.AutoSize = True
-        Me.chkProducers.Enabled = False
-        Me.chkProducers.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkProducers.Location = New System.Drawing.Point(3, 72)
-        Me.chkProducers.Name = "chkProducers"
-        Me.chkProducers.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
-        Me.chkProducers.Size = New System.Drawing.Size(97, 17)
-        Me.chkProducers.TabIndex = 23
-        Me.chkProducers.Text = "Producers"
-        Me.chkProducers.UseVisualStyleBackColor = True
-        '
-        'chkFullCrew
-        '
-        Me.chkFullCrew.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkFullCrew.AutoSize = True
-        Me.chkFullCrew.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkFullCrew.Location = New System.Drawing.Point(3, 3)
-        Me.chkFullCrew.Name = "chkFullCrew"
-        Me.chkFullCrew.Size = New System.Drawing.Size(111, 17)
-        Me.chkFullCrew.TabIndex = 20
-        Me.chkFullCrew.Text = "Scrape Full Crew"
-        Me.chkFullCrew.UseVisualStyleBackColor = True
-        '
-        'chkMusicBy
-        '
-        Me.chkMusicBy.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMusicBy.AutoSize = True
-        Me.chkMusicBy.Enabled = False
-        Me.chkMusicBy.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMusicBy.Location = New System.Drawing.Point(3, 49)
-        Me.chkMusicBy.Name = "chkMusicBy"
-        Me.chkMusicBy.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
-        Me.chkMusicBy.Size = New System.Drawing.Size(91, 17)
-        Me.chkMusicBy.TabIndex = 22
-        Me.chkMusicBy.Text = "Music By"
-        Me.chkMusicBy.UseVisualStyleBackColor = True
-        '
-        'chkCrew
-        '
-        Me.chkCrew.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkCrew.AutoSize = True
-        Me.chkCrew.Enabled = False
-        Me.chkCrew.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCrew.Location = New System.Drawing.Point(3, 26)
-        Me.chkCrew.Name = "chkCrew"
-        Me.chkCrew.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
-        Me.chkCrew.Size = New System.Drawing.Size(105, 17)
-        Me.chkCrew.TabIndex = 21
-        Me.chkCrew.Text = "Other Crew"
-        Me.chkCrew.UseVisualStyleBackColor = True
         '
         'chkOriginalTitle
         '
@@ -524,17 +426,17 @@ Partial Class frmSettingsHolder_Movie
         Me.chkGenre.Text = "Genre"
         Me.chkGenre.UseVisualStyleBackColor = True
         '
-        'chkCast
+        'chkWriters
         '
-        Me.chkCast.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkCast.AutoSize = True
-        Me.chkCast.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCast.Location = New System.Drawing.Point(196, 26)
-        Me.chkCast.Name = "chkCast"
-        Me.chkCast.Size = New System.Drawing.Size(48, 17)
-        Me.chkCast.TabIndex = 12
-        Me.chkCast.Text = "Cast"
-        Me.chkCast.UseVisualStyleBackColor = True
+        Me.chkWriters.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkWriters.AutoSize = True
+        Me.chkWriters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkWriters.Location = New System.Drawing.Point(196, 72)
+        Me.chkWriters.Name = "chkWriters"
+        Me.chkWriters.Size = New System.Drawing.Size(105, 17)
+        Me.chkWriters.TabIndex = 14
+        Me.chkWriters.Text = "Credits(Writers)"
+        Me.chkWriters.UseVisualStyleBackColor = True
         '
         'chkDirector
         '
@@ -548,17 +450,17 @@ Partial Class frmSettingsHolder_Movie
         Me.chkDirector.Text = "Director"
         Me.chkDirector.UseVisualStyleBackColor = True
         '
-        'chkWriters
+        'chkCast
         '
-        Me.chkWriters.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkWriters.AutoSize = True
-        Me.chkWriters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkWriters.Location = New System.Drawing.Point(196, 72)
-        Me.chkWriters.Name = "chkWriters"
-        Me.chkWriters.Size = New System.Drawing.Size(105, 17)
-        Me.chkWriters.TabIndex = 14
-        Me.chkWriters.Text = "Credits(Writers)"
-        Me.chkWriters.UseVisualStyleBackColor = True
+        Me.chkCast.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkCast.AutoSize = True
+        Me.chkCast.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkCast.Location = New System.Drawing.Point(196, 26)
+        Me.chkCast.Name = "chkCast"
+        Me.chkCast.Size = New System.Drawing.Size(48, 17)
+        Me.chkCast.TabIndex = 12
+        Me.chkCast.Text = "Cast"
+        Me.chkCast.UseVisualStyleBackColor = True
         '
         'chkCountry
         '
@@ -606,7 +508,7 @@ Partial Class frmSettingsHolder_Movie
         Me.gbScraperOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbScraperOpts.Location = New System.Drawing.Point(3, 191)
         Me.gbScraperOpts.Name = "gbScraperOpts"
-        Me.gbScraperOpts.Size = New System.Drawing.Size(482, 140)
+        Me.gbScraperOpts.Size = New System.Drawing.Size(475, 140)
         Me.gbScraperOpts.TabIndex = 97
         Me.gbScraperOpts.TabStop = False
         Me.gbScraperOpts.Text = "Scraper Options"
@@ -638,7 +540,7 @@ Partial Class frmSettingsHolder_Movie
         Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblScraperOpts.Size = New System.Drawing.Size(476, 119)
+        Me.tblScraperOpts.Size = New System.Drawing.Size(469, 119)
         Me.tblScraperOpts.TabIndex = 1
         '
         'chkCountryAbbreviation
@@ -835,10 +737,6 @@ Partial Class frmSettingsHolder_Movie
         Me.gbScraperFieldsOpts.PerformLayout()
         Me.tblScraperFieldsOpts.ResumeLayout(False)
         Me.tblScraperFieldsOpts.PerformLayout()
-        Me.gbScraperFieldsCredits.ResumeLayout(False)
-        Me.gbScraperFieldsCredits.PerformLayout()
-        Me.tblScraperFieldsCredits.ResumeLayout(False)
-        Me.tblScraperFieldsCredits.PerformLayout()
         Me.gbScraperOpts.ResumeLayout(False)
         Me.gbScraperOpts.PerformLayout()
         Me.tblScraperOpts.ResumeLayout(False)
@@ -864,10 +762,6 @@ Partial Class frmSettingsHolder_Movie
     Friend WithEvents chkCertification As System.Windows.Forms.CheckBox
     Friend WithEvents chkCountry As System.Windows.Forms.CheckBox
     Friend WithEvents chkTop250 As System.Windows.Forms.CheckBox
-    Friend WithEvents chkCrew As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMusicBy As System.Windows.Forms.CheckBox
-    Friend WithEvents chkFullCrew As System.Windows.Forms.CheckBox
-    Friend WithEvents chkProducers As System.Windows.Forms.CheckBox
     Friend WithEvents chkWriters As System.Windows.Forms.CheckBox
     Friend WithEvents chkStudio As System.Windows.Forms.CheckBox
     Friend WithEvents chkRuntime As System.Windows.Forms.CheckBox
@@ -891,12 +785,10 @@ Partial Class frmSettingsHolder_Movie
     Friend WithEvents chkFallBackworldwide As System.Windows.Forms.CheckBox
     Friend WithEvents cbForceTitleLanguage As System.Windows.Forms.ComboBox
     Friend WithEvents lblForceTitleLanguage As System.Windows.Forms.Label
-    Friend WithEvents gbScraperFieldsCredits As System.Windows.Forms.GroupBox
     Friend WithEvents chkCountryAbbreviation As System.Windows.Forms.CheckBox
     Friend WithEvents chkMPAA As System.Windows.Forms.CheckBox
     Friend WithEvents chkOriginalTitle As System.Windows.Forms.CheckBox
     Friend WithEvents tblScraperFieldsOpts As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents tblScraperFieldsCredits As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblScraperOpts As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblSettingsTop As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblSettingsMain As System.Windows.Forms.TableLayoutPanel

@@ -214,7 +214,7 @@ Namespace TMDB
         ''' <param name="Options">Module settings<param>
         ''' <param name="IsSearch">Not used at moment</param>
         ''' <returns>True: success, false: no success</returns>
-        Public Function GetMovieInfo(ByVal strID As String, ByRef nMovie As MediaContainers.Movie, ByVal FullCrew As Boolean, ByVal GetPoster As Boolean, ByVal FilteredOptions As Structures.ScrapeOptions, ByVal IsSearch As Boolean) As Boolean
+        Public Function GetMovieInfo(ByVal strID As String, ByRef nMovie As MediaContainers.Movie, ByVal GetPoster As Boolean, ByVal FilteredOptions As Structures.ScrapeOptions, ByVal IsSearch As Boolean) As Boolean
             If String.IsNullOrEmpty(strID) OrElse strID.Length < 2 Then Return False
 
             Dim Movie As TMDbLib.Objects.Movies.Movie
@@ -316,7 +316,7 @@ Namespace TMDB
             If bwTMDB.CancellationPending Then Return Nothing
 
             'Director / Writer
-            If FilteredOptions.bMainDirector OrElse FilteredOptions.bMainWriters OrElse FilteredOptions.bMainFullCrew Then
+            If FilteredOptions.bMainDirector OrElse FilteredOptions.bMainWriters Then
                 If Movie.Credits IsNot Nothing AndAlso Movie.Credits.Crew IsNot Nothing Then
                     For Each aCrew As TMDbLib.Objects.General.Crew In Movie.Credits.Crew
                         If FilteredOptions.bMainDirector AndAlso aCrew.Department = "Directing" AndAlso aCrew.Job = "Director" Then
@@ -1051,7 +1051,7 @@ Namespace TMDB
             Select Case iType
                 Case Enums.ScrapeType.AllAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MissingAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SingleField
                     If r.Matches.Count = 1 Then
-                        b = GetMovieInfo(r.Matches.Item(0).TMDBID, nMovie, True, False, FilteredOptions, True)
+                        b = GetMovieInfo(r.Matches.Item(0).TMDBID, nMovie, False, FilteredOptions, True)
                     Else
                         nMovie.Clear()
                         Using dTMDB As New dlgTMDBSearchResults_Movie(_SpecialSettings, Me)
@@ -1059,7 +1059,7 @@ Namespace TMDB
                                 If String.IsNullOrEmpty(nMovie.TMDBID) Then
                                     b = False
                                 Else
-                                    b = GetMovieInfo(nMovie.TMDBID, nMovie, True, False, FilteredOptions, True)
+                                    b = GetMovieInfo(nMovie.TMDBID, nMovie, False, FilteredOptions, True)
                                 End If
                             Else
                                 b = False
@@ -1069,15 +1069,15 @@ Namespace TMDB
 
                 Case Enums.ScrapeType.AllSkip, Enums.ScrapeType.FilterSkip, Enums.ScrapeType.MarkedSkip, Enums.ScrapeType.MissingSkip, Enums.ScrapeType.NewSkip, Enums.ScrapeType.SelectedSkip
                     If r.Matches.Count = 1 Then
-                        b = GetMovieInfo(r.Matches.Item(0).TMDBID, nMovie, True, False, FilteredOptions, True)
+                        b = GetMovieInfo(r.Matches.Item(0).TMDBID, nMovie, False, FilteredOptions, True)
                     End If
 
                 Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SingleScrape
                     Dim exactHaveYear As Integer = FindYear(oDBMovie.Filename, r.Matches)
                     If r.Matches.Count = 1 Then
-                        b = GetMovieInfo(r.Matches.Item(0).TMDBID, nMovie, True, False, FilteredOptions, True)
+                        b = GetMovieInfo(r.Matches.Item(0).TMDBID, nMovie, False, FilteredOptions, True)
                     ElseIf r.Matches.Count > 1 Then
-                        b = GetMovieInfo(r.Matches.Item(If(exactHaveYear >= 0, exactHaveYear, 0)).TMDBID, nMovie, True, False, FilteredOptions, True)
+                        b = GetMovieInfo(r.Matches.Item(If(exactHaveYear >= 0, exactHaveYear, 0)).TMDBID, nMovie, False, FilteredOptions, True)
                     End If
             End Select
 
@@ -1255,7 +1255,7 @@ Namespace TMDB
                     e.Result = New Results With {.ResultType = SearchType.Movies, .Result = r}
 
                 Case SearchType.SearchDetails_Movie
-                    Dim s As Boolean = GetMovieInfo(Args.Parameter, Args.Movie, False, True, Args.Options_Movie, True)
+                    Dim s As Boolean = GetMovieInfo(Args.Parameter, Args.Movie, True, Args.Options_Movie, True)
                     e.Result = New Results With {.ResultType = SearchType.SearchDetails_Movie, .Success = s}
 
                 Case SearchType.MovieSets
