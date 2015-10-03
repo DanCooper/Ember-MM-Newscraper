@@ -114,14 +114,14 @@ Namespace TVDBs
             End While
         End Sub
 
-        Public Function GetSearchTVShowInfo(ByVal sShowName As String, ByRef oDBTV As Database.DBElement, ByRef nShow As MediaContainers.TVShow, ByVal iType As Enums.ScrapeType, ByVal FilteredOptions As Structures.ScrapeOptions) As MediaContainers.TVShow
+        Public Function GetSearchTVShowInfo(ByVal sShowName As String, ByRef oDBTV As Database.DBElement, ByRef nShow As MediaContainers.TVShow, ByVal iType As Enums.ScrapeType, ByVal FilteredOptions As Structures.ScrapeOptions, ByVal withEpisodes As Boolean) As MediaContainers.TVShow
             Dim r As SearchResults = SearchTVShow(sShowName)
             Dim b As Boolean = False
 
             Select Case iType
                 Case Enums.ScrapeType.AllAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MissingAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SingleField
                     If r.Matches.Count = 1 Then
-                        b = GetTVShowInfo(r.Matches.Item(0).TVDB, nShow, False, FilteredOptions, True, False)
+                        b = GetTVShowInfo(r.Matches.Item(0).TVDB, nShow, False, FilteredOptions, True, withEpisodes)
                     Else
                         nShow.Clear()
                         Using dTVDB As New dlgTVDBSearchResults(_SpecialSettings, Me)
@@ -129,7 +129,7 @@ Namespace TVDBs
                                 If String.IsNullOrEmpty(nShow.TVDB) Then
                                     b = False
                                 Else
-                                    b = GetTVShowInfo(r.Matches.Item(0).TVDB, nShow, False, FilteredOptions, True, False)
+                                    b = GetTVShowInfo(r.Matches.Item(0).TVDB, nShow, False, FilteredOptions, True, withEpisodes)
                                 End If
                             Else
                                 b = False
@@ -139,12 +139,12 @@ Namespace TVDBs
 
                 Case Enums.ScrapeType.AllSkip, Enums.ScrapeType.FilterSkip, Enums.ScrapeType.MarkedSkip, Enums.ScrapeType.MissingSkip, Enums.ScrapeType.NewSkip, Enums.ScrapeType.SelectedSkip
                     If r.Matches.Count = 1 Then
-                        b = GetTVShowInfo(r.Matches.Item(0).TVDB, nShow, False, FilteredOptions, True, False)
+                        b = GetTVShowInfo(r.Matches.Item(0).TVDB, nShow, False, FilteredOptions, True, withEpisodes)
                     End If
 
                 Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SingleScrape
                     If r.Matches.Count > 0 Then
-                        b = GetTVShowInfo(r.Matches.Item(0).TVDB, nShow, False, FilteredOptions, True, False)
+                        b = GetTVShowInfo(r.Matches.Item(0).TVDB, nShow, False, FilteredOptions, True, withEpisodes)
                     End If
             End Select
 

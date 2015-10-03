@@ -256,7 +256,7 @@ Public Class TVDB_Data
             ElseIf Not ScrapeType = Enums.ScrapeType.SingleScrape Then
                 'no TVDB-ID for tv show --> search first and try to get ID!
                 If Not String.IsNullOrEmpty(oDBTV.TVShow.Title) Then
-                    _scraper.GetSearchTVShowInfo(oDBTV.TVShow.Title, oDBTV, nShow, ScrapeType, FilteredOptions)
+                    _scraper.GetSearchTVShowInfo(oDBTV.TVShow.Title, oDBTV, nShow, ScrapeType, FilteredOptions, ScrapeModifier.withEpisodes)
                 End If
                 'if still no ID retrieved -> exit
                 If String.IsNullOrEmpty(nShow.TVDB) Then Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
