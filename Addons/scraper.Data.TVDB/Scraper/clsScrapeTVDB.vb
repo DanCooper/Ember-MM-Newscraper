@@ -143,7 +143,7 @@ Namespace TVDBs
                     End If
 
                 Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SingleScrape
-                    If r.Matches.Count > 1 Then
+                    If r.Matches.Count > 0 Then
                         b = GetTVShowInfo(r.Matches.Item(0).TVDB, nShow, False, FilteredOptions, True, False)
                     End If
             End Select
@@ -239,7 +239,7 @@ Namespace TVDBs
                         nShow.Actors.Add(New MediaContainers.Person With {.Name = aCast.Name, _
                                                                           .Order = aCast.SortOrder, _
                                                                           .Role = aCast.Role, _
-                                                                          .ThumbURL = If(Not String.IsNullOrEmpty(aCast.ImagePath), String.Format("{0}/banners/{1}", _TVDBMirror.Address, aCast.ImagePath), String.Empty), _
+                                                                          .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ImagePath), String.Format("{0}/banners/{1}", _TVDBMirror.Address, aCast.ImagePath), String.Empty), _
                                                                           .TVDB = CStr(aCast.Id)})
                     Next
                 End If

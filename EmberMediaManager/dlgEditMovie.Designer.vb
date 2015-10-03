@@ -24,8 +24,8 @@ Partial Class dlgEditMovie
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgEditMovie))
-        Dim ListViewGroup2 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Local Subtitles", System.Windows.Forms.HorizontalAlignment.Left)
-        Dim ListViewItem2 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("1")
+        Dim ListViewGroup1 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Local Subtitles", System.Windows.Forms.HorizontalAlignment.Left)
+        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("1")
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.Cancel_Button = New System.Windows.Forms.Button()
         Me.pnlTop = New System.Windows.Forms.Panel()
@@ -153,6 +153,7 @@ Partial Class dlgEditMovie
         Me.btnSetFanartLocal = New System.Windows.Forms.Button()
         Me.pbFanart = New System.Windows.Forms.PictureBox()
         Me.tpExtrafanarts = New System.Windows.Forms.TabPage()
+        Me.btnSetExtrafanartsScrape = New System.Windows.Forms.Button()
         Me.lblExtrafanartsSize = New System.Windows.Forms.Label()
         Me.pnlExtrafanarts = New System.Windows.Forms.Panel()
         Me.pnlEFanartsSetAsFanart = New System.Windows.Forms.Panel()
@@ -161,6 +162,7 @@ Partial Class dlgEditMovie
         Me.btnExtrafanartsRemove = New System.Windows.Forms.Button()
         Me.pbExtrafanarts = New System.Windows.Forms.PictureBox()
         Me.tpExtrathumbs = New System.Windows.Forms.TabPage()
+        Me.btnSetExtrathumbsScrape = New System.Windows.Forms.Button()
         Me.lblExtrathumbsSize = New System.Windows.Forms.Label()
         Me.pnlExtrathumbs = New System.Windows.Forms.Panel()
         Me.pnlEThumbsSetAsFanart = New System.Windows.Forms.Panel()
@@ -219,8 +221,7 @@ Partial Class dlgEditMovie
         Me.StatusStrip = New System.Windows.Forms.StatusStrip()
         Me.tsFilename = New System.Windows.Forms.ToolStripStatusLabel()
         Me.txtLastPlayed = New System.Windows.Forms.TextBox()
-        Me.btnSetExtrafanartsScrape = New System.Windows.Forms.Button()
-        Me.btnSetExtrathumbsScrape = New System.Windows.Forms.Button()
+        Me.colLocalPath = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEdit.SuspendLayout()
@@ -809,7 +810,7 @@ Partial Class dlgEditMovie
         '
         Me.lvActors.BackColor = System.Drawing.SystemColors.Window
         Me.lvActors.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lvActors.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colID, Me.colName, Me.colRole, Me.colThumb})
+        Me.lvActors.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colID, Me.colName, Me.colRole, Me.colThumb, Me.colLocalPath})
         Me.lvActors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lvActors.FullRowSelect = True
         Me.lvActors.Location = New System.Drawing.Point(273, 156)
@@ -1722,6 +1723,19 @@ Partial Class dlgEditMovie
         Me.tpExtrafanarts.Text = "Extrafanarts"
         Me.tpExtrafanarts.UseVisualStyleBackColor = True
         '
+        'btnSetExtrafanartsScrape
+        '
+        Me.btnSetExtrafanartsScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetExtrafanartsScrape.Image = CType(resources.GetObject("btnSetExtrafanartsScrape.Image"), System.Drawing.Image)
+        Me.btnSetExtrafanartsScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetExtrafanartsScrape.Location = New System.Drawing.Point(882, 95)
+        Me.btnSetExtrafanartsScrape.Name = "btnSetExtrafanartsScrape"
+        Me.btnSetExtrafanartsScrape.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetExtrafanartsScrape.TabIndex = 17
+        Me.btnSetExtrafanartsScrape.Text = "Scrape"
+        Me.btnSetExtrafanartsScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetExtrafanartsScrape.UseVisualStyleBackColor = True
+        '
         'lblExtrafanartsSize
         '
         Me.lblExtrafanartsSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
@@ -1812,6 +1826,19 @@ Partial Class dlgEditMovie
         Me.tpExtrathumbs.TabIndex = 4
         Me.tpExtrathumbs.Text = "Extrathumbs"
         Me.tpExtrathumbs.UseVisualStyleBackColor = True
+        '
+        'btnSetExtrathumbsScrape
+        '
+        Me.btnSetExtrathumbsScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetExtrathumbsScrape.Image = CType(resources.GetObject("btnSetExtrathumbsScrape.Image"), System.Drawing.Image)
+        Me.btnSetExtrathumbsScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetExtrathumbsScrape.Location = New System.Drawing.Point(882, 95)
+        Me.btnSetExtrathumbsScrape.Name = "btnSetExtrathumbsScrape"
+        Me.btnSetExtrathumbsScrape.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetExtrathumbsScrape.TabIndex = 18
+        Me.btnSetExtrathumbsScrape.Text = "Scrape"
+        Me.btnSetExtrathumbsScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetExtrathumbsScrape.UseVisualStyleBackColor = True
         '
         'lblExtrathumbsSize
         '
@@ -1970,12 +1997,12 @@ Partial Class dlgEditMovie
         Me.lvSubtitles.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5})
         Me.lvSubtitles.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lvSubtitles.FullRowSelect = True
-        ListViewGroup2.Header = "Local Subtitles"
-        ListViewGroup2.Name = "LocalSubtitles"
-        Me.lvSubtitles.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup2})
+        ListViewGroup1.Header = "Local Subtitles"
+        ListViewGroup1.Name = "LocalSubtitles"
+        Me.lvSubtitles.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup1})
         Me.lvSubtitles.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
-        ListViewItem2.Group = ListViewGroup2
-        Me.lvSubtitles.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem2})
+        ListViewItem1.Group = ListViewGroup1
+        Me.lvSubtitles.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
         Me.lvSubtitles.Location = New System.Drawing.Point(6, 6)
         Me.lvSubtitles.MultiSelect = False
         Me.lvSubtitles.Name = "lvSubtitles"
@@ -2418,31 +2445,10 @@ Partial Class dlgEditMovie
         Me.txtLastPlayed.Size = New System.Drawing.Size(118, 22)
         Me.txtLastPlayed.TabIndex = 74
         '
-        'btnSetExtrafanartsScrape
+        'colLocalPath
         '
-        Me.btnSetExtrafanartsScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnSetExtrafanartsScrape.Image = CType(resources.GetObject("btnSetExtrafanartsScrape.Image"), System.Drawing.Image)
-        Me.btnSetExtrafanartsScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetExtrafanartsScrape.Location = New System.Drawing.Point(882, 95)
-        Me.btnSetExtrafanartsScrape.Name = "btnSetExtrafanartsScrape"
-        Me.btnSetExtrafanartsScrape.Size = New System.Drawing.Size(96, 83)
-        Me.btnSetExtrafanartsScrape.TabIndex = 17
-        Me.btnSetExtrafanartsScrape.Text = "Scrape"
-        Me.btnSetExtrafanartsScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnSetExtrafanartsScrape.UseVisualStyleBackColor = True
-        '
-        'btnSetExtrathumbsScrape
-        '
-        Me.btnSetExtrathumbsScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnSetExtrathumbsScrape.Image = CType(resources.GetObject("btnSetExtrathumbsScrape.Image"), System.Drawing.Image)
-        Me.btnSetExtrathumbsScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnSetExtrathumbsScrape.Location = New System.Drawing.Point(882, 95)
-        Me.btnSetExtrathumbsScrape.Name = "btnSetExtrathumbsScrape"
-        Me.btnSetExtrathumbsScrape.Size = New System.Drawing.Size(96, 83)
-        Me.btnSetExtrathumbsScrape.TabIndex = 18
-        Me.btnSetExtrathumbsScrape.Text = "Scrape"
-        Me.btnSetExtrathumbsScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnSetExtrathumbsScrape.UseVisualStyleBackColor = True
+        Me.colLocalPath.Text = "Local Path"
+        Me.colLocalPath.Width = 0
         '
         'dlgEditMovie
         '
@@ -2723,5 +2729,6 @@ Partial Class dlgEditMovie
     Friend WithEvents txtLastPlayed As System.Windows.Forms.TextBox
     Friend WithEvents btnSetExtrafanartsScrape As System.Windows.Forms.Button
     Friend WithEvents btnSetExtrathumbsScrape As System.Windows.Forms.Button
+    Friend WithEvents colLocalPath As System.Windows.Forms.ColumnHeader
 
 End Class

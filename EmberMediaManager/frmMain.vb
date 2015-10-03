@@ -9447,15 +9447,15 @@ doCancel:
             If Me.currMovie.Movie.ActorsSpecified Then
                 Me.pbActors.Image = My.Resources.actor_silhouette
                 For Each imdbAct As MediaContainers.Person In Me.currMovie.Movie.Actors
-                    If Not String.IsNullOrEmpty(imdbAct.ThumbPath) AndAlso File.Exists(imdbAct.ThumbPath) Then
-                        If Not imdbAct.ThumbURL.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.ThumbURL.ToLower.IndexOf("no_photo") > 0 Then
-                            Me.alActors.Add(imdbAct.ThumbPath)
+                    If Not String.IsNullOrEmpty(imdbAct.LocalFilePath) AndAlso File.Exists(imdbAct.LocalFilePath) Then
+                        If Not imdbAct.URLOriginal.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.URLOriginal.ToLower.IndexOf("no_photo") > 0 Then
+                            Me.alActors.Add(imdbAct.LocalFilePath)
                         Else
                             Me.alActors.Add("none")
                         End If
-                    ElseIf Not String.IsNullOrEmpty(imdbAct.ThumbURL) Then
-                        If Not imdbAct.ThumbURL.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.ThumbURL.ToLower.IndexOf("no_photo") > 0 Then
-                            Me.alActors.Add(imdbAct.ThumbURL)
+                    ElseIf Not String.IsNullOrEmpty(imdbAct.URLOriginal) Then
+                        If Not imdbAct.URLOriginal.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.URLOriginal.ToLower.IndexOf("no_photo") > 0 Then
+                            Me.alActors.Add(imdbAct.URLOriginal)
                         Else
                             Me.alActors.Add("none")
                         End If
@@ -9662,15 +9662,15 @@ doCancel:
             If Me.currTV.TVEpisode.ActorsSpecified Then
                 Me.pbActors.Image = My.Resources.actor_silhouette
                 For Each imdbAct As MediaContainers.Person In Me.currTV.TVEpisode.Actors
-                    If Not String.IsNullOrEmpty(imdbAct.ThumbPath) AndAlso File.Exists(imdbAct.ThumbPath) Then
-                        If Not imdbAct.ThumbURL.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.ThumbURL.ToLower.IndexOf("no_photo") > 0 Then
-                            Me.alActors.Add(imdbAct.ThumbPath)
+                    If Not String.IsNullOrEmpty(imdbAct.LocalFilePath) AndAlso File.Exists(imdbAct.LocalFilePath) Then
+                        If Not imdbAct.URLOriginal.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.URLOriginal.ToLower.IndexOf("no_photo") > 0 Then
+                            Me.alActors.Add(imdbAct.LocalFilePath)
                         Else
                             Me.alActors.Add("none")
                         End If
-                    ElseIf Not String.IsNullOrEmpty(imdbAct.ThumbURL) Then
-                        If Not imdbAct.ThumbURL.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.ThumbURL.ToLower.IndexOf("no_photo") > 0 Then
-                            Me.alActors.Add(imdbAct.ThumbURL)
+                    ElseIf Not String.IsNullOrEmpty(imdbAct.URLOriginal) Then
+                        If Not imdbAct.URLOriginal.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.URLOriginal.ToLower.IndexOf("no_photo") > 0 Then
+                            Me.alActors.Add(imdbAct.URLOriginal)
                         Else
                             Me.alActors.Add("none")
                         End If
@@ -9785,15 +9785,15 @@ doCancel:
         If Me.currTV.TVShow.ActorsSpecified Then
             Me.pbActors.Image = My.Resources.actor_silhouette
             For Each imdbAct As MediaContainers.Person In Me.currTV.TVShow.Actors
-                If Not String.IsNullOrEmpty(imdbAct.ThumbPath) AndAlso File.Exists(imdbAct.ThumbPath) Then
-                    If Not imdbAct.ThumbURL.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.ThumbURL.ToLower.IndexOf("no_photo") > 0 Then
-                        Me.alActors.Add(imdbAct.ThumbPath)
+                If Not String.IsNullOrEmpty(imdbAct.LocalFilePath) AndAlso File.Exists(imdbAct.LocalFilePath) Then
+                    If Not imdbAct.URLOriginal.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.URLOriginal.ToLower.IndexOf("no_photo") > 0 Then
+                        Me.alActors.Add(imdbAct.LocalFilePath)
                     Else
                         Me.alActors.Add("none")
                     End If
-                ElseIf Not String.IsNullOrEmpty(imdbAct.ThumbURL) Then
-                    If Not imdbAct.ThumbURL.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.ThumbURL.ToLower.IndexOf("no_photo") > 0 Then
-                        Me.alActors.Add(imdbAct.ThumbURL)
+                ElseIf Not String.IsNullOrEmpty(imdbAct.URLOriginal) Then
+                    If Not imdbAct.URLOriginal.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.URLOriginal.ToLower.IndexOf("no_photo") > 0 Then
+                        Me.alActors.Add(imdbAct.URLOriginal)
                     Else
                         Me.alActors.Add("none")
                     End If
@@ -9899,15 +9899,15 @@ doCancel:
             If Me.currTV.TVShow.ActorsSpecified Then
                 Me.pbActors.Image = My.Resources.actor_silhouette
                 For Each imdbAct As MediaContainers.Person In Me.currTV.TVShow.Actors
-                    If Not String.IsNullOrEmpty(imdbAct.ThumbPath) AndAlso File.Exists(imdbAct.ThumbPath) Then
-                        If Not imdbAct.ThumbURL.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.ThumbURL.ToLower.IndexOf("no_photo") > 0 Then
-                            Me.alActors.Add(imdbAct.ThumbPath)
+                    If Not String.IsNullOrEmpty(imdbAct.LocalFilePath) AndAlso File.Exists(imdbAct.LocalFilePath) Then
+                        If Not imdbAct.URLOriginal.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.URLOriginal.ToLower.IndexOf("no_photo") > 0 Then
+                            Me.alActors.Add(imdbAct.LocalFilePath)
                         Else
                             Me.alActors.Add("none")
                         End If
-                    ElseIf Not String.IsNullOrEmpty(imdbAct.ThumbURL) Then
-                        If Not imdbAct.ThumbURL.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.ThumbURL.ToLower.IndexOf("no_photo") > 0 Then
-                            Me.alActors.Add(imdbAct.ThumbURL)
+                    ElseIf Not String.IsNullOrEmpty(imdbAct.URLOriginal) Then
+                        If Not imdbAct.URLOriginal.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.URLOriginal.ToLower.IndexOf("no_photo") > 0 Then
+                            Me.alActors.Add(imdbAct.URLOriginal)
                         Else
                             Me.alActors.Add("none")
                         End If

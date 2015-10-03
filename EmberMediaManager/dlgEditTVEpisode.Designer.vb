@@ -112,6 +112,7 @@ Partial Class dlgEditTVEpisode
         Me.StatusStrip = New System.Windows.Forms.StatusStrip()
         Me.tsFilename = New System.Windows.Forms.ToolStripStatusLabel()
         Me.txtLastPlayed = New System.Windows.Forms.TextBox()
+        Me.colLocalPath = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEdit.SuspendLayout()
@@ -476,7 +477,7 @@ Partial Class dlgEditTVEpisode
         '
         'lvActors
         '
-        Me.lvActors.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colID, Me.colName, Me.colRole, Me.colThumb})
+        Me.lvActors.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colID, Me.colName, Me.colRole, Me.colThumb, Me.colLocalPath})
         Me.lvActors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lvActors.FullRowSelect = True
         Me.lvActors.Location = New System.Drawing.Point(7, 204)
@@ -1019,6 +1020,11 @@ Partial Class dlgEditTVEpisode
         Me.txtLastPlayed.Size = New System.Drawing.Size(118, 22)
         Me.txtLastPlayed.TabIndex = 75
         '
+        'colLocalPath
+        '
+        Me.colLocalPath.Text = "Local Path"
+        Me.colLocalPath.Width = 0
+        '
         'dlgEditTVEpisode
         '
         Me.AcceptButton = Me.OK_Button
@@ -1157,5 +1163,6 @@ Partial Class dlgEditTVEpisode
     Friend WithEvents btnSetSubtitleLocal As System.Windows.Forms.Button
     Friend WithEvents colID As System.Windows.Forms.ColumnHeader
     Friend WithEvents txtLastPlayed As System.Windows.Forms.TextBox
+    Friend WithEvents colLocalPath As System.Windows.Forms.ColumnHeader
 
 End Class

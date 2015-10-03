@@ -137,6 +137,7 @@ Partial Class dlgEditTVShow
         Me.lblSortTitle = New System.Windows.Forms.Label()
         Me.lblTitle = New System.Windows.Forms.Label()
         Me.tcEdit = New System.Windows.Forms.TabControl()
+        Me.colLocalPath = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpExtrafanarts.SuspendLayout()
@@ -274,7 +275,7 @@ Partial Class dlgEditTVShow
         Me.lblEpisodeSorting.Text = "Episode Sorted by:"
         Me.lblEpisodeSorting.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
-        'tpEFanarts
+        'tpExtrafanarts
         '
         Me.tpExtrafanarts.Controls.Add(Me.lblExtrafanartsSize)
         Me.tpExtrafanarts.Controls.Add(Me.pnlShowEFanartsSetAsFanart)
@@ -283,7 +284,7 @@ Partial Class dlgEditTVShow
         Me.tpExtrafanarts.Controls.Add(Me.btnExtrafanartsRemove)
         Me.tpExtrafanarts.Controls.Add(Me.pbExtrafanarts)
         Me.tpExtrafanarts.Location = New System.Drawing.Point(4, 22)
-        Me.tpExtrafanarts.Name = "tpEFanarts"
+        Me.tpExtrafanarts.Name = "tpExtrafanarts"
         Me.tpExtrafanarts.Size = New System.Drawing.Size(836, 463)
         Me.tpExtrafanarts.TabIndex = 12
         Me.tpExtrafanarts.Text = "Extrafanarts"
@@ -1246,7 +1247,7 @@ Partial Class dlgEditTVShow
         '
         'lvActors
         '
-        Me.lvActors.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colID, Me.colName, Me.colRole, Me.colThumb})
+        Me.lvActors.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colID, Me.colName, Me.colRole, Me.colThumb, Me.colLocalPath})
         Me.lvActors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lvActors.FullRowSelect = True
         Me.lvActors.Location = New System.Drawing.Point(217, 189)
@@ -1439,6 +1440,11 @@ Partial Class dlgEditTVShow
         Me.tcEdit.Size = New System.Drawing.Size(844, 489)
         Me.tcEdit.TabIndex = 3
         '
+        'colLocalPath
+        '
+        Me.colLocalPath.Text = "Local Path"
+        Me.colLocalPath.Width = 0
+        '
         'dlgEditTVShow
         '
         Me.AcceptButton = Me.OK_Button
@@ -1612,5 +1618,6 @@ Partial Class dlgEditTVShow
     Friend WithEvents lblSortTitle As System.Windows.Forms.Label
     Friend WithEvents lblTitle As System.Windows.Forms.Label
     Friend WithEvents tcEdit As System.Windows.Forms.TabControl
+    Friend WithEvents colLocalPath As System.Windows.Forms.ColumnHeader
 
 End Class

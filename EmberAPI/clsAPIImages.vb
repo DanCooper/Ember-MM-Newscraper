@@ -812,9 +812,11 @@ Public Class Images
     Public Sub FromFile(ByVal sPath As String)
         If Me._ms IsNot Nothing Then
             Me._ms.Dispose()
+            Me._ms = Nothing
         End If
         If Me._image IsNot Nothing Then
             Me._image.Dispose()
+            Me._image = Nothing
         End If
         If Not String.IsNullOrEmpty(sPath) AndAlso File.Exists(sPath) Then
             Try

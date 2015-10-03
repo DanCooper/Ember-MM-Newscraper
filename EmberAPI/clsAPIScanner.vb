@@ -709,7 +709,7 @@ Public Class Scanner
             'search local actor thumb for each actor in NFO
             If DBMovie.Movie.Actors.Count > 0 AndAlso DBMovie.ActorThumbs.Count > 0 Then
                 For Each actor In DBMovie.Movie.Actors
-                    actor.ThumbPath = DBMovie.ActorThumbs.FirstOrDefault(Function(s) Path.GetFileNameWithoutExtension(s).ToLower = actor.Name.Replace(" ", "_").ToLower)
+                    actor.LocalFilePath = DBMovie.ActorThumbs.FirstOrDefault(Function(s) Path.GetFileNameWithoutExtension(s).ToLower = actor.Name.Replace(" ", "_").ToLower)
                 Next
             End If
 
@@ -855,7 +855,7 @@ Public Class Scanner
             'search local actor thumb for each actor in NFO
             If cEpisode.TVEpisode.Actors.Count > 0 AndAlso cEpisode.ActorThumbs.Count > 0 Then
                 For Each actor In cEpisode.TVEpisode.Actors
-                    actor.ThumbPath = cEpisode.ActorThumbs.FirstOrDefault(Function(s) Path.GetFileNameWithoutExtension(s).ToLower = actor.Name.Replace(" ", "_").ToLower)
+                    actor.LocalFilePath = cEpisode.ActorThumbs.FirstOrDefault(Function(s) Path.GetFileNameWithoutExtension(s).ToLower = actor.Name.Replace(" ", "_").ToLower)
                 Next
             End If
 
@@ -982,7 +982,7 @@ Public Class Scanner
                     'search local actor thumb for each actor in NFO
                     If DBTVShow.TVShow.Actors.Count > 0 AndAlso DBTVShow.ActorThumbs.Count > 0 Then
                         For Each actor In DBTVShow.TVShow.Actors
-                            actor.ThumbPath = DBTVShow.ActorThumbs.FirstOrDefault(Function(s) Path.GetFileNameWithoutExtension(s).ToLower = actor.Name.Replace(" ", "_").ToLower)
+                            actor.LocalFilePath = DBTVShow.ActorThumbs.FirstOrDefault(Function(s) Path.GetFileNameWithoutExtension(s).ToLower = actor.Name.Replace(" ", "_").ToLower)
                         Next
                     End If
 

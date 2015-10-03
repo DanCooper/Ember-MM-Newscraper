@@ -263,7 +263,7 @@ Namespace TMDB
                     For Each aCast As TMDbLib.Objects.Movies.Cast In Movie.Credits.Cast
                         nMovie.Actors.Add(New MediaContainers.Person With {.Name = aCast.Name, _
                                                                            .Role = aCast.Character, _
-                                                                           .ThumbURL = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_TMDBApi.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty), _
+                                                                           .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_TMDBApi.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty), _
                                                                            .TMDB = CStr(aCast.Id)})
                     Next
                 End If
@@ -622,7 +622,7 @@ Namespace TMDB
                     For Each aCast As TMDbLib.Objects.TvShows.Cast In Show.Credits.Cast
                         nShow.Actors.Add(New MediaContainers.Person With {.Name = aCast.Name, _
                                                                            .Role = aCast.Character, _
-                                                                           .ThumbURL = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_TMDBApi.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty), _
+                                                                           .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_TMDBApi.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty), _
                                                                            .TMDB = CStr(aCast.Id)})
                     Next
                 End If
@@ -922,7 +922,7 @@ Namespace TMDB
                     For Each aCast As TMDbLib.Objects.TvShows.Cast In EpisodeInfo.Credits.Cast
                         nEpisode.Actors.Add(New MediaContainers.Person With {.Name = aCast.Name, _
                                                                            .Role = aCast.Character, _
-                                                                           .ThumbURL = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_TMDBApi.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty), _
+                                                                           .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_TMDBApi.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty), _
                                                                            .TMDB = CStr(aCast.Id)})
                     Next
                 End If
@@ -962,7 +962,7 @@ Namespace TMDB
                     For Each aCast As TMDbLib.Objects.TvShows.Cast In EpisodeInfo.GuestStars
                         nEpisode.GuestStars.Add(New MediaContainers.Person With {.Name = aCast.Name, _
                                                                            .Role = aCast.Character, _
-                                                                           .ThumbURL = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_TMDBApi.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty), _
+                                                                           .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_TMDBApi.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty), _
                                                                            .TMDB = CStr(aCast.Id)})
                     Next
                 End If
@@ -1113,7 +1113,7 @@ Namespace TMDB
                     End If
 
                 Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SingleScrape
-                    If r.Matches.Count >= 1 Then
+                    If r.Matches.Count >= 0 Then
                         b = GetMovieSetInfo(r.Matches.Item(0).TMDB, nMovieSet, False, FilteredOptions, True)
                     End If
             End Select
@@ -1150,7 +1150,7 @@ Namespace TMDB
                     End If
 
                 Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SingleScrape
-                    If r.Matches.Count > 1 Then
+                    If r.Matches.Count > 0 Then
                         b = GetTVShowInfo(r.Matches.Item(0).TMDB, nShow, False, FilteredOptions, True, True)
                     End If
             End Select

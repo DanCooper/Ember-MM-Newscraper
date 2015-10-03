@@ -2151,7 +2151,7 @@ Namespace MediaContainers
         End Property
 
         <XmlElement("thumb")> _
-        Public Property ThumbURL() As String
+        Public Property URLOriginal() As String
             Get
                 Return Me._thumb.URLOriginal
             End Get
@@ -2161,14 +2161,14 @@ Namespace MediaContainers
         End Property
 
         <XmlIgnore()> _
-        Public ReadOnly Property ThumbURLSpecified() As Boolean
+        Public ReadOnly Property URLOriginalSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._thumb.URLOriginal)
             End Get
         End Property
 
         <XmlIgnore()> _
-        Public Property ThumbPath() As String
+        Public Property LocalFilePath() As String
             Get
                 Return Me._thumb.LocalFilePath
             End Get
@@ -2178,7 +2178,7 @@ Namespace MediaContainers
         End Property
 
         <XmlIgnore()> _
-        Public ReadOnly Property ThumbPathSpecified() As Boolean
+        Public ReadOnly Property LocalFilePathSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._thumb.LocalFilePath)
             End Get

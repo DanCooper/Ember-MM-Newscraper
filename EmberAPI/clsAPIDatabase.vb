@@ -134,7 +134,7 @@ Public Class Database
 
         Dim iOrder As Integer = 0
         For Each actor As MediaContainers.Person In cast
-            Dim idActor = AddActor(actor.Name, actor.ThumbURL, actor.ThumbPath, actor.IMDB, actor.TMDB, True)
+            Dim idActor = AddActor(actor.Name, actor.URLOriginal, actor.LocalFilePath, actor.IMDB, actor.TMDB, True)
             AddLinkToActor(table, idActor, field, idMedia, actor.Role, iOrder)
             iOrder += 1
         Next
@@ -1549,8 +1549,8 @@ Public Class Database
                     person.ID = Convert.ToInt64(SQLreader("idActor"))
                     person.Name = SQLreader("strActor").ToString
                     person.Role = SQLreader("strRole").ToString
-                    person.ThumbPath = SQLreader("url").ToString
-                    person.ThumbURL = SQLreader("strThumb").ToString
+                    person.LocalFilePath = SQLreader("url").ToString
+                    person.URLOriginal = SQLreader("strThumb").ToString
                     _movieDB.Movie.Actors.Add(person)
                 End While
             End Using
@@ -2086,8 +2086,8 @@ Public Class Database
                     person.ID = Convert.ToInt64(SQLreader("idActor"))
                     person.Name = SQLreader("strActor").ToString
                     person.Role = SQLreader("strRole").ToString
-                    person.ThumbPath = SQLreader("url").ToString
-                    person.ThumbURL = SQLreader("strThumb").ToString
+                    person.LocalFilePath = SQLreader("url").ToString
+                    person.URLOriginal = SQLreader("strThumb").ToString
                     _TVDB.TVEpisode.Actors.Add(person)
                 End While
             End Using
@@ -2397,8 +2397,8 @@ Public Class Database
                     person.ID = Convert.ToInt64(SQLreader("idActor"))
                     person.Name = SQLreader("strActor").ToString
                     person.Role = SQLreader("strRole").ToString
-                    person.ThumbPath = SQLreader("url").ToString
-                    person.ThumbURL = SQLreader("strThumb").ToString
+                    person.LocalFilePath = SQLreader("url").ToString
+                    person.URLOriginal = SQLreader("strThumb").ToString
                     _TVDB.TVShow.Actors.Add(person)
                 End While
             End Using

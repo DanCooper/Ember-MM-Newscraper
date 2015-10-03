@@ -182,7 +182,8 @@ Public Class dlgEditTVShow
                 Dim lvItem As ListViewItem = Me.lvActors.Items.Add(eActor.ID.ToString)
                 lvItem.SubItems.Add(eActor.Name)
                 lvItem.SubItems.Add(eActor.Role)
-                lvItem.SubItems.Add(eActor.ThumbURL)
+                lvItem.SubItems.Add(eActor.URLOriginal)
+                lvItem.SubItems.Add(eActor.LocalFilePath)
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -1068,7 +1069,7 @@ Public Class dlgEditTVShow
         Try
             If Me.lvActors.SelectedItems.Count > 0 Then
                 Dim lvwItem As ListViewItem = Me.lvActors.SelectedItems(0)
-                Dim eActor As New MediaContainers.Person With {.ID = CInt(lvwItem.Text), .Name = lvwItem.SubItems(1).Text, .Role = lvwItem.SubItems(2).Text, .ThumbURL = lvwItem.SubItems(3).Text}
+                Dim eActor As New MediaContainers.Person With {.ID = CInt(lvwItem.Text), .Name = lvwItem.SubItems(1).Text, .Role = lvwItem.SubItems(2).Text, .URLOriginal = lvwItem.SubItems(3).Text, .LocalFilePath = lvwItem.SubItems(4).Text}
                 Using dAddEditActor As New dlgAddEditActor
                     eActor = dAddEditActor.ShowDialog(False, eActor)
                 End Using
@@ -1076,7 +1077,8 @@ Public Class dlgEditTVShow
                     lvwItem.Text = eActor.ID.ToString
                     lvwItem.SubItems(1).Text = eActor.Name
                     lvwItem.SubItems(2).Text = eActor.Role
-                    lvwItem.SubItems(3).Text = eActor.ThumbURL
+                    lvwItem.SubItems(3).Text = eActor.URLOriginal
+                    lvwItem.SubItems(4).Text = eActor.LocalFilePath
                     lvwItem.Selected = True
                     lvwItem.EnsureVisible()
                 End If
@@ -1126,7 +1128,8 @@ Public Class dlgEditTVShow
                 lvItem = .lvActors.Items.Add(imdbAct.ID.ToString)
                 lvItem.SubItems.Add(imdbAct.Name)
                 lvItem.SubItems.Add(imdbAct.Role)
-                lvItem.SubItems.Add(imdbAct.ThumbURL)
+                lvItem.SubItems.Add(imdbAct.URLOriginal)
+                lvItem.SubItems.Add(imdbAct.LocalFilePath)
             Next
 
             Dim tRating As Single = NumUtils.ConvertToSingle(Me.tmpDBElement.TVShow.Rating)
@@ -1861,7 +1864,8 @@ Public Class dlgEditTVShow
                         addActor.ID = CInt(lviActor.Text.Trim)
                         addActor.Name = lviActor.SubItems(1).Text.Trim
                         addActor.Role = lviActor.SubItems(2).Text.Trim
-                        addActor.ThumbURL = lviActor.SubItems(3).Text.Trim
+                        addActor.URLOriginal = lviActor.SubItems(3).Text.Trim
+                        addActor.LocalFilePath = lviActor.SubItems(4).Text.Trim
                         addActor.Order = iOrder
                         iOrder += 1
                         Me.tmpDBElement.TVShow.Actors.Add(addActor)
