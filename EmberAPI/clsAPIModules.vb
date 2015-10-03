@@ -565,6 +565,7 @@ Public Class ModulesManager
                 SetScraperEnable_Data_Movie("scraper.Data.TMDB.ScraperModule.TMDB_Data", True)
             End If
             If Not ImageScraperAnyEnabled AndAlso Not ImageScraperFound Then
+                SetScraperEnable_Image_Movie("scraper.Image.FanartTV.ScraperModule.FanartTV_Image", True)
                 SetScraperEnable_Image_Movie("scraper.Image.TMDB.ScraperModule.TMDB_Image", True)
             End If
             If Not ThemeScraperAnyEnabled AndAlso Not ThemeScraperFound Then
@@ -674,6 +675,7 @@ Public Class ModulesManager
                 SetScraperEnable_Data_MovieSet("scraper.Data.TMDB.ScraperModule.TMDB_Data", True)
             End If
             If Not ImageScraperAnyEnabled AndAlso Not ImageScraperFound Then
+                SetScraperEnable_Image_MovieSet("scraper.Image.FanartTV.ScraperModule.FanartTV_Image", True)
                 SetScraperEnable_Image_MovieSet("scraper.Image.TMDB.ScraperModule.TMDB_Image", True)
             End If
         End If
@@ -806,9 +808,11 @@ Public Class ModulesManager
                 c += 1
             Next
             If Not DataScraperAnyEnabled AndAlso Not DataScraperFound Then
-                SetScraperEnable_Data_TV("scraper.TVDB.EmberTVScraperModule.TVDB_Data", True)
+                SetScraperEnable_Data_TV("scraper.Data.TVDB.ScraperModule.TVDB_Data", True)
             End If
             If Not ImageScraperAnyEnabled AndAlso Not ImageScraperFound Then
+                SetScraperEnable_Image_TV("scraper.Image.FanartTV.ScraperModule.FanartTV_Image", True)
+                SetScraperEnable_Image_TV("scraper.Image.TMDB.ScraperModule.TMDB_Image", True)
                 SetScraperEnable_Image_TV("scraper.Image.TVDB.ScraperModule.TVDB_Image", True)
             End If
             If Not ThemeScraperAnyEnabled AndAlso Not ThemeScraperFound Then

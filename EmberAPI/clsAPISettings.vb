@@ -6582,23 +6582,6 @@ Public Class Settings
     ''' </summary>
     ''' <remarks></remarks>
     Public Sub SetDefaults()
-        ''Make it simple: load a default values XML file
-        'Try
-        '    Dim configpath As String = FileUtils.Common.ReturnSettingsFile("Defaults", "DefaultSettings.xml")
-
-        '    Dim objStreamReader As New StreamReader(configpath)
-        '    Dim xXMLSettings As New XmlSerializer(_XMLSettings.GetType)
-
-        '_XMLSettings = CType(xXMLSettings.Deserialize(objStreamReader), clsXMLSettings)
-        '    objStreamReader.Close()
-        '    ' error - someone removed the variable that holds the default TVDB languages. In case TVDB is not online to check them
-        '    '_tvscraperlanguages.Sort(AddressOf CompareLanguagesLong)
-        'Catch ex As Exception
-        '    logger.Error(New StackFrame().GetMethod().Name, ex)
-        'End Try
-
-
-        'Safe Solution: Don't load it from XML files
         Me.CleanDotFanartJPG = False
         Me.CleanExtrathumbs = False
         Me.CleanFanartJPG = False
@@ -6784,7 +6767,7 @@ Public Class Settings
         Me.MovieScraperCleanFields = False
         Me.MovieScraperCleanPlotOutline = False
         Me.MovieScraperCollectionID = True
-        Me.MovieScraperCollectionsAuto = False
+        Me.MovieScraperCollectionsAuto = True
         Me.MovieScraperCountry = True
         Me.MovieScraperDirector = True
         Me.MovieScraperDurationRuntimeFormat = "<m>"
@@ -6946,7 +6929,7 @@ Public Class Settings
         Me.TVGeneralMarkNewShows = False
         Me.TVGeneralSeasonListSorting = New List(Of ListSorting)
         Me.TVGeneralShowListSorting = New List(Of ListSorting)
-        Me.TVImagesCacheEnabled = False
+        Me.TVImagesCacheEnabled = True
         Me.TVImagesDisplayImageSelect = True
         Me.TVImagesGetBlankImages = False
         Me.TVImagesGetEnglishImages = False
