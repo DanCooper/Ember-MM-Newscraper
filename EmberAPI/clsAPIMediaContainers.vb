@@ -602,6 +602,7 @@ Namespace MediaContainers
             Me._plot = String.Empty
             Me._rating = String.Empty
             Me._runtime = String.Empty
+            Me._scrapersource = String.Empty
             Me._season = -1
             Me._seasoncombined = -1
             Me._seasondvd = -1
@@ -2254,6 +2255,7 @@ Namespace MediaContainers
 
         Private _aired As String
         Private _plot As String
+        Private _scrapersource As String
         Private _season As Integer
         Private _title As String
         Private _tmdb As String
@@ -2303,6 +2305,16 @@ Namespace MediaContainers
             Get
                 Return Not String.IsNullOrEmpty(Me._title)
             End Get
+        End Property
+
+        <XmlIgnore()> _
+        Public Property Scrapersource() As String
+            Get
+                Return Me._scrapersource
+            End Get
+            Set(ByVal value As String)
+                Me._scrapersource = value
+            End Set
         End Property
 
         <XmlElement("season")> _
@@ -2380,6 +2392,7 @@ Namespace MediaContainers
         Public Sub Clear()
             Me._aired = String.Empty
             Me._plot = String.Empty
+            Me._scrapersource = String.Empty
             Me._season = -1
             Me._tmdb = String.Empty
             Me._tvdb = String.Empty
@@ -4621,9 +4634,9 @@ Namespace MediaContainers
             End If
 
             If Not cSettings.MediaLanguageOnly Then
-                For Each tmpImage As Image In ImagesList.Where(Function(f) Not f.ShortLang = cSettings.MediaLanguage OrElse _
-                                                                   Not f.ShortLang = "en" OrElse _
-                                                                   Not f.ShortLang = Master.eLang.GetString(1168, "Blank") OrElse _
+                For Each tmpImage As Image In ImagesList.Where(Function(f) Not f.ShortLang = cSettings.MediaLanguage AndAlso _
+                                                                   Not f.ShortLang = "en" AndAlso _
+                                                                   Not f.ShortLang = Master.eLang.GetString(1168, "Blank") AndAlso _
                                                                    Not f.ShortLang = String.Empty)
                     SortedList.Add(tmpImage)
                 Next
