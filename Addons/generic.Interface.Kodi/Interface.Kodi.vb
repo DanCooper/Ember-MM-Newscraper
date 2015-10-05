@@ -191,7 +191,7 @@ Public Class KodiInterface
                                 Dim _APIKodi As New Kodi.APIKodi(mHost)
                                 'run task
                                 AddHandler _APIKodi.GenericEvent, AddressOf Handle_GenericEvent
-                                If Await Task.Run(Function() _APIKodi.UpdateMovieInfo(tDBMovie.ID, _SpecialSettings.SendNotifications, _SpecialSettings.SyncPlayCounts AndAlso _SpecialSettings.SyncPlayCountsHost = mHost.Label)) Then
+                                If Await Task.Run(Function() _APIKodi.UpdateInfo_Movie(tDBMovie.ID, _SpecialSettings.SendNotifications, _SpecialSettings.SyncPlayCounts AndAlso _SpecialSettings.SyncPlayCountsHost = mHost.Label)) Then
                                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", mHost.Label & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & tDBMovie.Movie.Title, New Bitmap(My.Resources.logo)}))
                                 Else
                                     logger.Warn("[KodiInterface] RunGeneric MovieUpdate: " & mHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBMovie.Movie.Title)
@@ -203,7 +203,7 @@ Public Class KodiInterface
                                     Dim _APIKodi As New Kodi.APIKodi(tHost)
                                     'run task
                                     AddHandler _APIKodi.GenericEvent, AddressOf Handle_GenericEvent
-                                    If Await Task.Run(Function() _APIKodi.UpdateMovieInfo(tDBMovie.ID, _SpecialSettings.SendNotifications, _SpecialSettings.SyncPlayCounts AndAlso _SpecialSettings.SyncPlayCountsHost = tHost.Label)) Then
+                                    If Await Task.Run(Function() _APIKodi.UpdateInfo_Movie(tDBMovie.ID, _SpecialSettings.SendNotifications, _SpecialSettings.SyncPlayCounts AndAlso _SpecialSettings.SyncPlayCountsHost = tHost.Label)) Then
                                         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", tHost.Label & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & tDBMovie.Movie.Title, New Bitmap(My.Resources.logo)}))
                                     Else
                                         logger.Warn("[KodiInterface] RunGeneric MovieUpdate: " & tHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBMovie.Movie.Title)
@@ -238,7 +238,7 @@ Public Class KodiInterface
                         If Not String.IsNullOrEmpty(tDBMovieset.MovieSet.TMDB) Then
                             For Each tHost In _SpecialSettings.Hosts.Where(Function(f) f.RealTimeSync AndAlso Not String.IsNullOrEmpty(f.MovieSetArtworksPath))
                                 Dim _APIKodi As New Kodi.APIKodi(tHost)
-                                If Await Task.Run(Function() _APIKodi.UpdateMovieSetInfo(tDBMovieset.ID, _SpecialSettings.SendNotifications)) Then
+                                If Await Task.Run(Function() _APIKodi.UpdateInfo_MovieSet(tDBMovieset.ID, _SpecialSettings.SendNotifications)) Then
                                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", tHost.Label & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & tDBMovieset.MovieSet.Title, New Bitmap(My.Resources.logo)}))
                                 Else
                                     logger.Warn("[KodiInterface] RunGeneric MovieSetUpdate: " & tHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBMovieset.MovieSet.Title)
@@ -270,7 +270,7 @@ Public Class KodiInterface
                             If mHost IsNot Nothing Then
                                 Dim _APIKodi As New Kodi.APIKodi(mHost)
                                 AddHandler _APIKodi.GenericEvent, AddressOf Handle_GenericEvent
-                                If Await Task.Run(Function() _APIKodi.UpdateTVEpisodeInfo(tDBTV.ID, _SpecialSettings.SendNotifications, _SpecialSettings.SyncPlayCounts AndAlso _SpecialSettings.SyncPlayCountsHost = mHost.Label)) Then
+                                If Await Task.Run(Function() _APIKodi.UpdateInfo_TVEpisode(tDBTV.ID, _SpecialSettings.SendNotifications, _SpecialSettings.SyncPlayCounts AndAlso _SpecialSettings.SyncPlayCountsHost = mHost.Label)) Then
                                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", mHost.Label & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & tDBTV.TVEpisode.Title, New Bitmap(My.Resources.logo)}))
                                 Else
                                     logger.Warn("[KodiInterface] RunGeneric TVEpisodeUpdate: " & mHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVEpisode.Title)
@@ -281,7 +281,7 @@ Public Class KodiInterface
                                 For Each tHost In _SpecialSettings.Hosts.Where(Function(f) f.RealTimeSync AndAlso f.Sources.Where(Function(c) c.ContentType = Enums.ContentType.TV).Count > 0)
                                     Dim _APIKodi As New Kodi.APIKodi(tHost)
                                     AddHandler _APIKodi.GenericEvent, AddressOf Handle_GenericEvent
-                                    If Await Task.Run(Function() _APIKodi.UpdateTVEpisodeInfo(tDBTV.ID, _SpecialSettings.SendNotifications, _SpecialSettings.SyncPlayCounts AndAlso _SpecialSettings.SyncPlayCountsHost = tHost.Label)) Then
+                                    If Await Task.Run(Function() _APIKodi.UpdateInfo_TVEpisode(tDBTV.ID, _SpecialSettings.SendNotifications, _SpecialSettings.SyncPlayCounts AndAlso _SpecialSettings.SyncPlayCountsHost = tHost.Label)) Then
                                         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", tHost.Label & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & tDBTV.TVEpisode.Title, New Bitmap(My.Resources.logo)}))
                                     Else
                                         logger.Warn("[KodiInterface] RunGeneric TVEpisodeUpdate: " & tHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVEpisode.Title)
@@ -313,7 +313,7 @@ Public Class KodiInterface
                         If Not String.IsNullOrEmpty(tDBTV.ID.ToString) Then
                             If mHost IsNot Nothing Then
                                 Dim _APIKodi As New Kodi.APIKodi(mHost)
-                                If Await Task.Run(Function() _APIKodi.UpdateTVSeasonInfo(tDBTV.ID, _SpecialSettings.SendNotifications)) Then
+                                If Await Task.Run(Function() _APIKodi.UpdateInfo_TVSeason(tDBTV.ID, _SpecialSettings.SendNotifications)) Then
                                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", mHost.Label & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & tDBTV.TVSeason.Title, New Bitmap(My.Resources.logo)}))
                                 Else
                                     logger.Warn("[KodiInterface] RunGeneric TVSeasonUpdate: " & mHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVSeason.Title)
@@ -322,7 +322,7 @@ Public Class KodiInterface
                             Else
                                 For Each tHost In _SpecialSettings.Hosts.Where(Function(f) f.RealTimeSync AndAlso f.Sources.Where(Function(c) c.ContentType = Enums.ContentType.TV).Count > 0)
                                     Dim _APIKodi As New Kodi.APIKodi(tHost)
-                                    If Await Task.Run(Function() _APIKodi.UpdateTVSeasonInfo(tDBTV.ID, _SpecialSettings.SendNotifications)) Then
+                                    If Await Task.Run(Function() _APIKodi.UpdateInfo_TVSeason(tDBTV.ID, _SpecialSettings.SendNotifications)) Then
                                         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", tHost.Label & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & tDBTV.TVSeason.Title, New Bitmap(My.Resources.logo)}))
                                     Else
                                         logger.Warn("[KodiInterface] RunGeneric TVSeasonUpdate: " & tHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVSeason.Title)
@@ -353,7 +353,7 @@ Public Class KodiInterface
                         If Not String.IsNullOrEmpty(tDBTV.NfoPath) Then
                             If mHost IsNot Nothing Then
                                 Dim _APIKodi As New Kodi.APIKodi(mHost)
-                                If Await Task.Run(Function() _APIKodi.UpdateTVShowInfo(tDBTV.ShowID, _SpecialSettings.SendNotifications)) Then
+                                If Await Task.Run(Function() _APIKodi.UpdateInfo_TVShow(tDBTV.ShowID, _SpecialSettings.SendNotifications)) Then
                                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", mHost.Label & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & tDBTV.TVShow.Title, New Bitmap(My.Resources.logo)}))
                                 Else
                                     logger.Warn("[KodiInterface] RunGeneric TVShowUpdate: " & mHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVShow.Title)
@@ -362,7 +362,7 @@ Public Class KodiInterface
                             Else
                                 For Each tHost In _SpecialSettings.Hosts.Where(Function(f) f.RealTimeSync AndAlso f.Sources.Where(Function(c) c.ContentType = Enums.ContentType.TV).Count > 0)
                                     Dim _APIKodi As New Kodi.APIKodi(tHost)
-                                    If Await Task.Run(Function() _APIKodi.UpdateTVShowInfo(tDBTV.ShowID, _SpecialSettings.SendNotifications)) Then
+                                    If Await Task.Run(Function() _APIKodi.UpdateInfo_TVShow(tDBTV.ShowID, _SpecialSettings.SendNotifications)) Then
                                         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", tHost.Label & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & tDBTV.TVShow.Title, New Bitmap(My.Resources.logo)}))
                                     Else
                                         logger.Warn("[KodiInterface] RunGeneric TVShowUpdate: " & tHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVShow.Title)
@@ -841,7 +841,7 @@ Public Class KodiInterface
         If Host IsNot Nothing Then
             Dim _APIKodi As New Kodi.APIKodi(Host)
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Host.Label & " | " & Master.eLang.GetString(1450, "Cleaning Video Library..."), New Bitmap(My.Resources.logo)}))
-            Dim response = Await _APIKodi.CleanVideoLibrary()
+            Dim response = Await _APIKodi.VideoLibrary_Clean()
             If response = Nothing Then
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Host.Label & " | " & Master.eLang.GetString(1451, "Cleaning Failed"), Nothing}))
             Else
@@ -862,7 +862,7 @@ Public Class KodiInterface
         If Host IsNot Nothing Then
             Dim _APIKodi As New Kodi.APIKodi(Host)
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Host.Label & " | " & Master.eLang.GetString(1448, "Updating Video Library..."), New Bitmap(My.Resources.logo)}))
-            Dim response = Await _APIKodi.ScanVideoLibrary()
+            Dim response = Await _APIKodi.VideoLibrary_Scan()
             If response = Nothing Then
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Host.Label & " | " & Master.eLang.GetString(1449, "Update Failed"), Nothing}))
             Else

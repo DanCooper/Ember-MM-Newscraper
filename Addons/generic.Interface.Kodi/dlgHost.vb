@@ -253,7 +253,7 @@ Public Class dlgHost
                 currentHostRemoteSources = Kodi.APIKodi.GetSources(_currentHost)
             Case 2
                 'API request: Get JSONRPC version of host
-                JsonHostversion = Kodi.APIKodi.GetJSONHostVersion(_currentHost)
+                JsonHostversion = Kodi.APIKodi.GetHostJSONVersion(_currentHost)
         End Select
     End Sub
 
