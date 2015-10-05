@@ -272,6 +272,8 @@ Public Class TMDB_Data
         _setup_TV.chkScraperEpisodePlot.Checked = ConfigScrapeOptions_TV.bEpisodePlot
         _setup_TV.chkScraperEpisodeRating.Checked = ConfigScrapeOptions_TV.bEpisodeRating
         _setup_TV.chkScraperEpisodeTitle.Checked = ConfigScrapeOptions_TV.bEpisodeTitle
+        _setup_TV.chkScraperSeasonAired.Checked = ConfigScrapeOptions_TV.bSeasonAired
+        _setup_TV.chkScraperSeasonPlot.Checked = ConfigScrapeOptions_TV.bSeasonPlot
         _setup_TV.chkScraperShowActors.Checked = ConfigScrapeOptions_TV.bMainActors
         _setup_TV.chkScraperShowCert.Checked = ConfigScrapeOptions_TV.bMainCert
         _setup_TV.chkScraperShowCountry.Checked = ConfigScrapeOptions_TV.bMainCountry
@@ -357,6 +359,8 @@ Public Class TMDB_Data
         ConfigScrapeOptions_TV.bEpisodePlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", True, , Enums.ContentType.TVEpisode)
         ConfigScrapeOptions_TV.bEpisodeRating = clsAdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.ContentType.TVEpisode)
         ConfigScrapeOptions_TV.bEpisodeTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle", True, , Enums.ContentType.TVEpisode)
+        ConfigScrapeOptions_TV.bSeasonAired = clsAdvancedSettings.GetBooleanSetting("DoAired", True, , Enums.ContentType.TVSeason)
+        ConfigScrapeOptions_TV.bSeasonPlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", True, , Enums.ContentType.TVSeason)
         ConfigScrapeOptions_TV.bMainActors = clsAdvancedSettings.GetBooleanSetting("DoActors", True, , Enums.ContentType.TVShow)
         ConfigScrapeOptions_TV.bMainCert = clsAdvancedSettings.GetBooleanSetting("DoCert", True, , Enums.ContentType.TVShow)
         ConfigScrapeOptions_TV.bMainCountry = clsAdvancedSettings.GetBooleanSetting("DoCountry", True, , Enums.ContentType.TVShow)
@@ -427,6 +431,8 @@ Public Class TMDB_Data
             settings.SetBooleanSetting("DoPlot", ConfigScrapeOptions_TV.bEpisodePlot, , , Enums.ContentType.TVEpisode)
             settings.SetBooleanSetting("DoRating", ConfigScrapeOptions_TV.bEpisodeRating, , , Enums.ContentType.TVEpisode)
             settings.SetBooleanSetting("DoTitle", ConfigScrapeOptions_TV.bEpisodeTitle, , , Enums.ContentType.TVEpisode)
+            settings.SetBooleanSetting("DoAired", ConfigScrapeOptions_TV.bSeasonAired, , , Enums.ContentType.TVSeason)
+            settings.SetBooleanSetting("DoPlot", ConfigScrapeOptions_TV.bSeasonPlot, , , Enums.ContentType.TVSeason)
             settings.SetBooleanSetting("DoActors", ConfigScrapeOptions_TV.bMainActors, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("DoCert", ConfigScrapeOptions_TV.bMainCert, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("DoCountry", ConfigScrapeOptions_TV.bMainCountry, , , Enums.ContentType.TVShow)
@@ -511,6 +517,8 @@ Public Class TMDB_Data
         ConfigScrapeOptions_TV.bMainStatus = _setup_TV.chkScraperShowStatus.Checked
         ConfigScrapeOptions_TV.bMainStudio = _setup_TV.chkScraperShowStudio.Checked
         ConfigScrapeOptions_TV.bMainTitle = _setup_TV.chkScraperShowTitle.Checked
+        ConfigScrapeOptions_TV.bSeasonAired = _setup_TV.chkScraperSeasonAired.Checked
+        ConfigScrapeOptions_TV.bSeasonPlot = _setup_TV.chkScraperSeasonPlot.Checked
         _SpecialSettings_TV.FallBackEng = _setup_TV.chkFallBackEng.Checked
         _SpecialSettings_TV.GetAdultItems = _setup_TV.chkGetAdultItems.Checked
         SaveSettings_TV()
@@ -738,19 +746,19 @@ Public Class TMDB_Data
         If ScrapeModifier.MainNFO AndAlso Not ScrapeModifier.DoSearch Then
             If Not String.IsNullOrEmpty(oDBElement.TVShow.TMDB) Then
                 'TMDB-ID already available -> scrape and save data into an empty tv show container (nShow)
-                _scraper.GetTVShowInfo(oDBElement.TVShow.TMDB, nShow, False, FilteredOptions, False, ScrapeModifier.withEpisodes)
+                _scraper.GetTVShowInfo(oDBElement.TVShow.TMDB, nShow, ScrapeModifier, FilteredOptions, False)
             ElseIf Not String.IsNullOrEmpty(oDBElement.TVShow.TVDB) Then
                 oDBElement.TVShow.TMDB = _scraper.GetTMDBbyTVDB(oDBElement.TVShow.TVDB)
                 If String.IsNullOrEmpty(oDBElement.TVShow.TMDB) Then Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
-                _scraper.GetTVShowInfo(oDBElement.TVShow.TMDB, nShow, False, FilteredOptions, False, ScrapeModifier.withEpisodes)
+                _scraper.GetTVShowInfo(oDBElement.TVShow.TMDB, nShow, ScrapeModifier, FilteredOptions, False)
             ElseIf Not String.IsNullOrEmpty(oDBElement.TVShow.IMDB) Then
                 oDBElement.TVShow.TMDB = _scraper.GetTMDBbyIMDB(oDBElement.TVShow.IMDB)
                 If String.IsNullOrEmpty(oDBElement.TVShow.TMDB) Then Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
-                _scraper.GetTVShowInfo(oDBElement.TVShow.TMDB, nShow, False, FilteredOptions, False, ScrapeModifier.withEpisodes)
+                _scraper.GetTVShowInfo(oDBElement.TVShow.TMDB, nShow, ScrapeModifier, FilteredOptions, False)
             ElseIf Not ScrapeType = Enums.ScrapeType.SingleScrape Then
                 'no TVDB-ID for tv show --> search first and try to get ID!
                 If Not String.IsNullOrEmpty(oDBElement.TVShow.Title) Then
-                    _scraper.GetSearchTVShowInfo(oDBElement.TVShow.Title, oDBElement, nShow, ScrapeType, FilteredOptions, ScrapeModifier.withEpisodes)
+                    _scraper.GetSearchTVShowInfo(oDBElement.TVShow.Title, oDBElement, nShow, ScrapeType, ScrapeModifier, FilteredOptions)
                 End If
                 'if still no ID retrieved -> exit
                 If String.IsNullOrEmpty(nShow.TMDB) Then Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
@@ -769,7 +777,7 @@ Public Class TMDB_Data
             If String.IsNullOrEmpty(oDBElement.TVShow.TMDB) Then
                 Using dSearch As New dlgTMDBSearchResults_TV(_SpecialSettings_TV, _scraper)
                     If dSearch.ShowDialog(nShow, oDBElement.TVShow.Title, oDBElement.ShowPath, FilteredOptions) = Windows.Forms.DialogResult.OK Then
-                        _scraper.GetTVShowInfo(nShow.TMDB, nShow, False, FilteredOptions, False, ScrapeModifier.withEpisodes)
+                        _scraper.GetTVShowInfo(nShow.TMDB, nShow, ScrapeModifier, FilteredOptions, False)
                         'if a tvshow is found, set DoSearch back to "false" for following scrapers
                         ScrapeModifier.DoSearch = False
                     Else
@@ -837,6 +845,42 @@ Public Class TMDB_Data
             End If
             If nEpisode.TMDBSpecified Then
                 oDBElement.TVEpisode.TMDB = nEpisode.TMDB
+            End If
+        End If
+
+        logger.Trace("Finished TMDB Scraper")
+        Return New Interfaces.ModuleResult With {.breakChain = False}
+    End Function
+
+    Public Function Scraper_TVSeason(ByRef oDBElement As Database.DBElement, ByRef nSeason As MediaContainers.SeasonDetails, ByVal ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_TV.Scraper_TVSeason
+        logger.Trace("Started TMDB Scraper")
+
+        LoadSettings_TV()
+        _SpecialSettings_TV.PrefLanguage = oDBElement.Language
+
+        Dim _scraper As New TMDB.Scraper(_SpecialSettings_TV)
+
+        Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions_TV)
+
+        If String.IsNullOrEmpty(oDBElement.TVShow.TMDB) AndAlso Not String.IsNullOrEmpty(oDBElement.TVShow.TVDB) Then
+            oDBElement.TVShow.TMDB = _scraper.GetTMDBbyTVDB(oDBElement.TVShow.TVDB)
+        End If
+
+        If Not String.IsNullOrEmpty(oDBElement.TVShow.TMDB) Then
+            If Not oDBElement.TVSeason.Season = -1 Then
+                nSeason = _scraper.GetTVSeasonInfo(CInt(oDBElement.TVShow.TMDB), oDBElement.TVSeason.Season, FilteredOptions)
+            Else
+                nSeason = Nothing
+            End If
+        End If
+
+        'set new informations for following scrapers
+        If nSeason IsNot Nothing Then
+            If nSeason.TMDBSpecified Then
+                oDBElement.TVSeason.TMDB = nSeason.TMDB
+            End If
+            If nSeason.TVDBSpecified Then
+                oDBElement.TVSeason.TVDB = nSeason.TVDB
             End If
         End If
 

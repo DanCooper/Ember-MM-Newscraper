@@ -3179,6 +3179,24 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVScraperSeasonAired() As Boolean
+        Get
+            Return Settings._XMLSettings.TVScraperSeasonAired
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVScraperSeasonAired = value
+        End Set
+    End Property
+
+    Public Property TVScraperSeasonPlot() As Boolean
+        Get
+            Return Settings._XMLSettings.TVScraperSeasonPlot
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVScraperSeasonPlot = value
+        End Set
+    End Property
+
     Public Property TVScraperShowActors() As Boolean
         Get
             Return Settings._XMLSettings.TVScraperShowActors
@@ -6976,6 +6994,8 @@ Public Class Settings
         Me.TVScraperEpisodeTitle = True
         Me.TVScraperMetaDataScan = True
         Me.TVScraperOptionsOrdering = Enums.Ordering.Standard
+        Me.TVScraperSeasonAired = True
+        Me.TVScraperSeasonPlot = True
         Me.TVScraperShowActors = True
         Me.TVScraperShowCert = False
         Me.TVScraperShowCertForMPAA = False

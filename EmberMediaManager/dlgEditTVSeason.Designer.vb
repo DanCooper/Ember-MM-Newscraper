@@ -28,6 +28,11 @@ Partial Class dlgEditTVSeason
         Me.lblTopTitle = New System.Windows.Forms.Label()
         Me.pbTopLogo = New System.Windows.Forms.PictureBox()
         Me.tcEdit = New System.Windows.Forms.TabControl()
+        Me.tpDetails = New System.Windows.Forms.TabPage()
+        Me.txtAired = New System.Windows.Forms.TextBox()
+        Me.lblAired = New System.Windows.Forms.Label()
+        Me.lblPlot = New System.Windows.Forms.Label()
+        Me.txtPlot = New System.Windows.Forms.TextBox()
         Me.tpPoster = New System.Windows.Forms.TabPage()
         Me.btnSetPosterDL = New System.Windows.Forms.Button()
         Me.btnRemovePoster = New System.Windows.Forms.Button()
@@ -62,6 +67,7 @@ Partial Class dlgEditTVSeason
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEdit.SuspendLayout()
+        Me.tpDetails.SuspendLayout()
         Me.tpPoster.SuspendLayout()
         CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpBanner.SuspendLayout()
@@ -122,6 +128,7 @@ Partial Class dlgEditTVSeason
         '
         'tcEdit
         '
+        Me.tcEdit.Controls.Add(Me.tpDetails)
         Me.tcEdit.Controls.Add(Me.tpPoster)
         Me.tcEdit.Controls.Add(Me.tpBanner)
         Me.tcEdit.Controls.Add(Me.tpLandscape)
@@ -132,6 +139,59 @@ Partial Class dlgEditTVSeason
         Me.tcEdit.SelectedIndex = 0
         Me.tcEdit.Size = New System.Drawing.Size(844, 478)
         Me.tcEdit.TabIndex = 3
+        '
+        'tpDetails
+        '
+        Me.tpDetails.Controls.Add(Me.txtAired)
+        Me.tpDetails.Controls.Add(Me.lblAired)
+        Me.tpDetails.Controls.Add(Me.lblPlot)
+        Me.tpDetails.Controls.Add(Me.txtPlot)
+        Me.tpDetails.Location = New System.Drawing.Point(4, 22)
+        Me.tpDetails.Name = "tpDetails"
+        Me.tpDetails.Size = New System.Drawing.Size(836, 452)
+        Me.tpDetails.TabIndex = 5
+        Me.tpDetails.Text = "Details"
+        Me.tpDetails.UseVisualStyleBackColor = True
+        '
+        'txtAired
+        '
+        Me.txtAired.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtAired.Location = New System.Drawing.Point(7, 22)
+        Me.txtAired.Name = "txtAired"
+        Me.txtAired.Size = New System.Drawing.Size(137, 22)
+        Me.txtAired.TabIndex = 32
+        '
+        'lblAired
+        '
+        Me.lblAired.AutoSize = True
+        Me.lblAired.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblAired.Location = New System.Drawing.Point(5, 7)
+        Me.lblAired.Name = "lblAired"
+        Me.lblAired.Size = New System.Drawing.Size(38, 13)
+        Me.lblAired.TabIndex = 31
+        Me.lblAired.Text = "Aired:"
+        '
+        'lblPlot
+        '
+        Me.lblPlot.AutoSize = True
+        Me.lblPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblPlot.Location = New System.Drawing.Point(5, 47)
+        Me.lblPlot.Name = "lblPlot"
+        Me.lblPlot.Size = New System.Drawing.Size(31, 13)
+        Me.lblPlot.TabIndex = 29
+        Me.lblPlot.Text = "Plot:"
+        '
+        'txtPlot
+        '
+        Me.txtPlot.AcceptsReturn = True
+        Me.txtPlot.BackColor = System.Drawing.SystemColors.Window
+        Me.txtPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtPlot.Location = New System.Drawing.Point(7, 63)
+        Me.txtPlot.Multiline = True
+        Me.txtPlot.Name = "txtPlot"
+        Me.txtPlot.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.txtPlot.Size = New System.Drawing.Size(811, 229)
+        Me.txtPlot.TabIndex = 30
         '
         'tpPoster
         '
@@ -530,6 +590,8 @@ Partial Class dlgEditTVSeason
         Me.pnlTop.PerformLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tcEdit.ResumeLayout(False)
+        Me.tpDetails.ResumeLayout(False)
+        Me.tpDetails.PerformLayout()
         Me.tpPoster.ResumeLayout(False)
         CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tpBanner.ResumeLayout(False)
@@ -577,5 +639,10 @@ Partial Class dlgEditTVSeason
     Friend WithEvents btnSetLandscapeScrape As System.Windows.Forms.Button
     Friend WithEvents btnSetLandscapeLocal As System.Windows.Forms.Button
     Friend WithEvents pbLandscape As System.Windows.Forms.PictureBox
+    Friend WithEvents tpDetails As System.Windows.Forms.TabPage
+    Friend WithEvents lblPlot As System.Windows.Forms.Label
+    Friend WithEvents txtPlot As System.Windows.Forms.TextBox
+    Friend WithEvents txtAired As System.Windows.Forms.TextBox
+    Friend WithEvents lblAired As System.Windows.Forms.Label
 
 End Class

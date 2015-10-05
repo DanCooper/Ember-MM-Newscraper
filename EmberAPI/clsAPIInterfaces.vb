@@ -185,6 +185,15 @@ Public Class Interfaces
         ''' <returns></returns>
         ''' <remarks></remarks>
         Function Scraper_TVEpisode(ByRef oDBElement As Database.DBElement, ByRef nEpisode As MediaContainers.EpisodeDetails, ByVal ScrapeOptions As Structures.ScrapeOptions) As ModuleResult
+        ''' <summary>
+        ''' Get single season information
+        ''' </summary>
+        ''' <param name="oDBElement"></param>
+        ''' <param name="nSeason"></param>
+        ''' <param name="ScrapeOptions"></param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Function Scraper_TVSeason(ByRef oDBElement As Database.DBElement, ByRef nSeason As MediaContainers.SeasonDetails, ByVal ScrapeOptions As Structures.ScrapeOptions) As ModuleResult
 
 #End Region 'Methods
 

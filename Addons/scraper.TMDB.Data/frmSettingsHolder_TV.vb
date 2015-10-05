@@ -101,7 +101,8 @@ Public Class frmSettingsHolder_TV
         chkScraperEpisodePlot.CheckedChanged, _
         chkScraperEpisodeRating.CheckedChanged, _
         chkScraperEpisodeTitle.CheckedChanged, _
- _
+        chkScraperSeasonAired.CheckedChanged, _
+        chkScraperSeasonPlot.CheckedChanged, _
         chkScraperShowActors.CheckedChanged, _
         chkScraperShowCert.CheckedChanged, _
         chkScraperShowCountry.CheckedChanged, _

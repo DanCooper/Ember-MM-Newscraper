@@ -457,6 +457,10 @@ Public Class IMDB_Data
         logger.Trace("Finished TMDB Scraper")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
+
+    Public Function Scraper_TVSeason(ByRef oDBTVSeason As Database.DBElement, ByRef nSeason As MediaContainers.SeasonDetails, ByVal ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_TV.Scraper_TVSeason
+        Return New Interfaces.ModuleResult With {.breakChain = False}
+    End Function
     ''' <summary>
     '''  Scrape MovieDetails from IMDB
     ''' </summary>

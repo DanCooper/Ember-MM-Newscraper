@@ -648,9 +648,10 @@ Public Class Enums
         SeasonBanner = 30
         SeasonFanart = 31
         SeasonLandscape = 32
-        SeasonPoster = 33
-        withEpisodes = 34
-        withSeasons = 35
+        SeasonNFO = 33
+        SeasonPoster = 34
+        withEpisodes = 35
+        withSeasons = 36
     End Enum
 
     Public Enum ModuleEventType As Integer
@@ -1151,6 +1152,8 @@ Public Class Functions
             .bMainStatus = Master.eSettings.TVScraperShowStatus
             .bMainStudio = Master.eSettings.TVScraperShowStudio
             .bMainTitle = Master.eSettings.TVScraperShowTitle
+            .bSeasonAired = Master.eSettings.TVScraperSeasonAired
+            .bSeasonPlot = Master.eSettings.TVScraperSeasonPlot
         End With
     End Sub
     ''' <summary>
@@ -1516,6 +1519,7 @@ Public Class Functions
                     .SeasonBanner = MValue
                     .SeasonFanart = MValue
                     .SeasonLandscape = MValue
+                    .SeasonNFO = MValue
                     .SeasonPoster = MValue
                     '.withEpisodes should not be set here
                     '.withSeasons should not be set here
@@ -1583,6 +1587,8 @@ Public Class Functions
                     .SeasonFanart = MValue
                 Case Enums.ModifierType.SeasonLandscape
                     .SeasonLandscape = MValue
+                Case Enums.ModifierType.SeasonNFO
+                    .SeasonNFO = MValue
                 Case Enums.ModifierType.SeasonPoster
                     .SeasonPoster = MValue
                 Case Enums.ModifierType.withEpisodes

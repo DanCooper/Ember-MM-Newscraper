@@ -4387,12 +4387,13 @@ Public Class Database
             End Using
         Else
             Using SQLcommand_update_seasons As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand_update_seasons.CommandText = String.Format("UPDATE seasons SET SeasonText=?, Lock=?, Mark=?, New=? WHERE idSeason={0}", ID)
+                SQLcommand_update_seasons.CommandText = String.Format("UPDATE seasons SET SeasonText=?, Lock=?, Mark=?, New=?, strTVDB=?, strTMDB=?, strAired=?, strPlot=? WHERE idSeason={0}", ID)
                 Dim par_seasons_SeasonText As SQLite.SQLiteParameter = SQLcommand_update_seasons.Parameters.Add("par_seasons_SeasonText", DbType.String, 0, "SeasonText")
                 Dim par_seasons_Lock As SQLite.SQLiteParameter = SQLcommand_update_seasons.Parameters.Add("par_seasons_Lock", DbType.Boolean, 0, "Lock")
                 Dim par_seasons_Mark As SQLite.SQLiteParameter = SQLcommand_update_seasons.Parameters.Add("par_seasons_Mark", DbType.Boolean, 0, "Mark")
                 Dim par_seasons_New As SQLite.SQLiteParameter = SQLcommand_update_seasons.Parameters.Add("par_seasons_New", DbType.Boolean, 0, "New")
                 Dim par_seasons_strTVDB As SQLite.SQLiteParameter = SQLcommand_update_seasons.Parameters.Add("par_seasons_strTVDB", DbType.String, 0, "strTVDB")
+                Dim par_seasons_strTMDB As SQLite.SQLiteParameter = SQLcommand_update_seasons.Parameters.Add("par_seasons_strTMDB", DbType.String, 0, "strTMDB")
                 Dim par_seasons_strAired As SQLite.SQLiteParameter = SQLcommand_update_seasons.Parameters.Add("par_seasons_strAired", DbType.String, 0, "strAired")
                 Dim par_seasons_strPlot As SQLite.SQLiteParameter = SQLcommand_update_seasons.Parameters.Add("par_seasons_strPlot", DbType.String, 0, "strPlot")
                 par_seasons_SeasonText.Value = StringUtils.FormatSeasonText(_season.TVSeason.Season)
@@ -4400,6 +4401,7 @@ Public Class Database
                 par_seasons_Mark.Value = _season.IsMark
                 par_seasons_New.Value = False
                 par_seasons_strTVDB.Value = _season.TVSeason.TVDB
+                par_seasons_strTMDB.Value = _season.TVSeason.TMDB
                 par_seasons_strAired.Value = _season.TVSeason.Aired
                 par_seasons_strPlot.Value = _season.TVSeason.Plot
                 SQLcommand_update_seasons.ExecuteNonQuery()

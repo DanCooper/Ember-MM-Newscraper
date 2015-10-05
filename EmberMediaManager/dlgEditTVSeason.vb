@@ -375,6 +375,9 @@ Public Class dlgEditTVSeason
     Private Sub FillInfo()
         With Me
 
+            .txtAired.Text = Me.tmpDBElement.TVSeason.Aired
+            .txtPlot.Text = Me.tmpDBElement.TVSeason.Plot
+
             'Images and TabPages
 
             If (Not tmpDBElement.TVSeason.Season = 999 AndAlso Master.eSettings.TVSeasonBannerAnyEnabled) OrElse _
@@ -453,7 +456,7 @@ Public Class dlgEditTVSeason
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-        Master.DB.SaveTVSeasonToDB(Me.tmpDBElement, False, True)
+        Me.SetInfo()
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
@@ -535,7 +538,19 @@ Public Class dlgEditTVSeason
         End If
     End Sub
 
+    Private Sub SetInfo()
+        Me.OK_Button.Enabled = False
+        Me.Cancel_Button.Enabled = False
+
+        Me.tmpDBElement.TVSeason.Aired = Me.txtAired.Text.Trim
+        Me.tmpDBElement.TVSeason.Plot = Me.txtPlot.Text.Trim
+    End Sub
+
     Private Sub SetUp()
+        'Aired
+        Dim strAired As String = String.Concat(Master.eLang.GetString(728, "Aired"), ":")
+        Me.lblAired.Text = strAired
+
         'Download
         Dim strDownload As String = Master.eLang.GetString(373, "Download")
         Me.btnSetBannerDL.Text = strDownload
@@ -549,6 +564,10 @@ Public Class dlgEditTVSeason
         Me.btnSetFanartLocal.Text = strLocalBrowse
         Me.btnSetLandscapeLocal.Text = strLocalBrowse
         Me.btnSetPosterLocal.Text = strLocalBrowse
+
+        'Plot
+        Dim strPlot As String = Master.eLang.GetString(241, "Plot:")
+        Me.lblPlot.Text = strPlot
 
         'Remove
         Dim strRemove As String = Master.eLang.GetString(30, "Remove")

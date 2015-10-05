@@ -403,6 +403,8 @@ Partial Public Class clsXMLSettings
     Private _tvscraperepisodetitle As Boolean
     Private _tvscrapermetadatascan As Boolean
     Private _tvscraperoptionsordering As Enums.Ordering
+    Private _tvscraperseasonaired As Boolean
+    Private _tvscraperseasonplot As Boolean
     Private _tvscrapershowactors As Boolean
     Private _tvscrapershowcert As Boolean
     Private _tvscrapershowcertformpaa As Boolean
@@ -4105,6 +4107,24 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._tvscraperepisodetitle = value
+        End Set
+    End Property
+
+    Public Property TVScraperSeasonAired() As Boolean
+        Get
+            Return Me._tvscraperseasonaired
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvscraperseasonaired = value
+        End Set
+    End Property
+
+    Public Property TVScraperSeasonPlot() As Boolean
+        Get
+            Return Me._tvscraperseasonplot
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvscraperseasonplot = value
         End Set
     End Property
 

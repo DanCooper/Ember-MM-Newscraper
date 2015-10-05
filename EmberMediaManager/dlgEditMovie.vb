@@ -32,6 +32,7 @@ Public Class dlgEditMovie
 #End Region 'Events
 
 #Region "Fields"
+
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Private tmpDBElement As New Database.DBElement

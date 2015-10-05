@@ -252,11 +252,11 @@ Public Class TVDB_Data
         If ScrapeModifier.MainNFO AndAlso Not ScrapeModifier.DoSearch Then
             If Not String.IsNullOrEmpty(oDBTV.TVShow.TVDB) Then
                 'TVDB-ID already available -> scrape and save data into an empty tv show container (nShow)
-                _scraper.GetTVShowInfo(oDBTV.TVShow.TVDB, nShow, False, FilteredOptions, False, ScrapeModifier.withEpisodes)
+                _scraper.GetTVShowInfo(oDBTV.TVShow.TVDB, nShow, ScrapeModifier, FilteredOptions, False)
             ElseIf Not ScrapeType = Enums.ScrapeType.SingleScrape Then
                 'no TVDB-ID for tv show --> search first and try to get ID!
                 If Not String.IsNullOrEmpty(oDBTV.TVShow.Title) Then
-                    _scraper.GetSearchTVShowInfo(oDBTV.TVShow.Title, oDBTV, nShow, ScrapeType, FilteredOptions, ScrapeModifier.withEpisodes)
+                    _scraper.GetSearchTVShowInfo(oDBTV.TVShow.Title, oDBTV, nShow, ScrapeType, ScrapeModifier, FilteredOptions)
                 End If
                 'if still no ID retrieved -> exit
                 If String.IsNullOrEmpty(nShow.TVDB) Then Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
@@ -274,8 +274,8 @@ Public Class TVDB_Data
         If ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto Then
             If String.IsNullOrEmpty(oDBTV.TVShow.TVDB) Then
                 Using dSearch As New dlgTVDBSearchResults(Settings, _scraper)
-                    If dSearch.ShowDialog(nShow, oDBTV.TVShow.Title, oDBTV.ShowPath, FilteredOptions) = Windows.Forms.DialogResult.OK Then
-                        _scraper.GetTVShowInfo(nShow.TVDB, nShow, False, FilteredOptions, False, ScrapeModifier.withEpisodes)
+                    If dSearch.ShowDialog(nShow, oDBTV.TVShow.Title, oDBTV.ShowPath, ScrapeModifier, FilteredOptions) = Windows.Forms.DialogResult.OK Then
+                        _scraper.GetTVShowInfo(nShow.TVDB, nShow, ScrapeModifier, FilteredOptions, False)
                         'if a tvshow is found, set DoSearch back to "false" for following scrapers
                         ScrapeModifier.DoSearch = False
                     Else
@@ -339,6 +339,10 @@ Public Class TVDB_Data
         End If
 
         logger.Trace("Finished TVDB Scraper")
+        Return New Interfaces.ModuleResult With {.breakChain = False}
+    End Function
+
+    Public Function Scraper_TVSeason(ByRef oDBTVSeason As Database.DBElement, ByRef nSeason As MediaContainers.SeasonDetails, ByVal ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_TV.Scraper_TVSeason
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
