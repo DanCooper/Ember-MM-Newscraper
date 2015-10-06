@@ -777,6 +777,17 @@ Namespace Kodi
                 Return Nothing
             End If
         End Function
+
+        Public Async Function TestConnectionToHost() As Task(Of Boolean)
+            Try
+                Dim Response = Await _kodi.JSONRPC.Ping
+                Return True
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(String.Format("[APIKodi] [{0}] TestConnectionToHost | No connection to Host!", _currenthost.Label))
+                Return False
+            End Try
+        End Function
         ''' <summary>
         ''' Update movie details at Kodi
         ''' </summary>
