@@ -140,10 +140,22 @@ Public Class KodiInterface
     ''' Timer tick event is async so we can queue with await all API tasks
     ''' </remarks>
     Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
-        'add job to tasklist and get everything done
-        TaskList.Add(New KodiTask With {.mType = mType, .mDBElement = _dbelement})
-        If TasksDone Then Me.RunTasks()
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+        If Not Master.isCL Then
+            'add job to tasklist and get everything done
+            TaskList.Add(New KodiTask With {.mType = mType, .mDBElement = _dbelement})
+            If TasksDone Then Me.RunTasks()
+            Return New Interfaces.ModuleResult With {.breakChain = False}
+        Else
+            Dim mDBElement As Database.DBElement = _dbelement
+            Dim tTask As Task(Of Boolean) = Task.Run(Function() DoCommandLine(mType, mDBElement))
+            While Not tTask.IsCompleted
+                Threading.Thread.Sleep(50)
+            End While
+        End If
+    End Function
+
+    Private Async Function DoCommandLine(ByVal mType As Enums.ModuleEventType, ByVal mDBElement As Database.DBElement) As Task(Of Boolean)
+        Return Await Task.Run(Function() GenericRunCallBack(mType, mDBElement))
     End Function
 
     ''' <summary>
@@ -156,14 +168,21 @@ Public Class KodiInterface
     ''' Made async to await async Kodi API
     ''' </remarks>
     Private Async Sub RunTasks()
+        Dim getError As Boolean = False
         Me.TasksDone = False
         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1439, "Run Tasks"), New Bitmap(My.Resources.logo)}))
         While Me.TaskList.Count > 0
-            Await GenericRunCallBack(TaskList.Item(0).mType, TaskList.Item(0).mDBElement, TaskList.Item(0).mHost)
+            If Not Await GenericRunCallBack(TaskList.Item(0).mType, TaskList.Item(0).mDBElement, TaskList.Item(0).mHost) Then
+                getError = True
+            End If
             Me.TaskList.RemoveAt(0)
         End While
         Me.TasksDone = True
-        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(251, "All Tasks Done"), New Bitmap(My.Resources.logo)}))
+        If Not getError Then
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(251, "All Tasks Done"), New Bitmap(My.Resources.logo)}))
+        Else
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), String.Format(Master.eLang.GetString(969, "One or more Task(s) failed.{0}Please check log for more informations"), Environment.NewLine), Nothing}))
+        End If
     End Sub
 
     Sub Handle_GenericEvent(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object))
@@ -178,6 +197,8 @@ Public Class KodiInterface
     ''' Made async to await async Kodi API
     ''' </remarks>
     Private Async Function GenericRunCallBack(ByVal mType As Enums.ModuleEventType, ByVal mDBElement As Database.DBElement, Optional mHost As Host = Nothing) As Task(Of Boolean)
+        Dim getError As Boolean = False
+
         'check if at least one host is configured, else skip
         If _SpecialSettings.Hosts.Count > 0 Then
             Select Case mType
@@ -196,8 +217,8 @@ Public Class KodiInterface
                                 Else
                                     logger.Warn("[KodiInterface] RunGeneric MovieUpdate: " & mHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBMovie.Movie.Title)
                                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", mHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBMovie.Movie.Title, Nothing}))
+                                    getError = True
                                 End If
-                                RemoveHandler _APIKodi.GenericEvent, AddressOf Handle_GenericEvent
                             Else
                                 For Each tHost As Host In _SpecialSettings.Hosts.Where(Function(f) f.RealTimeSync AndAlso f.Sources.Where(Function(c) c.ContentType = Enums.ContentType.Movie).Count > 0)
                                     Dim _APIKodi As New Kodi.APIKodi(tHost)
@@ -208,6 +229,7 @@ Public Class KodiInterface
                                     Else
                                         logger.Warn("[KodiInterface] RunGeneric MovieUpdate: " & tHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBMovie.Movie.Title)
                                         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", tHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBMovie.Movie.Title, Nothing}))
+                                        getError = True
                                     End If
                                     RemoveHandler _APIKodi.GenericEvent, AddressOf Handle_GenericEvent
                                     'Synchronously waiting for an async method... not good and no ideal solution here. The asynchronous code of KodiAPI works best if it doesn’t get synchronously blocked - so for now I moved notifcation in Ember in async APIKodi to avoid waiting here for the task to finish. 
@@ -226,9 +248,11 @@ Public Class KodiInterface
                         Else
                             logger.Warn("[KodiInterface] GenericRunCallBack MovieUpdate: " & Master.eLang.GetString(1442, "Please Scrape In Ember First!"))
                             'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
+                            getError = True
                         End If
                     Else
                         logger.Warn("[KodiInterface] GenericRunCallBack MovieUpdate: Not online!")
+                        getError = True
                     End If
 
                     'MovieSet syncing
@@ -243,6 +267,7 @@ Public Class KodiInterface
                                 Else
                                     logger.Warn("[KodiInterface] RunGeneric MovieSetUpdate: " & tHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBMovieset.MovieSet.Title)
                                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", tHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBMovieset.MovieSet.Title, Nothing}))
+                                    getError = True
                                 End If
                                 ''TODO We don't wait here for Async API to be finished (because it will block UI thread for a few seconds), any idea?
                                 'If result.Result = True Then
@@ -256,9 +281,11 @@ Public Class KodiInterface
                         Else
                             logger.Warn("[KodiInterface] GenericRunCallBack MoviesetUpdate: Please Scrape In Ember First!")
                             'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
+                            getError = True
                         End If
                     Else
                         logger.Warn("[KodiInterface] GenericRunCallBack MoviesetUpdate: No movies in set!")
+                        getError = True
                     End If
 
 
@@ -275,6 +302,7 @@ Public Class KodiInterface
                                 Else
                                     logger.Warn("[KodiInterface] RunGeneric TVEpisodeUpdate: " & mHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVEpisode.Title)
                                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", mHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVEpisode.Title, Nothing}))
+                                    getError = True
                                 End If
                                 RemoveHandler _APIKodi.GenericEvent, AddressOf Handle_GenericEvent
                             Else
@@ -286,6 +314,7 @@ Public Class KodiInterface
                                     Else
                                         logger.Warn("[KodiInterface] RunGeneric TVEpisodeUpdate: " & tHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVEpisode.Title)
                                         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", tHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVEpisode.Title, Nothing}))
+                                        getError = True
                                     End If
                                     RemoveHandler _APIKodi.GenericEvent, AddressOf Handle_GenericEvent
                                     ''TODO We don't wait here for Async API to be finished (because it will block UI thread for a few seconds), any idea?
@@ -301,9 +330,11 @@ Public Class KodiInterface
                         Else
                             logger.Warn("[KodiInterface] GenericRunCallBack TVEpisodeUpdate: Please Scrape In Ember First!")
                             'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
+                            getError = True
                         End If
                     Else
                         logger.Warn("[KodiInterface] GenericRunCallBack TVEpisodeUpdate: Not online!")
+                        getError = True
                     End If
 
                     'TVSeason syncing
@@ -318,6 +349,7 @@ Public Class KodiInterface
                                 Else
                                     logger.Warn("[KodiInterface] RunGeneric TVSeasonUpdate: " & mHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVSeason.Title)
                                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", mHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVSeason.Title, Nothing}))
+                                    getError = True
                                 End If
                             Else
                                 For Each tHost In _SpecialSettings.Hosts.Where(Function(f) f.RealTimeSync AndAlso f.Sources.Where(Function(c) c.ContentType = Enums.ContentType.TV).Count > 0)
@@ -327,6 +359,7 @@ Public Class KodiInterface
                                     Else
                                         logger.Warn("[KodiInterface] RunGeneric TVSeasonUpdate: " & tHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVSeason.Title)
                                         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", tHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVSeason.Title, Nothing}))
+                                        getError = True
                                     End If
                                     ''TODO We don't wait here for Async API to be finished (because it will block UI thread for a few seconds), any idea?
                                     'If result.Result = True Then
@@ -341,9 +374,11 @@ Public Class KodiInterface
                         Else
                             logger.Warn("[KodiInterface] GenericRunCallBack TVSeasonUpdate: Please Scrape In Ember First!")
                             'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
+                            getError = True
                         End If
                     Else
                         logger.Warn("[KodiInterface] GenericRunCallBack TVSeasonUpdate: Not online!")
+                        getError = True
                     End If
 
                     'TVShow syncing
@@ -358,6 +393,7 @@ Public Class KodiInterface
                                 Else
                                     logger.Warn("[KodiInterface] RunGeneric TVShowUpdate: " & mHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVShow.Title)
                                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", mHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVShow.Title, Nothing}))
+                                    getError = True
                                 End If
                             Else
                                 For Each tHost In _SpecialSettings.Hosts.Where(Function(f) f.RealTimeSync AndAlso f.Sources.Where(Function(c) c.ContentType = Enums.ContentType.TV).Count > 0)
@@ -367,6 +403,7 @@ Public Class KodiInterface
                                     Else
                                         logger.Warn("[KodiInterface] RunGeneric TVShowUpdate: " & tHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVShow.Title)
                                         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", tHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVShow.Title, Nothing}))
+                                        getError = True
                                     End If
                                     ''TODO We don't wait here for Async API to be finished (because it will block UI thread for a few seconds), any idea?
                                     'If result.Result = True Then
@@ -381,16 +418,23 @@ Public Class KodiInterface
                         Else
                             logger.Warn("[KodiInterface] GenericRunCallBack TVShowUpdate: Please Scrape In Ember First!")
                             'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
+                            getError = True
                         End If
                     Else
                         logger.Warn("[KodiInterface] GenericRunCallBack TVShowUpdate: Not online!")
+                        getError = True
                     End If
             End Select
         Else
             logger.Warn("[KodiInterface] GenericRunCallBack: No Host Configured!")
+            getError = True
         End If
 
-        Return True
+        If Not getError Then
+            Return True
+        Else
+            Return False
+        End If
     End Function
 
     ''' <summary>

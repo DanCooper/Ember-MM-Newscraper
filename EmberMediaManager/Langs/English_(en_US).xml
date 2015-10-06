@@ -1058,7 +1058,7 @@
     "Jezz_X" and Wayne "nitr8" Humphrey
     Media Flags
   </string>
-  <string id="969"></string>
+  <string id="969">One or more Task(s) failed.{0}Please check log for more informations.</string>
   <string id="970">No Fanarts found</string>
   <string id="971"></string>
   <string id="972">No Posters found</string>
