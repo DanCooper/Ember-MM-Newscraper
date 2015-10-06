@@ -276,7 +276,7 @@ Public Class dlgImgSelect
     End Sub
 
     Public Function SetDefaults() As Boolean
-        Images.SetDefaultImages(tDBElementResult, tDefaultImagesContainer, tSearchResultsContainer, tScrapeModifier, tContentType, tDefaultSeasonImagesContainer, tDefaultEpisodeImagesContainer)
+        Images.SetDefaultImages(tDBElementResult, tDefaultImagesContainer, tSearchResultsContainer, tScrapeModifier, tContentType, tDefaultSeasonImagesContainer, tDefaultEpisodeImagesContainer, IsAutoScraper:=False)
         Return False
     End Function
 

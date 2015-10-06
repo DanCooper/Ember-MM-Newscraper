@@ -413,4 +413,511 @@ Public Class ImageUtils
 
 #End Region 'Methods
 
+    ''' <summary>
+    ''' Contains methods for image comparison and recognition. 
+    ''' </summary>
+    ''' <remarks>
+    ''' 2015/09/22 Cocotus - First implementation
+    ''' Idea: Use this class/algorithm to avoid duplicate images in library (i.e. same image as fanart.jpg and in extrafanart-folder) 
+    ''' Methods are based and implemented using information provided by Dr. Neal Krawetz
+    ''' on his blog: http://www.hackerfactor.com/blog/index.php?/archives/432-Looks-Like-It.html.
+    ''' A big fragment of the code below is result of merging the provided samples/examples at that blog (phyton language) and converted to VB.NET
+    ''' </remarks>
+    Public Class ImageComparison
+
+        Public Enum Algorithm
+            AverageHash = 0
+            PHash = 1
+        End Enum
+
+
+        ''' <summary>
+        ''' Check similarity between two given images
+        ''' </summary>
+        ''' <param name="image_1">The first image</param>
+        ''' <param name="image_2">The second image</param>
+        ''' <returns>true=Images are identical, false=different images</returns>
+        ''' <remarks>
+        ''' 2015/09/22 Cocotus - First implementation
+        ''' </remarks>
+        Public Shared Function GetSimilarity(image_1 As Image, image_2 As Image, Algorithm As Algorithm) As Integer
+            Dim imagehash_1 As String
+            Dim imagehash_2 As String
+            If Algorithm = ImageComparison.Algorithm.AverageHash Then
+                imagehash_1 = AverageHash.GetAverageHash(image_1)
+                imagehash_2 = AverageHash.GetAverageHash(image_2)
+            Else
+                imagehash_1 = PHash.GetPHash(image_1)
+                imagehash_2 = PHash.GetPHash(image_2)
+            End If
+
+            Return CalculateHammingDistance(imagehash_1, imagehash_2)
+        End Function
+
+        ''' <summary>
+        ''' Check similarity between two given images
+        ''' </summary>
+        ''' <param name="image_1">The first image</param>
+        ''' <param name="imagepath_2">Path to the second image</param>
+        ''' <returns>true=Images are identical, false=different images</returns>
+        ''' <remarks>
+        ''' 2015/09/22 Cocotus - First implementation
+        ''' </remarks>
+        Public Shared Function GetSimilarity(image_1 As Image, imagepath_2 As String, Algorithm As Algorithm) As Integer
+            Dim image_2 As New Bitmap(imagepath_2)
+            Dim imagehash_1 As String
+            Dim imagehash_2 As String
+            If Algorithm = ImageComparison.Algorithm.AverageHash Then
+                imagehash_1 = AverageHash.GetAverageHash(image_1)
+                imagehash_2 = AverageHash.GetAverageHash(image_2)
+            Else
+                imagehash_1 = PHash.GetPHash(image_1)
+                imagehash_2 = PHash.GetPHash(image_2)
+            End If
+
+            Return CalculateHammingDistance(imagehash_1, imagehash_2)
+        End Function
+
+        ''' <summary>
+        ''' Check similarity between two given images
+        ''' </summary>
+        ''' <param name="imagepath_1">Path to the first image</param>
+        ''' <param name="imagepath_2">Path to the second image</param>
+        ''' <returns>true=Images are identical, false=different images</returns>
+        ''' <remarks>
+        ''' 2015/09/22 Cocotus - First implementation
+        ''' </remarks>
+        Public Shared Function IsIdenticalImage(imagepath_1 As String, imagepath_2 As String, Algorithm As Algorithm) As Integer
+            Dim image_1 As New Bitmap(imagepath_1)
+            Dim image_2 As New Bitmap(imagepath_2)
+            Dim imagehash_1 As String
+            Dim imagehash_2 As String
+            If Algorithm = ImageComparison.Algorithm.AverageHash Then
+                imagehash_1 = AverageHash.GetAverageHash(image_1)
+                imagehash_2 = AverageHash.GetAverageHash(image_2)
+            Else
+                imagehash_1 = PHash.GetPHash(image_1)
+                imagehash_2 = PHash.GetPHash(image_2)
+            End If
+
+            Return CalculateHammingDistance(imagehash_1, imagehash_2)
+        End Function
+
+        ''' <summary>
+        ''' Check similarity between two given hashes (of images)
+        ''' </summary>
+        ''' <param name="hashCode_1">The first hash.</param>
+        ''' <param name="hashCode_2">The second hash.</param>
+        ''' <returns>true=Images are identical, false=different images</returns>
+        ''' <remarks>
+        ''' 2015/09/22 Cocotus - First implementation
+        ''' May need some tweaking to decide at what value to return true
+        ''' </remarks>
+        Private Shared Function IsIdentical(hashCode_1 As String, hashCode_2 As String, Optional ByVal MatchTolerance As Integer = 5) As Boolean
+            'assumption: smaller HammingDistance means, higher possibility of images being identical -> this a more robust setting
+            'A distance of zero indicates that it is likely a very similar picture (or a variation of the same picture). A distance of 5 means a few things may be different, but they are probably still close enough to be similar. But a distance of 10 or more? That's probably a very different picture.
+            'MatchTolerance:
+            '0 = identical images
+            '<5 = likely identical images
+            '>10 = completely different images
+
+            'for poster since they look often the same (different language on poster but same backgroudn) -> Use MatchFactor = 1
+            'for fanart we use higher value because fanarts are mostly not similar -> Use MatchFactor = 5
+
+            'calculate similarity between the two hashes. 
+            'The lower the value, the closer the hashes are to being identical
+            Dim HammingDistance = CalculateHammingDistance(hashCode_1, hashCode_2)
+
+            If HammingDistance <= MatchTolerance Then
+                Return True
+            Else
+                Return False
+            End If
+        End Function
+
+        ''' <summary>
+        ''' Computes the HammingDistance between the hashcode of two images
+        ''' </summary>
+        ''' <param name="hashCode_1">Hash of Image 1</param>  
+        ''' <param name="hashCode_2">Hash of Image 2</param>  
+        ''' <returns>Hamming Distance value -> 0: identical images, 0-5: most likely identical, >10: different images</returns>  
+        '''  <remarks>
+        ''' 2015/09/22 Cocotus - First implementation
+        ''' Used in AverageHash and PHash algorithm
+        ''' </remarks>
+        Private Shared Function CalculateHammingDistance(ByVal hashCode_1 As String, ByVal hashCode_2 As String) As Integer
+            Dim same As Integer = 0
+            Dim len As Integer = hashCode_1.Length
+            Dim i As Integer = 0
+            Do While (i < len)
+                If (hashCode_1(i) <> hashCode_2(i)) Then
+                    same = (same + 1)
+                End If
+                i = (i + 1)
+            Loop
+            Return same
+        End Function
+
+        ''' <summary>
+        ''' Reduce size of image
+        ''' </summary>
+        ''' <param name="img">The image that should be shrinked</param>
+        ''' <param name="width">new width of image</param>
+        ''' <param name="height">new height of image</param>
+        ''' <returns>resized image</returns>
+        ''' <remarks>
+        ''' 2015/09/26 Cocotus - First implementation
+        ''' Used in AverageHash and PHash algorithm:
+        ''' 1.Step: Reduce size of image to 8x8 (AverageHasg) or 32x32 (PHash)
+        ''' </remarks>
+        Private Shared Function Shrink(ByVal img As Image, width As Integer, height As Integer) As Bitmap
+            Dim bmp As New Bitmap(width, height, Imaging.PixelFormat.Format32bppRgb)
+            Dim tmpcanvas As Graphics = Graphics.FromImage(bmp)
+            tmpcanvas.CompositingQuality = Drawing2D.CompositingQuality.HighQuality
+            tmpcanvas.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBilinear
+            tmpcanvas.SmoothingMode = Drawing2D.SmoothingMode.HighQuality
+            tmpcanvas.DrawImage(img, 0, 0, width, height)
+            tmpcanvas.Dispose()
+            Return bmp
+        End Function
+
+
+        ''' <summary>
+        ''' Reduce color of image and convert to grayscale
+        ''' </summary>
+        ''' <param name="img">The image that should be shrinked</param>
+        ''' <param name="width">new width of image</param>
+        ''' <param name="height">new height of image</param>
+        ''' <returns>resized image</returns>
+        ''' <remarks>
+        ''' 2015/09/26 Cocotus - First implementation
+        ''' Used in AverageHash and PHash algorithm:
+        ''' 1.Step: Reduce size of image to 8x8 (AverageHasg) or 32x32 (PHash)
+        ''' </remarks>
+        Private Shared Function ReduceColors(ByVal img As Bitmap, width As Integer, height As Integer) As Integer()
+            '2.Step: Reduce color. The tiny 8x8 picture is converted to a grayscale
+            Dim pixels As Integer() = New Integer(((width * height)) - 1) {}
+            Dim i As Integer = 0
+            Do While (i < width)
+                Dim j As Integer = 0
+                Do While (j < height)
+                    Dim color As Color = img.GetPixel(i, j)
+                    pixels(((i * height) + j)) = RGBToGray(color.ToArgb)
+                    j = (j + 1)
+                Loop
+                i = (i + 1)
+            Loop
+            Return pixels
+        End Function
+        ''' <summary>  
+        ''' Convert image to grayscale
+        ''' </summary>  
+        ''' <param name="pixels"></param>  
+        ''' <returns>pixel color value</returns>  
+        ''' <remarks>
+        ''' 2015/09/22 Cocotus - First implementation
+        ''' Conversion helper used in AverageHash/PHash calculation
+        ''' </remarks>
+        Private Shared Function RGBToGray(ByVal pixels As Integer) As Integer
+            Dim _red As Integer = ((pixels + 16) _
+                        And 255)
+            Dim _green As Integer = ((pixels + 8) _
+                        And 255)
+            Dim _blue As Integer = (pixels And 255)
+            Return CType(((0.3 * _red) _
+                        + ((0.59 * _green) + (0.11 * _blue))), Integer)
+        End Function
+
+#Region "AverageHash Algorithm"
+
+        ''' <summary>
+        ''' The algorithm used in this class is called "AverageHash"
+        ''' </summary>
+        ''' <remarks>
+        ''' 2015/09/22 Cocotus - First implementation
+        ''' </remarks>
+        Partial Class AverageHash
+
+            ''' <summary>
+            ''' Computes the average hash of an image according to the algorithm provided by Dr. Neal Krawetz
+            ''' on his blog: http://www.hackerfactor.com/blog/index.php?/archives/432-Looks-Like-It.html.
+            ''' </summary>
+            ''' <param name="imgtoHash">The image to calculate the hash value for</param>
+            ''' <returns>The hash of the image as string</returns>
+            ''' <remarks>
+            ''' 2015/09/22 Cocotus - First implementation
+            ''' Average Hash algorithm implemented as described in above blog.
+            ''' 1.Step: Reduce size of image to 8x8 (shrink)
+            ''' 2.Step: Reduce color. The tiny 8x8 picture is converted to a grayscale
+            ''' 3.Step: Average the colors. Compute the mean value of the 64 colors.
+            ''' 4.Step: Compute the bits. This is the fun part. Each bit is simply set based on whether the color value is above or below the mean.
+            ''' 5.Step: Construct the hash
+            ''' </remarks>
+            Public Shared Function GetAverageHash(imgtoHash As Image) As String
+
+                Dim width As Integer = 8
+                Dim height As Integer = 8
+
+                '1.Step:Reduce size of image (shrink)
+                Dim shrinkedbmp = Shrink(imgtoHash, width, height)
+
+                '2.Step: Reduce color
+                Dim cleanedpixels = ReduceColors(shrinkedbmp, width, height)
+
+                '3.Step: Average the colors. Compute the mean value of the 64 colors.
+                Dim m As Single = 0
+                Dim i As Integer = 0
+                For i = 0 To cleanedpixels.Length - 1
+                    m += cleanedpixels(i)
+                Next
+                m = m / cleanedpixels.Length
+                Dim avgPixel As Integer = CInt(m)
+
+                '4.Step: Compute the bits. This is the fun part. Each bit is simply set based on whether the color value is above or below the mean.
+                ' Return 1-bits when the tone is equal to or above the average,
+                ' and 0-bits when it's below the average.
+                Dim comps() As Integer = New Integer(((width * height)) - 1) {}
+                i = 0
+                Do While (i < comps.Length)
+                    If (cleanedpixels(i) >= avgPixel) Then
+                        comps(i) = 1
+                    Else
+                        comps(i) = 0
+                    End If
+                    i = (i + 1)
+                Loop
+
+                '5.Step: Construct the hash
+                Dim hashCode As System.Text.StringBuilder = New System.Text.StringBuilder
+                i = 0
+                Do While (i < comps.Length)
+                    Dim result As Integer = ((comps(i) * CType(Math.Pow(2, 3), Integer)) _
+                                + ((comps((i + 1)) * CType(Math.Pow(2, 2), Integer)) _
+                                + ((comps((i + 2)) * CType(Math.Pow(2, 1), Integer)) _
+                                + comps((i + 2)))))
+                    hashCode.Append(BinaryToHex(result))
+                    i = (i + 4)
+                Loop
+
+                shrinkedbmp.Dispose()
+                'the final hashcode/identifier of the image
+                Return hashCode.ToString
+            End Function
+
+            ''' <summary>
+            ''' Conversion helper used in AverageHash calculation
+            ''' </summary>
+            ''' <remarks>
+            ''' 2015/09/22 Cocotus - First implementation
+            ''' </remarks>
+            Private Shared Function BinaryToHex(ByVal binary As Integer) As Char
+                Dim ch As Char = Microsoft.VisualBasic.ChrW(32)
+                Select Case (binary)
+                    Case 0
+                        ch = Microsoft.VisualBasic.ChrW(48)
+                    Case 1
+                        ch = Microsoft.VisualBasic.ChrW(49)
+                    Case 2
+                        ch = Microsoft.VisualBasic.ChrW(50)
+                    Case 3
+                        ch = Microsoft.VisualBasic.ChrW(51)
+                    Case 4
+                        ch = Microsoft.VisualBasic.ChrW(52)
+                    Case 5
+                        ch = Microsoft.VisualBasic.ChrW(53)
+                    Case 6
+                        ch = Microsoft.VisualBasic.ChrW(54)
+                    Case 7
+                        ch = Microsoft.VisualBasic.ChrW(55)
+                    Case 8
+                        ch = Microsoft.VisualBasic.ChrW(56)
+                    Case 9
+                        ch = Microsoft.VisualBasic.ChrW(57)
+                    Case 10
+                        ch = Microsoft.VisualBasic.ChrW(97)
+                    Case 11
+                        ch = Microsoft.VisualBasic.ChrW(98)
+                    Case 12
+                        ch = Microsoft.VisualBasic.ChrW(99)
+                    Case 13
+                        ch = Microsoft.VisualBasic.ChrW(100)
+                    Case 14
+                        ch = Microsoft.VisualBasic.ChrW(101)
+                    Case 15
+                        ch = Microsoft.VisualBasic.ChrW(102)
+                    Case Else
+                        ch = Microsoft.VisualBasic.ChrW(32)
+                End Select
+                Return ch
+            End Function
+        End Class
+
+#End Region
+
+#Region "PHash Algorithm"
+
+        ''' <summary>
+        ''' The algorithm used in this class is called "PHash"
+        ''' </summary>
+        ''' <remarks>
+        ''' 2015/09/26 Cocotus - First implementation
+        ''' Its more robust but more complicated then the fast AverageHash algorithm, maybe use to compare posters?
+        ''' </remarks>
+        Private Class PHash
+
+            ''' <summary>
+            ''' Computes the PHash of an image according to the algorithm provided by Dr. Neal Krawetz
+            ''' on his blog: http://www.hackerfactor.com/blog/index.php?/archives/432-Looks-Like-It.html.
+            ''' </summary>
+            ''' <param name="imgtoHash">The path to the image to calculate the hash value for</param>
+            ''' <returns>The hash of the image as string</returns>
+            ''' <remarks>
+            ''' 2015/09/26 Cocotus - First implementation
+            ''' PHash algorithm implemented as described in above blog.
+            ''' 1.Step: Reduce size of image to 32x32 (shrink)
+            ''' 2.Step: Reduce color. The tiny picture is converted to a grayscale
+            ''' 3.Step: Compute the DCT
+            ''' 4.Step: Compute the average value
+            ''' 5.Step: Further reduce the DCT
+            ''' 6.Step: Construct the hash
+            ''' </remarks>
+            Public Shared Function GetPHash(imgtoHash As Image) As String
+                Dim width As Integer = 32
+                Dim height As Integer = 32
+                Dim hashCode = ""
+
+                '1.Step:Reduce size of image (shrink)
+                Dim shrinkedbmp = Shrink(imgtoHash, width, height)
+
+                '2.Step: Reduce color
+                Dim cleanedpixels = ReduceColors(shrinkedbmp, width, height)
+
+                '3.Step: Compute the DCT
+                Dim dctpixels = DCT.GetDCT(cleanedpixels, width)
+
+                '4.Step: Calculate average pixel value of 8 x 8 area of image
+                width = 8
+                height = 8
+                Dim sum As Integer = 0
+                For i As Integer = 0 To height - 1
+                    For j As Integer = 0 To width - 1
+                        sum = sum + dctpixels(i * width + j)
+                    Next
+                Next
+                Dim avr = CInt(sum / (width * height))
+
+                '5/6.Step: Further reduce the DCT, Construct the hash
+                Dim sb As New System.Text.StringBuilder()
+                For i As Integer = 0 To height - 1
+                    For j As Integer = 0 To width - 1
+                        If dctpixels(i * width + j) >= avr Then
+                            sb.Append("1")
+                        Else
+                            sb.Append("0")
+                        End If
+                    Next
+                Next
+                Dim result As Int64 = 0
+                If sb(0) = "0"c Then
+                    result = Convert.ToInt64(sb.ToString(), 2)
+                Else
+                    Dim ba = "1000000000000000000000000000000000000000000000000000000000000000"
+                    result = Convert.ToInt64(ba, 2) Xor Convert.ToInt64(sb.ToString().Substring(1), 2)
+                End If
+                sb = New System.Text.StringBuilder(result.ToString("x"))
+                If sb.Length < 16 Then
+                    Dim n As Integer = 16 - sb.Length
+                    For i As Integer = 0 To n - 1
+                        sb.Insert(0, "0")
+                    Next
+                End If
+                'the final imagehashcode
+                hashCode = sb.ToString
+                shrinkedbmp.Dispose()
+                Return hashCode
+            End Function
+
+        End Class
+
+
+        'DiscreteCosineTransformation algorithm, helper class for PHash
+        Partial Private Class DCT
+            Public Shared Function GetDCT(pix As Integer(), n As Integer) As Integer()
+                Dim iMatrix As Double()() = DoubleArray(n, n)
+                For i As Integer = 0 To n - 1
+                    For j As Integer = 0 To n - 1
+                        iMatrix(i)(j) = CDbl(pix(i * n + j))
+                    Next
+                Next
+                Dim quotient As Double()() = Coefficient(n)
+                Dim quotientT As Double()() = TransposingMatrix(quotient, n)
+                Dim temp As Double()() = DoubleArray(n, n)
+                temp = MatrixMultiply(quotient, iMatrix, n)
+                iMatrix = MatrixMultiply(temp, quotientT, n)
+
+                Dim newpix As Integer() = New Integer(n * n - 1) {}
+                For i As Integer = 0 To n - 1
+                    For j As Integer = 0 To n - 1
+                        newpix(i * n + j) = CInt(iMatrix(i)(j))
+                    Next
+                Next
+                Return newpix
+            End Function
+            Private Shared Function DoubleArray(m As Integer, n As Integer) As Double()()
+                Dim Array As Double()()
+                If m > -1 Then
+                    Array = New Double(m - 1)() {}
+                    If n > -1 Then
+                        For i As Integer = 0 To m - 1
+                            Array(i) = New Double(n - 1) {}
+                        Next
+                    End If
+                Else
+                    Array = Nothing
+                End If
+
+                Return Array
+            End Function
+            Private Shared Function Coefficient(n As Integer) As Double()()
+                Dim coeff As Double()() = DoubleArray(n, n)
+                Dim sqrt As Double = 1.0 / Math.Sqrt(n)
+                For i As Integer = 0 To n - 1
+                    coeff(0)(i) = sqrt
+                Next
+                For i As Integer = 1 To n - 1
+                    For j As Integer = 0 To n - 1
+                        coeff(i)(j) = Math.Sqrt(2.0 / n) * Math.Cos(i * Math.PI * (j + 0.5) / CDbl(n))
+                    Next
+                Next
+                Return coeff
+            End Function
+            Private Shared Function TransposingMatrix(matrix As Double()(), n As Integer) As Double()()
+                Dim nMatrix As Double()() = DoubleArray(n, n)
+                For i As Integer = 0 To n - 1
+                    For j As Integer = 0 To n - 1
+                        nMatrix(i)(j) = matrix(j)(i)
+                    Next
+                Next
+                Return nMatrix
+            End Function
+            Private Shared Function MatrixMultiply(A As Double()(), B As Double()(), n As Integer) As Double()()
+                Dim nMatrix As Double()() = DoubleArray(n, n)
+                Dim t As Double = 0.0
+                For i As Integer = 0 To n - 1
+                    For j As Integer = 0 To n - 1
+                        t = 0
+                        For k As Integer = 0 To n - 1
+                            t += A(i)(k) * B(k)(j)
+                        Next
+                        nMatrix(i)(j) = t
+                    Next
+                Next
+                Return nMatrix
+            End Function
+        End Class
+
+#End Region
+
+    End Class
+
 End Class

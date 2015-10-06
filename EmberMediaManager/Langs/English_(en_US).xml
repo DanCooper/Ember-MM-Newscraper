@@ -1545,4 +1545,8 @@
   <string id="1454">Retrieve PlayCount from</string>
   <string id="1455">Filesize [MB]</string>
   <string id="1456">Include Distributors</string>
+  <string id="1457">Autoscraper</string>
+  <string id="1458">Imagedialog</string>
+  <string id="1459">Activate ImageFilter to avoid duplicate images</string>
+  <string id="1460">Match Tolerance should be between 0 - 10 | 0 = 100% identical images, 10= different images</string>
 </strings>
