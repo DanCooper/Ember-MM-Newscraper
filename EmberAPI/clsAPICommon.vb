@@ -713,7 +713,6 @@ Public Class Enums
         MediaPlayerPlaylistClear_Video = 19
         MediaPlayerStop_Audio = 20
         MediaPlayerStop_Video = 21
-        MovieImageNaming = 22
         Notification = 23
         OnBannerSave_Movie = 24
         OnClearArtSave_Movie = 25
@@ -759,7 +758,6 @@ Public Class Enums
         Sync_TVSeason = 49
         Sync_TVShow = 50
         Task = 51
-        TVImageNaming = 52
         ''' <summary>
         ''' Called when auto scraper finishs but before save to DB
         ''' </summary>

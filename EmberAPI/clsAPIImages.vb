@@ -38,7 +38,6 @@ Public Class Images
     <NonSerialized()> _
     Private sHTTP As HTTP
 	Private _image As Image
-    Private _isedit As Boolean
 
 #End Region 'Fields
 
@@ -51,15 +50,6 @@ Public Class Images
 #End Region 'Constructors
 
 #Region "Properties"
-
-    Public Property IsEdit() As Boolean
-        Get
-            Return _isedit
-        End Get
-        Set(ByVal value As Boolean)
-            _isedit = value
-        End Set
-    End Property
 
 	Public ReadOnly Property [Image]() As Image
 		Get
@@ -115,7 +105,6 @@ Public Class Images
         End If
 
         'In with the new...
-        _isedit = False
         _image = Nothing
         _ms = New MemoryStream()
         sHTTP = New HTTP()
@@ -1068,77 +1057,20 @@ Public Class Images
     ''' Stores the Image to the supplied <paramref name="sPath"/>
     ''' </summary>
     ''' <param name="sPath">Location to store the image</param>
-    ''' <param name="sUrl">URL of desired image</param>
     ''' <remarks></remarks>
-    Public Sub Save(ByVal sPath As String, Optional ByVal sUrl As String = "")
-        '2013/11/26 Dekker500 - This method is a swiss army knife. Completely different behaviour based on what parameter is supplied. Break it down a bit for a more logical flow (if I set a path and URL and quality but no resize, it'll happily ignore everything but the path)
+    Public Sub Save(ByVal sPath As String)
         Dim retSave() As Byte
         Try
-            If String.IsNullOrEmpty(sUrl) Then
-                'EmberAPI.FileUtils.Common.MoveFileWithStream(sUrl, sPath)
-                retSave = _ms.ToArray
+            retSave = _ms.ToArray
 
-                'make sure directory exists
-                Directory.CreateDirectory(Directory.GetParent(sPath).FullName)
-                If sPath.Length <= 260 Then
-                    Using fs As New FileStream(sPath, FileMode.Create, FileAccess.Write)
-                        fs.Write(retSave, 0, retSave.Length)
-                        fs.Flush()
-                        fs.Close()
-                    End Using
-                End If
-                Return
-            End If
-
-            If _image Is Nothing Then Exit Sub
-
-            Dim doesExist As Boolean = File.Exists(sPath)
-            Dim fAtt As New FileAttributes
-            Dim fAttWritable As Boolean = True
-            If Not String.IsNullOrEmpty(sPath) AndAlso (Not doesExist OrElse (Not CBool(File.GetAttributes(sPath) And FileAttributes.ReadOnly))) Then
-                If doesExist Then
-                    'get the current attributes to set them back after writing
-                    fAtt = File.GetAttributes(sPath)
-                    'set attributes to none for writing
-                    Try
-                        File.SetAttributes(sPath, FileAttributes.Normal)
-                    Catch ex As Exception
-                        fAttWritable = False
-                    End Try
-                End If
-
-                If Not sUrl = "" Then
-
-                    Dim webclient As New Net.WebClient
-                    'Download image!
-                    webclient.DownloadFile(sUrl, sPath)
-
-                Else
-                    Using msSave As New MemoryStream
-                        Dim ICI As ImageCodecInfo = GetEncoderInfo(ImageFormat.Jpeg)
-                        Dim EncPars As EncoderParameters = New EncoderParameters(1)
-
-                        EncPars.Param(0) = New EncoderParameter(Encoder.RenderMethod, EncoderValue.RenderNonProgressive)
-
-                        _image.Save(msSave, ICI, EncPars)
-
-                        retSave = msSave.ToArray
-
-                        'make sure directory exists
-                        Directory.CreateDirectory(Directory.GetParent(sPath).FullName)
-                        If sPath.Length <= 260 Then
-                            Using fs As New FileStream(sPath, FileMode.Create, FileAccess.Write)
-                                fs.Write(retSave, 0, retSave.Length)
-                                fs.Flush()
-                            End Using
-                        End If
-                        msSave.Flush()
-                    End Using
-                    'once is saved as teh quality is defined from the user we need to reload the new image to align _ms and _image
-                    Me.FromFile(sPath)
-                End If
-
-                If doesExist And fAttWritable Then File.SetAttributes(sPath, fAtt)
+            'make sure directory exists
+            Directory.CreateDirectory(Directory.GetParent(sPath).FullName)
+            If sPath.Length <= 260 Then
+                Using fs As New FileStream(sPath, FileMode.Create, FileAccess.Write)
+                    fs.Write(retSave, 0, retSave.Length)
+                    fs.Flush()
+                    fs.Close()
+                End Using
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -1173,9 +1105,7 @@ Public Class Images
 
         For Each a In FileUtils.GetFilenameList.Movie(aMovie, Enums.ModifierType.MainActorThumbs)
             tPath = a.Replace("<placeholder>", actor.Name.Replace(" ", "_"))
-            If Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.MovieActorThumbsOverwrite) Then
-                Save(tPath)
-            End If
+            Save(tPath)
         Next
 
         Return tPath
@@ -1184,10 +1114,9 @@ Public Class Images
     ''' Save the image as a movie banner
     ''' </summary>
     ''' <param name="mMovie"><c>Database.DBElement</c> representing the movie being referred to</param>
-    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieBanner(ByVal mMovie As Database.DBElement, Optional sURL As String = "") As String
+    Public Function SaveAsMovieBanner(ByVal mMovie As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
         Dim doResize As Boolean = Master.eSettings.MovieBannerResize AndAlso (_image.Width > Master.eSettings.MovieBannerWidth OrElse _image.Height > Master.eSettings.MovieBannerHeight)
@@ -1206,10 +1135,8 @@ Public Class Images
             End If
 
             For Each a In FileUtils.GetFilenameList.Movie(mMovie, Enums.ModifierType.MainBanner)
-                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieBannerOverwrite) Then
-                    Save(a, sURL)
-                    strReturn = a
-                End If
+                Save(a)
+                strReturn = a
             Next
 
         Catch ex As Exception
@@ -1221,10 +1148,9 @@ Public Class Images
     ''' Save the image as a movie ClearArt
     ''' </summary>
     ''' <param name="mMovie"><c>Database.DBElement</c> representing the movie being referred to</param>
-    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieClearArt(ByVal mMovie As Database.DBElement, Optional sURL As String = "") As String
+    Public Function SaveAsMovieClearArt(ByVal mMovie As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
         Try
@@ -1235,10 +1161,8 @@ Public Class Images
             End Try
 
             For Each a In FileUtils.GetFilenameList.Movie(mMovie, Enums.ModifierType.MainClearArt)
-                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieClearArtOverwrite) Then
-                    Save(a, sURL)
-                    strReturn = a
-                End If
+                Save(a)
+                strReturn = a
             Next
 
         Catch ex As Exception
@@ -1253,7 +1177,7 @@ Public Class Images
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieClearLogo(ByVal mMovie As Database.DBElement, Optional sURL As String = "") As String
+    Public Function SaveAsMovieClearLogo(ByVal mMovie As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
         Try
@@ -1264,10 +1188,8 @@ Public Class Images
             End Try
 
             For Each a In FileUtils.GetFilenameList.Movie(mMovie, Enums.ModifierType.MainClearLogo)
-                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieClearLogoOverwrite) Then
-                    Save(a, sURL)
-                    strReturn = a
-                End If
+                Save(a)
+                strReturn = a
             Next
 
         Catch ex As Exception
@@ -1282,7 +1204,7 @@ Public Class Images
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieDiscArt(ByVal mMovie As Database.DBElement, Optional sURL As String = "") As String
+    Public Function SaveAsMovieDiscArt(ByVal mMovie As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
         Try
@@ -1293,10 +1215,8 @@ Public Class Images
             End Try
 
             For Each a In FileUtils.GetFilenameList.Movie(mMovie, Enums.ModifierType.MainDiscArt)
-                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieDiscArtOverwrite) Then
-                    Save(a, sURL)
-                    strReturn = a
-                End If
+                Save(a)
+                strReturn = a
             Next
 
         Catch ex As Exception
@@ -1342,7 +1262,7 @@ Public Class Images
     ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieExtrafanart(ByVal mMovie As Database.DBElement, ByVal sName As String, Optional sURL As String = "") As String
+    Public Function SaveAsMovieExtrafanart(ByVal mMovie As Database.DBElement, ByVal sName As String) As String
         Dim efPath As String = String.Empty
         Dim iMod As Integer = 0
         Dim iVal As Integer = 1
@@ -1414,10 +1334,9 @@ Public Class Images
     ''' Save the image as a movie's extrathumb
     ''' </summary>
     ''' <param name="mMovie"><c>Database.DBElement</c> representing the movie being referred to</param>
-    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieExtrathumb(ByVal mMovie As Database.DBElement, Optional sURL As String = "") As String
+    Public Function SaveAsMovieExtrathumb(ByVal mMovie As Database.DBElement) As String
         Dim etPath As String = String.Empty
         Dim iMod As Integer = 0
         Dim iVal As Integer = 1
@@ -1454,10 +1373,9 @@ Public Class Images
     ''' Save the image as a movie fanart
     ''' </summary>
     ''' <param name="mMovie"><c></c> representing the movie being referred to</param>
-    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieFanart(ByVal mMovie As Database.DBElement, Optional sURL As String = "") As String
+    Public Function SaveAsMovieFanart(ByVal mMovie As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
         Dim doResize As Boolean = Master.eSettings.MovieFanartResize AndAlso (_image.Width > Master.eSettings.MovieFanartWidth OrElse _image.Height > Master.eSettings.MovieFanartHeight)
@@ -1476,14 +1394,12 @@ Public Class Images
             End If
 
             For Each a In FileUtils.GetFilenameList.Movie(mMovie, Enums.ModifierType.MainFanart)
-                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieFanartOverwrite) Then
-                    Save(a, sURL)
-                    strReturn = a
-                End If
+                Save(a)
+                strReturn = a
             Next
 
             If Master.eSettings.MovieBackdropsAuto AndAlso Directory.Exists(Master.eSettings.MovieBackdropsPath) Then
-                Save(String.Concat(Master.eSettings.MovieBackdropsPath, Path.DirectorySeparatorChar, StringUtils.CleanFileName(mMovie.Movie.OriginalTitle), "_tt", mMovie.Movie.IMDBID, ".jpg"), sURL)
+                Save(String.Concat(Master.eSettings.MovieBackdropsPath, Path.DirectorySeparatorChar, StringUtils.CleanFileName(mMovie.Movie.OriginalTitle), "_tt", mMovie.Movie.IMDBID, ".jpg"))
             End If
 
         Catch ex As Exception
@@ -1496,10 +1412,9 @@ Public Class Images
     ''' Save the image as a movie landscape
     ''' </summary>
     ''' <param name="mMovie"><c>Database.DBElement</c> representing the movie being referred to</param>
-    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieLandscape(ByVal mMovie As Database.DBElement, Optional sURL As String = "") As String
+    Public Function SaveAsMovieLandscape(ByVal mMovie As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
         Try
@@ -1510,10 +1425,8 @@ Public Class Images
             End Try
 
             For Each a In FileUtils.GetFilenameList.Movie(mMovie, Enums.ModifierType.MainLandscape)
-                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieLandscapeOverwrite) Then
-                    Save(a, sURL)
-                    strReturn = a
-                End If
+                Save(a)
+                strReturn = a
             Next
 
         Catch ex As Exception
@@ -1525,10 +1438,9 @@ Public Class Images
     ''' Save the image as a movie poster
     ''' </summary>
     ''' <param name="mMovie"><c>Database.DBElement</c> representing the movie being referred to</param>
-    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMoviePoster(ByVal mMovie As Database.DBElement, Optional sURL As String = "") As String
+    Public Function SaveAsMoviePoster(ByVal mMovie As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
         Dim doResize As Boolean = Master.eSettings.MoviePosterResize AndAlso (_image.Width > Master.eSettings.MoviePosterWidth OrElse _image.Height > Master.eSettings.MoviePosterHeight)
@@ -1547,10 +1459,8 @@ Public Class Images
             End If
 
             For Each a In FileUtils.GetFilenameList.Movie(mMovie, Enums.ModifierType.MainPoster)
-                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MoviePosterOverwrite) Then
-                    Save(a, sURL)
-                    strReturn = a
-                End If
+                Save(a)
+                strReturn = a
             Next
 
         Catch ex As Exception
@@ -1562,10 +1472,9 @@ Public Class Images
     ''' Save the image as a movieset banner
     ''' </summary>
     ''' <param name="mMovieSet"><c>Database.DBElement</c> representing the movieset being referred to</param>
-    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieSetBanner(ByVal mMovieSet As Database.DBElement, Optional sURL As String = "") As String
+    Public Function SaveAsMovieSetBanner(ByVal mMovieSet As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
         Dim doResize As Boolean = Master.eSettings.MovieSetBannerResize AndAlso (_image.Width > Master.eSettings.MovieSetBannerWidth OrElse _image.Height > Master.eSettings.MovieSetBannerHeight)
@@ -1584,10 +1493,8 @@ Public Class Images
             End If
 
             For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet, Enums.ModifierType.MainBanner)
-                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetBannerOverwrite) Then
-                    Save(a, sURL)
-                    strReturn = a
-                End If
+                Save(a)
+                strReturn = a
             Next
 
         Catch ex As Exception
@@ -1599,10 +1506,9 @@ Public Class Images
     ''' Save the image as a movieset ClearArt
     ''' </summary>
     ''' <param name="mMovieSet"><c>Database.DBElement</c> representing the movieset being referred to</param>
-    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieSetClearArt(ByVal mMovieSet As Database.DBElement, Optional sURL As String = "") As String
+    Public Function SaveAsMovieSetClearArt(ByVal mMovieSet As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
         Try
@@ -1613,10 +1519,8 @@ Public Class Images
             'End Try
 
             For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet, Enums.ModifierType.MainClearArt)
-                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetClearArtOverwrite) Then
-                    Save(a, sURL)
-                    strReturn = a
-                End If
+                Save(a)
+                strReturn = a
             Next
 
         Catch ex As Exception
@@ -1628,10 +1532,9 @@ Public Class Images
     ''' Save the image as a movieset ClearLogo
     ''' </summary>
     ''' <param name="mMovieSet"><c>Database.DBElement</c> representing the movieset being referred to</param>
-    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieSetClearLogo(ByVal mMovieSet As Database.DBElement, Optional sURL As String = "") As String
+    Public Function SaveAsMovieSetClearLogo(ByVal mMovieSet As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
         Try
@@ -1642,10 +1545,8 @@ Public Class Images
             'End Try
 
             For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet, Enums.ModifierType.MainClearLogo)
-                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetClearLogoOverwrite) Then
-                    Save(a, sURL)
-                    strReturn = a
-                End If
+                Save(a)
+                strReturn = a
             Next
 
         Catch ex As Exception
@@ -1657,10 +1558,9 @@ Public Class Images
     ''' Save the image as a movieset DiscArt
     ''' </summary>
     ''' <param name="mMovieSet"><c>Database.DBElement</c> representing the movieset being referred to</param>
-    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieSetDiscArt(ByVal mMovieSet As Database.DBElement, Optional sURL As String = "") As String
+    Public Function SaveAsMovieSetDiscArt(ByVal mMovieSet As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
         Try
@@ -1671,10 +1571,8 @@ Public Class Images
             'End Try
 
             For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet, Enums.ModifierType.MainDiscArt)
-                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetDiscArtOverwrite) Then
-                    Save(a, sURL)
-                    strReturn = a
-                End If
+                Save(a)
+                strReturn = a
             Next
 
         Catch ex As Exception
@@ -1686,10 +1584,9 @@ Public Class Images
     ''' Save the image as a movieset Fanart
     ''' </summary>
     ''' <param name="mMovieSet"><c>Database.DBElement</c> representing the movieset being referred to</param>
-    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieSetFanart(ByVal mMovieSet As Database.DBElement, Optional sURL As String = "") As String
+    Public Function SaveAsMovieSetFanart(ByVal mMovieSet As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
         Dim doResize As Boolean = Master.eSettings.MovieSetFanartResize AndAlso (_image.Width > Master.eSettings.MovieSetFanartWidth OrElse _image.Height > Master.eSettings.MovieSetFanartHeight)
@@ -1708,10 +1605,8 @@ Public Class Images
             End If
 
             For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet, Enums.ModifierType.MainFanart)
-                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetFanartOverwrite) Then
-                    Save(a, sURL)
-                    strReturn = a
-                End If
+                Save(a)
+                strReturn = a
             Next
 
         Catch ex As Exception
@@ -1723,10 +1618,9 @@ Public Class Images
     ''' Save the image as a movieset Landscape
     ''' </summary>
     ''' <param name="mMovieSet"><c>Database.DBElement</c> representing the movieset being referred to</param>
-    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieSetLandscape(ByVal mMovieSet As Database.DBElement, Optional sURL As String = "") As String
+    Public Function SaveAsMovieSetLandscape(ByVal mMovieSet As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
         Try
@@ -1737,10 +1631,8 @@ Public Class Images
             'End Try
 
             For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet, Enums.ModifierType.MainLandscape)
-                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetLandscapeOverwrite) Then
-                    Save(a, sURL)
-                    strReturn = a
-                End If
+                Save(a)
+                strReturn = a
             Next
 
         Catch ex As Exception
@@ -1752,10 +1644,9 @@ Public Class Images
     ''' Save the image as a movieset Poster
     ''' </summary>
     ''' <param name="mMovieSet"><c>Database.DBElement</c> representing the movieset being referred to</param>
-    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieSetPoster(ByVal mMovieSet As Database.DBElement, Optional sURL As String = "") As String
+    Public Function SaveAsMovieSetPoster(ByVal mMovieSet As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
         Dim doResize As Boolean = Master.eSettings.MovieSetPosterResize AndAlso (_image.Width > Master.eSettings.MovieSetPosterWidth OrElse _image.Height > Master.eSettings.MovieSetPosterHeight)
@@ -1774,10 +1665,8 @@ Public Class Images
             End If
 
             For Each a In FileUtils.GetFilenameList.MovieSet(mMovieSet, Enums.ModifierType.MainPoster)
-                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.MovieSetPosterOverwrite) Then
-                    Save(a, sURL)
-                    strReturn = a
-                End If
+                Save(a)
+                strReturn = a
             Next
 
         Catch ex As Exception
@@ -1789,43 +1678,23 @@ Public Class Images
     ''' Saves the image as the AllSeason banner
     ''' </summary>
     ''' <param name="mShow">The <c>Database.DBElement</c> representing the show being referenced</param>
-    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVAllSeasonsBanner(ByVal mShow As Database.DBElement, Optional sURL As String = "") As String
+    Public Function SaveAsTVAllSeasonsBanner(ByVal mShow As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
         Dim doResize As Boolean = Master.eSettings.TVASBannerResize AndAlso (_image.Width > Master.eSettings.TVASBannerWidth OrElse _image.Height > Master.eSettings.TVASBannerHeight)
 
         Try
-            Dim pPath As String = String.Empty
-            Dim ShowPath As String = mShow.ShowPath
-
             If doResize Then
                 ImageUtils.ResizeImage(_image, Master.eSettings.TVASBannerWidth, Master.eSettings.TVASBannerHeight)
                 'need to align _immage and _ms
                 UpdateMSfromImg(_image)
             End If
 
-            Try
-                Dim params As New List(Of Object)(New Object() {Enums.ModifierType.AllSeasonsBanner, mShow, New List(Of String)})
-                Dim doContinue As Boolean = True
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
-                For Each s As String In DirectCast(params(2), List(Of String))
-                    If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVASBannerOverwrite) Then
-                        Save(s, sURL)
-                        If String.IsNullOrEmpty(strReturn) Then strReturn = s
-                    End If
-                Next
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
-
             For Each a In FileUtils.GetFilenameList.TVShow(mShow, Enums.ModifierType.AllSeasonsBanner)
-                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVASBannerOverwrite) Then
-                    Save(a, sURL)
-                    strReturn = a
-                End If
+                Save(a)
+                strReturn = a
             Next
 
         Catch ex As Exception
@@ -1838,43 +1707,23 @@ Public Class Images
     ''' Saves the image as the AllSeason fanart
     ''' </summary>
     ''' <param name="mShow">The <c>Database.DBElement</c> representing the show being referenced</param>
-    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVAllSeasonsFanart(ByVal mShow As Database.DBElement, Optional sURL As String = "") As String
+    Public Function SaveAsTVAllSeasonsFanart(ByVal mShow As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
         Dim doResize As Boolean = Master.eSettings.TVASFanartResize AndAlso (_image.Width > Master.eSettings.TVASFanartWidth OrElse _image.Height > Master.eSettings.TVASFanartHeight)
 
         Try
-            Dim pPath As String = String.Empty
-            Dim ShowPath As String = mShow.ShowPath
-
             If doResize Then
                 ImageUtils.ResizeImage(_image, Master.eSettings.TVASFanartWidth, Master.eSettings.TVASFanartHeight)
                 'need to align _immage and _ms
                 UpdateMSfromImg(_image)
             End If
 
-            Try
-                Dim params As New List(Of Object)(New Object() {Enums.ModifierType.AllSeasonsFanart, mShow, New List(Of String)})
-                Dim doContinue As Boolean = True
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
-                For Each s As String In DirectCast(params(2), List(Of String))
-                    If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVASFanartOverwrite) Then
-                        Save(s, sURL)
-                        If String.IsNullOrEmpty(strReturn) Then strReturn = s
-                    End If
-                Next
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
-
             For Each a In FileUtils.GetFilenameList.TVShow(mShow, Enums.ModifierType.AllSeasonsFanart)
-                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVASFanartOverwrite) Then
-                    Save(a, sURL)
-                    strReturn = a
-                End If
+                Save(a)
+                strReturn = a
             Next
 
         Catch ex As Exception
@@ -1887,35 +1736,15 @@ Public Class Images
     ''' Saves the image as the AllSeason landscape
     ''' </summary>
     ''' <param name="mShow">The <c>Database.DBElement</c> representing the show being referenced</param>
-    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVAllSeasonsLandscape(ByVal mShow As Database.DBElement, Optional sURL As String = "") As String
+    Public Function SaveAsTVAllSeasonsLandscape(ByVal mShow As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
         Try
-            Dim pPath As String = String.Empty
-            Dim ShowPath As String = mShow.ShowPath
-
-            Try
-                Dim params As New List(Of Object)(New Object() {Enums.ModifierType.AllSeasonsLandscape, mShow, New List(Of String)})
-                Dim doContinue As Boolean = True
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
-                For Each s As String In DirectCast(params(2), List(Of String))
-                    If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVASLandscapeOverwrite) Then
-                        Save(s, sURL)
-                        If String.IsNullOrEmpty(strReturn) Then strReturn = s
-                    End If
-                Next
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
-
             For Each a In FileUtils.GetFilenameList.TVShow(mShow, Enums.ModifierType.AllSeasonsLandscape)
-                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVASLandscapeOverwrite) Then
-                    Save(a, sURL)
-                    strReturn = a
-                End If
+                Save(a)
+                strReturn = a
             Next
 
         Catch ex As Exception
@@ -1928,43 +1757,23 @@ Public Class Images
     ''' Saves the image as the AllSeason poster
     ''' </summary>
     ''' <param name="mShow">The <c>Database.DBElement</c> representing the show being referenced</param>
-    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVAllSeasonsPoster(ByVal mShow As Database.DBElement, Optional sURL As String = "") As String
+    Public Function SaveAsTVAllSeasonsPoster(ByVal mShow As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
         Dim doResize As Boolean = Master.eSettings.TVASPosterResize AndAlso (_image.Width > Master.eSettings.TVASPosterWidth OrElse _image.Height > Master.eSettings.TVASPosterHeight)
 
         Try
-            Dim pPath As String = String.Empty
-            Dim ShowPath As String = mShow.ShowPath
-
             If doResize Then
                 ImageUtils.ResizeImage(_image, Master.eSettings.TVASPosterWidth, Master.eSettings.TVASPosterHeight)
                 'need to align _immage and _ms
                 UpdateMSfromImg(_image)
             End If
 
-            Try
-                Dim params As New List(Of Object)(New Object() {Enums.ModifierType.AllSeasonsPoster, mShow, New List(Of String)})
-                Dim doContinue As Boolean = True
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
-                For Each s As String In DirectCast(params(2), List(Of String))
-                    If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVASPosterOverwrite) Then
-                        Save(s, sURL)
-                        If String.IsNullOrEmpty(strReturn) Then strReturn = s
-                    End If
-                Next
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
-
             For Each a In FileUtils.GetFilenameList.TVShow(mShow, Enums.ModifierType.AllSeasonsPoster)
-                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVASPosterOverwrite) Then
-                    Save(a, sURL)
-                    strReturn = a
-                End If
+                Save(a)
+                strReturn = a
             Next
 
         Catch ex As Exception
@@ -2002,9 +1811,7 @@ Public Class Images
 
         For Each a In FileUtils.GetFilenameList.TVEpisode(mEpisode, Enums.ModifierType.EpisodeActorThumbs)
             tPath = a.Replace("<placeholder>", actor.Name.Replace(" ", "_"))
-            If Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.TVEpisodeActorThumbsOverwrite) Then
-                Save(tPath)
-            End If
+            Save(tPath)
         Next
 
         Return tPath
@@ -2013,10 +1820,9 @@ Public Class Images
     ''' Saves the image as the episode fanart
     ''' </summary>
     ''' <param name="mEpisode">The <c>Database.DBElement</c> representing the show being referenced</param>
-    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVEpisodeFanart(ByVal mEpisode As Database.DBElement, Optional sURL As String = "") As String
+    Public Function SaveAsTVEpisodeFanart(ByVal mEpisode As Database.DBElement) As String
         If String.IsNullOrEmpty(mEpisode.Filename) Then Return String.Empty
 
         Dim strReturn As String = String.Empty
@@ -2024,36 +1830,15 @@ Public Class Images
         Dim doResize As Boolean = Master.eSettings.TVEpisodeFanartResize AndAlso (_image.Width > Master.eSettings.TVEpisodeFanartWidth OrElse _image.Height > Master.eSettings.TVEpisodeFanartHeight)
 
         Try
-            Dim EpisodePath As String = mEpisode.Filename
-
             If doResize Then
                 ImageUtils.ResizeImage(_image, Master.eSettings.TVEpisodeFanartWidth, Master.eSettings.TVEpisodeFanartHeight)
                 'need to align _immage and _ms
                 UpdateMSfromImg(_image)
             End If
 
-            Try
-                Dim params As New List(Of Object)(New Object() {Enums.ModifierType.EpisodeFanart, mEpisode, New List(Of String)})
-                Dim doContinue As Boolean = True
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
-                For Each s As String In DirectCast(params(2), List(Of String))
-                    If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVEpisodeFanartOverwrite) Then
-                        Save(s, sURL)
-                        If String.IsNullOrEmpty(strReturn) Then strReturn = s
-                    End If
-                Next
-                If Not doContinue Then
-                    Return strReturn
-                End If
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
-
             For Each a In FileUtils.GetFilenameList.TVEpisode(mEpisode, Enums.ModifierType.EpisodeFanart)
-                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVEpisodeFanartOverwrite) Then
-                    Save(a, sURL)
-                    strReturn = a
-                End If
+                Save(a)
+                strReturn = a
             Next
 
         Catch ex As Exception
@@ -2065,10 +1850,9 @@ Public Class Images
     ''' Save the image as an episode poster
     ''' </summary>
     ''' <param name="mEpisode">The <c>Database.DBElement</c> representing the show being referenced</param>
-    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVEpisodePoster(ByVal mEpisode As Database.DBElement, Optional sURL As String = "") As String
+    Public Function SaveAsTVEpisodePoster(ByVal mEpisode As Database.DBElement) As String
         If String.IsNullOrEmpty(mEpisode.Filename) Then Return String.Empty
 
         Dim strReturn As String = String.Empty
@@ -2076,36 +1860,15 @@ Public Class Images
         Dim doResize As Boolean = Master.eSettings.TVEpisodePosterResize AndAlso (_image.Width > Master.eSettings.TVEpisodePosterWidth OrElse _image.Height > Master.eSettings.TVEpisodePosterHeight)
 
         Try
-            Dim EpisodePath As String = mEpisode.Filename
-
             If doResize Then
                 ImageUtils.ResizeImage(_image, Master.eSettings.TVEpisodePosterWidth, Master.eSettings.TVEpisodePosterHeight)
                 'need to align _immage and _ms
                 UpdateMSfromImg(_image)
             End If
 
-            Try
-                Dim params As New List(Of Object)(New Object() {Enums.ModifierType.EpisodePoster, mEpisode, New List(Of String)})
-                Dim doContinue As Boolean = True
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
-                For Each s As String In DirectCast(params(2), List(Of String))
-                    If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVEpisodePosterOverwrite) Then
-                        Save(s, sURL)
-                        If String.IsNullOrEmpty(strReturn) Then strReturn = s
-                    End If
-                Next
-                If Not doContinue Then
-                    Return strReturn
-                End If
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
-
             For Each a In FileUtils.GetFilenameList.TVEpisode(mEpisode, Enums.ModifierType.EpisodePoster)
-                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVEpisodePosterOverwrite) Then
-                    Save(a, sURL)
-                    strReturn = a
-                End If
+                Save(a)
+                strReturn = a
             Next
 
         Catch ex As Exception
@@ -2117,10 +1880,9 @@ Public Class Images
     ''' Save the image as a TV Show's season banner
     ''' </summary>
     ''' <param name="mSeason"><c>Database.DBElement</c> representing the TV Season being referred to</param>
-    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVSeasonBanner(ByVal mSeason As Database.DBElement, Optional sURL As String = "") As String
+    Public Function SaveAsTVSeasonBanner(ByVal mSeason As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
         Dim doResize As Boolean = Master.eSettings.TVSeasonBannerResize AndAlso (_image.Width > Master.eSettings.TVSeasonBannerWidth OrElse _image.Height > Master.eSettings.TVSeasonBannerHeight)
@@ -2132,28 +1894,9 @@ Public Class Images
                 UpdateMSfromImg(_image)
             End If
 
-            Try
-                Dim params As New List(Of Object)(New Object() {Enums.ModifierType.SeasonBanner, mSeason, New List(Of String)})
-                Dim doContinue As Boolean = True
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
-                For Each s As String In DirectCast(params(2), List(Of String))
-                    If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVSeasonBannerOverwrite) Then
-                        Save(s, sURL)
-                        If String.IsNullOrEmpty(strReturn) Then strReturn = s
-                    End If
-                Next
-                If Not doContinue Then
-                    Return strReturn
-                End If
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
-
             For Each a In FileUtils.GetFilenameList.TVSeason(mSeason, Enums.ModifierType.SeasonBanner)
-                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVSeasonBannerOverwrite) Then
-                    Save(a, sURL)
-                    strReturn = a
-                End If
+                Save(a)
+                strReturn = a
             Next
 
         Catch ex As Exception
@@ -2165,10 +1908,9 @@ Public Class Images
     ''' Save the image as the TV Show's season fanart
     ''' </summary>
     ''' <param name="mSeason"><c>Database.DBElement</c> representing the TV Season being referred to</param>
-    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVSeasonFanart(ByVal mSeason As Database.DBElement, Optional sURL As String = "") As String
+    Public Function SaveAsTVSeasonFanart(ByVal mSeason As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
         Dim doResize As Boolean = Master.eSettings.TVSeasonFanartResize AndAlso (_image.Width > Master.eSettings.TVSeasonFanartWidth OrElse _image.Height > Master.eSettings.TVSeasonFanartHeight)
@@ -2179,29 +1921,10 @@ Public Class Images
                 'need to align _immage and _ms
                 UpdateMSfromImg(_image)
             End If
-            Try
-                Dim params As New List(Of Object)(New Object() {Enums.ModifierType.SeasonFanart, mSeason, New List(Of String)})
-                Dim doContinue As Boolean = True
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
-                For Each s As String In DirectCast(params(2), List(Of String))
-                    If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVSeasonFanartOverwrite) Then
-
-                        Save(s, sURL)
-                        If String.IsNullOrEmpty(strReturn) Then strReturn = s
-                    End If
-                Next
-                If Not doContinue Then
-                    Return strReturn
-                End If
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
 
             For Each a In FileUtils.GetFilenameList.TVSeason(mSeason, Enums.ModifierType.SeasonFanart)
-                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVSeasonFanartOverwrite) Then
-                    Save(a, sURL)
-                    strReturn = a
-                End If
+                Save(a)
+                strReturn = a
             Next
 
         Catch ex As Exception
@@ -2213,35 +1936,15 @@ Public Class Images
     ''' Save the image as a TV Show's season landscape
     ''' </summary>
     ''' <param name="mSeason"><c>Database.DBElement</c> representing the TV Season being referred to</param>
-    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVSeasonLandscape(ByVal mSeason As Database.DBElement, Optional sURL As String = "") As String
+    Public Function SaveAsTVSeasonLandscape(ByVal mSeason As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
         Try
-            Try
-                Dim params As New List(Of Object)(New Object() {Enums.ModifierType.SeasonLandscape, mSeason, New List(Of String)})
-                Dim doContinue As Boolean = True
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
-                For Each s As String In DirectCast(params(2), List(Of String))
-                    If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVSeasonLandscapeOverwrite) Then
-                        Save(s, sURL)
-                        If String.IsNullOrEmpty(strReturn) Then strReturn = s
-                    End If
-                Next
-                If Not doContinue Then
-                    Return strReturn
-                End If
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
-
             For Each a In FileUtils.GetFilenameList.TVSeason(mSeason, Enums.ModifierType.SeasonLandscape)
-                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVSeasonLandscapeOverwrite) Then
-                    Save(a, sURL)
-                    strReturn = a
-                End If
+                Save(a)
+                strReturn = a
             Next
 
         Catch ex As Exception
@@ -2253,10 +1956,9 @@ Public Class Images
     ''' Save the image as a TV Show's season poster
     ''' </summary>
     ''' <param name="mSeason"><c>Database.DBElement</c> representing the TV Season being referred to</param>
-    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVSeasonPoster(ByVal mSeason As Database.DBElement, Optional sURL As String = "") As String
+    Public Function SaveAsTVSeasonPoster(ByVal mSeason As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
         Dim doResize As Boolean = Master.eSettings.TVSeasonPosterResize AndAlso (_image.Width > Master.eSettings.TVSeasonPosterWidth OrElse _image.Height > Master.eSettings.TVSeasonPosterHeight)
@@ -2268,28 +1970,9 @@ Public Class Images
                 UpdateMSfromImg(_image)
             End If
 
-            Try
-                Dim params As New List(Of Object)(New Object() {Enums.ModifierType.SeasonPoster, mSeason, New List(Of String)})
-                Dim doContinue As Boolean = True
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
-                For Each s As String In DirectCast(params(2), List(Of String))
-                    If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVSeasonPosterOverwrite) Then
-                        Save(s, sURL)
-                        If String.IsNullOrEmpty(strReturn) Then strReturn = s
-                    End If
-                Next
-                If Not doContinue Then
-                    Return strReturn
-                End If
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
-
             For Each a In FileUtils.GetFilenameList.TVSeason(mSeason, Enums.ModifierType.SeasonPoster)
-                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVSeasonPosterOverwrite) Then
-                    Save(a, sURL)
-                    strReturn = a
-                End If
+                Save(a)
+                strReturn = a
             Next
 
         Catch ex As Exception
@@ -2326,9 +2009,7 @@ Public Class Images
 
         For Each a In FileUtils.GetFilenameList.TVShow(mShow, Enums.ModifierType.MainActorThumbs)
             tPath = a.Replace("<placeholder>", actor.Name.Replace(" ", "_"))
-            If Not File.Exists(tPath) OrElse (IsEdit OrElse Master.eSettings.TVShowActorThumbsOverwrite) Then
-                Save(tPath)
-            End If
+            Save(tPath)
         Next
 
         Return tPath
@@ -2337,10 +2018,9 @@ Public Class Images
     ''' Save the image as a TV Show's banner
     ''' </summary>
     ''' <param name="mShow"><c>Database.DBElement</c> representing the TV Show being referred to</param>
-    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVShowBanner(ByVal mShow As Database.DBElement, Optional sURL As String = "") As String
+    Public Function SaveAsTVShowBanner(ByVal mShow As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return strReturn
@@ -2348,35 +2028,15 @@ Public Class Images
         Dim doResize As Boolean = Master.eSettings.TVShowBannerResize AndAlso (_image.Width > Master.eSettings.TVShowBannerWidth OrElse _image.Height > Master.eSettings.TVShowBannerHeight)
 
         Try
-            Dim pPath As String = String.Empty
-            Dim ShowPath As String = mShow.ShowPath
-
             If doResize Then
                 ImageUtils.ResizeImage(_image, Master.eSettings.TVShowBannerWidth, Master.eSettings.TVShowBannerHeight)
                 'need to align _immage and _ms
                 UpdateMSfromImg(_image)
             End If
 
-            Try
-                Dim params As New List(Of Object)(New Object() {Enums.ModifierType.MainBanner, mShow, New List(Of String)})
-                Dim doContinue As Boolean = True
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
-                For Each s As String In DirectCast(params(2), List(Of String))
-                    If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVShowBannerOverwrite) Then
-                        Save(s, sURL)
-                        If String.IsNullOrEmpty(strReturn) Then strReturn = s
-                    End If
-                Next
-                If Not doContinue Then Return strReturn
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
-
             For Each a In FileUtils.GetFilenameList.TVShow(mShow, Enums.ModifierType.MainBanner)
-                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVShowBannerOverwrite) Then
-                    Save(a, sURL)
-                    strReturn = a
-                End If
+                Save(a)
+                strReturn = a
             Next
 
         Catch ex As Exception
@@ -2388,38 +2048,17 @@ Public Class Images
     ''' Save the image as a TV Show's CharacterArt
     ''' </summary>
     ''' <param name="mShow"><c>Database.DBElement</c> representing the TV Show being referred to</param>
-    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVShowCharacterArt(ByVal mShow As Database.DBElement, Optional sURL As String = "") As String
+    Public Function SaveAsTVShowCharacterArt(ByVal mShow As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return strReturn
 
         Try
-            Dim pPath As String = String.Empty
-            Dim ShowPath As String = mShow.ShowPath
-
-            Try
-                Dim params As New List(Of Object)(New Object() {Enums.ModifierType.MainCharacterArt, mShow, New List(Of String)})
-                Dim doContinue As Boolean = True
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
-                For Each s As String In DirectCast(params(2), List(Of String))
-                    If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVShowCharacterArtOverwrite) Then
-                        Save(s, sURL)
-                        If String.IsNullOrEmpty(strReturn) Then strReturn = s
-                    End If
-                Next
-                If Not doContinue Then Return strReturn
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
-
             For Each a In FileUtils.GetFilenameList.TVShow(mShow, Enums.ModifierType.MainCharacterArt)
-                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVShowCharacterArtOverwrite) Then
-                    Save(a, sURL)
-                    strReturn = a
-                End If
+                Save(a)
+                strReturn = a
             Next
 
         Catch ex As Exception
@@ -2431,38 +2070,17 @@ Public Class Images
     ''' Save the image as a TV Show's ClearArt
     ''' </summary>
     ''' <param name="mShow"><c>Database.DBElement</c> representing the TV Show being referred to</param>
-    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVShowClearArt(ByVal mShow As Database.DBElement, Optional sURL As String = "") As String
+    Public Function SaveAsTVShowClearArt(ByVal mShow As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return strReturn
 
         Try
-            Dim pPath As String = String.Empty
-            Dim ShowPath As String = mShow.ShowPath
-
-            Try
-                Dim params As New List(Of Object)(New Object() {Enums.ModifierType.MainClearArt, mShow, New List(Of String)})
-                Dim doContinue As Boolean = True
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
-                For Each s As String In DirectCast(params(2), List(Of String))
-                    If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVShowClearArtOverwrite) Then
-                        Save(s, sURL)
-                        If String.IsNullOrEmpty(strReturn) Then strReturn = s
-                    End If
-                Next
-                If Not doContinue Then Return strReturn
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
-
             For Each a In FileUtils.GetFilenameList.TVShow(mShow, Enums.ModifierType.MainClearArt)
-                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVShowClearArtOverwrite) Then
-                    Save(a, sURL)
-                    strReturn = a
-                End If
+                Save(a)
+                strReturn = a
             Next
 
         Catch ex As Exception
@@ -2474,38 +2092,17 @@ Public Class Images
     ''' Save the image as a TV Show's ClearLogo
     ''' </summary>
     ''' <param name="mShow"><c>Database.DBElement</c> representing the TV Show being referred to</param>
-    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVShowClearLogo(ByVal mShow As Database.DBElement, Optional sURL As String = "") As String
+    Public Function SaveAsTVShowClearLogo(ByVal mShow As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return strReturn
 
         Try
-            Dim pPath As String = String.Empty
-            Dim ShowPath As String = mShow.ShowPath
-
-            Try
-                Dim params As New List(Of Object)(New Object() {Enums.ModifierType.MainClearLogo, mShow, New List(Of String)})
-                Dim doContinue As Boolean = True
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
-                For Each s As String In DirectCast(params(2), List(Of String))
-                    If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVShowClearLogoOverwrite) Then
-                        Save(s, sURL)
-                        If String.IsNullOrEmpty(strReturn) Then strReturn = s
-                    End If
-                Next
-                If Not doContinue Then Return strReturn
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
-
             For Each a In FileUtils.GetFilenameList.TVShow(mShow, Enums.ModifierType.MainClearLogo)
-                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVShowClearLogoOverwrite) Then
-                    Save(a, sURL)
-                    strReturn = a
-                End If
+                Save(a)
+                strReturn = a
             Next
 
         Catch ex As Exception
@@ -2544,10 +2141,9 @@ Public Class Images
     ''' Save the image as a tv show's extrafanart
     ''' </summary>
     ''' <param name="mShow"><c>Database.DBElement</c> representing the TV Show being referred to</param>
-    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVShowExtrafanart(ByVal mShow As Database.DBElement, ByVal sName As String, Optional sURL As String = "") As String
+    Public Function SaveAsTVShowExtrafanart(ByVal mShow As Database.DBElement, ByVal sName As String) As String
         Dim efPath As String = String.Empty
         Dim iMod As Integer = 0
         Dim iVal As Integer = 1
@@ -2557,8 +2153,6 @@ Public Class Images
         Dim doResize As Boolean = Master.eSettings.TVShowEFanartsResize AndAlso (_image.Width > Master.eSettings.TVShowEFanartsWidth OrElse _image.Height > Master.eSettings.TVShowEFanartsHeight)
 
         Try
-            Dim ShowPath As String = mShow.ShowPath
-
             If doResize Then
                 ImageUtils.ResizeImage(_image, Master.eSettings.TVShowEFanartsWidth, Master.eSettings.TVShowEFanartsHeight)
                 'need to align _immage and _ms
@@ -2589,10 +2183,9 @@ Public Class Images
     ''' Save the image as a TV Show's fanart
     ''' </summary>
     ''' <param name="mShow"><c>Database.DBElement</c> representing the TV Show being referred to</param>
-    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVShowFanart(ByVal mShow As Database.DBElement, Optional sURL As String = "") As String
+    Public Function SaveAsTVShowFanart(ByVal mShow As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return strReturn
@@ -2600,37 +2193,15 @@ Public Class Images
         Dim doResize As Boolean = Master.eSettings.TVShowFanartResize AndAlso (_image.Width > Master.eSettings.TVShowFanartWidth OrElse _image.Height > Master.eSettings.TVShowFanartHeight)
 
         Try
-            Dim tPath As String = String.Empty
-            Dim ShowPath As String = mShow.ShowPath
-
             If doResize Then
                 ImageUtils.ResizeImage(_image, Master.eSettings.TVShowFanartWidth, Master.eSettings.TVShowFanartHeight)
                 'need to align _immage and _ms
                 UpdateMSfromImg(_image)
             End If
 
-            Try
-                Dim params As New List(Of Object)(New Object() {Enums.ModifierType.MainFanart, mShow, New List(Of String)})
-                Dim doContinue As Boolean = True
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
-                For Each s As String In DirectCast(params(2), List(Of String))
-                    If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVShowFanartOverwrite) Then
-                        Save(s, sURL)
-                        If String.IsNullOrEmpty(strReturn) Then strReturn = s
-                    End If
-                Next
-                If Not doContinue Then
-                    Return strReturn
-                End If
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
-
             For Each a In FileUtils.GetFilenameList.TVShow(mShow, Enums.ModifierType.MainFanart)
-                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVShowFanartOverwrite) Then
-                    Save(a, sURL)
-                    strReturn = a
-                End If
+                Save(a)
+                strReturn = a
             Next
 
         Catch ex As Exception
@@ -2642,38 +2213,17 @@ Public Class Images
     ''' Save the image as a TV Show's landscape
     ''' </summary>
     ''' <param name="mShow"><c>Database.DBElement</c> representing the TV Show being referred to</param>
-    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVShowLandscape(ByVal mShow As Database.DBElement, Optional sURL As String = "") As String
+    Public Function SaveAsTVShowLandscape(ByVal mShow As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return strReturn
 
         Try
-            Dim pPath As String = String.Empty
-            Dim ShowPath As String = mShow.ShowPath
-
-            Try
-                Dim params As New List(Of Object)(New Object() {Enums.ModifierType.MainLandscape, mShow, New List(Of String)})
-                Dim doContinue As Boolean = True
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
-                For Each s As String In DirectCast(params(2), List(Of String))
-                    If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVShowLandscapeOverwrite) Then
-                        Save(s, sURL)
-                        If String.IsNullOrEmpty(strReturn) Then strReturn = s
-                    End If
-                Next
-                If Not doContinue Then Return strReturn
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
-
             For Each a In FileUtils.GetFilenameList.TVShow(mShow, Enums.ModifierType.MainLandscape)
-                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVShowLandscapeOverwrite) Then
-                    Save(a, sURL)
-                    strReturn = a
-                End If
+                Save(a)
+                strReturn = a
             Next
 
         Catch ex As Exception
@@ -2685,10 +2235,9 @@ Public Class Images
     ''' Save the image as a TV Show's poster
     ''' </summary>
     ''' <param name="mShow"><c>Database.DBElement</c> representing the TV Show being referred to</param>
-    ''' <param name="sURL">Optional <c>String</c> URL for the image</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsTVShowPoster(ByVal mShow As Database.DBElement, Optional sURL As String = "") As String
+    Public Function SaveAsTVShowPoster(ByVal mShow As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return strReturn
@@ -2696,35 +2245,15 @@ Public Class Images
         Dim doResize As Boolean = Master.eSettings.TVShowPosterResize AndAlso (_image.Width > Master.eSettings.TVShowPosterWidth OrElse _image.Height > Master.eSettings.TVShowPosterHeight)
 
         Try
-            Dim pPath As String = String.Empty
-            Dim ShowPath As String = mShow.ShowPath
-
             If doResize Then
                 ImageUtils.ResizeImage(_image, Master.eSettings.TVShowPosterWidth, Master.eSettings.TVShowPosterHeight)
                 'need to align _immage and _ms
                 UpdateMSfromImg(_image)
             End If
 
-            Try
-                Dim params As New List(Of Object)(New Object() {Enums.ModifierType.MainPoster, mShow, New List(Of String)})
-                Dim doContinue As Boolean = True
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.TVImageNaming, params, doContinue)
-                For Each s As String In DirectCast(params(2), List(Of String))
-                    If Not File.Exists(s) OrElse (IsEdit OrElse Master.eSettings.TVShowPosterOverwrite) Then
-                        Save(s, sURL)
-                        If String.IsNullOrEmpty(strReturn) Then strReturn = s
-                    End If
-                Next
-                If Not doContinue Then Return strReturn
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-            End Try
-
             For Each a In FileUtils.GetFilenameList.TVShow(mShow, Enums.ModifierType.MainPoster)
-                If Not File.Exists(a) OrElse (IsEdit OrElse Master.eSettings.TVShowPosterOverwrite) Then
-                    Save(a, sURL)
-                    strReturn = a
-                End If
+                Save(a)
+                strReturn = a
             Next
 
         Catch ex As Exception
