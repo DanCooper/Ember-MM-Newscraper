@@ -453,8 +453,8 @@
   <string id="452">Convert Names to Proper Case</string>
   <string id="453">Always Display Genre Text</string>
   <string id="454">Genre Language Filter</string>
-  <string id="455">Do Not Display Fanart</string>
-  <string id="456">Do Not Display Poster</string>
+  <string id="455">Display Fanart</string>
+  <string id="456">Display Poster</string>
   <string id="457">Display Image Dimensions</string>
   <string id="458">Help</string>
   <string id="459">Mark New Movies</string>
@@ -965,7 +965,7 @@
   <string id="964">Current Image:</string>
   <string id="965">Use Plot for Plot Outline</string>
   <string id="966">Enable Images Glass Overlay</string>
-  <string id="967">Do Not Display Small Fanart</string>
+  <string id="967">Display Small Fanart</string>
   <string id="968">
     Created By: Jason Schnitzler
     -8
@@ -1060,7 +1060,7 @@
   </string>
   <string id="969">One or more Task(s) failed.{0}Please check log for more informations.</string>
   <string id="970">No Fanarts found</string>
-  <string id="971"></string>
+  <string id="971">Keep existing</string>
   <string id="972">No Posters found</string>
   <string id="973">Actor Thumbs Only</string>
   <string id="974"></string>
@@ -1235,12 +1235,12 @@
   <string id="1143"></string>
   <string id="1144"></string>
   <string id="1145"></string>
-  <string id="1146">Do Not Display Banner</string>
-  <string id="1147">Do Not Display CharacterArt</string>
-  <string id="1148">Do Not Display ClearArt</string>
-  <string id="1149">Do Not Display ClearLogo</string>
-  <string id="1150">Do Not Display DiscArt</string>
-  <string id="1151">Do Not Display Landscape</string>
+  <string id="1146">Display Banner</string>
+  <string id="1147">Display CharacterArt</string>
+  <string id="1148">Display ClearArt</string>
+  <string id="1149">Display ClearLogo</string>
+  <string id="1150">Display DiscArt</string>
+  <string id="1151">Display Landscape</string>
   <string id="1152">Main Window</string>
   <string id="1153">Scraped</string>
   <string id="1154">No information is available for this MovieSet</string>

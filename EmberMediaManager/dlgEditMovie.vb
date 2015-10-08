@@ -49,7 +49,7 @@ Public Class dlgEditMovie
     Private AnyTrailerPlayerEnabled As Boolean = False
 
     'Extrafanarts
-    Private EFanartsWarning As Boolean = True
+    Private ExtrafanartsWarning As Boolean = True
     Private iEFCounter As Integer = 0
     Private iEFLeft As Integer = 1
     Private iEFTop As Integer = 1
@@ -57,7 +57,7 @@ Public Class dlgEditMovie
     Private pnlExtrafanartsImage() As Panel
 
     'Extrathumbs
-    Private EThumbsWarning As Boolean = True
+    Private ExtrathumbsWarning As Boolean = True
     Private iETCounter As Integer = 0
     Private iETLeft As Integer = 1
     Private iETTop As Integer = 1
@@ -192,14 +192,14 @@ Public Class dlgEditMovie
         Me.lblExtrathumbsSize.Visible = True
 
         If tImg.Index > 0 Then
-            Me.btnEThumbsUp.Enabled = True
+            Me.btnExtrathumbsUp.Enabled = True
         Else
-            Me.btnEThumbsUp.Enabled = False
+            Me.btnExtrathumbsUp.Enabled = False
         End If
         If tImg.Index < tmpDBElement.ImagesContainer.Extrathumbs.Count - 1 Then
-            Me.btnEThumbsDown.Enabled = True
+            Me.btnExtrathumbsDown.Enabled = True
         Else
-            Me.btnEThumbsDown.Enabled = False
+            Me.btnExtrathumbsDown.Enabled = False
         End If
     End Sub
 
@@ -290,7 +290,7 @@ Public Class dlgEditMovie
         End Try
     End Sub
 
-    Private Sub btnEThumbsDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEThumbsDown.Click
+    Private Sub btnExtrathumbsDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExtrathumbsDown.Click
         If tmpDBElement.ImagesContainer.Extrathumbs.Count > 0 AndAlso Me.currExtrathumbImage.Index < tmpDBElement.ImagesContainer.Extrathumbs.Count - 1 Then
             Dim iIndex As Integer = Me.currExtrathumbImage.Index
             tmpDBElement.ImagesContainer.Extrathumbs.Item(iIndex).Index = tmpDBElement.ImagesContainer.Extrathumbs.Item(iIndex).Index + 1
@@ -300,7 +300,7 @@ Public Class dlgEditMovie
         End If
     End Sub
 
-    Private Sub btnEThumbsUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEThumbsUp.Click
+    Private Sub btnExtrathumbsUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExtrathumbsUp.Click
         If tmpDBElement.ImagesContainer.Extrathumbs.Count > 0 AndAlso Me.currExtrathumbImage.Index > 0 Then
             Dim iIndex As Integer = Me.currExtrathumbImage.Index
             tmpDBElement.ImagesContainer.Extrathumbs.Item(iIndex).Index = tmpDBElement.ImagesContainer.Extrathumbs.Item(iIndex).Index - 1
@@ -1490,10 +1490,10 @@ Public Class dlgEditMovie
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, Me.tmpDBElement)
             Me.lvwActorSorter = New ListViewColumnSorter()
             Me.lvActors.ListViewItemSorter = Me.lvwActorSorter
-            'Me.lvwEThumbsSorter = New ListViewColumnSorter() With {.SortByText = True, .Order = SortOrder.Ascending, .NumericSort = True}
-            'Me.lvEThumbs.ListViewItemSorter = Me.lvwEThumbsSorter
-            'Me.lvwEFanartsSorter = New ListViewColumnSorter() With {.SortByText = True, .Order = SortOrder.Ascending, .NumericSort = True}
-            'Me.lvEFanarts.ListViewItemSorter = Me.lvwEFanartsSorter
+            'Me.lvwExtrathumbsSorter = New ListViewColumnSorter() With {.SortByText = True, .Order = SortOrder.Ascending, .NumericSort = True}
+            'Me.lvExtrathumbs.ListViewItemSorter = Me.lvwExtrathumbsSorter
+            'Me.lvwExtrafanartsSorter = New ListViewColumnSorter() With {.SortByText = True, .Order = SortOrder.Ascending, .NumericSort = True}
+            'Me.lvExtrafanarts.ListViewItemSorter = Me.lvwExtrafanartsSorter
 
             Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
             Using g As Graphics = Graphics.FromImage(iBackground)
@@ -2771,7 +2771,7 @@ Public Class dlgEditMovie
                     Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
                     Me.lblFanartSize.Visible = True
                 End If
-            ElseIf _params(0).ToString = "EFanartToSave" Then
+            ElseIf _params(0).ToString = "ExtrafanartToSave" Then
                 Dim fPath As String = _params(1).ToString
                 If Not String.IsNullOrEmpty(fPath) AndAlso File.Exists(fPath) Then
                     Dim eImg As New MediaContainers.Image
@@ -2779,7 +2779,7 @@ Public Class dlgEditMovie
                     tmpDBElement.ImagesContainer.Extrafanarts.Add(eImg)
                     Me.RefreshExtrafanarts()
                 End If
-            ElseIf _params(0).ToString = "EThumbToSave" Then
+            ElseIf _params(0).ToString = "ExtrathumbToSave" Then
                 Dim fPath As String = _params(1).ToString
                 If Not String.IsNullOrEmpty(fPath) AndAlso File.Exists(fPath) Then
                     Dim eImg As New MediaContainers.Image

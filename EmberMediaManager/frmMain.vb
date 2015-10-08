@@ -1519,15 +1519,15 @@ Public Class frmMain
             Return
         End If
 
-        If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall = Me.currTV.ImagesContainer.Fanart.ImageOriginal
-        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster = Me.currTV.ImagesContainer.Poster.ImageOriginal
+        If Master.eSettings.GeneralDisplayFanartSmall Then Me.MainFanartSmall = Me.currTV.ImagesContainer.Fanart.ImageOriginal
+        If Master.eSettings.GeneralDisplayPoster Then Me.MainPoster = Me.currTV.ImagesContainer.Poster.ImageOriginal
 
         If bwLoadEpInfo.CancellationPending Then
             e.Cancel = True
             Return
         End If
 
-        If Not Master.eSettings.GeneralHideFanart Then
+        If Master.eSettings.GeneralDisplayFanart Then
             Dim NeedsGS As Boolean = False
             If Me.currTV.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
                 Me.MainFanart = Me.currTV.ImagesContainer.Fanart.ImageOriginal
@@ -1606,14 +1606,14 @@ Public Class frmMain
             Return
         End If
 
-        If Not Master.eSettings.GeneralHideBanner Then Me.MainBanner = Me.currMovie.ImagesContainer.Banner.ImageOriginal
-        If Not Master.eSettings.GeneralHideClearArt Then Me.MainClearArt = Me.currMovie.ImagesContainer.ClearArt.ImageOriginal
-        If Not Master.eSettings.GeneralHideClearLogo Then Me.MainClearLogo = Me.currMovie.ImagesContainer.ClearLogo.ImageOriginal
-        If Not Master.eSettings.GeneralHideDiscArt Then Me.MainDiscArt = Me.currMovie.ImagesContainer.DiscArt.ImageOriginal
-        If Not Master.eSettings.GeneralHideFanart Then Me.MainFanart = Me.currMovie.ImagesContainer.Fanart.ImageOriginal
-        If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall = Me.currMovie.ImagesContainer.Fanart.ImageOriginal
-        If Not Master.eSettings.GeneralHideLandscape Then Me.MainLandscape = Me.currMovie.ImagesContainer.Landscape.ImageOriginal
-        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster = Me.currMovie.ImagesContainer.Poster.ImageOriginal
+        If Master.eSettings.GeneralDisplayBanner Then Me.MainBanner = Me.currMovie.ImagesContainer.Banner.ImageOriginal
+        If Master.eSettings.GeneralDisplayClearArt Then Me.MainClearArt = Me.currMovie.ImagesContainer.ClearArt.ImageOriginal
+        If Master.eSettings.GeneralDisplayClearLogo Then Me.MainClearLogo = Me.currMovie.ImagesContainer.ClearLogo.ImageOriginal
+        If Master.eSettings.GeneralDisplayDiscArt Then Me.MainDiscArt = Me.currMovie.ImagesContainer.DiscArt.ImageOriginal
+        If Master.eSettings.GeneralDisplayFanart Then Me.MainFanart = Me.currMovie.ImagesContainer.Fanart.ImageOriginal
+        If Master.eSettings.GeneralDisplayFanartSmall Then Me.MainFanartSmall = Me.currMovie.ImagesContainer.Fanart.ImageOriginal
+        If Master.eSettings.GeneralDisplayLandscape Then Me.MainLandscape = Me.currMovie.ImagesContainer.Landscape.ImageOriginal
+        If Master.eSettings.GeneralDisplayPoster Then Me.MainPoster = Me.currMovie.ImagesContainer.Poster.ImageOriginal
         'read nfo if it's there
 
         'wait for mediainfo to update the nfo
@@ -1671,14 +1671,14 @@ Public Class frmMain
             Return
         End If
 
-        If Not Master.eSettings.GeneralHideBanner Then Me.MainBanner = Me.currMovieSet.ImagesContainer.Banner.ImageOriginal
-        If Not Master.eSettings.GeneralHideClearArt Then Me.MainClearArt = Me.currMovieSet.ImagesContainer.ClearArt.ImageOriginal
-        If Not Master.eSettings.GeneralHideClearLogo Then Me.MainClearLogo = Me.currMovieSet.ImagesContainer.ClearLogo.ImageOriginal
-        If Not Master.eSettings.GeneralHideDiscArt Then Me.MainDiscArt = Me.currMovieSet.ImagesContainer.DiscArt.ImageOriginal
-        If Not Master.eSettings.GeneralHideFanart Then Me.MainFanart = Me.currMovieSet.ImagesContainer.Fanart.ImageOriginal
-        If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall = Me.currMovieSet.ImagesContainer.Fanart.ImageOriginal
-        If Not Master.eSettings.GeneralHideLandscape Then Me.MainLandscape = Me.currMovieSet.ImagesContainer.Landscape.ImageOriginal
-        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster = Me.currMovieSet.ImagesContainer.Poster.ImageOriginal
+        If Master.eSettings.GeneralDisplayBanner Then Me.MainBanner = Me.currMovieSet.ImagesContainer.Banner.ImageOriginal
+        If Master.eSettings.GeneralDisplayClearArt Then Me.MainClearArt = Me.currMovieSet.ImagesContainer.ClearArt.ImageOriginal
+        If Master.eSettings.GeneralDisplayClearLogo Then Me.MainClearLogo = Me.currMovieSet.ImagesContainer.ClearLogo.ImageOriginal
+        If Master.eSettings.GeneralDisplayDiscArt Then Me.MainDiscArt = Me.currMovieSet.ImagesContainer.DiscArt.ImageOriginal
+        If Master.eSettings.GeneralDisplayFanart Then Me.MainFanart = Me.currMovieSet.ImagesContainer.Fanart.ImageOriginal
+        If Master.eSettings.GeneralDisplayFanartSmall Then Me.MainFanartSmall = Me.currMovieSet.ImagesContainer.Fanart.ImageOriginal
+        If Master.eSettings.GeneralDisplayLandscape Then Me.MainLandscape = Me.currMovieSet.ImagesContainer.Landscape.ImageOriginal
+        If Master.eSettings.GeneralDisplayPoster Then Me.MainPoster = Me.currMovieSet.ImagesContainer.Poster.ImageOriginal
         'read nfo if it's there
 
         If bwLoadMovieSetInfo.CancellationPending Then
@@ -1792,17 +1792,17 @@ Public Class frmMain
             Return
         End If
 
-        If Not Master.eSettings.GeneralHideBanner Then Me.MainBanner = Me.currTV.ImagesContainer.Banner.ImageOriginal
-        If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall = Me.currTV.ImagesContainer.Fanart.ImageOriginal
-        If Not Master.eSettings.GeneralHideLandscape Then Me.MainLandscape = Me.currTV.ImagesContainer.Landscape.ImageOriginal
-        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster = Me.currTV.ImagesContainer.Poster.ImageOriginal
+        If Master.eSettings.GeneralDisplayBanner Then Me.MainBanner = Me.currTV.ImagesContainer.Banner.ImageOriginal
+        If Master.eSettings.GeneralDisplayFanartSmall Then Me.MainFanartSmall = Me.currTV.ImagesContainer.Fanart.ImageOriginal
+        If Master.eSettings.GeneralDisplayLandscape Then Me.MainLandscape = Me.currTV.ImagesContainer.Landscape.ImageOriginal
+        If Master.eSettings.GeneralDisplayPoster Then Me.MainPoster = Me.currTV.ImagesContainer.Poster.ImageOriginal
 
         If bwLoadSeasonInfo.CancellationPending Then
             e.Cancel = True
             Return
         End If
 
-        If Not Master.eSettings.GeneralHideFanart Then
+        If Master.eSettings.GeneralDisplayFanart Then
             Dim NeedsGS As Boolean = False
             If Me.currTV.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
                 Me.MainFanart = Me.currTV.ImagesContainer.Fanart.ImageOriginal
@@ -1863,14 +1863,14 @@ Public Class frmMain
             Return
         End If
 
-        If Not Master.eSettings.GeneralHideBanner Then Me.MainBanner = Me.currTV.ImagesContainer.Banner.ImageOriginal
-        If Not Master.eSettings.GeneralHideCharacterArt Then Me.MainCharacterArt = Me.currTV.ImagesContainer.CharacterArt.ImageOriginal
-        If Not Master.eSettings.GeneralHideClearArt Then Me.MainClearArt = Me.currTV.ImagesContainer.ClearArt.ImageOriginal
-        If Not Master.eSettings.GeneralHideClearLogo Then Me.MainClearLogo = Me.currTV.ImagesContainer.ClearLogo.ImageOriginal
-        If Not Master.eSettings.GeneralHideFanart Then Me.MainFanart = Me.currTV.ImagesContainer.Fanart.ImageOriginal
-        If Not Master.eSettings.GeneralHideFanartSmall Then Me.MainFanartSmall = Me.currTV.ImagesContainer.Fanart.ImageOriginal
-        If Not Master.eSettings.GeneralHideLandscape Then Me.MainLandscape = Me.currTV.ImagesContainer.Landscape.ImageOriginal
-        If Not Master.eSettings.GeneralHidePoster Then Me.MainPoster = Me.currTV.ImagesContainer.Poster.ImageOriginal
+        If Master.eSettings.GeneralDisplayBanner Then Me.MainBanner = Me.currTV.ImagesContainer.Banner.ImageOriginal
+        If Master.eSettings.GeneralDisplayCharacterArt Then Me.MainCharacterArt = Me.currTV.ImagesContainer.CharacterArt.ImageOriginal
+        If Master.eSettings.GeneralDisplayClearArt Then Me.MainClearArt = Me.currTV.ImagesContainer.ClearArt.ImageOriginal
+        If Master.eSettings.GeneralDisplayClearLogo Then Me.MainClearLogo = Me.currTV.ImagesContainer.ClearLogo.ImageOriginal
+        If Master.eSettings.GeneralDisplayFanart Then Me.MainFanart = Me.currTV.ImagesContainer.Fanart.ImageOriginal
+        If Master.eSettings.GeneralDisplayFanartSmall Then Me.MainFanartSmall = Me.currTV.ImagesContainer.Fanart.ImageOriginal
+        If Master.eSettings.GeneralDisplayLandscape Then Me.MainLandscape = Me.currTV.ImagesContainer.Landscape.ImageOriginal
+        If Master.eSettings.GeneralDisplayPoster Then Me.MainPoster = Me.currTV.ImagesContainer.Poster.ImageOriginal
 
         If bwLoadShowInfo.CancellationPending Then
             e.Cancel = True
@@ -3247,8 +3247,8 @@ doCancel:
                 If .MovieMissingClearArt Then MissingFilter.Add("ClearArtPath IS NULL OR ClearArtPath=''")
                 If .MovieMissingClearLogo Then MissingFilter.Add("ClearLogoPath IS NULL OR ClearLogoPath=''")
                 If .MovieMissingDiscArt Then MissingFilter.Add("DiscArtPath IS NULL OR DiscArtPath=''")
-                If .MovieMissingEFanarts Then MissingFilter.Add("EFanartsPath IS NULL OR EFanartsPath=''")
-                If .MovieMissingEThumbs Then MissingFilter.Add("EThumbsPath IS NULL OR EThumbsPath=''")
+                If .MovieMissingExtrafanarts Then MissingFilter.Add("EFanartsPath IS NULL OR EFanartsPath=''")
+                If .MovieMissingExtrathumbs Then MissingFilter.Add("EThumbsPath IS NULL OR EThumbsPath=''")
                 If .MovieMissingFanart Then MissingFilter.Add("FanartPath IS NULL OR FanartPath=''")
                 If .MovieMissingLandscape Then MissingFilter.Add("LandscapePath IS NULL OR LandscapePath=''")
                 If .MovieMissingNFO Then MissingFilter.Add("NfoPath IS NULL OR NfoPath=''")
@@ -3292,7 +3292,7 @@ doCancel:
                 If .TVShowMissingCharacterArt Then MissingFilter.Add("CharacterArtPath IS NULL OR CharacterArtPath=''")
                 If .TVShowMissingClearArt Then MissingFilter.Add("ClearArtPath IS NULL OR ClearArtPath=''")
                 If .TVShowMissingClearLogo Then MissingFilter.Add("ClearLogoPath IS NULL OR ClearLogoPath=''")
-                If .TVShowMissingEFanarts Then MissingFilter.Add("EFanartsPath IS NULL OR EFanartsPath=''")
+                If .TVShowMissingExtrafanarts Then MissingFilter.Add("EFanartsPath IS NULL OR EFanartsPath=''")
                 If .TVShowMissingFanart Then MissingFilter.Add("FanartPath IS NULL OR FanartPath=''")
                 If .TVShowMissingLandscape Then MissingFilter.Add("LandscapePath IS NULL OR LandscapePath=''")
                 If .TVShowMissingNFO Then MissingFilter.Add("NfoPath IS NULL OR NfoPath=''")
@@ -3634,15 +3634,15 @@ doCancel:
         SetFilterMissing_Movies()
     End Sub
 
-    Private Sub chkMovieMissingEFanarts_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieMissingEFanarts.CheckedChanged
-        Master.eSettings.MovieMissingEFanarts = Me.chkMovieMissingEFanarts.Checked
+    Private Sub chkMovieMissingExtrafanarts_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieMissingExtrafanarts.CheckedChanged
+        Master.eSettings.MovieMissingExtrafanarts = Me.chkMovieMissingExtrafanarts.Checked
         Me.chkFilterMissing_Movies.Enabled = Master.eSettings.MovieMissingItemsAnyEnabled
         Me.chkFilterMissing_Movies.Checked = Master.eSettings.MovieMissingItemsAnyEnabled
         SetFilterMissing_Movies()
     End Sub
 
-    Private Sub chkMovieMissingEThumbs_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieMissingEThumbs.CheckedChanged
-        Master.eSettings.MovieMissingEThumbs = Me.chkMovieMissingEThumbs.Checked
+    Private Sub chkMovieMissingExtrathumbs_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieMissingExtrathumbs.CheckedChanged
+        Master.eSettings.MovieMissingExtrathumbs = Me.chkMovieMissingExtrathumbs.Checked
         Me.chkFilterMissing_Movies.Enabled = Master.eSettings.MovieMissingItemsAnyEnabled
         Me.chkFilterMissing_Movies.Checked = Master.eSettings.MovieMissingItemsAnyEnabled
         SetFilterMissing_Movies()
@@ -3781,8 +3781,8 @@ doCancel:
         SetFilterMissing_Shows()
     End Sub
 
-    Private Sub chkShowMissingEFanarts_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkShowMissingEFanarts.CheckedChanged
-        Master.eSettings.TVShowMissingEFanarts = Me.chkShowMissingEFanarts.Checked
+    Private Sub chkShowMissingExtrafanarts_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkShowMissingExtrafanarts.CheckedChanged
+        Master.eSettings.TVShowMissingExtrafanarts = Me.chkShowMissingExtrafanarts.Checked
         Me.chkFilterMissing_Shows.Enabled = Master.eSettings.TVShowMissingItemsAnyEnabled
         Me.chkFilterMissing_Shows.Checked = Master.eSettings.TVShowMissingItemsAnyEnabled
         SetFilterMissing_Shows()
@@ -11620,8 +11620,8 @@ doCancel:
         Dim ClearArtAllowed As Boolean = Master.eSettings.MovieClearArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearArt)
         Dim ClearLogoAllowed As Boolean = Master.eSettings.MovieClearLogoAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearLogo)
         Dim DiscArtAllowed As Boolean = Master.eSettings.MovieDiscArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainDiscArt)
-        Dim EFanartsAllowed As Boolean = Master.eSettings.MovieExtrafanartsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
-        Dim EThumbsAllowed As Boolean = Master.eSettings.MovieExtrathumbsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
+        Dim ExtrafanartsAllowed As Boolean = Master.eSettings.MovieExtrafanartsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
+        Dim ExtrathumbsAllowed As Boolean = Master.eSettings.MovieExtrathumbsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
         Dim FanartAllowed As Boolean = Master.eSettings.MovieFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
         Dim LandscapeAllowed As Boolean = Master.eSettings.MovieLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainLandscape)
         Dim PosterAllowed As Boolean = Master.eSettings.MoviePosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainPoster)
@@ -11639,8 +11639,8 @@ doCancel:
             sModifier.MainClearArt = ScrapeModifier.MainClearArt AndAlso ClearArtAllowed
             sModifier.MainClearLogo = ScrapeModifier.MainClearLogo AndAlso ClearLogoAllowed
             sModifier.MainDiscArt = ScrapeModifier.MainDiscArt AndAlso DiscArtAllowed
-            sModifier.MainExtrafanarts = ScrapeModifier.MainExtrafanarts AndAlso EFanartsAllowed
-            sModifier.MainExtrathumbs = ScrapeModifier.MainExtrathumbs AndAlso EThumbsAllowed
+            sModifier.MainExtrafanarts = ScrapeModifier.MainExtrafanarts AndAlso ExtrafanartsAllowed
+            sModifier.MainExtrathumbs = ScrapeModifier.MainExtrathumbs AndAlso ExtrathumbsAllowed
             sModifier.MainFanart = ScrapeModifier.MainFanart AndAlso FanartAllowed
             sModifier.MainLandscape = ScrapeModifier.MainLandscape AndAlso LandscapeAllowed
             sModifier.MainMeta = ScrapeModifier.MainMeta
@@ -11963,7 +11963,7 @@ doCancel:
         Dim MainCharacterArtAllowed As Boolean = Master.eSettings.TVShowCharacterArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainCharacterArt)
         Dim MainClearArtAllowed As Boolean = Master.eSettings.TVShowClearArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearArt)
         Dim MainClearLogoAllowed As Boolean = Master.eSettings.TVShowClearLogoAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearLogo)
-        Dim MainEFanartsAllowed As Boolean = Master.eSettings.TVShowExtrafanartsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)
+        Dim MainExtrafanartsAllowed As Boolean = Master.eSettings.TVShowExtrafanartsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)
         Dim MainFanartAllowed As Boolean = Master.eSettings.TVShowFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)
         Dim MainLandscapeAllowed As Boolean = Master.eSettings.TVShowLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainLandscape)
         Dim MainPosterAllowed As Boolean = Master.eSettings.TVShowPosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainPoster)
@@ -11993,7 +11993,7 @@ doCancel:
             sModifier.MainCharacterArt = ScrapeModifier.MainCharacterArt AndAlso MainCharacterArtAllowed
             sModifier.MainClearArt = ScrapeModifier.MainClearArt AndAlso MainClearArtAllowed
             sModifier.MainClearLogo = ScrapeModifier.MainClearLogo AndAlso MainClearLogoAllowed
-            sModifier.MainExtrafanarts = ScrapeModifier.MainExtrafanarts AndAlso MainEFanartsAllowed
+            sModifier.MainExtrafanarts = ScrapeModifier.MainExtrafanarts AndAlso MainExtrafanartsAllowed
             sModifier.MainFanart = ScrapeModifier.MainFanart AndAlso MainFanartAllowed
             sModifier.MainLandscape = ScrapeModifier.MainLandscape AndAlso MainLandscapeAllowed
             sModifier.MainNFO = ScrapeModifier.MainNFO
@@ -14789,7 +14789,7 @@ doCancel:
 
         Me.ClearInfo()
 
-        If Me.dgvMovies.Rows.Count >= iRow Then
+        If Me.dgvMovies.Rows.Count > iRow Then
             If String.IsNullOrEmpty(Me.dgvMovies.Item("BannerPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvMovies.Item("ClearArtPath", iRow).Value.ToString) AndAlso _
                 String.IsNullOrEmpty(Me.dgvMovies.Item("ClearLogoPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvMovies.Item("DiscArtPath", iRow).Value.ToString) AndAlso _
                 String.IsNullOrEmpty(Me.dgvMovies.Item("EFanartsPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvMovies.Item("EThumbsPath", iRow).Value.ToString) AndAlso _
@@ -14820,7 +14820,7 @@ doCancel:
 
         Me.ClearInfo()
 
-        If Me.dgvMovieSets.Rows.Count >= iRow Then
+        If Me.dgvMovieSets.Rows.Count > iRow Then
             If String.IsNullOrEmpty(Me.dgvMovieSets.Item("BannerPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvMovieSets.Item("ClearArtPath", iRow).Value.ToString) AndAlso _
                 String.IsNullOrEmpty(Me.dgvMovieSets.Item("ClearLogoPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvMovieSets.Item("DiscArtPath", iRow).Value.ToString) AndAlso _
                 String.IsNullOrEmpty(Me.dgvMovieSets.Item("FanartPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvMovieSets.Item("LandscapePath", iRow).Value.ToString) AndAlso _
@@ -14847,7 +14847,7 @@ doCancel:
 
         Me.ClearInfo()
 
-        If Me.dgvTVEpisodes.Rows.Count >= iRow Then
+        If Me.dgvTVEpisodes.Rows.Count > iRow Then
             If String.IsNullOrEmpty(Me.dgvTVEpisodes.Item("FanartPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvTVEpisodes.Item("NfoPath", iRow).Value.ToString) AndAlso _
                 String.IsNullOrEmpty(Me.dgvTVEpisodes.Item("PosterPath", iRow).Value.ToString) AndAlso Not Convert.ToInt64(Me.dgvTVEpisodes.Item("idFile", iRow).Value) = -1 Then
                 Me.ShowNoInfo(True, Enums.ContentType.TVEpisode)
@@ -14876,7 +14876,7 @@ doCancel:
 
         Me.ClearInfo()
 
-        If Me.dgvTVSeasons.Rows.Count >= iRow Then
+        If Me.dgvTVSeasons.Rows.Count > iRow Then
             If String.IsNullOrEmpty(Me.dgvTVSeasons.Item("BannerPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvTVSeasons.Item("FanartPath", iRow).Value.ToString) AndAlso _
                 String.IsNullOrEmpty(Me.dgvTVSeasons.Item("LandscapePath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvTVSeasons.Item("PosterPath", iRow).Value.ToString) AndAlso _
                 Not Convert.ToBoolean(Me.dgvTVSeasons.Item("Missing", iRow).Value) Then
@@ -14911,7 +14911,7 @@ doCancel:
 
         Me.ClearInfo()
 
-        If Me.dgvTVShows.Rows.Count >= iRow Then
+        If Me.dgvTVShows.Rows.Count > iRow Then
             If String.IsNullOrEmpty(Me.dgvTVShows.Item("BannerPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvTVShows.Item("CharacterArtPath", iRow).Value.ToString) AndAlso _
                 String.IsNullOrEmpty(Me.dgvTVShows.Item("ClearArtPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvTVShows.Item("ClearLogoPath", iRow).Value.ToString) AndAlso _
                 String.IsNullOrEmpty(Me.dgvTVShows.Item("EFanartsPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvTVShows.Item("FanartPath", iRow).Value.ToString) AndAlso _
@@ -16056,13 +16056,13 @@ doCancel:
                 .chkMovieMissingDiscArt.Checked = Master.eSettings.MovieMissingDiscArt
                 AddHandler Me.chkMovieMissingDiscArt.CheckedChanged, AddressOf Me.chkMovieMissingDiscArt_CheckedChanged
 
-                RemoveHandler Me.chkMovieMissingEFanarts.CheckedChanged, AddressOf Me.chkMovieMissingEFanarts_CheckedChanged
-                .chkMovieMissingEFanarts.Checked = Master.eSettings.MovieMissingEFanarts
-                AddHandler Me.chkMovieMissingEFanarts.CheckedChanged, AddressOf Me.chkMovieMissingEFanarts_CheckedChanged
+                RemoveHandler Me.chkMovieMissingExtrafanarts.CheckedChanged, AddressOf Me.chkMovieMissingExtrafanarts_CheckedChanged
+                .chkMovieMissingExtrafanarts.Checked = Master.eSettings.MovieMissingExtrafanarts
+                AddHandler Me.chkMovieMissingExtrafanarts.CheckedChanged, AddressOf Me.chkMovieMissingExtrafanarts_CheckedChanged
 
-                RemoveHandler Me.chkMovieMissingEThumbs.CheckedChanged, AddressOf Me.chkMovieMissingEThumbs_CheckedChanged
-                .chkMovieMissingEThumbs.Checked = Master.eSettings.MovieMissingEThumbs
-                AddHandler Me.chkMovieMissingEThumbs.CheckedChanged, AddressOf Me.chkMovieMissingEThumbs_CheckedChanged
+                RemoveHandler Me.chkMovieMissingExtrathumbs.CheckedChanged, AddressOf Me.chkMovieMissingExtrathumbs_CheckedChanged
+                .chkMovieMissingExtrathumbs.Checked = Master.eSettings.MovieMissingExtrathumbs
+                AddHandler Me.chkMovieMissingExtrathumbs.CheckedChanged, AddressOf Me.chkMovieMissingExtrathumbs_CheckedChanged
 
                 RemoveHandler Me.chkMovieMissingFanart.CheckedChanged, AddressOf Me.chkMovieMissingFanart_CheckedChanged
                 .chkMovieMissingFanart.Checked = Master.eSettings.MovieMissingFanart
@@ -16140,9 +16140,9 @@ doCancel:
                 .chkShowMissingClearLogo.Checked = Master.eSettings.TVShowMissingClearLogo
                 AddHandler Me.chkShowMissingClearLogo.CheckedChanged, AddressOf Me.chkShowMissingClearLogo_CheckedChanged
 
-                RemoveHandler Me.chkShowMissingEFanarts.CheckedChanged, AddressOf Me.chkShowMissingEFanarts_CheckedChanged
-                .chkShowMissingEFanarts.Checked = Master.eSettings.TVShowMissingEFanarts
-                AddHandler Me.chkShowMissingEFanarts.CheckedChanged, AddressOf Me.chkShowMissingEFanarts_CheckedChanged
+                RemoveHandler Me.chkShowMissingExtrafanarts.CheckedChanged, AddressOf Me.chkShowMissingExtrafanarts_CheckedChanged
+                .chkShowMissingExtrafanarts.Checked = Master.eSettings.TVShowMissingExtrafanarts
+                AddHandler Me.chkShowMissingExtrafanarts.CheckedChanged, AddressOf Me.chkShowMissingExtrafanarts_CheckedChanged
 
                 RemoveHandler Me.chkShowMissingFanart.CheckedChanged, AddressOf Me.chkShowMissingFanart_CheckedChanged
                 .chkShowMissingFanart.Checked = Master.eSettings.TVShowMissingFanart

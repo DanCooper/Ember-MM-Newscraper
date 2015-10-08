@@ -786,8 +786,8 @@ Public Class Enums
         ClearArtItem = 2
         ClearLogoItem = 3
         DiscArtItem = 4
-        EFanartsItem = 5
-        EThumbsItem = 6
+        ExtrafanartsItem = 5
+        ExtrathumbsItem = 6
         FanartItem = 7
         LandscapeItem = 8
         NFOItem = 9

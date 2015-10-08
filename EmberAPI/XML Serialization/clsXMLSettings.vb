@@ -47,15 +47,15 @@ Partial Public Class clsXMLSettings
     Private _generalmainfiltersortorder_movies As Integer
     Private _generalmainfiltersortorder_moviesets As Integer
     Private _generalmainfiltersortorder_shows As Integer
-    Private _generalhidebanner As Boolean
-    Private _generalhidecharacterart As Boolean
-    Private _generalhideclearart As Boolean
-    Private _generalhideclearlogo As Boolean
-    Private _generalhidediscart As Boolean
-    Private _generalhidefanart As Boolean
-    Private _generalhidefanartsmall As Boolean
-    Private _generalhidelandscape As Boolean
-    Private _generalhideposter As Boolean
+    Private _generaldisplaybanner As Boolean
+    Private _generaldisplaycharacterart As Boolean
+    Private _generaldisplayclearart As Boolean
+    Private _generaldisplayclearlogo As Boolean
+    Private _generaldisplaydiscart As Boolean
+    Private _generaldisplayfanart As Boolean
+    Private _generaldisplayfanartsmall As Boolean
+    Private _generaldisplaylandscape As Boolean
+    Private _generaldisplayposter As Boolean
     Private _generalimagesglassoverlay As Boolean
     Private _generallanguage As String
     Private _generalmainsplitterpanelstate As Integer
@@ -78,38 +78,38 @@ Partial Public Class clsXMLSettings
     Private _generalwindowsize As New Size
     Private _generalwindowstate As FormWindowState
     Private _genrefilter As String
-    Private _movieactorthumbsoverwrite As Boolean
+    Private _movieactorthumbskeepexisting As Boolean
     Private _moviebackdropsauto As Boolean
     Private _moviebackdropspath As String
     Private _moviebannerheight As Integer
-    Private _moviebanneroverwrite As Boolean
+    Private _moviebannerkeepexisting As Boolean
     Private _moviebannerprefsizeonly As Boolean
     Private _moviebannerprefsize As Enums.MovieBannerSize
     Private _moviebannerresize As Boolean
     Private _moviebannerwidth As Integer
     Private _moviecleandb As Boolean
-    Private _movieclearartoverwrite As Boolean
-    Private _movieclearlogooverwrite As Boolean
+    Private _movieclearartkeepexisting As Boolean
+    Private _movieclearlogokeepexisting As Boolean
     Private _movieclickscrape As Boolean
     Private _movieclickscrapeask As Boolean
-    Private _moviediscartoverwrite As Boolean
+    Private _moviediscartkeepexisting As Boolean
     Private _moviedisplayyear As Boolean
-    Private _movieefanartsheight As Integer
-    Private _movieefanartslimit As Integer
-    Private _movieefanartsoverwrite As Boolean
-    Private _movieefanartsprefsizeonly As Boolean
-    Private _movieefanartsprefsize As Enums.MovieFanartSize
-    Private _movieefanartsresize As Boolean
-    Private _movieefanartswidth As Integer
-    Private _movieethumbsheight As Integer
-    Private _movieethumbslimit As Integer
-    Private _movieethumbsoverwrite As Boolean
-    Private _movieethumbsprefsizeonly As Boolean
-    Private _movieethumbsprefsize As Enums.MovieFanartSize
-    Private _movieethumbsresize As Boolean
-    Private _movieethumbswidth As Integer
+    Private _movieextrafanartsheight As Integer
+    Private _movieextrafanartslimit As Integer
+    Private _movieextrafanartskeepexisting As Boolean
+    Private _movieextrafanartsprefsizeonly As Boolean
+    Private _movieextrafanartsprefsize As Enums.MovieFanartSize
+    Private _movieextrafanartsresize As Boolean
+    Private _movieextrafanartswidth As Integer
+    Private _movieextrathumbsheight As Integer
+    Private _movieextrathumbslimit As Integer
+    Private _movieextrathumbskeepexisting As Boolean
+    Private _movieextrathumbsprefsizeonly As Boolean
+    Private _movieextrathumbsprefsize As Enums.MovieFanartSize
+    Private _movieextrathumbsresize As Boolean
+    Private _movieextrathumbswidth As Integer
     Private _moviefanartheight As Integer
-    Private _moviefanartoverwrite As Boolean
+    Private _moviefanartkeepexisting As Boolean
     Private _moviefanartprefsizeonly As Boolean
     Private _moviefanartprefsize As Enums.MovieFanartSize
     Private _moviefanartresize As Boolean
@@ -136,7 +136,7 @@ Partial Public Class clsXMLSettings
     Private _movieimagesmedialanguageonly As Boolean
     Private _movieimagespreflanguage As String
     Private _movieimdburl As String
-    Private _movielandscapeoverwrite As Boolean
+    Private _movielandscapekeepexisting As Boolean
     Private _movielevtolerance As Integer
     Private _movielockactors As Boolean
     Private _movielockcert As Boolean
@@ -167,8 +167,8 @@ Partial Public Class clsXMLSettings
     Private _moviemissingclearart As Boolean
     Private _moviemissingclearlogo As Boolean
     Private _moviemissingdiscart As Boolean
-    Private _moviemissingefanarts As Boolean
-    Private _moviemissingethumbs As Boolean
+    Private _moviemissingextrafanarts As Boolean
+    Private _moviemissingextrathumbs As Boolean
     Private _moviemissingfanart As Boolean
     Private _moviemissinglandscape As Boolean
     Private _moviemissingnfo As Boolean
@@ -178,7 +178,7 @@ Partial Public Class clsXMLSettings
     Private _moviemissingtrailer As Boolean
     Private _movieimagesnotsaveurltonfo As Boolean
     Private _movieposterheight As Integer
-    Private _movieposteroverwrite As Boolean
+    Private _movieposterkeepexisting As Boolean
     Private _movieposterprefsizeonly As Boolean
     Private _movieposterprefsize As Enums.MoviePosterSize
     Private _movieposterresize As Boolean
@@ -230,20 +230,20 @@ Partial Public Class clsXMLSettings
     Private _moviescraperxbmctrailerformat As Boolean
     Private _moviescraperyear As Boolean
     Private _moviesetbannerheight As Integer
-    Private _moviesetbanneroverwrite As Boolean
+    Private _moviesetbannerkeepexisting As Boolean
     Private _moviesetbannerprefsizeonly As Boolean
     Private _moviesetbannerprefsize As Enums.MovieBannerSize
     Private _moviesetbannerresize As Boolean
     Private _moviesetbannerwidth As Integer
     Private _moviesetcleandb As Boolean
     Private _moviesetcleanfiles As Boolean
-    Private _moviesetclearartoverwrite As Boolean
-    Private _moviesetclearlogooverwrite As Boolean
+    Private _moviesetclearartkeepexisting As Boolean
+    Private _moviesetclearlogokeepexisting As Boolean
     Private _moviesetclickscrape As Boolean
     Private _moviesetclickscrapeask As Boolean
-    Private _moviesetdiscartoverwrite As Boolean
+    Private _moviesetdiscartkeepexisting As Boolean
     Private _moviesetfanartheight As Integer
-    Private _moviesetfanartoverwrite As Boolean
+    Private _moviesetfanartkeepexisting As Boolean
     Private _moviesetfanartprefsizeonly As Boolean
     Private _moviesetfanartprefsize As Enums.MovieFanartSize
     Private _moviesetfanartresize As Boolean
@@ -255,7 +255,7 @@ Partial Public Class clsXMLSettings
     Private _moviesetimagesgetblankimages As Boolean
     Private _moviesetimagesgetenglishimages As Boolean
     Private _moviesetimagesmedialanguageonly As Boolean
-    Private _moviesetlandscapeoverwrite As Boolean
+    Private _moviesetlandscapekeepexisting As Boolean
     Private _moviesetlockplot As Boolean
     Private _moviesetlocktitle As Boolean
     Private _moviesetmissingbanner As Boolean
@@ -267,7 +267,7 @@ Partial Public Class clsXMLSettings
     Private _moviesetmissingnfo As Boolean
     Private _moviesetmissingposter As Boolean
     Private _moviesetposterheight As Integer
-    Private _moviesetposteroverwrite As Boolean
+    Private _moviesetposterkeepexisting As Boolean
     Private _moviesetposterprefsizeonly As Boolean
     Private _moviesetposterprefsize As Enums.MoviePosterSize
     Private _moviesetposterresize As Boolean
@@ -282,10 +282,10 @@ Partial Public Class clsXMLSettings
     Private _moviesetsorttokens As List(Of String)
     Private _moviesorttokensisempty As Boolean
     Private _moviesetsorttokensisempty As Boolean
-    Private _moviethemeoverwrite As Boolean
+    Private _moviethemekeepexisting As Boolean
     Private _movietrailerdefaultsearch As String
     Private _movietrailerdeleteexisting As Boolean
-    Private _movietraileroverwrite As Boolean
+    Private _movietrailerkeepexisting As Boolean
     Private _movietrailerminvideoqual As Enums.TrailerVideoQuality
     Private _movietrailerprefvideoqual As Enums.TrailerVideoQuality
     Private _ommdummyformat As Integer
@@ -302,32 +302,32 @@ Partial Public Class clsXMLSettings
     Private _sortpath As String
     Private _traktpassword As String
     Private _traktusername As String
-    Private _tvasbannerheight As Integer
-    Private _tvasbanneroverwrite As Boolean
-    Private _tvasbannerprefsize As Enums.TVBannerSize
-    Private _tvasbannerprefsizeonly As Boolean
-    Private _tvasbannerpreftype As Enums.TVBannerType
-    Private _tvasbannerresize As Boolean
-    Private _tvasbannerwidth As Integer
-    Private _tvasfanartheight As Integer
-    Private _tvasfanartoverwrite As Boolean
-    Private _tvasfanartprefsize As Enums.TVFanartSize
-    Private _tvasfanartprefsizeonly As Boolean
-    Private _tvasfanartresize As Boolean
-    Private _tvasfanartwidth As Integer
-    Private _tvaslandscapeoverwrite As Boolean
-    Private _tvasposterheight As Integer
-    Private _tvasposteroverwrite As Boolean
-    Private _tvasposterprefsize As Enums.TVPosterSize
-    Private _tvasposterprefsizeonly As Boolean
-    Private _tvasposterresize As Boolean
-    Private _tvasposterwidth As Integer
+    Private _tvallseasonsbannerheight As Integer
+    Private _tvallseasonsbannerkeepexisting As Boolean
+    Private _tvallseasonsbannerprefsize As Enums.TVBannerSize
+    Private _tvallseasonsbannerprefsizeonly As Boolean
+    Private _tvallseasonsbannerpreftype As Enums.TVBannerType
+    Private _tvallseasonsbannerresize As Boolean
+    Private _tvallseasonsbannerwidth As Integer
+    Private _tvallseasonsfanartheight As Integer
+    Private _tvallseasonsfanartkeepexisting As Boolean
+    Private _tvallseasonsfanartprefsize As Enums.TVFanartSize
+    Private _tvallseasonsfanartprefsizeonly As Boolean
+    Private _tvallseasonsfanartresize As Boolean
+    Private _tvallseasonsfanartwidth As Integer
+    Private _tvallseasonslandscapekeepexisting As Boolean
+    Private _tvallseasonsposterheight As Integer
+    Private _tvallseasonsposterkeepexisting As Boolean
+    Private _tvallseasonsposterprefsize As Enums.TVPosterSize
+    Private _tvallseasonsposterprefsizeonly As Boolean
+    Private _tvallseasonsposterresize As Boolean
+    Private _tvallseasonsposterwidth As Integer
     Private _tvcleandb As Boolean
     Private _tvdisplaymissingepisodes As Boolean
     Private _tvdisplaystatus As Boolean
-    Private _tvepisodeactorthumbsoverwrite As Boolean
+    Private _tvepisodeactorthumbskeepexisting As Boolean
     Private _tvepisodefanartheight As Integer
-    Private _tvepisodefanartoverwrite As Boolean
+    Private _tvepisodefanartkeepexisting As Boolean
     Private _tvepisodefanartprefsize As Enums.TVFanartSize
     Private _tvepisodefanartprefsizeonly As Boolean
     Private _tvepisodefanartresize As Boolean
@@ -339,7 +339,7 @@ Partial Public Class clsXMLSettings
     Private _tvepisodemissingposter As Boolean
     Private _tvepisodenofilter As Boolean
     Private _tvepisodeposterheight As Integer
-    Private _tvepisodeposteroverwrite As Boolean
+    Private _tvepisodeposterkeepexisting As Boolean
     Private _tvepisodeposterprefsize As Enums.TVEpisodePosterSize
     Private _tvepisodeposterprefsizeonly As Boolean
     Private _tvepisodeposterresize As Boolean
@@ -429,76 +429,76 @@ Partial Public Class clsXMLSettings
     Private _tvscraperusemdduration As Boolean
     Private _tvscraperusesruntimeforep As Boolean
     Private _tvseasonbannerheight As Integer
-    Private _tvseasonbanneroverwrite As Boolean
+    Private _tvseasonbannerkeepexisting As Boolean
     Private _tvseasonbannerprefsize As Enums.TVBannerSize
     Private _tvseasonbannerprefsizeonly As Boolean
     Private _tvseasonbannerpreftype As Enums.TVBannerType
     Private _tvseasonbannerresize As Boolean
     Private _tvseasonbannerwidth As Integer
     Private _tvseasonfanartheight As Integer
-    Private _tvseasonfanartoverwrite As Boolean
+    Private _tvseasonfanartkeepexisting As Boolean
     Private _tvseasonfanartprefsize As Enums.TVFanartSize
     Private _tvseasonfanartprefsizeonly As Boolean
     Private _tvseasonfanartresize As Boolean
     Private _tvseasonfanartwidth As Integer
-    Private _tvseasonlandscapeoverwrite As Boolean
+    Private _tvseasonlandscapekeepexisting As Boolean
     Private _tvseasonmissingbanner As Boolean
     Private _tvseasonmissingfanart As Boolean
     Private _tvseasonmissinglandscape As Boolean
     Private _tvseasonmissingposter As Boolean
     Private _tvseasonposterheight As Integer
-    Private _tvseasonposteroverwrite As Boolean
+    Private _tvseasonposterkeepexisting As Boolean
     Private _tvseasonposterprefsize As Enums.TVSeasonPosterSize
     Private _tvseasonposterprefsizeonly As Boolean
     Private _tvseasonposterresize As Boolean
     Private _tvseasonposterwidth As Integer
-    Private _tvshowactorthumbsoverwrite As Boolean
+    Private _tvshowactorthumbskeepexisting As Boolean
     Private _tvshowbannerheight As Integer
-    Private _tvshowbanneroverwrite As Boolean
+    Private _tvshowbannerkeepexisting As Boolean
     Private _tvshowbannerprefsize As Enums.TVBannerSize
     Private _tvshowbannerprefsizeonly As Boolean
     Private _tvshowbannerpreftype As Enums.TVBannerType
     Private _tvshowbannerresize As Boolean
     Private _tvshowbannerwidth As Integer
-    Private _tvshowcharacterartoverwrite As Boolean
-    Private _tvshowclearartoverwrite As Boolean
-    Private _tvshowclearlogooverwrite As Boolean
-    Private _tvshowefanartslimit As Integer
-    Private _tvshowefanartsoverwrite As Boolean
-    Private _tvshowefanartsprefonly As Boolean
-    Private _tvshowefanartsprefsize As Enums.TVFanartSize
-    Private _tvshowefanartsprefsizeonly As Boolean
-    Private _tvshowefanartsresize As Boolean
-    Private _tvshowefanartsheight As Integer
-    Private _tvshowefanartswidth As Integer
+    Private _tvshowcharacterartkeepexisting As Boolean
+    Private _tvshowclearartkeepexisting As Boolean
+    Private _tvshowclearlogokeepexisting As Boolean
+    Private _tvshowextrafanartslimit As Integer
+    Private _tvshowextrafanartskeepexisting As Boolean
+    Private _tvshowextrafanartsprefonly As Boolean
+    Private _tvshowextrafanartsprefsize As Enums.TVFanartSize
+    Private _tvshowextrafanartsprefsizeonly As Boolean
+    Private _tvshowextrafanartsresize As Boolean
+    Private _tvshowextrafanartsheight As Integer
+    Private _tvshowextrafanartswidth As Integer
     Private _tvshowfanartheight As Integer
-    Private _tvshowfanartoverwrite As Boolean
+    Private _tvshowfanartkeepexisting As Boolean
     Private _tvshowfanartprefsize As Enums.TVFanartSize
     Private _tvshowfanartprefsizeonly As Boolean
     Private _tvshowfanartresize As Boolean
     Private _tvshowfanartwidth As Integer
     Private _tvshowfiltercustom As List(Of String)
     Private _tvshowfiltercustomisempty As Boolean
-    Private _tvshowlandscapeoverwrite As Boolean
+    Private _tvshowlandscapekeepexisting As Boolean
     Private _tvshowmatching As List(Of regexp)
     Private _tvshowmissingbanner As Boolean
     Private _tvshowmissingcharacterart As Boolean
     Private _tvshowmissingclearart As Boolean
     Private _tvshowmissingclearlogo As Boolean
-    Private _tvshowmissingefanarts As Boolean
+    Private _tvshowmissingextrafanarts As Boolean
     Private _tvshowmissingfanart As Boolean
     Private _tvshowmissinglandscape As Boolean
     Private _tvshowmissingnfo As Boolean
     Private _tvshowmissingposter As Boolean
     Private _tvshowmissingtheme As Boolean
     Private _tvshowposterheight As Integer
-    Private _tvshowposteroverwrite As Boolean
+    Private _tvshowposterkeepexisting As Boolean
     Private _tvshowposterprefsize As Enums.TVPosterSize
     Private _tvshowposterprefsizeonly As Boolean
     Private _tvshowposterresize As Boolean
     Private _tvshowposterwidth As Integer
     Private _tvshowpropercase As Boolean
-    Private _tvshowthemeoverwrite As Boolean
+    Private _tvshowthemekeepexisting As Boolean
     Private _tvskiplessthan As Integer
     Private _tvsorttokens As List(Of String)
     Private _tvsorttokensisempty As Boolean
@@ -962,30 +962,30 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieActorThumbsOverwrite() As Boolean
+    Public Property MovieActorThumbsKeepExisting() As Boolean
         Get
-            Return Me._movieactorthumbsoverwrite
+            Return Me._movieactorthumbskeepexisting
         End Get
         Set(ByVal value As Boolean)
-            Me._movieactorthumbsoverwrite = value
+            Me._movieactorthumbskeepexisting = value
         End Set
     End Property
 
-    Public Property TVASPosterHeight() As Integer
+    Public Property TVAllSeasonsPosterHeight() As Integer
         Get
-            Return Me._tvasposterheight
+            Return Me._tvallseasonsposterheight
         End Get
         Set(ByVal value As Integer)
-            Me._tvasposterheight = value
+            Me._tvallseasonsposterheight = value
         End Set
     End Property
 
-    Public Property TVASPosterWidth() As Integer
+    Public Property TVAllSeasonsPosterWidth() As Integer
         Get
-            Return Me._tvasposterwidth
+            Return Me._tvallseasonsposterwidth
         End Get
         Set(ByVal value As Integer)
-            Me._tvasposterwidth = value
+            Me._tvallseasonsposterwidth = value
         End Set
     End Property
 
@@ -1540,57 +1540,57 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property TVShowEFanartsHeight() As Integer
+    Public Property TVShowExtrafanartsHeight() As Integer
         Get
-            Return Me._tvshowefanartsheight
+            Return Me._tvshowextrafanartsheight
         End Get
         Set(ByVal value As Integer)
-            Me._tvshowefanartsheight = value
+            Me._tvshowextrafanartsheight = value
         End Set
     End Property
 
-    Public Property MovieEFanartsHeight() As Integer
+    Public Property MovieExtrafanartsHeight() As Integer
         Get
-            Return Me._movieefanartsheight
+            Return Me._movieextrafanartsheight
         End Get
         Set(ByVal value As Integer)
-            Me._movieefanartsheight = value
+            Me._movieextrafanartsheight = value
         End Set
     End Property
 
-    Public Property MovieEThumbsHeight() As Integer
+    Public Property MovieExtrathumbsHeight() As Integer
         Get
-            Return Me._movieethumbsheight
+            Return Me._movieextrathumbsheight
         End Get
         Set(ByVal value As Integer)
-            Me._movieethumbsheight = value
+            Me._movieextrathumbsheight = value
         End Set
     End Property
 
-    Public Property MovieEThumbsLimit() As Integer
+    Public Property MovieExtrathumbsLimit() As Integer
         Get
-            Return Me._movieethumbslimit
+            Return Me._movieextrathumbslimit
         End Get
         Set(ByVal value As Integer)
-            Me._movieethumbslimit = value
+            Me._movieextrathumbslimit = value
         End Set
     End Property
 
-    Public Property TVShowEFanartsLimit() As Integer
+    Public Property TVShowExtrafanartsLimit() As Integer
         Get
-            Return Me._tvshowefanartslimit
+            Return Me._tvshowextrafanartslimit
         End Get
         Set(ByVal value As Integer)
-            Me._tvshowefanartslimit = value
+            Me._tvshowextrafanartslimit = value
         End Set
     End Property
 
-    Public Property MovieEFanartsLimit() As Integer
+    Public Property MovieExtrafanartsLimit() As Integer
         Get
-            Return Me._movieefanartslimit
+            Return Me._movieextrafanartslimit
         End Get
         Set(ByVal value As Integer)
-            Me._movieefanartslimit = value
+            Me._movieextrafanartslimit = value
         End Set
     End Property
 
@@ -1612,30 +1612,30 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property TVShowEFanartsPrefOnly() As Boolean
+    Public Property TVShowExtrafanartsPrefOnly() As Boolean
         Get
-            Return Me._tvshowefanartsprefonly
+            Return Me._tvshowextrafanartsprefonly
         End Get
         Set(ByVal value As Boolean)
-            Me._tvshowefanartsprefonly = value
+            Me._tvshowextrafanartsprefonly = value
         End Set
     End Property
 
-    Public Property MovieEFanartsPrefSizeOnly() As Boolean
+    Public Property MovieExtrafanartsPrefSizeOnly() As Boolean
         Get
-            Return Me._movieefanartsprefsizeonly
+            Return Me._movieextrafanartsprefsizeonly
         End Get
         Set(ByVal value As Boolean)
-            Me._movieefanartsprefsizeonly = value
+            Me._movieextrafanartsprefsizeonly = value
         End Set
     End Property
 
-    Public Property MovieEThumbsPrefSizeOnly() As Boolean
+    Public Property MovieExtrathumbsPrefSizeOnly() As Boolean
         Get
-            Return Me._movieethumbsprefsizeonly
+            Return Me._movieextrathumbsprefsizeonly
         End Get
         Set(ByVal value As Boolean)
-            Me._movieethumbsprefsizeonly = value
+            Me._movieextrathumbsprefsizeonly = value
         End Set
     End Property
 
@@ -1648,30 +1648,30 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property TVShowEFanartsWidth() As Integer
+    Public Property TVShowExtrafanartsWidth() As Integer
         Get
-            Return Me._tvshowefanartswidth
+            Return Me._tvshowextrafanartswidth
         End Get
         Set(ByVal value As Integer)
-            Me._tvshowefanartswidth = value
+            Me._tvshowextrafanartswidth = value
         End Set
     End Property
 
-    Public Property MovieEFanartsWidth() As Integer
+    Public Property MovieExtrafanartsWidth() As Integer
         Get
-            Return Me._movieefanartswidth
+            Return Me._movieextrafanartswidth
         End Get
         Set(ByVal value As Integer)
-            Me._movieefanartswidth = value
+            Me._movieextrafanartswidth = value
         End Set
     End Property
 
-    Public Property MovieEThumbsWidth() As Integer
+    Public Property MovieExtrathumbsWidth() As Integer
         Get
-            Return Me._movieethumbswidth
+            Return Me._movieextrathumbswidth
         End Get
         Set(ByVal value As Integer)
-            Me._movieethumbswidth = value
+            Me._movieextrathumbswidth = value
         End Set
     End Property
 
@@ -2462,21 +2462,21 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieMissingEThumbs() As Boolean
+    Public Property MovieMissingExtrathumbs() As Boolean
         Get
-            Return Me._moviemissingethumbs
+            Return Me._moviemissingextrathumbs
         End Get
         Set(ByVal value As Boolean)
-            Me._moviemissingethumbs = value
+            Me._moviemissingextrathumbs = value
         End Set
     End Property
 
-    Public Property MovieMissingEFanarts() As Boolean
+    Public Property MovieMissingExtrafanarts() As Boolean
         Get
-            Return Me._moviemissingefanarts
+            Return Me._moviemissingextrafanarts
         End Get
         Set(ByVal value As Boolean)
-            Me._moviemissingefanarts = value
+            Me._moviemissingextrafanarts = value
         End Set
     End Property
 
@@ -2777,84 +2777,84 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property GeneralHideBanner() As Boolean
+    Public Property GeneralDisplayBanner() As Boolean
         Get
-            Return Me._generalhidebanner
+            Return Me._generaldisplaybanner
         End Get
         Set(ByVal value As Boolean)
-            Me._generalhidebanner = value
+            Me._generaldisplaybanner = value
         End Set
     End Property
 
-    Public Property GeneralHideCharacterArt() As Boolean
+    Public Property GeneralDisplayCharacterArt() As Boolean
         Get
-            Return Me._generalhidecharacterart
+            Return Me._generaldisplaycharacterart
         End Get
         Set(ByVal value As Boolean)
-            Me._generalhidecharacterart = value
+            Me._generaldisplaycharacterart = value
         End Set
     End Property
 
-    Public Property GeneralHideClearArt() As Boolean
+    Public Property GeneralDisplayClearArt() As Boolean
         Get
-            Return Me._generalhideclearart
+            Return Me._generaldisplayclearart
         End Get
         Set(ByVal value As Boolean)
-            Me._generalhideclearart = value
+            Me._generaldisplayclearart = value
         End Set
     End Property
 
-    Public Property GeneralHideClearLogo() As Boolean
+    Public Property GeneralDisplayClearLogo() As Boolean
         Get
-            Return Me._generalhideclearlogo
+            Return Me._generaldisplayclearlogo
         End Get
         Set(ByVal value As Boolean)
-            Me._generalhideclearlogo = value
+            Me._generaldisplayclearlogo = value
         End Set
     End Property
 
-    Public Property GeneralHideDiscArt() As Boolean
+    Public Property GeneralDisplayDiscArt() As Boolean
         Get
-            Return Me._generalhidediscart
+            Return Me._generaldisplaydiscart
         End Get
         Set(ByVal value As Boolean)
-            Me._generalhidediscart = value
+            Me._generaldisplaydiscart = value
         End Set
     End Property
 
-    Public Property GeneralHideFanart() As Boolean
+    Public Property GeneralDisplayFanart() As Boolean
         Get
-            Return Me._generalhidefanart
+            Return Me._generaldisplayfanart
         End Get
         Set(ByVal value As Boolean)
-            Me._generalhidefanart = value
+            Me._generaldisplayfanart = value
         End Set
     End Property
 
-    Public Property GeneralHideFanartSmall() As Boolean
+    Public Property GeneralDisplayFanartSmall() As Boolean
         Get
-            Return Me._generalhidefanartsmall
+            Return Me._generaldisplayfanartsmall
         End Get
         Set(ByVal value As Boolean)
-            Me._generalhidefanartsmall = value
+            Me._generaldisplayfanartsmall = value
         End Set
     End Property
 
-    Public Property GeneralHideLandscape() As Boolean
+    Public Property GeneralDisplayLandscape() As Boolean
         Get
-            Return Me._generalhidelandscape
+            Return Me._generaldisplaylandscape
         End Get
         Set(ByVal value As Boolean)
-            Me._generalhidelandscape = value
+            Me._generaldisplaylandscape = value
         End Set
     End Property
 
-    Public Property GeneralHidePoster() As Boolean
+    Public Property GeneralDisplayPoster() As Boolean
         Get
-            Return Me._generalhideposter
+            Return Me._generaldisplayposter
         End Get
         Set(ByVal value As Boolean)
-            Me._generalhideposter = value
+            Me._generaldisplayposter = value
         End Set
     End Property
 
@@ -3020,93 +3020,93 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property TVASBannerOverwrite() As Boolean
+    Public Property TVAllSeasonsBannerKeepExisting() As Boolean
         Get
-            Return Me._tvasbanneroverwrite
+            Return Me._tvallseasonsbannerkeepexisting
         End Get
         Set(ByVal value As Boolean)
-            Me._tvasbanneroverwrite = value
+            Me._tvallseasonsbannerkeepexisting = value
         End Set
     End Property
 
-    Public Property TVASFanartOverwrite() As Boolean
+    Public Property TVAllSeasonsFanartKeepExisting() As Boolean
         Get
-            Return Me._tvasfanartoverwrite
+            Return Me._tvallseasonsfanartkeepexisting
         End Get
         Set(ByVal value As Boolean)
-            Me._tvasfanartoverwrite = value
+            Me._tvallseasonsfanartkeepexisting = value
         End Set
     End Property
 
-    Public Property TVASLandscapeOverwrite() As Boolean
+    Public Property TVAllSeasonsLandscapeKeepExisting() As Boolean
         Get
-            Return Me._tvaslandscapeoverwrite
+            Return Me._tvallseasonslandscapekeepexisting
         End Get
         Set(ByVal value As Boolean)
-            Me._tvaslandscapeoverwrite = value
+            Me._tvallseasonslandscapekeepexisting = value
         End Set
     End Property
 
-    Public Property TVASPosterOverwrite() As Boolean
+    Public Property TVAllSeasonsPosterKeepExisting() As Boolean
         Get
-            Return Me._tvasposteroverwrite
+            Return Me._tvallseasonsposterkeepexisting
         End Get
         Set(ByVal value As Boolean)
-            Me._tvasposteroverwrite = value
+            Me._tvallseasonsposterkeepexisting = value
         End Set
     End Property
 
-    Public Property TVEpisodeFanartOverwrite() As Boolean
+    Public Property TVEpisodeFanartKeepExisting() As Boolean
         Get
-            Return Me._tvepisodefanartoverwrite
+            Return Me._tvepisodefanartkeepexisting
         End Get
         Set(ByVal value As Boolean)
-            Me._tvepisodefanartoverwrite = value
+            Me._tvepisodefanartkeepexisting = value
         End Set
     End Property
 
-    Public Property TVEpisodePosterOverwrite() As Boolean
+    Public Property TVEpisodePosterKeepExisting() As Boolean
         Get
-            Return Me._tvepisodeposteroverwrite
+            Return Me._tvepisodeposterkeepexisting
         End Get
         Set(ByVal value As Boolean)
-            Me._tvepisodeposteroverwrite = value
+            Me._tvepisodeposterkeepexisting = value
         End Set
     End Property
 
-    Public Property TVShowEFanartsOverwrite() As Boolean
+    Public Property TVShowExtrafanartsKeepExisting() As Boolean
         Get
-            Return Me._tvshowefanartsoverwrite
+            Return Me._tvshowextrafanartskeepexisting
         End Get
         Set(ByVal value As Boolean)
-            Me._tvshowefanartsoverwrite = value
+            Me._tvshowextrafanartskeepexisting = value
         End Set
     End Property
 
-    Public Property MovieEFanartsOverwrite() As Boolean
+    Public Property MovieExtrafanartsKeepExisting() As Boolean
         Get
-            Return Me._movieefanartsoverwrite
+            Return Me._movieextrafanartskeepexisting
         End Get
         Set(ByVal value As Boolean)
-            Me._movieefanartsoverwrite = value
+            Me._movieextrafanartskeepexisting = value
         End Set
     End Property
 
-    Public Property MovieEThumbsOverwrite() As Boolean
+    Public Property MovieExtrathumbsKeepExisting() As Boolean
         Get
-            Return Me._movieethumbsoverwrite
+            Return Me._movieextrathumbskeepexisting
         End Get
         Set(ByVal value As Boolean)
-            Me._movieethumbsoverwrite = value
+            Me._movieextrathumbskeepexisting = value
         End Set
     End Property
 
-    Public Property MovieFanartOverwrite() As Boolean
+    Public Property MovieFanartKeepExisting() As Boolean
         Get
-            Return Me._moviefanartoverwrite
+            Return Me._moviefanartkeepexisting
         End Get
         Set(ByVal value As Boolean)
-            Me._moviefanartoverwrite = value
+            Me._moviefanartkeepexisting = value
         End Set
     End Property
 
@@ -3119,219 +3119,219 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MoviePosterOverwrite() As Boolean
+    Public Property MoviePosterKeepExisting() As Boolean
         Get
-            Return Me._movieposteroverwrite
+            Return Me._movieposterkeepexisting
         End Get
         Set(ByVal value As Boolean)
-            Me._movieposteroverwrite = value
+            Me._movieposterkeepexisting = value
         End Set
     End Property
 
-    Public Property TVSeasonBannerOverwrite() As Boolean
+    Public Property TVSeasonBannerKeepExisting() As Boolean
         Get
-            Return Me._tvseasonbanneroverwrite
+            Return Me._tvseasonbannerkeepexisting
         End Get
         Set(ByVal value As Boolean)
-            Me._tvseasonbanneroverwrite = value
+            Me._tvseasonbannerkeepexisting = value
         End Set
     End Property
 
-    Public Property TVShowCharacterArtOverwrite() As Boolean
+    Public Property TVShowCharacterArtKeepExisting() As Boolean
         Get
-            Return Me._tvshowcharacterartoverwrite
+            Return Me._tvshowcharacterartkeepexisting
         End Get
         Set(ByVal value As Boolean)
-            Me._tvshowcharacterartoverwrite = value
+            Me._tvshowcharacterartkeepexisting = value
         End Set
     End Property
 
-    Public Property TVShowClearArtOverwrite() As Boolean
+    Public Property TVShowClearArtKeepExisting() As Boolean
         Get
-            Return Me._tvshowclearartoverwrite
+            Return Me._tvshowclearartkeepexisting
         End Get
         Set(ByVal value As Boolean)
-            Me._tvshowclearartoverwrite = value
+            Me._tvshowclearartkeepexisting = value
         End Set
     End Property
 
-    Public Property TVShowClearLogoOverwrite() As Boolean
+    Public Property TVShowClearLogoKeepExisting() As Boolean
         Get
-            Return Me._tvshowclearlogooverwrite
+            Return Me._tvshowclearlogokeepexisting
         End Get
         Set(ByVal value As Boolean)
-            Me._tvshowclearlogooverwrite = value
+            Me._tvshowclearlogokeepexisting = value
         End Set
     End Property
 
-    Public Property TVSeasonLandscapeOverwrite() As Boolean
+    Public Property TVSeasonLandscapeKeepExisting() As Boolean
         Get
-            Return Me._tvseasonlandscapeoverwrite
+            Return Me._tvseasonlandscapekeepexisting
         End Get
         Set(ByVal value As Boolean)
-            Me._tvseasonlandscapeoverwrite = value
+            Me._tvseasonlandscapekeepexisting = value
         End Set
     End Property
 
-    Public Property TVShowLandscapeOverwrite() As Boolean
+    Public Property TVShowLandscapeKeepExisting() As Boolean
         Get
-            Return Me._tvshowlandscapeoverwrite
+            Return Me._tvshowlandscapekeepexisting
         End Get
         Set(ByVal value As Boolean)
-            Me._tvshowlandscapeoverwrite = value
+            Me._tvshowlandscapekeepexisting = value
         End Set
     End Property
 
-    Public Property TVSeasonFanartOverwrite() As Boolean
+    Public Property TVSeasonFanartKeepExisting() As Boolean
         Get
-            Return Me._tvseasonfanartoverwrite
+            Return Me._tvseasonfanartkeepexisting
         End Get
         Set(ByVal value As Boolean)
-            Me._tvseasonfanartoverwrite = value
+            Me._tvseasonfanartkeepexisting = value
         End Set
     End Property
 
-    Public Property TVSeasonPosterOverwrite() As Boolean
+    Public Property TVSeasonPosterKeepExisting() As Boolean
         Get
-            Return Me._tvseasonposteroverwrite
+            Return Me._tvseasonposterkeepexisting
         End Get
         Set(ByVal value As Boolean)
-            Me._tvseasonposteroverwrite = value
+            Me._tvseasonposterkeepexisting = value
         End Set
     End Property
 
-    Public Property TVShowBannerOverwrite() As Boolean
+    Public Property TVShowBannerKeepExisting() As Boolean
         Get
-            Return Me._tvshowbanneroverwrite
+            Return Me._tvshowbannerkeepexisting
         End Get
         Set(ByVal value As Boolean)
-            Me._tvshowbanneroverwrite = value
+            Me._tvshowbannerkeepexisting = value
         End Set
     End Property
 
-    Public Property TVShowFanartOverwrite() As Boolean
+    Public Property TVShowFanartKeepExisting() As Boolean
         Get
-            Return Me._tvshowfanartoverwrite
+            Return Me._tvshowfanartkeepexisting
         End Get
         Set(ByVal value As Boolean)
-            Me._tvshowfanartoverwrite = value
+            Me._tvshowfanartkeepexisting = value
         End Set
     End Property
 
-    Public Property TVShowPosterOverwrite() As Boolean
+    Public Property TVShowPosterKeepExisting() As Boolean
         Get
-            Return Me._tvshowposteroverwrite
+            Return Me._tvshowposterkeepexisting
         End Get
         Set(ByVal value As Boolean)
-            Me._tvshowposteroverwrite = value
+            Me._tvshowposterkeepexisting = value
         End Set
     End Property
 
-    Public Property MovieBannerOverwrite() As Boolean
+    Public Property MovieBannerKeepExisting() As Boolean
         Get
-            Return Me._moviebanneroverwrite
+            Return Me._moviebannerkeepexisting
         End Get
         Set(ByVal value As Boolean)
-            Me._moviebanneroverwrite = value
+            Me._moviebannerkeepexisting = value
         End Set
     End Property
 
-    Public Property MovieDiscArtOverwrite() As Boolean
+    Public Property MovieDiscArtKeepExisting() As Boolean
         Get
-            Return Me._moviediscartoverwrite
+            Return Me._moviediscartkeepexisting
         End Get
         Set(ByVal value As Boolean)
-            Me._moviediscartoverwrite = value
+            Me._moviediscartkeepexisting = value
         End Set
     End Property
 
-    Public Property MovieLandscapeOverwrite() As Boolean
+    Public Property MovieLandscapeKeepExisting() As Boolean
         Get
-            Return Me._movielandscapeoverwrite
+            Return Me._movielandscapekeepexisting
         End Get
         Set(ByVal value As Boolean)
-            Me._movielandscapeoverwrite = value
+            Me._movielandscapekeepexisting = value
         End Set
     End Property
 
-    Public Property MovieClearArtOverwrite() As Boolean
+    Public Property MovieClearArtKeepExisting() As Boolean
         Get
-            Return Me._movieclearartoverwrite
+            Return Me._movieclearartkeepexisting
         End Get
         Set(ByVal value As Boolean)
-            Me._movieclearartoverwrite = value
+            Me._movieclearartkeepexisting = value
         End Set
     End Property
 
-    Public Property MovieClearLogoOverwrite() As Boolean
+    Public Property MovieClearLogoKeepExisting() As Boolean
         Get
-            Return Me._movieclearlogooverwrite
+            Return Me._movieclearlogokeepexisting
         End Get
         Set(ByVal value As Boolean)
-            Me._movieclearlogooverwrite = value
+            Me._movieclearlogokeepexisting = value
         End Set
     End Property
 
-    Public Property MovieSetBannerOverwrite() As Boolean
+    Public Property MovieSetBannerKeepExisting() As Boolean
         Get
-            Return Me._moviesetbanneroverwrite
+            Return Me._moviesetbannerkeepexisting
         End Get
         Set(ByVal value As Boolean)
-            Me._moviesetbanneroverwrite = value
+            Me._moviesetbannerkeepexisting = value
         End Set
     End Property
 
-    Public Property MovieSetClearArtOverwrite() As Boolean
+    Public Property MovieSetClearArtKeepExisting() As Boolean
         Get
-            Return Me._moviesetclearartoverwrite
+            Return Me._moviesetclearartkeepexisting
         End Get
         Set(ByVal value As Boolean)
-            Me._moviesetclearartoverwrite = value
+            Me._moviesetclearartkeepexisting = value
         End Set
     End Property
 
-    Public Property MovieSetClearLogoOverwrite() As Boolean
+    Public Property MovieSetClearLogoKeepExisting() As Boolean
         Get
-            Return Me._moviesetclearlogooverwrite
+            Return Me._moviesetclearlogokeepexisting
         End Get
         Set(ByVal value As Boolean)
-            Me._moviesetclearlogooverwrite = value
+            Me._moviesetclearlogokeepexisting = value
         End Set
     End Property
 
-    Public Property MovieSetDiscArtOverwrite() As Boolean
+    Public Property MovieSetDiscArtKeepExisting() As Boolean
         Get
-            Return Me._moviesetdiscartoverwrite
+            Return Me._moviesetdiscartkeepexisting
         End Get
         Set(ByVal value As Boolean)
-            Me._moviesetdiscartoverwrite = value
+            Me._moviesetdiscartkeepexisting = value
         End Set
     End Property
 
-    Public Property MovieSetFanartOverwrite() As Boolean
+    Public Property MovieSetFanartKeepExisting() As Boolean
         Get
-            Return Me._moviesetfanartoverwrite
+            Return Me._moviesetfanartkeepexisting
         End Get
         Set(ByVal value As Boolean)
-            Me._moviesetfanartoverwrite = value
+            Me._moviesetfanartkeepexisting = value
         End Set
     End Property
 
-    Public Property MovieSetLandscapeOverwrite() As Boolean
+    Public Property MovieSetLandscapeKeepExisting() As Boolean
         Get
-            Return Me._moviesetlandscapeoverwrite
+            Return Me._moviesetlandscapekeepexisting
         End Get
         Set(ByVal value As Boolean)
-            Me._moviesetlandscapeoverwrite = value
+            Me._moviesetlandscapekeepexisting = value
         End Set
     End Property
 
-    Public Property MovieSetPosterOverwrite() As Boolean
+    Public Property MovieSetPosterKeepExisting() As Boolean
         Get
-            Return Me._moviesetposteroverwrite
+            Return Me._moviesetposterkeepexisting
         End Get
         Set(ByVal value As Boolean)
-            Me._moviesetposteroverwrite = value
+            Me._moviesetposterkeepexisting = value
         End Set
     End Property
 
@@ -3353,30 +3353,30 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieTrailerOverwrite() As Boolean
+    Public Property MovieTrailerKeepExisting() As Boolean
         Get
-            Return Me._movietraileroverwrite
+            Return Me._movietrailerkeepexisting
         End Get
         Set(ByVal value As Boolean)
-            Me._movietraileroverwrite = value
+            Me._movietrailerkeepexisting = value
         End Set
     End Property
 
-    Public Property MovieThemeOverwrite() As Boolean
+    Public Property MovieThemeKeepExisting() As Boolean
         Get
-            Return Me._moviethemeoverwrite
+            Return Me._moviethemekeepexisting
         End Get
         Set(ByVal value As Boolean)
-            Me._moviethemeoverwrite = value
+            Me._moviethemekeepexisting = value
         End Set
     End Property
 
-    Public Property TVShowThemeOverwrite() As Boolean
+    Public Property TVShowThemeKeepExisting() As Boolean
         Get
-            Return Me._tvshowthemeoverwrite
+            Return Me._tvshowthemekeepexisting
         End Get
         Set(ByVal value As Boolean)
-            Me._tvshowthemeoverwrite = value
+            Me._tvshowthemekeepexisting = value
         End Set
     End Property
 
@@ -3461,12 +3461,12 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property TVASPosterPrefSize() As Enums.TVPosterSize
+    Public Property TVAllSeasonsPosterPrefSize() As Enums.TVPosterSize
         Get
-            Return Me._tvasposterprefsize
+            Return Me._tvallseasonsposterprefsize
         End Get
         Set(ByVal value As Enums.TVPosterSize)
-            Me._tvasposterprefsize = value
+            Me._tvallseasonsposterprefsize = value
         End Set
     End Property
 
@@ -3497,21 +3497,21 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieEFanartsPrefSize() As Enums.MovieFanartSize
+    Public Property MovieExtrafanartsPrefSize() As Enums.MovieFanartSize
         Get
-            Return Me._movieefanartsprefsize
+            Return Me._movieextrafanartsprefsize
         End Get
         Set(ByVal value As Enums.MovieFanartSize)
-            Me._movieefanartsprefsize = value
+            Me._movieextrafanartsprefsize = value
         End Set
     End Property
 
-    Public Property MovieEThumbsPrefSize() As Enums.MovieFanartSize
+    Public Property MovieExtrathumbsPrefSize() As Enums.MovieFanartSize
         Get
-            Return Me._movieethumbsprefsize
+            Return Me._movieextrathumbsprefsize
         End Get
         Set(ByVal value As Enums.MovieFanartSize)
-            Me._movieethumbsprefsize = value
+            Me._movieextrathumbsprefsize = value
         End Set
     End Property
 
@@ -3542,39 +3542,39 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property TVASFanartPrefSize() As Enums.TVFanartSize
+    Public Property TVAllSeasonsFanartPrefSize() As Enums.TVFanartSize
         Get
-            Return Me._tvasfanartprefsize
+            Return Me._tvallseasonsfanartprefsize
         End Get
         Set(ByVal value As Enums.TVFanartSize)
-            Me._tvasfanartprefsize = value
+            Me._tvallseasonsfanartprefsize = value
         End Set
     End Property
 
-    Public Property TVASBannerPrefSizeOnly() As Boolean
+    Public Property TVAllSeasonsBannerPrefSizeOnly() As Boolean
         Get
-            Return Me._tvasbannerprefsizeonly
+            Return Me._tvallseasonsbannerprefsizeonly
         End Get
         Set(ByVal value As Boolean)
-            Me._tvasbannerprefsizeonly = value
+            Me._tvallseasonsbannerprefsizeonly = value
         End Set
     End Property
 
-    Public Property TVASFanartPrefSizeOnly() As Boolean
+    Public Property TVAllSeasonsFanartPrefSizeOnly() As Boolean
         Get
-            Return Me._tvasfanartprefsizeonly
+            Return Me._tvallseasonsfanartprefsizeonly
         End Get
         Set(ByVal value As Boolean)
-            Me._tvasfanartprefsizeonly = value
+            Me._tvallseasonsfanartprefsizeonly = value
         End Set
     End Property
 
-    Public Property TVASPosterPrefSizeOnly() As Boolean
+    Public Property TVAllSeasonsPosterPrefSizeOnly() As Boolean
         Get
-            Return Me._tvasposterprefsizeonly
+            Return Me._tvallseasonsposterprefsizeonly
         End Get
         Set(ByVal value As Boolean)
-            Me._tvasposterprefsizeonly = value
+            Me._tvallseasonsposterprefsizeonly = value
         End Set
     End Property
 
@@ -3632,12 +3632,12 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property TVShowEFanartsPrefSizeOnly() As Boolean
+    Public Property TVShowExtrafanartsPrefSizeOnly() As Boolean
         Get
-            Return Me._tvshowefanartsprefsizeonly
+            Return Me._tvshowextrafanartsprefsizeonly
         End Get
         Set(ByVal value As Boolean)
-            Me._tvshowefanartsprefsizeonly = value
+            Me._tvshowextrafanartsprefsizeonly = value
         End Set
     End Property
 
@@ -3714,21 +3714,21 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property TVASBannerPrefSize() As Enums.TVBannerSize
+    Public Property TVAllSeasonsBannerPrefSize() As Enums.TVBannerSize
         Get
-            Return Me._tvasbannerprefsize
+            Return Me._tvallseasonsbannerprefsize
         End Get
         Set(ByVal value As Enums.TVBannerSize)
-            Me._tvasbannerprefsize = value
+            Me._tvallseasonsbannerprefsize = value
         End Set
     End Property
 
-    Public Property TVASBannerPrefType() As Enums.TVBannerType
+    Public Property TVAllSeasonsBannerPrefType() As Enums.TVBannerType
         Get
-            Return Me._tvasbannerpreftype
+            Return Me._tvallseasonsbannerpreftype
         End Get
         Set(ByVal value As Enums.TVBannerType)
-            Me._tvasbannerpreftype = value
+            Me._tvallseasonsbannerpreftype = value
         End Set
     End Property
 
@@ -3750,12 +3750,12 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property TVShowEFanartsPrefSize() As Enums.TVFanartSize
+    Public Property TVShowExtrafanartsPrefSize() As Enums.TVFanartSize
         Get
-            Return Me._tvshowefanartsprefsize
+            Return Me._tvshowextrafanartsprefsize
         End Get
         Set(ByVal value As Enums.TVFanartSize)
-            Me._tvshowefanartsprefsize = value
+            Me._tvshowextrafanartsprefsize = value
         End Set
     End Property
 
@@ -3831,30 +3831,30 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property TVASBannerResize() As Boolean
+    Public Property TVAllSeasonsBannerResize() As Boolean
         Get
-            Return Me._tvasbannerresize
+            Return Me._tvallseasonsbannerresize
         End Get
         Set(ByVal value As Boolean)
-            Me._tvasbannerresize = value
+            Me._tvallseasonsbannerresize = value
         End Set
     End Property
 
-    Public Property TVASPosterResize() As Boolean
+    Public Property TVAllSeasonsPosterResize() As Boolean
         Get
-            Return Me._tvasposterresize
+            Return Me._tvallseasonsposterresize
         End Get
         Set(ByVal value As Boolean)
-            Me._tvasposterresize = value
+            Me._tvallseasonsposterresize = value
         End Set
     End Property
 
-    Public Property TVASFanartResize() As Boolean
+    Public Property TVAllSeasonsFanartResize() As Boolean
         Get
-            Return Me._tvasfanartresize
+            Return Me._tvallseasonsfanartresize
         End Get
         Set(ByVal value As Boolean)
-            Me._tvasfanartresize = value
+            Me._tvallseasonsfanartresize = value
         End Set
     End Property
 
@@ -3876,30 +3876,30 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property TVShowEFanartsResize() As Boolean
+    Public Property TVShowExtrafanartsResize() As Boolean
         Get
-            Return Me._tvshowefanartsresize
+            Return Me._tvshowextrafanartsresize
         End Get
         Set(ByVal value As Boolean)
-            Me._tvshowefanartsresize = value
+            Me._tvshowextrafanartsresize = value
         End Set
     End Property
 
-    Public Property MovieEFanartsResize() As Boolean
+    Public Property MovieExtrafanartsResize() As Boolean
         Get
-            Return Me._movieefanartsresize
+            Return Me._movieextrafanartsresize
         End Get
         Set(ByVal value As Boolean)
-            Me._movieefanartsresize = value
+            Me._movieextrafanartsresize = value
         End Set
     End Property
 
-    Public Property MovieEThumbsResize() As Boolean
+    Public Property MovieExtrathumbsResize() As Boolean
         Get
-            Return Me._movieethumbsresize
+            Return Me._movieextrathumbsresize
         End Get
         Set(ByVal value As Boolean)
-            Me._movieethumbsresize = value
+            Me._movieextrathumbsresize = value
         End Set
     End Property
 
@@ -4290,12 +4290,12 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property TVASBannerWidth() As Integer
+    Public Property TVAllSeasonsBannerWidth() As Integer
         Get
-            Return Me._tvasbannerwidth
+            Return Me._tvallseasonsbannerwidth
         End Get
         Set(ByVal value As Integer)
-            Me._tvasbannerwidth = value
+            Me._tvallseasonsbannerwidth = value
         End Set
     End Property
 
@@ -4308,12 +4308,12 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property TVASFanartWidth() As Integer
+    Public Property TVAllSeasonsFanartWidth() As Integer
         Get
-            Return Me._tvasfanartwidth
+            Return Me._tvallseasonsfanartwidth
         End Get
         Set(ByVal value As Integer)
-            Me._tvasfanartwidth = value
+            Me._tvallseasonsfanartwidth = value
         End Set
     End Property
 
@@ -4344,12 +4344,12 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property TVASBannerHeight() As Integer
+    Public Property TVAllSeasonsBannerHeight() As Integer
         Get
-            Return Me._tvasbannerheight
+            Return Me._tvallseasonsbannerheight
         End Get
         Set(ByVal value As Integer)
-            Me._tvasbannerheight = value
+            Me._tvallseasonsbannerheight = value
         End Set
     End Property
 
@@ -4362,21 +4362,21 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property TVASFanartHeight() As Integer
+    Public Property TVAllSeasonsFanartHeight() As Integer
         Get
-            Return Me._tvasfanartheight
+            Return Me._tvallseasonsfanartheight
         End Get
         Set(ByVal value As Integer)
-            Me._tvasfanartheight = value
+            Me._tvallseasonsfanartheight = value
         End Set
     End Property
 
-    Public Property TVShowActorThumbsOverwrite() As Boolean
+    Public Property TVShowActorThumbsKeepExisting() As Boolean
         Get
-            Return Me._tvshowactorthumbsoverwrite
+            Return Me._tvshowactorthumbskeepexisting
         End Get
         Set(ByVal value As Boolean)
-            Me._tvshowactorthumbsoverwrite = value
+            Me._tvshowactorthumbskeepexisting = value
         End Set
     End Property
 
@@ -7107,12 +7107,12 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property TVEpisodeActorThumbsOverwrite() As Boolean
+    Public Property TVEpisodeActorThumbsKeepExisting() As Boolean
         Get
-            Return Me._tvepisodeactorthumbsoverwrite
+            Return Me._tvepisodeactorthumbskeepexisting
         End Get
         Set(ByVal value As Boolean)
-            Me._tvepisodeactorthumbsoverwrite = value
+            Me._tvepisodeactorthumbskeepexisting = value
         End Set
     End Property
 
@@ -7251,12 +7251,12 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property TVShowMissingEFanarts() As Boolean
+    Public Property TVShowMissingExtrafanarts() As Boolean
         Get
-            Return Me._tvshowmissingefanarts
+            Return Me._tvshowmissingextrafanarts
         End Get
         Set(ByVal value As Boolean)
-            Me._tvshowmissingefanarts = value
+            Me._tvshowmissingextrafanarts = value
         End Set
     End Property
 

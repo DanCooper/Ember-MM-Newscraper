@@ -793,7 +793,7 @@ Public Class Trailers
             End If
 
             For Each a In FileUtils.GetFilenameList.Movie(mMovie, Enums.ModifierType.MainTrailer)
-                If Not File.Exists(String.Concat(a, fExt)) OrElse (isEdit OrElse Master.eSettings.MovieTrailerOverwrite) Then
+                If Not File.Exists(String.Concat(a, fExt)) OrElse (isEdit OrElse Master.eSettings.MovieTrailerKeepExisting) Then
                     Save(String.Concat(a, fExt))
                     strReturn = (String.Concat(a, fExt))
                 End If
@@ -833,7 +833,7 @@ Public Class Trailers
     Public Function IsAllowedToDownload(ByVal mMovie As Database.DBElement) As Boolean
         Try
             With Master.eSettings
-                If (String.IsNullOrEmpty(mMovie.Trailer.LocalFilePath) OrElse .MovieTrailerOverwrite) AndAlso _
+                If (String.IsNullOrEmpty(mMovie.Trailer.LocalFilePath) OrElse .MovieTrailerKeepExisting) AndAlso _
                     (.MovieTrailerEden OrElse .MovieTrailerFrodo OrElse .MovieTrailerNMJ OrElse .MovieTrailerYAMJ) OrElse _
                     (.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(.MovieTrailerExpertBDMV) OrElse Not String.IsNullOrEmpty(.MovieTrailerExpertMulti) OrElse _
                             Not String.IsNullOrEmpty(.MovieTrailerExpertMulti) OrElse Not String.IsNullOrEmpty(.MovieTrailerExpertSingle))) Then

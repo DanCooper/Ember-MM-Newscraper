@@ -92,8 +92,8 @@ Public Class frmMovieExtractor
                     pbFrame.Image = Image.FromStream(fsFImage)
                 End Using
                 btnFrameLoad.Enabled = False
-                btnFrameSaveAsEFanart.Enabled = True
-                btnFrameSaveAsEThumb.Enabled = True
+                btnFrameSaveAsExtrafanart.Enabled = True
+                btnFrameSaveAsExtrathumb.Enabled = True
                 btnFrameSaveAsFanart.Enabled = True
             Else
                 tbFrame.Maximum = 0
@@ -150,8 +150,8 @@ Public Class frmMovieExtractor
             ffmpeg.StartInfo.RedirectStandardError = False
 
             pnlFrameProgress.Visible = True
-            btnFrameSaveAsEFanart.Enabled = False
-            btnFrameSaveAsEThumb.Enabled = False
+            btnFrameSaveAsExtrafanart.Enabled = False
+            btnFrameSaveAsExtrathumb.Enabled = False
             btnFrameSaveAsFanart.Enabled = False
 
             ffmpeg.Start()
@@ -164,8 +164,8 @@ Public Class frmMovieExtractor
                     pbFrame.Image = Image.FromStream(fsFImage)
                 End Using
                 tbFrame.Enabled = True
-                btnFrameSaveAsEFanart.Enabled = True
-                btnFrameSaveAsEThumb.Enabled = True
+                btnFrameSaveAsExtrafanart.Enabled = True
+                btnFrameSaveAsExtrathumb.Enabled = True
                 btnFrameSaveAsFanart.Enabled = True
                 pnlFrameProgress.Visible = False
                 PreviousFrameValue = tbFrame.Value
@@ -174,8 +174,8 @@ Public Class frmMovieExtractor
                 tbFrame.Maximum = 0
                 tbFrame.Value = 0
                 tbFrame.Enabled = False
-                btnFrameSaveAsEFanart.Enabled = False
-                btnFrameSaveAsEThumb.Enabled = False
+                btnFrameSaveAsExtrafanart.Enabled = False
+                btnFrameSaveAsExtrathumb.Enabled = False
                 btnFrameSaveAsFanart.Enabled = False
                 btnFrameLoad.Enabled = True
                 pbFrame.Image = Nothing
@@ -190,15 +190,15 @@ Public Class frmMovieExtractor
             tbFrame.Maximum = 0
             tbFrame.Value = 0
             tbFrame.Enabled = False
-            btnFrameSaveAsEFanart.Enabled = False
-            btnFrameSaveAsEThumb.Enabled = False
+            btnFrameSaveAsExtrafanart.Enabled = False
+            btnFrameSaveAsExtrathumb.Enabled = False
             btnFrameSaveAsFanart.Enabled = False
             btnFrameLoad.Enabled = True
             pbFrame.Image = Nothing
         End Try
     End Sub
 
-    Private Sub btnFrameSaveAsEFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFrameSaveAsEFanart.Click
+    Private Sub btnFrameSaveAsExtrafanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFrameSaveAsExtrafanart.Click
         Try
             Dim tPath As String = Path.Combine(Master.TempPath, "extrafanarts")
 
@@ -214,16 +214,16 @@ Public Class frmMovieExtractor
             exImage.Dispose()
             exImage = Nothing
 
-            RaiseEvent GenericEvent(Enums.ModuleEventType.FrameExtrator_Movie, New List(Of Object)(New Object() {"EFanartToSave", sPath}))
+            RaiseEvent GenericEvent(Enums.ModuleEventType.FrameExtrator_Movie, New List(Of Object)(New Object() {"ExtrafanartToSave", sPath}))
 
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
-        btnFrameSaveAsEFanart.Enabled = False
+        btnFrameSaveAsExtrafanart.Enabled = False
     End Sub
 
-    Private Sub btnFrameSaveAsEThumb_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFrameSaveAsEThumb.Click
+    Private Sub btnFrameSaveAsExtrathumb_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFrameSaveAsExtrathumb.Click
         Try
             Dim tPath As String = Path.Combine(Master.TempPath, "extrathumbs")
 
@@ -239,13 +239,13 @@ Public Class frmMovieExtractor
             exImage.Dispose()
             exImage = Nothing
 
-            RaiseEvent GenericEvent(Enums.ModuleEventType.FrameExtrator_Movie, New List(Of Object)(New Object() {"EThumbToSave", sPath}))
+            RaiseEvent GenericEvent(Enums.ModuleEventType.FrameExtrator_Movie, New List(Of Object)(New Object() {"ExtrathumbToSave", sPath}))
 
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
-        btnFrameSaveAsEThumb.Enabled = False
+        btnFrameSaveAsExtrathumb.Enabled = False
     End Sub
 
     Private Sub btnFrameSaveAsFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFrameSaveAsFanart.Click
@@ -299,8 +299,8 @@ Public Class frmMovieExtractor
         Me.gbAutoGenerate.Text = Master.eLang.GetString(296, "Auto-Generate")
         Me.lblToCreate.Text = Master.eLang.GetString(303, "# to Create:")
         Me.btnAutoGen.Text = Master.eLang.GetString(304, "Auto-Gen")
-        Me.btnFrameSaveAsEFanart.Text = Master.eLang.GetString(1050, "Save as Extrafanart")
-        Me.btnFrameSaveAsEThumb.Text = Master.eLang.GetString(305, "Save as Extrathumb")
+        Me.btnFrameSaveAsExtrafanart.Text = Master.eLang.GetString(1050, "Save as Extrafanart")
+        Me.btnFrameSaveAsExtrathumb.Text = Master.eLang.GetString(305, "Save as Extrathumb")
         Me.btnFrameSaveAsFanart.Text = Master.eLang.GetString(1049, "Save as Fanart")
         Me.lblExtractingFrame.Text = Master.eLang.GetString(306, "Extracting Frame...")
         Me.btnFrameLoad.Text = Master.eLang.GetString(307, "Load Movie")

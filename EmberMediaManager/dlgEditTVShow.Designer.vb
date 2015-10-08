@@ -36,7 +36,7 @@ Partial Class dlgEditTVShow
         Me.lblEpisodeSorting = New System.Windows.Forms.Label()
         Me.tpExtrafanarts = New System.Windows.Forms.TabPage()
         Me.lblExtrafanartsSize = New System.Windows.Forms.Label()
-        Me.pnlShowEFanartsSetAsFanart = New System.Windows.Forms.Panel()
+        Me.pnlShowExtrafanartsSetAsFanart = New System.Windows.Forms.Panel()
         Me.btnExtrafanartsSetAsFanart = New System.Windows.Forms.Button()
         Me.pnlExtrafanarts = New System.Windows.Forms.Panel()
         Me.btnExtrafanartsRefresh = New System.Windows.Forms.Button()
@@ -141,7 +141,7 @@ Partial Class dlgEditTVShow
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpExtrafanarts.SuspendLayout()
-        Me.pnlShowEFanartsSetAsFanart.SuspendLayout()
+        Me.pnlShowExtrafanartsSetAsFanart.SuspendLayout()
         CType(Me.pbExtrafanarts, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpFanart.SuspendLayout()
         CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -278,7 +278,7 @@ Partial Class dlgEditTVShow
         'tpExtrafanarts
         '
         Me.tpExtrafanarts.Controls.Add(Me.lblExtrafanartsSize)
-        Me.tpExtrafanarts.Controls.Add(Me.pnlShowEFanartsSetAsFanart)
+        Me.tpExtrafanarts.Controls.Add(Me.pnlShowExtrafanartsSetAsFanart)
         Me.tpExtrafanarts.Controls.Add(Me.pnlExtrafanarts)
         Me.tpExtrafanarts.Controls.Add(Me.btnExtrafanartsRefresh)
         Me.tpExtrafanarts.Controls.Add(Me.btnExtrafanartsRemove)
@@ -303,13 +303,13 @@ Partial Class dlgEditTVShow
         '
         'pnlShowEFanartsSetAsFanart
         '
-        Me.pnlShowEFanartsSetAsFanart.BackColor = System.Drawing.Color.LightGray
-        Me.pnlShowEFanartsSetAsFanart.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlShowEFanartsSetAsFanart.Controls.Add(Me.btnExtrafanartsSetAsFanart)
-        Me.pnlShowEFanartsSetAsFanart.Location = New System.Drawing.Point(719, 403)
-        Me.pnlShowEFanartsSetAsFanart.Name = "pnlShowEFanartsSetAsFanart"
-        Me.pnlShowEFanartsSetAsFanart.Size = New System.Drawing.Size(109, 39)
-        Me.pnlShowEFanartsSetAsFanart.TabIndex = 21
+        Me.pnlShowExtrafanartsSetAsFanart.BackColor = System.Drawing.Color.LightGray
+        Me.pnlShowExtrafanartsSetAsFanart.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlShowExtrafanartsSetAsFanart.Controls.Add(Me.btnExtrafanartsSetAsFanart)
+        Me.pnlShowExtrafanartsSetAsFanart.Location = New System.Drawing.Point(719, 403)
+        Me.pnlShowExtrafanartsSetAsFanart.Name = "pnlShowEFanartsSetAsFanart"
+        Me.pnlShowExtrafanartsSetAsFanart.Size = New System.Drawing.Size(109, 39)
+        Me.pnlShowExtrafanartsSetAsFanart.TabIndex = 21
         '
         'btnExtrafanartsSetAsFanart
         '
@@ -1471,7 +1471,7 @@ Partial Class dlgEditTVShow
         Me.pnlTop.PerformLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tpExtrafanarts.ResumeLayout(False)
-        Me.pnlShowEFanartsSetAsFanart.ResumeLayout(False)
+        Me.pnlShowExtrafanartsSetAsFanart.ResumeLayout(False)
         CType(Me.pbExtrafanarts, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tpFanart.ResumeLayout(False)
         CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1517,7 +1517,7 @@ Partial Class dlgEditTVShow
     Friend WithEvents lblEpisodeSorting As System.Windows.Forms.Label
     Friend WithEvents tpExtrafanarts As System.Windows.Forms.TabPage
     Friend WithEvents lblExtrafanartsSize As System.Windows.Forms.Label
-    Friend WithEvents pnlShowEFanartsSetAsFanart As System.Windows.Forms.Panel
+    Friend WithEvents pnlShowExtrafanartsSetAsFanart As System.Windows.Forms.Panel
     Friend WithEvents btnExtrafanartsSetAsFanart As System.Windows.Forms.Button
     Friend WithEvents pnlExtrafanarts As System.Windows.Forms.Panel
     Friend WithEvents btnExtrafanartsRefresh As System.Windows.Forms.Button
