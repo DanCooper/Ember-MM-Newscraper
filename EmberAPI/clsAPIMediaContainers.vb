@@ -665,7 +665,7 @@ Namespace MediaContainers
         End Sub
 
         Public Sub SaveAllActorThumbs(ByRef DBElement As Database.DBElement)
-            If Me.ActorsSpecified Then
+            If Me.ActorsSpecified AndAlso Master.eSettings.TVEpisodeActorThumbsAnyEnabled Then
                 Images.SaveTVEpisodeActorThumbs(DBElement)
             Else
                 'Images.DeleteTVEpisodeActorThumbs(DBElement) 'TODO: find a way to only remove actor thumbs that not needed in other episodes with same actor thumbs path
@@ -1938,7 +1938,7 @@ Namespace MediaContainers
         End Sub
 
         Public Sub SaveAllActorThumbs(ByRef DBElement As Database.DBElement)
-            If Me.ActorsSpecified Then
+            If Me.ActorsSpecified AndAlso Master.eSettings.MovieActorThumbsAnyEnabled Then
                 Images.SaveMovieActorThumbs(DBElement)
             Else
                 Images.DeleteMovieActorThumbs(DBElement)
@@ -3254,7 +3254,7 @@ Namespace MediaContainers
         End Sub
 
         Public Sub SaveAllActorThumbs(ByRef DBElement As Database.DBElement)
-            If Me.ActorsSpecified Then
+            If Me.ActorsSpecified AndAlso Master.eSettings.TVShowActorThumbsAnyEnabled Then
                 Images.SaveTVShowActorThumbs(DBElement)
             Else
                 Images.DeleteTVShowActorThumbs(DBElement)
@@ -3282,6 +3282,7 @@ Namespace MediaContainers
         Private _imagethumb As Images
         Private _index As Integer
         Private _ischecked As Boolean
+        Private _isedit As Boolean
         Private _likes As Integer
         Private _localfilepath As String
         Private _longlang As String

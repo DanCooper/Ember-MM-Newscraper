@@ -56,30 +56,30 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieActorThumbsOverwrite() As Boolean
+    Public Property MovieActorThumbsKeepExisting() As Boolean
         Get
-            Return Settings._XMLSettings.MovieActorThumbsOverwrite
+            Return Settings._XMLSettings.MovieActorThumbsKeepExisting
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieActorThumbsOverwrite = value
+            Settings._XMLSettings.MovieActorThumbsKeepExisting = value
         End Set
     End Property
 
-    Public Property TVASPosterHeight() As Integer
+    Public Property TVAllSeasonsPosterHeight() As Integer
         Get
-            Return Settings._XMLSettings.TVASPosterHeight
+            Return Settings._XMLSettings.TVAllSeasonsPosterHeight
         End Get
         Set(ByVal value As Integer)
-            Settings._XMLSettings.TVASPosterHeight = value
+            Settings._XMLSettings.TVAllSeasonsPosterHeight = value
         End Set
     End Property
 
-    Public Property TVASPosterWidth() As Integer
+    Public Property TVAllSeasonsPosterWidth() As Integer
         Get
-            Return Settings._XMLSettings.TVASPosterWidth
+            Return Settings._XMLSettings.TVAllSeasonsPosterWidth
         End Get
         Set(ByVal value As Integer)
-            Settings._XMLSettings.TVASPosterWidth = value
+            Settings._XMLSettings.TVAllSeasonsPosterWidth = value
         End Set
     End Property
 
@@ -607,57 +607,57 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVShowEFanartsHeight() As Integer
+    Public Property TVShowExtrafanartsHeight() As Integer
         Get
-            Return Settings._XMLSettings.TVShowEFanartsHeight
+            Return Settings._XMLSettings.TVShowExtrafanartsHeight
         End Get
         Set(ByVal value As Integer)
-            Settings._XMLSettings.TVShowEFanartsHeight = value
+            Settings._XMLSettings.TVShowExtrafanartsHeight = value
         End Set
     End Property
 
-    Public Property MovieEFanartsHeight() As Integer
+    Public Property MovieExtrafanartsHeight() As Integer
         Get
-            Return Settings._XMLSettings.MovieEFanartsHeight
+            Return Settings._XMLSettings.MovieExtrafanartsHeight
         End Get
         Set(ByVal value As Integer)
-            Settings._XMLSettings.MovieEFanartsHeight = value
+            Settings._XMLSettings.MovieExtrafanartsHeight = value
         End Set
     End Property
 
-    Public Property MovieEThumbsHeight() As Integer
+    Public Property MovieExtrathumbsHeight() As Integer
         Get
-            Return Settings._XMLSettings.MovieEThumbsHeight
+            Return Settings._XMLSettings.MovieExtrathumbsHeight
         End Get
         Set(ByVal value As Integer)
-            Settings._XMLSettings.MovieEThumbsHeight = value
+            Settings._XMLSettings.MovieExtrathumbsHeight = value
         End Set
     End Property
 
-    Public Property MovieEThumbsLimit() As Integer
+    Public Property MovieExtrathumbsLimit() As Integer
         Get
-            Return Settings._XMLSettings.MovieEThumbsLimit
+            Return Settings._XMLSettings.MovieExtrathumbsLimit
         End Get
         Set(ByVal value As Integer)
-            Settings._XMLSettings.MovieEThumbsLimit = value
+            Settings._XMLSettings.MovieExtrathumbsLimit = value
         End Set
     End Property
 
-    Public Property TVShowEFanartsLimit() As Integer
+    Public Property TVShowExtrafanartsLimit() As Integer
         Get
-            Return Settings._XMLSettings.TVShowEFanartsLimit
+            Return Settings._XMLSettings.TVShowExtrafanartsLimit
         End Get
         Set(ByVal value As Integer)
-            Settings._XMLSettings.TVShowEFanartsLimit = value
+            Settings._XMLSettings.TVShowExtrafanartsLimit = value
         End Set
     End Property
 
-    Public Property MovieEFanartsLimit() As Integer
+    Public Property MovieExtrafanartsLimit() As Integer
         Get
-            Return Settings._XMLSettings.MovieEFanartsLimit
+            Return Settings._XMLSettings.MovieExtrafanartsLimit
         End Get
         Set(ByVal value As Integer)
-            Settings._XMLSettings.MovieEFanartsLimit = value
+            Settings._XMLSettings.MovieExtrafanartsLimit = value
         End Set
     End Property
 
@@ -679,30 +679,30 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVShowEFanartsPrefOnly() As Boolean
+    Public Property TVShowExtrafanartsPrefOnly() As Boolean
         Get
-            Return Settings._XMLSettings.TVShowEFanartsPrefOnly
+            Return Settings._XMLSettings.TVShowExtrafanartsPrefOnly
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVShowEFanartsPrefOnly = value
+            Settings._XMLSettings.TVShowExtrafanartsPrefOnly = value
         End Set
     End Property
 
-    Public Property MovieEFanartsPrefSizeOnly() As Boolean
+    Public Property MovieExtrafanartsPrefSizeOnly() As Boolean
         Get
-            Return Settings._XMLSettings.MovieEFanartsPrefSizeOnly
+            Return Settings._XMLSettings.MovieExtrafanartsPrefSizeOnly
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieEFanartsPrefSizeOnly = value
+            Settings._XMLSettings.MovieExtrafanartsPrefSizeOnly = value
         End Set
     End Property
 
-    Public Property MovieEThumbsPrefSizeOnly() As Boolean
+    Public Property MovieExtrathumbsPrefSizeOnly() As Boolean
         Get
-            Return Settings._XMLSettings.MovieEThumbsPrefSizeOnly
+            Return Settings._XMLSettings.MovieExtrathumbsPrefSizeOnly
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieEThumbsPrefSizeOnly = value
+            Settings._XMLSettings.MovieExtrathumbsPrefSizeOnly = value
         End Set
     End Property
 
@@ -715,30 +715,30 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVShowEFanartsWidth() As Integer
+    Public Property TVShowExtrafanartsWidth() As Integer
         Get
-            Return Settings._XMLSettings.TVShowEFanartsWidth
+            Return Settings._XMLSettings.TVShowExtrafanartsWidth
         End Get
         Set(ByVal value As Integer)
-            Settings._XMLSettings.TVShowEFanartsWidth = value
+            Settings._XMLSettings.TVShowExtrafanartsWidth = value
         End Set
     End Property
 
-    Public Property MovieEFanartsWidth() As Integer
+    Public Property MovieExtrafanartsWidth() As Integer
         Get
-            Return Settings._XMLSettings.MovieEFanartsWidth
+            Return Settings._XMLSettings.MovieExtrafanartsWidth
         End Get
         Set(ByVal value As Integer)
-            Settings._XMLSettings.MovieEFanartsWidth = value
+            Settings._XMLSettings.MovieExtrafanartsWidth = value
         End Set
     End Property
 
-    Public Property MovieEThumbsWidth() As Integer
+    Public Property MovieExtrathumbsWidth() As Integer
         Get
-            Return Settings._XMLSettings.MovieEThumbsWidth
+            Return Settings._XMLSettings.MovieExtrathumbsWidth
         End Get
         Set(ByVal value As Integer)
-            Settings._XMLSettings.MovieEThumbsWidth = value
+            Settings._XMLSettings.MovieExtrathumbsWidth = value
         End Set
     End Property
 
@@ -1532,21 +1532,21 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieMissingEThumbs() As Boolean
+    Public Property MovieMissingExtrathumbs() As Boolean
         Get
-            Return Settings._XMLSettings.MovieMissingEThumbs
+            Return Settings._XMLSettings.MovieMissingExtrathumbs
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieMissingEThumbs = value
+            Settings._XMLSettings.MovieMissingExtrathumbs = value
         End Set
     End Property
 
-    Public Property MovieMissingEFanarts() As Boolean
+    Public Property MovieMissingExtrafanarts() As Boolean
         Get
-            Return Settings._XMLSettings.MovieMissingEFanarts
+            Return Settings._XMLSettings.MovieMissingExtrafanarts
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieMissingEFanarts = value
+            Settings._XMLSettings.MovieMissingExtrafanarts = value
         End Set
     End Property
 
@@ -1847,84 +1847,84 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property GeneralHideBanner() As Boolean
+    Public Property GeneralDisplayBanner() As Boolean
         Get
-            Return Settings._XMLSettings.GeneralHideBanner
+            Return Settings._XMLSettings.GeneralDisplayBanner
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.GeneralHideBanner = value
+            Settings._XMLSettings.GeneralDisplayBanner = value
         End Set
     End Property
 
-    Public Property GeneralHideCharacterArt() As Boolean
+    Public Property GeneralDisplayCharacterArt() As Boolean
         Get
-            Return Settings._XMLSettings.GeneralHideCharacterArt
+            Return Settings._XMLSettings.GeneralDisplayCharacterArt
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.GeneralHideCharacterArt = value
+            Settings._XMLSettings.GeneralDisplayCharacterArt = value
         End Set
     End Property
 
-    Public Property GeneralHideClearArt() As Boolean
+    Public Property GeneralDisplayClearArt() As Boolean
         Get
-            Return Settings._XMLSettings.GeneralHideClearArt
+            Return Settings._XMLSettings.GeneralDisplayClearArt
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.GeneralHideClearArt = value
+            Settings._XMLSettings.GeneralDisplayClearArt = value
         End Set
     End Property
 
-    Public Property GeneralHideClearLogo() As Boolean
+    Public Property GeneralDisplayClearLogo() As Boolean
         Get
-            Return Settings._XMLSettings.GeneralHideClearLogo
+            Return Settings._XMLSettings.GeneralDisplayClearLogo
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.GeneralHideClearLogo = value
+            Settings._XMLSettings.GeneralDisplayClearLogo = value
         End Set
     End Property
 
-    Public Property GeneralHideDiscArt() As Boolean
+    Public Property GeneralDisplayDiscArt() As Boolean
         Get
-            Return Settings._XMLSettings.GeneralHideDiscArt
+            Return Settings._XMLSettings.GeneralDisplayDiscArt
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.GeneralHideDiscArt = value
+            Settings._XMLSettings.GeneralDisplayDiscArt = value
         End Set
     End Property
 
-    Public Property GeneralHideFanart() As Boolean
+    Public Property GeneralDisplayFanart() As Boolean
         Get
-            Return Settings._XMLSettings.GeneralHideFanart
+            Return Settings._XMLSettings.GeneralDisplayFanart
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.GeneralHideFanart = value
+            Settings._XMLSettings.GeneralDisplayFanart = value
         End Set
     End Property
 
-    Public Property GeneralHideFanartSmall() As Boolean
+    Public Property GeneralDisplayFanartSmall() As Boolean
         Get
-            Return Settings._XMLSettings.GeneralHideFanartSmall
+            Return Settings._XMLSettings.GeneralDisplayFanartSmall
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.GeneralHideFanartSmall = value
+            Settings._XMLSettings.GeneralDisplayFanartSmall = value
         End Set
     End Property
 
-    Public Property GeneralHideLandscape() As Boolean
+    Public Property GeneralDisplayLandscape() As Boolean
         Get
-            Return Settings._XMLSettings.GeneralHideLandscape
+            Return Settings._XMLSettings.GeneralDisplayLandscape
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.GeneralHideLandscape = value
+            Settings._XMLSettings.GeneralDisplayLandscape = value
         End Set
     End Property
 
-    Public Property GeneralHidePoster() As Boolean
+    Public Property GeneralDisplayPoster() As Boolean
         Get
-            Return Settings._XMLSettings.GeneralHidePoster
+            Return Settings._XMLSettings.GeneralDisplayPoster
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.GeneralHidePoster = value
+            Settings._XMLSettings.GeneralDisplayPoster = value
         End Set
     End Property
 
@@ -2090,93 +2090,93 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVASBannerOverwrite() As Boolean
+    Public Property TVAllSeasonsBannerKeepExisting() As Boolean
         Get
-            Return Settings._XMLSettings.TVASBannerOverwrite
+            Return Settings._XMLSettings.TVAllSeasonsBannerKeepExisting
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVASBannerOverwrite = value
+            Settings._XMLSettings.TVAllSeasonsBannerKeepExisting = value
         End Set
     End Property
 
-    Public Property TVASFanartOverwrite() As Boolean
+    Public Property TVAllSeasonsFanartKeepExisting() As Boolean
         Get
-            Return Settings._XMLSettings.TVASFanartOverwrite
+            Return Settings._XMLSettings.TVAllSeasonsFanartKeepExisting
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVASFanartOverwrite = value
+            Settings._XMLSettings.TVAllSeasonsFanartKeepExisting = value
         End Set
     End Property
 
-    Public Property TVASLandscapeOverwrite() As Boolean
+    Public Property TVAllSeasonsLandscapeKeepExisting() As Boolean
         Get
-            Return Settings._XMLSettings.TVASLandscapeOverwrite
+            Return Settings._XMLSettings.TVAllSeasonsLandscapeKeepExisting
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVASLandscapeOverwrite = value
+            Settings._XMLSettings.TVAllSeasonsLandscapeKeepExisting = value
         End Set
     End Property
 
-    Public Property TVASPosterOverwrite() As Boolean
+    Public Property TVAllSeasonsPosterKeepExisting() As Boolean
         Get
-            Return Settings._XMLSettings.TVASPosterOverwrite
+            Return Settings._XMLSettings.TVAllSeasonsPosterKeepExisting
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVASPosterOverwrite = value
+            Settings._XMLSettings.TVAllSeasonsPosterKeepExisting = value
         End Set
     End Property
 
-    Public Property TVEpisodeFanartOverwrite() As Boolean
+    Public Property TVEpisodeFanartKeepExisting() As Boolean
         Get
-            Return Settings._XMLSettings.TVEpisodeFanartOverwrite
+            Return Settings._XMLSettings.TVEpisodeFanartKeepExisting
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVEpisodeFanartOverwrite = value
+            Settings._XMLSettings.TVEpisodeFanartKeepExisting = value
         End Set
     End Property
 
-    Public Property TVEpisodePosterOverwrite() As Boolean
+    Public Property TVEpisodePosterKeepExisting() As Boolean
         Get
-            Return Settings._XMLSettings.TVEpisodePosterOverwrite
+            Return Settings._XMLSettings.TVEpisodePosterKeepExisting
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVEpisodePosterOverwrite = value
+            Settings._XMLSettings.TVEpisodePosterKeepExisting = value
         End Set
     End Property
 
-    Public Property TVShowEFanartsOverwrite() As Boolean
+    Public Property TVShowExtrafanartsKeepExisting() As Boolean
         Get
-            Return Settings._XMLSettings.TVShowEFanartsOverwrite
+            Return Settings._XMLSettings.TVShowExtrafanartsKeepExisting
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVShowEFanartsOverwrite = value
+            Settings._XMLSettings.TVShowExtrafanartsKeepExisting = value
         End Set
     End Property
 
-    Public Property MovieEFanartsOverwrite() As Boolean
+    Public Property MovieExtrafanartsKeepExisting() As Boolean
         Get
-            Return Settings._XMLSettings.MovieEFanartsOverwrite
+            Return Settings._XMLSettings.MovieExtrafanartsKeepExisting
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieEFanartsOverwrite = value
+            Settings._XMLSettings.MovieExtrafanartsKeepExisting = value
         End Set
     End Property
 
-    Public Property MovieEThumbsOverwrite() As Boolean
+    Public Property MovieExtrathumbsKeepExisting() As Boolean
         Get
-            Return Settings._XMLSettings.MovieEThumbsOverwrite
+            Return Settings._XMLSettings.MovieExtrathumbsKeepExisting
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieEThumbsOverwrite = value
+            Settings._XMLSettings.MovieExtrathumbsKeepExisting = value
         End Set
     End Property
 
-    Public Property MovieFanartOverwrite() As Boolean
+    Public Property MovieFanartKeepExisting() As Boolean
         Get
-            Return Settings._XMLSettings.MovieFanartOverwrite
+            Return Settings._XMLSettings.MovieFanartKeepExisting
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieFanartOverwrite = value
+            Settings._XMLSettings.MovieFanartKeepExisting = value
         End Set
     End Property
 
@@ -2189,219 +2189,219 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MoviePosterOverwrite() As Boolean
+    Public Property MoviePosterKeepExisting() As Boolean
         Get
-            Return Settings._XMLSettings.MoviePosterOverwrite
+            Return Settings._XMLSettings.MoviePosterKeepExisting
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MoviePosterOverwrite = value
+            Settings._XMLSettings.MoviePosterKeepExisting = value
         End Set
     End Property
 
-    Public Property TVSeasonBannerOverwrite() As Boolean
+    Public Property TVSeasonBannerKeepExisting() As Boolean
         Get
-            Return Settings._XMLSettings.TVSeasonBannerOverwrite
+            Return Settings._XMLSettings.TVSeasonBannerKeepExisting
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVSeasonBannerOverwrite = value
+            Settings._XMLSettings.TVSeasonBannerKeepExisting = value
         End Set
     End Property
 
-    Public Property TVShowCharacterArtOverwrite() As Boolean
+    Public Property TVShowCharacterArtKeepExisting() As Boolean
         Get
-            Return Settings._XMLSettings.TVShowCharacterArtOverwrite
+            Return Settings._XMLSettings.TVShowCharacterArtKeepExisting
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVShowCharacterArtOverwrite = value
+            Settings._XMLSettings.TVShowCharacterArtKeepExisting = value
         End Set
     End Property
 
-    Public Property TVShowClearArtOverwrite() As Boolean
+    Public Property TVShowClearArtKeepExisting() As Boolean
         Get
-            Return Settings._XMLSettings.TVShowClearArtOverwrite
+            Return Settings._XMLSettings.TVShowClearArtKeepExisting
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVShowClearArtOverwrite = value
+            Settings._XMLSettings.TVShowClearArtKeepExisting = value
         End Set
     End Property
 
-    Public Property TVShowClearLogoOverwrite() As Boolean
+    Public Property TVShowClearLogoKeepExisting() As Boolean
         Get
-            Return Settings._XMLSettings.TVShowClearLogoOverwrite
+            Return Settings._XMLSettings.TVShowClearLogoKeepExisting
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVShowClearLogoOverwrite = value
+            Settings._XMLSettings.TVShowClearLogoKeepExisting = value
         End Set
     End Property
 
-    Public Property TVSeasonLandscapeOverwrite() As Boolean
+    Public Property TVSeasonLandscapeKeepExisting() As Boolean
         Get
-            Return Settings._XMLSettings.TVSeasonLandscapeOverwrite
+            Return Settings._XMLSettings.TVSeasonLandscapeKeepExisting
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVSeasonLandscapeOverwrite = value
+            Settings._XMLSettings.TVSeasonLandscapeKeepExisting = value
         End Set
     End Property
 
-    Public Property TVShowLandscapeOverwrite() As Boolean
+    Public Property TVShowLandscapeKeepExisting() As Boolean
         Get
-            Return Settings._XMLSettings.TVShowLandscapeOverwrite
+            Return Settings._XMLSettings.TVShowLandscapeKeepExisting
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVShowLandscapeOverwrite = value
+            Settings._XMLSettings.TVShowLandscapeKeepExisting = value
         End Set
     End Property
 
-    Public Property TVSeasonFanartOverwrite() As Boolean
+    Public Property TVSeasonFanartKeepExisting() As Boolean
         Get
-            Return Settings._XMLSettings.TVSeasonFanartOverwrite
+            Return Settings._XMLSettings.TVSeasonFanartKeepExisting
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVSeasonFanartOverwrite = value
+            Settings._XMLSettings.TVSeasonFanartKeepExisting = value
         End Set
     End Property
 
-    Public Property TVSeasonPosterOverwrite() As Boolean
+    Public Property TVSeasonPosterKeepExisting() As Boolean
         Get
-            Return Settings._XMLSettings.TVSeasonPosterOverwrite
+            Return Settings._XMLSettings.TVSeasonPosterKeepExisting
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVSeasonPosterOverwrite = value
+            Settings._XMLSettings.TVSeasonPosterKeepExisting = value
         End Set
     End Property
 
-    Public Property TVShowBannerOverwrite() As Boolean
+    Public Property TVShowBannerKeepExisting() As Boolean
         Get
-            Return Settings._XMLSettings.TVShowBannerOverwrite
+            Return Settings._XMLSettings.TVShowBannerKeepExisting
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVShowBannerOverwrite = value
+            Settings._XMLSettings.TVShowBannerKeepExisting = value
         End Set
     End Property
 
-    Public Property TVShowFanartOverwrite() As Boolean
+    Public Property TVShowFanartKeepExisting() As Boolean
         Get
-            Return Settings._XMLSettings.TVShowFanartOverwrite
+            Return Settings._XMLSettings.TVShowFanartKeepExisting
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVShowFanartOverwrite = value
+            Settings._XMLSettings.TVShowFanartKeepExisting = value
         End Set
     End Property
 
-    Public Property TVShowPosterOverwrite() As Boolean
+    Public Property TVShowPosterKeepExisting() As Boolean
         Get
-            Return Settings._XMLSettings.TVShowPosterOverwrite
+            Return Settings._XMLSettings.TVShowPosterKeepExisting
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVShowPosterOverwrite = value
+            Settings._XMLSettings.TVShowPosterKeepExisting = value
         End Set
     End Property
 
-    Public Property MovieBannerOverwrite() As Boolean
+    Public Property MovieBannerKeepExisting() As Boolean
         Get
-            Return Settings._XMLSettings.MovieBannerOverwrite
+            Return Settings._XMLSettings.MovieBannerKeepExisting
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieBannerOverwrite = value
+            Settings._XMLSettings.MovieBannerKeepExisting = value
         End Set
     End Property
 
-    Public Property MovieDiscArtOverwrite() As Boolean
+    Public Property MovieDiscArtKeepExisting() As Boolean
         Get
-            Return Settings._XMLSettings.MovieDiscArtOverwrite
+            Return Settings._XMLSettings.MovieDiscArtKeepExisting
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieDiscArtOverwrite = value
+            Settings._XMLSettings.MovieDiscArtKeepExisting = value
         End Set
     End Property
 
-    Public Property MovieLandscapeOverwrite() As Boolean
+    Public Property MovieLandscapeKeepExisting() As Boolean
         Get
-            Return Settings._XMLSettings.MovieLandscapeOverwrite
+            Return Settings._XMLSettings.MovieLandscapeKeepExisting
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieLandscapeOverwrite = value
+            Settings._XMLSettings.MovieLandscapeKeepExisting = value
         End Set
     End Property
 
-    Public Property MovieClearArtOverwrite() As Boolean
+    Public Property MovieClearArtKeepExisting() As Boolean
         Get
-            Return Settings._XMLSettings.MovieClearArtOverwrite
+            Return Settings._XMLSettings.MovieClearArtKeepExisting
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieClearArtOverwrite = value
+            Settings._XMLSettings.MovieClearArtKeepExisting = value
         End Set
     End Property
 
-    Public Property MovieClearLogoOverwrite() As Boolean
+    Public Property MovieClearLogoKeepExisting() As Boolean
         Get
-            Return Settings._XMLSettings.MovieClearLogoOverwrite
+            Return Settings._XMLSettings.MovieClearLogoKeepExisting
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieClearLogoOverwrite = value
+            Settings._XMLSettings.MovieClearLogoKeepExisting = value
         End Set
     End Property
 
-    Public Property MovieSetBannerOverwrite() As Boolean
+    Public Property MovieSetBannerKeepExisting() As Boolean
         Get
-            Return Settings._XMLSettings.MovieSetBannerOverwrite
+            Return Settings._XMLSettings.MovieSetBannerKeepExisting
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieSetBannerOverwrite = value
+            Settings._XMLSettings.MovieSetBannerKeepExisting = value
         End Set
     End Property
 
-    Public Property MovieSetClearArtOverwrite() As Boolean
+    Public Property MovieSetClearArtKeepExisting() As Boolean
         Get
-            Return Settings._XMLSettings.MovieSetClearArtOverwrite
+            Return Settings._XMLSettings.MovieSetClearArtKeepExisting
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieSetClearArtOverwrite = value
+            Settings._XMLSettings.MovieSetClearArtKeepExisting = value
         End Set
     End Property
 
-    Public Property MovieSetClearLogoOverwrite() As Boolean
+    Public Property MovieSetClearLogoKeepExisting() As Boolean
         Get
-            Return Settings._XMLSettings.MovieSetClearLogoOverwrite
+            Return Settings._XMLSettings.MovieSetClearLogoKeepExisting
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieSetClearLogoOverwrite = value
+            Settings._XMLSettings.MovieSetClearLogoKeepExisting = value
         End Set
     End Property
 
-    Public Property MovieSetDiscArtOverwrite() As Boolean
+    Public Property MovieSetDiscArtKeepExisting() As Boolean
         Get
-            Return Settings._XMLSettings.MovieSetDiscArtOverwrite
+            Return Settings._XMLSettings.MovieSetDiscArtKeepExisting
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieSetDiscArtOverwrite = value
+            Settings._XMLSettings.MovieSetDiscArtKeepExisting = value
         End Set
     End Property
 
-    Public Property MovieSetFanartOverwrite() As Boolean
+    Public Property MovieSetFanartKeepExisting() As Boolean
         Get
-            Return Settings._XMLSettings.MovieSetFanartOverwrite
+            Return Settings._XMLSettings.MovieSetFanartKeepExisting
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieSetFanartOverwrite = value
+            Settings._XMLSettings.MovieSetFanartKeepExisting = value
         End Set
     End Property
 
-    Public Property MovieSetLandscapeOverwrite() As Boolean
+    Public Property MovieSetLandscapeKeepExisting() As Boolean
         Get
-            Return Settings._XMLSettings.MovieSetLandscapeOverwrite
+            Return Settings._XMLSettings.MovieSetLandscapeKeepExisting
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieSetLandscapeOverwrite = value
+            Settings._XMLSettings.MovieSetLandscapeKeepExisting = value
         End Set
     End Property
 
-    Public Property MovieSetPosterOverwrite() As Boolean
+    Public Property MovieSetPosterKeepExisting() As Boolean
         Get
-            Return Settings._XMLSettings.MovieSetPosterOverwrite
+            Return Settings._XMLSettings.MovieSetPosterKeepExisting
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieSetPosterOverwrite = value
+            Settings._XMLSettings.MovieSetPosterKeepExisting = value
         End Set
     End Property
 
@@ -2423,30 +2423,30 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieTrailerOverwrite() As Boolean
+    Public Property MovieTrailerKeepExisting() As Boolean
         Get
-            Return Settings._XMLSettings.MovieTrailerOverwrite
+            Return Settings._XMLSettings.MovieTrailerKeepExisting
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieTrailerOverwrite = value
+            Settings._XMLSettings.MovieTrailerKeepExisting = value
         End Set
     End Property
 
-    Public Property MovieThemeOverwrite() As Boolean
+    Public Property MovieThemeKeepExisting() As Boolean
         Get
-            Return Settings._XMLSettings.MovieThemeOverwrite
+            Return Settings._XMLSettings.MovieThemeKeepExisting
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieThemeOverwrite = value
+            Settings._XMLSettings.MovieThemeKeepExisting = value
         End Set
     End Property
 
-    Public Property TVShowThemeOverwrite() As Boolean
+    Public Property TVShowThemeKeepExisting() As Boolean
         Get
-            Return Settings._XMLSettings.TVShowThemeOverwrite
+            Return Settings._XMLSettings.TVShowThemeKeepExisting
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVShowThemeOverwrite = value
+            Settings._XMLSettings.TVShowThemeKeepExisting = value
         End Set
     End Property
 
@@ -2531,12 +2531,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVASPosterPrefSize() As Enums.TVPosterSize
+    Public Property TVAllSeasonsPosterPrefSize() As Enums.TVPosterSize
         Get
-            Return Settings._XMLSettings.TVASPosterPrefSize
+            Return Settings._XMLSettings.TVAllSeasonsPosterPrefSize
         End Get
         Set(ByVal value As Enums.TVPosterSize)
-            Settings._XMLSettings.TVASPosterPrefSize = value
+            Settings._XMLSettings.TVAllSeasonsPosterPrefSize = value
         End Set
     End Property
 
@@ -2567,21 +2567,21 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieEFanartsPrefSize() As Enums.MovieFanartSize
+    Public Property MovieExtrafanartsPrefSize() As Enums.MovieFanartSize
         Get
-            Return Settings._XMLSettings.MovieEFanartsPrefSize
+            Return Settings._XMLSettings.MovieExtrafanartsPrefSize
         End Get
         Set(ByVal value As Enums.MovieFanartSize)
-            Settings._XMLSettings.MovieEFanartsPrefSize = value
+            Settings._XMLSettings.MovieExtrafanartsPrefSize = value
         End Set
     End Property
 
-    Public Property MovieEThumbsPrefSize() As Enums.MovieFanartSize
+    Public Property MovieExtrathumbsPrefSize() As Enums.MovieFanartSize
         Get
-            Return Settings._XMLSettings.MovieEThumbsPrefSize
+            Return Settings._XMLSettings.MovieExtrathumbsPrefSize
         End Get
         Set(ByVal value As Enums.MovieFanartSize)
-            Settings._XMLSettings.MovieEThumbsPrefSize = value
+            Settings._XMLSettings.MovieExtrathumbsPrefSize = value
         End Set
     End Property
 
@@ -2612,39 +2612,39 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVASFanartPrefSize() As Enums.TVFanartSize
+    Public Property TVAllSeasonsFanartPrefSize() As Enums.TVFanartSize
         Get
-            Return Settings._XMLSettings.TVASFanartPrefSize
+            Return Settings._XMLSettings.TVAllSeasonsFanartPrefSize
         End Get
         Set(ByVal value As Enums.TVFanartSize)
-            Settings._XMLSettings.TVASFanartPrefSize = value
+            Settings._XMLSettings.TVAllSeasonsFanartPrefSize = value
         End Set
     End Property
 
-    Public Property TVASBannerPrefSizeOnly() As Boolean
+    Public Property TVAllSeasonsBannerPrefSizeOnly() As Boolean
         Get
-            Return Settings._XMLSettings.TVASBannerPrefSizeOnly
+            Return Settings._XMLSettings.TVAllSeasonsBannerPrefSizeOnly
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVASBannerPrefSizeOnly = value
+            Settings._XMLSettings.TVAllSeasonsBannerPrefSizeOnly = value
         End Set
     End Property
 
-    Public Property TVASFanartPrefSizeOnly() As Boolean
+    Public Property TVAllSeasonsFanartPrefSizeOnly() As Boolean
         Get
-            Return Settings._XMLSettings.TVASFanartPrefSizeOnly
+            Return Settings._XMLSettings.TVAllSeasonsFanartPrefSizeOnly
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVASFanartPrefSizeOnly = value
+            Settings._XMLSettings.TVAllSeasonsFanartPrefSizeOnly = value
         End Set
     End Property
 
-    Public Property TVASPosterPrefSizeOnly() As Boolean
+    Public Property TVAllSeasonsPosterPrefSizeOnly() As Boolean
         Get
-            Return Settings._XMLSettings.TVASPosterPrefSizeOnly
+            Return Settings._XMLSettings.TVAllSeasonsPosterPrefSizeOnly
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVASPosterPrefSizeOnly = value
+            Settings._XMLSettings.TVAllSeasonsPosterPrefSizeOnly = value
         End Set
     End Property
 
@@ -2702,12 +2702,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVShowEFanartsPrefSizeOnly() As Boolean
+    Public Property TVShowExtrafanartsPrefSizeOnly() As Boolean
         Get
-            Return Settings._XMLSettings.TVShowEFanartsPrefSizeOnly
+            Return Settings._XMLSettings.TVShowExtrafanartsPrefSizeOnly
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVShowEFanartsPrefSizeOnly = value
+            Settings._XMLSettings.TVShowExtrafanartsPrefSizeOnly = value
         End Set
     End Property
 
@@ -2783,21 +2783,21 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVASBannerPrefSize() As Enums.TVBannerSize
+    Public Property TVAllSeasonsBannerPrefSize() As Enums.TVBannerSize
         Get
-            Return Settings._XMLSettings.TVASBannerPrefSize
+            Return Settings._XMLSettings.TVAllSeasonsBannerPrefSize
         End Get
         Set(ByVal value As Enums.TVBannerSize)
-            Settings._XMLSettings.TVASBannerPrefSize = value
+            Settings._XMLSettings.TVAllSeasonsBannerPrefSize = value
         End Set
     End Property
 
-    Public Property TVASBannerPrefType() As Enums.TVBannerType
+    Public Property TVAllSeasonsBannerPrefType() As Enums.TVBannerType
         Get
-            Return Settings._XMLSettings.TVASBannerPrefType
+            Return Settings._XMLSettings.TVAllSeasonsBannerPrefType
         End Get
         Set(ByVal value As Enums.TVBannerType)
-            Settings._XMLSettings.TVASBannerPrefType = value
+            Settings._XMLSettings.TVAllSeasonsBannerPrefType = value
         End Set
     End Property
 
@@ -2819,12 +2819,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVShowEFanartsPrefSize() As Enums.TVFanartSize
+    Public Property TVShowExtrafanartsPrefSize() As Enums.TVFanartSize
         Get
-            Return Settings._XMLSettings.TVShowEFanartsPrefSize
+            Return Settings._XMLSettings.TVShowExtrafanartsPrefSize
         End Get
         Set(ByVal value As Enums.TVFanartSize)
-            Settings._XMLSettings.TVShowEFanartsPrefSize = value
+            Settings._XMLSettings.TVShowExtrafanartsPrefSize = value
         End Set
     End Property
 
@@ -2900,30 +2900,30 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVASBannerResize() As Boolean
+    Public Property TVAllSeasonsBannerResize() As Boolean
         Get
-            Return Settings._XMLSettings.TVASBannerResize
+            Return Settings._XMLSettings.TVAllSeasonsBannerResize
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVASBannerResize = value
+            Settings._XMLSettings.TVAllSeasonsBannerResize = value
         End Set
     End Property
 
-    Public Property TVASPosterResize() As Boolean
+    Public Property TVAllSeasonsPosterResize() As Boolean
         Get
-            Return Settings._XMLSettings.TVASPosterResize
+            Return Settings._XMLSettings.TVAllSeasonsPosterResize
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVASPosterResize = value
+            Settings._XMLSettings.TVAllSeasonsPosterResize = value
         End Set
     End Property
 
-    Public Property TVASFanartResize() As Boolean
+    Public Property TVAllSeasonsFanartResize() As Boolean
         Get
-            Return Settings._XMLSettings.TVASFanartResize
+            Return Settings._XMLSettings.TVAllSeasonsFanartResize
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVASFanartResize = value
+            Settings._XMLSettings.TVAllSeasonsFanartResize = value
         End Set
     End Property
 
@@ -2945,30 +2945,30 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVShowEFanartsResize() As Boolean
+    Public Property TVShowExtrafanartsResize() As Boolean
         Get
-            Return Settings._XMLSettings.TVShowEFanartsResize
+            Return Settings._XMLSettings.TVShowExtrafanartsResize
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVShowEFanartsResize = value
+            Settings._XMLSettings.TVShowExtrafanartsResize = value
         End Set
     End Property
 
-    Public Property MovieEFanartsResize() As Boolean
+    Public Property MovieExtrafanartsResize() As Boolean
         Get
-            Return Settings._XMLSettings.MovieEFanartsResize
+            Return Settings._XMLSettings.MovieExtrafanartsResize
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieEFanartsResize = value
+            Settings._XMLSettings.MovieExtrafanartsResize = value
         End Set
     End Property
 
-    Public Property MovieEThumbsResize() As Boolean
+    Public Property MovieExtrathumbsResize() As Boolean
         Get
-            Return Settings._XMLSettings.MovieEThumbsResize
+            Return Settings._XMLSettings.MovieExtrathumbsResize
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieEThumbsResize = value
+            Settings._XMLSettings.MovieExtrathumbsResize = value
         End Set
     End Property
 
@@ -3359,12 +3359,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVASBannerWidth() As Integer
+    Public Property TVAllSeasonsBannerWidth() As Integer
         Get
-            Return Settings._XMLSettings.TVASBannerWidth
+            Return Settings._XMLSettings.TVAllSeasonsBannerWidth
         End Get
         Set(ByVal value As Integer)
-            Settings._XMLSettings.TVASBannerWidth = value
+            Settings._XMLSettings.TVAllSeasonsBannerWidth = value
         End Set
     End Property
 
@@ -3377,12 +3377,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVASFanartWidth() As Integer
+    Public Property TVAllSeasonsFanartWidth() As Integer
         Get
-            Return Settings._XMLSettings.TVASFanartWidth
+            Return Settings._XMLSettings.TVAllSeasonsFanartWidth
         End Get
         Set(ByVal value As Integer)
-            Settings._XMLSettings.TVASFanartWidth = value
+            Settings._XMLSettings.TVAllSeasonsFanartWidth = value
         End Set
     End Property
 
@@ -3413,12 +3413,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVASBannerHeight() As Integer
+    Public Property TVAllSeasonsBannerHeight() As Integer
         Get
-            Return Settings._XMLSettings.TVASBannerHeight
+            Return Settings._XMLSettings.TVAllSeasonsBannerHeight
         End Get
         Set(ByVal value As Integer)
-            Settings._XMLSettings.TVASBannerHeight = value
+            Settings._XMLSettings.TVAllSeasonsBannerHeight = value
         End Set
     End Property
 
@@ -3431,12 +3431,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVASFanartHeight() As Integer
+    Public Property TVAllSeasonsFanartHeight() As Integer
         Get
-            Return Settings._XMLSettings.TVASFanartHeight
+            Return Settings._XMLSettings.TVAllSeasonsFanartHeight
         End Get
         Set(ByVal value As Integer)
-            Settings._XMLSettings.TVASFanartHeight = value
+            Settings._XMLSettings.TVAllSeasonsFanartHeight = value
         End Set
     End Property
 
@@ -5951,12 +5951,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVShowActorThumbsOverwrite() As Boolean
+    Public Property TVShowActorThumbsKeepExisting() As Boolean
         Get
-            Return Settings._XMLSettings.TVShowActorThumbsOverwrite
+            Return Settings._XMLSettings.TVShowActorThumbsKeepExisting
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVShowActorThumbsOverwrite = value
+            Settings._XMLSettings.TVShowActorThumbsKeepExisting = value
         End Set
     End Property
 
@@ -6203,12 +6203,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVEpisodeActorThumbsOverwrite() As Boolean
+    Public Property TVEpisodeActorThumbsKeepExisting() As Boolean
         Get
-            Return Settings._XMLSettings.TVEpisodeActorThumbsOverwrite
+            Return Settings._XMLSettings.TVEpisodeActorThumbsKeepExisting
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVEpisodeActorThumbsOverwrite = value
+            Settings._XMLSettings.TVEpisodeActorThumbsKeepExisting = value
         End Set
     End Property
 
@@ -6347,12 +6347,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVShowMissingEFanarts() As Boolean
+    Public Property TVShowMissingExtrafanarts() As Boolean
         Get
-            Return Settings._XMLSettings.TVShowMissingEFanarts
+            Return Settings._XMLSettings.TVShowMissingExtrafanarts
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVShowMissingEFanarts = value
+            Settings._XMLSettings.TVShowMissingExtrafanarts = value
         End Set
     End Property
 
@@ -6637,15 +6637,15 @@ Public Class Settings
         Me.GeneralMainFilterSortOrder_Movies = 0
         Me.GeneralMainFilterSortOrder_MovieSets = 0
         Me.GeneralMainFilterSortOrder_Shows = 0
-        Me.GeneralHideBanner = False
-        Me.GeneralHideCharacterArt = False
-        Me.GeneralHideClearArt = False
-        Me.GeneralHideClearLogo = False
-        Me.GeneralHideDiscArt = False
-        Me.GeneralHideFanart = False
-        Me.GeneralHideFanartSmall = False
-        Me.GeneralHideLandscape = False
-        Me.GeneralHidePoster = False
+        Me.GeneralDisplayBanner = True
+        Me.GeneralDisplayCharacterArt = True
+        Me.GeneralDisplayClearArt = True
+        Me.GeneralDisplayClearLogo = True
+        Me.GeneralDisplayDiscArt = True
+        Me.GeneralDisplayFanart = True
+        Me.GeneralDisplayFanartSmall = True
+        Me.GeneralDisplayLandscape = True
+        Me.GeneralDisplayPoster = True
         Me.GeneralImagesGlassOverlay = False
         Me.GeneralLanguage = "English_(en_US)"
         Me.GeneralMainSplitterPanelState = 550
@@ -6668,38 +6668,38 @@ Public Class Settings
         'Me.GeneralWindowSize =
         Me.GeneralWindowState = FormWindowState.Maximized
         Me.GenreFilter = "English"
-        Me.MovieActorThumbsOverwrite = True
+        Me.MovieActorThumbsKeepExisting = False
         Me.MovieBackdropsAuto = False
         Me.MovieBackdropsPath = String.Empty
         Me.MovieBannerHeight = 0
-        Me.MovieBannerOverwrite = True
+        Me.MovieBannerKeepExisting = False
         Me.MovieBannerPrefSizeOnly = False
         Me.MovieBannerPrefSize = Enums.MovieBannerSize.Any
         Me.MovieBannerResize = False
         Me.MovieBannerWidth = 0
         Me.MovieCleanDB = False
-        Me.MovieClearArtOverwrite = True
-        Me.MovieClearLogoOverwrite = True
+        Me.MovieClearArtKeepExisting = False
+        Me.MovieClearLogoKeepExisting = False
         Me.MovieClickScrape = False
         Me.MovieClickScrapeAsk = False
-        Me.MovieDiscArtOverwrite = True
+        Me.MovieDiscArtKeepExisting = False
         Me.MovieDisplayYear = False
-        Me.MovieEFanartsHeight = 0
-        Me.MovieEFanartsLimit = 4
-        Me.MovieEFanartsOverwrite = True
-        Me.MovieEFanartsPrefSizeOnly = False
-        Me.MovieEFanartsPrefSize = Enums.MovieFanartSize.Any
-        Me.MovieEFanartsResize = False
-        Me.MovieEFanartsWidth = 0
-        Me.MovieEThumbsHeight = 0
-        Me.MovieEThumbsLimit = 4
-        Me.MovieEThumbsOverwrite = True
-        Me.MovieEThumbsPrefSizeOnly = False
-        Me.MovieEThumbsPrefSize = 0
-        Me.MovieEThumbsResize = False
-        Me.MovieEThumbsWidth = 0
+        Me.MovieExtrafanartsHeight = 0
+        Me.MovieExtrafanartsLimit = 4
+        Me.MovieExtrafanartsKeepExisting = False
+        Me.MovieExtrafanartsPrefSizeOnly = False
+        Me.MovieExtrafanartsPrefSize = Enums.MovieFanartSize.Any
+        Me.MovieExtrafanartsResize = False
+        Me.MovieExtrafanartsWidth = 0
+        Me.MovieExtrathumbsHeight = 0
+        Me.MovieExtrathumbsLimit = 4
+        Me.MovieExtrathumbsKeepExisting = False
+        Me.MovieExtrathumbsPrefSizeOnly = False
+        Me.MovieExtrathumbsPrefSize = 0
+        Me.MovieExtrathumbsResize = False
+        Me.MovieExtrathumbsWidth = 0
         Me.MovieFanartHeight = 0
-        Me.MovieFanartOverwrite = True
+        Me.MovieFanartKeepExisting = False
         Me.MovieFanartPrefSizeOnly = False
         Me.MovieFanartPrefSize = Enums.MovieFanartSize.Any
         Me.MovieFanartResize = False
@@ -6727,7 +6727,7 @@ Public Class Settings
         Me.MovieImagesNotSaveURLToNfo = False
         Me.MovieImagesPrefLanguage = "en"
         Me.MovieIMDBURL = String.Empty
-        Me.MovieLandscapeOverwrite = True
+        Me.MovieLandscapeKeepExisting = False
         Me.MovieLevTolerance = 0
         Me.MovieLockActors = False
         Me.MovieLockCert = False
@@ -6758,8 +6758,8 @@ Public Class Settings
         Me.MovieMissingClearArt = False
         Me.MovieMissingClearLogo = False
         Me.MovieMissingDiscArt = False
-        Me.MovieMissingEFanarts = False
-        Me.MovieMissingEThumbs = False
+        Me.MovieMissingExtrafanarts = False
+        Me.MovieMissingExtrathumbs = False
         Me.MovieMissingFanart = False
         Me.MovieMissingLandscape = False
         Me.MovieMissingNFO = False
@@ -6768,7 +6768,7 @@ Public Class Settings
         Me.MovieMissingTheme = False
         Me.MovieMissingTrailer = False
         Me.MoviePosterHeight = 0
-        Me.MoviePosterOverwrite = True
+        Me.MoviePosterKeepExisting = False
         Me.MoviePosterPrefSizeOnly = False
         Me.MoviePosterPrefSize = Enums.MoviePosterSize.Any
         Me.MoviePosterResize = False
@@ -6820,20 +6820,20 @@ Public Class Settings
         Me.MovieScraperXBMCTrailerFormat = False
         Me.MovieScraperYear = True
         Me.MovieSetBannerHeight = 0
-        Me.MovieSetBannerOverwrite = True
+        Me.MovieSetBannerKeepExisting = False
         Me.MovieSetBannerPrefSizeOnly = False
         Me.MovieSetBannerPrefSize = Enums.MovieBannerSize.Any
         Me.MovieSetBannerResize = False
         Me.MovieSetBannerWidth = 0
         Me.MovieSetCleanDB = False
         Me.MovieSetCleanFiles = False
-        Me.MovieSetClearArtOverwrite = True
-        Me.MovieSetClearLogoOverwrite = True
+        Me.MovieSetClearArtKeepExisting = False
+        Me.MovieSetClearLogoKeepExisting = False
         Me.MovieSetClickScrape = False
         Me.MovieSetClickScrapeAsk = False
-        Me.MovieSetDiscArtOverwrite = True
+        Me.MovieSetDiscArtKeepExisting = False
         Me.MovieSetFanartHeight = 0
-        Me.MovieSetFanartOverwrite = True
+        Me.MovieSetFanartKeepExisting = False
         Me.MovieSetFanartPrefSizeOnly = False
         Me.MovieSetFanartPrefSize = Enums.MovieFanartSize.Any
         Me.MovieSetFanartResize = False
@@ -6845,7 +6845,7 @@ Public Class Settings
         Me.MovieSetImagesGetBlankImages = False
         Me.MovieSetImagesGetEnglishImages = False
         Me.MovieSetImagesMediaLanguageOnly = False
-        Me.MovieSetLandscapeOverwrite = True
+        Me.MovieSetLandscapeKeepExisting = False
         Me.MovieSetLockPlot = False
         Me.MovieSetLockTitle = False
         Me.MovieSetMissingBanner = False
@@ -6857,7 +6857,7 @@ Public Class Settings
         Me.MovieSetMissingNFO = False
         Me.MovieSetMissingPoster = False
         Me.MovieSetPosterHeight = 0
-        Me.MovieSetPosterOverwrite = True
+        Me.MovieSetPosterKeepExisting = False
         Me.MovieSetPosterPrefSizeOnly = False
         Me.MovieSetPosterPrefSize = Enums.MoviePosterSize.Any
         Me.MovieSetPosterResize = False
@@ -6873,10 +6873,10 @@ Public Class Settings
         Me.MovieSortTokensIsEmpty = False
         Me.MovieSetSortTokensIsEmpty = False
         Me.MovieThemeTvTunesEnable = True
-        Me.MovieThemeOverwrite = True
+        Me.MovieThemeKeepExisting = False
         Me.MovieTrailerDefaultSearch = "trailer"
         Me.MovieTrailerDeleteExisting = True
-        Me.MovieTrailerOverwrite = True
+        Me.MovieTrailerKeepExisting = False
         Me.MovieTrailerMinVideoQual = Enums.TrailerVideoQuality.Any
         Me.MovieTrailerPrefVideoQual = Enums.TrailerVideoQuality.Any
         Me.OMMDummyFormat = 0
@@ -6893,32 +6893,32 @@ Public Class Settings
         Me.SortPath = String.Empty
         Me.TraktPassword = String.Empty
         Me.TraktUsername = String.Empty
-        Me.TVASBannerHeight = 0
-        Me.TVASBannerOverwrite = True
-        Me.TVASBannerPrefSize = Enums.TVBannerSize.Any
-        Me.TVASBannerPrefSizeOnly = False
-        Me.TVASBannerPrefType = Enums.TVBannerType.Any
-        Me.TVASBannerResize = False
-        Me.TVASBannerWidth = 0
-        Me.TVASFanartHeight = 0
-        Me.TVASFanartOverwrite = True
-        Me.TVASFanartPrefSize = Enums.TVFanartSize.Any
-        Me.TVASFanartPrefSizeOnly = False
-        Me.TVASFanartResize = False
-        Me.TVASFanartWidth = 0
-        Me.TVASLandscapeOverwrite = True
-        Me.TVASPosterHeight = 0
-        Me.TVASPosterOverwrite = True
-        Me.TVASPosterPrefSize = Enums.TVPosterSize.Any
-        Me.TVASPosterPrefSizeOnly = False
-        Me.TVASPosterResize = False
-        Me.TVASPosterWidth = 0
+        Me.TVAllSeasonsBannerHeight = 0
+        Me.TVAllSeasonsBannerKeepExisting = False
+        Me.TVAllSeasonsBannerPrefSize = Enums.TVBannerSize.Any
+        Me.TVAllSeasonsBannerPrefSizeOnly = False
+        Me.TVAllSeasonsBannerPrefType = Enums.TVBannerType.Any
+        Me.TVAllSeasonsBannerResize = False
+        Me.TVAllSeasonsBannerWidth = 0
+        Me.TVAllSeasonsFanartHeight = 0
+        Me.TVAllSeasonsFanartKeepExisting = False
+        Me.TVAllSeasonsFanartPrefSize = Enums.TVFanartSize.Any
+        Me.TVAllSeasonsFanartPrefSizeOnly = False
+        Me.TVAllSeasonsFanartResize = False
+        Me.TVAllSeasonsFanartWidth = 0
+        Me.TVAllSeasonsLandscapeKeepExisting = False
+        Me.TVAllSeasonsPosterHeight = 0
+        Me.TVAllSeasonsPosterKeepExisting = False
+        Me.TVAllSeasonsPosterPrefSize = Enums.TVPosterSize.Any
+        Me.TVAllSeasonsPosterPrefSizeOnly = False
+        Me.TVAllSeasonsPosterResize = False
+        Me.TVAllSeasonsPosterWidth = 0
         Me.TVCleanDB = False
         Me.TVDisplayMissingEpisodes = True
         Me.TVDisplayStatus = False
-        Me.TVEpisodeActorThumbsOverwrite = True
+        Me.TVEpisodeActorThumbsKeepExisting = False
         Me.TVEpisodeFanartHeight = 0
-        Me.TVEpisodeFanartOverwrite = True
+        Me.TVEpisodeFanartKeepExisting = False
         Me.TVEpisodeFanartPrefSize = Enums.TVFanartSize.Any
         Me.TVEpisodeFanartPrefSizeOnly = False
         Me.TVEpisodeFanartResize = False
@@ -6930,7 +6930,7 @@ Public Class Settings
         Me.TVEpisodeMissingPoster = False
         Me.TVEpisodeNoFilter = True
         Me.TVEpisodePosterHeight = 0
-        Me.TVEpisodePosterOverwrite = True
+        Me.TVEpisodePosterKeepExisting = False
         Me.TVEpisodePosterPrefSize = Enums.TVEpisodePosterSize.Any
         Me.TVEpisodePosterPrefSizeOnly = False
         Me.TVEpisodePosterResize = False
@@ -7020,78 +7020,78 @@ Public Class Settings
         Me.TVScraperUseMDDuration = True
         Me.TVScraperUseSRuntimeForEp = True
         Me.TVSeasonBannerHeight = 0
-        Me.TVSeasonBannerOverwrite = True
+        Me.TVSeasonBannerKeepExisting = False
         Me.TVSeasonBannerPrefSize = Enums.TVBannerSize.Any
         Me.TVSeasonBannerPrefSizeOnly = False
         Me.TVSeasonBannerPrefType = Enums.TVBannerType.Any
         Me.TVSeasonBannerResize = False
         Me.TVSeasonBannerWidth = 0
         Me.TVSeasonFanartHeight = 0
-        Me.TVSeasonFanartOverwrite = True
+        Me.TVSeasonFanartKeepExisting = False
         Me.TVSeasonFanartPrefSize = Enums.TVFanartSize.Any
         Me.TVSeasonFanartPrefSizeOnly = False
         Me.TVSeasonFanartPrefSizeOnly = False
         Me.TVSeasonFanartResize = False
         Me.TVSeasonFanartWidth = 0
-        Me.TVSeasonLandscapeOverwrite = True
+        Me.TVSeasonLandscapeKeepExisting = False
         Me.TVSeasonMissingBanner = False
         Me.TVSeasonMissingFanart = False
         Me.TVSeasonMissingLandscape = False
         Me.TVSeasonMissingPoster = False
         Me.TVSeasonPosterHeight = 0
-        Me.TVSeasonPosterOverwrite = True
+        Me.TVSeasonPosterKeepExisting = False
         Me.TVSeasonPosterPrefSize = Enums.TVSeasonPosterSize.Any
         Me.TVSeasonPosterPrefSizeOnly = False
         Me.TVSeasonPosterPrefSizeOnly = False
         Me.TVSeasonPosterResize = False
         Me.TVSeasonPosterWidth = 0
-        Me.TVShowActorThumbsOverwrite = True
+        Me.TVShowActorThumbsKeepExisting = False
         Me.TVShowBannerHeight = 0
-        Me.TVShowBannerOverwrite = True
+        Me.TVShowBannerKeepExisting = False
         Me.TVShowBannerPrefSize = Enums.TVBannerSize.Any
         Me.TVShowBannerPrefSizeOnly = False
         Me.TVShowBannerPrefType = Enums.TVBannerType.Any
         Me.TVShowBannerResize = False
         Me.TVShowBannerWidth = 0
-        Me.TVShowCharacterArtOverwrite = True
-        Me.TVShowClearArtOverwrite = True
-        Me.TVShowClearLogoOverwrite = True
-        Me.TVShowEFanartsLimit = 4
-        Me.TVShowEFanartsOverwrite = True
-        Me.TVShowEFanartsPrefOnly = False
-        Me.TVShowEFanartsPrefSize = Enums.TVFanartSize.Any
-        Me.TVShowEFanartsPrefSizeOnly = False
-        Me.TVShowEFanartsResize = False
-        Me.TVShowEFanartsHeight = 0
-        Me.TVShowEFanartsWidth = 0
+        Me.TVShowCharacterArtKeepExisting = False
+        Me.TVShowClearArtKeepExisting = False
+        Me.TVShowClearLogoKeepExisting = False
+        Me.TVShowExtrafanartsLimit = 4
+        Me.TVShowExtrafanartsKeepExisting = False
+        Me.TVShowExtrafanartsPrefOnly = False
+        Me.TVShowExtrafanartsPrefSize = Enums.TVFanartSize.Any
+        Me.TVShowExtrafanartsPrefSizeOnly = False
+        Me.TVShowExtrafanartsResize = False
+        Me.TVShowExtrafanartsHeight = 0
+        Me.TVShowExtrafanartsWidth = 0
         Me.TVShowFanartHeight = 0
-        Me.TVShowFanartOverwrite = True
+        Me.TVShowFanartKeepExisting = False
         Me.TVShowFanartPrefSize = Enums.TVFanartSize.Any
         Me.TVShowFanartPrefSizeOnly = False
         Me.TVShowFanartResize = False
         Me.TVShowFanartWidth = 0
         Me.TVShowFilterCustom = New List(Of String)
         Me.TVShowFilterCustomIsEmpty = False
-        Me.TVShowLandscapeOverwrite = True
+        Me.TVShowLandscapeKeepExisting = False
         Me.TVShowMatching = New List(Of regexp)
         Me.TVShowMissingBanner = False
         Me.TVShowMissingCharacterArt = False
         Me.TVShowMissingClearArt = False
         Me.TVShowMissingClearLogo = False
-        Me.TVShowMissingEFanarts = False
+        Me.TVShowMissingExtrafanarts = False
         Me.TVShowMissingFanart = False
         Me.TVShowMissingLandscape = False
         Me.TVShowMissingNFO = False
         Me.TVShowMissingPoster = False
         Me.TVShowMissingTheme = False
         Me.TVShowPosterHeight = 0
-        Me.TVShowPosterOverwrite = True
+        Me.TVShowPosterKeepExisting = False
         Me.TVShowPosterPrefSize = Enums.TVPosterSize.Any
         Me.TVShowPosterPrefSizeOnly = False
         Me.TVShowPosterResize = False
         Me.TVShowPosterWidth = 0
         Me.TVShowProperCase = True
-        Me.TVShowThemeOverwrite = True
+        Me.TVShowThemeKeepExisting = False
         Me.TVSkipLessThan = 0
         Me.TVSortTokens = New List(Of String)
         Me.TVSortTokensIsEmpty = False
@@ -7378,8 +7378,8 @@ Public Class Settings
     End Function
 
     Public Function MovieMissingItemsAnyEnabled() As Boolean
-        Return MovieMissingBanner OrElse MovieMissingClearArt OrElse MovieMissingClearLogo OrElse MovieMissingDiscArt OrElse MovieMissingEFanarts OrElse _
-            MovieMissingEThumbs OrElse MovieMissingFanart OrElse MovieMissingLandscape OrElse MovieMissingNFO OrElse MovieMissingPoster OrElse _
+        Return MovieMissingBanner OrElse MovieMissingClearArt OrElse MovieMissingClearLogo OrElse MovieMissingDiscArt OrElse MovieMissingExtrafanarts OrElse _
+            MovieMissingExtrathumbs OrElse MovieMissingFanart OrElse MovieMissingLandscape OrElse MovieMissingNFO OrElse MovieMissingPoster OrElse _
             MovieMissingSubtitles OrElse MovieMissingTheme OrElse MovieMissingTrailer
     End Function
 
@@ -7557,7 +7557,7 @@ Public Class Settings
 
     Public Function TVShowMissingItemsAnyEnabled() As Boolean
         Return TVShowMissingBanner OrElse TVShowMissingCharacterArt OrElse TVShowMissingClearArt OrElse TVShowMissingClearLogo OrElse _
-            TVShowMissingEFanarts OrElse TVShowMissingFanart OrElse TVShowMissingLandscape OrElse TVShowMissingNFO OrElse _
+            TVShowMissingExtrafanarts OrElse TVShowMissingFanart OrElse TVShowMissingLandscape OrElse TVShowMissingNFO OrElse _
             TVShowMissingPoster OrElse TVShowMissingTheme
     End Function
 

@@ -112,8 +112,8 @@ Partial Class frmMain
         Me.chkMovieMissingClearArt = New System.Windows.Forms.CheckBox()
         Me.chkMovieMissingClearLogo = New System.Windows.Forms.CheckBox()
         Me.chkMovieMissingDiscArt = New System.Windows.Forms.CheckBox()
-        Me.chkMovieMissingEFanarts = New System.Windows.Forms.CheckBox()
-        Me.chkMovieMissingEThumbs = New System.Windows.Forms.CheckBox()
+        Me.chkMovieMissingExtrafanarts = New System.Windows.Forms.CheckBox()
+        Me.chkMovieMissingExtrathumbs = New System.Windows.Forms.CheckBox()
         Me.chkMovieMissingFanart = New System.Windows.Forms.CheckBox()
         Me.chkMovieMissingLandscape = New System.Windows.Forms.CheckBox()
         Me.chkMovieMissingTrailer = New System.Windows.Forms.CheckBox()
@@ -146,7 +146,7 @@ Partial Class frmMain
         Me.chkShowMissingBanner = New System.Windows.Forms.CheckBox()
         Me.chkShowMissingClearArt = New System.Windows.Forms.CheckBox()
         Me.chkShowMissingClearLogo = New System.Windows.Forms.CheckBox()
-        Me.chkShowMissingEFanarts = New System.Windows.Forms.CheckBox()
+        Me.chkShowMissingExtrafanarts = New System.Windows.Forms.CheckBox()
         Me.chkShowMissingFanart = New System.Windows.Forms.CheckBox()
         Me.chkShowMissingLandscape = New System.Windows.Forms.CheckBox()
         Me.chkShowMissingPoster = New System.Windows.Forms.CheckBox()
@@ -1800,8 +1800,8 @@ Partial Class frmMain
         Me.tblFilterMissingItemsMain_Movies.Controls.Add(Me.chkMovieMissingClearArt, 0, 1)
         Me.tblFilterMissingItemsMain_Movies.Controls.Add(Me.chkMovieMissingClearLogo, 0, 2)
         Me.tblFilterMissingItemsMain_Movies.Controls.Add(Me.chkMovieMissingDiscArt, 0, 3)
-        Me.tblFilterMissingItemsMain_Movies.Controls.Add(Me.chkMovieMissingEFanarts, 0, 4)
-        Me.tblFilterMissingItemsMain_Movies.Controls.Add(Me.chkMovieMissingEThumbs, 0, 5)
+        Me.tblFilterMissingItemsMain_Movies.Controls.Add(Me.chkMovieMissingExtrafanarts, 0, 4)
+        Me.tblFilterMissingItemsMain_Movies.Controls.Add(Me.chkMovieMissingExtrathumbs, 0, 5)
         Me.tblFilterMissingItemsMain_Movies.Controls.Add(Me.chkMovieMissingFanart, 0, 6)
         Me.tblFilterMissingItemsMain_Movies.Controls.Add(Me.chkMovieMissingLandscape, 0, 7)
         Me.tblFilterMissingItemsMain_Movies.Controls.Add(Me.chkMovieMissingTrailer, 0, 12)
@@ -1872,23 +1872,23 @@ Partial Class frmMain
         '
         'chkMovieMissingEFanarts
         '
-        Me.chkMovieMissingEFanarts.AutoSize = True
-        Me.chkMovieMissingEFanarts.Location = New System.Drawing.Point(3, 95)
-        Me.chkMovieMissingEFanarts.Name = "chkMovieMissingEFanarts"
-        Me.chkMovieMissingEFanarts.Size = New System.Drawing.Size(87, 17)
-        Me.chkMovieMissingEFanarts.TabIndex = 0
-        Me.chkMovieMissingEFanarts.Text = "Extrafanarts"
-        Me.chkMovieMissingEFanarts.UseVisualStyleBackColor = True
+        Me.chkMovieMissingExtrafanarts.AutoSize = True
+        Me.chkMovieMissingExtrafanarts.Location = New System.Drawing.Point(3, 95)
+        Me.chkMovieMissingExtrafanarts.Name = "chkMovieMissingEFanarts"
+        Me.chkMovieMissingExtrafanarts.Size = New System.Drawing.Size(87, 17)
+        Me.chkMovieMissingExtrafanarts.TabIndex = 0
+        Me.chkMovieMissingExtrafanarts.Text = "Extrafanarts"
+        Me.chkMovieMissingExtrafanarts.UseVisualStyleBackColor = True
         '
         'chkMovieMissingEThumbs
         '
-        Me.chkMovieMissingEThumbs.AutoSize = True
-        Me.chkMovieMissingEThumbs.Location = New System.Drawing.Point(3, 118)
-        Me.chkMovieMissingEThumbs.Name = "chkMovieMissingEThumbs"
-        Me.chkMovieMissingEThumbs.Size = New System.Drawing.Size(90, 17)
-        Me.chkMovieMissingEThumbs.TabIndex = 0
-        Me.chkMovieMissingEThumbs.Text = "Extrathumbs"
-        Me.chkMovieMissingEThumbs.UseVisualStyleBackColor = True
+        Me.chkMovieMissingExtrathumbs.AutoSize = True
+        Me.chkMovieMissingExtrathumbs.Location = New System.Drawing.Point(3, 118)
+        Me.chkMovieMissingExtrathumbs.Name = "chkMovieMissingEThumbs"
+        Me.chkMovieMissingExtrathumbs.Size = New System.Drawing.Size(90, 17)
+        Me.chkMovieMissingExtrathumbs.TabIndex = 0
+        Me.chkMovieMissingExtrathumbs.Text = "Extrathumbs"
+        Me.chkMovieMissingExtrathumbs.UseVisualStyleBackColor = True
         '
         'chkMovieMissingFanart
         '
@@ -2244,7 +2244,7 @@ Partial Class frmMain
         Me.tblFilterMissingItemsMain_Shows.Controls.Add(Me.chkShowMissingBanner, 0, 0)
         Me.tblFilterMissingItemsMain_Shows.Controls.Add(Me.chkShowMissingClearArt, 0, 2)
         Me.tblFilterMissingItemsMain_Shows.Controls.Add(Me.chkShowMissingClearLogo, 0, 3)
-        Me.tblFilterMissingItemsMain_Shows.Controls.Add(Me.chkShowMissingEFanarts, 0, 4)
+        Me.tblFilterMissingItemsMain_Shows.Controls.Add(Me.chkShowMissingExtrafanarts, 0, 4)
         Me.tblFilterMissingItemsMain_Shows.Controls.Add(Me.chkShowMissingFanart, 0, 5)
         Me.tblFilterMissingItemsMain_Shows.Controls.Add(Me.chkShowMissingLandscape, 0, 6)
         Me.tblFilterMissingItemsMain_Shows.Controls.Add(Me.chkShowMissingPoster, 0, 8)
@@ -2305,13 +2305,13 @@ Partial Class frmMain
         '
         'chkShowMissingEFanarts
         '
-        Me.chkShowMissingEFanarts.AutoSize = True
-        Me.chkShowMissingEFanarts.Location = New System.Drawing.Point(3, 95)
-        Me.chkShowMissingEFanarts.Name = "chkShowMissingEFanarts"
-        Me.chkShowMissingEFanarts.Size = New System.Drawing.Size(87, 17)
-        Me.chkShowMissingEFanarts.TabIndex = 0
-        Me.chkShowMissingEFanarts.Text = "Extrafanarts"
-        Me.chkShowMissingEFanarts.UseVisualStyleBackColor = True
+        Me.chkShowMissingExtrafanarts.AutoSize = True
+        Me.chkShowMissingExtrafanarts.Location = New System.Drawing.Point(3, 95)
+        Me.chkShowMissingExtrafanarts.Name = "chkShowMissingEFanarts"
+        Me.chkShowMissingExtrafanarts.Size = New System.Drawing.Size(87, 17)
+        Me.chkShowMissingExtrafanarts.TabIndex = 0
+        Me.chkShowMissingExtrafanarts.Text = "Extrafanarts"
+        Me.chkShowMissingExtrafanarts.UseVisualStyleBackColor = True
         '
         'chkShowMissingFanart
         '
@@ -9464,8 +9464,8 @@ End Sub
     Friend WithEvents chkMovieMissingClearArt As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieMissingClearLogo As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieMissingDiscArt As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMovieMissingEFanarts As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMovieMissingEThumbs As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieMissingExtrafanarts As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieMissingExtrathumbs As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieMissingFanart As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieMissingLandscape As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieMissingTrailer As System.Windows.Forms.CheckBox
@@ -9498,7 +9498,7 @@ End Sub
     Friend WithEvents chkShowMissingBanner As System.Windows.Forms.CheckBox
     Friend WithEvents chkShowMissingClearArt As System.Windows.Forms.CheckBox
     Friend WithEvents chkShowMissingClearLogo As System.Windows.Forms.CheckBox
-    Friend WithEvents chkShowMissingEFanarts As System.Windows.Forms.CheckBox
+    Friend WithEvents chkShowMissingExtrafanarts As System.Windows.Forms.CheckBox
     Friend WithEvents chkShowMissingFanart As System.Windows.Forms.CheckBox
     Friend WithEvents chkShowMissingLandscape As System.Windows.Forms.CheckBox
     Friend WithEvents chkShowMissingPoster As System.Windows.Forms.CheckBox

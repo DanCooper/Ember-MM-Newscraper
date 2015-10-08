@@ -327,7 +327,7 @@ Public Class Themes
 
             Dim fExt As String = Path.GetExtension(Me._ext)
             For Each a In FileUtils.GetFilenameList.Movie(mMovie, Enums.ModifierType.MainTheme)
-                If Not File.Exists(String.Concat(a, fExt)) OrElse (isEdit OrElse Master.eSettings.MovieThemeOverwrite) Then
+                If Not File.Exists(String.Concat(a, fExt)) OrElse (isEdit OrElse Master.eSettings.MovieThemeKeepExisting) Then
                     Save(String.Concat(a, fExt))
                     strReturn = (String.Concat(a, fExt))
                 End If
@@ -367,7 +367,7 @@ Public Class Themes
     Public Function IsAllowedToDownload(ByVal mMovie As Database.DBElement) As Boolean
         Try
             With Master.eSettings
-                If (String.IsNullOrEmpty(mMovie.ThemePath) OrElse .MovieThemeOverwrite) AndAlso .MovieThemeTvTunesEnable AndAlso _
+                If (String.IsNullOrEmpty(mMovie.ThemePath) OrElse .MovieThemeKeepExisting) AndAlso .MovieThemeTvTunesEnable AndAlso _
                     (mMovie.IsSingle AndAlso .MovieThemeTvTunesMoviePath) OrElse _
                     (mMovie.IsSingle AndAlso .MovieThemeTvTunesSub AndAlso Not String.IsNullOrEmpty(.MovieThemeTvTunesSubDir)) OrElse _
                     (.MovieThemeTvTunesCustom AndAlso Not String.IsNullOrEmpty(.MovieThemeTvTunesCustomPath)) Then

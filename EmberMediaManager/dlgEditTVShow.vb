@@ -29,7 +29,7 @@ Public Class dlgEditTVShow
 
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
-    Friend WithEvents bwEFanarts As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwExtrafanarts As New System.ComponentModel.BackgroundWorker
 
     Private tmpDBElement As New Database.DBElement
 
@@ -37,7 +37,7 @@ Public Class dlgEditTVShow
     Private tmpRating As String
 
     'Extrafanarts
-    Private EFanartsWarning As Boolean = True
+    Private ExtrafanartsWarning As Boolean = True
     Private iEFCounter As Integer = 0
     Private iEFLeft As Integer = 1
     Private iEFTop As Integer = 1
@@ -1018,8 +1018,8 @@ Public Class dlgEditTVShow
     End Sub
 
     Private Sub dlgEditShow_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
-        If Me.bwEFanarts.IsBusy Then Me.bwEFanarts.CancelAsync()
-        While Me.bwEFanarts.IsBusy
+        If Me.bwExtrafanarts.IsBusy Then Me.bwExtrafanarts.CancelAsync()
+        While Me.bwExtrafanarts.IsBusy
             Application.DoEvents()
             Threading.Thread.Sleep(50)
         End While
@@ -1280,8 +1280,8 @@ Public Class dlgEditTVShow
                 tcEdit.TabPages.Remove(tpPoster)
             End If
 
-            .bwEFanarts.WorkerSupportsCancellation = True
-            .bwEFanarts.RunWorkerAsync()
+            .bwExtrafanarts.WorkerSupportsCancellation = True
+            .bwExtrafanarts.RunWorkerAsync()
         End With
     End Sub
 
@@ -1345,8 +1345,8 @@ Public Class dlgEditTVShow
         EditActor()
     End Sub
 
-    Private Sub lvEFanart_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs)
-        'If e.KeyCode = Keys.Delete Then Me.DeleteEFanarts()
+    Private Sub lvExtrafanart_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs)
+        'If e.KeyCode = Keys.Delete Then Me.DeleteExtrafanarts()
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
