@@ -2534,9 +2534,7 @@ Public Class frmMain
                             'autoscraping
                         ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
                             Dim newPreferredImages As New MediaContainers.ImagesContainer
-                            Dim newPreferredEpisodeImages As New List(Of MediaContainers.EpisodeOrSeasonImagesContainer)
-                            Dim newPreferredSeasonImages As New List(Of MediaContainers.EpisodeOrSeasonImagesContainer)
-                            Images.SetDefaultImages(DBScrapeShow, newPreferredImages, SearchResultsContainer, tScrapeItem.ScrapeModifier, Enums.ContentType.TV, newPreferredSeasonImages, newPreferredEpisodeImages)
+                            Images.SetDefaultImages(DBScrapeShow, newPreferredImages, SearchResultsContainer, tScrapeItem.ScrapeModifier, Enums.ContentType.TV)
                             DBScrapeShow.ImagesContainer = newPreferredImages
                         End If
                     End If
@@ -2549,11 +2547,11 @@ Public Class frmMain
                             MediaInfo.UpdateTVMediaInfo(tEpisode)
                         End If
                         If tScrapeItem.ScrapeModifier.EpisodeFanart OrElse tScrapeItem.ScrapeModifier.EpisodePoster Then
-                            Dim epImagesContainer As New MediaContainers.SearchResultsContainer
-                            Dim imgResult As MediaContainers.Image = Nothing
-                            ModulesManager.Instance.ScrapeImage_TV(tEpisode, epImagesContainer, tScrapeItem.ScrapeModifier, False)
-                            Images.GetPreferredTVEpisodePoster(epImagesContainer.EpisodePosters, imgResult, tEpisode.TVEpisode.Season, tEpisode.TVEpisode.Episode)
-                            tEpisode.ImagesContainer.Poster = imgResult
+                            Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
+                            ModulesManager.Instance.ScrapeImage_TV(tEpisode, SearchResultsContainer, tScrapeItem.ScrapeModifier, False)
+                            Dim newPreferredImages As New MediaContainers.ImagesContainer
+                            Images.SetDefaultImages(tEpisode, newPreferredImages, SearchResultsContainer, tScrapeItem.ScrapeModifier, Enums.ContentType.TVEpisode)
+                            tEpisode.ImagesContainer = newPreferredImages
                         End If
                     Next
                 End If
@@ -2845,9 +2843,7 @@ Public Class frmMain
                             'autoscraping
                         ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
                             Dim newPreferredImages As New MediaContainers.ImagesContainer
-                            Dim newPreferredEpisodeImages As New List(Of MediaContainers.EpisodeOrSeasonImagesContainer)
-                            Dim newPreferredSeasonImages As New List(Of MediaContainers.EpisodeOrSeasonImagesContainer)
-                            Images.SetDefaultImages(DBScrapeSeason, newPreferredImages, SearchResultsContainer, tScrapeItem.ScrapeModifier, Enums.ContentType.TVSeason, newPreferredSeasonImages, newPreferredEpisodeImages)
+                            Images.SetDefaultImages(DBScrapeSeason, newPreferredImages, SearchResultsContainer, tScrapeItem.ScrapeModifier, Enums.ContentType.TVSeason)
                             DBScrapeSeason.ImagesContainer = newPreferredImages
                         End If
                     End If
@@ -9099,6 +9095,13 @@ doCancel:
                         .dgvTVShows.Columns("Status").ToolTipText = Master.eLang.GetString(215, "Status")
                         .dgvTVShows.Columns("Status").HeaderText = Master.eLang.GetString(215, "Status")
                         .dgvTVShows.Columns("Status").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
+                        .dgvTVShows.Columns("strOriginalTitle").Resizable = DataGridViewTriState.False
+                        .dgvTVShows.Columns("strOriginalTitle").ReadOnly = True
+                        .dgvTVShows.Columns("strOriginalTitle").SortMode = DataGridViewColumnSortMode.Automatic
+                        .dgvTVShows.Columns("strOriginalTitle").Visible = Not CheckColumnHide_TVShows("strOriginalTitle")
+                        .dgvTVShows.Columns("strOriginalTitle").ToolTipText = Master.eLang.GetString(302, "Original Title")
+                        .dgvTVShows.Columns("strOriginalTitle").HeaderText = Master.eLang.GetString(302, "Original Title")
+                        .dgvTVShows.Columns("strOriginalTitle").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
                         .dgvTVShows.Columns("ThemePath").Width = 20
                         .dgvTVShows.Columns("ThemePath").Resizable = DataGridViewTriState.False
                         .dgvTVShows.Columns("ThemePath").ReadOnly = True
@@ -9405,7 +9408,7 @@ doCancel:
                 Me.lblTitle.Text = String.Format(Master.eLang.GetString(117, "Unknown Movie ({0})"), Me.currMovie.Movie.Year)
             End If
 
-            If Me.currMovie.Movie.OriginalTitleSpecified AndAlso Me.currMovie.Movie.OriginalTitle <> Me.currMovie.Movie.Title Then
+            If Me.currMovie.Movie.OriginalTitleSpecified AndAlso Not Me.currMovie.Movie.OriginalTitle = Me.currMovie.Movie.Title Then
                 Me.lblOriginalTitle.Text = String.Format(String.Concat(Master.eLang.GetString(302, "Original Title"), ": {0}"), Me.currMovie.Movie.OriginalTitle)
             Else
                 Me.lblOriginalTitle.Text = String.Empty
@@ -9761,6 +9764,12 @@ doCancel:
             Me.lblTitle.Text = Me.currTV.TVShow.Title
         End If
 
+        If Me.currTV.TVShow.OriginalTitleSpecified AndAlso Not Me.currTV.TVShow.OriginalTitle = Me.currTV.TVShow.Title Then
+            Me.lblOriginalTitle.Text = String.Format(String.Concat(Master.eLang.GetString(302, "Original Title"), ": {0}"), Me.currTV.TVShow.OriginalTitle)
+        Else
+            Me.lblOriginalTitle.Text = String.Empty
+        End If
+
         Me.txtPlot.Text = Me.currTV.TVSeason.Plot
         Me.lblRuntime.Text = String.Format(Master.eLang.GetString(645, "Premiered: {0}"), If(Me.currTV.TVShow.PremieredSpecified, Me.currTV.TVShow.Premiered, "?"))
 
@@ -9874,7 +9883,12 @@ doCancel:
                 Me.lblTitle.Text = Me.currTV.TVShow.Title
             End If
 
-            Me.lblOriginalTitle.Text = String.Empty
+            If Me.currTV.TVShow.OriginalTitleSpecified AndAlso Not Me.currTV.TVShow.OriginalTitle = Me.currTV.TVShow.Title Then
+                Me.lblOriginalTitle.Text = String.Format(String.Concat(Master.eLang.GetString(302, "Original Title"), ": {0}"), Me.currTV.TVShow.OriginalTitle)
+            Else
+                Me.lblOriginalTitle.Text = String.Empty
+            End If
+
             Me.txtPlot.Text = Me.currTV.TVShow.Plot
             Me.lblRuntime.Text = String.Format(Master.eLang.GetString(645, "Premiered: {0}"), If(String.IsNullOrEmpty(Me.currTV.TVShow.Premiered), "?", Me.currTV.TVShow.Premiered))
 
@@ -14627,7 +14641,7 @@ doCancel:
 
     Private Sub cmnuMovieUpSelCert_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelCert.Click
         Dim cScrapeOptions As New Structures.ScrapeOptions
-        cScrapeOptions.bMainCert = True
+        cScrapeOptions.bMainCertifications = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
         CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
@@ -14643,7 +14657,7 @@ doCancel:
 
     Private Sub cmnuMovieUpSelCountry_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelCountry.Click
         Dim cScrapeOptions As New Structures.ScrapeOptions
-        cScrapeOptions.bMainCountry = True
+        cScrapeOptions.bMainCountries = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
         CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
@@ -14651,7 +14665,7 @@ doCancel:
 
     Private Sub cmnuMovieUpSelDirector_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelDirector.Click
         Dim cScrapeOptions As New Structures.ScrapeOptions
-        cScrapeOptions.bMainDirector = True
+        cScrapeOptions.bMainDirectors = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
         CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
@@ -14659,7 +14673,7 @@ doCancel:
 
     Private Sub cmnuMovieUpSelGenre_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelGenre.Click
         Dim cScrapeOptions As New Structures.ScrapeOptions
-        cScrapeOptions.bMainGenre = True
+        cScrapeOptions.bMainGenres = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
         CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
@@ -14723,7 +14737,7 @@ doCancel:
 
     Private Sub cmnuMovieUpSelStudio_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelStudio.Click
         Dim cScrapeOptions As New Structures.ScrapeOptions
-        cScrapeOptions.bMainStudio = True
+        cScrapeOptions.bMainStudios = True
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
         CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)

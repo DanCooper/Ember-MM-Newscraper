@@ -434,7 +434,7 @@
   <string id="433">Overwrite Non-conforming nfos</string>
   <string id="434">(If unchecked, non-conforming nfos will be renamed to &lt;filename&gt;.info)</string>
   <string id="435">Language (Video)</string>
-  <string id="436">Display Overlay if Video Contains an Audio Stream With the Following Language:</string>
+  <string id="436">Display best Audio Stream with the following Language</string>
   <string id="437">Clean Files</string>
   <string id="438">Standard</string>
   <string id="439">Expert</string>
@@ -1063,7 +1063,7 @@
   <string id="971">Keep existing</string>
   <string id="972">No Posters found</string>
   <string id="973">Actor Thumbs Only</string>
-  <string id="974"></string>
+  <string id="974">Add Episode Guest Stars to Actors list</string>
   <string id="975">Extrafanarts Only</string>
   <string id="976"></string>
   <string id="977">Search</string>

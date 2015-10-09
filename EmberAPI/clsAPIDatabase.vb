@@ -70,7 +70,7 @@ Public Class Database
     ''' <param name="thumb">local thumb path</param>
     ''' <param name="strIMDB">IMDB ID of actor</param>
     ''' <param name="strTMDB">TMDB ID of actor</param>
-    ''' <param name="isActor"><c>True</c> if adding an actor, <c>False</c> if adding a Director, Writer or something else without ID's and images to refresh if already exist in actors table</param>
+    ''' <param name="isActor"><c>True</c> if adding an actor, <c>False</c> if adding a Creator, Director, Writer or something else without ID's and images to refresh if already exist in actors table</param>
     ''' <returns><c>ID</c> of actor in actors table</returns>
     ''' <remarks></remarks>
     Private Function AddActor(ByVal strActor As String, ByVal thumbURL As String, ByVal thumb As String, ByVal strIMDB As String, ByVal strTMDB As String, ByVal isActor As Boolean) As Long
@@ -140,6 +140,10 @@ Public Class Database
         Next
     End Sub
 
+    Private Sub AddCreatorToTvShow(ByVal idShow As Long, ByVal idActor As Long)
+        AddToLinkTable("creatorlinktvshow", "idActor", idActor, "idShow", idShow)
+    End Sub
+
     Private Function AddCountry(ByVal strCountry As String) As Long
         If String.IsNullOrEmpty(strCountry) Then Return -1
         Return AddToTable("country", "idCountry", "strCountry", strCountry)
@@ -151,6 +155,10 @@ Public Class Database
 
     Private Sub AddDirectorToEpisode(ByVal idEpisode As Long, ByVal idDirector As Long)
         AddToLinkTable("directorlinkepisode", "idDirector", idDirector, "idEpisode", idEpisode)
+    End Sub
+
+    Private Sub AddCountryToTVShow(ByVal idShow As Long, ByVal idCountry As Long)
+        AddToLinkTable("countrylinktvshow", "idCountry", idCountry, "idShow", idShow)
     End Sub
 
     Private Sub AddDirectorToMovie(ByVal idMovie As Long, ByVal idDirector As Long)
@@ -180,6 +188,17 @@ Public Class Database
 
     Private Sub AddGenreToTvShow(ByVal idShow As Long, ByVal idGenre As Long)
         AddToLinkTable("genrelinktvshow", "idGenre", idGenre, "idShow", idShow)
+    End Sub
+
+    Private Sub AddGuestStar(ByVal idMedia As Long, ByVal table As String, ByVal field As String, ByVal cast As List(Of MediaContainers.Person))
+        If cast Is Nothing Then Return
+
+        Dim iOrder As Integer = 0
+        For Each actor As MediaContainers.Person In cast
+            Dim idActor = AddActor(actor.Name, actor.URLOriginal, actor.LocalFilePath, actor.IMDB, actor.TMDB, True)
+            AddLinkToGuestStar(table, idActor, field, idMedia, actor.Role, iOrder)
+            iOrder += 1
+        Next
     End Sub
     ''' <summary>
     ''' add an actor to an actorlink* table
@@ -213,6 +232,44 @@ Public Class Database
                 Dim par_insert_actors_strRole As SQLite.SQLiteParameter = SQLcommand_insert_actorlink.Parameters.Add("par_insert_actors_strRole", DbType.String, 0, "strRole")
                 par_insert_actors_strRole.Value = role
                 SQLcommand_insert_actorlink.ExecuteNonQuery()
+            End Using
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+    ''' <summary>
+    ''' add an actor to an actorlink* table
+    ''' </summary>
+    ''' <param name="table">link table name without "actorlink" prefix("episode", "movie" or "tvshow")</param>
+    ''' <param name="actorID">ID of actor in table actors</param>
+    ''' <param name="field">field name in <c>table</c> without "id" prefix("Episode", "Movie" or "Show")</param>
+    ''' <param name="secondID">ID of <c>field</c> </param>
+    ''' <param name="role">actors role</param>
+    ''' <param name="order">actors order</param>
+    ''' <returns><c>True</c> if the actor link has been created, <c>False</c> otherwise</returns>
+    ''' <remarks></remarks>
+    Private Function AddLinkToGuestStar(ByVal table As String, ByVal actorID As Long, ByVal field As String, _
+                                    ByVal secondID As Long, ByVal role As String, _
+                                    ByVal order As Long) As Boolean
+        Dim doesExist As Boolean = False
+
+        Using SQLcommand_select_gueststarlink As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand_select_gueststarlink.CommandText = String.Format("SELECT * FROM gueststarlink{0} WHERE idActor={1} AND id{2}={3};", table, actorID, field, secondID)
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand_select_gueststarlink.ExecuteReader()
+                While SQLreader.Read
+                    doesExist = True
+                    Exit While
+                End While
+            End Using
+        End Using
+
+        If Not doesExist Then
+            Using SQLcommand_insert_gueststarlink As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                SQLcommand_insert_gueststarlink.CommandText = String.Format("INSERT INTO gueststarlink{0} (idActor, id{1}, strRole, iOrder) VALUES ({2},{3},?,{4})", table, field, actorID, secondID, order)
+                Dim par_insert_gueststar_strRole As SQLite.SQLiteParameter = SQLcommand_insert_gueststarlink.Parameters.Add("par_insert_gueststar_strRole", DbType.String, 0, "strRole")
+                par_insert_gueststar_strRole.Value = role
+                SQLcommand_insert_gueststarlink.ExecuteNonQuery()
             End Using
             Return True
         Else
@@ -684,7 +741,7 @@ Public Class Database
     Public Function ConnectMyVideosDB() As Boolean
 
         'set database version
-        Dim MyVideosDBVersion As Integer = 31
+        Dim MyVideosDBVersion As Integer = 32
 
         'set database filename
         Dim MyVideosDB As String = String.Format("MyVideos{0}.emm", MyVideosDBVersion)
@@ -2093,6 +2150,27 @@ Public Class Database
             End Using
         End Using
 
+        'Guest Stars
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = String.Concat("SELECT A.strRole, B.idActor, B.strActor, B.strThumb, C.url FROM gueststarlinkepisode AS A ", _
+                                                   "INNER JOIN actors AS B ON (A.idActor = B.idActor) ", _
+                                                   "LEFT OUTER JOIN art AS C ON (B.idActor = C.media_id AND C.media_type = 'actor' AND C.type = 'thumb') ", _
+                                                   "WHERE A.idEpisode = ", _TVDB.ID, " ", _
+                                                   "ORDER BY A.iOrder;")
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                Dim person As MediaContainers.Person
+                While SQLreader.Read
+                    person = New MediaContainers.Person
+                    person.ID = Convert.ToInt64(SQLreader("idActor"))
+                    person.Name = SQLreader("strActor").ToString
+                    person.Role = SQLreader("strRole").ToString
+                    person.LocalFilePath = SQLreader("url").ToString
+                    person.URLOriginal = SQLreader("strThumb").ToString
+                    _TVDB.TVEpisode.Actors.Add(person)
+                End While
+            End Using
+        End Using
+
         'Video Streams
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand.CommandText = String.Concat("SELECT * FROM TVVStreams WHERE TVEpID = ", _TVDB.ID, ";")
@@ -2378,6 +2456,7 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("strIMDB")) Then .IMDB = SQLreader("strIMDB").ToString
                         If Not DBNull.Value.Equals(SQLreader("strTMDB")) Then .TMDB = SQLreader("strTMDB").ToString
                         If Not DBNull.Value.Equals(SQLreader("Language")) Then .Language = SQLreader("Language").ToString
+                        If Not DBNull.Value.Equals(SQLreader("strOriginalTitle")) Then .OriginalTitle = SQLreader("strOriginalTitle").ToString
                     End With
                 End If
             End Using
@@ -2391,15 +2470,41 @@ Public Class Database
                                                    "WHERE A.idShow = ", _TVDB.ID, " ", _
                                                    "ORDER BY A.iOrder;")
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                Dim person As MediaContainers.Person
+                Dim actor As MediaContainers.Person
                 While SQLreader.Read
-                    person = New MediaContainers.Person
-                    person.ID = Convert.ToInt64(SQLreader("idActor"))
-                    person.Name = SQLreader("strActor").ToString
-                    person.Role = SQLreader("strRole").ToString
-                    person.LocalFilePath = SQLreader("url").ToString
-                    person.URLOriginal = SQLreader("strThumb").ToString
-                    _TVDB.TVShow.Actors.Add(person)
+                    actor = New MediaContainers.Person
+                    actor.ID = Convert.ToInt64(SQLreader("idActor"))
+                    actor.Name = SQLreader("strActor").ToString
+                    actor.Role = SQLreader("strRole").ToString
+                    actor.LocalFilePath = SQLreader("url").ToString
+                    actor.URLOriginal = SQLreader("strThumb").ToString
+                    _TVDB.TVShow.Actors.Add(actor)
+                End While
+            End Using
+        End Using
+
+        'Creators
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = String.Concat("SELECT actors.strActor ", _
+                                                   "FROM actors ", _
+                                                   "INNER JOIN creatorlinktvshow ON (actors.idActor = creatorlinktvshow.idActor) ", _
+                                                   "WHERE creatorlinktvshow.idShow = ", _TVDB.ID, ";")
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    _TVDB.TVShow.Creators.Add(SQLreader("strActor").ToString)
+                End While
+            End Using
+        End Using
+
+        'Countries
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = String.Concat("SELECT country.strCountry ", _
+                                                   "FROM country ", _
+                                                   "INNER JOIN countrylinktvshow ON (country.idCountry = countrylinktvshow.idCountry) ", _
+                                                   "WHERE countrylinktvshow.idShow = ", _TVDB.ID, ";")
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    _TVDB.TVShow.Countries.Add(SQLreader("strCountry").ToString)
                 End While
             End Using
         End Using
@@ -4180,6 +4285,13 @@ Public Class Database
                 End Using
                 AddCast(_episode.ID, "episode", "episode", _episode.TVEpisode.Actors)
 
+                'Guest Stars
+                Using SQLcommand_gueststarlinkepisode As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                    SQLcommand_gueststarlinkepisode.CommandText = String.Concat("DELETE FROM gueststarlinkepisode WHERE idEpisode = ", _episode.ID, ";")
+                    SQLcommand_gueststarlinkepisode.ExecuteNonQuery()
+                End Using
+                AddGuestStar(_episode.ID, "episode", "episode", _episode.TVEpisode.GuestStars)
+
                 'Images
                 Using SQLcommand_art As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                     SQLcommand_art.CommandText = String.Concat("DELETE FROM art WHERE media_id = ", _episode.ID, " AND media_type = 'episode';")
@@ -4444,16 +4556,16 @@ Public Class Database
                 SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO tvshow (", _
                  "TVShowPath, New, Mark, Source, TVDB, Lock, ListTitle, EpisodeGuide, ", _
                  "Plot, Genre, Premiered, Studio, MPAA, Rating, NfoPath, Language, Ordering, ", _
-                 "Status, ThemePath, ", _
-                 "EFanartsPath, Runtime, Title, Votes, EpisodeSorting, SortTitle, strIMDB, strTMDB", _
-                 ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM tvshow;")
+                 "Status, ThemePath, EFanartsPath, Runtime, Title, Votes, EpisodeSorting, SortTitle, ", _
+                 "strIMDB, strTMDB, strOriginalTitle", _
+                 ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM tvshow;")
             Else
                 SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO tvshow (", _
                  "idShow, TVShowPath, New, Mark, Source, TVDB, Lock, ListTitle, EpisodeGuide, ", _
                  "Plot, Genre, Premiered, Studio, MPAA, Rating, NfoPath, Language, Ordering, ", _
-                 "Status, ThemePath, ", _
-                 "EFanartsPath, Runtime, Title, Votes, EpisodeSorting, SortTitle, strIMDB, strTMDB", _
-                 ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM tvshow;")
+                 "Status, ThemePath, EFanartsPath, Runtime, Title, Votes, EpisodeSorting, SortTitle, ", _
+                 "strIMDB, strTMDB, strOriginalTitle", _
+                 ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM tvshow;")
                 Dim parTVShowID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTVShowID", DbType.UInt64, 0, "idShow")
                 parTVShowID.Value = _show.ID
             End If
@@ -4485,6 +4597,7 @@ Public Class Database
             Dim parSortTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSortTitle", DbType.String, 0, "SortTitle")
             Dim par_strIMDB As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("par_strIMDB", DbType.String, 0, "strIMDB")
             Dim par_strTMDB As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("par_strTMDB", DbType.String, 0, "strTMDB")
+            Dim par_strOriginalTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("par_strOriginalTitle", DbType.String, 0, "strOriginalTitle")
 
             With _show.TVShow
                 parTVDB.Value = .TVDB
@@ -4502,6 +4615,7 @@ Public Class Database
                 parVotes.Value = NumUtils.CleanVotes(.Votes)
                 par_strIMDB.Value = .IMDB
                 par_strTMDB.Value = .TMDB
+                par_strOriginalTitle.Value = .OriginalTitle
             End With
 
             'First let's save it to NFO, even because we will need the NFO path
@@ -4558,13 +4672,22 @@ Public Class Database
                 End Using
                 AddCast(_show.ID, "tvshow", "show", _show.TVShow.Actors)
 
-                'Directors
-                Using SQLcommand_directorlinktvshow As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                    SQLcommand_directorlinktvshow.CommandText = String.Format("DELETE FROM directorlinktvshow WHERE idShow = {0};", _show.ID)
-                    SQLcommand_directorlinktvshow.ExecuteNonQuery()
+                'Creators
+                Using SQLcommand_creatorlinktvshow As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                    SQLcommand_creatorlinktvshow.CommandText = String.Format("DELETE FROM creatorlinktvshow WHERE idShow = {0};", _show.ID)
+                    SQLcommand_creatorlinktvshow.ExecuteNonQuery()
                 End Using
-                For Each director As String In _show.TVShow.Directors
-                    AddDirectorToTvShow(_show.ID, AddActor(director, "", "", "", "", False))
+                For Each creator As String In _show.TVShow.Creators
+                    AddCreatorToTvShow(_show.ID, AddActor(creator, "", "", "", "", False))
+                Next
+
+                'Countries
+                Using SQLcommand_countrylinktvshow As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+                    SQLcommand_countrylinktvshow.CommandText = String.Format("DELETE FROM countrylinktvshow WHERE idShow = {0};", _show.ID)
+                    SQLcommand_countrylinktvshow.ExecuteNonQuery()
+                End Using
+                For Each country As String In _show.TVShow.Countries
+                    AddCountryToTVShow(_show.ID, AddCountry(country))
                 Next
 
                 'Genres

@@ -108,8 +108,8 @@ Public Class OFDB_Data
         _setup.chkTitle.Checked = ConfigScrapeOptions.bMainTitle
         _setup.chkOutline.Checked = ConfigScrapeOptions.bMainOutline
         _setup.chkPlot.Checked = ConfigScrapeOptions.bMainPlot
-        _setup.chkGenre.Checked = ConfigScrapeOptions.bMainGenre
-        _setup.chkCertification.Checked = ConfigScrapeOptions.bMainCert
+        _setup.chkGenre.Checked = ConfigScrapeOptions.bMainGenres
+        _setup.chkCertification.Checked = ConfigScrapeOptions.bMainCertifications
 
         _setup.orderChanged()
 
@@ -131,8 +131,8 @@ Public Class OFDB_Data
         ConfigScrapeOptions.bMainTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle", True)
         ConfigScrapeOptions.bMainOutline = clsAdvancedSettings.GetBooleanSetting("DoOutline", True)
         ConfigScrapeOptions.bMainPlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", True)
-        ConfigScrapeOptions.bMainGenre = clsAdvancedSettings.GetBooleanSetting("DoGenres", True)
-        ConfigScrapeOptions.bMainCert = clsAdvancedSettings.GetBooleanSetting("DoCert", False)
+        ConfigScrapeOptions.bMainGenres = clsAdvancedSettings.GetBooleanSetting("DoGenres", True)
+        ConfigScrapeOptions.bMainCertifications = clsAdvancedSettings.GetBooleanSetting("DoCert", False)
     End Sub
 
     Sub SaveSettings()
@@ -140,8 +140,8 @@ Public Class OFDB_Data
             settings.SetBooleanSetting("DoTitle", ConfigScrapeOptions.bMainTitle)
             settings.SetBooleanSetting("DoOutline", ConfigScrapeOptions.bMainOutline)
             settings.SetBooleanSetting("DoPlot", ConfigScrapeOptions.bMainPlot)
-            settings.SetBooleanSetting("DoGenres", ConfigScrapeOptions.bMainGenre)
-            settings.SetBooleanSetting("DoCert", ConfigScrapeOptions.bMainCert)
+            settings.SetBooleanSetting("DoGenres", ConfigScrapeOptions.bMainGenres)
+            settings.SetBooleanSetting("DoCert", ConfigScrapeOptions.bMainCertifications)
         End Using
     End Sub
 
@@ -150,11 +150,11 @@ Public Class OFDB_Data
     End Sub
 
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Data_Movie.SaveSetupScraper
-        ConfigScrapeOptions.bMainCert = _setup.chkCertification.Checked
+        ConfigScrapeOptions.bMainCertifications = _setup.chkCertification.Checked
         ConfigScrapeOptions.bMainTitle = _setup.chkTitle.Checked
         ConfigScrapeOptions.bMainOutline = _setup.chkOutline.Checked
         ConfigScrapeOptions.bMainPlot = _setup.chkPlot.Checked
-        ConfigScrapeOptions.bMainGenre = _setup.chkGenre.Checked
+        ConfigScrapeOptions.bMainGenres = _setup.chkGenre.Checked
         SaveSettings()
         If DoDispose Then
             RemoveHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged

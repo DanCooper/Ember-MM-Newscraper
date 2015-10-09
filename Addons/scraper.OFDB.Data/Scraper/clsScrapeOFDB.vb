@@ -138,12 +138,12 @@ Namespace OFDB
                     If Not String.IsNullOrEmpty(HTML) Then
 
                         'Certification
-                        If FilteredOptions.bMainCert Then
+                        If FilteredOptions.bMainCertifications Then
                             nMovie.Certifications.Add(GetCertification(HTML))
                         End If
 
                         'Genres
-                        If FilteredOptions.bMainGenre Then
+                        If FilteredOptions.bMainGenres Then
                             Dim strGenrePattern As String = "itemprop=""genre"">(?<GENRE>.*?)<\/span>"
                             Dim gResult As MatchCollection = Regex.Matches(HTML, strGenrePattern, RegexOptions.Singleline)
                             For ctr As Integer = 0 To gResult.Count - 1

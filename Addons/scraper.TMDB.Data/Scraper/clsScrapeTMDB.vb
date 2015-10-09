@@ -272,7 +272,7 @@ Namespace TMDB
             If bwTMDB.CancellationPending Then Return Nothing
 
             'Certifications
-            If FilteredOptions.bMainCert Then
+            If FilteredOptions.bMainCertifications Then
                 If Movie.Releases IsNot Nothing AndAlso Movie.Releases.Countries IsNot Nothing AndAlso Movie.Releases.Countries.Count > 0 Then
                     For Each cCountry In Movie.Releases.Countries
                         If Not String.IsNullOrEmpty(cCountry.Certification) Then
@@ -305,7 +305,7 @@ Namespace TMDB
             If bwTMDB.CancellationPending Then Return Nothing
 
             'Countries
-            If FilteredOptions.bMainCountry Then
+            If FilteredOptions.bMainCountries Then
                 If Movie.ProductionCountries IsNot Nothing AndAlso Movie.ProductionCountries.Count > 0 Then
                     For Each aContry As TMDbLib.Objects.Movies.ProductionCountry In Movie.ProductionCountries
                         nMovie.Countries.Add(aContry.Name)
@@ -316,10 +316,10 @@ Namespace TMDB
             If bwTMDB.CancellationPending Then Return Nothing
 
             'Director / Writer
-            If FilteredOptions.bMainDirector OrElse FilteredOptions.bMainWriters Then
+            If FilteredOptions.bMainDirectors OrElse FilteredOptions.bMainWriters Then
                 If Movie.Credits IsNot Nothing AndAlso Movie.Credits.Crew IsNot Nothing Then
                     For Each aCrew As TMDbLib.Objects.General.Crew In Movie.Credits.Crew
-                        If FilteredOptions.bMainDirector AndAlso aCrew.Department = "Directing" AndAlso aCrew.Job = "Director" Then
+                        If FilteredOptions.bMainDirectors AndAlso aCrew.Department = "Directing" AndAlso aCrew.Job = "Director" Then
                             nMovie.Directors.Add(aCrew.Name)
                         End If
                         If FilteredOptions.bMainWriters AndAlso aCrew.Department = "Writing" AndAlso (aCrew.Job = "Author" OrElse aCrew.Job = "Screenplay" OrElse aCrew.Job = "Writer") Then
@@ -332,7 +332,7 @@ Namespace TMDB
             If bwTMDB.CancellationPending Then Return Nothing
 
             'Genres
-            If FilteredOptions.bMainGenre Then
+            If FilteredOptions.bMainGenres Then
                 Dim aGenres As System.Collections.Generic.List(Of TMDbLib.Objects.General.Genre) = Nothing
                 If Movie.Genres Is Nothing OrElse (Movie.Genres IsNot Nothing AndAlso Movie.Genres.Count = 0) Then
                     If _SpecialSettings.FallBackEng AndAlso MovieE.Genres IsNot Nothing AndAlso MovieE.Genres.Count > 0 Then
@@ -433,7 +433,7 @@ Namespace TMDB
             If bwTMDB.CancellationPending Then Return Nothing
 
             'Studios
-            If FilteredOptions.bMainStudio Then
+            If FilteredOptions.bMainStudios Then
                 If Movie.ProductionCompanies IsNot Nothing AndAlso Movie.ProductionCompanies.Count > 0 Then
                     For Each cStudio In Movie.ProductionCompanies
                         nMovie.Studios.Add(cStudio.Name)
@@ -614,7 +614,7 @@ Namespace TMDB
 
             If bwTMDB.CancellationPending Or Show Is Nothing Then Return Nothing
 
-            'Cast (Actors)
+            'Actors
             If FilteredOptions.bMainActors Then
                 If Show.Credits IsNot Nothing AndAlso Show.Credits.Cast IsNot Nothing Then
                     For Each aCast As TMDbLib.Objects.TvShows.Cast In Show.Credits.Cast
@@ -629,7 +629,7 @@ Namespace TMDB
             If bwTMDB.CancellationPending Then Return Nothing
 
             'Certifications
-            If FilteredOptions.bMainCert Then
+            If FilteredOptions.bMainCertifications Then
                 If Show.ContentRatings IsNot Nothing AndAlso Show.ContentRatings.Results IsNot Nothing AndAlso Show.ContentRatings.Results.Count > 0 Then
                     For Each aCountry In Show.ContentRatings.Results
                         If Not String.IsNullOrEmpty(aCountry.Rating) Then
@@ -646,19 +646,19 @@ Namespace TMDB
 
             If bwTMDB.CancellationPending Then Return Nothing
 
-            'Countries
-            If FilteredOptions.bMainCountry Then
-                If Show.OriginCountry IsNot Nothing AndAlso Show.OriginCountry.Count > 0 Then
-                    For Each aCountry As String In Show.OriginCountry
-                        nShow.Countries.Add(aCountry)
-                    Next
-                End If
-            End If
+            'Countries 'TODO: Change from OriginCountry to ProductionCountries (not yet supported by API)
+            'If FilteredOptions.bMainCountry Then
+            '    If Show.OriginCountry IsNot Nothing AndAlso Show.OriginCountry.Count > 0 Then
+            '        For Each aCountry As String In Show.OriginCountry
+            '            nShow.Countries.Add(aCountry)
+            '        Next
+            '    End If
+            'End If
 
             If bwTMDB.CancellationPending Then Return Nothing
 
             'Created By
-            If FilteredOptions.bMainCreator Then
+            If FilteredOptions.bMainCreators Then
                 If Show.CreatedBy IsNot Nothing Then
                     For Each aCreator As TMDbLib.Objects.People.Person In Show.CreatedBy
                         nShow.Creators.Add(aCreator.Name)
@@ -669,7 +669,7 @@ Namespace TMDB
             If bwTMDB.CancellationPending Then Return Nothing
 
             'Genres
-            If FilteredOptions.bMainGenre Then
+            If FilteredOptions.bMainGenres Then
                 Dim aGenres As System.Collections.Generic.List(Of TMDbLib.Objects.General.Genre) = Nothing
                 If Show.Genres Is Nothing OrElse (Show.Genres IsNot Nothing AndAlso Show.Genres.Count = 0) Then
                     If _SpecialSettings.FallBackEng AndAlso ShowE.Genres IsNot Nothing AndAlso ShowE.Genres.Count > 0 Then
@@ -770,7 +770,7 @@ Namespace TMDB
             If bwTMDB.CancellationPending Then Return Nothing
 
             'Studios
-            If FilteredOptions.bMainStudio Then
+            If FilteredOptions.bMainStudios Then
                 If Show.Networks IsNot Nothing AndAlso Show.Networks.Count > 0 Then
                     For Each aStudio In Show.Networks
                         nShow.Studios.Add(aStudio.Name)
@@ -950,13 +950,13 @@ Namespace TMDB
             End If
 
             'Director / Writer
-            If FilteredOptions.bEpisodeCredits OrElse FilteredOptions.bEpisodeDirector Then
+            If FilteredOptions.bEpisodeCredits OrElse FilteredOptions.bEpisodeDirectors Then
                 If EpisodeInfo.Credits IsNot Nothing AndAlso EpisodeInfo.Credits.Crew IsNot Nothing Then
                     For Each aCrew As TMDbLib.Objects.General.Crew In EpisodeInfo.Credits.Crew
                         If FilteredOptions.bEpisodeCredits AndAlso aCrew.Department = "Writing" AndAlso (aCrew.Job = "Author" OrElse aCrew.Job = "Screenplay" OrElse aCrew.Job = "Writer") Then
                             nEpisode.Credits.Add(aCrew.Name)
                         End If
-                        If FilteredOptions.bEpisodeDirector AndAlso aCrew.Department = "Directing" AndAlso aCrew.Job = "Director" Then
+                        If FilteredOptions.bEpisodeDirectors AndAlso aCrew.Department = "Directing" AndAlso aCrew.Job = "Director" Then
                             nEpisode.Directors.Add(aCrew.Name)
                         End If
                     Next

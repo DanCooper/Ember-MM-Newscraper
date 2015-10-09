@@ -431,6 +431,13 @@
     <None Include="DB\MyVideosDBSQL_v30_Patch.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="DB\MyVideosDBSQL_v31_Patch.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DB\MyVideosDBSQL_v32.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="Defaults\DefaultAdvancedSettings - AudioFormatConverts.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

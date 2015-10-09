@@ -395,7 +395,7 @@ Namespace MediaContainers
             End Get
         End Property
 
-        <XmlElement("gueststars")> _
+        <XmlElement("gueststar")> _
         Public Property GuestStars() As List(Of Person)
             Get
                 Return Me._gueststars
@@ -2232,16 +2232,14 @@ Namespace MediaContainers
 
         Public Sub Clean()
             Me._id = -1
+            Me._imdb = String.Empty
             Me._name = String.Empty
             Me._order = -1
             Me._role = String.Empty
             Me._thumb = New Image
             Me._tmdb = String.Empty
+            Me._tvdb = String.Empty
         End Sub
-
-        Public Overrides Function ToString() As String
-            Return Me._name
-        End Function
 
 #End Region 'Methods
 
@@ -3068,7 +3066,7 @@ Namespace MediaContainers
         End Property
 
         <XmlIgnore()> _
-        Public ReadOnly Property CreatedBySpecified() As Boolean
+        Public ReadOnly Property CreatorsSpecified() As Boolean
             Get
                 Return _creators.Count > 0
             End Get

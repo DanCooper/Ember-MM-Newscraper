@@ -278,7 +278,7 @@ Namespace IMDB
                 If bwIMDB.CancellationPending Then Return Nothing
 
                 'Certifications
-                If FilteredOptions.bMainCert Then
+                If FilteredOptions.bMainCertifications Then
                     Dim D, W As Integer
                     D = HTML.IndexOf("<h5>Certification:</h5>")
                     If D > 0 Then
@@ -394,7 +394,7 @@ Namespace IMDB
                 If bwIMDB.CancellationPending Then Return Nothing
 
                 'Director
-                If FilteredOptions.bMainDirector Then
+                If FilteredOptions.bMainDirectors Then
                     Dim D, W As Integer
                     'Get the directors
                     D = If(HTML.IndexOf("<h5>Director:</h5>") > 0, HTML.IndexOf("<h5>Director:</h5>"), HTML.IndexOf("<h5>Directors:</h5>"))
@@ -416,7 +416,7 @@ Namespace IMDB
                 If bwIMDB.CancellationPending Then Return Nothing
 
                 'Countries
-                If FilteredOptions.bMainCountry Then
+                If FilteredOptions.bMainCountries Then
                     Dim D, W As Integer
                     D = If(HTML.IndexOf("<h5>Country:</h5>") > 0, HTML.IndexOf("<h5>Country:</h5>"), HTML.IndexOf("<h5>Countries:</h5>"))
                     W = If(D > 0, HTML.IndexOf("</div>", D), 0)
@@ -446,7 +446,7 @@ Namespace IMDB
                 If bwIMDB.CancellationPending Then Return Nothing
 
                 'Genres
-                If FilteredOptions.bMainGenre Then
+                If FilteredOptions.bMainGenres Then
                     Dim D, W As Integer
                     D = HTML.IndexOf("<h5>Genre:</h5>")
                     'Check if doesnt find genres
@@ -549,7 +549,7 @@ mPlot:          'Plot
                 End If
 
                 'Studios
-                If FilteredOptions.bMainStudio Then
+                If FilteredOptions.bMainStudios Then
                     Dim D, W As Integer
                     D = HTML.IndexOf("<b class=""blackcatheader"">Production Companies</b>")
                     If D > 0 Then W = HTML.IndexOf("</ul>", D)
@@ -672,7 +672,7 @@ mPlot:          'Plot
                 If bwIMDB.CancellationPending Then Return Nothing
 
                 'Certifications
-                If FilteredOptions.bMainCert Then
+                If FilteredOptions.bMainCertifications Then
                     Dim D, W As Integer
                     D = HTML.IndexOf("<h5>Certification:</h5>")
                     If D > 0 Then
@@ -727,7 +727,7 @@ mPlot:          'Plot
                 End If
 
                 If bwIMDB.CancellationPending Then Return Nothing
-                
+
                 'Actors
                 If FilteredOptions.bMainActors Then
                     'Find all cast of the movie
@@ -752,7 +752,7 @@ mPlot:          'Plot
                 If bwIMDB.CancellationPending Then Return Nothing
 
                 'Countries
-                If FilteredOptions.bMainCountry Then
+                If FilteredOptions.bMainCountries Then
                     Dim D, W As Integer
                     D = If(HTML.IndexOf("<h5>Country:</h5>") > 0, HTML.IndexOf("<h5>Country:</h5>"), HTML.IndexOf("<h5>Countries:</h5>"))
                     W = If(D > 0, HTML.IndexOf("</div>", D), 0)
@@ -781,7 +781,7 @@ mPlot:          'Plot
                 If bwIMDB.CancellationPending Then Return Nothing
 
                 'Genres
-                If FilteredOptions.bMainGenre Then
+                If FilteredOptions.bMainGenres Then
                     Dim D, W As Integer
                     D = HTML.IndexOf("<h5>Genre:</h5>")
                     'Check if doesnt find genres
@@ -840,7 +840,7 @@ mPlot:          'Plot
                 End If
 
                 'Studios
-                If FilteredOptions.bMainStudio Then
+                If FilteredOptions.bMainStudios Then
                     Dim D, W As Integer
                     'If FullCrew Then
                     '    D = HTML.IndexOf("<b class=""blackcatheader"">Production Companies</b>")

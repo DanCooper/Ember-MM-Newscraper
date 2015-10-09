@@ -3057,7 +3057,9 @@ Public Class dlgSettings
             Me.chkTVLockEpisodeRating.Checked = .TVLockEpisodeRating
             Me.chkTVLockEpisodeRuntime.Checked = .TVLockEpisodeRuntime
             Me.chkTVLockEpisodeTitle.Checked = .TVLockEpisodeTitle
+            Me.chkTVLockSeasonPlot.Checked = .TVLockSeasonPlot
             Me.chkTVLockShowCert.Checked = .TVLockShowCert
+            Me.chkTVLockShowCreators.Checked = .TVLockShowCreators
             Me.chkTVLockShowGenre.Checked = .TVLockShowGenre
             Me.chkTVLockShowMPAA.Checked = .TVLockShowMPAA
             Me.chkTVLockShowOriginalTitle.Checked = .TVLockShowOriginalTitle
@@ -3074,13 +3076,17 @@ Public Class dlgSettings
             Me.chkTVScraperEpisodeCredits.Checked = .TVScraperEpisodeCredits
             Me.chkTVScraperEpisodeDirector.Checked = .TVScraperEpisodeDirector
             Me.chkTVScraperEpisodeGuestStars.Checked = .TVScraperEpisodeGuestStars
+            Me.chkTVScraperEpisodeGuestStarsToActors.Checked = .TVScraperEpisodeGuestStarsToActors
             Me.chkTVScraperEpisodePlot.Checked = .TVScraperEpisodePlot
             Me.chkTVScraperEpisodeRating.Checked = .TVScraperEpisodeRating
             Me.chkTVScraperEpisodeRuntime.Checked = .TVScraperEpisodeRuntime
             Me.chkTVScraperEpisodeTitle.Checked = .TVScraperEpisodeTitle
             Me.chkTVScraperMetaDataScan.Checked = .TVScraperMetaDataScan
+            Me.chkTVScraperSeasonAired.Checked = .TVScraperSeasonAired
+            Me.chkTVScraperSeasonPlot.Checked = .TVScraperSeasonPlot
             Me.chkTVScraperShowActors.Checked = .TVScraperShowActors
             Me.chkTVScraperShowCert.Checked = .TVScraperShowCert
+            Me.chkTVScraperShowCreators.Checked = .TVScraperShowCreators
             Me.chkTVScraperShowCertForMPAA.Checked = .TVScraperShowCertForMPAA
             Me.chkTVScraperShowCertForMPAAFallback.Checked = .TVScraperShowCertForMPAAFallback
             Me.chkTVScraperShowCertFSK.Checked = .TVScraperShowCertFSK
@@ -4914,7 +4920,9 @@ Public Class dlgSettings
             .TVLockEpisodeRating = Me.chkTVLockEpisodeRating.Checked
             .TVLockEpisodeRuntime = Me.chkTVLockEpisodeRuntime.Checked
             .TVLockEpisodeTitle = Me.chkTVLockEpisodeTitle.Checked
+            .TVLockSeasonPlot = Me.chkTVLockSeasonPlot.Checked
             .TVLockShowCert = Me.chkTVLockShowCert.Checked
+            .TVLockShowCreators = Me.chkTVLockShowCreators.Checked
             .TVLockShowGenre = Me.chkTVLockShowGenre.Checked
             .TVLockShowMPAA = Me.chkTVLockShowMPAA.Checked
             .TVLockShowOriginalTitle = Me.chkTVLockShowOriginalTitle.Checked
@@ -4935,14 +4943,18 @@ Public Class dlgSettings
             .TVScraperEpisodeCredits = Me.chkTVScraperEpisodeCredits.Checked
             .TVScraperEpisodeDirector = Me.chkTVScraperEpisodeDirector.Checked
             .TVScraperEpisodeGuestStars = Me.chkTVScraperEpisodeGuestStars.Checked
+            .TVScraperEpisodeGuestStarsToActors = Me.chkTVScraperEpisodeGuestStarsToActors.Checked
             .TVScraperEpisodePlot = Me.chkTVScraperEpisodePlot.Checked
             .TVScraperEpisodeRating = Me.chkTVScraperEpisodeRating.Checked
             .TVScraperEpisodeRuntime = Me.chkTVScraperEpisodeRuntime.Checked
             .TVScraperEpisodeTitle = Me.chkTVScraperEpisodeTitle.Checked
             .TVScraperMetaDataScan = Me.chkTVScraperMetaDataScan.Checked
             .TVScraperOptionsOrdering = CType(Me.cbTVScraperOptionsOrdering.SelectedItem, KeyValuePair(Of String, Enums.Ordering)).Value
+            .TVScraperSeasonAired = Me.chkTVScraperSeasonAired.Checked
+            .TVScraperSeasonPlot = Me.chkTVScraperSeasonPlot.Checked
             .TVScraperShowActors = Me.chkTVScraperShowActors.Checked
             .TVScraperShowCert = Me.chkTVScraperShowCert.Checked
+            .TVScraperShowCreators = Me.chkTVScraperShowCreators.Checked
             .TVScraperShowCertForMPAA = Me.chkTVScraperShowCertForMPAA.Checked
             .TVScraperShowCertForMPAAFallback = Me.chkTVScraperShowCertForMPAAFallback.Checked
             .TVScraperShowCertFSK = Me.chkTVScraperShowCertFSK.Checked
@@ -5673,6 +5685,10 @@ Public Class dlgSettings
         Dim strCountry As String = Master.eLang.GetString(301, "Country")
         Me.lblMovieScraperGlobalCountry.Text = strCountry
 
+        'Creator(s)
+        Dim strCreators As String = Master.eLang.GetString(744, "Creator(s)")
+        Me.lblTVScraperGlobalCreators.Text = strCreators
+
         'Default Episode Ordering
         Dim strDefaultEpisodeOrdering As String = Master.eLang.GetString(797, "Default Episode Ordering")
         Me.lblTVSourcesDefaultsOrdering.Text = String.Concat(strDefaultEpisodeOrdering, ":")
@@ -5720,6 +5736,11 @@ Public Class dlgSettings
         Me.lblMovieDiscArtExpertVTS.Text = strDiscArt
         Me.lblMovieSourcesFileNamingXBMCADDiscArt.Text = strDiscArt
         Me.lblMovieSourcesFileNamingXBMCExtendedDiscArt.Text = strDiscArt
+
+        'Display best Audio Stream with the following Language
+        Dim strDisplayLanguageBestAudio As String = String.Concat(Master.eLang.GetString(436, "Display best Audio Stream with the following Language"), ":")
+        Me.lblMovieLanguageOverlay.Text = strDisplayLanguageBestAudio
+        Me.lblTVLanguageOverlay.Text = strDisplayLanguageBestAudio
 
         'Display "Image Select" dialog while single scraping
         Dim strDisplayImgDialog As String = Master.eLang.GetString(499, "Display ""Image Select"" dialog while single scraping")
@@ -5971,8 +5992,9 @@ Public Class dlgSettings
         Dim strLock As String = Master.eLang.GetString(24, "Lock")
         Me.lblMovieScraperGlobalHeaderLock.Text = strLock
         Me.lblMovieSetScraperGlobalHeaderLock.Text = strLock
-        Me.lblTVScraperGlobalHeaderShowsLock.Text = strLock
         Me.lblTVScraperGlobalHeaderEpisodesLock.Text = strLock
+        Me.lblTVScraperGlobalHeaderSeasonsLock.Text = strLock
+        Me.lblTVScraperGlobalHeaderShowsLock.Text = strLock
 
         'Max Height:
         Dim strMaxHeight As String = Master.eLang.GetString(480, "Max Height:")
@@ -6265,6 +6287,7 @@ Public Class dlgSettings
 
         'Seasons
         Dim strSeasons As String = Master.eLang.GetString(681, "Seasons")
+        Me.lblTVScraperGlobalHeaderSeasons.Text = strSeasons
 
         'Show List Sorting
         Dim strShowListSorting As String = Master.eLang.GetString(492, "Show List Sorting")
@@ -6461,6 +6484,7 @@ Public Class dlgSettings
         Me.chkTVEpisodeNoFilter.Text = Master.eLang.GetString(734, "Build Episode Title Instead of Filtering")
         Me.chkTVGeneralMarkNewEpisodes.Text = Master.eLang.GetString(621, "Mark New Episodes")
         Me.chkTVGeneralMarkNewShows.Text = Master.eLang.GetString(549, "Mark New Shows")
+        Me.chkTVScraperEpisodeGuestStarsToActors.Text = Master.eLang.GetString(974, "Add Episode Guest Stars to Actors list")
         Me.chkTVScraperUseMDDuration.Text = Master.eLang.GetString(516, "Use Duration for Runtime")
         Me.chkTVScraperUseSRuntimeForEp.Text = Master.eLang.GetString(1262, "Use Show Runtime for Episodes if no Episode Runtime can be found")
         Me.dgvMovieSetScraperTitleRenamer.Columns(0).HeaderText = Master.eLang.GetString(1277, "From")
@@ -6508,7 +6532,6 @@ Public Class dlgSettings
         Me.lblMovieGeneralCustomMarker3.Text = String.Concat(Master.eLang.GetString(1191, "Custom"), " #3")
         Me.lblMovieGeneralCustomMarker4.Text = String.Concat(Master.eLang.GetString(1191, "Custom"), " #4")
         Me.lblMovieIMDBMirror.Text = Master.eLang.GetString(884, "IMDB Mirror:")
-        Me.lblMovieLanguageOverlay.Text = Master.eLang.GetString(436, "Display Overlay if Video Contains an Audio Stream With the Following Language:")
         Me.lblMovieLevTolerance.Text = Master.eLang.GetString(461, "Mismatch Tolerance:")
         Me.lblMovieScraperDurationRuntimeFormat.Text = String.Format(Master.eLang.GetString(732, "<h>=Hours{0}<m>=Minutes{0}<s>=Seconds"), Environment.NewLine)
         Me.lblMovieScraperMPAANotRated.Text = String.Concat(Master.eLang.GetString(832, "MPAA value if no rating is available"), ":")
@@ -6550,7 +6573,6 @@ Public Class dlgSettings
         Me.gbMovieThemeOpts.Text = Me.gbGeneralThemes.Text
         Me.gbTVScraperDefFIExtOpts.Text = Me.gbTVScraperDefFIExtOpts.Text
         Me.lblSettingsTopTitle.Text = Me.Text
-        Me.lblTVLanguageOverlay.Text = Me.lblMovieLanguageOverlay.Text
         Me.lblTVSkipLessThan.Text = Me.lblMovieSkipLessThan.Text
         Me.lblTVSkipLessThanMB.Text = Me.lblMovieSkipLessThanMB.Text
 
@@ -7606,6 +7628,9 @@ Public Class dlgSettings
         chkTVLockEpisodeRating.CheckedChanged, _
         chkTVLockEpisodeRuntime.CheckedChanged, _
         chkTVLockEpisodeTitle.CheckedChanged, _
+        chkTVLockSeasonPlot.CheckedChanged, _
+        chkTVLockShowCert.CheckedChanged, _
+        chkTVLockShowCreators.CheckedChanged, _
         chkTVLockShowGenre.CheckedChanged, _
         chkTVLockShowMPAA.CheckedChanged, _
         chkTVLockShowOriginalTitle.CheckedChanged, _
@@ -7622,11 +7647,15 @@ Public Class dlgSettings
         chkTVScraperEpisodeCredits.CheckedChanged, _
         chkTVScraperEpisodeDirector.CheckedChanged, _
         chkTVScraperEpisodeGuestStars.CheckedChanged, _
+        chkTVScraperEpisodeGuestStarsToActors.CheckedChanged, _
         chkTVScraperEpisodePlot.CheckedChanged, _
         chkTVScraperEpisodeRating.CheckedChanged, _
         chkTVScraperEpisodeRuntime.CheckedChanged, _
         chkTVScraperEpisodeTitle.CheckedChanged, _
+        chkTVScraperSeasonAired.CheckedChanged, _
+        chkTVScraperSeasonPlot.CheckedChanged, _
         chkTVScraperShowActors.CheckedChanged, _
+        chkTVScraperShowCreators.CheckedChanged, _
         chkTVScraperShowEpiGuideURL.CheckedChanged, _
         chkTVScraperShowGenre.CheckedChanged, _
         chkTVScraperShowMPAA.CheckedChanged, _

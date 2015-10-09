@@ -1094,14 +1094,15 @@ Public Class dlgEditTVShow
             .cbOrdering.SelectedIndex = Me.tmpDBElement.Ordering
             .cbEpisodeSorting.SelectedIndex = Me.tmpDBElement.EpisodeSorting
 
-            If Not String.IsNullOrEmpty(Me.tmpDBElement.TVShow.Title) Then .txtTitle.Text = Me.tmpDBElement.TVShow.Title
-            If Not String.IsNullOrEmpty(Me.tmpDBElement.TVShow.Plot) Then .txtPlot.Text = Me.tmpDBElement.TVShow.Plot
-            If Not String.IsNullOrEmpty(Me.tmpDBElement.TVShow.Premiered) Then .txtPremiered.Text = Me.tmpDBElement.TVShow.Premiered
-            If Not String.IsNullOrEmpty(Me.tmpDBElement.TVShow.Runtime) Then .txtRuntime.Text = Me.tmpDBElement.TVShow.Runtime
-            If Not String.IsNullOrEmpty(Me.tmpDBElement.TVShow.SortTitle) Then .txtSortTitle.Text = Me.tmpDBElement.TVShow.SortTitle
-            If Not String.IsNullOrEmpty(Me.tmpDBElement.TVShow.Status) Then .txtStatus.Text = Me.tmpDBElement.TVShow.Status
-            If Not String.IsNullOrEmpty(Me.tmpDBElement.TVShow.Studio) Then .txtStudio.Text = Me.tmpDBElement.TVShow.Studio
-            If Not String.IsNullOrEmpty(Me.tmpDBElement.TVShow.Votes) Then .txtVotes.Text = Me.tmpDBElement.TVShow.Votes
+            .txtTitle.Text = Me.tmpDBElement.TVShow.Title
+            .txtOriginalTitle.Text = Me.tmpDBElement.TVShow.OriginalTitle
+            .txtPlot.Text = Me.tmpDBElement.TVShow.Plot
+            .txtPremiered.Text = Me.tmpDBElement.TVShow.Premiered
+            .txtRuntime.Text = Me.tmpDBElement.TVShow.Runtime
+            .txtSortTitle.Text = Me.tmpDBElement.TVShow.SortTitle
+            .txtStatus.Text = Me.tmpDBElement.TVShow.Status
+            .txtStudio.Text = Me.tmpDBElement.TVShow.Studio
+            .txtVotes.Text = Me.tmpDBElement.TVShow.Votes
 
             For i As Integer = 0 To .clbGenre.Items.Count - 1
                 .clbGenre.SetItemChecked(i, False)
@@ -1822,6 +1823,7 @@ Public Class dlgEditTVShow
                 Me.tmpDBElement.EpisodeSorting = DirectCast(.cbEpisodeSorting.SelectedIndex, Enums.EpisodeSorting)
 
                 Me.tmpDBElement.TVShow.Title = .txtTitle.Text.Trim
+                Me.tmpDBElement.TVShow.OriginalTitle = .txtOriginalTitle.Text.Trim
                 Me.tmpDBElement.TVShow.Plot = .txtPlot.Text.Trim
                 Me.tmpDBElement.TVShow.Premiered = .txtPremiered.Text.Trim
                 Me.tmpDBElement.TVShow.Runtime = .txtRuntime.Text.Trim
@@ -1934,6 +1936,7 @@ Public Class dlgEditTVShow
         Me.lblEpisodeSorting.Text = String.Concat(Master.eLang.GetString(364, "Show Episodes by"), ":")
         Me.lblMPAA.Text = Master.eLang.GetString(235, "MPAA Rating:")
         Me.lblOrdering.Text = Master.eLang.GetString(739, "Episode Ordering:")
+        Me.lblOriginalTitle.Text = String.Concat(Master.eLang.GetString(302, "Original Title"), ":")
         Me.lblPlot.Text = Master.eLang.GetString(241, "Plot:")
         Me.lblPremiered.Text = String.Concat(Master.eLang.GetString(724, "Premiered"), ":")
         Me.lblRating.Text = Master.eLang.GetString(245, "Rating:")

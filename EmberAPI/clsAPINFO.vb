@@ -120,7 +120,7 @@ Public Class NFO
             End If
 
             'Certification
-            If (Not DBMovie.Movie.CertificationsSpecified OrElse Not Master.eSettings.MovieLockCert) AndAlso ScrapeOptions.bMainCert AndAlso _
+            If (Not DBMovie.Movie.CertificationsSpecified OrElse Not Master.eSettings.MovieLockCert) AndAlso ScrapeOptions.bMainCertifications AndAlso _
                 scrapedmovie.CertificationsSpecified AndAlso Master.eSettings.MovieScraperCert AndAlso Not new_Certification Then
                 If Master.eSettings.MovieScraperCertLang = Master.eLang.All Then
                     DBMovie.Movie.Certifications.Clear()
@@ -175,7 +175,7 @@ Public Class NFO
             End If
 
             'Countries
-            If (Not DBMovie.Movie.CountriesSpecified OrElse Not Master.eSettings.MovieLockCountry) AndAlso ScrapeOptions.bMainCountry AndAlso _
+            If (Not DBMovie.Movie.CountriesSpecified OrElse Not Master.eSettings.MovieLockCountry) AndAlso ScrapeOptions.bMainCountries AndAlso _
                 scrapedmovie.CountriesSpecified AndAlso Master.eSettings.MovieScraperCountry AndAlso Not new_Countries Then
                 DBMovie.Movie.Countries.Clear()
                 DBMovie.Movie.Countries.AddRange(scrapedmovie.Countries)
@@ -185,7 +185,7 @@ Public Class NFO
             End If
 
             'Directors
-            If (Not DBMovie.Movie.DirectorsSpecified OrElse Not Master.eSettings.MovieLockDirector) AndAlso ScrapeOptions.bMainDirector AndAlso _
+            If (Not DBMovie.Movie.DirectorsSpecified OrElse Not Master.eSettings.MovieLockDirector) AndAlso ScrapeOptions.bMainDirectors AndAlso _
                 scrapedmovie.DirectorsSpecified AndAlso Master.eSettings.MovieScraperDirector AndAlso Not new_Directors Then
                 DBMovie.Movie.Directors.Clear()
                 DBMovie.Movie.Directors.AddRange(scrapedmovie.Directors)
@@ -195,7 +195,7 @@ Public Class NFO
             End If
 
             'Genres
-            If (Not DBMovie.Movie.GenresSpecified OrElse Not Master.eSettings.MovieLockGenre) AndAlso ScrapeOptions.bMainGenre AndAlso _
+            If (Not DBMovie.Movie.GenresSpecified OrElse Not Master.eSettings.MovieLockGenre) AndAlso ScrapeOptions.bMainGenres AndAlso _
                 scrapedmovie.GenresSpecified AndAlso Master.eSettings.MovieScraperGenre AndAlso Not new_Genres Then
                 'Check if scraped genre(s) are in user language and filter list if not!
                 'TODO StringUtils.GenreFilter too much "/" joins/array-converts for my taste - just work with List of String in future! 
@@ -291,7 +291,7 @@ Public Class NFO
             End If
 
             'Studios
-            If (Not DBMovie.Movie.StudiosSpecified OrElse Not Master.eSettings.MovieLockStudio) AndAlso ScrapeOptions.bMainStudio AndAlso _
+            If (Not DBMovie.Movie.StudiosSpecified OrElse Not Master.eSettings.MovieLockStudio) AndAlso ScrapeOptions.bMainStudios AndAlso _
                 scrapedmovie.StudiosSpecified AndAlso Master.eSettings.MovieScraperStudio AndAlso Not new_Studio Then
                 DBMovie.Movie.Studios.Clear()
 
@@ -503,6 +503,7 @@ Public Class NFO
         'protects the first scraped result against overwriting
         Dim new_Actors As Boolean = False
         Dim new_Certification As Boolean = False
+        Dim new_Creators As Boolean = False
         Dim new_Collections As Boolean = False
         Dim new_ShowCountries As Boolean = False
         Dim new_Credits As Boolean = False
@@ -575,7 +576,7 @@ Public Class NFO
             End If
 
             'Certification
-            If (Not DBTV.TVShow.CertificationsSpecified OrElse Not Master.eSettings.TVLockShowCert) AndAlso ScrapeOptions.bMainCert AndAlso _
+            If (Not DBTV.TVShow.CertificationsSpecified OrElse Not Master.eSettings.TVLockShowCert) AndAlso ScrapeOptions.bMainCertifications AndAlso _
                 scrapedshow.CertificationsSpecified AndAlso Master.eSettings.TVScraperShowCert AndAlso Not new_Certification Then
                 If Master.eSettings.TVScraperShowCertLang = Master.eLang.All Then
                     DBTV.TVShow.Certifications.Clear()
@@ -595,8 +596,16 @@ Public Class NFO
                 DBTV.TVShow.Certifications.Clear()
             End If
 
+            'Creators
+            If (Not DBTV.TVShow.CreatorsSpecified OrElse Not Master.eSettings.TVLockShowCreators) AndAlso ScrapeOptions.bMainCreators AndAlso _
+                scrapedshow.CreatorsSpecified AndAlso Master.eSettings.TVScraperShowCreators AndAlso Not new_Creators Then
+                DBTV.TVShow.Creators = scrapedshow.Creators
+            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowCreators AndAlso Not Master.eSettings.TVLockShowCreators Then
+                DBTV.TVShow.Creators.Clear()
+            End If
+
             'Countries
-            If (Not DBTV.TVShow.CountriesSpecified OrElse Not Master.eSettings.TVLockShowCountry) AndAlso ScrapeOptions.bMainCountry AndAlso _
+            If (Not DBTV.TVShow.CountriesSpecified OrElse Not Master.eSettings.TVLockShowCountry) AndAlso ScrapeOptions.bMainCountries AndAlso _
                 scrapedshow.CountriesSpecified AndAlso Master.eSettings.TVScraperShowCountry AndAlso Not new_ShowCountries Then
                 DBTV.TVShow.Countries.Clear()
                 DBTV.TVShow.Countries.AddRange(scrapedshow.Countries)
@@ -606,7 +615,7 @@ Public Class NFO
             End If
 
             'Genres
-            If (Not DBTV.TVShow.GenresSpecified OrElse Not Master.eSettings.TVLockShowGenre) AndAlso ScrapeOptions.bMainGenre AndAlso _
+            If (Not DBTV.TVShow.GenresSpecified OrElse Not Master.eSettings.TVLockShowGenre) AndAlso ScrapeOptions.bMainGenres AndAlso _
                 scrapedshow.GenresSpecified AndAlso Master.eSettings.TVScraperShowGenre AndAlso Not new_Genres Then
                 'Check if scraped genre(s) are in user language and filter list if not!
                 'TODO StringUtils.GenreFilter too much "/" joins/array-converts for my taste - just work with List of String in future! 
@@ -703,7 +712,7 @@ Public Class NFO
             End If
 
             'Studios
-            If (Not DBTV.TVShow.StudiosSpecified OrElse Not Master.eSettings.TVLockShowStudio) AndAlso ScrapeOptions.bMainStudio AndAlso _
+            If (Not DBTV.TVShow.StudiosSpecified OrElse Not Master.eSettings.TVLockShowStudio) AndAlso ScrapeOptions.bMainStudios AndAlso _
                 scrapedshow.StudiosSpecified AndAlso Master.eSettings.TVScraperShowStudio AndAlso Not new_Studio Then
                 DBTV.TVShow.Studios.Clear()
 
@@ -812,6 +821,7 @@ Public Class NFO
             DBTV.ListTitle = StringUtils.SortTokens_TV(DBTV.TVShow.Title)
         End If
 
+
         'Seasons
         For Each aKnownSeason As Integer In KnownSeasonsIndex
             'create a list of specified episode informations from all scrapers
@@ -907,6 +917,15 @@ Public Class NFO
                     logger.Warn("No valid episode or season number found")
                 End If
             Next
+        End If
+
+        'create the "* All Seasons" entry if needed
+        Dim tmpAllSeasons As Database.DBElement = DBTV.Seasons.FirstOrDefault(Function(f) f.TVSeason.Season = 999)
+        If tmpAllSeasons Is Nothing OrElse tmpAllSeasons.TVSeason Is Nothing Then
+            tmpAllSeasons = New Database.DBElement
+            tmpAllSeasons.TVSeason = New MediaContainers.SeasonDetails With {.Season = 999}
+            tmpAllSeasons = Master.DB.AddTVShowInfoToDBElement(tmpAllSeasons, DBTV)
+            DBTV.Seasons.Add(tmpAllSeasons)
         End If
 
         'cleanup seasons they don't have any episode
@@ -1078,18 +1097,16 @@ Public Class NFO
             'Credits
             If (Not DBTVEpisode.TVEpisode.CreditsSpecified OrElse Not Master.eSettings.TVLockEpisodeCredits) AndAlso _
                 scrapedepisode.CreditsSpecified AndAlso Master.eSettings.TVScraperEpisodeCredits AndAlso Not new_Credits Then
-                DBTVEpisode.TVEpisode.Credits.Clear()
-                DBTVEpisode.TVEpisode.Credits.AddRange(scrapedepisode.Credits)
+                DBTVEpisode.TVEpisode.Credits = scrapedepisode.Credits
                 new_Credits = True
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeCredits AndAlso Not Master.eSettings.TVLockEpisodeCredits Then
                 DBTVEpisode.TVEpisode.Credits.Clear()
             End If
 
             'Directors
-            If (Not DBTVEpisode.TVEpisode.DirectorsSpecified OrElse Not Master.eSettings.TVLockEpisodeDirector) AndAlso ScrapeOptions.bEpisodeDirector AndAlso _
+            If (Not DBTVEpisode.TVEpisode.DirectorsSpecified OrElse Not Master.eSettings.TVLockEpisodeDirector) AndAlso ScrapeOptions.bEpisodeDirectors AndAlso _
                 scrapedepisode.DirectorsSpecified AndAlso Master.eSettings.TVScraperEpisodeDirector AndAlso Not new_Directors Then
-                DBTVEpisode.TVEpisode.Directors.Clear()
-                DBTVEpisode.TVEpisode.Directors.AddRange(scrapedepisode.Directors)
+                DBTVEpisode.TVEpisode.Directors = scrapedepisode.Directors
                 new_Directors = True
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeDirector AndAlso Not Master.eSettings.TVLockEpisodeDirector Then
                 DBTVEpisode.TVEpisode.Directors.Clear()

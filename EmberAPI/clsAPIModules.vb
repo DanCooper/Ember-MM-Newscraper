@@ -1339,44 +1339,44 @@ Public Class ModulesManager
                     sEpisode.NfoPath = String.Empty
                     sEpisode.TVEpisode = New MediaContainers.EpisodeDetails With {.Episode = iEpisode, .Season = iSeason}
                 Next
-            End If
+        End If
 
-            'create a clone of DBTV
-            Dim oShow As Database.DBElement = CType(DBTV.CloneDeep, Database.DBElement)
+        'create a clone of DBTV
+        Dim oShow As Database.DBElement = CType(DBTV.CloneDeep, Database.DBElement)
 
-            If (modules.Count() <= 0) Then
-                logger.Warn("No TV scrapers are defined")
-            Else
-                For Each _externalScraperModule As _externalScraperModuleClass_Data_TV In modules
-                    logger.Trace("Scraping TV Show data using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
-                    AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
-
-                    Dim nShow As New MediaContainers.TVShow
-                    ret = _externalScraperModule.ProcessorModule.Scraper_TVShow(oShow, nShow, ScrapeModifier, ScrapeType, ScrapeOptions)
-
-                    If ret.Cancelled Then Return ret.Cancelled
-
-                    If nShow IsNot Nothing Then
-                        ScrapedList.Add(nShow)
-                    End If
-                    RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
-                    If ret.breakChain Then Exit For
-                Next
-
-                'Merge scraperresults considering global datascraper settings
-                DBTV = NFO.MergeDataScraperResults_TV(DBTV, ScrapedList, ScrapeType, ScrapeOptions, ScrapeModifier.withEpisodes)
-
-                'create cache paths for Actor Thumbs
-                DBTV.TVShow.CreateCachePaths_ActorsThumbs()
-                If ScrapeModifier.withEpisodes Then
-                    For Each tEpisode As Database.DBElement In DBTV.Episodes
-                        tEpisode.TVEpisode.CreateCachePaths_ActorsThumbs()
-                    Next
-                End If
-            End If
-            Return ret.Cancelled
+        If (modules.Count() <= 0) Then
+            logger.Warn("No TV scrapers are defined")
         Else
-            Return True 'Cancelled
+            For Each _externalScraperModule As _externalScraperModuleClass_Data_TV In modules
+                logger.Trace("Scraping TV Show data using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
+                AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
+
+                Dim nShow As New MediaContainers.TVShow
+                ret = _externalScraperModule.ProcessorModule.Scraper_TVShow(oShow, nShow, ScrapeModifier, ScrapeType, ScrapeOptions)
+
+                If ret.Cancelled Then Return ret.Cancelled
+
+                If nShow IsNot Nothing Then
+                    ScrapedList.Add(nShow)
+                End If
+                RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
+                If ret.breakChain Then Exit For
+            Next
+
+            'Merge scraperresults considering global datascraper settings
+            DBTV = NFO.MergeDataScraperResults_TV(DBTV, ScrapedList, ScrapeType, ScrapeOptions, ScrapeModifier.withEpisodes)
+
+            'create cache paths for Actor Thumbs
+            DBTV.TVShow.CreateCachePaths_ActorsThumbs()
+            If ScrapeModifier.withEpisodes Then
+                For Each tEpisode As Database.DBElement In DBTV.Episodes
+                    tEpisode.TVEpisode.CreateCachePaths_ActorsThumbs()
+                Next
+            End If
+        End If
+        Return ret.Cancelled
+        Else
+        Return True 'Cancelled
         End If
     End Function
     ''' <summary>

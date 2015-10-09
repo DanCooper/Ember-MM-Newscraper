@@ -1101,11 +1101,11 @@ Public Class Functions
         'TODO need proper unit test
         With Master.DefaultOptions_Movie
             .bMainActors = Master.eSettings.MovieScraperCast
-            .bMainCert = Master.eSettings.MovieScraperCert
+            .bMainCertifications = Master.eSettings.MovieScraperCert
             .bMainCollectionID = Master.eSettings.MovieScraperCollectionID
-            .bMainCountry = Master.eSettings.MovieScraperCountry
-            .bMainDirector = Master.eSettings.MovieScraperDirector
-            .bMainGenre = Master.eSettings.MovieScraperGenre
+            .bMainCountries = Master.eSettings.MovieScraperCountry
+            .bMainDirectors = Master.eSettings.MovieScraperDirector
+            .bMainGenres = Master.eSettings.MovieScraperGenre
             .bMainMPAA = Master.eSettings.MovieScraperMPAA
             .bMainOriginalTitle = Master.eSettings.MovieScraperOriginalTitle
             .bMainOutline = Master.eSettings.MovieScraperOutline
@@ -1113,7 +1113,7 @@ Public Class Functions
             .bMainRating = Master.eSettings.MovieScraperRating
             .bMainRelease = Master.eSettings.MovieScraperRelease
             .bMainRuntime = Master.eSettings.MovieScraperRuntime
-            .bMainStudio = Master.eSettings.MovieScraperStudio
+            .bMainStudios = Master.eSettings.MovieScraperStudio
             .bMainTagline = Master.eSettings.MovieScraperTagline
             .bMainTitle = Master.eSettings.MovieScraperTitle
             .bMainTop250 = Master.eSettings.MovieScraperTop250
@@ -1131,16 +1131,18 @@ Public Class Functions
             .bEpisodeActors = Master.eSettings.TVScraperEpisodeActors
             .bEpisodeAired = Master.eSettings.TVScraperEpisodeAired
             .bEpisodeCredits = Master.eSettings.TVScraperEpisodeCredits
-            .bEpisodeDirector = Master.eSettings.TVScraperEpisodeDirector
+            .bEpisodeDirectors = Master.eSettings.TVScraperEpisodeDirector
             .bEpisodeGuestStars = Master.eSettings.TVScraperEpisodeGuestStars
             .bEpisodePlot = Master.eSettings.TVScraperEpisodePlot
             .bEpisodeRating = Master.eSettings.TVScraperEpisodeRating
             .bEpisodeRuntime = Master.eSettings.TVScraperEpisodeRuntime
             .bEpisodeTitle = Master.eSettings.TVScraperEpisodeTitle
             .bMainActors = Master.eSettings.TVScraperShowActors
-            .bMainCert = Master.eSettings.TVScraperShowCert
+            .bMainCertifications = Master.eSettings.TVScraperShowCert
+            .bMainCountries = Master.eSettings.TVScraperShowCountry
+            .bMainCreators = Master.eSettings.TVScraperShowCreators
             .bMainEpisodeGuide = Master.eSettings.TVScraperShowEpiGuideURL
-            .bMainGenre = Master.eSettings.TVScraperShowGenre
+            .bMainGenres = Master.eSettings.TVScraperShowGenre
             .bMainMPAA = Master.eSettings.TVScraperShowMPAA
             .bMainOriginalTitle = Master.eSettings.TVScraperShowOriginalTitle
             .bMainPlot = Master.eSettings.TVScraperShowPlot
@@ -1148,7 +1150,7 @@ Public Class Functions
             .bMainRating = Master.eSettings.TVScraperShowRating
             .bMainRuntime = Master.eSettings.TVScraperShowRuntime
             .bMainStatus = Master.eSettings.TVScraperShowStatus
-            .bMainStudio = Master.eSettings.TVScraperShowStudio
+            .bMainStudios = Master.eSettings.TVScraperShowStudio
             .bMainTitle = Master.eSettings.TVScraperShowTitle
             .bSeasonAired = Master.eSettings.TVScraperSeasonAired
             .bSeasonPlot = Master.eSettings.TVScraperSeasonPlot
@@ -1407,20 +1409,20 @@ Public Class Functions
         filterOptions.bEpisodeActors = Options.bEpisodeActors AndAlso Options2.bEpisodeActors
         filterOptions.bEpisodeAired = Options.bEpisodeAired AndAlso Options2.bEpisodeAired
         filterOptions.bEpisodeCredits = Options.bEpisodeCredits AndAlso Options2.bEpisodeCredits
-        filterOptions.bEpisodeDirector = Options.bEpisodeDirector AndAlso Options2.bEpisodeDirector
+        filterOptions.bEpisodeDirectors = Options.bEpisodeDirectors AndAlso Options2.bEpisodeDirectors
         filterOptions.bEpisodeGuestStars = Options.bEpisodeGuestStars AndAlso Options2.bEpisodeGuestStars
         filterOptions.bEpisodePlot = Options.bEpisodePlot AndAlso Options2.bEpisodePlot
         filterOptions.bEpisodeRating = Options.bEpisodeRating AndAlso Options2.bEpisodeRating
         filterOptions.bEpisodeRuntime = Options.bEpisodeRuntime AndAlso Options2.bEpisodeRuntime
         filterOptions.bEpisodeTitle = Options.bEpisodeTitle AndAlso Options2.bEpisodeTitle
         filterOptions.bMainActors = Options.bMainActors AndAlso Options2.bMainActors
-        filterOptions.bMainCert = Options.bMainCert AndAlso Options2.bMainCert
+        filterOptions.bMainCertifications = Options.bMainCertifications AndAlso Options2.bMainCertifications
         filterOptions.bMainCollectionID = Options.bMainCollectionID AndAlso Options2.bMainCollectionID
-        filterOptions.bMainCountry = Options.bMainCountry AndAlso Options2.bMainCountry
-        filterOptions.bMainCreator = Options.bMainCreator AndAlso Options2.bMainCreator
-        filterOptions.bMainDirector = Options.bMainDirector AndAlso Options2.bMainDirector
+        filterOptions.bMainCountries = Options.bMainCountries AndAlso Options2.bMainCountries
+        filterOptions.bMainCreators = Options.bMainCreators AndAlso Options2.bMainCreators
+        filterOptions.bMainDirectors = Options.bMainDirectors AndAlso Options2.bMainDirectors
         filterOptions.bMainEpisodeGuide = Options.bMainEpisodeGuide AndAlso Options2.bMainEpisodeGuide
-        filterOptions.bMainGenre = Options.bMainGenre AndAlso Options2.bMainGenre
+        filterOptions.bMainGenres = Options.bMainGenres AndAlso Options2.bMainGenres
         filterOptions.bMainMPAA = Options.bMainMPAA AndAlso Options2.bMainMPAA
         filterOptions.bMainOriginalTitle = Options.bMainOriginalTitle AndAlso Options2.bMainOriginalTitle
         filterOptions.bMainOutline = Options.bMainOutline AndAlso Options2.bMainOutline
@@ -1430,7 +1432,7 @@ Public Class Functions
         filterOptions.bMainRelease = Options.bMainRelease AndAlso Options2.bMainRelease
         filterOptions.bMainRuntime = Options.bMainRuntime AndAlso Options2.bMainRuntime
         filterOptions.bMainStatus = Options.bMainStatus AndAlso Options2.bMainStatus
-        filterOptions.bMainStudio = Options.bMainStudio AndAlso Options2.bMainStudio
+        filterOptions.bMainStudios = Options.bMainStudios AndAlso Options2.bMainStudios
         filterOptions.bMainTagline = Options.bMainTagline AndAlso Options2.bMainTagline
         filterOptions.bMainTitle = Options.bMainTitle AndAlso Options2.bMainTitle
         filterOptions.bMainTop250 = Options.bMainTop250 AndAlso Options2.bMainTop250
@@ -1839,19 +1841,19 @@ Public Class Structures
         Dim bEpisodeActors As Boolean
         Dim bEpisodeAired As Boolean
         Dim bEpisodeCredits As Boolean
-        Dim bEpisodeDirector As Boolean
+        Dim bEpisodeDirectors As Boolean
         Dim bEpisodeGuestStars As Boolean
         Dim bEpisodePlot As Boolean
         Dim bEpisodeRating As Boolean
         Dim bEpisodeRuntime As Boolean
         Dim bEpisodeTitle As Boolean
         Dim bMainActors As Boolean
-        Dim bMainCert As Boolean
+        Dim bMainCertifications As Boolean
         Dim bMainCollectionID As Boolean
-        Dim bMainCreator As Boolean
-        Dim bMainDirector As Boolean
+        Dim bMainCreators As Boolean
+        Dim bMainDirectors As Boolean
         Dim bMainEpisodeGuide As Boolean
-        Dim bMainGenre As Boolean
+        Dim bMainGenres As Boolean
         Dim bMainMPAA As Boolean
         Dim bMainOriginalTitle As Boolean
         Dim bMainOutline As Boolean
@@ -1861,11 +1863,11 @@ Public Class Structures
         Dim bMainRelease As Boolean
         Dim bMainRuntime As Boolean
         Dim bMainStatus As Boolean
-        Dim bMainStudio As Boolean
+        Dim bMainStudios As Boolean
         Dim bMainTagline As Boolean
         Dim bMainTitle As Boolean
         Dim bMainTop250 As Boolean
-        Dim bMainCountry As Boolean
+        Dim bMainCountries As Boolean
         Dim bMainTags As Boolean
         Dim bMainTrailer As Boolean
         Dim bMainWriters As Boolean

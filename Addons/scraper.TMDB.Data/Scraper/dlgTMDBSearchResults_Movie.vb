@@ -299,8 +299,8 @@ Public Class dlgTMDBSearchResults_Movie
 
     Private Function SetPreviewOptions() As Structures.ScrapeOptions
         Dim aOpt As New Structures.ScrapeOptions
-        aOpt.bMainDirector = True
-        aOpt.bMainGenre = True
+        aOpt.bMainDirectors = True
+        aOpt.bMainGenres = True
         aOpt.bMainOutline = True
         aOpt.bMainPlot = True
         aOpt.bMainTagline = True

@@ -98,7 +98,7 @@ Public Class MoviepilotDE_Data
         _setup = New frmSettingsHolder
         LoadSettings()
         _setup.chkEnabled.Checked = _ScraperEnabled
-        _setup.chkCertification.Checked = ConfigScrapeOptions.bMainCert
+        _setup.chkCertification.Checked = ConfigScrapeOptions.bMainCertifications
         _setup.chkOutline.Checked = ConfigScrapeOptions.bMainOutline
         _setup.chkPlot.Checked = ConfigScrapeOptions.bMainPlot
 
@@ -121,14 +121,14 @@ Public Class MoviepilotDE_Data
     Sub LoadSettings()
         ConfigScrapeOptions.bMainOutline = clsAdvancedSettings.GetBooleanSetting("DoOutline", True)
         ConfigScrapeOptions.bMainPlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", True)
-        ConfigScrapeOptions.bMainCert = clsAdvancedSettings.GetBooleanSetting("DoCert", True)
+        ConfigScrapeOptions.bMainCertifications = clsAdvancedSettings.GetBooleanSetting("DoCert", True)
     End Sub
 
     Sub SaveSettings()
         Using settings = New clsAdvancedSettings()
             settings.SetBooleanSetting("DoOutline", ConfigScrapeOptions.bMainOutline)
             settings.SetBooleanSetting("DoPlot", ConfigScrapeOptions.bMainPlot)
-            settings.SetBooleanSetting("DoCert", ConfigScrapeOptions.bMainCert)
+            settings.SetBooleanSetting("DoCert", ConfigScrapeOptions.bMainCertifications)
         End Using
     End Sub
 
@@ -137,7 +137,7 @@ Public Class MoviepilotDE_Data
     End Sub
 
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Data_Movie.SaveSetupScraper
-        ConfigScrapeOptions.bMainCert = _setup.chkCertification.Checked
+        ConfigScrapeOptions.bMainCertifications = _setup.chkCertification.Checked
         ConfigScrapeOptions.bMainOutline = _setup.chkOutline.Checked
         ConfigScrapeOptions.bMainPlot = _setup.chkPlot.Checked
         SaveSettings()

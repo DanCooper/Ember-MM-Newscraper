@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<CommandFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <transaction name="MyVideosDBSQL_v31_to_v32">
+    <command type="DB">
+      <description>add strOriginalTitle to table tvshow</description>
+      <execute>
+        ALTER TABLE tvshow ADD COLUMN strOriginalTitle TEXT;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>add table creatorlinktvshow</description>
+      <execute>
+        CREATE TABLE creatorlinktvshow (
+        idActor   integer,
+        idShow      integer
+        );
+
+        CREATE UNIQUE INDEX ix_creatorlinktvshow_1
+        ON creatorlinktvshow
+        (idActor, idShow);
+
+        CREATE UNIQUE INDEX ix_creatorlinktvshow_2
+        ON creatorlinktvshow
+        (idShow, idActor);
+      </execute>
+    </command>
+    <command type="DB">
+      <description>add table countrylinktvshow</description>
+      <execute>
+        CREATE TABLE countrylinktvshow (
+        idCountry  integer,
+        idShow    integer
+        );
+
+        CREATE UNIQUE INDEX ix_countrylinktvshow_1
+        ON countrylinktvshow
+        (idCountry, idShow);
+
+        CREATE UNIQUE INDEX ix_countrylinktvshow_2
+        ON countrylinktvshow
+        (idShow, idCountry);
+      </execute>
+    </command>
+    <command type="DB">
+      <description>add table gueststarlinkepisode</description>
+      <execute>
+        CREATE TABLE gueststarlinkepisode (
+        idActor     integer,
+        idEpisode   integer,
+        strRole     text,
+        iOrder      integer
+        );
+
+        CREATE UNIQUE INDEX ix_gueststarlinkepisode_1
+        ON gueststarlinkepisode
+        (idActor, idEpisode);
+
+        CREATE UNIQUE INDEX ix_gueststarlinkepisode_2
+        ON gueststarlinkepisode
+        (idEpisode, idActor);
+      </execute>
+    </command>
+    <command type="DB">
+      <description>edit trigger delete_episode in table episode</description>
+      <execute>
+        DROP TRIGGER delete_episode;
+
+        CREATE TRIGGER delete_episode
+        AFTER DELETE
+        ON episode
+        BEGIN
+        DELETE FROM actorlinkepisode WHERE idEpisode=old.idEpisode;
+        DELETE FROM art WHERE media_id=old.idEpisode AND media_type='episode';
+        DELETE FROM directorlinkepisode WHERE idEpisode=old.idEpisode;
+        DELETE FROM files WHERE idFile=old.idFile;
+        DELETE FROM gueststarlinkepisode WHERE idEpisode=old.idEpisode;
+        DELETE FROM writerlinkepisode WHERE idEpisode=old.idEpisode;
+        DELETE FROM TVVStreams WHERE TVEpID=old.idEpisode;
+        DELETE FROM TVAStreams WHERE TVEpID=old.idEpisode;
+        DELETE FROM TVSubs WHERE TVEpID=old.idEpisode;
+        END;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>edit trigger delete_tvshow in table tvshow</description>
+      <execute>
+        DROP TRIGGER delete_tvshow;
+
+        CREATE TRIGGER delete_tvshow
+        AFTER DELETE
+        ON tvshow
+        BEGIN
+        DELETE FROM actorlinktvshow WHERE idShow=old.idShow;
+        DELETE FROM art WHERE media_id=old.idShow AND media_type='tvshow';
+        DELETE FROM creatorlinktvshow WHERE idShow=old.idShow;
+        DELETE FROM countrylinktvshow WHERE idShow=old.idShow;
+        DELETE FROM directorlinktvshow WHERE idShow=old.idShow;
+        DELETE FROM genrelinktvshow WHERE idShow=old.idShow;
+        DELETE FROM movielinktvshow WHERE idShow=old.idShow;
+        DELETE FROM seasons WHERE idShow=old.idShow;
+        DELETE FROM studiolinktvshow WHERE idShow=old.idShow;
+        DELETE FROM taglinks WHERE idMedia=old.idShow AND media_type='tvshow';
+        END;
+      </execute>
+    </command>
+  </transaction>
+  <noTransaction type="">
+  </noTransaction>
+<!-- 
+  <noTransaction type="DB">
+    <description>nd1</description>
+    <execute>ne1</execute>
+  </noTransaction>
+-->
+</CommandFile>

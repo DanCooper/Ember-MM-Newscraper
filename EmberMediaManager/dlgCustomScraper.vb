@@ -553,20 +553,20 @@ Public Class dlgCustomScraper
         CustomUpdater.ScrapeOptions.bEpisodeActors = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsActors.Checked
         CustomUpdater.ScrapeOptions.bEpisodeAired = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsAired.Checked
         CustomUpdater.ScrapeOptions.bEpisodeCredits = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsWriters.Checked
-        CustomUpdater.ScrapeOptions.bEpisodeDirector = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsDirectors.Checked
+        CustomUpdater.ScrapeOptions.bEpisodeDirectors = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsDirectors.Checked
         CustomUpdater.ScrapeOptions.bEpisodeGuestStars = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsGuestStars.Checked
         CustomUpdater.ScrapeOptions.bEpisodePlot = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsPlot.Checked
         CustomUpdater.ScrapeOptions.bEpisodeRating = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsRating.Checked
         CustomUpdater.ScrapeOptions.bEpisodeRuntime = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsRuntime.Checked
         CustomUpdater.ScrapeOptions.bEpisodeTitle = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsTitle.Checked
         CustomUpdater.ScrapeOptions.bMainActors = chkMainModifierNFO.Checked AndAlso chkMainOptionsActors.Checked
-        CustomUpdater.ScrapeOptions.bMainCert = chkMainModifierNFO.Checked AndAlso chkMainOptionsCertifications.Checked
+        CustomUpdater.ScrapeOptions.bMainCertifications = chkMainModifierNFO.Checked AndAlso chkMainOptionsCertifications.Checked
         CustomUpdater.ScrapeOptions.bMainCollectionID = chkMainModifierNFO.Checked AndAlso chkMainOptionsCollectionID.Checked
-        CustomUpdater.ScrapeOptions.bMainCountry = chkMainModifierNFO.Checked AndAlso chkMainOptionsCountries.Checked
-        CustomUpdater.ScrapeOptions.bMainCreator = chkMainModifierNFO.Checked AndAlso chkMainOptionsCreators.Checked
-        CustomUpdater.ScrapeOptions.bMainDirector = chkMainModifierNFO.Checked AndAlso chkMainOptionsDirectors.Checked
+        CustomUpdater.ScrapeOptions.bMainCountries = chkMainModifierNFO.Checked AndAlso chkMainOptionsCountries.Checked
+        CustomUpdater.ScrapeOptions.bMainCreators = chkMainModifierNFO.Checked AndAlso chkMainOptionsCreators.Checked
+        CustomUpdater.ScrapeOptions.bMainDirectors = chkMainModifierNFO.Checked AndAlso chkMainOptionsDirectors.Checked
         CustomUpdater.ScrapeOptions.bMainEpisodeGuide = chkMainModifierNFO.Checked AndAlso chkMainOptionsEpisodeGuideURL.Checked
-        CustomUpdater.ScrapeOptions.bMainGenre = chkMainModifierNFO.Checked AndAlso chkMainOptionsGenres.Checked
+        CustomUpdater.ScrapeOptions.bMainGenres = chkMainModifierNFO.Checked AndAlso chkMainOptionsGenres.Checked
         CustomUpdater.ScrapeOptions.bMainMPAA = chkMainModifierNFO.Checked AndAlso chkMainOptionsMPAA.Checked
         CustomUpdater.ScrapeOptions.bMainOriginalTitle = chkMainModifierNFO.Checked AndAlso chkMainOptionsOriginalTitle.Checked
         CustomUpdater.ScrapeOptions.bMainOutline = chkMainModifierNFO.Checked AndAlso chkMainOptionsOutline.Checked
@@ -576,7 +576,7 @@ Public Class dlgCustomScraper
         CustomUpdater.ScrapeOptions.bMainRelease = chkMainModifierNFO.Checked AndAlso chkMainOptionsReleaseDate.Checked
         CustomUpdater.ScrapeOptions.bMainRuntime = chkMainModifierNFO.Checked AndAlso chkMainOptionsRuntime.Checked
         CustomUpdater.ScrapeOptions.bMainStatus = chkMainModifierNFO.Checked AndAlso chkMainOptionsStatus.Checked
-        CustomUpdater.ScrapeOptions.bMainStudio = chkMainModifierNFO.Checked AndAlso chkMainOptionsStudios.Checked
+        CustomUpdater.ScrapeOptions.bMainStudios = chkMainModifierNFO.Checked AndAlso chkMainOptionsStudios.Checked
         CustomUpdater.ScrapeOptions.bMainTagline = chkMainModifierNFO.Checked AndAlso chkMainOptionsTagline.Checked
         CustomUpdater.ScrapeOptions.bMainTitle = chkMainModifierNFO.Checked AndAlso chkMainOptionsTitle.Checked
         CustomUpdater.ScrapeOptions.bMainTop250 = chkMainModifierNFO.Checked AndAlso chkMainOptionsTop250.Checked
@@ -615,7 +615,7 @@ Public Class dlgCustomScraper
             CustomUpdater.ScrapeOptions.bEpisodeActors OrElse _
             CustomUpdater.ScrapeOptions.bEpisodeAired OrElse _
             CustomUpdater.ScrapeOptions.bEpisodeCredits OrElse _
-            CustomUpdater.ScrapeOptions.bEpisodeDirector OrElse _
+            CustomUpdater.ScrapeOptions.bEpisodeDirectors OrElse _
             CustomUpdater.ScrapeOptions.bEpisodeGuestStars OrElse _
             CustomUpdater.ScrapeOptions.bEpisodePlot OrElse _
             CustomUpdater.ScrapeOptions.bEpisodeRating OrElse _
@@ -624,13 +624,13 @@ Public Class dlgCustomScraper
             Me.btnOK.Enabled = True
         ElseIf CustomUpdater.ScrapeModifier.MainNFO AndAlso ( _
             CustomUpdater.ScrapeOptions.bMainActors OrElse _
-            CustomUpdater.ScrapeOptions.bMainCert OrElse _
+            CustomUpdater.ScrapeOptions.bMainCertifications OrElse _
             CustomUpdater.ScrapeOptions.bMainCollectionID OrElse _
-            CustomUpdater.ScrapeOptions.bMainCountry OrElse _
-            CustomUpdater.ScrapeOptions.bMainCreator OrElse _
-            CustomUpdater.ScrapeOptions.bMainDirector OrElse _
+            CustomUpdater.ScrapeOptions.bMainCountries OrElse _
+            CustomUpdater.ScrapeOptions.bMainCreators OrElse _
+            CustomUpdater.ScrapeOptions.bMainDirectors OrElse _
             CustomUpdater.ScrapeOptions.bMainEpisodeGuide OrElse _
-            CustomUpdater.ScrapeOptions.bMainGenre OrElse _
+            CustomUpdater.ScrapeOptions.bMainGenres OrElse _
             CustomUpdater.ScrapeOptions.bMainMPAA OrElse _
             CustomUpdater.ScrapeOptions.bMainOriginalTitle OrElse _
             CustomUpdater.ScrapeOptions.bMainOutline OrElse _
@@ -640,7 +640,7 @@ Public Class dlgCustomScraper
             CustomUpdater.ScrapeOptions.bMainRelease OrElse _
             CustomUpdater.ScrapeOptions.bMainRuntime OrElse _
             CustomUpdater.ScrapeOptions.bMainStatus OrElse _
-            CustomUpdater.ScrapeOptions.bMainStudio OrElse _
+            CustomUpdater.ScrapeOptions.bMainStudios OrElse _
             CustomUpdater.ScrapeOptions.bMainTagline OrElse _
             CustomUpdater.ScrapeOptions.bMainTags OrElse _
             CustomUpdater.ScrapeOptions.bMainTitle OrElse _
@@ -852,7 +852,7 @@ Public Class dlgCustomScraper
                     Me.oMainCertificationsAllowed = .TVScraperShowCert
                     Me.oMainCollectionIDAllowed = False
                     Me.oMainCountriesAllowed = .TVScraperShowCountry
-                    Me.oMainCreatorsAllowed = True  'TODO: add creators
+                    Me.oMainCreatorsAllowed = .TVScraperShowCreators
                     Me.oMainDirectorsAllowed = False
                     Me.oMainEpisodeGuideURLAllowed = .TVScraperShowEpiGuideURL
                     Me.oMainGenresAllowed = .TVScraperShowGenre
@@ -873,8 +873,8 @@ Public Class dlgCustomScraper
                     Me.oMainTrailerAllowed = False
                     Me.oMainWritersAllowed = False
                     Me.oMainYearAllowed = False
-                    Me.oSeasonAiredAllowed = True 'TODO: add aired
-                    Me.oSeasonPlotAllowed = True 'TODO: add plot
+                    Me.oSeasonAiredAllowed = .TVScraperSeasonAired
+                    Me.oSeasonPlotAllowed = .TVScraperSeasonPlot
 
                     Me.chkMainModifierAll.Checked = True
                     Me.chkMainOptionsAll.Checked = True
@@ -1102,6 +1102,10 @@ Public Class dlgCustomScraper
         'ClearLogo
         Dim strClearLogo As String = Master.eLang.GetString(1097, "ClearLogo")
         Me.chkMainModifierClearLogo.Text = strClearLogo
+
+        'Creator(s)
+        Dim strCreators As String = Master.eLang.GetString(744, "Creator(s)")
+        Me.chkMainOptionsCreators.Text = strCreators
 
         'DiscArt
         Dim strDiscArt As String = Master.eLang.GetString(1098, "DiscArt")

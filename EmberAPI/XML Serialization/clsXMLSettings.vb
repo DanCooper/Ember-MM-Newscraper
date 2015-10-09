@@ -373,8 +373,10 @@ Partial Public Class clsXMLSettings
     Private _tvlockepisoderating As Boolean
     Private _tvlockepisoderuntime As Boolean
     Private _tvlockepisodetitle As Boolean
+    Private _tvlockseasonplot As Boolean
     Private _tvlockshowactors As Boolean
     Private _tvlockshowcert As Boolean
+    Private _tvlockshowcreators As Boolean
     Private _tvlockshowcountry As Boolean
     Private _tvlockshowgenre As Boolean
     Private _tvlockshowmpaa As Boolean
@@ -412,6 +414,7 @@ Partial Public Class clsXMLSettings
     Private _tvscrapershowcertfsk As Boolean
     Private _tvscrapershowcertlang As String
     Private _tvscrapershowcertonlyvalue As Boolean
+    Private _tvscrapershowcreators As Boolean
     Private _tvscrapershowcountry As Boolean
     Private _tvscrapershowepiguideurl As Boolean
     Private _tvscrapershowgenre As Boolean
@@ -4137,6 +4140,15 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property TVScraperShowCreators() As Boolean
+        Get
+            Return Me._tvscrapershowcreators
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvscrapershowcreators = value
+        End Set
+    End Property
+
     Public Property TVScraperShowCountry() As Boolean
         Get
             Return Me._tvscrapershowcountry
@@ -4524,6 +4536,15 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property TVLockSeasonPlot() As Boolean
+        Get
+            Return Me._tvlockseasonplot
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvlockseasonplot = value
+        End Set
+    End Property
+
     Public Property TVLockShowRating() As Boolean
         Get
             Return Me._tvlockshowrating
@@ -4611,6 +4632,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._tvlockshowcert = value
+        End Set
+    End Property
+
+    Public Property TVLockShowCreators() As Boolean
+        Get
+            Return Me._tvlockshowcreators
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvlockshowcreators = value
         End Set
     End Property
 

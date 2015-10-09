@@ -120,6 +120,7 @@ Partial Class dlgEditTVShow
         Me.colName = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colRole = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colThumb = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colLocalPath = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.txtPlot = New System.Windows.Forms.TextBox()
         Me.txtSortTitle = New System.Windows.Forms.TextBox()
         Me.txtTitle = New System.Windows.Forms.TextBox()
@@ -137,7 +138,8 @@ Partial Class dlgEditTVShow
         Me.lblSortTitle = New System.Windows.Forms.Label()
         Me.lblTitle = New System.Windows.Forms.Label()
         Me.tcEdit = New System.Windows.Forms.TabControl()
-        Me.colLocalPath = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.lblOriginalTitle = New System.Windows.Forms.Label()
+        Me.txtOriginalTitle = New System.Windows.Forms.TextBox()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpExtrafanarts.SuspendLayout()
@@ -301,13 +303,13 @@ Partial Class dlgEditTVShow
         Me.lblExtrafanartsSize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.lblExtrafanartsSize.Visible = False
         '
-        'pnlShowEFanartsSetAsFanart
+        'pnlShowExtrafanartsSetAsFanart
         '
         Me.pnlShowExtrafanartsSetAsFanart.BackColor = System.Drawing.Color.LightGray
         Me.pnlShowExtrafanartsSetAsFanart.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlShowExtrafanartsSetAsFanart.Controls.Add(Me.btnExtrafanartsSetAsFanart)
         Me.pnlShowExtrafanartsSetAsFanart.Location = New System.Drawing.Point(719, 403)
-        Me.pnlShowExtrafanartsSetAsFanart.Name = "pnlShowEFanartsSetAsFanart"
+        Me.pnlShowExtrafanartsSetAsFanart.Name = "pnlShowExtrafanartsSetAsFanart"
         Me.pnlShowExtrafanartsSetAsFanart.Size = New System.Drawing.Size(109, 39)
         Me.pnlShowExtrafanartsSetAsFanart.TabIndex = 21
         '
@@ -1015,6 +1017,7 @@ Partial Class dlgEditTVShow
         Me.tpDetails.Controls.Add(Me.lvActors)
         Me.tpDetails.Controls.Add(Me.txtPlot)
         Me.tpDetails.Controls.Add(Me.txtSortTitle)
+        Me.tpDetails.Controls.Add(Me.txtOriginalTitle)
         Me.tpDetails.Controls.Add(Me.txtTitle)
         Me.tpDetails.Controls.Add(Me.lbMPAA)
         Me.tpDetails.Controls.Add(Me.lblGenre)
@@ -1027,6 +1030,7 @@ Partial Class dlgEditTVShow
         Me.tpDetails.Controls.Add(Me.pbStar1)
         Me.tpDetails.Controls.Add(Me.lblRating)
         Me.tpDetails.Controls.Add(Me.lblPremiered)
+        Me.tpDetails.Controls.Add(Me.lblOriginalTitle)
         Me.tpDetails.Controls.Add(Me.lblSortTitle)
         Me.tpDetails.Controls.Add(Me.lblTitle)
         Me.tpDetails.Location = New System.Drawing.Point(4, 22)
@@ -1075,7 +1079,7 @@ Partial Class dlgEditTVShow
         'txtPremiered
         '
         Me.txtPremiered.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtPremiered.Location = New System.Drawing.Point(6, 105)
+        Me.txtPremiered.Location = New System.Drawing.Point(6, 148)
         Me.txtPremiered.Name = "txtPremiered"
         Me.txtPremiered.Size = New System.Drawing.Size(192, 22)
         Me.txtPremiered.TabIndex = 3
@@ -1110,7 +1114,7 @@ Partial Class dlgEditTVShow
         '
         'pbStar10
         '
-        Me.pbStar10.Location = New System.Drawing.Point(222, 146)
+        Me.pbStar10.Location = New System.Drawing.Point(222, 189)
         Me.pbStar10.Name = "pbStar10"
         Me.pbStar10.Size = New System.Drawing.Size(24, 24)
         Me.pbStar10.TabIndex = 77
@@ -1118,7 +1122,7 @@ Partial Class dlgEditTVShow
         '
         'pbStar9
         '
-        Me.pbStar9.Location = New System.Drawing.Point(198, 146)
+        Me.pbStar9.Location = New System.Drawing.Point(198, 189)
         Me.pbStar9.Name = "pbStar9"
         Me.pbStar9.Size = New System.Drawing.Size(24, 24)
         Me.pbStar9.TabIndex = 76
@@ -1126,7 +1130,7 @@ Partial Class dlgEditTVShow
         '
         'pbStar8
         '
-        Me.pbStar8.Location = New System.Drawing.Point(174, 146)
+        Me.pbStar8.Location = New System.Drawing.Point(174, 189)
         Me.pbStar8.Name = "pbStar8"
         Me.pbStar8.Size = New System.Drawing.Size(24, 24)
         Me.pbStar8.TabIndex = 75
@@ -1134,7 +1138,7 @@ Partial Class dlgEditTVShow
         '
         'pbStar7
         '
-        Me.pbStar7.Location = New System.Drawing.Point(150, 146)
+        Me.pbStar7.Location = New System.Drawing.Point(150, 189)
         Me.pbStar7.Name = "pbStar7"
         Me.pbStar7.Size = New System.Drawing.Size(24, 24)
         Me.pbStar7.TabIndex = 74
@@ -1142,7 +1146,7 @@ Partial Class dlgEditTVShow
         '
         'pbStar6
         '
-        Me.pbStar6.Location = New System.Drawing.Point(126, 146)
+        Me.pbStar6.Location = New System.Drawing.Point(126, 189)
         Me.pbStar6.Name = "pbStar6"
         Me.pbStar6.Size = New System.Drawing.Size(24, 24)
         Me.pbStar6.TabIndex = 73
@@ -1182,9 +1186,9 @@ Partial Class dlgEditTVShow
         Me.clbGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.clbGenre.FormattingEnabled = True
         Me.clbGenre.IntegralHeight = False
-        Me.clbGenre.Location = New System.Drawing.Point(7, 189)
+        Me.clbGenre.Location = New System.Drawing.Point(7, 245)
         Me.clbGenre.Name = "clbGenre"
-        Me.clbGenre.Size = New System.Drawing.Size(192, 268)
+        Me.clbGenre.Size = New System.Drawing.Size(192, 212)
         Me.clbGenre.Sorted = True
         Me.clbGenre.TabIndex = 6
         '
@@ -1239,7 +1243,7 @@ Partial Class dlgEditTVShow
         '
         Me.lblActors.AutoSize = True
         Me.lblActors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblActors.Location = New System.Drawing.Point(214, 173)
+        Me.lblActors.Location = New System.Drawing.Point(214, 229)
         Me.lblActors.Name = "lblActors"
         Me.lblActors.Size = New System.Drawing.Size(43, 13)
         Me.lblActors.TabIndex = 9
@@ -1250,9 +1254,9 @@ Partial Class dlgEditTVShow
         Me.lvActors.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colID, Me.colName, Me.colRole, Me.colThumb, Me.colLocalPath})
         Me.lvActors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lvActors.FullRowSelect = True
-        Me.lvActors.Location = New System.Drawing.Point(217, 189)
+        Me.lvActors.Location = New System.Drawing.Point(217, 245)
         Me.lvActors.Name = "lvActors"
-        Me.lvActors.Size = New System.Drawing.Size(408, 236)
+        Me.lvActors.Size = New System.Drawing.Size(408, 180)
         Me.lvActors.TabIndex = 10
         Me.lvActors.UseCompatibleStateImageBehavior = False
         Me.lvActors.View = System.Windows.Forms.View.Details
@@ -1277,6 +1281,11 @@ Partial Class dlgEditTVShow
         Me.colThumb.Text = "Thumb"
         Me.colThumb.Width = 174
         '
+        'colLocalPath
+        '
+        Me.colLocalPath.Text = "Local Path"
+        Me.colLocalPath.Width = 0
+        '
         'txtPlot
         '
         Me.txtPlot.AcceptsReturn = True
@@ -1290,7 +1299,7 @@ Partial Class dlgEditTVShow
         'txtSortTitle
         '
         Me.txtSortTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtSortTitle.Location = New System.Drawing.Point(6, 64)
+        Me.txtSortTitle.Location = New System.Drawing.Point(6, 107)
         Me.txtSortTitle.Name = "txtSortTitle"
         Me.txtSortTitle.Size = New System.Drawing.Size(192, 22)
         Me.txtSortTitle.TabIndex = 1
@@ -1316,7 +1325,7 @@ Partial Class dlgEditTVShow
         '
         Me.lblGenre.AutoSize = True
         Me.lblGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblGenre.Location = New System.Drawing.Point(4, 173)
+        Me.lblGenre.Location = New System.Drawing.Point(6, 229)
         Me.lblGenre.Name = "lblGenre"
         Me.lblGenre.Size = New System.Drawing.Size(41, 13)
         Me.lblGenre.TabIndex = 5
@@ -1344,7 +1353,7 @@ Partial Class dlgEditTVShow
         '
         'pbStar5
         '
-        Me.pbStar5.Location = New System.Drawing.Point(102, 146)
+        Me.pbStar5.Location = New System.Drawing.Point(102, 189)
         Me.pbStar5.Name = "pbStar5"
         Me.pbStar5.Size = New System.Drawing.Size(24, 24)
         Me.pbStar5.TabIndex = 67
@@ -1352,7 +1361,7 @@ Partial Class dlgEditTVShow
         '
         'pbStar4
         '
-        Me.pbStar4.Location = New System.Drawing.Point(78, 146)
+        Me.pbStar4.Location = New System.Drawing.Point(78, 189)
         Me.pbStar4.Name = "pbStar4"
         Me.pbStar4.Size = New System.Drawing.Size(24, 24)
         Me.pbStar4.TabIndex = 66
@@ -1360,7 +1369,7 @@ Partial Class dlgEditTVShow
         '
         'pbStar3
         '
-        Me.pbStar3.Location = New System.Drawing.Point(54, 146)
+        Me.pbStar3.Location = New System.Drawing.Point(54, 189)
         Me.pbStar3.Name = "pbStar3"
         Me.pbStar3.Size = New System.Drawing.Size(24, 24)
         Me.pbStar3.TabIndex = 65
@@ -1368,7 +1377,7 @@ Partial Class dlgEditTVShow
         '
         'pbStar2
         '
-        Me.pbStar2.Location = New System.Drawing.Point(30, 146)
+        Me.pbStar2.Location = New System.Drawing.Point(30, 189)
         Me.pbStar2.Name = "pbStar2"
         Me.pbStar2.Size = New System.Drawing.Size(24, 24)
         Me.pbStar2.TabIndex = 64
@@ -1376,7 +1385,7 @@ Partial Class dlgEditTVShow
         '
         'pbStar1
         '
-        Me.pbStar1.Location = New System.Drawing.Point(6, 146)
+        Me.pbStar1.Location = New System.Drawing.Point(6, 189)
         Me.pbStar1.Name = "pbStar1"
         Me.pbStar1.Size = New System.Drawing.Size(24, 24)
         Me.pbStar1.TabIndex = 63
@@ -1386,7 +1395,7 @@ Partial Class dlgEditTVShow
         '
         Me.lblRating.AutoSize = True
         Me.lblRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblRating.Location = New System.Drawing.Point(6, 130)
+        Me.lblRating.Location = New System.Drawing.Point(6, 173)
         Me.lblRating.Name = "lblRating"
         Me.lblRating.Size = New System.Drawing.Size(44, 13)
         Me.lblRating.TabIndex = 4
@@ -1396,7 +1405,7 @@ Partial Class dlgEditTVShow
         '
         Me.lblPremiered.AutoSize = True
         Me.lblPremiered.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblPremiered.Location = New System.Drawing.Point(6, 89)
+        Me.lblPremiered.Location = New System.Drawing.Point(6, 132)
         Me.lblPremiered.Name = "lblPremiered"
         Me.lblPremiered.Size = New System.Drawing.Size(63, 13)
         Me.lblPremiered.TabIndex = 2
@@ -1406,7 +1415,7 @@ Partial Class dlgEditTVShow
         '
         Me.lblSortTitle.AutoSize = True
         Me.lblSortTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblSortTitle.Location = New System.Drawing.Point(6, 48)
+        Me.lblSortTitle.Location = New System.Drawing.Point(6, 91)
         Me.lblSortTitle.Name = "lblSortTitle"
         Me.lblSortTitle.Size = New System.Drawing.Size(56, 13)
         Me.lblSortTitle.TabIndex = 0
@@ -1440,10 +1449,23 @@ Partial Class dlgEditTVShow
         Me.tcEdit.Size = New System.Drawing.Size(844, 489)
         Me.tcEdit.TabIndex = 3
         '
-        'colLocalPath
+        'lblOriginalTitle
         '
-        Me.colLocalPath.Text = "Local Path"
-        Me.colLocalPath.Width = 0
+        Me.lblOriginalTitle.AutoSize = True
+        Me.lblOriginalTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblOriginalTitle.Location = New System.Drawing.Point(6, 50)
+        Me.lblOriginalTitle.Name = "lblOriginalTitle"
+        Me.lblOriginalTitle.Size = New System.Drawing.Size(76, 13)
+        Me.lblOriginalTitle.TabIndex = 0
+        Me.lblOriginalTitle.Text = "Original Title:"
+        '
+        'txtOriginalTitle
+        '
+        Me.txtOriginalTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtOriginalTitle.Location = New System.Drawing.Point(6, 66)
+        Me.txtOriginalTitle.Name = "txtOriginalTitle"
+        Me.txtOriginalTitle.Size = New System.Drawing.Size(192, 22)
+        Me.txtOriginalTitle.TabIndex = 1
         '
         'dlgEditTVShow
         '
@@ -1619,5 +1641,7 @@ Partial Class dlgEditTVShow
     Friend WithEvents lblTitle As System.Windows.Forms.Label
     Friend WithEvents tcEdit As System.Windows.Forms.TabControl
     Friend WithEvents colLocalPath As System.Windows.Forms.ColumnHeader
+    Friend WithEvents txtOriginalTitle As System.Windows.Forms.TextBox
+    Friend WithEvents lblOriginalTitle As System.Windows.Forms.Label
 
 End Class

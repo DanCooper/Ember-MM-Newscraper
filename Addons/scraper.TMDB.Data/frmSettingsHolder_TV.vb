@@ -106,7 +106,7 @@ Public Class frmSettingsHolder_TV
         chkScraperShowActors.CheckedChanged, _
         chkScraperShowCert.CheckedChanged, _
         chkScraperShowCountry.CheckedChanged, _
-        chkScraperShowCreator.CheckedChanged, _
+        chkScraperShowCreators.CheckedChanged, _
         chkScraperShowGenre.CheckedChanged, _
         chkScraperShowOriginalTitle.CheckedChanged, _
         chkScraperShowPlot.CheckedChanged, _
@@ -140,6 +140,29 @@ Public Class frmSettingsHolder_TV
         Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
         Me.chkFallBackEng.Text = Master.eLang.GetString(922, "Fallback to english")
         Me.chkGetAdultItems.Text = Master.eLang.GetString(1046, "Include Adult Items")
+        Me.chkScraperEpisodeActors.Text = Master.eLang.GetString(725, "Actors")
+        Me.chkScraperEpisodeAired.Text = Master.eLang.GetString(728, "Aired")
+        Me.chkScraperEpisodeCredits.Text = Master.eLang.GetString(394, "Credits (Writers)")
+        Me.chkScraperEpisodeDirector.Text = Master.eLang.GetString(62, "Director")
+        Me.chkScraperEpisodeGuestStars.Text = Master.eLang.GetString(508, "Guest Stars")
+        Me.chkScraperEpisodePlot.Text = Master.eLang.GetString(65, "Plot")
+        Me.chkScraperEpisodeRating.Text = Master.eLang.GetString(400, "Rating")
+        Me.chkScraperEpisodeTitle.Text = Master.eLang.GetString(21, "Title")
+        Me.chkScraperSeasonAired.Text = Master.eLang.GetString(728, "Aired")
+        Me.chkScraperSeasonPlot.Text = Master.eLang.GetString(65, "Plot")
+        Me.chkScraperShowActors.Text = Master.eLang.GetString(725, "Actors")
+        Me.chkScraperShowCert.Text = Master.eLang.GetString(56, "Certification(s)")
+        Me.chkScraperShowCountry.Text = Master.eLang.GetString(301, "Country")
+        Me.chkScraperShowCreators.Text = Master.eLang.GetString(744, "Creator(s)")
+        Me.chkScraperShowGenre.Text = Master.eLang.GetString(20, "Genre")
+        Me.chkScraperShowOriginalTitle.Text = Master.eLang.GetString(302, "Original Title")
+        Me.chkScraperShowPlot.Text = Master.eLang.GetString(65, "Plot")
+        Me.chkScraperShowPremiered.Text = Master.eLang.GetString(724, "Premiered")
+        Me.chkScraperShowRating.Text = Master.eLang.GetString(400, "Rating")
+        Me.chkScraperShowRuntime.Text = Master.eLang.GetString(396, "Runtime")
+        Me.chkScraperShowStatus.Text = Master.eLang.GetString(215, "Status")
+        Me.chkScraperShowStudio.Text = Master.eLang.GetString(395, "Studio")
+        Me.chkScraperShowTitle.Text = Master.eLang.GetString(21, "Title")
         Me.gbScraperFieldsOpts.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
         Me.gbScraperOpts.Text = Master.eLang.GetString(1186, "Scraper Options")
         Me.lblApiKey.Text = String.Concat(Master.eLang.GetString(870, "TMDB API Key"), ":")

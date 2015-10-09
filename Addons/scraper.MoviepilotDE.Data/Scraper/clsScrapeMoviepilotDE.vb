@@ -80,7 +80,7 @@ Namespace MoviepilotDE
 
                     '....and use result to get the wanted information
                     If Not String.IsNullOrEmpty(HTML) Then
-                        If FilteredOptions.bMainCert Then
+                        If FilteredOptions.bMainCertifications Then
                             nMovie.Certifications.Add(GetCertification(HTML))
                         End If
 

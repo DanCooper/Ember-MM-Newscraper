@@ -335,7 +335,7 @@ Public Class dlgIMDBSearchResults_TV
 
     Private Function SetPreviewOptions() As Structures.ScrapeOptions
         Dim aOpt As New Structures.ScrapeOptions
-        aOpt.bMainGenre = True
+        aOpt.bMainGenres = True
         aOpt.bMainPlot = True
         aOpt.bMainPremiered = True
         aOpt.bMainTitle = True

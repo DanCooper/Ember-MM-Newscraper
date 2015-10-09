@@ -3206,6 +3206,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVScraperShowCreators() As Boolean
+        Get
+            Return Settings._XMLSettings.TVScraperShowCreators
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVScraperShowCreators = value
+        End Set
+    End Property
+
     Public Property TVScraperShowCountry() As Boolean
         Get
             Return Settings._XMLSettings.TVScraperShowCountry
@@ -3584,6 +3593,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVLockSeasonPlot() As Boolean
+        Get
+            Return Settings._XMLSettings.TVLockSeasonPlot
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVLockSeasonPlot = value
+        End Set
+    End Property
+
     Public Property TVLockShowRating() As Boolean
         Get
             Return Settings._XMLSettings.TVLockShowRating
@@ -3671,6 +3689,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.TVLockShowCert = value
+        End Set
+    End Property
+
+    Public Property TVLockShowCreators() As Boolean
+        Get
+            Return Settings._XMLSettings.TVLockShowCreators
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVLockShowCreators = value
         End Set
     End Property
 
@@ -6964,8 +6991,10 @@ Public Class Settings
         Me.TVLockEpisodeRating = False
         Me.TVLockEpisodeRuntime = False
         Me.TVLockEpisodeTitle = False
+        Me.TVLockSeasonPlot = False
         Me.TVLockShowActors = False
         Me.TVLockShowCert = False
+        Me.TVLockShowCreators = False
         Me.TVLockShowCountry = False
         Me.TVLockShowGenre = False
         Me.TVLockShowMPAA = False
@@ -7003,6 +7032,7 @@ Public Class Settings
         Me.TVScraperShowCertFSK = False
         Me.TVScraperShowCertLang = String.Empty
         Me.TVScraperShowCertOnlyValue = False
+        Me.TVScraperShowCreators = True
         Me.TVScraperShowCountry = True
         Me.TVScraperShowEpiGuideURL = False
         Me.TVScraperShowGenre = True
@@ -7308,19 +7338,20 @@ Public Class Settings
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TVShowListSorting) AndAlso (Force OrElse Master.eSettings.TVGeneralShowListSorting.Count <= 0) Then
             Master.eSettings.TVGeneralShowListSorting.Clear()
             Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 0, .Hide = False, .Column = "ListTitle", .LabelID = 21, .LabelText = "Title"})
-            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 1, .Hide = True, .Column = "Status", .LabelID = 215, .LabelText = "Status"})
-            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 2, .Hide = True, .Column = "Episodes", .LabelID = 682, .LabelText = "Episodes"})
-            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 3, .Hide = False, .Column = "NfoPath", .LabelID = 150, .LabelText = "NFO"})
-            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 4, .Hide = False, .Column = "BannerPath", .LabelID = 838, .LabelText = "Banner"})
-            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 5, .Hide = False, .Column = "CharacterArtPath", .LabelID = 1140, .LabelText = "CharacterArt"})
-            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 6, .Hide = False, .Column = "ClearArtPath", .LabelID = 1096, .LabelText = "ClearArt"})
-            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 7, .Hide = False, .Column = "ClearLogoPath", .LabelID = 1097, .LabelText = "ClearLogo"})
-            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 8, .Hide = False, .Column = "EFanartsPath", .LabelID = 992, .LabelText = "Extrafanarts"})
-            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 9, .Hide = False, .Column = "FanartPath", .LabelID = 149, .LabelText = "Fanart"})
-            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 10, .Hide = False, .Column = "LandscapePath", .LabelID = 1035, .LabelText = "Landscape"})
-            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 11, .Hide = False, .Column = "PosterPath", .LabelID = 148, .LabelText = "Poster"})
-            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 12, .Hide = False, .Column = "ThemePath", .LabelID = 1118, .LabelText = "Theme"})
-            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 13, .Hide = False, .Column = "HasWatched", .LabelID = 981, .LabelText = "Watched"})
+            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 1, .Hide = True, .Column = "strOriginalTitle", .LabelID = 302, .LabelText = "Original Title"})
+            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 2, .Hide = True, .Column = "Status", .LabelID = 215, .LabelText = "Status"})
+            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 3, .Hide = True, .Column = "Episodes", .LabelID = 682, .LabelText = "Episodes"})
+            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 4, .Hide = False, .Column = "NfoPath", .LabelID = 150, .LabelText = "NFO"})
+            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 5, .Hide = False, .Column = "BannerPath", .LabelID = 838, .LabelText = "Banner"})
+            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 6, .Hide = False, .Column = "CharacterArtPath", .LabelID = 1140, .LabelText = "CharacterArt"})
+            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 7, .Hide = False, .Column = "ClearArtPath", .LabelID = 1096, .LabelText = "ClearArt"})
+            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 8, .Hide = False, .Column = "ClearLogoPath", .LabelID = 1097, .LabelText = "ClearLogo"})
+            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 9, .Hide = False, .Column = "EFanartsPath", .LabelID = 992, .LabelText = "Extrafanarts"})
+            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 10, .Hide = False, .Column = "FanartPath", .LabelID = 149, .LabelText = "Fanart"})
+            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 11, .Hide = False, .Column = "LandscapePath", .LabelID = 1035, .LabelText = "Landscape"})
+            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 12, .Hide = False, .Column = "PosterPath", .LabelID = 148, .LabelText = "Poster"})
+            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 13, .Hide = False, .Column = "ThemePath", .LabelID = 1118, .LabelText = "Theme"})
+            Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 14, .Hide = False, .Column = "HasWatched", .LabelID = 981, .LabelText = "Watched"})
         End If
     End Sub
 

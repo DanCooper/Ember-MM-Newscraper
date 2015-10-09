@@ -246,7 +246,7 @@ Namespace TVDBs
             If bwTVDB.CancellationPending Then Return Nothing
 
             'Genres
-            If FilteredOptions.bMainGenre Then
+            If FilteredOptions.bMainGenres Then
                 Dim aGenres As List(Of String) = Nothing
                 If Results.Series.Genre IsNot Nothing Then
                     aGenres = Results.Series.Genre.Split(CChar(",")).ToList
@@ -318,7 +318,7 @@ Namespace TVDBs
             If bwTVDB.CancellationPending Then Return Nothing
 
             'Studios
-            If FilteredOptions.bMainStudio Then
+            If FilteredOptions.bMainStudios Then
                 nShow.Studios.Add(Results.Series.Network)
             End If
 
@@ -471,7 +471,7 @@ Namespace TVDBs
             End If
 
             'Writer
-            If FilteredOptions.bEpisodeDirector Then
+            If FilteredOptions.bEpisodeDirectors Then
                 If EpisodeInfo.Director IsNot Nothing AndAlso Not String.IsNullOrEmpty(EpisodeInfo.Director) Then
                     Dim DirectorsList As New List(Of String)
                     Dim charsToTrim() As Char = {"|"c, ","c}

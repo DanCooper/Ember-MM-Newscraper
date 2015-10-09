@@ -309,8 +309,8 @@ Public Class dlgTVDBSearchResults
 
     Private Function SetPreviewOptions() As Structures.ScrapeOptions
         Dim aOpt As New Structures.ScrapeOptions
-        aOpt.bMainCreator = True
-        aOpt.bMainGenre = True
+        aOpt.bMainCreators = True
+        aOpt.bMainGenres = True
         aOpt.bMainPlot = True
         aOpt.bMainPremiered = True
         aOpt.bMainTitle = True
