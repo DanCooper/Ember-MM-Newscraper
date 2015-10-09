@@ -57,10 +57,14 @@ Namespace TMDB
 
             Try
                 Dim Results As TMDbLib.Objects.General.Images = Nothing
+                Dim APIResult As Task(Of TMDbLib.Objects.General.ImagesWithId)
+
                 If ContentType = Enums.ContentType.Movie Then
-                    Results = _TMDBApi.GetMovieImages(CInt(TMDBID))
+                    APIResult = Task.Run(Function() _TMDBApi.GetMovieImages(CInt(TMDBID)))
+                    Results = APIResult.Result
                 ElseIf ContentType = Enums.ContentType.MovieSet Then
-                    Results = _TMDBApi.GetCollectionImages(CInt(TMDBID))
+                    APIResult = Task.Run(Function() _TMDBApi.GetCollectionImages(CInt(TMDBID)))
+                    Results = APIResult.Result
                 End If
 
                 If Results Is Nothing Then
@@ -119,7 +123,10 @@ Namespace TMDB
 
             Try
                 Dim Results As TMDbLib.Objects.General.ImagesWithId = Nothing
-                Results = _TMDBApi.GetTvShowImages(CInt(tmdbID))
+                Dim APIResult As Task(Of TMDbLib.Objects.General.ImagesWithId)
+                APIResult = Task.Run(Function() _TMDBApi.GetTvShowImages(CInt(tmdbID)))
+
+                Results = APIResult.Result
 
                 If Results Is Nothing Then
                     Return Nothing
@@ -170,14 +177,16 @@ Namespace TMDB
             Return alContainer
         End Function
 
-        Public Function GetImages_TVEpisode(ByVal tmdbID As String, ByRef iSeason As Integer, ByRef iEpisode As Integer) As MediaContainers.SearchResultsContainer
+        Public Function GetImages_TVEpisode(ByVal tmdbID As String, ByVal iSeason As Integer, ByVal iEpisode As Integer) As MediaContainers.SearchResultsContainer
             Dim alContainer As New MediaContainers.SearchResultsContainer
 
             If bwTMDB.CancellationPending Then Return Nothing
 
             Try
                 Dim Results As TMDbLib.Objects.General.StillImages = Nothing
-                Results = _TMDBApi.GetTvEpisodeImages(CInt(tmdbID), iSeason, iEpisode)
+                Dim APIResult As Task(Of TMDbLib.Objects.General.StillImages)
+                APIResult = Task.Run(Function() _TMDBApi.GetTvEpisodeImages(CInt(tmdbID), iSeason, iEpisode))
+                Results = APIResult.Result
 
                 If Results Is Nothing Then
                     Return Nothing
@@ -211,11 +220,17 @@ Namespace TMDB
             Return alContainer
         End Function
 
-        Public Function GetTMDBbyTVDB(ByRef tvdbID As String) As String
+        Public Function GetTMDBbyTVDB(ByVal tvdbID As String) As String
             Dim tmdbID As String = String.Empty
 
             Try
-                tmdbID = _TMDBApi.Find(TMDbLib.Objects.Find.FindExternalSource.TvDb, tvdbID).TvResults.Item(0).Id.ToString
+                Dim APIResult As Task(Of TMDbLib.Objects.Find.FindContainer)
+                APIResult = Task.Run(Function() _TMDBApi.Find(TMDbLib.Objects.Find.FindExternalSource.TvDb, tvdbID))
+
+                If APIResult IsNot Nothing AndAlso APIResult.Result IsNot Nothing AndAlso _
+                    APIResult.Result.TvResults IsNot Nothing AndAlso APIResult.Result.TvResults.Count > 0 Then
+                    tmdbID = APIResult.Result.TvResults.Item(0).Id.ToString
+                End If
 
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)

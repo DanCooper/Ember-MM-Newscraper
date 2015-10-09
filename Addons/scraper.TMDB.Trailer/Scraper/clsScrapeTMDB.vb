@@ -85,9 +85,13 @@ Namespace TMDB
 
             If String.IsNullOrEmpty(tmdbID) OrElse Not Integer.TryParse(tmdbID, 0) Then Return alTrailers
 
-            trailers = _TMDBApi.GetMovie(CInt(tmdbID), TMDbLib.Objects.Movies.MovieMethods.Videos).Videos
+            Dim APIResult As Task(Of TMDbLib.Objects.Movies.Movie)
+            APIResult = Task.Run(Function() _TMDBApi.GetMovie(CInt(tmdbID), TMDbLib.Objects.Movies.MovieMethods.Videos))
+
+            trailers = APIResult.Result.Videos
             If trailers.Results Is Nothing OrElse trailers.Results.Count = 0 AndAlso _MySettings.FallBackEng Then
-                trailers = _TMDBApiE.GetMovie(CInt(tmdbID), TMDbLib.Objects.Movies.MovieMethods.Videos).Videos
+                APIResult = Task.Run(Function() _TMDBApiE.GetMovie(CInt(tmdbID), TMDbLib.Objects.Movies.MovieMethods.Videos))
+                trailers = APIResult.Result.Videos
                 If trailers.Results Is Nothing OrElse trailers.Results.Count = 0 Then
                     Return alTrailers
                 End If

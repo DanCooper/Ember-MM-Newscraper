@@ -121,9 +121,9 @@
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="TMDbLib, Version=0.8.3.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="TMDbLib, Version=0.8.5.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\TMDbLib.0.8.3\lib\net45\TMDbLib.dll</HintPath>
+      <HintPath>..\..\packages\TMDbLib.0.8.5.0-alpha\lib\net45\TMDbLib.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -132,6 +132,7 @@
     <Import Include="System.Collections.Generic" />
     <Import Include="System.Drawing" />
     <Import Include="System.Linq" />
+    <Import Include="System.Threading.Tasks" />
     <Import Include="System.Web" />
     <Import Include="System.Windows.Forms" />
     <Import Include="System.Xml.Linq" />
