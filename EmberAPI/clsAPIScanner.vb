@@ -803,7 +803,7 @@ Public Class Scanner
                         MediaInfo.UpdateTVMediaInfo(cEpisode)
                     End If
                 Else
-                    If Not String.IsNullOrEmpty(cEpisode.TVShow.TVDB) AndAlso cEpisode.ShowID >= 0 Then
+                    If isNew AndAlso Not String.IsNullOrEmpty(cEpisode.TVShow.TVDB) AndAlso cEpisode.ShowID >= 0 Then
                         If String.IsNullOrEmpty(cEpisode.TVEpisode.Aired) Then cEpisode.TVEpisode.Aired = sEpisode.Aired
                         If Not ModulesManager.Instance.ScrapeData_TVEpisode(cEpisode, Master.DefaultOptions_TV, False) Then
                             If Not String.IsNullOrEmpty(cEpisode.TVEpisode.Title) Then
@@ -826,7 +826,7 @@ Public Class Scanner
                         MediaInfo.UpdateTVMediaInfo(cEpisode)
                     End If
                 Else
-                    If Not String.IsNullOrEmpty(cEpisode.TVShow.TVDB) AndAlso cEpisode.ShowID >= 0 Then
+                    If isNew AndAlso Not String.IsNullOrEmpty(cEpisode.TVShow.TVDB) AndAlso cEpisode.ShowID >= 0 Then
                         If cEpisode.TVEpisode.Season = -1 Then cEpisode.TVEpisode.Season = sEpisode.Season
                         If cEpisode.TVEpisode.Episode = -1 Then cEpisode.TVEpisode.Episode = sEpisode.Episode
                         If Not ModulesManager.Instance.ScrapeData_TVEpisode(cEpisode, Master.DefaultOptions_TV, False) Then
@@ -841,6 +841,21 @@ Public Class Scanner
                         End If
                     Else
                         cEpisode.TVEpisode = New MediaContainers.EpisodeDetails
+                    End If
+                End If
+            End If
+
+            'Scrape episode images
+            If isNew Then
+                Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
+                Dim ScrapeModifier As New Structures.ScrapeModifier
+                If String.IsNullOrEmpty(cEpisode.ImagesContainer.Fanart.LocalFilePath) AndAlso Master.eSettings.TVEpisodeFanartAnyEnabled Then ScrapeModifier.EpisodeFanart = True
+                If String.IsNullOrEmpty(cEpisode.ImagesContainer.Poster.LocalFilePath) AndAlso Master.eSettings.TVEpisodePosterAnyEnabled Then ScrapeModifier.EpisodePoster = True
+                If ScrapeModifier.EpisodeFanart OrElse ScrapeModifier.EpisodePoster Then
+                    If Not ModulesManager.Instance.ScrapeImage_TV(cEpisode, SearchResultsContainer, ScrapeModifier, False) Then
+                        Dim newPreferredImages As New MediaContainers.ImagesContainer
+                        Images.SetDefaultImages(cEpisode, newPreferredImages, SearchResultsContainer, ScrapeModifier, Enums.ContentType.TVEpisode)
+                        cEpisode.ImagesContainer = newPreferredImages
                     End If
                 End If
             End If

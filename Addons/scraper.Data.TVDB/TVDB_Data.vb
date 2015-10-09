@@ -343,6 +343,7 @@ Public Class TVDB_Data
     End Function
 
     Public Function Scraper_TVSeason(ByRef oDBTVSeason As Database.DBElement, ByRef nSeason As MediaContainers.SeasonDetails, ByVal ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_TV.Scraper_TVSeason
+        nSeason = Nothing
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 

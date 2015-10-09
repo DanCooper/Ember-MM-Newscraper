@@ -1008,7 +1008,7 @@ Namespace TMDB
             Dim SeasonInfo As TMDbLib.Objects.TvShows.TvSeason = _TMDBApi.GetTvSeason(tmdbID, SeasonNumber, TMDbLib.Objects.TvShows.TvSeasonMethods.Credits Or TMDbLib.Objects.TvShows.TvSeasonMethods.ExternalIds)
 
             If SeasonInfo Is Nothing OrElse SeasonInfo.Id Is Nothing OrElse Not SeasonInfo.Id > 0 Then
-                logger.Error(String.Format("Can't scrape or season not found: tmdbID={0}, Season{1}", tmdbID, SeasonNumber))
+                logger.Error(String.Format("Can't scrape or season not found: tmdbID={0}, Season={1}", tmdbID, SeasonNumber))
                 Return Nothing
             End If
 

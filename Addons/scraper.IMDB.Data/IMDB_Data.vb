@@ -454,11 +454,13 @@ Public Class IMDB_Data
         '    nEpisode = _scraper.GetTVEpisodeInfo(CInt(_scraper.GetTMDBbyTVDB(TVDBID)), Season, Episode, filterOptions)
         'End If
 
+        nEpisode = Nothing
         logger.Trace("Finished TMDB Scraper")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
     Public Function Scraper_TVSeason(ByRef oDBTVSeason As Database.DBElement, ByRef nSeason As MediaContainers.SeasonDetails, ByVal ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_TV.Scraper_TVSeason
+        nSeason = Nothing
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
     ''' <summary>
