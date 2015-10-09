@@ -321,14 +321,16 @@ Public Class dlgTrailerSelect
                 End Using
             End If
         Else
-            If Master.isWindows Then
-                Process.Start(Me.lvTrailers.SelectedItems(0).SubItems(2).Text.ToString)
-            Else
-                Using Explorer As New Process
-                    Explorer.StartInfo.FileName = "xdg-open"
-                    Explorer.StartInfo.Arguments = Me.lvTrailers.SelectedItems(0).SubItems(2).Text.ToString
-                    Explorer.Start()
-                End Using
+            If Not String.IsNullOrEmpty(Me.lvTrailers.SelectedItems(0).SubItems(2).Text.ToString) Then
+                If Master.isWindows Then
+                    Process.Start(Me.lvTrailers.SelectedItems(0).SubItems(2).Text.ToString)
+                Else
+                    Using Explorer As New Process
+                        Explorer.StartInfo.FileName = "xdg-open"
+                        Explorer.StartInfo.Arguments = Me.lvTrailers.SelectedItems(0).SubItems(2).Text.ToString
+                        Explorer.Start()
+                    End Using
+                End If
             End If
         End If
     End Sub
@@ -458,17 +460,29 @@ Public Class dlgTrailerSelect
     End Sub
 
     Private Sub lvTrailers_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvTrailers.DoubleClick
-        If Not String.IsNullOrEmpty(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString) Then
-            Dim vLink As String = Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString
-            If Regex.IsMatch(vLink, "https?:\/\/.*imdb.*\/video\/imdb\/.*") Then
-                Using dFormats As New dlgTrailerFormat
-                    Dim sFormat As TrailerLinksContainer = dFormats.ShowDialog(vLink)
-                    Me.TrailerAddToPlayer(sFormat.VideoURL)
-                End Using
-            ElseIf Regex.IsMatch(vLink, "https?:\/\/movietrailers\.apple\.com.*?") OrElse Regex.IsMatch(vLink, "https?:\/\/trailers.apple.com\*?") Then
-                MessageBox.Show(String.Format(Master.eLang.GetString(1169, "Please use the {0}{1}{0} button for this trailer"), """", Master.eLang.GetString(931, "Open In Browser")), Master.eLang.GetString(271, "Error Playing Trailer"), MessageBoxButtons.OK, MessageBoxIcon.Information)
+        If Not _withPlayer OrElse pnlTrailerPreviewNoPlayer.Visible Then
+            If Master.isWindows Then
+                Process.Start(Me.lvTrailers.SelectedItems(0).SubItems(2).Text.ToString)
             Else
-                Me.TrailerAddToPlayer(vLink)
+                Using Explorer As New Process
+                    Explorer.StartInfo.FileName = "xdg-open"
+                    Explorer.StartInfo.Arguments = Me.lvTrailers.SelectedItems(0).SubItems(2).Text.ToString
+                    Explorer.Start()
+                End Using
+            End If
+        Else
+            If Not String.IsNullOrEmpty(Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString) Then
+                Dim vLink As String = Me.lvTrailers.SelectedItems(0).SubItems(1).Text.ToString
+                If Regex.IsMatch(vLink, "https?:\/\/.*imdb.*\/video\/imdb\/.*") Then
+                    Using dFormats As New dlgTrailerFormat
+                        Dim sFormat As TrailerLinksContainer = dFormats.ShowDialog(vLink)
+                        Me.TrailerAddToPlayer(sFormat.VideoURL)
+                    End Using
+                ElseIf Regex.IsMatch(vLink, "https?:\/\/movietrailers\.apple\.com.*?") OrElse Regex.IsMatch(vLink, "https?:\/\/trailers.apple.com\*?") Then
+                    MessageBox.Show(String.Format(Master.eLang.GetString(1169, "Please use the {0}{1}{0} button for this trailer"), """", Master.eLang.GetString(931, "Open In Browser")), Master.eLang.GetString(271, "Error Playing Trailer"), MessageBoxButtons.OK, MessageBoxIcon.Information)
+                Else
+                    Me.TrailerAddToPlayer(vLink)
+                End If
             End If
         End If
     End Sub

@@ -960,9 +960,9 @@ Public Class Enums
         HD1080p60fps = 5
         HD720p = 6
         HD720p60fps = 7
-        HQ480p = 8
+        HQ480p = 8 'or 576 for 4:3 media
         SQ360p = 9
-        SQ240p = 10
+        SQ240p = 10 'or 270
         SQ144p = 11
         SQ144p15fps = 12
         UNKNOWN = 13
