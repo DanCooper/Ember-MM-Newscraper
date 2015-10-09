@@ -184,7 +184,7 @@ Public Class dlgImgSelect
         Me.pnlTopImages.Height = iTopImage_DistanceTop + iTopImage_Size_Panel.Height + 20
     End Sub
 
-    Public Overloads Function ShowDialog(ByVal DBElement As Database.DBElement, ByRef SearchResultsContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifier As Structures.ScrapeModifier, ByVal ContentType As Enums.ContentType, Optional ByVal _isEdit As Boolean = False) As DialogResult
+    Public Overloads Function ShowDialog(ByVal DBElement As Database.DBElement, ByRef SearchResultsContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifier As Structures.ScrapeModifier, ByVal ContentType As Enums.ContentType) As DialogResult
         Me.tSearchResultsContainer = SearchResultsContainer
         Me.tDBElementResult = CType(DBElement.CloneDeep, Database.DBElement)
         Me.tScrapeModifier = ScrapeModifier
