@@ -1177,7 +1177,7 @@ Namespace TMDB
                     End If
 
                 Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SingleScrape
-                    If r.Matches.Count >= 0 Then
+                    If r.Matches.Count > 0 Then
                         b = GetMovieSetInfo(r.Matches.Item(0).TMDB, nMovieSet, False, FilteredOptions, True)
                     End If
             End Select
