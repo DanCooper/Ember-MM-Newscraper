@@ -35,8 +35,6 @@ Public Class Images
 
 	Private _ms As MemoryStream
     Private Ret As Byte()
-    <NonSerialized()> _
-    Private sHTTP As HTTP
 	Private _image As Image
 
 #End Region 'Fields
@@ -107,7 +105,6 @@ Public Class Images
         'In with the new...
         _image = Nothing
         _ms = New MemoryStream()
-        sHTTP = New HTTP()
     End Sub
     ''' <summary>
     ''' Delete the given arbitrary file
@@ -836,7 +833,7 @@ Public Class Images
         If String.IsNullOrEmpty(sURL) Then Return
 
         Try
-            If sHTTP Is Nothing Then sHTTP = New HTTP
+            Dim sHTTP As New HTTP
             sHTTP.StartDownloadImage(sURL)
             While sHTTP.IsDownloading
                 Application.DoEvents()
@@ -3593,14 +3590,12 @@ Public Class Images
                     _ms.Dispose()
                 End If
                 If _image IsNot Nothing Then _image.Dispose()
-                If sHTTP IsNot Nothing Then sHTTP.Dispose()
             End If
 
             ' free unmanaged resources (unmanaged objects) and override Finalize() below.
             ' set large fields to null.
             _ms = Nothing
             _image = Nothing
-            sHTTP = Nothing
         End If
         Me.disposedValue = True
     End Sub
