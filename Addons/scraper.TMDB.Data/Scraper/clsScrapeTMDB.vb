@@ -1071,6 +1071,11 @@ Namespace TMDB
             nSeason.TMDB = CStr(SeasonInfo.Id)
             If SeasonInfo.ExternalIds IsNot Nothing AndAlso SeasonInfo.ExternalIds.TvdbId IsNot Nothing Then nSeason.TVDB = CStr(SeasonInfo.ExternalIds.TvdbId)
 
+            'Season #
+            If CInt(SeasonInfo.SeasonNumber) >= 0 Then
+                nSeason.Season = CInt(SeasonInfo.SeasonNumber)
+            End If
+
             'Aired
             If FilteredOptions.bSeasonAired Then
                 If SeasonInfo.AirDate IsNot Nothing Then
@@ -1094,14 +1099,11 @@ Namespace TMDB
                 End If
             End If
 
-            'Season #
-            If CInt(SeasonInfo.SeasonNumber) >= 0 Then
-                nSeason.Season = CInt(SeasonInfo.SeasonNumber)
-            End If
-
             'Title
-            If SeasonInfo.Name IsNot Nothing Then
-                nSeason.Title = SeasonInfo.Name
+            If FilteredOptions.bSeasonTitle Then
+                If SeasonInfo.Name IsNot Nothing Then
+                    nSeason.Title = SeasonInfo.Name
+                End If
             End If
 
             Return nSeason

@@ -128,13 +128,13 @@ Partial Class dlgCustomScraper
         Me.chkMainOptionsCertifications = New System.Windows.Forms.CheckBox()
         Me.chkMainOptionsCreators = New System.Windows.Forms.CheckBox()
         Me.chkMainOptionsReleaseDate = New System.Windows.Forms.CheckBox()
-        Me.chkMainOptionsRating = New System.Windows.Forms.CheckBox()
         Me.chkMainOptionsPlot = New System.Windows.Forms.CheckBox()
         Me.chkMainOptionsDirectors = New System.Windows.Forms.CheckBox()
         Me.chkMainOptionsOutline = New System.Windows.Forms.CheckBox()
         Me.chkMainOptionsEpisodeGuideURL = New System.Windows.Forms.CheckBox()
         Me.chkMainOptionsGenres = New System.Windows.Forms.CheckBox()
         Me.chkMainOptionsMPAA = New System.Windows.Forms.CheckBox()
+        Me.chkMainOptionsRating = New System.Windows.Forms.CheckBox()
         Me.chkMainOptionsPremiered = New System.Windows.Forms.CheckBox()
         Me.pnlBottom = New System.Windows.Forms.Panel()
         Me.tblBottom = New System.Windows.Forms.TableLayoutPanel()
@@ -182,6 +182,7 @@ Partial Class dlgCustomScraper
         Me.btnSeasonScrapeOptionsNone = New System.Windows.Forms.Button()
         Me.chkSeasonOptionsAired = New System.Windows.Forms.CheckBox()
         Me.chkSeasonOptionsPlot = New System.Windows.Forms.CheckBox()
+        Me.chkSeasonOptionsTitle = New System.Windows.Forms.CheckBox()
         Me.pnlTop.SuspendLayout()
         Me.tblTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -954,17 +955,6 @@ Partial Class dlgCustomScraper
         Me.chkMainOptionsReleaseDate.Text = "Release Date"
         Me.chkMainOptionsReleaseDate.UseVisualStyleBackColor = True
         '
-        'chkMainOptionsRating
-        '
-        Me.chkMainOptionsRating.AutoSize = True
-        Me.chkMainOptionsRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkMainOptionsRating.Location = New System.Drawing.Point(133, 55)
-        Me.chkMainOptionsRating.Name = "chkMainOptionsRating"
-        Me.chkMainOptionsRating.Size = New System.Drawing.Size(60, 17)
-        Me.chkMainOptionsRating.TabIndex = 6
-        Me.chkMainOptionsRating.Text = "Rating"
-        Me.chkMainOptionsRating.UseVisualStyleBackColor = True
-        '
         'chkMainOptionsPlot
         '
         Me.chkMainOptionsPlot.AutoSize = True
@@ -1030,6 +1020,17 @@ Partial Class dlgCustomScraper
         Me.chkMainOptionsMPAA.TabIndex = 2
         Me.chkMainOptionsMPAA.Text = "MPAA"
         Me.chkMainOptionsMPAA.UseVisualStyleBackColor = True
+        '
+        'chkMainOptionsRating
+        '
+        Me.chkMainOptionsRating.AutoSize = True
+        Me.chkMainOptionsRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkMainOptionsRating.Location = New System.Drawing.Point(133, 55)
+        Me.chkMainOptionsRating.Name = "chkMainOptionsRating"
+        Me.chkMainOptionsRating.Size = New System.Drawing.Size(60, 17)
+        Me.chkMainOptionsRating.TabIndex = 6
+        Me.chkMainOptionsRating.Text = "Rating"
+        Me.chkMainOptionsRating.UseVisualStyleBackColor = True
         '
         'chkMainOptionsPremiered
         '
@@ -1607,7 +1608,8 @@ Partial Class dlgCustomScraper
         Me.tblSeasonScrapeOptions.Controls.Add(Me.chkSeasonOptionsAll, 0, 0)
         Me.tblSeasonScrapeOptions.Controls.Add(Me.btnSeasonScrapeOptionsNone, 1, 0)
         Me.tblSeasonScrapeOptions.Controls.Add(Me.chkSeasonOptionsAired, 0, 1)
-        Me.tblSeasonScrapeOptions.Controls.Add(Me.chkSeasonOptionsPlot, 1, 1)
+        Me.tblSeasonScrapeOptions.Controls.Add(Me.chkSeasonOptionsPlot, 0, 2)
+        Me.tblSeasonScrapeOptions.Controls.Add(Me.chkSeasonOptionsTitle, 1, 1)
         Me.tblSeasonScrapeOptions.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblSeasonScrapeOptions.Location = New System.Drawing.Point(3, 18)
         Me.tblSeasonScrapeOptions.Name = "tblSeasonScrapeOptions"
@@ -1665,12 +1667,23 @@ Partial Class dlgCustomScraper
         '
         Me.chkSeasonOptionsPlot.AutoSize = True
         Me.chkSeasonOptionsPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkSeasonOptionsPlot.Location = New System.Drawing.Point(78, 32)
+        Me.chkSeasonOptionsPlot.Location = New System.Drawing.Point(3, 55)
         Me.chkSeasonOptionsPlot.Name = "chkSeasonOptionsPlot"
         Me.chkSeasonOptionsPlot.Size = New System.Drawing.Size(46, 17)
         Me.chkSeasonOptionsPlot.TabIndex = 13
         Me.chkSeasonOptionsPlot.Text = "Plot"
         Me.chkSeasonOptionsPlot.UseVisualStyleBackColor = True
+        '
+        'chkSeasonOptionsTitle
+        '
+        Me.chkSeasonOptionsTitle.AutoSize = True
+        Me.chkSeasonOptionsTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkSeasonOptionsTitle.Location = New System.Drawing.Point(78, 32)
+        Me.chkSeasonOptionsTitle.Name = "chkSeasonOptionsTitle"
+        Me.chkSeasonOptionsTitle.Size = New System.Drawing.Size(47, 17)
+        Me.chkSeasonOptionsTitle.TabIndex = 13
+        Me.chkSeasonOptionsTitle.Text = "Title"
+        Me.chkSeasonOptionsTitle.UseVisualStyleBackColor = True
         '
         'dlgCustomScraper
         '
@@ -1813,6 +1826,7 @@ Partial Class dlgCustomScraper
     Friend WithEvents chkEpisodeModifierNFO As System.Windows.Forms.CheckBox
     Friend WithEvents chkEpisodeModifierActorThumbs As System.Windows.Forms.CheckBox
     Friend WithEvents chkEpisodeModifierMetaData As System.Windows.Forms.CheckBox
+    Friend WithEvents chkSeasonOptionsTitle As System.Windows.Forms.CheckBox
 
 #End Region 'Methods
 

@@ -985,11 +985,11 @@ Public Class NFO
             End If
 
             'Title
-            If (Not DBTVSeason.TVSeason.TitleSpecified OrElse Not Master.eSettings.TVLockEpisodeTitle) AndAlso ScrapeOptions.bEpisodeTitle AndAlso _
-                scrapedseason.TitleSpecified AndAlso Master.eSettings.TVScraperEpisodeTitle AndAlso Not new_Title Then
+            If (Not DBTVSeason.TVSeason.TitleSpecified OrElse Not Master.eSettings.TVLockSeasonTitle) AndAlso ScrapeOptions.bSeasonTitle AndAlso _
+                scrapedseason.TitleSpecified AndAlso Master.eSettings.TVScraperSeasonTitle AndAlso Not new_Title Then
                 DBTVSeason.TVSeason.Title = scrapedseason.Title
                 new_Title = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeTitle AndAlso Not Master.eSettings.TVLockEpisodeTitle Then
+            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperSeasonTitle AndAlso Not Master.eSettings.TVLockSeasonTitle Then
                 DBTVSeason.TVSeason.Title = String.Empty
             End If
         Next

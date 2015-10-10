@@ -3058,6 +3058,7 @@ Public Class dlgSettings
             Me.chkTVLockEpisodeRuntime.Checked = .TVLockEpisodeRuntime
             Me.chkTVLockEpisodeTitle.Checked = .TVLockEpisodeTitle
             Me.chkTVLockSeasonPlot.Checked = .TVLockSeasonPlot
+            Me.chkTVLockSeasonTitle.Checked = .TVLockSeasonTitle
             Me.chkTVLockShowCert.Checked = .TVLockShowCert
             Me.chkTVLockShowCreators.Checked = .TVLockShowCreators
             Me.chkTVLockShowGenre.Checked = .TVLockShowGenre
@@ -3084,6 +3085,7 @@ Public Class dlgSettings
             Me.chkTVScraperMetaDataScan.Checked = .TVScraperMetaDataScan
             Me.chkTVScraperSeasonAired.Checked = .TVScraperSeasonAired
             Me.chkTVScraperSeasonPlot.Checked = .TVScraperSeasonPlot
+            Me.chkTVScraperSeasonTitle.Checked = .TVScraperSeasonTitle
             Me.chkTVScraperShowActors.Checked = .TVScraperShowActors
             Me.chkTVScraperShowCert.Checked = .TVScraperShowCert
             Me.chkTVScraperShowCreators.Checked = .TVScraperShowCreators
@@ -4921,6 +4923,7 @@ Public Class dlgSettings
             .TVLockEpisodeRuntime = Me.chkTVLockEpisodeRuntime.Checked
             .TVLockEpisodeTitle = Me.chkTVLockEpisodeTitle.Checked
             .TVLockSeasonPlot = Me.chkTVLockSeasonPlot.Checked
+            .TVLockSeasonTitle = Me.chkTVLockSeasonTitle.Checked
             .TVLockShowCert = Me.chkTVLockShowCert.Checked
             .TVLockShowCreators = Me.chkTVLockShowCreators.Checked
             .TVLockShowGenre = Me.chkTVLockShowGenre.Checked
@@ -4952,6 +4955,7 @@ Public Class dlgSettings
             .TVScraperOptionsOrdering = CType(Me.cbTVScraperOptionsOrdering.SelectedItem, KeyValuePair(Of String, Enums.Ordering)).Value
             .TVScraperSeasonAired = Me.chkTVScraperSeasonAired.Checked
             .TVScraperSeasonPlot = Me.chkTVScraperSeasonPlot.Checked
+            .TVScraperSeasonTitle = Me.chkTVScraperSeasonTitle.Checked
             .TVScraperShowActors = Me.chkTVScraperShowActors.Checked
             .TVScraperShowCert = Me.chkTVScraperShowCert.Checked
             .TVScraperShowCreators = Me.chkTVScraperShowCreators.Checked
@@ -7629,6 +7633,7 @@ Public Class dlgSettings
         chkTVLockEpisodeRuntime.CheckedChanged, _
         chkTVLockEpisodeTitle.CheckedChanged, _
         chkTVLockSeasonPlot.CheckedChanged, _
+        chkTVLockSeasonTitle.CheckedChanged, _
         chkTVLockShowCert.CheckedChanged, _
         chkTVLockShowCreators.CheckedChanged, _
         chkTVLockShowGenre.CheckedChanged, _
@@ -7654,6 +7659,7 @@ Public Class dlgSettings
         chkTVScraperEpisodeTitle.CheckedChanged, _
         chkTVScraperSeasonAired.CheckedChanged, _
         chkTVScraperSeasonPlot.CheckedChanged, _
+        chkTVScraperSeasonTitle.CheckedChanged, _
         chkTVScraperShowActors.CheckedChanged, _
         chkTVScraperShowCreators.CheckedChanged, _
         chkTVScraperShowEpiGuideURL.CheckedChanged, _

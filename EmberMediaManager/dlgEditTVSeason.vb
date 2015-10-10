@@ -377,6 +377,7 @@ Public Class dlgEditTVSeason
 
             .txtAired.Text = Me.tmpDBElement.TVSeason.Aired
             .txtPlot.Text = Me.tmpDBElement.TVSeason.Plot
+            .txtTitle.Text = Me.tmpDBElement.TVSeason.Title
 
             'Images and TabPages
 
@@ -544,6 +545,7 @@ Public Class dlgEditTVSeason
 
         Me.tmpDBElement.TVSeason.Aired = Me.txtAired.Text.Trim
         Me.tmpDBElement.TVSeason.Plot = Me.txtPlot.Text.Trim
+        Me.tmpDBElement.TVSeason.Title = Me.txtTitle.Text.Trim
     End Sub
 
     Private Sub SetUp()
@@ -582,6 +584,10 @@ Public Class dlgEditTVSeason
         Me.btnSetFanartScrape.Text = strScrape
         Me.btnSetLandscapeScrape.Text = strScrape
         Me.btnSetPosterScrape.Text = strScrape
+
+        'Title
+        Dim strTitle As String = Master.eLang.GetString(21, "Title")
+        Me.lblTitle.Text = strTitle
 
         Me.Text = Master.eLang.GetString(769, "Edit Season")
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")

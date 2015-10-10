@@ -64,6 +64,8 @@ Partial Class dlgEditTVSeason
         Me.Cancel_Button = New System.Windows.Forms.Button()
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.ofdImage = New System.Windows.Forms.OpenFileDialog()
+        Me.lblTitle = New System.Windows.Forms.Label()
+        Me.txtTitle = New System.Windows.Forms.TextBox()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEdit.SuspendLayout()
@@ -142,6 +144,8 @@ Partial Class dlgEditTVSeason
         '
         'tpDetails
         '
+        Me.tpDetails.Controls.Add(Me.lblTitle)
+        Me.tpDetails.Controls.Add(Me.txtTitle)
         Me.tpDetails.Controls.Add(Me.txtAired)
         Me.tpDetails.Controls.Add(Me.lblAired)
         Me.tpDetails.Controls.Add(Me.lblPlot)
@@ -156,7 +160,7 @@ Partial Class dlgEditTVSeason
         'txtAired
         '
         Me.txtAired.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtAired.Location = New System.Drawing.Point(7, 22)
+        Me.txtAired.Location = New System.Drawing.Point(265, 24)
         Me.txtAired.Name = "txtAired"
         Me.txtAired.Size = New System.Drawing.Size(137, 22)
         Me.txtAired.TabIndex = 32
@@ -165,7 +169,7 @@ Partial Class dlgEditTVSeason
         '
         Me.lblAired.AutoSize = True
         Me.lblAired.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblAired.Location = New System.Drawing.Point(5, 7)
+        Me.lblAired.Location = New System.Drawing.Point(263, 9)
         Me.lblAired.Name = "lblAired"
         Me.lblAired.Size = New System.Drawing.Size(38, 13)
         Me.lblAired.TabIndex = 31
@@ -175,7 +179,7 @@ Partial Class dlgEditTVSeason
         '
         Me.lblPlot.AutoSize = True
         Me.lblPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblPlot.Location = New System.Drawing.Point(5, 47)
+        Me.lblPlot.Location = New System.Drawing.Point(5, 55)
         Me.lblPlot.Name = "lblPlot"
         Me.lblPlot.Size = New System.Drawing.Size(31, 13)
         Me.lblPlot.TabIndex = 29
@@ -186,7 +190,7 @@ Partial Class dlgEditTVSeason
         Me.txtPlot.AcceptsReturn = True
         Me.txtPlot.BackColor = System.Drawing.SystemColors.Window
         Me.txtPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtPlot.Location = New System.Drawing.Point(7, 63)
+        Me.txtPlot.Location = New System.Drawing.Point(7, 71)
         Me.txtPlot.Multiline = True
         Me.txtPlot.Name = "txtPlot"
         Me.txtPlot.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
@@ -568,6 +572,25 @@ Partial Class dlgEditTVSeason
         Me.OK_Button.TabIndex = 0
         Me.OK_Button.Text = "OK"
         '
+        'lblTitle
+        '
+        Me.lblTitle.AutoSize = True
+        Me.lblTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblTitle.Location = New System.Drawing.Point(5, 9)
+        Me.lblTitle.Name = "lblTitle"
+        Me.lblTitle.Size = New System.Drawing.Size(32, 13)
+        Me.lblTitle.TabIndex = 33
+        Me.lblTitle.Text = "Title:"
+        '
+        'txtTitle
+        '
+        Me.txtTitle.BackColor = System.Drawing.SystemColors.Window
+        Me.txtTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtTitle.Location = New System.Drawing.Point(7, 24)
+        Me.txtTitle.Name = "txtTitle"
+        Me.txtTitle.Size = New System.Drawing.Size(252, 22)
+        Me.txtTitle.TabIndex = 34
+        '
         'dlgEditTVSeason
         '
         Me.AcceptButton = Me.OK_Button
@@ -644,5 +667,7 @@ Partial Class dlgEditTVSeason
     Friend WithEvents txtPlot As System.Windows.Forms.TextBox
     Friend WithEvents txtAired As System.Windows.Forms.TextBox
     Friend WithEvents lblAired As System.Windows.Forms.Label
+    Friend WithEvents lblTitle As System.Windows.Forms.Label
+    Friend WithEvents txtTitle As System.Windows.Forms.TextBox
 
 End Class

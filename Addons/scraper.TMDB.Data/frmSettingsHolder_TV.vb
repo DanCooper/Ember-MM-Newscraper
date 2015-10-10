@@ -103,6 +103,7 @@ Public Class frmSettingsHolder_TV
         chkScraperEpisodeTitle.CheckedChanged, _
         chkScraperSeasonAired.CheckedChanged, _
         chkScraperSeasonPlot.CheckedChanged, _
+        chkScraperSeasonTitle.CheckedChanged, _
         chkScraperShowActors.CheckedChanged, _
         chkScraperShowCert.CheckedChanged, _
         chkScraperShowCountry.CheckedChanged, _
@@ -150,6 +151,7 @@ Public Class frmSettingsHolder_TV
         Me.chkScraperEpisodeTitle.Text = Master.eLang.GetString(21, "Title")
         Me.chkScraperSeasonAired.Text = Master.eLang.GetString(728, "Aired")
         Me.chkScraperSeasonPlot.Text = Master.eLang.GetString(65, "Plot")
+        Me.chkScraperSeasonTitle.Text = Master.eLang.GetString(21, "Title")
         Me.chkScraperShowActors.Text = Master.eLang.GetString(725, "Actors")
         Me.chkScraperShowCert.Text = Master.eLang.GetString(56, "Certification(s)")
         Me.chkScraperShowCountry.Text = Master.eLang.GetString(301, "Country")

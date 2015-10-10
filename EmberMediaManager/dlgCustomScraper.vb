@@ -94,6 +94,7 @@ Public Class dlgCustomScraper
     Private oMainYearAllowed As Boolean
     Private oSeasonAiredAllowed As Boolean
     Private oSeasonPlotAllowed As Boolean
+    Private oSeasonTitleAllowed As Boolean
 
 #End Region 'Fields
 
@@ -252,6 +253,7 @@ Public Class dlgCustomScraper
 
         chkSeasonOptionsAired.Checked = False
         chkSeasonOptionsPlot.Checked = False
+        chkSeasonOptionsTitle.Checked = False
 
         CheckEnable()
     End Sub
@@ -504,9 +506,12 @@ Public Class dlgCustomScraper
                     chkSeasonOptionsAired.Enabled = False
                     chkSeasonOptionsPlot.Checked = Me.oSeasonPlotAllowed
                     chkSeasonOptionsPlot.Enabled = False
+                    chkSeasonOptionsTitle.Checked = Me.oSeasonTitleAllowed
+                    chkSeasonOptionsTitle.Enabled = False
                 Else
                     chkSeasonOptionsAired.Enabled = Me.oSeasonAiredAllowed
                     chkSeasonOptionsPlot.Enabled = Me.oSeasonPlotAllowed
+                    chkSeasonOptionsTitle.Enabled = Me.oSeasonTitleAllowed
                 End If
             Else
                 gbSeasonScrapeOptions.Enabled = False
@@ -585,6 +590,7 @@ Public Class dlgCustomScraper
         CustomUpdater.ScrapeOptions.bMainYear = chkMainModifierNFO.Checked AndAlso chkMainOptionsYear.Checked
         CustomUpdater.ScrapeOptions.bSeasonAired = chkSpecialModifierWithSeasons.Checked AndAlso chkMainModifierNFO.Checked AndAlso chkSeasonOptionsAired.Checked   'TODO: check. Atm we save the season infos to tv show NFO
         CustomUpdater.ScrapeOptions.bSeasonPlot = chkSpecialModifierWithSeasons.Checked AndAlso chkMainModifierNFO.Checked AndAlso chkSeasonOptionsPlot.Checked     'TODO: check. Atm we save the season infos to tv show NFO
+        CustomUpdater.ScrapeOptions.bSeasonTitle = chkSpecialModifierWithSeasons.Checked AndAlso chkMainModifierNFO.Checked AndAlso chkSeasonOptionsTitle.Checked     'TODO: check. Atm we save the season infos to tv show NFO
 
         If CustomUpdater.ScrapeModifier.EpisodeActorThumbs OrElse _
             CustomUpdater.ScrapeModifier.EpisodeFanart OrElse _
@@ -732,6 +738,7 @@ Public Class dlgCustomScraper
                     Me.oMainYearAllowed = .MovieScraperYear
                     Me.oSeasonAiredAllowed = False
                     Me.oSeasonPlotAllowed = False
+                    Me.oSeasonTitleAllowed = False
 
                     Me.chkMainModifierAll.Checked = True
                     Me.chkMainOptionsAll.Checked = True
@@ -806,6 +813,7 @@ Public Class dlgCustomScraper
                     Me.oMainYearAllowed = False
                     Me.oSeasonAiredAllowed = False
                     Me.oSeasonPlotAllowed = False
+                    Me.oSeasonTitleAllowed = False
 
                     Me.chkMainModifierAll.Checked = True
                     Me.chkMainOptionsAll.Checked = True
@@ -875,6 +883,7 @@ Public Class dlgCustomScraper
                     Me.oMainYearAllowed = False
                     Me.oSeasonAiredAllowed = .TVScraperSeasonAired
                     Me.oSeasonPlotAllowed = .TVScraperSeasonPlot
+                    Me.oSeasonTitleAllowed = .TVScraperSeasonTitle
 
                     Me.chkMainModifierAll.Checked = True
                     Me.chkMainOptionsAll.Checked = True
@@ -1054,6 +1063,7 @@ Public Class dlgCustomScraper
         chkSeasonOptionsAired.Click, _
         chkSeasonOptionsAll.Click, _
         chkSeasonOptionsPlot.Click, _
+        chkSeasonOptionsTitle.Click, _
         chkSpecialModifierAll.Click, _
         chkSpecialModifierWithEpisodes.Click, _
         chkSpecialModifierWithSeasons.Click

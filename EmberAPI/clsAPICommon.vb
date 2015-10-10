@@ -1154,6 +1154,7 @@ Public Class Functions
             .bMainTitle = Master.eSettings.TVScraperShowTitle
             .bSeasonAired = Master.eSettings.TVScraperSeasonAired
             .bSeasonPlot = Master.eSettings.TVScraperSeasonPlot
+            .bSeasonTitle = Master.eSettings.TVScraperSeasonTitle
         End With
     End Sub
     ''' <summary>
@@ -1441,6 +1442,7 @@ Public Class Functions
         filterOptions.bMainYear = Options.bMainYear AndAlso Options2.bMainYear
         filterOptions.bSeasonAired = Options.bSeasonAired AndAlso Options2.bSeasonAired
         filterOptions.bSeasonPlot = Options.bSeasonPlot AndAlso Options2.bSeasonPlot
+        filterOptions.bSeasonTitle = Options.bSeasonTitle AndAlso Options2.bSeasonTitle
         Return filterOptions
     End Function
 
@@ -1874,6 +1876,7 @@ Public Class Structures
         Dim bMainYear As Boolean
         Dim bSeasonAired As Boolean
         Dim bSeasonPlot As Boolean
+        Dim bSeasonTitle As Boolean
     End Structure
 
     Public Structure SettingsResult

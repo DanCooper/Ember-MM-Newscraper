@@ -4488,7 +4488,7 @@ Public Class Database
                 Dim par_seasons_strPlot As SQLite.SQLiteParameter = SQLcommand_insert_seasons.Parameters.Add("par_seasons_strPlot", DbType.String, 0, "strPlot")
                 par_seasons_idShow.Value = _season.ShowID
                 par_seasons_Season.Value = _season.TVSeason.Season
-                par_seasons_SeasonText.Value = StringUtils.FormatSeasonText(_season.TVSeason.Season)
+                par_seasons_SeasonText.Value = If(_season.TVSeason.TitleSpecified, _season.TVSeason.Title, StringUtils.FormatSeasonText(_season.TVSeason.Season))
                 par_seasons_Lock.Value = _season.IsLock
                 par_seasons_Mark.Value = _season.IsMark
                 par_seasons_New.Value = True
@@ -4509,7 +4509,7 @@ Public Class Database
                 Dim par_seasons_strTMDB As SQLite.SQLiteParameter = SQLcommand_update_seasons.Parameters.Add("par_seasons_strTMDB", DbType.String, 0, "strTMDB")
                 Dim par_seasons_strAired As SQLite.SQLiteParameter = SQLcommand_update_seasons.Parameters.Add("par_seasons_strAired", DbType.String, 0, "strAired")
                 Dim par_seasons_strPlot As SQLite.SQLiteParameter = SQLcommand_update_seasons.Parameters.Add("par_seasons_strPlot", DbType.String, 0, "strPlot")
-                par_seasons_SeasonText.Value = StringUtils.FormatSeasonText(_season.TVSeason.Season)
+                par_seasons_SeasonText.Value = If(_season.TVSeason.TitleSpecified, _season.TVSeason.Title, StringUtils.FormatSeasonText(_season.TVSeason.Season))
                 par_seasons_Lock.Value = _season.IsLock
                 par_seasons_Mark.Value = _season.IsMark
                 par_seasons_New.Value = False

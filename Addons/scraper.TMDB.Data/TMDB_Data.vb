@@ -274,6 +274,7 @@ Public Class TMDB_Data
         _setup_TV.chkScraperEpisodeTitle.Checked = ConfigScrapeOptions_TV.bEpisodeTitle
         _setup_TV.chkScraperSeasonAired.Checked = ConfigScrapeOptions_TV.bSeasonAired
         _setup_TV.chkScraperSeasonPlot.Checked = ConfigScrapeOptions_TV.bSeasonPlot
+        _setup_TV.chkScraperSeasonTitle.Checked = ConfigScrapeOptions_TV.bSeasonTitle
         _setup_TV.chkScraperShowActors.Checked = ConfigScrapeOptions_TV.bMainActors
         _setup_TV.chkScraperShowCert.Checked = ConfigScrapeOptions_TV.bMainCertifications
         _setup_TV.chkScraperShowCountry.Checked = ConfigScrapeOptions_TV.bMainCountries
@@ -361,6 +362,7 @@ Public Class TMDB_Data
         ConfigScrapeOptions_TV.bEpisodeTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle", True, , Enums.ContentType.TVEpisode)
         ConfigScrapeOptions_TV.bSeasonAired = clsAdvancedSettings.GetBooleanSetting("DoAired", True, , Enums.ContentType.TVSeason)
         ConfigScrapeOptions_TV.bSeasonPlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", True, , Enums.ContentType.TVSeason)
+        ConfigScrapeOptions_TV.bSeasonTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle", True, , Enums.ContentType.TVSeason)
         ConfigScrapeOptions_TV.bMainActors = clsAdvancedSettings.GetBooleanSetting("DoActors", True, , Enums.ContentType.TVShow)
         ConfigScrapeOptions_TV.bMainCertifications = clsAdvancedSettings.GetBooleanSetting("DoCert", True, , Enums.ContentType.TVShow)
         ConfigScrapeOptions_TV.bMainCountries = clsAdvancedSettings.GetBooleanSetting("DoCountry", True, , Enums.ContentType.TVShow)
@@ -433,6 +435,7 @@ Public Class TMDB_Data
             settings.SetBooleanSetting("DoTitle", ConfigScrapeOptions_TV.bEpisodeTitle, , , Enums.ContentType.TVEpisode)
             settings.SetBooleanSetting("DoAired", ConfigScrapeOptions_TV.bSeasonAired, , , Enums.ContentType.TVSeason)
             settings.SetBooleanSetting("DoPlot", ConfigScrapeOptions_TV.bSeasonPlot, , , Enums.ContentType.TVSeason)
+            settings.SetBooleanSetting("DoTitle", ConfigScrapeOptions_TV.bSeasonTitle, , , Enums.ContentType.TVSeason)
             settings.SetBooleanSetting("DoActors", ConfigScrapeOptions_TV.bMainActors, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("DoCert", ConfigScrapeOptions_TV.bMainCertifications, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("DoCountry", ConfigScrapeOptions_TV.bMainCountries, , , Enums.ContentType.TVShow)
@@ -519,6 +522,7 @@ Public Class TMDB_Data
         ConfigScrapeOptions_TV.bMainTitle = _setup_TV.chkScraperShowTitle.Checked
         ConfigScrapeOptions_TV.bSeasonAired = _setup_TV.chkScraperSeasonAired.Checked
         ConfigScrapeOptions_TV.bSeasonPlot = _setup_TV.chkScraperSeasonPlot.Checked
+        ConfigScrapeOptions_TV.bSeasonTitle = _setup_TV.chkScraperSeasonTitle.Checked
         _SpecialSettings_TV.FallBackEng = _setup_TV.chkFallBackEng.Checked
         _SpecialSettings_TV.GetAdultItems = _setup_TV.chkGetAdultItems.Checked
         SaveSettings_TV()

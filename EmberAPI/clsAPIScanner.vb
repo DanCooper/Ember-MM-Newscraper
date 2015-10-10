@@ -1034,6 +1034,7 @@ Public Class Scanner
                                 If nfoSeason IsNot Nothing Then
                                     tmpSeason.TVSeason.Aired = nfoSeason.Aired
                                     tmpSeason.TVSeason.Plot = nfoSeason.Plot
+                                    tmpSeason.TVSeason.Title = nfoSeason.Title
                                     tmpSeason.TVSeason.TMDB = nfoSeason.TMDB
                                     tmpSeason.TVSeason.TVDB = nfoSeason.TVDB
                                 End If
