@@ -1183,6 +1183,8 @@ Partial Class dlgSettings
         Me.lblTVScraperGlobalHeaderSeasonsLock = New System.Windows.Forms.Label()
         Me.lblTVScraperGlobalHeaderSeasons = New System.Windows.Forms.Label()
         Me.chkTVScraperSeasonAired = New System.Windows.Forms.CheckBox()
+        Me.chkTVScraperSeasonTitle = New System.Windows.Forms.CheckBox()
+        Me.chkTVLockSeasonTitle = New System.Windows.Forms.CheckBox()
         Me.gbTVScraperMetaDataOpts = New System.Windows.Forms.GroupBox()
         Me.tblTVScraperMetaDataOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.gbTVScraperDefFIExtOpts = New System.Windows.Forms.GroupBox()
@@ -1558,8 +1560,6 @@ Partial Class dlgSettings
         Me.scSettingsBody = New System.Windows.Forms.SplitContainer()
         Me.scSettingsMain = New System.Windows.Forms.SplitContainer()
         Me.tblSettingsFooter = New System.Windows.Forms.TableLayoutPanel()
-        Me.chkTVScraperSeasonTitle = New System.Windows.Forms.CheckBox()
-        Me.chkTVLockSeasonTitle = New System.Windows.Forms.CheckBox()
         Me.gbGeneralMiscOpts.SuspendLayout
         Me.tblGeneralMisc.SuspendLayout
         Me.gbGeneralDaemon.SuspendLayout
@@ -4359,7 +4359,7 @@ Partial Class dlgSettings
         '
         Me.btnOK.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.btnOK.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.btnOK.Location = New System.Drawing.Point(1019, 41)
+        Me.btnOK.Location = New System.Drawing.Point(1129, 41)
         Me.btnOK.Margin = New System.Windows.Forms.Padding(3, 3, 3, 10)
         Me.btnOK.Name = "btnOK"
         Me.btnOK.Size = New System.Drawing.Size(75, 23)
@@ -4372,7 +4372,7 @@ Partial Class dlgSettings
         Me.btnApply.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.btnApply.Enabled = false
         Me.btnApply.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.btnApply.Location = New System.Drawing.Point(859, 41)
+        Me.btnApply.Location = New System.Drawing.Point(969, 41)
         Me.btnApply.Margin = New System.Windows.Forms.Padding(3, 3, 3, 10)
         Me.btnApply.Name = "btnApply"
         Me.btnApply.Size = New System.Drawing.Size(74, 23)
@@ -4385,7 +4385,7 @@ Partial Class dlgSettings
         Me.btnCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.btnCancel.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.btnCancel.Location = New System.Drawing.Point(939, 41)
+        Me.btnCancel.Location = New System.Drawing.Point(1049, 41)
         Me.btnCancel.Margin = New System.Windows.Forms.Padding(3, 3, 3, 10)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(74, 23)
@@ -4403,7 +4403,7 @@ Partial Class dlgSettings
         Me.pnlSettingsTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlSettingsTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlSettingsTop.Name = "pnlSettingsTop"
-        Me.pnlSettingsTop.Size = New System.Drawing.Size(1104, 64)
+        Me.pnlSettingsTop.Size = New System.Drawing.Size(1214, 64)
         Me.pnlSettingsTop.TabIndex = 3
         '
         'lblSettingsTopDetails
@@ -5965,7 +5965,7 @@ Partial Class dlgSettings
         Me.pnlSettingsCurrent.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlSettingsCurrent.Location = New System.Drawing.Point(5, 3)
         Me.pnlSettingsCurrent.Name = "pnlSettingsCurrent"
-        Me.pnlSettingsCurrent.Size = New System.Drawing.Size(1094, 27)
+        Me.pnlSettingsCurrent.Size = New System.Drawing.Size(1204, 27)
         Me.pnlSettingsCurrent.TabIndex = 5
         '
         'pbSettingsCurrent
@@ -16894,6 +16894,28 @@ Partial Class dlgSettings
         Me.chkTVScraperSeasonAired.TabIndex = 4
         Me.chkTVScraperSeasonAired.UseVisualStyleBackColor = true
         '
+        'chkTVScraperSeasonTitle
+        '
+        Me.chkTVScraperSeasonTitle.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.chkTVScraperSeasonTitle.AutoSize = true
+        Me.chkTVScraperSeasonTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVScraperSeasonTitle.Location = New System.Drawing.Point(242, 390)
+        Me.chkTVScraperSeasonTitle.Name = "chkTVScraperSeasonTitle"
+        Me.chkTVScraperSeasonTitle.Size = New System.Drawing.Size(15, 14)
+        Me.chkTVScraperSeasonTitle.TabIndex = 4
+        Me.chkTVScraperSeasonTitle.UseVisualStyleBackColor = true
+        '
+        'chkTVLockSeasonTitle
+        '
+        Me.chkTVLockSeasonTitle.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.chkTVLockSeasonTitle.AutoSize = true
+        Me.chkTVLockSeasonTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVLockSeasonTitle.Location = New System.Drawing.Point(271, 390)
+        Me.chkTVLockSeasonTitle.Name = "chkTVLockSeasonTitle"
+        Me.chkTVLockSeasonTitle.Size = New System.Drawing.Size(15, 14)
+        Me.chkTVLockSeasonTitle.TabIndex = 1
+        Me.chkTVLockSeasonTitle.UseVisualStyleBackColor = true
+        '
         'gbTVScraperMetaDataOpts
         '
         Me.gbTVScraperMetaDataOpts.AutoSize = true
@@ -18799,7 +18821,7 @@ Partial Class dlgSettings
         Me.tsSettingsTopMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
         Me.tsSettingsTopMenu.Location = New System.Drawing.Point(0, 64)
         Me.tsSettingsTopMenu.Name = "tsSettingsTopMenu"
-        Me.tsSettingsTopMenu.Size = New System.Drawing.Size(1104, 25)
+        Me.tsSettingsTopMenu.Size = New System.Drawing.Size(1214, 25)
         Me.tsSettingsTopMenu.Stretch = true
         Me.tsSettingsTopMenu.TabIndex = 4
         Me.tsSettingsTopMenu.Text = "ToolStrip1"
@@ -18811,7 +18833,7 @@ Partial Class dlgSettings
         Me.pnlSettingsMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlSettingsMain.Location = New System.Drawing.Point(0, 0)
         Me.pnlSettingsMain.Name = "pnlSettingsMain"
-        Me.pnlSettingsMain.Size = New System.Drawing.Size(848, 634)
+        Me.pnlSettingsMain.Size = New System.Drawing.Size(958, 634)
         Me.pnlSettingsMain.TabIndex = 9
         '
         'gbSettingsHelp
@@ -18823,7 +18845,7 @@ Partial Class dlgSettings
         Me.gbSettingsHelp.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.gbSettingsHelp.Location = New System.Drawing.Point(0, 0)
         Me.gbSettingsHelp.Name = "gbSettingsHelp"
-        Me.gbSettingsHelp.Size = New System.Drawing.Size(677, 66)
+        Me.gbSettingsHelp.Size = New System.Drawing.Size(765, 66)
         Me.gbSettingsHelp.TabIndex = 0
         Me.gbSettingsHelp.TabStop = false
         Me.gbSettingsHelp.Text = "     Help"
@@ -18843,7 +18865,7 @@ Partial Class dlgSettings
         Me.lblHelp.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.lblHelp.Location = New System.Drawing.Point(3, 18)
         Me.lblHelp.Name = "lblHelp"
-        Me.lblHelp.Size = New System.Drawing.Size(671, 45)
+        Me.lblHelp.Size = New System.Drawing.Size(759, 45)
         Me.lblHelp.TabIndex = 0
         '
         'pnlSettingsHelp
@@ -18855,7 +18877,7 @@ Partial Class dlgSettings
         Me.pnlSettingsHelp.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.pnlSettingsHelp.Location = New System.Drawing.Point(3, 3)
         Me.pnlSettingsHelp.Name = "pnlSettingsHelp"
-        Me.pnlSettingsHelp.Size = New System.Drawing.Size(679, 68)
+        Me.pnlSettingsHelp.Size = New System.Drawing.Size(767, 68)
         Me.pnlSettingsHelp.TabIndex = 8
         '
         'pnlMovieTrailers
@@ -21717,7 +21739,7 @@ Partial Class dlgSettings
         'scSettings.Panel2
         '
         Me.scSettings.Panel2.Controls.Add(Me.scSettingsBody)
-        Me.scSettings.Size = New System.Drawing.Size(1104, 861)
+        Me.scSettings.Size = New System.Drawing.Size(1214, 861)
         Me.scSettings.SplitterDistance = 145
         Me.scSettings.TabIndex = 28
         '
@@ -21732,7 +21754,7 @@ Partial Class dlgSettings
         Me.tblSettingsCurrent.Padding = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.tblSettingsCurrent.RowCount = 1
         Me.tblSettingsCurrent.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50!))
-        Me.tblSettingsCurrent.Size = New System.Drawing.Size(1104, 33)
+        Me.tblSettingsCurrent.Size = New System.Drawing.Size(1214, 33)
         Me.tblSettingsCurrent.TabIndex = 6
         '
         'scSettingsBody
@@ -21752,7 +21774,7 @@ Partial Class dlgSettings
         '
         Me.scSettingsBody.Panel2.Controls.Add(Me.tblSettingsFooter)
         Me.scSettingsBody.Panel2.Padding = New System.Windows.Forms.Padding(2, 0, 5, 0)
-        Me.scSettingsBody.Size = New System.Drawing.Size(1104, 712)
+        Me.scSettingsBody.Size = New System.Drawing.Size(1214, 712)
         Me.scSettingsBody.SplitterDistance = 634
         Me.scSettingsBody.TabIndex = 99
         '
@@ -21772,7 +21794,7 @@ Partial Class dlgSettings
         '
         Me.scSettingsMain.Panel2.Controls.Add(Me.pnlSettingsMain)
         Me.scSettingsMain.Panel2.Padding = New System.Windows.Forms.Padding(0, 0, 5, 0)
-        Me.scSettingsMain.Size = New System.Drawing.Size(1104, 634)
+        Me.scSettingsMain.Size = New System.Drawing.Size(1214, 634)
         Me.scSettingsMain.SplitterDistance = 247
         Me.scSettingsMain.TabIndex = 0
         '
@@ -21793,30 +21815,8 @@ Partial Class dlgSettings
         Me.tblSettingsFooter.Name = "tblSettingsFooter"
         Me.tblSettingsFooter.RowCount = 1
         Me.tblSettingsFooter.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100!))
-        Me.tblSettingsFooter.Size = New System.Drawing.Size(1097, 74)
+        Me.tblSettingsFooter.Size = New System.Drawing.Size(1207, 74)
         Me.tblSettingsFooter.TabIndex = 0
-        '
-        'chkTVScraperSeasonTitle
-        '
-        Me.chkTVScraperSeasonTitle.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVScraperSeasonTitle.AutoSize = true
-        Me.chkTVScraperSeasonTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkTVScraperSeasonTitle.Location = New System.Drawing.Point(242, 390)
-        Me.chkTVScraperSeasonTitle.Name = "chkTVScraperSeasonTitle"
-        Me.chkTVScraperSeasonTitle.Size = New System.Drawing.Size(15, 14)
-        Me.chkTVScraperSeasonTitle.TabIndex = 4
-        Me.chkTVScraperSeasonTitle.UseVisualStyleBackColor = true
-        '
-        'chkTVLockSeasonTitle
-        '
-        Me.chkTVLockSeasonTitle.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVLockSeasonTitle.AutoSize = true
-        Me.chkTVLockSeasonTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkTVLockSeasonTitle.Location = New System.Drawing.Point(271, 390)
-        Me.chkTVLockSeasonTitle.Name = "chkTVLockSeasonTitle"
-        Me.chkTVLockSeasonTitle.Size = New System.Drawing.Size(15, 14)
-        Me.chkTVLockSeasonTitle.TabIndex = 1
-        Me.chkTVLockSeasonTitle.UseVisualStyleBackColor = true
         '
         'dlgSettings
         '
@@ -21824,7 +21824,7 @@ Partial Class dlgSettings
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96!, 96!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.btnCancel
-        Me.ClientSize = New System.Drawing.Size(1104, 861)
+        Me.ClientSize = New System.Drawing.Size(1214, 861)
         Me.Controls.Add(Me.pnlMovieSources)
         Me.Controls.Add(Me.pnlTVSources)
         Me.Controls.Add(Me.pnlTVThemes)

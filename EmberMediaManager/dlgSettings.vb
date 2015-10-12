@@ -18,7 +18,7 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 ' #
-' # Dialog size: 1120; 900
+' # Dialog size: 1230; 900
 ' # Move the panels (pnl*) from 900;900 to 0;0 to edit. Move it back after editing.
 
 Imports System
@@ -6352,6 +6352,10 @@ Public Class dlgSettings
         'Theme
         Dim strTheme As String = Master.eLang.GetString(1118, "Theme")
 
+        'Themes
+        Dim strThemes As String = Master.eLang.GetString(1285, "Themes")
+        Me.gbMovieThemeOpts.Text = strThemes
+
         'Title
         Dim strTitle As String = Master.eLang.GetString(21, "Title")
         Me.lblMovieScraperGlobalTitle.Text = strTitle
@@ -6574,7 +6578,6 @@ Public Class dlgSettings
         Me.chkTVScraperMetaDataScan.Text = Me.chkMovieScraperMetaDataScan.Text
         Me.chkTVShowProperCase.Text = Me.chkMovieProperCase.Text
         Me.gbMovieSetGeneralMediaListOpts.Text = Me.gbMovieGeneralMediaListOpts.Text
-        Me.gbMovieThemeOpts.Text = Me.gbGeneralThemes.Text
         Me.gbTVScraperDefFIExtOpts.Text = Me.gbTVScraperDefFIExtOpts.Text
         Me.lblSettingsTopTitle.Text = Me.Text
         Me.lblTVSkipLessThan.Text = Me.lblMovieSkipLessThan.Text
