@@ -3685,8 +3685,12 @@ Namespace MediaContainers
         End Function
 
         Public Function CompareTo(ByVal other As [Image]) As Integer Implements IComparable(Of [Image]).CompareTo
-            Dim retVal As Integer = (Me.ShortLang).CompareTo(other.ShortLang)
-            Return retVal
+            Try
+                Dim retVal As Integer = (Me.ShortLang).CompareTo(other.ShortLang)
+                Return retVal
+            Catch ex As Exception
+                Return 0
+            End Try
         End Function
 
 #End Region 'Methods
