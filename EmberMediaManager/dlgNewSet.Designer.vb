@@ -22,89 +22,155 @@ Partial Class dlgNewSet
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.tlpButtons = New System.Windows.Forms.TableLayoutPanel()
-        Me.OK_Button = New System.Windows.Forms.Button()
-        Me.Cancel_Button = New System.Windows.Forms.Button()
-        Me.txtSetName = New System.Windows.Forms.TextBox()
-        Me.lblSetName = New System.Windows.Forms.Label()
-        Me.pnlNewSet = New System.Windows.Forms.Panel()
-        Me.tlpButtons.SuspendLayout()
-        Me.pnlNewSet.SuspendLayout()
+        Me.btnOK = New System.Windows.Forms.Button()
+        Me.btnCancel = New System.Windows.Forms.Button()
+        Me.txtTitle = New System.Windows.Forms.TextBox()
+        Me.lblTitle = New System.Windows.Forms.Label()
+        Me.pnlMain = New System.Windows.Forms.Panel()
+        Me.cbLanguage = New System.Windows.Forms.ComboBox()
+        Me.tblBottom = New System.Windows.Forms.TableLayoutPanel()
+        Me.tblMain = New System.Windows.Forms.TableLayoutPanel()
+        Me.lblLanguage = New System.Windows.Forms.Label()
+        Me.pnlBottom = New System.Windows.Forms.Panel()
+        Me.pnlMain.SuspendLayout()
+        Me.tblBottom.SuspendLayout()
+        Me.tblMain.SuspendLayout()
+        Me.pnlBottom.SuspendLayout()
         Me.SuspendLayout()
         '
-        'tlpButtons
+        'btnOK
         '
-        Me.tlpButtons.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.tlpButtons.ColumnCount = 2
-        Me.tlpButtons.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.tlpButtons.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.tlpButtons.Controls.Add(Me.OK_Button, 0, 0)
-        Me.tlpButtons.Controls.Add(Me.Cancel_Button, 1, 0)
-        Me.tlpButtons.Location = New System.Drawing.Point(122, 57)
-        Me.tlpButtons.Name = "tlpButtons"
-        Me.tlpButtons.RowCount = 1
-        Me.tlpButtons.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.tlpButtons.Size = New System.Drawing.Size(146, 29)
-        Me.tlpButtons.TabIndex = 0
+        Me.btnOK.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.btnOK.Enabled = False
+        Me.btnOK.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnOK.Location = New System.Drawing.Point(120, 3)
+        Me.btnOK.Name = "btnOK"
+        Me.btnOK.Size = New System.Drawing.Size(67, 23)
+        Me.btnOK.TabIndex = 2
+        Me.btnOK.Text = "OK"
         '
-        'OK_Button
+        'btnCancel
         '
-        Me.OK_Button.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.OK_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.OK_Button.Location = New System.Drawing.Point(3, 3)
-        Me.OK_Button.Name = "OK_Button"
-        Me.OK_Button.Size = New System.Drawing.Size(67, 23)
-        Me.OK_Button.TabIndex = 0
-        Me.OK_Button.Text = "OK"
+        Me.btnCancel.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.btnCancel.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnCancel.Location = New System.Drawing.Point(193, 3)
+        Me.btnCancel.Name = "btnCancel"
+        Me.btnCancel.Size = New System.Drawing.Size(67, 23)
+        Me.btnCancel.TabIndex = 3
+        Me.btnCancel.Text = "Cancel"
         '
-        'Cancel_Button
+        'txtTitle
         '
-        Me.Cancel_Button.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Cancel_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Cancel_Button.Location = New System.Drawing.Point(76, 3)
-        Me.Cancel_Button.Name = "Cancel_Button"
-        Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
-        Me.Cancel_Button.TabIndex = 1
-        Me.Cancel_Button.Text = "Cancel"
+        Me.txtTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtTitle.Location = New System.Drawing.Point(3, 23)
+        Me.txtTitle.Name = "txtTitle"
+        Me.txtTitle.Size = New System.Drawing.Size(249, 22)
+        Me.txtTitle.TabIndex = 0
         '
-        'txtSetName
+        'lblTitle
         '
-        Me.txtSetName.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtSetName.Location = New System.Drawing.Point(10, 22)
-        Me.txtSetName.Name = "txtSetName"
-        Me.txtSetName.Size = New System.Drawing.Size(249, 22)
-        Me.txtSetName.TabIndex = 1
+        Me.lblTitle.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblTitle.AutoSize = True
+        Me.lblTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblTitle.Location = New System.Drawing.Point(3, 3)
+        Me.lblTitle.Name = "lblTitle"
+        Me.lblTitle.Size = New System.Drawing.Size(32, 13)
+        Me.lblTitle.TabIndex = 0
+        Me.lblTitle.Text = "Title:"
         '
-        'lblSetName
+        'pnlMain
         '
-        Me.lblSetName.AutoSize = True
-        Me.lblSetName.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblSetName.Location = New System.Drawing.Point(8, 7)
-        Me.lblSetName.Name = "lblSetName"
-        Me.lblSetName.Size = New System.Drawing.Size(60, 13)
-        Me.lblSetName.TabIndex = 0
-        Me.lblSetName.Text = "Set Name:"
+        Me.pnlMain.AutoSize = True
+        Me.pnlMain.BackColor = System.Drawing.Color.White
+        Me.pnlMain.Controls.Add(Me.tblMain)
+        Me.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlMain.Location = New System.Drawing.Point(0, 0)
+        Me.pnlMain.Name = "pnlMain"
+        Me.pnlMain.Size = New System.Drawing.Size(263, 131)
+        Me.pnlMain.TabIndex = 1
         '
-        'pnlNewSet
+        'cbLanguage
         '
-        Me.pnlNewSet.BackColor = System.Drawing.Color.White
-        Me.pnlNewSet.Controls.Add(Me.lblSetName)
-        Me.pnlNewSet.Controls.Add(Me.txtSetName)
-        Me.pnlNewSet.Location = New System.Drawing.Point(2, 3)
-        Me.pnlNewSet.Name = "pnlNewSet"
-        Me.pnlNewSet.Size = New System.Drawing.Size(267, 52)
-        Me.pnlNewSet.TabIndex = 1
+        Me.cbLanguage.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.cbLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbLanguage.Location = New System.Drawing.Point(3, 71)
+        Me.cbLanguage.Name = "cbLanguage"
+        Me.cbLanguage.Size = New System.Drawing.Size(249, 21)
+        Me.cbLanguage.TabIndex = 1
+        '
+        'tblBottom
+        '
+        Me.tblBottom.AutoSize = True
+        Me.tblBottom.ColumnCount = 3
+        Me.tblBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.tblBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblBottom.Controls.Add(Me.btnOK, 1, 0)
+        Me.tblBottom.Controls.Add(Me.btnCancel, 2, 0)
+        Me.tblBottom.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblBottom.Location = New System.Drawing.Point(0, 0)
+        Me.tblBottom.Name = "tblBottom"
+        Me.tblBottom.RowCount = 1
+        Me.tblBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblBottom.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblBottom.Size = New System.Drawing.Size(263, 29)
+        Me.tblBottom.TabIndex = 2
+        '
+        'tblMain
+        '
+        Me.tblMain.AutoSize = True
+        Me.tblMain.ColumnCount = 2
+        Me.tblMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMain.Controls.Add(Me.lblTitle, 0, 0)
+        Me.tblMain.Controls.Add(Me.cbLanguage, 0, 3)
+        Me.tblMain.Controls.Add(Me.txtTitle, 0, 1)
+        Me.tblMain.Controls.Add(Me.lblLanguage, 0, 2)
+        Me.tblMain.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblMain.Location = New System.Drawing.Point(0, 0)
+        Me.tblMain.Name = "tblMain"
+        Me.tblMain.RowCount = 5
+        Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMain.Size = New System.Drawing.Size(263, 131)
+        Me.tblMain.TabIndex = 2
+        '
+        'lblLanguage
+        '
+        Me.lblLanguage.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblLanguage.AutoSize = True
+        Me.lblLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblLanguage.Location = New System.Drawing.Point(3, 51)
+        Me.lblLanguage.Name = "lblLanguage"
+        Me.lblLanguage.Size = New System.Drawing.Size(62, 13)
+        Me.lblLanguage.TabIndex = 0
+        Me.lblLanguage.Text = "Language:"
+        '
+        'pnlBottom
+        '
+        Me.pnlBottom.AutoSize = True
+        Me.pnlBottom.Controls.Add(Me.tblBottom)
+        Me.pnlBottom.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.pnlBottom.Location = New System.Drawing.Point(0, 102)
+        Me.pnlBottom.Name = "pnlBottom"
+        Me.pnlBottom.Size = New System.Drawing.Size(263, 29)
+        Me.pnlBottom.TabIndex = 3
         '
         'dlgNewSet
         '
-        Me.AcceptButton = Me.OK_Button
+        Me.AcceptButton = Me.btnOK
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-        Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(272, 87)
-        Me.Controls.Add(Me.pnlNewSet)
-        Me.Controls.Add(Me.tlpButtons)
+        Me.AutoSize = True
+        Me.CancelButton = Me.btnCancel
+        Me.ClientSize = New System.Drawing.Size(263, 131)
+        Me.Controls.Add(Me.pnlBottom)
+        Me.Controls.Add(Me.pnlMain)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
@@ -113,17 +179,26 @@ Partial Class dlgNewSet
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
         Me.Text = "Add New Set"
-        Me.tlpButtons.ResumeLayout(False)
-        Me.pnlNewSet.ResumeLayout(False)
-        Me.pnlNewSet.PerformLayout()
+        Me.pnlMain.ResumeLayout(False)
+        Me.pnlMain.PerformLayout()
+        Me.tblBottom.ResumeLayout(False)
+        Me.tblMain.ResumeLayout(False)
+        Me.tblMain.PerformLayout()
+        Me.pnlBottom.ResumeLayout(False)
+        Me.pnlBottom.PerformLayout()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
-    Friend WithEvents tlpButtons As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents OK_Button As System.Windows.Forms.Button
-    Friend WithEvents Cancel_Button As System.Windows.Forms.Button
-    Friend WithEvents txtSetName As System.Windows.Forms.TextBox
-    Friend WithEvents lblSetName As System.Windows.Forms.Label
-    Friend WithEvents pnlNewSet As System.Windows.Forms.Panel
+    Friend WithEvents btnOK As System.Windows.Forms.Button
+    Friend WithEvents btnCancel As System.Windows.Forms.Button
+    Friend WithEvents txtTitle As System.Windows.Forms.TextBox
+    Friend WithEvents lblTitle As System.Windows.Forms.Label
+    Friend WithEvents pnlMain As System.Windows.Forms.Panel
+    Friend WithEvents cbLanguage As System.Windows.Forms.ComboBox
+    Friend WithEvents tblMain As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents tblBottom As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents lblLanguage As System.Windows.Forms.Label
+    Friend WithEvents pnlBottom As System.Windows.Forms.Panel
 
 End Class

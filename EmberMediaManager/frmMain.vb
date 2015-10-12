@@ -5444,11 +5444,16 @@ doCancel:
     Private Sub cmnuMovieSetNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetNew.Click
         Me.dgvMovieSets.ClearSelection()
 
-        Dim tmpDBMovieSet = New Database.DBElement
-        tmpDBMovieSet.MovieSet = New MediaContainers.MovieSet
-        tmpDBMovieSet.ID = -1
+        Dim tmpDBMovieSet = New Database.DBElement With {.MovieSet = New MediaContainers.MovieSet}
 
-        Edit_MovieSet(tmpDBMovieSet)
+        Using dNewSet As New dlgNewSet()
+            If dNewSet.ShowDialog(tmpDBMovieSet) = Windows.Forms.DialogResult.OK Then
+                tmpDBMovieSet = Master.DB.SaveMovieSetToDB(dNewSet.Result, True)
+                FillList(False, True, False)
+                Edit_MovieSet(tmpDBMovieSet)
+            End If
+        End Using
+
     End Sub
 
     Private Sub cmnuMovieSetReload_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetReload.Click
