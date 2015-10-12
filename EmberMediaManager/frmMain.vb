@@ -7309,7 +7309,7 @@ doCancel:
                             End If
                             'if any one item is set as unwatched, set menu to watched
                             'else they are all watched so set menu to not watched
-                            If String.IsNullOrEmpty(sRow.Cells("Playcount").Value.ToString) AndAlso sRow.Cells("Playcount").Value.ToString = "0" Then
+                            If String.IsNullOrEmpty(sRow.Cells("Playcount").Value.ToString) OrElse sRow.Cells("Playcount").Value.ToString = "0" Then
                                 setWatched = True
                                 If setLock AndAlso setMark Then Exit For
                             End If
