@@ -278,7 +278,7 @@ Public Class frmSettingsHolder
     End Sub
 
     Private Sub btnFolderPatternMoviesReset_Click(sender As Object, e As EventArgs) Handles btnFolderPatternMoviesReset.Click
-        Me.txtFolderPatternMovies.Text = "$B\$T {($Y)}"
+        Me.txtFolderPatternMovies.Text = "$T {($Y)}"
     End Sub
 
     Private Sub btnFolderPatternSeasonsReset_Click(sender As Object, e As EventArgs) Handles btnFolderPatternSeasonsReset.Click
@@ -286,7 +286,7 @@ Public Class frmSettingsHolder
     End Sub
 
     Private Sub btnFolderPatternShowsReset_Click(sender As Object, e As EventArgs) Handles btnFolderPatternShowsReset.Click
-        Me.txtFolderPatternShows.Text = "$B\$Z"
+        Me.txtFolderPatternShows.Text = "$Z"
     End Sub
 
     Private Sub chkEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnabled.CheckedChanged
