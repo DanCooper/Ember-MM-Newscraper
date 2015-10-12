@@ -799,6 +799,19 @@ Namespace TMDB
 
             If bwTMDB.CancellationPending Then Return Nothing
 
+            'Status
+            If FilteredOptions.bMainStatus Then
+                If Result.Status Is Nothing OrElse (Result.Status IsNot Nothing AndAlso String.IsNullOrEmpty(Result.Status)) Then
+                    If _SpecialSettings.FallBackEng AndAlso ResultE.Status IsNot Nothing AndAlso Not String.IsNullOrEmpty(ResultE.Status) Then
+                        nShow.Status = ResultE.Status
+                    End If
+                Else
+                    nShow.Status = Result.Status
+                End If
+            End If
+
+            If bwTMDB.CancellationPending Then Return Nothing
+
             'Studios
             If FilteredOptions.bMainStudios Then
                 If Result.Networks IsNot Nothing AndAlso Result.Networks.Count > 0 Then
