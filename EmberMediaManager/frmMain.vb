@@ -833,9 +833,12 @@ Public Class frmMain
         If Me.bwReload_TVShows.IsBusy Then Me.bwReload_TVShows.CancelAsync()
         If Me.bwRewrite_Movies.IsBusy Then Me.bwRewrite_Movies.CancelAsync()
         If Me.bwNonScrape.IsBusy Then Me.bwNonScrape.CancelAsync()
+        If Me.bwTVEpisodeScraper.IsBusy Then Me.bwTVEpisodeScraper.CancelAsync()
         If Me.bwTVScraper.IsBusy Then Me.bwTVScraper.CancelAsync()
+        If Me.bwTVSeasonScraper.IsBusy Then Me.bwTVSeasonScraper.CancelAsync()
         While Me.bwMovieScraper.IsBusy OrElse Me.bwReload_Movies.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwReload_MovieSets.IsBusy OrElse _
-            Me.bwNonScrape.IsBusy OrElse Me.bwReload_TVShows.IsBusy OrElse Me.bwRewrite_Movies.IsBusy OrElse Me.bwTVScraper.IsBusy
+            Me.bwNonScrape.IsBusy OrElse Me.bwReload_TVShows.IsBusy OrElse Me.bwRewrite_Movies.IsBusy OrElse Me.bwTVEpisodeScraper.IsBusy OrElse Me.bwTVScraper.IsBusy OrElse _
+            Me.bwTVSeasonScraper.IsBusy
             Application.DoEvents()
             Threading.Thread.Sleep(50)
         End While
