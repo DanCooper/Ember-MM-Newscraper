@@ -261,7 +261,7 @@ Partial Class dlgHost
         Me.dgvHostSources.ShowCellErrors = False
         Me.dgvHostSources.ShowCellToolTips = False
         Me.dgvHostSources.ShowRowErrors = False
-        Me.dgvHostSources.Size = New System.Drawing.Size(600, 150)
+        Me.dgvHostSources.Size = New System.Drawing.Size(600, 155)
         Me.dgvHostSources.TabIndex = 14
         '
         'colHostEmberSource
@@ -321,7 +321,7 @@ Partial Class dlgHost
         'btnOK
         '
         Me.btnOK.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnOK.Location = New System.Drawing.Point(528, 320)
+        Me.btnOK.Location = New System.Drawing.Point(528, 325)
         Me.btnOK.Name = "btnOK"
         Me.btnOK.Size = New System.Drawing.Size(75, 23)
         Me.btnOK.TabIndex = 9
@@ -331,7 +331,7 @@ Partial Class dlgHost
         'btnCancel
         '
         Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.btnCancel.Location = New System.Drawing.Point(609, 320)
+        Me.btnCancel.Location = New System.Drawing.Point(609, 325)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(75, 23)
         Me.btnCancel.TabIndex = 10

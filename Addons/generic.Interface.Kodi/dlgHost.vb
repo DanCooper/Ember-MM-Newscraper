@@ -93,7 +93,6 @@ Public Class dlgHost
         End If
         'load sources of selected host and display values in datagrid
         PopulateHostSources()
-        dgvHostSources.Enabled = True
     End Sub
     ''' <summary>
     ''' Actions on module startup
@@ -139,6 +138,7 @@ Public Class dlgHost
     ''' <remarks>
     ''' 2015/06/26 Cocotus - First implementation
     Private Sub PopulateHostSources()
+        dgvHostSources.SuspendLayout()
         dgvHostSources.Rows.Clear()
         Dim sPath As String
 
@@ -181,6 +181,8 @@ Public Class dlgHost
                 Next
             End If
         Next
+        dgvHostSources.ResumeLayout()
+        dgvHostSources.Enabled = True
     End Sub
     ''' <summary>
     ''' Get avalaible sources of host
