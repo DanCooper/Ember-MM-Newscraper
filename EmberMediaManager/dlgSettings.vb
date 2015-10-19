@@ -558,7 +558,7 @@ Public Class dlgSettings
             Me.lstTVEpisodeFilter.Items.Add(Me.txtTVEpisodeFilter.Text)
             Me.txtTVEpisodeFilter.Text = String.Empty
             Me.SetApplyButton(True)
-            Me.sResult.NeedsUpdate = True
+            Me.sResult.NeedsReload_TV = True
         End If
 
         Me.txtTVEpisodeFilter.Focus()
@@ -569,7 +569,7 @@ Public Class dlgSettings
             Me.lstMovieFilters.Items.Add(Me.txtMovieFilter.Text)
             Me.txtMovieFilter.Text = String.Empty
             Me.SetApplyButton(True)
-            Me.sResult.NeedsUpdate = True
+            Me.sResult.NeedsReload_Movie = True
         End If
 
         Me.txtMovieFilter.Focus()
@@ -613,7 +613,8 @@ Public Class dlgSettings
             End Using
 
             Me.SetApplyButton(True)
-            Me.sResult.NeedsUpdate = True
+            Me.sResult.NeedsDBClean_Movie = True
+            Me.sResult.NeedsDBClean_TV = True
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         Finally
@@ -643,7 +644,8 @@ Public Class dlgSettings
                 Me.lstFileSystemExcludedDirs.Refresh()
 
                 Me.SetApplyButton(True)
-                Me.sResult.NeedsUpdate = True
+                Me.sResult.NeedsDBUpdate_Movie = True
+                Me.sResult.NeedsDBUpdate_TV = True
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -658,7 +660,8 @@ Public Class dlgSettings
             If Not lstFileSystemValidVideoExts.Items.Contains(txtFileSystemValidVideoExts.Text.ToLower) Then
                 lstFileSystemValidVideoExts.Items.Add(txtFileSystemValidVideoExts.Text.ToLower)
                 Me.SetApplyButton(True)
-                Me.sResult.NeedsUpdate = True
+                Me.sResult.NeedsDBUpdate_Movie = True
+                Me.sResult.NeedsDBUpdate_TV = True
                 txtFileSystemValidVideoExts.Text = String.Empty
                 txtFileSystemValidVideoExts.Focus()
             End If
@@ -671,7 +674,8 @@ Public Class dlgSettings
             If Not lstFileSystemValidSubtitlesExts.Items.Contains(txtFileSystemValidSubtitlesExts.Text.ToLower) Then
                 lstFileSystemValidSubtitlesExts.Items.Add(txtFileSystemValidSubtitlesExts.Text.ToLower)
                 Me.SetApplyButton(True)
-                Me.sResult.NeedsUpdate = True
+                Me.sResult.NeedsReload_Movie = True
+                Me.sResult.NeedsReload_TV = True
                 txtFileSystemValidSubtitlesExts.Text = String.Empty
                 txtFileSystemValidSubtitlesExts.Focus()
             End If
@@ -684,7 +688,8 @@ Public Class dlgSettings
             If Not lstFileSystemValidThemeExts.Items.Contains(txtFileSystemValidThemeExts.Text.ToLower) Then
                 lstFileSystemValidThemeExts.Items.Add(txtFileSystemValidThemeExts.Text.ToLower)
                 Me.SetApplyButton(True)
-                Me.sResult.NeedsUpdate = True
+                Me.sResult.NeedsReload_Movie = True
+                Me.sResult.NeedsReload_TV = True
                 txtFileSystemValidThemeExts.Text = String.Empty
                 txtFileSystemValidThemeExts.Focus()
             End If
@@ -697,7 +702,8 @@ Public Class dlgSettings
             If Not lstFileSystemNoStackExts.Items.Contains(txtFileSystemNoStackExts.Text) Then
                 lstFileSystemNoStackExts.Items.Add(txtFileSystemNoStackExts.Text)
                 Me.SetApplyButton(True)
-                Me.sResult.NeedsUpdate = True
+                Me.sResult.NeedsDBUpdate_Movie = True
+                Me.sResult.NeedsDBUpdate_TV = True
                 txtFileSystemNoStackExts.Text = String.Empty
                 txtFileSystemNoStackExts.Focus()
             End If
@@ -709,7 +715,7 @@ Public Class dlgSettings
             Me.lstTVShowFilter.Items.Add(Me.txtTVShowFilter.Text)
             Me.txtTVShowFilter.Text = String.Empty
             Me.SetApplyButton(True)
-            Me.sResult.NeedsUpdate = True
+            Me.sResult.NeedsReload_TV = True
         End If
 
         Me.txtTVShowFilter.Focus()
@@ -740,7 +746,7 @@ Public Class dlgSettings
         If Not String.IsNullOrEmpty(txtMovieSortToken.Text) Then
             If Not lstMovieSortTokens.Items.Contains(txtMovieSortToken.Text) Then
                 lstMovieSortTokens.Items.Add(txtMovieSortToken.Text)
-                Me.sResult.NeedsRefresh_Movie = True
+                Me.sResult.NeedsReload_Movie = True
                 Me.SetApplyButton(True)
                 txtMovieSortToken.Text = String.Empty
                 txtMovieSortToken.Focus()
@@ -752,7 +758,7 @@ Public Class dlgSettings
         If Not String.IsNullOrEmpty(txtMovieSetSortToken.Text) Then
             If Not lstMovieSetSortTokens.Items.Contains(txtMovieSetSortToken.Text) Then
                 lstMovieSetSortTokens.Items.Add(txtMovieSetSortToken.Text)
-                Me.sResult.NeedsRefresh_MovieSet = True
+                Me.sResult.NeedsReload_MovieSet = True
                 Me.SetApplyButton(True)
                 txtMovieSetSortToken.Text = String.Empty
                 txtMovieSetSortToken.Focus()
@@ -764,7 +770,7 @@ Public Class dlgSettings
         If Not String.IsNullOrEmpty(txtTVSortToken.Text) Then
             If Not lstTVSortTokens.Items.Contains(txtTVSortToken.Text) Then
                 lstTVSortTokens.Items.Add(txtTVSortToken.Text)
-                Me.sResult.NeedsRefresh_TV = True
+                Me.sResult.NeedsReload_TV = True
                 Me.SetApplyButton(True)
                 txtTVSortToken.Text = String.Empty
                 txtTVSortToken.Focus()
@@ -773,11 +779,11 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnTVSourceAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVSourceAdd.Click
-        Using dSource As New dlgTVSource
+        Using dSource As New dlgSourceTVShow
             If dSource.ShowDialog = Windows.Forms.DialogResult.OK Then
                 RefreshTVSources()
                 Me.SetApplyButton(True)
-                Me.sResult.NeedsUpdate = True
+                Me.sResult.NeedsDBUpdate_TV = True
             End If
         End Using
     End Sub
@@ -797,7 +803,14 @@ Public Class dlgSettings
     Private Sub btnApply_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnApply.Click
         Me.SaveSettings(True)
         Me.SetApplyButton(False)
-        If Me.sResult.NeedsUpdate OrElse Me.sResult.NeedsRefresh_Movie OrElse Me.sResult.NeedsRefresh_MovieSet OrElse Me.sResult.NeedsRefresh_TV Then Me.didApply = True
+        If Me.sResult.NeedsDBClean_Movie OrElse _
+            Me.sResult.NeedsDBClean_TV OrElse _
+            Me.sResult.NeedsDBUpdate_Movie OrElse _
+            Me.sResult.NeedsDBUpdate_TV OrElse _
+            Me.sResult.NeedsReload_Movie OrElse _
+            Me.sResult.NeedsReload_MovieSet OrElse _
+            Me.sResult.NeedsReload_TV Then _
+            Me.didApply = True
     End Sub
 
     Private Sub btnMovieBackdropsPathBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieSourcesBackdropsFolderPathBrowse.Click
@@ -829,7 +842,7 @@ Public Class dlgSettings
                 Me.lstMovieFilters.Items.RemoveAt(iIndex)
                 Me.lstMovieFilters.SelectedIndex = iIndex + 1
                 Me.SetApplyButton(True)
-                Me.sResult.NeedsRefresh_Movie = True
+                Me.sResult.NeedsReload_Movie = True
                 Me.lstMovieFilters.Focus()
             End If
         Catch ex As Exception
@@ -909,10 +922,10 @@ Public Class dlgSettings
 
     Private Sub btnMovieSourceEdit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieSourceEdit.Click
         If lvMovieSources.SelectedItems.Count > 0 Then
-            Using dMovieSource As New dlgMovieSource
+            Using dMovieSource As New dlgSourceMovie
                 If dMovieSource.ShowDialog(Convert.ToInt32(lvMovieSources.SelectedItems(0).Text)) = Windows.Forms.DialogResult.OK Then
                     Me.RefreshMovieSources()
-                    Me.sResult.NeedsUpdate = True
+                    Me.sResult.NeedsReload_Movie = True 'TODO: Check if we have to use Reload or DBUpdate
                     Me.SetApplyButton(True)
                 End If
             End Using
@@ -943,10 +956,10 @@ Public Class dlgSettings
 
     Private Sub btnTVSourceEdit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVSourceEdit.Click
         If lvTVSources.SelectedItems.Count > 0 Then
-            Using dTVSource As New dlgTVSource
+            Using dTVSource As New dlgSourceTVShow
                 If dTVSource.ShowDialog(Convert.ToInt32(lvTVSources.SelectedItems(0).Text)) = Windows.Forms.DialogResult.OK Then
                     Me.RefreshTVSources()
-                    Me.sResult.NeedsUpdate = True
+                    Me.sResult.NeedsReload_TV = True 'TODO: Check if we have to use Reload or DBUpdate
                     Me.SetApplyButton(True)
                 End If
             End Using
@@ -961,7 +974,7 @@ Public Class dlgSettings
                 Me.lstTVEpisodeFilter.Items.RemoveAt(iIndex)
                 Me.lstTVEpisodeFilter.SelectedIndex = iIndex + 1
                 Me.SetApplyButton(True)
-                Me.sResult.NeedsRefresh_TV = True
+                Me.sResult.NeedsReload_TV = True
                 Me.lstTVEpisodeFilter.Focus()
             End If
         Catch ex As Exception
@@ -977,7 +990,7 @@ Public Class dlgSettings
                 Me.lstTVEpisodeFilter.Items.RemoveAt(iIndex + 1)
                 Me.lstTVEpisodeFilter.SelectedIndex = iIndex - 1
                 Me.SetApplyButton(True)
-                Me.sResult.NeedsRefresh_TV = True
+                Me.sResult.NeedsReload_TV = True
                 Me.lstTVEpisodeFilter.Focus()
             End If
         Catch ex As Exception
@@ -986,11 +999,11 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnMovieSourceAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieSourceAdd.Click
-        Using dSource As New dlgMovieSource
+        Using dSource As New dlgSourceMovie
             If dSource.ShowDialog = Windows.Forms.DialogResult.OK Then
                 RefreshMovieSources()
                 Me.SetApplyButton(True)
-                Me.sResult.NeedsUpdate = True
+                Me.sResult.NeedsDBUpdate_Movie = True
             End If
         End Using
     End Sub
@@ -1725,7 +1738,7 @@ Public Class dlgSettings
                 Me.lstTVShowFilter.Items.RemoveAt(iIndex)
                 Me.lstTVShowFilter.SelectedIndex = iIndex + 1
                 Me.SetApplyButton(True)
-                Me.sResult.NeedsRefresh_TV = True
+                Me.sResult.NeedsReload_TV = True
                 Me.lstTVShowFilter.Focus()
             End If
         Catch ex As Exception
@@ -1741,7 +1754,7 @@ Public Class dlgSettings
                 Me.lstTVShowFilter.Items.RemoveAt(iIndex + 1)
                 Me.lstTVShowFilter.SelectedIndex = iIndex - 1
                 Me.SetApplyButton(True)
-                Me.sResult.NeedsRefresh_TV = True
+                Me.sResult.NeedsReload_TV = True
                 Me.lstTVShowFilter.Focus()
             End If
         Catch ex As Exception
@@ -1758,7 +1771,7 @@ Public Class dlgSettings
                 Me.lstMovieFilters.Items.RemoveAt(iIndex + 1)
                 Me.lstMovieFilters.SelectedIndex = iIndex - 1
                 Me.SetApplyButton(True)
-                Me.sResult.NeedsRefresh_Movie = True
+                Me.sResult.NeedsReload_Movie = True
                 Me.lstMovieFilters.Focus()
             End If
         Catch ex As Exception
@@ -1897,12 +1910,12 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkMovieDisplayYear_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieDisplayYear.CheckedChanged
-        Me.sResult.NeedsRefresh_Movie = True
+        Me.sResult.NeedsReload_Movie = True
         Me.SetApplyButton(True)
     End Sub
 
     Private Sub chkTVDisplayStatus_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVDisplayStatus.CheckedChanged
-        Me.sResult.NeedsRefresh_TV = True
+        Me.sResult.NeedsReload_TV = True
         Me.SetApplyButton(True)
     End Sub
 
@@ -1937,7 +1950,7 @@ Public Class dlgSettings
 
     Private Sub chkTVEpisodeProperCase_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVEpisodeProperCase.CheckedChanged
         Me.SetApplyButton(True)
-        Me.sResult.NeedsRefresh_TV = True
+        Me.sResult.NeedsReload_TV = True
     End Sub
 
 
@@ -2030,7 +2043,7 @@ Public Class dlgSettings
 
     Private Sub chkMovieProperCase_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieProperCase.CheckedChanged
         Me.SetApplyButton(True)
-        Me.sResult.NeedsRefresh_Movie = True
+        Me.sResult.NeedsReload_Movie = True
     End Sub
 
     Private Sub chkTVAllSeasonsBannerResize_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVAllSeasonsBannerResize.CheckedChanged
@@ -2283,7 +2296,7 @@ Public Class dlgSettings
 
     Private Sub chkTVShowProperCase_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowProperCase.CheckedChanged
         Me.SetApplyButton(True)
-        Me.sResult.NeedsRefresh_TV = True
+        Me.sResult.NeedsReload_TV = True
     End Sub
 
     Private Sub chkMovieScraperCollectionID_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperCollectionID.CheckedChanged
@@ -2344,7 +2357,7 @@ Public Class dlgSettings
         Me.chkMovieNFOFrodo.Enabled = Me.chkMovieUseFrodo.Checked
         Me.chkMoviePosterFrodo.Enabled = Me.chkMovieUseFrodo.Checked
         Me.chkMovieTrailerFrodo.Enabled = Me.chkMovieUseFrodo.Checked
-        Me.chkMovieThemeTvTunesEnable.Enabled = Me.chkMovieUseFrodo.Checked OrElse Me.chkMovieUseEden.Checked
+        Me.chkMovieThemeTvTunesEnabled.Enabled = Me.chkMovieUseFrodo.Checked OrElse Me.chkMovieUseEden.Checked
         Me.chkMovieXBMCProtectVTSBDMV.Enabled = Me.chkMovieUseFrodo.Checked AndAlso Not Me.chkMovieUseEden.Checked
 
         If Not Me.chkMovieUseFrodo.Checked Then
@@ -2382,7 +2395,7 @@ Public Class dlgSettings
         End If
 
         If Not Me.chkMovieUseFrodo.Checked AndAlso Not Me.chkMovieUseEden.Checked Then
-            Me.chkMovieThemeTvTunesEnable.Checked = False
+            Me.chkMovieThemeTvTunesEnabled.Checked = False
         End If
     End Sub
 
@@ -2396,7 +2409,7 @@ Public Class dlgSettings
         Me.chkMovieNFOEden.Enabled = Me.chkMovieUseEden.Checked
         Me.chkMoviePosterEden.Enabled = Me.chkMovieUseEden.Checked
         Me.chkMovieTrailerEden.Enabled = Me.chkMovieUseEden.Checked
-        Me.chkMovieThemeTvTunesEnable.Enabled = Me.chkMovieUseEden.Checked OrElse Me.chkMovieUseFrodo.Checked
+        Me.chkMovieThemeTvTunesEnabled.Enabled = Me.chkMovieUseEden.Checked OrElse Me.chkMovieUseFrodo.Checked
         Me.chkMovieXBMCProtectVTSBDMV.Enabled = Not Me.chkMovieUseEden.Checked AndAlso Me.chkMovieUseFrodo.Checked
 
         If Not Me.chkMovieUseEden.Checked Then
@@ -2419,7 +2432,7 @@ Public Class dlgSettings
         End If
 
         If Not Me.chkMovieUseEden.Checked AndAlso Not Me.chkMovieUseFrodo.Checked Then
-            Me.chkMovieThemeTvTunesEnable.Checked = False
+            Me.chkMovieThemeTvTunesEnabled.Checked = False
         End If
     End Sub
 
@@ -2525,7 +2538,7 @@ Public Class dlgSettings
             Me.chkMovieThemeTvTunesSub.Checked = False
         End If
 
-        If Not Me.chkMovieThemeTvTunesCustom.Checked AndAlso Me.chkMovieThemeTvTunesEnable.Checked Then
+        If Not Me.chkMovieThemeTvTunesCustom.Checked AndAlso Me.chkMovieThemeTvTunesEnabled.Checked Then
             Me.chkMovieThemeTvTunesMoviePath.Enabled = True
             Me.chkMovieThemeTvTunesSub.Enabled = True
         End If
@@ -2544,20 +2557,20 @@ Public Class dlgSettings
             Me.chkTVShowThemeTvTunesSub.Checked = False
         End If
 
-        If Not Me.chkTVShowThemeTvTunesCustom.Checked AndAlso Me.chkTVShowThemeTvTunesEnable.Checked Then
+        If Not Me.chkTVShowThemeTvTunesCustom.Checked AndAlso Me.chkTVShowThemeTvTunesEnabled.Checked Then
             Me.chkTVShowThemeTvTunesShowPath.Enabled = True
             Me.chkTVShowThemeTvTunesSub.Enabled = True
         End If
     End Sub
 
-    Private Sub chkMovieThemeTvTunesEnable_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieThemeTvTunesEnable.CheckedChanged
+    Private Sub chkMovieThemeTvTunesEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieThemeTvTunesEnabled.CheckedChanged
         Me.SetApplyButton(True)
 
-        Me.chkMovieThemeTvTunesCustom.Enabled = Me.chkMovieThemeTvTunesEnable.Checked
-        Me.chkMovieThemeTvTunesMoviePath.Enabled = Me.chkMovieThemeTvTunesEnable.Checked
-        Me.chkMovieThemeTvTunesSub.Enabled = Me.chkMovieThemeTvTunesEnable.Checked
+        Me.chkMovieThemeTvTunesCustom.Enabled = Me.chkMovieThemeTvTunesEnabled.Checked
+        Me.chkMovieThemeTvTunesMoviePath.Enabled = Me.chkMovieThemeTvTunesEnabled.Checked
+        Me.chkMovieThemeTvTunesSub.Enabled = Me.chkMovieThemeTvTunesEnabled.Checked
 
-        If Not Me.chkMovieThemeTvTunesEnable.Checked Then
+        If Not Me.chkMovieThemeTvTunesEnabled.Checked Then
             Me.chkMovieThemeTvTunesCustom.Checked = False
             Me.chkMovieThemeTvTunesMoviePath.Checked = False
             Me.chkMovieThemeTvTunesSub.Checked = False
@@ -2566,14 +2579,14 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkTVShowThemeTvTunesEnable_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowThemeTvTunesEnable.CheckedChanged
+    Private Sub chkTVShowThemeTvTunesEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowThemeTvTunesEnabled.CheckedChanged
         Me.SetApplyButton(True)
 
-        Me.chkTVShowThemeTvTunesCustom.Enabled = Me.chkTVShowThemeTvTunesEnable.Checked
-        Me.chkTVShowThemeTvTunesShowPath.Enabled = Me.chkTVShowThemeTvTunesEnable.Checked
-        Me.chkTVShowThemeTvTunesSub.Enabled = Me.chkTVShowThemeTvTunesEnable.Checked
+        Me.chkTVShowThemeTvTunesCustom.Enabled = Me.chkTVShowThemeTvTunesEnabled.Checked
+        Me.chkTVShowThemeTvTunesShowPath.Enabled = Me.chkTVShowThemeTvTunesEnabled.Checked
+        Me.chkTVShowThemeTvTunesSub.Enabled = Me.chkTVShowThemeTvTunesEnabled.Checked
 
-        If Not Me.chkTVShowThemeTvTunesEnable.Checked Then
+        If Not Me.chkTVShowThemeTvTunesEnabled.Checked Then
             Me.chkTVShowThemeTvTunesCustom.Checked = False
             Me.chkTVShowThemeTvTunesShowPath.Checked = False
             Me.chkTVShowThemeTvTunesSub.Checked = False
@@ -2592,7 +2605,7 @@ Public Class dlgSettings
             Me.chkMovieThemeTvTunesSub.Checked = False
         End If
 
-        If Not Me.chkMovieThemeTvTunesMoviePath.Checked AndAlso Me.chkMovieThemeTvTunesEnable.Checked Then
+        If Not Me.chkMovieThemeTvTunesMoviePath.Checked AndAlso Me.chkMovieThemeTvTunesEnabled.Checked Then
             Me.chkMovieThemeTvTunesCustom.Enabled = True
             Me.chkMovieThemeTvTunesSub.Enabled = True
         End If
@@ -2608,7 +2621,7 @@ Public Class dlgSettings
             Me.chkTVShowThemeTvTunesSub.Checked = False
         End If
 
-        If Not Me.chkTVShowThemeTvTunesShowPath.Checked AndAlso Me.chkTVShowThemeTvTunesEnable.Checked Then
+        If Not Me.chkTVShowThemeTvTunesShowPath.Checked AndAlso Me.chkTVShowThemeTvTunesEnabled.Checked Then
             Me.chkTVShowThemeTvTunesCustom.Enabled = True
             Me.chkTVShowThemeTvTunesSub.Enabled = True
         End If
@@ -2626,7 +2639,7 @@ Public Class dlgSettings
             Me.chkMovieThemeTvTunesMoviePath.Checked = False
         End If
 
-        If Not Me.chkMovieThemeTvTunesSub.Checked AndAlso Me.chkMovieThemeTvTunesEnable.Checked Then
+        If Not Me.chkMovieThemeTvTunesSub.Checked AndAlso Me.chkMovieThemeTvTunesEnabled.Checked Then
             Me.chkMovieThemeTvTunesCustom.Enabled = True
             Me.chkMovieThemeTvTunesMoviePath.Enabled = True
         End If
@@ -2644,7 +2657,7 @@ Public Class dlgSettings
             Me.chkTVShowThemeTvTunesShowPath.Checked = False
         End If
 
-        If Not Me.chkTVShowThemeTvTunesSub.Checked AndAlso Me.chkTVShowThemeTvTunesEnable.Checked Then
+        If Not Me.chkTVShowThemeTvTunesSub.Checked AndAlso Me.chkTVShowThemeTvTunesEnabled.Checked Then
             Me.chkTVShowThemeTvTunesCustom.Enabled = True
             Me.chkTVShowThemeTvTunesShowPath.Enabled = True
         End If
@@ -2996,7 +3009,6 @@ Public Class dlgSettings
             Me.chkMovieSkipStackedSizeCheck.Checked = .MovieSkipStackedSizeCheck
             Me.chkMovieSortBeforeScan.Checked = .MovieSortBeforeScan
             Me.chkMovieThemeKeepExisting.Checked = .MovieThemeKeepExisting
-            Me.chkMovieTrailerDeleteExisting.Checked = .MovieTrailerDeleteExisting
             Me.chkMovieTrailerKeepExisting.Checked = .MovieTrailerKeepExisting
             Me.chkTVAllSeasonsBannerKeepExisting.Checked = .TVAllSeasonsBannerKeepExisting
             Me.chkTVAllSeasonsBannerPrefSizeOnly.Checked = .TVAllSeasonsBannerPrefSizeOnly
@@ -3358,7 +3370,7 @@ Public Class dlgSettings
             Me.chkMovieLandscapeExtended.Checked = .MovieLandscapeExtended
 
             '************** XBMC TvTunes settings **************
-            Me.chkMovieThemeTvTunesEnable.Checked = .MovieThemeTvTunesEnable
+            Me.chkMovieThemeTvTunesEnabled.Checked = .MovieThemeTvTunesEnable
             Me.chkMovieThemeTvTunesCustom.Checked = .MovieThemeTvTunesCustom
             Me.chkMovieThemeTvTunesMoviePath.Checked = .MovieThemeTvTunesMoviePath
             Me.chkMovieThemeTvTunesSub.Checked = .MovieThemeTvTunesSub
@@ -3546,7 +3558,7 @@ Public Class dlgSettings
             Me.chkTVShowLandscapeExtended.Checked = .TVShowLandscapeExtended
 
             '************* XBMC TvTunes settings ***************
-            Me.chkTVShowThemeTvTunesEnable.Checked = .TVShowThemeTvTunesEnable
+            Me.chkTVShowThemeTvTunesEnabled.Checked = .TVShowThemeTvTunesEnable
             Me.chkTVShowThemeTvTunesCustom.Checked = .TVShowThemeTvTunesCustom
             Me.chkTVShowThemeTvTunesShowPath.Checked = .TVShowThemeTvTunesShowPath
             Me.chkTVShowThemeTvTunesSub.Checked = .TVShowThemeTvTunesSub
@@ -3659,10 +3671,13 @@ Public Class dlgSettings
         Me.FillSettings()
         Me.lvMovieSources.ListViewItemSorter = New ListViewItemComparer(1)
         Me.lvTVSources.ListViewItemSorter = New ListViewItemComparer(1)
-        Me.sResult.NeedsUpdate = False
-        Me.sResult.NeedsRefresh_Movie = False
-        Me.sResult.NeedsRefresh_MovieSet = False
-        Me.sResult.NeedsRefresh_TV = False
+        Me.sResult.NeedsDBClean_Movie = False
+        Me.sResult.NeedsDBClean_TV = False
+        Me.sResult.NeedsDBUpdate_Movie = False
+        Me.sResult.NeedsDBUpdate_TV = False
+        Me.sResult.NeedsReload_Movie = False
+        Me.sResult.NeedsReload_MovieSet = False
+        Me.sResult.NeedsReload_TV = False
         Me.sResult.DidCancel = False
         Me.didApply = False
         Me.NoUpdate = False
@@ -4212,10 +4227,10 @@ Public Class dlgSettings
 
     Private Sub lvMovieSources_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvMovieSources.DoubleClick
         If lvMovieSources.SelectedItems.Count > 0 Then
-            Using dMovieSource As New dlgMovieSource
+            Using dMovieSource As New dlgSourceMovie
                 If dMovieSource.ShowDialog(Convert.ToInt32(lvMovieSources.SelectedItems(0).Text)) = Windows.Forms.DialogResult.OK Then
                     Me.RefreshMovieSources()
-                    Me.sResult.NeedsUpdate = True
+                    Me.sResult.NeedsReload_Movie = True 'TODO: Check if we have to use Reload or DBUpdate
                     Me.SetApplyButton(True)
                 End If
             End Using
@@ -4244,10 +4259,10 @@ Public Class dlgSettings
 
     Private Sub lvTVSources_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvTVSources.DoubleClick
         If lvTVSources.SelectedItems.Count > 0 Then
-            Using dTVSource As New dlgTVSource
+            Using dTVSource As New dlgSourceTVShow
                 If dTVSource.ShowDialog(Convert.ToInt32(lvTVSources.SelectedItems(0).Text)) = Windows.Forms.DialogResult.OK Then
                     Me.RefreshTVSources()
-                    Me.sResult.NeedsUpdate = True
+                    Me.sResult.NeedsReload_TV = True 'TODO: Check if we have to use Reload or DBUpdate
                     Me.SetApplyButton(True)
                 End If
             End Using
@@ -4360,7 +4375,7 @@ Public Class dlgSettings
                 Me.lstTVEpisodeFilter.Items.Remove(Me.lstTVEpisodeFilter.SelectedItems(0))
             End While
             Me.SetApplyButton(True)
-            Me.sResult.NeedsRefresh_TV = True
+            Me.sResult.NeedsReload_TV = True
         End If
     End Sub
 
@@ -4370,7 +4385,7 @@ Public Class dlgSettings
                 Me.lstMovieFilters.Items.Remove(Me.lstMovieFilters.SelectedItems(0))
             End While
             Me.SetApplyButton(True)
-            Me.sResult.NeedsRefresh_Movie = True
+            Me.sResult.NeedsReload_Movie = True
         End If
     End Sub
 
@@ -4393,7 +4408,8 @@ Public Class dlgSettings
                 Me.lstFileSystemValidVideoExts.Items.Remove(Me.lstFileSystemValidVideoExts.SelectedItems(0))
             End While
             Me.SetApplyButton(True)
-            Me.sResult.NeedsUpdate = True
+            Me.sResult.NeedsDBClean_Movie = True
+            Me.sResult.NeedsDBClean_TV = True
         End If
     End Sub
 
@@ -4403,7 +4419,8 @@ Public Class dlgSettings
                 Me.lstFileSystemValidSubtitlesExts.Items.Remove(Me.lstFileSystemValidSubtitlesExts.SelectedItems(0))
             End While
             Me.SetApplyButton(True)
-            Me.sResult.NeedsUpdate = True
+            Me.sResult.NeedsReload_Movie = True
+            Me.sResult.NeedsReload_TV = True
         End If
     End Sub
 
@@ -4413,7 +4430,8 @@ Public Class dlgSettings
                 Me.lstFileSystemValidThemeExts.Items.Remove(Me.lstFileSystemValidThemeExts.SelectedItems(0))
             End While
             Me.SetApplyButton(True)
-            Me.sResult.NeedsUpdate = True
+            Me.sResult.NeedsReload_Movie = True
+            Me.sResult.NeedsReload_TV = True
         End If
     End Sub
 
@@ -4442,7 +4460,7 @@ Public Class dlgSettings
                 Functions.GetListOfSources()
 
                 Me.SetApplyButton(True)
-                Me.sResult.NeedsUpdate = True
+                Me.sResult.NeedsDBClean_Movie = True
             End If
         End If
     End Sub
@@ -4453,7 +4471,8 @@ Public Class dlgSettings
                 Me.lstFileSystemNoStackExts.Items.Remove(Me.lstFileSystemNoStackExts.SelectedItems(0))
             End While
             Me.SetApplyButton(True)
-            Me.sResult.NeedsUpdate = True
+            Me.sResult.NeedsDBUpdate_Movie = True
+            Me.sResult.NeedsDBUpdate_TV = True
         End If
     End Sub
 
@@ -4476,7 +4495,7 @@ Public Class dlgSettings
                 Me.lstTVShowFilter.Items.Remove(Me.lstTVShowFilter.SelectedItems(0))
             End While
             Me.SetApplyButton(True)
-            Me.sResult.NeedsRefresh_TV = True
+            Me.sResult.NeedsReload_TV = True
         End If
     End Sub
 
@@ -4485,7 +4504,7 @@ Public Class dlgSettings
             While Me.lstMovieSortTokens.SelectedItems.Count > 0
                 Me.lstMovieSortTokens.Items.Remove(Me.lstMovieSortTokens.SelectedItems(0))
             End While
-            Me.sResult.NeedsRefresh_Movie = True
+            Me.sResult.NeedsReload_Movie = True
             Me.SetApplyButton(True)
         End If
     End Sub
@@ -4495,7 +4514,7 @@ Public Class dlgSettings
             While Me.lstMovieSetSortTokens.SelectedItems.Count > 0
                 Me.lstMovieSetSortTokens.Items.Remove(Me.lstMovieSetSortTokens.SelectedItems(0))
             End While
-            Me.sResult.NeedsRefresh_MovieSet = True
+            Me.sResult.NeedsReload_MovieSet = True
             Me.SetApplyButton(True)
         End If
     End Sub
@@ -4505,7 +4524,7 @@ Public Class dlgSettings
             While Me.lstTVSortTokens.SelectedItems.Count > 0
                 Me.lstTVSortTokens.Items.Remove(Me.lstTVSortTokens.SelectedItems(0))
             End While
-            Me.sResult.NeedsRefresh_TV = True
+            Me.sResult.NeedsReload_TV = True
             Me.SetApplyButton(True)
         End If
     End Sub
@@ -4545,7 +4564,7 @@ Public Class dlgSettings
                 Me.lvTVSources.EndUpdate()
                 Me.lvTVSources.Refresh()
                 Me.SetApplyButton(True)
-                Me.sResult.NeedsUpdate = True
+                Me.sResult.NeedsDBClean_TV = True
             End If
         End If
     End Sub
@@ -4850,7 +4869,6 @@ Public Class dlgSettings
             If .MovieSetSortTokens.Count <= 0 Then .MovieSetSortTokensIsEmpty = True
             .MovieThemeKeepExisting = Me.chkMovieThemeKeepExisting.Checked
             .MovieTrailerDefaultSearch = Me.txtMovieTrailerDefaultSearch.Text
-            .MovieTrailerDeleteExisting = Me.chkMovieTrailerDeleteExisting.Checked
             .MovieTrailerKeepExisting = Me.chkMovieTrailerKeepExisting.Checked
             .MovieTrailerMinVideoQual = CType(Me.cbMovieTrailerMinVideoQual.SelectedItem, KeyValuePair(Of String, Enums.TrailerVideoQuality)).Value
             .MovieTrailerPrefVideoQual = CType(Me.cbMovieTrailerPrefVideoQual.SelectedItem, KeyValuePair(Of String, Enums.TrailerVideoQuality)).Value
@@ -5167,7 +5185,7 @@ Public Class dlgSettings
             '************** XBMC TvTunes settings **************
             .MovieThemeTvTunesCustom = Me.chkMovieThemeTvTunesCustom.Checked
             .MovieThemeTvTunesCustomPath = Me.txtMovieThemeTvTunesCustomPath.Text
-            .MovieThemeTvTunesEnable = Me.chkMovieThemeTvTunesEnable.Checked
+            .MovieThemeTvTunesEnable = Me.chkMovieThemeTvTunesEnabled.Checked
             .MovieThemeTvTunesMoviePath = Me.chkMovieThemeTvTunesMoviePath.Checked
             .MovieThemeTvTunesSub = Me.chkMovieThemeTvTunesSub.Checked
             .MovieThemeTvTunesSubDir = Me.txtMovieThemeTvTunesSubDir.Text
@@ -5346,7 +5364,7 @@ Public Class dlgSettings
             .TVShowLandscapeAD = Me.chkTVShowLandscapeAD.Checked
 
             '************** XBMC TvTunes settings **************
-            .TVShowThemeTvTunesEnable = Me.chkTVShowThemeTvTunesEnable.Checked
+            .TVShowThemeTvTunesEnable = Me.chkTVShowThemeTvTunesEnabled.Checked
             .TVShowThemeTvTunesCustom = Me.chkTVShowThemeTvTunesCustom.Checked
             .TVShowThemeTvTunesCustomPath = Me.txtTVShowThemeTvTunesCustomPath.Text
             .TVShowThemeTvTunesShowPath = Me.chkTVShowThemeTvTunesShowPath.Checked
@@ -5536,6 +5554,14 @@ Public Class dlgSettings
         Me.lblMovieSourcesFileNamingXBMCDefaultsActorThumbs.Text = strActorThumbs
         Me.lblTVSourcesFileNamingXBMCDefaultsActorThumbs.Text = strActorThumbs
 
+        'Add Episode Guest Stars to Actors list
+        Dim strAddEPGuestStars As String = Master.eLang.GetString(974, "Add Episode Guest Stars to Actors list")
+        Me.chkTVScraperEpisodeGuestStarsToActors.Text = strAddEPGuestStars
+
+        'Add <displayseason> and <displayepisode> to special episodes
+        Dim strAddDisplaySE As String = Master.eLang.GetString(976, "Add <displayseason> and <displayepisode> to special episodes")
+        Me.chkTVScraperUseDisplaySeasonEpisode.Text = strAddDisplaySE
+
         'Aired
         Dim strAired As String = Master.eLang.GetString(728, "Aired")
         Me.lblTVScraperGlobalAired.Text = strAired
@@ -5627,6 +5653,7 @@ Public Class dlgSettings
         Me.gbTVImagesShowCharacterArtOpts.Text = strCharacterArt
         Me.lblTVShowCharacterArtExpert.Text = strCharacterArt
         Me.lblTVSourcesFileNamingXBMCADCharacterArt.Text = strCharacterArt
+        Me.lblTVSourcesFileNamingKodiExtendedCharacterArt.Text = strCharacterArt
 
         'Cleanup disabled fields
         Dim strCleanUpDisabledFileds As String = Master.eLang.GetString(125, "Cleanup disabled fields")
@@ -5650,6 +5677,7 @@ Public Class dlgSettings
         Me.lblMovieSourcesFileNamingKodiExtendedClearArt.Text = strClearArt
         Me.lblTVSourcesFilenamingExpertClearArt.Text = strClearArt
         Me.lblTVSourcesFileNamingKodiADClearArt.Text = strClearArt
+        Me.lblTVSourcesFileNamingKodiExtendedClearArt.Text = strClearArt
 
         'ClearLogo
         Dim strClearLogo As String = Master.eLang.GetString(1097, "ClearLogo")
@@ -5668,6 +5696,7 @@ Public Class dlgSettings
         Me.lblMovieSourcesFileNamingXBMCExtendedClearLogo.Text = strClearLogo
         Me.lblTVShowClearLogoExpert.Text = strClearLogo
         Me.lblTVSourcesFileNamingXBMCADClearLogo.Text = strClearLogo
+        Me.lblTVSourcesFileNamingKodiExtendedClearLogo.Text = strClearLogo
 
         'Collection ID
         Dim strCollectionID As String = Master.eLang.GetString(1135, "Collection ID")
@@ -5769,6 +5798,7 @@ Public Class dlgSettings
 
         'Enabled
         Dim strEnabled As String = Master.eLang.GetString(774, "Enabled")
+        Me.lblMovieSetSourcesFilenamingKodiMSAAEnabled.Text = strEnabled
         Me.lblMovieSourcesFileNamingBoxeeDefaultsEnabled.Text = strEnabled
         Me.lblMovieSourcesFileNamingNMTDefaultsEnabled.Text = strEnabled
         Me.lblMovieSourcesFileNamingXBMCDefaultsEnabled.Text = strEnabled
@@ -5776,6 +5806,9 @@ Public Class dlgSettings
         Me.lblTVSourcesFileNamingNMTDefaultsEnabled.Text = strEnabled
         Me.lblTVSourcesFileNamingXBMCDefaultsEnabled.Text = strEnabled
         Me.chkMovieUseExpert.Text = strEnabled
+        Me.chkMovieSetUseExpert.Text = strEnabled
+        Me.chkMovieThemeTvTunesEnabled.Text = strEnabled
+        Me.chkTVShowThemeTvTunesEnabled.Text = strEnabled
         Me.chkTVUseExpert.Text = strEnabled
 
         'Enabled Click Scrape
@@ -5792,8 +5825,6 @@ Public Class dlgSettings
 
         'Enable Theme Support
         Dim strEnableThemeSupport As String = Master.eLang.GetString(1082, "Enable Theme Support")
-        Me.chkMovieThemeTvTunesEnable.Text = strEnableThemeSupport
-        Me.chkTVShowThemeTvTunesEnable.Text = strEnableThemeSupport
 
         'Episode
         Dim strEpisode As String = Master.eLang.GetString(727, "Episode")
@@ -5815,6 +5846,11 @@ Public Class dlgSettings
         Dim strEpisodes As String = Master.eLang.GetString(682, "Episodes")
         Me.lblTVScraperGlobalHeaderEpisodes.Text = strEpisodes
 
+        'Exclude
+        Dim strExclude As String = Master.eLang.GetString(264, "Exclude")
+        Me.colMovieSourcesExclude.Text = strExclude
+        Me.colTVSourcesExclude.Text = strExclude
+
         'Expert
         Dim strExpert As String = Master.eLang.GetString(439, "Expert")
         Me.tpMovieSourcesFileNamingExpert.Text = strExpert
@@ -5830,6 +5866,8 @@ Public Class dlgSettings
         'Extended Images
         Dim strExtendedImages As String = Master.eLang.GetString(822, "Extended Images")
         Me.gbMovieSourcesFileNamingKodiExtendedOpts.Text = strExtendedImages
+        Me.gbMovieSetSourcesFileNamingKodiExtendedOpts.Text = strExtendedImages
+        Me.gbTVSourcesFileNamingKodiExtendedOpts.Text = strExtendedImages
 
         'Extrafanarts
         Dim strExtrafanarts As String = Master.eLang.GetString(992, "Extrafanarts")
@@ -5892,6 +5930,10 @@ Public Class dlgSettings
         Dim strGenre As String = Master.eLang.GetString(20, "Genre")
         Me.lblMovieScraperGlobalGenre.Text = strGenre
         Me.lblTVScraperGlobalGenre.Text = strGenre
+
+        'Get Year
+        Dim strGetYear As String = Master.eLang.GetString(586, "Get Year")
+        Me.colMovieSourcesGetYear.Text = strGetYear
 
         'Hide
         Dim strHide As String = Master.eLang.GetString(465, "Hide")
@@ -5999,6 +6041,12 @@ Public Class dlgSettings
         Me.lblTVScraperGlobalHeaderEpisodesLock.Text = strLock
         Me.lblTVScraperGlobalHeaderSeasonsLock.Text = strLock
         Me.lblTVScraperGlobalHeaderShowsLock.Text = strLock
+
+        'Main Window
+        Dim strMainWindow As String = Master.eLang.GetString(1152, "Main Window")
+        Me.gbGeneralMainWindowOpts.Text = strMainWindow
+        Me.gbMovieGeneralMainWindowOpts.Text = strMainWindow
+        Me.gbTVGeneralMainWindowOpts.Text = strMainWindow
 
         'Max Height:
         Dim strMaxHeight As String = Master.eLang.GetString(480, "Max Height:")
@@ -6131,6 +6179,16 @@ Public Class dlgSettings
         Me.chkMovieImagesMediaLanguageOnly.Text = strOnlyImgMediaLang
         Me.chkMovieSetImagesMediaLanguageOnly.Text = strOnlyImgMediaLang
         Me.chkTVImagesMediaLanguageOnly.Text = strOnlyImgMediaLang
+
+        'Only if no MPAA is found
+        Dim strOnlyIfNoMPAA As String = Master.eLang.GetString(1293, "Only if no MPAA is found")
+        Me.chkMovieScraperCertForMPAAFallback.Text = strOnlyIfNoMPAA
+        Me.chkTVScraperShowCertForMPAAFallback.Text = strOnlyIfNoMPAA
+
+        'Only Save the Value to NFO
+        Dim strOnlySaveValueToNFO As String = Master.eLang.GetString(835, "Only Save the Value to NFO")
+        Me.chkMovieScraperCertOnlyValue.Text = strOnlySaveValueToNFO
+        Me.chkTVScraperShowCertOnlyValue.Text = strOnlySaveValueToNFO
 
         'Optional Images
         Dim strOptionalImages As String = Master.eLang.GetString(267, "Optional Images")
@@ -6284,6 +6342,7 @@ Public Class dlgSettings
         'Season Landscape
         Dim strSeasonLandscape As String = Master.eLang.GetString(1018, "Season Landscape")
         Me.lblTVSourcesFileNamingXBMCADSeasonLandscape.Text = strSeasonLandscape
+        Me.lblTVSourcesFileNamingKodiExtendedSeasonLandscape.Text = strSeasonLandscape
 
         'Season List Sorting
         Dim strSeasonListSorting As String = Master.eLang.GetString(493, "Season List Sorting")
@@ -6388,11 +6447,20 @@ Public Class dlgSettings
         'TV Show Landscape
         Dim strTVShowLandscape As String = Master.eLang.GetString(1010, "TV Show Landscape")
         Me.lblTVSourcesFileNamingXBMCADTVShowLandscape.Text = strTVShowLandscape
+        Me.lblTVSourcesFileNamingKodiExtendedTVShowLandscape.Text = strTVShowLandscape
 
         'Use
         Dim strUse As String = Master.eLang.GetString(872, "Use")
-        Me.chkMovieSetUseExpert.Text = strUse
-        Me.chkMovieSetUseMSAA.Text = strUse
+
+        'Use Certification for MPAA
+        Dim strUseCertForMPAA As String = Master.eLang.GetString(511, "Use Certification for MPAA")
+        Me.chkMovieScraperCertForMPAA.Text = strUseCertForMPAA
+        Me.chkTVScraperShowCertForMPAA.Text = strUseCertForMPAA
+
+        'Use MPAA as Fallback for FSK Rating
+        Dim strUseMPAAAsFallbackForFSK As String = Master.eLang.GetString(882, "Use MPAA as Fallback for FSK Rating")
+        Me.chkMovieScraperCertFSK.Text = strUseMPAAAsFallbackForFSK
+        Me.chkTVScraperShowCertFSK.Text = strUseMPAAAsFallbackForFSK
 
         'Watched
         Dim strWatched As String = Master.eLang.GetString(981, "Watched")
@@ -6461,26 +6529,21 @@ Public Class dlgSettings
         Me.chkMovieSetCleanFiles.Text = Master.eLang.GetString(1276, "Remove Images and NFOs with MovieSets")
         Me.chkMovieSetGeneralMarkNew.Text = Master.eLang.GetString(1301, "Mark New MovieSets")
         Me.chkMovieScraperCastWithImg.Text = Master.eLang.GetString(510, "Scrape Only Actors With Images")
-        Me.chkMovieScraperCertForMPAA.Text = Master.eLang.GetString(511, "Use Certification for MPAA")
-        Me.chkMovieScraperCertForMPAAFallback.Text = Master.eLang.GetString(1293, "Only if no MPAA is found")
         Me.chkMovieScraperCleanPlotOutline.Text = Master.eLang.GetString(985, "Clean Plot/Outline")
         Me.chkMovieScraperCollectionsAuto.Text = Master.eLang.GetString(1266, "Add Movie automatically to Collections")
         Me.chkMovieScraperDetailView.Text = Master.eLang.GetString(1249, "Show scraped results in detailed view")
         Me.chkMovieScraperReleaseFormat.Text = Master.eLang.GetString(1272, "Date format Releasedate: yyyy-mm-dd")
         Me.chkMovieScraperMetaDataIFOScan.Text = Master.eLang.GetString(628, "Enable IFO Parsing")
         Me.chkMovieScraperMetaDataScan.Text = Master.eLang.GetString(517, "Scan Meta Data")
-        Me.chkMovieScraperCertOnlyValue.Text = Master.eLang.GetString(835, "Only Save the Value to NFO")
         Me.chkMovieScraperPlotForOutline.Text = Master.eLang.GetString(965, "Use Plot for Plot Outline")
         Me.chkMovieScraperPlotForOutlineIfEmpty.Text = Master.eLang.GetString(958, "Only if Plot Outline is empty")
         Me.chkMovieScraperStudioWithImg.Text = Master.eLang.GetString(1280, "Scrape Only Studios With Images")
         Me.chkMovieScraperUseMDDuration.Text = Master.eLang.GetString(516, "Use Duration for Runtime")
-        Me.chkMovieScraperCertFSK.Text = Master.eLang.GetString(882, "Use MPAA as Fallback for FSK Rating")
         Me.chkMovieScraperXBMCTrailerFormat.Text = Master.eLang.GetString(1187, "Save YouTube-Trailer-Links in XBMC compatible format")
         Me.chkMovieYAMJCompatibleSets.Text = Master.eLang.GetString(561, "YAMJ Compatible Sets")
         Me.chkMovieSkipStackedSizeCheck.Text = Master.eLang.GetString(538, "Skip Size Check of Stacked Files")
         Me.chkMovieSortBeforeScan.Text = Master.eLang.GetString(712, "Sort files into folder before each library update")
         Me.chkMovieStackExpertMulti.Text = String.Format(Master.eLang.GetString(1178, "Stack {0}filename{1}"), "<", ">")
-        Me.chkMovieTrailerDeleteExisting.Text = Master.eLang.GetString(522, "Delete All Existing")
         Me.chkMovieUnstackExpertMulti.Text = Master.eLang.GetString(1179, "also save unstacked")
         Me.chkMovieUseBaseDirectoryExpertBDMV.Text = Master.eLang.GetString(1180, "Use Base Directory")
         Me.chkMovieXBMCProtectVTSBDMV.Text = Master.eLang.GetString(1176, "Protect DVD/Bluray Structure")
@@ -6506,7 +6569,6 @@ Public Class dlgSettings
         Me.gbGeneralDaemon.Text = Master.eLang.GetString(1261, "Configuration ISO Filescanning")
         Me.gbGeneralDateAdded.Text = Master.eLang.GetString(792, "Adding Date")
         Me.gbGeneralInterface.Text = Master.eLang.GetString(795, "Interface")
-        Me.gbGeneralMainWindow.Text = Master.eLang.GetString(1152, "Main Window")
         Me.gbGeneralThemes.Text = Master.eLang.GetString(629, "GUI Themes")
         Me.gbMovieGeneralCustomMarker.Text = Master.eLang.GetString(1190, "Custom Marker")
         Me.gbMovieSourcesBackdropsFolderOpts.Text = Master.eLang.GetString(520, "Backdrops Folder")
@@ -6814,7 +6876,8 @@ Public Class dlgSettings
 
     Private Sub txtMovieSkipLessThan_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSkipLessThan.TextChanged
         Me.SetApplyButton(True)
-        Me.sResult.NeedsUpdate = True
+        Me.sResult.NeedsDBClean_Movie = True
+        Me.sResult.NeedsDBUpdate_Movie = True
     End Sub
 
     Private Sub txtTVSkipLessThan_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVSkipLessThan.KeyPress
@@ -6823,7 +6886,8 @@ Public Class dlgSettings
 
     Private Sub txtTVSkipLessThan_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVSkipLessThan.TextChanged
         Me.SetApplyButton(True)
-        Me.sResult.NeedsUpdate = True
+        Me.sResult.NeedsDBClean_TV = True
+        Me.sResult.NeedsDBUpdate_TV = True
     End Sub
 
     Private Sub txtTVScraperDefFIExt_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVScraperDefFIExt.TextChanged
@@ -7124,7 +7188,7 @@ Public Class dlgSettings
         Me.chkTVShowLandscapeExtended.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVShowNFOFrodo.Enabled = Me.chkTVUseFrodo.Checked
         Me.chkTVShowPosterFrodo.Enabled = Me.chkTVUseFrodo.Checked
-        Me.chkTVShowThemeTvTunesEnable.Enabled = Me.chkTVUseFrodo.Checked
+        Me.chkTVShowThemeTvTunesEnabled.Enabled = Me.chkTVUseFrodo.Checked
 
         If Not Me.chkTVUseFrodo.Checked Then
             Me.chkTVEpisodeActorThumbsFrodo.Checked = False
@@ -7149,7 +7213,7 @@ Public Class dlgSettings
             Me.chkTVShowLandscapeExtended.Checked = False
             Me.chkTVShowNFOFrodo.Checked = False
             Me.chkTVShowPosterFrodo.Checked = False
-            Me.chkTVShowThemeTvTunesEnable.Checked = False
+            Me.chkTVShowThemeTvTunesEnabled.Checked = False
         Else
             Me.chkTVEpisodeActorThumbsFrodo.Checked = True
             Me.chkTVEpisodeNFOFrodo.Checked = True
@@ -7591,7 +7655,7 @@ Public Class dlgSettings
         chkMovieSortBeforeScan.CheckedChanged, _
         chkMovieSourcesBackdropsAuto.CheckedChanged, _
         chkMovieThemeKeepExisting.CheckedChanged, _
-        chkMovieTrailerDeleteExisting.CheckedChanged, _
+ _
         chkMovieTrailerKeepExisting.CheckedChanged, _
         chkMovieUnstackExpertMulti.CheckedChanged, _
         chkMovieUnstackExpertSingle.CheckedChanged, _

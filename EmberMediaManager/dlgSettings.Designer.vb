@@ -231,7 +231,7 @@ Partial Class dlgSettings
         Me.gbGeneralDateAdded = New System.Windows.Forms.GroupBox()
         Me.tblGeneralDateAdded = New System.Windows.Forms.TableLayoutPanel()
         Me.cbGeneralDateTime = New System.Windows.Forms.ComboBox()
-        Me.gbGeneralMainWindow = New System.Windows.Forms.GroupBox()
+        Me.gbGeneralMainWindowOpts = New System.Windows.Forms.GroupBox()
         Me.tblGeneralMainWindow = New System.Windows.Forms.TableLayoutPanel()
         Me.chkGeneralDisplayDiscArt = New System.Windows.Forms.CheckBox()
         Me.chkGeneralDisplayImgNames = New System.Windows.Forms.CheckBox()
@@ -274,6 +274,10 @@ Partial Class dlgSettings
         Me.tblMovieGenrealIMDBMirrorOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.txtMovieIMDBURL = New System.Windows.Forms.TextBox()
         Me.lblMovieIMDBMirror = New System.Windows.Forms.Label()
+        Me.gbMovieGeneralMainWindowOpts = New System.Windows.Forms.GroupBox()
+        Me.tblMovieGeneralMainWindow = New System.Windows.Forms.TableLayoutPanel()
+        Me.lblMovieLanguageOverlay = New System.Windows.Forms.Label()
+        Me.cbMovieLanguageOverlay = New System.Windows.Forms.ComboBox()
         Me.pnlFileSystem = New System.Windows.Forms.Panel()
         Me.tblFileSystem = New System.Windows.Forms.TableLayoutPanel()
         Me.gbFileSystemValidVideoExts = New System.Windows.Forms.GroupBox()
@@ -408,7 +412,7 @@ Partial Class dlgSettings
         Me.chkMovieThemeTvTunesSub = New System.Windows.Forms.CheckBox()
         Me.btnMovieThemeTvTunesCustomPathBrowse = New System.Windows.Forms.Button()
         Me.chkMovieThemeTvTunesMoviePath = New System.Windows.Forms.CheckBox()
-        Me.chkMovieThemeTvTunesEnable = New System.Windows.Forms.CheckBox()
+        Me.chkMovieThemeTvTunesEnabled = New System.Windows.Forms.CheckBox()
         Me.chkMovieThemeTvTunesCustom = New System.Windows.Forms.CheckBox()
         Me.txtMovieThemeTvTunesCustomPath = New System.Windows.Forms.TextBox()
         Me.tpMovieSourcesFileNamingNMT = New System.Windows.Forms.TabPage()
@@ -667,6 +671,10 @@ Partial Class dlgSettings
         Me.lstTVShowFilter = New System.Windows.Forms.ListBox()
         Me.btnTVShowFilterAdd = New System.Windows.Forms.Button()
         Me.txtTVShowFilter = New System.Windows.Forms.TextBox()
+        Me.gbTVGeneralMainWindowOpts = New System.Windows.Forms.GroupBox()
+        Me.TableLayoutPanel4 = New System.Windows.Forms.TableLayoutPanel()
+        Me.lblTVLanguageOverlay = New System.Windows.Forms.Label()
+        Me.cbTVLanguageOverlay = New System.Windows.Forms.ComboBox()
         Me.gbTVSourcesDefaultsOpts = New System.Windows.Forms.GroupBox()
         Me.tblTVSourcesDefaultsOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.btnTVGeneralLangFetch = New System.Windows.Forms.Button()
@@ -693,14 +701,14 @@ Partial Class dlgSettings
         Me.tblTVSourcesFileNamingXBMC = New System.Windows.Forms.TableLayoutPanel()
         Me.gbTVSourcesFileNamingKodiExtendedOpts = New System.Windows.Forms.GroupBox()
         Me.tblTVSourcesFileNamingKodiExtendedOpts = New System.Windows.Forms.TableLayoutPanel()
-        Me.lblTVSourcesFileNamingXBMCExtendedClearArt = New System.Windows.Forms.Label()
-        Me.lblTVSourcesFileNamingXBMCExtendedClearLogo = New System.Windows.Forms.Label()
-        Me.lblTVSourcesFileNamingXBMCExtendedSeasonLandscape = New System.Windows.Forms.Label()
+        Me.lblTVSourcesFileNamingKodiExtendedClearArt = New System.Windows.Forms.Label()
+        Me.lblTVSourcesFileNamingKodiExtendedClearLogo = New System.Windows.Forms.Label()
+        Me.lblTVSourcesFileNamingKodiExtendedSeasonLandscape = New System.Windows.Forms.Label()
         Me.lblTVSourcesFileNamingKodiDefaultsHeaderExtended = New System.Windows.Forms.Label()
         Me.chkTVShowClearArtExtended = New System.Windows.Forms.CheckBox()
         Me.chkTVShowClearLogoExtended = New System.Windows.Forms.CheckBox()
         Me.chkTVSeasonLandscapeExtended = New System.Windows.Forms.CheckBox()
-        Me.lblTVSourcesFileNamingXBMCExtendedTVShowLandscape = New System.Windows.Forms.Label()
+        Me.lblTVSourcesFileNamingKodiExtendedTVShowLandscape = New System.Windows.Forms.Label()
         Me.chkTVShowLandscapeExtended = New System.Windows.Forms.CheckBox()
         Me.chkTVShowCharacterArtExtended = New System.Windows.Forms.CheckBox()
         Me.lblTVSourcesFileNamingKodiExtendedCharacterArt = New System.Windows.Forms.Label()
@@ -752,7 +760,7 @@ Partial Class dlgSettings
         Me.chkTVShowThemeTvTunesShowPath = New System.Windows.Forms.CheckBox()
         Me.btnTVShowThemeTvTunesCustomPathBrowse = New System.Windows.Forms.Button()
         Me.txtTVShowThemeTvTunesCustomPath = New System.Windows.Forms.TextBox()
-        Me.chkTVShowThemeTvTunesEnable = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowThemeTvTunesEnabled = New System.Windows.Forms.CheckBox()
         Me.chkTVShowThemeTvTunesCustom = New System.Windows.Forms.CheckBox()
         Me.chkTVShowThemeTvTunesSub = New System.Windows.Forms.CheckBox()
         Me.tpTVSourcesFileNamingNMT = New System.Windows.Forms.TabPage()
@@ -1196,13 +1204,11 @@ Partial Class dlgSettings
         Me.btnTVScraperDefFIExtAdd = New System.Windows.Forms.Button()
         Me.lblTVScraperDefFIExt = New System.Windows.Forms.Label()
         Me.chkTVScraperMetaDataScan = New System.Windows.Forms.CheckBox()
-        Me.cbTVLanguageOverlay = New System.Windows.Forms.ComboBox()
         Me.gbTVScraperDurationFormatOpts = New System.Windows.Forms.GroupBox()
         Me.tblgbTVScraperDurationFormatOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.chkTVScraperUseMDDuration = New System.Windows.Forms.CheckBox()
         Me.txtTVScraperDurationRuntimeFormat = New System.Windows.Forms.TextBox()
         Me.lblTVScraperDurationRuntimeFormat = New System.Windows.Forms.Label()
-        Me.lblTVLanguageOverlay = New System.Windows.Forms.Label()
         Me.gbTVScraperMiscOpts = New System.Windows.Forms.GroupBox()
         Me.tblTVScraperMiscOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.chkTVScraperUseSRuntimeForEp = New System.Windows.Forms.CheckBox()
@@ -1223,9 +1229,7 @@ Partial Class dlgSettings
         Me.btnMovieScraperDefFIExtAdd = New System.Windows.Forms.Button()
         Me.lblMovieScraperDefFIExt = New System.Windows.Forms.Label()
         Me.chkMovieScraperMetaDataScan = New System.Windows.Forms.CheckBox()
-        Me.cbMovieLanguageOverlay = New System.Windows.Forms.ComboBox()
         Me.chkMovieScraperMetaDataIFOScan = New System.Windows.Forms.CheckBox()
-        Me.lblMovieLanguageOverlay = New System.Windows.Forms.Label()
         Me.gbMovieScraperDurationFormatOpts = New System.Windows.Forms.GroupBox()
         Me.tblMovieScraperDurationFormatOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.lblMovieScraperDurationRuntimeFormat = New System.Windows.Forms.Label()
@@ -1343,7 +1347,6 @@ Partial Class dlgSettings
         Me.lblMovieTrailerDefaultSearch = New System.Windows.Forms.Label()
         Me.chkMovieTrailerKeepExisting = New System.Windows.Forms.CheckBox()
         Me.cbMovieTrailerMinVideoQual = New System.Windows.Forms.ComboBox()
-        Me.chkMovieTrailerDeleteExisting = New System.Windows.Forms.CheckBox()
         Me.lblMovieTrailerMinQual = New System.Windows.Forms.Label()
         Me.lblMovieTrailerPrefQual = New System.Windows.Forms.Label()
         Me.cbMovieTrailerPrefVideoQual = New System.Windows.Forms.ComboBox()
@@ -1423,7 +1426,7 @@ Partial Class dlgSettings
         Me.pbMSAAInfo = New System.Windows.Forms.PictureBox()
         Me.lblMovieSetSourcesFilenamingKodiMSAAPath = New System.Windows.Forms.Label()
         Me.chkMovieSetUseMSAA = New System.Windows.Forms.CheckBox()
-        Me.Label3 = New System.Windows.Forms.Label()
+        Me.lblMovieSetSourcesFilenamingKodiMSAAEnabled = New System.Windows.Forms.Label()
         Me.chkMovieSetBannerMSAA = New System.Windows.Forms.CheckBox()
         Me.chkMovieSetClearArtMSAA = New System.Windows.Forms.CheckBox()
         Me.chkMovieSetClearLogoMSAA = New System.Windows.Forms.CheckBox()
@@ -1612,7 +1615,7 @@ Partial Class dlgSettings
         Me.tblGeneralInterface.SuspendLayout
         Me.gbGeneralDateAdded.SuspendLayout
         Me.tblGeneralDateAdded.SuspendLayout
-        Me.gbGeneralMainWindow.SuspendLayout
+        Me.gbGeneralMainWindowOpts.SuspendLayout
         Me.tblGeneralMainWindow.SuspendLayout
         Me.pnlMovieGeneral.SuspendLayout
         Me.tblMovieGeneral.SuspendLayout
@@ -1624,6 +1627,8 @@ Partial Class dlgSettings
         Me.tblMovieGeneralGenreFilterOpts.SuspendLayout
         Me.gbMovieGenrealIMDBMirrorOpts.SuspendLayout
         Me.tblMovieGenrealIMDBMirrorOpts.SuspendLayout
+        Me.gbMovieGeneralMainWindowOpts.SuspendLayout
+        Me.tblMovieGeneralMainWindow.SuspendLayout
         Me.pnlFileSystem.SuspendLayout
         Me.tblFileSystem.SuspendLayout
         Me.gbFileSystemValidVideoExts.SuspendLayout
@@ -1731,6 +1736,8 @@ Partial Class dlgSettings
         Me.tblTVEpisodeFilterOpts.SuspendLayout
         Me.gbTVShowFilterOpts.SuspendLayout
         Me.tblTVShowFilterOpts.SuspendLayout
+        Me.gbTVGeneralMainWindowOpts.SuspendLayout
+        Me.TableLayoutPanel4.SuspendLayout
         Me.gbTVSourcesDefaultsOpts.SuspendLayout
         Me.tblTVSourcesDefaultsOpts.SuspendLayout
         Me.pnlTVSources.SuspendLayout
@@ -4496,7 +4503,7 @@ Partial Class dlgSettings
         Me.tblGeneral.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblGeneral.Controls.Add(Me.gbGeneralInterface, 0, 0)
         Me.tblGeneral.Controls.Add(Me.gbGeneralDateAdded, 0, 1)
-        Me.tblGeneral.Controls.Add(Me.gbGeneralMainWindow, 1, 0)
+        Me.tblGeneral.Controls.Add(Me.gbGeneralMainWindowOpts, 1, 0)
         Me.tblGeneral.Controls.Add(Me.gbGeneralMiscOpts, 1, 1)
         Me.tblGeneral.Controls.Add(Me.gbGeneralDaemon, 0, 3)
         Me.tblGeneral.Dock = System.Windows.Forms.DockStyle.Fill
@@ -4586,18 +4593,18 @@ Partial Class dlgSettings
         Me.cbGeneralDateTime.Size = New System.Drawing.Size(226, 21)
         Me.cbGeneralDateTime.TabIndex = 11
         '
-        'gbGeneralMainWindow
+        'gbGeneralMainWindowOpts
         '
-        Me.gbGeneralMainWindow.AutoSize = true
-        Me.gbGeneralMainWindow.Controls.Add(Me.tblGeneralMainWindow)
-        Me.gbGeneralMainWindow.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbGeneralMainWindow.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.gbGeneralMainWindow.Location = New System.Drawing.Point(247, 3)
-        Me.gbGeneralMainWindow.Name = "gbGeneralMainWindow"
-        Me.gbGeneralMainWindow.Size = New System.Drawing.Size(358, 283)
-        Me.gbGeneralMainWindow.TabIndex = 14
-        Me.gbGeneralMainWindow.TabStop = false
-        Me.gbGeneralMainWindow.Text = "Main Window"
+        Me.gbGeneralMainWindowOpts.AutoSize = true
+        Me.gbGeneralMainWindowOpts.Controls.Add(Me.tblGeneralMainWindow)
+        Me.gbGeneralMainWindowOpts.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbGeneralMainWindowOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.gbGeneralMainWindowOpts.Location = New System.Drawing.Point(247, 3)
+        Me.gbGeneralMainWindowOpts.Name = "gbGeneralMainWindowOpts"
+        Me.gbGeneralMainWindowOpts.Size = New System.Drawing.Size(358, 283)
+        Me.gbGeneralMainWindowOpts.TabIndex = 14
+        Me.gbGeneralMainWindowOpts.TabStop = false
+        Me.gbGeneralMainWindowOpts.Text = "Main Window"
         '
         'tblGeneralMainWindow
         '
@@ -4773,6 +4780,7 @@ Partial Class dlgSettings
         Me.tblMovieGeneral.Controls.Add(Me.gbMovieGeneralCustomMarker, 2, 3)
         Me.tblMovieGeneral.Controls.Add(Me.gbMovieGeneralGenreFilterOpts, 1, 3)
         Me.tblMovieGeneral.Controls.Add(Me.gbMovieGenrealIMDBMirrorOpts, 1, 2)
+        Me.tblMovieGeneral.Controls.Add(Me.gbMovieGeneralMainWindowOpts, 2, 0)
         Me.tblMovieGeneral.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMovieGeneral.Location = New System.Drawing.Point(0, 0)
         Me.tblMovieGeneral.Name = "tblMovieGeneral"
@@ -4790,14 +4798,13 @@ Partial Class dlgSettings
         'gbMovieGeneralFiltersOpts
         '
         Me.gbMovieGeneralFiltersOpts.AutoSize = true
-        Me.tblMovieGeneral.SetColumnSpan(Me.gbMovieGeneralFiltersOpts, 2)
         Me.gbMovieGeneralFiltersOpts.Controls.Add(Me.tblMovieGeneralFiltersOpts)
         Me.gbMovieGeneralFiltersOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieGeneralFiltersOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbMovieGeneralFiltersOpts.Location = New System.Drawing.Point(233, 3)
         Me.gbMovieGeneralFiltersOpts.Name = "gbMovieGeneralFiltersOpts"
         Me.tblMovieGeneral.SetRowSpan(Me.gbMovieGeneralFiltersOpts, 2)
-        Me.gbMovieGeneralFiltersOpts.Size = New System.Drawing.Size(477, 205)
+        Me.gbMovieGeneralFiltersOpts.Size = New System.Drawing.Size(232, 205)
         Me.gbMovieGeneralFiltersOpts.TabIndex = 6
         Me.gbMovieGeneralFiltersOpts.TabStop = false
         Me.gbMovieGeneralFiltersOpts.Text = "Folder/File Name Filters"
@@ -4828,7 +4835,7 @@ Partial Class dlgSettings
         Me.tblMovieGeneralFiltersOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieGeneralFiltersOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieGeneralFiltersOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieGeneralFiltersOpts.Size = New System.Drawing.Size(471, 184)
+        Me.tblMovieGeneralFiltersOpts.Size = New System.Drawing.Size(226, 184)
         Me.tblMovieGeneralFiltersOpts.TabIndex = 10
         '
         'btnMovieFilterRemove
@@ -4923,7 +4930,7 @@ Partial Class dlgSettings
         Me.gbMovieGeneralCustomMarker.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.gbMovieGeneralCustomMarker.Location = New System.Drawing.Point(471, 269)
         Me.gbMovieGeneralCustomMarker.Name = "gbMovieGeneralCustomMarker"
-        Me.gbMovieGeneralCustomMarker.Size = New System.Drawing.Size(239, 147)
+        Me.gbMovieGeneralCustomMarker.Size = New System.Drawing.Size(252, 147)
         Me.gbMovieGeneralCustomMarker.TabIndex = 9
         Me.gbMovieGeneralCustomMarker.TabStop = false
         Me.gbMovieGeneralCustomMarker.Text = "Custom Marker"
@@ -4957,7 +4964,7 @@ Partial Class dlgSettings
         Me.tblMovieGeneralCustomMarker.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieGeneralCustomMarker.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieGeneralCustomMarker.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieGeneralCustomMarker.Size = New System.Drawing.Size(233, 126)
+        Me.tblMovieGeneralCustomMarker.Size = New System.Drawing.Size(246, 126)
         Me.tblMovieGeneralCustomMarker.TabIndex = 10
         '
         'btnMovieGeneralCustomMarker4
@@ -5130,7 +5137,7 @@ Partial Class dlgSettings
         Me.gbMovieGenrealIMDBMirrorOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbMovieGenrealIMDBMirrorOpts.Location = New System.Drawing.Point(233, 214)
         Me.gbMovieGenrealIMDBMirrorOpts.Name = "gbMovieGenrealIMDBMirrorOpts"
-        Me.gbMovieGenrealIMDBMirrorOpts.Size = New System.Drawing.Size(477, 49)
+        Me.gbMovieGenrealIMDBMirrorOpts.Size = New System.Drawing.Size(490, 49)
         Me.gbMovieGenrealIMDBMirrorOpts.TabIndex = 8
         Me.gbMovieGenrealIMDBMirrorOpts.TabStop = false
         Me.gbMovieGenrealIMDBMirrorOpts.Text = "IMDB"
@@ -5150,7 +5157,7 @@ Partial Class dlgSettings
         Me.tblMovieGenrealIMDBMirrorOpts.RowCount = 2
         Me.tblMovieGenrealIMDBMirrorOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieGenrealIMDBMirrorOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieGenrealIMDBMirrorOpts.Size = New System.Drawing.Size(471, 28)
+        Me.tblMovieGenrealIMDBMirrorOpts.Size = New System.Drawing.Size(484, 28)
         Me.tblMovieGenrealIMDBMirrorOpts.TabIndex = 10
         '
         'txtMovieIMDBURL
@@ -5172,6 +5179,63 @@ Partial Class dlgSettings
         Me.lblMovieIMDBMirror.Size = New System.Drawing.Size(73, 13)
         Me.lblMovieIMDBMirror.TabIndex = 0
         Me.lblMovieIMDBMirror.Text = "IMDB Mirror:"
+        '
+        'gbMovieGeneralMainWindowOpts
+        '
+        Me.gbMovieGeneralMainWindowOpts.AutoSize = true
+        Me.gbMovieGeneralMainWindowOpts.Controls.Add(Me.tblMovieGeneralMainWindow)
+        Me.gbMovieGeneralMainWindowOpts.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbMovieGeneralMainWindowOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.gbMovieGeneralMainWindowOpts.Location = New System.Drawing.Point(471, 3)
+        Me.gbMovieGeneralMainWindowOpts.Name = "gbMovieGeneralMainWindowOpts"
+        Me.tblMovieGeneral.SetRowSpan(Me.gbMovieGeneralMainWindowOpts, 2)
+        Me.gbMovieGeneralMainWindowOpts.Size = New System.Drawing.Size(252, 205)
+        Me.gbMovieGeneralMainWindowOpts.TabIndex = 10
+        Me.gbMovieGeneralMainWindowOpts.TabStop = false
+        Me.gbMovieGeneralMainWindowOpts.Text = "Main Window"
+        '
+        'tblMovieGeneralMainWindow
+        '
+        Me.tblMovieGeneralMainWindow.AutoSize = true
+        Me.tblMovieGeneralMainWindow.ColumnCount = 2
+        Me.tblMovieGeneralMainWindow.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMovieGeneralMainWindow.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMovieGeneralMainWindow.Controls.Add(Me.lblMovieLanguageOverlay, 0, 0)
+        Me.tblMovieGeneralMainWindow.Controls.Add(Me.cbMovieLanguageOverlay, 0, 1)
+        Me.tblMovieGeneralMainWindow.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblMovieGeneralMainWindow.Location = New System.Drawing.Point(3, 18)
+        Me.tblMovieGeneralMainWindow.Name = "tblMovieGeneralMainWindow"
+        Me.tblMovieGeneralMainWindow.RowCount = 3
+        Me.tblMovieGeneralMainWindow.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMovieGeneralMainWindow.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMovieGeneralMainWindow.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMovieGeneralMainWindow.Size = New System.Drawing.Size(246, 184)
+        Me.tblMovieGeneralMainWindow.TabIndex = 0
+        '
+        'lblMovieLanguageOverlay
+        '
+        Me.lblMovieLanguageOverlay.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.lblMovieLanguageOverlay.AutoSize = true
+        Me.lblMovieLanguageOverlay.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblMovieLanguageOverlay.Location = New System.Drawing.Point(3, 0)
+        Me.lblMovieLanguageOverlay.MaximumSize = New System.Drawing.Size(250, 0)
+        Me.lblMovieLanguageOverlay.Name = "lblMovieLanguageOverlay"
+        Me.lblMovieLanguageOverlay.Size = New System.Drawing.Size(240, 26)
+        Me.lblMovieLanguageOverlay.TabIndex = 16
+        Me.lblMovieLanguageOverlay.Text = "Display best Audio Stream with the following Language:"
+        Me.lblMovieLanguageOverlay.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        '
+        'cbMovieLanguageOverlay
+        '
+        Me.cbMovieLanguageOverlay.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.cbMovieLanguageOverlay.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbMovieLanguageOverlay.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.cbMovieLanguageOverlay.FormattingEnabled = true
+        Me.cbMovieLanguageOverlay.Location = New System.Drawing.Point(36, 29)
+        Me.cbMovieLanguageOverlay.Name = "cbMovieLanguageOverlay"
+        Me.cbMovieLanguageOverlay.Size = New System.Drawing.Size(174, 21)
+        Me.cbMovieLanguageOverlay.Sorted = true
+        Me.cbMovieLanguageOverlay.TabIndex = 17
         '
         'pnlFileSystem
         '
@@ -6875,7 +6939,7 @@ Partial Class dlgSettings
         Me.tblMovieSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.chkMovieThemeTvTunesSub, 0, 4)
         Me.tblMovieSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.btnMovieThemeTvTunesCustomPathBrowse, 1, 3)
         Me.tblMovieSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.chkMovieThemeTvTunesMoviePath, 0, 1)
-        Me.tblMovieSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.chkMovieThemeTvTunesEnable, 0, 0)
+        Me.tblMovieSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.chkMovieThemeTvTunesEnabled, 0, 0)
         Me.tblMovieSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.chkMovieThemeTvTunesCustom, 0, 2)
         Me.tblMovieSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.txtMovieThemeTvTunesCustomPath, 0, 3)
         Me.tblMovieSourcesFileNamingKodiTvTunesOpts.Dock = System.Windows.Forms.DockStyle.Fill
@@ -6952,18 +7016,19 @@ Partial Class dlgSettings
         Me.chkMovieThemeTvTunesMoviePath.Text = "Store themes in movie directory"
         Me.chkMovieThemeTvTunesMoviePath.UseVisualStyleBackColor = true
         '
-        'chkMovieThemeTvTunesEnable
+        'chkMovieThemeTvTunesEnabled
         '
-        Me.chkMovieThemeTvTunesEnable.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieThemeTvTunesEnable.AutoSize = true
-        Me.tblMovieSourcesFileNamingKodiTvTunesOpts.SetColumnSpan(Me.chkMovieThemeTvTunesEnable, 2)
-        Me.chkMovieThemeTvTunesEnable.Enabled = false
-        Me.chkMovieThemeTvTunesEnable.Location = New System.Drawing.Point(3, 3)
-        Me.chkMovieThemeTvTunesEnable.Name = "chkMovieThemeTvTunesEnable"
-        Me.chkMovieThemeTvTunesEnable.Size = New System.Drawing.Size(97, 17)
-        Me.chkMovieThemeTvTunesEnable.TabIndex = 0
-        Me.chkMovieThemeTvTunesEnable.Text = "Enable Theme"
-        Me.chkMovieThemeTvTunesEnable.UseVisualStyleBackColor = true
+        Me.chkMovieThemeTvTunesEnabled.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkMovieThemeTvTunesEnabled.AutoSize = true
+        Me.tblMovieSourcesFileNamingKodiTvTunesOpts.SetColumnSpan(Me.chkMovieThemeTvTunesEnabled, 2)
+        Me.chkMovieThemeTvTunesEnabled.Enabled = false
+        Me.chkMovieThemeTvTunesEnabled.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieThemeTvTunesEnabled.Location = New System.Drawing.Point(3, 3)
+        Me.chkMovieThemeTvTunesEnabled.Name = "chkMovieThemeTvTunesEnabled"
+        Me.chkMovieThemeTvTunesEnabled.Size = New System.Drawing.Size(68, 17)
+        Me.chkMovieThemeTvTunesEnabled.TabIndex = 0
+        Me.chkMovieThemeTvTunesEnabled.Text = "Enabled"
+        Me.chkMovieThemeTvTunesEnabled.UseVisualStyleBackColor = true
         '
         'chkMovieThemeTvTunesCustom
         '
@@ -9105,7 +9170,7 @@ Partial Class dlgSettings
         '
         Me.chkMovieUseExpert.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkMovieUseExpert.AutoSize = true
-        Me.chkMovieUseExpert.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieUseExpert.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.chkMovieUseExpert.Location = New System.Drawing.Point(3, 3)
         Me.chkMovieUseExpert.Name = "chkMovieUseExpert"
         Me.chkMovieUseExpert.Size = New System.Drawing.Size(68, 17)
@@ -9338,7 +9403,7 @@ Partial Class dlgSettings
         Me.pnlTVGeneral.Controls.Add(Me.tblTVGeneral)
         Me.pnlTVGeneral.Location = New System.Drawing.Point(900, 900)
         Me.pnlTVGeneral.Name = "pnlTVGeneral"
-        Me.pnlTVGeneral.Size = New System.Drawing.Size(780, 579)
+        Me.pnlTVGeneral.Size = New System.Drawing.Size(780, 675)
         Me.pnlTVGeneral.TabIndex = 20
         Me.pnlTVGeneral.Visible = false
         '
@@ -9355,6 +9420,7 @@ Partial Class dlgSettings
         Me.tblTVGeneral.Controls.Add(Me.gbTVGeneralMediaListOpts, 0, 1)
         Me.tblTVGeneral.Controls.Add(Me.gbTVEpisodeFilterOpts, 2, 2)
         Me.tblTVGeneral.Controls.Add(Me.gbTVShowFilterOpts, 2, 1)
+        Me.tblTVGeneral.Controls.Add(Me.gbTVGeneralMainWindowOpts, 2, 0)
         Me.tblTVGeneral.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblTVGeneral.Location = New System.Drawing.Point(0, 0)
         Me.tblTVGeneral.Name = "tblTVGeneral"
@@ -9364,7 +9430,7 @@ Partial Class dlgSettings
         Me.tblTVGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVGeneral.Size = New System.Drawing.Size(780, 579)
+        Me.tblTVGeneral.Size = New System.Drawing.Size(780, 675)
         Me.tblTVGeneral.TabIndex = 5
         '
         'gbTVGeneralMiscOpts
@@ -9375,7 +9441,7 @@ Partial Class dlgSettings
         Me.gbTVGeneralMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbTVGeneralMiscOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbTVGeneralMiscOpts.Name = "gbTVGeneralMiscOpts"
-        Me.gbTVGeneralMiscOpts.Size = New System.Drawing.Size(292, 67)
+        Me.gbTVGeneralMiscOpts.Size = New System.Drawing.Size(292, 74)
         Me.gbTVGeneralMiscOpts.TabIndex = 0
         Me.gbTVGeneralMiscOpts.TabStop = false
         Me.gbTVGeneralMiscOpts.Text = "Miscellaneous"
@@ -9398,7 +9464,7 @@ Partial Class dlgSettings
         Me.tblTVGeneralMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVGeneralMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVGeneralMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVGeneralMiscOpts.Size = New System.Drawing.Size(286, 46)
+        Me.tblTVGeneralMiscOpts.Size = New System.Drawing.Size(286, 53)
         Me.tblTVGeneralMiscOpts.TabIndex = 74
         '
         'chkTVGeneralMarkNewEpisodes
@@ -9457,7 +9523,7 @@ Partial Class dlgSettings
         Me.gbTVGeneralMediaListOpts.Controls.Add(Me.tblTVGeneralMediaListOpts)
         Me.gbTVGeneralMediaListOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbTVGeneralMediaListOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.gbTVGeneralMediaListOpts.Location = New System.Drawing.Point(3, 76)
+        Me.gbTVGeneralMediaListOpts.Location = New System.Drawing.Point(3, 83)
         Me.gbTVGeneralMediaListOpts.Name = "gbTVGeneralMediaListOpts"
         Me.tblTVGeneral.SetRowSpan(Me.gbTVGeneralMediaListOpts, 3)
         Me.gbTVGeneralMediaListOpts.Size = New System.Drawing.Size(442, 500)
@@ -9913,7 +9979,7 @@ Partial Class dlgSettings
         Me.gbTVEpisodeFilterOpts.Controls.Add(Me.tblTVEpisodeFilterOpts)
         Me.gbTVEpisodeFilterOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbTVEpisodeFilterOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.gbTVEpisodeFilterOpts.Location = New System.Drawing.Point(451, 262)
+        Me.gbTVEpisodeFilterOpts.Location = New System.Drawing.Point(451, 269)
         Me.gbTVEpisodeFilterOpts.Name = "gbTVEpisodeFilterOpts"
         Me.gbTVEpisodeFilterOpts.Size = New System.Drawing.Size(326, 203)
         Me.gbTVEpisodeFilterOpts.TabIndex = 3
@@ -10056,7 +10122,7 @@ Partial Class dlgSettings
         Me.gbTVShowFilterOpts.Controls.Add(Me.tblTVShowFilterOpts)
         Me.gbTVShowFilterOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbTVShowFilterOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.gbTVShowFilterOpts.Location = New System.Drawing.Point(451, 76)
+        Me.gbTVShowFilterOpts.Location = New System.Drawing.Point(451, 83)
         Me.gbTVShowFilterOpts.Name = "gbTVShowFilterOpts"
         Me.gbTVShowFilterOpts.Size = New System.Drawing.Size(326, 180)
         Me.gbTVShowFilterOpts.TabIndex = 2
@@ -10175,6 +10241,62 @@ Partial Class dlgSettings
         Me.txtTVShowFilter.Name = "txtTVShowFilter"
         Me.txtTVShowFilter.Size = New System.Drawing.Size(195, 22)
         Me.txtTVShowFilter.TabIndex = 3
+        '
+        'gbTVGeneralMainWindowOpts
+        '
+        Me.gbTVGeneralMainWindowOpts.AutoSize = true
+        Me.gbTVGeneralMainWindowOpts.Controls.Add(Me.TableLayoutPanel4)
+        Me.gbTVGeneralMainWindowOpts.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbTVGeneralMainWindowOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.gbTVGeneralMainWindowOpts.Location = New System.Drawing.Point(451, 3)
+        Me.gbTVGeneralMainWindowOpts.Name = "gbTVGeneralMainWindowOpts"
+        Me.gbTVGeneralMainWindowOpts.Size = New System.Drawing.Size(326, 74)
+        Me.gbTVGeneralMainWindowOpts.TabIndex = 4
+        Me.gbTVGeneralMainWindowOpts.TabStop = false
+        Me.gbTVGeneralMainWindowOpts.Text = "Main Window"
+        '
+        'TableLayoutPanel4
+        '
+        Me.TableLayoutPanel4.AutoSize = true
+        Me.TableLayoutPanel4.ColumnCount = 2
+        Me.TableLayoutPanel4.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.TableLayoutPanel4.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.TableLayoutPanel4.Controls.Add(Me.lblTVLanguageOverlay, 0, 0)
+        Me.TableLayoutPanel4.Controls.Add(Me.cbTVLanguageOverlay, 0, 1)
+        Me.TableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel4.Location = New System.Drawing.Point(3, 18)
+        Me.TableLayoutPanel4.Name = "TableLayoutPanel4"
+        Me.TableLayoutPanel4.RowCount = 3
+        Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel4.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel4.Size = New System.Drawing.Size(320, 53)
+        Me.TableLayoutPanel4.TabIndex = 0
+        '
+        'lblTVLanguageOverlay
+        '
+        Me.lblTVLanguageOverlay.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.lblTVLanguageOverlay.AutoSize = true
+        Me.lblTVLanguageOverlay.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVLanguageOverlay.Location = New System.Drawing.Point(3, 0)
+        Me.lblTVLanguageOverlay.MaximumSize = New System.Drawing.Size(250, 0)
+        Me.lblTVLanguageOverlay.Name = "lblTVLanguageOverlay"
+        Me.lblTVLanguageOverlay.Size = New System.Drawing.Size(240, 26)
+        Me.lblTVLanguageOverlay.TabIndex = 1
+        Me.lblTVLanguageOverlay.Text = "Display best Audio Stream with the following Language:"
+        Me.lblTVLanguageOverlay.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        '
+        'cbTVLanguageOverlay
+        '
+        Me.cbTVLanguageOverlay.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.cbTVLanguageOverlay.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbTVLanguageOverlay.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
+        Me.cbTVLanguageOverlay.FormattingEnabled = true
+        Me.cbTVLanguageOverlay.Location = New System.Drawing.Point(36, 29)
+        Me.cbTVLanguageOverlay.Name = "cbTVLanguageOverlay"
+        Me.cbTVLanguageOverlay.Size = New System.Drawing.Size(174, 21)
+        Me.cbTVLanguageOverlay.Sorted = true
+        Me.cbTVLanguageOverlay.TabIndex = 2
         '
         'gbTVSourcesDefaultsOpts
         '
@@ -10475,14 +10597,14 @@ Partial Class dlgSettings
         Me.tblTVSourcesFileNamingKodiExtendedOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVSourcesFileNamingKodiExtendedOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVSourcesFileNamingKodiExtendedOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVSourcesFileNamingKodiExtendedOpts.Controls.Add(Me.lblTVSourcesFileNamingXBMCExtendedClearArt, 0, 2)
-        Me.tblTVSourcesFileNamingKodiExtendedOpts.Controls.Add(Me.lblTVSourcesFileNamingXBMCExtendedClearLogo, 0, 3)
-        Me.tblTVSourcesFileNamingKodiExtendedOpts.Controls.Add(Me.lblTVSourcesFileNamingXBMCExtendedSeasonLandscape, 0, 4)
+        Me.tblTVSourcesFileNamingKodiExtendedOpts.Controls.Add(Me.lblTVSourcesFileNamingKodiExtendedClearArt, 0, 2)
+        Me.tblTVSourcesFileNamingKodiExtendedOpts.Controls.Add(Me.lblTVSourcesFileNamingKodiExtendedClearLogo, 0, 3)
+        Me.tblTVSourcesFileNamingKodiExtendedOpts.Controls.Add(Me.lblTVSourcesFileNamingKodiExtendedSeasonLandscape, 0, 4)
         Me.tblTVSourcesFileNamingKodiExtendedOpts.Controls.Add(Me.lblTVSourcesFileNamingKodiDefaultsHeaderExtended, 1, 0)
         Me.tblTVSourcesFileNamingKodiExtendedOpts.Controls.Add(Me.chkTVShowClearArtExtended, 1, 2)
         Me.tblTVSourcesFileNamingKodiExtendedOpts.Controls.Add(Me.chkTVShowClearLogoExtended, 1, 3)
         Me.tblTVSourcesFileNamingKodiExtendedOpts.Controls.Add(Me.chkTVSeasonLandscapeExtended, 1, 4)
-        Me.tblTVSourcesFileNamingKodiExtendedOpts.Controls.Add(Me.lblTVSourcesFileNamingXBMCExtendedTVShowLandscape, 0, 5)
+        Me.tblTVSourcesFileNamingKodiExtendedOpts.Controls.Add(Me.lblTVSourcesFileNamingKodiExtendedTVShowLandscape, 0, 5)
         Me.tblTVSourcesFileNamingKodiExtendedOpts.Controls.Add(Me.chkTVShowLandscapeExtended, 1, 5)
         Me.tblTVSourcesFileNamingKodiExtendedOpts.Controls.Add(Me.chkTVShowCharacterArtExtended, 1, 1)
         Me.tblTVSourcesFileNamingKodiExtendedOpts.Controls.Add(Me.lblTVSourcesFileNamingKodiExtendedCharacterArt, 0, 1)
@@ -10500,38 +10622,38 @@ Partial Class dlgSettings
         Me.tblTVSourcesFileNamingKodiExtendedOpts.Size = New System.Drawing.Size(199, 180)
         Me.tblTVSourcesFileNamingKodiExtendedOpts.TabIndex = 0
         '
-        'lblTVSourcesFileNamingXBMCExtendedClearArt
+        'lblTVSourcesFileNamingKodiExtendedClearArt
         '
-        Me.lblTVSourcesFileNamingXBMCExtendedClearArt.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblTVSourcesFileNamingXBMCExtendedClearArt.AutoSize = true
-        Me.lblTVSourcesFileNamingXBMCExtendedClearArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblTVSourcesFileNamingXBMCExtendedClearArt.Location = New System.Drawing.Point(3, 63)
-        Me.lblTVSourcesFileNamingXBMCExtendedClearArt.Name = "lblTVSourcesFileNamingXBMCExtendedClearArt"
-        Me.lblTVSourcesFileNamingXBMCExtendedClearArt.Size = New System.Drawing.Size(48, 13)
-        Me.lblTVSourcesFileNamingXBMCExtendedClearArt.TabIndex = 10
-        Me.lblTVSourcesFileNamingXBMCExtendedClearArt.Text = "ClearArt"
+        Me.lblTVSourcesFileNamingKodiExtendedClearArt.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblTVSourcesFileNamingKodiExtendedClearArt.AutoSize = true
+        Me.lblTVSourcesFileNamingKodiExtendedClearArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVSourcesFileNamingKodiExtendedClearArt.Location = New System.Drawing.Point(3, 63)
+        Me.lblTVSourcesFileNamingKodiExtendedClearArt.Name = "lblTVSourcesFileNamingKodiExtendedClearArt"
+        Me.lblTVSourcesFileNamingKodiExtendedClearArt.Size = New System.Drawing.Size(48, 13)
+        Me.lblTVSourcesFileNamingKodiExtendedClearArt.TabIndex = 10
+        Me.lblTVSourcesFileNamingKodiExtendedClearArt.Text = "ClearArt"
         '
-        'lblTVSourcesFileNamingXBMCExtendedClearLogo
+        'lblTVSourcesFileNamingKodiExtendedClearLogo
         '
-        Me.lblTVSourcesFileNamingXBMCExtendedClearLogo.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblTVSourcesFileNamingXBMCExtendedClearLogo.AutoSize = true
-        Me.lblTVSourcesFileNamingXBMCExtendedClearLogo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblTVSourcesFileNamingXBMCExtendedClearLogo.Location = New System.Drawing.Point(3, 83)
-        Me.lblTVSourcesFileNamingXBMCExtendedClearLogo.Name = "lblTVSourcesFileNamingXBMCExtendedClearLogo"
-        Me.lblTVSourcesFileNamingXBMCExtendedClearLogo.Size = New System.Drawing.Size(59, 13)
-        Me.lblTVSourcesFileNamingXBMCExtendedClearLogo.TabIndex = 10
-        Me.lblTVSourcesFileNamingXBMCExtendedClearLogo.Text = "ClearLogo"
+        Me.lblTVSourcesFileNamingKodiExtendedClearLogo.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblTVSourcesFileNamingKodiExtendedClearLogo.AutoSize = true
+        Me.lblTVSourcesFileNamingKodiExtendedClearLogo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVSourcesFileNamingKodiExtendedClearLogo.Location = New System.Drawing.Point(3, 83)
+        Me.lblTVSourcesFileNamingKodiExtendedClearLogo.Name = "lblTVSourcesFileNamingKodiExtendedClearLogo"
+        Me.lblTVSourcesFileNamingKodiExtendedClearLogo.Size = New System.Drawing.Size(59, 13)
+        Me.lblTVSourcesFileNamingKodiExtendedClearLogo.TabIndex = 10
+        Me.lblTVSourcesFileNamingKodiExtendedClearLogo.Text = "ClearLogo"
         '
-        'lblTVSourcesFileNamingXBMCExtendedSeasonLandscape
+        'lblTVSourcesFileNamingKodiExtendedSeasonLandscape
         '
-        Me.lblTVSourcesFileNamingXBMCExtendedSeasonLandscape.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblTVSourcesFileNamingXBMCExtendedSeasonLandscape.AutoSize = true
-        Me.lblTVSourcesFileNamingXBMCExtendedSeasonLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblTVSourcesFileNamingXBMCExtendedSeasonLandscape.Location = New System.Drawing.Point(3, 103)
-        Me.lblTVSourcesFileNamingXBMCExtendedSeasonLandscape.Name = "lblTVSourcesFileNamingXBMCExtendedSeasonLandscape"
-        Me.lblTVSourcesFileNamingXBMCExtendedSeasonLandscape.Size = New System.Drawing.Size(101, 13)
-        Me.lblTVSourcesFileNamingXBMCExtendedSeasonLandscape.TabIndex = 10
-        Me.lblTVSourcesFileNamingXBMCExtendedSeasonLandscape.Text = "Season Landscape"
+        Me.lblTVSourcesFileNamingKodiExtendedSeasonLandscape.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblTVSourcesFileNamingKodiExtendedSeasonLandscape.AutoSize = true
+        Me.lblTVSourcesFileNamingKodiExtendedSeasonLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVSourcesFileNamingKodiExtendedSeasonLandscape.Location = New System.Drawing.Point(3, 103)
+        Me.lblTVSourcesFileNamingKodiExtendedSeasonLandscape.Name = "lblTVSourcesFileNamingKodiExtendedSeasonLandscape"
+        Me.lblTVSourcesFileNamingKodiExtendedSeasonLandscape.Size = New System.Drawing.Size(101, 13)
+        Me.lblTVSourcesFileNamingKodiExtendedSeasonLandscape.TabIndex = 10
+        Me.lblTVSourcesFileNamingKodiExtendedSeasonLandscape.Text = "Season Landscape"
         '
         'lblTVSourcesFileNamingKodiDefaultsHeaderExtended
         '
@@ -10578,16 +10700,16 @@ Partial Class dlgSettings
         Me.chkTVSeasonLandscapeExtended.TabIndex = 11
         Me.chkTVSeasonLandscapeExtended.UseVisualStyleBackColor = true
         '
-        'lblTVSourcesFileNamingXBMCExtendedTVShowLandscape
+        'lblTVSourcesFileNamingKodiExtendedTVShowLandscape
         '
-        Me.lblTVSourcesFileNamingXBMCExtendedTVShowLandscape.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblTVSourcesFileNamingXBMCExtendedTVShowLandscape.AutoSize = true
-        Me.lblTVSourcesFileNamingXBMCExtendedTVShowLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblTVSourcesFileNamingXBMCExtendedTVShowLandscape.Location = New System.Drawing.Point(3, 123)
-        Me.lblTVSourcesFileNamingXBMCExtendedTVShowLandscape.Name = "lblTVSourcesFileNamingXBMCExtendedTVShowLandscape"
-        Me.lblTVSourcesFileNamingXBMCExtendedTVShowLandscape.Size = New System.Drawing.Size(108, 13)
-        Me.lblTVSourcesFileNamingXBMCExtendedTVShowLandscape.TabIndex = 10
-        Me.lblTVSourcesFileNamingXBMCExtendedTVShowLandscape.Text = "TV Show Landscape"
+        Me.lblTVSourcesFileNamingKodiExtendedTVShowLandscape.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblTVSourcesFileNamingKodiExtendedTVShowLandscape.AutoSize = true
+        Me.lblTVSourcesFileNamingKodiExtendedTVShowLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblTVSourcesFileNamingKodiExtendedTVShowLandscape.Location = New System.Drawing.Point(3, 123)
+        Me.lblTVSourcesFileNamingKodiExtendedTVShowLandscape.Name = "lblTVSourcesFileNamingKodiExtendedTVShowLandscape"
+        Me.lblTVSourcesFileNamingKodiExtendedTVShowLandscape.Size = New System.Drawing.Size(108, 13)
+        Me.lblTVSourcesFileNamingKodiExtendedTVShowLandscape.TabIndex = 10
+        Me.lblTVSourcesFileNamingKodiExtendedTVShowLandscape.Text = "TV Show Landscape"
         '
         'chkTVShowLandscapeExtended
         '
@@ -11156,7 +11278,7 @@ Partial Class dlgSettings
         Me.gbTVSourcesFileNamingKodiTvTunesOpts.Size = New System.Drawing.Size(336, 169)
         Me.gbTVSourcesFileNamingKodiTvTunesOpts.TabIndex = 3
         Me.gbTVSourcesFileNamingKodiTvTunesOpts.TabStop = false
-        Me.gbTVSourcesFileNamingKodiTvTunesOpts.Text = "TvTunes Addon"
+        Me.gbTVSourcesFileNamingKodiTvTunesOpts.Text = "TvTunes"
         '
         'tblTVSourcesFileNamingKodiTvTunesOpts
         '
@@ -11170,7 +11292,7 @@ Partial Class dlgSettings
         Me.tblTVSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.chkTVShowThemeTvTunesShowPath, 0, 1)
         Me.tblTVSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.btnTVShowThemeTvTunesCustomPathBrowse, 1, 3)
         Me.tblTVSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.txtTVShowThemeTvTunesCustomPath, 0, 3)
-        Me.tblTVSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.chkTVShowThemeTvTunesEnable, 0, 0)
+        Me.tblTVSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.chkTVShowThemeTvTunesEnabled, 0, 0)
         Me.tblTVSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.chkTVShowThemeTvTunesCustom, 0, 2)
         Me.tblTVSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.chkTVShowThemeTvTunesSub, 0, 4)
         Me.tblTVSourcesFileNamingKodiTvTunesOpts.Dock = System.Windows.Forms.DockStyle.Fill
@@ -11242,16 +11364,17 @@ Partial Class dlgSettings
         Me.txtTVShowThemeTvTunesCustomPath.Size = New System.Drawing.Size(200, 22)
         Me.txtTVShowThemeTvTunesCustomPath.TabIndex = 6
         '
-        'chkTVShowThemeTvTunesEnable
+        'chkTVShowThemeTvTunesEnabled
         '
-        Me.chkTVShowThemeTvTunesEnable.AutoSize = true
-        Me.chkTVShowThemeTvTunesEnable.Enabled = false
-        Me.chkTVShowThemeTvTunesEnable.Location = New System.Drawing.Point(3, 3)
-        Me.chkTVShowThemeTvTunesEnable.Name = "chkTVShowThemeTvTunesEnable"
-        Me.chkTVShowThemeTvTunesEnable.Size = New System.Drawing.Size(74, 17)
-        Me.chkTVShowThemeTvTunesEnable.TabIndex = 5
-        Me.chkTVShowThemeTvTunesEnable.Text = "TV Theme"
-        Me.chkTVShowThemeTvTunesEnable.UseVisualStyleBackColor = true
+        Me.chkTVShowThemeTvTunesEnabled.AutoSize = true
+        Me.chkTVShowThemeTvTunesEnabled.Enabled = false
+        Me.chkTVShowThemeTvTunesEnabled.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkTVShowThemeTvTunesEnabled.Location = New System.Drawing.Point(3, 3)
+        Me.chkTVShowThemeTvTunesEnabled.Name = "chkTVShowThemeTvTunesEnabled"
+        Me.chkTVShowThemeTvTunesEnabled.Size = New System.Drawing.Size(68, 17)
+        Me.chkTVShowThemeTvTunesEnabled.TabIndex = 5
+        Me.chkTVShowThemeTvTunesEnabled.Text = "Enabled"
+        Me.chkTVShowThemeTvTunesEnabled.UseVisualStyleBackColor = true
         '
         'chkTVShowThemeTvTunesCustom
         '
@@ -12059,6 +12182,7 @@ Partial Class dlgSettings
         '
         Me.chkTVUseExpert.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkTVUseExpert.AutoSize = true
+        Me.chkTVUseExpert.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.chkTVUseExpert.Location = New System.Drawing.Point(3, 3)
         Me.chkTVUseExpert.Name = "chkTVUseExpert"
         Me.chkTVUseExpert.Size = New System.Drawing.Size(68, 17)
@@ -16938,15 +17062,11 @@ Partial Class dlgSettings
         Me.tblTVScraperMetaDataOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVScraperMetaDataOpts.Controls.Add(Me.gbTVScraperDefFIExtOpts, 1, 0)
         Me.tblTVScraperMetaDataOpts.Controls.Add(Me.chkTVScraperMetaDataScan, 0, 0)
-        Me.tblTVScraperMetaDataOpts.Controls.Add(Me.cbTVLanguageOverlay, 0, 3)
         Me.tblTVScraperMetaDataOpts.Controls.Add(Me.gbTVScraperDurationFormatOpts, 0, 1)
-        Me.tblTVScraperMetaDataOpts.Controls.Add(Me.lblTVLanguageOverlay, 0, 2)
         Me.tblTVScraperMetaDataOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblTVScraperMetaDataOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblTVScraperMetaDataOpts.Name = "tblTVScraperMetaDataOpts"
-        Me.tblTVScraperMetaDataOpts.RowCount = 6
-        Me.tblTVScraperMetaDataOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVScraperMetaDataOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblTVScraperMetaDataOpts.RowCount = 4
         Me.tblTVScraperMetaDataOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVScraperMetaDataOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVScraperMetaDataOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
@@ -16961,7 +17081,7 @@ Partial Class dlgSettings
         Me.gbTVScraperDefFIExtOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbTVScraperDefFIExtOpts.Location = New System.Drawing.Point(257, 3)
         Me.gbTVScraperDefFIExtOpts.Name = "gbTVScraperDefFIExtOpts"
-        Me.tblTVScraperMetaDataOpts.SetRowSpan(Me.gbTVScraperDefFIExtOpts, 5)
+        Me.tblTVScraperMetaDataOpts.SetRowSpan(Me.gbTVScraperDefFIExtOpts, 3)
         Me.gbTVScraperDefFIExtOpts.Size = New System.Drawing.Size(180, 184)
         Me.gbTVScraperDefFIExtOpts.TabIndex = 3
         Me.gbTVScraperDefFIExtOpts.TabStop = false
@@ -17072,18 +17192,6 @@ Partial Class dlgSettings
         Me.chkTVScraperMetaDataScan.Text = "Scan Meta Data"
         Me.chkTVScraperMetaDataScan.UseVisualStyleBackColor = true
         '
-        'cbTVLanguageOverlay
-        '
-        Me.cbTVLanguageOverlay.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.cbTVLanguageOverlay.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbTVLanguageOverlay.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.cbTVLanguageOverlay.FormattingEnabled = true
-        Me.cbTVLanguageOverlay.Location = New System.Drawing.Point(40, 130)
-        Me.cbTVLanguageOverlay.Name = "cbTVLanguageOverlay"
-        Me.cbTVLanguageOverlay.Size = New System.Drawing.Size(174, 21)
-        Me.cbTVLanguageOverlay.Sorted = true
-        Me.cbTVLanguageOverlay.TabIndex = 2
-        '
         'gbTVScraperDurationFormatOpts
         '
         Me.gbTVScraperDurationFormatOpts.AutoSize = true
@@ -17147,19 +17255,6 @@ Partial Class dlgSettings
         Me.lblTVScraperDurationRuntimeFormat.TabIndex = 24
         Me.lblTVScraperDurationRuntimeFormat.Text = "<h>=Hours"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"<m>=Minutes"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"<s>=Seconds"
         Me.lblTVScraperDurationRuntimeFormat.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'lblTVLanguageOverlay
-        '
-        Me.lblTVLanguageOverlay.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.lblTVLanguageOverlay.AutoSize = true
-        Me.lblTVLanguageOverlay.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblTVLanguageOverlay.Location = New System.Drawing.Point(7, 101)
-        Me.lblTVLanguageOverlay.MaximumSize = New System.Drawing.Size(250, 0)
-        Me.lblTVLanguageOverlay.Name = "lblTVLanguageOverlay"
-        Me.lblTVLanguageOverlay.Size = New System.Drawing.Size(240, 26)
-        Me.lblTVLanguageOverlay.TabIndex = 1
-        Me.lblTVLanguageOverlay.Text = "Display best Audio Stream with the following Language:"
-        Me.lblTVLanguageOverlay.TextAlign = System.Drawing.ContentAlignment.TopCenter
         '
         'gbTVScraperMiscOpts
         '
@@ -17303,16 +17398,12 @@ Partial Class dlgSettings
         Me.tblMovieScraperMetaDataOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieScraperMetaDataOpts.Controls.Add(Me.gbMovieScraperDefFIExtOpts, 1, 0)
         Me.tblMovieScraperMetaDataOpts.Controls.Add(Me.chkMovieScraperMetaDataScan, 0, 0)
-        Me.tblMovieScraperMetaDataOpts.Controls.Add(Me.cbMovieLanguageOverlay, 0, 4)
         Me.tblMovieScraperMetaDataOpts.Controls.Add(Me.chkMovieScraperMetaDataIFOScan, 0, 1)
-        Me.tblMovieScraperMetaDataOpts.Controls.Add(Me.lblMovieLanguageOverlay, 0, 3)
         Me.tblMovieScraperMetaDataOpts.Controls.Add(Me.gbMovieScraperDurationFormatOpts, 0, 2)
         Me.tblMovieScraperMetaDataOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMovieScraperMetaDataOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblMovieScraperMetaDataOpts.Name = "tblMovieScraperMetaDataOpts"
-        Me.tblMovieScraperMetaDataOpts.RowCount = 7
-        Me.tblMovieScraperMetaDataOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieScraperMetaDataOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMovieScraperMetaDataOpts.RowCount = 5
         Me.tblMovieScraperMetaDataOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieScraperMetaDataOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieScraperMetaDataOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
@@ -17328,7 +17419,7 @@ Partial Class dlgSettings
         Me.gbMovieScraperDefFIExtOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.gbMovieScraperDefFIExtOpts.Location = New System.Drawing.Point(257, 3)
         Me.gbMovieScraperDefFIExtOpts.Name = "gbMovieScraperDefFIExtOpts"
-        Me.tblMovieScraperMetaDataOpts.SetRowSpan(Me.gbMovieScraperDefFIExtOpts, 6)
+        Me.tblMovieScraperMetaDataOpts.SetRowSpan(Me.gbMovieScraperDefFIExtOpts, 4)
         Me.gbMovieScraperDefFIExtOpts.Size = New System.Drawing.Size(180, 184)
         Me.gbMovieScraperDefFIExtOpts.TabIndex = 8
         Me.gbMovieScraperDefFIExtOpts.TabStop = false
@@ -17441,18 +17532,6 @@ Partial Class dlgSettings
         Me.chkMovieScraperMetaDataScan.Text = "Scan Meta Data"
         Me.chkMovieScraperMetaDataScan.UseVisualStyleBackColor = true
         '
-        'cbMovieLanguageOverlay
-        '
-        Me.cbMovieLanguageOverlay.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.cbMovieLanguageOverlay.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbMovieLanguageOverlay.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.cbMovieLanguageOverlay.FormattingEnabled = true
-        Me.cbMovieLanguageOverlay.Location = New System.Drawing.Point(40, 153)
-        Me.cbMovieLanguageOverlay.Name = "cbMovieLanguageOverlay"
-        Me.cbMovieLanguageOverlay.Size = New System.Drawing.Size(174, 21)
-        Me.cbMovieLanguageOverlay.Sorted = true
-        Me.cbMovieLanguageOverlay.TabIndex = 17
-        '
         'chkMovieScraperMetaDataIFOScan
         '
         Me.chkMovieScraperMetaDataIFOScan.Anchor = System.Windows.Forms.AnchorStyles.Left
@@ -17464,19 +17543,6 @@ Partial Class dlgSettings
         Me.chkMovieScraperMetaDataIFOScan.TabIndex = 18
         Me.chkMovieScraperMetaDataIFOScan.Text = "Enable IFO Parsing"
         Me.chkMovieScraperMetaDataIFOScan.UseVisualStyleBackColor = true
-        '
-        'lblMovieLanguageOverlay
-        '
-        Me.lblMovieLanguageOverlay.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.lblMovieLanguageOverlay.AutoSize = true
-        Me.lblMovieLanguageOverlay.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblMovieLanguageOverlay.Location = New System.Drawing.Point(7, 124)
-        Me.lblMovieLanguageOverlay.MaximumSize = New System.Drawing.Size(250, 0)
-        Me.lblMovieLanguageOverlay.Name = "lblMovieLanguageOverlay"
-        Me.lblMovieLanguageOverlay.Size = New System.Drawing.Size(240, 26)
-        Me.lblMovieLanguageOverlay.TabIndex = 16
-        Me.lblMovieLanguageOverlay.Text = "Display best Audio Stream with the following Language:"
-        Me.lblMovieLanguageOverlay.TextAlign = System.Drawing.ContentAlignment.TopCenter
         '
         'gbMovieScraperDurationFormatOpts
         '
@@ -18916,7 +18982,7 @@ Partial Class dlgSettings
         Me.gbMovieTrailerOpts.Dock = System.Windows.Forms.DockStyle.Top
         Me.gbMovieTrailerOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbMovieTrailerOpts.Name = "gbMovieTrailerOpts"
-        Me.gbMovieTrailerOpts.Size = New System.Drawing.Size(194, 209)
+        Me.gbMovieTrailerOpts.Size = New System.Drawing.Size(194, 186)
         Me.gbMovieTrailerOpts.TabIndex = 1
         Me.gbMovieTrailerOpts.TabStop = false
         Me.gbMovieTrailerOpts.Text = "Trailers"
@@ -18927,35 +18993,33 @@ Partial Class dlgSettings
         Me.tblMovieTrailerOpts.ColumnCount = 2
         Me.tblMovieTrailerOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieTrailerOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMovieTrailerOpts.Controls.Add(Me.txtMovieTrailerDefaultSearch, 0, 7)
-        Me.tblMovieTrailerOpts.Controls.Add(Me.lblMovieTrailerDefaultSearch, 0, 6)
+        Me.tblMovieTrailerOpts.Controls.Add(Me.txtMovieTrailerDefaultSearch, 0, 6)
+        Me.tblMovieTrailerOpts.Controls.Add(Me.lblMovieTrailerDefaultSearch, 0, 5)
         Me.tblMovieTrailerOpts.Controls.Add(Me.chkMovieTrailerKeepExisting, 0, 0)
-        Me.tblMovieTrailerOpts.Controls.Add(Me.cbMovieTrailerMinVideoQual, 0, 5)
-        Me.tblMovieTrailerOpts.Controls.Add(Me.chkMovieTrailerDeleteExisting, 0, 1)
-        Me.tblMovieTrailerOpts.Controls.Add(Me.lblMovieTrailerMinQual, 0, 4)
-        Me.tblMovieTrailerOpts.Controls.Add(Me.lblMovieTrailerPrefQual, 0, 2)
-        Me.tblMovieTrailerOpts.Controls.Add(Me.cbMovieTrailerPrefVideoQual, 0, 3)
+        Me.tblMovieTrailerOpts.Controls.Add(Me.cbMovieTrailerMinVideoQual, 0, 4)
+        Me.tblMovieTrailerOpts.Controls.Add(Me.lblMovieTrailerMinQual, 0, 3)
+        Me.tblMovieTrailerOpts.Controls.Add(Me.lblMovieTrailerPrefQual, 0, 1)
+        Me.tblMovieTrailerOpts.Controls.Add(Me.cbMovieTrailerPrefVideoQual, 0, 2)
         Me.tblMovieTrailerOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMovieTrailerOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblMovieTrailerOpts.Name = "tblMovieTrailerOpts"
-        Me.tblMovieTrailerOpts.RowCount = 9
-        Me.tblMovieTrailerOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieTrailerOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieTrailerOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
+        Me.tblMovieTrailerOpts.RowCount = 8
         Me.tblMovieTrailerOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieTrailerOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
         Me.tblMovieTrailerOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieTrailerOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
         Me.tblMovieTrailerOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMovieTrailerOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20!))
         Me.tblMovieTrailerOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieTrailerOpts.Size = New System.Drawing.Size(188, 188)
+        Me.tblMovieTrailerOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMovieTrailerOpts.Size = New System.Drawing.Size(188, 165)
         Me.tblMovieTrailerOpts.TabIndex = 2
         '
         'txtMovieTrailerDefaultSearch
         '
         Me.txtMovieTrailerDefaultSearch.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.txtMovieTrailerDefaultSearch.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.txtMovieTrailerDefaultSearch.Location = New System.Drawing.Point(3, 163)
+        Me.txtMovieTrailerDefaultSearch.Location = New System.Drawing.Point(3, 140)
         Me.txtMovieTrailerDefaultSearch.Name = "txtMovieTrailerDefaultSearch"
         Me.txtMovieTrailerDefaultSearch.Size = New System.Drawing.Size(182, 22)
         Me.txtMovieTrailerDefaultSearch.TabIndex = 10
@@ -18965,7 +19029,7 @@ Partial Class dlgSettings
         Me.lblMovieTrailerDefaultSearch.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieTrailerDefaultSearch.AutoSize = true
         Me.lblMovieTrailerDefaultSearch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblMovieTrailerDefaultSearch.Location = New System.Drawing.Point(3, 143)
+        Me.lblMovieTrailerDefaultSearch.Location = New System.Drawing.Point(3, 120)
         Me.lblMovieTrailerDefaultSearch.Name = "lblMovieTrailerDefaultSearch"
         Me.lblMovieTrailerDefaultSearch.Size = New System.Drawing.Size(139, 13)
         Me.lblMovieTrailerDefaultSearch.TabIndex = 11
@@ -18989,31 +19053,17 @@ Partial Class dlgSettings
         Me.cbMovieTrailerMinVideoQual.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbMovieTrailerMinVideoQual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.cbMovieTrailerMinVideoQual.FormattingEnabled = true
-        Me.cbMovieTrailerMinVideoQual.Location = New System.Drawing.Point(3, 116)
+        Me.cbMovieTrailerMinVideoQual.Location = New System.Drawing.Point(3, 93)
         Me.cbMovieTrailerMinVideoQual.Name = "cbMovieTrailerMinVideoQual"
         Me.cbMovieTrailerMinVideoQual.Size = New System.Drawing.Size(125, 21)
         Me.cbMovieTrailerMinVideoQual.TabIndex = 9
-        '
-        'chkMovieTrailerDeleteExisting
-        '
-        Me.chkMovieTrailerDeleteExisting.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieTrailerDeleteExisting.AutoSize = true
-        Me.chkMovieTrailerDeleteExisting.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkMovieTrailerDeleteExisting.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.chkMovieTrailerDeleteExisting.Location = New System.Drawing.Point(3, 26)
-        Me.chkMovieTrailerDeleteExisting.Name = "chkMovieTrailerDeleteExisting"
-        Me.chkMovieTrailerDeleteExisting.Size = New System.Drawing.Size(118, 17)
-        Me.chkMovieTrailerDeleteExisting.TabIndex = 5
-        Me.chkMovieTrailerDeleteExisting.Text = "Delete All Existing"
-        Me.chkMovieTrailerDeleteExisting.TextAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.chkMovieTrailerDeleteExisting.UseVisualStyleBackColor = true
         '
         'lblMovieTrailerMinQual
         '
         Me.lblMovieTrailerMinQual.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieTrailerMinQual.AutoSize = true
         Me.lblMovieTrailerMinQual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblMovieTrailerMinQual.Location = New System.Drawing.Point(3, 96)
+        Me.lblMovieTrailerMinQual.Location = New System.Drawing.Point(3, 73)
         Me.lblMovieTrailerMinQual.Name = "lblMovieTrailerMinQual"
         Me.lblMovieTrailerMinQual.Size = New System.Drawing.Size(97, 13)
         Me.lblMovieTrailerMinQual.TabIndex = 8
@@ -19024,7 +19074,7 @@ Partial Class dlgSettings
         Me.lblMovieTrailerPrefQual.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieTrailerPrefQual.AutoSize = true
         Me.lblMovieTrailerPrefQual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblMovieTrailerPrefQual.Location = New System.Drawing.Point(3, 49)
+        Me.lblMovieTrailerPrefQual.Location = New System.Drawing.Point(3, 26)
         Me.lblMovieTrailerPrefQual.Name = "lblMovieTrailerPrefQual"
         Me.lblMovieTrailerPrefQual.Size = New System.Drawing.Size(96, 13)
         Me.lblMovieTrailerPrefQual.TabIndex = 6
@@ -19036,7 +19086,7 @@ Partial Class dlgSettings
         Me.cbMovieTrailerPrefVideoQual.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbMovieTrailerPrefVideoQual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
         Me.cbMovieTrailerPrefVideoQual.FormattingEnabled = true
-        Me.cbMovieTrailerPrefVideoQual.Location = New System.Drawing.Point(3, 69)
+        Me.cbMovieTrailerPrefVideoQual.Location = New System.Drawing.Point(3, 46)
         Me.cbMovieTrailerPrefVideoQual.Name = "cbMovieTrailerPrefVideoQual"
         Me.cbMovieTrailerPrefVideoQual.Size = New System.Drawing.Size(125, 21)
         Me.cbMovieTrailerPrefVideoQual.TabIndex = 7
@@ -19643,7 +19693,6 @@ Partial Class dlgSettings
         Me.tpMovieSetFileNamingKodi.Controls.Add(Me.tblMovieSetFileNamingKodi)
         Me.tpMovieSetFileNamingKodi.Location = New System.Drawing.Point(4, 22)
         Me.tpMovieSetFileNamingKodi.Name = "tpMovieSetFileNamingKodi"
-        Me.tpMovieSetFileNamingKodi.Padding = New System.Windows.Forms.Padding(3)
         Me.tpMovieSetFileNamingKodi.Size = New System.Drawing.Size(542, 344)
         Me.tpMovieSetFileNamingKodi.TabIndex = 1
         Me.tpMovieSetFileNamingKodi.Text = "Kodi"
@@ -19657,18 +19706,19 @@ Partial Class dlgSettings
         Me.tblMovieSetFileNamingKodi.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSetFileNamingKodi.Controls.Add(Me.gbMovieSetSourcesFileNamingKodiExtendedOpts, 0, 0)
         Me.tblMovieSetFileNamingKodi.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblMovieSetFileNamingKodi.Location = New System.Drawing.Point(3, 3)
+        Me.tblMovieSetFileNamingKodi.Location = New System.Drawing.Point(0, 0)
         Me.tblMovieSetFileNamingKodi.Name = "tblMovieSetFileNamingKodi"
         Me.tblMovieSetFileNamingKodi.RowCount = 2
         Me.tblMovieSetFileNamingKodi.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSetFileNamingKodi.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieSetFileNamingKodi.Size = New System.Drawing.Size(536, 338)
+        Me.tblMovieSetFileNamingKodi.Size = New System.Drawing.Size(542, 344)
         Me.tblMovieSetFileNamingKodi.TabIndex = 0
         '
         'gbMovieSetSourcesFileNamingKodiExtendedOpts
         '
         Me.gbMovieSetSourcesFileNamingKodiExtendedOpts.AutoSize = true
         Me.gbMovieSetSourcesFileNamingKodiExtendedOpts.Controls.Add(Me.tblMovieSetSourcesFileNamingKodiExtendedOpts)
+        Me.gbMovieSetSourcesFileNamingKodiExtendedOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieSetSourcesFileNamingKodiExtendedOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.gbMovieSetSourcesFileNamingKodiExtendedOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbMovieSetSourcesFileNamingKodiExtendedOpts.Name = "gbMovieSetSourcesFileNamingKodiExtendedOpts"
@@ -19964,7 +20014,7 @@ Partial Class dlgSettings
         Me.tblMovieSetSourcesFileNamingMSAA.Controls.Add(Me.txtMovieSetPathMSAA, 1, 7)
         Me.tblMovieSetSourcesFileNamingMSAA.Controls.Add(Me.lblMovieSetSourcesFilenamingKodiMSAAPath, 0, 7)
         Me.tblMovieSetSourcesFileNamingMSAA.Controls.Add(Me.chkMovieSetUseMSAA, 1, 0)
-        Me.tblMovieSetSourcesFileNamingMSAA.Controls.Add(Me.Label3, 0, 0)
+        Me.tblMovieSetSourcesFileNamingMSAA.Controls.Add(Me.lblMovieSetSourcesFilenamingKodiMSAAEnabled, 0, 0)
         Me.tblMovieSetSourcesFileNamingMSAA.Controls.Add(Me.chkMovieSetBannerMSAA, 1, 1)
         Me.tblMovieSetSourcesFileNamingMSAA.Controls.Add(Me.chkMovieSetClearArtMSAA, 1, 2)
         Me.tblMovieSetSourcesFileNamingMSAA.Controls.Add(Me.chkMovieSetClearLogoMSAA, 1, 3)
@@ -20027,16 +20077,16 @@ Partial Class dlgSettings
         Me.chkMovieSetUseMSAA.TabIndex = 10
         Me.chkMovieSetUseMSAA.UseVisualStyleBackColor = true
         '
-        'Label3
+        'lblMovieSetSourcesFilenamingKodiMSAAEnabled
         '
-        Me.Label3.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.Label3.AutoSize = true
-        Me.Label3.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.Label3.Location = New System.Drawing.Point(3, 3)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(26, 13)
-        Me.Label3.TabIndex = 5
-        Me.Label3.Text = "Use"
+        Me.lblMovieSetSourcesFilenamingKodiMSAAEnabled.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblMovieSetSourcesFilenamingKodiMSAAEnabled.AutoSize = true
+        Me.lblMovieSetSourcesFilenamingKodiMSAAEnabled.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblMovieSetSourcesFilenamingKodiMSAAEnabled.Location = New System.Drawing.Point(3, 3)
+        Me.lblMovieSetSourcesFilenamingKodiMSAAEnabled.Name = "lblMovieSetSourcesFilenamingKodiMSAAEnabled"
+        Me.lblMovieSetSourcesFilenamingKodiMSAAEnabled.Size = New System.Drawing.Size(49, 13)
+        Me.lblMovieSetSourcesFilenamingKodiMSAAEnabled.TabIndex = 5
+        Me.lblMovieSetSourcesFilenamingKodiMSAAEnabled.Text = "Enabled"
         '
         'chkMovieSetBannerMSAA
         '
@@ -20682,12 +20732,12 @@ Partial Class dlgSettings
         '
         Me.chkMovieSetUseExpert.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkMovieSetUseExpert.AutoSize = true
-        Me.chkMovieSetUseExpert.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.chkMovieSetUseExpert.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.chkMovieSetUseExpert.Location = New System.Drawing.Point(3, 3)
         Me.chkMovieSetUseExpert.Name = "chkMovieSetUseExpert"
-        Me.chkMovieSetUseExpert.Size = New System.Drawing.Size(45, 17)
+        Me.chkMovieSetUseExpert.Size = New System.Drawing.Size(68, 17)
         Me.chkMovieSetUseExpert.TabIndex = 1
-        Me.chkMovieSetUseExpert.Text = "Use"
+        Me.chkMovieSetUseExpert.Text = "Enabled"
         Me.chkMovieSetUseExpert.UseVisualStyleBackColor = true
         '
         'pnlMovieSetScraper
@@ -21825,13 +21875,13 @@ Partial Class dlgSettings
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(1214, 861)
+        Me.Controls.Add(Me.pnlTVGeneral)
         Me.Controls.Add(Me.pnlMovieSources)
         Me.Controls.Add(Me.pnlTVSources)
         Me.Controls.Add(Me.pnlTVThemes)
         Me.Controls.Add(Me.pnlTVImages)
         Me.Controls.Add(Me.pnlTVScraper)
         Me.Controls.Add(Me.pnlMovieScraper)
-        Me.Controls.Add(Me.pnlTVGeneral)
         Me.Controls.Add(Me.pnlMovieSetSources)
         Me.Controls.Add(Me.pnlMovieThemes)
         Me.Controls.Add(Me.pnlMovieTrailers)
@@ -21950,8 +22000,8 @@ Partial Class dlgSettings
         Me.gbGeneralDateAdded.PerformLayout
         Me.tblGeneralDateAdded.ResumeLayout(false)
         Me.tblGeneralDateAdded.PerformLayout
-        Me.gbGeneralMainWindow.ResumeLayout(false)
-        Me.gbGeneralMainWindow.PerformLayout
+        Me.gbGeneralMainWindowOpts.ResumeLayout(false)
+        Me.gbGeneralMainWindowOpts.PerformLayout
         Me.tblGeneralMainWindow.ResumeLayout(false)
         Me.tblGeneralMainWindow.PerformLayout
         Me.pnlMovieGeneral.ResumeLayout(false)
@@ -21973,6 +22023,10 @@ Partial Class dlgSettings
         Me.gbMovieGenrealIMDBMirrorOpts.PerformLayout
         Me.tblMovieGenrealIMDBMirrorOpts.ResumeLayout(false)
         Me.tblMovieGenrealIMDBMirrorOpts.PerformLayout
+        Me.gbMovieGeneralMainWindowOpts.ResumeLayout(false)
+        Me.gbMovieGeneralMainWindowOpts.PerformLayout
+        Me.tblMovieGeneralMainWindow.ResumeLayout(false)
+        Me.tblMovieGeneralMainWindow.PerformLayout
         Me.pnlFileSystem.ResumeLayout(false)
         Me.pnlFileSystem.PerformLayout
         Me.tblFileSystem.ResumeLayout(false)
@@ -22177,6 +22231,10 @@ Partial Class dlgSettings
         Me.gbTVShowFilterOpts.PerformLayout
         Me.tblTVShowFilterOpts.ResumeLayout(false)
         Me.tblTVShowFilterOpts.PerformLayout
+        Me.gbTVGeneralMainWindowOpts.ResumeLayout(false)
+        Me.gbTVGeneralMainWindowOpts.PerformLayout
+        Me.TableLayoutPanel4.ResumeLayout(false)
+        Me.TableLayoutPanel4.PerformLayout
         Me.gbTVSourcesDefaultsOpts.ResumeLayout(false)
         Me.gbTVSourcesDefaultsOpts.PerformLayout
         Me.tblTVSourcesDefaultsOpts.ResumeLayout(false)
@@ -22967,7 +23025,6 @@ End Sub
     Friend WithEvents gbMovieTrailerOpts As System.Windows.Forms.GroupBox
     Friend WithEvents cbMovieTrailerPrefVideoQual As System.Windows.Forms.ComboBox
     Friend WithEvents lblMovieTrailerPrefQual As System.Windows.Forms.Label
-    Friend WithEvents chkMovieTrailerDeleteExisting As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieTrailerKeepExisting As System.Windows.Forms.CheckBox
     Friend WithEvents txtMovieScraperOutlineLimit As System.Windows.Forms.TextBox
     Friend WithEvents chkMovieScraperPlotForOutline As System.Windows.Forms.CheckBox
@@ -23176,7 +23233,7 @@ End Sub
     Friend WithEvents chkTVShowFanartFrodo As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVShowPosterFrodo As System.Windows.Forms.CheckBox
     Friend WithEvents gbTVSourcesFileNamingKodiADOpts As System.Windows.Forms.GroupBox
-    Friend WithEvents chkTVShowThemeTvTunesEnable As System.Windows.Forms.CheckBox
+    Friend WithEvents chkTVShowThemeTvTunesEnabled As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVSeasonLandscapeAD As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVShowLandscapeAD As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVShowCharacterArtAD As System.Windows.Forms.CheckBox
@@ -23297,7 +23354,7 @@ End Sub
     Friend WithEvents txtMovieThemeTvTunesSubDir As System.Windows.Forms.TextBox
     Friend WithEvents txtMovieThemeTvTunesCustomPath As System.Windows.Forms.TextBox
     Friend WithEvents chkMovieThemeTvTunesCustom As System.Windows.Forms.CheckBox
-    Friend WithEvents chkMovieThemeTvTunesEnable As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMovieThemeTvTunesEnabled As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieThemeTvTunesMoviePath As System.Windows.Forms.CheckBox
     Friend WithEvents gbFileSystemValidThemeExts As System.Windows.Forms.GroupBox
     Friend WithEvents btnFileSystemValidThemeExtsReset As System.Windows.Forms.Button
@@ -23325,7 +23382,7 @@ End Sub
     Friend WithEvents chkTVShowPosterBoxee As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVUseBoxee As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVShowExtrafanartsFrodo As System.Windows.Forms.CheckBox
-    Friend WithEvents gbGeneralMainWindow As System.Windows.Forms.GroupBox
+    Friend WithEvents gbGeneralMainWindowOpts As System.Windows.Forms.GroupBox
     Friend WithEvents chkGeneralDisplayLandscape As System.Windows.Forms.CheckBox
     Friend WithEvents chkGeneralDisplayDiscArt As System.Windows.Forms.CheckBox
     Friend WithEvents chkGeneralDisplayClearArt As System.Windows.Forms.CheckBox
@@ -24068,14 +24125,14 @@ End Sub
     Friend WithEvents pbTVSourcesTvTunesInfo As System.Windows.Forms.PictureBox
     Friend WithEvents gbTVSourcesFileNamingKodiExtendedOpts As System.Windows.Forms.GroupBox
     Friend WithEvents tblTVSourcesFileNamingKodiExtendedOpts As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents lblTVSourcesFileNamingXBMCExtendedClearArt As System.Windows.Forms.Label
-    Friend WithEvents lblTVSourcesFileNamingXBMCExtendedClearLogo As System.Windows.Forms.Label
-    Friend WithEvents lblTVSourcesFileNamingXBMCExtendedSeasonLandscape As System.Windows.Forms.Label
+    Friend WithEvents lblTVSourcesFileNamingKodiExtendedClearArt As System.Windows.Forms.Label
+    Friend WithEvents lblTVSourcesFileNamingKodiExtendedClearLogo As System.Windows.Forms.Label
+    Friend WithEvents lblTVSourcesFileNamingKodiExtendedSeasonLandscape As System.Windows.Forms.Label
     Friend WithEvents lblTVSourcesFileNamingKodiDefaultsHeaderExtended As System.Windows.Forms.Label
     Friend WithEvents chkTVShowClearArtExtended As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVShowClearLogoExtended As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVSeasonLandscapeExtended As System.Windows.Forms.CheckBox
-    Friend WithEvents lblTVSourcesFileNamingXBMCExtendedTVShowLandscape As System.Windows.Forms.Label
+    Friend WithEvents lblTVSourcesFileNamingKodiExtendedTVShowLandscape As System.Windows.Forms.Label
     Friend WithEvents chkTVShowLandscapeExtended As System.Windows.Forms.CheckBox
     Friend WithEvents lblTVSourcesFileNamingKodiExtendedCharacterArt As System.Windows.Forms.Label
     Friend WithEvents chkTVShowCharacterArtExtended As System.Windows.Forms.CheckBox
@@ -24106,7 +24163,7 @@ End Sub
     Friend WithEvents lblMovieSetSourcesFilenamingKodiMSAAPath As System.Windows.Forms.Label
     Friend WithEvents lblMovieSetSourcesFilenamingKodiExtendedBanner As System.Windows.Forms.Label
     Friend WithEvents chkMovieSetBannerExtended As System.Windows.Forms.CheckBox
-    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents lblMovieSetSourcesFilenamingKodiMSAAEnabled As System.Windows.Forms.Label
     Friend WithEvents lblMovieSetSourcesFilenamingKodiMSAABanner As System.Windows.Forms.Label
     Friend WithEvents lblMovieSetSourcesFilenamingKodiMSAAClearArt As System.Windows.Forms.Label
     Friend WithEvents lblMovieSetSourcesFilenamingKodiMSAAClearLogo As System.Windows.Forms.Label
@@ -24147,4 +24204,8 @@ End Sub
     Friend WithEvents chkTVScraperEpisodeGuestStarsToActors As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVScraperSeasonTitle As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVLockSeasonTitle As System.Windows.Forms.CheckBox
+    Friend WithEvents gbMovieGeneralMainWindowOpts As System.Windows.Forms.GroupBox
+    Friend WithEvents tblMovieGeneralMainWindow As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents gbTVGeneralMainWindowOpts As System.Windows.Forms.GroupBox
+    Friend WithEvents TableLayoutPanel4 As System.Windows.Forms.TableLayoutPanel
 End Class

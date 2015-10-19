@@ -245,9 +245,9 @@ Partial Class frmSettingsHolder_TV
         Me.gbScraperImagesSeason.AutoSize = True
         Me.gbScraperImagesSeason.Controls.Add(Me.tblScraperImagesSeason)
         Me.gbScraperImagesSeason.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbScraperImagesSeason.Location = New System.Drawing.Point(101, 3)
+        Me.gbScraperImagesSeason.Location = New System.Drawing.Point(80, 3)
         Me.gbScraperImagesSeason.Name = "gbScraperImagesSeason"
-        Me.gbScraperImagesSeason.Size = New System.Drawing.Size(91, 67)
+        Me.gbScraperImagesSeason.Size = New System.Drawing.Size(70, 67)
         Me.gbScraperImagesSeason.TabIndex = 11
         Me.gbScraperImagesSeason.TabStop = False
         Me.gbScraperImagesSeason.Text = "Season"
@@ -267,7 +267,7 @@ Partial Class frmSettingsHolder_TV
         Me.tblScraperImagesSeason.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperImagesSeason.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperImagesSeason.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblScraperImagesSeason.Size = New System.Drawing.Size(85, 46)
+        Me.tblScraperImagesSeason.Size = New System.Drawing.Size(64, 46)
         Me.tblScraperImagesSeason.TabIndex = 98
         '
         'chkScrapeSeasonPoster
@@ -277,9 +277,9 @@ Partial Class frmSettingsHolder_TV
         Me.chkScrapeSeasonPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkScrapeSeasonPoster.Location = New System.Drawing.Point(3, 3)
         Me.chkScrapeSeasonPoster.Name = "chkScrapeSeasonPoster"
-        Me.chkScrapeSeasonPoster.Size = New System.Drawing.Size(79, 17)
+        Me.chkScrapeSeasonPoster.Size = New System.Drawing.Size(58, 17)
         Me.chkScrapeSeasonPoster.TabIndex = 0
-        Me.chkScrapeSeasonPoster.Text = "Get Poster"
+        Me.chkScrapeSeasonPoster.Text = "Poster"
         Me.chkScrapeSeasonPoster.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkScrapeSeasonPoster.UseVisualStyleBackColor = True
         '
@@ -290,7 +290,7 @@ Partial Class frmSettingsHolder_TV
         Me.gbScraperImagesTVShow.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbScraperImagesTVShow.Location = New System.Drawing.Point(3, 3)
         Me.gbScraperImagesTVShow.Name = "gbScraperImagesTVShow"
-        Me.gbScraperImagesTVShow.Size = New System.Drawing.Size(92, 67)
+        Me.gbScraperImagesTVShow.Size = New System.Drawing.Size(71, 67)
         Me.gbScraperImagesTVShow.TabIndex = 10
         Me.gbScraperImagesTVShow.TabStop = False
         Me.gbScraperImagesTVShow.Text = "TV Show"
@@ -311,7 +311,7 @@ Partial Class frmSettingsHolder_TV
         Me.tblScraperImagesShow.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperImagesShow.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperImagesShow.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperImagesShow.Size = New System.Drawing.Size(86, 46)
+        Me.tblScraperImagesShow.Size = New System.Drawing.Size(65, 46)
         Me.tblScraperImagesShow.TabIndex = 98
         '
         'chkScrapeShowFanart
@@ -321,9 +321,9 @@ Partial Class frmSettingsHolder_TV
         Me.chkScrapeShowFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkScrapeShowFanart.Location = New System.Drawing.Point(3, 3)
         Me.chkScrapeShowFanart.Name = "chkScrapeShowFanart"
-        Me.chkScrapeShowFanart.Size = New System.Drawing.Size(80, 17)
+        Me.chkScrapeShowFanart.Size = New System.Drawing.Size(59, 17)
         Me.chkScrapeShowFanart.TabIndex = 1
-        Me.chkScrapeShowFanart.Text = "Get Fanart"
+        Me.chkScrapeShowFanart.Text = "Fanart"
         Me.chkScrapeShowFanart.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkScrapeShowFanart.UseVisualStyleBackColor = True
         '
@@ -334,9 +334,9 @@ Partial Class frmSettingsHolder_TV
         Me.chkScrapeShowPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkScrapeShowPoster.Location = New System.Drawing.Point(3, 26)
         Me.chkScrapeShowPoster.Name = "chkScrapeShowPoster"
-        Me.chkScrapeShowPoster.Size = New System.Drawing.Size(79, 17)
+        Me.chkScrapeShowPoster.Size = New System.Drawing.Size(58, 17)
         Me.chkScrapeShowPoster.TabIndex = 0
-        Me.chkScrapeShowPoster.Text = "Get Poster"
+        Me.chkScrapeShowPoster.Text = "Poster"
         Me.chkScrapeShowPoster.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkScrapeShowPoster.UseVisualStyleBackColor = True
         '
@@ -345,9 +345,9 @@ Partial Class frmSettingsHolder_TV
         Me.gbScraperImagesEpisode.AutoSize = True
         Me.gbScraperImagesEpisode.Controls.Add(Me.tblScraperImagesEpisode)
         Me.gbScraperImagesEpisode.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbScraperImagesEpisode.Location = New System.Drawing.Point(198, 3)
+        Me.gbScraperImagesEpisode.Location = New System.Drawing.Point(156, 3)
         Me.gbScraperImagesEpisode.Name = "gbScraperImagesEpisode"
-        Me.gbScraperImagesEpisode.Size = New System.Drawing.Size(91, 67)
+        Me.gbScraperImagesEpisode.Size = New System.Drawing.Size(70, 67)
         Me.gbScraperImagesEpisode.TabIndex = 12
         Me.gbScraperImagesEpisode.TabStop = False
         Me.gbScraperImagesEpisode.Text = "Episode"
@@ -365,7 +365,7 @@ Partial Class frmSettingsHolder_TV
         Me.tblScraperImagesEpisode.RowCount = 2
         Me.tblScraperImagesEpisode.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperImagesEpisode.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperImagesEpisode.Size = New System.Drawing.Size(85, 46)
+        Me.tblScraperImagesEpisode.Size = New System.Drawing.Size(64, 46)
         Me.tblScraperImagesEpisode.TabIndex = 0
         '
         'chkScrapeEpisodePoster
@@ -374,9 +374,9 @@ Partial Class frmSettingsHolder_TV
         Me.chkScrapeEpisodePoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkScrapeEpisodePoster.Location = New System.Drawing.Point(3, 3)
         Me.chkScrapeEpisodePoster.Name = "chkScrapeEpisodePoster"
-        Me.chkScrapeEpisodePoster.Size = New System.Drawing.Size(79, 17)
+        Me.chkScrapeEpisodePoster.Size = New System.Drawing.Size(58, 17)
         Me.chkScrapeEpisodePoster.TabIndex = 0
-        Me.chkScrapeEpisodePoster.Text = "Get Poster"
+        Me.chkScrapeEpisodePoster.Text = "Poster"
         Me.chkScrapeEpisodePoster.UseVisualStyleBackColor = True
         '
         'pnlSettingsBottom

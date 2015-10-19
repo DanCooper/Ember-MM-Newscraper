@@ -1881,10 +1881,13 @@ Public Class Structures
 
     Public Structure SettingsResult
         Dim DidCancel As Boolean
-        Dim NeedsRefresh_Movie As Boolean
-        Dim NeedsRefresh_MovieSet As Boolean
-        Dim NeedsRefresh_TV As Boolean
-        Dim NeedsUpdate As Boolean
+        Dim NeedsDBClean_Movie As Boolean
+        Dim NeedsDBClean_TV As Boolean
+        Dim NeedsDBUpdate_Movie As Boolean
+        Dim NeedsDBUpdate_TV As Boolean
+        Dim NeedsReload_Movie As Boolean
+        Dim NeedsReload_MovieSet As Boolean
+        Dim NeedsReload_TV As Boolean
         Dim NeedsRestart As Boolean
     End Structure
 

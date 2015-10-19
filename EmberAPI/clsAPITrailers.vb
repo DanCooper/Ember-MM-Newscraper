@@ -788,7 +788,7 @@ Public Class Trailers
             End Try
 
             Dim fExt As String = Path.GetExtension(Me._ext)
-            If Master.eSettings.MovieTrailerDeleteExisting AndAlso Not String.IsNullOrEmpty(fExt) Then
+            If Not String.IsNullOrEmpty(fExt) Then
                 DeleteMovieTrailers(mMovie)
             End If
 

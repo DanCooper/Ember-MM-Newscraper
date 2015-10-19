@@ -74,7 +74,7 @@ Public Class dlgWizard
     End Sub
 
     Private Sub btnMovieAddFolders_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieAddFolder.Click
-        Using dSource As New dlgMovieSource()
+        Using dSource As New dlgSourceMovie()
             If dSource.ShowDialog(tmppath) = Windows.Forms.DialogResult.OK Then
                 RefreshSources()
             End If
@@ -112,7 +112,7 @@ Public Class dlgWizard
     End Sub
 
     Private Sub btnTVAddSource_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVAddSource.Click
-        Using dSource As New dlgTVSource
+        Using dSource As New dlgSourceTVShow
             If dSource.ShowDialog(tmppath) = Windows.Forms.DialogResult.OK Then
                 RefreshTVSources()
             End If
@@ -933,7 +933,7 @@ Public Class dlgWizard
 
     Private Sub lvMovies_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvMovies.DoubleClick
         If lvMovies.SelectedItems.Count > 0 Then
-            Using dMovieSource As New dlgMovieSource
+            Using dMovieSource As New dlgSourceMovie
                 If dMovieSource.ShowDialog(Convert.ToInt32(lvMovies.SelectedItems(0).Text)) = Windows.Forms.DialogResult.OK Then
                     Me.RefreshSources()
                 End If
@@ -947,7 +947,7 @@ Public Class dlgWizard
 
     Private Sub lvTVSources_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvTVSources.DoubleClick
         If lvTVSources.SelectedItems.Count > 0 Then
-            Using dTVSource As New dlgTVSource
+            Using dTVSource As New dlgSourceTVShow
                 If dTVSource.ShowDialog(Convert.ToInt32(lvTVSources.SelectedItems(0).Text)) = Windows.Forms.DialogResult.OK Then
                     Me.RefreshTVSources()
                 End If

@@ -141,9 +141,9 @@ Partial Class frmSettingsHolder_Movie
         Me.chkScrapePoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkScrapePoster.Location = New System.Drawing.Point(3, 26)
         Me.chkScrapePoster.Name = "chkScrapePoster"
-        Me.chkScrapePoster.Size = New System.Drawing.Size(84, 17)
+        Me.chkScrapePoster.Size = New System.Drawing.Size(58, 17)
         Me.chkScrapePoster.TabIndex = 0
-        Me.chkScrapePoster.Text = "Get Posters"
+        Me.chkScrapePoster.Text = "Poster"
         Me.chkScrapePoster.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkScrapePoster.UseVisualStyleBackColor = True
         '
@@ -154,9 +154,9 @@ Partial Class frmSettingsHolder_Movie
         Me.chkScrapeFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkScrapeFanart.Location = New System.Drawing.Point(3, 3)
         Me.chkScrapeFanart.Name = "chkScrapeFanart"
-        Me.chkScrapeFanart.Size = New System.Drawing.Size(80, 17)
+        Me.chkScrapeFanart.Size = New System.Drawing.Size(59, 17)
         Me.chkScrapeFanart.TabIndex = 1
-        Me.chkScrapeFanart.Text = "Get Fanart"
+        Me.chkScrapeFanart.Text = "Fanart"
         Me.chkScrapeFanart.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkScrapeFanart.UseVisualStyleBackColor = True
         '

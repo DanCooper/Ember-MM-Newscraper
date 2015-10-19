@@ -10911,14 +10911,14 @@ doCancel:
             Case Enums.ModuleEventType.CommandLine
                 Select Case _params(0).ToString
                     Case "addmoviesource"
-                        Using dSource As New dlgMovieSource
+                        Using dSource As New dlgSourceMovie
                             If dSource.ShowDialog(CStr(_params(1)), CStr(_params(1))) = Windows.Forms.DialogResult.OK Then
                                 Master.DB.LoadMovieSourcesFromDB()
                                 Me.SetMenus(True)
                             End If
                         End Using
                     Case "addtvshowsource"
-                        Using dSource As New dlgTVSource
+                        Using dSource As New dlgSourceTVShow
                             If dSource.ShowDialog(CStr(_params(1)), CStr(_params(1))) = Windows.Forms.DialogResult.OK Then
                                 Master.DB.LoadTVSourcesFromDB()
                                 Me.SetMenus(True)
@@ -15715,8 +15715,15 @@ doCancel:
                 Threading.Thread.Sleep(50)
             End While
 
-            If dresult.NeedsRefresh_Movie OrElse dresult.NeedsRefresh_MovieSet OrElse dresult.NeedsRefresh_TV OrElse dresult.NeedsUpdate Then
-                If dresult.NeedsRefresh_Movie Then
+            If dresult.NeedsDBClean_Movie OrElse _
+                dresult.NeedsDBClean_TV OrElse _
+                dresult.NeedsDBUpdate_Movie OrElse _
+                dresult.NeedsDBUpdate_TV OrElse _
+                dresult.NeedsReload_Movie OrElse _
+                dresult.NeedsReload_MovieSet OrElse _
+                dresult.NeedsReload_TV Then
+
+                If dresult.NeedsReload_Movie Then
                     If Not Me.fScanner.IsBusy Then
                         While Me.bwLoadMovieInfo.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwReload_Movies.IsBusy OrElse _
                             Me.bwLoadMovieSetInfo.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwReload_MovieSets.IsBusy OrElse _
@@ -15727,7 +15734,7 @@ doCancel:
                         Me.ReloadAll_Movie()
                     End If
                 End If
-                If dresult.NeedsRefresh_MovieSet Then
+                If dresult.NeedsReload_MovieSet Then
                     If Not Me.fScanner.IsBusy Then
                         While Me.bwLoadMovieInfo.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwReload_Movies.IsBusy OrElse _
                             Me.bwLoadMovieSetInfo.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwReload_MovieSets.IsBusy OrElse _
@@ -15738,7 +15745,7 @@ doCancel:
                         Me.ReloadAll_MovieSet()
                     End If
                 End If
-                If dresult.NeedsRefresh_TV Then
+                If dresult.NeedsReload_TV Then
                     If Not Me.fScanner.IsBusy Then
                         While Me.bwLoadMovieInfo.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwReload_Movies.IsBusy OrElse _
                             Me.bwLoadMovieSetInfo.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwReload_MovieSets.IsBusy OrElse _
@@ -15749,7 +15756,7 @@ doCancel:
                         Me.ReloadAll_TVShow()
                     End If
                 End If
-                If dresult.NeedsUpdate Then
+                If dresult.NeedsDBUpdate_Movie Then
                     If Not Me.fScanner.IsBusy Then
                         While Me.bwLoadMovieInfo.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwReload_Movies.IsBusy OrElse _
                             Me.bwLoadMovieSetInfo.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwReload_MovieSets.IsBusy OrElse _
@@ -15898,6 +15905,16 @@ doCancel:
                 Dim strMarked As String = Master.eLang.GetString(48, "Marked")
                 .mnuScrapeSubmenuMarked.Text = strMarked
 
+                'Change Language
+                Dim strChangeLanguage As String = Master.eLang.GetString(1200, "Change Language")
+                .cmnuMovieLanguage.Text = strChangeLanguage
+                .cmnuMovieSetLanguage.Text = strChangeLanguage
+                .cmnuShowLanguage.Text = strChangeLanguage
+
+                'Change Movie Sorting
+                Dim strChangeMovieSorting As String = Master.eLang.GetString(939, "Change Movie Sorting")
+                .cmnuMovieSetSortMethod.Text = strChangeMovieSorting
+
                 'Current Filter
                 Dim strCurrentFilter As String = Master.eLang.GetString(624, "Current Filter")
                 .mnuScrapeSubmenuFilter.Text = strCurrentFilter
@@ -16013,6 +16030,7 @@ doCancel:
                 .cmnuMovieGenresSet.Text = strSet
                 .cmnuMovieLanguageSet.Text = strSet
                 .cmnuMovieSetLanguageSet.Text = strSet
+                .cmnuMovieSetSortMethodSet.Text = strSet
                 .cmnuShowLanguageSet.Text = strSet
 
                 'Theme Only
@@ -16263,7 +16281,6 @@ doCancel:
                 .cmnuShowClearCacheImagesOnly.Text = Master.eLang.GetString(567, "Images Only")
                 .cmnuShowEdit.Text = Master.eLang.GetString(663, "Edit Show")
                 .cmnuShowEdit.Text = Master.eLang.GetString(663, "Edit Show")
-                .cmnuShowLanguage.Text = Master.eLang.GetString(1200, "Change Language")
                 .cmnuShowLock.Text = Master.eLang.GetString(24, "Lock")
                 .cmnuShowMark.Text = Master.eLang.GetString(23, "Mark")
                 .cmnuShowReload.Text = Master.eLang.GetString(22, "Reload")

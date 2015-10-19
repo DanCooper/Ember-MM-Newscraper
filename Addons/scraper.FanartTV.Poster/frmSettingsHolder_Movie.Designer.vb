@@ -159,11 +159,11 @@ Partial Class frmSettingsHolder_Movie
         Me.chkScrapeLandscape.AutoSize = True
         Me.chkScrapeLandscape.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkScrapeLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScrapeLandscape.Location = New System.Drawing.Point(108, 49)
+        Me.chkScrapeLandscape.Location = New System.Drawing.Point(98, 49)
         Me.chkScrapeLandscape.Name = "chkScrapeLandscape"
-        Me.chkScrapeLandscape.Size = New System.Drawing.Size(101, 17)
+        Me.chkScrapeLandscape.Size = New System.Drawing.Size(80, 17)
         Me.chkScrapeLandscape.TabIndex = 7
-        Me.chkScrapeLandscape.Text = "Get Landscape"
+        Me.chkScrapeLandscape.Text = "Landscape"
         Me.chkScrapeLandscape.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkScrapeLandscape.UseVisualStyleBackColor = True
         '
@@ -200,9 +200,9 @@ Partial Class frmSettingsHolder_Movie
         Me.chkScrapeClearArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkScrapeClearArt.Location = New System.Drawing.Point(3, 26)
         Me.chkScrapeClearArt.Name = "chkScrapeClearArt"
-        Me.chkScrapeClearArt.Size = New System.Drawing.Size(88, 17)
+        Me.chkScrapeClearArt.Size = New System.Drawing.Size(67, 17)
         Me.chkScrapeClearArt.TabIndex = 4
-        Me.chkScrapeClearArt.Text = "Get ClearArt"
+        Me.chkScrapeClearArt.Text = "ClearArt"
         Me.chkScrapeClearArt.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkScrapeClearArt.UseVisualStyleBackColor = True
         '
@@ -213,9 +213,9 @@ Partial Class frmSettingsHolder_Movie
         Me.chkScrapeClearLogo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkScrapeClearLogo.Location = New System.Drawing.Point(3, 72)
         Me.chkScrapeClearLogo.Name = "chkScrapeClearLogo"
-        Me.chkScrapeClearLogo.Size = New System.Drawing.Size(99, 17)
+        Me.chkScrapeClearLogo.Size = New System.Drawing.Size(78, 17)
         Me.chkScrapeClearLogo.TabIndex = 3
-        Me.chkScrapeClearLogo.Text = "Get ClearLogo"
+        Me.chkScrapeClearLogo.Text = "ClearLogo"
         Me.chkScrapeClearLogo.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkScrapeClearLogo.UseVisualStyleBackColor = True
         '
@@ -224,11 +224,11 @@ Partial Class frmSettingsHolder_Movie
         Me.chkScrapeFanart.AutoSize = True
         Me.chkScrapeFanart.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkScrapeFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScrapeFanart.Location = New System.Drawing.Point(108, 26)
+        Me.chkScrapeFanart.Location = New System.Drawing.Point(98, 26)
         Me.chkScrapeFanart.Name = "chkScrapeFanart"
-        Me.chkScrapeFanart.Size = New System.Drawing.Size(80, 17)
+        Me.chkScrapeFanart.Size = New System.Drawing.Size(59, 17)
         Me.chkScrapeFanart.TabIndex = 1
-        Me.chkScrapeFanart.Text = "Get Fanart"
+        Me.chkScrapeFanart.Text = "Fanart"
         Me.chkScrapeFanart.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkScrapeFanart.UseVisualStyleBackColor = True
         '
@@ -237,11 +237,11 @@ Partial Class frmSettingsHolder_Movie
         Me.chkScrapeDiscArt.AutoSize = True
         Me.chkScrapeDiscArt.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkScrapeDiscArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScrapeDiscArt.Location = New System.Drawing.Point(108, 3)
+        Me.chkScrapeDiscArt.Location = New System.Drawing.Point(98, 3)
         Me.chkScrapeDiscArt.Name = "chkScrapeDiscArt"
-        Me.chkScrapeDiscArt.Size = New System.Drawing.Size(83, 17)
+        Me.chkScrapeDiscArt.Size = New System.Drawing.Size(62, 17)
         Me.chkScrapeDiscArt.TabIndex = 6
-        Me.chkScrapeDiscArt.Text = "Get DiscArt"
+        Me.chkScrapeDiscArt.Text = "DiscArt"
         Me.chkScrapeDiscArt.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkScrapeDiscArt.UseVisualStyleBackColor = True
         '
@@ -252,9 +252,9 @@ Partial Class frmSettingsHolder_Movie
         Me.chkScrapeBanner.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkScrapeBanner.Location = New System.Drawing.Point(3, 3)
         Me.chkScrapeBanner.Name = "chkScrapeBanner"
-        Me.chkScrapeBanner.Size = New System.Drawing.Size(84, 17)
+        Me.chkScrapeBanner.Size = New System.Drawing.Size(63, 17)
         Me.chkScrapeBanner.TabIndex = 2
-        Me.chkScrapeBanner.Text = "Get Banner"
+        Me.chkScrapeBanner.Text = "Banner"
         Me.chkScrapeBanner.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkScrapeBanner.UseVisualStyleBackColor = True
         '
@@ -263,11 +263,11 @@ Partial Class frmSettingsHolder_Movie
         Me.chkScrapePoster.AutoSize = True
         Me.chkScrapePoster.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkScrapePoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScrapePoster.Location = New System.Drawing.Point(108, 72)
+        Me.chkScrapePoster.Location = New System.Drawing.Point(98, 72)
         Me.chkScrapePoster.Name = "chkScrapePoster"
-        Me.chkScrapePoster.Size = New System.Drawing.Size(79, 17)
+        Me.chkScrapePoster.Size = New System.Drawing.Size(58, 17)
         Me.chkScrapePoster.TabIndex = 0
-        Me.chkScrapePoster.Text = "Get Poster"
+        Me.chkScrapePoster.Text = "Poster"
         Me.chkScrapePoster.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkScrapePoster.UseVisualStyleBackColor = True
         '

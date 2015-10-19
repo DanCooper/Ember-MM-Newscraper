@@ -353,15 +353,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieTrailerDeleteExisting() As Boolean
-        Get
-            Return Settings._XMLSettings.MovieTrailerDeleteExisting
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieTrailerDeleteExisting = value
-        End Set
-    End Property
-
     Public Property TVDisplayMissingEpisodes() As Boolean
         Get
             Return Settings._XMLSettings.TVDisplayMissingEpisodes
@@ -6920,7 +6911,6 @@ Public Class Settings
         Me.MovieThemeTvTunesEnable = True
         Me.MovieThemeKeepExisting = False
         Me.MovieTrailerDefaultSearch = "trailer"
-        Me.MovieTrailerDeleteExisting = True
         Me.MovieTrailerKeepExisting = False
         Me.MovieTrailerMinVideoQual = Enums.TrailerVideoQuality.Any
         Me.MovieTrailerPrefVideoQual = Enums.TrailerVideoQuality.Any

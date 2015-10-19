@@ -266,10 +266,10 @@
     <Compile Include="dlgManualEdit.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgMovieSource.Designer.vb">
-      <DependentUpon>dlgMovieSource.vb</DependentUpon>
+    <Compile Include="dlgSourceMovie.Designer.vb">
+      <DependentUpon>dlgSourceMovie.vb</DependentUpon>
     </Compile>
-    <Compile Include="dlgMovieSource.vb">
+    <Compile Include="dlgSourceMovie.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="dlgNewSet.Designer.vb">
@@ -338,10 +338,10 @@
     <Compile Include="dlgTVRegExProfiles.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgTVSource.Designer.vb">
-      <DependentUpon>dlgTVSource.vb</DependentUpon>
+    <Compile Include="dlgSourceTVShow.Designer.vb">
+      <DependentUpon>dlgSourceTVShow.vb</DependentUpon>
     </Compile>
-    <Compile Include="dlgTVSource.vb">
+    <Compile Include="dlgSourceTVShow.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="dlgWizard.Designer.vb">
@@ -431,8 +431,8 @@
     <EmbeddedResource Include="dlgManualEdit.resx">
       <DependentUpon>dlgManualEdit.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="dlgMovieSource.resx">
-      <DependentUpon>dlgMovieSource.vb</DependentUpon>
+    <EmbeddedResource Include="dlgSourceMovie.resx">
+      <DependentUpon>dlgSourceMovie.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgNewSet.resx">
       <DependentUpon>dlgNewSet.vb</DependentUpon>
@@ -471,8 +471,8 @@
     <EmbeddedResource Include="dlgTVRegExProfiles.resx">
       <DependentUpon>dlgTVRegExProfiles.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="dlgTVSource.resx">
-      <DependentUpon>dlgTVSource.vb</DependentUpon>
+    <EmbeddedResource Include="dlgSourceTVShow.resx">
+      <DependentUpon>dlgSourceTVShow.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgWizard.resx">
       <DependentUpon>dlgWizard.vb</DependentUpon>

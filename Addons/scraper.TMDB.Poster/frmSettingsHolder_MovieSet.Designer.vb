@@ -143,7 +143,7 @@ Partial Class frmSettingsHolder_MovieSet
         Me.chkScrapePoster.Name = "chkScrapePoster"
         Me.chkScrapePoster.Size = New System.Drawing.Size(114, 15)
         Me.chkScrapePoster.TabIndex = 0
-        Me.chkScrapePoster.Text = "Get Posters"
+        Me.chkScrapePoster.Text = "Poster"
         Me.chkScrapePoster.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkScrapePoster.UseVisualStyleBackColor = True
         '
@@ -155,7 +155,7 @@ Partial Class frmSettingsHolder_MovieSet
         Me.chkScrapeFanart.Name = "chkScrapeFanart"
         Me.chkScrapeFanart.Size = New System.Drawing.Size(84, 16)
         Me.chkScrapeFanart.TabIndex = 1
-        Me.chkScrapeFanart.Text = "Get Fanart"
+        Me.chkScrapeFanart.Text = "Fanart"
         Me.chkScrapeFanart.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkScrapeFanart.UseVisualStyleBackColor = True
         '

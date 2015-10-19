@@ -18,12 +18,14 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
+Imports System
 Imports System.IO
 Imports System.Text.RegularExpressions
 Imports EmberAPI
 Imports NLog
+Imports System.Diagnostics
 
-Public Class dlgTVSource
+Public Class dlgSourceMovie
 
 #Region "Fields"
 
@@ -36,6 +38,8 @@ Public Class dlgTVSource
     Private _id As Integer = -1
     Private autoName As Boolean = True
     Private tmppath As String
+    Private prevPath As String = String.Empty
+    Private prevSource As String = String.Empty
 
 #End Region 'Fields
 
@@ -76,6 +80,8 @@ Public Class dlgTVSource
                 Else
                     .SelectedPath = Me.tmppath
                 End If
+                prevPath = txtSourcePath.Text
+                prevSource = txtSourceName.Text
                 If .ShowDialog = Windows.Forms.DialogResult.OK Then
                     If Not String.IsNullOrEmpty(.SelectedPath) Then
                         Me.txtSourcePath.Text = .SelectedPath
@@ -98,18 +104,6 @@ Public Class dlgTVSource
         Me.tmrWait.Enabled = True
     End Sub
 
-    Private Sub cbSourceOrdering_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbSourceOrdering.SelectedIndexChanged
-        Me.OK_Button.Enabled = False
-        Me.tmrWait.Enabled = False
-        Me.tmrWait.Enabled = True
-    End Sub
-
-    Private Sub cbSourceEpisodeSorting_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbSourceEpisodeSorting.SelectedIndexChanged
-        Me.OK_Button.Enabled = False
-        Me.tmrWait.Enabled = False
-        Me.tmrWait.Enabled = True
-    End Sub
-
     Private Sub CheckConditions()
         Dim isValid As Boolean = False
 
@@ -118,7 +112,7 @@ Public Class dlgTVSource
                 pbValid.Image = My.Resources.invalid
             Else
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    SQLcommand.CommandText = String.Concat("SELECT ID FROM TVSources WHERE Name LIKE """, Me.txtSourceName.Text.Trim, """ AND ID != ", Me._id, ";")
+                    SQLcommand.CommandText = String.Concat("SELECT ID FROM Sources WHERE Name LIKE """, Me.txtSourceName.Text.Trim, """ AND ID != ", Me._id, ";")
                     Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                         If SQLreader.HasRows Then
                             SQLreader.Read()
@@ -140,119 +134,144 @@ Public Class dlgTVSource
         End Try
 
         If Not String.IsNullOrEmpty(Me.txtSourcePath.Text) AndAlso Directory.Exists(Me.txtSourcePath.Text.Trim) AndAlso _
-            Not String.IsNullOrEmpty(Me.cbSourceLanguage.Text) AndAlso Not String.IsNullOrEmpty(Me.cbSourceOrdering.Text) AndAlso _
-            Not String.IsNullOrEmpty(Me.cbSourceEpisodeSorting.Text) AndAlso isValid Then
+            Not String.IsNullOrEmpty(Me.cbSourceLanguage.Text) AndAlso isValid Then
             Me.OK_Button.Enabled = True
         End If
+    End Sub
 
+    Private Sub chkSingle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSingle.CheckedChanged
+        Me.chkUseFolderName.Enabled = Me.chkSingle.Checked
+
+        If Not Me.chkSingle.Checked Then Me.chkUseFolderName.Checked = False
+    End Sub
+
+    Private Sub chkUseFolderName_CheckedChanged(sender As Object, e As EventArgs) Handles chkUseFolderName.CheckedChanged
+        If chkUseFolderName.Checked Then
+            Me.chkGetYear.Text = Master.eLang.GetString(585, "Get year from folder name")
+        Else
+            Me.chkGetYear.Text = Master.eLang.GetString(584, "Get year from file name")
+        End If
     End Sub
 
     Private Sub dlgMovieSource_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Me.SetUp()
         Try
             If Me._id >= 0 Then
-                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    SQLcommand.CommandText = String.Concat("SELECT ID, Name, Path, LastScan, Language, Ordering, Exclude, EpisodeSorting FROM TVSources WHERE ID = ", Me._id, ";")
-                    Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                        If SQLreader.HasRows() Then
-                            SQLreader.Read()
-                            Me.txtSourceName.Text = SQLreader("Name").ToString
-                            Me.txtSourcePath.Text = SQLreader("Path").ToString
-                            If Me.cbSourceLanguage.Items.Count > 0 Then
-                                Me.cbSourceLanguage.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = SQLreader("Language").ToString).name
-                            End If
-                            Me.cbSourceOrdering.SelectedIndex = DirectCast(Convert.ToInt32(SQLreader("Ordering")), Enums.Ordering)
-                            Me.cbSourceEpisodeSorting.SelectedIndex = DirectCast(Convert.ToInt32(SQLreader("EpisodeSorting")), Enums.EpisodeSorting)
-                            Me.chkExclude.Checked = Convert.ToBoolean(SQLreader("Exclude"))
-                            Me.autoName = False
-                        End If
-                    End Using
-                End Using
+                Dim s As Structures.MovieSource = Master.MovieSources.FirstOrDefault(Function(y) y.ID = Me._id.ToString)
+                If Not s.ID Is Nothing Then
+                    Me.autoName = False
+                    If Me.cbSourceLanguage.Items.Count > 0 Then
+                        Me.cbSourceLanguage.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = s.Language).name
+                    End If
+                    Me.chkExclude.Checked = s.Exclude
+                    Me.chkGetYear.Checked = s.GetYear
+                    Me.chkScanRecursive.Checked = s.Recursive
+                    Me.chkSingle.Checked = s.IsSingle
+                    Me.chkUseFolderName.Checked = s.UseFolderName
+                    Me.txtSourceName.Text = s.Name
+                    Me.txtSourcePath.Text = s.Path
+                End If
             Else
                 If Me.cbSourceLanguage.Items.Count > 0 Then
-                    Me.cbSourceLanguage.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.TVGeneralLanguage).name
+                    Me.cbSourceLanguage.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.MovieGeneralLanguage).name
                 End If
-                Me.cbSourceEpisodeSorting.SelectedIndex = Enums.EpisodeSorting.Episode
-                Me.cbSourceOrdering.SelectedIndex = Enums.Ordering.Standard
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
-    Private Sub dlgTVSource_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+    Private Sub dlgMovieSource_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
         Me.Activate()
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+
         Try
+            '2014/07/12 Fix for duplicate entries in database when editing path of existing sources http://bugs.embermediamanager.org/thebuggenie/embermediamanager/issues/89
+            'Delete all movies from "old" source before updating, else "old" path will still stay in database!
+            'only delete entries when path was changed!
+            If prevPath <> "" AndAlso prevPath <> currPathText Then
+                Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                    Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                        Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "source")
+                        parSource.Value = prevSource
+                        SQLcommand.CommandText = "SELECT idMovie FROM movie WHERE source = (?);"
+                        Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                            While SQLReader.Read
+                                Master.DB.DeleteMovieFromDB(Convert.ToInt64(SQLReader("idMovie")), True)
+                            End While
+                        End Using
+                        SQLcommand.ExecuteNonQuery()
+                    End Using
+                    SQLtransaction.Commit()
+                End Using
+            End If
+
+
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     If Me._id >= 0 Then
-                        SQLcommand.CommandText = String.Concat("UPDATE TVSources SET Name = (?), Path = (?), Language = (?), Ordering = (?), Exclude = (?), EpisodeSorting = (?) WHERE ID =", Me._id, ";")
+                        SQLcommand.CommandText = String.Concat("UPDATE sources SET name = (?), path = (?), recursive = (?), foldername = (?), single = (?), lastscan = (?), exclude = (?), getyear = (?) , Language = (?) WHERE ID =", Me._id, ";")
                     Else
-                        SQLcommand.CommandText = "INSERT OR REPLACE INTO TVSources (Name, Path, Language, Ordering, Exclude, EpisodeSorting) VALUES (?,?,?,?,?,?);"
+                        SQLcommand.CommandText = "INSERT OR REPLACE INTO sources (name, path, recursive, foldername, single, LastScan, Exclude, GetYear, Language) VALUES (?,?,?,?,?,?,?,?,?);"
                     End If
-                    Dim parName As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parName", DbType.String, 0, "Name")
-                    Dim parPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPath", DbType.String, 0, "Path")
-                    Dim parLanguage As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLanguage", DbType.String, 0, "Language")
-                    Dim parOrdering As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parOrdering", DbType.Int16, 0, "Ordering")
+                    Dim parName As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parName", DbType.String, 0, "name")
+                    Dim parPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPath", DbType.String, 0, "path")
+                    Dim parRecur As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parRecur", DbType.Boolean, 0, "recursive")
+                    Dim parFolder As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parFolder", DbType.Boolean, 0, "foldername")
+                    Dim parSingle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSingle", DbType.Boolean, 0, "single")
+                    Dim parLastScan As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLastScan", DbType.String, 0, "LastScan")
                     Dim parExclude As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parExclude", DbType.Boolean, 0, "Exclude")
-                    Dim parEpisodeSorting As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parEpisodeSorting", DbType.Int16, 0, "EpisodeSorting")
-
+                    Dim parGetYear As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parGetYear", DbType.Boolean, 0, "GetYear")
+                    Dim parLanguage As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLanguage", DbType.String, 0, "Language")
                     parName.Value = txtSourceName.Text.Trim
                     parPath.Value = Regex.Replace(txtSourcePath.Text.Trim, "^(\\)+\\\\", "\\")
+                    parRecur.Value = chkScanRecursive.Checked
+                    parFolder.Value = chkUseFolderName.Checked
+                    parSingle.Value = chkSingle.Checked
+                    parLastScan.Value = DateTime.Now
+                    parExclude.Value = chkExclude.Checked
+                    parGetYear.Value = chkGetYear.Checked
                     If cbSourceLanguage.Text <> String.Empty Then
                         parLanguage.Value = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = cbSourceLanguage.Text).abbreviation
                     Else
                         parLanguage.Value = "en"
                     End If
-                    If cbSourceOrdering.Text <> String.Empty Then
-                        parOrdering.Value = DirectCast(Me.cbSourceOrdering.SelectedIndex, Enums.Ordering)
-                    Else
-                        parOrdering.Value = Enums.Ordering.Standard
-                    End If
-                    If cbSourceEpisodeSorting.Text <> String.Empty Then
-                        parEpisodeSorting.Value = DirectCast(Me.cbSourceEpisodeSorting.SelectedIndex, Enums.EpisodeSorting)
-                    Else
-                        parEpisodeSorting.Value = Enums.EpisodeSorting.Episode
-                    End If
-                    parExclude.Value = chkExclude.Checked
 
                     SQLcommand.ExecuteNonQuery()
                 End Using
                 SQLtransaction.Commit()
             End Using
+            Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
             Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Finally
+            Functions.GetListOfSources()
         End Try
 
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
     End Sub
 
     Private Sub SetUp()
-        Me.Text = Master.eLang.GetString(705, "TV Source")
+        Me.Text = Master.eLang.GetString(198, "Movie Source")
         Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        Me.chkExclude.Text = Master.eLang.GetString(164, "Exclude path from library updates")
-        Me.gbSourceOptions.Text = Master.eLang.GetString(201, "Source Options")
-        Me.lblSourceEpisodeSorting.Text = String.Concat(Master.eLang.GetString(364, "Show Episodes by"), ":")
-        Me.lblSourceLanguage.Text = String.Concat(Master.eLang.GetString(1166, "Default Language"), ":")
+        Me.lblHint.Text = Master.eLang.GetString(114, "* This MUST be enabled to use extrathumbs and file naming options like movie.tbn, fanart.jpg, etc.")
         Me.lblSourceName.Text = Master.eLang.GetString(199, "Source Name:")
-        Me.lblSourceOrdering.Text = String.Concat(Master.eLang.GetString(797, "Default Episode Ordering"), ":")
         Me.lblSourcePath.Text = Master.eLang.GetString(200, "Source Path:")
-        Me.fbdBrowse.Description = Master.eLang.GetString(706, "Select the parent folder for your TV Series folders/files.")
+        Me.gbSourceOptions.Text = Master.eLang.GetString(201, "Source Options")
+        Me.lblSourceLanguage.Text = String.Concat(Master.eLang.GetString(1166, "Default Language"), ":")
+        Me.chkExclude.Text = Master.eLang.GetString(164, "Exclude path from library updates")
+        Me.chkGetYear.Text = Master.eLang.GetString(585, "Get year from folder name")
+        Me.chkSingle.Text = Master.eLang.GetString(202, "Movies are in separate folders *")
+        Me.chkUseFolderName.Text = Master.eLang.GetString(203, "Use Folder Name for Initial Listing")
+        Me.chkScanRecursive.Text = Master.eLang.GetString(204, "Scan Recursively")
+        Me.fbdBrowse.Description = Master.eLang.GetString(205, "Select the parent folder for your movie folders/files.")
 
         Me.cbSourceLanguage.Items.Clear()
         Me.cbSourceLanguage.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
-
-        Me.cbSourceOrdering.Items.Clear()
-        Me.cbSourceOrdering.Items.AddRange(New String() {Master.eLang.GetString(438, "Standard"), Master.eLang.GetString(1067, "DVD"), Master.eLang.GetString(839, "Absolute"), Master.eLang.GetString(1332, "Day Of Year")})
-
-        Me.cbSourceEpisodeSorting.Items.Clear()
-        Me.cbSourceEpisodeSorting.Items.AddRange(New String() {Master.eLang.GetString(755, "Episode #"), Master.eLang.GetString(728, "Aired")})
     End Sub
 
     Private Sub tmrName_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrName.Tick

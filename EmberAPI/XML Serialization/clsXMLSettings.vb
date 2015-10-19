@@ -284,7 +284,6 @@ Partial Public Class clsXMLSettings
     Private _moviesetsorttokensisempty As Boolean
     Private _moviethemekeepexisting As Boolean
     Private _movietrailerdefaultsearch As String
-    Private _movietrailerdeleteexisting As Boolean
     Private _movietrailerkeepexisting As Boolean
     Private _movietrailerminvideoqual As Enums.TrailerVideoQuality
     Private _movietrailerprefvideoqual As Enums.TrailerVideoQuality
@@ -1261,15 +1260,6 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._filesystemcleanerwhitelist = value
-        End Set
-    End Property
-
-    Public Property MovieTrailerDeleteExisting() As Boolean
-        Get
-            Return Me._movietrailerdeleteexisting
-        End Get
-        Set(ByVal value As Boolean)
-            Me._movietrailerdeleteexisting = value
         End Set
     End Property
 
