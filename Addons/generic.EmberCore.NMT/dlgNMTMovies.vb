@@ -127,13 +127,13 @@ Public Class dlgNMTMovies
                 End If
             End If
             dgvSources.ShowCellToolTips = True
-            For Each s As Structures.MovieSource In Master.MovieSources
+            For Each s As Database.DBSource In Master.MovieSources
                 Dim i As Integer = dgvSources.Rows.Add(New Object() {False, s.Name, My.Resources.film, String.Empty, "movie"})
                 dgvSources.Rows(i).Cells(1).ToolTipText = s.Path
                 'dgvSources.Rows(i).Cells(3).Value = AdvancedSettings.GetSetting(String.Concat("Path.Movie.", conf.Name, ".", s.Name), "")
                 'dgvSources.Rows(i).Cells(0).Value = AdvancedSettings.GetBooleanSetting(String.Concat("Path.Movie.Status.", conf.Name, ".", s.Name), False)
             Next
-            For Each s As Structures.TVSource In Master.TVSources
+            For Each s As Database.DBSource In Master.TVShowSources
                 Dim i As Integer = dgvSources.Rows.Add(New Object() {False, s.Name, My.Resources.television, String.Empty, "tv"})
                 dgvSources.Rows(i).Cells(1).ToolTipText = s.Path
                 'dgvSources.Rows(i).Cells(3).Value = AdvancedSettings.GetSetting(String.Concat("Path.TV.", conf.Name, ".", s.Name), "")
@@ -647,7 +647,7 @@ Public Class dlgNMTMovies
             Dim BackdropPath As String = GetUserParam("TVBackdropPath", "TVThumbs/")
             Dim uni As New UnicodeEncoding()
             Dim mapPath As String = If(String.IsNullOrEmpty(selectedSources(_curShow.Item("Source").ToString).ToString), String.Empty, selectedSources(_curShow.Item("Source").ToString).ToString)
-            Dim sourcePath As String = Master.TVSources.FirstOrDefault(Function(y) y.Name = _curShow.Item("Source").ToString).Path
+            Dim sourcePath As String = Master.TVShowSources.FirstOrDefault(Function(y) y.Name = _curShow.Item("Source").ToString).Path
             row = row.Replace("<$SHOWID>", id.ToString)
             row = row.Replace("<$SHOWCOUNTER>", counter.ToString)
             row = row.Replace("<$SHOWNAME>", (_curShow.Item("Title").ToString))
@@ -700,7 +700,7 @@ Public Class dlgNMTMovies
             Dim BackdropPath As String = GetUserParam("TVBackdropPath", "TVThumbs/")
 
             Dim mapPath As String = If(String.IsNullOrEmpty(selectedSources(_curShow.Item("Source").ToString).ToString), String.Empty, selectedSources(_curShow.Item("Source").ToString).ToString)
-            Dim sourcePath As String = Master.TVSources.FirstOrDefault(Function(y) y.Name = _curShow.Item("Source").ToString).Path
+            Dim sourcePath As String = Master.TVShowSources.FirstOrDefault(Function(y) y.Name = _curShow.Item("Source").ToString).Path
             'row = row.Replace("<$SHOWID>", showid)
             row = row.Replace("<$SEASONID>", seasonid)
             row = row.Replace("<$SEASONCOUNTER>", counter.ToString)
@@ -732,7 +732,7 @@ Public Class dlgNMTMovies
             Dim uni As New UnicodeEncoding()
             'Bellow need to be fixed
             Dim mapPath As String = If(String.IsNullOrEmpty(selectedSources(_curEpisode.Item("Source").ToString).ToString), String.Concat(GetUserParam("RelativePathToBase", "../../"), Path.GetFileName(_curEpisode.Item("Source").ToString)), selectedSources(_curEpisode.Item("Source").ToString).ToString)
-            Dim sourcePath As String = Master.TVSources.FirstOrDefault(Function(y) y.Name = _curEpisode.Item("Source").ToString).Path
+            Dim sourcePath As String = Master.TVShowSources.FirstOrDefault(Function(y) y.Name = _curEpisode.Item("Source").ToString).Path
             row = row.Replace("<$EPISODEID>", epid.ToString)
             row = row.Replace("<$EPISODECOUNTER>", counter.ToString)
             row = row.Replace("<$EPISODE_POSTER_FILE>", GetRelativePath(_curEpisode.Item("PosterPath").ToString, sourcePath, mapPath, outputbase))

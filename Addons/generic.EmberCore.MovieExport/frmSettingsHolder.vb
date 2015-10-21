@@ -57,7 +57,7 @@ Public Class frmSettingsHolder
         Me.lblIn.Text = Master.eLang.GetString(331, "in")
         Me.cbSearch.Items.AddRange(New Object() {Master.eLang.GetString(318, "Source Folder"), Master.eLang.GetString(21, "Title"), Master.eLang.GetString(278, "Year"), Master.eLang.GetString(319, "Video Flag"), Master.eLang.GetString(320, "Audio Flag")})
         lstSources.Items.Clear()
-        For Each s As Structures.MovieSource In Master.MovieSources
+        For Each s As Database.DBSource In Master.MovieSources
             lstSources.Items.Add(s.Name)
         Next
     End Sub

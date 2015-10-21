@@ -403,7 +403,7 @@ Public Class dlgExportMovies
                             If strIn = Master.eLang.GetString(318, "Source Folder") Then
                                 Dim found As Boolean = False
                                 For Each u As String In strFilter.Split(Convert.ToChar(";"))
-                                    If _curMovie.Source = u Then
+                                    If _curMovie.Source.Name = u Then
                                         found = True
                                         Exit For
                                     End If

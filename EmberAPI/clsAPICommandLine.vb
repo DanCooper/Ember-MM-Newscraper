@@ -275,16 +275,16 @@ Public Class CommandLine
                 Case "-updatemovies"
                     If Args.Count - 1 > i AndAlso Not Args(i + 1).StartsWith("-") Then
                         Dim clArg As String = Args(i + 1).Replace("""", String.Empty)
-                        Dim SourceName As String = Master.MovieSources.FirstOrDefault(Function(f) f.Name.ToLower = clArg.ToLower).Name
-                        If SourceName IsNot Nothing Then
+                        Dim sSource As Database.DBSource = Master.MovieSources.FirstOrDefault(Function(f) f.Name.ToLower = clArg.ToLower)
+                        If sSource IsNot Nothing Then
                             RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, _
-                                                    New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.Movies = True}, SourceName, String.Empty}))
+                                                    New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.Movies = True}, sSource.ID, String.Empty}))
                             i += 1
                         Else
-                            SourceName = Master.MovieSources.FirstOrDefault(Function(f) f.Path.ToLower = clArg.ToLower).Name
-                            If SourceName IsNot Nothing Then
+                            sSource = Master.MovieSources.FirstOrDefault(Function(f) f.Path.ToLower = clArg.ToLower)
+                            If sSource IsNot Nothing Then
                                 RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, _
-                                                        New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.Movies = True}, SourceName, String.Empty}))
+                                                        New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.Movies = True}, sSource.ID, String.Empty}))
                                 i += 1
                             Else
                                 RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, _
@@ -298,16 +298,16 @@ Public Class CommandLine
                 Case "-updatetvshows"
                     If Args.Count - 1 > i AndAlso Not Args(i + 1).StartsWith("-") Then
                         Dim clArg As String = Args(i + 1).Replace("""", String.Empty)
-                        Dim SourceName As String = Master.TVSources.FirstOrDefault(Function(f) f.Name.ToLower = clArg.ToLower).Name
-                        If SourceName IsNot Nothing Then
+                        Dim sSource As Database.DBSource = Master.TVShowSources.FirstOrDefault(Function(f) f.Name.ToLower = clArg.ToLower)
+                        If sSource IsNot Nothing Then
                             RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, _
-                                                    New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.TV = True}, SourceName, String.Empty}))
+                                                    New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.TV = True}, sSource.ID, String.Empty}))
                             i += 1
                         Else
-                            SourceName = Master.TVSources.FirstOrDefault(Function(f) f.Path.ToLower = clArg.ToLower).Name
-                            If SourceName IsNot Nothing Then
+                            sSource = Master.TVShowSources.FirstOrDefault(Function(f) f.Path.ToLower = clArg.ToLower)
+                            If sSource IsNot Nothing Then
                                 RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, _
-                                                        New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.TV = True}, SourceName, String.Empty}))
+                                                        New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.TV = True}, sSource.ID, String.Empty}))
                                 i += 1
                             Else
                                 RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, _

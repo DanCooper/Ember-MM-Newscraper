@@ -970,8 +970,8 @@ Public Class dlgWizard
 
         lvMovies.Items.Clear()
         Master.DB.LoadMovieSourcesFromDB()
-        For Each s As Structures.MovieSource In Master.MovieSources
-            lvItem = New ListViewItem(s.ID)
+        For Each s As Database.DBSource In Master.MovieSources
+            lvItem = New ListViewItem(CStr(s.ID))
             lvItem.SubItems.Add(s.Name)
             lvItem.SubItems.Add(s.Path)
             tmppath = s.Path
@@ -986,20 +986,20 @@ Public Class dlgWizard
 
     Private Sub RefreshTVSources()
         Dim lvItem As ListViewItem
-        Master.DB.LoadTVSourcesFromDB()
+        Master.DB.LoadTVShowSourcesFromDB()
         lvTVSources.Items.Clear()
         Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-            SQLcommand.CommandText = "SELECT ID, Name, Path, LastScan, Language, Ordering, Exclude, EpisodeSorting FROM TVSources;"
+            SQLcommand.CommandText = "SELECT * FROM tvshowsource;"
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 While SQLreader.Read
-                    lvItem = New ListViewItem(SQLreader("ID").ToString)
-                    lvItem.SubItems.Add(SQLreader("Name").ToString)
-                    lvItem.SubItems.Add(SQLreader("Path").ToString)
-                    lvItem.SubItems.Add(Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = SQLreader("Language").ToString).name)
-                    lvItem.SubItems.Add(DirectCast(Convert.ToInt32(SQLreader("Ordering")), Enums.Ordering).ToString)
-                    lvItem.SubItems.Add(If(Convert.ToBoolean(SQLreader("Exclude")), Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
-                    lvItem.SubItems.Add(DirectCast(Convert.ToInt32(SQLreader("EpisodeSorting")), Enums.EpisodeSorting).ToString)
-                    tmppath = SQLreader("Path").ToString
+                    lvItem = New ListViewItem(SQLreader("idSource").ToString)
+                    lvItem.SubItems.Add(SQLreader("strName").ToString)
+                    lvItem.SubItems.Add(SQLreader("strPath").ToString)
+                    lvItem.SubItems.Add(Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = SQLreader("strLanguage").ToString).name)
+                    lvItem.SubItems.Add(DirectCast(Convert.ToInt32(SQLreader("iOrdering")), Enums.Ordering).ToString)
+                    lvItem.SubItems.Add(If(Convert.ToBoolean(SQLreader("bExclude")), Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
+                    lvItem.SubItems.Add(DirectCast(Convert.ToInt32(SQLreader("iEpisodeSorting")), Enums.EpisodeSorting).ToString)
+                    tmppath = SQLreader("strPath").ToString
                     lvTVSources.Items.Add(lvItem)
                 End While
             End Using
@@ -1013,10 +1013,10 @@ Public Class dlgWizard
 
                 Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                     Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                        Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "source")
+                        Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.UInt64, 0, "idSource")
                         While Me.lvMovies.SelectedItems.Count > 0
-                            parSource.Value = lvMovies.SelectedItems(0).SubItems(1).Text
-                            SQLcommand.CommandText = String.Concat("DELETE FROM sources WHERE name = (?);")
+                            parSource.Value = lvMovies.SelectedItems(0).SubItems(0).Text
+                            SQLcommand.CommandText = String.Concat("DELETE FROM moviesource WHERE idSource = (?);")
                             SQLcommand.ExecuteNonQuery()
                             lvMovies.Items.Remove(Me.lvMovies.SelectedItems(0))
                         End While
@@ -1038,10 +1038,10 @@ Public Class dlgWizard
 
                 Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                     Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                        Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "source")
+                        Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.UInt64, 0, "idSource")
                         While Me.lvTVSources.SelectedItems.Count > 0
-                            parSource.Value = lvTVSources.SelectedItems(0).SubItems(1).Text
-                            SQLcommand.CommandText = String.Concat("DELETE FROM TVSources WHERE name = (?);")
+                            parSource.Value = lvTVSources.SelectedItems(0).SubItems(0).Text
+                            SQLcommand.CommandText = String.Concat("DELETE FROM tvshowsource WHERE idSource = (?);")
                             SQLcommand.ExecuteNonQuery()
                             lvTVSources.Items.Remove(Me.lvTVSources.SelectedItems(0))
                         End While

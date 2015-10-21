@@ -172,11 +172,11 @@ CREATE TABLE episode (
         idEpisode       integer PRIMARY KEY AUTOINCREMENT,
         idShow          integer NOT NULL,
         idFile          integer NOT NULL,
+		idSource		integer NOT NULL,
         Episode         integer,
         Title           text,
         "New"           bool DEFAULT 0,
         Mark            bool NOT NULL DEFAULT 0,
-        Source          text NOT NULL,
         Lock            bool NOT NULL DEFAULT 0,
         Season          integer,
         Rating          text,
@@ -287,13 +287,13 @@ CREATE TABLE taglinks (
 
 CREATE TABLE movie (
         idMovie         integer PRIMARY KEY AUTOINCREMENT,
+		idSource        integer NOT NULL,
         MoviePath       text,
         Type            bool,
         ListTitle       text,
         HasSub          bool NOT NULL DEFAULT 0,
         "New"           bool NOT NULL DEFAULT 0,
         Mark            bool NOT NULL DEFAULT 0,
-        Source          text,
         Imdb            text,
         Lock            bool,
         Title           text,
@@ -321,7 +321,6 @@ CREATE TABLE movie (
         TrailerPath     text,
         SubPath         text,
         FanartURL       text,
-        UseFolder       bool,
         OutOfTolerance  bool,
         VideoSource     text,
         SortTitle       text,
@@ -452,11 +451,11 @@ CREATE TABLE studiolinktvshow (
 
 CREATE TABLE tvshow (
 		idShow            integer PRIMARY KEY AUTOINCREMENT,
+		idSource          integer NOT NULL,
         ListTitle         text,
         "New"             bool DEFAULT 0,
         Mark              bool NOT NULL DEFAULT 0,
         TVShowPath        text NOT NULL,
-        Source            text NOT NULL,
         TVDB              text,
         Lock              bool NOT NULL DEFAULT 0,
         EpisodeGuide      text,
@@ -516,9 +515,9 @@ CREATE TABLE writerlinkepisode (
         (idEpisode, idWriter);
         
 CREATE TABLE writerlinkmovie (
-        idWriter  integer,
-        idMovie   integer
-        );
+		idWriter  integer,
+		idMovie   integer
+		);
 
         CREATE UNIQUE INDEX ix_writerlinkmovie_1
         ON writerlinkmovie
@@ -529,132 +528,137 @@ CREATE TABLE writerlinkmovie (
         (idMovie, idWriter);
 
 CREATE TABLE MoviesSets(
-	MovieID INTEGER NOT NULL,
-	SetID INTEGER NOT NULL,
-	SetOrder TEXT NOT NULL,
-	PRIMARY KEY (MovieID,SetID)
-	);
+		MovieID INTEGER NOT NULL,
+		SetID INTEGER NOT NULL,
+		SetOrder TEXT NOT NULL,
+		PRIMARY KEY (MovieID,SetID)
+		);
 
 CREATE TABLE MoviesVStreams(
-	MovieID INTEGER NOT NULL,
-	StreamID INTEGER NOT NULL,
-	Video_Width TEXT,
-	Video_Height TEXT,
-	Video_Codec TEXT,
-	Video_Duration TEXT,
-	Video_ScanType TEXT,
-	Video_AspectDisplayRatio TEXT,
-	Video_Language TEXT,
-	Video_LongLanguage TEXT,
-    Video_Bitrate TEXT,
-	Video_MultiViewCount TEXT,
-	Video_MultiViewLayout TEXT,
-	Video_StereoMode TEXT,
-	Video_FileSize INTEGER NOT NULL DEFAULT 0,
-	PRIMARY KEY (MovieID,StreamID)
-	);
+		MovieID INTEGER NOT NULL,
+		StreamID INTEGER NOT NULL,
+		Video_Width TEXT,
+		Video_Height TEXT,
+		Video_Codec TEXT,
+		Video_Duration TEXT,
+		Video_ScanType TEXT,
+		Video_AspectDisplayRatio TEXT,
+		Video_Language TEXT,
+		Video_LongLanguage TEXT,
+		Video_Bitrate TEXT,
+		Video_MultiViewCount TEXT,
+		Video_MultiViewLayout TEXT,
+		Video_StereoMode TEXT,
+		Video_FileSize INTEGER NOT NULL DEFAULT 0,
+		PRIMARY KEY (MovieID,StreamID)
+		);
 
 CREATE TABLE MoviesAStreams(
-	MovieID INTEGER NOT NULL,
-	StreamID INTEGER NOT NULL,
-	Audio_Language TEXT,
-	Audio_LongLanguage TEXT,
-	Audio_Codec TEXT,
-	Audio_Channel TEXT,
-	Audio_Bitrate TEXT,
-	PRIMARY KEY (MovieID,StreamID)
-	);
+		MovieID INTEGER NOT NULL,
+		StreamID INTEGER NOT NULL,
+		Audio_Language TEXT,
+		Audio_LongLanguage TEXT,
+		Audio_Codec TEXT,
+		Audio_Channel TEXT,
+		Audio_Bitrate TEXT,
+		PRIMARY KEY (MovieID,StreamID)
+		);
 
 CREATE TABLE MoviesSubs(
-	MovieID INTEGER NOT NULL,
-	StreamID INTEGER NOT NULL,
-	Subs_Language TEXT,
-	Subs_LongLanguage TEXT,
-	Subs_Type TEXT,
-	Subs_Path TEXT,
-	Subs_Forced BOOL NOT NULL DEFAULT 0,
-	PRIMARY KEY (MovieID,StreamID)
-	);
+		MovieID INTEGER NOT NULL,
+		StreamID INTEGER NOT NULL,
+		Subs_Language TEXT,
+		Subs_LongLanguage TEXT,
+		Subs_Type TEXT,
+		Subs_Path TEXT,
+		Subs_Forced BOOL NOT NULL DEFAULT 0,
+		PRIMARY KEY (MovieID,StreamID)
+		);
 
-CREATE TABLE Sources(
-	ID INTEGER PRIMARY KEY AUTOINCREMENT,
-	Name TEXT NOT NULL,
-	Path TEXT NOT NULL,
-	Recursive BOOL NOT NULL DEFAULT 0,
-	Foldername BOOL NOT NULL DEFAULT 0,
-	Single BOOL NOT NULL DEFAULT 0,
-	LastScan TEXT NOT NULL DEFAULT '1900/01/01',
-	Exclude BOOL NOT NULL DEFAULT 0,
-	GetYear BOOL NOT NULL DEFAULT 1,
-	Language TEXT NOT NULL DEFAULT en
-	);
-CREATE UNIQUE INDEX UniqueSource ON Sources (Path);
+CREATE TABLE moviesource(
+		idSource		INTEGER PRIMARY KEY AUTOINCREMENT,
+		strName			TEXT NOT NULL,
+		strPath			TEXT NOT NULL,
+		bRecursive		BOOL NOT NULL DEFAULT 0,
+		bFoldername		BOOL NOT NULL DEFAULT 0,
+		bSingle			BOOL NOT NULL DEFAULT 0,
+		strLastScan		TEXT NOT NULL DEFAULT '1900/01/01',
+		bExclude		BOOL NOT NULL DEFAULT 0,
+		bGetYear		BOOL NOT NULL DEFAULT 1,
+		strLanguage		TEXT NOT NULL DEFAULT en
+		);
+	
+CREATE UNIQUE INDEX UniqueMovieSourcePath
+		ON moviesource
+		(strPath);
 
-CREATE TRIGGER delete_source
-	AFTER DELETE
-	ON Sources
+CREATE TRIGGER delete_moviesource
+		AFTER DELETE
+		ON moviesource
 BEGIN
-	DELETE FROM movie WHERE Source=old.Name;
+		DELETE FROM movie WHERE idSource=old.idSource;
 END;
 
 CREATE TABLE TVVStreams(
-	TVEpID INTEGER NOT NULL,
-	StreamID INTEGER NOT NULL,
-	Video_Width TEXT,
-	Video_Height TEXT,
-	Video_Codec TEXT,
-	Video_Duration TEXT,
-	Video_ScanType TEXT,
-	Video_AspectDisplayRatio TEXT,
-	Video_Language TEXT,
-	Video_LongLanguage TEXT,
-    Video_Bitrate TEXT,
-	Video_MultiViewCount TEXT,
-	Video_MultiViewLayout TEXT,
-	Video_StereoMode TEXT,
-	Video_FileSize INTEGER NOT NULL DEFAULT 0,
-	PRIMARY KEY (TVEpID,StreamID)
-	);
+		TVEpID INTEGER NOT NULL,
+		StreamID INTEGER NOT NULL,
+		Video_Width TEXT,
+		Video_Height TEXT,
+		Video_Codec TEXT,
+		Video_Duration TEXT,
+		Video_ScanType TEXT,
+		Video_AspectDisplayRatio TEXT,
+		Video_Language TEXT,
+		Video_LongLanguage TEXT,
+		Video_Bitrate TEXT,
+		Video_MultiViewCount TEXT,
+		Video_MultiViewLayout TEXT,
+		Video_StereoMode TEXT,
+		Video_FileSize INTEGER NOT NULL DEFAULT 0,
+		PRIMARY KEY (TVEpID,StreamID)
+		);
 
 CREATE TABLE TVAStreams(
-	TVEpID INTEGER NOT NULL,
-	StreamID INTEGER NOT NULL,
-	Audio_Language TEXT,
-	Audio_LongLanguage TEXT,
-	Audio_Codec TEXT,
-	Audio_Channel TEXT,
-	Audio_Bitrate TEXT,
-	PRIMARY KEY (TVEpID,StreamID)
-	);
+		TVEpID INTEGER NOT NULL,
+		StreamID INTEGER NOT NULL,
+		Audio_Language TEXT,
+		Audio_LongLanguage TEXT,
+		Audio_Codec TEXT,
+		Audio_Channel TEXT,
+		Audio_Bitrate TEXT,
+		PRIMARY KEY (TVEpID,StreamID)
+		);
 
 CREATE TABLE TVSubs(
-	TVEpID INTEGER NOT NULL,
-	StreamID INTEGER NOT NULL,
-	Subs_Language TEXT,
-	Subs_LongLanguage TEXT,
-	Subs_Type TEXT,
-	Subs_Path TEXT,
-	Subs_Forced BOOL NOT NULL DEFAULT 0,
-	PRIMARY KEY (TVEpID,StreamID)
-	);
+		TVEpID INTEGER NOT NULL,
+		StreamID INTEGER NOT NULL,
+		Subs_Language TEXT,
+		Subs_LongLanguage TEXT,
+		Subs_Type TEXT,
+		Subs_Path TEXT,
+		Subs_Forced BOOL NOT NULL DEFAULT 0,
+		PRIMARY KEY (TVEpID,StreamID)
+		);
 
-CREATE TABLE TVSources(
-	ID INTEGER PRIMARY KEY AUTOINCREMENT,
-	Name TEXT NOT NULL,
-	Path TEXT NOT NULL,
-	LastScan TEXT NOT NULL DEFAULT '1900/01/01',
-	Language TEXT NOT NULL DEFAULT en,
-	Ordering INTEGER NOT NULL DEFAULT 0,
-	Exclude BOOL NOT NULL DEFAULT 0,
-	EpisodeSorting INTEGER NOT NULL DEFAULT 0
-	);
-CREATE UNIQUE INDEX UniqueTVSource ON TVSources (Path);
+CREATE TABLE tvshowsource(
+		idSource			INTEGER PRIMARY KEY AUTOINCREMENT,
+		strName				TEXT NOT NULL,
+		strPath				TEXT NOT NULL,
+		strLastScan			TEXT NOT NULL DEFAULT '1900/01/01',
+		strLanguage			TEXT NOT NULL DEFAULT en,
+		iOrdering			INTEGER NOT NULL DEFAULT 0,
+		bExclude			BOOL NOT NULL DEFAULT 0,
+		iEpisodeSorting		INTEGER NOT NULL DEFAULT 0
+		);
+CREATE UNIQUE INDEX UniqueTVShowSourcePath
+		ON tvshowsource
+		(strPath);
 
-CREATE TRIGGER delete_tvsource
-	AFTER DELETE
-	ON TVSources
+CREATE TRIGGER delete_tvshowsource
+		AFTER DELETE
+		ON tvshowsource
 BEGIN
-	DELETE FROM tvshow WHERE Source=old.Name;
+		DELETE FROM tvshow WHERE idSource=old.idSource;
 END;
 
 CREATE TABLE OrigPaths(
@@ -666,40 +670,42 @@ CREATE TABLE OrigPaths(
 	);
 
 CREATE TABLE EmberFiles(
-	OrigPath TEXT NOT NULL,
-	EmberPath TEXT NOT NULL,
-	Filename TEXT NOT NULL,
-	Hash TEXT NOT NULL,
-	Platform TEXT NOT NULL,
-	UseFile BOOL NOT NULL DEFAULT 0,
-	PRIMARY KEY (OrigPath,Filename)
-	);
+		OrigPath TEXT NOT NULL,
+		EmberPath TEXT NOT NULL,
+		Filename TEXT NOT NULL,
+		Hash TEXT NOT NULL,
+		Platform TEXT NOT NULL,
+		UseFile BOOL NOT NULL DEFAULT 0,
+		PRIMARY KEY (OrigPath,Filename)
+		);
 
 CREATE TABLE ExcludeFiles(
-	Filename TEXT NOT NULL,
-	PRIMARY KEY (Filename)
-	);
+		Filename TEXT NOT NULL,
+		PRIMARY KEY (Filename)
+		);
 
 CREATE TABLE ExcludeDir(
-	Dirname TEXT NOT NULL,
-	PRIMARY KEY (Dirname)
-	);
+		Dirname TEXT NOT NULL,
+		PRIMARY KEY (Dirname)
+		);
 
 CREATE TABLE ExcludeFilesInFolders(
-	Filename TEXT NOT NULL,
-	EmberPath TEXT NOT NULL,
-	PRIMARY KEY (Filename,EmberPath)
-	);
+		Filename TEXT NOT NULL,
+		EmberPath TEXT NOT NULL,
+		PRIMARY KEY (Filename,EmberPath)
+		);
 
 CREATE VIEW episodelist
         AS
         SELECT
         episode.*,
+		source.strName AS Source,
         fanart.url AS FanartPath,
         poster.url AS PosterPath,
         CASE WHEN episode.idFile IS -1 THEN 1 ELSE 0 END AS Missing
         FROM
         episode
+		LEFT OUTER JOIN tvshowsource AS source ON (source.idSource = episode.idSource)
         LEFT OUTER JOIN art AS fanart ON (fanart.media_id = episode.idEpisode)
         AND (fanart.media_type = 'episode')
         AND (fanart.type = 'fanart')
@@ -712,6 +718,7 @@ CREATE VIEW movielist
         SELECT
         movie.*,
         CASE WHEN movie.SortTitle IS NOT '' THEN movie.SortTitle ELSE movie.ListTitle END AS SortedTitle,
+		source.strName AS Source,
         banner.url AS BannerPath,
         clearart.url AS ClearArtPath,
         clearlogo.url AS ClearLogoPath,
@@ -721,6 +728,7 @@ CREATE VIEW movielist
         poster.url AS PosterPath
         FROM
         movie
+		LEFT OUTER JOIN moviesource AS source ON (source.idSource = movie.idSource)
         LEFT OUTER JOIN art AS banner ON (banner.media_id = movie.idMovie)
         AND (banner.media_type = 'movie')
         AND (banner.type = 'banner')
@@ -819,6 +827,7 @@ CREATE VIEW tvshowlist
         SELECT
         tvshow.*,
         CASE WHEN tvshow.SortTitle IS NOT '' THEN tvshow.SortTitle ELSE tvshow.ListTitle END AS SortedTitle,
+		source.strName AS Source,
         banner.url AS BannerPath,
         characterart.url AS CharacterArtPath,
         clearart.url AS ClearArtPath,
@@ -832,6 +841,7 @@ CREATE VIEW tvshowlist
         SUM(episodelist.New) AS NewEpisodes
         FROM
         tvshow
+		LEFT OUTER JOIN tvshowsource AS source ON (source.idSource = tvshow.idSource)
         LEFT OUTER JOIN art AS banner ON (banner.media_id = tvshow.idShow)
         AND (banner.media_type = 'tvshow')
         AND (banner.type = 'banner')

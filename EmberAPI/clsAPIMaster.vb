@@ -41,8 +41,8 @@ Public Class Master
     Public Shared is32Bit As Boolean
     Public Shared SourcesList As New List(Of String)
     Public Shared TempPath As String = Path.Combine(Functions.AppPath, "Temp")
-    Public Shared MovieSources As New List(Of Structures.MovieSource)
-    Public Shared TVSources As New List(Of Structures.TVSource)
+    Public Shared MovieSources As New List(Of Database.DBSource)
+    Public Shared TVShowSources As New List(Of Database.DBSource)
     Public Shared ExcludeDirs As New List(Of String)
     Public Shared AppPos As New Drawing.Rectangle
 

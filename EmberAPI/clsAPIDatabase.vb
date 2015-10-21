@@ -429,9 +429,9 @@ Public Class Database
     ''' </summary>
     ''' <param name="CleanMovies">If <c>True</c>, process the movie files</param>
     ''' <param name="CleanTV">If <c>True</c>, process the TV files</param>
-    ''' <param name="source">Optional. If provided, only process entries from that named source.</param>
+    ''' <param name="SourceID">Optional. If provided, only process entries from that source.</param>
     ''' <remarks></remarks>
-    Public Sub Clean(ByVal CleanMovies As Boolean, ByVal CleanMovieSets As Boolean, ByVal CleanTV As Boolean, Optional ByVal source As String = "")
+    Public Sub Clean(ByVal CleanMovies As Boolean, ByVal CleanMovieSets As Boolean, ByVal CleanTV As Boolean, Optional ByVal SourceID As Long = -1)
         Dim fInfo As FileInfo
         Dim tPath As String = String.Empty
         Dim sPath As String = String.Empty
@@ -439,31 +439,31 @@ Public Class Database
         Using SQLtransaction As SQLite.SQLiteTransaction = _myvideosDBConn.BeginTransaction()
             If CleanMovies Then
                 logger.Info("Cleaning movies started")
-                Dim MoviePaths As List(Of String) = GetMoviePaths()
+                Dim MoviePaths As List(Of String) = GetAllMoviePaths()
                 MoviePaths.Sort()
 
                 'get a listing of sources and their recursive properties
-                Dim SourceList As New List(Of SourceHolder)
-                Dim tSource As SourceHolder
+                Dim SourceList As New List(Of DBSource)
+                Dim tSource As DBSource
 
                 Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                    If source = String.Empty Then
-                        SQLcommand.CommandText = "SELECT Path, Name, Recursive, Single FROM sources;"
+                    If SourceID = -1 Then
+                        SQLcommand.CommandText = "SELECT * FROM moviesource;"
                     Else
-                        SQLcommand.CommandText = String.Format("SELECT Path, Name, Recursive, Single FROM sources WHERE Name=""{0}""", source)
+                        SQLcommand.CommandText = String.Format("SELECT * FROM moviesource WHERE idSource = {0}", SourceID)
                     End If
                     Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                         While SQLreader.Read
-                            SourceList.Add(New SourceHolder With {.Name = SQLreader("Name").ToString, .Path = SQLreader("Path").ToString, .Recursive = Convert.ToBoolean(SQLreader("Recursive")), .isSingle = Convert.ToBoolean(SQLreader("Single"))})
+                            SourceList.Add(LoadMovieSourceFromDB(Convert.ToInt64(SQLreader("idSource"))))
                         End While
                     End Using
                 End Using
 
                 Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                    If source = String.Empty Then
-                        SQLcommand.CommandText = "SELECT MoviePath, idMovie, Source, Type FROM movie ORDER BY MoviePath DESC;"
+                    If SourceID = -1 Then
+                        SQLcommand.CommandText = "SELECT MoviePath, idMovie, idSource, Type FROM movie ORDER BY MoviePath DESC;"
                     Else
-                        SQLcommand.CommandText = String.Format("SELECT MoviePath, idMovie, Source, Type FROM movie WHERE Source = ""{0}"" ORDER BY MoviePath DESC;", source)
+                        SQLcommand.CommandText = String.Format("SELECT MoviePath, idMovie, idSource, Type FROM movie WHERE idSource = {0} ORDER BY MoviePath DESC;", SourceID)
                     End If
                     Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                         While SQLReader.Read
@@ -478,7 +478,7 @@ Public Class Database
                                     Master.DB.DeleteMovieFromDB(Convert.ToInt64(SQLReader("idMovie")), True)
                                 End If
                             Else
-                                tSource = SourceList.OrderByDescending(Function(s) s.Path).FirstOrDefault(Function(s) s.Name = SQLReader("Source").ToString)
+                                tSource = SourceList.OrderByDescending(Function(s) s.Path).FirstOrDefault(Function(s) s.ID = Convert.ToInt64(SQLReader("idSource")))
                                 If tSource IsNot Nothing Then
                                     If Directory.GetParent(Directory.GetParent(SQLReader("MoviePath").ToString).FullName).Name.ToLower = "bdmv" Then
                                         tPath = Directory.GetParent(Directory.GetParent(SQLReader("MoviePath").ToString).FullName).FullName
@@ -486,10 +486,10 @@ Public Class Database
                                         tPath = Directory.GetParent(SQLReader("MoviePath").ToString).FullName
                                     End If
                                     sPath = FileUtils.Common.GetDirectory(tPath).ToLower
-                                    If tSource.Recursive = False AndAlso tPath.Length > tSource.Path.Length AndAlso If(sPath = "video_ts" OrElse sPath = "bdmv", tPath.Substring(tSource.Path.Length).Trim(Path.DirectorySeparatorChar).Split(Path.DirectorySeparatorChar).Count > 2, tPath.Substring(tSource.Path.Length).Trim(Path.DirectorySeparatorChar).Split(Path.DirectorySeparatorChar).Count > 1) Then
+                                    If Not tSource.Recursive AndAlso tPath.Length > tSource.Path.Length AndAlso If(sPath = "video_ts" OrElse sPath = "bdmv", tPath.Substring(tSource.Path.Length).Trim(Path.DirectorySeparatorChar).Split(Path.DirectorySeparatorChar).Count > 2, tPath.Substring(tSource.Path.Length).Trim(Path.DirectorySeparatorChar).Split(Path.DirectorySeparatorChar).Count > 1) Then
                                         MoviePaths.Remove(SQLReader("MoviePath").ToString)
                                         Master.DB.DeleteMovieFromDB(Convert.ToInt64(SQLReader("idMovie")), True)
-                                    ElseIf Not Convert.ToBoolean(SQLReader("Type")) AndAlso tSource.isSingle AndAlso Not MoviePaths.Where(Function(s) SQLReader("MoviePath").ToString.ToLower.StartsWith(tSource.Path.ToLower)).Count = 1 Then
+                                    ElseIf Not Convert.ToBoolean(SQLReader("Type")) AndAlso tSource.IsSingle AndAlso Not MoviePaths.Where(Function(s) SQLReader("MoviePath").ToString.ToLower.StartsWith(tSource.Path.ToLower)).Count = 1 Then
                                         MoviePaths.Remove(SQLReader("MoviePath").ToString)
                                         Master.DB.DeleteMovieFromDB(Convert.ToInt64(SQLReader("idMovie")), True)
                                     End If
@@ -523,10 +523,10 @@ Public Class Database
             If CleanTV Then
                 logger.Info("Cleaning tv shows started")
                 Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                    If String.IsNullOrEmpty(source) Then
+                    If SourceID = -1 Then
                         SQLcommand.CommandText = "SELECT strFilename FROM files;"
                     Else
-                        SQLcommand.CommandText = String.Format("SELECT strFilename FROM files INNER JOIN episode ON files.idFile = episode.idFile WHERE episode.Source =""{0}"";", source)
+                        SQLcommand.CommandText = String.Format("SELECT files.strFilename FROM files INNER JOIN episode ON (files.idFile = episode.idFile) WHERE episode.idSource = {0};", SourceID)
                     End If
 
                     Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
@@ -741,7 +741,7 @@ Public Class Database
     Public Function ConnectMyVideosDB() As Boolean
 
         'set database version
-        Dim MyVideosDBVersion As Integer = 32
+        Dim MyVideosDBVersion As Integer = 33
 
         'set database filename
         Dim MyVideosDB As String = String.Format("MyVideos{0}.emm", MyVideosDBVersion)
@@ -790,6 +790,7 @@ Public Class Database
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Error creating database", ex)
+            CloseMyVideosDB()
             File.Delete(MyVideosDBFile)
         End Try
         Return isNew
@@ -1273,7 +1274,7 @@ Public Class Database
         Return cList.ToArray
     End Function
 
-    Public Function GetMoviePaths() As List(Of String)
+    Public Function GetAllMoviePaths() As List(Of String)
         Dim tList As New List(Of String)
         Dim mPath As String = String.Empty
 
@@ -1294,26 +1295,6 @@ Public Class Database
         Return tList
     End Function
 
-    Public Function GetMovieSourceYearSetting(ByVal sName As String) As Boolean
-        Dim bYear As Boolean = False
-
-        Try
-            Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT GetYear FROM Sources WHERE Name = """, sName, """;")
-                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    If SQLreader.HasRows Then
-                        SQLreader.Read()
-                        bYear = Convert.ToBoolean(SQLreader("GetYear"))
-                    End If
-                End Using
-            End Using
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-
-        Return bYear
-    End Function
-
     Public Function GetTVSeasonIDFromEpisode(ByVal DBElement As DBElement) As Long
         Dim sID As Long = -1
         If DBElement.TVEpisode IsNot Nothing Then
@@ -1332,26 +1313,6 @@ Public Class Database
         Else
             Return sID
         End If
-    End Function
-
-    Public Function GetTVSourceLanguage(ByVal sName As String) As String
-        Dim sLang As String = String.Empty
-
-        Try
-            Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT Language FROM TVSources WHERE Name = """, sName, """;")
-                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    If SQLreader.HasRows Then
-                        SQLreader.Read()
-                        sLang = SQLreader("Language").ToString
-                    End If
-                End Using
-            End Using
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-
-        Return sLang
     End Function
 
     Public Function AddView(ByVal dbCommand As String) As Boolean
@@ -1528,13 +1489,14 @@ Public Class Database
                     If Not DBNull.Value.Equals(SQLreader("DateModified")) Then _movieDB.DateModified = Convert.ToInt64(SQLreader("DateModified"))
                     If Not DBNull.Value.Equals(SQLreader("ListTitle")) Then _movieDB.ListTitle = SQLreader("ListTitle").ToString
                     If Not DBNull.Value.Equals(SQLreader("MoviePath")) Then _movieDB.Filename = SQLreader("MoviePath").ToString
-                    _movieDB.IsSingle = Convert.ToBoolean(SQLreader("type"))
+                    _movieDB.IsSingle = Convert.ToBoolean(SQLreader("Type"))
                     If Not DBNull.Value.Equals(SQLreader("TrailerPath")) Then _movieDB.Trailer.LocalFilePath = SQLreader("TrailerPath").ToString
                     If Not DBNull.Value.Equals(SQLreader("NfoPath")) Then _movieDB.NfoPath = SQLreader("NfoPath").ToString
                     If Not DBNull.Value.Equals(SQLreader("EThumbsPath")) Then _movieDB.ExtrathumbsPath = SQLreader("EThumbsPath").ToString
                     If Not DBNull.Value.Equals(SQLreader("EFanartsPath")) Then _movieDB.ExtrafanartsPath = SQLreader("EFanartsPath").ToString
                     If Not DBNull.Value.Equals(SQLreader("ThemePath")) Then _movieDB.ThemePath = SQLreader("ThemePath").ToString
-                    If Not DBNull.Value.Equals(SQLreader("Source")) Then _movieDB.Source = SQLreader("Source").ToString
+
+                    _movieDB.Source = LoadMovieSourceFromDB(Convert.ToInt64(SQLreader("idSource")))
 
                     _movieDB.ImagesContainer.Banner.LocalFilePath = GetArtForItem(_movieDB.ID, "movie", "banner")
                     _movieDB.ImagesContainer.ClearArt.LocalFilePath = GetArtForItem(_movieDB.ID, "movie", "clearart")
@@ -1546,13 +1508,11 @@ Public Class Database
 
                     _movieDB.IsMark = Convert.ToBoolean(SQLreader("Mark"))
                     _movieDB.IsLock = Convert.ToBoolean(SQLreader("Lock"))
-                    _movieDB.UseFolder = Convert.ToBoolean(SQLreader("UseFolder"))
                     _movieDB.OutOfTolerance = Convert.ToBoolean(SQLreader("OutOfTolerance"))
                     _movieDB.IsMarkCustom1 = Convert.ToBoolean(SQLreader("MarkCustom1"))
                     _movieDB.IsMarkCustom2 = Convert.ToBoolean(SQLreader("MarkCustom2"))
                     _movieDB.IsMarkCustom3 = Convert.ToBoolean(SQLreader("MarkCustom3"))
                     _movieDB.IsMarkCustom4 = Convert.ToBoolean(SQLreader("MarkCustom4"))
-                    _movieDB.GetYear = GetMovieSourceYearSetting(_movieDB.Source)
                     If Not DBNull.Value.Equals(SQLreader("VideoSource")) Then _movieDB.VideoSource = SQLreader("VideoSource").ToString
                     If Not DBNull.Value.Equals(SQLreader("Language")) Then _movieDB.Language = SQLreader("Language").ToString
                     _movieDB.Movie = New MediaContainers.Movie
@@ -1854,6 +1814,31 @@ Public Class Database
 
         Return _moviesetDB
     End Function
+
+    Public Function LoadMovieSourceFromDB(ByVal SourceID As Long) As DBSource
+        Dim _source As New DBSource
+
+        _source.ID = SourceID
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = String.Concat("SELECT * FROM moviesource WHERE idSource = ", _source.ID, ";")
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                If SQLreader.HasRows Then
+                    SQLreader.Read()
+                    _source.Name = SQLreader("strName").ToString
+                    _source.Path = SQLreader("strPath").ToString
+                    _source.Recursive = Convert.ToBoolean(SQLreader("bRecursive"))
+                    _source.UseFolderName = Convert.ToBoolean(SQLreader("bFoldername"))
+                    _source.IsSingle = Convert.ToBoolean(SQLreader("bSingle"))
+                    _source.Exclude = Convert.ToBoolean(SQLreader("bExclude"))
+                    _source.GetYear = Convert.ToBoolean(SQLreader("bGetYear"))
+                    _source.Language = SQLreader("strLanguage").ToString
+                    _source.LastScan = SQLreader("strLastScan").ToString
+                End If
+            End Using
+        End Using
+
+        Return _source
+    End Function
     ''' <summary>
     ''' Load Movie Sources from the DB. This populates the Master.MovieSources list of movie Sources
     ''' </summary>
@@ -1861,20 +1846,21 @@ Public Class Database
     Public Sub LoadMovieSourcesFromDB()
         Master.MovieSources.Clear()
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommand.CommandText = "SELECT * FROM Sources;"
+            SQLcommand.CommandText = "SELECT * FROM moviesource;"
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 While SQLreader.Read
                     Try ' Parsing database entry may fail. If it does, log the error and ignore the entry but continue processing
-                        Dim msource As New Structures.MovieSource
-                        msource.ID = SQLreader("ID").ToString
-                        msource.Name = SQLreader("Name").ToString
-                        msource.Path = SQLreader("Path").ToString
-                        msource.Recursive = Convert.ToBoolean(SQLreader("Recursive"))
-                        msource.UseFolderName = Convert.ToBoolean(SQLreader("Foldername"))
-                        msource.IsSingle = Convert.ToBoolean(SQLreader("Single"))
-                        msource.Exclude = Convert.ToBoolean(SQLreader("Exclude"))
-                        msource.GetYear = Convert.ToBoolean(SQLreader("GetYear"))
-                        msource.Language = SQLreader("Language").ToString
+                        Dim msource As New DBSource
+                        msource.ID = Convert.ToInt64(SQLreader("idSource"))
+                        msource.Name = SQLreader("strName").ToString
+                        msource.Path = SQLreader("strPath").ToString
+                        msource.Recursive = Convert.ToBoolean(SQLreader("bRecursive"))
+                        msource.UseFolderName = Convert.ToBoolean(SQLreader("bFoldername"))
+                        msource.IsSingle = Convert.ToBoolean(SQLreader("bSingle"))
+                        msource.Exclude = Convert.ToBoolean(SQLreader("bExclude"))
+                        msource.GetYear = Convert.ToBoolean(SQLreader("bGetYear"))
+                        msource.Language = SQLreader("strLanguage").ToString
+                        msource.LastScan = SQLreader("strLastScan").ToString
                         Master.MovieSources.Add(msource)
                     Catch ex As Exception
                         logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -2079,11 +2065,12 @@ Public Class Database
                 If SQLreader.HasRows Then
                     SQLreader.Read()
                     If Not DBNull.Value.Equals(SQLreader("NfoPath")) Then _TVDB.NfoPath = SQLreader("NfoPath").ToString
-                    If Not DBNull.Value.Equals(SQLreader("Source")) Then _TVDB.Source = SQLreader("Source").ToString
                     If Not DBNull.Value.Equals(SQLreader("idShow")) Then _TVDB.ShowID = Convert.ToInt64(SQLreader("idShow"))
                     If Not DBNull.Value.Equals(SQLreader("DateAdded")) Then _TVDB.DateAdded = Convert.ToInt64(SQLreader("DateAdded"))
                     If Not DBNull.Value.Equals(SQLreader("VideoSource")) Then _TVDB.VideoSource = SQLreader("VideoSource").ToString
                     PathID = Convert.ToInt64(SQLreader("idFile"))
+
+                    _TVDB.Source = LoadTVShowSourceFromDB(Convert.ToInt64(SQLreader("idSource")))
 
                     _TVDB.ImagesContainer.Fanart.LocalFilePath = GetArtForItem(_TVDB.ID, "episode", "fanart")
                     _TVDB.ImagesContainer.Poster.LocalFilePath = GetArtForItem(_TVDB.ID, "episode", "thumb")
@@ -2423,9 +2410,10 @@ Public Class Database
                     If Not DBNull.Value.Equals(SQLreader("EFanartsPath")) Then _TVDB.ExtrafanartsPath = SQLreader("EFanartsPath").ToString
                     If Not DBNull.Value.Equals(SQLreader("Language")) Then _TVDB.Language = SQLreader("Language").ToString
                     If Not DBNull.Value.Equals(SQLreader("NfoPath")) Then _TVDB.NfoPath = SQLreader("NfoPath").ToString
-                    If Not DBNull.Value.Equals(SQLreader("Source")) Then _TVDB.Source = SQLreader("Source").ToString
                     If Not DBNull.Value.Equals(SQLreader("TVShowPath")) Then _TVDB.ShowPath = SQLreader("TVShowPath").ToString
                     If Not DBNull.Value.Equals(SQLreader("ThemePath")) Then _TVDB.ThemePath = SQLreader("ThemePath").ToString
+
+                    _TVDB.Source = LoadTVShowSourceFromDB(Convert.ToInt64(SQLreader("idSource")))
 
                     _TVDB.ImagesContainer.Banner.LocalFilePath = GetArtForItem(_TVDB.ID, "tvshow", "banner")
                     _TVDB.ImagesContainer.CharacterArt.LocalFilePath = GetArtForItem(_TVDB.ID, "tvshow", "characterart")
@@ -2578,26 +2566,50 @@ Public Class Database
 
         Return ShowPath
     End Function
+
+    Public Function LoadTVShowSourceFromDB(ByVal SourceID As Long) As DBSource
+        Dim _source As New DBSource
+
+        _source.ID = SourceID
+        Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = String.Concat("SELECT * FROM tvshowsource WHERE idSource = ", _source.ID, ";")
+            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                If SQLreader.HasRows Then
+                    SQLreader.Read()
+                    _source.Name = SQLreader("strName").ToString
+                    _source.Path = SQLreader("strPath").ToString
+                    _source.Language = SQLreader("strLanguage").ToString
+                    _source.Ordering = DirectCast(Convert.ToInt32(SQLreader("iOrdering")), Enums.Ordering)
+                    _source.Exclude = Convert.ToBoolean(SQLreader("bExclude"))
+                    _source.EpisodeSorting = DirectCast(Convert.ToInt32(SQLreader("iEpisodeSorting")), Enums.EpisodeSorting)
+                    _source.LastScan = SQLreader("strLastScan").ToString
+                End If
+            End Using
+        End Using
+
+        Return _source
+    End Function
     ''' <summary>
     ''' Load TV Sources from the DB. This populates the Master.TVSources list of TV Sources
     ''' </summary>
     ''' <remarks></remarks>
-    Public Sub LoadTVSourcesFromDB()
-        Master.TVSources.Clear()
+    Public Sub LoadTVShowSourcesFromDB()
+        Master.TVShowSources.Clear()
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommand.CommandText = "SELECT ID, Name, path, LastScan, Language, Ordering, Exclude, EpisodeSorting FROM TVSources;"
+            SQLcommand.CommandText = "SELECT * FROM tvshowsource;"
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 While SQLreader.Read
                     Try ' Parsing database entry may fail. If it does, log the error and ignore the entry but continue processing
-                        Dim tvsource As New Structures.TVSource
-                        tvsource.ID = SQLreader("ID").ToString
-                        tvsource.Name = SQLreader("Name").ToString
-                        tvsource.Path = SQLreader("Path").ToString
-                        tvsource.Language = SQLreader("Language").ToString
-                        tvsource.Ordering = DirectCast(Convert.ToInt32(SQLreader("Ordering")), Enums.Ordering)
-                        tvsource.Exclude = Convert.ToBoolean(SQLreader("Exclude"))
-                        tvsource.EpisodeSorting = DirectCast(Convert.ToInt32(SQLreader("EpisodeSorting")), Enums.EpisodeSorting)
-                        Master.TVSources.Add(tvsource)
+                        Dim tvsource As New DBSource
+                        tvsource.ID = Convert.ToInt64(SQLreader("idSource"))
+                        tvsource.Name = SQLreader("strName").ToString
+                        tvsource.Path = SQLreader("strPath").ToString
+                        tvsource.Language = SQLreader("strLanguage").ToString
+                        tvsource.Ordering = DirectCast(Convert.ToInt32(SQLreader("iOrdering")), Enums.Ordering)
+                        tvsource.Exclude = Convert.ToBoolean(SQLreader("bExclude"))
+                        tvsource.EpisodeSorting = DirectCast(Convert.ToInt32(SQLreader("iEpisodeSorting")), Enums.EpisodeSorting)
+                        tvsource.LastScan = SQLreader("strLastScan").ToString
+                        Master.TVShowSources.Add(tvsource)
                     Catch ex As Exception
                         logger.Error(New StackFrame().GetMethod().Name, ex)
                     End Try
@@ -3193,32 +3205,32 @@ Public Class Database
         Using SQLcommand_movie As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             If IsNew Then
                 SQLcommand_movie.CommandText = String.Concat("INSERT OR REPLACE INTO movie (", _
-                 "MoviePath, Type, ListTitle, HasSub, New, Mark, Source, Imdb, Lock, ", _
+                 "idSource, MoviePath, Type, ListTitle, HasSub, New, Mark, Imdb, Lock, ", _
                  "Title, OriginalTitle, SortTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, ", _
                  "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, Trailer, ", _
-                 "NfoPath, TrailerPath, SubPath, EThumbsPath, FanartURL, UseFolder, OutOfTolerance, VideoSource, ", _
+                 "NfoPath, TrailerPath, SubPath, EThumbsPath, FanartURL, OutOfTolerance, VideoSource, ", _
+                 "DateAdded, EFanartsPath, ThemePath, ", _
+                 "TMDB, TMDBColID, DateModified, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet, iLastPlayed, Language", _
+                 ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movie;")
+            Else
+                SQLcommand_movie.CommandText = String.Concat("INSERT OR REPLACE INTO movie (", _
+                 "idMovie, idSource, MoviePath, Type, ListTitle, HasSub, New, Mark, Imdb, Lock, ", _
+                 "Title, OriginalTitle, SortTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, ", _
+                 "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, Trailer, ", _
+                 "NfoPath, TrailerPath, SubPath, EThumbsPath, FanartURL, OutOfTolerance, VideoSource, ", _
                  "DateAdded, EFanartsPath, ThemePath, ", _
                  "TMDB, TMDBColID, DateModified, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet, iLastPlayed, Language", _
                  ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movie;")
-            Else
-                SQLcommand_movie.CommandText = String.Concat("INSERT OR REPLACE INTO movie (", _
-                 "idMovie, MoviePath, Type, ListTitle, HasSub, New, Mark, Source, Imdb, Lock, ", _
-                 "Title, OriginalTitle, SortTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, ", _
-                 "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, Trailer, ", _
-                 "NfoPath, TrailerPath, SubPath, EThumbsPath, FanartURL, UseFolder, OutOfTolerance, VideoSource, ", _
-                 "DateAdded, EFanartsPath, ThemePath, ", _
-                 "TMDB, TMDBColID, DateModified, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet, iLastPlayed, Language", _
-                 ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movie;")
                 Dim parMovieID As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("paridMovie", DbType.UInt64, 0, "idMovie")
                 parMovieID.Value = _movieDB.ID
             End If
+            Dim par_movie_idSource As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_idSource", DbType.UInt64, 0, "idSource")
             Dim par_movie_MoviePath As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_MoviePath", DbType.String, 0, "MoviePath")
             Dim par_movie_Type As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_Type", DbType.Boolean, 0, "Type")
             Dim par_movie_ListTitle As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_ListTitle", DbType.String, 0, "ListTitle")
             Dim par_movie_HasSub As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_HasSub", DbType.Boolean, 0, "HasSub")
             Dim par_movie_New As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_New", DbType.Boolean, 0, "New")
             Dim par_movie_Mark As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_Mark", DbType.Boolean, 0, "Mark")
-            Dim par_movie_Source As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_Source", DbType.String, 0, "Source")
             Dim par_movie_Imdb As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_Imdb", DbType.String, 0, "Imdb")
             Dim par_movie_Lock As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_Lock", DbType.Boolean, 0, "Lock")
             Dim par_movie_Title As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_Title", DbType.String, 0, "Title")
@@ -3247,7 +3259,6 @@ Public Class Database
             Dim par_movie_SubPath As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_SubPath", DbType.String, 0, "SubPath")
             Dim par_movie_ExtrathumbsPath As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_EThumbsPath", DbType.String, 0, "EThumbsPath")
             Dim par_movie_FanartURL As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_FanartURL", DbType.String, 0, "FanartURL")
-            Dim par_movie_UseFolder As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_UseFolder", DbType.Boolean, 0, "UseFolder")
             Dim par_movie_OutOfTolerance As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_OutOfTolerance", DbType.Boolean, 0, "OutOfTolerance")
             Dim par_movie_VideoSource As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_VideoSource", DbType.String, 0, "VideoSource")
             Dim par_movie_DateAdded As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_DateAdded", DbType.UInt64, 0, "DateAdded")
@@ -3410,11 +3421,10 @@ Public Class Database
             End With
 
             par_movie_OutOfTolerance.Value = _movieDB.OutOfTolerance
-            par_movie_UseFolder.Value = _movieDB.UseFolder
             par_movie_VideoSource.Value = _movieDB.VideoSource
             par_movie_Language.Value = _movieDB.Language
 
-            par_movie_Source.Value = _movieDB.Source
+            par_movie_idSource.Value = _movieDB.Source.ID
 
             If IsNew Then
                 If Master.eSettings.MovieGeneralMarkNew Then
@@ -4116,7 +4126,7 @@ Public Class Database
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             If IsNew Then
                 SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO episode (", _
-                 "idShow, idFile, New, Mark, Source, Lock, Title, Season, Episode, ", _
+                 "idShow, idFile, idSource, New, Mark, Lock, Title, Season, Episode, ", _
                  "Rating, Plot, Aired, Director, Credits, NfoPath, Playcount, ", _
                  "DisplaySeason, DisplayEpisode, DateAdded, Runtime, Votes, VideoSource, HasSub, SubEpisode, ", _
                  "iLastPlayed, strIMDB, strTMDB, strTVDB", _
@@ -4124,7 +4134,7 @@ Public Class Database
 
             Else
                 SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO episode (", _
-                 "idEpisode, idShow, idFile, New, Mark, Source, Lock, Title, Season, Episode, ", _
+                 "idEpisode, idShow, idFile, idSource, New, Mark, Lock, Title, Season, Episode, ", _
                  "Rating, Plot, Aired, Director, Credits, NfoPath, Playcount, ", _
                  "DisplaySeason, DisplayEpisode, DateAdded, Runtime, Votes, VideoSource, HasSub, SubEpisode, ", _
                  "iLastPlayed, strIMDB, strTMDB, strTVDB", _
@@ -4136,9 +4146,9 @@ Public Class Database
 
             Dim parTVShowID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTVShowID", DbType.UInt64, 0, "idShow")
             Dim parTVFileID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTVFileID", DbType.Int64, 0, "idFile")
+            Dim parSourceID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSourceID", DbType.UInt64, 0, "idSource")
             Dim parNew As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNew", DbType.Boolean, 0, "new")
             Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
-            Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "source")
             Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "lock")
             Dim parTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTitle", DbType.String, 0, "Title")
             Dim parSeason As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSeason", DbType.String, 0, "Season")
@@ -4230,7 +4240,7 @@ Public Class Database
             parMark.Value = _episode.IsMark
             parTVFileID.Value = PathID
             parLock.Value = _episode.IsLock
-            parSource.Value = _episode.Source
+            parSourceID.Value = _episode.Source.ID
             parVideoSource.Value = _episode.VideoSource
 
             With _episode.TVEpisode
@@ -4555,14 +4565,14 @@ Public Class Database
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             If IsNew Then
                 SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO tvshow (", _
-                 "TVShowPath, New, Mark, Source, TVDB, Lock, ListTitle, EpisodeGuide, ", _
+                 "idSource, TVShowPath, New, Mark, TVDB, Lock, ListTitle, EpisodeGuide, ", _
                  "Plot, Genre, Premiered, Studio, MPAA, Rating, NfoPath, Language, Ordering, ", _
                  "Status, ThemePath, EFanartsPath, Runtime, Title, Votes, EpisodeSorting, SortTitle, ", _
                  "strIMDB, strTMDB, strOriginalTitle", _
                  ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM tvshow;")
             Else
                 SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO tvshow (", _
-                 "idShow, TVShowPath, New, Mark, Source, TVDB, Lock, ListTitle, EpisodeGuide, ", _
+                 "idShow, idSource, TVShowPath, New, Mark, TVDB, Lock, ListTitle, EpisodeGuide, ", _
                  "Plot, Genre, Premiered, Studio, MPAA, Rating, NfoPath, Language, Ordering, ", _
                  "Status, ThemePath, EFanartsPath, Runtime, Title, Votes, EpisodeSorting, SortTitle, ", _
                  "strIMDB, strTMDB, strOriginalTitle", _
@@ -4571,10 +4581,10 @@ Public Class Database
                 parTVShowID.Value = _show.ID
             End If
 
+            Dim parTVSourceID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTVSourceID", DbType.UInt64, 0, "idSource")
             Dim parTVShowPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTVShowPath", DbType.String, 0, "TVShowPath")
             Dim parNew As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNew", DbType.Boolean, 0, "new")
             Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
-            Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "source")
             Dim parTVDB As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTVDB", DbType.String, 0, "TVDB")
             Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "lock")
             Dim parListTitle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parListTitle", DbType.String, 0, "ListTitle")
@@ -4637,8 +4647,8 @@ Public Class Database
             parListTitle.Value = _show.ListTitle
             parMark.Value = _show.IsMark
             parLock.Value = _show.IsLock
-            parSource.Value = _show.Source
-            parLanguage.Value = If(String.IsNullOrEmpty(_show.Language), Master.DB.GetTVSourceLanguage(_show.Source), _show.Language)
+            parTVSourceID.Value = _show.Source.ID
+            parLanguage.Value = _show.Language
             parOrdering.Value = _show.Ordering
             parEpisodeSorting.Value = _show.EpisodeSorting
 
@@ -4758,34 +4768,6 @@ Public Class Database
         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_TVShow, Nothing, Nothing, False, _show)
 
         Return _show
-    End Function
-    ''' <summary>
-    ''' Retrieve movie paths.
-    ''' </summary>
-    ''' <param name="source">If supplied, paths returned will be restricted to the given source. No validation is done
-    ''' on this source to ensure it is valid. If it is not valid, expect the returned paths to be empty.</param>
-    ''' <returns>List of String movie paths</returns>
-    ''' <remarks></remarks>
-    Public Function GetMoviePathsBySource(Optional ByVal source As String = "") As List(Of String)
-        Dim Paths As New List(Of String)
-        Try
-            Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Format("SELECT MoviePath, Source FROM movie {0};", If(source = String.Empty, String.Empty, String.Format("INNER JOIN Sources ON movie.Source=Sources.Name Where Sources.Path=""{0}""", source)))
-                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    While SQLreader.Read
-                        Try ' Parsing database entry may fail. If it does, log the error and ignore the entry but continue processing
-                            Paths.Add(SQLreader("MoviePath").ToString)
-                        Catch ex As Exception
-                            logger.Error(New StackFrame().GetMethod().Name, ex)
-                        End Try
-                    End While
-                End Using
-            End Using
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-
-        Return Paths
     End Function
 
 
@@ -4973,89 +4955,6 @@ Public Class Database
 #End Region 'Fields
 
     End Structure
-    ''' <summary>
-    ''' Class representing a media Source
-    ''' </summary>
-    ''' <remarks></remarks>
-    Private Class SourceHolder
-
-#Region "Fields"
-
-        Private _name As String
-        Private _path As String
-        Private _recursive As Boolean   ' Scanned recursively? I.e. should sub-directories be scanned as well?
-        Private _single As Boolean      ' Does this path contains a single video/media?
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Me.Clear()
-        End Sub
-
-#End Region 'Constructors
-
-#Region "Properties"
-        ''' <summary>
-        ''' Does this path contains a single video/media?
-        ''' </summary>
-        ''' <value>Whether this folder contains a single video</value>
-        Public Property isSingle() As Boolean
-            Get
-                Return Me._single
-            End Get
-            Set(ByVal value As Boolean)
-                Me._single = value
-            End Set
-        End Property
-        ''' <summary>
-        ''' Name given to this source by the user
-        ''' </summary>
-        ''' <value>Name given to this source by the user</value>
-        Public Property Name() As String
-            Get
-                Return Me._name
-            End Get
-            Set(ByVal value As String)
-                Me._name = value
-            End Set
-        End Property
-        Public Property Path() As String
-            Get
-                Return Me._path
-            End Get
-            Set(ByVal value As String)
-                Me._path = value
-            End Set
-        End Property
-        ''' <summary>
-        ''' Scanned recursively? I.e. should sub-directories be scanned as well?
-        ''' </summary>
-        ''' <value>Whether sub-directories should be scanned</value>
-        Public Property Recursive() As Boolean
-            Get
-                Return Me._recursive
-            End Get
-            Set(ByVal value As Boolean)
-                Me._recursive = value
-            End Set
-        End Property
-
-#End Region 'Properties
-
-#Region "Methods"
-
-        Public Sub Clear()
-            Me._name = String.Empty
-            Me._path = String.Empty
-            Me._recursive = False
-            Me._single = False
-        End Sub
-
-#End Region 'Methods
-
-    End Class
 
     Friend Class MovieInSet
         Implements IComparable(Of MovieInSet)
@@ -5198,7 +5097,6 @@ Public Class Database
         Private _extrathumbspath As String
         Private _filename As String
         Private _filenameid As Long
-        Private _getyear As Boolean
         Private _id As Long
         Private _imagescontainer As New MediaContainers.ImagesContainer
         Private _islock As Boolean
@@ -5221,14 +5119,13 @@ Public Class Database
         Private _showid As Long
         Private _showpath As String
         Private _sortmethod As Enums.SortMethod_MovieSet
-        Private _source As String
+        Private _source As New DBSource
         Private _subtitles As New List(Of MediaInfo.Subtitle)
         Private _themepath As String
         Private _trailer As New MediaContainers.Trailer
         Private _tvepisode As MediaContainers.EpisodeDetails
         Private _tvseason As MediaContainers.SeasonDetails
         Private _tvshow As MediaContainers.TVShow
-        Private _usefolder As Boolean
         Private _videosource As String
 
 #End Region 'Fields
@@ -5358,15 +5255,6 @@ Public Class Database
             Get
                 Return Not Me._filenameid = -1
             End Get
-        End Property
-
-        Public Property GetYear() As Boolean
-            Get
-                Return Me._getyear
-            End Get
-            Set(ByVal value As Boolean)
-                Me._getyear = value
-            End Set
         End Property
 
         Public Property ID() As Long
@@ -5627,18 +5515,18 @@ Public Class Database
             End Set
         End Property
 
-        Public Property Source() As String
+        Public Property Source() As DBSource
             Get
                 Return Me._source
             End Get
-            Set(ByVal value As String)
+            Set(ByVal value As DBSource)
                 Me._source = value
             End Set
         End Property
 
         Public ReadOnly Property SourceSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._source)
+                Return Not Me._source.ID = -1
             End Get
         End Property
 
@@ -5732,15 +5620,6 @@ Public Class Database
             End Get
         End Property
 
-        Public Property UseFolder() As Boolean
-            Get
-                Return Me._usefolder
-            End Get
-            Set(ByVal value As Boolean)
-                Me._usefolder = value
-            End Set
-        End Property
-
         Public Property VideoSource() As String
             Get
                 Return Me._videosource
@@ -5770,7 +5649,6 @@ Public Class Database
             Me._extrathumbspath = String.Empty
             Me._filename = String.Empty
             Me._filenameid = -1
-            Me._getyear = False
             Me._id = -1
             Me._imagescontainer = New MediaContainers.ImagesContainer
             Me._islock = False
@@ -5789,14 +5667,13 @@ Public Class Database
             Me._showid = -1
             Me._showpath = String.Empty
             Me._sortmethod = Enums.SortMethod_MovieSet.Year
-            Me._source = String.Empty
+            Me._source = New DBSource
             Me._subtitles = New List(Of MediaInfo.Subtitle)
             Me._themepath = String.Empty
             Me._trailer = New MediaContainers.Trailer
             Me._tvepisode = Nothing
             Me._tvseason = Nothing
             Me._tvshow = Nothing
-            Me._usefolder = False
             Me._videosource = String.Empty
         End Sub
 
@@ -5812,6 +5689,197 @@ Public Class Database
             Stream.Close()
         End Function
 
+
+#End Region 'Methods
+
+    End Class
+
+    <Serializable()>
+    Public Class DBSource
+
+#Region "Fields"
+
+        Private _episodesorting As Enums.EpisodeSorting
+        Private _exclude As Boolean
+        Private _getyear As Boolean
+        Private _id As Long
+        Private _issingle As Boolean
+        Private _language As String
+        Private _lastscan As String
+        Private _name As String
+        Private _ordering As Enums.Ordering
+        Private _path As String
+        Private _recursive As Boolean
+        Private _usefoldername As Boolean
+
+#End Region 'Fields
+
+#Region "Constructors"
+
+        Public Sub New()
+            Me.Clear()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Properties"
+
+        Public Property EpisodeSorting() As Enums.EpisodeSorting
+            Get
+                Return Me._episodesorting
+            End Get
+            Set(ByVal value As Enums.EpisodeSorting)
+                Me._episodesorting = value
+            End Set
+        End Property
+
+        Public Property Exclude() As Boolean
+            Get
+                Return Me._exclude
+            End Get
+            Set(ByVal value As Boolean)
+                Me._exclude = value
+            End Set
+        End Property
+
+        Public Property GetYear() As Boolean
+            Get
+                Return Me._getyear
+            End Get
+            Set(ByVal value As Boolean)
+                Me._getyear = value
+            End Set
+        End Property
+
+        Public Property ID() As Long
+            Get
+                Return Me._id
+            End Get
+            Set(ByVal value As Long)
+                Me._id = value
+            End Set
+        End Property
+
+        Public ReadOnly Property IDSpecified() As Boolean
+            Get
+                Return Not Me._id = -1
+            End Get
+        End Property
+
+        Public Property IsSingle() As Boolean
+            Get
+                Return Me._issingle
+            End Get
+            Set(ByVal value As Boolean)
+                Me._issingle = value
+            End Set
+        End Property
+
+        Public Property Language() As String
+            Get
+                Return Me._language
+            End Get
+            Set(ByVal value As String)
+                Me._language = value
+            End Set
+        End Property
+
+        Public ReadOnly Property LanguageSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._language)
+            End Get
+        End Property
+
+        Public Property LastScan() As String
+            Get
+                Return Me._lastscan
+            End Get
+            Set(ByVal value As String)
+                Me._lastscan = value
+            End Set
+        End Property
+
+        Public ReadOnly Property LastScanSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._lastscan)
+            End Get
+        End Property
+
+        Public Property Name() As String
+            Get
+                Return Me._name
+            End Get
+            Set(ByVal value As String)
+                Me._name = value
+            End Set
+        End Property
+
+        Public ReadOnly Property NameSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._name)
+            End Get
+        End Property
+
+        Public Property Ordering() As Enums.Ordering
+            Get
+                Return Me._ordering
+            End Get
+            Set(ByVal value As Enums.Ordering)
+                Me._ordering = value
+            End Set
+        End Property
+
+        Public Property Path() As String
+            Get
+                Return Me._path
+            End Get
+            Set(ByVal value As String)
+                Me._path = value
+            End Set
+        End Property
+
+        Public ReadOnly Property PathSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._path)
+            End Get
+        End Property
+
+        Public Property Recursive() As Boolean
+            Get
+                Return Me._recursive
+            End Get
+            Set(ByVal value As Boolean)
+                Me._recursive = value
+            End Set
+        End Property
+
+        Public Property UseFolderName() As Boolean
+            Get
+                Return Me._usefoldername
+            End Get
+            Set(ByVal value As Boolean)
+                Me._usefoldername = value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub Clear()
+            Me._episodesorting = Enums.EpisodeSorting.Episode
+            Me._exclude = False
+            Me._getyear = False
+            Me._id = -1
+            Me._issingle = False
+            Me._language = String.Empty
+            Me._lastscan = String.Empty
+            Me._name = String.Empty
+            Me._ordering = Enums.Ordering.Standard
+            Me._path = String.Empty
+            Me._recursive = False
+            Me._usefoldername = False
+        End Sub
 
 #End Region 'Methods
 

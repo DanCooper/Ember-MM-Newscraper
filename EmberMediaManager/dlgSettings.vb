@@ -1727,7 +1727,7 @@ Public Class dlgSettings
 
     Private Sub btnRemTVSource_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemTVSource.Click
         Me.RemoveTVSource()
-        Master.DB.LoadTVSourcesFromDB()
+        Master.DB.LoadTVShowSourcesFromDB()
     End Sub
 
     Private Sub btnTVShowFilterDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVShowFilterDown.Click
@@ -4313,8 +4313,8 @@ Public Class dlgSettings
         Dim lvItem As ListViewItem
         lvMovieSources.Items.Clear()
         Master.DB.LoadMovieSourcesFromDB()
-        For Each s As Structures.MovieSource In Master.MovieSources
-            lvItem = New ListViewItem(s.ID)
+        For Each s As Database.DBSource In Master.MovieSources
+            lvItem = New ListViewItem(CStr(s.ID))
             lvItem.SubItems.Add(s.Name)
             lvItem.SubItems.Add(s.Path)
             lvItem.SubItems.Add(s.Language)
@@ -4330,9 +4330,9 @@ Public Class dlgSettings
     Private Sub RefreshTVSources()
         Dim lvItem As ListViewItem
         lvTVSources.Items.Clear()
-        Master.DB.LoadTVSourcesFromDB()
-        For Each s As Structures.TVSource In Master.TVSources
-            lvItem = New ListViewItem(s.ID)
+        Master.DB.LoadTVShowSourcesFromDB()
+        For Each s As Database.DBSource In Master.TVShowSources
+            lvItem = New ListViewItem(CStr(s.ID))
             lvItem.SubItems.Add(s.Name)
             lvItem.SubItems.Add(s.Path)
             lvItem.SubItems.Add(s.Language)
@@ -4442,10 +4442,10 @@ Public Class dlgSettings
 
                 Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                     Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                        Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "source")
+                        Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "idSource")
                         While Me.lvMovieSources.SelectedItems.Count > 0
                             parSource.Value = lvMovieSources.SelectedItems(0).SubItems(0).Text
-                            SQLcommand.CommandText = String.Concat("DELETE FROM sources WHERE ID = (?);")
+                            SQLcommand.CommandText = String.Concat("DELETE FROM moviesource WHERE idSource = (?);")
                             SQLcommand.ExecuteNonQuery()
                             lvMovieSources.Items.Remove(lvMovieSources.SelectedItems(0))
                         End While
@@ -4549,10 +4549,10 @@ Public Class dlgSettings
 
                 Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                     Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                        Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.String, 0, "source")
+                        Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.UInt64, 0, "idSource")
                         While Me.lvTVSources.SelectedItems.Count > 0
                             parSource.Value = lvTVSources.SelectedItems(0).SubItems(0).Text
-                            SQLcommand.CommandText = String.Concat("DELETE FROM TVSources WHERE ID = (?);")
+                            SQLcommand.CommandText = String.Concat("DELETE FROM tvshowsource WHERE idSource = (?);")
                             SQLcommand.ExecuteNonQuery()
                             lvTVSources.Items.Remove(lvTVSources.SelectedItems(0))
                         End While

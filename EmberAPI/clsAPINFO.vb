@@ -419,7 +419,7 @@ Public Class NFO
             ElseIf FileUtils.Common.isBDRip(DBMovie.Filename) Then
                 DBMovie.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName).Name)
             Else
-                If DBMovie.UseFolder AndAlso DBMovie.IsSingle Then
+                If DBMovie.Source.UseFolderName AndAlso DBMovie.IsSingle Then
                     DBMovie.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(DBMovie.Filename).Name)
                 Else
                     DBMovie.ListTitle = StringUtils.FilterName_Movie(Path.GetFileNameWithoutExtension(DBMovie.Filename))

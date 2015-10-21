@@ -32,14 +32,14 @@ Partial Class dlgSourceMovie
         Me.btnBrowse = New System.Windows.Forms.Button()
         Me.gbSourceOptions = New System.Windows.Forms.GroupBox()
         Me.tblSourceOptions = New System.Windows.Forms.TableLayoutPanel()
-        Me.chkGetYear = New System.Windows.Forms.CheckBox()
+        Me.chkScanRecursive = New System.Windows.Forms.CheckBox()
+        Me.cbSourceLanguage = New System.Windows.Forms.ComboBox()
+        Me.lblHint = New System.Windows.Forms.Label()
+        Me.lblSourceLanguage = New System.Windows.Forms.Label()
         Me.chkExclude = New System.Windows.Forms.CheckBox()
+        Me.chkGetYear = New System.Windows.Forms.CheckBox()
         Me.chkSingle = New System.Windows.Forms.CheckBox()
         Me.chkUseFolderName = New System.Windows.Forms.CheckBox()
-        Me.chkScanRecursive = New System.Windows.Forms.CheckBox()
-        Me.lblHint = New System.Windows.Forms.Label()
-        Me.cbSourceLanguage = New System.Windows.Forms.ComboBox()
-        Me.lblSourceLanguage = New System.Windows.Forms.Label()
         Me.pbValid = New System.Windows.Forms.PictureBox()
         Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog()
         Me.tmrWait = New System.Windows.Forms.Timer(Me.components)
@@ -66,7 +66,7 @@ Partial Class dlgSourceMovie
         Me.OK_Button.Location = New System.Drawing.Point(290, 3)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
-        Me.OK_Button.TabIndex = 0
+        Me.OK_Button.TabIndex = 9
         Me.OK_Button.Text = "OK"
         '
         'Cancel_Button
@@ -76,7 +76,7 @@ Partial Class dlgSourceMovie
         Me.Cancel_Button.Location = New System.Drawing.Point(363, 3)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
-        Me.Cancel_Button.TabIndex = 1
+        Me.Cancel_Button.TabIndex = 10
         Me.Cancel_Button.Text = "Cancel"
         '
         'txtSourceName
@@ -85,7 +85,7 @@ Partial Class dlgSourceMovie
         Me.txtSourceName.Location = New System.Drawing.Point(6, 26)
         Me.txtSourceName.Name = "txtSourceName"
         Me.txtSourceName.Size = New System.Drawing.Size(130, 22)
-        Me.txtSourceName.TabIndex = 1
+        Me.txtSourceName.TabIndex = 0
         '
         'lblSourceName
         '
@@ -116,7 +116,7 @@ Partial Class dlgSourceMovie
         Me.txtSourcePath.Location = New System.Drawing.Point(6, 74)
         Me.txtSourcePath.Name = "txtSourcePath"
         Me.txtSourcePath.Size = New System.Drawing.Size(376, 22)
-        Me.txtSourcePath.TabIndex = 3
+        Me.txtSourcePath.TabIndex = 1
         '
         'btnBrowse
         '
@@ -124,7 +124,7 @@ Partial Class dlgSourceMovie
         Me.btnBrowse.Location = New System.Drawing.Point(388, 74)
         Me.btnBrowse.Name = "btnBrowse"
         Me.btnBrowse.Size = New System.Drawing.Size(26, 23)
-        Me.btnBrowse.TabIndex = 4
+        Me.btnBrowse.TabIndex = 2
         Me.btnBrowse.Text = "..."
         Me.btnBrowse.UseVisualStyleBackColor = True
         '
@@ -172,61 +172,6 @@ Partial Class dlgSourceMovie
         Me.tblSourceOptions.Size = New System.Drawing.Size(402, 164)
         Me.tblSourceOptions.TabIndex = 5
         '
-        'chkGetYear
-        '
-        Me.chkGetYear.AutoSize = True
-        Me.chkGetYear.Checked = True
-        Me.chkGetYear.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.tblSourceOptions.SetColumnSpan(Me.chkGetYear, 2)
-        Me.chkGetYear.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.chkGetYear.Location = New System.Drawing.Point(3, 72)
-        Me.chkGetYear.Name = "chkGetYear"
-        Me.chkGetYear.Size = New System.Drawing.Size(160, 17)
-        Me.chkGetYear.TabIndex = 4
-        Me.chkGetYear.Text = "Get year from folder name"
-        Me.chkGetYear.UseVisualStyleBackColor = True
-        '
-        'chkExclude
-        '
-        Me.chkExclude.AutoSize = True
-        Me.tblSourceOptions.SetColumnSpan(Me.chkExclude, 2)
-        Me.chkExclude.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkExclude.Location = New System.Drawing.Point(3, 95)
-        Me.chkExclude.Name = "chkExclude"
-        Me.chkExclude.Size = New System.Drawing.Size(199, 17)
-        Me.chkExclude.TabIndex = 3
-        Me.chkExclude.Text = "Exclude path from library updates"
-        Me.chkExclude.UseVisualStyleBackColor = True
-        '
-        'chkSingle
-        '
-        Me.chkSingle.AutoSize = True
-        Me.chkSingle.Checked = True
-        Me.chkSingle.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.tblSourceOptions.SetColumnSpan(Me.chkSingle, 2)
-        Me.chkSingle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkSingle.Location = New System.Drawing.Point(3, 26)
-        Me.chkSingle.Name = "chkSingle"
-        Me.chkSingle.Size = New System.Drawing.Size(188, 17)
-        Me.chkSingle.TabIndex = 1
-        Me.chkSingle.Text = "Movies are in separate folders *"
-        Me.chkSingle.UseVisualStyleBackColor = True
-        '
-        'chkUseFolderName
-        '
-        Me.chkUseFolderName.AutoSize = True
-        Me.chkUseFolderName.Checked = True
-        Me.chkUseFolderName.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.tblSourceOptions.SetColumnSpan(Me.chkUseFolderName, 2)
-        Me.chkUseFolderName.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkUseFolderName.Location = New System.Drawing.Point(3, 49)
-        Me.chkUseFolderName.Name = "chkUseFolderName"
-        Me.chkUseFolderName.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
-        Me.chkUseFolderName.Size = New System.Drawing.Size(220, 17)
-        Me.chkUseFolderName.TabIndex = 2
-        Me.chkUseFolderName.Text = "Use Folder Name for Initial Listing"
-        Me.chkUseFolderName.UseVisualStyleBackColor = True
-        '
         'chkScanRecursive
         '
         Me.chkScanRecursive.AutoSize = True
@@ -237,9 +182,18 @@ Partial Class dlgSourceMovie
         Me.chkScanRecursive.Location = New System.Drawing.Point(3, 3)
         Me.chkScanRecursive.Name = "chkScanRecursive"
         Me.chkScanRecursive.Size = New System.Drawing.Size(109, 17)
-        Me.chkScanRecursive.TabIndex = 0
+        Me.chkScanRecursive.TabIndex = 3
         Me.chkScanRecursive.Text = "Scan Recursively"
         Me.chkScanRecursive.UseVisualStyleBackColor = True
+        '
+        'cbSourceLanguage
+        '
+        Me.cbSourceLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbSourceLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbSourceLanguage.Location = New System.Drawing.Point(111, 118)
+        Me.cbSourceLanguage.Name = "cbSourceLanguage"
+        Me.cbSourceLanguage.Size = New System.Drawing.Size(172, 21)
+        Me.cbSourceLanguage.TabIndex = 8
         '
         'lblHint
         '
@@ -255,15 +209,6 @@ Partial Class dlgSourceMovie
     " fanart.jpg, etc."
         Me.lblHint.TextAlign = System.Drawing.ContentAlignment.TopCenter
         '
-        'cbSourceLanguage
-        '
-        Me.cbSourceLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbSourceLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cbSourceLanguage.Location = New System.Drawing.Point(111, 118)
-        Me.cbSourceLanguage.Name = "cbSourceLanguage"
-        Me.cbSourceLanguage.Size = New System.Drawing.Size(172, 21)
-        Me.cbSourceLanguage.TabIndex = 13
-        '
         'lblSourceLanguage
         '
         Me.lblSourceLanguage.Anchor = System.Windows.Forms.AnchorStyles.Left
@@ -276,10 +221,66 @@ Partial Class dlgSourceMovie
         Me.lblSourceLanguage.Text = "Default Language:"
         Me.lblSourceLanguage.TextAlign = System.Drawing.ContentAlignment.TopCenter
         '
+        'chkExclude
+        '
+        Me.chkExclude.AutoSize = True
+        Me.tblSourceOptions.SetColumnSpan(Me.chkExclude, 2)
+        Me.chkExclude.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkExclude.Location = New System.Drawing.Point(3, 95)
+        Me.chkExclude.Name = "chkExclude"
+        Me.chkExclude.Size = New System.Drawing.Size(199, 17)
+        Me.chkExclude.TabIndex = 7
+        Me.chkExclude.Text = "Exclude path from library updates"
+        Me.chkExclude.UseVisualStyleBackColor = True
+        '
+        'chkGetYear
+        '
+        Me.chkGetYear.AutoSize = True
+        Me.chkGetYear.Checked = True
+        Me.chkGetYear.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.tblSourceOptions.SetColumnSpan(Me.chkGetYear, 2)
+        Me.chkGetYear.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.chkGetYear.Location = New System.Drawing.Point(3, 72)
+        Me.chkGetYear.Name = "chkGetYear"
+        Me.chkGetYear.Size = New System.Drawing.Size(160, 17)
+        Me.chkGetYear.TabIndex = 6
+        Me.chkGetYear.Text = "Get year from folder name"
+        Me.chkGetYear.UseVisualStyleBackColor = True
+        '
+        'chkSingle
+        '
+        Me.chkSingle.AutoSize = True
+        Me.chkSingle.Checked = True
+        Me.chkSingle.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.tblSourceOptions.SetColumnSpan(Me.chkSingle, 2)
+        Me.chkSingle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkSingle.Location = New System.Drawing.Point(3, 26)
+        Me.chkSingle.Name = "chkSingle"
+        Me.chkSingle.Size = New System.Drawing.Size(188, 17)
+        Me.chkSingle.TabIndex = 4
+        Me.chkSingle.Text = "Movies are in separate folders *"
+        Me.chkSingle.UseVisualStyleBackColor = True
+        '
+        'chkUseFolderName
+        '
+        Me.chkUseFolderName.AutoSize = True
+        Me.chkUseFolderName.Checked = True
+        Me.chkUseFolderName.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.tblSourceOptions.SetColumnSpan(Me.chkUseFolderName, 2)
+        Me.chkUseFolderName.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkUseFolderName.Location = New System.Drawing.Point(3, 49)
+        Me.chkUseFolderName.Name = "chkUseFolderName"
+        Me.chkUseFolderName.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
+        Me.chkUseFolderName.Size = New System.Drawing.Size(220, 17)
+        Me.chkUseFolderName.TabIndex = 5
+        Me.chkUseFolderName.Text = "Use Folder Name for Initial Listing"
+        Me.chkUseFolderName.UseVisualStyleBackColor = True
+        '
         'pbValid
         '
+        Me.pbValid.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.pbValid.Image = Global.Ember_Media_Manager.My.Resources.Resources.invalid
-        Me.pbValid.Location = New System.Drawing.Point(142, 26)
+        Me.pbValid.Location = New System.Drawing.Point(142, 29)
         Me.pbValid.Name = "pbValid"
         Me.pbValid.Size = New System.Drawing.Size(16, 16)
         Me.pbValid.TabIndex = 7
@@ -372,7 +373,7 @@ Partial Class dlgSourceMovie
         Me.tblBottom.Size = New System.Drawing.Size(433, 29)
         Me.tblBottom.TabIndex = 0
         '
-        'dlgMovieSource
+        'dlgSourceMovie
         '
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -387,7 +388,7 @@ Partial Class dlgSourceMovie
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "dlgMovieSource"
+        Me.Name = "dlgSourceMovie"
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
         Me.Text = "Movie Source"

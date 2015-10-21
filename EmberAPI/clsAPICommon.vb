@@ -1284,10 +1284,10 @@ Public Class Functions
     Public Shared Sub GetListOfSources()
         Master.SourcesList.Clear()
         Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-            SQLcommand.CommandText = "SELECT sources.Path FROM sources;"
+            SQLcommand.CommandText = "SELECT strPath FROM moviesource;"
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 While SQLreader.Read
-                    Master.SourcesList.Add(SQLreader("Path").ToString)
+                    Master.SourcesList.Add(SQLreader("strPath").ToString)
                 End While
             End Using
         End Using
@@ -1750,34 +1750,6 @@ Public Class Structures
         Dim ScrapeOptions As ScrapeOptions
         Dim ScrapeModifier As ScrapeModifier
         Dim ScrapeType As Enums.ScrapeType
-    End Structure
-    ''' <summary>
-    ''' Structure representing a movie source path and its metadata
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Structure MovieSource
-        Dim Exclude As Boolean
-        Dim GetYear As Boolean
-        Dim ID As String
-        Dim IsSingle As Boolean
-        Dim Language As String
-        Dim Name As String
-        Dim Path As String
-        Dim Recursive As Boolean
-        Dim UseFolderName As Boolean
-    End Structure
-    ''' <summary>
-    ''' Structure representing a TV source path and its metadata
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Structure TVSource
-        Dim EpisodeSorting As Enums.EpisodeSorting
-        Dim Exclude As Boolean
-        Dim ID As String
-        Dim Language As String
-        Dim Name As String
-        Dim Ordering As Enums.Ordering
-        Dim Path As String
     End Structure
     ''' <summary>
     ''' Structure representing a tag in the database

@@ -43,10 +43,10 @@ Public Class FileFolderRenamer
 
         _movies.Clear()
         Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-            SQLNewcommand.CommandText = String.Concat("SELECT Path FROM Sources;")
+            SQLNewcommand.CommandText = String.Concat("SELECT strPath FROM moviesource;")
             Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                 While SQLReader.Read
-                    MovieFolders.Add(If(SQLReader("Path").ToString.EndsWith(Path.DirectorySeparatorChar), SQLReader("Path").ToString, String.Concat(SQLReader("Path").ToString, Path.DirectorySeparatorChar)))
+                    MovieFolders.Add(If(SQLReader("strPath").ToString.EndsWith(Path.DirectorySeparatorChar), SQLReader("strPath").ToString, String.Concat(SQLReader("strPath").ToString, Path.DirectorySeparatorChar)))
                 End While
             End Using
         End Using
@@ -60,10 +60,10 @@ Public Class FileFolderRenamer
 
         _episodes.Clear()
         Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-            SQLNewcommand.CommandText = String.Concat("SELECT Path FROM TVSources;")
+            SQLNewcommand.CommandText = String.Concat("SELECT strPath FROM tvshowsource;")
             Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                 While SQLReader.Read
-                    TVShowFolders.Add(If(SQLReader("Path").ToString.EndsWith(Path.DirectorySeparatorChar), SQLReader("Path").ToString, String.Concat(SQLReader("Path").ToString, Path.DirectorySeparatorChar)))
+                    TVShowFolders.Add(If(SQLReader("strPath").ToString.EndsWith(Path.DirectorySeparatorChar), SQLReader("strPath").ToString, String.Concat(SQLReader("strPath").ToString, Path.DirectorySeparatorChar)))
                 End While
             End Using
         End Using
@@ -881,10 +881,10 @@ Public Class FileFolderRenamer
 
         Dim eFolders As New List(Of String)
         Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-            SQLNewcommand.CommandText = String.Concat("SELECT Path FROM TVSources;")
+            SQLNewcommand.CommandText = String.Concat("SELECT strPath FROM tvshowsource;")
             Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                 While SQLReader.Read
-                    eFolders.Add(SQLReader("Path").ToString)
+                    eFolders.Add(SQLReader("strPath").ToString)
                 End While
             End Using
         End Using
@@ -1068,10 +1068,10 @@ Public Class FileFolderRenamer
 
         Dim mFolders As New List(Of String)
         Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-            SQLNewcommand.CommandText = String.Concat("SELECT Path FROM Sources;")
+            SQLNewcommand.CommandText = String.Concat("SELECT strPath FROM moviesource;")
             Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                 While SQLReader.Read
-                    mFolders.Add(SQLReader("Path").ToString)
+                    mFolders.Add(SQLReader("strPath").ToString)
                 End While
             End Using
         End Using
@@ -1182,10 +1182,10 @@ Public Class FileFolderRenamer
 
         Dim mFolders As New List(Of String)
         Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-            SQLNewcommand.CommandText = String.Concat("SELECT Path FROM TVSources;")
+            SQLNewcommand.CommandText = String.Concat("SELECT strPath FROM tvshowsource;")
             Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                 While SQLReader.Read
-                    mFolders.Add(SQLReader("Path").ToString)
+                    mFolders.Add(SQLReader("strPath").ToString)
                 End While
             End Using
         End Using

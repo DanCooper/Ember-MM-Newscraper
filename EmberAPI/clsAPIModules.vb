@@ -1114,7 +1114,7 @@ Public Class ModulesManager
                 ElseIf FileUtils.Common.isBDRip(DBMovie.Filename) Then
                     tmpYear = StringUtils.GetYear(Directory.GetParent(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName).Name)
                 Else
-                    If DBMovie.UseFolder AndAlso DBMovie.IsSingle Then
+                    If DBMovie.Source.UseFolderName AndAlso DBMovie.IsSingle Then
                         tmpYear = StringUtils.GetYear(Directory.GetParent(DBMovie.Filename).Name)
                     Else
                         tmpYear = StringUtils.GetYear(Path.GetFileNameWithoutExtension(DBMovie.Filename))
@@ -2047,7 +2047,7 @@ Public Class ModulesManager
 
 #Region "Delegates"
 
-        Delegate Sub LoadMedia(ByVal Scan As Structures.Scans, ByVal SourceName As String)
+        Delegate Sub LoadMedia(ByVal Scan As Structures.Scans, ByVal SourceID As Long)
 
         'all runtime object including Function (delegate) that need to be exposed to Modules
         Delegate Sub OpenImageViewer(ByVal _Image As Image)
@@ -2284,9 +2284,9 @@ Public Class ModulesManager
             _OpenImageViewer = IV
         End Sub
 
-        Public Sub InvokeLoadMedia(ByVal Scan As Structures.Scans, ByVal SourceName As String)
+        Public Sub InvokeLoadMedia(ByVal Scan As Structures.Scans, Optional ByVal SourceID As Long = -1)
             'Invoked from Modules
-            _LoadMedia.Invoke(Scan, SourceName)
+            _LoadMedia.Invoke(Scan, SourceID)
         End Sub
 
         Public Sub InvokeOpenImageViewer(ByRef _image As Image)

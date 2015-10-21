@@ -610,7 +610,7 @@ Public Class frmMain
         Return If(lsColumn Is Nothing, True, lsColumn.Hide)
     End Function
 
-    Public Sub LoadMedia(ByVal Scan As Structures.Scans, Optional ByVal SourceName As String = "", Optional ByVal Folder As String = "")
+    Public Sub LoadMedia(ByVal Scan As Structures.Scans, Optional ByVal SourceID As Long = -1, Optional ByVal Folder As String = "")
         Try
             Me.SetStatus(Master.eLang.GetString(116, "Performing Preliminary Tasks (Gathering Data)..."))
             Me.tspbLoading.ProgressBar.Style = ProgressBarStyle.Marquee
@@ -653,7 +653,7 @@ Public Class frmMain
                 Me.dgvTVEpisodes.DataSource = Nothing
             End If
 
-            Me.fScanner.Start(Scan, SourceName, Folder)
+            Me.fScanner.Start(Scan, SourceID, Folder)
 
         Catch ex As Exception
             Me.LoadingDone = True
@@ -10340,7 +10340,7 @@ doCancel:
         Master.fLoading.SetLoadingMesg(Master.eLang.GetString(858, "Loading database..."))
         Master.DB.ConnectMyVideosDB()
         Master.DB.LoadMovieSourcesFromDB()
-        Master.DB.LoadTVSourcesFromDB()
+        Master.DB.LoadTVShowSourcesFromDB()
         Master.DB.LoadExcludeDirsFromDB()
 
         RemoveHandler dgvMovies.RowsAdded, AddressOf dgvMovies_RowsAdded
@@ -10823,7 +10823,7 @@ doCancel:
                 AddHandler dgvTVShows.RowsAdded, AddressOf dgvTVShows_RowsAdded
 
                 Master.DB.LoadMovieSourcesFromDB()
-                Master.DB.LoadTVSourcesFromDB()
+                Master.DB.LoadTVShowSourcesFromDB()
                 Master.DB.LoadExcludeDirsFromDB()
 
                 Master.fLoading.SetLoadingMesg(Master.eLang.GetString(864, "Setting menus..."))
@@ -10920,7 +10920,7 @@ doCancel:
                     Case "addtvshowsource"
                         Using dSource As New dlgSourceTVShow
                             If dSource.ShowDialog(CStr(_params(1)), CStr(_params(1))) = Windows.Forms.DialogResult.OK Then
-                                Master.DB.LoadTVSourcesFromDB()
+                                Master.DB.LoadTVShowSourcesFromDB()
                                 Me.SetMenus(True)
                             End If
                         End Using
@@ -10936,7 +10936,7 @@ doCancel:
                         Master.fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
                         Master.fLoading.SetLoadingMesg(Master.eLang.GetString(860, "Loading Media..."))
                         Me.LoadingDone = False
-                        Me.LoadMedia(CType(_params(1), Structures.Scans), CStr(_params(2)), CStr(_params(3)))
+                        Me.LoadMedia(CType(_params(1), Structures.Scans), Convert.ToInt64(_params(2)), CStr(_params(3)))
                         While Not Me.LoadingDone
                             Application.DoEvents()
                             Threading.Thread.Sleep(50)
@@ -15404,22 +15404,20 @@ doCancel:
             Me.mnuUpdateMovies.DropDownItems.Clear()
             Me.cmnuTrayUpdateMovies.DropDownItems.Clear()
             Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                SQLNewcommand.CommandText = "SELECT COUNT(ID) AS cID FROM Sources;"
+                SQLNewcommand.CommandText = "SELECT COUNT(idSource) AS cID FROM moviesource;"
                 If Convert.ToInt32(SQLNewcommand.ExecuteScalar) > 1 Then
-                    mnuItem = Me.mnuUpdateMovies.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New System.EventHandler(AddressOf SourceSubClick))
-                    mnuItem.Tag = String.Empty
-                    mnuItem = Me.cmnuTrayUpdateMovies.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New System.EventHandler(AddressOf SourceSubClick))
-                    mnuItem.Tag = String.Empty
+                    mnuItem = Me.mnuUpdateMovies.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New System.EventHandler(AddressOf SourceSubClick_Movie))
+                    mnuItem = Me.cmnuTrayUpdateMovies.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New System.EventHandler(AddressOf SourceSubClick_Movie))
                 End If
-                SQLNewcommand.CommandText = "SELECT Name, Exclude FROM Sources;"
+                SQLNewcommand.CommandText = "SELECT idSource, strName, bExclude FROM moviesource;"
                 Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     While SQLReader.Read
-                        mnuItem = Me.mnuUpdateMovies.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), SQLReader("Name")), Nothing, New System.EventHandler(AddressOf SourceSubClick))
-                        mnuItem.Tag = SQLReader("Name").ToString
-                        mnuItem.ForeColor = If(Convert.ToBoolean(SQLReader("Exclude")), Color.Gray, Color.Black)
-                        mnuItem = Me.cmnuTrayUpdateMovies.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), SQLReader("Name")), Nothing, New System.EventHandler(AddressOf SourceSubClick))
-                        mnuItem.Tag = SQLReader("Name").ToString
-                        mnuItem.ForeColor = If(Convert.ToBoolean(SQLReader("Exclude")), Color.Gray, Color.Black)
+                        mnuItem = Me.mnuUpdateMovies.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), SQLReader("strName")), Nothing, New System.EventHandler(AddressOf SourceSubClick_Movie))
+                        mnuItem.Tag = SQLReader("idSource")
+                        mnuItem.ForeColor = If(Convert.ToBoolean(SQLReader("bExclude")), Color.Gray, Color.Black)
+                        mnuItem = Me.cmnuTrayUpdateMovies.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), SQLReader("strName")), Nothing, New System.EventHandler(AddressOf SourceSubClick_Movie))
+                        mnuItem.Tag = SQLReader("idSource")
+                        mnuItem.ForeColor = If(Convert.ToBoolean(SQLReader("bExclude")), Color.Gray, Color.Black)
                     End While
                 End Using
             End Using
@@ -15427,22 +15425,20 @@ doCancel:
             Me.mnuUpdateShows.DropDownItems.Clear()
             Me.cmnuTrayUpdateShows.DropDownItems.Clear()
             Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                SQLNewcommand.CommandText = "SELECT COUNT(ID) AS cID FROM TVSources;"
+                SQLNewcommand.CommandText = "SELECT COUNT(idSource) AS cID FROM tvshowsource;"
                 If Convert.ToInt32(SQLNewcommand.ExecuteScalar) > 1 Then
-                    mnuItem = Me.mnuUpdateShows.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New System.EventHandler(AddressOf TVSourceSubClick))
-                    mnuItem.Tag = String.Empty
-                    mnuItem = Me.cmnuTrayUpdateShows.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New System.EventHandler(AddressOf TVSourceSubClick))
-                    mnuItem.Tag = String.Empty
+                    mnuItem = Me.mnuUpdateShows.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New System.EventHandler(AddressOf SourceSubClick_TV))
+                    mnuItem = Me.cmnuTrayUpdateShows.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New System.EventHandler(AddressOf SourceSubClick_TV))
                 End If
-                SQLNewcommand.CommandText = "SELECT Name, Exclude FROM TVSources;"
+                SQLNewcommand.CommandText = "SELECT idSource, strName, bExclude FROM tvshowsource;"
                 Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     While SQLReader.Read
-                        mnuItem = Me.mnuUpdateShows.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), SQLReader("Name")), Nothing, New System.EventHandler(AddressOf TVSourceSubClick))
-                        mnuItem.Tag = SQLReader("Name").ToString
-                        mnuItem.ForeColor = If(Convert.ToBoolean(SQLReader("Exclude")), Color.Gray, Color.Black)
-                        mnuItem = Me.cmnuTrayUpdateShows.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), SQLReader("Name")), Nothing, New System.EventHandler(AddressOf TVSourceSubClick))
-                        mnuItem.Tag = SQLReader("Name").ToString
-                        mnuItem.ForeColor = If(Convert.ToBoolean(SQLReader("Exclude")), Color.Gray, Color.Black)
+                        mnuItem = Me.mnuUpdateShows.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), SQLReader("strName")), Nothing, New System.EventHandler(AddressOf SourceSubClick_TV))
+                        mnuItem.Tag = SQLReader("idSource")
+                        mnuItem.ForeColor = If(Convert.ToBoolean(SQLReader("bExclude")), Color.Gray, Color.Black)
+                        mnuItem = Me.cmnuTrayUpdateShows.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), SQLReader("strName")), Nothing, New System.EventHandler(AddressOf SourceSubClick_TV))
+                        mnuItem.Tag = SQLReader("idSource")
+                        mnuItem.ForeColor = If(Convert.ToBoolean(SQLReader("bExclude")), Color.Gray, Color.Black)
                     End While
                 End Using
             End Using
@@ -15525,20 +15521,20 @@ doCancel:
 
                 Me.clbFilterSources_Movies.Items.Clear()
                 Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    SQLNewcommand.CommandText = String.Concat("SELECT Name FROM Sources;")
+                    SQLNewcommand.CommandText = String.Concat("SELECT strName FROM moviesource;")
                     Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                         While SQLReader.Read
-                            Me.clbFilterSources_Movies.Items.Add(SQLReader("Name"))
+                            Me.clbFilterSources_Movies.Items.Add(SQLReader("strName"))
                         End While
                     End Using
                 End Using
 
                 Me.clbFilterSource_Shows.Items.Clear()
                 Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    SQLNewcommand.CommandText = String.Concat("SELECT Name FROM TVSources;")
+                    SQLNewcommand.CommandText = String.Concat("SELECT strName FROM tvshowsource;")
                     Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                         While SQLReader.Read
-                            Me.clbFilterSource_Shows.Items.Add(SQLReader("Name"))
+                            Me.clbFilterSource_Shows.Items.Add(SQLReader("strName"))
                         End While
                     End Using
                 End Using
@@ -16500,8 +16496,12 @@ doCancel:
         End Using
     End Sub
 
-    Private Sub SourceSubClick(ByVal sender As Object, ByVal e As System.EventArgs)
-        Dim SourceName As String = DirectCast(sender, ToolStripItem).Tag.ToString
+    Private Sub SourceSubClick_Movie(ByVal sender As Object, ByVal e As System.EventArgs)
+        Dim SourceID As Long = -1
+
+        If DirectCast(sender, ToolStripItem).Tag IsNot Nothing Then
+            SourceID = Convert.ToInt64(DirectCast(sender, ToolStripItem).Tag)
+        End If
 
         'Remove any previous scrape as there is no warranty that the new dataset will match with the old one
         Dim aPath As String = FileUtils.Common.ReturnSettingsFile("Settings", "ScraperStatus.dat")
@@ -16514,7 +16514,29 @@ doCancel:
             End Try
         End If
 
-        Me.LoadMedia(New Structures.Scans With {.Movies = True}, SourceName)
+        Me.LoadMedia(New Structures.Scans With {.Movies = True}, SourceID)
+    End Sub
+
+    Private Sub SourceSubClick_TV(ByVal sender As Object, ByVal e As System.EventArgs)
+        Dim SourceID As Long = -1
+
+        If DirectCast(sender, ToolStripItem).Tag IsNot Nothing Then
+            SourceID = Convert.ToInt64(DirectCast(sender, ToolStripItem).Tag)
+        End If
+
+        'Remove any previous scrape as there is no warranty that the new dataset will match with the old one
+        Dim aPath As String = FileUtils.Common.ReturnSettingsFile("Settings", "ScraperStatus.dat")
+        If File.Exists(aPath) Then
+            Try
+                File.Delete(aPath)
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+                Throw
+            End Try
+        End If
+
+
+        Me.LoadMedia(New Structures.Scans With {.TV = True}, SourceID)
     End Sub
 
     Private Sub tcMain_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tcMain.SelectedIndexChanged
@@ -17044,24 +17066,6 @@ doCancel:
 
     Private Sub mnuUpdate_ButtonClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuUpdate.ButtonClick
         Me.LoadMedia(New Structures.Scans With {.Movies = True, .MovieSets = True, .TV = True})
-    End Sub
-
-    Private Sub TVSourceSubClick(ByVal sender As Object, ByVal e As System.EventArgs)
-        Dim SourceName As String = DirectCast(sender, ToolStripItem).Tag.ToString
-
-        'Remove any previous scrape as there is no warranty that the new dataset will match with the old one
-        Dim aPath As String = FileUtils.Common.ReturnSettingsFile("Settings", "ScraperStatus.dat")
-        If File.Exists(aPath) Then
-            Try
-                File.Delete(aPath)
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-                Throw
-            End Try
-        End If
-
-
-        Me.LoadMedia(New Structures.Scans With {.TV = True}, SourceName)
     End Sub
 
     Private Sub txtFilterGenre_Movies_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtFilterGenre_Movies.Click

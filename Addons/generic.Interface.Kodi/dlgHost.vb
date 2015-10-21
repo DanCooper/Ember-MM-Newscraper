@@ -143,10 +143,10 @@ Public Class dlgHost
         Dim sPath As String
 
         'populate all library sources in Ember into embersources
-        For Each moviesources As Structures.MovieSource In Master.MovieSources
+        For Each moviesources As Database.DBSource In Master.MovieSources
             LocalSources.Add(moviesources.Path, Enums.ContentType.Movie)
         Next
-        For Each showsources As Structures.TVSource In Master.TVSources
+        For Each showsources As Database.DBSource In Master.TVShowSources
             LocalSources.Add(showsources.Path, Enums.ContentType.TV)
         Next
 
