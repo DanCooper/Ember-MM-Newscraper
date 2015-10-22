@@ -141,9 +141,9 @@ Public Class BulkRenamerModule
                     Dim ToNFO As Boolean = DirectCast(_params(1), Boolean)
                     Dim ShowErrors As Boolean = DirectCast(_params(2), Boolean)
                     Dim ToDB As Boolean = DirectCast(_params(3), Boolean)
-                    Dim Source As String = DirectCast(_params(4), String)
+                    Dim SourceID As Long = DirectCast(_params(4), Int64)
                     Dim FFRenamer As New FileFolderRenamer
-                    FFRenamer.RenameAfterUpdateDB_TV(Source, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, BatchMode, ToNFO, ShowErrors, ToDB)
+                    FFRenamer.RenameAfterUpdateDB_TV(SourceID, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, BatchMode, ToNFO, ShowErrors, ToDB)
                 End If
         End Select
         Return New Interfaces.ModuleResult With {.breakChain = False}

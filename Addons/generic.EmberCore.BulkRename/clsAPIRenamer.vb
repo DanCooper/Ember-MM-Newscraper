@@ -1676,71 +1676,66 @@ Public Class FileFolderRenamer
     End Function
 
 
-    Public Sub RenameAfterUpdateDB_TV(ByVal tvSource As String, ByVal folderPatternSeasons As String, ByVal filePatternEpisodes As String, ByVal BatchMode As Boolean, ByVal toNfo As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean)
-        Try
-            Dim EpisodeFile As New FileFolderRenamer.FileRename
-            Dim _currShow As New Database.DBElement
+    Public Sub RenameAfterUpdateDB_TV(ByVal SourceID As Long, ByVal folderPatternSeasons As String, ByVal filePatternEpisodes As String, ByVal BatchMode As Boolean, ByVal toNfo As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean)
+        Dim EpisodeFile As New FileFolderRenamer.FileRename
+        Dim _currShow As New Database.DBElement
 
-            ' Load new episodes using path from DB
-            Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                Dim _tmpPath As String = String.Empty
-                Dim iProg As Integer = 0
-                If String.IsNullOrEmpty(tvSource) Then
-                    SQLNewcommand.CommandText = String.Concat("SELECT COUNT(idEpisode) AS mcount FROM episode WHERE NOT idFile = -1 AND New = 1;")
-                Else
-                    SQLNewcommand.CommandText = String.Concat("SELECT COUNT(idEpisode) AS mcount FROM episode WHERE NOT idFile = -1 AND New = 1 AND Source = '", tvSource, "';")
+        ' Load new episodes using path from DB
+        Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+            Dim _tmpPath As String = String.Empty
+            Dim iProg As Integer = 0
+            If SourceID = -1 Then
+                SQLNewcommand.CommandText = String.Concat("SELECT COUNT(idEpisode) AS mcount FROM episode WHERE NOT idFile = -1 AND New = 1;")
+            Else
+                SQLNewcommand.CommandText = String.Concat("SELECT COUNT(idEpisode) AS mcount FROM episode WHERE NOT idFile = -1 AND New = 1 AND idSource = ", SourceID, ";")
+            End If
+            Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                If SQLcount.HasRows AndAlso SQLcount.Read() Then
+                    'Me.bwLoadInfo.ReportProgress(-1, SQLcount("mcount")) ' set maximum
                 End If
-                Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
-                    If SQLcount.HasRows AndAlso SQLcount.Read() Then
-                        'Me.bwLoadInfo.ReportProgress(-1, SQLcount("mcount")) ' set maximum
-                    End If
-                End Using
-                If String.IsNullOrEmpty(tvSource) Then
-                    SQLNewcommand.CommandText = String.Concat("SELECT NfoPath, idEpisode FROM episode WHERE NOT idFile = -1 AND New = 1 ORDER BY idShow ASC, Season ASC, Episode ASC;")
-                Else
-                    SQLNewcommand.CommandText = String.Concat("SELECT NfoPath, idEpisode FROM episode WHERE NOT idFile = -1 AND New = 1 AND Source = '", tvSource, "' ORDER BY idShow ASC, Season ASC, Episode ASC;")
-                End If
-                Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
-                    If SQLreader.HasRows Then
-                        While SQLreader.Read()
-                            Try
-                                If Not DBNull.Value.Equals(SQLreader("NfoPath")) AndAlso Not DBNull.Value.Equals(SQLreader("idEpisode")) Then
-                                    _tmpPath = SQLreader("NfoPath").ToString
-                                    If Not String.IsNullOrEmpty(_tmpPath) Then
+            End Using
+            If SourceID = -1 Then
+                SQLNewcommand.CommandText = String.Concat("SELECT NfoPath, idEpisode FROM episode WHERE NOT idFile = -1 AND New = 1 ORDER BY idShow ASC, Season ASC, Episode ASC;")
+            Else
+                SQLNewcommand.CommandText = String.Concat("SELECT NfoPath, idEpisode FROM episode WHERE NOT idFile = -1 AND New = 1 AND idSource = ", SourceID, " ORDER BY idShow ASC, Season ASC, Episode ASC;")
+            End If
+            Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                If SQLreader.HasRows Then
+                    While SQLreader.Read()
+                        Try
+                            If Not DBNull.Value.Equals(SQLreader("NfoPath")) AndAlso Not DBNull.Value.Equals(SQLreader("idEpisode")) Then
+                                _tmpPath = SQLreader("NfoPath").ToString
+                                If Not String.IsNullOrEmpty(_tmpPath) Then
 
-                                        EpisodeFile = New FileFolderRenamer.FileRename
-                                        _currShow = Master.DB.LoadTVEpisodeFromDB(Convert.ToInt32(SQLreader("idEpisode")), True, False)
+                                    EpisodeFile = New FileFolderRenamer.FileRename
+                                    _currShow = Master.DB.LoadTVEpisodeFromDB(Convert.ToInt32(SQLreader("idEpisode")), True, False)
 
-                                        If Not _currShow.ID = -1 AndAlso Not _currShow.ShowID = -1 AndAlso Not String.IsNullOrEmpty(_currShow.Filename) Then
-                                            'Me.bwLoadInfo.ReportProgress(iProg, String.Concat(_currShow.TVShow.Title, ": ", _currShow.TVEp.Title))
-                                            EpisodeFile = FileFolderRenamer.GetInfo_Episode(_currShow)
-                                            AddEpisode(EpisodeFile)
-                                        End If
+                                    If Not _currShow.ID = -1 AndAlso Not _currShow.ShowID = -1 AndAlso Not String.IsNullOrEmpty(_currShow.Filename) Then
+                                        'Me.bwLoadInfo.ReportProgress(iProg, String.Concat(_currShow.TVShow.Title, ": ", _currShow.TVEp.Title))
+                                        EpisodeFile = FileFolderRenamer.GetInfo_Episode(_currShow)
+                                        AddEpisode(EpisodeFile)
                                     End If
                                 End If
-                            Catch ex As Exception
-                                logger.Error(New StackFrame().GetMethod().Name, ex)
-                            End Try
-                            iProg += 1
-                        End While
-                    End If
-                End Using
+                            End If
+                        Catch ex As Exception
+                            logger.Error(New StackFrame().GetMethod().Name, ex)
+                        End Try
+                        iProg += 1
+                    End While
+                End If
             End Using
+        End Using
 
-            ProccessFiles_Episodes(folderPatternSeasons, filePatternEpisodes)
-            DoRename_Episodes()
+        ProccessFiles_Episodes(folderPatternSeasons, filePatternEpisodes)
+        DoRename_Episodes()
 
-            'set the status back to "New"
-            Using SQLcommand_update_episode As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                For Each episode In _episodes
-                    SQLcommand_update_episode.CommandText = String.Format("UPDATE episode SET 'New'=1 WHERE idEpisode={0}", episode.ID)
-                    SQLcommand_update_episode.ExecuteNonQuery()
-                Next
-            End Using
-
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+        'set the status back to "New"
+        Using SQLcommand_update_episode As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+            For Each episode In _episodes
+                SQLcommand_update_episode.CommandText = String.Format("UPDATE episode SET 'New'=1 WHERE idEpisode={0}", episode.ID)
+                SQLcommand_update_episode.ExecuteNonQuery()
+            Next
+        End Using
     End Sub
 
     Public Shared Sub RenameSingle_Episode(ByRef _tmpEpisode As Database.DBElement, ByVal folderPatternSeasons As String, ByVal filePatternEpisodes As String, ByVal BatchMode As Boolean, ByVal ShowError As Boolean, ByVal toDB As Boolean)
