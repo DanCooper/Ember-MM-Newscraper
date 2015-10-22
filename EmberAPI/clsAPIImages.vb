@@ -2436,8 +2436,8 @@ Public Class Images
                 End Select
 
                 If Not bKeepExisting Then
-                    DBElement.ImagesContainer.Extrathumbs.AddRange(defImgList)
-                    DefaultImagesContainer.Extrathumbs.AddRange(DBElement.ImagesContainer.Extrathumbs)
+                    DBElement.ImagesContainer.Extrathumbs = (defImgList)
+                    DefaultImagesContainer.Extrathumbs = (DBElement.ImagesContainer.Extrathumbs)
                 Else
                     DBElement.ImagesContainer.Extrathumbs.AddRange(defImgList)
                     DefaultImagesContainer.Extrathumbs.AddRange(DBElement.ImagesContainer.Extrathumbs)
