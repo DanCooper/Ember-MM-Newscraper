@@ -124,7 +124,6 @@ Partial Class dlgRestart
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgRestart"
-        Me.ShowInTaskbar = False
         Me.Text = "Restart Ember Media Manager?"
         Me.tlpButtons.ResumeLayout(False)
         CType(Me.pbLogo, System.ComponentModel.ISupportInitialize).EndInit()

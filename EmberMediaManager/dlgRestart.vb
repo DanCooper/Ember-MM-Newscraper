@@ -11,6 +11,10 @@ Public Class dlgRestart
         Me.StartPosition = FormStartPosition.Manual
     End Sub
 
+    Private Sub dlgRestart_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
+        Me.Activate()
+    End Sub
+
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
@@ -33,4 +37,5 @@ Public Class dlgRestart
         Me.OK_Button.Text = Master.eLang.GetString(300, "Yes")
         Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
     End Sub
+
 End Class
