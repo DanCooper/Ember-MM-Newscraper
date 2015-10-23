@@ -211,8 +211,7 @@ Public Class frmMovieExtractor
             Dim exImage As New Images
             Dim sPath As String = Path.Combine(tPath, String.Concat("thumb", (iMod + 1), ".jpg"))
             exImage.ResizeExtraFanart(Path.Combine(Master.TempPath, "frame.jpg"), sPath)
-            exImage.Dispose()
-            exImage = Nothing
+            exImage.Clear()
 
             RaiseEvent GenericEvent(Enums.ModuleEventType.FrameExtrator_Movie, New List(Of Object)(New Object() {"ExtrafanartToSave", sPath}))
 
@@ -236,8 +235,7 @@ Public Class frmMovieExtractor
             Dim exImage As New Images
             Dim sPath As String = Path.Combine(tPath, String.Concat("thumb", (iMod + 1), ".jpg"))
             exImage.ResizeExtraThumb(Path.Combine(Master.TempPath, "frame.jpg"), sPath)
-            exImage.Dispose()
-            exImage = Nothing
+            exImage.Clear()
 
             RaiseEvent GenericEvent(Enums.ModuleEventType.FrameExtrator_Movie, New List(Of Object)(New Object() {"ExtrathumbToSave", sPath}))
 

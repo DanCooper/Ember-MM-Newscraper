@@ -1681,17 +1681,17 @@ Public Class Database
 
         'ImagesContainer
         If withImages Then
-            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Banner.LocalFilePath) Then _movieDB.ImagesContainer.Banner.ImageOriginal.FromFile(_movieDB.ImagesContainer.Banner.LocalFilePath)
-            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.ClearArt.LocalFilePath) Then _movieDB.ImagesContainer.ClearArt.ImageOriginal.FromFile(_movieDB.ImagesContainer.ClearArt.LocalFilePath)
-            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.ClearLogo.LocalFilePath) Then _movieDB.ImagesContainer.ClearLogo.ImageOriginal.FromFile(_movieDB.ImagesContainer.ClearLogo.LocalFilePath)
-            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.DiscArt.LocalFilePath) Then _movieDB.ImagesContainer.DiscArt.ImageOriginal.FromFile(_movieDB.ImagesContainer.DiscArt.LocalFilePath)
-            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Fanart.LocalFilePath) Then _movieDB.ImagesContainer.Fanart.ImageOriginal.FromFile(_movieDB.ImagesContainer.Fanart.LocalFilePath)
-            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Landscape.LocalFilePath) Then _movieDB.ImagesContainer.Landscape.ImageOriginal.FromFile(_movieDB.ImagesContainer.Landscape.LocalFilePath)
-            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Poster.LocalFilePath) Then _movieDB.ImagesContainer.Poster.ImageOriginal.FromFile(_movieDB.ImagesContainer.Poster.LocalFilePath)
+            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Banner.LocalFilePath) Then _movieDB.ImagesContainer.Banner.ImageOriginal.FromFile(_movieDB.ImagesContainer.Banner.LocalFilePath, True)
+            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.ClearArt.LocalFilePath) Then _movieDB.ImagesContainer.ClearArt.ImageOriginal.FromFile(_movieDB.ImagesContainer.ClearArt.LocalFilePath, True)
+            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.ClearLogo.LocalFilePath) Then _movieDB.ImagesContainer.ClearLogo.ImageOriginal.FromFile(_movieDB.ImagesContainer.ClearLogo.LocalFilePath, True)
+            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.DiscArt.LocalFilePath) Then _movieDB.ImagesContainer.DiscArt.ImageOriginal.FromFile(_movieDB.ImagesContainer.DiscArt.LocalFilePath, True)
+            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Fanart.LocalFilePath) Then _movieDB.ImagesContainer.Fanart.ImageOriginal.FromFile(_movieDB.ImagesContainer.Fanart.LocalFilePath, True)
+            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Landscape.LocalFilePath) Then _movieDB.ImagesContainer.Landscape.ImageOriginal.FromFile(_movieDB.ImagesContainer.Landscape.LocalFilePath, True)
+            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Poster.LocalFilePath) Then _movieDB.ImagesContainer.Poster.ImageOriginal.FromFile(_movieDB.ImagesContainer.Poster.LocalFilePath, True)
             If Not String.IsNullOrEmpty(_movieDB.ExtrafanartsPath) AndAlso Directory.Exists(_movieDB.ExtrafanartsPath) Then
                 For Each ePath As String In Directory.GetFiles(_movieDB.ExtrafanartsPath, "*.jpg")
                     Dim eImg As New MediaContainers.Image
-                    If Not exclExtraImages Then eImg.ImageOriginal.FromFile(ePath)
+                    If Not exclExtraImages Then eImg.ImageOriginal.FromFile(ePath, True)
                     eImg.LocalFilePath = ePath
                     _movieDB.ImagesContainer.Extrafanarts.Add(eImg)
                 Next
@@ -1700,7 +1700,7 @@ Public Class Database
                 Dim iIndex As Integer = 0
                 For Each ePath As String In Directory.GetFiles(_movieDB.ExtrathumbsPath, "thumb*.jpg")
                     Dim eImg As New MediaContainers.Image
-                    If Not exclExtraImages Then eImg.ImageOriginal.FromFile(ePath)
+                    If Not exclExtraImages Then eImg.ImageOriginal.FromFile(ePath, True)
                     eImg.Index = iIndex
                     eImg.LocalFilePath = ePath
                     _movieDB.ImagesContainer.Extrathumbs.Add(eImg)

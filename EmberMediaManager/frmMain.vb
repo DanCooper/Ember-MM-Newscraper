@@ -9172,7 +9172,7 @@ doCancel:
         Dim lenSize As Integer
         Dim rect As Rectangle
 
-        If Me.MainPoster.Image IsNot Nothing Then
+        If Me.MainPoster.Image IsNot Nothing OrElse Me.MainPoster.FromMemoryStream Then
             Me.lblPosterSize.Text = String.Format("{0} x {1}", Me.MainPoster.Image.Width, Me.MainPoster.Image.Height)
             Me.pbPosterCache.Image = Me.MainPoster.Image
             ImageUtils.ResizePB(Me.pbPoster, Me.pbPosterCache, Me.PosterMaxHeight, Me.PosterMaxWidth)
@@ -9196,7 +9196,7 @@ doCancel:
             End If
         End If
 
-        If Me.MainFanartSmall.Image IsNot Nothing Then
+        If Me.MainFanartSmall.Image IsNot Nothing OrElse Me.MainFanartSmall.FromMemoryStream Then
             Me.lblFanartSmallSize.Text = String.Format("{0} x {1}", Me.MainFanartSmall.Image.Width, Me.MainFanartSmall.Image.Height)
             Me.pbFanartSmallCache.Image = Me.MainFanartSmall.Image
             ImageUtils.ResizePB(Me.pbFanartSmall, Me.pbFanartSmallCache, Me.FanartSmallMaxHeight, Me.FanartSmallMaxWidth)
@@ -9222,7 +9222,7 @@ doCancel:
             End If
         End If
 
-        If Me.MainLandscape.Image IsNot Nothing Then
+        If Me.MainLandscape.Image IsNot Nothing OrElse Me.MainLandscape.FromMemoryStream Then
             Me.lblLandscapeSize.Text = String.Format("{0} x {1}", Me.MainLandscape.Image.Width, Me.MainLandscape.Image.Height)
             Me.pbLandscapeCache.Image = Me.MainLandscape.Image
             ImageUtils.ResizePB(Me.pbLandscape, Me.pbLandscapeCache, Me.LandscapeMaxHeight, Me.LandscapeMaxWidth)
@@ -9248,7 +9248,7 @@ doCancel:
             End If
         End If
 
-        If Me.MainClearArt.Image IsNot Nothing Then
+        If Me.MainClearArt.Image IsNot Nothing OrElse Me.MainClearArt.FromMemoryStream Then
             Me.lblClearArtSize.Text = String.Format("{0} x {1}", Me.MainClearArt.Image.Width, Me.MainClearArt.Image.Height)
             Me.pbClearArtCache.Image = Me.MainClearArt.Image
             ImageUtils.ResizePB(Me.pbClearArt, Me.pbClearArtCache, Me.ClearArtMaxHeight, Me.ClearArtMaxWidth)
@@ -9274,7 +9274,7 @@ doCancel:
             End If
         End If
 
-        If Me.MainCharacterArt.Image IsNot Nothing Then
+        If Me.MainCharacterArt.Image IsNot Nothing OrElse Me.MainCharacterArt.FromMemoryStream Then
             Me.lblCharacterArtSize.Text = String.Format("{0} x {1}", Me.MainCharacterArt.Image.Width, Me.MainCharacterArt.Image.Height)
             Me.pbCharacterArtCache.Image = Me.MainCharacterArt.Image
             ImageUtils.ResizePB(Me.pbCharacterArt, Me.pbCharacterArtCache, Me.CharacterArtMaxHeight, Me.CharacterArtMaxWidth)
@@ -9300,7 +9300,7 @@ doCancel:
             End If
         End If
 
-        If Me.MainDiscArt.Image IsNot Nothing Then
+        If Me.MainDiscArt.Image IsNot Nothing OrElse Me.MainDiscArt.FromMemoryStream Then
             Me.lblDiscArtSize.Text = String.Format("{0} x {1}", Me.MainDiscArt.Image.Width, Me.MainDiscArt.Image.Height)
             Me.pbDiscArtCache.Image = Me.MainDiscArt.Image
             ImageUtils.ResizePB(Me.pbDiscArt, Me.pbDiscArtCache, Me.DiscArtMaxHeight, Me.DiscArtMaxWidth)
@@ -9326,7 +9326,7 @@ doCancel:
             End If
         End If
 
-        If Me.MainBanner.Image IsNot Nothing Then
+        If Me.MainBanner.Image IsNot Nothing OrElse Me.MainBanner.FromMemoryStream Then
             Me.lblBannerSize.Text = String.Format("{0} x {1}", Me.MainBanner.Image.Width, Me.MainBanner.Image.Height)
             Me.pbBannerCache.Image = Me.MainBanner.Image
             ImageUtils.ResizePB(Me.pbBanner, Me.pbBannerCache, Me.BannerMaxHeight, Me.BannerMaxWidth)
@@ -9352,7 +9352,7 @@ doCancel:
             End If
         End If
 
-        If Me.MainClearLogo.Image IsNot Nothing Then
+        If Me.MainClearLogo.Image IsNot Nothing OrElse Me.MainClearLogo.FromMemoryStream Then
             Me.lblClearLogoSize.Text = String.Format("{0} x {1}", Me.MainClearLogo.Image.Width, Me.MainClearLogo.Image.Height)
             Me.pbClearLogoCache.Image = Me.MainClearLogo.Image
             ImageUtils.ResizePB(Me.pbClearLogo, Me.pbClearLogoCache, Me.ClearLogoMaxHeight, Me.ClearLogoMaxWidth)
@@ -9378,7 +9378,7 @@ doCancel:
             End If
         End If
 
-        If Me.MainFanart.Image IsNot Nothing Then
+        If Me.MainFanart.Image IsNot Nothing OrElse Me.MainFanart.FromMemoryStream Then
             Me.pbFanartCache.Image = Me.MainFanart.Image
 
             ImageUtils.ResizePB(Me.pbFanart, Me.pbFanartCache, Me.scMain.Panel2.Height - 90, Me.scMain.Panel2.Width)

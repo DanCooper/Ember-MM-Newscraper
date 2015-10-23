@@ -27,15 +27,13 @@ Imports NLog
 
 <Serializable()> _
 Public Class Images
-    Implements IDisposable
-    '2013/11/28 Dekker500 - This class needs some serious love. Clear candidate for polymorphism. Images should be root, with posters, fanart, etc as children. None of this if/else stuff to confuse the issue. I will re-visit later
 
 #Region "Fields"
+
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
-	Private _ms As MemoryStream
-    Private Ret As Byte()
-	Private _image As Image
+    Private _image As Image
+    Private _ms As MemoryStream
 
 #End Region 'Fields
 
@@ -49,14 +47,11 @@ Public Class Images
 
 #Region "Properties"
 
-	Public ReadOnly Property [Image]() As Image
-		Get
-			Return _image
-		End Get
-		'Set(ByVal value As Image)
-		'    _image = value
-		'End Set
-	End Property
+    Public ReadOnly Property [Image]() As Image
+        Get
+            Return _image
+        End Get
+    End Property
 
 #End Region 'Properties
 
@@ -96,13 +91,6 @@ Public Class Images
     ''' </summary>
     ''' <remarks></remarks>
     Public Sub Clear()
-        'Out with the old...
-        If _ms IsNot Nothing Or _image IsNot Nothing Then
-            Me.Dispose(True)
-            Me.disposedValue = False    'Since this is not a real Dispose call...
-        End If
-
-        'In with the new...
         _image = Nothing
         _ms = New MemoryStream()
     End Sub
@@ -795,35 +783,51 @@ Public Class Images
     ''' </summary>
     ''' <param name="sPath">Path to the image file</param>
     ''' <remarks></remarks>
-    Public Sub FromFile(ByVal sPath As String)
-        If Me._ms IsNot Nothing Then
-            Me._ms.Dispose()
-            Me._ms = Nothing
-        End If
-        If Me._image IsNot Nothing Then
-            Me._image.Dispose()
+    Public Sub FromFile(ByVal sPath As String, Optional OnlyToMemoryStream As Boolean = False)
+        If Not String.IsNullOrEmpty(sPath) AndAlso File.Exists(sPath) Then
+            'Try
+            Me._ms = New MemoryStream()
+            Using fsImage As FileStream = File.OpenRead(sPath)
+                Dim memStream As New MemoryStream
+                memStream.SetLength(fsImage.Length)
+                fsImage.Read(memStream.GetBuffer, 0, CInt(Fix(fsImage.Length)))
+                Me._ms.Write(memStream.GetBuffer, 0, CInt(Fix(fsImage.Length)))
+                Me._ms.Flush()
+                If Not OnlyToMemoryStream Then
+                    _image = New Bitmap(Me._ms)
+                End If
+            End Using
+
+            'Me._ms = New MemoryStream()
+            'Using fsImage As New FileStream(sPath, FileMode.Open, FileAccess.Read)
+            '    Dim StreamBuffer(Convert.ToInt32(fsImage.Length - 1)) As Byte
+
+            '    fsImage.Read(StreamBuffer, 0, StreamBuffer.Length)
+            '    Me._ms.Write(StreamBuffer, 0, StreamBuffer.Length)
+
+            '    StreamBuffer = Nothing
+            '    '_ms.SetLength(fsImage.Length)
+            '    'fsImage.Read(_ms.GetBuffer(), 0, Convert.ToInt32(fsImage.Length))
+            '    Me._ms.Flush()
+            '    _image = New Bitmap(Me._ms)
+            'End Using
+            'Catch ex As Exception
+            '    logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sPath & ">", ex)
+            'End Try
+        Else
+            Me._ms = New MemoryStream
             Me._image = Nothing
         End If
-        If Not String.IsNullOrEmpty(sPath) AndAlso File.Exists(sPath) Then
-            Try
-                Me._ms = New MemoryStream()
-                Using fsImage As New FileStream(sPath, FileMode.Open, FileAccess.Read)
-                    Dim StreamBuffer(Convert.ToInt32(fsImage.Length - 1)) As Byte
-
-                    fsImage.Read(StreamBuffer, 0, StreamBuffer.Length)
-                    Me._ms.Write(StreamBuffer, 0, StreamBuffer.Length)
-
-                    StreamBuffer = Nothing
-                    '_ms.SetLength(fsImage.Length)
-                    'fsImage.Read(_ms.GetBuffer(), 0, Convert.ToInt32(fsImage.Length))
-                    Me._ms.Flush()
-                    _image = New Bitmap(Me._ms)
-                End Using
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sPath & ">", ex)
-            End Try
-        End If
     End Sub
+
+    Public Function FromMemoryStream() As Boolean
+        If Me._ms.Length > 0 Then
+            Me._image = New Bitmap(Me._ms)
+            Return True
+        Else
+            Return False
+        End If
+    End Function
     ''' <summary>
     ''' Loads this Image from the supplied URL
     ''' </summary>
@@ -1057,22 +1061,26 @@ Public Class Images
     ''' <param name="sPath">Location to store the image</param>
     ''' <remarks></remarks>
     Public Sub Save(ByVal sPath As String)
-        Dim retSave() As Byte
-        Try
-            retSave = _ms.ToArray
+        If Me._ms.Length > 0 Then
+            Dim retSave() As Byte
+            Try
+                retSave = _ms.ToArray
 
-            'make sure directory exists
-            Directory.CreateDirectory(Directory.GetParent(sPath).FullName)
-            If sPath.Length <= 260 Then
-                Using fs As New FileStream(sPath, FileMode.Create, FileAccess.Write)
-                    fs.Write(retSave, 0, retSave.Length)
-                    fs.Flush()
-                    fs.Close()
-                End Using
-            End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+                'make sure directory exists
+                Directory.CreateDirectory(Directory.GetParent(sPath).FullName)
+                If sPath.Length <= 260 Then
+                    Using fs As New FileStream(sPath, FileMode.Create, FileAccess.Write)
+                        fs.Write(retSave, 0, retSave.Length)
+                        fs.Flush()
+                        fs.Close()
+                    End Using
+                End If
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+            End Try
+        Else
+            Throw New ArgumentOutOfRangeException("Looks like MemoryStream is empty")
+        End If
     End Sub
 
     Public Shared Sub SaveMovieActorThumbs(ByVal mMovie As Database.DBElement)
@@ -3584,45 +3592,5 @@ Public Class Images
     End Function
 
 #End Region 'Methods
-
-#Region "IDisposable Support"
-    Private disposedValue As Boolean ' To detect redundant calls
-
-    ' IDisposable
-    Protected Overridable Sub Dispose(disposing As Boolean)
-        If Not Me.disposedValue Then
-            If disposing Then
-                ' dispose managed state (managed objects).
-                If _ms IsNot Nothing Then
-                    _ms.Flush()
-                    _ms.Close()
-                    _ms.Dispose()
-                End If
-                If _image IsNot Nothing Then _image.Dispose()
-            End If
-
-            ' free unmanaged resources (unmanaged objects) and override Finalize() below.
-            ' set large fields to null.
-            _ms = Nothing
-            _image = Nothing
-        End If
-        Me.disposedValue = True
-    End Sub
-
-    ' TODO: override Finalize() only if Dispose(ByVal disposing As Boolean) above has code to free unmanaged resources.
-    'Protected Overrides Sub Finalize()
-    '    ' Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
-    '    Dispose(False)
-    '    MyBase.Finalize()
-    'End Sub
-
-    ' This code added by Visual Basic to correctly implement the disposable pattern.
-    Public Sub Dispose() Implements IDisposable.Dispose
-        ' Do not change this code.  Put cleanup code in Dispose(disposing As Boolean) above.
-        Dispose(True)
-        GC.SuppressFinalize(Me)
-    End Sub
-
-#End Region 'IDisposable Support
 
 End Class
