@@ -1803,13 +1803,13 @@ Public Class Database
 
         'ImagesContainer
         If withImages Then
-            If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.Banner.LocalFilePath) Then _moviesetDB.ImagesContainer.Banner.ImageOriginal.FromFile(_moviesetDB.ImagesContainer.Banner.LocalFilePath)
-            If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.ClearArt.LocalFilePath) Then _moviesetDB.ImagesContainer.ClearArt.ImageOriginal.FromFile(_moviesetDB.ImagesContainer.ClearArt.LocalFilePath)
-            If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.ClearLogo.LocalFilePath) Then _moviesetDB.ImagesContainer.ClearLogo.ImageOriginal.FromFile(_moviesetDB.ImagesContainer.ClearLogo.LocalFilePath)
-            If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.DiscArt.LocalFilePath) Then _moviesetDB.ImagesContainer.DiscArt.ImageOriginal.FromFile(_moviesetDB.ImagesContainer.DiscArt.LocalFilePath)
-            If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.Fanart.LocalFilePath) Then _moviesetDB.ImagesContainer.Fanart.ImageOriginal.FromFile(_moviesetDB.ImagesContainer.Fanart.LocalFilePath)
-            If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.Landscape.LocalFilePath) Then _moviesetDB.ImagesContainer.Landscape.ImageOriginal.FromFile(_moviesetDB.ImagesContainer.Landscape.LocalFilePath)
-            If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.Poster.LocalFilePath) Then _moviesetDB.ImagesContainer.Poster.ImageOriginal.FromFile(_moviesetDB.ImagesContainer.Poster.LocalFilePath)
+            If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.Banner.LocalFilePath) Then _moviesetDB.ImagesContainer.Banner.ImageOriginal.FromFile(_moviesetDB.ImagesContainer.Banner.LocalFilePath, True)
+            If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.ClearArt.LocalFilePath) Then _moviesetDB.ImagesContainer.ClearArt.ImageOriginal.FromFile(_moviesetDB.ImagesContainer.ClearArt.LocalFilePath, True)
+            If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.ClearLogo.LocalFilePath) Then _moviesetDB.ImagesContainer.ClearLogo.ImageOriginal.FromFile(_moviesetDB.ImagesContainer.ClearLogo.LocalFilePath, True)
+            If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.DiscArt.LocalFilePath) Then _moviesetDB.ImagesContainer.DiscArt.ImageOriginal.FromFile(_moviesetDB.ImagesContainer.DiscArt.LocalFilePath, True)
+            If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.Fanart.LocalFilePath) Then _moviesetDB.ImagesContainer.Fanart.ImageOriginal.FromFile(_moviesetDB.ImagesContainer.Fanart.LocalFilePath, True)
+            If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.Landscape.LocalFilePath) Then _moviesetDB.ImagesContainer.Landscape.ImageOriginal.FromFile(_moviesetDB.ImagesContainer.Landscape.LocalFilePath, True)
+            If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.Poster.LocalFilePath) Then _moviesetDB.ImagesContainer.Poster.ImageOriginal.FromFile(_moviesetDB.ImagesContainer.Poster.LocalFilePath, True)
         End If
 
         Return _moviesetDB
@@ -2014,39 +2014,6 @@ Public Class Database
 
         Return _SeasonList
     End Function
-
-    ''' <summary>
-    ''' Get the posterpath for the AllSeasons entry.
-    ''' </summary>
-    ''' <param name="ShowID">ID of the show to load, as stored in the database</param>
-    ''' <param name="WithShow">If <c>True</c>, also retrieve base show information</param>
-    ''' <returns>Database.DBElement object</returns>
-    Public Function LoadTVAllSeasonsFromDB(ByVal ShowID As Long, Optional ByVal WithShow As Boolean = False) As Database.DBElement
-        If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
-
-        Dim _TVDB As New Database.DBElement
-        _TVDB.ShowID = ShowID
-        _TVDB.TVSeason = New MediaContainers.SeasonDetails With {.Season = 999}
-
-        Using SQLcommandTVSeason As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommandTVSeason.CommandText = String.Concat("SELECT idSeason FROM seasons WHERE idShow = ", ShowID, " AND Season = 999;")
-            Using SQLReader As SQLite.SQLiteDataReader = SQLcommandTVSeason.ExecuteReader
-                If SQLReader.HasRows Then
-                    SQLReader.Read()
-                    If Not DBNull.Value.Equals(SQLReader("idSeason")) Then _TVDB.ID = Convert.ToInt64(SQLReader("idSeason"))
-
-                    _TVDB.ImagesContainer.Banner.LocalFilePath = GetArtForItem(_TVDB.ID, "season", "banner")
-                    _TVDB.ImagesContainer.Fanart.LocalFilePath = GetArtForItem(_TVDB.ID, "season", "fanart")
-                    _TVDB.ImagesContainer.Landscape.LocalFilePath = GetArtForItem(_TVDB.ID, "season", "landscape")
-                    _TVDB.ImagesContainer.Poster.LocalFilePath = GetArtForItem(_TVDB.ID, "season", "poster")
-                End If
-            End Using
-        End Using
-
-        If WithShow Then Master.DB.AddTVShowInfoToDBElement(_TVDB)
-
-        Return _TVDB
-    End Function
     ''' <summary>
     ''' Load all the information for a TV Episode
     ''' </summary>
@@ -2237,8 +2204,8 @@ Public Class Database
 
         'ImagesContainer
         If withImages Then
-            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Fanart.LocalFilePath) Then _TVDB.ImagesContainer.Fanart.ImageOriginal.FromFile(_TVDB.ImagesContainer.Fanart.LocalFilePath)
-            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Poster.LocalFilePath) Then _TVDB.ImagesContainer.Poster.ImageOriginal.FromFile(_TVDB.ImagesContainer.Poster.LocalFilePath)
+            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Fanart.LocalFilePath) Then _TVDB.ImagesContainer.Fanart.ImageOriginal.FromFile(_TVDB.ImagesContainer.Fanart.LocalFilePath, True)
+            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Poster.LocalFilePath) Then _TVDB.ImagesContainer.Poster.ImageOriginal.FromFile(_TVDB.ImagesContainer.Poster.LocalFilePath, True)
         End If
 
         If withShow Then
@@ -2347,10 +2314,10 @@ Public Class Database
 
         'ImagesContainer
         If withImages Then
-            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Banner.LocalFilePath) Then _TVDB.ImagesContainer.Banner.ImageOriginal.FromFile(_TVDB.ImagesContainer.Banner.LocalFilePath)
-            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Fanart.LocalFilePath) Then _TVDB.ImagesContainer.Fanart.ImageOriginal.FromFile(_TVDB.ImagesContainer.Fanart.LocalFilePath)
-            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Landscape.LocalFilePath) Then _TVDB.ImagesContainer.Landscape.ImageOriginal.FromFile(_TVDB.ImagesContainer.Landscape.LocalFilePath)
-            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Poster.LocalFilePath) Then _TVDB.ImagesContainer.Poster.ImageOriginal.FromFile(_TVDB.ImagesContainer.Poster.LocalFilePath)
+            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Banner.LocalFilePath) Then _TVDB.ImagesContainer.Banner.ImageOriginal.FromFile(_TVDB.ImagesContainer.Banner.LocalFilePath, True)
+            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Fanart.LocalFilePath) Then _TVDB.ImagesContainer.Fanart.ImageOriginal.FromFile(_TVDB.ImagesContainer.Fanart.LocalFilePath, True)
+            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Landscape.LocalFilePath) Then _TVDB.ImagesContainer.Landscape.ImageOriginal.FromFile(_TVDB.ImagesContainer.Landscape.LocalFilePath, True)
+            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Poster.LocalFilePath) Then _TVDB.ImagesContainer.Poster.ImageOriginal.FromFile(_TVDB.ImagesContainer.Poster.LocalFilePath, True)
         End If
 
         If withShow Then
@@ -2514,17 +2481,17 @@ Public Class Database
 
         'ImagesContainer
         If withImages Then
-            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Banner.LocalFilePath) Then _TVDB.ImagesContainer.Banner.ImageOriginal.FromFile(_TVDB.ImagesContainer.Banner.LocalFilePath)
-            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.CharacterArt.LocalFilePath) Then _TVDB.ImagesContainer.CharacterArt.ImageOriginal.FromFile(_TVDB.ImagesContainer.CharacterArt.LocalFilePath)
-            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.ClearArt.LocalFilePath) Then _TVDB.ImagesContainer.ClearArt.ImageOriginal.FromFile(_TVDB.ImagesContainer.ClearArt.LocalFilePath)
-            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.ClearLogo.LocalFilePath) Then _TVDB.ImagesContainer.ClearLogo.ImageOriginal.FromFile(_TVDB.ImagesContainer.ClearLogo.LocalFilePath)
-            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Fanart.LocalFilePath) Then _TVDB.ImagesContainer.Fanart.ImageOriginal.FromFile(_TVDB.ImagesContainer.Fanart.LocalFilePath)
-            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Landscape.LocalFilePath) Then _TVDB.ImagesContainer.Landscape.ImageOriginal.FromFile(_TVDB.ImagesContainer.Landscape.LocalFilePath)
-            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Poster.LocalFilePath) Then _TVDB.ImagesContainer.Poster.ImageOriginal.FromFile(_TVDB.ImagesContainer.Poster.LocalFilePath)
+            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Banner.LocalFilePath) Then _TVDB.ImagesContainer.Banner.ImageOriginal.FromFile(_TVDB.ImagesContainer.Banner.LocalFilePath, True)
+            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.CharacterArt.LocalFilePath) Then _TVDB.ImagesContainer.CharacterArt.ImageOriginal.FromFile(_TVDB.ImagesContainer.CharacterArt.LocalFilePath, True)
+            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.ClearArt.LocalFilePath) Then _TVDB.ImagesContainer.ClearArt.ImageOriginal.FromFile(_TVDB.ImagesContainer.ClearArt.LocalFilePath, True)
+            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.ClearLogo.LocalFilePath) Then _TVDB.ImagesContainer.ClearLogo.ImageOriginal.FromFile(_TVDB.ImagesContainer.ClearLogo.LocalFilePath, True)
+            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Fanart.LocalFilePath) Then _TVDB.ImagesContainer.Fanart.ImageOriginal.FromFile(_TVDB.ImagesContainer.Fanart.LocalFilePath, True)
+            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Landscape.LocalFilePath) Then _TVDB.ImagesContainer.Landscape.ImageOriginal.FromFile(_TVDB.ImagesContainer.Landscape.LocalFilePath, True)
+            If Not String.IsNullOrEmpty(_TVDB.ImagesContainer.Poster.LocalFilePath) Then _TVDB.ImagesContainer.Poster.ImageOriginal.FromFile(_TVDB.ImagesContainer.Poster.LocalFilePath, True)
             If Not String.IsNullOrEmpty(_TVDB.ExtrafanartsPath) AndAlso Directory.Exists(_TVDB.ExtrafanartsPath) Then
                 For Each ePath As String In Directory.GetFiles(_TVDB.ExtrafanartsPath, "*.jpg")
                     Dim eImg As New MediaContainers.Image
-                    If Not exclExtraImages Then eImg.ImageOriginal.FromFile(ePath)
+                    If Not exclExtraImages Then eImg.ImageOriginal.FromFile(ePath, True)
                     eImg.LocalFilePath = ePath
                     _TVDB.ImagesContainer.Extrafanarts.Add(eImg)
                 Next

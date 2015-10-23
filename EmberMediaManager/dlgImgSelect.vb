@@ -275,10 +275,9 @@ Public Class dlgImgSelect
         Me.pbStatus.Visible = False
     End Sub
 
-    Public Function SetDefaults() As Boolean
+    Public Sub SetDefaults()
         Images.SetDefaultImages(tDBElementResult, tDefaultImagesContainer, tSearchResultsContainer, tScrapeModifier, tContentType, tDefaultSeasonImagesContainer, tDefaultEpisodeImagesContainer)
-        Return False
-    End Function
+    End Sub
 
     Private Function DownloadDefaultImages() As Boolean
 

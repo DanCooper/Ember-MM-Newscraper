@@ -82,145 +82,153 @@ Public Class dlgEditMovie
     Public Sub New()
         ' This call is required by the designer.
         InitializeComponent()
-        Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
-        Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
-        Me.StartPosition = FormStartPosition.Manual
+        Left = Master.AppPos.Left + (Master.AppPos.Width - Width) \ 2
+        Top = Master.AppPos.Top + (Master.AppPos.Height - Height) \ 2
+        StartPosition = FormStartPosition.Manual
     End Sub
 
     Public Overloads Function ShowDialog(ByVal DBMovie As Database.DBElement) As DialogResult
-        Me.tmpDBElement = DBMovie
+        tmpDBElement = DBMovie
         Return MyBase.ShowDialog()
     End Function
 
     Private Sub AddExtrafanartImage(ByVal sDescription As String, ByVal iIndex As Integer, tImage As MediaContainers.Image)
         Try
-            ReDim Preserve Me.pnlExtrafanartsImage(iIndex)
-            ReDim Preserve Me.pbExtrafanartsImage(iIndex)
-            Me.pnlExtrafanartsImage(iIndex) = New Panel()
-            Me.pbExtrafanartsImage(iIndex) = New PictureBox()
-            Me.pbExtrafanartsImage(iIndex).Name = iIndex.ToString
-            Me.pnlExtrafanartsImage(iIndex).Name = iIndex.ToString
-            Me.pnlExtrafanartsImage(iIndex).Size = New Size(128, 72)
-            Me.pbExtrafanartsImage(iIndex).Size = New Size(128, 72)
-            Me.pnlExtrafanartsImage(iIndex).BackColor = Color.White
-            Me.pnlExtrafanartsImage(iIndex).BorderStyle = BorderStyle.FixedSingle
-            Me.pbExtrafanartsImage(iIndex).SizeMode = PictureBoxSizeMode.Zoom
-            Me.pnlExtrafanartsImage(iIndex).Tag = tImage
-            Me.pbExtrafanartsImage(iIndex).Tag = tImage
-            Me.pbExtrafanartsImage(iIndex).Image = CType(tImage.ImageOriginal.Image.Clone(), Image)
-            Me.pnlExtrafanartsImage(iIndex).Left = iEFLeft
-            Me.pbExtrafanartsImage(iIndex).Left = 0
-            Me.pnlExtrafanartsImage(iIndex).Top = iEFTop
-            Me.pbExtrafanartsImage(iIndex).Top = 0
-            Me.pnlExtrafanarts.Controls.Add(Me.pnlExtrafanartsImage(iIndex))
-            Me.pnlExtrafanartsImage(iIndex).Controls.Add(Me.pbExtrafanartsImage(iIndex))
-            Me.pnlExtrafanartsImage(iIndex).BringToFront()
+            If tImage.ImageOriginal.Image Is Nothing Then
+                tImage.ImageOriginal.FromMemoryStream()
+            End If
+
+            ReDim Preserve pnlExtrafanartsImage(iIndex)
+            ReDim Preserve pbExtrafanartsImage(iIndex)
+            pnlExtrafanartsImage(iIndex) = New Panel()
+            pbExtrafanartsImage(iIndex) = New PictureBox()
+            pbExtrafanartsImage(iIndex).Name = iIndex.ToString
+            pnlExtrafanartsImage(iIndex).Name = iIndex.ToString
+            pnlExtrafanartsImage(iIndex).Size = New Size(128, 72)
+            pbExtrafanartsImage(iIndex).Size = New Size(128, 72)
+            pnlExtrafanartsImage(iIndex).BackColor = Color.White
+            pnlExtrafanartsImage(iIndex).BorderStyle = BorderStyle.FixedSingle
+            pbExtrafanartsImage(iIndex).SizeMode = PictureBoxSizeMode.Zoom
+            pnlExtrafanartsImage(iIndex).Tag = tImage
+            pbExtrafanartsImage(iIndex).Tag = tImage
+            pbExtrafanartsImage(iIndex).Image = CType(tImage.ImageOriginal.Image.Clone(), Image)
+            pnlExtrafanartsImage(iIndex).Left = iEFLeft
+            pbExtrafanartsImage(iIndex).Left = 0
+            pnlExtrafanartsImage(iIndex).Top = iEFTop
+            pbExtrafanartsImage(iIndex).Top = 0
+            pnlExtrafanarts.Controls.Add(pnlExtrafanartsImage(iIndex))
+            pnlExtrafanartsImage(iIndex).Controls.Add(pbExtrafanartsImage(iIndex))
+            pnlExtrafanartsImage(iIndex).BringToFront()
             AddHandler pbExtrafanartsImage(iIndex).Click, AddressOf pbExtrafanartsImage_Click
             AddHandler pnlExtrafanartsImage(iIndex).Click, AddressOf pnlExtrafanartsImage_Click
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
-        Me.iEFTop += 74
+        iEFTop += 74
 
     End Sub
 
     Private Sub AddExtrathumbImage(ByVal sDescription As String, ByVal iIndex As Integer, tImage As MediaContainers.Image)
         Try
-            ReDim Preserve Me.pnlExtrathumbsImage(iIndex)
-            ReDim Preserve Me.pbExtrathumbsImage(iIndex)
-            Me.pnlExtrathumbsImage(iIndex) = New Panel()
-            Me.pbExtrathumbsImage(iIndex) = New PictureBox()
-            Me.pbExtrathumbsImage(iIndex).Name = iIndex.ToString
-            Me.pnlExtrathumbsImage(iIndex).Name = iIndex.ToString
-            Me.pnlExtrathumbsImage(iIndex).Size = New Size(128, 72)
-            Me.pbExtrathumbsImage(iIndex).Size = New Size(128, 72)
-            Me.pnlExtrathumbsImage(iIndex).BackColor = Color.White
-            Me.pnlExtrathumbsImage(iIndex).BorderStyle = BorderStyle.FixedSingle
-            Me.pbExtrathumbsImage(iIndex).SizeMode = PictureBoxSizeMode.Zoom
-            Me.pnlExtrathumbsImage(iIndex).Tag = tImage
-            Me.pbExtrathumbsImage(iIndex).Tag = tImage
-            Me.pbExtrathumbsImage(iIndex).Image = CType(tImage.ImageOriginal.Image.Clone(), Image)
-            Me.pnlExtrathumbsImage(iIndex).Left = iETLeft
-            Me.pbExtrathumbsImage(iIndex).Left = 0
-            Me.pnlExtrathumbsImage(iIndex).Top = iETTop
-            Me.pbExtrathumbsImage(iIndex).Top = 0
-            Me.pnlExtrathumbs.Controls.Add(Me.pnlExtrathumbsImage(iIndex))
-            Me.pnlExtrathumbsImage(iIndex).Controls.Add(Me.pbExtrathumbsImage(iIndex))
-            Me.pnlExtrathumbsImage(iIndex).BringToFront()
+            If tImage.ImageOriginal.Image Is Nothing Then
+                tImage.ImageOriginal.FromMemoryStream()
+            End If
+
+            ReDim Preserve pnlExtrathumbsImage(iIndex)
+            ReDim Preserve pbExtrathumbsImage(iIndex)
+            pnlExtrathumbsImage(iIndex) = New Panel()
+            pbExtrathumbsImage(iIndex) = New PictureBox()
+            pbExtrathumbsImage(iIndex).Name = iIndex.ToString
+            pnlExtrathumbsImage(iIndex).Name = iIndex.ToString
+            pnlExtrathumbsImage(iIndex).Size = New Size(128, 72)
+            pbExtrathumbsImage(iIndex).Size = New Size(128, 72)
+            pnlExtrathumbsImage(iIndex).BackColor = Color.White
+            pnlExtrathumbsImage(iIndex).BorderStyle = BorderStyle.FixedSingle
+            pbExtrathumbsImage(iIndex).SizeMode = PictureBoxSizeMode.Zoom
+            pnlExtrathumbsImage(iIndex).Tag = tImage
+            pbExtrathumbsImage(iIndex).Tag = tImage
+            pbExtrathumbsImage(iIndex).Image = CType(tImage.ImageOriginal.Image.Clone(), Image)
+            pnlExtrathumbsImage(iIndex).Left = iETLeft
+            pbExtrathumbsImage(iIndex).Left = 0
+            pnlExtrathumbsImage(iIndex).Top = iETTop
+            pbExtrathumbsImage(iIndex).Top = 0
+            pnlExtrathumbs.Controls.Add(pnlExtrathumbsImage(iIndex))
+            pnlExtrathumbsImage(iIndex).Controls.Add(pbExtrathumbsImage(iIndex))
+            pnlExtrathumbsImage(iIndex).BringToFront()
             AddHandler pbExtrathumbsImage(iIndex).Click, AddressOf pbExtrathumbsImage_Click
             AddHandler pnlExtrathumbsImage(iIndex).Click, AddressOf pnlExtrathumbsImage_Click
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
-        Me.iETTop += 74
+        iETTop += 74
 
     End Sub
 
     Private Sub pbExtrafanartsImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
-        Me.DoSelectExtrafanart(Convert.ToInt32(DirectCast(sender, PictureBox).Name), DirectCast(DirectCast(sender, PictureBox).Tag, MediaContainers.Image))
+        DoSelectExtrafanart(Convert.ToInt32(DirectCast(sender, PictureBox).Name), DirectCast(DirectCast(sender, PictureBox).Tag, MediaContainers.Image))
     End Sub
 
     Private Sub pbExtrathumbsImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
-        Me.DoSelectExtrathumb(Convert.ToInt32(DirectCast(sender, PictureBox).Name), DirectCast(DirectCast(sender, PictureBox).Tag, MediaContainers.Image))
+        DoSelectExtrathumb(Convert.ToInt32(DirectCast(sender, PictureBox).Name), DirectCast(DirectCast(sender, PictureBox).Tag, MediaContainers.Image))
     End Sub
 
     Private Sub pnlExtrafanartsImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
-        Me.DoSelectExtrafanart(Convert.ToInt32(DirectCast(sender, Panel).Name), DirectCast(DirectCast(sender, Panel).Tag, MediaContainers.Image))
+        DoSelectExtrafanart(Convert.ToInt32(DirectCast(sender, Panel).Name), DirectCast(DirectCast(sender, Panel).Tag, MediaContainers.Image))
     End Sub
 
     Private Sub pnlExtrathumbsImage_Click(ByVal sender As Object, ByVal e As System.EventArgs)
-        Me.DoSelectExtrathumb(Convert.ToInt32(DirectCast(sender, Panel).Name), DirectCast(DirectCast(sender, Panel).Tag, MediaContainers.Image))
+        DoSelectExtrathumb(Convert.ToInt32(DirectCast(sender, Panel).Name), DirectCast(DirectCast(sender, Panel).Tag, MediaContainers.Image))
     End Sub
 
     Private Sub DoSelectExtrafanart(ByVal iIndex As Integer, tImg As MediaContainers.Image)
-        Me.pbExtrafanarts.Image = tImg.ImageOriginal.Image
-        Me.pbExtrafanarts.Tag = tImg
-        Me.btnExtrafanartsSetAsFanart.Enabled = True
-        Me.lblExtrafanartsSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbExtrafanarts.Image.Width, Me.pbExtrafanarts.Image.Height)
-        Me.lblExtrafanartsSize.Visible = True
+        pbExtrafanarts.Image = tImg.ImageOriginal.Image
+        pbExtrafanarts.Tag = tImg
+        btnExtrafanartsSetAsFanart.Enabled = True
+        lblExtrafanartsSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbExtrafanarts.Image.Width, pbExtrafanarts.Image.Height)
+        lblExtrafanartsSize.Visible = True
     End Sub
 
     Private Sub DoSelectExtrathumb(ByVal iIndex As Integer, tImg As MediaContainers.Image)
-        Me.currExtrathumbImage = tImg
+        currExtrathumbImage = tImg
 
-        Me.pbExtrathumbs.Image = tImg.ImageOriginal.Image
-        Me.pbExtrathumbs.Tag = tImg
-        Me.btnExtrathumbsSetAsFanart.Enabled = True
-        Me.lblExtrathumbsSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbExtrathumbs.Image.Width, Me.pbExtrathumbs.Image.Height)
-        Me.lblExtrathumbsSize.Visible = True
+        pbExtrathumbs.Image = tImg.ImageOriginal.Image
+        pbExtrathumbs.Tag = tImg
+        btnExtrathumbsSetAsFanart.Enabled = True
+        lblExtrathumbsSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbExtrathumbs.Image.Width, pbExtrathumbs.Image.Height)
+        lblExtrathumbsSize.Visible = True
 
         If tImg.Index > 0 Then
-            Me.btnExtrathumbsUp.Enabled = True
+            btnExtrathumbsUp.Enabled = True
         Else
-            Me.btnExtrathumbsUp.Enabled = False
+            btnExtrathumbsUp.Enabled = False
         End If
         If tImg.Index < tmpDBElement.ImagesContainer.Extrathumbs.Count - 1 Then
-            Me.btnExtrathumbsDown.Enabled = True
+            btnExtrathumbsDown.Enabled = True
         Else
-            Me.btnExtrathumbsDown.Enabled = False
+            btnExtrathumbsDown.Enabled = False
         End If
     End Sub
 
     Private Sub btnActorDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnActorDown.Click
-        If Me.lvActors.SelectedItems.Count > 0 AndAlso Me.lvActors.SelectedItems(0) IsNot Nothing AndAlso Me.lvActors.SelectedIndices(0) < (Me.lvActors.Items.Count - 1) Then
-            Dim iIndex As Integer = Me.lvActors.SelectedIndices(0)
-            Me.lvActors.Items.Insert(iIndex + 2, DirectCast(Me.lvActors.SelectedItems(0).Clone, ListViewItem))
-            Me.lvActors.Items.RemoveAt(iIndex)
-            Me.lvActors.Items(iIndex + 1).Selected = True
-            Me.lvActors.Select()
+        If lvActors.SelectedItems.Count > 0 AndAlso lvActors.SelectedItems(0) IsNot Nothing AndAlso lvActors.SelectedIndices(0) < (lvActors.Items.Count - 1) Then
+            Dim iIndex As Integer = lvActors.SelectedIndices(0)
+            lvActors.Items.Insert(iIndex + 2, DirectCast(lvActors.SelectedItems(0).Clone, ListViewItem))
+            lvActors.Items.RemoveAt(iIndex)
+            lvActors.Items(iIndex + 1).Selected = True
+            lvActors.Select()
         End If
     End Sub
 
     Private Sub btnActorUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnActorUp.Click
         Try
-            If Me.lvActors.SelectedItems.Count > 0 AndAlso Me.lvActors.SelectedItems(0) IsNot Nothing AndAlso Me.lvActors.SelectedIndices(0) > 0 Then
-                Dim iIndex As Integer = Me.lvActors.SelectedIndices(0)
-                Me.lvActors.Items.Insert(iIndex - 1, DirectCast(Me.lvActors.SelectedItems(0).Clone, ListViewItem))
-                Me.lvActors.Items.RemoveAt(iIndex + 1)
-                Me.lvActors.Items(iIndex - 1).Selected = True
-                Me.lvActors.Select()
+            If lvActors.SelectedItems.Count > 0 AndAlso lvActors.SelectedItems(0) IsNot Nothing AndAlso lvActors.SelectedIndices(0) > 0 Then
+                Dim iIndex As Integer = lvActors.SelectedIndices(0)
+                lvActors.Items.Insert(iIndex - 1, DirectCast(lvActors.SelectedItems(0).Clone, ListViewItem))
+                lvActors.Items.RemoveAt(iIndex + 1)
+                lvActors.Items(iIndex - 1).Selected = True
+                lvActors.Select()
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -234,7 +242,7 @@ Public Class dlgEditMovie
                 eActor = dAddEditActor.ShowDialog(True)
             End Using
             If eActor IsNot Nothing Then
-                Dim lvItem As ListViewItem = Me.lvActors.Items.Add(eActor.ID.ToString)
+                Dim lvItem As ListViewItem = lvActors.Items.Add(eActor.ID.ToString)
                 lvItem.SubItems.Add(eActor.Name)
                 lvItem.SubItems.Add(eActor.Role)
                 lvItem.SubItems.Add(eActor.URLOriginal)
@@ -246,26 +254,26 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub btnChangeMovie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnChangeMovie.Click
-        Me.ThemeStop()
-        Me.TrailerStop()
+        ThemeStop()
+        TrailerStop()
 
-        Me.CleanUp()
+        CleanUp()
 
-        Me.DialogResult = System.Windows.Forms.DialogResult.Abort
-        Me.Close()
+        DialogResult = System.Windows.Forms.DialogResult.Abort
+        Close()
     End Sub
 
     Private Sub btnDLTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         'Dim aUrlList As New List(Of Themes)
         'Dim tURL As String = String.Empty
-        'If Not ModulesManager.Instance.ScrapeTheme_Movie(Me.tmpDBMovie, aUrlList) Then
+        'If Not ModulesManager.Instance.ScrapeTheme_Movie(tmpDBMovie, aUrlList) Then
         '    Using dThemeSelect As New dlgThemeSelect()
-        '        MovieTheme = dThemeSelect.ShowDialog(Me.tmpDBMovie, aUrlList)
+        '        MovieTheme = dThemeSelect.ShowDialog(tmpDBMovie, aUrlList)
         '    End Using
         'End If
 
         'If Not String.IsNullOrEmpty(MovieTheme.URL) Then
-        '    'Me.btnPlayTheme.Enabled = True
+        '    'btnPlayTheme.Enabled = True
         'End If
     End Sub
 
@@ -277,13 +285,13 @@ Public Class dlgEditMovie
 
         Try
             dlgTrlS = New dlgTrailerSelect()
-            If dlgTrlS.ShowDialog(Me.tmpDBElement, tList, True, True, True) = Windows.Forms.DialogResult.OK Then
+            If dlgTrlS.ShowDialog(tmpDBElement, tList, True, True, True) = Windows.Forms.DialogResult.OK Then
                 tURL = dlgTrlS.Result.URLWebsite
             End If
 
             If Not String.IsNullOrEmpty(tURL) Then
-                Me.btnPlayTrailer.Enabled = True
-                Me.txtTrailer.Text = tURL
+                btnPlayTrailer.Enabled = True
+                txtTrailer.Text = tURL
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -291,22 +299,22 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub btnExtrathumbsDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExtrathumbsDown.Click
-        If tmpDBElement.ImagesContainer.Extrathumbs.Count > 0 AndAlso Me.currExtrathumbImage.Index < tmpDBElement.ImagesContainer.Extrathumbs.Count - 1 Then
-            Dim iIndex As Integer = Me.currExtrathumbImage.Index
+        If tmpDBElement.ImagesContainer.Extrathumbs.Count > 0 AndAlso currExtrathumbImage.Index < tmpDBElement.ImagesContainer.Extrathumbs.Count - 1 Then
+            Dim iIndex As Integer = currExtrathumbImage.Index
             tmpDBElement.ImagesContainer.Extrathumbs.Item(iIndex).Index = tmpDBElement.ImagesContainer.Extrathumbs.Item(iIndex).Index + 1
             tmpDBElement.ImagesContainer.Extrathumbs.Item(iIndex + 1).Index = tmpDBElement.ImagesContainer.Extrathumbs.Item(iIndex + 1).Index - 1
             RefreshExtrathumbs()
-            Me.DoSelectExtrathumb(iIndex + 1, CType(pnlExtrathumbsImage(iIndex + 1).Tag, MediaContainers.Image))
+            DoSelectExtrathumb(iIndex + 1, CType(pnlExtrathumbsImage(iIndex + 1).Tag, MediaContainers.Image))
         End If
     End Sub
 
     Private Sub btnExtrathumbsUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExtrathumbsUp.Click
-        If tmpDBElement.ImagesContainer.Extrathumbs.Count > 0 AndAlso Me.currExtrathumbImage.Index > 0 Then
-            Dim iIndex As Integer = Me.currExtrathumbImage.Index
+        If tmpDBElement.ImagesContainer.Extrathumbs.Count > 0 AndAlso currExtrathumbImage.Index > 0 Then
+            Dim iIndex As Integer = currExtrathumbImage.Index
             tmpDBElement.ImagesContainer.Extrathumbs.Item(iIndex).Index = tmpDBElement.ImagesContainer.Extrathumbs.Item(iIndex).Index - 1
             tmpDBElement.ImagesContainer.Extrathumbs.Item(iIndex - 1).Index = tmpDBElement.ImagesContainer.Extrathumbs.Item(iIndex - 1).Index + 1
             RefreshExtrathumbs()
-            Me.DoSelectExtrathumb(iIndex - 1, CType(pnlExtrathumbsImage(iIndex - 1).Tag, MediaContainers.Image))
+            DoSelectExtrathumb(iIndex - 1, CType(pnlExtrathumbsImage(iIndex - 1).Tag, MediaContainers.Image))
         End If
     End Sub
 
@@ -316,9 +324,9 @@ Public Class dlgEditMovie
 
     Private Sub btnManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnManual.Click
         Try
-            If dlgManualEdit.ShowDialog(Me.tmpDBElement.NfoPath) = Windows.Forms.DialogResult.OK Then
-                Me.tmpDBElement.Movie = NFO.LoadMovieFromNFO(Me.tmpDBElement.NfoPath, Me.tmpDBElement.IsSingle)
-                Me.FillInfo(False)
+            If dlgManualEdit.ShowDialog(tmpDBElement.NfoPath) = Windows.Forms.DialogResult.OK Then
+                tmpDBElement.Movie = NFO.LoadMovieFromNFO(tmpDBElement.NfoPath, tmpDBElement.IsSingle)
+                FillInfo(False)
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -331,8 +339,8 @@ Public Class dlgEditMovie
 
             Dim tPath As String = String.Empty
 
-            If Not String.IsNullOrEmpty(Me.txtTrailer.Text) Then
-                tPath = String.Concat("""", Me.txtTrailer.Text, """")
+            If Not String.IsNullOrEmpty(txtTrailer.Text) Then
+                tPath = String.Concat("""", txtTrailer.Text, """")
             End If
 
             If Not String.IsNullOrEmpty(tPath) Then
@@ -361,8 +369,8 @@ Public Class dlgEditMovie
 
             Dim tPath As String = String.Empty
 
-            If Not String.IsNullOrEmpty(Me.tmpDBElement.ThemePath) Then
-                tPath = String.Concat("""", Me.tmpDBElement.ThemePath, """")
+            If Not String.IsNullOrEmpty(tmpDBElement.ThemePath) Then
+                tPath = String.Concat("""", tmpDBElement.ThemePath, """")
             End If
 
             If Not String.IsNullOrEmpty(tPath) Then
@@ -383,62 +391,62 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub btnRemoveBanner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveBanner.Click
-        Me.pbBanner.Image = Nothing
-        Me.pbBanner.Tag = Nothing
-        Me.tmpDBElement.ImagesContainer.Banner = New MediaContainers.Image
+        pbBanner.Image = Nothing
+        pbBanner.Tag = Nothing
+        tmpDBElement.ImagesContainer.Banner = New MediaContainers.Image
     End Sub
 
     Private Sub btnRemoveClearArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveClearArt.Click
-        Me.pbClearArt.Image = Nothing
-        Me.pbClearArt.Tag = Nothing
-        Me.tmpDBElement.ImagesContainer.ClearArt = New MediaContainers.Image
+        pbClearArt.Image = Nothing
+        pbClearArt.Tag = Nothing
+        tmpDBElement.ImagesContainer.ClearArt = New MediaContainers.Image
     End Sub
 
     Private Sub btnRemoveClearLogo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveClearLogo.Click
-        Me.pbClearLogo.Image = Nothing
-        Me.pbClearLogo.Tag = Nothing
-        Me.tmpDBElement.ImagesContainer.ClearLogo = New MediaContainers.Image
+        pbClearLogo.Image = Nothing
+        pbClearLogo.Tag = Nothing
+        tmpDBElement.ImagesContainer.ClearLogo = New MediaContainers.Image
     End Sub
 
     Private Sub btnRemoveDiscArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveDiscArt.Click
-        Me.pbDiscArt.Image = Nothing
-        Me.pbDiscArt.Tag = Nothing
-        Me.tmpDBElement.ImagesContainer.DiscArt = New MediaContainers.Image
+        pbDiscArt.Image = Nothing
+        pbDiscArt.Tag = Nothing
+        tmpDBElement.ImagesContainer.DiscArt = New MediaContainers.Image
     End Sub
 
     Private Sub btnRemoveFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveFanart.Click
-        Me.pbFanart.Image = Nothing
-        Me.pbFanart.Tag = Nothing
-        Me.tmpDBElement.ImagesContainer.Fanart = New MediaContainers.Image
+        pbFanart.Image = Nothing
+        pbFanart.Tag = Nothing
+        tmpDBElement.ImagesContainer.Fanart = New MediaContainers.Image
     End Sub
 
     Private Sub btnRemoveLandscape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveLandscape.Click
-        Me.pbLandscape.Image = Nothing
-        Me.pbLandscape.Tag = Nothing
-        Me.tmpDBElement.ImagesContainer.Landscape = New MediaContainers.Image
+        pbLandscape.Image = Nothing
+        pbLandscape.Tag = Nothing
+        tmpDBElement.ImagesContainer.Landscape = New MediaContainers.Image
     End Sub
 
     Private Sub btnRemovePoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemovePoster.Click
-        Me.pbPoster.Image = Nothing
-        Me.pbPoster.Tag = Nothing
-        Me.tmpDBElement.ImagesContainer.Poster = New MediaContainers.Image
+        pbPoster.Image = Nothing
+        pbPoster.Tag = Nothing
+        tmpDBElement.ImagesContainer.Poster = New MediaContainers.Image
     End Sub
 
     Private Sub btnRemoveSubtitle_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveSubtitle.Click
-        Me.DeleteSubtitle()
+        DeleteSubtitle()
     End Sub
 
     Private Sub btnRemoveTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveTheme.Click
-        Me.ThemeStop()
-        'Me.axVLCTheme.playlist.items.clear()
-        Me.MovieTheme.Dispose()
-        Me.MovieTheme.toRemove = True
+        ThemeStop()
+        'axVLCTheme.playlist.items.clear()
+        MovieTheme.Dispose()
+        MovieTheme.toRemove = True
     End Sub
 
     Private Sub btnRemoveTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveTrailer.Click
-        Me.TrailerStop()
-        Me.TrailerPlaylistClear()
-        Me.tmpDBElement.Trailer = New MediaContainers.Trailer
+        TrailerStop()
+        TrailerPlaylistClear()
+        tmpDBElement.Trailer = New MediaContainers.Trailer
     End Sub
 
     Private Sub btnExtrafanartsRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExtrafanartsRemove.Click
@@ -451,34 +459,34 @@ Public Class dlgEditMovie
 
     Private Sub RemoveExtrafanart()
         If pbExtrafanarts.Tag IsNot Nothing Then
-            Me.tmpDBElement.ImagesContainer.Extrafanarts.Remove(DirectCast(Me.pbExtrafanarts.Tag, MediaContainers.Image))
-            Me.RefreshExtrafanarts()
-            Me.lblExtrafanartsSize.Text = ""
-            Me.lblExtrafanartsSize.Visible = False
+            tmpDBElement.ImagesContainer.Extrafanarts.Remove(DirectCast(pbExtrafanarts.Tag, MediaContainers.Image))
+            RefreshExtrafanarts()
+            lblExtrafanartsSize.Text = ""
+            lblExtrafanartsSize.Visible = False
         End If
     End Sub
 
     Private Sub RemoveExtrathumb()
         If pbExtrathumbs.Tag IsNot Nothing Then
-            Me.tmpDBElement.ImagesContainer.Extrathumbs.Remove(DirectCast(Me.pbExtrathumbs.Tag, MediaContainers.Image))
-            Me.RefreshExtrathumbs()
-            Me.lblExtrafanartsSize.Text = ""
-            Me.lblExtrafanartsSize.Visible = False
+            tmpDBElement.ImagesContainer.Extrathumbs.Remove(DirectCast(pbExtrathumbs.Tag, MediaContainers.Image))
+            RefreshExtrathumbs()
+            lblExtrafanartsSize.Text = ""
+            lblExtrafanartsSize.Visible = False
         End If
     End Sub
 
     Private Sub btnRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemove.Click
-        Me.DeleteActors()
+        DeleteActors()
     End Sub
 
     Private Sub btnRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRescrape.Click
-        Me.ThemeStop()
-        Me.TrailerStop()
+        ThemeStop()
+        TrailerStop()
 
-        Me.CleanUp()
+        CleanUp()
 
-        Me.DialogResult = System.Windows.Forms.DialogResult.Retry
-        Me.Close()
+        DialogResult = System.Windows.Forms.DialogResult.Retry
+        Close()
     End Sub
 
     Private Sub btnSetBannerDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetBannerDL.Click
@@ -488,12 +496,12 @@ Public Class dlgEditMovie
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
                     If tImage.ImageOriginal.Image IsNot Nothing Then
-                        Me.tmpDBElement.ImagesContainer.Banner = tImage
-                        Me.pbBanner.Image = Me.tmpDBElement.ImagesContainer.Banner.ImageOriginal.Image
-                        Me.pbBanner.Tag = Me.tmpDBElement.ImagesContainer.Banner
+                        tmpDBElement.ImagesContainer.Banner = tImage
+                        pbBanner.Image = tmpDBElement.ImagesContainer.Banner.ImageOriginal.Image
+                        pbBanner.Tag = tmpDBElement.ImagesContainer.Banner
 
-                        Me.lblBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbBanner.Image.Width, Me.pbBanner.Image.Height)
-                        Me.lblBannerSize.Visible = True
+                        lblBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbBanner.Image.Width, pbBanner.Image.Height)
+                        lblBannerSize.Visible = True
                     End If
                 End If
             End Using
@@ -507,16 +515,16 @@ Public Class dlgEditMovie
         Dim ScrapeModifier As New Structures.ScrapeModifier
 
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainBanner, True)
-        If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBElement, aContainer, ScrapeModifier, True) Then
+        If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifier, True) Then
             If aContainer.MainBanners.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(Me.tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
+                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
                     Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.Banner
-                    Me.tmpDBElement.ImagesContainer.Banner = pResults
+                    tmpDBElement.ImagesContainer.Banner = pResults
                     If pResults.ImageOriginal.Image IsNot Nothing Then
-                        Me.pbBanner.Image = CType(pResults.ImageOriginal.Image.Clone(), Image)
-                        Me.lblBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbBanner.Image.Width, Me.pbBanner.Image.Height)
-                        Me.lblBannerSize.Visible = True
+                        pbBanner.Image = CType(pResults.ImageOriginal.Image.Clone(), Image)
+                        lblBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbBanner.Image.Width, pbBanner.Image.Height)
+                        lblBannerSize.Visible = True
                     End If
                     Cursor = Cursors.Default
                 End If
@@ -529,18 +537,18 @@ Public Class dlgEditMovie
     Private Sub btnSetBannerLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetBannerLocal.Click
         Try
             With ofdLocalFiles
-                .InitialDirectory = Directory.GetParent(Me.tmpDBElement.Filename).FullName
+                .InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
                 .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
                 .FilterIndex = 0
             End With
 
             If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
-                Me.tmpDBElement.ImagesContainer.Banner.ImageOriginal.FromFile(ofdLocalFiles.FileName)
-                Me.pbBanner.Image = Me.tmpDBElement.ImagesContainer.Banner.ImageOriginal.Image
-                Me.pbBanner.Tag = Me.tmpDBElement.ImagesContainer.Banner
+                tmpDBElement.ImagesContainer.Banner.ImageOriginal.FromFile(ofdLocalFiles.FileName)
+                pbBanner.Image = tmpDBElement.ImagesContainer.Banner.ImageOriginal.Image
+                pbBanner.Tag = tmpDBElement.ImagesContainer.Banner
 
-                Me.lblBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbBanner.Image.Width, Me.pbBanner.Image.Height)
-                Me.lblBannerSize.Visible = True
+                lblBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbBanner.Image.Width, pbBanner.Image.Height)
+                lblBannerSize.Visible = True
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -554,12 +562,12 @@ Public Class dlgEditMovie
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
                     If tImage.ImageOriginal.Image IsNot Nothing Then
-                        Me.tmpDBElement.ImagesContainer.ClearArt = tImage
-                        Me.pbClearArt.Image = Me.tmpDBElement.ImagesContainer.ClearArt.ImageOriginal.Image
-                        Me.pbClearArt.Tag = Me.tmpDBElement.ImagesContainer.ClearArt
+                        tmpDBElement.ImagesContainer.ClearArt = tImage
+                        pbClearArt.Image = tmpDBElement.ImagesContainer.ClearArt.ImageOriginal.Image
+                        pbClearArt.Tag = tmpDBElement.ImagesContainer.ClearArt
 
-                        Me.lblClearArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbClearArt.Image.Width, Me.pbClearArt.Image.Height)
-                        Me.lblClearArtSize.Visible = True
+                        lblClearArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbClearArt.Image.Width, pbClearArt.Image.Height)
+                        lblClearArtSize.Visible = True
                     End If
                 End If
             End Using
@@ -573,16 +581,16 @@ Public Class dlgEditMovie
         Dim ScrapeModifier As New Structures.ScrapeModifier
 
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainClearArt, True)
-        If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBElement, aContainer, ScrapeModifier, True) Then
+        If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifier, True) Then
             If aContainer.MainClearArts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(Me.tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
+                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
                     Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.ClearArt
-                    Me.tmpDBElement.ImagesContainer.ClearArt = pResults
+                    tmpDBElement.ImagesContainer.ClearArt = pResults
                     If pResults.ImageOriginal.Image IsNot Nothing Then
-                        Me.pbClearArt.Image = CType(pResults.ImageOriginal.Image.Clone(), Image)
-                        Me.lblClearArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbClearArt.Image.Width, Me.pbClearArt.Image.Height)
-                        Me.lblClearArtSize.Visible = True
+                        pbClearArt.Image = CType(pResults.ImageOriginal.Image.Clone(), Image)
+                        lblClearArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbClearArt.Image.Width, pbClearArt.Image.Height)
+                        lblClearArtSize.Visible = True
                     End If
                     Cursor = Cursors.Default
                 End If
@@ -595,18 +603,18 @@ Public Class dlgEditMovie
     Private Sub btnSetClearArtLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetClearArtLocal.Click
         Try
             With ofdLocalFiles
-                .InitialDirectory = Directory.GetParent(Me.tmpDBElement.Filename).FullName
+                .InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
                 .Filter = Master.eLang.GetString(497, "Images") + "|*.png"
                 .FilterIndex = 0
             End With
 
             If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
-                Me.tmpDBElement.ImagesContainer.ClearArt.ImageOriginal.FromFile(ofdLocalFiles.FileName)
-                Me.pbClearArt.Image = Me.tmpDBElement.ImagesContainer.ClearArt.ImageOriginal.Image
-                Me.pbClearArt.Tag = Me.tmpDBElement.ImagesContainer.ClearArt
+                tmpDBElement.ImagesContainer.ClearArt.ImageOriginal.FromFile(ofdLocalFiles.FileName)
+                pbClearArt.Image = tmpDBElement.ImagesContainer.ClearArt.ImageOriginal.Image
+                pbClearArt.Tag = tmpDBElement.ImagesContainer.ClearArt
 
-                Me.lblClearArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbClearArt.Image.Width, Me.pbClearArt.Image.Height)
-                Me.lblClearArtSize.Visible = True
+                lblClearArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbClearArt.Image.Width, pbClearArt.Image.Height)
+                lblClearArtSize.Visible = True
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -620,12 +628,12 @@ Public Class dlgEditMovie
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
                     If tImage.ImageOriginal.Image IsNot Nothing Then
-                        Me.tmpDBElement.ImagesContainer.ClearLogo = tImage
-                        Me.pbClearLogo.Image = Me.tmpDBElement.ImagesContainer.ClearLogo.ImageOriginal.Image
-                        Me.pbClearLogo.Tag = Me.tmpDBElement.ImagesContainer.ClearLogo
+                        tmpDBElement.ImagesContainer.ClearLogo = tImage
+                        pbClearLogo.Image = tmpDBElement.ImagesContainer.ClearLogo.ImageOriginal.Image
+                        pbClearLogo.Tag = tmpDBElement.ImagesContainer.ClearLogo
 
-                        Me.lblClearLogoSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbClearLogo.Image.Width, Me.pbClearLogo.Image.Height)
-                        Me.lblClearLogoSize.Visible = True
+                        lblClearLogoSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbClearLogo.Image.Width, pbClearLogo.Image.Height)
+                        lblClearLogoSize.Visible = True
                     End If
                 End If
             End Using
@@ -639,16 +647,16 @@ Public Class dlgEditMovie
         Dim ScrapeModifier As New Structures.ScrapeModifier
 
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainClearLogo, True)
-        If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBElement, aContainer, ScrapeModifier, True) Then
+        If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifier, True) Then
             If aContainer.MainClearLogos.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(Me.tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
+                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
                     Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.ClearLogo
-                    Me.tmpDBElement.ImagesContainer.ClearLogo = pResults
+                    tmpDBElement.ImagesContainer.ClearLogo = pResults
                     If pResults.ImageOriginal.Image IsNot Nothing Then
-                        Me.pbClearLogo.Image = CType(pResults.ImageOriginal.Image.Clone(), Image)
-                        Me.lblClearLogoSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbClearLogo.Image.Width, Me.pbClearLogo.Image.Height)
-                        Me.lblClearLogoSize.Visible = True
+                        pbClearLogo.Image = CType(pResults.ImageOriginal.Image.Clone(), Image)
+                        lblClearLogoSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbClearLogo.Image.Width, pbClearLogo.Image.Height)
+                        lblClearLogoSize.Visible = True
                     End If
                     Cursor = Cursors.Default
                 End If
@@ -661,18 +669,18 @@ Public Class dlgEditMovie
     Private Sub btnSetClearLogoLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetClearLogoLocal.Click
         Try
             With ofdLocalFiles
-                .InitialDirectory = Directory.GetParent(Me.tmpDBElement.Filename).FullName
+                .InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
                 .Filter = Master.eLang.GetString(497, "Images") + "|*.png"
                 .FilterIndex = 0
             End With
 
             If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
-                Me.tmpDBElement.ImagesContainer.ClearLogo.ImageOriginal.FromFile(ofdLocalFiles.FileName)
-                Me.pbClearLogo.Image = Me.tmpDBElement.ImagesContainer.ClearLogo.ImageOriginal.Image
-                Me.pbClearLogo.Tag = Me.tmpDBElement.ImagesContainer.ClearLogo
+                tmpDBElement.ImagesContainer.ClearLogo.ImageOriginal.FromFile(ofdLocalFiles.FileName)
+                pbClearLogo.Image = tmpDBElement.ImagesContainer.ClearLogo.ImageOriginal.Image
+                pbClearLogo.Tag = tmpDBElement.ImagesContainer.ClearLogo
 
-                Me.lblClearLogoSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbClearLogo.Image.Width, Me.pbClearLogo.Image.Height)
-                Me.lblClearLogoSize.Visible = True
+                lblClearLogoSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbClearLogo.Image.Width, pbClearLogo.Image.Height)
+                lblClearLogoSize.Visible = True
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -686,12 +694,12 @@ Public Class dlgEditMovie
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
                     If tImage.ImageOriginal.Image IsNot Nothing Then
-                        Me.tmpDBElement.ImagesContainer.DiscArt = tImage
-                        Me.pbDiscArt.Image = Me.tmpDBElement.ImagesContainer.DiscArt.ImageOriginal.Image
-                        Me.pbDiscArt.Tag = Me.tmpDBElement.ImagesContainer.DiscArt
+                        tmpDBElement.ImagesContainer.DiscArt = tImage
+                        pbDiscArt.Image = tmpDBElement.ImagesContainer.DiscArt.ImageOriginal.Image
+                        pbDiscArt.Tag = tmpDBElement.ImagesContainer.DiscArt
 
-                        Me.lblDiscArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbDiscArt.Image.Width, Me.pbDiscArt.Image.Height)
-                        Me.lblDiscArtSize.Visible = True
+                        lblDiscArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbDiscArt.Image.Width, pbDiscArt.Image.Height)
+                        lblDiscArtSize.Visible = True
                     End If
                 End If
             End Using
@@ -705,16 +713,16 @@ Public Class dlgEditMovie
         Dim ScrapeModifier As New Structures.ScrapeModifier
 
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainDiscArt, True)
-        If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBElement, aContainer, ScrapeModifier, True) Then
+        If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifier, True) Then
             If aContainer.MainDiscArts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(Me.tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
+                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
                     Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.DiscArt
-                    Me.tmpDBElement.ImagesContainer.DiscArt = pResults
+                    tmpDBElement.ImagesContainer.DiscArt = pResults
                     If pResults.ImageOriginal.Image IsNot Nothing Then
-                        Me.pbDiscArt.Image = CType(pResults.ImageOriginal.Image.Clone(), Image)
-                        Me.lblDiscArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbDiscArt.Image.Width, Me.pbDiscArt.Image.Height)
-                        Me.lblDiscArtSize.Visible = True
+                        pbDiscArt.Image = CType(pResults.ImageOriginal.Image.Clone(), Image)
+                        lblDiscArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbDiscArt.Image.Width, pbDiscArt.Image.Height)
+                        lblDiscArtSize.Visible = True
                     End If
                     Cursor = Cursors.Default
                 End If
@@ -727,18 +735,18 @@ Public Class dlgEditMovie
     Private Sub btnSetDiscArtLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetDiscArtLocal.Click
         Try
             With ofdLocalFiles
-                .InitialDirectory = Directory.GetParent(Me.tmpDBElement.Filename).FullName
+                .InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
                 .Filter = Master.eLang.GetString(497, "Images") + "|*.png"
                 .FilterIndex = 0
             End With
 
             If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
-                Me.tmpDBElement.ImagesContainer.DiscArt.ImageOriginal.FromFile(ofdLocalFiles.FileName)
-                Me.pbDiscArt.Image = Me.tmpDBElement.ImagesContainer.DiscArt.ImageOriginal.Image
-                Me.pbDiscArt.Tag = Me.tmpDBElement.ImagesContainer.DiscArt
+                tmpDBElement.ImagesContainer.DiscArt.ImageOriginal.FromFile(ofdLocalFiles.FileName)
+                pbDiscArt.Image = tmpDBElement.ImagesContainer.DiscArt.ImageOriginal.Image
+                pbDiscArt.Tag = tmpDBElement.ImagesContainer.DiscArt
 
-                Me.lblDiscArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbDiscArt.Image.Width, Me.pbDiscArt.Image.Height)
-                Me.lblDiscArtSize.Visible = True
+                lblDiscArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbDiscArt.Image.Width, pbDiscArt.Image.Height)
+                lblDiscArtSize.Visible = True
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -746,24 +754,24 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub btnExtrafanartsSetAsFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExtrafanartsSetAsFanart.Click
-        If Me.pbExtrafanarts.Tag IsNot Nothing Then
-            Me.tmpDBElement.ImagesContainer.Fanart = DirectCast(Me.pbExtrafanarts.Tag, MediaContainers.Image)
-            Me.pbFanart.Image = Me.tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
-            Me.pbFanart.Tag = Me.tmpDBElement.ImagesContainer.Fanart
+        If pbExtrafanarts.Tag IsNot Nothing Then
+            tmpDBElement.ImagesContainer.Fanart = DirectCast(pbExtrafanarts.Tag, MediaContainers.Image)
+            pbFanart.Image = tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
+            pbFanart.Tag = tmpDBElement.ImagesContainer.Fanart
 
-            Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
-            Me.lblFanartSize.Visible = True
+            lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbFanart.Image.Width, pbFanart.Image.Height)
+            lblFanartSize.Visible = True
         End If
     End Sub
 
     Private Sub btnExtrathumbsSetAsFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExtrathumbsSetAsFanart.Click
-        If Me.pbExtrathumbs.Tag IsNot Nothing Then
-            Me.tmpDBElement.ImagesContainer.Fanart = DirectCast(Me.pbExtrathumbs.Tag, MediaContainers.Image)
-            Me.pbFanart.Image = Me.tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
-            Me.pbFanart.Tag = Me.tmpDBElement.ImagesContainer.Fanart
+        If pbExtrathumbs.Tag IsNot Nothing Then
+            tmpDBElement.ImagesContainer.Fanart = DirectCast(pbExtrathumbs.Tag, MediaContainers.Image)
+            pbFanart.Image = tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
+            pbFanart.Tag = tmpDBElement.ImagesContainer.Fanart
 
-            Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
-            Me.lblFanartSize.Visible = True
+            lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbFanart.Image.Width, pbFanart.Image.Height)
+            lblFanartSize.Visible = True
         End If
     End Sub
 
@@ -772,11 +780,11 @@ Public Class dlgEditMovie
         Dim ScrapeModifier As New Structures.ScrapeModifier
 
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainExtrafanarts, True)
-        If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBElement, aContainer, ScrapeModifier, True) Then
+        If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifier, True) Then
             If aContainer.MainFanarts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(Me.tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
-                    Me.tmpDBElement.ImagesContainer.Extrafanarts = dlgImgS.Result.ImagesContainer.Extrafanarts
+                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
+                    tmpDBElement.ImagesContainer.Extrafanarts = dlgImgS.Result.ImagesContainer.Extrafanarts
                     RefreshExtrafanarts()
                     Cursor = Cursors.Default
                 End If
@@ -791,11 +799,11 @@ Public Class dlgEditMovie
         Dim ScrapeModifier As New Structures.ScrapeModifier
 
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainExtrathumbs, True)
-        If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBElement, aContainer, ScrapeModifier, True) Then
+        If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifier, True) Then
             If aContainer.MainFanarts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(Me.tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
-                    Me.tmpDBElement.ImagesContainer.Extrathumbs = dlgImgS.Result.ImagesContainer.Extrathumbs
+                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
+                    tmpDBElement.ImagesContainer.Extrathumbs = dlgImgS.Result.ImagesContainer.Extrathumbs
                     RefreshExtrathumbs()
                     Cursor = Cursors.Default
                 End If
@@ -812,12 +820,12 @@ Public Class dlgEditMovie
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
                     If tImage.ImageOriginal.Image IsNot Nothing Then
-                        Me.tmpDBElement.ImagesContainer.Fanart = tImage
-                        Me.pbFanart.Image = Me.tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
-                        Me.pbFanart.Tag = Me.tmpDBElement.ImagesContainer.Fanart
+                        tmpDBElement.ImagesContainer.Fanart = tImage
+                        pbFanart.Image = tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
+                        pbFanart.Tag = tmpDBElement.ImagesContainer.Fanart
 
-                        Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
-                        Me.lblFanartSize.Visible = True
+                        lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbFanart.Image.Width, pbFanart.Image.Height)
+                        lblFanartSize.Visible = True
                     End If
                 End If
             End Using
@@ -831,16 +839,16 @@ Public Class dlgEditMovie
         Dim ScrapeModifier As New Structures.ScrapeModifier
 
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainFanart, True)
-        If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBElement, aContainer, ScrapeModifier, True) Then
+        If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifier, True) Then
             If aContainer.MainFanarts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(Me.tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
+                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
                     Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.Fanart
-                    Me.tmpDBElement.ImagesContainer.Fanart = pResults
+                    tmpDBElement.ImagesContainer.Fanart = pResults
                     If pResults.ImageOriginal.Image IsNot Nothing Then
-                        Me.pbFanart.Image = CType(pResults.ImageOriginal.Image.Clone(), Image)
-                        Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
-                        Me.lblFanartSize.Visible = True
+                        pbFanart.Image = CType(pResults.ImageOriginal.Image.Clone(), Image)
+                        lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbFanart.Image.Width, pbFanart.Image.Height)
+                        lblFanartSize.Visible = True
                     End If
                     Cursor = Cursors.Default
                 End If
@@ -853,18 +861,18 @@ Public Class dlgEditMovie
     Private Sub btnSetFanartLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartLocal.Click
         Try
             With ofdLocalFiles
-                .InitialDirectory = Directory.GetParent(Me.tmpDBElement.Filename).FullName
+                .InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
                 .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
                 .FilterIndex = 4
             End With
 
             If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
-                Me.tmpDBElement.ImagesContainer.Fanart.ImageOriginal.FromFile(ofdLocalFiles.FileName)
-                Me.pbFanart.Image = Me.tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
-                Me.pbFanart.Tag = Me.tmpDBElement.ImagesContainer.Fanart
+                tmpDBElement.ImagesContainer.Fanart.ImageOriginal.FromFile(ofdLocalFiles.FileName)
+                pbFanart.Image = tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
+                pbFanart.Tag = tmpDBElement.ImagesContainer.Fanart
 
-                Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
-                Me.lblFanartSize.Visible = True
+                lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbFanart.Image.Width, pbFanart.Image.Height)
+                lblFanartSize.Visible = True
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -878,12 +886,12 @@ Public Class dlgEditMovie
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
                     If tImage.ImageOriginal.Image IsNot Nothing Then
-                        Me.tmpDBElement.ImagesContainer.Landscape = tImage
-                        Me.pbLandscape.Image = Me.tmpDBElement.ImagesContainer.Landscape.ImageOriginal.Image
-                        Me.pbLandscape.Tag = Me.tmpDBElement.ImagesContainer.Landscape
+                        tmpDBElement.ImagesContainer.Landscape = tImage
+                        pbLandscape.Image = tmpDBElement.ImagesContainer.Landscape.ImageOriginal.Image
+                        pbLandscape.Tag = tmpDBElement.ImagesContainer.Landscape
 
-                        Me.lblLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbLandscape.Image.Width, Me.pbLandscape.Image.Height)
-                        Me.lblLandscapeSize.Visible = True
+                        lblLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbLandscape.Image.Width, pbLandscape.Image.Height)
+                        lblLandscapeSize.Visible = True
                     End If
                 End If
             End Using
@@ -897,16 +905,16 @@ Public Class dlgEditMovie
         Dim ScrapeModifier As New Structures.ScrapeModifier
 
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainLandscape, True)
-        If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBElement, aContainer, ScrapeModifier, True) Then
+        If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifier, True) Then
             If aContainer.MainLandscapes.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(Me.tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
+                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
                     Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.Landscape
-                    Me.tmpDBElement.ImagesContainer.Landscape = pResults
+                    tmpDBElement.ImagesContainer.Landscape = pResults
                     If pResults.ImageOriginal.Image IsNot Nothing Then
-                        Me.pbLandscape.Image = CType(pResults.ImageOriginal.Image.Clone(), Image)
-                        Me.lblLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbLandscape.Image.Width, Me.pbLandscape.Image.Height)
-                        Me.lblLandscapeSize.Visible = True
+                        pbLandscape.Image = CType(pResults.ImageOriginal.Image.Clone(), Image)
+                        lblLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbLandscape.Image.Width, pbLandscape.Image.Height)
+                        lblLandscapeSize.Visible = True
                     End If
                     Cursor = Cursors.Default
                 End If
@@ -919,18 +927,18 @@ Public Class dlgEditMovie
     Private Sub btnSetLandscapeLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetLandscapeLocal.Click
         Try
             With ofdLocalFiles
-                .InitialDirectory = Directory.GetParent(Me.tmpDBElement.Filename).FullName
+                .InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
                 .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
                 .FilterIndex = 0
             End With
 
             If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
-                Me.tmpDBElement.ImagesContainer.Landscape.ImageOriginal.FromFile(ofdLocalFiles.FileName)
-                Me.pbLandscape.Image = Me.tmpDBElement.ImagesContainer.Landscape.ImageOriginal.Image
-                Me.pbLandscape.Tag = Me.tmpDBElement.ImagesContainer.Landscape
+                tmpDBElement.ImagesContainer.Landscape.ImageOriginal.FromFile(ofdLocalFiles.FileName)
+                pbLandscape.Image = tmpDBElement.ImagesContainer.Landscape.ImageOriginal.Image
+                pbLandscape.Tag = tmpDBElement.ImagesContainer.Landscape
 
-                Me.lblLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbLandscape.Image.Width, Me.pbLandscape.Image.Height)
-                Me.lblLandscapeSize.Visible = True
+                lblLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbLandscape.Image.Width, pbLandscape.Image.Height)
+                lblLandscapeSize.Visible = True
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -944,12 +952,12 @@ Public Class dlgEditMovie
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
                     If tImage.ImageOriginal.Image IsNot Nothing Then
-                        Me.tmpDBElement.ImagesContainer.Poster = tImage
-                        Me.pbPoster.Image = Me.tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image
-                        Me.pbPoster.Tag = Me.tmpDBElement.ImagesContainer.Poster
+                        tmpDBElement.ImagesContainer.Poster = tImage
+                        pbPoster.Image = tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image
+                        pbPoster.Tag = tmpDBElement.ImagesContainer.Poster
 
-                        Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
-                        Me.lblPosterSize.Visible = True
+                        lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbPoster.Image.Width, pbPoster.Image.Height)
+                        lblPosterSize.Visible = True
                     End If
                 End If
             End Using
@@ -963,16 +971,16 @@ Public Class dlgEditMovie
         Dim ScrapeModifier As New Structures.ScrapeModifier
 
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainPoster, True)
-        If Not ModulesManager.Instance.ScrapeImage_Movie(Me.tmpDBElement, aContainer, ScrapeModifier, True) Then
+        If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifier, True) Then
             If aContainer.MainPosters.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(Me.tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
+                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
                     Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.Poster
-                    Me.tmpDBElement.ImagesContainer.Poster = pResults
+                    tmpDBElement.ImagesContainer.Poster = pResults
                     If pResults.ImageOriginal.Image IsNot Nothing Then
-                        Me.pbPoster.Image = CType(pResults.ImageOriginal.Image.Clone(), Image)
-                        Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
-                        Me.lblPosterSize.Visible = True
+                        pbPoster.Image = CType(pResults.ImageOriginal.Image.Clone(), Image)
+                        lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbPoster.Image.Width, pbPoster.Image.Height)
+                        lblPosterSize.Visible = True
                     End If
                     Cursor = Cursors.Default
                 End If
@@ -985,18 +993,18 @@ Public Class dlgEditMovie
     Private Sub btnSetPosterLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterLocal.Click
         Try
             With ofdLocalFiles
-                .InitialDirectory = Directory.GetParent(Me.tmpDBElement.Filename).FullName
+                .InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
                 .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
                 .FilterIndex = 0
             End With
 
             If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
-                Me.tmpDBElement.ImagesContainer.Poster.ImageOriginal.FromFile(ofdLocalFiles.FileName)
-                Me.pbPoster.Image = Me.tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image
-                Me.pbPoster.Tag = Me.tmpDBElement.ImagesContainer.Poster
+                tmpDBElement.ImagesContainer.Poster.ImageOriginal.FromFile(ofdLocalFiles.FileName)
+                pbPoster.Image = tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image
+                pbPoster.Tag = tmpDBElement.ImagesContainer.Poster
 
-                Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
-                Me.lblPosterSize.Visible = True
+                lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbPoster.Image.Width, pbPoster.Image.Height)
+                lblPosterSize.Visible = True
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -1009,9 +1017,9 @@ Public Class dlgEditMovie
     '    Dim tList As New List(Of Themes)
 
     '    Try
-    '        Me.ThemeStop()
+    '        ThemeStop()
     '        dlgTheS = New dlgThemeSelect()
-    '        If dlgTheS.ShowDialog(Me.tmpDBMovie, tList) = Windows.Forms.DialogResult.OK Then
+    '        If dlgTheS.ShowDialog(tmpDBMovie, tList) = Windows.Forms.DialogResult.OK Then
     '            tResults = dlgTheS.Results
     '            MovieTheme = dlgTheS.WebTheme
     '            ThemeAddToPlayer(MovieTheme)
@@ -1026,11 +1034,11 @@ Public Class dlgEditMovie
         Dim aUrlList As New List(Of Themes)
 
         Try
-            Me.ThemeStop()
-            If Not ModulesManager.Instance.ScrapeTheme_Movie(Me.tmpDBElement, aUrlList) Then
+            ThemeStop()
+            If Not ModulesManager.Instance.ScrapeTheme_Movie(tmpDBElement, aUrlList) Then
                 If aUrlList.Count > 0 Then
                     dlgThmS = New dlgThemeSelect()
-                    If dlgThmS.ShowDialog(Me.tmpDBElement, aUrlList) = Windows.Forms.DialogResult.OK Then
+                    If dlgThmS.ShowDialog(tmpDBElement, aUrlList) = Windows.Forms.DialogResult.OK Then
                         MovieTheme = dlgThmS.Results.WebTheme
                         MovieTheme.isEdit = True
                         ThemeAddToPlayer(MovieTheme)
@@ -1047,9 +1055,9 @@ Public Class dlgEditMovie
 
     Private Sub btnSetThemeLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetThemeLocal.Click
         Try
-            Me.ThemeStop()
+            ThemeStop()
             With ofdLocalFiles
-                .InitialDirectory = Directory.GetParent(Me.tmpDBElement.Filename).FullName
+                .InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
                 .Filter = Master.eLang.GetString(1285, "Themes") + "|*.mp3;*.wav"
                 .FilterIndex = 0
             End With
@@ -1070,12 +1078,12 @@ Public Class dlgEditMovie
         Dim tList As New List(Of MediaContainers.Trailer)
 
         Try
-            Me.TrailerStop()
+            TrailerStop()
             dlgTrlS = New dlgTrailerSelect()
-            If dlgTrlS.ShowDialog(Me.tmpDBElement, tList, False, True, True) = Windows.Forms.DialogResult.OK Then
+            If dlgTrlS.ShowDialog(tmpDBElement, tList, False, True, True) = Windows.Forms.DialogResult.OK Then
                 tResults = dlgTrlS.Result
-                Me.tmpDBElement.Trailer = tResults
-                TrailerPlaylistAdd(Me.tmpDBElement.Trailer)
+                tmpDBElement.Trailer = tResults
+                TrailerPlaylistAdd(tmpDBElement.Trailer)
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -1087,11 +1095,11 @@ Public Class dlgEditMovie
         Dim tList As New List(Of MediaContainers.Trailer)
 
         Try
-            Me.TrailerStop()
+            TrailerStop()
             dlgTrlS = New dlgTrailerSelect()
-            If dlgTrlS.ShowDialog(Me.tmpDBElement, tList, False, True, True) = Windows.Forms.DialogResult.OK Then
-                Me.tmpDBElement.Trailer = dlgTrlS.Result
-                TrailerPlaylistAdd(Me.tmpDBElement.Trailer)
+            If dlgTrlS.ShowDialog(tmpDBElement, tList, False, True, True) = Windows.Forms.DialogResult.OK Then
+                tmpDBElement.Trailer = dlgTrlS.Result
+                TrailerPlaylistAdd(tmpDBElement.Trailer)
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -1100,17 +1108,17 @@ Public Class dlgEditMovie
 
     Private Sub btnSetTrailerLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetTrailerLocal.Click
         Try
-            Me.TrailerStop()
+            TrailerStop()
             With ofdLocalFiles
-                .InitialDirectory = Directory.GetParent(Me.tmpDBElement.Filename).FullName
+                .InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
                 .Filter = Master.eLang.GetString(1195, "Trailers") + "|*.mp4;*.avi"
                 .FilterIndex = 0
             End With
 
             If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
-                Me.tmpDBElement.Trailer.TrailerOriginal.FromFile(ofdLocalFiles.FileName)
-                Me.tmpDBElement.Trailer.TrailerOriginal.isEdit = True
-                TrailerPlaylistAdd(Me.tmpDBElement.Trailer)
+                tmpDBElement.Trailer.TrailerOriginal.FromFile(ofdLocalFiles.FileName)
+                tmpDBElement.Trailer.TrailerOriginal.isEdit = True
+                TrailerPlaylistAdd(tmpDBElement.Trailer)
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -1119,40 +1127,40 @@ Public Class dlgEditMovie
 
     Private Sub btnStudio_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnStudio.Click
         Using dStudio As New dlgStudioSelect
-            Dim tStudio As String = dStudio.ShowDialog(Me.tmpDBElement)
+            Dim tStudio As String = dStudio.ShowDialog(tmpDBElement)
             If Not String.IsNullOrEmpty(tStudio) Then
-                Me.txtStudio.Text = tStudio
+                txtStudio.Text = tStudio
             End If
         End Using
     End Sub
 
     Private Sub btnExtrafanartsRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExtrafanartsRefresh.Click
-        Me.RefreshExtrafanarts()
+        RefreshExtrafanarts()
     End Sub
 
     Private Sub btnExtrathumbsRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExtrathumbsRefresh.Click
-        Me.RefreshExtrathumbs()
+        RefreshExtrathumbs()
     End Sub
 
     Private Sub ThemeStart()
-        'If Me.axVLCTheme.playlist.isPlaying Then
-        '    Me.axVLCTheme.playlist.togglePause()
-        '    Me.btnThemePlay.Text = "Play"
+        'If axVLCTheme.playlist.isPlaying Then
+        '    axVLCTheme.playlist.togglePause()
+        '    btnThemePlay.Text = "Play"
         'Else
-        '    Me.axVLCTheme.playlist.play()
-        '    Me.btnThemePlay.Text = "Pause"
+        '    axVLCTheme.playlist.play()
+        '    btnThemePlay.Text = "Pause"
         'End If
     End Sub
 
     Private Sub ThemeStop()
-        'Me.axVLCTheme.playlist.stop()
-        'Me.btnThemePlay.Text = "Play"
+        'axVLCTheme.playlist.stop()
+        'btnThemePlay.Text = "Play"
     End Sub
 
     Private Sub ThemeAddToPlayer(ByVal Theme As Themes)
         'Dim Link As String = String.Empty
-        'Me.axVLCTheme.playlist.stop()
-        'Me.axVLCTheme.playlist.items.clear()
+        'axVLCTheme.playlist.stop()
+        'axVLCTheme.playlist.items.clear()
     End Sub
 
     Private Sub TrailerPlaylistAdd(ByVal Trailer As MediaContainers.Trailer)
@@ -1423,13 +1431,13 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-        Me.ThemeStop()
-        Me.TrailerStop()
+        ThemeStop()
+        TrailerStop()
 
-        Me.CleanUp()
+        CleanUp()
 
-        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Close()
+        DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Close()
     End Sub
 
     Private Sub CleanUp()
@@ -1461,9 +1469,9 @@ Public Class dlgEditMovie
 
     Private Sub DeleteActors()
         Try
-            If Me.lvActors.Items.Count > 0 Then
-                While Me.lvActors.SelectedItems.Count > 0
-                    Me.lvActors.Items.Remove(Me.lvActors.SelectedItems(0))
+            If lvActors.Items.Count > 0 Then
+                While lvActors.SelectedItems.Count > 0
+                    lvActors.Items.Remove(lvActors.SelectedItems(0))
                 End While
             End If
         Catch ex As Exception
@@ -1472,33 +1480,33 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub dlgEditMovie_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
-        Me.MovieTheme.Dispose()
-        Me.MovieTheme = Nothing
+        MovieTheme.Dispose()
+        MovieTheme = Nothing
     End Sub
 
     Private Sub dlgEditMovie_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
-            Me.pbBanner.AllowDrop = True
-            Me.pbClearArt.AllowDrop = True
-            Me.pbClearLogo.AllowDrop = True
-            Me.pbDiscArt.AllowDrop = True
-            Me.pbFanart.AllowDrop = True
-            Me.pbLandscape.AllowDrop = True
-            Me.pbPoster.AllowDrop = True
+            pbBanner.AllowDrop = True
+            pbClearArt.AllowDrop = True
+            pbClearLogo.AllowDrop = True
+            pbDiscArt.AllowDrop = True
+            pbFanart.AllowDrop = True
+            pbLandscape.AllowDrop = True
+            pbPoster.AllowDrop = True
 
-            Me.SetUp()
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, Me.tmpDBElement)
-            Me.lvwActorSorter = New ListViewColumnSorter()
-            Me.lvActors.ListViewItemSorter = Me.lvwActorSorter
-            'Me.lvwExtrathumbsSorter = New ListViewColumnSorter() With {.SortByText = True, .Order = SortOrder.Ascending, .NumericSort = True}
-            'Me.lvExtrathumbs.ListViewItemSorter = Me.lvwExtrathumbsSorter
-            'Me.lvwExtrafanartsSorter = New ListViewColumnSorter() With {.SortByText = True, .Order = SortOrder.Ascending, .NumericSort = True}
-            'Me.lvExtrafanarts.ListViewItemSorter = Me.lvwExtrafanartsSorter
+            SetUp()
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, tmpDBElement)
+            lvwActorSorter = New ListViewColumnSorter()
+            lvActors.ListViewItemSorter = lvwActorSorter
+            'lvwExtrathumbsSorter = New ListViewColumnSorter() With {.SortByText = True, .Order = SortOrder.Ascending, .NumericSort = True}
+            'lvExtrathumbs.ListViewItemSorter = lvwExtrathumbsSorter
+            'lvwExtrafanartsSorter = New ListViewColumnSorter() With {.SortByText = True, .Order = SortOrder.Ascending, .NumericSort = True}
+            'lvExtrafanarts.ListViewItemSorter = lvwExtrafanartsSorter
 
-            Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
+            Dim iBackground As New Bitmap(pnlTop.Width, pnlTop.Height)
             Using g As Graphics = Graphics.FromImage(iBackground)
-                g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)
-                Me.pnlTop.BackgroundImage = iBackground
+                g.FillRectangle(New Drawing2D.LinearGradientBrush(pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)
+                pnlTop.BackgroundImage = iBackground
             End Using
 
             Dim dFileInfoEdit As New dlgFileInfo(tmpDBElement, False)
@@ -1506,14 +1514,14 @@ Public Class dlgEditMovie
             dFileInfoEdit.FormBorderStyle = FormBorderStyle.None
             dFileInfoEdit.BackColor = Color.White
             dFileInfoEdit.btnClose.Visible = False
-            Me.pnlFileInfo.Controls.Add(dFileInfoEdit)
+            pnlFileInfo.Controls.Add(dFileInfoEdit)
             Dim oldwidth As Integer = dFileInfoEdit.Width
             dFileInfoEdit.Width = pnlFileInfo.Width
             dFileInfoEdit.Height = pnlFileInfo.Height
             dFileInfoEdit.Show()
 
-            Me.LoadGenres()
-            Me.LoadRatings()
+            LoadGenres()
+            LoadRatings()
 
             Dim paramsFrameExtractor As New List(Of Object)(New Object() {New Panel})
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.FrameExtrator_Movie, paramsFrameExtractor, Nothing, True, tmpDBElement)
@@ -1538,7 +1546,7 @@ Public Class dlgEditMovie
                 pnlTrailerPreviewNoPlayer.Visible = False
             End If
 
-            Me.FillInfo()
+            FillInfo()
 
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -1546,13 +1554,13 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub dlgEditMovie_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
-        Me.Activate()
+        Activate()
     End Sub
 
     Private Sub EditActor()
         Try
-            If Me.lvActors.SelectedItems.Count > 0 Then
-                Dim lvwItem As ListViewItem = Me.lvActors.SelectedItems(0)
+            If lvActors.SelectedItems.Count > 0 Then
+                Dim lvwItem As ListViewItem = lvActors.SelectedItems(0)
                 Dim eActor As New MediaContainers.Person With {.ID = CInt(lvwItem.Text), .Name = lvwItem.SubItems(1).Text, .Role = lvwItem.SubItems(2).Text, .URLOriginal = lvwItem.SubItems(3).Text, .LocalFilePath = lvwItem.SubItems(4).Text}
                 Using dAddEditActor As New dlgAddEditActor
                     eActor = dAddEditActor.ShowDialog(False, eActor)
@@ -1574,417 +1582,365 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub FillInfo(Optional ByVal DoAll As Boolean = True)
-        Try
-            With Me
-                If String.IsNullOrEmpty(Me.tmpDBElement.NfoPath) Then
-                    .btnManual.Enabled = False
-                End If
 
-                Me.chkMark.Checked = Me.tmpDBElement.IsMark
-                If Me.tmpDBElement.Movie.PlayCountSpecified Then
-                    Me.chkWatched.Checked = True
+        If String.IsNullOrEmpty(tmpDBElement.NfoPath) Then
+            btnManual.Enabled = False
+        End If
+
+        chkMark.Checked = tmpDBElement.IsMark
+        If tmpDBElement.Movie.PlayCountSpecified Then
+            chkWatched.Checked = True
+        Else
+            chkWatched.Checked = False
+        End If
+
+        txtCerts.Text = tmpDBElement.Movie.Certification
+        txtCountry.Text = tmpDBElement.Movie.Country
+        txtCredits.Text = tmpDBElement.Movie.OldCredits
+        txtDirector.Text = tmpDBElement.Movie.Director
+        txtOriginalTitle.Text = tmpDBElement.Movie.OriginalTitle
+        txtOutline.Text = tmpDBElement.Movie.Outline
+        txtPlot.Text = tmpDBElement.Movie.Plot
+        txtReleaseDate.Text = tmpDBElement.Movie.ReleaseDate
+        txtRuntime.Text = tmpDBElement.Movie.Runtime
+        txtSortTitle.Text = tmpDBElement.Movie.SortTitle
+        txtTagline.Text = tmpDBElement.Movie.Tagline
+        txtTitle.Text = tmpDBElement.Movie.Title
+        txtTop250.Text = tmpDBElement.Movie.Top250
+        txtVideoSource.Text = tmpDBElement.Movie.VideoSource
+        txtVotes.Text = tmpDBElement.Movie.Votes
+        txtYear.Text = tmpDBElement.Movie.Year
+
+        If Not String.IsNullOrEmpty(tmpDBElement.Movie.LastPlayed) Then
+            Dim timecode As Double = 0
+            Double.TryParse(tmpDBElement.Movie.LastPlayed, timecode)
+            If timecode > 0 Then
+                txtLastPlayed.Text = Functions.ConvertFromUnixTimestamp(timecode).ToString("yyyy-MM-dd HH:mm:ss")
+            Else
+                txtLastPlayed.Text = tmpDBElement.Movie.LastPlayed
+            End If
+        End If
+
+        SelectMPAA()
+
+        If String.IsNullOrEmpty(tmpDBElement.ThemePath) Then
+            '.btnPlayTheme.Enabled = False
+        End If
+
+        '.btnDLTheme.Enabled = Master.eSettings.MovieThemeEnable AndAlso Master.eSettings.MovieThemeAnyEnabled AndAlso ModulesManager.Instance.QueryTrailerScraperCapabilities(Enums.ScraperCapabilities.Theme)
+
+        If Not String.IsNullOrEmpty(tmpDBElement.Movie.Trailer) Then
+            txtTrailer.Text = tmpDBElement.Movie.Trailer
+            btnPlayTrailer.Enabled = True
+        Else
+            btnPlayTrailer.Enabled = False
+        End If
+
+        btnDLTrailer.Enabled = Master.DefaultOptions_Movie.bMainTrailer
+
+        If tmpDBElement.Movie.Studios.Count > 0 Then
+            txtStudio.Text = tmpDBElement.Movie.Studio
+        End If
+
+        For i As Integer = 0 To clbGenre.Items.Count - 1
+            clbGenre.SetItemChecked(i, False)
+        Next
+        If tmpDBElement.Movie.Genres.Count > 0 Then
+            For g As Integer = 0 To tmpDBElement.Movie.Genres.Count - 1
+                If clbGenre.FindString(tmpDBElement.Movie.Genres(g).Trim) > 0 Then
+                    clbGenre.SetItemChecked(clbGenre.FindString(tmpDBElement.Movie.Genres(g).Trim), True)
+                End If
+            Next
+
+            If clbGenre.CheckedItems.Count = 0 Then
+                clbGenre.SetItemChecked(0, True)
+            End If
+        Else
+            clbGenre.SetItemChecked(0, True)
+        End If
+
+        Dim lvItem As ListViewItem
+        lvActors.Items.Clear()
+        For Each imdbAct As MediaContainers.Person In tmpDBElement.Movie.Actors
+            lvItem = lvActors.Items.Add(imdbAct.ID.ToString)
+            lvItem.SubItems.Add(imdbAct.Name)
+            lvItem.SubItems.Add(imdbAct.Role)
+            lvItem.SubItems.Add(imdbAct.URLOriginal)
+            lvItem.SubItems.Add(imdbAct.LocalFilePath)
+        Next
+
+        If Not String.IsNullOrEmpty(tmpDBElement.Filename) AndAlso String.IsNullOrEmpty(tmpDBElement.Movie.VideoSource) Then
+            Dim vSource As String = APIXML.GetVideoSource(tmpDBElement.Filename, False)
+            If Not String.IsNullOrEmpty(vSource) Then
+                tmpDBElement.VideoSource = vSource
+                tmpDBElement.Movie.VideoSource = tmpDBElement.VideoSource
+            ElseIf String.IsNullOrEmpty(tmpDBElement.VideoSource) AndAlso clsAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
+                tmpDBElement.VideoSource = clsAdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(tmpDBElement.Filename)), String.Empty, "*EmberAPP")
+                tmpDBElement.Movie.VideoSource = tmpDBElement.VideoSource
+            ElseIf Not String.IsNullOrEmpty(tmpDBElement.Movie.VideoSource) Then
+                tmpDBElement.VideoSource = tmpDBElement.Movie.VideoSource
+            End If
+        End If
+
+        Dim tRating As Single = NumUtils.ConvertToSingle(tmpDBElement.Movie.Rating)
+        tmpRating = tRating.ToString
+        pbStar1.Tag = tRating
+        pbStar2.Tag = tRating
+        pbStar3.Tag = tRating
+        pbStar4.Tag = tRating
+        pbStar5.Tag = tRating
+        pbStar6.Tag = tRating
+        pbStar7.Tag = tRating
+        pbStar8.Tag = tRating
+        pbStar9.Tag = tRating
+        pbStar10.Tag = tRating
+        If tRating > 0 Then BuildStars(tRating)
+
+        If DoAll Then
+            Dim pExt As String = Path.GetExtension(tmpDBElement.Filename).ToLower
+            If pExt = ".rar" OrElse pExt = ".iso" OrElse pExt = ".img" OrElse _
+            pExt = ".bin" OrElse pExt = ".cue" OrElse pExt = ".dat" OrElse _
+            pExt = ".disc" Then
+                tcEdit.TabPages.Remove(tpFrameExtraction)
+            Else
+                If Not pExt = ".disc" Then
+                    tcEdit.TabPages.Remove(tpMediaStub)
+                End If
+            End If
+
+            'Images and TabPages
+            With tmpDBElement.ImagesContainer
+
+                'Banner
+                If Master.eSettings.MovieBannerAnyEnabled Then
+                    If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainBanner) Then
+                        btnSetBannerScrape.Enabled = False
+                    End If
+                    If .Banner.ImageOriginal.Image IsNot Nothing OrElse .Banner.ImageOriginal.FromMemoryStream Then
+                        pbBanner.Image = .Banner.ImageOriginal.Image
+                        pbBanner.Tag = .Banner
+
+                        lblBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbBanner.Image.Width, pbBanner.Image.Height)
+                        lblBannerSize.Visible = True
+                    End If
                 Else
-                    Me.chkWatched.Checked = False
+                    tcEdit.TabPages.Remove(tpBanner)
                 End If
 
-                If Not String.IsNullOrEmpty(Me.tmpDBElement.Movie.Title) Then
-                    .txtTitle.Text = Me.tmpDBElement.Movie.Title
-                End If
-
-                If Not String.IsNullOrEmpty(Me.tmpDBElement.Movie.OriginalTitle) Then
-                    .txtOriginalTitle.Text = Me.tmpDBElement.Movie.OriginalTitle
-                End If
-
-                If Not String.IsNullOrEmpty(Me.tmpDBElement.Movie.SortTitle) Then
-                    .txtSortTitle.Text = Me.tmpDBElement.Movie.SortTitle
-                End If
-
-                If Not String.IsNullOrEmpty(Me.tmpDBElement.Movie.Tagline) Then
-                    .txtTagline.Text = Me.tmpDBElement.Movie.Tagline
-                End If
-
-                If Not String.IsNullOrEmpty(Me.tmpDBElement.Movie.Year) Then
-                    .mtxtYear.Text = Me.tmpDBElement.Movie.Year
-                End If
-
-                If Not String.IsNullOrEmpty(Me.tmpDBElement.Movie.Votes) Then
-                    .txtVotes.Text = Me.tmpDBElement.Movie.Votes
-                End If
-
-                If Not String.IsNullOrEmpty(Me.tmpDBElement.Movie.Outline) Then
-                    .txtOutline.Text = Me.tmpDBElement.Movie.Outline
-                End If
-
-                If Not String.IsNullOrEmpty(Me.tmpDBElement.Movie.Plot) Then
-                    .txtPlot.Text = Me.tmpDBElement.Movie.Plot
-                End If
-
-                If Not String.IsNullOrEmpty(Me.tmpDBElement.Movie.Top250) Then
-                    .txtTop250.Text = Me.tmpDBElement.Movie.Top250
-                End If
-
-                If Me.tmpDBElement.Movie.Countries.Count > 0 Then
-                    .txtCountry.Text = Me.tmpDBElement.Movie.Country
-                End If
-
-                If Not String.IsNullOrEmpty(Me.tmpDBElement.Movie.Runtime) Then
-                    .txtRuntime.Text = Me.tmpDBElement.Movie.Runtime
-                End If
-
-                If Not String.IsNullOrEmpty(Me.tmpDBElement.Movie.ReleaseDate) Then
-                    .txtReleaseDate.Text = Me.tmpDBElement.Movie.ReleaseDate
-                End If
-
-                If Me.tmpDBElement.Movie.Directors.Count > 0 Then
-                    .txtDirector.Text = Me.tmpDBElement.Movie.Director
-                End If
-
-                If Me.tmpDBElement.Movie.Credits.Count > 0 Then
-                    .txtCredits.Text = Me.tmpDBElement.Movie.OldCredits
-                End If
-
-                If Not String.IsNullOrEmpty(Me.tmpDBElement.VideoSource) Then
-                    .txtVideoSource.Text = Me.tmpDBElement.VideoSource
-                ElseIf Not String.IsNullOrEmpty(Me.tmpDBElement.Movie.VideoSource) Then
-                    .txtVideoSource.Text = Me.tmpDBElement.Movie.VideoSource
-                End If
-
-                If Me.tmpDBElement.Movie.Certifications.Count > 0 Then
-                    .txtCerts.Text = Me.tmpDBElement.Movie.Certification
-                End If
-
-                If Not String.IsNullOrEmpty(Me.tmpDBElement.Movie.LastPlayed) Then
-                    Dim timecode As Double = 0
-                    Double.TryParse(Me.tmpDBElement.Movie.LastPlayed, timecode)
-                    If timecode > 0 Then
-                        .txtLastPlayed.Text = Functions.ConvertFromUnixTimestamp(timecode).ToString("yyyy-MM-dd HH:mm:ss")
-                    Else
-                        .txtLastPlayed.Text = Me.tmpDBElement.Movie.LastPlayed
+                'ClearArt
+                If Master.eSettings.MovieClearArtAnyEnabled Then
+                    If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearArt) Then
+                        btnSetClearArtScrape.Enabled = False
                     End If
-                End If
+                    If .ClearArt.ImageOriginal.Image IsNot Nothing OrElse .ClearArt.ImageOriginal.FromMemoryStream Then
+                        pbClearArt.Image = .ClearArt.ImageOriginal.Image
+                        pbClearArt.Tag = .ClearArt
 
-                Me.SelectMPAA()
-
-                If String.IsNullOrEmpty(Me.tmpDBElement.ThemePath) Then
-                    '.btnPlayTheme.Enabled = False
-                End If
-
-                '.btnDLTheme.Enabled = Master.eSettings.MovieThemeEnable AndAlso Master.eSettings.MovieThemeAnyEnabled AndAlso ModulesManager.Instance.QueryTrailerScraperCapabilities(Enums.ScraperCapabilities.Theme)
-
-                If Not String.IsNullOrEmpty(Me.tmpDBElement.Movie.Trailer) Then
-                    .txtTrailer.Text = Me.tmpDBElement.Movie.Trailer
-                    .btnPlayTrailer.Enabled = True
-                Else
-                    .btnPlayTrailer.Enabled = False
-                End If
-
-                .btnDLTrailer.Enabled = Master.DefaultOptions_Movie.bMainTrailer
-
-                If Me.tmpDBElement.Movie.Studios.Count > 0 Then
-                    .txtStudio.Text = Me.tmpDBElement.Movie.Studio
-                End If
-
-                For i As Integer = 0 To .clbGenre.Items.Count - 1
-                    .clbGenre.SetItemChecked(i, False)
-                Next
-                If Me.tmpDBElement.Movie.Genres.Count > 0 Then
-                    For g As Integer = 0 To Me.tmpDBElement.Movie.Genres.Count - 1
-                        If .clbGenre.FindString(Me.tmpDBElement.Movie.Genres(g).Trim) > 0 Then
-                            .clbGenre.SetItemChecked(.clbGenre.FindString(Me.tmpDBElement.Movie.Genres(g).Trim), True)
-                        End If
-                    Next
-
-                    If .clbGenre.CheckedItems.Count = 0 Then
-                        .clbGenre.SetItemChecked(0, True)
+                        lblClearArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbClearArt.Image.Width, pbClearArt.Image.Height)
+                        lblClearArtSize.Visible = True
                     End If
                 Else
-                    .clbGenre.SetItemChecked(0, True)
+                    tcEdit.TabPages.Remove(tpClearArt)
                 End If
 
-                Dim lvItem As ListViewItem
-                .lvActors.Items.Clear()
-                For Each imdbAct As MediaContainers.Person In Me.tmpDBElement.Movie.Actors
-                    lvItem = .lvActors.Items.Add(imdbAct.ID.ToString)
-                    lvItem.SubItems.Add(imdbAct.Name)
-                    lvItem.SubItems.Add(imdbAct.Role)
-                    lvItem.SubItems.Add(imdbAct.URLOriginal)
-                    lvItem.SubItems.Add(imdbAct.LocalFilePath)
-                Next
-
-                If Not String.IsNullOrEmpty(Me.tmpDBElement.Filename) AndAlso String.IsNullOrEmpty(Me.tmpDBElement.Movie.VideoSource) Then
-                    Dim vSource As String = APIXML.GetVideoSource(Me.tmpDBElement.Filename, False)
-                    If Not String.IsNullOrEmpty(vSource) Then
-                        Me.tmpDBElement.VideoSource = vSource
-                        Me.tmpDBElement.Movie.VideoSource = Me.tmpDBElement.VideoSource
-                    ElseIf String.IsNullOrEmpty(Me.tmpDBElement.VideoSource) AndAlso clsAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
-                        Me.tmpDBElement.VideoSource = clsAdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(Me.tmpDBElement.Filename)), String.Empty, "*EmberAPP")
-                        Me.tmpDBElement.Movie.VideoSource = Me.tmpDBElement.VideoSource
-                    ElseIf Not String.IsNullOrEmpty(Me.tmpDBElement.Movie.VideoSource) Then
-                        Me.tmpDBElement.VideoSource = Me.tmpDBElement.Movie.VideoSource
+                'ClearLogo
+                If Master.eSettings.MovieClearLogoAnyEnabled Then
+                    If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearLogo) Then
+                        btnSetClearLogoScrape.Enabled = False
                     End If
+                    If .ClearLogo.ImageOriginal.Image IsNot Nothing OrElse .ClearLogo.ImageOriginal.FromMemoryStream Then
+                        pbClearLogo.Image = .ClearLogo.ImageOriginal.Image
+                        pbClearLogo.Tag = .ClearLogo
+
+                        lblClearLogoSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbClearLogo.Image.Width, pbClearLogo.Image.Height)
+                        lblClearLogoSize.Visible = True
+                    End If
+                Else
+                    tcEdit.TabPages.Remove(tpClearLogo)
                 End If
 
-                Dim tRating As Single = NumUtils.ConvertToSingle(Me.tmpDBElement.Movie.Rating)
-                .tmpRating = tRating.ToString
-                .pbStar1.Tag = tRating
-                .pbStar2.Tag = tRating
-                .pbStar3.Tag = tRating
-                .pbStar4.Tag = tRating
-                .pbStar5.Tag = tRating
-                .pbStar6.Tag = tRating
-                .pbStar7.Tag = tRating
-                .pbStar8.Tag = tRating
-                .pbStar9.Tag = tRating
-                .pbStar10.Tag = tRating
-                If tRating > 0 Then .BuildStars(tRating)
-
-                If DoAll Then
-                    Dim pExt As String = Path.GetExtension(Me.tmpDBElement.Filename).ToLower
-                    If pExt = ".rar" OrElse pExt = ".iso" OrElse pExt = ".img" OrElse _
-                    pExt = ".bin" OrElse pExt = ".cue" OrElse pExt = ".dat" OrElse _
-                    pExt = ".disc" Then
-                        tcEdit.TabPages.Remove(tpFrameExtraction)
-                    Else
-                        If Not pExt = ".disc" Then
-                            tcEdit.TabPages.Remove(tpMediaStub)
-                        End If
+                'DiscArt
+                If Master.eSettings.MovieDiscArtAnyEnabled Then
+                    If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainDiscArt) Then
+                        btnSetDiscArtScrape.Enabled = False
                     End If
+                    If .DiscArt.ImageOriginal.Image IsNot Nothing OrElse .DiscArt.ImageOriginal.FromMemoryStream Then
+                        pbDiscArt.Image = .DiscArt.ImageOriginal.Image
+                        pbDiscArt.Tag = .DiscArt
 
-                    'Images and TabPages
-
-                    'Banner
-                    If Master.eSettings.MovieBannerAnyEnabled Then
-                        If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainBanner) Then
-                            .btnSetBannerScrape.Enabled = False
-                        End If
-                        If Me.tmpDBElement.ImagesContainer.Banner.ImageOriginal.Image IsNot Nothing Then
-                            .pbBanner.Image = Me.tmpDBElement.ImagesContainer.Banner.ImageOriginal.Image
-                            .pbBanner.Tag = Me.tmpDBElement.ImagesContainer.Banner
-
-                            .lblBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbBanner.Image.Width, .pbBanner.Image.Height)
-                            .lblBannerSize.Visible = True
-                        End If
-                    Else
-                        tcEdit.TabPages.Remove(tpBanner)
+                        lblDiscArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbDiscArt.Image.Width, pbDiscArt.Image.Height)
+                        lblDiscArtSize.Visible = True
                     End If
+                Else
+                    tcEdit.TabPages.Remove(tpDiscArt)
+                End If
 
-                    'ClearArt
-                    If Master.eSettings.MovieClearArtAnyEnabled Then
-                        If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearArt) Then
-                            .btnSetClearArtScrape.Enabled = False
-                        End If
-                        If Me.tmpDBElement.ImagesContainer.ClearArt.ImageOriginal.Image IsNot Nothing Then
-                            .pbClearArt.Image = Me.tmpDBElement.ImagesContainer.ClearArt.ImageOriginal.Image
-                            .pbClearArt.Tag = Me.tmpDBElement.ImagesContainer.ClearArt
-
-                            .lblClearArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbClearArt.Image.Width, .pbClearArt.Image.Height)
-                            .lblClearArtSize.Visible = True
-                        End If
-                    Else
-                        tcEdit.TabPages.Remove(tpClearArt)
+                'Extrafanarts
+                If Master.eSettings.MovieExtrafanartsAnyEnabled Then
+                    'If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart) Then
+                    '.btnSetFanartScrape.Enabled = False
+                    'End If
+                    If .Extrafanarts.Count > 0 Then
+                        Dim iIndex As Integer = 0
+                        For Each img As MediaContainers.Image In .Extrafanarts
+                            AddExtrafanartImage(String.Concat(img.Width, " x ", img.Height), iIndex, img)
+                            iIndex += 1
+                        Next
                     End If
+                Else
+                    tcEdit.TabPages.Remove(tpExtrafanarts)
+                End If
 
-                    'ClearLogo
-                    If Master.eSettings.MovieClearLogoAnyEnabled Then
-                        If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearLogo) Then
-                            .btnSetClearLogoScrape.Enabled = False
-                        End If
-                        If Me.tmpDBElement.ImagesContainer.ClearLogo.ImageOriginal.Image IsNot Nothing Then
-                            .pbClearLogo.Image = Me.tmpDBElement.ImagesContainer.ClearLogo.ImageOriginal.Image
-                            .pbClearLogo.Tag = Me.tmpDBElement.ImagesContainer.ClearLogo
-
-                            .lblClearLogoSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbClearLogo.Image.Width, .pbClearLogo.Image.Height)
-                            .lblClearLogoSize.Visible = True
-                        End If
-                    Else
-                        tcEdit.TabPages.Remove(tpClearLogo)
+                'Extrathumbs
+                If Master.eSettings.MovieExtrathumbsAnyEnabled Then
+                    'If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart) Then
+                    '.btnSetFanartScrape.Enabled = False
+                    'End If
+                    If .Extrathumbs.Count > 0 Then
+                        Dim iIndex As Integer = 0
+                        For Each img As MediaContainers.Image In .Extrathumbs.OrderBy(Function(f) f.Index)
+                            AddExtrathumbImage(String.Concat(img.Width, " x ", img.Height), iIndex, img)
+                            iIndex += 1
+                        Next
                     End If
+                Else
+                    tcEdit.TabPages.Remove(tpExtrathumbs)
+                End If
 
-                    'DiscArt
-                    If Master.eSettings.MovieDiscArtAnyEnabled Then
-                        If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainDiscArt) Then
-                            .btnSetDiscArtScrape.Enabled = False
-                        End If
-                        If Me.tmpDBElement.ImagesContainer.DiscArt.ImageOriginal.Image IsNot Nothing Then
-                            .pbDiscArt.Image = Me.tmpDBElement.ImagesContainer.DiscArt.ImageOriginal.Image
-                            .pbDiscArt.Tag = Me.tmpDBElement.ImagesContainer.DiscArt
-
-                            .lblDiscArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbDiscArt.Image.Width, .pbDiscArt.Image.Height)
-                            .lblDiscArtSize.Visible = True
-                        End If
-                    Else
-                        tcEdit.TabPages.Remove(tpDiscArt)
+                'Fanart
+                If Master.eSettings.MovieFanartAnyEnabled Then
+                    If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart) Then
+                        btnSetFanartScrape.Enabled = False
                     End If
+                    If .Fanart.ImageOriginal.Image IsNot Nothing OrElse .Fanart.ImageOriginal.FromMemoryStream Then
+                        pbFanart.Image = .Fanart.ImageOriginal.Image
+                        pbFanart.Tag = .Fanart
 
-                    'Extrafanarts
-                    If Master.eSettings.MovieExtrafanartsAnyEnabled Then
-                        'If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart) Then
-                        '.btnSetFanartScrape.Enabled = False
-                        'End If
-                        If Me.tmpDBElement.ImagesContainer.Extrafanarts.Count > 0 Then
-                            Dim iIndex As Integer = 0
-                            For Each img As MediaContainers.Image In Me.tmpDBElement.ImagesContainer.Extrafanarts
-                                AddExtrafanartImage(String.Concat(img.Width, " x ", img.Height), iIndex, img)
-                                iIndex += 1
-                            Next
-                        End If
-                    Else
-                        tcEdit.TabPages.Remove(tpExtrafanarts)
+                        lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbFanart.Image.Width, pbFanart.Image.Height)
+                        lblFanartSize.Visible = True
                     End If
+                Else
+                    tcEdit.TabPages.Remove(tpFanart)
+                End If
 
-                    'Extrathumbs
-                    If Master.eSettings.MovieExtrathumbsAnyEnabled Then
-                        'If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart) Then
-                        '.btnSetFanartScrape.Enabled = False
-                        'End If
-                        If Me.tmpDBElement.ImagesContainer.Extrathumbs.Count > 0 Then
-                            Dim iIndex As Integer = 0
-                            For Each img As MediaContainers.Image In Me.tmpDBElement.ImagesContainer.Extrathumbs.OrderBy(Function(f) f.Index)
-                                AddExtrathumbImage(String.Concat(img.Width, " x ", img.Height), iIndex, img)
-                                iIndex += 1
-                            Next
-                        End If
-                    Else
-                        tcEdit.TabPages.Remove(tpExtrathumbs)
+                'Landscape
+                If Master.eSettings.MovieLandscapeAnyEnabled Then
+                    If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainLandscape) Then
+                        btnSetLandscapeScrape.Enabled = False
                     End If
+                    If .Landscape.ImageOriginal.Image IsNot Nothing OrElse .Landscape.ImageOriginal.FromMemoryStream Then
+                        pbLandscape.Image = .Landscape.ImageOriginal.Image
+                        pbLandscape.Tag = .Landscape
 
-                    'Fanart
-                    If Master.eSettings.MovieFanartAnyEnabled Then
-                        If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart) Then
-                            .btnSetFanartScrape.Enabled = False
-                        End If
-                        If Me.tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
-                            .pbFanart.Image = Me.tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
-                            .pbFanart.Tag = Me.tmpDBElement.ImagesContainer.Fanart
-
-                            .lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbFanart.Image.Width, .pbFanart.Image.Height)
-                            .lblFanartSize.Visible = True
-                        End If
-                    Else
-                        tcEdit.TabPages.Remove(tpFanart)
+                        lblLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbLandscape.Image.Width, pbLandscape.Image.Height)
+                        lblLandscapeSize.Visible = True
                     End If
+                Else
+                    tcEdit.TabPages.Remove(tpLandscape)
+                End If
 
-                    'Landscape
-                    If Master.eSettings.MovieLandscapeAnyEnabled Then
-                        If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainLandscape) Then
-                            .btnSetLandscapeScrape.Enabled = False
-                        End If
-                        If Me.tmpDBElement.ImagesContainer.Landscape.ImageOriginal.Image IsNot Nothing Then
-                            .pbLandscape.Image = Me.tmpDBElement.ImagesContainer.Landscape.ImageOriginal.Image
-                            .pbLandscape.Tag = Me.tmpDBElement.ImagesContainer.Landscape
-
-                            .lblLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbLandscape.Image.Width, .pbLandscape.Image.Height)
-                            .lblLandscapeSize.Visible = True
-                        End If
-                    Else
-                        tcEdit.TabPages.Remove(tpLandscape)
+                'Poster
+                If Master.eSettings.MoviePosterAnyEnabled Then
+                    If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainPoster) Then
+                        btnSetPosterScrape.Enabled = False
                     End If
+                    If .Poster.ImageOriginal.Image IsNot Nothing OrElse .Poster.ImageOriginal.FromMemoryStream Then
+                        pbPoster.Image = .Poster.ImageOriginal.Image
+                        pbPoster.Tag = .Poster
 
-                    'Poster
-                    If Master.eSettings.MoviePosterAnyEnabled Then
-                        If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainPoster) Then
-                            .btnSetPosterScrape.Enabled = False
-                        End If
-                        If Me.tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing Then
-                            .pbPoster.Image = Me.tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image
-                            .pbPoster.Tag = Me.tmpDBElement.ImagesContainer.Poster
-
-                            .lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), .pbPoster.Image.Width, .pbPoster.Image.Height)
-                            .lblPosterSize.Visible = True
-                        End If
-                    Else
-                        tcEdit.TabPages.Remove(tpPoster)
+                        lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbPoster.Image.Width, pbPoster.Image.Height)
+                        lblPosterSize.Visible = True
                     End If
-
-                    'Theme
-                    If Not Master.eSettings.MovieThemeAnyEnabled Then
-                        tcEdit.TabPages.Remove(tpTheme)
-                    End If
-
-                    If Not String.IsNullOrEmpty(Me.tmpDBElement.ThemePath) AndAlso Me.tmpDBElement.ThemePath.Substring(0, 1) = ":" Then
-                        MovieTheme.FromWeb(Me.tmpDBElement.ThemePath.Substring(1, Me.tmpDBElement.ThemePath.Length - 1))
-                        ThemeAddToPlayer(MovieTheme)
-                    ElseIf Not String.IsNullOrEmpty(Me.tmpDBElement.ThemePath) Then
-                        MovieTheme.FromFile(Me.tmpDBElement.ThemePath)
-                        ThemeAddToPlayer(MovieTheme)
-                    End If
-
-                    'Trailer
-                    If Master.eSettings.MovieTrailerAnyEnabled Then
-                        If Not String.IsNullOrEmpty(Me.tmpDBElement.Trailer.LocalFilePath) OrElse Not String.IsNullOrEmpty(Me.tmpDBElement.Trailer.URLVideoStream) Then
-                            TrailerPlaylistAdd(Me.tmpDBElement.Trailer)
-                        End If
-                    Else
-                        tcEdit.TabPages.Remove(tpTrailer)
-                    End If
-
-                    'DiscStub
-                    If Path.GetExtension(Me.tmpDBElement.Filename).ToLower = ".disc" Then
-                        Dim DiscStub As New MediaStub.DiscStub
-                        DiscStub = MediaStub.LoadDiscStub(Me.tmpDBElement.Filename)
-                        .txtMediaStubTitle.Text = DiscStub.Title
-                        .txtMediaStubMessage.Text = DiscStub.Message
-                    End If
-
-                    Me.LoadSubtitles()
+                Else
+                    tcEdit.TabPages.Remove(tpPoster)
                 End If
             End With
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+
+            'Theme
+            If Not Master.eSettings.MovieThemeAnyEnabled Then
+                tcEdit.TabPages.Remove(tpTheme)
+            End If
+
+            If Not String.IsNullOrEmpty(tmpDBElement.ThemePath) AndAlso tmpDBElement.ThemePath.Substring(0, 1) = ":" Then
+                MovieTheme.FromWeb(tmpDBElement.ThemePath.Substring(1, tmpDBElement.ThemePath.Length - 1))
+                ThemeAddToPlayer(MovieTheme)
+            ElseIf Not String.IsNullOrEmpty(tmpDBElement.ThemePath) Then
+                MovieTheme.FromFile(tmpDBElement.ThemePath)
+                ThemeAddToPlayer(MovieTheme)
+            End If
+
+            'Trailer
+            If Master.eSettings.MovieTrailerAnyEnabled Then
+                If Not String.IsNullOrEmpty(tmpDBElement.Trailer.LocalFilePath) OrElse Not String.IsNullOrEmpty(tmpDBElement.Trailer.URLVideoStream) Then
+                    TrailerPlaylistAdd(tmpDBElement.Trailer)
+                End If
+            Else
+                tcEdit.TabPages.Remove(tpTrailer)
+            End If
+
+            'DiscStub
+            If Path.GetExtension(tmpDBElement.Filename).ToLower = ".disc" Then
+                Dim DiscStub As New MediaStub.DiscStub
+                DiscStub = MediaStub.LoadDiscStub(tmpDBElement.Filename)
+                txtMediaStubTitle.Text = DiscStub.Title
+                txtMediaStubMessage.Text = DiscStub.Message
+            End If
+
+            LoadSubtitles()
+        End If
     End Sub
 
     Private Sub clbGenre_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles clbGenre.ItemCheck
         If e.Index = 0 Then
             For i As Integer = 1 To clbGenre.Items.Count - 1
-                Me.clbGenre.SetItemChecked(i, False)
+                clbGenre.SetItemChecked(i, False)
             Next
         Else
-            Me.clbGenre.SetItemChecked(0, False)
+            clbGenre.SetItemChecked(0, False)
         End If
     End Sub
 
     Private Sub lbMPAA_DoubleClick(sender As Object, e As EventArgs) Handles lbMPAA.DoubleClick
-        If Me.lbMPAA.SelectedItems.Count = 1 Then
-            If Me.lbMPAA.SelectedIndex = 0 Then
-                Me.txtMPAA.Text = String.Empty
+        If lbMPAA.SelectedItems.Count = 1 Then
+            If lbMPAA.SelectedIndex = 0 Then
+                txtMPAA.Text = String.Empty
             Else
-                Me.txtMPAA.Text = Me.lbMPAA.SelectedItem.ToString
+                txtMPAA.Text = lbMPAA.SelectedItem.ToString
             End If
         End If
     End Sub
 
     Private Sub LoadGenres()
-        Me.clbGenre.Items.Add(Master.eLang.None)
+        clbGenre.Items.Add(Master.eLang.None)
 
-        Me.clbGenre.Items.AddRange(APIXML.GetGenreList)
+        clbGenre.Items.AddRange(APIXML.GetGenreList)
     End Sub
 
     Private Sub LoadRatings()
-        Me.lbMPAA.Items.Add(Master.eLang.None)
-        If Not String.IsNullOrEmpty(Master.eSettings.MovieScraperMPAANotRated) Then Me.lbMPAA.Items.Add(Master.eSettings.MovieScraperMPAANotRated)
-        Me.lbMPAA.Items.AddRange(APIXML.GetRatingList_Movie)
+        lbMPAA.Items.Add(Master.eLang.None)
+        If Not String.IsNullOrEmpty(Master.eSettings.MovieScraperMPAANotRated) Then lbMPAA.Items.Add(Master.eSettings.MovieScraperMPAANotRated)
+        lbMPAA.Items.AddRange(APIXML.GetRatingList_Movie)
     End Sub
 
     Private Sub lvActors_ColumnClick(ByVal sender As Object, ByVal e As System.Windows.Forms.ColumnClickEventArgs) Handles lvActors.ColumnClick
         ' Determine if the clicked column is already the column that is
         ' being sorted.
         Try
-            If (e.Column = Me.lvwActorSorter.SortColumn) Then
+            If (e.Column = lvwActorSorter.SortColumn) Then
                 ' Reverse the current sort direction for this column.
-                If (Me.lvwActorSorter.Order = SortOrder.Ascending) Then
-                    Me.lvwActorSorter.Order = SortOrder.Descending
+                If (lvwActorSorter.Order = SortOrder.Ascending) Then
+                    lvwActorSorter.Order = SortOrder.Descending
                 Else
-                    Me.lvwActorSorter.Order = SortOrder.Ascending
+                    lvwActorSorter.Order = SortOrder.Ascending
                 End If
             Else
                 ' Set the column number that is to be sorted; default to ascending.
-                Me.lvwActorSorter.SortColumn = e.Column
-                Me.lvwActorSorter.Order = SortOrder.Ascending
+                lvwActorSorter.SortColumn = e.Column
+                lvwActorSorter.Order = SortOrder.Ascending
             End If
 
             ' Perform the sort with these new sort options.
-            Me.lvActors.Sort()
+            lvActors.Sort()
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
@@ -1995,28 +1951,28 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub lvActors_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lvActors.KeyDown
-        If e.KeyCode = Keys.Delete Then Me.DeleteActors()
+        If e.KeyCode = Keys.Delete Then DeleteActors()
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-        Me.ThemeStop()
-        Me.TrailerStop()
+        ThemeStop()
+        TrailerStop()
 
-        Me.SetInfo()
-        Me.CleanUp()
+        SetInfo()
+        CleanUp()
 
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.Close()
+        DialogResult = System.Windows.Forms.DialogResult.OK
+        Close()
     End Sub
 
     Private Sub pbBanner_DragDrop(sender As Object, e As DragEventArgs) Handles pbBanner.DragDrop
         Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
-            Me.tmpDBElement.ImagesContainer.Banner = tImage
-            Me.pbBanner.Image = Me.tmpDBElement.ImagesContainer.Banner.ImageOriginal.Image
-            Me.pbBanner.Tag = Me.tmpDBElement.ImagesContainer.Banner
-            Me.lblBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbBanner.Image.Width, Me.pbBanner.Image.Height)
-            Me.lblBannerSize.Visible = True
+            tmpDBElement.ImagesContainer.Banner = tImage
+            pbBanner.Image = tmpDBElement.ImagesContainer.Banner.ImageOriginal.Image
+            pbBanner.Tag = tmpDBElement.ImagesContainer.Banner
+            lblBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbBanner.Image.Width, pbBanner.Image.Height)
+            lblBannerSize.Visible = True
         End If
     End Sub
 
@@ -2031,11 +1987,11 @@ Public Class dlgEditMovie
     Private Sub pbClearArt_DragDrop(sender As Object, e As DragEventArgs) Handles pbClearArt.DragDrop
         Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
-            Me.tmpDBElement.ImagesContainer.ClearArt = tImage
-            Me.pbClearArt.Image = Me.tmpDBElement.ImagesContainer.ClearArt.ImageOriginal.Image
-            Me.pbClearArt.Tag = Me.tmpDBElement.ImagesContainer.ClearArt
-            Me.lblClearArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbClearArt.Image.Width, Me.pbClearArt.Image.Height)
-            Me.lblClearArtSize.Visible = True
+            tmpDBElement.ImagesContainer.ClearArt = tImage
+            pbClearArt.Image = tmpDBElement.ImagesContainer.ClearArt.ImageOriginal.Image
+            pbClearArt.Tag = tmpDBElement.ImagesContainer.ClearArt
+            lblClearArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbClearArt.Image.Width, pbClearArt.Image.Height)
+            lblClearArtSize.Visible = True
         End If
     End Sub
 
@@ -2050,11 +2006,11 @@ Public Class dlgEditMovie
     Private Sub pbClearLogo_DragDrop(sender As Object, e As DragEventArgs) Handles pbClearLogo.DragDrop
         Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
-            Me.tmpDBElement.ImagesContainer.ClearLogo = tImage
-            Me.pbClearLogo.Image = Me.tmpDBElement.ImagesContainer.ClearLogo.ImageOriginal.Image
-            Me.pbClearLogo.Tag = Me.tmpDBElement.ImagesContainer.ClearLogo
-            Me.lblClearLogoSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbClearLogo.Image.Width, Me.pbClearLogo.Image.Height)
-            Me.lblClearLogoSize.Visible = True
+            tmpDBElement.ImagesContainer.ClearLogo = tImage
+            pbClearLogo.Image = tmpDBElement.ImagesContainer.ClearLogo.ImageOriginal.Image
+            pbClearLogo.Tag = tmpDBElement.ImagesContainer.ClearLogo
+            lblClearLogoSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbClearLogo.Image.Width, pbClearLogo.Image.Height)
+            lblClearLogoSize.Visible = True
         End If
     End Sub
 
@@ -2069,11 +2025,11 @@ Public Class dlgEditMovie
     Private Sub pbDiscArt_DragDrop(sender As Object, e As DragEventArgs) Handles pbDiscArt.DragDrop
         Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
-            Me.tmpDBElement.ImagesContainer.DiscArt = tImage
-            Me.pbDiscArt.Image = Me.tmpDBElement.ImagesContainer.DiscArt.ImageOriginal.Image
-            Me.pbDiscArt.Tag = Me.tmpDBElement.ImagesContainer.DiscArt
-            Me.lblDiscArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbDiscArt.Image.Width, Me.pbDiscArt.Image.Height)
-            Me.lblDiscArtSize.Visible = True
+            tmpDBElement.ImagesContainer.DiscArt = tImage
+            pbDiscArt.Image = tmpDBElement.ImagesContainer.DiscArt.ImageOriginal.Image
+            pbDiscArt.Tag = tmpDBElement.ImagesContainer.DiscArt
+            lblDiscArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbDiscArt.Image.Width, pbDiscArt.Image.Height)
+            lblDiscArtSize.Visible = True
         End If
     End Sub
 
@@ -2088,11 +2044,11 @@ Public Class dlgEditMovie
     Private Sub pbFanart_DragDrop(sender As Object, e As DragEventArgs) Handles pbFanart.DragDrop
         Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
-            Me.tmpDBElement.ImagesContainer.Fanart = tImage
-            Me.pbFanart.Image = Me.tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
-            Me.pbFanart.Tag = Me.tmpDBElement.ImagesContainer.Fanart
-            Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
-            Me.lblFanartSize.Visible = True
+            tmpDBElement.ImagesContainer.Fanart = tImage
+            pbFanart.Image = tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
+            pbFanart.Tag = tmpDBElement.ImagesContainer.Fanart
+            lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbFanart.Image.Width, pbFanart.Image.Height)
+            lblFanartSize.Visible = True
         End If
     End Sub
 
@@ -2107,11 +2063,11 @@ Public Class dlgEditMovie
     Private Sub pbLandscape_DragDrop(sender As Object, e As DragEventArgs) Handles pbLandscape.DragDrop
         Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
-            Me.tmpDBElement.ImagesContainer.Landscape = tImage
-            Me.pbLandscape.Image = Me.tmpDBElement.ImagesContainer.Landscape.ImageOriginal.Image
-            Me.pbLandscape.Tag = Me.tmpDBElement.ImagesContainer.Landscape
-            Me.lblLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbLandscape.Image.Width, Me.pbLandscape.Image.Height)
-            Me.lblLandscapeSize.Visible = True
+            tmpDBElement.ImagesContainer.Landscape = tImage
+            pbLandscape.Image = tmpDBElement.ImagesContainer.Landscape.ImageOriginal.Image
+            pbLandscape.Tag = tmpDBElement.ImagesContainer.Landscape
+            lblLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbLandscape.Image.Width, pbLandscape.Image.Height)
+            lblLandscapeSize.Visible = True
         End If
     End Sub
 
@@ -2126,11 +2082,11 @@ Public Class dlgEditMovie
     Private Sub pbPoster_DragDrop(sender As Object, e As DragEventArgs) Handles pbPoster.DragDrop
         Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
-            Me.tmpDBElement.ImagesContainer.Poster = tImage
-            Me.pbPoster.Image = Me.tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image
-            Me.pbPoster.Tag = Me.tmpDBElement.ImagesContainer.Poster
-            Me.lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbPoster.Image.Width, Me.pbPoster.Image.Height)
-            Me.lblPosterSize.Visible = True
+            tmpDBElement.ImagesContainer.Poster = tImage
+            pbPoster.Image = tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image
+            pbPoster.Tag = tmpDBElement.ImagesContainer.Poster
+            lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbPoster.Image.Width, pbPoster.Image.Height)
+            lblPosterSize.Visible = True
         End If
     End Sub
 
@@ -2143,14 +2099,14 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub pbStar1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar1.Click
-        Me.tmpRating = Me.pbStar1.Tag.ToString
+        tmpRating = pbStar1.Tag.ToString
     End Sub
 
     Private Sub pbStar1_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar1.MouseLeave
         Try
             Dim tmpDBL As Single = 0
-            Single.TryParse(Me.tmpRating, tmpDBL)
-            Me.BuildStars(tmpDBL)
+            Single.TryParse(tmpRating, tmpDBL)
+            BuildStars(tmpDBL)
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
@@ -2159,11 +2115,11 @@ Public Class dlgEditMovie
     Private Sub pbStar1_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar1.MouseMove
         Try
             If e.X < 12 Then
-                Me.pbStar1.Tag = 0.5
-                Me.BuildStars(0.5)
+                pbStar1.Tag = 0.5
+                BuildStars(0.5)
             Else
-                Me.pbStar1.Tag = 1
-                Me.BuildStars(1)
+                pbStar1.Tag = 1
+                BuildStars(1)
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -2171,14 +2127,14 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub pbStar2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar2.Click
-        Me.tmpRating = Me.pbStar2.Tag.ToString
+        tmpRating = pbStar2.Tag.ToString
     End Sub
 
     Private Sub pbStar2_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar2.MouseLeave
         Try
             Dim tmpDBL As Single = 0
-            Single.TryParse(Me.tmpRating, tmpDBL)
-            Me.BuildStars(tmpDBL)
+            Single.TryParse(tmpRating, tmpDBL)
+            BuildStars(tmpDBL)
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
@@ -2187,11 +2143,11 @@ Public Class dlgEditMovie
     Private Sub pbStar2_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar2.MouseMove
         Try
             If e.X < 12 Then
-                Me.pbStar2.Tag = 1.5
-                Me.BuildStars(1.5)
+                pbStar2.Tag = 1.5
+                BuildStars(1.5)
             Else
-                Me.pbStar2.Tag = 2
-                Me.BuildStars(2)
+                pbStar2.Tag = 2
+                BuildStars(2)
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -2199,14 +2155,14 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub pbStar3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar3.Click
-        Me.tmpRating = Me.pbStar3.Tag.ToString
+        tmpRating = pbStar3.Tag.ToString
     End Sub
 
     Private Sub pbStar3_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar3.MouseLeave
         Try
             Dim tmpDBL As Single = 0
-            Single.TryParse(Me.tmpRating, tmpDBL)
-            Me.BuildStars(tmpDBL)
+            Single.TryParse(tmpRating, tmpDBL)
+            BuildStars(tmpDBL)
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
@@ -2215,11 +2171,11 @@ Public Class dlgEditMovie
     Private Sub pbStar3_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar3.MouseMove
         Try
             If e.X < 12 Then
-                Me.pbStar3.Tag = 2.5
-                Me.BuildStars(2.5)
+                pbStar3.Tag = 2.5
+                BuildStars(2.5)
             Else
-                Me.pbStar3.Tag = 3
-                Me.BuildStars(3)
+                pbStar3.Tag = 3
+                BuildStars(3)
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -2227,14 +2183,14 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub pbStar4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar4.Click
-        Me.tmpRating = Me.pbStar4.Tag.ToString
+        tmpRating = pbStar4.Tag.ToString
     End Sub
 
     Private Sub pbStar4_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar4.MouseLeave
         Try
             Dim tmpDBL As Single = 0
-            Single.TryParse(Me.tmpRating, tmpDBL)
-            Me.BuildStars(tmpDBL)
+            Single.TryParse(tmpRating, tmpDBL)
+            BuildStars(tmpDBL)
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
@@ -2243,11 +2199,11 @@ Public Class dlgEditMovie
     Private Sub pbStar4_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar4.MouseMove
         Try
             If e.X < 12 Then
-                Me.pbStar4.Tag = 3.5
-                Me.BuildStars(3.5)
+                pbStar4.Tag = 3.5
+                BuildStars(3.5)
             Else
-                Me.pbStar4.Tag = 4
-                Me.BuildStars(4)
+                pbStar4.Tag = 4
+                BuildStars(4)
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -2255,14 +2211,14 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub pbStar5_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar5.Click
-        Me.tmpRating = Me.pbStar5.Tag.ToString
+        tmpRating = pbStar5.Tag.ToString
     End Sub
 
     Private Sub pbStar5_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar5.MouseLeave
         Try
             Dim tmpDBL As Single = 0
-            Single.TryParse(Me.tmpRating, tmpDBL)
-            Me.BuildStars(tmpDBL)
+            Single.TryParse(tmpRating, tmpDBL)
+            BuildStars(tmpDBL)
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
@@ -2271,11 +2227,11 @@ Public Class dlgEditMovie
     Private Sub pbStar5_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar5.MouseMove
         Try
             If e.X < 12 Then
-                Me.pbStar5.Tag = 4.5
-                Me.BuildStars(4.5)
+                pbStar5.Tag = 4.5
+                BuildStars(4.5)
             Else
-                Me.pbStar5.Tag = 5
-                Me.BuildStars(5)
+                pbStar5.Tag = 5
+                BuildStars(5)
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -2283,14 +2239,14 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub pbStar6_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar6.Click
-        Me.tmpRating = Me.pbStar6.Tag.ToString
+        tmpRating = pbStar6.Tag.ToString
     End Sub
 
     Private Sub pbStar6_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar6.MouseLeave
         Try
             Dim tmpDBL As Single = 0
-            Single.TryParse(Me.tmpRating, tmpDBL)
-            Me.BuildStars(tmpDBL)
+            Single.TryParse(tmpRating, tmpDBL)
+            BuildStars(tmpDBL)
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
@@ -2299,11 +2255,11 @@ Public Class dlgEditMovie
     Private Sub pbStar6_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar6.MouseMove
         Try
             If e.X < 12 Then
-                Me.pbStar6.Tag = 5.5
-                Me.BuildStars(5.5)
+                pbStar6.Tag = 5.5
+                BuildStars(5.5)
             Else
-                Me.pbStar6.Tag = 6
-                Me.BuildStars(6)
+                pbStar6.Tag = 6
+                BuildStars(6)
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -2311,14 +2267,14 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub pbStar7_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar7.Click
-        Me.tmpRating = Me.pbStar7.Tag.ToString
+        tmpRating = pbStar7.Tag.ToString
     End Sub
 
     Private Sub pbStar7_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar7.MouseLeave
         Try
             Dim tmpDBL As Single = 0
-            Single.TryParse(Me.tmpRating, tmpDBL)
-            Me.BuildStars(tmpDBL)
+            Single.TryParse(tmpRating, tmpDBL)
+            BuildStars(tmpDBL)
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
@@ -2327,11 +2283,11 @@ Public Class dlgEditMovie
     Private Sub pbStar7_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar7.MouseMove
         Try
             If e.X < 12 Then
-                Me.pbStar7.Tag = 6.5
-                Me.BuildStars(6.5)
+                pbStar7.Tag = 6.5
+                BuildStars(6.5)
             Else
-                Me.pbStar7.Tag = 7
-                Me.BuildStars(7)
+                pbStar7.Tag = 7
+                BuildStars(7)
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -2339,14 +2295,14 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub pbStar8_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar8.Click
-        Me.tmpRating = Me.pbStar8.Tag.ToString
+        tmpRating = pbStar8.Tag.ToString
     End Sub
 
     Private Sub pbStar8_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar8.MouseLeave
         Try
             Dim tmpDBL As Single = 0
-            Single.TryParse(Me.tmpRating, tmpDBL)
-            Me.BuildStars(tmpDBL)
+            Single.TryParse(tmpRating, tmpDBL)
+            BuildStars(tmpDBL)
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
@@ -2355,11 +2311,11 @@ Public Class dlgEditMovie
     Private Sub pbStar8_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar8.MouseMove
         Try
             If e.X < 12 Then
-                Me.pbStar8.Tag = 7.5
-                Me.BuildStars(7.5)
+                pbStar8.Tag = 7.5
+                BuildStars(7.5)
             Else
-                Me.pbStar8.Tag = 8
-                Me.BuildStars(8)
+                pbStar8.Tag = 8
+                BuildStars(8)
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -2367,14 +2323,14 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub pbStar9_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar9.Click
-        Me.tmpRating = Me.pbStar9.Tag.ToString
+        tmpRating = pbStar9.Tag.ToString
     End Sub
 
     Private Sub pbStar9_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar9.MouseLeave
         Try
             Dim tmpDBL As Single = 0
-            Single.TryParse(Me.tmpRating, tmpDBL)
-            Me.BuildStars(tmpDBL)
+            Single.TryParse(tmpRating, tmpDBL)
+            BuildStars(tmpDBL)
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
@@ -2383,11 +2339,11 @@ Public Class dlgEditMovie
     Private Sub pbStar9_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar9.MouseMove
         Try
             If e.X < 12 Then
-                Me.pbStar9.Tag = 8.5
-                Me.BuildStars(8.5)
+                pbStar9.Tag = 8.5
+                BuildStars(8.5)
             Else
-                Me.pbStar9.Tag = 9
-                Me.BuildStars(9)
+                pbStar9.Tag = 9
+                BuildStars(9)
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -2395,14 +2351,14 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub pbStar10_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar10.Click
-        Me.tmpRating = Me.pbStar10.Tag.ToString
+        tmpRating = pbStar10.Tag.ToString
     End Sub
 
     Private Sub pbStar10_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar10.MouseLeave
         Try
             Dim tmpDBL As Single = 0
-            Single.TryParse(Me.tmpRating, tmpDBL)
-            Me.BuildStars(tmpDBL)
+            Single.TryParse(tmpRating, tmpDBL)
+            BuildStars(tmpDBL)
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
@@ -2411,11 +2367,11 @@ Public Class dlgEditMovie
     Private Sub pbStar10_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar10.MouseMove
         Try
             If e.X < 12 Then
-                Me.pbStar10.Tag = 9.5
-                Me.BuildStars(9.5)
+                pbStar10.Tag = 9.5
+                BuildStars(9.5)
             Else
-                Me.pbStar10.Tag = 10
-                Me.BuildStars(10)
+                pbStar10.Tag = 10
+                BuildStars(10)
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -2423,15 +2379,15 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub RefreshExtrafanarts()
-        'Me.pnlExtrafanarts.AutoScrollPosition = New Point(0, 0)
+        'pnlExtrafanarts.AutoScrollPosition = New Point(0, 0)
         iEFTop = 1
-        While Me.pnlExtrafanarts.Controls.Count > 0
-            Me.pnlExtrafanarts.Controls(0).Dispose()
+        While pnlExtrafanarts.Controls.Count > 0
+            pnlExtrafanarts.Controls(0).Dispose()
         End While
 
-        If Me.tmpDBElement.ImagesContainer.Extrafanarts.Count > 0 Then
+        If tmpDBElement.ImagesContainer.Extrafanarts.Count > 0 Then
             Dim iIndex As Integer = 0
-            For Each img As MediaContainers.Image In Me.tmpDBElement.ImagesContainer.Extrafanarts
+            For Each img As MediaContainers.Image In tmpDBElement.ImagesContainer.Extrafanarts
                 AddExtrafanartImage(String.Concat(img.Width, " x ", img.Height), iIndex, img)
                 iIndex += 1
             Next
@@ -2439,16 +2395,16 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub RefreshExtrathumbs()
-        'Me.pnlExtrathumbs.AutoScrollPosition = New Point(0, 0)
+        'pnlExtrathumbs.AutoScrollPosition = New Point(0, 0)
         iETTop = 1
-        While Me.pnlExtrathumbs.Controls.Count > 0
-            Me.pnlExtrathumbs.Controls(0).Dispose()
+        While pnlExtrathumbs.Controls.Count > 0
+            pnlExtrathumbs.Controls(0).Dispose()
         End While
 
-        If Me.tmpDBElement.ImagesContainer.Extrathumbs.Count > 0 Then
+        If tmpDBElement.ImagesContainer.Extrathumbs.Count > 0 Then
             tmpDBElement.ImagesContainer.SortExtrathumbs()
             Dim iIndex As Integer = 0
-            For Each img As MediaContainers.Image In Me.tmpDBElement.ImagesContainer.Extrathumbs.OrderBy(Function(f) f.Index)
+            For Each img As MediaContainers.Image In tmpDBElement.ImagesContainer.Extrathumbs.OrderBy(Function(f) f.Index)
                 img.Index = iIndex
                 AddExtrathumbImage(String.Concat(img.Width, " x ", img.Height), iIndex, img)
                 iIndex += 1
@@ -2458,44 +2414,44 @@ Public Class dlgEditMovie
 
     Private Sub SelectMPAA()
         Try
-            If Not String.IsNullOrEmpty(Me.tmpDBElement.Movie.MPAA) Then
+            If Not String.IsNullOrEmpty(tmpDBElement.Movie.MPAA) Then
                 If Master.eSettings.MovieScraperCertOnlyValue Then
                     Dim sItem As String = String.Empty
-                    For i As Integer = 0 To Me.lbMPAA.Items.Count - 1
-                        sItem = Me.lbMPAA.Items(i).ToString
-                        If sItem.Contains(":") AndAlso sItem.Split(Convert.ToChar(":"))(1) = Me.tmpDBElement.Movie.MPAA Then
-                            Me.lbMPAA.SelectedIndex = i
-                            Me.lbMPAA.TopIndex = i
+                    For i As Integer = 0 To lbMPAA.Items.Count - 1
+                        sItem = lbMPAA.Items(i).ToString
+                        If sItem.Contains(":") AndAlso sItem.Split(Convert.ToChar(":"))(1) = tmpDBElement.Movie.MPAA Then
+                            lbMPAA.SelectedIndex = i
+                            lbMPAA.TopIndex = i
                             Exit For
                         End If
                     Next
                 Else
                     Dim i As Integer = 0
-                    For ctr As Integer = 0 To Me.lbMPAA.Items.Count - 1
-                        If Me.tmpDBElement.Movie.MPAA.ToLower.StartsWith(Me.lbMPAA.Items.Item(ctr).ToString.ToLower) Then
+                    For ctr As Integer = 0 To lbMPAA.Items.Count - 1
+                        If tmpDBElement.Movie.MPAA.ToLower.StartsWith(lbMPAA.Items.Item(ctr).ToString.ToLower) Then
                             i = ctr
                             Exit For
                         End If
                     Next
-                    Me.lbMPAA.SelectedIndex = i
-                    Me.lbMPAA.TopIndex = i
+                    lbMPAA.SelectedIndex = i
+                    lbMPAA.TopIndex = i
 
                     Dim strMPAA As String = String.Empty
                     Dim strMPAADesc As String = String.Empty
                     If i > 0 Then
-                        strMPAA = Me.lbMPAA.Items.Item(i).ToString
-                        strMPAADesc = Me.tmpDBElement.Movie.MPAA.Replace(strMPAA, String.Empty).Trim
-                        Me.txtMPAA.Text = strMPAA
-                        Me.txtMPAADesc.Text = strMPAADesc
+                        strMPAA = lbMPAA.Items.Item(i).ToString
+                        strMPAADesc = tmpDBElement.Movie.MPAA.Replace(strMPAA, String.Empty).Trim
+                        txtMPAA.Text = strMPAA
+                        txtMPAADesc.Text = strMPAADesc
                     Else
-                        Me.txtMPAA.Text = Me.tmpDBElement.Movie.MPAA
+                        txtMPAA.Text = tmpDBElement.Movie.MPAA
                     End If
                 End If
             End If
 
-            If Me.lbMPAA.SelectedItems.Count = 0 Then
-                Me.lbMPAA.SelectedIndex = 0
-                Me.lbMPAA.TopIndex = 0
+            If lbMPAA.SelectedItems.Count = 0 Then
+                lbMPAA.SelectedIndex = 0
+                lbMPAA.TopIndex = 0
             End If
 
         Catch ex As Exception
@@ -2507,76 +2463,76 @@ Public Class dlgEditMovie
         Try
             With Me
 
-                Me.OK_Button.Enabled = False
-                Me.Cancel_Button.Enabled = False
-                Me.btnRescrape.Enabled = False
-                Me.btnChangeMovie.Enabled = False
+                OK_Button.Enabled = False
+                Cancel_Button.Enabled = False
+                btnRescrape.Enabled = False
+                btnChangeMovie.Enabled = False
 
-                Me.tmpDBElement.IsMark = Me.chkMark.Checked
+                tmpDBElement.IsMark = chkMark.Checked
 
                 If Not String.IsNullOrEmpty(.txtSortTitle.Text) Then
-                    Me.tmpDBElement.Movie.SortTitle = .txtSortTitle.Text.Trim
+                    tmpDBElement.Movie.SortTitle = .txtSortTitle.Text.Trim
                 Else
-                    Me.tmpDBElement.Movie.SortTitle = StringUtils.SortTokens_Movie(.txtTitle.Text.Trim)
+                    tmpDBElement.Movie.SortTitle = StringUtils.SortTokens_Movie(.txtTitle.Text.Trim)
                 End If
 
-                Me.tmpDBElement.Movie.Tagline = .txtTagline.Text.Trim
-                Me.tmpDBElement.Movie.Year = .mtxtYear.Text.Trim
-                Me.tmpDBElement.Movie.Votes = .txtVotes.Text.Trim
-                Me.tmpDBElement.Movie.Outline = .txtOutline.Text.Trim
-                Me.tmpDBElement.Movie.Plot = .txtPlot.Text.Trim
-                Me.tmpDBElement.Movie.Top250 = .txtTop250.Text.Trim
-                Me.tmpDBElement.Movie.Country = .txtCountry.Text.Trim
-                Me.tmpDBElement.Movie.Director = .txtDirector.Text.Trim
-                Me.tmpDBElement.Movie.Title = .txtTitle.Text.Trim
-                Me.tmpDBElement.Movie.Certification = .txtCerts.Text.Trim
-                Me.tmpDBElement.Movie.OriginalTitle = .txtOriginalTitle.Text.Trim
-                Me.tmpDBElement.Movie.MPAA = String.Concat(.txtMPAA.Text, " ", .txtMPAADesc.Text).Trim
-                Me.tmpDBElement.Movie.Runtime = .txtRuntime.Text.Trim
-                Me.tmpDBElement.Movie.ReleaseDate = .txtReleaseDate.Text.Trim
-                Me.tmpDBElement.Movie.OldCredits = .txtCredits.Text.Trim
-                Me.tmpDBElement.Movie.Studio = .txtStudio.Text.Trim
-                Me.tmpDBElement.VideoSource = .txtVideoSource.Text.Trim
-                Me.tmpDBElement.Movie.VideoSource = .txtVideoSource.Text.Trim
-                Me.tmpDBElement.Movie.Trailer = .txtTrailer.Text.Trim
-                Me.tmpDBElement.ListTitle = StringUtils.ListTitle_Movie(.txtTitle.Text, .mtxtYear.Text)
+                tmpDBElement.Movie.Tagline = .txtTagline.Text.Trim
+                tmpDBElement.Movie.Year = .txtYear.Text.Trim
+                tmpDBElement.Movie.Votes = .txtVotes.Text.Trim
+                tmpDBElement.Movie.Outline = .txtOutline.Text.Trim
+                tmpDBElement.Movie.Plot = .txtPlot.Text.Trim
+                tmpDBElement.Movie.Top250 = .txtTop250.Text.Trim
+                tmpDBElement.Movie.Country = .txtCountry.Text.Trim
+                tmpDBElement.Movie.Director = .txtDirector.Text.Trim
+                tmpDBElement.Movie.Title = .txtTitle.Text.Trim
+                tmpDBElement.Movie.Certification = .txtCerts.Text.Trim
+                tmpDBElement.Movie.OriginalTitle = .txtOriginalTitle.Text.Trim
+                tmpDBElement.Movie.MPAA = String.Concat(.txtMPAA.Text, " ", .txtMPAADesc.Text).Trim
+                tmpDBElement.Movie.Runtime = .txtRuntime.Text.Trim
+                tmpDBElement.Movie.ReleaseDate = .txtReleaseDate.Text.Trim
+                tmpDBElement.Movie.OldCredits = .txtCredits.Text.Trim
+                tmpDBElement.Movie.Studio = .txtStudio.Text.Trim
+                tmpDBElement.VideoSource = .txtVideoSource.Text.Trim
+                tmpDBElement.Movie.VideoSource = .txtVideoSource.Text.Trim
+                tmpDBElement.Movie.Trailer = .txtTrailer.Text.Trim
+                tmpDBElement.ListTitle = StringUtils.ListTitle_Movie(.txtTitle.Text, .txtYear.Text)
 
                 If Not .tmpRating.Trim = String.Empty AndAlso .tmpRating.Trim <> "0" Then
-                    Me.tmpDBElement.Movie.Rating = .tmpRating
+                    tmpDBElement.Movie.Rating = .tmpRating
                 Else
-                    Me.tmpDBElement.Movie.Rating = String.Empty
+                    tmpDBElement.Movie.Rating = String.Empty
                 End If
 
                 'cocotus, 2013/02 Playcount/Watched state support added
                 'if watched-checkbox is checked -> save Playcount=1 in nfo
                 If chkWatched.Checked Then
                     'Only set to 1 if field was empty before (otherwise it would overwrite Playcount everytime which is not desirable)
-                    If Not Me.tmpDBElement.Movie.PlayCountSpecified Then
-                        Me.tmpDBElement.Movie.PlayCount = 1
-                        Me.tmpDBElement.Movie.LastPlayed = Date.Now.ToString("yyyy-MM-dd HH:mm:ss")
+                    If Not tmpDBElement.Movie.PlayCountSpecified Then
+                        tmpDBElement.Movie.PlayCount = 1
+                        tmpDBElement.Movie.LastPlayed = Date.Now.ToString("yyyy-MM-dd HH:mm:ss")
                     End If
                 Else
                     'Unchecked Watched State -> Set Playcount back to 0, but only if it was filled before (check could save time)
-                    If Me.tmpDBElement.Movie.PlayCountSpecified Then
-                        Me.tmpDBElement.Movie.PlayCount = 0
-                        Me.tmpDBElement.Movie.LastPlayed = String.Empty
+                    If tmpDBElement.Movie.PlayCountSpecified Then
+                        tmpDBElement.Movie.PlayCount = 0
+                        tmpDBElement.Movie.LastPlayed = String.Empty
                     End If
                 End If
                 'cocotus End
 
                 If .clbGenre.CheckedItems.Count > 0 Then
                     If .clbGenre.CheckedIndices.Contains(0) Then
-                        Me.tmpDBElement.Movie.Genre = String.Empty
+                        tmpDBElement.Movie.Genre = String.Empty
                     Else
                         Dim strGenre As String = String.Empty
                         Dim isFirst As Boolean = True
                         Dim iChecked = From iCheck In .clbGenre.CheckedItems
                         strGenre = String.Join(" / ", iChecked.ToArray)
-                        Me.tmpDBElement.Movie.Genre = strGenre.Trim
+                        tmpDBElement.Movie.Genre = strGenre.Trim
                     End If
                 End If
 
-                Me.tmpDBElement.Movie.Actors.Clear()
+                tmpDBElement.Movie.Actors.Clear()
 
                 If .lvActors.Items.Count > 0 Then
                     Dim iOrder As Integer = 0
@@ -2589,30 +2545,30 @@ Public Class dlgEditMovie
                         addActor.LocalFilePath = lviActor.SubItems(4).Text.Trim
                         addActor.Order = iOrder
                         iOrder += 1
-                        Me.tmpDBElement.Movie.Actors.Add(addActor)
+                        tmpDBElement.Movie.Actors.Add(addActor)
                     Next
                 End If
 
                 If Not String.IsNullOrEmpty(.MovieTheme.Extention) AndAlso Not MovieTheme.toRemove Then 'TODO: proper check, extention check is only a woraround
-                    Dim tPath As String = .MovieTheme.SaveAsMovieTheme(Me.tmpDBElement)
-                    Me.tmpDBElement.ThemePath = tPath
+                    Dim tPath As String = .MovieTheme.SaveAsMovieTheme(tmpDBElement)
+                    tmpDBElement.ThemePath = tPath
                 Else
-                    Themes.DeleteMovieTheme(Me.tmpDBElement)
-                    Me.tmpDBElement.ThemePath = String.Empty
+                    Themes.DeleteMovieTheme(tmpDBElement)
+                    tmpDBElement.ThemePath = String.Empty
                 End If
 
-                If Path.GetExtension(Me.tmpDBElement.Filename) = ".disc" Then
-                    Dim StubFile As String = Me.tmpDBElement.Filename
-                    Dim Title As String = Me.txtMediaStubTitle.Text
-                    Dim Message As String = Me.txtMediaStubMessage.Text
+                If Path.GetExtension(tmpDBElement.Filename) = ".disc" Then
+                    Dim StubFile As String = tmpDBElement.Filename
+                    Dim Title As String = txtMediaStubTitle.Text
+                    Dim Message As String = txtMediaStubMessage.Text
                     MediaStub.SaveDiscStub(StubFile, Title, Message)
                 End If
 
-                If Not Master.eSettings.MovieImagesNotSaveURLToNfo AndAlso pResults.Posters.Count > 0 Then Me.tmpDBElement.Movie.Thumb = pResults.Posters
-                If Not Master.eSettings.MovieImagesNotSaveURLToNfo AndAlso fResults.Fanart.Thumb.Count > 0 Then Me.tmpDBElement.Movie.Fanart = pResults.Fanart
+                If Not Master.eSettings.MovieImagesNotSaveURLToNfo AndAlso pResults.Posters.Count > 0 Then tmpDBElement.Movie.Thumb = pResults.Posters
+                If Not Master.eSettings.MovieImagesNotSaveURLToNfo AndAlso fResults.Fanart.Thumb.Count > 0 Then tmpDBElement.Movie.Fanart = pResults.Fanart
 
                 Dim removeSubtitles As New List(Of MediaInfo.Subtitle)
-                For Each Subtitle In Me.tmpDBElement.Subtitles
+                For Each Subtitle In tmpDBElement.Subtitles
                     If Subtitle.toRemove Then
                         removeSubtitles.Add(Subtitle)
                     End If
@@ -2621,7 +2577,7 @@ Public Class dlgEditMovie
                     If File.Exists(Subtitle.SubsPath) Then
                         File.Delete(Subtitle.SubsPath)
                     End If
-                    Me.tmpDBElement.Subtitles.Remove(Subtitle)
+                    tmpDBElement.Subtitles.Remove(Subtitle)
                 Next
 
             End With
@@ -2633,115 +2589,115 @@ Public Class dlgEditMovie
     Private Sub SetUp()
         'Download
         Dim strDownload As String = Master.eLang.GetString(373, "Download")
-        Me.btnSetBannerDL.Text = strDownload
-        Me.btnSetClearArtDL.Text = strDownload
-        Me.btnSetClearLogoDL.Text = strDownload
-        Me.btnSetDiscArtDL.Text = strDownload
-        Me.btnSetFanartDL.Text = strDownload
-        Me.btnSetLandscapeDL.Text = strDownload
-        Me.btnSetPosterDL.Text = strDownload
-        Me.btnSetSubtitleDL.Text = strDownload
-        Me.btnSetThemeDL.Text = strDownload
-        Me.btnSetTrailerDL.Text = strDownload
+        btnSetBannerDL.Text = strDownload
+        btnSetClearArtDL.Text = strDownload
+        btnSetClearLogoDL.Text = strDownload
+        btnSetDiscArtDL.Text = strDownload
+        btnSetFanartDL.Text = strDownload
+        btnSetLandscapeDL.Text = strDownload
+        btnSetPosterDL.Text = strDownload
+        btnSetSubtitleDL.Text = strDownload
+        btnSetThemeDL.Text = strDownload
+        btnSetTrailerDL.Text = strDownload
 
         'Loacal Browse
         Dim strLocalBrowse As String = Master.eLang.GetString(78, "Local Browse")
-        Me.btnSetBannerLocal.Text = strLocalBrowse
-        Me.btnSetClearArtLocal.Text = strLocalBrowse
-        Me.btnSetClearLogoLocal.Text = strLocalBrowse
-        Me.btnSetDiscArtLocal.Text = strLocalBrowse
-        Me.btnSetFanartLocal.Text = strLocalBrowse
-        Me.btnSetLandscapeLocal.Text = strLocalBrowse
-        Me.btnSetPosterLocal.Text = strLocalBrowse
-        Me.btnSetSubtitleLocal.Text = strLocalBrowse
-        Me.btnSetThemeLocal.Text = strLocalBrowse
-        Me.btnSetTrailerLocal.Text = strLocalBrowse
+        btnSetBannerLocal.Text = strLocalBrowse
+        btnSetClearArtLocal.Text = strLocalBrowse
+        btnSetClearLogoLocal.Text = strLocalBrowse
+        btnSetDiscArtLocal.Text = strLocalBrowse
+        btnSetFanartLocal.Text = strLocalBrowse
+        btnSetLandscapeLocal.Text = strLocalBrowse
+        btnSetPosterLocal.Text = strLocalBrowse
+        btnSetSubtitleLocal.Text = strLocalBrowse
+        btnSetThemeLocal.Text = strLocalBrowse
+        btnSetTrailerLocal.Text = strLocalBrowse
 
         'Remove
         Dim strRemove As String = Master.eLang.GetString(30, "Remove")
-        Me.btnRemoveBanner.Text = strRemove
-        Me.btnRemoveClearArt.Text = strRemove
-        Me.btnRemoveClearLogo.Text = strRemove
-        Me.btnRemoveDiscArt.Text = strRemove
-        Me.btnRemoveFanart.Text = strRemove
-        Me.btnRemoveLandscape.Text = strRemove
-        Me.btnRemovePoster.Text = strRemove
-        Me.btnRemoveSubtitle.Text = strRemove
-        Me.btnRemoveTheme.Text = strRemove
-        Me.btnRemoveTrailer.Text = strRemove
+        btnRemoveBanner.Text = strRemove
+        btnRemoveClearArt.Text = strRemove
+        btnRemoveClearLogo.Text = strRemove
+        btnRemoveDiscArt.Text = strRemove
+        btnRemoveFanart.Text = strRemove
+        btnRemoveLandscape.Text = strRemove
+        btnRemovePoster.Text = strRemove
+        btnRemoveSubtitle.Text = strRemove
+        btnRemoveTheme.Text = strRemove
+        btnRemoveTrailer.Text = strRemove
 
         'Scrape
         Dim strScrape As String = Master.eLang.GetString(79, "Scrape")
-        Me.btnSetBannerScrape.Text = strScrape
-        Me.btnSetClearArtScrape.Text = strScrape
-        Me.btnSetClearLogoScrape.Text = strScrape
-        Me.btnSetDiscArtScrape.Text = strScrape
-        Me.btnSetFanartScrape.Text = strScrape
-        Me.btnSetLandscapeScrape.Text = strScrape
-        Me.btnSetPosterScrape.Text = strScrape
-        Me.btnSetSubtitleScrape.Text = strScrape
-        Me.btnSetThemeScrape.Text = strScrape
-        Me.btnSetTrailerScrape.Text = strScrape
+        btnSetBannerScrape.Text = strScrape
+        btnSetClearArtScrape.Text = strScrape
+        btnSetClearLogoScrape.Text = strScrape
+        btnSetDiscArtScrape.Text = strScrape
+        btnSetFanartScrape.Text = strScrape
+        btnSetLandscapeScrape.Text = strScrape
+        btnSetPosterScrape.Text = strScrape
+        btnSetSubtitleScrape.Text = strScrape
+        btnSetThemeScrape.Text = strScrape
+        btnSetTrailerScrape.Text = strScrape
 
-        Dim mTitle As String = Me.tmpDBElement.Movie.Title
+        Dim mTitle As String = tmpDBElement.Movie.Title
         Dim sTitle As String = String.Concat(Master.eLang.GetString(25, "Edit Movie"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
-        Me.Text = sTitle
-        Me.tsFilename.Text = Me.tmpDBElement.Filename
-        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
-        Me.btnChangeMovie.Text = Master.eLang.GetString(32, "Change Movie")
-        Me.btnManual.Text = Master.eLang.GetString(230, "Manual Edit")
-        Me.btnExtrafanartsSetAsFanart.Text = Me.btnExtrathumbsSetAsFanart.Text
-        Me.btnExtrathumbsSetAsFanart.Text = Master.eLang.GetString(255, "Set As Fanart")
-        Me.btnRescrape.Text = Master.eLang.GetString(716, "Re-Scrape")
-        Me.chkMark.Text = Master.eLang.GetString(23, "Mark")
-        Me.chkWatched.Text = Master.eLang.GetString(981, "Watched")
-        Me.colName.Text = Master.eLang.GetString(232, "Name")
-        Me.colRole.Text = Master.eLang.GetString(233, "Role")
-        Me.colThumb.Text = Master.eLang.GetString(234, "Thumb")
-        Me.lblActors.Text = Master.eLang.GetString(231, "Actors:")
-        Me.lblCerts.Text = Master.eLang.GetString(237, "Certification(s):")
-        Me.lblCountry.Text = String.Concat(Master.eLang.GetString(301, "Country"), ":")
-        Me.lblCredits.Text = Master.eLang.GetString(228, "Credits:")
-        Me.lblDirector.Text = Master.eLang.GetString(239, "Director:")
-        Me.lblVideoSource.Text = Master.eLang.GetString(824, "Video Source:")
-        Me.lblGenre.Text = Master.eLang.GetString(51, "Genre(s):")
-        Me.lblMPAA.Text = Master.eLang.GetString(235, "MPAA Rating:")
-        Me.lblMPAADesc.Text = Master.eLang.GetString(229, "MPAA Rating Description:")
-        Me.lblOriginalTitle.Text = String.Concat(Master.eLang.GetString(302, "Original Title"), ":")
-        Me.lblOutline.Text = Master.eLang.GetString(242, "Plot Outline:")
-        Me.lblPlot.Text = Master.eLang.GetString(241, "Plot:")
-        Me.lblRating.Text = Master.eLang.GetString(245, "Rating:")
-        Me.lblReleaseDate.Text = Master.eLang.GetString(236, "Release Date:")
-        Me.lblRuntime.Text = Master.eLang.GetString(238, "Runtime:")
-        Me.lblSortTilte.Text = String.Concat(Master.eLang.GetString(642, "Sort Title"), ":")
-        Me.lblStudio.Text = Master.eLang.GetString(226, "Studio:")
-        Me.lblTagline.Text = Master.eLang.GetString(243, "Tagline:")
-        Me.lblTitle.Text = Master.eLang.GetString(246, "Title:")
-        Me.lblTop250.Text = Master.eLang.GetString(240, "Top 250:")
-        Me.lblTopDetails.Text = Master.eLang.GetString(224, "Edit the details for the selected movie.")
-        Me.lblTopTitle.Text = Master.eLang.GetString(25, "Edit Movie")
-        Me.lblTrailerURL.Text = Master.eLang.GetString(227, "Trailer URL:")
-        Me.lblVotes.Text = Master.eLang.GetString(244, "Votes:")
-        Me.lblYear.Text = Master.eLang.GetString(49, "Year:")
-        Me.tpBanner.Text = Master.eLang.GetString(838, "Banner")
-        Me.tpClearArt.Text = Master.eLang.GetString(1096, "ClearArt")
-        Me.tpClearLogo.Text = Master.eLang.GetString(1097, "ClearLogo")
-        Me.tpDetails.Text = Master.eLang.GetString(1098, "DiscArt")
-        Me.tpDetails.Text = Master.eLang.GetString(26, "Details")
-        Me.tpExtrafanarts.Text = Master.eLang.GetString(992, "Extrafanarts")
-        Me.tpExtrathumbs.Text = Master.eLang.GetString(153, "Extrathumbs")
-        Me.tpFanart.Text = Master.eLang.GetString(149, "Fanart")
-        Me.tpFrameExtraction.Text = Master.eLang.GetString(256, "Frame Extraction")
-        Me.tpLandscape.Text = Master.eLang.GetString(1059, "Landscape")
-        Me.tpMetaData.Text = Master.eLang.GetString(866, "Metadata")
-        Me.tpPoster.Text = Master.eLang.GetString(148, "Poster")
+        Text = sTitle
+        tsFilename.Text = tmpDBElement.Filename
+        Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+        OK_Button.Text = Master.eLang.GetString(179, "OK")
+        btnChangeMovie.Text = Master.eLang.GetString(32, "Change Movie")
+        btnManual.Text = Master.eLang.GetString(230, "Manual Edit")
+        btnExtrafanartsSetAsFanart.Text = btnExtrathumbsSetAsFanart.Text
+        btnExtrathumbsSetAsFanart.Text = Master.eLang.GetString(255, "Set As Fanart")
+        btnRescrape.Text = Master.eLang.GetString(716, "Re-Scrape")
+        chkMark.Text = Master.eLang.GetString(23, "Mark")
+        chkWatched.Text = Master.eLang.GetString(981, "Watched")
+        colName.Text = Master.eLang.GetString(232, "Name")
+        colRole.Text = Master.eLang.GetString(233, "Role")
+        colThumb.Text = Master.eLang.GetString(234, "Thumb")
+        lblActors.Text = Master.eLang.GetString(231, "Actors:")
+        lblCerts.Text = Master.eLang.GetString(237, "Certification(s):")
+        lblCountry.Text = String.Concat(Master.eLang.GetString(301, "Country"), ":")
+        lblCredits.Text = Master.eLang.GetString(228, "Credits:")
+        lblDirector.Text = Master.eLang.GetString(239, "Director:")
+        lblVideoSource.Text = Master.eLang.GetString(824, "Video Source:")
+        lblGenre.Text = Master.eLang.GetString(51, "Genre(s):")
+        lblMPAA.Text = Master.eLang.GetString(235, "MPAA Rating:")
+        lblMPAADesc.Text = Master.eLang.GetString(229, "MPAA Rating Description:")
+        lblOriginalTitle.Text = String.Concat(Master.eLang.GetString(302, "Original Title"), ":")
+        lblOutline.Text = Master.eLang.GetString(242, "Plot Outline:")
+        lblPlot.Text = Master.eLang.GetString(241, "Plot:")
+        lblRating.Text = Master.eLang.GetString(245, "Rating:")
+        lblReleaseDate.Text = Master.eLang.GetString(236, "Release Date:")
+        lblRuntime.Text = Master.eLang.GetString(238, "Runtime:")
+        lblSortTilte.Text = String.Concat(Master.eLang.GetString(642, "Sort Title"), ":")
+        lblStudio.Text = Master.eLang.GetString(226, "Studio:")
+        lblTagline.Text = Master.eLang.GetString(243, "Tagline:")
+        lblTitle.Text = Master.eLang.GetString(246, "Title:")
+        lblTop250.Text = Master.eLang.GetString(240, "Top 250:")
+        lblTopDetails.Text = Master.eLang.GetString(224, "Edit the details for the selected movie.")
+        lblTopTitle.Text = Master.eLang.GetString(25, "Edit Movie")
+        lblTrailerURL.Text = Master.eLang.GetString(227, "Trailer URL:")
+        lblVotes.Text = Master.eLang.GetString(244, "Votes:")
+        lblYear.Text = Master.eLang.GetString(49, "Year:")
+        tpBanner.Text = Master.eLang.GetString(838, "Banner")
+        tpClearArt.Text = Master.eLang.GetString(1096, "ClearArt")
+        tpClearLogo.Text = Master.eLang.GetString(1097, "ClearLogo")
+        tpDetails.Text = Master.eLang.GetString(1098, "DiscArt")
+        tpDetails.Text = Master.eLang.GetString(26, "Details")
+        tpExtrafanarts.Text = Master.eLang.GetString(992, "Extrafanarts")
+        tpExtrathumbs.Text = Master.eLang.GetString(153, "Extrathumbs")
+        tpFanart.Text = Master.eLang.GetString(149, "Fanart")
+        tpFrameExtraction.Text = Master.eLang.GetString(256, "Frame Extraction")
+        tpLandscape.Text = Master.eLang.GetString(1059, "Landscape")
+        tpMetaData.Text = Master.eLang.GetString(866, "Metadata")
+        tpPoster.Text = Master.eLang.GetString(148, "Poster")
     End Sub
 
     Private Sub tcEditMovie_SelectedIndexChanged(sender As Object, e As EventArgs) Handles tcEdit.SelectedIndexChanged
-        Me.lvSubtitles.SelectedItems.Clear()
-        Me.ThemeStop()
-        Me.TrailerStop()
+        lvSubtitles.SelectedItems.Clear()
+        ThemeStop()
+        TrailerStop()
     End Sub
 
     Private Sub txtThumbCount_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs)
@@ -2749,27 +2705,27 @@ Public Class dlgEditMovie
     End Sub
 
     Private Sub txtThumbCount_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs)
-        Me.AcceptButton = Me.OK_Button
+        AcceptButton = OK_Button
     End Sub
 
     Private Sub txtTrailer_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTrailer.TextChanged
         If StringUtils.isValidURL(txtTrailer.Text) Then
-            Me.btnPlayTrailer.Enabled = True
+            btnPlayTrailer.Enabled = True
         Else
-            Me.btnPlayTrailer.Enabled = False
+            btnPlayTrailer.Enabled = False
         End If
     End Sub
 
     Sub GenericRunCallBack(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
         If mType = Enums.ModuleEventType.FrameExtrator_Movie AndAlso _params IsNot Nothing Then
             If _params(0).ToString = "FanartToSave" Then
-                Me.tmpDBElement.ImagesContainer.Fanart.ImageOriginal.FromFile(Path.Combine(Master.TempPath, "frame.jpg"))
-                If Me.tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
-                    Me.pbFanart.Image = Me.tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
-                    Me.pbFanart.Tag = Me.tmpDBElement.ImagesContainer.Fanart
+                tmpDBElement.ImagesContainer.Fanart.ImageOriginal.FromFile(Path.Combine(Master.TempPath, "frame.jpg"))
+                If tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
+                    pbFanart.Image = tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
+                    pbFanart.Tag = tmpDBElement.ImagesContainer.Fanart
 
-                    Me.lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), Me.pbFanart.Image.Width, Me.pbFanart.Image.Height)
-                    Me.lblFanartSize.Visible = True
+                    lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbFanart.Image.Width, pbFanart.Image.Height)
+                    lblFanartSize.Visible = True
                 End If
             ElseIf _params(0).ToString = "ExtrafanartToSave" Then
                 Dim fPath As String = _params(1).ToString
@@ -2777,7 +2733,7 @@ Public Class dlgEditMovie
                     Dim eImg As New MediaContainers.Image
                     eImg.ImageOriginal.FromFile(fPath)
                     tmpDBElement.ImagesContainer.Extrafanarts.Add(eImg)
-                    Me.RefreshExtrafanarts()
+                    RefreshExtrafanarts()
                 End If
             ElseIf _params(0).ToString = "ExtrathumbToSave" Then
                 Dim fPath As String = _params(1).ToString
@@ -2785,7 +2741,7 @@ Public Class dlgEditMovie
                     Dim eImg As New MediaContainers.Image
                     eImg.ImageOriginal.FromFile(fPath)
                     tmpDBElement.ImagesContainer.Extrathumbs.Add(eImg)
-                    Me.RefreshExtrathumbs()
+                    RefreshExtrathumbs()
                 End If
             End If
         End If
@@ -2793,18 +2749,18 @@ Public Class dlgEditMovie
 
     Private Sub txtOutline_KeyDown(ByVal sender As Object, e As KeyEventArgs) Handles txtOutline.KeyDown
         If e.KeyData = (Keys.Control Or Keys.A) Then
-            Me.txtOutline.SelectAll()
+            txtOutline.SelectAll()
         End If
     End Sub
 
     Private Sub txtPlot_KeyDown(ByVal sender As Object, e As KeyEventArgs) Handles txtPlot.KeyDown
         If e.KeyData = (Keys.Control Or Keys.A) Then
-            Me.txtPlot.SelectAll()
+            txtPlot.SelectAll()
         End If
     End Sub
 
     Private Sub lvSubtitles_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lvSubtitles.KeyDown
-        If e.KeyCode = Keys.Delete Then Me.DeleteSubtitle()
+        If e.KeyCode = Keys.Delete Then DeleteSubtitle()
     End Sub
 
     Private Sub lvSubtitles_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvSubtitles.DoubleClick
@@ -2823,7 +2779,7 @@ Public Class dlgEditMovie
                 txtSubtitlesPreview.Clear()
             Else
                 btnRemoveSubtitle.Enabled = True
-                txtSubtitlesPreview.Text = ReadSubtitle(Me.lvSubtitles.SelectedItems.Item(0).SubItems(1).Text.ToString)
+                txtSubtitlesPreview.Text = ReadSubtitle(lvSubtitles.SelectedItems.Item(0).SubItems(1).Text.ToString)
             End If
         Else
             btnRemoveSubtitle.Enabled = False
@@ -2856,12 +2812,12 @@ Public Class dlgEditMovie
             If lvSubtitles.SelectedItems.Count > 0 Then
                 Dim i As ListViewItem = lvSubtitles.SelectedItems(0)
                 Dim tmpFileInfo As New MediaInfo.Fileinfo
-                tmpFileInfo.StreamDetails.Subtitle.AddRange(Me.tmpDBElement.Subtitles)
+                tmpFileInfo.StreamDetails.Subtitle.AddRange(tmpDBElement.Subtitles)
                 Using dEditStream As New dlgFIStreamEditor
                     Dim stream As Object = dEditStream.ShowDialog(i.Tag.ToString, tmpFileInfo, Convert.ToInt16(i.Text))
                     If Not stream Is Nothing Then
                         If i.Tag.ToString = Master.eLang.GetString(597, "Subtitle Stream") Then
-                            Me.tmpDBElement.Subtitles(Convert.ToInt16(i.Text)) = DirectCast(stream, MediaInfo.Subtitle)
+                            tmpDBElement.Subtitles(Convert.ToInt16(i.Text)) = DirectCast(stream, MediaInfo.Subtitle)
                         End If
                         'NeedToRefresh = True
                         LoadSubtitles()
@@ -2878,7 +2834,7 @@ Public Class dlgEditMovie
             If lvSubtitles.SelectedItems.Count > 0 Then
                 Dim i As ListViewItem = lvSubtitles.SelectedItems(0)
                 If i.Tag.ToString = Master.eLang.GetString(597, "Subtitle Stream") Then
-                    Me.tmpDBElement.Subtitles(Convert.ToInt16(i.Text)).toRemove = True
+                    tmpDBElement.Subtitles(Convert.ToInt16(i.Text)).toRemove = True
                 End If
                 'NeedToRefresh = True
                 LoadSubtitles()
@@ -2895,7 +2851,7 @@ Public Class dlgEditMovie
         lvSubtitles.Groups.Clear()
         lvSubtitles.Items.Clear()
         Try
-            If Me.tmpDBElement.Subtitles.Count > 0 Then
+            If tmpDBElement.Subtitles.Count > 0 Then
                 g = New ListViewGroup
                 g.Header = Master.eLang.GetString(597, "Subtitle Stream")
                 lvSubtitles.Groups.Add(g)
@@ -2914,8 +2870,8 @@ Public Class dlgEditMovie
                 g.Items.Add(i)
                 lvSubtitles.Items.Add(i)
                 Dim s As MediaInfo.Subtitle
-                For c = 0 To Me.tmpDBElement.Subtitles.Count - 1
-                    s = Me.tmpDBElement.Subtitles(c)
+                For c = 0 To tmpDBElement.Subtitles.Count - 1
+                    s = tmpDBElement.Subtitles(c)
                     If Not s Is Nothing Then
                         i = New ListViewItem
                         i.Tag = Master.eLang.GetString(597, "Subtitle Stream")
