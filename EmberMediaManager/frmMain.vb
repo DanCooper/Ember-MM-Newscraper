@@ -1721,10 +1721,7 @@ Public Class frmMain
                         End If
 
                         Dim ResImg As Image
-                        If Movie.ImagesContainer.Poster.ImageOriginal.Image Is Nothing AndAlso Not String.IsNullOrEmpty(Movie.ImagesContainer.Poster.LocalFilePath) Then
-                            Movie.ImagesContainer.Poster.LoadAndCache(Enums.ContentType.Movie, True)
-                        End If
-                        If Movie.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing Then
+                        If Movie.ImagesContainer.Poster.LoadAndCache(Enums.ContentType.Movie, True) Then
                             ResImg = CType(Movie.ImagesContainer.Poster.ImageOriginal.Image.Clone(), Image)
                             ImageUtils.ResizeImage(ResImg, 59, 88, True, Color.White.ToArgb())
                             Posters.Add(New MovieInSetPoster With {.MoviePoster = ResImg, .MovieTitle = Movie.Movie.Title, .MovieYear = Movie.Movie.Year})

@@ -47,6 +47,12 @@ Public Class Images
 
 #Region "Properties"
 
+    Public ReadOnly Property HasMemoryStream() As Boolean
+        Get
+            Return _ms.Length > 0
+        End Get
+    End Property
+
     Public ReadOnly Property [Image]() As Image
         Get
             Return _image
@@ -797,23 +803,6 @@ Public Class Images
                     _image = New Bitmap(Me._ms)
                 End If
             End Using
-
-            'Me._ms = New MemoryStream()
-            'Using fsImage As New FileStream(sPath, FileMode.Open, FileAccess.Read)
-            '    Dim StreamBuffer(Convert.ToInt32(fsImage.Length - 1)) As Byte
-
-            '    fsImage.Read(StreamBuffer, 0, StreamBuffer.Length)
-            '    Me._ms.Write(StreamBuffer, 0, StreamBuffer.Length)
-
-            '    StreamBuffer = Nothing
-            '    '_ms.SetLength(fsImage.Length)
-            '    'fsImage.Read(_ms.GetBuffer(), 0, Convert.ToInt32(fsImage.Length))
-            '    Me._ms.Flush()
-            '    _image = New Bitmap(Me._ms)
-            'End Using
-            'Catch ex As Exception
-            '    logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sPath & ">", ex)
-            'End Try
         Else
             Me._ms = New MemoryStream
             Me._image = Nothing
@@ -821,7 +810,7 @@ Public Class Images
     End Sub
 
     Public Function FromMemoryStream() As Boolean
-        If Me._ms.Length > 0 Then
+        If Me.HasMemoryStream Then
             Me._image = New Bitmap(Me._ms)
             Return True
         Else
@@ -833,7 +822,7 @@ Public Class Images
     ''' </summary>
     ''' <param name="sURL">URL to the image file</param>
     ''' <remarks></remarks>
-    Public Sub FromWeb(ByVal sURL As String)
+    Public Sub FromWeb(ByVal sURL As String, Optional OnlyToMemoryStream As Boolean = False)
         If String.IsNullOrEmpty(sURL) Then Return
 
         Try
@@ -855,7 +844,10 @@ Public Class Images
                 Me._ms.Write(retSave, 0, retSave.Length)
 
                 'I do not copy from the _ms as it could not be a JPG
-                _image = New Bitmap(sHTTP.Image)
+                '_image = New Bitmap(sHTTP.Image)
+                If Not OnlyToMemoryStream Then
+                    _image = New Bitmap(sHTTP.Image) '(Me._ms)
+                End If
 
                 ' if is not a JPG or PNG we have to convert the memory stream to JPG format
                 If Not (sHTTP.isJPG OrElse sHTTP.isPNG) Then
@@ -1086,7 +1078,7 @@ Public Class Images
     Public Shared Sub SaveMovieActorThumbs(ByVal mMovie As Database.DBElement)
         'First, (Down)Load all actor thumbs from LocalFilePath or URL
         For Each tActor As MediaContainers.Person In mMovie.Movie.Actors
-            tActor.Thumb.LoadAndCache(Enums.ContentType.Movie, True)
+            tActor.Thumb.LoadAndCache(Enums.ContentType.Movie, True, True)
         Next
 
         'Secound, remove the old ones
@@ -1094,7 +1086,7 @@ Public Class Images
 
         'Thirdly, save all actor thumbs
         For Each tActor As MediaContainers.Person In mMovie.Movie.Actors
-            If tActor.Thumb.ImageOriginal.Image IsNot Nothing Then
+            If tActor.Thumb.LoadAndCache(Enums.ContentType.Movie, True, True) Then
                 tActor.Thumb.LocalFilePath = tActor.Thumb.ImageOriginal.SaveAsMovieActorThumb(mMovie, tActor)
             End If
         Next
@@ -1208,22 +1200,15 @@ Public Class Images
     ''' <remarks></remarks>
     Public Shared Function SaveMovieExtrafanarts(ByVal mMovie As Database.DBElement) As String
         Dim efPath As String = String.Empty
-        Dim iMod As Integer = 0
-        Dim iVal As Integer = 1
 
         Images.DeleteMovieExtrafanarts(mMovie)
 
         For Each eImg As MediaContainers.Image In mMovie.ImagesContainer.Extrafanarts
-            If eImg.ImageOriginal.Image IsNot Nothing Then
+            If eImg.LoadAndCache(Enums.ContentType.Movie, True, True) Then
                 efPath = eImg.ImageOriginal.SaveAsMovieExtrafanart(mMovie, If(Not String.IsNullOrEmpty(eImg.URLOriginal), Path.GetFileName(eImg.URLOriginal), Path.GetFileName(eImg.LocalFilePath)))
-            ElseIf Not String.IsNullOrEmpty(eImg.URLOriginal) Then
-                eImg.ImageOriginal.FromWeb(eImg.URLOriginal)
-                efPath = eImg.ImageOriginal.SaveAsMovieExtrafanart(mMovie, Path.GetFileName(eImg.URLOriginal))
-            ElseIf Not String.IsNullOrEmpty(eImg.LocalFilePath) Then
-                eImg.ImageOriginal.FromFile(eImg.LocalFilePath)
-                efPath = eImg.ImageOriginal.SaveAsMovieExtrafanart(mMovie, Path.GetFileName(eImg.LocalFilePath))
             End If
         Next
+
         'If efPath is empty (i.e. expert setting enabled but expert extrafanart scraping disabled) it will cause Ember to crash, therefore do check first
         If Not String.IsNullOrEmpty(efPath) Then
             Return Directory.GetParent(efPath).FullName
@@ -1281,19 +1266,11 @@ Public Class Images
     ''' <remarks></remarks>
     Public Shared Function SaveMovieExtrathumbs(ByVal mMovie As Database.DBElement) As String
         Dim etPath As String = String.Empty
-        Dim iMod As Integer = 0
-        Dim iVal As Integer = 1
 
         Images.DeleteMovieExtrathumbs(mMovie)
 
         For Each eImg As MediaContainers.Image In mMovie.ImagesContainer.Extrathumbs.OrderBy(Function(f) f.Index)
-            If eImg.ImageOriginal.Image IsNot Nothing Then
-                etPath = eImg.ImageOriginal.SaveAsMovieExtrathumb(mMovie)
-            ElseIf Not String.IsNullOrEmpty(eImg.URLOriginal) Then
-                eImg.ImageOriginal.FromWeb(eImg.URLOriginal)
-                etPath = eImg.ImageOriginal.SaveAsMovieExtrathumb(mMovie)
-            ElseIf Not String.IsNullOrEmpty(eImg.LocalFilePath) Then
-                eImg.ImageOriginal.FromFile(eImg.LocalFilePath)
+            If eImg.LoadAndCache(Enums.ContentType.Movie, True, True) Then
                 etPath = eImg.ImageOriginal.SaveAsMovieExtrathumb(mMovie)
             End If
         Next
@@ -1688,7 +1665,7 @@ Public Class Images
     Public Shared Sub SaveTVEpisodeActorThumbs(ByVal mEpisode As Database.DBElement)
         'First, (Down)Load all actor thumbs from LocalFilePath or URL
         For Each tActor As MediaContainers.Person In mEpisode.TVEpisode.Actors
-            tActor.Thumb.LoadAndCache(Enums.ContentType.TV, True)
+            tActor.Thumb.LoadAndCache(Enums.ContentType.TV, True, True)
         Next
 
         'Secound, remove the old ones
@@ -1880,7 +1857,7 @@ Public Class Images
     Public Shared Sub SaveTVShowActorThumbs(ByVal mShow As Database.DBElement)
         'First, (Down)Load all actor thumbs from LocalFilePath or URL
         For Each tActor As MediaContainers.Person In mShow.TVShow.Actors
-            tActor.Thumb.LoadAndCache(Enums.ContentType.TV, True)
+            tActor.Thumb.LoadAndCache(Enums.ContentType.TV, True, True)
         Next
 
         'Secound, remove the old ones
@@ -2011,13 +1988,13 @@ Public Class Images
         Images.DeleteTVShowExtrafanarts(mShow)
 
         For Each eImg As MediaContainers.Image In mShow.ImagesContainer.Extrafanarts
-            If eImg.ImageOriginal.Image IsNot Nothing Then
+            If eImg.ImageOriginal.Image IsNot Nothing OrElse eImg.ImageOriginal.FromMemoryStream Then
                 efPath = eImg.ImageOriginal.SaveAsTVShowExtrafanart(mShow, If(Not String.IsNullOrEmpty(eImg.URLOriginal), Path.GetFileName(eImg.URLOriginal), Path.GetFileName(eImg.LocalFilePath)))
             ElseIf Not String.IsNullOrEmpty(eImg.URLOriginal) Then
                 eImg.ImageOriginal.FromWeb(eImg.URLOriginal)
                 efPath = eImg.ImageOriginal.SaveAsTVShowExtrafanart(mShow, Path.GetFileName(eImg.URLOriginal))
             ElseIf Not String.IsNullOrEmpty(eImg.LocalFilePath) Then
-                eImg.ImageOriginal.FromFile(eImg.LocalFilePath)
+                eImg.ImageOriginal.FromFile(eImg.LocalFilePath, True)
                 efPath = eImg.ImageOriginal.SaveAsTVShowExtrafanart(mShow, Path.GetFileName(eImg.LocalFilePath))
             End If
         Next

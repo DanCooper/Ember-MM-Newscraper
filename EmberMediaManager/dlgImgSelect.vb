@@ -283,40 +283,40 @@ Public Class dlgImgSelect
 
         'Episode Fanart
         If DoEpisodeFanart Then
-            For Each tImg As Database.DBElement In Me.tDBElementResult.Episodes.Where(Function(s) s.ImagesContainer.Fanart.ImageOriginal.Image Is Nothing).OrderBy(Function(s) s.TVEpisode.Season).OrderBy(Function(f) f.TVEpisode.Episode)
+            For Each tImg As Database.DBElement In Me.tDBElementResult.Episodes.OrderBy(Function(s) s.TVEpisode.Season).OrderBy(Function(f) f.TVEpisode.Episode)
                 tImg.ImagesContainer.Fanart.LoadAndCache(tContentType)
             Next
         End If
 
         'Episode Poster
         If DoEpisodePoster Then
-            For Each tImg As Database.DBElement In Me.tDBElementResult.Episodes.Where(Function(s) s.ImagesContainer.Poster.ImageOriginal.Image Is Nothing).OrderBy(Function(s) s.TVEpisode.Season).OrderBy(Function(f) f.TVEpisode.Episode)
+            For Each tImg As Database.DBElement In Me.tDBElementResult.Episodes.OrderBy(Function(s) s.TVEpisode.Season).OrderBy(Function(f) f.TVEpisode.Episode)
                 tImg.ImagesContainer.Poster.LoadAndCache(tContentType)
             Next
         End If
 
         'Main Banner
-        If (DoMainBanner OrElse DoAllSeasonsBanner OrElse DoSeasonBanner) AndAlso Me.tDBElementResult.ImagesContainer.Banner.ImageOriginal.Image Is Nothing Then
+        If DoMainBanner OrElse DoAllSeasonsBanner OrElse DoSeasonBanner Then
             Me.tDBElementResult.ImagesContainer.Banner.LoadAndCache(tContentType)
         End If
 
         'Main CharacterArt
-        If DoMainCharacterArt AndAlso Me.tDBElementResult.ImagesContainer.CharacterArt.ImageOriginal.Image Is Nothing Then
+        If DoMainCharacterArt Then
             Me.tDBElementResult.ImagesContainer.CharacterArt.LoadAndCache(tContentType)
         End If
 
         'Main ClearArt
-        If DoMainClearArt AndAlso Me.tDBElementResult.ImagesContainer.ClearArt.ImageOriginal.Image Is Nothing Then
+        If DoMainClearArt Then
             Me.tDBElementResult.ImagesContainer.ClearArt.LoadAndCache(tContentType)
         End If
 
         'Main ClearLogo
-        If DoMainClearLogo AndAlso Me.tDBElementResult.ImagesContainer.ClearLogo.ImageOriginal.Image Is Nothing Then
+        If DoMainClearLogo Then
             Me.tDBElementResult.ImagesContainer.ClearLogo.LoadAndCache(tContentType)
         End If
 
         'Main DiscArt
-        If DoMainDiscArt AndAlso Me.tDBElementResult.ImagesContainer.DiscArt.ImageOriginal.Image Is Nothing Then
+        If DoMainDiscArt Then
             Me.tDBElementResult.ImagesContainer.DiscArt.LoadAndCache(tContentType)
         End If
 
@@ -335,44 +335,44 @@ Public Class dlgImgSelect
         End If
 
         'Main Fanart
-        If (DoMainFanart OrElse DoAllSeasonsFanart OrElse DoEpisodeFanart OrElse DoSeasonFanart) AndAlso Me.tDBElementResult.ImagesContainer.Fanart.ImageOriginal.Image Is Nothing Then
+        If DoMainFanart OrElse DoAllSeasonsFanart OrElse DoEpisodeFanart OrElse DoSeasonFanart Then
             Me.tDBElementResult.ImagesContainer.Fanart.LoadAndCache(tContentType)
         End If
 
         'Main Landscape
-        If (DoMainLandscape OrElse DoAllSeasonsLandscape OrElse DoSeasonLandscape) AndAlso Me.tDBElementResult.ImagesContainer.Landscape.ImageOriginal.Image Is Nothing Then
+        If DoMainLandscape OrElse DoAllSeasonsLandscape OrElse DoSeasonLandscape Then
             Me.tDBElementResult.ImagesContainer.Landscape.LoadAndCache(tContentType)
         End If
 
         'Main Poster
-        If (DoMainPoster OrElse DoAllSeasonsPoster OrElse DoEpisodePoster OrElse DoSeasonPoster) AndAlso Me.tDBElementResult.ImagesContainer.Poster.ImageOriginal.Image Is Nothing Then
+        If DoMainPoster OrElse DoAllSeasonsPoster OrElse DoEpisodePoster OrElse DoSeasonPoster Then
             Me.tDBElementResult.ImagesContainer.Poster.LoadAndCache(tContentType)
         End If
 
         'Season Banner
         If DoSeasonBanner Then
-            For Each tImg As Database.DBElement In Me.tDBElementResult.Seasons.Where(Function(s) s.ImagesContainer.Banner.ImageOriginal.Image Is Nothing).OrderBy(Function(s) s.TVSeason.Season)
+            For Each tImg As Database.DBElement In Me.tDBElementResult.Seasons.OrderBy(Function(s) s.TVSeason.Season)
                 tImg.ImagesContainer.Banner.LoadAndCache(tContentType)
             Next
         End If
 
         'Season Fanart
         If DoSeasonFanart Then
-            For Each tImg As Database.DBElement In Me.tDBElementResult.Seasons.Where(Function(s) s.ImagesContainer.Fanart.ImageOriginal.Image Is Nothing).OrderBy(Function(s) s.TVSeason.Season)
+            For Each tImg As Database.DBElement In Me.tDBElementResult.Seasons.OrderBy(Function(s) s.TVSeason.Season)
                 tImg.ImagesContainer.Fanart.LoadAndCache(tContentType)
             Next
         End If
 
         'Season Landscape
         If DoSeasonLandscape Then
-            For Each tImg As Database.DBElement In Me.tDBElementResult.Seasons.Where(Function(s) s.ImagesContainer.Landscape.ImageOriginal.Image Is Nothing).OrderBy(Function(s) s.TVSeason.Season)
+            For Each tImg As Database.DBElement In Me.tDBElementResult.Seasons.OrderBy(Function(s) s.TVSeason.Season)
                 tImg.ImagesContainer.Landscape.LoadAndCache(tContentType)
             Next
         End If
 
         'Season Poster
         If DoSeasonPoster Then
-            For Each tImg As Database.DBElement In Me.tDBElementResult.Seasons.Where(Function(s) s.ImagesContainer.Poster.ImageOriginal.Image Is Nothing).OrderBy(Function(s) s.TVSeason.Season)
+            For Each tImg As Database.DBElement In Me.tDBElementResult.Seasons.OrderBy(Function(s) s.TVSeason.Season)
                 tImg.ImagesContainer.Poster.LoadAndCache(tContentType)
             Next
         End If
@@ -2009,38 +2009,38 @@ Public Class dlgImgSelect
         Me.pbStatus.Visible = True
 
         'Banner
-        tDBElementResult.ImagesContainer.Banner.LoadAndCache(tContentType, True)
+        tDBElementResult.ImagesContainer.Banner.LoadAndCache(tContentType, True, True)
 
         'CharacterArt
-        tDBElementResult.ImagesContainer.CharacterArt.LoadAndCache(tContentType, True)
+        tDBElementResult.ImagesContainer.CharacterArt.LoadAndCache(tContentType, True, True)
 
         'ClearArt
-        tDBElementResult.ImagesContainer.ClearArt.LoadAndCache(tContentType, True)
+        tDBElementResult.ImagesContainer.ClearArt.LoadAndCache(tContentType, True, True)
 
         'ClearLogo
-        tDBElementResult.ImagesContainer.ClearLogo.LoadAndCache(tContentType, True)
+        tDBElementResult.ImagesContainer.ClearLogo.LoadAndCache(tContentType, True, True)
 
         'DiscArt
-        tDBElementResult.ImagesContainer.DiscArt.LoadAndCache(tContentType, True)
+        tDBElementResult.ImagesContainer.DiscArt.LoadAndCache(tContentType, True, True)
 
         'Extrafanarts
         For Each img As MediaContainers.Image In tDBElementResult.ImagesContainer.Extrafanarts
-            img.LoadAndCache(tContentType, True)
+            img.LoadAndCache(tContentType, True, True)
         Next
 
         'Extrathumbs
         For Each img As MediaContainers.Image In tDBElementResult.ImagesContainer.Extrathumbs.OrderBy(Function(f) f.Index)
-            img.LoadAndCache(tContentType, True)
+            img.LoadAndCache(tContentType, True, True)
         Next
 
         'Fanart
-        tDBElementResult.ImagesContainer.Fanart.LoadAndCache(tContentType, True)
+        tDBElementResult.ImagesContainer.Fanart.LoadAndCache(tContentType, True, True)
 
         'Landscape
-        tDBElementResult.ImagesContainer.Landscape.LoadAndCache(tContentType, True)
+        tDBElementResult.ImagesContainer.Landscape.LoadAndCache(tContentType, True, True)
 
         'Poster
-        tDBElementResult.ImagesContainer.Poster.LoadAndCache(tContentType, True)
+        tDBElementResult.ImagesContainer.Poster.LoadAndCache(tContentType, True, True)
 
         Me.DialogResult = Windows.Forms.DialogResult.OK
         Me.Close()

@@ -3319,7 +3319,7 @@ Public Class Database
 
             'First let's save it to NFO, even because we will need the NFO path
             'Also save Images to get ExtrafanartsPath and ExtrathumbsPath
-            'art Table be be linked later
+            'art Table will be linked later
             If ToNFO Then NFO.SaveMovieToNFO(_movieDB)
             If ToDisk Then
                 _movieDB.ImagesContainer.SaveAllImages(_movieDB, Enums.ContentType.Movie)
