@@ -562,7 +562,7 @@ Public Class dlgEditMovie
             End With
 
             If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
-                tmpDBElement.ImagesContainer.Banner.ImageOriginal.FromFile(ofdLocalFiles.FileName)
+                tmpDBElement.ImagesContainer.Banner.ImageOriginal.FromFile(ofdLocalFiles.FileName, True)
                 pbBanner.Image = tmpDBElement.ImagesContainer.Banner.ImageOriginal.Image
                 pbBanner.Tag = tmpDBElement.ImagesContainer.Banner
 
@@ -633,7 +633,7 @@ Public Class dlgEditMovie
             End With
 
             If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
-                tmpDBElement.ImagesContainer.ClearArt.ImageOriginal.FromFile(ofdLocalFiles.FileName)
+                tmpDBElement.ImagesContainer.ClearArt.ImageOriginal.FromFile(ofdLocalFiles.FileName, True)
                 pbClearArt.Image = tmpDBElement.ImagesContainer.ClearArt.ImageOriginal.Image
                 pbClearArt.Tag = tmpDBElement.ImagesContainer.ClearArt
 
@@ -704,7 +704,7 @@ Public Class dlgEditMovie
             End With
 
             If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
-                tmpDBElement.ImagesContainer.ClearLogo.ImageOriginal.FromFile(ofdLocalFiles.FileName)
+                tmpDBElement.ImagesContainer.ClearLogo.ImageOriginal.FromFile(ofdLocalFiles.FileName, True)
                 pbClearLogo.Image = tmpDBElement.ImagesContainer.ClearLogo.ImageOriginal.Image
                 pbClearLogo.Tag = tmpDBElement.ImagesContainer.ClearLogo
 
@@ -775,7 +775,7 @@ Public Class dlgEditMovie
             End With
 
             If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
-                tmpDBElement.ImagesContainer.DiscArt.ImageOriginal.FromFile(ofdLocalFiles.FileName)
+                tmpDBElement.ImagesContainer.DiscArt.ImageOriginal.FromFile(ofdLocalFiles.FileName, True)
                 pbDiscArt.Image = tmpDBElement.ImagesContainer.DiscArt.ImageOriginal.Image
                 pbDiscArt.Tag = tmpDBElement.ImagesContainer.DiscArt
 
@@ -908,7 +908,7 @@ Public Class dlgEditMovie
             End With
 
             If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
-                tmpDBElement.ImagesContainer.Fanart.ImageOriginal.FromFile(ofdLocalFiles.FileName)
+                tmpDBElement.ImagesContainer.Fanart.ImageOriginal.FromFile(ofdLocalFiles.FileName, True)
                 pbFanart.Image = tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
                 pbFanart.Tag = tmpDBElement.ImagesContainer.Fanart
 
@@ -979,7 +979,7 @@ Public Class dlgEditMovie
             End With
 
             If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
-                tmpDBElement.ImagesContainer.Landscape.ImageOriginal.FromFile(ofdLocalFiles.FileName)
+                tmpDBElement.ImagesContainer.Landscape.ImageOriginal.FromFile(ofdLocalFiles.FileName, True)
                 pbLandscape.Image = tmpDBElement.ImagesContainer.Landscape.ImageOriginal.Image
                 pbLandscape.Tag = tmpDBElement.ImagesContainer.Landscape
 
@@ -1050,7 +1050,7 @@ Public Class dlgEditMovie
             End With
 
             If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
-                tmpDBElement.ImagesContainer.Poster.ImageOriginal.FromFile(ofdLocalFiles.FileName)
+                tmpDBElement.ImagesContainer.Poster.ImageOriginal.FromFile(ofdLocalFiles.FileName, True)
                 pbPoster.Image = tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image
                 pbPoster.Tag = tmpDBElement.ImagesContainer.Poster
 
@@ -2770,7 +2770,7 @@ Public Class dlgEditMovie
     Sub GenericRunCallBack(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
         If mType = Enums.ModuleEventType.FrameExtrator_Movie AndAlso _params IsNot Nothing Then
             If _params(0).ToString = "FanartToSave" Then
-                tmpDBElement.ImagesContainer.Fanart.ImageOriginal.FromFile(Path.Combine(Master.TempPath, "frame.jpg"))
+                tmpDBElement.ImagesContainer.Fanart.ImageOriginal.FromFile(Path.Combine(Master.TempPath, "frame.jpg"), True)
                 If tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
                     pbFanart.Image = tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
                     pbFanart.Tag = tmpDBElement.ImagesContainer.Fanart
@@ -2782,7 +2782,7 @@ Public Class dlgEditMovie
                 Dim fPath As String = _params(1).ToString
                 If Not String.IsNullOrEmpty(fPath) AndAlso File.Exists(fPath) Then
                     Dim eImg As New MediaContainers.Image
-                    eImg.ImageOriginal.FromFile(fPath)
+                    eImg.ImageOriginal.FromFile(fPath, True)
                     tmpDBElement.ImagesContainer.Extrafanarts.Add(eImg)
                     RefreshExtrafanarts()
                 End If
@@ -2790,7 +2790,7 @@ Public Class dlgEditMovie
                 Dim fPath As String = _params(1).ToString
                 If Not String.IsNullOrEmpty(fPath) AndAlso File.Exists(fPath) Then
                     Dim eImg As New MediaContainers.Image
-                    eImg.ImageOriginal.FromFile(fPath)
+                    eImg.ImageOriginal.FromFile(fPath, True)
                     tmpDBElement.ImagesContainer.Extrathumbs.Add(eImg)
                     RefreshExtrathumbs()
                 End If

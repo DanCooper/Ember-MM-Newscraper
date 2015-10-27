@@ -1075,7 +1075,7 @@ Public Class dlgEditTVEpisode
 
     Sub GenericRunCallBack(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
         If mType = Enums.ModuleEventType.FrameExtrator_TVEpisode Then
-            tmpDBElement.ImagesContainer.Poster.ImageOriginal.FromFile(Path.Combine(Master.TempPath, "frame.jpg"))
+            tmpDBElement.ImagesContainer.Poster.ImageOriginal.FromFile(Path.Combine(Master.TempPath, "frame.jpg"), True)
             If tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing Then
                 pbPoster.Image = tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image
                 pbPoster.Tag = tmpDBElement.ImagesContainer.Poster
@@ -1097,7 +1097,7 @@ Public Class dlgEditTVEpisode
             End With
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
-                tmpDBElement.ImagesContainer.Fanart.ImageOriginal.FromFile(ofdImage.FileName)
+                tmpDBElement.ImagesContainer.Fanart.ImageOriginal.FromFile(ofdImage.FileName, True)
                 If tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
                     pbFanart.Image = tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
                     pbFanart.Tag = tmpDBElement.ImagesContainer.Fanart
@@ -1171,7 +1171,7 @@ Public Class dlgEditTVEpisode
             End With
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
-                tmpDBElement.ImagesContainer.Poster.ImageOriginal.FromFile(ofdImage.FileName)
+                tmpDBElement.ImagesContainer.Poster.ImageOriginal.FromFile(ofdImage.FileName, True)
                 If tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing Then
                     pbPoster.Image = tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image
                     pbPoster.Tag = tmpDBElement.ImagesContainer.Poster

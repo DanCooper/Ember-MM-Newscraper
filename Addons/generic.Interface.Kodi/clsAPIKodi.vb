@@ -807,7 +807,7 @@ Namespace Kodi
 
             Dim blnNeedSave As Boolean = False
             Dim isNew As Boolean = False
-            Dim uMovie As Database.DBElement = Master.DB.LoadMovieFromDB(lngMovieID, False)
+            Dim uMovie As Database.DBElement = Master.DB.LoadMovieFromDB(lngMovieID)
 
             Try
                 logger.Trace(String.Format("[APIKodi] [{0}] UpdateMovieInfo: ""{1}"" | Start syncing process...", _currenthost.Label, uMovie.Movie.Title))

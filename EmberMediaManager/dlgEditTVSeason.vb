@@ -146,7 +146,7 @@ Public Class dlgEditTVSeason
 
         If ofdImage.ShowDialog() = DialogResult.OK Then
             Dim tImage As New MediaContainers.Image
-            tImage.ImageOriginal.FromFile(ofdImage.FileName)
+            tImage.ImageOriginal.FromFile(ofdImage.FileName, True)
             If tImage.ImageOriginal.Image IsNot Nothing Then
                 tmpDBElement.ImagesContainer.Banner = tImage
                 pbBanner.Image = tImage.ImageOriginal.Image
@@ -216,7 +216,7 @@ Public Class dlgEditTVSeason
 
         If ofdImage.ShowDialog() = DialogResult.OK Then
             Dim tImage As New MediaContainers.Image
-            tImage.ImageOriginal.FromFile(ofdImage.FileName)
+            tImage.ImageOriginal.FromFile(ofdImage.FileName, True)
             If tImage.ImageOriginal.Image IsNot Nothing Then
                 tmpDBElement.ImagesContainer.Fanart = tImage
                 pbFanart.Image = tImage.ImageOriginal.Image
@@ -286,7 +286,7 @@ Public Class dlgEditTVSeason
 
         If ofdImage.ShowDialog() = DialogResult.OK Then
             Dim tImage As New MediaContainers.Image
-            tImage.ImageOriginal.FromFile(ofdImage.FileName)
+            tImage.ImageOriginal.FromFile(ofdImage.FileName, True)
             If tImage.ImageOriginal.Image IsNot Nothing Then
                 tmpDBElement.ImagesContainer.Landscape = tImage
                 pbLandscape.Image = tImage.ImageOriginal.Image
@@ -356,7 +356,7 @@ Public Class dlgEditTVSeason
 
         If ofdImage.ShowDialog() = DialogResult.OK Then
             Dim tImage As New MediaContainers.Image
-            tImage.ImageOriginal.FromFile(ofdImage.FileName)
+            tImage.ImageOriginal.FromFile(ofdImage.FileName, True)
             If tImage.ImageOriginal.Image IsNot Nothing Then
                 tmpDBElement.ImagesContainer.Poster = tImage
                 pbPoster.Image = tImage.ImageOriginal.Image

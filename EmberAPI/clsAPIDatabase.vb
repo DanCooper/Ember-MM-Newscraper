@@ -1473,10 +1473,9 @@ Public Class Database
     ''' Load all the information for a movie.
     ''' </summary>
     ''' <param name="MovieID">ID of the movie to load, as stored in the database</param>
-    ''' <param name="withImages">load all images to memorystream</param>
     ''' <param name="exclExtraImages">exclude Extrafanarts and Extrathumbs from memorystream</param>
     ''' <returns>Database.DBElement object</returns>
-    Public Function LoadMovieFromDB(ByVal MovieID As Long, Optional withImages As Boolean = True, Optional exclExtraImages As Boolean = False) As Database.DBElement
+    Public Function LoadMovieFromDB(ByVal MovieID As Long, Optional LoadBitmap As Boolean = False, Optional exclExtraImages As Boolean = False) As Database.DBElement
         Dim _movieDB As New Database.DBElement
 
         _movieDB.ID = MovieID
@@ -1680,18 +1679,18 @@ Public Class Database
         End Using
 
         'ImagesContainer
-        If withImages Then
-            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Banner.LocalFilePath) Then _movieDB.ImagesContainer.Banner.ImageOriginal.FromFile(_movieDB.ImagesContainer.Banner.LocalFilePath, True)
-            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.ClearArt.LocalFilePath) Then _movieDB.ImagesContainer.ClearArt.ImageOriginal.FromFile(_movieDB.ImagesContainer.ClearArt.LocalFilePath, True)
-            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.ClearLogo.LocalFilePath) Then _movieDB.ImagesContainer.ClearLogo.ImageOriginal.FromFile(_movieDB.ImagesContainer.ClearLogo.LocalFilePath, True)
-            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.DiscArt.LocalFilePath) Then _movieDB.ImagesContainer.DiscArt.ImageOriginal.FromFile(_movieDB.ImagesContainer.DiscArt.LocalFilePath, True)
-            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Fanart.LocalFilePath) Then _movieDB.ImagesContainer.Fanart.ImageOriginal.FromFile(_movieDB.ImagesContainer.Fanart.LocalFilePath, True)
-            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Landscape.LocalFilePath) Then _movieDB.ImagesContainer.Landscape.ImageOriginal.FromFile(_movieDB.ImagesContainer.Landscape.LocalFilePath, True)
-            If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Poster.LocalFilePath) Then _movieDB.ImagesContainer.Poster.ImageOriginal.FromFile(_movieDB.ImagesContainer.Poster.LocalFilePath, True)
+        If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Banner.LocalFilePath) Then _movieDB.ImagesContainer.Banner.ImageOriginal.FromFile(_movieDB.ImagesContainer.Banner.LocalFilePath, LoadBitmap)
+        If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.ClearArt.LocalFilePath) Then _movieDB.ImagesContainer.ClearArt.ImageOriginal.FromFile(_movieDB.ImagesContainer.ClearArt.LocalFilePath, LoadBitmap)
+        If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.ClearLogo.LocalFilePath) Then _movieDB.ImagesContainer.ClearLogo.ImageOriginal.FromFile(_movieDB.ImagesContainer.ClearLogo.LocalFilePath, LoadBitmap)
+        If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.DiscArt.LocalFilePath) Then _movieDB.ImagesContainer.DiscArt.ImageOriginal.FromFile(_movieDB.ImagesContainer.DiscArt.LocalFilePath, LoadBitmap)
+        If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Fanart.LocalFilePath) Then _movieDB.ImagesContainer.Fanart.ImageOriginal.FromFile(_movieDB.ImagesContainer.Fanart.LocalFilePath, LoadBitmap)
+        If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Landscape.LocalFilePath) Then _movieDB.ImagesContainer.Landscape.ImageOriginal.FromFile(_movieDB.ImagesContainer.Landscape.LocalFilePath, LoadBitmap)
+        If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Poster.LocalFilePath) Then _movieDB.ImagesContainer.Poster.ImageOriginal.FromFile(_movieDB.ImagesContainer.Poster.LocalFilePath, LoadBitmap)
+        If Not exclExtraImages Then
             If Not String.IsNullOrEmpty(_movieDB.ExtrafanartsPath) AndAlso Directory.Exists(_movieDB.ExtrafanartsPath) Then
                 For Each ePath As String In Directory.GetFiles(_movieDB.ExtrafanartsPath, "*.jpg")
                     Dim eImg As New MediaContainers.Image
-                    If Not exclExtraImages Then eImg.ImageOriginal.FromFile(ePath, True)
+                    eImg.ImageOriginal.FromFile(ePath, LoadBitmap)
                     eImg.LocalFilePath = ePath
                     _movieDB.ImagesContainer.Extrafanarts.Add(eImg)
                 Next
@@ -1700,7 +1699,7 @@ Public Class Database
                 Dim iIndex As Integer = 0
                 For Each ePath As String In Directory.GetFiles(_movieDB.ExtrathumbsPath, "thumb*.jpg")
                     Dim eImg As New MediaContainers.Image
-                    If Not exclExtraImages Then eImg.ImageOriginal.FromFile(ePath, True)
+                    eImg.ImageOriginal.FromFile(ePath, LoadBitmap)
                     eImg.Index = iIndex
                     eImg.LocalFilePath = ePath
                     _movieDB.ImagesContainer.Extrathumbs.Add(eImg)

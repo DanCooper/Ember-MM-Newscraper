@@ -678,7 +678,6 @@ Public Class dlgExportMovies
         End Try
     End Sub
 
-
     Private Sub bwLoadInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadInfo.DoWork
         _movies.Clear()
         ' Load nfo movies using path from DB

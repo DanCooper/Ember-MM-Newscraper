@@ -368,7 +368,7 @@ Public Class dlgEditMovieSet
             End With
 
             If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
-                tmpDBElement.ImagesContainer.Banner.ImageOriginal.FromFile(ofdLocalFiles.FileName)
+                tmpDBElement.ImagesContainer.Banner.ImageOriginal.FromFile(ofdLocalFiles.FileName, True)
                 pbBanner.Image = tmpDBElement.ImagesContainer.Banner.ImageOriginal.Image
                 pbBanner.Tag = tmpDBElement.ImagesContainer.Banner
 
@@ -439,7 +439,7 @@ Public Class dlgEditMovieSet
             End With
 
             If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
-                tmpDBElement.ImagesContainer.ClearArt.ImageOriginal.FromFile(ofdLocalFiles.FileName)
+                tmpDBElement.ImagesContainer.ClearArt.ImageOriginal.FromFile(ofdLocalFiles.FileName, True)
                 pbClearArt.Image = tmpDBElement.ImagesContainer.ClearArt.ImageOriginal.Image
                 pbClearArt.Tag = tmpDBElement.ImagesContainer.ClearArt
 
@@ -510,7 +510,7 @@ Public Class dlgEditMovieSet
             End With
 
             If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
-                tmpDBElement.ImagesContainer.ClearLogo.ImageOriginal.FromFile(ofdLocalFiles.FileName)
+                tmpDBElement.ImagesContainer.ClearLogo.ImageOriginal.FromFile(ofdLocalFiles.FileName, True)
                 pbClearLogo.Image = tmpDBElement.ImagesContainer.ClearLogo.ImageOriginal.Image
                 pbClearLogo.Tag = tmpDBElement.ImagesContainer.ClearLogo
 
@@ -581,7 +581,7 @@ Public Class dlgEditMovieSet
             End With
 
             If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
-                tmpDBElement.ImagesContainer.DiscArt.ImageOriginal.FromFile(ofdLocalFiles.FileName)
+                tmpDBElement.ImagesContainer.DiscArt.ImageOriginal.FromFile(ofdLocalFiles.FileName, True)
                 pbDiscArt.Image = tmpDBElement.ImagesContainer.DiscArt.ImageOriginal.Image
                 pbDiscArt.Tag = tmpDBElement.ImagesContainer.DiscArt
 
@@ -652,7 +652,7 @@ Public Class dlgEditMovieSet
             End With
 
             If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
-                tmpDBElement.ImagesContainer.Fanart.ImageOriginal.FromFile(ofdLocalFiles.FileName)
+                tmpDBElement.ImagesContainer.Fanart.ImageOriginal.FromFile(ofdLocalFiles.FileName, True)
                 pbFanart.Image = tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
                 pbFanart.Tag = tmpDBElement.ImagesContainer.Fanart
 
@@ -723,7 +723,7 @@ Public Class dlgEditMovieSet
             End With
 
             If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
-                tmpDBElement.ImagesContainer.Landscape.ImageOriginal.FromFile(ofdLocalFiles.FileName)
+                tmpDBElement.ImagesContainer.Landscape.ImageOriginal.FromFile(ofdLocalFiles.FileName, True)
                 pbLandscape.Image = tmpDBElement.ImagesContainer.Landscape.ImageOriginal.Image
                 pbLandscape.Tag = tmpDBElement.ImagesContainer.Landscape
 
@@ -794,7 +794,7 @@ Public Class dlgEditMovieSet
             End With
 
             If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
-                tmpDBElement.ImagesContainer.Poster.ImageOriginal.FromFile(ofdLocalFiles.FileName)
+                tmpDBElement.ImagesContainer.Poster.ImageOriginal.FromFile(ofdLocalFiles.FileName, True)
                 pbPoster.Image = tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image
                 pbPoster.Tag = tmpDBElement.ImagesContainer.Poster
 

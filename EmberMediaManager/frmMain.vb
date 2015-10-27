@@ -1538,12 +1538,12 @@ Public Class frmMain
                 Dim SeasonID As Long = Master.DB.GetTVSeasonIDFromEpisode(Me.currTV)
                 Dim TVSeasonFanart As String = Master.DB.GetArtForItem(SeasonID, "season", "fanart")
                 If Not String.IsNullOrEmpty(TVSeasonFanart) Then
-                    Me.MainFanart.FromFile(TVSeasonFanart)
+                    Me.MainFanart.FromFile(TVSeasonFanart, True)
                     NeedsGS = True
                 Else
                     Dim TVShowFanart As String = Master.DB.GetArtForItem(Me.currTV.ShowID, "tvshow", "fanart")
                     If Not String.IsNullOrEmpty(TVShowFanart) Then
-                        Me.MainFanart.FromFile(TVShowFanart)
+                        Me.MainFanart.FromFile(TVShowFanart, True)
                         NeedsGS = True
                     End If
                 End If
@@ -1721,8 +1721,8 @@ Public Class frmMain
                         End If
 
                         Dim ResImg As Image
-                        If Movie.ImagesContainer.Poster.LoadAndCache(Enums.ContentType.Movie, True) Then
-                            ResImg = CType(Movie.ImagesContainer.Poster.ImageOriginal.Image.Clone(), Image)
+                        If Movie.ImagesContainer.Poster.LoadAndCache(Enums.ContentType.Movie, True, True) Then
+                            ResImg = Movie.ImagesContainer.Poster.ImageOriginal.Image
                             ImageUtils.ResizeImage(ResImg, 59, 88, True, Color.White.ToArgb())
                             Posters.Add(New MovieInSetPoster With {.MoviePoster = ResImg, .MovieTitle = Movie.Movie.Title, .MovieYear = Movie.Movie.Year})
                         Else
@@ -1809,7 +1809,7 @@ Public Class frmMain
             Else
                 Dim TVShowFanart As String = Master.DB.GetArtForItem(Me.currTV.ShowID, "tvshow", "fanart")
                 If Not String.IsNullOrEmpty(TVShowFanart) Then
-                    Me.MainFanart.FromFile(TVShowFanart)
+                    Me.MainFanart.FromFile(TVShowFanart, True)
                     NeedsGS = True
                 End If
             End If
@@ -4579,7 +4579,7 @@ doCancel:
 
         Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
         Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
-        Dim tmpDBMovie As Database.DBElement = Master.DB.LoadMovieFromDB(ID)
+        Dim tmpDBMovie As Database.DBElement = Master.DB.LoadMovieFromDB(ID, True)
         Edit_Movie(tmpDBMovie)
     End Sub
 
@@ -5394,7 +5394,7 @@ doCancel:
         If Me.dgvMovies.SelectedRows.Count > 1 Then Return
         Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
         Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
-        Dim DBElement As Database.DBElement = Master.DB.LoadMovieFromDB(ID, False)
+        Dim DBElement As Database.DBElement = Master.DB.LoadMovieFromDB(ID)
         Using dEditMeta As New dlgFileInfo(DBElement, False)
             Select Case dEditMeta.ShowDialog()
                 Case Windows.Forms.DialogResult.OK
@@ -6076,7 +6076,7 @@ doCancel:
 
         Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
         Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
-        Dim tmpDBMovie As Database.DBElement = Master.DB.LoadMovieFromDB(ID)
+        Dim tmpDBMovie As Database.DBElement = Master.DB.LoadMovieFromDB(ID, True)
         Edit_Movie(tmpDBMovie)
     End Sub
 
@@ -6466,7 +6466,7 @@ doCancel:
 
                 Dim indX As Integer = Me.dgvMovies.SelectedRows(0).Index
                 Dim ID As Integer = Convert.ToInt32(Me.dgvMovies.Item("idMovie", indX).Value)
-                Dim tmpDBMovie As Database.DBElement = Master.DB.LoadMovieFromDB(ID)
+                Dim tmpDBMovie As Database.DBElement = Master.DB.LoadMovieFromDB(ID, True)
                 Edit_Movie(tmpDBMovie)
             End If
         Catch ex As Exception
@@ -9505,18 +9505,11 @@ doCancel:
                 Me.pbStudio.Tag = String.Empty
             End If
 
-            'If Not String.IsNullOrEmpty(Master.currMovie.Movie.Studio) Then
-            '    Me.pbStudio.Image = APIXML.GetStudioImage(Master.currMovie.Movie.Studio.ToLower) 'ByDef all images file a lower case
-            '    Me.pbStudio.Tag = Master.currMovie.Movie.Studio
-            'Else
-            '    Me.pbStudio.Image = APIXML.GetStudioImage("####")
-            '    Me.pbStudio.Tag = String.Empty
-            'End If
             If clsAdvancedSettings.GetBooleanSetting("StudioTagAlwaysOn", False) Then
                 lblStudio.Text = pbStudio.Tag.ToString
             End If
+
             If Master.eSettings.MovieScraperMetaDataScan Then
-                'Me.SetAVImages(APIXML.GetAVImages(Master.currMovie.Movie.FileInfo, Master.currMovie.Filename, False))
                 Me.SetAVImages(APIXML.GetAVImages(Me.currMovie.Movie.FileInfo, Me.currMovie.Filename, False, Me.currMovie.Movie.VideoSource))
                 Me.pnlInfoIcons.Width = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + pbStudio.Width + 6
                 Me.pbStudio.Left = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + 5
@@ -11182,7 +11175,7 @@ doCancel:
             End If
 
             If Not Me.alActors.Item(Me.lstActors.SelectedIndex).ToString.Trim.StartsWith("http") Then
-                Me.MainActors.FromFile(Me.alActors.Item(Me.lstActors.SelectedIndex).ToString)
+                Me.MainActors.FromFile(Me.alActors.Item(Me.lstActors.SelectedIndex).ToString, True)
 
                 If Me.MainActors.Image IsNot Nothing Then
                     Me.pbActors.Image = Me.MainActors.Image
@@ -14087,7 +14080,7 @@ doCancel:
     Private Function Reload_Movie(ByVal ID As Long, ByVal BatchMode As Boolean, ByVal showMessage As Boolean) As Boolean
         Dim DBMovie As New Database.DBElement
 
-        DBMovie = Master.DB.LoadMovieFromDB(ID, False)
+        DBMovie = Master.DB.LoadMovieFromDB(ID)
 
         If DBMovie.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBMovie, Not showMessage) Then
             fScanner.LoadMovie(DBMovie, False, BatchMode)
@@ -14815,7 +14808,7 @@ doCancel:
                 String.IsNullOrEmpty(Me.dgvMovies.Item("FanartPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvMovies.Item("LandscapePath", iRow).Value.ToString) AndAlso _
                 String.IsNullOrEmpty(Me.dgvMovies.Item("NfoPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvMovies.Item("PosterPath", iRow).Value.ToString) Then
                 Me.ShowNoInfo(True, 0)
-                Me.currMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(Me.dgvMovies.Item("idMovie", iRow).Value))
+                Me.currMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(Me.dgvMovies.Item("idMovie", iRow).Value), True, True)
                 Me.FillScreenInfoWith_Movie()
 
                 If Not Me.bwMovieScraper.IsBusy AndAlso Not Me.bwMovieSetScraper.IsBusy AndAlso Not Me.bwNonScrape.IsBusy AndAlso Not Me.fScanner.IsBusy AndAlso Not Me.bwMetaData.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwReload_Movies.IsBusy AndAlso Not Me.bwReload_MovieSets.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
@@ -15090,7 +15083,7 @@ doCancel:
                 Dim hasWatched As Boolean = False
                 Dim currPlaycount As Integer
 
-                Dim tmpDBMovie As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells("idMovie").Value), False)
+                Dim tmpDBMovie As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells("idMovie").Value))
 
                 currPlaycount = tmpDBMovie.Movie.PlayCount
                 hasWatched = tmpDBMovie.Movie.PlayCountSpecified
@@ -15316,7 +15309,7 @@ doCancel:
     Private Sub cmnuMovieLanguageSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieLanguageSet.Click
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
-                Dim tmpDBMovie As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt32(sRow.Cells("idMovie").Value), False)
+                Dim tmpDBMovie As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt32(sRow.Cells("idMovie").Value))
                 tmpDBMovie.Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = Me.cmnuMovieLanguageLanguages.Text).abbreviation
                 tmpDBMovie.Movie.Language = tmpDBMovie.Language
                 Master.DB.SaveMovieToDB(tmpDBMovie, False, True, True, False)

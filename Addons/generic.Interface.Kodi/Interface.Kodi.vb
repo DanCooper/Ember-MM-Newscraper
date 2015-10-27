@@ -816,7 +816,7 @@ Public Class KodiInterface
         If Host IsNot Nothing Then
             For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows
                 Dim ID As Long = Convert.ToInt64(sRow.Cells("idMovie").Value)
-                Dim DBElement As Database.DBElement = Master.DB.LoadMovieFromDB(ID, False)
+                Dim DBElement As Database.DBElement = Master.DB.LoadMovieFromDB(ID)
                 If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBElement, True) Then
                     If Not String.IsNullOrEmpty(DBElement.NfoPath) Then
                         'add job to tasklist and get everything done

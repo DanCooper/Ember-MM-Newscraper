@@ -3641,7 +3641,7 @@ Namespace MediaContainers
             End Select
         End Sub
 
-        Public Function LoadAndCache(ByVal tContentType As Enums.ContentType, Optional ByVal needFullsize As Boolean = False, Optional ByVal OnlyToStream As Boolean = False) As Boolean
+        Public Function LoadAndCache(ByVal tContentType As Enums.ContentType, Optional ByVal needFullsize As Boolean = False, Optional ByVal LoadBitmap As Boolean = False) As Boolean
             Dim doCache As Boolean = False
 
             Select Case tContentType
@@ -3653,27 +3653,27 @@ Namespace MediaContainers
                     doCache = Master.eSettings.TVImagesCacheEnabled
             End Select
 
-            If Not ((Me.ImageOriginal.HasMemoryStream OrElse (Me.ImageThumb.HasMemoryStream AndAlso Not needFullsize)) AndAlso OnlyToStream) Then
+            If Not ((Me.ImageOriginal.HasMemoryStream OrElse (Me.ImageThumb.HasMemoryStream AndAlso Not needFullsize)) AndAlso Not LoadBitmap) Then
                 If Me.ImageOriginal.Image Is Nothing OrElse (Me.ImageThumb.Image Is Nothing AndAlso Not needFullsize) Then
-                    If File.Exists(Me.LocalFilePath) Then
-                        Me.ImageOriginal.FromFile(Me.LocalFilePath, OnlyToStream)
-                    ElseIf Me.ImageThumb.HasMemoryStream AndAlso Not needFullsize AndAlso Not OnlyToStream Then
+                    If File.Exists(Me.LocalFilePath) AndAlso Not Me.ImageOriginal.HasMemoryStream Then
+                        Me.ImageOriginal.FromFile(Me.LocalFilePath, LoadBitmap)
+                    ElseIf Me.ImageThumb.HasMemoryStream AndAlso Not needFullsize AndAlso LoadBitmap Then
                         Me.ImageThumb.FromMemoryStream()
-                    ElseIf Me.ImageOriginal.HasMemoryStream AndAlso Not OnlyToStream Then
+                    ElseIf Me.ImageOriginal.HasMemoryStream AndAlso LoadBitmap Then
                         Me.ImageOriginal.FromMemoryStream()
                     ElseIf File.Exists(Me.CacheThumbPath) AndAlso Not needFullsize Then
-                        Me.ImageThumb.FromFile(Me.CacheThumbPath, OnlyToStream)
+                        Me.ImageThumb.FromFile(Me.CacheThumbPath, LoadBitmap)
                     ElseIf File.Exists(Me.CacheOriginalPath) Then
-                        Me.ImageOriginal.FromFile(Me.CacheOriginalPath, OnlyToStream)
+                        Me.ImageOriginal.FromFile(Me.CacheOriginalPath, LoadBitmap)
                     Else
                         If Not String.IsNullOrEmpty(Me.URLThumb) AndAlso Not needFullsize Then
-                            Me.ImageThumb.FromWeb(Me.URLThumb, OnlyToStream)
+                            Me.ImageThumb.FromWeb(Me.URLThumb, LoadBitmap)
                             If doCache AndAlso Not String.IsNullOrEmpty(Me.CacheThumbPath) AndAlso Me.ImageThumb.HasMemoryStream Then
                                 Directory.CreateDirectory(Directory.GetParent(Me.CacheThumbPath).FullName)
                                 Me.ImageThumb.Save(Me.CacheThumbPath)
                             End If
                         ElseIf Not String.IsNullOrEmpty(Me.URLOriginal) Then
-                            Me.ImageOriginal.FromWeb(Me.URLOriginal, OnlyToStream)
+                            Me.ImageOriginal.FromWeb(Me.URLOriginal, LoadBitmap)
                             If doCache AndAlso Not String.IsNullOrEmpty(Me.CacheOriginalPath) AndAlso Me.ImageOriginal.HasMemoryStream Then
                                 Directory.CreateDirectory(Directory.GetParent(Me.CacheOriginalPath).FullName)
                                 Me.ImageOriginal.Save(Me.CacheOriginalPath)
@@ -3684,7 +3684,7 @@ Namespace MediaContainers
             End If
 
             If (Me.ImageOriginal.Image IsNot Nothing OrElse (Me.ImageThumb.Image IsNot Nothing AndAlso Not needFullsize)) OrElse _
-                (OnlyToStream AndAlso (Me.ImageOriginal.HasMemoryStream OrElse (Me.ImageThumb.HasMemoryStream AndAlso Not needFullsize))) Then
+                (Not LoadBitmap AndAlso (Me.ImageOriginal.HasMemoryStream OrElse (Me.ImageThumb.HasMemoryStream AndAlso Not needFullsize))) Then
                 Return True
             Else
                 Return False
@@ -3846,7 +3846,7 @@ Namespace MediaContainers
                     Case Enums.ContentType.Movie
 
                         'Movie Banner
-                        If .Banner.LoadAndCache(Type, True, True) Then
+                        If .Banner.LoadAndCache(Type, True) Then
                             .Banner.LocalFilePath = .Banner.ImageOriginal.SaveAsMovieBanner(DBElement)
                         Else
                             Images.Delete_Movie(DBElement, Enums.ModifierType.MainBanner)
@@ -3854,7 +3854,7 @@ Namespace MediaContainers
                         End If
 
                         'Movie ClearArt
-                        If .ClearArt.LoadAndCache(Type, True, True) Then
+                        If .ClearArt.LoadAndCache(Type, True) Then
                             .ClearArt.LocalFilePath = .ClearArt.ImageOriginal.SaveAsMovieClearArt(DBElement)
                         Else
                             Images.Delete_Movie(DBElement, Enums.ModifierType.MainClearArt)
@@ -3862,7 +3862,7 @@ Namespace MediaContainers
                         End If
 
                         'Movie ClearLogo
-                        If .ClearLogo.LoadAndCache(Type, True, True) Then
+                        If .ClearLogo.LoadAndCache(Type, True) Then
                             .ClearLogo.LocalFilePath = .ClearLogo.ImageOriginal.SaveAsMovieClearLogo(DBElement)
                         Else
                             Images.Delete_Movie(DBElement, Enums.ModifierType.MainClearLogo)
@@ -3870,7 +3870,7 @@ Namespace MediaContainers
                         End If
 
                         'Movie DiscArt
-                        If .DiscArt.LoadAndCache(Type, True, True) Then
+                        If .DiscArt.LoadAndCache(Type, True) Then
                             .DiscArt.LocalFilePath = .DiscArt.ImageOriginal.SaveAsMovieDiscArt(DBElement)
                         Else
                             Images.Delete_Movie(DBElement, Enums.ModifierType.MainDiscArt)
@@ -3896,7 +3896,7 @@ Namespace MediaContainers
                         End If
 
                         'Movie Fanart
-                        If .Fanart.LoadAndCache(Type, True, True) Then
+                        If .Fanart.LoadAndCache(Type, True) Then
                             .Fanart.LocalFilePath = .Fanart.ImageOriginal.SaveAsMovieFanart(DBElement)
                         Else
                             Images.Delete_Movie(DBElement, Enums.ModifierType.MainFanart)
@@ -3904,7 +3904,7 @@ Namespace MediaContainers
                         End If
 
                         'Movie Landscape
-                        If .Landscape.LoadAndCache(Type, True, True) Then
+                        If .Landscape.LoadAndCache(Type, True) Then
                             .Landscape.LocalFilePath = .Landscape.ImageOriginal.SaveAsMovieLandscape(DBElement)
                         Else
                             Images.Delete_Movie(DBElement, Enums.ModifierType.MainLandscape)
@@ -3912,7 +3912,7 @@ Namespace MediaContainers
                         End If
 
                         'Movie Poster
-                        If .Poster.LoadAndCache(Type, True, True) Then
+                        If .Poster.LoadAndCache(Type, True) Then
                             .Poster.LocalFilePath = .Poster.ImageOriginal.SaveAsMoviePoster(DBElement)
                         Else
                             Images.Delete_Movie(DBElement, Enums.ModifierType.MainPoster)
@@ -3922,7 +3922,7 @@ Namespace MediaContainers
                     Case Enums.ContentType.MovieSet
 
                         'MovieSet Banner
-                        If .Banner.LoadAndCache(Type, True, True) Then
+                        If .Banner.LoadAndCache(Type, True) Then
                             .Banner.LocalFilePath = .Banner.ImageOriginal.SaveAsMovieSetBanner(DBElement)
                         Else
                             Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainBanner)
@@ -3930,7 +3930,7 @@ Namespace MediaContainers
                         End If
 
                         'MovieSet ClearArt
-                        If .ClearArt.LoadAndCache(Type, True, True) Then
+                        If .ClearArt.LoadAndCache(Type, True) Then
                             .ClearArt.LocalFilePath = .ClearArt.ImageOriginal.SaveAsMovieSetClearArt(DBElement)
                         Else
                             Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainClearArt)
@@ -3938,7 +3938,7 @@ Namespace MediaContainers
                         End If
 
                         'MovieSet ClearLogo
-                        If .ClearLogo.LoadAndCache(Type, True, True) Then
+                        If .ClearLogo.LoadAndCache(Type, True) Then
                             .ClearLogo.LocalFilePath = .ClearLogo.ImageOriginal.SaveAsMovieSetClearLogo(DBElement)
                         Else
                             Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainClearLogo)
@@ -3946,7 +3946,7 @@ Namespace MediaContainers
                         End If
 
                         'MovieSet DiscArt
-                        If .DiscArt.LoadAndCache(Type, True, True) Then
+                        If .DiscArt.LoadAndCache(Type, True) Then
                             .DiscArt.LocalFilePath = .DiscArt.ImageOriginal.SaveAsMovieSetDiscArt(DBElement)
                         Else
                             Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainDiscArt)
@@ -3954,7 +3954,7 @@ Namespace MediaContainers
                         End If
 
                         'MovieSet Fanart
-                        If .Fanart.LoadAndCache(Type, True, True) Then
+                        If .Fanart.LoadAndCache(Type, True) Then
                             .Fanart.LocalFilePath = .Fanart.ImageOriginal.SaveAsMovieSetFanart(DBElement)
                         Else
                             Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainFanart)
@@ -3962,7 +3962,7 @@ Namespace MediaContainers
                         End If
 
                         'MovieSet Landscape
-                        If .Landscape.LoadAndCache(Type, True, True) Then
+                        If .Landscape.LoadAndCache(Type, True) Then
                             .Landscape.LocalFilePath = .Landscape.ImageOriginal.SaveAsMovieSetLandscape(DBElement)
                         Else
                             Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainLandscape)
@@ -3970,7 +3970,7 @@ Namespace MediaContainers
                         End If
 
                         'MovieSet Poster
-                        If .Poster.LoadAndCache(Type, True, True) Then
+                        If .Poster.LoadAndCache(Type, True) Then
                             .Poster.LocalFilePath = .Poster.ImageOriginal.SaveAsMovieSetPoster(DBElement)
                         Else
                             Images.Delete_MovieSet(DBElement, Enums.ModifierType.MainPoster)
@@ -3980,7 +3980,7 @@ Namespace MediaContainers
                     Case Enums.ContentType.TVEpisode
 
                         'Episode Fanart
-                        If .Fanart.LoadAndCache(Type, True, True) Then
+                        If .Fanart.LoadAndCache(Type, True) Then
                             .Fanart.LocalFilePath = .Fanart.ImageOriginal.SaveAsTVEpisodeFanart(DBElement)
                         Else
                             Images.Delete_TVEpisode(DBElement, Enums.ModifierType.EpisodeFanart)
@@ -3988,7 +3988,7 @@ Namespace MediaContainers
                         End If
 
                         'Episode Poster
-                        If .Poster.LoadAndCache(Type, True, True) Then
+                        If .Poster.LoadAndCache(Type, True) Then
                             .Poster.LocalFilePath = .Poster.ImageOriginal.SaveAsTVEpisodePoster(DBElement)
                         Else
                             Images.Delete_TVEpisode(DBElement, Enums.ModifierType.EpisodePoster)
@@ -3998,7 +3998,7 @@ Namespace MediaContainers
                     Case Enums.ContentType.TVSeason
 
                         'Season Banner
-                        If .Banner.LoadAndCache(Type, True, True) Then
+                        If .Banner.LoadAndCache(Type, True) Then
                             If DBElement.TVSeason.Season = 999 Then
                                 .Banner.LocalFilePath = .Banner.ImageOriginal.SaveAsTVAllSeasonsBanner(DBElement)
                             Else
@@ -4015,7 +4015,7 @@ Namespace MediaContainers
                         End If
 
                         'Season Fanart
-                        If .Fanart.LoadAndCache(Type, True, True) Then
+                        If .Fanart.LoadAndCache(Type, True) Then
                             If DBElement.TVSeason.Season = 999 Then
                                 .Fanart.LocalFilePath = .Fanart.ImageOriginal.SaveAsTVAllSeasonsFanart(DBElement)
                             Else
@@ -4032,7 +4032,7 @@ Namespace MediaContainers
                         End If
 
                         'Season Landscape
-                        If .Landscape.LoadAndCache(Type, True, True) Then
+                        If .Landscape.LoadAndCache(Type, True) Then
                             If DBElement.TVSeason.Season = 999 Then
                                 .Landscape.LocalFilePath = .Landscape.ImageOriginal.SaveAsTVAllSeasonsLandscape(DBElement)
                             Else
@@ -4049,7 +4049,7 @@ Namespace MediaContainers
                         End If
 
                         'Season Poster
-                        If .Poster.LoadAndCache(Type, True, True) Then
+                        If .Poster.LoadAndCache(Type, True) Then
                             If DBElement.TVSeason.Season = 999 Then
                                 .Poster.LocalFilePath = .Poster.ImageOriginal.SaveAsTVAllSeasonsPoster(DBElement)
                             Else
@@ -4068,7 +4068,7 @@ Namespace MediaContainers
                     Case Enums.ContentType.TVShow
 
                         'Show Banner
-                        If .Banner.LoadAndCache(Type, True, True) Then
+                        If .Banner.LoadAndCache(Type, True) Then
                             .Banner.LocalFilePath = .Banner.ImageOriginal.SaveAsTVShowBanner(DBElement)
                         Else
                             Images.Delete_TVShow(DBElement, Enums.ModifierType.MainBanner)
@@ -4076,7 +4076,7 @@ Namespace MediaContainers
                         End If
 
                         'Show CharacterArt
-                        If .CharacterArt.LoadAndCache(Type, True, True) Then
+                        If .CharacterArt.LoadAndCache(Type, True) Then
                             .CharacterArt.LocalFilePath = .CharacterArt.ImageOriginal.SaveAsTVShowCharacterArt(DBElement)
                         Else
                             Images.Delete_TVShow(DBElement, Enums.ModifierType.MainCharacterArt)
@@ -4084,7 +4084,7 @@ Namespace MediaContainers
                         End If
 
                         'Show ClearArt
-                        If .ClearArt.LoadAndCache(Type, True, True) Then
+                        If .ClearArt.LoadAndCache(Type, True) Then
                             .ClearArt.LocalFilePath = .ClearArt.ImageOriginal.SaveAsTVShowClearArt(DBElement)
                         Else
                             Images.Delete_TVShow(DBElement, Enums.ModifierType.MainClearArt)
@@ -4092,7 +4092,7 @@ Namespace MediaContainers
                         End If
 
                         'Show ClearLogo
-                        If .ClearLogo.LoadAndCache(Type, True, True) Then
+                        If .ClearLogo.LoadAndCache(Type, True) Then
                             .ClearLogo.LocalFilePath = .ClearLogo.ImageOriginal.SaveAsTVShowClearLogo(DBElement)
                         Else
                             Images.Delete_TVShow(DBElement, Enums.ModifierType.MainClearLogo)
@@ -4109,7 +4109,7 @@ Namespace MediaContainers
                         End If
 
                         'Show Fanart
-                        If .Fanart.LoadAndCache(Type, True, True) Then
+                        If .Fanart.LoadAndCache(Type, True) Then
                             .Fanart.LocalFilePath = .Fanart.ImageOriginal.SaveAsTVShowFanart(DBElement)
                         Else
                             Images.Delete_TVShow(DBElement, Enums.ModifierType.MainFanart)
@@ -4117,7 +4117,7 @@ Namespace MediaContainers
                         End If
 
                         'Show Landscape
-                        If .Landscape.LoadAndCache(Type, True, True) Then
+                        If .Landscape.LoadAndCache(Type, True) Then
                             .Landscape.LocalFilePath = .Landscape.ImageOriginal.SaveAsTVShowLandscape(DBElement)
                         Else
                             Images.Delete_TVShow(DBElement, Enums.ModifierType.MainLandscape)
@@ -4125,7 +4125,7 @@ Namespace MediaContainers
                         End If
 
                         'Show Poster
-                        If .Poster.LoadAndCache(Type, True, True) Then
+                        If .Poster.LoadAndCache(Type, True) Then
                             .Poster.LocalFilePath = .Poster.ImageOriginal.SaveAsTVShowPoster(DBElement)
                         Else
                             Images.Delete_TVShow(DBElement, Enums.ModifierType.MainPoster)

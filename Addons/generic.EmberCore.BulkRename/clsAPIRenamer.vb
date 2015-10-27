@@ -159,7 +159,7 @@ Public Class FileFolderRenamer
             For Each f As FileFolderRenamer.FileRename In _movies.Where(Function(s) s.IsRenamed AndAlso Not s.FileExist AndAlso Not s.IsLocked)
                 iProg += 1
                 If Not f.ID = -1 Then
-                    _movieDB = Master.DB.LoadMovieFromDB(f.ID, False)
+                    _movieDB = Master.DB.LoadMovieFromDB(f.ID)
                     DoRenameSingle_Movie(f, _movieDB, True, False, True, sfunction, iProg)
                 End If
             Next

@@ -264,8 +264,9 @@ Public Class Images
     ''' Loads this Image from the contents of the supplied file
     ''' </summary>
     ''' <param name="sPath">Path to the image file</param>
+    ''' <param name="LoadBitmap">Create bitmap from memorystream</param>
     ''' <remarks></remarks>
-    Public Sub FromFile(ByVal sPath As String, Optional OnlyToMemoryStream As Boolean = False)
+    Public Sub FromFile(ByVal sPath As String, Optional LoadBitmap As Boolean = False)
         If Not String.IsNullOrEmpty(sPath) AndAlso File.Exists(sPath) Then
             'Try
             Me._ms = New MemoryStream()
@@ -275,7 +276,7 @@ Public Class Images
                 fsImage.Read(memStream.GetBuffer, 0, CInt(Fix(fsImage.Length)))
                 Me._ms.Write(memStream.GetBuffer, 0, CInt(Fix(fsImage.Length)))
                 Me._ms.Flush()
-                If Not OnlyToMemoryStream Then
+                If LoadBitmap Then
                     _image = New Bitmap(Me._ms)
                 End If
             End Using
@@ -297,8 +298,9 @@ Public Class Images
     ''' Loads this Image from the supplied URL
     ''' </summary>
     ''' <param name="sURL">URL to the image file</param>
+    ''' <param name="LoadBitmap">Create bitmap from memorystream</param>
     ''' <remarks></remarks>
-    Public Sub FromWeb(ByVal sURL As String, Optional OnlyToMemoryStream As Boolean = False)
+    Public Sub FromWeb(ByVal sURL As String, Optional LoadBitmap As Boolean = False)
         If String.IsNullOrEmpty(sURL) Then Return
 
         Try
@@ -321,7 +323,7 @@ Public Class Images
 
                 'I do not copy from the _ms as it could not be a JPG
                 '_image = New Bitmap(sHTTP.Image)
-                If Not OnlyToMemoryStream Then
+                If LoadBitmap Then
                     _image = New Bitmap(sHTTP.Image) '(Me._ms)
                 End If
 
@@ -376,7 +378,7 @@ Public Class Images
     Public Shared Sub SaveMovieActorThumbs(ByVal mMovie As Database.DBElement)
         'First, (Down)Load all actor thumbs from LocalFilePath or URL
         For Each tActor As MediaContainers.Person In mMovie.Movie.Actors
-            tActor.Thumb.LoadAndCache(Enums.ContentType.Movie, True, True)
+            tActor.Thumb.LoadAndCache(Enums.ContentType.Movie, True)
         Next
 
         'Secound, remove the old ones
@@ -384,7 +386,7 @@ Public Class Images
 
         'Thirdly, save all actor thumbs
         For Each tActor As MediaContainers.Person In mMovie.Movie.Actors
-            If tActor.Thumb.LoadAndCache(Enums.ContentType.Movie, True, True) Then
+            If tActor.Thumb.LoadAndCache(Enums.ContentType.Movie, True) Then
                 tActor.Thumb.LocalFilePath = tActor.Thumb.ImageOriginal.SaveAsMovieActorThumb(mMovie, tActor)
             End If
         Next
@@ -502,7 +504,7 @@ Public Class Images
         Images.Delete_Movie(mMovie, Enums.ModifierType.MainExtrafanarts)
 
         For Each eImg As MediaContainers.Image In mMovie.ImagesContainer.Extrafanarts
-            If eImg.LoadAndCache(Enums.ContentType.Movie, True, True) Then
+            If eImg.LoadAndCache(Enums.ContentType.Movie, True) Then
                 efPath = eImg.ImageOriginal.SaveAsMovieExtrafanart(mMovie, If(Not String.IsNullOrEmpty(eImg.URLOriginal), Path.GetFileName(eImg.URLOriginal), Path.GetFileName(eImg.LocalFilePath)))
             End If
         Next
@@ -568,7 +570,7 @@ Public Class Images
         Images.Delete_Movie(mMovie, Enums.ModifierType.MainExtrathumbs)
 
         For Each eImg As MediaContainers.Image In mMovie.ImagesContainer.Extrathumbs.OrderBy(Function(f) f.Index)
-            If eImg.LoadAndCache(Enums.ContentType.Movie, True, True) Then
+            If eImg.LoadAndCache(Enums.ContentType.Movie, True) Then
                 etPath = eImg.ImageOriginal.SaveAsMovieExtrathumb(mMovie)
             End If
         Next
@@ -963,7 +965,7 @@ Public Class Images
     Public Shared Sub SaveTVEpisodeActorThumbs(ByVal mEpisode As Database.DBElement)
         'First, (Down)Load all actor thumbs from LocalFilePath or URL
         For Each tActor As MediaContainers.Person In mEpisode.TVEpisode.Actors
-            tActor.Thumb.LoadAndCache(Enums.ContentType.TV, True, True)
+            tActor.Thumb.LoadAndCache(Enums.ContentType.TV, True)
         Next
 
         'Secound, remove the old ones
@@ -1155,7 +1157,7 @@ Public Class Images
     Public Shared Sub SaveTVShowActorThumbs(ByVal mShow As Database.DBElement)
         'First, (Down)Load all actor thumbs from LocalFilePath or URL
         For Each tActor As MediaContainers.Person In mShow.TVShow.Actors
-            tActor.Thumb.LoadAndCache(Enums.ContentType.TV, True, True)
+            tActor.Thumb.LoadAndCache(Enums.ContentType.TV, True)
         Next
 
         'Secound, remove the old ones
@@ -1286,7 +1288,7 @@ Public Class Images
         Images.Delete_TVShow(mShow, Enums.ModifierType.MainExtrafanarts)
 
         For Each eImg As MediaContainers.Image In mShow.ImagesContainer.Extrafanarts
-            If eImg.LoadAndCache(Enums.ContentType.TV, True, True) Then
+            If eImg.LoadAndCache(Enums.ContentType.TV, True) Then
                 efPath = eImg.ImageOriginal.SaveAsTVShowExtrafanart(mShow, If(Not String.IsNullOrEmpty(eImg.URLOriginal), Path.GetFileName(eImg.URLOriginal), Path.GetFileName(eImg.LocalFilePath)))
             End If
         Next

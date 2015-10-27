@@ -143,7 +143,7 @@ Public Class dlgBulkRenamer_Movie
                                     If Not String.IsNullOrEmpty(_tmpPath) Then
 
                                         MovieFile = New FileFolderRenamer.FileRename
-                                        _currMovie = Master.DB.LoadMovieFromDB(Convert.ToInt32(SQLreader("idMovie")), False)
+                                        _currMovie = Master.DB.LoadMovieFromDB(Convert.ToInt32(SQLreader("idMovie")))
 
                                         If Not _currMovie.ID = -1 AndAlso Not String.IsNullOrEmpty(_currMovie.Filename) Then
                                             MovieFile = FileFolderRenamer.GetInfo_Movie(_currMovie)
