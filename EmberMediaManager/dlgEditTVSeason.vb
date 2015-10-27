@@ -59,24 +59,32 @@ Public Class dlgEditTVSeason
     Private Sub btnRemoveBanner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveBanner.Click
         pbBanner.Image = Nothing
         pbBanner.Tag = Nothing
+        lblBannerSize.Text = String.Empty
+        lblBannerSize.Visible = False
         tmpDBElement.ImagesContainer.Banner = New MediaContainers.Image
     End Sub
 
     Private Sub btnRemoveFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveFanart.Click
         pbFanart.Image = Nothing
         pbFanart.Tag = Nothing
+        lblFanartSize.Text = String.Empty
+        lblFanartSize.Visible = False
         tmpDBElement.ImagesContainer.Fanart = New MediaContainers.Image
     End Sub
 
     Private Sub btnRemoveLandscape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveLandscape.Click
         pbLandscape.Image = Nothing
         pbLandscape.Tag = Nothing
+        lblLandscapeSize.Text = String.Empty
+        lblLandscapeSize.Visible = False
         tmpDBElement.ImagesContainer.Landscape = New MediaContainers.Image
     End Sub
 
     Private Sub btnRemovePoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemovePoster.Click
         pbPoster.Image = Nothing
         pbPoster.Tag = Nothing
+        lblPosterSize.Text = String.Empty
+        lblPosterSize.Visible = False
         tmpDBElement.ImagesContainer.Poster = New MediaContainers.Image
     End Sub
 
@@ -100,6 +108,7 @@ Public Class dlgEditTVSeason
         Dim aContainer As New MediaContainers.SearchResultsContainer
         Dim ScrapeModifier As New Structures.ScrapeModifier
 
+        Cursor = Cursors.WaitCursor
         If tmpDBElement.TVSeason.Season = 999 Then
             Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.AllSeasonsBanner, True)
         Else
@@ -109,19 +118,23 @@ Public Class dlgEditTVSeason
             If aContainer.SeasonBanners.Count > 0 OrElse (tmpDBElement.TVSeason.Season = 999 AndAlso aContainer.MainBanners.Count > 0) Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVSeason) = Windows.Forms.DialogResult.OK Then
-                    Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.Banner
-                    tmpDBElement.ImagesContainer.Banner = pResults
-                    If pResults.ImageOriginal.Image IsNot Nothing Then
-                        pbBanner.Image = CType(pResults.ImageOriginal.Image.Clone(), Image)
+                    tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
+                    If tmpDBElement.ImagesContainer.Banner.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Banner.ImageOriginal.FromMemoryStream Then
+                        pbBanner.Image = tmpDBElement.ImagesContainer.Banner.ImageOriginal.Image
                         lblBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbBanner.Image.Width, pbBanner.Image.Height)
                         lblBannerSize.Visible = True
+                    Else
+                        pbBanner.Image = Nothing
+                        pbBanner.Tag = Nothing
+                        lblBannerSize.Text = String.Empty
+                        lblBannerSize.Visible = False
                     End If
-                    Cursor = Cursors.Default
                 End If
             Else
                 MessageBox.Show(Master.eLang.GetString(1363, "No Banners found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         End If
+        Cursor = Cursors.Default
     End Sub
 
     Private Sub btnSetBannerLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetBannerLocal.Click
@@ -165,6 +178,7 @@ Public Class dlgEditTVSeason
         Dim aContainer As New MediaContainers.SearchResultsContainer
         Dim ScrapeModifier As New Structures.ScrapeModifier
 
+        Cursor = Cursors.WaitCursor
         If tmpDBElement.TVSeason.Season = 999 Then
             Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.AllSeasonsFanart, True)
         Else
@@ -174,19 +188,23 @@ Public Class dlgEditTVSeason
             If aContainer.SeasonFanarts.Count > 0 OrElse aContainer.MainFanarts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVSeason) = Windows.Forms.DialogResult.OK Then
-                    Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.Fanart
-                    tmpDBElement.ImagesContainer.Fanart = pResults
-                    If pResults.ImageOriginal.Image IsNot Nothing Then
-                        pbFanart.Image = CType(pResults.ImageOriginal.Image.Clone(), Image)
+                    tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
+                    If tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Fanart.ImageOriginal.FromMemoryStream Then
+                        pbFanart.Image = tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
                         lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbFanart.Image.Width, pbFanart.Image.Height)
                         lblFanartSize.Visible = True
+                    Else
+                        pbFanart.Image = Nothing
+                        pbFanart.Tag = Nothing
+                        lblFanartSize.Text = String.Empty
+                        lblFanartSize.Visible = False
                     End If
-                    Cursor = Cursors.Default
                 End If
             Else
                 MessageBox.Show(Master.eLang.GetString(970, "No Fanarts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         End If
+        Cursor = Cursors.Default
     End Sub
 
     Private Sub btnSetFanartLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartLocal.Click
@@ -230,6 +248,7 @@ Public Class dlgEditTVSeason
         Dim aContainer As New MediaContainers.SearchResultsContainer
         Dim ScrapeModifier As New Structures.ScrapeModifier
 
+        Cursor = Cursors.WaitCursor
         If tmpDBElement.TVSeason.Season = 999 Then
             Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.AllSeasonsLandscape, True)
         Else
@@ -239,19 +258,23 @@ Public Class dlgEditTVSeason
             If aContainer.SeasonLandscapes.Count > 0 OrElse (tmpDBElement.TVSeason.Season = 999 AndAlso aContainer.MainLandscapes.Count > 0) Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVSeason) = Windows.Forms.DialogResult.OK Then
-                    Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.Landscape
-                    tmpDBElement.ImagesContainer.Landscape = pResults
-                    If pResults.ImageOriginal.Image IsNot Nothing Then
-                        pbLandscape.Image = CType(pResults.ImageOriginal.Image.Clone(), Image)
+                    tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
+                    If tmpDBElement.ImagesContainer.Landscape.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Landscape.ImageOriginal.FromMemoryStream Then
+                        pbLandscape.Image = tmpDBElement.ImagesContainer.Landscape.ImageOriginal.Image
                         lblLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbLandscape.Image.Width, pbLandscape.Image.Height)
                         lblLandscapeSize.Visible = True
+                    Else
+                        pbLandscape.Image = Nothing
+                        pbLandscape.Tag = Nothing
+                        lblLandscapeSize.Text = String.Empty
+                        lblLandscapeSize.Visible = False
                     End If
-                    Cursor = Cursors.Default
                 End If
             Else
                 MessageBox.Show(Master.eLang.GetString(1197, "No Landscapes found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         End If
+        Cursor = Cursors.Default
     End Sub
 
     Private Sub btnSetLandscapeLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetLandscapeLocal.Click
@@ -295,6 +318,7 @@ Public Class dlgEditTVSeason
         Dim aContainer As New MediaContainers.SearchResultsContainer
         Dim ScrapeModifier As New Structures.ScrapeModifier
 
+        Cursor = Cursors.WaitCursor
         If tmpDBElement.TVSeason.Season = 999 Then
             Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.AllSeasonsPoster, True)
         Else
@@ -304,19 +328,23 @@ Public Class dlgEditTVSeason
             If aContainer.SeasonPosters.Count > 0 OrElse (tmpDBElement.TVSeason.Season = 999 AndAlso aContainer.MainPosters.Count > 0) Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVSeason) = Windows.Forms.DialogResult.OK Then
-                    Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.Poster
-                    tmpDBElement.ImagesContainer.Poster = pResults
-                    If pResults.ImageOriginal.Image IsNot Nothing Then
-                        pbPoster.Image = CType(pResults.ImageOriginal.Image.Clone(), Image)
-                        lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbPoster.Image.Width, pbPoster.Image.Height)
-                        lblPosterSize.Visible = True
+                    tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
+                    If tmpDBElement.ImagesContainer.Banner.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Banner.ImageOriginal.FromMemoryStream Then
+                        pbBanner.Image = tmpDBElement.ImagesContainer.Banner.ImageOriginal.Image
+                        lblBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbBanner.Image.Width, pbBanner.Image.Height)
+                        lblBannerSize.Visible = True
+                    Else
+                        pbBanner.Image = Nothing
+                        pbBanner.Tag = Nothing
+                        lblBannerSize.Text = String.Empty
+                        lblBannerSize.Visible = False
                     End If
-                    Cursor = Cursors.Default
                 End If
             Else
                 MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         End If
+        Cursor = Cursors.Default
     End Sub
 
     Private Sub btnSetPosterLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterLocal.Click

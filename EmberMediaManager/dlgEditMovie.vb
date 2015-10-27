@@ -393,42 +393,56 @@ Public Class dlgEditMovie
     Private Sub btnRemoveBanner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveBanner.Click
         pbBanner.Image = Nothing
         pbBanner.Tag = Nothing
+        lblBannerSize.Text = String.Empty
+        lblBannerSize.Visible = False
         tmpDBElement.ImagesContainer.Banner = New MediaContainers.Image
     End Sub
 
     Private Sub btnRemoveClearArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveClearArt.Click
         pbClearArt.Image = Nothing
         pbClearArt.Tag = Nothing
+        lblClearArtSize.Text = String.Empty
+        lblClearArtSize.Visible = False
         tmpDBElement.ImagesContainer.ClearArt = New MediaContainers.Image
     End Sub
 
     Private Sub btnRemoveClearLogo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveClearLogo.Click
         pbClearLogo.Image = Nothing
         pbClearLogo.Tag = Nothing
+        lblClearLogoSize.Text = String.Empty
+        lblClearLogoSize.Visible = False
         tmpDBElement.ImagesContainer.ClearLogo = New MediaContainers.Image
     End Sub
 
     Private Sub btnRemoveDiscArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveDiscArt.Click
         pbDiscArt.Image = Nothing
         pbDiscArt.Tag = Nothing
+        lblDiscArtSize.Text = String.Empty
+        lblDiscArtSize.Visible = False
         tmpDBElement.ImagesContainer.DiscArt = New MediaContainers.Image
     End Sub
 
     Private Sub btnRemoveFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveFanart.Click
         pbFanart.Image = Nothing
         pbFanart.Tag = Nothing
+        lblFanartSize.Text = String.Empty
+        lblFanartSize.Visible = False
         tmpDBElement.ImagesContainer.Fanart = New MediaContainers.Image
     End Sub
 
     Private Sub btnRemoveLandscape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveLandscape.Click
         pbLandscape.Image = Nothing
         pbLandscape.Tag = Nothing
+        lblLandscapeSize.Text = String.Empty
+        lblLandscapeSize.Visible = False
         tmpDBElement.ImagesContainer.Landscape = New MediaContainers.Image
     End Sub
 
     Private Sub btnRemovePoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemovePoster.Click
         pbPoster.Image = Nothing
         pbPoster.Tag = Nothing
+        lblPosterSize.Text = String.Empty
+        lblPosterSize.Visible = False
         tmpDBElement.ImagesContainer.Poster = New MediaContainers.Image
     End Sub
 
@@ -461,7 +475,7 @@ Public Class dlgEditMovie
         If pbExtrafanarts.Tag IsNot Nothing Then
             tmpDBElement.ImagesContainer.Extrafanarts.Remove(DirectCast(pbExtrafanarts.Tag, MediaContainers.Image))
             RefreshExtrafanarts()
-            lblExtrafanartsSize.Text = ""
+            lblExtrafanartsSize.Text = String.Empty
             lblExtrafanartsSize.Visible = False
         End If
     End Sub
@@ -470,7 +484,7 @@ Public Class dlgEditMovie
         If pbExtrathumbs.Tag IsNot Nothing Then
             tmpDBElement.ImagesContainer.Extrathumbs.Remove(DirectCast(pbExtrathumbs.Tag, MediaContainers.Image))
             RefreshExtrathumbs()
-            lblExtrafanartsSize.Text = ""
+            lblExtrafanartsSize.Text = String.Empty
             lblExtrafanartsSize.Visible = False
         End If
     End Sub
@@ -514,24 +528,29 @@ Public Class dlgEditMovie
         Dim aContainer As New MediaContainers.SearchResultsContainer
         Dim ScrapeModifier As New Structures.ScrapeModifier
 
+        Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainBanner, True)
         If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifier, True) Then
             If aContainer.MainBanners.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
-                    Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.Banner
-                    tmpDBElement.ImagesContainer.Banner = pResults
-                    If pResults.ImageOriginal.Image IsNot Nothing Then
-                        pbBanner.Image = CType(pResults.ImageOriginal.Image.Clone(), Image)
+                    tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
+                    If tmpDBElement.ImagesContainer.Banner.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Banner.ImageOriginal.FromMemoryStream Then
+                        pbBanner.Image = tmpDBElement.ImagesContainer.Banner.ImageOriginal.Image
                         lblBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbBanner.Image.Width, pbBanner.Image.Height)
                         lblBannerSize.Visible = True
+                    Else
+                        pbBanner.Image = Nothing
+                        pbBanner.Tag = Nothing
+                        lblBannerSize.Text = String.Empty
+                        lblBannerSize.Visible = False
                     End If
-                    Cursor = Cursors.Default
                 End If
             Else
                 MessageBox.Show(Master.eLang.GetString(1363, "No Banners found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         End If
+        Cursor = Cursors.Default
     End Sub
 
     Private Sub btnSetBannerLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetBannerLocal.Click
@@ -580,24 +599,29 @@ Public Class dlgEditMovie
         Dim aContainer As New MediaContainers.SearchResultsContainer
         Dim ScrapeModifier As New Structures.ScrapeModifier
 
+        Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainClearArt, True)
         If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifier, True) Then
             If aContainer.MainClearArts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
-                    Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.ClearArt
-                    tmpDBElement.ImagesContainer.ClearArt = pResults
-                    If pResults.ImageOriginal.Image IsNot Nothing Then
-                        pbClearArt.Image = CType(pResults.ImageOriginal.Image.Clone(), Image)
+                    tmpDBElement.ImagesContainer.ClearArt = dlgImgS.Result.ImagesContainer.ClearArt
+                    If tmpDBElement.ImagesContainer.ClearArt.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.ClearArt.ImageOriginal.FromMemoryStream Then
+                        pbClearArt.Image = tmpDBElement.ImagesContainer.ClearArt.ImageOriginal.Image
                         lblClearArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbClearArt.Image.Width, pbClearArt.Image.Height)
                         lblClearArtSize.Visible = True
+                    Else
+                        pbClearArt.Image = Nothing
+                        pbClearArt.Tag = Nothing
+                        lblClearArtSize.Text = String.Empty
+                        lblClearArtSize.Visible = False
                     End If
-                    Cursor = Cursors.Default
                 End If
             Else
                 MessageBox.Show(Master.eLang.GetString(1102, "No ClearArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         End If
+        Cursor = Cursors.Default
     End Sub
 
     Private Sub btnSetClearArtLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetClearArtLocal.Click
@@ -646,24 +670,29 @@ Public Class dlgEditMovie
         Dim aContainer As New MediaContainers.SearchResultsContainer
         Dim ScrapeModifier As New Structures.ScrapeModifier
 
+        Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainClearLogo, True)
         If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifier, True) Then
             If aContainer.MainClearLogos.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
-                    Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.ClearLogo
-                    tmpDBElement.ImagesContainer.ClearLogo = pResults
-                    If pResults.ImageOriginal.Image IsNot Nothing Then
-                        pbClearLogo.Image = CType(pResults.ImageOriginal.Image.Clone(), Image)
+                    tmpDBElement.ImagesContainer.ClearLogo = dlgImgS.Result.ImagesContainer.ClearLogo
+                    If dlgImgS.Result.ImagesContainer.ClearLogo.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.ClearLogo.ImageOriginal.FromMemoryStream Then
+                        pbClearLogo.Image = tmpDBElement.ImagesContainer.ClearLogo.ImageOriginal.Image
                         lblClearLogoSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbClearLogo.Image.Width, pbClearLogo.Image.Height)
                         lblClearLogoSize.Visible = True
+                    Else
+                        pbClearLogo.Image = Nothing
+                        pbClearLogo.Tag = Nothing
+                        lblClearLogoSize.Text = String.Empty
+                        lblClearLogoSize.Visible = False
                     End If
-                    Cursor = Cursors.Default
                 End If
             Else
                 MessageBox.Show(Master.eLang.GetString(1103, "No ClearLogos found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         End If
+        Cursor = Cursors.Default
     End Sub
 
     Private Sub btnSetClearLogoLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetClearLogoLocal.Click
@@ -712,24 +741,29 @@ Public Class dlgEditMovie
         Dim aContainer As New MediaContainers.SearchResultsContainer
         Dim ScrapeModifier As New Structures.ScrapeModifier
 
+        Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainDiscArt, True)
         If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifier, True) Then
             If aContainer.MainDiscArts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
-                    Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.DiscArt
-                    tmpDBElement.ImagesContainer.DiscArt = pResults
-                    If pResults.ImageOriginal.Image IsNot Nothing Then
-                        pbDiscArt.Image = CType(pResults.ImageOriginal.Image.Clone(), Image)
+                    tmpDBElement.ImagesContainer.DiscArt = dlgImgS.Result.ImagesContainer.DiscArt
+                    If tmpDBElement.ImagesContainer.DiscArt.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.DiscArt.ImageOriginal.FromMemoryStream Then
+                        pbDiscArt.Image = tmpDBElement.ImagesContainer.DiscArt.ImageOriginal.Image
                         lblDiscArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbDiscArt.Image.Width, pbDiscArt.Image.Height)
                         lblDiscArtSize.Visible = True
+                    Else
+                        pbDiscArt.Image = Nothing
+                        pbDiscArt.Tag = Nothing
+                        lblDiscArtSize.Text = String.Empty
+                        lblDiscArtSize.Visible = False
                     End If
-                    Cursor = Cursors.Default
                 End If
             Else
                 MessageBox.Show(Master.eLang.GetString(1104, "No DiscArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         End If
+        Cursor = Cursors.Default
     End Sub
 
     Private Sub btnSetDiscArtLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetDiscArtLocal.Click
@@ -779,6 +813,7 @@ Public Class dlgEditMovie
         Dim aContainer As New MediaContainers.SearchResultsContainer
         Dim ScrapeModifier As New Structures.ScrapeModifier
 
+        Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainExtrafanarts, True)
         If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifier, True) Then
             If aContainer.MainFanarts.Count > 0 Then
@@ -786,18 +821,19 @@ Public Class dlgEditMovie
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
                     tmpDBElement.ImagesContainer.Extrafanarts = dlgImgS.Result.ImagesContainer.Extrafanarts
                     RefreshExtrafanarts()
-                    Cursor = Cursors.Default
                 End If
             Else
                 MessageBox.Show(Master.eLang.GetString(970, "No Fanarts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         End If
+        Cursor = Cursors.Default
     End Sub
 
     Private Sub btnSetExtrathumbsScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetExtrathumbsScrape.Click
         Dim aContainer As New MediaContainers.SearchResultsContainer
         Dim ScrapeModifier As New Structures.ScrapeModifier
 
+        Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainExtrathumbs, True)
         If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifier, True) Then
             If aContainer.MainFanarts.Count > 0 Then
@@ -805,12 +841,12 @@ Public Class dlgEditMovie
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
                     tmpDBElement.ImagesContainer.Extrathumbs = dlgImgS.Result.ImagesContainer.Extrathumbs
                     RefreshExtrathumbs()
-                    Cursor = Cursors.Default
                 End If
             Else
                 MessageBox.Show(Master.eLang.GetString(970, "No Fanarts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         End If
+        Cursor = Cursors.Default
     End Sub
 
     Private Sub btnSetFanartDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartDL.Click
@@ -838,24 +874,29 @@ Public Class dlgEditMovie
         Dim aContainer As New MediaContainers.SearchResultsContainer
         Dim ScrapeModifier As New Structures.ScrapeModifier
 
+        Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainFanart, True)
         If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifier, True) Then
             If aContainer.MainFanarts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
-                    Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.Fanart
-                    tmpDBElement.ImagesContainer.Fanart = pResults
-                    If pResults.ImageOriginal.Image IsNot Nothing Then
-                        pbFanart.Image = CType(pResults.ImageOriginal.Image.Clone(), Image)
+                    tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
+                    If tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Fanart.ImageOriginal.FromMemoryStream Then
+                        pbFanart.Image = tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
                         lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbFanart.Image.Width, pbFanart.Image.Height)
                         lblFanartSize.Visible = True
+                    Else
+                        pbFanart.Image = Nothing
+                        pbFanart.Tag = Nothing
+                        lblFanartSize.Text = String.Empty
+                        lblFanartSize.Visible = False
                     End If
-                    Cursor = Cursors.Default
                 End If
             Else
                 MessageBox.Show(Master.eLang.GetString(970, "No Fanarts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         End If
+        Cursor = Cursors.Default
     End Sub
 
     Private Sub btnSetFanartLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartLocal.Click
@@ -904,24 +945,29 @@ Public Class dlgEditMovie
         Dim aContainer As New MediaContainers.SearchResultsContainer
         Dim ScrapeModifier As New Structures.ScrapeModifier
 
+        Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainLandscape, True)
         If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifier, True) Then
             If aContainer.MainLandscapes.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
-                    Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.Landscape
-                    tmpDBElement.ImagesContainer.Landscape = pResults
-                    If pResults.ImageOriginal.Image IsNot Nothing Then
-                        pbLandscape.Image = CType(pResults.ImageOriginal.Image.Clone(), Image)
+                    tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
+                    If tmpDBElement.ImagesContainer.Landscape.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Landscape.ImageOriginal.FromMemoryStream Then
+                        pbLandscape.Image = tmpDBElement.ImagesContainer.Landscape.ImageOriginal.Image
                         lblLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbLandscape.Image.Width, pbLandscape.Image.Height)
                         lblLandscapeSize.Visible = True
+                    Else
+                        pbLandscape.Image = Nothing
+                        pbLandscape.Tag = Nothing
+                        lblLandscapeSize.Text = String.Empty
+                        lblLandscapeSize.Visible = False
                     End If
-                    Cursor = Cursors.Default
                 End If
             Else
                 MessageBox.Show(Master.eLang.GetString(972, "No Landscapes found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         End If
+        Cursor = Cursors.Default
     End Sub
 
     Private Sub btnSetLandscapeLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetLandscapeLocal.Click
@@ -970,24 +1016,29 @@ Public Class dlgEditMovie
         Dim aContainer As New MediaContainers.SearchResultsContainer
         Dim ScrapeModifier As New Structures.ScrapeModifier
 
+        Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainPoster, True)
         If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifier, True) Then
             If aContainer.MainPosters.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
-                    Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.Poster
-                    tmpDBElement.ImagesContainer.Poster = pResults
-                    If pResults.ImageOriginal.Image IsNot Nothing Then
-                        pbPoster.Image = CType(pResults.ImageOriginal.Image.Clone(), Image)
+                    tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
+                    If tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Poster.ImageOriginal.FromMemoryStream Then
+                        pbPoster.Image = tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image
                         lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbPoster.Image.Width, pbPoster.Image.Height)
                         lblPosterSize.Visible = True
+                    Else
+                        pbPoster.Image = Nothing
+                        pbPoster.Tag = Nothing
+                        lblPosterSize.Text = String.Empty
+                        lblPosterSize.Visible = False
                     End If
-                    Cursor = Cursors.Default
                 End If
             Else
                 MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         End If
+        Cursor = Cursors.Default
     End Sub
 
     Private Sub btnSetPosterLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterLocal.Click

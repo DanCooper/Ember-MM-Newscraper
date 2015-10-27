@@ -119,15 +119,19 @@ Public Class dlgEditTVEpisode
         End Try
     End Sub
 
-    Private Sub btnRemoveEpisodeFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveFanart.Click
+    Private Sub btnRemoveFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveFanart.Click
         pbFanart.Image = Nothing
         pbFanart.Tag = Nothing
+        lblFanartSize.Text = String.Empty
+        lblFanartSize.Visible = False
         tmpDBElement.ImagesContainer.Fanart = New MediaContainers.Image
     End Sub
 
-    Private Sub btnRemoveEpisodePoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemovePoster.Click
+    Private Sub btnRemovePoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemovePoster.Click
         pbPoster.Image = Nothing
         pbPoster.Tag = Nothing
+        lblPosterSize.Text = String.Empty
+        lblPosterSize.Visible = False
         tmpDBElement.ImagesContainer.Poster = New MediaContainers.Image
     End Sub
 
@@ -1107,28 +1111,33 @@ Public Class dlgEditTVEpisode
         End Try
     End Sub
 
-    Private Sub btnSetEpisodeFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartScrape.Click
+    Private Sub btnSetFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartScrape.Click
         Dim aContainer As New MediaContainers.SearchResultsContainer
         Dim ScrapeModifier As New Structures.ScrapeModifier
 
+        Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.EpisodeFanart, True)
         If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifier, True) Then
             If aContainer.EpisodeFanarts.Count > 0 OrElse aContainer.MainFanarts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVEpisode) = Windows.Forms.DialogResult.OK Then
-                    Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.Fanart
-                    tmpDBElement.ImagesContainer.Fanart = pResults
-                    If pResults.ImageOriginal.Image IsNot Nothing Then
-                        pbFanart.Image = CType(pResults.ImageOriginal.Image.Clone(), Image)
+                    tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
+                    If tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Fanart.ImageOriginal.FromMemoryStream Then
+                        pbFanart.Image = tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
                         lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbFanart.Image.Width, pbFanart.Image.Height)
                         lblFanartSize.Visible = True
+                    Else
+                        pbFanart.Image = Nothing
+                        pbFanart.Tag = Nothing
+                        lblFanartSize.Text = String.Empty
+                        lblFanartSize.Visible = False
                     End If
-                    Cursor = Cursors.Default
                 End If
             Else
                 MessageBox.Show(Master.eLang.GetString(970, "No Fanarts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         End If
+        Cursor = Cursors.Default
     End Sub
 
     Private Sub btnSetEpisodeFanartDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartDL.Click
@@ -1176,28 +1185,33 @@ Public Class dlgEditTVEpisode
         End Try
     End Sub
 
-    Private Sub btnSetEpisodePosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterScrape.Click
+    Private Sub btnSetPosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterScrape.Click
         Dim aContainer As New MediaContainers.SearchResultsContainer
         Dim ScrapeModifier As New Structures.ScrapeModifier
 
+        Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.EpisodePoster, True)
         If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifier, True) Then
             If aContainer.EpisodePosters.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVEpisode) = Windows.Forms.DialogResult.OK Then
-                    Dim pResults As MediaContainers.Image = dlgImgS.Result.ImagesContainer.Poster
-                    tmpDBElement.ImagesContainer.Poster = pResults
-                    If pResults.ImageOriginal.Image IsNot Nothing Then
-                        pbPoster.Image = CType(pResults.ImageOriginal.Image.Clone(), Image)
+                    tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
+                    If tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Poster.ImageOriginal.FromMemoryStream Then
+                        pbPoster.Image = tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image
                         lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbPoster.Image.Width, pbPoster.Image.Height)
                         lblPosterSize.Visible = True
+                    Else
+                        pbPoster.Image = Nothing
+                        pbPoster.Tag = Nothing
+                        lblPosterSize.Text = String.Empty
+                        lblPosterSize.Visible = False
                     End If
-                    Cursor = Cursors.Default
                 End If
             Else
                 MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         End If
+        Cursor = Cursors.Default
     End Sub
 
     Private Sub btnSetEpisodePosterDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterDL.Click
