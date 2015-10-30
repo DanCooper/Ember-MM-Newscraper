@@ -411,7 +411,7 @@ Public Class TMDB_Image
 
         If DBTV.TVEpisode IsNot Nothing AndAlso DBTV.TVShow IsNot Nothing Then
             If Not String.IsNullOrEmpty(DBTV.TVShow.TMDB) Then
-                ImagesContainer = _scraper.GetImages_TVEpisode(DBTV.TVShow.TMDB, DBTV.TVEpisode.Season, DBTV.TVEpisode.Episode)
+                ImagesContainer = _scraper.GetImages_TVEpisode(DBTV.TVShow.TMDB, DBTV.TVEpisode.Season, DBTV.TVEpisode.Episode, FilteredModifier)
                 If FilteredModifier.MainFanart Then
                     ImagesContainer.MainFanarts = _scraper.GetImages_TVShow(DBTV.TVShow.TMDB, FilteredModifier).MainFanarts
                 End If

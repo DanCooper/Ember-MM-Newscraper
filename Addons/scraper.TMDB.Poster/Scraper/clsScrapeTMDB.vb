@@ -177,7 +177,7 @@ Namespace TMDB
             Return alContainer
         End Function
 
-        Public Function GetImages_TVEpisode(ByVal tmdbID As String, ByVal iSeason As Integer, ByVal iEpisode As Integer) As MediaContainers.SearchResultsContainer
+        Public Function GetImages_TVEpisode(ByVal tmdbID As String, ByVal iSeason As Integer, ByVal iEpisode As Integer, ByVal FilteredModifier As Structures.ScrapeModifier) As MediaContainers.SearchResultsContainer
             Dim alContainer As New MediaContainers.SearchResultsContainer
 
             If bwTMDB.CancellationPending Then Return Nothing
@@ -193,7 +193,7 @@ Namespace TMDB
                 End If
 
                 'EpisodePoster
-                If Results.Stills IsNot Nothing Then
+                If FilteredModifier.EpisodePoster AndAlso Results.Stills IsNot Nothing Then
                     For Each image In Results.Stills
                         Dim tmpImage As New MediaContainers.Image With { _
                             .Episode = iEpisode, _

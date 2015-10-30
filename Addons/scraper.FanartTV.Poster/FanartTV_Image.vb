@@ -580,7 +580,13 @@ Public Class FanartTV_Image
         Dim FilteredModifier As Structures.ScrapeModifier = Functions.ScrapeModifierAndAlso(ScrapeModifier, ConfigModifier_TV)
 
         If DBTV.TVEpisode IsNot Nothing AndAlso DBTV.TVShow IsNot Nothing Then
-            Return Nothing
+            If Not String.IsNullOrEmpty(DBTV.TVShow.TVDB) Then
+                If FilteredModifier.MainFanart Then
+                    ImagesContainer.MainFanarts = _scraper.GetImages_TV(DBTV.TVShow.TVDB, FilteredModifier).MainFanarts
+                End If
+            Else
+                logger.Trace(String.Concat("No TVDB ID exist to search: ", DBTV.ListTitle))
+            End If
         ElseIf DBTV.TVSeason IsNot Nothing AndAlso DBTV.TVShow IsNot Nothing Then
             If Not String.IsNullOrEmpty(DBTV.TVShow.TVDB) Then
                 ImagesContainer = _scraper.GetImages_TV(DBTV.TVShow.TVDB, FilteredModifier)
