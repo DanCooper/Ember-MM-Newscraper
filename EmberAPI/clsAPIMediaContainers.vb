@@ -3839,8 +3839,30 @@ Namespace MediaContainers
             Me._poster = New MediaContainers.Image
         End Sub
 
+        Public Sub LoadAllImages(ByVal Type As Enums.ContentType, ByVal LoadBitmap As Boolean, ByVal exclExtraImages As Boolean)
+            With Me
+                .Banner.LoadAndCache(Type, True, LoadBitmap)
+                .CharacterArt.LoadAndCache(Type, True, LoadBitmap)
+                .ClearArt.LoadAndCache(Type, True, LoadBitmap)
+                .ClearLogo.LoadAndCache(Type, True, LoadBitmap)
+                .DiscArt.LoadAndCache(Type, True, LoadBitmap)
+                .Fanart.LoadAndCache(Type, True, LoadBitmap)
+                .Landscape.LoadAndCache(Type, True, LoadBitmap)
+                .Poster.LoadAndCache(Type, True, LoadBitmap)
+
+                If Not exclExtraImages Then
+                    For Each tImg As MediaContainers.Image In .Extrafanarts
+                        tImg.LoadAndCache(Type, True, LoadBitmap)
+                    Next
+                    For Each tImg As MediaContainers.Image In .Extrathumbs
+                        tImg.LoadAndCache(Type, True, LoadBitmap)
+                    Next
+                End If
+            End With
+        End Sub
+
         Public Sub SaveAllImages(ByRef DBElement As Database.DBElement, ByRef Type As Enums.ContentType)
-            With DBElement.ImagesContainer
+            With Me
 
                 Select Case Type
                     Case Enums.ContentType.Movie

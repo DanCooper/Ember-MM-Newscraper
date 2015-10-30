@@ -392,15 +392,15 @@ Public Class dlgImgSelect
                                         tSearchResultsContainer.MainClearArts.Count + tSearchResultsContainer.MainClearLogos.Count + _
                                         tSearchResultsContainer.MainDiscArts.Count + tSearchResultsContainer.MainFanarts.Count + _
                                         tSearchResultsContainer.MainLandscapes.Count + tSearchResultsContainer.MainPosters.Count + _
-                                        tSearchResultsContainer.SeasonBanners.Where(Function(f) If(Not DoOnlySeason = -1, f.Season = DoOnlySeason, f.Season = Not DoOnlySeason)).Count + _
-                                        tSearchResultsContainer.SeasonFanarts.Where(Function(f) If(Not DoOnlySeason = -1, f.Season = DoOnlySeason, f.Season = Not DoOnlySeason)).Count + _
-                                        tSearchResultsContainer.SeasonLandscapes.Where(Function(f) If(Not DoOnlySeason = -1, f.Season = DoOnlySeason, f.Season = Not DoOnlySeason)).Count + _
-                                        tSearchResultsContainer.SeasonPosters.Where(Function(f) If(Not DoOnlySeason = -1, f.Season = DoOnlySeason, f.Season = Not DoOnlySeason)).Count, "max")
+                                        tSearchResultsContainer.SeasonBanners.Where(Function(f) If(Not DoOnlySeason = -1, f.Season = DoOnlySeason, Not f.Season = DoOnlySeason)).Count + _
+                                        tSearchResultsContainer.SeasonFanarts.Where(Function(f) If(Not DoOnlySeason = -1, f.Season = DoOnlySeason, Not f.Season = DoOnlySeason)).Count + _
+                                        tSearchResultsContainer.SeasonLandscapes.Where(Function(f) If(Not DoOnlySeason = -1, f.Season = DoOnlySeason, Not f.Season = DoOnlySeason)).Count + _
+                                        tSearchResultsContainer.SeasonPosters.Where(Function(f) If(Not DoOnlySeason = -1, f.Season = DoOnlySeason, Not f.Season = DoOnlySeason)).Count, "max")
 
         'Main Posters
         If DoMainPoster OrElse DoAllSeasonsPoster Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainPosters
-                tImg.LoadAndCache(tContentType, True)
+                tImg.LoadAndCache(tContentType, False, True)
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
@@ -415,7 +415,7 @@ Public Class dlgImgSelect
         'Main Banners
         If DoMainBanner OrElse DoAllSeasonsBanner Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainBanners
-                tImg.LoadAndCache(tContentType, True)
+                tImg.LoadAndCache(tContentType, False, True)
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
@@ -430,7 +430,7 @@ Public Class dlgImgSelect
         'Main CharacterArts
         If DoMainCharacterArt Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainCharacterArts
-                tImg.LoadAndCache(tContentType, True)
+                tImg.LoadAndCache(tContentType, False, True)
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
@@ -444,7 +444,7 @@ Public Class dlgImgSelect
         'Main ClearArts
         If DoMainClearArt Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainClearArts
-                tImg.LoadAndCache(tContentType, True)
+                tImg.LoadAndCache(tContentType, False, True)
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
@@ -458,7 +458,7 @@ Public Class dlgImgSelect
         'Main ClearLogos
         If DoMainClearLogo Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainClearLogos
-                tImg.LoadAndCache(tContentType, True)
+                tImg.LoadAndCache(tContentType, False, True)
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
@@ -472,7 +472,7 @@ Public Class dlgImgSelect
         'Main Discarts
         If DoMainDiscArt Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainDiscArts
-                tImg.LoadAndCache(tContentType, True)
+                tImg.LoadAndCache(tContentType, False, True)
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
@@ -486,7 +486,7 @@ Public Class dlgImgSelect
         'Main Fanarts
         If DoMainFanart OrElse DoMainExtrafanarts OrElse DoMainExtrathumbs OrElse DoAllSeasonsFanart OrElse DoEpisodeFanart OrElse DoSeasonFanart Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainFanarts
-                tImg.LoadAndCache(tContentType, True)
+                tImg.LoadAndCache(tContentType, False, True)
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
@@ -505,7 +505,7 @@ Public Class dlgImgSelect
         'Main Landscapes
         If DoMainLandscape OrElse DoAllSeasonsLandscape Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.MainLandscapes
-                tImg.LoadAndCache(tContentType, True)
+                tImg.LoadAndCache(tContentType, False, True)
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
@@ -520,7 +520,7 @@ Public Class dlgImgSelect
         'Season Banners
         If DoSeasonBanner OrElse DoAllSeasonsBanner Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.SeasonBanners.Where(Function(f) If(Not DoOnlySeason = -1, f.Season = DoOnlySeason, Not f.Season = DoOnlySeason))
-                tImg.LoadAndCache(tContentType, True)
+                tImg.LoadAndCache(tContentType, False, True)
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
@@ -535,7 +535,7 @@ Public Class dlgImgSelect
         'Season Fanarts
         If DoSeasonFanart OrElse DoAllSeasonsFanart Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.SeasonFanarts.Where(Function(f) If(Not DoOnlySeason = -1, f.Season = DoOnlySeason, Not f.Season = DoOnlySeason))
-                tImg.LoadAndCache(tContentType, True)
+                tImg.LoadAndCache(tContentType, False, True)
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
@@ -550,7 +550,7 @@ Public Class dlgImgSelect
         'Season Landscapes
         If DoSeasonLandscape OrElse DoAllSeasonsLandscape Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.SeasonLandscapes.Where(Function(f) If(Not DoOnlySeason = -1, f.Season = DoOnlySeason, Not f.Season = DoOnlySeason))
-                tImg.LoadAndCache(tContentType, True)
+                tImg.LoadAndCache(tContentType, False, True)
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
@@ -565,7 +565,7 @@ Public Class dlgImgSelect
         'Season Posters
         If DoSeasonPoster OrElse DoAllSeasonsPoster Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.SeasonPosters.Where(Function(f) If(Not DoOnlySeason = -1, f.Season = DoOnlySeason, Not f.Season = DoOnlySeason))
-                tImg.LoadAndCache(tContentType, True)
+                tImg.LoadAndCache(tContentType, False, True)
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
@@ -580,7 +580,7 @@ Public Class dlgImgSelect
         'Episode Fanarts
         If DoEpisodeFanart Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.EpisodeFanarts
-                tImg.LoadAndCache(tContentType, True)
+                tImg.LoadAndCache(tContentType, False, True)
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
@@ -594,7 +594,7 @@ Public Class dlgImgSelect
         'Episode Posters
         If DoEpisodePoster Then
             For Each tImg As MediaContainers.Image In tSearchResultsContainer.EpisodePosters
-                tImg.LoadAndCache(tContentType, True)
+                tImg.LoadAndCache(tContentType, False, True)
                 If Me.bwImgDownload.CancellationPending Then
                     Return True
                 End If
