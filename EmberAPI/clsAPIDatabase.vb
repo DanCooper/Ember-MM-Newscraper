@@ -1212,7 +1212,7 @@ Public Class Database
         Dim _tmpTVDBShow As New Database.DBElement
 
         If _TVDBShow Is Nothing OrElse _TVDBShow.TVShow Is Nothing Then
-            _tmpTVDBShow = LoadTVShowFromDB(_TVDB.ShowID, False, False, False)
+            _tmpTVDBShow = LoadTVShowFromDB(_TVDB.ShowID, False, False)
         Else
             _tmpTVDBShow = _TVDBShow
         End If

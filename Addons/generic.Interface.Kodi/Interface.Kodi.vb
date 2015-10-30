@@ -920,7 +920,7 @@ Public Class KodiInterface
         If Host IsNot Nothing Then
             For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListTVShows.SelectedRows
                 Dim ID As Long = Convert.ToInt64(sRow.Cells("idShow").Value)
-                Dim DBElement As Database.DBElement = Master.DB.LoadTVShowFromDB(ID, False, False, False)
+                Dim DBElement As Database.DBElement = Master.DB.LoadTVShowFromDB(ID, False, False)
                 If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBElement, True) Then
                     If Not String.IsNullOrEmpty(DBElement.NfoPath) Then
                         'add job to tasklist and get everything done

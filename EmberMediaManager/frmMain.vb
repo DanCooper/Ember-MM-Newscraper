@@ -4446,7 +4446,7 @@ doCancel:
         Me.SetControlsEnabled(False, True)
 
         Dim tmpEpisode As Database.DBElement = Master.DB.LoadTVEpisodeFromDB(ID, True)
-        Dim tmpShow As Database.DBElement = Master.DB.LoadTVShowFromDB(ShowID, False, False, False)
+        Dim tmpShow As Database.DBElement = Master.DB.LoadTVShowFromDB(ShowID, False, False)
 
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
@@ -14933,7 +14933,7 @@ doCancel:
                 String.IsNullOrEmpty(Me.dgvTVShows.Item("PosterPath", iRow).Value.ToString) Then
                 Me.ShowNoInfo(True, Enums.ContentType.TVShow)
 
-                Me.currTV = Master.DB.LoadTVShowFromDB(Convert.ToInt64(Me.dgvTVShows.Item("idShow", iRow).Value), False, False, True, False)
+                Me.currTV = Master.DB.LoadTVShowFromDB(Convert.ToInt64(Me.dgvTVShows.Item("idShow", iRow).Value), False, False, True, True)
                 Me.FillSeasons(Convert.ToInt32(Me.dgvTVShows.Item("idShow", iRow).Value))
 
                 If Not Me.fScanner.IsBusy AndAlso Not Me.bwMetaData.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadMovieSetInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwReload_Movies.IsBusy AndAlso Not Me.bwReload_MovieSets.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
@@ -15336,7 +15336,7 @@ doCancel:
     Private Sub cmnuShowLanguageSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowLanguageSet.Click
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
-                Dim tmpDBTVShow As Database.DBElement = Master.DB.LoadTVShowFromDB(Convert.ToInt32(sRow.Cells("idShow").Value), True, False, False)
+                Dim tmpDBTVShow As Database.DBElement = Master.DB.LoadTVShowFromDB(Convert.ToInt32(sRow.Cells("idShow").Value), True, False)
                 tmpDBTVShow.Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = Me.cmnuShowLanguageLanguages.Text).abbreviation
                 tmpDBTVShow.TVShow.Language = tmpDBTVShow.Language
                 Master.DB.SaveTVShowToDB(tmpDBTVShow, False, False, True, False, False)
