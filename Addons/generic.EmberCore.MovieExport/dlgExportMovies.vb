@@ -435,7 +435,11 @@ Public Class dlgExportMovies
                             row = row.Replace("<$MOVIENAME>", StringUtils.HtmlEncode(_curMovie.ListTitle))
                         End If
                         row = row.Replace("<$ORIGINALTITLE>", StringUtils.HtmlEncode(_curMovie.Movie.OriginalTitle))
-                        row = row.Replace("<$ACTORS>", StringUtils.HtmlEncode(Functions.ListToStringWithSeparator(_curMovie.Movie.Actors, ",")))
+                        Dim ActorsList As New List(Of String)
+                        For Each tActor As MediaContainers.Person In _curMovie.Movie.Actors
+                            ActorsList.Add(tActor.Name)
+                        Next
+                        row = row.Replace("<$ACTORS>", StringUtils.HtmlEncode(Functions.ListToStringWithSeparator(ActorsList, ", ")))
                         row = row.Replace("<$DIRECTOR>", StringUtils.HtmlEncode(_curMovie.Movie.Director))
                         row = row.Replace("<$CERTIFICATION>", StringUtils.HtmlEncode(_curMovie.Movie.Certification))
                         row = row.Replace("<$IMDBID>", StringUtils.HtmlEncode(_curMovie.Movie.IMDBID))
@@ -444,7 +448,15 @@ Public Class dlgExportMovies
                         row = row.Replace("<$RUNTIME>", StringUtils.HtmlEncode(_curMovie.Movie.Runtime))
                         row = row.Replace("<$TAGLINE>", StringUtils.HtmlEncode(_curMovie.Movie.Tagline))
                         row = row.Replace("<$RATING>", StringUtils.HtmlEncode(_curMovie.Movie.Rating))
-                        row = row.Replace("<$VOTES>", StringUtils.HtmlEncode(_curMovie.Movie.Votes))
+                        'digit grouping symbol for Votes count
+                        Dim Votes As String = String.Empty
+                        If Master.eSettings.GeneralDigitGrpSymbolVotes Then
+                            If _curMovie.Movie.VotesSpecified Then
+                                Votes = Double.Parse(_curMovie.Movie.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
+                                If Votes Is Nothing Then Votes = String.Empty
+                            End If
+                        End If
+                        row = row.Replace("<$VOTES>", StringUtils.HtmlEncode(Votes))
                         row = row.Replace("<$LISTTITLE>", StringUtils.HtmlEncode(_curMovie.ListTitle))
                         row = row.Replace("<$YEAR>", _curMovie.Movie.Year)
                         row = row.Replace("<$COUNTRY>", StringUtils.HtmlEncode(_curMovie.Movie.Country))
