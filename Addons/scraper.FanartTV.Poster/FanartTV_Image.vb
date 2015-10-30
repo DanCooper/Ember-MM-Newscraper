@@ -20,7 +20,6 @@
 
 Imports System.IO
 Imports EmberAPI
-Imports RestSharp
 Imports ScraperModule.FanartTVs
 Imports NLog
 Imports System.Diagnostics
