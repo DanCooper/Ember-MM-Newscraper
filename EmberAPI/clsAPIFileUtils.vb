@@ -832,7 +832,7 @@ Namespace FileUtils
                 End If
             ElseIf e.Data.GetDataPresent(DataFormats.FileDrop, False) Then
                 Dim localImage() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
-                tImage.ImageOriginal.FromFile(localImage(0).ToString)
+                tImage.ImageOriginal.FromFile(localImage(0).ToString, True)
                 If tImage.ImageOriginal.Image IsNot Nothing Then
                     Return tImage
                 End If

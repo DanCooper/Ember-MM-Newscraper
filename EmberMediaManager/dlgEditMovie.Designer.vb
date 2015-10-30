@@ -99,7 +99,7 @@ Partial Class dlgEditMovie
         Me.txtVotes = New System.Windows.Forms.TextBox()
         Me.lblVotes = New System.Windows.Forms.Label()
         Me.lblRating = New System.Windows.Forms.Label()
-        Me.mtxtYear = New System.Windows.Forms.MaskedTextBox()
+        Me.txtYear = New System.Windows.Forms.MaskedTextBox()
         Me.lblYear = New System.Windows.Forms.Label()
         Me.lblTitle = New System.Windows.Forms.Label()
         Me.txtTitle = New System.Windows.Forms.TextBox()
@@ -428,7 +428,7 @@ Partial Class dlgEditMovie
         Me.tpDetails.Controls.Add(Me.txtVotes)
         Me.tpDetails.Controls.Add(Me.lblVotes)
         Me.tpDetails.Controls.Add(Me.lblRating)
-        Me.tpDetails.Controls.Add(Me.mtxtYear)
+        Me.tpDetails.Controls.Add(Me.txtYear)
         Me.tpDetails.Controls.Add(Me.lblYear)
         Me.tpDetails.Controls.Add(Me.lblTitle)
         Me.tpDetails.Controls.Add(Me.txtTitle)
@@ -1043,14 +1043,14 @@ Partial Class dlgEditMovie
         '
         'mtxtYear
         '
-        Me.mtxtYear.BackColor = System.Drawing.SystemColors.Window
-        Me.mtxtYear.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.mtxtYear.Location = New System.Drawing.Point(7, 182)
-        Me.mtxtYear.Mask = "####"
-        Me.mtxtYear.Name = "mtxtYear"
-        Me.mtxtYear.PromptChar = Global.Microsoft.VisualBasic.ChrW(32)
-        Me.mtxtYear.Size = New System.Drawing.Size(50, 22)
-        Me.mtxtYear.TabIndex = 9
+        Me.txtYear.BackColor = System.Drawing.SystemColors.Window
+        Me.txtYear.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtYear.Location = New System.Drawing.Point(7, 182)
+        Me.txtYear.Mask = "####"
+        Me.txtYear.Name = "mtxtYear"
+        Me.txtYear.PromptChar = Global.Microsoft.VisualBasic.ChrW(32)
+        Me.txtYear.Size = New System.Drawing.Size(50, 22)
+        Me.txtYear.TabIndex = 9
         '
         'lblYear
         '
@@ -2574,7 +2574,7 @@ Partial Class dlgEditMovie
     Friend WithEvents txtVotes As System.Windows.Forms.TextBox
     Friend WithEvents lblVotes As System.Windows.Forms.Label
     Friend WithEvents lblRating As System.Windows.Forms.Label
-    Friend WithEvents mtxtYear As System.Windows.Forms.MaskedTextBox
+    Friend WithEvents txtYear As System.Windows.Forms.MaskedTextBox
     Friend WithEvents lblYear As System.Windows.Forms.Label
     Friend WithEvents lblTitle As System.Windows.Forms.Label
     Friend WithEvents txtTitle As System.Windows.Forms.TextBox

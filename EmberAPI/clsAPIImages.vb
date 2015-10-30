@@ -27,15 +27,13 @@ Imports NLog
 
 <Serializable()> _
 Public Class Images
-    Implements IDisposable
-    '2013/11/28 Dekker500 - This class needs some serious love. Clear candidate for polymorphism. Images should be root, with posters, fanart, etc as children. None of this if/else stuff to confuse the issue. I will re-visit later
 
 #Region "Fields"
+
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
-	Private _ms As MemoryStream
-    Private Ret As Byte()
-	Private _image As Image
+    Private _image As Image
+    Private _ms As MemoryStream
 
 #End Region 'Fields
 
@@ -49,14 +47,17 @@ Public Class Images
 
 #Region "Properties"
 
-	Public ReadOnly Property [Image]() As Image
-		Get
-			Return _image
-		End Get
-		'Set(ByVal value As Image)
-		'    _image = value
-		'End Set
-	End Property
+    Public ReadOnly Property HasMemoryStream() As Boolean
+        Get
+            Return _ms.Length > 0
+        End Get
+    End Property
+
+    Public ReadOnly Property [Image]() As Image
+        Get
+            Return _image
+        End Get
+    End Property
 
 #End Region 'Properties
 
@@ -96,13 +97,6 @@ Public Class Images
     ''' </summary>
     ''' <remarks></remarks>
     Public Sub Clear()
-        'Out with the old...
-        If _ms IsNot Nothing Or _image IsNot Nothing Then
-            Me.Dispose(True)
-            Me.disposedValue = False    'Since this is not a real Dispose call...
-        End If
-
-        'In with the new...
         _image = Nothing
         _ms = New MemoryStream()
     End Sub
@@ -112,7 +106,7 @@ Public Class Images
     ''' <param name="sPath"></param>
     ''' <remarks>This version of Delete is wrapped in a try-catch block which 
     ''' will log errors before safely returning.</remarks>
-    Public Shared Sub Delete(ByVal sPath As String)
+    Private Shared Sub Delete(ByVal sPath As String)
         If Not String.IsNullOrEmpty(sPath) Then
             Try
                 File.Delete(sPath)
@@ -122,449 +116,112 @@ Public Class Images
         End If
     End Sub
     ''' <summary>
-    ''' Delete the AllSeasons banner for the given show/DBTV
+    ''' Delete all movie images with specified image type
     ''' </summary>
-    ''' <param name="mShow">Show database record from which the ShowPath is extracted</param>
+    ''' <param name="DBMovie"></param>
+    ''' <param name="ImageType"></param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteTVAllSeasonsBanners(ByVal mShow As Database.DBElement)
-        If String.IsNullOrEmpty(mShow.ShowPath) Then Return
+    Public Shared Sub Delete_Movie(ByVal DBMovie As Database.DBElement, ByVal ImageType As Enums.ModifierType)
+        If String.IsNullOrEmpty(DBMovie.Filename) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.TVShow(mShow, Enums.ModifierType.AllSeasonsBanner)
+            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, ImageType)
+                Select Case ImageType
+                    Case Enums.ModifierType.MainActorThumbs
+                        Dim tmpPath As String = Directory.GetParent(a.Replace("<placeholder>", "dummy")).FullName
+                        If Directory.Exists(tmpPath) Then
+                            FileUtils.Delete.DeleteDirectory(tmpPath)
+                        End If
+                    Case Enums.ModifierType.MainExtrafanarts, Enums.ModifierType.MainExtrathumbs
+                        If Directory.Exists(a) Then
+                            FileUtils.Delete.DeleteDirectory(a)
+                        End If
+                    Case Else
+                        If File.Exists(a) Then
+                            Delete(a)
+                        End If
+                End Select
+            Next
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovie.Filename & ">", ex)
+        End Try
+    End Sub
+    ''' <summary>
+    ''' Delete all movieset images with specified image type
+    ''' </summary>
+    ''' <param name="DBMovieSet"></param>
+    ''' <param name="ImageType"></param>
+    ''' <remarks></remarks>
+    Public Shared Sub Delete_MovieSet(ByVal DBMovieSet As Database.DBElement, ByVal ImageType As Enums.ModifierType)
+        If String.IsNullOrEmpty(DBMovieSet.MovieSet.Title) Then Return
+
+        Try
+            For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet, ImageType)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mShow.ShowPath & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovieSet.MovieSet.Title & ">", ex)
         End Try
     End Sub
     ''' <summary>
-    ''' Delete the AllSeasons posters for the given show/DBTV
+    ''' Delete all tv show AllSeasons images with specified image type
     ''' </summary>
-    ''' <param name="mShow">Show database record from which the ShowPath is extracted</param>
+    ''' <param name="DBTVShow"></param>
+    ''' <param name="ImageType"></param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteTVAllSeasonsFanarts(ByVal mShow As Database.DBElement)
-        If String.IsNullOrEmpty(mShow.ShowPath) Then Return
+    Public Shared Sub Delete_TVAllSeasons(ByVal DBTVShow As Database.DBElement, ByVal ImageType As Enums.ModifierType)
+        If String.IsNullOrEmpty(DBTVShow.ShowPath) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.TVShow(mShow, Enums.ModifierType.AllSeasonsFanart)
+            For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, ImageType)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mShow.ShowPath & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
-    ''' Delete the AllSeasons landscape for the given show/DBTV
+    ''' Delete all tv episode images with specified image type
     ''' </summary>
-    ''' <param name="mShow">Show database record from which the ShowPath is extracted</param>
+    ''' <param name="DBTVEpisode"></param>
+    ''' <param name="ImageType"></param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteTVAllSeasonsLandscapes(ByVal mShow As Database.DBElement)
-        If String.IsNullOrEmpty(mShow.ShowPath) Then Return
-
-        Try
-            For Each a In FileUtils.GetFilenameList.TVShow(mShow, Enums.ModifierType.AllSeasonsLandscape)
-                If File.Exists(a) Then
-                    Delete(a)
-                End If
-            Next
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mShow.ShowPath & ">", ex)
-        End Try
-    End Sub
-    ''' <summary>
-    ''' Delete the AllSeasons posters for the given show/DBTV
-    ''' </summary>
-    ''' <param name="mShow">Show database record from which the ShowPath is extracted</param>
-    ''' <remarks></remarks>
-    Public Shared Sub DeleteTVAllSeasonsPosters(ByVal mShow As Database.DBElement)
-        If String.IsNullOrEmpty(mShow.ShowPath) Then Return
-
-        Try
-            For Each a In FileUtils.GetFilenameList.TVShow(mShow, Enums.ModifierType.AllSeasonsPoster)
-                If File.Exists(a) Then
-                    Delete(a)
-                End If
-            Next
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mShow.ShowPath & ">", ex)
-        End Try
-    End Sub
-    ''' <summary>
-    ''' Delete the episode actorthumbs for the given episode/DBTV
-    ''' </summary>
-    ''' <param name="DBTVEpisode">Episode database record</param>
-    ''' <remarks></remarks>
-    Public Shared Sub DeleteTVEpisodeActorThumbs(ByVal DBTVEpisode As Database.DBElement)
+    Public Shared Sub Delete_TVEpisode(ByVal DBTVEpisode As Database.DBElement, ByVal ImageType As Enums.ModifierType)
         If String.IsNullOrEmpty(DBTVEpisode.Filename) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.TVEpisode(DBTVEpisode, Enums.ModifierType.EpisodeActorThumbs)
-                Dim tmpPath As String = Directory.GetParent(a.Replace("<placeholder>", "dummy")).FullName
-                If Directory.Exists(tmpPath) Then
-                    FileUtils.Delete.DeleteDirectory(tmpPath)
-                End If
+            For Each a In FileUtils.GetFilenameList.TVEpisode(DBTVEpisode, ImageType)
+                Select Case ImageType
+                    Case Enums.ModifierType.EpisodeActorThumbs
+                        Dim tmpPath As String = Directory.GetParent(a.Replace("<placeholder>", "dummy")).FullName
+                        If Directory.Exists(tmpPath) Then
+                            FileUtils.Delete.DeleteDirectory(tmpPath)
+                        End If
+                    Case Else
+                        If File.Exists(a) Then
+                            Delete(a)
+                        End If
+                End Select
             Next
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVEpisode.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
-    ''' Delete the episode fanart for the given episode/DBTV
+    ''' Delete all tv season images with specified image type
     ''' </summary>
-    ''' <param name="DBTVEpisode">Episode database record</param>
+    ''' <param name="DBTVSeason"></param>
+    ''' <param name="ImageType"></param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteTVEpisodeFanarts(ByVal DBTVEpisode As Database.DBElement)
-        If String.IsNullOrEmpty(DBTVEpisode.Filename) Then Return
-
-        Try
-            For Each a In FileUtils.GetFilenameList.TVEpisode(DBTVEpisode, Enums.ModifierType.EpisodeFanart)
-                If File.Exists(a) Then
-                    Delete(a)
-                End If
-            Next
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVEpisode.ShowPath & ">", ex)
-        End Try
-    End Sub
-    ''' <summary>
-    ''' Delete the episode poster for the given episode/DBTV
-    ''' </summary>
-    ''' <param name="DBTVEpisode">Episode database record</param>
-    ''' <remarks></remarks>
-    Public Shared Sub DeleteTVEpisodePosters(ByVal DBTVEpisode As Database.DBElement)
-        If String.IsNullOrEmpty(DBTVEpisode.Filename) Then Return
-
-        Try
-            For Each a In FileUtils.GetFilenameList.TVEpisode(DBTVEpisode, Enums.ModifierType.EpisodePoster)
-                If File.Exists(a) Then
-                    Delete(a)
-                End If
-            Next
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVEpisode.ShowPath & ">", ex)
-        End Try
-    End Sub
-    ''' <summary>
-    ''' Delete the movie actorthumbs
-    ''' </summary>
-    ''' <param name="DBMovie">Movie database record</param>
-    ''' <remarks></remarks>
-    Public Shared Sub DeleteMovieActorThumbs(ByVal DBMovie As Database.DBElement)
-        If String.IsNullOrEmpty(DBMovie.Filename) Then Return
-
-        Try
-            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainActorThumbs)
-                Dim tmpPath As String = Directory.GetParent(a.Replace("<placeholder>", "dummy")).FullName
-                If Directory.Exists(tmpPath) Then
-                    FileUtils.Delete.DeleteDirectory(tmpPath)
-                End If
-            Next
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovie.Filename & ">", ex)
-        End Try
-    End Sub
-    ''' <summary>
-    ''' Delete the movie's banner
-    ''' </summary>
-    ''' <param name="DBMovie"><c>DBMovie</c> structure representing the movie on which we should operate</param>
-    ''' <remarks></remarks>
-    Public Shared Sub DeleteMovieBanners(ByVal DBMovie As Database.DBElement)
-        If String.IsNullOrEmpty(DBMovie.Filename) Then Return
-
-        Try
-            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainBanner)
-                If File.Exists(a) Then
-                    Delete(a)
-                End If
-            Next
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovie.Filename & ">", ex)
-        End Try
-    End Sub
-    ''' <summary>
-    ''' Delete the movie's ClearArt
-    ''' </summary>
-    ''' <param name="DBMovie"><c>DBMovie</c> structure representing the movie on which we should operate</param>
-    ''' <remarks></remarks>
-    Public Shared Sub DeleteMovieClearArts(ByVal DBMovie As Database.DBElement)
-        If String.IsNullOrEmpty(DBMovie.Filename) Then Return
-
-        Try
-            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainClearArt)
-                If File.Exists(a) Then
-                    Delete(a)
-                End If
-            Next
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovie.Filename & ">", ex)
-        End Try
-    End Sub
-    ''' <summary>
-    ''' Delete the movie's ClearLogo
-    ''' </summary>
-    ''' <param name="DBMovie"><c>DBMovie</c> structure representing the movie on which we should operate</param>
-    ''' <remarks></remarks>
-    Public Shared Sub DeleteMovieClearLogos(ByVal DBMovie As Database.DBElement)
-        If String.IsNullOrEmpty(DBMovie.Filename) Then Return
-
-        Try
-            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainClearLogo)
-                If File.Exists(a) Then
-                    Delete(a)
-                End If
-            Next
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovie.Filename & ">", ex)
-        End Try
-    End Sub
-    ''' <summary>
-    ''' Delete the movie's DiscArt
-    ''' </summary>
-    ''' <param name="DBMovie"><c>DBMovie</c> structure representing the movie on which we should operate</param>
-    ''' <remarks></remarks>
-    Public Shared Sub DeleteMovieDiscArts(ByVal DBMovie As Database.DBElement)
-        If String.IsNullOrEmpty(DBMovie.Filename) Then Return
-
-        Try
-            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainDiscArt)
-                If File.Exists(a) Then
-                    Delete(a)
-                End If
-            Next
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovie.Filename & ">", ex)
-        End Try
-    End Sub
-    ''' <summary>
-    ''' Delete the movie Extrafanarts
-    ''' </summary>
-    ''' <param name="DBMovie">Movie database record</param>
-    ''' <remarks></remarks>
-    Public Shared Sub DeleteMovieExtrafanarts(ByVal DBMovie As Database.DBElement)
-        If String.IsNullOrEmpty(DBMovie.Filename) Then Return
-
-        Try
-            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainExtrafanarts)
-                If Directory.Exists(a) Then
-                    FileUtils.Delete.DeleteDirectory(a)
-                End If
-            Next
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovie.Filename & ">", ex)
-        End Try
-    End Sub
-    ''' <summary>
-    ''' Delete the movie Extrathumbs
-    ''' </summary>
-    ''' <param name="DBMovie">Movie database record</param>
-    ''' <remarks></remarks>
-    Public Shared Sub DeleteMovieExtrathumbs(ByVal DBMovie As Database.DBElement)
-        If String.IsNullOrEmpty(DBMovie.Filename) Then Return
-
-        Try
-            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainExtrathumbs)
-                If Directory.Exists(a) Then
-                    FileUtils.Delete.DeleteDirectory(a)
-                End If
-            Next
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovie.Filename & ">", ex)
-        End Try
-    End Sub
-    ''' <summary>
-    ''' Delete the movie's fanart
-    ''' </summary>
-    ''' <param name="DBMovie"><c>DBMovie</c> structure representing the movie on which we should operate</param>
-    ''' <remarks></remarks>
-    Public Shared Sub DeleteMovieFanarts(ByVal DBMovie As Database.DBElement)
-        If String.IsNullOrEmpty(DBMovie.Filename) Then Return
-
-        Try
-            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainFanart)
-                If File.Exists(a) Then
-                    Delete(a)
-                End If
-            Next
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovie.Filename & ">", ex)
-        End Try
-    End Sub
-    ''' <summary>
-    ''' Delete the movie's landscape
-    ''' </summary>
-    ''' <param name="DBMovie"><c>DBMovie</c> structure representing the movie on which we should operate</param>
-    ''' <remarks></remarks>
-    Public Shared Sub DeleteMovieLandscapes(ByVal DBMovie As Database.DBElement)
-        If String.IsNullOrEmpty(DBMovie.Filename) Then Return
-
-        Try
-            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainLandscape)
-                If File.Exists(a) Then
-                    Delete(a)
-                End If
-            Next
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovie.Filename & ">", ex)
-        End Try
-    End Sub
-    ''' <summary>
-    ''' Delete the movie's posters
-    ''' </summary>
-    ''' <param name="DBMovie">Database.DBElement representing the movie to be worked on</param>
-    ''' <remarks></remarks>
-    Public Shared Sub DeleteMoviePosters(ByVal DBMovie As Database.DBElement)
-        If String.IsNullOrEmpty(DBMovie.Filename) Then Return
-
-        Try
-            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainPoster)
-                If File.Exists(a) Then
-                    Delete(a)
-                End If
-            Next
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovie.Filename & ">", ex)
-        End Try
-    End Sub
-    ''' <summary>
-    ''' Delete the movieset's banner
-    ''' </summary>
-    ''' <param name="DBMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
-    ''' <remarks></remarks>
-    Public Shared Sub DeleteMovieSetBanners(ByVal DBMovieSet As Database.DBElement)
-        If String.IsNullOrEmpty(DBMovieSet.MovieSet.Title) Then Return
-
-        Try
-            For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet, Enums.ModifierType.MainBanner)
-                If File.Exists(a) Then
-                    Delete(a)
-                End If
-            Next
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovieSet.MovieSet.Title & ">", ex)
-        End Try
-    End Sub
-    ''' <summary>
-    ''' Delete the movieset's ClearArt
-    ''' </summary>
-    ''' <param name="DBMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
-    ''' <remarks></remarks>
-    Public Shared Sub DeleteMovieSetClearArts(ByVal DBMovieSet As Database.DBElement)
-        If String.IsNullOrEmpty(DBMovieSet.MovieSet.Title) Then Return
-
-        Try
-            For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet, Enums.ModifierType.MainClearArt)
-                If File.Exists(a) Then
-                    Delete(a)
-                End If
-            Next
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovieSet.MovieSet.Title & ">", ex)
-        End Try
-    End Sub
-    ''' <summary>
-    ''' Delete the movieset's ClearLogo
-    ''' </summary>
-    ''' <param name="DBMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
-    ''' <remarks></remarks>
-    Public Shared Sub DeleteMovieSetClearLogos(ByVal DBMovieSet As Database.DBElement)
-        If String.IsNullOrEmpty(DBMovieSet.MovieSet.Title) Then Return
-
-        Try
-            For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet, Enums.ModifierType.MainClearLogo)
-                If File.Exists(a) Then
-                    Delete(a)
-                End If
-            Next
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovieSet.MovieSet.Title & ">", ex)
-        End Try
-    End Sub
-    ''' <summary>
-    ''' Delete the movieset's DiscArt
-    ''' </summary>
-    ''' <param name="DBMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
-    ''' <remarks></remarks>
-    Public Shared Sub DeleteMovieSetDiscArts(ByVal DBMovieSet As Database.DBElement)
-        If String.IsNullOrEmpty(DBMovieSet.MovieSet.Title) Then Return
-
-        Try
-            For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet, Enums.ModifierType.MainDiscArt)
-                If File.Exists(a) Then
-                    Delete(a)
-                End If
-            Next
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovieSet.MovieSet.Title & ">", ex)
-        End Try
-    End Sub
-    ''' <summary>
-    ''' Delete the movieset's fanart
-    ''' </summary>
-    ''' <param name="DBMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
-    ''' <remarks></remarks>
-    Public Shared Sub DeleteMovieSetFanarts(ByVal DBMovieSet As Database.DBElement)
-        If String.IsNullOrEmpty(DBMovieSet.MovieSet.Title) Then Return
-
-        Try
-            For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet, Enums.ModifierType.MainFanart)
-                If File.Exists(a) Then
-                    Delete(a)
-                End If
-            Next
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovieSet.MovieSet.Title & ">", ex)
-        End Try
-    End Sub
-    ''' <summary>
-    ''' Delete the movieset's landscape
-    ''' </summary>
-    ''' <param name="DBMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
-    ''' <remarks></remarks>
-    Public Shared Sub DeleteMovieSetLandscapes(ByVal DBMovieSet As Database.DBElement)
-        If String.IsNullOrEmpty(DBMovieSet.MovieSet.Title) Then Return
-
-        Try
-            For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet, Enums.ModifierType.MainLandscape)
-                If File.Exists(a) Then
-                    Delete(a)
-                End If
-            Next
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovieSet.MovieSet.Title & ">", ex)
-        End Try
-    End Sub
-    ''' <summary>
-    ''' Delete the movieset's poster
-    ''' </summary>
-    ''' <param name="DBMovieSet"><c>DBMovieSet</c> structure representing the movie on which we should operate</param>
-    ''' <remarks></remarks>
-    Public Shared Sub DeleteMovieSetPosters(ByVal DBMovieSet As Database.DBElement)
-        If String.IsNullOrEmpty(DBMovieSet.MovieSet.Title) Then Return
-
-        Try
-            For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet, Enums.ModifierType.MainPoster)
-                If File.Exists(a) Then
-                    Delete(a)
-                End If
-            Next
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovieSet.MovieSet.Title & ">", ex)
-        End Try
-    End Sub
-    ''' <summary>
-    ''' Delete the TV Show's season banner
-    ''' </summary>
-    ''' <param name="DBTVSeason"><c>Database.DBElement</c> representing the TV Season to work on</param>
-    ''' <remarks></remarks>
-    Public Shared Sub DeleteTVSeasonBanners(ByVal DBTVSeason As Database.DBElement)
+    Public Shared Sub Delete_TVSeason(ByVal DBTVSeason As Database.DBElement, ByVal ImageType As Enums.ModifierType)
         If String.IsNullOrEmpty(DBTVSeason.ShowPath) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.TVSeason(DBTVSeason, Enums.ModifierType.SeasonBanner)
+            For Each a In FileUtils.GetFilenameList.TVSeason(DBTVSeason, ImageType)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
@@ -574,217 +231,30 @@ Public Class Images
         End Try
     End Sub
     ''' <summary>
-    ''' Delete the TV Show's season fanart
+    ''' Delete all tv show images with specified image type
     ''' </summary>
-    ''' <param name="DBTVSeason"><c>Database.DBElement</c> representing the TV Season to work on</param>
+    ''' <param name="DBTVShow"></param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteTVSeasonFanarts(ByVal DBTVSeason As Database.DBElement)
-        If String.IsNullOrEmpty(DBTVSeason.ShowPath) Then Return
-
-        Try
-            For Each a In FileUtils.GetFilenameList.TVSeason(DBTVSeason, Enums.ModifierType.SeasonFanart)
-                If File.Exists(a) Then
-                    Delete(a)
-                End If
-            Next
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVSeason.ShowPath & ">", ex)
-        End Try
-    End Sub
-    ''' <summary>
-    ''' Delete the TV Show's season landscape
-    ''' </summary>
-    ''' <param name="DBTVSeason"><c>Database.DBElement</c> representing the TV Season to work on</param>
-    ''' <remarks></remarks>
-    Public Shared Sub DeleteTVSeasonLandscapes(ByVal DBTVSeason As Database.DBElement)
-        If String.IsNullOrEmpty(DBTVSeason.ShowPath) Then Return
-
-        Try
-            For Each a In FileUtils.GetFilenameList.TVSeason(DBTVSeason, Enums.ModifierType.SeasonLandscape)
-                If File.Exists(a) Then
-                    Delete(a)
-                End If
-            Next
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVSeason.ShowPath & ">", ex)
-        End Try
-    End Sub
-    ''' <summary>
-    ''' Delete the TV Show's season posters
-    ''' </summary>
-    ''' <param name="DBTVSeason"><c>Database.DBElement</c> representing the TV Season to work on</param>
-    ''' <remarks></remarks>
-    Public Shared Sub DeleteTVSeasonPosters(ByVal DBTVSeason As Database.DBElement)
-        If String.IsNullOrEmpty(DBTVSeason.ShowPath) Then Return
-
-        Try
-            For Each a In FileUtils.GetFilenameList.TVSeason(DBTVSeason, Enums.ModifierType.SeasonPoster)
-                If File.Exists(a) Then
-                    Delete(a)
-                End If
-            Next
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVSeason.ShowPath & ">", ex)
-        End Try
-    End Sub
-    ''' <summary>
-    ''' Delete the tv show actorthumbs for the given episode/DBTV
-    ''' </summary>
-    ''' <param name="DBTVShow">TV Show database record</param>
-    ''' <remarks></remarks>
-    Public Shared Sub DeleteTVShowActorThumbs(ByVal DBTVShow As Database.DBElement)
+    Public Shared Sub Delete_TVShow(ByVal DBTVShow As Database.DBElement, ByVal ImageType As Enums.ModifierType)
         If String.IsNullOrEmpty(DBTVShow.ShowPath) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, Enums.ModifierType.MainActorThumbs)
-                Dim tmpPath As String = Directory.GetParent(a.Replace("<placeholder>", "dummy")).FullName
-                If Directory.Exists(tmpPath) Then
-                    FileUtils.Delete.DeleteDirectory(tmpPath)
-                End If
-            Next
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVShow.ShowPath & ">", ex)
-        End Try
-    End Sub
-    ''' <summary>
-    ''' Delete the TV Show's banner
-    ''' </summary>
-    ''' <param name="DBTVShow"><c>Database.DBElement</c> representing the TV Show to work on</param>
-    ''' <remarks></remarks>
-    Public Shared Sub DeleteTVShowBanners(ByVal DBTVShow As Database.DBElement)
-        If String.IsNullOrEmpty(DBTVShow.ShowPath) Then Return
-
-        Try
-            For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, Enums.ModifierType.MainBanner)
-                If File.Exists(a) Then
-                    Delete(a)
-                End If
-            Next
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVShow.ShowPath & ">", ex)
-        End Try
-    End Sub
-    ''' <summary>
-    ''' Delete the TV Show's CharacterArt
-    ''' </summary>
-    ''' <param name="DBTVShow"><c>Database.DBElement</c> representing the TV Show to work on</param>
-    ''' <remarks></remarks>
-    Public Shared Sub DeleteTVShowCharacterArts(ByVal DBTVShow As Database.DBElement)
-        If String.IsNullOrEmpty(DBTVShow.ShowPath) Then Return
-
-        Try
-            For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, Enums.ModifierType.MainCharacterArt)
-                If File.Exists(a) Then
-                    Delete(a)
-                End If
-            Next
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVShow.ShowPath & ">", ex)
-        End Try
-    End Sub
-    ''' <summary>
-    ''' Delete the TV Show's ClearArt
-    ''' </summary>
-    ''' <param name="DBTVShow"><c>Database.DBElement</c> representing the TV Show to work on</param>
-    ''' <remarks></remarks>
-    Public Shared Sub DeleteTVShowClearArts(ByVal DBTVShow As Database.DBElement)
-        If String.IsNullOrEmpty(DBTVShow.ShowPath) Then Return
-
-        Try
-            For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, Enums.ModifierType.MainClearArt)
-                If File.Exists(a) Then
-                    Delete(a)
-                End If
-            Next
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVShow.ShowPath & ">", ex)
-        End Try
-    End Sub
-    ''' <summary>
-    ''' Delete the TV Show's ClearLogo
-    ''' </summary>
-    ''' <param name="DBTVShow"><c>Database.DBElement</c> representing the TV Show to work on</param>
-    ''' <remarks></remarks>
-    Public Shared Sub DeleteTVShowClearLogos(ByVal DBTVShow As Database.DBElement)
-        If String.IsNullOrEmpty(DBTVShow.ShowPath) Then Return
-
-        Try
-            For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, Enums.ModifierType.MainClearLogo)
-                If File.Exists(a) Then
-                    Delete(a)
-                End If
-            Next
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVShow.ShowPath & ">", ex)
-        End Try
-    End Sub
-    ''' <summary>
-    ''' Delete the tv show Extrafanarts
-    ''' </summary>
-    ''' <param name="DBTVShow">TV Show database record</param>
-    ''' <remarks></remarks>
-    Public Shared Sub DeleteTVShowExtrafanarts(ByVal DBTVShow As Database.DBElement)
-        If String.IsNullOrEmpty(DBTVShow.ShowPath) Then Return
-
-        Try
-            For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, Enums.ModifierType.MainExtrafanarts)
-                If Directory.Exists(a) Then
-                    FileUtils.Delete.DeleteDirectory(a)
-                End If
-            Next
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVShow.Filename & ">", ex)
-        End Try
-    End Sub
-    ''' <summary>
-    ''' Delete the TV Show's Fanart
-    ''' </summary>
-    ''' <param name="DBTVShow"><c>Database.DBElement</c> representing the TV Show to work on</param>
-    ''' <remarks></remarks>
-    Public Shared Sub DeleteTVShowFanarts(ByVal DBTVShow As Database.DBElement)
-        If String.IsNullOrEmpty(DBTVShow.ShowPath) Then Return
-
-        Try
-            For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, Enums.ModifierType.MainFanart)
-                If File.Exists(a) Then
-                    Delete(a)
-                End If
-            Next
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVShow.ShowPath & ">", ex)
-        End Try
-    End Sub
-    ''' <summary>
-    ''' Delete the TV Show's landscape
-    ''' </summary>
-    ''' <param name="DBTVShow"><c>Database.DBElement</c> representing the TV Show to work on</param>
-    ''' <remarks></remarks>
-    Public Shared Sub DeleteTVShowLandscapes(ByVal DBTVShow As Database.DBElement)
-        If String.IsNullOrEmpty(DBTVShow.ShowPath) Then Return
-
-        Try
-            For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, Enums.ModifierType.MainLandscape)
-                If File.Exists(a) Then
-                    Delete(a)
-                End If
-            Next
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVShow.ShowPath & ">", ex)
-        End Try
-    End Sub
-    ''' <summary>
-    ''' Delete the TV Show's posters
-    ''' </summary>
-    ''' <param name="DBTVShow"><c>Database.DBElement</c> representing the TV Show to work on</param>
-    ''' <remarks></remarks>
-    Public Shared Sub DeleteTVShowPosters(ByVal DBTVShow As Database.DBElement)
-        If String.IsNullOrEmpty(DBTVShow.ShowPath) Then Return
-
-        Try
-            For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, Enums.ModifierType.MainPoster)
-                If File.Exists(a) Then
-                    Delete(a)
-                End If
+            For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, ImageType)
+                Select Case ImageType
+                    Case Enums.ModifierType.MainActorThumbs
+                        Dim tmpPath As String = Directory.GetParent(a.Replace("<placeholder>", "dummy")).FullName
+                        If Directory.Exists(tmpPath) Then
+                            FileUtils.Delete.DeleteDirectory(tmpPath)
+                        End If
+                    Case Enums.ModifierType.MainExtrafanarts
+                        If Directory.Exists(a) Then
+                            FileUtils.Delete.DeleteDirectory(a)
+                        End If
+                    Case Else
+                        If File.Exists(a) Then
+                            Delete(a)
+                        End If
+                End Select
             Next
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVShow.ShowPath & ">", ex)
@@ -794,42 +264,43 @@ Public Class Images
     ''' Loads this Image from the contents of the supplied file
     ''' </summary>
     ''' <param name="sPath">Path to the image file</param>
+    ''' <param name="LoadBitmap">Create bitmap from memorystream</param>
     ''' <remarks></remarks>
-    Public Sub FromFile(ByVal sPath As String)
-        If Me._ms IsNot Nothing Then
-            Me._ms.Dispose()
-            Me._ms = Nothing
-        End If
-        If Me._image IsNot Nothing Then
-            Me._image.Dispose()
+    Public Sub FromFile(ByVal sPath As String, Optional LoadBitmap As Boolean = False)
+        If Not String.IsNullOrEmpty(sPath) AndAlso File.Exists(sPath) Then
+            'Try
+            Me._ms = New MemoryStream()
+            Using fsImage As FileStream = File.OpenRead(sPath)
+                Dim memStream As New MemoryStream
+                memStream.SetLength(fsImage.Length)
+                fsImage.Read(memStream.GetBuffer, 0, CInt(Fix(fsImage.Length)))
+                Me._ms.Write(memStream.GetBuffer, 0, CInt(Fix(fsImage.Length)))
+                Me._ms.Flush()
+                If LoadBitmap Then
+                    _image = New Bitmap(Me._ms)
+                End If
+            End Using
+        Else
+            Me._ms = New MemoryStream
             Me._image = Nothing
         End If
-        If Not String.IsNullOrEmpty(sPath) AndAlso File.Exists(sPath) Then
-            Try
-                Me._ms = New MemoryStream()
-                Using fsImage As New FileStream(sPath, FileMode.Open, FileAccess.Read)
-                    Dim StreamBuffer(Convert.ToInt32(fsImage.Length - 1)) As Byte
-
-                    fsImage.Read(StreamBuffer, 0, StreamBuffer.Length)
-                    Me._ms.Write(StreamBuffer, 0, StreamBuffer.Length)
-
-                    StreamBuffer = Nothing
-                    '_ms.SetLength(fsImage.Length)
-                    'fsImage.Read(_ms.GetBuffer(), 0, Convert.ToInt32(fsImage.Length))
-                    Me._ms.Flush()
-                    _image = New Bitmap(Me._ms)
-                End Using
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sPath & ">", ex)
-            End Try
-        End If
     End Sub
+
+    Public Function FromMemoryStream() As Boolean
+        If Me.HasMemoryStream Then
+            Me._image = New Bitmap(Me._ms)
+            Return True
+        Else
+            Return False
+        End If
+    End Function
     ''' <summary>
     ''' Loads this Image from the supplied URL
     ''' </summary>
     ''' <param name="sURL">URL to the image file</param>
+    ''' <param name="LoadBitmap">Create bitmap from memorystream</param>
     ''' <remarks></remarks>
-    Public Sub FromWeb(ByVal sURL As String)
+    Public Sub FromWeb(ByVal sURL As String, Optional LoadBitmap As Boolean = False)
         If String.IsNullOrEmpty(sURL) Then Return
 
         Try
@@ -851,7 +322,10 @@ Public Class Images
                 Me._ms.Write(retSave, 0, retSave.Length)
 
                 'I do not copy from the _ms as it could not be a JPG
-                _image = New Bitmap(sHTTP.Image)
+                '_image = New Bitmap(sHTTP.Image)
+                If LoadBitmap Then
+                    _image = New Bitmap(sHTTP.Image) '(Me._ms)
+                End If
 
                 ' if is not a JPG or PNG we have to convert the memory stream to JPG format
                 If Not (sHTTP.isJPG OrElse sHTTP.isPNG) Then
@@ -863,184 +337,6 @@ Public Class Images
             logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sURL & ">", ex)
         End Try
     End Sub
-
-    Public Function IsAllowedToDownload_Movie(ByVal mMovie As Database.DBElement, ByVal fType As Enums.ModifierType, Optional ByVal isChange As Boolean = False) As Boolean
-        With Master.eSettings
-            Select Case fType
-                Case Enums.ModifierType.MainBanner
-                    If isChange OrElse (String.IsNullOrEmpty(mMovie.ImagesContainer.Banner.LocalFilePath) OrElse .MovieBannerKeepExisting) AndAlso .MovieBannerAnyEnabled Then
-                        Return True
-                    Else
-                        Return False
-                    End If
-                Case Enums.ModifierType.MainClearArt
-                    If isChange OrElse (String.IsNullOrEmpty(mMovie.ImagesContainer.ClearArt.LocalFilePath) OrElse .MovieClearArtKeepExisting) AndAlso .MovieClearArtAnyEnabled Then
-                        Return True
-                    Else
-                        Return False
-                    End If
-                Case Enums.ModifierType.MainClearLogo
-                    If isChange OrElse (String.IsNullOrEmpty(mMovie.ImagesContainer.ClearLogo.LocalFilePath) OrElse .MovieClearLogoKeepExisting) AndAlso .MovieClearLogoAnyEnabled Then
-                        Return True
-                    Else
-                        Return False
-                    End If
-                Case Enums.ModifierType.MainDiscArt
-                    If isChange OrElse (String.IsNullOrEmpty(mMovie.ImagesContainer.DiscArt.LocalFilePath) OrElse .MovieDiscArtKeepExisting) AndAlso .MovieDiscArtAnyEnabled Then
-                        Return True
-                    Else
-                        Return False
-                    End If
-                Case Enums.ModifierType.MainExtrafanarts
-                    If isChange OrElse (String.IsNullOrEmpty(mMovie.ExtrafanartsPath) OrElse .MovieExtrafanartsKeepExisting) AndAlso .MovieExtrafanartsAnyEnabled Then
-                        Return True
-                    Else
-                        Return False
-                    End If
-                Case Enums.ModifierType.MainExtrathumbs
-                    If isChange OrElse (String.IsNullOrEmpty(mMovie.ExtrathumbsPath) OrElse .MovieExtrathumbsKeepExisting) AndAlso .MovieExtrathumbsAnyEnabled Then
-                        Return True
-                    Else
-                        Return False
-                    End If
-                Case Enums.ModifierType.MainFanart
-                    If isChange OrElse (String.IsNullOrEmpty(mMovie.ImagesContainer.Fanart.LocalFilePath) OrElse .MovieFanartKeepExisting) AndAlso .MovieFanartAnyEnabled Then
-                        Return True
-                    Else
-                        Return False
-                    End If
-                Case Enums.ModifierType.MainLandscape
-                    If isChange OrElse (String.IsNullOrEmpty(mMovie.ImagesContainer.Landscape.LocalFilePath) OrElse .MovieLandscapeKeepExisting) AndAlso .MovieLandscapeAnyEnabled Then
-                        Return True
-                    Else
-                        Return False
-                    End If
-                Case Enums.ModifierType.MainPoster
-                    If isChange OrElse (String.IsNullOrEmpty(mMovie.ImagesContainer.Poster.LocalFilePath) OrElse .MoviePosterKeepExisting) AndAlso .MoviePosterAnyEnabled Then
-                        Return True
-                    Else
-                        Return False
-                    End If
-                Case Else
-                    Return False
-            End Select
-        End With
-    End Function
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="mMovieSet"></param>
-    ''' <param name="fType"></param>
-    ''' <param name="isChange"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Public Function IsAllowedToDownload_MovieSet(ByVal mMovieSet As Database.DBElement, ByVal fType As Enums.ModifierType, Optional ByVal isChange As Boolean = False) As Boolean
-        With Master.eSettings
-            Select Case fType
-                Case Enums.ModifierType.MainBanner
-                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.ImagesContainer.Banner.LocalFilePath) OrElse .MovieSetBannerKeepExisting) AndAlso .MovieSetBannerAnyEnabled) Then
-                        Return True
-                    Else
-                        Return False
-                    End If
-                Case Enums.ModifierType.MainClearArt
-                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.ImagesContainer.ClearArt.LocalFilePath) OrElse .MovieSetClearArtKeepExisting) AndAlso .MovieSetClearArtAnyEnabled) Then
-                        Return True
-                    Else
-                        Return False
-                    End If
-                Case Enums.ModifierType.MainClearLogo
-                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.ImagesContainer.ClearLogo.LocalFilePath) OrElse .MovieSetClearLogoKeepExisting) AndAlso .MovieSetClearLogoAnyEnabled) Then
-                        Return True
-                    Else
-                        Return False
-                    End If
-                Case Enums.ModifierType.MainDiscArt
-                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.ImagesContainer.DiscArt.LocalFilePath) OrElse .MovieSetDiscArtKeepExisting) AndAlso .MovieSetDiscArtAnyEnabled) Then
-                        Return True
-                    Else
-                        Return False
-                    End If
-                Case Enums.ModifierType.MainFanart
-                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.ImagesContainer.Fanart.LocalFilePath) OrElse .MovieSetFanartKeepExisting) AndAlso .MovieSetFanartAnyEnabled) Then
-                        Return True
-                    Else
-                        Return False
-                    End If
-                Case Enums.ModifierType.MainLandscape
-                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.ImagesContainer.Landscape.LocalFilePath) OrElse .MovieSetLandscapeKeepExisting) AndAlso .MovieSetLandscapeAnyEnabled) Then
-                        Return True
-                    Else
-                        Return False
-                    End If
-                Case Enums.ModifierType.MainPoster
-                    If (isChange OrElse (String.IsNullOrEmpty(mMovieSet.ImagesContainer.Poster.LocalFilePath) OrElse .MovieSetPosterKeepExisting) AndAlso .MovieSetPosterAnyEnabled) Then
-                        Return True
-                    Else
-                        Return False
-                    End If
-                Case Else
-                    Return False
-            End Select
-        End With
-    End Function
-
-    Public Function IsAllowedToDownload(ByVal mTV As Database.DBElement, ByVal fType As Enums.ModifierType, Optional ByVal isChange As Boolean = False) As Boolean
-        With Master.eSettings
-            Select Case fType
-                Case Enums.ModifierType.MainBanner
-                    If isChange OrElse (String.IsNullOrEmpty(mTV.ImagesContainer.Banner.LocalFilePath) OrElse .TVShowBannerKeepExisting) AndAlso .MovieBannerAnyEnabled Then
-                        Return True
-                    Else
-                        Return False
-                    End If
-                Case Enums.ModifierType.MainCharacterArt
-                    If isChange OrElse (String.IsNullOrEmpty(mTV.ImagesContainer.CharacterArt.LocalFilePath) OrElse .TVShowCharacterArtKeepExisting) AndAlso .TVShowCharacterArtAnyEnabled Then
-                        Return True
-                    Else
-                        Return False
-                    End If
-                Case Enums.ModifierType.MainClearArt
-                    If isChange OrElse (String.IsNullOrEmpty(mTV.ImagesContainer.ClearArt.LocalFilePath) OrElse .TVShowClearArtKeepExisting) AndAlso .TVShowClearArtAnyEnabled Then
-                        Return True
-                    Else
-                        Return False
-                    End If
-                Case Enums.ModifierType.MainClearLogo
-                    If isChange OrElse (String.IsNullOrEmpty(mTV.ImagesContainer.ClearLogo.LocalFilePath) OrElse .TVShowClearLogoKeepExisting) AndAlso .TVShowClearLogoAnyEnabled Then
-                        Return True
-                    Else
-                        Return False
-                    End If
-                Case Enums.ModifierType.MainExtrafanarts
-                    If isChange OrElse (String.IsNullOrEmpty(mTV.ExtrafanartsPath) OrElse .TVShowExtrafanartsKeepExisting) AndAlso .TVShowExtrafanartsAnyEnabled Then
-                        Return True
-                    Else
-                        Return False
-                    End If
-                Case Enums.ModifierType.MainFanart
-                    If isChange OrElse (String.IsNullOrEmpty(mTV.ImagesContainer.Fanart.LocalFilePath) OrElse .TVShowFanartKeepExisting) AndAlso .TVShowFanartAnyEnabled Then
-                        Return True
-                    Else
-                        Return False
-                    End If
-                Case Enums.ModifierType.MainLandscape
-                    If isChange OrElse (String.IsNullOrEmpty(mTV.ImagesContainer.Landscape.LocalFilePath) OrElse .TVShowLandscapeKeepExisting) AndAlso .TVShowLandscapeAnyEnabled Then
-                        Return True
-                    Else
-                        Return False
-                    End If
-                Case Enums.ModifierType.MainPoster
-                    If isChange OrElse (String.IsNullOrEmpty(mTV.ImagesContainer.Poster.LocalFilePath) OrElse .TVShowPosterKeepExisting) AndAlso .TVShowPosterAnyEnabled Then
-                        Return True
-                    Else
-                        Return False
-                    End If
-                Case Else
-                    Return False
-            End Select
-        End With
-    End Function
 
     Public Sub ResizeExtraFanart(ByVal fromPath As String, ByVal toPath As String)
         Me.FromFile(fromPath)
@@ -1057,22 +353,26 @@ Public Class Images
     ''' <param name="sPath">Location to store the image</param>
     ''' <remarks></remarks>
     Public Sub Save(ByVal sPath As String)
-        Dim retSave() As Byte
-        Try
-            retSave = _ms.ToArray
+        If Me._ms.Length > 0 Then
+            Dim retSave() As Byte
+            Try
+                retSave = _ms.ToArray
 
-            'make sure directory exists
-            Directory.CreateDirectory(Directory.GetParent(sPath).FullName)
-            If sPath.Length <= 260 Then
-                Using fs As New FileStream(sPath, FileMode.Create, FileAccess.Write)
-                    fs.Write(retSave, 0, retSave.Length)
-                    fs.Flush()
-                    fs.Close()
-                End Using
-            End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+                'make sure directory exists
+                Directory.CreateDirectory(Directory.GetParent(sPath).FullName)
+                If sPath.Length <= 260 Then
+                    Using fs As New FileStream(sPath, FileMode.Create, FileAccess.Write)
+                        fs.Write(retSave, 0, retSave.Length)
+                        fs.Flush()
+                        fs.Close()
+                    End Using
+                End If
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+            End Try
+        Else
+            Throw New ArgumentOutOfRangeException("Looks like MemoryStream is empty")
+        End If
     End Sub
 
     Public Shared Sub SaveMovieActorThumbs(ByVal mMovie As Database.DBElement)
@@ -1082,11 +382,11 @@ Public Class Images
         Next
 
         'Secound, remove the old ones
-        Images.DeleteMovieActorThumbs(mMovie)
+        Images.Delete_Movie(mMovie, Enums.ModifierType.MainActorThumbs)
 
         'Thirdly, save all actor thumbs
         For Each tActor As MediaContainers.Person In mMovie.Movie.Actors
-            If tActor.Thumb.ImageOriginal.Image IsNot Nothing Then
+            If tActor.Thumb.LoadAndCache(Enums.ContentType.Movie, True) Then
                 tActor.Thumb.LocalFilePath = tActor.Thumb.ImageOriginal.SaveAsMovieActorThumb(mMovie, tActor)
             End If
         Next
@@ -1200,22 +500,15 @@ Public Class Images
     ''' <remarks></remarks>
     Public Shared Function SaveMovieExtrafanarts(ByVal mMovie As Database.DBElement) As String
         Dim efPath As String = String.Empty
-        Dim iMod As Integer = 0
-        Dim iVal As Integer = 1
 
-        Images.DeleteMovieExtrafanarts(mMovie)
+        Images.Delete_Movie(mMovie, Enums.ModifierType.MainExtrafanarts)
 
         For Each eImg As MediaContainers.Image In mMovie.ImagesContainer.Extrafanarts
-            If eImg.ImageOriginal.Image IsNot Nothing Then
+            If eImg.LoadAndCache(Enums.ContentType.Movie, True) Then
                 efPath = eImg.ImageOriginal.SaveAsMovieExtrafanart(mMovie, If(Not String.IsNullOrEmpty(eImg.URLOriginal), Path.GetFileName(eImg.URLOriginal), Path.GetFileName(eImg.LocalFilePath)))
-            ElseIf Not String.IsNullOrEmpty(eImg.URLOriginal) Then
-                eImg.ImageOriginal.FromWeb(eImg.URLOriginal)
-                efPath = eImg.ImageOriginal.SaveAsMovieExtrafanart(mMovie, Path.GetFileName(eImg.URLOriginal))
-            ElseIf Not String.IsNullOrEmpty(eImg.LocalFilePath) Then
-                eImg.ImageOriginal.FromFile(eImg.LocalFilePath)
-                efPath = eImg.ImageOriginal.SaveAsMovieExtrafanart(mMovie, Path.GetFileName(eImg.LocalFilePath))
             End If
         Next
+
         'If efPath is empty (i.e. expert setting enabled but expert extrafanart scraping disabled) it will cause Ember to crash, therefore do check first
         If Not String.IsNullOrEmpty(efPath) Then
             Return Directory.GetParent(efPath).FullName
@@ -1273,19 +566,11 @@ Public Class Images
     ''' <remarks></remarks>
     Public Shared Function SaveMovieExtrathumbs(ByVal mMovie As Database.DBElement) As String
         Dim etPath As String = String.Empty
-        Dim iMod As Integer = 0
-        Dim iVal As Integer = 1
 
-        Images.DeleteMovieExtrathumbs(mMovie)
+        Images.Delete_Movie(mMovie, Enums.ModifierType.MainExtrathumbs)
 
         For Each eImg As MediaContainers.Image In mMovie.ImagesContainer.Extrathumbs.OrderBy(Function(f) f.Index)
-            If eImg.ImageOriginal.Image IsNot Nothing Then
-                etPath = eImg.ImageOriginal.SaveAsMovieExtrathumb(mMovie)
-            ElseIf Not String.IsNullOrEmpty(eImg.URLOriginal) Then
-                eImg.ImageOriginal.FromWeb(eImg.URLOriginal)
-                etPath = eImg.ImageOriginal.SaveAsMovieExtrathumb(mMovie)
-            ElseIf Not String.IsNullOrEmpty(eImg.LocalFilePath) Then
-                eImg.ImageOriginal.FromFile(eImg.LocalFilePath)
+            If eImg.LoadAndCache(Enums.ContentType.Movie, True) Then
                 etPath = eImg.ImageOriginal.SaveAsMovieExtrathumb(mMovie)
             End If
         Next
@@ -1876,7 +1161,7 @@ Public Class Images
         Next
 
         'Secound, remove the old ones
-        Images.DeleteTVShowActorThumbs(mShow)
+        Images.Delete_TVShow(mShow, Enums.ModifierType.MainActorThumbs)
 
         'Thirdly, save all actor thumbs
         For Each tActor As MediaContainers.Person In mShow.TVShow.Actors
@@ -2000,17 +1285,11 @@ Public Class Images
         Dim iMod As Integer = 0
         Dim iVal As Integer = 1
 
-        Images.DeleteTVShowExtrafanarts(mShow)
+        Images.Delete_TVShow(mShow, Enums.ModifierType.MainExtrafanarts)
 
         For Each eImg As MediaContainers.Image In mShow.ImagesContainer.Extrafanarts
-            If eImg.ImageOriginal.Image IsNot Nothing Then
+            If eImg.LoadAndCache(Enums.ContentType.TV, True) Then
                 efPath = eImg.ImageOriginal.SaveAsTVShowExtrafanart(mShow, If(Not String.IsNullOrEmpty(eImg.URLOriginal), Path.GetFileName(eImg.URLOriginal), Path.GetFileName(eImg.LocalFilePath)))
-            ElseIf Not String.IsNullOrEmpty(eImg.URLOriginal) Then
-                eImg.ImageOriginal.FromWeb(eImg.URLOriginal)
-                efPath = eImg.ImageOriginal.SaveAsTVShowExtrafanart(mShow, Path.GetFileName(eImg.URLOriginal))
-            ElseIf Not String.IsNullOrEmpty(eImg.LocalFilePath) Then
-                eImg.ImageOriginal.FromFile(eImg.LocalFilePath)
-                efPath = eImg.ImageOriginal.SaveAsTVShowExtrafanart(mShow, Path.GetFileName(eImg.LocalFilePath))
             End If
         Next
 
@@ -3584,45 +2863,5 @@ Public Class Images
     End Function
 
 #End Region 'Methods
-
-#Region "IDisposable Support"
-    Private disposedValue As Boolean ' To detect redundant calls
-
-    ' IDisposable
-    Protected Overridable Sub Dispose(disposing As Boolean)
-        If Not Me.disposedValue Then
-            If disposing Then
-                ' dispose managed state (managed objects).
-                If _ms IsNot Nothing Then
-                    _ms.Flush()
-                    _ms.Close()
-                    _ms.Dispose()
-                End If
-                If _image IsNot Nothing Then _image.Dispose()
-            End If
-
-            ' free unmanaged resources (unmanaged objects) and override Finalize() below.
-            ' set large fields to null.
-            _ms = Nothing
-            _image = Nothing
-        End If
-        Me.disposedValue = True
-    End Sub
-
-    ' TODO: override Finalize() only if Dispose(ByVal disposing As Boolean) above has code to free unmanaged resources.
-    'Protected Overrides Sub Finalize()
-    '    ' Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
-    '    Dispose(False)
-    '    MyBase.Finalize()
-    'End Sub
-
-    ' This code added by Visual Basic to correctly implement the disposable pattern.
-    Public Sub Dispose() Implements IDisposable.Dispose
-        ' Do not change this code.  Put cleanup code in Dispose(disposing As Boolean) above.
-        Dispose(True)
-        GC.SuppressFinalize(Me)
-    End Sub
-
-#End Region 'IDisposable Support
 
 End Class

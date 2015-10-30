@@ -765,19 +765,6 @@ Public Class StringUtils
             End If
         End If
         Return False
-
-        'Oldest Return Regex.IsMatch(sToCheck, "^((ht|f)tps?\:\/\/|~\/|\/)?(\w+:\w+@)?(([-\w]+\.)+(com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum|travel|[a-z]{2}))\/", RegexOptions.IgnoreCase)
-        'Old Return Regex.IsMatch(sToCheck, "[a-zA-Z]{3,}://[a-zA-Z0-9\.]+/*[a-zA-Z0-9/\\%_.]*\?*[a-zA-Z0-9/\\%_.=&amp;]*")
-        'Alternate method using regex.
-        'Static expression As String = "^(http(?:s)?\:\/\/[a-zA-Z0-9\-]+(?:\.[a-zA-Z0-9\-]+)*\.[a-zA-Z]{2,6}(?:\/?|(?:\/[\w\-]+)*)(?:\/?|\/\w+\.[a-zA-Z]{2,4}(?:\?[\w]+\=[\w\-]+)?)?(?:\&[\w]+\=[\w\-]+)*)$"
-        'Try
-        '    Return Regex.IsMatch(sToCheck, expression, RegexOptions.IgnoreCase)
-        'Catch ex As Exception
-        '    logger.Error(GetType(StringUtils),"Input <" & sToCheck & "> generated the following message: " & vbCrLf & ex.Message, ex.StackTrace, "Error")
-        'End Try
-
-        ''If we get here, something went wrong.
-        'Return False
     End Function
     ''' <summary>
     ''' Determines whether the supplied character is valid for a numeric-only field such as a text-box.

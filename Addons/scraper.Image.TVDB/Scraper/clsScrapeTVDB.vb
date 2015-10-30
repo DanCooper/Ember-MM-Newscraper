@@ -180,7 +180,7 @@ Namespace TVDBs
             Return alContainer
         End Function
 
-        Public Function GetImages_TVEpisode(ByVal tvdbID As String, ByVal iSeason As Integer, ByVal iEpisode As Integer) As MediaContainers.SearchResultsContainer
+        Public Function GetImages_TVEpisode(ByVal tvdbID As String, ByVal iSeason As Integer, ByVal iEpisode As Integer, ByVal FilteredModifier As Structures.ScrapeModifier) As MediaContainers.SearchResultsContainer
             Dim alContainer As New MediaContainers.SearchResultsContainer
 
             Try
@@ -193,7 +193,7 @@ Namespace TVDBs
                 If bwTVDB.CancellationPending Then Return Nothing
 
                 'EpisodePoster
-                If Results.Series.Episodes IsNot Nothing Then
+                If FilteredModifier.EpisodePoster AndAlso Results.Series.Episodes IsNot Nothing Then
                     For Each tEpisode As TVDB.Model.Episode In Results.Series.Episodes.Where(Function(f) f.SeasonNumber = iSeason And f.CombinedEpisodeNumber = iEpisode)
                         Dim img As New MediaContainers.Image With { _
                             .Episode = tEpisode.Number, _

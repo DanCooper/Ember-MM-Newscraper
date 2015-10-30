@@ -103,7 +103,7 @@ Public Class dlgTVChangeEp
         If lvEpisodes.SelectedItems.Count > 0 AndAlso lvEpisodes.SelectedItems(0).Tag IsNot Nothing Then
             Me._selectedEpisode = DirectCast(lvEpisodes.SelectedItems(0).Tag, MediaContainers.EpisodeDetails)
 
-            Me._selectedEpisode.ThumbPoster.LoadAndCache(Enums.ContentType.TV)
+            Me._selectedEpisode.ThumbPoster.LoadAndCache(Enums.ContentType.TV, False, True)
 
             If Me._selectedEpisode.ThumbPoster.ImageThumb.Image IsNot Nothing Then
                 Me.pbPreview.Image = Me._selectedEpisode.ThumbPoster.ImageThumb.Image

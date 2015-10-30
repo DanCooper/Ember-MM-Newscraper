@@ -141,7 +141,7 @@ Public Class FileFolderRenamer
                 For Each f As FileFolderRenamer.FileRename In _episodes.Where(Function(s) s.IsRenamed AndAlso Not s.FileExist AndAlso Not s.IsLocked)
                     iProg += 1
                     If Not f.ID = -1 Then
-                        _tvDB = Master.DB.LoadTVEpisodeFromDB(f.ID, True, False)
+                        _tvDB = Master.DB.LoadTVEpisodeFromDB(f.ID, True)
                         DoRenameSingle_Episode(f, _tvDB, True, False, True, sfunction, iProg)
                     End If
                 Next
@@ -159,7 +159,7 @@ Public Class FileFolderRenamer
             For Each f As FileFolderRenamer.FileRename In _movies.Where(Function(s) s.IsRenamed AndAlso Not s.FileExist AndAlso Not s.IsLocked)
                 iProg += 1
                 If Not f.ID = -1 Then
-                    _movieDB = Master.DB.LoadMovieFromDB(f.ID, False)
+                    _movieDB = Master.DB.LoadMovieFromDB(f.ID)
                     DoRenameSingle_Movie(f, _movieDB, True, False, True, sfunction, iProg)
                 End If
             Next
@@ -471,7 +471,7 @@ Public Class FileFolderRenamer
 
                         For Each aSeason In aSeasonsList
                             Dim tmpTV As New Database.DBElement
-                            tmpTV = Master.DB.LoadTVSeasonFromDB(aSeason, False, False)
+                            tmpTV = Master.DB.LoadTVSeasonFromDB(aSeason, False)
                             UpdatePaths_Show(tmpTV, srcDir, destDir)
                             Master.DB.SaveTVSeasonToDB(tmpTV, BatchMode, False)
                         Next
@@ -506,7 +506,7 @@ Public Class FileFolderRenamer
 
                         For Each aEpisode In aEpisodesList
                             Dim tmpTVEpisode As New Database.DBElement
-                            tmpTVEpisode = Master.DB.LoadTVEpisodeFromDB(aEpisode, False, False)
+                            tmpTVEpisode = Master.DB.LoadTVEpisodeFromDB(aEpisode, False)
                             UpdatePaths_Show(tmpTVEpisode, srcDir, destDir)
                             Master.DB.SaveTVEpisodeToDB(tmpTVEpisode, False, BatchMode, False, False, False)
                         Next
@@ -1708,7 +1708,7 @@ Public Class FileFolderRenamer
                                 If Not String.IsNullOrEmpty(_tmpPath) Then
 
                                     EpisodeFile = New FileFolderRenamer.FileRename
-                                    _currShow = Master.DB.LoadTVEpisodeFromDB(Convert.ToInt32(SQLreader("idEpisode")), True, False)
+                                    _currShow = Master.DB.LoadTVEpisodeFromDB(Convert.ToInt32(SQLreader("idEpisode")), True)
 
                                     If Not _currShow.ID = -1 AndAlso Not _currShow.ShowID = -1 AndAlso Not String.IsNullOrEmpty(_currShow.Filename) Then
                                         'Me.bwLoadInfo.ReportProgress(iProg, String.Concat(_currShow.TVShow.Title, ": ", _currShow.TVEp.Title))
