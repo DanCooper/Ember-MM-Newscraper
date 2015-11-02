@@ -1638,6 +1638,10 @@ Public Class dlgEditMovie
             btnManual.Enabled = False
         End If
 
+        If Me.cbSourceLanguage.Items.Count > 0 Then
+            Me.cbSourceLanguage.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = tmpDBElement.Language).name
+        End If
+
         chkMark.Checked = tmpDBElement.IsMark
         If tmpDBElement.Movie.PlayCountSpecified Then
             chkWatched.Checked = True
@@ -2519,6 +2523,12 @@ Public Class dlgEditMovie
                 btnRescrape.Enabled = False
                 btnChangeMovie.Enabled = False
 
+                If Not String.IsNullOrEmpty(cbSourceLanguage.Text) Then
+                    tmpDBElement.Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = cbSourceLanguage.Text).abbreviation
+                Else
+                    tmpDBElement.Language = "en"
+                End If
+
                 tmpDBElement.IsMark = chkMark.Checked
 
                 If Not String.IsNullOrEmpty(.txtSortTitle.Text) Then
@@ -2713,6 +2723,7 @@ Public Class dlgEditMovie
         lblDirector.Text = Master.eLang.GetString(239, "Director:")
         lblVideoSource.Text = Master.eLang.GetString(824, "Video Source:")
         lblGenre.Text = Master.eLang.GetString(51, "Genre(s):")
+        lblLanguage.Text = Master.eLang.GetString(610, "Language")
         lblMPAA.Text = Master.eLang.GetString(235, "MPAA Rating:")
         lblMPAADesc.Text = Master.eLang.GetString(229, "MPAA Rating Description:")
         lblOriginalTitle.Text = String.Concat(Master.eLang.GetString(302, "Original Title"), ":")
@@ -2743,6 +2754,9 @@ Public Class dlgEditMovie
         tpLandscape.Text = Master.eLang.GetString(1059, "Landscape")
         tpMetaData.Text = Master.eLang.GetString(866, "Metadata")
         tpPoster.Text = Master.eLang.GetString(148, "Poster")
+
+        cbSourceLanguage.Items.Clear()
+        cbSourceLanguage.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
     End Sub
 
     Private Sub tcEditMovie_SelectedIndexChanged(sender As Object, e As EventArgs) Handles tcEdit.SelectedIndexChanged

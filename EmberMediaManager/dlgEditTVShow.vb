@@ -1124,6 +1124,9 @@ Public Class dlgEditTVShow
     Private Sub FillInfo()
         cbOrdering.SelectedIndex = tmpDBElement.Ordering
         cbEpisodeSorting.SelectedIndex = tmpDBElement.EpisodeSorting
+        If Me.cbSourceLanguage.Items.Count > 0 Then
+            Me.cbSourceLanguage.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = tmpDBElement.Language).name
+        End If
 
         txtTitle.Text = tmpDBElement.TVShow.Title
         txtOriginalTitle.Text = tmpDBElement.TVShow.OriginalTitle
@@ -1851,6 +1854,11 @@ Public Class dlgEditTVShow
             With Me
                 tmpDBElement.Ordering = DirectCast(.cbOrdering.SelectedIndex, Enums.Ordering)
                 tmpDBElement.EpisodeSorting = DirectCast(.cbEpisodeSorting.SelectedIndex, Enums.EpisodeSorting)
+                If Not String.IsNullOrEmpty(cbSourceLanguage.Text) Then
+                    tmpDBElement.Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = cbSourceLanguage.Text).abbreviation
+                Else
+                    tmpDBElement.Language = "en"
+                End If
 
                 tmpDBElement.TVShow.Title = .txtTitle.Text.Trim
                 tmpDBElement.TVShow.OriginalTitle = .txtOriginalTitle.Text.Trim
@@ -1964,6 +1972,7 @@ Public Class dlgEditTVShow
         lblActors.Text = Master.eLang.GetString(231, "Actors:")
         lblGenre.Text = Master.eLang.GetString(51, "Genre(s):")
         lblEpisodeSorting.Text = String.Concat(Master.eLang.GetString(364, "Show Episodes by"), ":")
+        lblLanguage.Text = Master.eLang.GetString(610, "Language")
         lblMPAA.Text = Master.eLang.GetString(235, "MPAA Rating:")
         lblOrdering.Text = Master.eLang.GetString(739, "Episode Ordering:")
         lblOriginalTitle.Text = String.Concat(Master.eLang.GetString(302, "Original Title"), ":")
@@ -1992,6 +2001,9 @@ Public Class dlgEditTVShow
 
         cbEpisodeSorting.Items.Clear()
         cbEpisodeSorting.Items.AddRange(New String() {Master.eLang.GetString(755, "Episode #"), Master.eLang.GetString(728, "Aired")})
+
+        cbSourceLanguage.Items.Clear()
+        cbSourceLanguage.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
     End Sub
 
 #End Region 'Methods

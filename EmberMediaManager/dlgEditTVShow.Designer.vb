@@ -123,6 +123,7 @@ Partial Class dlgEditTVShow
         Me.colLocalPath = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.txtPlot = New System.Windows.Forms.TextBox()
         Me.txtSortTitle = New System.Windows.Forms.TextBox()
+        Me.txtOriginalTitle = New System.Windows.Forms.TextBox()
         Me.txtTitle = New System.Windows.Forms.TextBox()
         Me.lbMPAA = New System.Windows.Forms.ListBox()
         Me.lblGenre = New System.Windows.Forms.Label()
@@ -135,11 +136,12 @@ Partial Class dlgEditTVShow
         Me.pbStar1 = New System.Windows.Forms.PictureBox()
         Me.lblRating = New System.Windows.Forms.Label()
         Me.lblPremiered = New System.Windows.Forms.Label()
+        Me.lblOriginalTitle = New System.Windows.Forms.Label()
         Me.lblSortTitle = New System.Windows.Forms.Label()
         Me.lblTitle = New System.Windows.Forms.Label()
         Me.tcEdit = New System.Windows.Forms.TabControl()
-        Me.lblOriginalTitle = New System.Windows.Forms.Label()
-        Me.txtOriginalTitle = New System.Windows.Forms.TextBox()
+        Me.lblLanguage = New System.Windows.Forms.Label()
+        Me.cbSourceLanguage = New System.Windows.Forms.ComboBox()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpExtrafanarts.SuspendLayout()
@@ -243,7 +245,7 @@ Partial Class dlgEditTVShow
         Me.cbOrdering.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbOrdering.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbOrdering.FormattingEnabled = True
-        Me.cbOrdering.Location = New System.Drawing.Point(111, 565)
+        Me.cbOrdering.Location = New System.Drawing.Point(142, 565)
         Me.cbOrdering.Name = "cbOrdering"
         Me.cbOrdering.Size = New System.Drawing.Size(166, 21)
         Me.cbOrdering.TabIndex = 5
@@ -262,7 +264,7 @@ Partial Class dlgEditTVShow
         Me.cbEpisodeSorting.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbEpisodeSorting.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbEpisodeSorting.FormattingEnabled = True
-        Me.cbEpisodeSorting.Location = New System.Drawing.Point(440, 565)
+        Me.cbEpisodeSorting.Location = New System.Drawing.Point(142, 592)
         Me.cbEpisodeSorting.Name = "cbEpisodeSorting"
         Me.cbEpisodeSorting.Size = New System.Drawing.Size(166, 21)
         Me.cbEpisodeSorting.TabIndex = 5
@@ -270,7 +272,7 @@ Partial Class dlgEditTVShow
         'lblEpisodeSorting
         '
         Me.lblEpisodeSorting.AutoSize = True
-        Me.lblEpisodeSorting.Location = New System.Drawing.Point(330, 570)
+        Me.lblEpisodeSorting.Location = New System.Drawing.Point(5, 595)
         Me.lblEpisodeSorting.Name = "lblEpisodeSorting"
         Me.lblEpisodeSorting.Size = New System.Drawing.Size(103, 13)
         Me.lblEpisodeSorting.TabIndex = 4
@@ -1304,6 +1306,14 @@ Partial Class dlgEditTVShow
         Me.txtSortTitle.Size = New System.Drawing.Size(192, 22)
         Me.txtSortTitle.TabIndex = 1
         '
+        'txtOriginalTitle
+        '
+        Me.txtOriginalTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtOriginalTitle.Location = New System.Drawing.Point(6, 66)
+        Me.txtOriginalTitle.Name = "txtOriginalTitle"
+        Me.txtOriginalTitle.Size = New System.Drawing.Size(192, 22)
+        Me.txtOriginalTitle.TabIndex = 1
+        '
         'txtTitle
         '
         Me.txtTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -1411,6 +1421,16 @@ Partial Class dlgEditTVShow
         Me.lblPremiered.TabIndex = 2
         Me.lblPremiered.Text = "Premiered:"
         '
+        'lblOriginalTitle
+        '
+        Me.lblOriginalTitle.AutoSize = True
+        Me.lblOriginalTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblOriginalTitle.Location = New System.Drawing.Point(6, 50)
+        Me.lblOriginalTitle.Name = "lblOriginalTitle"
+        Me.lblOriginalTitle.Size = New System.Drawing.Size(76, 13)
+        Me.lblOriginalTitle.TabIndex = 0
+        Me.lblOriginalTitle.Text = "Original Title:"
+        '
         'lblSortTitle
         '
         Me.lblSortTitle.AutoSize = True
@@ -1449,23 +1469,23 @@ Partial Class dlgEditTVShow
         Me.tcEdit.Size = New System.Drawing.Size(844, 489)
         Me.tcEdit.TabIndex = 3
         '
-        'lblOriginalTitle
+        'lblLanguage
         '
-        Me.lblOriginalTitle.AutoSize = True
-        Me.lblOriginalTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblOriginalTitle.Location = New System.Drawing.Point(6, 50)
-        Me.lblOriginalTitle.Name = "lblOriginalTitle"
-        Me.lblOriginalTitle.Size = New System.Drawing.Size(76, 13)
-        Me.lblOriginalTitle.TabIndex = 0
-        Me.lblOriginalTitle.Text = "Original Title:"
+        Me.lblLanguage.AutoSize = True
+        Me.lblLanguage.Location = New System.Drawing.Point(339, 570)
+        Me.lblLanguage.Name = "lblLanguage"
+        Me.lblLanguage.Size = New System.Drawing.Size(61, 13)
+        Me.lblLanguage.TabIndex = 4
+        Me.lblLanguage.Text = "Language:"
         '
-        'txtOriginalTitle
+        'cbSourceLanguage
         '
-        Me.txtOriginalTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtOriginalTitle.Location = New System.Drawing.Point(6, 66)
-        Me.txtOriginalTitle.Name = "txtOriginalTitle"
-        Me.txtOriginalTitle.Size = New System.Drawing.Size(192, 22)
-        Me.txtOriginalTitle.TabIndex = 1
+        Me.cbSourceLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbSourceLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbSourceLanguage.Location = New System.Drawing.Point(418, 565)
+        Me.cbSourceLanguage.Name = "cbSourceLanguage"
+        Me.cbSourceLanguage.Size = New System.Drawing.Size(172, 21)
+        Me.cbSourceLanguage.TabIndex = 9
         '
         'dlgEditTVShow
         '
@@ -1473,9 +1493,11 @@ Partial Class dlgEditTVShow
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(853, 600)
+        Me.ClientSize = New System.Drawing.Size(853, 621)
+        Me.Controls.Add(Me.cbSourceLanguage)
         Me.Controls.Add(Me.lblEpisodeSorting)
         Me.Controls.Add(Me.cbEpisodeSorting)
+        Me.Controls.Add(Me.lblLanguage)
         Me.Controls.Add(Me.lblOrdering)
         Me.Controls.Add(Me.cbOrdering)
         Me.Controls.Add(Me.tcEdit)
@@ -1643,5 +1665,7 @@ Partial Class dlgEditTVShow
     Friend WithEvents colLocalPath As System.Windows.Forms.ColumnHeader
     Friend WithEvents txtOriginalTitle As System.Windows.Forms.TextBox
     Friend WithEvents lblOriginalTitle As System.Windows.Forms.Label
+    Friend WithEvents lblLanguage As System.Windows.Forms.Label
+    Friend WithEvents cbSourceLanguage As System.Windows.Forms.ComboBox
 
 End Class

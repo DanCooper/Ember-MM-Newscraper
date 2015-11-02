@@ -24,8 +24,8 @@ Partial Class dlgEditMovie
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgEditMovie))
-        Dim ListViewGroup1 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Local Subtitles", System.Windows.Forms.HorizontalAlignment.Left)
-        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("1")
+        Dim ListViewGroup2 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Local Subtitles", System.Windows.Forms.HorizontalAlignment.Left)
+        Dim ListViewItem2 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("1")
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.Cancel_Button = New System.Windows.Forms.Button()
         Me.pnlTop = New System.Windows.Forms.Panel()
@@ -78,6 +78,7 @@ Partial Class dlgEditMovie
         Me.colName = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colRole = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colThumb = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colLocalPath = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.lbMPAA = New System.Windows.Forms.ListBox()
         Me.lblGenre = New System.Windows.Forms.Label()
         Me.lblMPAA = New System.Windows.Forms.Label()
@@ -221,7 +222,8 @@ Partial Class dlgEditMovie
         Me.StatusStrip = New System.Windows.Forms.StatusStrip()
         Me.tsFilename = New System.Windows.Forms.ToolStripStatusLabel()
         Me.txtLastPlayed = New System.Windows.Forms.TextBox()
-        Me.colLocalPath = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.cbSourceLanguage = New System.Windows.Forms.ComboBox()
+        Me.lblLanguage = New System.Windows.Forms.Label()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEdit.SuspendLayout()
@@ -275,7 +277,7 @@ Partial Class dlgEditMovie
         '
         Me.OK_Button.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.OK_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.OK_Button.Location = New System.Drawing.Point(856, 593)
+        Me.OK_Button.Location = New System.Drawing.Point(856, 619)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
         Me.OK_Button.TabIndex = 0
@@ -286,7 +288,7 @@ Partial Class dlgEditMovie
         Me.Cancel_Button.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Cancel_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Cancel_Button.Location = New System.Drawing.Point(929, 593)
+        Me.Cancel_Button.Location = New System.Drawing.Point(929, 619)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
         Me.Cancel_Button.TabIndex = 1
@@ -840,6 +842,11 @@ Partial Class dlgEditMovie
         Me.colThumb.Text = "Thumb"
         Me.colThumb.Width = 174
         '
+        'colLocalPath
+        '
+        Me.colLocalPath.Text = "Local Path"
+        Me.colLocalPath.Width = 0
+        '
         'lbMPAA
         '
         Me.lbMPAA.BackColor = System.Drawing.SystemColors.Window
@@ -1041,13 +1048,13 @@ Partial Class dlgEditMovie
         Me.lblRating.TabIndex = 10
         Me.lblRating.Text = "Rating:"
         '
-        'mtxtYear
+        'txtYear
         '
         Me.txtYear.BackColor = System.Drawing.SystemColors.Window
         Me.txtYear.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.txtYear.Location = New System.Drawing.Point(7, 182)
         Me.txtYear.Mask = "####"
-        Me.txtYear.Name = "mtxtYear"
+        Me.txtYear.Name = "txtYear"
         Me.txtYear.PromptChar = Global.Microsoft.VisualBasic.ChrW(32)
         Me.txtYear.Size = New System.Drawing.Size(50, 22)
         Me.txtYear.TabIndex = 9
@@ -1756,13 +1763,13 @@ Partial Class dlgEditMovie
         Me.pnlExtrafanarts.Size = New System.Drawing.Size(165, 394)
         Me.pnlExtrafanarts.TabIndex = 15
         '
-        'pnlEFanartsSetAsFanart
+        'pnlExtrafanartsSetAsFanart
         '
         Me.pnlExtrafanartsSetAsFanart.BackColor = System.Drawing.Color.LightGray
         Me.pnlExtrafanartsSetAsFanart.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlExtrafanartsSetAsFanart.Controls.Add(Me.btnExtrafanartsSetAsFanart)
         Me.pnlExtrafanartsSetAsFanart.Location = New System.Drawing.Point(767, 363)
-        Me.pnlExtrafanartsSetAsFanart.Name = "pnlEFanartsSetAsFanart"
+        Me.pnlExtrafanartsSetAsFanart.Name = "pnlExtrafanartsSetAsFanart"
         Me.pnlExtrafanartsSetAsFanart.Size = New System.Drawing.Size(109, 39)
         Me.pnlExtrafanartsSetAsFanart.TabIndex = 14
         '
@@ -1860,13 +1867,13 @@ Partial Class dlgEditMovie
         Me.pnlExtrathumbs.Size = New System.Drawing.Size(165, 394)
         Me.pnlExtrathumbs.TabIndex = 7
         '
-        'pnlEThumbsSetAsFanart
+        'pnlExtrathumbsSetAsFanart
         '
         Me.pnlExtrathumbsSetAsFanart.BackColor = System.Drawing.Color.LightGray
         Me.pnlExtrathumbsSetAsFanart.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlExtrathumbsSetAsFanart.Controls.Add(Me.btnExtrathumbsSetAsFanart)
         Me.pnlExtrathumbsSetAsFanart.Location = New System.Drawing.Point(767, 363)
-        Me.pnlExtrathumbsSetAsFanart.Name = "pnlEThumbsSetAsFanart"
+        Me.pnlExtrathumbsSetAsFanart.Name = "pnlExtrathumbsSetAsFanart"
         Me.pnlExtrathumbsSetAsFanart.Size = New System.Drawing.Size(109, 39)
         Me.pnlExtrathumbsSetAsFanart.TabIndex = 6
         '
@@ -1902,22 +1909,22 @@ Partial Class dlgEditMovie
         Me.btnExtrathumbsRemove.TabIndex = 5
         Me.btnExtrathumbsRemove.UseVisualStyleBackColor = True
         '
-        'btnEThumbsDown
+        'btnExtrathumbsDown
         '
         Me.btnExtrathumbsDown.Enabled = False
-        Me.btnExtrathumbsDown.Image = CType(resources.GetObject("btnEThumbsDown.Image"), System.Drawing.Image)
+        Me.btnExtrathumbsDown.Image = CType(resources.GetObject("btnExtrathumbsDown.Image"), System.Drawing.Image)
         Me.btnExtrathumbsDown.Location = New System.Drawing.Point(88, 408)
-        Me.btnExtrathumbsDown.Name = "btnEThumbsDown"
+        Me.btnExtrathumbsDown.Name = "btnExtrathumbsDown"
         Me.btnExtrathumbsDown.Size = New System.Drawing.Size(23, 23)
         Me.btnExtrathumbsDown.TabIndex = 3
         Me.btnExtrathumbsDown.UseVisualStyleBackColor = True
         '
-        'btnEThumbsUp
+        'btnExtrathumbsUp
         '
         Me.btnExtrathumbsUp.Enabled = False
-        Me.btnExtrathumbsUp.Image = CType(resources.GetObject("btnEThumbsUp.Image"), System.Drawing.Image)
+        Me.btnExtrathumbsUp.Image = CType(resources.GetObject("btnExtrathumbsUp.Image"), System.Drawing.Image)
         Me.btnExtrathumbsUp.Location = New System.Drawing.Point(59, 408)
-        Me.btnExtrathumbsUp.Name = "btnEThumbsUp"
+        Me.btnExtrathumbsUp.Name = "btnExtrathumbsUp"
         Me.btnExtrathumbsUp.Size = New System.Drawing.Size(23, 23)
         Me.btnExtrathumbsUp.TabIndex = 2
         Me.btnExtrathumbsUp.UseVisualStyleBackColor = True
@@ -1997,12 +2004,12 @@ Partial Class dlgEditMovie
         Me.lvSubtitles.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5})
         Me.lvSubtitles.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lvSubtitles.FullRowSelect = True
-        ListViewGroup1.Header = "Local Subtitles"
-        ListViewGroup1.Name = "LocalSubtitles"
-        Me.lvSubtitles.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup1})
+        ListViewGroup2.Header = "Local Subtitles"
+        ListViewGroup2.Name = "LocalSubtitles"
+        Me.lvSubtitles.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup2})
         Me.lvSubtitles.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
-        ListViewItem1.Group = ListViewGroup1
-        Me.lvSubtitles.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
+        ListViewItem2.Group = ListViewGroup2
+        Me.lvSubtitles.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem2})
         Me.lvSubtitles.Location = New System.Drawing.Point(6, 6)
         Me.lvSubtitles.MultiSelect = False
         Me.lvSubtitles.Name = "lvSubtitles"
@@ -2368,7 +2375,7 @@ Partial Class dlgEditMovie
         Me.chkMark.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.chkMark.AutoSize = True
         Me.chkMark.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMark.Location = New System.Drawing.Point(12, 597)
+        Me.chkMark.Location = New System.Drawing.Point(8, 594)
         Me.chkMark.Name = "chkMark"
         Me.chkMark.Size = New System.Drawing.Size(86, 17)
         Me.chkMark.TabIndex = 5
@@ -2381,7 +2388,7 @@ Partial Class dlgEditMovie
         Me.btnRescrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnRescrape.Image = CType(resources.GetObject("btnRescrape.Image"), System.Drawing.Image)
         Me.btnRescrape.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnRescrape.Location = New System.Drawing.Point(403, 593)
+        Me.btnRescrape.Location = New System.Drawing.Point(403, 619)
         Me.btnRescrape.Name = "btnRescrape"
         Me.btnRescrape.Size = New System.Drawing.Size(98, 23)
         Me.btnRescrape.TabIndex = 7
@@ -2395,7 +2402,7 @@ Partial Class dlgEditMovie
         Me.btnChangeMovie.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnChangeMovie.Image = CType(resources.GetObject("btnChangeMovie.Image"), System.Drawing.Image)
         Me.btnChangeMovie.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnChangeMovie.Location = New System.Drawing.Point(534, 593)
+        Me.btnChangeMovie.Location = New System.Drawing.Point(534, 619)
         Me.btnChangeMovie.Name = "btnChangeMovie"
         Me.btnChangeMovie.Size = New System.Drawing.Size(107, 23)
         Me.btnChangeMovie.TabIndex = 8
@@ -2412,7 +2419,7 @@ Partial Class dlgEditMovie
         Me.chkWatched.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.chkWatched.AutoSize = True
         Me.chkWatched.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkWatched.Location = New System.Drawing.Point(135, 597)
+        Me.chkWatched.Location = New System.Drawing.Point(124, 594)
         Me.chkWatched.Name = "chkWatched"
         Me.chkWatched.Size = New System.Drawing.Size(72, 17)
         Me.chkWatched.TabIndex = 6
@@ -2422,7 +2429,7 @@ Partial Class dlgEditMovie
         'StatusStrip
         '
         Me.StatusStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsFilename})
-        Me.StatusStrip.Location = New System.Drawing.Point(0, 619)
+        Me.StatusStrip.Location = New System.Drawing.Point(0, 645)
         Me.StatusStrip.Name = "StatusStrip"
         Me.StatusStrip.Size = New System.Drawing.Size(1008, 22)
         Me.StatusStrip.SizingGrip = False
@@ -2445,10 +2452,23 @@ Partial Class dlgEditMovie
         Me.txtLastPlayed.Size = New System.Drawing.Size(118, 22)
         Me.txtLastPlayed.TabIndex = 74
         '
-        'colLocalPath
+        'cbSourceLanguage
         '
-        Me.colLocalPath.Text = "Local Path"
-        Me.colLocalPath.Width = 0
+        Me.cbSourceLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbSourceLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbSourceLanguage.Location = New System.Drawing.Point(91, 619)
+        Me.cbSourceLanguage.Name = "cbSourceLanguage"
+        Me.cbSourceLanguage.Size = New System.Drawing.Size(172, 21)
+        Me.cbSourceLanguage.TabIndex = 76
+        '
+        'lblLanguage
+        '
+        Me.lblLanguage.AutoSize = True
+        Me.lblLanguage.Location = New System.Drawing.Point(12, 624)
+        Me.lblLanguage.Name = "lblLanguage"
+        Me.lblLanguage.Size = New System.Drawing.Size(61, 13)
+        Me.lblLanguage.TabIndex = 75
+        Me.lblLanguage.Text = "Language:"
         '
         'dlgEditMovie
         '
@@ -2456,7 +2476,9 @@ Partial Class dlgEditMovie
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(1008, 641)
+        Me.ClientSize = New System.Drawing.Size(1008, 667)
+        Me.Controls.Add(Me.cbSourceLanguage)
+        Me.Controls.Add(Me.lblLanguage)
         Me.Controls.Add(Me.txtLastPlayed)
         Me.Controls.Add(Me.StatusStrip)
         Me.Controls.Add(Me.chkWatched)
@@ -2730,5 +2752,7 @@ Partial Class dlgEditMovie
     Friend WithEvents btnSetExtrafanartsScrape As System.Windows.Forms.Button
     Friend WithEvents btnSetExtrathumbsScrape As System.Windows.Forms.Button
     Friend WithEvents colLocalPath As System.Windows.Forms.ColumnHeader
+    Friend WithEvents cbSourceLanguage As System.Windows.Forms.ComboBox
+    Friend WithEvents lblLanguage As System.Windows.Forms.Label
 
 End Class
