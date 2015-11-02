@@ -197,7 +197,7 @@ Public Class dlgIMDBSearchResults_TV
         Me.lblTitle.Text = String.Empty
         Me.lblTagline.Text = String.Empty
         Me.lblYear.Text = String.Empty
-        Me.lblDirector.Text = String.Empty
+        Me.lblDirectors.Text = String.Empty
         Me.lblGenre.Text = String.Empty
         Me.txtPlot.Text = String.Empty
         Me.lblIMDBID.Text = String.Empty
@@ -210,7 +210,7 @@ Public Class dlgIMDBSearchResults_TV
 
     Private Sub ControlsVisible(ByVal areVisible As Boolean)
         Me.lblPremieredHeader.Visible = areVisible
-        Me.lblDirectorHeader.Visible = areVisible
+        Me.lblDirectorsHeader.Visible = areVisible
         Me.lblGenreHeader.Visible = areVisible
         Me.lblPlotHeader.Visible = areVisible
         Me.lblIMDBHeader.Visible = areVisible
@@ -218,7 +218,7 @@ Public Class dlgIMDBSearchResults_TV
         Me.lblYear.Visible = areVisible
         Me.lblTagline.Visible = areVisible
         Me.lblTitle.Visible = areVisible
-        Me.lblDirector.Visible = areVisible
+        Me.lblDirectors.Visible = areVisible
         Me.lblGenre.Visible = areVisible
         Me.lblIMDBID.Visible = areVisible
         Me.pbPoster.Visible = areVisible
@@ -351,7 +351,7 @@ Public Class dlgIMDBSearchResults_TV
         Me.chkManual.Text = Master.eLang.GetString(847, "Manual IMDB Entry:")
         Me.btnVerify.Text = Master.eLang.GetString(848, "Verify")
         Me.lblPremieredHeader.Text = String.Concat(Master.eLang.GetString(724, "Premiered"), ":")
-        Me.lblDirectorHeader.Text = Master.eLang.GetString(239, "Director:")
+        Me.lblDirectorsHeader.Text = String.Concat(Master.eLang.GetString(940, "Directors"), ":")
         Me.lblGenreHeader.Text = Master.eLang.GetString(51, "Genre(s):")
         Me.lblIMDBHeader.Text = Master.eLang.GetString(873, "IMDB ID:")
         Me.lblPlotHeader.Text = Master.eLang.GetString(242, "Plot Outline:")

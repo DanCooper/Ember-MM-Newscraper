@@ -320,7 +320,7 @@ fontstyle code 5.
       <fontstyle>0</fontstyle>
     </object>
     
-    <object name="lblCertsHeader">
+    <object name="lblCertificationsHeader">
       <width>pnlInfoPanel.Width - 542</width>
       <height>18</height>
       <left>231</left>
@@ -333,8 +333,8 @@ fontstyle code 5.
       <fontstyle>1</fontstyle>
     </object>
     
-    <object name="txtCerts">
-      <width>lblCertsHeader.Width</width>
+    <object name="txtCertifications">
+      <width>lblCertificationsHeader.Width</width>
       <height>20</height>
       <left>231</left>
       <top>208</top>
@@ -431,7 +431,7 @@ fontstyle code 5.
       <fontstyle>0</fontstyle>
     </object>
 
-    <object name="lblDirectorHeader">
+    <object name="lblDirectorsHeader">
       <width>pnlInfoPanel.Width - 486</width>
       <height>18</height>
       <left>3</left>
@@ -444,8 +444,8 @@ fontstyle code 5.
       <fontstyle>1</fontstyle>
     </object>
     
-    <object name="lblDirector">
-      <width>lblDirectorHeader.Width</width>
+    <object name="lblDirectors">
+      <width>lblDirectorsHeader.Width</width>
       <height>16</height>
       <left>3</left>
       <top>48</top>

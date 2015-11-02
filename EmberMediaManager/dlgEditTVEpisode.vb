@@ -500,7 +500,7 @@ Public Class dlgEditTVEpisode
     Private Sub FillInfo()
         txtAired.Text = tmpDBElement.TVEpisode.Aired
         txtCredits.Text = tmpDBElement.TVEpisode.OldCredits
-        txtDirector.Text = tmpDBElement.TVEpisode.Director
+        txtDirectors.Text = tmpDBElement.TVEpisode.Director
         txtEpisode.Text = tmpDBElement.TVEpisode.Episode.ToString
         txtPlot.Text = tmpDBElement.TVEpisode.Plot
         txtRuntime.Text = tmpDBElement.TVEpisode.Runtime
@@ -950,7 +950,7 @@ Public Class dlgEditTVEpisode
         With Me
             tmpDBElement.TVEpisode.Aired = .txtAired.Text.Trim
             tmpDBElement.TVEpisode.OldCredits = .txtCredits.Text.Trim
-            tmpDBElement.TVEpisode.Director = .txtDirector.Text.Trim
+            tmpDBElement.TVEpisode.Director = .txtDirectors.Text.Trim
             tmpDBElement.TVEpisode.Episode = Convert.ToInt32(.txtEpisode.Text.Trim)
             tmpDBElement.TVEpisode.Plot = .txtPlot.Text.Trim
             tmpDBElement.TVEpisode.Rating = .tmpRating
@@ -1044,10 +1044,10 @@ Public Class dlgEditTVEpisode
         colName.Text = Master.eLang.GetString(232, "Name")
         colRole.Text = Master.eLang.GetString(233, "Role")
         colThumb.Text = Master.eLang.GetString(234, "Thumb")
-        lblActors.Text = Master.eLang.GetString(231, "Actors:")
+        lblActors.Text = String.Concat(Master.eLang.GetString(231, "Actors"), ":")
         lblAired.Text = String.Concat(Master.eLang.GetString(728, "Aired"), ":")
         lblCredits.Text = Master.eLang.GetString(228, "Credits:")
-        lblDirector.Text = Master.eLang.GetString(239, "Director:")
+        lblDirectors.Text = String.Concat(Master.eLang.GetString(940, "Directors"), ":")
         lblEpisode.Text = String.Concat(Master.eLang.GetString(727, "Episode"), ":")
         lblPlot.Text = Master.eLang.GetString(241, "Plot:")
         lblRating.Text = Master.eLang.GetString(245, "Rating:")

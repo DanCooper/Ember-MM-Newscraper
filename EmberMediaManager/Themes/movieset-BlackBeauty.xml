@@ -183,11 +183,11 @@ or a "32-bit ARGB value"
     <!-- END INTERNAL TO PNLMOVIESINSET -->
 
     <!-- Hide all the stuff we won't be using -->
-    <object name="lblDirectorHeader">
+    <object name="lblDirectorsHeader">
       <visible>false</visible>
     </object>
 
-    <object name="lblDirector">
+    <object name="lblDirectors">
       <visible>false</visible>
     </object>
 
@@ -227,11 +227,11 @@ or a "32-bit ARGB value"
       <visible>false</visible>
     </object>
 
-    <object name="lblCertsHeader">
+    <object name="lblCertificationsHeader">
       <visible>false</visible>
     </object>
 
-    <object name="txtCerts">
+    <object name="txtCertifications">
       <visible>false</visible>
     </object>
 

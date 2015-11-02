@@ -98,7 +98,7 @@ Public Class MoviepilotDE_Data
         _setup = New frmSettingsHolder
         LoadSettings()
         _setup.chkEnabled.Checked = _ScraperEnabled
-        _setup.chkCertification.Checked = ConfigScrapeOptions.bMainCertifications
+        _setup.chkCertifications.Checked = ConfigScrapeOptions.bMainCertifications
         _setup.chkOutline.Checked = ConfigScrapeOptions.bMainOutline
         _setup.chkPlot.Checked = ConfigScrapeOptions.bMainPlot
 
@@ -137,7 +137,7 @@ Public Class MoviepilotDE_Data
     End Sub
 
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Data_Movie.SaveSetupScraper
-        ConfigScrapeOptions.bMainCertifications = _setup.chkCertification.Checked
+        ConfigScrapeOptions.bMainCertifications = _setup.chkCertifications.Checked
         ConfigScrapeOptions.bMainOutline = _setup.chkOutline.Checked
         ConfigScrapeOptions.bMainPlot = _setup.chkPlot.Checked
         SaveSettings()

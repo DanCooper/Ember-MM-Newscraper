@@ -44,15 +44,15 @@ Partial Class frmSettingsHolder_Movie
         Me.chkRating = New System.Windows.Forms.CheckBox()
         Me.chkTop250 = New System.Windows.Forms.CheckBox()
         Me.chkMPAA = New System.Windows.Forms.CheckBox()
-        Me.chkCertification = New System.Windows.Forms.CheckBox()
+        Me.chkCertifications = New System.Windows.Forms.CheckBox()
         Me.chkRuntime = New System.Windows.Forms.CheckBox()
         Me.chkTrailer = New System.Windows.Forms.CheckBox()
-        Me.chkGenre = New System.Windows.Forms.CheckBox()
+        Me.chkGenres = New System.Windows.Forms.CheckBox()
         Me.chkWriters = New System.Windows.Forms.CheckBox()
-        Me.chkDirector = New System.Windows.Forms.CheckBox()
-        Me.chkCast = New System.Windows.Forms.CheckBox()
-        Me.chkCountry = New System.Windows.Forms.CheckBox()
-        Me.chkStudio = New System.Windows.Forms.CheckBox()
+        Me.chkDirectors = New System.Windows.Forms.CheckBox()
+        Me.chkActors = New System.Windows.Forms.CheckBox()
+        Me.chkCountries = New System.Windows.Forms.CheckBox()
+        Me.chkStudios = New System.Windows.Forms.CheckBox()
         Me.chkStudiowithDistributors = New System.Windows.Forms.CheckBox()
         Me.gbScraperOpts = New System.Windows.Forms.GroupBox()
         Me.tblScraperOpts = New System.Windows.Forms.TableLayoutPanel()
@@ -233,15 +233,15 @@ Partial Class frmSettingsHolder_Movie
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkRating, 1, 0)
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkTop250, 1, 1)
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkMPAA, 1, 2)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkCertification, 1, 3)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkCertifications, 1, 3)
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkRuntime, 1, 4)
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkTrailer, 1, 5)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkGenre, 1, 6)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkGenres, 1, 6)
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkWriters, 2, 3)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkDirector, 2, 2)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkCast, 2, 1)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkCountry, 2, 0)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkStudio, 2, 4)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkDirectors, 2, 2)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkActors, 2, 1)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkCountries, 2, 0)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkStudios, 2, 4)
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkStudiowithDistributors, 2, 5)
         Me.tblScraperFieldsOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblScraperFieldsOpts.Location = New System.Drawing.Point(3, 18)
@@ -378,17 +378,17 @@ Partial Class frmSettingsHolder_Movie
         Me.chkMPAA.Text = "MPAA"
         Me.chkMPAA.UseVisualStyleBackColor = True
         '
-        'chkCertification
+        'chkCertifications
         '
-        Me.chkCertification.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkCertification.AutoSize = True
-        Me.chkCertification.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCertification.Location = New System.Drawing.Point(101, 72)
-        Me.chkCertification.Name = "chkCertification"
-        Me.chkCertification.Size = New System.Drawing.Size(89, 17)
-        Me.chkCertification.TabIndex = 3
-        Me.chkCertification.Text = "Certification"
-        Me.chkCertification.UseVisualStyleBackColor = True
+        Me.chkCertifications.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkCertifications.AutoSize = True
+        Me.chkCertifications.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkCertifications.Location = New System.Drawing.Point(101, 72)
+        Me.chkCertifications.Name = "chkCertifications"
+        Me.chkCertifications.Size = New System.Drawing.Size(94, 17)
+        Me.chkCertifications.TabIndex = 3
+        Me.chkCertifications.Text = "Certifications"
+        Me.chkCertifications.UseVisualStyleBackColor = True
         '
         'chkRuntime
         '
@@ -414,77 +414,77 @@ Partial Class frmSettingsHolder_Movie
         Me.chkTrailer.Text = "Trailer"
         Me.chkTrailer.UseVisualStyleBackColor = True
         '
-        'chkGenre
+        'chkGenres
         '
-        Me.chkGenre.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkGenre.AutoSize = True
-        Me.chkGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGenre.Location = New System.Drawing.Point(101, 141)
-        Me.chkGenre.Name = "chkGenre"
-        Me.chkGenre.Size = New System.Drawing.Size(57, 17)
-        Me.chkGenre.TabIndex = 15
-        Me.chkGenre.Text = "Genre"
-        Me.chkGenre.UseVisualStyleBackColor = True
+        Me.chkGenres.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkGenres.AutoSize = True
+        Me.chkGenres.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkGenres.Location = New System.Drawing.Point(101, 141)
+        Me.chkGenres.Name = "chkGenres"
+        Me.chkGenres.Size = New System.Drawing.Size(62, 17)
+        Me.chkGenres.TabIndex = 15
+        Me.chkGenres.Text = "Genres"
+        Me.chkGenres.UseVisualStyleBackColor = True
         '
         'chkWriters
         '
         Me.chkWriters.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkWriters.AutoSize = True
         Me.chkWriters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkWriters.Location = New System.Drawing.Point(196, 72)
+        Me.chkWriters.Location = New System.Drawing.Point(201, 72)
         Me.chkWriters.Name = "chkWriters"
-        Me.chkWriters.Size = New System.Drawing.Size(105, 17)
+        Me.chkWriters.Size = New System.Drawing.Size(108, 17)
         Me.chkWriters.TabIndex = 14
-        Me.chkWriters.Text = "Credits(Writers)"
+        Me.chkWriters.Text = "Credits (Writers)"
         Me.chkWriters.UseVisualStyleBackColor = True
         '
-        'chkDirector
+        'chkDirectors
         '
-        Me.chkDirector.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkDirector.AutoSize = True
-        Me.chkDirector.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkDirector.Location = New System.Drawing.Point(196, 49)
-        Me.chkDirector.Name = "chkDirector"
-        Me.chkDirector.Size = New System.Drawing.Size(67, 17)
-        Me.chkDirector.TabIndex = 13
-        Me.chkDirector.Text = "Director"
-        Me.chkDirector.UseVisualStyleBackColor = True
+        Me.chkDirectors.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkDirectors.AutoSize = True
+        Me.chkDirectors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkDirectors.Location = New System.Drawing.Point(201, 49)
+        Me.chkDirectors.Name = "chkDirectors"
+        Me.chkDirectors.Size = New System.Drawing.Size(72, 17)
+        Me.chkDirectors.TabIndex = 13
+        Me.chkDirectors.Text = "Directors"
+        Me.chkDirectors.UseVisualStyleBackColor = True
         '
-        'chkCast
+        'chkActors
         '
-        Me.chkCast.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkCast.AutoSize = True
-        Me.chkCast.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCast.Location = New System.Drawing.Point(196, 26)
-        Me.chkCast.Name = "chkCast"
-        Me.chkCast.Size = New System.Drawing.Size(48, 17)
-        Me.chkCast.TabIndex = 12
-        Me.chkCast.Text = "Cast"
-        Me.chkCast.UseVisualStyleBackColor = True
+        Me.chkActors.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkActors.AutoSize = True
+        Me.chkActors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkActors.Location = New System.Drawing.Point(201, 26)
+        Me.chkActors.Name = "chkActors"
+        Me.chkActors.Size = New System.Drawing.Size(58, 17)
+        Me.chkActors.TabIndex = 12
+        Me.chkActors.Text = "Actors"
+        Me.chkActors.UseVisualStyleBackColor = True
         '
-        'chkCountry
+        'chkCountries
         '
-        Me.chkCountry.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkCountry.AutoSize = True
-        Me.chkCountry.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCountry.Location = New System.Drawing.Point(196, 3)
-        Me.chkCountry.Name = "chkCountry"
-        Me.chkCountry.Size = New System.Drawing.Size(67, 17)
-        Me.chkCountry.TabIndex = 18
-        Me.chkCountry.Text = "Country"
-        Me.chkCountry.UseVisualStyleBackColor = True
+        Me.chkCountries.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkCountries.AutoSize = True
+        Me.chkCountries.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkCountries.Location = New System.Drawing.Point(201, 3)
+        Me.chkCountries.Name = "chkCountries"
+        Me.chkCountries.Size = New System.Drawing.Size(76, 17)
+        Me.chkCountries.TabIndex = 18
+        Me.chkCountries.Text = "Countries"
+        Me.chkCountries.UseVisualStyleBackColor = True
         '
-        'chkStudio
+        'chkStudios
         '
-        Me.chkStudio.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkStudio.AutoSize = True
-        Me.chkStudio.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkStudio.Location = New System.Drawing.Point(196, 95)
-        Me.chkStudio.Name = "chkStudio"
-        Me.chkStudio.Size = New System.Drawing.Size(60, 17)
-        Me.chkStudio.TabIndex = 8
-        Me.chkStudio.Text = "Studio"
-        Me.chkStudio.UseVisualStyleBackColor = True
+        Me.chkStudios.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkStudios.AutoSize = True
+        Me.chkStudios.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkStudios.Location = New System.Drawing.Point(201, 95)
+        Me.chkStudios.Name = "chkStudios"
+        Me.chkStudios.Size = New System.Drawing.Size(65, 17)
+        Me.chkStudios.TabIndex = 8
+        Me.chkStudios.Text = "Studios"
+        Me.chkStudios.UseVisualStyleBackColor = True
         '
         'chkStudiowithDistributors
         '
@@ -492,7 +492,7 @@ Partial Class frmSettingsHolder_Movie
         Me.chkStudiowithDistributors.AutoSize = True
         Me.chkStudiowithDistributors.Enabled = False
         Me.chkStudiowithDistributors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkStudiowithDistributors.Location = New System.Drawing.Point(196, 118)
+        Me.chkStudiowithDistributors.Location = New System.Drawing.Point(201, 118)
         Me.chkStudiowithDistributors.Name = "chkStudiowithDistributors"
         Me.chkStudiowithDistributors.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
         Me.chkStudiowithDistributors.Size = New System.Drawing.Size(148, 17)
@@ -703,7 +703,7 @@ Partial Class frmSettingsHolder_Movie
         Me.lblInfoBottom.Name = "lblInfoBottom"
         Me.lblInfoBottom.Size = New System.Drawing.Size(205, 24)
         Me.lblInfoBottom.TabIndex = 4
-        Me.lblInfoBottom.Text = "These settings are specific to this module." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Please refer to the global settings " & _
+        Me.lblInfoBottom.Text = "These settings are specific to this module." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Please refer to the global settings " &
     "for more options."
         Me.lblInfoBottom.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
@@ -759,18 +759,18 @@ Partial Class frmSettingsHolder_Movie
     Friend WithEvents lblInfoBottom As System.Windows.Forms.Label
     Friend WithEvents pbIconBottom As System.Windows.Forms.PictureBox
     Friend WithEvents gbScraperFieldsOpts As System.Windows.Forms.GroupBox
-    Friend WithEvents chkCertification As System.Windows.Forms.CheckBox
-    Friend WithEvents chkCountry As System.Windows.Forms.CheckBox
+    Friend WithEvents chkCertifications As System.Windows.Forms.CheckBox
+    Friend WithEvents chkCountries As System.Windows.Forms.CheckBox
     Friend WithEvents chkTop250 As System.Windows.Forms.CheckBox
     Friend WithEvents chkWriters As System.Windows.Forms.CheckBox
-    Friend WithEvents chkStudio As System.Windows.Forms.CheckBox
+    Friend WithEvents chkStudios As System.Windows.Forms.CheckBox
     Friend WithEvents chkRuntime As System.Windows.Forms.CheckBox
     Friend WithEvents chkPlot As System.Windows.Forms.CheckBox
     Friend WithEvents chkOutline As System.Windows.Forms.CheckBox
-    Friend WithEvents chkGenre As System.Windows.Forms.CheckBox
-    Friend WithEvents chkDirector As System.Windows.Forms.CheckBox
+    Friend WithEvents chkGenres As System.Windows.Forms.CheckBox
+    Friend WithEvents chkDirectors As System.Windows.Forms.CheckBox
     Friend WithEvents chkTagline As System.Windows.Forms.CheckBox
-    Friend WithEvents chkCast As System.Windows.Forms.CheckBox
+    Friend WithEvents chkActors As System.Windows.Forms.CheckBox
     Friend WithEvents chkTrailer As System.Windows.Forms.CheckBox
     Friend WithEvents chkRating As System.Windows.Forms.CheckBox
     Friend WithEvents chkRelease As System.Windows.Forms.CheckBox

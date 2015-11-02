@@ -61,8 +61,9 @@ Partial Class dlgEditTVEpisode
         Me.colName = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colRole = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colThumb = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.lblDirector = New System.Windows.Forms.Label()
-        Me.txtDirector = New System.Windows.Forms.TextBox()
+        Me.colLocalPath = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.lblDirectors = New System.Windows.Forms.Label()
+        Me.txtDirectors = New System.Windows.Forms.TextBox()
         Me.lblPlot = New System.Windows.Forms.Label()
         Me.txtPlot = New System.Windows.Forms.TextBox()
         Me.pbStar5 = New System.Windows.Forms.PictureBox()
@@ -112,7 +113,6 @@ Partial Class dlgEditTVEpisode
         Me.StatusStrip = New System.Windows.Forms.StatusStrip()
         Me.tsFilename = New System.Windows.Forms.ToolStripStatusLabel()
         Me.txtLastPlayed = New System.Windows.Forms.TextBox()
-        Me.colLocalPath = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEdit.SuspendLayout()
@@ -230,8 +230,8 @@ Partial Class dlgEditTVEpisode
         Me.tpDetails.Controls.Add(Me.btnRemove)
         Me.tpDetails.Controls.Add(Me.lblActors)
         Me.tpDetails.Controls.Add(Me.lvActors)
-        Me.tpDetails.Controls.Add(Me.lblDirector)
-        Me.tpDetails.Controls.Add(Me.txtDirector)
+        Me.tpDetails.Controls.Add(Me.lblDirectors)
+        Me.tpDetails.Controls.Add(Me.txtDirectors)
         Me.tpDetails.Controls.Add(Me.lblPlot)
         Me.tpDetails.Controls.Add(Me.txtPlot)
         Me.tpDetails.Controls.Add(Me.pbStar5)
@@ -506,23 +506,28 @@ Partial Class dlgEditTVEpisode
         Me.colThumb.Text = "Thumb"
         Me.colThumb.Width = 387
         '
-        'lblDirector
+        'colLocalPath
         '
-        Me.lblDirector.AutoSize = True
-        Me.lblDirector.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblDirector.Location = New System.Drawing.Point(7, 139)
-        Me.lblDirector.Name = "lblDirector"
-        Me.lblDirector.Size = New System.Drawing.Size(51, 13)
-        Me.lblDirector.TabIndex = 11
-        Me.lblDirector.Text = "Director:"
+        Me.colLocalPath.Text = "Local Path"
+        Me.colLocalPath.Width = 0
         '
-        'txtDirector
+        'lblDirectors
         '
-        Me.txtDirector.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtDirector.Location = New System.Drawing.Point(7, 155)
-        Me.txtDirector.Name = "txtDirector"
-        Me.txtDirector.Size = New System.Drawing.Size(241, 22)
-        Me.txtDirector.TabIndex = 12
+        Me.lblDirectors.AutoSize = True
+        Me.lblDirectors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblDirectors.Location = New System.Drawing.Point(7, 139)
+        Me.lblDirectors.Name = "lblDirectors"
+        Me.lblDirectors.Size = New System.Drawing.Size(56, 13)
+        Me.lblDirectors.TabIndex = 11
+        Me.lblDirectors.Text = "Directors:"
+        '
+        'txtDirectors
+        '
+        Me.txtDirectors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtDirectors.Location = New System.Drawing.Point(7, 155)
+        Me.txtDirectors.Name = "txtDirectors"
+        Me.txtDirectors.Size = New System.Drawing.Size(241, 22)
+        Me.txtDirectors.TabIndex = 12
         '
         'lblPlot
         '
@@ -1020,11 +1025,6 @@ Partial Class dlgEditTVEpisode
         Me.txtLastPlayed.Size = New System.Drawing.Size(118, 22)
         Me.txtLastPlayed.TabIndex = 75
         '
-        'colLocalPath
-        '
-        Me.colLocalPath.Text = "Local Path"
-        Me.colLocalPath.Width = 0
-        '
         'dlgEditTVEpisode
         '
         Me.AcceptButton = Me.OK_Button
@@ -1093,8 +1093,8 @@ Partial Class dlgEditTVEpisode
     Friend WithEvents colName As System.Windows.Forms.ColumnHeader
     Friend WithEvents colRole As System.Windows.Forms.ColumnHeader
     Friend WithEvents colThumb As System.Windows.Forms.ColumnHeader
-    Friend WithEvents lblDirector As System.Windows.Forms.Label
-    Friend WithEvents txtDirector As System.Windows.Forms.TextBox
+    Friend WithEvents lblDirectors As System.Windows.Forms.Label
+    Friend WithEvents txtDirectors As System.Windows.Forms.TextBox
     Friend WithEvents lblPlot As System.Windows.Forms.Label
     Friend WithEvents txtPlot As System.Windows.Forms.TextBox
     Friend WithEvents pbStar5 As System.Windows.Forms.PictureBox

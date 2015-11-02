@@ -145,11 +145,11 @@ Public Class IMDB_Data
         LoadSettings_Movie()
         _setup_Movie.chkEnabled.Checked = _ScraperEnabled_Movie
 
-        _setup_Movie.chkCast.Checked = ConfigScrapeOptions_Movie.bMainActors
-        _setup_Movie.chkCertification.Checked = ConfigScrapeOptions_Movie.bMainCertifications
-        _setup_Movie.chkCountry.Checked = ConfigScrapeOptions_Movie.bMainCountries
-        _setup_Movie.chkDirector.Checked = ConfigScrapeOptions_Movie.bMainDirectors
-        _setup_Movie.chkGenre.Checked = ConfigScrapeOptions_Movie.bMainGenres
+        _setup_Movie.chkActors.Checked = ConfigScrapeOptions_Movie.bMainActors
+        _setup_Movie.chkCertifications.Checked = ConfigScrapeOptions_Movie.bMainCertifications
+        _setup_Movie.chkCountries.Checked = ConfigScrapeOptions_Movie.bMainCountries
+        _setup_Movie.chkDirectors.Checked = ConfigScrapeOptions_Movie.bMainDirectors
+        _setup_Movie.chkGenres.Checked = ConfigScrapeOptions_Movie.bMainGenres
         _setup_Movie.chkMPAA.Checked = ConfigScrapeOptions_Movie.bMainMPAA
         _setup_Movie.chkOriginalTitle.Checked = ConfigScrapeOptions_Movie.bMainOriginalTitle
         _setup_Movie.chkOutline.Checked = ConfigScrapeOptions_Movie.bMainOutline
@@ -157,7 +157,7 @@ Public Class IMDB_Data
         _setup_Movie.chkRating.Checked = ConfigScrapeOptions_Movie.bMainRating
         _setup_Movie.chkRelease.Checked = ConfigScrapeOptions_Movie.bMainRelease
         _setup_Movie.chkRuntime.Checked = ConfigScrapeOptions_Movie.bMainRuntime
-        _setup_Movie.chkStudio.Checked = ConfigScrapeOptions_Movie.bMainStudios
+        _setup_Movie.chkStudios.Checked = ConfigScrapeOptions_Movie.bMainStudios
         _setup_Movie.chkTagline.Checked = ConfigScrapeOptions_Movie.bMainTagline
         _setup_Movie.chkTitle.Checked = ConfigScrapeOptions_Movie.bMainTitle
         _setup_Movie.chkTop250.Checked = ConfigScrapeOptions_Movie.bMainTop250
@@ -348,11 +348,11 @@ Public Class IMDB_Data
     End Sub
 
     Sub SaveSetupScraper_Movie(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Data_Movie.SaveSetupScraper
-        ConfigScrapeOptions_Movie.bMainActors = _setup_Movie.chkCast.Checked
-        ConfigScrapeOptions_Movie.bMainCertifications = _setup_Movie.chkCertification.Checked
-        ConfigScrapeOptions_Movie.bMainCountries = _setup_Movie.chkCountry.Checked
-        ConfigScrapeOptions_Movie.bMainDirectors = _setup_Movie.chkDirector.Checked
-        ConfigScrapeOptions_Movie.bMainGenres = _setup_Movie.chkGenre.Checked
+        ConfigScrapeOptions_Movie.bMainActors = _setup_Movie.chkActors.Checked
+        ConfigScrapeOptions_Movie.bMainCertifications = _setup_Movie.chkCertifications.Checked
+        ConfigScrapeOptions_Movie.bMainCountries = _setup_Movie.chkCountries.Checked
+        ConfigScrapeOptions_Movie.bMainDirectors = _setup_Movie.chkDirectors.Checked
+        ConfigScrapeOptions_Movie.bMainGenres = _setup_Movie.chkGenres.Checked
         ConfigScrapeOptions_Movie.bMainMPAA = _setup_Movie.chkMPAA.Checked
         ConfigScrapeOptions_Movie.bMainOriginalTitle = _setup_Movie.chkOriginalTitle.Checked
         ConfigScrapeOptions_Movie.bMainOutline = _setup_Movie.chkOutline.Checked
@@ -360,7 +360,7 @@ Public Class IMDB_Data
         ConfigScrapeOptions_Movie.bMainRating = _setup_Movie.chkRating.Checked
         ConfigScrapeOptions_Movie.bMainRelease = _setup_Movie.chkRelease.Checked
         ConfigScrapeOptions_Movie.bMainRuntime = _setup_Movie.chkRuntime.Checked
-        ConfigScrapeOptions_Movie.bMainStudios = _setup_Movie.chkStudio.Checked
+        ConfigScrapeOptions_Movie.bMainStudios = _setup_Movie.chkStudios.Checked
         ConfigScrapeOptions_Movie.bMainTagline = _setup_Movie.chkTagline.Checked
         ConfigScrapeOptions_Movie.bMainTitle = _setup_Movie.chkTitle.Checked
         ConfigScrapeOptions_Movie.bMainTop250 = _setup_Movie.chkTop250.Checked

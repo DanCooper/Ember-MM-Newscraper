@@ -5554,6 +5554,11 @@ Public Class dlgSettings
         Me.lblMovieSourcesFileNamingXBMCDefaultsActorThumbs.Text = strActorThumbs
         Me.lblTVSourcesFileNamingXBMCDefaultsActorThumbs.Text = strActorThumbs
 
+        'Actors
+        Dim strActors As String = Master.eLang.GetString(231, "Actors")
+        Me.lblMovieScraperGlobalActors.Text = strActors
+        Me.lblTVScraperGlobalActors.Text = strActors
+
         'Add Episode Guest Stars to Actors list
         Dim strAddEPGuestStars As String = Master.eLang.GetString(974, "Add Episode Guest Stars to Actors list")
         Me.chkTVScraperEpisodeGuestStarsToActors.Text = strAddEPGuestStars
@@ -5637,16 +5642,12 @@ Public Class dlgSettings
         Me.lblTVSourcesFilenamingKodiDefaultsBanner.Text = strBanner
         Me.lblTVSourcesFilenamingNMTDefaultsBanner.Text = strBanner
 
-        'Cast
-        Dim strCast As String = Master.eLang.GetString(63, "Cast")
-        Me.lblMovieScraperGlobalCast.Text = strCast
-
-        'Certification
-        Dim strCertification As String = Master.eLang.GetString(722, "Certification")
-        Me.gbMovieScraperCertificationOpts.Text = strCertification
-        Me.gbTVScraperCertificationOpts.Text = strCertification
-        Me.lblMovieScraperGlobalCertification.Text = strCertification
-        Me.lblTVScraperGlobalCertification.Text = strCertification
+        'Certifications
+        Dim strCertifications As String = Master.eLang.GetString(56, "Certifications")
+        Me.gbMovieScraperCertificationOpts.Text = strCertifications
+        Me.gbTVScraperCertificationOpts.Text = strCertifications
+        Me.lblMovieScraperGlobalCertifications.Text = strCertifications
+        Me.lblTVScraperGlobalCertifications.Text = strCertifications
 
         'CharacterArt
         Dim strCharacterArt As String = Master.eLang.GetString(1140, "CharacterArt")
@@ -5714,12 +5715,12 @@ Public Class dlgSettings
         Me.colTVGeneralSeasonListSortingLabel.Text = strColumn
         Me.colTVGeneralShowListSortingLabel.Text = strColumn
 
-        'Country
-        Dim strCountry As String = Master.eLang.GetString(301, "Country")
-        Me.lblMovieScraperGlobalCountry.Text = strCountry
+        'Countries
+        Dim strCountries As String = Master.eLang.GetString(237, "Countries")
+        Me.lblMovieScraperGlobalCountries.Text = strCountries
 
-        'Creator(s)
-        Dim strCreators As String = Master.eLang.GetString(744, "Creator(s)")
+        'Creators
+        Dim strCreators As String = Master.eLang.GetString(744, "Creators")
         Me.lblTVScraperGlobalCreators.Text = strCreators
 
         'Default Episode Ordering
@@ -5751,10 +5752,10 @@ Public Class dlgSettings
         Me.gbMovieScraperDefFIExtOpts.Text = strDefaultsByFileType
         Me.gbTVScraperDefFIExtOpts.Text = strDefaultsByFileType
 
-        'Director
-        Dim strDirector As String = Master.eLang.GetString(62, "Director")
-        Me.lblMovieScraperGlobalDirector.Text = strDirector
-        Me.lblTVScraperGlobalDirector.Text = strDirector
+        'Directors
+        Dim strDirectors As String = Master.eLang.GetString(940, "Directors")
+        Me.lblMovieScraperGlobalDirectors.Text = strDirectors
+        Me.lblTVScraperGlobalDirectors.Text = strDirectors
 
         'DiscArt
         Dim strDiscArt As String = Master.eLang.GetString(1098, "DiscArt")
@@ -5842,6 +5843,10 @@ Public Class dlgSettings
         Dim strEpisodeListSorting As String = Master.eLang.GetString(494, "Episode List Sorting")
         Me.gbTVGeneralEpisodeListSorting.Text = strEpisodeListSorting
 
+        'Episode Guide URL
+        Dim strEpisodeGuideURL As String = Master.eLang.GetString(723, "Episode Guide URL")
+        lblTVScraperGlobalEpisodeGuideURL.Text = strEpisodeGuideURL
+
         'Episodes
         Dim strEpisodes As String = Master.eLang.GetString(682, "Episodes")
         Me.lblTVScraperGlobalHeaderEpisodes.Text = strEpisodes
@@ -5926,10 +5931,10 @@ Public Class dlgSettings
         Me.lblMovieScraperDefFIExt.Text = strFileType
         Me.lblTVScraperDefFIExt.Text = strFileType
 
-        'Genre
-        Dim strGenre As String = Master.eLang.GetString(20, "Genre")
-        Me.lblMovieScraperGlobalGenre.Text = strGenre
-        Me.lblTVScraperGlobalGenre.Text = strGenre
+        'Genres
+        Dim strGenres As String = Master.eLang.GetString(725, "Genres")
+        Me.lblMovieScraperGlobalGenres.Text = strGenres
+        Me.lblTVScraperGlobalGenres.Text = strGenres
 
         'Get Year
         Dim strGetYear As String = Master.eLang.GetString(586, "Get Year")
@@ -6396,10 +6401,10 @@ Public Class dlgSettings
         Dim strStoreThemeInShowDirectory As String = Master.eLang.GetString(1265, "Store themes in tv show directory")
         Me.chkTVShowThemeTvTunesShowPath.Text = strStoreThemeInShowDirectory
 
-        'Studio
-        Dim strStudio As String = Master.eLang.GetString(395, "Studio")
-        Me.lblMovieScraperGlobalStudio.Text = strStudio
-        Me.lblTVScraperGlobalStudio.Text = strStudio
+        'Studios
+        Dim strStudio As String = Master.eLang.GetString(226, "Studios")
+        Me.lblMovieScraperGlobalStudios.Text = strStudio
+        Me.lblTVScraperGlobalStudios.Text = strStudio
 
         'Subtitles
         Dim strSubtitles As String = Master.eLang.GetString(152, "Subtitles")

@@ -215,29 +215,38 @@ Partial Class frmMain
         Me.mnuScrapeModifierPoster = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeModifierTheme = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeModifierTrailer = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuScrapeTypeAsk = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeTypeSkip = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieUpSel = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieUpSelActors = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieUpSelCert = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieUpSelCollectionID = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieUpSelCountry = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieUpSelDirector = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieUpSelGenre = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieUpSelMPAA = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieUpSelOriginalTitle = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieUpSelPlot = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieUpSelOutline = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieUpSelRating = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieUpSelRelease = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieUpSelRuntime = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieUpSelStudio = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieUpSelTagline = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieUpSelTitle = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieUpSelTop250 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieUpSelTrailer = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieUpSelWriter = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieUpSelYear = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeTypeAsk = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeSubmenuFilter = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuMovieSingleDataField = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeOption = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.mnuScrapeOptionActors = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeOptionAired = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeOptionCertifications = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeOptionCollectionID = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeOptionCreators = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeOptionCountries = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeOptionDirectors = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeOptionEpiGuideURL = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeOptionGenres = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeOptionGuestStars = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeOptionMPAA = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeOptionOriginalTitle = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeOptionPlot = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeOptionOutline = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeOptionPremiered = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeOptionRating = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeOptionReleaseDate = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeOptionRuntime = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeOptionStatus = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeOptionStudios = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeOptionTagline = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeOptionTitle = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeOptionTop250 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeOptionTrailer = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeOptionWriters = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeOptionYear = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuEpisodeSingleDataField = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieLanguage = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieLanguageLanguages = New System.Windows.Forms.ToolStripComboBox()
         Me.cmnuMovieLanguageSet = New System.Windows.Forms.ToolStripMenuItem()
@@ -265,6 +274,7 @@ Partial Class frmMain
         Me.cmnuMovieSetSep3 = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuMovieSetRescrape = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieSetRescrapeSelected = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuMovieSetSingleDataField = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieSetSortMethod = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieSetSortMethodMethods = New System.Windows.Forms.ToolStripComboBox()
         Me.cmnuMovieSetSortMethodSet = New System.Windows.Forms.ToolStripMenuItem()
@@ -286,6 +296,7 @@ Partial Class frmMain
         Me.ToolStripSeparator7 = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuShowRescrape = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuShowRescrapeSelected = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuShowSingleDataField = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuShowRefresh = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuShowLanguage = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuShowLanguageLanguages = New System.Windows.Forms.ToolStripComboBox()
@@ -317,6 +328,7 @@ Partial Class frmMain
         Me.ToolStripSeparator14 = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuSeasonRescrape = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuSeasonRescrapeSelected = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuSeasonSingleDataField = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator15 = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuSeasonOpenFolder = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator27 = New System.Windows.Forms.ToolStripSeparator()
@@ -490,8 +502,8 @@ Partial Class frmMain
         Me.lvMoviesInSet = New System.Windows.Forms.ListView()
         Me.ilMoviesInSet = New System.Windows.Forms.ImageList(Me.components)
         Me.lblMoviesInSetHeader = New System.Windows.Forms.Label()
-        Me.txtCerts = New System.Windows.Forms.TextBox()
-        Me.lblCertsHeader = New System.Windows.Forms.Label()
+        Me.txtCertifications = New System.Windows.Forms.TextBox()
+        Me.lblCertificationsHeader = New System.Windows.Forms.Label()
         Me.lblReleaseDate = New System.Windows.Forms.Label()
         Me.lblReleaseDateHeader = New System.Windows.Forms.Label()
         Me.btnMid = New System.Windows.Forms.Button()
@@ -506,8 +518,8 @@ Partial Class frmMain
         Me.txtIMDBID = New System.Windows.Forms.TextBox()
         Me.lblTMDBHeader = New System.Windows.Forms.Label()
         Me.lblIMDBHeader = New System.Windows.Forms.Label()
-        Me.lblDirector = New System.Windows.Forms.Label()
-        Me.lblDirectorHeader = New System.Windows.Forms.Label()
+        Me.lblDirectors = New System.Windows.Forms.Label()
+        Me.lblDirectorsHeader = New System.Windows.Forms.Label()
         Me.pnlActors = New System.Windows.Forms.Panel()
         Me.pbActLoad = New System.Windows.Forms.PictureBox()
         Me.lstActors = New System.Windows.Forms.ListBox()
@@ -663,8 +675,8 @@ Partial Class frmMain
         Me.mnuScrapeSubmenuMissing = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeSubmenuNew = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeSubmenuMarked = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuScrapeSubmenuFilter = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeSubmenuCustom = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayScrapeMovieSets = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeMovieSets = New System.Windows.Forms.ToolStripDropDownButton()
         Me.mnuScrapeTVShows = New System.Windows.Forms.ToolStripDropDownButton()
         Me.mnuUpdate = New System.Windows.Forms.ToolStripSplitButton()
@@ -673,7 +685,6 @@ Partial Class frmMain
         Me.tsbMediaCenters = New System.Windows.Forms.ToolStripSplitButton()
         Me.cmnuTrayScrapeTVShows = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayScrapeMovies = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayScrapeMovieSets = New System.Windows.Forms.ToolStripMenuItem()
         Me.ilColumnIcons = New System.Windows.Forms.ImageList(Me.components)
         Me.tmrWait_Movie = New System.Windows.Forms.Timer(Me.components)
         Me.tmrLoad_Movie = New System.Windows.Forms.Timer(Me.components)
@@ -774,6 +785,7 @@ Partial Class frmMain
         Me.cmnuMovie.SuspendLayout()
         Me.mnuScrapeType.SuspendLayout()
         Me.mnuScrapeModifier.SuspendLayout()
+        Me.mnuScrapeOption.SuspendLayout()
         CType(Me.dgvMovieSets, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.cmnuMovieSet.SuspendLayout()
         CType(Me.scTV, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -2644,7 +2656,7 @@ Partial Class frmMain
         '
         'cmnuMovie
         '
-        Me.cmnuMovie.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieTitle, Me.cmnuMovieSep1, Me.cmnuMovieReload, Me.cmnuMovieMark, Me.cmnuMovieMarkAs, Me.cmnuMovieLock, Me.cmnuMovieWatched, Me.cmnuMovieSep2, Me.cmnuMovieEdit, Me.cmnuMovieEditMetaData, Me.cmnuMovieGenres, Me.cmnuMovieSep3, Me.cmnuMovieRescrape, Me.cmnuMovieRescrapeSelected, Me.cmnuMovieUpSel, Me.cmnuMovieLanguage, Me.cmnuMovieChange, Me.cmnuMovieChangeAuto, Me.cmnuMovieSep4, Me.cmnuMovieBrowseIMDB, Me.cmnuMovieBrowseTMDB, Me.cmnuMovieOpenFolder, Me.cmnuMovieSep5, Me.cmnuMovieRemove})
+        Me.cmnuMovie.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieTitle, Me.cmnuMovieSep1, Me.cmnuMovieReload, Me.cmnuMovieMark, Me.cmnuMovieMarkAs, Me.cmnuMovieLock, Me.cmnuMovieWatched, Me.cmnuMovieSep2, Me.cmnuMovieEdit, Me.cmnuMovieEditMetaData, Me.cmnuMovieGenres, Me.cmnuMovieSep3, Me.cmnuMovieRescrape, Me.cmnuMovieRescrapeSelected, Me.cmnuMovieSingleDataField, Me.cmnuMovieLanguage, Me.cmnuMovieChange, Me.cmnuMovieChangeAuto, Me.cmnuMovieSep4, Me.cmnuMovieBrowseIMDB, Me.cmnuMovieBrowseTMDB, Me.cmnuMovieOpenFolder, Me.cmnuMovieSep5, Me.cmnuMovieRemove})
         Me.cmnuMovie.Name = "mnuMediaList"
         Me.cmnuMovie.Size = New System.Drawing.Size(247, 452)
         '
@@ -2817,7 +2829,7 @@ Partial Class frmMain
         '
         Me.mnuScrapeType.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuScrapeTypeAuto, Me.mnuScrapeTypeAsk, Me.mnuScrapeTypeSkip})
         Me.mnuScrapeType.Name = "mnuScrapeType"
-        Me.mnuScrapeType.OwnerItem = Me.mnuScrapeSubmenuFilter
+        Me.mnuScrapeType.OwnerItem = Me.mnuScrapeSubmenuMarked
         Me.mnuScrapeType.Size = New System.Drawing.Size(272, 70)
         '
         'mnuScrapeTypeAuto
@@ -2832,7 +2844,7 @@ Partial Class frmMain
         '
         Me.mnuScrapeModifier.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuScrapeModifierAll, Me.mnuScrapeModifierActorthumbs, Me.mnuScrapeModifierBanner, Me.mnuScrapeModifierCharacterArt, Me.mnuScrapeModifierClearArt, Me.mnuScrapeModifierClearLogo, Me.mnuScrapeModifierDiscArt, Me.mnuScrapeModifierExtrafanarts, Me.mnuScrapeModifierExtrathumbs, Me.mnuScrapeModifierFanart, Me.mnuScrapeModifierLandscape, Me.mnuScrapeModifierMetaData, Me.mnuScrapeModifierNFO, Me.mnuScrapeModifierPoster, Me.mnuScrapeModifierTheme, Me.mnuScrapeModifierTrailer})
         Me.mnuScrapeModifier.Name = "mnuScrapeModifier"
-        Me.mnuScrapeModifier.OwnerItem = Me.mnuScrapeTypeSkip
+        Me.mnuScrapeModifier.OwnerItem = Me.mnuScrapeTypeAsk
         Me.mnuScrapeModifier.Size = New System.Drawing.Size(179, 356)
         '
         'mnuScrapeModifierAll
@@ -2962,14 +2974,6 @@ Partial Class frmMain
         Me.mnuScrapeModifierTrailer.Tag = "trailer"
         Me.mnuScrapeModifierTrailer.Text = "Trailer Only"
         '
-        'mnuScrapeTypeAsk
-        '
-        Me.mnuScrapeTypeAsk.DropDown = Me.mnuScrapeModifier
-        Me.mnuScrapeTypeAsk.Name = "mnuScrapeTypeAsk"
-        Me.mnuScrapeTypeAsk.Size = New System.Drawing.Size(271, 22)
-        Me.mnuScrapeTypeAsk.Tag = "ask"
-        Me.mnuScrapeTypeAsk.Text = "Ask (Require Input If No Exact Match)"
-        '
         'mnuScrapeTypeSkip
         '
         Me.mnuScrapeTypeSkip.DropDown = Me.mnuScrapeModifier
@@ -2978,132 +2982,225 @@ Partial Class frmMain
         Me.mnuScrapeTypeSkip.Tag = "skip"
         Me.mnuScrapeTypeSkip.Text = "Skip (Skip If More Than One Match)"
         '
-        'cmnuMovieUpSel
+        'mnuScrapeTypeAsk
         '
-        Me.cmnuMovieUpSel.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieUpSelActors, Me.cmnuMovieUpSelCert, Me.cmnuMovieUpSelCollectionID, Me.cmnuMovieUpSelCountry, Me.cmnuMovieUpSelDirector, Me.cmnuMovieUpSelGenre, Me.cmnuMovieUpSelMPAA, Me.cmnuMovieUpSelOriginalTitle, Me.cmnuMovieUpSelPlot, Me.cmnuMovieUpSelOutline, Me.cmnuMovieUpSelRating, Me.cmnuMovieUpSelRelease, Me.cmnuMovieUpSelRuntime, Me.cmnuMovieUpSelStudio, Me.cmnuMovieUpSelTagline, Me.cmnuMovieUpSelTitle, Me.cmnuMovieUpSelTop250, Me.cmnuMovieUpSelTrailer, Me.cmnuMovieUpSelWriter, Me.cmnuMovieUpSelYear})
-        Me.cmnuMovieUpSel.Name = "cmnuMovieUpSel"
-        Me.cmnuMovieUpSel.Size = New System.Drawing.Size(246, 22)
-        Me.cmnuMovieUpSel.Text = "Update Single Data Field"
+        Me.mnuScrapeTypeAsk.DropDown = Me.mnuScrapeModifier
+        Me.mnuScrapeTypeAsk.Name = "mnuScrapeTypeAsk"
+        Me.mnuScrapeTypeAsk.Size = New System.Drawing.Size(271, 22)
+        Me.mnuScrapeTypeAsk.Tag = "ask"
+        Me.mnuScrapeTypeAsk.Text = "Ask (Require Input If No Exact Match)"
         '
-        'cmnuMovieUpSelActors
+        'mnuScrapeSubmenuFilter
         '
-        Me.cmnuMovieUpSelActors.Name = "cmnuMovieUpSelActors"
-        Me.cmnuMovieUpSelActors.Size = New System.Drawing.Size(148, 22)
-        Me.cmnuMovieUpSelActors.Text = "Actors"
+        Me.mnuScrapeSubmenuFilter.DropDown = Me.mnuScrapeType
+        Me.mnuScrapeSubmenuFilter.Name = "mnuScrapeSubmenuFilter"
+        Me.mnuScrapeSubmenuFilter.Size = New System.Drawing.Size(167, 22)
+        Me.mnuScrapeSubmenuFilter.Tag = "filter"
+        Me.mnuScrapeSubmenuFilter.Text = "Current Filter"
         '
-        'cmnuMovieUpSelCert
+        'cmnuMovieSingleDataField
         '
-        Me.cmnuMovieUpSelCert.Name = "cmnuMovieUpSelCert"
-        Me.cmnuMovieUpSelCert.Size = New System.Drawing.Size(148, 22)
-        Me.cmnuMovieUpSelCert.Text = "Certification"
+        Me.cmnuMovieSingleDataField.DropDown = Me.mnuScrapeOption
+        Me.cmnuMovieSingleDataField.Name = "cmnuMovieSingleDataField"
+        Me.cmnuMovieSingleDataField.Size = New System.Drawing.Size(246, 22)
+        Me.cmnuMovieSingleDataField.Tag = "movie"
+        Me.cmnuMovieSingleDataField.Text = "Update Single Data Field"
         '
-        'cmnuMovieUpSelCollectionID
+        'mnuScrapeOption
         '
-        Me.cmnuMovieUpSelCollectionID.Name = "cmnuMovieUpSelCollectionID"
-        Me.cmnuMovieUpSelCollectionID.Size = New System.Drawing.Size(148, 22)
-        Me.cmnuMovieUpSelCollectionID.Text = "Collection ID"
+        Me.mnuScrapeOption.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuScrapeOptionActors, Me.mnuScrapeOptionAired, Me.mnuScrapeOptionCertifications, Me.mnuScrapeOptionCollectionID, Me.mnuScrapeOptionCreators, Me.mnuScrapeOptionCountries, Me.mnuScrapeOptionDirectors, Me.mnuScrapeOptionEpiGuideURL, Me.mnuScrapeOptionGenres, Me.mnuScrapeOptionGuestStars, Me.mnuScrapeOptionMPAA, Me.mnuScrapeOptionOriginalTitle, Me.mnuScrapeOptionPlot, Me.mnuScrapeOptionOutline, Me.mnuScrapeOptionPremiered, Me.mnuScrapeOptionRating, Me.mnuScrapeOptionReleaseDate, Me.mnuScrapeOptionRuntime, Me.mnuScrapeOptionStatus, Me.mnuScrapeOptionStudios, Me.mnuScrapeOptionTagline, Me.mnuScrapeOptionTitle, Me.mnuScrapeOptionTop250, Me.mnuScrapeOptionTrailer, Me.mnuScrapeOptionWriters, Me.mnuScrapeOptionYear})
+        Me.mnuScrapeOption.Name = "mnuScrapeOption"
+        Me.mnuScrapeOption.Size = New System.Drawing.Size(174, 576)
         '
-        'cmnuMovieUpSelCountry
+        'mnuScrapeOptionActors
         '
-        Me.cmnuMovieUpSelCountry.Name = "cmnuMovieUpSelCountry"
-        Me.cmnuMovieUpSelCountry.Size = New System.Drawing.Size(148, 22)
-        Me.cmnuMovieUpSelCountry.Text = "Country"
+        Me.mnuScrapeOptionActors.Name = "mnuScrapeOptionActors"
+        Me.mnuScrapeOptionActors.Size = New System.Drawing.Size(173, 22)
+        Me.mnuScrapeOptionActors.Tag = "actors"
+        Me.mnuScrapeOptionActors.Text = "Actors"
         '
-        'cmnuMovieUpSelDirector
+        'mnuScrapeOptionAired
         '
-        Me.cmnuMovieUpSelDirector.Name = "cmnuMovieUpSelDirector"
-        Me.cmnuMovieUpSelDirector.Size = New System.Drawing.Size(148, 22)
-        Me.cmnuMovieUpSelDirector.Text = "Director"
+        Me.mnuScrapeOptionAired.Name = "mnuScrapeOptionAired"
+        Me.mnuScrapeOptionAired.Size = New System.Drawing.Size(173, 22)
+        Me.mnuScrapeOptionAired.Tag = "aired"
+        Me.mnuScrapeOptionAired.Text = "Aired"
         '
-        'cmnuMovieUpSelGenre
+        'mnuScrapeOptionCertifications
         '
-        Me.cmnuMovieUpSelGenre.Name = "cmnuMovieUpSelGenre"
-        Me.cmnuMovieUpSelGenre.Size = New System.Drawing.Size(148, 22)
-        Me.cmnuMovieUpSelGenre.Text = "Genre"
+        Me.mnuScrapeOptionCertifications.Name = "mnuScrapeOptionCertifications"
+        Me.mnuScrapeOptionCertifications.Size = New System.Drawing.Size(173, 22)
+        Me.mnuScrapeOptionCertifications.Tag = "certifications"
+        Me.mnuScrapeOptionCertifications.Text = "Certifications"
         '
-        'cmnuMovieUpSelMPAA
+        'mnuScrapeOptionCollectionID
         '
-        Me.cmnuMovieUpSelMPAA.Name = "cmnuMovieUpSelMPAA"
-        Me.cmnuMovieUpSelMPAA.Size = New System.Drawing.Size(148, 22)
-        Me.cmnuMovieUpSelMPAA.Text = "MPAA"
+        Me.mnuScrapeOptionCollectionID.Name = "mnuScrapeOptionCollectionID"
+        Me.mnuScrapeOptionCollectionID.Size = New System.Drawing.Size(173, 22)
+        Me.mnuScrapeOptionCollectionID.Tag = "collectionid"
+        Me.mnuScrapeOptionCollectionID.Text = "Collection ID"
         '
-        'cmnuMovieUpSelOriginalTitle
+        'mnuScrapeOptionCreators
         '
-        Me.cmnuMovieUpSelOriginalTitle.Name = "cmnuMovieUpSelOriginalTitle"
-        Me.cmnuMovieUpSelOriginalTitle.Size = New System.Drawing.Size(148, 22)
-        Me.cmnuMovieUpSelOriginalTitle.Text = "Original Title"
+        Me.mnuScrapeOptionCreators.Name = "mnuScrapeOptionCreators"
+        Me.mnuScrapeOptionCreators.Size = New System.Drawing.Size(173, 22)
+        Me.mnuScrapeOptionCreators.Tag = "creators"
+        Me.mnuScrapeOptionCreators.Text = "Creators"
         '
-        'cmnuMovieUpSelPlot
+        'mnuScrapeOptionCountries
         '
-        Me.cmnuMovieUpSelPlot.Name = "cmnuMovieUpSelPlot"
-        Me.cmnuMovieUpSelPlot.Size = New System.Drawing.Size(148, 22)
-        Me.cmnuMovieUpSelPlot.Text = "Plot"
+        Me.mnuScrapeOptionCountries.Name = "mnuScrapeOptionCountries"
+        Me.mnuScrapeOptionCountries.Size = New System.Drawing.Size(173, 22)
+        Me.mnuScrapeOptionCountries.Tag = "countries"
+        Me.mnuScrapeOptionCountries.Text = "Countries"
         '
-        'cmnuMovieUpSelOutline
+        'mnuScrapeOptionDirectors
         '
-        Me.cmnuMovieUpSelOutline.Name = "cmnuMovieUpSelOutline"
-        Me.cmnuMovieUpSelOutline.Size = New System.Drawing.Size(148, 22)
-        Me.cmnuMovieUpSelOutline.Text = "Plot Outline"
+        Me.mnuScrapeOptionDirectors.Name = "mnuScrapeOptionDirectors"
+        Me.mnuScrapeOptionDirectors.Size = New System.Drawing.Size(173, 22)
+        Me.mnuScrapeOptionDirectors.Tag = "directors"
+        Me.mnuScrapeOptionDirectors.Text = "Directors"
         '
-        'cmnuMovieUpSelRating
+        'mnuScrapeOptionEpiGuideURL
         '
-        Me.cmnuMovieUpSelRating.Name = "cmnuMovieUpSelRating"
-        Me.cmnuMovieUpSelRating.Size = New System.Drawing.Size(148, 22)
-        Me.cmnuMovieUpSelRating.Text = "Rating / Votes"
+        Me.mnuScrapeOptionEpiGuideURL.Name = "mnuScrapeOptionEpiGuideURL"
+        Me.mnuScrapeOptionEpiGuideURL.Size = New System.Drawing.Size(173, 22)
+        Me.mnuScrapeOptionEpiGuideURL.Tag = "epiguideurl"
+        Me.mnuScrapeOptionEpiGuideURL.Text = "Episode Guide URL"
         '
-        'cmnuMovieUpSelRelease
+        'mnuScrapeOptionGenres
         '
-        Me.cmnuMovieUpSelRelease.Name = "cmnuMovieUpSelRelease"
-        Me.cmnuMovieUpSelRelease.Size = New System.Drawing.Size(148, 22)
-        Me.cmnuMovieUpSelRelease.Text = "Release Date"
+        Me.mnuScrapeOptionGenres.Name = "mnuScrapeOptionGenres"
+        Me.mnuScrapeOptionGenres.Size = New System.Drawing.Size(173, 22)
+        Me.mnuScrapeOptionGenres.Tag = "genres"
+        Me.mnuScrapeOptionGenres.Text = "Genres"
         '
-        'cmnuMovieUpSelRuntime
+        'mnuScrapeOptionGuestStars
         '
-        Me.cmnuMovieUpSelRuntime.Name = "cmnuMovieUpSelRuntime"
-        Me.cmnuMovieUpSelRuntime.Size = New System.Drawing.Size(148, 22)
-        Me.cmnuMovieUpSelRuntime.Text = "Runtime"
+        Me.mnuScrapeOptionGuestStars.Name = "mnuScrapeOptionGuestStars"
+        Me.mnuScrapeOptionGuestStars.Size = New System.Drawing.Size(173, 22)
+        Me.mnuScrapeOptionGuestStars.Tag = "gueststars"
+        Me.mnuScrapeOptionGuestStars.Text = "Guest Stars"
         '
-        'cmnuMovieUpSelStudio
+        'mnuScrapeOptionMPAA
         '
-        Me.cmnuMovieUpSelStudio.Name = "cmnuMovieUpSelStudio"
-        Me.cmnuMovieUpSelStudio.Size = New System.Drawing.Size(148, 22)
-        Me.cmnuMovieUpSelStudio.Text = "Studio"
+        Me.mnuScrapeOptionMPAA.Name = "mnuScrapeOptionMPAA"
+        Me.mnuScrapeOptionMPAA.Size = New System.Drawing.Size(173, 22)
+        Me.mnuScrapeOptionMPAA.Tag = "mpaa"
+        Me.mnuScrapeOptionMPAA.Text = "MPAA"
         '
-        'cmnuMovieUpSelTagline
+        'mnuScrapeOptionOriginalTitle
         '
-        Me.cmnuMovieUpSelTagline.Name = "cmnuMovieUpSelTagline"
-        Me.cmnuMovieUpSelTagline.Size = New System.Drawing.Size(148, 22)
-        Me.cmnuMovieUpSelTagline.Text = "Tagline"
+        Me.mnuScrapeOptionOriginalTitle.Name = "mnuScrapeOptionOriginalTitle"
+        Me.mnuScrapeOptionOriginalTitle.Size = New System.Drawing.Size(173, 22)
+        Me.mnuScrapeOptionOriginalTitle.Tag = "originaltitle"
+        Me.mnuScrapeOptionOriginalTitle.Text = "Original Title"
         '
-        'cmnuMovieUpSelTitle
+        'mnuScrapeOptionPlot
         '
-        Me.cmnuMovieUpSelTitle.Name = "cmnuMovieUpSelTitle"
-        Me.cmnuMovieUpSelTitle.Size = New System.Drawing.Size(148, 22)
-        Me.cmnuMovieUpSelTitle.Text = "Title"
+        Me.mnuScrapeOptionPlot.Name = "mnuScrapeOptionPlot"
+        Me.mnuScrapeOptionPlot.Size = New System.Drawing.Size(173, 22)
+        Me.mnuScrapeOptionPlot.Tag = "plot"
+        Me.mnuScrapeOptionPlot.Text = "Plot"
         '
-        'cmnuMovieUpSelTop250
+        'mnuScrapeOptionOutline
         '
-        Me.cmnuMovieUpSelTop250.Name = "cmnuMovieUpSelTop250"
-        Me.cmnuMovieUpSelTop250.Size = New System.Drawing.Size(148, 22)
-        Me.cmnuMovieUpSelTop250.Text = "Top 250"
+        Me.mnuScrapeOptionOutline.Name = "mnuScrapeOptionOutline"
+        Me.mnuScrapeOptionOutline.Size = New System.Drawing.Size(173, 22)
+        Me.mnuScrapeOptionOutline.Tag = "outline"
+        Me.mnuScrapeOptionOutline.Text = "Plot Outline"
         '
-        'cmnuMovieUpSelTrailer
+        'mnuScrapeOptionPremiered
         '
-        Me.cmnuMovieUpSelTrailer.Name = "cmnuMovieUpSelTrailer"
-        Me.cmnuMovieUpSelTrailer.Size = New System.Drawing.Size(148, 22)
-        Me.cmnuMovieUpSelTrailer.Text = "Trailer"
+        Me.mnuScrapeOptionPremiered.Name = "mnuScrapeOptionPremiered"
+        Me.mnuScrapeOptionPremiered.Size = New System.Drawing.Size(173, 22)
+        Me.mnuScrapeOptionPremiered.Tag = "premiered"
+        Me.mnuScrapeOptionPremiered.Text = "Premiered"
         '
-        'cmnuMovieUpSelWriter
+        'mnuScrapeOptionRating
         '
-        Me.cmnuMovieUpSelWriter.Name = "cmnuMovieUpSelWriter"
-        Me.cmnuMovieUpSelWriter.Size = New System.Drawing.Size(148, 22)
-        Me.cmnuMovieUpSelWriter.Text = "Writer"
+        Me.mnuScrapeOptionRating.Name = "mnuScrapeOptionRating"
+        Me.mnuScrapeOptionRating.Size = New System.Drawing.Size(173, 22)
+        Me.mnuScrapeOptionRating.Tag = "rating"
+        Me.mnuScrapeOptionRating.Text = "Rating / Votes"
         '
-        'cmnuMovieUpSelYear
+        'mnuScrapeOptionReleaseDate
         '
-        Me.cmnuMovieUpSelYear.Name = "cmnuMovieUpSelYear"
-        Me.cmnuMovieUpSelYear.Size = New System.Drawing.Size(148, 22)
-        Me.cmnuMovieUpSelYear.Text = "Year"
+        Me.mnuScrapeOptionReleaseDate.Name = "mnuScrapeOptionReleaseDate"
+        Me.mnuScrapeOptionReleaseDate.Size = New System.Drawing.Size(173, 22)
+        Me.mnuScrapeOptionReleaseDate.Tag = "releasedate"
+        Me.mnuScrapeOptionReleaseDate.Text = "Release Date"
+        '
+        'mnuScrapeOptionRuntime
+        '
+        Me.mnuScrapeOptionRuntime.Name = "mnuScrapeOptionRuntime"
+        Me.mnuScrapeOptionRuntime.Size = New System.Drawing.Size(173, 22)
+        Me.mnuScrapeOptionRuntime.Tag = "runtime"
+        Me.mnuScrapeOptionRuntime.Text = "Runtime"
+        '
+        'mnuScrapeOptionStatus
+        '
+        Me.mnuScrapeOptionStatus.Name = "mnuScrapeOptionStatus"
+        Me.mnuScrapeOptionStatus.Size = New System.Drawing.Size(173, 22)
+        Me.mnuScrapeOptionStatus.Tag = "status"
+        Me.mnuScrapeOptionStatus.Text = "Status"
+        '
+        'mnuScrapeOptionStudios
+        '
+        Me.mnuScrapeOptionStudios.Name = "mnuScrapeOptionStudios"
+        Me.mnuScrapeOptionStudios.Size = New System.Drawing.Size(173, 22)
+        Me.mnuScrapeOptionStudios.Tag = "studios"
+        Me.mnuScrapeOptionStudios.Text = "Studios"
+        '
+        'mnuScrapeOptionTagline
+        '
+        Me.mnuScrapeOptionTagline.Name = "mnuScrapeOptionTagline"
+        Me.mnuScrapeOptionTagline.Size = New System.Drawing.Size(173, 22)
+        Me.mnuScrapeOptionTagline.Tag = "tagline"
+        Me.mnuScrapeOptionTagline.Text = "Tagline"
+        '
+        'mnuScrapeOptionTitle
+        '
+        Me.mnuScrapeOptionTitle.Name = "mnuScrapeOptionTitle"
+        Me.mnuScrapeOptionTitle.Size = New System.Drawing.Size(173, 22)
+        Me.mnuScrapeOptionTitle.Tag = "title"
+        Me.mnuScrapeOptionTitle.Text = "Title"
+        '
+        'mnuScrapeOptionTop250
+        '
+        Me.mnuScrapeOptionTop250.Name = "mnuScrapeOptionTop250"
+        Me.mnuScrapeOptionTop250.Size = New System.Drawing.Size(173, 22)
+        Me.mnuScrapeOptionTop250.Tag = "top250"
+        Me.mnuScrapeOptionTop250.Text = "Top 250"
+        '
+        'mnuScrapeOptionTrailer
+        '
+        Me.mnuScrapeOptionTrailer.Name = "mnuScrapeOptionTrailer"
+        Me.mnuScrapeOptionTrailer.Size = New System.Drawing.Size(173, 22)
+        Me.mnuScrapeOptionTrailer.Tag = "trailer"
+        Me.mnuScrapeOptionTrailer.Text = "Trailer"
+        '
+        'mnuScrapeOptionWriters
+        '
+        Me.mnuScrapeOptionWriters.Name = "mnuScrapeOptionWriters"
+        Me.mnuScrapeOptionWriters.Size = New System.Drawing.Size(173, 22)
+        Me.mnuScrapeOptionWriters.Tag = "writers"
+        Me.mnuScrapeOptionWriters.Text = "Writers"
+        '
+        'mnuScrapeOptionYear
+        '
+        Me.mnuScrapeOptionYear.Name = "mnuScrapeOptionYear"
+        Me.mnuScrapeOptionYear.Size = New System.Drawing.Size(173, 22)
+        Me.mnuScrapeOptionYear.Tag = "year"
+        Me.mnuScrapeOptionYear.Text = "Year"
+        '
+        'cmnuEpisodeSingleDataField
+        '
+        Me.cmnuEpisodeSingleDataField.DropDown = Me.mnuScrapeOption
+        Me.cmnuEpisodeSingleDataField.Name = "cmnuEpisodeSingleDataField"
+        Me.cmnuEpisodeSingleDataField.Size = New System.Drawing.Size(246, 22)
+        Me.cmnuEpisodeSingleDataField.Tag = "tvepisode"
+        Me.cmnuEpisodeSingleDataField.Text = "Update Single Data Field"
         '
         'cmnuMovieLanguage
         '
@@ -3227,7 +3324,7 @@ Partial Class frmMain
         '
         'cmnuMovieSet
         '
-        Me.cmnuMovieSet.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieSetTitle, Me.cmnuMovieSetSep1, Me.cmnuMovieSetReload, Me.cmnuMovieSetMark, Me.cmnuMovieSetLock, Me.cmnuMovieSetSep2, Me.cmnuMovieSetNew, Me.cmnuMovieSetEdit, Me.cmnuMovieSetRemove, Me.cmnuMovieSetSep3, Me.cmnuMovieSetRescrape, Me.cmnuMovieSetRescrapeSelected, Me.cmnuMovieSetSortMethod, Me.cmnuMovieSetLanguage})
+        Me.cmnuMovieSet.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieSetTitle, Me.cmnuMovieSetSep1, Me.cmnuMovieSetReload, Me.cmnuMovieSetMark, Me.cmnuMovieSetLock, Me.cmnuMovieSetSep2, Me.cmnuMovieSetNew, Me.cmnuMovieSetEdit, Me.cmnuMovieSetRemove, Me.cmnuMovieSetSep3, Me.cmnuMovieSetRescrape, Me.cmnuMovieSetRescrapeSelected, Me.cmnuMovieSetSingleDataField, Me.cmnuMovieSetSortMethod, Me.cmnuMovieSetLanguage})
         Me.cmnuMovieSet.Name = "cmnuMovieSets"
         Me.cmnuMovieSet.Size = New System.Drawing.Size(235, 286)
         '
@@ -3318,6 +3415,14 @@ Partial Class frmMain
         Me.cmnuMovieSetRescrapeSelected.Size = New System.Drawing.Size(234, 22)
         Me.cmnuMovieSetRescrapeSelected.Tag = "movieset"
         Me.cmnuMovieSetRescrapeSelected.Text = "(Re)Scrape Selected MovieSets"
+        '
+        'cmnuMovieSetSingleDataField
+        '
+        Me.cmnuMovieSetSingleDataField.DropDown = Me.mnuScrapeOption
+        Me.cmnuMovieSetSingleDataField.Name = "cmnuMovieSetSingleDataField"
+        Me.cmnuMovieSetSingleDataField.Size = New System.Drawing.Size(234, 22)
+        Me.cmnuMovieSetSingleDataField.Tag = "movieset"
+        Me.cmnuMovieSetSingleDataField.Text = "Update Single Data Field"
         '
         'cmnuMovieSetSortMethod
         '
@@ -3411,9 +3516,9 @@ Partial Class frmMain
         '
         'cmnuShow
         '
-        Me.cmnuShow.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuShowTitle, Me.ToolStripMenuItem2, Me.cmnuShowReload, Me.cmnuShowReloadFull, Me.cmnuShowMark, Me.cmnuShowLock, Me.cmnuShowWatched, Me.ToolStripSeparator8, Me.cmnuShowEdit, Me.ToolStripSeparator7, Me.cmnuShowRescrape, Me.cmnuShowRescrapeSelected, Me.cmnuShowRefresh, Me.cmnuShowLanguage, Me.cmnuShowChange, Me.ToolStripSeparator1, Me.cmnuShowOpenFolder, Me.ToolStripSeparator20, Me.cmnuShowClearCache, Me.ToolStripSeparator11, Me.cmnuShowRemove})
+        Me.cmnuShow.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuShowTitle, Me.ToolStripMenuItem2, Me.cmnuShowReload, Me.cmnuShowReloadFull, Me.cmnuShowMark, Me.cmnuShowLock, Me.cmnuShowWatched, Me.ToolStripSeparator8, Me.cmnuShowEdit, Me.ToolStripSeparator7, Me.cmnuShowRescrape, Me.cmnuShowRescrapeSelected, Me.cmnuShowSingleDataField, Me.cmnuShowRefresh, Me.cmnuShowLanguage, Me.cmnuShowChange, Me.ToolStripSeparator1, Me.cmnuShowOpenFolder, Me.ToolStripSeparator20, Me.cmnuShowClearCache, Me.ToolStripSeparator11, Me.cmnuShowRemove})
         Me.cmnuShow.Name = "mnuShows"
-        Me.cmnuShow.Size = New System.Drawing.Size(247, 370)
+        Me.cmnuShow.Size = New System.Drawing.Size(247, 414)
         '
         'cmnuShowTitle
         '
@@ -3502,6 +3607,14 @@ Partial Class frmMain
         Me.cmnuShowRescrapeSelected.Size = New System.Drawing.Size(246, 22)
         Me.cmnuShowRescrapeSelected.Tag = "tvshow"
         Me.cmnuShowRescrapeSelected.Text = "(Re)Scrape Selected Shows"
+        '
+        'cmnuShowSingleDataField
+        '
+        Me.cmnuShowSingleDataField.DropDown = Me.mnuScrapeOption
+        Me.cmnuShowSingleDataField.Name = "cmnuShowSingleDataField"
+        Me.cmnuShowSingleDataField.Size = New System.Drawing.Size(246, 22)
+        Me.cmnuShowSingleDataField.Tag = "tvshow"
+        Me.cmnuShowSingleDataField.Text = "Update Single Data Field"
         '
         'cmnuShowRefresh
         '
@@ -3660,9 +3773,9 @@ Partial Class frmMain
         '
         'cmnuSeason
         '
-        Me.cmnuSeason.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuSeasonTitle, Me.ToolStripSeparator17, Me.cmnuSeasonReload, Me.cmnuSeasonReloadFull, Me.cmnuSeasonMark, Me.cmnuSeasonLock, Me.cmnuSeasonWatched, Me.ToolStripSeparator16, Me.cmnuSeasonEdit, Me.ToolStripSeparator14, Me.cmnuSeasonRescrape, Me.cmnuSeasonRescrapeSelected, Me.ToolStripSeparator15, Me.cmnuSeasonOpenFolder, Me.ToolStripSeparator27, Me.cmnuSeasonRemove})
+        Me.cmnuSeason.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuSeasonTitle, Me.ToolStripSeparator17, Me.cmnuSeasonReload, Me.cmnuSeasonReloadFull, Me.cmnuSeasonMark, Me.cmnuSeasonLock, Me.cmnuSeasonWatched, Me.ToolStripSeparator16, Me.cmnuSeasonEdit, Me.ToolStripSeparator14, Me.cmnuSeasonRescrape, Me.cmnuSeasonRescrapeSelected, Me.cmnuSeasonSingleDataField, Me.ToolStripSeparator15, Me.cmnuSeasonOpenFolder, Me.ToolStripSeparator27, Me.cmnuSeasonRemove})
         Me.cmnuSeason.Name = "mnuSeasons"
-        Me.cmnuSeason.Size = New System.Drawing.Size(247, 276)
+        Me.cmnuSeason.Size = New System.Drawing.Size(247, 298)
         '
         'cmnuSeasonTitle
         '
@@ -3752,6 +3865,14 @@ Partial Class frmMain
         Me.cmnuSeasonRescrapeSelected.Tag = "tvseason"
         Me.cmnuSeasonRescrapeSelected.Text = "(Re)Scrape Selected Seasons"
         '
+        'cmnuSeasonSingleDataField
+        '
+        Me.cmnuSeasonSingleDataField.DropDown = Me.mnuScrapeOption
+        Me.cmnuSeasonSingleDataField.Name = "cmnuSeasonSingleDataField"
+        Me.cmnuSeasonSingleDataField.Size = New System.Drawing.Size(246, 22)
+        Me.cmnuSeasonSingleDataField.Tag = "tvseason"
+        Me.cmnuSeasonSingleDataField.Text = "Update Single Data Field"
+        '
         'ToolStripSeparator15
         '
         Me.ToolStripSeparator15.Name = "ToolStripSeparator15"
@@ -3822,9 +3943,9 @@ Partial Class frmMain
         '
         'cmnuEpisode
         '
-        Me.cmnuEpisode.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuEpisodeTitle, Me.ToolStripSeparator6, Me.cmnuEpisodeReload, Me.cmnuEpisodeMark, Me.cmnuEpisodeLock, Me.cmnuEpisodeWatched, Me.ToolStripSeparator9, Me.cmnuEpisodeEdit, Me.ToolStripSeparator10, Me.cmnuEpisodeRescrape, Me.cmnuEpisodeRescrapeSelected, Me.cmnuEpisodeChange, Me.ToolStripSeparator12, Me.cmnuEpisodeOpenFolder, Me.ToolStripSeparator28, Me.cmnuEpisodeRemove})
+        Me.cmnuEpisode.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuEpisodeTitle, Me.ToolStripSeparator6, Me.cmnuEpisodeReload, Me.cmnuEpisodeMark, Me.cmnuEpisodeLock, Me.cmnuEpisodeWatched, Me.ToolStripSeparator9, Me.cmnuEpisodeEdit, Me.ToolStripSeparator10, Me.cmnuEpisodeRescrape, Me.cmnuEpisodeRescrapeSelected, Me.cmnuEpisodeSingleDataField, Me.cmnuEpisodeChange, Me.ToolStripSeparator12, Me.cmnuEpisodeOpenFolder, Me.ToolStripSeparator28, Me.cmnuEpisodeRemove})
         Me.cmnuEpisode.Name = "mnuEpisodes"
-        Me.cmnuEpisode.Size = New System.Drawing.Size(247, 276)
+        Me.cmnuEpisode.Size = New System.Drawing.Size(247, 298)
         '
         'cmnuEpisodeTitle
         '
@@ -5953,8 +6074,8 @@ Partial Class frmMain
         Me.pnlInfoPanel.BackColor = System.Drawing.Color.Gainsboro
         Me.pnlInfoPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlInfoPanel.Controls.Add(Me.pnlMoviesInSet)
-        Me.pnlInfoPanel.Controls.Add(Me.txtCerts)
-        Me.pnlInfoPanel.Controls.Add(Me.lblCertsHeader)
+        Me.pnlInfoPanel.Controls.Add(Me.txtCertifications)
+        Me.pnlInfoPanel.Controls.Add(Me.lblCertificationsHeader)
         Me.pnlInfoPanel.Controls.Add(Me.lblReleaseDate)
         Me.pnlInfoPanel.Controls.Add(Me.lblReleaseDateHeader)
         Me.pnlInfoPanel.Controls.Add(Me.btnMid)
@@ -5969,8 +6090,8 @@ Partial Class frmMain
         Me.pnlInfoPanel.Controls.Add(Me.txtIMDBID)
         Me.pnlInfoPanel.Controls.Add(Me.lblTMDBHeader)
         Me.pnlInfoPanel.Controls.Add(Me.lblIMDBHeader)
-        Me.pnlInfoPanel.Controls.Add(Me.lblDirector)
-        Me.pnlInfoPanel.Controls.Add(Me.lblDirectorHeader)
+        Me.pnlInfoPanel.Controls.Add(Me.lblDirectors)
+        Me.pnlInfoPanel.Controls.Add(Me.lblDirectorsHeader)
         Me.pnlInfoPanel.Controls.Add(Me.pnlActors)
         Me.pnlInfoPanel.Controls.Add(Me.lblOutlineHeader)
         Me.pnlInfoPanel.Controls.Add(Me.txtOutline)
@@ -6027,32 +6148,32 @@ Partial Class frmMain
         Me.lblMoviesInSetHeader.Text = "Movies in Set"
         Me.lblMoviesInSetHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'txtCerts
+        'txtCertifications
         '
-        Me.txtCerts.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.txtCertifications.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtCerts.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtCerts.Location = New System.Drawing.Point(231, 208)
-        Me.txtCerts.Name = "txtCerts"
-        Me.txtCerts.ReadOnly = True
-        Me.txtCerts.Size = New System.Drawing.Size(223, 22)
-        Me.txtCerts.TabIndex = 3
-        Me.txtCerts.TabStop = False
+        Me.txtCertifications.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtCertifications.Location = New System.Drawing.Point(231, 208)
+        Me.txtCertifications.Name = "txtCertifications"
+        Me.txtCertifications.ReadOnly = True
+        Me.txtCertifications.Size = New System.Drawing.Size(223, 22)
+        Me.txtCertifications.TabIndex = 3
+        Me.txtCertifications.TabStop = False
         '
-        'lblCertsHeader
+        'lblCertificationsHeader
         '
-        Me.lblCertsHeader.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.lblCertificationsHeader.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lblCertsHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.lblCertsHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblCertsHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblCertsHeader.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblCertsHeader.Location = New System.Drawing.Point(231, 188)
-        Me.lblCertsHeader.Name = "lblCertsHeader"
-        Me.lblCertsHeader.Size = New System.Drawing.Size(223, 17)
-        Me.lblCertsHeader.TabIndex = 2
-        Me.lblCertsHeader.Text = "Certifications"
-        Me.lblCertsHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.lblCertificationsHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.lblCertificationsHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblCertificationsHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblCertificationsHeader.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.lblCertificationsHeader.Location = New System.Drawing.Point(231, 188)
+        Me.lblCertificationsHeader.Name = "lblCertificationsHeader"
+        Me.lblCertificationsHeader.Size = New System.Drawing.Size(223, 17)
+        Me.lblCertificationsHeader.TabIndex = 2
+        Me.lblCertificationsHeader.Text = "Certifications"
+        Me.lblCertificationsHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'lblReleaseDate
         '
@@ -6229,33 +6350,33 @@ Partial Class frmMain
         Me.lblIMDBHeader.Text = "IMDB ID"
         Me.lblIMDBHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'lblDirector
+        'lblDirectors
         '
-        Me.lblDirector.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.lblDirectors.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lblDirector.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblDirector.ForeColor = System.Drawing.Color.Black
-        Me.lblDirector.Location = New System.Drawing.Point(3, 48)
-        Me.lblDirector.Name = "lblDirector"
-        Me.lblDirector.Size = New System.Drawing.Size(280, 16)
-        Me.lblDirector.TabIndex = 27
-        Me.lblDirector.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.lblDirector.UseMnemonic = False
+        Me.lblDirectors.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblDirectors.ForeColor = System.Drawing.Color.Black
+        Me.lblDirectors.Location = New System.Drawing.Point(3, 48)
+        Me.lblDirectors.Name = "lblDirectors"
+        Me.lblDirectors.Size = New System.Drawing.Size(280, 16)
+        Me.lblDirectors.TabIndex = 27
+        Me.lblDirectors.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.lblDirectors.UseMnemonic = False
         '
-        'lblDirectorHeader
+        'lblDirectorsHeader
         '
-        Me.lblDirectorHeader.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.lblDirectorsHeader.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lblDirectorHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.lblDirectorHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lblDirectorHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblDirectorHeader.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblDirectorHeader.Location = New System.Drawing.Point(3, 27)
-        Me.lblDirectorHeader.Name = "lblDirectorHeader"
-        Me.lblDirectorHeader.Size = New System.Drawing.Size(279, 17)
-        Me.lblDirectorHeader.TabIndex = 21
-        Me.lblDirectorHeader.Text = "Director"
-        Me.lblDirectorHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.lblDirectorsHeader.BackColor = System.Drawing.SystemColors.ControlDarkDark
+        Me.lblDirectorsHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblDirectorsHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblDirectorsHeader.ForeColor = System.Drawing.SystemColors.HighlightText
+        Me.lblDirectorsHeader.Location = New System.Drawing.Point(3, 27)
+        Me.lblDirectorsHeader.Name = "lblDirectorsHeader"
+        Me.lblDirectorsHeader.Size = New System.Drawing.Size(279, 17)
+        Me.lblDirectorsHeader.TabIndex = 21
+        Me.lblDirectorsHeader.Text = "Directors"
+        Me.lblDirectorsHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'pnlActors
         '
@@ -6314,7 +6435,7 @@ Partial Class frmMain
         Me.lblActorsHeader.Name = "lblActorsHeader"
         Me.lblActorsHeader.Size = New System.Drawing.Size(301, 17)
         Me.lblActorsHeader.TabIndex = 18
-        Me.lblActorsHeader.Text = "Cast"
+        Me.lblActorsHeader.Text = "Actors"
         Me.lblActorsHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'lblOutlineHeader
@@ -7958,7 +8079,7 @@ Partial Class frmMain
         Me.lblStudio.Name = "lblStudio"
         Me.lblStudio.Size = New System.Drawing.Size(167, 18)
         Me.lblStudio.TabIndex = 37
-        Me.lblStudio.Text = "Studio"
+        Me.lblStudio.Text = "Studios"
         Me.lblStudio.TextAlign = System.Drawing.ContentAlignment.TopRight
         Me.lblStudio.UseMnemonic = False
         '
@@ -8127,6 +8248,7 @@ Partial Class frmMain
         '
         Me.mnuScrapeSubmenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuScrapeSubmenuAll, Me.mnuScrapeSubmenuMissing, Me.mnuScrapeSubmenuNew, Me.mnuScrapeSubmenuMarked, Me.mnuScrapeSubmenuFilter, Me.mnuScrapeSubmenuCustom})
         Me.mnuScrapeSubmenu.Name = "mnuScrapeSubmenu"
+        Me.mnuScrapeSubmenu.OwnerItem = Me.cmnuTrayScrapeMovies
         Me.mnuScrapeSubmenu.Size = New System.Drawing.Size(168, 136)
         '
         'mnuScrapeSubmenuAll
@@ -8161,20 +8283,21 @@ Partial Class frmMain
         Me.mnuScrapeSubmenuMarked.Tag = "marked"
         Me.mnuScrapeSubmenuMarked.Text = "Marked"
         '
-        'mnuScrapeSubmenuFilter
-        '
-        Me.mnuScrapeSubmenuFilter.DropDown = Me.mnuScrapeType
-        Me.mnuScrapeSubmenuFilter.Name = "mnuScrapeSubmenuFilter"
-        Me.mnuScrapeSubmenuFilter.Size = New System.Drawing.Size(167, 22)
-        Me.mnuScrapeSubmenuFilter.Tag = "filter"
-        Me.mnuScrapeSubmenuFilter.Text = "Current Filter"
-        '
         'mnuScrapeSubmenuCustom
         '
         Me.mnuScrapeSubmenuCustom.Name = "mnuScrapeSubmenuCustom"
         Me.mnuScrapeSubmenuCustom.Size = New System.Drawing.Size(167, 22)
         Me.mnuScrapeSubmenuCustom.Tag = "custom"
         Me.mnuScrapeSubmenuCustom.Text = "Custom Scraper..."
+        '
+        'cmnuTrayScrapeMovieSets
+        '
+        Me.cmnuTrayScrapeMovieSets.DropDown = Me.mnuScrapeSubmenu
+        Me.cmnuTrayScrapeMovieSets.Image = CType(resources.GetObject("cmnuTrayScrapeMovieSets.Image"), System.Drawing.Image)
+        Me.cmnuTrayScrapeMovieSets.Name = "cmnuTrayScrapeMovieSets"
+        Me.cmnuTrayScrapeMovieSets.Size = New System.Drawing.Size(194, 22)
+        Me.cmnuTrayScrapeMovieSets.Tag = "movieset"
+        Me.cmnuTrayScrapeMovieSets.Text = "Scrape MovieSets"
         '
         'mnuScrapeMovieSets
         '
@@ -8252,18 +8375,9 @@ Partial Class frmMain
         Me.cmnuTrayScrapeMovies.Tag = "movie"
         Me.cmnuTrayScrapeMovies.Text = "Scrape Movies"
         '
-        'cmnuTrayScrapeMovieSets
-        '
-        Me.cmnuTrayScrapeMovieSets.DropDown = Me.mnuScrapeSubmenu
-        Me.cmnuTrayScrapeMovieSets.Image = CType(resources.GetObject("cmnuTrayScrapeMovieSets.Image"), System.Drawing.Image)
-        Me.cmnuTrayScrapeMovieSets.Name = "cmnuTrayScrapeMovieSets"
-        Me.cmnuTrayScrapeMovieSets.Size = New System.Drawing.Size(194, 22)
-        Me.cmnuTrayScrapeMovieSets.Tag = "movieset"
-        Me.cmnuTrayScrapeMovieSets.Text = "Scrape MovieSets"
-        '
         'ilColumnIcons
         '
-        Me.ilColumnIcons.ImageStream = CType(resources.GetObject("ilColumnIcons.ImageStream"),System.Windows.Forms.ImageListStreamer)
+        Me.ilColumnIcons.ImageStream = CType(resources.GetObject("ilColumnIcons.ImageStream"), System.Windows.Forms.ImageListStreamer)
         Me.ilColumnIcons.TransparentColor = System.Drawing.Color.Transparent
         Me.ilColumnIcons.Images.SetKeyName(0, "listcheck.png")
         Me.ilColumnIcons.Images.SetKeyName(1, "listdotgrey.png")
@@ -8335,8 +8449,8 @@ Partial Class frmMain
         '
         'cmnuTrayTitle
         '
-        Me.cmnuTrayTitle.Enabled = false
-        Me.cmnuTrayTitle.Image = CType(resources.GetObject("cmnuTrayTitle.Image"),System.Drawing.Image)
+        Me.cmnuTrayTitle.Enabled = False
+        Me.cmnuTrayTitle.Image = CType(resources.GetObject("cmnuTrayTitle.Image"), System.Drawing.Image)
         Me.cmnuTrayTitle.Name = "cmnuTrayTitle"
         Me.cmnuTrayTitle.Size = New System.Drawing.Size(194, 22)
         Me.cmnuTrayTitle.Text = "Ember Media Manager"
@@ -8349,7 +8463,7 @@ Partial Class frmMain
         'cmnuTrayUpdate
         '
         Me.cmnuTrayUpdate.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayUpdateMovies, Me.cmnuTrayUpdateShows})
-        Me.cmnuTrayUpdate.Image = CType(resources.GetObject("cmnuTrayUpdate.Image"),System.Drawing.Image)
+        Me.cmnuTrayUpdate.Image = CType(resources.GetObject("cmnuTrayUpdate.Image"), System.Drawing.Image)
         Me.cmnuTrayUpdate.Name = "cmnuTrayUpdate"
         Me.cmnuTrayUpdate.Size = New System.Drawing.Size(194, 22)
         Me.cmnuTrayUpdate.Text = "Update Media"
@@ -8374,28 +8488,28 @@ Partial Class frmMain
         'cmnuTrayTools
         '
         Me.cmnuTrayTools.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuTrayToolsCleanFiles, Me.cmnuTrayToolsSortFiles, Me.cmnuTrayToolsBackdrops, Me.ToolStripSeparator24, Me.cmnuTrayToolsOfflineHolder, Me.ToolStripSeparator25, Me.cmnuTrayToolsClearCache, Me.cmnuTrayToolsCleanDB, Me.ToolStripSeparator4, Me.cmnuTrayToolsReloadMovies, Me.cmnuTrayToolsReloadMovieSets, Me.cmnuTrayToolsReloadTVShows, Me.ToolStripSeparator26})
-        Me.cmnuTrayTools.Image = CType(resources.GetObject("cmnuTrayTools.Image"),System.Drawing.Image)
+        Me.cmnuTrayTools.Image = CType(resources.GetObject("cmnuTrayTools.Image"), System.Drawing.Image)
         Me.cmnuTrayTools.Name = "cmnuTrayTools"
         Me.cmnuTrayTools.Size = New System.Drawing.Size(194, 22)
         Me.cmnuTrayTools.Text = "Tools"
         '
         'cmnuTrayToolsCleanFiles
         '
-        Me.cmnuTrayToolsCleanFiles.Image = CType(resources.GetObject("cmnuTrayToolsCleanFiles.Image"),System.Drawing.Image)
+        Me.cmnuTrayToolsCleanFiles.Image = CType(resources.GetObject("cmnuTrayToolsCleanFiles.Image"), System.Drawing.Image)
         Me.cmnuTrayToolsCleanFiles.Name = "cmnuTrayToolsCleanFiles"
         Me.cmnuTrayToolsCleanFiles.Size = New System.Drawing.Size(289, 22)
         Me.cmnuTrayToolsCleanFiles.Text = "Clean Files"
         '
         'cmnuTrayToolsSortFiles
         '
-        Me.cmnuTrayToolsSortFiles.Image = CType(resources.GetObject("cmnuTrayToolsSortFiles.Image"),System.Drawing.Image)
+        Me.cmnuTrayToolsSortFiles.Image = CType(resources.GetObject("cmnuTrayToolsSortFiles.Image"), System.Drawing.Image)
         Me.cmnuTrayToolsSortFiles.Name = "cmnuTrayToolsSortFiles"
         Me.cmnuTrayToolsSortFiles.Size = New System.Drawing.Size(289, 22)
         Me.cmnuTrayToolsSortFiles.Text = "Sort Files into Folders"
         '
         'cmnuTrayToolsBackdrops
         '
-        Me.cmnuTrayToolsBackdrops.Image = CType(resources.GetObject("cmnuTrayToolsBackdrops.Image"),System.Drawing.Image)
+        Me.cmnuTrayToolsBackdrops.Image = CType(resources.GetObject("cmnuTrayToolsBackdrops.Image"), System.Drawing.Image)
         Me.cmnuTrayToolsBackdrops.Name = "cmnuTrayToolsBackdrops"
         Me.cmnuTrayToolsBackdrops.Size = New System.Drawing.Size(289, 22)
         Me.cmnuTrayToolsBackdrops.Text = "Copy Existing Fanart to Backdrops Folder"
@@ -8407,7 +8521,7 @@ Partial Class frmMain
         '
         'cmnuTrayToolsOfflineHolder
         '
-        Me.cmnuTrayToolsOfflineHolder.Image = CType(resources.GetObject("cmnuTrayToolsOfflineHolder.Image"),System.Drawing.Image)
+        Me.cmnuTrayToolsOfflineHolder.Image = CType(resources.GetObject("cmnuTrayToolsOfflineHolder.Image"), System.Drawing.Image)
         Me.cmnuTrayToolsOfflineHolder.Name = "cmnuTrayToolsOfflineHolder"
         Me.cmnuTrayToolsOfflineHolder.Size = New System.Drawing.Size(289, 22)
         Me.cmnuTrayToolsOfflineHolder.Text = "Offline Media Manager"
@@ -8419,14 +8533,14 @@ Partial Class frmMain
         '
         'cmnuTrayToolsClearCache
         '
-        Me.cmnuTrayToolsClearCache.Image = CType(resources.GetObject("cmnuTrayToolsClearCache.Image"),System.Drawing.Image)
+        Me.cmnuTrayToolsClearCache.Image = CType(resources.GetObject("cmnuTrayToolsClearCache.Image"), System.Drawing.Image)
         Me.cmnuTrayToolsClearCache.Name = "cmnuTrayToolsClearCache"
         Me.cmnuTrayToolsClearCache.Size = New System.Drawing.Size(289, 22)
         Me.cmnuTrayToolsClearCache.Text = "Clear All Caches"
         '
         'cmnuTrayToolsCleanDB
         '
-        Me.cmnuTrayToolsCleanDB.Image = CType(resources.GetObject("cmnuTrayToolsCleanDB.Image"),System.Drawing.Image)
+        Me.cmnuTrayToolsCleanDB.Image = CType(resources.GetObject("cmnuTrayToolsCleanDB.Image"), System.Drawing.Image)
         Me.cmnuTrayToolsCleanDB.Name = "cmnuTrayToolsCleanDB"
         Me.cmnuTrayToolsCleanDB.Size = New System.Drawing.Size(289, 22)
         Me.cmnuTrayToolsCleanDB.Text = "Clean Database"
@@ -8438,21 +8552,21 @@ Partial Class frmMain
         '
         'cmnuTrayToolsReloadMovies
         '
-        Me.cmnuTrayToolsReloadMovies.Image = CType(resources.GetObject("cmnuTrayToolsReloadMovies.Image"),System.Drawing.Image)
+        Me.cmnuTrayToolsReloadMovies.Image = CType(resources.GetObject("cmnuTrayToolsReloadMovies.Image"), System.Drawing.Image)
         Me.cmnuTrayToolsReloadMovies.Name = "cmnuTrayToolsReloadMovies"
         Me.cmnuTrayToolsReloadMovies.Size = New System.Drawing.Size(289, 22)
         Me.cmnuTrayToolsReloadMovies.Text = "Reload All Movies"
         '
         'cmnuTrayToolsReloadMovieSets
         '
-        Me.cmnuTrayToolsReloadMovieSets.Image = CType(resources.GetObject("cmnuTrayToolsReloadMovieSets.Image"),System.Drawing.Image)
+        Me.cmnuTrayToolsReloadMovieSets.Image = CType(resources.GetObject("cmnuTrayToolsReloadMovieSets.Image"), System.Drawing.Image)
         Me.cmnuTrayToolsReloadMovieSets.Name = "cmnuTrayToolsReloadMovieSets"
         Me.cmnuTrayToolsReloadMovieSets.Size = New System.Drawing.Size(289, 22)
         Me.cmnuTrayToolsReloadMovieSets.Text = "Reload All MovieSets"
         '
         'cmnuTrayToolsReloadTVShows
         '
-        Me.cmnuTrayToolsReloadTVShows.Image = CType(resources.GetObject("cmnuTrayToolsReloadTVShows.Image"),System.Drawing.Image)
+        Me.cmnuTrayToolsReloadTVShows.Image = CType(resources.GetObject("cmnuTrayToolsReloadTVShows.Image"), System.Drawing.Image)
         Me.cmnuTrayToolsReloadTVShows.Name = "cmnuTrayToolsReloadTVShows"
         Me.cmnuTrayToolsReloadTVShows.Size = New System.Drawing.Size(289, 22)
         Me.cmnuTrayToolsReloadTVShows.Text = "Reload All TV Shows"
@@ -8469,7 +8583,7 @@ Partial Class frmMain
         '
         'cmnuTraySettings
         '
-        Me.cmnuTraySettings.Image = CType(resources.GetObject("cmnuTraySettings.Image"),System.Drawing.Image)
+        Me.cmnuTraySettings.Image = CType(resources.GetObject("cmnuTraySettings.Image"), System.Drawing.Image)
         Me.cmnuTraySettings.Name = "cmnuTraySettings"
         Me.cmnuTraySettings.Size = New System.Drawing.Size(194, 22)
         Me.cmnuTraySettings.Text = "Settings..."
@@ -8481,7 +8595,7 @@ Partial Class frmMain
         '
         'cmnuTrayExit
         '
-        Me.cmnuTrayExit.Image = CType(resources.GetObject("cmnuTrayExit.Image"),System.Drawing.Image)
+        Me.cmnuTrayExit.Image = CType(resources.GetObject("cmnuTrayExit.Image"), System.Drawing.Image)
         Me.cmnuTrayExit.Name = "cmnuTrayExit"
         Me.cmnuTrayExit.Size = New System.Drawing.Size(194, 22)
         Me.cmnuTrayExit.Text = "Exit"
@@ -8500,16 +8614,16 @@ Partial Class frmMain
         '
         'pbLoadSettings
         '
-        Me.pbLoadSettings.Image = CType(resources.GetObject("pbLoadSettings.Image"),System.Drawing.Image)
+        Me.pbLoadSettings.Image = CType(resources.GetObject("pbLoadSettings.Image"), System.Drawing.Image)
         Me.pbLoadSettings.Location = New System.Drawing.Point(12, 11)
         Me.pbLoadSettings.Name = "pbLoadSettings"
         Me.pbLoadSettings.Size = New System.Drawing.Size(48, 48)
         Me.pbLoadSettings.TabIndex = 2
-        Me.pbLoadSettings.TabStop = false
+        Me.pbLoadSettings.TabStop = False
         '
         'lblLoadSettings
         '
-        Me.lblLoadSettings.Font = New System.Drawing.Font("Segoe UI", 12!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblLoadSettings.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblLoadSettings.Location = New System.Drawing.Point(63, 11)
         Me.lblLoadSettings.Name = "lblLoadSettings"
         Me.lblLoadSettings.Size = New System.Drawing.Size(175, 48)
@@ -8535,7 +8649,7 @@ Partial Class frmMain
         Me.pnlLoadSettings.Name = "pnlLoadSettings"
         Me.pnlLoadSettings.Size = New System.Drawing.Size(257, 119)
         Me.pnlLoadSettings.TabIndex = 13
-        Me.pnlLoadSettings.Visible = false
+        Me.pnlLoadSettings.Visible = False
         '
         'tmrAppExit
         '
@@ -8573,406 +8687,407 @@ Partial Class frmMain
         '
         'frmMain
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(96!, 96!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.ClientSize = New System.Drawing.Size(1354, 945)
         Me.Controls.Add(Me.pnlLoadSettings)
         Me.Controls.Add(Me.scMain)
         Me.Controls.Add(Me.StatusStrip)
         Me.Controls.Add(Me.mnuMain)
-        Me.DoubleBuffered = true
-        Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.Icon = CType(resources.GetObject("$this.Icon"),System.Drawing.Icon)
+        Me.DoubleBuffered = True
+        Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MainMenuStrip = Me.mnuMain
         Me.MinimumSize = New System.Drawing.Size(800, 700)
         Me.Name = "frmMain"
         Me.Padding = New System.Windows.Forms.Padding(5, 0, 5, 0)
         Me.Text = "Ember Media Manager"
-        Me.StatusStrip.ResumeLayout(false)
-        Me.StatusStrip.PerformLayout
-        Me.mnuMain.ResumeLayout(false)
-        Me.mnuMain.PerformLayout
-        Me.scMain.Panel1.ResumeLayout(false)
-        Me.scMain.Panel1.PerformLayout
-        Me.scMain.Panel2.ResumeLayout(false)
-        Me.scMain.Panel2.PerformLayout
-        CType(Me.scMain,System.ComponentModel.ISupportInitialize).EndInit
-        Me.scMain.ResumeLayout(false)
-        Me.pnlFilterCountries_Movies.ResumeLayout(false)
-        Me.pnlFilterCountries_Movies.PerformLayout
-        Me.pnlFilterCountriesMain_Movies.ResumeLayout(false)
-        Me.pnlFilterCountriesTop_Movies.ResumeLayout(false)
-        Me.pnlFilterCountriesTop_Movies.PerformLayout
-        Me.tblFilterCountriesTop_Movies.ResumeLayout(false)
-        Me.tblFilterCountriesTop_Movies.PerformLayout
-        Me.pnlFilterGenres_Movies.ResumeLayout(false)
-        Me.pnlFilterGenres_Movies.PerformLayout
-        Me.pnlFilterGenresMain_Movies.ResumeLayout(false)
-        Me.pnlFilterGenresTop_Movies.ResumeLayout(false)
-        Me.pnlFilterGenresTop_Movies.PerformLayout
-        Me.tblFilterGenresTop_Movies.ResumeLayout(false)
-        Me.tblFilterGenresTop_Movies.PerformLayout
-        Me.pnlFilterGenres_Shows.ResumeLayout(false)
-        Me.pnlFilterGenres_Shows.PerformLayout
-        Me.pnlFilterGenresMain_Shows.ResumeLayout(false)
-        Me.pnlFilterGenresTop_Shows.ResumeLayout(false)
-        Me.pnlFilterGenresTop_Shows.PerformLayout
-        Me.tblFilterGenresTop_Shows.ResumeLayout(false)
-        Me.tblFilterGenresTop_Shows.PerformLayout
-        Me.pnlFilterDataFields_Movies.ResumeLayout(false)
-        Me.pnlFilterDataFields_Movies.PerformLayout
-        Me.pnlFilterDataFieldsMain_Movies.ResumeLayout(false)
-        Me.pnlFilterDataFieldsTop_Movies.ResumeLayout(false)
-        Me.pnlFilterDataFieldsTop_Movies.PerformLayout
-        Me.tblFilterDataFieldsTop_Movies.ResumeLayout(false)
-        Me.tblFilterDataFieldsTop_Movies.PerformLayout
-        Me.pnlFilterMissingItems_Movies.ResumeLayout(false)
-        Me.pnlFilterMissingItems_Movies.PerformLayout
-        Me.pnlFilterMissingItemsMain_Movies.ResumeLayout(false)
-        Me.pnlFilterMissingItemsMain_Movies.PerformLayout
-        Me.tblFilterMissingItemsMain_Movies.ResumeLayout(false)
-        Me.tblFilterMissingItemsMain_Movies.PerformLayout
-        Me.pnlFilterMissingItemsTop_Movies.ResumeLayout(false)
-        Me.pnlFilterMissingItemsTop_Movies.PerformLayout
-        Me.tblFilterMissingItemsTop_Movies.ResumeLayout(false)
-        Me.tblFilterMissingItemsTop_Movies.PerformLayout
-        Me.pnlFilterMissingItems_MovieSets.ResumeLayout(false)
-        Me.pnlFilterMissingItems_MovieSets.PerformLayout
-        Me.pnlFilterMissingItemsMain_MovieSets.ResumeLayout(false)
-        Me.pnlFilterMissingItemsMain_MovieSets.PerformLayout
-        Me.tlbFilterMissingItemsMain_MovieSets.ResumeLayout(false)
-        Me.tlbFilterMissingItemsMain_MovieSets.PerformLayout
-        Me.pnlFilterMissingItemsTop_MovieSets.ResumeLayout(false)
-        Me.pnlFilterMissingItemsTop_MovieSets.PerformLayout
-        Me.tblFilterMissingItemsTop_MovieSets.ResumeLayout(false)
-        Me.tblFilterMissingItemsTop_MovieSets.PerformLayout
-        Me.pnlFilterMissingItems_Shows.ResumeLayout(false)
-        Me.pnlFilterMissingItems_Shows.PerformLayout
-        Me.pnlFilterMissingItemsMain_Shows.ResumeLayout(false)
-        Me.pnlFilterMissingItemsMain_Shows.PerformLayout
-        Me.tblFilterMissingItemsMain_Shows.ResumeLayout(false)
-        Me.tblFilterMissingItemsMain_Shows.PerformLayout
-        Me.pnlFilterMissingItemsTop_Shows.ResumeLayout(false)
-        Me.pnlFilterMissingItemsTop_Shows.PerformLayout
-        Me.tblFilterMissingItemsTop_Shows.ResumeLayout(false)
-        Me.tblFilterMissingItemsTop_Shows.PerformLayout
-        Me.pnlFilterSources_Movies.ResumeLayout(false)
-        Me.pnlFilterSources_Movies.PerformLayout
-        Me.pnlFilterSourcesMain_Movies.ResumeLayout(false)
-        Me.pnlFilterSourcesTop_Movies.ResumeLayout(false)
-        Me.pnlFilterSourcesTop_Movies.PerformLayout
-        Me.tblFilterSourcesTop_Movies.ResumeLayout(false)
-        Me.tblFilterSourcesTop_Movies.PerformLayout
-        Me.pnlFilterSources_Shows.ResumeLayout(false)
-        Me.pnlFilterSources_Shows.PerformLayout
-        Me.pnlFilterSourcesMain_Shows.ResumeLayout(false)
-        Me.pnlFilterSourcesTop_Shows.ResumeLayout(false)
-        Me.pnlFilterSourcesTop_Shows.PerformLayout
-        Me.tblFilterSourcesTop_Shows.ResumeLayout(false)
-        Me.tblFilterSourcesTop_Shows.PerformLayout
-        CType(Me.dgvMovies,System.ComponentModel.ISupportInitialize).EndInit
-        Me.cmnuMovie.ResumeLayout(false)
-        Me.mnuScrapeType.ResumeLayout(false)
-        Me.mnuScrapeModifier.ResumeLayout(false)
-        CType(Me.dgvMovieSets,System.ComponentModel.ISupportInitialize).EndInit
-        Me.cmnuMovieSet.ResumeLayout(false)
-        Me.scTV.Panel1.ResumeLayout(false)
-        Me.scTV.Panel2.ResumeLayout(false)
-        CType(Me.scTV,System.ComponentModel.ISupportInitialize).EndInit
-        Me.scTV.ResumeLayout(false)
-        CType(Me.dgvTVShows,System.ComponentModel.ISupportInitialize).EndInit
-        Me.cmnuShow.ResumeLayout(false)
-        Me.scTVSeasonsEpisodes.Panel1.ResumeLayout(false)
-        Me.scTVSeasonsEpisodes.Panel2.ResumeLayout(false)
-        CType(Me.scTVSeasonsEpisodes,System.ComponentModel.ISupportInitialize).EndInit
-        Me.scTVSeasonsEpisodes.ResumeLayout(false)
-        CType(Me.dgvTVSeasons,System.ComponentModel.ISupportInitialize).EndInit
-        Me.cmnuSeason.ResumeLayout(false)
-        CType(Me.dgvTVEpisodes,System.ComponentModel.ISupportInitialize).EndInit
-        Me.cmnuEpisode.ResumeLayout(false)
-        Me.pnlListTop.ResumeLayout(false)
-        Me.pnlListTop.PerformLayout
-        Me.tblListTop.ResumeLayout(false)
-        Me.tblListTop.PerformLayout
-        Me.tcMain.ResumeLayout(false)
-        Me.pnlSearchMovies.ResumeLayout(false)
-        Me.pnlSearchMovies.PerformLayout
-        CType(Me.picSearchMovies,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlSearchMovieSets.ResumeLayout(false)
-        Me.pnlSearchMovieSets.PerformLayout
-        CType(Me.picSearchMovieSets,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlSearchTVShows.ResumeLayout(false)
-        Me.pnlSearchTVShows.PerformLayout
-        CType(Me.picSearchTVShows,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlFilter_Movies.ResumeLayout(false)
-        Me.pnlFilter_Movies.PerformLayout
-        Me.tblFilter_Movies.ResumeLayout(false)
-        Me.tblFilter_Movies.PerformLayout
-        Me.gbFilterGeneral_Movies.ResumeLayout(false)
-        Me.gbFilterGeneral_Movies.PerformLayout
-        Me.tblFilterGeneral_Movies.ResumeLayout(false)
-        Me.tblFilterGeneral_Movies.PerformLayout
-        Me.gbFilterSorting_Movies.ResumeLayout(false)
-        Me.gbFilterSorting_Movies.PerformLayout
-        Me.tblFilterSorting_Movies.ResumeLayout(false)
-        Me.tblFilterSorting_Movies.PerformLayout
-        Me.gbFilterSpecific_Movies.ResumeLayout(false)
-        Me.gbFilterSpecific_Movies.PerformLayout
-        Me.tblFilterSpecific_Movies.ResumeLayout(false)
-        Me.tblFilterSpecific_Movies.PerformLayout
-        Me.gbFilterModifier_Movies.ResumeLayout(false)
-        Me.gbFilterModifier_Movies.PerformLayout
-        Me.tblFilterModifier_Movies.ResumeLayout(false)
-        Me.tblFilterModifier_Movies.PerformLayout
-        Me.tblFilterSpecificData_Movies.ResumeLayout(false)
-        Me.tblFilterSpecificData_Movies.PerformLayout
-        Me.gbFilterDataField_Movies.ResumeLayout(false)
-        Me.gbFilterDataField_Movies.PerformLayout
-        Me.tblFilterDataField_Movies.ResumeLayout(false)
-        Me.tblFilterDataField_Movies.PerformLayout
-        Me.gbFilterLists_Movies.ResumeLayout(false)
-        Me.gbFilterLists_Movies.PerformLayout
-        Me.tblFilterLists_Movies.ResumeLayout(false)
-        Me.pnlFilterTop_Movies.ResumeLayout(false)
-        Me.pnlFilterTop_Movies.PerformLayout
-        Me.tblFilterTop_Movies.ResumeLayout(false)
-        Me.tblFilterTop_Movies.PerformLayout
-        Me.pnlFilter_MovieSets.ResumeLayout(false)
-        Me.pnlFilter_MovieSets.PerformLayout
-        Me.tblFilter_MovieSets.ResumeLayout(false)
-        Me.tblFilter_MovieSets.PerformLayout
-        Me.gbFilterLists_MovieSets.ResumeLayout(false)
-        Me.gbFilterLists_MovieSets.PerformLayout
-        Me.tblFilterLists_MovieSets.ResumeLayout(false)
-        Me.gbFilterGeneral_MovieSets.ResumeLayout(false)
-        Me.gbFilterGeneral_MovieSets.PerformLayout
-        Me.tblFilterGeneral_MovieSets.ResumeLayout(false)
-        Me.tblFilterGeneral_MovieSets.PerformLayout
-        Me.gbFilterSpecific_MovieSets.ResumeLayout(false)
-        Me.gbFilterSpecific_MovieSets.PerformLayout
-        Me.tblFilterSpecific_MovieSets.ResumeLayout(false)
-        Me.tblFilterSpecific_MovieSets.PerformLayout
-        Me.gbFilterModifier_MovieSets.ResumeLayout(false)
-        Me.gbFilterModifier_MovieSets.PerformLayout
-        Me.tblFilterModifier_MovieSets.ResumeLayout(false)
-        Me.tblFilterModifier_MovieSets.PerformLayout
-        Me.pnlFilterTop_MovieSets.ResumeLayout(false)
-        Me.pnlFilterTop_MovieSets.PerformLayout
-        Me.tblFilterTop_MovieSets.ResumeLayout(false)
-        Me.tblFilterTop_MovieSets.PerformLayout
-        Me.pnlFilter_Shows.ResumeLayout(false)
-        Me.pnlFilter_Shows.PerformLayout
-        Me.tblFilter_Shows.ResumeLayout(false)
-        Me.tblFilter_Shows.PerformLayout
-        Me.gbFilterSorting_Shows.ResumeLayout(false)
-        Me.gbFilterSorting_Shows.PerformLayout
-        Me.TableLayoutPanel1.ResumeLayout(false)
-        Me.TableLayoutPanel1.PerformLayout
-        Me.gbFilterLists_Shows.ResumeLayout(false)
-        Me.gbFilterLists_Shows.PerformLayout
-        Me.tblFilterLists_Shows.ResumeLayout(false)
-        Me.gbFilterGeneral_Shows.ResumeLayout(false)
-        Me.gbFilterGeneral_Shows.PerformLayout
-        Me.tblFilterGeneral_Shows.ResumeLayout(false)
-        Me.tblFilterGeneral_Shows.PerformLayout
-        Me.gbFilterSpecific_Shows.ResumeLayout(false)
-        Me.gbFilterSpecific_Shows.PerformLayout
-        Me.tblFilterSpecific_Shows.ResumeLayout(false)
-        Me.tblFilterSpecific_Shows.PerformLayout
-        Me.gbFilterModifier_Shows.ResumeLayout(false)
-        Me.gbFilterModifier_Shows.PerformLayout
-        Me.tblFilterModifier_Shows.ResumeLayout(false)
-        Me.tblFilterModifier_Shows.PerformLayout
-        Me.tblFilterSpecificData_Shows.ResumeLayout(false)
-        Me.tblFilterSpecificData_Shows.PerformLayout
-        Me.pnlFilterTop_Shows.ResumeLayout(false)
-        Me.pnlFilterTop_Shows.PerformLayout
-        Me.tblFilterTop_Shows.ResumeLayout(false)
-        Me.tblFilterTop_Shows.PerformLayout
-        Me.pnlCancel.ResumeLayout(false)
-        Me.pnlCancel.PerformLayout
-        Me.pnlNoInfo.ResumeLayout(false)
-        Me.pnlNoInfoBG.ResumeLayout(false)
-        CType(Me.pbNoInfo,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlInfoPanel.ResumeLayout(false)
-        Me.pnlInfoPanel.PerformLayout
-        Me.pnlMoviesInSet.ResumeLayout(false)
-        CType(Me.pbMILoading,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlActors.ResumeLayout(false)
-        CType(Me.pbActLoad,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbActors,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlTop250.ResumeLayout(false)
-        CType(Me.pbTop250,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbBannerCache,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlBanner.ResumeLayout(false)
-        Me.pnlBanner.PerformLayout
-        Me.pnlBannerMain.ResumeLayout(false)
-        Me.pnlBannerMain.PerformLayout
-        Me.tblBannerMain.ResumeLayout(false)
-        CType(Me.pbBanner,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlBannerBottom.ResumeLayout(false)
-        Me.pnlBannerBottom.PerformLayout
-        Me.tblBannerBottom.ResumeLayout(false)
-        Me.tblBannerBottom.PerformLayout
-        Me.pnlBannerTop.ResumeLayout(false)
-        Me.pnlBannerTop.PerformLayout
-        Me.tblBannerTop.ResumeLayout(false)
-        Me.tblBannerTop.PerformLayout
-        CType(Me.pbCache,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlClearLogo.ResumeLayout(false)
-        Me.pnlClearLogo.PerformLayout
-        Me.pnlClearLogoMain.ResumeLayout(false)
-        Me.pnlClearLogoMain.PerformLayout
-        Me.tblClearLogoMain.ResumeLayout(false)
-        CType(Me.pbClearLogo,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlClearLogoBottom.ResumeLayout(false)
-        Me.pnlClearLogoBottom.PerformLayout
-        Me.tblClearLogoBottom.ResumeLayout(false)
-        Me.tblClearLogoBottom.PerformLayout
-        Me.pnlClearLogoTop.ResumeLayout(false)
-        Me.pnlClearLogoTop.PerformLayout
-        Me.tblClearLogoTop.ResumeLayout(false)
-        Me.tblClearLogoTop.PerformLayout
-        Me.pnlCharacterArt.ResumeLayout(false)
-        Me.pnlCharacterArt.PerformLayout
-        Me.pnlCharacterArtMain.ResumeLayout(false)
-        Me.pnlCharacterArtMain.PerformLayout
-        Me.tblCharacterArtMain.ResumeLayout(false)
-        CType(Me.pbCharacterArt,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlCharacterArtBottom.ResumeLayout(false)
-        Me.pnlCharacterArtBottom.PerformLayout
-        Me.tblCharacterArtBottom.ResumeLayout(false)
-        Me.tblCharacterArtBottom.PerformLayout
-        Me.pnlCharacterArtTop.ResumeLayout(false)
-        Me.pnlCharacterArtTop.PerformLayout
-        Me.tblCharacterArtTop.ResumeLayout(false)
-        Me.tblCharacterArtTop.PerformLayout
-        CType(Me.pbCharacterArtCache,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlDiscArt.ResumeLayout(false)
-        Me.pnlDiscArt.PerformLayout
-        Me.pnlDiscArtMain.ResumeLayout(false)
-        Me.pnlDiscArtMain.PerformLayout
-        Me.tblDiscArtMain.ResumeLayout(false)
-        CType(Me.pbDiscArt,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlDiscArtBottom.ResumeLayout(false)
-        Me.pnlDiscArtBottom.PerformLayout
-        Me.tblDiscArtBottom.ResumeLayout(false)
-        Me.tblDiscArtBottom.PerformLayout
-        Me.pnlDiscArtTop.ResumeLayout(false)
-        Me.pnlDiscArtTop.PerformLayout
-        Me.tblDiscArtTop.ResumeLayout(false)
-        Me.tblDiscArtTop.PerformLayout
-        CType(Me.pbDiscArtCache,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbClearLogoCache,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlClearArt.ResumeLayout(false)
-        Me.pnlClearArt.PerformLayout
-        Me.pnlClearArtMain.ResumeLayout(false)
-        Me.pnlClearArtMain.PerformLayout
-        Me.tblClearArtMain.ResumeLayout(false)
-        CType(Me.pbClearArt,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlClearArtBottom.ResumeLayout(false)
-        Me.pnlClearArtBottom.PerformLayout
-        Me.tblClearArtBottom.ResumeLayout(false)
-        Me.tblClearArtBottom.PerformLayout
-        Me.pnlClearArtTop.ResumeLayout(false)
-        Me.pnlClearArtTop.PerformLayout
-        Me.tblClearArtTop.ResumeLayout(false)
-        Me.tblClearArtTop.PerformLayout
-        Me.pnlLandscape.ResumeLayout(false)
-        Me.pnlLandscape.PerformLayout
-        Me.pnlLandscapeMain.ResumeLayout(false)
-        Me.pnlLandscapeMain.PerformLayout
-        Me.tblLandscapeMain.ResumeLayout(false)
-        CType(Me.pbLandscape,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlLandscapeBottom.ResumeLayout(false)
-        Me.pnlLandscapeBottom.PerformLayout
-        Me.tblLandscapeBottom.ResumeLayout(false)
-        Me.tblLandscapeBottom.PerformLayout
-        Me.pnlLandscapeTop.ResumeLayout(false)
-        Me.pnlLandscapeTop.PerformLayout
-        Me.tblLandscapeTop.ResumeLayout(false)
-        Me.tblLandscapeTop.PerformLayout
-        Me.pnlFanartSmall.ResumeLayout(false)
-        Me.pnlFanartSmall.PerformLayout
-        Me.pnlFanartSmallMain.ResumeLayout(false)
-        Me.pnlFanartSmallMain.PerformLayout
-        Me.tblFanartSmallMain.ResumeLayout(false)
-        CType(Me.pbFanartSmall,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlFanartSmallBottom.ResumeLayout(false)
-        Me.pnlFanartSmallBottom.PerformLayout
-        Me.tblFanartSmallBottom.ResumeLayout(false)
-        Me.tblFanartSmallBottom.PerformLayout
-        Me.pnlFanartSmallTop.ResumeLayout(false)
-        Me.pnlFanartSmallTop.PerformLayout
-        Me.tblFanartSmallTop.ResumeLayout(false)
-        Me.tblFanartSmallTop.PerformLayout
-        Me.pnlPoster.ResumeLayout(false)
-        Me.pnlPoster.PerformLayout
-        Me.pnlPosterMain.ResumeLayout(false)
-        Me.pnlPosterMain.PerformLayout
-        Me.tblPosterMain.ResumeLayout(false)
-        CType(Me.pbPoster,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlPosterBottom.ResumeLayout(false)
-        Me.pnlPosterBottom.PerformLayout
-        Me.tblPosterBottom.ResumeLayout(false)
-        Me.tblPosterBottom.PerformLayout
-        Me.pnlPosterTop.ResumeLayout(false)
-        Me.pnlPosterTop.PerformLayout
-        Me.tblPosterTop.ResumeLayout(false)
-        Me.tblPosterTop.PerformLayout
-        Me.pnlTop.ResumeLayout(false)
-        Me.pnlTop.PerformLayout
-        Me.tlpHeader.ResumeLayout(false)
-        Me.tlpHeader.PerformLayout
-        Me.pnlRating.ResumeLayout(false)
-        CType(Me.pbStar10,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbStar9,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbStar8,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbStar7,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbStar6,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbStar5,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbStar4,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbStar3,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbStar2,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbStar1,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlInfoIcons.ResumeLayout(false)
-        CType(Me.pbSubtitleLang6,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbSubtitleLang5,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbSubtitleLang4,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbSubtitleLang3,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbSubtitleLang2,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbSubtitleLang1,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbSubtitleLang0,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbAudioLang6,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbAudioLang5,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbAudioLang4,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbAudioLang3,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbAudioLang2,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbAudioLang1,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbAudioLang0,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbVType,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbStudio,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbVideo,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbAudio,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbResolution,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbChannels,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbPosterCache,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbFanartSmallCache,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbLandscapeCache,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbClearArtCache,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlMPAA.ResumeLayout(false)
-        Me.pnlMPAA.PerformLayout
-        CType(Me.pbMPAA,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbFanartCache,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.pbFanart,System.ComponentModel.ISupportInitialize).EndInit
-        Me.tsMain.ResumeLayout(false)
-        Me.tsMain.PerformLayout
-        Me.mnuScrapeSubmenu.ResumeLayout(false)
-        Me.cmnuTray.ResumeLayout(false)
-        Me.pnlLoadSettingsBG.ResumeLayout(false)
-        CType(Me.pbLoadSettings,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlLoadSettings.ResumeLayout(false)
-        Me.ResumeLayout(false)
+        Me.StatusStrip.ResumeLayout(False)
+        Me.StatusStrip.PerformLayout()
+        Me.mnuMain.ResumeLayout(False)
+        Me.mnuMain.PerformLayout()
+        Me.scMain.Panel1.ResumeLayout(False)
+        Me.scMain.Panel1.PerformLayout()
+        Me.scMain.Panel2.ResumeLayout(False)
+        Me.scMain.Panel2.PerformLayout()
+        CType(Me.scMain, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.scMain.ResumeLayout(False)
+        Me.pnlFilterCountries_Movies.ResumeLayout(False)
+        Me.pnlFilterCountries_Movies.PerformLayout()
+        Me.pnlFilterCountriesMain_Movies.ResumeLayout(False)
+        Me.pnlFilterCountriesTop_Movies.ResumeLayout(False)
+        Me.pnlFilterCountriesTop_Movies.PerformLayout()
+        Me.tblFilterCountriesTop_Movies.ResumeLayout(False)
+        Me.tblFilterCountriesTop_Movies.PerformLayout()
+        Me.pnlFilterGenres_Movies.ResumeLayout(False)
+        Me.pnlFilterGenres_Movies.PerformLayout()
+        Me.pnlFilterGenresMain_Movies.ResumeLayout(False)
+        Me.pnlFilterGenresTop_Movies.ResumeLayout(False)
+        Me.pnlFilterGenresTop_Movies.PerformLayout()
+        Me.tblFilterGenresTop_Movies.ResumeLayout(False)
+        Me.tblFilterGenresTop_Movies.PerformLayout()
+        Me.pnlFilterGenres_Shows.ResumeLayout(False)
+        Me.pnlFilterGenres_Shows.PerformLayout()
+        Me.pnlFilterGenresMain_Shows.ResumeLayout(False)
+        Me.pnlFilterGenresTop_Shows.ResumeLayout(False)
+        Me.pnlFilterGenresTop_Shows.PerformLayout()
+        Me.tblFilterGenresTop_Shows.ResumeLayout(False)
+        Me.tblFilterGenresTop_Shows.PerformLayout()
+        Me.pnlFilterDataFields_Movies.ResumeLayout(False)
+        Me.pnlFilterDataFields_Movies.PerformLayout()
+        Me.pnlFilterDataFieldsMain_Movies.ResumeLayout(False)
+        Me.pnlFilterDataFieldsTop_Movies.ResumeLayout(False)
+        Me.pnlFilterDataFieldsTop_Movies.PerformLayout()
+        Me.tblFilterDataFieldsTop_Movies.ResumeLayout(False)
+        Me.tblFilterDataFieldsTop_Movies.PerformLayout()
+        Me.pnlFilterMissingItems_Movies.ResumeLayout(False)
+        Me.pnlFilterMissingItems_Movies.PerformLayout()
+        Me.pnlFilterMissingItemsMain_Movies.ResumeLayout(False)
+        Me.pnlFilterMissingItemsMain_Movies.PerformLayout()
+        Me.tblFilterMissingItemsMain_Movies.ResumeLayout(False)
+        Me.tblFilterMissingItemsMain_Movies.PerformLayout()
+        Me.pnlFilterMissingItemsTop_Movies.ResumeLayout(False)
+        Me.pnlFilterMissingItemsTop_Movies.PerformLayout()
+        Me.tblFilterMissingItemsTop_Movies.ResumeLayout(False)
+        Me.tblFilterMissingItemsTop_Movies.PerformLayout()
+        Me.pnlFilterMissingItems_MovieSets.ResumeLayout(False)
+        Me.pnlFilterMissingItems_MovieSets.PerformLayout()
+        Me.pnlFilterMissingItemsMain_MovieSets.ResumeLayout(False)
+        Me.pnlFilterMissingItemsMain_MovieSets.PerformLayout()
+        Me.tlbFilterMissingItemsMain_MovieSets.ResumeLayout(False)
+        Me.tlbFilterMissingItemsMain_MovieSets.PerformLayout()
+        Me.pnlFilterMissingItemsTop_MovieSets.ResumeLayout(False)
+        Me.pnlFilterMissingItemsTop_MovieSets.PerformLayout()
+        Me.tblFilterMissingItemsTop_MovieSets.ResumeLayout(False)
+        Me.tblFilterMissingItemsTop_MovieSets.PerformLayout()
+        Me.pnlFilterMissingItems_Shows.ResumeLayout(False)
+        Me.pnlFilterMissingItems_Shows.PerformLayout()
+        Me.pnlFilterMissingItemsMain_Shows.ResumeLayout(False)
+        Me.pnlFilterMissingItemsMain_Shows.PerformLayout()
+        Me.tblFilterMissingItemsMain_Shows.ResumeLayout(False)
+        Me.tblFilterMissingItemsMain_Shows.PerformLayout()
+        Me.pnlFilterMissingItemsTop_Shows.ResumeLayout(False)
+        Me.pnlFilterMissingItemsTop_Shows.PerformLayout()
+        Me.tblFilterMissingItemsTop_Shows.ResumeLayout(False)
+        Me.tblFilterMissingItemsTop_Shows.PerformLayout()
+        Me.pnlFilterSources_Movies.ResumeLayout(False)
+        Me.pnlFilterSources_Movies.PerformLayout()
+        Me.pnlFilterSourcesMain_Movies.ResumeLayout(False)
+        Me.pnlFilterSourcesTop_Movies.ResumeLayout(False)
+        Me.pnlFilterSourcesTop_Movies.PerformLayout()
+        Me.tblFilterSourcesTop_Movies.ResumeLayout(False)
+        Me.tblFilterSourcesTop_Movies.PerformLayout()
+        Me.pnlFilterSources_Shows.ResumeLayout(False)
+        Me.pnlFilterSources_Shows.PerformLayout()
+        Me.pnlFilterSourcesMain_Shows.ResumeLayout(False)
+        Me.pnlFilterSourcesTop_Shows.ResumeLayout(False)
+        Me.pnlFilterSourcesTop_Shows.PerformLayout()
+        Me.tblFilterSourcesTop_Shows.ResumeLayout(False)
+        Me.tblFilterSourcesTop_Shows.PerformLayout()
+        CType(Me.dgvMovies, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.cmnuMovie.ResumeLayout(False)
+        Me.mnuScrapeType.ResumeLayout(False)
+        Me.mnuScrapeModifier.ResumeLayout(False)
+        Me.mnuScrapeOption.ResumeLayout(False)
+        CType(Me.dgvMovieSets, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.cmnuMovieSet.ResumeLayout(False)
+        Me.scTV.Panel1.ResumeLayout(False)
+        Me.scTV.Panel2.ResumeLayout(False)
+        CType(Me.scTV, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.scTV.ResumeLayout(False)
+        CType(Me.dgvTVShows, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.cmnuShow.ResumeLayout(False)
+        Me.scTVSeasonsEpisodes.Panel1.ResumeLayout(False)
+        Me.scTVSeasonsEpisodes.Panel2.ResumeLayout(False)
+        CType(Me.scTVSeasonsEpisodes, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.scTVSeasonsEpisodes.ResumeLayout(False)
+        CType(Me.dgvTVSeasons, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.cmnuSeason.ResumeLayout(False)
+        CType(Me.dgvTVEpisodes, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.cmnuEpisode.ResumeLayout(False)
+        Me.pnlListTop.ResumeLayout(False)
+        Me.pnlListTop.PerformLayout()
+        Me.tblListTop.ResumeLayout(False)
+        Me.tblListTop.PerformLayout()
+        Me.tcMain.ResumeLayout(False)
+        Me.pnlSearchMovies.ResumeLayout(False)
+        Me.pnlSearchMovies.PerformLayout()
+        CType(Me.picSearchMovies, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlSearchMovieSets.ResumeLayout(False)
+        Me.pnlSearchMovieSets.PerformLayout()
+        CType(Me.picSearchMovieSets, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlSearchTVShows.ResumeLayout(False)
+        Me.pnlSearchTVShows.PerformLayout()
+        CType(Me.picSearchTVShows, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlFilter_Movies.ResumeLayout(False)
+        Me.pnlFilter_Movies.PerformLayout()
+        Me.tblFilter_Movies.ResumeLayout(False)
+        Me.tblFilter_Movies.PerformLayout()
+        Me.gbFilterGeneral_Movies.ResumeLayout(False)
+        Me.gbFilterGeneral_Movies.PerformLayout()
+        Me.tblFilterGeneral_Movies.ResumeLayout(False)
+        Me.tblFilterGeneral_Movies.PerformLayout()
+        Me.gbFilterSorting_Movies.ResumeLayout(False)
+        Me.gbFilterSorting_Movies.PerformLayout()
+        Me.tblFilterSorting_Movies.ResumeLayout(False)
+        Me.tblFilterSorting_Movies.PerformLayout()
+        Me.gbFilterSpecific_Movies.ResumeLayout(False)
+        Me.gbFilterSpecific_Movies.PerformLayout()
+        Me.tblFilterSpecific_Movies.ResumeLayout(False)
+        Me.tblFilterSpecific_Movies.PerformLayout()
+        Me.gbFilterModifier_Movies.ResumeLayout(False)
+        Me.gbFilterModifier_Movies.PerformLayout()
+        Me.tblFilterModifier_Movies.ResumeLayout(False)
+        Me.tblFilterModifier_Movies.PerformLayout()
+        Me.tblFilterSpecificData_Movies.ResumeLayout(False)
+        Me.tblFilterSpecificData_Movies.PerformLayout()
+        Me.gbFilterDataField_Movies.ResumeLayout(False)
+        Me.gbFilterDataField_Movies.PerformLayout()
+        Me.tblFilterDataField_Movies.ResumeLayout(False)
+        Me.tblFilterDataField_Movies.PerformLayout()
+        Me.gbFilterLists_Movies.ResumeLayout(False)
+        Me.gbFilterLists_Movies.PerformLayout()
+        Me.tblFilterLists_Movies.ResumeLayout(False)
+        Me.pnlFilterTop_Movies.ResumeLayout(False)
+        Me.pnlFilterTop_Movies.PerformLayout()
+        Me.tblFilterTop_Movies.ResumeLayout(False)
+        Me.tblFilterTop_Movies.PerformLayout()
+        Me.pnlFilter_MovieSets.ResumeLayout(False)
+        Me.pnlFilter_MovieSets.PerformLayout()
+        Me.tblFilter_MovieSets.ResumeLayout(False)
+        Me.tblFilter_MovieSets.PerformLayout()
+        Me.gbFilterLists_MovieSets.ResumeLayout(False)
+        Me.gbFilterLists_MovieSets.PerformLayout()
+        Me.tblFilterLists_MovieSets.ResumeLayout(False)
+        Me.gbFilterGeneral_MovieSets.ResumeLayout(False)
+        Me.gbFilterGeneral_MovieSets.PerformLayout()
+        Me.tblFilterGeneral_MovieSets.ResumeLayout(False)
+        Me.tblFilterGeneral_MovieSets.PerformLayout()
+        Me.gbFilterSpecific_MovieSets.ResumeLayout(False)
+        Me.gbFilterSpecific_MovieSets.PerformLayout()
+        Me.tblFilterSpecific_MovieSets.ResumeLayout(False)
+        Me.tblFilterSpecific_MovieSets.PerformLayout()
+        Me.gbFilterModifier_MovieSets.ResumeLayout(False)
+        Me.gbFilterModifier_MovieSets.PerformLayout()
+        Me.tblFilterModifier_MovieSets.ResumeLayout(False)
+        Me.tblFilterModifier_MovieSets.PerformLayout()
+        Me.pnlFilterTop_MovieSets.ResumeLayout(False)
+        Me.pnlFilterTop_MovieSets.PerformLayout()
+        Me.tblFilterTop_MovieSets.ResumeLayout(False)
+        Me.tblFilterTop_MovieSets.PerformLayout()
+        Me.pnlFilter_Shows.ResumeLayout(False)
+        Me.pnlFilter_Shows.PerformLayout()
+        Me.tblFilter_Shows.ResumeLayout(False)
+        Me.tblFilter_Shows.PerformLayout()
+        Me.gbFilterSorting_Shows.ResumeLayout(False)
+        Me.gbFilterSorting_Shows.PerformLayout()
+        Me.TableLayoutPanel1.ResumeLayout(False)
+        Me.TableLayoutPanel1.PerformLayout()
+        Me.gbFilterLists_Shows.ResumeLayout(False)
+        Me.gbFilterLists_Shows.PerformLayout()
+        Me.tblFilterLists_Shows.ResumeLayout(False)
+        Me.gbFilterGeneral_Shows.ResumeLayout(False)
+        Me.gbFilterGeneral_Shows.PerformLayout()
+        Me.tblFilterGeneral_Shows.ResumeLayout(False)
+        Me.tblFilterGeneral_Shows.PerformLayout()
+        Me.gbFilterSpecific_Shows.ResumeLayout(False)
+        Me.gbFilterSpecific_Shows.PerformLayout()
+        Me.tblFilterSpecific_Shows.ResumeLayout(False)
+        Me.tblFilterSpecific_Shows.PerformLayout()
+        Me.gbFilterModifier_Shows.ResumeLayout(False)
+        Me.gbFilterModifier_Shows.PerformLayout()
+        Me.tblFilterModifier_Shows.ResumeLayout(False)
+        Me.tblFilterModifier_Shows.PerformLayout()
+        Me.tblFilterSpecificData_Shows.ResumeLayout(False)
+        Me.tblFilterSpecificData_Shows.PerformLayout()
+        Me.pnlFilterTop_Shows.ResumeLayout(False)
+        Me.pnlFilterTop_Shows.PerformLayout()
+        Me.tblFilterTop_Shows.ResumeLayout(False)
+        Me.tblFilterTop_Shows.PerformLayout()
+        Me.pnlCancel.ResumeLayout(False)
+        Me.pnlCancel.PerformLayout()
+        Me.pnlNoInfo.ResumeLayout(False)
+        Me.pnlNoInfoBG.ResumeLayout(False)
+        CType(Me.pbNoInfo, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlInfoPanel.ResumeLayout(False)
+        Me.pnlInfoPanel.PerformLayout()
+        Me.pnlMoviesInSet.ResumeLayout(False)
+        CType(Me.pbMILoading, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlActors.ResumeLayout(False)
+        CType(Me.pbActLoad, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbActors, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlTop250.ResumeLayout(False)
+        CType(Me.pbTop250, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbBannerCache, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlBanner.ResumeLayout(False)
+        Me.pnlBanner.PerformLayout()
+        Me.pnlBannerMain.ResumeLayout(False)
+        Me.pnlBannerMain.PerformLayout()
+        Me.tblBannerMain.ResumeLayout(False)
+        CType(Me.pbBanner, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlBannerBottom.ResumeLayout(False)
+        Me.pnlBannerBottom.PerformLayout()
+        Me.tblBannerBottom.ResumeLayout(False)
+        Me.tblBannerBottom.PerformLayout()
+        Me.pnlBannerTop.ResumeLayout(False)
+        Me.pnlBannerTop.PerformLayout()
+        Me.tblBannerTop.ResumeLayout(False)
+        Me.tblBannerTop.PerformLayout()
+        CType(Me.pbCache, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlClearLogo.ResumeLayout(False)
+        Me.pnlClearLogo.PerformLayout()
+        Me.pnlClearLogoMain.ResumeLayout(False)
+        Me.pnlClearLogoMain.PerformLayout()
+        Me.tblClearLogoMain.ResumeLayout(False)
+        CType(Me.pbClearLogo, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlClearLogoBottom.ResumeLayout(False)
+        Me.pnlClearLogoBottom.PerformLayout()
+        Me.tblClearLogoBottom.ResumeLayout(False)
+        Me.tblClearLogoBottom.PerformLayout()
+        Me.pnlClearLogoTop.ResumeLayout(False)
+        Me.pnlClearLogoTop.PerformLayout()
+        Me.tblClearLogoTop.ResumeLayout(False)
+        Me.tblClearLogoTop.PerformLayout()
+        Me.pnlCharacterArt.ResumeLayout(False)
+        Me.pnlCharacterArt.PerformLayout()
+        Me.pnlCharacterArtMain.ResumeLayout(False)
+        Me.pnlCharacterArtMain.PerformLayout()
+        Me.tblCharacterArtMain.ResumeLayout(False)
+        CType(Me.pbCharacterArt, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlCharacterArtBottom.ResumeLayout(False)
+        Me.pnlCharacterArtBottom.PerformLayout()
+        Me.tblCharacterArtBottom.ResumeLayout(False)
+        Me.tblCharacterArtBottom.PerformLayout()
+        Me.pnlCharacterArtTop.ResumeLayout(False)
+        Me.pnlCharacterArtTop.PerformLayout()
+        Me.tblCharacterArtTop.ResumeLayout(False)
+        Me.tblCharacterArtTop.PerformLayout()
+        CType(Me.pbCharacterArtCache, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlDiscArt.ResumeLayout(False)
+        Me.pnlDiscArt.PerformLayout()
+        Me.pnlDiscArtMain.ResumeLayout(False)
+        Me.pnlDiscArtMain.PerformLayout()
+        Me.tblDiscArtMain.ResumeLayout(False)
+        CType(Me.pbDiscArt, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlDiscArtBottom.ResumeLayout(False)
+        Me.pnlDiscArtBottom.PerformLayout()
+        Me.tblDiscArtBottom.ResumeLayout(False)
+        Me.tblDiscArtBottom.PerformLayout()
+        Me.pnlDiscArtTop.ResumeLayout(False)
+        Me.pnlDiscArtTop.PerformLayout()
+        Me.tblDiscArtTop.ResumeLayout(False)
+        Me.tblDiscArtTop.PerformLayout()
+        CType(Me.pbDiscArtCache, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbClearLogoCache, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlClearArt.ResumeLayout(False)
+        Me.pnlClearArt.PerformLayout()
+        Me.pnlClearArtMain.ResumeLayout(False)
+        Me.pnlClearArtMain.PerformLayout()
+        Me.tblClearArtMain.ResumeLayout(False)
+        CType(Me.pbClearArt, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlClearArtBottom.ResumeLayout(False)
+        Me.pnlClearArtBottom.PerformLayout()
+        Me.tblClearArtBottom.ResumeLayout(False)
+        Me.tblClearArtBottom.PerformLayout()
+        Me.pnlClearArtTop.ResumeLayout(False)
+        Me.pnlClearArtTop.PerformLayout()
+        Me.tblClearArtTop.ResumeLayout(False)
+        Me.tblClearArtTop.PerformLayout()
+        Me.pnlLandscape.ResumeLayout(False)
+        Me.pnlLandscape.PerformLayout()
+        Me.pnlLandscapeMain.ResumeLayout(False)
+        Me.pnlLandscapeMain.PerformLayout()
+        Me.tblLandscapeMain.ResumeLayout(False)
+        CType(Me.pbLandscape, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlLandscapeBottom.ResumeLayout(False)
+        Me.pnlLandscapeBottom.PerformLayout()
+        Me.tblLandscapeBottom.ResumeLayout(False)
+        Me.tblLandscapeBottom.PerformLayout()
+        Me.pnlLandscapeTop.ResumeLayout(False)
+        Me.pnlLandscapeTop.PerformLayout()
+        Me.tblLandscapeTop.ResumeLayout(False)
+        Me.tblLandscapeTop.PerformLayout()
+        Me.pnlFanartSmall.ResumeLayout(False)
+        Me.pnlFanartSmall.PerformLayout()
+        Me.pnlFanartSmallMain.ResumeLayout(False)
+        Me.pnlFanartSmallMain.PerformLayout()
+        Me.tblFanartSmallMain.ResumeLayout(False)
+        CType(Me.pbFanartSmall, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlFanartSmallBottom.ResumeLayout(False)
+        Me.pnlFanartSmallBottom.PerformLayout()
+        Me.tblFanartSmallBottom.ResumeLayout(False)
+        Me.tblFanartSmallBottom.PerformLayout()
+        Me.pnlFanartSmallTop.ResumeLayout(False)
+        Me.pnlFanartSmallTop.PerformLayout()
+        Me.tblFanartSmallTop.ResumeLayout(False)
+        Me.tblFanartSmallTop.PerformLayout()
+        Me.pnlPoster.ResumeLayout(False)
+        Me.pnlPoster.PerformLayout()
+        Me.pnlPosterMain.ResumeLayout(False)
+        Me.pnlPosterMain.PerformLayout()
+        Me.tblPosterMain.ResumeLayout(False)
+        CType(Me.pbPoster, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlPosterBottom.ResumeLayout(False)
+        Me.pnlPosterBottom.PerformLayout()
+        Me.tblPosterBottom.ResumeLayout(False)
+        Me.tblPosterBottom.PerformLayout()
+        Me.pnlPosterTop.ResumeLayout(False)
+        Me.pnlPosterTop.PerformLayout()
+        Me.tblPosterTop.ResumeLayout(False)
+        Me.tblPosterTop.PerformLayout()
+        Me.pnlTop.ResumeLayout(False)
+        Me.pnlTop.PerformLayout()
+        Me.tlpHeader.ResumeLayout(False)
+        Me.tlpHeader.PerformLayout()
+        Me.pnlRating.ResumeLayout(False)
+        CType(Me.pbStar10, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbStar9, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbStar8, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbStar7, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbStar6, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbStar5, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbStar4, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbStar3, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbStar2, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbStar1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlInfoIcons.ResumeLayout(False)
+        CType(Me.pbSubtitleLang6, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbSubtitleLang5, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbSubtitleLang4, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbSubtitleLang3, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbSubtitleLang2, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbSubtitleLang1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbSubtitleLang0, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbAudioLang6, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbAudioLang5, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbAudioLang4, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbAudioLang3, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbAudioLang2, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbAudioLang1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbAudioLang0, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbVType, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbStudio, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbVideo, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbAudio, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbResolution, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbChannels, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbPosterCache, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbFanartSmallCache, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbLandscapeCache, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbClearArtCache, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlMPAA.ResumeLayout(False)
+        Me.pnlMPAA.PerformLayout()
+        CType(Me.pbMPAA, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbFanartCache, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbFanart, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.tsMain.ResumeLayout(False)
+        Me.tsMain.PerformLayout()
+        Me.mnuScrapeSubmenu.ResumeLayout(False)
+        Me.cmnuTray.ResumeLayout(False)
+        Me.pnlLoadSettingsBG.ResumeLayout(False)
+        CType(Me.pbLoadSettings, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlLoadSettings.ResumeLayout(False)
+        Me.ResumeLayout(False)
         Me.PerformLayout
 
 End Sub
@@ -9006,8 +9121,8 @@ End Sub
     Friend WithEvents lblFilePathHeader As System.Windows.Forms.Label
     Friend WithEvents txtIMDBID As System.Windows.Forms.TextBox
     Friend WithEvents lblIMDBHeader As System.Windows.Forms.Label
-    Friend WithEvents lblDirector As System.Windows.Forms.Label
-    Friend WithEvents lblDirectorHeader As System.Windows.Forms.Label
+    Friend WithEvents lblDirectors As System.Windows.Forms.Label
+    Friend WithEvents lblDirectorsHeader As System.Windows.Forms.Label
     Friend WithEvents pnlActors As System.Windows.Forms.Panel
     Friend WithEvents pbActLoad As System.Windows.Forms.PictureBox
     Friend WithEvents lstActors As System.Windows.Forms.ListBox
@@ -9031,8 +9146,8 @@ End Sub
     Friend WithEvents mnuScrapeMovies As System.Windows.Forms.ToolStripDropDownButton
     Friend WithEvents btnMid As System.Windows.Forms.Button
     Friend WithEvents pbPosterCache As System.Windows.Forms.PictureBox
-    Friend WithEvents txtCerts As System.Windows.Forms.TextBox
-    Friend WithEvents lblCertsHeader As System.Windows.Forms.Label
+    Friend WithEvents txtCertifications As System.Windows.Forms.TextBox
+    Friend WithEvents lblCertificationsHeader As System.Windows.Forms.Label
     Friend WithEvents lblReleaseDate As System.Windows.Forms.Label
     Friend WithEvents lblReleaseDateHeader As System.Windows.Forms.Label
     Friend WithEvents ilColumnIcons As System.Windows.Forms.ImageList
@@ -9261,8 +9376,7 @@ End Sub
     Friend WithEvents cmnuTrayToolsOfflineHolder As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuVersion As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuShowRefresh As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieUpSel As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieUpSelRating As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmnuMovieSingleDataField As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents tpMovieSets As System.Windows.Forms.TabPage
     Friend WithEvents dgvMovieSets As System.Windows.Forms.DataGridView
     Friend WithEvents dgvMovies As System.Windows.Forms.DataGridView
@@ -9288,20 +9402,6 @@ End Sub
     Friend WithEvents cmnuMovieMarkAsCustom2 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuMovieMarkAsCustom3 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuMovieMarkAsCustom4 As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieUpSelTrailer As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieUpSelCert As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieUpSelCountry As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieUpSelDirector As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieUpSelMPAA As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieUpSelOutline As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieUpSelPlot As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieUpSelRelease As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieUpSelStudio As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieUpSelTagline As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieUpSelTitle As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieUpSelTop250 As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieUpSelWriter As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieUpSelYear As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuMovieSetSep3 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents cmnuMovieSetRescrape As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuShowLanguage As System.Windows.Forms.ToolStripMenuItem
@@ -9511,10 +9611,6 @@ End Sub
     Friend WithEvents chkShowMissingCharacterArt As System.Windows.Forms.CheckBox
     Friend WithEvents chkShowMissingTheme As System.Windows.Forms.CheckBox
     Friend WithEvents chkFilterNewEpisodes_Shows As System.Windows.Forms.CheckBox
-    Friend WithEvents cmnuMovieUpSelActors As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieUpSelGenre As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieUpSelOriginalTitle As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents cmnuMovieUpSelRuntime As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents pnlPosterBottom As System.Windows.Forms.Panel
     Friend WithEvents tblPosterBottom As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents lblPosterSize As System.Windows.Forms.Label
@@ -9598,7 +9694,6 @@ End Sub
     Friend WithEvents tblBannerTop As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents lblBannerTitle As System.Windows.Forms.Label
     Friend WithEvents pbBannerCache As System.Windows.Forms.PictureBox
-    Friend WithEvents cmnuMovieUpSelCollectionID As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuShowClearCache As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuShowClearCacheDataOnly As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuShowClearCacheImagesOnly As System.Windows.Forms.ToolStripMenuItem
@@ -9673,4 +9768,35 @@ End Sub
     Friend WithEvents cmnuMovieSetLanguage As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents cmnuMovieSetLanguageLanguages As System.Windows.Forms.ToolStripComboBox
     Friend WithEvents cmnuMovieSetLanguageSet As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents mnuScrapeOption As ContextMenuStrip
+    Friend WithEvents mnuScrapeOptionActors As ToolStripMenuItem
+    Friend WithEvents mnuScrapeOptionCertifications As ToolStripMenuItem
+    Friend WithEvents mnuScrapeOptionCollectionID As ToolStripMenuItem
+    Friend WithEvents mnuScrapeOptionCountries As ToolStripMenuItem
+    Friend WithEvents mnuScrapeOptionDirectors As ToolStripMenuItem
+    Friend WithEvents mnuScrapeOptionGenres As ToolStripMenuItem
+    Friend WithEvents mnuScrapeOptionMPAA As ToolStripMenuItem
+    Friend WithEvents mnuScrapeOptionOriginalTitle As ToolStripMenuItem
+    Friend WithEvents mnuScrapeOptionPlot As ToolStripMenuItem
+    Friend WithEvents mnuScrapeOptionRating As ToolStripMenuItem
+    Friend WithEvents mnuScrapeOptionReleaseDate As ToolStripMenuItem
+    Friend WithEvents mnuScrapeOptionRuntime As ToolStripMenuItem
+    Friend WithEvents mnuScrapeOptionStudios As ToolStripMenuItem
+    Friend WithEvents mnuScrapeOptionTagline As ToolStripMenuItem
+    Friend WithEvents mnuScrapeOptionTitle As ToolStripMenuItem
+    Friend WithEvents mnuScrapeOptionTop250 As ToolStripMenuItem
+    Friend WithEvents mnuScrapeOptionTrailer As ToolStripMenuItem
+    Friend WithEvents mnuScrapeOptionWriters As ToolStripMenuItem
+    Friend WithEvents mnuScrapeOptionYear As ToolStripMenuItem
+    Friend WithEvents mnuScrapeOptionOutline As ToolStripMenuItem
+    Friend WithEvents cmnuMovieSetSingleDataField As ToolStripMenuItem
+    Friend WithEvents cmnuEpisodeSingleDataField As ToolStripMenuItem
+    Friend WithEvents cmnuShowSingleDataField As ToolStripMenuItem
+    Friend WithEvents cmnuSeasonSingleDataField As ToolStripMenuItem
+    Friend WithEvents mnuScrapeOptionCreators As ToolStripMenuItem
+    Friend WithEvents mnuScrapeOptionGuestStars As ToolStripMenuItem
+    Friend WithEvents mnuScrapeOptionPremiered As ToolStripMenuItem
+    Friend WithEvents mnuScrapeOptionStatus As ToolStripMenuItem
+    Friend WithEvents mnuScrapeOptionAired As ToolStripMenuItem
+    Friend WithEvents mnuScrapeOptionEpiGuideURL As ToolStripMenuItem
 End Class

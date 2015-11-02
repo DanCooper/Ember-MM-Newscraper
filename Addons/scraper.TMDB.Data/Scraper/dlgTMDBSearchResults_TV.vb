@@ -199,7 +199,7 @@ Public Class dlgTMDBSearchResults_TV
 
     Private Sub ControlsVisible(ByVal areVisible As Boolean)
         Me.lblAiredHeader.Visible = areVisible
-        Me.lblCreatorHeader.Visible = areVisible
+        Me.lblCreatorsHeader.Visible = areVisible
         Me.lblGenreHeader.Visible = areVisible
         Me.lblPlotHeader.Visible = areVisible
         Me.lblTMDBHeader.Visible = areVisible
@@ -325,7 +325,7 @@ Public Class dlgTMDBSearchResults_TV
         Me.chkManual.Text = Master.eLang.GetString(926, "Manual TMDB Entry:")
         Me.btnVerify.Text = Master.eLang.GetString(848, "Verify")
         Me.lblAiredHeader.Text = String.Concat(Master.eLang.GetString(728, "Aired"), ":")
-        Me.lblCreatorHeader.Text = String.Concat(Master.eLang.GetString(744, "Creator(s)"), ":")
+        Me.lblCreatorsHeader.Text = String.Concat(Master.eLang.GetString(744, "Creators"), ":")
         Me.lblGenreHeader.Text = Master.eLang.GetString(51, "Genre(s):")
         Me.lblTMDBHeader.Text = String.Concat(Master.eLang.GetString(933, "TMDB ID"), ":")
         Me.lblPlotHeader.Text = Master.eLang.GetString(242, "Plot Outline:")

@@ -25,7 +25,7 @@ Partial Class frmSettingsHolder
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmSettingsHolder))
         Me.gbScraperFieldsOpts = New System.Windows.Forms.GroupBox()
         Me.tblScraperFieldsOpts = New System.Windows.Forms.TableLayoutPanel()
-        Me.chkCertification = New System.Windows.Forms.CheckBox()
+        Me.chkCertifications = New System.Windows.Forms.CheckBox()
         Me.chkOutline = New System.Windows.Forms.CheckBox()
         Me.chkPlot = New System.Windows.Forms.CheckBox()
         Me.chkEnabled = New System.Windows.Forms.CheckBox()
@@ -73,7 +73,7 @@ Partial Class frmSettingsHolder
         Me.tblScraperFieldsOpts.ColumnCount = 2
         Me.tblScraperFieldsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblScraperFieldsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkCertification, 0, 2)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkCertifications, 0, 2)
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkOutline, 0, 1)
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkPlot, 0, 0)
         Me.tblScraperFieldsOpts.Dock = System.Windows.Forms.DockStyle.Fill
@@ -87,17 +87,17 @@ Partial Class frmSettingsHolder
         Me.tblScraperFieldsOpts.Size = New System.Drawing.Size(194, 69)
         Me.tblScraperFieldsOpts.TabIndex = 97
         '
-        'chkCertification
+        'chkCertifications
         '
-        Me.chkCertification.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkCertification.AutoSize = True
-        Me.chkCertification.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCertification.Location = New System.Drawing.Point(3, 49)
-        Me.chkCertification.Name = "chkCertification"
-        Me.chkCertification.Size = New System.Drawing.Size(89, 17)
-        Me.chkCertification.TabIndex = 0
-        Me.chkCertification.Text = "Certification"
-        Me.chkCertification.UseVisualStyleBackColor = True
+        Me.chkCertifications.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkCertifications.AutoSize = True
+        Me.chkCertifications.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkCertifications.Location = New System.Drawing.Point(3, 49)
+        Me.chkCertifications.Name = "chkCertifications"
+        Me.chkCertifications.Size = New System.Drawing.Size(94, 17)
+        Me.chkCertifications.TabIndex = 0
+        Me.chkCertifications.Text = "Certifications"
+        Me.chkCertifications.UseVisualStyleBackColor = True
         '
         'chkOutline
         '
@@ -260,7 +260,7 @@ Partial Class frmSettingsHolder
         Me.lblInfoBottom.Name = "lblInfoBottom"
         Me.lblInfoBottom.Size = New System.Drawing.Size(225, 31)
         Me.lblInfoBottom.TabIndex = 4
-        Me.lblInfoBottom.Text = "These settings are specific to this module." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Please refer to the global settings " & _
+        Me.lblInfoBottom.Text = "These settings are specific to this module." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Please refer to the global settings " &
     "for more options."
         Me.lblInfoBottom.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
@@ -291,7 +291,7 @@ Partial Class frmSettingsHolder
         Me.tblSettingsMain.Size = New System.Drawing.Size(372, 243)
         Me.tblSettingsMain.TabIndex = 0
         '
-        'frmMoviepilotDEInfoSettingsHolder
+        'frmSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
@@ -303,7 +303,7 @@ Partial Class frmSettingsHolder
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "frmMoviepilotDEInfoSettingsHolder"
+        Me.Name = "frmSettingsHolder"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Scraper Setup"
@@ -340,7 +340,7 @@ Partial Class frmSettingsHolder
     Friend WithEvents lblScraperOrder As System.Windows.Forms.Label
     Friend WithEvents lblInfoBottom As System.Windows.Forms.Label
     Friend WithEvents pbIconBottom As System.Windows.Forms.PictureBox
-    Friend WithEvents chkCertification As System.Windows.Forms.CheckBox
+    Friend WithEvents chkCertifications As System.Windows.Forms.CheckBox
     Friend WithEvents tblScraperFieldsOpts As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents pnlSettingsMain As System.Windows.Forms.Panel
     Friend WithEvents tblSettingsMain As System.Windows.Forms.TableLayoutPanel
