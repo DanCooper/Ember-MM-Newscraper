@@ -103,21 +103,21 @@ Public Class TVDB_Data
         _setup.chkScraperEpisodeActors.Checked = ConfigScrapeOptions.bEpisodeActors
         _setup.chkScraperEpisodeAired.Checked = ConfigScrapeOptions.bEpisodeAired
         _setup.chkScraperEpisodeCredits.Checked = ConfigScrapeOptions.bEpisodeCredits
-        _setup.chkScraperEpisodeDirector.Checked = ConfigScrapeOptions.bEpisodeDirectors
+        _setup.chkScraperEpisodeDirectors.Checked = ConfigScrapeOptions.bEpisodeDirectors
         _setup.chkScraperEpisodeGuestStars.Checked = ConfigScrapeOptions.bEpisodeGuestStars
         _setup.chkScraperEpisodePlot.Checked = ConfigScrapeOptions.bEpisodePlot
         _setup.chkScraperEpisodeRating.Checked = ConfigScrapeOptions.bEpisodeRating
         _setup.chkScraperEpisodeTitle.Checked = ConfigScrapeOptions.bEpisodeTitle
         _setup.chkScraperShowActors.Checked = ConfigScrapeOptions.bMainActors
         _setup.chkScraperShowEpisodeGuide.Checked = ConfigScrapeOptions.bMainEpisodeGuide
-        _setup.chkScraperShowGenre.Checked = ConfigScrapeOptions.bMainGenres
+        _setup.chkScraperShowGenres.Checked = ConfigScrapeOptions.bMainGenres
         _setup.chkScraperShowMPAA.Checked = ConfigScrapeOptions.bMainMPAA
         _setup.chkScraperShowPlot.Checked = ConfigScrapeOptions.bMainPlot
         _setup.chkScraperShowPremiered.Checked = ConfigScrapeOptions.bMainPremiered
         _setup.chkScraperShowRating.Checked = ConfigScrapeOptions.bMainRating
         _setup.chkScraperShowRuntime.Checked = ConfigScrapeOptions.bMainRuntime
         _setup.chkScraperShowStatus.Checked = ConfigScrapeOptions.bMainStatus
-        _setup.chkScraperShowStudio.Checked = ConfigScrapeOptions.bMainStudios
+        _setup.chkScraperShowStudios.Checked = ConfigScrapeOptions.bMainStudios
         _setup.chkScraperShowTitle.Checked = ConfigScrapeOptions.bMainTitle
 
         If Not String.IsNullOrEmpty(strPrivateAPIKey) Then
@@ -199,21 +199,21 @@ Public Class TVDB_Data
         ConfigScrapeOptions.bEpisodeActors = _setup.chkScraperEpisodeActors.Checked
         ConfigScrapeOptions.bEpisodeAired = _setup.chkScraperEpisodeAired.Checked
         ConfigScrapeOptions.bEpisodeCredits = _setup.chkScraperEpisodeCredits.Checked
-        ConfigScrapeOptions.bEpisodeDirectors = _setup.chkScraperEpisodeDirector.Checked
+        ConfigScrapeOptions.bEpisodeDirectors = _setup.chkScraperEpisodeDirectors.Checked
         ConfigScrapeOptions.bEpisodeGuestStars = _setup.chkScraperEpisodeGuestStars.Checked
         ConfigScrapeOptions.bEpisodePlot = _setup.chkScraperEpisodePlot.Checked
         ConfigScrapeOptions.bEpisodeRating = _setup.chkScraperEpisodeRating.Checked
         ConfigScrapeOptions.bEpisodeTitle = _setup.chkScraperEpisodeTitle.Checked
         ConfigScrapeOptions.bMainActors = _setup.chkScraperShowActors.Checked
         ConfigScrapeOptions.bMainEpisodeGuide = _setup.chkScraperShowEpisodeGuide.Checked
-        ConfigScrapeOptions.bMainGenres = _setup.chkScraperShowGenre.Checked
+        ConfigScrapeOptions.bMainGenres = _setup.chkScraperShowGenres.Checked
         ConfigScrapeOptions.bMainMPAA = _setup.chkScraperShowMPAA.Checked
         ConfigScrapeOptions.bMainPlot = _setup.chkScraperShowPlot.Checked
         ConfigScrapeOptions.bMainPremiered = _setup.chkScraperShowPremiered.Checked
         ConfigScrapeOptions.bMainRating = _setup.chkScraperShowRating.Checked
         ConfigScrapeOptions.bMainRuntime = _setup.chkScraperShowRuntime.Checked
         ConfigScrapeOptions.bMainStatus = _setup.chkScraperShowStatus.Checked
-        ConfigScrapeOptions.bMainStudios = _setup.chkScraperShowStudio.Checked
+        ConfigScrapeOptions.bMainStudios = _setup.chkScraperShowStudios.Checked
         ConfigScrapeOptions.bMainTitle = _setup.chkScraperShowTitle.Checked
         SaveSettings()
         If DoDispose Then

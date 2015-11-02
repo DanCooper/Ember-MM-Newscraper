@@ -18,18 +18,14 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.IO
 Imports EmberAPI
-Imports System.Diagnostics
 
 Public Class frmSettingsHolder_Movie
 
 #Region "Events"
 
     Public Event ModuleSettingsChanged()
-
     Public Event SetupScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
-
     Public Event SetupNeedsRestart()
 
 #End Region 'Events
@@ -46,14 +42,14 @@ Public Class frmSettingsHolder_Movie
 
     Public Sub New()
         InitializeComponent()
-        Me.SetUp()
+        SetUp()
     End Sub
 
-    Private Sub pbTMDBApiKeyInfo_Click(sender As System.Object, e As System.EventArgs) Handles pbTMDBApiKeyInfo.Click
+    Private Sub pbTMDBApiKeyInfo_Click(sender As Object, e As EventArgs) Handles pbTMDBApiKeyInfo.Click
         Functions.Launch(My.Resources.urlAPIKey)
     End Sub
 
-    Private Sub btnDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDown.Click
+    Private Sub btnDown_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnDown.Click
         Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Data_Movie.FirstOrDefault(Function(p) p.AssemblyName = TMDB_Data._AssemblyName).ModuleOrder
         If order < ModulesManager.Instance.externalScrapersModules_Data_Movie.Count - 1 Then
             ModulesManager.Instance.externalScrapersModules_Data_Movie.FirstOrDefault(Function(p) p.ModuleOrder = order + 1).ModuleOrder = order
@@ -63,7 +59,7 @@ Public Class frmSettingsHolder_Movie
         End If
     End Sub
 
-    Private Sub btnUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUp.Click
+    Private Sub btnUp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnUp.Click
         Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Data_Movie.FirstOrDefault(Function(p) p.AssemblyName = TMDB_Data._AssemblyName).ModuleOrder
         If order > 0 Then
             ModulesManager.Instance.externalScrapersModules_Data_Movie.FirstOrDefault(Function(p) p.ModuleOrder = order - 1).ModuleOrder = order
@@ -74,105 +70,107 @@ Public Class frmSettingsHolder_Movie
     End Sub
 
     Private Sub btnUnlockAPI_Click(sender As Object, e As EventArgs) Handles btnUnlockAPI.Click
-        If Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key") Then
-            Me.btnUnlockAPI.Text = Master.eLang.GetString(443, "Use embedded API Key")
-            Me.lblEMMAPI.Visible = False
-            Me.txtApiKey.Enabled = True
+        If btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key") Then
+            btnUnlockAPI.Text = Master.eLang.GetString(443, "Use embedded API Key")
+            lblEMMAPI.Visible = False
+            txtApiKey.Enabled = True
         Else
-            Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
-            Me.lblEMMAPI.Visible = True
-            Me.txtApiKey.Enabled = False
-            Me.txtApiKey.Text = String.Empty
+            btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
+            lblEMMAPI.Visible = True
+            txtApiKey.Enabled = False
+            txtApiKey.Text = String.Empty
         End If
     End Sub
 
-    Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnabled.CheckedChanged
+    Private Sub cbEnabled_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkEnabled.CheckedChanged
         RaiseEvent SetupScraperChanged(chkEnabled.Checked, 0)
     End Sub
+
     Private Sub chkWriters_CheckedChanged(sender As Object, e As EventArgs) Handles chkWriters.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
-    Private Sub chkDirector_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles chkDirector.CheckedChanged
+
+    Private Sub chkDirector_CheckedChanged(sender As Object, e As EventArgs) Handles chkDirectors.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkCast_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCast.CheckedChanged
+    Private Sub chkCast_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkActors.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkCollectionID_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCollectionID.CheckedChanged
+    Private Sub chkCollectionID_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkCollectionID.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkGenre_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGenre.CheckedChanged
+    Private Sub chkGenre_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkGenres.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkGetAdult_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGetAdultItems.CheckedChanged
+    Private Sub chkGetAdult_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkGetAdultItems.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkMPAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCertification.CheckedChanged
+    Private Sub chkMPAA_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkCertifications.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkOriginalTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkOriginalTitle.CheckedChanged
+    Private Sub chkOriginalTitle_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkOriginalTitle.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkPlot.CheckedChanged
+    Private Sub chkPlot_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkPlot.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkRating_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkRating.CheckedChanged
+    Private Sub chkRating_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkRating.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkRelease_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkRelease.CheckedChanged
+    Private Sub chkRelease_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkRelease.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkRuntime_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkRuntime.CheckedChanged
+    Private Sub chkRuntime_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkRuntime.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkStudio_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkStudio.CheckedChanged
+    Private Sub chkStudio_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkStudios.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkTagline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTagline.CheckedChanged
+    Private Sub chkTagline_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTagline.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkTitle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTitle.CheckedChanged
+    Private Sub chkTitle_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTitle.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkCountry_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCountry.CheckedChanged
+    Private Sub chkCountry_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkCountries.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkTrailer_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTrailer.CheckedChanged
+    Private Sub chkTrailer_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTrailer.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkVotes_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub chkVotes_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkYear_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkYear.CheckedChanged
+    Private Sub chkYear_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkYear.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkFallBackEng_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles chkFallBackEng.CheckedChanged
+    Private Sub chkFallBackEng_CheckedChanged(sender As Object, e As EventArgs) Handles chkFallBackEng.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub cbTMDBPrefLanguage_SelectedIndexChanged(sender As System.Object, e As System.EventArgs)
+    Private Sub cbTMDBPrefLanguage_SelectedIndexChanged(sender As Object, e As EventArgs)
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub txtTMDBApiKey_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtApiKey.TextChanged
+    Private Sub txtTMDBApiKey_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtApiKey.TextChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -188,33 +186,33 @@ Public Class frmSettingsHolder_Movie
     End Sub
 
     Private Sub SetUp()
-        Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
-        Me.chkCast.Text = Master.eLang.GetString(63, "Cast")
-        Me.chkCertification.Text = Master.eLang.GetString(722, "Certification")
-        Me.chkCollectionID.Text = Master.eLang.GetString(1135, "Collection ID")
-        Me.chkCountry.Text = Master.eLang.GetString(301, "Country")
-        Me.chkDirector.Text = Master.eLang.GetString(62, "Director")
-        Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        Me.chkFallBackEng.Text = Master.eLang.GetString(922, "Fallback to english")
-        Me.chkGenre.Text = Master.eLang.GetString(20, "Genre")
-        Me.chkGetAdultItems.Text = Master.eLang.GetString(1046, "Include Adult Items")
-        Me.chkOriginalTitle.Text = Master.eLang.GetString(302, "Original Title")
-        Me.chkPlot.Text = Master.eLang.GetString(65, "Plot")
-        Me.chkRating.Text = Master.eLang.GetString(400, "Rating")
-        Me.chkRelease.Text = Master.eLang.GetString(57, "Release Date")
-        Me.chkRuntime.Text = Master.eLang.GetString(396, "Runtime")
-        Me.chkStudio.Text = Master.eLang.GetString(395, "Studio")
-        Me.chkTagline.Text = Master.eLang.GetString(397, "Tagline")
-        Me.chkTitle.Text = Master.eLang.GetString(21, "Title")
-        Me.chkTrailer.Text = Master.eLang.GetString(151, "Trailer")
-        Me.chkWriters.Text = Master.eLang.GetString(394, "Writers")
-        Me.chkYear.Text = Master.eLang.GetString(278, "Year")
-        Me.gbScraperFieldsOpts.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
-        Me.gbScraperOpts.Text = Master.eLang.GetString(1186, "Scraper Options")
-        Me.lblApiKey.Text = String.Concat(Master.eLang.GetString(870, "TMDB API Key"), ":")
-        Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager Embedded API Key")
-        Me.lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), Environment.NewLine)
-        Me.lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
+        btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
+        chkActors.Text = Master.eLang.GetString(231, "Actors")
+        chkCertifications.Text = Master.eLang.GetString(56, "Certifications")
+        chkCollectionID.Text = Master.eLang.GetString(1135, "Collection ID")
+        chkCountries.Text = Master.eLang.GetString(237, "Countries")
+        chkDirectors.Text = Master.eLang.GetString(940, "Directors")
+        chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
+        chkFallBackEng.Text = Master.eLang.GetString(922, "Fallback to english")
+        chkGenres.Text = Master.eLang.GetString(725, "Genres")
+        chkGetAdultItems.Text = Master.eLang.GetString(1046, "Include Adult Items")
+        chkOriginalTitle.Text = Master.eLang.GetString(302, "Original Title")
+        chkPlot.Text = Master.eLang.GetString(65, "Plot")
+        chkRating.Text = Master.eLang.GetString(400, "Rating")
+        chkRelease.Text = Master.eLang.GetString(57, "Release Date")
+        chkRuntime.Text = Master.eLang.GetString(396, "Runtime")
+        chkStudios.Text = Master.eLang.GetString(226, "Studios")
+        chkTagline.Text = Master.eLang.GetString(397, "Tagline")
+        chkTitle.Text = Master.eLang.GetString(21, "Title")
+        chkTrailer.Text = Master.eLang.GetString(151, "Trailer")
+        chkWriters.Text = Master.eLang.GetString(394, "Writers")
+        chkYear.Text = Master.eLang.GetString(278, "Year")
+        gbScraperFieldsOpts.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
+        gbScraperOpts.Text = Master.eLang.GetString(1186, "Scraper Options")
+        lblApiKey.Text = String.Concat(Master.eLang.GetString(870, "TMDB API Key"), ":")
+        lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager Embedded API Key")
+        lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), Environment.NewLine)
+        lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
     End Sub
 
 #End Region 'Methods

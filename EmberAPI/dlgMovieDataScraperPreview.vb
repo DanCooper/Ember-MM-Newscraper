@@ -19,11 +19,8 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System
 Imports System.Text.RegularExpressions
-Imports EmberAPI
 Imports NLog
-Imports System.Net
 Imports System.Windows.Forms
 Imports System.Drawing
 
@@ -62,12 +59,12 @@ Public Class dlgMovieDataScraperPreview
         Me.colNameIMDB.Text = Master.eLang.GetString(232, "Name")
         Me.colRoleIMDB.Text = Master.eLang.GetString(233, "Role")
         Me.colThumbIMDB.Text = Master.eLang.GetString(234, "Thumb")
-        Me.lblActors.Text = Master.eLang.GetString(231, "Actors:")
-        Me.lblCerts.Text = Master.eLang.GetString(237, "Certification(s):")
-        Me.lblCountry.Text = String.Concat(Master.eLang.GetString(301, "Country"), ":")
+        Me.lblActors.Text = String.Concat(Master.eLang.GetString(231, "Actors"), ":")
+        Me.lblCertifications.Text = String.Concat(Master.eLang.GetString(56, "Certifications"), ":")
+        Me.lblCountries.Text = String.Concat(Master.eLang.GetString(237, "Countries"), ":")
         Me.lblCredits.Text = Master.eLang.GetString(228, "Credits:")
-        Me.lblDirector.Text = Master.eLang.GetString(239, "Director:")
-        Me.lblGenre.Text = Master.eLang.GetString(51, "Genre(s):")
+        Me.lblDirectors.Text = String.Concat(Master.eLang.GetString(940, "Directors"), ":")
+        Me.lblGenres.Text = Master.eLang.GetString(51, "Genre(s):")
         Me.lblMPAA.Text = Master.eLang.GetString(235, "MPAA Rating:")
         Me.lblOriginalTitle.Text = String.Concat(Master.eLang.GetString(302, "Original Title"), ":")
         Me.lblOutline.Text = Master.eLang.GetString(242, "Plot Outline:")
@@ -75,7 +72,7 @@ Public Class dlgMovieDataScraperPreview
         Me.lblRating.Text = Master.eLang.GetString(245, "Rating:")
         Me.lblReleaseDate.Text = Master.eLang.GetString(236, "Release Date:")
         Me.lblRuntime.Text = Master.eLang.GetString(238, "Runtime:")
-        Me.lblStudio.Text = Master.eLang.GetString(226, "Studio:")
+        Me.lblStudios.Text = String.Concat(Master.eLang.GetString(226, "Studios"), ":")
         Me.lblTagline.Text = Master.eLang.GetString(243, "Tagline:")
         Me.lblTitle.Text = Master.eLang.GetString(246, "Title:")
         Me.lblTop250.Text = Master.eLang.GetString(240, "Top 250:")

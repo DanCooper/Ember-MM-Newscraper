@@ -54,7 +54,7 @@
   <string id="53">Canceling Scraper...</string>
   <string id="54">Cancel Scraper</string>
   <string id="55">No information is available for this Movie</string>
-  <string id="56">Certification(s)</string>
+  <string id="56">Certifications</string>
   <string id="57">Release Date</string>
   <string id="58">Refresh</string>
   <string id="59">Meta Data</string>
@@ -224,18 +224,18 @@
   <string id="223">Select Studio</string>
   <string id="224">Edit the details for the selected movie.</string>
   <string id="225">No Trailers found</string>
-  <string id="226">Studio:</string>
+  <string id="226">Studios</string>
   <string id="227">Trailer URL:</string>
   <string id="228">Credits:</string>
   <string id="229">MPAA Rating Description:</string>
   <string id="230">Manual Edit</string>
-  <string id="231">Actors:</string>
+  <string id="231">Actors</string>
   <string id="232">Name</string>
   <string id="233">Role</string>
   <string id="234">Thumb</string>
   <string id="235">MPAA Rating:</string>
   <string id="236">Release Date:</string>
-  <string id="237">Certification(s):</string>
+  <string id="237">Countries</string>
   <string id="238">Runtime:</string>
   <string id="239">Director:</string>
   <string id="240">Top 250:</string>
@@ -723,7 +723,7 @@
   <string id="722">Certification</string>
   <string id="723">Episode Guide URL</string>
   <string id="724">Premiered</string>
-  <string id="725">Actors</string>
+  <string id="725">Genres</string>
   <string id="726">Season {0}</string>
   <string id="727">Episode</string>
   <string id="728">Aired</string>
@@ -742,7 +742,7 @@
   <string id="741">Preferred Language</string>
   <string id="742">Fetch Available Languages</string>
   <string id="743">Show</string>
-  <string id="744">Creator(s)</string>
+  <string id="744">Creators</string>
   <string id="745">Any</string>
   <string id="746">Blank</string>
   <string id="747">Graphical</string>
@@ -938,7 +938,7 @@
   <string id="937">Unable to retrieve movie details for the entered TVDB ID. Please check your entry and try again.</string>
   <string id="938">TheMovieDB API is missing or not valid</string>
   <string id="939">Change Movie Sorting</string>
-  <string id="940"></string>
+  <string id="940">Directors</string>
   <string id="941">TVDB ID</string>
   <string id="942">Get your API Key from thetvdb.com</string>
   <string id="943">There are no known episodes for this show. Scrape the show, season, or episode and try again.</string>

@@ -229,7 +229,7 @@ Public Class dlgTrakttvManager
             btntraktListsSaveListCompare.Text = Master.eLang.GetString(1328, "Export unknown movies")
             coltraktListTitle.HeaderText = Master.eLang.GetString(21, "Title")
             coltraktListYear.HeaderText = Master.eLang.GetString(278, "Year")
-            coltraktListGenres.HeaderText = Master.eLang.GetString(20, "Genres")
+            coltraktListGenres.HeaderText = Master.eLang.GetString(725, "Genres")
             coltraktListTrailer.HeaderText = Master.eLang.GetString(151, "Trailer")
             coltraktListRating.HeaderText = Master.eLang.GetString(400, "Rating")
             coltraktListIMDB.HeaderText = Master.eLang.GetString(1323, "URL")

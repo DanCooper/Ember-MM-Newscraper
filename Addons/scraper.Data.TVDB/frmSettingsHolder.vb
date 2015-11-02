@@ -46,7 +46,7 @@ Public Class frmSettingsHolder
 
     Public Sub New()
         InitializeComponent()
-        Me.SetUp()
+        SetUp()
     End Sub
 
     Private Sub pbApiKeyInfo_Click(sender As System.Object, e As System.EventArgs) Handles pbApiKeyInfo.Click
@@ -74,16 +74,16 @@ Public Class frmSettingsHolder
     End Sub
 
     Private Sub btnUnlockAPI_Click(sender As Object, e As EventArgs) Handles btnUnlockAPI.Click
-        If Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key") Then
-            Me.btnUnlockAPI.Text = Master.eLang.GetString(443, "Use embedded API Key")
-            Me.lblEMMAPI.Visible = False
-            Me.txtApiKey.Enabled = True
+        If btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key") Then
+            btnUnlockAPI.Text = Master.eLang.GetString(443, "Use embedded API Key")
+            lblEMMAPI.Visible = False
+            txtApiKey.Enabled = True
         Else
-            Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
-            Me.chkScraperShowEpisodeGuide.Checked = False
-            Me.lblEMMAPI.Visible = True
-            Me.txtApiKey.Enabled = False
-            Me.txtApiKey.Text = String.Empty
+            btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
+            chkScraperShowEpisodeGuide.Checked = False
+            lblEMMAPI.Visible = True
+            txtApiKey.Enabled = False
+            txtApiKey.Text = String.Empty
         End If
     End Sub
 
@@ -104,24 +104,24 @@ Public Class frmSettingsHolder
     End Sub
 
     Private Sub SettingsChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
-        chkScraperEpisodeActors.CheckedChanged, _
-        chkScraperEpisodeAired.CheckedChanged, _
-        chkScraperEpisodeCredits.CheckedChanged, _
-        chkScraperEpisodeDirector.CheckedChanged, _
-        chkScraperEpisodeGuestStars.CheckedChanged, _
-        chkScraperEpisodePlot.CheckedChanged, _
-        chkScraperEpisodeRating.CheckedChanged, _
+        chkScraperEpisodeActors.CheckedChanged,
+        chkScraperEpisodeAired.CheckedChanged,
+        chkScraperEpisodeCredits.CheckedChanged,
+        chkScraperEpisodeDirectors.CheckedChanged,
+        chkScraperEpisodeGuestStars.CheckedChanged,
+        chkScraperEpisodePlot.CheckedChanged,
+        chkScraperEpisodeRating.CheckedChanged,
         chkScraperEpisodeTitle.CheckedChanged, _
  _
-        chkScraperShowActors.CheckedChanged, _
-        chkScraperShowGenre.CheckedChanged, _
-        chkScraperShowMPAA.CheckedChanged, _
-        chkScraperShowPlot.CheckedChanged, _
-        chkScraperShowPremiered.CheckedChanged, _
-        chkScraperShowRating.CheckedChanged, _
-        chkScraperShowRuntime.CheckedChanged, _
-        chkScraperShowStatus.CheckedChanged, _
-        chkScraperShowStudio.CheckedChanged, _
+        chkScraperShowActors.CheckedChanged,
+        chkScraperShowGenres.CheckedChanged,
+        chkScraperShowMPAA.CheckedChanged,
+        chkScraperShowPlot.CheckedChanged,
+        chkScraperShowPremiered.CheckedChanged,
+        chkScraperShowRating.CheckedChanged,
+        chkScraperShowRuntime.CheckedChanged,
+        chkScraperShowStatus.CheckedChanged,
+        chkScraperShowStudios.CheckedChanged,
         chkScraperShowTitle.CheckedChanged
 
         RaiseEvent ModuleSettingsChanged()
@@ -139,14 +139,33 @@ Public Class frmSettingsHolder
     End Sub
 
     Private Sub SetUp()
-        Me.btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
-        Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        Me.gbScraperFieldsOpts.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
-        Me.gbScraperOpts.Text = Master.eLang.GetString(1186, "Scraper Options")
-        Me.lblApiKey.Text = String.Concat(Master.eLang.GetString(932, "TVDB API Key"), ":")
-        Me.lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager Embedded API Key")
-        Me.lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), Environment.NewLine)
-        Me.lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
+        btnUnlockAPI.Text = Master.eLang.GetString(1188, "Use my own API key")
+        chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
+        chkScraperEpisodeActors.Text = Master.eLang.GetString(231, "Actors")
+        chkScraperEpisodeAired.Text = Master.eLang.GetString(728, "Aired")
+        chkScraperEpisodeCredits.Text = Master.eLang.GetString(394, "Credits (Writers)")
+        chkScraperEpisodeDirectors.Text = Master.eLang.GetString(940, "Directors")
+        chkScraperEpisodeGuestStars.Text = Master.eLang.GetString(508, "Guest Stars")
+        chkScraperEpisodePlot.Text = Master.eLang.GetString(65, "Plot")
+        chkScraperEpisodeRating.Text = Master.eLang.GetString(400, "Rating")
+        chkScraperEpisodeTitle.Text = Master.eLang.GetString(21, "Title")
+        chkScraperShowActors.Text = Master.eLang.GetString(231, "Actors")
+        chkScraperShowEpisodeGuide.Text = Master.eLang.GetString(723, "Episode Guide URL")
+        chkScraperShowGenres.Text = Master.eLang.GetString(725, "Genres")
+        chkScraperShowMPAA.Text = Master.eLang.GetString(401, "MPAA")
+        chkScraperShowPlot.Text = Master.eLang.GetString(65, "Plot")
+        chkScraperShowPremiered.Text = Master.eLang.GetString(724, "Premiered")
+        chkScraperShowRating.Text = Master.eLang.GetString(400, "Rating")
+        chkScraperShowRuntime.Text = Master.eLang.GetString(396, "Runtime")
+        chkScraperShowStatus.Text = Master.eLang.GetString(215, "Status")
+        chkScraperShowStudios.Text = Master.eLang.GetString(226, "Studios")
+        chkScraperShowTitle.Text = Master.eLang.GetString(21, "Title")
+        gbScraperFieldsOpts.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
+        gbScraperOpts.Text = Master.eLang.GetString(1186, "Scraper Options")
+        lblApiKey.Text = String.Concat(Master.eLang.GetString(932, "TVDB API Key"), ":")
+        lblEMMAPI.Text = Master.eLang.GetString(1189, "Ember Media Manager Embedded API Key")
+        lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), Environment.NewLine)
+        lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
     End Sub
 
 #End Region 'Methods

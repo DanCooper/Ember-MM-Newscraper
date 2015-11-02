@@ -18,7 +18,6 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.IO
 Imports EmberAPI
 Imports NLog
 
@@ -103,30 +102,30 @@ Public Class dlgCustomScraper
     Public Sub New(ByVal tContentType As Enums.ContentType)
         ' This call is required by the designer.
         InitializeComponent()
-        Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
-        Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
-        Me.StartPosition = FormStartPosition.Manual
+        Left = Master.AppPos.Left + (Master.AppPos.Width - Width) \ 2
+        Top = Master.AppPos.Top + (Master.AppPos.Height - Height) \ 2
+        StartPosition = FormStartPosition.Manual
 
-        Me._ContentType = tContentType
+        _ContentType = tContentType
     End Sub
 
     Public Overloads Function ShowDialog() As Structures.CustomUpdaterStruct
         If MyBase.ShowDialog() = Windows.Forms.DialogResult.OK Then
-            Me.CustomUpdater.Canceled = False
+            CustomUpdater.Canceled = False
         Else
-            Me.CustomUpdater.Canceled = True
+            CustomUpdater.Canceled = True
         End If
-        Return Me.CustomUpdater
+        Return CustomUpdater
     End Function
 
-    Private Sub dlgUpdateMedia_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Private Sub dlgUpdateMedia_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         Try
-            Me.SetUp()
+            SetUp()
 
-            Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
+            Dim iBackground As New Bitmap(pnlTop.Width, pnlTop.Height)
             Using g As Graphics = Graphics.FromImage(iBackground)
-                g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)
-                Me.pnlTop.BackgroundImage = iBackground
+                g.FillRectangle(New Drawing2D.LinearGradientBrush(pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)
+                pnlTop.BackgroundImage = iBackground
             End Using
 
             'set defaults
@@ -135,25 +134,25 @@ Public Class dlgCustomScraper
             CustomUpdater.ScrapeType = Enums.ScrapeType.AllAuto
             'Functions.SetScrapeModifier(CustomUpdater.ScrapeModifier, Enums.ModifierType.All, True)
 
-            Me.CheckEnable()
+            CheckEnable()
 
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
-    Private Sub dlgUpdateMedia_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
-        Me.Activate()
+    Private Sub dlgUpdateMedia_Shown(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Shown
+        Activate()
     End Sub
 
-    Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
-        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Close()
+    Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnCancel.Click
+        DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Close()
     End Sub
 
-    Private Sub btnOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOK.Click
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.Close()
+    Private Sub btnOK_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles btnOK.Click
+        DialogResult = System.Windows.Forms.DialogResult.OK
+        Close()
     End Sub
 
     Private Sub btnEpisodeScrapeModifierNone_Click(sender As Object, e As EventArgs) Handles btnEpisodeScrapeModifierNone.Click
@@ -271,131 +270,131 @@ Public Class dlgCustomScraper
 
         'Main Modifiers
         If chkMainModifierAll.Checked Then
-            chkMainModifierActorThumbs.Checked = Me.mMainActorThumbsAllowed
+            chkMainModifierActorThumbs.Checked = mMainActorThumbsAllowed
             chkMainModifierActorThumbs.Enabled = False
-            chkMainModifierBanner.Checked = Me.mMainBannerAllowed
+            chkMainModifierBanner.Checked = mMainBannerAllowed
             chkMainModifierBanner.Enabled = False
-            chkMainModifierCharacterArt.Checked = Me.mMainCharacterArtAllowed
+            chkMainModifierCharacterArt.Checked = mMainCharacterArtAllowed
             chkMainModifierCharacterArt.Enabled = False
-            chkMainModifierClearArt.Checked = Me.mMainClearArtAllowed
+            chkMainModifierClearArt.Checked = mMainClearArtAllowed
             chkMainModifierClearArt.Enabled = False
-            chkMainModifierClearLogo.Checked = Me.mMainClearLogoAllowed
+            chkMainModifierClearLogo.Checked = mMainClearLogoAllowed
             chkMainModifierClearLogo.Enabled = False
-            chkMainModifierDiscArt.Checked = Me.mMainDiscArtAllowed
+            chkMainModifierDiscArt.Checked = mMainDiscArtAllowed
             chkMainModifierDiscArt.Enabled = False
-            chkMainModifierExtrafanarts.Checked = Me.mMainExtrafanartsAllowed
+            chkMainModifierExtrafanarts.Checked = mMainExtrafanartsAllowed
             chkMainModifierExtrafanarts.Enabled = False
-            chkMainModifierExtrathumbs.Checked = Me.mMainExtrathumbsAllowed
+            chkMainModifierExtrathumbs.Checked = mMainExtrathumbsAllowed
             chkMainModifierExtrathumbs.Enabled = False
-            chkMainModifierFanart.Checked = Me.mMainFanartAllowed
+            chkMainModifierFanart.Checked = mMainFanartAllowed
             chkMainModifierFanart.Enabled = False
-            chkMainModifierLandscape.Checked = Me.mMainLandscapeAllowed
+            chkMainModifierLandscape.Checked = mMainLandscapeAllowed
             chkMainModifierLandscape.Enabled = False
-            chkMainModifierMetaData.Checked = Me.mMainMetaDataAllowed
+            chkMainModifierMetaData.Checked = mMainMetaDataAllowed
             chkMainModifierMetaData.Enabled = False
-            chkMainModifierNFO.Checked = Me.mMainNFOAllowed
+            chkMainModifierNFO.Checked = mMainNFOAllowed
             chkMainModifierNFO.Enabled = False
-            chkMainModifierPoster.Checked = Me.mMainPosterAllowed
+            chkMainModifierPoster.Checked = mMainPosterAllowed
             chkMainModifierPoster.Enabled = False
-            chkMainModifierTheme.Checked = Me.mMainThemeAllowed
+            chkMainModifierTheme.Checked = mMainThemeAllowed
             chkMainModifierTheme.Enabled = False
-            chkMainModifierTrailer.Checked = Me.mMainTrailerAllowed
+            chkMainModifierTrailer.Checked = mMainTrailerAllowed
             chkMainModifierTrailer.Enabled = False
         Else
-            chkMainModifierActorThumbs.Enabled = Me.mMainActorThumbsAllowed
-            chkMainModifierBanner.Enabled = Me.mMainBannerAllowed
-            chkMainModifierCharacterArt.Enabled = Me.mMainCharacterArtAllowed
-            chkMainModifierClearArt.Enabled = Me.mMainClearArtAllowed
-            chkMainModifierClearLogo.Enabled = Me.mMainClearLogoAllowed
-            chkMainModifierDiscArt.Enabled = Me.mMainDiscArtAllowed
-            chkMainModifierExtrafanarts.Enabled = Me.mMainExtrafanartsAllowed
-            chkMainModifierExtrathumbs.Enabled = Me.mMainExtrathumbsAllowed
-            chkMainModifierFanart.Enabled = Me.mMainFanartAllowed
-            chkMainModifierLandscape.Enabled = Me.mMainLandscapeAllowed
-            chkMainModifierMetaData.Enabled = Me.mMainMetaDataAllowed
-            chkMainModifierNFO.Enabled = Me.mMainNFOAllowed
-            chkMainModifierPoster.Enabled = Me.mMainPosterAllowed
-            chkMainModifierTheme.Enabled = Me.mMainThemeAllowed
-            chkMainModifierTrailer.Enabled = Me.mMainTrailerAllowed
+            chkMainModifierActorThumbs.Enabled = mMainActorThumbsAllowed
+            chkMainModifierBanner.Enabled = mMainBannerAllowed
+            chkMainModifierCharacterArt.Enabled = mMainCharacterArtAllowed
+            chkMainModifierClearArt.Enabled = mMainClearArtAllowed
+            chkMainModifierClearLogo.Enabled = mMainClearLogoAllowed
+            chkMainModifierDiscArt.Enabled = mMainDiscArtAllowed
+            chkMainModifierExtrafanarts.Enabled = mMainExtrafanartsAllowed
+            chkMainModifierExtrathumbs.Enabled = mMainExtrathumbsAllowed
+            chkMainModifierFanart.Enabled = mMainFanartAllowed
+            chkMainModifierLandscape.Enabled = mMainLandscapeAllowed
+            chkMainModifierMetaData.Enabled = mMainMetaDataAllowed
+            chkMainModifierNFO.Enabled = mMainNFOAllowed
+            chkMainModifierPoster.Enabled = mMainPosterAllowed
+            chkMainModifierTheme.Enabled = mMainThemeAllowed
+            chkMainModifierTrailer.Enabled = mMainTrailerAllowed
         End If
 
         'Main Options
         If chkMainModifierNFO.Checked Then
             gbMainScrapeOptions.Enabled = True
             If chkMainOptionsAll.Checked Then
-                chkMainOptionsActors.Checked = Me.oMainActorsAllowed
+                chkMainOptionsActors.Checked = oMainActorsAllowed
                 chkMainOptionsActors.Enabled = False
-                chkMainOptionsCertifications.Checked = Me.oMainCertificationsAllowed
+                chkMainOptionsCertifications.Checked = oMainCertificationsAllowed
                 chkMainOptionsCertifications.Enabled = False
-                chkMainOptionsCollectionID.Checked = Me.oMainCollectionIDAllowed
+                chkMainOptionsCollectionID.Checked = oMainCollectionIDAllowed
                 chkMainOptionsCollectionID.Enabled = False
-                chkMainOptionsCountries.Checked = Me.oMainCountriesAllowed
+                chkMainOptionsCountries.Checked = oMainCountriesAllowed
                 chkMainOptionsCountries.Enabled = False
-                chkMainOptionsCreators.Checked = Me.oMainCreatorsAllowed
+                chkMainOptionsCreators.Checked = oMainCreatorsAllowed
                 chkMainOptionsCreators.Enabled = False
-                chkMainOptionsDirectors.Checked = Me.oMainDirectorsAllowed
+                chkMainOptionsDirectors.Checked = oMainDirectorsAllowed
                 chkMainOptionsDirectors.Enabled = False
-                chkMainOptionsEpisodeGuideURL.Checked = Me.oMainEpisodeGuideURLAllowed
+                chkMainOptionsEpisodeGuideURL.Checked = oMainEpisodeGuideURLAllowed
                 chkMainOptionsEpisodeGuideURL.Enabled = False
-                chkMainOptionsGenres.Checked = Me.oMainGenresAllowed
+                chkMainOptionsGenres.Checked = oMainGenresAllowed
                 chkMainOptionsGenres.Enabled = False
-                chkMainOptionsMPAA.Checked = Me.oMainMPAAAllowed
+                chkMainOptionsMPAA.Checked = oMainMPAAAllowed
                 chkMainOptionsMPAA.Enabled = False
-                chkMainOptionsOriginalTitle.Checked = Me.oMainOriginalTitleAllowed
+                chkMainOptionsOriginalTitle.Checked = oMainOriginalTitleAllowed
                 chkMainOptionsOriginalTitle.Enabled = False
-                chkMainOptionsOutline.Checked = Me.oMainOutlineAllowed
+                chkMainOptionsOutline.Checked = oMainOutlineAllowed
                 chkMainOptionsOutline.Enabled = False
-                chkMainOptionsPlot.Checked = Me.oMainPlotAllowed
+                chkMainOptionsPlot.Checked = oMainPlotAllowed
                 chkMainOptionsPlot.Enabled = False
-                chkMainOptionsPremiered.Checked = Me.oMainPremieredAllowed
+                chkMainOptionsPremiered.Checked = oMainPremieredAllowed
                 chkMainOptionsPremiered.Enabled = False
-                chkMainOptionsRating.Checked = Me.oMainRatingAllowed
+                chkMainOptionsRating.Checked = oMainRatingAllowed
                 chkMainOptionsRating.Enabled = False
-                chkMainOptionsReleaseDate.Checked = Me.oMainReleaseDateAllowed
+                chkMainOptionsReleaseDate.Checked = oMainReleaseDateAllowed
                 chkMainOptionsReleaseDate.Enabled = False
-                chkMainOptionsRuntime.Checked = Me.oMainRuntimeAllowed
+                chkMainOptionsRuntime.Checked = oMainRuntimeAllowed
                 chkMainOptionsRuntime.Enabled = False
-                chkMainOptionsStatus.Checked = Me.oMainStatusAllowed
+                chkMainOptionsStatus.Checked = oMainStatusAllowed
                 chkMainOptionsStatus.Enabled = False
-                chkMainOptionsStudios.Checked = Me.oMainStudiosAllowed
+                chkMainOptionsStudios.Checked = oMainStudiosAllowed
                 chkMainOptionsStudios.Enabled = False
-                chkMainOptionsTagline.Checked = Me.oMainTaglineAllowed
+                chkMainOptionsTagline.Checked = oMainTaglineAllowed
                 chkMainOptionsTagline.Enabled = False
-                chkMainOptionsTitle.Checked = Me.oMainTitleAllowed
+                chkMainOptionsTitle.Checked = oMainTitleAllowed
                 chkMainOptionsTitle.Enabled = False
-                chkMainOptionsTop250.Checked = Me.oMainTop250Allowed
+                chkMainOptionsTop250.Checked = oMainTop250Allowed
                 chkMainOptionsTop250.Enabled = False
-                chkMainOptionsTrailer.Checked = Me.oMainTrailerAllowed
+                chkMainOptionsTrailer.Checked = oMainTrailerAllowed
                 chkMainOptionsTrailer.Enabled = False
-                chkMainOptionsWriters.Checked = Me.oMainWritersAllowed
+                chkMainOptionsWriters.Checked = oMainWritersAllowed
                 chkMainOptionsWriters.Enabled = False
-                chkMainOptionsYear.Checked = Me.oMainYearAllowed
+                chkMainOptionsYear.Checked = oMainYearAllowed
                 chkMainOptionsYear.Enabled = False
             Else
-                chkMainOptionsActors.Enabled = Me.oMainActorsAllowed
-                chkMainOptionsCertifications.Enabled = Me.oMainCertificationsAllowed
-                chkMainOptionsCollectionID.Enabled = Me.oMainCollectionIDAllowed
-                chkMainOptionsCountries.Enabled = Me.oMainCountriesAllowed
-                chkMainOptionsCreators.Enabled = Me.oMainCreatorsAllowed
-                chkMainOptionsDirectors.Enabled = Me.oMainDirectorsAllowed
-                chkMainOptionsEpisodeGuideURL.Enabled = Me.oMainEpisodeGuideURLAllowed
-                chkMainOptionsGenres.Enabled = Me.oMainGenresAllowed
-                chkMainOptionsMPAA.Enabled = Me.oMainMPAAAllowed
-                chkMainOptionsOriginalTitle.Enabled = Me.oMainOriginalTitleAllowed
-                chkMainOptionsOutline.Enabled = Me.oMainOutlineAllowed
-                chkMainOptionsPlot.Enabled = Me.oMainPlotAllowed
-                chkMainOptionsPremiered.Enabled = Me.oMainPremieredAllowed
-                chkMainOptionsRating.Enabled = Me.oMainRatingAllowed
-                chkMainOptionsReleaseDate.Enabled = Me.oMainReleaseDateAllowed
-                chkMainOptionsRuntime.Enabled = Me.oMainRuntimeAllowed
-                chkMainOptionsStatus.Enabled = Me.oMainStatusAllowed
-                chkMainOptionsStudios.Enabled = Me.oMainStudiosAllowed
-                chkMainOptionsTagline.Enabled = Me.oMainTaglineAllowed
-                chkMainOptionsTitle.Enabled = Me.oMainTitleAllowed
-                chkMainOptionsTop250.Enabled = Me.oMainTop250Allowed
-                chkMainOptionsTrailer.Enabled = Me.oMainTrailerAllowed
-                chkMainOptionsWriters.Enabled = Me.oMainWritersAllowed
-                chkMainOptionsYear.Enabled = Me.oMainYearAllowed
+                chkMainOptionsActors.Enabled = oMainActorsAllowed
+                chkMainOptionsCertifications.Enabled = oMainCertificationsAllowed
+                chkMainOptionsCollectionID.Enabled = oMainCollectionIDAllowed
+                chkMainOptionsCountries.Enabled = oMainCountriesAllowed
+                chkMainOptionsCreators.Enabled = oMainCreatorsAllowed
+                chkMainOptionsDirectors.Enabled = oMainDirectorsAllowed
+                chkMainOptionsEpisodeGuideURL.Enabled = oMainEpisodeGuideURLAllowed
+                chkMainOptionsGenres.Enabled = oMainGenresAllowed
+                chkMainOptionsMPAA.Enabled = oMainMPAAAllowed
+                chkMainOptionsOriginalTitle.Enabled = oMainOriginalTitleAllowed
+                chkMainOptionsOutline.Enabled = oMainOutlineAllowed
+                chkMainOptionsPlot.Enabled = oMainPlotAllowed
+                chkMainOptionsPremiered.Enabled = oMainPremieredAllowed
+                chkMainOptionsRating.Enabled = oMainRatingAllowed
+                chkMainOptionsReleaseDate.Enabled = oMainReleaseDateAllowed
+                chkMainOptionsRuntime.Enabled = oMainRuntimeAllowed
+                chkMainOptionsStatus.Enabled = oMainStatusAllowed
+                chkMainOptionsStudios.Enabled = oMainStudiosAllowed
+                chkMainOptionsTagline.Enabled = oMainTaglineAllowed
+                chkMainOptionsTitle.Enabled = oMainTitleAllowed
+                chkMainOptionsTop250.Enabled = oMainTop250Allowed
+                chkMainOptionsTrailer.Enabled = oMainTrailerAllowed
+                chkMainOptionsWriters.Enabled = oMainWritersAllowed
+                chkMainOptionsYear.Enabled = oMainYearAllowed
             End If
         Else
             gbMainScrapeOptions.Enabled = False
@@ -418,56 +417,56 @@ Public Class dlgCustomScraper
 
             'Episode Modifiers
             If chkEpisodeModifierAll.Checked Then
-                chkEpisodeModifierActorThumbs.Checked = Me.mEpisodeActorThumbsAllowed
+                chkEpisodeModifierActorThumbs.Checked = mEpisodeActorThumbsAllowed
                 chkEpisodeModifierActorThumbs.Enabled = False
-                chkEpisodeModifierFanart.Checked = Me.mEpisodeFanartAllowed
+                chkEpisodeModifierFanart.Checked = mEpisodeFanartAllowed
                 chkEpisodeModifierFanart.Enabled = False
-                chkEpisodeModifierMetaData.Checked = Me.mEpisodeMetaDataAllowed
+                chkEpisodeModifierMetaData.Checked = mEpisodeMetaDataAllowed
                 chkEpisodeModifierMetaData.Enabled = False
-                chkEpisodeModifierNFO.Checked = Me.mEpisodeNFOAllowed
+                chkEpisodeModifierNFO.Checked = mEpisodeNFOAllowed
                 chkEpisodeModifierNFO.Enabled = False
-                chkEpisodeModifierPoster.Checked = Me.mEpisodePosterAllowed
+                chkEpisodeModifierPoster.Checked = mEpisodePosterAllowed
                 chkEpisodeModifierPoster.Enabled = False
             Else
-                chkEpisodeModifierActorThumbs.Enabled = Me.mEpisodeActorThumbsAllowed
-                chkEpisodeModifierFanart.Enabled = Me.mEpisodeFanartAllowed
-                chkEpisodeModifierMetaData.Enabled = Me.mEpisodeMetaDataAllowed
-                chkEpisodeModifierNFO.Enabled = Me.mEpisodeNFOAllowed
-                chkEpisodeModifierPoster.Enabled = Me.mEpisodePosterAllowed
+                chkEpisodeModifierActorThumbs.Enabled = mEpisodeActorThumbsAllowed
+                chkEpisodeModifierFanart.Enabled = mEpisodeFanartAllowed
+                chkEpisodeModifierMetaData.Enabled = mEpisodeMetaDataAllowed
+                chkEpisodeModifierNFO.Enabled = mEpisodeNFOAllowed
+                chkEpisodeModifierPoster.Enabled = mEpisodePosterAllowed
             End If
 
             'Episode Options
             If chkEpisodeModifierNFO.Checked Then
                 gbEpisodeScrapeOptions.Enabled = True
                 If chkEpisodeOptionsAll.Checked Then
-                    chkEpisodeOptionsActors.Checked = Me.oEpisodeActorsAllowed
+                    chkEpisodeOptionsActors.Checked = oEpisodeActorsAllowed
                     chkEpisodeOptionsActors.Enabled = False
-                    chkEpisodeOptionsAired.Checked = Me.oEpisodeAiredAllowed
+                    chkEpisodeOptionsAired.Checked = oEpisodeAiredAllowed
                     chkEpisodeOptionsAired.Enabled = False
-                    chkEpisodeOptionsDirectors.Checked = Me.oEpisodeDirectorsAllowed
+                    chkEpisodeOptionsDirectors.Checked = oEpisodeDirectorsAllowed
                     chkEpisodeOptionsDirectors.Enabled = False
-                    chkEpisodeOptionsGuestStars.Checked = Me.oEpisodeGuestStarsAllowed
+                    chkEpisodeOptionsGuestStars.Checked = oEpisodeGuestStarsAllowed
                     chkEpisodeOptionsGuestStars.Enabled = False
-                    chkEpisodeOptionsPlot.Checked = Me.oEpisodePlotAllowed
+                    chkEpisodeOptionsPlot.Checked = oEpisodePlotAllowed
                     chkEpisodeOptionsPlot.Enabled = False
-                    chkEpisodeOptionsRating.Checked = Me.oEpisodeRatingAllowed
+                    chkEpisodeOptionsRating.Checked = oEpisodeRatingAllowed
                     chkEpisodeOptionsRating.Enabled = False
-                    chkEpisodeOptionsRuntime.Checked = Me.oEpisodeRuntimeAllowed
+                    chkEpisodeOptionsRuntime.Checked = oEpisodeRuntimeAllowed
                     chkEpisodeOptionsRuntime.Enabled = False
-                    chkEpisodeOptionsTitle.Checked = Me.oEpisodeTitleAllowed
+                    chkEpisodeOptionsTitle.Checked = oEpisodeTitleAllowed
                     chkEpisodeOptionsTitle.Enabled = False
-                    chkEpisodeOptionsWriters.Checked = Me.oEpisodeWritersAllowed
+                    chkEpisodeOptionsWriters.Checked = oEpisodeWritersAllowed
                     chkEpisodeOptionsWriters.Enabled = False
                 Else
-                    chkEpisodeOptionsActors.Enabled = Me.oEpisodeActorsAllowed
-                    chkEpisodeOptionsAired.Enabled = Me.oEpisodeAiredAllowed
-                    chkEpisodeOptionsDirectors.Enabled = Me.oEpisodeDirectorsAllowed
-                    chkEpisodeOptionsGuestStars.Enabled = Me.oEpisodeGuestStarsAllowed
-                    chkEpisodeOptionsPlot.Enabled = Me.oEpisodePlotAllowed
-                    chkEpisodeOptionsRating.Enabled = Me.oEpisodeRatingAllowed
-                    chkEpisodeOptionsRuntime.Enabled = Me.oEpisodeRuntimeAllowed
-                    chkEpisodeOptionsTitle.Enabled = Me.oEpisodeTitleAllowed
-                    chkEpisodeOptionsWriters.Enabled = Me.oEpisodeWritersAllowed
+                    chkEpisodeOptionsActors.Enabled = oEpisodeActorsAllowed
+                    chkEpisodeOptionsAired.Enabled = oEpisodeAiredAllowed
+                    chkEpisodeOptionsDirectors.Enabled = oEpisodeDirectorsAllowed
+                    chkEpisodeOptionsGuestStars.Enabled = oEpisodeGuestStarsAllowed
+                    chkEpisodeOptionsPlot.Enabled = oEpisodePlotAllowed
+                    chkEpisodeOptionsRating.Enabled = oEpisodeRatingAllowed
+                    chkEpisodeOptionsRuntime.Enabled = oEpisodeRuntimeAllowed
+                    chkEpisodeOptionsTitle.Enabled = oEpisodeTitleAllowed
+                    chkEpisodeOptionsWriters.Enabled = oEpisodeWritersAllowed
                 End If
             Else
                 gbEpisodeScrapeOptions.Enabled = False
@@ -483,35 +482,35 @@ Public Class dlgCustomScraper
 
             'Season Modifiers
             If chkSeasonModifierAll.Checked Then
-                chkSeasonModifierBanner.Checked = Me.mSeasonBannerAllowed
+                chkSeasonModifierBanner.Checked = mSeasonBannerAllowed
                 chkSeasonModifierBanner.Enabled = False
-                chkSeasonModifierFanart.Checked = Me.mSeasonFanartAllowed
+                chkSeasonModifierFanart.Checked = mSeasonFanartAllowed
                 chkSeasonModifierFanart.Enabled = False
-                chkSeasonModifierLandscape.Checked = Me.mSeasonLandscapeAllowed
+                chkSeasonModifierLandscape.Checked = mSeasonLandscapeAllowed
                 chkSeasonModifierLandscape.Enabled = False
-                chkSeasonModifierPoster.Checked = Me.mSeasonPosterAllowed
+                chkSeasonModifierPoster.Checked = mSeasonPosterAllowed
                 chkSeasonModifierPoster.Enabled = False
             Else
-                chkSeasonModifierBanner.Enabled = Me.mSeasonBannerAllowed
-                chkSeasonModifierFanart.Enabled = Me.mSeasonFanartAllowed
-                chkSeasonModifierLandscape.Enabled = Me.mSeasonLandscapeAllowed
-                chkSeasonModifierPoster.Enabled = Me.mSeasonPosterAllowed
+                chkSeasonModifierBanner.Enabled = mSeasonBannerAllowed
+                chkSeasonModifierFanart.Enabled = mSeasonFanartAllowed
+                chkSeasonModifierLandscape.Enabled = mSeasonLandscapeAllowed
+                chkSeasonModifierPoster.Enabled = mSeasonPosterAllowed
             End If
 
             'Season Options
             If chkMainModifierNFO.Checked Then 'TODO: check. Atm we save the season infos to tv show NFO
                 gbSeasonScrapeOptions.Enabled = True
                 If chkSeasonOptionsAll.Checked Then
-                    chkSeasonOptionsAired.Checked = Me.oSeasonAiredAllowed
+                    chkSeasonOptionsAired.Checked = oSeasonAiredAllowed
                     chkSeasonOptionsAired.Enabled = False
-                    chkSeasonOptionsPlot.Checked = Me.oSeasonPlotAllowed
+                    chkSeasonOptionsPlot.Checked = oSeasonPlotAllowed
                     chkSeasonOptionsPlot.Enabled = False
-                    chkSeasonOptionsTitle.Checked = Me.oSeasonTitleAllowed
+                    chkSeasonOptionsTitle.Checked = oSeasonTitleAllowed
                     chkSeasonOptionsTitle.Enabled = False
                 Else
-                    chkSeasonOptionsAired.Enabled = Me.oSeasonAiredAllowed
-                    chkSeasonOptionsPlot.Enabled = Me.oSeasonPlotAllowed
-                    chkSeasonOptionsTitle.Enabled = Me.oSeasonTitleAllowed
+                    chkSeasonOptionsAired.Enabled = oSeasonAiredAllowed
+                    chkSeasonOptionsPlot.Enabled = oSeasonPlotAllowed
+                    chkSeasonOptionsTitle.Enabled = oSeasonTitleAllowed
                 End If
             Else
                 gbSeasonScrapeOptions.Enabled = False
@@ -592,73 +591,73 @@ Public Class dlgCustomScraper
         CustomUpdater.ScrapeOptions.bSeasonPlot = chkSpecialModifierWithSeasons.Checked AndAlso chkMainModifierNFO.Checked AndAlso chkSeasonOptionsPlot.Checked     'TODO: check. Atm we save the season infos to tv show NFO
         CustomUpdater.ScrapeOptions.bSeasonTitle = chkSpecialModifierWithSeasons.Checked AndAlso chkMainModifierNFO.Checked AndAlso chkSeasonOptionsTitle.Checked     'TODO: check. Atm we save the season infos to tv show NFO
 
-        If CustomUpdater.ScrapeModifier.EpisodeActorThumbs OrElse _
-            CustomUpdater.ScrapeModifier.EpisodeFanart OrElse _
-            CustomUpdater.ScrapeModifier.EpisodeMeta OrElse _
-            CustomUpdater.ScrapeModifier.EpisodePoster OrElse _
-            CustomUpdater.ScrapeModifier.EpisodeSubtitles OrElse _
-            CustomUpdater.ScrapeModifier.MainActorthumbs OrElse _
-            CustomUpdater.ScrapeModifier.MainBanner OrElse _
-            CustomUpdater.ScrapeModifier.MainCharacterArt OrElse _
-            CustomUpdater.ScrapeModifier.MainClearArt OrElse _
-            CustomUpdater.ScrapeModifier.MainClearLogo OrElse _
-            CustomUpdater.ScrapeModifier.MainDiscArt OrElse _
-            CustomUpdater.ScrapeModifier.MainExtrafanarts OrElse _
-            CustomUpdater.ScrapeModifier.MainExtrathumbs OrElse _
-            CustomUpdater.ScrapeModifier.MainFanart OrElse _
-            CustomUpdater.ScrapeModifier.MainLandscape OrElse _
-            CustomUpdater.ScrapeModifier.MainMeta OrElse _
-            CustomUpdater.ScrapeModifier.MainPoster OrElse _
-            CustomUpdater.ScrapeModifier.MainSubtitles OrElse _
-            CustomUpdater.ScrapeModifier.MainTheme OrElse _
-            CustomUpdater.ScrapeModifier.MainTrailer OrElse _
-            CustomUpdater.ScrapeModifier.SeasonBanner OrElse _
-            CustomUpdater.ScrapeModifier.SeasonFanart OrElse _
-            CustomUpdater.ScrapeModifier.SeasonLandscape OrElse _
+        If CustomUpdater.ScrapeModifier.EpisodeActorThumbs OrElse
+            CustomUpdater.ScrapeModifier.EpisodeFanart OrElse
+            CustomUpdater.ScrapeModifier.EpisodeMeta OrElse
+            CustomUpdater.ScrapeModifier.EpisodePoster OrElse
+            CustomUpdater.ScrapeModifier.EpisodeSubtitles OrElse
+            CustomUpdater.ScrapeModifier.MainActorthumbs OrElse
+            CustomUpdater.ScrapeModifier.MainBanner OrElse
+            CustomUpdater.ScrapeModifier.MainCharacterArt OrElse
+            CustomUpdater.ScrapeModifier.MainClearArt OrElse
+            CustomUpdater.ScrapeModifier.MainClearLogo OrElse
+            CustomUpdater.ScrapeModifier.MainDiscArt OrElse
+            CustomUpdater.ScrapeModifier.MainExtrafanarts OrElse
+            CustomUpdater.ScrapeModifier.MainExtrathumbs OrElse
+            CustomUpdater.ScrapeModifier.MainFanart OrElse
+            CustomUpdater.ScrapeModifier.MainLandscape OrElse
+            CustomUpdater.ScrapeModifier.MainMeta OrElse
+            CustomUpdater.ScrapeModifier.MainPoster OrElse
+            CustomUpdater.ScrapeModifier.MainSubtitles OrElse
+            CustomUpdater.ScrapeModifier.MainTheme OrElse
+            CustomUpdater.ScrapeModifier.MainTrailer OrElse
+            CustomUpdater.ScrapeModifier.SeasonBanner OrElse
+            CustomUpdater.ScrapeModifier.SeasonFanart OrElse
+            CustomUpdater.ScrapeModifier.SeasonLandscape OrElse
             CustomUpdater.ScrapeModifier.SeasonPoster Then
-            Me.btnOK.Enabled = True
-        ElseIf CustomUpdater.ScrapeModifier.EpisodeNFO AndAlso ( _
-            CustomUpdater.ScrapeOptions.bEpisodeActors OrElse _
-            CustomUpdater.ScrapeOptions.bEpisodeAired OrElse _
-            CustomUpdater.ScrapeOptions.bEpisodeCredits OrElse _
-            CustomUpdater.ScrapeOptions.bEpisodeDirectors OrElse _
-            CustomUpdater.ScrapeOptions.bEpisodeGuestStars OrElse _
-            CustomUpdater.ScrapeOptions.bEpisodePlot OrElse _
-            CustomUpdater.ScrapeOptions.bEpisodeRating OrElse _
-            CustomUpdater.ScrapeOptions.bEpisodeRuntime OrElse _
+            btnOK.Enabled = True
+        ElseIf CustomUpdater.ScrapeModifier.EpisodeNFO AndAlso (
+            CustomUpdater.ScrapeOptions.bEpisodeActors OrElse
+            CustomUpdater.ScrapeOptions.bEpisodeAired OrElse
+            CustomUpdater.ScrapeOptions.bEpisodeCredits OrElse
+            CustomUpdater.ScrapeOptions.bEpisodeDirectors OrElse
+            CustomUpdater.ScrapeOptions.bEpisodeGuestStars OrElse
+            CustomUpdater.ScrapeOptions.bEpisodePlot OrElse
+            CustomUpdater.ScrapeOptions.bEpisodeRating OrElse
+            CustomUpdater.ScrapeOptions.bEpisodeRuntime OrElse
             CustomUpdater.ScrapeOptions.bEpisodeTitle) Then
-            Me.btnOK.Enabled = True
-        ElseIf CustomUpdater.ScrapeModifier.MainNFO AndAlso ( _
-            CustomUpdater.ScrapeOptions.bMainActors OrElse _
-            CustomUpdater.ScrapeOptions.bMainCertifications OrElse _
-            CustomUpdater.ScrapeOptions.bMainCollectionID OrElse _
-            CustomUpdater.ScrapeOptions.bMainCountries OrElse _
-            CustomUpdater.ScrapeOptions.bMainCreators OrElse _
-            CustomUpdater.ScrapeOptions.bMainDirectors OrElse _
-            CustomUpdater.ScrapeOptions.bMainEpisodeGuide OrElse _
-            CustomUpdater.ScrapeOptions.bMainGenres OrElse _
-            CustomUpdater.ScrapeOptions.bMainMPAA OrElse _
-            CustomUpdater.ScrapeOptions.bMainOriginalTitle OrElse _
-            CustomUpdater.ScrapeOptions.bMainOutline OrElse _
-            CustomUpdater.ScrapeOptions.bMainPlot OrElse _
-            CustomUpdater.ScrapeOptions.bMainPremiered OrElse _
-            CustomUpdater.ScrapeOptions.bMainRating OrElse _
-            CustomUpdater.ScrapeOptions.bMainRelease OrElse _
-            CustomUpdater.ScrapeOptions.bMainRuntime OrElse _
-            CustomUpdater.ScrapeOptions.bMainStatus OrElse _
-            CustomUpdater.ScrapeOptions.bMainStudios OrElse _
-            CustomUpdater.ScrapeOptions.bMainTagline OrElse _
-            CustomUpdater.ScrapeOptions.bMainTags OrElse _
-            CustomUpdater.ScrapeOptions.bMainTitle OrElse _
-            CustomUpdater.ScrapeOptions.bMainTop250 OrElse _
-            CustomUpdater.ScrapeOptions.bMainTrailer OrElse _
-            CustomUpdater.ScrapeOptions.bMainWriters OrElse _
-            CustomUpdater.ScrapeOptions.bMainYear OrElse _
-            CustomUpdater.ScrapeOptions.bSeasonAired OrElse _
+            btnOK.Enabled = True
+        ElseIf CustomUpdater.ScrapeModifier.MainNFO AndAlso (
+            CustomUpdater.ScrapeOptions.bMainActors OrElse
+            CustomUpdater.ScrapeOptions.bMainCertifications OrElse
+            CustomUpdater.ScrapeOptions.bMainCollectionID OrElse
+            CustomUpdater.ScrapeOptions.bMainCountries OrElse
+            CustomUpdater.ScrapeOptions.bMainCreators OrElse
+            CustomUpdater.ScrapeOptions.bMainDirectors OrElse
+            CustomUpdater.ScrapeOptions.bMainEpisodeGuide OrElse
+            CustomUpdater.ScrapeOptions.bMainGenres OrElse
+            CustomUpdater.ScrapeOptions.bMainMPAA OrElse
+            CustomUpdater.ScrapeOptions.bMainOriginalTitle OrElse
+            CustomUpdater.ScrapeOptions.bMainOutline OrElse
+            CustomUpdater.ScrapeOptions.bMainPlot OrElse
+            CustomUpdater.ScrapeOptions.bMainPremiered OrElse
+            CustomUpdater.ScrapeOptions.bMainRating OrElse
+            CustomUpdater.ScrapeOptions.bMainRelease OrElse
+            CustomUpdater.ScrapeOptions.bMainRuntime OrElse
+            CustomUpdater.ScrapeOptions.bMainStatus OrElse
+            CustomUpdater.ScrapeOptions.bMainStudios OrElse
+            CustomUpdater.ScrapeOptions.bMainTagline OrElse
+            CustomUpdater.ScrapeOptions.bMainTags OrElse
+            CustomUpdater.ScrapeOptions.bMainTitle OrElse
+            CustomUpdater.ScrapeOptions.bMainTop250 OrElse
+            CustomUpdater.ScrapeOptions.bMainTrailer OrElse
+            CustomUpdater.ScrapeOptions.bMainWriters OrElse
+            CustomUpdater.ScrapeOptions.bMainYear OrElse
+            CustomUpdater.ScrapeOptions.bSeasonAired OrElse
             CustomUpdater.ScrapeOptions.bSeasonPlot) Then
-            Me.btnOK.Enabled = True
+            btnOK.Enabled = True
         Else
-            Me.btnOK.Enabled = False
+            btnOK.Enabled = False
         End If
     End Sub
 
@@ -671,227 +670,227 @@ Public Class dlgCustomScraper
                 Case Enums.ContentType.Movie
                     NameID = "idMovie"
                     NameTable = "movie"
-                    Me.gbEpisodeScrapeModifier.Visible = False
-                    Me.gbEpisodeScrapeOptions.Visible = False
-                    Me.gbSeasonScrapeModifier.Visible = False
-                    Me.gbSeasonScrapeOptions.Visible = False
-                    Me.gbSpecialScrapeModifier.Visible = False
+                    gbEpisodeScrapeModifier.Visible = False
+                    gbEpisodeScrapeOptions.Visible = False
+                    gbSeasonScrapeModifier.Visible = False
+                    gbSeasonScrapeOptions.Visible = False
+                    gbSpecialScrapeModifier.Visible = False
 
-                    Me.mEpisodeActorThumbsAllowed = False
-                    Me.mEpisodeFanartAllowed = False
-                    Me.mEpisodeMetaDataAllowed = False
-                    Me.mEpisodeNFOAllowed = False
-                    Me.mEpisodePosterAllowed = False
-                    Me.mMainActorThumbsAllowed = .MovieActorThumbsAnyEnabled
-                    Me.mMainBannerAllowed = .MovieBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainBanner)
-                    Me.mMainCharacterArtAllowed = False
-                    Me.mMainClearArtAllowed = .MovieClearArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearArt)
-                    Me.mMainClearLogoAllowed = .MovieClearLogoAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearLogo)
-                    Me.mMainDiscArtAllowed = .MovieDiscArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainDiscArt)
-                    Me.mMainExtrafanartsAllowed = .MovieExtrafanartsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
-                    Me.mMainExtrathumbsAllowed = .MovieExtrathumbsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
-                    Me.mMainFanartAllowed = .MovieFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
-                    Me.mMainLandscapeAllowed = .MovieLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainLandscape)
-                    Me.mMainMetaDataAllowed = .MovieScraperMetaDataScan
-                    Me.mMainNFOAllowed = .MovieNFOAnyEnabled
-                    Me.mMainPosterAllowed = .MoviePosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainPoster)
-                    Me.mMainThemeAllowed = .MovieThemeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_Movie(Enums.ModifierType.MainTheme)
-                    Me.mMainTrailerAllowed = .MovieTrailerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Trailer_Movie(Enums.ModifierType.MainTrailer)
-                    Me.mSeasonBannerAllowed = False
-                    Me.mSeasonFanartAllowed = False
-                    Me.mSeasonLandscapeAllowed = False
-                    Me.mSeasonPosterAllowed = False
+                    mEpisodeActorThumbsAllowed = False
+                    mEpisodeFanartAllowed = False
+                    mEpisodeMetaDataAllowed = False
+                    mEpisodeNFOAllowed = False
+                    mEpisodePosterAllowed = False
+                    mMainActorThumbsAllowed = .MovieActorThumbsAnyEnabled
+                    mMainBannerAllowed = .MovieBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainBanner)
+                    mMainCharacterArtAllowed = False
+                    mMainClearArtAllowed = .MovieClearArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearArt)
+                    mMainClearLogoAllowed = .MovieClearLogoAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearLogo)
+                    mMainDiscArtAllowed = .MovieDiscArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainDiscArt)
+                    mMainExtrafanartsAllowed = .MovieExtrafanartsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
+                    mMainExtrathumbsAllowed = .MovieExtrathumbsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
+                    mMainFanartAllowed = .MovieFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
+                    mMainLandscapeAllowed = .MovieLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainLandscape)
+                    mMainMetaDataAllowed = .MovieScraperMetaDataScan
+                    mMainNFOAllowed = .MovieNFOAnyEnabled
+                    mMainPosterAllowed = .MoviePosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainPoster)
+                    mMainThemeAllowed = .MovieThemeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_Movie(Enums.ModifierType.MainTheme)
+                    mMainTrailerAllowed = .MovieTrailerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Trailer_Movie(Enums.ModifierType.MainTrailer)
+                    mSeasonBannerAllowed = False
+                    mSeasonFanartAllowed = False
+                    mSeasonLandscapeAllowed = False
+                    mSeasonPosterAllowed = False
 
-                    Me.oEpisodeActorsAllowed = False
-                    Me.oEpisodeAiredAllowed = False
-                    Me.oEpisodeDirectorsAllowed = False
-                    Me.oEpisodeGuestStarsAllowed = False
-                    Me.oEpisodePlotAllowed = False
-                    Me.oEpisodeRatingAllowed = False
-                    Me.oEpisodeRuntimeAllowed = False
-                    Me.oEpisodeTitleAllowed = False
-                    Me.oEpisodeWritersAllowed = False
-                    Me.oMainActorsAllowed = .MovieScraperCast
-                    Me.oMainCertificationsAllowed = .MovieScraperCert
-                    Me.oMainCollectionIDAllowed = .MovieScraperCollectionID
-                    Me.oMainCountriesAllowed = .MovieScraperCountry
-                    Me.oMainCreatorsAllowed = False
-                    Me.oMainDirectorsAllowed = .MovieScraperDirector
-                    Me.oMainEpisodeGuideURLAllowed = False
-                    Me.oMainGenresAllowed = .MovieScraperGenre
-                    Me.oMainMPAAAllowed = .MovieScraperMPAA
-                    Me.oMainOriginalTitleAllowed = .MovieScraperOriginalTitle
-                    Me.oMainOutlineAllowed = .MovieScraperOutline
-                    Me.oMainPlotAllowed = .MovieScraperPlot
-                    Me.oMainPremieredAllowed = False
-                    Me.oMainProducersAllowed = False
-                    Me.oMainRatingAllowed = .MovieScraperRating
-                    Me.oMainReleaseDateAllowed = .MovieScraperRelease
-                    Me.oMainRuntimeAllowed = .MovieScraperRuntime
-                    Me.oMainStatusAllowed = False
-                    Me.oMainStudiosAllowed = .MovieScraperStudio
-                    Me.oMainTaglineAllowed = .MovieScraperTagline
-                    Me.oMainTitleAllowed = .MovieScraperTitle
-                    Me.oMainTop250Allowed = .MovieScraperTop250
-                    Me.oMainTrailerAllowed = .MovieScraperTrailer
-                    Me.oMainWritersAllowed = .MovieScraperCredits
-                    Me.oMainYearAllowed = .MovieScraperYear
-                    Me.oSeasonAiredAllowed = False
-                    Me.oSeasonPlotAllowed = False
-                    Me.oSeasonTitleAllowed = False
+                    oEpisodeActorsAllowed = False
+                    oEpisodeAiredAllowed = False
+                    oEpisodeDirectorsAllowed = False
+                    oEpisodeGuestStarsAllowed = False
+                    oEpisodePlotAllowed = False
+                    oEpisodeRatingAllowed = False
+                    oEpisodeRuntimeAllowed = False
+                    oEpisodeTitleAllowed = False
+                    oEpisodeWritersAllowed = False
+                    oMainActorsAllowed = .MovieScraperCast
+                    oMainCertificationsAllowed = .MovieScraperCert
+                    oMainCollectionIDAllowed = .MovieScraperCollectionID
+                    oMainCountriesAllowed = .MovieScraperCountry
+                    oMainCreatorsAllowed = False
+                    oMainDirectorsAllowed = .MovieScraperDirector
+                    oMainEpisodeGuideURLAllowed = False
+                    oMainGenresAllowed = .MovieScraperGenre
+                    oMainMPAAAllowed = .MovieScraperMPAA
+                    oMainOriginalTitleAllowed = .MovieScraperOriginalTitle
+                    oMainOutlineAllowed = .MovieScraperOutline
+                    oMainPlotAllowed = .MovieScraperPlot
+                    oMainPremieredAllowed = False
+                    oMainProducersAllowed = False
+                    oMainRatingAllowed = .MovieScraperRating
+                    oMainReleaseDateAllowed = .MovieScraperRelease
+                    oMainRuntimeAllowed = .MovieScraperRuntime
+                    oMainStatusAllowed = False
+                    oMainStudiosAllowed = .MovieScraperStudio
+                    oMainTaglineAllowed = .MovieScraperTagline
+                    oMainTitleAllowed = .MovieScraperTitle
+                    oMainTop250Allowed = .MovieScraperTop250
+                    oMainTrailerAllowed = .MovieScraperTrailer
+                    oMainWritersAllowed = .MovieScraperCredits
+                    oMainYearAllowed = .MovieScraperYear
+                    oSeasonAiredAllowed = False
+                    oSeasonPlotAllowed = False
+                    oSeasonTitleAllowed = False
 
-                    Me.chkMainModifierAll.Checked = True
-                    Me.chkMainOptionsAll.Checked = True
+                    chkMainModifierAll.Checked = True
+                    chkMainOptionsAll.Checked = True
 
                 Case Enums.ContentType.MovieSet
                     NameID = "idSet"
                     NameTable = "sets"
-                    Me.gbEpisodeScrapeModifier.Visible = False
-                    Me.gbEpisodeScrapeOptions.Visible = False
-                    Me.gbSeasonScrapeModifier.Visible = False
-                    Me.gbSeasonScrapeOptions.Visible = False
-                    Me.gbSpecialScrapeModifier.Visible = False
+                    gbEpisodeScrapeModifier.Visible = False
+                    gbEpisodeScrapeOptions.Visible = False
+                    gbSeasonScrapeModifier.Visible = False
+                    gbSeasonScrapeOptions.Visible = False
+                    gbSpecialScrapeModifier.Visible = False
 
-                    Me.mEpisodeActorThumbsAllowed = False
-                    Me.mEpisodeFanartAllowed = False
-                    Me.mEpisodeMetaDataAllowed = False
-                    Me.mEpisodeNFOAllowed = False
-                    Me.mEpisodePosterAllowed = False
-                    Me.mMainActorThumbsAllowed = False
-                    Me.mMainBannerAllowed = .MovieSetBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainBanner)
-                    Me.mMainCharacterArtAllowed = False
-                    Me.mMainClearArtAllowed = .MovieSetClearArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainClearArt)
-                    Me.mMainClearLogoAllowed = .MovieSetClearLogoAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainClearLogo)
-                    Me.mMainDiscArtAllowed = .MovieSetDiscArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainDiscArt)
-                    Me.mMainExtrafanartsAllowed = False
-                    Me.mMainExtrathumbsAllowed = False
-                    Me.mMainFanartAllowed = .MovieSetFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainFanart)
-                    Me.mMainLandscapeAllowed = .MovieSetLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainLandscape)
-                    Me.mMainMetaDataAllowed = False
-                    Me.mMainNFOAllowed = .MovieSetNFOAnyEnabled
-                    Me.mMainPosterAllowed = .MovieSetPosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainPoster)
-                    Me.mMainThemeAllowed = False
-                    Me.mMainTrailerAllowed = False
-                    Me.mSeasonBannerAllowed = False
-                    Me.mSeasonFanartAllowed = False
-                    Me.mSeasonLandscapeAllowed = False
-                    Me.mSeasonPosterAllowed = False
+                    mEpisodeActorThumbsAllowed = False
+                    mEpisodeFanartAllowed = False
+                    mEpisodeMetaDataAllowed = False
+                    mEpisodeNFOAllowed = False
+                    mEpisodePosterAllowed = False
+                    mMainActorThumbsAllowed = False
+                    mMainBannerAllowed = .MovieSetBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainBanner)
+                    mMainCharacterArtAllowed = False
+                    mMainClearArtAllowed = .MovieSetClearArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainClearArt)
+                    mMainClearLogoAllowed = .MovieSetClearLogoAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainClearLogo)
+                    mMainDiscArtAllowed = .MovieSetDiscArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainDiscArt)
+                    mMainExtrafanartsAllowed = False
+                    mMainExtrathumbsAllowed = False
+                    mMainFanartAllowed = .MovieSetFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainFanart)
+                    mMainLandscapeAllowed = .MovieSetLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainLandscape)
+                    mMainMetaDataAllowed = False
+                    mMainNFOAllowed = .MovieSetNFOAnyEnabled
+                    mMainPosterAllowed = .MovieSetPosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainPoster)
+                    mMainThemeAllowed = False
+                    mMainTrailerAllowed = False
+                    mSeasonBannerAllowed = False
+                    mSeasonFanartAllowed = False
+                    mSeasonLandscapeAllowed = False
+                    mSeasonPosterAllowed = False
 
-                    Me.oEpisodeActorsAllowed = False
-                    Me.oEpisodeAiredAllowed = False
-                    Me.oEpisodeDirectorsAllowed = False
-                    Me.oEpisodeGuestStarsAllowed = False
-                    Me.oEpisodePlotAllowed = False
-                    Me.oEpisodeRatingAllowed = False
-                    Me.oEpisodeRuntimeAllowed = False
-                    Me.oEpisodeTitleAllowed = False
-                    Me.oEpisodeWritersAllowed = False
-                    Me.oMainActorsAllowed = False
-                    Me.oMainCertificationsAllowed = False
-                    Me.oMainCollectionIDAllowed = False
-                    Me.oMainCountriesAllowed = False
-                    Me.oMainCreatorsAllowed = False
-                    Me.oMainDirectorsAllowed = False
-                    Me.oMainEpisodeGuideURLAllowed = False
-                    Me.oMainGenresAllowed = False
-                    Me.oMainMPAAAllowed = False
-                    Me.oMainOriginalTitleAllowed = False
-                    Me.oMainOutlineAllowed = False
-                    Me.oMainPlotAllowed = .MovieSetScraperPlot
-                    Me.oMainPremieredAllowed = False
-                    Me.oMainProducersAllowed = False
-                    Me.oMainRatingAllowed = False
-                    Me.oMainReleaseDateAllowed = False
-                    Me.oMainRuntimeAllowed = False
-                    Me.oMainStatusAllowed = False
-                    Me.oMainStudiosAllowed = False
-                    Me.oMainTaglineAllowed = False
-                    Me.oMainTitleAllowed = .MovieSetScraperTitle
-                    Me.oMainTop250Allowed = False
-                    Me.oMainTrailerAllowed = False
-                    Me.oMainWritersAllowed = False
-                    Me.oMainYearAllowed = False
-                    Me.oSeasonAiredAllowed = False
-                    Me.oSeasonPlotAllowed = False
-                    Me.oSeasonTitleAllowed = False
+                    oEpisodeActorsAllowed = False
+                    oEpisodeAiredAllowed = False
+                    oEpisodeDirectorsAllowed = False
+                    oEpisodeGuestStarsAllowed = False
+                    oEpisodePlotAllowed = False
+                    oEpisodeRatingAllowed = False
+                    oEpisodeRuntimeAllowed = False
+                    oEpisodeTitleAllowed = False
+                    oEpisodeWritersAllowed = False
+                    oMainActorsAllowed = False
+                    oMainCertificationsAllowed = False
+                    oMainCollectionIDAllowed = False
+                    oMainCountriesAllowed = False
+                    oMainCreatorsAllowed = False
+                    oMainDirectorsAllowed = False
+                    oMainEpisodeGuideURLAllowed = False
+                    oMainGenresAllowed = False
+                    oMainMPAAAllowed = False
+                    oMainOriginalTitleAllowed = False
+                    oMainOutlineAllowed = False
+                    oMainPlotAllowed = .MovieSetScraperPlot
+                    oMainPremieredAllowed = False
+                    oMainProducersAllowed = False
+                    oMainRatingAllowed = False
+                    oMainReleaseDateAllowed = False
+                    oMainRuntimeAllowed = False
+                    oMainStatusAllowed = False
+                    oMainStudiosAllowed = False
+                    oMainTaglineAllowed = False
+                    oMainTitleAllowed = .MovieSetScraperTitle
+                    oMainTop250Allowed = False
+                    oMainTrailerAllowed = False
+                    oMainWritersAllowed = False
+                    oMainYearAllowed = False
+                    oSeasonAiredAllowed = False
+                    oSeasonPlotAllowed = False
+                    oSeasonTitleAllowed = False
 
-                    Me.chkMainModifierAll.Checked = True
-                    Me.chkMainOptionsAll.Checked = True
+                    chkMainModifierAll.Checked = True
+                    chkMainOptionsAll.Checked = True
 
                 Case Enums.ContentType.TV
                     NameID = "idShow"
                     NameTable = "tvshow"
 
-                    Me.mEpisodeActorThumbsAllowed = .TVEpisodeActorThumbsAnyEnabled
-                    Me.mEpisodeFanartAllowed = .TVEpisodeFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodeFanart)
-                    Me.mEpisodeMetaDataAllowed = .TVScraperMetaDataScan
-                    Me.mEpisodeNFOAllowed = .TVEpisodeNFOAnyEnabled
-                    Me.mEpisodePosterAllowed = .TVEpisodePosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodePoster)
-                    Me.mMainActorThumbsAllowed = .TVShowActorThumbsAnyEnabled
-                    Me.mMainBannerAllowed = .MovieBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainBanner)
-                    Me.mMainCharacterArtAllowed = .TVShowCharacterArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainCharacterArt)
-                    Me.mMainClearArtAllowed = .TVShowClearArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearArt)
-                    Me.mMainClearLogoAllowed = .TVShowClearLogoAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearLogo)
-                    Me.mMainDiscArtAllowed = False
-                    Me.mMainExtrafanartsAllowed = .TVShowExtrafanartsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)
-                    Me.mMainExtrathumbsAllowed = False
-                    Me.mMainFanartAllowed = .TVShowFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)
-                    Me.mMainLandscapeAllowed = .TVShowLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainLandscape)
-                    Me.mMainMetaDataAllowed = False
-                    Me.mMainNFOAllowed = .TVShowNFOAnyEnabled
-                    Me.mMainPosterAllowed = .TVShowPosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainPoster)
-                    Me.mMainThemeAllowed = .TvShowThemeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_Movie(Enums.ModifierType.MainTheme)
-                    Me.mMainTrailerAllowed = False
-                    Me.mSeasonBannerAllowed = .TVSeasonBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonBanner)
-                    Me.mSeasonFanartAllowed = .TVSeasonFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonFanart)
-                    Me.mSeasonLandscapeAllowed = .TVSeasonLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonLandscape)
-                    Me.mSeasonPosterAllowed = .TVSeasonPosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonPoster)
+                    mEpisodeActorThumbsAllowed = .TVEpisodeActorThumbsAnyEnabled
+                    mEpisodeFanartAllowed = .TVEpisodeFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodeFanart)
+                    mEpisodeMetaDataAllowed = .TVScraperMetaDataScan
+                    mEpisodeNFOAllowed = .TVEpisodeNFOAnyEnabled
+                    mEpisodePosterAllowed = .TVEpisodePosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodePoster)
+                    mMainActorThumbsAllowed = .TVShowActorThumbsAnyEnabled
+                    mMainBannerAllowed = .MovieBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainBanner)
+                    mMainCharacterArtAllowed = .TVShowCharacterArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainCharacterArt)
+                    mMainClearArtAllowed = .TVShowClearArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearArt)
+                    mMainClearLogoAllowed = .TVShowClearLogoAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearLogo)
+                    mMainDiscArtAllowed = False
+                    mMainExtrafanartsAllowed = .TVShowExtrafanartsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)
+                    mMainExtrathumbsAllowed = False
+                    mMainFanartAllowed = .TVShowFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)
+                    mMainLandscapeAllowed = .TVShowLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainLandscape)
+                    mMainMetaDataAllowed = False
+                    mMainNFOAllowed = .TVShowNFOAnyEnabled
+                    mMainPosterAllowed = .TVShowPosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainPoster)
+                    mMainThemeAllowed = .TvShowThemeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_Movie(Enums.ModifierType.MainTheme)
+                    mMainTrailerAllowed = False
+                    mSeasonBannerAllowed = .TVSeasonBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonBanner)
+                    mSeasonFanartAllowed = .TVSeasonFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonFanart)
+                    mSeasonLandscapeAllowed = .TVSeasonLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonLandscape)
+                    mSeasonPosterAllowed = .TVSeasonPosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonPoster)
 
-                    Me.oEpisodeActorsAllowed = .TVScraperEpisodeActors
-                    Me.oEpisodeAiredAllowed = .TVScraperEpisodeAired
-                    Me.oEpisodeDirectorsAllowed = .TVScraperEpisodeDirector
-                    Me.oEpisodeGuestStarsAllowed = .TVScraperEpisodeGuestStars
-                    Me.oEpisodePlotAllowed = .TVScraperEpisodePlot
-                    Me.oEpisodeRatingAllowed = .TVScraperEpisodeRating
-                    Me.oEpisodeRuntimeAllowed = .TVScraperEpisodeRuntime
-                    Me.oEpisodeTitleAllowed = .TVScraperEpisodeTitle
-                    Me.oEpisodeWritersAllowed = .TVScraperEpisodeCredits
-                    Me.oMainActorsAllowed = .TVScraperShowActors
-                    Me.oMainCertificationsAllowed = .TVScraperShowCert
-                    Me.oMainCollectionIDAllowed = False
-                    Me.oMainCountriesAllowed = .TVScraperShowCountry
-                    Me.oMainCreatorsAllowed = .TVScraperShowCreators
-                    Me.oMainDirectorsAllowed = False
-                    Me.oMainEpisodeGuideURLAllowed = .TVScraperShowEpiGuideURL
-                    Me.oMainGenresAllowed = .TVScraperShowGenre
-                    Me.oMainMPAAAllowed = .TVScraperShowMPAA
-                    Me.oMainOriginalTitleAllowed = .TVScraperShowOriginalTitle
-                    Me.oMainOutlineAllowed = False
-                    Me.oMainPlotAllowed = .TVScraperShowPlot
-                    Me.oMainPremieredAllowed = .TVScraperShowPremiered
-                    Me.oMainProducersAllowed = False
-                    Me.oMainRatingAllowed = .TVScraperShowRating
-                    Me.oMainReleaseDateAllowed = False
-                    Me.oMainRuntimeAllowed = .TVScraperShowRuntime
-                    Me.oMainStatusAllowed = .TVScraperShowStatus
-                    Me.oMainStudiosAllowed = .TVScraperShowStudio
-                    Me.oMainTaglineAllowed = False
-                    Me.oMainTitleAllowed = .TVScraperShowTitle
-                    Me.oMainTop250Allowed = False
-                    Me.oMainTrailerAllowed = False
-                    Me.oMainWritersAllowed = False
-                    Me.oMainYearAllowed = False
-                    Me.oSeasonAiredAllowed = .TVScraperSeasonAired
-                    Me.oSeasonPlotAllowed = .TVScraperSeasonPlot
-                    Me.oSeasonTitleAllowed = .TVScraperSeasonTitle
+                    oEpisodeActorsAllowed = .TVScraperEpisodeActors
+                    oEpisodeAiredAllowed = .TVScraperEpisodeAired
+                    oEpisodeDirectorsAllowed = .TVScraperEpisodeDirector
+                    oEpisodeGuestStarsAllowed = .TVScraperEpisodeGuestStars
+                    oEpisodePlotAllowed = .TVScraperEpisodePlot
+                    oEpisodeRatingAllowed = .TVScraperEpisodeRating
+                    oEpisodeRuntimeAllowed = .TVScraperEpisodeRuntime
+                    oEpisodeTitleAllowed = .TVScraperEpisodeTitle
+                    oEpisodeWritersAllowed = .TVScraperEpisodeCredits
+                    oMainActorsAllowed = .TVScraperShowActors
+                    oMainCertificationsAllowed = .TVScraperShowCert
+                    oMainCollectionIDAllowed = False
+                    oMainCountriesAllowed = .TVScraperShowCountry
+                    oMainCreatorsAllowed = .TVScraperShowCreators
+                    oMainDirectorsAllowed = False
+                    oMainEpisodeGuideURLAllowed = .TVScraperShowEpiGuideURL
+                    oMainGenresAllowed = .TVScraperShowGenre
+                    oMainMPAAAllowed = .TVScraperShowMPAA
+                    oMainOriginalTitleAllowed = .TVScraperShowOriginalTitle
+                    oMainOutlineAllowed = False
+                    oMainPlotAllowed = .TVScraperShowPlot
+                    oMainPremieredAllowed = .TVScraperShowPremiered
+                    oMainProducersAllowed = False
+                    oMainRatingAllowed = .TVScraperShowRating
+                    oMainReleaseDateAllowed = False
+                    oMainRuntimeAllowed = .TVScraperShowRuntime
+                    oMainStatusAllowed = .TVScraperShowStatus
+                    oMainStudiosAllowed = .TVScraperShowStudio
+                    oMainTaglineAllowed = False
+                    oMainTitleAllowed = .TVScraperShowTitle
+                    oMainTop250Allowed = False
+                    oMainTrailerAllowed = False
+                    oMainWritersAllowed = False
+                    oMainYearAllowed = False
+                    oSeasonAiredAllowed = .TVScraperSeasonAired
+                    oSeasonPlotAllowed = .TVScraperSeasonPlot
+                    oSeasonTitleAllowed = .TVScraperSeasonTitle
 
-                    Me.chkMainModifierAll.Checked = True
-                    Me.chkMainOptionsAll.Checked = True
-                    Me.chkSpecialModifierAll.Checked = True
-                    Me.chkEpisodeModifierAll.Checked = True
-                    Me.chkEpisodeOptionsAll.Checked = True
-                    Me.chkSeasonModifierAll.Checked = True
-                    Me.chkSeasonOptionsAll.Checked = True
+                    chkMainModifierAll.Checked = True
+                    chkMainOptionsAll.Checked = True
+                    chkSpecialModifierAll.Checked = True
+                    chkEpisodeModifierAll.Checked = True
+                    chkEpisodeOptionsAll.Checked = True
+                    chkSeasonModifierAll.Checked = True
+                    chkSeasonOptionsAll.Checked = True
             End Select
         End With
 
@@ -913,159 +912,159 @@ Public Class dlgCustomScraper
         End If
     End Sub
 
-    Private Sub rbUpdateModifier_All_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbScrapeType_All.CheckedChanged
+    Private Sub rbUpdateModifier_All_CheckedChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles rbScrapeType_All.CheckedChanged
         Select Case True
-            Case Me.rbScrapeType_Ask.Checked
-                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.AllAsk
-            Case Me.rbScrapeType_Auto.Checked
-                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.AllAuto
-            Case Me.rbScrapeType_Skip.Checked
-                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.AllSkip
+            Case rbScrapeType_Ask.Checked
+                CustomUpdater.ScrapeType = Enums.ScrapeType.AllAsk
+            Case rbScrapeType_Auto.Checked
+                CustomUpdater.ScrapeType = Enums.ScrapeType.AllAuto
+            Case rbScrapeType_Skip.Checked
+                CustomUpdater.ScrapeType = Enums.ScrapeType.AllSkip
         End Select
     End Sub
 
-    Private Sub rbUpdateModifier_Marked_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbScrapeType_Marked.CheckedChanged
+    Private Sub rbUpdateModifier_Marked_CheckedChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles rbScrapeType_Marked.CheckedChanged
         Select Case True
-            Case Me.rbScrapeType_Ask.Checked
-                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MarkedAsk
-            Case Me.rbScrapeType_Auto.Checked
-                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MarkedAuto
-            Case Me.rbScrapeType_Skip.Checked
-                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MarkedSkip
+            Case rbScrapeType_Ask.Checked
+                CustomUpdater.ScrapeType = Enums.ScrapeType.MarkedAsk
+            Case rbScrapeType_Auto.Checked
+                CustomUpdater.ScrapeType = Enums.ScrapeType.MarkedAuto
+            Case rbScrapeType_Skip.Checked
+                CustomUpdater.ScrapeType = Enums.ScrapeType.MarkedSkip
         End Select
     End Sub
 
-    Private Sub rbUpdateModifier_Missing_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbScrapeType_Missing.CheckedChanged
+    Private Sub rbUpdateModifier_Missing_CheckedChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles rbScrapeType_Missing.CheckedChanged
         Select Case True
-            Case Me.rbScrapeType_Ask.Checked
-                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MissingAsk
-            Case Me.rbScrapeType_Auto.Checked
-                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MissingAuto
-            Case Me.rbScrapeType_Skip.Checked
-                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MissingSkip
+            Case rbScrapeType_Ask.Checked
+                CustomUpdater.ScrapeType = Enums.ScrapeType.MissingAsk
+            Case rbScrapeType_Auto.Checked
+                CustomUpdater.ScrapeType = Enums.ScrapeType.MissingAuto
+            Case rbScrapeType_Skip.Checked
+                CustomUpdater.ScrapeType = Enums.ScrapeType.MissingSkip
         End Select
     End Sub
 
-    Private Sub rbUpdateModifier_New_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbScrapeType_New.CheckedChanged
+    Private Sub rbUpdateModifier_New_CheckedChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles rbScrapeType_New.CheckedChanged
         Select Case True
-            Case Me.rbScrapeType_Ask.Checked
-                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.NewAsk
-            Case Me.rbScrapeType_Auto.Checked
-                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.NewAuto
-            Case Me.rbScrapeType_Skip.Checked
-                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.NewSkip
+            Case rbScrapeType_Ask.Checked
+                CustomUpdater.ScrapeType = Enums.ScrapeType.NewAsk
+            Case rbScrapeType_Auto.Checked
+                CustomUpdater.ScrapeType = Enums.ScrapeType.NewAuto
+            Case rbScrapeType_Skip.Checked
+                CustomUpdater.ScrapeType = Enums.ScrapeType.NewSkip
         End Select
     End Sub
 
-    Private Sub rbUpdate_Ask_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbScrapeType_Ask.CheckedChanged
+    Private Sub rbUpdate_Ask_CheckedChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles rbScrapeType_Ask.CheckedChanged
         Select Case True
-            Case Me.rbScrapeType_All.Checked
-                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.AllAsk
+            Case rbScrapeType_All.Checked
+                CustomUpdater.ScrapeType = Enums.ScrapeType.AllAsk
             Case rbScrapeType_Marked.Checked
-                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MarkedAsk
-            Case Me.rbScrapeType_Missing.Checked
-                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MissingAsk
-            Case Me.rbScrapeType_New.Checked
-                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.NewAsk
+                CustomUpdater.ScrapeType = Enums.ScrapeType.MarkedAsk
+            Case rbScrapeType_Missing.Checked
+                CustomUpdater.ScrapeType = Enums.ScrapeType.MissingAsk
+            Case rbScrapeType_New.Checked
+                CustomUpdater.ScrapeType = Enums.ScrapeType.NewAsk
         End Select
     End Sub
 
-    Private Sub rbUpdate_Auto_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbScrapeType_Auto.CheckedChanged
+    Private Sub rbUpdate_Auto_CheckedChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles rbScrapeType_Auto.CheckedChanged
         Select Case True
-            Case Me.rbScrapeType_All.Checked
-                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.AllAuto
-            Case Me.rbScrapeType_Marked.Checked
-                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MarkedAuto
-            Case Me.rbScrapeType_Missing.Checked
-                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MissingAuto
-            Case Me.rbScrapeType_New.Checked
-                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.NewAuto
+            Case rbScrapeType_All.Checked
+                CustomUpdater.ScrapeType = Enums.ScrapeType.AllAuto
+            Case rbScrapeType_Marked.Checked
+                CustomUpdater.ScrapeType = Enums.ScrapeType.MarkedAuto
+            Case rbScrapeType_Missing.Checked
+                CustomUpdater.ScrapeType = Enums.ScrapeType.MissingAuto
+            Case rbScrapeType_New.Checked
+                CustomUpdater.ScrapeType = Enums.ScrapeType.NewAuto
         End Select
     End Sub
 
-    Private Sub rbUpdate_Skip_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbScrapeType_Skip.CheckedChanged
+    Private Sub rbUpdate_Skip_CheckedChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles rbScrapeType_Skip.CheckedChanged
         Select Case True
-            Case Me.rbScrapeType_All.Checked
-                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.AllSkip
-            Case Me.rbScrapeType_Marked.Checked
-                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MarkedSkip
-            Case Me.rbScrapeType_Missing.Checked
-                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.MissingSkip
-            Case Me.rbScrapeType_New.Checked
-                Me.CustomUpdater.ScrapeType = Enums.ScrapeType.NewSkip
+            Case rbScrapeType_All.Checked
+                CustomUpdater.ScrapeType = Enums.ScrapeType.AllSkip
+            Case rbScrapeType_Marked.Checked
+                CustomUpdater.ScrapeType = Enums.ScrapeType.MarkedSkip
+            Case rbScrapeType_Missing.Checked
+                CustomUpdater.ScrapeType = Enums.ScrapeType.MissingSkip
+            Case rbScrapeType_New.Checked
+                CustomUpdater.ScrapeType = Enums.ScrapeType.NewSkip
         End Select
     End Sub
 
     Private Sub CheckBoxes_Click(sender As Object, e As EventArgs) Handles _
-        chkEpisodeModifierActorThumbs.Click, _
-        chkEpisodeModifierAll.Click, _
-        chkEpisodeModifierFanart.Click, _
-        chkEpisodeModifierMetaData.Click, _
-        chkEpisodeModifierNFO.Click, _
-        chkEpisodeModifierPoster.Click, _
-        chkEpisodeOptionsActors.Click, _
-        chkEpisodeOptionsAired.Click, _
-        chkEpisodeOptionsAll.Click, _
-        chkEpisodeOptionsDirectors.Click, _
-        chkEpisodeOptionsGuestStars.Click, _
-        chkEpisodeOptionsPlot.Click, _
-        chkEpisodeOptionsRating.Click, _
-        chkEpisodeOptionsRuntime.Click, _
-        chkEpisodeOptionsTitle.Click, _
-        chkEpisodeOptionsWriters.Click, _
-        chkMainModifierActorThumbs.Click, _
-        chkMainModifierAll.Click, _
-        chkMainModifierBanner.Click, _
-        chkMainModifierCharacterArt.Click, _
-        chkMainModifierClearArt.Click, _
-        chkMainModifierClearLogo.Click, _
-        chkMainModifierDiscArt.Click, _
-        chkMainModifierExtrafanarts.Click, _
-        chkMainModifierExtrathumbs.Click, _
-        chkMainModifierFanart.Click, _
-        chkMainModifierLandscape.Click, _
-        chkMainModifierMetaData.Click, _
-        chkMainModifierNFO.Click, _
-        chkMainModifierPoster.Click, _
-        chkMainModifierTheme.Click, _
-        chkMainModifierTrailer.Click, _
-        chkMainOptionsActors.Click, _
-        chkMainOptionsAll.Click, _
-        chkMainOptionsCertifications.Click, _
-        chkMainOptionsCollectionID.Click, _
-        chkMainOptionsCountries.Click, _
-        chkMainOptionsCreators.Click, _
-        chkMainOptionsDirectors.Click, _
-        chkMainOptionsEpisodeGuideURL.Click, _
-        chkMainOptionsGenres.Click, _
-        chkMainOptionsMPAA.Click, _
-        chkMainOptionsOriginalTitle.Click, _
-        chkMainOptionsOutline.Click, _
-        chkMainOptionsPlot.Click, _
+        chkEpisodeModifierActorThumbs.Click,
+        chkEpisodeModifierAll.Click,
+        chkEpisodeModifierFanart.Click,
+        chkEpisodeModifierMetaData.Click,
+        chkEpisodeModifierNFO.Click,
+        chkEpisodeModifierPoster.Click,
+        chkEpisodeOptionsActors.Click,
+        chkEpisodeOptionsAired.Click,
+        chkEpisodeOptionsAll.Click,
+        chkEpisodeOptionsDirectors.Click,
+        chkEpisodeOptionsGuestStars.Click,
+        chkEpisodeOptionsPlot.Click,
+        chkEpisodeOptionsRating.Click,
+        chkEpisodeOptionsRuntime.Click,
+        chkEpisodeOptionsTitle.Click,
+        chkEpisodeOptionsWriters.Click,
+        chkMainModifierActorThumbs.Click,
+        chkMainModifierAll.Click,
+        chkMainModifierBanner.Click,
+        chkMainModifierCharacterArt.Click,
+        chkMainModifierClearArt.Click,
+        chkMainModifierClearLogo.Click,
+        chkMainModifierDiscArt.Click,
+        chkMainModifierExtrafanarts.Click,
+        chkMainModifierExtrathumbs.Click,
+        chkMainModifierFanart.Click,
+        chkMainModifierLandscape.Click,
+        chkMainModifierMetaData.Click,
+        chkMainModifierNFO.Click,
+        chkMainModifierPoster.Click,
+        chkMainModifierTheme.Click,
+        chkMainModifierTrailer.Click,
+        chkMainOptionsActors.Click,
+        chkMainOptionsAll.Click,
+        chkMainOptionsCertifications.Click,
+        chkMainOptionsCollectionID.Click,
+        chkMainOptionsCountries.Click,
+        chkMainOptionsCreators.Click,
+        chkMainOptionsDirectors.Click,
+        chkMainOptionsEpisodeGuideURL.Click,
+        chkMainOptionsGenres.Click,
+        chkMainOptionsMPAA.Click,
+        chkMainOptionsOriginalTitle.Click,
+        chkMainOptionsOutline.Click,
+        chkMainOptionsPlot.Click,
         chkMainOptionsPremiered.Click, _
  _
-        chkMainOptionsRating.Click, _
-        chkMainOptionsReleaseDate.Click, _
-        chkMainOptionsRuntime.Click, _
-        chkMainOptionsStatus.Click, _
-        chkMainOptionsStudios.Click, _
-        chkMainOptionsTagline.Click, _
-        chkMainOptionsTitle.Click, _
-        chkMainOptionsTop250.Click, _
-        chkMainOptionsTrailer.Click, _
-        chkMainOptionsWriters.Click, _
-        chkMainOptionsYear.Click, _
-        chkSeasonModifierAll.Click, _
-        chkSeasonModifierBanner.Click, _
-        chkSeasonModifierFanart.Click, _
-        chkSeasonModifierLandscape.Click, _
-        chkSeasonModifierPoster.Click, _
-        chkSeasonOptionsAired.Click, _
-        chkSeasonOptionsAll.Click, _
-        chkSeasonOptionsPlot.Click, _
-        chkSeasonOptionsTitle.Click, _
-        chkSpecialModifierAll.Click, _
-        chkSpecialModifierWithEpisodes.Click, _
+        chkMainOptionsRating.Click,
+        chkMainOptionsReleaseDate.Click,
+        chkMainOptionsRuntime.Click,
+        chkMainOptionsStatus.Click,
+        chkMainOptionsStudios.Click,
+        chkMainOptionsTagline.Click,
+        chkMainOptionsTitle.Click,
+        chkMainOptionsTop250.Click,
+        chkMainOptionsTrailer.Click,
+        chkMainOptionsWriters.Click,
+        chkMainOptionsYear.Click,
+        chkSeasonModifierAll.Click,
+        chkSeasonModifierBanner.Click,
+        chkSeasonModifierFanart.Click,
+        chkSeasonModifierLandscape.Click,
+        chkSeasonModifierPoster.Click,
+        chkSeasonOptionsAired.Click,
+        chkSeasonOptionsAll.Click,
+        chkSeasonOptionsPlot.Click,
+        chkSeasonOptionsTitle.Click,
+        chkSpecialModifierAll.Click,
+        chkSpecialModifierWithEpisodes.Click,
         chkSpecialModifierWithSeasons.Click
 
         CheckEnable()
@@ -1075,148 +1074,149 @@ Public Class dlgCustomScraper
 
         'Actor Thumbs
         Dim strActorThumbs As String = Master.eLang.GetString(991, "Actor Thumbs")
-        Me.chkEpisodeModifierActorThumbs.Text = strActorThumbs
-        Me.chkMainModifierActorThumbs.Text = strActorThumbs
+        chkEpisodeModifierActorThumbs.Text = strActorThumbs
+        chkMainModifierActorThumbs.Text = strActorThumbs
 
         'All
         Dim strAll As String = Master.eLang.GetString(68, "All")
-        Me.rbScrapeType_All.Text = strAll
+        rbScrapeType_All.Text = strAll
 
         'All Items
         Dim strAllItems As String = Master.eLang.GetString(70, "All Items")
-        Me.chkEpisodeModifierAll.Text = strAllItems
-        Me.chkEpisodeOptionsAll.Text = strAllItems
-        Me.chkMainModifierAll.Text = strAllItems
-        Me.chkMainOptionsAll.Text = strAllItems
-        Me.chkSeasonModifierAll.Text = strAllItems
-        Me.chkSeasonOptionsAll.Text = strAllItems
-        Me.chkSpecialModifierAll.Text = strAllItems
+        chkEpisodeModifierAll.Text = strAllItems
+        chkEpisodeOptionsAll.Text = strAllItems
+        chkMainModifierAll.Text = strAllItems
+        chkMainOptionsAll.Text = strAllItems
+        chkSeasonModifierAll.Text = strAllItems
+        chkSeasonOptionsAll.Text = strAllItems
+        chkSpecialModifierAll.Text = strAllItems
 
         'Banner
         Dim strBanner As String = Master.eLang.GetString(838, "Banner")
-        Me.chkMainModifierBanner.Text = strBanner
-        Me.chkSeasonModifierBanner.Text = strBanner
+        chkMainModifierBanner.Text = strBanner
+        chkSeasonModifierBanner.Text = strBanner
 
         'Cancel
         Dim strCancel As String = Master.eLang.GetString(167, "Cancel")
-        Me.btnCancel.Text = strCancel
+        btnCancel.Text = strCancel
 
         'CharacterArt
         Dim strCharacterArt As String = Master.eLang.GetString(1140, "CharacterArt")
-        Me.chkMainModifierCharacterArt.Text = strCharacterArt
+        chkMainModifierCharacterArt.Text = strCharacterArt
 
         'ClearArt
         Dim strClearArt As String = Master.eLang.GetString(1096, "ClearArt")
-        Me.chkMainModifierClearArt.Text = strClearArt
+        chkMainModifierClearArt.Text = strClearArt
 
         'ClearLogo
         Dim strClearLogo As String = Master.eLang.GetString(1097, "ClearLogo")
-        Me.chkMainModifierClearLogo.Text = strClearLogo
+        chkMainModifierClearLogo.Text = strClearLogo
 
-        'Creator(s)
-        Dim strCreators As String = Master.eLang.GetString(744, "Creator(s)")
-        Me.chkMainOptionsCreators.Text = strCreators
+        'Creators
+        Dim strCreators As String = Master.eLang.GetString(744, "Creators")
+        chkMainOptionsCreators.Text = strCreators
 
         'DiscArt
         Dim strDiscArt As String = Master.eLang.GetString(1098, "DiscArt")
-        Me.chkMainModifierDiscArt.Text = strDiscArt
+        chkMainModifierDiscArt.Text = strDiscArt
 
         'Extrafanarts
         Dim strExtrafanarts As String = Master.eLang.GetString(992, "Extrafanarts")
-        Me.chkMainModifierExtrafanarts.Text = strExtrafanarts
+        chkMainModifierExtrafanarts.Text = strExtrafanarts
 
         'Extrathumbs
         Dim strExtrathumbs As String = Master.eLang.GetString(153, "Extrathumbs")
-        Me.chkMainModifierExtrathumbs.Text = strExtrathumbs
+        chkMainModifierExtrathumbs.Text = strExtrathumbs
 
         'Fanart
         Dim strFanart As String = Master.eLang.GetString(149, "Fanart")
-        Me.chkEpisodeModifierFanart.Text = strFanart
-        Me.chkMainModifierFanart.Text = strFanart
-        Me.chkSeasonModifierFanart.Text = strFanart
+        chkEpisodeModifierFanart.Text = strFanart
+        chkMainModifierFanart.Text = strFanart
+        chkSeasonModifierFanart.Text = strFanart
 
         'Landscape
         Dim strLandscape As String = Master.eLang.GetString(1059, "Landscape")
-        Me.chkMainModifierLandscape.Text = strLandscape
-        Me.chkSeasonModifierLandscape.Text = strLandscape
+        chkMainModifierLandscape.Text = strLandscape
+        chkSeasonModifierLandscape.Text = strLandscape
 
         'MetaData
         Dim strMetaData As String = Master.eLang.GetString(59, "Meta Data")
-        Me.chkEpisodeModifierMetaData.Text = strMetaData
-        Me.chkMainModifierMetaData.Text = strMetaData
+        chkEpisodeModifierMetaData.Text = strMetaData
+        chkMainModifierMetaData.Text = strMetaData
 
         'NFO
         Dim strNFO As String = Master.eLang.GetString(150, "NFO")
-        Me.chkEpisodeModifierNFO.Text = strNFO
-        Me.chkMainModifierNFO.Text = strNFO
+        chkEpisodeModifierNFO.Text = strNFO
+        chkMainModifierNFO.Text = strNFO
 
         'Poster
         Dim strPoster As String = Master.eLang.GetString(148, "Poster")
-        Me.chkEpisodeModifierPoster.Text = strPoster
-        Me.chkMainModifierPoster.Text = strPoster
-        Me.chkSeasonModifierPoster.Text = strPoster
+        chkEpisodeModifierPoster.Text = strPoster
+        chkMainModifierPoster.Text = strPoster
+        chkSeasonModifierPoster.Text = strPoster
 
         'Select None
         Dim strSelectNone As String = Master.eLang.GetString(1139, "Select None")
-        Me.btnEpisodeScrapeModifierNone.Text = strSelectNone
-        Me.btnEpisodeScrapeOptionsNone.Text = strSelectNone
-        Me.btnMainScrapeModifierNone.Text = strSelectNone
-        Me.btnMainScrapeOptionsNone.Text = strSelectNone
-        Me.btnSeasonScrapeModifierNone.Text = strSelectNone
-        Me.btnSeasonScrapeOptionsNone.Text = strSelectNone
-        Me.btnSpecialScrapeModifierNone.Text = strSelectNone
+        btnEpisodeScrapeModifierNone.Text = strSelectNone
+        btnEpisodeScrapeOptionsNone.Text = strSelectNone
+        btnMainScrapeModifierNone.Text = strSelectNone
+        btnMainScrapeOptionsNone.Text = strSelectNone
+        btnSeasonScrapeModifierNone.Text = strSelectNone
+        btnSeasonScrapeOptionsNone.Text = strSelectNone
+        btnSpecialScrapeModifierNone.Text = strSelectNone
 
         'Theme
         Dim strTheme As String = Master.eLang.GetString(1118, "Theme")
-        Me.chkMainModifierTheme.Text = strTheme
+        chkMainModifierTheme.Text = strTheme
 
         'Trailer
         Dim strTrailer As String = Master.eLang.GetString(151, "Trailer")
-        Me.chkMainModifierTrailer.Text = strTrailer
+        chkMainModifierTrailer.Text = strTrailer
 
         'with Episodes
         Dim strWithEpisodes As String = Master.eLang.GetString(960, "with Episodes")
-        Me.chkSpecialModifierWithEpisodes.Text = strWithEpisodes
+        chkSpecialModifierWithEpisodes.Text = strWithEpisodes
 
         'with Seasons
         Dim strWithSeasons As String = Master.eLang.GetString(959, "with Seasons")
-        Me.chkSpecialModifierWithSeasons.Text = strWithSeasons
+        chkSpecialModifierWithSeasons.Text = strWithSeasons
 
 
-        Me.Text = Master.eLang.GetString(384, "Custom Scraper")
-        Me.btnOK.Text = Master.eLang.GetString(389, "Begin")
-        Me.chkMainOptionsActors.Text = Master.eLang.GetString(63, "Cast")
-        Me.chkMainOptionsCertifications.Text = Master.eLang.GetString(56, "Certification")
-        Me.chkMainOptionsCollectionID.Text = Master.eLang.GetString(1135, "Collection ID")
-        Me.chkMainOptionsCountries.Text = Master.eLang.GetString(301, "Country")
-        Me.chkMainOptionsDirectors.Text = Master.eLang.GetString(62, "Director")
-        Me.chkMainOptionsGenres.Text = Master.eLang.GetString(20, "Genre")
-        Me.chkMainOptionsMPAA.Text = Master.eLang.GetString(401, "MPAA")
-        Me.chkMainOptionsOriginalTitle.Text = Master.eLang.GetString(302, "Original Title")
-        Me.chkMainOptionsOutline.Text = Master.eLang.GetString(64, "Plot Outline")
-        Me.chkMainOptionsPlot.Text = Master.eLang.GetString(65, "Plot")
-        Me.chkMainOptionsRating.Text = Master.eLang.GetString(400, "Rating")
-        Me.chkMainOptionsReleaseDate.Text = Master.eLang.GetString(57, "Release Date")
-        Me.chkMainOptionsRuntime.Text = Master.eLang.GetString(396, "Runtime")
-        Me.chkMainOptionsStudios.Text = Master.eLang.GetString(395, "Studio")
-        Me.chkMainOptionsTagline.Text = Master.eLang.GetString(397, "Tagline")
-        Me.chkMainOptionsTitle.Text = Master.eLang.GetString(21, "Title")
-        Me.chkMainOptionsTop250.Text = Master.eLang.GetString(591, "Top 250")
-        Me.chkMainOptionsTrailer.Text = Master.eLang.GetString(151, "Trailer")
-        Me.chkMainOptionsWriters.Text = Master.eLang.GetString(394, "Writers")
-        Me.chkMainOptionsYear.Text = Master.eLang.GetString(278, "Year")
-        Me.gbMainScrapeOptions.Text = Master.eLang.GetString(390, "Options")
-        Me.gbMainScrapeModifier.Text = Master.eLang.GetString(388, "Modifiers")
-        Me.gbScrapeType_Filter.Text = Master.eLang.GetString(386, "Selection Filter")
-        Me.gbScrapeType_Mode.Text = Master.eLang.GetString(387, "Update Mode")
-        Me.lblTopDescription.Text = Master.eLang.GetString(385, "Create a custom scraper")
-        Me.lblTopTitle.Text = Me.Text
-        Me.rbScrapeType_Marked.Text = Master.eLang.GetString(48, "Marked")
-        Me.rbScrapeType_Missing.Text = Master.eLang.GetString(40, "Missing Items")
-        Me.rbScrapeType_New.Text = Master.eLang.GetString(47, "New")
-        Me.rbScrapeType_Ask.Text = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
-        Me.rbScrapeType_Auto.Text = Master.eLang.GetString(69, "Automatic (Force Best Match)")
-        Me.rbScrapeType_Skip.Text = Master.eLang.GetString(1041, "Skip (Skip If More Than One Match)")
+        Text = Master.eLang.GetString(384, "Custom Scraper")
+        btnOK.Text = Master.eLang.GetString(389, "Begin")
+        chkMainOptionsActors.Text = Master.eLang.GetString(231, "Actors")
+        chkMainOptionsCertifications.Text = Master.eLang.GetString(56, "Certifications")
+        chkMainOptionsCollectionID.Text = Master.eLang.GetString(1135, "Collection ID")
+        chkMainOptionsCountries.Text = Master.eLang.GetString(237, "Countries")
+        chkMainOptionsDirectors.Text = Master.eLang.GetString(940, "Directors")
+        chkMainOptionsEpisodeGuideURL.Text = Master.eLang.GetString(723, "Episode Guide URL")
+        chkMainOptionsGenres.Text = Master.eLang.GetString(725, "Genres")
+        chkMainOptionsMPAA.Text = Master.eLang.GetString(401, "MPAA")
+        chkMainOptionsOriginalTitle.Text = Master.eLang.GetString(302, "Original Title")
+        chkMainOptionsOutline.Text = Master.eLang.GetString(64, "Plot Outline")
+        chkMainOptionsPlot.Text = Master.eLang.GetString(65, "Plot")
+        chkMainOptionsRating.Text = Master.eLang.GetString(400, "Rating")
+        chkMainOptionsReleaseDate.Text = Master.eLang.GetString(57, "Release Date")
+        chkMainOptionsRuntime.Text = Master.eLang.GetString(396, "Runtime")
+        chkMainOptionsStudios.Text = Master.eLang.GetString(226, "Studios")
+        chkMainOptionsTagline.Text = Master.eLang.GetString(397, "Tagline")
+        chkMainOptionsTitle.Text = Master.eLang.GetString(21, "Title")
+        chkMainOptionsTop250.Text = Master.eLang.GetString(591, "Top 250")
+        chkMainOptionsTrailer.Text = Master.eLang.GetString(151, "Trailer")
+        chkMainOptionsWriters.Text = Master.eLang.GetString(394, "Writers")
+        chkMainOptionsYear.Text = Master.eLang.GetString(278, "Year")
+        gbMainScrapeOptions.Text = Master.eLang.GetString(390, "Options")
+        gbMainScrapeModifier.Text = Master.eLang.GetString(388, "Modifiers")
+        gbScrapeType_Filter.Text = Master.eLang.GetString(386, "Selection Filter")
+        gbScrapeType_Mode.Text = Master.eLang.GetString(387, "Update Mode")
+        lblTopDescription.Text = Master.eLang.GetString(385, "Create a custom scraper")
+        lblTopTitle.Text = Text
+        rbScrapeType_Marked.Text = Master.eLang.GetString(48, "Marked")
+        rbScrapeType_Missing.Text = Master.eLang.GetString(40, "Missing Items")
+        rbScrapeType_New.Text = Master.eLang.GetString(47, "New")
+        rbScrapeType_Ask.Text = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
+        rbScrapeType_Auto.Text = Master.eLang.GetString(69, "Automatic (Force Best Match)")
+        rbScrapeType_Skip.Text = Master.eLang.GetString(1041, "Skip (Skip If More Than One Match)")
     End Sub
 
 #End Region 'Methods

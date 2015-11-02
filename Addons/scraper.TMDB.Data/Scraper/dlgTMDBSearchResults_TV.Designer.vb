@@ -42,7 +42,7 @@ Partial Class dlgTMDBSearchResults_TV
         Me.btnVerify = New System.Windows.Forms.Button()
         Me.lblTMDBID = New System.Windows.Forms.Label()
         Me.lblAiredHeader = New System.Windows.Forms.Label()
-        Me.lblCreatorHeader = New System.Windows.Forms.Label()
+        Me.lblCreatorsHeader = New System.Windows.Forms.Label()
         Me.lblGenreHeader = New System.Windows.Forms.Label()
         Me.lblTMDBHeader = New System.Windows.Forms.Label()
         Me.lblPlotHeader = New System.Windows.Forms.Label()
@@ -267,16 +267,16 @@ Partial Class dlgTMDBSearchResults_TV
         Me.lblAiredHeader.Text = "Aired:"
         Me.lblAiredHeader.Visible = False
         '
-        'lblCreatorHeader
+        'lblCreatorsHeader
         '
-        Me.lblCreatorHeader.AutoSize = True
-        Me.lblCreatorHeader.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblCreatorHeader.Location = New System.Drawing.Point(414, 186)
-        Me.lblCreatorHeader.Name = "lblCreatorHeader"
-        Me.lblCreatorHeader.Size = New System.Drawing.Size(61, 13)
-        Me.lblCreatorHeader.TabIndex = 14
-        Me.lblCreatorHeader.Text = "Creator(s):"
-        Me.lblCreatorHeader.Visible = False
+        Me.lblCreatorsHeader.AutoSize = True
+        Me.lblCreatorsHeader.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblCreatorsHeader.Location = New System.Drawing.Point(414, 186)
+        Me.lblCreatorsHeader.Name = "lblCreatorsHeader"
+        Me.lblCreatorsHeader.Size = New System.Drawing.Size(53, 13)
+        Me.lblCreatorsHeader.TabIndex = 14
+        Me.lblCreatorsHeader.Text = "Creators:"
+        Me.lblCreatorsHeader.Visible = False
         '
         'lblGenreHeader
         '
@@ -412,7 +412,7 @@ Partial Class dlgTMDBSearchResults_TV
         Me.Controls.Add(Me.lblPlotHeader)
         Me.Controls.Add(Me.lblTMDBHeader)
         Me.Controls.Add(Me.lblGenreHeader)
-        Me.Controls.Add(Me.lblCreatorHeader)
+        Me.Controls.Add(Me.lblCreatorsHeader)
         Me.Controls.Add(Me.lblAiredHeader)
         Me.Controls.Add(Me.lblTMDBID)
         Me.Controls.Add(Me.btnVerify)
@@ -465,7 +465,7 @@ Partial Class dlgTMDBSearchResults_TV
     Friend WithEvents btnVerify As System.Windows.Forms.Button
     Friend WithEvents lblTMDBID As System.Windows.Forms.Label
     Friend WithEvents lblAiredHeader As System.Windows.Forms.Label
-    Friend WithEvents lblCreatorHeader As System.Windows.Forms.Label
+    Friend WithEvents lblCreatorsHeader As System.Windows.Forms.Label
     Friend WithEvents lblGenreHeader As System.Windows.Forms.Label
     Friend WithEvents lblTMDBHeader As System.Windows.Forms.Label
     Friend WithEvents lblPlotHeader As System.Windows.Forms.Label

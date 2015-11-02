@@ -1646,9 +1646,9 @@ Public Class dlgEditMovie
         End If
 
         txtCerts.Text = tmpDBElement.Movie.Certification
-        txtCountry.Text = tmpDBElement.Movie.Country
+        txtCountries.Text = tmpDBElement.Movie.Country
         txtCredits.Text = tmpDBElement.Movie.OldCredits
-        txtDirector.Text = tmpDBElement.Movie.Director
+        txtDirectors.Text = tmpDBElement.Movie.Director
         txtOriginalTitle.Text = tmpDBElement.Movie.OriginalTitle
         txtOutline.Text = tmpDBElement.Movie.Outline
         txtPlot.Text = tmpDBElement.Movie.Plot
@@ -1749,8 +1749,8 @@ Public Class dlgEditMovie
 
         If DoAll Then
             Dim pExt As String = Path.GetExtension(tmpDBElement.Filename).ToLower
-            If pExt = ".rar" OrElse pExt = ".iso" OrElse pExt = ".img" OrElse _
-            pExt = ".bin" OrElse pExt = ".cue" OrElse pExt = ".dat" OrElse _
+            If pExt = ".rar" OrElse pExt = ".iso" OrElse pExt = ".img" OrElse
+            pExt = ".bin" OrElse pExt = ".cue" OrElse pExt = ".dat" OrElse
             pExt = ".disc" Then
                 tcEdit.TabPages.Remove(tpFrameExtraction)
             Else
@@ -2533,8 +2533,8 @@ Public Class dlgEditMovie
                 tmpDBElement.Movie.Outline = .txtOutline.Text.Trim
                 tmpDBElement.Movie.Plot = .txtPlot.Text.Trim
                 tmpDBElement.Movie.Top250 = .txtTop250.Text.Trim
-                tmpDBElement.Movie.Country = .txtCountry.Text.Trim
-                tmpDBElement.Movie.Director = .txtDirector.Text.Trim
+                tmpDBElement.Movie.Country = .txtCountries.Text.Trim
+                tmpDBElement.Movie.Director = .txtDirectors.Text.Trim
                 tmpDBElement.Movie.Title = .txtTitle.Text.Trim
                 tmpDBElement.Movie.Certification = .txtCerts.Text.Trim
                 tmpDBElement.Movie.OriginalTitle = .txtOriginalTitle.Text.Trim
@@ -2706,11 +2706,11 @@ Public Class dlgEditMovie
         colName.Text = Master.eLang.GetString(232, "Name")
         colRole.Text = Master.eLang.GetString(233, "Role")
         colThumb.Text = Master.eLang.GetString(234, "Thumb")
-        lblActors.Text = Master.eLang.GetString(231, "Actors:")
-        lblCerts.Text = Master.eLang.GetString(237, "Certification(s):")
-        lblCountry.Text = String.Concat(Master.eLang.GetString(301, "Country"), ":")
+        lblActors.Text = String.Concat(Master.eLang.GetString(231, "Actors"), ":")
+        lblCerts.Text = String.Concat(Master.eLang.GetString(56, "Certifications"), ":")
+        lblCountries.Text = String.Concat(Master.eLang.GetString(237, "Countries"), ":")
         lblCredits.Text = Master.eLang.GetString(228, "Credits:")
-        lblDirector.Text = Master.eLang.GetString(239, "Director:")
+        lblDirectors.Text = String.Concat(Master.eLang.GetString(940, "Directors"), ":")
         lblVideoSource.Text = Master.eLang.GetString(824, "Video Source:")
         lblGenre.Text = Master.eLang.GetString(51, "Genre(s):")
         lblMPAA.Text = Master.eLang.GetString(235, "MPAA Rating:")
@@ -2722,7 +2722,7 @@ Public Class dlgEditMovie
         lblReleaseDate.Text = Master.eLang.GetString(236, "Release Date:")
         lblRuntime.Text = Master.eLang.GetString(238, "Runtime:")
         lblSortTilte.Text = String.Concat(Master.eLang.GetString(642, "Sort Title"), ":")
-        lblStudio.Text = Master.eLang.GetString(226, "Studio:")
+        lblStudio.Text = String.Concat(Master.eLang.GetString(395, "Studio"), ":")
         lblTagline.Text = Master.eLang.GetString(243, "Tagline:")
         lblTitle.Text = Master.eLang.GetString(246, "Title:")
         lblTop250.Text = Master.eLang.GetString(240, "Top 250:")

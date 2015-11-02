@@ -108,8 +108,8 @@ Public Class OFDB_Data
         _setup.chkTitle.Checked = ConfigScrapeOptions.bMainTitle
         _setup.chkOutline.Checked = ConfigScrapeOptions.bMainOutline
         _setup.chkPlot.Checked = ConfigScrapeOptions.bMainPlot
-        _setup.chkGenre.Checked = ConfigScrapeOptions.bMainGenres
-        _setup.chkCertification.Checked = ConfigScrapeOptions.bMainCertifications
+        _setup.chkGenres.Checked = ConfigScrapeOptions.bMainGenres
+        _setup.chkCertifications.Checked = ConfigScrapeOptions.bMainCertifications
 
         _setup.orderChanged()
 
@@ -150,11 +150,11 @@ Public Class OFDB_Data
     End Sub
 
     Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Data_Movie.SaveSetupScraper
-        ConfigScrapeOptions.bMainCertifications = _setup.chkCertification.Checked
+        ConfigScrapeOptions.bMainCertifications = _setup.chkCertifications.Checked
         ConfigScrapeOptions.bMainTitle = _setup.chkTitle.Checked
         ConfigScrapeOptions.bMainOutline = _setup.chkOutline.Checked
         ConfigScrapeOptions.bMainPlot = _setup.chkPlot.Checked
-        ConfigScrapeOptions.bMainGenres = _setup.chkGenre.Checked
+        ConfigScrapeOptions.bMainGenres = _setup.chkGenres.Checked
         SaveSettings()
         If DoDispose Then
             RemoveHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged

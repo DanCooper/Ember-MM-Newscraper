@@ -69,7 +69,7 @@ Public Class frmSettingsHolder
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkkMoviepilotRating_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCertification.CheckedChanged
+    Private Sub chkkMoviepilotRating_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkCertifications.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -90,7 +90,7 @@ Public Class frmSettingsHolder
     End Sub
 
     Private Sub SetUp()
-        Me.chkCertification.Text = Master.eLang.GetString(722, "Certification")
+        Me.chkCertifications.Text = Master.eLang.GetString(56, "Certifications")
         Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
         Me.chkOutline.Text = Master.eLang.GetString(64, "Plot Outline")
         Me.chkPlot.Text = Master.eLang.GetString(65, "Plot")

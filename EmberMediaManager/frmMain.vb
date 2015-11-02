@@ -183,6 +183,7 @@ Public Class frmMain
     Private _ipup As Integer = 500
     Private CloseApp As Boolean = False
 
+    Private _SelectedScrapeOption As String = String.Empty
     Private _SelectedScrapeType As String = String.Empty
     Private _SelectedScrapeTypeMode As String = String.Empty
     Private _SelectedContentType As String = String.Empty
@@ -523,9 +524,9 @@ Public Class frmMain
                     .pbActors.Image = Nothing
                 End If
                 .MainActors.Clear()
-                .lblDirector.Text = String.Empty
+                .lblDirectors.Text = String.Empty
                 .lblReleaseDate.Text = String.Empty
-                .txtCerts.Text = String.Empty
+                .txtCertifications.Text = String.Empty
                 .txtIMDBID.Text = String.Empty
                 .txtFilePath.Text = String.Empty
                 .txtOutline.Text = String.Empty
@@ -836,8 +837,8 @@ Public Class frmMain
         If Me.bwTVEpisodeScraper.IsBusy Then Me.bwTVEpisodeScraper.CancelAsync()
         If Me.bwTVScraper.IsBusy Then Me.bwTVScraper.CancelAsync()
         If Me.bwTVSeasonScraper.IsBusy Then Me.bwTVSeasonScraper.CancelAsync()
-        While Me.bwMovieScraper.IsBusy OrElse Me.bwReload_Movies.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwReload_MovieSets.IsBusy OrElse _
-            Me.bwNonScrape.IsBusy OrElse Me.bwReload_TVShows.IsBusy OrElse Me.bwRewrite_Movies.IsBusy OrElse Me.bwTVEpisodeScraper.IsBusy OrElse Me.bwTVScraper.IsBusy OrElse _
+        While Me.bwMovieScraper.IsBusy OrElse Me.bwReload_Movies.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwReload_MovieSets.IsBusy OrElse
+            Me.bwNonScrape.IsBusy OrElse Me.bwReload_TVShows.IsBusy OrElse Me.bwRewrite_Movies.IsBusy OrElse Me.bwTVEpisodeScraper.IsBusy OrElse Me.bwTVScraper.IsBusy OrElse
             Me.bwTVSeasonScraper.IsBusy
             Application.DoEvents()
             Threading.Thread.Sleep(50)
@@ -891,7 +892,7 @@ Public Class frmMain
     End Sub
 
     Private Sub btnFilterUp_MovieSets_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilterUp_MovieSets.Click
-       
+
         Me.FilterRaise_MovieSets = True
         FilterMovement_MovieSets()
     End Sub
@@ -1736,7 +1737,7 @@ Public Class frmMain
                 End Try
             End If
 
-            e.Result = New Results With {.MovieinSetPosters = Posters}
+            e.Result = New Results With {.MovieInSetPosters = Posters}
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
             e.Result = New Results With {.MovieInSetPosters = Nothing}
@@ -1899,11 +1900,11 @@ Public Class frmMain
             If Args.IsTV Then
                 MediaInfo.UpdateTVMediaInfo(Args.DBElement)
                 Master.DB.SaveTVEpisodeToDB(Args.DBElement, False, False, True, False, False)
-                e.Result = New Results With {.fileinfo = NFO.FIToString(Args.DBElement.TVEpisode.FileInfo, True), .DBElement = Args.DBElement, .IsTV = True, .setEnabled = Args.setEnabled}
+                e.Result = New Results With {.fileInfo = NFO.FIToString(Args.DBElement.TVEpisode.FileInfo, True), .DBElement = Args.DBElement, .IsTV = True, .setEnabled = Args.setEnabled}
             Else
                 MediaInfo.UpdateMediaInfo(Args.DBElement)
                 Master.DB.SaveMovieToDB(Args.DBElement, False, False, True, False)
-                e.Result = New Results With {.fileinfo = NFO.FIToString(Args.DBElement.Movie.FileInfo, False), .setEnabled = Args.setEnabled, .Path = Args.Path, .DBElement = Args.DBElement}
+                e.Result = New Results With {.fileInfo = NFO.FIToString(Args.DBElement.Movie.FileInfo, False), .setEnabled = Args.setEnabled, .Path = Args.Path, .DBElement = Args.DBElement}
             End If
 
             If Me.bwMetaData.CancellationPending Then
@@ -1913,7 +1914,7 @@ Public Class frmMain
 
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
-            e.Result = New Results With {.fileinfo = "error", .setEnabled = Args.setEnabled}
+            e.Result = New Results With {.fileInfo = "error", .setEnabled = Args.setEnabled}
             e.Cancel = True
         End Try
     End Sub
@@ -1967,8 +1968,8 @@ Public Class frmMain
                 Me.tcMain.Enabled = True
                 Me.mnuUpdate.Enabled = True
                 Me.cmnuTrayUpdate.Enabled = True
-                If (currMainTabTag.ContentType = Enums.ContentType.Movie AndAlso Me.dgvMovies.RowCount > 0) OrElse _
-                    (currMainTabTag.ContentType = Enums.ContentType.MovieSet AndAlso Me.dgvMovieSets.RowCount > 0) OrElse _
+                If (currMainTabTag.ContentType = Enums.ContentType.Movie AndAlso Me.dgvMovies.RowCount > 0) OrElse
+                    (currMainTabTag.ContentType = Enums.ContentType.MovieSet AndAlso Me.dgvMovieSets.RowCount > 0) OrElse
                     (currMainTabTag.ContentType = Enums.ContentType.TV AndAlso Me.dgvTVShows.RowCount > 0) Then
                     Me.SetControlsEnabled(True)
                 End If
@@ -2050,9 +2051,9 @@ Public Class frmMain
                 End If
             Else
                 ' if we do not have the movie ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
-                If String.IsNullOrEmpty(DBScrapeMovie.Movie.ID) AndAlso (tScrapeItem.ScrapeModifier.MainActorthumbs Or tScrapeItem.ScrapeModifier.MainBanner Or tScrapeItem.ScrapeModifier.MainClearArt Or _
-                                                                         tScrapeItem.ScrapeModifier.MainClearLogo Or tScrapeItem.ScrapeModifier.MainDiscArt Or tScrapeItem.ScrapeModifier.MainExtrafanarts Or _
-                                                                         tScrapeItem.ScrapeModifier.MainExtrathumbs Or tScrapeItem.ScrapeModifier.MainFanart Or tScrapeItem.ScrapeModifier.MainLandscape Or _
+                If String.IsNullOrEmpty(DBScrapeMovie.Movie.ID) AndAlso (tScrapeItem.ScrapeModifier.MainActorthumbs Or tScrapeItem.ScrapeModifier.MainBanner Or tScrapeItem.ScrapeModifier.MainClearArt Or
+                                                                         tScrapeItem.ScrapeModifier.MainClearLogo Or tScrapeItem.ScrapeModifier.MainDiscArt Or tScrapeItem.ScrapeModifier.MainExtrafanarts Or
+                                                                         tScrapeItem.ScrapeModifier.MainExtrathumbs Or tScrapeItem.ScrapeModifier.MainFanart Or tScrapeItem.ScrapeModifier.MainLandscape Or
                                                                          tScrapeItem.ScrapeModifier.MainPoster Or tScrapeItem.ScrapeModifier.MainTheme Or tScrapeItem.ScrapeModifier.MainTrailer) Then
                     Dim tModifier As New Structures.ScrapeModifier With {.MainNFO = True}
                     Dim tOptions As New Structures.ScrapeOptions 'set all values to false to not override any field. ID's are always determined.
@@ -2081,14 +2082,14 @@ Public Class frmMain
                 End If
 
                 'get all images 
-                If tScrapeItem.ScrapeModifier.MainBanner OrElse _
-                    tScrapeItem.ScrapeModifier.MainClearArt OrElse _
-                    tScrapeItem.ScrapeModifier.MainClearLogo OrElse _
-                    tScrapeItem.ScrapeModifier.MainDiscArt OrElse _
-                    tScrapeItem.ScrapeModifier.MainExtrafanarts OrElse _
-                    tScrapeItem.ScrapeModifier.MainExtrathumbs OrElse _
-                    tScrapeItem.ScrapeModifier.MainFanart OrElse _
-                    tScrapeItem.ScrapeModifier.MainLandscape OrElse _
+                If tScrapeItem.ScrapeModifier.MainBanner OrElse
+                    tScrapeItem.ScrapeModifier.MainClearArt OrElse
+                    tScrapeItem.ScrapeModifier.MainClearLogo OrElse
+                    tScrapeItem.ScrapeModifier.MainDiscArt OrElse
+                    tScrapeItem.ScrapeModifier.MainExtrafanarts OrElse
+                    tScrapeItem.ScrapeModifier.MainExtrathumbs OrElse
+                    tScrapeItem.ScrapeModifier.MainFanart OrElse
+                    tScrapeItem.ScrapeModifier.MainLandscape OrElse
                     tScrapeItem.ScrapeModifier.MainPoster Then
 
                     Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
@@ -2290,9 +2291,9 @@ Public Class frmMain
                 End If
             Else
                 ' if we do not have the movie set ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
-                If String.IsNullOrEmpty(DBScrapeMovieSet.MovieSet.TMDB) AndAlso (tScrapeItem.ScrapeModifier.MainBanner Or tScrapeItem.ScrapeModifier.MainClearArt Or _
-                                                                         tScrapeItem.ScrapeModifier.MainClearLogo Or tScrapeItem.ScrapeModifier.MainDiscArt Or _
-                                                                         tScrapeItem.ScrapeModifier.MainFanart Or tScrapeItem.ScrapeModifier.MainLandscape Or _
+                If String.IsNullOrEmpty(DBScrapeMovieSet.MovieSet.TMDB) AndAlso (tScrapeItem.ScrapeModifier.MainBanner Or tScrapeItem.ScrapeModifier.MainClearArt Or
+                                                                         tScrapeItem.ScrapeModifier.MainClearLogo Or tScrapeItem.ScrapeModifier.MainDiscArt Or
+                                                                         tScrapeItem.ScrapeModifier.MainFanart Or tScrapeItem.ScrapeModifier.MainLandscape Or
                                                                          tScrapeItem.ScrapeModifier.MainPoster) Then
                     Dim tOpt As New Structures.ScrapeOptions 'all false value not to override any field
                     If ModulesManager.Instance.ScrapeData_MovieSet(DBScrapeMovieSet, tScrapeItem.ScrapeModifier, Args.ScrapeType, tOpt, Args.ScrapeList.Count = 1) Then
@@ -2357,13 +2358,13 @@ Public Class frmMain
                 End If
 
                 'get all images
-                If tScrapeItem.ScrapeModifier.MainBanner OrElse _
-                    tScrapeItem.ScrapeModifier.MainClearArt OrElse _
-                    tScrapeItem.ScrapeModifier.MainClearLogo OrElse _
-                    tScrapeItem.ScrapeModifier.MainDiscArt OrElse _
-                    tScrapeItem.ScrapeModifier.MainExtrafanarts OrElse _
-                    tScrapeItem.ScrapeModifier.MainFanart OrElse _
-                    tScrapeItem.ScrapeModifier.MainLandscape OrElse _
+                If tScrapeItem.ScrapeModifier.MainBanner OrElse
+                    tScrapeItem.ScrapeModifier.MainClearArt OrElse
+                    tScrapeItem.ScrapeModifier.MainClearLogo OrElse
+                    tScrapeItem.ScrapeModifier.MainDiscArt OrElse
+                    tScrapeItem.ScrapeModifier.MainExtrafanarts OrElse
+                    tScrapeItem.ScrapeModifier.MainFanart OrElse
+                    tScrapeItem.ScrapeModifier.MainLandscape OrElse
                     tScrapeItem.ScrapeModifier.MainPoster Then
 
                     Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
@@ -2490,9 +2491,9 @@ Public Class frmMain
                 End If
             Else
                 ' if we do not have the tvshow ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
-                If String.IsNullOrEmpty(DBScrapeShow.TVShow.TVDB) AndAlso (tScrapeItem.ScrapeModifier.MainActorthumbs Or tScrapeItem.ScrapeModifier.MainBanner Or tScrapeItem.ScrapeModifier.MainCharacterArt Or _
-                                                                           tScrapeItem.ScrapeModifier.MainClearArt Or tScrapeItem.ScrapeModifier.MainClearLogo Or tScrapeItem.ScrapeModifier.MainExtrafanarts Or _
-                                                                           tScrapeItem.ScrapeModifier.MainFanart Or tScrapeItem.ScrapeModifier.MainLandscape Or tScrapeItem.ScrapeModifier.MainPoster Or _
+                If String.IsNullOrEmpty(DBScrapeShow.TVShow.TVDB) AndAlso (tScrapeItem.ScrapeModifier.MainActorthumbs Or tScrapeItem.ScrapeModifier.MainBanner Or tScrapeItem.ScrapeModifier.MainCharacterArt Or
+                                                                           tScrapeItem.ScrapeModifier.MainClearArt Or tScrapeItem.ScrapeModifier.MainClearLogo Or tScrapeItem.ScrapeModifier.MainExtrafanarts Or
+                                                                           tScrapeItem.ScrapeModifier.MainFanart Or tScrapeItem.ScrapeModifier.MainLandscape Or tScrapeItem.ScrapeModifier.MainPoster Or
                                                                            tScrapeItem.ScrapeModifier.MainTheme) Then
                     Dim tOpt As New Structures.ScrapeOptions 'all false value not to override any field
                     If ModulesManager.Instance.ScrapeData_TVShow(DBScrapeShow, tScrapeItem.ScrapeModifier, Args.ScrapeType, tOpt, Args.ScrapeList.Count = 1) Then
@@ -2511,14 +2512,14 @@ Public Class frmMain
                 End If
 
                 'get all images
-                If tScrapeItem.ScrapeModifier.MainBanner OrElse _
-                    tScrapeItem.ScrapeModifier.MainCharacterArt OrElse _
-                    tScrapeItem.ScrapeModifier.MainClearArt OrElse _
-                    tScrapeItem.ScrapeModifier.MainClearLogo OrElse _
-                    tScrapeItem.ScrapeModifier.MainDiscArt OrElse _
-                    tScrapeItem.ScrapeModifier.MainExtrafanarts OrElse _
-                    tScrapeItem.ScrapeModifier.MainFanart OrElse _
-                    tScrapeItem.ScrapeModifier.MainLandscape OrElse _
+                If tScrapeItem.ScrapeModifier.MainBanner OrElse
+                    tScrapeItem.ScrapeModifier.MainCharacterArt OrElse
+                    tScrapeItem.ScrapeModifier.MainClearArt OrElse
+                    tScrapeItem.ScrapeModifier.MainClearLogo OrElse
+                    tScrapeItem.ScrapeModifier.MainDiscArt OrElse
+                    tScrapeItem.ScrapeModifier.MainExtrafanarts OrElse
+                    tScrapeItem.ScrapeModifier.MainFanart OrElse
+                    tScrapeItem.ScrapeModifier.MainLandscape OrElse
                     tScrapeItem.ScrapeModifier.MainPoster Then
 
                     Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
@@ -2662,9 +2663,9 @@ Public Class frmMain
                 End If
             Else
                 ' if we do not have the episode ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
-                If String.IsNullOrEmpty(DBScrapeEpisode.TVEpisode.TVDB) AndAlso (tScrapeItem.ScrapeModifier.MainActorthumbs Or tScrapeItem.ScrapeModifier.MainBanner Or tScrapeItem.ScrapeModifier.MainCharacterArt Or _
-                                                                         tScrapeItem.ScrapeModifier.MainClearArt Or tScrapeItem.ScrapeModifier.MainClearLogo Or tScrapeItem.ScrapeModifier.MainExtrafanarts Or _
-                                                                         tScrapeItem.ScrapeModifier.MainFanart Or tScrapeItem.ScrapeModifier.MainLandscape Or tScrapeItem.ScrapeModifier.MainPoster Or _
+                If String.IsNullOrEmpty(DBScrapeEpisode.TVEpisode.TVDB) AndAlso (tScrapeItem.ScrapeModifier.MainActorthumbs Or tScrapeItem.ScrapeModifier.MainBanner Or tScrapeItem.ScrapeModifier.MainCharacterArt Or
+                                                                         tScrapeItem.ScrapeModifier.MainClearArt Or tScrapeItem.ScrapeModifier.MainClearLogo Or tScrapeItem.ScrapeModifier.MainExtrafanarts Or
+                                                                         tScrapeItem.ScrapeModifier.MainFanart Or tScrapeItem.ScrapeModifier.MainLandscape Or tScrapeItem.ScrapeModifier.MainPoster Or
                                                                          tScrapeItem.ScrapeModifier.MainTheme) Then
                     Dim tOpt As New Structures.ScrapeOptions 'all false value not to override any field
                     If ModulesManager.Instance.ScrapeData_TVEpisode(DBScrapeEpisode, tOpt, Args.ScrapeList.Count = 1) Then
@@ -2688,7 +2689,7 @@ Public Class frmMain
                 End If
 
                 'get all images
-                If tScrapeItem.ScrapeModifier.EpisodeFanart OrElse _
+                If tScrapeItem.ScrapeModifier.EpisodeFanart OrElse
                     tScrapeItem.ScrapeModifier.EpisodePoster Then
                     Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
                     bwTVEpisodeScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(265, "Scraping Episode Images"), ":"))
@@ -2808,7 +2809,7 @@ Public Class frmMain
                 End If
             Else
                 ' if we do not have the tvshow ID we need to retrive it even if is just a Poster/Fanart/Trailer/Actors update
-                If String.IsNullOrEmpty(DBScrapeSeason.TVSeason.TVDB) AndAlso (tScrapeItem.ScrapeModifier.SeasonBanner Or tScrapeItem.ScrapeModifier.SeasonFanart Or _
+                If String.IsNullOrEmpty(DBScrapeSeason.TVSeason.TVDB) AndAlso (tScrapeItem.ScrapeModifier.SeasonBanner Or tScrapeItem.ScrapeModifier.SeasonFanart Or
                                                                                tScrapeItem.ScrapeModifier.SeasonLandscape Or tScrapeItem.ScrapeModifier.SeasonPoster) Then
                     Dim tOpt As New Structures.ScrapeOptions 'all false value not to override any field
                     If ModulesManager.Instance.ScrapeData_TVSeason(DBScrapeSeason, tOpt, Args.ScrapeList.Count = 1) Then
@@ -2821,13 +2822,13 @@ Public Class frmMain
 
             If Not Cancelled Then
                 'get all images
-                If tScrapeItem.ScrapeModifier.AllSeasonsBanner OrElse _
-                    tScrapeItem.ScrapeModifier.AllSeasonsFanart OrElse _
-                    tScrapeItem.ScrapeModifier.AllSeasonsLandscape OrElse _
-                    tScrapeItem.ScrapeModifier.AllSeasonsPoster OrElse _
-                    tScrapeItem.ScrapeModifier.SeasonBanner OrElse _
-                    tScrapeItem.ScrapeModifier.SeasonFanart OrElse _
-                    tScrapeItem.ScrapeModifier.SeasonLandscape OrElse _
+                If tScrapeItem.ScrapeModifier.AllSeasonsBanner OrElse
+                    tScrapeItem.ScrapeModifier.AllSeasonsFanart OrElse
+                    tScrapeItem.ScrapeModifier.AllSeasonsLandscape OrElse
+                    tScrapeItem.ScrapeModifier.AllSeasonsPoster OrElse
+                    tScrapeItem.ScrapeModifier.SeasonBanner OrElse
+                    tScrapeItem.ScrapeModifier.SeasonFanart OrElse
+                    tScrapeItem.ScrapeModifier.SeasonLandscape OrElse
                     tScrapeItem.ScrapeModifier.SeasonPoster Then
 
                     Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
@@ -3320,7 +3321,7 @@ doCancel:
                         AddHandler cbFilterYearTo_Movies.SelectedIndexChanged, AddressOf cbFilterYearTo_Movies_SelectedIndexChanged
 
                         If Not String.IsNullOrEmpty(cbFilterYearTo_Movies.Text) AndAlso Not cbFilterYearTo_Movies.Text = Master.eLang.All Then
-                            Me.filYear_Movies = String.Concat("Year ", cbFilterYearModFrom_Movies.Text, " '", cbFilterYearFrom_Movies.Text, _
+                            Me.filYear_Movies = String.Concat("Year ", cbFilterYearModFrom_Movies.Text, " '", cbFilterYearFrom_Movies.Text,
                                                               "' AND Year ", cbFilterYearModTo_Movies.Text, " '", cbFilterYearTo_Movies.Text, "'")
                         Else
                             Me.filYear_Movies = String.Concat("Year ", cbFilterYearModFrom_Movies.Text, " '", cbFilterYearFrom_Movies.Text, "'")
@@ -3336,7 +3337,7 @@ doCancel:
                         AddHandler cbFilterYearTo_Movies.SelectedIndexChanged, AddressOf cbFilterYearTo_Movies_SelectedIndexChanged
 
                         If Not String.IsNullOrEmpty(cbFilterYearTo_Movies.Text) AndAlso Not cbFilterYearTo_Movies.Text = Master.eLang.All Then
-                            Me.filYear_Movies = String.Concat("Year ", cbFilterYearModFrom_Movies.Text, " '", cbFilterYearFrom_Movies.Text, _
+                            Me.filYear_Movies = String.Concat("Year ", cbFilterYearModFrom_Movies.Text, " '", cbFilterYearFrom_Movies.Text,
                                                               "' AND Year ", cbFilterYearModTo_Movies.Text, " '", cbFilterYearTo_Movies.Text, "'")
                         Else
                             Me.filYear_Movies = String.Concat("Year ", cbFilterYearModFrom_Movies.Text, " '", cbFilterYearFrom_Movies.Text, "'")
@@ -5791,7 +5792,7 @@ doCancel:
         If Me.dgvMovies.SelectedRows.Count = 1 Then
             Dim ScrapeModifier As New Structures.ScrapeModifier
             Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.All, True)
-            Me.CreateScrapeList_Movie(Enums.ScrapeType.SingleScrape, Master.DefaultOptions_Movie, ScrapeModifier)
+            CreateScrapeList_Movie(Enums.ScrapeType.SingleScrape, Master.DefaultOptions_Movie, ScrapeModifier)
         End If
     End Sub
 
@@ -5799,17 +5800,17 @@ doCancel:
         If Me.dgvMovieSets.SelectedRows.Count = 1 Then
             Dim ScrapeModifier As New Structures.ScrapeModifier
             Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.All, True)
-            Me.CreateScrapeList_MovieSet(Enums.ScrapeType.SingleScrape, Master.DefaultOptions_MovieSet, ScrapeModifier)
+            CreateScrapeList_MovieSet(Enums.ScrapeType.SingleScrape, Master.DefaultOptions_MovieSet, ScrapeModifier)
         End If
     End Sub
 
     Private Sub cmnuShowRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowRescrape.Click
-        If Me.dgvTVShows.SelectedRows.Count > 0 Then
+        If dgvTVShows.SelectedRows.Count > 0 Then
             Dim ScrapeModifier As New Structures.ScrapeModifier
             Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.All, True)
             Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.withEpisodes, True)
             Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.withSeasons, True)
-            Me.CreateScrapeList_TV(Enums.ScrapeType.SingleScrape, Master.DefaultOptions_TV, ScrapeModifier)
+            CreateScrapeList_TV(Enums.ScrapeType.SingleScrape, Master.DefaultOptions_TV, ScrapeModifier)
         End If
     End Sub
     ''' <summary>
@@ -5820,11 +5821,11 @@ doCancel:
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub cmnuMovieChange_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieChange.Click
-        If Me.dgvMovies.SelectedRows.Count <> 1 Then Return 'This method is only valid for when exactly one movie is selected
+        If dgvMovies.SelectedRows.Count <> 1 Then Return 'This method is only valid for when exactly one movie is selected
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.DoSearch, True)
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.All, True)
-        Me.CreateScrapeList_Movie(Enums.ScrapeType.SingleScrape, Master.DefaultOptions_Movie, ScrapeModifier)
+        CreateScrapeList_Movie(Enums.ScrapeType.SingleScrape, Master.DefaultOptions_Movie, ScrapeModifier)
     End Sub
     ''' <summary>
     ''' User has selected "Change Movie" from the context menu. This will re-validate the movie title with the user,
@@ -5834,11 +5835,11 @@ doCancel:
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub cmnuMovieChangeAuto_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieChangeAuto.Click
-        If Me.dgvMovies.SelectedRows.Count <> 1 Then Return 'This method is only valid for when exactly one movie is selected
+        If dgvMovies.SelectedRows.Count <> 1 Then Return 'This method is only valid for when exactly one movie is selected
         Dim ScrapeModifier As New Structures.ScrapeModifier
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.DoSearch, True)
         Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.All, True)
-        Me.CreateScrapeList_Movie(Enums.ScrapeType.SingleAuto, Master.DefaultOptions_Movie, ScrapeModifier)
+        CreateScrapeList_Movie(Enums.ScrapeType.SingleAuto, Master.DefaultOptions_Movie, ScrapeModifier)
     End Sub
 
     Private Sub cmnuSeasonEdit_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonEdit.Click
@@ -5849,7 +5850,7 @@ doCancel:
     End Sub
 
     Private Sub cmnuSeasonOpenFolder_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuSeasonOpenFolder.Click
-        If Me.dgvTVSeasons.SelectedRows.Count > 0 Then
+        If dgvTVSeasons.SelectedRows.Count > 0 Then
             Dim doOpen As Boolean = True
             Dim SeasonPath As String = String.Empty
 
@@ -6015,11 +6016,11 @@ doCancel:
             Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
             CreateScrapeList_Movie(Enums.ScrapeType.SingleField, scrapeOptions, ScrapeModifier)
 
-        ElseIf Master.eSettings.MovieClickScrape AndAlso _
-            (colName = "BannerPath" OrElse colName = "ClearArtPath" OrElse colName = "ClearLogoPath" OrElse _
-            colName = "DiscArtPath" OrElse colName = "EFanartsPath" OrElse colName = "EThumbsPath" OrElse _
-            colName = "FanartPath" OrElse colName = "LandscapePath" OrElse colName = "NfoPath" OrElse _
-            colName = "PosterPath" OrElse colName = "ThemePath" OrElse colName = "TrailerPath") AndAlso _
+        ElseIf Master.eSettings.MovieClickScrape AndAlso
+            (colName = "BannerPath" OrElse colName = "ClearArtPath" OrElse colName = "ClearLogoPath" OrElse
+            colName = "DiscArtPath" OrElse colName = "EFanartsPath" OrElse colName = "EThumbsPath" OrElse
+            colName = "FanartPath" OrElse colName = "LandscapePath" OrElse colName = "NfoPath" OrElse
+            colName = "PosterPath" OrElse colName = "ThemePath" OrElse colName = "TrailerPath") AndAlso
             Not bwMovieScraper.IsBusy Then
             Dim movie As Int32 = CType(Me.dgvMovies.Rows(e.RowIndex).Cells("idMovie").Value, Int32)
             Dim objCell As DataGridViewCell = CType(Me.dgvMovies.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
@@ -6118,7 +6119,7 @@ doCancel:
                 Me.cmnuMovieEditMetaData.Visible = False
                 Me.cmnuMovieRescrapeSelected.Visible = True
                 Me.cmnuMovieRescrape.Visible = False
-                Me.cmnuMovieUpSel.Visible = True
+                Me.cmnuMovieSingleDataField.Visible = True
                 'Me.cmuRenamer.Visible = False
                 Me.cmnuMovieSep4.Visible = False
 
@@ -6171,7 +6172,7 @@ doCancel:
                     Me.cmnuMovieEditMetaData.Visible = True
                     Me.cmnuMovieRescrapeSelected.Visible = True
                     Me.cmnuMovieRescrape.Visible = True
-                    Me.cmnuMovieUpSel.Visible = True
+                    Me.cmnuMovieSingleDataField.Visible = True
                     Me.cmnuMovieSep3.Visible = True
                     Me.cmnuMovieSep4.Visible = True
 
@@ -6220,10 +6221,10 @@ doCancel:
         If colName = "Playcount" AndAlso e.RowIndex >= 0 Then
             oldStatus = GetStatus()
             Me.SetStatus(Master.eLang.GetString(885, "Change Watched Status"))
-        ElseIf (colName = "BannerPath" OrElse colName = "ClearArtPath" OrElse colName = "ClearLogoPath" OrElse _
-            colName = "DiscArtPath" OrElse colName = "EFanartsPath" OrElse colName = "EThumbsPath" OrElse _
-            colName = "FanartPath" OrElse colName = "LandscapePath" OrElse colName = "NfoPath" OrElse _
-            colName = "PosterPath" OrElse colName = "ThemePath" OrElse colName = "TrailerPath" OrElse _
+        ElseIf (colName = "BannerPath" OrElse colName = "ClearArtPath" OrElse colName = "ClearLogoPath" OrElse
+            colName = "DiscArtPath" OrElse colName = "EFanartsPath" OrElse colName = "EThumbsPath" OrElse
+            colName = "FanartPath" OrElse colName = "LandscapePath" OrElse colName = "NfoPath" OrElse
+            colName = "PosterPath" OrElse colName = "ThemePath" OrElse colName = "TrailerPath" OrElse
             colName = "HasSet" OrElse colName = "HasSub") AndAlso e.RowIndex >= 0 Then
             Me.dgvMovies.ShowCellToolTips = False
 
@@ -6296,10 +6297,10 @@ doCancel:
         End If
 
         'icons for column header
-        If (colName = "BannerPath" OrElse colName = "ClearArtPath" OrElse colName = "ClearLogoPath" OrElse _
-            colName = "DiscArtPath" OrElse colName = "EFanartsPath" OrElse colName = "EThumbsPath" OrElse _
-            colName = "FanartPath" OrElse colName = "LandscapePath" OrElse colName = "NfoPath" OrElse _
-            colName = "PosterPath" OrElse colName = "ThemePath" OrElse colName = "TrailerPath" OrElse _
+        If (colName = "BannerPath" OrElse colName = "ClearArtPath" OrElse colName = "ClearLogoPath" OrElse
+            colName = "DiscArtPath" OrElse colName = "EFanartsPath" OrElse colName = "EThumbsPath" OrElse
+            colName = "FanartPath" OrElse colName = "LandscapePath" OrElse colName = "NfoPath" OrElse
+            colName = "PosterPath" OrElse colName = "ThemePath" OrElse colName = "TrailerPath" OrElse
             colName = "HasSet" OrElse colName = "HasSub" OrElse colName = "Playcount") AndAlso e.RowIndex = -1 Then
             e.PaintBackground(e.ClipBounds, False)
 
@@ -6346,7 +6347,7 @@ doCancel:
         End If
 
         'text fields
-        If (colName = "Imdb" OrElse colName = "ListTitle" OrElse colName = "MPAA" OrElse colName = "OriginalTitle" OrElse _
+        If (colName = "Imdb" OrElse colName = "ListTitle" OrElse colName = "MPAA" OrElse colName = "OriginalTitle" OrElse
             colName = "Rating" OrElse colName = "TMDB" OrElse colName = "Year") AndAlso e.RowIndex >= 0 Then
             If Convert.ToBoolean(Me.dgvMovies.Item("Mark", e.RowIndex).Value) Then
                 e.CellStyle.ForeColor = Color.Crimson
@@ -6394,9 +6395,9 @@ doCancel:
             End If
 
             'path fields
-            If colName = "BannerPath" OrElse colName = "ClearArtPath" OrElse colName = "ClearLogoPath" OrElse _
-                colName = "DiscArtPath" OrElse colName = "EFanartsPath" OrElse colName = "EThumbsPath" OrElse _
-                colName = "FanartPath" OrElse colName = "LandscapePath" OrElse colName = "NfoPath" OrElse _
+            If colName = "BannerPath" OrElse colName = "ClearArtPath" OrElse colName = "ClearLogoPath" OrElse
+                colName = "DiscArtPath" OrElse colName = "EFanartsPath" OrElse colName = "EThumbsPath" OrElse
+                colName = "FanartPath" OrElse colName = "LandscapePath" OrElse colName = "NfoPath" OrElse
                 colName = "PosterPath" OrElse colName = "ThemePath" OrElse colName = "TrailerPath" Then
                 e.PaintBackground(e.ClipBounds, True)
 
@@ -6456,7 +6457,7 @@ doCancel:
                     End If
                 Next
             ElseIf e.KeyChar = Convert.ToChar(Keys.Enter) Then
-                If Me.fScanner.IsBusy OrElse Me.bwMetaData.IsBusy OrElse Me.bwLoadMovieInfo.IsBusy OrElse _
+                If Me.fScanner.IsBusy OrElse Me.bwMetaData.IsBusy OrElse Me.bwLoadMovieInfo.IsBusy OrElse
                 Me.bwDownloadPic.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwReload_Movies.IsBusy _
                 OrElse Me.bwCleanDB.IsBusy OrElse Me.bwRewrite_Movies.IsBusy Then Return
 
@@ -6573,8 +6574,8 @@ doCancel:
                 Me.currRow_MovieSet = Me.dgvMovieSets.SelectedRows(0).Index
             End If
 
-        ElseIf Master.eSettings.MovieSetClickScrape AndAlso _
-            (colName = "BannerPath" OrElse colName = "ClearArtPath" OrElse colName = "ClearLogoPath" OrElse colName = "DiscArtPath" OrElse _
+        ElseIf Master.eSettings.MovieSetClickScrape AndAlso
+            (colName = "BannerPath" OrElse colName = "ClearArtPath" OrElse colName = "ClearLogoPath" OrElse colName = "DiscArtPath" OrElse
              colName = "FanartPath" OrElse colName = "LandscapePath" OrElse colName = "NfoPath" OrElse colName = "PosterPath") AndAlso Not bwMovieSetScraper.IsBusy Then
             Dim movieset As Int32 = CType(Me.dgvMovieSets.Rows(e.RowIndex).Cells("idSet").Value, Int32)
             Dim objCell As DataGridViewCell = CType(Me.dgvMovieSets.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
@@ -6754,7 +6755,7 @@ doCancel:
 
         Me.dgvMovieSets.ShowCellToolTips = True
 
-        If (colName = "BannerPath" OrElse colName = "ClearArtPath" OrElse colName = "ClearLogoPath" OrElse colName = "DiscArtPath" OrElse _
+        If (colName = "BannerPath" OrElse colName = "ClearArtPath" OrElse colName = "ClearLogoPath" OrElse colName = "DiscArtPath" OrElse
              colName = "FanartPath" OrElse colName = "LandscapePath" OrElse colName = "NfoPath" OrElse colName = "PosterPath") AndAlso e.RowIndex >= 0 Then
             Me.dgvMovieSets.ShowCellToolTips = False
 
@@ -6811,8 +6812,8 @@ doCancel:
         End If
 
         'icons for column header
-        If (colName = "BannerPath" OrElse colName = "ClearArtPath" OrElse colName = "ClearLogoPath" OrElse _
-            colName = "DiscArtPath" OrElse colName = "FanartPath" OrElse colName = "LandscapePath" OrElse _
+        If (colName = "BannerPath" OrElse colName = "ClearArtPath" OrElse colName = "ClearLogoPath" OrElse
+            colName = "DiscArtPath" OrElse colName = "FanartPath" OrElse colName = "LandscapePath" OrElse
             colName = "NfoPath" OrElse colName = "PosterPath") AndAlso e.RowIndex = -1 Then
             e.PaintBackground(e.ClipBounds, False)
 
@@ -6873,8 +6874,8 @@ doCancel:
             End If
 
             'path fields
-            If colName = "BannerPath" OrElse colName = "ClearArtPath" OrElse colName = "ClearLogoPath" OrElse _
-                colName = "DiscArtPath" OrElse colName = "FanartPath" OrElse colName = "LandscapePath" OrElse _
+            If colName = "BannerPath" OrElse colName = "ClearArtPath" OrElse colName = "ClearLogoPath" OrElse
+                colName = "DiscArtPath" OrElse colName = "FanartPath" OrElse colName = "LandscapePath" OrElse
                 colName = "NfoPath" OrElse colName = "PosterPath" Then
                 e.PaintBackground(e.ClipBounds, True)
 
@@ -6907,8 +6908,8 @@ doCancel:
                 End If
             Next
         ElseIf e.KeyChar = Convert.ToChar(Keys.Enter) Then
-            If Me.fScanner.IsBusy OrElse Me.bwLoadMovieSetInfo.IsBusy OrElse _
-            Me.bwLoadMovieSetPosters.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwReload_MovieSets.IsBusy OrElse _
+            If Me.fScanner.IsBusy OrElse Me.bwLoadMovieSetInfo.IsBusy OrElse
+            Me.bwLoadMovieSetPosters.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwReload_MovieSets.IsBusy OrElse
             Me.bwCleanDB.IsBusy Then Return
 
             Dim indX As Integer = Me.dgvMovieSets.SelectedRows(0).Index
@@ -6973,8 +6974,8 @@ doCancel:
                 SetWatchedStatus_TVEpisode()
             End If
 
-        ElseIf Master.eSettings.TVGeneralClickScrape AndAlso _
-            (colName = "FanartPath" OrElse colName = "NfoPath" OrElse colName = "PosterPath") AndAlso _
+        ElseIf Master.eSettings.TVGeneralClickScrape AndAlso
+            (colName = "FanartPath" OrElse colName = "NfoPath" OrElse colName = "PosterPath") AndAlso
             Not bwTVEpisodeScraper.IsBusy Then
             Dim episode As Int32 = CType(Me.dgvTVEpisodes.Rows(e.RowIndex).Cells("idEpisode").Value, Int32)
             Dim objCell As DataGridViewCell = CType(Me.dgvTVEpisodes.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
@@ -7048,7 +7049,7 @@ doCancel:
         If colName = "Playcount" AndAlso e.RowIndex >= 0 Then
             oldStatus = GetStatus()
             Me.SetStatus(Master.eLang.GetString(885, "Change Watched Status"))
-        ElseIf (colName = "FanartPath" OrElse colName = "NfoPath" OrElse _
+        ElseIf (colName = "FanartPath" OrElse colName = "NfoPath" OrElse
             colName = "PosterPath" OrElse colName = "HasSub") AndAlso e.RowIndex >= 0 Then
             Me.dgvTVEpisodes.ShowCellToolTips = False
 
@@ -7101,7 +7102,7 @@ doCancel:
         End If
 
         'icons for column header
-        If (colName = "FanartPath" OrElse colName = "NfoPath" OrElse colName = "PosterPath" OrElse _
+        If (colName = "FanartPath" OrElse colName = "NfoPath" OrElse colName = "PosterPath" OrElse
             colName = "HasSub" OrElse colName = "Playcount") AndAlso e.RowIndex = -1 Then
             e.PaintBackground(e.ClipBounds, False)
 
@@ -7128,7 +7129,7 @@ doCancel:
         End If
 
         'text fields
-        If (colName = "Aired" OrElse colName = "Episode" OrElse colName = "Season" OrElse _
+        If (colName = "Aired" OrElse colName = "Episode" OrElse colName = "Season" OrElse
             colName = "Title") AndAlso e.RowIndex >= 0 Then
             If Convert.ToInt64(Me.dgvTVEpisodes.Item("idFile", e.RowIndex).Value) = -1 Then
                 e.CellStyle.ForeColor = Color.Gray
@@ -7409,9 +7410,9 @@ doCancel:
                 SetWatchedStatus_TVSeason()
             End If
 
-        ElseIf Master.eSettings.TVGeneralClickScrape AndAlso _
-            (colName = "BannerPath" OrElse colName = "FanartPath" OrElse _
-             colName = "LandscapePath" OrElse colName = "PosterPath") AndAlso _
+        ElseIf Master.eSettings.TVGeneralClickScrape AndAlso
+            (colName = "BannerPath" OrElse colName = "FanartPath" OrElse
+             colName = "LandscapePath" OrElse colName = "PosterPath") AndAlso
             Not bwTVSeasonScraper.IsBusy Then
             Dim season As Int32 = CType(Me.dgvTVSeasons.Rows(e.RowIndex).Cells("idSeason").Value, Int32)
             Dim objCell As DataGridViewCell = CType(Me.dgvTVSeasons.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
@@ -7482,7 +7483,7 @@ doCancel:
         If colName = "HasWatched" AndAlso e.RowIndex >= 0 AndAlso Not CInt(Me.dgvTVSeasons.Rows(e.RowIndex).Cells("Season").Value) = 999 Then
             oldStatus = GetStatus()
             Me.SetStatus(Master.eLang.GetString(885, "Change Watched Status"))
-        ElseIf (colName = "BannerPath" OrElse colName = "FanartPath" OrElse _
+        ElseIf (colName = "BannerPath" OrElse colName = "FanartPath" OrElse
             colName = "LandscapePath" OrElse colName = "PosterPath") AndAlso e.RowIndex >= 0 Then
             Me.dgvTVSeasons.ShowCellToolTips = False
 
@@ -7533,7 +7534,7 @@ doCancel:
         End If
 
         'icons for column header
-        If (colName = "BannerPath" OrElse colName = "FanartPath" OrElse colName = "LandscapePath" OrElse _
+        If (colName = "BannerPath" OrElse colName = "FanartPath" OrElse colName = "LandscapePath" OrElse
             colName = "PosterPath" OrElse colName = "HasWatched") AndAlso e.RowIndex = -1 Then
             e.PaintBackground(e.ClipBounds, False)
 
@@ -7569,7 +7570,7 @@ doCancel:
                 e.CellStyle.ForeColor = Color.Crimson
                 e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                 e.CellStyle.SelectionForeColor = Color.Crimson
-            ElseIf Convert.ToBoolean(Me.dgvTVSeasons.Item("New", e.RowIndex).Value) OrElse _
+            ElseIf Convert.ToBoolean(Me.dgvTVSeasons.Item("New", e.RowIndex).Value) OrElse
                 Not String.IsNullOrEmpty(Me.dgvTVSeasons.Item("NewEpisodes", e.RowIndex).Value.ToString) AndAlso CInt(Me.dgvTVSeasons.Item("NewEpisodes", e.RowIndex).Value) > 0 Then
                 e.CellStyle.ForeColor = Color.Green
                 e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
@@ -7593,7 +7594,7 @@ doCancel:
             End If
 
             'path fields
-            If colName = "BannerPath" OrElse colName = "FanartPath" OrElse colName = "LandscapePath" OrElse _
+            If colName = "BannerPath" OrElse colName = "FanartPath" OrElse colName = "LandscapePath" OrElse
                 colName = "NfoPath" OrElse colName = "PosterPath" Then
                 e.PaintBackground(e.ClipBounds, True)
 
@@ -7775,10 +7776,10 @@ doCancel:
                 SetWatchedStatus_TVShow()
             End If
 
-        ElseIf Master.eSettings.TVGeneralClickScrape AndAlso _
-            (colName = "BannerPath" OrElse colName = "CharacterArtPath" OrElse colName = "ClearArtPath" OrElse _
-            colName = "ClearLogoPath" OrElse colName = "EFanartsPath" OrElse colName = "FanartPath" OrElse _
-            colName = "LandscapePath" OrElse colName = "NfoPath" OrElse colName = "PosterPath" OrElse _
+        ElseIf Master.eSettings.TVGeneralClickScrape AndAlso
+            (colName = "BannerPath" OrElse colName = "CharacterArtPath" OrElse colName = "ClearArtPath" OrElse
+            colName = "ClearLogoPath" OrElse colName = "EFanartsPath" OrElse colName = "FanartPath" OrElse
+            colName = "LandscapePath" OrElse colName = "NfoPath" OrElse colName = "PosterPath" OrElse
             colName = "ThemePath") AndAlso Not bwTVScraper.IsBusy Then
             Dim tvshow As Int32 = CType(Me.dgvTVShows.Rows(e.RowIndex).Cells("idShow").Value, Int32)
             Dim objCell As DataGridViewCell = CType(Me.dgvTVShows.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
@@ -7861,9 +7862,9 @@ doCancel:
         If colName = "HasWatched" AndAlso e.RowIndex >= 0 Then
             oldStatus = GetStatus()
             Me.SetStatus(Master.eLang.GetString(885, "Change Watched Status"))
-        ElseIf (colName = "BannerPath" OrElse colName = "CharacterArtPath" OrElse colName = "ClearArtPath" OrElse _
-            colName = "ClearLogoPath" OrElse colName = "EFanartsPath" OrElse colName = "FanartPath" OrElse _
-            colName = "LandscapePath" OrElse colName = "NfoPath" OrElse colName = "PosterPath" OrElse _
+        ElseIf (colName = "BannerPath" OrElse colName = "CharacterArtPath" OrElse colName = "ClearArtPath" OrElse
+            colName = "ClearLogoPath" OrElse colName = "EFanartsPath" OrElse colName = "FanartPath" OrElse
+            colName = "LandscapePath" OrElse colName = "NfoPath" OrElse colName = "PosterPath" OrElse
             colName = "ThemePath") AndAlso e.RowIndex >= 0 Then
             Me.dgvTVShows.ShowCellToolTips = False
 
@@ -7926,9 +7927,9 @@ doCancel:
         End If
 
         'icons for column header
-        If (colName = "BannerPath" OrElse colName = "CharacterArtPath" OrElse colName = "ClearArtPath" OrElse _
-            colName = "ClearLogoPath" OrElse colName = "EFanartsPath" OrElse colName = "FanartPath" OrElse _
-            colName = "LandscapePath" OrElse colName = "NfoPath" OrElse colName = "PosterPath" OrElse _
+        If (colName = "BannerPath" OrElse colName = "CharacterArtPath" OrElse colName = "ClearArtPath" OrElse
+            colName = "ClearLogoPath" OrElse colName = "EFanartsPath" OrElse colName = "FanartPath" OrElse
+            colName = "LandscapePath" OrElse colName = "NfoPath" OrElse colName = "PosterPath" OrElse
             colName = "ThemePath" OrElse colName = "HasWatched") AndAlso e.RowIndex = -1 Then
             e.PaintBackground(e.ClipBounds, False)
 
@@ -7972,7 +7973,7 @@ doCancel:
                 e.CellStyle.ForeColor = Color.Crimson
                 e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                 e.CellStyle.SelectionForeColor = Color.Crimson
-            ElseIf Convert.ToBoolean(Me.dgvTVShows.Item("New", e.RowIndex).Value) OrElse _
+            ElseIf Convert.ToBoolean(Me.dgvTVShows.Item("New", e.RowIndex).Value) OrElse
                 Not String.IsNullOrEmpty(Me.dgvTVShows.Item("NewEpisodes", e.RowIndex).Value.ToString) AndAlso CInt(Me.dgvTVShows.Item("NewEpisodes", e.RowIndex).Value) > 0 Then
                 e.CellStyle.ForeColor = Color.Green
                 e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
@@ -7996,9 +7997,9 @@ doCancel:
             End If
 
             'path fields
-            If colName = "BannerPath" OrElse colName = "CharacterArtPath" OrElse colName = "ClearArtPath" OrElse _
-                colName = "ClearLogoPath" OrElse colName = "EFanartsPath" OrElse colName = "FanartPath" OrElse _
-                colName = "LandscapePath" OrElse colName = "NfoPath" OrElse colName = "PosterPath" OrElse _
+            If colName = "BannerPath" OrElse colName = "CharacterArtPath" OrElse colName = "ClearArtPath" OrElse
+                colName = "ClearLogoPath" OrElse colName = "EFanartsPath" OrElse colName = "FanartPath" OrElse
+                colName = "LandscapePath" OrElse colName = "NfoPath" OrElse colName = "PosterPath" OrElse
                 colName = "ThemePath" Then
                 e.PaintBackground(e.ClipBounds, True)
 
@@ -8670,23 +8671,23 @@ doCancel:
             Me.ClearInfo()
 
             If Not String.IsNullOrEmpty(Me.filSearch_Movies) AndAlso Me.cbSearchMovies.Text = Master.eLang.GetString(100, "Actor") Then
-                Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT DISTINCT '", Me.currList_Movies, "'.* FROM actors ", _
-                                                                   "LEFT OUTER JOIN actorlinkmovie ON (actors.idActor = actorlinkmovie.idActor) ", _
-                                                                   "INNER JOIN '", Me.currList_Movies, "' ON (actorlinkmovie.idMovie = '", Me.currList_Movies, "'.idMovie) ", _
-                                                                   "WHERE actors.strActor LIKE '%", Me.filSearch_Movies, "%' ", _
+                Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT DISTINCT '", Me.currList_Movies, "'.* FROM actors ",
+                                                                   "LEFT OUTER JOIN actorlinkmovie ON (actors.idActor = actorlinkmovie.idActor) ",
+                                                                   "INNER JOIN '", Me.currList_Movies, "' ON (actorlinkmovie.idMovie = '", Me.currList_Movies, "'.idMovie) ",
+                                                                   "WHERE actors.strActor LIKE '%", Me.filSearch_Movies, "%' ",
                                                                    "ORDER BY '", Me.currList_Movies, "'.ListTitle COLLATE NOCASE;"))
             ElseIf Not String.IsNullOrEmpty(Me.filSearch_Movies) AndAlso Me.cbSearchMovies.Text = Master.eLang.GetString(233, "Role") Then
-                Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT DISTINCT '", Me.currList_Movies, "'.* FROM actorlinkmovie ", _
-                                                                   "INNER JOIN '", Me.currList_Movies, "' ON (actorlinkmovie.idMovie = '", Me.currList_Movies, "'.idMovie) ", _
-                                                                   "WHERE actorlinkmovie.strRole LIKE '%", Me.filSearch_Movies, "%' ", _
+                Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT DISTINCT '", Me.currList_Movies, "'.* FROM actorlinkmovie ",
+                                                                   "INNER JOIN '", Me.currList_Movies, "' ON (actorlinkmovie.idMovie = '", Me.currList_Movies, "'.idMovie) ",
+                                                                   "WHERE actorlinkmovie.strRole LIKE '%", Me.filSearch_Movies, "%' ",
                                                                    "ORDER BY '", Me.currList_Movies, "'.ListTitle COLLATE NOCASE;"))
             Else
                 If Me.chkFilterDuplicates_Movies.Checked Then
-                    Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT * FROM '", Me.currList_Movies, "' ", _
-                                                                       "WHERE imdb IN (SELECT imdb FROM '", Me.currList_Movies, "' WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb HAVING ( COUNT(imdb) > 1 )) ", _
+                    Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT * FROM '", Me.currList_Movies, "' ",
+                                                                       "WHERE imdb IN (SELECT imdb FROM '", Me.currList_Movies, "' WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb HAVING ( COUNT(imdb) > 1 )) ",
                                                                        "ORDER BY ListTitle COLLATE NOCASE;"))
                 Else
-                    Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT * FROM '", Me.currList_Movies, "' ", _
+                    Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT * FROM '", Me.currList_Movies, "' ",
                                                                        "ORDER BY ListTitle COLLATE NOCASE;"))
                 End If
             End If
@@ -8696,7 +8697,7 @@ doCancel:
             Me.bsMovieSets.DataSource = Nothing
             Me.dgvMovieSets.DataSource = Nothing
             Me.ClearInfo()
-            Master.DB.FillDataTable(Me.dtMovieSets, String.Concat("SELECT * FROM '", Me.currList_MovieSets, "' ", _
+            Master.DB.FillDataTable(Me.dtMovieSets, String.Concat("SELECT * FROM '", Me.currList_MovieSets, "' ",
                                                                   "ORDER BY ListTitle COLLATE NOCASE;"))
         End If
 
@@ -8708,7 +8709,7 @@ doCancel:
             Me.bsTVEpisodes.DataSource = Nothing
             Me.dgvTVEpisodes.DataSource = Nothing
             Me.ClearInfo()
-            Master.DB.FillDataTable(Me.dtTVShows, String.Concat("SELECT * FROM '", Me.currList_Shows, "' ", _
+            Master.DB.FillDataTable(Me.dtTVShows, String.Concat("SELECT * FROM '", Me.currList_Shows, "' ",
                                                               "ORDER BY ListTitle COLLATE NOCASE;"))
         End If
 
@@ -9518,7 +9519,7 @@ doCancel:
                 Me.pbStudio.Left = 0
             End If
 
-            Me.lblDirector.Text = String.Join(" / ", Me.currMovie.Movie.Directors.ToArray)
+            Me.lblDirectors.Text = String.Join(" / ", Me.currMovie.Movie.Directors.ToArray)
 
             Me.txtIMDBID.Text = Me.currMovie.Movie.IMDBID
             Me.txtTMDBID.Text = Me.currMovie.Movie.TMDBID
@@ -9526,7 +9527,7 @@ doCancel:
             Me.txtFilePath.Text = Me.currMovie.Filename
 
             Me.lblReleaseDate.Text = Me.currMovie.Movie.ReleaseDate
-            Me.txtCerts.Text = String.Join(" / ", Me.currMovie.Movie.Certifications.ToArray)
+            Me.txtCertifications.Text = String.Join(" / ", Me.currMovie.Movie.Certifications.ToArray)
 
             Me.txtMetaData.Text = NFO.FIToString(Me.currMovie.Movie.FileInfo, False)
 
@@ -9634,7 +9635,7 @@ doCancel:
             Me.SuspendLayout()
             Me.lblTitle.Text = If(String.IsNullOrEmpty(Me.currTV.Filename), String.Concat(Me.currTV.TVEpisode.Title, " ", Master.eLang.GetString(689, "[MISSING]")), Me.currTV.TVEpisode.Title)
             Me.txtPlot.Text = Me.currTV.TVEpisode.Plot
-            Me.lblDirector.Text = String.Join(" / ", Me.currTV.TVEpisode.Directors.ToArray)
+            Me.lblDirectors.Text = String.Join(" / ", Me.currTV.TVEpisode.Directors.ToArray)
             Me.txtFilePath.Text = Me.currTV.Filename
             Me.lblRuntime.Text = String.Format(Master.eLang.GetString(647, "Aired: {0}"), If(String.IsNullOrEmpty(Me.currTV.TVEpisode.Aired), "?", Me.currTV.TVEpisode.Aired))
 
@@ -9654,8 +9655,8 @@ doCancel:
                 Me.lblRating.Text = "Error: Please rescrape Rating and Votes"
             End Try
 
-            Me.lblTagline.Text = String.Format(Master.eLang.GetString(648, "Season: {0}, Episode: {1}"), _
-                            If(String.IsNullOrEmpty(Me.currTV.TVEpisode.Season.ToString), "?", Me.currTV.TVEpisode.Season.ToString), _
+            Me.lblTagline.Text = String.Format(Master.eLang.GetString(648, "Season: {0}, Episode: {1}"),
+                            If(String.IsNullOrEmpty(Me.currTV.TVEpisode.Season.ToString), "?", Me.currTV.TVEpisode.Season.ToString),
                             If(String.IsNullOrEmpty(Me.currTV.TVEpisode.Episode.ToString), "?", Me.currTV.TVEpisode.Episode.ToString))
 
             Me.alActors = New List(Of String)
@@ -10018,10 +10019,10 @@ doCancel:
         If Master.eSettings.TVDisplayMissingEpisodes Then
             Master.DB.FillDataTable(Me.dtTVSeasons, String.Concat("SELECT * FROM seasonslist WHERE idShow = ", ShowID, " ORDER BY Season;"))
         Else
-            Master.DB.FillDataTable(Me.dtTVSeasons, String.Concat("SELECT DISTINCT seasonslist.* ", _
-                                                                "FROM seasonslist ", _
-                                                                "LEFT OUTER JOIN episodelist ON (seasonslist.idShow = episodelist.idShow) AND (seasonslist.Season = episodelist.Season) ", _
-                                                                "WHERE seasonslist.idShow = ", ShowID, " AND (episodelist.Missing = 0 OR seasonslist.Season = 999) ", _
+            Master.DB.FillDataTable(Me.dtTVSeasons, String.Concat("SELECT DISTINCT seasonslist.* ",
+                                                                "FROM seasonslist ",
+                                                                "LEFT OUTER JOIN episodelist ON (seasonslist.idShow = episodelist.idShow) AND (seasonslist.Season = episodelist.Season) ",
+                                                                "WHERE seasonslist.idShow = ", ShowID, " AND (episodelist.Missing = 0 OR seasonslist.Season = 999) ",
                                                                 "ORDER BY seasonslist.Season;"))
         End If
 
@@ -10227,7 +10228,7 @@ doCancel:
             Master.fLoading.SetLoadingMesg(Master.eLang.GetString(854, "Basic setup"))
 
             Dim currentDomain As AppDomain = AppDomain.CurrentDomain
-            ModulesManager.AssemblyList.Add(New ModulesManager.AssemblyListItem With {.AssemblyName = "EmberAPI", _
+            ModulesManager.AssemblyList.Add(New ModulesManager.AssemblyListItem With {.AssemblyName = "EmberAPI",
               .Assembly = Assembly.LoadFile(Path.Combine(Functions.AppPath, "EmberAPI.dll"))})
             'Cocotus 2014/01/25 By switching Ember to NET4.5 dependency , the LoadFile method is not supported anymore
             '  http://msdn.microsoft.com/de-de/library/system.reflection.assembly.loadfile(v=vs.110).aspx
@@ -10768,8 +10769,8 @@ doCancel:
                 Me.pnlFilter_Shows.Visible = False
 
                 'MenuItem Tags for better Enable/Disable handling
-                Me.mnuMainToolsCleanDB.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfNoMovies = True, .IfTabMovies = True, .IfTabMovieSets = True, .IfNoMoviesets = True, .IfNoTVShows = True, .IfTabTVShows = True}
-                Me.mnuMainToolsClearCache.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfNoMovies = True, .IfTabMovies = True, .IfTabMovieSets = True, .IfNoMoviesets = True, .IfNoTVShows = True, .IfTabTVShows = True}
+                Me.mnuMainToolsCleanDB.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfNoMovies = True, .IfTabMovies = True, .IfTabMovieSets = True, .IfNoMovieSets = True, .IfNoTVShows = True, .IfTabTVShows = True}
+                Me.mnuMainToolsClearCache.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfNoMovies = True, .IfTabMovies = True, .IfTabMovieSets = True, .IfNoMovieSets = True, .IfNoTVShows = True, .IfTabTVShows = True}
                 Me.mnuMainToolsOfflineHolder.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfTabMovies = True, .IfNoMovies = True}
                 Me.mnuMainToolsReloadMovies.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfTabMovies = True, .IfTabMovieSets = True, .IfTabTVShows = True}
                 Me.mnuMainToolsReloadMovieSets.Tag = New Structures.ModulesMenus With {.ForMovieSets = True, .IfTabMovies = True, .IfTabMovieSets = True, .IfTabTVShows = True}
@@ -10851,23 +10852,23 @@ doCancel:
             Me.pbFanart.Left = Convert.ToInt32((Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2)
             Me.pnlNoInfo.Location = New Point(Convert.ToInt32((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2), Convert.ToInt32((Me.scMain.Panel2.Height - Me.pnlNoInfo.Height) / 2))
             Me.pnlCancel.Location = New Point(Convert.ToInt32((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2), 124)
-            Me.pnlFilterCountries_Movies.Location = New Point(Me.pnlFilter_Movies.Left + Me.tblFilter_Movies.Left + Me.gbFilterSpecific_Movies.Left + Me.tblFilterSpecific_Movies.Left + Me.tblFilterSpecificData_Movies.Left + Me.txtFilterCountry_Movies.Left + 1, _
+            Me.pnlFilterCountries_Movies.Location = New Point(Me.pnlFilter_Movies.Left + Me.tblFilter_Movies.Left + Me.gbFilterSpecific_Movies.Left + Me.tblFilterSpecific_Movies.Left + Me.tblFilterSpecificData_Movies.Left + Me.txtFilterCountry_Movies.Left + 1,
                                                               (Me.pnlFilter_Movies.Top + Me.tblFilter_Movies.Top + Me.gbFilterSpecific_Movies.Top + Me.tblFilterSpecific_Movies.Top + Me.tblFilterSpecificData_Movies.Top + Me.txtFilterCountry_Movies.Top) - Me.pnlFilterCountries_Movies.Height)
-            Me.pnlFilterGenres_Movies.Location = New Point(Me.pnlFilter_Movies.Left + Me.tblFilter_Movies.Left + Me.gbFilterSpecific_Movies.Left + Me.tblFilterSpecific_Movies.Left + Me.tblFilterSpecificData_Movies.Left + Me.txtFilterGenre_Movies.Left + 1, _
+            Me.pnlFilterGenres_Movies.Location = New Point(Me.pnlFilter_Movies.Left + Me.tblFilter_Movies.Left + Me.gbFilterSpecific_Movies.Left + Me.tblFilterSpecific_Movies.Left + Me.tblFilterSpecificData_Movies.Left + Me.txtFilterGenre_Movies.Left + 1,
                                                            (Me.pnlFilter_Movies.Top + Me.tblFilter_Movies.Top + Me.gbFilterSpecific_Movies.Top + Me.tblFilterSpecific_Movies.Top + Me.tblFilterSpecificData_Movies.Top + Me.txtFilterGenre_Movies.Top) - Me.pnlFilterGenres_Movies.Height)
-            Me.pnlFilterGenres_Shows.Location = New Point(Me.pnlFilter_Shows.Left + Me.tblFilter_Shows.Left + Me.gbFilterSpecific_Shows.Left + Me.tblFilterSpecific_Shows.Left + Me.tblFilterSpecificData_Shows.Left + Me.txtFilterGenre_Shows.Left + 1, _
+            Me.pnlFilterGenres_Shows.Location = New Point(Me.pnlFilter_Shows.Left + Me.tblFilter_Shows.Left + Me.gbFilterSpecific_Shows.Left + Me.tblFilterSpecific_Shows.Left + Me.tblFilterSpecificData_Shows.Left + Me.txtFilterGenre_Shows.Left + 1,
                                                           (Me.pnlFilter_Shows.Top + Me.tblFilter_Shows.Top + Me.gbFilterSpecific_Shows.Top + Me.tblFilterSpecific_Shows.Top + Me.tblFilterSpecificData_Shows.Top + Me.txtFilterGenre_Shows.Top) - Me.pnlFilterGenres_Shows.Height)
-            Me.pnlFilterDataFields_Movies.Location = New Point(Me.pnlFilter_Movies.Left + Me.tblFilter_Movies.Left + Me.gbFilterSpecific_Movies.Left + Me.tblFilterSpecific_Movies.Left + Me.tblFilterSpecificData_Movies.Left + Me.gbFilterDataField_Movies.Left + Me.tblFilterDataField_Movies.Left + Me.txtFilterDataField_Movies.Left + 1, _
+            Me.pnlFilterDataFields_Movies.Location = New Point(Me.pnlFilter_Movies.Left + Me.tblFilter_Movies.Left + Me.gbFilterSpecific_Movies.Left + Me.tblFilterSpecific_Movies.Left + Me.tblFilterSpecificData_Movies.Left + Me.gbFilterDataField_Movies.Left + Me.tblFilterDataField_Movies.Left + Me.txtFilterDataField_Movies.Left + 1,
                                                                (Me.pnlFilter_Movies.Top + Me.tblFilter_Movies.Top + Me.gbFilterSpecific_Movies.Top + Me.tblFilterSpecific_Movies.Top + Me.tblFilterSpecificData_Movies.Top + Me.gbFilterDataField_Movies.Top + Me.tblFilterDataField_Movies.Top + Me.txtFilterDataField_Movies.Top) - Me.pnlFilterDataFields_Movies.Height)
-            Me.pnlFilterMissingItems_Movies.Location = New Point(Me.pnlFilter_Movies.Left + Me.tblFilter_Movies.Left + Me.gbFilterGeneral_Movies.Left + Me.tblFilterGeneral_Movies.Left + Me.btnFilterMissing_Movies.Left + 1, _
+            Me.pnlFilterMissingItems_Movies.Location = New Point(Me.pnlFilter_Movies.Left + Me.tblFilter_Movies.Left + Me.gbFilterGeneral_Movies.Left + Me.tblFilterGeneral_Movies.Left + Me.btnFilterMissing_Movies.Left + 1,
                                                                  (Me.pnlFilter_Movies.Top + Me.tblFilter_Movies.Top + Me.gbFilterGeneral_Movies.Top + Me.tblFilterGeneral_Movies.Top + Me.btnFilterMissing_Movies.Top) - Me.pnlFilterMissingItems_Movies.Height)
-            Me.pnlFilterMissingItems_MovieSets.Location = New Point(Me.pnlFilter_MovieSets.Left + Me.tblFilter_MovieSets.Left + Me.gbFilterGeneral_MovieSets.Left + Me.tblFilterGeneral_MovieSets.Left + Me.btnFilterMissing_MovieSets.Left + 1, _
+            Me.pnlFilterMissingItems_MovieSets.Location = New Point(Me.pnlFilter_MovieSets.Left + Me.tblFilter_MovieSets.Left + Me.gbFilterGeneral_MovieSets.Left + Me.tblFilterGeneral_MovieSets.Left + Me.btnFilterMissing_MovieSets.Left + 1,
                                                                  (Me.pnlFilter_MovieSets.Top + Me.tblFilter_MovieSets.Top + Me.gbFilterGeneral_MovieSets.Top + Me.tblFilterGeneral_MovieSets.Top + Me.btnFilterMissing_MovieSets.Top) - Me.pnlFilterMissingItems_MovieSets.Height)
-            Me.pnlFilterMissingItems_Shows.Location = New Point(Me.pnlFilter_Shows.Left + Me.tblFilter_Shows.Left + Me.gbFilterGeneral_Shows.Left + Me.tblFilterGeneral_Shows.Left + Me.btnFilterMissing_Shows.Left + 1, _
+            Me.pnlFilterMissingItems_Shows.Location = New Point(Me.pnlFilter_Shows.Left + Me.tblFilter_Shows.Left + Me.gbFilterGeneral_Shows.Left + Me.tblFilterGeneral_Shows.Left + Me.btnFilterMissing_Shows.Left + 1,
                                                                  (Me.pnlFilter_Shows.Top + Me.tblFilter_Shows.Top + Me.gbFilterGeneral_Shows.Top + Me.tblFilterGeneral_Shows.Top + Me.btnFilterMissing_Shows.Top) - Me.pnlFilterMissingItems_Shows.Height)
-            Me.pnlFilterSources_Movies.Location = New Point(Me.pnlFilter_Movies.Left + Me.tblFilter_Movies.Left + Me.gbFilterSpecific_Movies.Left + Me.tblFilterSpecific_Movies.Left + Me.tblFilterSpecificData_Movies.Left + Me.txtFilterSource_Movies.Left + 1, _
+            Me.pnlFilterSources_Movies.Location = New Point(Me.pnlFilter_Movies.Left + Me.tblFilter_Movies.Left + Me.gbFilterSpecific_Movies.Left + Me.tblFilterSpecific_Movies.Left + Me.tblFilterSpecificData_Movies.Left + Me.txtFilterSource_Movies.Left + 1,
                                                             (Me.pnlFilter_Movies.Top + Me.tblFilter_Movies.Top + Me.gbFilterSpecific_Movies.Top + Me.tblFilterSpecific_Movies.Top + Me.tblFilterSpecificData_Movies.Top + Me.txtFilterSource_Movies.Top) - Me.pnlFilterSources_Movies.Height)
-            Me.pnlFilterSources_Shows.Location = New Point(Me.pnlFilter_Shows.Left + Me.tblFilter_Shows.Left + Me.gbFilterSpecific_Shows.Left + Me.tblFilterSpecific_Shows.Left + Me.tblFilterSpecificData_Shows.Left + Me.txtFilterSource_Shows.Left + 1, _
+            Me.pnlFilterSources_Shows.Location = New Point(Me.pnlFilter_Shows.Left + Me.tblFilter_Shows.Left + Me.gbFilterSpecific_Shows.Left + Me.tblFilterSpecific_Shows.Left + Me.tblFilterSpecificData_Shows.Left + Me.txtFilterSource_Shows.Left + 1,
                                                            (Me.pnlFilter_Shows.Top + Me.tblFilter_Shows.Top + Me.gbFilterSpecific_Shows.Top + Me.tblFilterSpecific_Shows.Top + Me.tblFilterSpecificData_Shows.Top + Me.txtFilterSource_Shows.Top) - Me.pnlFilterSources_Shows.Height)
             Me.pnlLoadSettings.Location = New Point(Convert.ToInt32((Me.Width - Me.pnlLoadSettings.Width) / 2), Convert.ToInt32((Me.Height - Me.pnlLoadSettings.Height) / 2))
         End If
@@ -11203,6 +11204,280 @@ doCancel:
         End If
     End Sub
 
+    Private Sub mnuScrapeOption_Opened(sender As Object, e As EventArgs) Handles mnuScrapeOption.Opened
+        _SelectedContentType = mnuScrapeOption.OwnerItem.Tag.ToString
+
+        With Master.eSettings
+            Select Case _SelectedContentType
+                Case "movie"
+                    mnuScrapeOptionActors.Enabled = .MovieScraperCast
+                    mnuScrapeOptionActors.Visible = True
+                    mnuScrapeOptionAired.Enabled = False
+                    mnuScrapeOptionAired.Visible = False
+                    mnuScrapeOptionCertifications.Enabled = .MovieScraperCert
+                    mnuScrapeOptionCertifications.Visible = True
+                    mnuScrapeOptionCollectionID.Enabled = .MovieScraperCollectionID
+                    mnuScrapeOptionCollectionID.Visible = True
+                    mnuScrapeOptionCountries.Enabled = .MovieScraperCountry
+                    mnuScrapeOptionCountries.Visible = True
+                    mnuScrapeOptionCreators.Enabled = False
+                    mnuScrapeOptionCreators.Visible = False
+                    mnuScrapeOptionDirectors.Enabled = .MovieScraperDirector
+                    mnuScrapeOptionDirectors.Visible = True
+                    mnuScrapeOptionEpiGuideURL.Enabled = False
+                    mnuScrapeOptionEpiGuideURL.Visible = False
+                    mnuScrapeOptionGenres.Enabled = .MovieScraperGenre
+                    mnuScrapeOptionGenres.Visible = True
+                    mnuScrapeOptionGuestStars.Enabled = False
+                    mnuScrapeOptionGuestStars.Visible = False
+                    mnuScrapeOptionMPAA.Enabled = .MovieScraperMPAA
+                    mnuScrapeOptionMPAA.Visible = True
+                    mnuScrapeOptionOriginalTitle.Enabled = .MovieScraperOriginalTitle
+                    mnuScrapeOptionOriginalTitle.Visible = True
+                    mnuScrapeOptionOutline.Enabled = .MovieScraperOutline
+                    mnuScrapeOptionOutline.Visible = True
+                    mnuScrapeOptionPlot.Enabled = .MovieScraperPlot
+                    mnuScrapeOptionPlot.Visible = True
+                    mnuScrapeOptionPremiered.Enabled = False
+                    mnuScrapeOptionPremiered.Visible = False
+                    mnuScrapeOptionRating.Enabled = .MovieScraperRating
+                    mnuScrapeOptionRating.Visible = True
+                    mnuScrapeOptionReleaseDate.Enabled = .MovieScraperRelease
+                    mnuScrapeOptionReleaseDate.Visible = True
+                    mnuScrapeOptionRuntime.Enabled = .MovieScraperRuntime
+                    mnuScrapeOptionRuntime.Visible = True
+                    mnuScrapeOptionStatus.Enabled = False
+                    mnuScrapeOptionStatus.Visible = False
+                    mnuScrapeOptionStudios.Enabled = .MovieScraperStudio
+                    mnuScrapeOptionStudios.Visible = True
+                    mnuScrapeOptionTagline.Enabled = .MovieScraperTagline
+                    mnuScrapeOptionTagline.Visible = True
+                    mnuScrapeOptionTitle.Enabled = .MovieScraperTitle
+                    mnuScrapeOptionTitle.Visible = True
+                    mnuScrapeOptionTop250.Enabled = .MovieScraperTop250
+                    mnuScrapeOptionTop250.Visible = True
+                    mnuScrapeOptionTrailer.Enabled = .MovieScraperTrailer
+                    mnuScrapeOptionTrailer.Visible = True
+                    mnuScrapeOptionWriters.Enabled = .MovieScraperCredits
+                    mnuScrapeOptionWriters.Visible = True
+                    mnuScrapeOptionYear.Enabled = .MovieScraperYear
+                    mnuScrapeOptionYear.Visible = True
+                Case "movieset"
+                    mnuScrapeOptionActors.Enabled = False
+                    mnuScrapeOptionActors.Visible = False
+                    mnuScrapeOptionAired.Enabled = False
+                    mnuScrapeOptionAired.Visible = False
+                    mnuScrapeOptionCertifications.Enabled = False
+                    mnuScrapeOptionCertifications.Visible = False
+                    mnuScrapeOptionCollectionID.Enabled = False
+                    mnuScrapeOptionCollectionID.Visible = False
+                    mnuScrapeOptionCountries.Enabled = False
+                    mnuScrapeOptionCountries.Visible = False
+                    mnuScrapeOptionCreators.Enabled = False
+                    mnuScrapeOptionCreators.Visible = False
+                    mnuScrapeOptionDirectors.Enabled = False
+                    mnuScrapeOptionDirectors.Visible = False
+                    mnuScrapeOptionEpiGuideURL.Enabled = False
+                    mnuScrapeOptionEpiGuideURL.Visible = False
+                    mnuScrapeOptionGenres.Enabled = False
+                    mnuScrapeOptionGenres.Visible = False
+                    mnuScrapeOptionGuestStars.Enabled = False
+                    mnuScrapeOptionGuestStars.Visible = False
+                    mnuScrapeOptionMPAA.Enabled = False
+                    mnuScrapeOptionMPAA.Visible = False
+                    mnuScrapeOptionOriginalTitle.Enabled = False
+                    mnuScrapeOptionOriginalTitle.Visible = False
+                    mnuScrapeOptionOutline.Enabled = False
+                    mnuScrapeOptionOutline.Visible = False
+                    mnuScrapeOptionPlot.Enabled = .MovieSetScraperPlot
+                    mnuScrapeOptionPlot.Visible = True
+                    mnuScrapeOptionPremiered.Enabled = False
+                    mnuScrapeOptionPremiered.Visible = False
+                    mnuScrapeOptionRating.Enabled = False
+                    mnuScrapeOptionRating.Visible = False
+                    mnuScrapeOptionReleaseDate.Enabled = False
+                    mnuScrapeOptionReleaseDate.Visible = False
+                    mnuScrapeOptionRuntime.Enabled = False
+                    mnuScrapeOptionRuntime.Visible = False
+                    mnuScrapeOptionStatus.Enabled = False
+                    mnuScrapeOptionStatus.Visible = False
+                    mnuScrapeOptionStudios.Enabled = False
+                    mnuScrapeOptionStudios.Visible = False
+                    mnuScrapeOptionTagline.Enabled = False
+                    mnuScrapeOptionTagline.Visible = False
+                    mnuScrapeOptionTitle.Enabled = .MovieSetScraperTitle
+                    mnuScrapeOptionTitle.Visible = True
+                    mnuScrapeOptionTop250.Enabled = False
+                    mnuScrapeOptionTop250.Visible = False
+                    mnuScrapeOptionTrailer.Enabled = False
+                    mnuScrapeOptionTrailer.Visible = False
+                    mnuScrapeOptionWriters.Enabled = False
+                    mnuScrapeOptionWriters.Visible = False
+                    mnuScrapeOptionYear.Enabled = False
+                    mnuScrapeOptionYear.Visible = False
+                Case "tvepisode"
+                    mnuScrapeOptionActors.Enabled = .TVScraperEpisodeActors
+                    mnuScrapeOptionActors.Visible = True
+                    mnuScrapeOptionAired.Enabled = .TVScraperEpisodeAired
+                    mnuScrapeOptionAired.Visible = True
+                    mnuScrapeOptionCertifications.Enabled = False
+                    mnuScrapeOptionCertifications.Visible = False
+                    mnuScrapeOptionCollectionID.Enabled = False
+                    mnuScrapeOptionCollectionID.Visible = False
+                    mnuScrapeOptionCountries.Enabled = False
+                    mnuScrapeOptionCountries.Visible = False
+                    mnuScrapeOptionCreators.Enabled = False
+                    mnuScrapeOptionCreators.Visible = False
+                    mnuScrapeOptionDirectors.Enabled = .TVScraperEpisodeDirector
+                    mnuScrapeOptionDirectors.Visible = True
+                    mnuScrapeOptionEpiGuideURL.Enabled = False
+                    mnuScrapeOptionEpiGuideURL.Visible = False
+                    mnuScrapeOptionGenres.Enabled = False
+                    mnuScrapeOptionGenres.Visible = False
+                    mnuScrapeOptionGuestStars.Enabled = .TVScraperEpisodeGuestStars
+                    mnuScrapeOptionGuestStars.Visible = True
+                    mnuScrapeOptionMPAA.Enabled = False
+                    mnuScrapeOptionMPAA.Visible = False
+                    mnuScrapeOptionOriginalTitle.Enabled = False
+                    mnuScrapeOptionOriginalTitle.Visible = False
+                    mnuScrapeOptionOutline.Enabled = False
+                    mnuScrapeOptionOutline.Visible = False
+                    mnuScrapeOptionPlot.Enabled = .TVScraperEpisodePlot
+                    mnuScrapeOptionPlot.Visible = True
+                    mnuScrapeOptionPremiered.Enabled = False
+                    mnuScrapeOptionPremiered.Visible = False
+                    mnuScrapeOptionRating.Enabled = .TVScraperEpisodeRating
+                    mnuScrapeOptionRating.Visible = True
+                    mnuScrapeOptionReleaseDate.Enabled = False
+                    mnuScrapeOptionReleaseDate.Visible = False
+                    mnuScrapeOptionRuntime.Enabled = .TVScraperEpisodeRuntime
+                    mnuScrapeOptionRuntime.Visible = True
+                    mnuScrapeOptionStatus.Enabled = False
+                    mnuScrapeOptionStatus.Visible = False
+                    mnuScrapeOptionStudios.Enabled = False
+                    mnuScrapeOptionStudios.Visible = False
+                    mnuScrapeOptionTagline.Enabled = False
+                    mnuScrapeOptionTagline.Visible = False
+                    mnuScrapeOptionTitle.Enabled = .TVScraperEpisodeTitle
+                    mnuScrapeOptionTitle.Visible = True
+                    mnuScrapeOptionTop250.Enabled = False
+                    mnuScrapeOptionTop250.Visible = False
+                    mnuScrapeOptionTrailer.Enabled = False
+                    mnuScrapeOptionTrailer.Visible = False
+                    mnuScrapeOptionWriters.Enabled = .TVScraperEpisodeCredits
+                    mnuScrapeOptionWriters.Visible = True
+                    mnuScrapeOptionYear.Enabled = False
+                    mnuScrapeOptionYear.Visible = False
+                Case "tvseason"
+                    mnuScrapeOptionActors.Enabled = False
+                    mnuScrapeOptionActors.Visible = False
+                    mnuScrapeOptionAired.Enabled = .TVScraperSeasonAired
+                    mnuScrapeOptionAired.Visible = True
+                    mnuScrapeOptionCertifications.Enabled = False
+                    mnuScrapeOptionCertifications.Visible = False
+                    mnuScrapeOptionCollectionID.Enabled = False
+                    mnuScrapeOptionCollectionID.Visible = False
+                    mnuScrapeOptionCountries.Enabled = False
+                    mnuScrapeOptionCountries.Visible = False
+                    mnuScrapeOptionCreators.Enabled = False
+                    mnuScrapeOptionCreators.Visible = False
+                    mnuScrapeOptionDirectors.Enabled = False
+                    mnuScrapeOptionDirectors.Visible = False
+                    mnuScrapeOptionEpiGuideURL.Enabled = False
+                    mnuScrapeOptionEpiGuideURL.Visible = False
+                    mnuScrapeOptionGenres.Enabled = False
+                    mnuScrapeOptionGenres.Visible = False
+                    mnuScrapeOptionGuestStars.Enabled = False
+                    mnuScrapeOptionGuestStars.Visible = False
+                    mnuScrapeOptionMPAA.Enabled = False
+                    mnuScrapeOptionMPAA.Visible = False
+                    mnuScrapeOptionOriginalTitle.Enabled = False
+                    mnuScrapeOptionOriginalTitle.Visible = False
+                    mnuScrapeOptionOutline.Enabled = False
+                    mnuScrapeOptionOutline.Visible = False
+                    mnuScrapeOptionPlot.Enabled = .TVScraperSeasonPlot
+                    mnuScrapeOptionPlot.Visible = True
+                    mnuScrapeOptionPremiered.Enabled = False
+                    mnuScrapeOptionPremiered.Visible = False
+                    mnuScrapeOptionRating.Enabled = False
+                    mnuScrapeOptionRating.Visible = False
+                    mnuScrapeOptionReleaseDate.Enabled = False
+                    mnuScrapeOptionReleaseDate.Visible = False
+                    mnuScrapeOptionRuntime.Enabled = False
+                    mnuScrapeOptionRuntime.Visible = False
+                    mnuScrapeOptionStatus.Enabled = False
+                    mnuScrapeOptionStatus.Visible = False
+                    mnuScrapeOptionStudios.Enabled = False
+                    mnuScrapeOptionStudios.Visible = False
+                    mnuScrapeOptionTagline.Enabled = False
+                    mnuScrapeOptionTagline.Visible = False
+                    mnuScrapeOptionTitle.Enabled = .TVScraperSeasonTitle
+                    mnuScrapeOptionTitle.Visible = True
+                    mnuScrapeOptionTop250.Enabled = False
+                    mnuScrapeOptionTop250.Visible = False
+                    mnuScrapeOptionTrailer.Enabled = False
+                    mnuScrapeOptionTrailer.Visible = False
+                    mnuScrapeOptionWriters.Enabled = False
+                    mnuScrapeOptionWriters.Visible = False
+                    mnuScrapeOptionYear.Enabled = False
+                    mnuScrapeOptionYear.Visible = False
+                Case "tvshow"
+                    mnuScrapeOptionActors.Enabled = .TVScraperShowActors
+                    mnuScrapeOptionActors.Visible = True
+                    mnuScrapeOptionAired.Enabled = False
+                    mnuScrapeOptionAired.Visible = False
+                    mnuScrapeOptionCertifications.Enabled = .TVScraperShowCert
+                    mnuScrapeOptionCertifications.Visible = True
+                    mnuScrapeOptionCollectionID.Enabled = False
+                    mnuScrapeOptionCollectionID.Visible = False
+                    mnuScrapeOptionCountries.Enabled = .TVScraperShowCountry
+                    mnuScrapeOptionCountries.Visible = True
+                    mnuScrapeOptionCreators.Enabled = .TVScraperShowCreators
+                    mnuScrapeOptionCreators.Visible = True
+                    mnuScrapeOptionDirectors.Enabled = False
+                    mnuScrapeOptionDirectors.Visible = False
+                    mnuScrapeOptionEpiGuideURL.Enabled = .TVScraperShowEpiGuideURL
+                    mnuScrapeOptionEpiGuideURL.Visible = True
+                    mnuScrapeOptionGenres.Enabled = .TVScraperShowGenre
+                    mnuScrapeOptionGenres.Visible = True
+                    mnuScrapeOptionGuestStars.Enabled = False
+                    mnuScrapeOptionGuestStars.Visible = False
+                    mnuScrapeOptionMPAA.Enabled = .TVScraperShowMPAA
+                    mnuScrapeOptionMPAA.Visible = True
+                    mnuScrapeOptionOriginalTitle.Enabled = .TVScraperShowOriginalTitle
+                    mnuScrapeOptionOriginalTitle.Visible = True
+                    mnuScrapeOptionOutline.Enabled = False
+                    mnuScrapeOptionOutline.Visible = False
+                    mnuScrapeOptionPlot.Enabled = .TVScraperShowPlot
+                    mnuScrapeOptionPlot.Visible = True
+                    mnuScrapeOptionPremiered.Enabled = .TVScraperShowPremiered
+                    mnuScrapeOptionPremiered.Visible = True
+                    mnuScrapeOptionRating.Enabled = .TVScraperShowRating
+                    mnuScrapeOptionRating.Visible = True
+                    mnuScrapeOptionReleaseDate.Enabled = False
+                    mnuScrapeOptionReleaseDate.Visible = False
+                    mnuScrapeOptionRuntime.Enabled = .TVScraperShowRuntime
+                    mnuScrapeOptionRuntime.Visible = True
+                    mnuScrapeOptionStatus.Enabled = .TVScraperShowStatus
+                    mnuScrapeOptionStatus.Visible = True
+                    mnuScrapeOptionStudios.Enabled = .TVScraperShowStudio
+                    mnuScrapeOptionStudios.Visible = True
+                    mnuScrapeOptionTagline.Enabled = False
+                    mnuScrapeOptionTagline.Visible = False
+                    mnuScrapeOptionTitle.Enabled = .TVScraperShowTitle
+                    mnuScrapeOptionTitle.Visible = True
+                    mnuScrapeOptionTop250.Enabled = False
+                    mnuScrapeOptionTop250.Visible = False
+                    mnuScrapeOptionTrailer.Enabled = False
+                    mnuScrapeOptionTrailer.Visible = False
+                    mnuScrapeOptionWriters.Enabled = False
+                    mnuScrapeOptionWriters.Visible = False
+                    mnuScrapeOptionYear.Enabled = False
+                    mnuScrapeOptionYear.Visible = False
+            End Select
+        End With
+    End Sub
+
     Private Sub mnuScrapeModifier_Opened(sender As Object, e As EventArgs) Handles mnuScrapeModifier.Opened
         _SelectedScrapeTypeMode = mnuScrapeModifier.OwnerItem.Tag.ToString
 
@@ -11384,22 +11659,22 @@ doCancel:
     End Sub
 
     Private Sub Autoscraper(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
-        mnuScrapeModifierActorthumbs.Click, _
-        mnuScrapeModifierAll.Click, _
-        mnuScrapeModifierBanner.Click, _
-        mnuScrapeModifierCharacterArt.Click, _
-        mnuScrapeModifierClearArt.Click, _
-        mnuScrapeModifierClearLogo.Click, _
-        mnuScrapeModifierDiscArt.Click, _
-        mnuScrapeModifierExtrafanarts.Click, _
-        mnuScrapeModifierExtrathumbs.Click, _
-        mnuScrapeModifierFanart.Click, _
-        mnuScrapeModifierLandscape.Click, _
-        mnuScrapeModifierMetaData.Click, _
-        mnuScrapeModifierNFO.Click, _
-        mnuScrapeModifierPoster.Click, _
-        mnuScrapeModifierTheme.Click, _
-        mnuScrapeModifierTrailer.Click, _
+        mnuScrapeModifierActorthumbs.Click,
+        mnuScrapeModifierAll.Click,
+        mnuScrapeModifierBanner.Click,
+        mnuScrapeModifierCharacterArt.Click,
+        mnuScrapeModifierClearArt.Click,
+        mnuScrapeModifierClearLogo.Click,
+        mnuScrapeModifierDiscArt.Click,
+        mnuScrapeModifierExtrafanarts.Click,
+        mnuScrapeModifierExtrathumbs.Click,
+        mnuScrapeModifierFanart.Click,
+        mnuScrapeModifierLandscape.Click,
+        mnuScrapeModifierMetaData.Click,
+        mnuScrapeModifierNFO.Click,
+        mnuScrapeModifierPoster.Click,
+        mnuScrapeModifierTheme.Click,
+        mnuScrapeModifierTrailer.Click,
         mnuScrapeSubmenuCustom.Click
 
         Dim ContentType As String = String.Empty
@@ -11506,55 +11781,176 @@ doCancel:
 
             Select Case ContentType
                 Case "movie"
-                    Me.CreateScrapeList_Movie(Type, Master.DefaultOptions_Movie, ScrapeModifier)
+                    CreateScrapeList_Movie(Type, Master.DefaultOptions_Movie, ScrapeModifier)
                 Case "movieset"
-                    Me.CreateScrapeList_MovieSet(Type, Master.DefaultOptions_MovieSet, ScrapeModifier)
+                    CreateScrapeList_MovieSet(Type, Master.DefaultOptions_MovieSet, ScrapeModifier)
                 Case "tvepisode"
-                    Me.CreateScrapeList_TVEpisode(Type, Master.DefaultOptions_TV, ScrapeModifier)
+                    CreateScrapeList_TVEpisode(Type, Master.DefaultOptions_TV, ScrapeModifier)
                 Case "tvseason"
-                    Me.CreateScrapeList_TVSeason(Type, Master.DefaultOptions_TV, ScrapeModifier)
+                    CreateScrapeList_TVSeason(Type, Master.DefaultOptions_TV, ScrapeModifier)
                 Case "tvshow"
                     ScrapeModifier.withEpisodes = True
                     ScrapeModifier.withSeasons = True
-                    Me.CreateScrapeList_TV(Type, Master.DefaultOptions_TV, ScrapeModifier)
+                    CreateScrapeList_TV(Type, Master.DefaultOptions_TV, ScrapeModifier)
             End Select
         Else
             Select Case ContentType
                 Case "movie"
-                    Me.SetControlsEnabled(False)
+                    SetControlsEnabled(False)
                     Using dlgCustomScraper As New dlgCustomScraper(Enums.ContentType.Movie)
                         Dim CustomScraper As Structures.CustomUpdaterStruct = Nothing
                         CustomScraper = dlgCustomScraper.ShowDialog()
                         If Not CustomScraper.Canceled Then
-                            Me.CreateScrapeList_Movie(CustomScraper.ScrapeType, CustomScraper.ScrapeOptions, CustomScraper.ScrapeModifier)
+                            CreateScrapeList_Movie(CustomScraper.ScrapeType, CustomScraper.ScrapeOptions, CustomScraper.ScrapeModifier)
                         Else
-                            Me.SetControlsEnabled(True)
+                            SetControlsEnabled(True)
                         End If
                     End Using
                 Case "movieset"
-                    Me.SetControlsEnabled(False)
+                    SetControlsEnabled(False)
                     Using dlgCustomScraper As New dlgCustomScraper(Enums.ContentType.MovieSet)
                         Dim CustomScraper As Structures.CustomUpdaterStruct = Nothing
                         CustomScraper = dlgCustomScraper.ShowDialog()
                         If Not CustomScraper.Canceled Then
-                            Me.CreateScrapeList_MovieSet(CustomScraper.ScrapeType, CustomScraper.ScrapeOptions, CustomScraper.ScrapeModifier)
+                            CreateScrapeList_MovieSet(CustomScraper.ScrapeType, CustomScraper.ScrapeOptions, CustomScraper.ScrapeModifier)
                         Else
-                            Me.SetControlsEnabled(True)
+                            SetControlsEnabled(True)
                         End If
                     End Using
                 Case "tvshow"
-                    Me.SetControlsEnabled(False)
+                    SetControlsEnabled(False)
                     Using dlgCustomScraper As New dlgCustomScraper(Enums.ContentType.TV)
                         Dim CustomScraper As Structures.CustomUpdaterStruct = Nothing
                         CustomScraper = dlgCustomScraper.ShowDialog()
                         If Not CustomScraper.Canceled Then
-                            Me.CreateScrapeList_TV(CustomScraper.ScrapeType, CustomScraper.ScrapeOptions, CustomScraper.ScrapeModifier)
+                            CreateScrapeList_TV(CustomScraper.ScrapeType, CustomScraper.ScrapeOptions, CustomScraper.ScrapeModifier)
                         Else
-                            Me.SetControlsEnabled(True)
+                            SetControlsEnabled(True)
                         End If
                     End Using
             End Select
         End If
+    End Sub
+
+    Private Sub SingleDataField(ByVal sender As Object, ByVal e As EventArgs) Handles _
+        mnuScrapeOptionActors.Click,
+        mnuScrapeOptionAired.Click,
+        mnuScrapeOptionCertifications.Click,
+        mnuScrapeOptionCollectionID.Click,
+        mnuScrapeOptionCountries.Click,
+        mnuScrapeOptionCreators.Click,
+        mnuScrapeOptionDirectors.Click,
+        mnuScrapeOptionEpiGuideURL.Click,
+        mnuScrapeOptionGenres.Click,
+        mnuScrapeOptionGuestStars.Click,
+        mnuScrapeOptionMPAA.Click,
+        mnuScrapeOptionOriginalTitle.Click,
+        mnuScrapeOptionOutline.Click,
+        mnuScrapeOptionPlot.Click,
+        mnuScrapeOptionPremiered.Click,
+        mnuScrapeOptionRating.Click,
+        mnuScrapeOptionReleaseDate.Click,
+        mnuScrapeOptionRuntime.Click,
+        mnuScrapeOptionStatus.Click,
+        mnuScrapeOptionStudios.Click,
+        mnuScrapeOptionTagline.Click,
+        mnuScrapeOptionTitle.Click,
+        mnuScrapeOptionTop250.Click,
+        mnuScrapeOptionTrailer.Click,
+        mnuScrapeOptionWriters.Click,
+        mnuScrapeOptionYear.Click
+
+        Dim ContentType As String = String.Empty
+        Dim ScrapeOption As String = String.Empty
+        Dim ScrapeOptions As New Structures.ScrapeOptions
+        Dim ScrapeModifier As New Structures.ScrapeModifier
+
+        Dim Menu As ToolStripMenuItem = DirectCast(sender, ToolStripMenuItem)
+        ScrapeOption = Menu.Tag.ToString
+        ContentType = _SelectedContentType
+
+        Select Case ScrapeOption
+            Case "actors"
+                ScrapeOptions.bEpisodeActors = True
+                ScrapeOptions.bMainActors = True
+            Case "aired"
+                ScrapeOptions.bEpisodeAired = True
+                ScrapeOptions.bSeasonAired = True
+            Case "certifications"
+                ScrapeOptions.bMainCertifications = True
+            Case "collectionid"
+                ScrapeOptions.bMainCollectionID = True
+            Case "countries"
+                ScrapeOptions.bMainCountries = True
+            Case "creators"
+                ScrapeOptions.bMainCreators = True
+            Case "directors"
+                ScrapeOptions.bEpisodeDirectors = True
+                ScrapeOptions.bMainDirectors = True
+            Case "epiguideurl"
+                ScrapeOptions.bMainEpisodeGuide = True
+            Case "genres"
+                ScrapeOptions.bMainGenres = True
+            Case "gueststars"
+                ScrapeOptions.bEpisodeGuestStars = True
+            Case "mpaa"
+                ScrapeOptions.bMainMPAA = True
+            Case "originaltitle"
+                ScrapeOptions.bMainOriginalTitle = True
+            Case "outline"
+                ScrapeOptions.bMainOutline = True
+            Case "plot"
+                ScrapeOptions.bEpisodePlot = True
+                ScrapeOptions.bMainPlot = True
+                ScrapeOptions.bSeasonPlot = True
+            Case "premiered"
+                ScrapeOptions.bMainPremiered = True
+            Case "rating"
+                ScrapeOptions.bEpisodeRating = True
+                ScrapeOptions.bMainRating = True
+            Case "releasedate"
+                ScrapeOptions.bMainRelease = True
+            Case "runtime"
+                ScrapeOptions.bEpisodeRuntime = True
+                ScrapeOptions.bMainRuntime = True
+            Case "status"
+                ScrapeOptions.bMainStatus = True
+            Case "studios"
+                ScrapeOptions.bMainStudios = True
+            Case "tagline"
+                ScrapeOptions.bMainTagline = True
+            Case "title"
+                ScrapeOptions.bEpisodeTitle = True
+                ScrapeOptions.bMainTitle = True
+                ScrapeOptions.bSeasonTitle = True
+            Case "top250"
+                ScrapeOptions.bMainTop250 = True
+            Case "trailer"
+                ScrapeOptions.bMainTrailer = True
+            Case "writers"
+                ScrapeOptions.bEpisodeCredits = True
+                ScrapeOptions.bMainWriters = True
+            Case "year"
+                ScrapeOptions.bMainYear = True
+        End Select
+
+        Select Case ContentType
+            Case "movie"
+                ScrapeModifier.MainNFO = True
+                CreateScrapeList_Movie(Enums.ScrapeType.SingleField, ScrapeOptions, ScrapeModifier)
+            Case "movieset"
+                ScrapeModifier.MainNFO = True
+                CreateScrapeList_MovieSet(Enums.ScrapeType.SingleField, ScrapeOptions, ScrapeModifier)
+            Case "tvepisode"
+                ScrapeModifier.EpisodeNFO = True
+                CreateScrapeList_TVEpisode(Enums.ScrapeType.SingleField, ScrapeOptions, ScrapeModifier)
+            Case "tvseason"
+                ScrapeModifier.SeasonNFO = True
+                CreateScrapeList_TVSeason(Enums.ScrapeType.SingleField, ScrapeOptions, ScrapeModifier)
+            Case "tvshow"
+                ScrapeModifier.MainNFO = True
+                CreateScrapeList_TV(Enums.ScrapeType.SingleField, ScrapeOptions, ScrapeModifier)
+        End Select
     End Sub
 
     Private Sub Mono_Shown()
@@ -11617,7 +12013,7 @@ doCancel:
         Dim ScrapeList As New List(Of ScrapeItem)
 
         Select Case sType
-            Case Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SelectedSkip, _
+            Case Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SelectedSkip,
                 Enums.ScrapeType.SingleAuto, Enums.ScrapeType.SingleField, Enums.ScrapeType.SingleScrape
                 'create snapshoot list of selected movies
                 For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
@@ -11792,7 +12188,7 @@ doCancel:
         Dim ScrapeList As New List(Of ScrapeItem)
 
         Select Case sType
-            Case Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SelectedSkip, _
+            Case Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SelectedSkip,
                 Enums.ScrapeType.SingleAuto, Enums.ScrapeType.SingleField, Enums.ScrapeType.SingleScrape
                 'create snapshoot list of selected moviesets
                 For Each sRow As DataGridViewRow In Me.dgvMovieSets.SelectedRows
@@ -11917,7 +12313,7 @@ doCancel:
         Application.DoEvents()
         bwMovieSetScraper.WorkerSupportsCancellation = True
         bwMovieSetScraper.WorkerReportsProgress = True
-        bwMovieSetScraper.RunWorkerAsync(New Arguments With {.ScrapeOptions = ScrapeOptions, .ScrapeList = ScrapeList, .scrapeType = sType})
+        bwMovieSetScraper.RunWorkerAsync(New Arguments With {.ScrapeOptions = ScrapeOptions, .ScrapeList = ScrapeList, .ScrapeType = sType})
     End Sub
 
     Private Sub InfoDownloaded_TV(ByRef DBTVShow As Database.DBElement)
@@ -11952,7 +12348,7 @@ doCancel:
         Dim ScrapeList As New List(Of ScrapeItem)
 
         Select Case sType
-            Case Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SelectedSkip, _
+            Case Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SelectedSkip,
                 Enums.ScrapeType.SingleAuto, Enums.ScrapeType.SingleField, Enums.ScrapeType.SingleScrape
                 'create snapshoot list of selected tv show
                 For Each sRow As DataGridViewRow In Me.dgvTVShows.SelectedRows
@@ -12111,7 +12507,7 @@ doCancel:
         Application.DoEvents()
         bwTVScraper.WorkerSupportsCancellation = True
         bwTVScraper.WorkerReportsProgress = True
-        bwTVScraper.RunWorkerAsync(New Arguments With {.ScrapeOptions = ScrapeOptions, .ScrapeList = ScrapeList, .scrapeType = sType})
+        bwTVScraper.RunWorkerAsync(New Arguments With {.ScrapeOptions = ScrapeOptions, .ScrapeList = ScrapeList, .ScrapeType = sType})
     End Sub
 
     Private Sub InfoDownloaded_TVEpisode(ByRef DBTVEpisode As Database.DBElement)
@@ -12146,7 +12542,7 @@ doCancel:
         Dim ScrapeList As New List(Of ScrapeItem)
 
         Select Case sType
-            Case Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SelectedSkip, _
+            Case Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SelectedSkip,
                 Enums.ScrapeType.SingleAuto, Enums.ScrapeType.SingleField, Enums.ScrapeType.SingleScrape
                 'create snapshoot list of selected tv episode
                 For Each sRow As DataGridViewRow In Me.dgvTVEpisodes.SelectedRows
@@ -12159,7 +12555,7 @@ doCancel:
         End Select
 
         Dim ActorThumbsAllowed As Boolean = Master.eSettings.TVEpisodeActorThumbsAnyEnabled
-        Dim FanartAllowed As Boolean = Master.eSettings.TVEpisodeFanartAnyEnabled AndAlso (ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodeFanart) OrElse _
+        Dim FanartAllowed As Boolean = Master.eSettings.TVEpisodeFanartAnyEnabled AndAlso (ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodeFanart) OrElse
                                                                                            ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart))
         Dim PosterAllowed As Boolean = Master.eSettings.TVEpisodePosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodePoster)
 
@@ -12259,7 +12655,7 @@ doCancel:
         Application.DoEvents()
         bwTVEpisodeScraper.WorkerSupportsCancellation = True
         bwTVEpisodeScraper.WorkerReportsProgress = True
-        bwTVEpisodeScraper.RunWorkerAsync(New Arguments With {.ScrapeOptions = ScrapeOptions, .ScrapeList = ScrapeList, .scrapeType = sType})
+        bwTVEpisodeScraper.RunWorkerAsync(New Arguments With {.ScrapeOptions = ScrapeOptions, .ScrapeList = ScrapeList, .ScrapeType = sType})
     End Sub
 
     Private Sub InfoDownloaded_TVSeason(ByRef DBTVSeason As Database.DBElement)
@@ -12294,7 +12690,7 @@ doCancel:
         Dim ScrapeList As New List(Of ScrapeItem)
 
         Select Case sType
-            Case Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SelectedSkip, _
+            Case Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SelectedSkip,
                 Enums.ScrapeType.SingleAuto, Enums.ScrapeType.SingleField, Enums.ScrapeType.SingleScrape
                 'create snapshoot list of selected tv season
                 For Each sRow As DataGridViewRow In Me.dgvTVSeasons.SelectedRows
@@ -12416,7 +12812,7 @@ doCancel:
         Application.DoEvents()
         bwTVSeasonScraper.WorkerSupportsCancellation = True
         bwTVSeasonScraper.WorkerReportsProgress = True
-        bwTVSeasonScraper.RunWorkerAsync(New Arguments With {.ScrapeOptions = ScrapeOptions, .ScrapeList = ScrapeList, .scrapeType = sType})
+        bwTVSeasonScraper.RunWorkerAsync(New Arguments With {.ScrapeOptions = ScrapeOptions, .ScrapeList = ScrapeList, .ScrapeType = sType})
     End Sub
 
     Function MyResolveEventHandler(ByVal sender As Object, ByVal args As ResolveEventArgs) As [Assembly]
@@ -13605,18 +14001,18 @@ doCancel:
             Me.FilterArray_Movies.Add(Me.filDataField_Movies)
         End If
 
-        If (Not String.IsNullOrEmpty(Me.cbFilterYearFrom_Movies.Text) AndAlso Not Me.cbFilterYearFrom_Movies.Text = Master.eLang.All) OrElse _
-            (Not String.IsNullOrEmpty(Me.cbFilterYearTo_Movies.Text) AndAlso Not Me.cbFilterYearTo_Movies.Text = Master.eLang.All) OrElse _
-            Me.clbFilterGenres_Movies.CheckedItems.Count > 0 OrElse Me.clbFilterCountries_Movies.CheckedItems.Count > 0 OrElse _
-            Me.clbFilterCountries_Movies.CheckedItems.Count > 0 OrElse Me.chkFilterMark_Movies.Checked OrElse _
-            Me.chkFilterMarkCustom1_Movies.Checked OrElse Me.chkFilterMarkCustom2_Movies.Checked OrElse Me.chkFilterMarkCustom3_Movies.Checked OrElse _
-            Me.chkFilterMarkCustom4_Movies.Checked OrElse Me.chkFilterNew_Movies.Checked OrElse Me.chkFilterLock_Movies.Checked OrElse _
-            Not Me.clbFilterSources_Movies.CheckedItems.Count > 0 OrElse Me.chkFilterDuplicates_Movies.Checked OrElse _
+        If (Not String.IsNullOrEmpty(Me.cbFilterYearFrom_Movies.Text) AndAlso Not Me.cbFilterYearFrom_Movies.Text = Master.eLang.All) OrElse
+            (Not String.IsNullOrEmpty(Me.cbFilterYearTo_Movies.Text) AndAlso Not Me.cbFilterYearTo_Movies.Text = Master.eLang.All) OrElse
+            Me.clbFilterGenres_Movies.CheckedItems.Count > 0 OrElse Me.clbFilterCountries_Movies.CheckedItems.Count > 0 OrElse
+            Me.clbFilterCountries_Movies.CheckedItems.Count > 0 OrElse Me.chkFilterMark_Movies.Checked OrElse
+            Me.chkFilterMarkCustom1_Movies.Checked OrElse Me.chkFilterMarkCustom2_Movies.Checked OrElse Me.chkFilterMarkCustom3_Movies.Checked OrElse
+            Me.chkFilterMarkCustom4_Movies.Checked OrElse Me.chkFilterNew_Movies.Checked OrElse Me.chkFilterLock_Movies.Checked OrElse
+            Not Me.clbFilterSources_Movies.CheckedItems.Count > 0 OrElse Me.chkFilterDuplicates_Movies.Checked OrElse
             Me.chkFilterMissing_Movies.Checked OrElse Me.chkFilterTolerance_Movies.Checked OrElse Not Me.cbFilterVideoSource_Movies.Text = Master.eLang.All Then Me.RunFilter_Movies()
     End Sub
 
     Private Sub rbFilterAnd_MovieSets_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterAnd_MovieSets.Click
-        If Me.chkFilterEmpty_MovieSets.Checked OrElse Me.chkFilterMark_MovieSets.Checked OrElse Me.chkFilterNew_MovieSets.Checked OrElse Me.chkFilterLock_MovieSets.Checked OrElse _
+        If Me.chkFilterEmpty_MovieSets.Checked OrElse Me.chkFilterMark_MovieSets.Checked OrElse Me.chkFilterNew_MovieSets.Checked OrElse Me.chkFilterLock_MovieSets.Checked OrElse
             Me.chkFilterMissing_MovieSets.Checked OrElse Me.chkFilterMultiple_MovieSets.Checked OrElse Me.chkFilterOne_MovieSets.Checked Then Me.RunFilter_MovieSets()
     End Sub
 
@@ -13665,8 +14061,8 @@ doCancel:
         '    Me.FilterArray_Movies.Add(Me.filCountry_Movies)
         'End If
 
-        If Me.clbFilterGenres_Shows.CheckedItems.Count > 0 OrElse Me.chkFilterMark_Shows.Checked OrElse Me.chkFilterNewEpisodes_Shows.Checked OrElse _
-            Me.chkFilterNewShows_Shows.Checked OrElse Me.chkFilterLock_Shows.Checked OrElse Not Me.clbFilterSource_Shows.CheckedItems.Count > 0 OrElse _
+        If Me.clbFilterGenres_Shows.CheckedItems.Count > 0 OrElse Me.chkFilterMark_Shows.Checked OrElse Me.chkFilterNewEpisodes_Shows.Checked OrElse
+            Me.chkFilterNewShows_Shows.Checked OrElse Me.chkFilterLock_Shows.Checked OrElse Not Me.clbFilterSource_Shows.CheckedItems.Count > 0 OrElse
             Me.chkFilterMissing_Shows.Checked Then Me.RunFilter_Shows()
     End Sub
 
@@ -13737,18 +14133,18 @@ doCancel:
             Me.FilterArray_Movies.Add(Me.filDataField_Movies)
         End If
 
-        If (Not String.IsNullOrEmpty(Me.cbFilterYearFrom_Movies.Text) AndAlso Not Me.cbFilterYearFrom_Movies.Text = Master.eLang.All) OrElse _
-            (Not String.IsNullOrEmpty(Me.cbFilterYearTo_Movies.Text) AndAlso Not Me.cbFilterYearTo_Movies.Text = Master.eLang.All) OrElse _
-            Me.clbFilterGenres_Movies.CheckedItems.Count > 0 OrElse Me.clbFilterCountries_Movies.CheckedItems.Count > 0 OrElse _
-            Me.clbFilterCountries_Movies.CheckedItems.Count > 0 OrElse Me.chkFilterMark_Movies.Checked OrElse _
-            Me.chkFilterMarkCustom1_Movies.Checked OrElse Me.chkFilterMarkCustom2_Movies.Checked OrElse Me.chkFilterMarkCustom3_Movies.Checked OrElse _
-            Me.chkFilterMarkCustom4_Movies.Checked OrElse Me.chkFilterNew_Movies.Checked OrElse Me.chkFilterLock_Movies.Checked OrElse _
-            Not Me.clbFilterSources_Movies.CheckedItems.Count > 0 OrElse Me.chkFilterDuplicates_Movies.Checked OrElse _
+        If (Not String.IsNullOrEmpty(Me.cbFilterYearFrom_Movies.Text) AndAlso Not Me.cbFilterYearFrom_Movies.Text = Master.eLang.All) OrElse
+            (Not String.IsNullOrEmpty(Me.cbFilterYearTo_Movies.Text) AndAlso Not Me.cbFilterYearTo_Movies.Text = Master.eLang.All) OrElse
+            Me.clbFilterGenres_Movies.CheckedItems.Count > 0 OrElse Me.clbFilterCountries_Movies.CheckedItems.Count > 0 OrElse
+            Me.clbFilterCountries_Movies.CheckedItems.Count > 0 OrElse Me.chkFilterMark_Movies.Checked OrElse
+            Me.chkFilterMarkCustom1_Movies.Checked OrElse Me.chkFilterMarkCustom2_Movies.Checked OrElse Me.chkFilterMarkCustom3_Movies.Checked OrElse
+            Me.chkFilterMarkCustom4_Movies.Checked OrElse Me.chkFilterNew_Movies.Checked OrElse Me.chkFilterLock_Movies.Checked OrElse
+            Not Me.clbFilterSources_Movies.CheckedItems.Count > 0 OrElse Me.chkFilterDuplicates_Movies.Checked OrElse
             Me.chkFilterMissing_Movies.Checked OrElse Me.chkFilterTolerance_Movies.Checked OrElse Not Me.cbFilterVideoSource_Movies.Text = Master.eLang.All Then Me.RunFilter_Movies()
     End Sub
 
     Private Sub rbFilterOr_MovieSets_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterOr_MovieSets.Click
-        If Me.chkFilterEmpty_MovieSets.Checked OrElse Me.chkFilterMark_MovieSets.Checked OrElse Me.chkFilterNew_MovieSets.Checked OrElse Me.chkFilterLock_MovieSets.Checked OrElse _
+        If Me.chkFilterEmpty_MovieSets.Checked OrElse Me.chkFilterMark_MovieSets.Checked OrElse Me.chkFilterNew_MovieSets.Checked OrElse Me.chkFilterLock_MovieSets.Checked OrElse
             Me.chkFilterMissing_MovieSets.Checked OrElse Me.chkFilterMultiple_MovieSets.Checked OrElse Me.chkFilterOne_MovieSets.Checked Then Me.RunFilter_MovieSets()
     End Sub
 
@@ -13797,8 +14193,8 @@ doCancel:
         '    Me.FilterArray_Movies.Add(Me.filCountry_Movies)
         'End If
 
-        If Me.clbFilterGenres_Shows.CheckedItems.Count > 0 OrElse Me.chkFilterMark_Shows.Checked OrElse Me.chkFilterNewEpisodes_Shows.Checked OrElse _
-            Me.chkFilterNewShows_Shows.Checked OrElse Me.chkFilterLock_Shows.Checked OrElse Not Me.clbFilterSource_Shows.CheckedItems.Count > 0 OrElse _
+        If Me.clbFilterGenres_Shows.CheckedItems.Count > 0 OrElse Me.chkFilterMark_Shows.Checked OrElse Me.chkFilterNewEpisodes_Shows.Checked OrElse
+            Me.chkFilterNewShows_Shows.Checked OrElse Me.chkFilterLock_Shows.Checked OrElse Not Me.clbFilterSource_Shows.CheckedItems.Count > 0 OrElse
             Me.chkFilterMissing_Shows.Checked Then Me.RunFilter_Shows()
     End Sub
 
@@ -14088,9 +14484,9 @@ doCancel:
             fScanner.LoadMovie(DBMovie, False, BatchMode)
             If Not BatchMode Then RefreshRow_Movie(DBMovie.ID)
         Else
-            If showMessage AndAlso MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".", Environment.NewLine, _
-                                                         Master.eLang.GetString(703, "Whould you like to remove it from the library?")), _
-                                                     Master.eLang.GetString(654, "Remove movie from library"), _
+            If showMessage AndAlso MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".", Environment.NewLine,
+                                                         Master.eLang.GetString(703, "Whould you like to remove it from the library?")),
+                                                     Master.eLang.GetString(654, "Remove movie from library"),
                                                      MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
                 Master.DB.DeleteMovieFromDB(ID, BatchMode)
                 Return True
@@ -14141,9 +14537,9 @@ doCancel:
             fScanner.LoadTVEpisode(DBTVEpisode, False, BatchMode, False)
             If Not BatchMode Then RefreshRow_TVEpisode(DBTVEpisode.ID)
         Else
-            If showMessage AndAlso MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".", Environment.NewLine, _
-                                                         Master.eLang.GetString(703, "Whould you like to remove it from the library?")), _
-                                                     Master.eLang.GetString(738, "Remove episode from library"), _
+            If showMessage AndAlso MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".", Environment.NewLine,
+                                                         Master.eLang.GetString(703, "Whould you like to remove it from the library?")),
+                                                     Master.eLang.GetString(738, "Remove episode from library"),
                                                      MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
                 Master.DB.DeleteTVEpFromDBByPath(DBTVEpisode.Filename, False, BatchMode)
                 Return True
@@ -14192,9 +14588,9 @@ doCancel:
             fScanner.LoadTVShow(DBTVShow, False, BatchMode, False)
             If Not BatchMode Then RefreshRow_TVShow(DBTVShow.ID)
         Else
-            If showMessage AndAlso MessageBox.Show(String.Concat(Master.eLang.GetString(719, "This path is no longer available"), ".", Environment.NewLine, _
-                                                         Master.eLang.GetString(703, "Whould you like to remove it from the library?")), _
-                                                     Master.eLang.GetString(776, "Remove tv show from library"), _
+            If showMessage AndAlso MessageBox.Show(String.Concat(Master.eLang.GetString(719, "This path is no longer available"), ".", Environment.NewLine,
+                                                         Master.eLang.GetString(703, "Whould you like to remove it from the library?")),
+                                                     Master.eLang.GetString(776, "Remove tv show from library"),
                                                      MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
                 Master.DB.DeleteTVShowFromDB(ID, BatchMode)
                 Return True
@@ -14240,23 +14636,23 @@ doCancel:
     Private Sub ResizeMoviesList()
         If Not Master.isWindows Then
             If Me.dgvMovies.ColumnCount > 0 Then
-                Me.dgvMovies.Columns(3).Width = Me.dgvMovies.Width - _
-                If(CheckColumnHide_Movies("Year"), dgvMovies.Columns(17).Width, 0) - _
-                If(CheckColumnHide_Movies("BannerPath"), 20, 0) - _
-                If(CheckColumnHide_Movies("ClearArtPath"), 20, 0) - _
-                If(CheckColumnHide_Movies("ClearLogoPath"), 20, 0) - _
-                If(CheckColumnHide_Movies("DiscArtPath"), 20, 0) - _
-                If(CheckColumnHide_Movies("EFanartsPath"), 20, 0) - _
-                If(CheckColumnHide_Movies("EThumbsPath"), 20, 0) - _
-                If(CheckColumnHide_Movies("FanartPath"), 20, 0) - _
-                If(CheckColumnHide_Movies("LandscapePath"), 20, 0) - _
-                If(CheckColumnHide_Movies("NfoPath"), 20, 0) - _
-                If(CheckColumnHide_Movies("PosterPath"), 20, 0) - _
-                If(CheckColumnHide_Movies("HasSet"), 20, 0) - _
-                If(CheckColumnHide_Movies("HasSub"), 20, 0) - _
-                If(CheckColumnHide_Movies("ThemePath"), 20, 0) - _
-                If(CheckColumnHide_Movies("TrailerPath"), 20, 0) - _
-                If(CheckColumnHide_Movies("Playcount"), 20, 0) - _
+                Me.dgvMovies.Columns(3).Width = Me.dgvMovies.Width -
+                If(CheckColumnHide_Movies("Year"), dgvMovies.Columns(17).Width, 0) -
+                If(CheckColumnHide_Movies("BannerPath"), 20, 0) -
+                If(CheckColumnHide_Movies("ClearArtPath"), 20, 0) -
+                If(CheckColumnHide_Movies("ClearLogoPath"), 20, 0) -
+                If(CheckColumnHide_Movies("DiscArtPath"), 20, 0) -
+                If(CheckColumnHide_Movies("EFanartsPath"), 20, 0) -
+                If(CheckColumnHide_Movies("EThumbsPath"), 20, 0) -
+                If(CheckColumnHide_Movies("FanartPath"), 20, 0) -
+                If(CheckColumnHide_Movies("LandscapePath"), 20, 0) -
+                If(CheckColumnHide_Movies("NfoPath"), 20, 0) -
+                If(CheckColumnHide_Movies("PosterPath"), 20, 0) -
+                If(CheckColumnHide_Movies("HasSet"), 20, 0) -
+                If(CheckColumnHide_Movies("HasSub"), 20, 0) -
+                If(CheckColumnHide_Movies("ThemePath"), 20, 0) -
+                If(CheckColumnHide_Movies("TrailerPath"), 20, 0) -
+                If(CheckColumnHide_Movies("Playcount"), 20, 0) -
                 If(Me.dgvMovies.DisplayRectangle.Height > Me.dgvMovies.ClientRectangle.Height, 0, SystemInformation.VerticalScrollBarWidth)
             End If
         End If
@@ -14265,15 +14661,15 @@ doCancel:
     Private Sub ResizeMovieSetsList()
         If Not Master.isWindows Then
             If Me.dgvMovieSets.ColumnCount > 0 Then
-                Me.dgvMovieSets.Columns(0).Width = Me.dgvMovieSets.Width - _
-                If(CheckColumnHide_MovieSets("NfoPath"), 20, 0) - _
-                If(CheckColumnHide_MovieSets("PosterPath"), 20, 0) - _
-                If(CheckColumnHide_MovieSets("FanartPath"), 20, 0) - _
-                If(CheckColumnHide_MovieSets("BannerPath"), 20, 0) - _
-                If(CheckColumnHide_MovieSets("LandscapePath"), 20, 0) - _
-                If(CheckColumnHide_MovieSets("DiscArtPath"), 20, 0) - _
-                If(CheckColumnHide_MovieSets("ClearLogoPath"), 20, 0) - _
-                If(CheckColumnHide_MovieSets("ClearArtPath"), 20, 0) - _
+                Me.dgvMovieSets.Columns(0).Width = Me.dgvMovieSets.Width -
+                If(CheckColumnHide_MovieSets("NfoPath"), 20, 0) -
+                If(CheckColumnHide_MovieSets("PosterPath"), 20, 0) -
+                If(CheckColumnHide_MovieSets("FanartPath"), 20, 0) -
+                If(CheckColumnHide_MovieSets("BannerPath"), 20, 0) -
+                If(CheckColumnHide_MovieSets("LandscapePath"), 20, 0) -
+                If(CheckColumnHide_MovieSets("DiscArtPath"), 20, 0) -
+                If(CheckColumnHide_MovieSets("ClearLogoPath"), 20, 0) -
+                If(CheckColumnHide_MovieSets("ClearArtPath"), 20, 0) -
                 If(Me.dgvMovieSets.DisplayRectangle.Height > Me.dgvMovieSets.ClientRectangle.Height, 0, SystemInformation.VerticalScrollBarWidth)
             End If
         End If
@@ -14284,38 +14680,38 @@ doCancel:
 
         If Not Master.isWindows Then
             If (iType = 0 OrElse iType = 1) AndAlso Me.dgvTVShows.ColumnCount > 0 Then
-                Me.dgvTVShows.Columns(1).Width = Me.dgvTVShows.Width - _
-                If(CheckColumnHide_TVShows("BannerPath"), 20, 0) - _
-                If(CheckColumnHide_TVShows("CharacterArtPath"), 20, 0) - _
-                If(CheckColumnHide_TVShows("ClearArtPath"), 20, 0) - _
-                If(CheckColumnHide_TVShows("ClearLogoPath"), 20, 0) - _
-                If(CheckColumnHide_TVShows("EFanartsPath"), 20, 0) - _
-                If(CheckColumnHide_TVShows("FanartPath"), 20, 0) - _
-                If(CheckColumnHide_TVShows("LandscapePath"), 20, 0) - _
-                If(CheckColumnHide_TVShows("NfoPath"), 20, 0) - _
-                If(CheckColumnHide_TVShows("PosterPath"), 20, 0) - _
-                If(CheckColumnHide_TVShows("ThemePath"), 20, 0) - _
-                If(CheckColumnHide_TVShows("Playcount"), 20, 0) - _
+                Me.dgvTVShows.Columns(1).Width = Me.dgvTVShows.Width -
+                If(CheckColumnHide_TVShows("BannerPath"), 20, 0) -
+                If(CheckColumnHide_TVShows("CharacterArtPath"), 20, 0) -
+                If(CheckColumnHide_TVShows("ClearArtPath"), 20, 0) -
+                If(CheckColumnHide_TVShows("ClearLogoPath"), 20, 0) -
+                If(CheckColumnHide_TVShows("EFanartsPath"), 20, 0) -
+                If(CheckColumnHide_TVShows("FanartPath"), 20, 0) -
+                If(CheckColumnHide_TVShows("LandscapePath"), 20, 0) -
+                If(CheckColumnHide_TVShows("NfoPath"), 20, 0) -
+                If(CheckColumnHide_TVShows("PosterPath"), 20, 0) -
+                If(CheckColumnHide_TVShows("ThemePath"), 20, 0) -
+                If(CheckColumnHide_TVShows("Playcount"), 20, 0) -
                 If(Me.dgvTVShows.DisplayRectangle.Height > Me.dgvTVShows.ClientRectangle.Height, 0, SystemInformation.VerticalScrollBarWidth)
             End If
 
             If (iType = 0 OrElse iType = 2) AndAlso Me.dgvTVSeasons.ColumnCount > 0 Then
-                Me.dgvTVSeasons.Columns(1).Width = Me.dgvTVSeasons.Width - _
-                If(CheckColumnHide_TVSeasons("BannerPath"), 20, 0) - _
-                If(CheckColumnHide_TVSeasons("FanartPath"), 20, 0) - _
-                If(CheckColumnHide_TVSeasons("LandscapePath"), 20, 0) - _
-                If(CheckColumnHide_TVSeasons("PosterPath"), 20, 0) - _
-                If(CheckColumnHide_TVSeasons("Playcount"), 20, 0) - _
+                Me.dgvTVSeasons.Columns(1).Width = Me.dgvTVSeasons.Width -
+                If(CheckColumnHide_TVSeasons("BannerPath"), 20, 0) -
+                If(CheckColumnHide_TVSeasons("FanartPath"), 20, 0) -
+                If(CheckColumnHide_TVSeasons("LandscapePath"), 20, 0) -
+                If(CheckColumnHide_TVSeasons("PosterPath"), 20, 0) -
+                If(CheckColumnHide_TVSeasons("Playcount"), 20, 0) -
                 If(Me.dgvTVSeasons.DisplayRectangle.Height > Me.dgvTVSeasons.ClientRectangle.Height, 0, SystemInformation.VerticalScrollBarWidth)
             End If
 
             If (iType = 0 OrElse iType = 3) AndAlso Me.dgvTVEpisodes.ColumnCount > 0 Then
-                Me.dgvTVEpisodes.Columns(2).Width = Me.dgvTVEpisodes.Width - 40 - _
-                If(CheckColumnHide_TVEpisodes("FanartPath"), 20, 0) - _
-                If(CheckColumnHide_TVEpisodes("NfoPath"), 20, 0) - _
-                If(CheckColumnHide_TVEpisodes("PosterPath"), 20, 0) - _
-                If(CheckColumnHide_TVEpisodes("HasSub"), 20, 0) - _
-                If(CheckColumnHide_TVEpisodes("Playcount"), 20, 0) - _
+                Me.dgvTVEpisodes.Columns(2).Width = Me.dgvTVEpisodes.Width - 40 -
+                If(CheckColumnHide_TVEpisodes("FanartPath"), 20, 0) -
+                If(CheckColumnHide_TVEpisodes("NfoPath"), 20, 0) -
+                If(CheckColumnHide_TVEpisodes("PosterPath"), 20, 0) -
+                If(CheckColumnHide_TVEpisodes("HasSub"), 20, 0) -
+                If(CheckColumnHide_TVEpisodes("Playcount"), 20, 0) -
                 If(Me.dgvTVEpisodes.DisplayRectangle.Height > Me.dgvTVEpisodes.ClientRectangle.Height, 0, SystemInformation.VerticalScrollBarWidth)
             End If
 
@@ -14596,23 +14992,23 @@ doCancel:
                 Me.pbFanart.Left = Convert.ToInt32((Me.scMain.Panel2.Width - Me.pbFanart.Width) / 2)
                 Me.pnlNoInfo.Location = New Point(Convert.ToInt32((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2), Convert.ToInt32((Me.scMain.Panel2.Height - Me.pnlNoInfo.Height) / 2))
                 Me.pnlCancel.Location = New Point(Convert.ToInt32((Me.scMain.Panel2.Width - Me.pnlNoInfo.Width) / 2), 124)
-                Me.pnlFilterCountries_Movies.Location = New Point(Me.pnlFilter_Movies.Left + Me.tblFilter_Movies.Left + Me.gbFilterSpecific_Movies.Left + Me.tblFilterSpecific_Movies.Left + Me.tblFilterSpecificData_Movies.Left + Me.txtFilterCountry_Movies.Left + 1, _
+                Me.pnlFilterCountries_Movies.Location = New Point(Me.pnlFilter_Movies.Left + Me.tblFilter_Movies.Left + Me.gbFilterSpecific_Movies.Left + Me.tblFilterSpecific_Movies.Left + Me.tblFilterSpecificData_Movies.Left + Me.txtFilterCountry_Movies.Left + 1,
                                                                   (Me.pnlFilter_Movies.Top + Me.tblFilter_Movies.Top + Me.gbFilterSpecific_Movies.Top + Me.tblFilterSpecific_Movies.Top + Me.tblFilterSpecificData_Movies.Top + Me.txtFilterCountry_Movies.Top) - Me.pnlFilterCountries_Movies.Height)
-                Me.pnlFilterGenres_Movies.Location = New Point(Me.pnlFilter_Movies.Left + Me.tblFilter_Movies.Left + Me.gbFilterSpecific_Movies.Left + Me.tblFilterSpecific_Movies.Left + Me.tblFilterSpecificData_Movies.Left + Me.txtFilterGenre_Movies.Left + 1, _
+                Me.pnlFilterGenres_Movies.Location = New Point(Me.pnlFilter_Movies.Left + Me.tblFilter_Movies.Left + Me.gbFilterSpecific_Movies.Left + Me.tblFilterSpecific_Movies.Left + Me.tblFilterSpecificData_Movies.Left + Me.txtFilterGenre_Movies.Left + 1,
                                                                (Me.pnlFilter_Movies.Top + Me.tblFilter_Movies.Top + Me.gbFilterSpecific_Movies.Top + Me.tblFilterSpecific_Movies.Top + Me.tblFilterSpecificData_Movies.Top + Me.txtFilterGenre_Movies.Top) - Me.pnlFilterGenres_Movies.Height)
-                Me.pnlFilterGenres_Shows.Location = New Point(Me.pnlFilter_Shows.Left + Me.tblFilter_Shows.Left + Me.gbFilterSpecific_Shows.Left + Me.tblFilterSpecific_Shows.Left + Me.tblFilterSpecificData_Shows.Left + Me.txtFilterGenre_Shows.Left + 1, _
+                Me.pnlFilterGenres_Shows.Location = New Point(Me.pnlFilter_Shows.Left + Me.tblFilter_Shows.Left + Me.gbFilterSpecific_Shows.Left + Me.tblFilterSpecific_Shows.Left + Me.tblFilterSpecificData_Shows.Left + Me.txtFilterGenre_Shows.Left + 1,
                                                               (Me.pnlFilter_Shows.Top + Me.tblFilter_Shows.Top + Me.gbFilterSpecific_Shows.Top + Me.tblFilterSpecific_Shows.Top + Me.tblFilterSpecificData_Shows.Top + Me.txtFilterGenre_Shows.Top) - Me.pnlFilterGenres_Shows.Height)
-                Me.pnlFilterDataFields_Movies.Location = New Point(Me.pnlFilter_Movies.Left + Me.tblFilter_Movies.Left + Me.gbFilterSpecific_Movies.Left + Me.tblFilterSpecific_Movies.Left + Me.tblFilterSpecificData_Movies.Left + Me.gbFilterDataField_Movies.Left + Me.tblFilterDataField_Movies.Left + Me.txtFilterDataField_Movies.Left + 1, _
+                Me.pnlFilterDataFields_Movies.Location = New Point(Me.pnlFilter_Movies.Left + Me.tblFilter_Movies.Left + Me.gbFilterSpecific_Movies.Left + Me.tblFilterSpecific_Movies.Left + Me.tblFilterSpecificData_Movies.Left + Me.gbFilterDataField_Movies.Left + Me.tblFilterDataField_Movies.Left + Me.txtFilterDataField_Movies.Left + 1,
                                                                    (Me.pnlFilter_Movies.Top + Me.tblFilter_Movies.Top + Me.gbFilterSpecific_Movies.Top + Me.tblFilterSpecific_Movies.Top + Me.tblFilterSpecificData_Movies.Top + Me.gbFilterDataField_Movies.Top + Me.tblFilterDataField_Movies.Top + Me.txtFilterDataField_Movies.Top) - Me.pnlFilterDataFields_Movies.Height)
-                Me.pnlFilterMissingItems_Movies.Location = New Point(Me.pnlFilter_Movies.Left + Me.tblFilter_Movies.Left + Me.gbFilterGeneral_Movies.Left + Me.tblFilterGeneral_Movies.Left + Me.btnFilterMissing_Movies.Left + 1, _
+                Me.pnlFilterMissingItems_Movies.Location = New Point(Me.pnlFilter_Movies.Left + Me.tblFilter_Movies.Left + Me.gbFilterGeneral_Movies.Left + Me.tblFilterGeneral_Movies.Left + Me.btnFilterMissing_Movies.Left + 1,
                                                                      (Me.pnlFilter_Movies.Top + Me.tblFilter_Movies.Top + Me.gbFilterGeneral_Movies.Top + Me.tblFilterGeneral_Movies.Top + Me.btnFilterMissing_Movies.Top) - Me.pnlFilterMissingItems_Movies.Height)
-                Me.pnlFilterMissingItems_MovieSets.Location = New Point(Me.pnlFilter_MovieSets.Left + Me.tblFilter_MovieSets.Left + Me.gbFilterGeneral_MovieSets.Left + Me.tblFilterGeneral_MovieSets.Left + Me.btnFilterMissing_MovieSets.Left + 1, _
+                Me.pnlFilterMissingItems_MovieSets.Location = New Point(Me.pnlFilter_MovieSets.Left + Me.tblFilter_MovieSets.Left + Me.gbFilterGeneral_MovieSets.Left + Me.tblFilterGeneral_MovieSets.Left + Me.btnFilterMissing_MovieSets.Left + 1,
                                                                      (Me.pnlFilter_MovieSets.Top + Me.tblFilter_MovieSets.Top + Me.gbFilterGeneral_MovieSets.Top + Me.tblFilterGeneral_MovieSets.Top + Me.btnFilterMissing_MovieSets.Top) - Me.pnlFilterMissingItems_MovieSets.Height)
-                Me.pnlFilterMissingItems_Shows.Location = New Point(Me.pnlFilter_Shows.Left + Me.tblFilter_Shows.Left + Me.gbFilterGeneral_Shows.Left + Me.tblFilterGeneral_Shows.Left + Me.btnFilterMissing_Shows.Left + 1, _
+                Me.pnlFilterMissingItems_Shows.Location = New Point(Me.pnlFilter_Shows.Left + Me.tblFilter_Shows.Left + Me.gbFilterGeneral_Shows.Left + Me.tblFilterGeneral_Shows.Left + Me.btnFilterMissing_Shows.Left + 1,
                                                                      (Me.pnlFilter_Shows.Top + Me.tblFilter_Shows.Top + Me.gbFilterGeneral_Shows.Top + Me.tblFilterGeneral_Shows.Top + Me.btnFilterMissing_Shows.Top) - Me.pnlFilterMissingItems_Shows.Height)
-                Me.pnlFilterSources_Movies.Location = New Point(Me.pnlFilter_Movies.Left + Me.tblFilter_Movies.Left + Me.gbFilterSpecific_Movies.Left + Me.tblFilterSpecific_Movies.Left + Me.tblFilterSpecificData_Movies.Left + Me.txtFilterSource_Movies.Left + 1, _
+                Me.pnlFilterSources_Movies.Location = New Point(Me.pnlFilter_Movies.Left + Me.tblFilter_Movies.Left + Me.gbFilterSpecific_Movies.Left + Me.tblFilterSpecific_Movies.Left + Me.tblFilterSpecificData_Movies.Left + Me.txtFilterSource_Movies.Left + 1,
                                                                 (Me.pnlFilter_Movies.Top + Me.tblFilter_Movies.Top + Me.gbFilterSpecific_Movies.Top + Me.tblFilterSpecific_Movies.Top + Me.tblFilterSpecificData_Movies.Top + Me.txtFilterSource_Movies.Top) - Me.pnlFilterSources_Movies.Height)
-                Me.pnlFilterSources_Shows.Location = New Point(Me.pnlFilter_Shows.Left + Me.tblFilter_Shows.Left + Me.gbFilterSpecific_Shows.Left + Me.tblFilterSpecific_Shows.Left + Me.tblFilterSpecificData_Shows.Left + Me.txtFilterSource_Shows.Left + 1, _
+                Me.pnlFilterSources_Shows.Location = New Point(Me.pnlFilter_Shows.Left + Me.tblFilter_Shows.Left + Me.gbFilterSpecific_Shows.Left + Me.tblFilterSpecific_Shows.Left + Me.tblFilterSpecificData_Shows.Left + Me.txtFilterSource_Shows.Left + 1,
                                                                (Me.pnlFilter_Shows.Top + Me.tblFilter_Shows.Top + Me.gbFilterSpecific_Shows.Top + Me.tblFilterSpecific_Shows.Top + Me.tblFilterSpecificData_Shows.Top + Me.txtFilterSource_Shows.Top) - Me.pnlFilterSources_Shows.Height)
 
                 Select Case Me.tcMain.SelectedIndex
@@ -14630,166 +15026,6 @@ doCancel:
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
-
-    Private Sub cmnuMovieUpSelActors_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelActors.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions
-        cScrapeOptions.bMainActors = True
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieUpSelCert_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelCert.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions
-        cScrapeOptions.bMainCertifications = True
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieUpSelCollectionID_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelCollectionID.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions
-        cScrapeOptions.bMainCollectionID = True
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieUpSelCountry_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelCountry.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions
-        cScrapeOptions.bMainCountries = True
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieUpSelDirector_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelDirector.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions
-        cScrapeOptions.bMainDirectors = True
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieUpSelGenre_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelGenre.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions
-        cScrapeOptions.bMainGenres = True
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieUpSelMPAA_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelMPAA.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions
-        cScrapeOptions.bMainMPAA = True
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieUpSelOriginalTitle_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelOriginalTitle.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions
-        cScrapeOptions.bMainOriginalTitle = True
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieUpSelOutline_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelOutline.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions
-        cScrapeOptions.bMainOutline = True
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieUpSelPlot_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelPlot.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions
-        cScrapeOptions.bMainPlot = True
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieUpSelRating_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelRating.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions
-        cScrapeOptions.bMainRating = True
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieUpSelRelease_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelRelease.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions
-        cScrapeOptions.bMainRelease = True
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieUpSelRuntime_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelRuntime.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions
-        cScrapeOptions.bMainRuntime = True
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieUpSelStudio_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelStudio.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions
-        cScrapeOptions.bMainStudios = True
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieUpSelTagline_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelTagline.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions
-        cScrapeOptions.bMainTagline = True
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieUpSelTitle_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelTitle.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions
-        cScrapeOptions.bMainTitle = True
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieUpSelTop250_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelTop250.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions
-        cScrapeOptions.bMainTop250 = True
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieUpSelTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelTrailer.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions
-        cScrapeOptions.bMainTrailer = True
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieUpSelWriters_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelWriter.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions
-        cScrapeOptions.bMainWriters = True
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
-    End Sub
-
-    Private Sub cmnuMovieUpSelYear_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUpSelYear.Click
-        Dim cScrapeOptions As New Structures.ScrapeOptions
-        cScrapeOptions.bMainYear = True
-        Dim ScrapeModifier As New Structures.ScrapeModifier
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainNFO, True)
-        CreateScrapeList_Movie(Enums.ScrapeType.SingleField, cScrapeOptions, ScrapeModifier)
-    End Sub
     ''' <summary>
     ''' Updates the media info panels (right side of disiplay) when the movie selector changes (left side of display)
     ''' </summary>
@@ -14804,10 +15040,10 @@ doCancel:
         Me.ClearInfo()
 
         If Me.dgvMovies.Rows.Count > iRow Then
-            If String.IsNullOrEmpty(Me.dgvMovies.Item("BannerPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvMovies.Item("ClearArtPath", iRow).Value.ToString) AndAlso _
-                String.IsNullOrEmpty(Me.dgvMovies.Item("ClearLogoPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvMovies.Item("DiscArtPath", iRow).Value.ToString) AndAlso _
-                String.IsNullOrEmpty(Me.dgvMovies.Item("EFanartsPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvMovies.Item("EThumbsPath", iRow).Value.ToString) AndAlso _
-                String.IsNullOrEmpty(Me.dgvMovies.Item("FanartPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvMovies.Item("LandscapePath", iRow).Value.ToString) AndAlso _
+            If String.IsNullOrEmpty(Me.dgvMovies.Item("BannerPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvMovies.Item("ClearArtPath", iRow).Value.ToString) AndAlso
+                String.IsNullOrEmpty(Me.dgvMovies.Item("ClearLogoPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvMovies.Item("DiscArtPath", iRow).Value.ToString) AndAlso
+                String.IsNullOrEmpty(Me.dgvMovies.Item("EFanartsPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvMovies.Item("EThumbsPath", iRow).Value.ToString) AndAlso
+                String.IsNullOrEmpty(Me.dgvMovies.Item("FanartPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvMovies.Item("LandscapePath", iRow).Value.ToString) AndAlso
                 String.IsNullOrEmpty(Me.dgvMovies.Item("NfoPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvMovies.Item("PosterPath", iRow).Value.ToString) Then
                 Me.ShowNoInfo(True, 0)
                 Me.currMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(Me.dgvMovies.Item("idMovie", iRow).Value), True, True)
@@ -14835,9 +15071,9 @@ doCancel:
         Me.ClearInfo()
 
         If Me.dgvMovieSets.Rows.Count > iRow Then
-            If String.IsNullOrEmpty(Me.dgvMovieSets.Item("BannerPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvMovieSets.Item("ClearArtPath", iRow).Value.ToString) AndAlso _
-                String.IsNullOrEmpty(Me.dgvMovieSets.Item("ClearLogoPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvMovieSets.Item("DiscArtPath", iRow).Value.ToString) AndAlso _
-                String.IsNullOrEmpty(Me.dgvMovieSets.Item("FanartPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvMovieSets.Item("LandscapePath", iRow).Value.ToString) AndAlso _
+            If String.IsNullOrEmpty(Me.dgvMovieSets.Item("BannerPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvMovieSets.Item("ClearArtPath", iRow).Value.ToString) AndAlso
+                String.IsNullOrEmpty(Me.dgvMovieSets.Item("ClearLogoPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvMovieSets.Item("DiscArtPath", iRow).Value.ToString) AndAlso
+                String.IsNullOrEmpty(Me.dgvMovieSets.Item("FanartPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvMovieSets.Item("LandscapePath", iRow).Value.ToString) AndAlso
                 String.IsNullOrEmpty(Me.dgvMovieSets.Item("NfoPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvMovieSets.Item("PosterPath", iRow).Value.ToString) Then
                 Me.ShowNoInfo(True, Enums.ContentType.MovieSet)
 
@@ -14862,7 +15098,7 @@ doCancel:
         Me.ClearInfo()
 
         If Me.dgvTVEpisodes.Rows.Count > iRow Then
-            If String.IsNullOrEmpty(Me.dgvTVEpisodes.Item("FanartPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvTVEpisodes.Item("NfoPath", iRow).Value.ToString) AndAlso _
+            If String.IsNullOrEmpty(Me.dgvTVEpisodes.Item("FanartPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvTVEpisodes.Item("NfoPath", iRow).Value.ToString) AndAlso
                 String.IsNullOrEmpty(Me.dgvTVEpisodes.Item("PosterPath", iRow).Value.ToString) AndAlso Not Convert.ToInt64(Me.dgvTVEpisodes.Item("idFile", iRow).Value) = -1 Then
                 Me.ShowNoInfo(True, Enums.ContentType.TVEpisode)
 
@@ -14891,8 +15127,8 @@ doCancel:
         Me.ClearInfo()
 
         If Me.dgvTVSeasons.Rows.Count > iRow Then
-            If String.IsNullOrEmpty(Me.dgvTVSeasons.Item("BannerPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvTVSeasons.Item("FanartPath", iRow).Value.ToString) AndAlso _
-                String.IsNullOrEmpty(Me.dgvTVSeasons.Item("LandscapePath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvTVSeasons.Item("PosterPath", iRow).Value.ToString) AndAlso _
+            If String.IsNullOrEmpty(Me.dgvTVSeasons.Item("BannerPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvTVSeasons.Item("FanartPath", iRow).Value.ToString) AndAlso
+                String.IsNullOrEmpty(Me.dgvTVSeasons.Item("LandscapePath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvTVSeasons.Item("PosterPath", iRow).Value.ToString) AndAlso
                 Not Convert.ToBoolean(Me.dgvTVSeasons.Item("Missing", iRow).Value) Then
                 If Not Me.currThemeType = Theming.ThemeType.Show Then Me.ApplyTheme(Theming.ThemeType.Show)
                 Me.ShowNoInfo(True, Enums.ContentType.TVSeason)
@@ -14900,13 +15136,13 @@ doCancel:
                 Me.currTV = Master.DB.LoadTVSeasonFromDB(Convert.ToInt32(Me.dgvTVSeasons.Item("idSeason", iRow).Value), True, True)
                 Me.FillEpisodes(Convert.ToInt32(Me.dgvTVSeasons.Item("idShow", iRow).Value), Convert.ToInt32(Me.dgvTVSeasons.Item("Season", iRow).Value))
 
-                If Not Me.fScanner.IsBusy AndAlso Not Me.bwMetaData.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadMovieSetInfo.IsBusy AndAlso _
-                    Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwReload_Movies.IsBusy AndAlso _
+                If Not Me.fScanner.IsBusy AndAlso Not Me.bwMetaData.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwLoadMovieSetInfo.IsBusy AndAlso
+                    Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwReload_Movies.IsBusy AndAlso
                     Not Me.bwReload_MovieSets.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
                     Me.cmnuSeason.Enabled = True
                 End If
             Else
-                Me.LoadInfo_TVSeason(Convert.ToInt32(Me.dgvTVSeasons.Item("idSeason", iRow).Value), _
+                Me.LoadInfo_TVSeason(Convert.ToInt32(Me.dgvTVSeasons.Item("idSeason", iRow).Value),
                                   If(CInt(Me.dgvTVSeasons.Item("Season", iRow).Value) = 999, False, CBool(Me.dgvTVSeasons.Item("Missing", iRow).Value)))
                 Me.FillEpisodes(Convert.ToInt32(Me.dgvTVSeasons.Item("idShow", iRow).Value), Convert.ToInt32(Me.dgvTVSeasons.Item("Season", iRow).Value))
             End If
@@ -14926,10 +15162,10 @@ doCancel:
         Me.ClearInfo()
 
         If Me.dgvTVShows.Rows.Count > iRow Then
-            If String.IsNullOrEmpty(Me.dgvTVShows.Item("BannerPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvTVShows.Item("CharacterArtPath", iRow).Value.ToString) AndAlso _
-                String.IsNullOrEmpty(Me.dgvTVShows.Item("ClearArtPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvTVShows.Item("ClearLogoPath", iRow).Value.ToString) AndAlso _
-                String.IsNullOrEmpty(Me.dgvTVShows.Item("EFanartsPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvTVShows.Item("FanartPath", iRow).Value.ToString) AndAlso _
-                String.IsNullOrEmpty(Me.dgvTVShows.Item("LandscapePath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvTVShows.Item("NfoPath", iRow).Value.ToString) AndAlso _
+            If String.IsNullOrEmpty(Me.dgvTVShows.Item("BannerPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvTVShows.Item("CharacterArtPath", iRow).Value.ToString) AndAlso
+                String.IsNullOrEmpty(Me.dgvTVShows.Item("ClearArtPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvTVShows.Item("ClearLogoPath", iRow).Value.ToString) AndAlso
+                String.IsNullOrEmpty(Me.dgvTVShows.Item("EFanartsPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvTVShows.Item("FanartPath", iRow).Value.ToString) AndAlso
+                String.IsNullOrEmpty(Me.dgvTVShows.Item("LandscapePath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(Me.dgvTVShows.Item("NfoPath", iRow).Value.ToString) AndAlso
                 String.IsNullOrEmpty(Me.dgvTVShows.Item("PosterPath", iRow).Value.ToString) Then
                 Me.ShowNoInfo(True, Enums.ContentType.TVShow)
 
@@ -14989,16 +15225,16 @@ doCancel:
             If TypeOf i Is ToolStripMenuItem Then
                 Dim o As ToolStripMenuItem = DirectCast(i, ToolStripMenuItem)
                 If o.Tag Is Nothing Then
-                    o.Enabled = isEnabled AndAlso ((Me.dgvMovies.RowCount > 0 AndAlso currMainTabTag.ContentType = Enums.ContentType.Movie) OrElse _
-                                                   (Me.dgvMovieSets.RowCount > 0 AndAlso currMainTabTag.ContentType = Enums.ContentType.MovieSet) OrElse _
+                    o.Enabled = isEnabled AndAlso ((Me.dgvMovies.RowCount > 0 AndAlso currMainTabTag.ContentType = Enums.ContentType.Movie) OrElse
+                                                   (Me.dgvMovieSets.RowCount > 0 AndAlso currMainTabTag.ContentType = Enums.ContentType.MovieSet) OrElse
                                                    (Me.dgvTVShows.RowCount > 0 AndAlso currMainTabTag.ContentType = Enums.ContentType.TV))
                 ElseIf TypeOf o.Tag Is Structures.ModulesMenus Then
                     Dim tagmenu As Structures.ModulesMenus = DirectCast(o.Tag, Structures.ModulesMenus)
-                    o.Enabled = (isEnabled OrElse Not withTools) AndAlso (((tagmenu.IfTabMovies AndAlso currMainTabTag.ContentType = Enums.ContentType.Movie) OrElse _
-                                                                           (tagmenu.IfTabMovieSets AndAlso currMainTabTag.ContentType = Enums.ContentType.MovieSet) OrElse _
-                                                                           (tagmenu.IfTabTVShows AndAlso currMainTabTag.ContentType = Enums.ContentType.TV)) AndAlso _
-                                                                       ((tagmenu.ForMovies AndAlso (Me.dgvMovies.RowCount > 0 OrElse tagmenu.IfNoMovies)) OrElse _
-                                                                        (tagmenu.ForMovieSets AndAlso (Me.dgvMovieSets.RowCount > 0 OrElse tagmenu.IfNoMovieSets)) OrElse _
+                    o.Enabled = (isEnabled OrElse Not withTools) AndAlso (((tagmenu.IfTabMovies AndAlso currMainTabTag.ContentType = Enums.ContentType.Movie) OrElse
+                                                                           (tagmenu.IfTabMovieSets AndAlso currMainTabTag.ContentType = Enums.ContentType.MovieSet) OrElse
+                                                                           (tagmenu.IfTabTVShows AndAlso currMainTabTag.ContentType = Enums.ContentType.TV)) AndAlso
+                                                                       ((tagmenu.ForMovies AndAlso (Me.dgvMovies.RowCount > 0 OrElse tagmenu.IfNoMovies)) OrElse
+                                                                        (tagmenu.ForMovieSets AndAlso (Me.dgvMovieSets.RowCount > 0 OrElse tagmenu.IfNoMovieSets)) OrElse
                                                                         (tagmenu.ForTVShows AndAlso (Me.dgvTVShows.RowCount > 0 OrElse tagmenu.IfNoTVShows))))
                 End If
             ElseIf TypeOf i Is ToolStripSeparator Then
@@ -15007,9 +15243,9 @@ doCancel:
             End If
         Next
         With Master.eSettings
-            If (Not .FileSystemExpertCleaner AndAlso (.CleanDotFanartJPG OrElse .CleanFanartJPG OrElse .CleanFolderJPG OrElse .CleanMovieFanartJPG OrElse _
-            .CleanMovieJPG OrElse .CleanMovieNameJPG OrElse .CleanMovieNFO OrElse .CleanMovieNFOB OrElse _
-            .CleanMovieTBN OrElse .CleanMovieTBNB OrElse .CleanPosterJPG OrElse .CleanPosterTBN OrElse .CleanExtrathumbs)) OrElse _
+            If (Not .FileSystemExpertCleaner AndAlso (.CleanDotFanartJPG OrElse .CleanFanartJPG OrElse .CleanFolderJPG OrElse .CleanMovieFanartJPG OrElse
+            .CleanMovieJPG OrElse .CleanMovieNameJPG OrElse .CleanMovieNFO OrElse .CleanMovieNFOB OrElse
+            .CleanMovieTBN OrElse .CleanMovieTBNB OrElse .CleanPosterJPG OrElse .CleanPosterTBN OrElse .CleanExtrathumbs)) OrElse
             (.FileSystemExpertCleaner AndAlso (.FileSystemCleanerWhitelist OrElse .FileSystemCleanerWhitelistExts.Count > 0)) Then
                 Me.mnuMainToolsCleanFiles.Enabled = isEnabled AndAlso Me.dgvMovies.RowCount > 0 AndAlso Me.tcMain.SelectedIndex = 0
             Else
@@ -15367,9 +15603,9 @@ doCancel:
         Dim currMainTabTag As Structures.MainTabType = DirectCast(Me.tcMain.SelectedTab.Tag, Structures.MainTabType)
 
         With Master.eSettings
-            If (Not .FileSystemExpertCleaner AndAlso (.CleanDotFanartJPG OrElse .CleanFanartJPG OrElse .CleanFolderJPG OrElse .CleanMovieFanartJPG OrElse _
-            .CleanMovieJPG OrElse .CleanMovieNameJPG OrElse .CleanMovieNFO OrElse .CleanMovieNFOB OrElse _
-            .CleanMovieTBN OrElse .CleanMovieTBNB OrElse .CleanPosterJPG OrElse .CleanPosterTBN OrElse .CleanExtrathumbs)) OrElse _
+            If (Not .FileSystemExpertCleaner AndAlso (.CleanDotFanartJPG OrElse .CleanFanartJPG OrElse .CleanFolderJPG OrElse .CleanMovieFanartJPG OrElse
+            .CleanMovieJPG OrElse .CleanMovieNameJPG OrElse .CleanMovieNFO OrElse .CleanMovieNFOB OrElse
+            .CleanMovieTBN OrElse .CleanMovieTBNB OrElse .CleanPosterJPG OrElse .CleanPosterTBN OrElse .CleanExtrathumbs)) OrElse
             (.FileSystemExpertCleaner AndAlso (.FileSystemCleanerWhitelist OrElse .FileSystemCleanerWhitelistExts.Count > 0)) Then
                 Me.mnuMainToolsCleanFiles.Enabled = True AndAlso Me.dgvMovies.RowCount > 0 AndAlso currMainTabTag.ContentType = Enums.ContentType.Movie
             Else
@@ -15703,18 +15939,18 @@ doCancel:
                 Threading.Thread.Sleep(50)
             End While
 
-            If dresult.NeedsDBClean_Movie OrElse _
-                dresult.NeedsDBClean_TV OrElse _
-                dresult.NeedsDBUpdate_Movie OrElse _
-                dresult.NeedsDBUpdate_TV OrElse _
-                dresult.NeedsReload_Movie OrElse _
-                dresult.NeedsReload_MovieSet OrElse _
+            If dresult.NeedsDBClean_Movie OrElse
+                dresult.NeedsDBClean_TV OrElse
+                dresult.NeedsDBUpdate_Movie OrElse
+                dresult.NeedsDBUpdate_TV OrElse
+                dresult.NeedsReload_Movie OrElse
+                dresult.NeedsReload_MovieSet OrElse
                 dresult.NeedsReload_TV Then
 
                 If dresult.NeedsReload_Movie Then
                     If Not Me.fScanner.IsBusy Then
-                        While Me.bwLoadMovieInfo.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwReload_Movies.IsBusy OrElse _
-                            Me.bwLoadMovieSetInfo.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwReload_MovieSets.IsBusy OrElse _
+                        While Me.bwLoadMovieInfo.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwReload_Movies.IsBusy OrElse
+                            Me.bwLoadMovieSetInfo.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwReload_MovieSets.IsBusy OrElse
                             Me.bwLoadEpInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwReload_TVShows.IsBusy OrElse Me.bwCleanDB.IsBusy
                             Application.DoEvents()
                             'Threading.Thread.Sleep(50)
@@ -15724,8 +15960,8 @@ doCancel:
                 End If
                 If dresult.NeedsReload_MovieSet Then
                     If Not Me.fScanner.IsBusy Then
-                        While Me.bwLoadMovieInfo.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwReload_Movies.IsBusy OrElse _
-                            Me.bwLoadMovieSetInfo.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwReload_MovieSets.IsBusy OrElse _
+                        While Me.bwLoadMovieInfo.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwReload_Movies.IsBusy OrElse
+                            Me.bwLoadMovieSetInfo.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwReload_MovieSets.IsBusy OrElse
                             Me.bwLoadEpInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwReload_TVShows.IsBusy OrElse Me.bwCleanDB.IsBusy
                             Application.DoEvents()
                             'Threading.Thread.Sleep(50)
@@ -15735,8 +15971,8 @@ doCancel:
                 End If
                 If dresult.NeedsReload_TV Then
                     If Not Me.fScanner.IsBusy Then
-                        While Me.bwLoadMovieInfo.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwReload_Movies.IsBusy OrElse _
-                            Me.bwLoadMovieSetInfo.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwReload_MovieSets.IsBusy OrElse _
+                        While Me.bwLoadMovieInfo.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwReload_Movies.IsBusy OrElse
+                            Me.bwLoadMovieSetInfo.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwReload_MovieSets.IsBusy OrElse
                             Me.bwLoadEpInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwReload_TVShows.IsBusy OrElse Me.bwCleanDB.IsBusy
                             Application.DoEvents()
                             'Threading.Thread.Sleep(50)
@@ -15746,8 +15982,8 @@ doCancel:
                 End If
                 If dresult.NeedsDBUpdate_Movie Then
                     If Not Me.fScanner.IsBusy Then
-                        While Me.bwLoadMovieInfo.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwReload_Movies.IsBusy OrElse _
-                            Me.bwLoadMovieSetInfo.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwReload_MovieSets.IsBusy OrElse _
+                        While Me.bwLoadMovieInfo.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwReload_Movies.IsBusy OrElse
+                            Me.bwLoadMovieSetInfo.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwReload_MovieSets.IsBusy OrElse
                             Me.bwLoadEpInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwReload_TVShows.IsBusy OrElse Me.bwCleanDB.IsBusy
                             Application.DoEvents()
                             'Threading.Thread.Sleep(50)
@@ -15756,8 +15992,8 @@ doCancel:
                     End If
                 End If
             Else
-                If Not Me.fScanner.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwMovieScraper.IsBusy AndAlso Not Me.bwReload_Movies.IsBusy AndAlso _
-                    Not Me.bwLoadMovieSetInfo.IsBusy AndAlso Not Me.bwMovieSetScraper.IsBusy AndAlso Not Me.bwReload_MovieSets.IsBusy AndAlso _
+                If Not Me.fScanner.IsBusy AndAlso Not Me.bwLoadMovieInfo.IsBusy AndAlso Not Me.bwMovieScraper.IsBusy AndAlso Not Me.bwReload_Movies.IsBusy AndAlso
+                    Not Me.bwLoadMovieSetInfo.IsBusy AndAlso Not Me.bwMovieSetScraper.IsBusy AndAlso Not Me.bwReload_MovieSets.IsBusy AndAlso
                     Not Me.bwLoadEpInfo.IsBusy AndAlso Not Me.bwLoadSeasonInfo.IsBusy AndAlso Not Me.bwLoadShowInfo.IsBusy AndAlso Not Me.bwReload_TVShows.IsBusy AndAlso Not Me.bwCleanDB.IsBusy Then
                     Me.FillList(True, True, True)
                 End If
@@ -15765,8 +16001,8 @@ doCancel:
 
             Me.SetMenus(True)
             If dresult.NeedsRestart Then
-                While Me.bwLoadMovieInfo.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwReload_Movies.IsBusy OrElse _
-                    Me.bwLoadMovieSetInfo.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwReload_MovieSets.IsBusy OrElse _
+                While Me.bwLoadMovieInfo.IsBusy OrElse Me.bwMovieScraper.IsBusy OrElse Me.bwReload_Movies.IsBusy OrElse
+                    Me.bwLoadMovieSetInfo.IsBusy OrElse Me.bwMovieSetScraper.IsBusy OrElse Me.bwReload_MovieSets.IsBusy OrElse
                     Me.bwLoadEpInfo.IsBusy OrElse Me.bwLoadSeasonInfo.IsBusy OrElse Me.bwLoadShowInfo.IsBusy OrElse Me.bwReload_TVShows.IsBusy OrElse Me.bwCleanDB.IsBusy
                     Application.DoEvents()
                     'Threading.Thread.Sleep(50)
@@ -16021,6 +16257,14 @@ doCancel:
                 .cmnuMovieSetSortMethodSet.Text = strSet
                 .cmnuShowLanguageSet.Text = strSet
 
+                'Update Single Data Field
+                Dim strUpdateSingelDataField As String = Master.eLang.GetString(1126, "Update Single Data Field")
+                .cmnuEpisodeSingleDataField.Text = strUpdateSingelDataField
+                .cmnuMovieSingleDataField.Text = strUpdateSingelDataField
+                .cmnuMovieSetSingleDataField.Text = strUpdateSingelDataField
+                .cmnuSeasonSingleDataField.Text = strUpdateSingelDataField
+                .cmnuShowSingleDataField.Text = strUpdateSingelDataField
+
                 'Theme Only
                 Dim strThemeOnly As String = Master.eLang.GetString(1125, "Theme Only")
                 .mnuScrapeModifierTheme.Text = strThemeOnly
@@ -16208,7 +16452,7 @@ doCancel:
                 .cmnuMovieChangeAuto.Text = Master.eLang.GetString(1294, "Change Movie (Auto)")
                 .cmnuMovieEdit.Text = Master.eLang.GetString(25, "Edit Movie")
                 .cmnuMovieEditMetaData.Text = Master.eLang.GetString(603, "Edit Meta Data")
-                .cmnuMovieGenres.Text = Master.eLang.GetString(20, "Genre")
+                .cmnuMovieGenres.Text = Master.eLang.GetString(725, "Genres")
                 .cmnuMovieGenresAdd.Text = Master.eLang.GetString(28, "Add")
                 .cmnuMovieGenresRemove.Text = Master.eLang.GetString(30, "Remove")
                 .cmnuMovieGenresTitle.Text = Master.eLang.GetString(27, ">> Select Genre <<")
@@ -16233,28 +16477,7 @@ doCancel:
                 .cmnuMovieSetEdit.Text = Master.eLang.GetString(1131, "Edit MovieSet")
                 .cmnuMovieSetNew.Text = Master.eLang.GetString(208, "Add New Set")
                 .cmnuMovieSetRescrape.Text = Master.eLang.GetString(1233, "(Re)Scrape MovieSet")
-                .cmnuMovieUpSelActors.Text = Master.eLang.GetString(725, "Actors")
-                .cmnuMovieUpSelCert.Text = Master.eLang.GetString(56, "Certification")
-                .cmnuMovieUpSelCollectionID.Text = Master.eLang.GetString(1135, "Collection ID")
-                .cmnuMovieUpSelCountry.Text = Master.eLang.GetString(301, "Country")
-                .cmnuMovieUpSelDirector.Text = Master.eLang.GetString(62, "Director")
-                .cmnuMovieUpSelGenre.Text = Master.eLang.GetString(20, "Genre")
-                .cmnuMovieUpSelMPAA.Text = Master.eLang.GetString(401, "MPAA")
-                .cmnuMovieUpSelOriginalTitle.Text = Master.eLang.GetString(302, "Original Title")
-                .cmnuMovieUpSelOutline.Text = Master.eLang.GetString(64, "Plot Outline")
-                .cmnuMovieUpSelPlot.Text = Master.eLang.GetString(65, "Plot")
-                .cmnuMovieUpSelRating.Text = Master.eLang.GetString(400, "Rating")
-                .cmnuMovieUpSelRelease.Text = Master.eLang.GetString(57, "Release Date")
-                .cmnuMovieUpSelRuntime.Text = Master.eLang.GetString(396, "Runtime")
-                .cmnuMovieUpSelStudio.Text = Master.eLang.GetString(395, "Studio")
-                .cmnuMovieUpSelTagline.Text = Master.eLang.GetString(397, "Tagline")
-                .cmnuMovieUpSelTitle.Text = Master.eLang.GetString(21, "Title")
-                .cmnuMovieUpSelTop250.Text = Master.eLang.GetString(591, "Top 250")
-                .cmnuMovieUpSelTrailer.Text = Master.eLang.GetString(151, "Trailer")
-                .cmnuMovieUpSelWriter.Text = Master.eLang.GetString(777, "Writer")
-                .cmnuMovieUpSelYear.Text = Master.eLang.GetString(278, "Year")
                 .cmnuMovieTitle.Text = Master.eLang.GetString(21, "Title")
-                .cmnuMovieUpSel.Text = Master.eLang.GetString(1126, "Update Single Data Field")
                 .cmnuSeasonRemoveFromDB.Text = Master.eLang.GetString(646, "Remove from Database")
                 .cmnuSeasonLock.Text = Master.eLang.GetString(24, "Lock")
                 .cmnuSeasonMark.Text = Master.eLang.GetString(23, "Mark")
@@ -16293,26 +16516,26 @@ doCancel:
                 .gbFilterSpecific_Shows.Text = .gbFilterSpecific_Movies.Text
                 .gbFilterSorting_Movies.Text = Master.eLang.GetString(600, "Extra Sorting")
                 .gbFilterSorting_Shows.Text = .gbFilterSorting_Movies.Text
-                .lblActorsHeader.Text = Master.eLang.GetString(63, "Cast")
+                .lblActorsHeader.Text = Master.eLang.GetString(231, "Actors")
                 .lblCanceling.Text = Master.eLang.GetString(53, "Canceling Scraper...")
-                .lblCertsHeader.Text = Master.eLang.GetString(56, "Certification(s)")
+                .lblCertificationsHeader.Text = Master.eLang.GetString(56, "Certifications")
                 .lblCharacterArtTitle.Text = Master.eLang.GetString(1140, "CharacterArt")
                 .lblClearArtTitle.Text = Master.eLang.GetString(1096, "ClearArt")
                 .lblClearLogoTitle.Text = Master.eLang.GetString(1097, "ClearLogo")
-                .lblDirectorHeader.Text = Master.eLang.GetString(62, "Director")
+                .lblDirectorsHeader.Text = Master.eLang.GetString(940, "Directors")
                 .lblDiscArtTitle.Text = Master.eLang.GetString(1098, "DiscArt")
                 .lblFanartSmallTitle.Text = Master.eLang.GetString(149, "Fanart")
                 .lblFilePathHeader.Text = Master.eLang.GetString(60, "File Path")
                 .lblFilter_Movies.Text = Master.eLang.GetString(52, "Filters")
                 .lblFilter_MovieSets.Text = .lblFilter_Movies.Text
                 .lblFilter_Shows.Text = .lblFilter_Movies.Text
-                .lblFilterCountries_Movies.Text = Master.eLang.GetString(301, "Country")
+                .lblFilterCountries_Movies.Text = Master.eLang.GetString(237, "Countries")
                 .lblFilterCountriesClose_Movies.Text = Master.eLang.GetString(19, "Close")
-                .lblFilterCountry_Movies.Text = String.Concat(Master.eLang.GetString(301, "Country"), ":")
+                .lblFilterCountry_Movies.Text = String.Concat(Master.eLang.GetString(237, "Countries"), ":")
                 .lblFilterVideoSource_Movies.Text = Master.eLang.GetString(824, "Video Source:")
-                .lblFilterGenre_Movies.Text = Master.eLang.GetString(51, "Genre:")
+                .lblFilterGenre_Movies.Text = String.Concat(Master.eLang.GetString(725, "Genres"), ":")
                 .lblFilterGenre_Shows.Text = .lblFilterGenre_Movies.Text
-                .lblFilterGenres_Movies.Text = Master.eLang.GetString(20, "Genre")
+                .lblFilterGenres_Movies.Text = Master.eLang.GetString(725, "Genres")
                 .lblFilterGenres_Shows.Text = .lblFilterGenres_Movies.Text
                 .lblFilterSource_Movies.Text = Master.eLang.GetString(50, "Source:")
                 .lblFilterSource_Shows.Text = .lblFilterSource_Movies.Text
@@ -16357,6 +16580,31 @@ doCancel:
                 .mnuMainToolsOfflineHolder.Text = Master.eLang.GetString(524, "&Offline Media Manager")
                 .mnuMainToolsRewriteMovieContent.Text = Master.eLang.GetString(1298, "Rewrite All Movie Content")
                 .mnuMainToolsSortFiles.Text = Master.eLang.GetString(10, "&Sort Files Into Folders")
+                .mnuScrapeOptionActors.Text = Master.eLang.GetString(231, "Actors")
+                .mnuScrapeOptionAired.Text = Master.eLang.GetString(728, "Aired")
+                .mnuScrapeOptionCertifications.Text = Master.eLang.GetString(56, "Certification")
+                .mnuScrapeOptionCollectionID.Text = Master.eLang.GetString(1135, "Collection ID")
+                .mnuScrapeOptionCountries.Text = Master.eLang.GetString(237, "Countries")
+                .mnuScrapeOptionCreators.Text = Master.eLang.GetString(744, "Creators")
+                .mnuScrapeOptionDirectors.Text = Master.eLang.GetString(940, "Directors")
+                .mnuScrapeOptionGenres.Text = Master.eLang.GetString(725, "Genres")
+                .mnuScrapeOptionGuestStars.Text = Master.eLang.GetString(508, "Guest Stars")
+                .mnuScrapeOptionMPAA.Text = Master.eLang.GetString(401, "MPAA")
+                .mnuScrapeOptionOriginalTitle.Text = Master.eLang.GetString(302, "Original Title")
+                .mnuScrapeOptionOutline.Text = Master.eLang.GetString(64, "Plot Outline")
+                .mnuScrapeOptionPlot.Text = Master.eLang.GetString(65, "Plot")
+                .mnuScrapeOptionPremiered.Text = Master.eLang.GetString(724, "Premiered")
+                .mnuScrapeOptionRating.Text = Master.eLang.GetString(400, "Rating")
+                .mnuScrapeOptionReleaseDate.Text = Master.eLang.GetString(57, "Release Date")
+                .mnuScrapeOptionRuntime.Text = Master.eLang.GetString(396, "Runtime")
+                .mnuScrapeOptionStatus.Text = Master.eLang.GetString(215, "Status")
+                .mnuScrapeOptionStudios.Text = Master.eLang.GetString(226, "Studios")
+                .mnuScrapeOptionTagline.Text = Master.eLang.GetString(397, "Tagline")
+                .mnuScrapeOptionTitle.Text = Master.eLang.GetString(21, "Title")
+                .mnuScrapeOptionTop250.Text = Master.eLang.GetString(591, "Top 250")
+                .mnuScrapeOptionTrailer.Text = Master.eLang.GetString(151, "Trailer")
+                .mnuScrapeOptionWriters.Text = Master.eLang.GetString(777, "Writer")
+                .mnuScrapeOptionYear.Text = Master.eLang.GetString(278, "Year")
                 .mnuUpdate.Text = Master.eLang.GetString(82, "Update Library")
                 .mnuUpdateMovies.Text = Master.eLang.GetString(36, "Movies")
                 .mnuUpdateShows.Text = Master.eLang.GetString(653, "TV Shows")

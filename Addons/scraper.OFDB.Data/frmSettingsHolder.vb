@@ -57,7 +57,7 @@ Public Class frmSettingsHolder
         RaiseEvent SetupScraperChanged(chkEnabled.Checked, 0)
     End Sub
 
-    Private Sub chkOFDBGenre_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGenre.CheckedChanged
+    Private Sub chkOFDBGenre_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGenres.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -73,7 +73,7 @@ Public Class frmSettingsHolder
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkRating_CheckedChanged(sender As Object, e As EventArgs) Handles chkCertification.CheckedChanged
+    Private Sub chkRating_CheckedChanged(sender As Object, e As EventArgs) Handles chkCertifications.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -94,9 +94,9 @@ Public Class frmSettingsHolder
     End Sub
 
     Private Sub SetUp()
-        Me.chkCertification.Text = Master.eLang.GetString(722, "Certification")
+        Me.chkCertifications.Text = Master.eLang.GetString(56, "Certifications")
         Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        Me.chkGenre.Text = Master.eLang.GetString(20, "Genre")
+        Me.chkGenres.Text = Master.eLang.GetString(725, "Genres")
         Me.chkOutline.Text = Master.eLang.GetString(64, "Plot Outline")
         Me.chkPlot.Text = Master.eLang.GetString(65, "Plot")
         Me.chkTitle.Text = Master.eLang.GetString(21, "Title")

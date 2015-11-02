@@ -222,17 +222,17 @@ Partial Class dlgMovieDataScraperPreview
         Me.tbTrailerOFDB = New System.Windows.Forms.TabPage()
         Me.txtTrailerOFDB = New System.Windows.Forms.TextBox()
         Me.lblOriginalTitle = New System.Windows.Forms.Label()
-        Me.lblCountry = New System.Windows.Forms.Label()
-        Me.lblStudio = New System.Windows.Forms.Label()
+        Me.lblCountries = New System.Windows.Forms.Label()
+        Me.lblStudios = New System.Windows.Forms.Label()
         Me.lblTrailerURL = New System.Windows.Forms.Label()
         Me.lblReleaseDate = New System.Windows.Forms.Label()
         Me.lblCredits = New System.Windows.Forms.Label()
-        Me.lblCerts = New System.Windows.Forms.Label()
+        Me.lblCertifications = New System.Windows.Forms.Label()
         Me.lblRuntime = New System.Windows.Forms.Label()
         Me.lblActors = New System.Windows.Forms.Label()
-        Me.lblGenre = New System.Windows.Forms.Label()
+        Me.lblGenres = New System.Windows.Forms.Label()
         Me.lblMPAA = New System.Windows.Forms.Label()
-        Me.lblDirector = New System.Windows.Forms.Label()
+        Me.lblDirectors = New System.Windows.Forms.Label()
         Me.lblTop250 = New System.Windows.Forms.Label()
         Me.lblPlot = New System.Windows.Forms.Label()
         Me.lblOutline = New System.Windows.Forms.Label()
@@ -429,17 +429,17 @@ Partial Class dlgMovieDataScraperPreview
         Me.tpScraperResults.Controls.Add(Me.tbCert)
         Me.tpScraperResults.Controls.Add(Me.tbTrailer)
         Me.tpScraperResults.Controls.Add(Me.lblOriginalTitle)
-        Me.tpScraperResults.Controls.Add(Me.lblCountry)
-        Me.tpScraperResults.Controls.Add(Me.lblStudio)
+        Me.tpScraperResults.Controls.Add(Me.lblCountries)
+        Me.tpScraperResults.Controls.Add(Me.lblStudios)
         Me.tpScraperResults.Controls.Add(Me.lblTrailerURL)
         Me.tpScraperResults.Controls.Add(Me.lblReleaseDate)
         Me.tpScraperResults.Controls.Add(Me.lblCredits)
-        Me.tpScraperResults.Controls.Add(Me.lblCerts)
+        Me.tpScraperResults.Controls.Add(Me.lblCertifications)
         Me.tpScraperResults.Controls.Add(Me.lblRuntime)
         Me.tpScraperResults.Controls.Add(Me.lblActors)
-        Me.tpScraperResults.Controls.Add(Me.lblGenre)
+        Me.tpScraperResults.Controls.Add(Me.lblGenres)
         Me.tpScraperResults.Controls.Add(Me.lblMPAA)
-        Me.tpScraperResults.Controls.Add(Me.lblDirector)
+        Me.tpScraperResults.Controls.Add(Me.lblDirectors)
         Me.tpScraperResults.Controls.Add(Me.lblTop250)
         Me.tpScraperResults.Controls.Add(Me.lblPlot)
         Me.tpScraperResults.Controls.Add(Me.lblOutline)
@@ -2495,25 +2495,25 @@ Partial Class dlgMovieDataScraperPreview
         Me.lblOriginalTitle.TabIndex = 75
         Me.lblOriginalTitle.Text = "Original Title:"
         '
-        'lblCountry
+        'lblCountries
         '
-        Me.lblCountry.AutoSize = True
-        Me.lblCountry.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblCountry.Location = New System.Drawing.Point(6, 445)
-        Me.lblCountry.Name = "lblCountry"
-        Me.lblCountry.Size = New System.Drawing.Size(52, 13)
-        Me.lblCountry.TabIndex = 84
-        Me.lblCountry.Text = "Country:"
+        Me.lblCountries.AutoSize = True
+        Me.lblCountries.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblCountries.Location = New System.Drawing.Point(6, 445)
+        Me.lblCountries.Name = "lblCountries"
+        Me.lblCountries.Size = New System.Drawing.Size(60, 13)
+        Me.lblCountries.TabIndex = 84
+        Me.lblCountries.Text = "Countries:"
         '
-        'lblStudio
+        'lblStudios
         '
-        Me.lblStudio.AutoSize = True
-        Me.lblStudio.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblStudio.Location = New System.Drawing.Point(572, 372)
-        Me.lblStudio.Name = "lblStudio"
-        Me.lblStudio.Size = New System.Drawing.Size(44, 13)
-        Me.lblStudio.TabIndex = 115
-        Me.lblStudio.Text = "Studio:"
+        Me.lblStudios.AutoSize = True
+        Me.lblStudios.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblStudios.Location = New System.Drawing.Point(572, 372)
+        Me.lblStudios.Name = "lblStudios"
+        Me.lblStudios.Size = New System.Drawing.Size(49, 13)
+        Me.lblStudios.TabIndex = 115
+        Me.lblStudios.Text = "Studios:"
         '
         'lblTrailerURL
         '
@@ -2545,15 +2545,15 @@ Partial Class dlgMovieDataScraperPreview
         Me.lblCredits.TabIndex = 113
         Me.lblCredits.Text = "Credits:"
         '
-        'lblCerts
+        'lblCertifications
         '
-        Me.lblCerts.AutoSize = True
-        Me.lblCerts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblCerts.Location = New System.Drawing.Point(289, 226)
-        Me.lblCerts.Name = "lblCerts"
-        Me.lblCerts.Size = New System.Drawing.Size(86, 13)
-        Me.lblCerts.TabIndex = 118
-        Me.lblCerts.Text = "Certification(s):"
+        Me.lblCertifications.AutoSize = True
+        Me.lblCertifications.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblCertifications.Location = New System.Drawing.Point(289, 226)
+        Me.lblCertifications.Name = "lblCertifications"
+        Me.lblCertifications.Size = New System.Drawing.Size(78, 13)
+        Me.lblCertifications.TabIndex = 118
+        Me.lblCertifications.Text = "Certifications:"
         '
         'lblRuntime
         '
@@ -2575,15 +2575,15 @@ Partial Class dlgMovieDataScraperPreview
         Me.lblActors.TabIndex = 102
         Me.lblActors.Text = "Actors:"
         '
-        'lblGenre
+        'lblGenres
         '
-        Me.lblGenre.AutoSize = True
-        Me.lblGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblGenre.Location = New System.Drawing.Point(289, 372)
-        Me.lblGenre.Name = "lblGenre"
-        Me.lblGenre.Size = New System.Drawing.Size(41, 13)
-        Me.lblGenre.TabIndex = 96
-        Me.lblGenre.Text = "Genre:"
+        Me.lblGenres.AutoSize = True
+        Me.lblGenres.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblGenres.Location = New System.Drawing.Point(289, 372)
+        Me.lblGenres.Name = "lblGenres"
+        Me.lblGenres.Size = New System.Drawing.Size(46, 13)
+        Me.lblGenres.TabIndex = 96
+        Me.lblGenres.Text = "Genres:"
         '
         'lblMPAA
         '
@@ -2591,19 +2591,19 @@ Partial Class dlgMovieDataScraperPreview
         Me.lblMPAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblMPAA.Location = New System.Drawing.Point(289, 299)
         Me.lblMPAA.Name = "lblMPAA"
-        Me.lblMPAA.Size = New System.Drawing.Size(80, 13)
+        Me.lblMPAA.Size = New System.Drawing.Size(43, 13)
         Me.lblMPAA.TabIndex = 109
-        Me.lblMPAA.Text = "MPAA Rating:"
+        Me.lblMPAA.Text = "MPAA:"
         '
-        'lblDirector
+        'lblDirectors
         '
-        Me.lblDirector.AutoSize = True
-        Me.lblDirector.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblDirector.Location = New System.Drawing.Point(289, 445)
-        Me.lblDirector.Name = "lblDirector"
-        Me.lblDirector.Size = New System.Drawing.Size(51, 13)
-        Me.lblDirector.TabIndex = 94
-        Me.lblDirector.Text = "Director:"
+        Me.lblDirectors.AutoSize = True
+        Me.lblDirectors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblDirectors.Location = New System.Drawing.Point(289, 445)
+        Me.lblDirectors.Name = "lblDirectors"
+        Me.lblDirectors.Size = New System.Drawing.Size(56, 13)
+        Me.lblDirectors.TabIndex = 94
+        Me.lblDirectors.Text = "Directors:"
         '
         'lblTop250
         '
@@ -2919,21 +2919,21 @@ Partial Class dlgMovieDataScraperPreview
     Friend WithEvents tbTrailerIMDB As System.Windows.Forms.TabPage
     Friend WithEvents btnPlayTrailer As System.Windows.Forms.Button
     Friend WithEvents lblOriginalTitle As System.Windows.Forms.Label
-    Friend WithEvents lblCountry As System.Windows.Forms.Label
-    Friend WithEvents lblStudio As System.Windows.Forms.Label
+    Friend WithEvents lblCountries As System.Windows.Forms.Label
+    Friend WithEvents lblStudios As System.Windows.Forms.Label
     Friend WithEvents lblTrailerURL As System.Windows.Forms.Label
     Friend WithEvents lblReleaseDate As System.Windows.Forms.Label
     Friend WithEvents lblCredits As System.Windows.Forms.Label
-    Friend WithEvents lblCerts As System.Windows.Forms.Label
+    Friend WithEvents lblCertifications As System.Windows.Forms.Label
     Friend WithEvents lblRuntime As System.Windows.Forms.Label
     Friend WithEvents lblActors As System.Windows.Forms.Label
     Friend WithEvents lvActorsIMDB As System.Windows.Forms.ListView
     Friend WithEvents colNameIMDB As System.Windows.Forms.ColumnHeader
     Friend WithEvents colRoleIMDB As System.Windows.Forms.ColumnHeader
     Friend WithEvents colThumbIMDB As System.Windows.Forms.ColumnHeader
-    Friend WithEvents lblGenre As System.Windows.Forms.Label
+    Friend WithEvents lblGenres As System.Windows.Forms.Label
     Friend WithEvents lblMPAA As System.Windows.Forms.Label
-    Friend WithEvents lblDirector As System.Windows.Forms.Label
+    Friend WithEvents lblDirectors As System.Windows.Forms.Label
     Friend WithEvents lblTop250 As System.Windows.Forms.Label
     Friend WithEvents lblPlot As System.Windows.Forms.Label
     Friend WithEvents txtPlotIMDB As System.Windows.Forms.TextBox
