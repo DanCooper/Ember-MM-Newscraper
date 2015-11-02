@@ -39,7 +39,7 @@ Public Class HTTP
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Private dThread As New Threading.Thread(AddressOf DownloadImage)
-    Private wrRequest As New HttpWebRequest
+    Private wrRequest As HttpWebRequest
     Private _cancelRequested As Boolean
     Private _image As Image
     Private _ms As MemoryStream = New MemoryStream()
