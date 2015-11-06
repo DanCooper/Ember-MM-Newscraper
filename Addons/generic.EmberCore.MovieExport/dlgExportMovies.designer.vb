@@ -6,19 +6,18 @@ Partial Class dlgExportMovies
 
     Friend  WithEvents btnCancel As System.Windows.Forms.Button
     Friend WithEvents cbTemplate As System.Windows.Forms.ComboBox
-    Friend  WithEvents Close_Button As System.Windows.Forms.Button
+    Friend  WithEvents btnClose As System.Windows.Forms.Button
     Friend  WithEvents ImageList1 As System.Windows.Forms.ImageList
-    Friend WithEvents lblFilterSelected As System.Windows.Forms.Label
-    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents lblFilter As System.Windows.Forms.Label
+    Friend WithEvents lblTemplate As System.Windows.Forms.Label
     Friend WithEvents lblCanceling As System.Windows.Forms.Label
     Friend WithEvents lblCompiling As System.Windows.Forms.Label
     Friend WithEvents lblFile As System.Windows.Forms.Label
     Friend WithEvents pbCompile As System.Windows.Forms.ProgressBar
-    Friend WithEvents pnlBG As System.Windows.Forms.Panel
-    Friend WithEvents pnlBottomMain As System.Windows.Forms.Panel
+    Friend WithEvents pnlMain As System.Windows.Forms.Panel
     Friend WithEvents pnlCancel As System.Windows.Forms.Panel
-    Friend WithEvents Save_Button As System.Windows.Forms.Button
-    Friend WithEvents wbMovieList As System.Windows.Forms.WebBrowser
+    Friend WithEvents btnSave As System.Windows.Forms.Button
+    Friend WithEvents wbPreview As System.Windows.Forms.WebBrowser
 
     'Required by the Windows Form Designer
     Private components As System.ComponentModel.IContainer
@@ -46,13 +45,12 @@ Partial Class dlgExportMovies
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgExportMovies))
-        Me.Save_Button = New System.Windows.Forms.Button()
-        Me.Close_Button = New System.Windows.Forms.Button()
-        Me.pnlBottomMain = New System.Windows.Forms.Panel()
-        Me.btn_BuildHTML = New System.Windows.Forms.Button()
-        Me.lblFilterSelected = New System.Windows.Forms.Label()
-        Me.cbo_SelectedFilter = New System.Windows.Forms.ComboBox()
-        Me.Label2 = New System.Windows.Forms.Label()
+        Me.btnSave = New System.Windows.Forms.Button()
+        Me.btnClose = New System.Windows.Forms.Button()
+        Me.btnBuild = New System.Windows.Forms.Button()
+        Me.lblFilter = New System.Windows.Forms.Label()
+        Me.cbFilter = New System.Windows.Forms.ComboBox()
+        Me.lblTemplate = New System.Windows.Forms.Label()
         Me.cbTemplate = New System.Windows.Forms.ComboBox()
         Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
         Me.pnlCancel = New System.Windows.Forms.Panel()
@@ -61,100 +59,96 @@ Partial Class dlgExportMovies
         Me.lblCompiling = New System.Windows.Forms.Label()
         Me.lblFile = New System.Windows.Forms.Label()
         Me.lblCanceling = New System.Windows.Forms.Label()
-        Me.pnlBG = New System.Windows.Forms.Panel()
-        Me.wbMovieList = New System.Windows.Forms.WebBrowser()
-        Me.pnlBottomMain.SuspendLayout()
+        Me.pnlMain = New System.Windows.Forms.Panel()
+        Me.wbPreview = New System.Windows.Forms.WebBrowser()
+        Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
+        Me.pnlBottom = New System.Windows.Forms.Panel()
+        Me.tblBottom = New System.Windows.Forms.TableLayoutPanel()
         Me.pnlCancel.SuspendLayout()
-        Me.pnlBG.SuspendLayout()
+        Me.pnlMain.SuspendLayout()
+        Me.pnlBottom.SuspendLayout()
+        Me.tblBottom.SuspendLayout()
         Me.SuspendLayout()
         '
-        'Save_Button
+        'btnSave
         '
-        Me.Save_Button.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.Save_Button.Enabled = False
-        Me.Save_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Save_Button.Location = New System.Drawing.Point(779, 9)
-        Me.Save_Button.Name = "Save_Button"
-        Me.Save_Button.Size = New System.Drawing.Size(119, 31)
-        Me.Save_Button.TabIndex = 6
-        Me.Save_Button.Text = "Save"
+        Me.btnSave.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.btnSave.Enabled = False
+        Me.btnSave.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSave.Location = New System.Drawing.Point(837, 15)
+        Me.btnSave.Name = "btnSave"
+        Me.tblBottom.SetRowSpan(Me.btnSave, 2)
+        Me.btnSave.Size = New System.Drawing.Size(119, 23)
+        Me.btnSave.TabIndex = 6
+        Me.btnSave.Text = "Save"
         '
-        'Close_Button
+        'btnClose
         '
-        Me.Close_Button.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.Close_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Close_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Close_Button.Location = New System.Drawing.Point(904, 9)
-        Me.Close_Button.Name = "Close_Button"
-        Me.Close_Button.Size = New System.Drawing.Size(119, 31)
-        Me.Close_Button.TabIndex = 1
-        Me.Close_Button.Text = "Close"
+        Me.btnClose.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.btnClose.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnClose.Location = New System.Drawing.Point(962, 15)
+        Me.btnClose.Name = "btnClose"
+        Me.tblBottom.SetRowSpan(Me.btnClose, 2)
+        Me.btnClose.Size = New System.Drawing.Size(119, 23)
+        Me.btnClose.TabIndex = 1
+        Me.btnClose.Text = "Close"
         '
-        'pnlBottomMain
+        'btnBuild
         '
-        Me.pnlBottomMain.Controls.Add(Me.Close_Button)
-        Me.pnlBottomMain.Controls.Add(Me.btn_BuildHTML)
-        Me.pnlBottomMain.Controls.Add(Me.Save_Button)
-        Me.pnlBottomMain.Controls.Add(Me.lblFilterSelected)
-        Me.pnlBottomMain.Controls.Add(Me.cbo_SelectedFilter)
-        Me.pnlBottomMain.Controls.Add(Me.Label2)
-        Me.pnlBottomMain.Controls.Add(Me.cbTemplate)
-        Me.pnlBottomMain.Location = New System.Drawing.Point(0, 502)
-        Me.pnlBottomMain.Name = "pnlBottomMain"
-        Me.pnlBottomMain.Size = New System.Drawing.Size(1035, 48)
-        Me.pnlBottomMain.TabIndex = 0
+        Me.btnBuild.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.btnBuild.Enabled = False
+        Me.btnBuild.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnBuild.Location = New System.Drawing.Point(289, 15)
+        Me.btnBuild.Name = "btnBuild"
+        Me.tblBottom.SetRowSpan(Me.btnBuild, 2)
+        Me.btnBuild.Size = New System.Drawing.Size(169, 23)
+        Me.btnBuild.TabIndex = 5
+        Me.btnBuild.Text = "Generate Template"
         '
-        'btn_BuildHTML
+        'lblFilter
         '
-        Me.btn_BuildHTML.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.btn_BuildHTML.Enabled = False
-        Me.btn_BuildHTML.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btn_BuildHTML.Location = New System.Drawing.Point(604, 9)
-        Me.btn_BuildHTML.Name = "btn_BuildHTML"
-        Me.btn_BuildHTML.Size = New System.Drawing.Size(169, 31)
-        Me.btn_BuildHTML.TabIndex = 5
-        Me.btn_BuildHTML.Text = "Generate Template"
+        Me.lblFilter.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblFilter.AutoSize = True
+        Me.lblFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblFilter.Location = New System.Drawing.Point(3, 34)
+        Me.lblFilter.Name = "lblFilter"
+        Me.lblFilter.Size = New System.Drawing.Size(33, 13)
+        Me.lblFilter.TabIndex = 0
+        Me.lblFilter.Text = "Filter"
         '
-        'lblFilterSelected
+        'cbFilter
         '
-        Me.lblFilterSelected.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblFilterSelected.Location = New System.Drawing.Point(288, 6)
-        Me.lblFilterSelected.Name = "lblFilterSelected"
-        Me.lblFilterSelected.Size = New System.Drawing.Size(43, 16)
-        Me.lblFilterSelected.TabIndex = 0
-        Me.lblFilterSelected.Text = "Filter"
-        Me.lblFilterSelected.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.cbFilter.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.cbFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbFilter.FormattingEnabled = True
+        Me.cbFilter.Items.AddRange(New Object() {"-", "Filter 1", "Filter 2", "Filter 3"})
+        Me.cbFilter.Location = New System.Drawing.Point(63, 30)
+        Me.cbFilter.Name = "cbFilter"
+        Me.cbFilter.Size = New System.Drawing.Size(200, 21)
+        Me.cbFilter.TabIndex = 4
         '
-        'cbo_SelectedFilter
+        'lblTemplate
         '
-        Me.cbo_SelectedFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbo_SelectedFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cbo_SelectedFilter.FormattingEnabled = True
-        Me.cbo_SelectedFilter.Items.AddRange(New Object() {"-", "Filter 1", "Filter 2", "Filter 3"})
-        Me.cbo_SelectedFilter.Location = New System.Drawing.Point(337, 9)
-        Me.cbo_SelectedFilter.Name = "cbo_SelectedFilter"
-        Me.cbo_SelectedFilter.Size = New System.Drawing.Size(138, 21)
-        Me.cbo_SelectedFilter.TabIndex = 4
-        '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label2.Location = New System.Drawing.Point(11, 9)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(54, 13)
-        Me.Label2.TabIndex = 1
-        Me.Label2.Text = "Template"
-        Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.lblTemplate.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblTemplate.AutoSize = True
+        Me.lblTemplate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblTemplate.Location = New System.Drawing.Point(3, 7)
+        Me.lblTemplate.Name = "lblTemplate"
+        Me.lblTemplate.Size = New System.Drawing.Size(54, 13)
+        Me.lblTemplate.TabIndex = 1
+        Me.lblTemplate.Text = "Template"
         '
         'cbTemplate
         '
+        Me.cbTemplate.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.cbTemplate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbTemplate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbTemplate.FormattingEnabled = True
-        Me.cbTemplate.Location = New System.Drawing.Point(71, 9)
+        Me.cbTemplate.Location = New System.Drawing.Point(63, 3)
         Me.cbTemplate.Name = "cbTemplate"
-        Me.cbTemplate.Size = New System.Drawing.Size(195, 21)
+        Me.cbTemplate.Size = New System.Drawing.Size(200, 21)
         Me.cbTemplate.TabIndex = 2
         '
         'ImageList1
@@ -231,52 +225,104 @@ Partial Class dlgExportMovies
         Me.lblCanceling.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.lblCanceling.Visible = False
         '
-        'pnlBG
+        'pnlMain
         '
-        Me.pnlBG.AutoScroll = True
-        Me.pnlBG.Controls.Add(Me.pnlCancel)
-        Me.pnlBG.Controls.Add(Me.wbMovieList)
-        Me.pnlBG.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.pnlBG.Location = New System.Drawing.Point(0, 0)
-        Me.pnlBG.Name = "pnlBG"
-        Me.pnlBG.Size = New System.Drawing.Size(1035, 550)
-        Me.pnlBG.TabIndex = 4
+        Me.pnlMain.AutoScroll = True
+        Me.pnlMain.Controls.Add(Me.pnlCancel)
+        Me.pnlMain.Controls.Add(Me.wbPreview)
+        Me.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlMain.Location = New System.Drawing.Point(0, 0)
+        Me.pnlMain.Name = "pnlMain"
+        Me.pnlMain.Size = New System.Drawing.Size(1084, 603)
+        Me.pnlMain.TabIndex = 4
         '
-        'wbMovieList
+        'wbPreview
         '
-        Me.wbMovieList.Location = New System.Drawing.Point(0, 0)
-        Me.wbMovieList.MinimumSize = New System.Drawing.Size(20, 20)
-        Me.wbMovieList.Name = "wbMovieList"
-        Me.wbMovieList.Size = New System.Drawing.Size(1034, 500)
-        Me.wbMovieList.TabIndex = 0
-        Me.wbMovieList.Visible = False
+        Me.wbPreview.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.wbPreview.Location = New System.Drawing.Point(0, 0)
+        Me.wbPreview.MinimumSize = New System.Drawing.Size(20, 20)
+        Me.wbPreview.Name = "wbPreview"
+        Me.wbPreview.Size = New System.Drawing.Size(1084, 603)
+        Me.wbPreview.TabIndex = 0
+        Me.wbPreview.Visible = False
+        '
+        'StatusStrip1
+        '
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 581)
+        Me.StatusStrip1.Name = "StatusStrip1"
+        Me.StatusStrip1.Size = New System.Drawing.Size(1084, 22)
+        Me.StatusStrip1.TabIndex = 5
+        Me.StatusStrip1.Text = "StatusStrip1"
+        '
+        'pnlBottom
+        '
+        Me.pnlBottom.AutoSize = True
+        Me.pnlBottom.Controls.Add(Me.tblBottom)
+        Me.pnlBottom.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.pnlBottom.Location = New System.Drawing.Point(0, 527)
+        Me.pnlBottom.Name = "pnlBottom"
+        Me.pnlBottom.Size = New System.Drawing.Size(1084, 54)
+        Me.pnlBottom.TabIndex = 6
+        '
+        'tblBottom
+        '
+        Me.tblBottom.AutoSize = True
+        Me.tblBottom.ColumnCount = 8
+        Me.tblBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.tblBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblBottom.Controls.Add(Me.btnClose, 7, 0)
+        Me.tblBottom.Controls.Add(Me.lblTemplate, 0, 0)
+        Me.tblBottom.Controls.Add(Me.btnSave, 6, 0)
+        Me.tblBottom.Controls.Add(Me.btnBuild, 4, 0)
+        Me.tblBottom.Controls.Add(Me.cbTemplate, 1, 0)
+        Me.tblBottom.Controls.Add(Me.lblFilter, 0, 1)
+        Me.tblBottom.Controls.Add(Me.cbFilter, 1, 1)
+        Me.tblBottom.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblBottom.Location = New System.Drawing.Point(0, 0)
+        Me.tblBottom.Name = "tblBottom"
+        Me.tblBottom.RowCount = 2
+        Me.tblBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblBottom.Size = New System.Drawing.Size(1084, 54)
+        Me.tblBottom.TabIndex = 0
         '
         'dlgExportMovies
         '
-        Me.AcceptButton = Me.Save_Button
+        Me.AcceptButton = Me.btnSave
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.AutoScroll = True
-        Me.CancelButton = Me.Close_Button
-        Me.ClientSize = New System.Drawing.Size(1035, 550)
-        Me.Controls.Add(Me.pnlBottomMain)
-        Me.Controls.Add(Me.pnlBG)
+        Me.CancelButton = Me.btnClose
+        Me.ClientSize = New System.Drawing.Size(1084, 603)
+        Me.Controls.Add(Me.pnlMain)
+        Me.Controls.Add(Me.pnlBottom)
+        Me.Controls.Add(Me.StatusStrip1)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgExportMovies"
         Me.Text = "Export Movies"
-        Me.pnlBottomMain.ResumeLayout(False)
-        Me.pnlBottomMain.PerformLayout()
         Me.pnlCancel.ResumeLayout(False)
-        Me.pnlBG.ResumeLayout(False)
+        Me.pnlMain.ResumeLayout(False)
+        Me.pnlBottom.ResumeLayout(False)
+        Me.pnlBottom.PerformLayout()
+        Me.tblBottom.ResumeLayout(False)
+        Me.tblBottom.PerformLayout()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
-    Friend WithEvents cbo_SelectedFilter As System.Windows.Forms.ComboBox
-    Friend WithEvents btn_BuildHTML As System.Windows.Forms.Button
+    Friend WithEvents cbFilter As System.Windows.Forms.ComboBox
+    Friend WithEvents btnBuild As System.Windows.Forms.Button
+    Friend WithEvents StatusStrip1 As StatusStrip
+    Friend WithEvents pnlBottom As Panel
+    Friend WithEvents tblBottom As TableLayoutPanel
 
 #End Region 'Methods
 

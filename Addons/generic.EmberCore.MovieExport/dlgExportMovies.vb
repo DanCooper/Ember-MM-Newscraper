@@ -612,6 +612,7 @@ Public Class dlgExportMovies
         End If
         Return ReturnString
     End Function
+
     Private Function GetSeasonInfo(ByVal Id As String) As String
         Dim ReturnString As String = String.Empty
 
@@ -737,9 +738,6 @@ Public Class dlgExportMovies
     End Sub
 
     Private Sub bwLoadInfo_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadInfo.RunWorkerCompleted
-        '//
-        ' Thread finished: display it if not cancelled
-        '\\
         If Not isCL Then
             bCancelled = e.Cancelled
             If Not e.Cancelled Then
@@ -748,7 +746,7 @@ Public Class dlgExportMovies
                 End If
                 LoadHTML()
             Else
-                wbMovieList.DocumentText = String.Concat("<center><h1 style=""color:Red;"">", Master.eLang.GetString(284, "Canceled"), "</h1></center>")
+                wbPreview.DocumentText = String.Concat("<center><h1 style=""color:Red;"">", Master.eLang.GetString(284, "Canceled"), "</h1></center>")
             End If
             pnlCancel.Visible = False
         End If
@@ -756,7 +754,6 @@ Public Class dlgExportMovies
 
     Private Sub bwSaveAll_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwSaveAll.DoWork
         Try
-
             Dim Args As Arguments = DirectCast(e.Argument, Arguments)
             Dim destPathShort As String = Path.GetDirectoryName(Args.destPath)
             'Only create extra files once for each template... dont do it when applyng filters
@@ -831,7 +828,7 @@ Public Class dlgExportMovies
 
     End Sub
 
-    Private Sub Close_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Close_Button.Click
+    Private Sub btnClose_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClose.Click
         If bwSaveAll.IsBusy Then
             bwSaveAll.CancelAsync()
         End If
@@ -1084,10 +1081,10 @@ Public Class dlgExportMovies
         '   Dim tmphtml As String = Path.Combine(Me.TempPath, String.Concat(Master.eSettings.Language, ".html"))
         Dim tmphtml As String = Path.Combine(TempPath, "index.htm")
         Try
-            wbMovieList.Navigate(tmphtml)
-            Save_Button.Enabled = True
+            wbPreview.Navigate(tmphtml)
+            btnSave.Enabled = True
         Catch ex As Exception
-            Save_Button.Enabled = False
+            btnSave.Enabled = False
         End Try
     End Sub
 
@@ -1133,12 +1130,12 @@ Public Class dlgExportMovies
     Private Sub SaveAll(ByVal sWarning As String, ByVal srcPath As String, ByVal destPath As String, Optional ByVal resizePoster As Integer = 200)
 
 
-        wbMovieList.Visible = False
+        wbPreview.Visible = False
         If Not String.IsNullOrEmpty(sWarning) Then Warning(True, sWarning)
-        cbo_SelectedFilter.Enabled = False
+        cbFilter.Enabled = False
         cbTemplate.Enabled = False
-        btn_BuildHTML.Enabled = False
-        Save_Button.Enabled = False
+        btnBuild.Enabled = False
+        btnSave.Enabled = False
         bwSaveAll = New System.ComponentModel.BackgroundWorker
         bwSaveAll.WorkerReportsProgress = True
         bwSaveAll.WorkerSupportsCancellation = True
@@ -1148,17 +1145,17 @@ Public Class dlgExportMovies
             Threading.Thread.Sleep(50)
         End While
 
-        cbo_SelectedFilter.Enabled = True
+        cbFilter.Enabled = True
         cbTemplate.Enabled = True
-        btn_BuildHTML.Enabled = True
-        Save_Button.Enabled = True
+        btnBuild.Enabled = True
+        btnSave.Enabled = True
         If pnlCancel.Visible Then Warning(False)
         If Not workerCanceled Then
-            wbMovieList.Visible = True
+            wbPreview.Visible = True
         End If
     End Sub
 
-    Private Sub Save_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Save_Button.Click
+    Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
         'cocotus  Use settings instead of opening filedialog which causes problems!
         'old
         'Dim saveHTML As New SaveFileDialog()
@@ -1180,10 +1177,10 @@ Public Class dlgExportMovies
         Cursor = Cursors.WaitCursor
         If Directory.Exists(clsAdvancedSettings.GetSetting("ExportPath", String.Empty)) Then
             CopyDirectory(TempPath, clsAdvancedSettings.GetSetting("ExportPath", String.Empty), True)
-            Save_Button.Enabled = False
+            btnSave.Enabled = False
             MessageBox.Show((Master.eLang.GetString(1003, "Template saved to:") & clsAdvancedSettings.GetSetting("ExportPath", String.Empty)), Master.eLang.GetString(361, "Finished!"), MessageBoxButtons.OK)
         Else
-            Save_Button.Enabled = False
+            btnSave.Enabled = False
             MessageBox.Show((Master.eLang.GetString(221, "Export Path is not valid:") & clsAdvancedSettings.GetSetting("ExportPath", String.Empty)), Master.eLang.GetString(816, "An Error Has Occurred"), MessageBoxButtons.OK)
         End If
         Cursor = Cursors.Default
@@ -1192,15 +1189,15 @@ Public Class dlgExportMovies
 
     Private Sub SetUp()
         Text = Master.eLang.GetString(328, "Export Movies")
-        Save_Button.Text = Master.eLang.GetString(273, "Save")
-        Close_Button.Text = Master.eLang.GetString(19, "Close")
+        btnSave.Text = Master.eLang.GetString(273, "Save")
+        btnClose.Text = Master.eLang.GetString(19, "Close")
 
         lblCompiling.Text = Master.eLang.GetString(177, "Compiling Movie List...")
         lblCanceling.Text = Master.eLang.GetString(178, "Canceling Compilation...")
         btnCancel.Text = Master.eLang.GetString(167, "Cancel")
-        Label2.Text = Master.eLang.GetString(334, "Template")
-        btn_BuildHTML.Text = Master.eLang.GetString(1004, "Generate HTML...")
-        Save_Button.Enabled = False
+        lblTemplate.Text = Master.eLang.GetString(334, "Template")
+        btnBuild.Text = Master.eLang.GetString(1004, "Generate HTML...")
+        btnSave.Enabled = False
 
     End Sub
 
@@ -1222,19 +1219,19 @@ Public Class dlgExportMovies
         End Try
     End Sub
 
-    Private Sub WebBrowser1_DocumentCompleted(ByVal sender As System.Object, ByVal e As System.Windows.Forms.WebBrowserDocumentCompletedEventArgs) Handles wbMovieList.DocumentCompleted
+    Private Sub wbPreview_DocumentCompleted(ByVal sender As System.Object, ByVal e As System.Windows.Forms.WebBrowserDocumentCompletedEventArgs) Handles wbPreview.DocumentCompleted
         If Not bCancelled Then
-            If Not cbTemplate.Text = String.Empty Then Save_Button.Enabled = True
+            If Not cbTemplate.Text = String.Empty Then btnSave.Enabled = True
         End If
         Warning(False)
     End Sub
 
-    Private Sub btn_BuildHTML_Click(sender As Object, e As EventArgs) Handles btn_BuildHTML.Click
-        If cbo_SelectedFilter.Text = "Filter 1" Then
+    Private Sub btnBuild_Click(sender As Object, e As EventArgs) Handles btnBuild.Click
+        If cbFilter.Text = "Filter 1" Then
             strFilter = clsAdvancedSettings.GetSetting("ExportFilter1", String.Empty)
-        ElseIf cbo_SelectedFilter.Text = "Filter 2" Then
+        ElseIf cbFilter.Text = "Filter 2" Then
             strFilter = clsAdvancedSettings.GetSetting("ExportFilter2", String.Empty)
-        ElseIf cbo_SelectedFilter.Text = "Filter 3" Then
+        ElseIf cbFilter.Text = "Filter 3" Then
             strFilter = clsAdvancedSettings.GetSetting("ExportFilter3", String.Empty)
         Else
             strFilter = String.Empty
