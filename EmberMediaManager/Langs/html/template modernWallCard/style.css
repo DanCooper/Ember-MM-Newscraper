@@ -1,0 +1,140 @@
+
+html, body{
+	margin: 0;
+	padding: 0;
+	background: #EFEFEF;
+	font-family: 'LatoWeb';
+	font-size: 9pt;
+	font-style: normal;
+}
+
+a{
+	text-decoration: none;
+	color: #2196f3;
+}
+
+
+/* Headline Section*/
+
+.headline-container{
+	color: #333;
+	margin: 30px 25px 20px;
+}
+
+.headline-container > h1{
+	margin-bottom: 0;
+	font-size: 30px;
+}
+
+.headline-container > div > span{
+	text-transform: uppercase;
+	font-size: 12px;
+}
+.headline-container > div > span:nth-child(odd){
+	/* string */
+	color: #9e9e9e;
+	margin-left: 10px;
+}
+.headline-container > div > span:nth-child(even){
+	/* value */
+	color: #1e88e5;
+	margin-right: 15px;
+}
+
+
+/* Control */
+
+.control{
+	float: right;
+}
+.control > a{
+	font-size: 20px;
+	padding: 10px;
+}
+
+/* Movie Boxdesign */
+
+.box{
+	margin: 12px;
+	box-shadow: 0 0 5px #555;
+	display: inline-block;
+	border-radius: 3px;
+	overflow: hidden;
+}
+
+.box > img{
+	height: 230px;
+	width: 153px;
+}
+
+/* Big Img */
+
+.big-img > img{
+	height: 300px;
+	width: 200px;
+}
+
+
+/* Wall */
+.wall-container > .movie-info{
+	display: none;
+}
+
+.wall-container .box{
+	height: 230px;
+	width: 153px;
+}
+.wall-container .big-img{
+	height: 300px;
+	width: 200px;
+}
+/* Card */
+.card-container > .movie-info{
+	float: left;
+	height: 230px;
+    padding: 10px;
+    width: 295px;
+    background: #F8F8F8;
+    color:#333333;
+}
+.card-container > .movie-info > p{
+	color: #9e9e9e;
+	max-height: 153px;
+	overflow: hidden;
+}
+
+.card-container > img{
+	float: left;
+}
+
+.box .card-container {
+	border-radius: 5px;
+	height: 230px;
+	width: 440px;
+}
+
+
+
+
+/* Modal View*/
+.modal-header > p{
+	margin: 0;
+	margin-top: 7px;
+}
+
+.table > tbody > tr:first-child > td {
+    border: 0 none;
+}
+
+
+
+/* Footer */
+
+footer {  
+	box-sizing: border-box;
+	padding: 40px 100px 40px 0;
+	width: 100%;
+	font-size: 15px;
+	text-align: right;
+	color: #9e9e9e;
+}
