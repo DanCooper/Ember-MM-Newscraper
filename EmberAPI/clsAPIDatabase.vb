@@ -2717,10 +2717,10 @@ Public Class Database
 
         Master.fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
 
-        Me.bwPatchDB = New System.ComponentModel.BackgroundWorker
-        Me.bwPatchDB.WorkerReportsProgress = True
-        Me.bwPatchDB.WorkerSupportsCancellation = False
-        Me.bwPatchDB.RunWorkerAsync(New Arguments With {.currDBPath = cPath, .currVersion = cVersion, .newDBPath = nPath, .newVersion = nVersion})
+        bwPatchDB = New System.ComponentModel.BackgroundWorker
+        bwPatchDB.WorkerReportsProgress = True
+        bwPatchDB.WorkerSupportsCancellation = False
+        bwPatchDB.RunWorkerAsync(New Arguments With {.currDBPath = cPath, .currVersion = cVersion, .newDBPath = nPath, .newVersion = nVersion})
 
         While bwPatchDB.IsBusy
             Application.DoEvents()
@@ -3125,22 +3125,22 @@ Public Class Database
         If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
         Using SQLcommand_movie As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             If IsNew Then
-                SQLcommand_movie.CommandText = String.Concat("INSERT OR REPLACE INTO movie (", _
-                 "idSource, MoviePath, Type, ListTitle, HasSub, New, Mark, Imdb, Lock, ", _
-                 "Title, OriginalTitle, SortTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, ", _
-                 "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, Trailer, ", _
-                 "NfoPath, TrailerPath, SubPath, EThumbsPath, FanartURL, OutOfTolerance, VideoSource, ", _
-                 "DateAdded, EFanartsPath, ThemePath, ", _
-                 "TMDB, TMDBColID, DateModified, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet, iLastPlayed, Language", _
+                SQLcommand_movie.CommandText = String.Concat("INSERT OR REPLACE INTO movie (",
+                 "idSource, MoviePath, Type, ListTitle, HasSub, New, Mark, Imdb, Lock, ",
+                 "Title, OriginalTitle, SortTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, ",
+                 "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, Trailer, ",
+                 "NfoPath, TrailerPath, SubPath, EThumbsPath, FanartURL, OutOfTolerance, VideoSource, ",
+                 "DateAdded, EFanartsPath, ThemePath, ",
+                 "TMDB, TMDBColID, DateModified, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet, iLastPlayed, Language",
                  ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movie;")
             Else
-                SQLcommand_movie.CommandText = String.Concat("INSERT OR REPLACE INTO movie (", _
-                 "idMovie, idSource, MoviePath, Type, ListTitle, HasSub, New, Mark, Imdb, Lock, ", _
-                 "Title, OriginalTitle, SortTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, ", _
-                 "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, Trailer, ", _
-                 "NfoPath, TrailerPath, SubPath, EThumbsPath, FanartURL, OutOfTolerance, VideoSource, ", _
-                 "DateAdded, EFanartsPath, ThemePath, ", _
-                 "TMDB, TMDBColID, DateModified, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet, iLastPlayed, Language", _
+                SQLcommand_movie.CommandText = String.Concat("INSERT OR REPLACE INTO movie (",
+                 "idMovie, idSource, MoviePath, Type, ListTitle, HasSub, New, Mark, Imdb, Lock, ",
+                 "Title, OriginalTitle, SortTitle, Year, Rating, Votes, MPAA, Top250, Country, Outline, Plot, Tagline, Certification, Genre, ",
+                 "Studio, Runtime, ReleaseDate, Director, Credits, Playcount, Trailer, ",
+                 "NfoPath, TrailerPath, SubPath, EThumbsPath, FanartURL, OutOfTolerance, VideoSource, ",
+                 "DateAdded, EFanartsPath, ThemePath, ",
+                 "TMDB, TMDBColID, DateModified, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet, iLastPlayed, Language",
                  ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movie;")
                 Dim parMovieID As SQLite.SQLiteParameter = SQLcommand_movie.Parameters.Add("paridMovie", DbType.UInt64, 0, "idMovie")
                 parMovieID.Value = _movieDB.ID
@@ -3448,9 +3448,9 @@ Public Class Database
                     SQLcommandMoviesVStreams.ExecuteNonQuery()
 
                     'Expanded SQL Statement to INSERT/replace new fields
-                    SQLcommandMoviesVStreams.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesVStreams (", _
-                       "MovieID, StreamID, Video_Width,Video_Height,Video_Codec,Video_Duration, Video_ScanType, Video_AspectDisplayRatio, ", _
-                       "Video_Language, Video_LongLanguage, Video_Bitrate, Video_MultiViewCount, Video_FileSize, Video_MultiViewLayout, ", _
+                    SQLcommandMoviesVStreams.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesVStreams (",
+                       "MovieID, StreamID, Video_Width,Video_Height,Video_Codec,Video_Duration, Video_ScanType, Video_AspectDisplayRatio, ",
+                       "Video_Language, Video_LongLanguage, Video_Bitrate, Video_MultiViewCount, Video_FileSize, Video_MultiViewLayout, ",
                        "Video_StereoMode) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);")
 
                     Dim parVideo_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_MovieID", DbType.UInt64, 0, "MovieID")
@@ -3494,8 +3494,8 @@ Public Class Database
                     SQLcommandMoviesAStreams.ExecuteNonQuery()
 
                     'Expanded SQL Statement to INSERT/replace new fields
-                    SQLcommandMoviesAStreams.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesAStreams (", _
-                      "MovieID, StreamID, Audio_Language, Audio_LongLanguage, Audio_Codec, Audio_Channel, Audio_Bitrate", _
+                    SQLcommandMoviesAStreams.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesAStreams (",
+                      "MovieID, StreamID, Audio_Language, Audio_LongLanguage, Audio_Codec, Audio_Channel, Audio_Bitrate",
                       ") VALUES (?,?,?,?,?,?,?);")
 
                     Dim parAudio_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesAStreams.Parameters.Add("parAudio_MovieID", DbType.UInt64, 0, "MovieID")
@@ -3524,8 +3524,8 @@ Public Class Database
                     SQLcommandMoviesSubs.CommandText = String.Concat("DELETE FROM MoviesSubs WHERE MovieID = ", _movieDB.ID, ";")
                     SQLcommandMoviesSubs.ExecuteNonQuery()
 
-                    SQLcommandMoviesSubs.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesSubs (", _
-                       "MovieID, StreamID, Subs_Language, Subs_LongLanguage,Subs_Type, Subs_Path, Subs_Forced", _
+                    SQLcommandMoviesSubs.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesSubs (",
+                       "MovieID, StreamID, Subs_Language, Subs_LongLanguage,Subs_Type, Subs_Path, Subs_Forced",
                        ") VALUES (?,?,?,?,?,?,?);")
                     Dim parSubs_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_MovieID", DbType.UInt64, 0, "MovieID")
                     Dim parSubs_StreamID As SQLite.SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_StreamID", DbType.UInt64, 0, "StreamID")
@@ -3573,8 +3573,8 @@ Public Class Database
                         IsNewSet = Not s.ID > 0
                         If Not IsNewSet Then
                             Using SQLcommandMoviesSets As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                                SQLcommandMoviesSets.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesSets (", _
-                             "MovieID, SetID, SetOrder", _
+                                SQLcommandMoviesSets.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesSets (",
+                             "MovieID, SetID, SetOrder",
                              ") VALUES (?,?,?);")
                                 Dim parMoviesSets_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesSets.Parameters.Add("parSets_MovieID", DbType.Int64, 0, "MovieID")
                                 Dim parMoviesSets_SetID As SQLite.SQLiteParameter = SQLcommandMoviesSets.Parameters.Add("parSets_SetID", DbType.Int64, 0, "SetID")
@@ -3589,7 +3589,7 @@ Public Class Database
                             'first check if a Set with same TMDBColID is already existing
                             If Not String.IsNullOrEmpty(s.TMDBColID) Then
                                 Using SQLcommandSets As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                                    SQLcommandSets.CommandText = String.Concat("SELECT idSet, SetName ", _
+                                    SQLcommandSets.CommandText = String.Concat("SELECT idSet, SetName ",
                                                                                "FROM sets WHERE TMDBColID LIKE """, s.TMDBColID, """;")
                                     Using SQLreader As SQLite.SQLiteDataReader = SQLcommandSets.ExecuteReader()
                                         If SQLreader.HasRows Then
@@ -3608,7 +3608,7 @@ Public Class Database
                             If IsNewSet Then
                                 'secondly check if a Set with same name is already existing
                                 Using SQLcommandSets As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                                    SQLcommandSets.CommandText = String.Concat("SELECT idSet ", _
+                                    SQLcommandSets.CommandText = String.Concat("SELECT idSet ",
                                                                                "FROM sets WHERE SetName LIKE """, s.Title, """;")
                                     Using SQLreader As SQLite.SQLiteDataReader = SQLcommandSets.ExecuteReader()
                                         If SQLreader.HasRows Then
@@ -3625,8 +3625,8 @@ Public Class Database
                             If Not IsNewSet Then
                                 'create new MoviesSets with existing SetID
                                 Using SQLcommandMoviesSets As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                                    SQLcommandMoviesSets.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesSets (", _
-                                                                                     "MovieID, SetID, SetOrder", _
+                                    SQLcommandMoviesSets.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesSets (",
+                                                                                     "MovieID, SetID, SetOrder",
                                                                                      ") VALUES (?,?,?);")
                                     Dim parMoviesSets_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesSets.Parameters.Add("parSets_MovieID", DbType.Int64, 0, "MovieID")
                                     Dim parMoviesSets_SetID As SQLite.SQLiteParameter = SQLcommandMoviesSets.Parameters.Add("parSets_SetID", DbType.Int64, 0, "SetID")
@@ -3640,9 +3640,9 @@ Public Class Database
                             Else
                                 'create new Set
                                 Using SQLcommandSets As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                                    SQLcommandSets.CommandText = String.Concat("INSERT OR REPLACE INTO sets (", _
-                                                                                     "ListTitle, NfoPath, TMDBColID, Plot, SetName, ", _
-                                                                                     "New, Mark, Lock, SortMethod, Language", _
+                                    SQLcommandSets.CommandText = String.Concat("INSERT OR REPLACE INTO sets (",
+                                                                                     "ListTitle, NfoPath, TMDBColID, Plot, SetName, ",
+                                                                                     "New, Mark, Lock, SortMethod, Language",
                                                                                      ") VALUES (?,?,?,?,?,?,?,?,?,?);")
                                     Dim parSets_ListTitle As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_ListTitle", DbType.String, 0, "ListTitle")
                                     Dim parSets_NfoPath As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_NfoPath", DbType.String, 0, "NfoPath")
@@ -3685,8 +3685,8 @@ Public Class Database
                                 'create new MoviesSets with new SetID
                                 If s.ID > 0 Then
                                     Using SQLcommandMoviesSets As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                                        SQLcommandMoviesSets.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesSets (", _
-                                                                                         "MovieID, SetID, SetOrder", _
+                                        SQLcommandMoviesSets.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesSets (",
+                                                                                         "MovieID, SetID, SetOrder",
                                                                                          ") VALUES (?,?,?);")
                                         Dim parMoviesSets_MovieID As SQLite.SQLiteParameter = SQLcommandMoviesSets.Parameters.Add("parSets_MovieID", DbType.Int64, 0, "MovieID")
                                         Dim parMoviesSets_SetID As SQLite.SQLiteParameter = SQLcommandMoviesSets.Parameters.Add("parSets_SetID", DbType.Int64, 0, "SetID")
@@ -3743,12 +3743,12 @@ Public Class Database
         If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             If IsNew Then
-                SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO sets (", _
-                 "ListTitle, NfoPath, TMDBColID, Plot, SetName, New, Mark, Lock, SortMethod, Language", _
+                SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO sets (",
+                 "ListTitle, NfoPath, TMDBColID, Plot, SetName, New, Mark, Lock, SortMethod, Language",
                  ") VALUES (?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM sets;")
             Else
-                SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO sets (", _
-                 "idSet, ListTitle, NfoPath, TMDBColID, Plot, SetName, New, Mark, Lock, SortMethod, Language", _
+                SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO sets (",
+                 "idSet, ListTitle, NfoPath, TMDBColID, Plot, SetName, New, Mark, Lock, SortMethod, Language",
                  ") VALUES (?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM sets;")
                 Dim parMovieSetID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMovieSetID", DbType.UInt64, 0, "idSet")
                 parMovieSetID.Value = _moviesetDB.ID
@@ -3817,7 +3817,7 @@ Public Class Database
 
             'get all movies linked to this MovieSet
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT MovieID, SetID, SetOrder FROM MoviesSets ", _
+                SQLcommand.CommandText = String.Concat("SELECT MovieID, SetID, SetOrder FROM MoviesSets ",
                                                        "WHERE SetID = ", _moviesetDB.ID, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     While SQLreader.Read
@@ -3868,7 +3868,7 @@ Public Class Database
             If IsNew Then
                 SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO tag (strTag) VALUES (?); SELECT LAST_INSERT_ROWID() FROM tag;")
             Else
-                SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO tag (", _
+                SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO tag (",
                           "idTag, strTag) VALUES (?,?); SELECT LAST_INSERT_ROWID() FROM tag;")
                 Dim parTagID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTagID", DbType.UInt64, 0, "idTag")
                 parTagID.Value = _tagDB.ID
@@ -3908,7 +3908,7 @@ Public Class Database
 
             'get all movies linked to this tag from database (old state)
             Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT idMedia, idTag FROM taglinks ", _
+                SQLcommand.CommandText = String.Concat("SELECT idMedia, idTag FROM taglinks ",
                    "WHERE idTag = ", _tagDB.ID, " AND media_type = 'movie';")
 
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
@@ -3959,7 +3959,7 @@ Public Class Database
 
     Public Sub ChangeTVEpisode(ByVal _episode As Database.DBElement, ByVal ListOfEpisodes As List(Of MediaContainers.EpisodeDetails), Optional ByVal Batchmode As Boolean = False)
         Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
-        If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
+        If Not Batchmode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
         Using SQLPCommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
 
             'first step: remove all existing episode informations for this file and set it to "Missing"
@@ -4031,7 +4031,7 @@ Public Class Database
                             PathID = Convert.ToInt64(SQLreader("idFile"))
                         Else
                             Using SQLpcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                                SQLpcommand.CommandText = String.Concat("INSERT INTO files (", _
+                                SQLpcommand.CommandText = String.Concat("INSERT INTO files (",
                                      "strFilename) VALUES (?); SELECT LAST_INSERT_ROWID() FROM files;")
                                 Dim parEpPath As SQLite.SQLiteParameter = SQLpcommand.Parameters.Add("parEpPath", DbType.String, 0, "strFilename")
                                 parEpPath.Value = _episode.Filename
@@ -4046,19 +4046,19 @@ Public Class Database
 
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             If IsNew Then
-                SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO episode (", _
-                 "idShow, idFile, idSource, New, Mark, Lock, Title, Season, Episode, ", _
-                 "Rating, Plot, Aired, Director, Credits, NfoPath, Playcount, ", _
-                 "DisplaySeason, DisplayEpisode, DateAdded, Runtime, Votes, VideoSource, HasSub, SubEpisode, ", _
-                 "iLastPlayed, strIMDB, strTMDB, strTVDB", _
+                SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO episode (",
+                 "idShow, idFile, idSource, New, Mark, Lock, Title, Season, Episode, ",
+                 "Rating, Plot, Aired, Director, Credits, NfoPath, Playcount, ",
+                 "DisplaySeason, DisplayEpisode, DateAdded, Runtime, Votes, VideoSource, HasSub, SubEpisode, ",
+                 "iLastPlayed, strIMDB, strTMDB, strTVDB",
                  ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM episode;")
 
             Else
-                SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO episode (", _
-                 "idEpisode, idShow, idFile, idSource, New, Mark, Lock, Title, Season, Episode, ", _
-                 "Rating, Plot, Aired, Director, Credits, NfoPath, Playcount, ", _
-                 "DisplaySeason, DisplayEpisode, DateAdded, Runtime, Votes, VideoSource, HasSub, SubEpisode, ", _
-                 "iLastPlayed, strIMDB, strTMDB, strTVDB", _
+                SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO episode (",
+                 "idEpisode, idShow, idFile, idSource, New, Mark, Lock, Title, Season, Episode, ",
+                 "Rating, Plot, Aired, Director, Credits, NfoPath, Playcount, ",
+                 "DisplaySeason, DisplayEpisode, DateAdded, Runtime, Votes, VideoSource, HasSub, SubEpisode, ",
+                 "iLastPlayed, strIMDB, strTMDB, strTVDB",
                  ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM episode;")
 
                 Dim parTVEpisodeID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTVEpisodeID", DbType.UInt64, 0, "idEpisode")
@@ -4244,9 +4244,9 @@ Public Class Database
                 Using SQLcommandTVVStreams As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                     SQLcommandTVVStreams.CommandText = String.Concat("DELETE FROM TVVStreams WHERE TVEpID = ", _episode.ID, ";")
                     SQLcommandTVVStreams.ExecuteNonQuery()
-                    SQLcommandTVVStreams.CommandText = String.Concat("INSERT OR REPLACE INTO TVVStreams (", _
-                       "TVEpID, StreamID, Video_Width, Video_Height, Video_Codec, Video_Duration, Video_ScanType, Video_AspectDisplayRatio,", _
-                       "Video_Language, Video_LongLanguage, Video_Bitrate, Video_MultiViewCount, Video_FileSize, Video_MultiViewLayout, ", _
+                    SQLcommandTVVStreams.CommandText = String.Concat("INSERT OR REPLACE INTO TVVStreams (",
+                       "TVEpID, StreamID, Video_Width, Video_Height, Video_Codec, Video_Duration, Video_ScanType, Video_AspectDisplayRatio,",
+                       "Video_Language, Video_LongLanguage, Video_Bitrate, Video_MultiViewCount, Video_FileSize, Video_MultiViewLayout, ",
                        "Video_StereoMode) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);")
 
                     Dim parVideo_EpID As SQLite.SQLiteParameter = SQLcommandTVVStreams.Parameters.Add("parVideo_EpID", DbType.UInt64, 0, "TVEpID")
@@ -4288,8 +4288,8 @@ Public Class Database
                 Using SQLcommandTVAStreams As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                     SQLcommandTVAStreams.CommandText = String.Concat("DELETE FROM TVAStreams WHERE TVEpID = ", _episode.ID, ";")
                     SQLcommandTVAStreams.ExecuteNonQuery()
-                    SQLcommandTVAStreams.CommandText = String.Concat("INSERT OR REPLACE INTO TVAStreams (", _
-                       "TVEpID, StreamID, Audio_Language, Audio_LongLanguage, Audio_Codec, Audio_Channel, Audio_Bitrate", _
+                    SQLcommandTVAStreams.CommandText = String.Concat("INSERT OR REPLACE INTO TVAStreams (",
+                       "TVEpID, StreamID, Audio_Language, Audio_LongLanguage, Audio_Codec, Audio_Channel, Audio_Bitrate",
                        ") VALUES (?,?,?,?,?,?,?);")
 
                     Dim parAudio_EpID As SQLite.SQLiteParameter = SQLcommandTVAStreams.Parameters.Add("parAudio_EpID", DbType.UInt64, 0, "TVEpID")
@@ -4318,8 +4318,8 @@ Public Class Database
                     SQLcommandTVSubs.CommandText = String.Concat("DELETE FROM TVSubs WHERE TVEpID = ", _episode.ID, ";")
                     SQLcommandTVSubs.ExecuteNonQuery()
 
-                    SQLcommandTVSubs.CommandText = String.Concat("INSERT OR REPLACE INTO TVSubs (", _
-                       "TVEpID, StreamID, Subs_Language, Subs_LongLanguage, Subs_Type, Subs_Path, Subs_Forced", _
+                    SQLcommandTVSubs.CommandText = String.Concat("INSERT OR REPLACE INTO TVSubs (",
+                       "TVEpID, StreamID, Subs_Language, Subs_LongLanguage, Subs_Type, Subs_Path, Subs_Forced",
                        ") VALUES (?,?,?,?,?,?,?);")
                     Dim parSubs_EpID As SQLite.SQLiteParameter = SQLcommandTVSubs.Parameters.Add("parSubs_EpID", DbType.UInt64, 0, "TVEpID")
                     Dim parSubs_StreamID As SQLite.SQLiteParameter = SQLcommandTVSubs.Parameters.Add("parSubs_StreamID", DbType.UInt64, 0, "StreamID")
@@ -4404,8 +4404,8 @@ Public Class Database
 
         If Not doesExist Then
             Using SQLcommand_insert_seasons As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand_insert_seasons.CommandText = String.Concat("INSERT INTO seasons (", _
-                                                                      "idSeason, idShow, Season, SeasonText, Lock, Mark, New, strTVDB, strTMDB, strAired, strPlot", _
+                SQLcommand_insert_seasons.CommandText = String.Concat("INSERT INTO seasons (",
+                                                                      "idSeason, idShow, Season, SeasonText, Lock, Mark, New, strTVDB, strTMDB, strAired, strPlot",
                                                                       ") VALUES (NULL,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM seasons;")
                 Dim par_seasons_idShow As SQLite.SQLiteParameter = SQLcommand_insert_seasons.Parameters.Add("par_seasons_idShow", DbType.UInt64, 0, "idShow")
                 Dim par_seasons_Season As SQLite.SQLiteParameter = SQLcommand_insert_seasons.Parameters.Add("par_seasons_Season", DbType.Int32, 0, "Season")
@@ -4485,18 +4485,18 @@ Public Class Database
         If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
             If IsNew Then
-                SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO tvshow (", _
-                 "idSource, TVShowPath, New, Mark, TVDB, Lock, ListTitle, EpisodeGuide, ", _
-                 "Plot, Genre, Premiered, Studio, MPAA, Rating, NfoPath, Language, Ordering, ", _
-                 "Status, ThemePath, EFanartsPath, Runtime, Title, Votes, EpisodeSorting, SortTitle, ", _
-                 "strIMDB, strTMDB, strOriginalTitle", _
+                SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO tvshow (",
+                 "idSource, TVShowPath, New, Mark, TVDB, Lock, ListTitle, EpisodeGuide, ",
+                 "Plot, Genre, Premiered, Studio, MPAA, Rating, NfoPath, Language, Ordering, ",
+                 "Status, ThemePath, EFanartsPath, Runtime, Title, Votes, EpisodeSorting, SortTitle, ",
+                 "strIMDB, strTMDB, strOriginalTitle",
                  ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM tvshow;")
             Else
-                SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO tvshow (", _
-                 "idShow, idSource, TVShowPath, New, Mark, TVDB, Lock, ListTitle, EpisodeGuide, ", _
-                 "Plot, Genre, Premiered, Studio, MPAA, Rating, NfoPath, Language, Ordering, ", _
-                 "Status, ThemePath, EFanartsPath, Runtime, Title, Votes, EpisodeSorting, SortTitle, ", _
-                 "strIMDB, strTMDB, strOriginalTitle", _
+                SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO tvshow (",
+                 "idShow, idSource, TVShowPath, New, Mark, TVDB, Lock, ListTitle, EpisodeGuide, ",
+                 "Plot, Genre, Premiered, Studio, MPAA, Rating, NfoPath, Language, Ordering, ",
+                 "Status, ThemePath, EFanartsPath, Runtime, Title, Votes, EpisodeSorting, SortTitle, ",
+                 "strIMDB, strTMDB, strOriginalTitle",
                  ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM tvshow;")
                 Dim parTVShowID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTVShowID", DbType.UInt64, 0, "idShow")
                 parTVShowID.Value = _show.ID
@@ -4806,7 +4806,7 @@ Public Class Database
         Try
             Using SQLtransaction As SQLite.SQLiteTransaction = _myvideosDBConn.BeginTransaction()
                 Using SQLCommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-                    SQLCommand.CommandText = String.Concat("INSERT OR REPLACE INTO Addons (", _
+                    SQLCommand.CommandText = String.Concat("INSERT OR REPLACE INTO Addons (",
                       "AddonID, Version) VALUES (?,?);")
                     Dim parAddonID As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parAddonID", DbType.Int32, 0, "AddonID")
                     Dim parVersion As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parVersion", DbType.String, 0, "Version")
@@ -4892,7 +4892,7 @@ Public Class Database
 #Region "Constructors"
 
         Public Sub New()
-            Me.Clear()
+            Clear()
         End Sub
 
 #End Region 'Constructors
@@ -4901,37 +4901,37 @@ Public Class Database
 
         Public Property DBMovie() As Database.DBElement
             Get
-                Return Me._dbmovie
+                Return _dbmovie
             End Get
             Set(ByVal value As Database.DBElement)
-                Me._dbmovie = value
+                _dbmovie = value
             End Set
         End Property
 
         Public Property ID() As Long
             Get
-                Return Me._id
+                Return _id
             End Get
             Set(ByVal value As Long)
-                Me._id = value
+                _id = value
             End Set
         End Property
 
         Public Property ListTitle() As String
             Get
-                Return Me._listtitle
+                Return _listtitle
             End Get
             Set(ByVal value As String)
-                Me._listtitle = value
+                _listtitle = value
             End Set
         End Property
 
         Public Property Order() As Integer
             Get
-                Return Me._order
+                Return _order
             End Get
             Set(ByVal value As Integer)
-                Me._order = value
+                _order = value
             End Set
         End Property
 
@@ -4940,14 +4940,14 @@ Public Class Database
 #Region "Methods"
 
         Public Sub Clear()
-            Me._dbmovie = New Database.DBElement
-            Me._id = -1
-            Me._order = 0
-            Me._listtitle = String.Empty
+            _dbmovie = New Database.DBElement
+            _id = -1
+            _order = 0
+            _listtitle = String.Empty
         End Sub
 
         Public Function CompareTo(ByVal other As MovieInSet) As Integer Implements IComparable(Of MovieInSet).CompareTo
-            Return (Me.Order).CompareTo(other.Order)
+            Return (Order).CompareTo(other.Order)
         End Function
 
 #End Region 'Methods
@@ -4966,7 +4966,7 @@ Public Class Database
 #Region "Constructors"
 
         Public Sub New()
-            Me.Clear()
+            Clear()
         End Sub
 
 #End Region 'Constructors
@@ -4975,18 +4975,18 @@ Public Class Database
 
         Public Property Name() As String
             Get
-                Return Me._name
+                Return _name
             End Get
             Set(ByVal value As String)
-                Me._name = value
+                _name = value
             End Set
         End Property
         Public Property Statement() As String
             Get
-                Return Me._statement
+                Return _statement
             End Get
             Set(ByVal value As String)
-                Me._statement = value
+                _statement = value
             End Set
         End Property
 
@@ -4995,8 +4995,8 @@ Public Class Database
 #Region "Methods"
 
         Public Sub Clear()
-            Me._name = String.Empty
-            Me._statement = String.Empty
+            _name = String.Empty
+            _statement = String.Empty
         End Sub
 
 #End Region 'Methods
@@ -5054,7 +5054,7 @@ Public Class Database
 #Region "Constructors"
 
         Public Sub New()
-            Me.Clear()
+            Clear()
         End Sub
 
 #End Region 'Constructors
@@ -5063,496 +5063,496 @@ Public Class Database
 
         Public Property ActorThumbs() As List(Of String)
             Get
-                Return Me._actorthumbs
+                Return _actorthumbs
             End Get
             Set(ByVal value As List(Of String))
-                Me._actorthumbs = value
+                _actorthumbs = value
             End Set
         End Property
 
         Public ReadOnly Property ActorThumbsSpecified() As Boolean
             Get
-                Return Me._actorthumbs.Count > 0
+                Return _actorthumbs.Count > 0
             End Get
         End Property
 
         Public Property DateAdded() As Long
             Get
-                Return Me._dateadded
+                Return _dateadded
             End Get
             Set(ByVal value As Long)
-                Me._dateadded = value
+                _dateadded = value
             End Set
         End Property
 
         Public Property DateModified() As Long
             Get
-                Return Me._datemodified
+                Return _datemodified
             End Get
             Set(ByVal value As Long)
-                Me._datemodified = value
+                _datemodified = value
             End Set
         End Property
 
         Public Property Episodes() As List(Of DBElement)
             Get
-                Return Me._episodes
+                Return _episodes
             End Get
             Set(ByVal value As List(Of DBElement))
-                Me._episodes = value
+                _episodes = value
             End Set
         End Property
 
         Public ReadOnly Property EpisodesSpecified() As Boolean
             Get
-                Return Me._episodes.Count > 0
+                Return _episodes.Count > 0
             End Get
         End Property
 
         Public Property EpisodeSorting() As Enums.EpisodeSorting
             Get
-                Return Me._episodesorting
+                Return _episodesorting
             End Get
             Set(ByVal value As Enums.EpisodeSorting)
-                Me._episodesorting = value
+                _episodesorting = value
             End Set
         End Property
 
         Public Property ExtrafanartsPath() As String
             Get
-                Return Me._extrafanartspath
+                Return _extrafanartspath
             End Get
             Set(ByVal value As String)
-                Me._extrafanartspath = value
+                _extrafanartspath = value
             End Set
         End Property
 
         Public ReadOnly Property ExtrafanartsPathSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._extrafanartspath)
+                Return Not String.IsNullOrEmpty(_extrafanartspath)
             End Get
         End Property
 
         Public Property ExtrathumbsPath() As String
             Get
-                Return Me._extrathumbspath
+                Return _extrathumbspath
             End Get
             Set(ByVal value As String)
-                Me._extrathumbspath = value
+                _extrathumbspath = value
             End Set
         End Property
 
         Public ReadOnly Property ExtrathumbsPathSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._extrathumbspath)
+                Return Not String.IsNullOrEmpty(_extrathumbspath)
             End Get
         End Property
 
         Public Property Filename() As String
             Get
-                Return Me._filename
+                Return _filename
             End Get
             Set(ByVal value As String)
-                Me._filename = value
+                _filename = value
             End Set
         End Property
 
         Public ReadOnly Property FilenameSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._filename)
+                Return Not String.IsNullOrEmpty(_filename)
             End Get
         End Property
 
         Public Property FilenameID() As Long
             Get
-                Return Me._filenameid
+                Return _filenameid
             End Get
             Set(ByVal value As Long)
-                Me._filenameid = value
+                _filenameid = value
             End Set
         End Property
 
         Public ReadOnly Property FilenameIDSpecified() As Boolean
             Get
-                Return Not Me._filenameid = -1
+                Return Not _filenameid = -1
             End Get
         End Property
 
         Public Property ID() As Long
             Get
-                Return Me._id
+                Return _id
             End Get
             Set(ByVal value As Long)
-                Me._id = value
+                _id = value
             End Set
         End Property
 
         Public ReadOnly Property IDSpecified() As Boolean
             Get
-                Return Not Me._id = -1
+                Return Not _id = -1
             End Get
         End Property
 
         Public Property ImagesContainer() As MediaContainers.ImagesContainer
             Get
-                Return Me._imagescontainer
+                Return _imagescontainer
             End Get
             Set(ByVal value As MediaContainers.ImagesContainer)
-                Me._imagescontainer = value
+                _imagescontainer = value
             End Set
         End Property
 
         Public Property IsLock() As Boolean
             Get
-                Return Me._islock
+                Return _islock
             End Get
             Set(ByVal value As Boolean)
-                Me._islock = value
+                _islock = value
             End Set
         End Property
 
         Public Property IsMark() As Boolean
             Get
-                Return Me._ismark
+                Return _ismark
             End Get
             Set(ByVal value As Boolean)
-                Me._ismark = value
+                _ismark = value
             End Set
         End Property
 
         Public Property IsMarkCustom1() As Boolean
             Get
-                Return Me._ismarkcustom1
+                Return _ismarkcustom1
             End Get
             Set(ByVal value As Boolean)
-                Me._ismarkcustom1 = value
+                _ismarkcustom1 = value
             End Set
         End Property
 
         Public Property IsMarkCustom2() As Boolean
             Get
-                Return Me._ismarkcustom2
+                Return _ismarkcustom2
             End Get
             Set(ByVal value As Boolean)
-                Me._ismarkcustom2 = value
+                _ismarkcustom2 = value
             End Set
         End Property
 
         Public Property IsMarkCustom3() As Boolean
             Get
-                Return Me._ismarkcustom3
+                Return _ismarkcustom3
             End Get
             Set(ByVal value As Boolean)
-                Me._ismarkcustom3 = value
+                _ismarkcustom3 = value
             End Set
         End Property
 
         Public Property IsMarkCustom4() As Boolean
             Get
-                Return Me._ismarkcustom4
+                Return _ismarkcustom4
             End Get
             Set(ByVal value As Boolean)
-                Me._ismarkcustom4 = value
+                _ismarkcustom4 = value
             End Set
         End Property
 
         Public Property IsOnline() As Boolean
             Get
-                Return Me._isonline
+                Return _isonline
             End Get
             Set(ByVal value As Boolean)
-                Me._isonline = value
+                _isonline = value
             End Set
         End Property
 
         Public Property IsSingle() As Boolean
             Get
-                Return Me._issingle
+                Return _issingle
             End Get
             Set(ByVal value As Boolean)
-                Me._issingle = value
+                _issingle = value
             End Set
         End Property
 
         Public Property Language() As String
             Get
-                Return Me._language
+                Return _language
             End Get
             Set(ByVal value As String)
-                Me._language = value
+                _language = value
             End Set
         End Property
 
         Public ReadOnly Property LanguageSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._language)
+                Return Not String.IsNullOrEmpty(_language)
             End Get
         End Property
 
         Public Property ListTitle() As String
             Get
-                Return Me._listtitle
+                Return _listtitle
             End Get
             Set(ByVal value As String)
-                Me._listtitle = value
+                _listtitle = value
             End Set
         End Property
 
         Public ReadOnly Property ListTitleSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._listtitle)
+                Return Not String.IsNullOrEmpty(_listtitle)
             End Get
         End Property
 
         Public Property Movie() As MediaContainers.Movie
             Get
-                Return Me._movie
+                Return _movie
             End Get
             Set(ByVal value As MediaContainers.Movie)
-                Me._movie = value
+                _movie = value
             End Set
         End Property
 
         Public ReadOnly Property MovieSpecified() As Boolean
             Get
-                Return Me._movie IsNot Nothing
+                Return _movie IsNot Nothing
             End Get
         End Property
 
         Public Property MovieList() As List(Of DBElement)
             Get
-                Return Me._movielist
+                Return _movielist
             End Get
             Set(ByVal value As List(Of DBElement))
-                Me._movielist = value
+                _movielist = value
             End Set
         End Property
 
         Public ReadOnly Property MovieListSpecified() As Boolean
             Get
-                Return Me._movielist.Count > 0
+                Return _movielist.Count > 0
             End Get
         End Property
 
         Public Property MovieSet() As MediaContainers.MovieSet
             Get
-                Return Me._movieset
+                Return _movieset
             End Get
             Set(ByVal value As MediaContainers.MovieSet)
-                Me._movieset = value
+                _movieset = value
             End Set
         End Property
 
         Public ReadOnly Property MovieSetSpecified() As Boolean
             Get
-                Return Me._movieset IsNot Nothing
+                Return _movieset IsNot Nothing
             End Get
         End Property
 
         Public Property NfoPath() As String
             Get
-                Return Me._nfopath
+                Return _nfopath
             End Get
             Set(ByVal value As String)
-                Me._nfopath = value
+                _nfopath = value
             End Set
         End Property
 
         Public ReadOnly Property NfoPathSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._nfopath)
+                Return Not String.IsNullOrEmpty(_nfopath)
             End Get
         End Property
 
         Public Property Ordering() As Enums.Ordering
             Get
-                Return Me._ordering
+                Return _ordering
             End Get
             Set(ByVal value As Enums.Ordering)
-                Me._ordering = value
+                _ordering = value
             End Set
         End Property
 
         Public Property OutOfTolerance() As Boolean
             Get
-                Return Me._outoftolerance
+                Return _outoftolerance
             End Get
             Set(ByVal value As Boolean)
-                Me._outoftolerance = value
+                _outoftolerance = value
             End Set
         End Property
 
         Public Property Seasons() As List(Of DBElement)
             Get
-                Return Me._seasons
+                Return _seasons
             End Get
             Set(ByVal value As List(Of DBElement))
-                Me._seasons = value
+                _seasons = value
             End Set
         End Property
 
         Public ReadOnly Property SeasonsSpecified() As Boolean
             Get
-                Return Me._seasons.Count > 0
+                Return _seasons.Count > 0
             End Get
         End Property
 
         Public Property ShowID() As Long
             Get
-                Return Me._showid
+                Return _showid
             End Get
             Set(ByVal value As Long)
-                Me._showid = value
+                _showid = value
             End Set
         End Property
 
         Public ReadOnly Property ShowIDSpecified() As Boolean
             Get
-                Return Not Me._showid = -1
+                Return Not _showid = -1
             End Get
         End Property
 
         Public Property ShowPath() As String
             Get
-                Return Me._showpath
+                Return _showpath
             End Get
             Set(ByVal value As String)
-                Me._showpath = value
+                _showpath = value
             End Set
         End Property
 
         Public ReadOnly Property ShowPathSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._showpath)
+                Return Not String.IsNullOrEmpty(_showpath)
             End Get
         End Property
 
         Public Property SortMethod() As Enums.SortMethod_MovieSet
             Get
-                Return Me._sortmethod
+                Return _sortmethod
             End Get
             Set(ByVal value As Enums.SortMethod_MovieSet)
-                Me._sortmethod = value
+                _sortmethod = value
             End Set
         End Property
 
         Public Property Source() As DBSource
             Get
-                Return Me._source
+                Return _source
             End Get
             Set(ByVal value As DBSource)
-                Me._source = value
+                _source = value
             End Set
         End Property
 
         Public ReadOnly Property SourceSpecified() As Boolean
             Get
-                Return Not Me._source.ID = -1
+                Return Not _source.ID = -1
             End Get
         End Property
 
         Public Property Subtitles() As List(Of MediaInfo.Subtitle)
             Get
-                Return Me._subtitles
+                Return _subtitles
             End Get
             Set(ByVal value As List(Of MediaInfo.Subtitle))
-                Me._subtitles = value
+                _subtitles = value
             End Set
         End Property
 
         Public ReadOnly Property SubtitlesSpecified() As Boolean
             Get
-                Return Me._subtitles.Count > 0
+                Return _subtitles.Count > 0
             End Get
         End Property
 
         Public Property ThemePath() As String
             Get
-                Return Me._themepath
+                Return _themepath
             End Get
             Set(ByVal value As String)
-                Me._themepath = value
+                _themepath = value
             End Set
         End Property
 
         Public ReadOnly Property ThemePathSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._themepath)
+                Return Not String.IsNullOrEmpty(_themepath)
             End Get
         End Property
 
         Public Property Trailer() As MediaContainers.Trailer
             Get
-                Return Me._trailer
+                Return _trailer
             End Get
             Set(ByVal value As MediaContainers.Trailer)
-                Me._trailer = value
+                _trailer = value
             End Set
         End Property
 
         Public ReadOnly Property TrailerSpecified() As Boolean
             Get
-                Return Me._trailer.TrailerOriginal IsNot Nothing AndAlso Me._trailer.TrailerOriginal.hasMemoryStream
+                Return _trailer.TrailerOriginal IsNot Nothing AndAlso _trailer.TrailerOriginal.hasMemoryStream
             End Get
         End Property
 
         Public Property TVEpisode() As MediaContainers.EpisodeDetails
             Get
-                Return Me._tvepisode
+                Return _tvepisode
             End Get
             Set(ByVal value As MediaContainers.EpisodeDetails)
-                Me._tvepisode = value
+                _tvepisode = value
             End Set
         End Property
 
         Public ReadOnly Property TVEpisodeSpecified() As Boolean
             Get
-                Return Me._tvepisode IsNot Nothing
+                Return _tvepisode IsNot Nothing
             End Get
         End Property
 
         Public Property TVSeason() As MediaContainers.SeasonDetails
             Get
-                Return Me._tvseason
+                Return _tvseason
             End Get
             Set(ByVal value As MediaContainers.SeasonDetails)
-                Me._tvseason = value
+                _tvseason = value
             End Set
         End Property
 
         Public ReadOnly Property TVSeasonSpecified() As Boolean
             Get
-                Return Me._tvseason IsNot Nothing
+                Return _tvseason IsNot Nothing
             End Get
         End Property
 
         Public Property TVShow() As MediaContainers.TVShow
             Get
-                Return Me._tvshow
+                Return _tvshow
             End Get
             Set(ByVal value As MediaContainers.TVShow)
-                Me._tvshow = value
+                _tvshow = value
             End Set
         End Property
 
         Public ReadOnly Property TVShowSpecified() As Boolean
             Get
-                Return Me._tvshow IsNot Nothing
+                Return _tvshow IsNot Nothing
             End Get
         End Property
 
         Public Property VideoSource() As String
             Get
-                Return Me._videosource
+                Return _videosource
             End Get
             Set(ByVal value As String)
-                Me._videosource = value
+                _videosource = value
             End Set
         End Property
 
         Public ReadOnly Property VideoSourceSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._videosource)
+                Return Not String.IsNullOrEmpty(_videosource)
             End Get
         End Property
 
@@ -5561,41 +5561,41 @@ Public Class Database
 #Region "Methods"
 
         Public Sub Clear()
-            Me._actorthumbs = New List(Of String)
-            Me._dateadded = -1
-            Me._datemodified = -1
-            Me._episodes = New List(Of DBElement)
-            Me._episodesorting = Enums.EpisodeSorting.Episode
-            Me._extrafanartspath = String.Empty
-            Me._extrathumbspath = String.Empty
-            Me._filename = String.Empty
-            Me._filenameid = -1
-            Me._id = -1
-            Me._imagescontainer = New MediaContainers.ImagesContainer
-            Me._islock = False
-            Me._ismark = False
-            Me._isonline = False
-            Me._issingle = False
-            Me._language = String.Empty
-            Me._listtitle = String.Empty
-            Me._movie = Nothing
-            Me._movielist = New List(Of DBElement)
-            Me._movieset = Nothing
-            Me._nfopath = String.Empty
-            Me._ordering = Enums.Ordering.Standard
-            Me._outoftolerance = False
-            Me._seasons = New List(Of DBElement)
-            Me._showid = -1
-            Me._showpath = String.Empty
-            Me._sortmethod = Enums.SortMethod_MovieSet.Year
-            Me._source = New DBSource
-            Me._subtitles = New List(Of MediaInfo.Subtitle)
-            Me._themepath = String.Empty
-            Me._trailer = New MediaContainers.Trailer
-            Me._tvepisode = Nothing
-            Me._tvseason = Nothing
-            Me._tvshow = Nothing
-            Me._videosource = String.Empty
+            _actorthumbs = New List(Of String)
+            _dateadded = -1
+            _datemodified = -1
+            _episodes = New List(Of DBElement)
+            _episodesorting = Enums.EpisodeSorting.Episode
+            _extrafanartspath = String.Empty
+            _extrathumbspath = String.Empty
+            _filename = String.Empty
+            _filenameid = -1
+            _id = -1
+            _imagescontainer = New MediaContainers.ImagesContainer
+            _islock = False
+            _ismark = False
+            _isonline = False
+            _issingle = False
+            _language = String.Empty
+            _listtitle = String.Empty
+            _movie = Nothing
+            _movielist = New List(Of DBElement)
+            _movieset = Nothing
+            _nfopath = String.Empty
+            _ordering = Enums.Ordering.Standard
+            _outoftolerance = False
+            _seasons = New List(Of DBElement)
+            _showid = -1
+            _showpath = String.Empty
+            _sortmethod = Enums.SortMethod_MovieSet.Year
+            _source = New DBSource
+            _subtitles = New List(Of MediaInfo.Subtitle)
+            _themepath = String.Empty
+            _trailer = New MediaContainers.Trailer
+            _tvepisode = Nothing
+            _tvseason = Nothing
+            _tvshow = Nothing
+            _videosource = String.Empty
         End Sub
 
         Public Function CloneDeep() As Object Implements ICloneable.Clone
@@ -5638,7 +5638,7 @@ Public Class Database
 #Region "Constructors"
 
         Public Sub New()
-            Me.Clear()
+            Clear()
         End Sub
 
 #End Region 'Constructors
@@ -5647,139 +5647,139 @@ Public Class Database
 
         Public Property EpisodeSorting() As Enums.EpisodeSorting
             Get
-                Return Me._episodesorting
+                Return _episodesorting
             End Get
             Set(ByVal value As Enums.EpisodeSorting)
-                Me._episodesorting = value
+                _episodesorting = value
             End Set
         End Property
 
         Public Property Exclude() As Boolean
             Get
-                Return Me._exclude
+                Return _exclude
             End Get
             Set(ByVal value As Boolean)
-                Me._exclude = value
+                _exclude = value
             End Set
         End Property
 
         Public Property GetYear() As Boolean
             Get
-                Return Me._getyear
+                Return _getyear
             End Get
             Set(ByVal value As Boolean)
-                Me._getyear = value
+                _getyear = value
             End Set
         End Property
 
         Public Property ID() As Long
             Get
-                Return Me._id
+                Return _id
             End Get
             Set(ByVal value As Long)
-                Me._id = value
+                _id = value
             End Set
         End Property
 
         Public ReadOnly Property IDSpecified() As Boolean
             Get
-                Return Not Me._id = -1
+                Return Not _id = -1
             End Get
         End Property
 
         Public Property IsSingle() As Boolean
             Get
-                Return Me._issingle
+                Return _issingle
             End Get
             Set(ByVal value As Boolean)
-                Me._issingle = value
+                _issingle = value
             End Set
         End Property
 
         Public Property Language() As String
             Get
-                Return Me._language
+                Return _language
             End Get
             Set(ByVal value As String)
-                Me._language = value
+                _language = value
             End Set
         End Property
 
         Public ReadOnly Property LanguageSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._language)
+                Return Not String.IsNullOrEmpty(_language)
             End Get
         End Property
 
         Public Property LastScan() As String
             Get
-                Return Me._lastscan
+                Return _lastscan
             End Get
             Set(ByVal value As String)
-                Me._lastscan = value
+                _lastscan = value
             End Set
         End Property
 
         Public ReadOnly Property LastScanSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._lastscan)
+                Return Not String.IsNullOrEmpty(_lastscan)
             End Get
         End Property
 
         Public Property Name() As String
             Get
-                Return Me._name
+                Return _name
             End Get
             Set(ByVal value As String)
-                Me._name = value
+                _name = value
             End Set
         End Property
 
         Public ReadOnly Property NameSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._name)
+                Return Not String.IsNullOrEmpty(_name)
             End Get
         End Property
 
         Public Property Ordering() As Enums.Ordering
             Get
-                Return Me._ordering
+                Return _ordering
             End Get
             Set(ByVal value As Enums.Ordering)
-                Me._ordering = value
+                _ordering = value
             End Set
         End Property
 
         Public Property Path() As String
             Get
-                Return Me._path
+                Return _path
             End Get
             Set(ByVal value As String)
-                Me._path = value
+                _path = value
             End Set
         End Property
 
         Public ReadOnly Property PathSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._path)
+                Return Not String.IsNullOrEmpty(_path)
             End Get
         End Property
 
         Public Property Recursive() As Boolean
             Get
-                Return Me._recursive
+                Return _recursive
             End Get
             Set(ByVal value As Boolean)
-                Me._recursive = value
+                _recursive = value
             End Set
         End Property
 
         Public Property UseFolderName() As Boolean
             Get
-                Return Me._usefoldername
+                Return _usefoldername
             End Get
             Set(ByVal value As Boolean)
-                Me._usefoldername = value
+                _usefoldername = value
             End Set
         End Property
 
@@ -5788,18 +5788,18 @@ Public Class Database
 #Region "Methods"
 
         Public Sub Clear()
-            Me._episodesorting = Enums.EpisodeSorting.Episode
-            Me._exclude = False
-            Me._getyear = False
-            Me._id = -1
-            Me._issingle = False
-            Me._language = String.Empty
-            Me._lastscan = String.Empty
-            Me._name = String.Empty
-            Me._ordering = Enums.Ordering.Standard
-            Me._path = String.Empty
-            Me._recursive = False
-            Me._usefoldername = False
+            _episodesorting = Enums.EpisodeSorting.Episode
+            _exclude = False
+            _getyear = False
+            _id = -1
+            _issingle = False
+            _language = String.Empty
+            _lastscan = String.Empty
+            _name = String.Empty
+            _ordering = Enums.Ordering.Standard
+            _path = String.Empty
+            _recursive = False
+            _usefoldername = False
         End Sub
 
 #End Region 'Methods
