@@ -899,27 +899,10 @@ Namespace MediaContainers
             End Set
         End Property
 
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public ReadOnly Property IDSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me.MovieID.ID)
-            End Get
-        End Property
-
-        <XmlIgnore()> _
-        Public Property IDMovieDB() As String
-            Get
-                Return Me.MovieID.IDMovieDB
-            End Get
-            Set(ByVal value As String)
-                Me.MovieID.IDMovieDB = value
-            End Set
-        End Property
-
-        <XmlIgnore()> _
-        Public ReadOnly Property IDMovieDBSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(Me.MovieID.IDMovieDB)
             End Get
         End Property
 
@@ -1660,7 +1643,6 @@ Namespace MediaContainers
         <Serializable()> _
         Class _MovieID
             Private _imdbid As String
-            Private _moviedb As String
             Private _tmdbid As String
 
             Sub New()
@@ -1669,41 +1651,23 @@ Namespace MediaContainers
 
             Public Sub Clear()
                 _imdbid = String.Empty
-                _moviedb = String.Empty
                 _tmdbid = String.Empty
             End Sub
 
             <XmlText()> _
             Public Property ID() As String
                 Get
-                    Return If(Not String.IsNullOrEmpty(_imdbid), If(_imdbid.Substring(0, 2) = "tt", If(Not String.IsNullOrEmpty(_moviedb) AndAlso _imdbid.Trim = "tt-1", _imdbid.Replace("tt", String.Empty), _imdbid.Trim), If(Not _imdbid.Trim = "tt-1", If(Not String.IsNullOrEmpty(_imdbid), String.Concat("tt", _imdbid), String.Empty), _imdbid)), String.Empty)
+                    Return If(Not String.IsNullOrEmpty(_imdbid), If(_imdbid.Substring(0, 2) = "tt", If(_imdbid.Trim = "tt-1", _imdbid.Replace("tt", String.Empty), _imdbid.Trim), If(Not _imdbid.Trim = "tt-1", If(Not String.IsNullOrEmpty(_imdbid), String.Concat("tt", _imdbid), String.Empty), _imdbid)), String.Empty)
                 End Get
                 Set(ByVal value As String)
                     _imdbid = If(Not String.IsNullOrEmpty(value), If(value.Substring(0, 2) = "tt", value.Trim, String.Concat("tt", value.Trim)), String.Empty)
                 End Set
             End Property
 
-            <XmlIgnore()> _
+            <XmlIgnore()>
             Public ReadOnly Property IDSpecified() As Boolean
                 Get
                     Return Not String.IsNullOrEmpty(_imdbid) AndAlso Not _imdbid = "tt"
-                End Get
-            End Property
-
-            <XmlAttribute("moviedb")> _
-            Public Property IDMovieDB() As String
-                Get
-                    Return _moviedb.Trim
-                End Get
-                Set(ByVal value As String)
-                    Me._moviedb = value.Trim
-                End Set
-            End Property
-
-            <XmlIgnore()> _
-            Public ReadOnly Property IDMovieDBSpecified() As Boolean
-                Get
-                    Return Not String.IsNullOrEmpty(Me._moviedb)
                 End Get
             End Property
 

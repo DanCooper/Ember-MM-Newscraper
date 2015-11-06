@@ -2204,9 +2204,6 @@ Public Class NFO
                     If movieToSave.Movie.TMDBIDSpecified Then
                         movieToSave.Movie.TMDBID = String.Empty
                     End If
-                    If movieToSave.Movie.IDMovieDBSpecified Then
-                        movieToSave.Movie.IDMovieDB = String.Empty
-                    End If
                 End If
 
                 'digit grouping symbol for Votes count
