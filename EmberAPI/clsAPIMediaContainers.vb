@@ -2281,10 +2281,37 @@ Namespace MediaContainers
             End Set
         End Property
 
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public ReadOnly Property AiredSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._aired)
+            End Get
+        End Property
+
+        <XmlIgnore()>
+        Public Property Scrapersource() As String
+            Get
+                Return Me._scrapersource
+            End Get
+            Set(ByVal value As String)
+                Me._scrapersource = value
+            End Set
+        End Property
+
+        <XmlElement("season")>
+        Public Property Season() As Integer
+            Get
+                Return Me._season
+            End Get
+            Set(ByVal value As Integer)
+                Me._season = value
+            End Set
+        End Property
+
+        <XmlIgnore()>
+        Public ReadOnly Property SeasonSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._season.ToString)
             End Get
         End Property
 
@@ -2298,37 +2325,10 @@ Namespace MediaContainers
             End Set
         End Property
 
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public ReadOnly Property TitleSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._title)
-            End Get
-        End Property
-
-        <XmlIgnore()> _
-        Public Property Scrapersource() As String
-            Get
-                Return Me._scrapersource
-            End Get
-            Set(ByVal value As String)
-                Me._scrapersource = value
-            End Set
-        End Property
-
-        <XmlElement("season")> _
-        Public Property Season() As Integer
-            Get
-                Return Me._season
-            End Get
-            Set(ByVal value As Integer)
-                Me._season = value
-            End Set
-        End Property
-
-        <XmlIgnore()> _
-        Public ReadOnly Property SeasonSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(Me._season.ToString)
             End Get
         End Property
 
@@ -2342,10 +2342,27 @@ Namespace MediaContainers
             End Set
         End Property
 
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public ReadOnly Property PlotSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._plot)
+            End Get
+        End Property
+
+        <XmlElement("tmdb")>
+        Public Property TMDB() As String
+            Get
+                Return Me._tmdb
+            End Get
+            Set(ByVal value As String)
+                Me._tmdb = value
+            End Set
+        End Property
+
+        <XmlIgnore()>
+        Public ReadOnly Property TMDBSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(Me._tmdb)
             End Get
         End Property
 
@@ -2359,27 +2376,10 @@ Namespace MediaContainers
             End Set
         End Property
 
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public ReadOnly Property TVDBSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._tvdb)
-            End Get
-        End Property
-
-        <XmlElement("tmdb")> _
-        Public Property TMDB() As String
-            Get
-                Return Me._tmdb
-            End Get
-            Set(ByVal value As String)
-                Me._tmdb = value
-            End Set
-        End Property
-
-        <XmlIgnore()> _
-        Public ReadOnly Property TMDBSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(Me._tmdb)
             End Get
         End Property
 
