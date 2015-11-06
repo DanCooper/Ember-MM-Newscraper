@@ -19,7 +19,6 @@
 ' ################################################################################
 
 Imports System.IO
-Imports System.Text.RegularExpressions
 Imports EmberAPI
 Imports NLog
 
@@ -556,12 +555,15 @@ Public Class dlgEditTVEpisode
         'Images and TabPages
         With tmpDBElement.ImagesContainer
 
+            'Load all images to MemoryStream and Bitmap
+            .LoadAllImages(Enums.ContentType.TVEpisode, True, False)
+
             'Fanart
             If Master.eSettings.TVEpisodeFanartAnyEnabled Then
                 If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodeFanart) AndAlso Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart) Then
                     btnSetFanartScrape.Enabled = False
                 End If
-                If .Fanart.ImageOriginal.Image IsNot Nothing OrElse .Fanart.ImageOriginal.FromMemoryStream Then
+                If .Fanart.ImageOriginal.Image IsNot Nothing Then
                     pbFanart.Image = .Fanart.ImageOriginal.Image
                     pbFanart.Tag = .Fanart
 
@@ -577,7 +579,7 @@ Public Class dlgEditTVEpisode
                 If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodePoster) Then
                     btnSetPosterScrape.Enabled = False
                 End If
-                If .Poster.ImageOriginal.Image IsNot Nothing OrElse .Poster.ImageOriginal.FromMemoryStream Then
+                If .Poster.ImageOriginal.Image IsNot Nothing Then
                     pbPoster.Image = .Poster.ImageOriginal.Image
                     pbPoster.Tag = .Poster
 

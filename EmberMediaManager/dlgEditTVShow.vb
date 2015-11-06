@@ -18,18 +18,14 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.IO
 Imports EmberAPI
 Imports NLog
-Imports System.Diagnostics
 
 Public Class dlgEditTVShow
 
 #Region "Fields"
 
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
-
-    Friend WithEvents bwExtrafanarts As New System.ComponentModel.BackgroundWorker
 
     Private tmpDBElement As New Database.DBElement
 
@@ -74,7 +70,7 @@ Public Class dlgEditTVShow
     Private Sub AddExtrafanartImage(ByVal sDescription As String, ByVal iIndex As Integer, tImage As MediaContainers.Image)
         Try
             If tImage.ImageOriginal.Image Is Nothing Then
-                tImage.ImageOriginal.FromMemoryStream()
+                tImage.LoadAndCache(Enums.ContentType.TVShow, True, True)
             End If
 
             ReDim Preserve pnlExtrafanartsImage(iIndex)
@@ -1049,14 +1045,6 @@ Public Class dlgEditTVShow
         End Try
     End Sub
 
-    Private Sub dlgEditShow_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
-        If bwExtrafanarts.IsBusy Then bwExtrafanarts.CancelAsync()
-        While bwExtrafanarts.IsBusy
-            Application.DoEvents()
-            Threading.Thread.Sleep(50)
-        End While
-    End Sub
-
     Private Sub dlgEditShow_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         If tmpDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(tmpDBElement, True) Then
             If Not Master.eSettings.TVShowBannerAnyEnabled Then tcEdit.TabPages.Remove(tpBanner)
@@ -1186,12 +1174,15 @@ Public Class dlgEditTVShow
         'Images and TabPages
         With tmpDBElement.ImagesContainer
 
+            'Load all images to MemoryStream and Bitmap
+            .LoadAllImages(Enums.ContentType.TVShow, True, False)
+
             'Banner
             If Master.eSettings.TVShowBannerAnyEnabled Then
                 If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainBanner) Then
                     btnSetBannerScrape.Enabled = False
                 End If
-                If .Banner.ImageOriginal.Image IsNot Nothing OrElse .Banner.ImageOriginal.FromMemoryStream Then
+                If .Banner.ImageOriginal.Image IsNot Nothing Then
                     pbBanner.Image = .Banner.ImageOriginal.Image
                     pbBanner.Tag = .Banner
 
@@ -1207,7 +1198,7 @@ Public Class dlgEditTVShow
                 If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainCharacterArt) Then
                     btnSetCharacterArtScrape.Enabled = False
                 End If
-                If .CharacterArt.ImageOriginal.Image IsNot Nothing OrElse .CharacterArt.ImageOriginal.FromMemoryStream Then
+                If .CharacterArt.ImageOriginal.Image IsNot Nothing Then
                     pbCharacterArt.Image = .CharacterArt.ImageOriginal.Image
                     pbCharacterArt.Tag = .CharacterArt
 
@@ -1223,7 +1214,7 @@ Public Class dlgEditTVShow
                 If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearArt) Then
                     btnSetClearArtScrape.Enabled = False
                 End If
-                If .ClearArt.ImageOriginal.Image IsNot Nothing OrElse .ClearArt.ImageOriginal.FromMemoryStream Then
+                If .ClearArt.ImageOriginal.Image IsNot Nothing Then
                     pbClearArt.Image = .ClearArt.ImageOriginal.Image
                     pbClearArt.Tag = .ClearArt
 
@@ -1239,7 +1230,7 @@ Public Class dlgEditTVShow
                 If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearLogo) Then
                     btnSetClearLogoScrape.Enabled = False
                 End If
-                If .ClearLogo.ImageOriginal.Image IsNot Nothing OrElse .ClearLogo.ImageOriginal.FromMemoryStream Then
+                If .ClearLogo.ImageOriginal.Image IsNot Nothing Then
                     pbClearLogo.Image = .ClearLogo.ImageOriginal.Image
                     pbClearLogo.Tag = .ClearLogo
 
@@ -1257,8 +1248,8 @@ Public Class dlgEditTVShow
                 'End If
                 If .Extrafanarts.Count > 0 Then
                     Dim iIndex As Integer = 0
-                    For Each img As MediaContainers.Image In .Extrafanarts
-                        AddExtrafanartImage(String.Concat(img.Width, " x ", img.Height), iIndex, img)
+                    For Each tImg As MediaContainers.Image In .Extrafanarts
+                        AddExtrafanartImage(String.Concat(tImg.Width, " x ", tImg.Height), iIndex, tImg)
                         iIndex += 1
                     Next
                 End If
@@ -1271,7 +1262,7 @@ Public Class dlgEditTVShow
                 If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart) Then
                     btnSetFanartScrape.Enabled = False
                 End If
-                If .Fanart.ImageOriginal.Image IsNot Nothing OrElse .Fanart.ImageOriginal.FromMemoryStream Then
+                If .Fanart.ImageOriginal.Image IsNot Nothing Then
                     pbFanart.Image = .Fanart.ImageOriginal.Image
                     pbFanart.Tag = .Fanart
 
@@ -1287,7 +1278,7 @@ Public Class dlgEditTVShow
                 If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainLandscape) Then
                     btnSetLandscapeScrape.Enabled = False
                 End If
-                If .Landscape.ImageOriginal.Image IsNot Nothing OrElse .Landscape.ImageOriginal.FromMemoryStream Then
+                If .Landscape.ImageOriginal.Image IsNot Nothing Then
                     pbLandscape.Image = .Landscape.ImageOriginal.Image
                     pbLandscape.Tag = .Landscape
 
@@ -1303,7 +1294,7 @@ Public Class dlgEditTVShow
                 If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainPoster) Then
                     btnSetPosterScrape.Enabled = False
                 End If
-                If .Poster.ImageOriginal.Image IsNot Nothing OrElse .Poster.ImageOriginal.FromMemoryStream Then
+                If .Poster.ImageOriginal.Image IsNot Nothing Then
                     pbPoster.Image = .Poster.ImageOriginal.Image
                     pbPoster.Tag = .Poster
 
@@ -1314,9 +1305,6 @@ Public Class dlgEditTVShow
                 tcEdit.TabPages.Remove(tpPoster)
             End If
         End With
-
-        bwExtrafanarts.WorkerSupportsCancellation = True
-        bwExtrafanarts.RunWorkerAsync()
     End Sub
 
     Private Sub lbGenre_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles clbGenre.ItemCheck

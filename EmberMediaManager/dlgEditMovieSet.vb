@@ -18,9 +18,7 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System
 Imports System.IO
-Imports System.Text.RegularExpressions
 Imports EmberAPI
 Imports NLog
 
@@ -245,7 +243,7 @@ Public Class dlgEditMovieSet
     End Sub
 
     Private Function FindMovie(ByVal lMov As MovieInSet) As Boolean
-        If lMov.ID = CType(sMovieID, Long) Then Return True Else  : Return False
+        If lMov.ID = CType(sMovieID, Long) Then Return True Else : Return False
     End Function
 
     Private Sub btnRemoveBanner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveBanner.Click
@@ -1024,12 +1022,15 @@ Public Class dlgEditMovieSet
         'Images and TabPages
         With tmpDBElement.ImagesContainer
 
+            'Load all images to MemoryStream and Bitmap
+            .LoadAllImages(Enums.ContentType.MovieSet, True, False)
+
             'Banner
             If Master.eSettings.MovieSetBannerAnyEnabled Then
                 If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainBanner) Then
                     btnSetBannerScrape.Enabled = False
                 End If
-                If .Banner.ImageOriginal.Image IsNot Nothing OrElse .Banner.ImageOriginal.FromMemoryStream Then
+                If .Banner.ImageOriginal.Image IsNot Nothing Then
                     pbBanner.Image = .Banner.ImageOriginal.Image
                     pbBanner.Tag = .Banner
 
@@ -1045,7 +1046,7 @@ Public Class dlgEditMovieSet
                 If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainClearArt) Then
                     btnSetClearArtScrape.Enabled = False
                 End If
-                If .ClearArt.ImageOriginal.Image IsNot Nothing OrElse .ClearArt.ImageOriginal.FromMemoryStream Then
+                If .ClearArt.ImageOriginal.Image IsNot Nothing Then
                     pbClearArt.Image = .ClearArt.ImageOriginal.Image
                     pbClearArt.Tag = .ClearArt
 
@@ -1061,7 +1062,7 @@ Public Class dlgEditMovieSet
                 If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainClearLogo) Then
                     btnSetClearLogoScrape.Enabled = False
                 End If
-                If .ClearLogo.ImageOriginal.Image IsNot Nothing OrElse .ClearLogo.ImageOriginal.FromMemoryStream Then
+                If .ClearLogo.ImageOriginal.Image IsNot Nothing Then
                     pbClearLogo.Image = .ClearLogo.ImageOriginal.Image
                     pbClearLogo.Tag = .ClearLogo
 
@@ -1077,7 +1078,7 @@ Public Class dlgEditMovieSet
                 If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainDiscArt) Then
                     btnSetDiscArtScrape.Enabled = False
                 End If
-                If .DiscArt.ImageOriginal.Image IsNot Nothing OrElse .DiscArt.ImageOriginal.FromMemoryStream Then
+                If .DiscArt.ImageOriginal.Image IsNot Nothing Then
                     pbDiscArt.Image = .DiscArt.ImageOriginal.Image
                     pbDiscArt.Tag = .DiscArt
 
@@ -1093,7 +1094,7 @@ Public Class dlgEditMovieSet
                 If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainFanart) Then
                     btnSetFanartScrape.Enabled = False
                 End If
-                If .Fanart.ImageOriginal.Image IsNot Nothing OrElse .Fanart.ImageOriginal.FromMemoryStream Then
+                If .Fanart.ImageOriginal.Image IsNot Nothing Then
                     pbFanart.Image = .Fanart.ImageOriginal.Image
                     pbFanart.Tag = .Fanart
 
@@ -1109,7 +1110,7 @@ Public Class dlgEditMovieSet
                 If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainLandscape) Then
                     btnSetLandscapeScrape.Enabled = False
                 End If
-                If .Landscape.ImageOriginal.Image IsNot Nothing OrElse .Landscape.ImageOriginal.FromMemoryStream Then
+                If .Landscape.ImageOriginal.Image IsNot Nothing Then
                     pbLandscape.Image = .Landscape.ImageOriginal.Image
                     pbLandscape.Tag = .Landscape
 
@@ -1125,7 +1126,7 @@ Public Class dlgEditMovieSet
                 If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainPoster) Then
                     btnSetPosterScrape.Enabled = False
                 End If
-                If .Poster.ImageOriginal.Image IsNot Nothing OrElse .Poster.ImageOriginal.FromMemoryStream Then
+                If .Poster.ImageOriginal.Image IsNot Nothing Then
                     pbPoster.Image = .Poster.ImageOriginal.Image
                     pbPoster.Tag = .Poster
 
