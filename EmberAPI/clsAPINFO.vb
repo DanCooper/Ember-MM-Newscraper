@@ -840,15 +840,15 @@ Public Class NFO
                 Next
             Else
                 'no existing season found -> add it as "missing" season
-                Dim mSeason As New Database.DBElement With { _
-                    .ID = -1, _
-                    .ImagesContainer = New MediaContainers.ImagesContainer, _
-                    .ShowID = DBTV.ShowID, _
-                    .ShowPath = DBTV.ShowPath, _
-                    .TVSeason = New MediaContainers.SeasonDetails With {.Season = aKnownSeason}}
+                Dim mSeason As New Database.DBElement With {.TVSeason = New MediaContainers.SeasonDetails With {.Season = aKnownSeason}}
                 mSeason = Master.DB.AddTVShowInfoToDBElement(mSeason, DBTV)
                 DBTV.Seasons.Add(MergeDataScraperResults_TVSeason(mSeason, ScrapedSeasonList, ScrapeOptions))
             End If
+        Next
+        'add all season informations to TVShow (for saving season informations to tv show NFO)
+        DBTV.TVShow.Seasons.Seasons.Clear()
+        For Each kSeason As Database.DBElement In DBTV.Seasons.OrderBy(Function(f) f.TVSeason.Season)
+            DBTV.TVShow.Seasons.Seasons.Add(kSeason.TVSeason)
         Next
 
         'Episodes
