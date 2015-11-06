@@ -375,7 +375,7 @@ Public Class dlgExportMovies
                                 If Not String.IsNullOrEmpty(tAud.LongLanguage) Then
                                     _audLongLanguage = tAud.LongLanguage
                                 End If
-                                _audDetails = String.Format("{0} / {1}ch", If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(138, "Unknown"), tAud.Codec), If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(138, "Unknown"), tAud.Channels)).ToUpper
+                                _audDetails = String.Format("{0}ch / {1}", If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(138, "Unknown"), tAud.Channels), If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(138, "Unknown"), tAud.Codec)).ToUpper
                             End If
 
                             If _curMovie.Movie.FileInfo.StreamDetails.Subtitle.Count > 0 Then
