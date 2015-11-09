@@ -2957,7 +2957,7 @@ Namespace MediaContainers
             End Get
         End Property
 
-        <XmlElement("tag")> _
+        <XmlElement("tag")>
         Public Property Tags() As List(Of String)
             Get
                 Return _tags
@@ -2969,6 +2969,13 @@ Namespace MediaContainers
                     _tags = value
                 End If
             End Set
+        End Property
+
+        <XmlIgnore()>
+        Public ReadOnly Property TagsSpecified() As Boolean
+            Get
+                Return Me._tags.Count > 0
+            End Get
         End Property
 
         <XmlElement("runtime")> _
