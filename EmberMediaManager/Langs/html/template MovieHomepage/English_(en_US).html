@@ -31,13 +31,13 @@ func_SearchActor(document.getElementById('actorform').value);
 </head>
 
 <body>
-<$MOVIE>	
+<$$MOVIE>	
 <div id="movie<$COUNT>" class="divmain">
 <div id="backgrounddiv<$COUNT>" class="page-background"></div> 
 <div class="paddingwrap">
 
 <div class="divmovietopbar"> 
-<h2 style="margin-bottom:0px; margin-top:0px; display:inline;"><$MOVIENAME> (<$YEAR>)</h2>
+<h2 style="margin-bottom:0px; margin-top:0px; display:inline;"><$TITLE> (<$YEAR>)</h2>
 <p class="fontstil"><$TAGLINE></p>
 <div style="text-align: right; position:absolute; top:0px; right:0px;">
 <p class="fontstil" style= "padding: 2em;">Rating: &nbsp;<b><$RATING></b> &nbsp;(<$VOTES> Votes)</p>
@@ -98,7 +98,7 @@ DataURL[<$COUNT>] = "<$DIRNAME>";
 DataYear[<$COUNT>] = "<$YEAR>";
 DataBild[<$COUNT>] = "<$POSTER_FILE>";
 DataFilename[<$COUNT>] = "<$FILENAME>";
-DataName[<$COUNT>] = "<$MOVIENAME>";
+DataName[<$COUNT>] = "<$TITLE>";
 DataGenre[<$COUNT>] = "<$GENRES>";
 DataDate[<$COUNT>] = "<$DATEADDED>";
 DataFanart[<$COUNT>] = "<$FANART_FILE>";
@@ -118,7 +118,7 @@ DataTVShows = "<$TVSHOWS>";
 
 </div></div>
 <!-- MAIN CONTENT END -->
-<$/MOVIE>
+</$$MOVIE>
 
 <!-- NAVIGATION L -->
 <div id="sidebar-left">

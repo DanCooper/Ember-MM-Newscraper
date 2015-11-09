@@ -315,7 +315,7 @@ Public Class dlgNMTMovies
             PreProcessProperties(patternDetails)
             Dim s = pattern.IndexOf("<$MOVIE>")
             If s >= 0 Then
-                Dim e = pattern.IndexOf("<$/MOVIE>")
+                Dim e = pattern.IndexOf("</$MOVIE>")
                 If e >= 0 Then
                     movieheader = pattern.Substring(0, s)
                     movierow = pattern.Substring(s + 8, e - s - 8)
@@ -563,9 +563,9 @@ Public Class dlgNMTMovies
             row = row.Replace("<$POSTER_FILE>", GetRelativePath(_curMovie.Item("PosterPath").ToString, sourcePath, mapPath, outputbase))
             row = row.Replace("<$FANART_FILE>", GetRelativePath(_curMovie.Item("FanartPath").ToString, sourcePath, mapPath, outputbase))
             If Not String.IsNullOrEmpty(_curMovie.Item("Title").ToString) Then
-                row = row.Replace("<$MOVIENAME>", (_curMovie.Item("Title").ToString))
+                row = row.Replace("<$TITLE>", (_curMovie.Item("Title").ToString))
             Else
-                row = row.Replace("<$MOVIENAME>", (_curMovie.Item("ListTitle").ToString))
+                row = row.Replace("<$TITLE>", (_curMovie.Item("ListTitle").ToString))
             End If
             row = row.Replace("<$ORIGINALTITLE>", (_curMovie.Item("OriginalTitle").ToString))
             row = row.Replace("<$ACTORS>", (GetMovieActorForID(_curMovie.Item("ID").ToString)))
