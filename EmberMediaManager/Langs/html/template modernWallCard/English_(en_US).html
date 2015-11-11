@@ -1,6 +1,11 @@
-﻿<!DOCTYPE html> 
-<$NEED_POSTERS>
-    <html>
+﻿<!DOCTYPE html>
+<exportsettings>
+    <mainposters>true</mainposters>
+    <mainposters_maxheight>300</mainposters_maxheight>
+    <mainposters_maxwidth>200</mainposters_maxwidth>
+</exportsettings>
+
+<html>
 <head>
     <meta charset="utf-8">
     <title>Media Library</title>
@@ -14,6 +19,7 @@
 <body>
     <script type="text/javascript">
         var movie_counter = 0;
+        var tvepisode_counter = 0;
         var tvshow_counter = 0;
         var now = null;
 
@@ -31,6 +37,8 @@
             <span id="total_movies">0</span>
             <span>TV Shows:</span>
             <span id="total_tvshows">0</span>
+            <span>Episodes:</span>
+            <span id="total_tvepisodes">0</span>
             <span>Updated:</span>
             <span id="update_time">0</span>
             
@@ -101,7 +109,7 @@
                             </tr>
                             <tr>
                                 <td>Filesize</td>
-                                <td><$SIZE></td>
+                                <td><$FILESIZE></td>
                             </tr>
                         </table>
                     </div>
@@ -163,6 +171,36 @@
                             </tr>
                         </table>
                     </div>
+                    <div class="modal-footer">
+                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="false">
+                            <$$TVSEASON>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" role="tab" id="season_info_<$COUNT>_<$COUNT_SEASON>">
+                                        <h4 class="panel-title">
+                                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse_<$COUNT>_<$COUNT_SEASON>" aria-expanded="false" aria-controls="collapse_<$COUNT>_<$COUNT_SEASON>">
+                                                <$TITLE>
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapse_<$COUNT>_<$COUNT_SEASON>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="season_info_<$COUNT>_<$COUNT_SEASON>">
+                                        <div class="panel-body">
+                                            <$PLOT>
+                                            <br><br>
+                                        </div>
+                                        <div class="panel-footer">
+                                            <$$TVEPISODE>
+                                                <script type="text/javascript">
+                                                    tvepisode_counter++;
+                                                </script>
+                                                <h4 class="title">Episode <$EPISODE>: <$TITLE></h4>
+                                                <$PLOT>
+                                            </$$TVEPISODE>
+                                        </div>
+                                    </div>
+                                </div>
+                            </$$TVSEASON>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -170,6 +208,7 @@
     
     <script type="text/javascript">
         document.getElementById("total_movies").innerHTML = movie_counter;
+        document.getElementById("total_tvepisodes").innerHTML = tvepisode_counter;
         document.getElementById("total_tvshows").innerHTML = tvshow_counter;
         document.getElementById("update_time").innerHTML = now;
     </script>

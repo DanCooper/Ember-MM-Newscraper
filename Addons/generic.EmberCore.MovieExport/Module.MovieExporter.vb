@@ -165,7 +165,7 @@ Public Class MovieExporterModule
         Dim SPanel As New Containers.SettingsPanel
 
         _setup.txt_exportmoviepath.Text = MySettings.ExportPath
-        _setup.chkExportTVShows.Checked = MySettings.ExportTVShows
+        _setup.chkExportMissingEpisodes.Checked = MySettings.ExportMissingEpisodes
         _setup.cbo_exportmovieposter.Text = CStr(MySettings.ExportPosterHeight)
         _setup.cbo_exportmoviefanart.Text = CStr(MySettings.ExportFanartWidth)
         _setup.cbo_exportmoviequality.Text = CStr(MySettings.ExportImageQuality)
@@ -196,8 +196,8 @@ Public Class MovieExporterModule
     End Sub
 
     Sub LoadSettings()
-        MySettings.ExportPath = clsAdvancedSettings.GetSetting("ExportPath", "")
-        MySettings.ExportTVShows = clsAdvancedSettings.GetBooleanSetting("ExportTVShows", False)
+        MySettings.ExportPath = clsAdvancedSettings.GetSetting("ExportPath", String.Empty)
+        MySettings.ExportMissingEpisodes = clsAdvancedSettings.GetBooleanSetting("ExportMissingEpisodes", False)
         MySettings.ExportPosterHeight = CInt(clsAdvancedSettings.GetSetting("ExportPosterHeight", "300"))
         MySettings.ExportFanartWidth = CInt(clsAdvancedSettings.GetSetting("ExportFanartWidth", "800"))
         MySettings.ExportFilter1 = clsAdvancedSettings.GetSetting("ExportFilter1", "-")
@@ -209,7 +209,7 @@ Public Class MovieExporterModule
     Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
         Me.Enabled = Me._setup.cbEnabled.Checked
         MySettings.ExportPath = _setup.txt_exportmoviepath.Text
-        MySettings.ExportTVShows = _setup.chkExportTVShows.Checked
+        MySettings.ExportMissingEpisodes = _setup.chkExportMissingEpisodes.Checked
         MySettings.ExportPosterHeight = CInt(_setup.cbo_exportmovieposter.Text)
         MySettings.ExportFanartWidth = CInt(_setup.cbo_exportmoviefanart.Text)
         MySettings.ExportFilter1 = _setup.lbl_exportmoviefilter1saved.Text
@@ -227,7 +227,7 @@ Public Class MovieExporterModule
     Sub SaveSettings()
         Using settings = New clsAdvancedSettings()
             settings.SetSetting("ExportPath", MySettings.ExportPath)
-            settings.SetBooleanSetting("ExportTVShows", MySettings.ExportTVShows)
+            settings.SetBooleanSetting("ExportMissingEpisodes", MySettings.ExportMissingEpisodes)
             settings.SetSetting("ExportPosterHeight", CStr(MySettings.ExportPosterHeight))
             settings.SetSetting("ExportFanartWidth", CStr(MySettings.ExportFanartWidth))
             settings.SetSetting("ExportFilter1", MySettings.ExportFilter1)
@@ -252,8 +252,8 @@ Public Class MovieExporterModule
         Dim ExportFilter1 As String
         Dim ExportFilter2 As String
         Dim ExportFilter3 As String
-        Dim ExportTVShows As Boolean
         Dim ExportImageQuality As Integer
+        Dim ExportMissingEpisodes As Boolean
 
 #End Region 'Fields
 

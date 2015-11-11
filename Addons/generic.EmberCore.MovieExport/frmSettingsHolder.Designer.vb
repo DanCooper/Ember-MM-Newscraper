@@ -28,29 +28,29 @@ Partial Class frmSettingsHolder
         Me.pnlSettings = New System.Windows.Forms.Panel()
         Me.pnlSettingsMain = New System.Windows.Forms.Panel()
         Me.tblSettingsMain = New System.Windows.Forms.TableLayoutPanel()
+        Me.gbGeneralOpts = New System.Windows.Forms.GroupBox()
+        Me.tblGeneralOpts = New System.Windows.Forms.TableLayoutPanel()
+        Me.chkExportMissingEpisodes = New System.Windows.Forms.CheckBox()
+        Me.lblGeneralPath = New System.Windows.Forms.Label()
+        Me.btnExportPath = New System.Windows.Forms.Button()
+        Me.txt_exportmoviepath = New System.Windows.Forms.TextBox()
         Me.gbFilterOpts = New System.Windows.Forms.GroupBox()
         Me.tblFilterOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.lbl_exportmoviefilter3saved = New System.Windows.Forms.Label()
-        Me.lbl_exportmoviefilter2saved = New System.Windows.Forms.Label()
-        Me.cbo_exportmoviefilter = New System.Windows.Forms.ComboBox()
-        Me.lbl_exportmoviefilter1saved = New System.Windows.Forms.Label()
-        Me.lstSources = New System.Windows.Forms.CheckedListBox()
-        Me.txtSearch = New System.Windows.Forms.TextBox()
         Me.lblFilter3 = New System.Windows.Forms.Label()
+        Me.txtSearch = New System.Windows.Forms.TextBox()
         Me.btnSource = New System.Windows.Forms.Button()
+        Me.lbl_exportmoviefilter2saved = New System.Windows.Forms.Label()
         Me.lblFilter2 = New System.Windows.Forms.Label()
         Me.lblIn = New System.Windows.Forms.Label()
+        Me.lbl_exportmoviefilter1saved = New System.Windows.Forms.Label()
         Me.lblFilter1 = New System.Windows.Forms.Label()
+        Me.lstSources = New System.Windows.Forms.CheckedListBox()
         Me.lblFilter = New System.Windows.Forms.Label()
-        Me.btn_Apply = New System.Windows.Forms.Button()
+        Me.cbo_exportmoviefilter = New System.Windows.Forms.ComboBox()
+        Me.btnFilterSave = New System.Windows.Forms.Button()
         Me.cbSearch = New System.Windows.Forms.ComboBox()
-        Me.btn_Reset = New System.Windows.Forms.Button()
-        Me.gbGeneralOpts = New System.Windows.Forms.GroupBox()
-        Me.tblGeneralOpts = New System.Windows.Forms.TableLayoutPanel()
-        Me.chkExportTVShows = New System.Windows.Forms.CheckBox()
-        Me.lblGeneralPath = New System.Windows.Forms.Label()
-        Me.btn_exportmoviepath = New System.Windows.Forms.Button()
-        Me.txt_exportmoviepath = New System.Windows.Forms.TextBox()
+        Me.btnFilterReset = New System.Windows.Forms.Button()
         Me.gbImageOpts = New System.Windows.Forms.GroupBox()
         Me.tblImageOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.cbo_exportmoviequality = New System.Windows.Forms.ComboBox()
@@ -64,10 +64,10 @@ Partial Class frmSettingsHolder
         Me.pnlSettings.SuspendLayout()
         Me.pnlSettingsMain.SuspendLayout()
         Me.tblSettingsMain.SuspendLayout()
-        Me.gbFilterOpts.SuspendLayout()
-        Me.tblFilterOpts.SuspendLayout()
         Me.gbGeneralOpts.SuspendLayout()
         Me.tblGeneralOpts.SuspendLayout()
+        Me.gbFilterOpts.SuspendLayout()
+        Me.tblFilterOpts.SuspendLayout()
         Me.gbImageOpts.SuspendLayout()
         Me.tblImageOpts.SuspendLayout()
         Me.SuspendLayout()
@@ -152,6 +152,84 @@ Partial Class frmSettingsHolder
         Me.tblSettingsMain.Size = New System.Drawing.Size(582, 369)
         Me.tblSettingsMain.TabIndex = 0
         '
+        'gbGeneralOpts
+        '
+        Me.gbGeneralOpts.AutoSize = True
+        Me.gbGeneralOpts.Controls.Add(Me.tblGeneralOpts)
+        Me.gbGeneralOpts.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbGeneralOpts.Location = New System.Drawing.Point(3, 3)
+        Me.gbGeneralOpts.Name = "gbGeneralOpts"
+        Me.gbGeneralOpts.Size = New System.Drawing.Size(335, 102)
+        Me.gbGeneralOpts.TabIndex = 20
+        Me.gbGeneralOpts.TabStop = False
+        Me.gbGeneralOpts.Text = "General Settings"
+        '
+        'tblGeneralOpts
+        '
+        Me.tblGeneralOpts.AutoSize = True
+        Me.tblGeneralOpts.ColumnCount = 4
+        Me.tblGeneralOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblGeneralOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblGeneralOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblGeneralOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblGeneralOpts.Controls.Add(Me.chkExportMissingEpisodes, 0, 1)
+        Me.tblGeneralOpts.Controls.Add(Me.lblGeneralPath, 0, 0)
+        Me.tblGeneralOpts.Controls.Add(Me.btnExportPath, 2, 0)
+        Me.tblGeneralOpts.Controls.Add(Me.txt_exportmoviepath, 1, 0)
+        Me.tblGeneralOpts.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblGeneralOpts.Location = New System.Drawing.Point(3, 18)
+        Me.tblGeneralOpts.Name = "tblGeneralOpts"
+        Me.tblGeneralOpts.RowCount = 3
+        Me.tblGeneralOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblGeneralOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblGeneralOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblGeneralOpts.Size = New System.Drawing.Size(329, 81)
+        Me.tblGeneralOpts.TabIndex = 23
+        '
+        'chkExportMissingEpisodes
+        '
+        Me.chkExportMissingEpisodes.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkExportMissingEpisodes.AutoSize = True
+        Me.tblGeneralOpts.SetColumnSpan(Me.chkExportMissingEpisodes, 3)
+        Me.chkExportMissingEpisodes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkExportMissingEpisodes.Location = New System.Drawing.Point(3, 31)
+        Me.chkExportMissingEpisodes.Name = "chkExportMissingEpisodes"
+        Me.chkExportMissingEpisodes.Size = New System.Drawing.Size(155, 17)
+        Me.chkExportMissingEpisodes.TabIndex = 15
+        Me.chkExportMissingEpisodes.Text = "Display Missing Episodes"
+        Me.chkExportMissingEpisodes.UseVisualStyleBackColor = True
+        '
+        'lblGeneralPath
+        '
+        Me.lblGeneralPath.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblGeneralPath.AutoSize = True
+        Me.lblGeneralPath.Location = New System.Drawing.Point(3, 7)
+        Me.lblGeneralPath.Name = "lblGeneralPath"
+        Me.lblGeneralPath.Size = New System.Drawing.Size(63, 13)
+        Me.lblGeneralPath.TabIndex = 12
+        Me.lblGeneralPath.Text = "ExportPath"
+        Me.lblGeneralPath.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'btnExportPath
+        '
+        Me.btnExportPath.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.btnExportPath.Location = New System.Drawing.Point(305, 3)
+        Me.btnExportPath.Margin = New System.Windows.Forms.Padding(0)
+        Me.btnExportPath.Name = "btnExportPath"
+        Me.btnExportPath.Size = New System.Drawing.Size(24, 22)
+        Me.btnExportPath.TabIndex = 14
+        Me.btnExportPath.Text = "..."
+        Me.btnExportPath.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnExportPath.UseVisualStyleBackColor = True
+        '
+        'txt_exportmoviepath
+        '
+        Me.txt_exportmoviepath.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.txt_exportmoviepath.Location = New System.Drawing.Point(72, 3)
+        Me.txt_exportmoviepath.Name = "txt_exportmoviepath"
+        Me.txt_exportmoviepath.Size = New System.Drawing.Size(230, 22)
+        Me.txt_exportmoviepath.TabIndex = 13
+        '
         'gbFilterOpts
         '
         Me.gbFilterOpts.AutoSize = True
@@ -188,9 +266,9 @@ Partial Class frmSettingsHolder
         Me.tblFilterOpts.Controls.Add(Me.lstSources, 0, 2)
         Me.tblFilterOpts.Controls.Add(Me.lblFilter, 0, 0)
         Me.tblFilterOpts.Controls.Add(Me.cbo_exportmoviefilter, 1, 0)
-        Me.tblFilterOpts.Controls.Add(Me.btn_Apply, 6, 1)
+        Me.tblFilterOpts.Controls.Add(Me.btnFilterSave, 6, 1)
         Me.tblFilterOpts.Controls.Add(Me.cbSearch, 4, 1)
-        Me.tblFilterOpts.Controls.Add(Me.btn_Reset, 6, 2)
+        Me.tblFilterOpts.Controls.Add(Me.btnFilterReset, 6, 2)
         Me.tblFilterOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblFilterOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblFilterOpts.Name = "tblFilterOpts"
@@ -219,67 +297,6 @@ Partial Class frmSettingsHolder
         Me.lbl_exportmoviefilter3saved.Text = "-"
         Me.lbl_exportmoviefilter3saved.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'lbl_exportmoviefilter2saved
-        '
-        Me.lbl_exportmoviefilter2saved.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lbl_exportmoviefilter2saved.AutoSize = True
-        Me.tblFilterOpts.SetColumnSpan(Me.lbl_exportmoviefilter2saved, 5)
-        Me.lbl_exportmoviefilter2saved.Enabled = False
-        Me.lbl_exportmoviefilter2saved.Location = New System.Drawing.Point(92, 174)
-        Me.lbl_exportmoviefilter2saved.Name = "lbl_exportmoviefilter2saved"
-        Me.lbl_exportmoviefilter2saved.Size = New System.Drawing.Size(11, 13)
-        Me.lbl_exportmoviefilter2saved.TabIndex = 11
-        Me.lbl_exportmoviefilter2saved.Text = "-"
-        Me.lbl_exportmoviefilter2saved.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'cbo_exportmoviefilter
-        '
-        Me.cbo_exportmoviefilter.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.tblFilterOpts.SetColumnSpan(Me.cbo_exportmoviefilter, 2)
-        Me.cbo_exportmoviefilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbo_exportmoviefilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cbo_exportmoviefilter.FormattingEnabled = True
-        Me.cbo_exportmoviefilter.Items.AddRange(New Object() {"Filter 1", "Filter 2", "Filter 3"})
-        Me.cbo_exportmoviefilter.Location = New System.Drawing.Point(92, 3)
-        Me.cbo_exportmoviefilter.Name = "cbo_exportmoviefilter"
-        Me.cbo_exportmoviefilter.Size = New System.Drawing.Size(77, 21)
-        Me.cbo_exportmoviefilter.TabIndex = 10
-        '
-        'lbl_exportmoviefilter1saved
-        '
-        Me.lbl_exportmoviefilter1saved.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lbl_exportmoviefilter1saved.AutoSize = True
-        Me.tblFilterOpts.SetColumnSpan(Me.lbl_exportmoviefilter1saved, 5)
-        Me.lbl_exportmoviefilter1saved.Enabled = False
-        Me.lbl_exportmoviefilter1saved.Location = New System.Drawing.Point(92, 154)
-        Me.lbl_exportmoviefilter1saved.Name = "lbl_exportmoviefilter1saved"
-        Me.lbl_exportmoviefilter1saved.Size = New System.Drawing.Size(11, 13)
-        Me.lbl_exportmoviefilter1saved.TabIndex = 8
-        Me.lbl_exportmoviefilter1saved.Text = "-"
-        Me.lbl_exportmoviefilter1saved.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'lstSources
-        '
-        Me.lstSources.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.tblFilterOpts.SetColumnSpan(Me.lstSources, 2)
-        Me.lstSources.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lstSources.FormattingEnabled = True
-        Me.lstSources.Location = New System.Drawing.Point(3, 59)
-        Me.lstSources.Name = "lstSources"
-        Me.tblFilterOpts.SetRowSpan(Me.lstSources, 2)
-        Me.lstSources.Size = New System.Drawing.Size(166, 89)
-        Me.lstSources.TabIndex = 7
-        Me.lstSources.Visible = False
-        '
-        'txtSearch
-        '
-        Me.txtSearch.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.tblFilterOpts.SetColumnSpan(Me.txtSearch, 2)
-        Me.txtSearch.Location = New System.Drawing.Point(3, 30)
-        Me.txtSearch.Name = "txtSearch"
-        Me.txtSearch.Size = New System.Drawing.Size(166, 22)
-        Me.txtSearch.TabIndex = 3
-        '
         'lblFilter3
         '
         Me.lblFilter3.Anchor = System.Windows.Forms.AnchorStyles.Left
@@ -291,6 +308,15 @@ Partial Class frmSettingsHolder
         Me.lblFilter3.TabIndex = 14
         Me.lblFilter3.Text = "Filter 3"
         Me.lblFilter3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'txtSearch
+        '
+        Me.txtSearch.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.tblFilterOpts.SetColumnSpan(Me.txtSearch, 2)
+        Me.txtSearch.Location = New System.Drawing.Point(3, 30)
+        Me.txtSearch.Name = "txtSearch"
+        Me.txtSearch.Size = New System.Drawing.Size(166, 22)
+        Me.txtSearch.TabIndex = 3
         '
         'btnSource
         '
@@ -305,6 +331,19 @@ Partial Class frmSettingsHolder
         Me.btnSource.Text = "SET"
         Me.btnSource.UseVisualStyleBackColor = False
         Me.btnSource.Visible = False
+        '
+        'lbl_exportmoviefilter2saved
+        '
+        Me.lbl_exportmoviefilter2saved.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lbl_exportmoviefilter2saved.AutoSize = True
+        Me.tblFilterOpts.SetColumnSpan(Me.lbl_exportmoviefilter2saved, 5)
+        Me.lbl_exportmoviefilter2saved.Enabled = False
+        Me.lbl_exportmoviefilter2saved.Location = New System.Drawing.Point(92, 174)
+        Me.lbl_exportmoviefilter2saved.Name = "lbl_exportmoviefilter2saved"
+        Me.lbl_exportmoviefilter2saved.Size = New System.Drawing.Size(11, 13)
+        Me.lbl_exportmoviefilter2saved.TabIndex = 11
+        Me.lbl_exportmoviefilter2saved.Text = "-"
+        Me.lbl_exportmoviefilter2saved.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'lblFilter2
         '
@@ -330,6 +369,19 @@ Partial Class frmSettingsHolder
         Me.lblIn.Text = "in"
         Me.lblIn.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
+        'lbl_exportmoviefilter1saved
+        '
+        Me.lbl_exportmoviefilter1saved.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lbl_exportmoviefilter1saved.AutoSize = True
+        Me.tblFilterOpts.SetColumnSpan(Me.lbl_exportmoviefilter1saved, 5)
+        Me.lbl_exportmoviefilter1saved.Enabled = False
+        Me.lbl_exportmoviefilter1saved.Location = New System.Drawing.Point(92, 154)
+        Me.lbl_exportmoviefilter1saved.Name = "lbl_exportmoviefilter1saved"
+        Me.lbl_exportmoviefilter1saved.Size = New System.Drawing.Size(11, 13)
+        Me.lbl_exportmoviefilter1saved.TabIndex = 8
+        Me.lbl_exportmoviefilter1saved.Text = "-"
+        Me.lbl_exportmoviefilter1saved.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
         'lblFilter1
         '
         Me.lblFilter1.Anchor = System.Windows.Forms.AnchorStyles.Left
@@ -341,6 +393,19 @@ Partial Class frmSettingsHolder
         Me.lblFilter1.TabIndex = 9
         Me.lblFilter1.Text = "Filter 1"
         Me.lblFilter1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'lstSources
+        '
+        Me.lstSources.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.tblFilterOpts.SetColumnSpan(Me.lstSources, 2)
+        Me.lstSources.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lstSources.FormattingEnabled = True
+        Me.lstSources.Location = New System.Drawing.Point(3, 59)
+        Me.lstSources.Name = "lstSources"
+        Me.tblFilterOpts.SetRowSpan(Me.lstSources, 2)
+        Me.lstSources.Size = New System.Drawing.Size(166, 89)
+        Me.lstSources.TabIndex = 7
+        Me.lstSources.Visible = False
         '
         'lblFilter
         '
@@ -354,18 +419,31 @@ Partial Class frmSettingsHolder
         Me.lblFilter.Text = "Generate Filter"
         Me.lblFilter.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'btn_Apply
+        'cbo_exportmoviefilter
         '
-        Me.btn_Apply.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.btn_Apply.BackColor = System.Drawing.Color.White
-        Me.btn_Apply.Enabled = False
-        Me.btn_Apply.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btn_Apply.Location = New System.Drawing.Point(365, 30)
-        Me.btn_Apply.Name = "btn_Apply"
-        Me.btn_Apply.Size = New System.Drawing.Size(101, 23)
-        Me.btn_Apply.TabIndex = 5
-        Me.btn_Apply.Text = "Save Filter"
-        Me.btn_Apply.UseVisualStyleBackColor = True
+        Me.cbo_exportmoviefilter.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.tblFilterOpts.SetColumnSpan(Me.cbo_exportmoviefilter, 2)
+        Me.cbo_exportmoviefilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbo_exportmoviefilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbo_exportmoviefilter.FormattingEnabled = True
+        Me.cbo_exportmoviefilter.Items.AddRange(New Object() {"Filter 1", "Filter 2", "Filter 3"})
+        Me.cbo_exportmoviefilter.Location = New System.Drawing.Point(92, 3)
+        Me.cbo_exportmoviefilter.Name = "cbo_exportmoviefilter"
+        Me.cbo_exportmoviefilter.Size = New System.Drawing.Size(77, 21)
+        Me.cbo_exportmoviefilter.TabIndex = 10
+        '
+        'btnFilterSave
+        '
+        Me.btnFilterSave.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.btnFilterSave.BackColor = System.Drawing.Color.White
+        Me.btnFilterSave.Enabled = False
+        Me.btnFilterSave.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnFilterSave.Location = New System.Drawing.Point(365, 30)
+        Me.btnFilterSave.Name = "btnFilterSave"
+        Me.btnFilterSave.Size = New System.Drawing.Size(101, 23)
+        Me.btnFilterSave.TabIndex = 5
+        Me.btnFilterSave.Text = "Save Filter"
+        Me.btnFilterSave.UseVisualStyleBackColor = True
         '
         'cbSearch
         '
@@ -378,94 +456,16 @@ Partial Class frmSettingsHolder
         Me.cbSearch.Size = New System.Drawing.Size(117, 21)
         Me.cbSearch.TabIndex = 4
         '
-        'btn_Reset
+        'btnFilterReset
         '
-        Me.btn_Reset.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.btn_Reset.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btn_Reset.Location = New System.Drawing.Point(365, 59)
-        Me.btn_Reset.Name = "btn_Reset"
-        Me.btn_Reset.Size = New System.Drawing.Size(101, 23)
-        Me.btn_Reset.TabIndex = 6
-        Me.btn_Reset.Text = "Reset Filter"
-        Me.btn_Reset.UseVisualStyleBackColor = True
-        '
-        'gbGeneralOpts
-        '
-        Me.gbGeneralOpts.AutoSize = True
-        Me.gbGeneralOpts.Controls.Add(Me.tblGeneralOpts)
-        Me.gbGeneralOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbGeneralOpts.Location = New System.Drawing.Point(3, 3)
-        Me.gbGeneralOpts.Name = "gbGeneralOpts"
-        Me.gbGeneralOpts.Size = New System.Drawing.Size(335, 102)
-        Me.gbGeneralOpts.TabIndex = 20
-        Me.gbGeneralOpts.TabStop = False
-        Me.gbGeneralOpts.Text = "General Settings"
-        '
-        'tblGeneralOpts
-        '
-        Me.tblGeneralOpts.AutoSize = True
-        Me.tblGeneralOpts.ColumnCount = 4
-        Me.tblGeneralOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblGeneralOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblGeneralOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblGeneralOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblGeneralOpts.Controls.Add(Me.chkExportTVShows, 0, 1)
-        Me.tblGeneralOpts.Controls.Add(Me.lblGeneralPath, 0, 0)
-        Me.tblGeneralOpts.Controls.Add(Me.btn_exportmoviepath, 2, 0)
-        Me.tblGeneralOpts.Controls.Add(Me.txt_exportmoviepath, 1, 0)
-        Me.tblGeneralOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblGeneralOpts.Location = New System.Drawing.Point(3, 18)
-        Me.tblGeneralOpts.Name = "tblGeneralOpts"
-        Me.tblGeneralOpts.RowCount = 3
-        Me.tblGeneralOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblGeneralOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblGeneralOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblGeneralOpts.Size = New System.Drawing.Size(329, 81)
-        Me.tblGeneralOpts.TabIndex = 23
-        '
-        'chkExportTVShows
-        '
-        Me.chkExportTVShows.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkExportTVShows.AutoSize = True
-        Me.tblGeneralOpts.SetColumnSpan(Me.chkExportTVShows, 3)
-        Me.chkExportTVShows.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkExportTVShows.Location = New System.Drawing.Point(3, 31)
-        Me.chkExportTVShows.Name = "chkExportTVShows"
-        Me.chkExportTVShows.Size = New System.Drawing.Size(111, 17)
-        Me.chkExportTVShows.TabIndex = 15
-        Me.chkExportTVShows.Text = "Export TV Shows"
-        Me.chkExportTVShows.UseVisualStyleBackColor = True
-        '
-        'lblGeneralPath
-        '
-        Me.lblGeneralPath.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblGeneralPath.AutoSize = True
-        Me.lblGeneralPath.Location = New System.Drawing.Point(3, 7)
-        Me.lblGeneralPath.Name = "lblGeneralPath"
-        Me.lblGeneralPath.Size = New System.Drawing.Size(63, 13)
-        Me.lblGeneralPath.TabIndex = 12
-        Me.lblGeneralPath.Text = "ExportPath"
-        Me.lblGeneralPath.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'btn_exportmoviepath
-        '
-        Me.btn_exportmoviepath.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.btn_exportmoviepath.Location = New System.Drawing.Point(305, 3)
-        Me.btn_exportmoviepath.Margin = New System.Windows.Forms.Padding(0)
-        Me.btn_exportmoviepath.Name = "btn_exportmoviepath"
-        Me.btn_exportmoviepath.Size = New System.Drawing.Size(24, 22)
-        Me.btn_exportmoviepath.TabIndex = 14
-        Me.btn_exportmoviepath.Text = "..."
-        Me.btn_exportmoviepath.TextAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btn_exportmoviepath.UseVisualStyleBackColor = True
-        '
-        'txt_exportmoviepath
-        '
-        Me.txt_exportmoviepath.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.txt_exportmoviepath.Location = New System.Drawing.Point(72, 3)
-        Me.txt_exportmoviepath.Name = "txt_exportmoviepath"
-        Me.txt_exportmoviepath.Size = New System.Drawing.Size(230, 22)
-        Me.txt_exportmoviepath.TabIndex = 13
+        Me.btnFilterReset.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.btnFilterReset.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnFilterReset.Location = New System.Drawing.Point(365, 59)
+        Me.btnFilterReset.Name = "btnFilterReset"
+        Me.btnFilterReset.Size = New System.Drawing.Size(101, 23)
+        Me.btnFilterReset.TabIndex = 6
+        Me.btnFilterReset.Text = "Reset Filter"
+        Me.btnFilterReset.UseVisualStyleBackColor = True
         '
         'gbImageOpts
         '
@@ -601,14 +601,14 @@ Partial Class frmSettingsHolder
         Me.pnlSettingsMain.PerformLayout()
         Me.tblSettingsMain.ResumeLayout(False)
         Me.tblSettingsMain.PerformLayout()
-        Me.gbFilterOpts.ResumeLayout(False)
-        Me.gbFilterOpts.PerformLayout()
-        Me.tblFilterOpts.ResumeLayout(False)
-        Me.tblFilterOpts.PerformLayout()
         Me.gbGeneralOpts.ResumeLayout(False)
         Me.gbGeneralOpts.PerformLayout()
         Me.tblGeneralOpts.ResumeLayout(False)
         Me.tblGeneralOpts.PerformLayout()
+        Me.gbFilterOpts.ResumeLayout(False)
+        Me.gbFilterOpts.PerformLayout()
+        Me.tblFilterOpts.ResumeLayout(False)
+        Me.tblFilterOpts.PerformLayout()
         Me.gbImageOpts.ResumeLayout(False)
         Me.gbImageOpts.PerformLayout()
         Me.tblImageOpts.ResumeLayout(False)
@@ -621,7 +621,7 @@ Partial Class frmSettingsHolder
     Friend WithEvents cbEnabled As System.Windows.Forms.CheckBox
     Friend WithEvents pnlSettings As System.Windows.Forms.Panel
     Friend WithEvents lblGeneralPath As System.Windows.Forms.Label
-    Friend WithEvents btn_exportmoviepath As System.Windows.Forms.Button
+    Friend WithEvents btnExportPath As System.Windows.Forms.Button
     Friend WithEvents txt_exportmoviepath As System.Windows.Forms.TextBox
     Friend WithEvents lblImageFanartWidth As System.Windows.Forms.Label
     Friend WithEvents cbo_exportmoviefanart As System.Windows.Forms.ComboBox
@@ -630,9 +630,9 @@ Partial Class frmSettingsHolder
     Friend WithEvents gbImageOpts As System.Windows.Forms.GroupBox
     Friend WithEvents gbGeneralOpts As System.Windows.Forms.GroupBox
     Friend WithEvents btnSource As System.Windows.Forms.Button
-    Friend WithEvents btn_Reset As System.Windows.Forms.Button
+    Friend WithEvents btnFilterReset As System.Windows.Forms.Button
     Friend WithEvents lblFilter As System.Windows.Forms.Label
-    Friend WithEvents btn_Apply As System.Windows.Forms.Button
+    Friend WithEvents btnFilterSave As System.Windows.Forms.Button
     Friend WithEvents lblIn As System.Windows.Forms.Label
     Friend WithEvents cbSearch As System.Windows.Forms.ComboBox
     Friend WithEvents txtSearch As System.Windows.Forms.TextBox
@@ -645,7 +645,7 @@ Partial Class frmSettingsHolder
     Friend WithEvents lbl_exportmoviefilter2saved As System.Windows.Forms.Label
     Friend WithEvents lblFilter3 As System.Windows.Forms.Label
     Friend WithEvents lbl_exportmoviefilter3saved As System.Windows.Forms.Label
-    Friend WithEvents chkExportTVShows As System.Windows.Forms.CheckBox
+    Friend WithEvents chkExportMissingEpisodes As System.Windows.Forms.CheckBox
     Friend WithEvents cbo_exportmoviequality As System.Windows.Forms.ComboBox
     Friend WithEvents lblImageQuality As System.Windows.Forms.Label
     Friend WithEvents tblSettingsTop As System.Windows.Forms.TableLayoutPanel
