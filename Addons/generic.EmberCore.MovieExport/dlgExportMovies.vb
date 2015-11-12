@@ -50,6 +50,8 @@ Public Class dlgExportMovies
     Private MovieList As New List(Of Database.DBElement)
     Private TVShowList As New List(Of Database.DBElement)
 
+    Dim strFilter As String = String.Empty
+
     'HTML settings
     Private tExportSettings As New ExportSettings
 
@@ -380,13 +382,15 @@ Public Class dlgExportMovies
                             row = row.Replace("<$FILESIZE>", StringUtils.HtmlEncode(FileSize(tMovie.Filename)))
 
                             'Images
-                            row = row.Replace("<$BANNER_FILE>", String.Concat("export/", counter.ToString, "-banner.jpg"))
-                            row = row.Replace("<$CLEARART_FILE>", String.Concat("export/", counter.ToString, "-clearart.jpg"))
-                            row = row.Replace("<$CLEARLOGO_FILE>", String.Concat("export/", counter.ToString, "-clearlogo.jpg"))
-                            row = row.Replace("<$DISCART_FILE>", String.Concat("export/", counter.ToString, "-discart.jpg"))
-                            row = row.Replace("<$FANART_FILE>", String.Concat("export/", counter.ToString, "-fanart.jpg"))
-                            row = row.Replace("<$LANDSCAPE_FILE>", String.Concat("export/", counter.ToString, "-landscape.jpg"))
-                            row = row.Replace("<$POSTER_FILE>", String.Concat("export/", counter.ToString, "-poster.jpg"))
+                            With tMovie.ImagesContainer
+                                row = row.Replace("<$BANNER_FILE>", ExportImage(.Banner, counter, Enums.ModifierType.MainBanner))
+                                row = row.Replace("<$CLEARART_FILE>", ExportImage(.ClearArt, counter, Enums.ModifierType.MainClearArt))
+                                row = row.Replace("<$CLEARLOGO_FILE>", ExportImage(.ClearLogo, counter, Enums.ModifierType.MainClearLogo))
+                                row = row.Replace("<$DISCART_FILE>", ExportImage(.DiscArt, counter, Enums.ModifierType.MainDiscArt))
+                                row = row.Replace("<$FANART_FILE>", ExportImage(.Fanart, counter, Enums.ModifierType.MainFanart))
+                                row = row.Replace("<$LANDSCAPE_FILE>", ExportImage(.Landscape, counter, Enums.ModifierType.MainLandscape))
+                                row = row.Replace("<$POSTER_FILE>", ExportImage(.Poster, counter, Enums.ModifierType.MainPoster))
+                            End With
 
                             'Title
                             Dim Title As String = String.Empty
@@ -504,6 +508,12 @@ Public Class dlgExportMovies
                                                     row_Episode = row_Episode.Replace("<$COUNT>", counter.ToString)
                                                     row_Episode = row_Episode.Replace("<$COUNT_EPISODE>", counter_episode.ToString)
 
+                                                    'Images
+                                                    With tEpisode.ImagesContainer
+                                                        row_Episode = row_Episode.Replace("<$FANART_FILE>", ExportImage(.Fanart, counter, Enums.ModifierType.EpisodeFanart, counter_season, counter_episode))
+                                                        row_Episode = row_Episode.Replace("<$POSTER_FILE>", ExportImage(.Poster, counter, Enums.ModifierType.EpisodePoster, counter_season, counter_episode))
+                                                    End With
+
                                                     'Actors
                                                     Dim ActorsList_Episode As New List(Of String)
                                                     For Each tActor As MediaContainers.Person In tEpisode.TVEpisode.Actors
@@ -551,10 +561,12 @@ Public Class dlgExportMovies
                                         row_Season = row_Season.Replace("<$COUNT_SEASON>", counter_season.ToString)
 
                                         'Images
-                                        row_Season = row_Season.Replace("<$BANNER_FILE>", ExportImage(tSeason.ImagesContainer.Banner, counter, Enums.ModifierType.SeasonBanner, counter_season))
-                                        row_Season = row_Season.Replace("<$FANART_FILE>", String.Concat("export/", counter.ToString, "-fanart.jpg"))
-                                        row_Season = row_Season.Replace("<$LANDSCAPE_FILE>", String.Concat("export/", counter.ToString, "-landscape.jpg"))
-                                        row_Season = row_Season.Replace("<$POSTER_FILE>", String.Concat("export/", counter.ToString, "-poster.jpg"))
+                                        With tSeason.ImagesContainer
+                                            row_Season = row_Season.Replace("<$BANNER_FILE>", ExportImage(.Banner, counter, Enums.ModifierType.SeasonBanner, counter_season))
+                                            row_Season = row_Season.Replace("<$FANART_FILE>", ExportImage(.Fanart, counter, Enums.ModifierType.SeasonFanart, counter_season))
+                                            row_Season = row_Season.Replace("<$LANDSCAPE_FILE>", ExportImage(.Landscape, counter, Enums.ModifierType.SeasonLandscape, counter_season))
+                                            row_Season = row_Season.Replace("<$POSTER_FILE>", ExportImage(.Poster, counter, Enums.ModifierType.SeasonPoster, counter_season))
+                                        End With
 
                                         'Fields
                                         row_Season = row_Season.Replace("<$AIRED>", StringUtils.HtmlEncode(tSeason.TVSeason.Aired))
@@ -582,13 +594,15 @@ Public Class dlgExportMovies
                             row = row.Replace("<$PATH>", StringUtils.HtmlEncode(tShow.ShowPath))
 
                             'Images
-                            row = row.Replace("<$BANNER_FILE>", String.Concat("export/", counter.ToString, "-banner.jpg"))
-                            row = row.Replace("<$CHARACTERART_FILE>", String.Concat("export/", counter.ToString, "-characterart.jpg"))
-                            row = row.Replace("<$CLEARART_FILE>", String.Concat("export/", counter.ToString, "-clearart.jpg"))
-                            row = row.Replace("<$CLEARLOGO_FILE>", String.Concat("export/", counter.ToString, "-clearlogo.jpg"))
-                            row = row.Replace("<$FANART_FILE>", String.Concat("export/", counter.ToString, "-fanart.jpg"))
-                            row = row.Replace("<$LANDSCAPE_FILE>", String.Concat("export/", counter.ToString, "-landscape.jpg"))
-                            row = row.Replace("<$POSTER_FILE>", String.Concat("export/", counter.ToString, "-poster.jpg"))
+                            With tShow.ImagesContainer
+                                row = row.Replace("<$BANNER_FILE>", ExportImage(.Banner, counter, Enums.ModifierType.MainBanner))
+                                row = row.Replace("<$CHARACTERART_FILE>", ExportImage(.CharacterArt, counter, Enums.ModifierType.MainCharacterArt))
+                                row = row.Replace("<$CLEARART_FILE>", ExportImage(.ClearArt, counter, Enums.ModifierType.MainClearArt))
+                                row = row.Replace("<$CLEARLOGO_FILE>", ExportImage(.ClearLogo, counter, Enums.ModifierType.MainClearLogo))
+                                row = row.Replace("<$FANART_FILE>", ExportImage(.Fanart, counter, Enums.ModifierType.MainFanart))
+                                row = row.Replace("<$LANDSCAPE_FILE>", ExportImage(.Landscape, counter, Enums.ModifierType.MainLandscape))
+                                row = row.Replace("<$POSTER_FILE>", ExportImage(.Poster, counter, Enums.ModifierType.MainPoster))
+                            End With
 
                             'Title
                             Dim Title As String = String.Empty
@@ -702,114 +716,6 @@ Public Class dlgExportMovies
         Return ReturnString
     End Function
 
-    Private Function GetAllTVShows() As String
-        Dim ReturnString As String = String.Empty
-        allTVShows.Clear()
-        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-            SQLcommand.CommandText = String.Concat("SELECT * FROM tvshow ORDER BY ListTitle COLLATE NOCASE;")
-            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                If SQLreader.HasRows Then
-                    While SQLreader.Read()
-                        If Not String.IsNullOrEmpty(SQLreader("Title").ToString) Then
-                            If Not String.IsNullOrEmpty(SQLreader("idShow").ToString) Then
-                                allTVShows.Add(SQLreader("idShow").ToString & "*" & SQLreader("Title").ToString & GetSeasonInfo(SQLreader("idShow").ToString))
-                            End If
-                        End If
-                    End While
-                End If
-            End Using
-        End Using
-        If allTVShows.Count > 0 Then
-            For i = 0 To allTVShows.Count - 1
-                If i > 0 Then
-                    ReturnString = ReturnString + "|" + allTVShows(i)
-                Else
-                    ReturnString = allTVShows(i)
-                End If
-            Next
-        End If
-        Return ReturnString
-    End Function
-
-    Private Function GetSeasonInfo(ByVal Id As String) As String
-        Dim ReturnString As String = String.Empty
-
-        Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-            Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "idShow")
-            SQLcommand.CommandText = "SELECT * FROM seasonslist WHERE idShow = (?);"
-            parID.Value = Id
-            Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                If SQLreader.HasRows Then
-                    While SQLreader.Read()
-
-                        If Not String.IsNullOrEmpty(SQLreader("Season").ToString) AndAlso Not SQLreader("Season").ToString.Contains("999") Then
-                            If Not String.IsNullOrEmpty(SQLreader("PosterPath").ToString) Then
-                                ExportSeasonImage(SQLreader("idShow").ToString & "s" & SQLreader("Season").ToString, SQLreader("PosterPath").ToString, TempPath)
-                            End If
-                            ReturnString = ReturnString + "*" + SQLreader("idShow").ToString & "s" & SQLreader("Season").ToString
-                        End If
-                    End While
-                End If
-            End Using
-        End Using
-        Return ReturnString
-    End Function
-
-    Private Sub ExportSeasonImage(ByVal filename As String, ByVal source As String, ByVal temppath As String)
-        Try
-
-            Dim finalpath As String = Path.Combine(temppath, "export")
-            Directory.CreateDirectory(finalpath)
-
-            Try
-                Dim posterfile As String = Path.Combine(finalpath, String.Concat(filename, "-poster.jpg"))
-                If File.Exists(source) Then
-                    'cocotus, 2013/02 Export HTML expanded: configurable resizable images
-
-                    'old method
-                    'If new_width > 0 Then
-                    '    Dim im As New Images
-                    '    im.FromFile(_curMovie.PosterPath)
-                    '    ImageUtils.ResizeImage(im.Image, new_width, new_width, False, Color.Black.ToArgb)
-                    '    im.Save(posterfile)
-                    'Else
-                    '    File.Copy(_curMovie.PosterPath, posterfile, True)
-                    'End If
-
-                    'If strPosterSize = "original" Then
-                    File.Copy(source, posterfile, True)
-                    'Else
-                    '    'Now we do some image processing to make the output file smaller!
-                    '    Try
-                    '        Dim img As Image
-                    '        Dim sFileName As String = source
-                    '        Dim fs As New System.IO.FileStream(sFileName, System.IO.FileMode.Open)
-                    '        img = Image.FromStream(fs)
-                    '        fs.Close()
-                    '        '1. Step: Resizing, Image method needs Size and IMAGE object we just created, so now we can start!
-                    '        Dim imgresized As Image = ImageUtils.ResizeImage(img, PosterSize)
-                    '        img.Dispose()
-                    '        '2. Step: Now use jpeg compression to make file even smaller...
-                    '        ImageUtils.JPEGCompression(imgresized, posterfile, CInt(clsAdvancedSettings.GetSetting("ExportImageQuality", "70")))
-                    '        imgresized.Dispose()
-
-                    '    Catch ex As Exception
-                    '        'The old method, used here when anything goes wrong
-                    '        File.Copy(source, posterfile, True)
-                    '    End Try
-                    'End If
-
-                    'cocotus end
-
-                End If
-
-            Catch
-            End Try
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-    End Sub
-
     Private Sub bwLoadInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadInfo.DoWork
         MovieList.Clear()
         ' Load nfo movies using path from DB
@@ -914,27 +820,6 @@ Public Class dlgExportMovies
                     Args.srcPath = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Flags", Path.DirectorySeparatorChar)
                     Directory.CreateDirectory(Path.Combine(destPathShort, "flags"))
                     CopyDirectory(Args.srcPath, Path.Combine(destPathShort, "flags"), True)
-                End If
-                If bwSaveAll.CancellationPending Then
-                    e.Cancel = True
-                    Return
-                End If
-                If tExportSettings.MainPosters Then
-                    ExportPoster(destPathShort, Args.resizePoster)
-                End If
-                If bwSaveAll.CancellationPending Then
-                    e.Cancel = True
-                    Return
-                End If
-                If tExportSettings.MainFanarts Then
-                    ExportFanart(destPathShort)
-                End If
-                If clsAdvancedSettings.GetBooleanSetting("ExportMissingEpisodes", False) = True Then
-                    Try
-                        AllTVShowList = GetAllTVShows()
-                    Catch ex As Exception
-
-                    End Try
                 End If
                 If bwSaveAll.CancellationPending Then
                     e.Cancel = True
@@ -1053,188 +938,125 @@ Public Class dlgExportMovies
             Select Case tImageType
                 Case Enums.ModifierType.EpisodeFanart
                     If tExportSettings.EpisodeFanarts AndAlso Not iCount = -1 AndAlso Not iCount_Episode = -1 AndAlso Not iCount_Season = -1 Then
-
+                        If Not tExportSettings.EpisodeFanarts_MaxHeight = -1 OrElse Not tExportSettings.EpisodeFanarts_MaxWidth = -1 Then
+                            If tImage.LoadAndCache(Enums.ContentType.TV, True, True) Then
+                                Dim nImg As Image = tImage.ImageOriginal.Image
+                                ImageUtils.ResizeImage(nImg, tExportSettings.EpisodeFanarts_MaxWidth, tExportSettings.EpisodeFanarts_MaxHeight)
+                                tImage.ImageOriginal.UpdateMSfromImg(nImg)
+                                strPath = String.Format("export/{0}/{1}/{2}-fanart.jpg", iCount, iCount_Season, iCount_Episode)
+                                tImage.ImageOriginal.Save(Path.Combine(TempPath, strPath))
+                                tImage.ImageOriginal.Image.Dispose()   'Dispose to save memory
+                            End If
+                        Else
+                            strPath = String.Format("export/{0}/{1}/{2}-fanart.jpg", iCount, iCount_Season, iCount_Episode)
+                            File.Copy(tImage.LocalFilePath, Path.Combine(TempPath, strPath), True)
+                        End If
                     End If
                 Case Enums.ModifierType.EpisodePoster
+                    If tExportSettings.EpisodePosters AndAlso Not iCount = -1 AndAlso Not iCount_Episode = -1 AndAlso Not iCount_Season = -1 Then
+                        If Not tExportSettings.EpisodePosters_MaxHeight = -1 OrElse Not tExportSettings.EpisodePosters_MaxWidth = -1 Then
+                            If tImage.LoadAndCache(Enums.ContentType.TV, True, True) Then
+                                Dim nImg As Image = tImage.ImageOriginal.Image
+                                ImageUtils.ResizeImage(nImg, tExportSettings.EpisodePosters_MaxWidth, tExportSettings.EpisodePosters_MaxHeight)
+                                tImage.ImageOriginal.UpdateMSfromImg(nImg)
+                                strPath = String.Format("export/{0}/{1}/{2}-poster.jpg", iCount, iCount_Season, iCount_Episode)
+                                tImage.ImageOriginal.Save(Path.Combine(TempPath, strPath))
+                                tImage.ImageOriginal.Image.Dispose() 'Dispose to save memory
+                            End If
+                        Else
+                            strPath = String.Format("export/{0}/{1}/{2}-poster.jpg", iCount, iCount_Season, iCount_Episode)
+                            File.Copy(tImage.LocalFilePath, Path.Combine(TempPath, strPath), True)
+                        End If
+                    End If
                 Case Enums.ModifierType.MainBanner
+                    If tExportSettings.MainBanners AndAlso Not iCount = -1 Then
+                        If Not tExportSettings.MainBanners_MaxHeight = -1 OrElse Not tExportSettings.MainBanners_MaxWidth = -1 Then
+                            If tImage.LoadAndCache(Enums.ContentType.Movie, True, True) Then
+                                Dim nImg As Image = tImage.ImageOriginal.Image
+                                ImageUtils.ResizeImage(nImg, tExportSettings.MainBanners_MaxWidth, tExportSettings.MainBanners_MaxHeight)
+                                tImage.ImageOriginal.UpdateMSfromImg(nImg)
+                                strPath = String.Format("export/{0}-banner.jpg", iCount)
+                                tImage.ImageOriginal.Save(Path.Combine(TempPath, strPath))
+                                tImage.ImageOriginal.Image.Dispose() 'Dispose to save memory
+                            End If
+                        Else
+                            strPath = String.Format("export/{0}-banner.jpg", iCount)
+                            File.Copy(tImage.LocalFilePath, Path.Combine(TempPath, strPath), True)
+                        End If
+                    End If
                 Case Enums.ModifierType.MainCharacterArt
+                    If tExportSettings.MainCharacterarts AndAlso Not iCount = -1 Then
+                        strPath = String.Format("export/{0}-characterart.png", iCount)
+                        File.Copy(tImage.LocalFilePath, Path.Combine(TempPath, strPath), True)
+                    End If
                 Case Enums.ModifierType.MainClearArt
+                    If tExportSettings.MainClearArts AndAlso Not iCount = -1 Then
+                        strPath = String.Format("export/{0}-clearart.png", iCount)
+                        File.Copy(tImage.LocalFilePath, Path.Combine(TempPath, strPath), True)
+                    End If
                 Case Enums.ModifierType.MainClearLogo
+                    If tExportSettings.MainClearLogos AndAlso Not iCount = -1 Then
+                        strPath = String.Format("export/{0}-clearlogo.png", iCount)
+                        File.Copy(tImage.LocalFilePath, Path.Combine(TempPath, strPath), True)
+                    End If
                 Case Enums.ModifierType.MainDiscArt
+                    If tExportSettings.MainClearArts AndAlso Not iCount = -1 Then
+                        strPath = String.Format("export/{0}-discart.png", iCount)
+                        File.Copy(tImage.LocalFilePath, Path.Combine(TempPath, strPath), True)
+                    End If
                 Case Enums.ModifierType.MainFanart
+                    If tExportSettings.MainFanarts AndAlso Not iCount = -1 Then
+                        If Not tExportSettings.MainFanarts_MaxHeight = -1 OrElse Not tExportSettings.MainFanarts_MaxWidth = -1 Then
+                            If tImage.LoadAndCache(Enums.ContentType.Movie, True, True) Then
+                                Dim nImg As Image = tImage.ImageOriginal.Image
+                                ImageUtils.ResizeImage(nImg, tExportSettings.MainFanarts_MaxWidth, tExportSettings.MainFanarts_MaxHeight)
+                                tImage.ImageOriginal.UpdateMSfromImg(nImg)
+                                strPath = String.Format("export/{0}-fanart.jpg", iCount)
+                                tImage.ImageOriginal.Save(Path.Combine(TempPath, strPath))
+                                tImage.ImageOriginal.Image.Dispose() 'Dispose to save memory
+                            End If
+                        Else
+                            strPath = String.Format("export/{0}-fanart.jpg", iCount)
+                            File.Copy(tImage.LocalFilePath, Path.Combine(TempPath, strPath), True)
+                        End If
+                    End If
                 Case Enums.ModifierType.MainLandscape
+                    If tExportSettings.MainLandscapes AndAlso Not iCount = -1 Then
+                        If Not tExportSettings.MainLandscapes_MaxHeight = -1 OrElse Not tExportSettings.MainLandscapes_MaxWidth = -1 Then
+                            If tImage.LoadAndCache(Enums.ContentType.Movie, True, True) Then
+                                Dim nImg As Image = tImage.ImageOriginal.Image
+                                ImageUtils.ResizeImage(nImg, tExportSettings.MainLandscapes_MaxWidth, tExportSettings.MainLandscapes_MaxHeight)
+                                tImage.ImageOriginal.UpdateMSfromImg(nImg)
+                                strPath = String.Format("export/{0}-landscape.jpg", iCount)
+                                tImage.ImageOriginal.Save(Path.Combine(TempPath, strPath))
+                                tImage.ImageOriginal.Image.Dispose() 'Dispose to save memory
+                            End If
+                        Else
+                            strPath = String.Format("export/{0}-landscape.jpg", iCount)
+                            File.Copy(tImage.LocalFilePath, Path.Combine(TempPath, strPath), True)
+                        End If
+                    End If
                 Case Enums.ModifierType.MainPoster
+                    If tExportSettings.MainPosters AndAlso Not iCount = -1 Then
+                        If Not tExportSettings.MainPosters_MaxHeight = -1 OrElse Not tExportSettings.MainPosters_MaxWidth = -1 Then
+                            If tImage.LoadAndCache(Enums.ContentType.Movie, True, True) Then
+                                Dim nImg As Image = tImage.ImageOriginal.Image
+                                ImageUtils.ResizeImage(nImg, tExportSettings.MainPosters_MaxWidth, tExportSettings.MainPosters_MaxHeight)
+                                tImage.ImageOriginal.UpdateMSfromImg(nImg)
+                                strPath = String.Format("export/{0}-poster.jpg", iCount)
+                                tImage.ImageOriginal.Save(Path.Combine(TempPath, strPath))
+                                tImage.ImageOriginal.Image.Dispose() 'Dispose to save memory
+                            End If
+                        Else
+                            strPath = String.Format("export/{0}-poster.jpg", iCount)
+                            File.Copy(tImage.LocalFilePath, Path.Combine(TempPath, strPath), True)
+                        End If
+                    End If
             End Select
         End If
 
         Return strPath
     End Function
-
-    Private Sub ExportFanart(ByVal fpath As String)
-        Try
-            Dim counter As Integer = 1
-            Dim finalpath As String = Path.Combine(fpath, "export")
-            Directory.CreateDirectory(finalpath)
-
-            For Each _curMovie As Database.DBElement In MovieList.Where(Function(y) FilterMovies.Contains(y.ID))
-                Try
-                    Dim fanartfile As String = Path.Combine(finalpath, String.Concat(counter.ToString, "-fanart.jpg"))
-                    If File.Exists(_curMovie.ImagesContainer.Fanart.LocalFilePath) Then
-
-                        'cocotus, 2013/02 Export HTML expanded: configurable resizable images
-
-                        'old method, just copy/no image conversion
-                        'File.Copy(_curMovie.FanartPath, fanartfile, True)
-
-                        'If strFanartSize = "original" Then
-                        '    File.Copy(_curMovie.ImagesContainer.Fanart.LocalFilePath, fanartfile, True)
-                        'Else
-                        '    'Now we do some image processing to make the output file smaller!
-                        '    Try
-                        '        Dim img As Image
-                        '        Dim sFileName As String = _curMovie.ImagesContainer.Fanart.LocalFilePath
-                        '        Dim fs As New System.IO.FileStream(sFileName, System.IO.FileMode.Open)
-                        '        img = Image.FromStream(fs)
-                        '        fs.Close()
-                        '        '1. Step: Resizing, Image method needs Size and IMAGE object we just created, so now we can start!
-                        '        Dim imgresized As Image = ImageUtils.ResizeImage(img, FanartSize)
-                        '        img.Dispose()
-                        '        '2. Step: Now use jpeg compression to make file even smaller...
-                        '        ImageUtils.JPEGCompression(imgresized, fanartfile, CInt(clsAdvancedSettings.GetSetting("ExportImageQuality", "70")))
-                        '        imgresized.Dispose()
-
-                        '    Catch ex As Exception
-                        '        'The old method, used here when anything goes wrong
-                        '        File.Copy(_curMovie.ImagesContainer.Fanart.LocalFilePath, fanartfile, True)
-                        '    End Try
-                        'End If
-                        'cocotus end
-
-
-                    End If
-                    counter += 1
-                Catch
-                End Try
-
-                If bwSaveAll.CancellationPending Then
-                    Return
-                End If
-            Next
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-    End Sub
-
-    Private Sub ExportPoster(ByVal fpath As String, ByVal new_width As Integer)
-        Try
-            Dim counter As Integer = 1
-            Dim finalpath As String = Path.Combine(fpath, "export")
-            Directory.CreateDirectory(finalpath)
-            For Each _curMovie As Database.DBElement In MovieList.Where(Function(y) FilterMovies.Contains(y.ID))
-                Try
-                    Dim posterfile As String = Path.Combine(finalpath, String.Concat(counter.ToString, "-poster.jpg"))
-                    If File.Exists(_curMovie.ImagesContainer.Poster.LocalFilePath) Then                        'cocotus, 2013/02 Export HTML expanded: configurable resizable images
-                        'cocotus, 2013/02 Export HTML expanded: configurable resizable images
-
-                        'old method
-                        'If new_width > 0 Then
-                        '    Dim im As New Images
-                        '    im.FromFile(_curMovie.PosterPath)
-                        '    ImageUtils.ResizeImage(im.Image, new_width, new_width, False, Color.Black.ToArgb)
-                        '    im.Save(posterfile)
-                        'Else
-                        '    File.Copy(_curMovie.PosterPath, posterfile, True)
-                        'End If
-
-                        'If strPosterSize = "original" Then
-                        File.Copy(_curMovie.ImagesContainer.Poster.LocalFilePath, posterfile, True)
-                        'Else
-                        '    'Now we do some image processing to make the output file smaller!
-                        '    Try
-                        '        Dim img As Image
-                        '        Dim sFileName As String = _curMovie.ImagesContainer.Poster.LocalFilePath
-                        '        Dim fs As New System.IO.FileStream(sFileName, System.IO.FileMode.Open)
-                        '        img = Image.FromStream(fs)
-                        '        fs.Close()
-                        '        '1. Step: Resizing, Image method needs Size and IMAGE object we just created, so now we can start!
-                        '        Dim imgresized As Image = ImageUtils.ResizeImage(img, PosterSize)
-                        '        img.Dispose()
-                        '        '2. Step: Now use jpeg compression to make file even smaller...
-                        '        ImageUtils.JPEGCompression(imgresized, posterfile, CInt(clsAdvancedSettings.GetSetting("ExportImageQuality", "70")))
-                        '        imgresized.Dispose()
-
-                        '    Catch ex As Exception
-                        '        'The old method, used here when anything goes wrong
-                        '        File.Copy(_curMovie.ImagesContainer.Poster.LocalFilePath, posterfile, True)
-                        '    End Try
-                        'End If
-
-                        'cocotus end
-                    End If
-
-                Catch
-                End Try
-                counter += 1
-                If bwSaveAll.CancellationPending Then
-                    Return
-                End If
-
-            Next
-
-            For Each _curTVShow As Database.DBElement In TVShowList '.Where(Function(y) FilterMovies.Contains(y.ID))
-                Try
-                    Dim posterfile As String = Path.Combine(finalpath, String.Concat(counter.ToString, "-poster.jpg"))
-                    If File.Exists(_curTVShow.ImagesContainer.Poster.LocalFilePath) Then                        'cocotus, 2013/02 Export HTML expanded: configurable resizable images
-                        'cocotus, 2013/02 Export HTML expanded: configurable resizable images
-
-                        'old method
-                        'If new_width > 0 Then
-                        '    Dim im As New Images
-                        '    im.FromFile(_curMovie.PosterPath)
-                        '    ImageUtils.ResizeImage(im.Image, new_width, new_width, False, Color.Black.ToArgb)
-                        '    im.Save(posterfile)
-                        'Else
-                        'File.Copy(_curMovie.PosterPath, posterfile, True)
-                        'End If
-
-                        'If strPosterSize = "original" Then
-                        File.Copy(_curTVShow.ImagesContainer.Poster.LocalFilePath, posterfile, True)
-                        'Else
-                        '    'Now we do some image processing to make the output file smaller!
-                        '    Try
-                        '        Dim img As Image
-                        '        Dim sFileName As String = _curTVShow.ImagesContainer.Poster.LocalFilePath
-                        '        Dim fs As New System.IO.FileStream(sFileName, System.IO.FileMode.Open)
-                        '        img = Image.FromStream(fs)
-                        '        fs.Close()
-                        '        '1. Step: Resizing, Image method needs Size and IMAGE object we just created, so now we can start!
-                        '        Dim imgresized As Image = ImageUtils.ResizeImage(img, PosterSize)
-                        '        img.Dispose()
-                        '        '2. Step: Now use jpeg compression to make file even smaller...
-                        '        ImageUtils.JPEGCompression(imgresized, posterfile, CInt(clsAdvancedSettings.GetSetting("ExportImageQuality", "70")))
-                        '        imgresized.Dispose()
-
-                        '    Catch ex As Exception
-                        '        'The old method, used here when anything goes wrong
-                        '        File.Copy(_curTVShow.ImagesContainer.Poster.LocalFilePath, posterfile, True)
-                        '    End Try
-                        'End If
-
-                        'cocotus end
-                    End If
-
-                Catch
-                End Try
-                counter += 1
-                If bwSaveAll.CancellationPending Then
-                    Return
-                End If
-
-            Next
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-    End Sub
 
     Private Function GetAVImages(ByVal AVMovie As Database.DBElement, ByVal line As String) As String
         If APIXML.lFlags.Count > 0 Then
@@ -1368,7 +1190,6 @@ Public Class dlgExportMovies
 
     Private Sub SaveAll(ByVal sWarning As String, ByVal srcPath As String, ByVal destPath As String, Optional ByVal resizePoster As Integer = 200)
 
-
         wbPreview.Visible = False
         If Not String.IsNullOrEmpty(sWarning) Then Warning(True, sWarning)
         cbFilter.Enabled = False
@@ -1395,24 +1216,6 @@ Public Class dlgExportMovies
     End Sub
 
     Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
-        'cocotus  Use settings instead of opening filedialog which causes problems!
-        'old
-        'Dim saveHTML As New SaveFileDialog()
-        'Dim myStream As Stream
-        'saveHTML.Filter = "HTML files (*.htm)|*.htm"
-        'saveHTML.FilterIndex = 2
-        'saveHTML.RestoreDirectory = True
-
-        'If saveHTML.ShowDialog() = DialogResult.OK Then
-        '    myStream = saveHTML.OpenFile()
-        '    myStream.Close()
-        '    If Not IsNothing(myStream) Then
-        '        DontSaveExtra = False 'Force Full Save
-        '        Dim srcPath As String = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, base_template, Path.DirectorySeparatorChar)
-        '        Me.SaveAll(Master.eLang.GetString(327, "Saving all files. Please wait..."), srcPath, saveHTML.FileName)
-        '    End If
-        'End If
-        'new simply copy from temp to user defined directory
         Cursor = Cursors.WaitCursor
         If Directory.Exists(clsAdvancedSettings.GetSetting("ExportPath", String.Empty)) Then
             CopyDirectory(TempPath, clsAdvancedSettings.GetSetting("ExportPath", String.Empty), True)
@@ -1437,7 +1240,6 @@ Public Class dlgExportMovies
         lblTemplate.Text = Master.eLang.GetString(334, "Template")
         btnBuild.Text = Master.eLang.GetString(1004, "Generate HTML...")
         btnSave.Enabled = False
-
     End Sub
 
     Private Sub Warning(ByVal show As Boolean, Optional ByVal txt As String = "")
@@ -1488,13 +1290,6 @@ Public Class dlgExportMovies
             BuildHTML(False, String.Empty, String.Empty, base_template, True)
         End If
     End Sub
-
-    Dim strFilter As String = String.Empty
-    'The following resizing method of image requires Size object, so lets create that...
-    Dim FanartSize As New Size(1024, 576)
-    Dim PosterSize As New Size(200, 300)
-
-    'cocotus end
 
 #End Region 'Methods
 
