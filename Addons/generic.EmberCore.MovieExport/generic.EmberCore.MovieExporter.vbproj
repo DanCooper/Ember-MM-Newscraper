@@ -145,6 +145,7 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="clsAPIMediaExporter.vb" />
     <Compile Include="dlgExportMovies.designer.vb">
       <DependentUpon>dlgExportMovies.vb</DependentUpon>
     </Compile>
