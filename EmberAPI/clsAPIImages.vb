@@ -1431,6 +1431,7 @@ Public Class Images
     ''' <param name="ContentType"></param>
     ''' <param name="DefaultSeasonImagesContainer">Contains all original or new images (determined on the basis of preferences) of each season. This Container is required for resetting an image.</param>
     ''' <param name="DefaultEpisodeImagesContainer">Contains all original or new images (determined on the basis of preferences) of each episode. This Container is required for resetting an image.</param>
+    ''' <param name="IsAutoScraper">Is method called during autoscraping process?</param>
     ''' <remarks></remarks>
     Public Shared Sub SetDefaultImages(ByRef DBElement As Database.DBElement, _
                                        ByRef DefaultImagesContainer As MediaContainers.ImagesContainer, _
@@ -1438,7 +1439,8 @@ Public Class Images
                                        ByRef ScrapeModifier As Structures.ScrapeModifier, _
                                        ByRef ContentType As Enums.ContentType, _
                                        Optional ByRef DefaultSeasonImagesContainer As List(Of MediaContainers.EpisodeOrSeasonImagesContainer) = Nothing, _
-                                       Optional ByRef DefaultEpisodeImagesContainer As List(Of MediaContainers.EpisodeOrSeasonImagesContainer) = Nothing)
+                                       Optional ByRef DefaultEpisodeImagesContainer As List(Of MediaContainers.EpisodeOrSeasonImagesContainer) = Nothing, _
+                                       Optional ByVal IsAutoScraper As Boolean = True)
 
         Dim DoEpisodeFanart As Boolean = False
         Dim DoEpisodePoster As Boolean = False
@@ -1651,6 +1653,31 @@ Public Class Images
             End If
         Else
             DefaultImagesContainer.DiscArt = DBElement.ImagesContainer.DiscArt
+        End If
+
+        'Remove duplicate fanart from image scraperresults
+        If DoMainExtrafanarts OrElse DoMainExtrathumbs OrElse DoMainFanart Then
+            'If process is autoscraper, then make sure that extraimages is not the same as main image of movie (i.e. fanart.jpg of movie should not be part of extrafanart)
+            If IsAutoScraper = True AndAlso Master.eSettings.GeneralImageFilterAutoscraper Then
+                RemoveDuplicateImages(SearchResultsContainer.MainFanarts, DBElement.ImagesContainer.Fanart, MatchTolerance:=Master.eSettings.GeneralImageFilterFanartMatchTolerance)
+            ElseIf IsAutoScraper = False AndAlso Master.eSettings.GeneralImageFilterImagedialog Then
+                'only remove duplicates in the scraped imagelist, do not consider main image of movie (else current image of movie would not be selectable in image preview window!)
+                RemoveDuplicateImages(SearchResultsContainer.MainFanarts, MatchTolerance:=Master.eSettings.GeneralImageFilterFanartMatchTolerance)
+            End If
+        End If
+        'Remove duplicate posters from image scraperresults
+        If DoMainPoster Then
+            'If process is autoscraper, then make sure that extraimages is not the same as main image of movie (i.e. fanart.jpg of movie should not be part of extrafanart)
+            If IsAutoScraper = True AndAlso Master.eSettings.GeneralImageFilterAutoscraper Then
+                'since the following algorithm removes duplicates from beginning of list and keeps the images instance which is lower in list, we reverse the list to place images in preferred language at the end of the list
+                SearchResultsContainer.MainPosters.Reverse()
+                RemoveDuplicateImages(SearchResultsContainer.MainPosters, DBElement.ImagesContainer.Poster, MatchTolerance:=Master.eSettings.GeneralImageFilterPosterMatchTolerance)
+            ElseIf IsAutoScraper = False AndAlso Master.eSettings.GeneralImageFilterImagedialog Then
+                'since the following algorithm removes duplicates from beginning of list and keeps the images instance which is lower in list, we reverse the list to place images in preferred language at the end of the list
+                SearchResultsContainer.MainPosters.Reverse()
+                'only remove duplicates in the scraped imagelist, do not consider main image of movie (else current image of movie would not be selectable in image preview window!)
+                RemoveDuplicateImages(SearchResultsContainer.MainPosters, MatchTolerance:=Master.eSettings.GeneralImageFilterPosterMatchTolerance)
+            End If
         End If
 
         'Main Extrafanarts
@@ -2862,6 +2889,114 @@ Public Class Images
         End If
     End Function
 
+    ''' <summary>
+    ''' Remove duplicate images from a given list of images
+    ''' </summary>
+    ''' <param name="ImageList">Source <c>List</c> of <c>MediaContainers.Image</c> holding available extraFanart</param>
+    ''' <param name="CurrentImage">Optional: Current image of video file (i.e. fanart.jpg)</param>
+    ''' <returns>true: no errors, false: no images to compare</returns>
+    ''' <remarks>
+    ''' 2015/09/23 Cocotus - First implementation
+    ''' Used to avoid duplicate images
+    ''' </remarks>
+    Public Shared Function RemoveDuplicateImages(ByRef ImageList As List(Of MediaContainers.Image), Optional ByVal CurrentImage As MediaContainers.Image = Nothing, Optional ByVal MatchTolerance As Integer = 5) As Boolean
+        If ImageList.Count = 0 Then Return False
+        Dim lstScrapedImages As New List(Of Images)
+        Dim lstSimilarImages As New List(Of Tuple(Of Integer, Integer))
+        Dim currentimagesimilarity As Integer = 0
+
+        'To compare images for similarity we need to load them
+        'Checking for similarity means we need to load images to compare the content! -> Need to download ´the scraped image
+        'If the images aren't avalaible in cache or stored local, download them
+        For Each singleImage In ImageList
+            Dim ScrapedImage As New Images
+            If File.Exists(singleImage.LocalFilePath) Then
+                ScrapedImage.FromFile(singleImage.LocalFilePath, LoadBitmap:=True)
+            ElseIf Master.eSettings.MovieImagesCacheEnabled AndAlso File.Exists(singleImage.CacheThumbPath) Then
+                ScrapedImage.FromFile(singleImage.CacheThumbPath, LoadBitmap:=True)
+                'need to download
+            ElseIf Not singleImage.URLThumb Is Nothing AndAlso Not String.IsNullOrEmpty(singleImage.URLThumb) Then
+                ScrapedImage.FromWeb(singleImage.URLThumb, LoadBitmap:=True)
+            ElseIf Not singleImage.URLOriginal Is Nothing AndAlso Not String.IsNullOrEmpty(singleImage.URLOriginal) Then
+                ScrapedImage.FromWeb(singleImage.URLOriginal, LoadBitmap:=True)
+            End If
+            lstScrapedImages.Add(ScrapedImage)
+        Next
+
+        '1. Step (Optional): Remove any image  scraped imagelist which is identical to (current) image (i.e. fanart) of movie!
+        If Not CurrentImage Is Nothing AndAlso File.Exists(CurrentImage.LocalFilePath) Then
+            For i = 0 To lstScrapedImages.Count - 1
+                Dim referenceitem = lstScrapedImages(i)
+                'stores index of image in imagelist with calculacted Similarityvalue
+                'invalid comparison (one of images is nothing?!)
+                If referenceitem Is Nothing OrElse referenceitem.Image Is Nothing Then
+                    currentimagesimilarity = 99
+                    'First image is Nothing -> no need to compare anything!
+                    logger.Warn("[RemoveDuplicateImages] Image is nothing. Can't compare images! Image at Index: " & i)
+                Else
+                    currentimagesimilarity = ImageUtils.ImageComparison.GetSimilarity(referenceitem.Image, CurrentImage.LocalFilePath, ImageUtils.ImageComparison.Algorithm.AverageHash)
+                    'Combine with pHash?!
+                    'If currentimagesimilarity > MatchTolerance Then
+                    '    currentimagesimilarity = ImageUtils.ImageComparison.GetSimilarity(referenceitem.Image, CurrentImage.LocalFilePath, ImageUtils.ImageComparison.Algorithm.PHash)
+                    'End If
+                End If
+                Dim newSimilarityvalue = Tuple.Create(i, currentimagesimilarity)
+                lstSimilarImages.Add(newSimilarityvalue)
+            Next
+        End If
+
+        '2. Step: Calculate similarity for each image combination in imagelist - basically we compare each image in lstScrapedImages to find out which images are identical to each other
+        For i = 0 To lstScrapedImages.Count - 1
+            Dim referenceitem = lstScrapedImages(i)
+            For j = i + 1 To lstScrapedImages.Count - 1
+
+                'check for invalid images (one of images is nothing?!)
+                If referenceitem Is Nothing OrElse referenceitem.Image Is Nothing Then
+                    currentimagesimilarity = 99
+                    'First image is nothing -> no need to compare anything!
+                    logger.Warn("[RemoveDuplicateImages] Image 1 is nothing. Can't compare images! Image at Index: " & i)
+                ElseIf lstScrapedImages.Item(j) Is Nothing OrElse lstScrapedImages.Item(j).Image Is Nothing Then
+                    currentimagesimilarity = 99
+                    'Second image is nothing -> no need to compare anything!
+                    logger.Warn("[RemoveDuplicateImages] Image 2 is nothing. Can't compare images! Image at Index: " & j)
+                Else
+                    'stores index of image in imagelist with calculacted Similarityvalue
+                    currentimagesimilarity = ImageUtils.ImageComparison.GetSimilarity(referenceitem.Image, lstScrapedImages.Item(j).Image, ImageUtils.ImageComparison.Algorithm.AverageHash)
+                    'Combine with pHash?!
+                    'If currentimagesimilarity > MatchTolerance Then
+                    '    currentimagesimilarity = ImageUtils.ImageComparison.GetSimilarity(referenceitem.Image, lstScrapedImages.Item(j).Image, ImageUtils.ImageComparison.Algorithm.PHash)
+                    'End If
+                End If
+                Dim newSimilarityvalue = Tuple.Create(i, currentimagesimilarity)
+                lstSimilarImages.Add(newSimilarityvalue)
+            Next
+        Next
+
+        'Sort Similaritylist by similarityvalue
+        lstSimilarImages.Sort(Function(x, y) y.Item2.CompareTo(x.Item2))
+        lstSimilarImages.Reverse()
+
+        logger.Trace("[RemoveDuplicateImages] Ignore all images with MatchTolerance less/equal then : " & MatchTolerance & "...")
+        'logging used for debugging in tests
+        'For Each calculatedimage In lstSimilarImages
+        '    If calculatedimage.Item1 <= MatchTolerance Then
+        '        logger.Trace("[RemoveDuplicateImages] Ignore image with MatchTolerance: " & calculatedimage.Item2 & " at Index: " & calculatedimage.Item1 & " Name: " & ImageList.Item(calculatedimage.Item1).URLOriginal)
+        '    Else
+        '        logger.Trace("[RemoveDuplicateImages] Keep image with MatchTolerance: " & calculatedimage.Item2 & " at Index: " & calculatedimage.Item1 & " Name: " & ImageList.Item(calculatedimage.Item1).URLOriginal)
+        '    End If
+        'Next
+
+        '3. Step: finally remove duplicate image at index calculated above
+        For i = ImageList.Count - 1 To 0 Step -1
+            If lstSimilarImages.Any(Function(c) c.Item1 = i AndAlso c.Item2 <= MatchTolerance) Then
+                logger.Trace("[RemoveDuplicateImages] Ignore image: " & ImageList.Item(i).URLOriginal & " ...")
+                ImageList.RemoveAt(i)
+            End If
+        Next
+
+        Return True
+
+    End Function
 #End Region 'Methods
 
 End Class
