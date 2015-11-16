@@ -41,6 +41,11 @@ Partial Public Class clsXMLSettings
     Private _generalfilterpanelstatemovie As Boolean
     Private _generalfilterpanelstatemovieset As Boolean
     Private _generalfilterpanelstateshow As Boolean
+    Private _generalimagefilter As Boolean
+    Private _generalimagefilterautoscraper As Boolean
+    Private _generalimagefilterimagedialog As Boolean
+    Private _generalimagefilterpostermatchtolerance As Integer
+    Private _generalimagefilterfanartmatchtolerance As Integer
     Private _generalmainfiltersortcolumn_movies As Integer
     Private _generalmainfiltersortcolumn_moviesets As Integer
     Private _generalmainfiltersortcolumn_shows As Integer
@@ -1954,6 +1959,49 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._generalfilterpanelstateshow = value
+        End Set
+    End Property
+
+    Public Property GeneralImageFilter() As Boolean
+        Get
+            Return Me._generalimagefilter
+        End Get
+        Set(ByVal value As Boolean)
+            Me._generalimagefilter = value
+        End Set
+    End Property
+
+    Public Property GeneralImageFilterAutoscraper() As Boolean
+        Get
+            Return Me._generalimagefilterautoscraper
+        End Get
+        Set(ByVal value As Boolean)
+            Me._generalimagefilterautoscraper = value
+        End Set
+    End Property
+
+    Public Property GeneralImageFilterImagedialog() As Boolean
+        Get
+            Return Me._generalimagefilterimagedialog
+        End Get
+        Set(ByVal value As Boolean)
+            Me._generalimagefilterimagedialog = value
+        End Set
+    End Property
+    Public Property GeneralImageFilterPosterMatchTolerance() As Integer
+        Get
+            Return Me._generalimagefilterpostermatchtolerance
+        End Get
+        Set(ByVal value As Integer)
+            Me._generalimagefilterpostermatchtolerance = value
+        End Set
+    End Property
+    Public Property GeneralImageFilterFanartMatchTolerance() As Integer
+        Get
+            Return Me._generalimagefilterfanartmatchtolerance
+        End Get
+        Set(ByVal value As Integer)
+            Me._generalimagefilterfanartmatchtolerance = value
         End Set
     End Property
 

@@ -2830,6 +2830,19 @@ Public Class dlgSettings
             Me.chkGeneralCheckUpdates.Checked = .GeneralCheckUpdates
             Me.chkGeneralDateAddedIgnoreNFO.Checked = .GeneralDateAddedIgnoreNFO
             Me.chkGeneralDigitGrpSymbolVotes.Checked = .GeneralDigitGrpSymbolVotes
+            If .GeneralImageFilter Then
+                Me.chkGeneralImageFilter.Checked = True
+                Me.chkGeneralImageFilterAutoscraper.Checked = .GeneralImageFilterAutoscraper
+                Me.chkGeneralImageFilterImagedialog.Checked = .GeneralImageFilterImagedialog
+                Me.txtGeneralImageFilterPosterMatchRate.Text = .GeneralImageFilterPosterMatchTolerance.ToString
+                Me.txtGeneralImageFilterFanartMatchRate.Text = .GeneralImageFilterFanartMatchTolerance.ToString
+            Else
+                Me.chkGeneralImageFilter.Checked = False
+                Me.chkGeneralImageFilterAutoscraper.Enabled = False
+                Me.chkGeneralImageFilterImagedialog.Enabled = False
+                Me.txtGeneralImageFilterPosterMatchRate.Enabled = False
+                Me.txtGeneralImageFilterFanartMatchRate.Enabled = False
+            End If
             Me.chkGeneralDoubleClickScrape.Checked = .GeneralDoubleClickScrape
             Me.chkGeneralDisplayBanner.Checked = .GeneralDisplayBanner
             Me.chkGeneralDisplayCharacterArt.Checked = .GeneralDisplayCharacterArt
@@ -4632,6 +4645,19 @@ Public Class dlgSettings
             .GeneralDisplayLandscape = Me.chkGeneralDisplayLandscape.Checked
             .GeneralDisplayPoster = Me.chkGeneralDisplayPoster.Checked
             .GeneralImagesGlassOverlay = Me.chkGeneralImagesGlassOverlay.Checked
+            .GeneralImageFilter = Me.chkGeneralImageFilter.Checked
+            .GeneralImageFilterAutoscraper = Me.chkGeneralImageFilterAutoscraper.Checked
+            .GeneralImageFilterImagedialog = Me.chkGeneralImageFilterImagedialog.Checked
+            If Not String.IsNullOrEmpty(Me.txtGeneralImageFilterPosterMatchRate.Text) AndAlso Integer.TryParse(Me.txtGeneralImageFilterPosterMatchRate.Text, 1) Then
+                .GeneralImageFilterPosterMatchTolerance = Convert.ToInt32(Me.txtGeneralImageFilterPosterMatchRate.Text)
+            Else
+                .GeneralImageFilterPosterMatchTolerance = 1
+            End If
+            If Not String.IsNullOrEmpty(Me.txtGeneralImageFilterFanartMatchRate.Text) AndAlso Integer.TryParse(Me.txtGeneralImageFilterFanartMatchRate.Text, 4) Then
+                .GeneralImageFilterFanartMatchTolerance = Convert.ToInt32(Me.txtGeneralImageFilterFanartMatchRate.Text)
+            Else
+                .GeneralImageFilterFanartMatchTolerance = 4
+            End If
             .GeneralLanguage = Me.cbGeneralLanguage.Text
             .GeneralMovieTheme = Me.cbGeneralMovieTheme.Text
             .GeneralMovieSetTheme = Me.cbGeneralMovieSetTheme.Text
@@ -6516,6 +6542,9 @@ Public Class dlgSettings
         Me.chkGeneralDisplayLandscape.Text = Master.eLang.GetString(1151, "Display Landscape")
         Me.chkGeneralDisplayPoster.Text = Master.eLang.GetString(456, "Display Poster")
         Me.chkGeneralImagesGlassOverlay.Text = Master.eLang.GetString(966, "Enable Images Glass Overlay")
+        Me.chkGeneralImageFilter.Text = Master.eLang.GetString(1459, "Activate ImageFilter to avoid duplicate images")
+        Me.chkGeneralImageFilterAutoscraper.Text = Master.eLang.GetString(1457, "Autoscraper")
+        Me.chkGeneralImageFilterImagedialog.Text = Master.eLang.GetString(1458, "Imagedialog")
         Me.chkGeneralOverwriteNfo.Text = Master.eLang.GetString(433, "Overwrite Non-conforming nfos")
         Me.chkGeneralDisplayGenresText.Text = Master.eLang.GetString(453, "Always Display Genre Text")
         Me.chkGeneralDisplayLangFlags.Text = Master.eLang.GetString(489, "Display Language Flags")
@@ -6596,6 +6625,8 @@ Public Class dlgSettings
         Me.lblFileSystemCleanerWhitelist.Text = Master.eLang.GetString(441, "Whitelisted Extensions:")
         Me.lblGeneralDaemonDrive.Text = Master.eLang.GetString(989, "Driveletter")
         Me.lblGeneralDaemonPath.Text = Master.eLang.GetString(990, "Path to DTLite.exe")
+        Me.lblGeneralImageFilterPosterMatchRate.Text = Master.eLang.GetString(148, "Poster") & " " & Master.eLang.GetString(461, "Mismatch Tolerance:")
+        Me.lblGeneralImageFilterFanartMatchRate.Text = Master.eLang.GetString(149, "Fanart") & " " & Master.eLang.GetString(461, "Mismatch Tolerance:")
         Me.lblGeneralMovieSetTheme.Text = String.Concat(Master.eLang.GetString(1155, "MovieSet Theme"), ":")
         Me.lblGeneralMovieTheme.Text = String.Concat(Master.eLang.GetString(620, "Movie Theme"), ":")
         Me.lblGeneralOverwriteNfo.Text = Master.eLang.GetString(434, "(If unchecked, non-conforming nfos will be renamed to <filename>.info)")
@@ -7019,7 +7050,7 @@ Public Class dlgSettings
         End Try
     End Sub
 
-    Private Sub btnGeneralDaemonPathBrowse_Click(sender As Object, e As EventArgs) Handles btnGeneralDaemonPathBrowse.Click
+    Private Sub btnGeneralDaemonPathBrowse_Click(sender As Object, e As EventArgs)
         Try
             With Me.fileBrowse
                 .Filter = "Exe (*.exe*)|*.exe*|Exe (*.exe*)|*.exe*"
@@ -7477,8 +7508,45 @@ Public Class dlgSettings
         End If
     End Sub
 
+    Private Sub chkGeneralImageFilter_CheckedChanged(sender As Object, e As EventArgs) Handles chkGeneralImageFilter.CheckedChanged
+        Me.SetApplyButton(True)
+
+        Me.chkGeneralImageFilterAutoscraper.Enabled = chkGeneralImageFilter.Checked
+        Me.chkGeneralImageFilterImagedialog.Enabled = chkGeneralImageFilter.Checked
+        Me.txtGeneralImageFilterFanartMatchRate.Enabled = chkGeneralImageFilter.Checked
+        Me.txtGeneralImageFilterPosterMatchRate.Enabled = chkGeneralImageFilter.Checked
+
+        If Me.chkGeneralImageFilter.Checked Then
+            If String.IsNullOrEmpty(txtGeneralImageFilterPosterMatchRate.Text) Then
+                txtGeneralImageFilterPosterMatchRate.Text = "1"
+            End If
+            If String.IsNullOrEmpty(txtGeneralImageFilterFanartMatchRate.Text) Then
+                txtGeneralImageFilterFanartMatchRate.Text = "4"
+            End If
+        End If
+    End Sub
+
+    Private Sub txtGeneralImageFilterMatchRate_TextChanged(sender As Object, e As EventArgs) Handles txtGeneralImageFilterPosterMatchRate.LostFocus, txtGeneralImageFilterFanartMatchRate.LostFocus
+        If Me.chkGeneralImageFilter.Checked Then
+            Dim txtbox As TextBox = CType(sender, TextBox)
+            Dim matchfactor As Integer = 0
+            Dim NotGood As Boolean = False
+            If Integer.TryParse(txtbox.Text, matchfactor) Then
+                If matchfactor < 0 OrElse matchfactor > 10 Then
+                    NotGood = True
+                End If
+            Else
+                NotGood = True
+            End If
+            If NotGood = True Then
+                txtbox.Text = ""
+                MessageBox.Show(Master.eLang.GetString(1460, "Match Tolerance should be between 0 - 10 | 0 = 100% identical images, 10= different images"), Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            End If
+        End If
+    End Sub
+
     Private Sub EnableApplyButton(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
-        cbGeneralDaemonDrive.SelectedIndexChanged, _
+ _
         cbGeneralDateTime.SelectedIndexChanged, _
         cbGeneralMovieSetTheme.SelectedIndexChanged, _
         cbGeneralMovieTheme.SelectedIndexChanged, _
@@ -7529,6 +7597,8 @@ Public Class dlgSettings
         chkGeneralDateAddedIgnoreNFO.CheckedChanged, _
         chkGeneralDigitGrpSymbolVotes.CheckedChanged, _
         chkGeneralDoubleClickScrape.CheckedChanged, _
+        chkGeneralImageFilterAutoscraper.CheckedChanged, _
+        chkGeneralImageFilterImagedialog.CheckedChanged, _
         chkGeneralImagesGlassOverlay.CheckedChanged, _
         chkGeneralOverwriteNfo.CheckedChanged, _
         chkGeneralDisplayGenresText.CheckedChanged, _
@@ -7801,7 +7871,9 @@ Public Class dlgSettings
         chkTVShowPosterYAMJ.CheckedChanged, _
         chkTVShowThemeKeepExisting.CheckedChanged, _
         tcFileSystemCleaner.SelectedIndexChanged, _
-        txtGeneralDaemonPath.TextChanged, _
+ _
+        txtGeneralImageFilterFanartMatchRate.TextChanged, _
+        txtGeneralImageFilterPosterMatchRate.TextChanged, _
         txtMovieActorThumbsExtExpertBDMV.TextChanged, _
         txtMovieActorThumbsExtExpertMulti.TextChanged, _
         txtMovieActorThumbsExtExpertSingle.TextChanged, _

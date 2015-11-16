@@ -1775,6 +1775,50 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property GeneralImageFilter() As Boolean
+        Get
+            Return Settings._XMLSettings.GeneralImageFilter
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.GeneralImageFilter = value
+        End Set
+    End Property
+
+    Public Property GeneralImageFilterAutoscraper() As Boolean
+        Get
+            Return Settings._XMLSettings.GeneralImageFilterAutoscraper
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.GeneralImageFilterAutoscraper = value
+        End Set
+    End Property
+
+    Public Property GeneralImageFilterImagedialog() As Boolean
+        Get
+            Return Settings._XMLSettings.GeneralImageFilterImagedialog
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.GeneralImageFilterImagedialog = value
+        End Set
+    End Property
+    Public Property GeneralImageFilterPosterMatchTolerance() As Integer
+        Get
+            Return Settings._XMLSettings.GeneralImageFilterPosterMatchTolerance
+        End Get
+        Set(ByVal value As Integer)
+            Settings._XMLSettings.GeneralImageFilterPosterMatchTolerance = value
+        End Set
+    End Property
+
+    Public Property GeneralImageFilterFanartMatchTolerance() As Integer
+        Get
+            Return Settings._XMLSettings.GeneralImageFilterFanartMatchTolerance
+        End Get
+        Set(ByVal value As Integer)
+            Settings._XMLSettings.GeneralImageFilterFanartMatchTolerance = value
+        End Set
+    End Property
+
     Public Property MovieSetScraperTitle() As Boolean
         Get
             Return Settings._XMLSettings.MovieSetScraperTitle
@@ -6683,6 +6727,11 @@ Public Class Settings
         Me.GeneralDisplayLandscape = True
         Me.GeneralDisplayPoster = True
         Me.GeneralImagesGlassOverlay = False
+        Me.GeneralImageFilter = True
+        Me.GeneralImageFilterAutoscraper = True
+        Me.GeneralImageFilterImagedialog = False
+        Me.GeneralImageFilterFanartMatchTolerance = 4
+        Me.GeneralImageFilterPosterMatchTolerance = 1
         Me.GeneralLanguage = "English_(en_US)"
         Me.GeneralMainSplitterPanelState = 550
         Me.GeneralMovieInfoPanelState = 200

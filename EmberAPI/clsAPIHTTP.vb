@@ -334,12 +334,13 @@ Public Class HTTP
 
                             'save to real file
                             Using mStream As New FileStream(outFile, FileMode.Create, FileAccess.Write)
-                                Dim StreamBuffer(4096) As Byte
+                                'use a larger buffer/blocksize because files are often large, before NET 4.5x : StreamBuffer(4096) = default
+                                Dim StreamBuffer(81920) As Byte
                                 Dim BlockSize As Integer
                                 Dim iProgress As Integer
                                 Dim iCurrent As Integer
                                 Do
-                                    BlockSize = Ms.Read(StreamBuffer, 0, 4096)
+                                    BlockSize = Ms.Read(StreamBuffer, 0, 81920)
                                     iCurrent += BlockSize
                                     If BlockSize > 0 Then
                                         mStream.Write(StreamBuffer, 0, BlockSize)
@@ -349,8 +350,9 @@ Public Class HTTP
                                         End If
                                     End If
                                 Loop While BlockSize > 0 AndAlso Not Me._cancelRequested
-                                StreamBuffer = Nothing
-                                mStream.Close()
+                                'this is not necessary because of using block
+                                'StreamBuffer = Nothing
+                                'mStream.Close()
                             End Using
                         Else
                             ' no real file specified, let's work with memory streams
@@ -419,19 +421,12 @@ Public Class HTTP
                             _isPNG = True
                         End If
                         Using SourceStream As System.IO.Stream = wrResponse.GetResponseStream()
+                            'Optimized HTTP Code: simplify download process to use .net 4.X methods("copyto" instead of loop)
                             Dim count = Convert.ToInt32(wrResponse.ContentLength)
-                            Dim buffer = New Byte(count) {}
-                            Dim bytesRead As Integer
                             If Not count = -1 Then
-                                Do
-                                    bytesRead += SourceStream.Read(buffer, bytesRead, count - bytesRead)
-                                Loop Until bytesRead = count
-                                SourceStream.Close()
                                 Me._ms.Close()
-                                Me._ms = New MemoryStream()
-
-                                Me._ms.Write(buffer, 0, bytesRead)
-                                Me._ms.Flush()
+                                Me._ms = New MemoryStream(count)
+                                SourceStream.CopyTo(Me._ms)
                                 Me._image = New Bitmap(Me._ms)
                             End If
                         End Using
