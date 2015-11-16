@@ -94,7 +94,7 @@ Public Class MovieExporterModule
 
     Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
         Try
-            dlgExportMovies.CLExport(DirectCast(_params(0), String), DirectCast(_params(1), String), DirectCast(_params(2), Int32))
+            'dlgExportMovies.CLExport(DirectCast(_params(0), String), DirectCast(_params(1), String), DirectCast(_params(2), Int32))
 
         Catch ex As Exception
         End Try

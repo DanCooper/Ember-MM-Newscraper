@@ -233,7 +233,7 @@ Partial Class dlgExportMovies
         Me.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlMain.Location = New System.Drawing.Point(0, 0)
         Me.pnlMain.Name = "pnlMain"
-        Me.pnlMain.Size = New System.Drawing.Size(1084, 603)
+        Me.pnlMain.Size = New System.Drawing.Size(1084, 527)
         Me.pnlMain.TabIndex = 4
         '
         'wbPreview
@@ -242,7 +242,7 @@ Partial Class dlgExportMovies
         Me.wbPreview.Location = New System.Drawing.Point(0, 0)
         Me.wbPreview.MinimumSize = New System.Drawing.Size(20, 20)
         Me.wbPreview.Name = "wbPreview"
-        Me.wbPreview.Size = New System.Drawing.Size(1084, 603)
+        Me.wbPreview.Size = New System.Drawing.Size(1084, 527)
         Me.wbPreview.TabIndex = 0
         Me.wbPreview.Visible = False
         '
