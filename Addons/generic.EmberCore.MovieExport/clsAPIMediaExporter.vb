@@ -21,6 +21,7 @@
 Imports EmberAPI
 Imports NLog
 Imports System.IO
+Imports System.Text
 Imports System.Text.RegularExpressions
 Imports System.Xml.Serialization
 
@@ -30,62 +31,19 @@ Public Class MediaExporter
 
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
+    Private tCounter_Global As Integer
+    Private tCounter_TVEpisode As Integer
+    Private tCounter_TVSeason As Integer
     Private tExportSettings As New ExportSettings
+    Private tMovieList As List(Of Database.DBElement)
+    Private tTempPath As String = Path.Combine(Master.TempPath, "Export")
+    Private tTVShowList As List(Of Database.DBElement)
 
 #End Region 'Fields
 
 #Region "Methods"
 
-    Private Function Build_HTML(ByVal tContentPartMap As List(Of ContentPart), ByVal bSearch As Boolean, Optional tTVShow As Database.DBElement = Nothing, Optional tTVSeason As Database.DBElement = Nothing) As StringBuilder
-        Dim HTMLBodyPart As New StringBuilder
-
-        For Each part In tContentPartMap
-            If part.isLooped Then
-                'Movies
-                If part.ContentType = Enums.ContentType.Movie Then
-                    FilterMovies.Clear()
-                    For Each tMovie As Database.DBElement In MovieList
-                        HTMLBodyPart.Append(Process_Movie(part, tMovie, bSearch, tCounter_Global))
-                        tCounter_Global += 1
-                    Next
-
-                    'TV Shows
-                ElseIf part.ContentType = Enums.ContentType.TVShow Then
-                    For Each tShow As Database.DBElement In TVShowList
-                        HTMLBodyPart.Append(Process_TVShow(part, tShow, bSearch, tCounter_Global))
-                        tCounter_Global += 1
-                    Next
-
-                    'TV Seasons
-                ElseIf part.ContentType = Enums.ContentType.TVSeason Then
-                    If tTVShow IsNot Nothing Then
-                        Dim iCounter_Season As Integer = 1
-                        For Each tSeason As Database.DBElement In tTVShow.Seasons.Where(Function(f) Not f.TVSeason.Season = 999)
-                            HTMLBodyPart.Append(Process_TVSeason(part, tTVShow, tSeason, tCounter_Global, iCounter_Season))
-                            iCounter_Season += 1
-                        Next
-                    End If
-
-                    'TV Episodes
-                ElseIf part.ContentType = Enums.ContentType.TVEpisode Then
-                    If tTVShow IsNot Nothing AndAlso tTVSeason IsNot Nothing Then
-                        Dim iCounter_Season As Integer = 1
-                        Dim iCounter_Episode As Integer = 1
-                        For Each tEpisode As Database.DBElement In tTVShow.Episodes
-                            HTMLBodyPart.Append(Process_TVEpisode(part, tTVShow, tEpisode, tCounter_Global, iCounter_Season, iCounter_Episode))
-                            iCounter_Episode += 1
-                        Next
-                    End If
-                End If
-            Else
-                HTMLBodyPart.Append(part.Content)
-            End If
-        Next
-
-        Return HTMLBodyPart
-    End Function
-
-    Private Function ProcessPattern_HTML(ByVal strPattern As String) As List(Of ContentPart)
+    Private Function Build_ContentPartMap(ByVal strPattern As String) As List(Of ContentPart)
         'here we transform the main pattern string into a content map
         Dim tContentPartMap As New List(Of ContentPart)
         Dim part As ContentPart
@@ -123,7 +81,7 @@ Public Class MediaExporter
 
                     'check if we have an InnerContentPart
                     If Not part.Content.IndexOf("<$$") = -1 Then
-                        part.innerContentPartMap = ProcessPattern_HTML(part.Content)
+                        part.innerContentPartMap = Build_ContentPartMap(part.Content)
                         part.Content = String.Empty
                     End If
 
@@ -138,7 +96,7 @@ Public Class MediaExporter
 
                     'check if we have an InnerContentPart
                     If Not part.Content.IndexOf("<$$") = -1 Then
-                        part.innerContentPartMap = ProcessPattern_HTML(part.Content)
+                        part.innerContentPartMap = Build_ContentPartMap(part.Content)
                         part.Content = String.Empty
                     End If
 
@@ -153,7 +111,7 @@ Public Class MediaExporter
 
                     'check if we have an InnerContentPart
                     If Not part.Content.IndexOf("<$$") = -1 Then
-                        part.innerContentPartMap = ProcessPattern_HTML(part.Content)
+                        part.innerContentPartMap = Build_ContentPartMap(part.Content)
                         part.Content = String.Empty
                     End If
 
@@ -167,127 +125,245 @@ Public Class MediaExporter
         Return tContentPartMap
     End Function
 
-    Private Function ExportImage(ByVal tImage As MediaContainers.Image, ByVal iCount As Integer, ByVal tImageType As Enums.ModifierType, Optional ByVal iCount_Season As Integer = -1, Optional ByVal iCount_Episode As Integer = -1) As String
+    Private Function Build_HTML(ByVal tContentPartMap As List(Of ContentPart),
+                                Optional ByVal tTVShow As Database.DBElement = Nothing,
+                                Optional ByVal tTVSeason As Database.DBElement = Nothing) As StringBuilder
+
+        Dim HTMLBodyPart As New StringBuilder
+
+        For Each part In tContentPartMap
+            If part.isLooped Then
+                'Movies
+                If part.ContentType = Enums.ContentType.Movie Then
+                    For Each tMovie As Database.DBElement In tMovieList
+                        HTMLBodyPart.Append(ProcessPattern_Movie(part, tMovie))
+                        tCounter_Global += 1
+                    Next
+
+                    'TV Shows
+                ElseIf part.ContentType = Enums.ContentType.TVShow Then
+                    For Each tShow As Database.DBElement In tTVShowList
+                        HTMLBodyPart.Append(ProcessPattern_TVShow(part, tShow))
+                        tCounter_Global += 1
+                    Next
+
+                    'TV Seasons
+                ElseIf part.ContentType = Enums.ContentType.TVSeason Then
+                    If tTVShow IsNot Nothing Then
+                        tCounter_TVSeason = 1
+                        For Each tSeason As Database.DBElement In tTVShow.Seasons.Where(Function(f) Not f.TVSeason.Season = 999)
+                            HTMLBodyPart.Append(ProcessPattern_TVSeason(part, tTVShow, tSeason))
+                            tCounter_TVSeason += 1
+                        Next
+                    End If
+
+                    'TV Episodes
+                ElseIf part.ContentType = Enums.ContentType.TVEpisode Then
+                    If tTVShow IsNot Nothing AndAlso tTVSeason IsNot Nothing Then
+                        tCounter_TVEpisode = 1
+                        For Each tEpisode As Database.DBElement In tTVShow.Episodes
+                            HTMLBodyPart.Append(ProcessPattern_TVEpisode(part, tTVShow, tEpisode))
+                            tCounter_TVEpisode += 1
+                        Next
+                    End If
+                End If
+            Else
+                HTMLBodyPart.Append(part.Content)
+            End If
+        Next
+
+        Return HTMLBodyPart
+    End Function
+
+    Private Sub CreateTemplate()
+
+    End Sub
+
+    Private Function ExportImage(ByVal tImage As MediaContainers.Image, ByVal tImageType As Enums.ModifierType) As String
         Dim strPath As String = String.Empty
 
-        If Not Directory.Exists(Path.Combine(TempPath, "export")) Then Directory.CreateDirectory(Path.Combine(TempPath, "export"))
+        If Not Directory.Exists(Path.Combine(tTempPath, "export")) Then Directory.CreateDirectory(Path.Combine(tTempPath, "export"))
 
         If File.Exists(tImage.LocalFilePath) Then
             Select Case tImageType
                 Case Enums.ModifierType.EpisodeFanart
-                    If tExportSettings.EpisodeFanarts AndAlso Not iCount = -1 AndAlso Not iCount_Episode = -1 AndAlso Not iCount_Season = -1 Then
+                    If tExportSettings.EpisodeFanarts Then
                         If Not tExportSettings.EpisodeFanarts_MaxHeight = -1 OrElse Not tExportSettings.EpisodeFanarts_MaxWidth = -1 Then
                             If tImage.LoadAndCache(Enums.ContentType.TV, True, True) Then
                                 Dim nImg As Image = tImage.ImageOriginal.Image
                                 ImageUtils.ResizeImage(nImg, tExportSettings.EpisodeFanarts_MaxWidth, tExportSettings.EpisodeFanarts_MaxHeight)
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
-                                strPath = String.Format("export/{0}/{1}/{2}-fanart.jpg", iCount, iCount_Season, iCount_Episode)
-                                tImage.ImageOriginal.Save(Path.Combine(TempPath, strPath))
+                                strPath = String.Format("export/{0}/{1}/{2}-fanart.jpg", tCounter_Global, tCounter_TVSeason, tCounter_TVEpisode)
+                                tImage.ImageOriginal.Save(Path.Combine(tTempPath, strPath))
                                 tImage.ImageOriginal.Image.Dispose()   'Dispose to save memory
                             End If
                         Else
-                            strPath = String.Format("export/{0}/{1}/{2}-fanart.jpg", iCount, iCount_Season, iCount_Episode)
-                            File.Copy(tImage.LocalFilePath, Path.Combine(TempPath, strPath), True)
+                            strPath = String.Format("export/{0}/{1}/{2}-fanart.jpg", tCounter_Global, tCounter_TVSeason, tCounter_TVEpisode)
+                            File.Copy(tImage.LocalFilePath, Path.Combine(tTempPath, strPath), True)
                         End If
                     End If
                 Case Enums.ModifierType.EpisodePoster
-                    If tExportSettings.EpisodePosters AndAlso Not iCount = -1 AndAlso Not iCount_Episode = -1 AndAlso Not iCount_Season = -1 Then
+                    If tExportSettings.EpisodePosters Then
                         If Not tExportSettings.EpisodePosters_MaxHeight = -1 OrElse Not tExportSettings.EpisodePosters_MaxWidth = -1 Then
                             If tImage.LoadAndCache(Enums.ContentType.TV, True, True) Then
                                 Dim nImg As Image = tImage.ImageOriginal.Image
                                 ImageUtils.ResizeImage(nImg, tExportSettings.EpisodePosters_MaxWidth, tExportSettings.EpisodePosters_MaxHeight)
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
-                                strPath = String.Format("export/{0}/{1}/{2}-poster.jpg", iCount, iCount_Season, iCount_Episode)
-                                tImage.ImageOriginal.Save(Path.Combine(TempPath, strPath))
+                                strPath = String.Format("export/{0}/{1}/{2}-poster.jpg", tCounter_Global, tCounter_TVSeason, tCounter_TVEpisode)
+                                tImage.ImageOriginal.Save(Path.Combine(tTempPath, strPath))
                                 tImage.ImageOriginal.Image.Dispose() 'Dispose to save memory
                             End If
                         Else
-                            strPath = String.Format("export/{0}/{1}/{2}-poster.jpg", iCount, iCount_Season, iCount_Episode)
-                            File.Copy(tImage.LocalFilePath, Path.Combine(TempPath, strPath), True)
+                            strPath = String.Format("export/{0}/{1}/{2}-poster.jpg", tCounter_Global, tCounter_TVSeason, tCounter_TVEpisode)
+                            File.Copy(tImage.LocalFilePath, Path.Combine(tTempPath, strPath), True)
                         End If
                     End If
                 Case Enums.ModifierType.MainBanner
-                    If tExportSettings.MainBanners AndAlso Not iCount = -1 Then
+                    If tExportSettings.MainBanners Then
                         If Not tExportSettings.MainBanners_MaxHeight = -1 OrElse Not tExportSettings.MainBanners_MaxWidth = -1 Then
                             If tImage.LoadAndCache(Enums.ContentType.Movie, True, True) Then
                                 Dim nImg As Image = tImage.ImageOriginal.Image
                                 ImageUtils.ResizeImage(nImg, tExportSettings.MainBanners_MaxWidth, tExportSettings.MainBanners_MaxHeight)
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
-                                strPath = String.Format("export/{0}-banner.jpg", iCount)
-                                tImage.ImageOriginal.Save(Path.Combine(TempPath, strPath))
+                                strPath = String.Format("export/{0}-banner.jpg", tCounter_Global)
+                                tImage.ImageOriginal.Save(Path.Combine(tTempPath, strPath))
                                 tImage.ImageOriginal.Image.Dispose() 'Dispose to save memory
                             End If
                         Else
-                            strPath = String.Format("export/{0}-banner.jpg", iCount)
-                            File.Copy(tImage.LocalFilePath, Path.Combine(TempPath, strPath), True)
+                            strPath = String.Format("export/{0}-banner.jpg", tCounter_Global)
+                            File.Copy(tImage.LocalFilePath, Path.Combine(tTempPath, strPath), True)
                         End If
                     End If
                 Case Enums.ModifierType.MainCharacterArt
-                    If tExportSettings.MainCharacterarts AndAlso Not iCount = -1 Then
-                        strPath = String.Format("export/{0}-characterart.png", iCount)
-                        File.Copy(tImage.LocalFilePath, Path.Combine(TempPath, strPath), True)
+                    If tExportSettings.MainCharacterarts Then
+                        strPath = String.Format("export/{0}-characterart.png", tCounter_Global)
+                        File.Copy(tImage.LocalFilePath, Path.Combine(tTempPath, strPath), True)
                     End If
                 Case Enums.ModifierType.MainClearArt
-                    If tExportSettings.MainClearArts AndAlso Not iCount = -1 Then
-                        strPath = String.Format("export/{0}-clearart.png", iCount)
-                        File.Copy(tImage.LocalFilePath, Path.Combine(TempPath, strPath), True)
+                    If tExportSettings.MainClearArts Then
+                        strPath = String.Format("export/{0}-clearart.png", tCounter_Global)
+                        File.Copy(tImage.LocalFilePath, Path.Combine(tTempPath, strPath), True)
                     End If
                 Case Enums.ModifierType.MainClearLogo
-                    If tExportSettings.MainClearLogos AndAlso Not iCount = -1 Then
-                        strPath = String.Format("export/{0}-clearlogo.png", iCount)
-                        File.Copy(tImage.LocalFilePath, Path.Combine(TempPath, strPath), True)
+                    If tExportSettings.MainClearLogos Then
+                        strPath = String.Format("export/{0}-clearlogo.png", tCounter_Global)
+                        File.Copy(tImage.LocalFilePath, Path.Combine(tTempPath, strPath), True)
                     End If
                 Case Enums.ModifierType.MainDiscArt
-                    If tExportSettings.MainClearArts AndAlso Not iCount = -1 Then
-                        strPath = String.Format("export/{0}-discart.png", iCount)
-                        File.Copy(tImage.LocalFilePath, Path.Combine(TempPath, strPath), True)
+                    If tExportSettings.MainClearArts Then
+                        strPath = String.Format("export/{0}-discart.png", tCounter_Global)
+                        File.Copy(tImage.LocalFilePath, Path.Combine(tTempPath, strPath), True)
                     End If
                 Case Enums.ModifierType.MainFanart
-                    If tExportSettings.MainFanarts AndAlso Not iCount = -1 Then
+                    If tExportSettings.MainFanarts Then
                         If Not tExportSettings.MainFanarts_MaxHeight = -1 OrElse Not tExportSettings.MainFanarts_MaxWidth = -1 Then
                             If tImage.LoadAndCache(Enums.ContentType.Movie, True, True) Then
                                 Dim nImg As Image = tImage.ImageOriginal.Image
                                 ImageUtils.ResizeImage(nImg, tExportSettings.MainFanarts_MaxWidth, tExportSettings.MainFanarts_MaxHeight)
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
-                                strPath = String.Format("export/{0}-fanart.jpg", iCount)
-                                tImage.ImageOriginal.Save(Path.Combine(TempPath, strPath))
+                                strPath = String.Format("export/{0}-fanart.jpg", tCounter_Global)
+                                tImage.ImageOriginal.Save(Path.Combine(tTempPath, strPath))
                                 tImage.ImageOriginal.Image.Dispose() 'Dispose to save memory
                             End If
                         Else
-                            strPath = String.Format("export/{0}-fanart.jpg", iCount)
-                            File.Copy(tImage.LocalFilePath, Path.Combine(TempPath, strPath), True)
+                            strPath = String.Format("export/{0}-fanart.jpg", tCounter_Global)
+                            File.Copy(tImage.LocalFilePath, Path.Combine(tTempPath, strPath), True)
                         End If
                     End If
                 Case Enums.ModifierType.MainLandscape
-                    If tExportSettings.MainLandscapes AndAlso Not iCount = -1 Then
+                    If tExportSettings.MainLandscapes Then
                         If Not tExportSettings.MainLandscapes_MaxHeight = -1 OrElse Not tExportSettings.MainLandscapes_MaxWidth = -1 Then
                             If tImage.LoadAndCache(Enums.ContentType.Movie, True, True) Then
                                 Dim nImg As Image = tImage.ImageOriginal.Image
                                 ImageUtils.ResizeImage(nImg, tExportSettings.MainLandscapes_MaxWidth, tExportSettings.MainLandscapes_MaxHeight)
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
-                                strPath = String.Format("export/{0}-landscape.jpg", iCount)
-                                tImage.ImageOriginal.Save(Path.Combine(TempPath, strPath))
+                                strPath = String.Format("export/{0}-landscape.jpg", tCounter_Global)
+                                tImage.ImageOriginal.Save(Path.Combine(tTempPath, strPath))
                                 tImage.ImageOriginal.Image.Dispose() 'Dispose to save memory
                             End If
                         Else
-                            strPath = String.Format("export/{0}-landscape.jpg", iCount)
-                            File.Copy(tImage.LocalFilePath, Path.Combine(TempPath, strPath), True)
+                            strPath = String.Format("export/{0}-landscape.jpg", tCounter_Global)
+                            File.Copy(tImage.LocalFilePath, Path.Combine(tTempPath, strPath), True)
                         End If
                     End If
                 Case Enums.ModifierType.MainPoster
-                    If tExportSettings.MainPosters AndAlso Not iCount = -1 Then
+                    If tExportSettings.MainPosters Then
                         If Not tExportSettings.MainPosters_MaxHeight = -1 OrElse Not tExportSettings.MainPosters_MaxWidth = -1 Then
                             If tImage.LoadAndCache(Enums.ContentType.Movie, True, True) Then
                                 Dim nImg As Image = tImage.ImageOriginal.Image
                                 ImageUtils.ResizeImage(nImg, tExportSettings.MainPosters_MaxWidth, tExportSettings.MainPosters_MaxHeight)
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
-                                strPath = String.Format("export/{0}-poster.jpg", iCount)
-                                tImage.ImageOriginal.Save(Path.Combine(TempPath, strPath))
+                                strPath = String.Format("export/{0}-poster.jpg", tCounter_Global)
+                                tImage.ImageOriginal.Save(Path.Combine(tTempPath, strPath))
                                 tImage.ImageOriginal.Image.Dispose() 'Dispose to save memory
                             End If
                         Else
-                            strPath = String.Format("export/{0}-poster.jpg", iCount)
-                            File.Copy(tImage.LocalFilePath, Path.Combine(TempPath, strPath), True)
+                            strPath = String.Format("export/{0}-poster.jpg", tCounter_Global)
+                            File.Copy(tImage.LocalFilePath, Path.Combine(tTempPath, strPath), True)
+                        End If
+                    End If
+                Case Enums.ModifierType.SeasonBanner
+                    If tExportSettings.SeasonBanners Then
+                        If Not tExportSettings.SeasonBanners_MaxHeight = -1 OrElse Not tExportSettings.SeasonBanners_MaxWidth = -1 Then
+                            If tImage.LoadAndCache(Enums.ContentType.Movie, True, True) Then
+                                Dim nImg As Image = tImage.ImageOriginal.Image
+                                ImageUtils.ResizeImage(nImg, tExportSettings.SeasonBanners_MaxWidth, tExportSettings.SeasonBanners_MaxHeight)
+                                tImage.ImageOriginal.UpdateMSfromImg(nImg)
+                                strPath = String.Format("export/{0}/{1}-banner.jpg", tCounter_Global, tCounter_TVSeason)
+                                tImage.ImageOriginal.Save(Path.Combine(tTempPath, strPath))
+                                tImage.ImageOriginal.Image.Dispose() 'Dispose to save memory
+                            End If
+                        Else
+                            strPath = String.Format("export/{0}/{1}-banner.jpg", tCounter_Global, tCounter_TVSeason)
+                            File.Copy(tImage.LocalFilePath, Path.Combine(tTempPath, strPath), True)
+                        End If
+                    End If
+                Case Enums.ModifierType.SeasonFanart
+                    If tExportSettings.SeasonFanarts Then
+                        If Not tExportSettings.SeasonFanarts_MaxHeight = -1 OrElse Not tExportSettings.SeasonFanarts_MaxWidth = -1 Then
+                            If tImage.LoadAndCache(Enums.ContentType.Movie, True, True) Then
+                                Dim nImg As Image = tImage.ImageOriginal.Image
+                                ImageUtils.ResizeImage(nImg, tExportSettings.SeasonFanarts_MaxWidth, tExportSettings.SeasonFanarts_MaxHeight)
+                                tImage.ImageOriginal.UpdateMSfromImg(nImg)
+                                strPath = String.Format("export/{0}/{1}-fanart.jpg", tCounter_Global, tCounter_TVSeason)
+                                tImage.ImageOriginal.Save(Path.Combine(tTempPath, strPath))
+                                tImage.ImageOriginal.Image.Dispose() 'Dispose to save memory
+                            End If
+                        Else
+                            strPath = String.Format("export/{0}/{1}-fanart.jpg", tCounter_Global, tCounter_TVSeason)
+                            File.Copy(tImage.LocalFilePath, Path.Combine(tTempPath, strPath), True)
+                        End If
+                    End If
+                Case Enums.ModifierType.SeasonLandscape
+                    If tExportSettings.SeasonLandscapes Then
+                        If Not tExportSettings.SeasonLandscapes_MaxHeight = -1 OrElse Not tExportSettings.SeasonLandscapes_MaxWidth = -1 Then
+                            If tImage.LoadAndCache(Enums.ContentType.Movie, True, True) Then
+                                Dim nImg As Image = tImage.ImageOriginal.Image
+                                ImageUtils.ResizeImage(nImg, tExportSettings.SeasonLandscapes_MaxWidth, tExportSettings.SeasonLandscapes_MaxHeight)
+                                tImage.ImageOriginal.UpdateMSfromImg(nImg)
+                                strPath = String.Format("export/{0}/{1}-landscape.jpg", tCounter_Global, tCounter_TVSeason)
+                                tImage.ImageOriginal.Save(Path.Combine(tTempPath, strPath))
+                                tImage.ImageOriginal.Image.Dispose() 'Dispose to save memory
+                            End If
+                        Else
+                            strPath = String.Format("export/{0}/{1}-landscape.jpg", tCounter_Global, tCounter_TVSeason)
+                            File.Copy(tImage.LocalFilePath, Path.Combine(tTempPath, strPath), True)
+                        End If
+                    End If
+                Case Enums.ModifierType.SeasonPoster
+                    If tExportSettings.SeasonPosters Then
+                        If Not tExportSettings.SeasonPosters_MaxHeight = -1 OrElse Not tExportSettings.SeasonPosters_MaxWidth = -1 Then
+                            If tImage.LoadAndCache(Enums.ContentType.Movie, True, True) Then
+                                Dim nImg As Image = tImage.ImageOriginal.Image
+                                ImageUtils.ResizeImage(nImg, tExportSettings.SeasonPosters_MaxWidth, tExportSettings.SeasonPosters_MaxHeight)
+                                tImage.ImageOriginal.UpdateMSfromImg(nImg)
+                                strPath = String.Format("export/{0}/{1}-poster.jpg", tCounter_Global, tCounter_TVSeason)
+                                tImage.ImageOriginal.Save(Path.Combine(tTempPath, strPath))
+                                tImage.ImageOriginal.Image.Dispose() 'Dispose to save memory
+                            End If
+                        Else
+                            strPath = String.Format("export/{0}/{1}-poster.jpg", tCounter_Global, tCounter_TVSeason)
+                            File.Copy(tImage.LocalFilePath, Path.Combine(tTempPath, strPath), True)
                         End If
                     End If
             End Select
@@ -296,23 +372,126 @@ Public Class MediaExporter
         Return strPath
     End Function
 
-    Private Function ProcessPattern_Settings(ByVal strPattern As String) As String
-        tExportSettings.Clear()
+    Private Function GetAVImages(ByVal tDBElement As Database.DBElement, ByVal strRow As String, ByVal tContentType As Enums.ContentType) As String
+        If APIXML.lFlags.Count > 0 Then
+            Dim fiAV As New MediaInfo.Fileinfo
+            Select Case tContentType
+                Case Enums.ContentType.Movie
+                    fiAV = tDBElement.Movie.FileInfo
+                Case Enums.ContentType.TVEpisode
+                    fiAV = tDBElement.TVEpisode.FileInfo
+            End Select
+            Dim tVideo As MediaInfo.Video = NFO.GetBestVideo(fiAV)
+            Dim tAudio As MediaInfo.Audio = NFO.GetBestAudio(fiAV, False)
 
-        Dim regSettings As Match = Regex.Match(strPattern, "<exportsettings>.*?</exportsettings>", RegexOptions.Singleline)
-        If regSettings.Success Then
-            Dim xmlSer As XmlSerializer = Nothing
-            Using xmlSR As TextReader = New StringReader(regSettings.Value)
-                xmlSer = New XmlSerializer(GetType(ExportSettings))
-                tExportSettings = DirectCast(xmlSer.Deserialize(xmlSR), ExportSettings)
-            End Using
-            strPattern = strPattern.Replace(regSettings.Value, String.Empty)
+            Dim vresFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = NFO.GetResFromDimensions(tVideo).ToLower AndAlso f.Type = APIXML.FlagType.VideoResolution)
+            If vresFlag IsNot Nothing Then
+                strRow = strRow.Replace("<$FLAG_VRES>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(vresFlag.Path))).Replace("\", "/")
+            Else
+                vresFlag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = "defaultscreen" AndAlso f.Type = APIXML.FlagType.VideoResolution)
+                If vresFlag IsNot Nothing Then
+                    strRow = strRow.Replace("<$FLAG_VRES>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(vresFlag.Path))).Replace("\", "/")
+                End If
+            End If
+
+            'Dim vsourceFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = APIXML.GetFileSource(AVMovie.Filename) AndAlso f.Type = APIXML.FlagType.VideoSource)
+            Dim vsourceFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name.ToLower = tDBElement.VideoSource AndAlso f.Type = APIXML.FlagType.VideoSource)
+            If vsourceFlag IsNot Nothing Then
+                strRow = strRow.Replace("<$FLAG_VSOURCE>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(vsourceFlag.Path))).Replace("\", "/")
+            Else
+                vsourceFlag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = "defaultscreen" AndAlso f.Type = APIXML.FlagType.VideoSource)
+                If vsourceFlag IsNot Nothing Then
+                    strRow = strRow.Replace("<$FLAG_VSOURCE>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(vsourceFlag.Path))).Replace("\", "/")
+                End If
+            End If
+
+            Dim vcodecFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = tVideo.Codec.ToLower AndAlso f.Type = APIXML.FlagType.VideoCodec)
+            If vcodecFlag IsNot Nothing Then
+                strRow = strRow.Replace("<$FLAG_VTYPE>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(vcodecFlag.Path))).Replace("\", "/")
+            Else
+                vcodecFlag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = "defaultscreen" AndAlso f.Type = APIXML.FlagType.VideoCodec)
+                If vcodecFlag IsNot Nothing Then
+                    strRow = strRow.Replace("<$FLAG_VTYPE>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(vcodecFlag.Path))).Replace("\", "/")
+                End If
+            End If
+
+            Dim acodecFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = tAudio.Codec.ToLower AndAlso f.Type = APIXML.FlagType.AudioCodec)
+            If acodecFlag IsNot Nothing Then
+                strRow = strRow.Replace("<$FLAG_ATYPE>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(acodecFlag.Path))).Replace("\", "/")
+            Else
+                acodecFlag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = "defaultaudio" AndAlso f.Type = APIXML.FlagType.AudioCodec)
+                If acodecFlag IsNot Nothing Then
+                    strRow = strRow.Replace("<$FLAG_ATYPE>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(acodecFlag.Path))).Replace("\", "/")
+                End If
+            End If
+
+            Dim achanFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = tAudio.Channels AndAlso f.Type = APIXML.FlagType.AudioChan)
+            If achanFlag IsNot Nothing Then
+                strRow = strRow.Replace("<$FLAG_ACHAN>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(achanFlag.Path))).Replace("\", "/")
+            Else
+                achanFlag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = "defaultaudio" AndAlso f.Type = APIXML.FlagType.AudioChan)
+                If achanFlag IsNot Nothing Then
+                    strRow = strRow.Replace("<$FLAG_ACHAN>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(achanFlag.Path))).Replace("\", "/")
+                End If
+            End If
         End If
-
-        Return strPattern
+        Return strRow
     End Function
 
-    Private Function Process_Movie(ByVal tContentPart As ContentPart, ByVal tMovie As Database.DBElement, ByVal bSearch As Boolean, ByVal iCounter As Integer) As String
+    Private Function GetFileSize(ByVal fPath As String) As String
+        Dim fSize As Long = 0
+        If StringUtils.IsStacked(Path.GetFileNameWithoutExtension(fPath), True) OrElse FileUtils.Common.isVideoTS(fPath) OrElse FileUtils.Common.isBDRip(fPath) Then
+            Try
+                Dim sExt As String = Path.GetExtension(fPath).ToLower
+                Dim oFile As String = StringUtils.CleanStackingMarkers(fPath, False)
+                Dim sFile As New List(Of String)
+                Dim bIsVTS As Boolean = False
+
+                If sExt = ".ifo" OrElse sExt = ".bup" OrElse sExt = ".vob" Then
+                    bIsVTS = True
+                End If
+
+                If bIsVTS Then
+                    Try
+                        sFile.AddRange(Directory.GetFiles(Directory.GetParent(fPath).FullName, "VTS*.VOB"))
+                    Catch
+                    End Try
+                ElseIf sExt = ".m2ts" Then
+                    Try
+                        sFile.AddRange(Directory.GetFiles(Directory.GetParent(fPath).FullName, "*.m2ts"))
+                    Catch
+                    End Try
+                Else
+                    Try
+                        sFile.AddRange(Directory.GetFiles(Directory.GetParent(fPath).FullName, StringUtils.CleanStackingMarkers(Path.GetFileName(fPath), True)))
+                    Catch
+                    End Try
+                End If
+
+                For Each tFile As String In sFile
+                    fSize += New FileInfo(tFile).Length
+                Next
+            Catch ex As Exception
+            End Try
+        Else
+            fSize = New FileInfo(fPath).Length
+        End If
+
+        Select Case fSize
+            Case 0 To 1023
+                Return fSize & " Bytes"
+            Case 1024 To 1048575
+                Return String.Concat((fSize / 1024).ToString("###0.00"), " KB")
+            Case 1048576 To 1043741824
+                Return String.Concat((fSize / 1024 ^ 2).ToString("###0.00"), " MB")
+            Case Is > 1043741824
+                Return String.Concat((fSize / 1024 ^ 3).ToString("###0.00"), " GB")
+        End Select
+
+        Return "0 bytes"
+    End Function
+
+    Private Function ProcessPattern_Movie(ByVal tContentPart As ContentPart, ByVal tMovie As Database.DBElement) As String
         Dim strRow As String = tContentPart.Content
 
         Dim tVid As New MediaInfo.Video
@@ -394,22 +573,22 @@ Public Class MediaExporter
         End If
 
         'Special Strings
-        strRow = strRow.Replace("<$COUNT>", iCounter.ToString)
+        strRow = strRow.Replace("<$COUNT>", tCounter_Global.ToString)
         strRow = strRow.Replace("<$DIRNAME>", StringUtils.HtmlEncode(Path.GetDirectoryName(tMovie.Filename)))
         strRow = strRow.Replace("<$FILENAME>", StringUtils.HtmlEncode(Path.GetFileName(tMovie.Filename)))
         strRow = strRow.Replace("<$NOW>", System.DateTime.Now.ToLongDateString) 'Save Build Date. might be useful info!
         strRow = strRow.Replace("<$PATH>", String.Empty)
-        strRow = strRow.Replace("<$FILESIZE>", StringUtils.HtmlEncode(FileSize(tMovie.Filename)))
+        strRow = strRow.Replace("<$FILESIZE>", StringUtils.HtmlEncode(GetFileSize(tMovie.Filename)))
 
         'Images
         With tMovie.ImagesContainer
-            strRow = strRow.Replace("<$BANNER_FILE>", ExportImage(.Banner, iCounter, Enums.ModifierType.MainBanner))
-            strRow = strRow.Replace("<$CLEARART_FILE>", ExportImage(.ClearArt, iCounter, Enums.ModifierType.MainClearArt))
-            strRow = strRow.Replace("<$CLEARLOGO_FILE>", ExportImage(.ClearLogo, iCounter, Enums.ModifierType.MainClearLogo))
-            strRow = strRow.Replace("<$DISCART_FILE>", ExportImage(.DiscArt, iCounter, Enums.ModifierType.MainDiscArt))
-            strRow = strRow.Replace("<$FANART_FILE>", ExportImage(.Fanart, iCounter, Enums.ModifierType.MainFanart))
-            strRow = strRow.Replace("<$LANDSCAPE_FILE>", ExportImage(.Landscape, iCounter, Enums.ModifierType.MainLandscape))
-            strRow = strRow.Replace("<$POSTER_FILE>", ExportImage(.Poster, iCounter, Enums.ModifierType.MainPoster))
+            strRow = strRow.Replace("<$BANNER_FILE>", ExportImage(.Banner, Enums.ModifierType.MainBanner))
+            strRow = strRow.Replace("<$CLEARART_FILE>", ExportImage(.ClearArt, Enums.ModifierType.MainClearArt))
+            strRow = strRow.Replace("<$CLEARLOGO_FILE>", ExportImage(.ClearLogo, Enums.ModifierType.MainClearLogo))
+            strRow = strRow.Replace("<$DISCART_FILE>", ExportImage(.DiscArt, Enums.ModifierType.MainDiscArt))
+            strRow = strRow.Replace("<$FANART_FILE>", ExportImage(.Fanart, Enums.ModifierType.MainFanart))
+            strRow = strRow.Replace("<$LANDSCAPE_FILE>", ExportImage(.Landscape, Enums.ModifierType.MainLandscape))
+            strRow = strRow.Replace("<$POSTER_FILE>", ExportImage(.Poster, Enums.ModifierType.MainPoster))
         End With
 
         'Title
@@ -488,27 +667,44 @@ Public Class MediaExporter
 
         'cocotus, 2013/02 Added support for new MediaInfo-fields
         'Row = Row.Replace("<$MOVIESETS>", StringUtils.HtmlEncode(AllMovieSetList)) 'A long string of all moviesets, seperated with ;!
-        strRow = strRow.Replace("<$TVSHOWS>", StringUtils.HtmlEncode(AllTVShowList)) 'A long string of all tvshows, seperated with |!
-        strRow = strRow.Replace("<$SET>", StringUtils.HtmlEncode(GetMovieSets(tMovie))) 'All sets which movie belongs to, seperated with ;!
+        'strRow = strRow.Replace("<$TVSHOWS>", StringUtils.HtmlEncode(AllTVShowList)) 'A long string of all tvshows, seperated with |!
+        'strRow = strRow.Replace("<$SET>", StringUtils.HtmlEncode(GetMovieSets(tMovie))) 'All sets which movie belongs to, seperated with ;!
 
         'Flags
-        strRow = GetAVImages(tMovie, strRow)
+        strRow = GetAVImages(tMovie, strRow, Enums.ContentType.Movie)
 
         Return strRow
     End Function
 
-    Private Function Process_TVEpisode(ByVal tContentPart As ContentPart, ByVal tShow As Database.DBElement, ByVal tEpisode As Database.DBElement, ByVal iCounter As Integer, ByVal iCounter_Season As Integer, ByVal iCounter_Episode As Integer) As String
+    Private Function ProcessPattern_Settings(ByVal strPattern As String) As String
+        tExportSettings.Clear()
+
+        Dim regSettings As Match = Regex.Match(strPattern, "<exportsettings>.*?</exportsettings>", RegexOptions.Singleline)
+        If regSettings.Success Then
+            Dim xmlSer As XmlSerializer = Nothing
+            Using xmlSR As TextReader = New StringReader(regSettings.Value)
+                xmlSer = New XmlSerializer(GetType(ExportSettings))
+                tExportSettings = DirectCast(xmlSer.Deserialize(xmlSR), ExportSettings)
+            End Using
+            strPattern = strPattern.Replace(regSettings.Value, String.Empty)
+        End If
+
+        Return strPattern
+    End Function
+
+    Private Function ProcessPattern_TVEpisode(ByVal tContentPart As ContentPart, ByVal tShow As Database.DBElement, ByVal tEpisode As Database.DBElement) As String
         Dim strRow As String = tContentPart.Content
 
         'Special Strings
-        strRow = strRow.Replace("<$COUNT>", iCounter.ToString)
-        strRow = strRow.Replace("<$COUNT_EPISODE>", iCounter_Episode.ToString)
+        strRow = strRow.Replace("<$COUNT>", tCounter_Global.ToString)
+        strRow = strRow.Replace("<$COUNT_TVSEASON>", tCounter_TVSeason.ToString)
+        strRow = strRow.Replace("<$COUNT_TVEPISODE>", tCounter_TVEpisode.ToString)
         strRow = strRow.Replace("<$MISSING>", If(tEpisode.FilenameID = -1, "true", "false"))
 
         'Images
         With tEpisode.ImagesContainer
-            strRow = strRow.Replace("<$FANART_FILE>", ExportImage(.Fanart, iCounter, Enums.ModifierType.EpisodeFanart, iCounter_Season, iCounter_Episode))
-            strRow = strRow.Replace("<$POSTER_FILE>", ExportImage(.Poster, iCounter, Enums.ModifierType.EpisodePoster, iCounter_Season, iCounter_Episode))
+            strRow = strRow.Replace("<$FANART_FILE>", ExportImage(.Fanart, Enums.ModifierType.EpisodeFanart))
+            strRow = strRow.Replace("<$POSTER_FILE>", ExportImage(.Poster, Enums.ModifierType.EpisodePoster))
         End With
 
         'Actors
@@ -544,28 +740,28 @@ Public Class MediaExporter
         strRow = strRow.Replace("<$VOTES>", StringUtils.HtmlEncode(If(tEpisode.TVEpisode.VotesSpecified, Double.Parse(tEpisode.TVEpisode.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture), String.Empty)))
 
         'Flags
-        strRow = GetAVImages(tShow, strRow)
+        strRow = GetAVImages(tShow, strRow, Enums.ContentType.TVEpisode)
 
         Return strRow
     End Function
 
-    Private Function Process_TVSeason(ByVal tContentPart As ContentPart, ByVal tShow As Database.DBElement, ByVal tSeason As Database.DBElement, ByVal iCounter As Integer, ByVal iCounter_Season As Integer) As String
+    Private Function ProcessPattern_TVSeason(ByVal tContentPart As ContentPart, ByVal tShow As Database.DBElement, ByVal tSeason As Database.DBElement) As String
         Dim strRow As String = tContentPart.Content
 
         If tContentPart.innerContentPartMap IsNot Nothing Then
-            strRow = Build_HTML(DirectCast(tContentPart.innerContentPartMap, List(Of ContentPart)), False, tShow, tSeason).ToString
+            strRow = Build_HTML(DirectCast(tContentPart.innerContentPartMap, List(Of ContentPart)), tShow, tSeason).ToString
         End If
 
         'Special Strings
-        strRow = strRow.Replace("<$COUNT>", iCounter.ToString)
-        strRow = strRow.Replace("<$COUNT_SEASON>", iCounter_Season.ToString)
+        strRow = strRow.Replace("<$COUNT>", tCounter_Global.ToString)
+        strRow = strRow.Replace("<$COUNT_TVSEASON>", tCounter_TVSeason.ToString)
 
         'Images
         With tSeason.ImagesContainer
-            strRow = strRow.Replace("<$BANNER_FILE>", ExportImage(.Banner, iCounter, Enums.ModifierType.SeasonBanner, iCounter_Season))
-            strRow = strRow.Replace("<$FANART_FILE>", ExportImage(.Fanart, iCounter, Enums.ModifierType.SeasonFanart, iCounter_Season))
-            strRow = strRow.Replace("<$LANDSCAPE_FILE>", ExportImage(.Landscape, iCounter, Enums.ModifierType.SeasonLandscape, iCounter_Season))
-            strRow = strRow.Replace("<$POSTER_FILE>", ExportImage(.Poster, iCounter, Enums.ModifierType.SeasonPoster, iCounter_Season))
+            strRow = strRow.Replace("<$BANNER_FILE>", ExportImage(.Banner, Enums.ModifierType.SeasonBanner))
+            strRow = strRow.Replace("<$FANART_FILE>", ExportImage(.Fanart, Enums.ModifierType.SeasonFanart))
+            strRow = strRow.Replace("<$LANDSCAPE_FILE>", ExportImage(.Landscape, Enums.ModifierType.SeasonLandscape))
+            strRow = strRow.Replace("<$POSTER_FILE>", ExportImage(.Poster, Enums.ModifierType.SeasonPoster))
         End With
 
         'Fields
@@ -580,11 +776,11 @@ Public Class MediaExporter
         Return strRow
     End Function
 
-    Private Function Process_TVShow(ByVal tContentPart As ContentPart, ByVal tShow As Database.DBElement, ByVal bSearch As Boolean, ByVal iCounter As Integer) As String
+    Private Function ProcessPattern_TVShow(ByVal tContentPart As ContentPart, ByVal tShow As Database.DBElement) As String
         Dim strRow As String = tContentPart.Content
 
         If tContentPart.innerContentPartMap IsNot Nothing Then
-            strRow = Build_HTML(DirectCast(tContentPart.innerContentPartMap, List(Of ContentPart)), bSearch, tShow).ToString
+            strRow = Build_HTML(DirectCast(tContentPart.innerContentPartMap, List(Of ContentPart)), tShow).ToString
         End If
 
         'Special Strings
@@ -594,13 +790,13 @@ Public Class MediaExporter
 
         'Images
         With tShow.ImagesContainer
-            strRow = strRow.Replace("<$BANNER_FILE>", ExportImage(.Banner, tCounter_Global, Enums.ModifierType.MainBanner))
-            strRow = strRow.Replace("<$CHARACTERART_FILE>", ExportImage(.CharacterArt, tCounter_Global, Enums.ModifierType.MainCharacterArt))
-            strRow = strRow.Replace("<$CLEARART_FILE>", ExportImage(.ClearArt, tCounter_Global, Enums.ModifierType.MainClearArt))
-            strRow = strRow.Replace("<$CLEARLOGO_FILE>", ExportImage(.ClearLogo, tCounter_Global, Enums.ModifierType.MainClearLogo))
-            strRow = strRow.Replace("<$FANART_FILE>", ExportImage(.Fanart, tCounter_Global, Enums.ModifierType.MainFanart))
-            strRow = strRow.Replace("<$LANDSCAPE_FILE>", ExportImage(.Landscape, tCounter_Global, Enums.ModifierType.MainLandscape))
-            strRow = strRow.Replace("<$POSTER_FILE>", ExportImage(.Poster, tCounter_Global, Enums.ModifierType.MainPoster))
+            strRow = strRow.Replace("<$BANNER_FILE>", ExportImage(.Banner, Enums.ModifierType.MainBanner))
+            strRow = strRow.Replace("<$CHARACTERART_FILE>", ExportImage(.CharacterArt, Enums.ModifierType.MainCharacterArt))
+            strRow = strRow.Replace("<$CLEARART_FILE>", ExportImage(.ClearArt, Enums.ModifierType.MainClearArt))
+            strRow = strRow.Replace("<$CLEARLOGO_FILE>", ExportImage(.ClearLogo, Enums.ModifierType.MainClearLogo))
+            strRow = strRow.Replace("<$FANART_FILE>", ExportImage(.Fanart, Enums.ModifierType.MainFanart))
+            strRow = strRow.Replace("<$LANDSCAPE_FILE>", ExportImage(.Landscape, Enums.ModifierType.MainLandscape))
+            strRow = strRow.Replace("<$POSTER_FILE>", ExportImage(.Poster, Enums.ModifierType.MainPoster))
         End With
 
         'Title
@@ -642,9 +838,6 @@ Public Class MediaExporter
         strRow = strRow.Replace("<$TMDBID>", StringUtils.HtmlEncode(tShow.TVShow.TMDB))
         strRow = strRow.Replace("<$TVDBID>", tShow.TVShow.TVDB)
         strRow = strRow.Replace("<$VOTES>", StringUtils.HtmlEncode(If(tShow.TVShow.VotesSpecified, Double.Parse(tShow.TVShow.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture), String.Empty)))
-
-        'Flags
-        strRow = GetAVImages(tShow, strRow)
 
         Return strRow
     End Function
