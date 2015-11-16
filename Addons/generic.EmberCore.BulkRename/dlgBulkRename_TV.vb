@@ -59,9 +59,9 @@ Public Class dlgBulkRenamer_TV
     Public Sub New()
         ' This call is required by the designer.
         InitializeComponent()
-        Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
-        Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
-        Me.StartPosition = FormStartPosition.Manual
+        Left = Master.AppPos.Left + (Master.AppPos.Width - Width) \ 2
+        Top = Master.AppPos.Top + (Master.AppPos.Height - Height) \ 2
+        StartPosition = FormStartPosition.Manual
     End Sub
 
     Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
@@ -74,8 +74,8 @@ Public Class dlgBulkRenamer_TV
 
     Private Sub bwDoRename_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDoRename.RunWorkerCompleted
         pnlCancel.Visible = False
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.Close()
+        DialogResult = System.Windows.Forms.DialogResult.OK
+        Close()
     End Sub
 
     Private Sub bwDoRename_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDoRename.DoWork
@@ -104,11 +104,11 @@ Public Class dlgBulkRenamer_TV
             '    hasFilter = True
             'End If
 
-            If Not String.IsNullOrEmpty(Me.FilterShows) Then
+            If Not String.IsNullOrEmpty(FilterShows) Then
                 If hasFilter Then
-                    dbFilter = String.Concat("(", Me.FilterShows, ") AND ", dbFilter).Trim
+                    dbFilter = String.Concat("(", FilterShows, ") AND ", dbFilter).Trim
                 Else
-                    dbFilter = String.Concat(Me.FilterShows).Trim
+                    dbFilter = String.Concat(FilterShows).Trim
                     hasFilter = True
                 End If
             End If
@@ -124,7 +124,7 @@ Public Class dlgBulkRenamer_TV
                 End If
                 Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     If SQLcount.HasRows AndAlso SQLcount.Read() Then
-                        Me.bwLoadInfo.ReportProgress(-1, SQLcount("mcount")) ' set maximum
+                        bwLoadInfo.ReportProgress(-1, SQLcount("mcount")) ' set maximum
                     End If
                 End Using
                 If Not hasFilter Then
@@ -144,7 +144,7 @@ Public Class dlgBulkRenamer_TV
                                         _currShow = Master.DB.LoadTVEpisodeFromDB(Convert.ToInt32(SQLreader("idEpisode")), True)
 
                                         If Not _currShow.ID = -1 AndAlso Not _currShow.ShowID = -1 AndAlso Not String.IsNullOrEmpty(_currShow.Filename) Then
-                                            Me.bwLoadInfo.ReportProgress(iProg, String.Concat(_currShow.TVShow.Title, ": ", _currShow.TVEpisode.Title))
+                                            bwLoadInfo.ReportProgress(iProg, String.Concat(_currShow.TVShow.Title, ": ", _currShow.TVEpisode.Title))
                                             EpisodeFile = FileFolderRenamer.GetInfo_Episode(_currShow)
                                             FFRenamer.AddEpisode(EpisodeFile)
                                         End If
@@ -173,10 +173,10 @@ Public Class dlgBulkRenamer_TV
 
     Private Sub bwLoadInfo_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwLoadInfo.ProgressChanged
         If e.ProgressPercentage >= 0 Then
-            Me.pbCompile.Value = e.ProgressPercentage
-            Me.lblFile.Text = e.UserState.ToString
+            pbCompile.Value = e.ProgressPercentage
+            lblFile.Text = e.UserState.ToString
         Else
-            Me.pbCompile.Maximum = Convert.ToInt32(e.UserState)
+            pbCompile.Maximum = Convert.ToInt32(e.UserState)
         End If
     End Sub
 
@@ -188,7 +188,7 @@ Public Class dlgBulkRenamer_TV
                 tmrSimul.Enabled = True
             Else
             End If
-            Me.pnlCancel.Visible = False
+            pnlCancel.Visible = False
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
@@ -204,12 +204,12 @@ Public Class dlgBulkRenamer_TV
 
     Private Sub Close_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Close_Button.Click
         If DoneRename Then
-            Me.DialogResult = System.Windows.Forms.DialogResult.OK
+            DialogResult = System.Windows.Forms.DialogResult.OK
         Else
-            Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+            DialogResult = System.Windows.Forms.DialogResult.Cancel
         End If
 
-        Me.Close()
+        Close()
     End Sub
 
     Private Sub cmsEpisodeList_Opening(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles cmsEpisodeList.Opening
@@ -269,7 +269,7 @@ Public Class dlgBulkRenamer_TV
     End Sub
 
     Private Sub dgvEpisodesList_ColumnHeaderMouseClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellMouseEventArgs) Handles dgvEpisodesList.ColumnHeaderMouseClick
-        Me.dgvEpisodesList.Sort(Me.dgvEpisodesList.Columns(e.ColumnIndex), System.ComponentModel.ListSortDirection.Ascending)
+        dgvEpisodesList.Sort(dgvEpisodesList.Columns(e.ColumnIndex), System.ComponentModel.ListSortDirection.Ascending)
     End Sub
 
     Private Sub dgvEpisodesList_ColumnWidthChanged(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewColumnEventArgs) Handles dgvEpisodesList.ColumnWidthChanged
@@ -284,9 +284,9 @@ Public Class dlgBulkRenamer_TV
     End Sub
 
     Private Sub dlgBulkRename_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
-        If Me.bwLoadInfo.IsBusy Then
-            Me.DoCancel()
-            While Me.bwLoadInfo.IsBusy
+        If bwLoadInfo.IsBusy Then
+            DoCancel()
+            While bwLoadInfo.IsBusy
                 Application.DoEvents()
                 Threading.Thread.Sleep(50)
             End While
@@ -294,7 +294,7 @@ Public Class dlgBulkRenamer_TV
     End Sub
 
     Private Sub dlgBulkRename_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Me.SetUp()
+        SetUp()
 
         FFRenamer = New FileFolderRenamer
         ' temporarily disabled - TODO: autoresizing
@@ -307,7 +307,7 @@ Public Class dlgBulkRenamer_TV
     End Sub
 
     Private Sub dlgBulkRename_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
-        Me.Activate()
+        Activate()
 
         Try
             ' Show Cancel Panel
@@ -320,10 +320,10 @@ Public Class dlgBulkRenamer_TV
             Application.DoEvents()
 
             'Start worker
-            Me.bwLoadInfo = New System.ComponentModel.BackgroundWorker
-            Me.bwLoadInfo.WorkerSupportsCancellation = True
-            Me.bwLoadInfo.WorkerReportsProgress = True
-            Me.bwLoadInfo.RunWorkerAsync()
+            bwLoadInfo = New System.ComponentModel.BackgroundWorker
+            bwLoadInfo.WorkerSupportsCancellation = True
+            bwLoadInfo.WorkerReportsProgress = True
+            bwLoadInfo.RunWorkerAsync()
 
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -332,7 +332,7 @@ Public Class dlgBulkRenamer_TV
 
     Private Sub DoCancel()
         Try
-            Me.bwLoadInfo.CancelAsync()
+            bwLoadInfo.CancelAsync()
             btnCancel.Visible = False
             lblCompiling.Visible = False
             pbCompile.Style = ProgressBarStyle.Marquee
@@ -347,14 +347,14 @@ Public Class dlgBulkRenamer_TV
     Private Sub DoProcess()
         Dim Sta As MyStart = New MyStart(AddressOf Start)
         Dim Fin As MyFinish = New MyFinish(AddressOf Finish)
-        Me.Invoke(Sta)
+        Invoke(Sta)
         FFRenamer.ProccessFiles_Episodes(txtFolderPatternSeasons.Text, txtFilePatternEpisodes.Text)
-        Me.Invoke(Fin)
+        Invoke(Fin)
     End Sub
 
     Private Sub Finish()
         Simulate()
-        Me.pnlCancel.Visible = False
+        pnlCancel.Visible = False
     End Sub
 
     Private Sub Rename_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Rename_Button.Click
@@ -367,10 +367,10 @@ Public Class dlgBulkRenamer_TV
         pbCompile.Value = 0
         Application.DoEvents()
         'Start worker
-        Me.bwDoRename = New System.ComponentModel.BackgroundWorker
-        Me.bwDoRename.WorkerSupportsCancellation = True
-        Me.bwDoRename.WorkerReportsProgress = True
-        Me.bwDoRename.RunWorkerAsync()
+        bwDoRename = New System.ComponentModel.BackgroundWorker
+        bwDoRename.WorkerSupportsCancellation = True
+        bwDoRename.WorkerReportsProgress = True
+        bwDoRename.RunWorkerAsync()
     End Sub
 
     Sub setLock(ByVal lock As Boolean)
@@ -379,9 +379,9 @@ Public Class dlgBulkRenamer_TV
             row.Cells(5).Value = lock
         Next
 
-        If Me.chkRenamedOnly.Checked AndAlso lock Then
-            Me.dgvEpisodesList.ClearSelection()
-            Me.dgvEpisodesList.CurrentCell = Nothing
+        If chkRenamedOnly.Checked AndAlso lock Then
+            dgvEpisodesList.ClearSelection()
+            dgvEpisodesList.CurrentCell = Nothing
         End If
 
         dgvEpisodesList.Refresh()
@@ -394,9 +394,9 @@ Public Class dlgBulkRenamer_TV
                 row.Cells(5).Value = lock
             Next
 
-            If Me.chkRenamedOnly.Checked AndAlso lock Then
-                Me.dgvEpisodesList.ClearSelection()
-                Me.dgvEpisodesList.CurrentCell = Nothing
+            If chkRenamedOnly.Checked AndAlso lock Then
+                dgvEpisodesList.ClearSelection()
+                dgvEpisodesList.CurrentCell = Nothing
             End If
 
             dgvEpisodesList.Refresh()
@@ -406,39 +406,39 @@ Public Class dlgBulkRenamer_TV
     End Sub
 
     Private Sub SetUp()
-        Me.Text = Master.eLang.GetString(274, "TV Bulk Renamer")
-        Me.Close_Button.Text = Master.eLang.GetString(19, "Close")
-        Me.lblTopDetails.Text = Master.eLang.GetString(275, "Rename TV Shows and files")
-        Me.lblTopTitle.Text = Me.Text
-        Me.lblCompiling.Text = Master.eLang.GetString(277, "Compiling TV Shows List...")
-        Me.lblCanceling.Text = Master.eLang.GetString(178, "Canceling Compilation...")
-        Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel")
-        Me.Rename_Button.Text = Master.eLang.GetString(257, "Rename")
-        Me.tsmLockEpisode.Text = Master.eLang.GetString(24, "Lock")
-        Me.tsmUnlockEpisode.Text = Master.eLang.GetString(108, "Unlock")
-        Me.tsmLockAll.Text = Master.eLang.GetString(169, "Lock All")
-        Me.tsmUnlockAll.Text = Master.eLang.GetString(170, "Unlock All")
-        Me.lblFolderPatternShows.Text = Master.eLang.GetString(495, "Show Folders Pattern")
-        Me.lblFilePatternEpisodes.Text = Master.eLang.GetString(469, "Episode Files Pattern")
-        Me.lblFolderPatternSeasons.Text = Master.eLang.GetString(496, "Season Folders Pattern")
-        Me.chkRenamedOnly.Text = Master.eLang.GetString(280, "Display Only Episodes That Will Be Renamed")
+        Text = Master.eLang.GetString(274, "TV Bulk Renamer")
+        Close_Button.Text = Master.eLang.GetString(19, "Close")
+        lblTopDetails.Text = Master.eLang.GetString(275, "Rename TV Shows and files")
+        lblTopTitle.Text = Text
+        lblCompiling.Text = Master.eLang.GetString(277, "Compiling TV Shows List...")
+        lblCanceling.Text = Master.eLang.GetString(178, "Canceling Compilation...")
+        btnCancel.Text = Master.eLang.GetString(167, "Cancel")
+        Rename_Button.Text = Master.eLang.GetString(257, "Rename")
+        tsmLockEpisode.Text = Master.eLang.GetString(24, "Lock")
+        tsmUnlockEpisode.Text = Master.eLang.GetString(108, "Unlock")
+        tsmLockAll.Text = Master.eLang.GetString(169, "Lock All")
+        tsmUnlockAll.Text = Master.eLang.GetString(170, "Unlock All")
+        lblFolderPatternShows.Text = Master.eLang.GetString(495, "Show Folders Pattern")
+        lblFilePatternEpisodes.Text = Master.eLang.GetString(469, "Episode Files Pattern")
+        lblFolderPatternSeasons.Text = Master.eLang.GetString(496, "Season Folders Pattern")
+        chkRenamedOnly.Text = Master.eLang.GetString(280, "Display Only Episodes That Will Be Renamed")
 
         Dim frmToolTip As New ToolTip()
         Dim s As String = String.Format(Master.eLang.GetString(262, "$1 = First Letter of the Title{0}$2 = Aired date (episodes only){0}$A = Audio Channels{0}$B = Base Path{0}$C = Director{0}$D = Directory{0}$E = Sort Title{0}$F = File Name{0}$G = Genre (Follow with a space, dot or hyphen to change separator){0}$H = Video Codec{0}$I = IMDB ID{0}$J = Audio Codec{0}$K#.S? = #Padding (0-9), Season Separator (. or _ or x), Season Prefix{0}$L = List Title{0}$M = MPAA{0}$N = Collection Name{0}$O = OriginalTitle{0}$OO = OriginalTitle if different from Title{0}$P = Rating{0}$Q#.E? = #Padding (0-9), Episode Separator (. or _ or x), Episode Prefix{0}$R = Resolution{0}$S = Video Source{0}$T = Title{0}$U = Country (Follow with a space, dot or hyphen to change separator){0}$V = 3D (If Multiview > 1){0}$W#.S?#.E? = #Padding (0-9), Seasons Separator (. or _), Season Prefix, #Padding (0-9), Episode Separator (. or _ or x), Episode Prefix{0}$Y = Year{0}$X. (Replace Space with .){0}$Z = Show Title{0}{{}} = Optional{0}$?aaa?bbb? = Replace aaa with bbb{0}$! = Uppercase first letter in each word{0}$; = Lowercase all letters{0}$- = Remove previous char if next pattern does not have a value{0}$+ = Remove next char if previous pattern does not have a value{0}$^ = Remove previous and next char if next pattern does not have a value"), Environment.NewLine)
-        frmToolTip.SetToolTip(Me.txtFilePatternEpisodes, s)
-        frmToolTip.SetToolTip(Me.txtFolderPatternSeasons, s)
-        frmToolTip.SetToolTip(Me.txtFolderPatternShows, s)
+        frmToolTip.SetToolTip(txtFilePatternEpisodes, s)
+        frmToolTip.SetToolTip(txtFolderPatternSeasons, s)
+        frmToolTip.SetToolTip(txtFolderPatternShows, s)
     End Sub
 
     Private Function ShowProgressRename(ByVal mov As String, ByVal iProg As Integer) As Boolean
-        Me.bwDoRename.ReportProgress(iProg, mov.ToString)
+        bwDoRename.ReportProgress(iProg, mov.ToString)
         If CancelRename Then Return False
         Return True
     End Function
 
     Private Sub Simulate()
         Try
-            With Me.dgvEpisodesList
+            With dgvEpisodesList
                 If Not run_once Then
                     For Each c As DataGridViewColumn In .Columns
                         _columnsize(c.Index) = c.Width
@@ -482,10 +482,10 @@ Public Class dlgBulkRenamer_TV
     End Sub
 
     Private Sub Start()
-        Me.btnCancel.Visible = False
-        Me.lblFile.Visible = False
-        Me.pbCompile.Style = ProgressBarStyle.Marquee
-        Me.pnlCancel.Visible = True
+        btnCancel.Visible = False
+        lblFile.Visible = False
+        pbCompile.Style = ProgressBarStyle.Marquee
+        pnlCancel.Visible = True
     End Sub
 
     Private Sub tmrSimul_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrSimul.Tick
@@ -552,8 +552,8 @@ Public Class dlgBulkRenamer_TV
         dHelpTips.lblTips.Text = s
         dHelpTips.Width = dHelpTips.lblTips.Width + 5
         dHelpTips.Height = dHelpTips.lblTips.Height + 35
-        dHelpTips.Top = Me.Top + 10
-        dHelpTips.Left = Me.Right - dHelpTips.Width - 10
+        dHelpTips.Top = Top + 10
+        dHelpTips.Left = Right - dHelpTips.Width - 10
         If dHelpTips.Visible Then
             dHelpTips.Hide()
         Else

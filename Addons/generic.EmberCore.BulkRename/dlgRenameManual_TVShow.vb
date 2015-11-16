@@ -36,9 +36,9 @@ Public Class dlgRenameManual_TVShow
     Public Sub New(ByVal DBElement As Database.DBElement)
         ' This call is required by the designer.
         InitializeComponent()
-        Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
-        Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
-        Me.StartPosition = FormStartPosition.Manual
+        Left = Master.AppPos.Left + (Master.AppPos.Width - Width) \ 2
+        Top = Master.AppPos.Top + (Master.AppPos.Height - Height) \ 2
+        StartPosition = FormStartPosition.Manual
         _DBElement = DBElement
     End Sub
 
@@ -48,17 +48,17 @@ Public Class dlgRenameManual_TVShow
 
     Private Sub bwRename_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwRename.RunWorkerCompleted
         Cursor.Current = Cursors.Default
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.Close()
+        DialogResult = System.Windows.Forms.DialogResult.OK
+        Close()
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Close()
+        DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Close()
     End Sub
 
     Private Sub dlgRenameManual_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Me.SetUp()
+        SetUp()
         Dim tFolder As String = String.Empty
         If Not String.IsNullOrEmpty(_DBElement.ShowPath) Then
             tFolder = Path.GetFileName(_DBElement.ShowPath)
@@ -75,18 +75,18 @@ Public Class dlgRenameManual_TVShow
         txtFolder.Enabled = False
         pnlStatus.Visible = True
         Application.DoEvents()
-        Me.bwRename = New System.ComponentModel.BackgroundWorker
-        Me.bwRename.RunWorkerAsync()
+        bwRename = New System.ComponentModel.BackgroundWorker
+        bwRename.RunWorkerAsync()
     End Sub
 
     Sub SetUp()
-        Me.Text = String.Concat(Master.eLang.GetString(263, "Manual Rename"), " | ", _DBElement.TVShow.Title)
-        Me.lblFolder.Text = Master.eLang.GetString(13, "Folder Name")
-        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
-        Me.Cancel_Button.Text = Master.eLang.GetString(19, "Close")
-        Me.lblTitle.Text = Master.eLang.GetString(246, "Title:")
-        Me.lblStatus.Text = Master.eLang.GetString(272, "Renaming Directory/Files...")
-        Me.txtTitle.Text = _DBElement.TVShow.Title
+        Text = String.Concat(Master.eLang.GetString(263, "Manual Rename"), " | ", _DBElement.TVShow.Title)
+        lblFolder.Text = Master.eLang.GetString(13, "Folder Name")
+        OK_Button.Text = Master.eLang.GetString(179, "OK")
+        Cancel_Button.Text = Master.eLang.GetString(19, "Close")
+        lblTitle.Text = Master.eLang.GetString(246, "Title:")
+        lblStatus.Text = Master.eLang.GetString(272, "Renaming Directory/Files...")
+        txtTitle.Text = _DBElement.TVShow.Title
     End Sub
 
     Private Sub txtFolder_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFolder.TextChanged
