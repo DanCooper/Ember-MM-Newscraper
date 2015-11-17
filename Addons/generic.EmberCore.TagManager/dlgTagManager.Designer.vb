@@ -41,6 +41,10 @@ Partial Class dlgTagManager
         Me.pnlMain = New System.Windows.Forms.Panel()
         Me.tblMain = New System.Windows.Forms.TableLayoutPanel()
         Me.gbMovies = New System.Windows.Forms.GroupBox()
+        Me.gbMoviesFilter = New System.Windows.Forms.GroupBox()
+        Me.rdMoviesFiltered = New System.Windows.Forms.RadioButton()
+        Me.rdMoviesAll = New System.Windows.Forms.RadioButton()
+        Me.rdMoviesSelected = New System.Windows.Forms.RadioButton()
         Me.dgvMovies = New System.Windows.Forms.DataGridView()
         Me.btnAddMovie = New System.Windows.Forms.Button()
         Me.gbTags = New System.Windows.Forms.GroupBox()
@@ -63,6 +67,7 @@ Partial Class dlgTagManager
         Me.pnlMain.SuspendLayout()
         Me.tblMain.SuspendLayout()
         Me.gbMovies.SuspendLayout()
+        Me.gbMoviesFilter.SuspendLayout()
         CType(Me.dgvMovies, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gbTags.SuspendLayout()
         Me.gbMoviesInTag.SuspendLayout()
@@ -90,7 +95,7 @@ Partial Class dlgTagManager
         Me.pnlTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlTop.Name = "pnlTop"
-        Me.pnlTop.Size = New System.Drawing.Size(754, 64)
+        Me.pnlTop.Size = New System.Drawing.Size(925, 64)
         Me.pnlTop.TabIndex = 1
         '
         'picTopTitle
@@ -229,13 +234,14 @@ Partial Class dlgTagManager
         Me.btnCancel.UseVisualStyleBackColor = True
         '
         'pnlMain
+        '
         Me.pnlMain.AutoSize = True
         Me.pnlMain.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.pnlMain.Controls.Add(Me.tblMain)
         Me.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlMain.Location = New System.Drawing.Point(0, 64)
         Me.pnlMain.Name = "pnlMain"
-        Me.pnlMain.Size = New System.Drawing.Size(754, 444)
+        Me.pnlMain.Size = New System.Drawing.Size(925, 550)
         Me.pnlMain.TabIndex = 16
         '
         'tblMain
@@ -254,23 +260,70 @@ Partial Class dlgTagManager
         Me.tblMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMain.Location = New System.Drawing.Point(0, 0)
         Me.tblMain.Name = "tblMain"
-        Me.tblMain.RowCount = 2
+        Me.tblMain.RowCount = 3
         Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMain.Size = New System.Drawing.Size(754, 444)
+        Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMain.Size = New System.Drawing.Size(925, 550)
         Me.tblMain.TabIndex = 3
         '
         'gbMovies
         '
+        Me.gbMovies.Controls.Add(Me.gbMoviesFilter)
         Me.gbMovies.Controls.Add(Me.dgvMovies)
         Me.gbMovies.Controls.Add(Me.btnAddMovie)
         Me.gbMovies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbMovies.Location = New System.Drawing.Point(470, 3)
         Me.gbMovies.Name = "gbMovies"
-        Me.gbMovies.Size = New System.Drawing.Size(259, 411)
+        Me.gbMovies.Size = New System.Drawing.Size(443, 541)
         Me.gbMovies.TabIndex = 7
         Me.gbMovies.TabStop = False
         Me.gbMovies.Text = "Avalaible Movies"
+        '
+        'gbMoviesFilter
+        '
+        Me.gbMoviesFilter.Controls.Add(Me.rdMoviesFiltered)
+        Me.gbMoviesFilter.Controls.Add(Me.rdMoviesAll)
+        Me.gbMoviesFilter.Controls.Add(Me.rdMoviesSelected)
+        Me.gbMoviesFilter.Location = New System.Drawing.Point(257, 21)
+        Me.gbMoviesFilter.Name = "gbMoviesFilter"
+        Me.gbMoviesFilter.Size = New System.Drawing.Size(164, 90)
+        Me.gbMoviesFilter.TabIndex = 57
+        Me.gbMoviesFilter.TabStop = False
+        Me.gbMoviesFilter.Text = "Filter"
+        '
+        'rdMoviesFiltered
+        '
+        Me.rdMoviesFiltered.AutoSize = True
+        Me.rdMoviesFiltered.Location = New System.Drawing.Point(6, 21)
+        Me.rdMoviesFiltered.Name = "rdMoviesFiltered"
+        Me.rdMoviesFiltered.Size = New System.Drawing.Size(104, 17)
+        Me.rdMoviesFiltered.TabIndex = 54
+        Me.rdMoviesFiltered.TabStop = True
+        Me.rdMoviesFiltered.Text = "Filtered movies"
+        Me.rdMoviesFiltered.UseVisualStyleBackColor = True
+        '
+        'rdMoviesAll
+        '
+        Me.rdMoviesAll.AutoSize = True
+        Me.rdMoviesAll.Location = New System.Drawing.Point(6, 67)
+        Me.rdMoviesAll.Name = "rdMoviesAll"
+        Me.rdMoviesAll.Size = New System.Drawing.Size(79, 17)
+        Me.rdMoviesAll.TabIndex = 56
+        Me.rdMoviesAll.TabStop = True
+        Me.rdMoviesAll.Text = "All movies"
+        Me.rdMoviesAll.UseVisualStyleBackColor = True
+        '
+        'rdMoviesSelected
+        '
+        Me.rdMoviesSelected.AutoSize = True
+        Me.rdMoviesSelected.Location = New System.Drawing.Point(6, 44)
+        Me.rdMoviesSelected.Name = "rdMoviesSelected"
+        Me.rdMoviesSelected.Size = New System.Drawing.Size(108, 17)
+        Me.rdMoviesSelected.TabIndex = 55
+        Me.rdMoviesSelected.TabStop = True
+        Me.rdMoviesSelected.Text = "Selected movies"
+        Me.rdMoviesSelected.UseVisualStyleBackColor = True
         '
         'dgvMovies
         '
@@ -295,7 +348,7 @@ Partial Class dlgTagManager
         Me.dgvMovies.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.dgvMovies.ShowCellErrors = False
         Me.dgvMovies.ShowRowErrors = False
-        Me.dgvMovies.Size = New System.Drawing.Size(243, 352)
+        Me.dgvMovies.Size = New System.Drawing.Size(243, 485)
         Me.dgvMovies.StandardTab = True
         Me.dgvMovies.TabIndex = 51
         '
@@ -304,7 +357,7 @@ Partial Class dlgTagManager
         Me.btnAddMovie.Enabled = False
         Me.btnAddMovie.Image = CType(resources.GetObject("btnAddMovie.Image"), System.Drawing.Image)
         Me.btnAddMovie.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnAddMovie.Location = New System.Drawing.Point(8, 382)
+        Me.btnAddMovie.Location = New System.Drawing.Point(10, 512)
         Me.btnAddMovie.Name = "btnAddMovie"
         Me.btnAddMovie.Size = New System.Drawing.Size(23, 23)
         Me.btnAddMovie.TabIndex = 1
@@ -321,14 +374,14 @@ Partial Class dlgTagManager
         Me.gbTags.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTags.Location = New System.Drawing.Point(3, 3)
         Me.gbTags.Name = "gbTags"
-        Me.gbTags.Size = New System.Drawing.Size(221, 411)
+        Me.gbTags.Size = New System.Drawing.Size(221, 541)
         Me.gbTags.TabIndex = 5
         Me.gbTags.TabStop = False
         Me.gbTags.Text = "Tags"
         '
         'txtEditTag
         '
-        Me.txtEditTag.Location = New System.Drawing.Point(6, 351)
+        Me.txtEditTag.Location = New System.Drawing.Point(9, 484)
         Me.txtEditTag.Name = "txtEditTag"
         Me.txtEditTag.Size = New System.Drawing.Size(178, 22)
         Me.txtEditTag.TabIndex = 39
@@ -336,7 +389,7 @@ Partial Class dlgTagManager
         'btnRemoveTag
         '
         Me.btnRemoveTag.Image = CType(resources.GetObject("btnRemoveTag.Image"), System.Drawing.Image)
-        Me.btnRemoveTag.Location = New System.Drawing.Point(188, 378)
+        Me.btnRemoveTag.Location = New System.Drawing.Point(191, 511)
         Me.btnRemoveTag.Name = "btnRemoveTag"
         Me.btnRemoveTag.Size = New System.Drawing.Size(23, 23)
         Me.btnRemoveTag.TabIndex = 3
@@ -346,7 +399,7 @@ Partial Class dlgTagManager
         '
         Me.btnEditTag.Image = CType(resources.GetObject("btnEditTag.Image"), System.Drawing.Image)
         Me.btnEditTag.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnEditTag.Location = New System.Drawing.Point(188, 351)
+        Me.btnEditTag.Location = New System.Drawing.Point(191, 484)
         Me.btnEditTag.Name = "btnEditTag"
         Me.btnEditTag.Size = New System.Drawing.Size(23, 23)
         Me.btnEditTag.TabIndex = 2
@@ -357,7 +410,7 @@ Partial Class dlgTagManager
         '
         Me.btnNewTag.Image = CType(resources.GetObject("btnNewTag.Image"), System.Drawing.Image)
         Me.btnNewTag.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnNewTag.Location = New System.Drawing.Point(6, 378)
+        Me.btnNewTag.Location = New System.Drawing.Point(9, 511)
         Me.btnNewTag.Name = "btnNewTag"
         Me.btnNewTag.Size = New System.Drawing.Size(23, 23)
         Me.btnNewTag.TabIndex = 1
@@ -369,7 +422,7 @@ Partial Class dlgTagManager
         Me.lbTags.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lbTags.Location = New System.Drawing.Point(6, 20)
         Me.lbTags.Name = "lbTags"
-        Me.lbTags.Size = New System.Drawing.Size(205, 329)
+        Me.lbTags.Size = New System.Drawing.Size(205, 459)
         Me.lbTags.Sorted = True
         Me.lbTags.TabIndex = 0
         '
@@ -381,7 +434,7 @@ Partial Class dlgTagManager
         Me.gbMoviesInTag.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbMoviesInTag.Location = New System.Drawing.Point(230, 3)
         Me.gbMoviesInTag.Name = "gbMoviesInTag"
-        Me.gbMoviesInTag.Size = New System.Drawing.Size(234, 411)
+        Me.gbMoviesInTag.Size = New System.Drawing.Size(234, 541)
         Me.gbMoviesInTag.TabIndex = 6
         Me.gbMoviesInTag.TabStop = False
         Me.gbMoviesInTag.Text = "Movies In Tag"
@@ -400,7 +453,7 @@ Partial Class dlgTagManager
         '
         Me.btnRemoveMovie.Enabled = False
         Me.btnRemoveMovie.Image = CType(resources.GetObject("btnRemoveMovie.Image"), System.Drawing.Image)
-        Me.btnRemoveMovie.Location = New System.Drawing.Point(205, 382)
+        Me.btnRemoveMovie.Location = New System.Drawing.Point(205, 512)
         Me.btnRemoveMovie.Name = "btnRemoveMovie"
         Me.btnRemoveMovie.Size = New System.Drawing.Size(23, 23)
         Me.btnRemoveMovie.TabIndex = 4
@@ -415,7 +468,7 @@ Partial Class dlgTagManager
         Me.lbMoviesInTag.Location = New System.Drawing.Point(6, 46)
         Me.lbMoviesInTag.Name = "lbMoviesInTag"
         Me.lbMoviesInTag.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-        Me.lbMoviesInTag.Size = New System.Drawing.Size(222, 329)
+        Me.lbMoviesInTag.Size = New System.Drawing.Size(222, 459)
         Me.lbMoviesInTag.TabIndex = 1
         '
         'btnglobalTagsSync
@@ -432,9 +485,9 @@ Partial Class dlgTagManager
         Me.pnlBottom.AutoSize = True
         Me.pnlBottom.Controls.Add(Me.tblBottom)
         Me.pnlBottom.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlBottom.Location = New System.Drawing.Point(0, 508)
+        Me.pnlBottom.Location = New System.Drawing.Point(0, 614)
         Me.pnlBottom.Name = "pnlBottom"
-        Me.pnlBottom.Size = New System.Drawing.Size(754, 38)
+        Me.pnlBottom.Size = New System.Drawing.Size(925, 38)
         Me.pnlBottom.TabIndex = 18
         '
         'tblBottom
@@ -451,7 +504,7 @@ Partial Class dlgTagManager
         Me.tblBottom.Name = "tblBottom"
         Me.tblBottom.RowCount = 1
         Me.tblBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblBottom.Size = New System.Drawing.Size(754, 38)
+        Me.tblBottom.Size = New System.Drawing.Size(925, 38)
         Me.tblBottom.TabIndex = 0
         '
         'dlgTagManager
@@ -459,7 +512,7 @@ Partial Class dlgTagManager
         Me.AcceptButton = Me.OK_Button
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-        Me.ClientSize = New System.Drawing.Size(754, 546)
+        Me.ClientSize = New System.Drawing.Size(925, 652)
         Me.ControlBox = False
         Me.Controls.Add(Me.pnlMain)
         Me.Controls.Add(Me.pnlTop)
@@ -480,6 +533,8 @@ Partial Class dlgTagManager
         Me.pnlMain.PerformLayout()
         Me.tblMain.ResumeLayout(False)
         Me.gbMovies.ResumeLayout(False)
+        Me.gbMoviesFilter.ResumeLayout(False)
+        Me.gbMoviesFilter.PerformLayout()
         CType(Me.dgvMovies, System.ComponentModel.ISupportInitialize).EndInit()
         Me.gbTags.ResumeLayout(False)
         Me.gbTags.PerformLayout()
@@ -489,7 +544,8 @@ Partial Class dlgTagManager
         Me.tblBottom.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
-End Sub
+
+    End Sub
     Friend WithEvents OK_Button As System.Windows.Forms.Button
     Friend WithEvents pnlTop As System.Windows.Forms.Panel
     Friend WithEvents lblTopDetails As System.Windows.Forms.Label
@@ -522,4 +578,8 @@ End Sub
     Friend WithEvents tblMain As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents pnlBottom As System.Windows.Forms.Panel
     Friend WithEvents tblBottom As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents gbMoviesFilter As System.Windows.Forms.GroupBox
+    Friend WithEvents rdMoviesFiltered As System.Windows.Forms.RadioButton
+    Friend WithEvents rdMoviesAll As System.Windows.Forms.RadioButton
+    Friend WithEvents rdMoviesSelected As System.Windows.Forms.RadioButton
 End Class

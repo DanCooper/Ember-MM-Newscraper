@@ -39,8 +39,8 @@ Public Class dlgTagManager
 
     'datatable which contains all tags in Ember database, loaded at module startup
     Private dtMovieTags As New DataTable
-    'datatable which contains all movies in Ember database, loaded at module startup
-    Private dtMovies As New DataTable
+    'list of movies / movie view
+    Private lstFilteredMovies As New List(Of Database.DBElement)
 
     'reflects the current(modified) tag collection which will be saved to database/NFO
     Private globalMovieTags As New List(Of SyncTag)
@@ -89,10 +89,18 @@ Public Class dlgTagManager
         Me.lblTopDetails.Text = Master.eLang.GetString(1374, "Manage XBMC tags")
         gbTags.Text = Master.eLang.GetString(9999, "Tags")
         gbMoviesInTag.Text = Master.eLang.GetString(1375, "Movies in tag")
+        Me.rdMoviesAll.Text = Master.eLang.GetString(1461, "All movies")
+        Me.rdMoviesFiltered.Text = Master.eLang.GetString(1462, "Filtered movies")
+        Me.rdMoviesSelected.Text = Master.eLang.GetString(1463, "Selected movies")
+        Me.gbMoviesFilter.Text = Master.eLang.GetString(330, "Filter")
 
-        'load existing movies from database into datatable
-        Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT * FROM movielist ", _
-                                                            "ORDER BY ListTitle COLLATE NOCASE;"))
+        'load current movielist-view/selection
+        For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListMovies.Rows
+            Dim DBElement As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells("idMovie").Value))
+            If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBElement, True) Then
+                lstFilteredMovies.Add(DBElement)
+            End If
+        Next
 
         RefreshModule()
     End Sub
@@ -133,24 +141,21 @@ Public Class dlgTagManager
             Me.dgvMovies.SuspendLayout()
             Me.bsMovies.DataSource = Nothing
             Me.dgvMovies.DataSource = Nothing
-            If Me.dtMovies.Rows.Count > 0 Then
+            If Me.lstFilteredMovies.Count > 0 Then
+                '  If Me.dtMovies.Rows.Count > 0 Then
                 With Me
-                    .bsMovies.DataSource = .dtMovies
+                    .bsMovies.DataSource = .lstFilteredMovies
                     .dgvMovies.DataSource = .bsMovies
-
-                    .dgvMovies.Columns(0).Visible = False
-                    .dgvMovies.Columns(1).Visible = False
-                    .dgvMovies.Columns(2).Visible = False
-                    .dgvMovies.Columns(3).Resizable = DataGridViewTriState.True
-                    .dgvMovies.Columns(3).ReadOnly = True
-                    .dgvMovies.Columns(3).MinimumWidth = 83
-                    .dgvMovies.Columns(3).SortMode = DataGridViewColumnSortMode.Automatic
-                    .dgvMovies.Columns(3).ToolTipText = Master.eLang.GetString(21, "Title")
-                    .dgvMovies.Columns(3).HeaderText = Master.eLang.GetString(21, "Title")
-
-                    For i As Integer = 4 To .dgvMovies.Columns.Count - 1
+                    For i As Integer = 0 To .dgvMovies.Columns.Count - 1
                         .dgvMovies.Columns(i).Visible = False
                     Next
+                    .dgvMovies.Columns(26).Visible = True
+                    .dgvMovies.Columns(26).Resizable = DataGridViewTriState.True
+                    .dgvMovies.Columns(26).ReadOnly = True
+                    .dgvMovies.Columns(26).MinimumWidth = 83
+                    .dgvMovies.Columns(26).SortMode = DataGridViewColumnSortMode.Automatic
+                    .dgvMovies.Columns(26).ToolTipText = Master.eLang.GetString(21, "Title")
+                    .dgvMovies.Columns(26).HeaderText = Master.eLang.GetString(21, "Title")
 
                     .dgvMovies.Columns(0).ValueType = GetType(Int32)
                 End With
@@ -255,7 +260,6 @@ Public Class dlgTagManager
                             If movie.Movie.Title = selectedmovie.ToString Then
                                 _tag.IsModified = True
                                 _tag.Movies.Remove(movie)
-                                Exit For
                             End If
                         Next
                     End If
@@ -278,7 +282,7 @@ Public Class dlgTagManager
         If Me.dgvMovies.SelectedRows.Count > 0 Then
             For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
                 Dim tmpMovie As New Database.DBElement
-                tmpMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells(0).Value))
+                tmpMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells("ID").Value))
 
 
                 If Not String.IsNullOrEmpty(tmpMovie.Movie.Title) Then
@@ -288,7 +292,7 @@ Public Class dlgTagManager
                             If Not _tag.Movies Is Nothing Then
                                 Dim alreadyintag As Boolean = False
                                 For Each movie In _tag.Movies
-                                    If movie.Movie.Title = tmpMovie.Movie.Title Then
+                                    If movie.Movie.Title = tmpMovie.Movie.Title AndAlso movie.Movie.IMDBID = tmpMovie.Movie.IMDBID Then
                                         alreadyintag = True
                                     End If
                                 Next
@@ -556,6 +560,57 @@ Public Class dlgTagManager
 
 #End Region 'Methods
 
+
+    Private Sub rdMoviesFiltered_CheckedChanged(sender As Object, e As EventArgs) Handles rdMoviesFiltered.CheckedChanged
+        If rdMoviesFiltered.Checked Then
+            lstFilteredMovies.Clear()
+            'load current movielist-view/selection
+            For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListMovies.Rows
+                Dim DBElement As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells("idMovie").Value))
+                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBElement, True) Then
+                    lstFilteredMovies.Add(DBElement)
+                End If
+            Next
+            dgvMovies.DataSource = Nothing
+            dgvMovies.Rows.Clear()
+            RefreshModule()
+        End If
+    End Sub
+
+    Private Sub rdMoviesSelected_CheckedChanged(sender As Object, e As EventArgs) Handles rdMoviesSelected.CheckedChanged
+        If rdMoviesSelected.Checked Then
+            lstFilteredMovies.Clear()
+            'load current movielist-view/selection
+            For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows
+                Dim DBElement As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells("idMovie").Value))
+                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBElement, True) Then
+                    lstFilteredMovies.Add(DBElement)
+                End If
+            Next
+            dgvMovies.DataSource = Nothing
+            dgvMovies.Rows.Clear()
+            RefreshModule()
+        End If
+    End Sub
+
+    Private Sub rdMoviesAll_CheckedChanged(sender As Object, e As EventArgs) Handles rdMoviesAll.CheckedChanged
+        If rdMoviesAll.Checked Then
+            lstFilteredMovies.Clear()
+            'load current movielist-view/selection
+            Dim dtmovies As New DataTable
+            Master.DB.FillDataTable(dtmovies, String.Concat("SELECT * FROM movielist ", _
+                                                                "ORDER BY ListTitle COLLATE NOCASE;"))
+            For Each sRow As DataRow In dtmovies.Rows
+                Dim DBElement As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow("idMovie")))
+                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBElement, True) Then
+                    lstFilteredMovies.Add(DBElement)
+                End If
+            Next
+            dgvMovies.DataSource = Nothing
+            dgvMovies.Rows.Clear()
+            RefreshModule()
+        End If
+    End Sub
 
 End Class
 

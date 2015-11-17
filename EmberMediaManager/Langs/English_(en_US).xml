@@ -1549,4 +1549,7 @@
   <string id="1458">Imagedialog</string>
   <string id="1459">Activate ImageFilter to avoid duplicate images</string>
   <string id="1460">Match Tolerance should be between 0 - 10 | 0 = 100% identical images, 10= different images</string>
+  <string id="1461">All movies</string>
+  <string id="1462">Filtered movies</string>
+  <string id="1463">Selected movies</string>
 </strings>
