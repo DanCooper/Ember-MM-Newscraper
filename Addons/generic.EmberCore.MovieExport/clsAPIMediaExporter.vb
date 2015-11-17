@@ -29,7 +29,7 @@ Public Class MediaExporter
 
 #Region "Fields"
 
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     Public Delegate Function ShowProgress(ByVal title As String, ByVal operation As String) As Boolean
 
@@ -208,6 +208,7 @@ Public Class MediaExporter
             htmlPath = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, TemplateName, Path.DirectorySeparatorChar, "English_(en_US).html")
         End If
         If Not File.Exists(htmlPath) Then
+            logger.Warn(String.Concat("Can't find template """, htmlPath, """"))
             Return String.Empty
         End If
 
@@ -421,6 +422,67 @@ Public Class MediaExporter
         Return strPath
     End Function
 
+    Private Function GetAVSInfo(ByVal fInfo As MediaInfo.Fileinfo) As AVSInfo
+        Dim nInfo As New AVSInfo
+
+        Dim tVid As New MediaInfo.Video
+        Dim tAud As New MediaInfo.Audio
+        Dim tRes As String = String.Empty
+
+
+        If fInfo IsNot Nothing Then
+            If fInfo.StreamDetails.Video.Count > 0 Then
+                tVid = NFO.GetBestVideo(fInfo)
+                tRes = NFO.GetResFromDimensions(tVid)
+
+                nInfo.vidBitrate = tVid.Bitrate
+                nInfo.vidFileSize = CStr(tVid.Filesize)
+                nInfo.vidMultiViewCount = tVid.MultiViewCount
+                nInfo.vidMultiViewLayout = tVid.MultiViewLayout
+                nInfo.vidAspect = tVid.Aspect
+                nInfo.vidDuration = tVid.Duration
+                nInfo.vidHeight = tVid.Height
+                nInfo.vidLanguage = tVid.Language
+                nInfo.vidLongLanguage = tVid.LongLanguage
+                nInfo.vidScantype = tVid.Scantype
+                nInfo.vidStereoMode = tVid.StereoMode
+                nInfo.vidWidth = tVid.Width
+                nInfo.vidDetails = String.Format("{0} / {1}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(138, "Unknown"), tRes), If(String.IsNullOrEmpty(tVid.Codec), Master.eLang.GetString(138, "Unknown"), tVid.Codec)).ToUpper
+                nInfo.vidDimensions = NFO.GetDimensionsFromVideo(tVid)
+            End If
+
+            If fInfo.StreamDetails.Audio.Count > 0 Then
+                tAud = NFO.GetBestAudio(fInfo, False)
+
+                nInfo.audBitrate = tAud.Bitrate
+                nInfo.audChannels = tAud.Channels
+                nInfo.audLanguage = tAud.Language
+                nInfo.audLongLanguage = tAud.LongLanguage
+                nInfo.audDetails = String.Format("{0}ch / {1}", If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(138, "Unknown"), tAud.Channels), If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(138, "Unknown"), tAud.Codec)).ToUpper
+            End If
+
+            If fInfo.StreamDetails.Subtitle.Count > 0 Then
+                Dim subtitleinfo As MediaInfo.Subtitle
+                For c = 0 To fInfo.StreamDetails.Subtitle.Count - 1
+                    subtitleinfo = fInfo.StreamDetails.Subtitle(c)
+                    If Not subtitleinfo Is Nothing Then
+                        If Not String.IsNullOrEmpty(subtitleinfo.Language) Then
+                            nInfo.subLanguage = nInfo.subLanguage & ";" & subtitleinfo.Language
+                        End If
+                        If Not String.IsNullOrEmpty(subtitleinfo.LongLanguage) Then
+                            nInfo.subLongLanguage = nInfo.subLongLanguage & ";" & subtitleinfo.LongLanguage
+                        End If
+                        If Not String.IsNullOrEmpty(subtitleinfo.SubsType) Then
+                            nInfo.subType = nInfo.subType & ";" & subtitleinfo.SubsType
+                        End If
+                    End If
+                Next
+            End If
+        End If
+
+        Return nInfo
+    End Function
+
     Private Function GetFileSize(ByVal fPath As String) As String
         Dim fSize As Long = 0
         If StringUtils.IsStacked(Path.GetFileNameWithoutExtension(fPath), True) OrElse FileUtils.Common.isVideoTS(fPath) OrElse FileUtils.Common.isBDRip(fPath) Then
@@ -594,101 +656,23 @@ Public Class MediaExporter
     Private Function ProcessPattern_Movie(ByVal tContentPart As ContentPart, ByVal sfunction As ShowProgress, ByVal tMovie As Database.DBElement) As String
         Dim strRow As String = tContentPart.Content
 
-        Dim tVid As New MediaInfo.Video
-        Dim tAud As New MediaInfo.Audio
-        Dim tRes As String = String.Empty
-
-        Dim _audBitrate As String = String.Empty
-        Dim _audChannels As String = String.Empty
-        Dim _audDetails As String = String.Empty
-        Dim _audLanguage As String = String.Empty
-        Dim _audLongLanguage As String = String.Empty
-        Dim _subLanguage As String = String.Empty
-        Dim _subLongLanguage As String = String.Empty
-        Dim _subType As String = String.Empty
-        Dim _vidAspect As String = String.Empty
-        Dim _vidBitrate As String = String.Empty
-        Dim _vidDetails As String = String.Empty
-        Dim _vidDimensions As String = String.Empty
-        Dim _vidDuration As String = String.Empty
-        Dim _vidFileSize As String = String.Empty
-        Dim _vidHeight As String = String.Empty
-        Dim _vidLanguage As String = String.Empty
-        Dim _vidLongLanguage As String = String.Empty
-        Dim _vidMultiViewCount As String = String.Empty
-        Dim _vidMultiViewLayout As String = String.Empty
-        Dim _vidScantype As String = String.Empty
-        Dim _vidStereoMode As String = String.Empty
-        Dim _vidWidth As String = String.Empty
-
-        'FileInfo
-        If tMovie.Movie.FileInfo IsNot Nothing Then
-            If tMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 Then
-                tVid = NFO.GetBestVideo(tMovie.Movie.FileInfo)
-                tRes = NFO.GetResFromDimensions(tVid)
-
-                _vidBitrate = tVid.Bitrate
-                _vidFileSize = CStr(tVid.Filesize)
-                _vidMultiViewCount = tVid.MultiViewCount
-                _vidMultiViewLayout = tVid.MultiViewLayout
-                _vidAspect = tVid.Aspect
-                _vidDuration = tVid.Duration
-                _vidHeight = tVid.Height
-                _vidLanguage = tVid.Language
-                _vidLongLanguage = tVid.LongLanguage
-                _vidScantype = tVid.Scantype
-                _vidStereoMode = tVid.StereoMode
-                _vidWidth = tVid.Width
-                _vidDetails = String.Format("{0} / {1}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(138, "Unknown"), tRes), If(String.IsNullOrEmpty(tVid.Codec), Master.eLang.GetString(138, "Unknown"), tVid.Codec)).ToUpper
-                _vidDimensions = NFO.GetDimensionsFromVideo(tVid)
-            End If
-
-            If tMovie.Movie.FileInfo.StreamDetails.Audio.Count > 0 Then
-                tAud = NFO.GetBestAudio(tMovie.Movie.FileInfo, False)
-
-                _audBitrate = tAud.Bitrate
-                _audChannels = tAud.Channels
-                _audLanguage = tAud.Language
-                _audLongLanguage = tAud.LongLanguage
-                _audDetails = String.Format("{0}ch / {1}", If(String.IsNullOrEmpty(tAud.Channels), Master.eLang.GetString(138, "Unknown"), tAud.Channels), If(String.IsNullOrEmpty(tAud.Codec), Master.eLang.GetString(138, "Unknown"), tAud.Codec)).ToUpper
-            End If
-
-            If tMovie.Movie.FileInfo.StreamDetails.Subtitle.Count > 0 Then
-                Dim subtitleinfo As MediaInfo.Subtitle
-                For c = 0 To tMovie.Movie.FileInfo.StreamDetails.Subtitle.Count - 1
-                    subtitleinfo = tMovie.Movie.FileInfo.StreamDetails.Subtitle(c)
-                    If Not subtitleinfo Is Nothing Then
-                        If Not String.IsNullOrEmpty(subtitleinfo.Language) Then
-                            _subLanguage = _subLanguage & ";" & subtitleinfo.Language
-                        End If
-                        If Not String.IsNullOrEmpty(subtitleinfo.LongLanguage) Then
-                            _subLongLanguage = _subLongLanguage & ";" & subtitleinfo.LongLanguage
-                        End If
-                        If Not String.IsNullOrEmpty(subtitleinfo.SubsType) Then
-                            _subType = _subType & ";" & subtitleinfo.SubsType
-                        End If
-                    End If
-                Next
-            End If
-        End If
-
         'Special Strings
         strRow = strRow.Replace("<$COUNT>", tCounter_Global.ToString)
         strRow = strRow.Replace("<$DIRNAME>", StringUtils.HtmlEncode(Path.GetDirectoryName(tMovie.Filename)))
         strRow = strRow.Replace("<$FILENAME>", StringUtils.HtmlEncode(Path.GetFileName(tMovie.Filename)))
-        strRow = strRow.Replace("<$NOW>", System.DateTime.Now.ToLongDateString) 'Save Build Date. might be useful info!
-        strRow = strRow.Replace("<$PATH>", String.Empty)
         strRow = strRow.Replace("<$FILESIZE>", StringUtils.HtmlEncode(GetFileSize(tMovie.Filename)))
+        strRow = strRow.Replace("<$NOW>", System.DateTime.Now.ToLongDateString) 'Save Build Date. might be useful info!
+        strRow = strRow.Replace("<$PATH>", StringUtils.HtmlEncode(tMovie.Filename))
 
         'Images
         With tMovie.ImagesContainer
-            strRow = strRow.Replace("<$BANNER_FILE>", ExportImage(.Banner, Enums.ModifierType.MainBanner))
-            strRow = strRow.Replace("<$CLEARART_FILE>", ExportImage(.ClearArt, Enums.ModifierType.MainClearArt))
-            strRow = strRow.Replace("<$CLEARLOGO_FILE>", ExportImage(.ClearLogo, Enums.ModifierType.MainClearLogo))
-            strRow = strRow.Replace("<$DISCART_FILE>", ExportImage(.DiscArt, Enums.ModifierType.MainDiscArt))
-            strRow = strRow.Replace("<$FANART_FILE>", ExportImage(.Fanart, Enums.ModifierType.MainFanart))
-            strRow = strRow.Replace("<$LANDSCAPE_FILE>", ExportImage(.Landscape, Enums.ModifierType.MainLandscape))
-            strRow = strRow.Replace("<$POSTER_FILE>", ExportImage(.Poster, Enums.ModifierType.MainPoster))
+            strRow = strRow.Replace("<$BANNER>", ExportImage(.Banner, Enums.ModifierType.MainBanner))
+            strRow = strRow.Replace("<$CLEARART>", ExportImage(.ClearArt, Enums.ModifierType.MainClearArt))
+            strRow = strRow.Replace("<$CLEARLOGO>", ExportImage(.ClearLogo, Enums.ModifierType.MainClearLogo))
+            strRow = strRow.Replace("<$DISCART>", ExportImage(.DiscArt, Enums.ModifierType.MainDiscArt))
+            strRow = strRow.Replace("<$FANART>", ExportImage(.Fanart, Enums.ModifierType.MainFanart))
+            strRow = strRow.Replace("<$LANDSCAPE>", ExportImage(.Landscape, Enums.ModifierType.MainLandscape))
+            strRow = strRow.Replace("<$POSTER>", ExportImage(.Poster, Enums.ModifierType.MainPoster))
         End With
 
         'Title
@@ -705,7 +689,7 @@ Public Class MediaExporter
             ActorsList.Add(tActor.Name)
         Next
 
-        'Fields
+        'NFO Fields
         strRow = strRow.Replace("<$ACTORS>", StringUtils.HtmlEncode(String.Join(", ", ActorsList.ToArray)))
         strRow = strRow.Replace("<$CERTIFICATIONS>", StringUtils.HtmlEncode(String.Join(" / ", tMovie.Movie.Certifications.ToArray)))
         strRow = strRow.Replace("<$COUNTRIES>", StringUtils.HtmlEncode(String.Join(" / ", tMovie.Movie.Countries.ToArray)))
@@ -738,37 +722,35 @@ Public Class MediaExporter
         strRow = strRow.Replace("<$VOTES>", StringUtils.HtmlEncode(If(tMovie.Movie.VotesSpecified, Double.Parse(tMovie.Movie.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture), String.Empty)))
         strRow = strRow.Replace("<$YEAR>", tMovie.Movie.Year)
 
-        'Audio
-        strRow = strRow.Replace("<$AUDIO>", _audDetails)
-        strRow = strRow.Replace("<$AUDIOBITRATE>", _audBitrate)
-        strRow = strRow.Replace("<$AUDIOCHANNELS>", _audChannels)
-        strRow = strRow.Replace("<$AUDIOLANGUAGE>", _audLanguage)
-        strRow = strRow.Replace("<$AUDIOLONGLANGUAGE>", _audLongLanguage)
+        'FileInfo
+        Dim fInfo As AVSInfo = GetAVSInfo(tMovie.Movie.FileInfo)
 
-        'Video
-        strRow = strRow.Replace("<$VIDEO>", _vidDetails)
-        strRow = strRow.Replace("<$VIDEOASPECT>", _vidAspect)
-        strRow = strRow.Replace("<$VIDEOBITRATE>", _vidBitrate)
-        strRow = strRow.Replace("<$VIDEODIMENSIONS>", _vidDimensions)
-        strRow = strRow.Replace("<$VIDEODURATION>", _vidDuration)
-        strRow = strRow.Replace("<$VIDEOFILESIZE>", _vidFileSize)
-        strRow = strRow.Replace("<$VIDEOHEIGHT>", _vidHeight)
-        strRow = strRow.Replace("<$VIDEOLANGUAGE>", _vidLanguage)
-        strRow = strRow.Replace("<$VIDEOLONGLANGUAGE>", _vidLongLanguage)
-        strRow = strRow.Replace("<$VIDEOMULTIVIEW>", _vidMultiViewCount)
-        strRow = strRow.Replace("<$VIDEOSCANTYPE>", _vidScantype)
-        strRow = strRow.Replace("<$VIDEOSTEREOMODE>", _vidStereoMode)
-        strRow = strRow.Replace("<$VIDEOWIDTH>", _vidWidth)
+        'Audio
+        strRow = strRow.Replace("<$AUDIO>", fInfo.audDetails)
+        strRow = strRow.Replace("<$AUDIOBITRATE>", fInfo.audBitrate)
+        strRow = strRow.Replace("<$AUDIOCHANNELS>", fInfo.audChannels)
+        strRow = strRow.Replace("<$AUDIOLANGUAGE>", fInfo.audLanguage)
+        strRow = strRow.Replace("<$AUDIOLONGLANGUAGE>", fInfo.audLongLanguage)
 
         'Subtitle
-        strRow = strRow.Replace("<$SUBTITLELANGUAGE>", _subLanguage)
-        strRow = strRow.Replace("<$SUBTITLELONGLANGUAGE>", _subLongLanguage)
-        strRow = strRow.Replace("<$SUBTITLETYPE>", _subType)
+        strRow = strRow.Replace("<$SUBTITLELANGUAGE>", fInfo.subLanguage)
+        strRow = strRow.Replace("<$SUBTITLELONGLANGUAGE>", fInfo.subLongLanguage)
+        strRow = strRow.Replace("<$SUBTITLETYPE>", fInfo.subType)
 
-        'cocotus, 2013/02 Added support for new MediaInfo-fields
-        'Row = Row.Replace("<$MOVIESETS>", StringUtils.HtmlEncode(AllMovieSetList)) 'A long string of all moviesets, seperated with ;!
-        'strRow = strRow.Replace("<$TVSHOWS>", StringUtils.HtmlEncode(AllTVShowList)) 'A long string of all tvshows, seperated with |!
-        'strRow = strRow.Replace("<$SET>", StringUtils.HtmlEncode(GetMovieSets(tMovie))) 'All sets which movie belongs to, seperated with ;!
+        'Video
+        strRow = strRow.Replace("<$VIDEO>", fInfo.vidDetails)
+        strRow = strRow.Replace("<$VIDEOASPECT>", fInfo.vidAspect)
+        strRow = strRow.Replace("<$VIDEOBITRATE>", fInfo.vidBitrate)
+        strRow = strRow.Replace("<$VIDEODIMENSIONS>", fInfo.vidDimensions)
+        strRow = strRow.Replace("<$VIDEODURATION>", fInfo.vidDuration)
+        strRow = strRow.Replace("<$VIDEOFILESIZE>", fInfo.vidFileSize)
+        strRow = strRow.Replace("<$VIDEOHEIGHT>", fInfo.vidHeight)
+        strRow = strRow.Replace("<$VIDEOLANGUAGE>", fInfo.vidLanguage)
+        strRow = strRow.Replace("<$VIDEOLONGLANGUAGE>", fInfo.vidLongLanguage)
+        strRow = strRow.Replace("<$VIDEOMULTIVIEW>", fInfo.vidMultiViewCount)
+        strRow = strRow.Replace("<$VIDEOSCANTYPE>", fInfo.vidScantype)
+        strRow = strRow.Replace("<$VIDEOSTEREOMODE>", fInfo.vidStereoMode)
+        strRow = strRow.Replace("<$VIDEOWIDTH>", fInfo.vidWidth)
 
         'Flags
         strRow = ProcessPattern_Flags(tMovie, strRow, Enums.ContentType.Movie)
@@ -799,12 +781,15 @@ Public Class MediaExporter
         strRow = strRow.Replace("<$COUNT>", tCounter_Global.ToString)
         strRow = strRow.Replace("<$COUNT_TVSEASON>", tCounter_TVSeason.ToString)
         strRow = strRow.Replace("<$COUNT_TVEPISODE>", tCounter_TVEpisode.ToString)
+        strRow = strRow.Replace("<$FILENAME>", StringUtils.HtmlEncode(Path.GetFileName(tEpisode.Filename)))
+        strRow = strRow.Replace("<$FILESIZE>", StringUtils.HtmlEncode(GetFileSize(tEpisode.Filename)))
         strRow = strRow.Replace("<$MISSING>", If(tEpisode.FilenameID = -1, "true", "false"))
+        strRow = strRow.Replace("<$PATH>", StringUtils.HtmlEncode(tEpisode.Filename))
 
         'Images
         With tEpisode.ImagesContainer
-            strRow = strRow.Replace("<$FANART_FILE>", ExportImage(.Fanart, Enums.ModifierType.EpisodeFanart))
-            strRow = strRow.Replace("<$POSTER_FILE>", ExportImage(.Poster, Enums.ModifierType.EpisodePoster))
+            strRow = strRow.Replace("<$FANART>", ExportImage(.Fanart, Enums.ModifierType.EpisodeFanart))
+            strRow = strRow.Replace("<$POSTER>", ExportImage(.Poster, Enums.ModifierType.EpisodePoster))
         End With
 
         'Actors
@@ -819,7 +804,7 @@ Public Class MediaExporter
             GuestStarsList_Episode.Add(tActor.Name)
         Next
 
-        'Fields
+        'NFO Fields
         strRow = strRow.Replace("<$ACTORS>", StringUtils.HtmlEncode(String.Join(", ", ActorsList_Episode.ToArray)))
         strRow = strRow.Replace("<$AIRED>", StringUtils.HtmlEncode(tEpisode.TVEpisode.Aired))
         strRow = strRow.Replace("<$CREDITS>", StringUtils.HtmlEncode(String.Join(" / ", tEpisode.TVEpisode.Credits.ToArray)))
@@ -839,6 +824,36 @@ Public Class MediaExporter
         strRow = strRow.Replace("<$VIDEOSOURCE>", StringUtils.HtmlEncode(tEpisode.TVEpisode.VideoSource))
         strRow = strRow.Replace("<$VOTES>", StringUtils.HtmlEncode(If(tEpisode.TVEpisode.VotesSpecified, Double.Parse(tEpisode.TVEpisode.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture), String.Empty)))
 
+        'FileInfo
+        Dim fInfo As AVSInfo = GetAVSInfo(tEpisode.TVEpisode.FileInfo)
+
+        'Audio
+        strRow = strRow.Replace("<$AUDIO>", fInfo.audDetails)
+        strRow = strRow.Replace("<$AUDIOBITRATE>", fInfo.audBitrate)
+        strRow = strRow.Replace("<$AUDIOCHANNELS>", fInfo.audChannels)
+        strRow = strRow.Replace("<$AUDIOLANGUAGE>", fInfo.audLanguage)
+        strRow = strRow.Replace("<$AUDIOLONGLANGUAGE>", fInfo.audLongLanguage)
+
+        'Subtitle
+        strRow = strRow.Replace("<$SUBTITLELANGUAGE>", fInfo.subLanguage)
+        strRow = strRow.Replace("<$SUBTITLELONGLANGUAGE>", fInfo.subLongLanguage)
+        strRow = strRow.Replace("<$SUBTITLETYPE>", fInfo.subType)
+
+        'Video
+        strRow = strRow.Replace("<$VIDEO>", fInfo.vidDetails)
+        strRow = strRow.Replace("<$VIDEOASPECT>", fInfo.vidAspect)
+        strRow = strRow.Replace("<$VIDEOBITRATE>", fInfo.vidBitrate)
+        strRow = strRow.Replace("<$VIDEODIMENSIONS>", fInfo.vidDimensions)
+        strRow = strRow.Replace("<$VIDEODURATION>", fInfo.vidDuration)
+        strRow = strRow.Replace("<$VIDEOFILESIZE>", fInfo.vidFileSize)
+        strRow = strRow.Replace("<$VIDEOHEIGHT>", fInfo.vidHeight)
+        strRow = strRow.Replace("<$VIDEOLANGUAGE>", fInfo.vidLanguage)
+        strRow = strRow.Replace("<$VIDEOLONGLANGUAGE>", fInfo.vidLongLanguage)
+        strRow = strRow.Replace("<$VIDEOMULTIVIEW>", fInfo.vidMultiViewCount)
+        strRow = strRow.Replace("<$VIDEOSCANTYPE>", fInfo.vidScantype)
+        strRow = strRow.Replace("<$VIDEOSTEREOMODE>", fInfo.vidStereoMode)
+        strRow = strRow.Replace("<$VIDEOWIDTH>", fInfo.vidWidth)
+
         'Flags
         strRow = ProcessPattern_Flags(tEpisode, strRow, Enums.ContentType.TVEpisode)
 
@@ -855,18 +870,18 @@ Public Class MediaExporter
         'Special Strings
         strRow = strRow.Replace("<$COUNT>", tCounter_Global.ToString)
         strRow = strRow.Replace("<$COUNT_TVSEASON>", tCounter_TVSeason.ToString)
+        strRow = strRow.Replace("<$EPISODES>", StringUtils.HtmlEncode(CStr(tShow.Episodes.Where(Function(f) f.TVEpisode.Season = tSeason.TVSeason.Season).Count)))
 
         'Images
         With tSeason.ImagesContainer
-            strRow = strRow.Replace("<$BANNER_FILE>", ExportImage(.Banner, Enums.ModifierType.SeasonBanner))
-            strRow = strRow.Replace("<$FANART_FILE>", ExportImage(.Fanart, Enums.ModifierType.SeasonFanart))
-            strRow = strRow.Replace("<$LANDSCAPE_FILE>", ExportImage(.Landscape, Enums.ModifierType.SeasonLandscape))
-            strRow = strRow.Replace("<$POSTER_FILE>", ExportImage(.Poster, Enums.ModifierType.SeasonPoster))
+            strRow = strRow.Replace("<$BANNER>", ExportImage(.Banner, Enums.ModifierType.SeasonBanner))
+            strRow = strRow.Replace("<$FANART>", ExportImage(.Fanart, Enums.ModifierType.SeasonFanart))
+            strRow = strRow.Replace("<$LANDSCAPE>", ExportImage(.Landscape, Enums.ModifierType.SeasonLandscape))
+            strRow = strRow.Replace("<$POSTER>", ExportImage(.Poster, Enums.ModifierType.SeasonPoster))
         End With
 
-        'Fields
+        'NFO Fields
         strRow = strRow.Replace("<$AIRED>", StringUtils.HtmlEncode(tSeason.TVSeason.Aired))
-        strRow = strRow.Replace("<$EPISODES>", StringUtils.HtmlEncode(CStr(tShow.Episodes.Where(Function(f) f.TVEpisode.Season = tSeason.TVSeason.Season).Count)))
         strRow = strRow.Replace("<$PLOT>", StringUtils.HtmlEncode(tSeason.TVSeason.Plot))
         strRow = strRow.Replace("<$SEASON>", StringUtils.HtmlEncode(CStr(tSeason.TVSeason.Season)))
         strRow = strRow.Replace("<$TITLE>", StringUtils.HtmlEncode(tSeason.TVSeason.Title))
@@ -885,18 +900,19 @@ Public Class MediaExporter
 
         'Special Strings
         strRow = strRow.Replace("<$COUNT>", tCounter_Global.ToString)
+        strRow = strRow.Replace("<$EPISODES>", StringUtils.HtmlEncode(CStr(tShow.Episodes.Count)))
         strRow = strRow.Replace("<$NOW>", System.DateTime.Now.ToLongDateString) 'Save Build Date. might be useful info!
         strRow = strRow.Replace("<$PATH>", StringUtils.HtmlEncode(tShow.ShowPath))
 
         'Images
         With tShow.ImagesContainer
-            strRow = strRow.Replace("<$BANNER_FILE>", ExportImage(.Banner, Enums.ModifierType.MainBanner))
-            strRow = strRow.Replace("<$CHARACTERART_FILE>", ExportImage(.CharacterArt, Enums.ModifierType.MainCharacterArt))
-            strRow = strRow.Replace("<$CLEARART_FILE>", ExportImage(.ClearArt, Enums.ModifierType.MainClearArt))
-            strRow = strRow.Replace("<$CLEARLOGO_FILE>", ExportImage(.ClearLogo, Enums.ModifierType.MainClearLogo))
-            strRow = strRow.Replace("<$FANART_FILE>", ExportImage(.Fanart, Enums.ModifierType.MainFanart))
-            strRow = strRow.Replace("<$LANDSCAPE_FILE>", ExportImage(.Landscape, Enums.ModifierType.MainLandscape))
-            strRow = strRow.Replace("<$POSTER_FILE>", ExportImage(.Poster, Enums.ModifierType.MainPoster))
+            strRow = strRow.Replace("<$BANNER>", ExportImage(.Banner, Enums.ModifierType.MainBanner))
+            strRow = strRow.Replace("<$CHARACTERART>", ExportImage(.CharacterArt, Enums.ModifierType.MainCharacterArt))
+            strRow = strRow.Replace("<$CLEARART>", ExportImage(.ClearArt, Enums.ModifierType.MainClearArt))
+            strRow = strRow.Replace("<$CLEARLOGO>", ExportImage(.ClearLogo, Enums.ModifierType.MainClearLogo))
+            strRow = strRow.Replace("<$FANART>", ExportImage(.Fanart, Enums.ModifierType.MainFanart))
+            strRow = strRow.Replace("<$LANDSCAPE>", ExportImage(.Landscape, Enums.ModifierType.MainLandscape))
+            strRow = strRow.Replace("<$POSTER>", ExportImage(.Poster, Enums.ModifierType.MainPoster))
         End With
 
         'Title
@@ -913,7 +929,7 @@ Public Class MediaExporter
             ActorsList.Add(tActor.Name)
         Next
 
-        'Fields
+        'NFO Fields
         strRow = strRow.Replace("<$ACTORS>", StringUtils.HtmlEncode(String.Join(", ", ActorsList.ToArray)))
         strRow = strRow.Replace("<$CERTIFICATIONS>", StringUtils.HtmlEncode(String.Join(" / ", tShow.TVShow.Certifications.ToArray)))
         strRow = strRow.Replace("<$COUNTRIES>", StringUtils.HtmlEncode(String.Join(" / ", tShow.TVShow.Countries.ToArray)))
@@ -958,7 +974,7 @@ Public Class MediaExporter
             End If
             Dim myStream As Stream = File.OpenWrite(IndexFile)
             If myStream IsNot Nothing Then
-                myStream.Write(System.Text.Encoding.ASCII.GetBytes(HTMLBody.ToString), 0, HTMLBody.ToString.Length)
+                myStream.Write(Encoding.ASCII.GetBytes(HTMLBody.ToString), 0, HTMLBody.ToString.Length)
                 myStream.Close()
             End If
             Return True
@@ -985,9 +1001,290 @@ Public Class MediaExporter
         Dim isLooped As Boolean
     End Structure
 
+    Private Class AVSInfo
+
+#Region "Fields"
+
+        Private _audBitrate As String
+        Private _audChannels As String
+        Private _audDetails As String
+        Private _audLanguage As String
+        Private _audLongLanguage As String
+        Private _subLanguage As String
+        Private _subLongLanguage As String
+        Private _subType As String
+        Private _vidAspect As String
+        Private _vidBitrate As String
+        Private _vidDetails As String
+        Private _vidDimensions As String
+        Private _vidDuration As String
+        Private _vidFileSize As String
+        Private _vidHeight As String
+        Private _vidLanguage As String
+        Private _vidLongLanguage As String
+        Private _vidMultiViewCount As String
+        Private _vidMultiViewLayout As String
+        Private _vidPrivateensions As String
+        Private _vidScantype As String
+        Private _vidStereoMode As String
+        Private _vidWidth As String
+
+#End Region 'Fields
+
+#Region "Properties"
+
+        Public Property audBitrate() As String
+            Get
+                Return _audBitrate
+            End Get
+            Set(ByVal value As String)
+                _audBitrate = value
+            End Set
+        End Property
+
+        Public Property audChannels() As String
+            Get
+                Return _audChannels
+            End Get
+            Set(ByVal value As String)
+                _audChannels = value
+            End Set
+        End Property
+
+        Public Property audDetails() As String
+            Get
+                Return _audDetails
+            End Get
+            Set(ByVal value As String)
+                _audDetails = value
+            End Set
+        End Property
+
+        Public Property audLanguage() As String
+            Get
+                Return _audLanguage
+            End Get
+            Set(ByVal value As String)
+                _audLanguage = value
+            End Set
+        End Property
+
+        Public Property audLongLanguage() As String
+            Get
+                Return _audLongLanguage
+            End Get
+            Set(ByVal value As String)
+                _audLongLanguage = value
+            End Set
+        End Property
+
+        Public Property subLanguage() As String
+            Get
+                Return _subLanguage
+            End Get
+            Set(ByVal value As String)
+                _subLanguage = value
+            End Set
+        End Property
+
+        Public Property subLongLanguage() As String
+            Get
+                Return _subLongLanguage
+            End Get
+            Set(ByVal value As String)
+                _subLongLanguage = value
+            End Set
+        End Property
+
+        Public Property subType() As String
+            Get
+                Return _subType
+            End Get
+            Set(ByVal value As String)
+                _subType = value
+            End Set
+        End Property
+
+        Public Property vidAspect() As String
+            Get
+                Return _vidAspect
+            End Get
+            Set(ByVal value As String)
+                _vidAspect = value
+            End Set
+        End Property
+
+        Public Property vidBitrate() As String
+            Get
+                Return _vidBitrate
+            End Get
+            Set(ByVal value As String)
+                _vidBitrate = value
+            End Set
+        End Property
+
+        Public Property vidDetails() As String
+            Get
+                Return _vidDetails
+            End Get
+            Set(ByVal value As String)
+                _vidDetails = value
+            End Set
+        End Property
+
+        Public Property vidDimensions() As String
+            Get
+                Return _vidDimensions
+            End Get
+            Set(ByVal value As String)
+                _vidDimensions = value
+            End Set
+        End Property
+
+        Public Property vidDuration() As String
+            Get
+                Return _vidDuration
+            End Get
+            Set(ByVal value As String)
+                _vidDuration = value
+            End Set
+        End Property
+
+        Public Property vidFileSize() As String
+            Get
+                Return _vidFileSize
+            End Get
+            Set(ByVal value As String)
+                _vidFileSize = value
+            End Set
+        End Property
+
+        Public Property vidHeight() As String
+            Get
+                Return _vidHeight
+            End Get
+            Set(ByVal value As String)
+                _vidHeight = value
+            End Set
+        End Property
+
+        Public Property vidLanguage() As String
+            Get
+                Return _vidLanguage
+            End Get
+            Set(ByVal value As String)
+                _vidLanguage = value
+            End Set
+        End Property
+
+        Public Property vidLongLanguage() As String
+            Get
+                Return _vidLongLanguage
+            End Get
+            Set(ByVal value As String)
+                _vidLongLanguage = value
+            End Set
+        End Property
+
+        Public Property vidMultiViewCount() As String
+            Get
+                Return _vidMultiViewCount
+            End Get
+            Set(ByVal value As String)
+                _vidMultiViewCount = value
+            End Set
+        End Property
+
+        Public Property vidMultiViewLayout() As String
+            Get
+                Return _vidMultiViewLayout
+            End Get
+            Set(ByVal value As String)
+                _vidMultiViewLayout = value
+            End Set
+        End Property
+
+        Public Property vidPrivateensions() As String
+            Get
+                Return _vidPrivateensions
+            End Get
+            Set(ByVal value As String)
+                _vidPrivateensions = value
+            End Set
+        End Property
+
+        Public Property vidScantype() As String
+            Get
+                Return _vidScantype
+            End Get
+            Set(ByVal value As String)
+                _vidScantype = value
+            End Set
+        End Property
+
+        Public Property vidStereoMode() As String
+            Get
+                Return _vidStereoMode
+            End Get
+            Set(ByVal value As String)
+                _vidStereoMode = value
+            End Set
+        End Property
+
+        Public Property vidWidth() As String
+            Get
+                Return _vidWidth
+            End Get
+            Set(ByVal value As String)
+                _vidWidth = value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+        Public Sub New()
+            Clear()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+
+#End Region 'Methods
+
+        Public Sub Clear()
+            _audBitrate = String.Empty
+            _audChannels = String.Empty
+            _audDetails = String.Empty
+            _audLanguage = String.Empty
+            _audLongLanguage = String.Empty
+            _subLanguage = String.Empty
+            _subLongLanguage = String.Empty
+            _subType = String.Empty
+            _vidAspect = String.Empty
+            _vidBitrate = String.Empty
+            _vidDetails = String.Empty
+            _vidDimensions = String.Empty
+            _vidDuration = String.Empty
+            _vidFileSize = String.Empty
+            _vidHeight = String.Empty
+            _vidLanguage = String.Empty
+            _vidLongLanguage = String.Empty
+            _vidMultiViewCount = String.Empty
+            _vidMultiViewLayout = String.Empty
+            _vidPrivateensions = String.Empty
+            _vidScantype = String.Empty
+            _vidStereoMode = String.Empty
+            _vidWidth = String.Empty
+        End Sub
+
+    End Class
+
     <Serializable()>
     <XmlRoot("exportsettings")>
-    Class ExportSettings
+    Public Class ExportSettings
 
 #Region "Fields"
 

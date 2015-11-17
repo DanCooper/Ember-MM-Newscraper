@@ -19,6 +19,7 @@
 ' ################################################################################
 
 Imports EmberAPI
+Imports System.IO
 
 Public Class MovieExporterModule
     Implements Interfaces.GenericModule
@@ -35,7 +36,7 @@ Public Class MovieExporterModule
     Private WithEvents cmnuTrayToolsExporter As New System.Windows.Forms.ToolStripMenuItem
     Private _AssemblyName As String = String.Empty
     Private _enabled As Boolean = False
-    Private _Name As String = "Movie List Exporter"
+    Private _Name As String = "MovieListExporter"
     Private _setup As frmSettingsHolder
     Private MySettings As New _MySettings
 
@@ -44,11 +45,8 @@ Public Class MovieExporterModule
 #Region "Events"
 
     Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) Implements Interfaces.GenericModule.GenericEvent
-
     Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.GenericModule.ModuleSetupChanged
-
     Public Event ModuleSettingsChanged() Implements Interfaces.GenericModule.ModuleSettingsChanged
-
     Public Event SetupNeedsRestart() Implements EmberAPI.Interfaces.GenericModule.SetupNeedsRestart
 
 #End Region 'Events
@@ -93,11 +91,55 @@ Public Class MovieExporterModule
 #Region "Methods"
 
     Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
-        Try
-            'dlgExportMovies.CLExport(DirectCast(_params(0), String), DirectCast(_params(1), String), DirectCast(_params(2), Int32))
+        Select Case mType
+            Case Enums.ModuleEventType.CommandLine
+                Dim TemplateName As String = String.Empty
+                Dim BuildPath As String = String.Empty
 
-        Catch ex As Exception
-        End Try
+                If _params IsNot Nothing Then
+                    For Each tParameter In _params
+                        'check if tParameter is a path or template name
+                        If Not String.IsNullOrEmpty(Path.GetPathRoot(tParameter.ToString)) Then
+                            BuildPath = tParameter.ToString
+                        Else
+                            TemplateName = tParameter.ToString
+                        End If
+                    Next
+                End If
+
+                If String.IsNullOrEmpty(BuildPath) Then
+                    BuildPath = MySettings.ExportPath
+                End If
+
+                If String.IsNullOrEmpty(TemplateName) Then
+                    TemplateName = MySettings.DefaultTemplate
+                End If
+
+                Dim MovieList As New List(Of Database.DBElement)
+                ' Load nfo movies using path from DB
+                Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                    SQLNewcommand.CommandText = String.Concat("SELECT idMovie FROM movielist ORDER BY SortTitle COLLATE NOCASE;")
+                    Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                        While SQLreader.Read()
+                            MovieList.Add(Master.DB.LoadMovieFromDB(Convert.ToInt32(SQLreader("idMovie"))))
+                        End While
+                    End Using
+                End Using
+
+                Dim TVShowList As New List(Of Database.DBElement)
+                ' Load nfo tv shows using path from DB
+                Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                    SQLNewcommand.CommandText = String.Concat("SELECT idShow FROM tvshowlist ORDER BY SortTitle COLLATE NOCASE;")
+                    Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                        While SQLreader.Read()
+                            TVShowList.Add(Master.DB.LoadTVShowFromDB(Convert.ToInt32(SQLreader("idShow")), True, True))
+                        End While
+                    End Using
+                End Using
+
+                Dim MExporter As New MediaExporter
+                MExporter.CreateTemplate(TemplateName, MovieList, TVShowList, BuildPath, Nothing)
+        End Select
 
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
@@ -166,12 +208,6 @@ Public Class MovieExporterModule
 
         _setup.txt_exportmoviepath.Text = MySettings.ExportPath
         _setup.chkExportMissingEpisodes.Checked = MySettings.ExportMissingEpisodes
-        _setup.cbo_exportmovieposter.Text = CStr(MySettings.ExportPosterHeight)
-        _setup.cbo_exportmoviefanart.Text = CStr(MySettings.ExportFanartWidth)
-        _setup.cbo_exportmoviequality.Text = CStr(MySettings.ExportImageQuality)
-        _setup.lbl_exportmoviefilter1saved.Text = MySettings.ExportFilter1
-        _setup.lbl_exportmoviefilter2saved.Text = MySettings.ExportFilter2
-        _setup.lbl_exportmoviefilter3saved.Text = MySettings.ExportFilter3
 
         SPanel.Name = Me._Name
         SPanel.Text = Master.eLang.GetString(335, "Movie List Exporter")
@@ -196,26 +232,15 @@ Public Class MovieExporterModule
     End Sub
 
     Sub LoadSettings()
+        MySettings.DefaultTemplate = clsAdvancedSettings.GetSetting("DefaultTemplate", "template")
         MySettings.ExportPath = clsAdvancedSettings.GetSetting("ExportPath", String.Empty)
         MySettings.ExportMissingEpisodes = clsAdvancedSettings.GetBooleanSetting("ExportMissingEpisodes", False)
-        MySettings.ExportPosterHeight = CInt(clsAdvancedSettings.GetSetting("ExportPosterHeight", "300"))
-        MySettings.ExportFanartWidth = CInt(clsAdvancedSettings.GetSetting("ExportFanartWidth", "800"))
-        MySettings.ExportFilter1 = clsAdvancedSettings.GetSetting("ExportFilter1", "-")
-        MySettings.ExportFilter2 = clsAdvancedSettings.GetSetting("ExportFilter2", "-")
-        MySettings.ExportFilter3 = clsAdvancedSettings.GetSetting("ExportFilter3", "-")
-        MySettings.ExportImageQuality = CInt(clsAdvancedSettings.GetSetting("ExportImageQuality", "70"))
     End Sub
 
     Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
         Me.Enabled = Me._setup.cbEnabled.Checked
         MySettings.ExportPath = _setup.txt_exportmoviepath.Text
         MySettings.ExportMissingEpisodes = _setup.chkExportMissingEpisodes.Checked
-        MySettings.ExportPosterHeight = CInt(_setup.cbo_exportmovieposter.Text)
-        MySettings.ExportFanartWidth = CInt(_setup.cbo_exportmoviefanart.Text)
-        MySettings.ExportFilter1 = _setup.lbl_exportmoviefilter1saved.Text
-        MySettings.ExportFilter2 = _setup.lbl_exportmoviefilter2saved.Text
-        MySettings.ExportFilter3 = _setup.lbl_exportmoviefilter3saved.Text
-        MySettings.ExportImageQuality = CInt(_setup.cbo_exportmoviequality.Text)
         SaveSettings()
         If DoDispose Then
             RemoveHandler Me._setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
@@ -226,14 +251,9 @@ Public Class MovieExporterModule
 
     Sub SaveSettings()
         Using settings = New clsAdvancedSettings()
+            settings.SetSetting("DefaultTemplate", MySettings.DefaultTemplate)
             settings.SetSetting("ExportPath", MySettings.ExportPath)
             settings.SetBooleanSetting("ExportMissingEpisodes", MySettings.ExportMissingEpisodes)
-            settings.SetSetting("ExportPosterHeight", CStr(MySettings.ExportPosterHeight))
-            settings.SetSetting("ExportFanartWidth", CStr(MySettings.ExportFanartWidth))
-            settings.SetSetting("ExportFilter1", MySettings.ExportFilter1)
-            settings.SetSetting("ExportFilter2", MySettings.ExportFilter2)
-            settings.SetSetting("ExportFilter3", MySettings.ExportFilter3)
-            settings.SetSetting("ExportImageQuality", CStr(MySettings.ExportImageQuality))
         End Using
     End Sub
 
@@ -246,13 +266,8 @@ Public Class MovieExporterModule
 
 #Region "Fields"
 
+        Dim DefaultTemplate As String
         Dim ExportPath As String
-        Dim ExportFanartWidth As Integer
-        Dim ExportPosterHeight As Integer
-        Dim ExportFilter1 As String
-        Dim ExportFilter2 As String
-        Dim ExportFilter3 As String
-        Dim ExportImageQuality As Integer
         Dim ExportMissingEpisodes As Boolean
 
 #End Region 'Fields

@@ -8,7 +8,6 @@ Partial Class dlgExportMovies
     Friend WithEvents cbTemplate As System.Windows.Forms.ComboBox
     Friend  WithEvents btnClose As System.Windows.Forms.Button
     Friend  WithEvents ImageList1 As System.Windows.Forms.ImageList
-    Friend WithEvents lblFilter As System.Windows.Forms.Label
     Friend WithEvents lblTemplate As System.Windows.Forms.Label
     Friend WithEvents lblCanceling As System.Windows.Forms.Label
     Friend WithEvents lblCompiling As System.Windows.Forms.Label
@@ -48,8 +47,6 @@ Partial Class dlgExportMovies
         Me.btnSave = New System.Windows.Forms.Button()
         Me.btnClose = New System.Windows.Forms.Button()
         Me.btnBuild = New System.Windows.Forms.Button()
-        Me.lblFilter = New System.Windows.Forms.Label()
-        Me.cbFilter = New System.Windows.Forms.ComboBox()
         Me.lblTemplate = New System.Windows.Forms.Label()
         Me.cbTemplate = New System.Windows.Forms.ComboBox()
         Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
@@ -105,29 +102,6 @@ Partial Class dlgExportMovies
         Me.btnBuild.Size = New System.Drawing.Size(169, 23)
         Me.btnBuild.TabIndex = 5
         Me.btnBuild.Text = "Generate Template"
-        '
-        'lblFilter
-        '
-        Me.lblFilter.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblFilter.AutoSize = True
-        Me.lblFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblFilter.Location = New System.Drawing.Point(3, 34)
-        Me.lblFilter.Name = "lblFilter"
-        Me.lblFilter.Size = New System.Drawing.Size(33, 13)
-        Me.lblFilter.TabIndex = 0
-        Me.lblFilter.Text = "Filter"
-        '
-        'cbFilter
-        '
-        Me.cbFilter.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.cbFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cbFilter.FormattingEnabled = True
-        Me.cbFilter.Items.AddRange(New Object() {"-", "Filter 1", "Filter 2", "Filter 3"})
-        Me.cbFilter.Location = New System.Drawing.Point(63, 30)
-        Me.cbFilter.Name = "cbFilter"
-        Me.cbFilter.Size = New System.Drawing.Size(200, 21)
-        Me.cbFilter.TabIndex = 4
         '
         'lblTemplate
         '
@@ -281,14 +255,12 @@ Partial Class dlgExportMovies
         Me.tblBottom.Controls.Add(Me.btnSave, 6, 0)
         Me.tblBottom.Controls.Add(Me.btnBuild, 4, 0)
         Me.tblBottom.Controls.Add(Me.cbTemplate, 1, 0)
-        Me.tblBottom.Controls.Add(Me.lblFilter, 0, 1)
-        Me.tblBottom.Controls.Add(Me.cbFilter, 1, 1)
         Me.tblBottom.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblBottom.Location = New System.Drawing.Point(0, 0)
         Me.tblBottom.Name = "tblBottom"
         Me.tblBottom.RowCount = 2
         Me.tblBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblBottom.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27.0!))
         Me.tblBottom.Size = New System.Drawing.Size(1084, 54)
         Me.tblBottom.TabIndex = 0
         '
@@ -318,7 +290,6 @@ Partial Class dlgExportMovies
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents cbFilter As System.Windows.Forms.ComboBox
     Friend WithEvents btnBuild As System.Windows.Forms.Button
     Friend WithEvents StatusStrip1 As StatusStrip
     Friend WithEvents pnlBottom As Panel

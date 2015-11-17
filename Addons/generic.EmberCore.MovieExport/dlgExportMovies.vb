@@ -117,12 +117,12 @@ Public Class dlgExportMovies
             Dim _tmpMovie As New Database.DBElement
             Dim _ID As Integer
             Dim iProg As Integer = 0
-            SQLNewcommand.CommandText = String.Concat("SELECT COUNT(idMovie) AS mcount FROM movie;")
+            SQLNewcommand.CommandText = String.Concat("SELECT COUNT(idMovie) AS mcount FROM movielist;")
             Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                 SQLcount.Read()
                 bwLoadInfo.ReportProgress(-1, SQLcount("mcount")) ' set maximum
             End Using
-            SQLNewcommand.CommandText = String.Concat("SELECT idMovie FROM movie ORDER BY ListTitle COLLATE NOCASE;")
+            SQLNewcommand.CommandText = String.Concat("SELECT idMovie FROM movielist ORDER BY SortTitle COLLATE NOCASE;")
             Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                 If SQLreader.HasRows Then
                     While SQLreader.Read()
@@ -149,12 +149,12 @@ Public Class dlgExportMovies
             Dim _tmpTVShow As New Database.DBElement
             Dim _ID As Integer
             Dim iProg As Integer = 0
-            SQLNewcommand.CommandText = String.Concat("SELECT COUNT(idShow) AS mcount FROM tvshow;")
+            SQLNewcommand.CommandText = String.Concat("SELECT COUNT(idShow) AS mcount FROM tvshowlist;")
             Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                 SQLcount.Read()
                 bwLoadInfo.ReportProgress(-1, SQLcount("mcount")) ' set maximum
             End Using
-            SQLNewcommand.CommandText = String.Concat("SELECT idShow FROM tvshow ORDER BY ListTitle COLLATE NOCASE;")
+            SQLNewcommand.CommandText = String.Concat("SELECT idShow FROM tvshowlist ORDER BY SortTitle COLLATE NOCASE;")
             Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                 If SQLreader.HasRows Then
                     While SQLreader.Read()
