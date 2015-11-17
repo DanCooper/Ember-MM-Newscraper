@@ -1252,8 +1252,6 @@ Public Class MediaExporter
 
 #Region "Methods"
 
-#End Region 'Methods
-
         Public Sub Clear()
             _audBitrate = String.Empty
             _audChannels = String.Empty
@@ -1279,6 +1277,8 @@ Public Class MediaExporter
             _vidStereoMode = String.Empty
             _vidWidth = String.Empty
         End Sub
+
+#End Region 'Methods
 
     End Class
 
