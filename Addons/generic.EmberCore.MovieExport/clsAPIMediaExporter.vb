@@ -421,7 +421,7 @@ Public Class MediaExporter
         Return strPath
     End Function
 
-    Private Function GetAVImages(ByVal tDBElement As Database.DBElement, ByVal strRow As String, ByVal tContentType As Enums.ContentType) As String
+    Private Function ProcessPattern_Flags(ByVal tDBElement As Database.DBElement, ByVal strRow As String, ByVal tContentType As Enums.ContentType) As String
         If APIXML.lFlags.Count > 0 Then
             Dim fiAV As New MediaInfo.Fileinfo
             Select Case tContentType
@@ -540,32 +540,6 @@ Public Class MediaExporter
         Return "0 bytes"
     End Function
 
-    Private Function SaveAll(ByVal TemplateSource As String, ByVal HTMLBody As StringBuilder) As Boolean
-        Try
-            CopyDirectory(TemplateSource, tBuildPath, True)
-
-            If tExportSettings.Flags Then
-                Directory.CreateDirectory(Path.Combine(tBuildPath, "flags"))
-                Dim FlagSource As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Flags", Path.DirectorySeparatorChar)
-                CopyDirectory(FlagSource, Path.Combine(tBuildPath, "flags"), True)
-            End If
-
-            Dim IndexFile As String = Path.Combine(tBuildPath, "index.htm")
-            If File.Exists(IndexFile) Then
-                File.Delete(IndexFile)
-            End If
-            Dim myStream As Stream = File.OpenWrite(IndexFile)
-            If myStream IsNot Nothing Then
-                myStream.Write(System.Text.Encoding.ASCII.GetBytes(HTMLBody.ToString), 0, HTMLBody.ToString.Length)
-                myStream.Close()
-            End If
-            Return True
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-            Return False
-        End Try
-    End Function
-
     Private Shared Sub CopyDirectory(ByVal SourcePath As String, ByVal DestPath As String, Optional ByVal Overwrite As Boolean = False)
         Dim SourceDir As DirectoryInfo = New DirectoryInfo(SourcePath)
         Dim DestDir As DirectoryInfo = New DirectoryInfo(DestPath)
@@ -616,6 +590,72 @@ Public Class MediaExporter
             Throw New DirectoryNotFoundException("Source directory does not exist: " + SourceDir.FullName)
         End If
     End Sub
+
+    Private Function ProcessPattern_Flags(ByVal tDBElement As Database.DBElement, ByVal strRow As String, ByVal tContentType As Enums.ContentType) As String
+        If APIXML.lFlags.Count > 0 Then
+            Dim fiAV As New MediaInfo.Fileinfo
+            Select Case tContentType
+                Case Enums.ContentType.Movie
+                    fiAV = tDBElement.Movie.FileInfo
+                Case Enums.ContentType.TVEpisode
+                    fiAV = tDBElement.TVEpisode.FileInfo
+            End Select
+            Dim tVideo As MediaInfo.Video = NFO.GetBestVideo(fiAV)
+            Dim tAudio As MediaInfo.Audio = NFO.GetBestAudio(fiAV, False)
+
+            Dim vresFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = NFO.GetResFromDimensions(tVideo).ToLower AndAlso f.Type = APIXML.FlagType.VideoResolution)
+            If vresFlag IsNot Nothing Then
+                strRow = strRow.Replace("<$FLAG_VRES>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(vresFlag.Path))).Replace("\", "/")
+            Else
+                vresFlag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = "defaultscreen" AndAlso f.Type = APIXML.FlagType.VideoResolution)
+                If vresFlag IsNot Nothing Then
+                    strRow = strRow.Replace("<$FLAG_VRES>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(vresFlag.Path))).Replace("\", "/")
+                End If
+            End If
+
+            'Dim vsourceFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = APIXML.GetFileSource(AVMovie.Filename) AndAlso f.Type = APIXML.FlagType.VideoSource)
+            Dim vsourceFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name.ToLower = tDBElement.VideoSource AndAlso f.Type = APIXML.FlagType.VideoSource)
+            If vsourceFlag IsNot Nothing Then
+                strRow = strRow.Replace("<$FLAG_VSOURCE>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(vsourceFlag.Path))).Replace("\", "/")
+            Else
+                vsourceFlag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = "defaultscreen" AndAlso f.Type = APIXML.FlagType.VideoSource)
+                If vsourceFlag IsNot Nothing Then
+                    strRow = strRow.Replace("<$FLAG_VSOURCE>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(vsourceFlag.Path))).Replace("\", "/")
+                End If
+            End If
+
+            Dim vcodecFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = tVideo.Codec.ToLower AndAlso f.Type = APIXML.FlagType.VideoCodec)
+            If vcodecFlag IsNot Nothing Then
+                strRow = strRow.Replace("<$FLAG_VTYPE>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(vcodecFlag.Path))).Replace("\", "/")
+            Else
+                vcodecFlag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = "defaultscreen" AndAlso f.Type = APIXML.FlagType.VideoCodec)
+                If vcodecFlag IsNot Nothing Then
+                    strRow = strRow.Replace("<$FLAG_VTYPE>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(vcodecFlag.Path))).Replace("\", "/")
+                End If
+            End If
+
+            Dim acodecFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = tAudio.Codec.ToLower AndAlso f.Type = APIXML.FlagType.AudioCodec)
+            If acodecFlag IsNot Nothing Then
+                strRow = strRow.Replace("<$FLAG_ATYPE>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(acodecFlag.Path))).Replace("\", "/")
+            Else
+                acodecFlag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = "defaultaudio" AndAlso f.Type = APIXML.FlagType.AudioCodec)
+                If acodecFlag IsNot Nothing Then
+                    strRow = strRow.Replace("<$FLAG_ATYPE>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(acodecFlag.Path))).Replace("\", "/")
+                End If
+            End If
+
+            Dim achanFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = tAudio.Channels AndAlso f.Type = APIXML.FlagType.AudioChan)
+            If achanFlag IsNot Nothing Then
+                strRow = strRow.Replace("<$FLAG_ACHAN>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(achanFlag.Path))).Replace("\", "/")
+            Else
+                achanFlag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = "defaultaudio" AndAlso f.Type = APIXML.FlagType.AudioChan)
+                If achanFlag IsNot Nothing Then
+                    strRow = strRow.Replace("<$FLAG_ACHAN>", String.Concat("flags", Path.DirectorySeparatorChar, Path.GetFileName(achanFlag.Path))).Replace("\", "/")
+                End If
+            End If
+        End If
+        Return strRow
+    End Function
 
     Private Function ProcessPattern_Movie(ByVal tContentPart As ContentPart, ByVal sfunction As ShowProgress, ByVal tMovie As Database.DBElement) As String
         Dim strRow As String = tContentPart.Content
@@ -797,7 +837,7 @@ Public Class MediaExporter
         'strRow = strRow.Replace("<$SET>", StringUtils.HtmlEncode(GetMovieSets(tMovie))) 'All sets which movie belongs to, seperated with ;!
 
         'Flags
-        strRow = GetAVImages(tMovie, strRow, Enums.ContentType.Movie)
+        strRow = ProcessPattern_Flags(tMovie, strRow, Enums.ContentType.Movie)
 
         Return strRow
     End Function
@@ -866,7 +906,7 @@ Public Class MediaExporter
         strRow = strRow.Replace("<$VOTES>", StringUtils.HtmlEncode(If(tEpisode.TVEpisode.VotesSpecified, Double.Parse(tEpisode.TVEpisode.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture), String.Empty)))
 
         'Flags
-        strRow = GetAVImages(tEpisode, strRow, Enums.ContentType.TVEpisode)
+        strRow = ProcessPattern_Flags(tEpisode, strRow, Enums.ContentType.TVEpisode)
 
         Return strRow
     End Function
@@ -966,6 +1006,32 @@ Public Class MediaExporter
         strRow = strRow.Replace("<$VOTES>", StringUtils.HtmlEncode(If(tShow.TVShow.VotesSpecified, Double.Parse(tShow.TVShow.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture), String.Empty)))
 
         Return strRow
+    End Function
+
+    Private Function SaveAll(ByVal TemplateSource As String, ByVal HTMLBody As StringBuilder) As Boolean
+        Try
+            CopyDirectory(TemplateSource, tBuildPath, True)
+
+            If tExportSettings.Flags Then
+                Directory.CreateDirectory(Path.Combine(tBuildPath, "flags"))
+                Dim FlagSource As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Flags", Path.DirectorySeparatorChar)
+                CopyDirectory(FlagSource, Path.Combine(tBuildPath, "flags"), True)
+            End If
+
+            Dim IndexFile As String = Path.Combine(tBuildPath, "index.htm")
+            If File.Exists(IndexFile) Then
+                File.Delete(IndexFile)
+            End If
+            Dim myStream As Stream = File.OpenWrite(IndexFile)
+            If myStream IsNot Nothing Then
+                myStream.Write(System.Text.Encoding.ASCII.GetBytes(HTMLBody.ToString), 0, HTMLBody.ToString.Length)
+                myStream.Close()
+            End If
+            Return True
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+            Return False
+        End Try
     End Function
 
 #End Region 'Methods
