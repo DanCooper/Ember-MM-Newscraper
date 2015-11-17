@@ -10304,16 +10304,17 @@ doCancel:
 
             If Not Directory.Exists(Master.TempPath) Then Directory.CreateDirectory(Master.TempPath)
 
-            If Master.isCL Then ' Command Line
-                LoadWithCommandLine(Master.appArgs)
-            Else 'Regular Run (GUI)
-                LoadWithGUI()
-            End If
             While Not ModulesManager.Instance.ModulesLoaded()
                 Master.fLoading.SetLoadingMesg(Master.eLang.GetString(856, "Loading modules..."))
                 Application.DoEvents()
                 Threading.Thread.Sleep(50)
             End While
+
+            If Master.isCL Then ' Command Line
+                LoadWithCommandLine(Master.appArgs)
+            Else 'Regular Run (GUI)
+                LoadWithGUI()
+            End If
             Master.fLoading.Close()
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -10351,306 +10352,6 @@ doCancel:
 
         Master.fLoading.Close()
         Me.Close()
-
-        'Try
-        '    logger.Trace("LoadWithCommandLine()")
-
-        '    Dim MoviePath As String = String.Empty
-        '    Dim isSingle As Boolean = False
-        '    Dim hasSpec As Boolean = False
-        '    Dim clScrapeType As Enums.ScrapeType_Movie = Enums.ScrapeType_Movie.None
-        '    Dim clExport As Boolean = False
-        '    Dim clExportResizePoster As Integer = 0
-        '    Dim clExportTemplate As String = "template"
-        '    Dim clAsk As Boolean = False
-        '    Dim nowindow As Boolean = False
-        '    Dim RunModule As Boolean = False
-        '    Dim ModuleName As String = String.Empty
-        '    Dim UpdateTVShows As Boolean = False
-        '    For i As Integer = 0 To Args.Count - 1
-
-        '        Select Case Args(i).ToLower
-        '            Case "-fullask"
-        '                clScrapeType = Enums.ScrapeType_Movie.FullAsk
-        '                clAsk = True
-        '            Case "-fullauto"
-        '                clScrapeType = Enums.ScrapeType_Movie.FullAuto
-        '                clAsk = False
-        '            Case "-fullskip"
-        '                clScrapeType = Enums.ScrapeType_Movie.FullSkip
-        '                clAsk = False
-        '            Case "-missask"
-        '                clScrapeType = Enums.ScrapeType_Movie.MissAsk
-        '                clAsk = True
-        '            Case "-missauto"
-        '                clScrapeType = Enums.ScrapeType_Movie.MissAuto
-        '                clAsk = False
-        '            Case "-missskip"
-        '                clScrapeType = Enums.ScrapeType_Movie.MissSkip
-        '                clAsk = True
-        '            Case "-newask"
-        '                clScrapeType = Enums.ScrapeType_Movie.NewAsk
-        '                clAsk = True
-        '            Case "-newauto"
-        '                clScrapeType = Enums.ScrapeType_Movie.NewAuto
-        '                clAsk = False
-        '            Case "-newskip"
-        '                clScrapeType = Enums.ScrapeType_Movie.NewSkip
-        '                clAsk = False
-        '            Case "-markask"
-        '                clScrapeType = Enums.ScrapeType_Movie.MarkAsk
-        '                clAsk = True
-        '            Case "-markauto"
-        '                clScrapeType = Enums.ScrapeType_Movie.MarkAuto
-        '                clAsk = False
-        '            Case "-markskip"
-        '                clScrapeType = Enums.ScrapeType_Movie.MarkSkip
-        '                clAsk = True
-        '            Case "-file"
-        '                If Args.Count - 1 > i Then
-        '                    isSingle = False
-        '                    hasSpec = True
-        '                    clScrapeType = Enums.ScrapeType_Movie.SingleScrape
-        '                    If File.Exists(Args(i + 1).Replace("""", String.Empty)) Then
-        '                        MoviePath = Args(i + 1).Replace("""", String.Empty)
-        '                        i += 1
-        '                    End If
-        '                Else
-        '                    Exit For
-        '                End If
-        '            Case "-folder"
-        '                If Args.Count - 1 > i Then
-        '                    isSingle = True
-        '                    hasSpec = True
-        '                    clScrapeType = Enums.ScrapeType_Movie.SingleScrape
-        '                    If File.Exists(Args(i + 1).Replace("""", String.Empty)) Then
-        '                        MoviePath = Args(i + 1).Replace("""", String.Empty)
-        '                        i += 1
-        '                    End If
-        '                Else
-        '                    Exit For
-        '                End If
-        '            Case "-export"
-        '                If Args.Count - 1 > i Then
-        '                    MoviePath = Args(i + 1).Replace("""", String.Empty)
-        '                    clExport = True
-        '                Else
-        '                    Exit For
-        '                End If
-        '            Case "-template"
-        '                If Args.Count - 1 > i Then
-        '                    clExportTemplate = Args(i + 1).Replace("""", String.Empty)
-        '                Else
-        '                    Exit For
-        '                End If
-        '            Case "-resize"
-        '                If Args.Count - 1 > i Then
-        '                    clExportResizePoster = Convert.ToUInt16(Args(i + 1).Replace("""", String.Empty))
-        '                Else
-        '                    Exit For
-        '                End If
-        '            Case "-all"
-        '                Functions.SetScraperMod(Enums.ModType.All, True)
-        '            Case "-banner"
-        '                Functions.SetScraperMod(Enums.ModType.Banner, True)
-        '            Case "-clearart"
-        '                Functions.SetScraperMod(Enums.ModType.ClearArt, True)
-        '            Case "-clearlogo"
-        '                Functions.SetScraperMod(Enums.ModType.ClearLogo, True)
-        '            Case "-discart"
-        '                Functions.SetScraperMod(Enums.ModType.DiscArt, True)
-        '            Case "-efanarts"
-        '                Functions.SetScraperMod(Enums.ModType.EFanarts, True)
-        '            Case "-ethumbs"
-        '                Functions.SetScraperMod(Enums.ModType.EThumbs, True)
-        '            Case "-fanart"
-        '                Functions.SetScraperMod(Enums.ModType.Fanart, True)
-        '            Case "-landscape"
-        '                Functions.SetScraperMod(Enums.ModType.Landscape, True)
-        '            Case "-nfo"
-        '                Functions.SetScraperMod(Enums.ModType.NFO, True)
-        '            Case "-poster"
-        '                Functions.SetScraperMod(Enums.ModType.Poster, True)
-        '            Case "-theme"
-        '                Functions.SetScraperMod(Enums.ModType.Theme, True)
-        '            Case "-trailer"
-        '                Functions.SetScraperMod(Enums.ModType.Trailer, True)
-        '            Case "--verbose"
-        '                clAsk = True
-        '            Case "-nowindow"
-        '                nowindow = True
-        '            Case "-run"
-        '                If Args.Count - 1 > i Then
-        '                    ModuleName = Args(i + 1).Replace("""", String.Empty)
-        '                    RunModule = True
-        '                Else
-        '                    Exit For
-        '                End If
-        '            Case "-tvupdate"
-        '                UpdateTVShows = True
-        '            Case Else
-        '                'If File.Exists(Args(2).Replace("""", String.Empty)) Then
-        '                'MoviePath = Args(2).Replace("""", String.Empty)
-        '                'End If
-        '        End Select
-        '    Next
-        '    If nowindow Then Master.fLoading.Hide()
-        '    APIXML.CacheXMLs()
-        '    Master.fLoading.SetLoadingMesg(Master.eLang.GetString(858, "Loading database..."))
-        '    If Master.DB.ConnectMyVideosDB() Then
-        '        Me.LoadMedia(New Structures.Scans With {.Movies = True, .TV = True})
-        '    End If
-        '    Master.DB.LoadMovieSourcesFromDB()
-        '    Master.DB.LoadTVSourcesFromDB()
-        '    Master.DB.LoadExcludeDirsFromDB()
-        '    If RunModule Then
-        '        Master.fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
-        '        Master.fLoading.SetLoadingMesg(Master.eLang.GetString(859, "Running Module..."))
-        '        Dim gModule As ModulesManager._externalGenericModuleClass = ModulesManager.Instance.externalProcessorModules.FirstOrDefault(Function(y) y.ProcessorModule.ModuleName = ModuleName)
-        '        If gModule IsNot Nothing Then
-        '            gModule.ProcessorModule.RunGeneric(Enums.ModuleEventType.CommandLine, Nothing, Nothing, Nothing, Nothing)
-        '        End If
-        '    End If
-        '    If clExport = True Then
-        '        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {MoviePath, clExportTemplate, clExportResizePoster}))
-        '        'dlgExportMovies.CLExport(MoviePath, clExportTemplate, clExportResizePoster)
-        '    End If
-
-        '    If Not clScrapeType = Enums.ScrapeType_Movie.None Then
-        '        Me.cmnuTrayExit.Enabled = True
-        '        Me.cmnuTray.Enabled = True
-        '        If Functions.HasModifier AndAlso Not clScrapeType = Enums.ScrapeType_Movie.SingleScrape Then
-        '            Try
-        '                Master.fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
-        '                Master.fLoading.SetLoadingMesg(Master.eLang.GetString(860, "Loading Media..."))
-        '                LoadMedia(New Structures.Scans With {.Movies = True})
-        '                While Not Me.LoadingDone
-        '                    Application.DoEvents()
-        '                    Threading.Thread.Sleep(50)
-        '                End While
-        '                Master.fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
-        '                Master.fLoading.SetLoadingMesg(Master.eLang.GetString(861, "Command Line Scraping..."))
-        '                MovieScrapeData(False, clScrapeType, Master.DefaultMovieOptions)
-        '            Catch ex As Exception
-        '                logger.Error(New StackFrame().GetMethod().Name, ex)
-        '            End Try
-        '        Else
-        '            Try
-        '                If Not String.IsNullOrEmpty(MoviePath) AndAlso hasSpec Then
-        '                    Master.currMovie = Master.DB.LoadMovieFromDB(MoviePath)
-        '                    Dim tmpTitle As String = String.Empty
-        '                    If FileUtils.Common.isVideoTS(MoviePath) Then
-        '                        tmpTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(MoviePath).FullName).Name, False)
-        '                    ElseIf FileUtils.Common.isBDRip(MoviePath) Then
-        '                        tmpTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(Directory.GetParent(MoviePath).FullName).FullName).Name, False)
-        '                    Else
-        '                        tmpTitle = StringUtils.FilterName_Movie(If(isSingle, Directory.GetParent(MoviePath).Name, Path.GetFileNameWithoutExtension(MoviePath)))
-        '                    End If
-        '                    If Master.currMovie.Movie Is Nothing Then
-        '                        Master.currMovie.Movie = New MediaContainers.Movie
-        '                        Master.currMovie.Movie.Title = tmpTitle
-        '                        Dim sFile As New Scanner.MovieContainer
-        '                        sFile.Filename = MoviePath
-        '                        sFile.isSingle = isSingle
-        '                        sFile.UseFolder = If(isSingle, True, False)
-        '                        fScanner.GetMovieFolderContents(sFile)
-        '                        If Not String.IsNullOrEmpty(sFile.Nfo) Then
-        '                            Master.currMovie.Movie = NFO.LoadMovieFromNFO(sFile.Nfo, sFile.isSingle)
-        '                        Else
-        '                            Master.currMovie.Movie = NFO.LoadMovieFromNFO(sFile.Filename, sFile.isSingle)
-        '                        End If
-        '                        If String.IsNullOrEmpty(Master.currMovie.Movie.Title) Then
-        '                            'no title so assume it's an invalid nfo, clear nfo path if exists
-        '                            sFile.Nfo = String.Empty
-        '                            If FileUtils.Common.isVideoTS(sFile.Filename) Then
-        '                                Master.currMovie.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).Name)
-        '                            ElseIf FileUtils.Common.isBDRip(sFile.Filename) Then
-        '                                Master.currMovie.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(Directory.GetParent(sFile.Filename).FullName).FullName).Name)
-        '                            Else
-        '                                If sFile.UseFolder AndAlso sFile.isSingle Then
-        '                                    Master.currMovie.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(sFile.Filename).Name)
-        '                                Else
-        '                                    Master.currMovie.ListTitle = StringUtils.FilterName_Movie(Path.GetFileNameWithoutExtension(sFile.Filename))
-        '                                End If
-        '                            End If
-        '                        Else
-        '                            Dim tTitle As String = StringUtils.SortTokens_Movie(Master.currMovie.Movie.Title)
-        '                            If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(Master.currMovie.Movie.Year) Then
-        '                                Master.currMovie.ListTitle = String.Format("{0} ({1})", tTitle, Master.currMovie.Movie.Year)
-        '                            Else
-        '                                Master.currMovie.ListTitle = tTitle
-        '                            End If
-        '                        End If
-
-        '                        If Not String.IsNullOrEmpty(Master.currMovie.ListTitle) Then
-        '                            Master.currMovie.BannerPath = sFile.Banner
-        '                            Master.currMovie.ClearArtPath = sFile.ClearArt
-        '                            Master.currMovie.ClearLogoPath = sFile.ClearLogo
-        '                            Master.currMovie.DiscArtPath = sFile.DiscArt
-        '                            Master.currMovie.EFanartsPath = sFile.EFanarts
-        '                            Master.currMovie.EThumbsPath = sFile.EThumbs
-        '                            Master.currMovie.FanartPath = sFile.Fanart
-        '                            Master.currMovie.Filename = sFile.Filename
-        '                            Master.currMovie.LandscapePath = sFile.Landscape
-        '                            Master.currMovie.NfoPath = sFile.Nfo
-        '                            Master.currMovie.PosterPath = sFile.Poster
-        '                            Master.currMovie.Source = sFile.Source
-        '                            Master.currMovie.Subtitles = sFile.Subtitles
-        '                            'Master.currMovie.SubPath = sFile.Subs
-        '                            Master.currMovie.ThemePath = sFile.Theme
-        '                            Master.currMovie.TrailerPath = sFile.Trailer
-        '                            Master.currMovie.UseFolder = sFile.UseFolder
-        '                            Master.currMovie.IsSingle = sFile.isSingle
-
-        '                            'search local actor thumb for each actor in NFO
-        '                            If Master.currMovie.Movie.Actors.Count > 0 AndAlso sFile.ActorThumbs.Count > 0 Then
-        '                                For Each actor In Master.currMovie.Movie.Actors
-        '                                    actor.ThumbPath = sFile.ActorThumbs.FirstOrDefault(Function(s) Path.GetFileNameWithoutExtension(s).ToLower = actor.Name.Replace(" ", "_").ToLower)
-        '                                Next
-        '                            End If
-        '                        End If
-        '                        Master.tmpMovie = Master.currMovie.Movie
-        '                    End If
-        '                    Master.fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
-        '                    Master.fLoading.SetLoadingMesg(Master.eLang.GetString(861, "Command Line Scraping..."))
-        '                    MovieScrapeData(False, Enums.ScrapeType_Movie.SingleScrape, Master.DefaultMovieOptions)
-        '                Else
-        '                    Me.ScraperDone = True
-        '                End If
-        '            Catch ex As Exception
-        '                Me.ScraperDone = True
-        '                logger.Error(New StackFrame().GetMethod().Name, ex)
-        '            End Try
-        '        End If
-
-        '        While Not Me.ScraperDone
-        '            Application.DoEvents()
-        '            Threading.Thread.Sleep(50)
-        '        End While
-        '    End If
-
-        '    If UpdateTVShows Then
-        '        Try
-        '            Master.fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
-        '            Master.fLoading.SetLoadingMesg(Master.eLang.GetString(860, "Loading Media..."))
-        '            LoadMedia(New Structures.Scans With {.TV = True})
-        '            While Not Me.LoadingDone
-        '                Application.DoEvents()
-        '                Threading.Thread.Sleep(50)
-        '            End While
-        '            Master.fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
-        '            Master.fLoading.SetLoadingMesg(Master.eLang.GetString(861, "Command Line Scraping..."))
-        '            MovieScrapeData(False, clScrapeType, Master.DefaultMovieOptions)
-        '        Catch ex As Exception
-        '            logger.Error(New StackFrame().GetMethod().Name, ex)
-        '        End Try
-        '    End If
-
-        '    Master.fLoading.Close()
-        '    Me.Close()
-        'Catch ex As Exception
-        'End Try
-
     End Sub
     ''' <summary>
     ''' Performs startup routines specific to being initiated as a GUI application (user interaction intended)
@@ -10932,6 +10633,15 @@ doCancel:
                             Application.DoEvents()
                             Threading.Thread.Sleep(50)
                         End While
+                    Case "run"
+                        Master.fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
+                        Master.fLoading.SetLoadingMesg(Master.eLang.GetString(859, "Running Module..."))
+                        Dim strModuleName As String = CStr(_params(1))
+                        Dim oParameters As List(Of Object) = CType(_params(2), List(Of Object))
+                        Dim gModule As ModulesManager._externalGenericModuleClass = ModulesManager.Instance.externalProcessorModules.FirstOrDefault(Function(y) y.ProcessorModule.ModuleName = strModuleName)
+                        If gModule IsNot Nothing Then
+                            gModule.ProcessorModule.RunGeneric(Enums.ModuleEventType.CommandLine, oParameters, Nothing, Nothing)
+                        End If
                     Case "scrapemovies"
                         Master.fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
                         Master.fLoading.SetLoadingMesg(Master.eLang.GetString(861, "Command Line Scraping..."))
