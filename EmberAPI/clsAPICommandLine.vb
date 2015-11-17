@@ -96,7 +96,7 @@ Public Class CommandLine
                         Dim strModuleName As String = Args(i + 1)
                         i += 1
                         Dim sParams As List(Of Object) = Nothing
-                        i = SetParameters(Args, i, sParams)
+                        i = SetModuleParameters(Args, i, sParams)
                         RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"run", strModuleName, sParams}))
                     Else
                         logger.Warn("[CommandLine] Missing module name for command ""-run""")
@@ -284,13 +284,13 @@ Public Class CommandLine
         Next
     End Sub
 
-    Private Function SetParameters(ByVal Args() As String, ByVal iStartPos As Integer, ByRef Parameters As List(Of Object)) As Integer
+    Private Function SetModuleParameters(ByVal Args() As String, ByVal iStartPos As Integer, ByRef Parameters As List(Of Object)) As Integer
         Dim iEndPos As Integer = iStartPos
 
         For i As Integer = iStartPos + 1 To Args.Count - 1
             If Not Args(i).StartsWith("-") Then
                 If Parameters Is Nothing Then Parameters = New List(Of Object)
-                Parameters.Add(New Object() {Args(i)})
+                Parameters.Add(Args(i))
             Else
                 Return i - 1
             End If
