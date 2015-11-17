@@ -173,7 +173,7 @@ Public Class MediaExporter
                 ElseIf part.ContentType = Enums.ContentType.TVEpisode Then
                     If tTVShow IsNot Nothing AndAlso tTVSeason IsNot Nothing Then
                         tCounter_TVEpisode = 1
-                        For Each tEpisode As Database.DBElement In tTVShow.Episodes
+                        For Each tEpisode As Database.DBElement In tTVShow.Episodes.Where(Function(f) f.TVEpisode.Season = tTVSeason.TVSeason.Season)
                             If Not sfunction Is Nothing Then
                                 If Not sfunction(tTVShow.TVShow.Title, tEpisode.TVEpisode.Title) Then Return Nothing
                             End If
@@ -245,7 +245,7 @@ Public Class MediaExporter
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
                                 strPath = String.Format("images/{0}/{1}/{2}-fanart.jpg", tCounter_Global, tCounter_TVSeason, tCounter_TVEpisode)
                                 tImage.ImageOriginal.Save(Path.Combine(tBuildPath, strPath))
-                                tImage.ImageOriginal.Image.Dispose()   'Dispose to save memory
+                                tImage.ImageOriginal = New Images 'Dispose to save memory
                             End If
                         Else
                             strPath = String.Format("images/{0}/{1}/{2}-fanart.jpg", tCounter_Global, tCounter_TVSeason, tCounter_TVEpisode)
@@ -261,7 +261,7 @@ Public Class MediaExporter
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
                                 strPath = String.Format("images/{0}/{1}/{2}-poster.jpg", tCounter_Global, tCounter_TVSeason, tCounter_TVEpisode)
                                 tImage.ImageOriginal.Save(Path.Combine(tBuildPath, strPath))
-                                tImage.ImageOriginal.Image.Dispose() 'Dispose to save memory
+                                tImage.ImageOriginal = New Images 'Dispose to save memory
                             End If
                         Else
                             strPath = String.Format("images/{0}/{1}/{2}-poster.jpg", tCounter_Global, tCounter_TVSeason, tCounter_TVEpisode)
@@ -277,7 +277,7 @@ Public Class MediaExporter
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
                                 strPath = String.Format("images/{0}-banner.jpg", tCounter_Global)
                                 tImage.ImageOriginal.Save(Path.Combine(tBuildPath, strPath))
-                                tImage.ImageOriginal.Image.Dispose() 'Dispose to save memory
+                                tImage.ImageOriginal = New Images 'Dispose to save memory
                             End If
                         Else
                             strPath = String.Format("images/{0}-banner.jpg", tCounter_Global)
@@ -313,7 +313,7 @@ Public Class MediaExporter
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
                                 strPath = String.Format("images/{0}-fanart.jpg", tCounter_Global)
                                 tImage.ImageOriginal.Save(Path.Combine(tBuildPath, strPath))
-                                tImage.ImageOriginal.Image.Dispose() 'Dispose to save memory
+                                tImage.ImageOriginal = New Images 'Dispose to save memory
                             End If
                         Else
                             strPath = String.Format("images/{0}-fanart.jpg", tCounter_Global)
@@ -329,7 +329,7 @@ Public Class MediaExporter
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
                                 strPath = String.Format("images/{0}-landscape.jpg", tCounter_Global)
                                 tImage.ImageOriginal.Save(Path.Combine(tBuildPath, strPath))
-                                tImage.ImageOriginal.Image.Dispose() 'Dispose to save memory
+                                tImage.ImageOriginal = New Images 'Dispose to save memory
                             End If
                         Else
                             strPath = String.Format("images/{0}-landscape.jpg", tCounter_Global)
@@ -339,13 +339,13 @@ Public Class MediaExporter
                 Case Enums.ModifierType.MainPoster
                     If tExportSettings.MainPosters Then
                         If Not tExportSettings.MainPosters_MaxHeight = -1 OrElse Not tExportSettings.MainPosters_MaxWidth = -1 Then
-                            If tImage.LoadAndCache(Enums.ContentType.Movie, True, True) Then
+                            If tImage.LoadAndCache(Enums.ContentType.TV, True, True) Then
                                 Dim nImg As Image = tImage.ImageOriginal.Image
                                 ImageUtils.ResizeImage(nImg, tExportSettings.MainPosters_MaxWidth, tExportSettings.MainPosters_MaxHeight)
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
                                 strPath = String.Format("images/{0}-poster.jpg", tCounter_Global)
                                 tImage.ImageOriginal.Save(Path.Combine(tBuildPath, strPath))
-                                tImage.ImageOriginal.Image.Dispose() 'Dispose to save memory
+                                tImage.ImageOriginal = New Images 'Dispose to save memory
                             End If
                         Else
                             strPath = String.Format("images/{0}-poster.jpg", tCounter_Global)
@@ -355,13 +355,13 @@ Public Class MediaExporter
                 Case Enums.ModifierType.SeasonBanner
                     If tExportSettings.SeasonBanners Then
                         If Not tExportSettings.SeasonBanners_MaxHeight = -1 OrElse Not tExportSettings.SeasonBanners_MaxWidth = -1 Then
-                            If tImage.LoadAndCache(Enums.ContentType.Movie, True, True) Then
+                            If tImage.LoadAndCache(Enums.ContentType.TV, True, True) Then
                                 Dim nImg As Image = tImage.ImageOriginal.Image
                                 ImageUtils.ResizeImage(nImg, tExportSettings.SeasonBanners_MaxWidth, tExportSettings.SeasonBanners_MaxHeight)
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
                                 strPath = String.Format("images/{0}/{1}-banner.jpg", tCounter_Global, tCounter_TVSeason)
                                 tImage.ImageOriginal.Save(Path.Combine(tBuildPath, strPath))
-                                tImage.ImageOriginal.Image.Dispose() 'Dispose to save memory
+                                tImage.ImageOriginal = New Images 'Dispose to save memory
                             End If
                         Else
                             strPath = String.Format("images/{0}/{1}-banner.jpg", tCounter_Global, tCounter_TVSeason)
@@ -371,13 +371,13 @@ Public Class MediaExporter
                 Case Enums.ModifierType.SeasonFanart
                     If tExportSettings.SeasonFanarts Then
                         If Not tExportSettings.SeasonFanarts_MaxHeight = -1 OrElse Not tExportSettings.SeasonFanarts_MaxWidth = -1 Then
-                            If tImage.LoadAndCache(Enums.ContentType.Movie, True, True) Then
+                            If tImage.LoadAndCache(Enums.ContentType.TV, True, True) Then
                                 Dim nImg As Image = tImage.ImageOriginal.Image
                                 ImageUtils.ResizeImage(nImg, tExportSettings.SeasonFanarts_MaxWidth, tExportSettings.SeasonFanarts_MaxHeight)
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
                                 strPath = String.Format("images/{0}/{1}-fanart.jpg", tCounter_Global, tCounter_TVSeason)
                                 tImage.ImageOriginal.Save(Path.Combine(tBuildPath, strPath))
-                                tImage.ImageOriginal.Image.Dispose() 'Dispose to save memory
+                                tImage.ImageOriginal = New Images 'Dispose to save memory
                             End If
                         Else
                             strPath = String.Format("images/{0}/{1}-fanart.jpg", tCounter_Global, tCounter_TVSeason)
@@ -387,13 +387,13 @@ Public Class MediaExporter
                 Case Enums.ModifierType.SeasonLandscape
                     If tExportSettings.SeasonLandscapes Then
                         If Not tExportSettings.SeasonLandscapes_MaxHeight = -1 OrElse Not tExportSettings.SeasonLandscapes_MaxWidth = -1 Then
-                            If tImage.LoadAndCache(Enums.ContentType.Movie, True, True) Then
+                            If tImage.LoadAndCache(Enums.ContentType.TV, True, True) Then
                                 Dim nImg As Image = tImage.ImageOriginal.Image
                                 ImageUtils.ResizeImage(nImg, tExportSettings.SeasonLandscapes_MaxWidth, tExportSettings.SeasonLandscapes_MaxHeight)
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
                                 strPath = String.Format("images/{0}/{1}-landscape.jpg", tCounter_Global, tCounter_TVSeason)
                                 tImage.ImageOriginal.Save(Path.Combine(tBuildPath, strPath))
-                                tImage.ImageOriginal.Image.Dispose() 'Dispose to save memory
+                                tImage.ImageOriginal = New Images 'Dispose to save memory
                             End If
                         Else
                             strPath = String.Format("images/{0}/{1}-landscape.jpg", tCounter_Global, tCounter_TVSeason)
@@ -403,13 +403,13 @@ Public Class MediaExporter
                 Case Enums.ModifierType.SeasonPoster
                     If tExportSettings.SeasonPosters Then
                         If Not tExportSettings.SeasonPosters_MaxHeight = -1 OrElse Not tExportSettings.SeasonPosters_MaxWidth = -1 Then
-                            If tImage.LoadAndCache(Enums.ContentType.Movie, True, True) Then
+                            If tImage.LoadAndCache(Enums.ContentType.TV, True, True) Then
                                 Dim nImg As Image = tImage.ImageOriginal.Image
                                 ImageUtils.ResizeImage(nImg, tExportSettings.SeasonPosters_MaxWidth, tExportSettings.SeasonPosters_MaxHeight)
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
                                 strPath = String.Format("images/{0}/{1}-poster.jpg", tCounter_Global, tCounter_TVSeason)
                                 tImage.ImageOriginal.Save(Path.Combine(tBuildPath, strPath))
-                                tImage.ImageOriginal.Image.Dispose() 'Dispose to save memory
+                                tImage.ImageOriginal = New Images 'Dispose to save memory
                             End If
                         Else
                             strPath = String.Format("images/{0}/{1}-poster.jpg", tCounter_Global, tCounter_TVSeason)
