@@ -33,7 +33,7 @@ Partial Class frmSettingsHolder
         Me.chkExportMissingEpisodes = New System.Windows.Forms.CheckBox()
         Me.lblGeneralPath = New System.Windows.Forms.Label()
         Me.btnExportPath = New System.Windows.Forms.Button()
-        Me.txt_exportmoviepath = New System.Windows.Forms.TextBox()
+        Me.txtExportPath = New System.Windows.Forms.TextBox()
         Me.pnlSettingsTop.SuspendLayout()
         Me.tblSettingsTop.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
@@ -128,7 +128,7 @@ Partial Class frmSettingsHolder
         Me.gbGeneralOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbGeneralOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbGeneralOpts.Name = "gbGeneralOpts"
-        Me.gbGeneralOpts.Size = New System.Drawing.Size(335, 72)
+        Me.gbGeneralOpts.Size = New System.Drawing.Size(338, 72)
         Me.gbGeneralOpts.TabIndex = 20
         Me.gbGeneralOpts.TabStop = False
         Me.gbGeneralOpts.Text = "General Settings"
@@ -144,7 +144,7 @@ Partial Class frmSettingsHolder
         Me.tblGeneralOpts.Controls.Add(Me.chkExportMissingEpisodes, 0, 1)
         Me.tblGeneralOpts.Controls.Add(Me.lblGeneralPath, 0, 0)
         Me.tblGeneralOpts.Controls.Add(Me.btnExportPath, 2, 0)
-        Me.tblGeneralOpts.Controls.Add(Me.txt_exportmoviepath, 1, 0)
+        Me.tblGeneralOpts.Controls.Add(Me.txtExportPath, 1, 0)
         Me.tblGeneralOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblGeneralOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblGeneralOpts.Name = "tblGeneralOpts"
@@ -152,7 +152,7 @@ Partial Class frmSettingsHolder
         Me.tblGeneralOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblGeneralOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblGeneralOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblGeneralOpts.Size = New System.Drawing.Size(329, 51)
+        Me.tblGeneralOpts.Size = New System.Drawing.Size(332, 51)
         Me.tblGeneralOpts.TabIndex = 23
         '
         'chkExportMissingEpisodes
@@ -174,15 +174,15 @@ Partial Class frmSettingsHolder
         Me.lblGeneralPath.AutoSize = True
         Me.lblGeneralPath.Location = New System.Drawing.Point(3, 7)
         Me.lblGeneralPath.Name = "lblGeneralPath"
-        Me.lblGeneralPath.Size = New System.Drawing.Size(63, 13)
+        Me.lblGeneralPath.Size = New System.Drawing.Size(66, 13)
         Me.lblGeneralPath.TabIndex = 12
-        Me.lblGeneralPath.Text = "ExportPath"
+        Me.lblGeneralPath.Text = "Export Path"
         Me.lblGeneralPath.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'btnExportPath
         '
         Me.btnExportPath.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.btnExportPath.Location = New System.Drawing.Point(305, 3)
+        Me.btnExportPath.Location = New System.Drawing.Point(308, 3)
         Me.btnExportPath.Margin = New System.Windows.Forms.Padding(0)
         Me.btnExportPath.Name = "btnExportPath"
         Me.btnExportPath.Size = New System.Drawing.Size(24, 22)
@@ -193,11 +193,11 @@ Partial Class frmSettingsHolder
         '
         'txt_exportmoviepath
         '
-        Me.txt_exportmoviepath.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.txt_exportmoviepath.Location = New System.Drawing.Point(72, 3)
-        Me.txt_exportmoviepath.Name = "txt_exportmoviepath"
-        Me.txt_exportmoviepath.Size = New System.Drawing.Size(230, 22)
-        Me.txt_exportmoviepath.TabIndex = 13
+        Me.txtExportPath.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.txtExportPath.Location = New System.Drawing.Point(75, 3)
+        Me.txtExportPath.Name = "txt_exportmoviepath"
+        Me.txtExportPath.Size = New System.Drawing.Size(230, 22)
+        Me.txtExportPath.TabIndex = 13
         '
         'frmSettingsHolder
         '
@@ -238,7 +238,7 @@ Partial Class frmSettingsHolder
     Friend WithEvents pnlSettings As System.Windows.Forms.Panel
     Friend WithEvents lblGeneralPath As System.Windows.Forms.Label
     Friend WithEvents btnExportPath As System.Windows.Forms.Button
-    Friend WithEvents txt_exportmoviepath As System.Windows.Forms.TextBox
+    Friend WithEvents txtExportPath As System.Windows.Forms.TextBox
     Friend WithEvents gbGeneralOpts As System.Windows.Forms.GroupBox
     Friend WithEvents chkExportMissingEpisodes As System.Windows.Forms.CheckBox
     Friend WithEvents tblSettingsTop As System.Windows.Forms.TableLayoutPanel

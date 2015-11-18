@@ -495,55 +495,60 @@ Public Class MediaExporter
 
     Private Function GetFileSize(ByVal fPath As String) As String
         Dim fSize As Long = 0
-        If StringUtils.IsStacked(Path.GetFileNameWithoutExtension(fPath), True) OrElse FileUtils.Common.isVideoTS(fPath) OrElse FileUtils.Common.isBDRip(fPath) Then
-            Try
-                Dim sExt As String = Path.GetExtension(fPath).ToLower
-                Dim oFile As String = StringUtils.CleanStackingMarkers(fPath, False)
-                Dim sFile As New List(Of String)
-                Dim bIsVTS As Boolean = False
 
-                If sExt = ".ifo" OrElse sExt = ".bup" OrElse sExt = ".vob" Then
-                    bIsVTS = True
-                End If
+        If Not String.IsNullOrEmpty(fPath) Then
+            If StringUtils.IsStacked(Path.GetFileNameWithoutExtension(fPath), True) OrElse FileUtils.Common.isVideoTS(fPath) OrElse FileUtils.Common.isBDRip(fPath) Then
+                Try
+                    Dim sExt As String = Path.GetExtension(fPath).ToLower
+                    Dim oFile As String = StringUtils.CleanStackingMarkers(fPath, False)
+                    Dim sFile As New List(Of String)
+                    Dim bIsVTS As Boolean = False
 
-                If bIsVTS Then
-                    Try
-                        sFile.AddRange(Directory.GetFiles(Directory.GetParent(fPath).FullName, "VTS*.VOB"))
-                    Catch
-                    End Try
-                ElseIf sExt = ".m2ts" Then
-                    Try
-                        sFile.AddRange(Directory.GetFiles(Directory.GetParent(fPath).FullName, "*.m2ts"))
-                    Catch
-                    End Try
-                Else
-                    Try
-                        sFile.AddRange(Directory.GetFiles(Directory.GetParent(fPath).FullName, StringUtils.CleanStackingMarkers(Path.GetFileName(fPath), True)))
-                    Catch
-                    End Try
-                End If
+                    If sExt = ".ifo" OrElse sExt = ".bup" OrElse sExt = ".vob" Then
+                        bIsVTS = True
+                    End If
 
-                For Each tFile As String In sFile
-                    fSize += New FileInfo(tFile).Length
-                Next
-            Catch ex As Exception
-            End Try
+                    If bIsVTS Then
+                        Try
+                            sFile.AddRange(Directory.GetFiles(Directory.GetParent(fPath).FullName, "VTS*.VOB"))
+                        Catch
+                        End Try
+                    ElseIf sExt = ".m2ts" Then
+                        Try
+                            sFile.AddRange(Directory.GetFiles(Directory.GetParent(fPath).FullName, "*.m2ts"))
+                        Catch
+                        End Try
+                    Else
+                        Try
+                            sFile.AddRange(Directory.GetFiles(Directory.GetParent(fPath).FullName, StringUtils.CleanStackingMarkers(Path.GetFileName(fPath), True)))
+                        Catch
+                        End Try
+                    End If
+
+                    For Each tFile As String In sFile
+                        fSize += New FileInfo(tFile).Length
+                    Next
+                Catch ex As Exception
+                End Try
+            Else
+                fSize = New FileInfo(fPath).Length
+            End If
+
+            Select Case fSize
+                Case 0 To 1023
+                    Return fSize & " Bytes"
+                Case 1024 To 1048575
+                    Return String.Concat((fSize / 1024).ToString("###0.00"), " KB")
+                Case 1048576 To 1043741824
+                    Return String.Concat((fSize / 1024 ^ 2).ToString("###0.00"), " MB")
+                Case Is > 1043741824
+                    Return String.Concat((fSize / 1024 ^ 3).ToString("###0.00"), " GB")
+            End Select
         Else
-            fSize = New FileInfo(fPath).Length
+            Return String.Empty
         End If
 
-        Select Case fSize
-            Case 0 To 1023
-                Return fSize & " Bytes"
-            Case 1024 To 1048575
-                Return String.Concat((fSize / 1024).ToString("###0.00"), " KB")
-            Case 1048576 To 1043741824
-                Return String.Concat((fSize / 1024 ^ 2).ToString("###0.00"), " MB")
-            Case Is > 1043741824
-                Return String.Concat((fSize / 1024 ^ 3).ToString("###0.00"), " GB")
-        End Select
-
-        Return "0 bytes"
+        Return String.Empty
     End Function
 
     Private Shared Sub CopyDirectory(ByVal SourcePath As String, ByVal DestPath As String, Optional ByVal Overwrite As Boolean = False)

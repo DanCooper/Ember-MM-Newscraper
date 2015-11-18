@@ -1879,16 +1879,16 @@ Public Class Database
         Return _tagDB
     End Function
 
-    Public Function LoadAllTVEpisodesFromDB(ByVal ShowID As Long, ByVal withShow As Boolean, Optional ByVal LoadBitmap As Boolean = False, Optional ByVal OnlySeason As Integer = -1) As List(Of Database.DBElement)
+    Public Function LoadAllTVEpisodesFromDB(ByVal ShowID As Long, ByVal withShow As Boolean, Optional ByVal LoadBitmap As Boolean = False, Optional ByVal OnlySeason As Integer = -1, Optional ByVal withMissingEpisodes As Boolean = False) As List(Of Database.DBElement)
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
 
         Dim _TVEpisodesList As New List(Of Database.DBElement)
 
         Using SQLCount As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
             If OnlySeason = -1 Then
-                SQLCount.CommandText = String.Concat("SELECT COUNT(idEpisode) AS eCount FROM episode WHERE idShow = ", ShowID, " AND NOT idFile = -1;")
+                SQLCount.CommandText = String.Concat("SELECT COUNT(idEpisode) AS eCount FROM episode WHERE idShow = ", ShowID, If(withMissingEpisodes, ";", " AND NOT idFile = -1;"))
             Else
-                SQLCount.CommandText = String.Concat("SELECT COUNT(idEpisode) AS eCount FROM episode WHERE idShow = ", ShowID, " AND Season = ", OnlySeason, " AND NOT idFile = -1;")
+                SQLCount.CommandText = String.Concat("SELECT COUNT(idEpisode) AS eCount FROM episode WHERE idShow = ", ShowID, " AND Season = ", OnlySeason, If(withMissingEpisodes, ";", " AND NOT idFile = -1;"))
             End If
             Using SQLRCount As SQLite.SQLiteDataReader = SQLCount.ExecuteReader
                 If SQLRCount.HasRows Then
@@ -1896,9 +1896,9 @@ Public Class Database
                     If Convert.ToInt32(SQLRCount("eCount")) > 0 Then
                         Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                             If OnlySeason = -1 Then
-                                SQLCommand.CommandText = String.Concat("SELECT * FROM episode WHERE idShow = ", ShowID, " AND NOT idFile = -1;")
+                                SQLCommand.CommandText = String.Concat("SELECT * FROM episode WHERE idShow = ", ShowID, If(withMissingEpisodes, ";", " AND NOT idFile = -1;"))
                             Else
-                                SQLCommand.CommandText = String.Concat("SELECT * FROM episode WHERE idShow = ", ShowID, " AND Season = ", OnlySeason, " AND NOT idFile = -1;")
+                                SQLCommand.CommandText = String.Concat("SELECT * FROM episode WHERE idShow = ", ShowID, " AND Season = ", OnlySeason, If(withMissingEpisodes, ";", " AND NOT idFile = -1;"))
                             End If
                             Using SQLReader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
                                 While SQLReader.Read
@@ -2327,7 +2327,7 @@ Public Class Database
     ''' <param name="LoadBitmap">load all images to memorystream</param>
     ''' <param name="exclExtraImages">exclude Extrafanarts and Extrathumbs from memorystream</param>
     ''' <returns>Database.DBElement object</returns>
-    Public Function LoadTVShowFromDB(ByVal ShowID As Long, ByVal withSeasons As Boolean, ByVal withEpisodes As Boolean, Optional ByVal LoadBitmap As Boolean = False, Optional ByVal exclExtraImages As Boolean = False) As Database.DBElement
+    Public Function LoadTVShowFromDB(ByVal ShowID As Long, ByVal withSeasons As Boolean, ByVal withEpisodes As Boolean, Optional ByVal LoadBitmap As Boolean = False, Optional ByVal exclExtraImages As Boolean = False, Optional ByVal withMissingEpisodes As Boolean = False) As Database.DBElement
         Dim _TVDB As New Database.DBElement
 
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
@@ -2378,10 +2378,10 @@ Public Class Database
 
         'Actors
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommand.CommandText = String.Concat("SELECT A.strRole, B.idActor, B.strActor, B.strThumb, C.url FROM actorlinktvshow AS A ", _
-                                                   "INNER JOIN actors AS B ON (A.idActor = B.idActor) ", _
-                                                   "LEFT OUTER JOIN art AS C ON (B.idActor = C.media_id AND C.media_type = 'actor' AND C.type = 'thumb') ", _
-                                                   "WHERE A.idShow = ", _TVDB.ID, " ", _
+            SQLcommand.CommandText = String.Concat("SELECT A.strRole, B.idActor, B.strActor, B.strThumb, C.url FROM actorlinktvshow AS A ",
+                                                   "INNER JOIN actors AS B ON (A.idActor = B.idActor) ",
+                                                   "LEFT OUTER JOIN art AS C ON (B.idActor = C.media_id AND C.media_type = 'actor' AND C.type = 'thumb') ",
+                                                   "WHERE A.idShow = ", _TVDB.ID, " ",
                                                    "ORDER BY A.iOrder;")
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 Dim actor As MediaContainers.Person
@@ -2399,9 +2399,9 @@ Public Class Database
 
         'Creators
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommand.CommandText = String.Concat("SELECT actors.strActor ", _
-                                                   "FROM actors ", _
-                                                   "INNER JOIN creatorlinktvshow ON (actors.idActor = creatorlinktvshow.idActor) ", _
+            SQLcommand.CommandText = String.Concat("SELECT actors.strActor ",
+                                                   "FROM actors ",
+                                                   "INNER JOIN creatorlinktvshow ON (actors.idActor = creatorlinktvshow.idActor) ",
                                                    "WHERE creatorlinktvshow.idShow = ", _TVDB.ID, ";")
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 While SQLreader.Read
@@ -2412,9 +2412,9 @@ Public Class Database
 
         'Countries
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommand.CommandText = String.Concat("SELECT country.strCountry ", _
-                                                   "FROM country ", _
-                                                   "INNER JOIN countrylinktvshow ON (country.idCountry = countrylinktvshow.idCountry) ", _
+            SQLcommand.CommandText = String.Concat("SELECT country.strCountry ",
+                                                   "FROM country ",
+                                                   "INNER JOIN countrylinktvshow ON (country.idCountry = countrylinktvshow.idCountry) ",
                                                    "WHERE countrylinktvshow.idShow = ", _TVDB.ID, ";")
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 While SQLreader.Read
@@ -2425,7 +2425,7 @@ Public Class Database
 
         'Tags
         Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommand.CommandText = String.Concat("SELECT B.strTag FROM taglinks ", _
+            SQLcommand.CommandText = String.Concat("SELECT B.strTag FROM taglinks ",
                                                    "AS A INNER JOIN tag AS B ON (A.idTag = B.idTag) WHERE A.idMedia = ", _TVDB.ID, " AND A.media_type = 'tvshow';")
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 Dim tag As String
@@ -2460,7 +2460,7 @@ Public Class Database
 
         'Episodes
         If withEpisodes Then
-            For Each tEpisode As Database.DBElement In LoadAllTVEpisodesFromDB(_TVDB.ID, False)
+            For Each tEpisode As Database.DBElement In LoadAllTVEpisodesFromDB(_TVDB.ID, False, False, -1, withMissingEpisodes)
                 tEpisode = Master.DB.AddTVShowInfoToDBElement(tEpisode, _TVDB)
                 _TVDB.Episodes.Add(tEpisode)
             Next

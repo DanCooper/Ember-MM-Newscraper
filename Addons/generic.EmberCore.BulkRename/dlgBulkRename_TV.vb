@@ -410,7 +410,7 @@ Public Class dlgBulkRenamer_TV
         Close_Button.Text = Master.eLang.GetString(19, "Close")
         lblTopDetails.Text = Master.eLang.GetString(275, "Rename TV Shows and files")
         lblTopTitle.Text = Text
-        lblCompiling.Text = Master.eLang.GetString(277, "Compiling TV Shows List...")
+        lblCompiling.Text = Master.eLang.GetString(277, "Compiling TV Show List...")
         lblCanceling.Text = Master.eLang.GetString(178, "Canceling Compilation...")
         btnCancel.Text = Master.eLang.GetString(167, "Cancel")
         Rename_Button.Text = Master.eLang.GetString(257, "Rename")

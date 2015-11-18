@@ -118,7 +118,7 @@ Public Class MovieExporterModule
                 Dim MovieList As New List(Of Database.DBElement)
                 ' Load nfo movies using path from DB
                 Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    SQLNewcommand.CommandText = String.Concat("SELECT idMovie FROM movielist ORDER BY SortTitle COLLATE NOCASE;")
+                    SQLNewcommand.CommandText = String.Concat("SELECT idMovie FROM movielist ORDER BY SortedTitle COLLATE NOCASE;")
                     Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                         While SQLreader.Read()
                             MovieList.Add(Master.DB.LoadMovieFromDB(Convert.ToInt32(SQLreader("idMovie"))))
@@ -129,10 +129,10 @@ Public Class MovieExporterModule
                 Dim TVShowList As New List(Of Database.DBElement)
                 ' Load nfo tv shows using path from DB
                 Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    SQLNewcommand.CommandText = String.Concat("SELECT idShow FROM tvshowlist ORDER BY SortTitle COLLATE NOCASE;")
+                    SQLNewcommand.CommandText = String.Concat("SELECT idShow FROM tvshowlist ORDER BY SortedTitle COLLATE NOCASE;")
                     Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                         While SQLreader.Read()
-                            TVShowList.Add(Master.DB.LoadTVShowFromDB(Convert.ToInt32(SQLreader("idShow")), True, True))
+                            TVShowList.Add(Master.DB.LoadTVShowFromDB(Convert.ToInt32(SQLreader("idShow")), True, True, False, False, MySettings.ExportMissingEpisodes))
                         End While
                     End Using
                 End Using
@@ -206,7 +206,7 @@ Public Class MovieExporterModule
         Me._setup.cbEnabled.Checked = Me._enabled
         Dim SPanel As New Containers.SettingsPanel
 
-        _setup.txt_exportmoviepath.Text = MySettings.ExportPath
+        _setup.txtExportPath.Text = MySettings.ExportPath
         _setup.chkExportMissingEpisodes.Checked = MySettings.ExportMissingEpisodes
 
         SPanel.Name = Me._Name
@@ -239,7 +239,7 @@ Public Class MovieExporterModule
 
     Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
         Me.Enabled = Me._setup.cbEnabled.Checked
-        MySettings.ExportPath = _setup.txt_exportmoviepath.Text
+        MySettings.ExportPath = _setup.txtExportPath.Text
         MySettings.ExportMissingEpisodes = _setup.chkExportMissingEpisodes.Checked
         SaveSettings()
         If DoDispose Then
