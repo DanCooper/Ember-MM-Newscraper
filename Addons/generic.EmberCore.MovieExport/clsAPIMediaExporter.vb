@@ -36,9 +36,12 @@ Public Class MediaExporter
     Private tCounter_Global As Integer
     Private tCounter_TVEpisode As Integer
     Private tCounter_TVSeason As Integer
+    Private tBuildPath As String = Path.Combine(Master.TempPath, "Export")
     Private tExportSettings As New ExportSettings
     Private tMovieList As List(Of Database.DBElement)
-    Private tBuildPath As String = Path.Combine(Master.TempPath, "Export")
+    Private tTotal_Movies As Integer
+    Private tTotal_TVEpisodes As Integer
+    Private tTotal_TVShows As Integer
     Private tTVShowList As List(Of Database.DBElement)
 
 #End Region 'Fields
@@ -183,7 +186,7 @@ Public Class MediaExporter
                     End If
                 End If
             Else
-                HTMLBodyPart.Append(part.Content)
+                HTMLBodyPart.Append(ProcessPattern_General(part))
             End If
         Next
 
@@ -193,6 +196,13 @@ Public Class MediaExporter
     Public Function CreateTemplate(ByVal TemplateName As String, ByVal MovieList As List(Of Database.DBElement), ByVal TVShowList As List(Of Database.DBElement), Optional ByVal BuildPath As String = "", Optional ByVal sfunction As ShowProgress = Nothing) As String
         tMovieList = MovieList
         tTVShowList = TVShowList
+
+        tTotal_Movies = tMovieList.Count
+        tTotal_TVShows = tTVShowList.Count
+        For Each tShow As Database.DBElement In tTVShowList
+            tTotal_TVEpisodes += tShow.Episodes.Count
+        Next
+
 
         If Not String.IsNullOrEmpty(BuildPath) Then
             tBuildPath = BuildPath
@@ -650,6 +660,17 @@ Public Class MediaExporter
                 End If
             End If
         End If
+        Return strRow
+    End Function
+
+    Private Function ProcessPattern_General(ByVal tContentPart As ContentPart) As String
+        Dim strRow As String = tContentPart.Content
+
+        'Special Strings
+        strRow = strRow.Replace("<$TOTAL_MOVIES>", tTotal_Movies.ToString)
+        strRow = strRow.Replace("<$TOTAL_TVEPISODES>", tTotal_TVEpisodes.ToString)
+        strRow = strRow.Replace("<$TOTAL_TVSHOWS>", tTotal_TVShows.ToString)
+
         Return strRow
     End Function
 
