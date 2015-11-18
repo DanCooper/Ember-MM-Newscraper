@@ -91,39 +91,25 @@ Public Class CommandLine
                     End If
                 Case "-cleanvideodb"
                     RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"cleanvideodb"}))
-                Case "-file"
-                    'If Args.Count - 1 > i Then
-                    '    isSingle = False
-                    '    hasSpec = True
-                    '    clScrapeType = Enums.ScrapeType_Movie.SingleScrape
-                    '    If File.Exists(Args(i + 1).Replace("""", String.Empty)) Then
-                    '        MoviePath = Args(i + 1).Replace("""", String.Empty)
-                    '        i += 1
-                    '    End If
-                    'Else
-                    '    Exit For
-                    'End If
-                Case "-folder"
-                    'If Args.Count - 1 > i Then
-                    '    isSingle = True
-                    '    hasSpec = True
-                    '    clScrapeType = Enums.ScrapeType_Movie.SingleScrape
-                    '    If File.Exists(Args(i + 1).Replace("""", String.Empty)) Then
-                    '        MoviePath = Args(i + 1).Replace("""", String.Empty)
-                    '        i += 1
-                    '    End If
-                    'Else
-                    '    Exit For
-                    'End If
+                Case "-run"
+                    If Args.Count - 1 > i AndAlso Not Args(i + 1).StartsWith("-") Then
+                        Dim strModuleName As String = Args(i + 1)
+                        i += 1
+                        Dim sParams As List(Of Object) = Nothing
+                        i = SetModuleParameters(Args, i, sParams)
+                        RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"run", strModuleName, sParams}))
+                    Else
+                        logger.Warn("[CommandLine] Missing module name for command ""-run""")
+                    End If
                 Case "-scanfolder"
                     If Args.Count - 1 > i Then
                         If Directory.Exists(Args(i + 1).Replace("""", String.Empty)) Then
-                            RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, _
-                                                    New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.SpecificFolder = True}, String.Empty, Args(i + 1).Replace("""", String.Empty)}))
+                            RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine,
+                                                    New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.SpecificFolder = True}, -1, Args(i + 1).Replace("""", String.Empty)}))
                             i += 1
                         End If
                     Else
-                        logger.Warn("[CommandLine] No path or invalid path specified for -scanfolder command")
+                        logger.Warn("[CommandLine] No path or invalid path specified for command ""-scanfolder""")
                     End If
                 Case "-scrapemovies"
                     If Args.Count - 1 > i AndAlso Not Args(i + 1).StartsWith("-") Then
@@ -179,10 +165,10 @@ Public Class CommandLine
                                 i = SetScraperMod(Args, i, CustomScrapeModifier)
                                 RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.NewSkip, CustomScrapeModifier}))
                             Case Else
-                                logger.Warn("[CommandLine] Invalid ScrapeType specified for -scrapemovies command")
+                                logger.Warn("[CommandLine] Invalid ScrapeType specified for command ""-scrapemovies""")
                         End Select
                     Else
-                        logger.Warn("[CommandLine] No ScrapeType specified for -scrapemovies command")
+                        logger.Warn("[CommandLine] No ScrapeType specified for command ""-scrapemovies""")
                     End If
                 Case "-scrapetvshows"
                     If Args.Count - 1 > i AndAlso Not Args(i + 1).StartsWith("-") Then
@@ -238,91 +224,81 @@ Public Class CommandLine
                                 i = SetScraperMod(Args, i, CustomScrapeModifier)
                                 RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.NewSkip, CustomScrapeModifier}))
                             Case Else
-                                logger.Warn("[CommandLine] Invalid ScrapeType specified for -scrapemovies command")
+                                logger.Warn("[CommandLine] Invalid ScrapeType specified for command ""-scrapemovies""")
                         End Select
                     Else
-                        logger.Warn("[CommandLine] No ScrapeType specified for -scrapemovies command")
+                        logger.Warn("[CommandLine] No ScrapeType specified for command ""-scrapemovies""")
                     End If
-                Case "-export"
-                    'If Args.Count - 1 > i Then
-                    '    MoviePath = Args(i + 1).Replace("""", String.Empty)
-                    '    clExport = True
-                    'Else
-                    '    Exit For
-                    'End If
-                Case "-template"
-                    'If Args.Count - 1 > i Then
-                    '    clExportTemplate = Args(i + 1).Replace("""", String.Empty)
-                    'Else
-                    '    Exit For
-                    'End If
-                Case "-resize"
-                    'If Args.Count - 1 > i Then
-                    '    clExportResizePoster = Convert.ToUInt16(Args(i + 1).Replace("""", String.Empty))
-                    'Else
-                    '    Exit For
-                    'End If
                 Case "--verbose"
                 Case "-nowindow"
                     Master.fLoading.Hide()
-                Case "-run"
-                    'If Args.Count - 1 > i Then
-                    '    ModuleName = Args(i + 1).Replace("""", String.Empty)
-                    '    RunModule = True
-                    'Else
-                    '    Exit For
-                    'End If
                 Case "-updatemovies"
                     If Args.Count - 1 > i AndAlso Not Args(i + 1).StartsWith("-") Then
                         Dim clArg As String = Args(i + 1).Replace("""", String.Empty)
                         Dim sSource As Database.DBSource = Master.MovieSources.FirstOrDefault(Function(f) f.Name.ToLower = clArg.ToLower)
                         If sSource IsNot Nothing Then
-                            RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, _
+                            RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine,
                                                     New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.Movies = True}, sSource.ID, String.Empty}))
                             i += 1
                         Else
                             sSource = Master.MovieSources.FirstOrDefault(Function(f) f.Path.ToLower = clArg.ToLower)
                             If sSource IsNot Nothing Then
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, _
+                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine,
                                                         New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.Movies = True}, sSource.ID, String.Empty}))
                                 i += 1
                             Else
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, _
-                                                    New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.Movies = True}, String.Empty, String.Empty}))
+                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine,
+                                                    New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.Movies = True}, -1, String.Empty}))
                             End If
                         End If
                     Else
-                        RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, _
-                                                    New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.Movies = True}, String.Empty, String.Empty}))
+                        RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine,
+                                                    New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.Movies = True}, -1, String.Empty}))
                     End If
                 Case "-updatetvshows"
                     If Args.Count - 1 > i AndAlso Not Args(i + 1).StartsWith("-") Then
                         Dim clArg As String = Args(i + 1).Replace("""", String.Empty)
                         Dim sSource As Database.DBSource = Master.TVShowSources.FirstOrDefault(Function(f) f.Name.ToLower = clArg.ToLower)
                         If sSource IsNot Nothing Then
-                            RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, _
+                            RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine,
                                                     New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.TV = True}, sSource.ID, String.Empty}))
                             i += 1
                         Else
                             sSource = Master.TVShowSources.FirstOrDefault(Function(f) f.Path.ToLower = clArg.ToLower)
                             If sSource IsNot Nothing Then
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, _
+                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine,
                                                         New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.TV = True}, sSource.ID, String.Empty}))
                                 i += 1
                             Else
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, _
-                                                    New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.TV = True}, String.Empty, String.Empty}))
+                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine,
+                                                    New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.TV = True}, -1, String.Empty}))
                             End If
                         End If
                     Else
-                        RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, _
-                                                    New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.TV = True}, String.Empty, String.Empty}))
+                        RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine,
+                                                    New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.TV = True}, -1, String.Empty}))
                     End If
                 Case Else
                     logger.Warn(String.Concat("[CommandLine] Invalid command: ", Args(i)))
             End Select
         Next
     End Sub
+
+    Private Function SetModuleParameters(ByVal Args() As String, ByVal iStartPos As Integer, ByRef Parameters As List(Of Object)) As Integer
+        Dim iEndPos As Integer = iStartPos
+
+        For i As Integer = iStartPos + 1 To Args.Count - 1
+            If Not Args(i).StartsWith("-") Then
+                If Parameters Is Nothing Then Parameters = New List(Of Object)
+                Parameters.Add(Args(i))
+            Else
+                Return i - 1
+            End If
+            iEndPos = i
+        Next
+
+        Return iEndPos
+    End Function
 
     Private Function SetScraperMod(ByVal Args() As String, ByVal iStartPos As Integer, ByRef ScrapeModifier As Structures.ScrapeModifier) As Integer
         Dim iEndPos As Integer = iStartPos

@@ -371,7 +371,7 @@ Public Class BulkRenamerModule
     End Sub
 
     Private Sub Handle_ModuleEnabledChanged(ByVal State As Boolean)
-        RaiseEvent ModuleEnabledChanged(Me._Name, State, 0)
+        RaiseEvent ModuleEnabledChanged(_Name, State, 0)
     End Sub
 
     Sub Init(ByVal sAssemblyName As String, ByVal sExecutable As String) Implements Interfaces.GenericModule.Init
@@ -381,27 +381,27 @@ Public Class BulkRenamerModule
 
     Function InjectSetup() As Containers.SettingsPanel Implements Interfaces.GenericModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
-        Me._setup = New frmSettingsHolder
-        Me._setup.chkEnabled.Checked = Me._enabled
-        Me._setup.txtFolderPatternMovies.Text = MySettings.FoldersPattern_Movies
-        Me._setup.txtFolderPatternSeasons.Text = MySettings.FoldersPattern_Seasons
-        Me._setup.txtFolderPatternShows.Text = MySettings.FoldersPattern_Shows
-        Me._setup.txtFilePatternEpisodes.Text = MySettings.FilesPattern_Episodes
-        Me._setup.txtFilePatternMovies.Text = MySettings.FilesPattern_Movies
-        Me._setup.chkRenameEditMovies.Checked = MySettings.RenameEdit_Movies
-        Me._setup.chkRenameEditEpisodes.Checked = MySettings.RenameEdit_Episodes
-        Me._setup.chkRenameMultiMovies.Checked = MySettings.RenameMulti_Movies
-        Me._setup.chkRenameMultiShows.Checked = MySettings.RenameMulti_Shows
-        Me._setup.chkRenameSingleMovies.Checked = MySettings.RenameSingle_Movies
-        Me._setup.chkRenameSingleShows.Checked = MySettings.RenameSingle_Shows
-        Me._setup.chkRenameUpdateEpisodes.Checked = MySettings.RenameUpdate_Episodes
-        SPanel.Name = Me._Name
+        _setup = New frmSettingsHolder
+        _setup.chkEnabled.Checked = _enabled
+        _setup.txtFolderPatternMovies.Text = MySettings.FoldersPattern_Movies
+        _setup.txtFolderPatternSeasons.Text = MySettings.FoldersPattern_Seasons
+        _setup.txtFolderPatternShows.Text = MySettings.FoldersPattern_Shows
+        _setup.txtFilePatternEpisodes.Text = MySettings.FilesPattern_Episodes
+        _setup.txtFilePatternMovies.Text = MySettings.FilesPattern_Movies
+        _setup.chkRenameEditMovies.Checked = MySettings.RenameEdit_Movies
+        _setup.chkRenameEditEpisodes.Checked = MySettings.RenameEdit_Episodes
+        _setup.chkRenameMultiMovies.Checked = MySettings.RenameMulti_Movies
+        _setup.chkRenameMultiShows.Checked = MySettings.RenameMulti_Shows
+        _setup.chkRenameSingleMovies.Checked = MySettings.RenameSingle_Movies
+        _setup.chkRenameSingleShows.Checked = MySettings.RenameSingle_Shows
+        _setup.chkRenameUpdateEpisodes.Checked = MySettings.RenameUpdate_Episodes
+        SPanel.Name = _Name
         SPanel.Text = Master.eLang.GetString(295, "Renamer")
         SPanel.Prefix = "Renamer_"
         SPanel.Type = Master.eLang.GetString(802, "Modules")
-        SPanel.ImageIndex = If(Me._enabled, 9, 10)
+        SPanel.ImageIndex = If(_enabled, 9, 10)
         SPanel.Order = 100
-        SPanel.Panel = Me._setup.pnlSettings()
+        SPanel.Panel = _setup.pnlSettings()
         AddHandler _setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
         AddHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         Return SPanel
@@ -452,23 +452,23 @@ Public Class BulkRenamerModule
     End Sub
 
     Sub SaveSetupModule(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
-        Me.Enabled = Me._setup.chkEnabled.Checked
-        MySettings.FoldersPattern_Movies = Me._setup.txtFolderPatternMovies.Text
-        MySettings.FoldersPattern_Seasons = Me._setup.txtFolderPatternSeasons.Text
-        MySettings.FoldersPattern_Shows = Me._setup.txtFolderPatternShows.Text
-        MySettings.FilesPattern_Episodes = Me._setup.txtFilePatternEpisodes.Text
-        MySettings.FilesPattern_Movies = Me._setup.txtFilePatternMovies.Text
-        MySettings.RenameEdit_Movies = Me._setup.chkRenameEditMovies.Checked
-        MySettings.RenameEdit_Episodes = Me._setup.chkRenameEditEpisodes.Checked
-        MySettings.RenameMulti_Movies = Me._setup.chkRenameMultiMovies.Checked
-        MySettings.RenameMulti_Shows = Me._setup.chkRenameMultiShows.Checked
-        MySettings.RenameSingle_Movies = Me._setup.chkRenameSingleMovies.Checked
-        MySettings.RenameSingle_Shows = Me._setup.chkRenameSingleShows.Checked
-        MySettings.RenameUpdate_Episodes = Me._setup.chkRenameUpdateEpisodes.Checked
+        Enabled = _setup.chkEnabled.Checked
+        MySettings.FoldersPattern_Movies = _setup.txtFolderPatternMovies.Text
+        MySettings.FoldersPattern_Seasons = _setup.txtFolderPatternSeasons.Text
+        MySettings.FoldersPattern_Shows = _setup.txtFolderPatternShows.Text
+        MySettings.FilesPattern_Episodes = _setup.txtFilePatternEpisodes.Text
+        MySettings.FilesPattern_Movies = _setup.txtFilePatternMovies.Text
+        MySettings.RenameEdit_Movies = _setup.chkRenameEditMovies.Checked
+        MySettings.RenameEdit_Episodes = _setup.chkRenameEditEpisodes.Checked
+        MySettings.RenameMulti_Movies = _setup.chkRenameMultiMovies.Checked
+        MySettings.RenameMulti_Shows = _setup.chkRenameMultiShows.Checked
+        MySettings.RenameSingle_Movies = _setup.chkRenameSingleMovies.Checked
+        MySettings.RenameSingle_Shows = _setup.chkRenameSingleShows.Checked
+        MySettings.RenameUpdate_Episodes = _setup.chkRenameUpdateEpisodes.Checked
         SaveSettings()
         If DoDispose Then
-            RemoveHandler Me._setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
-            RemoveHandler Me._setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+            RemoveHandler _setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
+            RemoveHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
             _setup.Dispose()
         End If
     End Sub

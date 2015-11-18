@@ -1937,34 +1937,34 @@ Public Class FileFolderRenamer
 
         Public Property Aired() As String
             Get
-                Return Me._aired
+                Return _aired
             End Get
             Set(ByVal value As String)
-                Me._aired = value
+                _aired = value
             End Set
         End Property
 
         Public Property AudioChannels() As String
             Get
-                Return Me._audiochannels
+                Return _audiochannels
             End Get
             Set(ByVal value As String)
-                Me._audiochannels = value
+                _audiochannels = value
             End Set
         End Property
 
         Public Property AudioCodec() As String
             Get
-                Return Me._audiocodec
+                Return _audiocodec
             End Get
             Set(ByVal value As String)
-                Me._audiocodec = value
+                _audiocodec = value
             End Set
         End Property
 
         Public Property BasePath() As String
             Get
-                Return Me._basePath
+                Return _basePath
             End Get
             Set(ByVal value As String)
                 _basePath = value
@@ -1973,7 +1973,7 @@ Public Class FileFolderRenamer
 
         Public Property Collection() As String
             Get
-                Return Me._collection
+                Return _collection
             End Get
             Set(ByVal value As String)
                 _collection = value
@@ -1982,52 +1982,52 @@ Public Class FileFolderRenamer
 
         Public Property DirExist() As Boolean
             Get
-                Return Me._dirExist
+                Return _dirExist
             End Get
             Set(ByVal value As Boolean)
-                Me._dirExist = value
+                _dirExist = value
             End Set
         End Property
 
         Public Property Extension() As String
             Get
-                Return Me._extension
+                Return _extension
             End Get
             Set(ByVal value As String)
-                Me._extension = value.Trim
+                _extension = value.Trim
             End Set
         End Property
 
         Public Property FileExist() As Boolean
             Get
-                Return Me._fileExist
+                Return _fileExist
             End Get
             Set(ByVal value As Boolean)
-                Me._fileExist = value
+                _fileExist = value
             End Set
         End Property
 
         Public Property FileName() As String
             Get
-                Return Me._fileName
+                Return _fileName
             End Get
             Set(ByVal value As String)
-                Me._fileName = value.Trim
+                _fileName = value.Trim
             End Set
         End Property
 
         Public Property ID() As Integer
             Get
-                Return Me._id
+                Return _id
             End Get
             Set(ByVal value As Integer)
-                Me._id = value
+                _id = value
             End Set
         End Property
 
         Public Property IsBDMV() As Boolean
             Get
-                Return Me._isbdmv
+                Return _isbdmv
             End Get
             Set(ByVal value As Boolean)
                 _isbdmv = value
@@ -2036,43 +2036,43 @@ Public Class FileFolderRenamer
 
         Public Property IsLocked() As Boolean
             Get
-                Return Me._islocked
+                Return _islocked
             End Get
             Set(ByVal value As Boolean)
-                Me._islocked = value
+                _islocked = value
             End Set
         End Property
 
         Public Property IsMultiEpisode() As Boolean
             Get
-                Return Me._ismultiepisode
+                Return _ismultiepisode
             End Get
             Set(ByVal value As Boolean)
-                Me._ismultiepisode = value
+                _ismultiepisode = value
             End Set
         End Property
 
         Public Property IsRenamed() As Boolean
             Get
-                Return Me._isRenamed
+                Return _isRenamed
             End Get
             Set(ByVal value As Boolean)
-                Me._isRenamed = value
+                _isRenamed = value
             End Set
         End Property
 
         Public Property IsSingle() As Boolean
             Get
-                Return Me._isSingle
+                Return _isSingle
             End Get
             Set(ByVal value As Boolean)
-                Me._isSingle = value
+                _isSingle = value
             End Set
         End Property
 
         Public Property IsVideo_TS() As Boolean
             Get
-                Return Me._isvideo_ts
+                Return _isvideo_ts
             End Get
             Set(ByVal value As Boolean)
                 _isvideo_ts = value
@@ -2081,235 +2081,235 @@ Public Class FileFolderRenamer
 
         Public Property ListTitle() As String
             Get
-                Return Me._listtitle
+                Return _listtitle
             End Get
             Set(ByVal value As String)
-                Me._listtitle = value.Trim
+                _listtitle = value.Trim
             End Set
         End Property
 
         Public Property MPAA() As String
             Get
-                Return Me._mpaa
+                Return _mpaa
             End Get
             Set(ByVal value As String)
-                Me._mpaa = value
+                _mpaa = value
             End Set
         End Property
 
         Public Property MultiViewCount() As String
             Get
-                Return Me._multiviewcount
+                Return _multiviewcount
             End Get
             Set(ByVal value As String)
-                Me._multiviewcount = value
+                _multiviewcount = value
             End Set
         End Property
 
         Public Property MultiViewLayout() As String
             Get
-                Return Me._multiviewlayout
+                Return _multiviewlayout
             End Get
             Set(ByVal value As String)
-                Me._multiviewlayout = value
+                _multiviewlayout = value
             End Set
         End Property
 
         Public Property NewFileName() As String
             Get
-                Return Me._newFileName
+                Return _newFileName
             End Get
             Set(ByVal value As String)
-                Me._newFileName = value.Trim
+                _newFileName = value.Trim
             End Set
         End Property
 
         Public Property NewPath() As String
             Get
-                Return Me._newPath
+                Return _newPath
             End Get
             Set(ByVal value As String)
-                Me._newPath = value.Trim
+                _newPath = value.Trim
             End Set
         End Property
 
         Public Property OldPath() As String
             Get
-                Return Me._oldpath
+                Return _oldpath
             End Get
             Set(ByVal value As String)
-                Me._oldpath = value.Trim
+                _oldpath = value.Trim
             End Set
         End Property
 
         Public Property OriginalTitle() As String
             Get
-                Return Me._originalTitle
+                Return _originalTitle
             End Get
             Set(ByVal value As String)
-                Me._originalTitle = value.Trim
+                _originalTitle = value.Trim
             End Set
         End Property
 
         Public Property Parent() As String
             Get
-                Return Me._parent
+                Return _parent
             End Get
             Set(ByVal value As String)
-                Me._parent = value.Trim
+                _parent = value.Trim
             End Set
         End Property
 
         Public Property Path() As String
             Get
-                Return Me._path
+                Return _path
             End Get
             Set(ByVal value As String)
-                Me._path = value.Trim
+                _path = value.Trim
             End Set
         End Property
 
         Public Property Rating() As String
             Get
-                Return Me._rating
+                Return _rating
             End Get
             Set(ByVal value As String)
-                Me._rating = value
+                _rating = value
             End Set
         End Property
 
         Public Property Resolution() As String
             Get
-                Return Me._resolution
+                Return _resolution
             End Get
             Set(ByVal value As String)
-                Me._resolution = value
+                _resolution = value
             End Set
         End Property
 
         Public Property Country() As String
             Get
-                Return Me._country
+                Return _country
             End Get
             Set(ByVal value As String)
-                Me._country = value.Trim
+                _country = value.Trim
             End Set
         End Property
 
         Public Property Title() As String
             Get
-                Return Me._title
+                Return _title
             End Get
             Set(ByVal value As String)
-                Me._title = value.Trim
+                _title = value.Trim
             End Set
         End Property
 
         Public Property TVDBID() As String
             Get
-                Return Me._tvdbid
+                Return _tvdbid
             End Get
             Set(ByVal value As String)
-                Me._tvdbid = value.Trim
+                _tvdbid = value.Trim
             End Set
         End Property
 
         Public Property SeasonsEpisodes() As List(Of SeasonsEpisodes)
             Get
-                Return Me._seasonsepisodes
+                Return _seasonsepisodes
             End Get
             Set(ByVal value As List(Of SeasonsEpisodes))
-                Me._seasonsepisodes = value
+                _seasonsepisodes = value
             End Set
         End Property
 
         Public Property ShowPath() As String
             Get
-                Return Me._showpath
+                Return _showpath
             End Get
             Set(ByVal value As String)
-                Me._showpath = value.Trim
+                _showpath = value.Trim
             End Set
         End Property
 
         Public Property ShowTitle() As String
             Get
-                Return Me._showtitle
+                Return _showtitle
             End Get
             Set(ByVal value As String)
-                Me._showtitle = value.Trim
+                _showtitle = value.Trim
             End Set
         End Property
 
         Public Property SortTitle() As String
             Get
-                Return Me._sorttitle
+                Return _sorttitle
             End Get
             Set(ByVal value As String)
-                Me._sorttitle = value.Trim
+                _sorttitle = value.Trim
             End Set
         End Property
 
         Public Property Status() As String
             Get
-                Return Me._status
+                Return _status
             End Get
             Set(ByVal value As String)
-                Me._status = value.Trim
+                _status = value.Trim
             End Set
         End Property
 
         Public Property VideoCodec() As String
             Get
-                Return Me._videocodec
+                Return _videocodec
             End Get
             Set(ByVal value As String)
-                Me._videocodec = value
+                _videocodec = value
             End Set
         End Property
 
         Public Property Year() As String
             Get
-                Return Me._year
+                Return _year
             End Get
             Set(ByVal value As String)
-                Me._year = value
+                _year = value
             End Set
         End Property
 
         Public Property IMDBID() As String
             Get
-                Return Me._imdbid
+                Return _imdbid
             End Get
             Set(ByVal value As String)
-                Me._imdbid = value.Trim
+                _imdbid = value.Trim
             End Set
         End Property
 
         Public Property Genre() As String
             Get
-                Return Me._genre
+                Return _genre
             End Get
             Set(ByVal value As String)
-                Me._genre = value.Trim
+                _genre = value.Trim
             End Set
         End Property
 
         Public Property Director() As String
             Get
-                Return Me._director
+                Return _director
             End Get
             Set(ByVal value As String)
-                Me._director = value.Trim
+                _director = value.Trim
             End Set
         End Property
 
         Public Property VideoSource() As String
             Get
-                Return Me._videosource
+                Return _videosource
             End Get
             Set(ByVal value As String)
-                Me._videosource = value.Trim
+                _videosource = value.Trim
             End Set
         End Property
 
@@ -2383,19 +2383,19 @@ Public Class FileFolderRenamer
 
         Public Property Season() As Integer
             Get
-                Return Me._season
+                Return _season
             End Get
             Set(ByVal value As Integer)
-                Me._season = value
+                _season = value
             End Set
         End Property
 
         Public Property Episodes() As List(Of Episode)
             Get
-                Return Me._episodes
+                Return _episodes
             End Get
             Set(ByVal value As List(Of Episode))
-                Me._episodes = value
+                _episodes = value
             End Set
         End Property
 
@@ -2433,37 +2433,37 @@ Public Class FileFolderRenamer
 
         Public Property ID() As Integer
             Get
-                Return Me._id
+                Return _id
             End Get
             Set(ByVal value As Integer)
-                Me._id = value
+                _id = value
             End Set
         End Property
 
         Public Property Episode() As Integer
             Get
-                Return Me._episode
+                Return _episode
             End Get
             Set(ByVal value As Integer)
-                Me._episode = value
+                _episode = value
             End Set
         End Property
 
         Public Property SubEpisode() As Integer
             Get
-                Return Me._subepisode
+                Return _subepisode
             End Get
             Set(ByVal value As Integer)
-                Me._subepisode = value
+                _subepisode = value
             End Set
         End Property
 
         Public Property Title() As String
             Get
-                Return Me._title
+                Return _title
             End Get
             Set(ByVal value As String)
-                Me._title = value
+                _title = value
             End Set
         End Property
 
@@ -2486,7 +2486,7 @@ Public Class FileFolderRenamer
         End Sub
 
         Public Function CompareTo(ByVal obj As Episode) As Integer Implements System.IComparable(Of Episode).CompareTo
-            Dim c1 As Integer = Me.Episode.CompareTo(obj.Episode)
+            Dim c1 As Integer = Episode.CompareTo(obj.Episode)
             If c1 <> 0 Then Return c1
         End Function
 

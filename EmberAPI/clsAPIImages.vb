@@ -417,7 +417,11 @@ Public Class Images
     Public Function SaveAsMovieBanner(ByVal mMovie As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
-        Dim doResize As Boolean = Master.eSettings.MovieBannerResize AndAlso (_image.Width > Master.eSettings.MovieBannerWidth OrElse _image.Height > Master.eSettings.MovieBannerHeight)
+        Dim doResize As Boolean = False
+        If Master.eSettings.MovieBannerResize Then
+            If _image Is Nothing Then FromMemoryStream()
+            doResize = _image.Width > Master.eSettings.MovieBannerWidth OrElse _image.Height > Master.eSettings.MovieBannerHeight
+        End If
 
         Try
             If doResize Then
@@ -529,7 +533,11 @@ Public Class Images
 
         If String.IsNullOrEmpty(mMovie.Filename) Then Return efPath
 
-        Dim doResize As Boolean = Master.eSettings.MovieExtrafanartsResize AndAlso (_image.Width > Master.eSettings.MovieExtrafanartsWidth OrElse _image.Height > Master.eSettings.MovieExtrafanartsHeight)
+        Dim doResize As Boolean = False
+        If Master.eSettings.MovieExtrafanartsResize Then
+            If _image Is Nothing Then FromMemoryStream()
+            doResize = _image.Width > Master.eSettings.MovieExtrafanartsWidth OrElse _image.Height > Master.eSettings.MovieExtrafanartsHeight
+        End If
 
         Try
             If doResize Then
@@ -595,7 +603,11 @@ Public Class Images
 
         If String.IsNullOrEmpty(mMovie.Filename) Then Return etPath
 
-        Dim doResize As Boolean = Master.eSettings.MovieExtrathumbsResize AndAlso (_image.Width > Master.eSettings.MovieExtrathumbsWidth OrElse _image.Height > Master.eSettings.MovieExtrathumbsHeight)
+        Dim doResize As Boolean = False
+        If Master.eSettings.MovieExtrathumbsResize Then
+            If _image Is Nothing Then FromMemoryStream()
+            doResize = _image.Width > Master.eSettings.MovieExtrathumbsWidth OrElse _image.Height > Master.eSettings.MovieExtrathumbsHeight
+        End If
 
         Try
             If doResize Then
@@ -630,7 +642,11 @@ Public Class Images
     Public Function SaveAsMovieFanart(ByVal mMovie As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
-        Dim doResize As Boolean = Master.eSettings.MovieFanartResize AndAlso (_image.Width > Master.eSettings.MovieFanartWidth OrElse _image.Height > Master.eSettings.MovieFanartHeight)
+        Dim doResize As Boolean = False
+        If Master.eSettings.MovieFanartResize Then
+            If _image Is Nothing Then FromMemoryStream()
+            doResize = _image.Width > Master.eSettings.MovieFanartWidth OrElse _image.Height > Master.eSettings.MovieFanartHeight
+        End If
 
         Try
             If doResize Then
@@ -682,7 +698,11 @@ Public Class Images
     Public Function SaveAsMoviePoster(ByVal mMovie As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
-        Dim doResize As Boolean = Master.eSettings.MoviePosterResize AndAlso (_image.Width > Master.eSettings.MoviePosterWidth OrElse _image.Height > Master.eSettings.MoviePosterHeight)
+        Dim doResize As Boolean = False
+        If Master.eSettings.MoviePosterResize Then
+            If _image Is Nothing Then FromMemoryStream()
+            doResize = _image.Width > Master.eSettings.MoviePosterWidth OrElse _image.Height > Master.eSettings.MoviePosterHeight
+        End If
 
         Try
             If doResize Then
@@ -709,7 +729,11 @@ Public Class Images
     Public Function SaveAsMovieSetBanner(ByVal mMovieSet As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
-        Dim doResize As Boolean = Master.eSettings.MovieSetBannerResize AndAlso (_image.Width > Master.eSettings.MovieSetBannerWidth OrElse _image.Height > Master.eSettings.MovieSetBannerHeight)
+        Dim doResize As Boolean = False
+        If Master.eSettings.MovieSetBannerResize Then
+            If _image Is Nothing Then FromMemoryStream()
+            doResize = _image.Width > Master.eSettings.MovieSetBannerWidth OrElse _image.Height > Master.eSettings.MovieSetBannerHeight
+        End If
 
         Try
             If doResize Then
@@ -793,7 +817,11 @@ Public Class Images
     Public Function SaveAsMovieSetFanart(ByVal mMovieSet As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
-        Dim doResize As Boolean = Master.eSettings.MovieSetFanartResize AndAlso (_image.Width > Master.eSettings.MovieSetFanartWidth OrElse _image.Height > Master.eSettings.MovieSetFanartHeight)
+        Dim doResize As Boolean = False
+        If Master.eSettings.MovieSetFanartResize Then
+            If _image Is Nothing Then FromMemoryStream()
+            doResize = _image.Width > Master.eSettings.MovieSetFanartWidth OrElse _image.Height > Master.eSettings.MovieSetFanartHeight
+        End If
 
         Try
             If doResize Then
@@ -839,7 +867,11 @@ Public Class Images
     Public Function SaveAsMovieSetPoster(ByVal mMovieSet As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
-        Dim doResize As Boolean = Master.eSettings.MovieSetPosterResize AndAlso (_image.Width > Master.eSettings.MovieSetPosterWidth OrElse _image.Height > Master.eSettings.MovieSetPosterHeight)
+        Dim doResize As Boolean = False
+        If Master.eSettings.MovieSetPosterResize Then
+            If _image Is Nothing Then FromMemoryStream()
+            doResize = _image.Width > Master.eSettings.MovieSetPosterWidth OrElse _image.Height > Master.eSettings.MovieSetPosterHeight
+        End If
 
         Try
             If doResize Then
@@ -866,7 +898,11 @@ Public Class Images
     Public Function SaveAsTVAllSeasonsBanner(ByVal mShow As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
-        Dim doResize As Boolean = Master.eSettings.TVAllSeasonsBannerResize AndAlso (_image.Width > Master.eSettings.TVAllSeasonsBannerWidth OrElse _image.Height > Master.eSettings.TVAllSeasonsBannerHeight)
+        Dim doResize As Boolean = False
+        If Master.eSettings.TVAllSeasonsBannerResize Then
+            If _image Is Nothing Then FromMemoryStream()
+            doResize = _image.Width > Master.eSettings.TVAllSeasonsBannerWidth OrElse _image.Height > Master.eSettings.TVAllSeasonsBannerHeight
+        End If
 
         Try
             If doResize Then
@@ -894,7 +930,11 @@ Public Class Images
     Public Function SaveAsTVAllSeasonsFanart(ByVal mShow As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
-        Dim doResize As Boolean = Master.eSettings.TVAllSeasonsFanartResize AndAlso (_image.Width > Master.eSettings.TVAllSeasonsFanartWidth OrElse _image.Height > Master.eSettings.TVAllSeasonsFanartHeight)
+        Dim doResize As Boolean = False
+        If Master.eSettings.TVAllSeasonsFanartResize Then
+            If _image Is Nothing Then FromMemoryStream()
+            doResize = _image.Width > Master.eSettings.TVAllSeasonsFanartWidth OrElse _image.Height > Master.eSettings.TVAllSeasonsFanartHeight
+        End If
 
         Try
             If doResize Then
@@ -942,7 +982,11 @@ Public Class Images
     Public Function SaveAsTVAllSeasonsPoster(ByVal mShow As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
-        Dim doResize As Boolean = Master.eSettings.TVAllSeasonsPosterResize AndAlso (_image.Width > Master.eSettings.TVAllSeasonsPosterWidth OrElse _image.Height > Master.eSettings.TVAllSeasonsPosterHeight)
+        Dim doResize As Boolean = False
+        If Master.eSettings.TVAllSeasonsPosterResize Then
+            If _image Is Nothing Then FromMemoryStream()
+            doResize = _image.Width > Master.eSettings.TVAllSeasonsPosterWidth OrElse _image.Height > Master.eSettings.TVAllSeasonsPosterHeight
+        End If
 
         Try
             If doResize Then
@@ -1006,7 +1050,11 @@ Public Class Images
 
         Dim strReturn As String = String.Empty
 
-        Dim doResize As Boolean = Master.eSettings.TVEpisodeFanartResize AndAlso (_image.Width > Master.eSettings.TVEpisodeFanartWidth OrElse _image.Height > Master.eSettings.TVEpisodeFanartHeight)
+        Dim doResize As Boolean = False
+        If Master.eSettings.TVEpisodeFanartResize Then
+            If _image Is Nothing Then FromMemoryStream()
+            doResize = _image.Width > Master.eSettings.TVEpisodeFanartWidth OrElse _image.Height > Master.eSettings.TVEpisodeFanartHeight
+        End If
 
         Try
             If doResize Then
@@ -1035,7 +1083,11 @@ Public Class Images
 
         Dim strReturn As String = String.Empty
 
-        Dim doResize As Boolean = Master.eSettings.TVEpisodePosterResize AndAlso (_image.Width > Master.eSettings.TVEpisodePosterWidth OrElse _image.Height > Master.eSettings.TVEpisodePosterHeight)
+        Dim doResize As Boolean = False
+        If Master.eSettings.TVEpisodePosterResize Then
+            If _image Is Nothing Then FromMemoryStream()
+            doResize = _image.Width > Master.eSettings.TVEpisodePosterWidth OrElse _image.Height > Master.eSettings.TVEpisodePosterHeight
+        End If
 
         Try
             If doResize Then
@@ -1062,7 +1114,11 @@ Public Class Images
     Public Function SaveAsTVSeasonBanner(ByVal mSeason As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
-        Dim doResize As Boolean = Master.eSettings.TVSeasonBannerResize AndAlso (_image.Width > Master.eSettings.TVSeasonBannerWidth OrElse _image.Height > Master.eSettings.TVSeasonBannerHeight)
+        Dim doResize As Boolean = False
+        If Master.eSettings.TVSeasonBannerResize Then
+            If _image Is Nothing Then FromMemoryStream()
+            doResize = _image.Width > Master.eSettings.TVSeasonBannerWidth OrElse _image.Height > Master.eSettings.TVSeasonBannerHeight
+        End If
 
         Try
             If doResize Then
@@ -1089,7 +1145,11 @@ Public Class Images
     Public Function SaveAsTVSeasonFanart(ByVal mSeason As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
-        Dim doResize As Boolean = Master.eSettings.TVSeasonFanartResize AndAlso (_image.Width > Master.eSettings.TVSeasonFanartWidth OrElse _image.Height > Master.eSettings.TVSeasonFanartHeight)
+        Dim doResize As Boolean = False
+        If Master.eSettings.TVSeasonFanartResize Then
+            If _image Is Nothing Then FromMemoryStream()
+            doResize = _image.Width > Master.eSettings.TVSeasonFanartWidth OrElse _image.Height > Master.eSettings.TVSeasonFanartHeight
+        End If
 
         Try
             If doResize Then
@@ -1135,7 +1195,11 @@ Public Class Images
     Public Function SaveAsTVSeasonPoster(ByVal mSeason As Database.DBElement) As String
         Dim strReturn As String = String.Empty
 
-        Dim doResize As Boolean = Master.eSettings.TVSeasonPosterResize AndAlso (_image.Width > Master.eSettings.TVSeasonPosterWidth OrElse _image.Height > Master.eSettings.TVSeasonPosterHeight)
+        Dim doResize As Boolean = False
+        If Master.eSettings.TVSeasonPosterResize Then
+            If _image Is Nothing Then FromMemoryStream()
+            doResize = _image.Width > Master.eSettings.TVSeasonPosterWidth OrElse _image.Height > Master.eSettings.TVSeasonPosterHeight
+        End If
 
         Try
             If doResize Then
@@ -1198,7 +1262,11 @@ Public Class Images
 
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return strReturn
 
-        Dim doResize As Boolean = Master.eSettings.TVShowBannerResize AndAlso (_image.Width > Master.eSettings.TVShowBannerWidth OrElse _image.Height > Master.eSettings.TVShowBannerHeight)
+        Dim doResize As Boolean = False
+        If Master.eSettings.TVShowBannerResize Then
+            If _image Is Nothing Then FromMemoryStream()
+            doResize = _image.Width > Master.eSettings.TVShowBannerWidth OrElse _image.Height > Master.eSettings.TVShowBannerHeight
+        End If
 
         Try
             If doResize Then
@@ -1313,7 +1381,11 @@ Public Class Images
 
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return efPath
 
-        Dim doResize As Boolean = Master.eSettings.TVShowExtrafanartsResize AndAlso (_image.Width > Master.eSettings.TVShowExtrafanartsWidth OrElse _image.Height > Master.eSettings.TVShowExtrafanartsHeight)
+        Dim doResize As Boolean = False
+        If Master.eSettings.TVShowExtrafanartsResize Then
+            If _image Is Nothing Then FromMemoryStream()
+            doResize = _image.Width > Master.eSettings.TVShowExtrafanartsWidth OrElse _image.Height > Master.eSettings.TVShowExtrafanartsHeight
+        End If
 
         Try
             If doResize Then
@@ -1353,7 +1425,11 @@ Public Class Images
 
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return strReturn
 
-        Dim doResize As Boolean = Master.eSettings.TVShowFanartResize AndAlso (_image.Width > Master.eSettings.TVShowFanartWidth OrElse _image.Height > Master.eSettings.TVShowFanartHeight)
+        Dim doResize As Boolean = False
+        If Master.eSettings.TVShowFanartResize Then
+            If _image Is Nothing Then FromMemoryStream()
+            doResize = _image.Width > Master.eSettings.TVShowFanartWidth OrElse _image.Height > Master.eSettings.TVShowFanartHeight
+        End If
 
         Try
             If doResize Then
@@ -1403,7 +1479,11 @@ Public Class Images
 
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return strReturn
 
-        Dim doResize As Boolean = Master.eSettings.TVShowPosterResize AndAlso (_image.Width > Master.eSettings.TVShowPosterWidth OrElse _image.Height > Master.eSettings.TVShowPosterHeight)
+        Dim doResize As Boolean = False
+        If Master.eSettings.TVShowPosterResize Then
+            If _image Is Nothing Then FromMemoryStream()
+            doResize = _image.Width > Master.eSettings.TVShowPosterWidth OrElse _image.Height > Master.eSettings.TVShowPosterHeight
+        End If
 
         Try
             If doResize Then

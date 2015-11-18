@@ -379,7 +379,7 @@ Public Class dlgNMTMovies
 
     Private Sub BuildTVHTML(ByVal template As String, ByVal outputbase As String)
         Try
-            bwBuildHTML.ReportProgress(0, Master.eLang.GetString(277, "Compiling TV Shows List..."))
+            bwBuildHTML.ReportProgress(0, Master.eLang.GetString(277, "Compiling TV Show List..."))
             Dim destPathShort As String = Path.Combine(outputbase, GetUserParam("TVDetailsPath", "html/").Replace("/", Path.DirectorySeparatorChar))
             HTMLTVBody.Length = 0
             Dim sBasePath As String = Path.Combine(Path.Combine(Functions.AppPath, "Modules"), Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetExecutingAssembly.Location))

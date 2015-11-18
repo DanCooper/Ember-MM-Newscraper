@@ -270,23 +270,23 @@ Public Class frmSettingsHolder
     End Sub
 
     Private Sub btnFilePatternEpisodesReset_Click(sender As Object, e As EventArgs) Handles btnFilePatternEpisodesReset.Click
-        Me.txtFilePatternEpisodes.Text = "$Z - $W2_S?2E?{ - $T}"
+        txtFilePatternEpisodes.Text = "$Z - $W2_S?2E?{ - $T}"
     End Sub
 
     Private Sub btnFilePatternMoviesReset_Click(sender As Object, e As EventArgs) Handles btnFilePatternMoviesReset.Click
-        Me.txtFilePatternMovies.Text = "$T{.$S}"
+        txtFilePatternMovies.Text = "$T{.$S}"
     End Sub
 
     Private Sub btnFolderPatternMoviesReset_Click(sender As Object, e As EventArgs) Handles btnFolderPatternMoviesReset.Click
-        Me.txtFolderPatternMovies.Text = "$T {($Y)}"
+        txtFolderPatternMovies.Text = "$T {($Y)}"
     End Sub
 
     Private Sub btnFolderPatternSeasonsReset_Click(sender As Object, e As EventArgs) Handles btnFolderPatternSeasonsReset.Click
-        Me.txtFolderPatternSeasons.Text = "Season $K2_?"
+        txtFolderPatternSeasons.Text = "Season $K2_?"
     End Sub
 
     Private Sub btnFolderPatternShowsReset_Click(sender As Object, e As EventArgs) Handles btnFolderPatternShowsReset.Click
-        Me.txtFolderPatternShows.Text = "$Z"
+        txtFolderPatternShows.Text = "$Z"
     End Sub
 
     Private Sub chkEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnabled.CheckedChanged
@@ -322,18 +322,18 @@ Public Class frmSettingsHolder
     End Sub
 
     Sub SetUp()
-        Me.chkRenameEditMovies.Text = Master.eLang.GetString(466, "Automatically Rename Files After Edit")
-        Me.chkRenameEditEpisodes.Text = Master.eLang.GetString(467, "Automatically Rename Files After Edit Episodes")
-        Me.chkRenameMultiMovies.Text = Master.eLang.GetString(281, "Automatically Rename Files During Multi-Scraper")
-        Me.chkRenameSingleMovies.Text = Master.eLang.GetString(282, "Automatically Rename Files During Single-Scraper")
-        Me.chkRenameUpdateEpisodes.Text = Master.eLang.GetString(468, "Automatically Rename Files After DB Update")
-        Me.gbRenamerPatternsMovie.Text = Master.eLang.GetString(285, "Default Movie Renaming Patterns")
-        Me.gbRenamerPatternsTV.Text = Master.eLang.GetString(470, "Default TV Renaming Patterns")
-        Me.lblFilePatternEpisodes.Text = Master.eLang.GetString(469, "Episode Files Pattern")
-        Me.lblFilePatternMovies.Text = Master.eLang.GetString(286, "Files Pattern")
-        Me.lblFolderPatternMovies.Text = Master.eLang.GetString(287, "Folders Pattern")
-        Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        Me.lblTips.Text = String.Format(Master.eLang.GetString(262, "$1 = First Letter of the Title{0}$2 = Aired date (episodes only){0}$A = Audio Channels{0}$B = Base Path{0}$C = Director{0}$D = Directory{0}$E = Sort Title{0}$F = File Name{0}$G = Genre (Follow with a space, dot or hyphen to change separator){0}$H = Video Codec{0}$I = IMDB ID{0}$J = Audio Codec{0}$K#.S? = #Padding (0-9), Season Separator (. or _ or x), Season Prefix{0}$L = List Title{0}$M = MPAA{0}$N = Collection Name{0}$O = OriginalTitle{0}$OO = OriginalTitle if different from Title{0}$P = Rating{0}$Q#.E? = #Padding (0-9), Episode Separator (. or _ or x), Episode Prefix{0}$R = Resolution{0}$S = Video Source{0}$T = Title{0}$U = Country (Follow with a space, dot or hyphen to change separator){0}$V = 3D (If Multiview > 1){0}$W#.S?#.E? = #Padding (0-9), Seasons Separator (. or _), Season Prefix, #Padding (0-9), Episode Separator (. or _ or x), Episode Prefix{0}$Y = Year{0}$X. (Replace Space with .){0}$Z = Show Title{0}{{}} = Optional{0}$?aaa?bbb? = Replace aaa with bbb{0}$! = Uppercase first letter in each word{0}$; = Lowercase all letters{0}$- = Remove previous char if next pattern does not have a value{0}$+ = Remove next char if previous pattern does not have a value{0}$^ = Remove previous and next char if next pattern does not have a value"), Environment.NewLine)
+        chkRenameEditMovies.Text = Master.eLang.GetString(466, "Automatically Rename Files After Edit")
+        chkRenameEditEpisodes.Text = Master.eLang.GetString(467, "Automatically Rename Files After Edit Episodes")
+        chkRenameMultiMovies.Text = Master.eLang.GetString(281, "Automatically Rename Files During Multi-Scraper")
+        chkRenameSingleMovies.Text = Master.eLang.GetString(282, "Automatically Rename Files During Single-Scraper")
+        chkRenameUpdateEpisodes.Text = Master.eLang.GetString(468, "Automatically Rename Files After DB Update")
+        gbRenamerPatternsMovie.Text = Master.eLang.GetString(285, "Default Movie Renaming Patterns")
+        gbRenamerPatternsTV.Text = Master.eLang.GetString(470, "Default TV Renaming Patterns")
+        lblFilePatternEpisodes.Text = Master.eLang.GetString(469, "Episode Files Pattern")
+        lblFilePatternMovies.Text = Master.eLang.GetString(286, "Files Pattern")
+        lblFolderPatternMovies.Text = Master.eLang.GetString(287, "Folders Pattern")
+        chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
+        lblTips.Text = String.Format(Master.eLang.GetString(262, "$1 = First Letter of the Title{0}$2 = Aired date (episodes only){0}$A = Audio Channels{0}$B = Base Path{0}$C = Director{0}$D = Directory{0}$E = Sort Title{0}$F = File Name{0}$G = Genre (Follow with a space, dot or hyphen to change separator){0}$H = Video Codec{0}$I = IMDB ID{0}$J = Audio Codec{0}$K#.S? = #Padding (0-9), Season Separator (. or _ or x), Season Prefix{0}$L = List Title{0}$M = MPAA{0}$N = Collection Name{0}$O = OriginalTitle{0}$OO = OriginalTitle if different from Title{0}$P = Rating{0}$Q#.E? = #Padding (0-9), Episode Separator (. or _ or x), Episode Prefix{0}$R = Resolution{0}$S = Video Source{0}$T = Title{0}$U = Country (Follow with a space, dot or hyphen to change separator){0}$V = 3D (If Multiview > 1){0}$W#.S?#.E? = #Padding (0-9), Seasons Separator (. or _), Season Prefix, #Padding (0-9), Episode Separator (. or _ or x), Episode Prefix{0}$Y = Year{0}$X. (Replace Space with .){0}$Z = Show Title{0}{{}} = Optional{0}$?aaa?bbb? = Replace aaa with bbb{0}$! = Uppercase first letter in each word{0}$; = Lowercase all letters{0}$- = Remove previous char if next pattern does not have a value{0}$+ = Remove next char if previous pattern does not have a value{0}$^ = Remove previous and next char if next pattern does not have a value"), Environment.NewLine)
     End Sub
 
     Private Sub txtFilePatternMovies_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFilePatternMovies.TextChanged
@@ -369,8 +369,8 @@ Public Class frmSettingsHolder
 
     Public Sub New()
         InitializeComponent()
-        Me.SetUp()
-        Me.CreateDummies()
+        SetUp()
+        CreateDummies()
     End Sub
 
 #End Region 'Methods

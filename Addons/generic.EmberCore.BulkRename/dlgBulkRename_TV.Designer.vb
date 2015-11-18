@@ -260,7 +260,7 @@ Partial Class dlgBulkRenamer_TV
         Me.lblCompiling.Name = "lblCompiling"
         Me.lblCompiling.Size = New System.Drawing.Size(186, 20)
         Me.lblCompiling.TabIndex = 0
-        Me.lblCompiling.Text = "Compiling Tv Shows List..."
+        Me.lblCompiling.Text = "Compiling Tv Show List..."
         Me.lblCompiling.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.lblCompiling.Visible = False
         '

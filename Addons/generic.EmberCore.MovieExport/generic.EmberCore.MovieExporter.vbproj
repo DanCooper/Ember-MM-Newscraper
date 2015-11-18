@@ -145,6 +145,7 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="clsAPIMediaExporter.vb" />
     <Compile Include="dlgExportMovies.designer.vb">
       <DependentUpon>dlgExportMovies.vb</DependentUpon>
     </Compile>
@@ -228,6 +229,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\icon.png" />
     <Content Include="x64\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

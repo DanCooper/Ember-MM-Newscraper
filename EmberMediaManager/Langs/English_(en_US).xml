@@ -275,7 +275,7 @@
   <string id="274">TV Bulk Renamer</string>
   <string id="275">Rename TV Shows and files</string>
   <string id="276">Apply</string>
-  <string id="277">Compiling TV Shows List...</string>
+  <string id="277">Compiling TV Show List...</string>
   <string id="278">Year</string>
   <string id="279">Folder Pattern</string>
   <string id="280">Display Only TV Shows That Will Be Renamed</string>
@@ -1071,8 +1071,8 @@
   <string id="979">Description</string>
   <string id="980">Not Watched</string>
   <string id="981">Watched</string>
-  <string id="982"></string>
-  <string id="983"></string>
+  <string id="982">Movie List</string>
+  <string id="983">TV Show List</string>
   <string id="984">Worldwide title as fallback</string>
   <string id="985">Clean Plot/Outline</string>
   <string id="986">MovieSet Artwork Folder</string>

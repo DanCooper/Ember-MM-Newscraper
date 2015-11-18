@@ -36,9 +36,9 @@ Public Class dlgRenameManual_Movie
     Public Sub New(ByVal DBElement As Database.DBElement)
         ' This call is required by the designer.
         InitializeComponent()
-        Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
-        Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
-        Me.StartPosition = FormStartPosition.Manual
+        Left = Master.AppPos.Left + (Master.AppPos.Width - Width) \ 2
+        Top = Master.AppPos.Top + (Master.AppPos.Height - Height) \ 2
+        StartPosition = FormStartPosition.Manual
         _DBElement = DBElement
     End Sub
 
@@ -48,17 +48,17 @@ Public Class dlgRenameManual_Movie
 
     Private Sub bwRename_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwRename.RunWorkerCompleted
         Cursor.Current = Cursors.Default
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.Close()
+        DialogResult = System.Windows.Forms.DialogResult.OK
+        Close()
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Close()
+        DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Close()
     End Sub
 
     Private Sub dlgRenameManual_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Me.SetUp()
+        SetUp()
         If FileUtils.Common.isVideoTS(_DBElement.Filename) Then
             txtFile.Text = "$F"
             txtFile.Visible = False
@@ -97,19 +97,19 @@ Public Class dlgRenameManual_Movie
         txtFile.Enabled = False
         pnlStatus.Visible = True
         Application.DoEvents()
-        Me.bwRename = New System.ComponentModel.BackgroundWorker
-        Me.bwRename.RunWorkerAsync()
+        bwRename = New System.ComponentModel.BackgroundWorker
+        bwRename.RunWorkerAsync()
     End Sub
 
     Sub SetUp()
-        Me.Text = String.Concat(Master.eLang.GetString(263, "Manual Rename"), " | ", _DBElement.Movie.Title)
-        Me.Label1.Text = Master.eLang.GetString(13, "Folder Name")
-        Me.Label2.Text = Master.eLang.GetString(15, "File Name")
-        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
-        Me.Cancel_Button.Text = Master.eLang.GetString(19, "Close")
-        Me.lblTitle.Text = Master.eLang.GetString(246, "Title:")
-        Me.Label3.Text = Master.eLang.GetString(272, "Renaming Directory/Files...")
-        Me.txtTitle.Text = _DBElement.Movie.Title
+        Text = String.Concat(Master.eLang.GetString(263, "Manual Rename"), " | ", _DBElement.Movie.Title)
+        Label1.Text = Master.eLang.GetString(13, "Folder Name")
+        Label2.Text = Master.eLang.GetString(15, "File Name")
+        OK_Button.Text = Master.eLang.GetString(179, "OK")
+        Cancel_Button.Text = Master.eLang.GetString(19, "Close")
+        lblTitle.Text = Master.eLang.GetString(246, "Title:")
+        Label3.Text = Master.eLang.GetString(272, "Renaming Directory/Files...")
+        txtTitle.Text = _DBElement.Movie.Title
     End Sub
 
     Private Sub txtFile_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFile.TextChanged
