@@ -29,25 +29,21 @@ Public Class dlgExportMovies
 
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Friend WithEvents bwLoadInfo As New ComponentModel.BackgroundWorker
     Friend WithEvents bwCreateTemplate As New ComponentModel.BackgroundWorker
+    Friend WithEvents bwLoadInfo As New ComponentModel.BackgroundWorker
 
-    Private TemplateName As String
     Private bCancelled As Boolean
     Private bExportMissingEpisodes As Boolean
     Private bHasChangedList_Movies As Boolean = True
     Private bHasChangedList_TVShows As Boolean = True
-    Private TempPath As String = Path.Combine(Master.TempPath, "Export")
-    Private MovieList As New List(Of Database.DBElement)
-    Private TVShowList As New List(Of Database.DBElement)
-
-    'list movies
-    Private currList_Movies As String = "movielist"
-    Private listViews_Movies As New Dictionary(Of String, String)
-
-    'list shows
-    Private currList_TVShows As String = "tvshowlist"
-    Private listViews_TVShows As New Dictionary(Of String, String)
+    Private dicListViews_Movies As New Dictionary(Of String, String)
+    Private dicListViews_TVShows As New Dictionary(Of String, String)
+    Private lstMovieList As New List(Of Database.DBElement)
+    Private lstTVShowList As New List(Of Database.DBElement)
+    Private strCurrList_Movies As String = "movielist"
+    Private strCurrList_TVShows As String = "tvshowlist"
+    Private strTempPath As String = Path.Combine(Master.TempPath, "Export")
+    Private strTemplateName As String
 
 #End Region 'Fields
 
@@ -59,6 +55,194 @@ Public Class dlgExportMovies
         Left = Master.AppPos.Left + (Master.AppPos.Width - Width) \ 2
         Top = Master.AppPos.Top + (Master.AppPos.Height - Height) \ 2
         StartPosition = FormStartPosition.Manual
+    End Sub
+
+    Private Sub btnBuild_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnBuild.Click
+        btnBuild.Enabled = False
+        bwLoadInfo.WorkerReportsProgress = True
+        bwLoadInfo.WorkerSupportsCancellation = True
+        bwLoadInfo.RunWorkerAsync()
+    End Sub
+
+    Private Sub btnCancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancel.Click
+        If bwLoadInfo.IsBusy Then
+            bwLoadInfo.CancelAsync()
+            'if is cancled while loading from DB we have to proper reload from DB
+            bHasChangedList_Movies = True
+            bHasChangedList_TVShows = True
+        End If
+        If bwCreateTemplate.IsBusy Then
+            bwCreateTemplate.CancelAsync()
+        End If
+        btnCancel.Enabled = False
+    End Sub
+
+    Private Sub btnClose_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnClose.Click
+        If bwLoadInfo.IsBusy Then
+            bwLoadInfo.CancelAsync()
+        End If
+        While bwLoadInfo.IsBusy
+            Application.DoEvents()
+            Threading.Thread.Sleep(50)
+        End While
+    End Sub
+
+    Private Sub btnExportPath_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnExportPath.Click
+        Using fbdDialog As New FolderBrowserDialog()
+            fbdDialog.Description = "Select ExportPath"
+            If fbdDialog.ShowDialog() = DialogResult.OK Then
+                txtExportPath.Text = fbdDialog.SelectedPath
+            End If
+        End Using
+    End Sub
+
+    Private Sub btnSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSave.Click
+        Cursor = Cursors.WaitCursor
+        If Not String.IsNullOrEmpty(txtExportPath.Text) Then
+            CopyDirectory(strTempPath, clsAdvancedSettings.GetSetting("ExportPath", String.Empty), True)
+            btnSave.Enabled = False
+            MessageBox.Show(String.Concat(Master.eLang.GetString(1003, "Template saved to:"), " ", txtExportPath.Text), Master.eLang.GetString(361, "Finished!"), MessageBoxButtons.OK)
+        Else
+            btnSave.Enabled = False
+            MessageBox.Show(Master.eLang.GetString(221, "Export Path is not valid"), Master.eLang.GetString(816, "An Error Has Occurred"), MessageBoxButtons.OK)
+        End If
+        Cursor = Cursors.Default
+    End Sub
+
+    Private Sub bwLoadInfo_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadInfo.DoWork
+        If bHasChangedList_Movies Then
+            bHasChangedList_Movies = False
+            lstMovieList.Clear()
+            bwLoadInfo.ReportProgress(-2, Master.eLang.GetString(177, "Compiling Movie List..."))
+
+            ' Load nfo movies using path from DB
+            Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                Dim _tmpMovie As New Database.DBElement
+                Dim iProg As Integer = 0
+                SQLNewcommand.CommandText = String.Format("SELECT COUNT(idMovie) AS mcount FROM '{0}';", strCurrList_Movies)
+                Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                    SQLcount.Read()
+                    bwLoadInfo.ReportProgress(-1, SQLcount("mcount")) ' set maximum
+                End Using
+                SQLNewcommand.CommandText = String.Format("SELECT idMovie FROM '{0}' ORDER BY SortTitle COLLATE NOCASE;", strCurrList_Movies)
+                Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                    If SQLreader.HasRows Then
+                        While SQLreader.Read()
+                            _tmpMovie = Master.DB.LoadMovieFromDB(Convert.ToInt32(SQLreader("idMovie")))
+                            lstMovieList.Add(_tmpMovie)
+                            bwLoadInfo.ReportProgress(iProg, _tmpMovie.ListTitle) '  show File
+                            iProg += 1
+                            If bwLoadInfo.CancellationPending Then
+                                e.Cancel = True
+                                Return
+                            End If
+                        End While
+                        e.Result = True
+                    Else
+                        e.Cancel = True
+                    End If
+                End Using
+            End Using
+        End If
+
+        If bHasChangedList_TVShows Then
+            bHasChangedList_TVShows = False
+            lstTVShowList.Clear()
+            bwLoadInfo.ReportProgress(-2, Master.eLang.GetString(277, "Compiling TV Show List..."))
+
+            ' Load nfo tv shows using path from DB
+            Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                Dim _tmpTVShow As New Database.DBElement
+                Dim iProg As Integer = 0
+                SQLNewcommand.CommandText = String.Format("SELECT COUNT(idShow) AS mcount FROM '{0}';", strCurrList_TVShows)
+                Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                    SQLcount.Read()
+                    bwLoadInfo.ReportProgress(-1, SQLcount("mcount")) ' set maximum
+                End Using
+                SQLNewcommand.CommandText = String.Format("SELECT idShow FROM '{0}' ORDER BY SortedTitle COLLATE NOCASE;", strCurrList_TVShows)
+                Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                    If SQLreader.HasRows Then
+                        While SQLreader.Read()
+                            _tmpTVShow = Master.DB.LoadTVShowFromDB(Convert.ToInt32(SQLreader("idShow")), True, True, False, False, bExportMissingEpisodes)
+                            lstTVShowList.Add(_tmpTVShow)
+                            bwLoadInfo.ReportProgress(iProg, _tmpTVShow.ListTitle) '  show File
+                            iProg += 1
+                            If bwLoadInfo.CancellationPending Then
+                                e.Cancel = True
+                                Return
+                            End If
+                        End While
+                        e.Result = True
+                    Else
+                        e.Cancel = True
+                    End If
+                End Using
+            End Using
+        End If
+    End Sub
+
+    Private Sub bwLoadInfo_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwLoadInfo.ProgressChanged
+        If e.ProgressPercentage >= 0 Then
+            pbCompile.Value = e.ProgressPercentage
+            lblFile.Text = e.UserState.ToString
+        ElseIf e.ProgressPercentage = -1
+            pbCompile.Maximum = Convert.ToInt32(e.UserState)
+        ElseIf e.ProgressPercentage = -2
+            lblCompiling.Text = e.UserState.ToString
+        End If
+    End Sub
+
+    Private Sub bwLoadInfo_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadInfo.RunWorkerCompleted
+        bCancelled = e.Cancelled
+        If Not e.Cancelled Then
+            Warning(True, "Create Template...")
+            bwCreateTemplate.WorkerReportsProgress = True
+            bwCreateTemplate.WorkerSupportsCancellation = True
+            bwCreateTemplate.RunWorkerAsync()
+        End If
+    End Sub
+
+    Private Sub bwCreateTemplate_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCreateTemplate.DoWork
+        Dim MExporter As New MediaExporter
+        Dim TempIndexFile As String = MExporter.CreateTemplate(strTemplateName, lstMovieList, lstTVShowList, String.Empty, AddressOf ShowProgressCreateTemplate)
+        e.Result = TempIndexFile
+    End Sub
+
+    Private Sub bwCreateTemplate_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwCreateTemplate.ProgressChanged
+        Dim Info = DirectCast(e.UserState, KeyValuePair(Of String, String))
+        lblFile.Text = If(Not String.IsNullOrEmpty(Info.Value.ToString), String.Concat(Info.Key.ToString, ": ", Info.Value.ToString), Info.Key.ToString)
+    End Sub
+
+    Private Sub bwCreateTemplate_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwCreateTemplate.RunWorkerCompleted
+        If Not String.IsNullOrEmpty(DirectCast(e.Result, String)) Then
+            LoadHTML(DirectCast(e.Result, String))
+        Else
+            wbPreview.DocumentText = String.Concat("<center><h1 style=""color:Red;"">", Master.eLang.GetString(284, "Canceled"), "</h1></center>")
+        End If
+        pnlCancel.Visible = False
+    End Sub
+
+    Private Sub cbList_Movies_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cbList_Movies.SelectedIndexChanged
+        If Not strCurrList_Movies = CType(cbList_Movies.SelectedItem, KeyValuePair(Of String, String)).Value Then
+            strCurrList_Movies = CType(cbList_Movies.SelectedItem, KeyValuePair(Of String, String)).Value
+            ModulesManager.Instance.RuntimeObjects.ListMovies = strCurrList_Movies
+            bHasChangedList_Movies = True
+            btnBuild.Enabled = True
+        End If
+    End Sub
+
+    Private Sub cbList_TVShows_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cbList_TVShows.SelectedIndexChanged
+        If Not strCurrList_TVShows = CType(cbList_TVShows.SelectedItem, KeyValuePair(Of String, String)).Value Then
+            strCurrList_TVShows = CType(cbList_TVShows.SelectedItem, KeyValuePair(Of String, String)).Value
+            ModulesManager.Instance.RuntimeObjects.ListMovies = strCurrList_Movies
+            bHasChangedList_TVShows = True
+            btnBuild.Enabled = True
+        End If
+    End Sub
+
+    Private Sub cbTemplate_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cbTemplate.SelectedIndexChanged
+        strTemplateName = cbTemplate.SelectedItem.ToString
+        btnBuild.Enabled = True
     End Sub
 
     Private Sub CopyDirectory(ByVal SourcePath As String, ByVal DestPath As String, Optional ByVal Overwrite As Boolean = False)
@@ -112,149 +296,6 @@ Public Class dlgExportMovies
         End If
     End Sub
 
-    Private Sub btnCancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancel.Click
-        If bwLoadInfo.IsBusy Then
-            bwLoadInfo.CancelAsync()
-            'if is cancled while loading from DB we have to proper reload from DB
-            bHasChangedList_Movies = True
-            bHasChangedList_TVShows = True
-        End If
-        If bwCreateTemplate.IsBusy Then
-            bwCreateTemplate.CancelAsync()
-        End If
-        btnCancel.Enabled = False
-    End Sub
-
-    Private Sub bwLoadInfo_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadInfo.DoWork
-        If bHasChangedList_Movies Then
-            bHasChangedList_Movies = False
-            MovieList.Clear()
-            bwLoadInfo.ReportProgress(-2, Master.eLang.GetString(177, "Compiling Movie List..."))
-
-            ' Load nfo movies using path from DB
-            Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                Dim _tmpMovie As New Database.DBElement
-                Dim iProg As Integer = 0
-                SQLNewcommand.CommandText = String.Format("SELECT COUNT(idMovie) AS mcount FROM '{0}';", currList_Movies)
-                Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
-                    SQLcount.Read()
-                    bwLoadInfo.ReportProgress(-1, SQLcount("mcount")) ' set maximum
-                End Using
-                SQLNewcommand.CommandText = String.Format("SELECT idMovie FROM '{0}' ORDER BY SortTitle COLLATE NOCASE;", currList_Movies)
-                Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
-                    If SQLreader.HasRows Then
-                        While SQLreader.Read()
-                            _tmpMovie = Master.DB.LoadMovieFromDB(Convert.ToInt32(SQLreader("idMovie")))
-                            MovieList.Add(_tmpMovie)
-                            bwLoadInfo.ReportProgress(iProg, _tmpMovie.ListTitle) '  show File
-                            iProg += 1
-                            If bwLoadInfo.CancellationPending Then
-                                e.Cancel = True
-                                Return
-                            End If
-                        End While
-                        e.Result = True
-                    Else
-                        e.Cancel = True
-                    End If
-                End Using
-            End Using
-        End If
-
-        If bHasChangedList_TVShows Then
-            bHasChangedList_TVShows = False
-            TVShowList.Clear()
-            bwLoadInfo.ReportProgress(-2, Master.eLang.GetString(277, "Compiling TV Show List..."))
-
-            ' Load nfo tv shows using path from DB
-            Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                Dim _tmpTVShow As New Database.DBElement
-                Dim iProg As Integer = 0
-                SQLNewcommand.CommandText = String.Format("SELECT COUNT(idShow) AS mcount FROM '{0}';", currList_TVShows)
-                Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
-                    SQLcount.Read()
-                    bwLoadInfo.ReportProgress(-1, SQLcount("mcount")) ' set maximum
-                End Using
-                SQLNewcommand.CommandText = String.Format("SELECT idShow FROM '{0}' ORDER BY SortedTitle COLLATE NOCASE;", currList_TVShows)
-                Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
-                    If SQLreader.HasRows Then
-                        While SQLreader.Read()
-                            _tmpTVShow = Master.DB.LoadTVShowFromDB(Convert.ToInt32(SQLreader("idShow")), True, True, False, False, bExportMissingEpisodes)
-                            TVShowList.Add(_tmpTVShow)
-                            bwLoadInfo.ReportProgress(iProg, _tmpTVShow.ListTitle) '  show File
-                            iProg += 1
-                            If bwLoadInfo.CancellationPending Then
-                                e.Cancel = True
-                                Return
-                            End If
-                        End While
-                        e.Result = True
-                    Else
-                        e.Cancel = True
-                    End If
-                End Using
-            End Using
-        End If
-    End Sub
-
-    Private Sub bwLoadInfo_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwLoadInfo.ProgressChanged
-        If e.ProgressPercentage >= 0 Then
-            pbCompile.Value = e.ProgressPercentage
-            lblFile.Text = e.UserState.ToString
-        ElseIf e.ProgressPercentage = -1
-            pbCompile.Maximum = Convert.ToInt32(e.UserState)
-        ElseIf e.ProgressPercentage = -2
-            lblCompiling.Text = e.UserState.ToString
-        End If
-    End Sub
-
-    Private Sub bwLoadInfo_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadInfo.RunWorkerCompleted
-        bCancelled = e.Cancelled
-        If Not e.Cancelled Then
-            Warning(True, "Create Template...")
-            bwCreateTemplate.WorkerReportsProgress = True
-            bwCreateTemplate.WorkerSupportsCancellation = True
-            bwCreateTemplate.RunWorkerAsync()
-        End If
-    End Sub
-
-    Private Sub bwCreateTemplate_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCreateTemplate.DoWork
-        Dim MExporter As New MediaExporter
-        Dim TempIndexFile As String = MExporter.CreateTemplate(TemplateName, MovieList, TVShowList, String.Empty, AddressOf ShowProgressCreateTemplate)
-        e.Result = TempIndexFile
-    End Sub
-
-    Private Sub bwCreateTemplate_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwCreateTemplate.ProgressChanged
-        Dim Info = DirectCast(e.UserState, KeyValuePair(Of String, String))
-        lblFile.Text = If(Not String.IsNullOrEmpty(Info.Value.ToString), String.Concat(Info.Key.ToString, ": ", Info.Value.ToString), Info.Key.ToString)
-    End Sub
-
-    Private Sub bwCreateTemplate_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwCreateTemplate.RunWorkerCompleted
-        If Not String.IsNullOrEmpty(DirectCast(e.Result, String)) Then
-            LoadHTML(DirectCast(e.Result, String))
-        Else
-            wbPreview.DocumentText = String.Concat("<center><h1 style=""color:Red;"">", Master.eLang.GetString(284, "Canceled"), "</h1></center>")
-        End If
-        pnlCancel.Visible = False
-    End Sub
-
-    Private Function ShowProgressCreateTemplate(ByVal title As String, ByVal operation As String) As Boolean
-        Dim Info As New KeyValuePair(Of String, String)(title, operation)
-        bwCreateTemplate.ReportProgress(0, Info)
-        If bwCreateTemplate.CancellationPending Then Return False
-        Return True
-    End Function
-
-    Private Sub btnClose_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnClose.Click
-        If bwLoadInfo.IsBusy Then
-            bwLoadInfo.CancelAsync()
-        End If
-        While bwLoadInfo.IsBusy
-            Application.DoEvents()
-            Threading.Thread.Sleep(50)
-        End While
-    End Sub
-
     Private Sub dlgExportMovies_FormClosing(ByVal sender As Object, ByVal e As FormClosingEventArgs) Handles Me.FormClosing
         If bwLoadInfo.IsBusy Then
             DoCancel()
@@ -263,7 +304,14 @@ Public Class dlgExportMovies
                 Threading.Thread.Sleep(50)
             End While
         End If
-        FileUtils.Delete.DeleteDirectory(TempPath)
+        If bwCreateTemplate.IsBusy Then
+            DoCancel()
+            While bwCreateTemplate.IsBusy
+                Application.DoEvents()
+                Threading.Thread.Sleep(50)
+            End While
+        End If
+        FileUtils.Delete.DeleteDirectory(strTempPath)
     End Sub
 
     Private Sub dlgExportMovies_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
@@ -284,28 +332,28 @@ Public Class dlgExportMovies
             End If
         End If
 
-        listViews_Movies.Clear()
-        listViews_Movies.Add(Master.eLang.GetString(786, "Default List"), "movielist")
+        dicListViews_Movies.Clear()
+        dicListViews_Movies.Add(Master.eLang.GetString(786, "Default List"), "movielist")
         For Each cList As String In Master.DB.GetViewList(Enums.ContentType.Movie)
-            listViews_Movies.Add(Regex.Replace(cList, "movie-", String.Empty).Trim, cList)
+            dicListViews_Movies.Add(Regex.Replace(cList, "movie-", String.Empty).Trim, cList)
         Next
-        cbList_Movies.DataSource = listViews_Movies.ToList
+        cbList_Movies.DataSource = dicListViews_Movies.ToList
         cbList_Movies.DisplayMember = "Key"
         cbList_Movies.ValueMember = "Value"
         cbList_Movies.SelectedIndex = 0
 
-        listViews_TVShows.Clear()
-        listViews_TVShows.Add(Master.eLang.GetString(786, "Default List"), "tvshowlist")
+        dicListViews_TVShows.Clear()
+        dicListViews_TVShows.Add(Master.eLang.GetString(786, "Default List"), "tvshowlist")
         For Each cList As String In Master.DB.GetViewList(Enums.ContentType.TVShow)
-            listViews_TVShows.Add(Regex.Replace(cList, "tvshow-", String.Empty).Trim, cList)
+            dicListViews_TVShows.Add(Regex.Replace(cList, "tvshow-", String.Empty).Trim, cList)
         Next
-        cbList_TVShows.DataSource = listViews_TVShows.ToList
+        cbList_TVShows.DataSource = dicListViews_TVShows.ToList
         cbList_TVShows.DisplayMember = "Key"
         cbList_TVShows.ValueMember = "Value"
         cbList_TVShows.SelectedIndex = 0
     End Sub
 
-    Private Sub dlgMoviesReport_Shown(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Shown
+    Private Sub dlgExportMovies_Shown(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Shown
         ' Show Cancel Panel
         btnBuild.Enabled = False
         btnCancel.Visible = True
@@ -347,27 +395,12 @@ Public Class dlgExportMovies
         End Try
     End Sub
 
-    Private Sub btnSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSave.Click
-        Cursor = Cursors.WaitCursor
-        If Not String.IsNullOrEmpty(txtExportPath.Text) Then
-            CopyDirectory(TempPath, clsAdvancedSettings.GetSetting("ExportPath", String.Empty), True)
-            btnSave.Enabled = False
-            MessageBox.Show(String.Concat(Master.eLang.GetString(1003, "Template saved to:"), " ", txtExportPath.Text), Master.eLang.GetString(361, "Finished!"), MessageBoxButtons.OK)
-        Else
-            btnSave.Enabled = False
-            MessageBox.Show(Master.eLang.GetString(221, "Export Path is not valid"), Master.eLang.GetString(816, "An Error Has Occurred"), MessageBoxButtons.OK)
-        End If
-        Cursor = Cursors.Default
-    End Sub
-
-    Private Sub btnExportPath_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnExportPath.Click
-        Using fbdDialog As New FolderBrowserDialog()
-            fbdDialog.Description = "Select ExportPath"
-            If fbdDialog.ShowDialog() = DialogResult.OK Then
-                txtExportPath.Text = fbdDialog.SelectedPath
-            End If
-        End Using
-    End Sub
+    Private Function ShowProgressCreateTemplate(ByVal title As String, ByVal operation As String) As Boolean
+        Dim Info As New KeyValuePair(Of String, String)(title, operation)
+        bwCreateTemplate.ReportProgress(0, Info)
+        If bwCreateTemplate.CancellationPending Then Return False
+        Return True
+    End Function
 
     Private Sub SetUp()
         Text = Master.eLang.GetString(328, "Export Movies")
@@ -381,6 +414,14 @@ Public Class dlgExportMovies
         lblList_Movies.Text = Master.eLang.GetString(982, "Movie List")
         lblList_TVShows.Text = Master.eLang.GetString(983, "TV Show List")
         lblTemplate.Text = Master.eLang.GetString(334, "Template")
+    End Sub
+
+    Private Sub txtExportPath_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtExportPath.TextChanged
+        If Not String.IsNullOrEmpty(txtExportPath.Text) Then
+            btnSave.Enabled = True
+        Else
+            btnSave.Enabled = False
+        End If
     End Sub
 
     Private Sub Warning(ByVal show As Boolean, Optional ByVal txt As String = "")
@@ -409,44 +450,6 @@ Public Class dlgExportMovies
             End If
         End If
         Warning(False)
-    End Sub
-
-    Private Sub btnBuild_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnBuild.Click
-        btnBuild.Enabled = False
-        bwLoadInfo.WorkerReportsProgress = True
-        bwLoadInfo.WorkerSupportsCancellation = True
-        bwLoadInfo.RunWorkerAsync()
-    End Sub
-
-    Private Sub cbTemplate_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cbTemplate.SelectedIndexChanged
-        TemplateName = cbTemplate.SelectedItem.ToString
-        btnBuild.Enabled = True
-    End Sub
-
-    Private Sub cbList_Movies_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cbList_Movies.SelectedIndexChanged
-        If Not currList_Movies = CType(cbList_Movies.SelectedItem, KeyValuePair(Of String, String)).Value Then
-            currList_Movies = CType(cbList_Movies.SelectedItem, KeyValuePair(Of String, String)).Value
-            ModulesManager.Instance.RuntimeObjects.ListMovies = currList_Movies
-            bHasChangedList_Movies = True
-            btnBuild.Enabled = True
-        End If
-    End Sub
-
-    Private Sub cbList_TVShows_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cbList_TVShows.SelectedIndexChanged
-        If Not currList_TVShows = CType(cbList_TVShows.SelectedItem, KeyValuePair(Of String, String)).Value Then
-            currList_TVShows = CType(cbList_TVShows.SelectedItem, KeyValuePair(Of String, String)).Value
-            ModulesManager.Instance.RuntimeObjects.ListMovies = currList_Movies
-            bHasChangedList_TVShows = True
-            btnBuild.Enabled = True
-        End If
-    End Sub
-
-    Private Sub txtExportPath_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtExportPath.TextChanged
-        If Not String.IsNullOrEmpty(txtExportPath.Text) Then
-            btnSave.Enabled = True
-        Else
-            btnSave.Enabled = False
-        End If
     End Sub
 
 #End Region 'Methods

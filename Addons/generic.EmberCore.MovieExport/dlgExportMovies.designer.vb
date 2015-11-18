@@ -7,7 +7,6 @@ Partial Class dlgExportMovies
     Friend  WithEvents btnCancel As System.Windows.Forms.Button
     Friend WithEvents cbTemplate As System.Windows.Forms.ComboBox
     Friend  WithEvents btnClose As System.Windows.Forms.Button
-    Friend  WithEvents ImageList1 As System.Windows.Forms.ImageList
     Friend WithEvents lblTemplate As System.Windows.Forms.Label
     Friend WithEvents lblCanceling As System.Windows.Forms.Label
     Friend WithEvents lblCompiling As System.Windows.Forms.Label
@@ -42,14 +41,12 @@ Partial Class dlgExportMovies
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgExportMovies))
         Me.btnSave = New System.Windows.Forms.Button()
         Me.btnClose = New System.Windows.Forms.Button()
         Me.btnBuild = New System.Windows.Forms.Button()
         Me.lblTemplate = New System.Windows.Forms.Label()
         Me.cbTemplate = New System.Windows.Forms.ComboBox()
-        Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
         Me.pnlCancel = New System.Windows.Forms.Panel()
         Me.btnCancel = New System.Windows.Forms.Button()
         Me.pbCompile = New System.Windows.Forms.ProgressBar()
@@ -130,13 +127,6 @@ Partial Class dlgExportMovies
         Me.tblBottom.SetRowSpan(Me.cbTemplate, 2)
         Me.cbTemplate.Size = New System.Drawing.Size(200, 21)
         Me.cbTemplate.TabIndex = 2
-        '
-        'ImageList1
-        '
-        Me.ImageList1.ImageStream = CType(resources.GetObject("ImageList1.ImageStream"), System.Windows.Forms.ImageListStreamer)
-        Me.ImageList1.TransparentColor = System.Drawing.Color.Transparent
-        Me.ImageList1.Images.SetKeyName(0, "asc.png")
-        Me.ImageList1.Images.SetKeyName(1, "desc.png")
         '
         'pnlCancel
         '
