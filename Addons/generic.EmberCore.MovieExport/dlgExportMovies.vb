@@ -58,33 +58,14 @@ Public Class dlgExportMovies
     End Sub
 
     Private Sub btnBuild_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnBuild.Click
-        btnBuild.Enabled = False
+        ShowStatus(True)
         bwLoadInfo.WorkerReportsProgress = True
         bwLoadInfo.WorkerSupportsCancellation = True
         bwLoadInfo.RunWorkerAsync()
     End Sub
 
-    Private Sub btnCancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancel.Click
-        If bwLoadInfo.IsBusy Then
-            bwLoadInfo.CancelAsync()
-            'if is cancled while loading from DB we have to proper reload from DB
-            bHasChangedList_Movies = True
-            bHasChangedList_TVShows = True
-        End If
-        If bwCreateTemplate.IsBusy Then
-            bwCreateTemplate.CancelAsync()
-        End If
-        btnCancel.Enabled = False
-    End Sub
-
     Private Sub btnClose_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnClose.Click
-        If bwLoadInfo.IsBusy Then
-            bwLoadInfo.CancelAsync()
-        End If
-        While bwLoadInfo.IsBusy
-            Application.DoEvents()
-            Threading.Thread.Sleep(50)
-        End While
+        DoCancel()
     End Sub
 
     Private Sub btnExportPath_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnExportPath.Click
@@ -183,19 +164,19 @@ Public Class dlgExportMovies
 
     Private Sub bwLoadInfo_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwLoadInfo.ProgressChanged
         If e.ProgressPercentage >= 0 Then
-            pbCompile.Value = e.ProgressPercentage
-            lblFile.Text = e.UserState.ToString
+            tspbStatus.Value = e.ProgressPercentage
+            tslblFile.Text = e.UserState.ToString
         ElseIf e.ProgressPercentage = -1
-            pbCompile.Maximum = Convert.ToInt32(e.UserState)
+            tspbStatus.Maximum = Convert.ToInt32(e.UserState)
         ElseIf e.ProgressPercentage = -2
-            lblCompiling.Text = e.UserState.ToString
+            tslblStatus.Text = e.UserState.ToString
         End If
     End Sub
 
     Private Sub bwLoadInfo_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadInfo.RunWorkerCompleted
         bCancelled = e.Cancelled
         If Not e.Cancelled Then
-            Warning(True, "Create Template...")
+            tslblStatus.Text = "Create Template..."
             bwCreateTemplate.WorkerReportsProgress = True
             bwCreateTemplate.WorkerSupportsCancellation = True
             bwCreateTemplate.RunWorkerAsync()
@@ -210,7 +191,7 @@ Public Class dlgExportMovies
 
     Private Sub bwCreateTemplate_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwCreateTemplate.ProgressChanged
         Dim Info = DirectCast(e.UserState, KeyValuePair(Of String, String))
-        lblFile.Text = If(Not String.IsNullOrEmpty(Info.Value.ToString), String.Concat(Info.Key.ToString, ": ", Info.Value.ToString), Info.Key.ToString)
+        tslblFile.Text = If(Not String.IsNullOrEmpty(Info.Value.ToString), String.Concat(Info.Key.ToString, ": ", Info.Value.ToString), Info.Key.ToString)
     End Sub
 
     Private Sub bwCreateTemplate_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwCreateTemplate.RunWorkerCompleted
@@ -219,7 +200,6 @@ Public Class dlgExportMovies
         Else
             wbPreview.DocumentText = String.Concat("<center><h1 style=""color:Red;"">", Master.eLang.GetString(284, "Canceled"), "</h1></center>")
         End If
-        pnlCancel.Visible = False
     End Sub
 
     Private Sub cbList_Movies_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cbList_Movies.SelectedIndexChanged
@@ -354,20 +334,10 @@ Public Class dlgExportMovies
     End Sub
 
     Private Sub dlgExportMovies_Shown(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Shown
-        ' Show Cancel Panel
-        btnBuild.Enabled = False
-        btnCancel.Visible = True
-        btnSave.Enabled = False
-        lblCompiling.Visible = True
-        pbCompile.Visible = True
-        pbCompile.Style = ProgressBarStyle.Continuous
-        lblCanceling.Visible = False
-        pnlCancel.Visible = True
-        Application.DoEvents()
-
         Activate()
 
         'Start worker
+        ShowStatus(True)
         bwLoadInfo = New ComponentModel.BackgroundWorker
         bwLoadInfo.WorkerSupportsCancellation = True
         bwLoadInfo.WorkerReportsProgress = True
@@ -375,18 +345,35 @@ Public Class dlgExportMovies
     End Sub
 
     Private Sub DoCancel()
-        bwLoadInfo.CancelAsync()
-        bwCreateTemplate.CancelAsync()
-        btnCancel.Visible = False
-        lblCompiling.Visible = False
-        pbCompile.Style = ProgressBarStyle.Marquee
-        pbCompile.MarqueeAnimationSpeed = 25
-        lblCanceling.Visible = True
-        lblFile.Visible = False
+        tslblStatus.Text = Master.eLang.GetString(178, "Canceling Compilation...")
+        tspbStatus.Style = ProgressBarStyle.Marquee
+        tspbStatus.MarqueeAnimationSpeed = 25
+        tslblFile.Visible = False
+
+        If bwLoadInfo.IsBusy Then
+            bwLoadInfo.CancelAsync()
+            'if is canceled while loading from DB we have to proper reload from DB
+            bHasChangedList_Movies = True
+            bHasChangedList_TVShows = True
+        End If
+        If bwCreateTemplate.IsBusy Then
+            bwCreateTemplate.CancelAsync()
+        End If
+        While bwLoadInfo.IsBusy OrElse bwCreateTemplate.IsBusy
+            Application.DoEvents()
+            Threading.Thread.Sleep(50)
+        End While
+
+        If btnClose.Text = Master.eLang.GetString(167, "Cancel") Then
+            ShowStatus(False)
+            btnBuild.Enabled = True
+        Else
+            Close()
+        End If
     End Sub
 
     Private Sub LoadHTML(ByVal TempIndexFile As String)
-        Warning(True, Master.eLang.GetString(326, "Loading. Please wait..."))
+        tslblStatus.Text = Master.eLang.GetString(326, "Loading. Please wait...")
 
         Try
             wbPreview.Navigate(TempIndexFile)
@@ -405,15 +392,39 @@ Public Class dlgExportMovies
     Private Sub SetUp()
         Text = Master.eLang.GetString(328, "Export Movies")
         btnBuild.Text = Master.eLang.GetString(1004, "Generate HTML...")
-        btnCancel.Text = Master.eLang.GetString(167, "Cancel")
         btnClose.Text = Master.eLang.GetString(19, "Close")
         btnSave.Text = Master.eLang.GetString(273, "Save")
-        lblCanceling.Text = Master.eLang.GetString(178, "Canceling Compilation...")
-        lblCompiling.Text = Master.eLang.GetString(177, "Compiling Movie List...")
         lblExportPath.Text = Master.eLang.GetString(995, "Export Path")
         lblList_Movies.Text = Master.eLang.GetString(982, "Movie List")
         lblList_TVShows.Text = Master.eLang.GetString(983, "TV Show List")
         lblTemplate.Text = Master.eLang.GetString(334, "Template")
+    End Sub
+
+    Private Sub ShowStatus(ByVal bEnable As Boolean)
+        If bEnable Then
+            btnClose.Text = Master.eLang.GetString(167, "Cancel")
+            btnBuild.Enabled = False
+            btnExportPath.Enabled = False
+            btnSave.Enabled = False
+            cbList_Movies.Enabled = False
+            cbList_TVShows.Enabled = False
+            cbTemplate.Enabled = False
+            wbPreview.Visible = False
+            tslblFile.Visible = True
+            tslblStatus.Visible = True
+            tspbStatus.Visible = True
+            txtExportPath.Enabled = False
+        Else
+            btnClose.Text = Master.eLang.GetString(19, "Close")
+            btnExportPath.Enabled = True
+            cbList_Movies.Enabled = True
+            cbList_TVShows.Enabled = True
+            cbTemplate.Enabled = True
+            tslblFile.Visible = False
+            tslblStatus.Visible = False
+            tspbStatus.Visible = False
+            txtExportPath.Enabled = True
+        End If
     End Sub
 
     Private Sub txtExportPath_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtExportPath.TextChanged
@@ -424,24 +435,6 @@ Public Class dlgExportMovies
         End If
     End Sub
 
-    Private Sub Warning(ByVal show As Boolean, Optional ByVal txt As String = "")
-        Try
-            btnCancel.Visible = True
-            btnCancel.Enabled = True
-            lblCompiling.Visible = True
-            pbCompile.Visible = True
-            pbCompile.Style = ProgressBarStyle.Marquee
-            pbCompile.MarqueeAnimationSpeed = 25
-            lblCanceling.Visible = False
-            pnlCancel.Visible = show
-            lblFile.Visible = True
-            lblCompiling.Text = txt
-            Application.DoEvents()
-            pnlCancel.BringToFront()
-        Catch ex As Exception
-        End Try
-    End Sub
-
     Private Sub wbPreview_DocumentCompleted(ByVal sender As Object, ByVal e As WebBrowserDocumentCompletedEventArgs) Handles wbPreview.DocumentCompleted
         If Not bCancelled Then
             wbPreview.Visible = True
@@ -449,7 +442,7 @@ Public Class dlgExportMovies
                 btnSave.Enabled = True
             End If
         End If
-        Warning(False)
+        ShowStatus(False)
     End Sub
 
 #End Region 'Methods

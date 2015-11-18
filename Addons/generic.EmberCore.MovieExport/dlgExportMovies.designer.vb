@@ -2,18 +2,11 @@
 Partial Class dlgExportMovies
     Inherits System.Windows.Forms.Form
 
-    #Region "Fields"
-
-    Friend  WithEvents btnCancel As System.Windows.Forms.Button
+#Region "Fields"
     Friend WithEvents cbTemplate As System.Windows.Forms.ComboBox
-    Friend  WithEvents btnClose As System.Windows.Forms.Button
+    Friend WithEvents btnClose As System.Windows.Forms.Button
     Friend WithEvents lblTemplate As System.Windows.Forms.Label
-    Friend WithEvents lblCanceling As System.Windows.Forms.Label
-    Friend WithEvents lblCompiling As System.Windows.Forms.Label
-    Friend WithEvents lblFile As System.Windows.Forms.Label
-    Friend WithEvents pbCompile As System.Windows.Forms.ProgressBar
     Friend WithEvents pnlMain As System.Windows.Forms.Panel
-    Friend WithEvents pnlCancel As System.Windows.Forms.Panel
     Friend WithEvents btnSave As System.Windows.Forms.Button
     Friend WithEvents wbPreview As System.Windows.Forms.WebBrowser
 
@@ -25,7 +18,7 @@ Partial Class dlgExportMovies
 #Region "Methods"
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode> _
+    <System.Diagnostics.DebuggerNonUserCode>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -39,7 +32,7 @@ Partial Class dlgExportMovies
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough> _
+    <System.Diagnostics.DebuggerStepThrough>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgExportMovies))
         Me.btnSave = New System.Windows.Forms.Button()
@@ -47,15 +40,9 @@ Partial Class dlgExportMovies
         Me.btnBuild = New System.Windows.Forms.Button()
         Me.lblTemplate = New System.Windows.Forms.Label()
         Me.cbTemplate = New System.Windows.Forms.ComboBox()
-        Me.pnlCancel = New System.Windows.Forms.Panel()
-        Me.btnCancel = New System.Windows.Forms.Button()
-        Me.pbCompile = New System.Windows.Forms.ProgressBar()
-        Me.lblCompiling = New System.Windows.Forms.Label()
-        Me.lblFile = New System.Windows.Forms.Label()
-        Me.lblCanceling = New System.Windows.Forms.Label()
         Me.pnlMain = New System.Windows.Forms.Panel()
         Me.wbPreview = New System.Windows.Forms.WebBrowser()
-        Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
+        Me.ssStatus = New System.Windows.Forms.StatusStrip()
         Me.pnlBottom = New System.Windows.Forms.Panel()
         Me.tblBottom = New System.Windows.Forms.TableLayoutPanel()
         Me.lblList_Movies = New System.Windows.Forms.Label()
@@ -65,8 +52,12 @@ Partial Class dlgExportMovies
         Me.lblExportPath = New System.Windows.Forms.Label()
         Me.txtExportPath = New System.Windows.Forms.TextBox()
         Me.btnExportPath = New System.Windows.Forms.Button()
-        Me.pnlCancel.SuspendLayout()
+        Me.tspbStatus = New System.Windows.Forms.ToolStripProgressBar()
+        Me.tslblFile = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.tslblSpring = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.tslblStatus = New System.Windows.Forms.ToolStripStatusLabel()
         Me.pnlMain.SuspendLayout()
+        Me.ssStatus.SuspendLayout()
         Me.pnlBottom.SuspendLayout()
         Me.tblBottom.SuspendLayout()
         Me.SuspendLayout()
@@ -85,7 +76,6 @@ Partial Class dlgExportMovies
         'btnClose
         '
         Me.btnClose.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.btnClose.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnClose.Location = New System.Drawing.Point(962, 30)
         Me.btnClose.Name = "btnClose"
@@ -128,77 +118,9 @@ Partial Class dlgExportMovies
         Me.cbTemplate.Size = New System.Drawing.Size(200, 21)
         Me.cbTemplate.TabIndex = 2
         '
-        'pnlCancel
-        '
-        Me.pnlCancel.BackColor = System.Drawing.Color.LightGray
-        Me.pnlCancel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlCancel.Controls.Add(Me.btnCancel)
-        Me.pnlCancel.Controls.Add(Me.pbCompile)
-        Me.pnlCancel.Controls.Add(Me.lblCompiling)
-        Me.pnlCancel.Controls.Add(Me.lblFile)
-        Me.pnlCancel.Controls.Add(Me.lblCanceling)
-        Me.pnlCancel.Location = New System.Drawing.Point(242, 12)
-        Me.pnlCancel.Name = "pnlCancel"
-        Me.pnlCancel.Size = New System.Drawing.Size(403, 76)
-        Me.pnlCancel.TabIndex = 1
-        Me.pnlCancel.Visible = False
-        '
-        'btnCancel
-        '
-        Me.btnCancel.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnCancel.Image = CType(resources.GetObject("btnCancel.Image"), System.Drawing.Image)
-        Me.btnCancel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnCancel.Location = New System.Drawing.Point(298, 3)
-        Me.btnCancel.Name = "btnCancel"
-        Me.btnCancel.Size = New System.Drawing.Size(100, 30)
-        Me.btnCancel.TabIndex = 2
-        Me.btnCancel.Text = "Cancel"
-        Me.btnCancel.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnCancel.UseVisualStyleBackColor = True
-        '
-        'pbCompile
-        '
-        Me.pbCompile.Location = New System.Drawing.Point(8, 36)
-        Me.pbCompile.Name = "pbCompile"
-        Me.pbCompile.Size = New System.Drawing.Size(388, 18)
-        Me.pbCompile.Style = System.Windows.Forms.ProgressBarStyle.Continuous
-        Me.pbCompile.TabIndex = 3
-        '
-        'lblCompiling
-        '
-        Me.lblCompiling.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblCompiling.Location = New System.Drawing.Point(3, 11)
-        Me.lblCompiling.Name = "lblCompiling"
-        Me.lblCompiling.Size = New System.Drawing.Size(395, 20)
-        Me.lblCompiling.TabIndex = 0
-        Me.lblCompiling.Text = "Compiling Movie List..."
-        Me.lblCompiling.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.lblCompiling.Visible = False
-        '
-        'lblFile
-        '
-        Me.lblFile.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblFile.Location = New System.Drawing.Point(3, 57)
-        Me.lblFile.Name = "lblFile"
-        Me.lblFile.Size = New System.Drawing.Size(395, 13)
-        Me.lblFile.TabIndex = 4
-        Me.lblFile.Text = "File ..."
-        '
-        'lblCanceling
-        '
-        Me.lblCanceling.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblCanceling.Location = New System.Drawing.Point(110, 12)
-        Me.lblCanceling.Name = "lblCanceling"
-        Me.lblCanceling.Size = New System.Drawing.Size(186, 20)
-        Me.lblCanceling.TabIndex = 1
-        Me.lblCanceling.Text = "Canceling Compilation..."
-        Me.lblCanceling.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        Me.lblCanceling.Visible = False
-        '
         'pnlMain
         '
         Me.pnlMain.AutoScroll = True
-        Me.pnlMain.Controls.Add(Me.pnlCancel)
         Me.pnlMain.Controls.Add(Me.wbPreview)
         Me.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlMain.Location = New System.Drawing.Point(0, 0)
@@ -216,13 +138,14 @@ Partial Class dlgExportMovies
         Me.wbPreview.TabIndex = 0
         Me.wbPreview.Visible = False
         '
-        'StatusStrip1
+        'ssStatus
         '
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 581)
-        Me.StatusStrip1.Name = "StatusStrip1"
-        Me.StatusStrip1.Size = New System.Drawing.Size(1084, 22)
-        Me.StatusStrip1.TabIndex = 5
-        Me.StatusStrip1.Text = "StatusStrip1"
+        Me.ssStatus.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible
+        Me.ssStatus.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tslblFile, Me.tslblSpring, Me.tslblStatus, Me.tspbStatus})
+        Me.ssStatus.Location = New System.Drawing.Point(0, 581)
+        Me.ssStatus.Name = "ssStatus"
+        Me.ssStatus.Size = New System.Drawing.Size(1084, 22)
+        Me.ssStatus.TabIndex = 5
         '
         'pnlBottom
         '
@@ -348,24 +271,56 @@ Partial Class dlgExportMovies
         Me.btnExportPath.TextAlign = System.Drawing.ContentAlignment.TopCenter
         Me.btnExportPath.UseVisualStyleBackColor = True
         '
+        'tspbStatus
+        '
+        Me.tspbStatus.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+        Me.tspbStatus.AutoSize = False
+        Me.tspbStatus.Name = "tspbStatus"
+        Me.tspbStatus.Size = New System.Drawing.Size(150, 16)
+        Me.tspbStatus.Style = System.Windows.Forms.ProgressBarStyle.Marquee
+        Me.tspbStatus.Visible = False
+        '
+        'tslblFile
+        '
+        Me.tslblFile.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.tslblFile.Name = "tslblFile"
+        Me.tslblFile.Size = New System.Drawing.Size(25, 17)
+        Me.tslblFile.Text = "File"
+        Me.tslblFile.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.tslblFile.Visible = False
+        '
+        'tslblSpring
+        '
+        Me.tslblSpring.Name = "tslblSpring"
+        Me.tslblSpring.Size = New System.Drawing.Size(1069, 17)
+        Me.tslblSpring.Spring = True
+        '
+        'tslblStatus
+        '
+        Me.tslblStatus.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.tslblStatus.Name = "tslblStatus"
+        Me.tslblStatus.Size = New System.Drawing.Size(50, 17)
+        Me.tslblStatus.Text = "Loading"
+        Me.tslblStatus.Visible = False
+        '
         'dlgExportMovies
         '
         Me.AcceptButton = Me.btnSave
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.AutoScroll = True
-        Me.CancelButton = Me.btnClose
         Me.ClientSize = New System.Drawing.Size(1084, 603)
         Me.Controls.Add(Me.pnlMain)
         Me.Controls.Add(Me.pnlBottom)
-        Me.Controls.Add(Me.StatusStrip1)
+        Me.Controls.Add(Me.ssStatus)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MinimizeBox = False
         Me.Name = "dlgExportMovies"
         Me.Text = "Export Movies"
-        Me.pnlCancel.ResumeLayout(False)
         Me.pnlMain.ResumeLayout(False)
+        Me.ssStatus.ResumeLayout(False)
+        Me.ssStatus.PerformLayout()
         Me.pnlBottom.ResumeLayout(False)
         Me.pnlBottom.PerformLayout()
         Me.tblBottom.ResumeLayout(False)
@@ -375,7 +330,7 @@ Partial Class dlgExportMovies
 
     End Sub
     Friend WithEvents btnBuild As System.Windows.Forms.Button
-    Friend WithEvents StatusStrip1 As StatusStrip
+    Friend WithEvents ssStatus As StatusStrip
     Friend WithEvents pnlBottom As Panel
     Friend WithEvents tblBottom As TableLayoutPanel
     Friend WithEvents lblList_Movies As Label
@@ -385,6 +340,10 @@ Partial Class dlgExportMovies
     Friend WithEvents txtExportPath As TextBox
     Friend WithEvents lblExportPath As Label
     Friend WithEvents btnExportPath As Button
+    Friend WithEvents tspbStatus As ToolStripProgressBar
+    Friend WithEvents tslblFile As ToolStripStatusLabel
+    Friend WithEvents tslblSpring As ToolStripStatusLabel
+    Friend WithEvents tslblStatus As ToolStripStatusLabel
 
 #End Region 'Methods
 
