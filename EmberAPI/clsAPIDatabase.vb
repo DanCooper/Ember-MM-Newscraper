@@ -428,10 +428,10 @@ Public Class Database
     ''' If not, remove all entries pertaining to the movie.
     ''' </summary>
     ''' <param name="CleanMovies">If <c>True</c>, process the movie files</param>
-    ''' <param name="CleanTV">If <c>True</c>, process the TV files</param>
+    ''' <param name="CleanTVShows">If <c>True</c>, process the TV files</param>
     ''' <param name="SourceID">Optional. If provided, only process entries from that source.</param>
     ''' <remarks></remarks>
-    Public Sub Clean(ByVal CleanMovies As Boolean, ByVal CleanMovieSets As Boolean, ByVal CleanTV As Boolean, Optional ByVal SourceID As Long = -1)
+    Public Sub Clean(ByVal CleanMovies As Boolean, ByVal CleanMovieSets As Boolean, ByVal CleanTVShows As Boolean, Optional ByVal SourceID As Long = -1)
         Dim fInfo As FileInfo
         Dim tPath As String = String.Empty
         Dim sPath As String = String.Empty
@@ -467,7 +467,7 @@ Public Class Database
                     End If
                     Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                         While SQLReader.Read
-                            If Not File.Exists(SQLReader("MoviePath").ToString) OrElse Not Master.eSettings.FileSystemValidExts.Contains(Path.GetExtension(SQLReader("MoviePath").ToString).ToLower) OrElse _
+                            If Not File.Exists(SQLReader("MoviePath").ToString) OrElse Not Master.eSettings.FileSystemValidExts.Contains(Path.GetExtension(SQLReader("MoviePath").ToString).ToLower) OrElse
                                 Master.ExcludeDirs.Exists(Function(s) SQLReader("MoviePath").ToString.ToLower.StartsWith(s.ToLower)) Then
                                 MoviePaths.Remove(SQLReader("MoviePath").ToString)
                                 Master.DB.DeleteMovieFromDB(Convert.ToInt64(SQLReader("idMovie")), True)
@@ -520,7 +520,7 @@ Public Class Database
                 logger.Info("Cleaning moviesets done")
             End If
 
-            If CleanTV Then
+            If CleanTVShows Then
                 logger.Info("Cleaning tv shows started")
                 Using SQLcommand As SQLite.SQLiteCommand = _myvideosDBConn.CreateCommand()
                     If SourceID = -1 Then
@@ -531,7 +531,7 @@ Public Class Database
 
                     Using SQLReader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                         While SQLReader.Read
-                            If Not File.Exists(SQLReader("strFilename").ToString) OrElse Not Master.eSettings.FileSystemValidExts.Contains(Path.GetExtension(SQLReader("strFilename").ToString).ToLower) OrElse _
+                            If Not File.Exists(SQLReader("strFilename").ToString) OrElse Not Master.eSettings.FileSystemValidExts.Contains(Path.GetExtension(SQLReader("strFilename").ToString).ToLower) OrElse
                                 Master.ExcludeDirs.Exists(Function(s) SQLReader("strFilename").ToString.ToLower.StartsWith(s.ToLower)) Then
                                 Master.DB.DeleteTVEpFromDBByPath(SQLReader("strFilename").ToString, False, True)
                             End If

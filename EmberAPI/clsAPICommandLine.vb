@@ -105,7 +105,7 @@ Public Class CommandLine
                     If Args.Count - 1 > i Then
                         If Directory.Exists(Args(i + 1).Replace("""", String.Empty)) Then
                             RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine,
-                                                    New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.SpecificFolder = True}, -1, Args(i + 1).Replace("""", String.Empty)}))
+                                                    New List(Of Object)(New Object() {"loadmedia", New Structures.ScanOrClean With {.SpecificFolder = True}, -1, Args(i + 1).Replace("""", String.Empty)}))
                             i += 1
                         End If
                     Else
@@ -238,22 +238,22 @@ Public Class CommandLine
                         Dim sSource As Database.DBSource = Master.MovieSources.FirstOrDefault(Function(f) f.Name.ToLower = clArg.ToLower)
                         If sSource IsNot Nothing Then
                             RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine,
-                                                    New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.Movies = True}, sSource.ID, String.Empty}))
+                                                    New List(Of Object)(New Object() {"loadmedia", New Structures.ScanOrClean With {.Movies = True}, sSource.ID, String.Empty}))
                             i += 1
                         Else
                             sSource = Master.MovieSources.FirstOrDefault(Function(f) f.Path.ToLower = clArg.ToLower)
                             If sSource IsNot Nothing Then
                                 RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine,
-                                                        New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.Movies = True}, sSource.ID, String.Empty}))
+                                                        New List(Of Object)(New Object() {"loadmedia", New Structures.ScanOrClean With {.Movies = True}, sSource.ID, String.Empty}))
                                 i += 1
                             Else
                                 RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine,
-                                                    New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.Movies = True}, -1, String.Empty}))
+                                                    New List(Of Object)(New Object() {"loadmedia", New Structures.ScanOrClean With {.Movies = True}, -1, String.Empty}))
                             End If
                         End If
                     Else
                         RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine,
-                                                    New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.Movies = True}, -1, String.Empty}))
+                                                    New List(Of Object)(New Object() {"loadmedia", New Structures.ScanOrClean With {.Movies = True}, -1, String.Empty}))
                     End If
                 Case "-updatetvshows"
                     If Args.Count - 1 > i AndAlso Not Args(i + 1).StartsWith("-") Then
@@ -261,22 +261,22 @@ Public Class CommandLine
                         Dim sSource As Database.DBSource = Master.TVShowSources.FirstOrDefault(Function(f) f.Name.ToLower = clArg.ToLower)
                         If sSource IsNot Nothing Then
                             RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine,
-                                                    New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.TV = True}, sSource.ID, String.Empty}))
+                                                    New List(Of Object)(New Object() {"loadmedia", New Structures.ScanOrClean With {.TV = True}, sSource.ID, String.Empty}))
                             i += 1
                         Else
                             sSource = Master.TVShowSources.FirstOrDefault(Function(f) f.Path.ToLower = clArg.ToLower)
                             If sSource IsNot Nothing Then
                                 RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine,
-                                                        New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.TV = True}, sSource.ID, String.Empty}))
+                                                        New List(Of Object)(New Object() {"loadmedia", New Structures.ScanOrClean With {.TV = True}, sSource.ID, String.Empty}))
                                 i += 1
                             Else
                                 RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine,
-                                                    New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.TV = True}, -1, String.Empty}))
+                                                    New List(Of Object)(New Object() {"loadmedia", New Structures.ScanOrClean With {.TV = True}, -1, String.Empty}))
                             End If
                         End If
                     Else
                         RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine,
-                                                    New List(Of Object)(New Object() {"loadmedia", New Structures.Scans With {.TV = True}, -1, String.Empty}))
+                                                    New List(Of Object)(New Object() {"loadmedia", New Structures.ScanOrClean With {.TV = True}, -1, String.Empty}))
                     End If
                 Case Else
                     logger.Warn(String.Concat("[CommandLine] Invalid command: ", Args(i)))

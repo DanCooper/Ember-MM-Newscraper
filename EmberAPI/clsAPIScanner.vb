@@ -1555,7 +1555,7 @@ Public Class Scanner
         Next
     End Sub
 
-    Public Sub Start(ByVal Scan As Structures.Scans, ByVal SourceID As Long, ByVal Folder As String)
+    Public Sub Start(ByVal Scan As Structures.ScanOrClean, ByVal SourceID As Long, ByVal Folder As String)
         Me.bwPrelim = New System.ComponentModel.BackgroundWorker
         Me.bwPrelim.WorkerReportsProgress = True
         Me.bwPrelim.WorkerSupportsCancellation = True
@@ -1847,7 +1847,7 @@ Public Class Scanner
 #Region "Fields"
 
         Dim Folder As String
-        Dim Scan As Structures.Scans
+        Dim Scan As Structures.ScanOrClean
         Dim SourceID As Long
 
 #End Region 'Fields

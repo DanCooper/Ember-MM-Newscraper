@@ -383,7 +383,7 @@ Public Class FileManagerExternalModule
                                     End If
                                 End If
                             Next
-                            If Not _MySettings.TeraCopy AndAlso doMove Then ModulesManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.Scans With {.Movies = True})
+                            If Not _MySettings.TeraCopy AndAlso doMove Then ModulesManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.ScanOrClean With {.Movies = True})
                         ElseIf ContentType = Enums.ContentType.TVShow Then
                             Dim mShow As New Database.DBElement
                             Dim FileDelete As New FileUtils.Delete
@@ -403,7 +403,7 @@ Public Class FileManagerExternalModule
                                     End If
                                 End If
                             Next
-                            If Not _MySettings.TeraCopy AndAlso doMove Then ModulesManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.Scans With {.TV = True})
+                            If Not _MySettings.TeraCopy AndAlso doMove Then ModulesManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.ScanOrClean With {.TV = True})
                         End If
                         If _MySettings.TeraCopy Then mTeraCopy.RunTeraCopy()
                     End If

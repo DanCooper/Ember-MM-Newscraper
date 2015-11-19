@@ -1761,7 +1761,7 @@ Public Class Structures
         Dim Title As String
     End Structure
 
-    Public Structure Scans
+    Public Structure ScanOrClean
         Dim Movies As Boolean
         Dim MovieSets As Boolean
         Dim SpecificFolder As Boolean

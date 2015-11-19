@@ -2047,7 +2047,7 @@ Public Class ModulesManager
 
 #Region "Delegates"
 
-        Delegate Sub LoadMedia(ByVal Scan As Structures.Scans, ByVal SourceID As Long)
+        Delegate Sub LoadMedia(ByVal Scan As Structures.ScanOrClean, ByVal SourceID As Long)
 
         'all runtime object including Function (delegate) that need to be exposed to Modules
         Delegate Sub OpenImageViewer(ByVal _Image As Image)
@@ -2284,7 +2284,7 @@ Public Class ModulesManager
             _OpenImageViewer = IV
         End Sub
 
-        Public Sub InvokeLoadMedia(ByVal Scan As Structures.Scans, Optional ByVal SourceID As Long = -1)
+        Public Sub InvokeLoadMedia(ByVal Scan As Structures.ScanOrClean, Optional ByVal SourceID As Long = -1)
             'Invoked from Modules
             _LoadMedia.Invoke(Scan, SourceID)
         End Sub

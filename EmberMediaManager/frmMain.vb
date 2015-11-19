@@ -401,8 +401,8 @@ Public Class frmMain
                 If .bwLoadSeasonInfo.IsBusy Then .bwLoadSeasonInfo.CancelAsync()
                 If .bwLoadEpInfo.IsBusy Then .bwLoadEpInfo.CancelAsync()
 
-                While .bwDownloadPic.IsBusy OrElse .bwLoadMovieInfo.IsBusy OrElse .bwLoadMovieSetInfo.IsBusy OrElse _
-                    .bwLoadShowInfo.IsBusy OrElse .bwLoadSeasonInfo.IsBusy OrElse .bwLoadEpInfo.IsBusy OrElse _
+                While .bwDownloadPic.IsBusy OrElse .bwLoadMovieInfo.IsBusy OrElse .bwLoadMovieSetInfo.IsBusy OrElse
+                    .bwLoadShowInfo.IsBusy OrElse .bwLoadSeasonInfo.IsBusy OrElse .bwLoadEpInfo.IsBusy OrElse
                     .bwLoadMovieSetPosters.IsBusy
                     Application.DoEvents()
                     Threading.Thread.Sleep(50)
@@ -611,7 +611,7 @@ Public Class frmMain
         Return If(lsColumn Is Nothing, True, lsColumn.Hide)
     End Function
 
-    Public Sub LoadMedia(ByVal Scan As Structures.Scans, Optional ByVal SourceID As Long = -1, Optional ByVal Folder As String = "")
+    Public Sub LoadMedia(ByVal Scan As Structures.ScanOrClean, Optional ByVal SourceID As Long = -1, Optional ByVal Folder As String = "")
         Try
             SetStatus(Master.eLang.GetString(116, "Performing Preliminary Tasks (Gathering Data)..."))
             tspbLoading.ProgressBar.Style = ProgressBarStyle.Marquee
@@ -1445,7 +1445,8 @@ Public Class frmMain
     End Sub
 
     Private Sub bwCleanDB_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCleanDB.DoWork
-        Master.DB.Clean(True, True, True)
+        Dim Args As Structures.ScanOrClean = DirectCast(e.Argument, Structures.ScanOrClean)
+        Master.DB.Clean(Args.Movies, Args.MovieSets, Args.TV)
     End Sub
 
     Private Sub bwCleanDB_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwCleanDB.RunWorkerCompleted
@@ -4103,10 +4104,10 @@ doCancel:
     End Sub
 
     Private Sub mnuMainToolsCleanDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsCleanDB.Click, cmnuTrayToolsCleanDB.Click
-        CleanDB()
+        CleanDB(New Structures.ScanOrClean With {.Movies = True, .MovieSets = True, .TV = True})
     End Sub
 
-    Private Sub CleanDB()
+    Private Sub CleanDB(ByVal Clean As Structures.ScanOrClean)
         SetControlsEnabled(False, True)
         tspbLoading.Style = ProgressBarStyle.Marquee
         EnableFilters_Movies(False)
@@ -4117,7 +4118,7 @@ doCancel:
         tspbLoading.Visible = True
 
         bwCleanDB.WorkerSupportsCancellation = True
-        bwCleanDB.RunWorkerAsync()
+        bwCleanDB.RunWorkerAsync(Clean)
     End Sub
 
     Private Sub CleanFiles()
@@ -5898,7 +5899,7 @@ doCancel:
         SetControlsEnabled(False)
         Using dSortFiles As New dlgSortFiles
             If dSortFiles.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                LoadMedia(New Structures.Scans With {.Movies = True})
+                LoadMedia(New Structures.ScanOrClean With {.Movies = True})
             Else
                 SetControlsEnabled(True)
             End If
@@ -10491,13 +10492,13 @@ doCancel:
 
                 If Not String.IsNullOrEmpty(Master.eSettings.Version) Then 'If Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision) Then
                     If Master.DB.ConnectMyVideosDB() Then
-                        LoadMedia(New Structures.Scans With {.Movies = True, .MovieSets = True, .TV = True})
+                        LoadMedia(New Structures.ScanOrClean With {.Movies = True, .MovieSets = True, .TV = True})
                     End If
                     FillList(True, True, True)
                     Visible = True
                 Else
                     If Master.DB.ConnectMyVideosDB() Then
-                        LoadMedia(New Structures.Scans With {.Movies = True, .MovieSets = True, .TV = True})
+                        LoadMedia(New Structures.ScanOrClean With {.Movies = True, .MovieSets = True, .TV = True})
                     End If
                     'If dlgWizard.ShowDialog() = Windows.Forms.DialogResult.OK Then
                     '    Application.DoEvents()
@@ -10619,7 +10620,7 @@ doCancel:
                     Case "cleanvideodb"
                         Master.fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
                         Master.fLoading.SetLoadingMesg(Master.eLang.GetString(644, "Cleaning Database..."))
-                        CleanDB()
+                        CleanDB(New Structures.ScanOrClean With {.Movies = True, .MovieSets = True, .TV = True})
                         While bwCleanDB.IsBusy
                             Application.DoEvents()
                             Threading.Thread.Sleep(50)
@@ -10628,7 +10629,7 @@ doCancel:
                         Master.fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
                         Master.fLoading.SetLoadingMesg(Master.eLang.GetString(860, "Loading Media..."))
                         LoadingDone = False
-                        LoadMedia(CType(_params(1), Structures.Scans), Convert.ToInt64(_params(2)), CStr(_params(3)))
+                        LoadMedia(CType(_params(1), Structures.ScanOrClean), Convert.ToInt64(_params(2)), CStr(_params(3)))
                         While Not LoadingDone
                             Application.DoEvents()
                             Threading.Thread.Sleep(50)
@@ -15540,7 +15541,7 @@ doCancel:
         'Using dOfflineHolder As New dlgOfflineHolder
         '    dOfflineHolder.ShowDialog()
         'End Using
-        LoadMedia(New Structures.Scans With {.Movies = True, .TV = False})
+        LoadMedia(New Structures.ScanOrClean With {.Movies = True, .TV = False})
         SetControlsEnabled(True)
     End Sub
 
@@ -15657,13 +15658,29 @@ doCancel:
                 dresult.NeedsReload_MovieSet OrElse
                 dresult.NeedsReload_TV Then
 
+                If dresult.NeedsDBClean_Movie OrElse dresult.NeedsDBClean_TV Then
+                    If MessageBox.Show("Clean DB", "title", MessageBoxButtons.YesNo) = DialogResult.Yes Then
+                        While bwLoadMovieInfo.IsBusy OrElse bwMovieScraper.IsBusy OrElse bwReload_Movies.IsBusy OrElse
+                            bwLoadMovieSetInfo.IsBusy OrElse bwMovieSetScraper.IsBusy OrElse bwReload_MovieSets.IsBusy OrElse
+                            bwLoadEpInfo.IsBusy OrElse bwLoadSeasonInfo.IsBusy OrElse bwLoadShowInfo.IsBusy OrElse bwReload_TVShows.IsBusy OrElse bwCleanDB.IsBusy
+                            Application.DoEvents()
+                            Threading.Thread.Sleep(50)
+                        End While
+                        Dim DBCleaner As New Structures.ScanOrClean
+                        'it's not necessary to clean the DB if we clean it anyway after DB update
+                        DBCleaner.Movies = dresult.NeedsDBClean_Movie AndAlso Not (dresult.NeedsDBUpdate_Movie AndAlso Master.eSettings.MovieCleanDB)
+                        DBCleaner.TV = dresult.NeedsDBClean_TV AndAlso Not (dresult.NeedsDBUpdate_TV AndAlso Master.eSettings.TVCleanDB)
+                        CleanDB(DBCleaner)
+                    End If
+                End If
+
                 If dresult.NeedsReload_Movie Then
                     If Not fScanner.IsBusy Then
                         While bwLoadMovieInfo.IsBusy OrElse bwMovieScraper.IsBusy OrElse bwReload_Movies.IsBusy OrElse
                             bwLoadMovieSetInfo.IsBusy OrElse bwMovieSetScraper.IsBusy OrElse bwReload_MovieSets.IsBusy OrElse
                             bwLoadEpInfo.IsBusy OrElse bwLoadSeasonInfo.IsBusy OrElse bwLoadShowInfo.IsBusy OrElse bwReload_TVShows.IsBusy OrElse bwCleanDB.IsBusy
                             Application.DoEvents()
-                            'Threading.Thread.Sleep(50)
+                            Threading.Thread.Sleep(50)
                         End While
                         ReloadAll_Movie()
                     End If
@@ -15674,7 +15691,7 @@ doCancel:
                             bwLoadMovieSetInfo.IsBusy OrElse bwMovieSetScraper.IsBusy OrElse bwReload_MovieSets.IsBusy OrElse
                             bwLoadEpInfo.IsBusy OrElse bwLoadSeasonInfo.IsBusy OrElse bwLoadShowInfo.IsBusy OrElse bwReload_TVShows.IsBusy OrElse bwCleanDB.IsBusy
                             Application.DoEvents()
-                            'Threading.Thread.Sleep(50)
+                            Threading.Thread.Sleep(50)
                         End While
                         ReloadAll_MovieSet()
                     End If
@@ -15685,7 +15702,7 @@ doCancel:
                             bwLoadMovieSetInfo.IsBusy OrElse bwMovieSetScraper.IsBusy OrElse bwReload_MovieSets.IsBusy OrElse
                             bwLoadEpInfo.IsBusy OrElse bwLoadSeasonInfo.IsBusy OrElse bwLoadShowInfo.IsBusy OrElse bwReload_TVShows.IsBusy OrElse bwCleanDB.IsBusy
                             Application.DoEvents()
-                            'Threading.Thread.Sleep(50)
+                            Threading.Thread.Sleep(50)
                         End While
                         ReloadAll_TVShow()
                     End If
@@ -15696,9 +15713,9 @@ doCancel:
                             bwLoadMovieSetInfo.IsBusy OrElse bwMovieSetScraper.IsBusy OrElse bwReload_MovieSets.IsBusy OrElse
                             bwLoadEpInfo.IsBusy OrElse bwLoadSeasonInfo.IsBusy OrElse bwLoadShowInfo.IsBusy OrElse bwReload_TVShows.IsBusy OrElse bwCleanDB.IsBusy
                             Application.DoEvents()
-                            'Threading.Thread.Sleep(50)
+                            Threading.Thread.Sleep(50)
                         End While
-                        LoadMedia(New Structures.Scans With {.Movies = True, .TV = True})
+                        LoadMedia(New Structures.ScanOrClean With {.Movies = True, .TV = True})
                     End If
                 End If
             Else
@@ -15715,7 +15732,7 @@ doCancel:
                     bwLoadMovieSetInfo.IsBusy OrElse bwMovieSetScraper.IsBusy OrElse bwReload_MovieSets.IsBusy OrElse
                     bwLoadEpInfo.IsBusy OrElse bwLoadSeasonInfo.IsBusy OrElse bwLoadShowInfo.IsBusy OrElse bwReload_TVShows.IsBusy OrElse bwCleanDB.IsBusy
                     Application.DoEvents()
-                    'Threading.Thread.Sleep(50)
+                    Threading.Thread.Sleep(50)
                 End While
                 Using dRestart As New dlgRestart
                     If dRestart.ShowDialog = Windows.Forms.DialogResult.OK Then
@@ -16464,7 +16481,7 @@ doCancel:
             End Try
         End If
 
-        LoadMedia(New Structures.Scans With {.Movies = True}, SourceID)
+        LoadMedia(New Structures.ScanOrClean With {.Movies = True}, SourceID)
     End Sub
 
     Private Sub SourceSubClick_TV(ByVal sender As Object, ByVal e As System.EventArgs)
@@ -16486,7 +16503,7 @@ doCancel:
         End If
 
 
-        LoadMedia(New Structures.Scans With {.TV = True}, SourceID)
+        LoadMedia(New Structures.ScanOrClean With {.TV = True}, SourceID)
     End Sub
 
     Private Sub tcMain_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tcMain.SelectedIndexChanged
@@ -17015,7 +17032,7 @@ doCancel:
     End Sub
 
     Private Sub mnuUpdate_ButtonClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuUpdate.ButtonClick
-        LoadMedia(New Structures.Scans With {.Movies = True, .MovieSets = True, .TV = True})
+        LoadMedia(New Structures.ScanOrClean With {.Movies = True, .MovieSets = True, .TV = True})
     End Sub
 
     Private Sub txtFilterGenre_Movies_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtFilterGenre_Movies.Click
