@@ -23,12 +23,12 @@ Imports System.Xml.Serialization
 Imports System.Net
 Imports System.Drawing
 Imports System.Windows.Forms
-Imports System.Xml.Linq
 Imports NLog
+
 Public Class Settings
 
 #Region "Fields"
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     Private Shared _XMLSettings As New clsXMLSettings
 
@@ -37,7 +37,7 @@ Public Class Settings
 #Region "Constructors"
 
     Public Sub New()
-        Me.SetDefaults()
+        SetDefaults()
     End Sub
 
 #End Region 'Constructors
@@ -52,7 +52,7 @@ Public Class Settings
             Return Settings._XMLSettings.MovieScraperCastLimit
         End Get
         Set(ByVal value As Integer)
-            Settings._XMLSettings.moviescrapercastlimit = value
+            Settings._XMLSettings.MovieScraperCastLimit = value
         End Set
     End Property
 
@@ -416,8 +416,8 @@ Public Class Settings
         End Set
     End Property
 
-    <XmlArray("EmberModules")> _
-    <XmlArrayItem("Module")> _
+    <XmlArray("EmberModules")>
+    <XmlArrayItem("Module")>
     Public Property EmberModules() As List(Of ModulesManager._XMLEmberModuleClass)
         Get
             Return Settings._XMLSettings.EmberModules
@@ -1453,10 +1453,10 @@ Public Class Settings
 
     Public Property TVGeneralClickScrapeAsk() As Boolean
         Get
-            Return Settings._XMLSettings.TVGeneralClickScrapeAsk
+            Return Settings._XMLSettings.TVGeneralClickScrapeask
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.TVGeneralClickScrapeAsk = value
+            Settings._XMLSettings.TVGeneralClickScrapeask = value
         End Set
     End Property
 
@@ -4402,6 +4402,24 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieUseAD() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieUseAD
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieUseAD = value
+        End Set
+    End Property
+
+    Public Property MovieUseExtended() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieUseExtended
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieUseExtended = value
+        End Set
+    End Property
+
     Public Property MovieUseFrodo() As Boolean
         Get
             Return Settings._XMLSettings.MovieUseFrodo
@@ -5527,6 +5545,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieSetUseExtended() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieSetUseExtended
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieSetUseExtended = value
+        End Set
+    End Property
+
     Public Property MovieSetUseMSAA() As Boolean
         Get
             Return Settings._XMLSettings.MovieSetUseMSAA
@@ -5785,6 +5812,24 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.TVUseExpert = value
+        End Set
+    End Property
+
+    Public Property TVUseAD() As Boolean
+        Get
+            Return Settings._XMLSettings.TVUseAD
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVUseAD = value
+        End Set
+    End Property
+
+    Public Property TVUseExtended() As Boolean
+        Get
+            Return Settings._XMLSettings.TVUseExtended
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVUseExtended = value
         End Set
     End Property
 
@@ -6568,7 +6613,7 @@ Public Class Settings
                     'old allseasons/season/tvshow banner type
                     sSettings = System.Text.RegularExpressions.Regex.Replace(sSettings, "PrefType>None<", "PrefType>Any<")
                     'old seasonposter size HD1000
-                    sSettings = System.Text.RegularExpressions.Regex.Replace(sSettings, "<TVSeasonPosterPrefSize>HD1000</TVSeasonPosterPrefSize>", _
+                    sSettings = System.Text.RegularExpressions.Regex.Replace(sSettings, "<TVSeasonPosterPrefSize>HD1000</TVSeasonPosterPrefSize>",
                                                                              "<TVSeasonPosterPrefSize>Any</TVSeasonPosterPrefSize>")
 
                     Dim xXMLSettings As New XmlSerializer(_XMLSettings.GetType)
@@ -6595,14 +6640,9 @@ Public Class Settings
         If Not (Master.eSettings.MovieUseBoxee Or Master.eSettings.MovieUseEden Or Master.eSettings.MovieUseExpert Or Master.eSettings.MovieUseFrodo Or Master.eSettings.MovieUseNMJ Or Master.eSettings.MovieUseYAMJ) Then
             Master.eSettings.MovieUseFrodo = True
             Master.eSettings.MovieActorThumbsFrodo = True
-            Master.eSettings.MovieBannerExtended = True
-            Master.eSettings.MovieClearArtExtended = True
-            Master.eSettings.MovieClearLogoExtended = True
-            Master.eSettings.MovieDiscArtExtended = True
             Master.eSettings.MovieExtrafanartsFrodo = True
             Master.eSettings.MovieExtrathumbsFrodo = True
             Master.eSettings.MovieFanartFrodo = True
-            Master.eSettings.MovieLandscapeExtended = True
             Master.eSettings.MovieNFOFrodo = True
             Master.eSettings.MoviePosterFrodo = True
             Master.eSettings.MovieThemeTvTunesEnable = True
@@ -6619,16 +6659,11 @@ Public Class Settings
             Master.eSettings.TVEpisodePosterFrodo = True
             Master.eSettings.TVSeasonBannerFrodo = True
             Master.eSettings.TVSeasonFanartFrodo = True
-            Master.eSettings.TVSeasonLandscapeExtended = True
             Master.eSettings.TVSeasonPosterFrodo = True
             Master.eSettings.TVShowActorThumbsFrodo = True
             Master.eSettings.TVShowBannerFrodo = True
-            Master.eSettings.TVShowCharacterArtExtended = True
-            Master.eSettings.TVShowClearArtExtended = True
-            Master.eSettings.TVShowClearLogoExtended = True
             Master.eSettings.TVShowExtrafanartsFrodo = True
             Master.eSettings.TVShowFanartFrodo = True
-            Master.eSettings.TVShowLandscapeExtended = True
             Master.eSettings.TVShowNFOFrodo = True
             Master.eSettings.TVShowPosterFrodo = True
         End If
@@ -6680,513 +6715,513 @@ Public Class Settings
     ''' </summary>
     ''' <remarks></remarks>
     Public Sub SetDefaults()
-        Me.CleanDotFanartJPG = False
-        Me.CleanExtrathumbs = False
-        Me.CleanFanartJPG = False
-        Me.CleanFolderJPG = False
-        Me.CleanMovieJPG = False
-        Me.CleanMovieNFO = False
-        Me.CleanMovieNFOB = False
-        Me.CleanMovieTBN = False
-        Me.CleanMovieTBNB = False
-        Me.CleanMovieFanartJPG = False
-        Me.CleanMovieNameJPG = False
-        Me.CleanPosterJPG = False
-        Me.CleanPosterTBN = False
-        Me.EmberModules = New List(Of ModulesManager._XMLEmberModuleClass)
-        Me.FileSystemCleanerWhitelist = False
-        Me.FileSystemCleanerWhitelistExts = New List(Of String)
-        Me.FileSystemExpertCleaner = False
-        Me.FileSystemNoStackExts = New List(Of String)
-        Me.FileSystemValidExts = New List(Of String)
-        Me.FileSystemValidSubtitlesExts = New List(Of String)
-        Me.FileSystemValidThemeExts = New List(Of String)
-        Me.GeneralCheckUpdates = False
-        Me.GeneralDaemonDrive = String.Empty
-        Me.GeneralDaemonPath = String.Empty
-        Me.GeneralDateAddedIgnoreNFO = False
-        Me.GeneralDateTime = Enums.DateTime.Now
-        Me.GeneralDigitGrpSymbolVotes = False
-        Me.GeneralDoubleClickScrape = False
-        Me.GeneralFilterPanelStateMovie = False
-        Me.GeneralFilterPanelStateMovieSet = False
-        Me.GeneralFilterPanelStateShow = False
-        Me.GeneralMainFilterSortColumn_Movies = 3
-        Me.GeneralMainFilterSortColumn_MovieSets = 1
-        Me.GeneralMainFilterSortColumn_Shows = 1
-        Me.GeneralMainFilterSortOrder_Movies = 0
-        Me.GeneralMainFilterSortOrder_MovieSets = 0
-        Me.GeneralMainFilterSortOrder_Shows = 0
-        Me.GeneralDisplayBanner = True
-        Me.GeneralDisplayCharacterArt = True
-        Me.GeneralDisplayClearArt = True
-        Me.GeneralDisplayClearLogo = True
-        Me.GeneralDisplayDiscArt = True
-        Me.GeneralDisplayFanart = True
-        Me.GeneralDisplayFanartSmall = True
-        Me.GeneralDisplayLandscape = True
-        Me.GeneralDisplayPoster = True
-        Me.GeneralImagesGlassOverlay = False
-        Me.GeneralImageFilter = True
-        Me.GeneralImageFilterAutoscraper = True
-        Me.GeneralImageFilterImagedialog = False
-        Me.GeneralImageFilterFanartMatchTolerance = 4
-        Me.GeneralImageFilterPosterMatchTolerance = 1
-        Me.GeneralLanguage = "English_(en_US)"
-        Me.GeneralMainSplitterPanelState = 550
-        Me.GeneralMovieInfoPanelState = 200
-        Me.GeneralMovieSetInfoPanelState = 200
-        Me.GeneralMovieTheme = "Default"
-        Me.GeneralMovieSetTheme = "Default"
-        Me.GeneralOverwriteNfo = False
-        Me.GeneralSeasonSplitterPanelState = 200
-        Me.GeneralShowGenresText = True
-        Me.GeneralShowLangFlags = True
-        Me.GeneralShowImgDims = True
-        Me.GeneralShowImgNames = True
-        Me.GeneralShowSplitterPanelState = 200
-        Me.GeneralSourceFromFolder = False
-        Me.GeneralTVEpisodeTheme = "Default"
-        Me.GeneralTVShowInfoPanelState = 200
-        Me.GeneralTVShowTheme = "Default"
+        CleanDotFanartJPG = False
+        CleanExtrathumbs = False
+        CleanFanartJPG = False
+        CleanFolderJPG = False
+        CleanMovieJPG = False
+        CleanMovieNFO = False
+        CleanMovieNFOB = False
+        CleanMovieTBN = False
+        CleanMovieTBNB = False
+        CleanMovieFanartJPG = False
+        CleanMovieNameJPG = False
+        CleanPosterJPG = False
+        CleanPosterTBN = False
+        EmberModules = New List(Of ModulesManager._XMLEmberModuleClass)
+        FileSystemCleanerWhitelist = False
+        FileSystemCleanerWhitelistExts = New List(Of String)
+        FileSystemExpertCleaner = False
+        FileSystemNoStackExts = New List(Of String)
+        FileSystemValidExts = New List(Of String)
+        FileSystemValidSubtitlesExts = New List(Of String)
+        FileSystemValidThemeExts = New List(Of String)
+        GeneralCheckUpdates = False
+        GeneralDaemonDrive = String.Empty
+        GeneralDaemonPath = String.Empty
+        GeneralDateAddedIgnoreNFO = False
+        GeneralDateTime = Enums.DateTime.Now
+        GeneralDigitGrpSymbolVotes = False
+        GeneralDoubleClickScrape = False
+        GeneralFilterPanelStateMovie = False
+        GeneralFilterPanelStateMovieSet = False
+        GeneralFilterPanelStateShow = False
+        GeneralMainFilterSortColumn_Movies = 3
+        GeneralMainFilterSortColumn_MovieSets = 1
+        GeneralMainFilterSortColumn_Shows = 1
+        GeneralMainFilterSortOrder_Movies = 0
+        GeneralMainFilterSortOrder_MovieSets = 0
+        GeneralMainFilterSortOrder_Shows = 0
+        GeneralDisplayBanner = True
+        GeneralDisplayCharacterArt = True
+        GeneralDisplayClearArt = True
+        GeneralDisplayClearLogo = True
+        GeneralDisplayDiscArt = True
+        GeneralDisplayFanart = True
+        GeneralDisplayFanartSmall = True
+        GeneralDisplayLandscape = True
+        GeneralDisplayPoster = True
+        GeneralImagesGlassOverlay = False
+        GeneralImageFilter = True
+        GeneralImageFilterAutoscraper = True
+        GeneralImageFilterImagedialog = False
+        GeneralImageFilterFanartMatchTolerance = 4
+        GeneralImageFilterPosterMatchTolerance = 1
+        GeneralLanguage = "English_(en_US)"
+        GeneralMainSplitterPanelState = 550
+        GeneralMovieInfoPanelState = 200
+        GeneralMovieSetInfoPanelState = 200
+        GeneralMovieTheme = "Default"
+        GeneralMovieSetTheme = "Default"
+        GeneralOverwriteNfo = False
+        GeneralSeasonSplitterPanelState = 200
+        GeneralShowGenresText = True
+        GeneralShowLangFlags = True
+        GeneralShowImgDims = True
+        GeneralShowImgNames = True
+        GeneralShowSplitterPanelState = 200
+        GeneralSourceFromFolder = False
+        GeneralTVEpisodeTheme = "Default"
+        GeneralTVShowInfoPanelState = 200
+        GeneralTVShowTheme = "Default"
         'Me.GeneralWindowLoc =
         'Me.GeneralWindowSize =
-        Me.GeneralWindowState = FormWindowState.Maximized
-        Me.GenreFilter = "English"
-        Me.MovieActorThumbsKeepExisting = False
-        Me.MovieBackdropsAuto = False
-        Me.MovieBackdropsPath = String.Empty
-        Me.MovieBannerHeight = 0
-        Me.MovieBannerKeepExisting = False
-        Me.MovieBannerPrefSizeOnly = False
-        Me.MovieBannerPrefSize = Enums.MovieBannerSize.Any
-        Me.MovieBannerResize = False
-        Me.MovieBannerWidth = 0
-        Me.MovieCleanDB = False
-        Me.MovieClearArtKeepExisting = False
-        Me.MovieClearLogoKeepExisting = False
-        Me.MovieClickScrape = False
-        Me.MovieClickScrapeAsk = False
-        Me.MovieDiscArtKeepExisting = False
-        Me.MovieDisplayYear = False
-        Me.MovieExtrafanartsHeight = 0
-        Me.MovieExtrafanartsLimit = 4
-        Me.MovieExtrafanartsKeepExisting = False
-        Me.MovieExtrafanartsPrefSizeOnly = False
-        Me.MovieExtrafanartsPrefSize = Enums.MovieFanartSize.Any
-        Me.MovieExtrafanartsResize = False
-        Me.MovieExtrafanartsWidth = 0
-        Me.MovieExtrathumbsHeight = 0
-        Me.MovieExtrathumbsLimit = 4
-        Me.MovieExtrathumbsKeepExisting = False
-        Me.MovieExtrathumbsPrefSizeOnly = False
-        Me.MovieExtrathumbsPrefSize = 0
-        Me.MovieExtrathumbsResize = False
-        Me.MovieExtrathumbsWidth = 0
-        Me.MovieFanartHeight = 0
-        Me.MovieFanartKeepExisting = False
-        Me.MovieFanartPrefSizeOnly = False
-        Me.MovieFanartPrefSize = Enums.MovieFanartSize.Any
-        Me.MovieFanartResize = False
-        Me.MovieFanartWidth = 0
-        Me.MovieFilterCustom = New List(Of String)
-        Me.MovieFilterCustomIsEmpty = False
-        Me.MovieGeneralCustomMarker1Color = -32704
-        Me.MovieGeneralCustomMarker2Color = -16776961
-        Me.MovieGeneralCustomMarker3Color = -12582784
-        Me.MovieGeneralCustomMarker4Color = -16711681
-        Me.MovieGeneralCustomMarker1Name = String.Empty
-        Me.MovieGeneralCustomMarker2Name = String.Empty
-        Me.MovieGeneralCustomMarker3Name = String.Empty
-        Me.MovieGeneralCustomMarker4Name = String.Empty
-        Me.MovieGeneralFlagLang = String.Empty
-        Me.MovieGeneralIgnoreLastScan = True
-        Me.MovieGeneralLanguage = "en"
-        Me.MovieGeneralMarkNew = False
-        Me.MovieGeneralMediaListSorting = New List(Of ListSorting)
-        Me.MovieImagesCacheEnabled = False
-        Me.MovieImagesDisplayImageSelect = True
-        Me.MovieImagesGetBlankImages = False
-        Me.MovieImagesGetEnglishImages = False
-        Me.MovieImagesMediaLanguageOnly = False
-        Me.MovieImagesNotSaveURLToNfo = False
-        Me.MovieImagesPrefLanguage = "en"
-        Me.MovieIMDBURL = String.Empty
-        Me.MovieLandscapeKeepExisting = False
-        Me.MovieLevTolerance = 0
-        Me.MovieLockActors = False
-        Me.MovieLockCert = False
-        Me.MovieLockCollectionID = False
-        Me.MovieLockCollections = False
-        Me.MovieLockCountry = False
-        Me.MovieLockDirector = False
-        Me.MovieLockGenre = False
-        Me.MovieLockLanguageA = False
-        Me.MovieLockLanguageV = False
-        Me.MovieLockMPAA = False
-        Me.MovieLockOriginalTitle = False
-        Me.MovieLockOutline = False
-        Me.MovieLockPlot = False
-        Me.MovieLockRating = False
-        Me.MovieLockReleaseDate = False
-        Me.MovieLockRuntime = False
-        Me.MovieLockStudio = False
-        Me.MovieLockTags = False
-        Me.MovieLockTagline = False
-        Me.MovieLockTitle = False
-        Me.MovieLockTop250 = False
-        Me.MovieLockTrailer = False
-        Me.MovieLockCredits = False
-        Me.MovieLockYear = False
-        Me.MovieMetadataPerFileType = New List(Of MetadataPerType)
-        Me.MovieMissingBanner = False
-        Me.MovieMissingClearArt = False
-        Me.MovieMissingClearLogo = False
-        Me.MovieMissingDiscArt = False
-        Me.MovieMissingExtrafanarts = False
-        Me.MovieMissingExtrathumbs = False
-        Me.MovieMissingFanart = False
-        Me.MovieMissingLandscape = False
-        Me.MovieMissingNFO = False
-        Me.MovieMissingPoster = False
-        Me.MovieMissingSubtitles = False
-        Me.MovieMissingTheme = False
-        Me.MovieMissingTrailer = False
-        Me.MoviePosterHeight = 0
-        Me.MoviePosterKeepExisting = False
-        Me.MoviePosterPrefSizeOnly = False
-        Me.MoviePosterPrefSize = Enums.MoviePosterSize.Any
-        Me.MoviePosterResize = False
-        Me.MoviePosterWidth = 0
-        Me.MovieProperCase = True
-        Me.MovieScanOrderModify = False
-        Me.MovieScraperCast = True
-        Me.MovieScraperCastLimit = 0
-        Me.MovieScraperCastWithImgOnly = False
-        Me.MovieScraperCertForMPAA = False
-        Me.MovieScraperCertForMPAAFallback = False
-        Me.MovieScraperCert = False
-        Me.MovieScraperCertLang = String.Empty
-        Me.MovieScraperCleanFields = False
-        Me.MovieScraperCleanPlotOutline = False
-        Me.MovieScraperCollectionID = True
-        Me.MovieScraperCollectionsAuto = True
-        Me.MovieScraperCountry = True
-        Me.MovieScraperDirector = True
-        Me.MovieScraperDurationRuntimeFormat = "<m>"
-        Me.MovieScraperReleaseFormat = False
-        Me.MovieScraperGenre = True
-        Me.MovieScraperGenreLimit = 0
-        Me.MovieScraperMetaDataIFOScan = True
-        Me.MovieScraperMetaDataScan = True
-        Me.MovieScraperMPAA = True
-        Me.MovieScraperMPAANotRated = String.Empty
-        Me.MovieScraperOriginalTitle = True
-        Me.MovieScraperCertOnlyValue = False
-        Me.MovieScraperOutline = True
-        Me.MovieScraperOutlineLimit = 350
-        Me.MovieScraperPlot = True
-        Me.MovieScraperPlotForOutline = False
-        Me.MovieScraperPlotForOutlineIfEmpty = False
-        Me.MovieScraperRating = True
-        Me.MovieScraperRelease = True
-        Me.MovieScraperRuntime = True
-        Me.MovieScraperStudio = True
-        Me.MovieScraperStudioLimit = 0
-        Me.MovieScraperStudioWithImgOnly = False
-        Me.MovieScraperTagline = True
-        Me.MovieScraperTitle = True
-        Me.MovieScraperTop250 = True
-        Me.MovieScraperTrailer = True
-        Me.MovieScraperUseDetailView = False
-        Me.MovieScraperUseMDDuration = True
-        Me.MovieScraperCertFSK = False
-        Me.MovieScraperCredits = True
-        Me.MovieScraperXBMCTrailerFormat = False
-        Me.MovieScraperYear = True
-        Me.MovieSetBannerHeight = 0
-        Me.MovieSetBannerKeepExisting = False
-        Me.MovieSetBannerPrefSizeOnly = False
-        Me.MovieSetBannerPrefSize = Enums.MovieBannerSize.Any
-        Me.MovieSetBannerResize = False
-        Me.MovieSetBannerWidth = 0
-        Me.MovieSetCleanDB = False
-        Me.MovieSetCleanFiles = False
-        Me.MovieSetClearArtKeepExisting = False
-        Me.MovieSetClearLogoKeepExisting = False
-        Me.MovieSetClickScrape = False
-        Me.MovieSetClickScrapeAsk = False
-        Me.MovieSetDiscArtKeepExisting = False
-        Me.MovieSetFanartHeight = 0
-        Me.MovieSetFanartKeepExisting = False
-        Me.MovieSetFanartPrefSizeOnly = False
-        Me.MovieSetFanartPrefSize = Enums.MovieFanartSize.Any
-        Me.MovieSetFanartResize = False
-        Me.MovieSetFanartWidth = 0
-        Me.MovieSetGeneralMarkNew = False
-        Me.MovieSetGeneralMediaListSorting = New List(Of ListSorting)
-        Me.MovieSetImagesCacheEnabled = False
-        Me.MovieSetImagesDisplayImageSelect = True
-        Me.MovieSetImagesGetBlankImages = False
-        Me.MovieSetImagesGetEnglishImages = False
-        Me.MovieSetImagesMediaLanguageOnly = False
-        Me.MovieSetLandscapeKeepExisting = False
-        Me.MovieSetLockPlot = False
-        Me.MovieSetLockTitle = False
-        Me.MovieSetMissingBanner = False
-        Me.MovieSetMissingClearArt = False
-        Me.MovieSetMissingClearLogo = False
-        Me.MovieSetMissingDiscArt = False
-        Me.MovieSetMissingFanart = False
-        Me.MovieSetMissingLandscape = False
-        Me.MovieSetMissingNFO = False
-        Me.MovieSetMissingPoster = False
-        Me.MovieSetPosterHeight = 0
-        Me.MovieSetPosterKeepExisting = False
-        Me.MovieSetPosterPrefSizeOnly = False
-        Me.MovieSetPosterPrefSize = Enums.MoviePosterSize.Any
-        Me.MovieSetPosterResize = False
-        Me.MovieSetPosterWidth = 0
-        Me.MovieSets = New List(Of String)
-        Me.MovieSetScraperPlot = True
-        Me.MovieSetScraperTitle = True
-        Me.MovieSkipLessThan = 0
-        Me.MovieSkipStackedSizeCheck = False
-        Me.MovieSortBeforeScan = False
-        Me.MovieSortTokens = New List(Of String)
-        Me.MovieSetSortTokens = New List(Of String)
-        Me.MovieSortTokensIsEmpty = False
-        Me.MovieSetSortTokensIsEmpty = False
-        Me.MovieThemeTvTunesEnable = True
-        Me.MovieThemeKeepExisting = False
-        Me.MovieTrailerDefaultSearch = "trailer"
-        Me.MovieTrailerKeepExisting = False
-        Me.MovieTrailerMinVideoQual = Enums.TrailerVideoQuality.Any
-        Me.MovieTrailerPrefVideoQual = Enums.TrailerVideoQuality.Any
-        Me.OMMDummyFormat = 0
-        Me.OMMDummyTagline = String.Empty
-        Me.OMMDummyTop = String.Empty
-        Me.OMMDummyUseBackground = True
-        Me.OMMDummyUseFanart = True
-        Me.OMMDummyUseOverlay = True
-        Me.OMMMediaStubTagline = String.Empty
-        Me.Password = String.Empty
-        Me.ProxyCredentials = New NetworkCredential
-        Me.ProxyPort = 0
-        Me.ProxyURI = String.Empty
-        Me.SortPath = String.Empty
-        Me.TraktPassword = String.Empty
-        Me.TraktUsername = String.Empty
-        Me.TVAllSeasonsBannerHeight = 0
-        Me.TVAllSeasonsBannerKeepExisting = False
-        Me.TVAllSeasonsBannerPrefSize = Enums.TVBannerSize.Any
-        Me.TVAllSeasonsBannerPrefSizeOnly = False
-        Me.TVAllSeasonsBannerPrefType = Enums.TVBannerType.Any
-        Me.TVAllSeasonsBannerResize = False
-        Me.TVAllSeasonsBannerWidth = 0
-        Me.TVAllSeasonsFanartHeight = 0
-        Me.TVAllSeasonsFanartKeepExisting = False
-        Me.TVAllSeasonsFanartPrefSize = Enums.TVFanartSize.Any
-        Me.TVAllSeasonsFanartPrefSizeOnly = False
-        Me.TVAllSeasonsFanartResize = False
-        Me.TVAllSeasonsFanartWidth = 0
-        Me.TVAllSeasonsLandscapeKeepExisting = False
-        Me.TVAllSeasonsPosterHeight = 0
-        Me.TVAllSeasonsPosterKeepExisting = False
-        Me.TVAllSeasonsPosterPrefSize = Enums.TVPosterSize.Any
-        Me.TVAllSeasonsPosterPrefSizeOnly = False
-        Me.TVAllSeasonsPosterResize = False
-        Me.TVAllSeasonsPosterWidth = 0
-        Me.TVCleanDB = False
-        Me.TVDisplayMissingEpisodes = True
-        Me.TVDisplayStatus = False
-        Me.TVEpisodeActorThumbsKeepExisting = False
-        Me.TVEpisodeFanartHeight = 0
-        Me.TVEpisodeFanartKeepExisting = False
-        Me.TVEpisodeFanartPrefSize = Enums.TVFanartSize.Any
-        Me.TVEpisodeFanartPrefSizeOnly = False
-        Me.TVEpisodeFanartResize = False
-        Me.TVEpisodeFanartWidth = 0
-        Me.TVEpisodeFilterCustom = New List(Of String)
-        Me.TVEpisodeFilterCustomIsEmpty = False
-        Me.TVEpisodeMissingFanart = False
-        Me.TVEpisodeMissingNFO = False
-        Me.TVEpisodeMissingPoster = False
-        Me.TVEpisodeNoFilter = True
-        Me.TVEpisodePosterHeight = 0
-        Me.TVEpisodePosterKeepExisting = False
-        Me.TVEpisodePosterPrefSize = Enums.TVEpisodePosterSize.Any
-        Me.TVEpisodePosterPrefSizeOnly = False
-        Me.TVEpisodePosterResize = False
-        Me.TVEpisodePosterWidth = 0
-        Me.TVEpisodeProperCase = True
-        Me.TVGeneralClickScrape = False
-        Me.TVGeneralClickScrapeAsk = False
-        Me.TVGeneralEpisodeListSorting = New List(Of ListSorting)
-        Me.TVGeneralFlagLang = String.Empty
-        Me.TVGeneralIgnoreLastScan = True
-        Me.TVGeneralLanguage = "en"
-        Me.TVGeneralLanguages = New clsXMLTVDBLanguages
-        Me.TVGeneralMarkNewEpisodes = False
-        Me.TVGeneralMarkNewShows = False
-        Me.TVGeneralSeasonListSorting = New List(Of ListSorting)
-        Me.TVGeneralShowListSorting = New List(Of ListSorting)
-        Me.TVImagesCacheEnabled = True
-        Me.TVImagesDisplayImageSelect = True
-        Me.TVImagesGetBlankImages = False
-        Me.TVImagesGetEnglishImages = False
-        Me.TVImagesMediaLanguageOnly = False
-        Me.TVImagesPrefLanguage = "en"
-        Me.TVLockEpisodeActors = False
-        Me.TVLockEpisodeAired = False
-        Me.TVLockEpisodeCredits = False
-        Me.TVLockEpisodeDirector = False
-        Me.TVLockEpisodeGuestStars = False
-        Me.TVLockEpisodeLanguageA = False
-        Me.TVLockEpisodeLanguageV = False
-        Me.TVLockEpisodePlot = False
-        Me.TVLockEpisodeRating = False
-        Me.TVLockEpisodeRuntime = False
-        Me.TVLockEpisodeTitle = False
-        Me.TVLockSeasonPlot = False
-        Me.TVLockSeasonTitle = False
-        Me.TVLockShowActors = False
-        Me.TVLockShowCert = False
-        Me.TVLockShowCreators = False
-        Me.TVLockShowCountry = False
-        Me.TVLockShowGenre = False
-        Me.TVLockShowMPAA = False
-        Me.TVLockShowOriginalTitle = False
-        Me.TVLockShowPlot = False
-        Me.TVLockShowPremiered = False
-        Me.TVLockShowRating = False
-        Me.TVLockShowRuntime = False
-        Me.TVLockShowStatus = False
-        Me.TVLockShowStudio = False
-        Me.TVLockShowTitle = False
-        Me.TVMetadataPerFileType = New List(Of MetadataPerType)
-        Me.TVMultiPartMatching = "^[-_ex]+([0-9]+(?:(?:[a-i]|\.[1-9])(?![0-9]))?)"
-        Me.TVScanOrderModify = False
-        Me.TVScraperCleanFields = False
-        Me.TVScraperDurationRuntimeFormat = "<m>"
-        Me.TVScraperEpisodeActors = True
-        Me.TVScraperEpisodeAired = True
-        Me.TVScraperEpisodeCredits = True
-        Me.TVScraperEpisodeDirector = True
-        Me.TVScraperEpisodeGuestStars = True
-        Me.TVScraperEpisodeGuestStarsToActors = False
-        Me.TVScraperEpisodePlot = True
-        Me.TVScraperEpisodeRating = True
-        Me.TVScraperEpisodeRuntime = True
-        Me.TVScraperEpisodeTitle = True
-        Me.TVScraperMetaDataScan = True
-        Me.TVScraperOptionsOrdering = Enums.Ordering.Standard
-        Me.TVScraperSeasonAired = True
-        Me.TVScraperSeasonPlot = True
-        Me.TVScraperSeasonTitle = False
-        Me.TVScraperShowActors = True
-        Me.TVScraperShowCert = False
-        Me.TVScraperShowCertForMPAA = False
-        Me.TVScraperShowCertForMPAAFallback = False
-        Me.TVScraperShowCertFSK = False
-        Me.TVScraperShowCertLang = String.Empty
-        Me.TVScraperShowCertOnlyValue = False
-        Me.TVScraperShowCreators = True
-        Me.TVScraperShowCountry = True
-        Me.TVScraperShowEpiGuideURL = False
-        Me.TVScraperShowGenre = True
-        Me.TVScraperShowMPAA = True
-        Me.TVScraperShowMPAANotRated = String.Empty
-        Me.TVScraperShowOriginalTitle = True
-        Me.TVScraperShowPlot = True
-        Me.TVScraperShowPremiered = True
-        Me.TVScraperShowRating = True
-        Me.TVScraperShowRuntime = True
-        Me.TVScraperShowStatus = True
-        Me.TVScraperShowStudio = True
-        Me.TVScraperShowTitle = True
-        Me.TVScraperUseDisplaySeasonEpisode = True
-        Me.TVScraperUseMDDuration = True
-        Me.TVScraperUseSRuntimeForEp = True
-        Me.TVSeasonBannerHeight = 0
-        Me.TVSeasonBannerKeepExisting = False
-        Me.TVSeasonBannerPrefSize = Enums.TVBannerSize.Any
-        Me.TVSeasonBannerPrefSizeOnly = False
-        Me.TVSeasonBannerPrefType = Enums.TVBannerType.Any
-        Me.TVSeasonBannerResize = False
-        Me.TVSeasonBannerWidth = 0
-        Me.TVSeasonFanartHeight = 0
-        Me.TVSeasonFanartKeepExisting = False
-        Me.TVSeasonFanartPrefSize = Enums.TVFanartSize.Any
-        Me.TVSeasonFanartPrefSizeOnly = False
-        Me.TVSeasonFanartPrefSizeOnly = False
-        Me.TVSeasonFanartResize = False
-        Me.TVSeasonFanartWidth = 0
-        Me.TVSeasonLandscapeKeepExisting = False
-        Me.TVSeasonMissingBanner = False
-        Me.TVSeasonMissingFanart = False
-        Me.TVSeasonMissingLandscape = False
-        Me.TVSeasonMissingPoster = False
-        Me.TVSeasonPosterHeight = 0
-        Me.TVSeasonPosterKeepExisting = False
-        Me.TVSeasonPosterPrefSize = Enums.TVSeasonPosterSize.Any
-        Me.TVSeasonPosterPrefSizeOnly = False
-        Me.TVSeasonPosterPrefSizeOnly = False
-        Me.TVSeasonPosterResize = False
-        Me.TVSeasonPosterWidth = 0
-        Me.TVShowActorThumbsKeepExisting = False
-        Me.TVShowBannerHeight = 0
-        Me.TVShowBannerKeepExisting = False
-        Me.TVShowBannerPrefSize = Enums.TVBannerSize.Any
-        Me.TVShowBannerPrefSizeOnly = False
-        Me.TVShowBannerPrefType = Enums.TVBannerType.Any
-        Me.TVShowBannerResize = False
-        Me.TVShowBannerWidth = 0
-        Me.TVShowCharacterArtKeepExisting = False
-        Me.TVShowClearArtKeepExisting = False
-        Me.TVShowClearLogoKeepExisting = False
-        Me.TVShowExtrafanartsLimit = 4
-        Me.TVShowExtrafanartsKeepExisting = False
-        Me.TVShowExtrafanartsPrefOnly = False
-        Me.TVShowExtrafanartsPrefSize = Enums.TVFanartSize.Any
-        Me.TVShowExtrafanartsPrefSizeOnly = False
-        Me.TVShowExtrafanartsResize = False
-        Me.TVShowExtrafanartsHeight = 0
-        Me.TVShowExtrafanartsWidth = 0
-        Me.TVShowFanartHeight = 0
-        Me.TVShowFanartKeepExisting = False
-        Me.TVShowFanartPrefSize = Enums.TVFanartSize.Any
-        Me.TVShowFanartPrefSizeOnly = False
-        Me.TVShowFanartResize = False
-        Me.TVShowFanartWidth = 0
-        Me.TVShowFilterCustom = New List(Of String)
-        Me.TVShowFilterCustomIsEmpty = False
-        Me.TVShowLandscapeKeepExisting = False
-        Me.TVShowMatching = New List(Of regexp)
-        Me.TVShowMissingBanner = False
-        Me.TVShowMissingCharacterArt = False
-        Me.TVShowMissingClearArt = False
-        Me.TVShowMissingClearLogo = False
-        Me.TVShowMissingExtrafanarts = False
-        Me.TVShowMissingFanart = False
-        Me.TVShowMissingLandscape = False
-        Me.TVShowMissingNFO = False
-        Me.TVShowMissingPoster = False
-        Me.TVShowMissingTheme = False
-        Me.TVShowPosterHeight = 0
-        Me.TVShowPosterKeepExisting = False
-        Me.TVShowPosterPrefSize = Enums.TVPosterSize.Any
-        Me.TVShowPosterPrefSizeOnly = False
-        Me.TVShowPosterResize = False
-        Me.TVShowPosterWidth = 0
-        Me.TVShowProperCase = True
-        Me.TVShowThemeKeepExisting = False
-        Me.TVSkipLessThan = 0
-        Me.TVSortTokens = New List(Of String)
-        Me.TVSortTokensIsEmpty = False
-        Me.Username = String.Empty
-        Me.UseTrakt = False
-        Me.Version = String.Empty
+        GeneralWindowState = FormWindowState.Maximized
+        GenreFilter = "English"
+        MovieActorThumbsKeepExisting = False
+        MovieBackdropsAuto = False
+        MovieBackdropsPath = String.Empty
+        MovieBannerHeight = 0
+        MovieBannerKeepExisting = False
+        MovieBannerPrefSizeOnly = False
+        MovieBannerPrefSize = Enums.MovieBannerSize.Any
+        MovieBannerResize = False
+        MovieBannerWidth = 0
+        MovieCleanDB = False
+        MovieClearArtKeepExisting = False
+        MovieClearLogoKeepExisting = False
+        MovieClickScrape = False
+        MovieClickScrapeAsk = False
+        MovieDiscArtKeepExisting = False
+        MovieDisplayYear = False
+        MovieExtrafanartsHeight = 0
+        MovieExtrafanartsLimit = 4
+        MovieExtrafanartsKeepExisting = False
+        MovieExtrafanartsPrefSizeOnly = False
+        MovieExtrafanartsPrefSize = Enums.MovieFanartSize.Any
+        MovieExtrafanartsResize = False
+        MovieExtrafanartsWidth = 0
+        MovieExtrathumbsHeight = 0
+        MovieExtrathumbsLimit = 4
+        MovieExtrathumbsKeepExisting = False
+        MovieExtrathumbsPrefSizeOnly = False
+        MovieExtrathumbsPrefSize = 0
+        MovieExtrathumbsResize = False
+        MovieExtrathumbsWidth = 0
+        MovieFanartHeight = 0
+        MovieFanartKeepExisting = False
+        MovieFanartPrefSizeOnly = False
+        MovieFanartPrefSize = Enums.MovieFanartSize.Any
+        MovieFanartResize = False
+        MovieFanartWidth = 0
+        MovieFilterCustom = New List(Of String)
+        MovieFilterCustomIsEmpty = False
+        MovieGeneralCustomMarker1Color = -32704
+        MovieGeneralCustomMarker2Color = -16776961
+        MovieGeneralCustomMarker3Color = -12582784
+        MovieGeneralCustomMarker4Color = -16711681
+        MovieGeneralCustomMarker1Name = String.Empty
+        MovieGeneralCustomMarker2Name = String.Empty
+        MovieGeneralCustomMarker3Name = String.Empty
+        MovieGeneralCustomMarker4Name = String.Empty
+        MovieGeneralFlagLang = String.Empty
+        MovieGeneralIgnoreLastScan = True
+        MovieGeneralLanguage = "en"
+        MovieGeneralMarkNew = False
+        MovieGeneralMediaListSorting = New List(Of ListSorting)
+        MovieImagesCacheEnabled = False
+        MovieImagesDisplayImageSelect = True
+        MovieImagesGetBlankImages = False
+        MovieImagesGetEnglishImages = False
+        MovieImagesMediaLanguageOnly = False
+        MovieImagesNotSaveURLToNfo = False
+        MovieImagesPrefLanguage = "en"
+        MovieIMDBURL = String.Empty
+        MovieLandscapeKeepExisting = False
+        MovieLevTolerance = 0
+        MovieLockActors = False
+        MovieLockCert = False
+        MovieLockCollectionID = False
+        MovieLockCollections = False
+        MovieLockCountry = False
+        MovieLockDirector = False
+        MovieLockGenre = False
+        MovieLockLanguageA = False
+        MovieLockLanguageV = False
+        MovieLockMPAA = False
+        MovieLockOriginalTitle = False
+        MovieLockOutline = False
+        MovieLockPlot = False
+        MovieLockRating = False
+        MovieLockReleaseDate = False
+        MovieLockRuntime = False
+        MovieLockStudio = False
+        MovieLockTags = False
+        MovieLockTagline = False
+        MovieLockTitle = False
+        MovieLockTop250 = False
+        MovieLockTrailer = False
+        MovieLockCredits = False
+        MovieLockYear = False
+        MovieMetadataPerFileType = New List(Of MetadataPerType)
+        MovieMissingBanner = False
+        MovieMissingClearArt = False
+        MovieMissingClearLogo = False
+        MovieMissingDiscArt = False
+        MovieMissingExtrafanarts = False
+        MovieMissingExtrathumbs = False
+        MovieMissingFanart = False
+        MovieMissingLandscape = False
+        MovieMissingNFO = False
+        MovieMissingPoster = False
+        MovieMissingSubtitles = False
+        MovieMissingTheme = False
+        MovieMissingTrailer = False
+        MoviePosterHeight = 0
+        MoviePosterKeepExisting = False
+        MoviePosterPrefSizeOnly = False
+        MoviePosterPrefSize = Enums.MoviePosterSize.Any
+        MoviePosterResize = False
+        MoviePosterWidth = 0
+        MovieProperCase = True
+        MovieScanOrderModify = False
+        MovieScraperCast = True
+        MovieScraperCastLimit = 0
+        MovieScraperCastWithImgOnly = False
+        MovieScraperCertForMPAA = False
+        MovieScraperCertForMPAAFallback = False
+        MovieScraperCert = False
+        MovieScraperCertLang = String.Empty
+        MovieScraperCleanFields = False
+        MovieScraperCleanPlotOutline = False
+        MovieScraperCollectionID = True
+        MovieScraperCollectionsAuto = True
+        MovieScraperCountry = True
+        MovieScraperDirector = True
+        MovieScraperDurationRuntimeFormat = "<m>"
+        MovieScraperReleaseFormat = False
+        MovieScraperGenre = True
+        MovieScraperGenreLimit = 0
+        MovieScraperMetaDataIFOScan = True
+        MovieScraperMetaDataScan = True
+        MovieScraperMPAA = True
+        MovieScraperMPAANotRated = String.Empty
+        MovieScraperOriginalTitle = True
+        MovieScraperCertOnlyValue = False
+        MovieScraperOutline = True
+        MovieScraperOutlineLimit = 350
+        MovieScraperPlot = True
+        MovieScraperPlotForOutline = False
+        MovieScraperPlotForOutlineIfEmpty = False
+        MovieScraperRating = True
+        MovieScraperRelease = True
+        MovieScraperRuntime = True
+        MovieScraperStudio = True
+        MovieScraperStudioLimit = 0
+        MovieScraperStudioWithImgOnly = False
+        MovieScraperTagline = True
+        MovieScraperTitle = True
+        MovieScraperTop250 = True
+        MovieScraperTrailer = True
+        MovieScraperUseDetailView = False
+        MovieScraperUseMDDuration = True
+        MovieScraperCertFSK = False
+        MovieScraperCredits = True
+        MovieScraperXBMCTrailerFormat = False
+        MovieScraperYear = True
+        MovieSetBannerHeight = 0
+        MovieSetBannerKeepExisting = False
+        MovieSetBannerPrefSizeOnly = False
+        MovieSetBannerPrefSize = Enums.MovieBannerSize.Any
+        MovieSetBannerResize = False
+        MovieSetBannerWidth = 0
+        MovieSetCleanDB = False
+        MovieSetCleanFiles = False
+        MovieSetClearArtKeepExisting = False
+        MovieSetClearLogoKeepExisting = False
+        MovieSetClickScrape = False
+        MovieSetClickScrapeAsk = False
+        MovieSetDiscArtKeepExisting = False
+        MovieSetFanartHeight = 0
+        MovieSetFanartKeepExisting = False
+        MovieSetFanartPrefSizeOnly = False
+        MovieSetFanartPrefSize = Enums.MovieFanartSize.Any
+        MovieSetFanartResize = False
+        MovieSetFanartWidth = 0
+        MovieSetGeneralMarkNew = False
+        MovieSetGeneralMediaListSorting = New List(Of ListSorting)
+        MovieSetImagesCacheEnabled = False
+        MovieSetImagesDisplayImageSelect = True
+        MovieSetImagesGetBlankImages = False
+        MovieSetImagesGetEnglishImages = False
+        MovieSetImagesMediaLanguageOnly = False
+        MovieSetLandscapeKeepExisting = False
+        MovieSetLockPlot = False
+        MovieSetLockTitle = False
+        MovieSetMissingBanner = False
+        MovieSetMissingClearArt = False
+        MovieSetMissingClearLogo = False
+        MovieSetMissingDiscArt = False
+        MovieSetMissingFanart = False
+        MovieSetMissingLandscape = False
+        MovieSetMissingNFO = False
+        MovieSetMissingPoster = False
+        MovieSetPosterHeight = 0
+        MovieSetPosterKeepExisting = False
+        MovieSetPosterPrefSizeOnly = False
+        MovieSetPosterPrefSize = Enums.MoviePosterSize.Any
+        MovieSetPosterResize = False
+        MovieSetPosterWidth = 0
+        MovieSets = New List(Of String)
+        MovieSetScraperPlot = True
+        MovieSetScraperTitle = True
+        MovieSkipLessThan = 0
+        MovieSkipStackedSizeCheck = False
+        MovieSortBeforeScan = False
+        MovieSortTokens = New List(Of String)
+        MovieSetSortTokens = New List(Of String)
+        MovieSortTokensIsEmpty = False
+        MovieSetSortTokensIsEmpty = False
+        MovieThemeTvTunesEnable = True
+        MovieThemeKeepExisting = False
+        MovieTrailerDefaultSearch = "trailer"
+        MovieTrailerKeepExisting = False
+        MovieTrailerMinVideoQual = Enums.TrailerVideoQuality.Any
+        MovieTrailerPrefVideoQual = Enums.TrailerVideoQuality.Any
+        OMMDummyFormat = 0
+        OMMDummyTagline = String.Empty
+        OMMDummyTop = String.Empty
+        OMMDummyUseBackground = True
+        OMMDummyUseFanart = True
+        OMMDummyUseOverlay = True
+        OMMMediaStubTagline = String.Empty
+        Password = String.Empty
+        ProxyCredentials = New NetworkCredential
+        ProxyPort = 0
+        ProxyURI = String.Empty
+        SortPath = String.Empty
+        TraktPassword = String.Empty
+        TraktUsername = String.Empty
+        TVAllSeasonsBannerHeight = 0
+        TVAllSeasonsBannerKeepExisting = False
+        TVAllSeasonsBannerPrefSize = Enums.TVBannerSize.Any
+        TVAllSeasonsBannerPrefSizeOnly = False
+        TVAllSeasonsBannerPrefType = Enums.TVBannerType.Any
+        TVAllSeasonsBannerResize = False
+        TVAllSeasonsBannerWidth = 0
+        TVAllSeasonsFanartHeight = 0
+        TVAllSeasonsFanartKeepExisting = False
+        TVAllSeasonsFanartPrefSize = Enums.TVFanartSize.Any
+        TVAllSeasonsFanartPrefSizeOnly = False
+        TVAllSeasonsFanartResize = False
+        TVAllSeasonsFanartWidth = 0
+        TVAllSeasonsLandscapeKeepExisting = False
+        TVAllSeasonsPosterHeight = 0
+        TVAllSeasonsPosterKeepExisting = False
+        TVAllSeasonsPosterPrefSize = Enums.TVPosterSize.Any
+        TVAllSeasonsPosterPrefSizeOnly = False
+        TVAllSeasonsPosterResize = False
+        TVAllSeasonsPosterWidth = 0
+        TVCleanDB = False
+        TVDisplayMissingEpisodes = True
+        TVDisplayStatus = False
+        TVEpisodeActorThumbsKeepExisting = False
+        TVEpisodeFanartHeight = 0
+        TVEpisodeFanartKeepExisting = False
+        TVEpisodeFanartPrefSize = Enums.TVFanartSize.Any
+        TVEpisodeFanartPrefSizeOnly = False
+        TVEpisodeFanartResize = False
+        TVEpisodeFanartWidth = 0
+        TVEpisodeFilterCustom = New List(Of String)
+        TVEpisodeFilterCustomIsEmpty = False
+        TVEpisodeMissingFanart = False
+        TVEpisodeMissingNFO = False
+        TVEpisodeMissingPoster = False
+        TVEpisodeNoFilter = True
+        TVEpisodePosterHeight = 0
+        TVEpisodePosterKeepExisting = False
+        TVEpisodePosterPrefSize = Enums.TVEpisodePosterSize.Any
+        TVEpisodePosterPrefSizeOnly = False
+        TVEpisodePosterResize = False
+        TVEpisodePosterWidth = 0
+        TVEpisodeProperCase = True
+        TVGeneralClickScrape = False
+        TVGeneralClickScrapeAsk = False
+        TVGeneralEpisodeListSorting = New List(Of ListSorting)
+        TVGeneralFlagLang = String.Empty
+        TVGeneralIgnoreLastScan = True
+        TVGeneralLanguage = "en"
+        TVGeneralLanguages = New clsXMLTVDBLanguages
+        TVGeneralMarkNewEpisodes = False
+        TVGeneralMarkNewShows = False
+        TVGeneralSeasonListSorting = New List(Of ListSorting)
+        TVGeneralShowListSorting = New List(Of ListSorting)
+        TVImagesCacheEnabled = True
+        TVImagesDisplayImageSelect = True
+        TVImagesGetBlankImages = False
+        TVImagesGetEnglishImages = False
+        TVImagesMediaLanguageOnly = False
+        TVImagesPrefLanguage = "en"
+        TVLockEpisodeActors = False
+        TVLockEpisodeAired = False
+        TVLockEpisodeCredits = False
+        TVLockEpisodeDirector = False
+        TVLockEpisodeGuestStars = False
+        TVLockEpisodeLanguageA = False
+        TVLockEpisodeLanguageV = False
+        TVLockEpisodePlot = False
+        TVLockEpisodeRating = False
+        TVLockEpisodeRuntime = False
+        TVLockEpisodeTitle = False
+        TVLockSeasonPlot = False
+        TVLockSeasonTitle = False
+        TVLockShowActors = False
+        TVLockShowCert = False
+        TVLockShowCreators = False
+        TVLockShowCountry = False
+        TVLockShowGenre = False
+        TVLockShowMPAA = False
+        TVLockShowOriginalTitle = False
+        TVLockShowPlot = False
+        TVLockShowPremiered = False
+        TVLockShowRating = False
+        TVLockShowRuntime = False
+        TVLockShowStatus = False
+        TVLockShowStudio = False
+        TVLockShowTitle = False
+        TVMetadataPerFileType = New List(Of MetadataPerType)
+        TVMultiPartMatching = "^[-_ex]+([0-9]+(?:(?:[a-i]|\.[1-9])(?![0-9]))?)"
+        TVScanOrderModify = False
+        TVScraperCleanFields = False
+        TVScraperDurationRuntimeFormat = "<m>"
+        TVScraperEpisodeActors = True
+        TVScraperEpisodeAired = True
+        TVScraperEpisodeCredits = True
+        TVScraperEpisodeDirector = True
+        TVScraperEpisodeGuestStars = True
+        TVScraperEpisodeGuestStarsToActors = False
+        TVScraperEpisodePlot = True
+        TVScraperEpisodeRating = True
+        TVScraperEpisodeRuntime = True
+        TVScraperEpisodeTitle = True
+        TVScraperMetaDataScan = True
+        TVScraperOptionsOrdering = Enums.Ordering.Standard
+        TVScraperSeasonAired = True
+        TVScraperSeasonPlot = True
+        TVScraperSeasonTitle = False
+        TVScraperShowActors = True
+        TVScraperShowCert = False
+        TVScraperShowCertForMPAA = False
+        TVScraperShowCertForMPAAFallback = False
+        TVScraperShowCertFSK = False
+        TVScraperShowCertLang = String.Empty
+        TVScraperShowCertOnlyValue = False
+        TVScraperShowCreators = True
+        TVScraperShowCountry = True
+        TVScraperShowEpiGuideURL = False
+        TVScraperShowGenre = True
+        TVScraperShowMPAA = True
+        TVScraperShowMPAANotRated = String.Empty
+        TVScraperShowOriginalTitle = True
+        TVScraperShowPlot = True
+        TVScraperShowPremiered = True
+        TVScraperShowRating = True
+        TVScraperShowRuntime = True
+        TVScraperShowStatus = True
+        TVScraperShowStudio = True
+        TVScraperShowTitle = True
+        TVScraperUseDisplaySeasonEpisode = True
+        TVScraperUseMDDuration = True
+        TVScraperUseSRuntimeForEp = True
+        TVSeasonBannerHeight = 0
+        TVSeasonBannerKeepExisting = False
+        TVSeasonBannerPrefSize = Enums.TVBannerSize.Any
+        TVSeasonBannerPrefSizeOnly = False
+        TVSeasonBannerPrefType = Enums.TVBannerType.Any
+        TVSeasonBannerResize = False
+        TVSeasonBannerWidth = 0
+        TVSeasonFanartHeight = 0
+        TVSeasonFanartKeepExisting = False
+        TVSeasonFanartPrefSize = Enums.TVFanartSize.Any
+        TVSeasonFanartPrefSizeOnly = False
+        TVSeasonFanartPrefSizeOnly = False
+        TVSeasonFanartResize = False
+        TVSeasonFanartWidth = 0
+        TVSeasonLandscapeKeepExisting = False
+        TVSeasonMissingBanner = False
+        TVSeasonMissingFanart = False
+        TVSeasonMissingLandscape = False
+        TVSeasonMissingPoster = False
+        TVSeasonPosterHeight = 0
+        TVSeasonPosterKeepExisting = False
+        TVSeasonPosterPrefSize = Enums.TVSeasonPosterSize.Any
+        TVSeasonPosterPrefSizeOnly = False
+        TVSeasonPosterPrefSizeOnly = False
+        TVSeasonPosterResize = False
+        TVSeasonPosterWidth = 0
+        TVShowActorThumbsKeepExisting = False
+        TVShowBannerHeight = 0
+        TVShowBannerKeepExisting = False
+        TVShowBannerPrefSize = Enums.TVBannerSize.Any
+        TVShowBannerPrefSizeOnly = False
+        TVShowBannerPrefType = Enums.TVBannerType.Any
+        TVShowBannerResize = False
+        TVShowBannerWidth = 0
+        TVShowCharacterArtKeepExisting = False
+        TVShowClearArtKeepExisting = False
+        TVShowClearLogoKeepExisting = False
+        TVShowExtrafanartsLimit = 4
+        TVShowExtrafanartsKeepExisting = False
+        TVShowExtrafanartsPrefOnly = False
+        TVShowExtrafanartsPrefSize = Enums.TVFanartSize.Any
+        TVShowExtrafanartsPrefSizeOnly = False
+        TVShowExtrafanartsResize = False
+        TVShowExtrafanartsHeight = 0
+        TVShowExtrafanartsWidth = 0
+        TVShowFanartHeight = 0
+        TVShowFanartKeepExisting = False
+        TVShowFanartPrefSize = Enums.TVFanartSize.Any
+        TVShowFanartPrefSizeOnly = False
+        TVShowFanartResize = False
+        TVShowFanartWidth = 0
+        TVShowFilterCustom = New List(Of String)
+        TVShowFilterCustomIsEmpty = False
+        TVShowLandscapeKeepExisting = False
+        TVShowMatching = New List(Of regexp)
+        TVShowMissingBanner = False
+        TVShowMissingCharacterArt = False
+        TVShowMissingClearArt = False
+        TVShowMissingClearLogo = False
+        TVShowMissingExtrafanarts = False
+        TVShowMissingFanart = False
+        TVShowMissingLandscape = False
+        TVShowMissingNFO = False
+        TVShowMissingPoster = False
+        TVShowMissingTheme = False
+        TVShowPosterHeight = 0
+        TVShowPosterKeepExisting = False
+        TVShowPosterPrefSize = Enums.TVPosterSize.Any
+        TVShowPosterPrefSizeOnly = False
+        TVShowPosterResize = False
+        TVShowPosterWidth = 0
+        TVShowProperCase = True
+        TVShowThemeKeepExisting = False
+        TVSkipLessThan = 0
+        TVSortTokens = New List(Of String)
+        TVSortTokensIsEmpty = False
+        Username = String.Empty
+        UseTrakt = False
+        Version = String.Empty
 
         LoadTVLanguages()
     End Sub
@@ -7423,63 +7458,63 @@ Public Class Settings
     End Function
 
     Public Function MovieActorThumbsAnyEnabled() As Boolean
-        Return MovieActorThumbsEden OrElse MovieActorThumbsFrodo OrElse _
+        Return MovieActorThumbsEden OrElse MovieActorThumbsFrodo OrElse
             (MovieUseExpert AndAlso ((MovieActorThumbsExpertBDMV AndAlso Not String.IsNullOrEmpty(MovieActorThumbsExtExpertBDMV)) OrElse (MovieActorThumbsExpertMulti AndAlso Not String.IsNullOrEmpty(MovieActorThumbsExtExpertMulti)) OrElse (MovieActorThumbsExpertSingle AndAlso Not String.IsNullOrEmpty(MovieActorThumbsExtExpertSingle)) OrElse (MovieActorThumbsExpertVTS AndAlso Not String.IsNullOrEmpty(MovieActorThumbsExtExpertVTS))))
     End Function
 
     Public Function MovieBannerAnyEnabled() As Boolean
-        Return MovieBannerAD OrElse MovieBannerExtended OrElse MovieBannerNMJ OrElse MovieBannerYAMJ OrElse _
+        Return MovieBannerAD OrElse MovieBannerExtended OrElse MovieBannerNMJ OrElse MovieBannerYAMJ OrElse
             (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MovieBannerExpertBDMV) OrElse Not String.IsNullOrEmpty(MovieBannerExpertMulti) OrElse Not String.IsNullOrEmpty(MovieBannerExpertSingle) OrElse Not String.IsNullOrEmpty(MovieBannerExpertVTS)))
     End Function
 
     Public Function MovieClearArtAnyEnabled() As Boolean
-        Return MovieClearArtAD OrElse MovieClearArtExtended OrElse _
+        Return MovieClearArtAD OrElse MovieClearArtExtended OrElse
             (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MovieClearArtExpertBDMV) OrElse Not String.IsNullOrEmpty(MovieClearArtExpertMulti) OrElse Not String.IsNullOrEmpty(MovieClearArtExpertSingle) OrElse Not String.IsNullOrEmpty(MovieClearArtExpertVTS)))
     End Function
 
     Public Function MovieClearLogoAnyEnabled() As Boolean
-        Return MovieClearLogoAD OrElse MovieClearLogoExtended OrElse _
+        Return MovieClearLogoAD OrElse MovieClearLogoExtended OrElse
             (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MovieClearLogoExpertBDMV) OrElse Not String.IsNullOrEmpty(MovieClearLogoExpertMulti) OrElse Not String.IsNullOrEmpty(MovieClearLogoExpertSingle) OrElse Not String.IsNullOrEmpty(MovieClearLogoExpertVTS)))
     End Function
 
     Public Function MovieDiscArtAnyEnabled() As Boolean
-        Return MovieDiscArtAD OrElse MovieDiscArtExtended OrElse _
+        Return MovieDiscArtAD OrElse MovieDiscArtExtended OrElse
             (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MovieDiscArtExpertBDMV) OrElse Not String.IsNullOrEmpty(MovieDiscArtExpertMulti) OrElse Not String.IsNullOrEmpty(MovieDiscArtExpertSingle) OrElse Not String.IsNullOrEmpty(MovieDiscArtExpertVTS)))
     End Function
 
     Public Function MovieExtrafanartsAnyEnabled() As Boolean
-        Return MovieExtrafanartsEden OrElse MovieExtrafanartsFrodo OrElse _
+        Return MovieExtrafanartsEden OrElse MovieExtrafanartsFrodo OrElse
             (MovieUseExpert AndAlso (MovieExtrafanartsExpertBDMV OrElse MovieExtrafanartsExpertSingle OrElse MovieExtrafanartsExpertVTS))
     End Function
 
     Public Function MovieExtrathumbsAnyEnabled() As Boolean
-        Return MovieExtrathumbsEden OrElse MovieExtrathumbsFrodo OrElse _
+        Return MovieExtrathumbsEden OrElse MovieExtrathumbsFrodo OrElse
             (MovieUseExpert AndAlso (MovieExtrathumbsExpertBDMV OrElse MovieExtrathumbsExpertSingle OrElse MovieExtrathumbsExpertVTS))
     End Function
 
     Public Function MovieFanartAnyEnabled() As Boolean
-        Return MovieFanartBoxee OrElse MovieFanartEden OrElse MovieFanartFrodo OrElse MovieFanartNMJ OrElse MovieFanartYAMJ OrElse _
+        Return MovieFanartBoxee OrElse MovieFanartEden OrElse MovieFanartFrodo OrElse MovieFanartNMJ OrElse MovieFanartYAMJ OrElse
             (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MovieFanartExpertBDMV) OrElse Not String.IsNullOrEmpty(MovieFanartExpertMulti) OrElse Not String.IsNullOrEmpty(MovieFanartExpertSingle) OrElse Not String.IsNullOrEmpty(MovieFanartExpertVTS)))
     End Function
 
     Public Function MovieLandscapeAnyEnabled() As Boolean
-        Return MovieLandscapeAD OrElse MovieLandscapeExtended OrElse _
+        Return MovieLandscapeAD OrElse MovieLandscapeExtended OrElse
             (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MovieLandscapeExpertBDMV) OrElse Not String.IsNullOrEmpty(MovieLandscapeExpertMulti) OrElse Not String.IsNullOrEmpty(MovieLandscapeExpertSingle) OrElse Not String.IsNullOrEmpty(MovieLandscapeExpertVTS)))
     End Function
 
     Public Function MovieMissingItemsAnyEnabled() As Boolean
-        Return MovieMissingBanner OrElse MovieMissingClearArt OrElse MovieMissingClearLogo OrElse MovieMissingDiscArt OrElse MovieMissingExtrafanarts OrElse _
-            MovieMissingExtrathumbs OrElse MovieMissingFanart OrElse MovieMissingLandscape OrElse MovieMissingNFO OrElse MovieMissingPoster OrElse _
+        Return MovieMissingBanner OrElse MovieMissingClearArt OrElse MovieMissingClearLogo OrElse MovieMissingDiscArt OrElse MovieMissingExtrafanarts OrElse
+            MovieMissingExtrathumbs OrElse MovieMissingFanart OrElse MovieMissingLandscape OrElse MovieMissingNFO OrElse MovieMissingPoster OrElse
             MovieMissingSubtitles OrElse MovieMissingTheme OrElse MovieMissingTrailer
     End Function
 
     Public Function MovieNFOAnyEnabled() As Boolean
-        Return MovieNFOBoxee OrElse MovieNFOEden OrElse MovieNFOFrodo OrElse MovieNFONMJ OrElse MovieNFOYAMJ OrElse _
+        Return MovieNFOBoxee OrElse MovieNFOEden OrElse MovieNFOFrodo OrElse MovieNFONMJ OrElse MovieNFOYAMJ OrElse
             (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MovieNFOExpertBDMV) OrElse Not String.IsNullOrEmpty(MovieNFOExpertMulti) OrElse Not String.IsNullOrEmpty(MovieNFOExpertSingle) OrElse Not String.IsNullOrEmpty(MovieNFOExpertVTS)))
     End Function
 
     Public Function MoviePosterAnyEnabled() As Boolean
-        Return MoviePosterBoxee OrElse MoviePosterEden OrElse MoviePosterFrodo OrElse MoviePosterNMJ OrElse MoviePosterYAMJ OrElse _
+        Return MoviePosterBoxee OrElse MoviePosterEden OrElse MoviePosterFrodo OrElse MoviePosterNMJ OrElse MoviePosterYAMJ OrElse
             (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MoviePosterExpertBDMV) OrElse Not String.IsNullOrEmpty(MoviePosterExpertMulti) OrElse Not String.IsNullOrEmpty(MoviePosterExpertSingle) OrElse Not String.IsNullOrEmpty(MoviePosterExpertVTS)))
     End Function
 
@@ -7488,47 +7523,47 @@ Public Class Settings
     End Function
 
     Public Function MovieTrailerAnyEnabled() As Boolean
-        Return MovieTrailerEden OrElse MovieTrailerFrodo OrElse MovieTrailerNMJ OrElse MovieTrailerYAMJ OrElse _
+        Return MovieTrailerEden OrElse MovieTrailerFrodo OrElse MovieTrailerNMJ OrElse MovieTrailerYAMJ OrElse
             (MovieUseExpert AndAlso (Not String.IsNullOrEmpty(MovieTrailerExpertBDMV) OrElse Not String.IsNullOrEmpty(MovieTrailerExpertMulti) OrElse Not String.IsNullOrEmpty(MovieTrailerExpertSingle) OrElse Not String.IsNullOrEmpty(MovieTrailerExpertVTS)))
     End Function
 
     Public Function MovieSetBannerAnyEnabled() As Boolean
-        Return (MovieSetBannerExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse _
-            (MovieSetUseMSAA AndAlso MovieSetBannerMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse _
+        Return (MovieSetBannerExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
+            (MovieSetBannerMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse
             (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetPosterExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetPosterExpertSingle))))
     End Function
 
     Public Function MovieSetClearArtAnyEnabled() As Boolean
-        Return (MovieSetClearArtExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse _
-            (MovieSetUseMSAA AndAlso MovieSetClearArtMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse _
+        Return (MovieSetClearArtExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
+            (MovieSetClearArtMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse
             (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetClearArtExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetClearArtExpertSingle))))
     End Function
 
     Public Function MovieSetClearLogoAnyEnabled() As Boolean
-        Return (MovieSetClearLogoExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse _
-            (MovieSetUseMSAA AndAlso MovieSetClearLogoMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse _
+        Return (MovieSetClearLogoExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
+            (MovieSetClearLogoMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse
             (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetClearLogoExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetClearLogoExpertSingle))))
     End Function
 
     Public Function MovieSetDiscArtAnyEnabled() As Boolean
-        Return (MovieSetDiscArtExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse _
+        Return (MovieSetDiscArtExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
             (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetDiscArtExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetDiscArtExpertSingle))))
     End Function
 
     Public Function MovieSetFanartAnyEnabled() As Boolean
-        Return (MovieSetFanartExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse _
-            (MovieSetUseMSAA AndAlso MovieSetFanartMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse _
+        Return (MovieSetFanartExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
+            (MovieSetFanartMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse
             (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetFanartExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetFanartExpertSingle))))
     End Function
 
     Public Function MovieSetLandscapeAnyEnabled() As Boolean
-        Return (MovieSetLandscapeExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse _
-            (MovieSetUseMSAA AndAlso MovieSetLandscapeMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse _
+        Return (MovieSetLandscapeExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
+            (MovieSetLandscapeMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse
             (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetLandscapeExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetLandscapeExpertSingle))))
     End Function
 
     Public Function MovieSetMissingItemsAnyEnabled() As Boolean
-        Return MovieSetMissingBanner OrElse MovieSetMissingClearArt OrElse MovieSetMissingClearLogo OrElse MovieSetMissingDiscArt OrElse _
+        Return MovieSetMissingBanner OrElse MovieSetMissingClearArt OrElse MovieSetMissingClearLogo OrElse MovieSetMissingDiscArt OrElse
             MovieSetMissingFanart OrElse MovieSetMissingLandscape OrElse MovieSetMissingNFO OrElse MovieSetMissingPoster
     End Function
 
@@ -7537,8 +7572,8 @@ Public Class Settings
     End Function
 
     Public Function MovieSetPosterAnyEnabled() As Boolean
-        Return (MovieSetPosterExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse _
-            (MovieSetUseMSAA AndAlso MovieSetPosterMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse _
+        Return (MovieSetPosterExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
+            (MovieSetPosterMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse
             (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetPosterExpertParent) OrElse (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetPosterExpertSingle))))
     End Function
 
@@ -7547,27 +7582,27 @@ Public Class Settings
     End Function
 
     Public Function TVAllSeasonsBannerAnyEnabled() As Boolean
-        Return TVSeasonBannerFrodo OrElse _
+        Return TVSeasonBannerFrodo OrElse
             (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVAllSeasonsBannerExpert))
     End Function
 
     Public Function TVAllSeasonsFanartAnyEnabled() As Boolean
-        Return TVSeasonFanartFrodo OrElse _
+        Return TVSeasonFanartFrodo OrElse
             (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVAllSeasonsFanartExpert))
     End Function
 
     Public Function TVAllSeasonsLandscapeAnyEnabled() As Boolean
-        Return TVSeasonLandscapeAD OrElse TVSeasonLandscapeExtended OrElse _
+        Return TVSeasonLandscapeAD OrElse TVSeasonLandscapeExtended OrElse
             (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVAllSeasonsLandscapeExpert))
     End Function
 
     Public Function TVAllSeasonsPosterAnyEnabled() As Boolean
-        Return TVSeasonPosterFrodo OrElse _
+        Return TVSeasonPosterFrodo OrElse
             (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVAllSeasonsPosterExpert))
     End Function
 
     Public Function TVEpisodeActorThumbsAnyEnabled() As Boolean
-        Return TVEpisodeActorThumbsFrodo OrElse _
+        Return TVEpisodeActorThumbsFrodo OrElse
             (TVUseExpert AndAlso TVEpisodeActorThumbsExpert AndAlso Not String.IsNullOrEmpty(TVEpisodeActorThumbsExtExpert))
     End Function
 
@@ -7576,88 +7611,88 @@ Public Class Settings
     End Function
 
     Public Function TVEpisodeNFOAnyEnabled() As Boolean
-        Return TVEpisodeNFOBoxee OrElse TVEpisodeNFOFrodo OrElse TVEpisodeNFOYAMJ OrElse _
+        Return TVEpisodeNFOBoxee OrElse TVEpisodeNFOFrodo OrElse TVEpisodeNFOYAMJ OrElse
             (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVEpisodeNFOExpert))
     End Function
 
     Public Function TVEpisodePosterAnyEnabled() As Boolean
-        Return TVEpisodePosterBoxee OrElse TVEpisodePosterFrodo OrElse TVEpisodePosterYAMJ OrElse _
+        Return TVEpisodePosterBoxee OrElse TVEpisodePosterFrodo OrElse TVEpisodePosterYAMJ OrElse
             (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVEpisodePosterExpert))
     End Function
 
     Public Function TVSeasonBannerAnyEnabled() As Boolean
-        Return TVSeasonBannerFrodo OrElse TVSeasonBannerYAMJ OrElse _
+        Return TVSeasonBannerFrodo OrElse TVSeasonBannerYAMJ OrElse
             (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVSeasonBannerExpert))
     End Function
 
     Public Function TVSeasonFanartAnyEnabled() As Boolean
-        Return TVSeasonFanartFrodo OrElse TVSeasonFanartYAMJ OrElse _
+        Return TVSeasonFanartFrodo OrElse TVSeasonFanartYAMJ OrElse
             (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVSeasonFanartExpert))
     End Function
 
     Public Function TVSeasonLandscapeAnyEnabled() As Boolean
-        Return TVSeasonLandscapeAD OrElse TVSeasonLandscapeExtended OrElse _
+        Return TVSeasonLandscapeAD OrElse TVSeasonLandscapeExtended OrElse
             (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVSeasonLandscapeExpert))
     End Function
 
     Public Function TVSeasonPosterAnyEnabled() As Boolean
-        Return TVSeasonPosterBoxee OrElse TVSeasonPosterFrodo OrElse TVSeasonPosterYAMJ OrElse _
+        Return TVSeasonPosterBoxee OrElse TVSeasonPosterFrodo OrElse TVSeasonPosterYAMJ OrElse
             (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVSeasonPosterExpert))
     End Function
 
     Public Function TVShowActorThumbsAnyEnabled() As Boolean
-        Return TVShowActorThumbsFrodo OrElse _
+        Return TVShowActorThumbsFrodo OrElse
             (TVUseExpert AndAlso TVShowActorThumbsExpert AndAlso Not String.IsNullOrEmpty(TVShowActorThumbsExtExpert))
     End Function
 
     Public Function TVShowBannerAnyEnabled() As Boolean
-        Return TVShowBannerBoxee OrElse TVShowBannerFrodo OrElse TVShowBannerYAMJ OrElse _
+        Return TVShowBannerBoxee OrElse TVShowBannerFrodo OrElse TVShowBannerYAMJ OrElse
             (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowBannerExpert))
     End Function
 
     Public Function TVShowCharacterArtAnyEnabled() As Boolean
-        Return TVShowCharacterArtAD OrElse TVShowCharacterArtExtended OrElse _
+        Return TVShowCharacterArtAD OrElse TVShowCharacterArtExtended OrElse
             (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowCharacterArtExpert))
     End Function
 
     Public Function TVShowClearArtAnyEnabled() As Boolean
-        Return TVShowClearArtAD OrElse TVShowClearArtExtended OrElse _
+        Return TVShowClearArtAD OrElse TVShowClearArtExtended OrElse
             (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowClearArtExpert))
     End Function
 
     Public Function TVShowClearLogoAnyEnabled() As Boolean
-        Return TVShowClearLogoAD OrElse TVShowClearLogoExtended OrElse _
+        Return TVShowClearLogoAD OrElse TVShowClearLogoExtended OrElse
             (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowClearLogoExpert))
     End Function
 
     Public Function TVShowExtrafanartsAnyEnabled() As Boolean
-        Return TVShowExtrafanartsFrodo OrElse _
+        Return TVShowExtrafanartsFrodo OrElse
             (TVUseExpert AndAlso TVShowExtrafanartsExpert)
     End Function
 
     Public Function TVShowFanartAnyEnabled() As Boolean
-        Return TVShowFanartBoxee OrElse TVShowFanartFrodo OrElse TVShowFanartYAMJ OrElse _
+        Return TVShowFanartBoxee OrElse TVShowFanartFrodo OrElse TVShowFanartYAMJ OrElse
             (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowFanartExpert))
     End Function
 
     Public Function TVShowLandscapeAnyEnabled() As Boolean
-        Return TVShowLandscapeAD OrElse TVShowLandscapeExtended OrElse _
+        Return TVShowLandscapeAD OrElse TVShowLandscapeExtended OrElse
             (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowLandscapeExpert))
     End Function
 
     Public Function TVShowMissingItemsAnyEnabled() As Boolean
-        Return TVShowMissingBanner OrElse TVShowMissingCharacterArt OrElse TVShowMissingClearArt OrElse TVShowMissingClearLogo OrElse _
-            TVShowMissingExtrafanarts OrElse TVShowMissingFanart OrElse TVShowMissingLandscape OrElse TVShowMissingNFO OrElse _
+        Return TVShowMissingBanner OrElse TVShowMissingCharacterArt OrElse TVShowMissingClearArt OrElse TVShowMissingClearLogo OrElse
+            TVShowMissingExtrafanarts OrElse TVShowMissingFanart OrElse TVShowMissingLandscape OrElse TVShowMissingNFO OrElse
             TVShowMissingPoster OrElse TVShowMissingTheme
     End Function
 
     Public Function TVShowNFOAnyEnabled() As Boolean
-        Return TVShowNFOBoxee OrElse TVShowNFOFrodo OrElse TVShowNFOYAMJ OrElse _
+        Return TVShowNFOBoxee OrElse TVShowNFOFrodo OrElse TVShowNFOYAMJ OrElse
             (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowNFOExpert))
     End Function
 
     Public Function TVShowPosterAnyEnabled() As Boolean
-        Return TVShowPosterBoxee OrElse TVShowPosterFrodo OrElse TVShowPosterYAMJ OrElse _
+        Return TVShowPosterBoxee OrElse TVShowPosterFrodo OrElse TVShowPosterYAMJ OrElse
             (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowPosterExpert))
     End Function
 
@@ -7665,7 +7700,7 @@ Public Class Settings
         Return TVShowThemeTvTunesEnable AndAlso (TVShowThemeTvTunesShowPath OrElse (TVShowThemeTvTunesCustom AndAlso Not String.IsNullOrEmpty(TVShowThemeTvTunesCustomPath) OrElse (TVShowThemeTvTunesSub AndAlso Not String.IsNullOrEmpty(TVShowThemeTvTunesSubDir))))
     End Function
 
-    Private Shared Function CompareLanguagesLong( _
+    Private Shared Function CompareLanguagesLong(
         ByVal x As TVDBLanguagesLanguage, ByVal y As TVDBLanguagesLanguage) As Integer
 
         If x Is Nothing Then
@@ -7708,7 +7743,7 @@ Public Class Settings
 
     End Function
 
-    Private Shared Function CompareLanguagesShort( _
+    Private Shared Function CompareLanguagesShort(
         ByVal x As TVDBLanguagesLanguage, ByVal y As TVDBLanguagesLanguage) As Integer
 
         If x Is Nothing Then
@@ -7767,7 +7802,7 @@ Public Class Settings
 #Region "Constructors"
 
         Public Sub New()
-            Me.Clear()
+            Clear()
         End Sub
 
 #End Region 'Constructors
@@ -7776,19 +7811,19 @@ Public Class Settings
 
         Public Property FileType() As String
             Get
-                Return Me._filetype
+                Return _filetype
             End Get
             Set(ByVal value As String)
-                Me._filetype = value
+                _filetype = value
             End Set
         End Property
 
         Public Property MetaData() As MediaInfo.Fileinfo
             Get
-                Return Me._metadata
+                Return _metadata
             End Get
             Set(ByVal value As MediaInfo.Fileinfo)
-                Me._metadata = value
+                _metadata = value
             End Set
         End Property
 
@@ -7797,8 +7832,8 @@ Public Class Settings
 #Region "Methods"
 
         Public Sub Clear()
-            Me._filetype = String.Empty
-            Me._metadata = New MediaInfo.Fileinfo
+            _filetype = String.Empty
+            _metadata = New MediaInfo.Fileinfo
         End Sub
 
 #End Region 'Methods
@@ -7820,7 +7855,7 @@ Public Class Settings
 #Region "Constructors"
 
         Public Sub New()
-            Me.Clear()
+            Clear()
         End Sub
 
 #End Region 'Constructors
@@ -7834,10 +7869,10 @@ Public Class Settings
         ''' <remarks></remarks>
         Public Property Column() As String
             Get
-                Return Me._column
+                Return _column
             End Get
             Set(ByVal value As String)
-                Me._column = value
+                _column = value
             End Set
         End Property
 
@@ -7857,10 +7892,10 @@ Public Class Settings
         ''' <remarks></remarks>
         Public Property Hide() As Boolean
             Get
-                Return Me._hide
+                Return _hide
             End Get
             Set(ByVal value As Boolean)
-                Me._hide = value
+                _hide = value
             End Set
         End Property
         ''' <summary>
@@ -7871,10 +7906,10 @@ Public Class Settings
         ''' <remarks></remarks>
         Public Property LabelID() As Integer
             Get
-                Return Me._labelid
+                Return _labelid
             End Get
             Set(ByVal value As Integer)
-                Me._labelid = value
+                _labelid = value
             End Set
         End Property
         ''' <summary>
@@ -7885,10 +7920,10 @@ Public Class Settings
         ''' <remarks></remarks>
         Public Property LabelText() As String
             Get
-                Return Me._labeltext
+                Return _labeltext
             End Get
             Set(ByVal value As String)
-                Me._labeltext = value
+                _labeltext = value
             End Set
         End Property
 
@@ -7897,11 +7932,11 @@ Public Class Settings
 #Region "Methods"
 
         Public Sub Clear()
-            Me._column = String.Empty
-            Me._displayindex = -1
-            Me._hide = False
-            Me._labelid = 1
-            Me._labeltext = String.Empty
+            _column = String.Empty
+            _displayindex = -1
+            _hide = False
+            _labelid = 1
+            _labeltext = String.Empty
         End Sub
 
 #End Region 'Methods
@@ -7922,7 +7957,7 @@ Public Class Settings
 #Region "Constructors"
 
         Public Sub New()
-            Me.Clear()
+            Clear()
         End Sub
 
 #End Region 'Constructors
@@ -7931,19 +7966,19 @@ Public Class Settings
 
         Public Property byDate() As Boolean
             Get
-                Return Me._bydate
+                Return _bydate
             End Get
             Set(ByVal value As Boolean)
-                Me._bydate = value
+                _bydate = value
             End Set
         End Property
 
         Public Property defaultSeason() As Integer
             Get
-                Return Me._defaultSeason
+                Return _defaultSeason
             End Get
             Set(ByVal value As Integer)
-                Me._defaultSeason = value
+                _defaultSeason = value
             End Set
         End Property
 
@@ -7958,10 +7993,10 @@ Public Class Settings
 
         Public Property Regexp() As String
             Get
-                Return Me._regexp
+                Return _regexp
             End Get
             Set(ByVal value As String)
-                Me._regexp = value
+                _regexp = value
             End Set
         End Property
 
@@ -7970,10 +8005,10 @@ Public Class Settings
 #Region "Methods"
 
         Public Sub Clear()
-            Me._bydate = False
-            Me._defaultSeason = -1
-            Me._id = -1
-            Me._regexp = String.Empty
+            _bydate = False
+            _defaultSeason = -1
+            _id = -1
+            _regexp = String.Empty
         End Sub
 
 #End Region 'Methods

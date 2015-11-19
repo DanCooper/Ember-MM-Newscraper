@@ -520,7 +520,7 @@ Partial Public Class clsXMLSettings
     '******************* Movie Part ********************
     '***************************************************
 
-    '*************** XBMC Frodo settings ***************
+    '*************** Kodi Frodo settings ***************
     Private _movieusefrodo As Boolean
     Private _movieactorthumbsfrodo As Boolean
     Private _movieextrafanartsfrodo As Boolean
@@ -530,7 +530,7 @@ Partial Public Class clsXMLSettings
     Private _movieposterfrodo As Boolean
     Private _movietrailerfrodo As Boolean
 
-    '*************** XBMC Eden settings ***************
+    '*************** Kodi Eden settings ***************
     Private _movieuseeden As Boolean
     Private _movieactorthumbseden As Boolean
     Private _movieextrafanartseden As Boolean
@@ -540,24 +540,26 @@ Partial Public Class clsXMLSettings
     Private _moviepostereden As Boolean
     Private _movietrailereden As Boolean
 
-    '******** XBMC ArtworkDownloader settings *********
+    '******** Kodi ArtworkDownloader settings *********
+    Private _movieusead As Boolean
     Private _moviebannerad As Boolean
     Private _movieclearartad As Boolean
     Private _movieclearlogoad As Boolean
     Private _moviediscartad As Boolean
     Private _movielandscapead As Boolean
 
-    '********* XBMC Extended Images settings **********
+    '********* Kodi Extended Images settings **********
+    Private _movieuseextended As Boolean
     Private _moviebannerextended As Boolean
     Private _movieclearartextended As Boolean
     Private _movieclearlogoextended As Boolean
     Private _moviediscartextended As Boolean
     Private _movielandscapeextended As Boolean
 
-    '************* XBMC optional settings *************
+    '************* Kodi optional settings *************
     Private _moviexbmcprotectvtsbdmv As Boolean
 
-    '*************** XBMC TvTunes settings ***************
+    '*************** Kodi TvTunes settings ***************
     Private _moviethemetvtunesenable As Boolean
     Private _moviethemetvtunescustom As Boolean
     Private _moviethemetvtunescustompath As String
@@ -678,6 +680,7 @@ Partial Public Class clsXMLSettings
     '***************************************************
 
     '*************** Kodi Extended settings ***************
+    Private _moviesetuseextended As Boolean
     Private _moviesetbannerextended As Boolean
     Private _moviesetclearartextended As Boolean
     Private _moviesetclearlogoextended As Boolean
@@ -722,7 +725,7 @@ Partial Public Class clsXMLSettings
     '****************** TV Show Part *******************
     '***************************************************
 
-    '*************** XBMC Frodo settings ***************
+    '*************** Kodi Frodo settings ***************
     Private _tvusefrodo As Boolean
     Private _tvepisodeactorthumbsfrodo As Boolean
     Private _tvepisodenfofrodo As Boolean
@@ -737,24 +740,26 @@ Partial Public Class clsXMLSettings
     Private _tvshownfofrodo As Boolean
     Private _tvshowposterfrodo As Boolean
 
-    '*************** XBMC Eden settings ****************
+    '*************** Kodi Eden settings ****************
     Private _tvuseeden As Boolean
 
-    '******** XBMC ArtworkDownloader settings **********
+    '******** Kodi ArtworkDownloader settings **********
+    Private _tvusead As Boolean
     Private _tvseasonlandscapead As Boolean
     Private _tvshowcharacterartad As Boolean
     Private _tvshowclearartad As Boolean
     Private _tvshowclearlogoad As Boolean
     Private _tvshowlandscapead As Boolean
 
-    '********* XBMC Extended Images settings **********
+    '********* Kodi Extended Images settings **********
+    Private _tvuseextended As Boolean
     Private _tvseasonlandscapeextended As Boolean
     Private _tvshowcharacterartextended As Boolean
     Private _tvshowclearartextended As Boolean
     Private _tvshowclearlogoextended As Boolean
     Private _tvshowlandscapeextended As Boolean
 
-    '*************** XBMC TvTunes settings ***************
+    '*************** Kodi TvTunes settings ***************
     Private _tvshowthemetvtunesenable As Boolean
     Private _tvshowthemetvtunescustom As Boolean
     Private _tvshowthemetvtunescustompath As String
@@ -2194,6 +2199,7 @@ Partial Public Class clsXMLSettings
             Me._movielocklanguagev = value
         End Set
     End Property
+
     Public Property MovieLockLanguageA() As Boolean
         Get
             Return Me._movielocklanguagea
@@ -5296,12 +5302,39 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property MovieUseAD() As Boolean
+        Get
+            Return Me._movieusead
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movieusead = value
+        End Set
+    End Property
+
+    Public Property MovieUseExtended() As Boolean
+        Get
+            Return Me._movieuseextended
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movieuseextended = value
+        End Set
+    End Property
+
     Public Property MovieUseFrodo() As Boolean
         Get
             Return Me._movieusefrodo
         End Get
         Set(ByVal value As Boolean)
             Me._movieusefrodo = value
+        End Set
+    End Property
+
+    Public Property MovieSetUseExtended() As Boolean
+        Get
+            Return Me._moviesetuseextended
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetuseextended = value
         End Set
     End Property
 
@@ -6706,6 +6739,24 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._tvuseexpert = value
+        End Set
+    End Property
+
+    Public Property TVUseAD() As Boolean
+        Get
+            Return Me._tvusead
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvusead = value
+        End Set
+    End Property
+
+    Public Property TVUseExtended() As Boolean
+        Get
+            Return Me._tvuseextended
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvuseextended = value
         End Set
     End Property
 
