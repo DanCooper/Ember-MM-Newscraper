@@ -168,7 +168,7 @@ Public Class frmSettingsHolder_TV
         Me.chkScrapeShowClearArtOnlyHD.Text = Master.eLang.GetString(1105, "Only HD")
         Me.chkScrapeShowClearLogo.Text = Master.eLang.GetString(1097, "ClearLogo")
         Me.chkScrapeShowClearLogoOnlyHD.Text = Me.chkScrapeShowClearArtOnlyHD.Text
-        Me.chkScrapeShowCharacterArt.Text = Master.eLang.GetString(1052, "Get CharacterArt")
+        Me.chkScrapeShowCharacterArt.Text = Master.eLang.GetString(1140, "CharacterArt")
         Me.chkScrapeShowFanart.Text = Master.eLang.GetString(149, "Fanart")
         Me.chkScrapeShowLandscape.Text = Master.eLang.GetString(1035, "Landscape")
         Me.chkScrapeShowPoster.Text = Master.eLang.GetString(148, "Poster")

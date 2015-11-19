@@ -111,7 +111,7 @@ Partial Class frmSettingsHolder_MovieSet
         Me.gbScraperImagesOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbScraperImagesOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbScraperImagesOpts.Name = "gbScraperImagesOpts"
-        Me.gbScraperImagesOpts.Size = New System.Drawing.Size(432, 64)
+        Me.gbScraperImagesOpts.Size = New System.Drawing.Size(432, 67)
         Me.gbScraperImagesOpts.TabIndex = 1
         Me.gbScraperImagesOpts.TabStop = False
         Me.gbScraperImagesOpts.Text = "Images - Scraper specific"
@@ -132,16 +132,17 @@ Partial Class frmSettingsHolder_MovieSet
         Me.tblScraperImagesOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperImagesOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperImagesOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperImagesOpts.Size = New System.Drawing.Size(426, 43)
+        Me.tblScraperImagesOpts.Size = New System.Drawing.Size(426, 46)
         Me.tblScraperImagesOpts.TabIndex = 98
         '
         'chkScrapePoster
         '
+        Me.chkScrapePoster.AutoSize = True
         Me.chkScrapePoster.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkScrapePoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScrapePoster.Location = New System.Drawing.Point(3, 25)
+        Me.chkScrapePoster.Location = New System.Drawing.Point(3, 26)
         Me.chkScrapePoster.Name = "chkScrapePoster"
-        Me.chkScrapePoster.Size = New System.Drawing.Size(114, 15)
+        Me.chkScrapePoster.Size = New System.Drawing.Size(58, 17)
         Me.chkScrapePoster.TabIndex = 0
         Me.chkScrapePoster.Text = "Poster"
         Me.chkScrapePoster.TextAlign = System.Drawing.ContentAlignment.TopLeft
@@ -149,11 +150,12 @@ Partial Class frmSettingsHolder_MovieSet
         '
         'chkScrapeFanart
         '
+        Me.chkScrapeFanart.AutoSize = True
         Me.chkScrapeFanart.CheckAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkScrapeFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkScrapeFanart.Location = New System.Drawing.Point(3, 3)
         Me.chkScrapeFanart.Name = "chkScrapeFanart"
-        Me.chkScrapeFanart.Size = New System.Drawing.Size(84, 16)
+        Me.chkScrapeFanart.Size = New System.Drawing.Size(59, 17)
         Me.chkScrapeFanart.TabIndex = 1
         Me.chkScrapeFanart.Text = "Fanart"
         Me.chkScrapeFanart.TextAlign = System.Drawing.ContentAlignment.TopLeft
@@ -165,7 +167,7 @@ Partial Class frmSettingsHolder_MovieSet
         Me.gbScraperOpts.Controls.Add(Me.tblScraperOpts)
         Me.gbScraperOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbScraperOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbScraperOpts.Location = New System.Drawing.Point(3, 73)
+        Me.gbScraperOpts.Location = New System.Drawing.Point(3, 76)
         Me.gbScraperOpts.Name = "gbScraperOpts"
         Me.gbScraperOpts.Size = New System.Drawing.Size(432, 70)
         Me.gbScraperOpts.TabIndex = 95
@@ -301,7 +303,7 @@ Partial Class frmSettingsHolder_MovieSet
         Me.lblInfoBottom.Name = "lblInfoBottom"
         Me.lblInfoBottom.Size = New System.Drawing.Size(205, 24)
         Me.lblInfoBottom.TabIndex = 3
-        Me.lblInfoBottom.Text = "These settings are specific to this module." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Please refer to the global settings " & _
+        Me.lblInfoBottom.Text = "These settings are specific to this module." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Please refer to the global settings " &
     "for more options."
         Me.lblInfoBottom.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
@@ -406,6 +408,7 @@ Partial Class frmSettingsHolder_MovieSet
         Me.gbScraperImagesOpts.ResumeLayout(False)
         Me.gbScraperImagesOpts.PerformLayout()
         Me.tblScraperImagesOpts.ResumeLayout(False)
+        Me.tblScraperImagesOpts.PerformLayout()
         Me.gbScraperOpts.ResumeLayout(False)
         Me.gbScraperOpts.PerformLayout()
         Me.tblScraperOpts.ResumeLayout(False)
