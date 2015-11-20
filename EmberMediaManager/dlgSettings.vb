@@ -1683,6 +1683,7 @@ Public Class dlgSettings
     Private Sub btnMovieSortTokenReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieSortTokenReset.Click
         Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieSortTokens, True)
         RefreshMovieSortTokens()
+        sResult.NeedsReload_Movie = True
         SetApplyButton(True)
     End Sub
 
@@ -1693,6 +1694,7 @@ Public Class dlgSettings
     Private Sub btnMovieSetSortTokenReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieSetSortTokenReset.Click
         Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieSetSortTokens, True)
         RefreshMovieSetSortTokens()
+        sResult.NeedsReload_MovieSet = True
         SetApplyButton(True)
     End Sub
 
@@ -1703,6 +1705,7 @@ Public Class dlgSettings
     Private Sub btnTVSortTokenReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVSortTokenReset.Click
         Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVSortTokens, True)
         RefreshTVSortTokens()
+        sResult.NeedsReload_TV = True
         SetApplyButton(True)
     End Sub
 
