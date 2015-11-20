@@ -51,17 +51,16 @@ Partial Class dlgEditTVEpisode
         Me.lblSeason = New System.Windows.Forms.Label()
         Me.lblCredits = New System.Windows.Forms.Label()
         Me.txtCredits = New System.Windows.Forms.TextBox()
-        Me.btnEditActor = New System.Windows.Forms.Button()
-        Me.btnAddActor = New System.Windows.Forms.Button()
+        Me.btnActorEdit = New System.Windows.Forms.Button()
+        Me.btnActorAdd = New System.Windows.Forms.Button()
         Me.btnManual = New System.Windows.Forms.Button()
-        Me.btnRemove = New System.Windows.Forms.Button()
+        Me.btnActorRemove = New System.Windows.Forms.Button()
         Me.lblActors = New System.Windows.Forms.Label()
         Me.lvActors = New System.Windows.Forms.ListView()
         Me.colID = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colName = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colRole = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colThumb = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.colLocalPath = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.lblDirectors = New System.Windows.Forms.Label()
         Me.txtDirectors = New System.Windows.Forms.TextBox()
         Me.lblPlot = New System.Windows.Forms.Label()
@@ -224,10 +223,10 @@ Partial Class dlgEditTVEpisode
         Me.tpDetails.Controls.Add(Me.lblSeason)
         Me.tpDetails.Controls.Add(Me.lblCredits)
         Me.tpDetails.Controls.Add(Me.txtCredits)
-        Me.tpDetails.Controls.Add(Me.btnEditActor)
-        Me.tpDetails.Controls.Add(Me.btnAddActor)
+        Me.tpDetails.Controls.Add(Me.btnActorEdit)
+        Me.tpDetails.Controls.Add(Me.btnActorAdd)
         Me.tpDetails.Controls.Add(Me.btnManual)
-        Me.tpDetails.Controls.Add(Me.btnRemove)
+        Me.tpDetails.Controls.Add(Me.btnActorRemove)
         Me.tpDetails.Controls.Add(Me.lblActors)
         Me.tpDetails.Controls.Add(Me.lvActors)
         Me.tpDetails.Controls.Add(Me.lblDirectors)
@@ -430,21 +429,21 @@ Partial Class dlgEditTVEpisode
         '
         'btnEditActor
         '
-        Me.btnEditActor.Image = CType(resources.GetObject("btnEditActor.Image"), System.Drawing.Image)
-        Me.btnEditActor.Location = New System.Drawing.Point(35, 423)
-        Me.btnEditActor.Name = "btnEditActor"
-        Me.btnEditActor.Size = New System.Drawing.Size(23, 23)
-        Me.btnEditActor.TabIndex = 18
-        Me.btnEditActor.UseVisualStyleBackColor = True
+        Me.btnActorEdit.Image = CType(resources.GetObject("btnEditActor.Image"), System.Drawing.Image)
+        Me.btnActorEdit.Location = New System.Drawing.Point(35, 423)
+        Me.btnActorEdit.Name = "btnEditActor"
+        Me.btnActorEdit.Size = New System.Drawing.Size(23, 23)
+        Me.btnActorEdit.TabIndex = 18
+        Me.btnActorEdit.UseVisualStyleBackColor = True
         '
         'btnAddActor
         '
-        Me.btnAddActor.Image = CType(resources.GetObject("btnAddActor.Image"), System.Drawing.Image)
-        Me.btnAddActor.Location = New System.Drawing.Point(6, 423)
-        Me.btnAddActor.Name = "btnAddActor"
-        Me.btnAddActor.Size = New System.Drawing.Size(23, 23)
-        Me.btnAddActor.TabIndex = 17
-        Me.btnAddActor.UseVisualStyleBackColor = True
+        Me.btnActorAdd.Image = CType(resources.GetObject("btnAddActor.Image"), System.Drawing.Image)
+        Me.btnActorAdd.Location = New System.Drawing.Point(6, 423)
+        Me.btnActorAdd.Name = "btnAddActor"
+        Me.btnActorAdd.Size = New System.Drawing.Size(23, 23)
+        Me.btnActorAdd.TabIndex = 17
+        Me.btnActorAdd.UseVisualStyleBackColor = True
         '
         'btnManual
         '
@@ -458,12 +457,12 @@ Partial Class dlgEditTVEpisode
         '
         'btnRemove
         '
-        Me.btnRemove.Image = CType(resources.GetObject("btnRemove.Image"), System.Drawing.Image)
-        Me.btnRemove.Location = New System.Drawing.Point(602, 423)
-        Me.btnRemove.Name = "btnRemove"
-        Me.btnRemove.Size = New System.Drawing.Size(23, 23)
-        Me.btnRemove.TabIndex = 21
-        Me.btnRemove.UseVisualStyleBackColor = True
+        Me.btnActorRemove.Image = CType(resources.GetObject("btnRemove.Image"), System.Drawing.Image)
+        Me.btnActorRemove.Location = New System.Drawing.Point(602, 423)
+        Me.btnActorRemove.Name = "btnRemove"
+        Me.btnActorRemove.Size = New System.Drawing.Size(23, 23)
+        Me.btnActorRemove.TabIndex = 21
+        Me.btnActorRemove.UseVisualStyleBackColor = True
         '
         'lblActors
         '
@@ -477,7 +476,7 @@ Partial Class dlgEditTVEpisode
         '
         'lvActors
         '
-        Me.lvActors.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colID, Me.colName, Me.colRole, Me.colThumb, Me.colLocalPath})
+        Me.lvActors.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colID, Me.colName, Me.colRole, Me.colThumb})
         Me.lvActors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lvActors.FullRowSelect = True
         Me.lvActors.Location = New System.Drawing.Point(7, 204)
@@ -505,11 +504,6 @@ Partial Class dlgEditTVEpisode
         '
         Me.colThumb.Text = "Thumb"
         Me.colThumb.Width = 387
-        '
-        'colLocalPath
-        '
-        Me.colLocalPath.Text = "Local Path"
-        Me.colLocalPath.Width = 0
         '
         'lblDirectors
         '
@@ -1084,10 +1078,10 @@ Partial Class dlgEditTVEpisode
     Friend WithEvents tpDetails As System.Windows.Forms.TabPage
     Friend WithEvents lblCredits As System.Windows.Forms.Label
     Friend WithEvents txtCredits As System.Windows.Forms.TextBox
-    Friend WithEvents btnEditActor As System.Windows.Forms.Button
-    Friend WithEvents btnAddActor As System.Windows.Forms.Button
+    Friend WithEvents btnActorEdit As System.Windows.Forms.Button
+    Friend WithEvents btnActorAdd As System.Windows.Forms.Button
     Friend WithEvents btnManual As System.Windows.Forms.Button
-    Friend WithEvents btnRemove As System.Windows.Forms.Button
+    Friend WithEvents btnActorRemove As System.Windows.Forms.Button
     Friend WithEvents lblActors As System.Windows.Forms.Label
     Friend WithEvents lvActors As System.Windows.Forms.ListView
     Friend WithEvents colName As System.Windows.Forms.ColumnHeader
@@ -1163,6 +1157,5 @@ Partial Class dlgEditTVEpisode
     Friend WithEvents btnSetSubtitleLocal As System.Windows.Forms.Button
     Friend WithEvents colID As System.Windows.Forms.ColumnHeader
     Friend WithEvents txtLastPlayed As System.Windows.Forms.TextBox
-    Friend WithEvents colLocalPath As System.Windows.Forms.ColumnHeader
 
 End Class

@@ -24,8 +24,8 @@ Partial Class dlgEditMovie
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgEditMovie))
-        Dim ListViewGroup2 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Local Subtitles", System.Windows.Forms.HorizontalAlignment.Left)
-        Dim ListViewItem2 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("1")
+        Dim ListViewGroup1 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Local Subtitles", System.Windows.Forms.HorizontalAlignment.Left)
+        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("1")
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.Cancel_Button = New System.Windows.Forms.Button()
         Me.pnlTop = New System.Windows.Forms.Panel()
@@ -68,17 +68,16 @@ Partial Class dlgEditMovie
         Me.txtRuntime = New System.Windows.Forms.TextBox()
         Me.lblMPAADesc = New System.Windows.Forms.Label()
         Me.txtMPAADesc = New System.Windows.Forms.TextBox()
-        Me.btnEditActor = New System.Windows.Forms.Button()
-        Me.btnAddActor = New System.Windows.Forms.Button()
+        Me.btnActorEdit = New System.Windows.Forms.Button()
+        Me.btnActorAdd = New System.Windows.Forms.Button()
         Me.btnManual = New System.Windows.Forms.Button()
-        Me.btnRemove = New System.Windows.Forms.Button()
+        Me.btnActorRemove = New System.Windows.Forms.Button()
         Me.lblActors = New System.Windows.Forms.Label()
         Me.lvActors = New System.Windows.Forms.ListView()
         Me.colID = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colName = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colRole = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colThumb = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.colLocalPath = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.lbMPAA = New System.Windows.Forms.ListBox()
         Me.lblGenre = New System.Windows.Forms.Label()
         Me.lblMPAA = New System.Windows.Forms.Label()
@@ -403,10 +402,10 @@ Partial Class dlgEditMovie
         Me.tpDetails.Controls.Add(Me.txtRuntime)
         Me.tpDetails.Controls.Add(Me.lblMPAADesc)
         Me.tpDetails.Controls.Add(Me.txtMPAADesc)
-        Me.tpDetails.Controls.Add(Me.btnEditActor)
-        Me.tpDetails.Controls.Add(Me.btnAddActor)
+        Me.tpDetails.Controls.Add(Me.btnActorEdit)
+        Me.tpDetails.Controls.Add(Me.btnActorAdd)
         Me.tpDetails.Controls.Add(Me.btnManual)
-        Me.tpDetails.Controls.Add(Me.btnRemove)
+        Me.tpDetails.Controls.Add(Me.btnActorRemove)
         Me.tpDetails.Controls.Add(Me.lblActors)
         Me.tpDetails.Controls.Add(Me.lvActors)
         Me.tpDetails.Controls.Add(Me.lbMPAA)
@@ -763,21 +762,21 @@ Partial Class dlgEditMovie
         '
         'btnEditActor
         '
-        Me.btnEditActor.Image = CType(resources.GetObject("btnEditActor.Image"), System.Drawing.Image)
-        Me.btnEditActor.Location = New System.Drawing.Point(302, 304)
-        Me.btnEditActor.Name = "btnEditActor"
-        Me.btnEditActor.Size = New System.Drawing.Size(23, 23)
-        Me.btnEditActor.TabIndex = 32
-        Me.btnEditActor.UseVisualStyleBackColor = True
+        Me.btnActorEdit.Image = CType(resources.GetObject("btnEditActor.Image"), System.Drawing.Image)
+        Me.btnActorEdit.Location = New System.Drawing.Point(302, 304)
+        Me.btnActorEdit.Name = "btnEditActor"
+        Me.btnActorEdit.Size = New System.Drawing.Size(23, 23)
+        Me.btnActorEdit.TabIndex = 32
+        Me.btnActorEdit.UseVisualStyleBackColor = True
         '
         'btnAddActor
         '
-        Me.btnAddActor.Image = CType(resources.GetObject("btnAddActor.Image"), System.Drawing.Image)
-        Me.btnAddActor.Location = New System.Drawing.Point(273, 304)
-        Me.btnAddActor.Name = "btnAddActor"
-        Me.btnAddActor.Size = New System.Drawing.Size(23, 23)
-        Me.btnAddActor.TabIndex = 31
-        Me.btnAddActor.UseVisualStyleBackColor = True
+        Me.btnActorAdd.Image = CType(resources.GetObject("btnAddActor.Image"), System.Drawing.Image)
+        Me.btnActorAdd.Location = New System.Drawing.Point(273, 304)
+        Me.btnActorAdd.Name = "btnAddActor"
+        Me.btnActorAdd.Size = New System.Drawing.Size(23, 23)
+        Me.btnActorAdd.TabIndex = 31
+        Me.btnActorAdd.UseVisualStyleBackColor = True
         '
         'btnManual
         '
@@ -791,12 +790,12 @@ Partial Class dlgEditMovie
         '
         'btnRemove
         '
-        Me.btnRemove.Image = CType(resources.GetObject("btnRemove.Image"), System.Drawing.Image)
-        Me.btnRemove.Location = New System.Drawing.Point(658, 304)
-        Me.btnRemove.Name = "btnRemove"
-        Me.btnRemove.Size = New System.Drawing.Size(23, 23)
-        Me.btnRemove.TabIndex = 35
-        Me.btnRemove.UseVisualStyleBackColor = True
+        Me.btnActorRemove.Image = CType(resources.GetObject("btnRemove.Image"), System.Drawing.Image)
+        Me.btnActorRemove.Location = New System.Drawing.Point(658, 304)
+        Me.btnActorRemove.Name = "btnRemove"
+        Me.btnActorRemove.Size = New System.Drawing.Size(23, 23)
+        Me.btnActorRemove.TabIndex = 35
+        Me.btnActorRemove.UseVisualStyleBackColor = True
         '
         'lblActors
         '
@@ -812,7 +811,7 @@ Partial Class dlgEditMovie
         '
         Me.lvActors.BackColor = System.Drawing.SystemColors.Window
         Me.lvActors.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.lvActors.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colID, Me.colName, Me.colRole, Me.colThumb, Me.colLocalPath})
+        Me.lvActors.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colID, Me.colName, Me.colRole, Me.colThumb})
         Me.lvActors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lvActors.FullRowSelect = True
         Me.lvActors.Location = New System.Drawing.Point(273, 156)
@@ -841,11 +840,6 @@ Partial Class dlgEditMovie
         '
         Me.colThumb.Text = "Thumb"
         Me.colThumb.Width = 174
-        '
-        'colLocalPath
-        '
-        Me.colLocalPath.Text = "Local Path"
-        Me.colLocalPath.Width = 0
         '
         'lbMPAA
         '
@@ -2004,12 +1998,12 @@ Partial Class dlgEditMovie
         Me.lvSubtitles.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5})
         Me.lvSubtitles.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lvSubtitles.FullRowSelect = True
-        ListViewGroup2.Header = "Local Subtitles"
-        ListViewGroup2.Name = "LocalSubtitles"
-        Me.lvSubtitles.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup2})
+        ListViewGroup1.Header = "Local Subtitles"
+        ListViewGroup1.Name = "LocalSubtitles"
+        Me.lvSubtitles.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup1})
         Me.lvSubtitles.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
-        ListViewItem2.Group = ListViewGroup2
-        Me.lvSubtitles.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem2})
+        ListViewItem1.Group = ListViewGroup1
+        Me.lvSubtitles.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
         Me.lvSubtitles.Location = New System.Drawing.Point(6, 6)
         Me.lvSubtitles.MultiSelect = False
         Me.lvSubtitles.Name = "lvSubtitles"
@@ -2566,10 +2560,10 @@ Partial Class dlgEditMovie
     Friend WithEvents tpDetails As System.Windows.Forms.TabPage
     Friend WithEvents lblMPAADesc As System.Windows.Forms.Label
     Friend WithEvents txtMPAADesc As System.Windows.Forms.TextBox
-    Friend WithEvents btnEditActor As System.Windows.Forms.Button
-    Friend WithEvents btnAddActor As System.Windows.Forms.Button
+    Friend WithEvents btnActorEdit As System.Windows.Forms.Button
+    Friend WithEvents btnActorAdd As System.Windows.Forms.Button
     Friend WithEvents btnManual As System.Windows.Forms.Button
-    Friend WithEvents btnRemove As System.Windows.Forms.Button
+    Friend WithEvents btnActorRemove As System.Windows.Forms.Button
     Friend WithEvents lblActors As System.Windows.Forms.Label
     Friend WithEvents lvActors As System.Windows.Forms.ListView
     Friend WithEvents colName As System.Windows.Forms.ColumnHeader
@@ -2751,7 +2745,6 @@ Partial Class dlgEditMovie
     Friend WithEvents txtLastPlayed As System.Windows.Forms.TextBox
     Friend WithEvents btnSetExtrafanartsScrape As System.Windows.Forms.Button
     Friend WithEvents btnSetExtrathumbsScrape As System.Windows.Forms.Button
-    Friend WithEvents colLocalPath As System.Windows.Forms.ColumnHeader
     Friend WithEvents cbSourceLanguage As System.Windows.Forms.ComboBox
     Friend WithEvents lblLanguage As System.Windows.Forms.Label
 

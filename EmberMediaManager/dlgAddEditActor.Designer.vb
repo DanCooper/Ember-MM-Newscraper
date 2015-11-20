@@ -24,8 +24,8 @@ Partial Class dlgAddEditActor
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgAddEditActor))
         Me.tblBottom = New System.Windows.Forms.TableLayoutPanel()
-        Me.OK_Button = New System.Windows.Forms.Button()
-        Me.Cancel_Button = New System.Windows.Forms.Button()
+        Me.btnOK = New System.Windows.Forms.Button()
+        Me.btnCancel = New System.Windows.Forms.Button()
         Me.txtName = New System.Windows.Forms.TextBox()
         Me.txtRole = New System.Windows.Forms.TextBox()
         Me.txtThumb = New System.Windows.Forms.TextBox()
@@ -52,36 +52,37 @@ Partial Class dlgAddEditActor
         Me.tblBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.tblBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblBottom.Controls.Add(Me.OK_Button, 1, 0)
-        Me.tblBottom.Controls.Add(Me.Cancel_Button, 2, 0)
+        Me.tblBottom.Controls.Add(Me.btnOK, 1, 0)
+        Me.tblBottom.Controls.Add(Me.btnCancel, 2, 0)
         Me.tblBottom.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblBottom.Location = New System.Drawing.Point(0, 0)
         Me.tblBottom.Name = "tblBottom"
         Me.tblBottom.RowCount = 1
         Me.tblBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblBottom.Size = New System.Drawing.Size(384, 29)
+        Me.tblBottom.Size = New System.Drawing.Size(394, 29)
         Me.tblBottom.TabIndex = 0
         '
-        'OK_Button
+        'btnOK
         '
-        Me.OK_Button.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.OK_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.OK_Button.Location = New System.Drawing.Point(241, 3)
-        Me.OK_Button.Name = "OK_Button"
-        Me.OK_Button.Size = New System.Drawing.Size(67, 23)
-        Me.OK_Button.TabIndex = 0
-        Me.OK_Button.Text = "OK"
+        Me.btnOK.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.btnOK.Enabled = False
+        Me.btnOK.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnOK.Location = New System.Drawing.Point(251, 3)
+        Me.btnOK.Name = "btnOK"
+        Me.btnOK.Size = New System.Drawing.Size(67, 23)
+        Me.btnOK.TabIndex = 0
+        Me.btnOK.Text = "OK"
         '
-        'Cancel_Button
+        'btnCancel
         '
-        Me.Cancel_Button.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Cancel_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Cancel_Button.Location = New System.Drawing.Point(314, 3)
-        Me.Cancel_Button.Name = "Cancel_Button"
-        Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
-        Me.Cancel_Button.TabIndex = 1
-        Me.Cancel_Button.Text = "Cancel"
+        Me.btnCancel.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.btnCancel.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnCancel.Location = New System.Drawing.Point(324, 3)
+        Me.btnCancel.Name = "btnCancel"
+        Me.btnCancel.Size = New System.Drawing.Size(67, 23)
+        Me.btnCancel.TabIndex = 1
+        Me.btnCancel.Text = "Cancel"
         '
         'txtName
         '
@@ -186,7 +187,7 @@ Partial Class dlgAddEditActor
         Me.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlMain.Location = New System.Drawing.Point(0, 0)
         Me.pnlMain.Name = "pnlMain"
-        Me.pnlMain.Size = New System.Drawing.Size(384, 212)
+        Me.pnlMain.Size = New System.Drawing.Size(394, 245)
         Me.pnlMain.TabIndex = 1
         '
         'pnlBottom
@@ -194,18 +195,18 @@ Partial Class dlgAddEditActor
         Me.pnlBottom.AutoSize = True
         Me.pnlBottom.Controls.Add(Me.tblBottom)
         Me.pnlBottom.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlBottom.Location = New System.Drawing.Point(0, 212)
+        Me.pnlBottom.Location = New System.Drawing.Point(0, 245)
         Me.pnlBottom.Name = "pnlBottom"
-        Me.pnlBottom.Size = New System.Drawing.Size(384, 29)
+        Me.pnlBottom.Size = New System.Drawing.Size(394, 29)
         Me.pnlBottom.TabIndex = 2
         '
         'dlgAddEditActor
         '
-        Me.AcceptButton = Me.OK_Button
+        Me.AcceptButton = Me.btnOK
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-        Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(384, 241)
+        Me.CancelButton = Me.btnCancel
+        Me.ClientSize = New System.Drawing.Size(394, 274)
         Me.ControlBox = False
         Me.Controls.Add(Me.pnlMain)
         Me.Controls.Add(Me.pnlBottom)
@@ -230,8 +231,8 @@ Partial Class dlgAddEditActor
 
     End Sub
     Friend WithEvents tblBottom As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents OK_Button As System.Windows.Forms.Button
-    Friend WithEvents Cancel_Button As System.Windows.Forms.Button
+    Friend WithEvents btnOK As System.Windows.Forms.Button
+    Friend WithEvents btnCancel As System.Windows.Forms.Button
     Friend WithEvents txtName As System.Windows.Forms.TextBox
     Friend WithEvents txtRole As System.Windows.Forms.TextBox
     Friend WithEvents txtThumb As System.Windows.Forms.TextBox

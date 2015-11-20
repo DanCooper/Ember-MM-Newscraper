@@ -18,89 +18,84 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.Text.RegularExpressions
 Imports EmberAPI
 Imports NLog
-Imports System.Diagnostics
 
 Public Class dlgAddEditActor
 
 #Region "Fields"
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
+
     Public Shared selIndex As Integer = 0
 
-    Private eActor As MediaContainers.Person
+    Private tmpActor As MediaContainers.Person
+    Private strOldURLOriginal As String
     Private isNew As Boolean = True
     Private sHTTP As New HTTP
 
 #End Region 'Fields
+
+#Region "Properties"
+
+    Public ReadOnly Property Result As MediaContainers.Person
+        Get
+            Return tmpActor
+        End Get
+    End Property
+
+#End Region 'Properties
 
 #Region "Methods"
 
     Public Sub New()
         ' This call is required by the designer.
         InitializeComponent()
-        Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
-        Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
-        Me.StartPosition = FormStartPosition.Manual
+        Left = Master.AppPos.Left + (Master.AppPos.Width - Width) \ 2
+        Top = Master.AppPos.Top + (Master.AppPos.Height - Height) \ 2
+        StartPosition = FormStartPosition.Manual
     End Sub
 
     Public Sub SetUp()
-        Me.lblName.Text = Master.eLang.GetString(154, "Actor Name:")
-        Me.lblRole.Text = Master.eLang.GetString(155, "Actor Role:")
-        Me.lblThumb.Text = Master.eLang.GetString(156, "Actor Thumb (URL):")
+        lblName.Text = Master.eLang.GetString(154, "Actor Name:")
+        lblRole.Text = Master.eLang.GetString(155, "Actor Role:")
+        lblThumb.Text = Master.eLang.GetString(156, "Actor Thumb (URL):")
     End Sub
 
-    Public Overloads Function ShowDialog(ByVal bNew As Boolean, Optional ByVal inActor As MediaContainers.Person = Nothing) As MediaContainers.Person
-        '//
-        ' Overload to pass data
-        '\\
-
-        Me.isNew = bNew
-
-        If bNew Then
-            Me.eActor = New MediaContainers.Person
+    Public Overloads Function ShowDialog(Optional ByVal inActor As MediaContainers.Person = Nothing) As DialogResult
+        isNew = inActor Is Nothing
+        If isNew Then
+            tmpActor = New MediaContainers.Person
+            strOldURLOriginal = String.Empty
         Else
-            Me.eActor = inActor
+            tmpActor = inActor
+            strOldURLOriginal = inActor.URLOriginal
         End If
-
-        If MyBase.ShowDialog() = Windows.Forms.DialogResult.OK Then
-            Return Me.eActor
-        Else
-            Return Nothing
-        End If
+        Return MyBase.ShowDialog()
     End Function
 
-    Private Sub btnVerify_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnVerify.Click
-        '//
-        ' Download the pic to verify the url was entered correctly
-        '\\
-
-        Try
-            If Not String.IsNullOrEmpty(Me.txtThumb.Text) Then
-                If StringUtils.isValidURL(Me.txtThumb.Text) Then
-                    If Me.bwDownloadPic.IsBusy Then
-                        Me.bwDownloadPic.CancelAsync()
-                    End If
-
-                    Me.pbActLoad.Visible = True
-
-                    Me.bwDownloadPic = New System.ComponentModel.BackgroundWorker
-                    Me.bwDownloadPic.WorkerSupportsCancellation = True
-                    Me.bwDownloadPic.RunWorkerAsync()
-                Else
-                    MessageBox.Show(Master.eLang.GetString(159, "Specified URL is not valid."), Master.eLang.GetString(160, "Invalid URL"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+    Private Sub btnVerify_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnVerify.Click
+        If Not String.IsNullOrEmpty(txtThumb.Text) Then
+            If StringUtils.isValidURL(txtThumb.Text) Then
+                If bwDownloadPic.IsBusy Then
+                    bwDownloadPic.CancelAsync()
                 End If
+
+                pbActLoad.Visible = True
+
+                bwDownloadPic = New System.ComponentModel.BackgroundWorker
+                bwDownloadPic.WorkerSupportsCancellation = True
+                bwDownloadPic.RunWorkerAsync()
             Else
-                MessageBox.Show(Master.eLang.GetString(161, "Please enter a URL to verify."), Master.eLang.GetString(162, "No Thumb URL Specified"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                MessageBox.Show(Master.eLang.GetString(159, "Specified URL is not valid."), Master.eLang.GetString(160, "Invalid URL"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+        Else
+            MessageBox.Show(Master.eLang.GetString(161, "Please enter a URL to verify."), Master.eLang.GetString(162, "No Thumb URL Specified"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+        End If
     End Sub
 
     Private Sub bwDownloadPic_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadPic.DoWork
-        sHTTP.StartDownloadImage(Me.txtThumb.Text)
+        sHTTP.StartDownloadImage(txtThumb.Text)
 
         While sHTTP.IsDownloading
             Application.DoEvents()
@@ -111,64 +106,39 @@ Public Class dlgAddEditActor
     End Sub
 
     Private Sub bwDownloadPic_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDownloadPic.RunWorkerCompleted
-        '//
-        ' Thread finished: display pic if it was able to get one
-        '\\
-
-        Me.pbActLoad.Visible = False
-
-        Me.pbActors.Image = DirectCast(e.Result, Image)
+        pbActLoad.Visible = False
+        pbActors.Image = DirectCast(e.Result, Image)
+        tmpActor.Thumb = New MediaContainers.Image With {.URLOriginal = txtThumb.Text}
+        tmpActor.Thumb.ImageOriginal.UpdateMSfromImg(pbActors.Image)
     End Sub
 
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-        '//
-        ' Get me out of here!
-        '\\
-
-        Me.DialogResult = Windows.Forms.DialogResult.Cancel
-
-        Me.Close()
+    Private Sub btnCancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancel.Click
+        DialogResult = DialogResult.Cancel
     End Sub
 
-    Private Sub dlgAddEditActor_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        '//
-        ' Fill form with data if needed
-        '\\
+    Private Sub dlgAddEditActor_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
+        SetUp()
 
-        Try
-            Me.SetUp()
+        If isNew Then
+            Text = Master.eLang.GetString(157, "New Actor")
+        Else
+            Text = Master.eLang.GetString(158, "Edit Actor")
+            txtName.Text = tmpActor.Name
+            txtRole.Text = tmpActor.Role
+            txtThumb.Text = tmpActor.URLOriginal
+        End If
 
-            If Me.isNew Then
-                Me.Text = Master.eLang.GetString(157, "New Actor")
-            Else
-                Me.Text = Master.eLang.GetString(158, "Edit Actor")
-                Me.txtName.Text = Me.eActor.Name
-                Me.txtRole.Text = Me.eActor.Role
-                Me.txtThumb.Text = Me.eActor.URLOriginal
-
-            End If
-
-            Me.Activate()
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+        Activate()
     End Sub
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-        '//
-        ' Fill the MediaContainers.Person with the data
-        '\\
+    Private Sub btnOK_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnOK.Click
+        tmpActor.Name = txtName.Text
+        tmpActor.Role = txtRole.Text
+        DialogResult = DialogResult.OK
+    End Sub
 
-        Try
-            Me.eActor.Name = Me.txtName.Text
-            Me.eActor.Role = Me.txtRole.Text
-            Me.eActor.URLOriginal = Me.txtThumb.Text
-            Me.DialogResult = Windows.Forms.DialogResult.OK
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-
-        Me.Close()
+    Private Sub txtName_TextChanged(sender As Object, e As EventArgs) Handles txtName.TextChanged
+        btnOK.Enabled = Not String.IsNullOrEmpty(txtName.Text)
     End Sub
 
 #End Region 'Methods

@@ -1013,11 +1013,11 @@ Public Class Images
         Next
 
         'Secound, remove the old ones
-        'Images.DeleteTVEpisodeActorThumbs(mEpisode) 'TODO: find a way to only remove actor thumbs that not needed in other episodes with same actor thumbs path
+        'Images.Delete_TVEpisode(mEpisode, Enums.ModifierType.EpisodeActorThumbs) 'TODO: find a way to only remove actor thumbs that not needed in other episodes with same actor thumbs path
 
         'Thirdly, save all actor thumbs
         For Each tActor As MediaContainers.Person In mEpisode.TVEpisode.Actors
-            If tActor.Thumb.ImageOriginal.Image IsNot Nothing Then
+            If tActor.Thumb.LoadAndCache(Enums.ContentType.TV, True) Then
                 tActor.Thumb.LocalFilePath = tActor.Thumb.ImageOriginal.SaveAsTVEpisodeActorThumb(mEpisode, tActor)
             End If
         Next
@@ -1229,7 +1229,7 @@ Public Class Images
 
         'Thirdly, save all actor thumbs
         For Each tActor As MediaContainers.Person In mShow.TVShow.Actors
-            If tActor.Thumb.ImageOriginal.Image IsNot Nothing Then
+            If tActor.Thumb.LoadAndCache(Enums.ContentType.TV, True) Then
                 tActor.Thumb.LocalFilePath = tActor.Thumb.ImageOriginal.SaveAsTVShowActorThumb(mShow, tActor)
             End If
         Next

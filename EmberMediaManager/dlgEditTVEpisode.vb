@@ -25,7 +25,8 @@ Imports NLog
 Public Class dlgEditTVEpisode
 
 #Region "Fields"
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     Private tmpDBElement As New Database.DBElement
 
@@ -60,7 +61,47 @@ Public Class dlgEditTVEpisode
         Return MyBase.ShowDialog()
     End Function
 
-    Private Sub btnActorDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnActorDown.Click
+    Private Sub ActorEdit()
+        If lvActors.SelectedItems.Count > 0 Then
+            Dim lvwItem As ListViewItem = lvActors.SelectedItems(0)
+            Dim eActor As MediaContainers.Person = DirectCast(lvwItem.Tag, MediaContainers.Person)
+            Using dAddEditActor As New dlgAddEditActor
+                If dAddEditActor.ShowDialog(eActor) = DialogResult.OK Then
+                    eActor = dAddEditActor.Result
+                    lvwItem.Text = eActor.ID.ToString
+                    lvwItem.Tag = eActor
+                    lvwItem.SubItems(1).Text = eActor.Name
+                    lvwItem.SubItems(2).Text = eActor.Role
+                    lvwItem.SubItems(3).Text = eActor.URLOriginal
+                    lvwItem.Selected = True
+                    lvwItem.EnsureVisible()
+                End If
+            End Using
+        End If
+    End Sub
+
+    Private Sub ActorRemove()
+        If lvActors.Items.Count > 0 Then
+            While lvActors.SelectedItems.Count > 0
+                lvActors.Items.Remove(lvActors.SelectedItems(0))
+            End While
+        End If
+    End Sub
+
+    Private Sub btnActorAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnActorAdd.Click
+        Using dAddEditActor As New dlgAddEditActor
+            If dAddEditActor.ShowDialog() = DialogResult.OK Then
+                Dim nActor As MediaContainers.Person = dAddEditActor.Result
+                Dim lvItem As ListViewItem = lvActors.Items.Add(nActor.ID.ToString)
+                lvItem.Tag = nActor
+                lvItem.SubItems.Add(nActor.Name)
+                lvItem.SubItems.Add(nActor.Role)
+                lvItem.SubItems.Add(nActor.URLOriginal)
+            End If
+        End Using
+    End Sub
+
+    Private Sub btnActorDown_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnActorDown.Click
         If lvActors.SelectedItems.Count > 0 AndAlso lvActors.SelectedItems(0) IsNot Nothing AndAlso lvActors.SelectedIndices(0) < (lvActors.Items.Count - 1) Then
             Dim iIndex As Integer = lvActors.SelectedIndices(0)
             lvActors.Items.Insert(iIndex + 2, DirectCast(lvActors.SelectedItems(0).Clone, ListViewItem))
@@ -70,55 +111,32 @@ Public Class dlgEditTVEpisode
         End If
     End Sub
 
-    Private Sub btnActorUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnActorUp.Click
-        Try
-            If lvActors.SelectedItems.Count > 0 AndAlso lvActors.SelectedItems(0) IsNot Nothing AndAlso lvActors.SelectedIndices(0) > 0 Then
-                Dim iIndex As Integer = lvActors.SelectedIndices(0)
-                lvActors.Items.Insert(iIndex - 1, DirectCast(lvActors.SelectedItems(0).Clone, ListViewItem))
-                lvActors.Items.RemoveAt(iIndex + 1)
-                lvActors.Items(iIndex - 1).Selected = True
-                lvActors.Select()
-            End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+    Private Sub btnActorEdit_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnActorEdit.Click
+        ActorEdit()
     End Sub
 
-    Private Sub btnAddActor_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddActor.Click
-        Try
-            Dim eActor As New MediaContainers.Person
-            Using dAddEditActor As New dlgAddEditActor
-                eActor = dAddEditActor.ShowDialog(True)
-            End Using
-            If eActor IsNot Nothing Then
-                Dim lvItem As ListViewItem = lvActors.Items.Add(eActor.ID.ToString)
-                lvItem.SubItems.Add(eActor.Name)
-                lvItem.SubItems.Add(eActor.Role)
-                lvItem.SubItems.Add(eActor.URLOriginal)
-                lvItem.SubItems.Add(eActor.LocalFilePath)
-            End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+    Private Sub btnActorRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnActorRemove.Click
+        ActorRemove()
     End Sub
 
-    Private Sub btnEditActor_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEditActor.Click
-        EditActor()
+    Private Sub btnActorUp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnActorUp.Click
+        If lvActors.SelectedItems.Count > 0 AndAlso lvActors.SelectedItems(0) IsNot Nothing AndAlso lvActors.SelectedIndices(0) > 0 Then
+            Dim iIndex As Integer = lvActors.SelectedIndices(0)
+            lvActors.Items.Insert(iIndex - 1, DirectCast(lvActors.SelectedItems(0).Clone, ListViewItem))
+            lvActors.Items.RemoveAt(iIndex + 1)
+            lvActors.Items(iIndex - 1).Selected = True
+            lvActors.Select()
+        End If
     End Sub
 
-
-    Private Sub btnManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnManual.Click
-        Try
-            If dlgManualEdit.ShowDialog(tmpDBElement.NfoPath) = Windows.Forms.DialogResult.OK Then
-                tmpDBElement.TVEpisode = NFO.LoadTVEpFromNFO(tmpDBElement.NfoPath, tmpDBElement.TVEpisode.Season, tmpDBElement.TVEpisode.Episode)
-                FillInfo()
-            End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+    Private Sub btnManual_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnManual.Click
+        If dlgManualEdit.ShowDialog(tmpDBElement.NfoPath) = DialogResult.OK Then
+            tmpDBElement.TVEpisode = NFO.LoadTVEpFromNFO(tmpDBElement.NfoPath, tmpDBElement.TVEpisode.Season, tmpDBElement.TVEpisode.Episode)
+            FillInfo()
+        End If
     End Sub
 
-    Private Sub btnRemoveFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveFanart.Click
+    Private Sub btnRemoveFanart_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRemoveFanart.Click
         pbFanart.Image = Nothing
         pbFanart.Tag = Nothing
         lblFanartSize.Text = String.Empty
@@ -126,7 +144,7 @@ Public Class dlgEditTVEpisode
         tmpDBElement.ImagesContainer.Fanart = New MediaContainers.Image
     End Sub
 
-    Private Sub btnRemovePoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemovePoster.Click
+    Private Sub btnRemovePoster_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRemovePoster.Click
         pbPoster.Image = Nothing
         pbPoster.Tag = Nothing
         lblPosterSize.Text = String.Empty
@@ -134,11 +152,7 @@ Public Class dlgEditTVEpisode
         tmpDBElement.ImagesContainer.Poster = New MediaContainers.Image
     End Sub
 
-    Private Sub btnRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemove.Click
-        DeleteActors()
-    End Sub
-
-    Private Sub btnRemoveSubtitle_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveSubtitle.Click
+    Private Sub btnRemoveSubtitle_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRemoveSubtitle.Click
         DeleteSubtitle()
     End Sub
 
@@ -388,11 +402,9 @@ Public Class dlgEditTVEpisode
         End Try
     End Sub
 
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+    Private Sub Cancel_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Cancel_Button.Click
         CleanUp()
-
-        DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Close()
+        DialogResult = DialogResult.Cancel
     End Sub
 
     Private Sub CleanUp()
@@ -413,19 +425,7 @@ Public Class dlgEditTVEpisode
         End Try
     End Sub
 
-    Private Sub DeleteActors()
-        Try
-            If lvActors.Items.Count > 0 Then
-                While lvActors.SelectedItems.Count > 0
-                    lvActors.Items.Remove(lvActors.SelectedItems(0))
-                End While
-            End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-    End Sub
-
-    Private Sub dlgEditEpisode_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Private Sub dlgEditEpisode_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         If tmpDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(tmpDBElement, True) Then
             If Not Master.eSettings.TVEpisodeFanartAnyEnabled Then tcEdit.TabPages.Remove(tpFanart)
             If Not Master.eSettings.TVEpisodePosterAnyEnabled Then
@@ -467,33 +467,8 @@ Public Class dlgEditTVEpisode
 
             FillInfo()
         Else
-            DialogResult = System.Windows.Forms.DialogResult.Cancel
-            Close()
+            DialogResult = DialogResult.Cancel
         End If
-    End Sub
-
-    Private Sub EditActor()
-        Try
-            If lvActors.SelectedItems.Count > 0 Then
-                Dim lvwItem As ListViewItem = lvActors.SelectedItems(0)
-                Dim eActor As New MediaContainers.Person With {.ID = CInt(lvwItem.Text), .Name = lvwItem.SubItems(1).Text, .Role = lvwItem.SubItems(2).Text, .URLOriginal = lvwItem.SubItems(3).Text, .LocalFilePath = lvwItem.SubItems(4).Text}
-                Using dAddEditActor As New dlgAddEditActor
-                    eActor = dAddEditActor.ShowDialog(False, eActor)
-                End Using
-                If eActor IsNot Nothing Then
-                    lvwItem.Text = eActor.ID.ToString
-                    lvwItem.SubItems(1).Text = eActor.Name
-                    lvwItem.SubItems(2).Text = eActor.Role
-                    lvwItem.SubItems(3).Text = eActor.URLOriginal
-                    lvwItem.SubItems(4).Text = eActor.LocalFilePath
-                    lvwItem.Selected = True
-                    lvwItem.EnsureVisible()
-                End If
-                eActor = Nothing
-            End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
     End Sub
 
     Private Sub FillInfo()
@@ -513,14 +488,15 @@ Public Class dlgEditTVEpisode
             txtVideoSource.Text = tmpDBElement.TVEpisode.VideoSource
         End If
 
+        'Actors
         Dim lvItem As ListViewItem
         lvActors.Items.Clear()
-        For Each imdbAct As MediaContainers.Person In tmpDBElement.TVEpisode.Actors
-            lvItem = lvActors.Items.Add(imdbAct.ID.ToString)
-            lvItem.SubItems.Add(imdbAct.Name)
-            lvItem.SubItems.Add(imdbAct.Role)
-            lvItem.SubItems.Add(imdbAct.URLOriginal)
-            lvItem.SubItems.Add(imdbAct.LocalFilePath)
+        For Each tActor As MediaContainers.Person In tmpDBElement.TVEpisode.Actors
+            lvItem = lvActors.Items.Add(tActor.ID.ToString)
+            lvItem.Tag = tActor
+            lvItem.SubItems.Add(tActor.Name)
+            lvItem.SubItems.Add(tActor.Role)
+            lvItem.SubItems.Add(tActor.URLOriginal)
         Next
 
         Dim tRating As Single = NumUtils.ConvertToSingle(tmpDBElement.TVEpisode.Rating)
@@ -594,7 +570,7 @@ Public Class dlgEditTVEpisode
         LoadSubtitles()
     End Sub
 
-    Private Sub lvActors_ColumnClick(ByVal sender As Object, ByVal e As System.Windows.Forms.ColumnClickEventArgs) Handles lvActors.ColumnClick
+    Private Sub lvActors_ColumnClick(ByVal sender As Object, ByVal e As ColumnClickEventArgs) Handles lvActors.ColumnClick
         ' Determine if the clicked column is already the column that is
         ' being sorted.
         Try
@@ -618,16 +594,14 @@ Public Class dlgEditTVEpisode
         End Try
     End Sub
 
-    Private Sub lvActors_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvActors.DoubleClick
-        EditActor()
+    Private Sub lvActors_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles lvActors.DoubleClick
+        ActorEdit()
     End Sub
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+    Private Sub OK_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles OK_Button.Click
         SetInfo()
         CleanUp()
-
-        DialogResult = System.Windows.Forms.DialogResult.OK
-        Close()
+        DialogResult = DialogResult.OK
     End Sub
 
     Private Sub pbEpisodeFanart_DragDrop(sender As Object, e As DragEventArgs) Handles pbFanart.DragDrop
@@ -668,11 +642,11 @@ Public Class dlgEditTVEpisode
         End If
     End Sub
 
-    Private Sub pbStar1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar1.Click
+    Private Sub pbStar1_Click(ByVal sender As Object, ByVal e As EventArgs) Handles pbStar1.Click
         tmpRating = pbStar1.Tag.ToString
     End Sub
 
-    Private Sub pbStar1_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar1.MouseLeave
+    Private Sub pbStar1_MouseLeave(ByVal sender As Object, ByVal e As EventArgs) Handles pbStar1.MouseLeave
         Try
             Dim tmpDBL As Single = 0
             Single.TryParse(tmpRating, tmpDBL)
@@ -682,7 +656,7 @@ Public Class dlgEditTVEpisode
         End Try
     End Sub
 
-    Private Sub pbStar1_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar1.MouseMove
+    Private Sub pbStar1_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles pbStar1.MouseMove
         Try
             If e.X < 12 Then
                 pbStar1.Tag = 0.5
@@ -696,11 +670,11 @@ Public Class dlgEditTVEpisode
         End Try
     End Sub
 
-    Private Sub pbStar2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar2.Click
+    Private Sub pbStar2_Click(ByVal sender As Object, ByVal e As EventArgs) Handles pbStar2.Click
         tmpRating = pbStar2.Tag.ToString
     End Sub
 
-    Private Sub pbStar2_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar2.MouseLeave
+    Private Sub pbStar2_MouseLeave(ByVal sender As Object, ByVal e As EventArgs) Handles pbStar2.MouseLeave
         Try
             Dim tmpDBL As Single = 0
             Single.TryParse(tmpRating, tmpDBL)
@@ -710,7 +684,7 @@ Public Class dlgEditTVEpisode
         End Try
     End Sub
 
-    Private Sub pbStar2_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar2.MouseMove
+    Private Sub pbStar2_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles pbStar2.MouseMove
         Try
             If e.X < 12 Then
                 pbStar2.Tag = 1.5
@@ -724,11 +698,11 @@ Public Class dlgEditTVEpisode
         End Try
     End Sub
 
-    Private Sub pbStar3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar3.Click
+    Private Sub pbStar3_Click(ByVal sender As Object, ByVal e As EventArgs) Handles pbStar3.Click
         tmpRating = pbStar3.Tag.ToString
     End Sub
 
-    Private Sub pbStar3_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar3.MouseLeave
+    Private Sub pbStar3_MouseLeave(ByVal sender As Object, ByVal e As EventArgs) Handles pbStar3.MouseLeave
         Try
             Dim tmpDBL As Single = 0
             Single.TryParse(tmpRating, tmpDBL)
@@ -738,7 +712,7 @@ Public Class dlgEditTVEpisode
         End Try
     End Sub
 
-    Private Sub pbStar3_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar3.MouseMove
+    Private Sub pbStar3_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles pbStar3.MouseMove
         Try
             If e.X < 12 Then
                 pbStar3.Tag = 2.5
@@ -752,11 +726,11 @@ Public Class dlgEditTVEpisode
         End Try
     End Sub
 
-    Private Sub pbStar4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar4.Click
+    Private Sub pbStar4_Click(ByVal sender As Object, ByVal e As EventArgs) Handles pbStar4.Click
         tmpRating = pbStar4.Tag.ToString
     End Sub
 
-    Private Sub pbStar4_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar4.MouseLeave
+    Private Sub pbStar4_MouseLeave(ByVal sender As Object, ByVal e As EventArgs) Handles pbStar4.MouseLeave
         Try
             Dim tmpDBL As Single = 0
             Single.TryParse(tmpRating, tmpDBL)
@@ -766,7 +740,7 @@ Public Class dlgEditTVEpisode
         End Try
     End Sub
 
-    Private Sub pbStar4_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar4.MouseMove
+    Private Sub pbStar4_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles pbStar4.MouseMove
         Try
             If e.X < 12 Then
                 pbStar4.Tag = 3.5
@@ -780,11 +754,11 @@ Public Class dlgEditTVEpisode
         End Try
     End Sub
 
-    Private Sub pbStar5_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar5.Click
+    Private Sub pbStar5_Click(ByVal sender As Object, ByVal e As EventArgs) Handles pbStar5.Click
         tmpRating = pbStar5.Tag.ToString
     End Sub
 
-    Private Sub pbStar5_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar5.MouseLeave
+    Private Sub pbStar5_MouseLeave(ByVal sender As Object, ByVal e As EventArgs) Handles pbStar5.MouseLeave
         Try
             Dim tmpDBL As Single = 0
             Single.TryParse(tmpRating, tmpDBL)
@@ -794,7 +768,7 @@ Public Class dlgEditTVEpisode
         End Try
     End Sub
 
-    Private Sub pbStar5_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar5.MouseMove
+    Private Sub pbStar5_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles pbStar5.MouseMove
         Try
             If e.X < 12 Then
                 pbStar5.Tag = 4.5
@@ -808,11 +782,11 @@ Public Class dlgEditTVEpisode
         End Try
     End Sub
 
-    Private Sub pbStar6_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar6.Click
+    Private Sub pbStar6_Click(ByVal sender As Object, ByVal e As EventArgs) Handles pbStar6.Click
         tmpRating = pbStar6.Tag.ToString
     End Sub
 
-    Private Sub pbStar6_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar6.MouseLeave
+    Private Sub pbStar6_MouseLeave(ByVal sender As Object, ByVal e As EventArgs) Handles pbStar6.MouseLeave
         Try
             Dim tmpDBL As Single = 0
             Single.TryParse(tmpRating, tmpDBL)
@@ -822,7 +796,7 @@ Public Class dlgEditTVEpisode
         End Try
     End Sub
 
-    Private Sub pbStar6_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar6.MouseMove
+    Private Sub pbStar6_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles pbStar6.MouseMove
         Try
             If e.X < 12 Then
                 pbStar6.Tag = 5.5
@@ -836,11 +810,11 @@ Public Class dlgEditTVEpisode
         End Try
     End Sub
 
-    Private Sub pbStar7_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar7.Click
+    Private Sub pbStar7_Click(ByVal sender As Object, ByVal e As EventArgs) Handles pbStar7.Click
         tmpRating = pbStar7.Tag.ToString
     End Sub
 
-    Private Sub pbStar7_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar7.MouseLeave
+    Private Sub pbStar7_MouseLeave(ByVal sender As Object, ByVal e As EventArgs) Handles pbStar7.MouseLeave
         Try
             Dim tmpDBL As Single = 0
             Single.TryParse(tmpRating, tmpDBL)
@@ -850,7 +824,7 @@ Public Class dlgEditTVEpisode
         End Try
     End Sub
 
-    Private Sub pbStar7_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar7.MouseMove
+    Private Sub pbStar7_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles pbStar7.MouseMove
         Try
             If e.X < 12 Then
                 pbStar7.Tag = 6.5
@@ -864,11 +838,11 @@ Public Class dlgEditTVEpisode
         End Try
     End Sub
 
-    Private Sub pbStar8_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar8.Click
+    Private Sub pbStar8_Click(ByVal sender As Object, ByVal e As EventArgs) Handles pbStar8.Click
         tmpRating = pbStar8.Tag.ToString
     End Sub
 
-    Private Sub pbStar8_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar8.MouseLeave
+    Private Sub pbStar8_MouseLeave(ByVal sender As Object, ByVal e As EventArgs) Handles pbStar8.MouseLeave
         Try
             Dim tmpDBL As Single = 0
             Single.TryParse(tmpRating, tmpDBL)
@@ -878,7 +852,7 @@ Public Class dlgEditTVEpisode
         End Try
     End Sub
 
-    Private Sub pbStar8_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar8.MouseMove
+    Private Sub pbStar8_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles pbStar8.MouseMove
         Try
             If e.X < 12 Then
                 pbStar8.Tag = 7.5
@@ -892,11 +866,11 @@ Public Class dlgEditTVEpisode
         End Try
     End Sub
 
-    Private Sub pbStar9_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar9.Click
+    Private Sub pbStar9_Click(ByVal sender As Object, ByVal e As EventArgs) Handles pbStar9.Click
         tmpRating = pbStar9.Tag.ToString
     End Sub
 
-    Private Sub pbStar9_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar9.MouseLeave
+    Private Sub pbStar9_MouseLeave(ByVal sender As Object, ByVal e As EventArgs) Handles pbStar9.MouseLeave
         Try
             Dim tmpDBL As Single = 0
             Single.TryParse(tmpRating, tmpDBL)
@@ -906,7 +880,7 @@ Public Class dlgEditTVEpisode
         End Try
     End Sub
 
-    Private Sub pbStar9_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar9.MouseMove
+    Private Sub pbStar9_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles pbStar9.MouseMove
         Try
             If e.X < 12 Then
                 pbStar9.Tag = 8.5
@@ -920,11 +894,11 @@ Public Class dlgEditTVEpisode
         End Try
     End Sub
 
-    Private Sub pbStar10_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles pbStar10.Click
+    Private Sub pbStar10_Click(ByVal sender As Object, ByVal e As EventArgs) Handles pbStar10.Click
         tmpRating = pbStar10.Tag.ToString
     End Sub
 
-    Private Sub pbStar10_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStar10.MouseLeave
+    Private Sub pbStar10_MouseLeave(ByVal sender As Object, ByVal e As EventArgs) Handles pbStar10.MouseLeave
         Try
             Dim tmpDBL As Single = 0
             Single.TryParse(tmpRating, tmpDBL)
@@ -934,7 +908,7 @@ Public Class dlgEditTVEpisode
         End Try
     End Sub
 
-    Private Sub pbStar10_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbStar10.MouseMove
+    Private Sub pbStar10_MouseMove(ByVal sender As Object, ByVal e As MouseEventArgs) Handles pbStar10.MouseMove
         Try
             If e.X < 12 Then
                 pbStar10.Tag = 9.5
@@ -963,17 +937,12 @@ Public Class dlgEditTVEpisode
             tmpDBElement.TVEpisode.VideoSource = .txtVideoSource.Text.Trim
             tmpDBElement.VideoSource = .txtVideoSource.Text.Trim
 
+            'Actors
             tmpDBElement.TVEpisode.Actors.Clear()
-
             If .lvActors.Items.Count > 0 Then
                 Dim iOrder As Integer = 0
                 For Each lviActor As ListViewItem In .lvActors.Items
-                    Dim addActor As New MediaContainers.Person
-                    addActor.ID = CInt(lviActor.Text.Trim)
-                    addActor.Name = lviActor.SubItems(1).Text.Trim
-                    addActor.Role = lviActor.SubItems(2).Text.Trim
-                    addActor.URLOriginal = lviActor.SubItems(3).Text.Trim
-                    addActor.LocalFilePath = lviActor.SubItems(4).Text.Trim
+                    Dim addActor As MediaContainers.Person = DirectCast(lviActor.Tag, MediaContainers.Person)
                     addActor.Order = iOrder
                     iOrder += 1
                     tmpDBElement.TVEpisode.Actors.Add(addActor)
@@ -1090,7 +1059,7 @@ Public Class dlgEditTVEpisode
         End If
     End Sub
 
-    Private Sub btnSetFanartLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartLocal.Click
+    Private Sub btnSetFanartLocal_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetFanartLocal.Click
         Try
             With ofdImage
                 .InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
@@ -1113,7 +1082,7 @@ Public Class dlgEditTVEpisode
         End Try
     End Sub
 
-    Private Sub btnSetFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartScrape.Click
+    Private Sub btnSetFanartScrape_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetFanartScrape.Click
         Dim aContainer As New MediaContainers.SearchResultsContainer
         Dim ScrapeModifier As New Structures.ScrapeModifier
 
@@ -1122,7 +1091,7 @@ Public Class dlgEditTVEpisode
         If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifier, True) Then
             If aContainer.EpisodeFanarts.Count > 0 OrElse aContainer.MainFanarts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVEpisode) = Windows.Forms.DialogResult.OK Then
+                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVEpisode) = DialogResult.OK Then
                     tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
                     If tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Fanart.ImageOriginal.FromMemoryStream Then
                         pbFanart.Image = tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
@@ -1142,7 +1111,7 @@ Public Class dlgEditTVEpisode
         Cursor = Cursors.Default
     End Sub
 
-    Private Sub btnSetEpisodeFanartDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartDL.Click
+    Private Sub btnSetEpisodeFanartDL_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetFanartDL.Click
         Try
             Using dImgManual As New dlgImgManual
                 Dim tImage As MediaContainers.Image
@@ -1164,7 +1133,7 @@ Public Class dlgEditTVEpisode
     End Sub
 
 
-    Private Sub btnSetPosterLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterLocal.Click
+    Private Sub btnSetPosterLocal_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetPosterLocal.Click
         Try
             With ofdImage
                 .InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
@@ -1187,7 +1156,7 @@ Public Class dlgEditTVEpisode
         End Try
     End Sub
 
-    Private Sub btnSetPosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterScrape.Click
+    Private Sub btnSetPosterScrape_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetPosterScrape.Click
         Dim aContainer As New MediaContainers.SearchResultsContainer
         Dim ScrapeModifier As New Structures.ScrapeModifier
 
@@ -1196,7 +1165,7 @@ Public Class dlgEditTVEpisode
         If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifier, True) Then
             If aContainer.EpisodePosters.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVEpisode) = Windows.Forms.DialogResult.OK Then
+                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVEpisode) = DialogResult.OK Then
                     tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
                     If tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Poster.ImageOriginal.FromMemoryStream Then
                         pbPoster.Image = tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image
@@ -1216,7 +1185,7 @@ Public Class dlgEditTVEpisode
         Cursor = Cursors.Default
     End Sub
 
-    Private Sub btnSetEpisodePosterDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterDL.Click
+    Private Sub btnSetEpisodePosterDL_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetPosterDL.Click
         Try
             Using dImgManual As New dlgImgManual
                 Dim tImage As MediaContainers.Image
@@ -1243,11 +1212,11 @@ Public Class dlgEditTVEpisode
         End If
     End Sub
 
-    Private Sub lvSubtitles_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lvSubtitles.KeyDown
+    Private Sub lvSubtitles_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lvSubtitles.KeyDown
         If e.KeyCode = Keys.Delete Then DeleteSubtitle()
     End Sub
 
-    Private Sub lvSubtitles_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvSubtitles.DoubleClick
+    Private Sub lvSubtitles_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles lvSubtitles.DoubleClick
         If lvSubtitles.SelectedItems.Count > 0 Then
             If lvSubtitles.SelectedItems.Item(0).Tag.ToString <> "Header" Then
                 EditSubtitle()
@@ -1255,7 +1224,7 @@ Public Class dlgEditTVEpisode
         End If
     End Sub
 
-    Private Sub lvSubtitles_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvSubtitles.SelectedIndexChanged
+    Private Sub lvSubtitles_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles lvSubtitles.SelectedIndexChanged
         If lvSubtitles.SelectedItems.Count > 0 Then
             If lvSubtitles.SelectedItems.Item(0).Tag.ToString = "Header" Then
                 lvSubtitles.SelectedItems.Clear()
