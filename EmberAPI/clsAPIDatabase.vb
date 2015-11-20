@@ -3246,18 +3246,20 @@ Public Class Database
             End Try
 
             Dim DateTimeLastPlayedUnix As Double = -1
-            Try
-                Dim DateTimeLastPlayed As DateTime = DateTime.ParseExact(_movieDB.Movie.LastPlayed, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
-                DateTimeLastPlayedUnix = Functions.ConvertToUnixTimestamp(DateTimeLastPlayed)
-            Catch
-                'Kodi save it only as yyyy-MM-dd, try that
+            If Not String.IsNullOrEmpty(_movieDB.Movie.LastPlayed) Then
                 Try
-                    Dim DateTimeLastPlayed As DateTime = DateTime.ParseExact(_movieDB.Movie.LastPlayed, "yyyy-MM-dd", Globalization.CultureInfo.InvariantCulture)
+                    Dim DateTimeLastPlayed As DateTime = DateTime.ParseExact(_movieDB.Movie.LastPlayed, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
                     DateTimeLastPlayedUnix = Functions.ConvertToUnixTimestamp(DateTimeLastPlayed)
                 Catch
-                    DateTimeLastPlayedUnix = -1
+                    'Kodi save it only as yyyy-MM-dd, try that
+                    Try
+                        Dim DateTimeLastPlayed As DateTime = DateTime.ParseExact(_movieDB.Movie.LastPlayed, "yyyy-MM-dd", Globalization.CultureInfo.InvariantCulture)
+                        DateTimeLastPlayedUnix = Functions.ConvertToUnixTimestamp(DateTimeLastPlayed)
+                    Catch
+                        DateTimeLastPlayedUnix = -1
+                    End Try
                 End Try
-            End Try
+            End If
             If DateTimeLastPlayedUnix >= 0 Then
                 par_movie_iLastPlayed.Value = DateTimeLastPlayedUnix
             Else
@@ -4127,18 +4129,20 @@ Public Class Database
             End Try
 
             Dim DateTimeLastPlayedUnix As Double = -1
-            Try
-                Dim DateTimeLastPlayed As DateTime = DateTime.ParseExact(_episode.TVEpisode.LastPlayed, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
-                DateTimeLastPlayedUnix = Functions.ConvertToUnixTimestamp(DateTimeLastPlayed)
-            Catch
-                'Kodi save it only as yyyy-MM-dd, try that
+            If Not String.IsNullOrEmpty(_episode.TVEpisode.LastPlayed) Then
                 Try
-                    Dim DateTimeLastPlayed As DateTime = DateTime.ParseExact(_episode.TVEpisode.LastPlayed, "yyyy-MM-dd", Globalization.CultureInfo.InvariantCulture)
+                    Dim DateTimeLastPlayed As DateTime = DateTime.ParseExact(_episode.TVEpisode.LastPlayed, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
                     DateTimeLastPlayedUnix = Functions.ConvertToUnixTimestamp(DateTimeLastPlayed)
                 Catch
-                    DateTimeLastPlayedUnix = -1
+                    'Kodi save it only as yyyy-MM-dd, try that
+                    Try
+                        Dim DateTimeLastPlayed As DateTime = DateTime.ParseExact(_episode.TVEpisode.LastPlayed, "yyyy-MM-dd", Globalization.CultureInfo.InvariantCulture)
+                        DateTimeLastPlayedUnix = Functions.ConvertToUnixTimestamp(DateTimeLastPlayed)
+                    Catch
+                        DateTimeLastPlayedUnix = -1
+                    End Try
                 End Try
-            End Try
+            End If
             If DateTimeLastPlayedUnix >= 0 Then
                 par_iLastPlayed.Value = DateTimeLastPlayedUnix
             Else
