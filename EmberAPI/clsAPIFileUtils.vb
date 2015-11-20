@@ -2237,56 +2237,61 @@ Namespace FileUtils
 
                     'For each file in the directory...
                     For Each sFile As FileInfo In lFi
-                        Dim DummyMovie As New Database.DBElement With {.Filename = "dummyname.ext", .IsSingle = False}
+                        Dim DummyMovie As New Database.DBElement(Enums.ContentType.Movie) With {.Filename = "dummyname.ext", .IsSingle = False}
                         RaiseEvent ProgressUpdated((iCount \ lFi.Count), String.Concat(Master.eLang.GetString(219, "Moving "), sFile.Name))
                         tmpName = Path.GetFileNameWithoutExtension(sFile.Name)
                         '...clean fanart and trailer decorations...
-                        For Each a In FileUtils.GetFilenameList.Movie(DummyMovie, Enums.ModifierType.MainBanner)
+                        For Each a In GetFilenameList.Movie(DummyMovie, Enums.ModifierType.MainBanner)
                             Dim b As String = Path.GetFileNameWithoutExtension(a)
                             b = b.Replace("dummyname", String.Empty)
                             If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)
                         Next
-                        For Each a In FileUtils.GetFilenameList.Movie(DummyMovie, Enums.ModifierType.MainCharacterArt)
+                        For Each a In GetFilenameList.Movie(DummyMovie, Enums.ModifierType.MainCharacterArt)
                             Dim b As String = Path.GetFileNameWithoutExtension(a)
                             b = b.Replace("dummyname", String.Empty)
                             If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)
                         Next
-                        For Each a In FileUtils.GetFilenameList.Movie(DummyMovie, Enums.ModifierType.MainClearArt)
+                        For Each a In GetFilenameList.Movie(DummyMovie, Enums.ModifierType.MainClearArt)
                             Dim b As String = Path.GetFileNameWithoutExtension(a)
                             b = b.Replace("dummyname", String.Empty)
                             If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)
                         Next
-                        For Each a In FileUtils.GetFilenameList.Movie(DummyMovie, Enums.ModifierType.MainClearLogo)
+                        For Each a In GetFilenameList.Movie(DummyMovie, Enums.ModifierType.MainClearLogo)
                             Dim b As String = Path.GetFileNameWithoutExtension(a)
                             b = b.Replace("dummyname", String.Empty)
                             If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)
                         Next
-                        For Each a In FileUtils.GetFilenameList.Movie(DummyMovie, Enums.ModifierType.MainDiscArt)
+                        For Each a In GetFilenameList.Movie(DummyMovie, Enums.ModifierType.MainDiscArt)
                             Dim b As String = Path.GetFileNameWithoutExtension(a)
                             b = b.Replace("dummyname", String.Empty)
                             If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)
                         Next
-                        For Each a In FileUtils.GetFilenameList.Movie(DummyMovie, Enums.ModifierType.MainFanart)
+                        For Each a In GetFilenameList.Movie(DummyMovie, Enums.ModifierType.MainFanart)
                             Dim b As String = Path.GetFileNameWithoutExtension(a)
                             b = b.Replace("dummyname", String.Empty)
                             If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)
                         Next
-                        For Each a In FileUtils.GetFilenameList.Movie(DummyMovie, Enums.ModifierType.MainLandscape)
+                        For Each a In GetFilenameList.Movie(DummyMovie, Enums.ModifierType.MainLandscape)
                             Dim b As String = Path.GetFileNameWithoutExtension(a)
                             b = b.Replace("dummyname", String.Empty)
                             If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)
                         Next
-                        For Each a In FileUtils.GetFilenameList.Movie(DummyMovie, Enums.ModifierType.MainNFO)
+                        For Each a In GetFilenameList.Movie(DummyMovie, Enums.ModifierType.MainNFO)
                             Dim b As String = Path.GetFileNameWithoutExtension(a)
                             b = b.Replace("dummyname", String.Empty)
                             If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)
                         Next
-                        For Each a In FileUtils.GetFilenameList.Movie(DummyMovie, Enums.ModifierType.MainPoster)
+                        For Each a In GetFilenameList.Movie(DummyMovie, Enums.ModifierType.MainPoster)
                             Dim b As String = Path.GetFileNameWithoutExtension(a)
                             b = b.Replace("dummyname", String.Empty)
                             If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)
                         Next
-                        For Each a In FileUtils.GetFilenameList.Movie(DummyMovie, Enums.ModifierType.MainTrailer)
+                        For Each a In GetFilenameList.Movie(DummyMovie, Enums.ModifierType.MainTheme)
+                            Dim b As String = Path.GetFileNameWithoutExtension(a)
+                            b = b.Replace("dummyname", String.Empty)
+                            If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)
+                        Next
+                        For Each a In GetFilenameList.Movie(DummyMovie, Enums.ModifierType.MainTrailer)
                             Dim b As String = Path.GetFileNameWithoutExtension(a)
                             b = b.Replace("dummyname", String.Empty)
                             If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)

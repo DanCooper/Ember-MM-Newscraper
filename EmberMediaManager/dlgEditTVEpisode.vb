@@ -28,7 +28,7 @@ Public Class dlgEditTVEpisode
 
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Private tmpDBElement As New Database.DBElement
+    Private tmpDBElement As Database.DBElement
 
     Private lvwActorSorter As ListViewColumnSorter
     Private PreviousFrameValue As Integer
@@ -532,7 +532,7 @@ Public Class dlgEditTVEpisode
         With tmpDBElement.ImagesContainer
 
             'Load all images to MemoryStream and Bitmap
-            .LoadAllImages(Enums.ContentType.TVEpisode, True, False)
+            tmpDBElement.LoadAllImages(True, False)
 
             'Fanart
             If Master.eSettings.TVEpisodeFanartAnyEnabled Then
@@ -1091,7 +1091,7 @@ Public Class dlgEditTVEpisode
         If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifier, True) Then
             If aContainer.EpisodeFanarts.Count > 0 OrElse aContainer.MainFanarts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVEpisode) = DialogResult.OK Then
+                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
                     tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
                     If tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Fanart.ImageOriginal.FromMemoryStream Then
                         pbFanart.Image = tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
@@ -1165,7 +1165,7 @@ Public Class dlgEditTVEpisode
         If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifier, True) Then
             If aContainer.EpisodePosters.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVEpisode) = DialogResult.OK Then
+                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
                     tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
                     If tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Poster.ImageOriginal.FromMemoryStream Then
                         pbPoster.Image = tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image

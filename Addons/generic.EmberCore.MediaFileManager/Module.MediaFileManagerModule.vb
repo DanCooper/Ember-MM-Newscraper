@@ -364,10 +364,9 @@ Public Class FileManagerExternalModule
                     If MessageBox.Show(String.Format(If(doMove, strMove, strCopy), _
                                             MediaToWork.Count, dstPath), If(doMove, Master.eLang.GetString(910, "Move"), Master.eLang.GetString(911, "Copy")), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                         If ContentType = Enums.ContentType.Movie Then
-                            Dim mMovie As New Database.DBElement
                             Dim FileDelete As New FileUtils.Delete
                             For Each movieID As Long In MediaToWork
-                                mMovie = Master.DB.LoadMovieFromDB(movieID)
+                                Dim mMovie As Database.DBElement = Master.DB.LoadMovieFromDB(movieID)
                                 ItemsToWork = FileDelete.GetItemsToDelete(False, mMovie)
                                 If ItemsToWork.Count = 1 AndAlso Directory.Exists(ItemsToWork(0).ToString) Then
                                     If _MySettings.TeraCopy Then
@@ -385,10 +384,9 @@ Public Class FileManagerExternalModule
                             Next
                             If Not _MySettings.TeraCopy AndAlso doMove Then ModulesManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.ScanOrClean With {.Movies = True})
                         ElseIf ContentType = Enums.ContentType.TVShow Then
-                            Dim mShow As New Database.DBElement
                             Dim FileDelete As New FileUtils.Delete
                             For Each tShowID As Long In MediaToWork
-                                mShow = Master.DB.LoadTVShowFromDB(tShowID, False, False)
+                                Dim mShow As Database.DBElement = Master.DB.LoadTVShowFromDB(tShowID, False, False)
                                 If Directory.Exists(mShow.ShowPath) Then
                                     If _MySettings.TeraCopy Then
                                         mTeraCopy.Sources.Add(mShow.ShowPath)

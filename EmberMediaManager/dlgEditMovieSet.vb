@@ -30,7 +30,7 @@ Public Class dlgEditMovieSet
 
     Friend WithEvents bwLoadMoviesInSet As New System.ComponentModel.BackgroundWorker
 
-    Private tmpDBElement As New Database.DBElement
+    Private tmpDBElement As Database.DBElement
 
     Private CachePath As String = String.Empty
     Private fResults As New Containers.ImgResult
@@ -216,8 +216,7 @@ Public Class dlgEditMovieSet
         If dgvMovies.SelectedRows.Count > 0 Then
             SetControlsEnabled(False)
             For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
-                Dim tmpMovie As New Database.DBElement
-                tmpMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells(0).Value))
+                Dim tmpMovie As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells(0).Value))
                 If Not String.IsNullOrEmpty(tmpMovie.Movie.Title) Then
                     If String.IsNullOrEmpty(txtCollectionID.Text) AndAlso tmpMovie.Movie.TMDBColIDSpecified Then
                         Dim result As DialogResult = MessageBox.Show(String.Format(Master.eLang.GetString(1264, "Should the Collection ID of the movie ""{0}"" be used as ID for this Collection?"), tmpMovie.Movie.Title), Master.eLang.GetString(1263, "TMDB Collection ID found"), MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)
@@ -337,7 +336,7 @@ Public Class dlgEditMovieSet
         If Not ModulesManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifier) Then
             If aContainer.MainBanners.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.MovieSet) = Windows.Forms.DialogResult.OK Then
+                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = Windows.Forms.DialogResult.OK Then
                     tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
                     If tmpDBElement.ImagesContainer.Banner.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Banner.ImageOriginal.FromMemoryStream Then
                         pbBanner.Image = tmpDBElement.ImagesContainer.Banner.ImageOriginal.Image
@@ -408,7 +407,7 @@ Public Class dlgEditMovieSet
         If Not ModulesManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifier) Then
             If aContainer.MainClearArts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.MovieSet) = Windows.Forms.DialogResult.OK Then
+                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = Windows.Forms.DialogResult.OK Then
                     tmpDBElement.ImagesContainer.ClearArt = dlgImgS.Result.ImagesContainer.ClearArt
                     If tmpDBElement.ImagesContainer.ClearArt.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.ClearArt.ImageOriginal.FromMemoryStream Then
                         pbClearArt.Image = tmpDBElement.ImagesContainer.ClearArt.ImageOriginal.Image
@@ -479,7 +478,7 @@ Public Class dlgEditMovieSet
         If Not ModulesManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifier) Then
             If aContainer.MainClearLogos.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.MovieSet) = Windows.Forms.DialogResult.OK Then
+                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = Windows.Forms.DialogResult.OK Then
                     tmpDBElement.ImagesContainer.ClearLogo = dlgImgS.Result.ImagesContainer.ClearLogo
                     If dlgImgS.Result.ImagesContainer.ClearLogo.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.ClearLogo.ImageOriginal.FromMemoryStream Then
                         pbClearLogo.Image = tmpDBElement.ImagesContainer.ClearLogo.ImageOriginal.Image
@@ -550,7 +549,7 @@ Public Class dlgEditMovieSet
         If Not ModulesManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifier) Then
             If aContainer.MainDiscArts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.MovieSet) = Windows.Forms.DialogResult.OK Then
+                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = Windows.Forms.DialogResult.OK Then
                     tmpDBElement.ImagesContainer.DiscArt = dlgImgS.Result.ImagesContainer.DiscArt
                     If tmpDBElement.ImagesContainer.DiscArt.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.DiscArt.ImageOriginal.FromMemoryStream Then
                         pbDiscArt.Image = tmpDBElement.ImagesContainer.DiscArt.ImageOriginal.Image
@@ -621,7 +620,7 @@ Public Class dlgEditMovieSet
         If Not ModulesManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifier) Then
             If aContainer.MainFanarts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.MovieSet) = Windows.Forms.DialogResult.OK Then
+                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = Windows.Forms.DialogResult.OK Then
                     tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
                     If tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Fanart.ImageOriginal.FromMemoryStream Then
                         pbFanart.Image = tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
@@ -692,7 +691,7 @@ Public Class dlgEditMovieSet
         If Not ModulesManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifier) Then
             If aContainer.MainLandscapes.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.MovieSet) = Windows.Forms.DialogResult.OK Then
+                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = Windows.Forms.DialogResult.OK Then
                     tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
                     If tmpDBElement.ImagesContainer.Landscape.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Landscape.ImageOriginal.FromMemoryStream Then
                         pbLandscape.Image = tmpDBElement.ImagesContainer.Landscape.ImageOriginal.Image
@@ -763,7 +762,7 @@ Public Class dlgEditMovieSet
         If Not ModulesManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifier) Then
             If aContainer.MainPosters.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.MovieSet) = Windows.Forms.DialogResult.OK Then
+                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = Windows.Forms.DialogResult.OK Then
                     tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
                     If tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Poster.ImageOriginal.FromMemoryStream Then
                         pbPoster.Image = tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image
@@ -808,25 +807,24 @@ Public Class dlgEditMovieSet
         MoviesInSet.Clear()
 
         Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-            Dim tmpMovie As New Database.DBElement
             Dim iProg As Integer = 0
             If Not (Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJCompatibleSets) Then
                 If tmpDBElement.SortMethod = Enums.SortMethod_MovieSet.Year Then
-                    SQLcommand.CommandText = String.Concat("SELECT MovieID, SetOrder FROM MoviesSets INNER JOIN movie ON (MoviesSets.MovieID = movie.idMovie) ", _
+                    SQLcommand.CommandText = String.Concat("SELECT MovieID, SetOrder FROM MoviesSets INNER JOIN movie ON (MoviesSets.MovieID = movie.idMovie) ",
                                                            "WHERE SetID = ", tmpDBElement.ID, " ORDER BY movie.Year;")
                 ElseIf tmpDBElement.SortMethod = Enums.SortMethod_MovieSet.Title Then
-                    SQLcommand.CommandText = String.Concat("SELECT MovieID, SetOrder FROM MoviesSets INNER JOIN movielist ON (MoviesSets.MovieID = movielist.idMovie) ", _
+                    SQLcommand.CommandText = String.Concat("SELECT MovieID, SetOrder FROM MoviesSets INNER JOIN movielist ON (MoviesSets.MovieID = movielist.idMovie) ",
                                                            "WHERE SetID = ", tmpDBElement.ID, " ORDER BY movielist.SortedTitle COLLATE NOCASE;")
                 End If
             Else
-                SQLcommand.CommandText = String.Concat("SELECT MovieID, SetOrder FROM MoviesSets ", _
+                SQLcommand.CommandText = String.Concat("SELECT MovieID, SetOrder FROM MoviesSets ",
                                                        "WHERE SetID = ", tmpDBElement.ID, " ORDER BY SetOrder;")
             End If
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 If SQLreader.HasRows Then
                     While SQLreader.Read()
                         If bwLoadMoviesInSet.CancellationPending Then Return
-                        tmpMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(SQLreader("MovieID")))
+                        Dim tmpMovie As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt64(SQLreader("MovieID")))
                         If Not String.IsNullOrEmpty(tmpMovie.Movie.Title) Then
                             Dim tmpSetOrder As Integer = If(Not String.IsNullOrEmpty(SQLreader("SetOrder").ToString), CInt(SQLreader("SetOrder").ToString), Nothing)
                             MoviesInSet.Add(New MovieInSet With {.DBMovie = tmpMovie, .ID = tmpMovie.ID, .ListTitle = String.Concat(tmpMovie.ListTitle, If(Not String.IsNullOrEmpty(tmpMovie.Movie.Year), String.Format(" ({0})", tmpMovie.Movie.Year), String.Empty)), .Order = tmpSetOrder})
@@ -1023,7 +1021,7 @@ Public Class dlgEditMovieSet
         With tmpDBElement.ImagesContainer
 
             'Load all images to MemoryStream and Bitmap
-            .LoadAllImages(Enums.ContentType.MovieSet, True, False)
+            tmpDBElement.LoadAllImages(True, False)
 
             'Banner
             If Master.eSettings.MovieSetBannerAnyEnabled Then
@@ -1675,7 +1673,7 @@ Public Class dlgEditMovieSet
 #Region "Methods"
 
         Public Sub Clear()
-            _dbmovie = New Database.DBElement
+            _dbmovie = New Database.DBElement(Enums.ContentType.Movie)
             _id = -1
             _order = 0
             _listtitle = String.Empty

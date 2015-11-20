@@ -27,7 +27,7 @@ Public Class dlgRenameManual_TVShow
 
     Friend WithEvents bwRename As New System.ComponentModel.BackgroundWorker
 
-    Private _DBElement As New Database.DBElement
+    Private _DBElement As New Database.DBElement(Enums.ContentType.TVShow)
 
 #End Region 'Fields
 

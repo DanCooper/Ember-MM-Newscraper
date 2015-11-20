@@ -27,7 +27,7 @@ Public Class dlgRenameManual_Movie
 
     Friend WithEvents bwRename As New System.ComponentModel.BackgroundWorker
 
-    Private _DBElement As New Database.DBElement
+    Private _DBElement As New Database.DBElement(Enums.ContentType.Movie)
 
 #End Region 'Fields
 

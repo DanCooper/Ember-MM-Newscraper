@@ -281,8 +281,7 @@ Public Class dlgTagManager
     Private Sub btnAddMovie_Click(sender As Object, e As EventArgs) Handles btnAddMovie.Click
         If Me.dgvMovies.SelectedRows.Count > 0 Then
             For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
-                Dim tmpMovie As New Database.DBElement
-                tmpMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells("ID").Value))
+                Dim tmpMovie As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells("ID").Value))
 
 
                 If Not String.IsNullOrEmpty(tmpMovie.Movie.Title) Then

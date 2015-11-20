@@ -90,8 +90,6 @@ Public Class dlgBulkRenamer_Movie
 
     Private Sub bwLoadInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadInfo.DoWork
         Try
-            Dim MovieFile As New FileFolderRenamer.FileRename
-            Dim _currMovie As New Database.DBElement
             Dim hasFilter As Boolean = False
             Dim dbFilter As String = String.Empty
 
@@ -141,15 +139,10 @@ Public Class dlgBulkRenamer_Movie
                                 If Not DBNull.Value.Equals(SQLreader("NfoPath")) AndAlso Not DBNull.Value.Equals(SQLreader("idMovie")) Then
                                     _tmpPath = SQLreader("NfoPath").ToString
                                     If Not String.IsNullOrEmpty(_tmpPath) Then
-
-                                        MovieFile = New FileFolderRenamer.FileRename
-                                        _currMovie = Master.DB.LoadMovieFromDB(Convert.ToInt32(SQLreader("idMovie")))
-
+                                        Dim _currMovie As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt32(SQLreader("idMovie")))
                                         If Not _currMovie.ID = -1 AndAlso Not String.IsNullOrEmpty(_currMovie.Filename) Then
-                                            MovieFile = FileFolderRenamer.GetInfo_Movie(_currMovie)
-
+                                            Dim MovieFile As FileFolderRenamer.FileRename = FileFolderRenamer.GetInfo_Movie(_currMovie)
                                             FFRenamer.AddMovie(MovieFile)
-
                                             bwLoadInfo.ReportProgress(iProg, _currMovie.ListTitle)
                                         End If
                                     End If

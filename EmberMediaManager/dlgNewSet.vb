@@ -24,7 +24,7 @@ Public Class dlgNewSet
 
 #Region "Fields"
 
-    Private tmpDBElement As New Database.DBElement
+    Private tmpDBElement As Database.DBElement
 
 #End Region 'Fields
 

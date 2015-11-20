@@ -32,7 +32,7 @@ Public Class dlgTrailerSelect
     Friend WithEvents bwDownloadTrailer As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwParseTrailer As New System.ComponentModel.BackgroundWorker
 
-    Private tMovie As New Database.DBElement
+    Private tmpDBElement As Database.DBElement
     Private _result As New MediaContainers.Trailer
     Private tArray As New List(Of String)
     Private tURL As String = String.Empty
@@ -98,7 +98,7 @@ Public Class dlgTrailerSelect
 
         Me.txtYouTubeSearch.Text = String.Concat(DBMovie.Movie.Title, " ", Master.eSettings.MovieTrailerDefaultSearch)
 
-        Me.tMovie = DBMovie
+        Me.tmpDBElement = DBMovie
         Me.sPath = DBMovie.Filename
 
         AddTrailersToList(tURLList)
@@ -171,7 +171,7 @@ Public Class dlgTrailerSelect
                 MessageBox.Show(Master.eLang.GetString(192, "File is not valid."), Master.eLang.GetString(194, "Not Valid"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                 didCancel = True
             End If
-        ElseIf YouTube.UrlUtils.IsYouTubeURL(Me.txtManualTrailerLink.Text) OrElse _
+        ElseIf YouTube.UrlUtils.IsYouTubeURL(Me.txtManualTrailerLink.Text) OrElse
             Regex.IsMatch(Me.txtManualTrailerLink.Text, "https?:\/\/.*imdb.*\/video\/imdb\/.*") Then
             Dim sFormat As New TrailerLinksContainer
             Using dFormats As New dlgTrailerFormat
@@ -212,7 +212,7 @@ Public Class dlgTrailerSelect
                 Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
                 Me.bwDownloadTrailer.WorkerReportsProgress = True
                 Me.bwDownloadTrailer.WorkerSupportsCancellation = True
-                Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.parameter = ManualTrailer, .bType = CloseDialog})
+                Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.Parameter = ManualTrailer, .bType = CloseDialog})
             End If
         Else
             If YouTube.UrlUtils.IsYouTubeURL(Me.lvTrailers.SelectedItems(0).SubItems(2).Text.ToString) Then
@@ -263,7 +263,7 @@ Public Class dlgTrailerSelect
                     Me.bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
                     Me.bwDownloadTrailer.WorkerReportsProgress = True
                     Me.bwDownloadTrailer.WorkerSupportsCancellation = True
-                    Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.parameter = SelectedTrailer, .bType = CloseDialog})
+                    Me.bwDownloadTrailer.RunWorkerAsync(New Arguments With {.Parameter = SelectedTrailer, .bType = CloseDialog})
                 End If
             End If
         End If
@@ -278,7 +278,7 @@ Public Class dlgTrailerSelect
     Private Sub btnBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowseLocalTrailer.Click
         Try
             With ofdTrailer
-                .InitialDirectory = Directory.GetParent(Me.tMovie.Filename).FullName
+                .InitialDirectory = Directory.GetParent(Me.tmpDBElement.Filename).FullName
                 .Filter = String.Concat("Supported Trailer Formats|*", Functions.ListToStringWithSeparator(Master.eSettings.FileSystemValidExts.ToArray(), ";*"))
                 .FilterIndex = 0
             End With
@@ -363,7 +363,7 @@ Public Class dlgTrailerSelect
     Private Sub bwCompileList_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCompileList.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Try
-            If Not ModulesManager.Instance.ScrapeTrailer_Movie(Me.tMovie, Enums.ModifierType.MainTrailer, nList) Then
+            If Not ModulesManager.Instance.ScrapeTrailer_Movie(Me.tmpDBElement, Enums.ModifierType.MainTrailer, nList) Then
                 Args.bType = True
             Else
                 Args.bType = False

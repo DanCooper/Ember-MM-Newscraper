@@ -98,7 +98,6 @@ Public Class dlgExportMovies
 
             ' Load nfo movies using path from DB
             Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                Dim _tmpMovie As New Database.DBElement
                 Dim iProg As Integer = 0
                 SQLNewcommand.CommandText = String.Format("SELECT COUNT(idMovie) AS mcount FROM '{0}';", strCurrList_Movies)
                 Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
@@ -109,7 +108,7 @@ Public Class dlgExportMovies
                 Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         While SQLreader.Read()
-                            _tmpMovie = Master.DB.LoadMovieFromDB(Convert.ToInt32(SQLreader("idMovie")))
+                            Dim _tmpMovie As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt32(SQLreader("idMovie")))
                             lstMovieList.Add(_tmpMovie)
                             bwLoadInfo.ReportProgress(iProg, _tmpMovie.ListTitle) '  show File
                             iProg += 1
@@ -133,7 +132,6 @@ Public Class dlgExportMovies
 
             ' Load nfo tv shows using path from DB
             Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                Dim _tmpTVShow As New Database.DBElement
                 Dim iProg As Integer = 0
                 SQLNewcommand.CommandText = String.Format("SELECT COUNT(idShow) AS mcount FROM '{0}';", strCurrList_TVShows)
                 Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
@@ -144,7 +142,7 @@ Public Class dlgExportMovies
                 Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         While SQLreader.Read()
-                            _tmpTVShow = Master.DB.LoadTVShowFromDB(Convert.ToInt32(SQLreader("idShow")), True, True, False, False, bExportMissingEpisodes)
+                            Dim _tmpTVShow As Database.DBElement = Master.DB.LoadTVShowFromDB(Convert.ToInt32(SQLreader("idShow")), True, True, False, False, bExportMissingEpisodes)
                             lstTVShowList.Add(_tmpTVShow)
                             bwLoadInfo.ReportProgress(iProg, _tmpTVShow.ListTitle) '  show File
                             iProg += 1

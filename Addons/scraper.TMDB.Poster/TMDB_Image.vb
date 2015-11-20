@@ -409,30 +409,31 @@ Public Class TMDB_Image
             End If
         End If
 
-        If DBTV.TVEpisode IsNot Nothing AndAlso DBTV.TVShow IsNot Nothing Then
-            If Not String.IsNullOrEmpty(DBTV.TVShow.TMDB) Then
-                ImagesContainer = _scraper.GetImages_TVEpisode(DBTV.TVShow.TMDB, DBTV.TVEpisode.Season, DBTV.TVEpisode.Episode, FilteredModifier)
-                If FilteredModifier.MainFanart Then
-                    ImagesContainer.MainFanarts = _scraper.GetImages_TVShow(DBTV.TVShow.TMDB, FilteredModifier).MainFanarts
+        Select Case DBTV.ContentType
+            Case Enums.ContentType.TVEpisode
+                If Not String.IsNullOrEmpty(DBTV.TVShow.TMDB) Then
+                    ImagesContainer = _scraper.GetImages_TVEpisode(DBTV.TVShow.TMDB, DBTV.TVEpisode.Season, DBTV.TVEpisode.Episode, FilteredModifier)
+                    If FilteredModifier.MainFanart Then
+                        ImagesContainer.MainFanarts = _scraper.GetImages_TVShow(DBTV.TVShow.TMDB, FilteredModifier).MainFanarts
+                    End If
+                Else
+                    logger.Trace(String.Concat("No TMDB ID exist to search: ", DBTV.ListTitle))
                 End If
-            Else
-                logger.Trace(String.Concat("No TMDB ID exist to search: ", DBTV.ListTitle))
-            End If
-        ElseIf DBTV.TVSeason IsNot Nothing AndAlso DBTV.TVShow IsNot Nothing Then
-            If Not String.IsNullOrEmpty(DBTV.TVShow.TMDB) Then
-                ImagesContainer = _scraper.GetImages_TVShow(DBTV.TVShow.TMDB, FilteredModifier)
-            Else
-                logger.Trace(String.Concat("No TVDB ID exist to search: ", DBTV.ListTitle))
-            End If
-        ElseIf DBTV.TVShow IsNot Nothing Then
-            If Not String.IsNullOrEmpty(DBTV.TVShow.TMDB) Then
-                ImagesContainer = _scraper.GetImages_TVShow(DBTV.TVShow.TMDB, FilteredModifier)
-            Else
-                logger.Trace(String.Concat("No TVDB ID exist to search: ", DBTV.ListTitle))
-            End If
-        Else
-            logger.Error(String.Concat("No DBElement.TVShow was loaded"))
-        End If
+            Case Enums.ContentType.TVSeason
+                If Not String.IsNullOrEmpty(DBTV.TVShow.TMDB) Then
+                    ImagesContainer = _scraper.GetImages_TVShow(DBTV.TVShow.TMDB, FilteredModifier)
+                Else
+                    logger.Trace(String.Concat("No TVDB ID exist to search: ", DBTV.ListTitle))
+                End If
+            Case Enums.ContentType.TVShow
+                If Not String.IsNullOrEmpty(DBTV.TVShow.TMDB) Then
+                    ImagesContainer = _scraper.GetImages_TVShow(DBTV.TVShow.TMDB, FilteredModifier)
+                Else
+                    logger.Trace(String.Concat("No TVDB ID exist to search: ", DBTV.ListTitle))
+                End If
+            Case Else
+                logger.Error(String.Concat("Unhandled ContentType"))
+        End Select
 
         logger.Trace("Finished TMDB Scraper")
         Return New Interfaces.ModuleResult With {.breakChain = False}

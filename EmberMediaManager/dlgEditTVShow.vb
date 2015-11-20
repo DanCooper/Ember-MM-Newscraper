@@ -27,7 +27,7 @@ Public Class dlgEditTVShow
 
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Private tmpDBElement As New Database.DBElement
+    Private tmpDBElement As Database.DBElement
 
     Private lvwActorSorter As ListViewColumnSorter
     Private tmpRating As String
@@ -288,7 +288,7 @@ Public Class dlgEditTVShow
         If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifier, True) Then
             If aContainer.MainBanners.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVShow) = DialogResult.OK Then
+                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
                     tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
                     If tmpDBElement.ImagesContainer.Banner.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Banner.ImageOriginal.FromMemoryStream Then
                         pbBanner.Image = tmpDBElement.ImagesContainer.Banner.ImageOriginal.Image
@@ -362,7 +362,7 @@ Public Class dlgEditTVShow
         If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifier, True) Then
             If aContainer.MainCharacterArts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVShow) = DialogResult.OK Then
+                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
                     tmpDBElement.ImagesContainer.CharacterArt = dlgImgS.Result.ImagesContainer.CharacterArt
                     If tmpDBElement.ImagesContainer.CharacterArt.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.CharacterArt.ImageOriginal.FromMemoryStream Then
                         pbCharacterArt.Image = tmpDBElement.ImagesContainer.CharacterArt.ImageOriginal.Image
@@ -456,7 +456,7 @@ Public Class dlgEditTVShow
         If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifier, True) Then
             If aContainer.MainClearArts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVShow) = DialogResult.OK Then
+                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
                     tmpDBElement.ImagesContainer.ClearArt = dlgImgS.Result.ImagesContainer.ClearArt
                     If tmpDBElement.ImagesContainer.ClearArt.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.ClearArt.ImageOriginal.FromMemoryStream Then
                         pbClearArt.Image = tmpDBElement.ImagesContainer.ClearArt.ImageOriginal.Image
@@ -530,7 +530,7 @@ Public Class dlgEditTVShow
         If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifier, True) Then
             If aContainer.MainClearLogos.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVShow) = DialogResult.OK Then
+                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
                     tmpDBElement.ImagesContainer.ClearLogo = dlgImgS.Result.ImagesContainer.ClearLogo
                     If dlgImgS.Result.ImagesContainer.ClearLogo.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.ClearLogo.ImageOriginal.FromMemoryStream Then
                         pbClearLogo.Image = tmpDBElement.ImagesContainer.ClearLogo.ImageOriginal.Image
@@ -604,7 +604,7 @@ Public Class dlgEditTVShow
         If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifier, True) Then
             If aContainer.MainFanarts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVShow) = DialogResult.OK Then
+                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
                     tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
                     If tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Fanart.ImageOriginal.FromMemoryStream Then
                         pbFanart.Image = tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
@@ -658,7 +658,7 @@ Public Class dlgEditTVShow
         If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifier, True) Then
             If aContainer.MainLandscapes.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVShow) = DialogResult.OK Then
+                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
                     tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
                     If tmpDBElement.ImagesContainer.Landscape.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Landscape.ImageOriginal.FromMemoryStream Then
                         pbLandscape.Image = tmpDBElement.ImagesContainer.Landscape.ImageOriginal.Image
@@ -752,7 +752,7 @@ Public Class dlgEditTVShow
         If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifier, True) Then
             If aContainer.MainPosters.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVShow) = DialogResult.OK Then
+                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
                     tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
                     If tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Poster.ImageOriginal.FromMemoryStream Then
                         pbPoster.Image = tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image
@@ -1152,7 +1152,7 @@ Public Class dlgEditTVShow
         With tmpDBElement.ImagesContainer
 
             'Load all images to MemoryStream and Bitmap
-            .LoadAllImages(Enums.ContentType.TVShow, True, False)
+            tmpDBElement.LoadAllImages(True, False)
 
             'Banner
             If Master.eSettings.TVShowBannerAnyEnabled Then

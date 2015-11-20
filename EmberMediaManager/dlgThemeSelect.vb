@@ -30,8 +30,6 @@ Public Class dlgThemeSelect
 
     Friend WithEvents bwDownloadTheme As New System.ComponentModel.BackgroundWorker
 
-    Private tMovie As New Database.DBElement
-    Private tShow As New Database.DBElement
     Private _UrlList As List(Of Themes)
     Private tURL As String = String.Empty
     Private sPath As String

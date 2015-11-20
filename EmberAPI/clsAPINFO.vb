@@ -840,7 +840,7 @@ Public Class NFO
                 Next
             Else
                 'no existing season found -> add it as "missing" season
-                Dim mSeason As New Database.DBElement With {.TVSeason = New MediaContainers.SeasonDetails With {.Season = aKnownSeason}}
+                Dim mSeason As New Database.DBElement(Enums.ContentType.TVSeason) With {.TVSeason = New MediaContainers.SeasonDetails With {.Season = aKnownSeason}}
                 mSeason = Master.DB.AddTVShowInfoToDBElement(mSeason, DBTV)
                 DBTV.Seasons.Add(MergeDataScraperResults_TVSeason(mSeason, ScrapedSeasonList, ScrapeOptions))
             End If
@@ -903,7 +903,7 @@ Public Class NFO
                             Next
                         Else
                             'no local episode found -> add it as "missing" episode
-                            Dim mEpisode As New Database.DBElement With {.TVEpisode = New MediaContainers.EpisodeDetails With {.Episode = iEpisode, .Season = iSeason}}
+                            Dim mEpisode As New Database.DBElement(Enums.ContentType.TVEpisode) With {.TVEpisode = New MediaContainers.EpisodeDetails With {.Episode = iEpisode, .Season = iSeason}}
                             mEpisode = Master.DB.AddTVShowInfoToDBElement(mEpisode, DBTV)
                             MergeDataScraperResults_TVEpisode(mEpisode, ScrapedEpisodeList, ScrapeOptions)
                             If mEpisode.TVEpisode.TitleSpecified Then
@@ -922,7 +922,7 @@ Public Class NFO
         'create the "* All Seasons" entry if needed
         Dim tmpAllSeasons As Database.DBElement = DBTV.Seasons.FirstOrDefault(Function(f) f.TVSeason.Season = 999)
         If tmpAllSeasons Is Nothing OrElse tmpAllSeasons.TVSeason Is Nothing Then
-            tmpAllSeasons = New Database.DBElement
+            tmpAllSeasons = New Database.DBElement(Enums.ContentType.TVSeason)
             tmpAllSeasons.TVSeason = New MediaContainers.SeasonDetails With {.Season = 999}
             tmpAllSeasons = Master.DB.AddTVShowInfoToDBElement(tmpAllSeasons, DBTV)
             DBTV.Seasons.Add(tmpAllSeasons)

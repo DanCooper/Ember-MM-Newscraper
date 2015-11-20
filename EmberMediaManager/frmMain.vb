@@ -2016,7 +2016,7 @@ Public Class frmMain
     Private Sub bwMovieScraper_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwMovieScraper.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Dim Cancelled As Boolean = False
-        Dim DBScrapeMovie As New Database.DBElement
+        Dim DBScrapeMovie As New Database.DBElement(Enums.ContentType.Movie)
 
         logger.Trace("Starting MOVIE scrape")
 
@@ -2098,7 +2098,7 @@ Public Class frmMain
                     If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, SearchResultsContainer, tScrapeItem.ScrapeModifier, Args.ScrapeList.Count = 1) Then
                         If Args.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.MovieImagesDisplayImageSelect Then
                             Using dImgSelect As New dlgImgSelect
-                                If dImgSelect.ShowDialog(DBScrapeMovie, SearchResultsContainer, tScrapeItem.ScrapeModifier, Enums.ContentType.Movie) = Windows.Forms.DialogResult.OK Then
+                                If dImgSelect.ShowDialog(DBScrapeMovie, SearchResultsContainer, tScrapeItem.ScrapeModifier) = Windows.Forms.DialogResult.OK Then
                                     DBScrapeMovie = dImgSelect.Result
                                 End If
                             End Using
@@ -2106,7 +2106,7 @@ Public Class frmMain
                             'autoscraping
                         ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
                             Dim newPreferredImages As New MediaContainers.ImagesContainer
-                            Images.SetDefaultImages(DBScrapeMovie, newPreferredImages, SearchResultsContainer, tScrapeItem.ScrapeModifier, Enums.ContentType.Movie)
+                            Images.SetDefaultImages(DBScrapeMovie, newPreferredImages, SearchResultsContainer, tScrapeItem.ScrapeModifier)
                             DBScrapeMovie.ImagesContainer = newPreferredImages
                         End If
                     End If
@@ -2241,8 +2241,8 @@ Public Class frmMain
     Private Sub bwMovieSetScraper_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwMovieSetScraper.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Dim Cancelled As Boolean = False
-        Dim DBScrapeMovieSet As New Database.DBElement
-        Dim cloneMovieSet As New Database.DBElement
+        Dim DBScrapeMovieSet As New Database.DBElement(Enums.ContentType.MovieSet)
+        Dim cloneMovieSet As New Database.DBElement(Enums.ContentType.MovieSet)
 
         logger.Trace("Starting MOVIE SET scrape")
 
@@ -2373,7 +2373,7 @@ Public Class frmMain
                     If Not ModulesManager.Instance.ScrapeImage_MovieSet(DBScrapeMovieSet, SearchResultsContainer, tScrapeItem.ScrapeModifier) Then
                         If Args.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.MovieImagesDisplayImageSelect Then
                             Using dImgSelect As New dlgImgSelect
-                                If dImgSelect.ShowDialog(DBScrapeMovieSet, SearchResultsContainer, tScrapeItem.ScrapeModifier, Enums.ContentType.Movie) = DialogResult.OK Then
+                                If dImgSelect.ShowDialog(DBScrapeMovieSet, SearchResultsContainer, tScrapeItem.ScrapeModifier) = DialogResult.OK Then
                                     DBScrapeMovieSet = dImgSelect.Result
                                 End If
                             End Using
@@ -2381,7 +2381,7 @@ Public Class frmMain
                             'autoscraping
                         ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
                             Dim newPreferredImages As New MediaContainers.ImagesContainer
-                            Images.SetDefaultImages(DBScrapeMovieSet, newPreferredImages, SearchResultsContainer, tScrapeItem.ScrapeModifier, Enums.ContentType.MovieSet)
+                            Images.SetDefaultImages(DBScrapeMovieSet, newPreferredImages, SearchResultsContainer, tScrapeItem.ScrapeModifier)
                             DBScrapeMovieSet.ImagesContainer = newPreferredImages
                         End If
                     End If
@@ -2457,7 +2457,7 @@ Public Class frmMain
     Private Sub bwTVScraper_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwTVScraper.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Dim Cancelled As Boolean = False
-        Dim DBScrapeShow As New Database.DBElement
+        Dim DBScrapeShow As New Database.DBElement(Enums.ContentType.TVShow)
 
         logger.Trace("Starting TV Show scrape")
 
@@ -2528,7 +2528,7 @@ Public Class frmMain
                     If Not ModulesManager.Instance.ScrapeImage_TV(DBScrapeShow, SearchResultsContainer, tScrapeItem.ScrapeModifier, Args.ScrapeList.Count = 1) Then
                         If Args.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.TVImagesDisplayImageSelect Then
                             Using dImgSelect As New dlgImgSelect
-                                If dImgSelect.ShowDialog(DBScrapeShow, SearchResultsContainer, tScrapeItem.ScrapeModifier, Enums.ContentType.TV) = DialogResult.OK Then
+                                If dImgSelect.ShowDialog(DBScrapeShow, SearchResultsContainer, tScrapeItem.ScrapeModifier) = DialogResult.OK Then
                                     DBScrapeShow = dImgSelect.Result
                                 End If
                             End Using
@@ -2536,7 +2536,7 @@ Public Class frmMain
                             'autoscraping
                         ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
                             Dim newPreferredImages As New MediaContainers.ImagesContainer
-                            Images.SetDefaultImages(DBScrapeShow, newPreferredImages, SearchResultsContainer, tScrapeItem.ScrapeModifier, Enums.ContentType.TV)
+                            Images.SetDefaultImages(DBScrapeShow, newPreferredImages, SearchResultsContainer, tScrapeItem.ScrapeModifier)
                             DBScrapeShow.ImagesContainer = newPreferredImages
                         End If
                     End If
@@ -2552,7 +2552,7 @@ Public Class frmMain
                             Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
                             ModulesManager.Instance.ScrapeImage_TV(tEpisode, SearchResultsContainer, tScrapeItem.ScrapeModifier, False)
                             Dim newPreferredImages As New MediaContainers.ImagesContainer
-                            Images.SetDefaultImages(tEpisode, newPreferredImages, SearchResultsContainer, tScrapeItem.ScrapeModifier, Enums.ContentType.TVEpisode)
+                            Images.SetDefaultImages(tEpisode, newPreferredImages, SearchResultsContainer, tScrapeItem.ScrapeModifier)
                             tEpisode.ImagesContainer = newPreferredImages
                         End If
                     Next
@@ -2632,7 +2632,7 @@ Public Class frmMain
     Private Sub bwTVEpisodeScraper_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwTVEpisodeScraper.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Dim Cancelled As Boolean = False
-        Dim DBScrapeEpisode As New Database.DBElement
+        Dim DBScrapeEpisode As New Database.DBElement(Enums.ContentType.TVEpisode)
 
         logger.Trace("Starting EPISODE scrape")
 
@@ -2697,7 +2697,7 @@ Public Class frmMain
                     If Not ModulesManager.Instance.ScrapeImage_TV(DBScrapeEpisode, SearchResultsContainer, tScrapeItem.ScrapeModifier, Args.ScrapeList.Count = 1) Then
                         If Args.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.TVImagesDisplayImageSelect Then
                             Using dImgSelect As New dlgImgSelect
-                                If dImgSelect.ShowDialog(DBScrapeEpisode, SearchResultsContainer, tScrapeItem.ScrapeModifier, Enums.ContentType.TVEpisode) = DialogResult.OK Then
+                                If dImgSelect.ShowDialog(DBScrapeEpisode, SearchResultsContainer, tScrapeItem.ScrapeModifier) = DialogResult.OK Then
                                     DBScrapeEpisode = dImgSelect.Result
                                 End If
                             End Using
@@ -2705,7 +2705,7 @@ Public Class frmMain
                             'autoscraping
                         ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
                             Dim newPreferredImages As New MediaContainers.ImagesContainer
-                            Images.SetDefaultImages(DBScrapeEpisode, newPreferredImages, SearchResultsContainer, tScrapeItem.ScrapeModifier, Enums.ContentType.TVEpisode)
+                            Images.SetDefaultImages(DBScrapeEpisode, newPreferredImages, SearchResultsContainer, tScrapeItem.ScrapeModifier)
                             DBScrapeEpisode.ImagesContainer = newPreferredImages
                         End If
                     End If
@@ -2780,7 +2780,7 @@ Public Class frmMain
     Private Sub bwTVSeasonScraper_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwTVSeasonScraper.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Dim Cancelled As Boolean = False
-        Dim DBScrapeSeason As New Database.DBElement
+        Dim DBScrapeSeason As New Database.DBElement(Enums.ContentType.TVSeason)
 
         logger.Trace("Starting TV Season scrape")
 
@@ -2837,7 +2837,7 @@ Public Class frmMain
                     If Not ModulesManager.Instance.ScrapeImage_TV(DBScrapeSeason, SearchResultsContainer, tScrapeItem.ScrapeModifier, Args.ScrapeList.Count = 1) Then
                         If Args.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.TVImagesDisplayImageSelect Then
                             Using dImgSelect As New dlgImgSelect
-                                If dImgSelect.ShowDialog(DBScrapeSeason, SearchResultsContainer, tScrapeItem.ScrapeModifier, Enums.ContentType.TVSeason) = DialogResult.OK Then
+                                If dImgSelect.ShowDialog(DBScrapeSeason, SearchResultsContainer, tScrapeItem.ScrapeModifier) = DialogResult.OK Then
                                     DBScrapeSeason = dImgSelect.Result
                                 End If
                             End Using
@@ -2845,7 +2845,7 @@ Public Class frmMain
                             'autoscraping
                         ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
                             Dim newPreferredImages As New MediaContainers.ImagesContainer
-                            Images.SetDefaultImages(DBScrapeSeason, newPreferredImages, SearchResultsContainer, tScrapeItem.ScrapeModifier, Enums.ContentType.TVSeason)
+                            Images.SetDefaultImages(DBScrapeSeason, newPreferredImages, SearchResultsContainer, tScrapeItem.ScrapeModifier)
                             DBScrapeSeason.ImagesContainer = newPreferredImages
                         End If
                     End If
@@ -5446,7 +5446,7 @@ doCancel:
     Private Sub cmnuMovieSetNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetNew.Click
         dgvMovieSets.ClearSelection()
 
-        Dim tmpDBMovieSet = New Database.DBElement With {.MovieSet = New MediaContainers.MovieSet}
+        Dim tmpDBMovieSet = New Database.DBElement(Enums.ContentType.MovieSet) With {.MovieSet = New MediaContainers.MovieSet}
 
         Using dNewSet As New dlgNewSet()
             If dNewSet.ShowDialog(tmpDBMovieSet) = Windows.Forms.DialogResult.OK Then
@@ -6102,7 +6102,7 @@ doCancel:
     End Sub
 
     Private Sub dgvMovies_CellMouseDown(sender As Object, e As System.Windows.Forms.DataGridViewCellMouseEventArgs) Handles dgvMovies.CellMouseDown
-        If e.Button = Windows.Forms.MouseButtons.Right And dgvMovies.RowCount > 0 Then
+        If e.Button = MouseButtons.Right And dgvMovies.RowCount > 0 Then
             If bwCleanDB.IsBusy OrElse bwMovieScraper.IsBusy OrElse bwNonScrape.IsBusy Then
                 cmnuMovieTitle.Text = Master.eLang.GetString(845, ">> No Item Selected <<")
                 Return
@@ -6642,7 +6642,7 @@ doCancel:
     End Sub
 
     Private Sub dgvMovieSets_CellMouseDown(sender As Object, e As System.Windows.Forms.DataGridViewCellMouseEventArgs) Handles dgvMovieSets.CellMouseDown
-        If e.Button = Windows.Forms.MouseButtons.Right And dgvMovieSets.RowCount > 0 Then
+        If e.Button = MouseButtons.Right And dgvMovieSets.RowCount > 0 Then
             If bwCleanDB.IsBusy OrElse bwMovieSetScraper.IsBusy OrElse bwNonScrape.IsBusy Then
                 cmnuMovieSetTitle.Text = Master.eLang.GetString(845, ">> No Item Selected <<")
                 Return
@@ -7266,7 +7266,7 @@ doCancel:
     Private Sub dgvTVEpisodes_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dgvTVEpisodes.MouseDown
         Dim hasMissing As Boolean = False
 
-        If e.Button = Windows.Forms.MouseButtons.Right And dgvTVEpisodes.RowCount > 0 Then
+        If e.Button = MouseButtons.Right And dgvTVEpisodes.RowCount > 0 Then
             cmnuEpisode.Enabled = False
 
             Dim dgvHTI As DataGridView.HitTestInfo = dgvTVEpisodes.HitTest(e.X, e.Y)
@@ -7650,7 +7650,7 @@ doCancel:
     End Sub
 
     Private Sub dgvTVSeasons_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dgvTVSeasons.MouseDown
-        If e.Button = Windows.Forms.MouseButtons.Right And dgvTVSeasons.RowCount > 0 Then
+        If e.Button = MouseButtons.Right And dgvTVSeasons.RowCount > 0 Then
 
             cmnuSeason.Enabled = False
 
@@ -8056,7 +8056,7 @@ doCancel:
     End Sub
 
     Private Sub dgvTVShows_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dgvTVShows.MouseDown
-        If e.Button = Windows.Forms.MouseButtons.Right And dgvTVShows.RowCount > 0 Then
+        If e.Button = MouseButtons.Right And dgvTVShows.RowCount > 0 Then
 
             cmnuShow.Enabled = False
 
@@ -12722,15 +12722,16 @@ doCancel:
 
     Private Sub pbBanner_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbBanner.MouseDoubleClick
         Try
-            If e.Button = Windows.Forms.MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
+            If e.Button = MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
                 If pbBannerCache.Image IsNot Nothing Then
                     Using dImgView As New dlgImgView
                         dImgView.ShowDialog(pbBannerCache.Image)
                     End Using
                 End If
-            ElseIf e.Button = Windows.Forms.MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
-                Select Case tcMain.SelectedIndex
-                    Case 0 'Movies list
+            ElseIf e.Button = MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
+
+                Select Case DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType).ContentType
+                    Case Enums.ContentType.Movie
                         If dgvMovies.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
 
@@ -12745,7 +12746,7 @@ doCancel:
                         If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifier, True) Then
                             If aContainer.MainBanners.Count > 0 Then
                                 Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = DialogResult.OK Then
+                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
                                     Master.DB.SaveMovieToDB(tmpDBElement, False, False, False, True)
                                     RefreshRow_Movie(ID)
@@ -12755,7 +12756,7 @@ doCancel:
                             End If
                         End If
                         SetControlsEnabled(True)
-                    Case 1 'MovieSets list
+                    Case Enums.ContentType.MovieSet
                         If dgvMovieSets.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
 
@@ -12770,7 +12771,7 @@ doCancel:
                         If Not ModulesManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifier) Then
                             If aContainer.MainBanners.Count > 0 Then
                                 Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.MovieSet) = DialogResult.OK Then
+                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
                                     Master.DB.SaveMovieSetToDB(tmpDBElement, False, False, True)
                                     RefreshRow_MovieSet(ID)
@@ -12780,7 +12781,7 @@ doCancel:
                             End If
                         End If
                         SetControlsEnabled(True)
-                    Case 2 'TV list
+                    Case Enums.ContentType.TV
                         'TV Show list
                         If dgvTVShows.Focused Then
                             If dgvTVShows.SelectedRows.Count > 1 Then Return
@@ -12797,7 +12798,7 @@ doCancel:
                             If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifier, True) Then
                                 If aContainer.MainBanners.Count > 0 Then
                                     Dim dlgImgS As New dlgImgSelect()
-                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVShow) = DialogResult.OK Then
+                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
                                         Master.DB.SaveTVShowToDB(tmpDBElement, False, False, False, True, False)
                                         RefreshRow_TVShow(ID)
@@ -12828,7 +12829,7 @@ doCancel:
                             If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifier, True) Then
                                 If aContainer.SeasonBanners.Count > 0 OrElse (tmpDBElement.TVSeason.Season = 999 AndAlso aContainer.MainBanners.Count > 0) Then
                                     Dim dlgImgS As New dlgImgSelect()
-                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVSeason) = DialogResult.OK Then
+                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
                                         Master.DB.SaveTVSeasonToDB(tmpDBElement, False, True)
                                         RefreshRow_TVSeason(ID)
@@ -12853,19 +12854,20 @@ doCancel:
 
     Private Sub pbCharacterArt_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbCharacterArt.MouseDoubleClick
         Try
-            If e.Button = Windows.Forms.MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
+            If e.Button = MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
                 If pbCharacterArtCache.Image IsNot Nothing Then
                     Using dImgView As New dlgImgView
                         dImgView.ShowDialog(pbCharacterArtCache.Image)
                     End Using
                 End If
-            ElseIf e.Button = Windows.Forms.MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
-                Select Case tcMain.SelectedIndex
-                    Case 0 'Movies list
+            ElseIf e.Button = MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
+
+                Select Case DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType).ContentType
+                    Case Enums.ContentType.Movie
                         Return
-                    Case 1 'MovieSets list
+                    Case Enums.ContentType.MovieSet
                         Return
-                    Case 2 'TV list
+                    Case Enums.ContentType.TV
                         'TV Show list
                         If dgvTVShows.Focused Then
                             If dgvTVShows.SelectedRows.Count > 1 Then Return
@@ -12882,7 +12884,7 @@ doCancel:
                             If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifier, True) Then
                                 If aContainer.MainCharacterArts.Count > 0 Then
                                     Dim dlgImgS As New dlgImgSelect()
-                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVShow) = DialogResult.OK Then
+                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.CharacterArt = dlgImgS.Result.ImagesContainer.CharacterArt
                                         Master.DB.SaveTVShowToDB(tmpDBElement, False, False, False, True, False)
                                         RefreshRow_TVShow(ID)
@@ -12911,15 +12913,16 @@ doCancel:
 
     Private Sub pbClearArt_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbClearArt.MouseDoubleClick
         Try
-            If e.Button = Windows.Forms.MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
+            If e.Button = MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
                 If pbClearArtCache.Image IsNot Nothing Then
                     Using dImgView As New dlgImgView
                         dImgView.ShowDialog(pbClearArtCache.Image)
                     End Using
                 End If
-            ElseIf e.Button = Windows.Forms.MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
-                Select Case tcMain.SelectedIndex
-                    Case 0 'Movies list
+            ElseIf e.Button = MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
+
+                Select Case DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType).ContentType
+                    Case Enums.ContentType.Movie
                         If dgvMovies.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
 
@@ -12934,7 +12937,7 @@ doCancel:
                         If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifier, True) Then
                             If aContainer.MainClearArts.Count > 0 Then
                                 Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = DialogResult.OK Then
+                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.ClearArt = dlgImgS.Result.ImagesContainer.ClearArt
                                     Master.DB.SaveMovieToDB(tmpDBElement, False, False, False, True)
                                     RefreshRow_Movie(ID)
@@ -12944,7 +12947,7 @@ doCancel:
                             End If
                         End If
                         SetControlsEnabled(True)
-                    Case 1 'MovieSets list
+                    Case Enums.ContentType.MovieSet
                         If dgvMovieSets.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
 
@@ -12959,7 +12962,7 @@ doCancel:
                         If Not ModulesManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifier) Then
                             If aContainer.MainClearArts.Count > 0 Then
                                 Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.MovieSet) = DialogResult.OK Then
+                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.ClearArt = dlgImgS.Result.ImagesContainer.ClearArt
                                     Master.DB.SaveMovieSetToDB(tmpDBElement, False, False, True)
                                     RefreshRow_MovieSet(ID)
@@ -12969,7 +12972,7 @@ doCancel:
                             End If
                         End If
                         SetControlsEnabled(True)
-                    Case 2 'TV list
+                    Case Enums.ContentType.TV
                         'TV Show list
                         If dgvTVShows.Focused Then
                             If dgvTVShows.SelectedRows.Count > 1 Then Return
@@ -12986,7 +12989,7 @@ doCancel:
                             If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifier, True) Then
                                 If aContainer.MainClearArts.Count > 0 Then
                                     Dim dlgImgS As New dlgImgSelect()
-                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVShow) = DialogResult.OK Then
+                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.ClearArt = dlgImgS.Result.ImagesContainer.ClearArt
                                         Master.DB.SaveTVShowToDB(tmpDBElement, False, False, False, True, False)
                                         RefreshRow_TVShow(ID)
@@ -13015,15 +13018,16 @@ doCancel:
 
     Private Sub pbClearLogo_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbClearLogo.MouseDoubleClick
         Try
-            If e.Button = Windows.Forms.MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
+            If e.Button = MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
                 If pbClearLogoCache.Image IsNot Nothing Then
                     Using dImgView As New dlgImgView
                         dImgView.ShowDialog(pbClearLogoCache.Image)
                     End Using
                 End If
-            ElseIf e.Button = Windows.Forms.MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
-                Select Case tcMain.SelectedIndex
-                    Case 0 'Movies list
+            ElseIf e.Button = MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
+
+                Select Case DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType).ContentType
+                    Case Enums.ContentType.Movie
                         If dgvMovies.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
 
@@ -13038,7 +13042,7 @@ doCancel:
                         If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifier, True) Then
                             If aContainer.MainClearLogos.Count > 0 Then
                                 Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = DialogResult.OK Then
+                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.ClearLogo = dlgImgS.Result.ImagesContainer.ClearLogo
                                     Master.DB.SaveMovieToDB(tmpDBElement, False, False, False, True)
                                     RefreshRow_Movie(ID)
@@ -13048,7 +13052,7 @@ doCancel:
                             End If
                         End If
                         SetControlsEnabled(True)
-                    Case 1 'MovieSets list
+                    Case Enums.ContentType.MovieSet
                         If dgvMovieSets.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
 
@@ -13063,7 +13067,7 @@ doCancel:
                         If Not ModulesManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifier) Then
                             If aContainer.MainClearLogos.Count > 0 Then
                                 Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.MovieSet) = DialogResult.OK Then
+                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.ClearLogo = dlgImgS.Result.ImagesContainer.ClearLogo
                                     Master.DB.SaveMovieSetToDB(tmpDBElement, False, False, True)
                                     RefreshRow_MovieSet(ID)
@@ -13073,7 +13077,7 @@ doCancel:
                             End If
                         End If
                         SetControlsEnabled(True)
-                    Case 2 'TV list
+                    Case Enums.ContentType.TV
                         'TV Show list
                         If dgvTVShows.Focused Then
                             If dgvTVShows.SelectedRows.Count > 1 Then Return
@@ -13090,7 +13094,7 @@ doCancel:
                             If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifier, True) Then
                                 If aContainer.MainClearLogos.Count > 0 Then
                                     Dim dlgImgS As New dlgImgSelect()
-                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVShow) = DialogResult.OK Then
+                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.ClearLogo = dlgImgS.Result.ImagesContainer.ClearLogo
                                         Master.DB.SaveTVShowToDB(tmpDBElement, False, False, False, True, False)
                                         RefreshRow_TVShow(ID)
@@ -13119,15 +13123,16 @@ doCancel:
 
     Private Sub pbDiscArt_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbDiscArt.MouseDoubleClick
         Try
-            If e.Button = Windows.Forms.MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
+            If e.Button = MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
                 If pbDiscArtCache.Image IsNot Nothing Then
                     Using dImgView As New dlgImgView
                         dImgView.ShowDialog(pbDiscArtCache.Image)
                     End Using
                 End If
-            ElseIf e.Button = Windows.Forms.MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
-                Select Case tcMain.SelectedIndex
-                    Case 0 'Movies list
+            ElseIf e.Button = MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
+
+                Select Case DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType).ContentType
+                    Case Enums.ContentType.Movie
                         If dgvMovies.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
 
@@ -13142,7 +13147,7 @@ doCancel:
                         If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifier, True) Then
                             If aContainer.MainDiscArts.Count > 0 Then
                                 Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = DialogResult.OK Then
+                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.DiscArt = dlgImgS.Result.ImagesContainer.DiscArt
                                     Master.DB.SaveMovieToDB(tmpDBElement, False, False, False, True)
                                     RefreshRow_Movie(ID)
@@ -13152,7 +13157,7 @@ doCancel:
                             End If
                         End If
                         SetControlsEnabled(True)
-                    Case 1 'MovieSets list
+                    Case Enums.ContentType.MovieSet
                         If dgvMovieSets.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
 
@@ -13167,7 +13172,7 @@ doCancel:
                         If Not ModulesManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifier) Then
                             If aContainer.MainDiscArts.Count > 0 Then
                                 Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.MovieSet) = DialogResult.OK Then
+                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.DiscArt = dlgImgS.Result.ImagesContainer.DiscArt
                                     Master.DB.SaveMovieSetToDB(tmpDBElement, False, False, True)
                                     RefreshRow_MovieSet(ID)
@@ -13177,7 +13182,7 @@ doCancel:
                             End If
                         End If
                         SetControlsEnabled(True)
-                    Case 2 'TV list
+                    Case Enums.ContentType.TV
                         'TV Show list
                         If dgvTVShows.Focused Then
                             Return
@@ -13205,7 +13210,7 @@ doCancel:
     ''' <remarks></remarks>
     Private Sub pbFanart_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbFanart.MouseDoubleClick, pbFanartSmall.MouseDoubleClick
         Try
-            If e.Button = Windows.Forms.MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
+            If e.Button = MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
                 If pbFanartCache.Image IsNot Nothing Then
                     Using dImgView As New dlgImgView
                         dImgView.ShowDialog(pbFanartCache.Image)
@@ -13215,9 +13220,10 @@ doCancel:
                         dImgView.ShowDialog(pbFanartSmallCache.Image)
                     End Using
                 End If
-            ElseIf e.Button = Windows.Forms.MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
-                Select Case tcMain.SelectedIndex
-                    Case 0 'Movies list
+            ElseIf e.Button = MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
+
+                Select Case DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType).ContentType
+                    Case Enums.ContentType.Movie
                         If dgvMovies.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
 
@@ -13232,7 +13238,7 @@ doCancel:
                         If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifier, True) Then
                             If aContainer.MainFanarts.Count > 0 Then
                                 Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = DialogResult.OK Then
+                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
                                     Master.DB.SaveMovieToDB(tmpDBElement, False, False, False, True)
                                     RefreshRow_Movie(ID)
@@ -13242,7 +13248,7 @@ doCancel:
                             End If
                         End If
                         SetControlsEnabled(True)
-                    Case 1 'MovieSets list
+                    Case Enums.ContentType.MovieSet
                         If dgvMovieSets.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
 
@@ -13257,7 +13263,7 @@ doCancel:
                         If Not ModulesManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifier) Then
                             If aContainer.MainFanarts.Count > 0 Then
                                 Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.MovieSet) = DialogResult.OK Then
+                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
                                     Master.DB.SaveMovieSetToDB(tmpDBElement, False, False, True)
                                     RefreshRow_MovieSet(ID)
@@ -13267,7 +13273,7 @@ doCancel:
                             End If
                         End If
                         SetControlsEnabled(True)
-                    Case 2 'TV list
+                    Case Enums.ContentType.TV
                         'TV Show list
                         If dgvTVShows.Focused Then
                             If dgvTVShows.SelectedRows.Count > 1 Then Return
@@ -13284,7 +13290,7 @@ doCancel:
                             If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifier, True) Then
                                 If aContainer.MainFanarts.Count > 0 Then
                                     Dim dlgImgS As New dlgImgSelect()
-                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVShow) = DialogResult.OK Then
+                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
                                         Master.DB.SaveTVShowToDB(tmpDBElement, False, False, False, True, False)
                                         RefreshRow_TVShow(ID)
@@ -13293,6 +13299,7 @@ doCancel:
                                     MessageBox.Show(Master.eLang.GetString(970, "No Fanarts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
                                 End If
                             End If
+                            SetControlsEnabled(True)
 
                             'TV Season list
                         ElseIf dgvTVSeasons.Focused Then
@@ -13314,7 +13321,7 @@ doCancel:
                             If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifier, True) Then
                                 If aContainer.SeasonFanarts.Count > 0 OrElse aContainer.MainFanarts.Count > 0 Then
                                     Dim dlgImgS As New dlgImgSelect()
-                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVSeason) = DialogResult.OK Then
+                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
                                         Master.DB.SaveTVSeasonToDB(tmpDBElement, False, True)
                                         RefreshRow_TVSeason(ID)
@@ -13341,7 +13348,7 @@ doCancel:
                             If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifier, True) Then
                                 If aContainer.EpisodeFanarts.Count > 0 OrElse aContainer.MainFanarts.Count > 0 Then
                                     Dim dlgImgS As New dlgImgSelect()
-                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVEpisode) = DialogResult.OK Then
+                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
                                         Master.DB.SaveTVEpisodeToDB(tmpDBElement, False, False, False, True, False)
                                         RefreshRow_TVEpisode(ID)
@@ -13362,15 +13369,16 @@ doCancel:
 
     Private Sub pbLandscape_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbLandscape.MouseDoubleClick
         Try
-            If e.Button = Windows.Forms.MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
+            If e.Button = MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
                 If pbLandscapeCache.Image IsNot Nothing Then
                     Using dImgView As New dlgImgView
                         dImgView.ShowDialog(pbLandscapeCache.Image)
                     End Using
                 End If
-            ElseIf e.Button = Windows.Forms.MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
-                Select Case tcMain.SelectedIndex
-                    Case 0 'Movies list
+            ElseIf e.Button = MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
+
+                Select Case DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType).ContentType
+                    Case Enums.ContentType.Movie
                         If dgvMovies.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
 
@@ -13385,7 +13393,7 @@ doCancel:
                         If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifier, True) Then
                             If aContainer.MainLandscapes.Count > 0 Then
                                 Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = DialogResult.OK Then
+                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
                                     Master.DB.SaveMovieToDB(tmpDBElement, False, False, False, True)
                                     RefreshRow_Movie(ID)
@@ -13395,7 +13403,7 @@ doCancel:
                             End If
                         End If
                         SetControlsEnabled(True)
-                    Case 1 'MovieSets list
+                    Case Enums.ContentType.MovieSet
                         If dgvMovieSets.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
 
@@ -13410,7 +13418,7 @@ doCancel:
                         If Not ModulesManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifier) Then
                             If aContainer.MainLandscapes.Count > 0 Then
                                 Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.MovieSet) = DialogResult.OK Then
+                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
                                     Master.DB.SaveMovieSetToDB(tmpDBElement, False, False, True)
                                     RefreshRow_MovieSet(ID)
@@ -13420,7 +13428,7 @@ doCancel:
                             End If
                         End If
                         SetControlsEnabled(True)
-                    Case 2 'TV list
+                    Case Enums.ContentType.TV
                         'TV Show list
                         If dgvTVShows.Focused Then
                             If dgvTVShows.SelectedRows.Count > 1 Then Return
@@ -13437,7 +13445,7 @@ doCancel:
                             If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifier, True) Then
                                 If aContainer.MainLandscapes.Count > 0 Then
                                     Dim dlgImgS As New dlgImgSelect()
-                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVShow) = DialogResult.OK Then
+                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
                                         Master.DB.SaveTVShowToDB(tmpDBElement, False, False, False, True, False)
                                         RefreshRow_TVShow(ID)
@@ -13468,7 +13476,7 @@ doCancel:
                             If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifier, True) Then
                                 If aContainer.SeasonLandscapes.Count > 0 OrElse (tmpDBElement.TVSeason.Season = 999 AndAlso aContainer.MainLandscapes.Count > 0) Then
                                     Dim dlgImgS As New dlgImgSelect()
-                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVSeason) = DialogResult.OK Then
+                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
                                         Master.DB.SaveTVSeasonToDB(tmpDBElement, False, True)
                                         RefreshRow_TVSeason(ID)
@@ -13493,15 +13501,16 @@ doCancel:
 
     Private Sub pbPoster_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbPoster.MouseDoubleClick
         Try
-            If e.Button = Windows.Forms.MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
+            If e.Button = MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
                 If pbPosterCache.Image IsNot Nothing Then
                     Using dImgView As New dlgImgView
                         dImgView.ShowDialog(pbPosterCache.Image)
                     End Using
                 End If
-            ElseIf e.Button = Windows.Forms.MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
-                Select Case tcMain.SelectedIndex
-                    Case 0 'Movies list
+            ElseIf e.Button = MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
+
+                Select Case DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType).ContentType
+                    Case Enums.ContentType.Movie
                         If dgvMovies.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
 
@@ -13516,7 +13525,7 @@ doCancel:
                         If Not ModulesManager.Instance.ScrapeImage_Movie(tmpDBElement, aContainer, ScrapeModifier, True) Then
                             If aContainer.MainPosters.Count > 0 Then
                                 Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.Movie) = DialogResult.OK Then
+                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
                                     Master.DB.SaveMovieToDB(tmpDBElement, False, False, False, True)
                                     RefreshRow_Movie(ID)
@@ -13526,7 +13535,7 @@ doCancel:
                             End If
                         End If
                         SetControlsEnabled(True)
-                    Case 1 'MovieSets list
+                    Case Enums.ContentType.MovieSet
                         If dgvMovieSets.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
 
@@ -13541,7 +13550,7 @@ doCancel:
                         If Not ModulesManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifier) Then
                             If aContainer.MainPosters.Count > 0 Then
                                 Dim dlgImgS As New dlgImgSelect()
-                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.MovieSet) = DialogResult.OK Then
+                                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
                                     Master.DB.SaveMovieSetToDB(tmpDBElement, False, False, True)
                                     RefreshRow_MovieSet(ID)
@@ -13551,7 +13560,7 @@ doCancel:
                             End If
                         End If
                         SetControlsEnabled(True)
-                    Case 2 'TV list
+                    Case Enums.ContentType.TV
                         'TV Show list
                         If dgvTVShows.Focused Then
                             If dgvTVShows.SelectedRows.Count > 1 Then Return
@@ -13568,7 +13577,7 @@ doCancel:
                             If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifier, True) Then
                                 If aContainer.MainPosters.Count > 0 Then
                                     Dim dlgImgS As New dlgImgSelect()
-                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVShow) = DialogResult.OK Then
+                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
                                         Master.DB.SaveTVShowToDB(tmpDBElement, False, False, False, True, False)
                                         RefreshRow_TVShow(ID)
@@ -13599,7 +13608,7 @@ doCancel:
                             If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifier, True) Then
                                 If aContainer.SeasonPosters.Count > 0 OrElse (tmpDBElement.TVSeason.Season = 999 AndAlso aContainer.MainPosters.Count > 0) Then
                                     Dim dlgImgS As New dlgImgSelect()
-                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVSeason) = DialogResult.OK Then
+                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
                                         Master.DB.SaveTVSeasonToDB(tmpDBElement, False, True)
                                         RefreshRow_TVSeason(ID)
@@ -13626,7 +13635,7 @@ doCancel:
                             If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifier, True) Then
                                 If aContainer.EpisodePosters.Count > 0 Then
                                     Dim dlgImgS As New dlgImgSelect()
-                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier, Enums.ContentType.TVEpisode) = DialogResult.OK Then
+                                    If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
                                         Master.DB.SaveTVEpisodeToDB(tmpDBElement, False, False, False, True, False)
                                         RefreshRow_TVEpisode(ID)
@@ -14187,9 +14196,7 @@ doCancel:
     ''' <returns>Reload movie from disc</returns>
     ''' <remarks></remarks>
     Private Function Reload_Movie(ByVal ID As Long, ByVal BatchMode As Boolean, ByVal showMessage As Boolean) As Boolean
-        Dim DBMovie As New Database.DBElement
-
-        DBMovie = Master.DB.LoadMovieFromDB(ID)
+        Dim DBMovie As Database.DBElement = Master.DB.LoadMovieFromDB(ID)
 
         If DBMovie.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBMovie, Not showMessage) Then
             fScanner.LoadMovie(DBMovie, False, BatchMode)
@@ -14220,9 +14227,7 @@ doCancel:
     ''' <returns></returns>
     ''' <remarks></remarks>
     Private Function Reload_MovieSet(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False) As Boolean
-        Dim DBMovieSet As New Database.DBElement
-
-        DBMovieSet = Master.DB.LoadMovieSetFromDB(ID)
+        Dim DBMovieSet As Database.DBElement = Master.DB.LoadMovieSetFromDB(ID)
 
         fScanner.LoadMovieSet(DBMovieSet, False, BatchMode)
         If Not BatchMode Then RefreshRow_MovieSet(DBMovieSet.ID)
@@ -14237,10 +14242,8 @@ doCancel:
     ''' <returns></returns>
     ''' <remarks></remarks>
     Private Function Reload_TVEpisode(ByVal ID As Long, ByVal BatchMode As Boolean, ByVal showMessage As Boolean) As Boolean
-        Dim DBTVEpisode As New Database.DBElement
+        Dim DBTVEpisode As Database.DBElement = Master.DB.LoadTVEpisodeFromDB(ID, True)
         Dim epCount As Integer = 0
-
-        DBTVEpisode = Master.DB.LoadTVEpisodeFromDB(ID, True)
 
         If DBTVEpisode.FilenameID = -1 Then Return False 'skipping missing episodes
 
@@ -14269,9 +14272,7 @@ doCancel:
     ''' <returns></returns>
     ''' <remarks></remarks>
     Private Function Reload_TVSeason(ByVal ID As Long, ByVal BatchMode As Boolean, ByVal showMessage As Boolean, reloadFull As Boolean) As Boolean
-        Dim DBTVSeason As New Database.DBElement
-
-        DBTVSeason = Master.DB.LoadTVSeasonFromDB(ID, True)
+        Dim DBTVSeason As Database.DBElement = Master.DB.LoadTVSeasonFromDB(ID, True)
 
         If DBTVSeason.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTVSeason, showMessage) Then
             fScanner.GetTVSeasonFolderContents(DBTVSeason)
@@ -14291,9 +14292,7 @@ doCancel:
     ''' <returns></returns>
     ''' <remarks></remarks>
     Private Function Reload_TVShow(ByVal ID As Long, ByVal BatchMode As Boolean, ByVal showMessage As Boolean, ByVal reloadFull As Boolean) As Boolean
-        Dim DBTVShow As New Database.DBElement
-
-        DBTVShow = Master.DB.LoadTVShowFromDB(ID, reloadFull, reloadFull, False)
+        Dim DBTVShow As Database.DBElement = Master.DB.LoadTVShowFromDB(ID, reloadFull, reloadFull, False)
 
         If DBTVShow.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTVShow, showMessage) Then
             fScanner.LoadTVShow(DBTVShow, False, BatchMode, False)
@@ -14319,9 +14318,7 @@ doCancel:
     ''' <returns>reload list from database?</returns>
     ''' <remarks></remarks>
     Private Function RewriteMovie(ByVal ID As Long, ByVal BatchMode As Boolean) As Boolean
-        Dim tmpMovieDB As New Database.DBElement
-
-        tmpMovieDB = Master.DB.LoadMovieFromDB(ID)
+        Dim tmpMovieDB As Database.DBElement = Master.DB.LoadMovieFromDB(ID)
 
         If tmpMovieDB.IsOnline Then
             Master.DB.SaveMovieToDB(tmpMovieDB, False, BatchMode, True, True)
