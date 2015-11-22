@@ -104,7 +104,7 @@ Public Class frmSettingsHolder_TV
         Me.lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
         Me.chkScraperEpisodePlaycount.Text = Master.eLang.GetString(1452, "Playcount")
         Me.chkScraperEpisodeLastPlayed.Text = Master.eLang.GetString(1369, "Last watched")
-        Me.chkUsePersonalRatings.Text = Master.eLang.GetString(1464, "Use personal rating (if avalaible)")
+        Me.chkUsePersonalRatings.Text = Master.eLang.GetString(1464, "Use personal rating (if available)")
         Me.lblTraktPassword.Text = Master.eLang.GetString(426, "Password")
         Me.lblTraktUser.Text = Master.eLang.GetString(425, "Username")
         Me.txtTraktPassword.PasswordChar = "*"c

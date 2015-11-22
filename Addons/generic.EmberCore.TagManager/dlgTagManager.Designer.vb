@@ -278,7 +278,7 @@ Partial Class dlgTagManager
         Me.gbMovies.Size = New System.Drawing.Size(443, 541)
         Me.gbMovies.TabIndex = 7
         Me.gbMovies.TabStop = False
-        Me.gbMovies.Text = "Avalaible Movies"
+        Me.gbMovies.Text = "available Movies"
         '
         'gbMoviesFilter
         '

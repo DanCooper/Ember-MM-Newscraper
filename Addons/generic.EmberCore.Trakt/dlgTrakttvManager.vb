@@ -115,7 +115,7 @@ Public Class dlgTrakttvManager
     ''' <param name="sender">startup of module</param>
     ''' <remarks>
     ''' - set labels/translation text
-    ''' - set settings, check if necessary data is avalaible
+    ''' - set settings, check if necessary data is available
     ''' - load existing movies in background
     ''' 2014/10/12 Cocotus - First implementation
     ''' </remarks>
@@ -256,7 +256,7 @@ Public Class dlgTrakttvManager
             coltraktWatchlistListedAt.HeaderText = Master.eLang.GetString(601, "Date Added")
             coltraktWatchlistIMDB.HeaderText = Master.eLang.GetString(1323, "URL")
             'load existing movies from database into datatable
-            Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT * FROM movielist ", _
+            Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT * FROM movielist ",
                                                                 "ORDER BY ListTitle COLLATE NOCASE;"))
             'load existing episodes from database into datatable
             Master.DB.FillDataTable(Me.dtEpisodes, String.Concat("SELECT * FROM episodelist INNER JOIN tvshowlist ON (tvshowlist.idShow  = episodelist.idShow) WHERE Missing = 0;"))
@@ -264,7 +264,7 @@ Public Class dlgTrakttvManager
 
             RemoveHandler Me.cbotraktListsFavorites.SelectedIndexChanged, AddressOf Me.cbotraktListsFavorites_SelectedIndexChanged
             Me.cbotraktListsFavorites.Items.Clear()
-            'Cocotus 2014/10/11 Automatically populate avalaible videosources from user settings to sourcefilter instead of using hardcoded list here!
+            'Cocotus 2014/10/11 Automatically populate available videosources from user settings to sourcefilter instead of using hardcoded list here!
             Dim mylists As New List(Of AdvancedSettingsComplexSettingsTableItem)
             mylists = clsAdvancedSettings.GetComplexSetting("TraktFavoriteLists", "generic.EmberCore.Trakt")
             If Not mylists Is Nothing Then
@@ -840,43 +840,43 @@ Public Class dlgTrakttvManager
                 For Each Item As TraktAPI.Model.TraktMovieWatched In traktWatchedMovies
                     'Check if information is stored...
                     If Not Item.Movie.Title Is Nothing AndAlso Item.Movie.Title <> "" AndAlso Not Item.Movie.Ids.Imdb Is Nothing AndAlso Item.Movie.Ids.Imdb <> "" Then
-           
-                            Dim tmpwatchedratedmovie As New TraktAPI.Model.TraktMovieWatchedRated
-                            'listed-At is not user friendly formatted, so change format a bit
-                            '"listed_at": 2014-09-01T09:10:11.000Z (original)
-                            'new format here: 2014-09-01  09:10:11
-                            Dim myDateString As String = Item.LastWatchedAt
-                            Dim myDate As DateTime
-                            Dim isDate As Boolean = DateTime.TryParse(myDateString, myDate)
-                            If isDate Then
-                                tmpwatchedratedmovie.LastWatchedAt = myDate.ToString("yyyy-MM-dd HH:mm:ss")
-                            End If
-                            tmpwatchedratedmovie.Movie = Item.Movie
-                            tmpwatchedratedmovie.Plays = Item.Plays
 
-                            If traktRatedMovies Is Nothing = False Then
-                                For Each RatedMovie As TraktAPI.Model.TraktMovieRated In traktRatedMovies
-                                    'Check if information is stored...
-                                    If Not RatedMovie.Movie.Title Is Nothing AndAlso RatedMovie.Movie.Title <> "" AndAlso Not RatedMovie.Movie.Ids.Imdb Is Nothing AndAlso RatedMovie.Movie.Ids.Imdb <> "" AndAlso RatedMovie.Movie.Ids.Trakt = Item.Movie.Ids.Trakt Then
-                                        tmpwatchedratedmovie.RatedAt = RatedMovie.RatedAt
-                                        tmpwatchedratedmovie.Rating = RatedMovie.Rating
-                                        Exit For
-                                    End If
-                                Next
-                            Else
-                                logger.Info("No ratings of movies scraped from trakt.tv!")
-                            End If
-                            If myWatchedMovies Is Nothing Then
-                                myWatchedMovies = New List(Of TraktAPI.Model.TraktMovieWatchedRated)
-                            End If
-                            'Now store imdbid, title and playcount information into dictionary (for now no other info needed...)
-                            If Item.Movie.Ids.Imdb.Length > 2 AndAlso Item.Movie.Ids.Imdb.Substring(0, 2) = "tt" Then
-                                'IMDBID beginning with tt -> strip tt first and save only number!
-                                tmpwatchedratedmovie.Movie.Ids.Imdb = Item.Movie.Ids.Imdb.Substring(2)
-                            End If
-                            myWatchedMovies.Add(tmpwatchedratedmovie)
-
+                        Dim tmpwatchedratedmovie As New TraktAPI.Model.TraktMovieWatchedRated
+                        'listed-At is not user friendly formatted, so change format a bit
+                        '"listed_at": 2014-09-01T09:10:11.000Z (original)
+                        'new format here: 2014-09-01  09:10:11
+                        Dim myDateString As String = Item.LastWatchedAt
+                        Dim myDate As DateTime
+                        Dim isDate As Boolean = DateTime.TryParse(myDateString, myDate)
+                        If isDate Then
+                            tmpwatchedratedmovie.LastWatchedAt = myDate.ToString("yyyy-MM-dd HH:mm:ss")
                         End If
+                        tmpwatchedratedmovie.Movie = Item.Movie
+                        tmpwatchedratedmovie.Plays = Item.Plays
+
+                        If traktRatedMovies Is Nothing = False Then
+                            For Each RatedMovie As TraktAPI.Model.TraktMovieRated In traktRatedMovies
+                                'Check if information is stored...
+                                If Not RatedMovie.Movie.Title Is Nothing AndAlso RatedMovie.Movie.Title <> "" AndAlso Not RatedMovie.Movie.Ids.Imdb Is Nothing AndAlso RatedMovie.Movie.Ids.Imdb <> "" AndAlso RatedMovie.Movie.Ids.Trakt = Item.Movie.Ids.Trakt Then
+                                    tmpwatchedratedmovie.RatedAt = RatedMovie.RatedAt
+                                    tmpwatchedratedmovie.Rating = RatedMovie.Rating
+                                    Exit For
+                                End If
+                            Next
+                        Else
+                            logger.Info("No ratings of movies scraped from trakt.tv!")
+                        End If
+                        If myWatchedMovies Is Nothing Then
+                            myWatchedMovies = New List(Of TraktAPI.Model.TraktMovieWatchedRated)
+                        End If
+                        'Now store imdbid, title and playcount information into dictionary (for now no other info needed...)
+                        If Item.Movie.Ids.Imdb.Length > 2 AndAlso Item.Movie.Ids.Imdb.Substring(0, 2) = "tt" Then
+                            'IMDBID beginning with tt -> strip tt first and save only number!
+                            tmpwatchedratedmovie.Movie.Ids.Imdb = Item.Movie.Ids.Imdb.Substring(2)
+                        End If
+                        myWatchedMovies.Add(tmpwatchedratedmovie)
+
+                    End If
                 Next
             Else
 
@@ -939,43 +939,43 @@ Public Class dlgTrakttvManager
                 If traktWatchedEpisodes Is Nothing = False Then
                     For Each watchedtvshow In traktWatchedEpisodes
 
-                        If Not watchedtvshow.Show.Title Is Nothing AndAlso watchedtvshow.Show.Title <> "" AndAlso Not watchedtvshow.Show.Ids.Tvdb Is Nothing AndAlso watchedtvshow.Show.Ids.Tvdb.ToString <> "" Then      
-                                Dim tmpwatchedshow As New TraktAPI.Model.TraktShowWatchedProgress
-                                Dim traktShowProgress As New TraktAPI.Model.TraktShowProgress
+                        If Not watchedtvshow.Show.Title Is Nothing AndAlso watchedtvshow.Show.Title <> "" AndAlso Not watchedtvshow.Show.Ids.Tvdb Is Nothing AndAlso watchedtvshow.Show.Ids.Tvdb.ToString <> "" Then
+                            Dim tmpwatchedshow As New TraktAPI.Model.TraktShowWatchedProgress
+                            Dim traktShowProgress As New TraktAPI.Model.TraktShowProgress
 
-                                If traktGetShowProgress = True Then
-                                    traktShowProgress = TrakttvAPI.GetProgressShow(watchedtvshow.Show.Ids.Trakt.ToString)
-                                End If
-                                If Not traktShowProgress Is Nothing Then
-                                    tmpwatchedshow.EpisodesAired = traktShowProgress.Aired
-                                    tmpwatchedshow.EpisodesWatched = traktShowProgress.Completed
-                                Else
-                                    tmpwatchedshow.EpisodesAired = 0
-                                    tmpwatchedshow.EpisodesWatched = 0
-                                End If
-                                'save information we want to display in datagridview in helperobject
-                                tmpwatchedshow.ShowTitle = watchedtvshow.Show.Title
-                                tmpwatchedshow.ShowID = CStr(watchedtvshow.Show.Ids.Tvdb)
-                                tmpwatchedshow.EpisodePlaycount = watchedtvshow.Plays
+                            If traktGetShowProgress = True Then
+                                traktShowProgress = TrakttvAPI.GetProgressShow(watchedtvshow.Show.Ids.Trakt.ToString)
+                            End If
+                            If Not traktShowProgress Is Nothing Then
+                                tmpwatchedshow.EpisodesAired = traktShowProgress.Aired
+                                tmpwatchedshow.EpisodesWatched = traktShowProgress.Completed
+                            Else
+                                tmpwatchedshow.EpisodesAired = 0
+                                tmpwatchedshow.EpisodesWatched = 0
+                            End If
+                            'save information we want to display in datagridview in helperobject
+                            tmpwatchedshow.ShowTitle = watchedtvshow.Show.Title
+                            tmpwatchedshow.ShowID = CStr(watchedtvshow.Show.Ids.Tvdb)
+                            tmpwatchedshow.EpisodePlaycount = watchedtvshow.Plays
 
-                                'listed-At is not user friendly formatted, so change format a bit
-                                '"listed_at": 2014-09-01T09:10:11.000Z (original)
-                                'new format here: 2014-09-01  09:10:11
-                                Dim myDateString As String = watchedtvshow.WatchedAt
-                                Dim myDate As DateTime
-                                Dim isDate As Boolean = DateTime.TryParse(myDateString, myDate)
-                                If isDate Then
-                                    watchedtvshow.WatchedAt = myDate.ToString("yyyy-MM-dd HH:mm:ss")
-                                    tmpwatchedshow.LastWatchedEpisode = myDate.ToString("yyyy-MM-dd HH:mm:ss")
-                                End If
-                                If myWatchedShows Is Nothing Then
-                                    myWatchedShows = New List(Of TraktAPI.Model.TraktShowWatchedProgress)
-                                End If
-                                myWatchedShows.Add(tmpwatchedshow)
-                                If myWatchedEpisodes Is Nothing Then
-                                    myWatchedEpisodes = New List(Of TraktAPI.Model.TraktEpisodeWatched)
-                                End If
-                                myWatchedEpisodes.Add(watchedtvshow)
+                            'listed-At is not user friendly formatted, so change format a bit
+                            '"listed_at": 2014-09-01T09:10:11.000Z (original)
+                            'new format here: 2014-09-01  09:10:11
+                            Dim myDateString As String = watchedtvshow.WatchedAt
+                            Dim myDate As DateTime
+                            Dim isDate As Boolean = DateTime.TryParse(myDateString, myDate)
+                            If isDate Then
+                                watchedtvshow.WatchedAt = myDate.ToString("yyyy-MM-dd HH:mm:ss")
+                                tmpwatchedshow.LastWatchedEpisode = myDate.ToString("yyyy-MM-dd HH:mm:ss")
+                            End If
+                            If myWatchedShows Is Nothing Then
+                                myWatchedShows = New List(Of TraktAPI.Model.TraktShowWatchedProgress)
+                            End If
+                            myWatchedShows.Add(tmpwatchedshow)
+                            If myWatchedEpisodes Is Nothing Then
+                                myWatchedEpisodes = New List(Of TraktAPI.Model.TraktEpisodeWatched)
+                            End If
+                            myWatchedEpisodes.Add(watchedtvshow)
                         End If
                     Next
                 End If
@@ -989,7 +989,7 @@ Public Class dlgTrakttvManager
                     'fill rows
                     For Each watchedshow In myWatchedShows
                         If traktGetShowProgress = True Then
-                             dgvtraktPlaycount.Rows.Add(New Object() {watchedshow.ShowTitle, watchedshow.EpisodePlaycount, watchedshow.LastWatchedEpisode, watchedshow.EpisodesWatched.ToString & "/" & watchedshow.EpisodesAired.ToString, ""})
+                            dgvtraktPlaycount.Rows.Add(New Object() {watchedshow.ShowTitle, watchedshow.EpisodePlaycount, watchedshow.LastWatchedEpisode, watchedshow.EpisodesWatched.ToString & "/" & watchedshow.EpisodesAired.ToString, ""})
                         Else
                             dgvtraktPlaycount.Rows.Add(New Object() {watchedshow.ShowTitle, watchedshow.EpisodePlaycount, watchedshow.LastWatchedEpisode, "", ""})
                         End If
@@ -1550,8 +1550,8 @@ Public Class dlgTrakttvManager
     ''' 2014/10/12 Cocotus - First implementation
     ''' 2015/02/09 Cocotus - Fixed for API v2
     ''' A list will only be added/displayed in Ember if following is fulfilled:
-    ''' List:      - Listname, Slug(identifier of a trakt.tv list) of list is avalaible
-    ''' ListItems: - list consist of only movies (episodes not supported right now!), movietitle, IMDB of movie avalaible
+    ''' List:      - Listname, Slug(identifier of a trakt.tv list) of list is available
+    ''' ListItems: - list consist of only movies (episodes not supported right now!), movietitle, IMDB of movie available
     ''' </remarks>
     Private Sub btntraktListsGetPersonal_Click(sender As Object, e As EventArgs) Handles btntraktListsGetPersonal.Click
         'clear globalists, set back controls
@@ -1573,7 +1573,7 @@ Public Class dlgTrakttvManager
             For Each userlist As TraktAPI.Model.TraktListDetail In traktUserLists
                 'check if name of list is stored...
                 If Not userlist.Name Is Nothing Then
-                    'check if slug(identifier of a trakt.tv list) is avalaible
+                    'check if slug(identifier of a trakt.tv list) is available
                     Dim listname As String = userlist.Ids.Slug
                     If Not String.IsNullOrEmpty(listname) Then
                         'all required information is there -> GET userlist items
@@ -1686,7 +1686,7 @@ Public Class dlgTrakttvManager
 
             If lbDBLists.Items.Count = 0 Then
                 'fill lbDBLists(Listbox) - all lists/tags from Ember database!
-                Master.DB.FillDataTable(Me.dtMovieTags, String.Concat("SELECT * FROM tag ", _
+                Master.DB.FillDataTable(Me.dtMovieTags, String.Concat("SELECT * FROM tag ",
                                                                   "ORDER BY strTag COLLATE NOCASE;"))
 
 
@@ -1705,7 +1705,7 @@ Public Class dlgTrakttvManager
                     Me.btntraktListsGetDatabase.Enabled = False
                 End If
             End If
-            'enable avalaible movie datagridview
+            'enable available movie datagridview
             dgvMovies.Enabled = True
 
         Else
@@ -2023,7 +2023,7 @@ Public Class dlgTrakttvManager
                             End If
                         Next
 
-                        'don't remove added movie from avalaible movielist - movie can be part of multiple lists!
+                        'don't remove added movie from available movielist - movie can be part of multiple lists!
                         'Me.lbtraktListstMovies.Items.Remove(lbtraktListstMovies.SelectedItems(0))
                         ' bsMovies.Remove(sRow.DataBoundItem)
                     Else
@@ -2233,7 +2233,7 @@ Public Class dlgTrakttvManager
             Dim strList As String = Me.lbtraktLists.SelectedItem.ToString
             'newlistname (from textbox)
             Dim newListname As String = Me.txttraktListsEditList.Text
-            'only update if both names(old and new) are avalaible, also don't edit if newname is already a used listname
+            'only update if both names(old and new) are available, also don't edit if newname is already a used listname
             If Not String.IsNullOrEmpty(strList) AndAlso Not String.IsNullOrEmpty(newListname) AndAlso Not Me.lbtraktLists.Items.Contains(newListname) Then
                 'update listname in globallist
                 For Each _list In traktLists

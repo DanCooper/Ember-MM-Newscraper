@@ -67,7 +67,7 @@ Namespace HDTrailersNet
 
 
         ''' <summary>
-        ''' Scrapes avalaible trailerlinks from HD-Trailer.net
+        ''' Scrapes available trailerlinks from HD-Trailer.net
         ''' </summary>
         ''' <remarks>Try to find trailerlinks for selected movie and add results to global trailerlist
         ''' 
@@ -120,7 +120,7 @@ Namespace HDTrailersNet
                             searchTerm = Web.HttpUtility.UrlEncode(searchTerm)
                             SearchURL = String.Concat(BaseURL, searchTerm)
                             '--> i.e "
-                            'performing google search to find avalaible links on hd-trailers.net
+                            'performing google search to find available links on hd-trailers.net
                             sHTTP = New HTTP
                             sHtml = sHTTP.DownloadData(SearchURL)
                             sHTTP = Nothing
@@ -174,7 +174,7 @@ Namespace HDTrailersNet
                     'Step 3: If URL to movie was found on hd-trailers.net, download HTML of moviepage and search for trailerlinks
                     If Not String.IsNullOrEmpty(TrailerWEBPageURL) Then
                         logger.Info("[" & originaltitle & "] HD-Trailer.net - Movie found! Download URL: " & TrailerWEBPageURL)
-                        'find avalaible links on hd-trailers.net movie site
+                        'find available links on hd-trailers.net movie site
                         sHTTP = New HTTP
                         sHtml = ""
                         sHtml = sHTTP.DownloadData(TrailerWEBPageURL)

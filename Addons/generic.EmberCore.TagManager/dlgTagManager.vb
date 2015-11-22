@@ -74,7 +74,7 @@ Public Class dlgTagManager
     ''' <param name="sender">startup of module</param>
     ''' <remarks>
     ''' - set labels/translation text
-    ''' - set settings, check if necessary data is avalaible
+    ''' - set settings, check if necessary data is available
     ''' - load existing movies in background
     ''' 2015/03/01 Cocotus - First implementation
     ''' </remarks>
@@ -133,7 +133,7 @@ Public Class dlgTagManager
         pnlMain.Enabled = False
 
         'load existing tags from database into datatable
-        Master.DB.FillDataTable(Me.dtMovieTags, String.Concat("SELECT * FROM tag ", _
+        Master.DB.FillDataTable(Me.dtMovieTags, String.Concat("SELECT * FROM tag ",
                                                              "ORDER BY strTag COLLATE NOCASE;"))
 
         'fill movie datagridview
@@ -415,7 +415,7 @@ Public Class dlgTagManager
             Dim strtag As String = Me.lbTags.SelectedItem.ToString
             'newtagname (from textbox)
             Dim newtagname As String = Me.txtEditTag.Text
-            'only update if both names(old and new) are avalaible, also don't edit if newname is already a used tagname
+            'only update if both names(old and new) are available, also don't edit if newname is already a used tagname
             If Not String.IsNullOrEmpty(strtag) AndAlso Not String.IsNullOrEmpty(newtagname) AndAlso Not Me.lbTags.Items.Contains(newtagname) Then
                 'update listname in globallist
                 For Each _tag In globalMovieTags

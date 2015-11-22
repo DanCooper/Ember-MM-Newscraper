@@ -185,7 +185,7 @@ Public Class dlgHost
         dgvHostSources.Enabled = True
     End Sub
     ''' <summary>
-    ''' Get avalaible sources of host
+    ''' Get available sources of host
     ''' </summary>
     ''' <param name="sender">"Populate Sources" button</param>
     ''' <remarks>

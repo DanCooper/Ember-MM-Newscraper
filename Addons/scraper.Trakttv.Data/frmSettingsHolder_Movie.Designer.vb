@@ -261,7 +261,7 @@ Partial Class frmSettingsHolder_Movie
         Me.chkUsePersonalRatings.Name = "chkUsePersonalRatings"
         Me.chkUsePersonalRatings.Size = New System.Drawing.Size(191, 17)
         Me.chkUsePersonalRatings.TabIndex = 4
-        Me.chkUsePersonalRatings.Text = "Use personal rating (if avalaible)"
+        Me.chkUsePersonalRatings.Text = "Use personal rating (if available)"
         Me.chkUsePersonalRatings.UseVisualStyleBackColor = True
         '
         'txtTraktPassword

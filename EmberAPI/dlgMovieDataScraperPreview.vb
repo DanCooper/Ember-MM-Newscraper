@@ -1261,7 +1261,7 @@ Public Class dlgMovieDataScraperPreview
     ''' <param name="sender">trailer-button</param>
     ''' <param name="e">trailer-button</param>
     ''' <remarks>
-    ''' 2014/09/13 Cocotus - First implementation: If trailer-URL avalaible, play trailer!
+    ''' 2014/09/13 Cocotus - First implementation: If trailer-URL available, play trailer!
     ''' </remarks>
     Private Sub btnPlayTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPlayTrailer.Click
         Try

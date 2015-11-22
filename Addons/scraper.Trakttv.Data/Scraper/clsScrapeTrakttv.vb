@@ -141,7 +141,7 @@ Namespace TrakttvScraper
                         Else
                             logger.Info("[GetMovieInfo] Could not scrape community rating/votes from trakt.tv! Current movie: " & strID)
                         End If
-                        'instead of community rating use personal rating if avalaible?
+                        'instead of community rating use personal rating if available?
                         If _SpecialSettings.UsePersonalRatings Then
                             If _traktRatedMovies Is Nothing = False Then
                                 For Each ratedMovie As TraktAPI.Model.TraktMovieRated In _traktRatedMovies
@@ -324,7 +324,7 @@ Namespace TrakttvScraper
                         logger.Info("[GetTVEpisodeInfo] Could not scrape community rating/votes from trakt.tv! Current show: ", ShowID)
                     End If
 
-                    'instead of community rating use personal rating if avalaible?
+                    'instead of community rating use personal rating if available?
                     If _SpecialSettings.UsePersonalRatings Then
                         If _traktRatedEpisodes Is Nothing = False Then
                             For Each ratedEpisode As TraktAPI.Model.TraktEpisodeRated In _traktRatedEpisodes

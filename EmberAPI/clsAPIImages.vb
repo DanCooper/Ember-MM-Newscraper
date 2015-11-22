@@ -2988,7 +2988,7 @@ Public Class Images
 
         'To compare images for similarity we need to load them
         'Checking for similarity means we need to load images to compare the content! -> Need to download ´the scraped image
-        'If the images aren't avalaible in cache or stored local, download them
+        'If the images aren't available in cache or stored local, download them
         For Each singleImage In ImageList
             Dim ScrapedImage As New Images
             If File.Exists(singleImage.LocalFilePath) Then

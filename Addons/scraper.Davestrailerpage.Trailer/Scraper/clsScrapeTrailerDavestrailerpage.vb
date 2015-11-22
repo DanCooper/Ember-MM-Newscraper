@@ -67,7 +67,7 @@ Namespace Davestrailerpage
 
 
         ''' <summary>
-        ''' Scrapes avalaible trailerlinks from http://www.davestrailerpage.co.uk/
+        ''' Scrapes available trailerlinks from http://www.davestrailerpage.co.uk/
         ''' </summary>
         ''' <remarks>Try to find trailerlinks for selected movie and add results to global trailerlist
         ''' 

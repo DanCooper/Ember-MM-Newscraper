@@ -1148,7 +1148,7 @@ Partial Class dlgTrakttvManager
         Me.gbtraktListsMovies.Size = New System.Drawing.Size(259, 411)
         Me.gbtraktListsMovies.TabIndex = 7
         Me.gbtraktListsMovies.TabStop = False
-        Me.gbtraktListsMovies.Text = "Avalaible Movies"
+        Me.gbtraktListsMovies.Text = "available Movies"
         '
         'dgvMovies
         '

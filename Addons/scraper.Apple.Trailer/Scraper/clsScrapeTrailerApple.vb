@@ -70,7 +70,7 @@ Namespace Apple
 
 
         ''' <summary>
-        ''' Scrapes avalaible trailerlinks from Apple
+        ''' Scrapes available trailerlinks from Apple
         ''' </summary>
         ''' <remarks>Try to find trailerlinks for selected movie and add results to global trailerlist
         ''' 
@@ -119,7 +119,7 @@ Namespace Apple
                         BaseURL = "http://www.google.ch/search?q=apple+trailer+"
                         searchtitle = Web.HttpUtility.UrlEncode(originaltitle)
                         SearchURL = String.Concat(BaseURL, searchtitle)
-                        'performing google search to find avalaible links on apple trailers
+                        'performing google search to find available links on apple trailers
                         sHTTP = New HTTP
                         sHtml = ""
                         sHtml = sHTTP.DownloadData(SearchURL)
@@ -209,7 +209,7 @@ Namespace Apple
                         Dim TrailerSiteURL = String.Concat(TrailerWEBPageURL, urlHQ)
                         'i.e http://trailers.apple.com/trailers/paramount/transformersageofextinction/includes/large.html
 
-                        'find avalaible links on apple movie site
+                        'find available links on apple movie site
                         sHTTP = New HTTP
                         sHtml = ""
                         sHtml = sHTTP.DownloadData(TrailerSiteURL)
