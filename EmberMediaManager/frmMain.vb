@@ -3094,6 +3094,7 @@ doCancel:
     End Sub
 
     Private Sub bwReload_TVShows_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwReload_TVShows.DoWork
+        Dim reloadFull As Boolean = DirectCast(e.Argument, Boolean)
         Dim iCount As Integer = 0
         Dim ShowIDs As New Dictionary(Of Long, String)
         Dim doFill As Boolean = False
@@ -3106,7 +3107,7 @@ doCancel:
             For Each KVP As KeyValuePair(Of Long, String) In ShowIDs
                 If bwReload_TVShows.CancellationPending Then Return
                 bwReload_TVShows.ReportProgress(iCount, KVP.Value)
-                If Reload_TVShow(KVP.Key, True, False, True) Then
+                If Reload_TVShow(KVP.Key, True, False, reloadFull) Then
                     doFill = True
                 Else
                     bwReload_TVShows.ReportProgress(-1, KVP.Key)
@@ -13964,7 +13965,7 @@ doCancel:
         End If
     End Sub
 
-    Private Sub ReloadAll_TVShow()
+    Private Sub ReloadAll_TVShow(ByVal reloadFull As Boolean)
         If dtTVShows.Rows.Count > 0 Then
             Cursor = Cursors.WaitCursor
             SetControlsEnabled(False, True)
@@ -13981,7 +13982,7 @@ doCancel:
             Application.DoEvents()
             bwReload_TVShows.WorkerReportsProgress = True
             bwReload_TVShows.WorkerSupportsCancellation = True
-            bwReload_TVShows.RunWorkerAsync()
+            bwReload_TVShows.RunWorkerAsync(reloadFull)
         Else
             SetControlsEnabled(True)
         End If
@@ -14025,7 +14026,7 @@ doCancel:
     End Sub
 
     Private Sub mnuMainToolsReloadTVShows_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsReloadTVShows.Click
-        ReloadAll_TVShow()
+        ReloadAll_TVShow(True)
     End Sub
 
     Private Sub mnuMainToolsRewriteMovieContent_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsRewriteMovieContent.Click
@@ -15504,7 +15505,7 @@ doCancel:
                 RemoveHandler cbFilterVideoSource_Movies.SelectedIndexChanged, AddressOf cbFilterVideoSource_Movies_SelectedIndexChanged
                 cbFilterVideoSource_Movies.Items.Clear()
                 cbFilterVideoSource_Movies.Items.Add(Master.eLang.All)
-                'Cocotus 2014/10/11 Automatically populate avalaible videosources from user settings to sourcefilter instead of using hardcoded list here!
+                'Cocotus 2014/10/11 Automatically populate available videosources from user settings to sourcefilter instead of using hardcoded list here!
                 Dim mySources As New List(Of AdvancedSettingsComplexSettingsTableItem)
                 mySources = clsAdvancedSettings.GetComplexSetting("MovieSources")
                 If Not mySources Is Nothing Then
@@ -15653,7 +15654,8 @@ doCancel:
                 dresult.NeedsDBUpdate_TV OrElse
                 dresult.NeedsReload_Movie OrElse
                 dresult.NeedsReload_MovieSet OrElse
-                dresult.NeedsReload_TV Then
+                dresult.NeedsReload_TVEpisode OrElse
+                dresult.NeedsReload_TVShow Then
 
                 If dresult.NeedsDBClean_Movie OrElse dresult.NeedsDBClean_TV Then
                     If MessageBox.Show("Clean DB", "title", MessageBoxButtons.YesNo) = DialogResult.Yes Then
@@ -15693,7 +15695,7 @@ doCancel:
                         ReloadAll_MovieSet()
                     End If
                 End If
-                If dresult.NeedsReload_TV Then
+                If dresult.NeedsReload_TVEpisode OrElse dresult.NeedsReload_TVShow Then
                     If Not fScanner.IsBusy Then
                         While bwLoadMovieInfo.IsBusy OrElse bwMovieScraper.IsBusy OrElse bwReload_Movies.IsBusy OrElse
                             bwLoadMovieSetInfo.IsBusy OrElse bwMovieSetScraper.IsBusy OrElse bwReload_MovieSets.IsBusy OrElse
@@ -15701,7 +15703,7 @@ doCancel:
                             Application.DoEvents()
                             Threading.Thread.Sleep(50)
                         End While
-                        ReloadAll_TVShow()
+                        ReloadAll_TVShow(dresult.NeedsReload_TVEpisode)
                     End If
                 End If
                 If dresult.NeedsDBUpdate_Movie Then
@@ -15741,7 +15743,6 @@ doCancel:
             SetMenus(False)
             SetControlsEnabled(True)
         End If
-
     End Sub
 
     Private Sub mnuMainEditSettings_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainEditSettings.Click, cmnuTraySettings.Click

@@ -410,7 +410,7 @@ Public Class StringUtils
     ''' and duplicate whitespaces, replacing them all with a simple space </param>
     ''' <returns>The filtered name as a <c>String</c></returns>
     ''' <remarks></remarks>
-    Public Shared Function FilterName_TVEp(ByVal TVEpName As String, ByVal TVShowName As String, Optional ByVal doExtras As Boolean = True, Optional ByVal remPunct As Boolean = False) As String
+    Public Shared Function FilterName_TVEpisode(ByVal TVEpName As String, ByVal TVShowName As String, Optional ByVal doExtras As Boolean = True, Optional ByVal remPunct As Boolean = False) As String
         Try
 
             If String.IsNullOrEmpty(TVEpName) Then Return String.Empty

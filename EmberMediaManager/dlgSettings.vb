@@ -562,7 +562,7 @@ Public Class dlgSettings
             lstTVEpisodeFilter.Items.Add(txtTVEpisodeFilter.Text)
             txtTVEpisodeFilter.Text = String.Empty
             SetApplyButton(True)
-            sResult.NeedsReload_TV = True
+            sResult.NeedsReload_TVEpisode = True
         End If
 
         txtTVEpisodeFilter.Focus()
@@ -679,7 +679,7 @@ Public Class dlgSettings
                 lstFileSystemValidSubtitlesExts.Items.Add(txtFileSystemValidSubtitlesExts.Text.ToLower)
                 SetApplyButton(True)
                 sResult.NeedsReload_Movie = True
-                sResult.NeedsReload_TV = True
+                sResult.NeedsReload_TVEpisode = True
                 txtFileSystemValidSubtitlesExts.Text = String.Empty
                 txtFileSystemValidSubtitlesExts.Focus()
             End If
@@ -693,7 +693,7 @@ Public Class dlgSettings
                 lstFileSystemValidThemeExts.Items.Add(txtFileSystemValidThemeExts.Text.ToLower)
                 SetApplyButton(True)
                 sResult.NeedsReload_Movie = True
-                sResult.NeedsReload_TV = True
+                sResult.NeedsReload_TVShow = True
                 txtFileSystemValidThemeExts.Text = String.Empty
                 txtFileSystemValidThemeExts.Focus()
             End If
@@ -719,7 +719,7 @@ Public Class dlgSettings
             lstTVShowFilter.Items.Add(txtTVShowFilter.Text)
             txtTVShowFilter.Text = String.Empty
             SetApplyButton(True)
-            sResult.NeedsReload_TV = True
+            sResult.NeedsReload_TVShow = True
         End If
 
         txtTVShowFilter.Focus()
@@ -774,7 +774,7 @@ Public Class dlgSettings
         If Not String.IsNullOrEmpty(txtTVSortToken.Text) Then
             If Not lstTVSortTokens.Items.Contains(txtTVSortToken.Text) Then
                 lstTVSortTokens.Items.Add(txtTVSortToken.Text)
-                sResult.NeedsReload_TV = True
+                sResult.NeedsReload_TVShow = True
                 SetApplyButton(True)
                 txtTVSortToken.Text = String.Empty
                 txtTVSortToken.Focus()
@@ -813,7 +813,7 @@ Public Class dlgSettings
             sResult.NeedsDBUpdate_TV OrElse
             sResult.NeedsReload_Movie OrElse
             sResult.NeedsReload_MovieSet OrElse
-            sResult.NeedsReload_TV Then _
+            sResult.NeedsReload_TVShow Then _
             didApply = True
     End Sub
 
@@ -963,7 +963,7 @@ Public Class dlgSettings
             Using dTVSource As New dlgSourceTVShow
                 If dTVSource.ShowDialog(Convert.ToInt32(lvTVSources.SelectedItems(0).Text)) = Windows.Forms.DialogResult.OK Then
                     RefreshTVSources()
-                    sResult.NeedsReload_TV = True 'TODO: Check if we have to use Reload or DBUpdate
+                    sResult.NeedsReload_TVShow = True
                     SetApplyButton(True)
                 End If
             End Using
@@ -978,7 +978,7 @@ Public Class dlgSettings
                 lstTVEpisodeFilter.Items.RemoveAt(iIndex)
                 lstTVEpisodeFilter.SelectedIndex = iIndex + 1
                 SetApplyButton(True)
-                sResult.NeedsReload_TV = True
+                sResult.NeedsReload_TVEpisode = True
                 lstTVEpisodeFilter.Focus()
             End If
         Catch ex As Exception
@@ -994,7 +994,7 @@ Public Class dlgSettings
                 lstTVEpisodeFilter.Items.RemoveAt(iIndex + 1)
                 lstTVEpisodeFilter.SelectedIndex = iIndex - 1
                 SetApplyButton(True)
-                sResult.NeedsReload_TV = True
+                sResult.NeedsReload_TVEpisode = True
                 lstTVEpisodeFilter.Focus()
             End If
         Catch ex As Exception
@@ -1705,7 +1705,7 @@ Public Class dlgSettings
     Private Sub btnTVSortTokenReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVSortTokenReset.Click
         Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVSortTokens, True)
         RefreshTVSortTokens()
-        sResult.NeedsReload_TV = True
+        sResult.NeedsReload_TVShow = True
         SetApplyButton(True)
     End Sub
 
@@ -1745,7 +1745,7 @@ Public Class dlgSettings
                 lstTVShowFilter.Items.RemoveAt(iIndex)
                 lstTVShowFilter.SelectedIndex = iIndex + 1
                 SetApplyButton(True)
-                sResult.NeedsReload_TV = True
+                sResult.NeedsReload_TVShow = True
                 lstTVShowFilter.Focus()
             End If
         Catch ex As Exception
@@ -1761,7 +1761,7 @@ Public Class dlgSettings
                 lstTVShowFilter.Items.RemoveAt(iIndex + 1)
                 lstTVShowFilter.SelectedIndex = iIndex - 1
                 SetApplyButton(True)
-                sResult.NeedsReload_TV = True
+                sResult.NeedsReload_TVShow = True
                 lstTVShowFilter.Focus()
             End If
         Catch ex As Exception
@@ -1922,7 +1922,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub chkTVDisplayStatus_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVDisplayStatus.CheckedChanged
-        sResult.NeedsReload_TV = True
+        sResult.NeedsReload_TVShow = True
         SetApplyButton(True)
     End Sub
 
@@ -1957,7 +1957,7 @@ Public Class dlgSettings
 
     Private Sub chkTVEpisodeProperCase_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVEpisodeProperCase.CheckedChanged
         SetApplyButton(True)
-        sResult.NeedsReload_TV = True
+        sResult.NeedsReload_TVEpisode = True
     End Sub
 
 
@@ -2303,7 +2303,7 @@ Public Class dlgSettings
 
     Private Sub chkTVShowProperCase_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowProperCase.CheckedChanged
         SetApplyButton(True)
-        sResult.NeedsReload_TV = True
+        sResult.NeedsReload_TVShow = True
     End Sub
 
     Private Sub chkMovieScraperCollectionID_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperCollectionID.CheckedChanged
@@ -3745,7 +3745,8 @@ Public Class dlgSettings
         sResult.NeedsDBUpdate_TV = False
         sResult.NeedsReload_Movie = False
         sResult.NeedsReload_MovieSet = False
-        sResult.NeedsReload_TV = False
+        sResult.NeedsReload_TVEpisode = False
+        sResult.NeedsReload_TVShow = False
         sResult.DidCancel = False
         didApply = False
         NoUpdate = False
@@ -4330,7 +4331,7 @@ Public Class dlgSettings
             Using dTVSource As New dlgSourceTVShow
                 If dTVSource.ShowDialog(Convert.ToInt32(lvTVSources.SelectedItems(0).Text)) = Windows.Forms.DialogResult.OK Then
                     RefreshTVSources()
-                    sResult.NeedsReload_TV = True 'TODO: Check if we have to use Reload or DBUpdate
+                    sResult.NeedsReload_TVShow = True
                     SetApplyButton(True)
                 End If
             End Using
@@ -4443,7 +4444,7 @@ Public Class dlgSettings
                 lstTVEpisodeFilter.Items.Remove(lstTVEpisodeFilter.SelectedItems(0))
             End While
             SetApplyButton(True)
-            sResult.NeedsReload_TV = True
+            sResult.NeedsReload_TVEpisode = True
         End If
     End Sub
 
@@ -4488,7 +4489,7 @@ Public Class dlgSettings
             End While
             SetApplyButton(True)
             sResult.NeedsReload_Movie = True
-            sResult.NeedsReload_TV = True
+            sResult.NeedsReload_TVEpisode = True
         End If
     End Sub
 
@@ -4499,7 +4500,7 @@ Public Class dlgSettings
             End While
             SetApplyButton(True)
             sResult.NeedsReload_Movie = True
-            sResult.NeedsReload_TV = True
+            sResult.NeedsReload_TVEpisode = True
         End If
     End Sub
 
@@ -4563,7 +4564,7 @@ Public Class dlgSettings
                 lstTVShowFilter.Items.Remove(lstTVShowFilter.SelectedItems(0))
             End While
             SetApplyButton(True)
-            sResult.NeedsReload_TV = True
+            sResult.NeedsReload_TVShow = True
         End If
     End Sub
 
@@ -4592,7 +4593,7 @@ Public Class dlgSettings
             While lstTVSortTokens.SelectedItems.Count > 0
                 lstTVSortTokens.Items.Remove(lstTVSortTokens.SelectedItems(0))
             End While
-            sResult.NeedsReload_TV = True
+            sResult.NeedsReload_TVShow = True
             SetApplyButton(True)
         End If
     End Sub

@@ -1859,7 +1859,8 @@ Public Class Structures
         Dim NeedsDBUpdate_TV As Boolean
         Dim NeedsReload_Movie As Boolean
         Dim NeedsReload_MovieSet As Boolean
-        Dim NeedsReload_TV As Boolean
+        Dim NeedsReload_TVEpisode As Boolean
+        Dim NeedsReload_TVShow As Boolean
         Dim NeedsRestart As Boolean
     End Structure
 
