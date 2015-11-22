@@ -51,13 +51,18 @@ namespace Trakttv
         public const string GETCollectionMovies = "https://api-v2launch.trakt.tv/sync/collection/movies";
         public const string GETWatchedMovies = "https://api-v2launch.trakt.tv/sync/watched/movies";
         public const string GETRatedMovies = "https://api-v2launch.trakt.tv/sync/ratings/movies";
+        public const string GETMovieRating = "https://api-v2launch.trakt.tv/movies/{0}/ratings";
 
         // Show requests
         public const string GETCollectionEpisodes = "https://api-v2launch.trakt.tv/sync/collection/shows";
         public const string GETWatchedEpisodes = "https://api-v2launch.trakt.tv/sync/watched/shows";
         public const string GETRatedEpisodes = "https://api-v2launch.trakt.tv/sync/ratings/episodes";
         public const string GETRatedShows = "https://api-v2launch.trakt.tv/sync/ratings/shows";
+        public const string GETRatedSeasons = "https://api-v2launch.trakt.tv/sync/ratings/seasons";
         public const string GETProgressShow = "https://api-v2launch.trakt.tv/shows/{0}/progress/watched";
+        public const string GETShowRating = "https://api-v2launch.trakt.tv/shows/{0}/ratings";
+        public const string GETSeasonRating = "https://api-v2launch.trakt.tv/shows/{0}/seasons/{1}/ratings";
+        public const string GETEpisodeRating = "https://api-v2launch.trakt.tv/shows/{0}/seasons/{1}/episodes/{2}/ratings";
 
         // Lists requests
         public const string GETUserLists = "https://api-v2launch.trakt.tv/users/{0}/lists";
@@ -80,6 +85,7 @@ namespace Trakttv
         public const string GETUserComments = "https://api-v2launch.trakt.tv/users/{0}/comments/{1}/{2}?extended=full,images";      
         public const string GETCommentReplies = "https://api-v2launch.trakt.tv/comments/{0}/replies";
         public const string GETComment = "https://api-v2launch.trakt.tv/comments/{0}";
+
         #endregion
     }
 }

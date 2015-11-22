@@ -15,6 +15,47 @@ namespace Trakttv
     {
         public static Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
+
+        /// <summary>
+        ///  Trakt-Login process for using v2 API (Token based authentification) 
+        /// </summary>
+        /// <param name="_traktuser">trakt.tv Username</param>
+        /// <param name="_traktpassword">trakt.tv Password</param>
+        /// <param name="_trakttoken">Optional: trakt.tv Token, may be empty (then it will be generated)</param>
+        /// <returns>(new) trakt.tv Token</returns>
+        /// <remarks>
+        /// 2015/01/17 Cocotus - First implementation of new V2 Authentification process for trakt.tv API
+        /// </remarks>
+        public static string LoginToTrakt(string _traktuser, string _traktpassword, string _trakttoken= "")
+        {
+            // Use Trakttv wrapper
+            TraktToken response = null;
+            TraktAPI.Model.TraktAuthentication account = new TraktAPI.Model.TraktAuthentication();
+            account.Username = _traktuser;
+            account.Password = _traktpassword;
+            TraktSettings.Password = _traktpassword;
+            TraktSettings.Username = _traktuser;
+
+            if (string.IsNullOrEmpty(_trakttoken))
+            {
+               response = Trakttv.TraktMethods.LoginToAccount(account);
+                if ((response != null))
+                {
+                    _trakttoken = response.Token;
+                }
+                else
+                {
+                    _trakttoken = "";
+                }
+            }
+            else
+            {
+                TraktSettings.Token = _trakttoken;
+            }
+            return _trakttoken;
+        }
+
+
         /// <summary>
         /// Login to trak.tv, this is called from other modules in Ember to connect to trakt.tv, Entry point
         /// </summary>

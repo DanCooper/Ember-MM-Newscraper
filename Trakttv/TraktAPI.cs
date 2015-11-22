@@ -373,7 +373,7 @@ namespace Trakttv
 
        #endregion
 
-        #region GET Ratings (only movies for now...)
+        #region GET Ratings
         /// <summary>
         /// Returns the users rated movies
         /// </summary>
@@ -383,6 +383,81 @@ namespace Trakttv
 
             if (response == null) return null;
             return response.FromJSONArray<TraktMovieRated>();
+        }
+
+        /// <summary>
+        /// Returns the users rated episodes
+        /// </summary>
+        public static IEnumerable<TraktEpisodeRated> GetRatedEpisodes()
+        {
+            var response = READFromTrakt(TraktURIs.GETRatedEpisodes);
+            return response.FromJSONArray<TraktEpisodeRated>();
+        }
+
+        /// <summary>
+        /// Returns the users rated shows
+        /// </summary>
+        public static IEnumerable<TraktShowRated> GetRatedShows()
+        {
+            var response = READFromTrakt(TraktURIs.GETRatedShows);
+            return response.FromJSONArray<TraktShowRated>();
+        }
+
+        /// <summary>
+        /// Returns the users rated seasons
+        /// </summary>
+        public static IEnumerable<TraktSeasonRated> GetRatedSeasons()
+        {
+            var response = READFromTrakt(TraktURIs.GETRatedSeasons);
+            return response.FromJSONArray<TraktSeasonRated>();
+        }
+
+        #endregion
+
+        #region GET Community Ratings
+
+        /// <summary>
+        /// Returns rating of a specific tv show
+        /// <param name="MovieID">The ID of the movie</param>
+        /// </summary>
+        public static TraktRating GetMovieRating(string MovieID)
+        {
+            var response = READFromTrakt(string.Format(TraktURIs.GETMovieRating, MovieID));
+            return response.FromJSON<TraktRating>();
+        }
+
+
+        /// <summary>
+        /// Returns rating of a specific tv show
+        /// <param name="ShowID">The ID of the show</param>
+        /// </summary>
+        public static TraktRating GetShowRating(string ShowID)
+        {
+            var response = READFromTrakt(string.Format(TraktURIs.GETShowRating, ShowID));
+            return response.FromJSON<TraktRating>();
+        }
+
+        /// <summary>
+        /// Returns rating of a season
+        /// <param name="ShowID">The ID of the show</param>
+        /// <param name="Seasonnumber">The number of season</param>
+        /// </summary>
+        public static TraktRating GetSeasonRating(string ShowID, int Seasonnumber)
+        {
+            var response = READFromTrakt(string.Format(TraktURIs.GETSeasonRating, ShowID, Seasonnumber));
+            return response.FromJSON<TraktRating>();
+        }
+
+        /// <summary>
+        /// Returns rating of a specific episode
+        /// <param name="ShowID">The ID of the show</param>
+        /// <param name="Seasonnumber">The number of season</param>
+        /// <param name="Episodenumber">The episode number</param>
+        /// </summary>
+        public static TraktRating GetEpisodeRating(string ShowID, int Seasonnumber, int Episodenumber)
+        {
+            var response = READFromTrakt(string.Format(TraktURIs.GETEpisodeRating, ShowID, Seasonnumber, Episodenumber));
+            return response.FromJSON<TraktRating>();
         }
 
         #endregion

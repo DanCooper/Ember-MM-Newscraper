@@ -108,6 +108,10 @@
     <Compile Include="Model\Other\TraktUser.cs" />
     <Compile Include="Model\Other\TraktUserImages.cs" />
     <Compile Include="Model\Other\TraktUserSummary.cs" />
+    <Compile Include="Model\Rating\TraktShowRated.cs" />
+    <Compile Include="Model\Rating\TraktSeasonRated.cs" />
+    <Compile Include="Model\Rating\TraktEpisodeRated.cs" />
+    <Compile Include="Model\Rating\TraktRating.cs" />
     <Compile Include="Model\Rating\TraktMovieRated.cs" />
     <Compile Include="Model\Rating\TraktSyncMovieRated.cs" />
     <Compile Include="Model\Rating\TraktSyncMoviesRated.cs" />
