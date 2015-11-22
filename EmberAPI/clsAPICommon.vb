@@ -607,8 +607,8 @@ Public Class Enums
         Generic = 1
         Movie = 2
         MovieSet = 3
-        TV = 4
-        Music = 5
+        Music = 4
+        TV = 5
         TVEpisode = 6
         TVSeason = 7
         TVShow = 8

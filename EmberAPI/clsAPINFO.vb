@@ -25,7 +25,6 @@ Imports System.Xml
 Imports System.Xml.Serialization
 Imports NLog
 Imports System.Windows.Forms
-Imports Trakttv
 
 Public Class NFO
 
