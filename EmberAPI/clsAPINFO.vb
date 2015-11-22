@@ -25,6 +25,7 @@ Imports System.Xml
 Imports System.Xml.Serialization
 Imports NLog
 Imports System.Windows.Forms
+Imports Trakttv
 
 Public Class NFO
 
@@ -379,6 +380,17 @@ Public Class NFO
             ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperRuntime AndAlso Not Master.eSettings.MovieLockRuntime Then
                 DBMovie.Movie.Runtime = String.Empty
             End If
+
+            'Playcount / Last Played
+            'There are some options missing (lock/clean/bOptions...), so right now we are always overriding existing playcount/lastplayed data with the scraped one - but in this case it's fine since scraped values are always up to date!?
+            'TODO Maybe add lock options like the other scraperfields?
+            If scrapedmovie.PlayCountSpecified Then
+                DBMovie.Movie.PlayCount = scrapedmovie.PlayCount
+            End If
+            If scrapedmovie.LastPlayedSpecified Then
+                DBMovie.Movie.LastPlayed = scrapedmovie.LastPlayed
+            End If
+
         Next
 
         'Certification for MPAA
@@ -1153,16 +1165,26 @@ Public Class NFO
                 DBTVEpisode.TVEpisode.Plot = String.Empty
             End If
 
-            'Rating
+            'Rating/Votes
             If (Not DBTVEpisode.TVEpisode.RatingSpecified OrElse Not Master.eSettings.TVLockEpisodeRating) AndAlso ScrapeOptions.bEpisodeRating AndAlso _
                 scrapedepisode.RatingSpecified AndAlso Master.eSettings.TVScraperEpisodeRating AndAlso Not new_Rating Then
-                DBTVEpisode.TVEpisode.Rating = scrapedepisode.Rating
                 DBTVEpisode.TVEpisode.Votes = Regex.Replace(scrapedepisode.Votes, "\D", String.Empty)
                 new_Rating = True
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeRating AndAlso Not Master.eSettings.TVLockEpisodeRating Then
                 DBTVEpisode.TVEpisode.Rating = String.Empty
                 DBTVEpisode.TVEpisode.Votes = String.Empty
             End If
+
+            'Playcount / Last Played
+            'There are some options missing (lock/clean/bOptions...), so right now we are always overriding existing playcount/lastplayed data with the scraped one - but in this case it's fine since scraped values are always up to date!?
+            'TODO Maybe add lock options like the other scraperfields?
+            If scrapedepisode.PlaycountSpecified Then
+                DBTVEpisode.TVEpisode.Playcount = scrapedepisode.Playcount
+            End If
+            If scrapedepisode.LastPlayedSpecified Then
+                DBTVEpisode.TVEpisode.LastPlayed = scrapedepisode.LastPlayed
+            End If
+
 
             'Runtime
             If (Not DBTVEpisode.TVEpisode.RuntimeSpecified OrElse Not Master.eSettings.TVLockEpisodeRuntime) AndAlso ScrapeOptions.bEpisodeRuntime AndAlso _
