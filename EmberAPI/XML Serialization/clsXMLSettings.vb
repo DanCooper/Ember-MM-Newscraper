@@ -82,7 +82,6 @@ Partial Public Class clsXMLSettings
     Private _generalwindowloc As New Point
     Private _generalwindowsize As New Size
     Private _generalwindowstate As FormWindowState
-    Private _genrefilter As String
     Private _movieactorthumbskeepexisting As Boolean
     Private _moviebackdropsauto As Boolean
     Private _moviebackdropspath As String
@@ -2043,16 +2042,6 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._moviescrapercleanplotoutline = value
-        End Set
-    End Property
-
-
-    Public Property GenreFilter() As String
-        Get
-            Return Me._genrefilter
-        End Get
-        Set(ByVal value As String)
-            Me._genrefilter = value
         End Set
     End Property
 

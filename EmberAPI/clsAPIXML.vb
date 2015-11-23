@@ -71,26 +71,13 @@ Public Class APIXML
                 End Try
             End If
 
-            Dim gPath As String = FileUtils.Common.ReturnSettingsFile("Settings", "Genres.xml")
+            Dim gPath As String = FileUtils.Common.ReturnSettingsFile("Settings", "Core.Genres.xml")
             If File.Exists(gPath) Then
                 objStreamReader = New StreamReader(gPath)
                 Dim xGenres As New XmlSerializer(GenreXML.GetType)
 
                 GenreXML = CType(xGenres.Deserialize(objStreamReader), clsXMLGenres)
                 objStreamReader.Close()
-            Else
-                Dim gPathD As String = FileUtils.Common.ReturnSettingsFile("Defaults", "DefaultGenres.xml")
-                objStreamReader = New StreamReader(gPathD)
-                Dim xGenres As New XmlSerializer(GenreXML.GetType)
-
-                GenreXML = CType(xGenres.Deserialize(objStreamReader), clsXMLGenres)
-                objStreamReader.Close()
-
-                Try
-                    File.Copy(gPathD, gPath)
-                Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name, ex)
-                End Try
             End If
 
             If Directory.Exists(Directory.GetParent(String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Genres", Path.DirectorySeparatorChar)).FullName) Then
@@ -449,18 +436,14 @@ Public Class APIXML
     End Function
 
     Public Shared Function GetGenreImage(ByVal strGenre As String) As Image
-        '//
-        ' Set the proper images based on the genre string
-        '\\
-
         Dim imgGenre As Image = Nothing
         Dim imgGenreStr As String = String.Empty
         Dim mePath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Genres")
-        imgGenreStr = Path.Combine(mePath, GenreXML.default.icon)
+        imgGenreStr = Path.Combine(mePath, GenreXML.DefaultImage)
 
-        Dim v = From e In GenreXML.name.Where(Function(f) f.searchstring = strGenre)
+        Dim v = From e In GenreXML.Genres.Where(Function(f) f.Name = strGenre)
         If v.Count > 0 Then
-            imgGenreStr = Path.Combine(mePath, v(0).icon)
+            imgGenreStr = Path.Combine(mePath, v(0).Image)
         End If
         Try
 
@@ -477,27 +460,11 @@ Public Class APIXML
         Return imgGenre
     End Function
 
-    Public Shared Function GetGenreList(Optional ByVal LangsOnly As Boolean = False) As String()
+    Public Shared Function GetGenreList() As String()
         Dim retGenre As New List(Of String)
-        Try
-            If LangsOnly Then
-                retGenre.AddRange(GenreXML.supported.ToArray)
-            Else
-                Dim splitLang() As String
-                For Each gen In GenreXML.name
-                    If gen.language IsNot Nothing Then
-                        splitLang = gen.language.Split(Convert.ToChar("|"))
-                        For Each strGen As String In splitLang
-                            If Not retGenre.Contains(gen.searchstring) AndAlso (Master.eSettings.GenreFilter.Contains(String.Format("{0}", Master.eLang.GetString(569, Master.eLang.All))) OrElse Master.eSettings.GenreFilter.Split(Convert.ToChar(",")).Contains(strGen)) Then
-                                retGenre.Add(gen.searchstring)
-                            End If
-                        Next
-                    End If
-                Next
-            End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+        For Each mGenre In GenreXML.Genres
+            retGenre.Add(mGenre.Name)
+        Next
         Return retGenre.ToArray
     End Function
 

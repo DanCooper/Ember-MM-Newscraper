@@ -33,37 +33,14 @@ Imports NLog
 Public Class StringUtils
 
 #Region "Fields"
+
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
-#End Region
+
+#End Region 'Fields
 
 #Region "Properties"
-    Private Shared _internalGenreList As Dictionary(Of String, String) = Nothing
-    ''' <summary>
-    ''' <c>Dictionary</c> of Ember-specific Genres. 
-    ''' The Key is a comparison-friendly <c>String</c> (such as "filmnoir")
-    ''' and the Value is the full-text <c>String</c> (such as "Film Noir")
-    ''' </summary>
-    ''' <value>Dictionary of Ember-specific Genres</value>
-    ''' <returns><c>Dictionary</c> of Ember's internally-defined genres</returns>
-    ''' <remarks>This singleton removes the need to re-generate this list every time foreign genre lists
-    ''' are validated against Ember's internal genre list.</remarks>
-    Friend Shared ReadOnly Property InternalGenreList As Dictionary(Of String, String)
-        Get
-            If String.IsNullOrEmpty(Master.eSettings.GenreFilter) Then
-                'NOTE: This is just a dummy. Next call we will try to define it again, in case the user has changed the settings
-                Return New Dictionary(Of String, String)
-            End If
-            If _internalGenreList Is Nothing Then
-                If Not String.IsNullOrEmpty(Master.eSettings.GenreFilter) Then
-                    'Dim fGenres() As String = APIXML.GetGenreListString     'List of Ember's configured Genres
-                    'convert EMBER Genres to comparable strings, by removing underscores, dashes, and spaces
-                    _internalGenreList = GenerateNeutralList(APIXML.GetGenreList)
-                End If
-            End If
-            Return _internalGenreList
-        End Get
-    End Property
-#End Region
+
+#End Region 'Properties
 
 #Region "Methods"
     ''' <summary>
@@ -87,36 +64,13 @@ Public Class StringUtils
     ''' 2013/11/12 Dekker500 - Refactored. Reversed output to match result expected from method name. Also updated references (all from frmMain) to match.
     ''' </remarks>
     Public Shared Function AlphaNumericOnly(ByVal KeyChar As Char, Optional ByVal AllowSpecial As Boolean = False) As Boolean
-        If Char.IsLetterOrDigit(KeyChar) OrElse (AllowSpecial AndAlso (Char.IsControl(KeyChar) OrElse _
+        If Char.IsLetterOrDigit(KeyChar) OrElse (AllowSpecial AndAlso (Char.IsControl(KeyChar) OrElse
         Char.IsWhiteSpace(KeyChar) OrElse Convert.ToInt32(KeyChar) = 44 OrElse Convert.ToInt32(KeyChar) = 45 OrElse Convert.ToInt32(KeyChar) = 46 OrElse Convert.ToInt32(KeyChar) = 58)) Then
             Return True
         Else
             Return False
         End If
     End Function
-    ''' <summary>
-    ''' Transforms the supplied <c>String</c> into one that simplifies comparison 
-    ''' by removing leading/trailing white space, underscores, dashes, and spaces, 
-    ''' and converting to lowercase.
-    ''' </summary>
-    ''' <param name="source">Source <c>String</c></param>
-    ''' <returns><c>String</c> that has been transformed</returns>
-    ''' <remarks>Though neutralizing the string can be taken to a much greater extreme 
-    ''' (removing all special characters like @, #, etc), the intended purpose of this
-    ''' method is to clean the genre names returned by IMDB, such as those listed 
-    ''' here: http://www.imdb.com/search/title
-    ''' </remarks>
-    Friend Shared Function GenerateNeutralString(source As String) As String
-        Return source.Trim.Replace("_", String.Empty).Replace("-", String.Empty).Replace(" ", String.Empty).ToLower
-    End Function
-    Friend Shared Function GenerateNeutralList(source As String()) As Dictionary(Of String, String)
-        Dim result As New Dictionary(Of String, String)
-        For Each blub In source
-            result.Add(GenerateNeutralString(blub), blub)
-        Next
-        Return result
-    End Function
-
     ''' <summary>
     ''' Converts the supplied /-separated string of genres and returns an equivalent
     ''' /-separated string of genres, but using Ember's internal genre list
@@ -130,37 +84,24 @@ Public Class StringUtils
     ''' 
     ''' 2013/11/13 Dekker500 - Extracted code to simplify strings into GenerateNeutralString to avoid duplicate code and its maintenance evils
     ''' </remarks>
-    Public Shared Function GenreFilter(aGenres As String) As String
+    Public Shared Function GenreFilter(ByVal aGenres As List(Of String)) As List(Of String)
+        Dim nGernes As New List(Of String)
 
-        If Not String.IsNullOrEmpty(Master.eSettings.GenreFilter) Then
-            Dim sGenres() As String = aGenres.Split("/"c)   'List of supplied Genres from the parameter
-            'Dim fGenres() As String = APIXML.GetGenreListString     'List of Ember's configured Genres
-            Dim rGenres As New List(Of String)  'List of Ember Genres to return
-
-            'Cocotus, 20130930,http://bugs.embermediamanager.org/thebuggenie/embermediamanager/issues/24 More robust Genre matching, should be working for IMDB genres like Game-Show, Talk-Show, Film-Noir 
-            'convert genres scraped from IMDB to comparable strings by removing underscores, dashes, and spaces
-            Dim comparelistsGenres = GenerateNeutralList(sGenres)
-
-            'now look for matches with Ember's internal genre list...
-            Dim toAdd As String = String.Empty
-            For Each candidate In comparelistsGenres
-                If InternalGenreList.TryGetValue(candidate.Key, toAdd) Then
-                    rGenres.Add(toAdd)
+        If Not aGenres.Count = 0 Then
+            For Each tGenre As String In aGenres
+                Dim gMappingTable As genreMapping = APIXML.GenreXML.MappingTable.FirstOrDefault(Function(f) f.SearchString = tGenre)
+                If gMappingTable IsNot Nothing Then
+                    nGernes.AddRange(gMappingTable.Mappings)
                 Else
-                    logger.Warn("Unhandled genre encountered: {0}", candidate.Value)
+                    'add a new mapping if tGenre is not in the list
+                    APIXML.GenreXML.Genres.Add(New genreProperty With {.isNew = True, .Name = tGenre})
+                    APIXML.GenreXML.MappingTable.Add(New genreMapping With {.Mappings = New List(Of String) From {tGenre}, .SearchString = tGenre})
+                    nGernes.Add(tGenre)
                 End If
             Next
-
-            If rGenres.Count > 0 Then
-                Dim tGenres = String.Join("/", rGenres.ToArray).Trim
-                Return tGenres
-            Else
-                Return String.Empty
-            End If
-        Else
-            Return aGenres
         End If
 
+        Return nGernes
     End Function
     ''' <summary>
     ''' When given a valid path to a video/media file, return the path but without stacking markers.

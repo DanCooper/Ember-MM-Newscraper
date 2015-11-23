@@ -110,6 +110,7 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="clsAPIGenresEditor.vb" />
     <Compile Include="frmSettingsHolder.Designer.vb">
       <DependentUpon>frmSettingsHolder.vb</DependentUpon>
     </Compile>

@@ -1,115 +1,206 @@
-﻿
-'''<remarks/>
-<System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True), _
- System.Xml.Serialization.XmlRootAttribute([Namespace]:="", IsNullable:=False, ElementName:="genres")> _
-Partial Public Class clsXMLGenres
+﻿' ################################################################################
+' #                             EMBER MEDIA MANAGER                              #
+' ################################################################################
+' ################################################################################
+' # This file is part of Ember Media Manager.                                    #
+' #                                                                              #
+' # Ember Media Manager is free software: you can redistribute it and/or modify  #
+' # it under the terms of the GNU General Public License as published by         #
+' # the Free Software Foundation, either version 3 of the License, or            #
+' # (at your option) any later version.                                          #
+' #                                                                              #
+' # Ember Media Manager is distributed in the hope that it will be useful,       #
+' # but WITHOUT ANY WARRANTY; without even the implied warranty of               #
+' # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                #
+' # GNU General Public License for more details.                                 #
+' #                                                                              #
+' # You should have received a copy of the GNU General Public License            #
+' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
+' ################################################################################
 
-    Private _languages As New List(Of String)
+Imports System.Xml.Serialization
 
-    Private _nameField As New List(Of genresName)
+<Serializable()>
+<XmlRoot("core.genres")>
+Public Class clsXMLGenres
 
-    Private _defaultField As genresDefault
+#Region "Fields"
 
-    '''<remarks/>
-    <System.Xml.Serialization.XmlArrayItemAttribute("language", IsNullable:=False)> _
-    Public Property supported() As List(Of String)
+    Private _defaultimage As String
+    Private _genres As New List(Of genreProperty)
+    Private _mappingtable As New List(Of genreMapping)
+
+#End Region 'Fields
+
+#Region "Properties"
+
+    <XmlElement("defaultimage")>
+    Public Property DefaultImage() As String
         Get
-            Return Me._languages
+            Return _defaultimage
         End Get
-        Set(value As List(Of String))
-            Me._languages = value
+        Set(ByVal value As String)
+            _defaultimage = value
         End Set
     End Property
 
-    '''<remarks/>
-    <System.Xml.Serialization.XmlElementAttribute("name")> _
-    Public Property name() As List(Of genresName)
+    <XmlElement("genres")>
+    Public Property Genres() As List(Of genreProperty)
         Get
-            Return Me._nameField
+            Return _genres
         End Get
-        Set(value As List(Of genresName))
-            Me._nameField = value
+        Set(ByVal value As List(Of genreProperty))
+            _genres = value
         End Set
     End Property
 
-    '''<remarks/>
-    Public Property [default]() As genresDefault
+    <XmlElement("mappingtable")>
+    Public Property MappingTable() As List(Of genreMapping)
         Get
-            Return Me._defaultField
+            Return _mappingtable
         End Get
-        Set(value As genresDefault)
-            Me._defaultField = value
+        Set(ByVal value As List(Of genreMapping))
+            _mappingtable = value
         End Set
     End Property
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+    Public Sub New()
+        Clear()
+    End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+
+    Public Sub Clear()
+        _defaultimage = "default.jpg"
+        _genres.Clear()
+        _mappingtable.Clear()
+    End Sub
+
+#End Region 'Methods
+
+
 End Class
 
-'''<remarks/>
-<System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
-Partial Public Class genresName
+<Serializable()>
+Public Class genreMapping
 
-    Private _iconField As String
 
-    Private _searchstringField As String
+#Region "Fields"
 
-    Private _languageField As String
+    Private _mappings As New List(Of String)
+    Private _searchstring As String
 
-    '''<remarks/>
-    Public Property icon() As String
+#End Region 'Fields
+
+#Region "Properties"
+
+    <XmlElement("searchstring")>
+    Public Property SearchString() As String
         Get
-            Return Me._iconField
+            Return _searchstring
         End Get
-        Set(value As String)
-            Me._iconField = Value
+        Set(ByVal value As String)
+            _searchstring = value
         End Set
     End Property
 
-    '''<remarks/>
-    <System.Xml.Serialization.XmlAttributeAttribute()> _
-    Public Property searchstring() As String
+    <XmlElement("mappings")>
+    Public Property Mappings() As List(Of String)
         Get
-            Return Me._searchstringField
+            Return _mappings
         End Get
-        Set(value As String)
-            Me._searchstringField = Value
+        Set(ByVal value As List(Of String))
+            _mappings = value
         End Set
     End Property
 
-    '''<remarks/>
-    <System.Xml.Serialization.XmlAttributeAttribute()> _
-    Public Property language() As String
-        Get
-            Return Me._languageField
-        End Get
-        Set(value As String)
-            Me._languageField = Value
-        End Set
-    End Property
+#End Region 'Properties
 
-    <System.Xml.Serialization.XmlIgnore()> _
-    Public Property languages() As List(Of String)
-        Get
-            Return Me._languageField.Split("|"c).ToList()
-        End Get
-        Set(value As List(Of String))
-            Me._languageField = String.Join("|", value.ToArray())
-        End Set
-    End Property
+#Region "Constructors"
+
+    Public Sub New()
+        Clear()
+    End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+
+    Public Sub Clear()
+        _mappings.Clear()
+        _searchstring = String.Empty
+    End Sub
+
+#End Region 'Methods
+
 End Class
 
-        '''<remarks/>
-<System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
-Partial Public Class genresDefault
+<Serializable()>
+Public Class genreProperty
 
-        Private _iconField As String
+#Region "Fields"
 
-        '''<remarks/>
-        Public Property icon() As String
-            Get
-                Return Me._iconField
-            End Get
-            Set(value As String)
-                Me._iconField = value
-            End Set
-        End Property
-    End Class
+    Private _image As String
+    Private _isnew As Boolean
+    Private _name As String
 
+#End Region 'Fields
+
+#Region "Properties"
+
+    <XmlElement("name")>
+    Public Property Name() As String
+        Get
+            Return _name
+        End Get
+        Set(ByVal value As String)
+            _name = value
+        End Set
+    End Property
+
+    <XmlElement("image")>
+    Public Property Image() As String
+        Get
+            Return _image
+        End Get
+        Set(ByVal value As String)
+            _image = value
+        End Set
+    End Property
+
+    <XmlElement("isnew")>
+    Public Property isNew() As Boolean
+        Get
+            Return _isnew
+        End Get
+        Set(ByVal value As Boolean)
+            _isnew = value
+        End Set
+    End Property
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+    Public Sub New()
+        Clear()
+    End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+
+    Public Sub Clear()
+        _image = String.Empty
+        _name = String.Empty
+    End Sub
+
+#End Region 'Methods
+
+End Class

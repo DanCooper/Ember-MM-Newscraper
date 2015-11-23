@@ -452,7 +452,7 @@
   <string id="451">Folder/File Name Filters</string>
   <string id="452">Convert Names to Proper Case</string>
   <string id="453">Always Display Genre Text</string>
-  <string id="454">Genre Language Filter</string>
+  <string id="454"></string>
   <string id="455">Display Fanart</string>
   <string id="456">Display Poster</string>
   <string id="457">Display Image Dimensions</string>
@@ -702,7 +702,7 @@
   <string id="701">Select Sort Method</string>
   <string id="702">Change</string>
   <string id="703">Whould you like to remove it from the library?</string>
-  <string id="704">Genres Filter</string>
+  <string id="704"></string>
   <string id="705">TV Source</string>
   <string id="706">Select the parent folder for your TV Series folders/files.</string>
   <string id="707">Languages</string>

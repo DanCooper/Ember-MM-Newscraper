@@ -1306,7 +1306,6 @@ Public Class dlgEditTVShow
 
     Private Sub LoadGenres()
         clbGenre.Items.Add(Master.eLang.None)
-
         clbGenre.Items.AddRange(APIXML.GetGenreList)
     End Sub
 

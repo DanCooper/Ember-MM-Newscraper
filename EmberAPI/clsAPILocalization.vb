@@ -285,8 +285,8 @@ Public Class Localization
                 lhPath = String.Concat(Functions.AppPath, "Modules", Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, Assembly, ".", Language, "-Help.xml")
                 If Not File.Exists(lPath) Then 'Failback disabled, possible not need anymore
                     'lPath = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, Language, ".xml")
-                    File.WriteAllText(lPath, "<?xml version=""1.0"" encoding=""utf-8""?>" & vbCrLf & _
-                        "<strings xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">" & vbCrLf & _
+                    File.WriteAllText(lPath, "<?xml version=""1.0"" encoding=""utf-8""?>" & vbCrLf &
+                        "<strings xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">" & vbCrLf &
                         "</strings>")
                 End If
             End If
@@ -320,9 +320,6 @@ Public Class Localization
             logger.Error("Cannot find {0}.xml." & Environment.NewLine & "Expected path: {1}", Language, lPath)
             MessageBox.Show(String.Concat(String.Format("Cannot find {0}.xml.", Language), Environment.NewLine, Environment.NewLine, "Expected path:", Environment.NewLine, lPath), "File Not Found", MessageBoxButtons.OK, MessageBoxIcon.Warning)
         End If
-
-        ' Need to change Globaly Langs_all
-        Master.eSettings.GenreFilter = Master.eSettings.GenreFilter.Replace(_old_all, _all)
     End Sub
 
 #End Region 'Methods

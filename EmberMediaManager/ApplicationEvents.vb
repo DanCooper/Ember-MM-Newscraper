@@ -41,6 +41,7 @@ Namespace My
         Private Sub MyApplication_Startup(ByVal sender As Object, ByVal e As Microsoft.VisualBasic.ApplicationServices.StartupEventArgs) Handles Me.Startup
             'Try
             logger.Info("====Ember Media Manager starting up====")
+            logger.Info(String.Format("====Version {0}.{1}.{2}.{3}====", Application.Info.Version.Major, Application.Info.Version.Minor, Application.Info.Version.Build, Application.Info.Version.Revision))
             Master.fLoading = New EmberAPI.frmSplash
             Master.is32Bit = (IntPtr.Size = 4)
             Master.appArgs = e

@@ -1040,16 +1040,6 @@ Public Class Settings
         End Set
     End Property
 
-
-    Public Property GenreFilter() As String
-        Get
-            Return Settings._XMLSettings.GenreFilter
-        End Get
-        Set(ByVal value As String)
-            Settings._XMLSettings.GenreFilter = value
-        End Set
-    End Property
-
     Public Property MovieScraperGenreLimit() As Integer
         Get
             Return Settings._XMLSettings.MovieScraperGenreLimit
@@ -6787,7 +6777,6 @@ Public Class Settings
         'Me.GeneralWindowLoc =
         'Me.GeneralWindowSize =
         GeneralWindowState = FormWindowState.Maximized
-        GenreFilter = "English"
         MovieActorThumbsKeepExisting = False
         MovieBackdropsAuto = False
         MovieBackdropsPath = String.Empty

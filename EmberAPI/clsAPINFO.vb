@@ -195,23 +195,16 @@ Public Class NFO
             End If
 
             'Genres
-            If (Not DBMovie.Movie.GenresSpecified OrElse Not Master.eSettings.MovieLockGenre) AndAlso ScrapeOptions.bMainGenres AndAlso _
+            If (Not DBMovie.Movie.GenresSpecified OrElse Not Master.eSettings.MovieLockGenre) AndAlso ScrapeOptions.bMainGenres AndAlso
                 scrapedmovie.GenresSpecified AndAlso Master.eSettings.MovieScraperGenre AndAlso Not new_Genres Then
-                'Check if scraped genre(s) are in user language and filter list if not!
-                'TODO StringUtils.GenreFilter too much "/" joins/array-converts for my taste - just work with List of String in future! 
-                Dim tGenre As String = String.Join("/", scrapedmovie.Genres.ToArray).Trim
-                Dim _genres As New List(Of String)
-                tGenre = StringUtils.GenreFilter(tGenre)
-                If Not String.IsNullOrEmpty(tGenre) Then
-                    Dim sGenres() As String = tGenre.Split("/"c)
-                    _genres.AddRange(sGenres.ToList)
-                End If
 
-                If Master.eSettings.MovieScraperGenreLimit > 0 AndAlso Master.eSettings.MovieScraperGenreLimit < _genres.Count AndAlso _genres.Count > 0 Then
-                    _genres.RemoveRange(Master.eSettings.MovieScraperGenreLimit, _genres.Count - Master.eSettings.MovieScraperGenreLimit)
+                Dim tGenre As List(Of String) = StringUtils.GenreFilter(scrapedmovie.Genres)
+
+                If Master.eSettings.MovieScraperGenreLimit > 0 AndAlso Master.eSettings.MovieScraperGenreLimit < tGenre.Count AndAlso tGenre.Count > 0 Then
+                    tGenre.RemoveRange(Master.eSettings.MovieScraperGenreLimit, tGenre.Count - Master.eSettings.MovieScraperGenreLimit)
                 End If
                 DBMovie.Movie.Genres.Clear()
-                DBMovie.Movie.Genres.AddRange(_genres)
+                DBMovie.Movie.Genres.AddRange(tGenre)
                 new_Genres = True
             ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperGenre AndAlso Not Master.eSettings.MovieLockGenre Then
                 DBMovie.Movie.Genres.Clear()
@@ -626,23 +619,16 @@ Public Class NFO
             End If
 
             'Genres
-            If (Not DBTV.TVShow.GenresSpecified OrElse Not Master.eSettings.TVLockShowGenre) AndAlso ScrapeOptions.bMainGenres AndAlso _
+            If (Not DBTV.TVShow.GenresSpecified OrElse Not Master.eSettings.TVLockShowGenre) AndAlso ScrapeOptions.bMainGenres AndAlso
                 scrapedshow.GenresSpecified AndAlso Master.eSettings.TVScraperShowGenre AndAlso Not new_Genres Then
-                'Check if scraped genre(s) are in user language and filter list if not!
-                'TODO StringUtils.GenreFilter too much "/" joins/array-converts for my taste - just work with List of String in future! 
-                Dim tGenre As String = String.Join("/", scrapedshow.Genres.ToArray).Trim
-                Dim _genres As New List(Of String)
-                tGenre = StringUtils.GenreFilter(tGenre)
-                If Not String.IsNullOrEmpty(tGenre) Then
-                    Dim sGenres() As String = tGenre.Split("/"c)
-                    _genres.AddRange(sGenres.ToList)
-                End If
+
+                Dim tGenre As List(Of String) = StringUtils.GenreFilter(scrapedshow.Genres)
 
                 'If Master.eSettings.TVScraperShowGenreLimit > 0 AndAlso Master.eSettings.TVScraperShowGenreLimit < _genres.Count AndAlso _genres.Count > 0 Then
                 '    _genres.RemoveRange(Master.eSettings.TVScraperShowGenreLimit, _genres.Count - Master.eSettings.TVScraperShowGenreLimit)
                 'End If
                 DBTV.TVShow.Genres.Clear()
-                DBTV.TVShow.Genres.AddRange(_genres)
+                DBTV.TVShow.Genres.AddRange(tGenre)
                 new_Genres = True
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowGenre AndAlso Not Master.eSettings.TVLockShowGenre Then
                 DBTV.TVShow.Genres.Clear()

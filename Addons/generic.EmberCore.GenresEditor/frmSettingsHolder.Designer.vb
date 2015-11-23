@@ -23,122 +23,104 @@ Partial Class frmSettingsHolder
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmSettingsHolder))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.pnlGenres = New System.Windows.Forms.Panel()
-        Me.btnRemoveGenre = New System.Windows.Forms.Button()
-        Me.btnAddGenre = New System.Windows.Forms.Button()
-        Me.btnRemoveLang = New System.Windows.Forms.Button()
-        Me.btnAddLang = New System.Windows.Forms.Button()
-        Me.cbLangs = New System.Windows.Forms.ComboBox()
-        Me.Label1 = New System.Windows.Forms.Label()
+        Me.btnMappingRemove = New System.Windows.Forms.Button()
+        Me.btnMappingAdd = New System.Windows.Forms.Button()
+        Me.btnGenreRemove = New System.Windows.Forms.Button()
+        Me.btnGenreAdd = New System.Windows.Forms.Button()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.btnChangeImg = New System.Windows.Forms.Button()
+        Me.btnImageChange = New System.Windows.Forms.Button()
         Me.pbIcon = New System.Windows.Forms.PictureBox()
+        Me.dgvMapping = New System.Windows.Forms.DataGridView()
         Me.dgvGenres = New System.Windows.Forms.DataGridView()
-        Me.searchstring = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.dgvLang = New System.Windows.Forms.DataGridView()
         Me.Column1 = New System.Windows.Forms.DataGridViewCheckBoxColumn()
         Me.DataGridViewTextBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.searchstring = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.btnGenresLoadFromDB = New System.Windows.Forms.Button()
         Me.pnlGenres.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         CType(Me.pbIcon, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.dgvMapping, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dgvGenres, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.dgvLang, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'pnlGenres
         '
-        Me.pnlGenres.Controls.Add(Me.btnRemoveGenre)
-        Me.pnlGenres.Controls.Add(Me.btnAddGenre)
-        Me.pnlGenres.Controls.Add(Me.btnRemoveLang)
-        Me.pnlGenres.Controls.Add(Me.btnAddLang)
-        Me.pnlGenres.Controls.Add(Me.cbLangs)
-        Me.pnlGenres.Controls.Add(Me.Label1)
+        Me.pnlGenres.Controls.Add(Me.btnGenresLoadFromDB)
+        Me.pnlGenres.Controls.Add(Me.btnMappingRemove)
+        Me.pnlGenres.Controls.Add(Me.btnMappingAdd)
+        Me.pnlGenres.Controls.Add(Me.btnGenreRemove)
+        Me.pnlGenres.Controls.Add(Me.btnGenreAdd)
         Me.pnlGenres.Controls.Add(Me.GroupBox1)
+        Me.pnlGenres.Controls.Add(Me.dgvMapping)
         Me.pnlGenres.Controls.Add(Me.dgvGenres)
-        Me.pnlGenres.Controls.Add(Me.dgvLang)
         Me.pnlGenres.Location = New System.Drawing.Point(0, 0)
         Me.pnlGenres.Name = "pnlGenres"
-        Me.pnlGenres.Size = New System.Drawing.Size(627, 367)
+        Me.pnlGenres.Size = New System.Drawing.Size(764, 439)
         Me.pnlGenres.TabIndex = 0
         '
         'btnRemoveGenre
         '
-        Me.btnRemoveGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnRemoveGenre.Image = CType(resources.GetObject("btnRemoveGenre.Image"), System.Drawing.Image)
-        Me.btnRemoveGenre.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnRemoveGenre.Location = New System.Drawing.Point(114, 248)
-        Me.btnRemoveGenre.Name = "btnRemoveGenre"
-        Me.btnRemoveGenre.Size = New System.Drawing.Size(72, 23)
-        Me.btnRemoveGenre.TabIndex = 4
-        Me.btnRemoveGenre.Text = "Remove"
-        Me.btnRemoveGenre.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnRemoveGenre.UseVisualStyleBackColor = True
+        Me.btnMappingRemove.Enabled = False
+        Me.btnMappingRemove.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnMappingRemove.Image = CType(resources.GetObject("btnRemoveGenre.Image"), System.Drawing.Image)
+        Me.btnMappingRemove.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnMappingRemove.Location = New System.Drawing.Point(114, 248)
+        Me.btnMappingRemove.Name = "btnRemoveGenre"
+        Me.btnMappingRemove.Size = New System.Drawing.Size(72, 23)
+        Me.btnMappingRemove.TabIndex = 4
+        Me.btnMappingRemove.Text = "Remove"
+        Me.btnMappingRemove.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnMappingRemove.UseVisualStyleBackColor = True
         '
         'btnAddGenre
         '
-        Me.btnAddGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnAddGenre.Image = CType(resources.GetObject("btnAddGenre.Image"), System.Drawing.Image)
-        Me.btnAddGenre.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnAddGenre.Location = New System.Drawing.Point(22, 248)
-        Me.btnAddGenre.Name = "btnAddGenre"
-        Me.btnAddGenre.Size = New System.Drawing.Size(72, 23)
-        Me.btnAddGenre.TabIndex = 3
-        Me.btnAddGenre.Text = "Add"
-        Me.btnAddGenre.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnAddGenre.UseVisualStyleBackColor = True
+        Me.btnMappingAdd.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnMappingAdd.Image = CType(resources.GetObject("btnAddGenre.Image"), System.Drawing.Image)
+        Me.btnMappingAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnMappingAdd.Location = New System.Drawing.Point(22, 248)
+        Me.btnMappingAdd.Name = "btnAddGenre"
+        Me.btnMappingAdd.Size = New System.Drawing.Size(72, 23)
+        Me.btnMappingAdd.TabIndex = 3
+        Me.btnMappingAdd.Text = "Add"
+        Me.btnMappingAdd.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnMappingAdd.UseVisualStyleBackColor = True
         '
         'btnRemoveLang
         '
-        Me.btnRemoveLang.Enabled = False
-        Me.btnRemoveLang.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnRemoveLang.Image = CType(resources.GetObject("btnRemoveLang.Image"), System.Drawing.Image)
-        Me.btnRemoveLang.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnRemoveLang.Location = New System.Drawing.Point(331, 248)
-        Me.btnRemoveLang.Name = "btnRemoveLang"
-        Me.btnRemoveLang.Size = New System.Drawing.Size(72, 23)
-        Me.btnRemoveLang.TabIndex = 7
-        Me.btnRemoveLang.Text = "Remove"
-        Me.btnRemoveLang.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnRemoveLang.UseVisualStyleBackColor = True
+        Me.btnGenreRemove.Enabled = False
+        Me.btnGenreRemove.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnGenreRemove.Image = CType(resources.GetObject("btnRemoveLang.Image"), System.Drawing.Image)
+        Me.btnGenreRemove.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnGenreRemove.Location = New System.Drawing.Point(331, 248)
+        Me.btnGenreRemove.Name = "btnRemoveLang"
+        Me.btnGenreRemove.Size = New System.Drawing.Size(72, 23)
+        Me.btnGenreRemove.TabIndex = 7
+        Me.btnGenreRemove.Text = "Remove"
+        Me.btnGenreRemove.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnGenreRemove.UseVisualStyleBackColor = True
         '
         'btnAddLang
         '
-        Me.btnAddLang.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnAddLang.Image = CType(resources.GetObject("btnAddLang.Image"), System.Drawing.Image)
-        Me.btnAddLang.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnAddLang.Location = New System.Drawing.Point(239, 248)
-        Me.btnAddLang.Name = "btnAddLang"
-        Me.btnAddLang.Size = New System.Drawing.Size(72, 23)
-        Me.btnAddLang.TabIndex = 6
-        Me.btnAddLang.Text = "Add"
-        Me.btnAddLang.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnAddLang.UseVisualStyleBackColor = True
-        '
-        'cbLangs
-        '
-        Me.cbLangs.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbLangs.FormattingEnabled = True
-        Me.cbLangs.Location = New System.Drawing.Point(8, 25)
-        Me.cbLangs.Name = "cbLangs"
-        Me.cbLangs.Size = New System.Drawing.Size(188, 21)
-        Me.cbLangs.TabIndex = 1
-        '
-        'Label1
-        '
-        Me.Label1.Location = New System.Drawing.Point(9, 9)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(90, 13)
-        Me.Label1.TabIndex = 0
-        Me.Label1.Text = "Genres Filter"
+        Me.btnGenreAdd.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnGenreAdd.Image = CType(resources.GetObject("btnAddLang.Image"), System.Drawing.Image)
+        Me.btnGenreAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnGenreAdd.Location = New System.Drawing.Point(239, 248)
+        Me.btnGenreAdd.Name = "btnAddLang"
+        Me.btnGenreAdd.Size = New System.Drawing.Size(72, 23)
+        Me.btnGenreAdd.TabIndex = 6
+        Me.btnGenreAdd.Text = "Add"
+        Me.btnGenreAdd.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnGenreAdd.UseVisualStyleBackColor = True
         '
         'GroupBox1
         '
-        Me.GroupBox1.Controls.Add(Me.btnChangeImg)
+        Me.GroupBox1.Controls.Add(Me.btnImageChange)
         Me.GroupBox1.Controls.Add(Me.pbIcon)
-        Me.GroupBox1.Location = New System.Drawing.Point(431, 49)
+        Me.GroupBox1.Location = New System.Drawing.Point(557, 52)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(180, 195)
         Me.GroupBox1.TabIndex = 8
@@ -147,17 +129,17 @@ Partial Class frmSettingsHolder
         '
         'btnChangeImg
         '
-        Me.btnChangeImg.Enabled = False
-        Me.btnChangeImg.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnChangeImg.Image = Global.generic.EmberCore.GenresEditor.My.Resources.Resources.image
-        Me.btnChangeImg.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnChangeImg.Location = New System.Drawing.Point(87, 19)
-        Me.btnChangeImg.Name = "btnChangeImg"
-        Me.btnChangeImg.Size = New System.Drawing.Size(81, 23)
-        Me.btnChangeImg.TabIndex = 0
-        Me.btnChangeImg.Text = "Change"
-        Me.btnChangeImg.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnChangeImg.UseVisualStyleBackColor = True
+        Me.btnImageChange.Enabled = False
+        Me.btnImageChange.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnImageChange.Image = Global.generic.EmberCore.GenresEditor.My.Resources.Resources.image
+        Me.btnImageChange.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnImageChange.Location = New System.Drawing.Point(87, 19)
+        Me.btnImageChange.Name = "btnChangeImg"
+        Me.btnImageChange.Size = New System.Drawing.Size(81, 23)
+        Me.btnImageChange.TabIndex = 0
+        Me.btnImageChange.Text = "Change"
+        Me.btnImageChange.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnImageChange.UseVisualStyleBackColor = True
         '
         'pbIcon
         '
@@ -168,6 +150,27 @@ Partial Class frmSettingsHolder
         Me.pbIcon.TabIndex = 6
         Me.pbIcon.TabStop = False
         '
+        'dgvMapping
+        '
+        Me.dgvMapping.AllowUserToAddRows = False
+        Me.dgvMapping.AllowUserToDeleteRows = False
+        Me.dgvMapping.AllowUserToResizeColumns = False
+        Me.dgvMapping.AllowUserToResizeRows = False
+        Me.dgvMapping.BackgroundColor = System.Drawing.Color.White
+        Me.dgvMapping.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvMapping.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.searchstring})
+        Me.dgvMapping.Location = New System.Drawing.Point(7, 52)
+        Me.dgvMapping.MultiSelect = False
+        Me.dgvMapping.Name = "dgvMapping"
+        Me.dgvMapping.RowHeadersVisible = False
+        Me.dgvMapping.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.dgvMapping.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect
+        Me.dgvMapping.ShowCellErrors = False
+        Me.dgvMapping.ShowCellToolTips = False
+        Me.dgvMapping.ShowRowErrors = False
+        Me.dgvMapping.Size = New System.Drawing.Size(202, 192)
+        Me.dgvMapping.TabIndex = 2
+        '
         'dgvGenres
         '
         Me.dgvGenres.AllowUserToAddRows = False
@@ -176,51 +179,19 @@ Partial Class frmSettingsHolder
         Me.dgvGenres.AllowUserToResizeRows = False
         Me.dgvGenres.BackgroundColor = System.Drawing.Color.White
         Me.dgvGenres.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvGenres.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.searchstring})
-        Me.dgvGenres.Location = New System.Drawing.Point(7, 52)
+        Me.dgvGenres.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Column1, Me.DataGridViewTextBoxColumn1})
+        Me.dgvGenres.Location = New System.Drawing.Point(239, 52)
         Me.dgvGenres.MultiSelect = False
         Me.dgvGenres.Name = "dgvGenres"
         Me.dgvGenres.RowHeadersVisible = False
         Me.dgvGenres.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.dgvGenres.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect
+        Me.dgvGenres.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.dgvGenres.ShowCellErrors = False
         Me.dgvGenres.ShowCellToolTips = False
+        Me.dgvGenres.ShowEditingIcon = False
         Me.dgvGenres.ShowRowErrors = False
-        Me.dgvGenres.Size = New System.Drawing.Size(202, 192)
-        Me.dgvGenres.TabIndex = 2
-        '
-        'searchstring
-        '
-        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.searchstring.DefaultCellStyle = DataGridViewCellStyle1
-        Me.searchstring.FillWeight = 180.0!
-        Me.searchstring.HeaderText = "Genre"
-        Me.searchstring.Name = "searchstring"
-        Me.searchstring.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.searchstring.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.searchstring.Width = 180
-        '
-        'dgvLang
-        '
-        Me.dgvLang.AllowUserToAddRows = False
-        Me.dgvLang.AllowUserToDeleteRows = False
-        Me.dgvLang.AllowUserToResizeColumns = False
-        Me.dgvLang.AllowUserToResizeRows = False
-        Me.dgvLang.BackgroundColor = System.Drawing.Color.White
-        Me.dgvLang.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgvLang.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Column1, Me.DataGridViewTextBoxColumn1})
-        Me.dgvLang.Location = New System.Drawing.Point(239, 52)
-        Me.dgvLang.MultiSelect = False
-        Me.dgvLang.Name = "dgvLang"
-        Me.dgvLang.RowHeadersVisible = False
-        Me.dgvLang.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.dgvLang.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgvLang.ShowCellErrors = False
-        Me.dgvLang.ShowCellToolTips = False
-        Me.dgvLang.ShowEditingIcon = False
-        Me.dgvLang.ShowRowErrors = False
-        Me.dgvLang.Size = New System.Drawing.Size(164, 192)
-        Me.dgvLang.TabIndex = 5
+        Me.dgvGenres.Size = New System.Drawing.Size(164, 192)
+        Me.dgvGenres.TabIndex = 5
         '
         'Column1
         '
@@ -239,48 +210,66 @@ Partial Class frmSettingsHolder
         DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
         Me.DataGridViewTextBoxColumn1.DefaultCellStyle = DataGridViewCellStyle3
         Me.DataGridViewTextBoxColumn1.FillWeight = 120.0!
-        Me.DataGridViewTextBoxColumn1.HeaderText = "Languages"
+        Me.DataGridViewTextBoxColumn1.HeaderText = "Genres"
         Me.DataGridViewTextBoxColumn1.Name = "DataGridViewTextBoxColumn1"
         Me.DataGridViewTextBoxColumn1.ReadOnly = True
         Me.DataGridViewTextBoxColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
         Me.DataGridViewTextBoxColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         Me.DataGridViewTextBoxColumn1.Width = 120
         '
-        'frmGenresEditor
+        'searchstring
+        '
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.searchstring.DefaultCellStyle = DataGridViewCellStyle1
+        Me.searchstring.FillWeight = 180.0!
+        Me.searchstring.HeaderText = "Mapping"
+        Me.searchstring.Name = "searchstring"
+        Me.searchstring.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.searchstring.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        Me.searchstring.Width = 180
+        '
+        'btnGenresLoadFromDB
+        '
+        Me.btnGenresLoadFromDB.Location = New System.Drawing.Point(239, 23)
+        Me.btnGenresLoadFromDB.Name = "btnGenresLoadFromDB"
+        Me.btnGenresLoadFromDB.Size = New System.Drawing.Size(164, 23)
+        Me.btnGenresLoadFromDB.TabIndex = 9
+        Me.btnGenresLoadFromDB.Text = "Load Genres from DB"
+        Me.btnGenresLoadFromDB.UseVisualStyleBackColor = True
+        '
+        'frmSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(628, 366)
+        Me.ClientSize = New System.Drawing.Size(845, 496)
         Me.Controls.Add(Me.pnlGenres)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "frmGenresEditor"
+        Me.Name = "frmSettingsHolder"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "frmGenresEditor"
         Me.pnlGenres.ResumeLayout(False)
         Me.GroupBox1.ResumeLayout(False)
         CType(Me.pbIcon, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.dgvMapping, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.dgvGenres, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.dgvLang, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
     Friend WithEvents pnlGenres As System.Windows.Forms.Panel
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
-    Friend WithEvents btnChangeImg As System.Windows.Forms.Button
+    Friend WithEvents btnImageChange As System.Windows.Forms.Button
     Friend WithEvents pbIcon As System.Windows.Forms.PictureBox
+    Friend WithEvents dgvMapping As System.Windows.Forms.DataGridView
     Friend WithEvents dgvGenres As System.Windows.Forms.DataGridView
-    Friend WithEvents dgvLang As System.Windows.Forms.DataGridView
-    Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents cbLangs As System.Windows.Forms.ComboBox
-    Friend WithEvents Column1 As System.Windows.Forms.DataGridViewCheckBoxColumn
-    Friend WithEvents DataGridViewTextBoxColumn1 As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents btnRemoveGenre As System.Windows.Forms.Button
-    Friend WithEvents btnAddGenre As System.Windows.Forms.Button
-    Friend WithEvents btnRemoveLang As System.Windows.Forms.Button
-    Friend WithEvents btnAddLang As System.Windows.Forms.Button
-    Friend WithEvents searchstring As System.Windows.Forms.DataGridViewTextBoxColumn
-
+    Friend WithEvents btnMappingRemove As System.Windows.Forms.Button
+    Friend WithEvents btnMappingAdd As System.Windows.Forms.Button
+    Friend WithEvents btnGenreRemove As System.Windows.Forms.Button
+    Friend WithEvents btnGenreAdd As System.Windows.Forms.Button
+    Friend WithEvents btnGenresLoadFromDB As Windows.Forms.Button
+    Friend WithEvents searchstring As Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents Column1 As Windows.Forms.DataGridViewCheckBoxColumn
+    Friend WithEvents DataGridViewTextBoxColumn1 As Windows.Forms.DataGridViewTextBoxColumn
 End Class

@@ -1274,6 +1274,21 @@ Public Class Database
         Return cList.ToArray
     End Function
 
+    Public Function GetAllGenres() As List(Of String)
+        Dim gList As New List(Of String)
+
+        Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = "SELECT strGenre FROM genre;"
+            Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    gList.Add(SQLreader("strGenre").ToString)
+                End While
+            End Using
+        End Using
+
+        Return gList
+    End Function
+
     Public Function GetAllMoviePaths() As List(Of String)
         Dim tList As New List(Of String)
         Dim mPath As String = String.Empty
