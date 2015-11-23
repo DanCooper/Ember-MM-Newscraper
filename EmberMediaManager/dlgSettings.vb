@@ -21,7 +21,6 @@
 ' # Dialog size: 1230; 900
 ' # Move the panels (pnl*) from 900;900 to 0;0 to edit. Move it back after editing.
 
-Imports System
 Imports System.IO
 Imports EmberAPI
 Imports System.Net
@@ -30,7 +29,7 @@ Imports NLog
 Public Class dlgSettings
 
 #Region "Fields"
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     Private currPanel As New Panel
     Private currText As String = String.Empty
@@ -557,7 +556,7 @@ Public Class dlgSettings
         sResult.NeedsRestart = True
     End Sub
 
-    Private Sub btnTVEpisodeFilterAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVEpisodeFilterAdd.Click
+    Private Sub btnTVEpisodeFilterAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVEpisodeFilterAdd.Click
         If Not String.IsNullOrEmpty(txtTVEpisodeFilter.Text) Then
             lstTVEpisodeFilter.Items.Add(txtTVEpisodeFilter.Text)
             txtTVEpisodeFilter.Text = String.Empty
@@ -568,7 +567,7 @@ Public Class dlgSettings
         txtTVEpisodeFilter.Focus()
     End Sub
 
-    Private Sub btnMovieFilterAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieFilterAdd.Click
+    Private Sub btnMovieFilterAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieFilterAdd.Click
         If Not String.IsNullOrEmpty(txtMovieFilter.Text) Then
             lstMovieFilters.Items.Add(txtMovieFilter.Text)
             txtMovieFilter.Text = String.Empty
@@ -579,7 +578,7 @@ Public Class dlgSettings
         txtMovieFilter.Focus()
     End Sub
 
-    Private Sub btnFileSystemExcludedDirsAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemExcludedDirsAdd.Click
+    Private Sub btnFileSystemExcludedDirsAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemExcludedDirsAdd.Click
         If Not String.IsNullOrEmpty(txtFileSystemExcludedDirs.Text) Then
             If Not lstFileSystemExcludedDirs.Items.Contains(txtFileSystemExcludedDirs.Text.ToLower) Then
                 AddExcludedDir(txtFileSystemExcludedDirs.Text)
@@ -590,12 +589,12 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub btnFileSystemExcludedDirsRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemExcludedDirsRemove.Click
+    Private Sub btnFileSystemExcludedDirsRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemExcludedDirsRemove.Click
         RemoveExcludeDir()
         RefreshFileSystemExcludeDirs()
     End Sub
 
-    Private Sub lstFileSystemExcludedDirs_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lstFileSystemExcludedDirs.KeyDown
+    Private Sub lstFileSystemExcludedDirs_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lstFileSystemExcludedDirs.KeyDown
         If e.KeyCode = Keys.Delete Then
             RemoveExcludeDir()
             RefreshFileSystemExcludeDirs()
@@ -658,7 +657,7 @@ Public Class dlgSettings
         End Try
     End Sub
 
-    Private Sub btnFileSystemValidVideoExtsAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemValidVideoExtsAdd.Click
+    Private Sub btnFileSystemValidVideoExtsAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemValidVideoExtsAdd.Click
         If Not String.IsNullOrEmpty(txtFileSystemValidVideoExts.Text) Then
             If Not txtFileSystemValidVideoExts.Text.Substring(0, 1) = "." Then txtFileSystemValidVideoExts.Text = String.Concat(".", txtFileSystemValidVideoExts.Text)
             If Not lstFileSystemValidVideoExts.Items.Contains(txtFileSystemValidVideoExts.Text.ToLower) Then
@@ -672,7 +671,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub btnFileSystemValidSubtitlesExtsAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemValidSubtitlesExtsAdd.Click
+    Private Sub btnFileSystemValidSubtitlesExtsAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemValidSubtitlesExtsAdd.Click
         If Not String.IsNullOrEmpty(txtFileSystemValidSubtitlesExts.Text) Then
             If Not txtFileSystemValidSubtitlesExts.Text.Substring(0, 1) = "." Then txtFileSystemValidSubtitlesExts.Text = String.Concat(".", txtFileSystemValidSubtitlesExts.Text)
             If Not lstFileSystemValidSubtitlesExts.Items.Contains(txtFileSystemValidSubtitlesExts.Text.ToLower) Then
@@ -686,7 +685,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub btnFileSystemValidThemeExtsAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemValidThemeExtsAdd.Click
+    Private Sub btnFileSystemValidThemeExtsAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemValidThemeExtsAdd.Click
         If Not String.IsNullOrEmpty(txtFileSystemValidThemeExts.Text) Then
             If Not txtFileSystemValidThemeExts.Text.Substring(0, 1) = "." Then txtFileSystemValidThemeExts.Text = String.Concat(".", txtFileSystemValidThemeExts.Text)
             If Not lstFileSystemValidThemeExts.Items.Contains(txtFileSystemValidThemeExts.Text.ToLower) Then
@@ -700,7 +699,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub btnFileSystemNoStackExtsAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemNoStackExtsAdd.Click
+    Private Sub btnFileSystemNoStackExtsAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemNoStackExtsAdd.Click
         If Not String.IsNullOrEmpty(txtFileSystemNoStackExts.Text) Then
             If Not txtFileSystemNoStackExts.Text.Substring(0, 1) = "." Then txtFileSystemNoStackExts.Text = String.Concat(".", txtFileSystemNoStackExts.Text)
             If Not lstFileSystemNoStackExts.Items.Contains(txtFileSystemNoStackExts.Text) Then
@@ -714,7 +713,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub btnTVShowFilterAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVShowFilterAdd.Click
+    Private Sub btnTVShowFilterAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVShowFilterAdd.Click
         If Not String.IsNullOrEmpty(txtTVShowFilter.Text) Then
             lstTVShowFilter.Items.Add(txtTVShowFilter.Text)
             txtTVShowFilter.Text = String.Empty
@@ -725,7 +724,7 @@ Public Class dlgSettings
         txtTVShowFilter.Focus()
     End Sub
 
-    Private Sub btnTVSourcesRegexTVShowMatchingAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVSourcesRegexTVShowMatchingAdd.Click
+    Private Sub btnTVSourcesRegexTVShowMatchingAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSourcesRegexTVShowMatchingAdd.Click
         If String.IsNullOrEmpty(btnTVSourcesRegexTVShowMatchingAdd.Tag.ToString) Then
             Dim lID = (From lRegex As Settings.regexp In TVShowMatching Select lRegex.ID).Max
             TVShowMatching.Add(New Settings.regexp With {.ID = Convert.ToInt32(lID) + 1,
@@ -746,7 +745,7 @@ Public Class dlgSettings
         LoadTVShowMatching()
     End Sub
 
-    Private Sub btnMovieSortTokenAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieSortTokenAdd.Click
+    Private Sub btnMovieSortTokenAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSortTokenAdd.Click
         If Not String.IsNullOrEmpty(txtMovieSortToken.Text) Then
             If Not lstMovieSortTokens.Items.Contains(txtMovieSortToken.Text) Then
                 lstMovieSortTokens.Items.Add(txtMovieSortToken.Text)
@@ -758,7 +757,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub btnMovieSetSortTokenAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieSetSortTokenAdd.Click
+    Private Sub btnMovieSetSortTokenAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSetSortTokenAdd.Click
         If Not String.IsNullOrEmpty(txtMovieSetSortToken.Text) Then
             If Not lstMovieSetSortTokens.Items.Contains(txtMovieSetSortToken.Text) Then
                 lstMovieSetSortTokens.Items.Add(txtMovieSetSortToken.Text)
@@ -770,7 +769,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub btnTVSortTokenAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVSortTokenAdd.Click
+    Private Sub btnTVSortTokenAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSortTokenAdd.Click
         If Not String.IsNullOrEmpty(txtTVSortToken.Text) Then
             If Not lstTVSortTokens.Items.Contains(txtTVSortToken.Text) Then
                 lstTVSortTokens.Items.Add(txtTVSortToken.Text)
@@ -782,7 +781,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub btnTVSourceAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVSourceAdd.Click
+    Private Sub btnTVSourceAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSourceAdd.Click
         Using dSource As New dlgSourceTVShow
             If dSource.ShowDialog = Windows.Forms.DialogResult.OK Then
                 RefreshTVSources()
@@ -792,7 +791,7 @@ Public Class dlgSettings
         End Using
     End Sub
 
-    Private Sub btnFileSystemCleanerWhitelistAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemCleanerWhitelistAdd.Click
+    Private Sub btnFileSystemCleanerWhitelistAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemCleanerWhitelistAdd.Click
         If Not String.IsNullOrEmpty(txtFileSystemCleanerWhitelist.Text) Then
             If Not txtFileSystemCleanerWhitelist.Text.Substring(0, 1) = "." Then txtFileSystemCleanerWhitelist.Text = String.Concat(".", txtFileSystemCleanerWhitelist.Text)
             If Not lstFileSystemCleanerWhitelist.Items.Contains(txtFileSystemCleanerWhitelist.Text.ToLower) Then
@@ -804,7 +803,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub btnApply_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnApply.Click
+    Private Sub btnApply_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnApply.Click
         SaveSettings(True)
         SetApplyButton(False)
         If sResult.NeedsDBClean_Movie OrElse
@@ -817,7 +816,7 @@ Public Class dlgSettings
             didApply = True
     End Sub
 
-    Private Sub btnMovieBackdropsPathBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieSourcesBackdropsFolderPathBrowse.Click
+    Private Sub btnMovieBackdropsPathBrowse_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSourcesBackdropsFolderPathBrowse.Click
         With fbdBrowse
             fbdBrowse.Description = Master.eLang.GetString(552, "Select the folder where you wish to store your backdrops...")
             If .ShowDialog = Windows.Forms.DialogResult.OK Then
@@ -828,17 +827,17 @@ Public Class dlgSettings
         End With
     End Sub
 
-    Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
+    Private Sub btnCancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancel.Click
         If Not didApply Then sResult.DidCancel = True
         RemoveScraperPanels()
         Close()
     End Sub
 
-    Private Sub btnTVSourcesRegexTVShowMatchingClear_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVSourcesRegexTVShowMatchingClear.Click
+    Private Sub btnTVSourcesRegexTVShowMatchingClear_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSourcesRegexTVShowMatchingClear.Click
         ClearTVShowMatching()
     End Sub
 
-    Private Sub btnMovieFilterDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieFilterDown.Click
+    Private Sub btnMovieFilterDown_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieFilterDown.Click
         Try
             If lstMovieFilters.Items.Count > 0 AndAlso lstMovieFilters.SelectedItem IsNot Nothing AndAlso lstMovieFilters.SelectedIndex < (lstMovieFilters.Items.Count - 1) Then
                 Dim iIndex As Integer = lstMovieFilters.SelectedIndices(0)
@@ -898,7 +897,7 @@ Public Class dlgSettings
         End With
     End Sub
 
-    Private Sub btnMovieScraperDefFIExtEdit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieScraperDefFIExtEdit.Click
+    Private Sub btnMovieScraperDefFIExtEdit_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieScraperDefFIExtEdit.Click
         Using dEditMeta As New dlgFileInfo(New Database.DBElement(Enums.ContentType.Movie), False)
             Dim fi As New MediaInfo.Fileinfo
             For Each x As Settings.MetadataPerType In MovieMeta
@@ -920,11 +919,11 @@ Public Class dlgSettings
         End Using
     End Sub
 
-    Private Sub btnTVSourcesRegexTVShowMatchingEdit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVSourcesRegexTVShowMatchingEdit.Click
+    Private Sub btnTVSourcesRegexTVShowMatchingEdit_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSourcesRegexTVShowMatchingEdit.Click
         If lvTVSourcesRegexTVShowMatching.SelectedItems.Count > 0 Then EditTVShowMatching(lvTVSourcesRegexTVShowMatching.SelectedItems(0))
     End Sub
 
-    Private Sub btnMovieSourceEdit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieSourceEdit.Click
+    Private Sub btnMovieSourceEdit_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSourceEdit.Click
         If lvMovieSources.SelectedItems.Count > 0 Then
             Using dMovieSource As New dlgSourceMovie
                 If dMovieSource.ShowDialog(Convert.ToInt32(lvMovieSources.SelectedItems(0).Text)) = Windows.Forms.DialogResult.OK Then
@@ -936,7 +935,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub btnTVScraperDefFIExtEdit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVScraperDefFIExtEdit.Click
+    Private Sub btnTVScraperDefFIExtEdit_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVScraperDefFIExtEdit.Click
         Using dEditMeta As New dlgFileInfo(New Database.DBElement(Enums.ContentType.TVEpisode), True)
             Dim fi As New MediaInfo.Fileinfo
             For Each x As Settings.MetadataPerType In TVMeta
@@ -958,7 +957,7 @@ Public Class dlgSettings
         End Using
     End Sub
 
-    Private Sub btnTVSourceEdit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVSourceEdit.Click
+    Private Sub btnTVSourceEdit_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSourceEdit.Click
         If lvTVSources.SelectedItems.Count > 0 Then
             Using dTVSource As New dlgSourceTVShow
                 If dTVSource.ShowDialog(Convert.ToInt32(lvTVSources.SelectedItems(0).Text)) = Windows.Forms.DialogResult.OK Then
@@ -970,7 +969,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub btnTVEpisodeFilterDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVEpisodeFilterDown.Click
+    Private Sub btnTVEpisodeFilterDown_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVEpisodeFilterDown.Click
         Try
             If lstTVEpisodeFilter.Items.Count > 0 AndAlso lstTVEpisodeFilter.SelectedItem IsNot Nothing AndAlso lstTVEpisodeFilter.SelectedIndex < (lstTVEpisodeFilter.Items.Count - 1) Then
                 Dim iIndex As Integer = lstTVEpisodeFilter.SelectedIndices(0)
@@ -986,7 +985,7 @@ Public Class dlgSettings
         End Try
     End Sub
 
-    Private Sub btnTVEpisodeFilterUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVEpisodeFilterUp.Click
+    Private Sub btnTVEpisodeFilterUp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVEpisodeFilterUp.Click
         Try
             If lstTVEpisodeFilter.Items.Count > 0 AndAlso lstTVEpisodeFilter.SelectedItem IsNot Nothing AndAlso lstTVEpisodeFilter.SelectedIndex > 0 Then
                 Dim iIndex As Integer = lstTVEpisodeFilter.SelectedIndices(0)
@@ -1002,7 +1001,7 @@ Public Class dlgSettings
         End Try
     End Sub
 
-    Private Sub btnMovieSourceAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieSourceAdd.Click
+    Private Sub btnMovieSourceAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSourceAdd.Click
         Using dSource As New dlgSourceMovie
             If dSource.ShowDialog = Windows.Forms.DialogResult.OK Then
                 RefreshMovieSources()
@@ -1012,12 +1011,12 @@ Public Class dlgSettings
         End Using
     End Sub
 
-    Private Sub btnMovieSourceRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieSourceRemove.Click
+    Private Sub btnMovieSourceRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSourceRemove.Click
         RemoveMovieSource()
         Master.DB.LoadMovieSourcesFromDB()
     End Sub
 
-    Private Sub btnMovieScraperDefFIExtAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieScraperDefFIExtAdd.Click
+    Private Sub btnMovieScraperDefFIExtAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieScraperDefFIExtAdd.Click
         If Not txtMovieScraperDefFIExt.Text.StartsWith(".") Then txtMovieScraperDefFIExt.Text = String.Concat(".", txtMovieScraperDefFIExt.Text)
         Using dEditMeta As New dlgFileInfo(New Database.DBElement(Enums.ContentType.Movie), False)
             Dim fi As New MediaInfo.Fileinfo
@@ -1036,7 +1035,7 @@ Public Class dlgSettings
         End Using
     End Sub
 
-    Private Sub btnTVScraperDefFIExtAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVScraperDefFIExtAdd.Click
+    Private Sub btnTVScraperDefFIExtAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVScraperDefFIExtAdd.Click
         If Not txtTVScraperDefFIExt.Text.StartsWith(".") Then txtTVScraperDefFIExt.Text = String.Concat(".", txtTVScraperDefFIExt.Text)
         Using dEditMeta As New dlgFileInfo(New Database.DBElement(Enums.ContentType.TVEpisode), True)
             Dim fi As New MediaInfo.Fileinfo
@@ -1055,14 +1054,14 @@ Public Class dlgSettings
         End Using
     End Sub
 
-    Private Sub btnOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOK.Click
+    Private Sub btnOK_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnOK.Click
         NoUpdate = True
         SaveSettings(False)
         RemoveScraperPanels()
         Close()
     End Sub
 
-    Private Sub btnTVSourcesRegexTVShowMatchingUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVSourcesRegexTVShowMatchingUp.Click
+    Private Sub btnTVSourcesRegexTVShowMatchingUp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSourcesRegexTVShowMatchingUp.Click
         Try
             If lvTVSourcesRegexTVShowMatching.Items.Count > 0 AndAlso lvTVSourcesRegexTVShowMatching.SelectedItems.Count > 0 AndAlso Not lvTVSourcesRegexTVShowMatching.SelectedItems(0).Index = 0 Then
                 Dim selItem As Settings.regexp = TVShowMatching.FirstOrDefault(Function(r) r.ID = Convert.ToInt32(lvTVSourcesRegexTVShowMatching.SelectedItems(0).Text))
@@ -1089,7 +1088,7 @@ Public Class dlgSettings
         End Try
     End Sub
 
-    Private Sub btnTVSourcesRegexTVShowMatchingDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVSourcesRegexTVShowMatchingDown.Click
+    Private Sub btnTVSourcesRegexTVShowMatchingDown_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSourcesRegexTVShowMatchingDown.Click
         Try
             If lvTVSourcesRegexTVShowMatching.Items.Count > 0 AndAlso lvTVSourcesRegexTVShowMatching.SelectedItems.Count > 0 AndAlso lvTVSourcesRegexTVShowMatching.SelectedItems(0).Index < (lvTVSourcesRegexTVShowMatching.Items.Count - 1) Then
                 Dim selItem As Settings.regexp = TVShowMatching.FirstOrDefault(Function(r) r.ID = Convert.ToInt32(lvTVSourcesRegexTVShowMatching.SelectedItems(0).Text))
@@ -1116,7 +1115,7 @@ Public Class dlgSettings
         End Try
     End Sub
 
-    Private Sub btnMovieGeneralMediaListSortingUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieGeneralMediaListSortingUp.Click
+    Private Sub btnMovieGeneralMediaListSortingUp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieGeneralMediaListSortingUp.Click
         Try
             If lvMovieGeneralMediaListSorting.Items.Count > 0 AndAlso lvMovieGeneralMediaListSorting.SelectedItems.Count > 0 AndAlso Not lvMovieGeneralMediaListSorting.SelectedItems(0).Index = 0 Then
                 Dim selItem As Settings.ListSorting = MovieGeneralMediaListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvMovieGeneralMediaListSorting.SelectedItems(0).Text))
@@ -1146,7 +1145,7 @@ Public Class dlgSettings
         End Try
     End Sub
 
-    Private Sub btnMovieSetGeneralMediaListSortingUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieSetGeneralMediaListSortingUp.Click
+    Private Sub btnMovieSetGeneralMediaListSortingUp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSetGeneralMediaListSortingUp.Click
         Try
             If lvMovieSetGeneralMediaListSorting.Items.Count > 0 AndAlso lvMovieSetGeneralMediaListSorting.SelectedItems.Count > 0 AndAlso Not lvMovieSetGeneralMediaListSorting.SelectedItems(0).Index = 0 Then
                 Dim selItem As Settings.ListSorting = MovieSetGeneralMediaListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvMovieSetGeneralMediaListSorting.SelectedItems(0).Text))
@@ -1176,7 +1175,7 @@ Public Class dlgSettings
         End Try
     End Sub
 
-    Private Sub btnTVGeneralEpisodeListSortingUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVGeneralEpisodeListSortingUp.Click
+    Private Sub btnTVGeneralEpisodeListSortingUp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVGeneralEpisodeListSortingUp.Click
         Try
             If lvTVGeneralEpisodeListSorting.Items.Count > 0 AndAlso lvTVGeneralEpisodeListSorting.SelectedItems.Count > 0 AndAlso Not lvTVGeneralEpisodeListSorting.SelectedItems(0).Index = 0 Then
                 Dim selItem As Settings.ListSorting = TVGeneralEpisodeListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvTVGeneralEpisodeListSorting.SelectedItems(0).Text))
@@ -1206,7 +1205,7 @@ Public Class dlgSettings
         End Try
     End Sub
 
-    Private Sub btnTVGeneralSeasonListSortingUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVGeneralSeasonListSortingUp.Click
+    Private Sub btnTVGeneralSeasonListSortingUp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVGeneralSeasonListSortingUp.Click
         Try
             If lvTVGeneralSeasonListSorting.Items.Count > 0 AndAlso lvTVGeneralSeasonListSorting.SelectedItems.Count > 0 AndAlso Not lvTVGeneralSeasonListSorting.SelectedItems(0).Index = 0 Then
                 Dim selItem As Settings.ListSorting = TVGeneralSeasonListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvTVGeneralSeasonListSorting.SelectedItems(0).Text))
@@ -1236,7 +1235,7 @@ Public Class dlgSettings
         End Try
     End Sub
 
-    Private Sub btnTVGeneralShowListSortingUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVGeneralShowListSortingUp.Click
+    Private Sub btnTVGeneralShowListSortingUp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVGeneralShowListSortingUp.Click
         Try
             If lvTVGeneralShowListSorting.Items.Count > 0 AndAlso lvTVGeneralShowListSorting.SelectedItems.Count > 0 AndAlso Not lvTVGeneralShowListSorting.SelectedItems(0).Index = 0 Then
                 Dim selItem As Settings.ListSorting = TVGeneralShowListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvTVGeneralShowListSorting.SelectedItems(0).Text))
@@ -1266,7 +1265,7 @@ Public Class dlgSettings
         End Try
     End Sub
 
-    Private Sub btnMovieGeneralMediaListSortingDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieGeneralMediaListSortingDown.Click
+    Private Sub btnMovieGeneralMediaListSortingDown_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieGeneralMediaListSortingDown.Click
         Try
             If lvMovieGeneralMediaListSorting.Items.Count > 0 AndAlso lvMovieGeneralMediaListSorting.SelectedItems.Count > 0 AndAlso lvMovieGeneralMediaListSorting.SelectedItems(0).Index < (lvMovieGeneralMediaListSorting.Items.Count - 1) Then
                 Dim selItem As Settings.ListSorting = MovieGeneralMediaListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvMovieGeneralMediaListSorting.SelectedItems(0).Text))
@@ -1296,7 +1295,7 @@ Public Class dlgSettings
         End Try
     End Sub
 
-    Private Sub btnMovieSetGeneralMediaListSortingDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieSetGeneralMediaListSortingDown.Click
+    Private Sub btnMovieSetGeneralMediaListSortingDown_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSetGeneralMediaListSortingDown.Click
         Try
             If lvMovieSetGeneralMediaListSorting.Items.Count > 0 AndAlso lvMovieSetGeneralMediaListSorting.SelectedItems.Count > 0 AndAlso lvMovieSetGeneralMediaListSorting.SelectedItems(0).Index < (lvMovieSetGeneralMediaListSorting.Items.Count - 1) Then
                 Dim selItem As Settings.ListSorting = MovieSetGeneralMediaListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvMovieSetGeneralMediaListSorting.SelectedItems(0).Text))
@@ -1326,7 +1325,7 @@ Public Class dlgSettings
         End Try
     End Sub
 
-    Private Sub btnTVGeneralEpisodeListSortingDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVGeneralEpisodeListSortingDown.Click
+    Private Sub btnTVGeneralEpisodeListSortingDown_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVGeneralEpisodeListSortingDown.Click
         Try
             If lvTVGeneralEpisodeListSorting.Items.Count > 0 AndAlso lvTVGeneralEpisodeListSorting.SelectedItems.Count > 0 AndAlso lvTVGeneralEpisodeListSorting.SelectedItems(0).Index < (lvTVGeneralEpisodeListSorting.Items.Count - 1) Then
                 Dim selItem As Settings.ListSorting = TVGeneralEpisodeListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvTVGeneralEpisodeListSorting.SelectedItems(0).Text))
@@ -1356,7 +1355,7 @@ Public Class dlgSettings
         End Try
     End Sub
 
-    Private Sub btnTVGeneralSeasonListSortingDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVGeneralSeasonListSortingDown.Click
+    Private Sub btnTVGeneralSeasonListSortingDown_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVGeneralSeasonListSortingDown.Click
         Try
             If lvTVGeneralSeasonListSorting.Items.Count > 0 AndAlso lvTVGeneralSeasonListSorting.SelectedItems.Count > 0 AndAlso lvTVGeneralSeasonListSorting.SelectedItems(0).Index < (lvTVGeneralSeasonListSorting.Items.Count - 1) Then
                 Dim selItem As Settings.ListSorting = TVGeneralSeasonListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvTVGeneralSeasonListSorting.SelectedItems(0).Text))
@@ -1386,7 +1385,7 @@ Public Class dlgSettings
         End Try
     End Sub
 
-    Private Sub btnTVGeneralShowListSortingDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVGeneralShowListSortingDown.Click
+    Private Sub btnTVGeneralShowListSortingDown_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVGeneralShowListSortingDown.Click
         Try
             If lvTVGeneralShowListSorting.Items.Count > 0 AndAlso lvTVGeneralShowListSorting.SelectedItems.Count > 0 AndAlso lvTVGeneralShowListSorting.SelectedItems(0).Index < (lvTVGeneralShowListSorting.Items.Count - 1) Then
                 Dim selItem As Settings.ListSorting = TVGeneralShowListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvTVGeneralShowListSorting.SelectedItems(0).Text))
@@ -1526,7 +1525,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub btnTVShowFilterReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVShowFilterReset.Click
+    Private Sub btnTVShowFilterReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVShowFilterReset.Click
         If MessageBox.Show(Master.eLang.GetString(840, "Are you sure you want to reset to the default list of show filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ShowFilters, True)
             RefreshTVShowFilters()
@@ -1534,7 +1533,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub btnTVEpisodeFilterReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVEpisodeFilterReset.Click
+    Private Sub btnTVEpisodeFilterReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVEpisodeFilterReset.Click
         If MessageBox.Show(Master.eLang.GetString(841, "Are you sure you want to reset to the default list of episode filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.EpFilters, True)
             RefreshTVEpisodeFilters()
@@ -1542,7 +1541,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub btnMovieFilterReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieFilterReset.Click
+    Private Sub btnMovieFilterReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieFilterReset.Click
         If MessageBox.Show(Master.eLang.GetString(842, "Are you sure you want to reset to the default list of movie filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieFilters, True)
             RefreshMovieFilters()
@@ -1550,7 +1549,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub btnFileSystemValidVideoExtsReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemValidVideoExtsReset.Click
+    Private Sub btnFileSystemValidVideoExtsReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemValidVideoExtsReset.Click
         If MessageBox.Show(Master.eLang.GetString(843, "Are you sure you want to reset to the default list of valid video extensions?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ValidExts, True)
             RefreshFileSystemValidExts()
@@ -1558,7 +1557,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub btnFileSystemValidSubtitlesExtsReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemValidSubtitlesExtsReset.Click
+    Private Sub btnFileSystemValidSubtitlesExtsReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemValidSubtitlesExtsReset.Click
         If MessageBox.Show(Master.eLang.GetString(1283, "Are you sure you want to reset to the default list of valid subtitle extensions?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ValidSubtitleExts, True)
             RefreshFileSystemValidSubtitlesExts()
@@ -1566,7 +1565,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub btnFileSystemValidThemeExtsReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemValidThemeExtsReset.Click
+    Private Sub btnFileSystemValidThemeExtsReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemValidThemeExtsReset.Click
         If MessageBox.Show(Master.eLang.GetString(1080, "Are you sure you want to reset to the default list of valid theme extensions?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ValidThemeExts, True)
             RefreshFileSystemValidThemeExts()
@@ -1574,7 +1573,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub btnTVSourcesRegexTVShowMatchingGet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVSourcesRegexTVShowMatchingGet.Click
+    Private Sub btnTVSourcesRegexTVShowMatchingGet_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSourcesRegexTVShowMatchingGet.Click
         Using dd As New dlgTVRegExProfiles
             If dd.ShowDialog() = Windows.Forms.DialogResult.OK Then
                 TVShowMatching.Clear()
@@ -1585,7 +1584,7 @@ Public Class dlgSettings
         End Using
     End Sub
 
-    Private Sub btnTVSourcesRegexTVShowMatchingReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVSourcesRegexTVShowMatchingReset.Click
+    Private Sub btnTVSourcesRegexTVShowMatchingReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSourcesRegexTVShowMatchingReset.Click
         If MessageBox.Show(Master.eLang.GetString(844, "Are you sure you want to reset to the default list of show regex?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVShowMatching, True)
             TVShowMatching.Clear()
@@ -1595,12 +1594,12 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub btnTVSourcesRegexMultiPartMatchingReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVSourcesRegexMultiPartMatchingReset.Click
+    Private Sub btnTVSourcesRegexMultiPartMatchingReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSourcesRegexMultiPartMatchingReset.Click
         txtTVSourcesRegexMultiPartMatching.Text = "^[-_ex]+([0-9]+(?:(?:[a-i]|\.[1-9])(?![0-9]))?)"
         SetApplyButton(True)
     End Sub
 
-    Private Sub btnMovieGeneralMediaListSortingReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieGeneralMediaListSortingReset.Click
+    Private Sub btnMovieGeneralMediaListSortingReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieGeneralMediaListSortingReset.Click
         Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieListSorting, True)
         MovieGeneralMediaListSorting.Clear()
         MovieGeneralMediaListSorting.AddRange(Master.eSettings.MovieGeneralMediaListSorting)
@@ -1608,7 +1607,7 @@ Public Class dlgSettings
         SetApplyButton(True)
     End Sub
 
-    Private Sub btnMovieSetGeneralMediaListSortingReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieSetGeneralMediaListSortingReset.Click
+    Private Sub btnMovieSetGeneralMediaListSortingReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSetGeneralMediaListSortingReset.Click
         Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieSetListSorting, True)
         MovieSetGeneralMediaListSorting.Clear()
         MovieSetGeneralMediaListSorting.AddRange(Master.eSettings.MovieSetGeneralMediaListSorting)
@@ -1616,7 +1615,7 @@ Public Class dlgSettings
         SetApplyButton(True)
     End Sub
 
-    Private Sub btnTVEpisodeGeneralMediaListSortingReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVGeneralEpisodeListSortingReset.Click
+    Private Sub btnTVEpisodeGeneralMediaListSortingReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVGeneralEpisodeListSortingReset.Click
         Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVEpisodeListSorting, True)
         TVGeneralEpisodeListSorting.Clear()
         TVGeneralEpisodeListSorting.AddRange(Master.eSettings.TVGeneralEpisodeListSorting)
@@ -1624,7 +1623,7 @@ Public Class dlgSettings
         SetApplyButton(True)
     End Sub
 
-    Private Sub btnTVSeasonGeneralMediaListSortingReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVGeneralSeasonListSortingReset.Click
+    Private Sub btnTVSeasonGeneralMediaListSortingReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVGeneralSeasonListSortingReset.Click
         Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVSeasonListSorting, True)
         TVGeneralSeasonListSorting.Clear()
         TVGeneralSeasonListSorting.AddRange(Master.eSettings.TVGeneralSeasonListSorting)
@@ -1632,7 +1631,7 @@ Public Class dlgSettings
         SetApplyButton(True)
     End Sub
 
-    Private Sub btnTVGeneralShowListSortingReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVGeneralShowListSortingReset.Click
+    Private Sub btnTVGeneralShowListSortingReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVGeneralShowListSortingReset.Click
         Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVShowListSorting, True)
         TVGeneralShowListSorting.Clear()
         TVGeneralShowListSorting.AddRange(Master.eSettings.TVGeneralShowListSorting)
@@ -1640,76 +1639,76 @@ Public Class dlgSettings
         SetApplyButton(True)
     End Sub
 
-    Private Sub btnFileSystemValidExtsRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemValidVideoExtsRemove.Click
+    Private Sub btnFileSystemValidExtsRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemValidVideoExtsRemove.Click
         RemoveFileSystemValidExts()
     End Sub
 
-    Private Sub btnFileSystemValidSubtitlesExtsRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemValidSubtitlesExtsRemove.Click
+    Private Sub btnFileSystemValidSubtitlesExtsRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemValidSubtitlesExtsRemove.Click
         RemoveFileSystemValidSubtitlesExts()
     End Sub
 
-    Private Sub btnFileSystemValidThemeExtsRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemValidThemeExtsRemove.Click
+    Private Sub btnFileSystemValidThemeExtsRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemValidThemeExtsRemove.Click
         RemoveFileSystemValidThemeExts()
     End Sub
 
-    Private Sub btnTVEpisodeFilterRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVEpisodeFilterRemove.Click
+    Private Sub btnTVEpisodeFilterRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVEpisodeFilterRemove.Click
         RemoveTVEpisodeFilter()
     End Sub
 
-    Private Sub btnMovieFilterRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieFilterRemove.Click
+    Private Sub btnMovieFilterRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieFilterRemove.Click
         RemoveMovieFilter()
     End Sub
 
-    Private Sub btnMovieScraperDefFIExtRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieScraperDefFIExtRemove.Click
+    Private Sub btnMovieScraperDefFIExtRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieScraperDefFIExtRemove.Click
         RemoveMovieMetaData()
     End Sub
 
-    Private Sub btnFileSystemNoStackExtsRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemNoStackExtsRemove.Click
+    Private Sub btnFileSystemNoStackExtsRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemNoStackExtsRemove.Click
         RemoveFileSystemNoStackExts()
     End Sub
 
-    Private Sub btnTVShowFilterRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVShowFilterRemove.Click
+    Private Sub btnTVShowFilterRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVShowFilterRemove.Click
         RemoveTVShowFilter()
     End Sub
 
-    Private Sub btnTVSourcesRegexTVShowMatchingRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVSourcesRegexTVShowMatchingRemove.Click
+    Private Sub btnTVSourcesRegexTVShowMatchingRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSourcesRegexTVShowMatchingRemove.Click
         RemoveTVShowMatching()
     End Sub
 
-    Private Sub btnMovieSortTokenRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieSortTokenRemove.Click
+    Private Sub btnMovieSortTokenRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSortTokenRemove.Click
         RemoveMovieSortToken()
     End Sub
 
-    Private Sub btnMovieSortTokenReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieSortTokenReset.Click
+    Private Sub btnMovieSortTokenReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSortTokenReset.Click
         Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieSortTokens, True)
         RefreshMovieSortTokens()
         sResult.NeedsReload_Movie = True
         SetApplyButton(True)
     End Sub
 
-    Private Sub btnMovieSetSortTokenRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieSetSortTokenRemove.Click
+    Private Sub btnMovieSetSortTokenRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSetSortTokenRemove.Click
         RemoveMovieSetSortToken()
     End Sub
 
-    Private Sub btnMovieSetSortTokenReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieSetSortTokenReset.Click
+    Private Sub btnMovieSetSortTokenReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSetSortTokenReset.Click
         Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieSetSortTokens, True)
         RefreshMovieSetSortTokens()
         sResult.NeedsReload_MovieSet = True
         SetApplyButton(True)
     End Sub
 
-    Private Sub btnTVSortTokenRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVSortTokenRemove.Click
+    Private Sub btnTVSortTokenRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSortTokenRemove.Click
         RemoveTVSortToken()
     End Sub
 
-    Private Sub btnTVSortTokenReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVSortTokenReset.Click
+    Private Sub btnTVSortTokenReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSortTokenReset.Click
         Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVSortTokens, True)
         RefreshTVSortTokens()
         sResult.NeedsReload_TVShow = True
         SetApplyButton(True)
     End Sub
 
-    Private Sub btnTVGeneralLangFetch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVGeneralLangFetch.Click
+    Private Sub btnTVGeneralLangFetch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVGeneralLangFetch.Click
         Master.eSettings.TVGeneralLanguages = ModulesManager.Instance.GetTVLanguages()
         cbTVGeneralLang.Items.Clear()
         cbTVGeneralLang.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
@@ -1719,11 +1718,11 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub btnTVScraperDefFIExtRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVScraperDefFIExtRemove.Click
+    Private Sub btnTVScraperDefFIExtRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVScraperDefFIExtRemove.Click
         RemoveTVMetaData()
     End Sub
 
-    Private Sub btnFileSystemCleanerWhitelistRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileSystemCleanerWhitelistRemove.Click
+    Private Sub btnFileSystemCleanerWhitelistRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemCleanerWhitelistRemove.Click
         If lstFileSystemCleanerWhitelist.Items.Count > 0 AndAlso lstFileSystemCleanerWhitelist.SelectedItems.Count > 0 Then
             While lstFileSystemCleanerWhitelist.SelectedItems.Count > 0
                 lstFileSystemCleanerWhitelist.Items.Remove(lstFileSystemCleanerWhitelist.SelectedItems(0))
@@ -1732,12 +1731,12 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub btnRemTVSource_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemTVSource.Click
+    Private Sub btnRemTVSource_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRemTVSource.Click
         RemoveTVSource()
         Master.DB.LoadTVShowSourcesFromDB()
     End Sub
 
-    Private Sub btnTVShowFilterDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVShowFilterDown.Click
+    Private Sub btnTVShowFilterDown_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVShowFilterDown.Click
         Try
             If lstTVShowFilter.Items.Count > 0 AndAlso lstTVShowFilter.SelectedItem IsNot Nothing AndAlso lstTVShowFilter.SelectedIndex < (lstTVShowFilter.Items.Count - 1) Then
                 Dim iIndex As Integer = lstTVShowFilter.SelectedIndices(0)
@@ -1753,7 +1752,7 @@ Public Class dlgSettings
         End Try
     End Sub
 
-    Private Sub btnTVShowFilterUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVShowFilterUp.Click
+    Private Sub btnTVShowFilterUp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVShowFilterUp.Click
         Try
             If lstTVShowFilter.Items.Count > 0 AndAlso lstTVShowFilter.SelectedItem IsNot Nothing AndAlso lstTVShowFilter.SelectedIndex > 0 Then
                 Dim iIndex As Integer = lstTVShowFilter.SelectedIndices(0)
@@ -1770,7 +1769,7 @@ Public Class dlgSettings
     End Sub
 
 
-    Private Sub btnMovieFilterUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieFilterUp.Click
+    Private Sub btnMovieFilterUp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieFilterUp.Click
         Try
             If lstMovieFilters.Items.Count > 0 AndAlso lstMovieFilters.SelectedItem IsNot Nothing AndAlso lstMovieFilters.SelectedIndex > 0 Then
                 Dim iIndex As Integer = lstMovieFilters.SelectedIndices(0)
@@ -1786,14 +1785,14 @@ Public Class dlgSettings
         End Try
     End Sub
 
-    Private Sub cbGeneralLanguage_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbGeneralLanguage.SelectedIndexChanged
+    Private Sub cbGeneralLanguage_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cbGeneralLanguage.SelectedIndexChanged
         If Not cbGeneralLanguage.SelectedItem.ToString = Master.eSettings.GeneralLanguage Then
             Handle_SetupNeedsRestart()
         End If
         SetApplyButton(True)
     End Sub
 
-    Private Sub cbMovieTrailerPrefVideoQual_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbMovieTrailerPrefVideoQual.SelectedIndexChanged
+    Private Sub cbMovieTrailerPrefVideoQual_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cbMovieTrailerPrefVideoQual.SelectedIndexChanged
         If CType(cbMovieTrailerPrefVideoQual.SelectedItem, KeyValuePair(Of String, Enums.TrailerVideoQuality)).Value = Enums.TrailerVideoQuality.Any Then
             cbMovieTrailerMinVideoQual.Enabled = False
         Else
@@ -1815,17 +1814,17 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkMovieClickScrape_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieClickScrape.CheckedChanged
+    Private Sub chkMovieClickScrape_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieClickScrape.CheckedChanged
         chkMovieClickScrapeAsk.Enabled = chkMovieClickScrape.Checked
         SetApplyButton(True)
     End Sub
 
-    Private Sub chkTVGeneralClickScrape_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVGeneralClickScrape.CheckedChanged
+    Private Sub chkTVGeneralClickScrape_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVGeneralClickScrape.CheckedChanged
         chkTVGeneralClickScrapeAsk.Enabled = chkTVGeneralClickScrape.Checked
         SetApplyButton(True)
     End Sub
 
-    Private Sub chkMovieScraperStudio_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperStudio.CheckedChanged
+    Private Sub chkMovieScraperStudio_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieScraperStudio.CheckedChanged
         SetApplyButton(True)
         chkMovieScraperStudioWithImg.Enabled = chkMovieScraperStudio.Checked
         txtMovieScraperStudioLimit.Enabled = chkMovieScraperStudio.Checked
@@ -1834,7 +1833,7 @@ Public Class dlgSettings
             txtMovieScraperStudioLimit.Text = "0"
         End If
     End Sub
-    Private Sub chkMovieScraperCast_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperCast.CheckedChanged
+    Private Sub chkMovieScraperCast_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieScraperCast.CheckedChanged
         SetApplyButton(True)
 
         chkMovieScraperCastWithImg.Enabled = chkMovieScraperCast.Checked
@@ -1846,7 +1845,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkMovieScraperCert_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperCert.CheckedChanged
+    Private Sub chkMovieScraperCert_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieScraperCert.CheckedChanged
         SetApplyButton(True)
 
         If Not chkMovieScraperCert.Checked Then
@@ -1867,7 +1866,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkTVScraperShowCert_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperShowCert.CheckedChanged
+    Private Sub chkTVScraperShowCert_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVScraperShowCert.CheckedChanged
         SetApplyButton(True)
 
         If Not chkTVScraperShowCert.Checked Then
@@ -1888,7 +1887,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkMovieScraperCertForMPAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperCertForMPAA.CheckedChanged
+    Private Sub chkMovieScraperCertForMPAA_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieScraperCertForMPAA.CheckedChanged
         SetApplyButton(True)
 
         If Not chkMovieScraperCertForMPAA.Checked Then
@@ -1899,7 +1898,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkTVScraperShowCertForMPAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperShowCertForMPAA.CheckedChanged
+    Private Sub chkTVScraperShowCertForMPAA_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVScraperShowCertForMPAA.CheckedChanged
         SetApplyButton(True)
 
         If Not chkTVScraperShowCertForMPAA.Checked Then
@@ -1909,24 +1908,24 @@ Public Class dlgSettings
             chkTVScraperShowCertForMPAAFallback.Enabled = True
         End If
     End Sub
-    Private Sub chkMovieLevTolerance_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieLevTolerance.CheckedChanged
+    Private Sub chkMovieLevTolerance_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieLevTolerance.CheckedChanged
         SetApplyButton(True)
 
         txtMovieLevTolerance.Enabled = chkMovieLevTolerance.Checked
         If Not chkMovieLevTolerance.Checked Then txtMovieLevTolerance.Text = String.Empty
     End Sub
 
-    Private Sub chkMovieDisplayYear_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieDisplayYear.CheckedChanged
+    Private Sub chkMovieDisplayYear_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieDisplayYear.CheckedChanged
         sResult.NeedsReload_Movie = True
         SetApplyButton(True)
     End Sub
 
-    Private Sub chkTVDisplayStatus_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVDisplayStatus.CheckedChanged
+    Private Sub chkTVDisplayStatus_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVDisplayStatus.CheckedChanged
         sResult.NeedsReload_TVShow = True
         SetApplyButton(True)
     End Sub
 
-    Private Sub chkProxyCredsEnable_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkProxyCredsEnable.CheckedChanged
+    Private Sub chkProxyCredsEnable_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkProxyCredsEnable.CheckedChanged
         SetApplyButton(True)
         txtProxyUsername.Enabled = chkProxyCredsEnable.Checked
         txtProxyPassword.Enabled = chkProxyCredsEnable.Checked
@@ -1939,7 +1938,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkProxyEnable_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkProxyEnable.CheckedChanged
+    Private Sub chkProxyEnable_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkProxyEnable.CheckedChanged
         SetApplyButton(True)
         txtProxyURI.Enabled = chkProxyEnable.Checked
         txtProxyPort.Enabled = chkProxyEnable.Checked
@@ -1955,13 +1954,13 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkTVEpisodeProperCase_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVEpisodeProperCase.CheckedChanged
+    Private Sub chkTVEpisodeProperCase_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVEpisodeProperCase.CheckedChanged
         SetApplyButton(True)
         sResult.NeedsReload_TVEpisode = True
     End Sub
 
 
-    Private Sub chkMovieScraperGenre_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperGenre.CheckedChanged
+    Private Sub chkMovieScraperGenre_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieScraperGenre.CheckedChanged
         SetApplyButton(True)
 
         txtMovieScraperGenreLimit.Enabled = chkMovieScraperGenre.Checked
@@ -1969,52 +1968,52 @@ Public Class dlgSettings
         If Not chkMovieScraperGenre.Checked Then txtMovieScraperGenreLimit.Text = "0"
     End Sub
 
-    Private Sub chkGeneralDisplayBanner_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralDisplayBanner.CheckedChanged
+    Private Sub chkGeneralDisplayBanner_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkGeneralDisplayBanner.CheckedChanged
         SetApplyButton(True)
         CheckHideSettings()
     End Sub
 
-    Private Sub chkGeneralDisplayCharacterArt_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralDisplayCharacterArt.CheckedChanged
+    Private Sub chkGeneralDisplayCharacterArt_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkGeneralDisplayCharacterArt.CheckedChanged
         SetApplyButton(True)
         CheckHideSettings()
     End Sub
 
-    Private Sub chkGeneralDisplayClearArt_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralDisplayClearArt.CheckedChanged
+    Private Sub chkGeneralDisplayClearArt_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkGeneralDisplayClearArt.CheckedChanged
         SetApplyButton(True)
         CheckHideSettings()
     End Sub
 
-    Private Sub chkGeneralDisplayClearLogo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralDisplayClearLogo.CheckedChanged
+    Private Sub chkGeneralDisplayClearLogo_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkGeneralDisplayClearLogo.CheckedChanged
         SetApplyButton(True)
         CheckHideSettings()
     End Sub
 
-    Private Sub chkGeneralDisplayDiscArt_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralDisplayDiscArt.CheckedChanged
+    Private Sub chkGeneralDisplayDiscArt_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkGeneralDisplayDiscArt.CheckedChanged
         SetApplyButton(True)
         CheckHideSettings()
     End Sub
 
-    Private Sub chkGeneralDisplayFanart_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralDisplayFanart.CheckedChanged
+    Private Sub chkGeneralDisplayFanart_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkGeneralDisplayFanart.CheckedChanged
         SetApplyButton(True)
         CheckHideSettings()
     End Sub
 
-    Private Sub chkGeneralDisplayLandscape_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralDisplayLandscape.CheckedChanged
+    Private Sub chkGeneralDisplayLandscape_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkGeneralDisplayLandscape.CheckedChanged
         SetApplyButton(True)
         CheckHideSettings()
     End Sub
 
-    Private Sub chkGeneralDisplayPoster_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralDisplayPoster.CheckedChanged
+    Private Sub chkGeneralDisplayPoster_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkGeneralDisplayPoster.CheckedChanged
         SetApplyButton(True)
         CheckHideSettings()
     End Sub
 
-    Private Sub chkGeneralDisplayFanartSmall_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkGeneralDisplayFanartSmall.CheckedChanged
+    Private Sub chkGeneralDisplayFanartSmall_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkGeneralDisplayFanartSmall.CheckedChanged
         SetApplyButton(True)
         CheckHideSettings()
     End Sub
 
-    Private Sub chkTVEpisodeNoFilter_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVEpisodeNoFilter.CheckedChanged
+    Private Sub chkTVEpisodeNoFilter_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVEpisodeNoFilter.CheckedChanged
         SetApplyButton(True)
 
         chkTVEpisodeProperCase.Enabled = Not chkTVEpisodeNoFilter.Checked
@@ -2026,7 +2025,7 @@ Public Class dlgSettings
         btnTVEpisodeFilterRemove.Enabled = Not chkTVEpisodeNoFilter.Checked
     End Sub
 
-    Private Sub chkMovieScraperPlotForOutline_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperPlotForOutline.CheckedChanged
+    Private Sub chkMovieScraperPlotForOutline_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieScraperPlotForOutline.CheckedChanged
         SetApplyButton(True)
 
         txtMovieScraperOutlineLimit.Enabled = chkMovieScraperPlotForOutline.Checked
@@ -2038,7 +2037,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkMovieScraperPlot_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperPlot.CheckedChanged
+    Private Sub chkMovieScraperPlot_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieScraperPlot.CheckedChanged
         SetApplyButton(True)
 
         chkMovieScraperPlotForOutline.Enabled = chkMovieScraperPlot.Checked
@@ -2048,12 +2047,12 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkMovieProperCase_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieProperCase.CheckedChanged
+    Private Sub chkMovieProperCase_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieProperCase.CheckedChanged
         SetApplyButton(True)
         sResult.NeedsReload_Movie = True
     End Sub
 
-    Private Sub chkTVAllSeasonsBannerResize_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVAllSeasonsBannerResize.CheckedChanged
+    Private Sub chkTVAllSeasonsBannerResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVAllSeasonsBannerResize.CheckedChanged
         SetApplyButton(True)
 
         txtTVAllSeasonsBannerWidth.Enabled = chkTVAllSeasonsBannerResize.Checked
@@ -2065,7 +2064,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkTVAllSeasonsFanartResize_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVAllSeasonsFanartResize.CheckedChanged
+    Private Sub chkTVAllSeasonsFanartResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVAllSeasonsFanartResize.CheckedChanged
         SetApplyButton(True)
 
         txtTVAllSeasonsFanartWidth.Enabled = chkTVAllSeasonsFanartResize.Checked
@@ -2077,7 +2076,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkTVAllSeasonsosterResize_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVAllSeasonsPosterResize.CheckedChanged
+    Private Sub chkTVAllSeasonsosterResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVAllSeasonsPosterResize.CheckedChanged
         SetApplyButton(True)
 
         txtTVAllSeasonsPosterWidth.Enabled = chkTVAllSeasonsPosterResize.Checked
@@ -2089,7 +2088,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkTVEpisodeFanartResize_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVEpisodeFanartResize.CheckedChanged
+    Private Sub chkTVEpisodeFanartResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVEpisodeFanartResize.CheckedChanged
         SetApplyButton(True)
 
         txtTVEpisodeFanartWidth.Enabled = chkTVEpisodeFanartResize.Checked
@@ -2101,7 +2100,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkTVEpisodePosterResize_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVEpisodePosterResize.CheckedChanged
+    Private Sub chkTVEpisodePosterResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVEpisodePosterResize.CheckedChanged
         SetApplyButton(True)
 
         txtTVEpisodePosterWidth.Enabled = chkTVEpisodePosterResize.Checked
@@ -2113,7 +2112,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkMovieBannerResize_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieBannerResize.CheckedChanged
+    Private Sub chkMovieBannerResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieBannerResize.CheckedChanged
         SetApplyButton(True)
 
         txtMovieBannerWidth.Enabled = chkMovieBannerResize.Checked
@@ -2125,7 +2124,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkMovieExtrafanartsResize_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieExtrafanartsResize.CheckedChanged
+    Private Sub chkMovieExtrafanartsResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieExtrafanartsResize.CheckedChanged
         SetApplyButton(True)
 
         txtMovieExtrafanartsWidth.Enabled = chkMovieExtrafanartsResize.Checked
@@ -2137,7 +2136,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkTVShowExtrafanartsResize_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowExtrafanartsResize.CheckedChanged
+    Private Sub chkTVShowExtrafanartsResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVShowExtrafanartsResize.CheckedChanged
         SetApplyButton(True)
 
         txtTVShowExtrafanartsWidth.Enabled = chkTVShowExtrafanartsResize.Checked
@@ -2149,7 +2148,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkMovieExtrathumbsResize_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieExtrathumbsResize.CheckedChanged
+    Private Sub chkMovieExtrathumbsResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieExtrathumbsResize.CheckedChanged
         SetApplyButton(True)
 
         txtMovieExtrathumbsWidth.Enabled = chkMovieExtrathumbsResize.Checked
@@ -2161,7 +2160,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkMovieFanartResize_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieFanartResize.CheckedChanged
+    Private Sub chkMovieFanartResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieFanartResize.CheckedChanged
         SetApplyButton(True)
 
         txtMovieFanartWidth.Enabled = chkMovieFanartResize.Checked
@@ -2173,7 +2172,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkMoviePosterResize_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMoviePosterResize.CheckedChanged
+    Private Sub chkMoviePosterResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMoviePosterResize.CheckedChanged
         SetApplyButton(True)
 
         txtMoviePosterWidth.Enabled = chkMoviePosterResize.Checked
@@ -2185,7 +2184,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkMovieSetBannerResize_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetBannerResize.CheckedChanged
+    Private Sub chkMovieSetBannerResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieSetBannerResize.CheckedChanged
         SetApplyButton(True)
 
         txtMovieSetBannerWidth.Enabled = chkMovieSetBannerResize.Checked
@@ -2197,7 +2196,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkMovieSetFanartResize_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetFanartResize.CheckedChanged
+    Private Sub chkMovieSetFanartResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieSetFanartResize.CheckedChanged
         SetApplyButton(True)
 
         txtMovieSetFanartWidth.Enabled = chkMovieSetFanartResize.Checked
@@ -2209,7 +2208,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkMovieSetPosterResize_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetPosterResize.CheckedChanged
+    Private Sub chkMovieSetPosterResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieSetPosterResize.CheckedChanged
         SetApplyButton(True)
 
         txtMovieSetPosterWidth.Enabled = chkMovieSetPosterResize.Checked
@@ -2221,7 +2220,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkTVShowbannerResize_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowBannerResize.CheckedChanged
+    Private Sub chkTVShowbannerResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVShowBannerResize.CheckedChanged
         SetApplyButton(True)
 
         txtTVShowBannerWidth.Enabled = chkTVShowBannerResize.Checked
@@ -2233,7 +2232,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkTVShowFanartResize_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowFanartResize.CheckedChanged
+    Private Sub chkTVShowFanartResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVShowFanartResize.CheckedChanged
         SetApplyButton(True)
 
         txtTVShowFanartWidth.Enabled = chkTVShowFanartResize.Checked
@@ -2245,7 +2244,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkTVShowPosterResize_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowPosterResize.CheckedChanged
+    Private Sub chkTVShowPosterResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVShowPosterResize.CheckedChanged
         SetApplyButton(True)
 
         txtTVShowPosterWidth.Enabled = chkTVShowPosterResize.Checked
@@ -2257,7 +2256,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkTVScraperShowRuntime_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperShowRuntime.CheckedChanged
+    Private Sub chkTVScraperShowRuntime_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVScraperShowRuntime.CheckedChanged
         chkTVScraperUseSRuntimeForEp.Enabled = chkTVScraperShowRuntime.Checked
         If Not chkTVScraperShowRuntime.Checked Then
             chkTVScraperUseSRuntimeForEp.Checked = False
@@ -2265,7 +2264,7 @@ Public Class dlgSettings
         SetApplyButton(True)
     End Sub
 
-    Private Sub chkTVSeasonbannerResize_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVSeasonBannerResize.CheckedChanged
+    Private Sub chkTVSeasonbannerResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVSeasonBannerResize.CheckedChanged
         SetApplyButton(True)
 
         txtTVSeasonBannerWidth.Enabled = chkTVSeasonBannerResize.Checked
@@ -2277,7 +2276,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkTVSeasonFanartResize_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVSeasonFanartResize.CheckedChanged
+    Private Sub chkTVSeasonFanartResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVSeasonFanartResize.CheckedChanged
         SetApplyButton(True)
 
         txtTVSeasonFanartWidth.Enabled = chkTVSeasonFanartResize.Checked
@@ -2289,7 +2288,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkTVSeasonPosterResize_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVSeasonPosterResize.CheckedChanged
+    Private Sub chkTVSeasonPosterResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVSeasonPosterResize.CheckedChanged
         SetApplyButton(True)
 
         txtTVSeasonPosterWidth.Enabled = chkTVSeasonPosterResize.Checked
@@ -2301,12 +2300,12 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkTVShowProperCase_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowProperCase.CheckedChanged
+    Private Sub chkTVShowProperCase_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVShowProperCase.CheckedChanged
         SetApplyButton(True)
         sResult.NeedsReload_TVShow = True
     End Sub
 
-    Private Sub chkMovieScraperCollectionID_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperCollectionID.CheckedChanged
+    Private Sub chkMovieScraperCollectionID_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieScraperCollectionID.CheckedChanged
         SetApplyButton(True)
 
         chkMovieScraperCollectionsAuto.Enabled = chkMovieScraperCollectionID.Checked
@@ -2315,7 +2314,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkTVScraperMetaDataScan_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperMetaDataScan.CheckedChanged
+    Private Sub chkTVScraperMetaDataScan_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVScraperMetaDataScan.CheckedChanged
         SetApplyButton(True)
 
         cbTVLanguageOverlay.Enabled = chkTVScraperMetaDataScan.Checked
@@ -2325,7 +2324,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkMovieUseAD_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieUseAD.CheckedChanged
+    Private Sub chkMovieUseAD_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieUseAD.CheckedChanged
         SetApplyButton(True)
 
         chkMovieBannerAD.Enabled = chkMovieUseAD.Checked
@@ -2349,7 +2348,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkMovieUseBoxee_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieUseBoxee.CheckedChanged
+    Private Sub chkMovieUseBoxee_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieUseBoxee.CheckedChanged
         SetApplyButton(True)
 
         chkMovieFanartBoxee.Enabled = chkMovieUseBoxee.Checked
@@ -2367,7 +2366,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkMovieUseKodiExtended_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieUseExtended.CheckedChanged
+    Private Sub chkMovieUseKodiExtended_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieUseExtended.CheckedChanged
         SetApplyButton(True)
 
         chkMovieBannerExtended.Enabled = chkMovieUseExtended.Checked
@@ -2391,7 +2390,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkMovieUseFrodo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieUseFrodo.CheckedChanged
+    Private Sub chkMovieUseFrodo_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieUseFrodo.CheckedChanged
         SetApplyButton(True)
 
         chkMovieActorThumbsFrodo.Enabled = chkMovieUseFrodo.Checked
@@ -2423,7 +2422,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkMovieUseEden_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieUseEden.CheckedChanged
+    Private Sub chkMovieUseEden_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieUseEden.CheckedChanged
         SetApplyButton(True)
 
         chkMovieActorThumbsEden.Enabled = chkMovieUseEden.Checked
@@ -2455,7 +2454,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkMovieUseYAMJ_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieUseYAMJ.CheckedChanged
+    Private Sub chkMovieUseYAMJ_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieUseYAMJ.CheckedChanged
         SetApplyButton(True)
 
         chkMovieBannerYAMJ.Enabled = chkMovieUseYAMJ.Checked
@@ -2481,7 +2480,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkMovieUseNMJ_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieUseNMJ.CheckedChanged
+    Private Sub chkMovieUseNMJ_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieUseNMJ.CheckedChanged
         SetApplyButton(True)
 
         chkMovieBannerNMJ.Enabled = chkMovieUseNMJ.Checked
@@ -2505,7 +2504,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkMovieSetUseExtended_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetUseExtended.CheckedChanged
+    Private Sub chkMovieSetUseExtended_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieSetUseExtended.CheckedChanged
         SetApplyButton(True)
 
         btnMovieSetPathExtendedBrowse.Enabled = chkMovieSetUseExtended.Checked
@@ -2537,7 +2536,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkMovieSetUseMSAA_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetUseMSAA.CheckedChanged
+    Private Sub chkMovieSetUseMSAA_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieSetUseMSAA.CheckedChanged
         SetApplyButton(True)
 
         btnMovieSetPathMSAABrowse.Enabled = chkMovieSetUseMSAA.Checked
@@ -2566,17 +2565,17 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkMovieScraperUseMDDuration_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieScraperUseMDDuration.CheckedChanged
+    Private Sub chkMovieScraperUseMDDuration_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieScraperUseMDDuration.CheckedChanged
         txtMovieScraperDurationRuntimeFormat.Enabled = chkMovieScraperUseMDDuration.Checked
         SetApplyButton(True)
     End Sub
 
-    Private Sub chkTVScraperUseMDDuration_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVScraperUseMDDuration.CheckedChanged
+    Private Sub chkTVScraperUseMDDuration_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVScraperUseMDDuration.CheckedChanged
         txtTVScraperDurationRuntimeFormat.Enabled = chkTVScraperUseMDDuration.Checked
         SetApplyButton(True)
     End Sub
 
-    Private Sub chkMovieThemeTvTunesCustom_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieThemeTvTunesCustom.CheckedChanged
+    Private Sub chkMovieThemeTvTunesCustom_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieThemeTvTunesCustom.CheckedChanged
         SetApplyButton(True)
 
         txtMovieThemeTvTunesCustomPath.Enabled = chkMovieThemeTvTunesCustom.Checked
@@ -2595,7 +2594,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkTVShowThemeTvTunesCustom_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowThemeTvTunesCustom.CheckedChanged
+    Private Sub chkTVShowThemeTvTunesCustom_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVShowThemeTvTunesCustom.CheckedChanged
         SetApplyButton(True)
 
         txtTVShowThemeTvTunesCustomPath.Enabled = chkTVShowThemeTvTunesCustom.Checked
@@ -2614,7 +2613,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkMovieThemeTvTunesEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieThemeTvTunesEnabled.CheckedChanged
+    Private Sub chkMovieThemeTvTunesEnabled_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieThemeTvTunesEnabled.CheckedChanged
         SetApplyButton(True)
 
         chkMovieThemeTvTunesCustom.Enabled = chkMovieThemeTvTunesEnabled.Checked
@@ -2630,7 +2629,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkTVShowThemeTvTunesEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowThemeTvTunesEnabled.CheckedChanged
+    Private Sub chkTVShowThemeTvTunesEnabled_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVShowThemeTvTunesEnabled.CheckedChanged
         SetApplyButton(True)
 
         chkTVShowThemeTvTunesCustom.Enabled = chkTVShowThemeTvTunesEnabled.Checked
@@ -2646,7 +2645,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkMovieThemeTvTunesMoviePath_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieThemeTvTunesMoviePath.CheckedChanged
+    Private Sub chkMovieThemeTvTunesMoviePath_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieThemeTvTunesMoviePath.CheckedChanged
         SetApplyButton(True)
 
         If chkMovieThemeTvTunesMoviePath.Checked Then
@@ -2662,7 +2661,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkTVShowThemeTvTunesTVShowPath_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowThemeTvTunesShowPath.CheckedChanged
+    Private Sub chkTVShowThemeTvTunesTVShowPath_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVShowThemeTvTunesShowPath.CheckedChanged
         SetApplyButton(True)
 
         If chkTVShowThemeTvTunesShowPath.Checked Then
@@ -2678,7 +2677,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkMovieThemeTvTunesSub_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieThemeTvTunesSub.CheckedChanged
+    Private Sub chkMovieThemeTvTunesSub_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieThemeTvTunesSub.CheckedChanged
         SetApplyButton(True)
 
         txtMovieThemeTvTunesSubDir.Enabled = chkMovieThemeTvTunesSub.Checked
@@ -2696,7 +2695,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkTVShowThemeTvTunesSub_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVShowThemeTvTunesSub.CheckedChanged
+    Private Sub chkTVShowThemeTvTunesSub_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVShowThemeTvTunesSub.CheckedChanged
         SetApplyButton(True)
 
         txtTVShowThemeTvTunesSubDir.Enabled = chkTVShowThemeTvTunesSub.Checked
@@ -2714,7 +2713,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkMovieYAMJWatchedFile_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieYAMJWatchedFile.CheckedChanged
+    Private Sub chkMovieYAMJWatchedFile_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieYAMJWatchedFile.CheckedChanged
         txtMovieYAMJWatchedFolder.Enabled = chkMovieYAMJWatchedFile.Checked
         btnMovieYAMJWatchedFilesBrowse.Enabled = chkMovieYAMJWatchedFile.Checked
         SetApplyButton(True)
@@ -2729,7 +2728,7 @@ Public Class dlgSettings
         chkTVSourcesRegexTVShowMatchingByDate.Checked = False
     End Sub
 
-    Private Sub dlgSettings_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+    Private Sub dlgSettings_Shown(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Shown
         Activate()
     End Sub
 
@@ -2825,10 +2824,10 @@ Public Class dlgSettings
 
     Private Sub FillSettings()
         With Master.eSettings
-            btnMovieGeneralCustomMarker1.BackColor = System.Drawing.Color.FromArgb(.MovieGeneralCustomMarker1Color)
-            btnMovieGeneralCustomMarker2.BackColor = System.Drawing.Color.FromArgb(.MovieGeneralCustomMarker2Color)
-            btnMovieGeneralCustomMarker3.BackColor = System.Drawing.Color.FromArgb(.MovieGeneralCustomMarker3Color)
-            btnMovieGeneralCustomMarker4.BackColor = System.Drawing.Color.FromArgb(.MovieGeneralCustomMarker4Color)
+            btnMovieGeneralCustomMarker1.BackColor = Color.FromArgb(.MovieGeneralCustomMarker1Color)
+            btnMovieGeneralCustomMarker2.BackColor = Color.FromArgb(.MovieGeneralCustomMarker2Color)
+            btnMovieGeneralCustomMarker3.BackColor = Color.FromArgb(.MovieGeneralCustomMarker3Color)
+            btnMovieGeneralCustomMarker4.BackColor = Color.FromArgb(.MovieGeneralCustomMarker4Color)
             cbGeneralDaemonDrive.SelectedItem = .GeneralDaemonDrive
             cbGeneralDateTime.SelectedIndex = .GeneralDateTime
             cbGeneralLanguage.SelectedItem = .GeneralLanguage
@@ -3697,7 +3696,7 @@ Public Class dlgSettings
         End With
     End Sub
 
-    Private Sub frmSettings_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub frmSettings_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         Functions.PNLDoubleBuffer(pnlSettingsMain)
         SetUp()
         AddPanels()
@@ -3831,15 +3830,15 @@ Public Class dlgSettings
         SetApplyButton(True)
     End Sub
 
-    Private Sub HelpMouseEnter(ByVal sender As Object, ByVal e As System.EventArgs)
+    Private Sub HelpMouseEnter(ByVal sender As Object, ByVal e As EventArgs)
         lblHelp.Text = dHelp.Item(DirectCast(sender, Control).AccessibleDescription)
     End Sub
 
-    Private Sub HelpMouseLeave(ByVal sender As Object, ByVal e As System.EventArgs)
+    Private Sub HelpMouseLeave(ByVal sender As Object, ByVal e As EventArgs)
         lblHelp.Text = String.Empty
     End Sub
 
-    Private Sub clbMovieGenre_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles clbMovieGenre.ItemCheck
+    Private Sub clbMovieGenre_ItemCheck(ByVal sender As Object, ByVal e As ItemCheckEventArgs) Handles clbMovieGenre.ItemCheck
         If e.Index = 0 Then
             For i As Integer = 1 To clbMovieGenre.Items.Count - 1
                 clbMovieGenre.SetItemChecked(i, False)
@@ -4172,15 +4171,15 @@ Public Class dlgSettings
         Next
     End Sub
 
-    Private Sub lstTVEpisodeFilter_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lstTVEpisodeFilter.KeyDown
+    Private Sub lstTVEpisodeFilter_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lstTVEpisodeFilter.KeyDown
         If e.KeyCode = Keys.Delete Then RemoveTVEpisodeFilter()
     End Sub
 
-    Private Sub lstMovieFilters_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lstMovieFilters.KeyDown
+    Private Sub lstMovieFilters_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lstMovieFilters.KeyDown
         If e.KeyCode = Keys.Delete Then RemoveMovieFilter()
     End Sub
 
-    Private Sub lstMovieScraperDefFIExt_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lstMovieScraperDefFIExt.DoubleClick
+    Private Sub lstMovieScraperDefFIExt_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles lstMovieScraperDefFIExt.DoubleClick
         If lstMovieScraperDefFIExt.SelectedItems.Count > 0 Then
             Using dEditMeta As New dlgFileInfo(New Database.DBElement(Enums.ContentType.Movie), False)
                 Dim fi As New MediaInfo.Fileinfo
@@ -4204,11 +4203,11 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub lstMovieScraperDefFIExt_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lstMovieScraperDefFIExt.KeyDown
+    Private Sub lstMovieScraperDefFIExt_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lstMovieScraperDefFIExt.KeyDown
         If e.KeyCode = Keys.Delete Then RemoveMovieMetaData()
     End Sub
 
-    Private Sub lstMovieScraperDefFIExt_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lstMovieScraperDefFIExt.SelectedIndexChanged
+    Private Sub lstMovieScraperDefFIExt_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles lstMovieScraperDefFIExt.SelectedIndexChanged
         If lstMovieScraperDefFIExt.SelectedItems.Count > 0 Then
             btnMovieScraperDefFIExtEdit.Enabled = True
             btnMovieScraperDefFIExtRemove.Enabled = True
@@ -4219,39 +4218,39 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub lstFileSystemValidExts_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lstFileSystemValidVideoExts.KeyDown
+    Private Sub lstFileSystemValidExts_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lstFileSystemValidVideoExts.KeyDown
         If e.KeyCode = Keys.Delete Then RemoveFileSystemValidExts()
     End Sub
 
-    Private Sub lstFileSystemValidSubtitlesExts_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lstFileSystemValidSubtitlesExts.KeyDown
+    Private Sub lstFileSystemValidSubtitlesExts_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lstFileSystemValidSubtitlesExts.KeyDown
         If e.KeyCode = Keys.Delete Then RemoveFileSystemValidSubtitlesExts()
     End Sub
 
-    Private Sub lstFileSystemValidThemeExts_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lstFileSystemValidThemeExts.KeyDown
+    Private Sub lstFileSystemValidThemeExts_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lstFileSystemValidThemeExts.KeyDown
         If e.KeyCode = Keys.Delete Then RemoveFileSystemValidThemeExts()
     End Sub
 
-    Private Sub lstFileSystemNoStackExts_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lstFileSystemNoStackExts.KeyDown
+    Private Sub lstFileSystemNoStackExts_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lstFileSystemNoStackExts.KeyDown
         If e.KeyCode = Keys.Delete Then RemoveFileSystemNoStackExts()
     End Sub
 
-    Private Sub lstTVShowFilter_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lstTVShowFilter.KeyDown
+    Private Sub lstTVShowFilter_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lstTVShowFilter.KeyDown
         If e.KeyCode = Keys.Delete Then RemoveTVShowFilter()
     End Sub
 
-    Private Sub lstMovieSortTokens_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lstMovieSortTokens.KeyDown
+    Private Sub lstMovieSortTokens_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lstMovieSortTokens.KeyDown
         If e.KeyCode = Keys.Delete Then RemoveMovieSortToken()
     End Sub
 
-    Private Sub lstMovieSetSortTokens_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lstMovieSetSortTokens.KeyDown
+    Private Sub lstMovieSetSortTokens_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lstMovieSetSortTokens.KeyDown
         If e.KeyCode = Keys.Delete Then RemoveMovieSetSortToken()
     End Sub
 
-    Private Sub lsttvSortTokens_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lstTVSortTokens.KeyDown
+    Private Sub lsttvSortTokens_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lstTVSortTokens.KeyDown
         If e.KeyCode = Keys.Delete Then RemoveTVSortToken()
     End Sub
 
-    Private Sub lstTVScraperDefFIExt_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lstTVScraperDefFIExt.DoubleClick
+    Private Sub lstTVScraperDefFIExt_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles lstTVScraperDefFIExt.DoubleClick
         If lstTVScraperDefFIExt.SelectedItems.Count > 0 Then
             Using dEditMeta As New dlgFileInfo(New Database.DBElement(Enums.ContentType.TVEpisode), True)
                 Dim fi As New MediaInfo.Fileinfo
@@ -4275,11 +4274,11 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub lstTVScraperDefFIExt_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lstTVScraperDefFIExt.KeyDown
+    Private Sub lstTVScraperDefFIExt_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lstTVScraperDefFIExt.KeyDown
         If e.KeyCode = Keys.Delete Then RemoveTVMetaData()
     End Sub
 
-    Private Sub lstTVScraperDefFIExt_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lstTVScraperDefFIExt.SelectedIndexChanged
+    Private Sub lstTVScraperDefFIExt_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles lstTVScraperDefFIExt.SelectedIndexChanged
         If lstTVScraperDefFIExt.SelectedItems.Count > 0 Then
             btnTVScraperDefFIExtEdit.Enabled = True
             btnTVScraperDefFIExtRemove.Enabled = True
@@ -4294,7 +4293,7 @@ Public Class dlgSettings
         lvMovieSources.ListViewItemSorter = New ListViewItemComparer(e.Column)
     End Sub
 
-    Private Sub lvMovieSources_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvMovieSources.DoubleClick
+    Private Sub lvMovieSources_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles lvMovieSources.DoubleClick
         If lvMovieSources.SelectedItems.Count > 0 Then
             Using dMovieSource As New dlgSourceMovie
                 If dMovieSource.ShowDialog(Convert.ToInt32(lvMovieSources.SelectedItems(0).Text)) = Windows.Forms.DialogResult.OK Then
@@ -4306,19 +4305,19 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub lvMovieSources_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lvMovieSources.KeyDown
+    Private Sub lvMovieSources_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lvMovieSources.KeyDown
         If e.KeyCode = Keys.Delete Then RemoveMovieSource()
     End Sub
 
-    Private Sub lvTVSourcesRegexTVShowMatching_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvTVSourcesRegexTVShowMatching.DoubleClick
+    Private Sub lvTVSourcesRegexTVShowMatching_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles lvTVSourcesRegexTVShowMatching.DoubleClick
         If lvTVSourcesRegexTVShowMatching.SelectedItems.Count > 0 Then EditTVShowMatching(lvTVSourcesRegexTVShowMatching.SelectedItems(0))
     End Sub
 
-    Private Sub lvTVSourcesRegexTVShowMatching_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lvTVSourcesRegexTVShowMatching.KeyDown
+    Private Sub lvTVSourcesRegexTVShowMatching_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lvTVSourcesRegexTVShowMatching.KeyDown
         If e.KeyCode = Keys.Delete Then RemoveTVShowMatching()
     End Sub
 
-    Private Sub lvTVSourcesRegexTVShowMatching_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvTVSourcesRegexTVShowMatching.SelectedIndexChanged
+    Private Sub lvTVSourcesRegexTVShowMatching_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles lvTVSourcesRegexTVShowMatching.SelectedIndexChanged
         If Not String.IsNullOrEmpty(btnTVSourcesRegexTVShowMatchingAdd.Tag.ToString) Then ClearTVShowMatching()
     End Sub
 
@@ -4326,7 +4325,7 @@ Public Class dlgSettings
         lvTVSources.ListViewItemSorter = New ListViewItemComparer(e.Column)
     End Sub
 
-    Private Sub lvTVSources_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles lvTVSources.DoubleClick
+    Private Sub lvTVSources_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles lvTVSources.DoubleClick
         If lvTVSources.SelectedItems.Count > 0 Then
             Using dTVSource As New dlgSourceTVShow
                 If dTVSource.ShowDialog(Convert.ToInt32(lvTVSources.SelectedItems(0).Text)) = Windows.Forms.DialogResult.OK Then
@@ -4338,7 +4337,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub lvTVSources_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lvTVSources.KeyDown
+    Private Sub lvTVSources_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lvTVSources.KeyDown
         If e.KeyCode = Keys.Delete Then RemoveTVSource()
     End Sub
 
@@ -6760,12 +6759,12 @@ Public Class dlgSettings
         LoadTVScraperOptionsOrdering()
     End Sub
 
-    Private Sub ToolStripButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) 'TODO: check why no Handles (maybe not needed)
+    Private Sub ToolStripButton_Click(ByVal sender As Object, ByVal e As EventArgs) 'TODO: check why no Handles (maybe not needed)
         currText = DirectCast(sender, ToolStripButton).Text
         FillList(currText)
     End Sub
 
-    Private Sub tvSettingsList_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvSettingsList.AfterSelect
+    Private Sub tvSettingsList_AfterSelect(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvSettingsList.AfterSelect
         pbSettingsCurrent.Image = ilSettings.Images(tvSettingsList.SelectedNode.ImageIndex)
         lblSettingsCurrent.Text = String.Format("{0} - {1}", currText, tvSettingsList.SelectedNode.Text)
 
@@ -6779,35 +6778,35 @@ Public Class dlgSettings
         pnlSettingsMain.Refresh()
     End Sub
 
-    Private Sub txtMovieScraperCastLimit_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieScraperCastLimit.KeyPress
+    Private Sub txtMovieScraperCastLimit_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieScraperCastLimit.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtTVAllSeasonsBannerHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVAllSeasonsBannerHeight.KeyPress
+    Private Sub txtTVAllSeasonsBannerHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVAllSeasonsBannerHeight.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtTVAllSeasonsBannerWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVAllSeasonsBannerWidth.KeyPress
+    Private Sub txtTVAllSeasonsBannerWidth_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVAllSeasonsBannerWidth.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtTVAllSeasonsPosterHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVAllSeasonsPosterHeight.KeyPress
+    Private Sub txtTVAllSeasonsPosterHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVAllSeasonsPosterHeight.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtTVAllSeasonsPosterWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVAllSeasonsPosterWidth.KeyPress
+    Private Sub txtTVAllSeasonsPosterWidth_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVAllSeasonsPosterWidth.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtTVAllSeasonsFanartHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVAllSeasonsFanartHeight.KeyPress
+    Private Sub txtTVAllSeasonsFanartHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVAllSeasonsFanartHeight.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtTVAllSeasonsFanartWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVAllSeasonsFanartWidth.KeyPress
+    Private Sub txtTVAllSeasonsFanartWidth_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVAllSeasonsFanartWidth.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtMovieBackdropsPath_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSourcesBackdropsFolderPath.TextChanged
+    Private Sub txtMovieBackdropsPath_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtMovieSourcesBackdropsFolderPath.TextChanged
         SetApplyButton(True)
 
         If String.IsNullOrEmpty(txtMovieSourcesBackdropsFolderPath.Text) Then
@@ -6818,11 +6817,11 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub txtMovieLevTolerance_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieLevTolerance.KeyPress
+    Private Sub txtMovieLevTolerance_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieLevTolerance.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtMovieScraperDefFIExt_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieScraperDefFIExt.TextChanged
+    Private Sub txtMovieScraperDefFIExt_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtMovieScraperDefFIExt.TextChanged
         btnMovieScraperDefFIExtAdd.Enabled = Not String.IsNullOrEmpty(txtMovieScraperDefFIExt.Text) AndAlso Not lstMovieScraperDefFIExt.Items.Contains(If(txtMovieScraperDefFIExt.Text.StartsWith("."), txtMovieScraperDefFIExt.Text, String.Concat(".", txtMovieScraperDefFIExt.Text)))
         If btnMovieScraperDefFIExtAdd.Enabled Then
             btnMovieScraperDefFIExtEdit.Enabled = False
@@ -6830,170 +6829,170 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub txtTVEpisodeFanartHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVEpisodeFanartHeight.KeyPress
+    Private Sub txtTVEpisodeFanartHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVEpisodeFanartHeight.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtTVEpisodeFanartWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVEpisodeFanartWidth.KeyPress
+    Private Sub txtTVEpisodeFanartWidth_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVEpisodeFanartWidth.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtTVEpisodePosterHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVEpisodePosterHeight.KeyPress
+    Private Sub txtTVEpisodePosterHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVEpisodePosterHeight.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtTVEpisodePosterWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVEpisodePosterWidth.KeyPress
+    Private Sub txtTVEpisodePosterWidth_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVEpisodePosterWidth.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtMovieBannerHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieBannerHeight.KeyPress
+    Private Sub txtMovieBannerHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieBannerHeight.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtMovieBannerWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieBannerWidth.KeyPress
+    Private Sub txtMovieBannerWidth_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieBannerWidth.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtMovieSetBannerHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieSetBannerHeight.KeyPress
+    Private Sub txtMovieSetBannerHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieSetBannerHeight.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtMovieSetBannerWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieSetBannerWidth.KeyPress
+    Private Sub txtMovieSetBannerWidth_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieSetBannerWidth.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtTVShowExtrafanartsHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVShowExtrafanartsHeight.KeyPress
+    Private Sub txtTVShowExtrafanartsHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVShowExtrafanartsHeight.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtTVShowExtrafanartsLimit_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVShowExtrafanartsLimit.KeyPress
+    Private Sub txtTVShowExtrafanartsLimit_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVShowExtrafanartsLimit.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtTVShowExtrafanartsWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVShowExtrafanartsWidth.KeyPress
+    Private Sub txtTVShowExtrafanartsWidth_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVShowExtrafanartsWidth.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtMovieExtrafanartsHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieExtrafanartsHeight.KeyPress
+    Private Sub txtMovieExtrafanartsHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieExtrafanartsHeight.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtMovieExtrafanartsLimit_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieExtrafanartsLimit.KeyPress
+    Private Sub txtMovieExtrafanartsLimit_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieExtrafanartsLimit.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtMovieExtrafanartsWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieExtrafanartsWidth.KeyPress
+    Private Sub txtMovieExtrafanartsWidth_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieExtrafanartsWidth.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtMovieExtrathumbsHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieExtrathumbsHeight.KeyPress
+    Private Sub txtMovieExtrathumbsHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieExtrathumbsHeight.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtMovieExtrathumbsLimit_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieExtrathumbsLimit.KeyPress
+    Private Sub txtMovieExtrathumbsLimit_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieExtrathumbsLimit.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtMovieExtrathumbsWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieExtrathumbsWidth.KeyPress
+    Private Sub txtMovieExtrathumbsWidth_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieExtrathumbsWidth.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtMovieFanartHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieFanartHeight.KeyPress
+    Private Sub txtMovieFanartHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieFanartHeight.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtMovieFanartWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieFanartWidth.KeyPress
+    Private Sub txtMovieFanartWidth_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieFanartWidth.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtMovieSetFanartHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieSetFanartHeight.KeyPress
+    Private Sub txtMovieSetFanartHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieSetFanartHeight.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtMovieSetFanartWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieSetFanartWidth.KeyPress
+    Private Sub txtMovieSetFanartWidth_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieSetFanartWidth.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtMovieScraperGenreLimit_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieScraperGenreLimit.KeyPress
+    Private Sub txtMovieScraperGenreLimit_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieScraperGenreLimit.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
-    Private Sub txtMovieScraperOutlineLimit_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieScraperOutlineLimit.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMoviePosterHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMoviePosterHeight.KeyPress
+    Private Sub txtMovieScraperOutlineLimit_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieScraperOutlineLimit.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtMoviePosterWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMoviePosterWidth.KeyPress
+    Private Sub txtMoviePosterHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMoviePosterHeight.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtMovieSetPosterHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieSetPosterHeight.KeyPress
+    Private Sub txtMoviePosterWidth_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMoviePosterWidth.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtMovieSetPosterWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieSetPosterWidth.KeyPress
+    Private Sub txtMovieSetPosterHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieSetPosterHeight.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtProxyPort_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtProxyPort.KeyPress
+    Private Sub txtMovieSetPosterWidth_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieSetPosterWidth.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtTVSourcesRegexTVShowMatchingRegex_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtTVSourcesRegexTVShowMatchingRegex.TextChanged
+    Private Sub txtProxyPort_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtProxyPort.KeyPress
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
+    End Sub
+
+    Private Sub txtTVSourcesRegexTVShowMatchingRegex_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtTVSourcesRegexTVShowMatchingRegex.TextChanged
         ValidateTVShowMatching()
     End Sub
 
-    Private Sub txtTVSourcesRegexTVShowMatchingDefaultSeason_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtTVSourcesRegexTVShowMatchingDefaultSeason.TextChanged
+    Private Sub txtTVSourcesRegexTVShowMatchingDefaultSeason_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtTVSourcesRegexTVShowMatchingDefaultSeason.TextChanged
         ValidateTVShowMatching()
     End Sub
 
-    Private Sub txtTVShowBannerHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVShowBannerHeight.KeyPress
+    Private Sub txtTVShowBannerHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVShowBannerHeight.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtTVShowBannerWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVShowBannerWidth.KeyPress
+    Private Sub txtTVShowBannerWidth_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVShowBannerWidth.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtTVShowFanartHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVShowFanartHeight.KeyPress
+    Private Sub txtTVShowFanartHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVShowFanartHeight.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtTVShowFanartWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVShowFanartWidth.KeyPress
+    Private Sub txtTVShowFanartWidth_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVShowFanartWidth.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtTVShowPosterHeight_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVShowPosterHeight.KeyPress
+    Private Sub txtTVShowPosterHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVShowPosterHeight.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtTVShowPosterWidth_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVShowPosterWidth.KeyPress
+    Private Sub txtTVShowPosterWidth_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVShowPosterWidth.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtMovieSkipLessThan_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtMovieSkipLessThan.KeyPress
+    Private Sub txtMovieSkipLessThan_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieSkipLessThan.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtMovieSkipLessThan_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtMovieSkipLessThan.TextChanged
+    Private Sub txtMovieSkipLessThan_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtMovieSkipLessThan.TextChanged
         SetApplyButton(True)
         sResult.NeedsDBClean_Movie = True
         sResult.NeedsDBUpdate_Movie = True
     End Sub
 
-    Private Sub txtTVSkipLessThan_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtTVSkipLessThan.KeyPress
+    Private Sub txtTVSkipLessThan_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVSkipLessThan.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtTVSkipLessThan_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVSkipLessThan.TextChanged
+    Private Sub txtTVSkipLessThan_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtTVSkipLessThan.TextChanged
         SetApplyButton(True)
         sResult.NeedsDBClean_TV = True
         sResult.NeedsDBUpdate_TV = True
     End Sub
 
-    Private Sub txtTVScraperDefFIExt_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTVScraperDefFIExt.TextChanged
+    Private Sub txtTVScraperDefFIExt_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtTVScraperDefFIExt.TextChanged
         btnTVScraperDefFIExtAdd.Enabled = Not String.IsNullOrEmpty(txtTVScraperDefFIExt.Text) AndAlso Not lstTVScraperDefFIExt.Items.Contains(If(txtTVScraperDefFIExt.Text.StartsWith("."), txtTVScraperDefFIExt.Text, String.Concat(".", txtTVScraperDefFIExt.Text)))
         If btnTVScraperDefFIExtAdd.Enabled Then
             btnTVScraperDefFIExtEdit.Enabled = False
@@ -7141,7 +7140,7 @@ Public Class dlgSettings
         End Try
     End Sub
 
-    Private Sub chkMovieUseExpert_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieUseExpert.CheckedChanged
+    Private Sub chkMovieUseExpert_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieUseExpert.CheckedChanged
         SetApplyButton(True)
 
         chkMovieActorThumbsExpertBDMV.Enabled = chkMovieUseExpert.Checked
@@ -7203,17 +7202,17 @@ Public Class dlgSettings
         txtMovieTrailerExpertVTS.Enabled = chkMovieUseExpert.Checked
     End Sub
 
-    Private Sub chkMovieStackExpertSingle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieStackExpertSingle.CheckedChanged
+    Private Sub chkMovieStackExpertSingle_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieStackExpertSingle.CheckedChanged
         chkMovieUnstackExpertSingle.Enabled = chkMovieStackExpertSingle.Checked AndAlso chkMovieStackExpertSingle.Enabled
         SetApplyButton(True)
     End Sub
 
-    Private Sub chkMovieStackExpertMulti_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieStackExpertMulti.CheckedChanged
+    Private Sub chkMovieStackExpertMulti_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieStackExpertMulti.CheckedChanged
         chkMovieUnstackExpertMulti.Enabled = chkMovieStackExpertMulti.Checked AndAlso chkMovieStackExpertMulti.Enabled
         SetApplyButton(True)
     End Sub
 
-    Private Sub chkMovieSetUseExpert_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetUseExpert.CheckedChanged
+    Private Sub chkMovieSetUseExpert_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieSetUseExpert.CheckedChanged
         SetApplyButton(True)
 
         btnMovieSetPathExpertSingleBrowse.Enabled = chkMovieSetUseExpert.Checked
@@ -7236,7 +7235,7 @@ Public Class dlgSettings
         txtMovieSetPosterExpertSingle.Enabled = chkMovieSetUseExpert.Checked
     End Sub
 
-    Private Sub chkTVUseBoxee_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVUseBoxee.CheckedChanged
+    Private Sub chkTVUseBoxee_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVUseBoxee.CheckedChanged
         SetApplyButton(True)
 
         chkTVEpisodeNFOBoxee.Enabled = chkTVUseBoxee.Checked
@@ -7266,7 +7265,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkTVUseAD_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVUseAD.CheckedChanged
+    Private Sub chkTVUseAD_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVUseAD.CheckedChanged
         SetApplyButton(True)
 
         chkTVSeasonLandscapeAD.Enabled = chkTVUseAD.Checked
@@ -7290,7 +7289,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkTVUseExtended_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVUseExtended.CheckedChanged
+    Private Sub chkTVUseExtended_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVUseExtended.CheckedChanged
         SetApplyButton(True)
 
         chkTVSeasonLandscapeExtended.Enabled = chkTVUseExtended.Checked
@@ -7314,7 +7313,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkTVUseFrodo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVUseFrodo.CheckedChanged
+    Private Sub chkTVUseFrodo_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVUseFrodo.CheckedChanged
         SetApplyButton(True)
 
         chkTVEpisodeActorThumbsFrodo.Enabled = chkTVUseFrodo.Checked
@@ -7364,7 +7363,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkTVUseYAMJ_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVUseYAMJ.CheckedChanged
+    Private Sub chkTVUseYAMJ_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVUseYAMJ.CheckedChanged
         SetApplyButton(True)
 
         chkTVEpisodeNFOYAMJ.Enabled = chkTVUseYAMJ.Checked
@@ -7400,7 +7399,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkTVUseExpert_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkTVUseExpert.CheckedChanged
+    Private Sub chkTVUseExpert_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVUseExpert.CheckedChanged
         SetApplyButton(True)
 
         chkTVEpisodeActorThumbsExpert.Enabled = chkTVUseExpert.Checked
@@ -7429,7 +7428,7 @@ Public Class dlgSettings
         txtTVShowPosterExpert.Enabled = chkTVUseExpert.Checked
     End Sub
 
-    Private Sub chkMovieSetClickScrape_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetClickScrape.CheckedChanged
+    Private Sub chkMovieSetClickScrape_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieSetClickScrape.CheckedChanged
         chkMovieSetClickScrapeAsk.Enabled = chkMovieSetClickScrape.Checked
         SetApplyButton(True)
     End Sub
@@ -7542,18 +7541,18 @@ Public Class dlgSettings
         SetApplyButton(True)
     End Sub
 
-    Private Sub btnMovieSetScraperMapperRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieSetScraperTitleRenamerRemove.Click
+    Private Sub btnMovieSetScraperMapperRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSetScraperTitleRenamerRemove.Click
         If dgvMovieSetScraperTitleRenamer.SelectedCells.Count > 0 AndAlso Not Convert.ToBoolean(dgvMovieSetScraperTitleRenamer.Rows(dgvMovieSetScraperTitleRenamer.SelectedCells(0).RowIndex).Tag) Then
             dgvMovieSetScraperTitleRenamer.Rows.RemoveAt(dgvMovieSetScraperTitleRenamer.SelectedCells(0).RowIndex)
             SetApplyButton(True)
         End If
     End Sub
 
-    Private Sub dgvMovieSetScraperMapper_CurrentCellDirtyStateChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvMovieSetScraperTitleRenamer.CurrentCellDirtyStateChanged
+    Private Sub dgvMovieSetScraperMapper_CurrentCellDirtyStateChanged(ByVal sender As Object, ByVal e As EventArgs) Handles dgvMovieSetScraperTitleRenamer.CurrentCellDirtyStateChanged
         SetApplyButton(True)
     End Sub
 
-    Private Sub dgvMovieSetScraperMapper_SelectionChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvMovieSetScraperTitleRenamer.SelectionChanged
+    Private Sub dgvMovieSetScraperMapper_SelectionChanged(ByVal sender As Object, ByVal e As EventArgs) Handles dgvMovieSetScraperTitleRenamer.SelectionChanged
         If dgvMovieSetScraperTitleRenamer.SelectedCells.Count > 0 AndAlso Not Convert.ToBoolean(dgvMovieSetScraperTitleRenamer.Rows(dgvMovieSetScraperTitleRenamer.SelectedCells(0).RowIndex).Tag) Then
             btnMovieSetScraperTitleRenamerRemove.Enabled = True
         Else
@@ -7561,7 +7560,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub dgvMovieSetScraperMapper_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles dgvMovieSetScraperTitleRenamer.KeyDown
+    Private Sub dgvMovieSetScraperMapper_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles dgvMovieSetScraperTitleRenamer.KeyDown
         e.Handled = (e.KeyCode = Keys.Enter)
     End Sub
 
@@ -7638,7 +7637,7 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub EnableApplyButton(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
+    Private Sub EnableApplyButton(ByVal sender As Object, ByVal e As EventArgs) Handles _
         cbGeneralDateTime.SelectedIndexChanged,
         cbGeneralMovieSetTheme.SelectedIndexChanged,
         cbGeneralMovieTheme.SelectedIndexChanged,
