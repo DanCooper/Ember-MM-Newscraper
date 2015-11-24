@@ -19,32 +19,33 @@
 ' ################################################################################
 
 Imports System.IO
-Imports NLog
 
 Public Class Master
 
 #Region "Fields"
+
     Public Shared fLoading As New frmSplash
 
     Public Shared isUserInteractive As Boolean = True
     Public Shared isCL As Boolean
-    Public Shared appArgs As Microsoft.VisualBasic.ApplicationServices.StartupEventArgs
+    Public Shared appArgs As ApplicationServices.StartupEventArgs
 
+    Public Shared AppPos As New Drawing.Rectangle
     Public Shared CanScanDiscImage As Boolean
     Public Shared DB As New Database
     Public Shared DefaultOptions_Movie As New Structures.ScrapeOptions
     Public Shared DefaultOptions_MovieSet As New Structures.ScrapeOptions
     Public Shared DefaultOptions_TV As New Structures.ScrapeOptions
+    Public Shared ExcludeDirs As New List(Of String)
+    Public Shared MovieSources As New List(Of Database.DBSource)
+    Public Shared SettingsPath As String = Path.Combine(Functions.AppPath, "Settings")
+    Public Shared SourcesList As New List(Of String)
+    Public Shared TVShowSources As New List(Of Database.DBSource)
+    Public Shared TempPath As String = Path.Combine(Functions.AppPath, "Temp")
     Public Shared eLang As New Localization
     Public Shared eSettings As New Settings
-    Public Shared isWindows As Boolean = Functions.CheckIfWindows
     Public Shared is32Bit As Boolean
-    Public Shared SourcesList As New List(Of String)
-    Public Shared TempPath As String = Path.Combine(Functions.AppPath, "Temp")
-    Public Shared MovieSources As New List(Of Database.DBSource)
-    Public Shared TVShowSources As New List(Of Database.DBSource)
-    Public Shared ExcludeDirs As New List(Of String)
-    Public Shared AppPos As New Drawing.Rectangle
+    Public Shared isWindows As Boolean = Functions.CheckIfWindows
 
 #End Region 'Fields
 

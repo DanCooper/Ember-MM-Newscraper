@@ -6680,20 +6680,7 @@ Public Class Settings
     Public Sub Save()
         Try
             Dim xmlSerial As New XmlSerializer(GetType(Settings))
-
-            'Cocotus All XML Config files in new Setting-folder!
-            Dim configpath As String = ""
-            If Directory.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar)) Then
-                configpath = String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "Settings.xml")
-                'still Settings.xml is on old place (root)
-            Else
-                configpath = Path.Combine(Functions.AppPath, "Settings.xml")
-            End If
-
-            'old
-            '  Dim xmlWriter As New StreamWriter(Path.Combine(Functions.AppPath, "Settings.xml"))
-
-            Dim xmlWriter As New StreamWriter(configpath)
+            Dim xmlWriter As New StreamWriter(Path.Combine(Master.SettingsPath, "Settings.xml"))
             xmlSerial.Serialize(xmlWriter, Master.eSettings)
             xmlWriter.Close()
         Catch ex As Exception

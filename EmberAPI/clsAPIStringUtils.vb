@@ -72,18 +72,10 @@ Public Class StringUtils
         End If
     End Function
     ''' <summary>
-    ''' Converts the supplied /-separated string of genres and returns an equivalent
-    ''' /-separated string of genres, but using Ember's internal genre list
-    ''' </summary>
-    ''' <param name="aGenres"><c>String</c> of genres, separated by a forward-slash (/)</param>
-    ''' <returns></returns>
-    ''' <remarks>
-    ''' This method will take genres from the parameter (such as IMDB's Film-Noir) and return Ember's 
-    ''' internal representation (Film Noir). It does this by striping special characters from both the 
-    ''' supplied list of Genres, and Ember's internal list of Genres before performing the comparison.
     ''' 
-    ''' 2013/11/13 Dekker500 - Extracted code to simplify strings into GenerateNeutralString to avoid duplicate code and its maintenance evils
-    ''' </remarks>
+    ''' </summary>
+    ''' <param name="aGenres"></param>
+    ''' <returns></returns>
     Public Shared Function GenreFilter(ByVal aGenres As List(Of String)) As List(Of String)
         Dim nGernes As New List(Of String)
 
@@ -97,6 +89,7 @@ Public Class StringUtils
                     APIXML.GenreXML.Genres.Add(New genreProperty With {.isNew = True, .Name = tGenre})
                     APIXML.GenreXML.MappingTable.Add(New genreMapping With {.Mappings = New List(Of String) From {tGenre}, .SearchString = tGenre})
                     nGernes.Add(tGenre)
+                    APIXML.GenreXML.Save()
                 End If
             Next
         End If

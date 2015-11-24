@@ -18,20 +18,16 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System
 Imports System.IO
-Imports System.Text
 Imports System.Text.RegularExpressions
-Imports System.Xml
 Imports System.Xml.Serialization
 Imports System.Drawing
-Imports System.Xml.Linq
 Imports NLog
 
 Public Class APIXML
 
 #Region "Fields"
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     Public Shared lFlags As New List(Of Flag)
     Public Shared alGenres As New List(Of String)
@@ -468,36 +464,6 @@ Public Class APIXML
         Return retGenre.ToArray
     End Function
 
-    'Public Shared Function GetGenreListString(Optional ByVal LangsOnly As Boolean = False) As String()
-    '    Dim retGenre As New List(Of String)
-    '    Try
-    '        If LangsOnly Then
-    '            Dim xGenre = From xGen In GenreXML...<supported>.Descendants Select xGen.Value
-    '            If xGenre.Count > 0 Then
-    '                retGenre.AddRange(xGenre.ToArray)
-    '            End If
-    '        Else
-    '            Dim splitLang() As String
-    '            Dim xGenre = From xGen In GenreXML...<name> Select xGen.@searchstring, xGen.@language
-    '            If xGenre.Count > 0 Then
-    '                For i As Integer = 0 To xGenre.Count - 1
-    '                    If xGenre(i).language IsNot Nothing Then
-    '                        splitLang = xGenre(i).language.Split(Convert.ToChar("|"))
-    '                        For Each strGen As String In splitLang
-    '                            If Not retGenre.Contains(xGenre(i).searchstring) AndAlso (Master.eSettings.GenreFilter.Contains(String.Format("{0}", Master.eLang.GetString(569, Master.eLang.All))) OrElse Master.eSettings.GenreFilter.Split(Convert.ToChar(",")).Contains(strGen)) Then
-    '                                retGenre.Add(xGenre(i).searchstring)
-    '                            End If
-    '                        Next
-    '                    End If
-    '                Next
-    '            End If
-    '        End If
-    '    Catch ex As Exception
-    '        logger.Error(New StackFrame().GetMethod().Name, ex)
-    '    End Try
-    '    Return retGenre.ToArray
-    'End Function
-
     Public Shared Function GetRatingImage(ByVal strRating As String) As Image
         Dim mePath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Ratings")
         Dim imgRating As Image = Nothing
@@ -637,6 +603,8 @@ Public Class APIXML
 
 #End Region 'Methods
 
+#Region "Nested Types"
+
     Public Enum FlagType
         VideoCodec = 0
         VideoResolution = 1
@@ -654,49 +622,53 @@ Public Class APIXML
 
         Public Property Name() As String
             Get
-                Return Me._name
+                Return _name
             End Get
             Set(ByVal value As String)
-                Me._name = value
+                _name = value
             End Set
         End Property
 
         Public Property Image() As Image
             Get
-                Return Me._image
+                Return _image
             End Get
             Set(ByVal value As Image)
-                Me._image = value
+                _image = value
             End Set
         End Property
 
         Public Property Path() As String
             Get
-                Return Me._path
+                Return _path
             End Get
             Set(ByVal value As String)
-                Me._path = value
+                _path = value
             End Set
         End Property
 
         Public Property Type() As FlagType
             Get
-                Return Me._type
+                Return _type
             End Get
             Set(ByVal value As FlagType)
-                Me._type = value
+                _type = value
             End Set
         End Property
 
         Public Sub New()
-            Me.Clear()
+            Clear()
         End Sub
 
         Public Sub Clear()
-            Me._name = String.Empty
-            Me._image = Nothing
-            Me._path = String.Empty
-            Me._type = FlagType.VideoCodec
+            _name = String.Empty
+            _image = Nothing
+            _path = String.Empty
+            _type = FlagType.VideoCodec
         End Sub
+
     End Class
+
+#End Region 'Nested Types
+
 End Class

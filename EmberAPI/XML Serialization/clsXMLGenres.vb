@@ -18,6 +18,7 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
+Imports System.IO
 Imports System.Xml.Serialization
 
 <Serializable()>
@@ -82,8 +83,14 @@ Public Class clsXMLGenres
         _mappingtable.Clear()
     End Sub
 
-#End Region 'Methods
+    Public Sub Save()
+        Dim xmlSerial As New XmlSerializer(GetType(clsXMLGenres))
+        Dim xmlWriter As New StreamWriter(Path.Combine(Master.SettingsPath, "Core.Genres.xml"))
+        xmlSerial.Serialize(xmlWriter, APIXML.GenreXML)
+        xmlWriter.Close()
+    End Sub
 
+#End Region 'Methods
 
 End Class
 
