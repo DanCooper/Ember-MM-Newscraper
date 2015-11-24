@@ -1167,6 +1167,7 @@ Public Class NFO
             'Rating/Votes
             If (Not DBTVEpisode.TVEpisode.RatingSpecified OrElse Not Master.eSettings.TVLockEpisodeRating) AndAlso ScrapeOptions.bEpisodeRating AndAlso _
                 scrapedepisode.RatingSpecified AndAlso Master.eSettings.TVScraperEpisodeRating AndAlso Not new_Rating Then
+                DBTVEpisode.TVEpisode.Rating = scrapedepisode.Rating
                 DBTVEpisode.TVEpisode.Votes = Regex.Replace(scrapedepisode.Votes, "\D", String.Empty)
                 new_Rating = True
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeRating AndAlso Not Master.eSettings.TVLockEpisodeRating Then
