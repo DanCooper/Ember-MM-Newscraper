@@ -28,9 +28,9 @@ Public Class genericGenresEditor
 
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
+    Private _Name As String = "Genres Editor"
     Private _setup As frmSettingsHolder
     Private _AssemblyName As String = String.Empty
-    Private _xmlSettingsPath As String = FileUtils.Common.ReturnSettingsFile("Settings", "Core.Genres.xml")
 
 #End Region 'Fields
 
@@ -55,7 +55,7 @@ Public Class genericGenresEditor
 
     Public ReadOnly Property ModuleName() As String Implements Interfaces.GenericModule.ModuleName
         Get
-            Return "Genres Editor"
+            Return _Name
         End Get
     End Property
 

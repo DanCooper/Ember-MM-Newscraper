@@ -1791,6 +1791,7 @@ Public Class Settings
             Settings._XMLSettings.GeneralImageFilterImagedialog = value
         End Set
     End Property
+
     Public Property GeneralImageFilterPosterMatchTolerance() As Integer
         Get
             Return Settings._XMLSettings.GeneralImageFilterPosterMatchTolerance
