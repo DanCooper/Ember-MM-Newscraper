@@ -20,8 +20,6 @@
 
 Imports EmberAPI
 Imports NLog
-Imports System.IO
-Imports System.Xml.Serialization
 
 Public Class genericGenresEditor
     Implements Interfaces.GenericModule
@@ -105,7 +103,7 @@ Public Class genericGenresEditor
     End Function
 
     Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
-        If Not _setup Is Nothing Then _setup.SaveChanges(_xmlSettingsPath)
+        If Not _setup Is Nothing Then _setup.SaveChanges()
         If DoDispose Then
             RemoveHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
             _setup.Dispose()

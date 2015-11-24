@@ -85,8 +85,12 @@ Public Class StringUtils
                 If gMappingTable IsNot Nothing Then
                     nGernes.AddRange(gMappingTable.Mappings)
                 Else
-                    'add a new mapping if tGenre is not in the list
-                    APIXML.GenreXML.Genres.Add(New genreProperty With {.isNew = True, .Name = tGenre})
+                    'check if the tGenre is already existing in Gernes list
+                    Dim eGenre As genreProperty = APIXML.GenreXML.Genres.FirstOrDefault(Function(f) f.Name = tGenre)
+                    If eGenre Is Nothing Then
+                        APIXML.GenreXML.Genres.Add(New genreProperty With {.Name = tGenre})
+                    End If
+                    'add a new mapping if tGenre is not in the MappingTable
                     APIXML.GenreXML.MappingTable.Add(New genreMapping With {.Mappings = New List(Of String) From {tGenre}, .SearchString = tGenre})
                     nGernes.Add(tGenre)
                     APIXML.GenreXML.Save()

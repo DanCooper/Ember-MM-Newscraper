@@ -24,6 +24,7 @@ Imports System.Xml.Serialization
 <Serializable()>
 <XmlRoot("core.genres")>
 Public Class clsXMLGenres
+    Implements ICloneable
 
 #Region "Fields"
 
@@ -83,11 +84,33 @@ Public Class clsXMLGenres
         _mappingtable.Clear()
     End Sub
 
+    Public Function CloneDeep() As Object _
+        Implements ICloneable.Clone
+        ' Gibt eine vollständige Kopie dieses Objekts zurück. 
+        ' Voraussetzung ist die Serialisierbarkeit aller beteiligten 
+        ' Objekte. 
+        Dim Stream As New MemoryStream(50000)
+        Dim Formatter As New Runtime.Serialization.Formatters.Binary.BinaryFormatter()
+        ' Serialisierung über alle Objekte hinweg in einen Stream 
+        Formatter.Serialize(Stream, Me)
+        ' Zurück zum Anfang des Streams und... 
+        Stream.Seek(0, SeekOrigin.Begin)
+        ' ...aus dem Stream in ein Objekt deserialisieren 
+        CloneDeep = Formatter.Deserialize(Stream)
+        Stream.Close()
+    End Function
+
     Public Sub Save()
+        Sort()
         Dim xmlSerial As New XmlSerializer(GetType(clsXMLGenres))
         Dim xmlWriter As New StreamWriter(Path.Combine(Master.SettingsPath, "Core.Genres.xml"))
         xmlSerial.Serialize(xmlWriter, APIXML.GenreXML)
         xmlWriter.Close()
+    End Sub
+
+    Public Sub Sort()
+        _genres.Sort()
+        _mappingtable.Sort()
     End Sub
 
 #End Region 'Methods
@@ -96,10 +119,12 @@ End Class
 
 <Serializable()>
 Public Class genreMapping
+    Implements IComparable(Of genreMapping)
 
 
 #Region "Fields"
 
+    Private _isnew As Boolean
     Private _mappings As New List(Of String)
     Private _searchstring As String
 
@@ -127,6 +152,16 @@ Public Class genreMapping
         End Set
     End Property
 
+    <XmlElement("isnew")>
+    Public Property isNew() As Boolean
+        Get
+            Return _isnew
+        End Get
+        Set(ByVal value As Boolean)
+            _isnew = value
+        End Set
+    End Property
+
 #End Region 'Properties
 
 #Region "Constructors"
@@ -140,9 +175,20 @@ Public Class genreMapping
 #Region "Methods"
 
     Public Sub Clear()
+        _isnew = True
         _mappings.Clear()
         _searchstring = String.Empty
     End Sub
+
+    Public Function CompareTo(ByVal other As genreMapping) As Integer _
+        Implements IComparable(Of genreMapping).CompareTo
+        Try
+            Dim retVal As Integer = (SearchString).CompareTo(other.SearchString)
+            Return retVal
+        Catch ex As Exception
+            Return 0
+        End Try
+    End Function
 
 #End Region 'Methods
 
@@ -150,6 +196,7 @@ End Class
 
 <Serializable()>
 Public Class genreProperty
+    Implements IComparable(Of genreProperty)
 
 #Region "Fields"
 
@@ -205,8 +252,19 @@ Public Class genreProperty
 
     Public Sub Clear()
         _image = String.Empty
+        _isnew = True
         _name = String.Empty
     End Sub
+
+    Public Function CompareTo(ByVal other As genreProperty) As Integer _
+        Implements IComparable(Of genreProperty).CompareTo
+        Try
+            Dim retVal As Integer = (Name).CompareTo(other.Name)
+            Return retVal
+        Catch ex As Exception
+            Return 0
+        End Try
+    End Function
 
 #End Region 'Methods
 
