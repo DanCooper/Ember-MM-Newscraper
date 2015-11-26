@@ -694,6 +694,16 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property tvdb() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("tvdb", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Sucht eine lokalisierte Zeichenfolge, die &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
         '''&lt;!--
         '''### Anchor Help ###
@@ -883,6 +893,15 @@ Namespace My.Resources
         Friend ReadOnly Property urlTheMovieDb() As String
             Get
                 Return ResourceManager.GetString("urlTheMovieDb", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die http://thetvdb.com/ ähnelt.
+        '''</summary>
+        Friend ReadOnly Property urlTVDB() As String
+            Get
+                Return ResourceManager.GetString("urlTVDB", resourceCulture)
             End Get
         End Property
         

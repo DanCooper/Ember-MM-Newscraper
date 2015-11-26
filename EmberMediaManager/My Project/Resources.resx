@@ -357,4 +357,11 @@
   <data name="urlReleaseThread" xml:space="preserve">
     <value>http://forum.kodi.tv/showthread.php?tid=191781</value>
   </data>
+  <data name="tvdb" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\tvdb.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="urlTVDB" xml:space="preserve">
+    <value>http://thetvdb.com/</value>
+    <comment>thetvdb.com - an open database for television fans</comment>
+  </data>
 </root>

@@ -905,6 +905,7 @@
     <None Include="Resources\undo.png" />
     <None Include="Resources\noposter.jpg" />
     <None Include="Resources\tvtunes.png" />
+    <Content Include="Resources\tvdb.png" />
     <Content Include="Themes\movie-BlackBeauty.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -12595,16 +12595,36 @@ doCancel:
         End If
     End Sub
     ''' <summary>
-    ''' Disable TMDB/IMDB menutitem if selected movies don't have TMDBID/IMDBID
+    ''' Disable IMDB/TMDBID/TVDB menutitem if selected episodes don't have IMDBID/TMDBID/TVDB
     ''' </summary>
-    ''' <param name="sender">movielist contextmenu</param>
+    ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    ''' <remarks>
-    ''' 
-    ''' 
-    ''' 2014/10/10 Cocotus - First implementation: This is used to disable TMDB/IMDB menuitem(s) if not a single movie of selected movies has IMDBID or TMDBID
-    ''' </remarks>
-    ''' 
+    Private Sub cmnuEpisode_Opened(sender As Object, e As EventArgs) Handles cmnuEpisode.Opened
+        If dgvTVEpisodes.SelectedRows.Count > 0 Then
+            Dim enableIMDB As Boolean = False
+            Dim enableTMDB As Boolean = False
+            Dim enableTVDB As Boolean = False
+            For Each sRow As DataGridViewRow In dgvTVEpisodes.SelectedRows
+                If Not String.IsNullOrEmpty(sRow.Cells("strIMDB").Value.ToString) Then
+                    enableIMDB = True
+                End If
+                If Not String.IsNullOrEmpty(sRow.Cells("strTMDB").Value.ToString) Then
+                    enableTMDB = True
+                End If
+                If Not String.IsNullOrEmpty(sRow.Cells("strTVDB").Value.ToString) Then
+                    enableTVDB = True
+                End If
+            Next
+            cmnuEpisodeBrowseIMDB.Enabled = enableIMDB
+            cmnuEpisodeBrowseTMDB.Enabled = enableTMDB
+            cmnuEpisodeBrowseTVDB.Enabled = enableTVDB
+        End If
+    End Sub
+    ''' <summary>
+    ''' Disable IMDB/TMDB menutitem if selected movies don't have IMDBID/TMDBID
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub cmnuMovie_Opened(sender As Object, e As EventArgs) Handles cmnuMovie.Opened
         If dgvMovies.SelectedRows.Count > 0 Then
             Dim enableIMDB As Boolean = False
@@ -12621,17 +12641,168 @@ doCancel:
             cmnuMovieBrowseTMDB.Enabled = enableTMDB
         End If
     End Sub
+    ''' <summary>
+    ''' Disable TMDB menutitem if selected moviesets don't have TMDBColID
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub cmnuMovieSet_Opened(sender As Object, e As EventArgs) Handles cmnuMovieSet.Opened
+        If dgvMovieSets.SelectedRows.Count > 0 Then
+            Dim enableTMDB As Boolean = False
+            For Each sRow As DataGridViewRow In dgvMovieSets.SelectedRows
+                If Not String.IsNullOrEmpty(sRow.Cells("TMDBColID").Value.ToString) Then
+                    enableTMDB = True
+                End If
+            Next
+            cmnuMovieSetBrowseTMDB.Enabled = enableTMDB
+        End If
+    End Sub
+    ''' <summary>
+    ''' Disable IMDB/TMDBID/TVDB menutitem if selected tvshow don't have IMDBID/TMDBID/TVDB
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub cmnuSeason_Opened(sender As Object, e As EventArgs) Handles cmnuSeason.Opened
+        If dgvTVSeasons.SelectedRows.Count > 0 Then
+            Dim enableIMDB As Boolean = False
+            Dim enableTMDB As Boolean = False
+            Dim enableTVDB As Boolean = False
+            If Not CInt(dgvTVSeasons.SelectedRows(0).Cells("season").Value) = 999 Then
+                For Each sRow As DataGridViewRow In dgvTVSeasons.SelectedRows
+                    If Not String.IsNullOrEmpty(dgvTVShows.SelectedRows(0).Cells("strIMDB").Value.ToString) Then
+                        enableIMDB = True
+                    End If
+                    If Not String.IsNullOrEmpty(sRow.Cells("strTMDB").Value.ToString) Then
+                        enableTMDB = True
+                    End If
+                    If Not String.IsNullOrEmpty(sRow.Cells("strTVDB").Value.ToString) Then
+                        enableTVDB = True
+                    End If
+                Next
+            End If
+            cmnuSeasonBrowseIMDB.Enabled = enableIMDB
+            cmnuSeasonBrowseTMDB.Enabled = enableTMDB
+            cmnuSeasonBrowseTVDB.Enabled = enableTVDB
+        End If
+    End Sub
+    ''' <summary>
+    ''' Disable IMDB/TMDBID/TVDB menutitem if selected tvshow don't have IMDBID/TMDBID/TVDB
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub cmnuShow_Opened(sender As Object, e As EventArgs) Handles cmnuShow.Opened
+        If dgvTVShows.SelectedRows.Count > 0 Then
+            Dim enableIMDB As Boolean = False
+            Dim enableTMDB As Boolean = False
+            Dim enableTVDB As Boolean = False
+            For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
+                If Not String.IsNullOrEmpty(sRow.Cells("strIMDB").Value.ToString) Then
+                    enableIMDB = True
+                End If
+                If Not String.IsNullOrEmpty(sRow.Cells("strTMDB").Value.ToString) Then
+                    enableTMDB = True
+                End If
+                If Not String.IsNullOrEmpty(sRow.Cells("TVDB").Value.ToString) Then
+                    enableTVDB = True
+                End If
+            Next
+            cmnuShowBrowseIMDB.Enabled = enableIMDB
+            cmnuShowBrowseTMDB.Enabled = enableTMDB
+            cmnuShowBrowseTVDB.Enabled = enableTVDB
+        End If
+    End Sub
+    ''' <summary>
+    ''' Open IMDB-Page of selected episode(s) in defaultbrowser
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub cmnuEpisodeBrowseIMDB_Click(sender As Object, e As EventArgs) Handles cmnuEpisodeBrowseIMDB.Click
+        Try
+            If dgvTVEpisodes.SelectedRows.Count > 0 Then
+                Dim doOpen As Boolean = True
+                If dgvTVEpisodes.SelectedRows.Count > 10 Then
+                    If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvTVEpisodes.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then doOpen = False
+                End If
 
+                If doOpen Then
+                    Dim tmpstring As String = String.Empty
+                    For Each sRow As DataGridViewRow In dgvTVEpisodes.SelectedRows
+                        If Not String.IsNullOrEmpty(sRow.Cells("strIMDB").Value.ToString) Then
+                            tmpstring = sRow.Cells("strIMDB").Value.ToString.Replace("tt", String.Empty)
+                            If Not My.Resources.urlIMDB.EndsWith("/") Then
+                                Functions.Launch(String.Concat(My.Resources.urlIMDB, "/title/tt", tmpstring))
+                            Else
+                                Functions.Launch(String.Concat(My.Resources.urlIMDB, "title/tt", tmpstring))
+                            End If
+                        End If
+                    Next
+                End If
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+    ''' <summary>
+    ''' Open TMDB-Page of selected episode(s) in defaultbrowser
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub cmnuEpisodeBrowseTMDB_Click(sender As Object, e As EventArgs) Handles cmnuEpisodeBrowseTMDB.Click
+        Try
+            If dgvTVEpisodes.SelectedRows.Count > 0 Then
+                Dim doOpen As Boolean = True
+                If dgvTVEpisodes.SelectedRows.Count > 10 Then
+                    If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvTVEpisodes.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then doOpen = False
+                End If
+                If doOpen Then
+                    Dim ShowID As String = dgvTVShows.SelectedRows(0).Cells("strTMDB").Value.ToString
+                    For Each sRow As DataGridViewRow In dgvTVEpisodes.SelectedRows
+                        If Not My.Resources.urlTheMovieDb.EndsWith("/") Then
+                            Functions.Launch(String.Concat(My.Resources.urlTheMovieDb, "/tv/", ShowID, "/season/", sRow.Cells("Season").Value.ToString, "/episode/", sRow.Cells("Episode").Value.ToString))
+                        Else
+                            Functions.Launch(String.Concat(My.Resources.urlTheMovieDb, "tv/", ShowID, "/season/", sRow.Cells("Season").Value.ToString, "/episode/", sRow.Cells("Episode").Value.ToString))
+                        End If
+                    Next
+                End If
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+    ''' <summary>
+    ''' Open TVDB-Page of selected episode(s) in defaultbrowser
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub cmnuEpisodeBrowseTVDB_Click(sender As Object, e As EventArgs) Handles cmnuEpisodeBrowseTVDB.Click
+        Try
+            If dgvTVEpisodes.SelectedRows.Count > 0 Then
+                Dim doOpen As Boolean = True
+                If dgvTVEpisodes.SelectedRows.Count > 10 Then
+                    If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvTVEpisodes.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then doOpen = False
+                End If
+                If doOpen Then
+                    Dim ShowID As String = dgvTVShows.SelectedRows(0).Cells("TVDB").Value.ToString
+                    For Each sRow As DataGridViewRow In dgvTVEpisodes.SelectedRows
+                        If Not String.IsNullOrEmpty(sRow.Cells("strTVDB").Value.ToString) Then
+                            If Not My.Resources.urlTVDB.EndsWith("/") Then
+                                Functions.Launch(String.Concat(My.Resources.urlTVDB, "/?tab=episode&seriesid=", ShowID & "&id=", sRow.Cells("strTVDB").Value.ToString))
+                            Else
+                                Functions.Launch(String.Concat(My.Resources.urlTVDB, "?tab=episode&seriesid=", ShowID & "&id=", sRow.Cells("strTVDB").Value.ToString))
+                            End If
+                        End If
+                    Next
+                End If
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
     ''' <summary>
     ''' Open IMDB-Page of selected movie(s) in defaultbrowser
     ''' </summary>
-    ''' <param name="sender">Browse to... menuitem</param>
+    ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    ''' <remarks>
-    ''' 
-    ''' 
-    ''' 2014/10/10 Cocotus - First implementation
-    ''' </remarks>
     Private Sub cmnuMovieBrowseIMDB_Click(sender As Object, e As EventArgs) Handles cmnuMovieBrowseIMDB.Click
         Try
             If dgvMovies.SelectedRows.Count > 0 Then
@@ -12646,9 +12817,9 @@ doCancel:
                         If Not String.IsNullOrEmpty(sRow.Cells("Imdb").Value.ToString) Then
                             tmpstring = sRow.Cells("Imdb").Value.ToString.Replace("tt", String.Empty)
                             If Not My.Resources.urlIMDB.EndsWith("/") Then
-                                Functions.Launch(My.Resources.urlIMDB & "/title/tt" & tmpstring)
+                                Functions.Launch(String.Concat(My.Resources.urlIMDB, "/title/tt", tmpstring))
                             Else
-                                Functions.Launch(My.Resources.urlIMDB & "title/tt" & tmpstring)
+                                Functions.Launch(String.Concat(My.Resources.urlIMDB, "title/tt", tmpstring))
                             End If
                         End If
                     Next
@@ -12657,18 +12828,12 @@ doCancel:
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
-
     End Sub
     ''' <summary>
-    '''Open TMDB-Page of selected movie(s) in defaultbrowser
+    ''' Open TMDB-Page of selected movie(s) in defaultbrowser
     ''' </summary>
-    ''' <param name="sender">Browse to... menuitem</param>
+    ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    ''' <remarks>
-    ''' 
-    ''' 
-    ''' 2014/10/10 Cocotus - First implementation
-    ''' </remarks>
     Private Sub cmnuMovieBrowseTMDB_Click(sender As Object, e As EventArgs) Handles cmnuMovieBrowseTMDB.Click
         Try
             If dgvMovies.SelectedRows.Count > 0 Then
@@ -12680,9 +12845,9 @@ doCancel:
                     For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
                         If Not String.IsNullOrEmpty(sRow.Cells("TMDB").Value.ToString) Then
                             If Not My.Resources.urlTheMovieDb.EndsWith("/") Then
-                                Functions.Launch(My.Resources.urlTheMovieDb & "/movie/" & sRow.Cells("TMDB").Value.ToString)
+                                Functions.Launch(String.Concat(My.Resources.urlTheMovieDb, "/movie/", sRow.Cells("TMDB").Value.ToString))
                             Else
-                                Functions.Launch(My.Resources.urlTheMovieDb & "movie/" & sRow.Cells("TMDB").Value.ToString)
+                                Functions.Launch(String.Concat(My.Resources.urlTheMovieDb, "movie/", sRow.Cells("TMDB").Value.ToString))
                             End If
                         End If
                     Next
@@ -12691,7 +12856,206 @@ doCancel:
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
+    End Sub
+    ''' <summary>
+    ''' Open TMDB-Page of selected movieset(s) in defaultbrowser
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub cmnuMovieSetBrowseTMDB_Click(sender As Object, e As EventArgs) Handles cmnuMovieSetBrowseTMDB.Click
+        Try
+            If dgvMovieSets.SelectedRows.Count > 0 Then
+                Dim doOpen As Boolean = True
+                If dgvMovieSets.SelectedRows.Count > 10 Then
+                    If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvMovieSets.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then doOpen = False
+                End If
+                If doOpen Then
+                    For Each sRow As DataGridViewRow In dgvMovieSets.SelectedRows
+                        If Not String.IsNullOrEmpty(sRow.Cells("TMDBColID").Value.ToString) Then
+                            If Not My.Resources.urlTheMovieDb.EndsWith("/") Then
+                                Functions.Launch(String.Concat(My.Resources.urlTheMovieDb, "/collection/", sRow.Cells("TMDBColID").Value.ToString))
+                            Else
+                                Functions.Launch(String.Concat(My.Resources.urlTheMovieDb, "collection/", sRow.Cells("TMDBColID").Value.ToString))
+                            End If
+                        End If
+                    Next
+                End If
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+    ''' <summary>
+    ''' Open IMDB-Page of selected season(s) in defaultbrowser
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub cmnuSeasonBrowseIMDB_Click(sender As Object, e As EventArgs) Handles cmnuSeasonBrowseIMDB.Click
+        Try
+            If dgvTVSeasons.SelectedRows.Count > 0 Then
+                Dim doOpen As Boolean = True
+                If dgvTVSeasons.SelectedRows.Count > 10 Then
+                    If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvTVSeasons.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then doOpen = False
+                End If
 
+                If doOpen Then
+                    Dim ShowID As String = dgvTVShows.SelectedRows(0).Cells("strIMDB").Value.ToString
+                    For Each sRow As DataGridViewRow In dgvTVSeasons.SelectedRows
+                        If Not String.IsNullOrEmpty(ShowID) Then
+                            If Not My.Resources.urlIMDB.EndsWith("/") Then
+                                Functions.Launch(String.Concat(My.Resources.urlIMDB, "/title/", ShowID, "/episodes?season=", sRow.Cells("Season").Value.ToString))
+                            Else
+                                Functions.Launch(String.Concat(My.Resources.urlIMDB, "title/", ShowID, "/episodes?season=", sRow.Cells("Season").Value.ToString))
+                            End If
+                        End If
+                    Next
+                End If
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+    ''' <summary>
+    ''' Open TMDB-Page of selected season(s) in defaultbrowser
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub cmnuSeasonBrowseTMDB_Click(sender As Object, e As EventArgs) Handles cmnuSeasonBrowseTMDB.Click
+        Try
+            If dgvTVSeasons.SelectedRows.Count > 0 Then
+                Dim doOpen As Boolean = True
+                If dgvTVSeasons.SelectedRows.Count > 10 Then
+                    If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvTVSeasons.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then doOpen = False
+                End If
+                If doOpen Then
+                    Dim ShowID As String = dgvTVShows.SelectedRows(0).Cells("strTMDB").Value.ToString
+                    For Each sRow As DataGridViewRow In dgvTVSeasons.SelectedRows
+                        If Not My.Resources.urlTheMovieDb.EndsWith("/") Then
+                            Functions.Launch(String.Concat(My.Resources.urlTheMovieDb, "/tv/", ShowID, "/season/", sRow.Cells("Season").Value.ToString))
+                        Else
+                            Functions.Launch(String.Concat(My.Resources.urlTheMovieDb, "tv/", ShowID, "/season/", sRow.Cells("Season").Value.ToString))
+                        End If
+                    Next
+                End If
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+    ''' <summary>
+    ''' Open TVDB-Page of selected seasons(s) in defaultbrowser
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub cmnuSeasonBrowseTVDB_Click(sender As Object, e As EventArgs) Handles cmnuSeasonBrowseTVDB.Click
+        Try
+            If dgvTVSeasons.SelectedRows.Count > 0 Then
+                Dim doOpen As Boolean = True
+                If dgvTVSeasons.SelectedRows.Count > 10 Then
+                    If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvTVSeasons.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then doOpen = False
+                End If
+                If doOpen Then
+                    Dim ShowID As String = dgvTVShows.SelectedRows(0).Cells("TVDB").Value.ToString
+                    For Each sRow As DataGridViewRow In dgvTVSeasons.SelectedRows
+                        If Not String.IsNullOrEmpty(sRow.Cells("strTVDB").Value.ToString) Then
+                            If Not My.Resources.urlTVDB.EndsWith("/") Then
+                                Functions.Launch(String.Concat(My.Resources.urlTVDB, "/?tab=season&seriesid=", ShowID & "&seasonid=", sRow.Cells("strTVDB").Value.ToString))
+                            Else
+                                Functions.Launch(String.Concat(My.Resources.urlTVDB, "?tab=season&seriesid=", ShowID, "&seasonid=", sRow.Cells("strTVDB").Value.ToString))
+                            End If
+                        End If
+                    Next
+                End If
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+    ''' <summary>
+    ''' Open IMDB-Page of selected show(s) in defaultbrowser
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub cmnuShowBrowseIMDB_Click(sender As Object, e As EventArgs) Handles cmnuShowBrowseIMDB.Click
+        Try
+            If dgvTVShows.SelectedRows.Count > 0 Then
+                Dim doOpen As Boolean = True
+                If dgvTVShows.SelectedRows.Count > 10 Then
+                    If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvTVShows.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then doOpen = False
+                End If
+
+                If doOpen Then
+                    Dim tmpstring As String = String.Empty
+                    For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
+                        If Not String.IsNullOrEmpty(sRow.Cells("strIMDB").Value.ToString) Then
+                            If Not My.Resources.urlIMDB.EndsWith("/") Then
+                                Functions.Launch(String.Concat(My.Resources.urlIMDB, "/title/", sRow.Cells("strIMDB").Value.ToString))
+                            Else
+                                Functions.Launch(String.Concat(My.Resources.urlIMDB, "title/", sRow.Cells("strIMDB").Value.ToString))
+                            End If
+                        End If
+                    Next
+                End If
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+    ''' <summary>
+    ''' Open TMDB-Page of selected tvshow(s) in defaultbrowser
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub cmnuShowBrowseTMDB_Click(sender As Object, e As EventArgs) Handles cmnuShowBrowseTMDB.Click
+        Try
+            If dgvTVShows.SelectedRows.Count > 0 Then
+                Dim doOpen As Boolean = True
+                If dgvTVShows.SelectedRows.Count > 10 Then
+                    If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvTVShows.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then doOpen = False
+                End If
+                If doOpen Then
+                    For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
+                        If Not String.IsNullOrEmpty(sRow.Cells("strTMDB").Value.ToString) Then
+                            If Not My.Resources.urlTheMovieDb.EndsWith("/") Then
+                                Functions.Launch(String.Concat(My.Resources.urlTheMovieDb, "/tv/", sRow.Cells("strTMDB").Value.ToString))
+                            Else
+                                Functions.Launch(String.Concat(My.Resources.urlTheMovieDb, "tv/", sRow.Cells("strTMDB").Value.ToString))
+                            End If
+                        End If
+                    Next
+                End If
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
+    End Sub
+    ''' <summary>
+    ''' Open TVDB-Page of selected tvshow(s) in defaultbrowser
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub cmnuShowBrowseTVDB_Click(sender As Object, e As EventArgs) Handles cmnuShowBrowseTVDB.Click
+        Try
+            If dgvTVShows.SelectedRows.Count > 0 Then
+                Dim doOpen As Boolean = True
+                If dgvTVShows.SelectedRows.Count > 10 Then
+                    If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvTVShows.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then doOpen = False
+                End If
+                If doOpen Then
+                    For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
+                        If Not String.IsNullOrEmpty(sRow.Cells("TVDB").Value.ToString) Then
+                            If Not My.Resources.urlTVDB.EndsWith("/") Then
+                                Functions.Launch(String.Concat(My.Resources.urlTVDB & "/?tab=series&id=" & sRow.Cells("TVDB").Value.ToString))
+                            Else
+                                Functions.Launch(String.Concat(My.Resources.urlTVDB & "?tab=series&id=" & sRow.Cells("TVDB").Value.ToString))
+                            End If
+                        End If
+                    Next
+                End If
+            End If
+        Catch ex As Exception
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+        End Try
     End Sub
 
     Private Sub OpenImageViewer(ByVal _Image As Image)
