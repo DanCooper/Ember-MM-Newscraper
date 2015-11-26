@@ -64,8 +64,8 @@ Public Class frmSettingsHolder
         _fDummyMultiEpisode.IsVideo_TS = False
         _fDummyMultiEpisode.ListTitle = "Big Bang Theory, The"
         _fDummyMultiEpisode.MPAA = "TV-14"
-        _fDummyMultiEpisode.MultiViewCount = "2"
-        _fDummyMultiEpisode.MultiViewLayout = ""
+        _fDummyMultiEpisode.MultiViewCount = "3d"
+        _fDummyMultiEpisode.MultiViewLayout = "Side by Side (left eye first)"
         _fDummyMultiEpisode.NewFileName = ""
         _fDummyMultiEpisode.NewPath = ""
         _fDummyMultiEpisode.OldPath = ""
@@ -74,8 +74,10 @@ Public Class frmSettingsHolder
         _fDummyMultiEpisode.Path = ""
         _fDummyMultiEpisode.Rating = "7.3"
         _fDummyMultiEpisode.Resolution = "720p"
+        _fDummyMultiEpisode.ShortStereoMode = "sbs"
         _fDummyMultiEpisode.ShowTitle = "The Big Bang Theory"
         _fDummyMultiEpisode.SortTitle = "Big Bang Theory"
+        _fDummyMultiEpisode.StereoMode = "left_right"
         _fDummyMultiEpisode.Title = "Pilot"
         _fDummyMultiEpisode.TVDBID = "58056"
         _fDummyMultiEpisode.VideoCodec = "xvid"
@@ -109,8 +111,8 @@ Public Class frmSettingsHolder
         _fDummyMultiSeason.IsVideo_TS = False
         _fDummyMultiSeason.ListTitle = "Big Bang Theory, The"
         _fDummyMultiSeason.MPAA = "TV-14"
-        _fDummyMultiSeason.MultiViewCount = "2"
-        _fDummyMultiSeason.MultiViewLayout = ""
+        _fDummyMultiSeason.MultiViewCount = "3d"
+        _fDummyMultiSeason.MultiViewLayout = "Side by Side (left eye first)"
         _fDummyMultiSeason.NewFileName = ""
         _fDummyMultiSeason.NewPath = ""
         _fDummyMultiSeason.OldPath = ""
@@ -119,8 +121,10 @@ Public Class frmSettingsHolder
         _fDummyMultiSeason.Path = ""
         _fDummyMultiSeason.Rating = "7.3"
         _fDummyMultiSeason.Resolution = "720p"
+        _fDummyMultiSeason.ShortStereoMode = "sbs"
         _fDummyMultiSeason.ShowTitle = "The Big Bang Theory"
         _fDummyMultiSeason.SortTitle = "Big Bang Theory"
+        _fDummyMultiSeason.StereoMode = "left_right"
         _fDummyMultiSeason.Title = "Pilot"
         _fDummyMultiSeason.TVDBID = "58056"
         _fDummyMultiSeason.VideoCodec = "xvid"
@@ -160,8 +164,8 @@ Public Class frmSettingsHolder
         _fDummySingleEpisode.IsVideo_TS = False
         _fDummySingleEpisode.ListTitle = "Big Bang Theory, The"
         _fDummySingleEpisode.MPAA = "TV-14"
-        _fDummySingleEpisode.MultiViewCount = "2"
-        _fDummySingleEpisode.MultiViewLayout = ""
+        _fDummySingleEpisode.MultiViewCount = "3d"
+        _fDummySingleEpisode.MultiViewLayout = "Side by Side (left eye first)"
         _fDummySingleEpisode.NewFileName = ""
         _fDummySingleEpisode.NewPath = ""
         _fDummySingleEpisode.OldPath = ""
@@ -170,8 +174,10 @@ Public Class frmSettingsHolder
         _fDummySingleEpisode.Path = ""
         _fDummySingleEpisode.Rating = "7.3"
         _fDummySingleEpisode.Resolution = "720p"
+        _fDummySingleEpisode.ShortStereoMode = "sbs"
         _fDummySingleEpisode.ShowTitle = "The Big Bang Theory"
         _fDummySingleEpisode.SortTitle = "Big Bang Theory"
+        _fDummySingleEpisode.StereoMode = "left_right"
         _fDummySingleEpisode.Title = "Pilot"
         _fDummySingleEpisode.TVDBID = "58056"
         _fDummySingleEpisode.VideoCodec = "xvid"
@@ -203,8 +209,8 @@ Public Class frmSettingsHolder
         _fDummySingleMovie.IsVideo_TS = False
         _fDummySingleMovie.ListTitle = "Avengers, The"
         _fDummySingleMovie.MPAA = "13"
-        _fDummySingleMovie.MultiViewCount = "2"
-        _fDummySingleMovie.MultiViewLayout = ""
+        _fDummySingleMovie.MultiViewCount = "3d"
+        _fDummySingleMovie.MultiViewLayout = "Side by Side (left eye first)"
         _fDummySingleMovie.NewFileName = ""
         _fDummySingleMovie.NewPath = ""
         _fDummySingleMovie.OldPath = ""
@@ -213,8 +219,10 @@ Public Class frmSettingsHolder
         _fDummySingleMovie.Path = ""
         _fDummySingleMovie.Rating = "7.3"
         _fDummySingleMovie.Resolution = "1080p"
+        _fDummySingleMovie.ShortStereoMode = "sbs"
         _fDummySingleMovie.ShowTitle = ""
         _fDummySingleMovie.SortTitle = "Avengers"
+        _fDummySingleMovie.StereoMode = "left_right"
         _fDummySingleMovie.Title = "The Avengers"
         _fDummySingleMovie.TVDBID = ""
         _fDummySingleMovie.VideoCodec = "h264"
@@ -333,7 +341,7 @@ Public Class frmSettingsHolder
         lblFilePatternMovies.Text = Master.eLang.GetString(286, "Files Pattern")
         lblFolderPatternMovies.Text = Master.eLang.GetString(287, "Folders Pattern")
         chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        lblTips.Text = String.Format(Master.eLang.GetString(262, "$1 = First Letter of the Title{0}$2 = Aired date (episodes only){0}$A = Audio Channels{0}$B = Base Path{0}$C = Director{0}$D = Directory{0}$E = Sort Title{0}$F = File Name{0}$G = Genre (Follow with a space, dot or hyphen to change separator){0}$H = Video Codec{0}$I = IMDB ID{0}$J = Audio Codec{0}$K#.S? = #Padding (0-9), Season Separator (. or _ or x), Season Prefix{0}$L = List Title{0}$M = MPAA{0}$N = Collection Name{0}$O = OriginalTitle{0}$OO = OriginalTitle if different from Title{0}$P = Rating{0}$Q#.E? = #Padding (0-9), Episode Separator (. or _ or x), Episode Prefix{0}$R = Resolution{0}$S = Video Source{0}$T = Title{0}$U = Country (Follow with a space, dot or hyphen to change separator){0}$V = 3D (If Multiview > 1){0}$W#.S?#.E? = #Padding (0-9), Seasons Separator (. or _), Season Prefix, #Padding (0-9), Episode Separator (. or _ or x), Episode Prefix{0}$Y = Year{0}$X. (Replace Space with .){0}$Z = Show Title{0}{{}} = Optional{0}$?aaa?bbb? = Replace aaa with bbb{0}$! = Uppercase first letter in each word{0}$; = Lowercase all letters{0}$- = Remove previous char if next pattern does not have a value{0}$+ = Remove next char if previous pattern does not have a value{0}$^ = Remove previous and next char if next pattern does not have a value"), Environment.NewLine)
+        lblTips.Text = String.Format(Master.eLang.GetString(262, "$1 = First Letter of the Title{0}$2 = Aired date (episodes only){0}$3 = ShortStereoMode{0}$4 = StereoMode{0}$A = Audio Channels{0}$B = Base Path{0}$C = Director{0}$D = Directory{0}$E = Sort Title{0}$F = File Name{0}$G = Genre (Follow with a space, dot or hyphen to change separator){0}$H = Video Codec{0}$I = IMDB ID{0}$J = Audio Codec{0}$K#.S? = #Padding (0-9), Season Separator (. or _ or x), Season Prefix{0}$L = List Title{0}$M = MPAA{0}$N = Collection Name{0}$O = OriginalTitle{0}$OO = OriginalTitle if different from Title{0}$P = Rating{0}$Q#.E? = #Padding (0-9), Episode Separator (. or _ or x), Episode Prefix{0}$R = Resolution{0}$S = Video Source{0}$T = Title{0}$U = Country (Follow with a space, dot or hyphen to change separator){0}$V = 3D (If Multiview > 1){0}$W#.S?#.E? = #Padding (0-9), Seasons Separator (. or _), Season Prefix, #Padding (0-9), Episode Separator (. or _ or x), Episode Prefix{0}$Y = Year{0}$X. (Replace Space with .){0}$Z = Show Title{0}{{}} = Optional{0}$?aaa?bbb? = Replace aaa with bbb{0}$! = Uppercase first letter in each word{0}$; = Lowercase all letters{0}$- = Remove previous char if next pattern does not have a value{0}$+ = Remove next char if previous pattern does not have a value{0}$^ = Remove previous and next char if next pattern does not have a value"), Environment.NewLine)
     End Sub
 
     Private Sub txtFilePatternMovies_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFilePatternMovies.TextChanged

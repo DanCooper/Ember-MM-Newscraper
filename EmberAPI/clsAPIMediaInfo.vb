@@ -533,6 +533,24 @@ Public Class MediaInfo
         End If
     End Function
 
+    Public Shared Function ConvertVStereoToShort(ByVal sFormat As String) As String
+        If Not String.IsNullOrEmpty(sFormat) Then
+            Dim tFormat As String = String.Empty
+            Select Case sFormat.ToLower
+                Case "bottom_top"
+                    tFormat = "tab"
+                Case "left_right", "right_left"
+                    tFormat = "sbs"
+                Case Else
+                    tFormat = "unknown"
+            End Select
+
+            Return tFormat
+        Else
+            Return String.Empty
+        End If
+    End Function
+
     Private Function Count_Get(ByVal StreamKind As StreamKind, Optional ByVal StreamNumber As UInteger = UInteger.MaxValue) As Integer
         If StreamNumber = UInteger.MaxValue Then
             Return MediaInfo_Count_Get(Handle, CType(StreamKind, UIntPtr), CType(-1, IntPtr))
@@ -606,7 +624,7 @@ Public Class MediaInfo
 
         For a As Integer = 0 To AudioStreams - 1
             miAudio = New Audio
-            miAudio.Codec = ConvertAFormat(Me.Get_(StreamKind.Audio, a, "CodecID"), Me.Get_(StreamKind.Audio, a, "Format"), _
+            miAudio.Codec = ConvertAFormat(Me.Get_(StreamKind.Audio, a, "CodecID"), Me.Get_(StreamKind.Audio, a, "Format"),
                                            Me.Get_(StreamKind.Audio, a, "CodecID/Hint"), Me.Get_(StreamKind.Audio, a, "Format_Profile"))
             miAudio.Channels = FormatAudioChannel(Me.Get_(StreamKind.Audio, a, "Channel(s)"))
 
@@ -802,7 +820,7 @@ Public Class MediaInfo
 
                     miVideo.Width = Me.Get_(StreamKind.Visual, v, "Width")
                     miVideo.Height = Me.Get_(StreamKind.Visual, v, "Height")
-                    miVideo.Codec = ConvertVFormat(Me.Get_(StreamKind.Visual, v, "CodecID"), Me.Get_(StreamKind.Visual, v, "Format"), _
+                    miVideo.Codec = ConvertVFormat(Me.Get_(StreamKind.Visual, v, "CodecID"), Me.Get_(StreamKind.Visual, v, "Format"),
                                                    Me.Get_(StreamKind.Visual, v, "Format_Version"))
 
                     'IFO Scan results (used when scanning VIDEO_TS files)
@@ -856,7 +874,7 @@ Public Class MediaInfo
 
                 For a As Integer = 0 To AudioStreams - 1
                     miAudio = New Audio
-                    miAudio.Codec = ConvertAFormat(Me.Get_(StreamKind.Audio, a, "CodecID"), Me.Get_(StreamKind.Audio, a, "Format"), _
+                    miAudio.Codec = ConvertAFormat(Me.Get_(StreamKind.Audio, a, "CodecID"), Me.Get_(StreamKind.Audio, a, "Format"),
                                                    Me.Get_(StreamKind.Audio, a, "CodecID/Hint"), Me.Get_(StreamKind.Audio, a, "Format_Profile"))
                     miAudio.Channels = FormatAudioChannel(Me.Get_(StreamKind.Audio, a, "Channel(s)"))
 
@@ -1065,9 +1083,9 @@ Public Class MediaInfo
 
 
                 'Biggest IFO File! -> Get Languages out of IFO and Bitrate data out of biggest VOB file!
-                Dim myFilesIFO = From file In di.GetFiles("VTS*.IFO") _
-                              Order By file.Length _
-                              Select file.FullName
+                Dim myFilesIFO = From file In di.GetFiles("VTS*.IFO")
+                                 Order By file.Length
+                                 Select file.FullName
                 If Not myFilesIFO Is Nothing AndAlso myFilesIFO.Count > 0 Then
                     alternativeIFOFile = myFilesIFO(myFilesIFO.Count - 2)
                     fiIFO = ScanLanguage(myFilesIFO.Last)
@@ -1076,21 +1094,21 @@ Public Class MediaInfo
                 'Biggest VOB File! -> Get Languages out of IFO and Bitrate data out of biggest VOB file!
                 If Not myFilesIFO Is Nothing AndAlso myFilesIFO.Count > 0 AndAlso myFilesIFO.Last.Length > 6 Then
 
-                    Dim myFiles = From file In di.GetFiles(Path.GetFileName(myFilesIFO.Last).Substring(0, Path.GetFileName(myFilesIFO.Last).Length - 6) & "*.VOB") _
-                        Order By file.Length _
-                        Select file.FullName
+                    Dim myFiles = From file In di.GetFiles(Path.GetFileName(myFilesIFO.Last).Substring(0, Path.GetFileName(myFilesIFO.Last).Length - 6) & "*.VOB")
+                                  Order By file.Length
+                                  Select file.FullName
                     If Not myFiles Is Nothing AndAlso myFiles.Count > 0 Then
                         sPath = myFiles.Last
                     Else
-                        myFiles = From file In di.GetFiles("VTS*.VOB") _
-                           Order By file.Length _
-                           Select file.FullName
+                        myFiles = From file In di.GetFiles("VTS*.VOB")
+                                  Order By file.Length
+                                  Select file.FullName
                         sPath = myFiles.Last
                     End If
                 Else
-                    Dim myFiles = From file In di.GetFiles("VTS*.VOB") _
-                             Order By file.Length _
-                             Select file.FullName
+                    Dim myFiles = From file In di.GetFiles("VTS*.VOB")
+                                  Order By file.Length
+                                  Select file.FullName
                     sPath = myFiles.Last
                 End If
 
@@ -1103,8 +1121,8 @@ Public Class MediaInfo
                     'ie. path = driveletter & "VIDEO_TS"
                     di = New DirectoryInfo(sPath)
                 End If
-                Dim myFiles = From file In di.GetFiles("*.m2ts") _
-                              Order By file.Length _
+                Dim myFiles = From file In di.GetFiles("*.m2ts")
+                              Order By file.Length
                               Select file.Name
 
                 If Not myFiles Is Nothing AndAlso myFiles.Count > 0 Then
@@ -1141,7 +1159,7 @@ Public Class MediaInfo
 
 #Region "Nested Types"
 
-    <Serializable()> _
+    <Serializable()>
     Public Class Audio
 
 #Region "Fields"
@@ -1157,7 +1175,7 @@ Public Class MediaInfo
 
 #Region "Properties"
 
-        <XmlElement("bitrate")> _
+        <XmlElement("bitrate")>
         Public Property Bitrate() As String
             Get
                 Return Me._bitrate.Trim()
@@ -1167,14 +1185,14 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore>
         Public ReadOnly Property BitrateSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._bitrate)
             End Get
         End Property
 
-        <XmlElement("channels")> _
+        <XmlElement("channels")>
         Public Property Channels() As String
             Get
                 Return Me._channels.Trim()
@@ -1184,14 +1202,14 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore>
         Public ReadOnly Property ChannelsSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._channels)
             End Get
         End Property
 
-        <XmlElement("codec")> _
+        <XmlElement("codec")>
         Public Property Codec() As String
             Get
                 Return Me._codec.Trim()
@@ -1201,14 +1219,14 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore>
         Public ReadOnly Property CodecSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._codec)
             End Get
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore>
         Public Property HasPreferred() As Boolean
             Get
                 Return Me._haspreferred
@@ -1218,7 +1236,7 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlElement("language")> _
+        <XmlElement("language")>
         Public Property Language() As String
             Get
                 Return Me._language.Trim()
@@ -1228,14 +1246,14 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore>
         Public ReadOnly Property LanguageSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._language)
             End Get
         End Property
 
-        <XmlElement("longlanguage")> _
+        <XmlElement("longlanguage")>
         Public Property LongLanguage() As String
             Get
                 Return Me._longlanguage.Trim()
@@ -1245,7 +1263,7 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore>
         Public ReadOnly Property LongLanguageSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._longlanguage)
@@ -1256,8 +1274,8 @@ Public Class MediaInfo
 
     End Class
 
-    <Serializable()> _
-    <XmlRoot("fileinfo")> _
+    <Serializable()>
+    <XmlRoot("fileinfo")>
     Public Class Fileinfo
 
 #Region "Fields"
@@ -1268,7 +1286,7 @@ Public Class MediaInfo
 
 #Region "Properties"
 
-        <XmlElement("streamdetails")> _
+        <XmlElement("streamdetails")>
         Property StreamDetails() As StreamData
             Get
                 Return _streamdetails
@@ -1278,11 +1296,11 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore>
         Public ReadOnly Property StreamDetailsSpecified() As Boolean
             Get
-                Return (_streamdetails.Video IsNot Nothing AndAlso _streamdetails.Video.Count > 0) OrElse _
-                (_streamdetails.Audio IsNot Nothing AndAlso _streamdetails.Audio.Count > 0) OrElse _
+                Return (_streamdetails.Video IsNot Nothing AndAlso _streamdetails.Video.Count > 0) OrElse
+                (_streamdetails.Audio IsNot Nothing AndAlso _streamdetails.Audio.Count > 0) OrElse
                 (_streamdetails.Subtitle IsNot Nothing AndAlso _streamdetails.Subtitle.Count > 0)
             End Get
         End Property
@@ -1291,8 +1309,8 @@ Public Class MediaInfo
 
     End Class
 
-    <Serializable()> _
-    <XmlRoot("streamdata")> _
+    <Serializable()>
+    <XmlRoot("streamdata")>
     Public Class StreamData
 
 #Region "Fields"
@@ -1305,7 +1323,7 @@ Public Class MediaInfo
 
 #Region "Properties"
 
-        <XmlElement("audio")> _
+        <XmlElement("audio")>
         Public Property Audio() As List(Of Audio)
             Get
                 Return Me._audio
@@ -1315,14 +1333,14 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore>
         Public ReadOnly Property AudioSpecified() As Boolean
             Get
                 Return Me._audio.Count > 0
             End Get
         End Property
 
-        <XmlElement("subtitle")> _
+        <XmlElement("subtitle")>
         Public Property Subtitle() As List(Of Subtitle)
             Get
                 Return Me._subtitle
@@ -1332,14 +1350,14 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore>
         Public ReadOnly Property SubtitleSpecified() As Boolean
             Get
                 Return Me._subtitle.Count > 0
             End Get
         End Property
 
-        <XmlElement("video")> _
+        <XmlElement("video")>
         Public Property Video() As List(Of Video)
             Get
                 Return Me._video
@@ -1349,7 +1367,7 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore>
         Public ReadOnly Property VideoSpecified() As Boolean
             Get
                 Return Me._video.Count > 0
@@ -1360,7 +1378,7 @@ Public Class MediaInfo
 
     End Class
 
-    <Serializable()> _
+    <Serializable()>
     Public Class Subtitle
 
 #Region "Fields"
@@ -1376,7 +1394,7 @@ Public Class MediaInfo
 
 #Region "Properties"
 
-        <XmlElement("language")> _
+        <XmlElement("language")>
         Public Property Language() As String
             Get
                 Return Me._language
@@ -1386,14 +1404,14 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore>
         Public ReadOnly Property LanguageSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._language)
             End Get
         End Property
 
-        <XmlElement("longlanguage")> _
+        <XmlElement("longlanguage")>
         Public Property LongLanguage() As String
             Get
                 Return Me._longlanguage
@@ -1403,14 +1421,14 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore>
         Public ReadOnly Property LongLanguageSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._longlanguage)
             End Get
         End Property
 
-        <XmlElement("forced")> _
+        <XmlElement("forced")>
         Public Property SubsForced() As Boolean
             Get
                 Return _subs_foced
@@ -1420,14 +1438,14 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore>
         Public ReadOnly Property SubsForcedSpecified() As Boolean
             Get
                 Return Me._subs_foced
             End Get
         End Property
 
-        <XmlElement("path")> _
+        <XmlElement("path")>
         Public Property SubsPath() As String
             Get
                 Return _subs_path
@@ -1437,14 +1455,14 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore>
         Public ReadOnly Property SubsPathSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._subs_path)
             End Get
         End Property
 
-        <XmlElement("type")> _
+        <XmlElement("type")>
         Public Property SubsType() As String
             Get
                 Return _subs_type
@@ -1454,14 +1472,14 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore>
         Public ReadOnly Property SubsTypeSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._subs_type)
             End Get
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore>
         Public Property toRemove() As Boolean
             Get
                 Return _toremove
@@ -1475,7 +1493,7 @@ Public Class MediaInfo
 
     End Class
 
-    <Serializable()> _
+    <Serializable()>
     Public Class Video
 
 #Region "Fields"
@@ -1500,7 +1518,7 @@ Public Class MediaInfo
 
 #Region "Properties"
 
-        <XmlElement("aspect")> _
+        <XmlElement("aspect")>
         Public Property Aspect() As String
             Get
                 Return Me._aspect.Trim()
@@ -1510,14 +1528,14 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore>
         Public ReadOnly Property AspectSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._aspect)
             End Get
         End Property
 
-        <XmlElement("bitrate")> _
+        <XmlElement("bitrate")>
         Public Property Bitrate() As String
             Get
                 Return Me._bitrate.Trim()
@@ -1527,14 +1545,14 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore>
         Public ReadOnly Property BitrateSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._bitrate)
             End Get
         End Property
 
-        <XmlElement("codec")> _
+        <XmlElement("codec")>
         Public Property Codec() As String
             Get
                 Return Me._codec.Trim()
@@ -1544,14 +1562,14 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore>
         Public ReadOnly Property CodecSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._codec)
             End Get
         End Property
 
-        <XmlElement("durationinseconds")> _
+        <XmlElement("durationinseconds")>
         Public Property Duration() As String
             Get
                 Return Me._duration.Trim()
@@ -1561,14 +1579,14 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public ReadOnly Property DurationSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._duration)
             End Get
         End Property
 
-        <XmlElement("height")> _
+        <XmlElement("height")>
         Public Property Height() As String
             Get
                 Return Me._height.Trim()
@@ -1578,14 +1596,14 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore>
         Public ReadOnly Property HeightSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._height)
             End Get
         End Property
 
-        <XmlElement("language")> _
+        <XmlElement("language")>
         Public Property Language() As String
             Get
                 Return Me._language.Trim()
@@ -1595,14 +1613,14 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore>
         Public ReadOnly Property LanguageSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._language)
             End Get
         End Property
 
-        <XmlElement("longlanguage")> _
+        <XmlElement("longlanguage")>
         Public Property LongLanguage() As String
             Get
                 Return Me._longlanguage.Trim()
@@ -1612,14 +1630,14 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore>
         Public ReadOnly Property LongLanguageSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._longlanguage)
             End Get
         End Property
 
-        <XmlElement("multiview_count")> _
+        <XmlElement("multiview_count")>
         Public Property MultiViewCount() As String
             Get
                 Return Me._multiview_count.Trim()
@@ -1629,14 +1647,14 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore>
         Public ReadOnly Property MultiViewCountSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._multiview_count)
             End Get
         End Property
 
-        <XmlElement("multiview_layout")> _
+        <XmlElement("multiview_layout")>
         Public Property MultiViewLayout() As String
             Get
                 Return Me._multiview_layout.Trim()
@@ -1646,14 +1664,14 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore>
         Public ReadOnly Property MultiViewLayoutSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._multiview_layout)
             End Get
         End Property
 
-        <XmlElement("scantype")> _
+        <XmlElement("scantype")>
         Public Property Scantype() As String
             Get
                 Return Me._scantype.Trim()
@@ -1663,14 +1681,21 @@ Public Class MediaInfo
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore>
         Public ReadOnly Property ScantypeSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(Me._scantype)
             End Get
         End Property
 
-        <XmlElement("stereomode")> _
+        <XmlIgnore>
+        Public ReadOnly Property ShortStereoMode() As String
+            Get
+                Return ConvertVStereoToShort(_stereomode).Trim()
+            End Get
+        End Property
+
+        <XmlElement("stereomode")>
         Public Property StereoMode() As String
             Get
                 Return Me._stereomode.Trim()

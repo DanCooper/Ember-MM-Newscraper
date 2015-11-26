@@ -861,8 +861,23 @@ Public Class FileFolderRenamer
 
                 'MultiViewCount
                 If _tmpTVEpisode.TVEpisode.FileInfo.StreamDetails.VideoSpecified Then
-                    If Not String.IsNullOrEmpty(_tmpTVEpisode.TVEpisode.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) AndAlso CDbl(_tmpTVEpisode.TVEpisode.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) > 1 Then
-                        EpisodeFile.MultiViewCount = "3D"
+                    If _tmpTVEpisode.TVEpisode.FileInfo.StreamDetails.Video.Item(0).MultiViewCountSpecified AndAlso CDbl(_tmpTVEpisode.TVEpisode.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) > 1 Then
+                        EpisodeFile.MultiViewCount = "3d"
+                    End If
+                End If
+
+                'MultiViewLayout
+                If _tmpTVEpisode.TVEpisode.FileInfo.StreamDetails.VideoSpecified Then
+                    If _tmpTVEpisode.TVEpisode.FileInfo.StreamDetails.Video.Item(0).MultiViewLayoutSpecified Then
+                        EpisodeFile.MultiViewLayout = _tmpTVEpisode.TVEpisode.FileInfo.StreamDetails.Video.Item(0).MultiViewLayout
+                    End If
+                End If
+
+                'StereoMode
+                If _tmpTVEpisode.TVEpisode.FileInfo.StreamDetails.VideoSpecified Then
+                    If _tmpTVEpisode.TVEpisode.FileInfo.StreamDetails.Video.Item(0).StereoModeSpecified Then
+                        EpisodeFile.StereoMode = _tmpTVEpisode.TVEpisode.FileInfo.StreamDetails.Video.Item(0).StereoMode
+                        EpisodeFile.ShortStereoMode = _tmpTVEpisode.TVEpisode.FileInfo.StreamDetails.Video.Item(0).ShortStereoMode
                     End If
                 End If
 
@@ -1048,7 +1063,22 @@ Public Class FileFolderRenamer
                 'MultiViewCount
                 If _tmpMovie.Movie.FileInfo.StreamDetails.VideoSpecified Then
                     If Not String.IsNullOrEmpty(_tmpMovie.Movie.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) AndAlso CDbl(_tmpMovie.Movie.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) > 1 Then
-                        MovieFile.MultiViewCount = "3D"
+                        MovieFile.MultiViewCount = "3d"
+                    End If
+                End If
+
+                'MultiViewLayout
+                If _tmpMovie.Movie.FileInfo.StreamDetails.VideoSpecified Then
+                    If _tmpMovie.Movie.FileInfo.StreamDetails.Video.Item(0).MultiViewLayoutSpecified Then
+                        MovieFile.MultiViewLayout = _tmpMovie.Movie.FileInfo.StreamDetails.Video.Item(0).MultiViewLayout
+                    End If
+                End If
+
+                'StereoMode
+                If _tmpMovie.Movie.FileInfo.StreamDetails.VideoSpecified Then
+                    If _tmpMovie.Movie.FileInfo.StreamDetails.Video.Item(0).StereoModeSpecified Then
+                        MovieFile.StereoMode = _tmpMovie.Movie.FileInfo.StreamDetails.Video.Item(0).StereoMode
+                        MovieFile.ShortStereoMode = _tmpMovie.Movie.FileInfo.StreamDetails.Video.Item(0).ShortStereoMode
                     End If
                 End If
 
@@ -1259,6 +1289,8 @@ Public Class FileFolderRenamer
                         strBase = strCond
                         strCond = ApplyPattern(strCond, "1", If(Not String.IsNullOrEmpty(f.SortTitle), f.SortTitle.Substring(0, 1), String.Empty))
                         strCond = ApplyPattern(strCond, "2", f.Aired)
+                        strCond = ApplyPattern(strCond, "3", f.ShortStereoMode)
+                        strCond = ApplyPattern(strCond, "4", f.StereoMode)
                         strCond = ApplyPattern(strCond, "A", f.AudioChannels)
                         strCond = ApplyPattern(strCond, "B", String.Empty) 'This is not need here, Only to HaveBase
                         strCond = ApplyPattern(strCond, "C", f.Director)
@@ -1349,6 +1381,8 @@ Public Class FileFolderRenamer
 
                 pattern = ApplyPattern(pattern, "1", If(Not String.IsNullOrEmpty(f.SortTitle), f.SortTitle.Substring(0, 1), String.Empty))
                 pattern = ApplyPattern(pattern, "2", f.Aired)
+                pattern = ApplyPattern(pattern, "3", f.ShortStereoMode)
+                pattern = ApplyPattern(pattern, "4", f.StereoMode)
                 pattern = ApplyPattern(pattern, "A", f.AudioChannels)
                 pattern = ApplyPattern(pattern, "B", String.Empty) 'This is not need here, Only to HaveBase
                 pattern = ApplyPattern(pattern, "C", f.Director)
@@ -1913,10 +1947,12 @@ Public Class FileFolderRenamer
         Private _rating As String
         Private _resolution As String
         Private _seasonsepisodes As New List(Of SeasonsEpisodes)
+        Private _shortstereomode As String
         Private _showpath As String
         Private _showtitle As String
         Private _sorttitle As String
         Private _status As String
+        Private _stereomode As String
         Private _title As String
         Private _tvdbid As String
         Private _videocodec As String
@@ -2215,6 +2251,15 @@ Public Class FileFolderRenamer
             End Set
         End Property
 
+        Public Property ShortStereoMode() As String
+            Get
+                Return _shortstereomode
+            End Get
+            Set(ByVal value As String)
+                _shortstereomode = value.Trim
+            End Set
+        End Property
+
         Public Property ShowPath() As String
             Get
                 Return _showpath
@@ -2248,6 +2293,15 @@ Public Class FileFolderRenamer
             End Get
             Set(ByVal value As String)
                 _status = value.Trim
+            End Set
+        End Property
+
+        Public Property StereoMode() As String
+            Get
+                Return _stereomode
+            End Get
+            Set(ByVal value As String)
+                _stereomode = value.Trim
             End Set
         End Property
 
@@ -2352,6 +2406,7 @@ Public Class FileFolderRenamer
             _showtitle = String.Empty
             _sorttitle = String.Empty
             _status = String.Empty
+            _stereomode = String.Empty
             _title = String.Empty
             _tvdbid = String.Empty
             _videocodec = String.Empty
