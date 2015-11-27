@@ -65,9 +65,10 @@ Public Class frmSettingsHolder
     End Sub
 
     Private Sub btnGenreConfirm_Click(sender As Object, e As EventArgs) Handles btnGenreConfirm.Click
-        If dgvGenres.SelectedRows.Count > 0 AndAlso Not dgvGenres.CurrentRow.Tag Is Nothing Then
+        If dgvGenres.SelectedRows.Count > 0 AndAlso dgvGenres.CurrentRow.Tag IsNot Nothing Then
             Dim gProperty As genreProperty = DirectCast(dgvGenres.CurrentRow.Tag, genreProperty)
             gProperty.isNew = False
+            btnGenreConfirm.Enabled = False
             dgvGenres.Refresh()
         End If
     End Sub
@@ -153,9 +154,10 @@ Public Class frmSettingsHolder
     End Sub
 
     Private Sub btnMappingConfirm_Click(sender As Object, e As EventArgs) Handles btnMappingConfirm.Click
-        If dgvMappings.SelectedRows.Count > 0 AndAlso Not dgvMappings.CurrentRow.Tag Is Nothing Then
+        If dgvMappings.SelectedRows.Count > 0 AndAlso dgvMappings.CurrentRow.Tag IsNot Nothing Then
             Dim gMapping As genreMapping = DirectCast(dgvMappings.CurrentRow.Tag, genreMapping)
             gMapping.isNew = False
+            btnMappingConfirm.Enabled = False
             dgvMappings.Refresh()
         End If
     End Sub
@@ -211,36 +213,42 @@ Public Class frmSettingsHolder
         End If
     End Sub
 
-    Private Sub dgvGenres_CurrentCellDirtyStateChanged(ByVal sender As Object, ByVal e As EventArgs) Handles dgvGenres.CurrentCellDirtyStateChanged
-        'checkbox part
-        Dim gMapping As genreMapping = DirectCast(dgvMappings.CurrentRow.Tag, genreMapping)
-        If Not gMapping Is Nothing Then
-            dgvGenres.CommitEdit(DataGridViewDataErrorContexts.Commit)
-            If Convert.ToBoolean(dgvGenres.CurrentRow.Cells(0).Value) Then
-                If Not gMapping.MappedTo.Contains(dgvGenres.CurrentRow.Cells(1).Value.ToString) Then
-                    gMapping.MappedTo.Add(dgvGenres.CurrentRow.Cells(1).Value.ToString)
-                    gMapping.isNew = False
-                End If
-            Else
-                If gMapping.MappedTo.Contains(dgvGenres.CurrentRow.Cells(1).Value.ToString) Then
-                    gMapping.MappedTo.Remove(dgvGenres.CurrentRow.Cells(1).Value.ToString)
-                    gMapping.isNew = False
+    Private Sub dgvGenres_CellValueChanged(sender As Object, e As DataGridViewCellEventArgs) Handles dgvGenres.CellValueChanged
+        If dgvGenres.SelectedRows.Count > 0 AndAlso dgvGenres.CurrentRow.Tag IsNot Nothing Then
+            'checkbox part
+            If dgvMappings.SelectedRows.Count > 0 AndAlso dgvMappings.CurrentRow.Tag IsNot Nothing Then
+                Dim gMapping As genreMapping = DirectCast(dgvMappings.CurrentRow.Tag, genreMapping)
+                If gMapping IsNot Nothing Then
+                    'dgvGenres.CommitEdit(DataGridViewDataErrorContexts.Commit)
+                    If Convert.ToBoolean(dgvGenres.CurrentRow.Cells(0).Value) Then
+                        If Not gMapping.MappedTo.Contains(dgvGenres.CurrentRow.Cells(1).Value.ToString) Then
+                            gMapping.MappedTo.Add(dgvGenres.CurrentRow.Cells(1).Value.ToString)
+                            gMapping.isNew = False
+                        End If
+                    Else
+                        If gMapping.MappedTo.Contains(dgvGenres.CurrentRow.Cells(1).Value.ToString) Then
+                            gMapping.MappedTo.Remove(dgvGenres.CurrentRow.Cells(1).Value.ToString)
+                            gMapping.isNew = False
+                        End If
+                    End If
+                    dgvMappings.Refresh()
+                    RaiseEvent ModuleSettingsChanged()
                 End If
             End If
-            dgvMappings.Refresh()
-            RaiseEvent ModuleSettingsChanged()
-        End If
 
-        'genre name part (renaming Genre)
-        Dim gProperty As genreProperty = DirectCast(dgvGenres.CurrentRow.Tag, genreProperty)
-        Dim strNewName As String = dgvGenres.CurrentRow.Cells(1).Value.ToString
-        If Not gProperty.Name = strNewName Then
-            For Each tMapping As genreMapping In tmpGenreXML.Mappings.Where(Function(f) f.MappedTo.Contains(gProperty.Name))
-                While tMapping.MappedTo.Contains(gProperty.Name)
-                    tMapping.MappedTo.Remove(gProperty.Name)
-                End While
-            Next
-            gProperty.Name = strNewName
+            'genre name part (renaming Genre)
+            Dim gProperty As genreProperty = DirectCast(dgvGenres.CurrentRow.Tag, genreProperty)
+            Dim strNewName As String = dgvGenres.CurrentRow.Cells(1).Value.ToString
+            If Not gProperty.Name = strNewName Then
+                For Each tMapping As genreMapping In tmpGenreXML.Mappings.Where(Function(f) f.MappedTo.Contains(gProperty.Name))
+                    While tMapping.MappedTo.Contains(gProperty.Name)
+                        tMapping.MappedTo.Remove(gProperty.Name)
+                    End While
+                    tMapping.MappedTo.Add(strNewName)
+                Next
+                gProperty.Name = strNewName
+                gProperty.isNew = False
+            End If
         End If
     End Sub
 

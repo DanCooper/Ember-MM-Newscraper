@@ -677,7 +677,7 @@ Public Class Database
             For Each lMovieID In MovieList
                 Dim tmpDBElement As DBElement = LoadMovieFromDB(lMovieID)
                 If tmpDBElement.IsOnline Then
-                    tmpDBElement.Movie.Genres = StringUtils.GenreFilter(tmpDBElement.Movie.Genres)
+                    tmpDBElement.Movie.Genres = StringUtils.GenreFilter(tmpDBElement.Movie.Genres, False)
                     SaveMovieToDB(tmpDBElement, False, True, True, False)
                 Else
                     logger.Info(String.Concat("Skip Movie (not online): ", tmpDBElement.Filename))
@@ -689,7 +689,7 @@ Public Class Database
             For Each lTVShowID In TVShowList
                 Dim tmpDBElement As DBElement = LoadTVShowFromDB(lTVShowID, False, False)
                 If tmpDBElement.IsOnline Then
-                    tmpDBElement.TVShow.Genres = StringUtils.GenreFilter(tmpDBElement.TVShow.Genres)
+                    tmpDBElement.TVShow.Genres = StringUtils.GenreFilter(tmpDBElement.TVShow.Genres, False)
                     SaveTVShowToDB(tmpDBElement, False, True, True, False, False)
                 Else
                     logger.Info(String.Concat("Skip TV Show (not online): ", tmpDBElement.ShowPath))

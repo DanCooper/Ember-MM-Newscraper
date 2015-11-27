@@ -23,10 +23,11 @@ Partial Class frmSettingsHolder
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmSettingsHolder))
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.pnlGenres = New System.Windows.Forms.Panel()
+        Me.btnGenreCleanupDB = New System.Windows.Forms.Button()
         Me.btnGenreConfirmAll = New System.Windows.Forms.Button()
         Me.btnGenreConfirm = New System.Windows.Forms.Button()
         Me.btnMappingConfirmAll = New System.Windows.Forms.Button()
@@ -47,7 +48,6 @@ Partial Class frmSettingsHolder
         Me.dgvGenres = New System.Windows.Forms.DataGridView()
         Me.GenreEnabled = New System.Windows.Forms.DataGridViewCheckBoxColumn()
         Me.GenreName = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.btnGenreCleanupDB = New System.Windows.Forms.Button()
         Me.pnlGenres.SuspendLayout()
         Me.gbImage.SuspendLayout()
         CType(Me.pbImage, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -76,6 +76,15 @@ Partial Class frmSettingsHolder
         Me.pnlGenres.Name = "pnlGenres"
         Me.pnlGenres.Size = New System.Drawing.Size(583, 422)
         Me.pnlGenres.TabIndex = 0
+        '
+        'btnGenreCleanupDB
+        '
+        Me.btnGenreCleanupDB.Location = New System.Drawing.Point(239, 374)
+        Me.btnGenreCleanupDB.Name = "btnGenreCleanupDB"
+        Me.btnGenreCleanupDB.Size = New System.Drawing.Size(199, 23)
+        Me.btnGenreCleanupDB.TabIndex = 13
+        Me.btnGenreCleanupDB.Text = "Cleanup Database"
+        Me.btnGenreCleanupDB.UseVisualStyleBackColor = True
         '
         'btnGenreConfirmAll
         '
@@ -268,8 +277,8 @@ Partial Class frmSettingsHolder
         '
         'MappingSearchString
         '
-        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        Me.MappingSearchString.DefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        Me.MappingSearchString.DefaultCellStyle = DataGridViewCellStyle1
         Me.MappingSearchString.FillWeight = 180.0!
         Me.MappingSearchString.HeaderText = "Mapping"
         Me.MappingSearchString.Name = "MappingSearchString"
@@ -300,11 +309,11 @@ Partial Class frmSettingsHolder
         '
         'GenreEnabled
         '
-        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle5.NullValue = False
-        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.White
-        DataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.Black
-        Me.GenreEnabled.DefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle2.NullValue = False
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.White
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Black
+        Me.GenreEnabled.DefaultCellStyle = DataGridViewCellStyle2
         Me.GenreEnabled.FillWeight = 22.0!
         Me.GenreEnabled.HeaderText = ""
         Me.GenreEnabled.Name = "GenreEnabled"
@@ -312,22 +321,13 @@ Partial Class frmSettingsHolder
         '
         'GenreName
         '
-        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        Me.GenreName.DefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        Me.GenreName.DefaultCellStyle = DataGridViewCellStyle3
         Me.GenreName.FillWeight = 158.0!
         Me.GenreName.HeaderText = "Genres"
         Me.GenreName.Name = "GenreName"
         Me.GenreName.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
         Me.GenreName.Width = 158
-        '
-        'btnGenreCleanupDB
-        '
-        Me.btnGenreCleanupDB.Location = New System.Drawing.Point(239, 374)
-        Me.btnGenreCleanupDB.Name = "btnGenreCleanupDB"
-        Me.btnGenreCleanupDB.Size = New System.Drawing.Size(199, 23)
-        Me.btnGenreCleanupDB.TabIndex = 13
-        Me.btnGenreCleanupDB.Text = "Cleanup Database"
-        Me.btnGenreCleanupDB.UseVisualStyleBackColor = True
         '
         'frmSettingsHolder
         '

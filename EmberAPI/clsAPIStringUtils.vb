@@ -76,7 +76,7 @@ Public Class StringUtils
     ''' </summary>
     ''' <param name="aGenres"></param>
     ''' <returns></returns>
-    Public Shared Function GenreFilter(ByVal aGenres As List(Of String)) As List(Of String)
+    Public Shared Function GenreFilter(ByVal aGenres As List(Of String), Optional ByVal addNewGenres As Boolean = True) As List(Of String)
         Dim nGernes As New List(Of String)
 
         If Not aGenres.Count = 0 Then
@@ -84,7 +84,7 @@ Public Class StringUtils
                 Dim gMappings As genreMapping = APIXML.GenreXML.Mappings.FirstOrDefault(Function(f) f.SearchString = tGenre)
                 If gMappings IsNot Nothing Then
                     nGernes.AddRange(gMappings.MappedTo)
-                Else
+                ElseIf addNewGenres Then
                     'check if the tGenre is already existing in Gernes list
                     Dim gProperty As genreProperty = APIXML.GenreXML.Genres.FirstOrDefault(Function(f) f.Name = tGenre)
                     If gProperty Is Nothing Then
