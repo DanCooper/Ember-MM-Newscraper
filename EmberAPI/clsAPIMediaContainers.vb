@@ -3602,12 +3602,12 @@ Namespace MediaContainers
                     doCache = Master.eSettings.MovieImagesCacheEnabled
                 Case Enums.ContentType.MovieSet
                     doCache = Master.eSettings.MovieSetImagesCacheEnabled
-                Case Enums.ContentType.TV
+                Case Enums.ContentType.TV, Enums.ContentType.TVEpisode, Enums.ContentType.TVSeason, Enums.ContentType.TVShow
                     doCache = Master.eSettings.TVImagesCacheEnabled
             End Select
 
             If Not ((ImageOriginal.HasMemoryStream OrElse (ImageThumb.HasMemoryStream AndAlso Not needFullsize)) AndAlso Not LoadBitmap) Then
-                If ImageOriginal.Image Is Nothing OrElse (ImageThumb.Image Is Nothing AndAlso Not needFullsize) Then
+                If (ImageOriginal.Image Is Nothing AndAlso needFullsize) OrElse (ImageThumb.Image Is Nothing AndAlso Not needFullsize) Then
                     If File.Exists(LocalFilePath) AndAlso Not ImageOriginal.HasMemoryStream Then
                         ImageOriginal.FromFile(LocalFilePath, LoadBitmap)
                     ElseIf ImageThumb.HasMemoryStream AndAlso Not needFullsize AndAlso LoadBitmap Then
@@ -4411,11 +4411,11 @@ Namespace MediaContainers
             _mainposters.Clear()
         End Sub
 
-        Public Sub CreateCachePaths(ByRef tDBElement As Database.DBElement, ByVal tContentType As Enums.ContentType)
+        Public Sub CreateCachePaths(ByRef tDBElement As Database.DBElement)
             Dim sID As String = String.Empty
             Dim sPath As String = String.Empty
 
-            Select Case tContentType
+            Select Case tDBElement.ContentType
                 Case Enums.ContentType.Movie
                     sID = tDBElement.Movie.ID
                     If String.IsNullOrEmpty(sID) Then
@@ -4431,7 +4431,7 @@ Namespace MediaContainers
                         sID = "Unknown"
                     End If
                     sPath = Path.Combine(Master.TempPath, String.Concat("MovieSets", Path.DirectorySeparatorChar, sID))
-                Case Enums.ContentType.TV
+                Case Enums.ContentType.TV, Enums.ContentType.TVEpisode, Enums.ContentType.TVSeason, Enums.ContentType.TVShow
                     sID = tDBElement.TVShow.TVDB
                     If String.IsNullOrEmpty(sID) Then
                         sID = "Unknown"
@@ -4541,10 +4541,10 @@ Namespace MediaContainers
             Next
         End Sub
 
-        Public Sub Sort(ByVal tDBElement As Database.DBElement, ByRef ContentType As Enums.ContentType)
+        Public Sub Sort(ByVal tDBElement As Database.DBElement)
             Dim cSettings As New Settings
 
-            Select Case ContentType
+            Select Case tDBElement.ContentType
                 Case Enums.ContentType.Movie
                     cSettings.GetBlankImages = Master.eSettings.MovieImagesGetBlankImages
                     cSettings.GetEnglishImages = Master.eSettings.MovieImagesGetEnglishImages
@@ -4555,7 +4555,7 @@ Namespace MediaContainers
                     cSettings.GetEnglishImages = Master.eSettings.MovieSetImagesGetEnglishImages
                     cSettings.MediaLanguage = tDBElement.Language
                     cSettings.MediaLanguageOnly = Master.eSettings.MovieSetImagesMediaLanguageOnly
-                Case Enums.ContentType.TV
+                Case Enums.ContentType.TV, Enums.ContentType.TVEpisode, Enums.ContentType.TVSeason, Enums.ContentType.TVShow
                     cSettings.GetBlankImages = Master.eSettings.TVImagesGetBlankImages
                     cSettings.GetEnglishImages = Master.eSettings.TVImagesGetEnglishImages
                     cSettings.MediaLanguage = tDBElement.Language
@@ -4579,7 +4579,6 @@ Namespace MediaContainers
             _mainposters.Sort()
 
             'sort all List(Of Image) by preffered language/en/Blank/String.Empty/others
-            'Fanarts are not filtered, most of all have no language specification
             _episodeposters = FilterImages(_episodeposters, cSettings)
             _seasonbanners = FilterImages(_seasonbanners, cSettings)
             _seasonlandscapes = FilterImages(_seasonlandscapes, cSettings)
@@ -4589,6 +4588,7 @@ Namespace MediaContainers
             _maincleararts = FilterImages(_maincleararts, cSettings)
             _mainclearlogos = FilterImages(_mainclearlogos, cSettings)
             _maindiscarts = FilterImages(_maindiscarts, cSettings)
+            _mainfanarts = FilterImages(_mainfanarts, cSettings)
             _mainlandscapes = FilterImages(_mainlandscapes, cSettings)
             _mainposters = FilterImages(_mainposters, cSettings)
         End Sub

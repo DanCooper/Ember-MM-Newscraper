@@ -190,14 +190,24 @@ Public Class dlgImgSelect
         tSearchResultsContainer = SearchResultsContainer
         tDBElementResult = CType(DBElement.CloneDeep, Database.DBElement)
         tScrapeModifier = ScrapeModifier
-        tContentType = DBElement.ContentType
-        If tContentType = Enums.ContentType.TVSeason Then
-            DoOnlySeason = DBElement.TVSeason.Season
-        End If
+
+        Select Case DBElement.ContentType
+            Case Enums.ContentType.TVShow
+                If ScrapeModifier.withEpisodes OrElse ScrapeModifier.withSeasons Then
+                    tContentType = Enums.ContentType.TV
+                Else
+                    tContentType = Enums.ContentType.TVShow
+                End If
+            Case Enums.ContentType.TVSeason
+                tContentType = Enums.ContentType.TVSeason
+                DoOnlySeason = DBElement.TVSeason.Season
+            Case Else
+                tContentType = DBElement.ContentType
+        End Select
 
         SetParameters()
 
-        Return MyBase.ShowDialog()
+        Return ShowDialog()
     End Function
 
     Private Sub dlgImageSelect_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load

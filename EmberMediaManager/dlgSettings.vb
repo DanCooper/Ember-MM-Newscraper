@@ -2864,19 +2864,9 @@ Public Class dlgSettings
             chkGeneralCheckUpdates.Checked = .GeneralCheckUpdates
             chkGeneralDateAddedIgnoreNFO.Checked = .GeneralDateAddedIgnoreNFO
             chkGeneralDigitGrpSymbolVotes.Checked = .GeneralDigitGrpSymbolVotes
-            If .GeneralImageFilter Then
-                chkGeneralImageFilter.Checked = True
-                chkGeneralImageFilterAutoscraper.Checked = .GeneralImageFilterAutoscraper
-                chkGeneralImageFilterImagedialog.Checked = .GeneralImageFilterImagedialog
-                txtGeneralImageFilterPosterMatchRate.Text = .GeneralImageFilterPosterMatchTolerance.ToString
-                txtGeneralImageFilterFanartMatchRate.Text = .GeneralImageFilterFanartMatchTolerance.ToString
-            Else
-                chkGeneralImageFilter.Checked = False
-                chkGeneralImageFilterAutoscraper.Enabled = False
-                chkGeneralImageFilterImagedialog.Enabled = False
-                txtGeneralImageFilterPosterMatchRate.Enabled = False
-                txtGeneralImageFilterFanartMatchRate.Enabled = False
-            End If
+            chkGeneralImageFilter.Checked = .GeneralImageFilter
+            chkGeneralImageFilterAutoscraper.Checked = .GeneralImageFilterAutoscraper
+            chkGeneralImageFilterImagedialog.Checked = .GeneralImageFilterImagedialog
             chkGeneralDoubleClickScrape.Checked = .GeneralDoubleClickScrape
             chkGeneralDisplayBanner.Checked = .GeneralDisplayBanner
             chkGeneralDisplayCharacterArt.Checked = .GeneralDisplayCharacterArt
@@ -3225,6 +3215,8 @@ Public Class dlgSettings
             lstFileSystemCleanerWhitelist.Items.AddRange(.FileSystemCleanerWhitelistExts.ToArray)
             lstFileSystemNoStackExts.Items.AddRange(.FileSystemNoStackExts.ToArray)
             tcFileSystemCleaner.SelectedTab = If(.FileSystemExpertCleaner, tpFileSystemCleanerExpert, tpFileSystemCleanerStandard)
+            txtGeneralImageFilterPosterMatchRate.Text = .GeneralImageFilterPosterMatchTolerance.ToString
+            txtGeneralImageFilterFanartMatchRate.Text = .GeneralImageFilterFanartMatchTolerance.ToString
             txtGeneralDaemonPath.Text = .GeneralDaemonPath.ToString
             txtMovieSourcesBackdropsFolderPath.Text = .MovieBackdropsPath.ToString
             txtMovieExtrafanartsLimit.Text = .MovieExtrafanartsLimit.ToString
@@ -4669,15 +4661,15 @@ Public Class dlgSettings
             .GeneralImageFilter = chkGeneralImageFilter.Checked
             .GeneralImageFilterAutoscraper = chkGeneralImageFilterAutoscraper.Checked
             .GeneralImageFilterImagedialog = chkGeneralImageFilterImagedialog.Checked
-            If Not String.IsNullOrEmpty(txtGeneralImageFilterPosterMatchRate.Text) AndAlso Integer.TryParse(txtGeneralImageFilterPosterMatchRate.Text, 1) Then
-                .GeneralImageFilterPosterMatchTolerance = Convert.ToInt32(txtGeneralImageFilterPosterMatchRate.Text)
-            Else
-                .GeneralImageFilterPosterMatchTolerance = 1
-            End If
             If Not String.IsNullOrEmpty(txtGeneralImageFilterFanartMatchRate.Text) AndAlso Integer.TryParse(txtGeneralImageFilterFanartMatchRate.Text, 4) Then
                 .GeneralImageFilterFanartMatchTolerance = Convert.ToInt32(txtGeneralImageFilterFanartMatchRate.Text)
             Else
                 .GeneralImageFilterFanartMatchTolerance = 4
+            End If
+            If Not String.IsNullOrEmpty(txtGeneralImageFilterPosterMatchRate.Text) AndAlso Integer.TryParse(txtGeneralImageFilterPosterMatchRate.Text, 1) Then
+                .GeneralImageFilterPosterMatchTolerance = Convert.ToInt32(txtGeneralImageFilterPosterMatchRate.Text)
+            Else
+                .GeneralImageFilterPosterMatchTolerance = 1
             End If
             .GeneralLanguage = cbGeneralLanguage.Text
             .GeneralMovieTheme = cbGeneralMovieTheme.Text
@@ -7555,17 +7547,10 @@ Public Class dlgSettings
 
         chkGeneralImageFilterAutoscraper.Enabled = chkGeneralImageFilter.Checked
         chkGeneralImageFilterImagedialog.Enabled = chkGeneralImageFilter.Checked
+        lblGeneralImageFilterFanartMatchRate.Enabled = chkGeneralImageFilter.Checked
+        lblGeneralImageFilterPosterMatchRate.Enabled = chkGeneralImageFilter.Checked
         txtGeneralImageFilterFanartMatchRate.Enabled = chkGeneralImageFilter.Checked
         txtGeneralImageFilterPosterMatchRate.Enabled = chkGeneralImageFilter.Checked
-
-        If chkGeneralImageFilter.Checked Then
-            If String.IsNullOrEmpty(txtGeneralImageFilterPosterMatchRate.Text) Then
-                txtGeneralImageFilterPosterMatchRate.Text = "1"
-            End If
-            If String.IsNullOrEmpty(txtGeneralImageFilterFanartMatchRate.Text) Then
-                txtGeneralImageFilterFanartMatchRate.Text = "4"
-            End If
-        End If
     End Sub
 
     Private Sub txtGeneralImageFilterMatchRate_TextChanged(sender As Object, e As EventArgs) Handles txtGeneralImageFilterPosterMatchRate.LostFocus, txtGeneralImageFilterFanartMatchRate.LostFocus
@@ -7580,8 +7565,8 @@ Public Class dlgSettings
             Else
                 NotGood = True
             End If
-            If NotGood = True Then
-                txtbox.Text = ""
+            If NotGood Then
+                txtbox.Text = String.Empty
                 MessageBox.Show(Master.eLang.GetString(1460, "Match Tolerance should be between 0 - 10 | 0 = 100% identical images, 10= different images"), Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK, MessageBoxIcon.Warning)
             End If
         End If

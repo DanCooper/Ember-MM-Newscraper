@@ -378,7 +378,7 @@ Public Class Images
     Public Shared Sub SaveMovieActorThumbs(ByVal mMovie As Database.DBElement)
         'First, (Down)Load all actor thumbs from LocalFilePath or URL
         For Each tActor As MediaContainers.Person In mMovie.Movie.Actors
-            tActor.Thumb.LoadAndCache(Enums.ContentType.Movie, True)
+            tActor.Thumb.LoadAndCache(mMovie.ContentType, True)
         Next
 
         'Secound, remove the old ones
@@ -386,7 +386,7 @@ Public Class Images
 
         'Thirdly, save all actor thumbs
         For Each tActor As MediaContainers.Person In mMovie.Movie.Actors
-            If tActor.Thumb.LoadAndCache(Enums.ContentType.Movie, True) Then
+            If tActor.Thumb.LoadAndCache(mMovie.ContentType, True) Then
                 tActor.Thumb.LocalFilePath = tActor.Thumb.ImageOriginal.SaveAsMovieActorThumb(mMovie, tActor)
             End If
         Next
@@ -508,7 +508,7 @@ Public Class Images
         Images.Delete_Movie(mMovie, Enums.ModifierType.MainExtrafanarts)
 
         For Each eImg As MediaContainers.Image In mMovie.ImagesContainer.Extrafanarts
-            If eImg.LoadAndCache(Enums.ContentType.Movie, True) Then
+            If eImg.LoadAndCache(mMovie.ContentType, True) Then
                 efPath = eImg.ImageOriginal.SaveAsMovieExtrafanart(mMovie, If(Not String.IsNullOrEmpty(eImg.URLOriginal), Path.GetFileName(eImg.URLOriginal), Path.GetFileName(eImg.LocalFilePath)))
             End If
         Next
@@ -578,7 +578,7 @@ Public Class Images
         Images.Delete_Movie(mMovie, Enums.ModifierType.MainExtrathumbs)
 
         For Each eImg As MediaContainers.Image In mMovie.ImagesContainer.Extrathumbs.OrderBy(Function(f) f.Index)
-            If eImg.LoadAndCache(Enums.ContentType.Movie, True) Then
+            If eImg.LoadAndCache(mMovie.ContentType, True) Then
                 etPath = eImg.ImageOriginal.SaveAsMovieExtrathumb(mMovie)
             End If
         Next
@@ -1009,7 +1009,7 @@ Public Class Images
     Public Shared Sub SaveTVEpisodeActorThumbs(ByVal mEpisode As Database.DBElement)
         'First, (Down)Load all actor thumbs from LocalFilePath or URL
         For Each tActor As MediaContainers.Person In mEpisode.TVEpisode.Actors
-            tActor.Thumb.LoadAndCache(Enums.ContentType.TV, True)
+            tActor.Thumb.LoadAndCache(mEpisode.ContentType, True)
         Next
 
         'Secound, remove the old ones
@@ -1017,7 +1017,7 @@ Public Class Images
 
         'Thirdly, save all actor thumbs
         For Each tActor As MediaContainers.Person In mEpisode.TVEpisode.Actors
-            If tActor.Thumb.LoadAndCache(Enums.ContentType.TV, True) Then
+            If tActor.Thumb.LoadAndCache(mEpisode.ContentType, True) Then
                 tActor.Thumb.LocalFilePath = tActor.Thumb.ImageOriginal.SaveAsTVEpisodeActorThumb(mEpisode, tActor)
             End If
         Next
@@ -1221,7 +1221,7 @@ Public Class Images
     Public Shared Sub SaveTVShowActorThumbs(ByVal mShow As Database.DBElement)
         'First, (Down)Load all actor thumbs from LocalFilePath or URL
         For Each tActor As MediaContainers.Person In mShow.TVShow.Actors
-            tActor.Thumb.LoadAndCache(Enums.ContentType.TV, True)
+            tActor.Thumb.LoadAndCache(mShow.ContentType, True)
         Next
 
         'Secound, remove the old ones
@@ -1229,7 +1229,7 @@ Public Class Images
 
         'Thirdly, save all actor thumbs
         For Each tActor As MediaContainers.Person In mShow.TVShow.Actors
-            If tActor.Thumb.LoadAndCache(Enums.ContentType.TV, True) Then
+            If tActor.Thumb.LoadAndCache(mShow.ContentType, True) Then
                 tActor.Thumb.LocalFilePath = tActor.Thumb.ImageOriginal.SaveAsTVShowActorThumb(mShow, tActor)
             End If
         Next
@@ -1356,7 +1356,7 @@ Public Class Images
         Images.Delete_TVShow(mShow, Enums.ModifierType.MainExtrafanarts)
 
         For Each eImg As MediaContainers.Image In mShow.ImagesContainer.Extrafanarts
-            If eImg.LoadAndCache(Enums.ContentType.TV, True) Then
+            If eImg.LoadAndCache(mShow.ContentType, True) Then
                 efPath = eImg.ImageOriginal.SaveAsTVShowExtrafanart(mShow, If(Not String.IsNullOrEmpty(eImg.URLOriginal), Path.GetFileName(eImg.URLOriginal), Path.GetFileName(eImg.LocalFilePath)))
             End If
         Next
@@ -1508,7 +1508,6 @@ Public Class Images
     ''' <param name="DefaultImagesContainer">Contains all original or new images (determined on the basis of preferences) of DBElement. This Container is required for resetting an image.</param>
     ''' <param name="SearchResultsContainer">Contains all new scraped images</param>
     ''' <param name="ScrapeModifier">Defines which images are to be redetermined</param>
-    ''' <param name="tContentType"></param>
     ''' <param name="DefaultSeasonImagesContainer">Contains all original or new images (determined on the basis of preferences) of each season. This Container is required for resetting an image.</param>
     ''' <param name="DefaultEpisodeImagesContainer">Contains all original or new images (determined on the basis of preferences) of each episode. This Container is required for resetting an image.</param>
     ''' <param name="IsAutoScraper">Is method called during autoscraping process?</param>
@@ -1538,7 +1537,18 @@ Public Class Images
         Dim DoSeasonLandscape As Boolean = False
         Dim DoSeasonPoster As Boolean = False
 
-        Dim tContentType As Enums.ContentType = DBElement.ContentType
+        Dim tContentType As Enums.ContentType = Enums.ContentType.None
+
+        Select Case DBElement.ContentType
+            Case Enums.ContentType.TVShow
+                If ScrapeModifier.withEpisodes OrElse ScrapeModifier.withSeasons Then
+                    tContentType = Enums.ContentType.TV
+                Else
+                    tContentType = Enums.ContentType.TVShow
+                End If
+            Case Else
+                tContentType = DBElement.ContentType
+        End Select
 
         Select Case tContentType
             Case Enums.ContentType.Movie
@@ -1592,6 +1602,28 @@ Public Class Images
                 DoSeasonLandscape = (ScrapeModifier.SeasonLandscape AndAlso Master.eSettings.TVSeasonLandscapeAnyEnabled) OrElse (ScrapeModifier.AllSeasonsLandscape AndAlso Master.eSettings.TVAllSeasonsLandscapeAnyEnabled)
                 DoSeasonPoster = (ScrapeModifier.SeasonPoster AndAlso Master.eSettings.TVSeasonPosterAnyEnabled) OrElse (ScrapeModifier.AllSeasonsPoster AndAlso Master.eSettings.TVAllSeasonsPosterAnyEnabled)
         End Select
+
+        'Remove duplicate fanart from image scraperresults
+        If DoMainExtrafanarts OrElse DoMainExtrathumbs OrElse DoMainFanart Then
+            'If process is autoscraper, then make sure that extraimages is not the same as main image of movie (i.e. fanart.jpg of movie should not be part of extrafanart)
+            If IsAutoScraper AndAlso Master.eSettings.GeneralImageFilter AndAlso Master.eSettings.GeneralImageFilterAutoscraper Then
+                RemoveDuplicateImages(SearchResultsContainer.MainFanarts, tContentType, DBElement.ImagesContainer.Fanart, MatchTolerance:=Master.eSettings.GeneralImageFilterFanartMatchTolerance)
+            ElseIf Not IsAutoScraper AndAlso Master.eSettings.GeneralImageFilter AndAlso Master.eSettings.GeneralImageFilterImagedialog Then
+                'only remove duplicates in the scraped imagelist, do not consider main image of movie (else current image of movie would not be selectable in image preview window!)
+                RemoveDuplicateImages(SearchResultsContainer.MainFanarts, tContentType, MatchTolerance:=Master.eSettings.GeneralImageFilterFanartMatchTolerance)
+            End If
+        End If
+
+        'Remove duplicate posters from image scraperresults
+        If DoMainPoster Then
+            'If process is autoscraper, then make sure that extraimages is not the same as main image of movie (i.e. fanart.jpg of movie should not be part of extrafanart)
+            If IsAutoScraper AndAlso Master.eSettings.GeneralImageFilter AndAlso Master.eSettings.GeneralImageFilterAutoscraper Then
+                RemoveDuplicateImages(SearchResultsContainer.MainPosters, tContentType, DBElement.ImagesContainer.Poster, MatchTolerance:=Master.eSettings.GeneralImageFilterPosterMatchTolerance)
+            ElseIf Not IsAutoScraper AndAlso Master.eSettings.GeneralImageFilter AndAlso Master.eSettings.GeneralImageFilterImagedialog Then
+                'only remove duplicates in the scraped imagelist, do not consider main image of movie (else current image of movie would not be selectable in image preview window!)
+                RemoveDuplicateImages(SearchResultsContainer.MainPosters, tContentType, MatchTolerance:=Master.eSettings.GeneralImageFilterPosterMatchTolerance)
+            End If
+        End If
 
         'Main Banner
         If DoMainBanner OrElse DoSeasonBanner Then
@@ -1734,31 +1766,6 @@ Public Class Images
             End If
         Else
             DefaultImagesContainer.DiscArt = DBElement.ImagesContainer.DiscArt
-        End If
-
-        'Remove duplicate fanart from image scraperresults
-        If DoMainExtrafanarts OrElse DoMainExtrathumbs OrElse DoMainFanart Then
-            'If process is autoscraper, then make sure that extraimages is not the same as main image of movie (i.e. fanart.jpg of movie should not be part of extrafanart)
-            If IsAutoScraper = True AndAlso Master.eSettings.GeneralImageFilterAutoscraper Then
-                RemoveDuplicateImages(SearchResultsContainer.MainFanarts, DBElement.ImagesContainer.Fanart, MatchTolerance:=Master.eSettings.GeneralImageFilterFanartMatchTolerance)
-            ElseIf IsAutoScraper = False AndAlso Master.eSettings.GeneralImageFilterImagedialog Then
-                'only remove duplicates in the scraped imagelist, do not consider main image of movie (else current image of movie would not be selectable in image preview window!)
-                RemoveDuplicateImages(SearchResultsContainer.MainFanarts, MatchTolerance:=Master.eSettings.GeneralImageFilterFanartMatchTolerance)
-            End If
-        End If
-        'Remove duplicate posters from image scraperresults
-        If DoMainPoster Then
-            'If process is autoscraper, then make sure that extraimages is not the same as main image of movie (i.e. fanart.jpg of movie should not be part of extrafanart)
-            If IsAutoScraper = True AndAlso Master.eSettings.GeneralImageFilterAutoscraper Then
-                'since the following algorithm removes duplicates from beginning of list and keeps the images instance which is lower in list, we reverse the list to place images in preferred language at the end of the list
-                SearchResultsContainer.MainPosters.Reverse()
-                RemoveDuplicateImages(SearchResultsContainer.MainPosters, DBElement.ImagesContainer.Poster, MatchTolerance:=Master.eSettings.GeneralImageFilterPosterMatchTolerance)
-            ElseIf IsAutoScraper = False AndAlso Master.eSettings.GeneralImageFilterImagedialog Then
-                'since the following algorithm removes duplicates from beginning of list and keeps the images instance which is lower in list, we reverse the list to place images in preferred language at the end of the list
-                SearchResultsContainer.MainPosters.Reverse()
-                'only remove duplicates in the scraped imagelist, do not consider main image of movie (else current image of movie would not be selectable in image preview window!)
-                RemoveDuplicateImages(SearchResultsContainer.MainPosters, MatchTolerance:=Master.eSettings.GeneralImageFilterPosterMatchTolerance)
-            End If
         End If
 
         'Main Extrafanarts
@@ -2980,31 +2987,29 @@ Public Class Images
     ''' 2015/09/23 Cocotus - First implementation
     ''' Used to avoid duplicate images
     ''' </remarks>
-    Public Shared Function RemoveDuplicateImages(ByRef ImageList As List(Of MediaContainers.Image), Optional ByVal CurrentImage As MediaContainers.Image = Nothing, Optional ByVal MatchTolerance As Integer = 5) As Boolean
+    Public Shared Function RemoveDuplicateImages(ByRef ImageList As List(Of MediaContainers.Image), ByVal ContentType As Enums.ContentType, Optional ByVal CurrentImage As MediaContainers.Image = Nothing, Optional ByVal MatchTolerance As Integer = 5) As Boolean
         If ImageList.Count = 0 Then Return False
         Dim lstScrapedImages As New List(Of Images)
         Dim lstSimilarImages As New List(Of Tuple(Of Integer, Integer))
         Dim currentimagesimilarity As Integer = 0
 
+        'since the following algorithm removes duplicates from beginning of list and keeps the images instance which is lower in list, we reverse the list to place images in preferred language at the end of the list
+        ImageList.Reverse()
+
         'To compare images for similarity we need to load them
         'Checking for similarity means we need to load images to compare the content! -> Need to download ´the scraped image
         'If the images aren't available in cache or stored local, download them
         For Each singleImage In ImageList
-            Dim ScrapedImage As New Images
-            If File.Exists(singleImage.LocalFilePath) Then
-                ScrapedImage.FromFile(singleImage.LocalFilePath, LoadBitmap:=True)
-            ElseIf Master.eSettings.MovieImagesCacheEnabled AndAlso File.Exists(singleImage.CacheThumbPath) Then
-                ScrapedImage.FromFile(singleImage.CacheThumbPath, LoadBitmap:=True)
-                'need to download
-            ElseIf Not singleImage.URLThumb Is Nothing AndAlso Not String.IsNullOrEmpty(singleImage.URLThumb) Then
-                ScrapedImage.FromWeb(singleImage.URLThumb, LoadBitmap:=True)
-            ElseIf Not singleImage.URLOriginal Is Nothing AndAlso Not String.IsNullOrEmpty(singleImage.URLOriginal) Then
-                ScrapedImage.FromWeb(singleImage.URLOriginal, LoadBitmap:=True)
+            If singleImage.LoadAndCache(ContentType, LoadBitmap:=True) Then
+                If singleImage.ImageThumb IsNot Nothing Then
+                    lstScrapedImages.Add(singleImage.ImageThumb)
+                ElseIf singleImage.ImageOriginal IsNot Nothing Then
+                    lstScrapedImages.Add(singleImage.ImageOriginal)
+                End If
             End If
-            lstScrapedImages.Add(ScrapedImage)
         Next
 
-        '1. Step (Optional): Remove any image  scraped imagelist which is identical to (current) image (i.e. fanart) of movie!
+        '1. Step (Optional): Remove any image scraped imagelist which is identical to (current) image (i.e. fanart) of movie!
         If Not CurrentImage Is Nothing AndAlso File.Exists(CurrentImage.LocalFilePath) Then
             For i = 0 To lstScrapedImages.Count - 1
                 Dim referenceitem = lstScrapedImages(i)
@@ -3075,8 +3080,9 @@ Public Class Images
             End If
         Next
 
-        Return True
+        ImageList.Reverse()
 
+        Return True
     End Function
 #End Region 'Methods
 

@@ -2043,6 +2043,7 @@ Partial Class dlgSettings
         'chkGeneralImageFilterAutoscraper
         '
         Me.chkGeneralImageFilterAutoscraper.AutoSize = True
+        Me.chkGeneralImageFilterAutoscraper.Enabled = False
         Me.chkGeneralImageFilterAutoscraper.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkGeneralImageFilterAutoscraper.Location = New System.Drawing.Point(23, 136)
         Me.chkGeneralImageFilterAutoscraper.Name = "chkGeneralImageFilterAutoscraper"
@@ -2054,11 +2055,11 @@ Partial Class dlgSettings
         'chkGeneralImageFilterImagedialog
         '
         Me.chkGeneralImageFilterImagedialog.AutoSize = True
-        Me.chkGeneralImageFilterImagedialog.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.chkGeneralImageFilterImagedialog.Enabled = False
         Me.chkGeneralImageFilterImagedialog.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkGeneralImageFilterImagedialog.Location = New System.Drawing.Point(23, 159)
         Me.chkGeneralImageFilterImagedialog.Name = "chkGeneralImageFilterImagedialog"
-        Me.chkGeneralImageFilterImagedialog.Size = New System.Drawing.Size(184, 17)
+        Me.chkGeneralImageFilterImagedialog.Size = New System.Drawing.Size(90, 17)
         Me.chkGeneralImageFilterImagedialog.TabIndex = 8
         Me.chkGeneralImageFilterImagedialog.Text = "Imagedialog"
         Me.chkGeneralImageFilterImagedialog.UseVisualStyleBackColor = True
@@ -2144,6 +2145,8 @@ Partial Class dlgSettings
         '
         'txtGeneralImageFilterPosterMatchRate
         '
+        Me.txtGeneralImageFilterPosterMatchRate.Enabled = False
+        Me.txtGeneralImageFilterPosterMatchRate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.txtGeneralImageFilterPosterMatchRate.Location = New System.Drawing.Point(213, 182)
         Me.txtGeneralImageFilterPosterMatchRate.Name = "txtGeneralImageFilterPosterMatchRate"
         Me.txtGeneralImageFilterPosterMatchRate.Size = New System.Drawing.Size(44, 22)
@@ -2153,6 +2156,7 @@ Partial Class dlgSettings
         '
         Me.lblGeneralImageFilterPosterMatchRate.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblGeneralImageFilterPosterMatchRate.AutoSize = True
+        Me.lblGeneralImageFilterPosterMatchRate.Enabled = False
         Me.lblGeneralImageFilterPosterMatchRate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblGeneralImageFilterPosterMatchRate.Location = New System.Drawing.Point(23, 186)
         Me.lblGeneralImageFilterPosterMatchRate.Name = "lblGeneralImageFilterPosterMatchRate"
@@ -2164,6 +2168,7 @@ Partial Class dlgSettings
         '
         Me.lblGeneralImageFilterFanartMatchRate.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblGeneralImageFilterFanartMatchRate.AutoSize = True
+        Me.lblGeneralImageFilterFanartMatchRate.Enabled = False
         Me.lblGeneralImageFilterFanartMatchRate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblGeneralImageFilterFanartMatchRate.Location = New System.Drawing.Point(23, 214)
         Me.lblGeneralImageFilterFanartMatchRate.Name = "lblGeneralImageFilterFanartMatchRate"
@@ -2173,6 +2178,8 @@ Partial Class dlgSettings
         '
         'txtGeneralImageFilterFanartMatchRate
         '
+        Me.txtGeneralImageFilterFanartMatchRate.Enabled = False
+        Me.txtGeneralImageFilterFanartMatchRate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.txtGeneralImageFilterFanartMatchRate.Location = New System.Drawing.Point(213, 210)
         Me.txtGeneralImageFilterFanartMatchRate.Name = "txtGeneralImageFilterFanartMatchRate"
         Me.txtGeneralImageFilterFanartMatchRate.Size = New System.Drawing.Size(44, 22)
