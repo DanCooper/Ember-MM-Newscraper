@@ -56,6 +56,14 @@ Public Class frmSettingsHolder
         End If
     End Sub
 
+    Private Sub btnGenreCleanupDB_Click(sender As Object, e As EventArgs) Handles btnGenreCleanupDB.Click
+        btnGenreCleanupDB.Enabled = False
+        SaveChanges()
+        Master.DB.CleanupGenres()
+        MessageBox.Show(Master.eLang.GetString(362, "Done"))
+        btnGenreCleanupDB.Enabled = True
+    End Sub
+
     Private Sub btnGenreConfirm_Click(sender As Object, e As EventArgs) Handles btnGenreConfirm.Click
         If dgvGenres.SelectedRows.Count > 0 AndAlso Not dgvGenres.CurrentRow.Tag Is Nothing Then
             Dim gProperty As genreProperty = DirectCast(dgvGenres.CurrentRow.Tag, genreProperty)
@@ -75,7 +83,7 @@ Public Class frmSettingsHolder
         Dim tGenreList As List(Of String) = Master.DB.GetAllGenres
 
         For Each tGenre As String In tGenreList
-            Dim gMapping As genreMapping = tmpGenreXML.MappingTable.FirstOrDefault(Function(f) f.SearchString = tGenre)
+            Dim gMapping As genreMapping = tmpGenreXML.Mappings.FirstOrDefault(Function(f) f.SearchString = tGenre)
             If gMapping Is Nothing Then
                 'check if the tGenre is already existing in Gernes list
                 Dim gProperty As genreProperty = tmpGenreXML.Genres.FirstOrDefault(Function(f) f.Name = tGenre)
@@ -83,7 +91,7 @@ Public Class frmSettingsHolder
                     tmpGenreXML.Genres.Add(New genreProperty With {.Name = tGenre})
                 End If
                 'add a new mapping if tGenre is not in the MappingTable
-                tmpGenreXML.MappingTable.Add(New genreMapping With {.Mappings = New List(Of String) From {tGenre}, .SearchString = tGenre})
+                tmpGenreXML.Mappings.Add(New genreMapping With {.MappedTo = New List(Of String) From {tGenre}, .SearchString = tGenre})
             End If
         Next
         LoadGenres()
@@ -95,9 +103,9 @@ Public Class frmSettingsHolder
             If dgvGenres.SelectedRows.Count > 0 Then 'AndAlso Not dgvLang.CurrentRow.Cells(1).Value Is Nothing Then
                 Dim gProperty As genreProperty = DirectCast(dgvGenres.SelectedRows(0).Tag, genreProperty)
                 tmpGenreXML.Genres.Remove(gProperty)
-                For Each gMapping As genreMapping In tmpGenreXML.MappingTable
-                    If gMapping.Mappings.Contains(gProperty.Name) Then
-                        gMapping.Mappings.Remove(gProperty.Name)
+                For Each gMapping As genreMapping In tmpGenreXML.Mappings
+                    If gMapping.MappedTo.Contains(gProperty.Name) Then
+                        gMapping.MappedTo.Remove(gProperty.Name)
                     End If
                 Next
                 dgvGenres.Rows.Remove(dgvGenres.SelectedRows(0))
@@ -136,7 +144,7 @@ Public Class frmSettingsHolder
         Dim strSearchString As String = InputBox(Master.eLang.GetString(1000, "Enter the new Mapping"), Master.eLang.GetString(1005, "New Mapping"))
         If Not String.IsNullOrEmpty(strSearchString) Then
             Dim gMapping As New genreMapping With {.SearchString = strSearchString}
-            tmpGenreXML.MappingTable.Add(gMapping)
+            tmpGenreXML.Mappings.Add(gMapping)
             Dim iRow As Integer = dgvMappings.Rows.Add(New Object() {strSearchString})
             dgvMappings.Rows(iRow).Tag = gMapping
             dgvMappings.CurrentCell = dgvMappings.Rows(iRow).Cells(0)
@@ -153,7 +161,7 @@ Public Class frmSettingsHolder
     End Sub
 
     Private Sub btnMappingConfirmAll_Click(sender As Object, e As EventArgs) Handles btnMappingConfirmAll.Click
-        For Each gMapping As genreMapping In tmpGenreXML.MappingTable.Where(Function(f) f.isNew)
+        For Each gMapping As genreMapping In tmpGenreXML.Mappings.Where(Function(f) f.isNew)
             gMapping.isNew = False
         Next
         dgvMappings.Refresh()
@@ -161,7 +169,7 @@ Public Class frmSettingsHolder
 
     Private Sub btnMappingRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMappingRemove.Click
         If dgvMappings.SelectedCells.Count > 0 Then
-            tmpGenreXML.MappingTable.Remove(DirectCast(dgvMappings.SelectedRows(0).Tag, genreMapping))
+            tmpGenreXML.Mappings.Remove(DirectCast(dgvMappings.SelectedRows(0).Tag, genreMapping))
             dgvMappings.Rows.RemoveAt(dgvMappings.SelectedCells(0).RowIndex)
             RaiseEvent ModuleSettingsChanged()
         End If
@@ -209,13 +217,13 @@ Public Class frmSettingsHolder
         If Not gMapping Is Nothing Then
             dgvGenres.CommitEdit(DataGridViewDataErrorContexts.Commit)
             If Convert.ToBoolean(dgvGenres.CurrentRow.Cells(0).Value) Then
-                If Not gMapping.Mappings.Contains(dgvGenres.CurrentRow.Cells(1).Value.ToString) Then
-                    gMapping.Mappings.Add(dgvGenres.CurrentRow.Cells(1).Value.ToString)
+                If Not gMapping.MappedTo.Contains(dgvGenres.CurrentRow.Cells(1).Value.ToString) Then
+                    gMapping.MappedTo.Add(dgvGenres.CurrentRow.Cells(1).Value.ToString)
                     gMapping.isNew = False
                 End If
             Else
-                If gMapping.Mappings.Contains(dgvGenres.CurrentRow.Cells(1).Value.ToString) Then
-                    gMapping.Mappings.Remove(dgvGenres.CurrentRow.Cells(1).Value.ToString)
+                If gMapping.MappedTo.Contains(dgvGenres.CurrentRow.Cells(1).Value.ToString) Then
+                    gMapping.MappedTo.Remove(dgvGenres.CurrentRow.Cells(1).Value.ToString)
                     gMapping.isNew = False
                 End If
             End If
@@ -227,9 +235,9 @@ Public Class frmSettingsHolder
         Dim gProperty As genreProperty = DirectCast(dgvGenres.CurrentRow.Tag, genreProperty)
         Dim strNewName As String = dgvGenres.CurrentRow.Cells(1).Value.ToString
         If Not gProperty.Name = strNewName Then
-            For Each tMapping As genreMapping In tmpGenreXML.MappingTable.Where(Function(f) f.Mappings.Contains(gProperty.Name))
-                While tMapping.Mappings.Contains(gProperty.Name)
-                    tMapping.Mappings.Remove(gProperty.Name)
+            For Each tMapping As genreMapping In tmpGenreXML.Mappings.Where(Function(f) f.MappedTo.Contains(gProperty.Name))
+                While tMapping.MappedTo.Contains(gProperty.Name)
+                    tMapping.MappedTo.Remove(gProperty.Name)
                 End While
             Next
             gProperty.Name = strNewName
@@ -282,7 +290,7 @@ Public Class frmSettingsHolder
             End If
 
             'background
-            If gMapping.Mappings.Count = 0 Then
+            If gMapping.MappedTo.Count = 0 Then
                 e.CellStyle.BackColor = Color.LightSteelBlue
                 e.CellStyle.SelectionBackColor = Color.DarkTurquoise
             Else
@@ -315,7 +323,7 @@ Public Class frmSettingsHolder
             If Not gMapping Is Nothing Then
                 GenreClearSelection()
                 For Each dRow As DataGridViewRow In dgvGenres.Rows
-                    For Each tGenre As String In gMapping.Mappings
+                    For Each tGenre As String In gMapping.MappedTo
                         dRow.Cells(0).Value = If(dRow.Cells(1).Value.ToString = tGenre, True, dRow.Cells(0).Value)
                     Next
                 Next
@@ -358,13 +366,13 @@ Public Class frmSettingsHolder
         dgvMappings.Rows.Clear()
         GenreClearSelection()
         If cbMappingFilter.SelectedItem.ToString = Master.eLang.GetString(639, "< All >") Then
-            For Each gMapping As genreMapping In tmpGenreXML.MappingTable
+            For Each gMapping As genreMapping In tmpGenreXML.Mappings
                 Dim iRow As Integer = dgvMappings.Rows.Add(New Object() {gMapping.SearchString})
                 dgvMappings.Rows(iRow).Tag = gMapping
             Next
         Else
             btnMappingRemove.Enabled = False
-            For Each gMapping As genreMapping In tmpGenreXML.MappingTable.Where(Function(f) f.Mappings.Contains(cbMappingFilter.SelectedItem.ToString))
+            For Each gMapping As genreMapping In tmpGenreXML.Mappings.Where(Function(f) f.MappedTo.Contains(cbMappingFilter.SelectedItem.ToString))
                 Dim i As Integer = dgvMappings.Rows.Add(New Object() {gMapping.SearchString})
                 dgvMappings.Rows(i).Tag = gMapping
             Next

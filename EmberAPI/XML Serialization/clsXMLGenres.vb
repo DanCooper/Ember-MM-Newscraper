@@ -30,7 +30,7 @@ Public Class clsXMLGenres
 
     Private _defaultimage As String
     Private _genres As New List(Of genreProperty)
-    Private _mappingtable As New List(Of genreMapping)
+    Private _mappings As New List(Of genreMapping)
 
 #End Region 'Fields
 
@@ -46,7 +46,7 @@ Public Class clsXMLGenres
         End Set
     End Property
 
-    <XmlElement("genres")>
+    <XmlElement("genre")>
     Public Property Genres() As List(Of genreProperty)
         Get
             Return _genres
@@ -56,13 +56,13 @@ Public Class clsXMLGenres
         End Set
     End Property
 
-    <XmlElement("mappingtable")>
-    Public Property MappingTable() As List(Of genreMapping)
+    <XmlElement("mapping")>
+    Public Property Mappings() As List(Of genreMapping)
         Get
-            Return _mappingtable
+            Return _mappings
         End Get
         Set(ByVal value As List(Of genreMapping))
-            _mappingtable = value
+            _mappings = value
         End Set
     End Property
 
@@ -81,7 +81,7 @@ Public Class clsXMLGenres
     Public Sub Clear()
         _defaultimage = "default.jpg"
         _genres.Clear()
-        _mappingtable.Clear()
+        _mappings.Clear()
     End Sub
 
     Public Function CloneDeep() As Object _
@@ -110,7 +110,7 @@ Public Class clsXMLGenres
 
     Public Sub Sort()
         _genres.Sort()
-        _mappingtable.Sort()
+        _mappings.Sort()
     End Sub
 
 #End Region 'Methods
@@ -125,7 +125,7 @@ Public Class genreMapping
 #Region "Fields"
 
     Private _isnew As Boolean
-    Private _mappings As New List(Of String)
+    Private _mappedto As New List(Of String)
     Private _searchstring As String
 
 #End Region 'Fields
@@ -142,13 +142,13 @@ Public Class genreMapping
         End Set
     End Property
 
-    <XmlElement("mappings")>
-    Public Property Mappings() As List(Of String)
+    <XmlElement("mappedto")>
+    Public Property MappedTo() As List(Of String)
         Get
-            Return _mappings
+            Return _mappedto
         End Get
         Set(ByVal value As List(Of String))
-            _mappings = value
+            _mappedto = value
         End Set
     End Property
 
@@ -176,7 +176,7 @@ Public Class genreMapping
 
     Public Sub Clear()
         _isnew = True
-        _mappings.Clear()
+        _mappedto.Clear()
         _searchstring = String.Empty
     End Sub
 

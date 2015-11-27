@@ -23,10 +23,14 @@ Partial Class frmSettingsHolder
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmSettingsHolder))
-        Dim DataGridViewCellStyle22 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle23 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle24 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.pnlGenres = New System.Windows.Forms.Panel()
+        Me.btnGenreConfirmAll = New System.Windows.Forms.Button()
+        Me.btnGenreConfirm = New System.Windows.Forms.Button()
+        Me.btnMappingConfirmAll = New System.Windows.Forms.Button()
+        Me.btnMappingConfirm = New System.Windows.Forms.Button()
         Me.btnGenreLoadFromDB = New System.Windows.Forms.Button()
         Me.btnMappingRemove = New System.Windows.Forms.Button()
         Me.btnMappingAdd = New System.Windows.Forms.Button()
@@ -43,10 +47,7 @@ Partial Class frmSettingsHolder
         Me.dgvGenres = New System.Windows.Forms.DataGridView()
         Me.GenreEnabled = New System.Windows.Forms.DataGridViewCheckBoxColumn()
         Me.GenreName = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.btnMappingConfirm = New System.Windows.Forms.Button()
-        Me.btnMappingConfirmAll = New System.Windows.Forms.Button()
-        Me.btnGenreConfirm = New System.Windows.Forms.Button()
-        Me.btnGenreConfirmAll = New System.Windows.Forms.Button()
+        Me.btnGenreCleanupDB = New System.Windows.Forms.Button()
         Me.pnlGenres.SuspendLayout()
         Me.gbImage.SuspendLayout()
         CType(Me.pbImage, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -56,6 +57,7 @@ Partial Class frmSettingsHolder
         '
         'pnlGenres
         '
+        Me.pnlGenres.Controls.Add(Me.btnGenreCleanupDB)
         Me.pnlGenres.Controls.Add(Me.btnGenreConfirmAll)
         Me.pnlGenres.Controls.Add(Me.btnGenreConfirm)
         Me.pnlGenres.Controls.Add(Me.btnMappingConfirmAll)
@@ -74,6 +76,44 @@ Partial Class frmSettingsHolder
         Me.pnlGenres.Name = "pnlGenres"
         Me.pnlGenres.Size = New System.Drawing.Size(583, 422)
         Me.pnlGenres.TabIndex = 0
+        '
+        'btnGenreConfirmAll
+        '
+        Me.btnGenreConfirmAll.Location = New System.Drawing.Point(338, 298)
+        Me.btnGenreConfirmAll.Name = "btnGenreConfirmAll"
+        Me.btnGenreConfirmAll.Size = New System.Drawing.Size(100, 23)
+        Me.btnGenreConfirmAll.TabIndex = 12
+        Me.btnGenreConfirmAll.Text = "Confirm All"
+        Me.btnGenreConfirmAll.UseVisualStyleBackColor = True
+        '
+        'btnGenreConfirm
+        '
+        Me.btnGenreConfirm.Enabled = False
+        Me.btnGenreConfirm.Location = New System.Drawing.Point(239, 298)
+        Me.btnGenreConfirm.Name = "btnGenreConfirm"
+        Me.btnGenreConfirm.Size = New System.Drawing.Size(93, 23)
+        Me.btnGenreConfirm.TabIndex = 11
+        Me.btnGenreConfirm.Text = "Confirm"
+        Me.btnGenreConfirm.UseVisualStyleBackColor = True
+        '
+        'btnMappingConfirmAll
+        '
+        Me.btnMappingConfirmAll.Location = New System.Drawing.Point(107, 298)
+        Me.btnMappingConfirmAll.Name = "btnMappingConfirmAll"
+        Me.btnMappingConfirmAll.Size = New System.Drawing.Size(100, 23)
+        Me.btnMappingConfirmAll.TabIndex = 10
+        Me.btnMappingConfirmAll.Text = "Confirm All"
+        Me.btnMappingConfirmAll.UseVisualStyleBackColor = True
+        '
+        'btnMappingConfirm
+        '
+        Me.btnMappingConfirm.Enabled = False
+        Me.btnMappingConfirm.Location = New System.Drawing.Point(8, 298)
+        Me.btnMappingConfirm.Name = "btnMappingConfirm"
+        Me.btnMappingConfirm.Size = New System.Drawing.Size(93, 23)
+        Me.btnMappingConfirm.TabIndex = 10
+        Me.btnMappingConfirm.Text = "Confirm"
+        Me.btnMappingConfirm.UseVisualStyleBackColor = True
         '
         'btnGenreLoadFromDB
         '
@@ -228,8 +268,8 @@ Partial Class frmSettingsHolder
         '
         'MappingSearchString
         '
-        DataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        Me.MappingSearchString.DefaultCellStyle = DataGridViewCellStyle22
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        Me.MappingSearchString.DefaultCellStyle = DataGridViewCellStyle4
         Me.MappingSearchString.FillWeight = 180.0!
         Me.MappingSearchString.HeaderText = "Mapping"
         Me.MappingSearchString.Name = "MappingSearchString"
@@ -260,11 +300,11 @@ Partial Class frmSettingsHolder
         '
         'GenreEnabled
         '
-        DataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle23.NullValue = False
-        DataGridViewCellStyle23.SelectionBackColor = System.Drawing.Color.White
-        DataGridViewCellStyle23.SelectionForeColor = System.Drawing.Color.Black
-        Me.GenreEnabled.DefaultCellStyle = DataGridViewCellStyle23
+        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle5.NullValue = False
+        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.White
+        DataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.Black
+        Me.GenreEnabled.DefaultCellStyle = DataGridViewCellStyle5
         Me.GenreEnabled.FillWeight = 22.0!
         Me.GenreEnabled.HeaderText = ""
         Me.GenreEnabled.Name = "GenreEnabled"
@@ -272,51 +312,22 @@ Partial Class frmSettingsHolder
         '
         'GenreName
         '
-        DataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        Me.GenreName.DefaultCellStyle = DataGridViewCellStyle24
+        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        Me.GenreName.DefaultCellStyle = DataGridViewCellStyle6
         Me.GenreName.FillWeight = 158.0!
         Me.GenreName.HeaderText = "Genres"
         Me.GenreName.Name = "GenreName"
         Me.GenreName.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
         Me.GenreName.Width = 158
         '
-        'btnMappingConfirm
+        'btnGenreCleanupDB
         '
-        Me.btnMappingConfirm.Enabled = False
-        Me.btnMappingConfirm.Location = New System.Drawing.Point(8, 298)
-        Me.btnMappingConfirm.Name = "btnMappingConfirm"
-        Me.btnMappingConfirm.Size = New System.Drawing.Size(93, 23)
-        Me.btnMappingConfirm.TabIndex = 10
-        Me.btnMappingConfirm.Text = "Confirm"
-        Me.btnMappingConfirm.UseVisualStyleBackColor = True
-        '
-        'btnMappingConfirmAll
-        '
-        Me.btnMappingConfirmAll.Location = New System.Drawing.Point(107, 298)
-        Me.btnMappingConfirmAll.Name = "btnMappingConfirmAll"
-        Me.btnMappingConfirmAll.Size = New System.Drawing.Size(100, 23)
-        Me.btnMappingConfirmAll.TabIndex = 10
-        Me.btnMappingConfirmAll.Text = "Confirm All"
-        Me.btnMappingConfirmAll.UseVisualStyleBackColor = True
-        '
-        'btnGenreConfirm
-        '
-        Me.btnGenreConfirm.Enabled = False
-        Me.btnGenreConfirm.Location = New System.Drawing.Point(239, 298)
-        Me.btnGenreConfirm.Name = "btnGenreConfirm"
-        Me.btnGenreConfirm.Size = New System.Drawing.Size(93, 23)
-        Me.btnGenreConfirm.TabIndex = 11
-        Me.btnGenreConfirm.Text = "Confirm"
-        Me.btnGenreConfirm.UseVisualStyleBackColor = True
-        '
-        'btnGenreConfirmAll
-        '
-        Me.btnGenreConfirmAll.Location = New System.Drawing.Point(338, 298)
-        Me.btnGenreConfirmAll.Name = "btnGenreConfirmAll"
-        Me.btnGenreConfirmAll.Size = New System.Drawing.Size(100, 23)
-        Me.btnGenreConfirmAll.TabIndex = 12
-        Me.btnGenreConfirmAll.Text = "Confirm All"
-        Me.btnGenreConfirmAll.UseVisualStyleBackColor = True
+        Me.btnGenreCleanupDB.Location = New System.Drawing.Point(239, 374)
+        Me.btnGenreCleanupDB.Name = "btnGenreCleanupDB"
+        Me.btnGenreCleanupDB.Size = New System.Drawing.Size(199, 23)
+        Me.btnGenreCleanupDB.TabIndex = 13
+        Me.btnGenreCleanupDB.Text = "Cleanup Database"
+        Me.btnGenreCleanupDB.UseVisualStyleBackColor = True
         '
         'frmSettingsHolder
         '
@@ -361,4 +372,5 @@ Partial Class frmSettingsHolder
     Friend WithEvents btnGenreConfirm As Windows.Forms.Button
     Friend WithEvents btnMappingConfirmAll As Windows.Forms.Button
     Friend WithEvents btnMappingConfirm As Windows.Forms.Button
+    Friend WithEvents btnGenreCleanupDB As Windows.Forms.Button
 End Class
