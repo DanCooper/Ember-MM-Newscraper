@@ -10196,7 +10196,9 @@ doCancel:
                 Master.eSettings.GeneralSeasonSplitterPanelState = scTVSeasonsEpisodes.SplitterDistance
                 Master.eSettings.GeneralShowSplitterPanelState = scTV.SplitterDistance
             End If
-            If Not WindowState = FormWindowState.Minimized Then Master.eSettings.Save()
+            If Not WindowState = FormWindowState.Minimized Then 'TODO: check why we don't save settings if Ember is minimized
+                Master.eSettings.Save()
+            End If
 
         Catch ex As Exception
             ' If we got here, then some of the above not run. Application.Exit can not be used. 

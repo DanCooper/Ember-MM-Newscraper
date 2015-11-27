@@ -4580,38 +4580,38 @@ Namespace MediaContainers
 
             'sort all List(Of Image) by preffered language/en/Blank/String.Empty/others
             'Fanarts are not filtered, most of all have no language specification
-            _episodeposters = SortImages(_episodeposters, cSettings)
-            _seasonbanners = SortImages(_seasonbanners, cSettings)
-            _seasonlandscapes = SortImages(_seasonlandscapes, cSettings)
-            _seasonposters = SortImages(_seasonposters, cSettings)
-            _mainbanners = SortImages(_mainbanners, cSettings)
-            _maincharacterarts = SortImages(_maincharacterarts, cSettings)
-            _maincleararts = SortImages(_maincleararts, cSettings)
-            _mainclearlogos = SortImages(_mainclearlogos, cSettings)
-            _maindiscarts = SortImages(_maindiscarts, cSettings)
-            _mainlandscapes = SortImages(_mainlandscapes, cSettings)
-            _mainposters = SortImages(_mainposters, cSettings)
+            _episodeposters = FilterImages(_episodeposters, cSettings)
+            _seasonbanners = FilterImages(_seasonbanners, cSettings)
+            _seasonlandscapes = FilterImages(_seasonlandscapes, cSettings)
+            _seasonposters = FilterImages(_seasonposters, cSettings)
+            _mainbanners = FilterImages(_mainbanners, cSettings)
+            _maincharacterarts = FilterImages(_maincharacterarts, cSettings)
+            _maincleararts = FilterImages(_maincleararts, cSettings)
+            _mainclearlogos = FilterImages(_mainclearlogos, cSettings)
+            _maindiscarts = FilterImages(_maindiscarts, cSettings)
+            _mainlandscapes = FilterImages(_mainlandscapes, cSettings)
+            _mainposters = FilterImages(_mainposters, cSettings)
         End Sub
 
-        Private Function SortImages(ByRef ImagesList As List(Of Image), ByVal cSettings As Settings) As List(Of Image)
-            Dim SortedList As New List(Of Image)
+        Private Function FilterImages(ByRef ImagesList As List(Of Image), ByVal cSettings As Settings) As List(Of Image)
+            Dim FilteredList As New List(Of Image)
 
             For Each tmpImage As Image In ImagesList.Where(Function(f) f.ShortLang = cSettings.MediaLanguage)
-                SortedList.Add(tmpImage)
+                FilteredList.Add(tmpImage)
             Next
 
             If (cSettings.GetEnglishImages OrElse Not cSettings.MediaLanguageOnly) AndAlso Not cSettings.MediaLanguage = "en" Then
                 For Each tmpImage As Image In ImagesList.Where(Function(f) f.ShortLang = "en")
-                    SortedList.Add(tmpImage)
+                    FilteredList.Add(tmpImage)
                 Next
             End If
 
             If cSettings.GetBlankImages OrElse Not cSettings.MediaLanguageOnly Then
                 For Each tmpImage As Image In ImagesList.Where(Function(f) f.ShortLang = Master.eLang.GetString(1168, "Blank"))
-                    SortedList.Add(tmpImage)
+                    FilteredList.Add(tmpImage)
                 Next
                 For Each tmpImage As Image In ImagesList.Where(Function(f) f.ShortLang = String.Empty)
-                    SortedList.Add(tmpImage)
+                    FilteredList.Add(tmpImage)
                 Next
             End If
 
@@ -4620,11 +4620,11 @@ Namespace MediaContainers
                                                                    Not f.ShortLang = "en" AndAlso
                                                                    Not f.ShortLang = Master.eLang.GetString(1168, "Blank") AndAlso
                                                                    Not f.ShortLang = String.Empty)
-                    SortedList.Add(tmpImage)
+                    FilteredList.Add(tmpImage)
                 Next
             End If
 
-            Return SortedList
+            Return FilteredList
         End Function
 
 #End Region 'Methods

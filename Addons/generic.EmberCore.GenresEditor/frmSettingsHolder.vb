@@ -1,15 +1,35 @@
-﻿Imports System.Windows.Forms
-Imports System.Xml.Serialization
+﻿' ################################################################################
+' #                             EMBER MEDIA MANAGER                              #
+' ################################################################################
+' ################################################################################
+' # This file is part of Ember Media Manager.                                    #
+' #                                                                              #
+' # Ember Media Manager is free software: you can redistribute it and/or modify  #
+' # it under the terms of the GNU General Public License as published by         #
+' # the Free Software Foundation, either version 3 of the License, or            #
+' # (at your option) any later version.                                          #
+' #                                                                              #
+' # Ember Media Manager is distributed in the hope that it will be useful,       #
+' # but WITHOUT ANY WARRANTY; without even the implied warranty of               #
+' # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                #
+' # GNU General Public License for more details.                                 #
+' #                                                                              #
+' # You should have received a copy of the GNU General Public License            #
+' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
+' ################################################################################
+
+Imports System.Windows.Forms
 Imports System.IO
 Imports EmberAPI
 Imports NLog
+Imports System.Drawing
 
 Public Class frmSettingsHolder
 
 #Region "Fields"
 
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
-    Private xmlGenres As xGenres
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
+    Private tmpGenreXML As clsXMLGenres
 
 #End Region 'Fields
 
@@ -20,307 +40,370 @@ Public Class frmSettingsHolder
         InitializeComponent()
         ' Add any initialization after the InitializeComponent() call.
         SetUp()
-        'Cocotus All XML Config files in new Setting-folder!
-        If File.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "Genres.xml")) Then
-            xmlGenres = xGenres.Load(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "Genres.xml"))
-        Else
-            xmlGenres = xGenres.Load(Path.Combine(Functions.AppPath, String.Format("Images{0}Genres{0}Genres.xml", Path.DirectorySeparatorChar)))
+        tmpGenreXML = CType(APIXML.GenreXML.CloneDeep, clsXMLGenres)
+        LoadGenres()
+    End Sub
+
+    Private Sub btnGenreAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnGenreAdd.Click
+        Dim strGenre As String = InputBox(Master.eLang.GetString(640, "Enter the new Genre"), Master.eLang.GetString(641, "New Genre"))
+        If Not String.IsNullOrEmpty(strGenre) Then
+            Dim gProperty As New genreProperty With {.isNew = False, .Name = strGenre}
+            tmpGenreXML.Genres.Add(gProperty)
+            Dim iRow As Integer = dgvGenres.Rows.Add(New Object() {False, strGenre})
+            dgvGenres.Rows(iRow).Tag = gProperty
+            dgvGenres.CurrentCell = dgvGenres.Rows(iRow).Cells(1)
+            RaiseEvent ModuleSettingsChanged()
         End If
-        'old
-        '  xmlGenres = xGenres.Load(Path.Combine(Functions.AppPath, String.Format("Images{0}Genres{0}Genres.xml", Path.DirectorySeparatorChar)))
-        GetLanguages()
-        'xmlGenres.Save(Path.Combine(Functions.AppPath, "Images\Genres\Genres2.xml"))
     End Sub
 
-    Public Sub SaveChanges()
-        Dim aPath As String
-        'Cocotus All XML Config files in new Setting-folder!
-        If Directory.Exists(String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar)) Then
-            aPath = String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "Genres.xml")
-        Else
-            aPath = (Path.Combine(Functions.AppPath, String.Format("Images{0}Genres{0}Genres.xml", Path.DirectorySeparatorChar)))
+    Private Sub btnGenreCleanupDB_Click(sender As Object, e As EventArgs) Handles btnGenreCleanupDB.Click
+        btnGenreCleanupDB.Enabled = False
+        SaveChanges()
+        Master.DB.CleanupGenres()
+        MessageBox.Show(Master.eLang.GetString(362, "Done"))
+        btnGenreCleanupDB.Enabled = True
+    End Sub
+
+    Private Sub btnGenreConfirm_Click(sender As Object, e As EventArgs) Handles btnGenreConfirm.Click
+        If dgvGenres.SelectedRows.Count > 0 AndAlso Not dgvGenres.CurrentRow.Tag Is Nothing Then
+            Dim gProperty As genreProperty = DirectCast(dgvGenres.CurrentRow.Tag, genreProperty)
+            gProperty.isNew = False
+            dgvGenres.Refresh()
         End If
-        xmlGenres.Save(aPath)
-        Dim objStreamReader As New StreamReader(aPath)
-        Dim xGenres As New XmlSerializer(APIXML.GenreXML.GetType)
-
-        APIXML.GenreXML = CType(xGenres.Deserialize(objStreamReader), clsXMLGenres)
-        objStreamReader.Close()
-
-        'old
-        '  xmlGenres.Save(Path.Combine(Functions.AppPath, String.Format("Images{0}Genres{0}Genres.xml", Path.DirectorySeparatorChar)))
-        ' APIXML.GenreXML = XDocument.Load(Path.Combine(Functions.AppPath, String.Format("Images{0}Genres{0}Genres.xml", Path.DirectorySeparatorChar)))
     End Sub
 
-    Private Sub GetLanguages()
-        Try
-            cbLangs.Items.Clear()
-            dgvLang.Rows.Clear()
-            cbLangs.Items.Add(Master.eLang.GetString(639, "< All >"))
-            cbLangs.Items.AddRange(xmlGenres.listOfLanguages.ToArray)
-            cbLangs.SelectedIndex = 0
-            For Each s As String In xmlGenres.listOfLanguages
-                dgvLang.Rows.Add(New Object() {False, s})
-            Next
-            dgvLang.ClearSelection()
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+    Private Sub btnGenreConfirmAll_Click(sender As Object, e As EventArgs) Handles btnGenreConfirmAll.Click
+        For Each gProperty As genreProperty In tmpGenreXML.Genres.Where(Function(f) f.isNew)
+            gProperty.isNew = False
+        Next
+        dgvGenres.Refresh()
     End Sub
 
-    Private Sub PopulateGenres()
-        Try
-            dgvGenres.Rows.Clear()
-            ClearLangSelection()
-            If cbLangs.SelectedItem.ToString = Master.eLang.GetString(639, "< All >") Then
-                For Each sett As xGenre In xmlGenres.listOfGenres
-                    Dim i As Integer = dgvGenres.Rows.Add(New Object() {sett.searchstring})
-                    dgvGenres.Rows(i).Tag = sett
-                    If sett.Langs.Count = 0 Then
-                        dgvGenres.Rows(i).DefaultCellStyle.ForeColor = Drawing.Color.Red
+    Private Sub btnGenreLoadFromDB_Click(sender As Object, e As EventArgs) Handles btnGenreLoadFromDB.Click
+        Dim tGenreList As List(Of String) = Master.DB.GetAllGenres
+
+        For Each tGenre As String In tGenreList
+            Dim gMapping As genreMapping = tmpGenreXML.Mappings.FirstOrDefault(Function(f) f.SearchString = tGenre)
+            If gMapping Is Nothing Then
+                'check if the tGenre is already existing in Gernes list
+                Dim gProperty As genreProperty = tmpGenreXML.Genres.FirstOrDefault(Function(f) f.Name = tGenre)
+                If gProperty Is Nothing Then
+                    tmpGenreXML.Genres.Add(New genreProperty With {.Name = tGenre})
+                End If
+                'add a new mapping if tGenre is not in the MappingTable
+                tmpGenreXML.Mappings.Add(New genreMapping With {.MappedTo = New List(Of String) From {tGenre}, .SearchString = tGenre})
+            End If
+        Next
+        LoadGenres()
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub btnGenreRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnGenreRemove.Click
+        If MsgBox(Master.eLang.GetString(661, "This will remove the Genre from all Mappings. Are you sure?"), MsgBoxStyle.YesNo, Master.eLang.GetString(662, "Remove Genre")) = MsgBoxResult.Yes Then
+            If dgvGenres.SelectedRows.Count > 0 Then 'AndAlso Not dgvLang.CurrentRow.Cells(1).Value Is Nothing Then
+                Dim gProperty As genreProperty = DirectCast(dgvGenres.SelectedRows(0).Tag, genreProperty)
+                tmpGenreXML.Genres.Remove(gProperty)
+                For Each gMapping As genreMapping In tmpGenreXML.Mappings
+                    If gMapping.MappedTo.Contains(gProperty.Name) Then
+                        gMapping.MappedTo.Remove(gProperty.Name)
                     End If
                 Next
-            Else
-                btnRemoveGenre.Enabled = False
-                For Each sett As xGenre In xmlGenres.listOfGenres.Where(Function(y) y.Langs.Contains(cbLangs.SelectedItem.ToString))
-                    Dim i As Integer = dgvGenres.Rows.Add(New Object() {sett.searchstring})
-                    dgvGenres.Rows(i).Tag = sett
-                Next
-            End If
-        Catch ex As Exception
-        End Try
-    End Sub
-
-    Private Sub ClearLangSelection()
-        For Each r As DataGridViewRow In dgvLang.Rows
-            r.Cells(0).Value = False
-        Next
-    End Sub
-
-    Private Sub dgvGenres_CurrentCellDirtyStateChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvGenres.CurrentCellDirtyStateChanged
-        Try
-            Dim g As xGenre = DirectCast(dgvGenres.CurrentRow.Tag, xGenre)
-            If Not g Is Nothing Then
-                dgvGenres.CommitEdit(DataGridViewDataErrorContexts.Commit)
-                g.searchstring = dgvGenres.CurrentRow.Cells(0).Value.ToString
+                dgvGenres.Rows.Remove(dgvGenres.SelectedRows(0))
+                cbMappingFilter.Items.Remove(gProperty.Name)
+                dgvMappings.Refresh()
                 RaiseEvent ModuleSettingsChanged()
             End If
-        Catch ex As Exception
-        End Try
-
+        End If
     End Sub
-    Private Sub dgvGenres_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles dgvGenres.KeyDown
+
+    Private Sub btnImageChange_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnImageChange.Click
+        Using fbImages As New OpenFileDialog
+            fbImages.InitialDirectory = Path.Combine(Functions.AppPath, String.Format("Images{0}Genres{0}", Path.DirectorySeparatorChar))
+            fbImages.Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
+            If fbImages.ShowDialog() = DialogResult.OK AndAlso Not String.IsNullOrEmpty(fbImages.FileName) Then
+                Dim gProperty As genreProperty = DirectCast(dgvGenres.CurrentRow.Tag, genreProperty)
+                gProperty.Image = Path.GetFileName(fbImages.FileName)
+                pbImage.Load(Path.Combine(Functions.AppPath, String.Format("Images{0}Genres{0}{1}", Path.DirectorySeparatorChar, gProperty.Image)))
+                btnImageRemove.Enabled = True
+                dgvGenres.Refresh()
+                RaiseEvent ModuleSettingsChanged()
+            End If
+        End Using
+    End Sub
+
+    Private Sub btnImageRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnImageRemove.Click
+        Dim gProperty As genreProperty = DirectCast(dgvGenres.CurrentRow.Tag, genreProperty)
+        gProperty.Image = String.Empty
+        pbImage.Image = Nothing
+        btnImageRemove.Enabled = False
+        dgvGenres.Refresh()
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub btnMappingAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMappingAdd.Click
+        Dim strSearchString As String = InputBox(Master.eLang.GetString(1000, "Enter the new Mapping"), Master.eLang.GetString(1005, "New Mapping"))
+        If Not String.IsNullOrEmpty(strSearchString) Then
+            Dim gMapping As New genreMapping With {.SearchString = strSearchString}
+            tmpGenreXML.Mappings.Add(gMapping)
+            Dim iRow As Integer = dgvMappings.Rows.Add(New Object() {strSearchString})
+            dgvMappings.Rows(iRow).Tag = gMapping
+            dgvMappings.CurrentCell = dgvMappings.Rows(iRow).Cells(0)
+            RaiseEvent ModuleSettingsChanged()
+        End If
+    End Sub
+
+    Private Sub btnMappingConfirm_Click(sender As Object, e As EventArgs) Handles btnMappingConfirm.Click
+        If dgvMappings.SelectedRows.Count > 0 AndAlso Not dgvMappings.CurrentRow.Tag Is Nothing Then
+            Dim gMapping As genreMapping = DirectCast(dgvMappings.CurrentRow.Tag, genreMapping)
+            gMapping.isNew = False
+            dgvMappings.Refresh()
+        End If
+    End Sub
+
+    Private Sub btnMappingConfirmAll_Click(sender As Object, e As EventArgs) Handles btnMappingConfirmAll.Click
+        For Each gMapping As genreMapping In tmpGenreXML.Mappings.Where(Function(f) f.isNew)
+            gMapping.isNew = False
+        Next
+        dgvMappings.Refresh()
+    End Sub
+
+    Private Sub btnMappingRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMappingRemove.Click
+        If dgvMappings.SelectedCells.Count > 0 Then
+            tmpGenreXML.Mappings.Remove(DirectCast(dgvMappings.SelectedRows(0).Tag, genreMapping))
+            dgvMappings.Rows.RemoveAt(dgvMappings.SelectedCells(0).RowIndex)
+            RaiseEvent ModuleSettingsChanged()
+        End If
+    End Sub
+
+    Private Sub cbMappingFilter_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cbMappingFilter.SelectedIndexChanged
+        PopulateMappings()
+    End Sub
+
+    Private Sub dgvGenres_CellPainting(sender As Object, e As DataGridViewCellPaintingEventArgs) Handles dgvGenres.CellPainting
+        If Master.isWindows AndAlso e.RowIndex >= 0 AndAlso Not dgvGenres.Item(e.ColumnIndex, e.RowIndex).Displayed Then
+            e.Handled = True
+            Return
+        End If
+
+        If e.RowIndex >= 0 Then
+
+            Dim gProperty As genreProperty = DirectCast(dgvGenres.Rows(e.RowIndex).Tag, genreProperty)
+
+            'text 
+            If gProperty.isNew Then
+                e.CellStyle.ForeColor = Color.Green
+                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
+                e.CellStyle.SelectionForeColor = Color.Green
+            Else
+                e.CellStyle.ForeColor = Color.Black
+                e.CellStyle.Font = New Font("Segoe UI", 8.25, FontStyle.Regular)
+                e.CellStyle.SelectionForeColor = Color.FromKnownColor(KnownColor.HighlightText)
+            End If
+
+            'background
+            If String.IsNullOrEmpty(gProperty.Image) Then
+                e.CellStyle.BackColor = Color.LightSteelBlue
+                e.CellStyle.SelectionBackColor = Color.DarkTurquoise
+            Else
+                e.CellStyle.BackColor = Color.White
+                e.CellStyle.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+            End If
+        End If
+    End Sub
+
+    Private Sub dgvGenres_CurrentCellDirtyStateChanged(ByVal sender As Object, ByVal e As EventArgs) Handles dgvGenres.CurrentCellDirtyStateChanged
+        'checkbox part
+        Dim gMapping As genreMapping = DirectCast(dgvMappings.CurrentRow.Tag, genreMapping)
+        If Not gMapping Is Nothing Then
+            dgvGenres.CommitEdit(DataGridViewDataErrorContexts.Commit)
+            If Convert.ToBoolean(dgvGenres.CurrentRow.Cells(0).Value) Then
+                If Not gMapping.MappedTo.Contains(dgvGenres.CurrentRow.Cells(1).Value.ToString) Then
+                    gMapping.MappedTo.Add(dgvGenres.CurrentRow.Cells(1).Value.ToString)
+                    gMapping.isNew = False
+                End If
+            Else
+                If gMapping.MappedTo.Contains(dgvGenres.CurrentRow.Cells(1).Value.ToString) Then
+                    gMapping.MappedTo.Remove(dgvGenres.CurrentRow.Cells(1).Value.ToString)
+                    gMapping.isNew = False
+                End If
+            End If
+            dgvMappings.Refresh()
+            RaiseEvent ModuleSettingsChanged()
+        End If
+
+        'genre name part (renaming Genre)
+        Dim gProperty As genreProperty = DirectCast(dgvGenres.CurrentRow.Tag, genreProperty)
+        Dim strNewName As String = dgvGenres.CurrentRow.Cells(1).Value.ToString
+        If Not gProperty.Name = strNewName Then
+            For Each tMapping As genreMapping In tmpGenreXML.Mappings.Where(Function(f) f.MappedTo.Contains(gProperty.Name))
+                While tMapping.MappedTo.Contains(gProperty.Name)
+                    tMapping.MappedTo.Remove(gProperty.Name)
+                End While
+            Next
+            gProperty.Name = strNewName
+        End If
+    End Sub
+
+    Private Sub dgvGenres_SelectionChanged(ByVal sender As Object, ByVal e As EventArgs) Handles dgvGenres.SelectionChanged
+        If dgvGenres.SelectedRows.Count > 0 AndAlso Not dgvGenres.CurrentRow.Tag Is Nothing Then
+            Dim gProperty As genreProperty = DirectCast(dgvGenres.CurrentRow.Tag, genreProperty)
+            If Not String.IsNullOrEmpty(gProperty.Image) Then
+                Dim imgPath As String = Path.Combine(Functions.AppPath, String.Format("Images{0}Genres{0}{1}", Path.DirectorySeparatorChar, gProperty.Image))
+                If File.Exists(imgPath) Then
+                    pbImage.Load(imgPath)
+                End If
+            Else
+                pbImage.Image = Nothing
+            End If
+            btnGenreConfirm.Enabled = gProperty.isNew
+            btnGenreRemove.Enabled = True
+            btnImageChange.Enabled = True
+            btnImageRemove.Enabled = Not String.IsNullOrEmpty(gProperty.Image)
+        Else
+            btnGenreRemove.Enabled = False
+            btnImageChange.Enabled = False
+            btnImageRemove.Enabled = False
+            btnGenreConfirm.Enabled = False
+            pbImage.Image = Nothing
+        End If
+    End Sub
+
+    Private Sub dgvMappings_CellPainting(sender As Object, e As DataGridViewCellPaintingEventArgs) Handles dgvMappings.CellPainting
+        If Master.isWindows AndAlso e.RowIndex >= 0 AndAlso Not dgvMappings.Item(e.ColumnIndex, e.RowIndex).Displayed Then
+            e.Handled = True
+            Return
+        End If
+
+        If e.RowIndex >= 0 Then
+
+            Dim gMapping As genreMapping = DirectCast(dgvMappings.Rows(e.RowIndex).Tag, genreMapping)
+
+            'text 
+            If gMapping.isNew Then
+                e.CellStyle.ForeColor = Color.Green
+                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
+                e.CellStyle.SelectionForeColor = Color.Green
+            Else
+                e.CellStyle.ForeColor = Color.Black
+                e.CellStyle.Font = New Font("Segoe UI", 8.25, FontStyle.Regular)
+                e.CellStyle.SelectionForeColor = Color.FromKnownColor(KnownColor.HighlightText)
+            End If
+
+            'background
+            If gMapping.MappedTo.Count = 0 Then
+                e.CellStyle.BackColor = Color.LightSteelBlue
+                e.CellStyle.SelectionBackColor = Color.DarkTurquoise
+            Else
+                e.CellStyle.BackColor = Color.White
+                e.CellStyle.SelectionBackColor = Color.FromKnownColor(KnownColor.Highlight)
+            End If
+        End If
+    End Sub
+
+    Private Sub dgvMappings_CurrentCellDirtyStateChanged(ByVal sender As Object, ByVal e As EventArgs) Handles dgvMappings.CurrentCellDirtyStateChanged
+        Dim gMapping As genreMapping = DirectCast(dgvMappings.CurrentRow.Tag, genreMapping)
+        If Not gMapping Is Nothing Then
+            dgvMappings.CommitEdit(DataGridViewDataErrorContexts.Commit)
+            gMapping.SearchString = dgvMappings.CurrentRow.Cells(0).Value.ToString
+            RaiseEvent ModuleSettingsChanged()
+        End If
+    End Sub
+
+    Private Sub dgvMappings_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles dgvMappings.KeyDown
         e.Handled = (e.KeyCode = Keys.Enter)
     End Sub
 
-    Private Sub dgvGenres_SelectionChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvGenres.SelectionChanged
-        btnRemoveGenre.Enabled = False
-        btnChangeImg.Enabled = False
-        dgvLang.Enabled = False
-        pbIcon.Image = Nothing
-        Try
-            dgvLang.ClearSelection()
-            If dgvGenres.SelectedCells.Count > 0 Then
-                Dim g As xGenre = DirectCast(dgvGenres.CurrentRow.Tag, xGenre)
-                If Not g Is Nothing Then
-                    ClearLangSelection()
-                    For Each r As DataGridViewRow In dgvLang.Rows
-                        For Each s As String In g.Langs
-                            r.Cells(0).Value = If(r.Cells(1).Value.ToString = s, True, r.Cells(0).Value)
-                        Next
+    Private Sub dgvMappings_SelectionChanged(ByVal sender As Object, ByVal e As EventArgs) Handles dgvMappings.SelectionChanged
+        btnMappingRemove.Enabled = False
+        dgvGenres.Columns(0).ReadOnly = True
+        dgvGenres.ClearSelection()
+
+        If dgvMappings.SelectedCells.Count > 0 Then
+            Dim gMapping As genreMapping = DirectCast(dgvMappings.Rows(dgvMappings.SelectedCells(0).RowIndex).Tag, genreMapping)
+            If Not gMapping Is Nothing Then
+                GenreClearSelection()
+                For Each dRow As DataGridViewRow In dgvGenres.Rows
+                    For Each tGenre As String In gMapping.MappedTo
+                        dRow.Cells(0).Value = If(dRow.Cells(1).Value.ToString = tGenre, True, dRow.Cells(0).Value)
                     Next
-                    btnRemoveGenre.Enabled = True
-                    btnChangeImg.Enabled = True
-                    dgvLang.Enabled = True
-                    If g.icon Is Nothing Then
-                        pbIcon.Image = Nothing
-                    Else
-                        pbIcon.Load(Path.Combine(Functions.AppPath, String.Format("Images{0}Genres{0}{1}", Path.DirectorySeparatorChar, g.icon)))
-                    End If
-
-                Else
-                    If dgvGenres.Rows.Count > 0 Then
-                        dgvGenres.ClearSelection()
-                    End If
-                End If
-            Else
-                ClearLangSelection()
-            End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-    End Sub
-
-    Private Sub dgvLang_CurrentCellDirtyStateChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvLang.CurrentCellDirtyStateChanged
-        Dim g As xGenre = DirectCast(dgvGenres.CurrentRow.Tag, xGenre)
-        If Not g Is Nothing Then
-            dgvLang.CommitEdit(DataGridViewDataErrorContexts.Commit)
-            RaiseEvent ModuleSettingsChanged()
-            If Convert.ToBoolean(dgvLang.CurrentRow.Cells(0).Value) Then
-                If Not g.Langs.Contains(dgvLang.CurrentRow.Cells(1).Value.ToString) Then
-                    g.Langs.Add(dgvLang.CurrentRow.Cells(1).Value.ToString)
-                End If
-            Else
-                If g.Langs.Contains(dgvLang.CurrentRow.Cells(1).Value.ToString) Then
-                    g.Langs.Remove(dgvLang.CurrentRow.Cells(1).Value.ToString)
-                End If
-            End If
-
-            If g.Langs.Count > 0 AndAlso dgvLang.CurrentRow.DefaultCellStyle.ForeColor = Drawing.Color.Red Then
-                dgvLang.CurrentRow.DefaultCellStyle.ForeColor = Drawing.Color.Black
-            End If
-        End If
-    End Sub
-    Private Sub dgvLang_SelectionChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvLang.SelectionChanged
-        If dgvLang.SelectedRows.Count > 0 AndAlso Not dgvLang.CurrentRow.Cells(1).Value Is Nothing Then
-            btnRemoveLang.Enabled = True
-        Else
-            btnRemoveLang.Enabled = False
-        End If
-    End Sub
-
-    Private Sub cbLangs_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbLangs.SelectedIndexChanged
-        PopulateGenres()
-    End Sub
-
-    Private Sub btnAddGenre_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddGenre.Click
-        Dim g As New xGenre
-        Dim i As Integer = dgvGenres.Rows.Add(New Object() {String.Empty})
-        dgvGenres.Rows(i).Tag = g
-        xmlGenres.listOfGenres.Add(g)
-        dgvGenres.CurrentCell = dgvGenres.Rows(i).Cells(0)
-        pbIcon.Image = Nothing
-        dgvLang.ClearSelection()
-        ClearLangSelection()
-        dgvGenres.BeginEdit(True)
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub btnAddLang_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddLang.Click
-        Dim s As String = InputBox(Master.eLang.GetString(640, "Enter the new Language"), Master.eLang.GetString(641, "New Language"))
-        Dim i As Integer = dgvLang.Rows.Add(New Object() {False, s})
-        dgvLang.CurrentCell = dgvLang.Rows(i).Cells(1)
-        xmlGenres.listOfLanguages.Add(s)
-        dgvLang.BeginEdit(True)
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-    Private Sub btnRemoveGenre_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveGenre.Click
-        If dgvGenres.SelectedCells.Count > 0 Then
-            xmlGenres.listOfGenres.RemoveAt(dgvGenres.SelectedCells(0).RowIndex)
-            dgvGenres.Rows.RemoveAt(dgvGenres.SelectedCells(0).RowIndex)
-            RaiseEvent ModuleSettingsChanged()
-        End If
-    End Sub
-
-    Private Sub btnRemoveLang_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveLang.Click
-        If MsgBox(Master.eLang.GetString(661, "This will remove the Language from all Genres. Are you sure?"), MsgBoxStyle.YesNo, Master.eLang.GetString(662, "Remove Language")) = MsgBoxResult.Yes Then
-            If dgvLang.SelectedRows.Count > 0 AndAlso Not dgvLang.CurrentRow.Cells(1).Value Is Nothing Then
-                Dim lang As String = dgvLang.SelectedRows(0).Cells(1).Value.ToString
-                dgvLang.Rows.Remove(dgvLang.SelectedRows(0))
-                xmlGenres.listOfLanguages.Remove(lang)
-                GetLanguages()
-                RaiseEvent ModuleSettingsChanged()
-                For Each g As xGenre In xmlGenres.listOfGenres
-                    If g.Langs.Contains(lang) Then
-                        g.Langs.Remove(lang)
-                        If g.Langs.Count = 0 Then
-                            For Each d As DataGridViewRow In dgvGenres.Rows
-                                If d.Cells(0).Value.ToString = g.searchstring Then
-                                    d.DefaultCellStyle.ForeColor = Drawing.Color.Red
-                                End If
-                            Next
-                        End If
-                    End If
                 Next
+                btnMappingConfirm.Enabled = gMapping.isNew
+                btnMappingRemove.Enabled = True
+                dgvGenres.Columns(0).ReadOnly = False
+            Else
+                If dgvMappings.Rows.Count > 0 Then
+                    dgvMappings.ClearSelection()
+                End If
             End If
+        Else
+            btnMappingConfirm.Enabled = False
+            btnMappingRemove.Enabled = False
+            GenreClearSelection()
         End If
     End Sub
 
-    Private Sub btnChangeImg_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnChangeImg.Click
-        Try
-            Using fbImages As New OpenFileDialog
-                fbImages.InitialDirectory = Path.Combine(Functions.AppPath, String.Format("Images{0}Genres{0}", Path.DirectorySeparatorChar))
-                fbImages.Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
-                fbImages.ShowDialog()
-                Dim g As xGenre = DirectCast(dgvGenres.CurrentRow.Tag, xGenre)
-                g.icon = Path.GetFileName(fbImages.FileName)
-                pbIcon.Load(Path.Combine(Functions.AppPath, String.Format("Images{0}Genres{0}{1}", Path.DirectorySeparatorChar, g.icon)))
-                RaiseEvent ModuleSettingsChanged()
-            End Using
-        Catch ex As Exception
-        End Try
+    Private Sub GenreClearSelection()
+        For Each dRow As DataGridViewRow In dgvGenres.Rows
+            dRow.Cells(0).Value = False
+        Next
+    End Sub
 
+    Private Sub LoadGenres()
+        tmpGenreXML.Sort()
+        cbMappingFilter.Items.Clear()
+        dgvGenres.Rows.Clear()
+        cbMappingFilter.Items.Add(Master.eLang.GetString(639, "< All >"))
+        For Each gProperty As genreProperty In tmpGenreXML.Genres
+            cbMappingFilter.Items.Add(gProperty.Name)
+            Dim iRow As Integer = dgvGenres.Rows.Add(New Object() {False, gProperty.Name})
+            dgvGenres.Rows(iRow).Tag = gProperty
+        Next
+        cbMappingFilter.SelectedIndex = 0
+        dgvGenres.ClearSelection()
+    End Sub
+
+    Private Sub PopulateMappings()
+        dgvMappings.Rows.Clear()
+        GenreClearSelection()
+        If cbMappingFilter.SelectedItem.ToString = Master.eLang.GetString(639, "< All >") Then
+            For Each gMapping As genreMapping In tmpGenreXML.Mappings
+                Dim iRow As Integer = dgvMappings.Rows.Add(New Object() {gMapping.SearchString})
+                dgvMappings.Rows(iRow).Tag = gMapping
+            Next
+        Else
+            btnMappingRemove.Enabled = False
+            For Each gMapping As genreMapping In tmpGenreXML.Mappings.Where(Function(f) f.MappedTo.Contains(cbMappingFilter.SelectedItem.ToString))
+                Dim i As Integer = dgvMappings.Rows.Add(New Object() {gMapping.SearchString})
+                dgvMappings.Rows(i).Tag = gMapping
+            Next
+        End If
+    End Sub
+
+    Public Sub SaveChanges()
+        APIXML.GenreXML = tmpGenreXML
+        APIXML.GenreXML.Save()
     End Sub
 
     Private Sub SetUp()
-        btnAddGenre.Text = Master.eLang.GetString(28, "Add")
-        btnAddLang.Text = Master.eLang.GetString(28, "Add")
-        btnRemoveGenre.Text = Master.eLang.GetString(30, "Remove")
-        btnRemoveLang.Text = Master.eLang.GetString(30, "Remove")
-        btnChangeImg.Text = Master.eLang.GetString(702, "Change")
-        GroupBox1.Text = Master.eLang.GetString(497, "Images")
-        Label1.Text = Master.eLang.GetString(704, "Genres Filter")
-        Me.dgvGenres.Columns(0).HeaderText = Master.eLang.GetString(20, "Genre")
-        Me.dgvLang.Columns(1).HeaderText = Master.eLang.GetString(707, "Languages")
-
+        btnGenreAdd.Text = Master.eLang.GetString(28, "Add")
+        btnGenreConfirm.Text = Master.eLang.GetString(987, "Confirm")
+        btnGenreConfirmAll.Text = Master.eLang.GetString(993, "Confirm All")
+        btnGenreLoadFromDB.Text = Master.eLang.GetString(704, "Load Genres from Database")
+        btnGenreRemove.Text = Master.eLang.GetString(30, "Remove")
+        btnImageChange.Text = Master.eLang.GetString(702, "Change")
+        btnImageRemove.Text = Master.eLang.GetString(30, "Remove")
+        btnMappingAdd.Text = Master.eLang.GetString(28, "Add")
+        btnMappingConfirm.Text = Master.eLang.GetString(987, "Confirm")
+        btnMappingConfirmAll.Text = Master.eLang.GetString(993, "Confirm All")
+        btnMappingRemove.Text = Master.eLang.GetString(30, "Remove")
+        dgvGenres.Columns(1).HeaderText = Master.eLang.GetString(20, "Genre")
+        dgvMappings.Columns(0).HeaderText = Master.eLang.GetString(454, "Mapping")
+        gbImage.Text = Master.eLang.GetString(497, "Images")
+        lblMappingFilter.Text = Master.eLang.GetString(330, "Filter")
     End Sub
 
-
 #Region "Nested Types"
-    <XmlRoot("genres")> _
-    Class xGenres
-        <XmlArray("supported")> _
-        <XmlArrayItem("language")> _
-        Public listOfLanguages As New List(Of String)
-        <XmlElement("name")> _
-        Public listOfGenres As New List(Of xGenre)
-        <XmlElement("default")> _
-        Public defaulticon As New xDefaulticon
 
-        Public Shared Function Load(ByVal fpath As String) As xGenres
-            Dim conf As xGenres = Nothing
-            Try
-                If Not File.Exists(fpath) Then Return New xGenres
-                Dim xmlSer As XmlSerializer
-                xmlSer = New XmlSerializer(GetType(xGenres))
-                Using xmlSW As New StreamReader(Path.Combine(Functions.AppPath, fpath))
-                    conf = DirectCast(xmlSer.Deserialize(xmlSW), xGenres)
-                End Using
-                For i As Integer = 0 To conf.listOfGenres.Count - 1
-                    If Not IsNothing(conf.listOfGenres(i).language) Then
-                        conf.listOfGenres(i).Langs.AddRange(conf.listOfGenres(i).language.Split(Convert.ToChar("|")))
-                    End If
-                Next
-            Catch ex As Exception
-            End Try
-            Return conf
-        End Function
-        Public Sub Save(ByVal fpath As String)
-            For i As Integer = 0 To Me.listOfGenres.Count - 1
-                Me.listOfGenres(i).language = Strings.Join(Me.listOfGenres(i).Langs.ToArray, "|")
-            Next
-            Dim xmlSer As New XmlSerializer(GetType(xGenres))
-            Using xmlSW As New StreamWriter(fpath)
-                xmlSer.Serialize(xmlSW, Me)
-            End Using
-        End Sub
-    End Class
-    Class xDefaulticon
-        <XmlText()> _
-       <XmlElement()> _
-        Public icon As String
-    End Class
-    Class xGenre
-        <XmlIgnore()> _
-        Public Langs As New List(Of String)
-        <XmlAttribute("searchstring")> _
-        Public searchstring As String
-        <XmlAttribute("language")> _
-        Public language As String
-        <XmlText()> _
-        <XmlElement()> _
-        Public icon As String
-    End Class
 #End Region 'Nested Types
 
 End Class

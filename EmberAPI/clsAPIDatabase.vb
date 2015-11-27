@@ -649,6 +649,66 @@ Public Class Database
             SQLcommand.ExecuteNonQuery()
         End Using
     End Sub
+
+    Public Sub CleanupGenres()
+        logger.Info("Cleanup Genres started")
+        Dim MovieList As New List(Of Long)
+        Dim TVShowList As New List(Of Long)
+
+        Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = "SELECT DISTINCT idMovie FROM genrelinkmovie;"
+            Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    MovieList.Add(Convert.ToInt64(SQLreader("idMovie")))
+                End While
+            End Using
+
+            SQLcommand.CommandText = "SELECT DISTINCT idShow FROM genrelinktvshow;"
+            Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    TVShowList.Add(Convert.ToInt64(SQLreader("idShow")))
+                End While
+            End Using
+        End Using
+
+        Using SQLtransaction As SQLiteTransaction = _myvideosDBConn.BeginTransaction()
+            logger.Info("Process all Movies")
+            'Process all Movies, which are assigned to a genre
+            For Each lMovieID In MovieList
+                Dim tmpDBElement As DBElement = LoadMovieFromDB(lMovieID)
+                If tmpDBElement.IsOnline Then
+                    tmpDBElement.Movie.Genres = StringUtils.GenreFilter(tmpDBElement.Movie.Genres)
+                    SaveMovieToDB(tmpDBElement, False, True, True, False)
+                Else
+                    logger.Info(String.Concat("Skip Movie (not online): ", tmpDBElement.Filename))
+                End If
+            Next
+
+            'Process all TVShows, which are assigned to a genre
+            logger.Info("Process all TVShows")
+            For Each lTVShowID In TVShowList
+                Dim tmpDBElement As DBElement = LoadTVShowFromDB(lTVShowID, False, False)
+                If tmpDBElement.IsOnline Then
+                    tmpDBElement.TVShow.Genres = StringUtils.GenreFilter(tmpDBElement.TVShow.Genres)
+                    SaveTVShowToDB(tmpDBElement, False, True, True, False, False)
+                Else
+                    logger.Info(String.Concat("Skip TV Show (not online): ", tmpDBElement.ShowPath))
+                End If
+            Next
+
+            'Cleanup genre table
+            Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+                logger.Info("Cleaning genre table")
+                SQLcommand.CommandText = String.Concat("DELETE FROM genre ",
+                                                       "WHERE NOT EXISTS (SELECT 1 FROM genrelinkmovie WHERE genrelinkmovie.idGenre = genre.idGenre) ",
+                                                         "AND NOT EXISTS (SELECT 1 FROM genrelinktvshow WHERE genrelinktvshow.idGenre = genre.idGenre)")
+                SQLcommand.ExecuteNonQuery()
+            End Using
+
+            SQLtransaction.Commit()
+        End Using
+        logger.Info("Cleanup Genres done")
+    End Sub
     ''' <summary>
     ''' Remove the New flag from database entries (movies, tvshow, seasons, episode)
     ''' </summary>
@@ -1272,6 +1332,21 @@ Public Class Database
 
         cList.Sort()
         Return cList.ToArray
+    End Function
+
+    Public Function GetAllGenres() As List(Of String)
+        Dim gList As New List(Of String)
+
+        Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = "SELECT strGenre FROM genre;"
+            Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    gList.Add(SQLreader("strGenre").ToString)
+                End While
+            End Using
+        End Using
+
+        Return gList
     End Function
 
     Public Function GetAllMoviePaths() As List(Of String)
@@ -4845,7 +4920,7 @@ Public Class Database
             End Using
             Return True
         Catch ex As Exception
-            Dim response As String = ""
+            Dim response As String = String.Empty
             response = Master.eLang.GetString(1386, "Invalid SQL!") & Environment.NewLine & ex.Message
             MessageBox.Show(ex.Message, Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK)
             Return False

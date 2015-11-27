@@ -2747,22 +2747,6 @@ Public Class dlgSettings
         End Select
     End Sub
 
-    Private Sub FillGenres()
-        If Not String.IsNullOrEmpty(Master.eSettings.GenreFilter) Then
-            Dim genreArray() As String
-            genreArray = Master.eSettings.GenreFilter.Split(","c)
-            For g As Integer = 0 To genreArray.Count - 1
-                If clbMovieGenre.FindString(genreArray(g).Trim) > 0 Then clbMovieGenre.SetItemChecked(clbMovieGenre.FindString(genreArray(g).Trim), True)
-            Next
-
-            If clbMovieGenre.CheckedItems.Count = 0 Then
-                clbMovieGenre.SetItemChecked(0, True)
-            End If
-        Else
-            clbMovieGenre.SetItemChecked(0, True)
-        End If
-    End Sub
-
     Private Sub FillMovieSetScraperTitleRenamer()
         For Each sett As AdvancedSettingsSetting In clsAdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MovieSetTitleRenamer:"))
             Dim i As Integer = dgvMovieSetScraperTitleRenamer.Rows.Add(New Object() {sett.Name.Substring(21), sett.Value})
@@ -3264,7 +3248,6 @@ Public Class dlgSettings
             txtTVSourcesRegexMultiPartMatching.Text = .TVMultiPartMatching
             txtTVSkipLessThan.Text = .TVSkipLessThan.ToString
 
-            FillGenres()
             FillMovieSetScraperTitleRenamer()
 
             If .MovieLevTolerance > 0 Then
@@ -3731,7 +3714,6 @@ Public Class dlgSettings
             pnlSettingsCurrent.BackgroundImage = iBackground
         End Using
 
-        LoadGenreLangs()
         LoadIntLangs()
         LoadLangs()
         LoadThemes()
@@ -3836,22 +3818,6 @@ Public Class dlgSettings
 
     Private Sub HelpMouseLeave(ByVal sender As Object, ByVal e As EventArgs)
         lblHelp.Text = String.Empty
-    End Sub
-
-    Private Sub clbMovieGenre_ItemCheck(ByVal sender As Object, ByVal e As ItemCheckEventArgs) Handles clbMovieGenre.ItemCheck
-        If e.Index = 0 Then
-            For i As Integer = 1 To clbMovieGenre.Items.Count - 1
-                clbMovieGenre.SetItemChecked(i, False)
-            Next
-        Else
-            clbMovieGenre.SetItemChecked(0, False)
-        End If
-        SetApplyButton(True)
-    End Sub
-
-    Private Sub LoadGenreLangs()
-        clbMovieGenre.Items.Add(Master.eLang.All)
-        clbMovieGenre.Items.AddRange(APIXML.GetGenreList(True))
     End Sub
 
     Private Sub LoadIntLangs()
@@ -5187,21 +5153,6 @@ Public Class dlgSettings
                 .FileSystemCleanerWhitelist = False
                 .FileSystemCleanerWhitelistExts.Clear()
             End If
-
-            If clbMovieGenre.CheckedItems.Count > 0 Then
-                If clbMovieGenre.CheckedItems.Contains(String.Format("{0}", Master.eLang.GetString(569, Master.eLang.All))) Then
-                    .GenreFilter = String.Format("{0}", Master.eLang.GetString(569, Master.eLang.All))
-                Else
-                    Dim strGenre As String = String.Empty
-                    Dim iChecked = From iCheck In clbMovieGenre.CheckedItems
-                    strGenre = String.Join(",", iChecked.ToArray)
-                    .GenreFilter = strGenre.Trim
-                End If
-            End If
-
-            clbMovieGenre.Items.Clear()
-            LoadGenreLangs()
-            FillGenres()
 
             SaveMovieSetScraperTitleRenamer()
 
@@ -6674,7 +6625,6 @@ Public Class dlgSettings
         gbMovieSourcesBackdropsFolderOpts.Text = Master.eLang.GetString(520, "Backdrops Folder")
         gbMovieImagesFanartOpts.Text = Master.eLang.GetString(149, "Fanart")
         gbMovieGeneralFiltersOpts.Text = Master.eLang.GetString(451, "Folder/File Name Filters")
-        gbMovieGeneralGenreFilterOpts.Text = Master.eLang.GetString(454, "Genre Language Filter")
         gbMovieGeneralMediaListOpts.Text = Master.eLang.GetString(460, "Media List Options")
         gbMovieScraperDefFIExtOpts.Text = Master.eLang.GetString(625, "Defaults by File Type")
         gbMovieSetScraperTitleRenamerOpts.Text = Master.eLang.GetString(1279, "Title Renamer")

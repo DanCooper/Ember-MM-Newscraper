@@ -179,7 +179,6 @@ Partial Class dlgSettings
         Me.chkMovieImagesGetBlankImages = New System.Windows.Forms.CheckBox()
         Me.chkMovieImagesGetEnglishImages = New System.Windows.Forms.CheckBox()
         Me.chkMovieImagesMediaLanguageOnly = New System.Windows.Forms.CheckBox()
-        Me.clbMovieGenre = New System.Windows.Forms.CheckedListBox()
         Me.gbMovieGeneralMediaListOpts = New System.Windows.Forms.GroupBox()
         Me.tblMovieGeneralMediaListOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.gbMovieGeneralMediaListSortTokensOpts = New System.Windows.Forms.GroupBox()
@@ -198,21 +197,21 @@ Partial Class dlgSettings
         Me.btnMovieGeneralMediaListSortingDown = New System.Windows.Forms.Button()
         Me.btnMovieGeneralMediaListSortingUp = New System.Windows.Forms.Button()
         Me.lvMovieGeneralMediaListSorting = New System.Windows.Forms.ListView()
-        Me.colMovieGeneralMediaListSortingDisplayIndex = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
-        Me.colMovieGeneralMediaListSortingColumn = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
-        Me.colMovieGeneralMediaListSortingLabel = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
-        Me.colMovieGeneralMediaListSortingHide = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
+        Me.colMovieGeneralMediaListSortingDisplayIndex = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colMovieGeneralMediaListSortingColumn = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colMovieGeneralMediaListSortingLabel = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colMovieGeneralMediaListSortingHide = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.btnMovieGeneralMediaListSortingReset = New System.Windows.Forms.Button()
         Me.lvMovieSources = New System.Windows.Forms.ListView()
-        Me.colMovieSourcesID = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
-        Me.colMovieSourcesName = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
-        Me.colMovieSourcesPath = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
-        Me.colMovieSourcesLanguage = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
-        Me.colMovieSourcesRecur = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
-        Me.colMovieSourcesFolder = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
-        Me.colMovieSourcesSingle = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
-        Me.colMovieSourcesExclude = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
-        Me.colMovieSourcesGetYear = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
+        Me.colMovieSourcesID = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colMovieSourcesName = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colMovieSourcesPath = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colMovieSourcesLanguage = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colMovieSourcesRecur = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colMovieSourcesFolder = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colMovieSourcesSingle = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colMovieSourcesExclude = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colMovieSourcesGetYear = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.btnMovieSourceRemove = New System.Windows.Forms.Button()
         Me.btnMovieSourceAdd = New System.Windows.Forms.Button()
         Me.btnOK = New System.Windows.Forms.Button()
@@ -275,8 +274,6 @@ Partial Class dlgSettings
         Me.lblMovieGeneralCustomMarker3 = New System.Windows.Forms.Label()
         Me.txtMovieGeneralCustomMarker1 = New System.Windows.Forms.TextBox()
         Me.txtMovieGeneralCustomMarker2 = New System.Windows.Forms.TextBox()
-        Me.gbMovieGeneralGenreFilterOpts = New System.Windows.Forms.GroupBox()
-        Me.tblMovieGeneralGenreFilterOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.gbMovieGenrealIMDBMirrorOpts = New System.Windows.Forms.GroupBox()
         Me.tblMovieGenrealIMDBMirrorOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.txtMovieIMDBURL = New System.Windows.Forms.TextBox()
@@ -1640,8 +1637,6 @@ Partial Class dlgSettings
         Me.tblMovieGeneralFiltersOpts.SuspendLayout()
         Me.gbMovieGeneralCustomMarker.SuspendLayout()
         Me.tblMovieGeneralCustomMarker.SuspendLayout()
-        Me.gbMovieGeneralGenreFilterOpts.SuspendLayout()
-        Me.tblMovieGeneralGenreFilterOpts.SuspendLayout()
         Me.gbMovieGenrealIMDBMirrorOpts.SuspendLayout()
         Me.tblMovieGenrealIMDBMirrorOpts.SuspendLayout()
         Me.gbMovieGeneralMainWindowOpts.SuspendLayout()
@@ -3987,19 +3982,6 @@ Partial Class dlgSettings
         Me.chkMovieImagesMediaLanguageOnly.Text = "Only Get Images for the Media Language"
         Me.chkMovieImagesMediaLanguageOnly.UseVisualStyleBackColor = True
         '
-        'clbMovieGenre
-        '
-        Me.clbMovieGenre.CheckOnClick = True
-        Me.clbMovieGenre.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.clbMovieGenre.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.clbMovieGenre.FormattingEnabled = True
-        Me.clbMovieGenre.IntegralHeight = False
-        Me.clbMovieGenre.Location = New System.Drawing.Point(3, 3)
-        Me.clbMovieGenre.Name = "clbMovieGenre"
-        Me.clbMovieGenre.Size = New System.Drawing.Size(220, 120)
-        Me.clbMovieGenre.Sorted = True
-        Me.clbMovieGenre.TabIndex = 0
-        '
         'gbMovieGeneralMediaListOpts
         '
         Me.gbMovieGeneralMediaListOpts.AutoSize = True
@@ -4883,8 +4865,7 @@ Partial Class dlgSettings
         Me.tblMovieGeneral.Controls.Add(Me.gbMovieGeneralMiscOpts, 0, 0)
         Me.tblMovieGeneral.Controls.Add(Me.gbMovieGeneralMediaListOpts, 0, 1)
         Me.tblMovieGeneral.Controls.Add(Me.gbMovieGeneralFiltersOpts, 1, 0)
-        Me.tblMovieGeneral.Controls.Add(Me.gbMovieGeneralCustomMarker, 2, 3)
-        Me.tblMovieGeneral.Controls.Add(Me.gbMovieGeneralGenreFilterOpts, 1, 3)
+        Me.tblMovieGeneral.Controls.Add(Me.gbMovieGeneralCustomMarker, 1, 3)
         Me.tblMovieGeneral.Controls.Add(Me.gbMovieGenrealIMDBMirrorOpts, 1, 2)
         Me.tblMovieGeneral.Controls.Add(Me.gbMovieGeneralMainWindowOpts, 2, 0)
         Me.tblMovieGeneral.Dock = System.Windows.Forms.DockStyle.Fill
@@ -4910,7 +4891,7 @@ Partial Class dlgSettings
         Me.gbMovieGeneralFiltersOpts.Location = New System.Drawing.Point(233, 3)
         Me.gbMovieGeneralFiltersOpts.Name = "gbMovieGeneralFiltersOpts"
         Me.tblMovieGeneral.SetRowSpan(Me.gbMovieGeneralFiltersOpts, 2)
-        Me.gbMovieGeneralFiltersOpts.Size = New System.Drawing.Size(232, 205)
+        Me.gbMovieGeneralFiltersOpts.Size = New System.Drawing.Size(239, 205)
         Me.gbMovieGeneralFiltersOpts.TabIndex = 6
         Me.gbMovieGeneralFiltersOpts.TabStop = False
         Me.gbMovieGeneralFiltersOpts.Text = "Folder/File Name Filters"
@@ -4941,7 +4922,7 @@ Partial Class dlgSettings
         Me.tblMovieGeneralFiltersOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieGeneralFiltersOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieGeneralFiltersOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieGeneralFiltersOpts.Size = New System.Drawing.Size(226, 184)
+        Me.tblMovieGeneralFiltersOpts.Size = New System.Drawing.Size(233, 184)
         Me.tblMovieGeneralFiltersOpts.TabIndex = 10
         '
         'btnMovieFilterRemove
@@ -5034,9 +5015,9 @@ Partial Class dlgSettings
         Me.gbMovieGeneralCustomMarker.Controls.Add(Me.tblMovieGeneralCustomMarker)
         Me.gbMovieGeneralCustomMarker.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieGeneralCustomMarker.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gbMovieGeneralCustomMarker.Location = New System.Drawing.Point(471, 269)
+        Me.gbMovieGeneralCustomMarker.Location = New System.Drawing.Point(233, 269)
         Me.gbMovieGeneralCustomMarker.Name = "gbMovieGeneralCustomMarker"
-        Me.gbMovieGeneralCustomMarker.Size = New System.Drawing.Size(252, 147)
+        Me.gbMovieGeneralCustomMarker.Size = New System.Drawing.Size(239, 133)
         Me.gbMovieGeneralCustomMarker.TabIndex = 9
         Me.gbMovieGeneralCustomMarker.TabStop = False
         Me.gbMovieGeneralCustomMarker.Text = "Custom Marker"
@@ -5070,7 +5051,7 @@ Partial Class dlgSettings
         Me.tblMovieGeneralCustomMarker.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieGeneralCustomMarker.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieGeneralCustomMarker.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieGeneralCustomMarker.Size = New System.Drawing.Size(246, 126)
+        Me.tblMovieGeneralCustomMarker.Size = New System.Drawing.Size(233, 112)
         Me.tblMovieGeneralCustomMarker.TabIndex = 10
         '
         'btnMovieGeneralCustomMarker4
@@ -5205,35 +5186,6 @@ Partial Class dlgSettings
         Me.txtMovieGeneralCustomMarker2.Size = New System.Drawing.Size(136, 22)
         Me.txtMovieGeneralCustomMarker2.TabIndex = 17
         '
-        'gbMovieGeneralGenreFilterOpts
-        '
-        Me.gbMovieGeneralGenreFilterOpts.AutoSize = True
-        Me.gbMovieGeneralGenreFilterOpts.Controls.Add(Me.tblMovieGeneralGenreFilterOpts)
-        Me.gbMovieGeneralGenreFilterOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbMovieGeneralGenreFilterOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbMovieGeneralGenreFilterOpts.Location = New System.Drawing.Point(233, 269)
-        Me.gbMovieGeneralGenreFilterOpts.Name = "gbMovieGeneralGenreFilterOpts"
-        Me.gbMovieGeneralGenreFilterOpts.Size = New System.Drawing.Size(232, 147)
-        Me.gbMovieGeneralGenreFilterOpts.TabIndex = 7
-        Me.gbMovieGeneralGenreFilterOpts.TabStop = False
-        Me.gbMovieGeneralGenreFilterOpts.Text = "Genre Language Filter"
-        '
-        'tblMovieGeneralGenreFilterOpts
-        '
-        Me.tblMovieGeneralGenreFilterOpts.AutoSize = True
-        Me.tblMovieGeneralGenreFilterOpts.ColumnCount = 2
-        Me.tblMovieGeneralGenreFilterOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMovieGeneralGenreFilterOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMovieGeneralGenreFilterOpts.Controls.Add(Me.clbMovieGenre, 0, 0)
-        Me.tblMovieGeneralGenreFilterOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblMovieGeneralGenreFilterOpts.Location = New System.Drawing.Point(3, 18)
-        Me.tblMovieGeneralGenreFilterOpts.Name = "tblMovieGeneralGenreFilterOpts"
-        Me.tblMovieGeneralGenreFilterOpts.RowCount = 2
-        Me.tblMovieGeneralGenreFilterOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieGeneralGenreFilterOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieGeneralGenreFilterOpts.Size = New System.Drawing.Size(226, 126)
-        Me.tblMovieGeneralGenreFilterOpts.TabIndex = 10
-        '
         'gbMovieGenrealIMDBMirrorOpts
         '
         Me.gbMovieGenrealIMDBMirrorOpts.AutoSize = True
@@ -5243,7 +5195,7 @@ Partial Class dlgSettings
         Me.gbMovieGenrealIMDBMirrorOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbMovieGenrealIMDBMirrorOpts.Location = New System.Drawing.Point(233, 214)
         Me.gbMovieGenrealIMDBMirrorOpts.Name = "gbMovieGenrealIMDBMirrorOpts"
-        Me.gbMovieGenrealIMDBMirrorOpts.Size = New System.Drawing.Size(490, 49)
+        Me.gbMovieGenrealIMDBMirrorOpts.Size = New System.Drawing.Size(497, 49)
         Me.gbMovieGenrealIMDBMirrorOpts.TabIndex = 8
         Me.gbMovieGenrealIMDBMirrorOpts.TabStop = False
         Me.gbMovieGenrealIMDBMirrorOpts.Text = "IMDB"
@@ -5263,7 +5215,7 @@ Partial Class dlgSettings
         Me.tblMovieGenrealIMDBMirrorOpts.RowCount = 2
         Me.tblMovieGenrealIMDBMirrorOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieGenrealIMDBMirrorOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieGenrealIMDBMirrorOpts.Size = New System.Drawing.Size(484, 28)
+        Me.tblMovieGenrealIMDBMirrorOpts.Size = New System.Drawing.Size(491, 28)
         Me.tblMovieGenrealIMDBMirrorOpts.TabIndex = 10
         '
         'txtMovieIMDBURL
@@ -5292,7 +5244,7 @@ Partial Class dlgSettings
         Me.gbMovieGeneralMainWindowOpts.Controls.Add(Me.tblMovieGeneralMainWindow)
         Me.gbMovieGeneralMainWindowOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieGeneralMainWindowOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gbMovieGeneralMainWindowOpts.Location = New System.Drawing.Point(471, 3)
+        Me.gbMovieGeneralMainWindowOpts.Location = New System.Drawing.Point(478, 3)
         Me.gbMovieGeneralMainWindowOpts.Name = "gbMovieGeneralMainWindowOpts"
         Me.tblMovieGeneral.SetRowSpan(Me.gbMovieGeneralMainWindowOpts, 2)
         Me.gbMovieGeneralMainWindowOpts.Size = New System.Drawing.Size(252, 205)
@@ -6203,14 +6155,14 @@ Partial Class dlgSettings
         Me.btnMovieSourceEdit.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnMovieSourceEdit.UseVisualStyleBackColor = True
         '
-        'gbMovieSourcesFileNamingOpts
+        'gbMovieSourcesFilenamingOpts
         '
         Me.gbMovieSourcesFilenamingOpts.AutoSize = True
         Me.gbMovieSourcesFilenamingOpts.Controls.Add(Me.tcMovieSourcesFileNaming)
         Me.gbMovieSourcesFilenamingOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieSourcesFilenamingOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbMovieSourcesFilenamingOpts.Location = New System.Drawing.Point(3, 114)
-        Me.gbMovieSourcesFilenamingOpts.Name = "gbMovieSourcesFileNamingOpts"
+        Me.gbMovieSourcesFilenamingOpts.Name = "gbMovieSourcesFilenamingOpts"
         Me.tblMovieSources.SetRowSpan(Me.gbMovieSourcesFilenamingOpts, 4)
         Me.gbMovieSourcesFilenamingOpts.Size = New System.Drawing.Size(532, 414)
         Me.gbMovieSourcesFilenamingOpts.TabIndex = 8
@@ -6262,14 +6214,14 @@ Partial Class dlgSettings
         Me.tblMovieSourcesFileNamingKodi.Size = New System.Drawing.Size(512, 349)
         Me.tblMovieSourcesFileNamingKodi.TabIndex = 0
         '
-        'gbMovieSourcesFileNamingKodiDefaultsOpts
+        'gbMovieSourcesFilenamingKodiDefaultsOpts
         '
         Me.gbMovieSourcesFilenamingKodiDefaultsOpts.AutoSize = True
         Me.gbMovieSourcesFilenamingKodiDefaultsOpts.Controls.Add(Me.tblMovieSourcesFileNamingKodiDefaultsOpts)
         Me.gbMovieSourcesFilenamingKodiDefaultsOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieSourcesFilenamingKodiDefaultsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbMovieSourcesFilenamingKodiDefaultsOpts.Location = New System.Drawing.Point(3, 3)
-        Me.gbMovieSourcesFilenamingKodiDefaultsOpts.Name = "gbMovieSourcesFileNamingKodiDefaultsOpts"
+        Me.gbMovieSourcesFilenamingKodiDefaultsOpts.Name = "gbMovieSourcesFilenamingKodiDefaultsOpts"
         Me.tblMovieSourcesFileNamingKodi.SetRowSpan(Me.gbMovieSourcesFilenamingKodiDefaultsOpts, 2)
         Me.gbMovieSourcesFilenamingKodiDefaultsOpts.Size = New System.Drawing.Size(172, 231)
         Me.gbMovieSourcesFilenamingKodiDefaultsOpts.TabIndex = 10
@@ -6414,68 +6366,68 @@ Partial Class dlgSettings
         Me.chkMovieActorThumbsFrodo.TabIndex = 4
         Me.chkMovieActorThumbsFrodo.UseVisualStyleBackColor = True
         '
-        'lblMovieSourcesFileNamingXBMCDefaultsExtrafanarts
+        'lblMovieSourcesFilenamingKodiDefaultsExtrafanarts
         '
         Me.lblMovieSourcesFilenamingKodiDefaultsExtrafanarts.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSourcesFilenamingKodiDefaultsExtrafanarts.AutoSize = True
         Me.lblMovieSourcesFilenamingKodiDefaultsExtrafanarts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMovieSourcesFilenamingKodiDefaultsExtrafanarts.Location = New System.Drawing.Point(3, 83)
-        Me.lblMovieSourcesFilenamingKodiDefaultsExtrafanarts.Name = "lblMovieSourcesFileNamingXBMCDefaultsExtrafanarts"
+        Me.lblMovieSourcesFilenamingKodiDefaultsExtrafanarts.Name = "lblMovieSourcesFilenamingKodiDefaultsExtrafanarts"
         Me.lblMovieSourcesFilenamingKodiDefaultsExtrafanarts.Size = New System.Drawing.Size(68, 13)
         Me.lblMovieSourcesFilenamingKodiDefaultsExtrafanarts.TabIndex = 10
         Me.lblMovieSourcesFilenamingKodiDefaultsExtrafanarts.Text = "Extrafanarts"
         '
-        'lblMovieSourcesFileNamingXBMCDefaultsExtrathumbs
+        'lblMovieSourcesFilenamingKodiDefaultsExtrathumbs
         '
         Me.lblMovieSourcesFilenamingKodiDefaultsExtrathumbs.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSourcesFilenamingKodiDefaultsExtrathumbs.AutoSize = True
         Me.lblMovieSourcesFilenamingKodiDefaultsExtrathumbs.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMovieSourcesFilenamingKodiDefaultsExtrathumbs.Location = New System.Drawing.Point(3, 103)
-        Me.lblMovieSourcesFilenamingKodiDefaultsExtrathumbs.Name = "lblMovieSourcesFileNamingXBMCDefaultsExtrathumbs"
+        Me.lblMovieSourcesFilenamingKodiDefaultsExtrathumbs.Name = "lblMovieSourcesFilenamingKodiDefaultsExtrathumbs"
         Me.lblMovieSourcesFilenamingKodiDefaultsExtrathumbs.Size = New System.Drawing.Size(71, 13)
         Me.lblMovieSourcesFilenamingKodiDefaultsExtrathumbs.TabIndex = 10
         Me.lblMovieSourcesFilenamingKodiDefaultsExtrathumbs.Text = "Extrathumbs"
         '
-        'lblMovieSourcesFilenamingXBMCDefaultsFanart
+        'lblMovieSourcesFilenamingKodiDefaultsFanart
         '
         Me.lblMovieSourcesFilenamingKodiDefaultsFanart.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSourcesFilenamingKodiDefaultsFanart.AutoSize = True
         Me.lblMovieSourcesFilenamingKodiDefaultsFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMovieSourcesFilenamingKodiDefaultsFanart.Location = New System.Drawing.Point(3, 123)
-        Me.lblMovieSourcesFilenamingKodiDefaultsFanart.Name = "lblMovieSourcesFilenamingXBMCDefaultsFanart"
+        Me.lblMovieSourcesFilenamingKodiDefaultsFanart.Name = "lblMovieSourcesFilenamingKodiDefaultsFanart"
         Me.lblMovieSourcesFilenamingKodiDefaultsFanart.Size = New System.Drawing.Size(40, 13)
         Me.lblMovieSourcesFilenamingKodiDefaultsFanart.TabIndex = 10
         Me.lblMovieSourcesFilenamingKodiDefaultsFanart.Text = "Fanart"
         '
-        'lblMovieSourcesFileNamingXBMCDefaultsNFO
+        'lblMovieSourcesFilenamingKodiDefaultsNFO
         '
         Me.lblMovieSourcesFilenamingKodiDefaultsNFO.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSourcesFilenamingKodiDefaultsNFO.AutoSize = True
         Me.lblMovieSourcesFilenamingKodiDefaultsNFO.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMovieSourcesFilenamingKodiDefaultsNFO.Location = New System.Drawing.Point(3, 143)
-        Me.lblMovieSourcesFilenamingKodiDefaultsNFO.Name = "lblMovieSourcesFileNamingXBMCDefaultsNFO"
+        Me.lblMovieSourcesFilenamingKodiDefaultsNFO.Name = "lblMovieSourcesFilenamingKodiDefaultsNFO"
         Me.lblMovieSourcesFilenamingKodiDefaultsNFO.Size = New System.Drawing.Size(30, 13)
         Me.lblMovieSourcesFilenamingKodiDefaultsNFO.TabIndex = 10
         Me.lblMovieSourcesFilenamingKodiDefaultsNFO.Text = "NFO"
         '
-        'lblMovieSourcesFileNamingXBMCDefaultsPoster
+        'lblMovieSourcesFilenamingKodiDefaultsPoster
         '
         Me.lblMovieSourcesFilenamingKodiDefaultsPoster.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSourcesFilenamingKodiDefaultsPoster.AutoSize = True
         Me.lblMovieSourcesFilenamingKodiDefaultsPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMovieSourcesFilenamingKodiDefaultsPoster.Location = New System.Drawing.Point(3, 163)
-        Me.lblMovieSourcesFilenamingKodiDefaultsPoster.Name = "lblMovieSourcesFileNamingXBMCDefaultsPoster"
+        Me.lblMovieSourcesFilenamingKodiDefaultsPoster.Name = "lblMovieSourcesFilenamingKodiDefaultsPoster"
         Me.lblMovieSourcesFilenamingKodiDefaultsPoster.Size = New System.Drawing.Size(39, 13)
         Me.lblMovieSourcesFilenamingKodiDefaultsPoster.TabIndex = 10
         Me.lblMovieSourcesFilenamingKodiDefaultsPoster.Text = "Poster"
         '
-        'lblMovieSourcesFileNamingXBMCDefaultsTrailer
+        'lblMovieSourcesFilenamingKodiDefaultsTrailer
         '
         Me.lblMovieSourcesFilenamingKodiDefaultsTrailer.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSourcesFilenamingKodiDefaultsTrailer.AutoSize = True
         Me.lblMovieSourcesFilenamingKodiDefaultsTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMovieSourcesFilenamingKodiDefaultsTrailer.Location = New System.Drawing.Point(3, 183)
-        Me.lblMovieSourcesFilenamingKodiDefaultsTrailer.Name = "lblMovieSourcesFileNamingXBMCDefaultsTrailer"
+        Me.lblMovieSourcesFilenamingKodiDefaultsTrailer.Name = "lblMovieSourcesFilenamingKodiDefaultsTrailer"
         Me.lblMovieSourcesFilenamingKodiDefaultsTrailer.Size = New System.Drawing.Size(38, 13)
         Me.lblMovieSourcesFilenamingKodiDefaultsTrailer.TabIndex = 10
         Me.lblMovieSourcesFilenamingKodiDefaultsTrailer.Text = "Trailer"
@@ -6612,14 +6564,14 @@ Partial Class dlgSettings
         Me.chkMovieTrailerEden.TabIndex = 16
         Me.chkMovieTrailerEden.UseVisualStyleBackColor = True
         '
-        'gbMovieSourcesFileNamingKodiOptionalOpts
+        'gbMovieSourcesFilenamingKodiOptionalOpts
         '
         Me.gbMovieSourcesFilenamingKodiOptionalOpts.AutoSize = True
         Me.gbMovieSourcesFilenamingKodiOptionalOpts.Controls.Add(Me.tblMovieSourcesFileNamingKodiOptionalOpts)
         Me.gbMovieSourcesFilenamingKodiOptionalOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieSourcesFilenamingKodiOptionalOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbMovieSourcesFilenamingKodiOptionalOpts.Location = New System.Drawing.Point(181, 190)
-        Me.gbMovieSourcesFilenamingKodiOptionalOpts.Name = "gbMovieSourcesFileNamingKodiOptionalOpts"
+        Me.gbMovieSourcesFilenamingKodiOptionalOpts.Name = "gbMovieSourcesFilenamingKodiOptionalOpts"
         Me.gbMovieSourcesFilenamingKodiOptionalOpts.Size = New System.Drawing.Size(186, 44)
         Me.gbMovieSourcesFilenamingKodiOptionalOpts.TabIndex = 2
         Me.gbMovieSourcesFilenamingKodiOptionalOpts.TabStop = False
@@ -6654,14 +6606,14 @@ Partial Class dlgSettings
         Me.chkMovieXBMCProtectVTSBDMV.Text = "Protect DVD/Bluray Structure"
         Me.chkMovieXBMCProtectVTSBDMV.UseVisualStyleBackColor = True
         '
-        'gbMovieSourcesFileNamingKodiExtendedOpts
+        'gbMovieSourcesFilenamingKodiExtendedOpts
         '
         Me.gbMovieSourcesFilenamingKodiExtendedOpts.AutoSize = True
         Me.gbMovieSourcesFilenamingKodiExtendedOpts.Controls.Add(Me.tblMovieSourcesFileNamingKodiExtendedOpts)
         Me.gbMovieSourcesFilenamingKodiExtendedOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieSourcesFilenamingKodiExtendedOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.gbMovieSourcesFilenamingKodiExtendedOpts.Location = New System.Drawing.Point(181, 3)
-        Me.gbMovieSourcesFilenamingKodiExtendedOpts.Name = "gbMovieSourcesFileNamingKodiExtendedOpts"
+        Me.gbMovieSourcesFilenamingKodiExtendedOpts.Name = "gbMovieSourcesFilenamingKodiExtendedOpts"
         Me.gbMovieSourcesFilenamingKodiExtendedOpts.Size = New System.Drawing.Size(186, 181)
         Me.gbMovieSourcesFilenamingKodiExtendedOpts.TabIndex = 11
         Me.gbMovieSourcesFilenamingKodiExtendedOpts.TabStop = False
@@ -6713,24 +6665,24 @@ Partial Class dlgSettings
         Me.lblMovieSourcesFileNamingKodiExtendedClearArt.TabIndex = 10
         Me.lblMovieSourcesFileNamingKodiExtendedClearArt.Text = "ClearArt"
         '
-        'lblMovieSourcesFileNamingXBMCExtendedClearLogo
+        'lblMovieSourcesFilenamingKodiExtendedClearLogo
         '
         Me.lblMovieSourcesFilenamingKodiExtendedClearLogo.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSourcesFilenamingKodiExtendedClearLogo.AutoSize = True
         Me.lblMovieSourcesFilenamingKodiExtendedClearLogo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMovieSourcesFilenamingKodiExtendedClearLogo.Location = New System.Drawing.Point(3, 103)
-        Me.lblMovieSourcesFilenamingKodiExtendedClearLogo.Name = "lblMovieSourcesFileNamingXBMCExtendedClearLogo"
+        Me.lblMovieSourcesFilenamingKodiExtendedClearLogo.Name = "lblMovieSourcesFilenamingKodiExtendedClearLogo"
         Me.lblMovieSourcesFilenamingKodiExtendedClearLogo.Size = New System.Drawing.Size(59, 13)
         Me.lblMovieSourcesFilenamingKodiExtendedClearLogo.TabIndex = 10
         Me.lblMovieSourcesFilenamingKodiExtendedClearLogo.Text = "ClearLogo"
         '
-        'lblMovieSourcesFileNamingXBMCExtendedDiscArt
+        'lblMovieSourcesFilenamingKodiExtendedDiscArt
         '
         Me.lblMovieSourcesFilenamingKodiExtendedDiscArt.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSourcesFilenamingKodiExtendedDiscArt.AutoSize = True
         Me.lblMovieSourcesFilenamingKodiExtendedDiscArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMovieSourcesFilenamingKodiExtendedDiscArt.Location = New System.Drawing.Point(3, 123)
-        Me.lblMovieSourcesFilenamingKodiExtendedDiscArt.Name = "lblMovieSourcesFileNamingXBMCExtendedDiscArt"
+        Me.lblMovieSourcesFilenamingKodiExtendedDiscArt.Name = "lblMovieSourcesFilenamingKodiExtendedDiscArt"
         Me.lblMovieSourcesFilenamingKodiExtendedDiscArt.Size = New System.Drawing.Size(43, 13)
         Me.lblMovieSourcesFilenamingKodiExtendedDiscArt.TabIndex = 10
         Me.lblMovieSourcesFilenamingKodiExtendedDiscArt.Text = "DiscArt"
@@ -6746,13 +6698,13 @@ Partial Class dlgSettings
         Me.lblMovieSourcesFilenamingKodiExtendedEnabled.TabIndex = 0
         Me.lblMovieSourcesFilenamingKodiExtendedEnabled.Text = "Enabled"
         '
-        'lblMovieSourcesFilenamingXBMCExtendedLandscape
+        'lblMovieSourcesFilenamingKodiExtendedLandscape
         '
         Me.lblMovieSourcesFilenamingKodiExtendedLandscape.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSourcesFilenamingKodiExtendedLandscape.AutoSize = True
         Me.lblMovieSourcesFilenamingKodiExtendedLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMovieSourcesFilenamingKodiExtendedLandscape.Location = New System.Drawing.Point(3, 143)
-        Me.lblMovieSourcesFilenamingKodiExtendedLandscape.Name = "lblMovieSourcesFilenamingXBMCExtendedLandscape"
+        Me.lblMovieSourcesFilenamingKodiExtendedLandscape.Name = "lblMovieSourcesFilenamingKodiExtendedLandscape"
         Me.lblMovieSourcesFilenamingKodiExtendedLandscape.Size = New System.Drawing.Size(61, 13)
         Me.lblMovieSourcesFilenamingKodiExtendedLandscape.TabIndex = 10
         Me.lblMovieSourcesFilenamingKodiExtendedLandscape.Text = "Landscape"
@@ -6967,13 +6919,13 @@ Partial Class dlgSettings
         Me.chkMovieClearArtAD.TabIndex = 6
         Me.chkMovieClearArtAD.UseVisualStyleBackColor = True
         '
-        'lblMovieSourcesFileNamingXBMCADClearLogo
+        'lblMovieSourcesFilenamingKodiADClearLogo
         '
         Me.lblMovieSourcesFilenamingKodiADClearLogo.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSourcesFilenamingKodiADClearLogo.AutoSize = True
         Me.lblMovieSourcesFilenamingKodiADClearLogo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMovieSourcesFilenamingKodiADClearLogo.Location = New System.Drawing.Point(3, 63)
-        Me.lblMovieSourcesFilenamingKodiADClearLogo.Name = "lblMovieSourcesFileNamingXBMCADClearLogo"
+        Me.lblMovieSourcesFilenamingKodiADClearLogo.Name = "lblMovieSourcesFilenamingKodiADClearLogo"
         Me.lblMovieSourcesFilenamingKodiADClearLogo.Size = New System.Drawing.Size(59, 13)
         Me.lblMovieSourcesFilenamingKodiADClearLogo.TabIndex = 10
         Me.lblMovieSourcesFilenamingKodiADClearLogo.Text = "ClearLogo"
@@ -6989,13 +6941,13 @@ Partial Class dlgSettings
         Me.chkMovieClearLogoAD.TabIndex = 5
         Me.chkMovieClearLogoAD.UseVisualStyleBackColor = True
         '
-        'lblMovieSourcesFileNamingXBMCADDiscArt
+        'lblMovieSourcesFilenamingKodiADDiscArt
         '
         Me.lblMovieSourcesFilenamingKodiADDiscArt.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSourcesFilenamingKodiADDiscArt.AutoSize = True
         Me.lblMovieSourcesFilenamingKodiADDiscArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMovieSourcesFilenamingKodiADDiscArt.Location = New System.Drawing.Point(3, 83)
-        Me.lblMovieSourcesFilenamingKodiADDiscArt.Name = "lblMovieSourcesFileNamingXBMCADDiscArt"
+        Me.lblMovieSourcesFilenamingKodiADDiscArt.Name = "lblMovieSourcesFilenamingKodiADDiscArt"
         Me.lblMovieSourcesFilenamingKodiADDiscArt.Size = New System.Drawing.Size(43, 13)
         Me.lblMovieSourcesFilenamingKodiADDiscArt.TabIndex = 10
         Me.lblMovieSourcesFilenamingKodiADDiscArt.Text = "DiscArt"
@@ -7022,13 +6974,13 @@ Partial Class dlgSettings
         Me.chkMovieLandscapeAD.TabIndex = 9
         Me.chkMovieLandscapeAD.UseVisualStyleBackColor = True
         '
-        'lblMovieSourcesFilenamingXBMCADLandscape
+        'lblMovieSourcesFilenamingKodiADLandscape
         '
         Me.lblMovieSourcesFilenamingKodiADLandscape.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSourcesFilenamingKodiADLandscape.AutoSize = True
         Me.lblMovieSourcesFilenamingKodiADLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMovieSourcesFilenamingKodiADLandscape.Location = New System.Drawing.Point(3, 103)
-        Me.lblMovieSourcesFilenamingKodiADLandscape.Name = "lblMovieSourcesFilenamingXBMCADLandscape"
+        Me.lblMovieSourcesFilenamingKodiADLandscape.Name = "lblMovieSourcesFilenamingKodiADLandscape"
         Me.lblMovieSourcesFilenamingKodiADLandscape.Size = New System.Drawing.Size(61, 13)
         Me.lblMovieSourcesFilenamingKodiADLandscape.TabIndex = 10
         Me.lblMovieSourcesFilenamingKodiADLandscape.Text = "Landscape"
@@ -7235,14 +7187,14 @@ Partial Class dlgSettings
         Me.tblMovieSourcesFileNamingNMT.Size = New System.Drawing.Size(512, 349)
         Me.tblMovieSourcesFileNamingNMT.TabIndex = 19
         '
-        'gbMovieSourcesFileNamingNMTDefaultsOpts
+        'gbMovieSourcesFilenamingNMTDefaultsOpts
         '
         Me.gbMovieSourcesFilenamingNMTDefaultsOpts.AutoSize = True
         Me.gbMovieSourcesFilenamingNMTDefaultsOpts.Controls.Add(Me.tblMovieSourcesFileNamingNMTDefaultsOpts)
         Me.gbMovieSourcesFilenamingNMTDefaultsOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieSourcesFilenamingNMTDefaultsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbMovieSourcesFilenamingNMTDefaultsOpts.Location = New System.Drawing.Point(3, 3)
-        Me.gbMovieSourcesFilenamingNMTDefaultsOpts.Name = "gbMovieSourcesFileNamingNMTDefaultsOpts"
+        Me.gbMovieSourcesFilenamingNMTDefaultsOpts.Name = "gbMovieSourcesFilenamingNMTDefaultsOpts"
         Me.tblMovieSourcesFileNamingNMT.SetRowSpan(Me.gbMovieSourcesFilenamingNMTDefaultsOpts, 2)
         Me.gbMovieSourcesFilenamingNMTDefaultsOpts.Size = New System.Drawing.Size(142, 161)
         Me.gbMovieSourcesFilenamingNMTDefaultsOpts.TabIndex = 3
@@ -7414,35 +7366,35 @@ Partial Class dlgSettings
         Me.lblMovieSourcesFilenamingNMTDefaultsFanart.TabIndex = 10
         Me.lblMovieSourcesFilenamingNMTDefaultsFanart.Text = "Fanart"
         '
-        'lblMovieSourcesFileNamingNMTDefaultsNFO
+        'lblMovieSourcesFilenamingNMTDefaultsNFO
         '
         Me.lblMovieSourcesFilenamingNMTDefaultsNFO.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSourcesFilenamingNMTDefaultsNFO.AutoSize = True
         Me.lblMovieSourcesFilenamingNMTDefaultsNFO.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMovieSourcesFilenamingNMTDefaultsNFO.Location = New System.Drawing.Point(3, 83)
-        Me.lblMovieSourcesFilenamingNMTDefaultsNFO.Name = "lblMovieSourcesFileNamingNMTDefaultsNFO"
+        Me.lblMovieSourcesFilenamingNMTDefaultsNFO.Name = "lblMovieSourcesFilenamingNMTDefaultsNFO"
         Me.lblMovieSourcesFilenamingNMTDefaultsNFO.Size = New System.Drawing.Size(30, 13)
         Me.lblMovieSourcesFilenamingNMTDefaultsNFO.TabIndex = 10
         Me.lblMovieSourcesFilenamingNMTDefaultsNFO.Text = "NFO"
         '
-        'lblMovieSourcesFileNamingNMTDefaultsPoster
+        'lblMovieSourcesFilenamingNMTDefaultsPoster
         '
         Me.lblMovieSourcesFilenamingNMTDefaultsPoster.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSourcesFilenamingNMTDefaultsPoster.AutoSize = True
         Me.lblMovieSourcesFilenamingNMTDefaultsPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMovieSourcesFilenamingNMTDefaultsPoster.Location = New System.Drawing.Point(3, 103)
-        Me.lblMovieSourcesFilenamingNMTDefaultsPoster.Name = "lblMovieSourcesFileNamingNMTDefaultsPoster"
+        Me.lblMovieSourcesFilenamingNMTDefaultsPoster.Name = "lblMovieSourcesFilenamingNMTDefaultsPoster"
         Me.lblMovieSourcesFilenamingNMTDefaultsPoster.Size = New System.Drawing.Size(39, 13)
         Me.lblMovieSourcesFilenamingNMTDefaultsPoster.TabIndex = 10
         Me.lblMovieSourcesFilenamingNMTDefaultsPoster.Text = "Poster"
         '
-        'lblMovieSourcesFileNamingNMTDefaultsTrailer
+        'lblMovieSourcesFilenamingNMTDefaultsTrailer
         '
         Me.lblMovieSourcesFilenamingNMTDefaultsTrailer.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSourcesFilenamingNMTDefaultsTrailer.AutoSize = True
         Me.lblMovieSourcesFilenamingNMTDefaultsTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMovieSourcesFilenamingNMTDefaultsTrailer.Location = New System.Drawing.Point(3, 123)
-        Me.lblMovieSourcesFilenamingNMTDefaultsTrailer.Name = "lblMovieSourcesFileNamingNMTDefaultsTrailer"
+        Me.lblMovieSourcesFilenamingNMTDefaultsTrailer.Name = "lblMovieSourcesFilenamingNMTDefaultsTrailer"
         Me.lblMovieSourcesFilenamingNMTDefaultsTrailer.Size = New System.Drawing.Size(38, 13)
         Me.lblMovieSourcesFilenamingNMTDefaultsTrailer.TabIndex = 10
         Me.lblMovieSourcesFilenamingNMTDefaultsTrailer.Text = "Trailer"
@@ -7511,14 +7463,14 @@ Partial Class dlgSettings
         Me.chkMovieUseYAMJ.TabIndex = 16
         Me.chkMovieUseYAMJ.UseVisualStyleBackColor = True
         '
-        'gbMovieSourcesFileNamingNMTOptionalOpts
+        'gbMovieSourcesFilenamingNMTOptionalOpts
         '
         Me.gbMovieSourcesFilenamingNMTOptionalOpts.AutoSize = True
         Me.gbMovieSourcesFilenamingNMTOptionalOpts.Controls.Add(Me.tblMovieSourcesFileNamingNMTOptionalOpts)
         Me.gbMovieSourcesFilenamingNMTOptionalOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieSourcesFilenamingNMTOptionalOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.gbMovieSourcesFilenamingNMTOptionalOpts.Location = New System.Drawing.Point(151, 3)
-        Me.gbMovieSourcesFilenamingNMTOptionalOpts.Name = "gbMovieSourcesFileNamingNMTOptionalOpts"
+        Me.gbMovieSourcesFilenamingNMTOptionalOpts.Name = "gbMovieSourcesFilenamingNMTOptionalOpts"
         Me.gbMovieSourcesFilenamingNMTOptionalOpts.Size = New System.Drawing.Size(261, 95)
         Me.gbMovieSourcesFilenamingNMTOptionalOpts.TabIndex = 18
         Me.gbMovieSourcesFilenamingNMTOptionalOpts.TabStop = False
@@ -7621,14 +7573,14 @@ Partial Class dlgSettings
         Me.tblMovieSourcesFileNamingBoxee.Size = New System.Drawing.Size(512, 349)
         Me.tblMovieSourcesFileNamingBoxee.TabIndex = 5
         '
-        'gbMovieSourcesFileNamingBoxeeDefaultsOpts
+        'gbMovieSourcesFilenamingBoxeeDefaultsOpts
         '
         Me.gbMovieSourcesFilenamingBoxeeDefaultsOpts.AutoSize = True
         Me.gbMovieSourcesFilenamingBoxeeDefaultsOpts.Controls.Add(Me.tblMovieSourcesFileNamingBoxeeDefaultsOpts)
         Me.gbMovieSourcesFilenamingBoxeeDefaultsOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieSourcesFilenamingBoxeeDefaultsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbMovieSourcesFilenamingBoxeeDefaultsOpts.Location = New System.Drawing.Point(3, 3)
-        Me.gbMovieSourcesFilenamingBoxeeDefaultsOpts.Name = "gbMovieSourcesFileNamingBoxeeDefaultsOpts"
+        Me.gbMovieSourcesFilenamingBoxeeDefaultsOpts.Name = "gbMovieSourcesFilenamingBoxeeDefaultsOpts"
         Me.gbMovieSourcesFilenamingBoxeeDefaultsOpts.Size = New System.Drawing.Size(106, 121)
         Me.gbMovieSourcesFilenamingBoxeeDefaultsOpts.TabIndex = 4
         Me.gbMovieSourcesFilenamingBoxeeDefaultsOpts.TabStop = False
@@ -7740,33 +7692,33 @@ Partial Class dlgSettings
         Me.lblMovieSourcesFilenamingBoxeeDefaultsFanart.TabIndex = 10
         Me.lblMovieSourcesFilenamingBoxeeDefaultsFanart.Text = "Fanart"
         '
-        'lblMovieSourcesFileNamingBoxeeDefaultsNFO
+        'lblMovieSourcesFilenamingBoxeeDefaultsNFO
         '
         Me.lblMovieSourcesFilenamingBoxeeDefaultsNFO.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSourcesFilenamingBoxeeDefaultsNFO.AutoSize = True
         Me.lblMovieSourcesFilenamingBoxeeDefaultsNFO.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMovieSourcesFilenamingBoxeeDefaultsNFO.Location = New System.Drawing.Point(3, 63)
-        Me.lblMovieSourcesFilenamingBoxeeDefaultsNFO.Name = "lblMovieSourcesFileNamingBoxeeDefaultsNFO"
+        Me.lblMovieSourcesFilenamingBoxeeDefaultsNFO.Name = "lblMovieSourcesFilenamingBoxeeDefaultsNFO"
         Me.lblMovieSourcesFilenamingBoxeeDefaultsNFO.Size = New System.Drawing.Size(30, 13)
         Me.lblMovieSourcesFilenamingBoxeeDefaultsNFO.TabIndex = 10
         Me.lblMovieSourcesFilenamingBoxeeDefaultsNFO.Text = "NFO"
         '
-        'lblMovieSourcesFileNamingBoxeeDefaultsPoster
+        'lblMovieSourcesFilenamingBoxeeDefaultsPoster
         '
         Me.lblMovieSourcesFilenamingBoxeeDefaultsPoster.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSourcesFilenamingBoxeeDefaultsPoster.AutoSize = True
         Me.lblMovieSourcesFilenamingBoxeeDefaultsPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMovieSourcesFilenamingBoxeeDefaultsPoster.Location = New System.Drawing.Point(3, 83)
-        Me.lblMovieSourcesFilenamingBoxeeDefaultsPoster.Name = "lblMovieSourcesFileNamingBoxeeDefaultsPoster"
+        Me.lblMovieSourcesFilenamingBoxeeDefaultsPoster.Name = "lblMovieSourcesFilenamingBoxeeDefaultsPoster"
         Me.lblMovieSourcesFilenamingBoxeeDefaultsPoster.Size = New System.Drawing.Size(39, 13)
         Me.lblMovieSourcesFilenamingBoxeeDefaultsPoster.TabIndex = 10
         Me.lblMovieSourcesFilenamingBoxeeDefaultsPoster.Text = "Poster"
         '
-        'tpMovieSourcesFileNamingExpert
+        'tpMovieSourcesFilenamingExpert
         '
         Me.tpMovieSourcesFilenamingExpert.Controls.Add(Me.tblMovieSourcesFileNamingExpert)
         Me.tpMovieSourcesFilenamingExpert.Location = New System.Drawing.Point(4, 22)
-        Me.tpMovieSourcesFilenamingExpert.Name = "tpMovieSourcesFileNamingExpert"
+        Me.tpMovieSourcesFilenamingExpert.Name = "tpMovieSourcesFilenamingExpert"
         Me.tpMovieSourcesFilenamingExpert.Size = New System.Drawing.Size(512, 349)
         Me.tpMovieSourcesFilenamingExpert.TabIndex = 2
         Me.tpMovieSourcesFilenamingExpert.Text = "Expert"
@@ -7789,14 +7741,14 @@ Partial Class dlgSettings
         Me.tblMovieSourcesFileNamingExpert.Size = New System.Drawing.Size(512, 349)
         Me.tblMovieSourcesFileNamingExpert.TabIndex = 0
         '
-        'gbMovieSourcesFileNamingExpertOpts
+        'gbMovieSourcesFilenamingExpertOpts
         '
         Me.gbMovieSourcesFilenamingExpertOpts.AutoSize = True
         Me.gbMovieSourcesFilenamingExpertOpts.Controls.Add(Me.tblMovieSourcesFileNamingExpertOpts)
         Me.gbMovieSourcesFilenamingExpertOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieSourcesFilenamingExpertOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.gbMovieSourcesFilenamingExpertOpts.Location = New System.Drawing.Point(3, 3)
-        Me.gbMovieSourcesFilenamingExpertOpts.Name = "gbMovieSourcesFileNamingExpertOpts"
+        Me.gbMovieSourcesFilenamingExpertOpts.Name = "gbMovieSourcesFilenamingExpertOpts"
         Me.gbMovieSourcesFilenamingExpertOpts.Size = New System.Drawing.Size(492, 340)
         Me.gbMovieSourcesFilenamingExpertOpts.TabIndex = 7
         Me.gbMovieSourcesFilenamingExpertOpts.TabStop = False
@@ -7865,13 +7817,13 @@ Partial Class dlgSettings
         Me.tblMovieSourcesFileNamingExpertSingle.Size = New System.Drawing.Size(472, 264)
         Me.tblMovieSourcesFileNamingExpertSingle.TabIndex = 0
         '
-        'gbMovieSourcesFileNamingExpertSingleImagesOpts
+        'gbMovieSourcesFilenamingExpertSingleImagesOpts
         '
         Me.gbMovieSourcesFilenamingExpertSingleImagesOpts.AutoSize = True
         Me.gbMovieSourcesFilenamingExpertSingleImagesOpts.Controls.Add(Me.tblMovieSourcesFileNamingExpertSingleImagesOpts)
         Me.gbMovieSourcesFilenamingExpertSingleImagesOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieSourcesFilenamingExpertSingleImagesOpts.Location = New System.Drawing.Point(286, 76)
-        Me.gbMovieSourcesFilenamingExpertSingleImagesOpts.Name = "gbMovieSourcesFileNamingExpertSingleImagesOpts"
+        Me.gbMovieSourcesFilenamingExpertSingleImagesOpts.Name = "gbMovieSourcesFilenamingExpertSingleImagesOpts"
         Me.gbMovieSourcesFilenamingExpertSingleImagesOpts.Size = New System.Drawing.Size(160, 95)
         Me.gbMovieSourcesFilenamingExpertSingleImagesOpts.TabIndex = 13
         Me.gbMovieSourcesFilenamingExpertSingleImagesOpts.TabStop = False
@@ -7945,13 +7897,13 @@ Partial Class dlgSettings
         Me.chkMovieExtrathumbsExpertSingle.Text = "Extrathumbs"
         Me.chkMovieExtrathumbsExpertSingle.UseVisualStyleBackColor = True
         '
-        'gbMovieSourcesFileNamingExpertSingleOptionalOpts
+        'gbMovieSourcesFilenamingExpertSingleOptionalOpts
         '
         Me.gbMovieSourcesFilenamingExpertSingleOptionalOpts.AutoSize = True
         Me.gbMovieSourcesFilenamingExpertSingleOptionalOpts.Controls.Add(Me.tblMovieSourcesFileNamingExpertSingleOptionalOpts)
         Me.gbMovieSourcesFilenamingExpertSingleOptionalOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieSourcesFilenamingExpertSingleOptionalOpts.Location = New System.Drawing.Point(286, 3)
-        Me.gbMovieSourcesFilenamingExpertSingleOptionalOpts.Name = "gbMovieSourcesFileNamingExpertSingleOptionalOpts"
+        Me.gbMovieSourcesFilenamingExpertSingleOptionalOpts.Name = "gbMovieSourcesFilenamingExpertSingleOptionalOpts"
         Me.gbMovieSourcesFilenamingExpertSingleOptionalOpts.Size = New System.Drawing.Size(160, 67)
         Me.gbMovieSourcesFilenamingExpertSingleOptionalOpts.TabIndex = 12
         Me.gbMovieSourcesFilenamingExpertSingleOptionalOpts.TabStop = False
@@ -8082,12 +8034,12 @@ Partial Class dlgSettings
         Me.txtMoviePosterExpertSingle.Size = New System.Drawing.Size(210, 22)
         Me.txtMoviePosterExpertSingle.TabIndex = 4
         '
-        'lblMovieTrailerExpertSingle
+        'lblMovieSourcesFilenamingExpertSingleTrailer
         '
         Me.lblMovieSourcesFilenamingExpertSingleTrailer.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSourcesFilenamingExpertSingleTrailer.AutoSize = True
         Me.lblMovieSourcesFilenamingExpertSingleTrailer.Location = New System.Drawing.Point(3, 231)
-        Me.lblMovieSourcesFilenamingExpertSingleTrailer.Name = "lblMovieTrailerExpertSingle"
+        Me.lblMovieSourcesFilenamingExpertSingleTrailer.Name = "lblMovieSourcesFilenamingExpertSingleTrailer"
         Me.lblMovieSourcesFilenamingExpertSingleTrailer.Size = New System.Drawing.Size(38, 13)
         Me.lblMovieSourcesFilenamingExpertSingleTrailer.TabIndex = 13
         Me.lblMovieSourcesFilenamingExpertSingleTrailer.Text = "Trailer"
@@ -8120,12 +8072,12 @@ Partial Class dlgSettings
         Me.txtMovieLandscapeExpertSingle.Size = New System.Drawing.Size(210, 22)
         Me.txtMovieLandscapeExpertSingle.TabIndex = 11
         '
-        'lblMoviePosterExpertSingle
+        'lblMovieSourcesFilenamingExpertSinglePoster
         '
         Me.lblMovieSourcesFilenamingExpertSinglePoster.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSourcesFilenamingExpertSinglePoster.AutoSize = True
         Me.lblMovieSourcesFilenamingExpertSinglePoster.Location = New System.Drawing.Point(3, 203)
-        Me.lblMovieSourcesFilenamingExpertSinglePoster.Name = "lblMoviePosterExpertSingle"
+        Me.lblMovieSourcesFilenamingExpertSinglePoster.Name = "lblMovieSourcesFilenamingExpertSinglePoster"
         Me.lblMovieSourcesFilenamingExpertSinglePoster.Size = New System.Drawing.Size(39, 13)
         Me.lblMovieSourcesFilenamingExpertSinglePoster.TabIndex = 10
         Me.lblMovieSourcesFilenamingExpertSinglePoster.Text = "Poster"
@@ -8158,22 +8110,22 @@ Partial Class dlgSettings
         Me.lblMovieSourcesFilenamingExpertSingleLandscape.TabIndex = 19
         Me.lblMovieSourcesFilenamingExpertSingleLandscape.Text = "Landscape"
         '
-        'lblMovieSourcesFileNamingExpertSingleNFO
+        'lblMovieSourcesFilenamingExpertSingleNFO
         '
         Me.lblMovieSourcesFilenamingExpertSingleNFO.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSourcesFilenamingExpertSingleNFO.AutoSize = True
         Me.lblMovieSourcesFilenamingExpertSingleNFO.Location = New System.Drawing.Point(3, 175)
-        Me.lblMovieSourcesFilenamingExpertSingleNFO.Name = "lblMovieSourcesFileNamingExpertSingleNFO"
+        Me.lblMovieSourcesFilenamingExpertSingleNFO.Name = "lblMovieSourcesFilenamingExpertSingleNFO"
         Me.lblMovieSourcesFilenamingExpertSingleNFO.Size = New System.Drawing.Size(30, 13)
         Me.lblMovieSourcesFilenamingExpertSingleNFO.TabIndex = 9
         Me.lblMovieSourcesFilenamingExpertSingleNFO.Text = "NFO"
         '
-        'lblMovieClearLogoExpertSingle
+        'lblMovieSourcesFilenamingExpertSingleClearLogo
         '
         Me.lblMovieSourcesFilenamingExpertSingleClearLogo.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSourcesFilenamingExpertSingleClearLogo.AutoSize = True
         Me.lblMovieSourcesFilenamingExpertSingleClearLogo.Location = New System.Drawing.Point(3, 63)
-        Me.lblMovieSourcesFilenamingExpertSingleClearLogo.Name = "lblMovieClearLogoExpertSingle"
+        Me.lblMovieSourcesFilenamingExpertSingleClearLogo.Name = "lblMovieSourcesFilenamingExpertSingleClearLogo"
         Me.lblMovieSourcesFilenamingExpertSingleClearLogo.Size = New System.Drawing.Size(59, 13)
         Me.lblMovieSourcesFilenamingExpertSingleClearLogo.TabIndex = 12
         Me.lblMovieSourcesFilenamingExpertSingleClearLogo.Text = "ClearLogo"
@@ -8196,12 +8148,12 @@ Partial Class dlgSettings
         Me.txtMovieDiscArtExpertSingle.Size = New System.Drawing.Size(210, 22)
         Me.txtMovieDiscArtExpertSingle.TabIndex = 10
         '
-        'lblMovieDiscArtExpertSingle
+        'lblMovieSourcesFilenamingExpertSingleDiscArt
         '
         Me.lblMovieSourcesFilenamingExpertSingleDiscArt.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSourcesFilenamingExpertSingleDiscArt.AutoSize = True
         Me.lblMovieSourcesFilenamingExpertSingleDiscArt.Location = New System.Drawing.Point(3, 91)
-        Me.lblMovieSourcesFilenamingExpertSingleDiscArt.Name = "lblMovieDiscArtExpertSingle"
+        Me.lblMovieSourcesFilenamingExpertSingleDiscArt.Name = "lblMovieSourcesFilenamingExpertSingleDiscArt"
         Me.lblMovieSourcesFilenamingExpertSingleDiscArt.Size = New System.Drawing.Size(43, 13)
         Me.lblMovieSourcesFilenamingExpertSingleDiscArt.TabIndex = 18
         Me.lblMovieSourcesFilenamingExpertSingleDiscArt.Text = "DiscArt"
@@ -8248,13 +8200,13 @@ Partial Class dlgSettings
         Me.tblMovieSourcesFileNamingExpertMulti.Size = New System.Drawing.Size(472, 264)
         Me.tblMovieSourcesFileNamingExpertMulti.TabIndex = 0
         '
-        'gbMovieSourcesFileNamingExpertMultiImagesOpts
+        'gbMovieSourcesFilenamingExpertMultiImagesOpts
         '
         Me.gbMovieSourcesFilenamingExpertMultiImagesOpts.AutoSize = True
         Me.gbMovieSourcesFilenamingExpertMultiImagesOpts.Controls.Add(Me.tblMovieSourcesFileNamingExpertMultiImagesOpts)
         Me.gbMovieSourcesFilenamingExpertMultiImagesOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieSourcesFilenamingExpertMultiImagesOpts.Location = New System.Drawing.Point(286, 76)
-        Me.gbMovieSourcesFilenamingExpertMultiImagesOpts.Name = "gbMovieSourcesFileNamingExpertMultiImagesOpts"
+        Me.gbMovieSourcesFilenamingExpertMultiImagesOpts.Name = "gbMovieSourcesFilenamingExpertMultiImagesOpts"
         Me.gbMovieSourcesFilenamingExpertMultiImagesOpts.Size = New System.Drawing.Size(160, 49)
         Me.gbMovieSourcesFilenamingExpertMultiImagesOpts.TabIndex = 11
         Me.gbMovieSourcesFilenamingExpertMultiImagesOpts.TabStop = False
@@ -8371,12 +8323,12 @@ Partial Class dlgSettings
         Me.txtMoviePosterExpertMulti.Size = New System.Drawing.Size(210, 22)
         Me.txtMoviePosterExpertMulti.TabIndex = 2
         '
-        'lblMovieTrailerExpertMulti
+        'lblMovieSourcesFilenamingExpertMultiTrailer
         '
         Me.lblMovieSourcesFilenamingExpertMultiTrailer.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSourcesFilenamingExpertMultiTrailer.AutoSize = True
         Me.lblMovieSourcesFilenamingExpertMultiTrailer.Location = New System.Drawing.Point(3, 231)
-        Me.lblMovieSourcesFilenamingExpertMultiTrailer.Name = "lblMovieTrailerExpertMulti"
+        Me.lblMovieSourcesFilenamingExpertMultiTrailer.Name = "lblMovieSourcesFilenamingExpertMultiTrailer"
         Me.lblMovieSourcesFilenamingExpertMultiTrailer.Size = New System.Drawing.Size(38, 13)
         Me.lblMovieSourcesFilenamingExpertMultiTrailer.TabIndex = 39
         Me.lblMovieSourcesFilenamingExpertMultiTrailer.Text = "Trailer"
@@ -8409,12 +8361,12 @@ Partial Class dlgSettings
         Me.txtMovieLandscapeExpertMulti.Size = New System.Drawing.Size(210, 22)
         Me.txtMovieLandscapeExpertMulti.TabIndex = 9
         '
-        'lblMoviePosterExpertMulti
+        'lblMovieSourcesFilenamingExpertMultiPoster
         '
         Me.lblMovieSourcesFilenamingExpertMultiPoster.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSourcesFilenamingExpertMultiPoster.AutoSize = True
         Me.lblMovieSourcesFilenamingExpertMultiPoster.Location = New System.Drawing.Point(3, 203)
-        Me.lblMovieSourcesFilenamingExpertMultiPoster.Name = "lblMoviePosterExpertMulti"
+        Me.lblMovieSourcesFilenamingExpertMultiPoster.Name = "lblMovieSourcesFilenamingExpertMultiPoster"
         Me.lblMovieSourcesFilenamingExpertMultiPoster.Size = New System.Drawing.Size(39, 13)
         Me.lblMovieSourcesFilenamingExpertMultiPoster.TabIndex = 36
         Me.lblMovieSourcesFilenamingExpertMultiPoster.Text = "Poster"
@@ -8447,22 +8399,22 @@ Partial Class dlgSettings
         Me.lblMovieSourcesFilenamingExpertMultiLandscape.TabIndex = 42
         Me.lblMovieSourcesFilenamingExpertMultiLandscape.Text = "Landscape"
         '
-        'lblMovieSourcesFileNamingExpertMultiNFO
+        'lblMovieSourcesFilenamingExpertMultiNFO
         '
         Me.lblMovieSourcesFilenamingExpertMultiNFO.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSourcesFilenamingExpertMultiNFO.AutoSize = True
         Me.lblMovieSourcesFilenamingExpertMultiNFO.Location = New System.Drawing.Point(3, 175)
-        Me.lblMovieSourcesFilenamingExpertMultiNFO.Name = "lblMovieSourcesFileNamingExpertMultiNFO"
+        Me.lblMovieSourcesFilenamingExpertMultiNFO.Name = "lblMovieSourcesFilenamingExpertMultiNFO"
         Me.lblMovieSourcesFilenamingExpertMultiNFO.Size = New System.Drawing.Size(30, 13)
         Me.lblMovieSourcesFilenamingExpertMultiNFO.TabIndex = 35
         Me.lblMovieSourcesFilenamingExpertMultiNFO.Text = "NFO"
         '
-        'lblMovieClearLogoExpertMulti
+        'lblMovieSourcesFilenamingExpertMultiClearLogo
         '
         Me.lblMovieSourcesFilenamingExpertMultiClearLogo.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSourcesFilenamingExpertMultiClearLogo.AutoSize = True
         Me.lblMovieSourcesFilenamingExpertMultiClearLogo.Location = New System.Drawing.Point(3, 63)
-        Me.lblMovieSourcesFilenamingExpertMultiClearLogo.Name = "lblMovieClearLogoExpertMulti"
+        Me.lblMovieSourcesFilenamingExpertMultiClearLogo.Name = "lblMovieSourcesFilenamingExpertMultiClearLogo"
         Me.lblMovieSourcesFilenamingExpertMultiClearLogo.Size = New System.Drawing.Size(59, 13)
         Me.lblMovieSourcesFilenamingExpertMultiClearLogo.TabIndex = 38
         Me.lblMovieSourcesFilenamingExpertMultiClearLogo.Text = "ClearLogo"
@@ -8485,12 +8437,12 @@ Partial Class dlgSettings
         Me.txtMovieDiscArtExpertMulti.Size = New System.Drawing.Size(210, 22)
         Me.txtMovieDiscArtExpertMulti.TabIndex = 8
         '
-        'lblMovieDiscArtExpertMulti
+        'lblMovieSourcesFilenamingExpertMultiDiscArt
         '
         Me.lblMovieSourcesFilenamingExpertMultiDiscArt.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSourcesFilenamingExpertMultiDiscArt.AutoSize = True
         Me.lblMovieSourcesFilenamingExpertMultiDiscArt.Location = New System.Drawing.Point(3, 91)
-        Me.lblMovieSourcesFilenamingExpertMultiDiscArt.Name = "lblMovieDiscArtExpertMulti"
+        Me.lblMovieSourcesFilenamingExpertMultiDiscArt.Name = "lblMovieSourcesFilenamingExpertMultiDiscArt"
         Me.lblMovieSourcesFilenamingExpertMultiDiscArt.Size = New System.Drawing.Size(43, 13)
         Me.lblMovieSourcesFilenamingExpertMultiDiscArt.TabIndex = 41
         Me.lblMovieSourcesFilenamingExpertMultiDiscArt.Text = "DiscArt"
@@ -8514,13 +8466,13 @@ Partial Class dlgSettings
         Me.txtMovieTrailerExpertMulti.Size = New System.Drawing.Size(210, 22)
         Me.txtMovieTrailerExpertMulti.TabIndex = 4
         '
-        'gbMovieSourcesFileNamingExpertMultiOptionalOpts
+        'gbMovieSourcesFilenamingExpertMultiOptionalOpts
         '
         Me.gbMovieSourcesFilenamingExpertMultiOptionalOpts.AutoSize = True
         Me.gbMovieSourcesFilenamingExpertMultiOptionalOpts.Controls.Add(Me.tblMovieSourcesFileNamingExpertMultiOptionalOpts)
         Me.gbMovieSourcesFilenamingExpertMultiOptionalOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieSourcesFilenamingExpertMultiOptionalOpts.Location = New System.Drawing.Point(286, 3)
-        Me.gbMovieSourcesFilenamingExpertMultiOptionalOpts.Name = "gbMovieSourcesFileNamingExpertMultiOptionalOpts"
+        Me.gbMovieSourcesFilenamingExpertMultiOptionalOpts.Name = "gbMovieSourcesFilenamingExpertMultiOptionalOpts"
         Me.gbMovieSourcesFilenamingExpertMultiOptionalOpts.Size = New System.Drawing.Size(160, 67)
         Me.gbMovieSourcesFilenamingExpertMultiOptionalOpts.TabIndex = 10
         Me.gbMovieSourcesFilenamingExpertMultiOptionalOpts.TabStop = False
@@ -8601,13 +8553,13 @@ Partial Class dlgSettings
         Me.tblMovieSourcesFileNamingExpertVTS.Size = New System.Drawing.Size(472, 264)
         Me.tblMovieSourcesFileNamingExpertVTS.TabIndex = 0
         '
-        'gbMovieSourcesFileNamingExpertVTSImagesOpts
+        'gbMovieSourcesFilenamingExpertVTSImagesOpts
         '
         Me.gbMovieSourcesFilenamingExpertVTSImagesOpts.AutoSize = True
         Me.gbMovieSourcesFilenamingExpertVTSImagesOpts.Controls.Add(Me.tblMovieSourcesFileNamingExpertVTSImagesOpts)
         Me.gbMovieSourcesFilenamingExpertVTSImagesOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieSourcesFilenamingExpertVTSImagesOpts.Location = New System.Drawing.Point(286, 89)
-        Me.gbMovieSourcesFilenamingExpertVTSImagesOpts.Name = "gbMovieSourcesFileNamingExpertVTSImagesOpts"
+        Me.gbMovieSourcesFilenamingExpertVTSImagesOpts.Name = "gbMovieSourcesFilenamingExpertVTSImagesOpts"
         Me.gbMovieSourcesFilenamingExpertVTSImagesOpts.Size = New System.Drawing.Size(165, 95)
         Me.gbMovieSourcesFilenamingExpertVTSImagesOpts.TabIndex = 11
         Me.gbMovieSourcesFilenamingExpertVTSImagesOpts.TabStop = False
@@ -8763,12 +8715,12 @@ Partial Class dlgSettings
         Me.txtMoviePosterExpertVTS.Size = New System.Drawing.Size(210, 22)
         Me.txtMoviePosterExpertVTS.TabIndex = 2
         '
-        'lblMovieTrailerExpertVTS
+        'lblMovieSourcesFilenamingExpertVTSTrailer
         '
         Me.lblMovieSourcesFilenamingExpertVTSTrailer.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSourcesFilenamingExpertVTSTrailer.AutoSize = True
         Me.lblMovieSourcesFilenamingExpertVTSTrailer.Location = New System.Drawing.Point(3, 231)
-        Me.lblMovieSourcesFilenamingExpertVTSTrailer.Name = "lblMovieTrailerExpertVTS"
+        Me.lblMovieSourcesFilenamingExpertVTSTrailer.Name = "lblMovieSourcesFilenamingExpertVTSTrailer"
         Me.lblMovieSourcesFilenamingExpertVTSTrailer.Size = New System.Drawing.Size(38, 13)
         Me.lblMovieSourcesFilenamingExpertVTSTrailer.TabIndex = 39
         Me.lblMovieSourcesFilenamingExpertVTSTrailer.Text = "Trailer"
@@ -8801,12 +8753,12 @@ Partial Class dlgSettings
         Me.txtMovieLandscapeExpertVTS.Size = New System.Drawing.Size(210, 22)
         Me.txtMovieLandscapeExpertVTS.TabIndex = 9
         '
-        'lblMoviePosterExpertVTS
+        'lblMovieSourcesFilenamingExpertVTSPoster
         '
         Me.lblMovieSourcesFilenamingExpertVTSPoster.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSourcesFilenamingExpertVTSPoster.AutoSize = True
         Me.lblMovieSourcesFilenamingExpertVTSPoster.Location = New System.Drawing.Point(3, 203)
-        Me.lblMovieSourcesFilenamingExpertVTSPoster.Name = "lblMoviePosterExpertVTS"
+        Me.lblMovieSourcesFilenamingExpertVTSPoster.Name = "lblMovieSourcesFilenamingExpertVTSPoster"
         Me.lblMovieSourcesFilenamingExpertVTSPoster.Size = New System.Drawing.Size(39, 13)
         Me.lblMovieSourcesFilenamingExpertVTSPoster.TabIndex = 36
         Me.lblMovieSourcesFilenamingExpertVTSPoster.Text = "Poster"
@@ -8839,22 +8791,22 @@ Partial Class dlgSettings
         Me.lblMovieSourcesFilenamingExpertVTSLandscape.TabIndex = 42
         Me.lblMovieSourcesFilenamingExpertVTSLandscape.Text = "Landscape"
         '
-        'lblMovieSourcesFileNamingExpertVTSNFO
+        'lblMovieSourcesFilenamingExpertVTSNFO
         '
         Me.lblMovieSourcesFilenamingExpertVTSNFO.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSourcesFilenamingExpertVTSNFO.AutoSize = True
         Me.lblMovieSourcesFilenamingExpertVTSNFO.Location = New System.Drawing.Point(3, 175)
-        Me.lblMovieSourcesFilenamingExpertVTSNFO.Name = "lblMovieSourcesFileNamingExpertVTSNFO"
+        Me.lblMovieSourcesFilenamingExpertVTSNFO.Name = "lblMovieSourcesFilenamingExpertVTSNFO"
         Me.lblMovieSourcesFilenamingExpertVTSNFO.Size = New System.Drawing.Size(30, 13)
         Me.lblMovieSourcesFilenamingExpertVTSNFO.TabIndex = 35
         Me.lblMovieSourcesFilenamingExpertVTSNFO.Text = "NFO"
         '
-        'lblMovieClearLogoExpertVTS
+        'lblMovieSourcesFilenamingExpertVTSClearLogo
         '
         Me.lblMovieSourcesFilenamingExpertVTSClearLogo.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSourcesFilenamingExpertVTSClearLogo.AutoSize = True
         Me.lblMovieSourcesFilenamingExpertVTSClearLogo.Location = New System.Drawing.Point(3, 63)
-        Me.lblMovieSourcesFilenamingExpertVTSClearLogo.Name = "lblMovieClearLogoExpertVTS"
+        Me.lblMovieSourcesFilenamingExpertVTSClearLogo.Name = "lblMovieSourcesFilenamingExpertVTSClearLogo"
         Me.lblMovieSourcesFilenamingExpertVTSClearLogo.Size = New System.Drawing.Size(59, 13)
         Me.lblMovieSourcesFilenamingExpertVTSClearLogo.TabIndex = 38
         Me.lblMovieSourcesFilenamingExpertVTSClearLogo.Text = "ClearLogo"
@@ -8877,12 +8829,12 @@ Partial Class dlgSettings
         Me.txtMovieDiscArtExpertVTS.Size = New System.Drawing.Size(210, 22)
         Me.txtMovieDiscArtExpertVTS.TabIndex = 8
         '
-        'lblMovieDiscArtExpertVTS
+        'lblMovieSourcesFilenamingExpertVTSDiscArt
         '
         Me.lblMovieSourcesFilenamingExpertVTSDiscArt.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSourcesFilenamingExpertVTSDiscArt.AutoSize = True
         Me.lblMovieSourcesFilenamingExpertVTSDiscArt.Location = New System.Drawing.Point(3, 91)
-        Me.lblMovieSourcesFilenamingExpertVTSDiscArt.Name = "lblMovieDiscArtExpertVTS"
+        Me.lblMovieSourcesFilenamingExpertVTSDiscArt.Name = "lblMovieSourcesFilenamingExpertVTSDiscArt"
         Me.lblMovieSourcesFilenamingExpertVTSDiscArt.Size = New System.Drawing.Size(43, 13)
         Me.lblMovieSourcesFilenamingExpertVTSDiscArt.TabIndex = 41
         Me.lblMovieSourcesFilenamingExpertVTSDiscArt.Text = "DiscArt"
@@ -8897,13 +8849,13 @@ Partial Class dlgSettings
         Me.lblMovieSourcesFilenamingExpertVTSFanart.TabIndex = 37
         Me.lblMovieSourcesFilenamingExpertVTSFanart.Text = "Fanart"
         '
-        'gbMovieSourcesFileNamingExpertVTSOptionalOpts
+        'gbMovieSourcesFilenamingExpertVTSOptionalOpts
         '
         Me.gbMovieSourcesFilenamingExpertVTSOptionalOpts.AutoSize = True
         Me.gbMovieSourcesFilenamingExpertVTSOptionalOpts.Controls.Add(Me.tblMovieSourcesFileNamingExpertVTSOptionalOpts)
         Me.gbMovieSourcesFilenamingExpertVTSOptionalOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieSourcesFilenamingExpertVTSOptionalOpts.Location = New System.Drawing.Point(286, 3)
-        Me.gbMovieSourcesFilenamingExpertVTSOptionalOpts.Name = "gbMovieSourcesFileNamingExpertVTSOptionalOpts"
+        Me.gbMovieSourcesFilenamingExpertVTSOptionalOpts.Name = "gbMovieSourcesFilenamingExpertVTSOptionalOpts"
         Me.gbMovieSourcesFilenamingExpertVTSOptionalOpts.Size = New System.Drawing.Size(165, 80)
         Me.gbMovieSourcesFilenamingExpertVTSOptionalOpts.TabIndex = 10
         Me.gbMovieSourcesFilenamingExpertVTSOptionalOpts.TabStop = False
@@ -8984,13 +8936,13 @@ Partial Class dlgSettings
         Me.tblMovieSourcesFileNamingExpertBDMV.Size = New System.Drawing.Size(472, 264)
         Me.tblMovieSourcesFileNamingExpertBDMV.TabIndex = 0
         '
-        'gbMovieSourcesFileNamingExpertBDMVImagesOpts
+        'gbMovieSourcesFilenamingExpertBDMVImagesOpts
         '
         Me.gbMovieSourcesFilenamingExpertBDMVImagesOpts.AutoSize = True
         Me.gbMovieSourcesFilenamingExpertBDMVImagesOpts.Controls.Add(Me.tblMovieSourcesFileNamingExpertBDMVImagesOpts)
         Me.gbMovieSourcesFilenamingExpertBDMVImagesOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieSourcesFilenamingExpertBDMVImagesOpts.Location = New System.Drawing.Point(286, 53)
-        Me.gbMovieSourcesFilenamingExpertBDMVImagesOpts.Name = "gbMovieSourcesFileNamingExpertBDMVImagesOpts"
+        Me.gbMovieSourcesFilenamingExpertBDMVImagesOpts.Name = "gbMovieSourcesFilenamingExpertBDMVImagesOpts"
         Me.gbMovieSourcesFilenamingExpertBDMVImagesOpts.Size = New System.Drawing.Size(160, 95)
         Me.gbMovieSourcesFilenamingExpertBDMVImagesOpts.TabIndex = 1
         Me.gbMovieSourcesFilenamingExpertBDMVImagesOpts.TabStop = False
@@ -9145,12 +9097,12 @@ Partial Class dlgSettings
         Me.txtMoviePosterExpertBDMV.Size = New System.Drawing.Size(210, 22)
         Me.txtMoviePosterExpertBDMV.TabIndex = 2
         '
-        'lblMovieTrailerExpertBDMV
+        'lblMovieSourcesFilenamingExpertBDMVTrailer
         '
         Me.lblMovieSourcesFilenamingExpertBDMVTrailer.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSourcesFilenamingExpertBDMVTrailer.AutoSize = True
         Me.lblMovieSourcesFilenamingExpertBDMVTrailer.Location = New System.Drawing.Point(3, 231)
-        Me.lblMovieSourcesFilenamingExpertBDMVTrailer.Name = "lblMovieTrailerExpertBDMV"
+        Me.lblMovieSourcesFilenamingExpertBDMVTrailer.Name = "lblMovieSourcesFilenamingExpertBDMVTrailer"
         Me.lblMovieSourcesFilenamingExpertBDMVTrailer.Size = New System.Drawing.Size(38, 13)
         Me.lblMovieSourcesFilenamingExpertBDMVTrailer.TabIndex = 39
         Me.lblMovieSourcesFilenamingExpertBDMVTrailer.Text = "Trailer"
@@ -9183,12 +9135,12 @@ Partial Class dlgSettings
         Me.txtMovieLandscapeExpertBDMV.Size = New System.Drawing.Size(210, 22)
         Me.txtMovieLandscapeExpertBDMV.TabIndex = 9
         '
-        'lblMoviePosterExpertBDMV
+        'lblMovieSourcesFilenamingExpertBDMVPoster
         '
         Me.lblMovieSourcesFilenamingExpertBDMVPoster.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSourcesFilenamingExpertBDMVPoster.AutoSize = True
         Me.lblMovieSourcesFilenamingExpertBDMVPoster.Location = New System.Drawing.Point(3, 203)
-        Me.lblMovieSourcesFilenamingExpertBDMVPoster.Name = "lblMoviePosterExpertBDMV"
+        Me.lblMovieSourcesFilenamingExpertBDMVPoster.Name = "lblMovieSourcesFilenamingExpertBDMVPoster"
         Me.lblMovieSourcesFilenamingExpertBDMVPoster.Size = New System.Drawing.Size(39, 13)
         Me.lblMovieSourcesFilenamingExpertBDMVPoster.TabIndex = 36
         Me.lblMovieSourcesFilenamingExpertBDMVPoster.Text = "Poster"
@@ -9221,22 +9173,22 @@ Partial Class dlgSettings
         Me.lblMovieSourcesFilenamingExpertBDMVLandscape.TabIndex = 42
         Me.lblMovieSourcesFilenamingExpertBDMVLandscape.Text = "Landscape"
         '
-        'lblMovieSourcesFileNamingExpertBDMVNFO
+        'lblMovieSourcesFilenamingExpertBDMVNFO
         '
         Me.lblMovieSourcesFilenamingExpertBDMVNFO.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSourcesFilenamingExpertBDMVNFO.AutoSize = True
         Me.lblMovieSourcesFilenamingExpertBDMVNFO.Location = New System.Drawing.Point(3, 175)
-        Me.lblMovieSourcesFilenamingExpertBDMVNFO.Name = "lblMovieSourcesFileNamingExpertBDMVNFO"
+        Me.lblMovieSourcesFilenamingExpertBDMVNFO.Name = "lblMovieSourcesFilenamingExpertBDMVNFO"
         Me.lblMovieSourcesFilenamingExpertBDMVNFO.Size = New System.Drawing.Size(30, 13)
         Me.lblMovieSourcesFilenamingExpertBDMVNFO.TabIndex = 35
         Me.lblMovieSourcesFilenamingExpertBDMVNFO.Text = "NFO"
         '
-        'lblMovieClearLogoExpertBDMV
+        'lblMovieSourcesFilenamingExpertBDMVClearLogo
         '
         Me.lblMovieSourcesFilenamingExpertBDMVClearLogo.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSourcesFilenamingExpertBDMVClearLogo.AutoSize = True
         Me.lblMovieSourcesFilenamingExpertBDMVClearLogo.Location = New System.Drawing.Point(3, 63)
-        Me.lblMovieSourcesFilenamingExpertBDMVClearLogo.Name = "lblMovieClearLogoExpertBDMV"
+        Me.lblMovieSourcesFilenamingExpertBDMVClearLogo.Name = "lblMovieSourcesFilenamingExpertBDMVClearLogo"
         Me.lblMovieSourcesFilenamingExpertBDMVClearLogo.Size = New System.Drawing.Size(59, 13)
         Me.lblMovieSourcesFilenamingExpertBDMVClearLogo.TabIndex = 38
         Me.lblMovieSourcesFilenamingExpertBDMVClearLogo.Text = "ClearLogo"
@@ -9259,12 +9211,12 @@ Partial Class dlgSettings
         Me.txtMovieDiscArtExpertBDMV.Size = New System.Drawing.Size(210, 22)
         Me.txtMovieDiscArtExpertBDMV.TabIndex = 8
         '
-        'lblMovieDiscArtExpertBDMV
+        'lblMovieSourcesFilenamingExpertBDMVDiscArt
         '
         Me.lblMovieSourcesFilenamingExpertBDMVDiscArt.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSourcesFilenamingExpertBDMVDiscArt.AutoSize = True
         Me.lblMovieSourcesFilenamingExpertBDMVDiscArt.Location = New System.Drawing.Point(3, 91)
-        Me.lblMovieSourcesFilenamingExpertBDMVDiscArt.Name = "lblMovieDiscArtExpertBDMV"
+        Me.lblMovieSourcesFilenamingExpertBDMVDiscArt.Name = "lblMovieSourcesFilenamingExpertBDMVDiscArt"
         Me.lblMovieSourcesFilenamingExpertBDMVDiscArt.Size = New System.Drawing.Size(43, 13)
         Me.lblMovieSourcesFilenamingExpertBDMVDiscArt.TabIndex = 41
         Me.lblMovieSourcesFilenamingExpertBDMVDiscArt.Text = "DiscArt"
@@ -9279,13 +9231,13 @@ Partial Class dlgSettings
         Me.lblMovieSourcesFilenamingExpertBDMVFanart.TabIndex = 37
         Me.lblMovieSourcesFilenamingExpertBDMVFanart.Text = "Fanart"
         '
-        'gbMovieSourcesFileNamingExpertBDMVOptionalOpts
+        'gbMovieSourcesFilenamingExpertBDMVOptionalOpts
         '
         Me.gbMovieSourcesFilenamingExpertBDMVOptionalOpts.AutoSize = True
         Me.gbMovieSourcesFilenamingExpertBDMVOptionalOpts.Controls.Add(Me.tblMovieSourcesFileNamingExpertBDMVOptionalOpts)
         Me.gbMovieSourcesFilenamingExpertBDMVOptionalOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieSourcesFilenamingExpertBDMVOptionalOpts.Location = New System.Drawing.Point(286, 3)
-        Me.gbMovieSourcesFilenamingExpertBDMVOptionalOpts.Name = "gbMovieSourcesFileNamingExpertBDMVOptionalOpts"
+        Me.gbMovieSourcesFilenamingExpertBDMVOptionalOpts.Name = "gbMovieSourcesFilenamingExpertBDMVOptionalOpts"
         Me.gbMovieSourcesFilenamingExpertBDMVOptionalOpts.Size = New System.Drawing.Size(160, 44)
         Me.gbMovieSourcesFilenamingExpertBDMVOptionalOpts.TabIndex = 10
         Me.gbMovieSourcesFilenamingExpertBDMVOptionalOpts.TabStop = False
@@ -10674,13 +10626,13 @@ Partial Class dlgSettings
         '
         Me.colTVSourcesSorting.Text = "Sorting"
         '
-        'gbTVSourcesFileNamingOpts
+        'gbTVSourcesFilenamingOpts
         '
         Me.gbTVSourcesFilenamingOpts.AutoSize = True
         Me.gbTVSourcesFilenamingOpts.Controls.Add(Me.tcTVSourcesFileNaming)
         Me.gbTVSourcesFilenamingOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbTVSourcesFilenamingOpts.Location = New System.Drawing.Point(3, 114)
-        Me.gbTVSourcesFilenamingOpts.Name = "gbTVSourcesFileNamingOpts"
+        Me.gbTVSourcesFilenamingOpts.Name = "gbTVSourcesFilenamingOpts"
         Me.tblTVSourcesGeneral.SetRowSpan(Me.gbTVSourcesFilenamingOpts, 3)
         Me.gbTVSourcesFilenamingOpts.Size = New System.Drawing.Size(532, 379)
         Me.gbTVSourcesFilenamingOpts.TabIndex = 6
@@ -10730,14 +10682,14 @@ Partial Class dlgSettings
         Me.tblTVSourcesFileNamingXBMC.Size = New System.Drawing.Size(512, 314)
         Me.tblTVSourcesFileNamingXBMC.TabIndex = 4
         '
-        'gbTVSourcesFileNamingKodiExtendedOpts
+        'gbTVSourcesFilenamingKodiExtendedOpts
         '
         Me.gbTVSourcesFilenamingKodiExtendedOpts.AutoSize = True
         Me.gbTVSourcesFilenamingKodiExtendedOpts.Controls.Add(Me.tblTVSourcesFileNamingKodiExtendedOpts)
         Me.gbTVSourcesFilenamingKodiExtendedOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbTVSourcesFilenamingKodiExtendedOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.gbTVSourcesFilenamingKodiExtendedOpts.Location = New System.Drawing.Point(259, 3)
-        Me.gbTVSourcesFilenamingKodiExtendedOpts.Name = "gbTVSourcesFileNamingKodiExtendedOpts"
+        Me.gbTVSourcesFilenamingKodiExtendedOpts.Name = "gbTVSourcesFilenamingKodiExtendedOpts"
         Me.gbTVSourcesFilenamingKodiExtendedOpts.Size = New System.Drawing.Size(205, 201)
         Me.gbTVSourcesFilenamingKodiExtendedOpts.TabIndex = 12
         Me.gbTVSourcesFilenamingKodiExtendedOpts.TabStop = False
@@ -10789,24 +10741,24 @@ Partial Class dlgSettings
         Me.lblTVSourcesFileNamingKodiExtendedClearArt.TabIndex = 10
         Me.lblTVSourcesFileNamingKodiExtendedClearArt.Text = "ClearArt"
         '
-        'lblTVSourcesFileNamingKodiExtendedClearLogo
+        'lblTVSourcesFilenamingKodiExtendedClearLogo
         '
         Me.lblTVSourcesFilenamingKodiExtendedClearLogo.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVSourcesFilenamingKodiExtendedClearLogo.AutoSize = True
         Me.lblTVSourcesFilenamingKodiExtendedClearLogo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVSourcesFilenamingKodiExtendedClearLogo.Location = New System.Drawing.Point(3, 103)
-        Me.lblTVSourcesFilenamingKodiExtendedClearLogo.Name = "lblTVSourcesFileNamingKodiExtendedClearLogo"
+        Me.lblTVSourcesFilenamingKodiExtendedClearLogo.Name = "lblTVSourcesFilenamingKodiExtendedClearLogo"
         Me.lblTVSourcesFilenamingKodiExtendedClearLogo.Size = New System.Drawing.Size(59, 13)
         Me.lblTVSourcesFilenamingKodiExtendedClearLogo.TabIndex = 10
         Me.lblTVSourcesFilenamingKodiExtendedClearLogo.Text = "ClearLogo"
         '
-        'lblTVSourcesFileNamingKodiExtendedSeasonLandscape
+        'lblTVSourcesFilenamingKodiExtendedSeasonLandscape
         '
         Me.lblTVSourcesFilenamingKodiExtendedSeasonLandscape.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVSourcesFilenamingKodiExtendedSeasonLandscape.AutoSize = True
         Me.lblTVSourcesFilenamingKodiExtendedSeasonLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVSourcesFilenamingKodiExtendedSeasonLandscape.Location = New System.Drawing.Point(3, 123)
-        Me.lblTVSourcesFilenamingKodiExtendedSeasonLandscape.Name = "lblTVSourcesFileNamingKodiExtendedSeasonLandscape"
+        Me.lblTVSourcesFilenamingKodiExtendedSeasonLandscape.Name = "lblTVSourcesFilenamingKodiExtendedSeasonLandscape"
         Me.lblTVSourcesFilenamingKodiExtendedSeasonLandscape.Size = New System.Drawing.Size(101, 13)
         Me.lblTVSourcesFilenamingKodiExtendedSeasonLandscape.TabIndex = 10
         Me.lblTVSourcesFilenamingKodiExtendedSeasonLandscape.Text = "Season Landscape"
@@ -10856,13 +10808,13 @@ Partial Class dlgSettings
         Me.chkTVSeasonLandscapeExtended.TabIndex = 11
         Me.chkTVSeasonLandscapeExtended.UseVisualStyleBackColor = True
         '
-        'lblTVSourcesFileNamingKodiExtendedTVShowLandscape
+        'lblTVSourcesFilenamingKodiExtendedTVShowLandscape
         '
         Me.lblTVSourcesFilenamingKodiExtendedTVShowLandscape.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVSourcesFilenamingKodiExtendedTVShowLandscape.AutoSize = True
         Me.lblTVSourcesFilenamingKodiExtendedTVShowLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVSourcesFilenamingKodiExtendedTVShowLandscape.Location = New System.Drawing.Point(3, 143)
-        Me.lblTVSourcesFilenamingKodiExtendedTVShowLandscape.Name = "lblTVSourcesFileNamingKodiExtendedTVShowLandscape"
+        Me.lblTVSourcesFilenamingKodiExtendedTVShowLandscape.Name = "lblTVSourcesFilenamingKodiExtendedTVShowLandscape"
         Me.lblTVSourcesFilenamingKodiExtendedTVShowLandscape.Size = New System.Drawing.Size(108, 13)
         Me.lblTVSourcesFilenamingKodiExtendedTVShowLandscape.TabIndex = 10
         Me.lblTVSourcesFilenamingKodiExtendedTVShowLandscape.Text = "TV Show Landscape"
@@ -10889,13 +10841,13 @@ Partial Class dlgSettings
         Me.chkTVShowCharacterArtExtended.TabIndex = 11
         Me.chkTVShowCharacterArtExtended.UseVisualStyleBackColor = True
         '
-        'lblTVSourcesFileNamingKodiExtendedCharacterArt
+        'lblTVSourcesFilenamingKodiExtendedCharacterArt
         '
         Me.lblTVSourcesFilenamingKodiExtendedCharacterArt.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVSourcesFilenamingKodiExtendedCharacterArt.AutoSize = True
         Me.lblTVSourcesFilenamingKodiExtendedCharacterArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTVSourcesFilenamingKodiExtendedCharacterArt.Location = New System.Drawing.Point(3, 63)
-        Me.lblTVSourcesFilenamingKodiExtendedCharacterArt.Name = "lblTVSourcesFileNamingKodiExtendedCharacterArt"
+        Me.lblTVSourcesFilenamingKodiExtendedCharacterArt.Name = "lblTVSourcesFilenamingKodiExtendedCharacterArt"
         Me.lblTVSourcesFilenamingKodiExtendedCharacterArt.Size = New System.Drawing.Size(71, 13)
         Me.lblTVSourcesFilenamingKodiExtendedCharacterArt.TabIndex = 10
         Me.lblTVSourcesFilenamingKodiExtendedCharacterArt.Text = "CharacterArt"
@@ -10921,14 +10873,14 @@ Partial Class dlgSettings
         Me.chkTVUseExtended.TabIndex = 10
         Me.chkTVUseExtended.UseVisualStyleBackColor = True
         '
-        'gbTVSourcesFileNamingKodiDefaultsOpts
+        'gbTVSourcesFilenamingKodiDefaultsOpts
         '
         Me.gbTVSourcesFilenamingKodiDefaultsOpts.AutoSize = True
         Me.gbTVSourcesFilenamingKodiDefaultsOpts.Controls.Add(Me.tblTVSourcesFileNamingKodiDefaultsOpts)
         Me.gbTVSourcesFilenamingKodiDefaultsOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbTVSourcesFilenamingKodiDefaultsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbTVSourcesFilenamingKodiDefaultsOpts.Location = New System.Drawing.Point(3, 3)
-        Me.gbTVSourcesFilenamingKodiDefaultsOpts.Name = "gbTVSourcesFileNamingKodiDefaultsOpts"
+        Me.gbTVSourcesFilenamingKodiDefaultsOpts.Name = "gbTVSourcesFilenamingKodiDefaultsOpts"
         Me.gbTVSourcesFilenamingKodiDefaultsOpts.Size = New System.Drawing.Size(250, 201)
         Me.gbTVSourcesFilenamingKodiDefaultsOpts.TabIndex = 1
         Me.gbTVSourcesFilenamingKodiDefaultsOpts.TabStop = False
@@ -11073,12 +11025,12 @@ Partial Class dlgSettings
         Me.chkTVSeasonFanartFrodo.TabIndex = 3
         Me.chkTVSeasonFanartFrodo.UseVisualStyleBackColor = True
         '
-        'lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelixTVShow
+        'lblTVSourcesFilenamingKodiDefaultsHeaderFrodoHelixTVShow
         '
         Me.lblTVSourcesFilenamingKodiDefaultsHeaderFrodoHelixTVShow.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.lblTVSourcesFilenamingKodiDefaultsHeaderFrodoHelixTVShow.AutoSize = True
         Me.lblTVSourcesFilenamingKodiDefaultsHeaderFrodoHelixTVShow.Location = New System.Drawing.Point(190, 43)
-        Me.lblTVSourcesFilenamingKodiDefaultsHeaderFrodoHelixTVShow.Name = "lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelixTVShow"
+        Me.lblTVSourcesFilenamingKodiDefaultsHeaderFrodoHelixTVShow.Name = "lblTVSourcesFilenamingKodiDefaultsHeaderFrodoHelixTVShow"
         Me.lblTVSourcesFilenamingKodiDefaultsHeaderFrodoHelixTVShow.Size = New System.Drawing.Size(51, 13)
         Me.lblTVSourcesFilenamingKodiDefaultsHeaderFrodoHelixTVShow.TabIndex = 4
         Me.lblTVSourcesFilenamingKodiDefaultsHeaderFrodoHelixTVShow.Text = "TV Show"
@@ -11105,33 +11057,33 @@ Partial Class dlgSettings
         Me.chkTVEpisodePosterFrodo.TabIndex = 5
         Me.chkTVEpisodePosterFrodo.UseVisualStyleBackColor = True
         '
-        'lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelixSeason
+        'lblTVSourcesFilenamingKodiDefaultsHeaderFrodoHelixSeason
         '
         Me.lblTVSourcesFilenamingKodiDefaultsHeaderFrodoHelixSeason.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.lblTVSourcesFilenamingKodiDefaultsHeaderFrodoHelixSeason.AutoSize = True
         Me.lblTVSourcesFilenamingKodiDefaultsHeaderFrodoHelixSeason.Location = New System.Drawing.Point(140, 43)
-        Me.lblTVSourcesFilenamingKodiDefaultsHeaderFrodoHelixSeason.Name = "lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelixSeason"
+        Me.lblTVSourcesFilenamingKodiDefaultsHeaderFrodoHelixSeason.Name = "lblTVSourcesFilenamingKodiDefaultsHeaderFrodoHelixSeason"
         Me.lblTVSourcesFilenamingKodiDefaultsHeaderFrodoHelixSeason.Size = New System.Drawing.Size(44, 13)
         Me.lblTVSourcesFilenamingKodiDefaultsHeaderFrodoHelixSeason.TabIndex = 3
         Me.lblTVSourcesFilenamingKodiDefaultsHeaderFrodoHelixSeason.Text = "Season"
         '
-        'lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelixEpisode
+        'lblTVSourcesFilenamingKodiDefaultsHeaderFrodoHelixEpisode
         '
         Me.lblTVSourcesFilenamingKodiDefaultsHeaderFrodoHelixEpisode.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.lblTVSourcesFilenamingKodiDefaultsHeaderFrodoHelixEpisode.AutoSize = True
         Me.lblTVSourcesFilenamingKodiDefaultsHeaderFrodoHelixEpisode.Location = New System.Drawing.Point(86, 43)
-        Me.lblTVSourcesFilenamingKodiDefaultsHeaderFrodoHelixEpisode.Name = "lblTVSourcesFileNamingXBMCDefaultsHeaderFrodoHelixEpisode"
+        Me.lblTVSourcesFilenamingKodiDefaultsHeaderFrodoHelixEpisode.Name = "lblTVSourcesFilenamingKodiDefaultsHeaderFrodoHelixEpisode"
         Me.lblTVSourcesFilenamingKodiDefaultsHeaderFrodoHelixEpisode.Size = New System.Drawing.Size(48, 13)
         Me.lblTVSourcesFilenamingKodiDefaultsHeaderFrodoHelixEpisode.TabIndex = 5
         Me.lblTVSourcesFilenamingKodiDefaultsHeaderFrodoHelixEpisode.Text = "Episode"
         '
-        'lblTVSourcesFileNamingXBMCDefaultsActorThumbs
+        'lblTVSourcesFilenamingKodiDefaultsActorThumbs
         '
         Me.lblTVSourcesFilenamingKodiDefaultsActorThumbs.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVSourcesFilenamingKodiDefaultsActorThumbs.AutoSize = True
         Me.lblTVSourcesFilenamingKodiDefaultsActorThumbs.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.lblTVSourcesFilenamingKodiDefaultsActorThumbs.Location = New System.Drawing.Point(3, 63)
-        Me.lblTVSourcesFilenamingKodiDefaultsActorThumbs.Name = "lblTVSourcesFileNamingXBMCDefaultsActorThumbs"
+        Me.lblTVSourcesFilenamingKodiDefaultsActorThumbs.Name = "lblTVSourcesFilenamingKodiDefaultsActorThumbs"
         Me.lblTVSourcesFilenamingKodiDefaultsActorThumbs.Size = New System.Drawing.Size(77, 13)
         Me.lblTVSourcesFilenamingKodiDefaultsActorThumbs.TabIndex = 6
         Me.lblTVSourcesFilenamingKodiDefaultsActorThumbs.Text = "Actor Thumbs"
@@ -11158,35 +11110,35 @@ Partial Class dlgSettings
         Me.lblTVSourcesFilenamingKodiDefaultsBanner.TabIndex = 6
         Me.lblTVSourcesFilenamingKodiDefaultsBanner.Text = "Banner"
         '
-        'lblTVSourcesFileNamingXBMCDefaultsExtrafanarts
+        'lblTVSourcesFilenamingKodiDefaultsExtrafanarts
         '
         Me.lblTVSourcesFilenamingKodiDefaultsExtrafanarts.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVSourcesFilenamingKodiDefaultsExtrafanarts.AutoSize = True
         Me.lblTVSourcesFilenamingKodiDefaultsExtrafanarts.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.lblTVSourcesFilenamingKodiDefaultsExtrafanarts.Location = New System.Drawing.Point(3, 103)
-        Me.lblTVSourcesFilenamingKodiDefaultsExtrafanarts.Name = "lblTVSourcesFileNamingXBMCDefaultsExtrafanarts"
+        Me.lblTVSourcesFilenamingKodiDefaultsExtrafanarts.Name = "lblTVSourcesFilenamingKodiDefaultsExtrafanarts"
         Me.lblTVSourcesFilenamingKodiDefaultsExtrafanarts.Size = New System.Drawing.Size(68, 13)
         Me.lblTVSourcesFilenamingKodiDefaultsExtrafanarts.TabIndex = 6
         Me.lblTVSourcesFilenamingKodiDefaultsExtrafanarts.Text = "Extrafanarts"
         '
-        'lblTVSourcesFilenamingXBMCDefaultsFanart
+        'lblTVSourcesFilenamingKodiDefaultsFanart
         '
         Me.lblTVSourcesFilenamingKodiDefaultsFanart.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVSourcesFilenamingKodiDefaultsFanart.AutoSize = True
         Me.lblTVSourcesFilenamingKodiDefaultsFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.lblTVSourcesFilenamingKodiDefaultsFanart.Location = New System.Drawing.Point(3, 123)
-        Me.lblTVSourcesFilenamingKodiDefaultsFanart.Name = "lblTVSourcesFilenamingXBMCDefaultsFanart"
+        Me.lblTVSourcesFilenamingKodiDefaultsFanart.Name = "lblTVSourcesFilenamingKodiDefaultsFanart"
         Me.lblTVSourcesFilenamingKodiDefaultsFanart.Size = New System.Drawing.Size(40, 13)
         Me.lblTVSourcesFilenamingKodiDefaultsFanart.TabIndex = 6
         Me.lblTVSourcesFilenamingKodiDefaultsFanart.Text = "Fanart"
         '
-        'lblTVSourcesFileNamingXBMCDefaultsPoster
+        'lblTVSourcesFilenamingKodiDefaultsPoster
         '
         Me.lblTVSourcesFilenamingKodiDefaultsPoster.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVSourcesFilenamingKodiDefaultsPoster.AutoSize = True
         Me.lblTVSourcesFilenamingKodiDefaultsPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.lblTVSourcesFilenamingKodiDefaultsPoster.Location = New System.Drawing.Point(3, 163)
-        Me.lblTVSourcesFilenamingKodiDefaultsPoster.Name = "lblTVSourcesFileNamingXBMCDefaultsPoster"
+        Me.lblTVSourcesFilenamingKodiDefaultsPoster.Name = "lblTVSourcesFilenamingKodiDefaultsPoster"
         Me.lblTVSourcesFilenamingKodiDefaultsPoster.Size = New System.Drawing.Size(39, 13)
         Me.lblTVSourcesFilenamingKodiDefaultsPoster.TabIndex = 6
         Me.lblTVSourcesFilenamingKodiDefaultsPoster.Text = "Poster"
@@ -11212,13 +11164,13 @@ Partial Class dlgSettings
         Me.chkTVUseFrodo.TabIndex = 10
         Me.chkTVUseFrodo.UseVisualStyleBackColor = True
         '
-        'lblTVSourcesFilenamingXBMCDefaultsNFO
+        'lblTVSourcesFilenamingKodiDefaultsNFO
         '
         Me.lblTVSourcesFilenamingKodiDefaultsNFO.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVSourcesFilenamingKodiDefaultsNFO.AutoSize = True
         Me.lblTVSourcesFilenamingKodiDefaultsNFO.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.lblTVSourcesFilenamingKodiDefaultsNFO.Location = New System.Drawing.Point(3, 143)
-        Me.lblTVSourcesFilenamingKodiDefaultsNFO.Name = "lblTVSourcesFilenamingXBMCDefaultsNFO"
+        Me.lblTVSourcesFilenamingKodiDefaultsNFO.Name = "lblTVSourcesFilenamingKodiDefaultsNFO"
         Me.lblTVSourcesFilenamingKodiDefaultsNFO.Size = New System.Drawing.Size(30, 13)
         Me.lblTVSourcesFilenamingKodiDefaultsNFO.TabIndex = 6
         Me.lblTVSourcesFilenamingKodiDefaultsNFO.Text = "NFO"
@@ -11380,13 +11332,13 @@ Partial Class dlgSettings
         Me.chkTVShowCharacterArtAD.TabIndex = 2
         Me.chkTVShowCharacterArtAD.UseVisualStyleBackColor = True
         '
-        'lblTVSourcesFileNamingXBMCADCharacterArt
+        'lblTVSourcesFilenamingKodiADCharacterArt
         '
         Me.lblTVSourcesFilenamingKodiADCharacterArt.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVSourcesFilenamingKodiADCharacterArt.AutoSize = True
         Me.lblTVSourcesFilenamingKodiADCharacterArt.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.lblTVSourcesFilenamingKodiADCharacterArt.Location = New System.Drawing.Point(3, 23)
-        Me.lblTVSourcesFilenamingKodiADCharacterArt.Name = "lblTVSourcesFileNamingXBMCADCharacterArt"
+        Me.lblTVSourcesFilenamingKodiADCharacterArt.Name = "lblTVSourcesFilenamingKodiADCharacterArt"
         Me.lblTVSourcesFilenamingKodiADCharacterArt.Size = New System.Drawing.Size(71, 13)
         Me.lblTVSourcesFilenamingKodiADCharacterArt.TabIndex = 5
         Me.lblTVSourcesFilenamingKodiADCharacterArt.Text = "CharacterArt"
@@ -11402,35 +11354,35 @@ Partial Class dlgSettings
         Me.lblTVSourcesFileNamingKodiADClearArt.TabIndex = 6
         Me.lblTVSourcesFileNamingKodiADClearArt.Text = "ClearArt"
         '
-        'lblTVSourcesFileNamingXBMCADClearLogo
+        'lblTVSourcesFilenamingKodiADClearLogo
         '
         Me.lblTVSourcesFilenamingKodiADClearLogo.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVSourcesFilenamingKodiADClearLogo.AutoSize = True
         Me.lblTVSourcesFilenamingKodiADClearLogo.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.lblTVSourcesFilenamingKodiADClearLogo.Location = New System.Drawing.Point(3, 63)
-        Me.lblTVSourcesFilenamingKodiADClearLogo.Name = "lblTVSourcesFileNamingXBMCADClearLogo"
+        Me.lblTVSourcesFilenamingKodiADClearLogo.Name = "lblTVSourcesFilenamingKodiADClearLogo"
         Me.lblTVSourcesFilenamingKodiADClearLogo.Size = New System.Drawing.Size(59, 13)
         Me.lblTVSourcesFilenamingKodiADClearLogo.TabIndex = 7
         Me.lblTVSourcesFilenamingKodiADClearLogo.Text = "ClearLogo"
         '
-        'lblTVSourcesFileNamingXBMCADSeasonLandscape
+        'lblTVSourcesFilenamingKodiADSeasonLandscape
         '
         Me.lblTVSourcesFilenamingKodiADSeasonLandscape.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVSourcesFilenamingKodiADSeasonLandscape.AutoSize = True
         Me.lblTVSourcesFilenamingKodiADSeasonLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.lblTVSourcesFilenamingKodiADSeasonLandscape.Location = New System.Drawing.Point(3, 83)
-        Me.lblTVSourcesFilenamingKodiADSeasonLandscape.Name = "lblTVSourcesFileNamingXBMCADSeasonLandscape"
+        Me.lblTVSourcesFilenamingKodiADSeasonLandscape.Name = "lblTVSourcesFilenamingKodiADSeasonLandscape"
         Me.lblTVSourcesFilenamingKodiADSeasonLandscape.Size = New System.Drawing.Size(101, 13)
         Me.lblTVSourcesFilenamingKodiADSeasonLandscape.TabIndex = 8
         Me.lblTVSourcesFilenamingKodiADSeasonLandscape.Text = "Season Landscape"
         '
-        'lblTVSourcesFileNamingXBMCADTVShowLandscape
+        'lblTVSourcesFilenamingKodiADTVShowLandscape
         '
         Me.lblTVSourcesFilenamingKodiADTVShowLandscape.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVSourcesFilenamingKodiADTVShowLandscape.AutoSize = True
         Me.lblTVSourcesFilenamingKodiADTVShowLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.lblTVSourcesFilenamingKodiADTVShowLandscape.Location = New System.Drawing.Point(3, 103)
-        Me.lblTVSourcesFilenamingKodiADTVShowLandscape.Name = "lblTVSourcesFileNamingXBMCADTVShowLandscape"
+        Me.lblTVSourcesFilenamingKodiADTVShowLandscape.Name = "lblTVSourcesFilenamingKodiADTVShowLandscape"
         Me.lblTVSourcesFilenamingKodiADTVShowLandscape.Size = New System.Drawing.Size(108, 13)
         Me.lblTVSourcesFilenamingKodiADTVShowLandscape.TabIndex = 9
         Me.lblTVSourcesFilenamingKodiADTVShowLandscape.Text = "TV Show Landscape"
@@ -11629,14 +11581,14 @@ Partial Class dlgSettings
         Me.tblTVSourcesFileNamingNMT.Size = New System.Drawing.Size(512, 314)
         Me.tblTVSourcesFileNamingNMT.TabIndex = 19
         '
-        'gbTVSourcesFileNamingNMTDefaultsOpts
+        'gbTVSourcesFilenamingNMTDefaultsOpts
         '
         Me.gbTVSourcesFilenamingNMTDefaultsOpts.AutoSize = True
         Me.gbTVSourcesFilenamingNMTDefaultsOpts.Controls.Add(Me.tblTVSourcesFileNamingNMTDefaultsOpts)
         Me.gbTVSourcesFilenamingNMTDefaultsOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbTVSourcesFilenamingNMTDefaultsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbTVSourcesFilenamingNMTDefaultsOpts.Location = New System.Drawing.Point(3, 3)
-        Me.gbTVSourcesFilenamingNMTDefaultsOpts.Name = "gbTVSourcesFileNamingNMTDefaultsOpts"
+        Me.gbTVSourcesFilenamingNMTDefaultsOpts.Name = "gbTVSourcesFilenamingNMTDefaultsOpts"
         Me.gbTVSourcesFilenamingNMTDefaultsOpts.Size = New System.Drawing.Size(383, 161)
         Me.gbTVSourcesFilenamingNMTDefaultsOpts.TabIndex = 18
         Me.gbTVSourcesFilenamingNMTDefaultsOpts.TabStop = False
@@ -11845,32 +11797,32 @@ Partial Class dlgSettings
         Me.chkTVShowBannerYAMJ.TabIndex = 25
         Me.chkTVShowBannerYAMJ.UseVisualStyleBackColor = True
         '
-        'lblTVSourcesFileNamingNMTDefaultsHeaderYAMJEpisode
+        'lblTVSourcesFilenamingNMTDefaultsHeaderYAMJEpisode
         '
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJEpisode.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJEpisode.AutoSize = True
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJEpisode.Location = New System.Drawing.Point(58, 43)
-        Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJEpisode.Name = "lblTVSourcesFileNamingNMTDefaultsHeaderYAMJEpisode"
+        Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJEpisode.Name = "lblTVSourcesFilenamingNMTDefaultsHeaderYAMJEpisode"
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJEpisode.Size = New System.Drawing.Size(48, 13)
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJEpisode.TabIndex = 5
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJEpisode.Text = "Episode"
         '
-        'lblTVSourcesFileNamingNMTDefaultsHeaderYAMJSeason
+        'lblTVSourcesFilenamingNMTDefaultsHeaderYAMJSeason
         '
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJSeason.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJSeason.AutoSize = True
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJSeason.Location = New System.Drawing.Point(112, 43)
-        Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJSeason.Name = "lblTVSourcesFileNamingNMTDefaultsHeaderYAMJSeason"
+        Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJSeason.Name = "lblTVSourcesFilenamingNMTDefaultsHeaderYAMJSeason"
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJSeason.Size = New System.Drawing.Size(44, 13)
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJSeason.TabIndex = 3
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJSeason.Text = "Season"
         '
-        'lblTVSourcesFileNamingNMTDefaultsHeaderYAMJTVShow
+        'lblTVSourcesFilenamingNMTDefaultsHeaderYAMJTVShow
         '
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJTVShow.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJTVShow.AutoSize = True
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJTVShow.Location = New System.Drawing.Point(162, 43)
-        Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJTVShow.Name = "lblTVSourcesFileNamingNMTDefaultsHeaderYAMJTVShow"
+        Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJTVShow.Name = "lblTVSourcesFilenamingNMTDefaultsHeaderYAMJTVShow"
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJTVShow.Size = New System.Drawing.Size(51, 13)
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJTVShow.TabIndex = 4
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJTVShow.Text = "TV Show"
@@ -11886,12 +11838,12 @@ Partial Class dlgSettings
         Me.chkTVShowFanartYAMJ.TabIndex = 18
         Me.chkTVShowFanartYAMJ.UseVisualStyleBackColor = True
         '
-        'lblTVSourcesFileNamingNMTDefaultsHeaderNMJEpisode
+        'lblTVSourcesFilenamingNMTDefaultsHeaderNMJEpisode
         '
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJEpisode.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJEpisode.AutoSize = True
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJEpisode.Location = New System.Drawing.Point(219, 43)
-        Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJEpisode.Name = "lblTVSourcesFileNamingNMTDefaultsHeaderNMJEpisode"
+        Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJEpisode.Name = "lblTVSourcesFilenamingNMTDefaultsHeaderNMJEpisode"
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJEpisode.Size = New System.Drawing.Size(48, 13)
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJEpisode.TabIndex = 5
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJEpisode.Text = "Episode"
@@ -11907,22 +11859,22 @@ Partial Class dlgSettings
         Me.chkTVShowPosterYAMJ.TabIndex = 17
         Me.chkTVShowPosterYAMJ.UseVisualStyleBackColor = True
         '
-        'lblTVSourcesFileNamingNMTDefaultsHeaderNMJSeason
+        'lblTVSourcesFilenamingNMTDefaultsHeaderNMJSeason
         '
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJSeason.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJSeason.AutoSize = True
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJSeason.Location = New System.Drawing.Point(273, 43)
-        Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJSeason.Name = "lblTVSourcesFileNamingNMTDefaultsHeaderNMJSeason"
+        Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJSeason.Name = "lblTVSourcesFilenamingNMTDefaultsHeaderNMJSeason"
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJSeason.Size = New System.Drawing.Size(44, 13)
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJSeason.TabIndex = 3
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJSeason.Text = "Season"
         '
-        'lblTVSourcesFileNamingNMTDefaultsHeaderNMJTVShow
+        'lblTVSourcesFilenamingNMTDefaultsHeaderNMJTVShow
         '
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJTVShow.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJTVShow.AutoSize = True
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJTVShow.Location = New System.Drawing.Point(323, 43)
-        Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJTVShow.Name = "lblTVSourcesFileNamingNMTDefaultsHeaderNMJTVShow"
+        Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJTVShow.Name = "lblTVSourcesFilenamingNMTDefaultsHeaderNMJTVShow"
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJTVShow.Size = New System.Drawing.Size(51, 13)
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJTVShow.TabIndex = 4
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJTVShow.Text = "TV Show"
@@ -11949,13 +11901,13 @@ Partial Class dlgSettings
         Me.lblTVSourcesFilenamingNMTDefaultsFanart.TabIndex = 6
         Me.lblTVSourcesFilenamingNMTDefaultsFanart.Text = "Fanart"
         '
-        'lblTVSourcesFileNamingNMTDefaultsPoster
+        'lblTVSourcesFilenamingNMTDefaultsPoster
         '
         Me.lblTVSourcesFilenamingNMTDefaultsPoster.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVSourcesFilenamingNMTDefaultsPoster.AutoSize = True
         Me.lblTVSourcesFilenamingNMTDefaultsPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.lblTVSourcesFilenamingNMTDefaultsPoster.Location = New System.Drawing.Point(3, 123)
-        Me.lblTVSourcesFilenamingNMTDefaultsPoster.Name = "lblTVSourcesFileNamingNMTDefaultsPoster"
+        Me.lblTVSourcesFilenamingNMTDefaultsPoster.Name = "lblTVSourcesFilenamingNMTDefaultsPoster"
         Me.lblTVSourcesFilenamingNMTDefaultsPoster.Size = New System.Drawing.Size(39, 13)
         Me.lblTVSourcesFilenamingNMTDefaultsPoster.TabIndex = 6
         Me.lblTVSourcesFilenamingNMTDefaultsPoster.Text = "Poster"
@@ -12084,14 +12036,14 @@ Partial Class dlgSettings
         Me.tblTVSourcesFileNamingBoxee.Size = New System.Drawing.Size(512, 314)
         Me.tblTVSourcesFileNamingBoxee.TabIndex = 20
         '
-        'gbTVSourcesFileNamingBoxeeDefaultsOpts
+        'gbTVSourcesFilenamingBoxeeDefaultsOpts
         '
         Me.gbTVSourcesFilenamingBoxeeDefaultsOpts.AutoSize = True
         Me.gbTVSourcesFilenamingBoxeeDefaultsOpts.Controls.Add(Me.tblTVSourcesFileNamingBoxeeDefaultsOpts)
         Me.gbTVSourcesFilenamingBoxeeDefaultsOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbTVSourcesFilenamingBoxeeDefaultsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbTVSourcesFilenamingBoxeeDefaultsOpts.Location = New System.Drawing.Point(3, 3)
-        Me.gbTVSourcesFilenamingBoxeeDefaultsOpts.Name = "gbTVSourcesFileNamingBoxeeDefaultsOpts"
+        Me.gbTVSourcesFilenamingBoxeeDefaultsOpts.Name = "gbTVSourcesFilenamingBoxeeDefaultsOpts"
         Me.gbTVSourcesFilenamingBoxeeDefaultsOpts.Size = New System.Drawing.Size(222, 161)
         Me.gbTVSourcesFilenamingBoxeeDefaultsOpts.TabIndex = 19
         Me.gbTVSourcesFilenamingBoxeeDefaultsOpts.TabStop = False
@@ -12183,22 +12135,22 @@ Partial Class dlgSettings
         Me.chkTVShowBannerBoxee.TabIndex = 25
         Me.chkTVShowBannerBoxee.UseVisualStyleBackColor = True
         '
-        'lblTVSourcesFileNamingBoxeeDefaultsHeaderBoxeeEpisode
+        'lblTVSourcesFilenamingBoxeeDefaultsHeaderBoxeeEpisode
         '
         Me.lblTVSourcesFilenamingBoxeeDefaultsHeaderBoxeeEpisode.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.lblTVSourcesFilenamingBoxeeDefaultsHeaderBoxeeEpisode.AutoSize = True
         Me.lblTVSourcesFilenamingBoxeeDefaultsHeaderBoxeeEpisode.Location = New System.Drawing.Point(58, 43)
-        Me.lblTVSourcesFilenamingBoxeeDefaultsHeaderBoxeeEpisode.Name = "lblTVSourcesFileNamingBoxeeDefaultsHeaderBoxeeEpisode"
+        Me.lblTVSourcesFilenamingBoxeeDefaultsHeaderBoxeeEpisode.Name = "lblTVSourcesFilenamingBoxeeDefaultsHeaderBoxeeEpisode"
         Me.lblTVSourcesFilenamingBoxeeDefaultsHeaderBoxeeEpisode.Size = New System.Drawing.Size(48, 13)
         Me.lblTVSourcesFilenamingBoxeeDefaultsHeaderBoxeeEpisode.TabIndex = 5
         Me.lblTVSourcesFilenamingBoxeeDefaultsHeaderBoxeeEpisode.Text = "Episode"
         '
-        'lblTVSourcesFileNamingBoxeeDefaultsHeaderBoxeeSeason
+        'lblTVSourcesFilenamingBoxeeDefaultsHeaderBoxeeSeason
         '
         Me.lblTVSourcesFilenamingBoxeeDefaultsHeaderBoxeeSeason.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.lblTVSourcesFilenamingBoxeeDefaultsHeaderBoxeeSeason.AutoSize = True
         Me.lblTVSourcesFilenamingBoxeeDefaultsHeaderBoxeeSeason.Location = New System.Drawing.Point(112, 43)
-        Me.lblTVSourcesFilenamingBoxeeDefaultsHeaderBoxeeSeason.Name = "lblTVSourcesFileNamingBoxeeDefaultsHeaderBoxeeSeason"
+        Me.lblTVSourcesFilenamingBoxeeDefaultsHeaderBoxeeSeason.Name = "lblTVSourcesFilenamingBoxeeDefaultsHeaderBoxeeSeason"
         Me.lblTVSourcesFilenamingBoxeeDefaultsHeaderBoxeeSeason.Size = New System.Drawing.Size(44, 13)
         Me.lblTVSourcesFilenamingBoxeeDefaultsHeaderBoxeeSeason.TabIndex = 3
         Me.lblTVSourcesFilenamingBoxeeDefaultsHeaderBoxeeSeason.Text = "Season"
@@ -12214,12 +12166,12 @@ Partial Class dlgSettings
         Me.chkTVShowFanartBoxee.TabIndex = 18
         Me.chkTVShowFanartBoxee.UseVisualStyleBackColor = True
         '
-        'lblTVSourcesFileNamingBoxeeDefaultsHeaderBoxeeTVShow
+        'lblTVSourcesFilenamingBoxeeDefaultsHeaderBoxeeTVShow
         '
         Me.lblTVSourcesFilenamingBoxeeDefaultsHeaderBoxeeTVShow.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.lblTVSourcesFilenamingBoxeeDefaultsHeaderBoxeeTVShow.AutoSize = True
         Me.lblTVSourcesFilenamingBoxeeDefaultsHeaderBoxeeTVShow.Location = New System.Drawing.Point(162, 43)
-        Me.lblTVSourcesFilenamingBoxeeDefaultsHeaderBoxeeTVShow.Name = "lblTVSourcesFileNamingBoxeeDefaultsHeaderBoxeeTVShow"
+        Me.lblTVSourcesFilenamingBoxeeDefaultsHeaderBoxeeTVShow.Name = "lblTVSourcesFilenamingBoxeeDefaultsHeaderBoxeeTVShow"
         Me.lblTVSourcesFilenamingBoxeeDefaultsHeaderBoxeeTVShow.Size = New System.Drawing.Size(51, 13)
         Me.lblTVSourcesFilenamingBoxeeDefaultsHeaderBoxeeTVShow.TabIndex = 4
         Me.lblTVSourcesFilenamingBoxeeDefaultsHeaderBoxeeTVShow.Text = "TV Show"
@@ -12257,13 +12209,13 @@ Partial Class dlgSettings
         Me.lblTVSourcesFilenamingBoxeeDefaultsFanart.TabIndex = 6
         Me.lblTVSourcesFilenamingBoxeeDefaultsFanart.Text = "Fanart"
         '
-        'lblTVSourcesFileNamingBoxeeDefaultsPoster
+        'lblTVSourcesFilenamingBoxeeDefaultsPoster
         '
         Me.lblTVSourcesFilenamingBoxeeDefaultsPoster.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVSourcesFilenamingBoxeeDefaultsPoster.AutoSize = True
         Me.lblTVSourcesFilenamingBoxeeDefaultsPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.lblTVSourcesFilenamingBoxeeDefaultsPoster.Location = New System.Drawing.Point(3, 123)
-        Me.lblTVSourcesFilenamingBoxeeDefaultsPoster.Name = "lblTVSourcesFileNamingBoxeeDefaultsPoster"
+        Me.lblTVSourcesFilenamingBoxeeDefaultsPoster.Name = "lblTVSourcesFilenamingBoxeeDefaultsPoster"
         Me.lblTVSourcesFilenamingBoxeeDefaultsPoster.Size = New System.Drawing.Size(39, 13)
         Me.lblTVSourcesFilenamingBoxeeDefaultsPoster.TabIndex = 6
         Me.lblTVSourcesFilenamingBoxeeDefaultsPoster.Text = "Poster"
@@ -12322,11 +12274,11 @@ Partial Class dlgSettings
         Me.chkTVShowNFOBoxee.TabIndex = 17
         Me.chkTVShowNFOBoxee.UseVisualStyleBackColor = True
         '
-        'tpTVSourcesFileNamingExpert
+        'tpTVSourcesFilenamingExpert
         '
         Me.tpTVSourcesFilenamingExpert.Controls.Add(Me.tblTVSourcesFileNamingExpert)
         Me.tpTVSourcesFilenamingExpert.Location = New System.Drawing.Point(4, 22)
-        Me.tpTVSourcesFilenamingExpert.Name = "tpTVSourcesFileNamingExpert"
+        Me.tpTVSourcesFilenamingExpert.Name = "tpTVSourcesFilenamingExpert"
         Me.tpTVSourcesFilenamingExpert.Size = New System.Drawing.Size(512, 314)
         Me.tpTVSourcesFilenamingExpert.TabIndex = 2
         Me.tpTVSourcesFilenamingExpert.Text = "Expert"
@@ -12348,14 +12300,14 @@ Partial Class dlgSettings
         Me.tblTVSourcesFileNamingExpert.Size = New System.Drawing.Size(512, 314)
         Me.tblTVSourcesFileNamingExpert.TabIndex = 1
         '
-        'gbTVSourcesFileNamingExpertOpts
+        'gbTVSourcesFilenamingExpertOpts
         '
         Me.gbTVSourcesFilenamingExpertOpts.AutoSize = True
         Me.gbTVSourcesFilenamingExpertOpts.Controls.Add(Me.tblTVSourcesFileNamingExpertOpts)
         Me.gbTVSourcesFilenamingExpertOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbTVSourcesFilenamingExpertOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVSourcesFilenamingExpertOpts.Location = New System.Drawing.Point(3, 3)
-        Me.gbTVSourcesFilenamingExpertOpts.Name = "gbTVSourcesFileNamingExpertOpts"
+        Me.gbTVSourcesFilenamingExpertOpts.Name = "gbTVSourcesFilenamingExpertOpts"
         Me.gbTVSourcesFilenamingExpertOpts.Size = New System.Drawing.Size(492, 310)
         Me.gbTVSourcesFilenamingExpertOpts.TabIndex = 0
         Me.gbTVSourcesFilenamingExpertOpts.TabStop = False
@@ -12404,12 +12356,12 @@ Partial Class dlgSettings
         Me.tcTVSourcesFileNamingExpert.Size = New System.Drawing.Size(480, 260)
         Me.tcTVSourcesFileNamingExpert.TabIndex = 1
         '
-        'tpTVSourcesFileNamingExpertTVShow
+        'tpTVSourcesFilenamingExpertTVShow
         '
         Me.tpTVSourcesFilenamingExpertTVShow.Controls.Add(Me.tblTVSourcesFileNamingExpertShow)
         Me.tpTVSourcesFilenamingExpertTVShow.Location = New System.Drawing.Point(4, 22)
         Me.tpTVSourcesFilenamingExpertTVShow.Margin = New System.Windows.Forms.Padding(0)
-        Me.tpTVSourcesFilenamingExpertTVShow.Name = "tpTVSourcesFileNamingExpertTVShow"
+        Me.tpTVSourcesFilenamingExpertTVShow.Name = "tpTVSourcesFilenamingExpertTVShow"
         Me.tpTVSourcesFilenamingExpertTVShow.Size = New System.Drawing.Size(472, 234)
         Me.tpTVSourcesFilenamingExpertTVShow.TabIndex = 0
         Me.tpTVSourcesFilenamingExpertTVShow.Text = "TV Show"
@@ -12474,12 +12426,12 @@ Partial Class dlgSettings
         Me.tblTVSourcesFileNamingExpertShowOpts.Size = New System.Drawing.Size(293, 224)
         Me.tblTVSourcesFileNamingExpertShowOpts.TabIndex = 0
         '
-        'lblTVShowBannerExpert
+        'lblTVSourcesFilenamingExpertShowBanner
         '
         Me.lblTVSourcesFilenamingExpertShowBanner.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVSourcesFilenamingExpertShowBanner.AutoSize = True
         Me.lblTVSourcesFilenamingExpertShowBanner.Location = New System.Drawing.Point(3, 7)
-        Me.lblTVSourcesFilenamingExpertShowBanner.Name = "lblTVShowBannerExpert"
+        Me.lblTVSourcesFilenamingExpertShowBanner.Name = "lblTVSourcesFilenamingExpertShowBanner"
         Me.lblTVSourcesFilenamingExpertShowBanner.Size = New System.Drawing.Size(44, 13)
         Me.lblTVSourcesFilenamingExpertShowBanner.TabIndex = 17
         Me.lblTVSourcesFilenamingExpertShowBanner.Text = "Banner"
@@ -12522,32 +12474,32 @@ Partial Class dlgSettings
         Me.txtTVShowCharacterArtExpert.Size = New System.Drawing.Size(210, 22)
         Me.txtTVShowCharacterArtExpert.TabIndex = 9
         '
-        'lblTVShowClearLogoExpert
+        'lblTVSourcesFilenamingExpertClearLogo
         '
         Me.lblTVSourcesFilenamingExpertClearLogo.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVSourcesFilenamingExpertClearLogo.AutoSize = True
         Me.lblTVSourcesFilenamingExpertClearLogo.Location = New System.Drawing.Point(3, 91)
-        Me.lblTVSourcesFilenamingExpertClearLogo.Name = "lblTVShowClearLogoExpert"
+        Me.lblTVSourcesFilenamingExpertClearLogo.Name = "lblTVSourcesFilenamingExpertClearLogo"
         Me.lblTVSourcesFilenamingExpertClearLogo.Size = New System.Drawing.Size(59, 13)
         Me.lblTVSourcesFilenamingExpertClearLogo.TabIndex = 12
         Me.lblTVSourcesFilenamingExpertClearLogo.Text = "ClearLogo"
         '
-        'lblTVShowFanartExpert
+        'lblTVSourcesFilenamingExpertShowFanart
         '
         Me.lblTVSourcesFilenamingExpertShowFanart.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVSourcesFilenamingExpertShowFanart.AutoSize = True
         Me.lblTVSourcesFilenamingExpertShowFanart.Location = New System.Drawing.Point(3, 119)
-        Me.lblTVSourcesFilenamingExpertShowFanart.Name = "lblTVShowFanartExpert"
+        Me.lblTVSourcesFilenamingExpertShowFanart.Name = "lblTVSourcesFilenamingExpertShowFanart"
         Me.lblTVSourcesFilenamingExpertShowFanart.Size = New System.Drawing.Size(40, 13)
         Me.lblTVSourcesFilenamingExpertShowFanart.TabIndex = 11
         Me.lblTVSourcesFilenamingExpertShowFanart.Text = "Fanart"
         '
-        'lblTVShowLandscapeExpert
+        'lblTVSourcesFilenamingExpertShowLandscape
         '
         Me.lblTVSourcesFilenamingExpertShowLandscape.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVSourcesFilenamingExpertShowLandscape.AutoSize = True
         Me.lblTVSourcesFilenamingExpertShowLandscape.Location = New System.Drawing.Point(3, 147)
-        Me.lblTVSourcesFilenamingExpertShowLandscape.Name = "lblTVShowLandscapeExpert"
+        Me.lblTVSourcesFilenamingExpertShowLandscape.Name = "lblTVSourcesFilenamingExpertShowLandscape"
         Me.lblTVSourcesFilenamingExpertShowLandscape.Size = New System.Drawing.Size(61, 13)
         Me.lblTVSourcesFilenamingExpertShowLandscape.TabIndex = 19
         Me.lblTVSourcesFilenamingExpertShowLandscape.Text = "Landscape"
@@ -12562,12 +12514,12 @@ Partial Class dlgSettings
         Me.lblTVShowPosterExpert.TabIndex = 10
         Me.lblTVShowPosterExpert.Text = "Poster"
         '
-        'lblTVShowNFOExpert
+        'lblTVSourcesFilenamingExpertShowNFO
         '
         Me.lblTVSourcesFilenamingExpertShowNFO.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVSourcesFilenamingExpertShowNFO.AutoSize = True
         Me.lblTVSourcesFilenamingExpertShowNFO.Location = New System.Drawing.Point(3, 175)
-        Me.lblTVSourcesFilenamingExpertShowNFO.Name = "lblTVShowNFOExpert"
+        Me.lblTVSourcesFilenamingExpertShowNFO.Name = "lblTVSourcesFilenamingExpertShowNFO"
         Me.lblTVSourcesFilenamingExpertShowNFO.Size = New System.Drawing.Size(30, 13)
         Me.lblTVSourcesFilenamingExpertShowNFO.TabIndex = 9
         Me.lblTVSourcesFilenamingExpertShowNFO.Text = "NFO"
@@ -12626,13 +12578,13 @@ Partial Class dlgSettings
         Me.txtTVShowPosterExpert.Size = New System.Drawing.Size(210, 22)
         Me.txtTVShowPosterExpert.TabIndex = 9
         '
-        'gbTVSourcesFileNamingExpertShowImagesOpts
+        'gbTVSourcesFilenamingExpertShowImagesOpts
         '
         Me.gbTVSourcesFilenamingExpertShowImagesOpts.AutoSize = True
         Me.gbTVSourcesFilenamingExpertShowImagesOpts.Controls.Add(Me.tblTVSourcesFileNamingExpertShowImagesOpts)
         Me.gbTVSourcesFilenamingExpertShowImagesOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbTVSourcesFilenamingExpertShowImagesOpts.Location = New System.Drawing.Point(296, 3)
-        Me.gbTVSourcesFilenamingExpertShowImagesOpts.Name = "gbTVSourcesFileNamingExpertShowImagesOpts"
+        Me.gbTVSourcesFilenamingExpertShowImagesOpts.Name = "gbTVSourcesFilenamingExpertShowImagesOpts"
         Me.gbTVSourcesFilenamingExpertShowImagesOpts.Size = New System.Drawing.Size(160, 72)
         Me.gbTVSourcesFilenamingExpertShowImagesOpts.TabIndex = 1
         Me.gbTVSourcesFilenamingExpertShowImagesOpts.TabStop = False
@@ -12691,12 +12643,12 @@ Partial Class dlgSettings
         Me.chkTVShowExtrafanartsExpert.Text = "Extrafanarts"
         Me.chkTVShowExtrafanartsExpert.UseVisualStyleBackColor = True
         '
-        'tpTVSourcesFileNamingExpertAllSeasons
+        'tpTVSourcesFilenamingExpertAllSeasons
         '
         Me.tpTVSourcesFilenamingExpertAllSeasons.Controls.Add(Me.TableLayoutPanel2)
         Me.tpTVSourcesFilenamingExpertAllSeasons.Location = New System.Drawing.Point(4, 22)
         Me.tpTVSourcesFilenamingExpertAllSeasons.Margin = New System.Windows.Forms.Padding(0)
-        Me.tpTVSourcesFilenamingExpertAllSeasons.Name = "tpTVSourcesFileNamingExpertAllSeasons"
+        Me.tpTVSourcesFilenamingExpertAllSeasons.Name = "tpTVSourcesFilenamingExpertAllSeasons"
         Me.tpTVSourcesFilenamingExpertAllSeasons.Size = New System.Drawing.Size(472, 234)
         Me.tpTVSourcesFilenamingExpertAllSeasons.TabIndex = 3
         Me.tpTVSourcesFilenamingExpertAllSeasons.Text = "All Seasons"
@@ -12749,12 +12701,12 @@ Partial Class dlgSettings
         Me.TableLayoutPanel3.Size = New System.Drawing.Size(453, 112)
         Me.TableLayoutPanel3.TabIndex = 1
         '
-        'lblTVAllSeasonsBannerExpert
+        'lblTVSourcesFilenamingExpertAllSeasonsBanner
         '
         Me.lblTVSourcesFilenamingExpertAllSeasonsBanner.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVSourcesFilenamingExpertAllSeasonsBanner.AutoSize = True
         Me.lblTVSourcesFilenamingExpertAllSeasonsBanner.Location = New System.Drawing.Point(3, 7)
-        Me.lblTVSourcesFilenamingExpertAllSeasonsBanner.Name = "lblTVAllSeasonsBannerExpert"
+        Me.lblTVSourcesFilenamingExpertAllSeasonsBanner.Name = "lblTVSourcesFilenamingExpertAllSeasonsBanner"
         Me.lblTVSourcesFilenamingExpertAllSeasonsBanner.Size = New System.Drawing.Size(44, 13)
         Me.lblTVSourcesFilenamingExpertAllSeasonsBanner.TabIndex = 17
         Me.lblTVSourcesFilenamingExpertAllSeasonsBanner.Text = "Banner"
@@ -12768,22 +12720,22 @@ Partial Class dlgSettings
         Me.txtTVAllSeasonsBannerExpert.Size = New System.Drawing.Size(380, 22)
         Me.txtTVAllSeasonsBannerExpert.TabIndex = 7
         '
-        'lblTVAllSeasonsFanartExpert
+        'lblTVSourcesFilenamingExpertAllSeasonsFanart
         '
         Me.lblTVSourcesFilenamingExpertAllSeasonsFanart.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVSourcesFilenamingExpertAllSeasonsFanart.AutoSize = True
         Me.lblTVSourcesFilenamingExpertAllSeasonsFanart.Location = New System.Drawing.Point(3, 35)
-        Me.lblTVSourcesFilenamingExpertAllSeasonsFanart.Name = "lblTVAllSeasonsFanartExpert"
+        Me.lblTVSourcesFilenamingExpertAllSeasonsFanart.Name = "lblTVSourcesFilenamingExpertAllSeasonsFanart"
         Me.lblTVSourcesFilenamingExpertAllSeasonsFanart.Size = New System.Drawing.Size(40, 13)
         Me.lblTVSourcesFilenamingExpertAllSeasonsFanart.TabIndex = 11
         Me.lblTVSourcesFilenamingExpertAllSeasonsFanart.Text = "Fanart"
         '
-        'lblTVAllSeasonsLandscapeExpert
+        'lblTVSourcesFilenamingExpertAllSeasonsLandscape
         '
         Me.lblTVSourcesFilenamingExpertAllSeasonsLandscape.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVSourcesFilenamingExpertAllSeasonsLandscape.AutoSize = True
         Me.lblTVSourcesFilenamingExpertAllSeasonsLandscape.Location = New System.Drawing.Point(3, 63)
-        Me.lblTVSourcesFilenamingExpertAllSeasonsLandscape.Name = "lblTVAllSeasonsLandscapeExpert"
+        Me.lblTVSourcesFilenamingExpertAllSeasonsLandscape.Name = "lblTVSourcesFilenamingExpertAllSeasonsLandscape"
         Me.lblTVSourcesFilenamingExpertAllSeasonsLandscape.Size = New System.Drawing.Size(61, 13)
         Me.lblTVSourcesFilenamingExpertAllSeasonsLandscape.TabIndex = 19
         Me.lblTVSourcesFilenamingExpertAllSeasonsLandscape.Text = "Landscape"
@@ -12825,12 +12777,12 @@ Partial Class dlgSettings
         Me.txtTVAllSeasonsPosterExpert.Size = New System.Drawing.Size(380, 22)
         Me.txtTVAllSeasonsPosterExpert.TabIndex = 9
         '
-        'tpTVSourcesFileNamingExpertSeason
+        'tpTVSourcesFilenamingExpertSeason
         '
         Me.tpTVSourcesFilenamingExpertSeason.Controls.Add(Me.tblTVSourcesFileNamingExpertSeason)
         Me.tpTVSourcesFilenamingExpertSeason.Location = New System.Drawing.Point(4, 22)
         Me.tpTVSourcesFilenamingExpertSeason.Margin = New System.Windows.Forms.Padding(0)
-        Me.tpTVSourcesFilenamingExpertSeason.Name = "tpTVSourcesFileNamingExpertSeason"
+        Me.tpTVSourcesFilenamingExpertSeason.Name = "tpTVSourcesFilenamingExpertSeason"
         Me.tpTVSourcesFilenamingExpertSeason.Size = New System.Drawing.Size(472, 234)
         Me.tpTVSourcesFilenamingExpertSeason.TabIndex = 1
         Me.tpTVSourcesFilenamingExpertSeason.Text = "Season"
@@ -12883,12 +12835,12 @@ Partial Class dlgSettings
         Me.tblTVSourcesFileNamingExpertSeasonOpts.Size = New System.Drawing.Size(453, 112)
         Me.tblTVSourcesFileNamingExpertSeasonOpts.TabIndex = 1
         '
-        'lblTVSeasonBannerExpert
+        'lblTVSourcesFilenamingExpertSeasonBanner
         '
         Me.lblTVSourcesFilenamingExpertSeasonBanner.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVSourcesFilenamingExpertSeasonBanner.AutoSize = True
         Me.lblTVSourcesFilenamingExpertSeasonBanner.Location = New System.Drawing.Point(3, 7)
-        Me.lblTVSourcesFilenamingExpertSeasonBanner.Name = "lblTVSeasonBannerExpert"
+        Me.lblTVSourcesFilenamingExpertSeasonBanner.Name = "lblTVSourcesFilenamingExpertSeasonBanner"
         Me.lblTVSourcesFilenamingExpertSeasonBanner.Size = New System.Drawing.Size(44, 13)
         Me.lblTVSourcesFilenamingExpertSeasonBanner.TabIndex = 17
         Me.lblTVSourcesFilenamingExpertSeasonBanner.Text = "Banner"
@@ -12902,22 +12854,22 @@ Partial Class dlgSettings
         Me.txtTVSeasonBannerExpert.Size = New System.Drawing.Size(380, 22)
         Me.txtTVSeasonBannerExpert.TabIndex = 7
         '
-        'lblTVSeasonFanartExpert
+        'lblTVSourcesFilenamingExpertSeasonFanart
         '
         Me.lblTVSourcesFilenamingExpertSeasonFanart.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVSourcesFilenamingExpertSeasonFanart.AutoSize = True
         Me.lblTVSourcesFilenamingExpertSeasonFanart.Location = New System.Drawing.Point(3, 35)
-        Me.lblTVSourcesFilenamingExpertSeasonFanart.Name = "lblTVSeasonFanartExpert"
+        Me.lblTVSourcesFilenamingExpertSeasonFanart.Name = "lblTVSourcesFilenamingExpertSeasonFanart"
         Me.lblTVSourcesFilenamingExpertSeasonFanart.Size = New System.Drawing.Size(40, 13)
         Me.lblTVSourcesFilenamingExpertSeasonFanart.TabIndex = 11
         Me.lblTVSourcesFilenamingExpertSeasonFanart.Text = "Fanart"
         '
-        'lblTVSeasonLandscapeExpert
+        'lblTVSourcesFilenamingExpertSeasonLandscape
         '
         Me.lblTVSourcesFilenamingExpertSeasonLandscape.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVSourcesFilenamingExpertSeasonLandscape.AutoSize = True
         Me.lblTVSourcesFilenamingExpertSeasonLandscape.Location = New System.Drawing.Point(3, 63)
-        Me.lblTVSourcesFilenamingExpertSeasonLandscape.Name = "lblTVSeasonLandscapeExpert"
+        Me.lblTVSourcesFilenamingExpertSeasonLandscape.Name = "lblTVSourcesFilenamingExpertSeasonLandscape"
         Me.lblTVSourcesFilenamingExpertSeasonLandscape.Size = New System.Drawing.Size(61, 13)
         Me.lblTVSourcesFilenamingExpertSeasonLandscape.TabIndex = 19
         Me.lblTVSourcesFilenamingExpertSeasonLandscape.Text = "Landscape"
@@ -12959,12 +12911,12 @@ Partial Class dlgSettings
         Me.txtTVSeasonPosterExpert.Size = New System.Drawing.Size(380, 22)
         Me.txtTVSeasonPosterExpert.TabIndex = 9
         '
-        'tpTVSourcesFileNamingExpertEpisode
+        'tpTVSourcesFilenamingExpertEpisode
         '
         Me.tpTVSourcesFilenamingExpertEpisode.Controls.Add(Me.tblTVSourcesFileNamingExpertEpisode)
         Me.tpTVSourcesFilenamingExpertEpisode.Location = New System.Drawing.Point(4, 22)
         Me.tpTVSourcesFilenamingExpertEpisode.Margin = New System.Windows.Forms.Padding(0)
-        Me.tpTVSourcesFilenamingExpertEpisode.Name = "tpTVSourcesFileNamingExpertEpisode"
+        Me.tpTVSourcesFilenamingExpertEpisode.Name = "tpTVSourcesFilenamingExpertEpisode"
         Me.tpTVSourcesFilenamingExpertEpisode.Size = New System.Drawing.Size(472, 234)
         Me.tpTVSourcesFilenamingExpertEpisode.TabIndex = 2
         Me.tpTVSourcesFilenamingExpertEpisode.Text = "Episode"
@@ -12988,13 +12940,13 @@ Partial Class dlgSettings
         Me.tblTVSourcesFileNamingExpertEpisode.Size = New System.Drawing.Size(472, 234)
         Me.tblTVSourcesFileNamingExpertEpisode.TabIndex = 0
         '
-        'gbTVSourcesFileNamingExpertEpisodeImagesOpts
+        'gbTVSourcesFilenamingExpertEpisodeImagesOpts
         '
         Me.gbTVSourcesFilenamingExpertEpisodeImagesOpts.AutoSize = True
         Me.gbTVSourcesFilenamingExpertEpisodeImagesOpts.Controls.Add(Me.tblTVSourcesFileNamingExpertEpisodeImagesOpts)
         Me.gbTVSourcesFilenamingExpertEpisodeImagesOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbTVSourcesFilenamingExpertEpisodeImagesOpts.Location = New System.Drawing.Point(265, 3)
-        Me.gbTVSourcesFilenamingExpertEpisodeImagesOpts.Name = "gbTVSourcesFileNamingExpertEpisodeImagesOpts"
+        Me.gbTVSourcesFilenamingExpertEpisodeImagesOpts.Name = "gbTVSourcesFilenamingExpertEpisodeImagesOpts"
         Me.gbTVSourcesFilenamingExpertEpisodeImagesOpts.Size = New System.Drawing.Size(204, 49)
         Me.gbTVSourcesFilenamingExpertEpisodeImagesOpts.TabIndex = 14
         Me.gbTVSourcesFilenamingExpertEpisodeImagesOpts.TabStop = False
@@ -13066,12 +13018,12 @@ Partial Class dlgSettings
         Me.TableLayoutPanel1.Size = New System.Drawing.Size(262, 84)
         Me.TableLayoutPanel1.TabIndex = 2
         '
-        'lblTVEpisodeFanartExpert
+        'lblTVSourcesFilenamingExpertEpisodeFanart
         '
         Me.lblTVSourcesFilenamingExpertEpisodeFanart.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVSourcesFilenamingExpertEpisodeFanart.AutoSize = True
         Me.lblTVSourcesFilenamingExpertEpisodeFanart.Location = New System.Drawing.Point(3, 7)
-        Me.lblTVSourcesFilenamingExpertEpisodeFanart.Name = "lblTVEpisodeFanartExpert"
+        Me.lblTVSourcesFilenamingExpertEpisodeFanart.Name = "lblTVSourcesFilenamingExpertEpisodeFanart"
         Me.lblTVSourcesFilenamingExpertEpisodeFanart.Size = New System.Drawing.Size(40, 13)
         Me.lblTVSourcesFilenamingExpertEpisodeFanart.TabIndex = 11
         Me.lblTVSourcesFilenamingExpertEpisodeFanart.Text = "Fanart"
@@ -13104,12 +13056,12 @@ Partial Class dlgSettings
         Me.txtTVEpisodePosterExpert.Size = New System.Drawing.Size(210, 22)
         Me.txtTVEpisodePosterExpert.TabIndex = 9
         '
-        'lblTVEpisodeNFOExpert
+        'lblTVSourcesFilenamingExpertEpisodeNFO
         '
         Me.lblTVSourcesFilenamingExpertEpisodeNFO.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVSourcesFilenamingExpertEpisodeNFO.AutoSize = True
         Me.lblTVSourcesFilenamingExpertEpisodeNFO.Location = New System.Drawing.Point(3, 35)
-        Me.lblTVSourcesFilenamingExpertEpisodeNFO.Name = "lblTVEpisodeNFOExpert"
+        Me.lblTVSourcesFilenamingExpertEpisodeNFO.Name = "lblTVSourcesFilenamingExpertEpisodeNFO"
         Me.lblTVSourcesFilenamingExpertEpisodeNFO.Size = New System.Drawing.Size(30, 13)
         Me.lblTVSourcesFilenamingExpertEpisodeNFO.TabIndex = 10
         Me.lblTVSourcesFilenamingExpertEpisodeNFO.Text = "NFO"
@@ -19847,7 +19799,7 @@ Partial Class dlgSettings
         Me.chkMovieSetCleanFiles.Text = "Remove Images and NFOs with MovieSets"
         Me.chkMovieSetCleanFiles.UseVisualStyleBackColor = True
         '
-        'gbMovieSetSourcesFileNamingOpts
+        'gbMovieSetSourcesFilenamingOpts
         '
         Me.gbMovieSetSourcesFilenamingOpts.AutoSize = True
         Me.tblMovieSetSources.SetColumnSpan(Me.gbMovieSetSourcesFilenamingOpts, 2)
@@ -19855,7 +19807,7 @@ Partial Class dlgSettings
         Me.gbMovieSetSourcesFilenamingOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieSetSourcesFilenamingOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbMovieSetSourcesFilenamingOpts.Location = New System.Drawing.Point(3, 76)
-        Me.gbMovieSetSourcesFilenamingOpts.Name = "gbMovieSetSourcesFileNamingOpts"
+        Me.gbMovieSetSourcesFilenamingOpts.Name = "gbMovieSetSourcesFilenamingOpts"
         Me.gbMovieSetSourcesFilenamingOpts.Size = New System.Drawing.Size(562, 397)
         Me.gbMovieSetSourcesFilenamingOpts.TabIndex = 8
         Me.gbMovieSetSourcesFilenamingOpts.TabStop = False
@@ -19915,14 +19867,14 @@ Partial Class dlgSettings
         Me.tblMovieSetFileNamingKodi.Size = New System.Drawing.Size(542, 344)
         Me.tblMovieSetFileNamingKodi.TabIndex = 0
         '
-        'gbMovieSetSourcesFileNamingKodiExtendedOpts
+        'gbMovieSetSourcesFilenamingKodiExtendedOpts
         '
         Me.gbMovieSetSourcesFilenamingKodiExtendedOpts.AutoSize = True
         Me.gbMovieSetSourcesFilenamingKodiExtendedOpts.Controls.Add(Me.tblMovieSetSourcesFileNamingKodiExtendedOpts)
         Me.gbMovieSetSourcesFilenamingKodiExtendedOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieSetSourcesFilenamingKodiExtendedOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbMovieSetSourcesFilenamingKodiExtendedOpts.Location = New System.Drawing.Point(3, 3)
-        Me.gbMovieSetSourcesFilenamingKodiExtendedOpts.Name = "gbMovieSetSourcesFileNamingKodiExtendedOpts"
+        Me.gbMovieSetSourcesFilenamingKodiExtendedOpts.Name = "gbMovieSetSourcesFilenamingKodiExtendedOpts"
         Me.gbMovieSetSourcesFilenamingKodiExtendedOpts.Size = New System.Drawing.Size(330, 249)
         Me.gbMovieSetSourcesFilenamingKodiExtendedOpts.TabIndex = 0
         Me.gbMovieSetSourcesFilenamingKodiExtendedOpts.TabStop = False
@@ -20452,11 +20404,11 @@ Partial Class dlgSettings
         Me.lblMovieSetSourcesFilenamingKodiMSAAPoster.TabIndex = 5
         Me.lblMovieSetSourcesFilenamingKodiMSAAPoster.Text = "Poster"
         '
-        'tpMovieSetFileNamingExpert
+        'tpMovieSetSourcesFilenamingExpert
         '
         Me.tpMovieSetSourcesFilenamingExpert.Controls.Add(Me.tblMovieSetSourcesFileNamingExpert)
         Me.tpMovieSetSourcesFilenamingExpert.Location = New System.Drawing.Point(4, 22)
-        Me.tpMovieSetSourcesFilenamingExpert.Name = "tpMovieSetFileNamingExpert"
+        Me.tpMovieSetSourcesFilenamingExpert.Name = "tpMovieSetSourcesFilenamingExpert"
         Me.tpMovieSetSourcesFilenamingExpert.Size = New System.Drawing.Size(542, 344)
         Me.tpMovieSetSourcesFilenamingExpert.TabIndex = 2
         Me.tpMovieSetSourcesFilenamingExpert.Text = "Expert"
@@ -20478,14 +20430,14 @@ Partial Class dlgSettings
         Me.tblMovieSetSourcesFileNamingExpert.Size = New System.Drawing.Size(542, 344)
         Me.tblMovieSetSourcesFileNamingExpert.TabIndex = 10
         '
-        'gbMovieSetSourcesFileNamingExpertOpts
+        'gbMovieSetSourcesFilenamingExpertOpts
         '
         Me.gbMovieSetSourcesFilenamingExpertOpts.AutoSize = True
         Me.gbMovieSetSourcesFilenamingExpertOpts.Controls.Add(Me.tblMovieSetSourcesFileNamingExpertOpts)
         Me.gbMovieSetSourcesFilenamingExpertOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieSetSourcesFilenamingExpertOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.gbMovieSetSourcesFilenamingExpertOpts.Location = New System.Drawing.Point(3, 3)
-        Me.gbMovieSetSourcesFilenamingExpertOpts.Name = "gbMovieSetSourcesFileNamingExpertOpts"
+        Me.gbMovieSetSourcesFilenamingExpertOpts.Name = "gbMovieSetSourcesFilenamingExpertOpts"
         Me.gbMovieSetSourcesFilenamingExpertOpts.Size = New System.Drawing.Size(536, 340)
         Me.gbMovieSetSourcesFilenamingExpertOpts.TabIndex = 8
         Me.gbMovieSetSourcesFilenamingExpertOpts.TabStop = False
@@ -20520,11 +20472,11 @@ Partial Class dlgSettings
         Me.tcMovieSetFileNamingExpert.Size = New System.Drawing.Size(508, 290)
         Me.tcMovieSetFileNamingExpert.TabIndex = 2
         '
-        'tpMovieSetFileNamingExpertSingle
+        'tpMovieSetFilenamingExpertSingle
         '
         Me.tpMovieSetFilenamingExpertSingle.Controls.Add(Me.tblMovieSetSourcesFileNamingExpertSingle)
         Me.tpMovieSetFilenamingExpertSingle.Location = New System.Drawing.Point(4, 22)
-        Me.tpMovieSetFilenamingExpertSingle.Name = "tpMovieSetFileNamingExpertSingle"
+        Me.tpMovieSetFilenamingExpertSingle.Name = "tpMovieSetFilenamingExpertSingle"
         Me.tpMovieSetFilenamingExpertSingle.Padding = New System.Windows.Forms.Padding(3)
         Me.tpMovieSetFilenamingExpertSingle.Size = New System.Drawing.Size(500, 264)
         Me.tpMovieSetFilenamingExpertSingle.TabIndex = 0
@@ -20574,12 +20526,12 @@ Partial Class dlgSettings
         Me.tblMovieSetSourcesFileNamingExpertSingle.Size = New System.Drawing.Size(494, 258)
         Me.tblMovieSetSourcesFileNamingExpertSingle.TabIndex = 10
         '
-        'lblMovieSetSourcesFileNamingExpertSingleNFO
+        'lblMovieSetSourcesFilenamingExpertSingleNFO
         '
         Me.lblMovieSetSourcesFilenamingExpertSingleNFO.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSetSourcesFilenamingExpertSingleNFO.AutoSize = True
         Me.lblMovieSetSourcesFilenamingExpertSingleNFO.Location = New System.Drawing.Point(3, 175)
-        Me.lblMovieSetSourcesFilenamingExpertSingleNFO.Name = "lblMovieSetSourcesFileNamingExpertSingleNFO"
+        Me.lblMovieSetSourcesFilenamingExpertSingleNFO.Name = "lblMovieSetSourcesFilenamingExpertSingleNFO"
         Me.lblMovieSetSourcesFilenamingExpertSingleNFO.Size = New System.Drawing.Size(30, 13)
         Me.lblMovieSetSourcesFilenamingExpertSingleNFO.TabIndex = 9
         Me.lblMovieSetSourcesFilenamingExpertSingleNFO.Text = "NFO"
@@ -20697,12 +20649,12 @@ Partial Class dlgSettings
         Me.txtMovieSetFanartExpertSingle.Size = New System.Drawing.Size(220, 22)
         Me.txtMovieSetFanartExpertSingle.TabIndex = 5
         '
-        'lblMovieSetClearLogoExpertSingle
+        'lblMovieSetSourcesClearLogoExpertSingle
         '
         Me.lblMovieSetSourcesClearLogoExpertSingle.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSetSourcesClearLogoExpertSingle.AutoSize = True
         Me.lblMovieSetSourcesClearLogoExpertSingle.Location = New System.Drawing.Point(3, 63)
-        Me.lblMovieSetSourcesClearLogoExpertSingle.Name = "lblMovieSetClearLogoExpertSingle"
+        Me.lblMovieSetSourcesClearLogoExpertSingle.Name = "lblMovieSetSourcesClearLogoExpertSingle"
         Me.lblMovieSetSourcesClearLogoExpertSingle.Size = New System.Drawing.Size(59, 13)
         Me.lblMovieSetSourcesClearLogoExpertSingle.TabIndex = 12
         Me.lblMovieSetSourcesClearLogoExpertSingle.Text = "ClearLogo"
@@ -20739,12 +20691,12 @@ Partial Class dlgSettings
         Me.btnMovieSetPathExpertSingleBrowse.Text = "..."
         Me.btnMovieSetPathExpertSingleBrowse.UseVisualStyleBackColor = True
         '
-        'lblMovieSetDiscArtExpertSingle
+        'lblMovieSetSourcesFilenamingExpertSingleDiscArt
         '
         Me.lblMovieSetSourcesFilenamingExpertSingleDiscArt.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSetSourcesFilenamingExpertSingleDiscArt.AutoSize = True
         Me.lblMovieSetSourcesFilenamingExpertSingleDiscArt.Location = New System.Drawing.Point(3, 91)
-        Me.lblMovieSetSourcesFilenamingExpertSingleDiscArt.Name = "lblMovieSetDiscArtExpertSingle"
+        Me.lblMovieSetSourcesFilenamingExpertSingleDiscArt.Name = "lblMovieSetSourcesFilenamingExpertSingleDiscArt"
         Me.lblMovieSetSourcesFilenamingExpertSingleDiscArt.Size = New System.Drawing.Size(43, 13)
         Me.lblMovieSetSourcesFilenamingExpertSingleDiscArt.TabIndex = 11
         Me.lblMovieSetSourcesFilenamingExpertSingleDiscArt.Text = "DiscArt"
@@ -20758,11 +20710,11 @@ Partial Class dlgSettings
         Me.txtMovieSetDiscArtExpertSingle.Size = New System.Drawing.Size(220, 22)
         Me.txtMovieSetDiscArtExpertSingle.TabIndex = 5
         '
-        'tpMovieSetFileNamingExpertParent
+        'tpMovieSetFilenamingExpertParent
         '
         Me.tpMovieSetFilenamingExpertParent.Controls.Add(Me.tblMovieSetSourcesFileNamingExpertParent)
         Me.tpMovieSetFilenamingExpertParent.Location = New System.Drawing.Point(4, 22)
-        Me.tpMovieSetFilenamingExpertParent.Name = "tpMovieSetFileNamingExpertParent"
+        Me.tpMovieSetFilenamingExpertParent.Name = "tpMovieSetFilenamingExpertParent"
         Me.tpMovieSetFilenamingExpertParent.Padding = New System.Windows.Forms.Padding(3)
         Me.tpMovieSetFilenamingExpertParent.Size = New System.Drawing.Size(500, 264)
         Me.tpMovieSetFilenamingExpertParent.TabIndex = 1
@@ -20863,12 +20815,12 @@ Partial Class dlgSettings
         Me.txtMovieSetFanartExpertParent.Size = New System.Drawing.Size(220, 22)
         Me.txtMovieSetFanartExpertParent.TabIndex = 3
         '
-        'lblMovieSetClearLogoExpertParent
+        'lblMovieSetSourcesClearLogoExpertParent
         '
         Me.lblMovieSetSourcesClearLogoExpertParent.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSetSourcesClearLogoExpertParent.AutoSize = True
         Me.lblMovieSetSourcesClearLogoExpertParent.Location = New System.Drawing.Point(3, 63)
-        Me.lblMovieSetSourcesClearLogoExpertParent.Name = "lblMovieSetClearLogoExpertParent"
+        Me.lblMovieSetSourcesClearLogoExpertParent.Name = "lblMovieSetSourcesClearLogoExpertParent"
         Me.lblMovieSetSourcesClearLogoExpertParent.Size = New System.Drawing.Size(59, 13)
         Me.lblMovieSetSourcesClearLogoExpertParent.TabIndex = 38
         Me.lblMovieSetSourcesClearLogoExpertParent.Text = "ClearLogo"
@@ -20892,12 +20844,12 @@ Partial Class dlgSettings
         Me.lblMovieSetSourcesFilenamingExpertParentClearArt.TabIndex = 51
         Me.lblMovieSetSourcesFilenamingExpertParentClearArt.Text = "ClearArt"
         '
-        'lblMovieSetSourcesFileNamingExpertParentNFO
+        'lblMovieSetSourcesFilenamingExpertParentNFO
         '
         Me.lblMovieSetSourcesFilenamingExpertParentNFO.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSetSourcesFilenamingExpertParentNFO.AutoSize = True
         Me.lblMovieSetSourcesFilenamingExpertParentNFO.Location = New System.Drawing.Point(3, 175)
-        Me.lblMovieSetSourcesFilenamingExpertParentNFO.Name = "lblMovieSetSourcesFileNamingExpertParentNFO"
+        Me.lblMovieSetSourcesFilenamingExpertParentNFO.Name = "lblMovieSetSourcesFilenamingExpertParentNFO"
         Me.lblMovieSetSourcesFilenamingExpertParentNFO.Size = New System.Drawing.Size(30, 13)
         Me.lblMovieSetSourcesFilenamingExpertParentNFO.TabIndex = 35
         Me.lblMovieSetSourcesFilenamingExpertParentNFO.Text = "NFO"
@@ -20941,12 +20893,12 @@ Partial Class dlgSettings
         Me.lblMovieSetSourcesFilenamingExpertParentBanner.TabIndex = 40
         Me.lblMovieSetSourcesFilenamingExpertParentBanner.Text = "Banner"
         '
-        'lblMovieSetDiscArtExpertParent
+        'lblMovieSetSourcesFilenamingExpertParentDiscArt
         '
         Me.lblMovieSetSourcesFilenamingExpertParentDiscArt.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSetSourcesFilenamingExpertParentDiscArt.AutoSize = True
         Me.lblMovieSetSourcesFilenamingExpertParentDiscArt.Location = New System.Drawing.Point(3, 91)
-        Me.lblMovieSetSourcesFilenamingExpertParentDiscArt.Name = "lblMovieSetDiscArtExpertParent"
+        Me.lblMovieSetSourcesFilenamingExpertParentDiscArt.Name = "lblMovieSetSourcesFilenamingExpertParentDiscArt"
         Me.lblMovieSetSourcesFilenamingExpertParentDiscArt.Size = New System.Drawing.Size(43, 13)
         Me.lblMovieSetSourcesFilenamingExpertParentDiscArt.TabIndex = 38
         Me.lblMovieSetSourcesFilenamingExpertParentDiscArt.Text = "DiscArt"
@@ -22103,7 +22055,7 @@ Partial Class dlgSettings
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(96!, 96!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(1214, 861)
@@ -22126,132 +22078,129 @@ Partial Class dlgSettings
         Me.Controls.Add(Me.pnlMovieGeneral)
         Me.Controls.Add(Me.pnlMovieImages)
         Me.Controls.Add(Me.scSettings)
-        Me.DoubleBuffered = true
-        Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.Icon = CType(resources.GetObject("$this.Icon"),System.Drawing.Icon)
-        Me.MinimizeBox = false
+        Me.DoubleBuffered = True
+        Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
+        Me.MinimizeBox = False
         Me.Name = "dlgSettings"
         Me.Text = "Settings"
-        Me.gbGeneralMiscOpts.ResumeLayout(false)
-        Me.gbGeneralMiscOpts.PerformLayout
-        Me.tblGeneralMisc.ResumeLayout(false)
-        Me.tblGeneralMisc.PerformLayout
-        Me.gbGeneralThemes.ResumeLayout(false)
-        Me.gbGeneralThemes.PerformLayout
-        Me.tblGeneralThemes.ResumeLayout(false)
-        Me.tblGeneralThemes.PerformLayout
-        Me.gbFileSystemCleanFiles.ResumeLayout(false)
-        Me.tcFileSystemCleaner.ResumeLayout(false)
-        Me.tpFileSystemCleanerStandard.ResumeLayout(false)
-        Me.tpFileSystemCleanerStandard.PerformLayout
-        Me.tpFileSystemCleanerExpert.ResumeLayout(false)
-        Me.tpFileSystemCleanerExpert.PerformLayout
-        Me.gbMovieGeneralMiscOpts.ResumeLayout(false)
-        Me.gbMovieGeneralMiscOpts.PerformLayout
-        Me.tblMovieGeneralMiscOpts.ResumeLayout(false)
-        Me.tblMovieGeneralMiscOpts.PerformLayout
-        Me.pnlMovieImages.ResumeLayout(false)
-        Me.pnlMovieImages.PerformLayout
-        Me.tblMovieImages.ResumeLayout(false)
-        Me.tblMovieImages.PerformLayout
-        Me.gbMovieImagesOpts.ResumeLayout(false)
-        Me.gbMovieImagesOpts.PerformLayout
-        Me.tblMovieImagesOpts.ResumeLayout(false)
-        Me.tblMovieImagesOpts.PerformLayout
-        Me.gbMovieImagesLandscapeOpts.ResumeLayout(false)
-        Me.gbMovieImagesLandscapeOpts.PerformLayout
-        Me.tblMovieImagesLandscapeOpts.ResumeLayout(false)
-        Me.tblMovieImagesLandscapeOpts.PerformLayout
-        Me.gbMovieImagesDiscArtOpts.ResumeLayout(false)
-        Me.gbMovieImagesDiscArtOpts.PerformLayout
-        Me.tblMovieImagesDiscArtOpts.ResumeLayout(false)
-        Me.tblMovieImagesDiscArtOpts.PerformLayout
-        Me.gbMovieImagesClearLogoOpts.ResumeLayout(false)
-        Me.gbMovieImagesClearLogoOpts.PerformLayout
-        Me.tblMovieImagesClearLogoOpts.ResumeLayout(false)
-        Me.tblMovieImagesClearLogoOpts.PerformLayout
-        Me.gbMovieImagesClearArtOpts.ResumeLayout(false)
-        Me.gbMovieImagesClearArtOpts.PerformLayout
-        Me.tblMovieImagesClearArtOpts.ResumeLayout(false)
-        Me.tblMovieImagesClearArtOpts.PerformLayout
-        Me.gbMovieImagesActorThumbsOpts.ResumeLayout(false)
-        Me.gbMovieImagesActorThumbsOpts.PerformLayout
-        Me.tblMovieImagesActorThumbsOpts.ResumeLayout(false)
-        Me.tblMovieImagesActorThumbsOpts.PerformLayout
-        Me.gbMovieImagesPosterOpts.ResumeLayout(false)
-        Me.gbMovieImagesPosterOpts.PerformLayout
-        Me.tblMovieImagesPosterOpts.ResumeLayout(false)
-        Me.tblMovieImagesPosterOpts.PerformLayout
-        Me.gbMovieImagesBannerOpts.ResumeLayout(false)
-        Me.gbMovieImagesBannerOpts.PerformLayout
-        Me.tblMovieImagesBannerOpts.ResumeLayout(false)
-        Me.tblMovieImagesBannerOpts.PerformLayout
-        Me.gbMovieImagesExtrathumbsOpts.ResumeLayout(false)
-        Me.gbMovieImagesExtrathumbsOpts.PerformLayout
-        Me.tblMovieImagesExtrathumbsOpts.ResumeLayout(false)
-        Me.tblMovieImagesExtrathumbsOpts.PerformLayout
-        Me.gbMovieImagesExtrafanartsOpts.ResumeLayout(false)
-        Me.gbMovieImagesExtrafanartsOpts.PerformLayout
-        Me.tblMovieImagesExtrafanartsOpts.ResumeLayout(false)
-        Me.tblMovieImagesExtrafanartsOpts.PerformLayout
-        Me.gbMovieImagesFanartOpts.ResumeLayout(false)
-        Me.gbMovieImagesFanartOpts.PerformLayout
-        Me.tblMovieImagesFanartOpts.ResumeLayout(false)
-        Me.tblMovieImagesFanartOpts.PerformLayout
-        Me.gbMovieImagesLanguageOpts.ResumeLayout(false)
-        Me.gbMovieImagesLanguageOpts.PerformLayout
-        Me.tblMovieImagesLanguageOpts.ResumeLayout(false)
-        Me.tblMovieImagesLanguageOpts.PerformLayout
-        Me.gbMovieGeneralMediaListOpts.ResumeLayout(false)
-        Me.gbMovieGeneralMediaListOpts.PerformLayout
-        Me.tblMovieGeneralMediaListOpts.ResumeLayout(false)
-        Me.tblMovieGeneralMediaListOpts.PerformLayout
-        Me.gbMovieGeneralMediaListSortTokensOpts.ResumeLayout(false)
-        Me.gbMovieGeneralMediaListSortTokensOpts.PerformLayout
-        Me.tblMovieGeneralSortTokensOpts.ResumeLayout(false)
-        Me.tblMovieGeneralSortTokensOpts.PerformLayout
-        Me.gbMovieGeneralMediaListSorting.ResumeLayout(false)
-        Me.gbMovieGeneralMediaListSorting.PerformLayout
-        Me.tblMovieGeneralMediaListSorting.ResumeLayout(false)
-        Me.pnlSettingsTop.ResumeLayout(false)
-        Me.pnlSettingsTop.PerformLayout
-        CType(Me.pbSettingsTopLogo,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlGeneral.ResumeLayout(false)
-        Me.pnlGeneral.PerformLayout
-        Me.tblGeneral.ResumeLayout(false)
-        Me.tblGeneral.PerformLayout
-        Me.gbGeneralDaemon.ResumeLayout(false)
-        Me.gbGeneralDaemon.PerformLayout
-        Me.tblGeneralDaemon.ResumeLayout(false)
-        Me.tblGeneralDaemon.PerformLayout
-        Me.gbGeneralInterface.ResumeLayout(false)
-        Me.gbGeneralInterface.PerformLayout
-        Me.tblGeneralInterface.ResumeLayout(false)
-        Me.tblGeneralInterface.PerformLayout
-        Me.gbGeneralDateAdded.ResumeLayout(false)
-        Me.gbGeneralDateAdded.PerformLayout
-        Me.tblGeneralDateAdded.ResumeLayout(false)
-        Me.tblGeneralDateAdded.PerformLayout
-        Me.gbGeneralMainWindowOpts.ResumeLayout(false)
-        Me.gbGeneralMainWindowOpts.PerformLayout
-        Me.tblGeneralMainWindow.ResumeLayout(false)
-        Me.tblGeneralMainWindow.PerformLayout
-        Me.pnlMovieGeneral.ResumeLayout(false)
-        Me.pnlMovieGeneral.PerformLayout
-        Me.tblMovieGeneral.ResumeLayout(false)
-        Me.tblMovieGeneral.PerformLayout
-        Me.gbMovieGeneralFiltersOpts.ResumeLayout(false)
-        Me.gbMovieGeneralFiltersOpts.PerformLayout
-        Me.tblMovieGeneralFiltersOpts.ResumeLayout(false)
-        Me.tblMovieGeneralFiltersOpts.PerformLayout
-        Me.gbMovieGeneralCustomMarker.ResumeLayout(false)
-        Me.gbMovieGeneralCustomMarker.PerformLayout
-        Me.tblMovieGeneralCustomMarker.ResumeLayout(false)
-        Me.tblMovieGeneralCustomMarker.PerformLayout
-        Me.gbMovieGeneralGenreFilterOpts.ResumeLayout(false)
-        Me.gbMovieGeneralGenreFilterOpts.PerformLayout
-        Me.tblMovieGeneralGenreFilterOpts.ResumeLayout(false)
-        Me.gbMovieGenrealIMDBMirrorOpts.ResumeLayout(false)
+        Me.gbGeneralMiscOpts.ResumeLayout(False)
+        Me.gbGeneralMiscOpts.PerformLayout()
+        Me.tblGeneralMisc.ResumeLayout(False)
+        Me.tblGeneralMisc.PerformLayout()
+        Me.gbGeneralThemes.ResumeLayout(False)
+        Me.gbGeneralThemes.PerformLayout()
+        Me.tblGeneralThemes.ResumeLayout(False)
+        Me.tblGeneralThemes.PerformLayout()
+        Me.gbFileSystemCleanFiles.ResumeLayout(False)
+        Me.tcFileSystemCleaner.ResumeLayout(False)
+        Me.tpFileSystemCleanerStandard.ResumeLayout(False)
+        Me.tpFileSystemCleanerStandard.PerformLayout()
+        Me.tpFileSystemCleanerExpert.ResumeLayout(False)
+        Me.tpFileSystemCleanerExpert.PerformLayout()
+        Me.gbMovieGeneralMiscOpts.ResumeLayout(False)
+        Me.gbMovieGeneralMiscOpts.PerformLayout()
+        Me.tblMovieGeneralMiscOpts.ResumeLayout(False)
+        Me.tblMovieGeneralMiscOpts.PerformLayout()
+        Me.pnlMovieImages.ResumeLayout(False)
+        Me.pnlMovieImages.PerformLayout()
+        Me.tblMovieImages.ResumeLayout(False)
+        Me.tblMovieImages.PerformLayout()
+        Me.gbMovieImagesOpts.ResumeLayout(False)
+        Me.gbMovieImagesOpts.PerformLayout()
+        Me.tblMovieImagesOpts.ResumeLayout(False)
+        Me.tblMovieImagesOpts.PerformLayout()
+        Me.gbMovieImagesLandscapeOpts.ResumeLayout(False)
+        Me.gbMovieImagesLandscapeOpts.PerformLayout()
+        Me.tblMovieImagesLandscapeOpts.ResumeLayout(False)
+        Me.tblMovieImagesLandscapeOpts.PerformLayout()
+        Me.gbMovieImagesDiscArtOpts.ResumeLayout(False)
+        Me.gbMovieImagesDiscArtOpts.PerformLayout()
+        Me.tblMovieImagesDiscArtOpts.ResumeLayout(False)
+        Me.tblMovieImagesDiscArtOpts.PerformLayout()
+        Me.gbMovieImagesClearLogoOpts.ResumeLayout(False)
+        Me.gbMovieImagesClearLogoOpts.PerformLayout()
+        Me.tblMovieImagesClearLogoOpts.ResumeLayout(False)
+        Me.tblMovieImagesClearLogoOpts.PerformLayout()
+        Me.gbMovieImagesClearArtOpts.ResumeLayout(False)
+        Me.gbMovieImagesClearArtOpts.PerformLayout()
+        Me.tblMovieImagesClearArtOpts.ResumeLayout(False)
+        Me.tblMovieImagesClearArtOpts.PerformLayout()
+        Me.gbMovieImagesActorThumbsOpts.ResumeLayout(False)
+        Me.gbMovieImagesActorThumbsOpts.PerformLayout()
+        Me.tblMovieImagesActorThumbsOpts.ResumeLayout(False)
+        Me.tblMovieImagesActorThumbsOpts.PerformLayout()
+        Me.gbMovieImagesPosterOpts.ResumeLayout(False)
+        Me.gbMovieImagesPosterOpts.PerformLayout()
+        Me.tblMovieImagesPosterOpts.ResumeLayout(False)
+        Me.tblMovieImagesPosterOpts.PerformLayout()
+        Me.gbMovieImagesBannerOpts.ResumeLayout(False)
+        Me.gbMovieImagesBannerOpts.PerformLayout()
+        Me.tblMovieImagesBannerOpts.ResumeLayout(False)
+        Me.tblMovieImagesBannerOpts.PerformLayout()
+        Me.gbMovieImagesExtrathumbsOpts.ResumeLayout(False)
+        Me.gbMovieImagesExtrathumbsOpts.PerformLayout()
+        Me.tblMovieImagesExtrathumbsOpts.ResumeLayout(False)
+        Me.tblMovieImagesExtrathumbsOpts.PerformLayout()
+        Me.gbMovieImagesExtrafanartsOpts.ResumeLayout(False)
+        Me.gbMovieImagesExtrafanartsOpts.PerformLayout()
+        Me.tblMovieImagesExtrafanartsOpts.ResumeLayout(False)
+        Me.tblMovieImagesExtrafanartsOpts.PerformLayout()
+        Me.gbMovieImagesFanartOpts.ResumeLayout(False)
+        Me.gbMovieImagesFanartOpts.PerformLayout()
+        Me.tblMovieImagesFanartOpts.ResumeLayout(False)
+        Me.tblMovieImagesFanartOpts.PerformLayout()
+        Me.gbMovieImagesLanguageOpts.ResumeLayout(False)
+        Me.gbMovieImagesLanguageOpts.PerformLayout()
+        Me.tblMovieImagesLanguageOpts.ResumeLayout(False)
+        Me.tblMovieImagesLanguageOpts.PerformLayout()
+        Me.gbMovieGeneralMediaListOpts.ResumeLayout(False)
+        Me.gbMovieGeneralMediaListOpts.PerformLayout()
+        Me.tblMovieGeneralMediaListOpts.ResumeLayout(False)
+        Me.tblMovieGeneralMediaListOpts.PerformLayout()
+        Me.gbMovieGeneralMediaListSortTokensOpts.ResumeLayout(False)
+        Me.gbMovieGeneralMediaListSortTokensOpts.PerformLayout()
+        Me.tblMovieGeneralSortTokensOpts.ResumeLayout(False)
+        Me.tblMovieGeneralSortTokensOpts.PerformLayout()
+        Me.gbMovieGeneralMediaListSorting.ResumeLayout(False)
+        Me.gbMovieGeneralMediaListSorting.PerformLayout()
+        Me.tblMovieGeneralMediaListSorting.ResumeLayout(False)
+        Me.pnlSettingsTop.ResumeLayout(False)
+        Me.pnlSettingsTop.PerformLayout()
+        CType(Me.pbSettingsTopLogo, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlGeneral.ResumeLayout(False)
+        Me.pnlGeneral.PerformLayout()
+        Me.tblGeneral.ResumeLayout(False)
+        Me.tblGeneral.PerformLayout()
+        Me.gbGeneralDaemon.ResumeLayout(False)
+        Me.gbGeneralDaemon.PerformLayout()
+        Me.tblGeneralDaemon.ResumeLayout(False)
+        Me.tblGeneralDaemon.PerformLayout()
+        Me.gbGeneralInterface.ResumeLayout(False)
+        Me.gbGeneralInterface.PerformLayout()
+        Me.tblGeneralInterface.ResumeLayout(False)
+        Me.tblGeneralInterface.PerformLayout()
+        Me.gbGeneralDateAdded.ResumeLayout(False)
+        Me.gbGeneralDateAdded.PerformLayout()
+        Me.tblGeneralDateAdded.ResumeLayout(False)
+        Me.tblGeneralDateAdded.PerformLayout()
+        Me.gbGeneralMainWindowOpts.ResumeLayout(False)
+        Me.gbGeneralMainWindowOpts.PerformLayout()
+        Me.tblGeneralMainWindow.ResumeLayout(False)
+        Me.tblGeneralMainWindow.PerformLayout()
+        Me.pnlMovieGeneral.ResumeLayout(False)
+        Me.pnlMovieGeneral.PerformLayout()
+        Me.tblMovieGeneral.ResumeLayout(False)
+        Me.tblMovieGeneral.PerformLayout()
+        Me.gbMovieGeneralFiltersOpts.ResumeLayout(False)
+        Me.gbMovieGeneralFiltersOpts.PerformLayout()
+        Me.tblMovieGeneralFiltersOpts.ResumeLayout(False)
+        Me.tblMovieGeneralFiltersOpts.PerformLayout()
+        Me.gbMovieGeneralCustomMarker.ResumeLayout(False)
+        Me.gbMovieGeneralCustomMarker.PerformLayout()
+        Me.tblMovieGeneralCustomMarker.ResumeLayout(False)
+        Me.tblMovieGeneralCustomMarker.PerformLayout()
+        Me.gbMovieGenrealIMDBMirrorOpts.ResumeLayout(False)
         Me.gbMovieGenrealIMDBMirrorOpts.PerformLayout
         Me.tblMovieGenrealIMDBMirrorOpts.ResumeLayout(false)
         Me.tblMovieGenrealIMDBMirrorOpts.PerformLayout
@@ -22975,7 +22924,6 @@ End Sub
     Friend WithEvents btnMovieSourcesBackdropsFolderPathBrowse As System.Windows.Forms.Button
     Friend WithEvents chkMovieSourcesBackdropsAuto As System.Windows.Forms.CheckBox
     Friend WithEvents pnlMovieSources As System.Windows.Forms.Panel
-    Friend WithEvents clbMovieGenre As System.Windows.Forms.CheckedListBox
     Friend WithEvents pnlMovieImages As System.Windows.Forms.Panel
     Friend WithEvents gbMovieSourcesMiscOpts As System.Windows.Forms.GroupBox
     Friend WithEvents lblMovieSkipLessThanMB As System.Windows.Forms.Label
@@ -23059,7 +23007,6 @@ End Sub
     Friend WithEvents btnMovieFilterAdd As System.Windows.Forms.Button
     Friend WithEvents txtMovieFilter As System.Windows.Forms.TextBox
     Friend WithEvents lstMovieFilters As System.Windows.Forms.ListBox
-    Friend WithEvents gbMovieGeneralGenreFilterOpts As System.Windows.Forms.GroupBox
     Friend WithEvents gbTVSourcesMiscOpts As System.Windows.Forms.GroupBox
     Friend WithEvents chkTVGeneralIgnoreLastScan As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVCleanDB As System.Windows.Forms.CheckBox
@@ -23922,7 +23869,6 @@ End Sub
     Friend WithEvents tblMovieSetGeneralMiscOpts As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblMovieSetGeneralSortTokensOpts As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblMovieGeneralCustomMarker As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents tblMovieGeneralGenreFilterOpts As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblMovieGeneralMediaListOpts As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblMovieGeneralSortTokensOpts As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblMovieGeneralMiscOpts As System.Windows.Forms.TableLayoutPanel
