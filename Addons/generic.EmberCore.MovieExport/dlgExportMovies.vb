@@ -29,8 +29,8 @@ Public Class dlgExportMovies
 
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Friend WithEvents bwCreateTemplate As New ComponentModel.BackgroundWorker
-    Friend WithEvents bwLoadInfo As New ComponentModel.BackgroundWorker
+    Friend WithEvents bwCreateTemplate As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwLoadInfo As New System.ComponentModel.BackgroundWorker
 
     Private bCancelled As Boolean
     Private bExportMissingEpisodes As Boolean
@@ -336,7 +336,7 @@ Public Class dlgExportMovies
 
         'Start worker
         ShowStatus(True)
-        bwLoadInfo = New ComponentModel.BackgroundWorker
+        bwLoadInfo = New System.ComponentModel.BackgroundWorker
         bwLoadInfo.WorkerSupportsCancellation = True
         bwLoadInfo.WorkerReportsProgress = True
         bwLoadInfo.RunWorkerAsync()
