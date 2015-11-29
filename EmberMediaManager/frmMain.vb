@@ -10249,10 +10249,13 @@ doCancel:
 
             Master.fLoading.SetLoadingMesg(Master.eLang.GetString(855, "Creating default options..."))
             Functions.CreateDefaultOptions()
-            '//
-            ' Add our handlers, load settings, set form colors, and try to load movies at startup
-            '\\
-            Master.fLoading.SetLoadingMesg(Master.eLang.GetString(856, "Loading modules..."))
+
+            Master.fLoading.SetLoadingMesg(Master.eLang.GetString(858, "Loading database..."))
+            Master.DB.ConnectMyVideosDB()
+            Master.DB.LoadMovieSourcesFromDB()
+            Master.DB.LoadTVShowSourcesFromDB()
+            Master.DB.LoadExcludeDirsFromDB()
+
             'Setup/Load Modules Manager and set runtime objects (ember application) so they can be exposed to modules
             'ExternalModulesManager = New ModulesManager
 
@@ -10277,11 +10280,14 @@ doCancel:
             ModulesManager.Instance.RuntimeObjects.MenuTVShowList = cmnuShow
             ModulesManager.Instance.RuntimeObjects.TopMenu = mnuMain
             ModulesManager.Instance.RuntimeObjects.TrayMenu = cmnuTray
+
+            'start loading modules in background
             ModulesManager.Instance.LoadAllModules()
 
             If Not Master.isCL Then
                 Master.fLoading.SetLoadingMesg(Master.eLang.GetString(857, "Creating GUI..."))
             End If
+
             'setup some dummies so we don't get exceptions when resizing form/info panel
             ReDim Preserve pnlGenre(0)
             ReDim Preserve pbGenre(0)
@@ -10314,6 +10320,15 @@ doCancel:
                 Threading.Thread.Sleep(50)
             End While
 
+
+            RemoveHandler dgvMovies.RowsAdded, AddressOf dgvMovies_RowsAdded
+            RemoveHandler dgvMovieSets.RowsAdded, AddressOf dgvMovieSets_RowsAdded
+            RemoveHandler dgvTVShows.RowsAdded, AddressOf dgvTVShows_RowsAdded
+            FillList(True, True, True)
+            AddHandler dgvMovies.RowsAdded, AddressOf dgvMovies_RowsAdded
+            AddHandler dgvMovieSets.RowsAdded, AddressOf dgvMovieSets_RowsAdded
+            AddHandler dgvTVShows.RowsAdded, AddressOf dgvTVShows_RowsAdded
+
             If Master.isCL Then ' Command Line
                 LoadWithCommandLine(Master.appArgs)
             Else 'Regular Run (GUI)
@@ -10332,20 +10347,6 @@ doCancel:
     ''' <remarks></remarks>
     Private Sub LoadWithCommandLine(ByVal appArgs As Microsoft.VisualBasic.ApplicationServices.StartupEventArgs)
         Dim Args() As String = appArgs.CommandLine.ToArray
-
-        Master.fLoading.SetLoadingMesg(Master.eLang.GetString(858, "Loading database..."))
-        Master.DB.ConnectMyVideosDB()
-        Master.DB.LoadMovieSourcesFromDB()
-        Master.DB.LoadTVShowSourcesFromDB()
-        Master.DB.LoadExcludeDirsFromDB()
-
-        RemoveHandler dgvMovies.RowsAdded, AddressOf dgvMovies_RowsAdded
-        RemoveHandler dgvMovieSets.RowsAdded, AddressOf dgvMovieSets_RowsAdded
-        RemoveHandler dgvTVShows.RowsAdded, AddressOf dgvTVShows_RowsAdded
-        FillList(True, True, True)
-        AddHandler dgvMovies.RowsAdded, AddressOf dgvMovies_RowsAdded
-        AddHandler dgvMovieSets.RowsAdded, AddressOf dgvMovieSets_RowsAdded
-        AddHandler dgvTVShows.RowsAdded, AddressOf dgvTVShows_RowsAdded
 
         fCommandLine.RunCommandLine(Args)
 
@@ -10487,40 +10488,8 @@ doCancel:
                 ClearInfo()
 
                 Application.DoEvents()
-                Master.fLoading.SetLoadingMesg(Master.eLang.GetString(858, "Loading database..."))
 
-                RemoveHandler dgvMovies.RowsAdded, AddressOf dgvMovies_RowsAdded
-                RemoveHandler dgvMovieSets.RowsAdded, AddressOf dgvMovieSets_RowsAdded
-                RemoveHandler dgvTVShows.RowsAdded, AddressOf dgvTVShows_RowsAdded
-
-                If Not String.IsNullOrEmpty(Master.eSettings.Version) Then 'If Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision) Then
-                    If Master.DB.ConnectMyVideosDB() Then
-                        LoadMedia(New Structures.ScanOrClean With {.Movies = True, .MovieSets = True, .TV = True})
-                    End If
-                    FillList(True, True, True)
-                    Visible = True
-                Else
-                    If Master.DB.ConnectMyVideosDB() Then
-                        LoadMedia(New Structures.ScanOrClean With {.Movies = True, .MovieSets = True, .TV = True})
-                    End If
-                    'If dlgWizard.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                    '    Application.DoEvents()
-                    '    Me.SetUp(False) 'just in case user changed languages
-                    '    Me.Visible = True
-                    '    Me.LoadMedia(New Structures.Scans With {.Movies = True, .MovieSets = True, .TV = True})
-                    'Else
-                    FillList(True, True, True)
-                    Visible = True
-                    'End If
-                End If
-
-                AddHandler dgvMovies.RowsAdded, AddressOf dgvMovies_RowsAdded
-                AddHandler dgvMovieSets.RowsAdded, AddressOf dgvMovieSets_RowsAdded
-                AddHandler dgvTVShows.RowsAdded, AddressOf dgvTVShows_RowsAdded
-
-                Master.DB.LoadMovieSourcesFromDB()
-                Master.DB.LoadTVShowSourcesFromDB()
-                Master.DB.LoadExcludeDirsFromDB()
+                Visible = True
 
                 Master.fLoading.SetLoadingMesg(Master.eLang.GetString(864, "Setting menus..."))
                 SetMenus(True)
