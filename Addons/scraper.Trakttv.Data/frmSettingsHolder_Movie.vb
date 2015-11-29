@@ -59,12 +59,6 @@ Public Class frmSettingsHolder_Movie
     Private Sub chkRating_CheckedChanged(sender As Object, e As EventArgs) Handles chkRating.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
-    Private Sub chkPlaycount_CheckedChanged(sender As Object, e As EventArgs) Handles chkPlaycount.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-    Private Sub chkLastPlayed_CheckedChanged(sender As Object, e As EventArgs) Handles chkLastPlayed.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
     Private Sub txtTraktUser_TextChanged(sender As Object, e As EventArgs) Handles txtTraktUser.TextChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
@@ -98,8 +92,6 @@ Public Class frmSettingsHolder_Movie
         Me.gbScraperOpts.Text = Master.eLang.GetString(1186, "Scraper Options")
         Me.lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), Environment.NewLine)
         Me.lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
-        Me.chkPlaycount.Text = Master.eLang.GetString(1452, "Playcount")
-        Me.chkLastPlayed.Text = Master.eLang.GetString(1369, "Last watched")
         Me.chkUsePersonalRatings.Text = Master.eLang.GetString(1464, "Use personal rating (if available)")
         Me.lblTraktPassword.Text = Master.eLang.GetString(426, "Password")
         Me.lblTraktUser.Text = Master.eLang.GetString(425, "Username")

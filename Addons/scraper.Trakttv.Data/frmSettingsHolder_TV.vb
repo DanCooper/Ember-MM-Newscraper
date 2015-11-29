@@ -64,12 +64,6 @@ Public Class frmSettingsHolder_TV
     Private Sub chkScraperEpRating_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperEpisodeRating.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
-    Private Sub chkScraperEpisodePlaycount_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperEpisodePlaycount.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-    Private Sub chkScraperEpisodeLastPlayed_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperEpisodeLastPlayed.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
     Private Sub txtTraktUser_TextChanged(sender As Object, e As EventArgs) Handles txtTraktUser.TextChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
@@ -102,8 +96,6 @@ Public Class frmSettingsHolder_TV
         Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
         Me.lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), Environment.NewLine)
         Me.lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
-        Me.chkScraperEpisodePlaycount.Text = Master.eLang.GetString(1452, "Playcount")
-        Me.chkScraperEpisodeLastPlayed.Text = Master.eLang.GetString(1369, "Last watched")
         Me.chkUsePersonalRatings.Text = Master.eLang.GetString(1464, "Use personal rating (if available)")
         Me.lblTraktPassword.Text = Master.eLang.GetString(426, "Password")
         Me.lblTraktUser.Text = Master.eLang.GetString(425, "Username")

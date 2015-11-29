@@ -89,6 +89,7 @@ Public Class dlgTrakttvManager
     'binding for movie datagridview
     Private bsMovies As New BindingSource
 
+    Private _SpecialSettings As New Trakt_Generic.SpecialSettings
     'Not used at moment
     'Friend WithEvents bwLoadMovies As New System.ComponentModel.BackgroundWorker
 
@@ -235,6 +236,8 @@ Public Class dlgTrakttvManager
             coltraktListIMDB.HeaderText = Master.eLang.GetString(1323, "URL")
             gbtraktListsViewerStep1.Text = Master.eLang.GetString(1352, "Step 1 (Optional): Load specific lists from trakt.tv")
             gbtraktListsViewerStep2.Text = Master.eLang.GetString(1353, "Step 2: Load selected list or type URL")
+            btntraktListsSavePlaylist.Text = Master.eLang.GetString(1465, "Export to Kodi playlist")
+            btntraktListsSendToKodi.Text = Master.eLang.GetString(1466, "Send list to Kodi")
 
             'Tab: Sync Watchlist 
             gbtraktWatchlist.Text = Master.eLang.GetString(1337, "Sync Watchlist")
@@ -286,6 +289,15 @@ Public Class dlgTrakttvManager
             dgvtraktComments.Sort(coltraktCommentsDate, System.ComponentModel.ListSortDirection.Descending)
 
             AddHandler Me.cbotraktListsFavorites.SelectedIndexChanged, AddressOf Me.cbotraktListsFavorites_SelectedIndexChanged
+
+            'load kodi interface settings (if exists) since we will use the information of remote path to create a playlist for kodi
+            If File.Exists(FileUtils.Common.ReturnSettingsFile("Settings", "Interface.Kodi.xml")) Then
+                Dim xmlSer As Xml.Serialization.XmlSerializer = Nothing
+                Using xmlSR As StreamReader = New StreamReader(FileUtils.Common.ReturnSettingsFile("Settings", "Interface.Kodi.xml"))
+                    xmlSer = New Xml.Serialization.XmlSerializer(GetType(Trakt_Generic.SpecialSettings))
+                    _SpecialSettings = DirectCast(xmlSer.Deserialize(xmlSR), Trakt_Generic.SpecialSettings)
+                End Using
+            End If
 
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -2635,6 +2647,8 @@ Public Class dlgTrakttvManager
         dgvtraktList.DataSource = Nothing
         dgvtraktList.Rows.Clear()
         btntraktListsSaveList.Enabled = False
+        btntraktListsSavePlaylist.Enabled = False
+        btntraktListsSendToKodi.Enabled = False
         btntraktListsSaveListCompare.Enabled = False
         chktraktListsCompare.Enabled = False
         lbltraktListsCount.Visible = False
@@ -2746,6 +2760,14 @@ Public Class dlgTrakttvManager
                 chktraktListsCompare.Enabled = True
                 lbltraktListsCount.Visible = True
                 lbltraktListsCount.Text = Master.eLang.GetString(794, "Search Results") & ": " & dgvtraktList.Rows.Count
+
+                'only enable creation of KODI playlist when necessary setup in KODI interface was done by user
+                If _SpecialSettings.Hosts IsNot Nothing AndAlso _SpecialSettings.Hosts.Count > 0 Then
+                    btntraktListsSavePlaylist.Enabled = True
+                    'TODO Currently offline until team Kodi fixes playlist sync!
+                    btntraktListsSendToKodi.Enabled = False
+                End If
+
                 'display description of list
                 If Not String.IsNullOrEmpty(userList.Description) Then
                     lbltraktListDescriptionText.Text = userList.Description
@@ -2778,6 +2800,54 @@ Public Class dlgTrakttvManager
         End If
 
     End Sub
+
+    ''' <summary>
+    ''' Trigger creation of .m3u playlist which contains all movies from the loaded trakt.tv list that also exist in Ember database
+    ''' </summary>
+    ''' <remarks>
+    ''' 2015/11/29 Cocotus - First implementation
+    ''' button is only enabled when Kodi Interface settings were configured by user
+    ''' We use the data in kodi interface settings to build the valid remotepath and a valid playlist for KODI
+    ''' </remarks>
+    Private Sub btntraktListsSavePlaylist_Click(sender As Object, e As EventArgs) Handles btntraktListsSavePlaylist.Click
+        ' Load module settings of kodi interface to build remote paths
+        If _SpecialSettings.Hosts IsNot Nothing AndAlso _SpecialSettings.Hosts.Count > 0 Then
+            Dim m3uString As String = "#EXTM3U" & Environment.NewLine
+            Dim basedirectory As String = ""
+            For Each item In userListItems
+                'search movie in global moviedatatable
+                For Each sRow As DataRow In dtMovies.Rows
+                    If Not item Is Nothing AndAlso Not item.Movie Is Nothing Then
+                        If item.Movie.Ids.Imdb = "tt" & sRow.Item("IMDB").ToString Then
+                            basedirectory = GetRemotePath(Directory.GetParent(sRow.Item("MoviePath").ToString).FullName)
+                            If basedirectory.LastIndexOf("/"c) > basedirectory.LastIndexOf("\"c) Then
+                                m3uString = m3uString & "#EXTINF:0," & sRow.Item("Title").ToString & Environment.NewLine & basedirectory & "/" & (Path.GetFileName((sRow.Item("MoviePath").ToString)).Trim) & Environment.NewLine
+                            Else
+                                m3uString = m3uString & "#EXTINF:0," & sRow.Item("Title").ToString & Environment.NewLine & basedirectory & "\" & (Path.GetFileName((sRow.Item("MoviePath").ToString)).Trim) & Environment.NewLine
+                            End If
+                            Exit For
+                        End If
+                    Else
+                        logger.Info("[" & item.Movie.Title & "] " & "Movie Item is Nothing! Could not be compared against library!")
+                    End If
+                Next
+            Next
+
+            'If Not String.IsNullOrEmpty(m3uString) Then
+            '    File.WriteAllText(Path.Combine(Master.TempPath, "traktplaylist.m3u"), m3uString)
+            '    Functions.Launch(Path.Combine(Master.TempPath, "traktplaylist.m3u"), True)
+            'End If
+            Dim saveFileDialog1 As New SaveFileDialog()
+            saveFileDialog1.FileName = "TraktPlaylistForKODI" + ".m3u"
+            saveFileDialog1.Filter = "m3u files (*.m3u)|*.m3u"
+            saveFileDialog1.FilterIndex = 2
+            saveFileDialog1.RestoreDirectory = True
+            If saveFileDialog1.ShowDialog() = DialogResult.OK Then
+                File.WriteAllText(saveFileDialog1.FileName, m3uString)
+            End If
+        End If
+    End Sub
+
     ''' <summary>
     ''' Trigger creation of HTML page which list only unknown movies
     ''' </summary>
@@ -3061,8 +3131,6 @@ Public Class dlgTrakttvManager
         End If
     End Sub
 
-
-
     ''' <summary>
     ''' Populate URL Textbox with your selected trakt.tv list
     ''' </summary>
@@ -3075,6 +3143,60 @@ Public Class dlgTrakttvManager
             txttraktListURL.Text = userListURL.Item(cbotraktListsScraped.SelectedIndex)
         End If
     End Sub
+
+    ''' <summary>
+    ''' Return remote/Kodi path to the base directory of a specific video file
+    ''' </summary>
+    ''' <param name="LocalPath">path to base directory as it is stored in Ember database</param>
+    ''' <returns>remote path of videofile used in Kodi (base directory)</returns>
+    ''' <remarks>
+    ''' 2015/11/29 Basically a 1:1 copy of existing function in KodiAPI module
+    ''' Used to get KODI path because we need it to build a valid playlist for Kodi
+    ''' ATTENTION: It's not allowed to use "Remotepath.ToLower" (Kodi can't find UNC sources with wrong case)
+    ''' </remarks>
+    Function GetRemotePath(ByVal strLocalPath As String) As String
+        Dim RemotePath As String = String.Empty
+        Dim RemoteIsUNC As Boolean = False
+        Dim pathfound As Boolean = False
+        For Each host In _SpecialSettings.Hosts
+            If pathfound = True Then
+                Exit For
+            End If
+            For Each Source In host.Sources
+                Dim tLocalSource As String = String.Empty
+                'add a directory separator at the end of the path to distinguish between
+                'D:\Movies
+                'D:\Movies Shared
+                '(needed for "LocalPath.ToLower.StartsWith(tLocalSource)"
+                If Source.LocalPath.Contains(Path.DirectorySeparatorChar) Then
+                    tLocalSource = If(Source.LocalPath.EndsWith(Path.DirectorySeparatorChar), Source.LocalPath, String.Concat(Source.LocalPath, Path.DirectorySeparatorChar)).Trim
+                ElseIf Source.LocalPath.Contains(Path.AltDirectorySeparatorChar) Then
+                    tLocalSource = If(Source.LocalPath.EndsWith(Path.AltDirectorySeparatorChar), Source.LocalPath, String.Concat(Source.LocalPath, Path.AltDirectorySeparatorChar)).Trim
+                End If
+                If strLocalPath.ToLower.StartsWith(tLocalSource.ToLower) Then
+                    Dim tRemoteSource As String = String.Empty
+                    If Source.RemotePath.Contains(Path.DirectorySeparatorChar) Then
+                        tRemoteSource = If(Source.RemotePath.EndsWith(Path.DirectorySeparatorChar), Source.RemotePath, String.Concat(Source.RemotePath, Path.DirectorySeparatorChar)).Trim
+                    ElseIf Source.RemotePath.Contains(Path.AltDirectorySeparatorChar) Then
+                        tRemoteSource = If(Source.RemotePath.EndsWith(Path.AltDirectorySeparatorChar), Source.RemotePath, String.Concat(Source.RemotePath, Path.AltDirectorySeparatorChar)).Trim
+                        RemoteIsUNC = True
+                    End If
+                    RemotePath = strLocalPath.Replace(tLocalSource, tRemoteSource)
+                    If RemoteIsUNC Then
+                        RemotePath = RemotePath.Replace(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
+                    Else
+                        RemotePath = RemotePath.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar)
+                    End If
+                    Exit For
+                    pathfound = True
+                End If
+            Next
+            If String.IsNullOrEmpty(RemotePath) Then logger.Error(String.Format("[dlgTrakttvManager] [{0}] GetRemotePath: ""{1}"" | Source not mapped!", host.Label, strLocalPath))
+        Next
+
+        Return RemotePath
+    End Function
+
 #End Region 'Trakt.tv Listviewer
 
 #Region "Trakt.tv Comments"

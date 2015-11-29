@@ -48,6 +48,9 @@ Public Class frmSettingsHolder
         Me.lblPassword.Text = Master.eLang.GetString(426, "Password")
         Me.lblUsername.Text = Master.eLang.GetString(425, "Username")
         Me.txtPassword.PasswordChar = "*"c
+        Me.gbSettingsLastPlayed.Text = Master.eLang.GetString(1369, "Last watched")
+        Me.gbSettingsPlaycount.Text = Master.eLang.GetString(1452, "Playcount")
+
     End Sub
 
 
@@ -64,4 +67,11 @@ Public Class frmSettingsHolder
 
 #End Region 'Methods
 
+    Private Sub tblSettingsGeneral_Paint(sender As Object, e As Windows.Forms.PaintEventArgs) Handles tblSettingsGeneral.Paint
+
+    End Sub
+
+    Private Sub chkSyncPlaycountEditEpisodes_CheckedChanged(sender As Object, e As EventArgs) Handles chkSyncPlaycountEditEpisodes.CheckedChanged
+
+    End Sub
 End Class

@@ -146,8 +146,6 @@ Public Class Trakttv_Data
         _setup_Movie.chkEnabled.Checked = _ScraperEnabled_Movie
 
         _setup_Movie.chkRating.Checked = ConfigScrapeOptions_Movie.bMainRating
-        _setup_Movie.chkPlaycount.Checked = _SpecialSettings_Movie.Playcount
-        _setup_Movie.chkLastPlayed.Checked = _SpecialSettings_Movie.LastPlayed
 
         _setup_Movie.txtTraktPassword.Text = _SpecialSettings_Movie.TrakttvPassword
         _setup_Movie.txtTraktUser.Text = _SpecialSettings_Movie.TrakttvUserName
@@ -177,8 +175,6 @@ Public Class Trakttv_Data
 
         _setup_TV.chkScraperShowRating.Checked = ConfigScrapeOptions_TV.bMainRating
         _setup_TV.chkScraperEpisodeRating.Checked = ConfigScrapeOptions_TV.bEpisodeRating
-        _setup_TV.chkScraperEpisodePlaycount.Checked = _SpecialSettings_TV.EpisodePlaycount
-        _setup_TV.chkScraperEpisodeLastPlayed.Checked = _SpecialSettings_TV.EpisodeLastPlayed
 
         _setup_TV.txtTraktPassword.Text = _SpecialSettings_TV.TrakttvPassword
         _setup_TV.txtTraktUser.Text = _SpecialSettings_TV.TrakttvUserName
@@ -202,8 +198,6 @@ Public Class Trakttv_Data
 
     Sub LoadSettings_Movie()
         ConfigScrapeOptions_Movie.bMainRating = clsAdvancedSettings.GetBooleanSetting("DoRating", True)
-        _SpecialSettings_Movie.Playcount = clsAdvancedSettings.GetBooleanSetting("DoPlaycount", False, , Enums.ContentType.Movie)
-        _SpecialSettings_Movie.LastPlayed = clsAdvancedSettings.GetBooleanSetting("DoLastPlayed", False, , Enums.ContentType.Movie)
         _SpecialSettings_Movie.TrakttvUserName = clsAdvancedSettings.GetSetting("Username", String.Empty, , Enums.ContentType.Movie)
         _SpecialSettings_Movie.TrakttvPassword = clsAdvancedSettings.GetSetting("Password", String.Empty, , Enums.ContentType.Movie)
         _SpecialSettings_Movie.UsePersonalRatings = clsAdvancedSettings.GetBooleanSetting("UsePersonalRatings", False, , Enums.ContentType.Movie)
@@ -211,8 +205,6 @@ Public Class Trakttv_Data
 
     Sub LoadSettings_TV()
         ConfigScrapeOptions_TV.bEpisodeRating = clsAdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.ContentType.TVEpisode)
-        _SpecialSettings_TV.EpisodePlaycount = clsAdvancedSettings.GetBooleanSetting("DoPlaycount", False, , Enums.ContentType.TVEpisode)
-        _SpecialSettings_TV.EpisodeLastPlayed = clsAdvancedSettings.GetBooleanSetting("DoLastPlayed", False, , Enums.ContentType.TVEpisode)
         ConfigScrapeOptions_TV.bMainRating = clsAdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.ContentType.TVShow)
         _SpecialSettings_TV.TrakttvUserName = clsAdvancedSettings.GetSetting("Username", String.Empty, , Enums.ContentType.TV)
         _SpecialSettings_TV.TrakttvPassword = clsAdvancedSettings.GetSetting("Password", String.Empty, , Enums.ContentType.TV)
@@ -222,8 +214,6 @@ Public Class Trakttv_Data
     Sub SaveSettings_Movie()
         Using settings = New clsAdvancedSettings()
             settings.SetBooleanSetting("DoRating", ConfigScrapeOptions_Movie.bMainRating, , , Enums.ContentType.Movie)
-            settings.SetBooleanSetting("DoPlaycount", _SpecialSettings_Movie.Playcount, , , Enums.ContentType.Movie)
-            settings.SetBooleanSetting("DoLastPlayed", _SpecialSettings_Movie.LastPlayed, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("UsePersonalRatings", _SpecialSettings_Movie.UsePersonalRatings, , , Enums.ContentType.Movie)
             settings.SetSetting("Username", _setup_Movie.txtTraktUser.Text, , , Enums.ContentType.Movie)
             settings.SetSetting("Password", _setup_Movie.txtTraktPassword.Text, , , Enums.ContentType.Movie)
@@ -233,8 +223,6 @@ Public Class Trakttv_Data
     Sub SaveSettings_TV()
         Using settings = New clsAdvancedSettings()
             settings.SetBooleanSetting("DoRating", ConfigScrapeOptions_TV.bEpisodeRating, , , Enums.ContentType.TVEpisode)
-            settings.SetBooleanSetting("DoPlaycount", _SpecialSettings_TV.EpisodePlaycount, , , Enums.ContentType.TVEpisode)
-            settings.SetBooleanSetting("DoLastPlayed", _SpecialSettings_TV.EpisodeLastPlayed, , , Enums.ContentType.TVEpisode)
             settings.SetBooleanSetting("DoRating", ConfigScrapeOptions_TV.bMainRating, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("UsePersonalRatings", _SpecialSettings_TV.UsePersonalRatings, , , Enums.ContentType.TV)
             settings.SetSetting("Username", _setup_TV.txtTraktUser.Text, , , Enums.ContentType.TV)
@@ -244,8 +232,6 @@ Public Class Trakttv_Data
 
     Sub SaveSetupScraper_Movie(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Data_Movie.SaveSetupScraper
         ConfigScrapeOptions_Movie.bMainRating = _setup_Movie.chkRating.Checked
-        _SpecialSettings_Movie.Playcount = _setup_Movie.chkPlaycount.Checked
-        _SpecialSettings_Movie.LastPlayed = _setup_Movie.chkLastPlayed.Checked
         _SpecialSettings_Movie.TrakttvPassword = _setup_Movie.txtTraktPassword.Text
         _SpecialSettings_Movie.TrakttvUserName = _setup_Movie.txtTraktUser.Text
         _SpecialSettings_Movie.UsePersonalRatings = _setup_Movie.chkUsePersonalRatings.Checked
@@ -260,8 +246,6 @@ Public Class Trakttv_Data
 
     Sub SaveSetupScraper_TV(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Data_TV.SaveSetupScraper
         ConfigScrapeOptions_TV.bEpisodeRating = _setup_TV.chkScraperEpisodeRating.Checked
-        _SpecialSettings_TV.EpisodePlaycount = _setup_TV.chkScraperEpisodePlaycount.Checked
-        _SpecialSettings_TV.EpisodeLastPlayed = _setup_TV.chkScraperEpisodeLastPlayed.Checked
         ConfigScrapeOptions_TV.bMainRating = _setup_TV.chkScraperShowRating.Checked
         _SpecialSettings_TV.TrakttvPassword = _setup_TV.txtTraktPassword.Text
         _SpecialSettings_TV.TrakttvUserName = _setup_TV.txtTraktUser.Text
@@ -434,11 +418,7 @@ Public Class Trakttv_Data
     Structure SpecialSettings
 
 #Region "Fields"
-        Dim Playcount As Boolean
-        Dim LastPlayed As Boolean
         Dim UsePersonalRatings As Boolean
-        Dim EpisodePlaycount As Boolean
-        Dim EpisodeLastPlayed As Boolean
         Dim TrakttvUserName As String
         Dim TrakttvPassword As String
 #End Region 'Fields

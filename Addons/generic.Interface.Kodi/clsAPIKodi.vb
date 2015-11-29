@@ -335,6 +335,8 @@ Namespace Kodi
                         codename = "Gotham "
                     Case "621"
                         codename = "Helix "
+                    Case "625"
+                        codename = "Isengard "
                 End Select
                 Return codename & response.version.major.ToString & "." & response.version.minor
             Catch ex As Exception
@@ -1532,6 +1534,7 @@ Namespace Kodi
                 Return Nothing
             End Try
         End Function
+
         ''' <summary>
         ''' Scan specific directory for new content
         ''' </summary>
@@ -1682,6 +1685,80 @@ Namespace Kodi
 #End Region 'Helper functions/methods
 
 #Region "Unused code"
+
+        ''' <summary>
+        ''' Retrieve ID of KODI playlist by playlist name
+        ''' </summary>
+        ''' <returns>ID of playlist, 999 if error occurs</returns>
+        ''' <remarks>
+        ''' 2015/11/29 Cocotus - First implementation
+        ''' Not used in moment but left here to pick up later when TeamKodi has fixed playlist API...
+        ''' ITS A PITA! At the moment there's no API method to retrieve the playlistID directly using the playlistName
+        ''' Basically I check if the wanted playlist "directory" exists, if thats the case I use the items stored in the list to query against all other playlists avalaible on Kodi.
+        ''' If the contents matches then I assume its correct playlist, and return the ID of playlist
+        ''' This is no way efficient, but right now there's no other solution to get playlistID by playlistname
+        ''' </remarks>
+        Public Async Function GetPlaylistID(ByVal PlaylistName As String) As Task(Of Integer)
+            If _kodi Is Nothing Then
+                logger.Error("[APIKodi] GetPlaylistID: No host initialized! Abort!")
+                Return Nothing
+            End If
+            Try
+                Dim response = Await _kodi.Files.GetDirectory("special://videoplaylists", Files.Media.files)
+                logger.Trace("[APIKodi] GetPlaylistID: " & _currenthost.Label)
+                If Not response Is Nothing Then
+                    For Each currentplaylist In response.files
+                        'file property contains path (and name of playlist), i.e. "special://profile/playlists/video/test.m3u"
+                        If Not currentplaylist Is Nothing AndAlso currentplaylist.file.Contains(PlaylistName) Then
+                            logger.Trace("[APIKodi] Playlist with name: " & PlaylistName & " found!")
+                            'get all items of the wanted playlist
+                            Dim wantedplaylistcontent = Await _kodi.Files.GetDirectory(currentplaylist.file, Files.Media.files, XBMCRPC.List.Fields.Files.AllFields)
+                            'now get all playlistsIDs avalaible using playlist-API
+                            Dim lstallplaylists = Await _kodi.Playlist.GetPlaylists
+                            'next loop through each playlist and check if its the one we want by comparing it's content with the content of our wanted playlist
+                            For Each tmpplaylist In lstallplaylists
+                                If Not tmpplaylist Is Nothing Then
+                                    'get all items of playlist
+                                    Dim tmpplaylistcontent = Await _kodi.Playlist.GetItems(tmpplaylist.playlistid)
+                                    'check if current looped playlist has same count as our wanted playlist (we use this to reduce the number of playlists we need to loop through)
+                                    If Not tmpplaylistcontent Is Nothing AndAlso Not tmpplaylistcontent.items Is Nothing AndAlso tmpplaylistcontent.items.Count = wantedplaylistcontent.files.Count Then
+                                        'if the both playlists don't have any items then I don't bother and return this list as the correct one
+                                        Dim IsIdenticalPlaylist = True
+
+                                        '... if there are items in playlist then check if each item in wanted list is also existing in current looped list -> if thats the case then it's the correct list!
+                                        For Each tmpplaylistitem In tmpplaylistcontent.items
+                                            IsIdenticalPlaylist = False
+                                            For Each wantedplaylistitem In wantedplaylistcontent.files
+                                                If wantedplaylistitem.file = tmpplaylistitem.AsVideoDetailsFile.file Then
+                                                    IsIdenticalPlaylist = True
+                                                    Exit For
+                                                End If
+                                            Next
+                                            If IsIdenticalPlaylist = False Then
+                                                Exit For
+                                            End If
+                                        Next
+                                        'check if the current examined playlist is the wanted playlist, if so return ID
+                                        If IsIdenticalPlaylist = True Then
+                                            logger.Trace("[APIKodi] Playlist with name: " & PlaylistName & " has ID: " & tmpplaylist.playlistid)
+                                            Return tmpplaylist.playlistid
+                                        End If
+                                    End If
+                                End If
+                            Next
+                        End If
+                    Next
+                Else
+                    logger.Error("[APIKodi] GetPlaylistID: Error during retrieving playlists! Abort!")
+                End If
+                Return 999
+
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+                Return 999
+            End Try
+        End Function
+
         ''' <summary>
         ''' Check host connection
         ''' </summary>
