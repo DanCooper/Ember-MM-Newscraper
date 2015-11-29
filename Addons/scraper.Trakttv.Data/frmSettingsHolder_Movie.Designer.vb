@@ -28,8 +28,6 @@ Partial Class frmSettingsHolder_Movie
         Me.pbIconBottom = New System.Windows.Forms.PictureBox()
         Me.pnlSettingsBottom = New System.Windows.Forms.Panel()
         Me.tblScraperFieldsOpts = New System.Windows.Forms.TableLayoutPanel()
-        Me.chkPlaycount = New System.Windows.Forms.CheckBox()
-        Me.chkLastPlayed = New System.Windows.Forms.CheckBox()
         Me.chkRating = New System.Windows.Forms.CheckBox()
         Me.gbScraperFieldsOpts = New System.Windows.Forms.GroupBox()
         Me.tblSettingsMain = New System.Windows.Forms.TableLayoutPanel()
@@ -123,8 +121,6 @@ Partial Class frmSettingsHolder_Movie
         Me.tblScraperFieldsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblScraperFieldsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblScraperFieldsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkPlaycount, 0, 1)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkLastPlayed, 0, 2)
         Me.tblScraperFieldsOpts.Controls.Add(Me.chkRating, 0, 0)
         Me.tblScraperFieldsOpts.Dock = System.Windows.Forms.DockStyle.Top
         Me.tblScraperFieldsOpts.Location = New System.Drawing.Point(3, 18)
@@ -134,30 +130,8 @@ Partial Class frmSettingsHolder_Movie
         Me.tblScraperFieldsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperFieldsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperFieldsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblScraperFieldsOpts.Size = New System.Drawing.Size(335, 69)
+        Me.tblScraperFieldsOpts.Size = New System.Drawing.Size(335, 23)
         Me.tblScraperFieldsOpts.TabIndex = 98
-        '
-        'chkPlaycount
-        '
-        Me.chkPlaycount.AutoSize = True
-        Me.chkPlaycount.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkPlaycount.Location = New System.Drawing.Point(3, 26)
-        Me.chkPlaycount.Name = "chkPlaycount"
-        Me.chkPlaycount.Size = New System.Drawing.Size(76, 17)
-        Me.chkPlaycount.TabIndex = 78
-        Me.chkPlaycount.Text = "Playcount"
-        Me.chkPlaycount.UseVisualStyleBackColor = True
-        '
-        'chkLastPlayed
-        '
-        Me.chkLastPlayed.AutoSize = True
-        Me.chkLastPlayed.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkLastPlayed.Location = New System.Drawing.Point(3, 49)
-        Me.chkLastPlayed.Name = "chkLastPlayed"
-        Me.chkLastPlayed.Size = New System.Drawing.Size(82, 17)
-        Me.chkLastPlayed.TabIndex = 1
-        Me.chkLastPlayed.Text = "Last Played"
-        Me.chkLastPlayed.UseVisualStyleBackColor = True
         '
         'chkRating
         '
@@ -178,7 +152,7 @@ Partial Class frmSettingsHolder_Movie
         Me.gbScraperFieldsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbScraperFieldsOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbScraperFieldsOpts.Name = "gbScraperFieldsOpts"
-        Me.gbScraperFieldsOpts.Size = New System.Drawing.Size(341, 90)
+        Me.gbScraperFieldsOpts.Size = New System.Drawing.Size(341, 44)
         Me.gbScraperFieldsOpts.TabIndex = 3
         Me.gbScraperFieldsOpts.TabStop = False
         Me.gbScraperFieldsOpts.Text = "Scraper Fields - Scraper specific"
@@ -208,7 +182,7 @@ Partial Class frmSettingsHolder_Movie
         Me.gbScraperOpts.Controls.Add(Me.tblScraperOpts)
         Me.gbScraperOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbScraperOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbScraperOpts.Location = New System.Drawing.Point(3, 99)
+        Me.gbScraperOpts.Location = New System.Drawing.Point(3, 53)
         Me.gbScraperOpts.Name = "gbScraperOpts"
         Me.gbScraperOpts.Size = New System.Drawing.Size(341, 100)
         Me.gbScraperOpts.TabIndex = 1
@@ -440,7 +414,6 @@ Partial Class frmSettingsHolder_Movie
     Friend WithEvents pbIconBottom As System.Windows.Forms.PictureBox
     Friend WithEvents pnlSettingsBottom As System.Windows.Forms.Panel
     Friend WithEvents tblScraperFieldsOpts As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents chkPlaycount As System.Windows.Forms.CheckBox
     Friend WithEvents chkRating As System.Windows.Forms.CheckBox
     Friend WithEvents gbScraperFieldsOpts As System.Windows.Forms.GroupBox
     Friend WithEvents tblSettingsMain As System.Windows.Forms.TableLayoutPanel
@@ -459,6 +432,5 @@ Partial Class frmSettingsHolder_Movie
     Friend WithEvents chkEnabled As System.Windows.Forms.CheckBox
     Friend WithEvents txtTraktUser As System.Windows.Forms.TextBox
     Friend WithEvents lblTraktPassword As System.Windows.Forms.Label
-    Friend WithEvents chkLastPlayed As System.Windows.Forms.CheckBox
 
 End Class

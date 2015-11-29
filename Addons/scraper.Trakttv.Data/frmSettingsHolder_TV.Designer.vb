@@ -27,9 +27,7 @@ Partial Class frmSettingsHolder_TV
         Me.pbIconBottom = New System.Windows.Forms.PictureBox()
         Me.gbScraperFieldsEpisode = New System.Windows.Forms.GroupBox()
         Me.tblScraperFieldsEpisode = New System.Windows.Forms.TableLayoutPanel()
-        Me.chkScraperEpisodeLastPlayed = New System.Windows.Forms.CheckBox()
         Me.chkScraperEpisodeRating = New System.Windows.Forms.CheckBox()
-        Me.chkScraperEpisodePlaycount = New System.Windows.Forms.CheckBox()
         Me.pnlSettingsBottom = New System.Windows.Forms.Panel()
         Me.tblSettingsBottom = New System.Windows.Forms.TableLayoutPanel()
         Me.lblInfoBottom = New System.Windows.Forms.Label()
@@ -100,7 +98,7 @@ Partial Class frmSettingsHolder_TV
         Me.gbScraperFieldsEpisode.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbScraperFieldsEpisode.Location = New System.Drawing.Point(81, 3)
         Me.gbScraperFieldsEpisode.Name = "gbScraperFieldsEpisode"
-        Me.gbScraperFieldsEpisode.Size = New System.Drawing.Size(176, 67)
+        Me.gbScraperFieldsEpisode.Size = New System.Drawing.Size(72, 44)
         Me.gbScraperFieldsEpisode.TabIndex = 1
         Me.gbScraperFieldsEpisode.TabStop = False
         Me.gbScraperFieldsEpisode.Text = "Episode"
@@ -112,9 +110,7 @@ Partial Class frmSettingsHolder_TV
         Me.tblScraperFieldsEpisode.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblScraperFieldsEpisode.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblScraperFieldsEpisode.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblScraperFieldsEpisode.Controls.Add(Me.chkScraperEpisodeLastPlayed, 0, 1)
         Me.tblScraperFieldsEpisode.Controls.Add(Me.chkScraperEpisodeRating, 0, 0)
-        Me.tblScraperFieldsEpisode.Controls.Add(Me.chkScraperEpisodePlaycount, 1, 0)
         Me.tblScraperFieldsEpisode.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblScraperFieldsEpisode.Location = New System.Drawing.Point(3, 18)
         Me.tblScraperFieldsEpisode.Name = "tblScraperFieldsEpisode"
@@ -125,19 +121,8 @@ Partial Class frmSettingsHolder_TV
         Me.tblScraperFieldsEpisode.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperFieldsEpisode.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperFieldsEpisode.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblScraperFieldsEpisode.Size = New System.Drawing.Size(170, 46)
+        Me.tblScraperFieldsEpisode.Size = New System.Drawing.Size(66, 23)
         Me.tblScraperFieldsEpisode.TabIndex = 0
-        '
-        'chkScraperEpisodeLastPlayed
-        '
-        Me.chkScraperEpisodeLastPlayed.AutoSize = True
-        Me.chkScraperEpisodeLastPlayed.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScraperEpisodeLastPlayed.Location = New System.Drawing.Point(3, 26)
-        Me.chkScraperEpisodeLastPlayed.Name = "chkScraperEpisodeLastPlayed"
-        Me.chkScraperEpisodeLastPlayed.Size = New System.Drawing.Size(82, 17)
-        Me.chkScraperEpisodeLastPlayed.TabIndex = 4
-        Me.chkScraperEpisodeLastPlayed.Text = "Last Played"
-        Me.chkScraperEpisodeLastPlayed.UseVisualStyleBackColor = True
         '
         'chkScraperEpisodeRating
         '
@@ -149,17 +134,6 @@ Partial Class frmSettingsHolder_TV
         Me.chkScraperEpisodeRating.TabIndex = 0
         Me.chkScraperEpisodeRating.Text = "Rating"
         Me.chkScraperEpisodeRating.UseVisualStyleBackColor = True
-        '
-        'chkScraperEpisodePlaycount
-        '
-        Me.chkScraperEpisodePlaycount.AutoSize = True
-        Me.chkScraperEpisodePlaycount.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.chkScraperEpisodePlaycount.Location = New System.Drawing.Point(91, 3)
-        Me.chkScraperEpisodePlaycount.Name = "chkScraperEpisodePlaycount"
-        Me.chkScraperEpisodePlaycount.Size = New System.Drawing.Size(76, 17)
-        Me.chkScraperEpisodePlaycount.TabIndex = 10
-        Me.chkScraperEpisodePlaycount.Text = "Playcount"
-        Me.chkScraperEpisodePlaycount.UseVisualStyleBackColor = True
         '
         'pnlSettingsBottom
         '
@@ -209,7 +183,7 @@ Partial Class frmSettingsHolder_TV
         Me.gbScraperOpts.Controls.Add(Me.tblScraperOpts)
         Me.gbScraperOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbScraperOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbScraperOpts.Location = New System.Drawing.Point(3, 103)
+        Me.gbScraperOpts.Location = New System.Drawing.Point(3, 80)
         Me.gbScraperOpts.Name = "gbScraperOpts"
         Me.gbScraperOpts.Size = New System.Drawing.Size(341, 100)
         Me.gbScraperOpts.TabIndex = 1
@@ -392,7 +366,7 @@ Partial Class frmSettingsHolder_TV
         Me.tblScraperFieldsShow.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperFieldsShow.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperFieldsShow.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperFieldsShow.Size = New System.Drawing.Size(66, 46)
+        Me.tblScraperFieldsShow.Size = New System.Drawing.Size(66, 23)
         Me.tblScraperFieldsShow.TabIndex = 0
         '
         'pnlSettingsMain
@@ -432,7 +406,7 @@ Partial Class frmSettingsHolder_TV
         Me.gbScraperFieldsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbScraperFieldsOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbScraperFieldsOpts.Name = "gbScraperFieldsOpts"
-        Me.gbScraperFieldsOpts.Size = New System.Drawing.Size(341, 94)
+        Me.gbScraperFieldsOpts.Size = New System.Drawing.Size(341, 71)
         Me.gbScraperFieldsOpts.TabIndex = 3
         Me.gbScraperFieldsOpts.TabStop = False
         Me.gbScraperFieldsOpts.Text = "Scraper Fields - Scraper specific"
@@ -453,7 +427,7 @@ Partial Class frmSettingsHolder_TV
         Me.tblScraperFieldsOpts.RowCount = 2
         Me.tblScraperFieldsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperFieldsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperFieldsOpts.Size = New System.Drawing.Size(335, 73)
+        Me.tblScraperFieldsOpts.Size = New System.Drawing.Size(335, 50)
         Me.tblScraperFieldsOpts.TabIndex = 99
         '
         'gbScraperFieldsShow
@@ -463,7 +437,7 @@ Partial Class frmSettingsHolder_TV
         Me.gbScraperFieldsShow.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbScraperFieldsShow.Location = New System.Drawing.Point(3, 3)
         Me.gbScraperFieldsShow.Name = "gbScraperFieldsShow"
-        Me.gbScraperFieldsShow.Size = New System.Drawing.Size(72, 67)
+        Me.gbScraperFieldsShow.Size = New System.Drawing.Size(72, 44)
         Me.gbScraperFieldsShow.TabIndex = 0
         Me.gbScraperFieldsShow.TabStop = False
         Me.gbScraperFieldsShow.Text = "Show"
@@ -535,9 +509,7 @@ Partial Class frmSettingsHolder_TV
     Friend WithEvents pbIconBottom As System.Windows.Forms.PictureBox
     Friend WithEvents gbScraperFieldsEpisode As System.Windows.Forms.GroupBox
     Friend WithEvents tblScraperFieldsEpisode As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents chkScraperEpisodeLastPlayed As System.Windows.Forms.CheckBox
     Friend WithEvents chkScraperEpisodeRating As System.Windows.Forms.CheckBox
-    Friend WithEvents chkScraperEpisodePlaycount As System.Windows.Forms.CheckBox
     Friend WithEvents pnlSettingsBottom As System.Windows.Forms.Panel
     Friend WithEvents tblSettingsBottom As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents lblInfoBottom As System.Windows.Forms.Label
