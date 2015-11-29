@@ -130,6 +130,7 @@ Partial Class frmSettingsHolder
         Me.gbSettingsLastPlayed.AutoSize = True
         Me.gbSettingsLastPlayed.Controls.Add(Me.tblSettingsLastPlayed)
         Me.gbSettingsLastPlayed.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbSettingsLastPlayed.Enabled = False
         Me.gbSettingsLastPlayed.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbSettingsLastPlayed.Location = New System.Drawing.Point(3, 109)
         Me.gbSettingsLastPlayed.Name = "gbSettingsLastPlayed"
@@ -228,6 +229,7 @@ Partial Class frmSettingsHolder
         Me.gbSettingsPlaycount.AutoSize = True
         Me.gbSettingsPlaycount.Controls.Add(Me.tblSettingsPlaycount)
         Me.gbSettingsPlaycount.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbSettingsPlaycount.Enabled = False
         Me.gbSettingsPlaycount.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbSettingsPlaycount.Location = New System.Drawing.Point(392, 109)
         Me.gbSettingsPlaycount.Name = "gbSettingsPlaycount"

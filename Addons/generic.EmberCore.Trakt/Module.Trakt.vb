@@ -176,6 +176,21 @@ Public Class Trakt_Generic
         Me._setup.txtUsername.Text = MySettings.Username
         Me._setup.txtPassword.Text = MySettings.Password
         Me._setup.chkGetShowProgress.Checked = MySettings.GetShowProgress
+        'LastPlayed
+        Me._setup.chkSyncLastPlayedEditMovies.Checked = MySettings.SyncLastPlayedEditMovies
+        Me._setup.chkSyncLastPlayedEditEpisodes.Checked = MySettings.SyncLastPlayedEditEpisodes
+        Me._setup.chkSyncLastPlayedMultiEpisodes.Checked = MySettings.SyncLastPlayedMultiEpisodes
+        Me._setup.chkSyncLastPlayedMultiMovies.Checked = MySettings.SyncLastPlayedMultiMovies
+        Me._setup.chkSyncLastPlayedSingleEpisodes.Checked = MySettings.SyncLastPlayedSingleEpisodes
+        Me._setup.chkSyncLastPlayedSingleMovies.Checked = MySettings.SyncLastPlayedSingleMovies
+        'Playcount
+        Me._setup.chkSyncPlaycountEditMovies.Checked = MySettings.SyncPlaycountEditMovies
+        Me._setup.chkSyncPlaycountEditEpisodes.Checked = MySettings.SyncPlaycountEditEpisodes
+        Me._setup.chkSyncPlaycountMultiEpisodes.Checked = MySettings.SyncPlaycountMultiEpisodes
+        Me._setup.chkSyncPlaycountMultiMovies.Checked = MySettings.SyncPlaycountMultiMovies
+        Me._setup.chkSyncPlaycountSingleEpisodes.Checked = MySettings.SyncPlaycountSingleEpisodes
+        Me._setup.chkSyncPlaycountSingleMovies.Checked = MySettings.SyncPlaycountSingleMovies
+
         SPanel.Name = Me._Name
         SPanel.Text = Master.eLang.GetString(871, "Trakt.tv Manager")
         SPanel.Prefix = "Trakt_"
@@ -202,12 +217,41 @@ Public Class Trakt_Generic
         MySettings.Username = clsAdvancedSettings.GetSetting("Username", "")
         MySettings.Password = clsAdvancedSettings.GetSetting("Password", "")
         MySettings.GetShowProgress = clsAdvancedSettings.GetBooleanSetting("GetShowProgress", False)
+        'LastPlayed
+        MySettings.SyncLastPlayedEditMovies = clsAdvancedSettings.GetBooleanSetting("SyncLastPlayedEditMovies", False)
+        MySettings.SyncLastPlayedEditEpisodes = clsAdvancedSettings.GetBooleanSetting("SyncLastPlayedEditEpisodes", False)
+        MySettings.SyncLastPlayedMultiEpisodes = clsAdvancedSettings.GetBooleanSetting("SyncLastPlayedMultiEpisodes", False)
+        MySettings.SyncLastPlayedMultiMovies = clsAdvancedSettings.GetBooleanSetting("SyncLastPlayedMultiMovies", False)
+        MySettings.SyncLastPlayedSingleEpisodes = clsAdvancedSettings.GetBooleanSetting("SyncLastPlayedSingleEpisodes", False)
+        MySettings.SyncLastPlayedSingleMovies = clsAdvancedSettings.GetBooleanSetting("SyncLastPlayedSingleMovies", False)
+        'Playcount
+        MySettings.SyncPlaycountEditMovies = clsAdvancedSettings.GetBooleanSetting("SyncPlaycountEditMovies", False)
+        MySettings.SyncPlaycountEditEpisodes = clsAdvancedSettings.GetBooleanSetting("SyncPlaycountEditEpisodes", False)
+        MySettings.SyncPlaycountMultiEpisodes = clsAdvancedSettings.GetBooleanSetting("SyncPlaycountMultiEpisodes", False)
+        MySettings.SyncPlaycountMultiMovies = clsAdvancedSettings.GetBooleanSetting("SyncPlaycountMultiMovies", False)
+        MySettings.SyncPlaycountSingleEpisodes = clsAdvancedSettings.GetBooleanSetting("SyncPlaycountSingleEpisodes", False)
+        MySettings.SyncPlaycountSingleMovies = clsAdvancedSettings.GetBooleanSetting("SyncPlaycountSingleMovies", False)
     End Sub
     Sub SaveSetupModule(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
         Me.Enabled = Me._setup.chkEnabled.Checked
         MySettings.Username = Me._setup.txtUsername.Text
         MySettings.Password = Me._setup.txtPassword.Text
         MySettings.GetShowProgress = Me._setup.chkGetShowProgress.Checked
+        'LastPlayed
+        MySettings.SyncLastPlayedEditMovies = Me._setup.chkSyncLastPlayedEditMovies.Checked
+        MySettings.SyncLastPlayedEditEpisodes = Me._setup.chkSyncLastPlayedEditEpisodes.Checked
+        MySettings.SyncLastPlayedMultiEpisodes = Me._setup.chkSyncLastPlayedMultiEpisodes.Checked
+        MySettings.SyncLastPlayedMultiMovies = Me._setup.chkSyncLastPlayedMultiMovies.Checked
+        MySettings.SyncLastPlayedSingleEpisodes = Me._setup.chkSyncLastPlayedSingleEpisodes.Checked
+        MySettings.SyncLastPlayedSingleMovies = Me._setup.chkSyncLastPlayedSingleMovies.Checked
+        'Playcount
+        MySettings.SyncPlaycountEditMovies = Me._setup.chkSyncPlaycountEditMovies.Checked
+        MySettings.SyncPlaycountEditEpisodes = Me._setup.chkSyncPlaycountEditEpisodes.Checked
+        MySettings.SyncPlaycountMultiEpisodes = Me._setup.chkSyncPlaycountMultiEpisodes.Checked
+        MySettings.SyncPlaycountMultiMovies = Me._setup.chkSyncPlaycountMultiMovies.Checked
+        MySettings.SyncPlaycountSingleEpisodes = Me._setup.chkSyncPlaycountSingleEpisodes.Checked
+        MySettings.SyncPlaycountSingleMovies = Me._setup.chkSyncPlaycountSingleMovies.Checked
+
         SaveSettings()
         If DoDispose Then
             RemoveHandler Me._setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
@@ -221,6 +265,20 @@ Public Class Trakt_Generic
             settings.SetSetting("Username", MySettings.Username)
             settings.SetSetting("Password", MySettings.Password)
             settings.SetBooleanSetting("GetShowProgress", MySettings.GetShowProgress)
+            'LastPlayed
+            settings.SetBooleanSetting("SyncLastPlayedEditMovies", MySettings.SyncLastPlayedEditMovies)
+            settings.SetBooleanSetting("SyncLastPlayedEditEpisodes", MySettings.SyncLastPlayedEditEpisodes)
+            settings.SetBooleanSetting("SyncLastPlayedMultiEpisodes", MySettings.SyncLastPlayedMultiEpisodes)
+            settings.SetBooleanSetting("SyncLastPlayedMultiMovies", MySettings.SyncLastPlayedMultiMovies)
+            settings.SetBooleanSetting("SyncLastPlayedSingleEpisodes", MySettings.SyncLastPlayedSingleEpisodes)
+            settings.SetBooleanSetting("SyncLastPlayedSingleMovies", MySettings.SyncLastPlayedSingleMovies)
+            'Playcount
+            settings.SetBooleanSetting("SyncPlaycountEditMovies", MySettings.SyncPlaycountEditMovies)
+            settings.SetBooleanSetting("SyncPlaycountEditEpisodes", MySettings.SyncPlaycountEditEpisodes)
+            settings.SetBooleanSetting("SyncPlaycountMultiEpisodes", MySettings.SyncPlaycountMultiEpisodes)
+            settings.SetBooleanSetting("SyncPlaycountMultiMovies", MySettings.SyncPlaycountMultiMovies)
+            settings.SetBooleanSetting("SyncPlaycountSingleEpisodes", MySettings.SyncPlaycountSingleEpisodes)
+            settings.SetBooleanSetting("SyncPlaycountSingleMovies", MySettings.SyncPlaycountSingleMovies)
         End Using
     End Sub
 
@@ -377,6 +435,23 @@ Public Class Trakt_Generic
         Dim Username As String
         Dim Password As String
         Dim GetShowProgress As Boolean
+
+        'LastPlayed
+        Dim SyncLastPlayedEditMovies As Boolean
+        Dim SyncLastPlayedEditEpisodes As Boolean
+        Dim SyncLastPlayedMultiEpisodes As Boolean
+        Dim SyncLastPlayedMultiMovies As Boolean
+        Dim SyncLastPlayedSingleEpisodes As Boolean
+        Dim SyncLastPlayedSingleMovies As Boolean
+        'Playcount
+        Dim SyncPlaycountEditMovies As Boolean
+        Dim SyncPlaycountEditEpisodes As Boolean
+        Dim SyncPlaycountMultiEpisodes As Boolean
+        Dim SyncPlaycountMultiMovies As Boolean
+        Dim SyncPlaycountSingleEpisodes As Boolean
+        Dim SyncPlaycountSingleMovies As Boolean
+
+        Dim Sync As Boolean
 #End Region 'Fields
     End Structure
 
