@@ -3232,6 +3232,7 @@ Namespace MediaContainers
         Private _imageoriginal As Images
         Private _imagethumb As Images
         Private _index As Integer
+        Private _isduplicate As Boolean
         Private _ischecked As Boolean
         Private _isedit As Boolean
         Private _likes As Integer
@@ -3346,6 +3347,15 @@ Namespace MediaContainers
             End Get
             Set(ByVal value As Integer)
                 _index = value
+            End Set
+        End Property
+
+        Public Property IsDuplicate() As Boolean
+            Get
+                Return _isduplicate
+            End Get
+            Set(ByVal value As Boolean)
+                _isduplicate = value
             End Set
         End Property
 
