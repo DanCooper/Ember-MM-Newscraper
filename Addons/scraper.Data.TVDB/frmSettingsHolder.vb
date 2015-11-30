@@ -18,9 +18,7 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.IO
 Imports EmberAPI
-Imports System.Diagnostics
 
 Public Class frmSettingsHolder
 
@@ -49,11 +47,11 @@ Public Class frmSettingsHolder
         SetUp()
     End Sub
 
-    Private Sub pbApiKeyInfo_Click(sender As System.Object, e As System.EventArgs) Handles pbApiKeyInfo.Click
+    Private Sub pbApiKeyInfo_Click(sender As Object, e As EventArgs) Handles pbApiKeyInfo.Click
         Functions.Launch(My.Resources.urlAPIKey)
     End Sub
 
-    Private Sub btnDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDown.Click
+    Private Sub btnDown_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnDown.Click
         Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Data_TV.FirstOrDefault(Function(p) p.AssemblyName = TVDB_Data._AssemblyName).ModuleOrder
         If order < ModulesManager.Instance.externalScrapersModules_Data_TV.Count - 1 Then
             ModulesManager.Instance.externalScrapersModules_Data_TV.FirstOrDefault(Function(p) p.ModuleOrder = order + 1).ModuleOrder = order
@@ -63,7 +61,7 @@ Public Class frmSettingsHolder
         End If
     End Sub
 
-    Private Sub btnUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUp.Click
+    Private Sub btnUp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnUp.Click
         Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Data_TV.FirstOrDefault(Function(p) p.AssemblyName = TVDB_Data._AssemblyName).ModuleOrder
         If order > 0 Then
             ModulesManager.Instance.externalScrapersModules_Data_TV.FirstOrDefault(Function(p) p.ModuleOrder = order - 1).ModuleOrder = order
@@ -87,11 +85,11 @@ Public Class frmSettingsHolder
         End If
     End Sub
 
-    Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnabled.CheckedChanged
+    Private Sub cbEnabled_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkEnabled.CheckedChanged
         RaiseEvent SetupScraperChanged(chkEnabled.Checked, 0)
     End Sub
 
-    Private Sub chkScraperShowEpisodeGuide_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScraperShowEpisodeGuide.CheckedChanged
+    Private Sub chkScraperShowEpisodeGuide_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkScraperShowEpisodeGuide.CheckedChanged
         If String.IsNullOrEmpty(txtApiKey.Text) AndAlso chkScraperShowEpisodeGuide.Checked Then
             MessageBox.Show(Master.eLang.GetString(1133, "You need your own API key for that"), Master.eLang.GetString(1134, "Error"), MessageBoxButtons.OK, MessageBoxIcon.Information)
             chkScraperShowEpisodeGuide.Checked = False
@@ -99,11 +97,11 @@ Public Class frmSettingsHolder
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub txtTMDBApiKey_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtApiKey.TextChanged
+    Private Sub txtTMDBApiKey_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtApiKey.TextChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub SettingsChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles _
+    Private Sub SettingsChanged(ByVal sender As Object, ByVal e As EventArgs) Handles _
         chkScraperEpisodeActors.CheckedChanged,
         chkScraperEpisodeAired.CheckedChanged,
         chkScraperEpisodeCredits.CheckedChanged,

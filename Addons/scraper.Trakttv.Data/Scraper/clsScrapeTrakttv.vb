@@ -60,7 +60,7 @@ Namespace TrakttvScraper
             Try
                 _SpecialSettings = SpecialSettings
 
-                _Token = Trakttv.TraktMethods.LoginToTrakt(_SpecialSettings.TrakttvUserName, _SpecialSettings.TrakttvPassword)
+                _Token = TraktMethods.LoginToTrakt(_SpecialSettings.TrakttvUserName, _SpecialSettings.TrakttvPassword)
                 If String.IsNullOrEmpty(_Token) Then
                     logger.Error(String.Concat("[New] Can't login to trakt.tv account!"))
                 Else
@@ -93,7 +93,6 @@ Namespace TrakttvScraper
         '''  Scrape MovieDetails from trakttv
         ''' </summary>
         ''' <param name="strID">TMDBID or IMDBID (IMDB ID starts with "tt") of movie to be scraped</param>
-        ''' <param name="nMovie">Container of scraped movie data</param>
         ''' <param name="FilteredOptions">Module settings<param>
         ''' <param name="IsSearch">Not used at moment</param>
         ''' <returns>True: success, false: no success</returns>
@@ -101,9 +100,11 @@ Namespace TrakttvScraper
         ''' 2015/11/18 Cocotus - First implementation
         ''' For now only retrieve trakt.tv exklusive data like playcount, lastplayed, rating and votes
         ''' </remarks>
-        Public Function GetMovieInfo(ByVal strID As String, ByRef nMovie As MediaContainers.Movie, ByVal FilteredOptions As Structures.ScrapeOptions, ByVal IsSearch As Boolean) As Boolean
+        Public Function GetMovieInfo(ByVal strID As String, ByVal FilteredOptions As Structures.ScrapeOptions, ByVal IsSearch As Boolean) As MediaContainers.Movie
+            If String.IsNullOrEmpty(strID) OrElse strID.Length < 2 Then Return Nothing
+
+            Dim nMovie As New MediaContainers.Movie
             Try
-                nMovie.Clear()
                 nMovie.Scrapersource = "TRAKTTV"
                 'check type of ID and set accordingly
                 If strID.Substring(0, 2).ToLower = "tt" Then
@@ -150,14 +151,16 @@ Namespace TrakttvScraper
 
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
+                Return Nothing
             End Try
+
+            Return nMovie
         End Function
 
         ''' <summary>
         '''  Scrape TV Show details from trakttv
         ''' </summary>
         ''' <param name="strID">IMDBID of tv show to be scraped</param>
-        ''' <param name="nShow">Container of scraped tv show data</param>
         ''' <param name="FilteredOptions">Module settings<param>
         ''' <param name="ScrapeModifier">More options - scrape episode/season infos?</param>
         ''' <returns>True: success, false: no success</returns>
@@ -165,30 +168,30 @@ Namespace TrakttvScraper
         ''' 2015/11/18 Cocotus - First implementation
         ''' trakt.tv API supports ONLY IMDB
         ''' </remarks>
-        Public Function GetTVShowInfo(ByVal strID As String, ByRef nShow As MediaContainers.TVShow, ByRef ScrapeModifier As Structures.ScrapeModifier, ByVal FilteredOptions As Structures.ScrapeOptions) As Boolean
-            If String.IsNullOrEmpty(strID) OrElse strID.Length < 2 Then Return False
+        Public Function GetTVShowInfo(ByVal strID As String, ByRef ScrapeModifier As Structures.ScrapeModifier, ByVal FilteredOptions As Structures.ScrapeOptions) As MediaContainers.TVShow
+            If String.IsNullOrEmpty(strID) OrElse strID.Length < 2 Then Return Nothing
 
-            'clear nShow from search results
-            nShow.Clear()
+            Dim nTVShow As New MediaContainers.TVShow
+
             If bwTrakttv.CancellationPending Then Return Nothing
 
             'check type of ID and set accordingly
             If strID.Substring(0, 2).ToLower = "tt" Then
                 'IMDBID
-                nShow.IMDB = strID
+                nTVShow.IMDB = strID
             Else
                 'TVDB? TMDB?
                 'nShow.TVDB = strID
             End If
 
-            nShow.Scrapersource = "TRAKTTV"
+            nTVShow.Scrapersource = "TRAKTTV"
 
             'Rating
             If FilteredOptions.bMainRating Then
                 Dim traktrating As TraktAPI.Model.TraktRating = TrakttvAPI.GetShowRating(strID)
                 If Not traktrating Is Nothing AndAlso Not traktrating.Rating Is Nothing AndAlso Not traktrating.Votes Is Nothing Then
-                    nShow.Rating = CStr(Math.Round(traktrating.Rating.Value, 1)) ' traktrating.Rating.ToString
-                    nShow.Votes = traktrating.Votes.ToString
+                    nTVShow.Rating = CStr(Math.Round(traktrating.Rating.Value, 1)) ' traktrating.Rating.ToString
+                    nTVShow.Votes = traktrating.Votes.ToString
                 Else
                     logger.Info("[GetTVShowInfo] Could not scrape community rating/votes from trakt.tv! Current showID: " & strID)
                 End If
@@ -203,7 +206,7 @@ Namespace TrakttvScraper
             '    Next
             'End If
 
-            Return True
+            Return nTVShow
         End Function
 
         ''' <summary>

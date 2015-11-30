@@ -1,6 +1,4 @@
-﻿Imports System.Drawing
-
-' ################################################################################
+﻿' ################################################################################
 ' #                             EMBER MEDIA MANAGER                              #
 ' ################################################################################
 ' ################################################################################
@@ -87,12 +85,11 @@ Public Class Interfaces
         ''' 
         ''' </summary>
         ''' <param name="oDBElement">Clone of original DBMovie. To fill with new IMDB or TMDB ID's for subsequent scrapers.</param>
-        ''' <param name="nMovie">New and empty Movie container to fill with new scraped data</param>
         ''' <param name="ScrapeType">What kind of data is being requested from the scrape(global scraper settings)</param>
         ''' <param name="ScrapeOptions"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Function Scraper(ByRef oDBElement As Database.DBElement, ByRef nMovie As MediaContainers.Movie, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As ModuleResult
+        Function Scraper(ByRef oDBElement As Database.DBElement, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As ModuleResult_Data_Movie
 
 #End Region 'Methods
 
@@ -128,13 +125,12 @@ Public Class Interfaces
         ''' 
         ''' </summary>
         ''' <param name="oDBElement">Clone of original DBMovieSet. To fill with new TMDB ID's for subsequent scrapers.</param>
-        ''' <param name="nMovieSet">New and empty MovieSet container to fill with new scraped data</param>
         ''' <param name="ScrapeModifier"></param>
         ''' <param name="ScrapeType"></param>
         ''' <param name="ScrapeOptions"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Function Scraper(ByRef oDBElement As Database.DBElement, ByRef nMovieSet As MediaContainers.MovieSet, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As ModuleResult
+        Function Scraper(ByRef oDBElement As Database.DBElement, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As ModuleResult_Data_MovieSet
 
 #End Region 'Methods
 
@@ -170,30 +166,27 @@ Public Class Interfaces
         ''' 
         ''' </summary>
         ''' <param name="oDBTV">Clone of original DBTV. To fill with new TVDB, IMDB or TMDB ID's for subsequent scrapers.</param>
-        ''' <param name="nShow">New and empty Show container to fill with new scraped data</param>
         ''' <param name="ScrapeType">What kind of data is being requested from the scrape(global scraper settings)</param>
         ''' <param name="ScrapeOptions"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Function Scraper_TVShow(ByRef oDBTV As Database.DBElement, ByRef nShow As MediaContainers.TVShow, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As ModuleResult
+        Function Scraper_TVShow(ByRef oDBTV As Database.DBElement, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As ModuleResult_Data_TVShow
         ''' <summary>
         ''' Get single episode information
         ''' </summary>
         ''' <param name="oDBElement"></param>
-        ''' <param name="nEpisode"></param>
         ''' <param name="ScrapeOptions"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Function Scraper_TVEpisode(ByRef oDBElement As Database.DBElement, ByRef nEpisode As MediaContainers.EpisodeDetails, ByVal ScrapeOptions As Structures.ScrapeOptions) As ModuleResult
+        Function Scraper_TVEpisode(ByRef oDBElement As Database.DBElement, ByVal ScrapeOptions As Structures.ScrapeOptions) As ModuleResult_Data_TVEpisode
         ''' <summary>
         ''' Get single season information
         ''' </summary>
         ''' <param name="oDBElement"></param>
-        ''' <param name="nSeason"></param>
         ''' <param name="ScrapeOptions"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Function Scraper_TVSeason(ByRef oDBElement As Database.DBElement, ByRef nSeason As MediaContainers.SeasonDetails, ByVal ScrapeOptions As Structures.ScrapeOptions) As ModuleResult
+        Function Scraper_TVSeason(ByRef oDBElement As Database.DBElement, ByVal ScrapeOptions As Structures.ScrapeOptions) As ModuleResult_Data_TVSeason
 
 #End Region 'Methods
 
@@ -359,27 +352,6 @@ Public Class Interfaces
         Function Scraper(ByVal DBTV As Database.DBElement, ByRef URLList As List(Of Themes)) As ModuleResult
         Sub SaveSetupScraper(ByVal DoDispose As Boolean)
 
-
-        'Sub ScraperOrderChanged()
-
-        'Sub CancelAsync()
-
-        'Function ChangeEpisode(ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Lang As String, ByRef epDet As MediaContainers.EpisodeDetails) As ModuleResult
-
-        'Function GetLangs(ByVal sMirror As String, ByRef Langs As List(Of Containers.TVLanguage)) As ModuleResult
-
-        'Function GetSingleImage(ByVal Title As String, ByVal ShowID As Integer, ByVal TVDBID As String, ByVal Type As Enums.TVImageType, ByVal Season As Integer, ByVal Episode As Integer, ByVal Lang As String, ByVal Ordering As Enums.Ordering, ByVal CurrentImage As Images, ByRef Image As Images) As ModuleResult
-
-        'Sub Init(ByVal sAssemblyName As String)
-
-        'Function InjectSetupScraper() As Containers.SettingsPanel
-
-        'Function Scraper(ByRef DBTV As Database.DBElement, ByVal ScrapeType As Enums.ScrapeType) As ModuleResult
-
-        'Function SaveImages() As ModuleResult
-
-        'Sub SaveSetupScraper(ByVal DoDispose As Boolean)
-
 #End Region 'Methods
 
     End Interface
@@ -436,6 +408,126 @@ Public Class Interfaces
         ''' </summary>
         ''' <remarks></remarks>
         Public Cancelled As Boolean
+
+#End Region 'Fields
+
+    End Structure
+    ''' <summary>
+    ''' This structure is returned by movie data scraper interfaces to represent the
+    ''' status of the operation that was requested
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Structure ModuleResult_Data_Movie
+
+#Region "Fields"
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <remarks></remarks>
+        Public breakChain As Boolean
+        ''' <summary>
+        ''' An error has occurred in the module, and its operation has been cancelled. 
+        ''' </summary>
+        ''' <remarks></remarks>
+        Public Cancelled As Boolean
+
+        Public Result As MediaContainers.Movie
+
+#End Region 'Fields
+
+    End Structure
+    ''' <summary>
+    ''' This structure is returned by movieset data scraper interfaces to represent the
+    ''' status of the operation that was requested
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Structure ModuleResult_Data_MovieSet
+
+#Region "Fields"
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <remarks></remarks>
+        Public breakChain As Boolean
+        ''' <summary>
+        ''' An error has occurred in the module, and its operation has been cancelled. 
+        ''' </summary>
+        ''' <remarks></remarks>
+        Public Cancelled As Boolean
+
+        Public Result As MediaContainers.MovieSet
+
+#End Region 'Fields
+
+    End Structure
+    ''' <summary>
+    ''' This structure is returned by tv episode data scraper interfaces to represent the
+    ''' status of the operation that was requested
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Structure ModuleResult_Data_TVEpisode
+
+#Region "Fields"
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <remarks></remarks>
+        Public breakChain As Boolean
+        ''' <summary>
+        ''' An error has occurred in the module, and its operation has been cancelled. 
+        ''' </summary>
+        ''' <remarks></remarks>
+        Public Cancelled As Boolean
+
+        Public Result As MediaContainers.EpisodeDetails
+
+#End Region 'Fields
+
+    End Structure
+    ''' <summary>
+    ''' This structure is returned by tv season data scraper interfaces to represent the
+    ''' status of the operation that was requested
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Structure ModuleResult_Data_TVSeason
+
+#Region "Fields"
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <remarks></remarks>
+        Public breakChain As Boolean
+        ''' <summary>
+        ''' An error has occurred in the module, and its operation has been cancelled. 
+        ''' </summary>
+        ''' <remarks></remarks>
+        Public Cancelled As Boolean
+
+        Public Result As MediaContainers.SeasonDetails
+
+#End Region 'Fields
+
+    End Structure
+    ''' <summary>
+    ''' This structure is returned by tv show data scraper interfaces to represent the
+    ''' status of the operation that was requested
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Structure ModuleResult_Data_TVShow
+
+#Region "Fields"
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <remarks></remarks>
+        Public breakChain As Boolean
+        ''' <summary>
+        ''' An error has occurred in the module, and its operation has been cancelled. 
+        ''' </summary>
+        ''' <remarks></remarks>
+        Public Cancelled As Boolean
+
+        Public Result As MediaContainers.TVShow
 
 #End Region 'Fields
 

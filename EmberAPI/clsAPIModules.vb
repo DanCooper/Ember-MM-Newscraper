@@ -1087,7 +1087,7 @@ Public Class ModulesManager
     Public Function ScrapeData_Movie(ByRef DBMovie As Database.DBElement, ByRef ScrapeModifier As Structures.ScrapeModifier, ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal showMessage As Boolean) As Boolean
         If DBMovie.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBMovie, showMessage) Then
             Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_Movie) = externalScrapersModules_Data_Movie.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
-            Dim ret As Interfaces.ModuleResult
+            Dim ret As Interfaces.ModuleResult_Data_Movie
             Dim ScrapedList As New List(Of MediaContainers.Movie)
 
             While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
@@ -1135,13 +1135,12 @@ Public Class ModulesManager
                     logger.Trace("Scraping movie data using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
                     AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie
 
-                    Dim nMovie As New MediaContainers.Movie
-                    ret = _externalScraperModule.ProcessorModule.Scraper(oDBMovie, nMovie, ScrapeModifier, ScrapeType, ScrapeOptions)
+                    ret = _externalScraperModule.ProcessorModule.Scraper(oDBMovie, ScrapeModifier, ScrapeType, ScrapeOptions)
 
                     If ret.Cancelled Then Return ret.Cancelled
 
-                    If nMovie IsNot Nothing Then
-                        ScrapedList.Add(nMovie)
+                    If ret.Result IsNot Nothing Then
+                        ScrapedList.Add(ret.Result)
                     End If
                     RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie
                     If ret.breakChain Then Exit For
@@ -1169,7 +1168,7 @@ Public Class ModulesManager
     Public Function ScrapeData_MovieSet(ByRef DBMovieSet As Database.DBElement, ByRef ScrapeModifier As Structures.ScrapeModifier, ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal showMessage As Boolean) As Boolean
         'If DBMovieSet.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_MovieSet(DBMovieSet, showMessage) Then
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_MovieSet) = externalScrapersModules_Data_MovieSet.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
-        Dim ret As Interfaces.ModuleResult
+        Dim ret As Interfaces.ModuleResult_Data_MovieSet
         Dim ScrapedList As New List(Of MediaContainers.MovieSet)
 
         While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
@@ -1196,13 +1195,12 @@ Public Class ModulesManager
                 logger.Trace("Scraping movieset data using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
                 AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_MovieSet
 
-                Dim nMovieSet As New MediaContainers.MovieSet
-                ret = _externalScraperModule.ProcessorModule.Scraper(oDBMovieSet, nMovieSet, ScrapeModifier, ScrapeType, ScrapeOptions)
+                ret = _externalScraperModule.ProcessorModule.Scraper(oDBMovieSet, ScrapeModifier, ScrapeType, ScrapeOptions)
 
                 If ret.Cancelled Then Return ret.Cancelled
 
-                If nMovieSet IsNot Nothing Then
-                    ScrapedList.Add(nMovieSet)
+                If ret.Result IsNot Nothing Then
+                    ScrapedList.Add(ret.Result)
                 End If
                 RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_MovieSet
                 If ret.breakChain Then Exit For
@@ -1220,7 +1218,7 @@ Public Class ModulesManager
     Public Function ScrapeData_TVEpisode(ByRef DBTV As Database.DBElement, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal showMessage As Boolean) As Boolean
         If DBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTV, showMessage) Then
             Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_TV) = externalScrapersModules_Data_TV.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
-            Dim ret As Interfaces.ModuleResult
+            Dim ret As Interfaces.ModuleResult_Data_TVEpisode
             Dim ScrapedList As New List(Of MediaContainers.EpisodeDetails)
 
             While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
@@ -1237,13 +1235,12 @@ Public Class ModulesManager
                     logger.Trace("Scraping Episode data using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
                     AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
 
-                    Dim nEpisode As New MediaContainers.EpisodeDetails
-                    ret = _externalScraperModule.ProcessorModule.Scraper_TVEpisode(oEpisode, nEpisode, ScrapeOptions)
+                    ret = _externalScraperModule.ProcessorModule.Scraper_TVEpisode(oEpisode, ScrapeOptions)
 
                     If ret.Cancelled Then Return ret.Cancelled
 
-                    If nEpisode IsNot Nothing Then
-                        ScrapedList.Add(nEpisode)
+                    If ret.Result IsNot Nothing Then
+                        ScrapedList.Add(ret.Result)
                     End If
                     RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
                     If ret.breakChain Then Exit For
@@ -1264,7 +1261,7 @@ Public Class ModulesManager
     Public Function ScrapeData_TVSeason(ByRef DBTV As Database.DBElement, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal showMessage As Boolean) As Boolean
         If DBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTV, showMessage) Then
             Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_TV) = externalScrapersModules_Data_TV.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
-            Dim ret As Interfaces.ModuleResult
+            Dim ret As Interfaces.ModuleResult_Data_TVSeason
             Dim ScrapedList As New List(Of MediaContainers.SeasonDetails)
 
             While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
@@ -1281,13 +1278,12 @@ Public Class ModulesManager
                     logger.Trace("Scraping Episode data using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
                     AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
 
-                    Dim nSeason As New MediaContainers.SeasonDetails
-                    ret = _externalScraperModule.ProcessorModule.Scraper_TVSeason(oSeason, nSeason, ScrapeOptions)
+                    ret = _externalScraperModule.ProcessorModule.Scraper_TVSeason(oSeason, ScrapeOptions)
 
                     If ret.Cancelled Then Return ret.Cancelled
 
-                    If nSeason IsNot Nothing Then
-                        ScrapedList.Add(nSeason)
+                    If ret.Result IsNot Nothing Then
+                        ScrapedList.Add(ret.Result)
                     End If
                     RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
                     If ret.breakChain Then Exit For
@@ -1312,7 +1308,7 @@ Public Class ModulesManager
     Public Function ScrapeData_TVShow(ByRef DBTV As Database.DBElement, ByRef ScrapeModifier As Structures.ScrapeModifier, ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal showMessage As Boolean) As Boolean
         If DBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTV, showMessage) Then
             Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_TV) = externalScrapersModules_Data_TV.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
-            Dim ret As Interfaces.ModuleResult
+            Dim ret As Interfaces.ModuleResult_Data_TVShow
             Dim ScrapedList As New List(Of MediaContainers.TVShow)
 
             While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
@@ -1351,15 +1347,14 @@ Public Class ModulesManager
                 logger.Trace("Scraping TV Show data using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
                 AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
 
-                Dim nShow As New MediaContainers.TVShow
-                ret = _externalScraperModule.ProcessorModule.Scraper_TVShow(oShow, nShow, ScrapeModifier, ScrapeType, ScrapeOptions)
+                    ret = _externalScraperModule.ProcessorModule.Scraper_TVShow(oShow, ScrapeModifier, ScrapeType, ScrapeOptions)
 
-                If ret.Cancelled Then Return ret.Cancelled
+                    If ret.Cancelled Then Return ret.Cancelled
 
-                If nShow IsNot Nothing Then
-                    ScrapedList.Add(nShow)
-                End If
-                RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
+                    If ret.Result IsNot Nothing Then
+                        ScrapedList.Add(ret.Result)
+                    End If
+                    RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
                 If ret.breakChain Then Exit For
             Next
 

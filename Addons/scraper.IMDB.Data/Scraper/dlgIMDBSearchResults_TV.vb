@@ -26,10 +26,11 @@ Imports NLog
 Public Class dlgIMDBSearchResults_TV
 
 #Region "Fields"
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
+
     Friend WithEvents bwDownloadPic As New System.ComponentModel.BackgroundWorker
-    Friend WithEvents tmrLoad As New System.Windows.Forms.Timer
-    Friend WithEvents tmrWait As New System.Windows.Forms.Timer
+    Friend WithEvents tmrLoad As New Timer
+    Friend WithEvents tmrWait As New Timer
 
     Private _IMDB As IMDB.Scraper
     Private sHTTP As New HTTP
@@ -38,38 +39,47 @@ Public Class dlgIMDBSearchResults_TV
     Private _SpecialSettings As IMDB_Data.SpecialSettings
 
     Private _InfoCache As New Dictionary(Of String, MediaContainers.TVShow)
-    Private _PosterCache As New Dictionary(Of String, System.Drawing.Image)
+    Private _PosterCache As New Dictionary(Of String, Image)
     Private _filterOptions As Structures.ScrapeOptions
 
-    Private _nShow As MediaContainers.TVShow
+    Private _tmpTVShow As New MediaContainers.TVShow
 
 #End Region 'Fields
+
+#Region "Properties"
+
+    Public ReadOnly Property Result As MediaContainers.TVShow
+        Get
+            Return _tmpTVShow
+        End Get
+    End Property
+
+#End Region 'Properties
 
 #Region "Methods"
 
     Public Sub New(ByVal SpecialSettings As IMDB_Data.SpecialSettings, ByRef IMDB As IMDB.Scraper)
         ' This call is required by the designer.
         InitializeComponent()
-        Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
-        Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
-        Me.StartPosition = FormStartPosition.Manual
+        Left = Master.AppPos.Left + (Master.AppPos.Width - Width) \ 2
+        Top = Master.AppPos.Top + (Master.AppPos.Height - Height) \ 2
+        StartPosition = FormStartPosition.Manual
         _SpecialSettings = SpecialSettings
         _IMDB = IMDB
     End Sub
 
-    Public Overloads Function ShowDialog(ByRef nShow As MediaContainers.TVShow, ByVal sShowTitle As String, ByVal sShowPath As String, ByVal filterOptions As Structures.ScrapeOptions) As Windows.Forms.DialogResult
-        Me.tmrWait.Enabled = False
-        Me.tmrWait.Interval = 250
-        Me.tmrLoad.Enabled = False
+    Public Overloads Function ShowDialog(ByVal sShowTitle As String, ByVal sShowPath As String, ByVal filterOptions As Structures.ScrapeOptions) As Windows.Forms.DialogResult
+        tmrWait.Enabled = False
+        tmrWait.Interval = 250
+        tmrLoad.Enabled = False
 
-        Me.tmrLoad.Interval = 100
+        tmrLoad.Interval = 100
 
         _filterOptions = filterOptions
-        _nShow = nShow
 
-        Me.Text = String.Concat(Master.eLang.GetString(794, "Search Results"), " - ", sShowTitle)
-        Me.txtSearch.Text = sShowTitle
-        Me.txtFileName.Text = sShowPath
+        Text = String.Concat(Master.eLang.GetString(794, "Search Results"), " - ", sShowTitle)
+        txtSearch.Text = sShowTitle
+        txtFileName.Text = sShowPath
 
         ' fix for Enhancement #91
         'chkManual.Enabled = False
@@ -77,49 +87,47 @@ Public Class dlgIMDBSearchResults_TV
 
         _IMDB.SearchTVShowAsync(sShowTitle, _filterOptions)
 
-        Return MyBase.ShowDialog()
+        Return ShowDialog()
     End Function
 
-    Public Overloads Function ShowDialog(ByRef nShow As MediaContainers.TVShow, ByVal Res As IMDB.SearchResults_TVShow, ByVal sShowTitle As String, ByVal sShowPath As String) As Windows.Forms.DialogResult
-        Me.tmrWait.Enabled = False
-        Me.tmrWait.Interval = 250
-        Me.tmrLoad.Enabled = False
-        Me.tmrLoad.Interval = 100
+    Public Overloads Function ShowDialog(ByVal Res As IMDB.SearchResults_TVShow, ByVal sShowTitle As String, ByVal sShowPath As String) As Windows.Forms.DialogResult
+        tmrWait.Enabled = False
+        tmrWait.Interval = 250
+        tmrLoad.Enabled = False
+        tmrLoad.Interval = 100
 
-        _nShow = nShow
-
-        Me.Text = String.Concat(Master.eLang.GetString(794, "Search Results"), " - ", sShowTitle)
-        Me.txtSearch.Text = sShowTitle
-        Me.txtFileName.Text = sShowPath
+        Text = String.Concat(Master.eLang.GetString(794, "Search Results"), " - ", sShowTitle)
+        txtSearch.Text = sShowTitle
+        txtFileName.Text = sShowPath
         SearchResultsDownloaded(Res)
 
-        Return MyBase.ShowDialog()
+        Return ShowDialog()
     End Function
 
-    Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
-        If Not String.IsNullOrEmpty(Me.txtSearch.Text) Then
-            Me.OK_Button.Enabled = False
+    Private Sub btnSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSearch.Click
+        If Not String.IsNullOrEmpty(txtSearch.Text) Then
+            OK_Button.Enabled = False
             pnlPicStatus.Visible = False
             _InfoCache.Clear()
             _PosterCache.Clear()
-            Me.ClearInfo()
-            Me.Label3.Text = Master.eLang.GetString(798, "Searching IMDB...")
-            Me.pnlLoading.Visible = True
+            ClearInfo()
+            Label3.Text = Master.eLang.GetString(798, "Searching IMDB...")
+            pnlLoading.Visible = True
 
             chkManual.Enabled = False
 
             _IMDB.CancelAsync()
-            _IMDB.SearchTVShowAsync(Me.txtSearch.Text, _filterOptions)
+            _IMDB.SearchTVShowAsync(txtSearch.Text, _filterOptions)
         End If
     End Sub
 
-    Private Sub btnVerify_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnVerify.Click
+    Private Sub btnVerify_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnVerify.Click
         Dim pOpt As New Structures.ScrapeOptions
         pOpt = SetPreviewOptions()
-        If Regex.IsMatch(Me.txtIMDBID.Text.Replace("tt", String.Empty), "\d\d\d\d\d\d\d") Then
-            Me.pnlLoading.Visible = True
+        If Regex.IsMatch(txtIMDBID.Text.Replace("tt", String.Empty), "\d\d\d\d\d\d\d") Then
+            pnlLoading.Visible = True
             _IMDB.CancelAsync()
-            _IMDB.GetSearchTVShowInfoAsync(Me.txtIMDBID.Text.Replace("tt", String.Empty), _nShow, pOpt)
+            _IMDB.GetSearchTVShowInfoAsync(txtIMDBID.Text.Replace("tt", String.Empty), _tmpTVShow, pOpt)
         Else
             MessageBox.Show(Master.eLang.GetString(799, "The ID you entered is not a valid IMDB ID."), Master.eLang.GetString(292, "Invalid Entry"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
         End If
@@ -146,7 +154,7 @@ Public Class dlgIMDBSearchResults_TV
         Dim Res As Results = DirectCast(e.Result, Results)
 
         Try
-            Me.pbPoster.Image = Res.Result
+            pbPoster.Image = Res.Result
             If Not _PosterCache.ContainsKey(Res.IMDBId) Then
                 _PosterCache.Add(Res.IMDBId, CType(Res.Result.Clone, Image))
             End If
@@ -157,179 +165,180 @@ Public Class dlgIMDBSearchResults_TV
         End Try
     End Sub
 
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+    Private Sub Cancel_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Cancel_Button.Click
         If _IMDB.bwIMDB.IsBusy Then
             _IMDB.CancelAsync()
         End If
 
-        _nShow = New MediaContainers.TVShow
+        _tmpTVShow = New MediaContainers.TVShow
 
-        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Close()
+        DialogResult = DialogResult.Cancel
+        Close()
     End Sub
 
     Private Sub btnOpenFolder_Click(sender As Object, e As EventArgs) Handles btnOpenFolder.Click
-        Dim fPath As String = Directory.GetParent(Me.txtFileName.Text).FullName
+        Dim fPath As String = Directory.GetParent(txtFileName.Text).FullName
 
         If Not String.IsNullOrEmpty(fPath) Then
             Process.Start("Explorer.exe", fPath)
         End If
     End Sub
 
-    Private Sub chkManual_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkManual.CheckedChanged
-        Me.ClearInfo()
-        If Me.chkManual.Enabled Then
-            Me.pnlLoading.Visible = False
+    Private Sub chkManual_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkManual.CheckedChanged
+        ClearInfo()
+        If chkManual.Enabled Then
+            pnlLoading.Visible = False
             _IMDB.CancelAsync()
         End If
-        Me.OK_Button.Enabled = False
-        Me.txtIMDBID.Enabled = Me.chkManual.Checked
-        Me.btnVerify.Enabled = Me.chkManual.Checked
-        Me.tvResults.Enabled = Not Me.chkManual.Checked
+        OK_Button.Enabled = False
+        txtIMDBID.Enabled = chkManual.Checked
+        btnVerify.Enabled = chkManual.Checked
+        tvResults.Enabled = Not chkManual.Checked
 
-        If Not Me.chkManual.Checked Then
+        If Not chkManual.Checked Then
             txtIMDBID.Text = String.Empty
         End If
     End Sub
 
     Private Sub ClearInfo()
-        Me.ControlsVisible(False)
-        Me.lblTitle.Text = String.Empty
-        Me.lblTagline.Text = String.Empty
-        Me.lblYear.Text = String.Empty
-        Me.lblDirectors.Text = String.Empty
-        Me.lblGenre.Text = String.Empty
-        Me.txtPlot.Text = String.Empty
-        Me.lblIMDBID.Text = String.Empty
-        Me.pbPoster.Image = Nothing
+        ControlsVisible(False)
+        lblTitle.Text = String.Empty
+        lblTagline.Text = String.Empty
+        lblYear.Text = String.Empty
+        lblDirectors.Text = String.Empty
+        lblGenre.Text = String.Empty
+        txtPlot.Text = String.Empty
+        lblIMDBID.Text = String.Empty
+        pbPoster.Image = Nothing
 
-        _nShow.Clear()
+        _tmpTVShow.Clear()
 
         _IMDB.CancelAsync()
     End Sub
 
     Private Sub ControlsVisible(ByVal areVisible As Boolean)
-        Me.lblPremieredHeader.Visible = areVisible
-        Me.lblDirectorsHeader.Visible = areVisible
-        Me.lblGenreHeader.Visible = areVisible
-        Me.lblPlotHeader.Visible = areVisible
-        Me.lblIMDBHeader.Visible = areVisible
-        Me.txtPlot.Visible = areVisible
-        Me.lblYear.Visible = areVisible
-        Me.lblTagline.Visible = areVisible
-        Me.lblTitle.Visible = areVisible
-        Me.lblDirectors.Visible = areVisible
-        Me.lblGenre.Visible = areVisible
-        Me.lblIMDBID.Visible = areVisible
-        Me.pbPoster.Visible = areVisible
+        lblPremieredHeader.Visible = areVisible
+        lblDirectorsHeader.Visible = areVisible
+        lblGenreHeader.Visible = areVisible
+        lblPlotHeader.Visible = areVisible
+        lblIMDBHeader.Visible = areVisible
+        txtPlot.Visible = areVisible
+        lblYear.Visible = areVisible
+        lblTagline.Visible = areVisible
+        lblTitle.Visible = areVisible
+        lblDirectors.Visible = areVisible
+        lblGenre.Visible = areVisible
+        lblIMDBID.Visible = areVisible
+        pbPoster.Visible = areVisible
     End Sub
 
-    Private Sub dlgIMDBSearchResults_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.GotFocus
-        Me.AcceptButton = Me.OK_Button
+    Private Sub dlgIMDBSearchResults_GotFocus(ByVal sender As Object, ByVal e As EventArgs) Handles Me.GotFocus
+        AcceptButton = OK_Button
     End Sub
 
-    Private Sub dlgIMDBSearchResults_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.SetUp()
+    Private Sub dlgIMDBSearchResults_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
+        SetUp()
         pnlPicStatus.Visible = False
         AddHandler _IMDB.SearchInfoDownloaded_TV, AddressOf SearchInfoDownloaded
         AddHandler _IMDB.SearchResultsDownloaded_TV, AddressOf SearchResultsDownloaded
 
         Try
-            Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
+            Dim iBackground As New Bitmap(pnlTop.Width, pnlTop.Height)
             Using g As Graphics = Graphics.FromImage(iBackground)
-                g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)
-                Me.pnlTop.BackgroundImage = iBackground
+                g.FillRectangle(New Drawing2D.LinearGradientBrush(pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)
+                pnlTop.BackgroundImage = iBackground
             End Using
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
-    Private Sub dlgIMDBSearchResults_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
-        Me.Activate()
-        Me.tvResults.Focus()
+    Private Sub dlgIMDBSearchResults_Shown(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Shown
+        Activate()
+        tvResults.Focus()
     End Sub
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-        If Me.chkManual.Checked AndAlso Me.btnVerify.Enabled Then
-            If Not Regex.IsMatch(Me.txtIMDBID.Text.Replace("tt", String.Empty), "\d\d\d\d\d\d\d") Then
+    Private Sub OK_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles OK_Button.Click
+        If chkManual.Checked AndAlso btnVerify.Enabled Then
+            If Not Regex.IsMatch(txtIMDBID.Text.Replace("tt", String.Empty), "\d\d\d\d\d\d\d") Then
                 MessageBox.Show(Master.eLang.GetString(799, "The ID you entered is not a valid IMDB ID."), Master.eLang.GetString(292, "Invalid Entry"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                 Exit Sub
             Else
-                If MessageBox.Show(String.Concat(Master.eLang.GetString(821, "You have manually entered an IMDB ID but have not verified it is correct."), Environment.NewLine, Environment.NewLine, Master.eLang.GetString(101, "Are you sure you want to continue?")), Master.eLang.GetString(823, "Continue without verification?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.No Then
+                If MessageBox.Show(String.Concat(Master.eLang.GetString(821, "You have manually entered an IMDB ID but have not verified it is correct."), Environment.NewLine, Environment.NewLine, Master.eLang.GetString(101, "Are you sure you want to continue?")), Master.eLang.GetString(823, "Continue without verification?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then
                     Exit Sub
                 Else
-                    _nShow.IMDB = Me.txtIMDBID.Text.Replace("tt", String.Empty)
+                    _tmpTVShow.IMDB = txtIMDBID.Text.Replace("tt", String.Empty)
                 End If
             End If
         End If
 
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.Close()
+        DialogResult = DialogResult.OK
+        Close()
     End Sub
 
-    Private Sub SearchInfoDownloaded(ByVal sPoster As String, ByVal bSuccess As Boolean)
-        Me.pnlLoading.Visible = False
-        Me.OK_Button.Enabled = True
+    Private Sub SearchInfoDownloaded(ByVal sPoster As String, ByVal sInfo As MediaContainers.TVShow)
+        pnlLoading.Visible = False
+        OK_Button.Enabled = True
 
-        If bSuccess Then
-            Me.ControlsVisible(True)
-            Me.lblTitle.Text = _nShow.Title
-            Me.lblTagline.Text = String.Empty
-            Me.lblYear.Text = _nShow.Premiered
+        If sInfo IsNot Nothing Then
+            ControlsVisible(True)
+            _tmpTVShow = sInfo
+            lblTitle.Text = _tmpTVShow.Title
+            lblTagline.Text = String.Empty
+            lblYear.Text = _tmpTVShow.Premiered
             'Me.lblDirector.Text = _nShow.Directors
-            Me.lblGenre.Text = _nShow.Genre
-            Me.txtPlot.Text = _nShow.Plot
-            Me.lblIMDBID.Text = _nShow.IMDB
+            lblGenre.Text = _tmpTVShow.Genre
+            txtPlot.Text = _tmpTVShow.Plot
+            lblIMDBID.Text = _tmpTVShow.IMDB
 
-            If _PosterCache.ContainsKey(_nShow.IMDB) Then
+            If _PosterCache.ContainsKey(_tmpTVShow.IMDB) Then
                 'just set it
-                Me.pbPoster.Image = _PosterCache(_nShow.IMDB)
+                pbPoster.Image = _PosterCache(_tmpTVShow.IMDB)
             Else
                 'go download it, if available
                 If Not String.IsNullOrEmpty(sPoster) Then
-                    If Me.bwDownloadPic.IsBusy Then
-                        Me.bwDownloadPic.CancelAsync()
+                    If bwDownloadPic.IsBusy Then
+                        bwDownloadPic.CancelAsync()
                     End If
                     pnlPicStatus.Visible = True
-                    Me.bwDownloadPic = New System.ComponentModel.BackgroundWorker
-                    Me.bwDownloadPic.WorkerSupportsCancellation = True
-                    Me.bwDownloadPic.RunWorkerAsync(New Arguments With {.pURL = sPoster, .IMDBId = _nShow.IMDB})
+                    bwDownloadPic = New System.ComponentModel.BackgroundWorker
+                    bwDownloadPic.WorkerSupportsCancellation = True
+                    bwDownloadPic.RunWorkerAsync(New Arguments With {.pURL = sPoster, .IMDBId = _tmpTVShow.IMDB})
                 End If
 
             End If
 
             'store clone of tmpmovie
-            If Not _InfoCache.ContainsKey(_nShow.IMDB) Then
-                _InfoCache.Add(_nShow.IMDB, GetTVShowClone(_nShow))
+            If Not _InfoCache.ContainsKey(_tmpTVShow.IMDB) Then
+                _InfoCache.Add(_tmpTVShow.IMDB, GetTVShowClone(_tmpTVShow))
             End If
 
 
-            Me.btnVerify.Enabled = False
+            btnVerify.Enabled = False
         Else
-            If Me.chkManual.Checked Then
+            If chkManual.Checked Then
                 MessageBox.Show(Master.eLang.GetString(825, "Unable to retrieve movie details for the entered IMDB ID. Please check your entry and try again."), Master.eLang.GetString(826, "Verification Failed"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-                Me.btnVerify.Enabled = True
+                btnVerify.Enabled = True
             End If
         End If
     End Sub
 
     Private Sub SearchResultsDownloaded(ByVal M As IMDB.SearchResults_TVShow)
-        Me.tvResults.Nodes.Clear()
-        Me.ClearInfo()
+        tvResults.Nodes.Clear()
+        ClearInfo()
         If M IsNot Nothing AndAlso M.Matches.Count > 0 Then
             For Each Show As MediaContainers.TVShow In M.Matches
-                Me.tvResults.Nodes.Add(New TreeNode() With {.Text = String.Concat(Show.Title), .Tag = Show.IMDB})
+                tvResults.Nodes.Add(New TreeNode() With {.Text = String.Concat(Show.Title), .Tag = Show.IMDB})
             Next
-            Me.tvResults.SelectedNode = Me.tvResults.Nodes(0)
+            tvResults.SelectedNode = tvResults.Nodes(0)
 
-            Me._prevnode = -2
+            _prevnode = -2
 
-            Me.tvResults.Focus()
+            tvResults.Focus()
         Else
-            Me.tvResults.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(833, "No Matches Found")})
+            tvResults.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(833, "No Matches Found")})
         End If
-        Me.pnlLoading.Visible = False
+        pnlLoading.Visible = False
         chkManual.Enabled = True
     End Sub
 
@@ -344,64 +353,64 @@ Public Class dlgIMDBSearchResults_TV
     End Function
 
     Private Sub SetUp()
-        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
-        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        Me.Label2.Text = Master.eLang.GetString(836, "View details of each result to find the proper movie.")
-        Me.Label1.Text = Master.eLang.GetString(948, "TV Search Results")
-        Me.chkManual.Text = Master.eLang.GetString(847, "Manual IMDB Entry:")
-        Me.btnVerify.Text = Master.eLang.GetString(848, "Verify")
-        Me.lblPremieredHeader.Text = String.Concat(Master.eLang.GetString(724, "Premiered"), ":")
-        Me.lblDirectorsHeader.Text = String.Concat(Master.eLang.GetString(940, "Directors"), ":")
-        Me.lblGenreHeader.Text = Master.eLang.GetString(51, "Genre(s):")
-        Me.lblIMDBHeader.Text = Master.eLang.GetString(873, "IMDB ID:")
-        Me.lblPlotHeader.Text = Master.eLang.GetString(242, "Plot Outline:")
-        Me.Label3.Text = Master.eLang.GetString(798, "Searching IMDB...")
+        OK_Button.Text = Master.eLang.GetString(179, "OK")
+        Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+        Label2.Text = Master.eLang.GetString(836, "View details of each result to find the proper movie.")
+        Label1.Text = Master.eLang.GetString(948, "TV Search Results")
+        chkManual.Text = Master.eLang.GetString(847, "Manual IMDB Entry:")
+        btnVerify.Text = Master.eLang.GetString(848, "Verify")
+        lblPremieredHeader.Text = String.Concat(Master.eLang.GetString(724, "Premiered"), ":")
+        lblDirectorsHeader.Text = String.Concat(Master.eLang.GetString(940, "Directors"), ":")
+        lblGenreHeader.Text = Master.eLang.GetString(51, "Genre(s):")
+        lblIMDBHeader.Text = Master.eLang.GetString(873, "IMDB ID:")
+        lblPlotHeader.Text = Master.eLang.GetString(242, "Plot Outline:")
+        Label3.Text = Master.eLang.GetString(798, "Searching IMDB...")
     End Sub
 
-    Private Sub tmrLoad_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrLoad.Tick
+    Private Sub tmrLoad_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles tmrLoad.Tick
         Dim pOpt As New Structures.ScrapeOptions
         pOpt = SetPreviewOptions()
 
-        Me.tmrWait.Stop()
-        Me.tmrLoad.Stop()
-        Me.pnlLoading.Visible = True
-        Me.Label3.Text = Master.eLang.GetString(875, "Downloading details...")
+        tmrWait.Stop()
+        tmrLoad.Stop()
+        pnlLoading.Visible = True
+        Label3.Text = Master.eLang.GetString(875, "Downloading details...")
 
-        _IMDB.GetSearchTVShowInfoAsync(Me.tvResults.SelectedNode.Tag.ToString, _nShow, pOpt)
+        _IMDB.GetSearchTVShowInfoAsync(tvResults.SelectedNode.Tag.ToString, _tmpTVShow, pOpt)
     End Sub
 
-    Private Sub tmrWait_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrWait.Tick
-        If Not Me._prevnode = Me._currnode Then
-            Me._prevnode = Me._currnode
-            Me.tmrWait.Stop()
-            Me.tmrLoad.Start()
+    Private Sub tmrWait_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles tmrWait.Tick
+        If Not _prevnode = _currnode Then
+            _prevnode = _currnode
+            tmrWait.Stop()
+            tmrLoad.Start()
         Else
-            Me.tmrLoad.Stop()
-            Me.tmrWait.Stop()
+            tmrLoad.Stop()
+            tmrWait.Stop()
         End If
     End Sub
-    Private Sub tvResults_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvResults.AfterSelect
+    Private Sub tvResults_AfterSelect(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvResults.AfterSelect
         Try
-            Me.tmrWait.Stop()
-            Me.tmrLoad.Stop()
+            tmrWait.Stop()
+            tmrLoad.Stop()
 
-            Me.ClearInfo()
-            Me.OK_Button.Enabled = False
+            ClearInfo()
+            OK_Button.Enabled = False
 
-            If Me.tvResults.SelectedNode.Tag IsNot Nothing AndAlso Not String.IsNullOrEmpty(Me.tvResults.SelectedNode.Tag.ToString) Then
-                Me._currnode = Me.tvResults.SelectedNode.Index
+            If tvResults.SelectedNode.Tag IsNot Nothing AndAlso Not String.IsNullOrEmpty(tvResults.SelectedNode.Tag.ToString) Then
+                _currnode = tvResults.SelectedNode.Index
 
                 'check if this movie is in the cache already
-                If _InfoCache.ContainsKey(Me.tvResults.SelectedNode.Tag.ToString) Then
-                    _nShow = GetTVShowClone(_InfoCache(Me.tvResults.SelectedNode.Tag.ToString))
-                    SearchInfoDownloaded(String.Empty, True)
+                If _InfoCache.ContainsKey(tvResults.SelectedNode.Tag.ToString) Then
+                    _tmpTVShow = GetTVShowClone(_InfoCache(tvResults.SelectedNode.Tag.ToString))
+                    SearchInfoDownloaded(String.Empty, _tmpTVShow)
                     Return
                 End If
 
-                Me.pnlLoading.Visible = True
-                Me.tmrWait.Start()
+                pnlLoading.Visible = True
+                tmrWait.Start()
             Else
-                Me.pnlLoading.Visible = False
+                pnlLoading.Visible = False
             End If
 
         Catch ex As Exception
@@ -409,31 +418,31 @@ Public Class dlgIMDBSearchResults_TV
         End Try
     End Sub
 
-    Private Sub tvResults_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles tvResults.GotFocus
-        Me.AcceptButton = Me.OK_Button
+    Private Sub tvResults_GotFocus(ByVal sender As Object, ByVal e As EventArgs) Handles tvResults.GotFocus
+        AcceptButton = OK_Button
     End Sub
 
-    Private Sub txtIMDBID_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtIMDBID.GotFocus
-        Me.AcceptButton = Me.btnVerify
+    Private Sub txtIMDBID_GotFocus(ByVal sender As Object, ByVal e As EventArgs) Handles txtIMDBID.GotFocus
+        AcceptButton = btnVerify
     End Sub
 
-    Private Sub txtIMDBID_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtIMDBID.TextChanged
-        If Me.chkManual.Checked Then
-            Me.btnVerify.Enabled = True
-            Me.OK_Button.Enabled = False
+    Private Sub txtIMDBID_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtIMDBID.TextChanged
+        If chkManual.Checked Then
+            btnVerify.Enabled = True
+            OK_Button.Enabled = False
         End If
     End Sub
 
-    Private Sub txtSearch_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtSearch.GotFocus
-        Me.AcceptButton = Me.btnSearch
+    Private Sub txtSearch_GotFocus(ByVal sender As Object, ByVal e As EventArgs) Handles txtSearch.GotFocus
+        AcceptButton = btnSearch
     End Sub
 
     Private Function GetTVShowClone(ByVal original As MediaContainers.TVShow) As MediaContainers.TVShow
         Try
-            Using mem As New IO.MemoryStream()
-                Dim bin As New System.Runtime.Serialization.Formatters.Binary.BinaryFormatter(Nothing, New System.Runtime.Serialization.StreamingContext(Runtime.Serialization.StreamingContextStates.Clone))
+            Using mem As New MemoryStream()
+                Dim bin As New Runtime.Serialization.Formatters.Binary.BinaryFormatter(Nothing, New Runtime.Serialization.StreamingContext(Runtime.Serialization.StreamingContextStates.Clone))
                 bin.Serialize(mem, original)
-                mem.Seek(0, IO.SeekOrigin.Begin)
+                mem.Seek(0, SeekOrigin.Begin)
                 Return DirectCast(bin.Deserialize(mem), MediaContainers.TVShow)
             End Using
         Catch ex As Exception

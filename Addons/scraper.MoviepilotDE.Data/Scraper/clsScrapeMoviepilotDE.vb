@@ -18,8 +18,6 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.IO
-Imports System.IO.Compression
 Imports System.Text.RegularExpressions
 Imports EmberAPI
 Imports NLog
@@ -30,7 +28,7 @@ Namespace MoviepilotDE
 
 #Region "Fields"
 
-        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
 #End Region 'Fields
 
@@ -61,9 +59,9 @@ Namespace MoviepilotDE
             Return FSK
         End Function
 
-        Public Function GetMovieInfo(ByVal strOriginalTitle As String, ByVal strTitle As String, ByVal strYear As String, ByRef nMovie As MediaContainers.Movie, ByVal FilteredOptions As Structures.ScrapeOptions) As Boolean
+        Public Function GetMovieInfo(ByVal strOriginalTitle As String, ByVal strTitle As String, ByVal strYear As String, ByVal FilteredOptions As Structures.ScrapeOptions) As MediaContainers.Movie
             Try
-                nMovie.Clear()
+                Dim nMovie As New MediaContainers.Movie
                 nMovie.Scrapersource = "MOVIEPILOT"
 
                 Dim sURL As String = SearchMovie(strOriginalTitle, strYear)
@@ -96,8 +94,10 @@ Namespace MoviepilotDE
                     End If
                 End If
 
+                Return nMovie
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
+                Return Nothing
             End Try
         End Function
         ''' <summary>

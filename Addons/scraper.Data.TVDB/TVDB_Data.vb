@@ -87,7 +87,7 @@ Public Class TVDB_Data
 
     Private Sub Handle_SetupScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
         ScraperEnabled = state
-        RaiseEvent ScraperSetupChanged(String.Concat(Me._Name, "_TV"), state, difforder)
+        RaiseEvent ScraperSetupChanged(String.Concat(_Name, "_TV"), state, difforder)
     End Sub
 
     Sub Init(ByVal sAssemblyName As String) Implements Interfaces.ScraperModule_Data_TV.Init
@@ -128,7 +128,7 @@ Public Class TVDB_Data
 
         _setup.orderChanged()
 
-        SPanel.Name = String.Concat(Me._Name, "_TV")
+        SPanel.Name = String.Concat(_Name, "_TV")
         SPanel.Text = "TVDB"
         SPanel.Prefix = "TVDBTVInfo_"
         SPanel.Order = 110
@@ -233,11 +233,10 @@ Public Class TVDB_Data
     '''  Scrape TVShowDetails from TVDB
     ''' </summary>
     ''' <param name="oDBTV">TV Show to be scraped. DBTV as ByRef to use existing data for identifing tv show and to fill with IMDB/TVDB ID for next scraper</param>
-    ''' <param name="nShow">New scraped TV Show data</param>
     ''' <param name="ScrapeOptions">What kind of data is being requested from the scrape(global scraper settings)</param>
     ''' <returns>Database.DBElement Object (nMovie) which contains the scraped data</returns>
     ''' <remarks></remarks>
-    Function Scraper(ByRef oDBTV As Database.DBElement, ByRef nShow As MediaContainers.TVShow, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_TV.Scraper_TVShow
+    Function Scraper(ByRef oDBTV As Database.DBElement, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_TVShow Implements Interfaces.ScraperModule_Data_TV.Scraper_TVShow
         logger.Trace("Started TVDB Scraper")
 
         LoadSettings()
@@ -246,64 +245,63 @@ Public Class TVDB_Data
         Settings.APIKey = _SpecialSettings.APIKey
         Settings.Language = oDBTV.Language
 
+        Dim nTVShow As New MediaContainers.TVShow
         Dim _scraper As New TVDBs.Scraper(Settings)
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions)
 
         If ScrapeModifier.MainNFO AndAlso Not ScrapeModifier.DoSearch Then
             If Not String.IsNullOrEmpty(oDBTV.TVShow.TVDB) Then
                 'TVDB-ID already available -> scrape and save data into an empty tv show container (nShow)
-                _scraper.GetTVShowInfo(oDBTV.TVShow.TVDB, nShow, ScrapeModifier, FilteredOptions, False)
+                nTVShow = _scraper.GetTVShowInfo(oDBTV.TVShow.TVDB, ScrapeModifier, FilteredOptions, False)
             ElseIf Not ScrapeType = Enums.ScrapeType.SingleScrape Then
                 'no TVDB-ID for tv show --> search first and try to get ID!
                 If Not String.IsNullOrEmpty(oDBTV.TVShow.Title) Then
-                    _scraper.GetSearchTVShowInfo(oDBTV.TVShow.Title, oDBTV, nShow, ScrapeType, ScrapeModifier, FilteredOptions)
+                    nTVShow = _scraper.GetSearchTVShowInfo(oDBTV.TVShow.Title, oDBTV, ScrapeType, ScrapeModifier, FilteredOptions)
                 End If
                 'if still no ID retrieved -> exit
-                If String.IsNullOrEmpty(nShow.TVDB) Then Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
+                If String.IsNullOrEmpty(nTVShow.TVDB) Then Return New Interfaces.ModuleResult_Data_TVShow With {.Result = Nothing}
             End If
         End If
 
-        If String.IsNullOrEmpty(nShow.TVDB) Then
+        If String.IsNullOrEmpty(nTVShow.TVDB) Then
             Select Case ScrapeType
                 Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto
-                    nShow = Nothing
-                    Return New Interfaces.ModuleResult With {.breakChain = False}
+                    Return New Interfaces.ModuleResult_Data_TVShow With {.Result = Nothing}
             End Select
         End If
 
         If ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto Then
             If String.IsNullOrEmpty(oDBTV.TVShow.TVDB) Then
-                Using dSearch As New dlgTVDBSearchResults(Settings, _scraper)
-                    If dSearch.ShowDialog(nShow, oDBTV.TVShow.Title, oDBTV.ShowPath, ScrapeModifier, FilteredOptions) = Windows.Forms.DialogResult.OK Then
-                        _scraper.GetTVShowInfo(nShow.TVDB, nShow, ScrapeModifier, FilteredOptions, False)
+                Using dlgSearch As New dlgTVDBSearchResults(Settings, _scraper)
+                    If dlgSearch.ShowDialog(oDBTV.TVShow.Title, oDBTV.ShowPath, ScrapeModifier, FilteredOptions) = DialogResult.OK Then
+                        nTVShow = _scraper.GetTVShowInfo(dlgSearch.Result.TVDB, ScrapeModifier, FilteredOptions, False)
                         'if a tvshow is found, set DoSearch back to "false" for following scrapers
                         ScrapeModifier.DoSearch = False
                     Else
-                        nShow = Nothing
-                        Return New Interfaces.ModuleResult With {.breakChain = False, .Cancelled = True}
+                        Return New Interfaces.ModuleResult_Data_TVShow With {.Cancelled = True, .Result = Nothing}
                     End If
                 End Using
             End If
         End If
 
         'set new informations for following scrapers
-        If nShow IsNot Nothing Then
-            If nShow.TitleSpecified Then
-                oDBTV.TVShow.Title = nShow.Title
+        If nTVShow IsNot Nothing Then
+            If nTVShow.TitleSpecified Then
+                oDBTV.TVShow.Title = nTVShow.Title
             End If
-            If nShow.TVDBSpecified Then
-                oDBTV.TVShow.TVDB = nShow.TVDB
+            If nTVShow.TVDBSpecified Then
+                oDBTV.TVShow.TVDB = nTVShow.TVDB
             End If
-            If nShow.IMDBSpecified Then
-                oDBTV.TVShow.IMDB = nShow.IMDB
+            If nTVShow.IMDBSpecified Then
+                oDBTV.TVShow.IMDB = nTVShow.IMDB
             End If
         End If
 
         logger.Trace("Finished TVDB Scraper")
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+        Return New Interfaces.ModuleResult_Data_TVShow With {.Result = nTVShow}
     End Function
 
-    Public Function Scraper_TVEpisode(ByRef oDBTVEpisode As Database.DBElement, ByRef nEpisode As MediaContainers.EpisodeDetails, ByVal ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_TV.Scraper_TVEpisode
+    Public Function Scraper_TVEpisode(ByRef oDBTVEpisode As Database.DBElement, ByVal ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_TVEpisode Implements Interfaces.ScraperModule_Data_TV.Scraper_TVEpisode
         logger.Trace("Started TVDB Scraper")
 
         LoadSettings()
@@ -312,42 +310,42 @@ Public Class TVDB_Data
         Settings.APIKey = _SpecialSettings.APIKey
         Settings.Language = oDBTVEpisode.Language
 
+        Dim nTVEpisode As New MediaContainers.EpisodeDetails
         Dim _scraper As New TVDBs.Scraper(Settings)
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions)
 
         If Not String.IsNullOrEmpty(oDBTVEpisode.TVShow.TVDB) Then
             If Not oDBTVEpisode.TVEpisode.Episode = -1 AndAlso Not oDBTVEpisode.TVEpisode.Season = -1 Then
-                nEpisode = _scraper.GetTVEpisodeInfo(CInt(oDBTVEpisode.TVShow.TVDB), oDBTVEpisode.TVEpisode.Season, oDBTVEpisode.TVEpisode.Episode, FilteredOptions)
+                nTVEpisode = _scraper.GetTVEpisodeInfo(CInt(oDBTVEpisode.TVShow.TVDB), oDBTVEpisode.TVEpisode.Season, oDBTVEpisode.TVEpisode.Episode, FilteredOptions)
             ElseIf Not String.IsNullOrEmpty(oDBTVEpisode.TVEpisode.Aired) Then
-                nEpisode = _scraper.GetTVEpisodeInfo(CInt(oDBTVEpisode.TVShow.TVDB), oDBTVEpisode.TVEpisode.Aired, FilteredOptions)
+                nTVEpisode = _scraper.GetTVEpisodeInfo(CInt(oDBTVEpisode.TVShow.TVDB), oDBTVEpisode.TVEpisode.Aired, FilteredOptions)
             Else
-                nEpisode = Nothing
+                Return New Interfaces.ModuleResult_Data_TVEpisode With {.Result = Nothing}
             End If
         End If
 
         'set new informations for following scrapers
-        If nEpisode IsNot Nothing Then
-            If nEpisode.TitleSpecified Then
-                oDBTVEpisode.TVEpisode.Title = nEpisode.Title
+        If nTVEpisode IsNot Nothing Then
+            If nTVEpisode.TitleSpecified Then
+                oDBTVEpisode.TVEpisode.Title = nTVEpisode.Title
             End If
-            If nEpisode.TVDBSpecified Then
-                oDBTVEpisode.TVEpisode.TVDB = nEpisode.TVDB
+            If nTVEpisode.TVDBSpecified Then
+                oDBTVEpisode.TVEpisode.TVDB = nTVEpisode.TVDB
             End If
-            If nEpisode.IMDBSpecified Then
-                oDBTVEpisode.TVEpisode.IMDB = nEpisode.IMDB
+            If nTVEpisode.IMDBSpecified Then
+                oDBTVEpisode.TVEpisode.IMDB = nTVEpisode.IMDB
             End If
         End If
 
         logger.Trace("Finished TVDB Scraper")
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+        Return New Interfaces.ModuleResult_Data_TVEpisode With {.Result = nTVEpisode}
     End Function
 
-    Public Function Scraper_TVSeason(ByRef oDBTVSeason As Database.DBElement, ByRef nSeason As MediaContainers.SeasonDetails, ByVal ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_TV.Scraper_TVSeason
-        nSeason = Nothing
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+    Public Function Scraper_TVSeason(ByRef oDBTVSeason As Database.DBElement, ByVal ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_TVSeason Implements Interfaces.ScraperModule_Data_TV.Scraper_TVSeason
+        Return New Interfaces.ModuleResult_Data_TVSeason With {.Result = Nothing}
     End Function
 
-    Public Sub ScraperOrderChanged() Implements EmberAPI.Interfaces.ScraperModule_Data_TV.ScraperOrderChanged
+    Public Sub ScraperOrderChanged() Implements Interfaces.ScraperModule_Data_TV.ScraperOrderChanged
         _setup.orderChanged()
     End Sub
 

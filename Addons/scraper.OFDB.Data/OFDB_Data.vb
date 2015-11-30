@@ -18,7 +18,6 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.IO
 Imports NLog
 Imports EmberAPI
 
@@ -170,25 +169,26 @@ Public Class OFDB_Data
     ''' <param name="Options">What kind of data is being requested from the scrape(global scraper settings)</param>
     ''' <returns>Database.DBElement Object (nMovie) which contains the scraped data</returns>
     ''' <remarks></remarks>
-    Function Scraper(ByRef oDBMovie As Database.DBElement, ByRef nMovie As MediaContainers.Movie, ByRef Modifier As Structures.ScrapeModifier, ByRef Type As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.Scraper
+    Function Scraper(ByRef oDBMovie As Database.DBElement, ByRef Modifier As Structures.ScrapeModifier, ByRef Type As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_Movie Implements Interfaces.ScraperModule_Data_Movie.Scraper
         logger.Trace("Started OFDB Scraper")
 
         LoadSettings()
 
+        Dim nMovie As New MediaContainers.Movie
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions)
 
         'datascraper needs imdb of movie!
         If String.IsNullOrEmpty(oDBMovie.Movie.ID) Then
             logger.Trace("IMDB-ID of movie is needed, but not availaible! Leave OFDB scraper...")
-            Return New Interfaces.ModuleResult With {.breakChain = False}
+            Return New Interfaces.ModuleResult_Data_Movie With {.Result = Nothing}
         End If
 
         If Modifier.MainNFO Then
-            _scraper.GetMovieInfo(oDBMovie.Movie.ID, nMovie, FilteredOptions)
+            nMovie = _scraper.GetMovieInfo(oDBMovie.Movie.ID, FilteredOptions)
         End If
 
         logger.Trace("Finished OFDB Scraper")
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+        Return New Interfaces.ModuleResult_Data_Movie With {.Result = nMovie}
     End Function
 
     Public Sub ScraperOrderChanged() Implements EmberAPI.Interfaces.ScraperModule_Data_Movie.ScraperOrderChanged

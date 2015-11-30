@@ -18,8 +18,6 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.IO
-Imports System.IO.Compression
 Imports System.Text.RegularExpressions
 Imports EmberAPI
 Imports NLog
@@ -30,7 +28,7 @@ Namespace OFDB
 
 #Region "Fields"
 
-        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
 #End Region 'Fields
 
@@ -123,9 +121,10 @@ Namespace OFDB
             Return FullPlot
         End Function
 
-        Public Function GetMovieInfo(ByVal strIMDBID As String, ByRef nMovie As MediaContainers.Movie, ByVal FilteredOptions As Structures.ScrapeOptions) As Boolean
+        Public Function GetMovieInfo(ByVal strIMDBID As String, ByVal FilteredOptions As Structures.ScrapeOptions) As MediaContainers.Movie
             Try
-                nMovie.Clear()
+                Dim nMovie As New MediaContainers.Movie
+
                 nMovie.Scrapersource = "OFDB"
 
                 Dim sURL As String = SearchMovie(strIMDBID)
@@ -176,8 +175,11 @@ Namespace OFDB
                         End If
                     End If
                 End If
+
+                Return nMovie
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
+                Return Nothing
             End Try
         End Function
 

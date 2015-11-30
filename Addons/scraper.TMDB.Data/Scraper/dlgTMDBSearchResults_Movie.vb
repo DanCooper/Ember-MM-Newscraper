@@ -18,7 +18,6 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.Text.RegularExpressions
 Imports System.IO
 Imports EmberAPI
 Imports NLog
@@ -27,10 +26,12 @@ Imports System.Diagnostics
 Public Class dlgTMDBSearchResults_Movie
 
 #Region "Fields"
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
+
     Friend WithEvents bwDownloadPic As New System.ComponentModel.BackgroundWorker
-    Friend WithEvents tmrLoad As New System.Windows.Forms.Timer
-    Friend WithEvents tmrWait As New System.Windows.Forms.Timer
+    Friend WithEvents tmrLoad As New Timer
+    Friend WithEvents tmrWait As New Timer
 
     Private _TMDB As TMDB.Scraper
     Private sHTTP As New HTTP
@@ -39,87 +40,93 @@ Public Class dlgTMDBSearchResults_Movie
     Private _SpecialSettings As TMDB_Data.SpecialSettings
 
     Private _InfoCache As New Dictionary(Of String, MediaContainers.Movie)
-    Private _PosterCache As New Dictionary(Of String, System.Drawing.Image)
+    Private _PosterCache As New Dictionary(Of String, Image)
     Private _filterOptions As Structures.ScrapeOptions
 
-    Private _nMovie As MediaContainers.Movie
+    Private _tmpMovie As New MediaContainers.Movie
 
 #End Region 'Fields
+
+#Region "Properties"
+
+    Public ReadOnly Property Result As MediaContainers.Movie
+        Get
+            Return _tmpMovie
+        End Get
+    End Property
+
+#End Region 'Properties
 
 #Region "Methods"
 
     Public Sub New(ByVal SpecialSettings As TMDB_Data.SpecialSettings, ByRef TMDB As TMDB.Scraper)
         ' This call is required by the designer.
         InitializeComponent()
-        Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
-        Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
-        Me.StartPosition = FormStartPosition.Manual
+        Left = Master.AppPos.Left + (Master.AppPos.Width - Width) \ 2
+        Top = Master.AppPos.Top + (Master.AppPos.Height - Height) \ 2
+        StartPosition = FormStartPosition.Manual
         _SpecialSettings = SpecialSettings
         _TMDB = TMDB
     End Sub
 
-    Public Overloads Function ShowDialog(ByRef nMovie As MediaContainers.Movie, ByVal sMovieTitle As String, ByVal sMovieFilename As String, ByVal filterOptions As Structures.ScrapeOptions, ByVal sMovieYear As String) As Windows.Forms.DialogResult
-        Me.tmrWait.Enabled = False
-        Me.tmrWait.Interval = 250
-        Me.tmrLoad.Enabled = False
-        Me.tmrLoad.Interval = 100
+    Public Overloads Function ShowDialog(ByVal sMovieTitle As String, ByVal sMovieFilename As String, ByVal filterOptions As Structures.ScrapeOptions, ByVal sMovieYear As String) As DialogResult
+        tmrWait.Enabled = False
+        tmrWait.Interval = 250
+        tmrLoad.Enabled = False
+        tmrLoad.Interval = 100
 
         _filterOptions = filterOptions
-        _nMovie = nMovie
 
-        Me.Text = String.Concat(Master.eLang.GetString(794, "Search Results"), " - ", sMovieTitle)
-        Me.txtSearch.Text = sMovieTitle
-        Me.txtFileName.Text = sMovieFilename
-        Me.txtYear.Text = sMovieYear
+        Text = String.Concat(Master.eLang.GetString(794, "Search Results"), " - ", sMovieTitle)
+        txtSearch.Text = sMovieTitle
+        txtFileName.Text = sMovieFilename
+        txtYear.Text = sMovieYear
         chkManual.Enabled = False
 
         _TMDB.SearchMovieAsync(sMovieTitle, _filterOptions, sMovieYear)
 
-        Return MyBase.ShowDialog()
+        Return ShowDialog()
     End Function
 
-    Public Overloads Function ShowDialog(ByRef nMovie As MediaContainers.Movie, ByVal Res As TMDB.SearchResults_Movie, ByVal sMovieTitle As String, ByVal sMovieFilename As String) As Windows.Forms.DialogResult
-        Me.tmrWait.Enabled = False
-        Me.tmrWait.Interval = 250
-        Me.tmrLoad.Enabled = False
-        Me.tmrLoad.Interval = 100
+    Public Overloads Function ShowDialog(ByVal Res As TMDB.SearchResults_Movie, ByVal sMovieTitle As String, ByVal sMovieFilename As String) As DialogResult
+        tmrWait.Enabled = False
+        tmrWait.Interval = 250
+        tmrLoad.Enabled = False
+        tmrLoad.Interval = 100
 
-        _nMovie = nMovie
-
-        Me.Text = String.Concat(Master.eLang.GetString(794, "Search Results"), " - ", sMovieTitle)
-        Me.txtSearch.Text = sMovieTitle
-        Me.txtFileName.Text = sMovieFilename
+        Text = String.Concat(Master.eLang.GetString(794, "Search Results"), " - ", sMovieTitle)
+        txtSearch.Text = sMovieTitle
+        txtFileName.Text = sMovieFilename
         SearchResultsDownloaded(Res)
 
-        Return MyBase.ShowDialog()
+        Return ShowDialog()
     End Function
 
-    Private Sub btnSearch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearch.Click
-        If Not String.IsNullOrEmpty(Me.txtSearch.Text) AndAlso (String.IsNullOrEmpty(Me.txtYear.Text) OrElse Integer.TryParse(Me.txtYear.Text, 0)) Then
-            Me.OK_Button.Enabled = False
+    Private Sub btnSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSearch.Click
+        If Not String.IsNullOrEmpty(txtSearch.Text) AndAlso (String.IsNullOrEmpty(txtYear.Text) OrElse Integer.TryParse(txtYear.Text, 0)) Then
+            OK_Button.Enabled = False
             pnlPicStatus.Visible = False
             _InfoCache.Clear()
             _PosterCache.Clear()
-            Me.ClearInfo()
-            Me.Label3.Text = Master.eLang.GetString(934, "Searching TMDB...")
-            Me.pnlLoading.Visible = True
+            ClearInfo()
+            Label3.Text = Master.eLang.GetString(934, "Searching TMDB...")
+            pnlLoading.Visible = True
             chkManual.Enabled = False
             _TMDB.CancelAsync()
 
-            _TMDB.SearchMovieAsync(Me.txtSearch.Text, _filterOptions, Me.txtYear.Text)
+            _TMDB.SearchMovieAsync(txtSearch.Text, _filterOptions, txtYear.Text)
         End If
     End Sub
 
-    Private Sub btnVerify_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnVerify.Click
+    Private Sub btnVerify_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnVerify.Click
         Dim pOpt As New Structures.ScrapeOptions
         pOpt = SetPreviewOptions()
         '' The rule is that if there is a tt is an IMDB otherwise is a TMDB
-        _TMDB.GetSearchMovieInfoAsync(Me.txtTMDBID.Text, _nMovie, pOpt)
-
+        _TMDB.GetSearchMovieInfoAsync(txtTMDBID.Text, _tmpMovie, pOpt)
     End Sub
 
     Private Sub btnOpenFolder_Click(sender As Object, e As EventArgs) Handles btnOpenFolder.Click
-        Dim fPath As String = Directory.GetParent(Me.txtFileName.Text).FullName
+        Dim fPath As String = Directory.GetParent(txtFileName.Text).FullName
 
         If Not String.IsNullOrEmpty(fPath) Then
             Process.Start("Explorer.exe", fPath)
@@ -142,7 +149,7 @@ Public Class dlgTMDBSearchResults_Movie
     Private Sub bwDownloadPic_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDownloadPic.RunWorkerCompleted
         Dim Res As Results = DirectCast(e.Result, Results)
 
-        Me.pbPoster.Image = Res.Result
+        pbPoster.Image = Res.Result
         If Not _PosterCache.ContainsKey(Res.IMDBId) Then
             _PosterCache.Add(Res.IMDBId, CType(Res.Result.Clone, Image))
         End If
@@ -150,150 +157,151 @@ Public Class dlgTMDBSearchResults_Movie
         pnlPicStatus.Visible = False
     End Sub
 
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+    Private Sub Cancel_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Cancel_Button.Click
         If _TMDB.bwTMDB.IsBusy Then
             _TMDB.CancelAsync()
         End If
-        _nMovie.Clear()
 
-        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Close()
+        _tmpMovie = Nothing
+
+        DialogResult = DialogResult.Cancel
     End Sub
 
-    Private Sub chkManual_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkManual.CheckedChanged
-        Me.ClearInfo()
-        Me.OK_Button.Enabled = False
-        Me.txtTMDBID.Enabled = Me.chkManual.Checked
-        Me.btnVerify.Enabled = Me.chkManual.Checked
-        Me.tvResults.Enabled = Not Me.chkManual.Checked
+    Private Sub chkManual_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkManual.CheckedChanged
+        ClearInfo()
+        OK_Button.Enabled = False
+        txtTMDBID.Enabled = chkManual.Checked
+        btnVerify.Enabled = chkManual.Checked
+        tvResults.Enabled = Not chkManual.Checked
 
-        If Not Me.chkManual.Checked Then
+        If Not chkManual.Checked Then
             txtTMDBID.Text = String.Empty
         End If
     End Sub
 
     Private Sub ClearInfo()
-        Me.ControlsVisible(False)
-        Me.lblTitle.Text = String.Empty
-        Me.lblTagline.Text = String.Empty
-        Me.lblYear.Text = String.Empty
-        Me.lblDirectors.Text = String.Empty
-        Me.lblGenre.Text = String.Empty
-        Me.txtPlot.Text = String.Empty
-        Me.lblTMDBID.Text = String.Empty
-        Me.pbPoster.Image = Nothing
+        ControlsVisible(False)
+        lblTitle.Text = String.Empty
+        lblTagline.Text = String.Empty
+        lblYear.Text = String.Empty
+        lblDirectors.Text = String.Empty
+        lblGenre.Text = String.Empty
+        txtPlot.Text = String.Empty
+        lblTMDBID.Text = String.Empty
+        pbPoster.Image = Nothing
 
-        _nMovie.Clear()
+        _tmpMovie.Clear()
 
         _TMDB.CancelAsync()
     End Sub
 
     Private Sub ControlsVisible(ByVal areVisible As Boolean)
-        Me.lblYearHeader.Visible = areVisible
-        Me.lblDirectorsHeader.Visible = areVisible
-        Me.lblGenreHeader.Visible = areVisible
-        Me.lblPlotHeader.Visible = areVisible
-        Me.lblTMDBHeader.Visible = areVisible
-        Me.txtPlot.Visible = areVisible
-        Me.lblYear.Visible = areVisible
-        Me.lblTagline.Visible = areVisible
-        Me.lblTitle.Visible = areVisible
-        Me.lblDirectors.Visible = areVisible
-        Me.lblGenre.Visible = areVisible
-        Me.lblTMDBID.Visible = areVisible
-        Me.pbPoster.Visible = areVisible
+        lblYearHeader.Visible = areVisible
+        lblDirectorsHeader.Visible = areVisible
+        lblGenreHeader.Visible = areVisible
+        lblPlotHeader.Visible = areVisible
+        lblTMDBHeader.Visible = areVisible
+        txtPlot.Visible = areVisible
+        lblYear.Visible = areVisible
+        lblTagline.Visible = areVisible
+        lblTitle.Visible = areVisible
+        lblDirectors.Visible = areVisible
+        lblGenre.Visible = areVisible
+        lblTMDBID.Visible = areVisible
+        pbPoster.Visible = areVisible
     End Sub
 
-    Private Sub dlgIMDBSearchResults_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.GotFocus
-        Me.AcceptButton = Me.OK_Button
+    Private Sub dlgIMDBSearchResults_GotFocus(ByVal sender As Object, ByVal e As EventArgs) Handles Me.GotFocus
+        AcceptButton = OK_Button
     End Sub
 
-    Private Sub dlgTMDBSearchResults_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.SetUp()
+    Private Sub dlgTMDBSearchResults_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
+        SetUp()
         pnlPicStatus.Visible = False
 
         AddHandler _TMDB.SearchInfoDownloaded_Movie, AddressOf SearchMovieInfoDownloaded
         AddHandler _TMDB.SearchResultsDownloaded_Movie, AddressOf SearchResultsDownloaded
 
-        Dim iBackground As New Bitmap(Me.pnlTop.Width, Me.pnlTop.Height)
+        Dim iBackground As New Bitmap(pnlTop.Width, pnlTop.Height)
         Using g As Graphics = Graphics.FromImage(iBackground)
-            g.FillRectangle(New Drawing2D.LinearGradientBrush(Me.pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)
-            Me.pnlTop.BackgroundImage = iBackground
+            g.FillRectangle(New Drawing2D.LinearGradientBrush(pnlTop.ClientRectangle, Color.SteelBlue, Color.LightSteelBlue, Drawing2D.LinearGradientMode.Horizontal), pnlTop.ClientRectangle)
+            pnlTop.BackgroundImage = iBackground
         End Using
     End Sub
 
-    Private Sub dlgTMDBSearchResults_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
-        Me.Activate()
-        Me.tvResults.Focus()
+    Private Sub dlgTMDBSearchResults_Shown(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Shown
+        Activate()
+        tvResults.Focus()
     End Sub
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.Close()
+    Private Sub OK_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles OK_Button.Click
+        DialogResult = DialogResult.OK
+        Close()
     End Sub
 
-    Private Sub SearchMovieInfoDownloaded(ByVal sPoster As String, ByVal bSuccess As Boolean)
-        Me.pnlLoading.Visible = False
-        Me.OK_Button.Enabled = True
+    Private Sub SearchMovieInfoDownloaded(ByVal sPoster As String, ByVal sInfo As MediaContainers.Movie)
+        pnlLoading.Visible = False
+        OK_Button.Enabled = True
 
-        If bSuccess Then
-            Me.ControlsVisible(True)
-            Me.lblTitle.Text = _nMovie.Title
-            Me.lblTagline.Text = _nMovie.Tagline
-            Me.lblYear.Text = _nMovie.Year
-            Me.lblDirectors.Text = _nMovie.Director
-            Me.lblGenre.Text = _nMovie.Genre
-            Me.txtPlot.Text = StringUtils.ShortenOutline(_nMovie.Plot, 410)
-            Me.lblTMDBID.Text = _nMovie.TMDBID
+        If sInfo IsNot Nothing Then
+            ControlsVisible(True)
+            _tmpMovie = sInfo
+            lblTitle.Text = _tmpMovie.Title
+            lblTagline.Text = _tmpMovie.Tagline
+            lblYear.Text = _tmpMovie.Year
+            lblDirectors.Text = _tmpMovie.Director
+            lblGenre.Text = _tmpMovie.Genre
+            txtPlot.Text = StringUtils.ShortenOutline(_tmpMovie.Plot, 410)
+            lblTMDBID.Text = _tmpMovie.TMDBID
 
-            If _PosterCache.ContainsKey(_nMovie.TMDBID) Then
+            If _PosterCache.ContainsKey(_tmpMovie.TMDBID) Then
                 'just set it
-                Me.pbPoster.Image = _PosterCache(_nMovie.TMDBID)
+                pbPoster.Image = _PosterCache(_tmpMovie.TMDBID)
             Else
                 'go download it, if available
                 If Not String.IsNullOrEmpty(sPoster) Then
-                    If Me.bwDownloadPic.IsBusy Then
-                        Me.bwDownloadPic.CancelAsync()
+                    If bwDownloadPic.IsBusy Then
+                        bwDownloadPic.CancelAsync()
                     End If
                     pnlPicStatus.Visible = True
-                    Me.bwDownloadPic = New System.ComponentModel.BackgroundWorker
-                    Me.bwDownloadPic.WorkerSupportsCancellation = True
-                    Me.bwDownloadPic.RunWorkerAsync(New Arguments With {.pURL = sPoster, .IMDBId = _nMovie.TMDBID})
+                    bwDownloadPic = New System.ComponentModel.BackgroundWorker
+                    bwDownloadPic.WorkerSupportsCancellation = True
+                    bwDownloadPic.RunWorkerAsync(New Arguments With {.pURL = sPoster, .IMDBId = _tmpMovie.TMDBID})
                 End If
 
             End If
 
             'store clone of tmpmovie
-            If Not _InfoCache.ContainsKey(_nMovie.TMDBID) Then
-                _InfoCache.Add(_nMovie.TMDBID, GetMovieClone(_nMovie))
+            If Not _InfoCache.ContainsKey(_tmpMovie.TMDBID) Then
+                _InfoCache.Add(_tmpMovie.TMDBID, GetMovieClone(_tmpMovie))
             End If
 
 
-            Me.btnVerify.Enabled = False
+            btnVerify.Enabled = False
         Else
-            If Me.chkManual.Checked Then
+            If chkManual.Checked Then
                 MessageBox.Show(Master.eLang.GetString(935, "Unable to retrieve movie details for the entered TMDB ID. Please check your entry and try again."), Master.eLang.GetString(826, "Verification Failed"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-                Me.btnVerify.Enabled = True
+                btnVerify.Enabled = True
             End If
         End If
     End Sub
 
     Private Sub SearchResultsDownloaded(ByVal M As TMDB.SearchResults_Movie)
-        Me.tvResults.Nodes.Clear()
-        Me.ClearInfo()
+        tvResults.Nodes.Clear()
+        ClearInfo()
         If M IsNot Nothing AndAlso M.Matches.Count > 0 Then
             For Each Movie As MediaContainers.Movie In M.Matches
-                Me.tvResults.Nodes.Add(New TreeNode() With {.Text = String.Concat(Movie.Title, If(Not String.IsNullOrEmpty(Movie.Year), String.Format(" ({0})", Movie.Year), String.Empty)), .Tag = Movie.TMDBID})
+                tvResults.Nodes.Add(New TreeNode() With {.Text = String.Concat(Movie.Title, If(Not String.IsNullOrEmpty(Movie.Year), String.Format(" ({0})", Movie.Year), String.Empty)), .Tag = Movie.TMDBID})
             Next
-            Me.tvResults.SelectedNode = Me.tvResults.Nodes(0)
+            tvResults.SelectedNode = tvResults.Nodes(0)
 
-            Me._prevnode = -2
+            _prevnode = -2
 
-            Me.tvResults.Focus()
+            tvResults.Focus()
         Else
-            Me.tvResults.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(833, "No Matches Found")})
+            tvResults.Nodes.Add(New TreeNode With {.Text = Master.eLang.GetString(833, "No Matches Found")})
         End If
-        Me.pnlLoading.Visible = False
+        pnlLoading.Visible = False
         chkManual.Enabled = True
     End Sub
 
@@ -311,88 +319,88 @@ Public Class dlgTMDBSearchResults_Movie
     End Function
 
     Private Sub SetUp()
-        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
-        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        Me.Label2.Text = Master.eLang.GetString(836, "View details of each result to find the proper movie.")
-        Me.Label1.Text = Master.eLang.GetString(846, "Movie Search Results")
-        Me.chkManual.Text = Master.eLang.GetString(926, "Manual TMDB Entry:")
-        Me.btnVerify.Text = Master.eLang.GetString(848, "Verify")
-        Me.lblYearHeader.Text = Master.eLang.GetString(49, "Year:")
-        Me.lblDirectorsHeader.Text = String.Concat(Master.eLang.GetString(940, "Directors"), ":")
-        Me.lblGenreHeader.Text = Master.eLang.GetString(51, "Genre(s):")
-        Me.lblTMDBHeader.Text = String.Concat(Master.eLang.GetString(933, "TMDB ID"), ":")
-        Me.lblPlotHeader.Text = Master.eLang.GetString(242, "Plot Outline:")
-        Me.Label3.Text = Master.eLang.GetString(934, "Searching TMDB...")
+        OK_Button.Text = Master.eLang.GetString(179, "OK")
+        Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+        Label2.Text = Master.eLang.GetString(836, "View details of each result to find the proper movie.")
+        Label1.Text = Master.eLang.GetString(846, "Movie Search Results")
+        chkManual.Text = Master.eLang.GetString(926, "Manual TMDB Entry:")
+        btnVerify.Text = Master.eLang.GetString(848, "Verify")
+        lblYearHeader.Text = Master.eLang.GetString(49, "Year:")
+        lblDirectorsHeader.Text = String.Concat(Master.eLang.GetString(940, "Directors"), ":")
+        lblGenreHeader.Text = Master.eLang.GetString(51, "Genre(s):")
+        lblTMDBHeader.Text = String.Concat(Master.eLang.GetString(933, "TMDB ID"), ":")
+        lblPlotHeader.Text = Master.eLang.GetString(242, "Plot Outline:")
+        Label3.Text = Master.eLang.GetString(934, "Searching TMDB...")
     End Sub
 
-    Private Sub tmrLoad_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrLoad.Tick
+    Private Sub tmrLoad_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles tmrLoad.Tick
         Dim pOpt As New Structures.ScrapeOptions
         pOpt = SetPreviewOptions()
 
-        Me.tmrWait.Stop()
-        Me.tmrLoad.Stop()
-        Me.pnlLoading.Visible = True
-        Me.Label3.Text = Master.eLang.GetString(875, "Downloading details...")
+        tmrWait.Stop()
+        tmrLoad.Stop()
+        pnlLoading.Visible = True
+        Label3.Text = Master.eLang.GetString(875, "Downloading details...")
 
-        _TMDB.GetSearchMovieInfoAsync(Me.tvResults.SelectedNode.Tag.ToString, _nMovie, pOpt)
+        _TMDB.GetSearchMovieInfoAsync(tvResults.SelectedNode.Tag.ToString, _tmpMovie, pOpt)
     End Sub
 
-    Private Sub tmrWait_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrWait.Tick
-        If Not Me._prevnode = Me._currnode Then
-            Me._prevnode = Me._currnode
-            Me.tmrWait.Stop()
-            Me.tmrLoad.Start()
+    Private Sub tmrWait_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles tmrWait.Tick
+        If Not _prevnode = _currnode Then
+            _prevnode = _currnode
+            tmrWait.Stop()
+            tmrLoad.Start()
         Else
-            Me.tmrLoad.Stop()
-            Me.tmrWait.Stop()
+            tmrLoad.Stop()
+            tmrWait.Stop()
         End If
     End Sub
 
-    Private Sub tvResults_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvResults.AfterSelect
-        Me.tmrWait.Stop()
-        Me.tmrLoad.Stop()
+    Private Sub tvResults_AfterSelect(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvResults.AfterSelect
+        tmrWait.Stop()
+        tmrLoad.Stop()
 
-        Me.ClearInfo()
-        Me.OK_Button.Enabled = False
+        ClearInfo()
+        OK_Button.Enabled = False
 
-        If Me.tvResults.SelectedNode.Tag IsNot Nothing AndAlso Not String.IsNullOrEmpty(Me.tvResults.SelectedNode.Tag.ToString) Then
-            Me._currnode = Me.tvResults.SelectedNode.Index
+        If tvResults.SelectedNode.Tag IsNot Nothing AndAlso Not String.IsNullOrEmpty(tvResults.SelectedNode.Tag.ToString) Then
+            _currnode = tvResults.SelectedNode.Index
 
             'check if this movie is in the cache already
-            If _InfoCache.ContainsKey(Me.tvResults.SelectedNode.Tag.ToString) Then
-                _nMovie = GetMovieClone(_InfoCache(Me.tvResults.SelectedNode.Tag.ToString))
-                SearchMovieInfoDownloaded(String.Empty, True)
+            If _InfoCache.ContainsKey(tvResults.SelectedNode.Tag.ToString) Then
+                _tmpMovie = GetMovieClone(_InfoCache(tvResults.SelectedNode.Tag.ToString))
+                SearchMovieInfoDownloaded(String.Empty, _tmpMovie)
                 Return
             End If
 
-            Me.pnlLoading.Visible = True
-            Me.tmrWait.Start()
+            pnlLoading.Visible = True
+            tmrWait.Start()
         Else
-            Me.pnlLoading.Visible = False
+            pnlLoading.Visible = False
         End If
     End Sub
 
-    Private Sub tvResults_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles tvResults.GotFocus
-        Me.AcceptButton = Me.OK_Button
+    Private Sub tvResults_GotFocus(ByVal sender As Object, ByVal e As EventArgs) Handles tvResults.GotFocus
+        AcceptButton = OK_Button
     End Sub
 
-    Private Sub txtTMDBID_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtTMDBID.GotFocus
-        Me.AcceptButton = Me.btnVerify
+    Private Sub txtTMDBID_GotFocus(ByVal sender As Object, ByVal e As EventArgs) Handles txtTMDBID.GotFocus
+        AcceptButton = btnVerify
     End Sub
 
-    Private Sub txtTMDBID_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTMDBID.TextChanged
-        If Me.chkManual.Checked Then
-            Me.btnVerify.Enabled = True
-            Me.OK_Button.Enabled = False
+    Private Sub txtTMDBID_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtTMDBID.TextChanged
+        If chkManual.Checked Then
+            btnVerify.Enabled = True
+            OK_Button.Enabled = False
         End If
     End Sub
 
-    Private Sub txtSearch_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtSearch.GotFocus
-        Me.AcceptButton = Me.btnSearch
+    Private Sub txtSearch_GotFocus(ByVal sender As Object, ByVal e As EventArgs) Handles txtSearch.GotFocus
+        AcceptButton = btnSearch
     End Sub
 
-    Private Sub txtYear_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtYear.GotFocus
-        Me.AcceptButton = Me.btnSearch
+    Private Sub txtYear_GotFocus(ByVal sender As Object, ByVal e As EventArgs) Handles txtYear.GotFocus
+        AcceptButton = btnSearch
     End Sub
 
     Private Function GetMovieClone(ByVal original As MediaContainers.Movie) As MediaContainers.Movie
