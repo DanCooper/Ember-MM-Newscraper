@@ -3233,8 +3233,6 @@ Namespace MediaContainers
         Private _imagethumb As Images
         Private _index As Integer
         Private _isduplicate As Boolean
-        Private _ischecked As Boolean
-        Private _isedit As Boolean
         Private _likes As Integer
         Private _localfilepath As String
         Private _longlang As String
@@ -3356,15 +3354,6 @@ Namespace MediaContainers
             End Get
             Set(ByVal value As Boolean)
                 _isduplicate = value
-            End Set
-        End Property
-
-        Public Property IsChecked() As Boolean
-            Get
-                Return _ischecked
-            End Get
-            Set(ByVal value As Boolean)
-                _ischecked = value
             End Set
         End Property
 
@@ -3538,7 +3527,7 @@ Namespace MediaContainers
             _imageoriginal = New Images
             _imagethumb = New Images
             _index = 0
-            _ischecked = False
+            _isduplicate = False
             _likes = 0
             _localfilepath = String.Empty
             _longlang = String.Empty
