@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class dlgImgSelect
     Inherits System.Windows.Forms.Form
 
     'Das Formular überschreibt den Löschvorgang, um die Komponentenliste zu bereinigen.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class dlgImgSelect
     'Hinweis: Die folgende Prozedur ist für den Windows Form-Designer erforderlich.
     'Das Bearbeiten ist mit dem Windows Form-Designer möglich.  
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgImgSelect))
@@ -45,10 +45,15 @@ Partial Class dlgImgSelect
         Me.btnSelectNone = New System.Windows.Forms.Button()
         Me.pnlImgSelectLeft = New System.Windows.Forms.Panel()
         Me.tblImgSelectLeft = New System.Windows.Forms.TableLayoutPanel()
-        Me.cbSubImageType = New System.Windows.Forms.ComboBox()
         Me.pnlSubImages = New System.Windows.Forms.Panel()
         Me.btnSubImageUp = New System.Windows.Forms.Button()
         Me.btnSubImageDown = New System.Windows.Forms.Button()
+        Me.btnExtrafanarts = New System.Windows.Forms.Button()
+        Me.btnExtrathumbs = New System.Windows.Forms.Button()
+        Me.btnSeasonBanner = New System.Windows.Forms.Button()
+        Me.btnSeasonFanart = New System.Windows.Forms.Button()
+        Me.btnSeasonLandscape = New System.Windows.Forms.Button()
+        Me.btnSeasonPoster = New System.Windows.Forms.Button()
         Me.ssImgSelect = New System.Windows.Forms.StatusStrip()
         Me.lblStatus = New System.Windows.Forms.ToolStripStatusLabel()
         Me.pbStatus = New System.Windows.Forms.ToolStripProgressBar()
@@ -56,6 +61,14 @@ Partial Class dlgImgSelect
         Me.pnlLoading = New System.Windows.Forms.Panel()
         Me.pbLoading = New System.Windows.Forms.ProgressBar()
         Me.lblLoading = New System.Windows.Forms.Label()
+        Me.cmnuTopImage = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.RestoreToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.RandomToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuSubImage = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.SubToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuListImage = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.ListToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.pnlImgSelect.SuspendLayout()
         Me.pnlImgSelectTop.SuspendLayout()
         Me.tblImgSelectTop.SuspendLayout()
@@ -68,6 +81,9 @@ Partial Class dlgImgSelect
         Me.tblImgSelectLeft.SuspendLayout()
         Me.ssImgSelect.SuspendLayout()
         Me.pnlLoading.SuspendLayout()
+        Me.cmnuTopImage.SuspendLayout()
+        Me.cmnuSubImage.SuspendLayout()
+        Me.cmnuListImage.SuspendLayout()
         Me.SuspendLayout()
         '
         'btnRemoveSubImage
@@ -322,33 +338,32 @@ Partial Class dlgImgSelect
         Me.tblImgSelectLeft.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblImgSelectLeft.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.tblImgSelectLeft.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblImgSelectLeft.Controls.Add(Me.btnRestoreSubImage, 0, 2)
-        Me.tblImgSelectLeft.Controls.Add(Me.btnRemoveSubImage, 5, 2)
-        Me.tblImgSelectLeft.Controls.Add(Me.cbSubImageType, 0, 0)
-        Me.tblImgSelectLeft.Controls.Add(Me.pnlSubImages, 0, 1)
-        Me.tblImgSelectLeft.Controls.Add(Me.btnSubImageUp, 2, 2)
-        Me.tblImgSelectLeft.Controls.Add(Me.btnSubImageDown, 3, 2)
+        Me.tblImgSelectLeft.Controls.Add(Me.btnRestoreSubImage, 0, 7)
+        Me.tblImgSelectLeft.Controls.Add(Me.btnRemoveSubImage, 5, 7)
+        Me.tblImgSelectLeft.Controls.Add(Me.pnlSubImages, 0, 6)
+        Me.tblImgSelectLeft.Controls.Add(Me.btnSubImageUp, 2, 7)
+        Me.tblImgSelectLeft.Controls.Add(Me.btnSubImageDown, 3, 7)
+        Me.tblImgSelectLeft.Controls.Add(Me.btnExtrafanarts, 0, 0)
+        Me.tblImgSelectLeft.Controls.Add(Me.btnExtrathumbs, 0, 1)
+        Me.tblImgSelectLeft.Controls.Add(Me.btnSeasonBanner, 0, 2)
+        Me.tblImgSelectLeft.Controls.Add(Me.btnSeasonFanart, 0, 3)
+        Me.tblImgSelectLeft.Controls.Add(Me.btnSeasonLandscape, 0, 4)
+        Me.tblImgSelectLeft.Controls.Add(Me.btnSeasonPoster, 0, 5)
         Me.tblImgSelectLeft.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblImgSelectLeft.Location = New System.Drawing.Point(0, 0)
         Me.tblImgSelectLeft.Name = "tblImgSelectLeft"
-        Me.tblImgSelectLeft.RowCount = 3
+        Me.tblImgSelectLeft.RowCount = 8
+        Me.tblImgSelectLeft.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblImgSelectLeft.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblImgSelectLeft.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblImgSelectLeft.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblImgSelectLeft.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblImgSelectLeft.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblImgSelectLeft.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.tblImgSelectLeft.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblImgSelectLeft.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblImgSelectLeft.Size = New System.Drawing.Size(211, 774)
         Me.tblImgSelectLeft.TabIndex = 0
-        '
-        'cbSubImageType
-        '
-        Me.tblImgSelectLeft.SetColumnSpan(Me.cbSubImageType, 6)
-        Me.cbSubImageType.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.cbSubImageType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbSubImageType.Enabled = False
-        Me.cbSubImageType.FormattingEnabled = True
-        Me.cbSubImageType.Location = New System.Drawing.Point(3, 3)
-        Me.cbSubImageType.Name = "cbSubImageType"
-        Me.cbSubImageType.Size = New System.Drawing.Size(205, 21)
-        Me.cbSubImageType.TabIndex = 3
         '
         'pnlSubImages
         '
@@ -356,9 +371,9 @@ Partial Class dlgImgSelect
         Me.pnlSubImages.AutoSize = True
         Me.tblImgSelectLeft.SetColumnSpan(Me.pnlSubImages, 6)
         Me.pnlSubImages.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.pnlSubImages.Location = New System.Drawing.Point(3, 30)
+        Me.pnlSubImages.Location = New System.Drawing.Point(3, 177)
         Me.pnlSubImages.Name = "pnlSubImages"
-        Me.pnlSubImages.Size = New System.Drawing.Size(205, 712)
+        Me.pnlSubImages.Size = New System.Drawing.Size(205, 565)
         Me.pnlSubImages.TabIndex = 4
         '
         'btnSubImageUp
@@ -380,6 +395,78 @@ Partial Class dlgImgSelect
         Me.btnSubImageDown.Size = New System.Drawing.Size(23, 23)
         Me.btnSubImageDown.TabIndex = 6
         Me.btnSubImageDown.UseVisualStyleBackColor = True
+        '
+        'btnExtrafanarts
+        '
+        Me.tblImgSelectLeft.SetColumnSpan(Me.btnExtrafanarts, 6)
+        Me.btnExtrafanarts.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.btnExtrafanarts.Enabled = False
+        Me.btnExtrafanarts.Location = New System.Drawing.Point(3, 3)
+        Me.btnExtrafanarts.Name = "btnExtrafanarts"
+        Me.btnExtrafanarts.Size = New System.Drawing.Size(205, 23)
+        Me.btnExtrafanarts.TabIndex = 7
+        Me.btnExtrafanarts.Text = "Extrafanarts"
+        Me.btnExtrafanarts.UseVisualStyleBackColor = True
+        '
+        'btnExtrathumbs
+        '
+        Me.tblImgSelectLeft.SetColumnSpan(Me.btnExtrathumbs, 6)
+        Me.btnExtrathumbs.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.btnExtrathumbs.Enabled = False
+        Me.btnExtrathumbs.Location = New System.Drawing.Point(3, 32)
+        Me.btnExtrathumbs.Name = "btnExtrathumbs"
+        Me.btnExtrathumbs.Size = New System.Drawing.Size(205, 23)
+        Me.btnExtrathumbs.TabIndex = 8
+        Me.btnExtrathumbs.Text = "Extrathumbs"
+        Me.btnExtrathumbs.UseVisualStyleBackColor = True
+        '
+        'btnSeasonBanner
+        '
+        Me.tblImgSelectLeft.SetColumnSpan(Me.btnSeasonBanner, 6)
+        Me.btnSeasonBanner.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.btnSeasonBanner.Enabled = False
+        Me.btnSeasonBanner.Location = New System.Drawing.Point(3, 61)
+        Me.btnSeasonBanner.Name = "btnSeasonBanner"
+        Me.btnSeasonBanner.Size = New System.Drawing.Size(205, 23)
+        Me.btnSeasonBanner.TabIndex = 9
+        Me.btnSeasonBanner.Text = "Season Banner"
+        Me.btnSeasonBanner.UseVisualStyleBackColor = True
+        '
+        'btnSeasonFanart
+        '
+        Me.tblImgSelectLeft.SetColumnSpan(Me.btnSeasonFanart, 6)
+        Me.btnSeasonFanart.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.btnSeasonFanart.Enabled = False
+        Me.btnSeasonFanart.Location = New System.Drawing.Point(3, 90)
+        Me.btnSeasonFanart.Name = "btnSeasonFanart"
+        Me.btnSeasonFanart.Size = New System.Drawing.Size(205, 23)
+        Me.btnSeasonFanart.TabIndex = 10
+        Me.btnSeasonFanart.Text = "Season Fanrt"
+        Me.btnSeasonFanart.UseVisualStyleBackColor = True
+        '
+        'btnSeasonLandscape
+        '
+        Me.tblImgSelectLeft.SetColumnSpan(Me.btnSeasonLandscape, 6)
+        Me.btnSeasonLandscape.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.btnSeasonLandscape.Enabled = False
+        Me.btnSeasonLandscape.Location = New System.Drawing.Point(3, 119)
+        Me.btnSeasonLandscape.Name = "btnSeasonLandscape"
+        Me.btnSeasonLandscape.Size = New System.Drawing.Size(205, 23)
+        Me.btnSeasonLandscape.TabIndex = 11
+        Me.btnSeasonLandscape.Text = "Season Landscape"
+        Me.btnSeasonLandscape.UseVisualStyleBackColor = True
+        '
+        'btnSeasonPoster
+        '
+        Me.tblImgSelectLeft.SetColumnSpan(Me.btnSeasonPoster, 6)
+        Me.btnSeasonPoster.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.btnSeasonPoster.Enabled = False
+        Me.btnSeasonPoster.Location = New System.Drawing.Point(3, 148)
+        Me.btnSeasonPoster.Name = "btnSeasonPoster"
+        Me.btnSeasonPoster.Size = New System.Drawing.Size(205, 23)
+        Me.btnSeasonPoster.TabIndex = 12
+        Me.btnSeasonPoster.Text = "Season Poster"
+        Me.btnSeasonPoster.UseVisualStyleBackColor = True
         '
         'ssImgSelect
         '
@@ -440,6 +527,54 @@ Partial Class dlgImgSelect
         Me.lblLoading.TabIndex = 0
         Me.lblLoading.Text = "Downloading Images..."
         '
+        'cmnuTopImage
+        '
+        Me.cmnuTopImage.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.RestoreToolStripMenuItem, Me.RandomToolStripMenuItem, Me.DeleteToolStripMenuItem})
+        Me.cmnuTopImage.Name = "cmnuImage"
+        Me.cmnuTopImage.Size = New System.Drawing.Size(120, 70)
+        '
+        'RestoreToolStripMenuItem
+        '
+        Me.RestoreToolStripMenuItem.Name = "RestoreToolStripMenuItem"
+        Me.RestoreToolStripMenuItem.Size = New System.Drawing.Size(119, 22)
+        Me.RestoreToolStripMenuItem.Text = "Restore"
+        '
+        'RandomToolStripMenuItem
+        '
+        Me.RandomToolStripMenuItem.Name = "RandomToolStripMenuItem"
+        Me.RandomToolStripMenuItem.Size = New System.Drawing.Size(119, 22)
+        Me.RandomToolStripMenuItem.Text = "Random"
+        '
+        'DeleteToolStripMenuItem
+        '
+        Me.DeleteToolStripMenuItem.Name = "DeleteToolStripMenuItem"
+        Me.DeleteToolStripMenuItem.Size = New System.Drawing.Size(119, 22)
+        Me.DeleteToolStripMenuItem.Text = "Delete"
+        '
+        'cmnuSubImage
+        '
+        Me.cmnuSubImage.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SubToolStripMenuItem})
+        Me.cmnuSubImage.Name = "cmnuSubImage"
+        Me.cmnuSubImage.Size = New System.Drawing.Size(153, 48)
+        '
+        'SubToolStripMenuItem
+        '
+        Me.SubToolStripMenuItem.Name = "SubToolStripMenuItem"
+        Me.SubToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.SubToolStripMenuItem.Text = "Sub"
+        '
+        'cmnuListImage
+        '
+        Me.cmnuListImage.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ListToolStripMenuItem})
+        Me.cmnuListImage.Name = "cmnuListImage"
+        Me.cmnuListImage.Size = New System.Drawing.Size(93, 26)
+        '
+        'ListToolStripMenuItem
+        '
+        Me.ListToolStripMenuItem.Name = "ListToolStripMenuItem"
+        Me.ListToolStripMenuItem.Size = New System.Drawing.Size(92, 22)
+        Me.ListToolStripMenuItem.Text = "List"
+        '
         'dlgImgSelect
         '
         Me.AcceptButton = Me.btnOK
@@ -475,6 +610,9 @@ Partial Class dlgImgSelect
         Me.ssImgSelect.PerformLayout()
         Me.pnlLoading.ResumeLayout(False)
         Me.pnlLoading.PerformLayout()
+        Me.cmnuTopImage.ResumeLayout(False)
+        Me.cmnuSubImage.ResumeLayout(False)
+        Me.cmnuListImage.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -485,7 +623,6 @@ Partial Class dlgImgSelect
     Friend WithEvents pnlImgSelectMain As System.Windows.Forms.Panel
     Friend WithEvents pnlImgSelectLeft As System.Windows.Forms.Panel
     Friend WithEvents tblImgSelectLeft As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents cbSubImageType As System.Windows.Forms.ComboBox
     Friend WithEvents pnlSubImages As System.Windows.Forms.Panel
     Friend WithEvents pnlImgSelectBottom As System.Windows.Forms.Panel
     Friend WithEvents pnlImgSelectTop As System.Windows.Forms.Panel
@@ -511,4 +648,18 @@ Partial Class dlgImgSelect
     Friend WithEvents pnlLoading As System.Windows.Forms.Panel
     Friend WithEvents pbLoading As System.Windows.Forms.ProgressBar
     Friend WithEvents lblLoading As System.Windows.Forms.Label
+    Friend WithEvents btnExtrafanarts As Button
+    Friend WithEvents btnExtrathumbs As Button
+    Friend WithEvents btnSeasonBanner As Button
+    Friend WithEvents btnSeasonFanart As Button
+    Friend WithEvents btnSeasonLandscape As Button
+    Friend WithEvents btnSeasonPoster As Button
+    Friend WithEvents cmnuTopImage As ContextMenuStrip
+    Friend WithEvents RestoreToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents RandomToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents DeleteToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents cmnuSubImage As ContextMenuStrip
+    Friend WithEvents SubToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents cmnuListImage As ContextMenuStrip
+    Friend WithEvents ListToolStripMenuItem As ToolStripMenuItem
 End Class
