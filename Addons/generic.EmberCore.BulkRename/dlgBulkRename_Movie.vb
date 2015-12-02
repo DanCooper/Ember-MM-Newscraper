@@ -65,7 +65,7 @@ Public Class dlgBulkRenamer_Movie
         StartPosition = FormStartPosition.Manual
     End Sub
 
-    Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
+    Private Sub btnCancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancel.Click
         If DoneRename Then
             CancelRename = True
         Else
@@ -75,11 +75,11 @@ Public Class dlgBulkRenamer_Movie
 
     Private Sub bwDoRename_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDoRename.RunWorkerCompleted
         pnlCancel.Visible = False
-        DialogResult = System.Windows.Forms.DialogResult.OK
+        DialogResult = DialogResult.OK
         Close()
     End Sub
 
-    Private Sub bwDoRename_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDoRename.DoWork
+    Private Sub bwDoRename_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDoRename.DoWork
         FFRenamer.DoRename_Movies(AddressOf ShowProgressRename)
     End Sub
 
@@ -88,7 +88,7 @@ Public Class dlgBulkRenamer_Movie
         lblFile.Text = e.UserState.ToString
     End Sub
 
-    Private Sub bwLoadInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadInfo.DoWork
+    Private Sub bwLoadInfo_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadInfo.DoWork
         Try
             Dim hasFilter As Boolean = False
             Dim dbFilter As String = String.Empty
@@ -191,7 +191,7 @@ Public Class dlgBulkRenamer_Movie
         End Try
     End Sub
 
-    Private Sub chkRenamedOnly_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkRenamedOnly.CheckedChanged
+    Private Sub chkRenamedOnly_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkRenamedOnly.CheckedChanged
         If chkRenamedOnly.Checked Then
             bsMovies.Filter = "IsRenamed = True AND IsLocked = False"
         Else
@@ -199,17 +199,17 @@ Public Class dlgBulkRenamer_Movie
         End If
     End Sub
 
-    Private Sub Close_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Close_Button.Click
+    Private Sub Close_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Close_Button.Click
         If DoneRename Then
-            DialogResult = System.Windows.Forms.DialogResult.OK
+            DialogResult = DialogResult.OK
         Else
-            DialogResult = System.Windows.Forms.DialogResult.Cancel
+            DialogResult = DialogResult.Cancel
         End If
 
         Close()
     End Sub
 
-    Private Sub cmsMovieList_Opening(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles cmsMovieList.Opening
+    Private Sub cmsMovieList_Opening(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles cmsMovieList.Opening
         Dim count As Integer = FFRenamer.GetCount_Movies
         Dim lockcount As Integer = FFRenamer.GetCountLocked_Movies
         If count > 0 Then
@@ -290,7 +290,7 @@ Public Class dlgBulkRenamer_Movie
         End If
     End Sub
 
-    Private Sub dlgBulkRename_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub dlgBulkRename_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         SetUp()
 
         FFRenamer = New FileFolderRenamer
@@ -303,7 +303,7 @@ Public Class dlgBulkRenamer_Movie
 
     End Sub
 
-    Private Sub dlgBulkRename_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+    Private Sub dlgBulkRename_Shown(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Shown
         Activate()
 
         Try
@@ -354,7 +354,7 @@ Public Class dlgBulkRenamer_Movie
         pnlCancel.Visible = False
     End Sub
 
-    Private Sub Rename_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Rename_Button.Click
+    Private Sub Rename_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Rename_Button.Click
         DoneRename = True
         pnlCancel.Visible = True
         lblCompiling.Text = Master.eLang.GetString(173, "Renaming...")
@@ -486,7 +486,7 @@ Public Class dlgBulkRenamer_Movie
         pnlCancel.Visible = True
     End Sub
 
-    Private Sub tmrSimul_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrSimul.Tick
+    Private Sub tmrSimul_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles tmrSimul.Tick
         Try
             'Need to make simulate thread safe
             tmrSimul.Enabled = False
@@ -499,23 +499,23 @@ Public Class dlgBulkRenamer_Movie
         End Try
     End Sub
 
-    Private Sub tsmLockAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmLockAll.Click
+    Private Sub tsmLockAll_Click(ByVal sender As Object, ByVal e As EventArgs) Handles tsmLockAll.Click
         setLockAll(True)
     End Sub
 
-    Private Sub tsmLockMovie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmLockMovie.Click
+    Private Sub tsmLockMovie_Click(ByVal sender As Object, ByVal e As EventArgs) Handles tsmLockMovie.Click
         setLock(True)
     End Sub
 
-    Private Sub tsmUnlockAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmUnlockAll.Click
+    Private Sub tsmUnlockAll_Click(ByVal sender As Object, ByVal e As EventArgs) Handles tsmUnlockAll.Click
         setLockAll(False)
     End Sub
 
-    Private Sub tsmUnlockMovie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmUnlockMovie.Click
+    Private Sub tsmUnlockMovie_Click(ByVal sender As Object, ByVal e As EventArgs) Handles tsmUnlockMovie.Click
         setLock(False)
     End Sub
 
-    Private Sub txtFile_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFilePattern.TextChanged
+    Private Sub txtFile_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtFilePattern.TextChanged
         Try
             If String.IsNullOrEmpty(txtFilePattern.Text) Then txtFilePattern.Text = "$F"
             tmrSimul.Enabled = True
@@ -524,7 +524,7 @@ Public Class dlgBulkRenamer_Movie
         End Try
     End Sub
 
-    Private Sub txtFolderNotSingle_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFolderPatternNotSingle.TextChanged
+    Private Sub txtFolderNotSingle_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtFolderPatternNotSingle.TextChanged
         Try
             If String.IsNullOrEmpty(txtFolderPatternNotSingle.Text) Then txtFolderPatternNotSingle.Text = "$D"
             tmrSimul.Enabled = True
@@ -533,7 +533,7 @@ Public Class dlgBulkRenamer_Movie
         End Try
     End Sub
 
-    Private Sub txtFolder_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFolderPattern.TextChanged
+    Private Sub txtFolder_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtFolderPattern.TextChanged
         Try
             If String.IsNullOrEmpty(txtFolderPattern.Text) Then txtFolderPattern.Text = "$D"
             tmrSimul.Enabled = True
@@ -559,15 +559,15 @@ Public Class dlgBulkRenamer_Movie
         End If
     End Sub
 
-    Private Sub btnFolderPatternHelp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFolderPatternHelp.Click
+    Private Sub btnFolderPatternHelp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFolderPatternHelp.Click
         LoadHelpTips()
     End Sub
 
-    Private Sub btnFolderPatternNotSingleHelp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFolderPatternNotSingleHelp.Click
+    Private Sub btnFolderPatternNotSingleHelp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFolderPatternNotSingleHelp.Click
         LoadHelpTips()
     End Sub
 
-    Private Sub btnFilePatternHelp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilePatternHelp.Click
+    Private Sub btnFilePatternHelp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFilePatternHelp.Click
         LoadHelpTips()
     End Sub
 
