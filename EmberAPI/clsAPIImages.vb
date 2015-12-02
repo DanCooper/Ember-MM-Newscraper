@@ -3027,6 +3027,9 @@ Public Class Images
                     'End If
                 End If
                 Dim newSimilarityvalue = Tuple.Create(i, currentimagesimilarity)
+                If MatchTolerance >= currentimagesimilarity Then
+                    logger.Trace("[RemoveDuplicateImages] Duplicate images found: Image1: " & ImageList.Item(i).URLOriginal & " Image2: Current image!")
+                End If
                 lstSimilarImages.Add(newSimilarityvalue)
             Next
         End If
@@ -3054,6 +3057,9 @@ Public Class Images
                     'End If
                 End If
                 Dim newSimilarityvalue = Tuple.Create(i, currentimagesimilarity)
+                If MatchTolerance >= currentimagesimilarity Then
+                    logger.Trace("[RemoveDuplicateImages] Duplicate images found: Image1: " & ImageList.Item(i).URLOriginal & " Image2: " & ImageList.Item(j).URLOriginal)
+                End If
                 lstSimilarImages.Add(newSimilarityvalue)
             Next
         Next
@@ -3075,8 +3081,12 @@ Public Class Images
         '3. Step: finally remove duplicate image at index calculated above
         For i = ImageList.Count - 1 To 0 Step -1
             If lstSimilarImages.Any(Function(c) c.Item1 = i AndAlso c.Item2 <= MatchTolerance) Then
-                logger.Trace("[RemoveDuplicateImages] Ignore image: " & ImageList.Item(i).URLOriginal & " ...")
-                ImageList.RemoveAt(i)
+                If i > 0 Then
+                    logger.Trace("[RemoveDuplicateImages] Duplicate images found: Image1: " & ImageList.Item(i).URLOriginal & " Image2: " & ImageList.Item(i - 1).URLOriginal)
+                End If
+                'don't remove duplicate images directly, instead "mark" them as duplicate and handle filtering in following methods...
+                'ImageList.RemoveAt(i)
+                ImageList.Item(i).IsDuplicate = True
             End If
         Next
 
