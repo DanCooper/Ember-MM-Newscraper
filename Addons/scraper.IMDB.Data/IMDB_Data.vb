@@ -446,7 +446,7 @@ Public Class IMDB_Data
     ''' <param name="Options">What kind of data is being requested from the scrape(global scraper settings)</param>
     ''' <returns>Database.DBElement Object (nMovie) which contains the scraped data</returns>
     ''' <remarks></remarks>
-    Function Scraper(ByRef oDBMovie As Database.DBElement, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_Movie Implements Interfaces.ScraperModule_Data_Movie.Scraper
+    Function Scraper_Movie(ByRef oDBMovie As Database.DBElement, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_Movie Implements Interfaces.ScraperModule_Data_Movie.Scraper_Movie
         logger.Trace("Started IMDB Scraper")
 
         LoadSettings_Movie()
@@ -462,12 +462,12 @@ Public Class IMDB_Data
             ElseIf Not ScrapeType = Enums.ScrapeType.SingleScrape Then
                 'no IMDB-ID for movie --> search first!
                 nMovie = _scraper.GetSearchMovieInfo(oDBMovie.Movie.Title, oDBMovie.Movie.Year, oDBMovie, ScrapeType, FilteredOptions, _SpecialSettings_Movie.FallBackWorldwide, _SpecialSettings_Movie.ForceTitleLanguage, _SpecialSettings_Movie.CountryAbbreviation, _SpecialSettings_Movie.StudiowithDistributors)
-                'if still no ID retrieved -> exit
-                If String.IsNullOrEmpty(nMovie.IMDBID) Then Return New Interfaces.ModuleResult_Data_Movie With {.Result = Nothing}
+                'if still no search result -> exit
+                If nMovie Is Nothing Then Return New Interfaces.ModuleResult_Data_Movie With {.Result = Nothing}
             End If
         End If
 
-        If String.IsNullOrEmpty(nMovie.IMDBID) Then
+        If nMovie Is Nothing Then
             Select Case ScrapeType
                 Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto
                     Return New Interfaces.ModuleResult_Data_Movie With {.Result = Nothing}

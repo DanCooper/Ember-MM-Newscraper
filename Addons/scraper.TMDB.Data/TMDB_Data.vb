@@ -591,7 +591,7 @@ Public Class TMDB_Data
     ''' <param name="Options">What kind of data is being requested from the scrape(global scraper settings)</param>
     ''' <returns>Database.DBElement Object (nMovie) which contains the scraped data</returns>
     ''' <remarks></remarks>
-    Function Scraper_Movie(ByRef oDBElement As Database.DBElement, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_Movie Implements Interfaces.ScraperModule_Data_Movie.Scraper
+    Function Scraper_Movie(ByRef oDBElement As Database.DBElement, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_Movie Implements Interfaces.ScraperModule_Data_Movie.Scraper_Movie
         logger.Trace("Started TMDB Scraper")
 
         LoadSettings_Movie()
@@ -614,12 +614,12 @@ Public Class TMDB_Data
                 If Not String.IsNullOrEmpty(oDBElement.Movie.Title) Then
                     nMovie = _scraper.GetSearchMovieInfo(oDBElement.Movie.Title, oDBElement, ScrapeType, FilteredOptions)
                 End If
-                'if still no ID retrieved -> exit
-                If String.IsNullOrEmpty(nMovie.TMDBID) Then Return New Interfaces.ModuleResult_Data_Movie With {.Result = Nothing}
+                'if still no search result -> exit
+                If nMovie Is Nothing Then Return New Interfaces.ModuleResult_Data_Movie With {.Result = Nothing}
             End If
         End If
 
-        If String.IsNullOrEmpty(nMovie.TMDBID) Then
+        If nMovie Is Nothing Then
             Select Case ScrapeType
                 Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto
                     Return New Interfaces.ModuleResult_Data_Movie With {.Result = Nothing}
@@ -686,12 +686,12 @@ Public Class TMDB_Data
                 If Not String.IsNullOrEmpty(oDBElement.MovieSet.Title) Then
                     nMovieSet = _scraper.GetSearchMovieSetInfo(oDBElement.MovieSet.Title, oDBElement, ScrapeType, FilteredOptions)
                 End If
-                'if still no ID retrieved -> exit
-                If String.IsNullOrEmpty(nMovieSet.TMDB) Then Return New Interfaces.ModuleResult_Data_MovieSet With {.Result = Nothing}
+                'if still no search result -> exit
+                If nMovieSet Is Nothing Then Return New Interfaces.ModuleResult_Data_MovieSet With {.Result = Nothing}
             End If
         End If
 
-        If String.IsNullOrEmpty(nMovieSet.TMDB) Then
+        If nMovieSet Is Nothing Then
             Select Case ScrapeType
                 Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto
                     Return New Interfaces.ModuleResult_Data_MovieSet With {.Result = Nothing}
@@ -761,12 +761,12 @@ Public Class TMDB_Data
                 If Not String.IsNullOrEmpty(oDBElement.TVShow.Title) Then
                     nTVShow = _scraper.GetSearchTVShowInfo(oDBElement.TVShow.Title, oDBElement, ScrapeType, ScrapeModifier, FilteredOptions)
                 End If
-                'if still no ID retrieved -> exit
-                If String.IsNullOrEmpty(nTVShow.TMDB) Then Return New Interfaces.ModuleResult_Data_TVShow With {.Result = Nothing}
+                'if still no search result -> exit
+                If nTVShow Is Nothing Then Return New Interfaces.ModuleResult_Data_TVShow With {.Result = Nothing}
             End If
         End If
 
-        If String.IsNullOrEmpty(nTVShow.TMDB) Then
+        If nTVShow Is Nothing Then
             Select Case ScrapeType
                 Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto
                     Return New Interfaces.ModuleResult_Data_TVShow With {.Result = Nothing}
@@ -830,6 +830,8 @@ Public Class TMDB_Data
             Else
                 Return New Interfaces.ModuleResult_Data_TVEpisode With {.Result = Nothing}
             End If
+            'if still no search result -> exit
+            If nTVEpisode Is Nothing Then Return New Interfaces.ModuleResult_Data_TVEpisode With {.Result = Nothing}
         End If
 
         'set new informations for following scrapers
@@ -873,6 +875,8 @@ Public Class TMDB_Data
             Else
                 Return New Interfaces.ModuleResult_Data_TVSeason With {.Result = Nothing}
             End If
+            'if still no search result -> exit
+            If nTVSeason Is Nothing Then Return New Interfaces.ModuleResult_Data_TVSeason With {.Result = Nothing}
         End If
 
         'set new informations for following scrapers

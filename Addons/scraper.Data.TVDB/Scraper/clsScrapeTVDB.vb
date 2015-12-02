@@ -112,39 +112,33 @@ Namespace TVDBs
 
         Public Function GetSearchTVShowInfo(ByVal sShowName As String, ByRef oDBTV As Database.DBElement, ByVal iType As Enums.ScrapeType, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef FilteredOptions As Structures.ScrapeOptions) As MediaContainers.TVShow
             Dim r As SearchResults = SearchTVShow(sShowName)
-            Dim nShow As New MediaContainers.TVShow
 
             Select Case iType
                 Case Enums.ScrapeType.AllAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MissingAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SingleField
                     If r.Matches.Count = 1 Then
-                        nShow = GetTVShowInfo(r.Matches.Item(0).TVDB, ScrapeModifier, FilteredOptions, False)
+                        Return GetTVShowInfo(r.Matches.Item(0).TVDB, ScrapeModifier, FilteredOptions, False)
                     Else
-                        nShow.Clear()
                         Using dlgSearch As New dlgTVDBSearchResults(_SpecialSettings, Me)
                             If dlgSearch.ShowDialog(r, sShowName, oDBTV.ShowPath) = DialogResult.OK Then
-                                If String.IsNullOrEmpty(dlgSearch.Result.TVDB) Then
-                                    Return Nothing
-                                Else
-                                    nShow = GetTVShowInfo(dlgSearch.Result.TVDB, ScrapeModifier, FilteredOptions, False)
+                                If Not String.IsNullOrEmpty(dlgSearch.Result.TVDB) Then
+                                    Return GetTVShowInfo(dlgSearch.Result.TVDB, ScrapeModifier, FilteredOptions, False)
                                 End If
-                            Else
-                                Return Nothing
                             End If
                         End Using
                     End If
 
                 Case Enums.ScrapeType.AllSkip, Enums.ScrapeType.FilterSkip, Enums.ScrapeType.MarkedSkip, Enums.ScrapeType.MissingSkip, Enums.ScrapeType.NewSkip, Enums.ScrapeType.SelectedSkip
                     If r.Matches.Count = 1 Then
-                        nShow = GetTVShowInfo(r.Matches.Item(0).TVDB, ScrapeModifier, FilteredOptions, False)
+                        Return GetTVShowInfo(r.Matches.Item(0).TVDB, ScrapeModifier, FilteredOptions, False)
                     End If
 
                 Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SingleScrape
                     If r.Matches.Count > 0 Then
-                        nShow = GetTVShowInfo(r.Matches.Item(0).TVDB, ScrapeModifier, FilteredOptions, False)
+                        Return GetTVShowInfo(r.Matches.Item(0).TVDB, ScrapeModifier, FilteredOptions, False)
                     End If
             End Select
 
-            Return nShow
+            Return Nothing
         End Function
 
         Private Function SearchTVShow(ByVal sShow As String) As SearchResults

@@ -258,12 +258,12 @@ Public Class TVDB_Data
                 If Not String.IsNullOrEmpty(oDBTV.TVShow.Title) Then
                     nTVShow = _scraper.GetSearchTVShowInfo(oDBTV.TVShow.Title, oDBTV, ScrapeType, ScrapeModifier, FilteredOptions)
                 End If
-                'if still no ID retrieved -> exit
-                If String.IsNullOrEmpty(nTVShow.TVDB) Then Return New Interfaces.ModuleResult_Data_TVShow With {.Result = Nothing}
+                'if still no search result -> exit
+                If nTVShow Is Nothing Then Return New Interfaces.ModuleResult_Data_TVShow With {.Result = Nothing}
             End If
         End If
 
-        If String.IsNullOrEmpty(nTVShow.TVDB) Then
+        If nTVShow Is Nothing Then
             Select Case ScrapeType
                 Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto
                     Return New Interfaces.ModuleResult_Data_TVShow With {.Result = Nothing}
