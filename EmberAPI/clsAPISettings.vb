@@ -4213,33 +4213,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TraktUsername() As String
-        Get
-            Return Settings._XMLSettings.TraktUsername
-        End Get
-        Set(ByVal value As String)
-            Settings._XMLSettings.TraktUsername = value
-        End Set
-    End Property
-
-    Public Property TraktPassword() As String
-        Get
-            Return Settings._XMLSettings.TraktPassword
-        End Get
-        Set(ByVal value As String)
-            Settings._XMLSettings.TraktPassword = value
-        End Set
-    End Property
-
-    Public Property UseTrakt() As Boolean
-        Get
-            Return Settings._XMLSettings.UseTrakt
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.UseTrakt = value
-        End Set
-    End Property
-
     Public Property GeneralDateTime() As Enums.DateTime
         Get
             Return Settings._XMLSettings.GeneralDateTime
@@ -6987,8 +6960,6 @@ Public Class Settings
         ProxyPort = 0
         ProxyURI = String.Empty
         SortPath = String.Empty
-        TraktPassword = String.Empty
-        TraktUsername = String.Empty
         TVAllSeasonsBannerHeight = 0
         TVAllSeasonsBannerKeepExisting = False
         TVAllSeasonsBannerPrefSize = Enums.TVBannerSize.Any
@@ -7197,7 +7168,6 @@ Public Class Settings
         TVSortTokens = New List(Of String)
         TVSortTokensIsEmpty = False
         Username = String.Empty
-        UseTrakt = False
         Version = String.Empty
 
         LoadTVLanguages()

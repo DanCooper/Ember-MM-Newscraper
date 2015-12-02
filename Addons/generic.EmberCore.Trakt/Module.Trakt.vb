@@ -105,11 +105,11 @@ Public Class Trakt_Generic
     ''' TODO: Needs some testing (error handling..)!? Idea: Can be executed via commandline to update/sync playcounts of movies and episodes
     ''' </remarks>
     Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
-        Try
-            dlgTrakttvManager.CLSyncPlaycount()
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+        'Try
+        '    dlgTrakttvManager.CLSyncPlaycount()
+        'Catch ex As Exception
+        '    logger.Error(New StackFrame().GetMethod().Name, ex)
+        'End Try
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 

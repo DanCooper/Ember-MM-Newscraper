@@ -303,8 +303,6 @@ Partial Public Class clsXMLSettings
     Private _proxyport As Integer
     Private _proxyuri As String
     Private _sortpath As String
-    Private _traktpassword As String
-    Private _traktusername As String
     Private _tvallseasonsbannerheight As Integer
     Private _tvallseasonsbannerkeepexisting As Boolean
     Private _tvallseasonsbannerprefsize As Enums.TVBannerSize
@@ -511,7 +509,6 @@ Partial Public Class clsXMLSettings
     Private _tvsorttokens As List(Of String)
     Private _tvsorttokensisempty As Boolean
     Private _username As String
-    Private _usetrakt As Boolean
     Private _version As String
 
 
@@ -5162,33 +5159,6 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As String)
             Me._password = value
-        End Set
-    End Property
-
-    Public Property TraktUsername() As String
-        Get
-            Return Me._traktusername
-        End Get
-        Set(ByVal value As String)
-            Me._traktusername = value
-        End Set
-    End Property
-
-    Public Property TraktPassword() As String
-        Get
-            Return Me._traktpassword
-        End Get
-        Set(ByVal value As String)
-            Me._traktpassword = value
-        End Set
-    End Property
-
-    Public Property UseTrakt() As Boolean
-        Get
-            Return Me._usetrakt
-        End Get
-        Set(ByVal value As Boolean)
-            Me._usetrakt = value
         End Set
     End Property
 
