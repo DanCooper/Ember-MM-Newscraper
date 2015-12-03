@@ -1172,113 +1172,98 @@ Namespace TMDB
 
         Public Function GetSearchMovieInfo(ByVal strMovieName As String, ByRef oDBMovie As Database.DBElement, ByVal eType As Enums.ScrapeType, ByVal FilteredOptions As Structures.ScrapeOptions) As MediaContainers.Movie
             Dim r As SearchResults_Movie = SearchMovie(strMovieName, CInt(If(Not String.IsNullOrEmpty(oDBMovie.Movie.Year), oDBMovie.Movie.Year, Nothing)))
-            Dim nMovie As New MediaContainers.Movie
 
             Select Case eType
                 Case Enums.ScrapeType.AllAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MissingAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SingleField
                     If r.Matches.Count = 1 Then
-                        nMovie = GetMovieInfo(r.Matches.Item(0).TMDBID, False, FilteredOptions, True)
+                        Return GetMovieInfo(r.Matches.Item(0).TMDBID, False, FilteredOptions, True)
                     Else
                         Using dlgSearch As New dlgTMDBSearchResults_Movie(_SpecialSettings, Me)
                             If dlgSearch.ShowDialog(r, strMovieName, oDBMovie.Filename) = DialogResult.OK Then
-                                If String.IsNullOrEmpty(dlgSearch.Result.TMDBID) Then
-                                    Return Nothing
-                                Else
-                                    nMovie = GetMovieInfo(dlgSearch.Result.TMDBID, False, FilteredOptions, True)
+                                If Not String.IsNullOrEmpty(dlgSearch.Result.TMDBID) Then
+                                    Return GetMovieInfo(dlgSearch.Result.TMDBID, False, FilteredOptions, True)
                                 End If
-                            Else
-                                Return Nothing
                             End If
                         End Using
                     End If
 
                 Case Enums.ScrapeType.AllSkip, Enums.ScrapeType.FilterSkip, Enums.ScrapeType.MarkedSkip, Enums.ScrapeType.MissingSkip, Enums.ScrapeType.NewSkip, Enums.ScrapeType.SelectedSkip
                     If r.Matches.Count = 1 Then
-                        nMovie = GetMovieInfo(r.Matches.Item(0).TMDBID, False, FilteredOptions, True)
+                        Return GetMovieInfo(r.Matches.Item(0).TMDBID, False, FilteredOptions, True)
                     End If
 
                 Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SingleScrape
                     Dim exactHaveYear As Integer = FindYear(oDBMovie.Filename, r.Matches)
                     If r.Matches.Count = 1 Then
-                        nMovie = GetMovieInfo(r.Matches.Item(0).TMDBID, False, FilteredOptions, True)
+                        Return GetMovieInfo(r.Matches.Item(0).TMDBID, False, FilteredOptions, True)
                     ElseIf r.Matches.Count > 1 Then
-                        nMovie = GetMovieInfo(r.Matches.Item(If(exactHaveYear >= 0, exactHaveYear, 0)).TMDBID, False, FilteredOptions, True)
+                        Return GetMovieInfo(r.Matches.Item(If(exactHaveYear >= 0, exactHaveYear, 0)).TMDBID, False, FilteredOptions, True)
                     End If
             End Select
 
-            Return nMovie
+            Return Nothing
         End Function
 
         Public Function GetSearchMovieSetInfo(ByVal strMovieSetName As String, ByRef oDBMovieSet As Database.DBElement, ByVal eType As Enums.ScrapeType, ByVal FilteredOptions As Structures.ScrapeOptions) As MediaContainers.MovieSet
             Dim r As SearchResults_MovieSet = SearchMovieSet(strMovieSetName)
-            Dim nMovieSet As New MediaContainers.MovieSet
 
             Select Case eType
                 Case Enums.ScrapeType.AllAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MissingAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SingleField
                     If r.Matches.Count = 1 Then
-                        nMovieSet = GetMovieSetInfo(r.Matches.Item(0).TMDB, False, FilteredOptions, True)
+                        Return GetMovieSetInfo(r.Matches.Item(0).TMDB, False, FilteredOptions, True)
                     Else
                         Using dlgSearch As New dlgTMDBSearchResults_MovieSet(_SpecialSettings, Me)
                             If dlgSearch.ShowDialog(r, strMovieSetName) = DialogResult.OK Then
-                                If String.IsNullOrEmpty(dlgSearch.Result.TMDB) Then
-                                    Return Nothing
-                                Else
-                                    nMovieSet = GetMovieSetInfo(dlgSearch.Result.TMDB, False, FilteredOptions, True)
+                                If Not String.IsNullOrEmpty(dlgSearch.Result.TMDB) Then
+                                    Return GetMovieSetInfo(dlgSearch.Result.TMDB, False, FilteredOptions, True)
                                 End If
-                            Else
-                                Return Nothing
                             End If
                         End Using
                     End If
 
                 Case Enums.ScrapeType.AllSkip, Enums.ScrapeType.FilterSkip, Enums.ScrapeType.MarkedSkip, Enums.ScrapeType.MissingSkip, Enums.ScrapeType.NewSkip, Enums.ScrapeType.SelectedSkip
                     If r.Matches.Count = 1 Then
-                        nMovieSet = GetMovieSetInfo(r.Matches.Item(0).TMDB, False, FilteredOptions, True)
+                        Return GetMovieSetInfo(r.Matches.Item(0).TMDB, False, FilteredOptions, True)
                     End If
 
                 Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SingleScrape
                     If r.Matches.Count > 0 Then
-                        nMovieSet = GetMovieSetInfo(r.Matches.Item(0).TMDB, False, FilteredOptions, True)
+                        Return GetMovieSetInfo(r.Matches.Item(0).TMDB, False, FilteredOptions, True)
                     End If
             End Select
 
-            Return nMovieSet
+            Return Nothing
         End Function
 
         Public Function GetSearchTVShowInfo(ByVal strShowName As String, ByRef oDBTV As Database.DBElement, ByVal eType As Enums.ScrapeType, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef FilteredOptions As Structures.ScrapeOptions) As MediaContainers.TVShow
             Dim r As SearchResults_TVShow = SearchTVShow(strShowName)
-            Dim nTVShow As New MediaContainers.TVShow
 
             Select Case eType
                 Case Enums.ScrapeType.AllAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MissingAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SingleField
                     If r.Matches.Count = 1 Then
-                        nTVShow = GetTVShowInfo(r.Matches.Item(0).TMDB, ScrapeModifier, FilteredOptions, False)
+                        Return GetTVShowInfo(r.Matches.Item(0).TMDB, ScrapeModifier, FilteredOptions, False)
                     Else
                         Using dlgSearch As New dlgTMDBSearchResults_TV(_SpecialSettings, Me)
                             If dlgSearch.ShowDialog(r, strShowName, oDBTV.ShowPath) = DialogResult.OK Then
-                                If String.IsNullOrEmpty(dlgSearch.Result.TMDB) Then
-                                    Return Nothing
-                                Else
-                                    nTVShow = GetTVShowInfo(dlgSearch.Result.TMDB, ScrapeModifier, FilteredOptions, False)
+                                If Not String.IsNullOrEmpty(dlgSearch.Result.TMDB) Then
+                                    Return GetTVShowInfo(dlgSearch.Result.TMDB, ScrapeModifier, FilteredOptions, False)
                                 End If
-                            Else
-                                Return Nothing
                             End If
                         End Using
                     End If
 
                 Case Enums.ScrapeType.AllSkip, Enums.ScrapeType.FilterSkip, Enums.ScrapeType.MarkedSkip, Enums.ScrapeType.MissingSkip, Enums.ScrapeType.NewSkip, Enums.ScrapeType.SelectedSkip
                     If r.Matches.Count = 1 Then
-                        nTVShow = GetTVShowInfo(r.Matches.Item(0).TMDB, ScrapeModifier, FilteredOptions, False)
+                        Return GetTVShowInfo(r.Matches.Item(0).TMDB, ScrapeModifier, FilteredOptions, False)
                     End If
 
                 Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SingleScrape
                     If r.Matches.Count > 0 Then
-                        nTVShow = GetTVShowInfo(r.Matches.Item(0).TMDB, ScrapeModifier, FilteredOptions, False)
+                        Return GetTVShowInfo(r.Matches.Item(0).TMDB, ScrapeModifier, FilteredOptions, False)
                     End If
             End Select
 
-            Return nTVShow
+            Return Nothing
         End Function
 
         Private Function FindYear(ByVal tmpname As String, ByVal lst As List(Of MediaContainers.Movie)) As Integer

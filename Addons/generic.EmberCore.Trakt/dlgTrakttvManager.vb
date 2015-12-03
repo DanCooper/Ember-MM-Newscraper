@@ -779,7 +779,6 @@ Public Class dlgTrakttvManager
 #End Region
 
 #Region "Trakt.tv Sync Playcount"
-
     ''' <summary>
     ''' Commandline call: Update/Sync playcounts of movies and episodes
     ''' </summary>
@@ -789,7 +788,7 @@ Public Class dlgTrakttvManager
     ''' </remarks>
     Public Shared Sub CLSyncPlaycount()
         Dim MySelf As New dlgTrakttvManager
-        If Master.eSettings.UseTrakt = False Then
+        If False Then
             Return
         End If
         MySelf.isCL = True

@@ -89,7 +89,7 @@ Public Class Interfaces
         ''' <param name="ScrapeOptions"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Function Scraper(ByRef oDBElement As Database.DBElement, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As ModuleResult_Data_Movie
+        Function Scraper_Movie(ByRef oDBElement As Database.DBElement, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As ModuleResult_Data_Movie
 
 #End Region 'Methods
 

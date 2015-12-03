@@ -82,7 +82,7 @@ Public Class dlgEditMovieSet
         Return MyBase.ShowDialog()
     End Function
 
-    Private Sub btnGetTMDBColID_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnGetTMDBColID.Click
+    Private Sub btnGetTMDBColID_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnGetTMDBColID.Click
         Dim newColID As String = String.Empty
 
         If MoviesInSet.Count > 0 Then
@@ -99,7 +99,7 @@ Public Class dlgEditMovieSet
         End If
     End Sub
 
-    Private Sub btnMovieUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieUp.Click
+    Private Sub btnMovieUp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieUp.Click
         'If lvMoviesInSet.Items.Count > 0 AndAlso lvMoviesInSet.SelectedItem IsNot Nothing AndAlso lvMoviesInSet.SelectedIndex > 0 Then
         '    needsMovieUpdate = True
         '    Dim iIndex As Integer = lvMoviesInSet.SelectedItems(0)
@@ -111,19 +111,19 @@ Public Class dlgEditMovieSet
         'End If
     End Sub
 
-    Private Sub lbMoviesInSet_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs)
+    Private Sub lbMoviesInSet_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs)
         If e.KeyCode = Keys.Delete Then RemoveFromSet()
     End Sub
 
-    Private Sub btnMovieRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieRemove.Click
+    Private Sub btnMovieRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieRemove.Click
         RemoveFromSet()
     End Sub
 
-    Private Sub btnMovieReAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieReAdd.Click
+    Private Sub btnMovieReAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieReAdd.Click
         ReAddToSet()
     End Sub
 
-    Private Sub btnSearchMovie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSearchMovie.Click
+    Private Sub btnSearchMovie_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSearchMovie.Click
         SetControlsEnabled(False)
 
         Application.DoEvents()
@@ -206,7 +206,7 @@ Public Class dlgEditMovieSet
         End If
     End Sub
 
-    Private Sub btnMovieAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieAdd.Click
+    Private Sub btnMovieAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieAdd.Click
         AddMovieToSet()
     End Sub
 
@@ -245,7 +245,7 @@ Public Class dlgEditMovieSet
         If lMov.ID = CType(sMovieID, Long) Then Return True Else : Return False
     End Function
 
-    Private Sub btnRemoveBanner_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveBanner.Click
+    Private Sub btnRemoveBanner_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRemoveBanner.Click
         pbBanner.Image = Nothing
         pbBanner.Tag = Nothing
         lblBannerSize.Text = String.Empty
@@ -253,7 +253,7 @@ Public Class dlgEditMovieSet
         tmpDBElement.ImagesContainer.Banner = New MediaContainers.Image
     End Sub
 
-    Private Sub btnRemoveClearArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveClearArt.Click
+    Private Sub btnRemoveClearArt_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRemoveClearArt.Click
         pbClearArt.Image = Nothing
         pbClearArt.Tag = Nothing
         lblClearArtSize.Text = String.Empty
@@ -261,7 +261,7 @@ Public Class dlgEditMovieSet
         tmpDBElement.ImagesContainer.ClearArt = New MediaContainers.Image
     End Sub
 
-    Private Sub btnRemoveClearLogo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveClearLogo.Click
+    Private Sub btnRemoveClearLogo_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRemoveClearLogo.Click
         pbClearLogo.Image = Nothing
         pbClearLogo.Tag = Nothing
         lblClearLogoSize.Text = String.Empty
@@ -269,7 +269,7 @@ Public Class dlgEditMovieSet
         tmpDBElement.ImagesContainer.ClearLogo = New MediaContainers.Image
     End Sub
 
-    Private Sub btnRemoveDiscArt_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveDiscArt.Click
+    Private Sub btnRemoveDiscArt_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRemoveDiscArt.Click
         pbDiscArt.Image = Nothing
         pbDiscArt.Tag = Nothing
         lblDiscArtSize.Text = String.Empty
@@ -277,7 +277,7 @@ Public Class dlgEditMovieSet
         tmpDBElement.ImagesContainer.DiscArt = New MediaContainers.Image
     End Sub
 
-    Private Sub btnRemoveFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveFanart.Click
+    Private Sub btnRemoveFanart_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRemoveFanart.Click
         pbFanart.Image = Nothing
         pbFanart.Tag = Nothing
         lblFanartSize.Text = String.Empty
@@ -285,7 +285,7 @@ Public Class dlgEditMovieSet
         tmpDBElement.ImagesContainer.Fanart = New MediaContainers.Image
     End Sub
 
-    Private Sub btnRemoveLandscape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveLandscape.Click
+    Private Sub btnRemoveLandscape_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRemoveLandscape.Click
         pbLandscape.Image = Nothing
         pbLandscape.Tag = Nothing
         lblLandscapeSize.Text = String.Empty
@@ -293,7 +293,7 @@ Public Class dlgEditMovieSet
         tmpDBElement.ImagesContainer.Landscape = New MediaContainers.Image
     End Sub
 
-    Private Sub btnRemovePoster_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemovePoster.Click
+    Private Sub btnRemovePoster_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRemovePoster.Click
         pbPoster.Image = Nothing
         pbPoster.Tag = Nothing
         lblPosterSize.Text = String.Empty
@@ -301,12 +301,12 @@ Public Class dlgEditMovieSet
         tmpDBElement.ImagesContainer.Poster = New MediaContainers.Image
     End Sub
 
-    Private Sub btnRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRescrape.Click
+    Private Sub btnRescrape_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRescrape.Click
         DialogResult = System.Windows.Forms.DialogResult.Retry
         Close()
     End Sub
 
-    Private Sub btnSetBannerDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetBannerDL.Click
+    Private Sub btnSetBannerDL_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetBannerDL.Click
         Try
             Using dImgManual As New dlgImgManual
                 Dim tImage As MediaContainers.Image
@@ -327,7 +327,7 @@ Public Class dlgEditMovieSet
         End Try
     End Sub
 
-    Private Sub btnSetBannerScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetBannerScrape.Click
+    Private Sub btnSetBannerScrape_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetBannerScrape.Click
         Dim aContainer As New MediaContainers.SearchResultsContainer
         Dim ScrapeModifier As New Structures.ScrapeModifier
 
@@ -356,7 +356,7 @@ Public Class dlgEditMovieSet
         Cursor = Cursors.Default
     End Sub
 
-    Private Sub btnSetBannerLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetBannerLocal.Click
+    Private Sub btnSetBannerLocal_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetBannerLocal.Click
         Try
             With ofdLocalFiles
                 '.InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
@@ -377,7 +377,7 @@ Public Class dlgEditMovieSet
         End Try
     End Sub
 
-    Private Sub btnSetClearArtDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetClearArtDL.Click
+    Private Sub btnSetClearArtDL_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetClearArtDL.Click
         Try
             Using dImgManual As New dlgImgManual
                 Dim tImage As MediaContainers.Image
@@ -398,7 +398,7 @@ Public Class dlgEditMovieSet
         End Try
     End Sub
 
-    Private Sub btnSetClearArtScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetClearArtScrape.Click
+    Private Sub btnSetClearArtScrape_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetClearArtScrape.Click
         Dim aContainer As New MediaContainers.SearchResultsContainer
         Dim ScrapeModifier As New Structures.ScrapeModifier
 
@@ -427,7 +427,7 @@ Public Class dlgEditMovieSet
         Cursor = Cursors.Default
     End Sub
 
-    Private Sub btnSetClearArtLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetClearArtLocal.Click
+    Private Sub btnSetClearArtLocal_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetClearArtLocal.Click
         Try
             With ofdLocalFiles
                 '.InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
@@ -448,7 +448,7 @@ Public Class dlgEditMovieSet
         End Try
     End Sub
 
-    Private Sub btnSetClearLogoDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetClearLogoDL.Click
+    Private Sub btnSetClearLogoDL_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetClearLogoDL.Click
         Try
             Using dImgManual As New dlgImgManual
                 Dim tImage As MediaContainers.Image
@@ -469,7 +469,7 @@ Public Class dlgEditMovieSet
         End Try
     End Sub
 
-    Private Sub btnSetClearLogoScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetClearLogoScrape.Click
+    Private Sub btnSetClearLogoScrape_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetClearLogoScrape.Click
         Dim aContainer As New MediaContainers.SearchResultsContainer
         Dim ScrapeModifier As New Structures.ScrapeModifier
 
@@ -498,7 +498,7 @@ Public Class dlgEditMovieSet
         Cursor = Cursors.Default
     End Sub
 
-    Private Sub btnSetClearLogoLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetClearLogoLocal.Click
+    Private Sub btnSetClearLogoLocal_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetClearLogoLocal.Click
         Try
             With ofdLocalFiles
                 '.InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
@@ -519,7 +519,7 @@ Public Class dlgEditMovieSet
         End Try
     End Sub
 
-    Private Sub btnSetDiscArtDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetDiscArtDL.Click
+    Private Sub btnSetDiscArtDL_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetDiscArtDL.Click
         Try
             Using dImgManual As New dlgImgManual
                 Dim tImage As MediaContainers.Image
@@ -540,7 +540,7 @@ Public Class dlgEditMovieSet
         End Try
     End Sub
 
-    Private Sub btnSetDiscArtScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetDiscArtScrape.Click
+    Private Sub btnSetDiscArtScrape_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetDiscArtScrape.Click
         Dim aContainer As New MediaContainers.SearchResultsContainer
         Dim ScrapeModifier As New Structures.ScrapeModifier
 
@@ -569,7 +569,7 @@ Public Class dlgEditMovieSet
         Cursor = Cursors.Default
     End Sub
 
-    Private Sub btnSetDiscArtLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetDiscArtLocal.Click
+    Private Sub btnSetDiscArtLocal_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetDiscArtLocal.Click
         Try
             With ofdLocalFiles
                 '.InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
@@ -590,7 +590,7 @@ Public Class dlgEditMovieSet
         End Try
     End Sub
 
-    Private Sub btnSetFanartDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartDL.Click
+    Private Sub btnSetFanartDL_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetFanartDL.Click
         Try
             Using dImgManual As New dlgImgManual
                 Dim tImage As MediaContainers.Image
@@ -611,7 +611,7 @@ Public Class dlgEditMovieSet
         End Try
     End Sub
 
-    Private Sub btnSetFanartScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartScrape.Click
+    Private Sub btnSetFanartScrape_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetFanartScrape.Click
         Dim aContainer As New MediaContainers.SearchResultsContainer
         Dim ScrapeModifier As New Structures.ScrapeModifier
 
@@ -640,7 +640,7 @@ Public Class dlgEditMovieSet
         Cursor = Cursors.Default
     End Sub
 
-    Private Sub btnSetFanartLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartLocal.Click
+    Private Sub btnSetFanartLocal_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetFanartLocal.Click
         Try
             With ofdLocalFiles
                 '.InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
@@ -661,7 +661,7 @@ Public Class dlgEditMovieSet
         End Try
     End Sub
 
-    Private Sub btnSetLandscapeDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetLandscapeDL.Click
+    Private Sub btnSetLandscapeDL_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetLandscapeDL.Click
         Try
             Using dImgManual As New dlgImgManual
                 Dim tImage As MediaContainers.Image
@@ -682,7 +682,7 @@ Public Class dlgEditMovieSet
         End Try
     End Sub
 
-    Private Sub btnSetLandscapeScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetLandscapeScrape.Click
+    Private Sub btnSetLandscapeScrape_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetLandscapeScrape.Click
         Dim aContainer As New MediaContainers.SearchResultsContainer
         Dim ScrapeModifier As New Structures.ScrapeModifier
 
@@ -711,7 +711,7 @@ Public Class dlgEditMovieSet
         Cursor = Cursors.Default
     End Sub
 
-    Private Sub btnSetLandscapeLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetLandscapeLocal.Click
+    Private Sub btnSetLandscapeLocal_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetLandscapeLocal.Click
         Try
             With ofdLocalFiles
                 '.InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
@@ -732,7 +732,7 @@ Public Class dlgEditMovieSet
         End Try
     End Sub
 
-    Private Sub btnSetPosterDL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterDL.Click
+    Private Sub btnSetPosterDL_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetPosterDL.Click
         Try
             Using dImgManual As New dlgImgManual
                 Dim tImage As MediaContainers.Image
@@ -753,7 +753,7 @@ Public Class dlgEditMovieSet
         End Try
     End Sub
 
-    Private Sub btnSetPosterScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterScrape.Click
+    Private Sub btnSetPosterScrape_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetPosterScrape.Click
         Dim aContainer As New MediaContainers.SearchResultsContainer
         Dim ScrapeModifier As New Structures.ScrapeModifier
 
@@ -782,7 +782,7 @@ Public Class dlgEditMovieSet
         Cursor = Cursors.Default
     End Sub
 
-    Private Sub btnSetPosterLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterLocal.Click
+    Private Sub btnSetPosterLocal_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetPosterLocal.Click
         Try
             With ofdLocalFiles
                 '.InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
@@ -803,7 +803,7 @@ Public Class dlgEditMovieSet
         End Try
     End Sub
 
-    Private Sub bwLoadMoviesInSet_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadMoviesInSet.DoWork
+    Private Sub bwLoadMoviesInSet_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadMoviesInSet.DoWork
         MoviesInSet.Clear()
 
         Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
@@ -862,21 +862,19 @@ Public Class dlgEditMovieSet
                 .bsMovies.DataSource = .dtMovies
                 .dgvMovies.DataSource = .bsMovies
 
-                .dgvMovies.Columns(0).Visible = False
-                .dgvMovies.Columns(1).Visible = False
-                .dgvMovies.Columns(2).Visible = False
-                .dgvMovies.Columns(3).Resizable = DataGridViewTriState.True
-                .dgvMovies.Columns(3).ReadOnly = True
-                .dgvMovies.Columns(3).MinimumWidth = 83
-                .dgvMovies.Columns(3).SortMode = DataGridViewColumnSortMode.Automatic
-                .dgvMovies.Columns(3).ToolTipText = Master.eLang.GetString(21, "Title")
-                .dgvMovies.Columns(3).HeaderText = Master.eLang.GetString(21, "Title")
-
-                For i As Integer = 4 To .dgvMovies.Columns.Count - 1
+                For i As Integer = 0 To .dgvMovies.Columns.Count - 1
                     .dgvMovies.Columns(i).Visible = False
                 Next
 
-                .dgvMovies.Columns(0).ValueType = GetType(Int32)
+                .dgvMovies.Columns("ListTitle").HeaderText = Master.eLang.GetString(21, "Title")
+                .dgvMovies.Columns("ListTitle").MinimumWidth = 83
+                .dgvMovies.Columns("ListTitle").ReadOnly = True
+                .dgvMovies.Columns("ListTitle").Resizable = DataGridViewTriState.True
+                .dgvMovies.Columns("ListTitle").SortMode = DataGridViewColumnSortMode.Automatic
+                .dgvMovies.Columns("ListTitle").ToolTipText = Master.eLang.GetString(21, "Title")
+                .dgvMovies.Columns("ListTitle").Visible = True
+
+                .dgvMovies.Columns("idMovie").ValueType = GetType(Int32)
 
                 .SetControlsEnabled(True)
 
@@ -956,12 +954,12 @@ Public Class dlgEditMovieSet
         btnMovieRemove.Enabled = False
     End Sub
 
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
+    Private Sub Cancel_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Cancel_Button.Click
         DialogResult = System.Windows.Forms.DialogResult.Cancel
         Close()
     End Sub
 
-    Private Sub dlgEditMovie_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub dlgEditMovie_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         pbBanner.AllowDrop = True
         pbClearArt.AllowDrop = True
         pbClearLogo.AllowDrop = True
@@ -997,7 +995,7 @@ Public Class dlgEditMovieSet
         End If
     End Sub
 
-    Private Sub dlgEditMovie_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+    Private Sub dlgEditMovie_Shown(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Shown
         Activate()
 
         Application.DoEvents()
@@ -1137,7 +1135,7 @@ Public Class dlgEditMovieSet
         End With
     End Sub
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+    Private Sub OK_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles OK_Button.Click
         SetInfo()
 
         If needsMovieUpdate Then
@@ -1440,27 +1438,24 @@ Public Class dlgEditMovieSet
 
         Master.DB.FillDataTable(dtMovies, "SELECT * FROM movie ORDER BY ListTitle COLLATE NOCASE;")
 
-
         If dtMovies.Rows.Count > 0 Then
             With Me
                 .bsMovies.DataSource = .dtMovies
                 .dgvMovies.DataSource = .bsMovies
 
-                .dgvMovies.Columns(0).Visible = False
-                .dgvMovies.Columns(1).Visible = False
-                .dgvMovies.Columns(2).Visible = False
-                .dgvMovies.Columns(3).Resizable = DataGridViewTriState.True
-                .dgvMovies.Columns(3).ReadOnly = True
-                .dgvMovies.Columns(3).MinimumWidth = 83
-                .dgvMovies.Columns(3).SortMode = DataGridViewColumnSortMode.Automatic
-                .dgvMovies.Columns(3).ToolTipText = Master.eLang.GetString(21, "Title")
-                .dgvMovies.Columns(3).HeaderText = Master.eLang.GetString(21, "Title")
-
-                For i As Integer = 4 To .dgvMovies.Columns.Count - 1
+                For i As Integer = 0 To .dgvMovies.Columns.Count - 1
                     .dgvMovies.Columns(i).Visible = False
                 Next
 
-                .dgvMovies.Columns(0).ValueType = GetType(Int32)
+                .dgvMovies.Columns("ListTitle").HeaderText = Master.eLang.GetString(21, "Title")
+                .dgvMovies.Columns("ListTitle").MinimumWidth = 83
+                .dgvMovies.Columns("ListTitle").ReadOnly = True
+                .dgvMovies.Columns("ListTitle").Resizable = DataGridViewTriState.True
+                .dgvMovies.Columns("ListTitle").SortMode = DataGridViewColumnSortMode.Automatic
+                .dgvMovies.Columns("ListTitle").ToolTipText = Master.eLang.GetString(21, "Title")
+                .dgvMovies.Columns("ListTitle").Visible = True
+
+                .dgvMovies.Columns("idMovie").ValueType = GetType(Int32)
 
                 .SetControlsEnabled(True)
 
@@ -1488,22 +1483,22 @@ Public Class dlgEditMovieSet
         End If
     End Sub
 
-    Private Sub dgvMovies_Sorted(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvMovies.Sorted
+    Private Sub dgvMovies_Sorted(ByVal sender As Object, ByVal e As EventArgs) Handles dgvMovies.Sorted
         If dgvMovies.RowCount > 0 Then
             dgvMovies.CurrentCell = Nothing
             dgvMovies.ClearSelection()
             dgvMovies.Rows(0).Selected = True
-            dgvMovies.CurrentCell = dgvMovies.Rows(0).Cells(3)
+            dgvMovies.CurrentCell = dgvMovies.Rows(0).Cells("ListTitle")
         End If
     End Sub
 
-    Private Sub dgvMovies_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles dgvMovies.KeyDown
+    Private Sub dgvMovies_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles dgvMovies.KeyDown
         'stop enter key from selecting next list item
         e.Handled = (e.KeyCode = Keys.Enter)
         If e.Modifiers = Keys.Control AndAlso e.KeyCode = Keys.S Then txtSearchMovies.Focus()
     End Sub
 
-    Private Sub dgvMovies_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvMovies.KeyPress
+    Private Sub dgvMovies_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles dgvMovies.KeyPress
         If StringUtils.AlphaNumericOnly(e.KeyChar) OrElse e.KeyChar = Convert.ToChar(Keys.Space) Then
             KeyBuffer = String.Concat(KeyBuffer, e.KeyChar.ToString.ToLower)
             tmrKeyBuffer.Start()
@@ -1517,19 +1512,19 @@ Public Class dlgEditMovieSet
         End If
     End Sub
 
-    Private Sub tmrKeyBuffer_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrKeyBuffer.Tick
+    Private Sub tmrKeyBuffer_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles tmrKeyBuffer.Tick
         tmrKeyBuffer.Enabled = False
         KeyBuffer = String.Empty
     End Sub
 
-    Private Sub txtSearchMovies_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtSearchMovies.KeyPress
+    Private Sub txtSearchMovies_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtSearchMovies.KeyPress
         e.Handled = Not StringUtils.AlphaNumericOnly(e.KeyChar, True)
         If e.KeyChar = Microsoft.VisualBasic.ChrW(Keys.Return) Then
             dgvMovies.Focus()
         End If
     End Sub
 
-    Private Sub txtSearchMovies_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSearchMovies.TextChanged
+    Private Sub txtSearchMovies_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtSearchMovies.TextChanged
         currTextSearch = txtSearchMovies.Text
 
         tmrSearchWait_Movies.Enabled = False
@@ -1537,7 +1532,7 @@ Public Class dlgEditMovieSet
         tmrSearchWait_Movies.Enabled = True
     End Sub
 
-    Private Sub tmrSearch_Movies_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrSearch_Movies.Tick
+    Private Sub tmrSearch_Movies_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles tmrSearch_Movies.Tick
         tmrSearchWait_Movies.Enabled = False
         tmrSearch_Movies.Enabled = False
         bDoingSearch = True
@@ -1560,7 +1555,7 @@ Public Class dlgEditMovieSet
         End If
     End Sub
 
-    Private Sub tmrSearchWait_Movies_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrSearchWait_Movies.Tick
+    Private Sub tmrSearchWait_Movies_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles tmrSearchWait_Movies.Tick
         tmrSearch_Movies.Enabled = False
         If prevTextSearch = currTextSearch Then
             tmrSearch_Movies.Enabled = True
@@ -1569,7 +1564,7 @@ Public Class dlgEditMovieSet
         End If
     End Sub
 
-    Private Sub dgvMovies_CellPainting(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvMovies.CellPainting
+    Private Sub dgvMovies_CellPainting(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellPaintingEventArgs) Handles dgvMovies.CellPainting
         If Master.isWindows AndAlso e.RowIndex >= 0 AndAlso Not dgvMovies.Item(e.ColumnIndex, e.RowIndex).Displayed Then
             e.Handled = True
             Return

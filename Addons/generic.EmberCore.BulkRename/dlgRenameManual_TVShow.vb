@@ -42,22 +42,22 @@ Public Class dlgRenameManual_TVShow
         _DBElement = DBElement
     End Sub
 
-    Private Sub bwRename_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwRename.DoWork
-        FileFolderRenamer.RenameSingle_Show(_DBElement, txtFolder.Text, False, True, True)
+    Private Sub bwRename_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwRename.DoWork
+        FileFolderRenamer.RenameSingle_Show(_DBElement, txtFolder.Text, String.Empty, String.Empty, False, True, True)
     End Sub
 
     Private Sub bwRename_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwRename.RunWorkerCompleted
         Cursor.Current = Cursors.Default
-        DialogResult = System.Windows.Forms.DialogResult.OK
+        DialogResult = DialogResult.OK
         Close()
     End Sub
 
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-        DialogResult = System.Windows.Forms.DialogResult.Cancel
+    Private Sub Cancel_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Cancel_Button.Click
+        DialogResult = DialogResult.Cancel
         Close()
     End Sub
 
-    Private Sub dlgRenameManual_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub dlgRenameManual_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         SetUp()
         Dim tFolder As String = String.Empty
         If Not String.IsNullOrEmpty(_DBElement.ShowPath) Then
@@ -68,7 +68,7 @@ Public Class dlgRenameManual_TVShow
         txtFolder.Text = tFolder.Trim
     End Sub
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
+    Private Sub OK_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles OK_Button.Click
         Cursor.Current = Cursors.WaitCursor
         OK_Button.Enabled = False
         Cancel_Button.Enabled = False
@@ -89,7 +89,7 @@ Public Class dlgRenameManual_TVShow
         txtTitle.Text = _DBElement.TVShow.Title
     End Sub
 
-    Private Sub txtFolder_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFolder.TextChanged
+    Private Sub txtFolder_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtFolder.TextChanged
         If Not String.IsNullOrEmpty(txtFolder.Text) Then
             OK_Button.Enabled = True
         Else

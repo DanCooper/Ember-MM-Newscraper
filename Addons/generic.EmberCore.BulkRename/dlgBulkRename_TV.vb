@@ -64,7 +64,7 @@ Public Class dlgBulkRenamer_TV
         StartPosition = FormStartPosition.Manual
     End Sub
 
-    Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
+    Private Sub btnCancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancel.Click
         If DoneRename Then
             CancelRename = True
         Else
@@ -74,11 +74,11 @@ Public Class dlgBulkRenamer_TV
 
     Private Sub bwDoRename_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDoRename.RunWorkerCompleted
         pnlCancel.Visible = False
-        DialogResult = System.Windows.Forms.DialogResult.OK
+        DialogResult = DialogResult.OK
         Close()
     End Sub
 
-    Private Sub bwDoRename_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDoRename.DoWork
+    Private Sub bwDoRename_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDoRename.DoWork
         FFRenamer.DoRename_Episodes(AddressOf ShowProgressRename)
     End Sub
 
@@ -87,7 +87,7 @@ Public Class dlgBulkRenamer_TV
         lblFile.Text = e.UserState.ToString
     End Sub
 
-    Private Sub bwLoadInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadInfo.DoWork
+    Private Sub bwLoadInfo_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadInfo.DoWork
         Try
             Dim hasFilter As Boolean = False
             Dim dbFilter As String = String.Empty
@@ -189,7 +189,7 @@ Public Class dlgBulkRenamer_TV
         End Try
     End Sub
 
-    Private Sub chkRenamedOnly_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkRenamedOnly.CheckedChanged
+    Private Sub chkRenamedOnly_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkRenamedOnly.CheckedChanged
         If chkRenamedOnly.Checked Then
             bsEpisodes.Filter = "IsRenamed = True AND IsLocked = False"
         Else
@@ -197,17 +197,17 @@ Public Class dlgBulkRenamer_TV
         End If
     End Sub
 
-    Private Sub Close_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Close_Button.Click
+    Private Sub Close_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Close_Button.Click
         If DoneRename Then
-            DialogResult = System.Windows.Forms.DialogResult.OK
+            DialogResult = DialogResult.OK
         Else
-            DialogResult = System.Windows.Forms.DialogResult.Cancel
+            DialogResult = DialogResult.Cancel
         End If
 
         Close()
     End Sub
 
-    Private Sub cmsEpisodeList_Opening(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles cmsEpisodeList.Opening
+    Private Sub cmsEpisodeList_Opening(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles cmsEpisodeList.Opening
         Dim count As Integer = FFRenamer.GetCount_Episodes
         Dim lockcount As Integer = FFRenamer.GetCountLocked_Episodes
         If count > 0 Then
@@ -288,7 +288,7 @@ Public Class dlgBulkRenamer_TV
         End If
     End Sub
 
-    Private Sub dlgBulkRename_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub dlgBulkRename_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         SetUp()
 
         FFRenamer = New FileFolderRenamer
@@ -301,7 +301,7 @@ Public Class dlgBulkRenamer_TV
 
     End Sub
 
-    Private Sub dlgBulkRename_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+    Private Sub dlgBulkRename_Shown(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Shown
         Activate()
 
         Try
@@ -352,7 +352,7 @@ Public Class dlgBulkRenamer_TV
         pnlCancel.Visible = False
     End Sub
 
-    Private Sub Rename_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Rename_Button.Click
+    Private Sub Rename_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Rename_Button.Click
         DoneRename = True
         pnlCancel.Visible = True
         lblCompiling.Text = Master.eLang.GetString(173, "Renaming...")
@@ -483,7 +483,7 @@ Public Class dlgBulkRenamer_TV
         pnlCancel.Visible = True
     End Sub
 
-    Private Sub tmrSimul_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrSimul.Tick
+    Private Sub tmrSimul_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles tmrSimul.Tick
         Try
             'Need to make simulate thread safe
             tmrSimul.Enabled = False
@@ -496,23 +496,23 @@ Public Class dlgBulkRenamer_TV
         End Try
     End Sub
 
-    Private Sub tsmLockAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmLockAll.Click
+    Private Sub tsmLockAll_Click(ByVal sender As Object, ByVal e As EventArgs) Handles tsmLockAll.Click
         setLockAll(True)
     End Sub
 
-    Private Sub tsmLockEpisode_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmLockEpisode.Click
+    Private Sub tsmLockEpisode_Click(ByVal sender As Object, ByVal e As EventArgs) Handles tsmLockEpisode.Click
         setLock(True)
     End Sub
 
-    Private Sub tsmUnlockAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmUnlockAll.Click
+    Private Sub tsmUnlockAll_Click(ByVal sender As Object, ByVal e As EventArgs) Handles tsmUnlockAll.Click
         setLockAll(False)
     End Sub
 
-    Private Sub tsmUnlockEpisode_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmUnlockEpisode.Click
+    Private Sub tsmUnlockEpisode_Click(ByVal sender As Object, ByVal e As EventArgs) Handles tsmUnlockEpisode.Click
         setLock(False)
     End Sub
 
-    Private Sub txtFilePatternEpisodes_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFilePatternEpisodes.TextChanged
+    Private Sub txtFilePatternEpisodes_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtFilePatternEpisodes.TextChanged
         Try
             If String.IsNullOrEmpty(txtFilePatternEpisodes.Text) Then txtFilePatternEpisodes.Text = "$F"
             tmrSimul.Enabled = True
@@ -521,7 +521,7 @@ Public Class dlgBulkRenamer_TV
         End Try
     End Sub
 
-    Private Sub txtFolderPatternSeasons_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFolderPatternSeasons.TextChanged
+    Private Sub txtFolderPatternSeasons_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtFolderPatternSeasons.TextChanged
         Try
             If String.IsNullOrEmpty(txtFolderPatternSeasons.Text) Then txtFolderPatternSeasons.Text = "$D"
             tmrSimul.Enabled = True
@@ -530,7 +530,7 @@ Public Class dlgBulkRenamer_TV
         End Try
     End Sub
 
-    Private Sub txtFolderPatternShows_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFolderPatternShows.TextChanged
+    Private Sub txtFolderPatternShows_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtFolderPatternShows.TextChanged
         Try
             If String.IsNullOrEmpty(txtFolderPatternShows.Text) Then txtFolderPatternShows.Text = "$Z"
             tmrSimul.Enabled = True
@@ -556,11 +556,11 @@ Public Class dlgBulkRenamer_TV
         End If
     End Sub
 
-    Private Sub btnFolderPatternHelp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFolderPatternHelp.Click
+    Private Sub btnFolderPatternHelp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFolderPatternHelp.Click
         LoadHelpTips()
     End Sub
 
-    Private Sub btnFilePatternHelp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilePatternHelp.Click
+    Private Sub btnFilePatternHelp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFilePatternHelp.Click
         LoadHelpTips()
     End Sub
 

@@ -954,7 +954,7 @@ Public Class Database
     Public Function DeleteMovieSetFromDB(ByVal ID As Long, ByVal BatchMode As Boolean) As Boolean
         Try
             'first get a list of all movies in the movieset to remove the movieset information from NFO
-            Dim moviesToSave As New List(Of Database.DBElement)
+            Dim moviesToSave As New List(Of DBElement)
 
             Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
             If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
@@ -1025,7 +1025,7 @@ Public Class Database
     Public Function DeleteTagFromDB(ByVal ID As Long, ByVal Mode As Integer, ByVal BatchMode As Boolean) As Boolean
         Try
             'first get a list of all movies in the tag to remove the tag information from NFO
-            Dim moviesToSave As New List(Of Database.DBElement)
+            Dim moviesToSave As New List(Of DBElement)
             Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
             Dim tagName As String = String.Empty
             If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
@@ -1268,8 +1268,8 @@ Public Class Database
     ''' <param name="_TVDB">Database.DBElement container to fill with TVShow informations</param>
     ''' <param name="_TVDBShow">Optional the TVShow informations to add to _TVDB</param>
     ''' <remarks></remarks>
-    Public Function AddTVShowInfoToDBElement(ByVal _TVDB As Database.DBElement, Optional ByVal _TVDBShow As Database.DBElement = Nothing) As Database.DBElement
-        Dim _tmpTVDBShow As Database.DBElement
+    Public Function AddTVShowInfoToDBElement(ByVal _TVDB As DBElement, Optional ByVal _TVDBShow As DBElement = Nothing) As DBElement
+        Dim _tmpTVDBShow As DBElement
 
         If _TVDBShow Is Nothing OrElse _TVDBShow.TVShow Is Nothing Then
             _tmpTVDBShow = LoadTVShowFromDB(_TVDB.ShowID, False, False)
@@ -1550,8 +1550,8 @@ Public Class Database
     ''' <param name="MovieID">ID of the movie to load, as stored in the database</param>
     ''' <param name="exclExtraImages">exclude Extrafanarts and Extrathumbs from memorystream</param>
     ''' <returns>Database.DBElement object</returns>
-    Public Function LoadMovieFromDB(ByVal MovieID As Long, Optional ByVal LoadBitmap As Boolean = False, Optional ByVal exclExtraImages As Boolean = False) As Database.DBElement
-        Dim _movieDB As New Database.DBElement(Enums.ContentType.Movie)
+    Public Function LoadMovieFromDB(ByVal MovieID As Long, Optional ByVal LoadBitmap As Boolean = False, Optional ByVal exclExtraImages As Boolean = False) As DBElement
+        Dim _movieDB As New DBElement(Enums.ContentType.Movie)
 
         _movieDB.ID = MovieID
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -1780,7 +1780,7 @@ Public Class Database
     ''' <param name="withImages">load all images to memorystream</param>
     ''' <param name="exclExtraImages">exclude Extrafanarts and Extrathumbs from memorystream</param>
     ''' <returns>Database.DBElement object</returns>
-    Public Function LoadMovieFromDB(ByVal sPath As String, Optional ByVal withImages As Boolean = False, Optional ByVal exclExtraImages As Boolean = False) As Database.DBElement
+    Public Function LoadMovieFromDB(ByVal sPath As String, Optional ByVal withImages As Boolean = False, Optional ByVal exclExtraImages As Boolean = False) As DBElement
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
             ' One more Query Better then re-write all function again
             SQLcommand.CommandText = String.Concat("SELECT idMovie FROM movie WHERE MoviePath = ", sPath, ";")
@@ -1791,7 +1791,7 @@ Public Class Database
             End Using
         End Using
 
-        Return New Database.DBElement(Enums.ContentType.Movie)
+        Return New DBElement(Enums.ContentType.Movie)
     End Function
 
     ''' <summary>
@@ -1800,7 +1800,7 @@ Public Class Database
     ''' <param name="MovieSetID">ID of the movieset to load, as stored in the database</param>
     ''' <param name="LoadBitmap">load all images to memorystream</param>
     ''' <returns>Database.DBElement object</returns>
-    Public Function LoadMovieSetFromDB(ByVal MovieSetID As Long, Optional ByVal LoadBitmap As Boolean = False) As Database.DBElement
+    Public Function LoadMovieSetFromDB(ByVal MovieSetID As Long, Optional ByVal LoadBitmap As Boolean = False) As DBElement
         Dim _moviesetDB As New DBElement(Enums.ContentType.MovieSet)
 
         _moviesetDB.ID = MovieSetID
@@ -1933,7 +1933,7 @@ Public Class Database
             End Using
         End Using
 
-        _tagDB.Movies = New List(Of Database.DBElement)
+        _tagDB.Movies = New List(Of DBElement)
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand.CommandText = String.Concat("SELECT * FROM taglinks ",
                         "WHERE idTag = ", _tagDB.ID, " AND media_type = 'movie';")
@@ -1946,10 +1946,10 @@ Public Class Database
         Return _tagDB
     End Function
 
-    Public Function LoadAllTVEpisodesFromDB(ByVal ShowID As Long, ByVal withShow As Boolean, Optional ByVal LoadBitmap As Boolean = False, Optional ByVal OnlySeason As Integer = -1, Optional ByVal withMissingEpisodes As Boolean = False) As List(Of Database.DBElement)
+    Public Function LoadAllTVEpisodesFromDB(ByVal ShowID As Long, ByVal withShow As Boolean, Optional ByVal LoadBitmap As Boolean = False, Optional ByVal OnlySeason As Integer = -1, Optional ByVal withMissingEpisodes As Boolean = False) As List(Of DBElement)
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
 
-        Dim _TVEpisodesList As New List(Of Database.DBElement)
+        Dim _TVEpisodesList As New List(Of DBElement)
 
         Using SQLCount As SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
             If OnlySeason = -1 Then
@@ -1981,10 +1981,10 @@ Public Class Database
         Return _TVEpisodesList
     End Function
 
-    Public Function LoadAllTVEpisodesFromDBByFileID(ByVal FileID As Long, ByVal withShow As Boolean, Optional ByVal LoadBitmap As Boolean = False) As List(Of Database.DBElement)
+    Public Function LoadAllTVEpisodesFromDBByFileID(ByVal FileID As Long, ByVal withShow As Boolean, Optional ByVal LoadBitmap As Boolean = False) As List(Of DBElement)
         If FileID < 0 Then Throw New ArgumentOutOfRangeException("idFile", "Value must be >= 0, was given: " & FileID)
 
-        Dim _TVEpisodesList As New List(Of Database.DBElement)
+        Dim _TVEpisodesList As New List(Of DBElement)
 
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand.CommandText = String.Format("SELECT idEpisode FROM episode WHERE idFile = {0};", FileID)
@@ -2000,10 +2000,10 @@ Public Class Database
         Return _TVEpisodesList
     End Function
 
-    Public Function LoadAllTVSeasonsFromDB(ByVal ShowID As Long, Optional ByVal LoadBitmap As Boolean = False) As List(Of Database.DBElement)
+    Public Function LoadAllTVSeasonsFromDB(ByVal ShowID As Long, Optional ByVal LoadBitmap As Boolean = False) As List(Of DBElement)
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
 
-        Dim _TVSeasonsList As New List(Of Database.DBElement)
+        Dim _TVSeasonsList As New List(Of DBElement)
 
         Using SQLCount As SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
             SQLCount.CommandText = String.Concat("SELECT COUNT(idSeason) AS eCount FROM seasons WHERE idShow = ", ShowID, ";")
@@ -2062,8 +2062,8 @@ Public Class Database
     ''' <param name="WithShow">>If <c>True</c>, also retrieve the TV Show information</param>
     ''' <param name="LoadBitmap">load all images to memorystream</param>
     ''' <returns>Database.DBElement object</returns>
-    Public Function LoadTVEpisodeFromDB(ByVal EpisodeID As Long, ByVal withShow As Boolean, Optional ByVal LoadBitmap As Boolean = False) As Database.DBElement
-        Dim _TVDB As New Database.DBElement(Enums.ContentType.TVEpisode)
+    Public Function LoadTVEpisodeFromDB(ByVal EpisodeID As Long, ByVal withShow As Boolean, Optional ByVal LoadBitmap As Boolean = False) As DBElement
+        Dim _TVDB As New DBElement(Enums.ContentType.TVEpisode)
         Dim PathID As Long = -1
 
         _TVDB.ID = EpisodeID
@@ -2262,7 +2262,7 @@ Public Class Database
     ''' <param name="WithShow">>If <c>True</c>, also retrieve the TV Show information</param>
     ''' <param name="LoadBitmap">load all images to memorystream</param>
     ''' <returns>Database.DBElement object</returns>
-    Public Function LoadTVEpisodeFromDB(ByVal sPath As String, ByVal withShow As Boolean, Optional ByVal LoadBitmap As Boolean = False) As Database.DBElement
+    Public Function LoadTVEpisodeFromDB(ByVal sPath As String, ByVal withShow As Boolean, Optional ByVal LoadBitmap As Boolean = False) As DBElement
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand.CommandText = String.Concat("SELECT idFile FROM files WHERE strFilename = ", sPath, ";")
             Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
@@ -2272,7 +2272,7 @@ Public Class Database
             End Using
         End Using
 
-        Return New Database.DBElement(Enums.ContentType.TVEpisode)
+        Return New DBElement(Enums.ContentType.TVEpisode)
     End Function
     ''' <summary>
     ''' Load all the information for a TV Episode
@@ -2284,7 +2284,7 @@ Public Class Database
     ''' <param name="LoadBitmap">load all images to memorystream</param>
     ''' <returns>Database.DBElement object</returns>
     ''' <remarks></remarks>
-    Public Function LoadTVEpisodeFromDB(ByVal iShowID As Integer, ByVal iSeason As Integer, ByVal iEpisode As Integer, ByVal withShow As Boolean, Optional ByVal LoadBitmap As Boolean = False) As Database.DBElement
+    Public Function LoadTVEpisodeFromDB(ByVal iShowID As Integer, ByVal iSeason As Integer, ByVal iEpisode As Integer, ByVal withShow As Boolean, Optional ByVal LoadBitmap As Boolean = False) As DBElement
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
             ' One more Query Better then re-write all function again
             SQLcommand.CommandText = String.Format("SELECT idEpisode FROM episode WHERE idShow = {0} AND Season = {1} AND Episode = {2};", iShowID, iSeason, iEpisode)
@@ -2295,7 +2295,7 @@ Public Class Database
             End Using
         End Using
 
-        Return New Database.DBElement(Enums.ContentType.TVEpisode)
+        Return New DBElement(Enums.ContentType.TVEpisode)
     End Function
     ''' <summary>
     ''' Load all the information for a TV Show
@@ -2303,7 +2303,7 @@ Public Class Database
     ''' <param name="ShowID">Show ID</param>
     ''' <returns>Database.DBElement object</returns>
     ''' <remarks></remarks>
-    Public Function LoadTVFullShowFromDB(ByVal ShowID As Long) As Database.DBElement
+    Public Function LoadTVFullShowFromDB(ByVal ShowID As Long) As DBElement
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
         Return Master.DB.LoadTVShowFromDB(ShowID, True, True)
     End Function
@@ -2315,8 +2315,8 @@ Public Class Database
     ''' <param name="LoadBitmap">load all images to memorystream</param>
     ''' <returns>Database.DBElement object</returns>
     ''' <remarks></remarks>
-    Public Function LoadTVSeasonFromDB(ByVal SeasonID As Long, ByVal withShow As Boolean, Optional ByVal LoadBitmap As Boolean = False) As Database.DBElement
-        Dim _TVDB As New Database.DBElement(Enums.ContentType.TVSeason)
+    Public Function LoadTVSeasonFromDB(ByVal SeasonID As Long, ByVal withShow As Boolean, Optional ByVal LoadBitmap As Boolean = False) As DBElement
+        Dim _TVDB As New DBElement(Enums.ContentType.TVSeason)
 
         _TVDB.ID = SeasonID
         Using SQLcommandTVSeason As SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -2363,8 +2363,8 @@ Public Class Database
     ''' <param name="WithShow">If <c>True</c>, also retrieve the TV Show information</param>
     ''' <returns>Database.DBElement object</returns>
     ''' <remarks></remarks>
-    Public Function LoadTVSeasonFromDB(ByVal ShowID As Long, ByVal iSeason As Integer, ByVal WithShow As Boolean, Optional ByVal LoadBitmap As Boolean = False) As Database.DBElement
-        Dim _TVDB As New Database.DBElement(Enums.ContentType.TVSeason)
+    Public Function LoadTVSeasonFromDB(ByVal ShowID As Long, ByVal iSeason As Integer, ByVal WithShow As Boolean, Optional ByVal LoadBitmap As Boolean = False) As DBElement
+        Dim _TVDB As New DBElement(Enums.ContentType.TVSeason)
 
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
 
@@ -2390,8 +2390,8 @@ Public Class Database
     ''' <param name="LoadBitmap">load all images to memorystream</param>
     ''' <param name="exclExtraImages">exclude Extrafanarts and Extrathumbs from memorystream</param>
     ''' <returns>Database.DBElement object</returns>
-    Public Function LoadTVShowFromDB(ByVal ShowID As Long, ByVal withSeasons As Boolean, ByVal withEpisodes As Boolean, Optional ByVal LoadBitmap As Boolean = False, Optional ByVal exclExtraImages As Boolean = False, Optional ByVal withMissingEpisodes As Boolean = False) As Database.DBElement
-        Dim _TVDB As New Database.DBElement(Enums.ContentType.TVShow)
+    Public Function LoadTVShowFromDB(ByVal ShowID As Long, ByVal withSeasons As Boolean, ByVal withEpisodes As Boolean, Optional ByVal LoadBitmap As Boolean = False, Optional ByVal exclExtraImages As Boolean = False, Optional ByVal withMissingEpisodes As Boolean = False) As DBElement
+        Dim _TVDB As New DBElement(Enums.ContentType.TVShow)
 
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
 
@@ -2523,7 +2523,7 @@ Public Class Database
 
         'Episodes
         If withEpisodes Then
-            For Each tEpisode As Database.DBElement In LoadAllTVEpisodesFromDB(_TVDB.ID, False, False, -1, withMissingEpisodes)
+            For Each tEpisode As DBElement In LoadAllTVEpisodesFromDB(_TVDB.ID, False, False, -1, withMissingEpisodes)
                 tEpisode = Master.DB.AddTVShowInfoToDBElement(tEpisode, _TVDB)
                 _TVDB.Episodes.Add(tEpisode)
             Next
@@ -3183,7 +3183,7 @@ Public Class Database
     ''' <param name="ToNFo">Save informations to NFO</param>
     ''' <param name="ToDisk">Save Images, Themes and Trailers to disk</param>
     ''' <returns>Database.DBElement object</returns>
-    Public Function SaveMovieToDB(ByVal _movieDB As Database.DBElement, ByVal IsNew As Boolean, ByVal BatchMode As Boolean, ByVal ToNFO As Boolean, ByVal ToDisk As Boolean) As Database.DBElement
+    Public Function SaveMovieToDB(ByVal _movieDB As DBElement, ByVal IsNew As Boolean, ByVal BatchMode As Boolean, ByVal ToNFO As Boolean, ByVal ToDisk As Boolean) As DBElement
         Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
         If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
         Using SQLcommand_movie As SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -3801,7 +3801,7 @@ Public Class Database
     ''' <param name="ToDisk">Create NFO and Images</param>
     ''' <param name="withMovies">Save the information also to all linked movies?</param>
     ''' <returns>Database.DBElement object</returns>
-    Public Function SaveMovieSetToDB(ByVal _moviesetDB As Database.DBElement, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal toDisk As Boolean = False, Optional ByVal withMovies As Boolean = False) As Database.DBElement
+    Public Function SaveMovieSetToDB(ByVal _moviesetDB As DBElement, ByVal IsNew As Boolean, Optional ByVal BatchMode As Boolean = False, Optional ByVal toDisk As Boolean = False, Optional ByVal withMovies As Boolean = False) As DBElement
         If _moviesetDB.ID = -1 Then IsNew = True
 
         Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
@@ -3964,9 +3964,9 @@ Public Class Database
             'Update all movies for this tag: if there are movies in linktag-table which aren't in current tag.movies object then remove movie-tag link from linktable and nfo for those movies
 
             'old state of tag in database
-            Dim MoviesInTagOld As New List(Of Database.DBElement)
+            Dim MoviesInTagOld As New List(Of DBElement)
             'new/updatend state of tag
-            Dim MoviesInTagNew As New List(Of Database.DBElement)
+            Dim MoviesInTagNew As New List(Of DBElement)
             MoviesInTagNew.AddRange(_tagDB.Movies.ToArray)
 
 
@@ -4000,7 +4000,7 @@ Public Class Database
             'write tag information into nfo (add tag)
             If MoviesInTagNew.Count > 0 Then
                 For Each tMovie In MoviesInTagNew
-                    Dim mMovie As Database.DBElement = LoadMovieFromDB(tMovie.ID) 'TODO: check why we load mMovie to overwrite tMovie with himself
+                    Dim mMovie As DBElement = LoadMovieFromDB(tMovie.ID) 'TODO: check why we load mMovie to overwrite tMovie with himself
                     tMovie = mMovie
                     mMovie.Movie.AddTag(_tagDB.Title)
                     Master.DB.SaveMovieToDB(mMovie, False, BatchMode, True, False)
@@ -4009,7 +4009,7 @@ Public Class Database
             'clean nfo of movies who aren't part of tag anymore (remove tag)
             If MoviesInTagOld.Count > 0 Then
                 For Each tMovie In MoviesInTagOld
-                    Dim mMovie As Database.DBElement = LoadMovieFromDB(tMovie.ID) 'TODO: check why we load mMovie to overwrite tMovie with himself
+                    Dim mMovie As DBElement = LoadMovieFromDB(tMovie.ID) 'TODO: check why we load mMovie to overwrite tMovie with himself
                     tMovie = mMovie
                     mMovie.Movie.Tags.Remove(_tagDB.Title)
                     Master.DB.SaveMovieToDB(mMovie, False, BatchMode, True, False)
@@ -4022,7 +4022,7 @@ Public Class Database
         Return _tagDB
     End Function
 
-    Public Sub ChangeTVEpisode(ByVal _episode As Database.DBElement, ByVal ListOfEpisodes As List(Of MediaContainers.EpisodeDetails), Optional ByVal Batchmode As Boolean = False)
+    Public Sub ChangeTVEpisode(ByVal _episode As DBElement, ByVal ListOfEpisodes As List(Of MediaContainers.EpisodeDetails), Optional ByVal Batchmode As Boolean = False)
         Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
         If Not Batchmode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
         Using SQLPCommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -4054,7 +4054,7 @@ Public Class Database
     ''' <param name="doSeasonCheck">If <c>True</c> then check if it's needed to create a new season for this episode</param>
     ''' <param name="BatchMode">Is the function already part of a transaction?</param>
     ''' <param name="ToDisk">Create NFO and Images</param>
-    Public Function SaveTVEpisodeToDB(ByVal _episode As Database.DBElement, ByVal IsNew As Boolean, ByVal BatchMode As Boolean, ByVal ToNFO As Boolean, ByVal ToDisk As Boolean, ByVal doSeasonCheck As Boolean) As Database.DBElement
+    Public Function SaveTVEpisodeToDB(ByVal _episode As DBElement, ByVal IsNew As Boolean, ByVal BatchMode As Boolean, ByVal ToNFO As Boolean, ByVal ToDisk As Boolean, ByVal doSeasonCheck As Boolean) As DBElement
         'TODO Must add parameter checking. Needs thought to ensure calling routines are not broken if exception thrown. 
         'TODO Break this method into smaller chunks. Too important to be this complex
 
@@ -4451,7 +4451,7 @@ Public Class Database
     ''' <param name="_season">Database.DBElement representing the season to be stored.</param>
     ''' <param name="BatchMode"></param>
     ''' <remarks>Note that this stores the season information, not the individual episodes within that season</remarks>
-    Public Function SaveTVSeasonToDB(ByRef _season As Database.DBElement, ByVal BatchMode As Boolean, ByVal ToDisk As Boolean) As Database.DBElement
+    Public Function SaveTVSeasonToDB(ByRef _season As DBElement, ByVal BatchMode As Boolean, ByVal ToDisk As Boolean) As DBElement
         Dim doesExist As Boolean = False
         Dim ID As Long = -1
 
@@ -4546,7 +4546,7 @@ Public Class Database
     ''' <param name="IsNew">Is this a new show (not already present in database)?</param>
     ''' <param name="BatchMode">Is the function already part of a transaction?</param>
     ''' <param name="ToDisk">Create NFO and Images</param>
-    Public Function SaveTVShowToDB(ByRef _show As Database.DBElement, ByVal IsNew As Boolean, ByVal BatchMode As Boolean, ByVal ToNFO As Boolean, ByVal ToDisk As Boolean, ByVal withEpisodes As Boolean) As Database.DBElement
+    Public Function SaveTVShowToDB(ByRef _show As DBElement, ByVal IsNew As Boolean, ByVal BatchMode As Boolean, ByVal ToNFO As Boolean, ByVal ToDisk As Boolean, ByVal withEpisodes As Boolean) As DBElement
         Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
 
         If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
@@ -4734,7 +4734,7 @@ Public Class Database
 
         'save season informations
         If _show.SeasonsSpecified Then
-            For Each nSeason As Database.DBElement In _show.Seasons
+            For Each nSeason As DBElement In _show.Seasons
                 SaveTVSeasonToDB(nSeason, True, True)
             Next
             DeleteInvalidTVSeasonsFromDB(_show.Seasons, _show.ID, True)
@@ -4742,7 +4742,7 @@ Public Class Database
 
         'save episode informations
         If withEpisodes AndAlso _show.EpisodesSpecified Then
-            For Each nEpisode As Database.DBElement In _show.Episodes
+            For Each nEpisode As DBElement In _show.Episodes
                 SaveTVEpisodeToDB(nEpisode, If(nEpisode.ID >= 0, False, True), True, True, True, False)
             Next
             DeleteInvalidTVEpisodesFromDB(_show.Episodes, _show.ID, True)
@@ -4949,7 +4949,7 @@ Public Class Database
 
 #Region "Fields"
 
-        Private _dbmovie As Database.DBElement
+        Private _dbmovie As DBElement
         Private _id As Long
         Private _listtitle As String
         Private _order As Integer
@@ -4966,11 +4966,11 @@ Public Class Database
 
 #Region "Properties"
 
-        Public Property DBMovie() As Database.DBElement
+        Public Property DBMovie() As DBElement
             Get
                 Return _dbmovie
             End Get
-            Set(ByVal value As Database.DBElement)
+            Set(ByVal value As DBElement)
                 _dbmovie = value
             End Set
         End Property
@@ -5007,7 +5007,7 @@ Public Class Database
 #Region "Methods"
 
         Public Sub Clear()
-            _dbmovie = New Database.DBElement(Enums.ContentType.Movie)
+            _dbmovie = New DBElement(Enums.ContentType.Movie)
             _id = -1
             _order = 0
             _listtitle = String.Empty

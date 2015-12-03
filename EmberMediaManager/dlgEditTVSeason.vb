@@ -328,16 +328,16 @@ Public Class dlgEditTVSeason
             If aContainer.SeasonPosters.Count > 0 OrElse (tmpDBElement.TVSeason.Season = 999 AndAlso aContainer.MainPosters.Count > 0) Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = Windows.Forms.DialogResult.OK Then
-                    tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
-                    If tmpDBElement.ImagesContainer.Banner.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Banner.ImageOriginal.FromMemoryStream Then
-                        pbBanner.Image = tmpDBElement.ImagesContainer.Banner.ImageOriginal.Image
-                        lblBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbBanner.Image.Width, pbBanner.Image.Height)
-                        lblBannerSize.Visible = True
+                    tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
+                    If tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Poster.ImageOriginal.FromMemoryStream Then
+                        pbPoster.Image = tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image
+                        lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbPoster.Image.Width, pbPoster.Image.Height)
+                        lblPosterSize.Visible = True
                     Else
-                        pbBanner.Image = Nothing
-                        pbBanner.Tag = Nothing
-                        lblBannerSize.Text = String.Empty
-                        lblBannerSize.Visible = False
+                        pbPoster.Image = Nothing
+                        pbPoster.Tag = Nothing
+                        lblPosterSize.Text = String.Empty
+                        lblPosterSize.Visible = False
                     End If
                 End If
             Else

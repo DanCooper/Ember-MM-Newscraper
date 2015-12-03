@@ -1135,7 +1135,7 @@ Public Class ModulesManager
                     logger.Trace("Scraping movie data using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
                     AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie
 
-                    ret = _externalScraperModule.ProcessorModule.Scraper(oDBMovie, ScrapeModifier, ScrapeType, ScrapeOptions)
+                    ret = _externalScraperModule.ProcessorModule.Scraper_Movie(oDBMovie, ScrapeModifier, ScrapeType, ScrapeOptions)
 
                     If ret.Cancelled Then Return ret.Cancelled
 
@@ -1145,6 +1145,8 @@ Public Class ModulesManager
                     RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie
                     If ret.breakChain Then Exit For
                 Next
+
+                If ScrapedList.Count = 0 Then Return True 'Cancelled
 
                 'Merge scraperresults considering global datascraper settings
                 DBMovie = NFO.MergeDataScraperResults_Movie(DBMovie, ScrapedList, ScrapeType, ScrapeOptions)
@@ -1206,6 +1208,8 @@ Public Class ModulesManager
                 If ret.breakChain Then Exit For
             Next
 
+            If ScrapedList.Count = 0 Then Return True 'Cancelled
+
             'Merge scraperresults considering global datascraper settings
             DBMovieSet = NFO.MergeDataScraperResults_MovieSet(DBMovieSet, ScrapedList, ScrapeType, ScrapeOptions)
         End If
@@ -1245,6 +1249,8 @@ Public Class ModulesManager
                     RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
                     If ret.breakChain Then Exit For
                 Next
+
+                If ScrapedList.Count = 0 Then Return True 'Cancelled
 
                 'Merge scraperresults considering global datascraper settings
                 DBTV = NFO.MergeDataScraperResults_TVEpisode_Single(DBTV, ScrapedList, ScrapeOptions)
@@ -1288,6 +1294,8 @@ Public Class ModulesManager
                     RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
                     If ret.breakChain Then Exit For
                 Next
+
+                If ScrapedList.Count = 0 Then Return True 'Cancelled
 
                 'Merge scraperresults considering global datascraper settings
                 DBTV = NFO.MergeDataScraperResults_TVSeason(DBTV, ScrapedList, ScrapeOptions)
@@ -1335,17 +1343,17 @@ Public Class ModulesManager
                     sEpisode.NfoPath = String.Empty
                     sEpisode.TVEpisode = New MediaContainers.EpisodeDetails With {.Episode = iEpisode, .Season = iSeason}
                 Next
-        End If
+            End If
 
-        'create a clone of DBTV
-        Dim oShow As Database.DBElement = CType(DBTV.CloneDeep, Database.DBElement)
+            'create a clone of DBTV
+            Dim oShow As Database.DBElement = CType(DBTV.CloneDeep, Database.DBElement)
 
-        If (modules.Count() <= 0) Then
-            logger.Warn("No TV scrapers are defined")
-        Else
-            For Each _externalScraperModule As _externalScraperModuleClass_Data_TV In modules
-                logger.Trace("Scraping TV Show data using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
-                AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
+            If (modules.Count() <= 0) Then
+                logger.Warn("No TV scrapers are defined")
+            Else
+                For Each _externalScraperModule As _externalScraperModuleClass_Data_TV In modules
+                    logger.Trace("Scraping TV Show data using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
+                    AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
 
                     ret = _externalScraperModule.ProcessorModule.Scraper_TVShow(oShow, ScrapeModifier, ScrapeType, ScrapeOptions)
 
@@ -1355,23 +1363,25 @@ Public Class ModulesManager
                         ScrapedList.Add(ret.Result)
                     End If
                     RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
-                If ret.breakChain Then Exit For
-            Next
-
-            'Merge scraperresults considering global datascraper settings
-            DBTV = NFO.MergeDataScraperResults_TV(DBTV, ScrapedList, ScrapeType, ScrapeOptions, ScrapeModifier.withEpisodes)
-
-            'create cache paths for Actor Thumbs
-            DBTV.TVShow.CreateCachePaths_ActorsThumbs()
-            If ScrapeModifier.withEpisodes Then
-                For Each tEpisode As Database.DBElement In DBTV.Episodes
-                    tEpisode.TVEpisode.CreateCachePaths_ActorsThumbs()
+                    If ret.breakChain Then Exit For
                 Next
+
+                If ScrapedList.Count = 0 Then Return True 'Cancelled
+
+                'Merge scraperresults considering global datascraper settings
+                DBTV = NFO.MergeDataScraperResults_TV(DBTV, ScrapedList, ScrapeType, ScrapeOptions, ScrapeModifier.withEpisodes)
+
+                'create cache paths for Actor Thumbs
+                DBTV.TVShow.CreateCachePaths_ActorsThumbs()
+                If ScrapeModifier.withEpisodes Then
+                    For Each tEpisode As Database.DBElement In DBTV.Episodes
+                        tEpisode.TVEpisode.CreateCachePaths_ActorsThumbs()
+                    Next
+                End If
             End If
-        End If
-        Return ret.Cancelled
+            Return ret.Cancelled
         Else
-        Return True 'Cancelled
+            Return True 'Cancelled
         End If
     End Function
     ''' <summary>

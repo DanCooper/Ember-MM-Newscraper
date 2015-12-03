@@ -3518,6 +3518,7 @@ Public Class dlgSettings
             '***************************************************
 
             '********* Kodi Extended Images settings ***********
+            chkMovieSetUseExtended.Checked = .MovieSetUseExtended
             chkMovieSetBannerExtended.Checked = .MovieSetBannerExtended
             chkMovieSetClearArtExtended.Checked = .MovieSetClearArtExtended
             chkMovieSetClearLogoExtended.Checked = .MovieSetClearLogoExtended

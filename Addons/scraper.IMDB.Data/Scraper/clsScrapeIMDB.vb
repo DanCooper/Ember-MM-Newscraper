@@ -1140,35 +1140,29 @@ mPlot:          'Plot
 
         Public Function GetSearchMovieInfo(ByVal sMovieName As String, ByVal sMovieYear As String, ByRef oDBMovie As Database.DBElement, ByVal iType As Enums.ScrapeType, ByVal FilteredOptions As Structures.ScrapeOptions, ByVal WorldWideTitleFallback As Boolean, ByVal ForceTitleLanguage As String, ByVal CountryAbbreviation As Boolean, ByVal StudiowithDistributors As Boolean) As MediaContainers.Movie
             Dim r As SearchResults_Movie = SearchMovie(sMovieName, sMovieYear)
-            Dim nMovie As New MediaContainers.Movie
 
             Try
                 Select Case iType
                     Case Enums.ScrapeType.AllAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MissingAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SingleField
                         If r.ExactMatches.Count = 1 Then
-                            nMovie = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation, StudiowithDistributors)
+                            Return GetMovieInfo(r.ExactMatches.Item(0).IMDBID, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation, StudiowithDistributors)
                         ElseIf r.PopularTitles.Count = 1 AndAlso r.PopularTitles(0).Lev <= 5 Then
-                            nMovie = GetMovieInfo(r.PopularTitles.Item(0).IMDBID, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation, StudiowithDistributors)
+                            Return GetMovieInfo(r.PopularTitles.Item(0).IMDBID, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation, StudiowithDistributors)
                         ElseIf r.ExactMatches.Count = 1 AndAlso r.ExactMatches(0).Lev <= 5 Then
-                            nMovie = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation, StudiowithDistributors)
+                            Return GetMovieInfo(r.ExactMatches.Item(0).IMDBID, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation, StudiowithDistributors)
                         Else
-                            nMovie.Clear()
                             Using dlgSearch As New dlgIMDBSearchResults_Movie(_SpecialSettings, Me)
                                 If dlgSearch.ShowDialog(r, sMovieName, oDBMovie.Filename) = DialogResult.OK Then
-                                    If String.IsNullOrEmpty(dlgSearch.Result.IMDBID) Then
-                                        Return Nothing
-                                    Else
-                                        nMovie = GetMovieInfo(dlgSearch.Result.IMDBID, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation, StudiowithDistributors)
+                                    If Not String.IsNullOrEmpty(dlgSearch.Result.IMDBID) Then
+                                        Return GetMovieInfo(dlgSearch.Result.IMDBID, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation, StudiowithDistributors)
                                     End If
-                                Else
-                                    Return Nothing
                                 End If
                             End Using
                         End If
 
                     Case Enums.ScrapeType.AllSkip, Enums.ScrapeType.FilterSkip, Enums.ScrapeType.MarkedSkip, Enums.ScrapeType.MissingSkip, Enums.ScrapeType.NewSkip, Enums.ScrapeType.SelectedSkip
                         If r.ExactMatches.Count = 1 Then
-                            nMovie = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation, StudiowithDistributors)
+                            Return GetMovieInfo(r.ExactMatches.Item(0).IMDBID, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation, StudiowithDistributors)
                         End If
 
                     Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SingleScrape
@@ -1192,21 +1186,21 @@ mPlot:          'Plot
                         '    b = GetMovieInfo(r.PartialMatches.Item(0).IMDBID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Options, True)
                         'End If
                         If r.ExactMatches.Count = 1 Then
-                            nMovie = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation, StudiowithDistributors)
+                            Return GetMovieInfo(r.ExactMatches.Item(0).IMDBID, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation, StudiowithDistributors)
                         ElseIf r.ExactMatches.Count > 1 AndAlso exactHaveYear >= 0 Then
-                            nMovie = GetMovieInfo(r.ExactMatches.Item(exactHaveYear).IMDBID, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation, StudiowithDistributors)
+                            Return GetMovieInfo(r.ExactMatches.Item(exactHaveYear).IMDBID, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation, StudiowithDistributors)
                         ElseIf r.PopularTitles.Count > 0 AndAlso popularHaveYear >= 0 Then
-                            nMovie = GetMovieInfo(r.PopularTitles.Item(popularHaveYear).IMDBID, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation, StudiowithDistributors)
+                            Return GetMovieInfo(r.PopularTitles.Item(popularHaveYear).IMDBID, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation, StudiowithDistributors)
                         ElseIf r.ExactMatches.Count > 0 AndAlso (r.ExactMatches(0).Lev <= 5 OrElse useAnyway) Then
-                            nMovie = GetMovieInfo(r.ExactMatches.Item(0).IMDBID, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation, StudiowithDistributors)
+                            Return GetMovieInfo(r.ExactMatches.Item(0).IMDBID, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation, StudiowithDistributors)
                         ElseIf r.PopularTitles.Count > 0 AndAlso (r.PopularTitles(0).Lev <= 5 OrElse useAnyway) Then
-                            nMovie = GetMovieInfo(r.PopularTitles.Item(0).IMDBID, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation, StudiowithDistributors)
+                            Return GetMovieInfo(r.PopularTitles.Item(0).IMDBID, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation, StudiowithDistributors)
                         ElseIf r.PartialMatches.Count > 0 AndAlso (r.PartialMatches(0).Lev <= 5 OrElse useAnyway) Then
-                            nMovie = GetMovieInfo(r.PartialMatches.Item(0).IMDBID, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation, StudiowithDistributors)
+                            Return GetMovieInfo(r.PartialMatches.Item(0).IMDBID, False, FilteredOptions, True, WorldWideTitleFallback, ForceTitleLanguage, CountryAbbreviation, StudiowithDistributors)
                         End If
                 End Select
 
-                Return nMovie
+                Return Nothing
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
                 Return Nothing
@@ -1215,34 +1209,29 @@ mPlot:          'Plot
 
         Public Function GetSearchTVShowInfo(ByVal sShowName As String, ByRef oDBTV As Database.DBElement, ByVal iType As Enums.ScrapeType, ByVal FilteredOptions As Structures.ScrapeOptions) As MediaContainers.TVShow
             Dim r As SearchResults_TVShow = SearchTVShow(sShowName)
-            Dim nTVShow As New MediaContainers.TVShow
 
             Select Case iType
                 Case Enums.ScrapeType.AllAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MissingAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SingleField
                     If r.Matches.Count = 1 Then
-                        nTVShow = GetTVShowInfo(r.Matches.Item(0).IMDB, False, FilteredOptions, True, False)
+                        Return GetTVShowInfo(r.Matches.Item(0).IMDB, False, FilteredOptions, True, False)
                     Else
                         Using dlgSearch As New dlgIMDBSearchResults_TV(_SpecialSettings, Me)
                             If dlgSearch.ShowDialog(r, sShowName, oDBTV.ShowPath) = DialogResult.OK Then
-                                If String.IsNullOrEmpty(dlgSearch.Result.IMDB) Then
-                                    Return Nothing
-                                Else
-                                    nTVShow = GetTVShowInfo(dlgSearch.Result.IMDB, False, FilteredOptions, True, False)
+                                If Not String.IsNullOrEmpty(dlgSearch.Result.IMDB) Then
+                                    Return GetTVShowInfo(dlgSearch.Result.IMDB, False, FilteredOptions, True, False)
                                 End If
-                            Else
-                                Return Nothing
                             End If
                         End Using
                     End If
 
                 Case Enums.ScrapeType.AllSkip, Enums.ScrapeType.FilterSkip, Enums.ScrapeType.MarkedSkip, Enums.ScrapeType.MissingSkip, Enums.ScrapeType.NewSkip, Enums.ScrapeType.SelectedSkip
                     If r.Matches.Count = 1 Then
-                        nTVShow = GetTVShowInfo(r.Matches.Item(0).IMDB, False, FilteredOptions, True, False)
+                        Return GetTVShowInfo(r.Matches.Item(0).IMDB, False, FilteredOptions, True, False)
                     End If
 
                 Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SingleScrape
                     If r.Matches.Count > 0 Then
-                        nTVShow = GetTVShowInfo(r.Matches.Item(0).IMDB, False, FilteredOptions, True, False)
+                        Return GetTVShowInfo(r.Matches.Item(0).IMDB, False, FilteredOptions, True, False)
                     End If
 
                     ''check if ALL results are over lev value
@@ -1279,7 +1268,7 @@ mPlot:          'Plot
                     'End If
             End Select
 
-            Return nTVShow
+            Return Nothing
         End Function
 
         Private Function FindYear(ByVal tmpname As String, ByVal lst As List(Of MediaContainers.Movie)) As Integer

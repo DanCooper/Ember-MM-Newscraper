@@ -68,6 +68,7 @@ Public Class clsAdvancedSettings
 #End Region 'Constructors
 
 #Region "Methods"
+
     Private Overloads Sub Dispose() Implements IDisposable.Dispose
         Disposing(True)
     End Sub
@@ -168,6 +169,7 @@ Public Class clsAdvancedSettings
         Catch ex As Exception
         End Try
     End Sub
+
     Public Shared Function GetComplexSetting(ByVal key As String, Optional ByVal cAssembly As String = "") As List(Of AdvancedSettingsComplexSettingsTableItem)
         Try
             Dim Assembly As String = cAssembly
@@ -220,30 +222,49 @@ Public Class clsAdvancedSettings
                 _AdvancedSettings = CType(xAdvancedSettings.Deserialize(objStreamReader), clsXMLAdvancedSettings)
                 objStreamReader.Close()
             End If
-
-            'Add complex settings to general advancedsettings.xml if those settings don't exist
-            Dim formatconversions As List(Of AdvancedSettingsComplexSettingsTableItem) = clsAdvancedSettings.GetComplexSetting("VideoFormatConverts", "*EmberAPP")
-            If formatconversions Is Nothing Then
-                Using settings = New clsAdvancedSettings()
-                    settings.SetDefaults("VideoFormatConverts")
-                End Using
-            End If
-            formatconversions = clsAdvancedSettings.GetComplexSetting("AudioFormatConverts", "*EmberAPP")
-            If formatconversions Is Nothing Then
-                Using settings = New clsAdvancedSettings()
-                    settings.SetDefaults("AudioFormatConverts")
-                End Using
-            End If
-            formatconversions = clsAdvancedSettings.GetComplexSetting("MovieSources", "*EmberAPP")
-            If formatconversions Is Nothing Then
-                Using settings = New clsAdvancedSettings()
-                    settings.SetDefaults("MovieSources")
-                End Using
-            End If
-
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Info("An attempt is made to repair the AdvancedSettings.xml")
+            Try
+                Using srAdvancedSettings As New StreamReader(fname)
+                    Dim sAdvancedSettings As String = srAdvancedSettings.ReadToEnd
+                    'old ContentTypes
+                    sAdvancedSettings = System.Text.RegularExpressions.Regex.Replace(sAdvancedSettings, "Content=""Episode""", "Content=""TVEpisode""")
+                    sAdvancedSettings = System.Text.RegularExpressions.Regex.Replace(sAdvancedSettings, "Content=""Season""", "Content=""TVSeason""")
+                    sAdvancedSettings = System.Text.RegularExpressions.Regex.Replace(sAdvancedSettings, "Content=""Show""", "Content=""TVShow""")
+
+                    Dim xXMLSettings As New XmlSerializer(_AdvancedSettings.GetType)
+                    Using reader As TextReader = New StringReader(sAdvancedSettings)
+                        _AdvancedSettings = CType(xXMLSettings.Deserialize(reader), clsXMLAdvancedSettings)
+                    End Using
+                End Using
+                logger.Info("AdvancedSettings.xml successfully repaired")
+            Catch ex2 As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex2)
+                File.Copy(fname, String.Concat(fname, "_backup"), True)
+                _AdvancedSettings = New clsXMLAdvancedSettings
+            End Try
         End Try
+
+        'Add complex settings to general advancedsettings.xml if those settings don't exist
+        Dim formatconversions As List(Of AdvancedSettingsComplexSettingsTableItem) = clsAdvancedSettings.GetComplexSetting("VideoFormatConverts", "*EmberAPP")
+        If formatconversions Is Nothing Then
+            Using settings = New clsAdvancedSettings()
+                settings.SetDefaults("VideoFormatConverts")
+            End Using
+        End If
+        formatconversions = clsAdvancedSettings.GetComplexSetting("AudioFormatConverts", "*EmberAPP")
+        If formatconversions Is Nothing Then
+            Using settings = New clsAdvancedSettings()
+                settings.SetDefaults("AudioFormatConverts")
+            End Using
+        End If
+        formatconversions = clsAdvancedSettings.GetComplexSetting("MovieSources", "*EmberAPP")
+        If formatconversions Is Nothing Then
+            Using settings = New clsAdvancedSettings()
+                settings.SetDefaults("MovieSources")
+            End Using
+        End If
         _DoNotSave = False
     End Sub
 

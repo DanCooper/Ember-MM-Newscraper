@@ -437,7 +437,7 @@ Public Class ImageUtils
         ''' </summary>
         ''' <param name="image_1">The first image</param>
         ''' <param name="image_2">The second image</param>
-        ''' <returns>true=Images are identical, false=different images</returns>
+        ''' <returns>0: identical images, 0-5: most likely identical, >10: different images</returns>
         ''' <remarks>
         ''' 2015/09/22 Cocotus - First implementation
         ''' </remarks>
@@ -460,7 +460,7 @@ Public Class ImageUtils
         ''' </summary>
         ''' <param name="image_1">The first image</param>
         ''' <param name="imagepath_2">Path to the second image</param>
-        ''' <returns>true=Images are identical, false=different images</returns>
+        ''' <returns>0: identical images, 0-5: most likely identical, >10: different images</returns>
         ''' <remarks>
         ''' 2015/09/22 Cocotus - First implementation
         ''' </remarks>
@@ -484,7 +484,7 @@ Public Class ImageUtils
         ''' </summary>
         ''' <param name="imagepath_1">Path to the first image</param>
         ''' <param name="imagepath_2">Path to the second image</param>
-        ''' <returns>true=Images are identical, false=different images</returns>
+        ''' <returns>0: identical images, 0-5: most likely identical, >10: different images</returns>
         ''' <remarks>
         ''' 2015/09/22 Cocotus - First implementation
         ''' </remarks>
