@@ -6564,6 +6564,7 @@ Public Class Settings
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Info("An attempt is made to repair the Settings.xml")
             Try
                 Using srSettings As New StreamReader(configpath)
                     Dim sSettings As String = srSettings.ReadToEnd
@@ -6586,6 +6587,7 @@ Public Class Settings
                     End Using
                     'Now we deserialize just the data in a local, shared, variable. So we can reference to us
                     Master.eSettings = Me
+                    logger.Info("AdvancedSettings.xml successfully repaired")
                 End Using
             Catch ex2 As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex2)
