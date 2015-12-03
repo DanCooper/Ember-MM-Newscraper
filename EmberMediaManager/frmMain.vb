@@ -2105,9 +2105,7 @@ Public Class frmMain
 
                             'autoscraping
                         ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
-                            Dim newPreferredImages As New MediaContainers.ImagesContainer
-                            Images.SetDefaultImages(DBScrapeMovie, newPreferredImages, SearchResultsContainer, tScrapeItem.ScrapeModifier)
-                            DBScrapeMovie.ImagesContainer = newPreferredImages
+                            Images.SetPreferredImages(DBScrapeMovie, SearchResultsContainer, tScrapeItem.ScrapeModifier)
                         End If
                     End If
                 End If
@@ -2380,9 +2378,7 @@ Public Class frmMain
 
                             'autoscraping
                         ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
-                            Dim newPreferredImages As New MediaContainers.ImagesContainer
-                            Images.SetDefaultImages(DBScrapeMovieSet, newPreferredImages, SearchResultsContainer, tScrapeItem.ScrapeModifier)
-                            DBScrapeMovieSet.ImagesContainer = newPreferredImages
+                            Images.SetPreferredImages(DBScrapeMovieSet, SearchResultsContainer, tScrapeItem.ScrapeModifier)
                         End If
                     End If
                 End If
@@ -2513,32 +2509,19 @@ Public Class frmMain
                 End If
 
                 'get all images
-                If tScrapeItem.ScrapeModifier.MainBanner OrElse
-                    tScrapeItem.ScrapeModifier.MainCharacterArt OrElse
-                    tScrapeItem.ScrapeModifier.MainClearArt OrElse
-                    tScrapeItem.ScrapeModifier.MainClearLogo OrElse
-                    tScrapeItem.ScrapeModifier.MainDiscArt OrElse
-                    tScrapeItem.ScrapeModifier.MainExtrafanarts OrElse
-                    tScrapeItem.ScrapeModifier.MainFanart OrElse
-                    tScrapeItem.ScrapeModifier.MainLandscape OrElse
-                    tScrapeItem.ScrapeModifier.MainPoster Then
-
-                    Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
+                Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
                     bwTVScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(254, "Scraping Images"), ":"))
-                    If Not ModulesManager.Instance.ScrapeImage_TV(DBScrapeShow, SearchResultsContainer, tScrapeItem.ScrapeModifier, Args.ScrapeList.Count = 1) Then
-                        If Args.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.TVImagesDisplayImageSelect Then
-                            Using dImgSelect As New dlgImgSelect
-                                If dImgSelect.ShowDialog(DBScrapeShow, SearchResultsContainer, tScrapeItem.ScrapeModifier) = DialogResult.OK Then
-                                    DBScrapeShow = dImgSelect.Result
-                                End If
-                            End Using
+                If Not ModulesManager.Instance.ScrapeImage_TV(DBScrapeShow, SearchResultsContainer, tScrapeItem.ScrapeModifier, Args.ScrapeList.Count = 1) Then
+                    If Args.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.TVImagesDisplayImageSelect Then
+                        Using dImgSelect As New dlgImgSelect
+                            If dImgSelect.ShowDialog(DBScrapeShow, SearchResultsContainer, tScrapeItem.ScrapeModifier) = DialogResult.OK Then
+                                DBScrapeShow = dImgSelect.Result
+                            End If
+                        End Using
 
-                            'autoscraping
-                        ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
-                            Dim newPreferredImages As New MediaContainers.ImagesContainer
-                            Images.SetDefaultImages(DBScrapeShow, newPreferredImages, SearchResultsContainer, tScrapeItem.ScrapeModifier)
-                            DBScrapeShow.ImagesContainer = newPreferredImages
-                        End If
+                        'autoscraping
+                    ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
+                        Images.SetPreferredImages(DBScrapeShow, SearchResultsContainer, tScrapeItem.ScrapeModifier)
                     End If
                 End If
 
@@ -2549,11 +2532,9 @@ Public Class frmMain
                             MediaInfo.UpdateTVMediaInfo(tEpisode)
                         End If
                         If tScrapeItem.ScrapeModifier.EpisodeFanart OrElse tScrapeItem.ScrapeModifier.EpisodePoster Then
-                            Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
+                            Dim SearchResultsContainer_Episodes As New MediaContainers.SearchResultsContainer
                             ModulesManager.Instance.ScrapeImage_TV(tEpisode, SearchResultsContainer, tScrapeItem.ScrapeModifier, False)
-                            Dim newPreferredImages As New MediaContainers.ImagesContainer
-                            Images.SetDefaultImages(tEpisode, newPreferredImages, SearchResultsContainer, tScrapeItem.ScrapeModifier)
-                            tEpisode.ImagesContainer = newPreferredImages
+                            Images.SetPreferredImages(tEpisode, SearchResultsContainer_Episodes, tScrapeItem.ScrapeModifier)
                         End If
                     Next
                 End If
@@ -2704,9 +2685,7 @@ Public Class frmMain
 
                             'autoscraping
                         ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
-                            Dim newPreferredImages As New MediaContainers.ImagesContainer
-                            Images.SetDefaultImages(DBScrapeEpisode, newPreferredImages, SearchResultsContainer, tScrapeItem.ScrapeModifier)
-                            DBScrapeEpisode.ImagesContainer = newPreferredImages
+                            Images.SetPreferredImages(DBScrapeEpisode, SearchResultsContainer, tScrapeItem.ScrapeModifier)
                         End If
                     End If
                 End If
@@ -2844,9 +2823,7 @@ Public Class frmMain
 
                             'autoscraping
                         ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
-                            Dim newPreferredImages As New MediaContainers.ImagesContainer
-                            Images.SetDefaultImages(DBScrapeSeason, newPreferredImages, SearchResultsContainer, tScrapeItem.ScrapeModifier)
-                            DBScrapeSeason.ImagesContainer = newPreferredImages
+                            Images.SetPreferredImages(DBScrapeSeason, SearchResultsContainer, tScrapeItem.ScrapeModifier)
                         End If
                     End If
                 End If

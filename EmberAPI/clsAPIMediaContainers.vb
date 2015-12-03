@@ -4232,6 +4232,72 @@ Namespace MediaContainers
     End Class
 
     <Serializable()>
+    Public Class PreferredImagesContainer
+
+#Region "Fields"
+
+        Private _episodes As New List(Of EpisodeOrSeasonImagesContainer)
+        Private _imagescontainer As New ImagesContainer
+        Private _seasons As New List(Of EpisodeOrSeasonImagesContainer)
+
+#End Region 'Fields
+
+#Region "Constructors"
+
+        Public Sub New()
+            Clear()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Properties"
+
+        Public Property Episodes() As List(Of EpisodeOrSeasonImagesContainer)
+            Get
+                Return _episodes
+            End Get
+            Set(ByVal value As List(Of EpisodeOrSeasonImagesContainer))
+                _episodes = value
+            End Set
+        End Property
+
+        Public Property ImagesContainer() As ImagesContainer
+            Get
+                Return _imagescontainer
+            End Get
+            Set(ByVal value As ImagesContainer)
+                _imagescontainer = value
+            End Set
+        End Property
+
+        Public Property Seasons() As List(Of EpisodeOrSeasonImagesContainer)
+            Get
+                Return _seasons
+            End Get
+            Set(ByVal value As List(Of EpisodeOrSeasonImagesContainer))
+                _seasons = value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub Clear()
+            _episodes.Clear()
+            _imagescontainer.Clear()
+            _seasons.Clear()
+        End Sub
+
+#End Region 'Methods
+
+#Region "Nested Types"
+
+#End Region 'Nested Types
+
+    End Class
+
+    <Serializable()>
     Public Class SearchResultsContainer
 
 #Region "Fields"
