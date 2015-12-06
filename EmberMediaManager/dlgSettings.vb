@@ -3971,6 +3971,7 @@ Public Class dlgSettings
     Private Sub LoadMovieFanartSizes()
         Dim items As New Dictionary(Of String, Enums.MovieFanartSize)
         items.Add(Master.eLang.GetString(745, "Any"), Enums.MovieFanartSize.Any)
+        items.Add("3840x2160", Enums.MovieFanartSize.UHD2160)
         items.Add("1920x1080", Enums.MovieFanartSize.HD1080)
         items.Add("1280x720", Enums.MovieFanartSize.HD720)
         items.Add("Thumb", Enums.MovieFanartSize.Thumb)
@@ -4028,6 +4029,7 @@ Public Class dlgSettings
     Private Sub LoadTVFanartSizes()
         Dim items As New Dictionary(Of String, Enums.TVFanartSize)
         items.Add(Master.eLang.GetString(745, "Any"), Enums.TVFanartSize.Any)
+        items.Add("3840x2160", Enums.TVFanartSize.UHD2160)
         items.Add("1920x1080", Enums.TVFanartSize.HD1080)
         items.Add("1280x720", Enums.TVFanartSize.HD720)
         cbTVAllSeasonsFanartPrefSize.DataSource = items.ToList
