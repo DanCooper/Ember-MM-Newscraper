@@ -24,11 +24,10 @@ Partial Class dlgImgSelect
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgImgSelect))
-        Me.btnRemoveSubImage = New System.Windows.Forms.Button()
-        Me.btnRestoreSubImage = New System.Windows.Forms.Button()
         Me.pnlImgSelect = New System.Windows.Forms.Panel()
         Me.pnlImgSelectMain = New System.Windows.Forms.Panel()
         Me.pnlImgSelectTop = New System.Windows.Forms.Panel()
+        Me.tblImgSelectTop = New System.Windows.Forms.TableLayoutPanel()
         Me.pnlTopImages = New System.Windows.Forms.Panel()
         Me.pnlImgSelectBottom = New System.Windows.Forms.Panel()
         Me.tblImgSelectBottom = New System.Windows.Forms.TableLayoutPanel()
@@ -63,12 +62,15 @@ Partial Class dlgImgSelect
         Me.cmnuTopImageRestorePreferred = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTopImageRemove = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuSubImage = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.SubToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuSubImageRestoreOriginal = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuSubImageRestorePreferred = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuSubImageRemove = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuSubImageRemoveAll = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuListImage = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.ListToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.tblImgSelectTop = New System.Windows.Forms.TableLayoutPanel()
         Me.pnlImgSelect.SuspendLayout()
         Me.pnlImgSelectTop.SuspendLayout()
+        Me.tblImgSelectTop.SuspendLayout()
         Me.pnlImgSelectBottom.SuspendLayout()
         Me.tblImgSelectBottom.SuspendLayout()
         Me.pnlFilter.SuspendLayout()
@@ -81,32 +83,7 @@ Partial Class dlgImgSelect
         Me.cmnuTopImage.SuspendLayout()
         Me.cmnuSubImage.SuspendLayout()
         Me.cmnuListImage.SuspendLayout()
-        Me.tblImgSelectTop.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'btnRemoveSubImage
-        '
-        Me.btnRemoveSubImage.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnRemoveSubImage.Enabled = False
-        Me.btnRemoveSubImage.Image = CType(resources.GetObject("btnRemoveSubImage.Image"), System.Drawing.Image)
-        Me.btnRemoveSubImage.Location = New System.Drawing.Point(165, 748)
-        Me.btnRemoveSubImage.Margin = New System.Windows.Forms.Padding(3, 3, 23, 3)
-        Me.btnRemoveSubImage.Name = "btnRemoveSubImage"
-        Me.btnRemoveSubImage.Size = New System.Drawing.Size(23, 23)
-        Me.btnRemoveSubImage.TabIndex = 2
-        Me.btnRemoveSubImage.UseVisualStyleBackColor = True
-        '
-        'btnRestoreSubImage
-        '
-        Me.btnRestoreSubImage.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnRestoreSubImage.Enabled = False
-        Me.btnRestoreSubImage.Image = CType(resources.GetObject("btnRestoreSubImage.Image"), System.Drawing.Image)
-        Me.btnRestoreSubImage.Location = New System.Drawing.Point(6, 748)
-        Me.btnRestoreSubImage.Margin = New System.Windows.Forms.Padding(6, 3, 3, 3)
-        Me.btnRestoreSubImage.Name = "btnRestoreSubImage"
-        Me.btnRestoreSubImage.Size = New System.Drawing.Size(23, 23)
-        Me.btnRestoreSubImage.TabIndex = 1
-        Me.btnRestoreSubImage.UseVisualStyleBackColor = True
         '
         'pnlImgSelect
         '
@@ -138,6 +115,22 @@ Partial Class dlgImgSelect
         Me.pnlImgSelectTop.Name = "pnlImgSelectTop"
         Me.pnlImgSelectTop.Size = New System.Drawing.Size(1323, 203)
         Me.pnlImgSelectTop.TabIndex = 0
+        '
+        'tblImgSelectTop
+        '
+        Me.tblImgSelectTop.AutoSize = True
+        Me.tblImgSelectTop.ColumnCount = 1
+        Me.tblImgSelectTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblImgSelectTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblImgSelectTop.Controls.Add(Me.pnlTopImages, 0, 0)
+        Me.tblImgSelectTop.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblImgSelectTop.Location = New System.Drawing.Point(0, 0)
+        Me.tblImgSelectTop.Name = "tblImgSelectTop"
+        Me.tblImgSelectTop.RowCount = 1
+        Me.tblImgSelectTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblImgSelectTop.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 203.0!))
+        Me.tblImgSelectTop.Size = New System.Drawing.Size(1323, 203)
+        Me.tblImgSelectTop.TabIndex = 0
         '
         'pnlTopImages
         '
@@ -292,8 +285,6 @@ Partial Class dlgImgSelect
         Me.tblImgSelectLeft.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblImgSelectLeft.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.tblImgSelectLeft.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblImgSelectLeft.Controls.Add(Me.btnRestoreSubImage, 0, 7)
-        Me.tblImgSelectLeft.Controls.Add(Me.btnRemoveSubImage, 5, 7)
         Me.tblImgSelectLeft.Controls.Add(Me.pnlSubImages, 0, 6)
         Me.tblImgSelectLeft.Controls.Add(Me.btnSubImageUp, 2, 7)
         Me.tblImgSelectLeft.Controls.Add(Me.btnSubImageDown, 3, 7)
@@ -334,7 +325,7 @@ Partial Class dlgImgSelect
         '
         Me.btnSubImageUp.Enabled = False
         Me.btnSubImageUp.Image = CType(resources.GetObject("btnSubImageUp.Image"), System.Drawing.Image)
-        Me.btnSubImageUp.Location = New System.Drawing.Point(71, 748)
+        Me.btnSubImageUp.Location = New System.Drawing.Point(79, 748)
         Me.btnSubImageUp.Name = "btnSubImageUp"
         Me.btnSubImageUp.Size = New System.Drawing.Size(23, 23)
         Me.btnSubImageUp.TabIndex = 5
@@ -344,7 +335,7 @@ Partial Class dlgImgSelect
         '
         Me.btnSubImageDown.Enabled = False
         Me.btnSubImageDown.Image = CType(resources.GetObject("btnSubImageDown.Image"), System.Drawing.Image)
-        Me.btnSubImageDown.Location = New System.Drawing.Point(100, 748)
+        Me.btnSubImageDown.Location = New System.Drawing.Point(108, 748)
         Me.btnSubImageDown.Name = "btnSubImageDown"
         Me.btnSubImageDown.Size = New System.Drawing.Size(23, 23)
         Me.btnSubImageDown.TabIndex = 6
@@ -510,15 +501,37 @@ Partial Class dlgImgSelect
         '
         'cmnuSubImage
         '
-        Me.cmnuSubImage.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SubToolStripMenuItem})
+        Me.cmnuSubImage.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuSubImageRestoreOriginal, Me.cmnuSubImageRestorePreferred, Me.cmnuSubImageRemove, Me.cmnuSubImageRemoveAll})
         Me.cmnuSubImage.Name = "cmnuSubImage"
-        Me.cmnuSubImage.Size = New System.Drawing.Size(95, 26)
+        Me.cmnuSubImage.Size = New System.Drawing.Size(165, 92)
         '
-        'SubToolStripMenuItem
+        'cmnuSubImageRestoreOriginal
         '
-        Me.SubToolStripMenuItem.Name = "SubToolStripMenuItem"
-        Me.SubToolStripMenuItem.Size = New System.Drawing.Size(94, 22)
-        Me.SubToolStripMenuItem.Text = "Sub"
+        Me.cmnuSubImageRestoreOriginal.Image = Global.Ember_Media_Manager.My.Resources.Resources.undo
+        Me.cmnuSubImageRestoreOriginal.Name = "cmnuSubImageRestoreOriginal"
+        Me.cmnuSubImageRestoreOriginal.Size = New System.Drawing.Size(164, 22)
+        Me.cmnuSubImageRestoreOriginal.Text = "Restore Original"
+        '
+        'cmnuSubImageRestorePreferred
+        '
+        Me.cmnuSubImageRestorePreferred.Image = Global.Ember_Media_Manager.My.Resources.Resources.undo
+        Me.cmnuSubImageRestorePreferred.Name = "cmnuSubImageRestorePreferred"
+        Me.cmnuSubImageRestorePreferred.Size = New System.Drawing.Size(164, 22)
+        Me.cmnuSubImageRestorePreferred.Text = "Restore Preferred"
+        '
+        'cmnuSubImageRemove
+        '
+        Me.cmnuSubImageRemove.Image = Global.Ember_Media_Manager.My.Resources.Resources.invalid
+        Me.cmnuSubImageRemove.Name = "cmnuSubImageRemove"
+        Me.cmnuSubImageRemove.Size = New System.Drawing.Size(164, 22)
+        Me.cmnuSubImageRemove.Text = "Remove"
+        '
+        'cmnuSubImageRemoveAll
+        '
+        Me.cmnuSubImageRemoveAll.Image = Global.Ember_Media_Manager.My.Resources.Resources.invalid
+        Me.cmnuSubImageRemoveAll.Name = "cmnuSubImageRemoveAll"
+        Me.cmnuSubImageRemoveAll.Size = New System.Drawing.Size(164, 22)
+        Me.cmnuSubImageRemoveAll.Text = "Remove All"
         '
         'cmnuListImage
         '
@@ -531,22 +544,6 @@ Partial Class dlgImgSelect
         Me.ListToolStripMenuItem.Name = "ListToolStripMenuItem"
         Me.ListToolStripMenuItem.Size = New System.Drawing.Size(92, 22)
         Me.ListToolStripMenuItem.Text = "List"
-        '
-        'tblImgSelectTop
-        '
-        Me.tblImgSelectTop.AutoSize = True
-        Me.tblImgSelectTop.ColumnCount = 1
-        Me.tblImgSelectTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblImgSelectTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblImgSelectTop.Controls.Add(Me.pnlTopImages, 0, 0)
-        Me.tblImgSelectTop.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblImgSelectTop.Location = New System.Drawing.Point(0, 0)
-        Me.tblImgSelectTop.Name = "tblImgSelectTop"
-        Me.tblImgSelectTop.RowCount = 1
-        Me.tblImgSelectTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblImgSelectTop.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblImgSelectTop.Size = New System.Drawing.Size(1323, 203)
-        Me.tblImgSelectTop.TabIndex = 0
         '
         'dlgImgSelect
         '
@@ -566,6 +563,7 @@ Partial Class dlgImgSelect
         Me.pnlImgSelect.PerformLayout()
         Me.pnlImgSelectTop.ResumeLayout(False)
         Me.pnlImgSelectTop.PerformLayout()
+        Me.tblImgSelectTop.ResumeLayout(False)
         Me.pnlImgSelectBottom.ResumeLayout(False)
         Me.tblImgSelectBottom.ResumeLayout(False)
         Me.tblImgSelectBottom.PerformLayout()
@@ -585,13 +583,10 @@ Partial Class dlgImgSelect
         Me.cmnuTopImage.ResumeLayout(False)
         Me.cmnuSubImage.ResumeLayout(False)
         Me.cmnuListImage.ResumeLayout(False)
-        Me.tblImgSelectTop.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents btnRemoveSubImage As System.Windows.Forms.Button
-    Friend WithEvents btnRestoreSubImage As System.Windows.Forms.Button
     Friend WithEvents pnlImgSelect As System.Windows.Forms.Panel
     Friend WithEvents pnlImgSelectMain As System.Windows.Forms.Panel
     Friend WithEvents pnlImgSelectLeft As System.Windows.Forms.Panel
@@ -629,8 +624,11 @@ Partial Class dlgImgSelect
     Friend WithEvents cmnuTopImageRestorePreferred As ToolStripMenuItem
     Friend WithEvents cmnuTopImageRemove As ToolStripMenuItem
     Friend WithEvents cmnuSubImage As ContextMenuStrip
-    Friend WithEvents SubToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents cmnuSubImageRemove As ToolStripMenuItem
     Friend WithEvents cmnuListImage As ContextMenuStrip
     Friend WithEvents ListToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents tblImgSelectTop As TableLayoutPanel
+    Friend WithEvents cmnuSubImageRemoveAll As ToolStripMenuItem
+    Friend WithEvents cmnuSubImageRestoreOriginal As ToolStripMenuItem
+    Friend WithEvents cmnuSubImageRestorePreferred As ToolStripMenuItem
 End Class
