@@ -26,7 +26,7 @@ Public Class dlgHost
 
 #Region "Fields"
 
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     'backgroundworker used for JSON request(s) like Populate Sources/Check Connection in this form
     Friend WithEvents bwLoadInfo As New System.ComponentModel.BackgroundWorker
@@ -59,11 +59,11 @@ Public Class dlgHost
     Sub New(ByVal Host As KodiInterface.Host)
         ' This call is required by the designer.
         InitializeComponent()
-        Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
-        Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
-        Me.StartPosition = FormStartPosition.Manual
+        Left = Master.AppPos.Left + (Master.AppPos.Width - Width) \ 2
+        Top = Master.AppPos.Top + (Master.AppPos.Height - Height) \ 2
+        StartPosition = FormStartPosition.Manual
 
-        Me._currentHost = Host
+        _currentHost = Host
     End Sub
 
 #End Region
@@ -80,13 +80,13 @@ Public Class dlgHost
         Setup()
 
         If Not _currentHost Is Nothing Then
-            Me.txtLabel.Text = _currentHost.Label
-            Me.txtHostIP.Text = _currentHost.Address
-            Me.txtPort.Text = CStr(_currentHost.Port)
-            Me.txtUsername.Text = _currentHost.Username
-            Me.txtPassword.Text = _currentHost.Password
-            Me.chkHostRealTimeSync.Checked = _currentHost.RealTimeSync
-            Me.txtHostMoviesetPath.Text = _currentHost.MovieSetArtworksPath
+            txtLabel.Text = _currentHost.Label
+            txtHostIP.Text = _currentHost.Address
+            txtPort.Text = CStr(_currentHost.Port)
+            txtUsername.Text = _currentHost.Username
+            txtPassword.Text = _currentHost.Password
+            chkHostRealTimeSync.Checked = _currentHost.RealTimeSync
+            txtHostMoviesetPath.Text = _currentHost.MovieSetArtworksPath
         Else
             'new host entry (should not be possible)
             _currentHost = New KodiInterface.Host
@@ -102,26 +102,26 @@ Public Class dlgHost
     ''' - set labels/translation text
     ''' 2015/06/26 Cocotus - First implementation
     Private Sub Setup()
-        Me.lblCompiling.Text = Master.eLang.GetString(326, "Loading...")
-        Me.Text = Master.eLang.GetString(1422, "Kodi Interface")
-        Me.btnOK.Text = Master.eLang.GetString(179, "OK")
-        Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel")
-        Me.btnHostCheck.Text = Master.eLang.GetString(1423, "Check Connection")
-        Me.btnHostPopulateSources.Text = Master.eLang.GetString(1424, "Populate Sources")
+        lblCompiling.Text = Master.eLang.GetString(326, "Loading...")
+        Text = Master.eLang.GetString(1422, "Kodi Interface")
+        btnOK.Text = Master.eLang.GetString(179, "OK")
+        btnCancel.Text = Master.eLang.GetString(167, "Cancel")
+        btnHostCheck.Text = Master.eLang.GetString(1423, "Check Connection")
+        btnHostPopulateSources.Text = Master.eLang.GetString(1424, "Populate Sources")
 
-        Me.gbHostDetails.Text = Master.eLang.GetString(1425, "Kodi Host")
-        Me.gbHostMoviesetPath.Text = "Kodi " & Master.eLang.GetString(986, "MovieSet Artwork Folder")
+        gbHostDetails.Text = Master.eLang.GetString(1425, "Kodi Host")
+        gbHostMoviesetPath.Text = "Kodi " & Master.eLang.GetString(986, "MovieSet Artwork Folder")
 
-        Me.chkHostRealTimeSync.Text = Master.eLang.GetString(1429, "Enable Real Time synchronization")
-        Me.lblHostLabel.Text = Master.eLang.GetString(232, "Name") & ":"
-        Me.lblHostIP.Text = Master.eLang.GetString(1430, "Kodi IP") & ":"
-        Me.lblHostPassword.Text = Master.eLang.GetString(426, "Password:")
-        Me.lblHostUsername.Text = Master.eLang.GetString(425, "Username:")
-        Me.lblHostWebserverPort.Text = Master.eLang.GetString(1431, "Kodi Port") & ":"
+        chkHostRealTimeSync.Text = Master.eLang.GetString(1429, "Enable Real Time synchronization")
+        lblHostLabel.Text = Master.eLang.GetString(232, "Name") & ":"
+        lblHostIP.Text = Master.eLang.GetString(1430, "Kodi IP") & ":"
+        lblHostPassword.Text = Master.eLang.GetString(426, "Password:")
+        lblHostUsername.Text = Master.eLang.GetString(425, "Username:")
+        lblHostWebserverPort.Text = Master.eLang.GetString(1431, "Kodi Port") & ":"
 
-        Me.colHostEmberSource.HeaderText = Master.eLang.GetString(1432, "Ember Source")
-        Me.colHostSource.HeaderText = Master.eLang.GetString(1433, "Kodi Source")
-        Me.colHostType.HeaderText = Master.eLang.GetString(1288, "Type")
+        colHostEmberSource.HeaderText = Master.eLang.GetString(1432, "Ember Source")
+        colHostSource.HeaderText = Master.eLang.GetString(1433, "Kodi Source")
+        colHostType.HeaderText = Master.eLang.GetString(1288, "Type")
 
         Dim SourceType As New Dictionary(Of String, Enums.ContentType)
         SourceType.Add(Master.eLang.None, Enums.ContentType.None)
@@ -294,39 +294,39 @@ Public Class dlgHost
     ''' 2015/06/27 Cocotus - First implementation
     ''' </remarks>
     Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
-        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Close()
+        DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Close()
     End Sub
 
     Private Sub btnOK_Click(sender As Object, e As EventArgs) Handles btnOK.Click
-        If String.IsNullOrEmpty(Me.txtLabel.Text) Then
+        If String.IsNullOrEmpty(txtLabel.Text) Then
             MessageBox.Show(Master.eLang.GetString(1436, "Please enter a unique name for host!"), Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             Exit Sub
         End If
-        If String.IsNullOrEmpty(Me.txtHostIP.Text) Then
+        If String.IsNullOrEmpty(txtHostIP.Text) Then
             MessageBox.Show(Master.eLang.GetString(1437, "You must enter an IP for this host!"), Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             Exit Sub
         End If
-        If String.IsNullOrEmpty(Me.txtPort.Text) Then
+        If String.IsNullOrEmpty(txtPort.Text) Then
             MessageBox.Show(Master.eLang.GetString(1438, "You must enter a port for this host!"), Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             Exit Sub
         End If
 
         SetInfo()
 
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.Close()
+        DialogResult = System.Windows.Forms.DialogResult.OK
+        Close()
     End Sub
 
     Private Sub SetInfo()
-        Me._currentHost.Address = txtHostIP.Text
-        Me._currentHost.Label = txtLabel.Text
-        Me._currentHost.MovieSetArtworksPath = txtHostMoviesetPath.Text
-        Me._currentHost.Password = txtPassword.Text
-        Me._currentHost.Port = CInt(txtPort.Text)
-        Me._currentHost.RealTimeSync = chkHostRealTimeSync.Checked
-        Me._currentHost.Username = txtUsername.Text
-        Me._currentHost.Sources.Clear()
+        _currentHost.Address = txtHostIP.Text
+        _currentHost.Label = txtLabel.Text
+        _currentHost.MovieSetArtworksPath = txtHostMoviesetPath.Text
+        _currentHost.Password = txtPassword.Text
+        _currentHost.Port = CInt(txtPort.Text)
+        _currentHost.RealTimeSync = chkHostRealTimeSync.Checked
+        _currentHost.Username = txtUsername.Text
+        _currentHost.Sources.Clear()
         If dgvHostSources.Rows.Count > 0 Then
             For i = 0 To dgvHostSources.Rows.Count - 1
                 If Not String.IsNullOrEmpty(CStr(dgvHostSources.Rows(i).Cells(0).Value)) AndAlso Not String.IsNullOrEmpty(CStr(dgvHostSources.Rows(i).Cells(1).Value)) Then
@@ -334,7 +334,7 @@ Public Class dlgHost
                     nSource.ContentType = CType(dgvHostSources.Rows(i).Cells(2).Value, Enums.ContentType)
                     nSource.LocalPath = CStr(dgvHostSources.Rows(i).Cells(0).Value)
                     nSource.RemotePath = CStr(dgvHostSources.Rows(i).Cells(1).Value)
-                    Me._currentHost.Sources.Add(nSource)
+                    _currentHost.Sources.Add(nSource)
                 End If
             Next
         End If

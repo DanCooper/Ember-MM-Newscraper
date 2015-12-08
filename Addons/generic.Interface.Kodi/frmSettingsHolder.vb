@@ -25,7 +25,7 @@ Public Class frmSettingsHolder
 
 #Region "Fields"
 
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     Public HostList As New List(Of KodiInterface.Host)
 
@@ -42,7 +42,7 @@ Public Class frmSettingsHolder
 
     Public Sub New()
         InitializeComponent()
-        Me.SetUp()
+        SetUp()
     End Sub
 
 #End Region
@@ -58,13 +58,13 @@ Public Class frmSettingsHolder
     ''' 2015/06/26 Cocotus - First implementation
     ''' </remarks>
     Sub SetUp()
-        Me.gbSettingsGeneral.Text = Master.eLang.GetString(420, "Settings")
-        Me.btnAddHost.Text = Master.eLang.GetString(28, "Add")
-        Me.btnRemoveHost.Text = Master.eLang.GetString(30, "Remove")
-        Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        Me.btnEditHost.Text = Master.eLang.GetString(1440, "Edit")
-        Me.chkNotification.Text = Master.eLang.GetString(1441, "Send Notifications")
-        Me.chkPlayCount.Text = Master.eLang.GetString(1454, "Retrieve PlayCount from") & ":"
+        gbSettingsGeneral.Text = Master.eLang.GetString(420, "Settings")
+        btnAddHost.Text = Master.eLang.GetString(28, "Add")
+        btnRemoveHost.Text = Master.eLang.GetString(30, "Remove")
+        chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
+        btnEditHost.Text = Master.eLang.GetString(1440, "Edit")
+        chkNotification.Text = Master.eLang.GetString(1441, "Send Notifications")
+        chkPlayCount.Text = Master.eLang.GetString(1454, "Retrieve PlayCount from") & ":"
     End Sub
 
     ''' <summary>
@@ -87,19 +87,19 @@ Public Class frmSettingsHolder
     ''' </remarks>
     Private Sub ReloadKodiHosts()
         Dim oldPlayCountHost As String = String.Empty
-        If Me.cbPlayCountHost.Items.Count > 0 AndAlso Me.cbPlayCountHost.SelectedItem IsNot Nothing Then
-            oldPlayCountHost = Me.cbPlayCountHost.SelectedItem.ToString
+        If cbPlayCountHost.Items.Count > 0 AndAlso cbPlayCountHost.SelectedItem IsNot Nothing Then
+            oldPlayCountHost = cbPlayCountHost.SelectedItem.ToString
         End If
-        Me.btnEditHost.Enabled = False
-        Me.btnRemoveHost.Enabled = False
-        Me.cbPlayCountHost.Items.Clear()
-        Me.lbHosts.Items.Clear()
+        btnEditHost.Enabled = False
+        btnRemoveHost.Enabled = False
+        cbPlayCountHost.Items.Clear()
+        lbHosts.Items.Clear()
         For Each host In HostList
-            Me.lbHosts.Items.Add(host.Label)
-            Me.cbPlayCountHost.Items.Add(host.Label)
+            lbHosts.Items.Add(host.Label)
+            cbPlayCountHost.Items.Add(host.Label)
         Next
-        If Me.cbPlayCountHost.Items.Contains(oldPlayCountHost) Then
-            Me.cbPlayCountHost.SelectedItem = oldPlayCountHost
+        If cbPlayCountHost.Items.Contains(oldPlayCountHost) Then
+            cbPlayCountHost.SelectedItem = oldPlayCountHost
         End If
     End Sub
 
@@ -133,8 +133,8 @@ Public Class frmSettingsHolder
     ''' Remove selected host in listbox from global xmlHosts and refresh view afterwards
     ''' </remarks>
     Private Sub RemoveKodiHost()
-        If Me.lbHosts.SelectedItems.Count > 0 Then
-            Dim HostToRemove As KodiInterface.Host = HostList.FirstOrDefault(Function(f) f.Label = Me.lbHosts.SelectedItem.ToString)
+        If lbHosts.SelectedItems.Count > 0 Then
+            Dim HostToRemove As KodiInterface.Host = HostList.FirstOrDefault(Function(f) f.Label = lbHosts.SelectedItem.ToString)
             If HostToRemove IsNot Nothing Then
                 HostList.Remove(HostToRemove)
                 ReloadKodiHosts()
@@ -152,7 +152,7 @@ Public Class frmSettingsHolder
         Dim newHost As New KodiInterface.Host
         Dim dlgNew As New dlgHost(newHost)
         If dlgNew.ShowDialog = Windows.Forms.DialogResult.OK Then
-            Me.HostList.Add(dlgNew.Result)
+            HostList.Add(dlgNew.Result)
             ReloadKodiHosts()
         End If
     End Sub
@@ -163,8 +163,8 @@ Public Class frmSettingsHolder
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub btnEditHost_Click(sender As Object, e As EventArgs) Handles btnEditHost.Click, lbHosts.DoubleClick
-        If Me.lbHosts.SelectedItems.Count > 0 Then
-            Dim oldHost As KodiInterface.Host = HostList.FirstOrDefault(Function(f) f.Label = Me.lbHosts.SelectedItem.ToString)
+        If lbHosts.SelectedItems.Count > 0 Then
+            Dim oldHost As KodiInterface.Host = HostList.FirstOrDefault(Function(f) f.Label = lbHosts.SelectedItem.ToString)
             If oldHost IsNot Nothing Then
                 Dim dlgNew As New dlgHost(oldHost)
                 If dlgNew.ShowDialog = Windows.Forms.DialogResult.OK Then
@@ -184,7 +184,7 @@ Public Class frmSettingsHolder
     ''' Only enable edit button if host is selected
     ''' </remarks>
     Private Sub lbHosts_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbHosts.SelectedIndexChanged
-        If Me.lbHosts.SelectedItems.Count > 0 Then
+        If lbHosts.SelectedItems.Count > 0 Then
             btnEditHost.Enabled = True
             btnRemoveHost.Enabled = True
         Else

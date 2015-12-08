@@ -38,7 +38,7 @@ Public Class KodiInterface
 
 #Region "Fields"
 
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     'reflects the current host(s) settings/setup configured in settings, will be filled at module startup from XML settings (and is used to write changes of settings back into XML)
     Private _SpecialSettings As New SpecialSettings
@@ -77,7 +77,7 @@ Public Class KodiInterface
     Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) Implements Interfaces.GenericModule.GenericEvent
     Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.GenericModule.ModuleSetupChanged
     Public Event ModuleSettingsChanged() Implements Interfaces.GenericModule.ModuleSettingsChanged
-    Public Event SetupNeedsRestart() Implements EmberAPI.Interfaces.GenericModule.SetupNeedsRestart
+    Public Event SetupNeedsRestart() Implements Interfaces.GenericModule.SetupNeedsRestart
 
 #End Region 'Events
 
@@ -87,10 +87,10 @@ Public Class KodiInterface
     ''' </summary>
     Public ReadOnly Property ModuleType() As List(Of Enums.ModuleEventType) Implements Interfaces.GenericModule.ModuleType
         Get
-            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.Sync_Movie, _
-                                                                                   Enums.ModuleEventType.Sync_MovieSet, _
-                                                                                   Enums.ModuleEventType.Sync_TVEpisode, _
-                                                                                   Enums.ModuleEventType.Sync_TVSeason, _
+            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.Sync_Movie,
+                                                                                   Enums.ModuleEventType.Sync_MovieSet,
+                                                                                   Enums.ModuleEventType.Sync_TVEpisode,
+                                                                                   Enums.ModuleEventType.Sync_TVSeason,
                                                                                    Enums.ModuleEventType.Sync_TVShow})
         End Get
     End Property
@@ -143,7 +143,7 @@ Public Class KodiInterface
         If Not Master.isCL Then
             'add job to tasklist and get everything done
             TaskList.Add(New KodiTask With {.mType = mType, .mDBElement = _dbelement})
-            If TasksDone Then Me.RunTasks()
+            If TasksDone Then RunTasks()
             Return New Interfaces.ModuleResult With {.breakChain = False}
         Else
             Dim mDBElement As Database.DBElement = _dbelement
@@ -155,7 +155,9 @@ Public Class KodiInterface
     End Function
 
     Private Async Function DoCommandLine(ByVal mType As Enums.ModuleEventType, ByVal mDBElement As Database.DBElement) As Task(Of Boolean)
-        Return Await Task.Run(Function() GenericRunCallBack(mType, mDBElement))
+        Dim GenericEventActionAsync As New Action(Of GenericEventCallBackAsync)(AddressOf Handle_GenericEventAsync)
+        Dim GenericEventProgressAsync = New Progress(Of GenericEventCallBackAsync)(GenericEventActionAsync)
+        Return Await Task.Run(Function() GenericRunCallBack(mType, mDBElement, GenericEventProgressAsync))
     End Function
 
     ''' <summary>
@@ -169,15 +171,18 @@ Public Class KodiInterface
     ''' </remarks>
     Private Async Sub RunTasks()
         Dim getError As Boolean = False
-        Me.TasksDone = False
+        Dim GenericEventActionAsync As New Action(Of GenericEventCallBackAsync)(AddressOf Handle_GenericEventAsync)
+        Dim GenericEventProgressAsync = New Progress(Of GenericEventCallBackAsync)(GenericEventActionAsync)
+
+        TasksDone = False
         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1439, "Run Tasks"), New Bitmap(My.Resources.logo)}))
-        While Me.TaskList.Count > 0
-            If Not Await GenericRunCallBack(TaskList.Item(0).mType, TaskList.Item(0).mDBElement, TaskList.Item(0).mHost) Then
+        While TaskList.Count > 0
+            If Not Await GenericRunCallBack(TaskList.Item(0).mType, TaskList.Item(0).mDBElement, GenericEventProgressAsync, TaskList.Item(0).mHost) Then
                 getError = True
             End If
-            Me.TaskList.RemoveAt(0)
+            TaskList.RemoveAt(0)
         End While
-        Me.TasksDone = True
+        TasksDone = True
         If Not getError Then
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(251, "All Tasks Done"), New Bitmap(My.Resources.logo)}))
         Else
@@ -185,8 +190,16 @@ Public Class KodiInterface
         End If
     End Sub
 
-    Sub Handle_GenericEvent(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object))
+    Sub Handle_GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
         RaiseEvent GenericEvent(mType, _params)
+    End Sub
+
+    Sub Handle_GenericEventAsync(ByVal mGenericEventCallBack As GenericEventCallBackAsync)
+        RaiseEvent GenericEvent(mGenericEventCallBack.tEventType, mGenericEventCallBack.tParams)
+    End Sub
+
+    Sub Handle_GenericSubEventAsync(ByVal mGenericSubEventCallBack As GenericSubEventCallBackAsync)
+        mGenericSubEventCallBack.tProgress.Report(mGenericSubEventCallBack.tGenericEventCallBackAsync)
     End Sub
     ''' <summary>
     ''' This is a generic callback function to handle all realtime-sync work for KODI-Api
@@ -196,8 +209,10 @@ Public Class KodiInterface
     ''' Worker function used to handle all ApiTaks in List(of KodiTask)
     ''' Made async to await async Kodi API
     ''' </remarks>
-    Private Async Function GenericRunCallBack(ByVal mType As Enums.ModuleEventType, ByVal mDBElement As Database.DBElement, Optional mHost As Host = Nothing) As Task(Of Boolean)
+    Private Async Function GenericRunCallBack(ByVal mType As Enums.ModuleEventType, ByVal mDBElement As Database.DBElement, ByVal GenericEventProcess As IProgress(Of GenericEventCallBackAsync), Optional mHost As Host = Nothing) As Task(Of Boolean)
         Dim getError As Boolean = False
+        Dim GenericSubEventActionAsync As New Action(Of GenericSubEventCallBackAsync)(AddressOf Handle_GenericSubEventAsync)
+        Dim GenericSubEventProgressAsync = New Progress(Of GenericSubEventCallBackAsync)(GenericSubEventActionAsync)
 
         'check if at least one host is configured, else skip
         If _SpecialSettings.Hosts.Count > 0 Then
@@ -205,7 +220,7 @@ Public Class KodiInterface
 
                 'Movie syncing
                 Case Enums.ModuleEventType.Sync_Movie
-                    Dim tDBMovie As EmberAPI.Database.DBElement = mDBElement
+                    Dim tDBMovie As Database.DBElement = mDBElement
                     If tDBMovie.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(tDBMovie, True) Then
                         If Not String.IsNullOrEmpty(tDBMovie.NfoPath) Then
                             If mHost IsNot Nothing Then
@@ -214,12 +229,11 @@ Public Class KodiInterface
                                 'connection test
                                 If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                     'run task
-                                    AddHandler _APIKodi.GenericEvent, AddressOf Handle_GenericEvent
-                                    If Await Task.Run(Function() _APIKodi.UpdateInfo_Movie(tDBMovie.ID, _SpecialSettings.SendNotifications, _SpecialSettings.SyncPlayCounts AndAlso _SpecialSettings.SyncPlayCountsHost = mHost.Label)) Then
-                                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", mHost.Label & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & tDBMovie.Movie.Title, New Bitmap(My.Resources.logo)}))
+                                    If Await Task.Run(Function() _APIKodi.UpdateInfo_Movie(tDBMovie.ID, _SpecialSettings.SendNotifications, _SpecialSettings.SyncPlayCounts AndAlso _SpecialSettings.SyncPlayCountsHost = mHost.Label, GenericSubEventProgressAsync, GenericEventProcess)) Then
+                                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", tDBMovie.Movie.Title), New Bitmap(My.Resources.logo)}))
                                     Else
-                                        logger.Warn("[KodiInterface] RunGeneric MovieUpdate: " & mHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBMovie.Movie.Title)
-                                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", mHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBMovie.Movie.Title, Nothing}))
+                                        logger.Warn(String.Concat("[KodiInterface] RunGeneric MovieUpdate: ", mHost.Label, " | Sync Failed: ", tDBMovie.Movie.Title))
+                                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", tDBMovie.Movie.Title), Nothing}))
                                         getError = True
                                     End If
                                 Else
@@ -232,15 +246,13 @@ Public Class KodiInterface
                                     'connection test
                                     If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                         'run task
-                                        AddHandler _APIKodi.GenericEvent, AddressOf Handle_GenericEvent
-                                        If Await Task.Run(Function() _APIKodi.UpdateInfo_Movie(tDBMovie.ID, _SpecialSettings.SendNotifications, _SpecialSettings.SyncPlayCounts AndAlso _SpecialSettings.SyncPlayCountsHost = tHost.Label)) Then
-                                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", tHost.Label & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & tDBMovie.Movie.Title, New Bitmap(My.Resources.logo)}))
+                                        If Await Task.Run(Function() _APIKodi.UpdateInfo_Movie(tDBMovie.ID, _SpecialSettings.SendNotifications, _SpecialSettings.SyncPlayCounts AndAlso _SpecialSettings.SyncPlayCountsHost = tHost.Label, GenericSubEventProgressAsync, GenericEventProcess)) Then
+                                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", tDBMovie.Movie.Title), New Bitmap(My.Resources.logo)}))
                                         Else
-                                            logger.Warn("[KodiInterface] RunGeneric MovieUpdate: " & tHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBMovie.Movie.Title)
-                                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", tHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBMovie.Movie.Title, Nothing}))
+                                            logger.Warn(String.Concat("[KodiInterface] RunGeneric MovieUpdate: ", tHost.Label, " | Sync Failed: ", tDBMovie.Movie.Title))
+                                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", tDBMovie.Movie.Title), Nothing}))
                                             getError = True
                                         End If
-                                        RemoveHandler _APIKodi.GenericEvent, AddressOf Handle_GenericEvent
                                         'Synchronously waiting for an async method... not good and no ideal solution here. The asynchronous code of KodiAPI works best if it doesn’t get synchronously blocked - so for now I moved notifcation in Ember in async APIKodi to avoid waiting here for the task to finish. 
                                         'solution for now until Ember v1.5 (in future better use await and change all methods/functions to async code, all the way up in Ember (like msavazzi prepared)) 
                                         'TODO We don't wait here for Async API to be finished (because it will block UI thread for a few seconds), any idea?
@@ -258,7 +270,7 @@ Public Class KodiInterface
                                 Next
                             End If
                         Else
-                            logger.Warn("[KodiInterface] GenericRunCallBack MovieUpdate: " & Master.eLang.GetString(1442, "Please Scrape In Ember First!"))
+                            logger.Warn("[KodiInterface] GenericRunCallBack MovieUpdate: Please Scrape In Ember First!")
                             'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
                             getError = True
                         End If
@@ -269,7 +281,7 @@ Public Class KodiInterface
 
                     'MovieSet syncing
                 Case Enums.ModuleEventType.Sync_MovieSet
-                    Dim tDBMovieset As EmberAPI.Database.DBElement = mDBElement
+                    Dim tDBMovieset As Database.DBElement = mDBElement
                     If tDBMovieset.MovieList.Count > 0 Then
                         If Not String.IsNullOrEmpty(tDBMovieset.MovieSet.TMDB) Then
                             For Each tHost In _SpecialSettings.Hosts.Where(Function(f) f.RealTimeSync AndAlso Not String.IsNullOrEmpty(f.MovieSetArtworksPath))
@@ -279,10 +291,10 @@ Public Class KodiInterface
                                 If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                     'run task
                                     If Await Task.Run(Function() _APIKodi.UpdateInfo_MovieSet(tDBMovieset.ID, _SpecialSettings.SendNotifications)) Then
-                                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", tHost.Label & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & tDBMovieset.MovieSet.Title, New Bitmap(My.Resources.logo)}))
+                                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", tDBMovieset.MovieSet.Title), New Bitmap(My.Resources.logo)}))
                                     Else
-                                        logger.Warn("[KodiInterface] RunGeneric MovieSetUpdate: " & tHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBMovieset.MovieSet.Title)
-                                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", tHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBMovieset.MovieSet.Title, Nothing}))
+                                        logger.Warn(String.Concat("[KodiInterface] RunGeneric MovieSetUpdate: ", tHost.Label, " | Sync Failed: ", tDBMovieset.MovieSet.Title))
+                                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", tDBMovieset.MovieSet.Title), Nothing}))
                                         getError = True
                                     End If
                                     ''TODO We don't wait here for Async API to be finished (because it will block UI thread for a few seconds), any idea?
@@ -310,7 +322,7 @@ Public Class KodiInterface
 
                     'Episode syncing
                 Case Enums.ModuleEventType.Sync_TVEpisode
-                    Dim tDBTV As EmberAPI.Database.DBElement = mDBElement
+                    Dim tDBTV As Database.DBElement = mDBElement
                     If tDBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(tDBTV, True) Then
                         If Not String.IsNullOrEmpty(tDBTV.NfoPath) Then
                             If mHost IsNot Nothing Then
@@ -319,15 +331,13 @@ Public Class KodiInterface
                                 'connection test
                                 If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                     'run task
-                                    AddHandler _APIKodi.GenericEvent, AddressOf Handle_GenericEvent
-                                    If Await Task.Run(Function() _APIKodi.UpdateInfo_TVEpisode(tDBTV.ID, _SpecialSettings.SendNotifications, _SpecialSettings.SyncPlayCounts AndAlso _SpecialSettings.SyncPlayCountsHost = mHost.Label)) Then
-                                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", mHost.Label & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & tDBTV.TVEpisode.Title, New Bitmap(My.Resources.logo)}))
+                                    If Await Task.Run(Function() _APIKodi.UpdateInfo_TVEpisode(tDBTV.ID, _SpecialSettings.SendNotifications, _SpecialSettings.SyncPlayCounts AndAlso _SpecialSettings.SyncPlayCountsHost = mHost.Label, GenericSubEventProgressAsync, GenericEventProcess)) Then
+                                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", tDBTV.TVEpisode.Title), New Bitmap(My.Resources.logo)}))
                                     Else
-                                        logger.Warn("[KodiInterface] RunGeneric TVEpisodeUpdate: " & mHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVEpisode.Title)
-                                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", mHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVEpisode.Title, Nothing}))
+                                        logger.Warn(String.Concat("[KodiInterface] RunGeneric TVEpisodeUpdate: ", mHost.Label, " | Sync Failed: ", tDBTV.TVEpisode.Title))
+                                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", tDBTV.TVEpisode.Title), Nothing}))
                                         getError = True
                                     End If
-                                    RemoveHandler _APIKodi.GenericEvent, AddressOf Handle_GenericEvent
                                 Else
                                     getError = True
                                 End If
@@ -338,15 +348,13 @@ Public Class KodiInterface
                                     'connection test
                                     If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                         'run task
-                                        AddHandler _APIKodi.GenericEvent, AddressOf Handle_GenericEvent
-                                        If Await Task.Run(Function() _APIKodi.UpdateInfo_TVEpisode(tDBTV.ID, _SpecialSettings.SendNotifications, _SpecialSettings.SyncPlayCounts AndAlso _SpecialSettings.SyncPlayCountsHost = tHost.Label)) Then
-                                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", tHost.Label & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & tDBTV.TVEpisode.Title, New Bitmap(My.Resources.logo)}))
+                                        If Await Task.Run(Function() _APIKodi.UpdateInfo_TVEpisode(tDBTV.ID, _SpecialSettings.SendNotifications, _SpecialSettings.SyncPlayCounts AndAlso _SpecialSettings.SyncPlayCountsHost = tHost.Label, GenericSubEventProgressAsync, GenericEventProcess)) Then
+                                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", tDBTV.TVEpisode.Title), New Bitmap(My.Resources.logo)}))
                                         Else
-                                            logger.Warn("[KodiInterface] RunGeneric TVEpisodeUpdate: " & tHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVEpisode.Title)
-                                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", tHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVEpisode.Title, Nothing}))
+                                            logger.Warn(String.Concat("[KodiInterface] RunGeneric TVEpisodeUpdate: ", tHost.Label, " | Sync Failed: ", tDBTV.TVEpisode.Title))
+                                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", tDBTV.TVEpisode.Title), Nothing}))
                                             getError = True
                                         End If
-                                        RemoveHandler _APIKodi.GenericEvent, AddressOf Handle_GenericEvent
                                         ''TODO We don't wait here for Async API to be finished (because it will block UI thread for a few seconds), any idea?
                                         'If result.Result = True Then
                                         '    logger.Warn("[KodiInterface] RunGeneric EpisodeUpdate: " & host.name & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & tDBTV.TVEp.Title)
@@ -372,7 +380,7 @@ Public Class KodiInterface
 
                     'TVSeason syncing
                 Case Enums.ModuleEventType.Sync_TVSeason
-                    Dim tDBTV As EmberAPI.Database.DBElement = mDBElement
+                    Dim tDBTV As Database.DBElement = mDBElement
                     If tDBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(tDBTV, True) Then
                         If Not String.IsNullOrEmpty(tDBTV.ID.ToString) Then
                             If mHost IsNot Nothing Then
@@ -382,10 +390,10 @@ Public Class KodiInterface
                                 If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                     'run task
                                     If Await Task.Run(Function() _APIKodi.UpdateInfo_TVSeason(tDBTV.ID, _SpecialSettings.SendNotifications)) Then
-                                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", mHost.Label & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & tDBTV.TVSeason.Title, New Bitmap(My.Resources.logo)}))
+                                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", tDBTV.TVSeason.Title), New Bitmap(My.Resources.logo)}))
                                     Else
-                                        logger.Warn("[KodiInterface] RunGeneric TVSeasonUpdate: " & mHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVSeason.Title)
-                                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", mHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVSeason.Title, Nothing}))
+                                        logger.Warn(String.Concat("[KodiInterface] RunGeneric TVSeasonUpdate: ", mHost.Label, " | Sync Failed: ", tDBTV.TVSeason.Title))
+                                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", tDBTV.TVSeason.Title), Nothing}))
                                         getError = True
                                     End If
                                 Else
@@ -399,10 +407,10 @@ Public Class KodiInterface
                                     If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                         'run task
                                         If Await Task.Run(Function() _APIKodi.UpdateInfo_TVSeason(tDBTV.ID, _SpecialSettings.SendNotifications)) Then
-                                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", tHost.Label & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & tDBTV.TVSeason.Title, New Bitmap(My.Resources.logo)}))
+                                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", tDBTV.TVSeason.Title), New Bitmap(My.Resources.logo)}))
                                         Else
-                                            logger.Warn("[KodiInterface] RunGeneric TVSeasonUpdate: " & tHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVSeason.Title)
-                                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", tHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVSeason.Title, Nothing}))
+                                            logger.Warn(String.Concat("[KodiInterface] RunGeneric TVSeasonUpdate: ", tHost.Label, " | Sync Failed: ", tDBTV.TVSeason.Title))
+                                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", tDBTV.TVSeason.Title), Nothing}))
                                             getError = True
                                         End If
                                         ''TODO We don't wait here for Async API to be finished (because it will block UI thread for a few seconds), any idea?
@@ -430,7 +438,7 @@ Public Class KodiInterface
 
                     'TVShow syncing
                 Case Enums.ModuleEventType.Sync_TVShow
-                    Dim tDBTV As EmberAPI.Database.DBElement = mDBElement
+                    Dim tDBTV As Database.DBElement = mDBElement
                     If tDBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(tDBTV, True) Then
                         If Not String.IsNullOrEmpty(tDBTV.NfoPath) Then
                             If mHost IsNot Nothing Then
@@ -440,10 +448,10 @@ Public Class KodiInterface
                                 If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                     'run task
                                     If Await Task.Run(Function() _APIKodi.UpdateInfo_TVShow(tDBTV.ShowID, _SpecialSettings.SendNotifications)) Then
-                                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", mHost.Label & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & tDBTV.TVShow.Title, New Bitmap(My.Resources.logo)}))
+                                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", tDBTV.TVShow.Title), New Bitmap(My.Resources.logo)}))
                                     Else
-                                        logger.Warn("[KodiInterface] RunGeneric TVShowUpdate: " & mHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVShow.Title)
-                                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", mHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVShow.Title, Nothing}))
+                                        logger.Warn(String.Concat("[KodiInterface] RunGeneric TVShowUpdate: ", mHost.Label, " | Sync Failed: ", tDBTV.TVShow.Title))
+                                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", tDBTV.TVShow.Title), Nothing}))
                                         getError = True
                                     End If
                                 Else
@@ -457,10 +465,10 @@ Public Class KodiInterface
                                     If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                         'run task
                                         If Await Task.Run(Function() _APIKodi.UpdateInfo_TVShow(tDBTV.ShowID, _SpecialSettings.SendNotifications)) Then
-                                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", tHost.Label & " | " & Master.eLang.GetString(1444, "Sync OK") & ": " & tDBTV.TVShow.Title, New Bitmap(My.Resources.logo)}))
+                                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", tDBTV.TVShow.Title), New Bitmap(My.Resources.logo)}))
                                         Else
-                                            logger.Warn("[KodiInterface] RunGeneric TVShowUpdate: " & tHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVShow.Title)
-                                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", tHost.Label & " | " & Master.eLang.GetString(1445, "Sync Failed") & ": " & tDBTV.TVShow.Title, Nothing}))
+                                            logger.Warn(String.Concat("[KodiInterface] RunGeneric TVShowUpdate: ", tHost.Label, " | Sync Failed: ", tDBTV.TVShow.Title))
+                                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", tDBTV.TVShow.Title), Nothing}))
                                             getError = True
                                         End If
                                         ''TODO We don't wait here for Async API to be finished (because it will block UI thread for a few seconds), any idea?
@@ -771,15 +779,15 @@ Public Class KodiInterface
     ''' Triggered when user submit changes in settings
     ''' Besides module settings also XML host configuration will be saved/updated
     Sub SaveSetupModule(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
-        Me.Enabled = Me._setup.chkEnabled.Checked
-        _SpecialSettings.SendNotifications = Me._setup.chkNotification.Checked
-        _SpecialSettings.SyncPlayCounts = _setup.chkPlayCount.Checked AndAlso Me._setup.cbPlayCountHost.SelectedItem IsNot Nothing
-        _SpecialSettings.SyncPlayCountsHost = If(Me._setup.cbPlayCountHost.SelectedItem IsNot Nothing, Me._setup.cbPlayCountHost.SelectedItem.ToString(), String.Empty)
+        Enabled = _setup.chkEnabled.Checked
+        _SpecialSettings.SendNotifications = _setup.chkNotification.Checked
+        _SpecialSettings.SyncPlayCounts = _setup.chkPlayCount.Checked AndAlso _setup.cbPlayCountHost.SelectedItem IsNot Nothing
+        _SpecialSettings.SyncPlayCountsHost = If(_setup.cbPlayCountHost.SelectedItem IsNot Nothing, _setup.cbPlayCountHost.SelectedItem.ToString(), String.Empty)
         SaveSettings()
-        If Me.Enabled Then PopulateMenus()
+        If Enabled Then PopulateMenus()
         If DoDispose Then
-            RemoveHandler Me._setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
-            RemoveHandler Me._setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+            RemoveHandler _setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
+            RemoveHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
             _setup.Dispose()
         End If
     End Sub
@@ -821,7 +829,7 @@ Public Class KodiInterface
                     If Not String.IsNullOrEmpty(DBElement.NfoPath) Then
                         'add job to tasklist and get everything done
                         TaskList.Add(New KodiTask With {.mDBElement = DBElement, .mHost = Host, .mType = Enums.ModuleEventType.Sync_Movie})
-                        If TasksDone Then Me.RunTasks()
+                        If TasksDone Then RunTasks()
                     Else
                         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
                     End If
@@ -846,7 +854,7 @@ Public Class KodiInterface
                 If Not String.IsNullOrEmpty(DBElement.MovieSet.Title) Then
                     'add job to tasklist and get everything done
                     TaskList.Add(New KodiTask With {.mDBElement = DBElement, .mHost = Host, .mType = Enums.ModuleEventType.Sync_MovieSet})
-                    If TasksDone Then Me.RunTasks()
+                    If TasksDone Then RunTasks()
                 Else
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
                 End If
@@ -873,7 +881,7 @@ Public Class KodiInterface
                     If Not String.IsNullOrEmpty(DBElement.NfoPath) Then
                         'add job to tasklist and get everything done
                         TaskList.Add(New KodiTask With {.mDBElement = DBElement, .mHost = Host, .mType = Enums.ModuleEventType.Sync_TVEpisode})
-                        If TasksDone Then Me.RunTasks()
+                        If TasksDone Then RunTasks()
                     Else
                         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
                     End If
@@ -900,7 +908,7 @@ Public Class KodiInterface
                 If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBElement, True) Then
                     'add job to tasklist and get everything done
                     TaskList.Add(New KodiTask With {.mDBElement = DBElement, .mHost = Host, .mType = Enums.ModuleEventType.Sync_TVSeason})
-                    If TasksDone Then Me.RunTasks()
+                    If TasksDone Then RunTasks()
                 End If
             Next
         Else
@@ -925,7 +933,7 @@ Public Class KodiInterface
                     If Not String.IsNullOrEmpty(DBElement.NfoPath) Then
                         'add job to tasklist and get everything done
                         TaskList.Add(New KodiTask With {.mDBElement = DBElement, .mHost = Host, .mType = Enums.ModuleEventType.Sync_TVShow})
-                        If TasksDone Then Me.RunTasks()
+                        If TasksDone Then RunTasks()
                     Else
                         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
                     End If
@@ -1073,12 +1081,26 @@ Public Class KodiInterface
     End Sub
 
     Private Sub Handle_ModuleEnabledChanged(ByVal State As Boolean)
-        RaiseEvent ModuleEnabledChanged(Me._Name, State, 0)
+        RaiseEvent ModuleEnabledChanged(_Name, State, 0)
     End Sub
 
 #End Region 'Methods
 
 #Region "Nested Types"
+
+    Public Structure GenericEventCallBackAsync
+
+        Dim tEventType As Enums.ModuleEventType
+        Dim tParams As List(Of Object)
+
+    End Structure
+
+    Public Structure GenericSubEventCallBackAsync
+
+        Dim tGenericEventCallBackAsync As GenericEventCallBackAsync
+        Dim tProgress As IProgress(Of GenericEventCallBackAsync)
+
+    End Structure
     ''' <summary>
     ''' structure used to store Update Movie/TV/Movieset-Tasks for Kodi Interface
     ''' </summary>
@@ -1091,8 +1113,8 @@ Public Class KodiInterface
 
     End Structure
 
-    <Serializable()> _
-    <XmlRoot("interface.kodi")> _
+    <Serializable()>
+    <XmlRoot("interface.kodi")>
     Class SpecialSettings
 
 #Region "Fields"
@@ -1106,43 +1128,43 @@ Public Class KodiInterface
 
 #Region "Properties"
 
-        <XmlElement("sendnotifications")> _
+        <XmlElement("sendnotifications")>
         Public Property SendNotifications() As Boolean
             Get
-                Return Me._sendnotifications
+                Return _sendnotifications
             End Get
             Set(ByVal value As Boolean)
-                Me._sendnotifications = value
+                _sendnotifications = value
             End Set
         End Property
 
-        <XmlElement("syncplaycounts")> _
+        <XmlElement("syncplaycounts")>
         Public Property SyncPlayCounts() As Boolean
             Get
-                Return Me._syncplaycounts
+                Return _syncplaycounts
             End Get
             Set(ByVal value As Boolean)
-                Me._syncplaycounts = value
+                _syncplaycounts = value
             End Set
         End Property
 
-        <XmlElement("syncplaycountshost")> _
+        <XmlElement("syncplaycountshost")>
         Public Property SyncPlayCountsHost() As String
             Get
-                Return Me._syncplaycountshost
+                Return _syncplaycountshost
             End Get
             Set(ByVal value As String)
-                Me._syncplaycountshost = value
+                _syncplaycountshost = value
             End Set
         End Property
 
-        <XmlElement("host")> _
+        <XmlElement("host")>
         Public Property Hosts() As List(Of Host)
             Get
-                Return Me._hosts
+                Return _hosts
             End Get
             Set(ByVal value As List(Of Host))
-                Me._hosts = value
+                _hosts = value
             End Set
         End Property
 
@@ -1151,7 +1173,7 @@ Public Class KodiInterface
 #Region "Constructors"
 
         Public Sub New()
-            Me.Clear()
+            Clear()
         End Sub
 
 #End Region 'Constructors
@@ -1159,10 +1181,10 @@ Public Class KodiInterface
 #Region "Methods"
 
         Public Sub Clear()
-            Me._hosts.Clear()
-            Me._sendnotifications = False
-            Me._syncplaycounts = False
-            Me._syncplaycountshost = String.Empty
+            _hosts.Clear()
+            _sendnotifications = False
+            _syncplaycounts = False
+            _syncplaycountshost = String.Empty
         End Sub
 
 #End Region 'Methods
@@ -1170,7 +1192,7 @@ Public Class KodiInterface
 
     End Class
 
-    <Serializable()> _
+    <Serializable()>
     Class Host
 
 #Region "Fields"
@@ -1188,83 +1210,83 @@ Public Class KodiInterface
 
 #Region "Properties"
 
-        <XmlElement("label")> _
+        <XmlElement("label")>
         Public Property Label() As String
             Get
-                Return Me._label
+                Return _label
             End Get
             Set(ByVal value As String)
-                Me._label = value
+                _label = value
             End Set
         End Property
 
-        <XmlElement("address")> _
+        <XmlElement("address")>
         Public Property Address() As String
             Get
-                Return Me._address
+                Return _address
             End Get
             Set(ByVal value As String)
-                Me._address = value
+                _address = value
             End Set
         End Property
 
-        <XmlElement("port")> _
+        <XmlElement("port")>
         Public Property Port() As Integer
             Get
-                Return Me._port
+                Return _port
             End Get
             Set(ByVal value As Integer)
-                Me._port = value
+                _port = value
             End Set
         End Property
 
-        <XmlElement("username")> _
+        <XmlElement("username")>
         Public Property Username() As String
             Get
-                Return Me._username
+                Return _username
             End Get
             Set(ByVal value As String)
-                Me._username = value
+                _username = value
             End Set
         End Property
 
-        <XmlElement("password")> _
+        <XmlElement("password")>
         Public Property Password() As String
             Get
-                Return Me._password
+                Return _password
             End Get
             Set(ByVal value As String)
-                Me._password = value
+                _password = value
             End Set
         End Property
 
-        <XmlElement("realtimesync")> _
+        <XmlElement("realtimesync")>
         Public Property RealTimeSync() As Boolean
             Get
-                Return Me._realtimesync
+                Return _realtimesync
             End Get
             Set(ByVal value As Boolean)
-                Me._realtimesync = value
+                _realtimesync = value
             End Set
         End Property
 
-        <XmlElement("moviesetartworkspath")> _
+        <XmlElement("moviesetartworkspath")>
         Public Property MovieSetArtworksPath() As String
             Get
-                Return Me._moviesetartworkspath
+                Return _moviesetartworkspath
             End Get
             Set(ByVal value As String)
-                Me._moviesetartworkspath = value
+                _moviesetartworkspath = value
             End Set
         End Property
 
-        <XmlElement("source")> _
+        <XmlElement("source")>
         Public Property Sources() As List(Of Source)
             Get
-                Return Me._sources
+                Return _sources
             End Get
             Set(ByVal value As List(Of Source))
-                Me._sources = value
+                _sources = value
             End Set
         End Property
 
@@ -1273,7 +1295,7 @@ Public Class KodiInterface
 #Region "Constructors"
 
         Public Sub New()
-            Me.Clear()
+            Clear()
         End Sub
 
 #End Region 'Constructors
@@ -1281,14 +1303,14 @@ Public Class KodiInterface
 #Region "Methods"
 
         Public Sub Clear()
-            Me._address = "localhost"
-            Me._moviesetartworkspath = String.Empty
-            Me._label = "New Host"
-            Me._password = String.Empty
-            Me._port = 80
-            Me._realtimesync = False
-            Me._sources.Clear()
-            Me._username = "kodi"
+            _address = "localhost"
+            _moviesetartworkspath = String.Empty
+            _label = "New Host"
+            _password = String.Empty
+            _port = 80
+            _realtimesync = False
+            _sources.Clear()
+            _username = "kodi"
         End Sub
 
 #End Region 'Methods
@@ -1296,7 +1318,7 @@ Public Class KodiInterface
     End Class
 
 
-    <Serializable()> _
+    <Serializable()>
     Class Source
 
 
@@ -1310,33 +1332,33 @@ Public Class KodiInterface
 
 #Region "Properties"
 
-        <XmlElement("contenttype")> _
+        <XmlElement("contenttype")>
         Public Property ContentType() As Enums.ContentType
             Get
-                Return Me._contenttype
+                Return _contenttype
             End Get
             Set(ByVal value As Enums.ContentType)
-                Me._contenttype = value
+                _contenttype = value
             End Set
         End Property
 
-        <XmlElement("localpath")> _
+        <XmlElement("localpath")>
         Public Property LocalPath() As String
             Get
-                Return Me._localpath
+                Return _localpath
             End Get
             Set(ByVal value As String)
-                Me._localpath = value
+                _localpath = value
             End Set
         End Property
 
-        <XmlElement("remotepath")> _
+        <XmlElement("remotepath")>
         Public Property RemotePath() As String
             Get
-                Return Me._remotepath
+                Return _remotepath
             End Get
             Set(ByVal value As String)
-                Me._remotepath = value
+                _remotepath = value
             End Set
         End Property
 
@@ -1345,7 +1367,7 @@ Public Class KodiInterface
 #Region "Constructors"
 
         Public Sub New()
-            Me.Clear()
+            Clear()
         End Sub
 
 #End Region 'Constructors
@@ -1353,9 +1375,9 @@ Public Class KodiInterface
 #Region "Methods"
 
         Public Sub Clear()
-            Me._contenttype = Enums.ContentType.Movie
-            Me._localpath = String.Empty
-            Me._remotepath = String.Empty
+            _contenttype = Enums.ContentType.Movie
+            _localpath = String.Empty
+            _remotepath = String.Empty
         End Sub
 
 #End Region 'Methods

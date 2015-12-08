@@ -23,6 +23,7 @@ Imports NLog
 Imports EmberAPI
 Imports XBMCRPC
 Imports System.IO
+Imports generic.Interface.Kodi.KodiInterface
 
 Namespace Kodi
 
@@ -30,7 +31,7 @@ Namespace Kodi
 
 #Region "Fields"
 
-        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Shared logger As Logger = LogManager.GetCurrentClassLogger()
         'current selected host, Kodi Host type already declared in EmberAPI (XML serialization) -> no MySettings declaration needed here
         Private _currenthost As New KodiInterface.Host
         'current selected client
@@ -43,8 +44,6 @@ Namespace Kodi
 #End Region 'Fields
 
 #Region "Events"
-
-        Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
 
 #End Region 'Events
 
@@ -801,7 +800,7 @@ Namespace Kodi
         ''' updates all movie fields which are filled/set in Ember (also paths of images)
         ''' at the moment the movie to update on host is identified by searching and comparing filename of movie(special handling for DVDs/Blurays), meaning there might be problems when filename is appearing more than once in movie library
         ''' </remarks>
-        Public Async Function UpdateInfo_Movie(ByVal lngMovieID As Long, ByVal blnSendHostNotification As Boolean, ByVal blnSyncPlayCount As Boolean) As Task(Of Boolean)
+        Public Async Function UpdateInfo_Movie(ByVal lngMovieID As Long, ByVal blnSendHostNotification As Boolean, ByVal blnSyncPlayCount As Boolean, ByVal GenericSubEvent As IProgress(Of GenericSubEventCallBackAsync), ByVal GenericMainEvent As IProgress(Of GenericEventCallBackAsync)) As Task(Of Boolean)
             If _kodi Is Nothing Then
                 logger.Error("[APIKodi] UpdateMovieInfo: No host initialized! Abort!")
                 Return False
@@ -900,19 +899,19 @@ Namespace Kodi
 
 
                     'string or null/nothing
-                    Dim mBanner As String = If(Not String.IsNullOrEmpty(uMovie.ImagesContainer.Banner.LocalFilePath), _
+                    Dim mBanner As String = If(Not String.IsNullOrEmpty(uMovie.ImagesContainer.Banner.LocalFilePath),
                                                   GetRemotePath(uMovie.ImagesContainer.Banner.LocalFilePath), Nothing)
-                    Dim mClearArt As String = If(Not String.IsNullOrEmpty(uMovie.ImagesContainer.ClearArt.LocalFilePath), _
+                    Dim mClearArt As String = If(Not String.IsNullOrEmpty(uMovie.ImagesContainer.ClearArt.LocalFilePath),
                                                   GetRemotePath(uMovie.ImagesContainer.ClearArt.LocalFilePath), Nothing)
-                    Dim mClearLogo As String = If(Not String.IsNullOrEmpty(uMovie.ImagesContainer.ClearLogo.LocalFilePath), _
+                    Dim mClearLogo As String = If(Not String.IsNullOrEmpty(uMovie.ImagesContainer.ClearLogo.LocalFilePath),
                                                   GetRemotePath(uMovie.ImagesContainer.ClearLogo.LocalFilePath), Nothing)
-                    Dim mDiscArt As String = If(Not String.IsNullOrEmpty(uMovie.ImagesContainer.DiscArt.LocalFilePath), _
+                    Dim mDiscArt As String = If(Not String.IsNullOrEmpty(uMovie.ImagesContainer.DiscArt.LocalFilePath),
                                                   GetRemotePath(uMovie.ImagesContainer.DiscArt.LocalFilePath), Nothing)
-                    Dim mFanart As String = If(Not String.IsNullOrEmpty(uMovie.ImagesContainer.Fanart.LocalFilePath), _
+                    Dim mFanart As String = If(Not String.IsNullOrEmpty(uMovie.ImagesContainer.Fanart.LocalFilePath),
                                                  GetRemotePath(uMovie.ImagesContainer.Fanart.LocalFilePath), Nothing)
-                    Dim mLandscape As String = If(Not String.IsNullOrEmpty(uMovie.ImagesContainer.Landscape.LocalFilePath), _
+                    Dim mLandscape As String = If(Not String.IsNullOrEmpty(uMovie.ImagesContainer.Landscape.LocalFilePath),
                                                   GetRemotePath(uMovie.ImagesContainer.Landscape.LocalFilePath), Nothing)
-                    Dim mPoster As String = If(Not String.IsNullOrEmpty(uMovie.ImagesContainer.Poster.LocalFilePath), _
+                    Dim mPoster As String = If(Not String.IsNullOrEmpty(uMovie.ImagesContainer.Poster.LocalFilePath),
                                                   GetRemotePath(uMovie.ImagesContainer.Poster.LocalFilePath), Nothing)
 
                     'all image paths will be set in artwork object
@@ -926,30 +925,30 @@ Namespace Kodi
                     artwork.poster = mPoster
                     'artwork.thumb = mPoster ' not supported in Ember?!
 
-                    Dim response = Await _kodi.VideoLibrary.SetMovieDetails(KodiID, _
-                                                                        title:=mTitle, _
-                                                                        playcount:=mPlaycount, _
-                                                                        runtime:=mRuntime, _
-                                                                        director:=mDirectorList, _
-                                                                        studio:=mStudioList, _
-                                                                        year:=mYear, _
-                                                                        plot:=mPlot, _
-                                                                        genre:=mGenreList, _
-                                                                        rating:=mRating, _
-                                                                        mpaa:=mMPAA, _
-                                                                        imdbnumber:=mImdbnumber, _
-                                                                        votes:=mVotes, _
-                                                                        lastplayed:=mLastPlayed, _
-                                                                        originaltitle:=mOriginalTitle, _
-                                                                        trailer:=mTrailer, _
-                                                                        tagline:=mTagline, _
-                                                                        plotoutline:=mOutline, _
-                                                                        writer:=mWriterList, _
-                                                                        country:=mCountryList, _
-                                                                        top250:=mTop250, _
-                                                                        sorttitle:=mSortTitle, _
-                                                                        set:=mSet, _
-                                                                        tag:=mTagList, _
+                    Dim response = Await _kodi.VideoLibrary.SetMovieDetails(KodiID,
+                                                                        title:=mTitle,
+                                                                        playcount:=mPlaycount,
+                                                                        runtime:=mRuntime,
+                                                                        director:=mDirectorList,
+                                                                        studio:=mStudioList,
+                                                                        year:=mYear,
+                                                                        plot:=mPlot,
+                                                                        genre:=mGenreList,
+                                                                        rating:=mRating,
+                                                                        mpaa:=mMPAA,
+                                                                        imdbnumber:=mImdbnumber,
+                                                                        votes:=mVotes,
+                                                                        lastplayed:=mLastPlayed,
+                                                                        originaltitle:=mOriginalTitle,
+                                                                        trailer:=mTrailer,
+                                                                        tagline:=mTagline,
+                                                                        plotoutline:=mOutline,
+                                                                        writer:=mWriterList,
+                                                                        country:=mCountryList,
+                                                                        top250:=mTop250,
+                                                                        sorttitle:=mSortTitle,
+                                                                        set:=mSet,
+                                                                        tag:=mTagList,
                                                                         art:=artwork).ConfigureAwait(False)
                     'not supported right now in Ember
                     'showlink:=mshowlink, _     
@@ -972,9 +971,12 @@ Namespace Kodi
                         If blnNeedSave Then
                             logger.Trace(String.Format("[APIKodi] [{0}] UpdateMovieInfo: ""{1}"" | Save Playcount from host", _currenthost.Label, uMovie.Movie.Title))
                             Master.DB.SaveMovieToDB(uMovie, False, False, True, False)
-                            'RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {uMovie.ID}))
+                            GenericSubEvent.Report(New GenericSubEventCallBackAsync With {
+                                                   .tGenericEventCallBackAsync = New GenericEventCallBackAsync With
+                                                   {.tEventType = Enums.ModuleEventType.AfterEdit_Movie, .tParams = New List(Of Object)(New Object() {uMovie.ID})},
+                                                   .tProgress = GenericMainEvent})
                         End If
-                        logger.Trace(String.Format("[APIKodi] [{0}] UpdateMovieInfo: ""{1}"" | {2} on host", _currenthost.Label, uMovie.Movie.Title, If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated"))))
+                        logger.Trace(String.Format("[APIKodi] [{0}] UpdateMovieInfo: ""{1}"" | {2} on host", _currenthost.Label, uMovie.Movie.Title, If(isNew, "Added", "Updated")))
                         Return True
                     End If
                 Else
@@ -1069,7 +1071,7 @@ Namespace Kodi
                         If blnSendHostNotification = True Then
                             Await SendMessage("Ember Media Manager", If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": " & uMovieset.MovieSet.Title).ConfigureAwait(False)
                         End If
-                        logger.Trace(String.Format("[APIKodi] [{0}] UpdateMovieSetInfo: ""{1}"" | {2} on host", _currenthost.Label, uMovieset.MovieSet.Title, If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated"))))
+                        logger.Trace(String.Format("[APIKodi] [{0}] UpdateMovieSetInfo: ""{1}"" | {2} on host", _currenthost.Label, uMovieset.MovieSet.Title, If(isNew, "Added", "Updated")))
                         Return True
                     End If
                 Else
@@ -1093,7 +1095,7 @@ Namespace Kodi
         ''' updates all episode fields (also pathes of images)
         ''' at the moment episode on host is identified by searching and comparing filename of episode
         ''' </remarks>
-        Public Async Function UpdateInfo_TVEpisode(ByVal lngTVEpisodeID As Long, ByVal blnSendHostNotification As Boolean, ByVal blnSyncPlayCount As Boolean) As Task(Of Boolean)
+        Public Async Function UpdateInfo_TVEpisode(ByVal lngTVEpisodeID As Long, ByVal blnSendHostNotification As Boolean, ByVal blnSyncPlayCount As Boolean, ByVal GenericSubEvent As IProgress(Of GenericSubEventCallBackAsync), ByVal GenericMainEvent As IProgress(Of GenericEventCallBackAsync)) As Task(Of Boolean)
             If _kodi Is Nothing Then
                 logger.Error("[APIKodi] UpdateTVEpisodeInfo: No host initialized! Abort!")
                 Return False
@@ -1165,22 +1167,22 @@ Namespace Kodi
 
                     'all image paths will be set in artwork object
                     Dim artwork As New Media.Artwork.Set
-                    artwork.fanart = If(Not String.IsNullOrEmpty(uEpisode.ImagesContainer.Fanart.LocalFilePath), _
+                    artwork.fanart = If(Not String.IsNullOrEmpty(uEpisode.ImagesContainer.Fanart.LocalFilePath),
                                                   GetRemotePath(uEpisode.ImagesContainer.Fanart.LocalFilePath), Nothing)
-                    artwork.poster = If(Not String.IsNullOrEmpty(uEpisode.ImagesContainer.Poster.LocalFilePath), _
+                    artwork.poster = If(Not String.IsNullOrEmpty(uEpisode.ImagesContainer.Poster.LocalFilePath),
                                                   GetRemotePath(uEpisode.ImagesContainer.Poster.LocalFilePath), Nothing)
                     'artwork.thumb = mPoster ' not supported in Ember?!
 
-                    Dim response = Await _kodi.VideoLibrary.SetEpisodeDetails(KodiID, _
-                                                                        title:=mTitle, _
-                                                                        playcount:=mPlaycount, _
-                                                                        runtime:=mRuntime, _
-                                                                        director:=mDirectorList, _
-                                                                        plot:=mPlot, _
-                                                                        rating:=mRating, _
-                                                                        votes:=mVotes, _
-                                                                        lastplayed:=mLastPlayed, _
-                                                                        writer:=mWriterList, _
+                    Dim response = Await _kodi.VideoLibrary.SetEpisodeDetails(KodiID,
+                                                                        title:=mTitle,
+                                                                        playcount:=mPlaycount,
+                                                                        runtime:=mRuntime,
+                                                                        director:=mDirectorList,
+                                                                        plot:=mPlot,
+                                                                        rating:=mRating,
+                                                                        votes:=mVotes,
+                                                                        lastplayed:=mLastPlayed,
+                                                                        writer:=mWriterList,
                                                                         art:=artwork).ConfigureAwait(False)
                     'not supported right now in Ember
                     'originaltitle:=moriginaltitle, _    
@@ -1205,9 +1207,12 @@ Namespace Kodi
                         If needSave Then
                             logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVEpisodeInfo: ""{1}"" | Save Playcount from host", _currenthost.Label, uEpisode.TVEpisode.Title))
                             Master.DB.SaveTVEpisodeToDB(uEpisode, False, False, True, False, False)
-                            'RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {uEpisode.ID}))
+                            GenericSubEvent.Report(New GenericSubEventCallBackAsync With {
+                                                   .tGenericEventCallBackAsync = New GenericEventCallBackAsync With
+                                                   {.tEventType = Enums.ModuleEventType.AfterEdit_TVEpisode, .tParams = New List(Of Object)(New Object() {uEpisode.ID})},
+                                                   .tProgress = GenericMainEvent})
                         End If
-                        logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVEpisodeInfo: ""{1}"" | {2} on host", _currenthost.Label, uEpisode.TVEpisode.Title, If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated"))))
+                        logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVEpisodeInfo: ""{1}"" | {2} on host", _currenthost.Label, uEpisode.TVEpisode.Title, If(isNew, "Added", "Updated")))
                         Return True
                     End If
                 Else
@@ -1294,7 +1299,7 @@ Namespace Kodi
                         If SendHostNotification = True Then
                             Await SendMessage("Ember Media Manager", If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": " & uSeason.TVShow.Title & ": Season " & uSeason.TVSeason.Season).ConfigureAwait(False)
                         End If
-                        logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVSeasonInfo: ""{1}: Season {2}"" | {3} on host", _currenthost.Label, uSeason.ShowPath, uSeason.TVSeason.Season, If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated"))))
+                        logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVSeasonInfo: ""{1}: Season {2}"" | {3} on host", _currenthost.Label, uSeason.ShowPath, uSeason.TVSeason.Season, If(isNew, "Added", "Updated")))
                         Return True
                     End If
                 Else
@@ -1457,7 +1462,7 @@ Namespace Kodi
                         If blnSendHostNotification = True Then
                             Await SendMessage("Ember Media Manager", If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": " & uTVShow.TVShow.Title).ConfigureAwait(False)
                         End If
-                        logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVShowInfo: ""{1}"" | {2} on host", _currenthost.Label, uTVShow.TVShow.Title, If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated"))))
+                        logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVShowInfo: ""{1}"" | {2} on host", _currenthost.Label, uTVShow.TVShow.Title, If(isNew, "Added", "Updated")))
                         Return True
                     End If
                 Else
