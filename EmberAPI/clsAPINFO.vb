@@ -896,7 +896,7 @@ Public Class NFO
                             If mEpisode.TVEpisode.TitleSpecified Then
                                 DBTV.Episodes.Add(mEpisode)
                             Else
-                                logger.Warn(String.Format("Can't add {0}: S{1}E{2}: No Episode Title found", mEpisode.TVShow.Title, mEpisode.TVEpisode.Season, mEpisode.TVEpisode.Episode))
+                                logger.Warn(String.Format("Missing Episode Ignored | {0} - S{1}E{2} | No Episode Title found", mEpisode.TVShow.Title, mEpisode.TVEpisode.Season, mEpisode.TVEpisode.Episode))
                             End If
                         End If
                     End If
