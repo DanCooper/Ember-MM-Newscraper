@@ -7230,7 +7230,8 @@ Public Class Settings
             Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]\[offline\].*")
             Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]ntsc.*")
             Master.eSettings.TVShowFilterCustom.Add("[\W_]PAL[\W_]?.*")
-            Master.eSettings.TVShowFilterCustom.Add("\.[->] ")
+            Master.eSettings.TVShowFilterCustom.Add("\.[->] ")                  'convert dots to space
+            Master.eSettings.TVShowFilterCustom.Add("_[->] ")                   'convert underscore to space
         End If
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.EpFilters) AndAlso (Force OrElse (Master.eSettings.TVEpisodeFilterCustom.Count <= 0 AndAlso Not Master.eSettings.TVEpisodeFilterCustomIsEmpty)) Then
@@ -7259,7 +7260,8 @@ Public Class Settings
             Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]\[offline\].*")
             Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]ntsc.*")
             Master.eSettings.TVEpisodeFilterCustom.Add("[\W_]PAL[\W_]?.*")
-            Master.eSettings.TVEpisodeFilterCustom.Add("\.[->] ")
+            Master.eSettings.TVEpisodeFilterCustom.Add("\.[->] ")               'convert dots to space
+            Master.eSettings.TVEpisodeFilterCustom.Add("_[->] ")                'convert underscore to space
         End If
 
         If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MovieSortTokens) AndAlso (Force OrElse (Master.eSettings.MovieSortTokens.Count <= 0 AndAlso Not Master.eSettings.MovieSortTokensIsEmpty)) Then
