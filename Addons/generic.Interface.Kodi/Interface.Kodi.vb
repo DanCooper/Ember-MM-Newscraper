@@ -160,15 +160,6 @@ Public Class KodiInterface
         Return Await Task.Run(Function() GenericRunCallBack(mType, mDBElement, GenericEventProgressAsync))
     End Function
 
-    ''' <summary>
-    ''' Tick event of timer object. Used to work through jobs of Tasklist
-    ''' </summary>
-    ''' <param name="sender">Timer tick event</param>
-    ''' <param name="e">Timer tick event</param>
-    ''' <remarks>
-    ''' Worker function used to handle all ApiTaks in List(of KodiTask)
-    ''' Made async to await async Kodi API
-    ''' </remarks>
     Private Async Sub RunTasks()
         Dim getError As Boolean = False
         Dim GenericEventActionAsync As New Action(Of GenericEventCallBackAsync)(AddressOf Handle_GenericEventAsync)
@@ -283,7 +274,23 @@ Public Class KodiInterface
                 Case Enums.ModuleEventType.Sync_MovieSet
                     Dim tDBMovieset As Database.DBElement = mDBElement
                     If tDBMovieset.MovieList.Count > 0 Then
-                        If Not String.IsNullOrEmpty(tDBMovieset.MovieSet.TMDB) Then
+                        If mHost IsNot Nothing Then
+                            Dim _APIKodi As New Kodi.APIKodi(mHost)
+
+                            'connection test
+                            If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
+                                'run task
+                                If Await Task.Run(Function() _APIKodi.UpdateInfo_MovieSet(tDBMovieset.ID, _SpecialSettings.SendNotifications)) Then
+                                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", tDBMovieset.MovieSet.Title), New Bitmap(My.Resources.logo)}))
+                                Else
+                                    logger.Warn(String.Concat("[KodiInterface] [", mHost.Label, "] RunGeneric MovieSet Update | Sync Failed:  ", tDBMovieset.MovieSet.Title))
+                                    ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", tDBMovieset.MovieSet.Title), Nothing}))
+                                    getError = True
+                                End If
+                            Else
+                                getError = True
+                            End If
+                        Else
                             For Each tHost In _SpecialSettings.Hosts.Where(Function(f) f.RealTimeSync AndAlso Not String.IsNullOrEmpty(f.MovieSetArtworksPath))
                                 Dim _APIKodi As New Kodi.APIKodi(tHost)
 
@@ -309,18 +316,13 @@ Public Class KodiInterface
                                     getError = True
                                 End If
                             Next
-                        Else
-                            logger.Warn("[KodiInterface] GenericRunCallBack MoviesetUpdate: Please Scrape In Ember First!")
-                            'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
-                            getError = True
                         End If
                     Else
                         logger.Warn("[KodiInterface] GenericRunCallBack MoviesetUpdate: No movies in set!")
                         getError = True
                     End If
 
-
-                    'Episode syncing
+                    'TVEpisode syncing
                 Case Enums.ModuleEventType.Sync_TVEpisode
                     Dim tDBTV As Database.DBElement = mDBElement
                     If tDBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(tDBTV, True) Then
@@ -633,7 +635,7 @@ Public Class KodiInterface
         'mnuMainTools menu
         mnuMainToolsKodi.DropDownItems.Clear()
         mnuMainToolsKodi.Image = New Bitmap(My.Resources.icon)
-        mnuMainToolsKodi.Text = "Kodi"
+        mnuMainToolsKodi.Text = "Kodi Interface"
         mnuMainToolsKodi.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfTabMovies = True, .ForMovieSets = True, .IfTabMovieSets = True, .ForTVShows = True, .IfTabTVShows = True}
         CreateToolsMenu(mnuMainToolsKodi)
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("mnuMainTools"), ToolStripMenuItem)
@@ -642,7 +644,7 @@ Public Class KodiInterface
         'mnuTrayTools
         mnuTrayToolsKodi.DropDownItems.Clear()
         mnuTrayToolsKodi.Image = New Bitmap(My.Resources.icon)
-        mnuTrayToolsKodi.Text = "Kodi"
+        mnuTrayToolsKodi.Text = "Kodi Interface"
         CreateToolsMenu(mnuTrayToolsKodi)
         tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
         AddToolsStripItem(tsi, mnuTrayToolsKodi)
@@ -650,8 +652,7 @@ Public Class KodiInterface
         'cmnuMovies
         cmnuKodi_Movies.DropDownItems.Clear()
         cmnuKodi_Movies.Image = New Bitmap(My.Resources.icon)
-        cmnuKodi_Movies.Text = "Kodi"
-        cmnuKodi_Movies.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.R), System.Windows.Forms.Keys)
+        cmnuKodi_Movies.Text = "Kodi Interface"
         CreateContextMenu(cmnuKodi_Movies, Enums.ContentType.Movie)
         SetToolsStripItem_Movies(cmnuSep_Movies)
         SetToolsStripItem_Movies(cmnuKodi_Movies)
@@ -659,8 +660,7 @@ Public Class KodiInterface
         'cmnuMovieSets
         cmnuKodi_MovieSets.DropDownItems.Clear()
         cmnuKodi_MovieSets.Image = New Bitmap(My.Resources.icon)
-        cmnuKodi_MovieSets.Text = "Kodi"
-        cmnuKodi_MovieSets.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.R), System.Windows.Forms.Keys)
+        cmnuKodi_MovieSets.Text = "Kodi Interface"
         CreateContextMenu(cmnuKodi_MovieSets, Enums.ContentType.MovieSet)
         SetToolsStripItem_MovieSets(cmnuSep_MovieSets)
         SetToolsStripItem_MovieSets(cmnuKodi_MovieSets)
@@ -668,8 +668,7 @@ Public Class KodiInterface
         'cmnuTVEpisodes
         cmnuKodi_TVEpisodes.DropDownItems.Clear()
         cmnuKodi_TVEpisodes.Image = New Bitmap(My.Resources.icon)
-        cmnuKodi_TVEpisodes.Text = "Kodi"
-        cmnuKodi_TVEpisodes.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.R), System.Windows.Forms.Keys)
+        cmnuKodi_TVEpisodes.Text = "Kodi Interface"
         CreateContextMenu(cmnuKodi_TVEpisodes, Enums.ContentType.TVEpisode)
         SetToolsStripItem_TVEpisodes(cmnuSep_TVEpisodes)
         SetToolsStripItem_TVEpisodes(cmnuKodi_TVEpisodes)
@@ -677,8 +676,7 @@ Public Class KodiInterface
         'cmnuTVSeasons
         cmnuKodi_TVSeasons.DropDownItems.Clear()
         cmnuKodi_TVSeasons.Image = New Bitmap(My.Resources.icon)
-        cmnuKodi_TVSeasons.Text = "Kodi"
-        cmnuKodi_TVSeasons.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.R), System.Windows.Forms.Keys)
+        cmnuKodi_TVSeasons.Text = "Kodi Interface"
         CreateContextMenu(cmnuKodi_TVSeasons, Enums.ContentType.TVSeason)
         SetToolsStripItem_TVSeasons(cmnuSep_TVSeasons)
         SetToolsStripItem_TVSeasons(cmnuKodi_TVSeasons)
@@ -686,8 +684,7 @@ Public Class KodiInterface
         'cmnuTVShows
         cmnuKodi_TVShows.DropDownItems.Clear()
         cmnuKodi_TVShows.Image = New Bitmap(My.Resources.icon)
-        cmnuKodi_TVShows.Text = "Kodi"
-        cmnuKodi_TVShows.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.R), System.Windows.Forms.Keys)
+        cmnuKodi_TVShows.Text = "Kodi Interface"
         CreateContextMenu(cmnuKodi_TVShows, Enums.ContentType.TVShow)
         SetToolsStripItem_TVShows(cmnuSep_TVShows)
         SetToolsStripItem_TVShows(cmnuKodi_TVShows)
