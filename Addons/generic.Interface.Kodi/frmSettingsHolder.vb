@@ -73,7 +73,7 @@ Public Class frmSettingsHolder
     ''' <param name="sender">"Enable"-checkbox in Form</param>
     ''' <remarks>
     ''' </remarks>
-    Private Sub chkEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnabled.CheckedChanged
+    Private Sub chkEnabled_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkEnabled.CheckedChanged
         RaiseEvent ModuleEnabledChanged(chkEnabled.Checked)
     End Sub
 
@@ -183,7 +183,7 @@ Public Class frmSettingsHolder
     ''' 2015/06/27 Cocotus - First implementation
     ''' Only enable edit button if host is selected
     ''' </remarks>
-    Private Sub lbHosts_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbHosts.SelectedIndexChanged
+    Private Sub lbHosts_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles lbHosts.SelectedIndexChanged
         If lbHosts.SelectedItems.Count > 0 Then
             btnEditHost.Enabled = True
             btnRemoveHost.Enabled = True
@@ -200,7 +200,7 @@ Public Class frmSettingsHolder
     ''' <remarks>
     ''' 2015/06/27 Cocotus - First implementation
     ''' </remarks>
-    Private Sub chkNotification_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkNotification.CheckedChanged
+    Private Sub chkNotification_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkNotification.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 

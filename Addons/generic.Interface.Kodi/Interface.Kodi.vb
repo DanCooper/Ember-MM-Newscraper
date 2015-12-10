@@ -816,7 +816,7 @@ Public Class KodiInterface
     ''' 2015/06/27 Cocotus - First implementation, prepared by DanCooper
     ''' Update details of movie in Kodi DB
     ''' </remarks>
-    Private Sub cmnuHostSyncItem_Movie_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub cmnuHostSyncItem_Movie_Click(ByVal sender As Object, ByVal e As EventArgs)
         Dim Host As Host = DirectCast(DirectCast(sender, ToolStripMenuItem).Tag, Host)
         If Host IsNot Nothing Then
             For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows
@@ -842,7 +842,7 @@ Public Class KodiInterface
     ''' 2015/06/27 Cocotus - First implementation
     ''' Update details of movieset in Kodi DB
     ''' </remarks>
-    Private Sub cmnuHostSyncItem_MovieSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub cmnuHostSyncItem_MovieSet_Click(ByVal sender As Object, ByVal e As EventArgs)
         Dim Host As Host = DirectCast(DirectCast(sender, ToolStripMenuItem).Tag, Host)
         If Host IsNot Nothing Then
             For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListMovieSets.SelectedRows
@@ -868,7 +868,7 @@ Public Class KodiInterface
     ''' 2015/06/27 Cocotus - First implementation, prepared by DanCooper
     ''' Update details of episode in Kodi DB
     ''' </remarks>
-    Private Sub cmnuHostSyncItem_TVEpisode_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub cmnuHostSyncItem_TVEpisode_Click(ByVal sender As Object, ByVal e As EventArgs)
         Dim Host As Host = DirectCast(DirectCast(sender, ToolStripMenuItem).Tag, Host)
         If Host IsNot Nothing Then
             For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListTVEpisodes.SelectedRows
@@ -896,7 +896,7 @@ Public Class KodiInterface
     ''' 2015/06/27 Cocotus - First implementation
     ''' Update details of season in Kodi DB
     ''' </remarks>
-    Private Sub cmnuHostSyncItem_TVSeason_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub cmnuHostSyncItem_TVSeason_Click(ByVal sender As Object, ByVal e As EventArgs)
         Dim Host As Host = DirectCast(DirectCast(sender, ToolStripMenuItem).Tag, Host)
         If Host IsNot Nothing Then
             For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListTVSeasons.SelectedRows
@@ -920,7 +920,7 @@ Public Class KodiInterface
     ''' 2015/06/27 Cocotus - First implementation, prepared by DanCooper
     ''' Update details of tvshow in Kodi DB
     ''' </remarks>
-    Private Sub cmnuHostSyncItem_TVShow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub cmnuHostSyncItem_TVShow_Click(ByVal sender As Object, ByVal e As EventArgs)
         Dim Host As Host = DirectCast(DirectCast(sender, ToolStripMenuItem).Tag, Host)
         If Host IsNot Nothing Then
             For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListTVShows.SelectedRows
@@ -946,7 +946,7 @@ Public Class KodiInterface
     ''' <param name="sender"></param>
     ''' <remarks>
     ''' </remarks>
-    Private Async Sub mnuHostCleanVideoLibrary_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Async Sub mnuHostCleanVideoLibrary_Click(ByVal sender As Object, ByVal e As EventArgs)
         Dim Host As Host = DirectCast(DirectCast(sender, ToolStripMenuItem).Tag, Host)
         If Host IsNot Nothing Then
             Dim _APIKodi As New Kodi.APIKodi(Host)
@@ -967,16 +967,19 @@ Public Class KodiInterface
     ''' <param name="sender"></param>
     ''' <remarks>
     ''' </remarks>
-    Private Async Sub mnuHostScanVideoLibrary_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Async Sub mnuHostScanVideoLibrary_Click(ByVal sender As Object, ByVal e As EventArgs)
         Dim Host As Host = DirectCast(DirectCast(sender, ToolStripMenuItem).Tag, Host)
         If Host IsNot Nothing Then
             Dim _APIKodi As New Kodi.APIKodi(Host)
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Host.Label & " | " & Master.eLang.GetString(1448, "Updating Video Library..."), New Bitmap(My.Resources.logo)}))
             Dim response = Await _APIKodi.VideoLibrary_Scan()
+            While Await _APIKodi.IsScanningVideo()
+                Threading.Thread.Sleep(1000)
+            End While
             If response = Nothing Then
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Host.Label & " | " & Master.eLang.GetString(1449, "Update Failed"), Nothing}))
             Else
-                'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, "Kodi Interface", "Video library updated", Nothing}))
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, "Kodi Interface", "Video library updated", Nothing}))
             End If
         Else
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))

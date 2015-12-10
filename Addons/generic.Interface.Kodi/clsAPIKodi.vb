@@ -964,7 +964,9 @@ Namespace Kodi
                 If KodiElement Is Nothing Then
                     logger.Trace(String.Format("[APIKodi] [{0}] UpdateMovieInfo: ""{1}"" | NOT found in database, scan directory on host...", _currenthost.Label, uMovie.Movie.Title))
                     Await VideoLibrary_ScanPath(uMovie).ConfigureAwait(False)
-                    Threading.Thread.Sleep(2000) 'TODO better solution for this?!
+                    While Await IsScanningVideo()
+                        Threading.Thread.Sleep(1000)
+                    End While
                     KodiElement = Await GetFullDetailsByID_Movie(Await GetMediaID(uMovie))
                     If KodiElement IsNot Nothing Then bIsNew = True
                 End If
@@ -1245,7 +1247,9 @@ Namespace Kodi
                 If KodiElement Is Nothing Then
                     logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVEpisodeInfo: ""{1}"" | NOT found in database, scan directory on host...", _currenthost.Label, uEpisode.TVEpisode.Title))
                     Await VideoLibrary_ScanPath(uEpisode).ConfigureAwait(False)
-                    Threading.Thread.Sleep(2000) 'TODO better solution for this?!
+                    While Await IsScanningVideo()
+                        Threading.Thread.Sleep(1000)
+                    End While
                     KodiElement = Await GetFullDetailsByID_TVEpisode(Await GetMediaID(uEpisode))
                     If KodiElement IsNot Nothing Then bIsNew = True
                 End If
@@ -1374,7 +1378,9 @@ Namespace Kodi
                 If KodiElement Is Nothing Then
                     logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVSeasonInfo: ""{1}: Season {2}"" | NOT found in database, scan directory on host...", _currenthost.Label, uSeason.ShowPath, uSeason.TVSeason.Season))
                     Await VideoLibrary_ScanPath(uSeason).ConfigureAwait(False)
-                    Threading.Thread.Sleep(2000) 'TODO better solution for this?!
+                    While Await IsScanningVideo()
+                        Threading.Thread.Sleep(1000)
+                    End While
                     KodiElement = Await GetFullDetailsByID_TVSeason(Await GetMediaID(uSeason))
                     If KodiElement IsNot Nothing Then bIsNew = True
                 End If
@@ -1453,7 +1459,9 @@ Namespace Kodi
                 If KodiElement Is Nothing Then
                     logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVShowInfo: ""{1}"" | NOT found in database, scan directory on host...", _currenthost.Label, uTVShow.TVShow.Title))
                     Await VideoLibrary_ScanPath(uTVShow).ConfigureAwait(False)
-                    Threading.Thread.Sleep(2000) 'TODO better solution for this?!
+                    While Await IsScanningVideo()
+                        Threading.Thread.Sleep(1000)
+                    End While
                     KodiElement = Await GetFullDetailsByID_TVShow(Await GetMediaID(uTVShow))
                     If KodiElement IsNot Nothing Then bIsNew = True
                 End If
@@ -1711,7 +1719,7 @@ Namespace Kodi
             End If
             Dim strResponse = Await _kodi.VideoLibrary.Scan(strRemotePath).ConfigureAwait(False)
             If strResponse.ToLower.Contains("error") Then
-                logger.Trace(String.Format("[APIKodi] [{0}] ScanVideoPath: ""{1}"" | {2}", _currenthost.Label, strRemotePath, strResponse))
+                logger.Trace(String.Format("[APIKodi] [{0}] ScanVideoPath: ""{1}"" | Start scanning process...", _currenthost.Label, strRemotePath))
                 Return False
             Else
                 logger.Trace(String.Format("[APIKodi] [{0}] ScanVideoPath: ""{1}"" | {2}", _currenthost.Label, strRemotePath, strResponse))
@@ -1783,6 +1791,27 @@ Namespace Kodi
                 Return False
             End Try
             Return True
+        End Function
+        ''' <summary>
+        ''' Scan video library of Kodi host
+        ''' </summary>
+        ''' <returns>string with status message, if failed: Nothing</returns>
+        ''' <remarks>
+        ''' 2015/06/27 Cocotus - First implementation
+        ''' </remarks>
+        Public Async Function IsScanningVideo() As Task(Of Boolean)
+            If _kodi Is Nothing Then
+                logger.Error("[APIKodi] IsScanningLibrary: No host initialized! Abort!")
+                Return False
+            End If
+
+            Try
+                Dim response As XBMC.GetInfoBooleansResponse = Await _kodi.XBMC.GetInfoBooleans(New List(Of String)(New String() {"Library.IsScanningVideo"}))
+                Return response.IsScanningVideo
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+                Return False
+            End Try
         End Function
 
 #Region "Helper functions/methods"

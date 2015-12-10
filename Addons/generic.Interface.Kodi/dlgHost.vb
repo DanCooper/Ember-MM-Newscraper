@@ -192,7 +192,7 @@ Public Class dlgHost
     ''' 2015/06/26 Cocotus - First implementation
     ''' Send JSON API request to Kodi to get all sources from host
     ''' request will be executed in backgroundworker
-    Private Sub btnHostPopulateSources_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnHostPopulateSources.Click
+    Private Sub btnHostPopulateSources_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnHostPopulateSources.Click
         SetControlsEnabled(False)
         SetInfo()
 
@@ -248,7 +248,7 @@ Public Class dlgHost
     ''' <remarks>
     ''' 2015/06/26 Cocotus - First implementation
     ''' Request will be executed in backgroundworker
-    Private Sub bwLoadInfo_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadInfo.DoWork
+    Private Sub bwLoadInfo_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadInfo.DoWork
         Select Case CInt(e.Argument)
             Case 1
                 'API request: Get all sources of current host
@@ -293,7 +293,7 @@ Public Class dlgHost
     ''' <remarks>
     ''' 2015/06/27 Cocotus - First implementation
     ''' </remarks>
-    Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
+    Private Sub btnCancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancel.Click
         DialogResult = System.Windows.Forms.DialogResult.Cancel
         Close()
     End Sub
