@@ -4059,7 +4059,6 @@ Public Class Database
         'TODO Break this method into smaller chunks. Too important to be this complex
 
         Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
-        Dim PathID As Long = -1
         If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
 
         'Copy fileinfo duration over to runtime var for xbmc to pick up episode runtime.
@@ -4080,7 +4079,6 @@ Public Class Database
                     Dim parFilename As SQLite.SQLiteParameter = SQLpathcommand.Parameters.Add("parFilename", DbType.String, 0, "strFilename")
                     parID.Value = _episode.FilenameID
                     parFilename.Value = _episode.Filename
-                    PathID = _episode.FilenameID
                     SQLpathcommand.ExecuteNonQuery()
                 End Using
             Else
@@ -4093,7 +4091,7 @@ Public Class Database
                     Using SQLreader As SQLiteDataReader = SQLpathcommand.ExecuteReader
                         If SQLreader.HasRows Then
                             SQLreader.Read()
-                            PathID = Convert.ToInt64(SQLreader("idFile"))
+                            _episode.FilenameID = Convert.ToInt64(SQLreader("idFile"))
                         Else
                             Using SQLpcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
                                 SQLpcommand.CommandText = String.Concat("INSERT INTO files (",
@@ -4101,7 +4099,7 @@ Public Class Database
                                 Dim parEpPath As SQLite.SQLiteParameter = SQLpcommand.Parameters.Add("parEpPath", DbType.String, 0, "strFilename")
                                 parEpPath.Value = _episode.Filename
 
-                                PathID = Convert.ToInt64(SQLpcommand.ExecuteScalar)
+                                _episode.FilenameID = Convert.ToInt64(SQLpcommand.ExecuteScalar)
                             End Using
                         End If
                     End Using
@@ -4226,7 +4224,7 @@ Public Class Database
             parHasSub.Value = (_episode.Subtitles IsNot Nothing AndAlso _episode.Subtitles.Count > 0) OrElse _episode.TVEpisode.FileInfo.StreamDetails.Subtitle.Count > 0
             parNew.Value = IsNew
             parMark.Value = _episode.IsMark
-            parTVFileID.Value = PathID
+            parTVFileID.Value = _episode.FilenameID
             parLock.Value = _episode.IsLock
             parSourceID.Value = _episode.Source.ID
             parVideoSource.Value = _episode.VideoSource

@@ -1244,9 +1244,21 @@ Namespace Kodi
                 'search TV Episode ID in Kodi DB
                 Dim KodiElement As Video.Details.Episode = Await GetFullDetailsByID_TVEpisode(Await GetMediaID(uEpisode))
 
+                'scan episode path
                 If KodiElement Is Nothing Then
                     logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVEpisodeInfo: ""{1}"" | NOT found in database, scan directory on host...", _currenthost.Label, uEpisode.TVEpisode.Title))
                     Await VideoLibrary_ScanPath(uEpisode).ConfigureAwait(False)
+                    While Await IsScanningVideo()
+                        Threading.Thread.Sleep(1000)
+                    End While
+                    KodiElement = Await GetFullDetailsByID_TVEpisode(Await GetMediaID(uEpisode))
+                    If KodiElement IsNot Nothing Then bIsNew = True
+                End If
+
+                'scan tv show path path
+                If KodiElement Is Nothing Then
+                    logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVEpisodeInfo: ""{1}"" | NOT found in database, scan directory on host...", _currenthost.Label, uEpisode.TVEpisode.Title))
+                    Await VideoLibrary_ScanPath(uEpisode, True).ConfigureAwait(False)
                     While Await IsScanningVideo()
                         Threading.Thread.Sleep(1000)
                     End While
@@ -1661,7 +1673,7 @@ Namespace Kodi
         ''' <remarks>
         ''' 2015/06/27 Cocotus - First implementation
         ''' </remarks>
-        Public Async Function VideoLibrary_ScanPath(ByVal tDBElement As Database.DBElement) As Task(Of Boolean)
+        Public Async Function VideoLibrary_ScanPath(ByVal tDBElement As Database.DBElement, Optional ByVal bUseShowPath As Boolean = False) As Task(Of Boolean)
             If _kodi Is Nothing Then
                 logger.Error("[APIKodi] ScanVideoPath: No host initialized! Abort!")
                 Return Nothing
@@ -1699,14 +1711,18 @@ Namespace Kodi
                         strLocalPath = tDBElement.ShowPath
                     End If
                 Case Enums.ContentType.TVEpisode
-                    If FileUtils.Common.isBDRip(tDBElement.Filename) Then
-                        'needs some testing?!
-                        strLocalPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(tDBElement.Filename).FullName).FullName).FullName
-                    ElseIf FileUtils.Common.isVideoTS(tDBElement.Filename) Then
-                        'needs some testing?!
-                        strLocalPath = Directory.GetParent(Directory.GetParent(tDBElement.Filename).FullName).FullName
+                    If Not bUseShowPath Then
+                        If FileUtils.Common.isBDRip(tDBElement.Filename) Then
+                            'needs some testing?!
+                            strLocalPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(tDBElement.Filename).FullName).FullName).FullName
+                        ElseIf FileUtils.Common.isVideoTS(tDBElement.Filename) Then
+                            'needs some testing?!
+                            strLocalPath = Directory.GetParent(Directory.GetParent(tDBElement.Filename).FullName).FullName
+                        Else
+                            strLocalPath = Directory.GetParent(tDBElement.Filename).FullName
+                        End If
                     Else
-                        strLocalPath = Directory.GetParent(tDBElement.Filename).FullName
+                        strLocalPath = tDBElement.ShowPath
                     End If
                 Case Else
                     logger.Warn(String.Format("[APIKodi] [{0}] ScanVideoPath: No videotype specified! Abort!", _currenthost.Label))
