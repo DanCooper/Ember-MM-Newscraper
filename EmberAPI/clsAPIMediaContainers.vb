@@ -3375,6 +3375,13 @@ Namespace MediaContainers
             End Set
         End Property
 
+        <XmlIgnore()>
+        Public ReadOnly Property LocalFilePathSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(_localfilepath)
+            End Get
+        End Property
+
         Public Property LongLang() As String
             Get
                 Return _longlang
