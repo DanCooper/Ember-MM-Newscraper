@@ -114,7 +114,7 @@ Public Class Tag_Generic
         Dim tsi As New ToolStripMenuItem
 
         'mnuMainTools menu
-        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("mnuMainTools"), ToolStripMenuItem)
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.MainMenu.Items("mnuMainTools"), ToolStripMenuItem)
         RemoveToolsStripItem(tsi, mnuMainToolsTag)
 
         'cmnuTrayTools
@@ -136,7 +136,7 @@ Public Class Tag_Generic
         'mnuMainTools menu
         mnuMainToolsTag.Image = New Bitmap(My.Resources._set)
         mnuMainToolsTag.Text = Master.eLang.GetString(868, "Tag Manager")
-        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("mnuMainTools"), ToolStripMenuItem)
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.MainMenu.Items("mnuMainTools"), ToolStripMenuItem)
         AddToolsStripItem(tsi, mnuMainToolsTag)
 
         'cmnuTrayTools

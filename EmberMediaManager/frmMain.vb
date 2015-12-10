@@ -10243,19 +10243,19 @@ doCancel:
 
             ModulesManager.Instance.RuntimeObjects.DelegateLoadMedia(AddressOf LoadMedia)
             ModulesManager.Instance.RuntimeObjects.DelegateOpenImageViewer(AddressOf OpenImageViewer)
+            ModulesManager.Instance.RuntimeObjects.MainMenu = mnuMain
             ModulesManager.Instance.RuntimeObjects.MainTabControl = tcMain
-            ModulesManager.Instance.RuntimeObjects.MainTool = tsMain
+            ModulesManager.Instance.RuntimeObjects.MainToolStrip = tsMain
             ModulesManager.Instance.RuntimeObjects.MediaListMovies = dgvMovies
             ModulesManager.Instance.RuntimeObjects.MediaListMovieSets = dgvMovieSets
             ModulesManager.Instance.RuntimeObjects.MediaListTVEpisodes = dgvTVEpisodes
             ModulesManager.Instance.RuntimeObjects.MediaListTVSeasons = dgvTVSeasons
             ModulesManager.Instance.RuntimeObjects.MediaListTVShows = dgvTVShows
-            ModulesManager.Instance.RuntimeObjects.MenuMovieList = cmnuMovie
-            ModulesManager.Instance.RuntimeObjects.MenuMovieSetList = cmnuMovieSet
-            ModulesManager.Instance.RuntimeObjects.MenuTVEpisodeList = cmnuEpisode
-            ModulesManager.Instance.RuntimeObjects.MenuTVSeasonList = cmnuSeason
-            ModulesManager.Instance.RuntimeObjects.MenuTVShowList = cmnuShow
-            ModulesManager.Instance.RuntimeObjects.TopMenu = mnuMain
+            ModulesManager.Instance.RuntimeObjects.ContextMenuMovieList = cmnuMovie
+            ModulesManager.Instance.RuntimeObjects.ContextMenuMovieSetList = cmnuMovieSet
+            ModulesManager.Instance.RuntimeObjects.ContextMenuTVEpisodeList = cmnuEpisode
+            ModulesManager.Instance.RuntimeObjects.ContextMenuTVSeasonList = cmnuSeason
+            ModulesManager.Instance.RuntimeObjects.ContextMenuTVShowList = cmnuShow
             ModulesManager.Instance.RuntimeObjects.TrayMenu = cmnuTray
 
             'start loading modules in background
@@ -10474,7 +10474,6 @@ doCancel:
                 cmnuTrayExit.Enabled = True
                 cmnuTraySettings.Enabled = True
                 mnuMainEdit.Enabled = True
-                If tsbMediaCenters.DropDownItems.Count > 0 Then tsbMediaCenters.Enabled = True
             End If
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -15286,7 +15285,6 @@ doCancel:
         mnuScrapeTVShows.Enabled = isEnabled AndAlso dgvTVShows.RowCount > 0 AndAlso currMainTabTag.ContentType = Enums.ContentType.TV
         mnuScrapeTVShows.Visible = currMainTabTag.ContentType = Enums.ContentType.TV
         mnuUpdate.Enabled = isEnabled
-        tsbMediaCenters.Enabled = isEnabled
         cmnuMovie.Enabled = isEnabled
         cmnuMovieSet.Enabled = isEnabled
         cmnuShow.Enabled = isEnabled
@@ -16658,7 +16656,6 @@ doCancel:
                 .rbFilterOr_Movies.Text = Master.eLang.GetString(46, "Or")
                 .rbFilterOr_MovieSets.Text = .rbFilterOr_Movies.Text
                 .rbFilterOr_Shows.Text = .rbFilterOr_Movies.Text
-                .tsbMediaCenters.Text = Master.eLang.GetString(83, "Media Centers")
                 .tslLoading.Text = Master.eLang.GetString(7, "Loading Media:")
 
                 .cmnuEpisodeOpenFolder.Text = .cmnuMovieOpenFolder.Text

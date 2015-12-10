@@ -110,8 +110,8 @@ Namespace Kodi
 
             If Not String.IsNullOrEmpty(strFilename) Then
                 Try
-                    Dim filter As New XBMCRPC.List.Filter.MoviesOr With {.or = New List(Of Object)}
-                    Dim filterRule As New XBMCRPC.List.Filter.Rule.Movies
+                    Dim filter As New List.Filter.MoviesOr With {.or = New List(Of Object)}
+                    Dim filterRule As New List.Filter.Rule.Movies
                     filterRule.field = List.Filter.Fields.Movies.filename
                     filterRule.Operator = List.Filter.Operators.endswith
                     filterRule.value = strFilename
@@ -141,8 +141,8 @@ Namespace Kodi
 
             If Not String.IsNullOrEmpty(strRemotePath) Then
                 Try
-                    Dim filter As New XBMCRPC.List.Filter.MoviesOr With {.or = New List(Of Object)}
-                    Dim filterRule As New XBMCRPC.List.Filter.Rule.Movies
+                    Dim filter As New List.Filter.MoviesOr With {.or = New List(Of Object)}
+                    Dim filterRule As New List.Filter.Rule.Movies
                     filterRule.field = List.Filter.Fields.Movies.path
                     filterRule.Operator = List.Filter.Operators.startswith
                     filterRule.value = strRemotePath
@@ -191,13 +191,13 @@ Namespace Kodi
 
             If Not String.IsNullOrEmpty(strRemotePath) Then
                 Try
-                    Dim filter As New XBMCRPC.List.Filter.EpisodesAnd With {.and = New List(Of Object)}
-                    Dim filterRulePath As New XBMCRPC.List.Filter.Rule.Episodes
+                    Dim filter As New List.Filter.EpisodesAnd With {.and = New List(Of Object)}
+                    Dim filterRulePath As New List.Filter.Rule.Episodes
                     filterRulePath.field = List.Filter.Fields.Episodes.path
                     filterRulePath.Operator = List.Filter.Operators.startswith
                     filterRulePath.value = strRemotePath
                     filter.and.Add(filterRulePath)
-                    Dim filterRuleFilename As New XBMCRPC.List.Filter.Rule.Episodes
+                    Dim filterRuleFilename As New List.Filter.Rule.Episodes
                     filterRuleFilename.field = List.Filter.Fields.Episodes.filename
                     filterRuleFilename.Operator = List.Filter.Operators.endswith
                     filterRuleFilename.value = Path.GetFileName(str)
@@ -273,8 +273,8 @@ Namespace Kodi
 
             If Not String.IsNullOrEmpty(strRemotePath) Then
                 Try
-                    Dim filter As New XBMCRPC.List.Filter.TVShowsOr With {.or = New List(Of Object)}
-                    Dim filterRule As New XBMCRPC.List.Filter.Rule.TVShows
+                    Dim filter As New List.Filter.TVShowsOr With {.or = New List(Of Object)}
+                    Dim filterRule As New List.Filter.Rule.TVShows
                     filterRule.field = List.Filter.Fields.TVShows.path
                     filterRule.Operator = List.Filter.Operators.startswith
                     filterRule.value = strRemotePath
@@ -581,8 +581,8 @@ Namespace Kodi
         ''' 2015/06/27 Cocotus - First implementation
         ''' Called from dlgHost.vb when user hits "Populate" button to get host sources
         ''' </remarks>
-        Public Shared Function GetSources(ByVal kHost As KodiInterface.Host) As List(Of XBMCRPC.List.Items.SourcesItem)
-            Dim listSources As New List(Of XBMCRPC.List.Items.SourcesItem)
+        Public Shared Function GetSources(ByVal kHost As KodiInterface.Host) As List(Of List.Items.SourcesItem)
+            Dim listSources As New List(Of List.Items.SourcesItem)
             Try
                 Dim _APIKodi As New Kodi.APIKodi(kHost)
                 listSources = _APIKodi.GetSources(XBMCRPC.Files.Media.video).Result
@@ -651,8 +651,8 @@ Namespace Kodi
             End If
 
             Try
-                Dim filter As New XBMCRPC.List.Filter.TexturesOr With {.or = New List(Of Object)}
-                Dim filterRule As New XBMCRPC.List.Filter.Rule.Textures
+                Dim filter As New List.Filter.TexturesOr With {.or = New List(Of Object)}
+                Dim filterRule As New List.Filter.Rule.Textures
                 filterRule.field = List.Filter.Fields.Textures.url
                 filterRule.Operator = List.Filter.Operators.startswith
                 filterRule.value = strMoviePath

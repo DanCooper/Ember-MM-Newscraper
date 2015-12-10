@@ -2020,32 +2020,32 @@ Public Class ModulesManager
 
 #Region "Fields"
 
-        Private _LoadMedia As LoadMedia
-        Private _MainTool As System.Windows.Forms.ToolStrip
-        Private _MainTabControl As System.Windows.Forms.TabControl
-        Private _MediaListMovies As System.Windows.Forms.DataGridView
-        Private _MediaListMovieSets As System.Windows.Forms.DataGridView
-        Private _MediaListTVEpisodes As System.Windows.Forms.DataGridView
-        Private _MediaListTVSeasons As System.Windows.Forms.DataGridView
-        Private _MediaListTVShows As System.Windows.Forms.DataGridView
-        Private _MenuMovieList As System.Windows.Forms.ContextMenuStrip
-        Private _MenuMovieSetList As System.Windows.Forms.ContextMenuStrip
-        Private _MenuTVEpisodeList As System.Windows.Forms.ContextMenuStrip
-        Private _MenuTVSeasonList As System.Windows.Forms.ContextMenuStrip
-        Private _MenuTVShowList As System.Windows.Forms.ContextMenuStrip
-        Private _OpenImageViewer As OpenImageViewer
-        Private _TopMenu As System.Windows.Forms.MenuStrip
-        Private _TrayMenu As System.Windows.Forms.ContextMenuStrip
-        Private _MediaTabSelected As Structures.MainTabType
+        Private _ContextMenuMovieList As ContextMenuStrip
+        Private _ContextMenuMovieSetList As ContextMenuStrip
+        Private _ContextMenuTVEpisodeList As ContextMenuStrip
+        Private _ContextMenuTVSeasonList As ContextMenuStrip
+        Private _ContextMenuTVShowList As ContextMenuStrip
         Private _FilterMovies As String
         Private _FilterMoviesSearch As String
         Private _FilterMoviesType As String
         Private _FilterShows As String
         Private _FilterShowsSearch As String
         Private _FilterShowsType As String
-        Private _ListMovies As String
         Private _ListMovieSets As String
+        Private _ListMovies As String
         Private _ListShows As String
+        Private _LoadMedia As LoadMedia
+        Private _MainMenu As MenuStrip
+        Private _MainTabControl As TabControl
+        Private _MainToolStrip As ToolStrip
+        Private _MediaListMovieSets As DataGridView
+        Private _MediaListMovies As DataGridView
+        Private _MediaListTVEpisodes As DataGridView
+        Private _MediaListTVSeasons As DataGridView
+        Private _MediaListTVShows As DataGridView
+        Private _MediaTabSelected As Structures.MainTabType
+        Private _OpenImageViewer As OpenImageViewer
+        Private _TrayMenu As ContextMenuStrip
 
 
 #End Region 'Fields
@@ -2150,128 +2150,128 @@ Public Class ModulesManager
             End Set
         End Property
 
-        Public Property MainTool() As System.Windows.Forms.ToolStrip
+        Public Property MainToolStrip() As ToolStrip
             Get
-                Return _MainTool
+                Return _MainToolStrip
             End Get
-            Set(ByVal value As System.Windows.Forms.ToolStrip)
-                _MainTool = value
+            Set(ByVal value As ToolStrip)
+                _MainToolStrip = value
             End Set
         End Property
 
-        Public Property MediaListMovies() As System.Windows.Forms.DataGridView
+        Public Property MediaListMovies() As DataGridView
             Get
                 Return _MediaListMovies
             End Get
-            Set(ByVal value As System.Windows.Forms.DataGridView)
+            Set(ByVal value As DataGridView)
                 _MediaListMovies = value
             End Set
         End Property
 
-        Public Property MediaListMovieSets() As System.Windows.Forms.DataGridView
+        Public Property MediaListMovieSets() As DataGridView
             Get
                 Return _MediaListMovieSets
             End Get
-            Set(ByVal value As System.Windows.Forms.DataGridView)
+            Set(ByVal value As DataGridView)
                 _MediaListMovieSets = value
             End Set
         End Property
 
-        Public Property MediaListTVEpisodes() As System.Windows.Forms.DataGridView
+        Public Property MediaListTVEpisodes() As DataGridView
             Get
                 Return _MediaListTVEpisodes
             End Get
-            Set(ByVal value As System.Windows.Forms.DataGridView)
+            Set(ByVal value As DataGridView)
                 _MediaListTVEpisodes = value
             End Set
         End Property
 
-        Public Property MediaListTVSeasons() As System.Windows.Forms.DataGridView
+        Public Property MediaListTVSeasons() As DataGridView
             Get
                 Return _MediaListTVSeasons
             End Get
-            Set(ByVal value As System.Windows.Forms.DataGridView)
+            Set(ByVal value As DataGridView)
                 _MediaListTVSeasons = value
             End Set
         End Property
 
-        Public Property MediaListTVShows() As System.Windows.Forms.DataGridView
+        Public Property MediaListTVShows() As DataGridView
             Get
                 Return _MediaListTVShows
             End Get
-            Set(ByVal value As System.Windows.Forms.DataGridView)
+            Set(ByVal value As DataGridView)
                 _MediaListTVShows = value
             End Set
         End Property
 
-        Public Property MenuMovieList() As System.Windows.Forms.ContextMenuStrip
+        Public Property ContextMenuMovieList() As ContextMenuStrip
             Get
-                Return _MenuMovieList
+                Return _ContextMenuMovieList
             End Get
-            Set(ByVal value As System.Windows.Forms.ContextMenuStrip)
-                _MenuMovieList = value
+            Set(ByVal value As ContextMenuStrip)
+                _ContextMenuMovieList = value
             End Set
         End Property
 
-        Public Property MenuMovieSetList() As System.Windows.Forms.ContextMenuStrip
+        Public Property ContextMenuMovieSetList() As ContextMenuStrip
             Get
-                Return _MenuMovieSetList
+                Return _ContextMenuMovieSetList
             End Get
-            Set(ByVal value As System.Windows.Forms.ContextMenuStrip)
-                _MenuMovieSetList = value
+            Set(ByVal value As ContextMenuStrip)
+                _ContextMenuMovieSetList = value
             End Set
         End Property
 
-        Public Property MenuTVEpisodeList() As System.Windows.Forms.ContextMenuStrip
+        Public Property ContextMenuTVEpisodeList() As ContextMenuStrip
             Get
-                Return _MenuTVEpisodeList
+                Return _ContextMenuTVEpisodeList
             End Get
-            Set(ByVal value As System.Windows.Forms.ContextMenuStrip)
-                _MenuTVEpisodeList = value
+            Set(ByVal value As ContextMenuStrip)
+                _ContextMenuTVEpisodeList = value
             End Set
         End Property
 
-        Public Property MenuTVSeasonList() As System.Windows.Forms.ContextMenuStrip
+        Public Property ContextMenuTVSeasonList() As ContextMenuStrip
             Get
-                Return _MenuTVSeasonList
+                Return _ContextMenuTVSeasonList
             End Get
-            Set(ByVal value As System.Windows.Forms.ContextMenuStrip)
-                _MenuTVSeasonList = value
+            Set(ByVal value As ContextMenuStrip)
+                _ContextMenuTVSeasonList = value
             End Set
         End Property
 
-        Public Property MenuTVShowList() As System.Windows.Forms.ContextMenuStrip
+        Public Property ContextMenuTVShowList() As ContextMenuStrip
             Get
-                Return _MenuTVShowList
+                Return _ContextMenuTVShowList
             End Get
-            Set(ByVal value As System.Windows.Forms.ContextMenuStrip)
-                _MenuTVShowList = value
+            Set(ByVal value As ContextMenuStrip)
+                _ContextMenuTVShowList = value
             End Set
         End Property
 
-        Public Property TopMenu() As System.Windows.Forms.MenuStrip
+        Public Property MainMenu() As MenuStrip
             Get
-                Return _TopMenu
+                Return _MainMenu
             End Get
-            Set(ByVal value As System.Windows.Forms.MenuStrip)
-                _TopMenu = value
+            Set(ByVal value As MenuStrip)
+                _MainMenu = value
             End Set
         End Property
 
-        Public Property TrayMenu() As System.Windows.Forms.ContextMenuStrip
+        Public Property TrayMenu() As ContextMenuStrip
             Get
                 Return _TrayMenu
             End Get
-            Set(ByVal value As System.Windows.Forms.ContextMenuStrip)
+            Set(ByVal value As ContextMenuStrip)
                 _TrayMenu = value
             End Set
         End Property
 
-        Public Property MainTabControl() As System.Windows.Forms.TabControl
+        Public Property MainTabControl() As TabControl
             Get
                 Return _MainTabControl
             End Get
-            Set(ByVal value As System.Windows.Forms.TabControl)
+            Set(ByVal value As TabControl)
                 _MainTabControl = value
             End Set
         End Property

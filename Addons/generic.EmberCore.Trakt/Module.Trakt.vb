@@ -117,7 +117,7 @@ Public Class Trakt_Generic
         Dim tsi As New ToolStripMenuItem
 
         'mnuMainTools
-        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("mnuMainTools"), ToolStripMenuItem)
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.MainMenu.Items("mnuMainTools"), ToolStripMenuItem)
         RemoveToolsStripItem(tsi, mnuMainToolsTrakt)
 
         'cmnuTrayTools
@@ -131,7 +131,7 @@ Public Class Trakt_Generic
         'mnuMainTools menu
         mnuMainToolsTrakt.Image = New Bitmap(My.Resources.icon)
         mnuMainToolsTrakt.Text = Master.eLang.GetString(871, "Trakt.tv Manager")
-        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("mnuMainTools"), ToolStripMenuItem)
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.MainMenu.Items("mnuMainTools"), ToolStripMenuItem)
         AddToolsStripItem(tsi, mnuMainToolsTrakt)
 
         'cmnuTrayTools

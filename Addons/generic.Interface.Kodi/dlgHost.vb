@@ -19,7 +19,6 @@
 ' ################################################################################
 
 Imports EmberAPI
-Imports System.IO
 Imports NLog
 
 Public Class dlgHost

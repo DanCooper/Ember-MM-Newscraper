@@ -241,7 +241,7 @@ Public Class BulkRenamerModule
         Dim tsi As New ToolStripMenuItem
 
         'mnuMainTools menu
-        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("mnuMainTools"), ToolStripMenuItem)
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.MainMenu.Items("mnuMainTools"), ToolStripMenuItem)
         tsi.DropDownItems.Remove(mnuMainToolsRenamer)
 
         'cmnuTrayTools
@@ -262,26 +262,26 @@ Public Class BulkRenamerModule
     End Sub
 
     Public Sub RemoveToolsStripItem_Episodes(value As System.Windows.Forms.ToolStripItem)
-        If ModulesManager.Instance.RuntimeObjects.MenuTVEpisodeList.InvokeRequired Then
-            ModulesManager.Instance.RuntimeObjects.MenuTVEpisodeList.Invoke(New Delegate_RemoveToolsStripItem(AddressOf RemoveToolsStripItem_Episodes), New Object() {value})
+        If ModulesManager.Instance.RuntimeObjects.ContextMenuTVEpisodeList.InvokeRequired Then
+            ModulesManager.Instance.RuntimeObjects.ContextMenuTVEpisodeList.Invoke(New Delegate_RemoveToolsStripItem(AddressOf RemoveToolsStripItem_Episodes), New Object() {value})
         Else
-            ModulesManager.Instance.RuntimeObjects.MenuTVEpisodeList.Items.Remove(value)
+            ModulesManager.Instance.RuntimeObjects.ContextMenuTVEpisodeList.Items.Remove(value)
         End If
     End Sub
 
     Public Sub RemoveToolsStripItem_Movies(value As System.Windows.Forms.ToolStripItem)
-        If ModulesManager.Instance.RuntimeObjects.MenuMovieList.InvokeRequired Then
-            ModulesManager.Instance.RuntimeObjects.MenuMovieList.Invoke(New Delegate_RemoveToolsStripItem(AddressOf RemoveToolsStripItem_Movies), New Object() {value})
+        If ModulesManager.Instance.RuntimeObjects.ContextMenuMovieList.InvokeRequired Then
+            ModulesManager.Instance.RuntimeObjects.ContextMenuMovieList.Invoke(New Delegate_RemoveToolsStripItem(AddressOf RemoveToolsStripItem_Movies), New Object() {value})
         Else
-            ModulesManager.Instance.RuntimeObjects.MenuMovieList.Items.Remove(value)
+            ModulesManager.Instance.RuntimeObjects.ContextMenuMovieList.Items.Remove(value)
         End If
     End Sub
 
     Public Sub RemoveToolsStripItem_Shows(value As System.Windows.Forms.ToolStripItem)
-        If ModulesManager.Instance.RuntimeObjects.MenuTVShowList.InvokeRequired Then
-            ModulesManager.Instance.RuntimeObjects.MenuTVShowList.Invoke(New Delegate_RemoveToolsStripItem(AddressOf RemoveToolsStripItem_Shows), New Object() {value})
+        If ModulesManager.Instance.RuntimeObjects.ContextMenuTVShowList.InvokeRequired Then
+            ModulesManager.Instance.RuntimeObjects.ContextMenuTVShowList.Invoke(New Delegate_RemoveToolsStripItem(AddressOf RemoveToolsStripItem_Shows), New Object() {value})
         Else
-            ModulesManager.Instance.RuntimeObjects.MenuTVShowList.Items.Remove(value)
+            ModulesManager.Instance.RuntimeObjects.ContextMenuTVShowList.Items.Remove(value)
         End If
     End Sub
 
@@ -292,7 +292,7 @@ Public Class BulkRenamerModule
         mnuMainToolsRenamer.Image = New Bitmap(My.Resources.icon)
         mnuMainToolsRenamer.Text = Master.eLang.GetString(291, "Bulk &Renamer")
         mnuMainToolsRenamer.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfTabMovies = True, .ForTVShows = True, .IfTabTVShows = True}
-        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("mnuMainTools"), ToolStripMenuItem)
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.MainMenu.Items("mnuMainTools"), ToolStripMenuItem)
         AddToolsStripItem(tsi, mnuMainToolsRenamer)
 
         'cmnuTrayTools
@@ -347,26 +347,26 @@ Public Class BulkRenamerModule
     End Sub
 
     Public Sub SetToolsStripItem_Episodes(value As System.Windows.Forms.ToolStripItem)
-        If ModulesManager.Instance.RuntimeObjects.MenuTVEpisodeList.InvokeRequired Then
-            ModulesManager.Instance.RuntimeObjects.MenuTVEpisodeList.Invoke(New Delegate_SetToolsStripItem(AddressOf SetToolsStripItem_Episodes), New Object() {value})
+        If ModulesManager.Instance.RuntimeObjects.ContextMenuTVEpisodeList.InvokeRequired Then
+            ModulesManager.Instance.RuntimeObjects.ContextMenuTVEpisodeList.Invoke(New Delegate_SetToolsStripItem(AddressOf SetToolsStripItem_Episodes), New Object() {value})
         Else
-            ModulesManager.Instance.RuntimeObjects.MenuTVEpisodeList.Items.Add(value)
+            ModulesManager.Instance.RuntimeObjects.ContextMenuTVEpisodeList.Items.Add(value)
         End If
     End Sub
 
     Public Sub SetToolsStripItem_Movies(value As System.Windows.Forms.ToolStripItem)
-        If ModulesManager.Instance.RuntimeObjects.MenuMovieList.InvokeRequired Then
-            ModulesManager.Instance.RuntimeObjects.MenuMovieList.Invoke(New Delegate_SetToolsStripItem(AddressOf SetToolsStripItem_Movies), New Object() {value})
+        If ModulesManager.Instance.RuntimeObjects.ContextMenuMovieList.InvokeRequired Then
+            ModulesManager.Instance.RuntimeObjects.ContextMenuMovieList.Invoke(New Delegate_SetToolsStripItem(AddressOf SetToolsStripItem_Movies), New Object() {value})
         Else
-            ModulesManager.Instance.RuntimeObjects.MenuMovieList.Items.Add(value)
+            ModulesManager.Instance.RuntimeObjects.ContextMenuMovieList.Items.Add(value)
         End If
     End Sub
 
     Public Sub SetToolsStripItem_Shows(value As System.Windows.Forms.ToolStripItem)
-        If ModulesManager.Instance.RuntimeObjects.MenuTVShowList.InvokeRequired Then
-            ModulesManager.Instance.RuntimeObjects.MenuTVShowList.Invoke(New Delegate_SetToolsStripItem(AddressOf SetToolsStripItem_Shows), New Object() {value})
+        If ModulesManager.Instance.RuntimeObjects.ContextMenuTVShowList.InvokeRequired Then
+            ModulesManager.Instance.RuntimeObjects.ContextMenuTVShowList.Invoke(New Delegate_SetToolsStripItem(AddressOf SetToolsStripItem_Shows), New Object() {value})
         Else
-            ModulesManager.Instance.RuntimeObjects.MenuTVShowList.Items.Add(value)
+            ModulesManager.Instance.RuntimeObjects.ContextMenuTVShowList.Items.Add(value)
         End If
     End Sub
 
