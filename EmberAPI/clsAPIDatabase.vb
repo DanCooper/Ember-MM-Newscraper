@@ -4043,7 +4043,7 @@ Public Class Database
         End Using
         If Not Batchmode Then SQLtransaction.Commit()
 
-        Dim params As New List(Of Object)(New Object() {False, False, False, True, _episode.Source})
+        Dim params As New List(Of Object)(New Object() {False, False, False, True, _episode.Source.ID})
         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterUpdateDB_TV, params, Nothing)
     End Sub
     ''' <summary>
