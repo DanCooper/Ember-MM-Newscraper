@@ -1036,19 +1036,19 @@ Namespace Kodi
 
 
                     'string or null/nothing
-                    Dim mBanner As String = If(Not String.IsNullOrEmpty(uMovie.ImagesContainer.Banner.LocalFilePath),
+                    Dim mBanner As String = If(uMovie.ImagesContainer.Banner.LocalFilePathSpecified,
                                                   GetRemotePath(uMovie.ImagesContainer.Banner.LocalFilePath), Nothing)
-                    Dim mClearArt As String = If(Not String.IsNullOrEmpty(uMovie.ImagesContainer.ClearArt.LocalFilePath),
+                    Dim mClearArt As String = If(uMovie.ImagesContainer.ClearArt.LocalFilePathSpecified,
                                                   GetRemotePath(uMovie.ImagesContainer.ClearArt.LocalFilePath), Nothing)
-                    Dim mClearLogo As String = If(Not String.IsNullOrEmpty(uMovie.ImagesContainer.ClearLogo.LocalFilePath),
+                    Dim mClearLogo As String = If(uMovie.ImagesContainer.ClearLogo.LocalFilePathSpecified,
                                                   GetRemotePath(uMovie.ImagesContainer.ClearLogo.LocalFilePath), Nothing)
-                    Dim mDiscArt As String = If(Not String.IsNullOrEmpty(uMovie.ImagesContainer.DiscArt.LocalFilePath),
+                    Dim mDiscArt As String = If(uMovie.ImagesContainer.DiscArt.LocalFilePathSpecified,
                                                   GetRemotePath(uMovie.ImagesContainer.DiscArt.LocalFilePath), Nothing)
-                    Dim mFanart As String = If(Not String.IsNullOrEmpty(uMovie.ImagesContainer.Fanart.LocalFilePath),
+                    Dim mFanart As String = If(uMovie.ImagesContainer.Fanart.LocalFilePathSpecified,
                                                  GetRemotePath(uMovie.ImagesContainer.Fanart.LocalFilePath), Nothing)
-                    Dim mLandscape As String = If(Not String.IsNullOrEmpty(uMovie.ImagesContainer.Landscape.LocalFilePath),
+                    Dim mLandscape As String = If(uMovie.ImagesContainer.Landscape.LocalFilePathSpecified,
                                                   GetRemotePath(uMovie.ImagesContainer.Landscape.LocalFilePath), Nothing)
-                    Dim mPoster As String = If(Not String.IsNullOrEmpty(uMovie.ImagesContainer.Poster.LocalFilePath),
+                    Dim mPoster As String = If(uMovie.ImagesContainer.Poster.LocalFilePathSpecified,
                                                   GetRemotePath(uMovie.ImagesContainer.Poster.LocalFilePath), Nothing)
 
                     'all image paths will be set in artwork object
@@ -1166,19 +1166,19 @@ Namespace Kodi
                     Dim mTitle As String = uMovieset.MovieSet.Title
 
                     'string or null/nothing
-                    Dim mBanner As String = If(Not String.IsNullOrEmpty(uMovieset.ImagesContainer.Banner.LocalFilePath),
+                    Dim mBanner As String = If(uMovieset.ImagesContainer.Banner.LocalFilePathSpecified,
                                                   GetRemotePath_MovieSet(uMovieset.ImagesContainer.Banner.LocalFilePath), Nothing)
-                    Dim mClearArt As String = If(Not String.IsNullOrEmpty(uMovieset.ImagesContainer.ClearArt.LocalFilePath),
+                    Dim mClearArt As String = If(uMovieset.ImagesContainer.ClearArt.LocalFilePathSpecified,
                                                   GetRemotePath_MovieSet(uMovieset.ImagesContainer.ClearArt.LocalFilePath), Nothing)
-                    Dim mClearLogo As String = If(Not String.IsNullOrEmpty(uMovieset.ImagesContainer.ClearLogo.LocalFilePath),
+                    Dim mClearLogo As String = If(uMovieset.ImagesContainer.ClearLogo.LocalFilePathSpecified,
                                                   GetRemotePath_MovieSet(uMovieset.ImagesContainer.ClearLogo.LocalFilePath), Nothing)
-                    Dim mDiscArt As String = If(Not String.IsNullOrEmpty(uMovieset.ImagesContainer.DiscArt.LocalFilePath),
+                    Dim mDiscArt As String = If(uMovieset.ImagesContainer.DiscArt.LocalFilePathSpecified,
                                                   GetRemotePath_MovieSet(uMovieset.ImagesContainer.DiscArt.LocalFilePath), Nothing)
-                    Dim mFanart As String = If(Not String.IsNullOrEmpty(uMovieset.ImagesContainer.Fanart.LocalFilePath),
+                    Dim mFanart As String = If(uMovieset.ImagesContainer.Fanart.LocalFilePathSpecified,
                                                  GetRemotePath_MovieSet(uMovieset.ImagesContainer.Fanart.LocalFilePath), Nothing)
-                    Dim mLandscape As String = If(Not String.IsNullOrEmpty(uMovieset.ImagesContainer.Landscape.LocalFilePath),
+                    Dim mLandscape As String = If(uMovieset.ImagesContainer.Landscape.LocalFilePathSpecified,
                                                   GetRemotePath_MovieSet(uMovieset.ImagesContainer.Landscape.LocalFilePath), Nothing)
-                    Dim mPoster As String = If(Not String.IsNullOrEmpty(uMovieset.ImagesContainer.Poster.LocalFilePath),
+                    Dim mPoster As String = If(uMovieset.ImagesContainer.Poster.LocalFilePathSpecified,
                                                   GetRemotePath_MovieSet(uMovieset.ImagesContainer.Poster.LocalFilePath), Nothing)
 
                     'all image paths will be set in artwork object
@@ -1309,12 +1309,16 @@ Namespace Kodi
                     'Writers (Credits)
                     Dim mWriterList As List(Of String) = If(uEpisode.TVEpisode.CreditsSpecified, uEpisode.TVEpisode.Credits, New List(Of String))
 
+                    'string or null/nothing
+                    Dim mFanart As String = If(uEpisode.ImagesContainer.Fanart.LocalFilePathSpecified,
+                                                 GetRemotePath(uEpisode.ImagesContainer.Fanart.LocalFilePath), Nothing)
+                    Dim mPoster As String = If(uEpisode.ImagesContainer.Poster.LocalFilePathSpecified,
+                                                  GetRemotePath(uEpisode.ImagesContainer.Poster.LocalFilePath), Nothing)
+
                     'all image paths will be set in artwork object
                     Dim artwork As New Media.Artwork.Set
-                    artwork.fanart = If(Not String.IsNullOrEmpty(uEpisode.ImagesContainer.Fanart.LocalFilePath),
-                                                  GetRemotePath(uEpisode.ImagesContainer.Fanart.LocalFilePath), Nothing)
-                    artwork.poster = If(Not String.IsNullOrEmpty(uEpisode.ImagesContainer.Poster.LocalFilePath),
-                                                  GetRemotePath(uEpisode.ImagesContainer.Poster.LocalFilePath), Nothing)
+                    artwork.fanart = mFanart
+                    artwork.poster = mPoster
                     'artwork.thumb = mPoster ' not supported in Ember?!
 
                     Dim response = Await _kodi.VideoLibrary.SetEpisodeDetails(KodiElement.episodeid,
@@ -1405,13 +1409,13 @@ Namespace Kodi
 
                 If KodiElement IsNot Nothing Then
                     'string or null/nothing
-                    Dim mBanner As String = If(Not String.IsNullOrEmpty(uSeason.ImagesContainer.Banner.LocalFilePath),
+                    Dim mBanner As String = If(uSeason.ImagesContainer.Banner.LocalFilePathSpecified,
                                                   GetRemotePath(uSeason.ImagesContainer.Banner.LocalFilePath), Nothing)
-                    Dim mFanart As String = If(Not String.IsNullOrEmpty(uSeason.ImagesContainer.Fanart.LocalFilePath),
+                    Dim mFanart As String = If(uSeason.ImagesContainer.Fanart.LocalFilePathSpecified,
                                                  GetRemotePath(uSeason.ImagesContainer.Fanart.LocalFilePath), Nothing)
-                    Dim mLandscape As String = If(Not String.IsNullOrEmpty(uSeason.ImagesContainer.Landscape.LocalFilePath),
+                    Dim mLandscape As String = If(uSeason.ImagesContainer.Landscape.LocalFilePathSpecified,
                                                   GetRemotePath(uSeason.ImagesContainer.Landscape.LocalFilePath), Nothing)
-                    Dim mPoster As String = If(Not String.IsNullOrEmpty(uSeason.ImagesContainer.Poster.LocalFilePath),
+                    Dim mPoster As String = If(uSeason.ImagesContainer.Poster.LocalFilePathSpecified,
                                                   GetRemotePath(uSeason.ImagesContainer.Poster.LocalFilePath), Nothing)
 
                     'all image paths will be set in artwork object
@@ -1526,19 +1530,19 @@ Namespace Kodi
                     Dim mTagList As List(Of String) = If(uTVShow.TVShow.Tags.Count > 0, uTVShow.TVShow.Tags, New List(Of String))
 
                     'string or null/nothing
-                    Dim mBanner As String = If(Not String.IsNullOrEmpty(uTVShow.ImagesContainer.Banner.LocalFilePath),
+                    Dim mBanner As String = If(uTVShow.ImagesContainer.Banner.LocalFilePathSpecified,
                                                   GetRemotePath(uTVShow.ImagesContainer.Banner.LocalFilePath), Nothing)
-                    Dim mCharacterArt As String = If(Not String.IsNullOrEmpty(uTVShow.ImagesContainer.CharacterArt.LocalFilePath),
+                    Dim mCharacterArt As String = If(uTVShow.ImagesContainer.CharacterArt.LocalFilePathSpecified,
                                                GetRemotePath(uTVShow.ImagesContainer.CharacterArt.LocalFilePath), Nothing)
-                    Dim mClearArt As String = If(Not String.IsNullOrEmpty(uTVShow.ImagesContainer.ClearArt.LocalFilePath),
+                    Dim mClearArt As String = If(uTVShow.ImagesContainer.ClearArt.LocalFilePathSpecified,
                                                 GetRemotePath(uTVShow.ImagesContainer.ClearArt.LocalFilePath), Nothing)
-                    Dim mClearLogo As String = If(Not String.IsNullOrEmpty(uTVShow.ImagesContainer.ClearLogo.LocalFilePath),
+                    Dim mClearLogo As String = If(uTVShow.ImagesContainer.ClearLogo.LocalFilePathSpecified,
                                                 GetRemotePath(uTVShow.ImagesContainer.ClearLogo.LocalFilePath), Nothing)
-                    Dim mFanart As String = If(Not String.IsNullOrEmpty(uTVShow.ImagesContainer.Fanart.LocalFilePath),
+                    Dim mFanart As String = If(uTVShow.ImagesContainer.Fanart.LocalFilePathSpecified,
                                                GetRemotePath(uTVShow.ImagesContainer.Fanart.LocalFilePath), Nothing)
-                    Dim mLandscape As String = If(Not String.IsNullOrEmpty(uTVShow.ImagesContainer.Landscape.LocalFilePath),
+                    Dim mLandscape As String = If(uTVShow.ImagesContainer.Landscape.LocalFilePathSpecified,
                                               GetRemotePath(uTVShow.ImagesContainer.Landscape.LocalFilePath), Nothing)
-                    Dim mPoster As String = If(Not String.IsNullOrEmpty(uTVShow.ImagesContainer.Poster.LocalFilePath),
+                    Dim mPoster As String = If(uTVShow.ImagesContainer.Poster.LocalFilePathSpecified,
                                                  GetRemotePath(uTVShow.ImagesContainer.Poster.LocalFilePath), Nothing)
                     'TODO Missing Artwork:
                     'Dim mExtraThumbs As String = If(Not String.IsNullOrEmpty(uTVShow.ShowEThumbsPath), _
