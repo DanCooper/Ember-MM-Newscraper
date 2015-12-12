@@ -1008,7 +1008,10 @@ Namespace Kodi
                     'integer or 0
                     Dim mPlaycount As Integer = If(uMovie.Movie.PlayCountSpecified, uMovie.Movie.PlayCount, 0)
                     Dim mRating As Double = If(uMovie.Movie.RatingSpecified, CType(Double.Parse(uMovie.Movie.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture), Double), 0)
-                    Dim mRuntime As Integer = If(uMovie.Movie.RuntimeSpecified, CType(uMovie.Movie.Runtime, Integer), 0) * 60 'API requires runtime in seconds
+                    Dim mRuntime As Integer = 0
+                    If uMovie.Movie.RuntimeSpecified AndAlso Integer.TryParse(uMovie.Movie.Runtime, 0) Then
+                        mRuntime = CType(uMovie.Movie.Runtime, Integer) * 60 'API requires runtime in seconds
+                    End If
                     Dim mTop250 As Integer = If(uMovie.Movie.Top250Specified, CType(uMovie.Movie.Top250, Integer), 0)
                     Dim mYear As Integer = If(uMovie.Movie.YearSpecified, CType(uMovie.Movie.Year, Integer), 0)
 
@@ -1294,7 +1297,10 @@ Namespace Kodi
                     'integer or 0
                     Dim mPlaycount As Integer = If(uEpisode.TVEpisode.PlaycountSpecified, CType(uEpisode.TVEpisode.Playcount, Integer), 0)
                     Dim mRating As Double = If(uEpisode.TVEpisode.RatingSpecified, CType(Double.Parse(uEpisode.TVEpisode.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture), Double), 0)
-                    Dim mRuntime As Integer = If(uEpisode.TVEpisode.RuntimeSpecified, CType(uEpisode.TVEpisode.Runtime, Integer), 0) * 60 'API requires runtime in seconds
+                    Dim mRuntime As Integer = 0
+                    If uEpisode.TVEpisode.RuntimeSpecified AndAlso Integer.TryParse(uEpisode.TVEpisode.Runtime, 0) Then
+                        mRuntime = CType(uEpisode.TVEpisode.Runtime, Integer) * 60 'API requires runtime in seconds
+                    End If
 
                     'arrays
                     'Directors
