@@ -259,7 +259,7 @@ Public Class KodiInterface
                                         If Await Task.Run(Function() _APIKodi.UpdateInfo_Movie(mDBElement.ID, _SpecialSettings.SendNotifications, _SpecialSettings.SyncPlayCounts AndAlso _SpecialSettings.SyncPlayCountsHost = tHost.Label, GenericSubEventProgressAsync, GenericEventProcess)) Then
                                             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.Movie.Title), New Bitmap(My.Resources.logo)}))
                                         Else
-                                            logger.Warn(String.Concat("[KodiInterface] [", mHost.Label, "] RunGeneric Movie Update | Sync Failed:  ", mDBElement.Movie.Title))
+                                            logger.Warn(String.Concat("[KodiInterface] [", tHost.Label, "] RunGeneric Movie Update | Sync Failed:  ", mDBElement.Movie.Title))
                                             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", mDBElement.Movie.Title), Nothing}))
                                             getError = True
                                         End If
@@ -318,7 +318,7 @@ Public Class KodiInterface
                                     If Await Task.Run(Function() _APIKodi.UpdateInfo_MovieSet(mDBElement.ID, _SpecialSettings.SendNotifications)) Then
                                         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MovieSet.Title), New Bitmap(My.Resources.logo)}))
                                     Else
-                                        logger.Warn(String.Concat("[KodiInterface] [", mHost.Label, "] RunGeneric MovieSet Update | Sync Failed:  ", mDBElement.MovieSet.Title))
+                                        logger.Warn(String.Concat("[KodiInterface] [", tHost.Label, "] RunGeneric MovieSet Update | Sync Failed:  ", mDBElement.MovieSet.Title))
                                         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", mDBElement.MovieSet.Title), Nothing}))
                                         getError = True
                                     End If
@@ -370,7 +370,7 @@ Public Class KodiInterface
                                         If Await Task.Run(Function() _APIKodi.UpdateInfo_TVEpisode(mDBElement.ID, _SpecialSettings.SendNotifications, _SpecialSettings.SyncPlayCounts AndAlso _SpecialSettings.SyncPlayCountsHost = tHost.Label, GenericSubEventProgressAsync, GenericEventProcess)) Then
                                             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.TVEpisode.Title), New Bitmap(My.Resources.logo)}))
                                         Else
-                                            logger.Warn(String.Concat("[KodiInterface] [", mHost.Label, "] RunGeneric TV Episode Update | Sync Failed:  ", mDBElement.TVEpisode.Title))
+                                            logger.Warn(String.Concat("[KodiInterface] [", tHost.Label, "] RunGeneric TV Episode Update | Sync Failed:  ", mDBElement.TVEpisode.Title))
                                             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", mDBElement.TVEpisode.Title), Nothing}))
                                             getError = True
                                         End If
@@ -484,7 +484,7 @@ Public Class KodiInterface
                                         If Await Task.Run(Function() _APIKodi.UpdateInfo_TVShow(mDBElement.ShowID, _SpecialSettings.SendNotifications)) Then
                                             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.TVShow.Title), New Bitmap(My.Resources.logo)}))
                                         Else
-                                            logger.Warn(String.Concat("[KodiInterface] [", mHost.Label, "] RunGeneric TV Show Update | Sync Failed:  ", mDBElement.TVShow.Title))
+                                            logger.Warn(String.Concat("[KodiInterface] [", tHost.Label, "] RunGeneric TV Show Update | Sync Failed:  ", mDBElement.TVShow.Title))
                                             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", mDBElement.TVShow.Title), Nothing}))
                                             getError = True
                                         End If
