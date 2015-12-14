@@ -1,15 +1,14 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json.Linq;
-using System.Runtime.Serialization;
+using Newtonsoft.Json;
+
 namespace XBMCRPC.List.Filter
 {
-   public enum Operators
+    [JsonConverter(typeof(OperatorEnumConverter))]
+    public enum Operators
    {
        contains,
        doesnotcontain,
-       [global::System.Runtime.Serialization.EnumMember(Value="is")]
        Is,
        isnot,
        startswith,
@@ -20,10 +19,32 @@ namespace XBMCRPC.List.Filter
        before,
        inthelast,
        notinthelast,
-       [global::System.Runtime.Serialization.EnumMember(Value="true")]
        True,
-       [global::System.Runtime.Serialization.EnumMember(Value="false")]
        False,
        between,
    }
+}
+
+public class OperatorEnumConverter : JsonConverter
+{
+    public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+    {
+        XBMCRPC.List.Filter.Operators op = (XBMCRPC.List.Filter.Operators)value;
+        writer.WriteValue(op.ToString().ToLower());
+    }
+    public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+    {
+        var values = Enum.GetNames(typeof(XBMCRPC.List.Filter.Operators));
+        var enumValue = values.FirstOrDefault(v => v.ToLower().Equals(reader.Value.ToString()));
+        XBMCRPC.List.Filter.Operators op;
+        if (Enum.TryParse(enumValue, out op))
+        {
+            return op;
+        }
+        return null;
+    }
+    public override bool CanConvert(Type objectType)
+    {
+        return objectType == typeof(string);
+    }
 }
