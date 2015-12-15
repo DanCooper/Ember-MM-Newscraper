@@ -2018,7 +2018,7 @@ Public Class frmMain
         Dim Cancelled As Boolean = False
         Dim DBScrapeMovie As New Database.DBElement(Enums.ContentType.Movie)
 
-        logger.Trace("Starting MOVIE scrape")
+        logger.Trace(String.Format("[Movie Scraper] [Start] Movies Count [{0}]", Args.ScrapeList.Count.ToString))
 
         For Each tScrapeItem As ScrapeItem In Args.ScrapeList
             Dim Theme As New MediaContainers.Theme
@@ -2036,7 +2036,7 @@ Public Class frmMain
 
             dScrapeRow = tScrapeItem.DataRow
 
-            logger.Trace(String.Concat("Start scraping: ", OldListTitle))
+            logger.Trace(String.Format("[Movie Scraper] [Start] Scraping {0}", OldListTitle))
 
             DBScrapeMovie = Master.DB.LoadMovieFromDB(Convert.ToInt64(tScrapeItem.DataRow.Item("idMovie")))
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, Nothing, False, DBScrapeMovie)
@@ -2044,9 +2044,9 @@ Public Class frmMain
             If tScrapeItem.ScrapeModifier.MainNFO Then
                 bwMovieScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(253, "Scraping Data"), ":"))
                 If ModulesManager.Instance.ScrapeData_Movie(DBScrapeMovie, tScrapeItem.ScrapeModifier, Args.ScrapeType, Args.ScrapeOptions, Args.ScrapeList.Count = 1) Then
+                    logger.Trace(String.Format("[Movie Scraper] [Cancelled] Scraping {0}", OldListTitle))
                     Cancelled = True
                     If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
-                        logger.Trace(String.Concat("Canceled scraping: ", OldListTitle))
                         bwMovieScraper.CancelAsync()
                     End If
                 End If
@@ -2059,9 +2059,9 @@ Public Class frmMain
                     Dim tModifier As New Structures.ScrapeModifier With {.MainNFO = True}
                     Dim tOptions As New Structures.ScrapeOptions 'set all values to false to not override any field. ID's are always determined.
                     If ModulesManager.Instance.ScrapeData_Movie(DBScrapeMovie, tModifier, Args.ScrapeType, tOptions, Args.ScrapeList.Count = 1) Then
+                        logger.Trace(String.Format("[Movie Scraper] [Cancelled] Scraping {0}", OldListTitle))
                         Cancelled = True
                         If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
-                            logger.Trace(String.Concat("Canceled scraping: ", OldListTitle))
                             bwMovieScraper.CancelAsync()
                         End If
                     End If
@@ -2179,14 +2179,14 @@ Public Class frmMain
                     bwMovieScraper.ReportProgress(-2, DBScrapeMovie.ID)
                     bwMovieScraper.ReportProgress(-1, If(Not OldListTitle = NewListTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle), NewListTitle))
                 End If
-                logger.Trace(String.Concat("Ended scraping: ", OldListTitle))
+                logger.Trace(String.Format("[Movie Scraper] [Done] Scraping {0}", OldListTitle))
             Else
-                logger.Trace(String.Concat("Canceled scraping: ", OldListTitle))
+                logger.Trace(String.Format("[Movie Scraper] [Cancelled] Scraping {0}", OldListTitle))
             End If
         Next
 
         e.Result = New Results With {.DBElement = DBScrapeMovie, .ScrapeType = Args.ScrapeType, .Cancelled = bwMovieScraper.CancellationPending}
-        logger.Trace("Ended MOVIE scrape")
+        logger.Trace(String.Format("[Movie Scraper] [Done] Scraping"))
     End Sub
 
     Private Sub bwMovieScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwMovieScraper.ProgressChanged
@@ -2242,7 +2242,7 @@ Public Class frmMain
         Dim DBScrapeMovieSet As New Database.DBElement(Enums.ContentType.MovieSet)
         Dim cloneMovieSet As New Database.DBElement(Enums.ContentType.MovieSet)
 
-        logger.Trace("Starting MOVIE SET scrape")
+        logger.Trace(String.Format("[MovieSet Scraper] [Start] MovieSets Count [{0}]", Args.ScrapeList.Count.ToString))
 
         For Each tScrapeItem As ScrapeItem In Args.ScrapeList
             Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -2256,6 +2256,8 @@ Public Class frmMain
             Dim etList As New List(Of String)
             Dim tURL As String = String.Empty
 
+            Cancelled = False
+
             If bwMovieSetScraper.CancellationPending Then Exit For
             OldListTitle = tScrapeItem.DataRow.Item("ListTitle").ToString
             OldTitle = tScrapeItem.DataRow.Item("SetName").ToString
@@ -2263,6 +2265,8 @@ Public Class frmMain
             bwMovieSetScraper.ReportProgress(1, OldListTitle)
 
             dScrapeRow = tScrapeItem.DataRow
+
+            logger.Trace(String.Format("[MovieSet Scraper] [Start] Scraping {0}", OldListTitle))
 
             DBScrapeMovieSet = Master.DB.LoadMovieSetFromDB(Convert.ToInt64(tScrapeItem.DataRow.Item("idSet")))
 
@@ -2282,9 +2286,9 @@ Public Class frmMain
             If tScrapeItem.ScrapeModifier.MainNFO Then
                 bwMovieSetScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(253, "Scraping Data"), ":"))
                 If ModulesManager.Instance.ScrapeData_MovieSet(DBScrapeMovieSet, tScrapeItem.ScrapeModifier, Args.ScrapeType, Args.ScrapeOptions, Args.ScrapeList.Count = 1) Then
+                    logger.Trace(String.Format("[MovieSet Scraper] [Cancelled] Scraping {0}", OldListTitle))
                     Cancelled = True
                     If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
-                        logger.Trace(String.Concat("Canceled scraping: ", OldListTitle))
                         bwMovieSetScraper.CancelAsync()
                     End If
                 End If
@@ -2296,6 +2300,7 @@ Public Class frmMain
                                                                          tScrapeItem.ScrapeModifier.MainPoster) Then
                     Dim tOpt As New Structures.ScrapeOptions 'all false value not to override any field
                     If ModulesManager.Instance.ScrapeData_MovieSet(DBScrapeMovieSet, tScrapeItem.ScrapeModifier, Args.ScrapeType, tOpt, Args.ScrapeList.Count = 1) Then
+                        logger.Trace(String.Format("[MovieSet Scraper] [Cancelled] Scraping {0}", OldListTitle))
                         Exit For
                     End If
                 End If
@@ -2395,11 +2400,14 @@ Public Class frmMain
                     bwMovieSetScraper.ReportProgress(-2, DBScrapeMovieSet.ID)
                     bwMovieSetScraper.ReportProgress(-1, If(Not OldListTitle = NewListTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle), NewListTitle))
                 End If
+                logger.Trace(String.Format("[MovieSet Scraper] [Done] Scraping {0}", OldListTitle))
+            Else
+                logger.Trace(String.Format("[MovieSet Scraper] [Cancelled] Scraping {0}", OldListTitle))
             End If
         Next
 
         e.Result = New Results With {.DBElement = DBScrapeMovieSet, .ScrapeType = Args.ScrapeType, .Cancelled = bwMovieSetScraper.CancellationPending}
-        logger.Trace("Ended MOVIESET scrape")
+        logger.Trace(String.Format("[MovieSet Scraper] [Done] Scraping"))
     End Sub
 
     Private Sub bwMovieSetScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwMovieSetScraper.ProgressChanged
