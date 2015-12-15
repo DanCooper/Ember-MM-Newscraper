@@ -3702,6 +3702,14 @@ Public Class Database
                                     parMoviesSets_SetOrder.Value = s.Order
                                     SQLcommandMoviesSets.ExecuteNonQuery()
                                 End Using
+
+                                'update existing set with latest TMDB Collection ID
+                                Using SQLcommandSets As SQLiteCommand = _myvideosDBConn.CreateCommand()
+                                    SQLcommandSets.CommandText = String.Format("UPDATE sets SET TMDBColID=? WHERE idSet={0}", s.ID)
+                                    Dim parSets_TMDBColID As SQLite.SQLiteParameter = SQLcommandSets.Parameters.Add("parSets_TMDBColID", DbType.String, 0, "strThumb")
+                                    parSets_TMDBColID.Value = s.TMDBColID
+                                    SQLcommandSets.ExecuteNonQuery()
+                                End Using
                             Else
                                 'create new Set
                                 Using SQLcommandSets As SQLiteCommand = _myvideosDBConn.CreateCommand()
