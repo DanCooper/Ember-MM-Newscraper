@@ -505,8 +505,15 @@ Public Class Images
     Public Shared Function SaveMovieExtrafanarts(ByVal mMovie As Database.DBElement) As String
         Dim efPath As String = String.Empty
 
+        'First, (Down)Load all Extrafanarts from LocalFilePath or URL
+        For Each eImg As MediaContainers.Image In mMovie.ImagesContainer.Extrafanarts
+            eImg.LoadAndCache(mMovie.ContentType, True)
+        Next
+
+        'Secound, remove the old ones
         Images.Delete_Movie(mMovie, Enums.ModifierType.MainExtrafanarts)
 
+        'Thirdly, save all Extrafanarts
         For Each eImg As MediaContainers.Image In mMovie.ImagesContainer.Extrafanarts
             If eImg.LoadAndCache(mMovie.ContentType, True) Then
                 efPath = eImg.ImageOriginal.SaveAsMovieExtrafanart(mMovie, If(Not String.IsNullOrEmpty(eImg.URLOriginal), Path.GetFileName(eImg.URLOriginal), Path.GetFileName(eImg.LocalFilePath)))
@@ -575,8 +582,15 @@ Public Class Images
     Public Shared Function SaveMovieExtrathumbs(ByVal mMovie As Database.DBElement) As String
         Dim etPath As String = String.Empty
 
+        'First, (Down)Load all Extrathumbs from LocalFilePath or URL
+        For Each eImg As MediaContainers.Image In mMovie.ImagesContainer.Extrathumbs
+            eImg.LoadAndCache(mMovie.ContentType, True)
+        Next
+
+        'Secound, remove the old ones
         Images.Delete_Movie(mMovie, Enums.ModifierType.MainExtrathumbs)
 
+        'Thirdly, save all Extrathumbs
         For Each eImg As MediaContainers.Image In mMovie.ImagesContainer.Extrathumbs.OrderBy(Function(f) f.Index)
             If eImg.LoadAndCache(mMovie.ContentType, True) Then
                 etPath = eImg.ImageOriginal.SaveAsMovieExtrathumb(mMovie)
@@ -1353,8 +1367,15 @@ Public Class Images
         Dim iMod As Integer = 0
         Dim iVal As Integer = 1
 
+        'First, (Down)Load all Extrafanarts from LocalFilePath or URL
+        For Each eImg As MediaContainers.Image In mShow.ImagesContainer.Extrafanarts
+            eImg.LoadAndCache(mShow.ContentType, True)
+        Next
+
+        'Secound, remove the old ones
         Images.Delete_TVShow(mShow, Enums.ModifierType.MainExtrafanarts)
 
+        'Thirdly, save all Extrafanarts
         For Each eImg As MediaContainers.Image In mShow.ImagesContainer.Extrafanarts
             If eImg.LoadAndCache(mShow.ContentType, True) Then
                 efPath = eImg.ImageOriginal.SaveAsTVShowExtrafanart(mShow, If(Not String.IsNullOrEmpty(eImg.URLOriginal), Path.GetFileName(eImg.URLOriginal), Path.GetFileName(eImg.LocalFilePath)))
