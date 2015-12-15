@@ -1085,6 +1085,7 @@ Public Class ModulesManager
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
     Public Function ScrapeData_Movie(ByRef DBMovie As Database.DBElement, ByRef ScrapeModifier As Structures.ScrapeModifier, ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal showMessage As Boolean) As Boolean
+        logger.Trace(String.Concat("[ScrapeData_Movie] [Start] ", DBMovie.Filename))
         If DBMovie.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBMovie, showMessage) Then
             Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_Movie) = externalScrapersModules_Data_Movie.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.ModuleResult_Data_Movie
@@ -1129,10 +1130,10 @@ Public Class ModulesManager
             Dim oDBMovie As Database.DBElement = CType(DBMovie.CloneDeep, Database.DBElement)
 
             If (modules.Count() <= 0) Then
-                logger.Warn("No movie scrapers are defined")
+                logger.Warn("[ScrapeData_Movie] [Abort] No scrapers enabled")
             Else
                 For Each _externalScraperModule As _externalScraperModuleClass_Data_Movie In modules
-                    logger.Trace("Scraping movie data using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
+                    logger.Trace("[ScrapeData_Movie] [Using] <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
                     AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie
 
                     ret = _externalScraperModule.ProcessorModule.Scraper_Movie(oDBMovie, ScrapeModifier, ScrapeType, ScrapeOptions)
@@ -1146,7 +1147,10 @@ Public Class ModulesManager
                     If ret.breakChain Then Exit For
                 Next
 
-                If ScrapedList.Count = 0 Then Return True 'Cancelled
+                If ScrapedList.Count = 0 Then
+                    logger.Trace(String.Concat("[ScrapeData_Movie] [Cancelled] [No Scraper Results]", DBMovie.Filename))
+                    Return True 'Cancelled
+                End If
 
                 'Merge scraperresults considering global datascraper settings
                 DBMovie = NFO.MergeDataScraperResults_Movie(DBMovie, ScrapedList, ScrapeType, ScrapeOptions)
@@ -1154,8 +1158,10 @@ Public Class ModulesManager
                 'create cache paths for Actor Thumbs
                 DBMovie.Movie.CreateCachePaths_ActorsThumbs()
             End If
+            logger.Trace(String.Concat("[ScrapeData_Movie] [Done] ", DBMovie.Filename))
             Return ret.Cancelled
         Else
+            logger.Trace(String.Concat("[ScrapeData_Movie] [Abort] [Offline] ", DBMovie.Filename))
             Return True 'Cancelled
         End If
     End Function
@@ -1168,6 +1174,7 @@ Public Class ModulesManager
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie set scrapers are enabled, a silent warning is generated.</remarks>
     Public Function ScrapeData_MovieSet(ByRef DBMovieSet As Database.DBElement, ByRef ScrapeModifier As Structures.ScrapeModifier, ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal showMessage As Boolean) As Boolean
+        logger.Trace(String.Concat("[ScrapeData_MovieSet] [Start] ", DBMovieSet.MovieSet.Title))
         'If DBMovieSet.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_MovieSet(DBMovieSet, showMessage) Then
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_MovieSet) = externalScrapersModules_Data_MovieSet.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
         Dim ret As Interfaces.ModuleResult_Data_MovieSet
@@ -1191,15 +1198,18 @@ Public Class ModulesManager
         Dim oDBMovieSet As Database.DBElement = CType(DBMovieSet.CloneDeep, Database.DBElement)
 
         If (modules.Count() <= 0) Then
-            logger.Warn("No movieset scrapers are defined")
+            logger.Warn("[ScrapeData_MovieSet] [Abort] No scrapers enabled")
         Else
             For Each _externalScraperModule As _externalScraperModuleClass_Data_MovieSet In modules
-                logger.Trace("Scraping movieset data using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
+                logger.Trace("[ScrapeData_MovieSet] [Using] <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
                 AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_MovieSet
 
                 ret = _externalScraperModule.ProcessorModule.Scraper(oDBMovieSet, ScrapeModifier, ScrapeType, ScrapeOptions)
 
-                If ret.Cancelled Then Return ret.Cancelled
+                If ret.Cancelled Then
+                    logger.Trace(String.Concat("[ScrapeData_MovieSet] [Cancelled] [No Scraper Results]", DBMovieSet.MovieSet.Title))
+                    Return ret.Cancelled
+                End If
 
                 If ret.Result IsNot Nothing Then
                     ScrapedList.Add(ret.Result)
@@ -1213,6 +1223,7 @@ Public Class ModulesManager
             'Merge scraperresults considering global datascraper settings
             DBMovieSet = NFO.MergeDataScraperResults_MovieSet(DBMovieSet, ScrapedList, ScrapeType, ScrapeOptions)
         End If
+        logger.Trace(String.Concat("[ScrapeData_MovieSet] [Done] ", DBMovieSet.MovieSet.Title))
         Return ret.Cancelled
         'Else
         'Return True 'Cancelled

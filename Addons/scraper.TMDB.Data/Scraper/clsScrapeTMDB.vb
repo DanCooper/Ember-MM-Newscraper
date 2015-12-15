@@ -251,7 +251,7 @@ Namespace TMDB
 
             If (Result Is Nothing AndAlso Not _SpecialSettings.FallBackEng) OrElse (Result Is Nothing AndAlso ResultE Is Nothing) OrElse
                 (Not Result.Id > 0 AndAlso Not _SpecialSettings.FallBackEng) OrElse (Not Result.Id > 0 AndAlso Not ResultE.Id > 0) Then
-                logger.Error(String.Concat("Can't scrape or movie not found: ", strID))
+                logger.Error(String.Format("Can't scrape or movie not found: [0]", strID))
                 Return Nothing
             End If
 
@@ -533,11 +533,12 @@ Namespace TMDB
             Dim Result As TMDbLib.Objects.Collections.Collection = APIResult.Result
             Dim ResultE As TMDbLib.Objects.Collections.Collection = APIResultE.Result
 
-            If (Not Result.Id > 0 AndAlso Not _SpecialSettings.FallBackEng) OrElse (Not Result.Id > 0 AndAlso Not ResultE.Id > 0) Then
+            If (Result Is Nothing AndAlso Not _SpecialSettings.FallBackEng) OrElse (Result Is Nothing AndAlso ResultE Is Nothing) OrElse
+                (Not Result.Id > 0 AndAlso Not _SpecialSettings.FallBackEng) OrElse (Not Result.Id > 0 AndAlso Not ResultE.Id > 0) Then
+                logger.Warn(String.Format("[TMDB_Data] [Abort] No API result for TMDB Collection ID [{0}]", strID))
                 Return Nothing
             End If
 
-            'nMovieSet.ID = CStr(MovieSet.Id)
             nMovieSet.TMDB = CStr(Result.Id)
 
             If bwTMDB.CancellationPending Or Result Is Nothing Then Return Nothing
@@ -616,7 +617,7 @@ Namespace TMDB
 
             If (Result Is Nothing AndAlso Not _SpecialSettings.FallBackEng) OrElse (Result Is Nothing AndAlso ResultE Is Nothing) OrElse
                 (Not Result.Id > 0 AndAlso Not _SpecialSettings.FallBackEng) OrElse (Not Result.Id > 0 AndAlso Not ResultE.Id > 0) Then
-                logger.Error(String.Format("Can't scrape or tv show not found: tmdbID:{0}", strID))
+                logger.Error(String.Format("Can't scrape or tv show not found: [{0}]", strID))
                 Return Nothing
             End If
 

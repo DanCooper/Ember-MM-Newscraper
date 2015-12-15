@@ -79,8 +79,6 @@ Public Class NFO
             'IDs
             If scrapedmovie.IMDBIDSpecified Then
                 DBMovie.Movie.IMDBID = scrapedmovie.IMDBID
-            End If
-            If scrapedmovie.IMDBIDSpecified Then
                 DBMovie.Movie.ID = scrapedmovie.ID
             End If
             If scrapedmovie.TMDBIDSpecified Then

@@ -667,7 +667,7 @@ Public Class TMDB_Data
     End Function
 
     Function Scraper_MovieSet(ByRef oDBElement As Database.DBElement, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_MovieSet Implements Interfaces.ScraperModule_Data_MovieSet.Scraper
-        logger.Trace("Started scrape TMDB")
+        logger.Trace(String.Format("[TMDB_Data] [Start]"))
 
         LoadSettings_MovieSet()
         _SpecialSettings_MovieSet.PrefLanguage = oDBElement.Language
@@ -687,13 +687,17 @@ Public Class TMDB_Data
                     nMovieSet = _scraper.GetSearchMovieSetInfo(oDBElement.MovieSet.Title, oDBElement, ScrapeType, FilteredOptions)
                 End If
                 'if still no search result -> exit
-                If nMovieSet Is Nothing Then Return New Interfaces.ModuleResult_Data_MovieSet With {.Result = Nothing}
+                If nMovieSet Is Nothing Then
+                    logger.Trace(String.Format("[TMDB_Data] [Abort] No search result found"))
+                    Return New Interfaces.ModuleResult_Data_MovieSet With {.Result = Nothing}
+                End If
             End If
         End If
 
         If nMovieSet Is Nothing Then
             Select Case ScrapeType
                 Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto
+                    logger.Trace(String.Format("[TMDB_Data] [Abort] No search result found"))
                     Return New Interfaces.ModuleResult_Data_MovieSet With {.Result = Nothing}
             End Select
         End If
@@ -706,6 +710,7 @@ Public Class TMDB_Data
                         'if a movieset is found, set DoSearch back to "false" for following scrapers
                         ScrapeModifier.DoSearch = False
                     Else
+                        logger.Trace(String.Format("[TMDB_Data] [Cancelled] Cancelled by user"))
                         Return New Interfaces.ModuleResult_Data_MovieSet With {.Cancelled = True, .Result = Nothing}
                     End If
                 End Using
@@ -723,7 +728,7 @@ Public Class TMDB_Data
             End If
         End If
 
-        logger.Trace("Finished TMDB Scraper")
+        logger.Trace(String.Format("[TMDB_Data] [Done] With result"))
         Return New Interfaces.ModuleResult_Data_MovieSet With {.Result = nMovieSet}
     End Function
     ''' <summary>
