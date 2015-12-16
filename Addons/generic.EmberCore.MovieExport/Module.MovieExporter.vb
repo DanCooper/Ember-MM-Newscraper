@@ -148,7 +148,7 @@ Public Class MovieExporterModule
         Dim tsi As New ToolStripMenuItem
 
         'mnuMainTools
-        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("mnuMainTools"), ToolStripMenuItem)
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.MainMenu.Items("mnuMainTools"), ToolStripMenuItem)
         RemoveToolsStripItem(tsi, mnuMainToolsExporter)
 
         'cmnuTrayTools
@@ -170,7 +170,7 @@ Public Class MovieExporterModule
         'mnuMainTools
         mnuMainToolsExporter.Image = New Bitmap(My.Resources.icon)
         mnuMainToolsExporter.Text = Master.eLang.GetString(336, "Export Movie List")
-        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TopMenu.Items("mnuMainTools"), ToolStripMenuItem)
+        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.MainMenu.Items("mnuMainTools"), ToolStripMenuItem)
         AddToolsStripItem(tsi, mnuMainToolsExporter)
 
         'cmnuTrayTools

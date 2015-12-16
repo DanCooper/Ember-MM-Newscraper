@@ -1085,6 +1085,7 @@ Public Class ModulesManager
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
     Public Function ScrapeData_Movie(ByRef DBMovie As Database.DBElement, ByRef ScrapeModifier As Structures.ScrapeModifier, ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal showMessage As Boolean) As Boolean
+        logger.Trace(String.Concat("[ScrapeData_Movie] [Start] ", DBMovie.Filename))
         If DBMovie.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBMovie, showMessage) Then
             Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_Movie) = externalScrapersModules_Data_Movie.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.ModuleResult_Data_Movie
@@ -1129,10 +1130,10 @@ Public Class ModulesManager
             Dim oDBMovie As Database.DBElement = CType(DBMovie.CloneDeep, Database.DBElement)
 
             If (modules.Count() <= 0) Then
-                logger.Warn("No movie scrapers are defined")
+                logger.Warn("[ScrapeData_Movie] [Abort] No scrapers enabled")
             Else
                 For Each _externalScraperModule As _externalScraperModuleClass_Data_Movie In modules
-                    logger.Trace("Scraping movie data using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
+                    logger.Trace("[ScrapeData_Movie] [Using] <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
                     AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie
 
                     ret = _externalScraperModule.ProcessorModule.Scraper_Movie(oDBMovie, ScrapeModifier, ScrapeType, ScrapeOptions)
@@ -1146,7 +1147,10 @@ Public Class ModulesManager
                     If ret.breakChain Then Exit For
                 Next
 
-                If ScrapedList.Count = 0 Then Return True 'Cancelled
+                If ScrapedList.Count = 0 Then
+                    logger.Trace(String.Concat("[ScrapeData_Movie] [Cancelled] [No Scraper Results]", DBMovie.Filename))
+                    Return True 'Cancelled
+                End If
 
                 'Merge scraperresults considering global datascraper settings
                 DBMovie = NFO.MergeDataScraperResults_Movie(DBMovie, ScrapedList, ScrapeType, ScrapeOptions)
@@ -1154,8 +1158,10 @@ Public Class ModulesManager
                 'create cache paths for Actor Thumbs
                 DBMovie.Movie.CreateCachePaths_ActorsThumbs()
             End If
+            logger.Trace(String.Concat("[ScrapeData_Movie] [Done] ", DBMovie.Filename))
             Return ret.Cancelled
         Else
+            logger.Trace(String.Concat("[ScrapeData_Movie] [Abort] [Offline] ", DBMovie.Filename))
             Return True 'Cancelled
         End If
     End Function
@@ -1168,6 +1174,7 @@ Public Class ModulesManager
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie set scrapers are enabled, a silent warning is generated.</remarks>
     Public Function ScrapeData_MovieSet(ByRef DBMovieSet As Database.DBElement, ByRef ScrapeModifier As Structures.ScrapeModifier, ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal showMessage As Boolean) As Boolean
+        logger.Trace(String.Concat("[ScrapeData_MovieSet] [Start] ", DBMovieSet.MovieSet.Title))
         'If DBMovieSet.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_MovieSet(DBMovieSet, showMessage) Then
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_MovieSet) = externalScrapersModules_Data_MovieSet.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
         Dim ret As Interfaces.ModuleResult_Data_MovieSet
@@ -1191,15 +1198,18 @@ Public Class ModulesManager
         Dim oDBMovieSet As Database.DBElement = CType(DBMovieSet.CloneDeep, Database.DBElement)
 
         If (modules.Count() <= 0) Then
-            logger.Warn("No movieset scrapers are defined")
+            logger.Warn("[ScrapeData_MovieSet] [Abort] No scrapers enabled")
         Else
             For Each _externalScraperModule As _externalScraperModuleClass_Data_MovieSet In modules
-                logger.Trace("Scraping movieset data using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
+                logger.Trace("[ScrapeData_MovieSet] [Using] <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
                 AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_MovieSet
 
                 ret = _externalScraperModule.ProcessorModule.Scraper(oDBMovieSet, ScrapeModifier, ScrapeType, ScrapeOptions)
 
-                If ret.Cancelled Then Return ret.Cancelled
+                If ret.Cancelled Then
+                    logger.Trace(String.Concat("[ScrapeData_MovieSet] [Cancelled] [No Scraper Results]", DBMovieSet.MovieSet.Title))
+                    Return ret.Cancelled
+                End If
 
                 If ret.Result IsNot Nothing Then
                     ScrapedList.Add(ret.Result)
@@ -1213,6 +1223,7 @@ Public Class ModulesManager
             'Merge scraperresults considering global datascraper settings
             DBMovieSet = NFO.MergeDataScraperResults_MovieSet(DBMovieSet, ScrapedList, ScrapeType, ScrapeOptions)
         End If
+        logger.Trace(String.Concat("[ScrapeData_MovieSet] [Done] ", DBMovieSet.MovieSet.Title))
         Return ret.Cancelled
         'Else
         'Return True 'Cancelled
@@ -2020,32 +2031,32 @@ Public Class ModulesManager
 
 #Region "Fields"
 
-        Private _LoadMedia As LoadMedia
-        Private _MainTool As System.Windows.Forms.ToolStrip
-        Private _MainTabControl As System.Windows.Forms.TabControl
-        Private _MediaListMovies As System.Windows.Forms.DataGridView
-        Private _MediaListMovieSets As System.Windows.Forms.DataGridView
-        Private _MediaListTVEpisodes As System.Windows.Forms.DataGridView
-        Private _MediaListTVSeasons As System.Windows.Forms.DataGridView
-        Private _MediaListTVShows As System.Windows.Forms.DataGridView
-        Private _MenuMovieList As System.Windows.Forms.ContextMenuStrip
-        Private _MenuMovieSetList As System.Windows.Forms.ContextMenuStrip
-        Private _MenuTVEpisodeList As System.Windows.Forms.ContextMenuStrip
-        Private _MenuTVSeasonList As System.Windows.Forms.ContextMenuStrip
-        Private _MenuTVShowList As System.Windows.Forms.ContextMenuStrip
-        Private _OpenImageViewer As OpenImageViewer
-        Private _TopMenu As System.Windows.Forms.MenuStrip
-        Private _TrayMenu As System.Windows.Forms.ContextMenuStrip
-        Private _MediaTabSelected As Structures.MainTabType
+        Private _ContextMenuMovieList As ContextMenuStrip
+        Private _ContextMenuMovieSetList As ContextMenuStrip
+        Private _ContextMenuTVEpisodeList As ContextMenuStrip
+        Private _ContextMenuTVSeasonList As ContextMenuStrip
+        Private _ContextMenuTVShowList As ContextMenuStrip
         Private _FilterMovies As String
         Private _FilterMoviesSearch As String
         Private _FilterMoviesType As String
         Private _FilterShows As String
         Private _FilterShowsSearch As String
         Private _FilterShowsType As String
-        Private _ListMovies As String
         Private _ListMovieSets As String
+        Private _ListMovies As String
         Private _ListShows As String
+        Private _LoadMedia As LoadMedia
+        Private _MainMenu As MenuStrip
+        Private _MainTabControl As TabControl
+        Private _MainToolStrip As ToolStrip
+        Private _MediaListMovieSets As DataGridView
+        Private _MediaListMovies As DataGridView
+        Private _MediaListTVEpisodes As DataGridView
+        Private _MediaListTVSeasons As DataGridView
+        Private _MediaListTVShows As DataGridView
+        Private _MediaTabSelected As Structures.MainTabType
+        Private _OpenImageViewer As OpenImageViewer
+        Private _TrayMenu As ContextMenuStrip
 
 
 #End Region 'Fields
@@ -2150,128 +2161,128 @@ Public Class ModulesManager
             End Set
         End Property
 
-        Public Property MainTool() As System.Windows.Forms.ToolStrip
+        Public Property MainToolStrip() As ToolStrip
             Get
-                Return _MainTool
+                Return _MainToolStrip
             End Get
-            Set(ByVal value As System.Windows.Forms.ToolStrip)
-                _MainTool = value
+            Set(ByVal value As ToolStrip)
+                _MainToolStrip = value
             End Set
         End Property
 
-        Public Property MediaListMovies() As System.Windows.Forms.DataGridView
+        Public Property MediaListMovies() As DataGridView
             Get
                 Return _MediaListMovies
             End Get
-            Set(ByVal value As System.Windows.Forms.DataGridView)
+            Set(ByVal value As DataGridView)
                 _MediaListMovies = value
             End Set
         End Property
 
-        Public Property MediaListMovieSets() As System.Windows.Forms.DataGridView
+        Public Property MediaListMovieSets() As DataGridView
             Get
                 Return _MediaListMovieSets
             End Get
-            Set(ByVal value As System.Windows.Forms.DataGridView)
+            Set(ByVal value As DataGridView)
                 _MediaListMovieSets = value
             End Set
         End Property
 
-        Public Property MediaListTVEpisodes() As System.Windows.Forms.DataGridView
+        Public Property MediaListTVEpisodes() As DataGridView
             Get
                 Return _MediaListTVEpisodes
             End Get
-            Set(ByVal value As System.Windows.Forms.DataGridView)
+            Set(ByVal value As DataGridView)
                 _MediaListTVEpisodes = value
             End Set
         End Property
 
-        Public Property MediaListTVSeasons() As System.Windows.Forms.DataGridView
+        Public Property MediaListTVSeasons() As DataGridView
             Get
                 Return _MediaListTVSeasons
             End Get
-            Set(ByVal value As System.Windows.Forms.DataGridView)
+            Set(ByVal value As DataGridView)
                 _MediaListTVSeasons = value
             End Set
         End Property
 
-        Public Property MediaListTVShows() As System.Windows.Forms.DataGridView
+        Public Property MediaListTVShows() As DataGridView
             Get
                 Return _MediaListTVShows
             End Get
-            Set(ByVal value As System.Windows.Forms.DataGridView)
+            Set(ByVal value As DataGridView)
                 _MediaListTVShows = value
             End Set
         End Property
 
-        Public Property MenuMovieList() As System.Windows.Forms.ContextMenuStrip
+        Public Property ContextMenuMovieList() As ContextMenuStrip
             Get
-                Return _MenuMovieList
+                Return _ContextMenuMovieList
             End Get
-            Set(ByVal value As System.Windows.Forms.ContextMenuStrip)
-                _MenuMovieList = value
+            Set(ByVal value As ContextMenuStrip)
+                _ContextMenuMovieList = value
             End Set
         End Property
 
-        Public Property MenuMovieSetList() As System.Windows.Forms.ContextMenuStrip
+        Public Property ContextMenuMovieSetList() As ContextMenuStrip
             Get
-                Return _MenuMovieSetList
+                Return _ContextMenuMovieSetList
             End Get
-            Set(ByVal value As System.Windows.Forms.ContextMenuStrip)
-                _MenuMovieSetList = value
+            Set(ByVal value As ContextMenuStrip)
+                _ContextMenuMovieSetList = value
             End Set
         End Property
 
-        Public Property MenuTVEpisodeList() As System.Windows.Forms.ContextMenuStrip
+        Public Property ContextMenuTVEpisodeList() As ContextMenuStrip
             Get
-                Return _MenuTVEpisodeList
+                Return _ContextMenuTVEpisodeList
             End Get
-            Set(ByVal value As System.Windows.Forms.ContextMenuStrip)
-                _MenuTVEpisodeList = value
+            Set(ByVal value As ContextMenuStrip)
+                _ContextMenuTVEpisodeList = value
             End Set
         End Property
 
-        Public Property MenuTVSeasonList() As System.Windows.Forms.ContextMenuStrip
+        Public Property ContextMenuTVSeasonList() As ContextMenuStrip
             Get
-                Return _MenuTVSeasonList
+                Return _ContextMenuTVSeasonList
             End Get
-            Set(ByVal value As System.Windows.Forms.ContextMenuStrip)
-                _MenuTVSeasonList = value
+            Set(ByVal value As ContextMenuStrip)
+                _ContextMenuTVSeasonList = value
             End Set
         End Property
 
-        Public Property MenuTVShowList() As System.Windows.Forms.ContextMenuStrip
+        Public Property ContextMenuTVShowList() As ContextMenuStrip
             Get
-                Return _MenuTVShowList
+                Return _ContextMenuTVShowList
             End Get
-            Set(ByVal value As System.Windows.Forms.ContextMenuStrip)
-                _MenuTVShowList = value
+            Set(ByVal value As ContextMenuStrip)
+                _ContextMenuTVShowList = value
             End Set
         End Property
 
-        Public Property TopMenu() As System.Windows.Forms.MenuStrip
+        Public Property MainMenu() As MenuStrip
             Get
-                Return _TopMenu
+                Return _MainMenu
             End Get
-            Set(ByVal value As System.Windows.Forms.MenuStrip)
-                _TopMenu = value
+            Set(ByVal value As MenuStrip)
+                _MainMenu = value
             End Set
         End Property
 
-        Public Property TrayMenu() As System.Windows.Forms.ContextMenuStrip
+        Public Property TrayMenu() As ContextMenuStrip
             Get
                 Return _TrayMenu
             End Get
-            Set(ByVal value As System.Windows.Forms.ContextMenuStrip)
+            Set(ByVal value As ContextMenuStrip)
                 _TrayMenu = value
             End Set
         End Property
 
-        Public Property MainTabControl() As System.Windows.Forms.TabControl
+        Public Property MainTabControl() As TabControl
             Get
                 Return _MainTabControl
             End Get
-            Set(ByVal value As System.Windows.Forms.TabControl)
+            Set(ByVal value As TabControl)
                 _MainTabControl = value
             End Set
         End Property

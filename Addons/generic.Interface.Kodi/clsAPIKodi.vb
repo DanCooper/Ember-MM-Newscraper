@@ -23,6 +23,7 @@ Imports NLog
 Imports EmberAPI
 Imports XBMCRPC
 Imports System.IO
+Imports generic.Interface.Kodi.KodiInterface
 
 Namespace Kodi
 
@@ -30,7 +31,7 @@ Namespace Kodi
 
 #Region "Fields"
 
-        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Shared logger As Logger = LogManager.GetCurrentClassLogger()
         'current selected host, Kodi Host type already declared in EmberAPI (XML serialization) -> no MySettings declaration needed here
         Private _currenthost As New KodiInterface.Host
         'current selected client
@@ -43,8 +44,6 @@ Namespace Kodi
 #End Region 'Fields
 
 #Region "Events"
-
-        Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
 
 #End Region 'Events
 
@@ -83,7 +82,7 @@ Namespace Kodi
         ''' </summary>
         ''' <returns>list of kodi movies, Nothing: error</returns>
         ''' <remarks></remarks>
-        Public Async Function GetAllMovies() As Task(Of VideoLibrary.GetMoviesResponse)
+        Private Async Function GetAllMovies() As Task(Of VideoLibrary.GetMoviesResponse)
             If _kodi Is Nothing Then
                 logger.Error("[APIKodi] GetAllMovies: No host initialized! Abort!")
                 Return Nothing
@@ -98,73 +97,11 @@ Namespace Kodi
             End Try
         End Function
         ''' <summary>
-        ''' Get all movies by a given filename
-        ''' </summary>
-        ''' <param name="RemoteFilename"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Async Function GetAllMoviesByFilename(ByVal strFilename As String) As Task(Of VideoLibrary.GetMoviesResponse)
-            If _kodi Is Nothing Then
-                logger.Error("[APIKodi] GetAllMoviesByFilename: No host initialized! Abort!")
-                Return Nothing
-            End If
-
-            If Not String.IsNullOrEmpty(strFilename) Then
-                Try
-                    Dim filter As New XBMCRPC.List.Filter.MoviesOr With {.or = New List(Of Object)}
-                    Dim filterRule As New XBMCRPC.List.Filter.Rule.Movies
-                    filterRule.field = List.Filter.Fields.Movies.filename
-                    filterRule.Operator = List.Filter.Operators.endswith
-                    filterRule.value = strFilename
-                    filter.or.Add(filterRule)
-
-                    Dim response = Await _kodi.VideoLibrary.GetMovies(filter, Video.Fields.Movie.AllFields).ConfigureAwait(False)
-                    Return response
-                Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name, ex)
-                    Return Nothing
-                End Try
-            Else
-                Return Nothing
-            End If
-        End Function
-        ''' <summary>
-        ''' Get all movies by a given path
-        ''' </summary>
-        ''' <param name="RemotePath"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Async Function GetAllMoviesByPath(ByVal strRemotePath As String) As Task(Of VideoLibrary.GetMoviesResponse)
-            If _kodi Is Nothing Then
-                logger.Error("[APIKodi] GetAllMoviesByPath: No host initialized! Abort!")
-                Return Nothing
-            End If
-
-            If Not String.IsNullOrEmpty(strRemotePath) Then
-                Try
-                    Dim filter As New XBMCRPC.List.Filter.MoviesOr With {.or = New List(Of Object)}
-                    Dim filterRule As New XBMCRPC.List.Filter.Rule.Movies
-                    filterRule.field = List.Filter.Fields.Movies.path
-                    filterRule.Operator = List.Filter.Operators.startswith
-                    filterRule.value = strRemotePath
-                    filter.or.Add(filterRule)
-
-                    Dim response = Await _kodi.VideoLibrary.GetMovies(filter, Video.Fields.Movie.AllFields).ConfigureAwait(False)
-                    Return response
-                Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name, ex)
-                    Return Nothing
-                End Try
-            Else
-                Return Nothing
-            End If
-        End Function
-        ''' <summary>
         ''' 
         ''' </summary>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Async Function GetAllMovieSets() As Task(Of VideoLibrary.GetMovieSetsResponse)
+        Private Async Function GetAllMovieSets() As Task(Of VideoLibrary.GetMovieSetsResponse)
             If _kodi Is Nothing Then
                 logger.Error("[APIKodi] GetAllMovieSets: No host initialized! Abort!")
                 Return Nothing
@@ -178,53 +115,8 @@ Namespace Kodi
                 Return Nothing
             End Try
         End Function
-        ''' <summary>
-        ''' Get all episodes by various details
-        ''' </summary>
-        ''' <param name="RemotePath"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Async Function GetAllTVEpisodesByDetails(ByVal strRemotePath As String, ByVal str As String, ByVal ShowID As Integer, ByVal intSeason As Integer, ByVal intEpisode As Integer) As Task(Of VideoLibrary.GetEpisodesResponse)
-            If _kodi Is Nothing Then
-                logger.Error("[APIKodi] GetAllTVEpisodesByDetails: No host initialized! Abort!")
-                Return Nothing
-            End If
 
-            If Not String.IsNullOrEmpty(strRemotePath) Then
-                Try
-                    Dim filter As New XBMCRPC.List.Filter.EpisodesAnd With {.and = New List(Of Object)}
-                    Dim filterRulePath As New XBMCRPC.List.Filter.Rule.Episodes
-                    filterRulePath.field = List.Filter.Fields.Episodes.path
-                    filterRulePath.Operator = List.Filter.Operators.startswith
-                    filterRulePath.value = strRemotePath
-                    filter.and.Add(filterRulePath)
-                    Dim filterRuleFilename As New XBMCRPC.List.Filter.Rule.Episodes
-                    filterRuleFilename.field = List.Filter.Fields.Episodes.filename
-                    filterRuleFilename.Operator = List.Filter.Operators.endswith
-                    filterRuleFilename.value = Path.GetFileName(str)
-                    filter.and.Add(filterRuleFilename)
-
-                    'bug in KodiAPI, "Is" will no be changed to lower case "is" for JSON request
-                    'same for "True" and "False"
-
-                    'Dim filterRuleEpisode As New XBMCRPC.List.Filter.Rule.Episodes
-                    'filterRuleEpisode.field = List.Filter.Fields.Episodes.episode
-                    'filterRuleEpisode.Operator = List.Filter.Operators.is
-                    'filterRuleEpisode.value = CStr(Episode)
-                    'filter.and.Add(filterRuleEpisode)
-
-                    Dim response = Await _kodi.VideoLibrary.GetEpisodes(filter, ShowID, intSeason, Video.Fields.Episode.AllFields).ConfigureAwait(False)
-                    Return response
-                Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name, ex)
-                    Return Nothing
-                End Try
-            Else
-                Return Nothing
-            End If
-        End Function
-
-        Public Async Function GetAllTVSeasonsByShowID(ByVal ShowID As Integer) As Task(Of VideoLibrary.GetSeasonsResponse)
+        Private Async Function GetAllTVSeasons(ByVal ShowID As Integer) As Task(Of VideoLibrary.GetSeasonsResponse)
             If _kodi Is Nothing Then
                 logger.Warn("[APIKodi] GetAllMovieSets: No host initialized! Abort!")
                 Return Nothing
@@ -246,7 +138,7 @@ Namespace Kodi
         ''' 2015/06/27 Cocotus - First implementation
         ''' Notice: No exception handling here because this function is called/nested in other functions and an exception must not be consumed (meaning a disconnect host would not be recognized at once)
         ''' </remarks>
-        Public Async Function GetAllTVShows() As Task(Of VideoLibrary.GetTVShowsResponse)
+        Private Async Function GetAllTVShows() As Task(Of VideoLibrary.GetTVShowsResponse)
             If _kodi Is Nothing Then
                 logger.Error("[APIKodi] GetAllTVShows: No host initialized! Abort!")
                 Return Nothing
@@ -261,35 +153,114 @@ Namespace Kodi
             End Try
         End Function
         ''' <summary>
-        ''' Get all tv shows by a given path
+        ''' Get full details of a Movie by ID
         ''' </summary>
-        ''' <param name="RemotePath"></param>
+        ''' <param name="iKodiID"></param>
         ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Async Function GetAllTVShowsByPath(ByVal strRemotePath As String) As Task(Of VideoLibrary.GetTVShowsResponse)
+        Private Async Function GetFullDetailsByID_Movie(ByVal iKodiID As Integer) As Task(Of Video.Details.Movie)
             If _kodi Is Nothing Then
-                logger.Error("[APIKodi] GetAllTVShowsByPath: No host initialized! Abort!")
+                logger.Error("[APIKodi] GetFullDetailsByID_Movie: No host initialized! Abort!")
                 Return Nothing
             End If
 
-            If Not String.IsNullOrEmpty(strRemotePath) Then
+            If Not iKodiID = -1 Then
                 Try
-                    Dim filter As New XBMCRPC.List.Filter.TVShowsOr With {.or = New List(Of Object)}
-                    Dim filterRule As New XBMCRPC.List.Filter.Rule.TVShows
-                    filterRule.field = List.Filter.Fields.TVShows.path
-                    filterRule.Operator = List.Filter.Operators.startswith
-                    filterRule.value = strRemotePath
-                    filter.or.Add(filterRule)
-
-                    Dim response = Await _kodi.VideoLibrary.GetTVShows(filter, Video.Fields.TVShow.AllFields).ConfigureAwait(False)
-                    Return response
+                    Dim KodiElement As VideoLibrary.GetMovieDetailsResponse = Await _kodi.VideoLibrary.GetMovieDetails(iKodiID, Video.Fields.Movie.AllFields).ConfigureAwait(False)
+                    If KodiElement IsNot Nothing AndAlso KodiElement.moviedetails IsNot Nothing Then Return KodiElement.moviedetails
                 Catch ex As Exception
                     logger.Error(New StackFrame().GetMethod().Name, ex)
                     Return Nothing
                 End Try
-            Else
+            End If
+            Return Nothing
+        End Function
+        ''' <summary>
+        ''' Get full details of a MovieSet by ID
+        ''' </summary>
+        ''' <param name="iKodiID"></param>
+        ''' <returns></returns>
+        Private Async Function GetFullDetailsByID_MovieSet(ByVal iKodiID As Integer) As Task(Of Video.Details.MovieSet)
+            If _kodi Is Nothing Then
+                logger.Error("[APIKodi] GetFullDetailsByID_MovieSet: No host initialized! Abort!")
                 Return Nothing
             End If
+
+            If Not iKodiID = -1 Then
+                Try
+                    Dim KodiElement As VideoLibrary.GetMovieSetDetailsResponse = Await _kodi.VideoLibrary.GetMovieSetDetails(iKodiID, Video.Fields.MovieSet.AllFields).ConfigureAwait(False)
+                    If KodiElement IsNot Nothing AndAlso KodiElement.setdetails IsNot Nothing Then Return KodiElement.setdetails
+                Catch ex As Exception
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                    Return Nothing
+                End Try
+            End If
+            Return Nothing
+        End Function
+        ''' <summary>
+        ''' Get full details of a MovieSet by ID
+        ''' </summary>
+        ''' <param name="iKodiID"></param>
+        ''' <returns></returns>
+        Private Async Function GetFullDetailsByID_TVEpisode(ByVal iKodiID As Integer) As Task(Of Video.Details.Episode)
+            If _kodi Is Nothing Then
+                logger.Error("[APIKodi] GetFullDetailsByID_TVEpisode: No host initialized! Abort!")
+                Return Nothing
+            End If
+
+            If Not iKodiID = -1 Then
+                Try
+                    Dim KodiElement As VideoLibrary.GetEpisodeDetailsResponse = Await _kodi.VideoLibrary.GetEpisodeDetails(iKodiID, Video.Fields.Episode.AllFields).ConfigureAwait(False)
+                    If KodiElement IsNot Nothing AndAlso KodiElement.episodedetails IsNot Nothing Then Return KodiElement.episodedetails
+                Catch ex As Exception
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                    Return Nothing
+                End Try
+            End If
+            Return Nothing
+        End Function
+        ''' <summary>
+        ''' Get full details of a MovieSet by ID
+        ''' </summary>
+        ''' <param name="iKodiID"></param>
+        ''' <returns></returns>
+        Private Async Function GetFullDetailsByID_TVSeason(ByVal iKodiID As Integer) As Task(Of Video.Details.Season)
+            If _kodi Is Nothing Then
+                logger.Error("[APIKodi] GetFullDetailsByID_TVSeason: No host initialized! Abort!")
+                Return Nothing
+            End If
+
+            If Not iKodiID = -1 Then
+                Try
+                    Dim KodiElement As VideoLibrary.GetSeasonDetailsResponse = Await _kodi.VideoLibrary.GetSeasonDetails(iKodiID, Video.Fields.Season.AllFields).ConfigureAwait(False)
+                    If KodiElement IsNot Nothing AndAlso KodiElement.seasondetails IsNot Nothing Then Return KodiElement.seasondetails
+                Catch ex As Exception
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                    Return Nothing
+                End Try
+            End If
+            Return Nothing
+        End Function
+        ''' <summary>
+        ''' Get full details of a MovieSet by ID
+        ''' </summary>
+        ''' <param name="iKodiID"></param>
+        ''' <returns></returns>
+        Private Async Function GetFullDetailsByID_TVShow(ByVal iKodiID As Integer) As Task(Of Video.Details.TVShow)
+            If _kodi Is Nothing Then
+                logger.Error("[APIKodi] GetFullDetailsByID_TVShow: No host initialized! Abort!")
+                Return Nothing
+            End If
+
+            If Not iKodiID = -1 Then
+                Try
+                    Dim KodiElement As VideoLibrary.GetTVShowDetailsResponse = Await _kodi.VideoLibrary.GetTVShowDetails(iKodiID, Video.Fields.TVShow.AllFields).ConfigureAwait(False)
+                    If KodiElement IsNot Nothing AndAlso KodiElement.tvshowdetails IsNot Nothing Then Return KodiElement.tvshowdetails
+                Catch ex As Exception
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                    Return Nothing
+                End Try
+            End If
+            Return Nothing
         End Function
         ''' <summary>
         ''' Get JSONRPC version of host
@@ -314,7 +285,7 @@ Namespace Kodi
         ''' <remarks>
         ''' 2015/06/27 Cocotus - First implementation
         ''' </remarks>
-        Public Async Function GetHostJSONVersion() As Task(Of String)
+        Private Async Function GetHostJSONVersion() As Task(Of String)
             If _kodi Is Nothing Then
                 logger.Error("[APIKodi] GetHostJSONVersion: No host initialized! Abort!")
                 Return Nothing
@@ -345,14 +316,85 @@ Namespace Kodi
             End Try
         End Function
         ''' <summary>
+        ''' Search movie ID in Kodi database
+        ''' </summary>
+        ''' <param name="tDBElement"></param>
+        ''' <returns></returns>
+        Private Async Function GetMediaID(ByVal tDBElement As Database.DBElement) As Task(Of Integer)
+            Dim KodiID As Integer = -1
+
+            Select Case tDBElement.ContentType
+                Case Enums.ContentType.Movie
+                    Dim KodiMovie As Video.Details.Movie = Await SearchMovie(tDBElement).ConfigureAwait(False)
+                    If KodiMovie IsNot Nothing Then Return KodiMovie.movieid
+                Case Enums.ContentType.MovieSet
+                    Dim KodiMovieset As Video.Details.MovieSet = Await SearchMovieSet(tDBElement).ConfigureAwait(False)
+                    If KodiMovieset IsNot Nothing Then Return KodiMovieset.setid
+                Case Enums.ContentType.TVEpisode
+                    Dim KodiEpsiode As Video.Details.Episode = Await SearchTVEpisode(tDBElement).ConfigureAwait(False)
+                    If Not KodiEpsiode Is Nothing Then Return KodiEpsiode.episodeid
+                Case Enums.ContentType.TVSeason
+                    Dim KodiSeason As Video.Details.Season = Await SearchTVSeason(tDBElement).ConfigureAwait(False)
+                    If Not KodiSeason Is Nothing Then Return KodiSeason.seasonid
+                Case Enums.ContentType.TVShow
+                    Dim KodiTVShow As Video.Details.TVShow = Await SearchTVShow(tDBElement).ConfigureAwait(False)
+                    If Not KodiTVShow Is Nothing Then Return KodiTVShow.tvshowid
+            End Select
+
+            Return -1
+        End Function
+
+        Private Function GetPlayCount() As Boolean
+            Return True
+        End Function
+
+        Public Shared Function GetPathAndFilename(ByVal tDBElement As Database.DBElement, Optional ByVal tForcedContentType As Enums.ContentType = Enums.ContentType.None) As PathAndFilename
+            Dim tPathAndFilename As New PathAndFilename With {.strFilename = String.Empty, .strPath = String.Empty}
+            Dim tContentType As Enums.ContentType = If(tForcedContentType = Enums.ContentType.None, tDBElement.ContentType, tForcedContentType)
+
+            Select Case tContentType
+                Case Enums.ContentType.Movie, Enums.ContentType.TVEpisode
+                    If FileUtils.Common.isVideoTS(tDBElement.Filename) Then
+                        'Kodi needs the VIDEO_TS folder path
+                        tPathAndFilename.strFilename = Path.GetFileName(tDBElement.Filename)
+                        tPathAndFilename.strPath = Directory.GetParent(tDBElement.Filename).FullName
+                    ElseIf FileUtils.Common.isBDRip(tDBElement.Filename) Then
+                        'Kodi needs the BDMV folder path and index.bdmv as filename
+                        Dim lFi As New List(Of FileInfo)
+                        Dim di As DirectoryInfo = New DirectoryInfo(Directory.GetParent(Directory.GetParent(tDBElement.Filename).FullName).FullName)
+                        lFi.AddRange(di.GetFiles)
+                        For Each tFile In lFi
+                            If tFile.Name.ToLower = "index.bdmv" Then
+                                tPathAndFilename.strFilename = tFile.Name
+                                Exit For
+                            End If
+                        Next
+                        tPathAndFilename.strPath = Directory.GetParent(Directory.GetParent(tDBElement.Filename).FullName).FullName
+                    Else
+                        tPathAndFilename.strFilename = Path.GetFileName(tDBElement.Filename)
+                        tPathAndFilename.strPath = Directory.GetParent(tDBElement.Filename).FullName
+                    End If
+                Case Enums.ContentType.TVShow
+                    tPathAndFilename.strPath = tDBElement.ShowPath
+            End Select
+
+            If tPathAndFilename.strPath.Contains(Path.DirectorySeparatorChar) AndAlso Not tPathAndFilename.strPath.EndsWith(Path.DirectorySeparatorChar) Then
+                tPathAndFilename.strPath = String.Concat(tPathAndFilename.strPath, Path.DirectorySeparatorChar)
+            ElseIf tPathAndFilename.strPath.Contains(Path.AltDirectorySeparatorChar) AndAlso Not tPathAndFilename.strPath.EndsWith(Path.AltDirectorySeparatorChar) Then
+                tPathAndFilename.strPath = String.Concat(tPathAndFilename.strPath, Path.AltDirectorySeparatorChar)
+            End If
+
+            Return tPathAndFilename
+        End Function
+        ''' <summary>
         ''' 
         ''' </summary>
         ''' <param name="LocalPath"></param>
         ''' <returns></returns>
         ''' <remarks>ATTENTION: It's not allowed to use "Remotepath.ToLower" (Kodi can't find UNC sources with wrong case)</remarks>
-        Function GetRemotePath(ByVal strLocalPath As String) As String
-            Dim RemotePath As String = String.Empty
-            Dim RemoteIsUNC As Boolean = False
+        Private Function GetRemotePath(ByVal strLocalPath As String) As String
+            Dim strRemotePath As String = String.Empty
+            Dim bRemoteIsUNC As Boolean = False
 
             For Each Source In _currenthost.Sources
                 Dim tLocalSource As String = String.Empty
@@ -371,21 +413,21 @@ Namespace Kodi
                         tRemoteSource = If(Source.RemotePath.EndsWith(Path.DirectorySeparatorChar), Source.RemotePath, String.Concat(Source.RemotePath, Path.DirectorySeparatorChar)).Trim
                     ElseIf Source.RemotePath.Contains(Path.AltDirectorySeparatorChar) Then
                         tRemoteSource = If(Source.RemotePath.EndsWith(Path.AltDirectorySeparatorChar), Source.RemotePath, String.Concat(Source.RemotePath, Path.AltDirectorySeparatorChar)).Trim
-                        RemoteIsUNC = True
+                        bRemoteIsUNC = True
                     End If
-                    RemotePath = strLocalPath.Replace(tLocalSource, tRemoteSource)
-                    If RemoteIsUNC Then
-                        RemotePath = RemotePath.Replace(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
+                    strRemotePath = strLocalPath.Replace(tLocalSource, tRemoteSource)
+                    If bRemoteIsUNC Then
+                        strRemotePath = strRemotePath.Replace(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
                     Else
-                        RemotePath = RemotePath.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar)
+                        strRemotePath = strRemotePath.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar)
                     End If
                     Exit For
                 End If
             Next
 
-            If String.IsNullOrEmpty(RemotePath) Then logger.Error(String.Format("[APIKodi] [{0}] GetRemotePath: ""{1}"" | Source not mapped!", _currenthost.Label, strLocalPath))
+            If String.IsNullOrEmpty(strRemotePath) Then logger.Error(String.Format("[APIKodi] [{0}] GetRemotePath: ""{1}"" | Source not mapped!", _currenthost.Label, strLocalPath))
 
-            Return RemotePath
+            Return strRemotePath
         End Function
         ''' <summary>
         ''' 
@@ -393,7 +435,7 @@ Namespace Kodi
         ''' <param name="LocalPath"></param>
         ''' <returns></returns>
         ''' <remarks>ATTENTION: It's not allowed to use "Remotepath.ToLower" (Kodi can't find UNC sources with wrong case)</remarks>
-        Function GetRemotePath_MovieSet(ByVal strLocalPath As String) As String
+        Private Function GetRemotePath_MovieSet(ByVal strLocalPath As String) As String
             Dim HostPath As String = _currenthost.MovieSetArtworksPath
             Dim RemotePath As String = String.Empty
             Dim RemoteIsUNC As Boolean = False
@@ -437,8 +479,8 @@ Namespace Kodi
         ''' 2015/06/27 Cocotus - First implementation
         ''' Called from dlgHost.vb when user hits "Populate" button to get host sources
         ''' </remarks>
-        Public Shared Function GetSources(ByVal kHost As KodiInterface.Host) As List(Of XBMCRPC.List.Items.SourcesItem)
-            Dim listSources As New List(Of XBMCRPC.List.Items.SourcesItem)
+        Public Shared Function GetSources(ByVal kHost As KodiInterface.Host) As List(Of List.Items.SourcesItem)
+            Dim listSources As New List(Of List.Items.SourcesItem)
             Try
                 Dim _APIKodi As New Kodi.APIKodi(kHost)
                 listSources = _APIKodi.GetSources(XBMCRPC.Files.Media.video).Result
@@ -457,7 +499,7 @@ Namespace Kodi
         ''' 2015/06/27 Cocotus - First implementation
         ''' 2015/07/05 Cocotus - Added multipath support, i.e nfs://192.168.2.200/Media_1/Movie/nfs://192.168.2.200/Media_2/Movie/
         ''' </remarks>
-        Public Async Function GetSources(mediaType As Files.Media) As Task(Of List(Of List.Items.SourcesItem))
+        Private Async Function GetSources(mediaType As Files.Media) As Task(Of List(Of List.Items.SourcesItem))
             If _kodi Is Nothing Then
                 logger.Error("[APIKodi] GetSources: No host initialized! Abort!")
                 Return Nothing
@@ -500,34 +542,121 @@ Namespace Kodi
             End Try
         End Function
 
-        Public Async Function GetTextures(ByVal strMoviePath As String) As Task(Of XBMCRPC.Textures.GetTexturesResponse)
+        Private Async Function GetTextures(ByVal tDBElement As Database.DBElement) As Task(Of Textures.GetTexturesResponse)
             If _kodi Is Nothing Then
                 logger.Error("[APIKodi] SendMessage: No host initialized! Abort!")
                 Return Nothing
             End If
 
-            Try
-                Dim filter As New XBMCRPC.List.Filter.TexturesOr With {.or = New List(Of Object)}
-                Dim filterRule As New XBMCRPC.List.Filter.Rule.Textures
-                filterRule.field = List.Filter.Fields.Textures.url
-                filterRule.Operator = List.Filter.Operators.startswith
-                filterRule.value = strMoviePath
-                filter.or.Add(filterRule)
+            Dim lImagesToRemove As New List(Of String)
 
-                Dim response As XBMCRPC.Textures.GetTexturesResponse = Await _kodi.Textures.GetTextures(filter, XBMCRPC.Textures.Fields.Texture.AllFields)
-                Return response
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-                Return Nothing
-            End Try
+            With tDBElement.ImagesContainer
+                If .Banner.LocalFilePathSpecified Then lImagesToRemove.Add(.Banner.LocalFilePath)
+                If .CharacterArt.LocalFilePathSpecified Then lImagesToRemove.Add(.CharacterArt.LocalFilePath)
+                If .ClearArt.LocalFilePathSpecified Then lImagesToRemove.Add(.ClearArt.LocalFilePath)
+                If .ClearLogo.LocalFilePathSpecified Then lImagesToRemove.Add(.ClearLogo.LocalFilePath)
+                If .DiscArt.LocalFilePathSpecified Then lImagesToRemove.Add(.DiscArt.LocalFilePath)
+                If .Fanart.LocalFilePathSpecified Then lImagesToRemove.Add(.Fanart.LocalFilePath)
+                If .Landscape.LocalFilePathSpecified Then lImagesToRemove.Add(.Landscape.LocalFilePath)
+                If .Poster.LocalFilePathSpecified Then lImagesToRemove.Add(.Poster.LocalFilePath)
+            End With
+
+            Select Case tDBElement.ContentType
+                Case Enums.ContentType.Movie
+                    For Each tActor As MediaContainers.Person In tDBElement.Movie.Actors.Where(Function(f) f.LocalFilePathSpecified)
+                        lImagesToRemove.Add(tActor.LocalFilePath)
+                    Next
+                Case Enums.ContentType.TVEpisode
+                    For Each tActor As MediaContainers.Person In tDBElement.TVEpisode.Actors.Where(Function(f) f.LocalFilePathSpecified)
+                        lImagesToRemove.Add(tActor.LocalFilePath)
+                    Next
+                Case Enums.ContentType.TVShow
+                    For Each tActor As MediaContainers.Person In tDBElement.TVShow.Actors.Where(Function(f) f.LocalFilePathSpecified)
+                        lImagesToRemove.Add(tActor.LocalFilePath)
+                    Next
+            End Select
+
+            If lImagesToRemove.Count > 0 Then
+                Try
+                    Dim filter As New List.Filter.TexturesOr With {.or = New List(Of Object)}
+                    For Each tURL As String In lImagesToRemove
+                        Dim filterRule As New List.Filter.Rule.Textures
+                        filterRule.field = List.Filter.Fields.Textures.url
+                        filterRule.Operator = List.Filter.Operators.Is
+                        filterRule.value = GetRemotePath(tURL)
+                        filter.or.Add(filterRule)
+                    Next
+
+                    'TODO: JSON is limited to 20k characters. We have to split the filter if there are to many actor thumbs
+                    Dim response As Textures.GetTexturesResponse = Await _kodi.Textures.GetTextures(filter, Textures.Fields.Texture.AllFields)
+                    Return response
+                Catch ex As Exception
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                    Return Nothing
+                End Try
+            End If
+            Return Nothing
         End Function
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' <param name="DBMovieSet"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Async Function SearchByDetails_MovieSet(ByVal DBMovieSet As Database.DBElement) As Task(Of XBMCRPC.Video.Details.MovieSet)
+
+        Private Async Function SearchMovie(ByVal tDBElement As Database.DBElement) As Task(Of Video.Details.Movie)
+            If _kodi Is Nothing Then
+                logger.Error("[APIKodi] SearchMovie: No host initialized! Abort!")
+                Return Nothing
+            End If
+
+            Dim kMovies As VideoLibrary.GetMoviesResponse
+
+            Dim tPathAndFilename As PathAndFilename = GetPathAndFilename(tDBElement)
+            Dim strFilename As String = tPathAndFilename.strFilename
+            Dim strRemotePath As String = GetRemotePath(tPathAndFilename.strPath)
+
+            If Not String.IsNullOrEmpty(strRemotePath) Then
+                Try
+                    Dim filter As New List.Filter.MoviesAnd With {.and = New List(Of Object)}
+                    Dim filterRule_Path As New List.Filter.Rule.Movies
+                    filterRule_Path.field = List.Filter.Fields.Movies.path
+                    filterRule_Path.Operator = List.Filter.Operators.Is
+                    filterRule_Path.value = strRemotePath
+                    filter.and.Add(filterRule_Path)
+                    Dim filterRule_Filename As New List.Filter.Rule.Movies
+                    filterRule_Filename.field = List.Filter.Fields.Movies.filename
+                    filterRule_Filename.Operator = List.Filter.Operators.Is
+                    filterRule_Filename.value = strFilename
+                    filter.and.Add(filterRule_Filename)
+
+                    kMovies = Await _kodi.VideoLibrary.GetMovies(filter).ConfigureAwait(False)
+                Catch ex As Exception
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                    Return Nothing
+                End Try
+            Else
+                logger.Error(String.Format("[APIKodi] [{0}] SearchMovie: ""{1}"" | Source not mapped!", _currenthost.Label, tDBElement.Source.Path))
+                Return Nothing
+            End If
+
+            If kMovies IsNot Nothing Then
+                If kMovies.movies IsNot Nothing Then
+                    If kMovies.movies.Count = 1 Then
+                        logger.Trace(String.Format("[APIKodi] [{0}] SearchMovie: ""{1}"" | OK, found in host database! [ID:{2}]", _currenthost.Label, tDBElement.Filename, kMovies.movies.Item(0).movieid))
+                        Return kMovies.movies.Item(0)
+                    ElseIf kMovies.movies.Count > 1 Then
+                        logger.Warn(String.Format("[APIKodi] [{0}] SearchMovie: ""{1}"" | MORE THAN ONE movie found in host database!", _currenthost.Label, tDBElement.Filename))
+                        Return Nothing
+                    Else
+                        logger.Warn(String.Format("[APIKodi] [{0}] SearchMovie: ""{1}"" | NOT found in host database!", _currenthost.Label, tDBElement.Filename))
+                        Return Nothing
+                    End If
+                Else
+                    logger.Warn(String.Format("[APIKodi] [{0}] SearchMovie: ""{1}"" | NOT found in host database!", _currenthost.Label, tDBElement.Filename))
+                    Return Nothing
+                End If
+            Else
+                logger.Error(String.Format("[APIKodi] [{0}] SearchMovie: ""{1}"" | No connection to Host!", _currenthost.Label, tDBElement.Filename))
+                Return Nothing
+            End If
+        End Function
+
+        Private Async Function SearchMovieSet(ByVal tDBElement As Database.DBElement) As Task(Of Video.Details.MovieSet)
             'get a list of all moviesets saved in Kodi DB
             Dim kMovieSets As VideoLibrary.GetMovieSetsResponse = Await GetAllMovieSets().ConfigureAwait(False)
 
@@ -536,246 +665,205 @@ Namespace Kodi
 
                     'compare by movieset title
                     For Each tMovieSet In kMovieSets.sets
-                        If tMovieSet.title.ToLower = DBMovieSet.MovieSet.Title.ToLower Then
-                            logger.Trace(String.Format("[APIKodi] [{0}] SearchMovieSetByDetails: ""{1}"" | OK, found in host database! [ID:{2}]", _currenthost.Label, DBMovieSet.MovieSet.Title, tMovieSet.setid))
+                        If tMovieSet.title.ToLower = tDBElement.MovieSet.Title.ToLower Then
+                            logger.Trace(String.Format("[APIKodi] [{0}] SearchMovieSetByDetails: ""{1}"" | OK, found in host database! [ID:{2}]", _currenthost.Label, tDBElement.MovieSet.Title, tMovieSet.setid))
                             Return tMovieSet
                         End If
                     Next
 
                     'compare by movies inside movieset
-                    For Each tMovie In DBMovieSet.MovieList
-                        logger.Trace(String.Format("[APIKodi] [{0}] SearchMovieSetByDetails: ""{1}"" | NOT found in database, trying to find the movieset by movies...", _currenthost.Label, DBMovieSet.MovieSet.Title))
+                    For Each tMovie In tDBElement.MovieList
+                        logger.Trace(String.Format("[APIKodi] [{0}] SearchMovieSetByDetails: ""{1}"" | NOT found in database, trying to find the movieset by movies...", _currenthost.Label, tDBElement.MovieSet.Title))
                         'search movie ID in Kodi DB
                         Dim MovieID As Integer = -1
-                        Dim KodiMovie = Await SearchByPath_Movie(Directory.GetParent(tMovie.Filename).FullName).ConfigureAwait(False)
-                        If KodiMovie Is Nothing Then
-                            KodiMovie = Await SearchByFilename_Movie(Path.GetFileName(tMovie.Filename)).ConfigureAwait(False)
-                        End If
+                        Dim KodiMovie = Await SearchMovie(tMovie).ConfigureAwait(False)
                         If KodiMovie IsNot Nothing Then
                             For Each tMovieSet In kMovieSets.sets
                                 If tMovieSet.setid = KodiMovie.setid Then
-                                    logger.Trace(String.Format("[APIKodi] [{0}] SearchMovieSetByDetails: ""{1}"" | OK, found in host database by movie ""{2}""! [ID:{3}]", _currenthost.Label, DBMovieSet.MovieSet.Title, KodiMovie.title, tMovieSet.setid))
+                                    logger.Trace(String.Format("[APIKodi] [{0}] SearchMovieSetByDetails: ""{1}"" | OK, found in host database by movie ""{2}""! [ID:{3}]", _currenthost.Label, tDBElement.MovieSet.Title, KodiMovie.title, tMovieSet.setid))
                                     Return tMovieSet
                                 End If
                             Next
                         End If
                     Next
 
-                    logger.Warn(String.Format("[APIKodi] [{0}] SearchMovieSetByDetails: ""{1}"" | NOT found in host database!", _currenthost.Label, DBMovieSet.MovieSet.Title))
+                    logger.Warn(String.Format("[APIKodi] [{0}] SearchMovieSetByDetails: ""{1}"" | NOT found in host database!", _currenthost.Label, tDBElement.MovieSet.Title))
                     Return Nothing
                 Else
-                    logger.Warn(String.Format("[APIKodi] [{0}] SearchMovieSetByDetails: ""{1}"" | NOT found in host database!", _currenthost.Label, DBMovieSet.MovieSet.Title))
+                    logger.Warn(String.Format("[APIKodi] [{0}] SearchMovieSetByDetails: ""{1}"" | NOT found in host database!", _currenthost.Label, tDBElement.MovieSet.Title))
                     Return Nothing
                 End If
             Else
-                logger.Error(String.Format("[APIKodi] [{0}] SearchMovieSetByDetails: ""{1}"" | No connection to Host!", _currenthost.Label, DBMovieSet.MovieSet.Title))
+                logger.Error(String.Format("[APIKodi] [{0}] SearchMovieSetByDetails: ""{1}"" | No connection to Host!", _currenthost.Label, tDBElement.MovieSet.Title))
                 Return Nothing
             End If
         End Function
-        ''' <summary>
-        ''' Search a episode by various details
-        ''' </summary>
-        ''' <param name="LocalPath_TVShow">Full TVShow path</param>
-        ''' <param name="LocalPath_Filename">FullPath of Filename with extension</param>
-        ''' <param name="Season">Season number of episode</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Async Function SearchByDetails_TVEpisode(ByVal strLocalPath_TVShow As String, ByVal strLocalPath_Filename As String, ByVal intSeason As Integer, ByVal intEpisode As Integer) As Task(Of XBMCRPC.Video.Details.Episode)
-            Dim KodiTVShow = Await SearchByPath_TVShow(strLocalPath_TVShow).ConfigureAwait(False)
-            Dim ShowID As Integer = -1
-            If Not KodiTVShow Is Nothing Then
-                ShowID = KodiTVShow.tvshowid
-            End If
-            If Not ShowID > -1 Then
-                logger.Warn(String.Format("[APIKodi] [{0}] SearchTVEpisodeByDetails: ""{1}"" | NOT found in host database!", _currenthost.Label, strLocalPath_Filename))
+
+        Private Async Function SearchTVEpisode(ByVal tDBElement As Database.DBElement) As Task(Of Video.Details.Episode)
+            If _kodi Is Nothing Then
+                logger.Error("[APIKodi] SearchTVEpisode: No host initialized! Abort!")
                 Return Nothing
             End If
 
-            Dim strRemotePath As String = GetRemotePath(Directory.GetParent(strLocalPath_Filename).FullName)
+            Dim KodiTVShow = Await SearchTVShow(tDBElement).ConfigureAwait(False)
+            Dim ShowID As Integer = -1
+            If KodiTVShow IsNot Nothing Then
+                ShowID = KodiTVShow.tvshowid
+            End If
+            If ShowID = -1 Then
+                logger.Warn(String.Format("[APIKodi] [{0}] SearchTVEpisode: ""{1}"" | TV Show NOT found in host database!", _currenthost.Label, tDBElement.ShowPath))
+                Return Nothing
+            End If
+
+            Dim kTVEpisodes As VideoLibrary.GetEpisodesResponse
+
+            Dim tPathAndFilename As PathAndFilename = GetPathAndFilename(tDBElement)
+            Dim strFilename As String = tPathAndFilename.strFilename
+            Dim strRemotePath As String = GetRemotePath(tPathAndFilename.strPath)
 
             If Not String.IsNullOrEmpty(strRemotePath) Then
-                'get a list of all episodes saved in Kodi DB by Path
-                Dim kTVEpisodes As VideoLibrary.GetEpisodesResponse = Await GetAllTVEpisodesByDetails(strRemotePath, strLocalPath_Filename, ShowID, intSeason, intEpisode).ConfigureAwait(False)
+                Try
+                    Dim filter As New List.Filter.EpisodesAnd With {.and = New List(Of Object)}
+                    Dim filterRule_Path As New List.Filter.Rule.Episodes
+                    filterRule_Path.field = List.Filter.Fields.Episodes.path
+                    filterRule_Path.Operator = List.Filter.Operators.Is
+                    filterRule_Path.value = strRemotePath
+                    filter.and.Add(filterRule_Path)
+                    Dim filterRule_Filename As New List.Filter.Rule.Episodes
+                    filterRule_Filename.field = List.Filter.Fields.Episodes.filename
+                    filterRule_Filename.Operator = List.Filter.Operators.Is
+                    filterRule_Filename.value = Path.GetFileName(strFilename)
+                    filter.and.Add(filterRule_Filename)
 
-                If kTVEpisodes IsNot Nothing Then
-                    If kTVEpisodes.episodes IsNot Nothing Then
-                        If kTVEpisodes.episodes.Count = 1 Then
-                            logger.Trace(String.Format("[APIKodi] [{0}] SearchTVEpisodeByDetails: ""{1}"" | OK, found in host database! [ID:{2}]", _currenthost.Label, strLocalPath_Filename, kTVEpisodes.episodes.Item(0).episodeid))
-                            Return kTVEpisodes.episodes.Item(0)
-                        ElseIf kTVEpisodes.episodes.Count > 1 Then
-                            'try to filter MultiEpisode files
-                            Dim sEpisode = kTVEpisodes.episodes.Where(Function(f) f.episode = intEpisode)
-                            If sEpisode.Count = 1 Then
-                                Return sEpisode(0)
-                            ElseIf sEpisode.Count > 1 Then
-                                logger.Warn(String.Format("[APIKodi] [{0}] SearchTVEpisodeByDetails: ""{1}"" | MORE THAN ONE episode found in host database!", _currenthost.Label, strLocalPath_Filename))
-                                Return Nothing
-                            Else
-                                logger.Warn(String.Format("[APIKodi] [{0}] SearchTVEpisodeByDetails: ""{1}"" | NOT found in host database!", _currenthost.Label, strLocalPath_Filename))
-                                Return Nothing
-                            End If
+                    kTVEpisodes = Await _kodi.VideoLibrary.GetEpisodes(filter, ShowID, tDBElement.TVEpisode.Season, Video.Fields.Episode.AllFields).ConfigureAwait(False)
+                Catch ex As Exception
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                    Return Nothing
+                End Try
+            Else
+                logger.Error(String.Format("[APIKodi] [{0}] SearchTVEpisode: ""{1}"" | Source not mapped!", _currenthost.Label, tDBElement.Source.Path))
+                Return Nothing
+            End If
+
+            If kTVEpisodes IsNot Nothing Then
+                If kTVEpisodes.episodes IsNot Nothing Then
+                    If kTVEpisodes.episodes.Count = 1 Then
+                        logger.Trace(String.Format("[APIKodi] [{0}] SearchTVEpisode: ""{1}"" | OK, found in host database! [ID:{2}]", _currenthost.Label, tDBElement.Filename, kTVEpisodes.episodes.Item(0).episodeid))
+                        Return kTVEpisodes.episodes.Item(0)
+                    ElseIf kTVEpisodes.episodes.Count > 1 Then
+                        'try to filter MultiEpisode files
+                        Dim sEpisode = kTVEpisodes.episodes.Where(Function(f) f.episode = tDBElement.TVEpisode.Episode)
+                        If sEpisode.Count = 1 Then
+                            Return sEpisode(0)
+                        ElseIf sEpisode.Count > 1 Then
+                            logger.Warn(String.Format("[APIKodi] [{0}] SearchTVEpisode: ""{1}"" | MORE THAN ONE episode found in host database!", _currenthost.Label, tDBElement.Filename))
+                            Return Nothing
                         Else
-                            logger.Warn(String.Format("[APIKodi] [{0}] SearchTVEpisodeByDetails: ""{1}"" | NOT found in host database!", _currenthost.Label, strLocalPath_Filename))
+                            logger.Warn(String.Format("[APIKodi] [{0}] SearchTVEpisode: ""{1}"" | NOT found in host database!", _currenthost.Label, tDBElement.Filename))
                             Return Nothing
                         End If
                     Else
-                        logger.Warn(String.Format("[APIKodi] [{0}] SearchTVEpisodeByDetails: ""{1}"" | NOT found in host database!", _currenthost.Label, strLocalPath_Filename))
+                        logger.Warn(String.Format("[APIKodi] [{0}] SearchTVEpisode: ""{1}"" | NOT found in host database!", _currenthost.Label, tDBElement.Filename))
                         Return Nothing
                     End If
                 Else
-                    logger.Error(String.Format("[APIKodi] [{0}] SearchTVEpisodeByDetails: ""{1}"" | No connection to Host!", _currenthost.Label, strLocalPath_Filename))
+                    logger.Warn(String.Format("[APIKodi] [{0}] SearchTVEpisode: ""{1}"" | NOT found in host database!", _currenthost.Label, tDBElement.Filename))
                     Return Nothing
                 End If
             Else
-                logger.Error(String.Format("[APIKodi] [{0}] SearchTVEpisodeByDetails: ""{1}"" | Source not mapped!", _currenthost.Label, strLocalPath_Filename))
+                logger.Error(String.Format("[APIKodi] [{0}] SearchTVEpisode: ""{1}"" | No connection to Host!", _currenthost.Label, tDBElement.Filename))
                 Return Nothing
             End If
         End Function
 
-        Public Async Function SearchByDetails_TVSeason(ByVal strLocalPath_TVShow As String, ByVal intSeason As Integer) As Task(Of XBMCRPC.Video.Details.Season)
-            Dim KodiTVShow = Await SearchByPath_TVShow(strLocalPath_TVShow).ConfigureAwait(False)
+        Private Async Function SearchTVSeason(ByVal tDBElement As Database.DBElement) As Task(Of Video.Details.Season)
+            If _kodi Is Nothing Then
+                logger.Error("[APIKodi] SearchTVSeason: No host initialized! Abort!")
+                Return Nothing
+            End If
+
+            Dim KodiTVShow = Await SearchTVShow(tDBElement).ConfigureAwait(False)
             Dim ShowID As Integer = -1
-            If Not KodiTVShow Is Nothing Then
+            If KodiTVShow IsNot Nothing Then
                 ShowID = KodiTVShow.tvshowid
             End If
-            If ShowID < 1 Then
-                logger.Warn(String.Format("[APIKodi] [{0}] SearchTVSeasonByDetails: ""{1}: Season {2}"" | NOT found in host database!", _currenthost.Label, strLocalPath_TVShow, intSeason))
+            If ShowID = -1 Then
+                logger.Warn(String.Format("[APIKodi] [{0}] SearchTVSeason: ""{1}: Season {2}"" | NOT found in host database!", _currenthost.Label, tDBElement.ShowPath, tDBElement.TVSeason.Season))
                 Return Nothing
             End If
 
             'get a list of all seasons saved in Kodi DB by ShowID
-            Dim kTVSeasons As VideoLibrary.GetSeasonsResponse = Await GetAllTVSeasonsByShowID(ShowID).ConfigureAwait(False)
+            Dim kTVSeasons As VideoLibrary.GetSeasonsResponse = Await GetAllTVSeasons(ShowID).ConfigureAwait(False)
 
             If kTVSeasons IsNot Nothing Then
                 If kTVSeasons.seasons IsNot Nothing Then
-                    Dim result = kTVSeasons.seasons.FirstOrDefault(Function(f) f.season = If(intSeason = 999, -1, intSeason))
+                    Dim result = kTVSeasons.seasons.FirstOrDefault(Function(f) f.season = If(tDBElement.TVSeason.Season = 999, -1, tDBElement.TVSeason.Season))
                     If result IsNot Nothing Then
-                        logger.Trace(String.Format("[APIKodi] [{0}] SearchTVSeasonByDetails: ""{1}: Season {2}"" | OK, found in host database! [ID:{3}]", _currenthost.Label, strLocalPath_TVShow, intSeason, result.seasonid))
+                        logger.Trace(String.Format("[APIKodi] [{0}] SearchTVSeason: ""{1}: Season {2}"" | OK, found in host database! [ID:{3}]", _currenthost.Label, tDBElement.ShowPath, tDBElement.TVSeason.Season, result.seasonid))
                         Return result
                     Else
-                        logger.Warn(String.Format("[APIKodi] [{0}] SearchTVSeasonByDetails: ""{1}: Season {2}"" | NOT found in host database!", _currenthost.Label, strLocalPath_TVShow, intSeason))
+                        logger.Warn(String.Format("[APIKodi] [{0}] SearchTVSeason: ""{1}: Season {2}"" | NOT found in host database!", _currenthost.Label, tDBElement.ShowPath, tDBElement.TVSeason.Season))
                         Return Nothing
                     End If
                 Else
-                    logger.Warn(String.Format("[APIKodi] [{0}] SearchTVSeasonByDetails: ""{1}: Season {2}"" | NOT found in host database!", _currenthost.Label, strLocalPath_TVShow, intSeason))
+                    logger.Warn(String.Format("[APIKodi] [{0}] SearchTVSeason: ""{1}: Season {2}"" | NOT found in host database!", _currenthost.Label, tDBElement.ShowPath, tDBElement.TVSeason.Season))
                     Return Nothing
                 End If
             Else
-                logger.Error(String.Format("[APIKodi] [{0}] SearchTVSeasonByDetails: ""{1}: Season {2}"" | No connection to Host!", _currenthost.Label, strLocalPath_TVShow, intSeason))
+                logger.Error(String.Format("[APIKodi] [{0}] SearchTVSeason: ""{1}: Season {2}"" | No connection to Host!", _currenthost.Label, tDBElement.ShowPath, tDBElement.TVSeason.Season))
                 Return Nothing
             End If
         End Function
-        ''' <summary>
-        ''' Search a movie by Filename
-        ''' </summary>
-        ''' <param name="Filename">Filename with extension</param>
-        ''' <returns></returns>
-        ''' <remarks>Don't use it with non-unique filenames like "VIDEO_TS.*"</remarks>
-        Public Async Function SearchByFilename_Movie(ByVal strFilename As String) As Task(Of XBMCRPC.Video.Details.Movie)
-            'get a list of all movies saved in Kodi DB by Filename
-            Dim kMovies As VideoLibrary.GetMoviesResponse = Await GetAllMoviesByFilename(strFilename).ConfigureAwait(False)
 
-            If kMovies IsNot Nothing Then
-                If kMovies.movies IsNot Nothing Then
-                    If kMovies.movies.Count = 1 Then
-                        logger.Trace(String.Format("[APIKodi] [{0}] SearchMovieByFilename: ""{1}"" | OK, found in host database! [ID:{2}]", _currenthost.Label, strFilename, kMovies.movies.Item(0).movieid))
-                        Return kMovies.movies.Item(0)
-                    ElseIf kMovies.movies.Count > 1 Then
-                        'TODO: add some comparisons to find the correct movie like:
-                        'path, IMDB ID, year ...
-                        logger.Warn(String.Format("[APIKodi] [{0}] SearchMovieByFilename: ""{1}"" | MORE THAN ONE movie found in host database!", _currenthost.Label, strFilename))
-                        Return Nothing
-                    Else
-                        logger.Warn(String.Format("[APIKodi] [{0}] SearchMovieByFilename: ""{1}"" | NOT found in host database!", _currenthost.Label, strFilename))
-                        Return Nothing
-                    End If
-                Else
-                    logger.Warn(String.Format("[APIKodi] [{0}] SearchMovieByFilename: ""{1}"" | NOT found in host database!", _currenthost.Label, strFilename))
-                    Return Nothing
-                End If
-            Else
-                logger.Error(String.Format("[APIKodi] [{0}] SearchMovieByFilename: ""{1}"" | No connection to Host!", _currenthost.Label, strFilename))
+        Private Async Function SearchTVShow(ByVal tDBElement As Database.DBElement) As Task(Of Video.Details.TVShow)
+            If _kodi Is Nothing Then
+                logger.Error("[APIKodi] SearchTVShow: No host initialized! Abort!")
                 Return Nothing
             End If
-        End Function
-        ''' <summary>
-        ''' Search a movie by path
-        ''' </summary>
-        ''' <param name="LocalPath">Full parent path of video file</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Async Function SearchByPath_Movie(ByVal strLocalPath As String) As Task(Of XBMCRPC.Video.Details.Movie)
-            Dim strRemotePath As String = GetRemotePath(strLocalPath)
+
+            Dim kTVShows As VideoLibrary.GetTVShowsResponse
+
+            Dim tPathAndFilename As PathAndFilename = GetPathAndFilename(tDBElement, Enums.ContentType.TVShow)
+            Dim strRemotePath As String = GetRemotePath(tPathAndFilename.strPath)
 
             If Not String.IsNullOrEmpty(strRemotePath) Then
-                'get a list of all movies saved in Kodi DB by Path
-                Dim kMovies As VideoLibrary.GetMoviesResponse = Await GetAllMoviesByPath(strRemotePath).ConfigureAwait(False)
+                Try
+                    Dim filter As New List.Filter.TVShowsOr With {.or = New List(Of Object)}
+                    Dim filterRule As New List.Filter.Rule.TVShows
+                    filterRule.field = List.Filter.Fields.TVShows.path
+                    filterRule.Operator = List.Filter.Operators.Is
+                    filterRule.value = strRemotePath
+                    filter.or.Add(filterRule)
 
-                If kMovies IsNot Nothing Then
-                    If kMovies.movies IsNot Nothing Then
-                        If kMovies.movies.Count = 1 Then
-                            logger.Trace(String.Format("[APIKodi] [{0}] SearchMovieByPath: ""{1}"" | OK, found in host database! [ID:{2}]", _currenthost.Label, strLocalPath, kMovies.movies.Item(0).movieid))
-                            Return kMovies.movies.Item(0)
-                        ElseIf kMovies.movies.Count > 1 Then
-                            'TODO: add some comparisons to find the correct movie like:
-                            'path, IMDB ID, year ...
-                            'or try to search movie by filename
-                            logger.Warn(String.Format("[APIKodi] [{0}] SearchMovieByPath: ""{1}"" | MORE THAN ONE movie found in host database!", _currenthost.Label, strLocalPath))
-                            Return Nothing
-                        Else
-                            logger.Warn(String.Format("[APIKodi] [{0}] SearchMovieByPath: ""{1}"" | NOT found in host database!", _currenthost.Label, strLocalPath))
-                            Return Nothing
-                        End If
-                    Else
-                        logger.Warn(String.Format("[APIKodi] [{0}] SearchMovieByPath: ""{1}"" | NOT found in host database!", _currenthost.Label, strLocalPath))
-                        Return Nothing
-                    End If
-                Else
-                    logger.Error(String.Format("[APIKodi] [{0}] SearchMovieByPath: ""{1}"" | No connection to Host!", _currenthost.Label, strLocalPath))
+                    kTVShows = Await _kodi.VideoLibrary.GetTVShows(filter).ConfigureAwait(False)
+
+                Catch ex As Exception
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
                     Return Nothing
-                End If
+                End Try
             Else
-                logger.Error(String.Format("[APIKodi] [{0}] SearchMovieByPath: ""{1}"" | Source not mapped!", _currenthost.Label, strLocalPath))
+                logger.Error(String.Format("[APIKodi] [{0}] SearchTVShow: ""{1}"" | Source not mapped!", _currenthost.Label, tDBElement.Source.Path))
                 Return Nothing
             End If
-        End Function
-        ''' <summary>
-        ''' Search a tv show by tv show path
-        ''' </summary>
-        ''' <param name="LocalPath">Full tv show path</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Async Function SearchByPath_TVShow(ByVal strLocalPath As String) As Task(Of XBMCRPC.Video.Details.TVShow)
-            Dim strRemotePath As String = GetRemotePath(strLocalPath)
 
-            If Not String.IsNullOrEmpty(strRemotePath) Then
-                'get a list of all tv shows saved in Kodi DB by Path
-                Dim kTVShows As VideoLibrary.GetTVShowsResponse = Await GetAllTVShowsByPath(strRemotePath).ConfigureAwait(False)
-
-                If kTVShows IsNot Nothing Then
-                    If kTVShows.tvshows IsNot Nothing Then
-                        If kTVShows.tvshows.Count = 1 Then
-                            logger.Trace(String.Format("[APIKodi] [{0}] SearchTVShowByPath: ""{1}"" | OK, found in host database! [ID:{2}]", _currenthost.Label, strLocalPath, kTVShows.tvshows.Item(0).tvshowid))
-                            Return kTVShows.tvshows.Item(0)
-                        ElseIf kTVShows.tvshows.Count > 1 Then
-                            'TODO: add some comparisons to find the correct tv show like:
-                            'TMDB ID, ...
-                            logger.Warn(String.Format("[APIKodi] [{0}] SearchTVShowByPath: ""{1}"" | MORE THAN ONE tv show found in host database!", _currenthost.Label, strLocalPath))
-                            Return Nothing
-                        Else
-                            logger.Warn(String.Format("[APIKodi] [{0}] SearchTVShowByPath: ""{1}"" | NOT found in host database!", _currenthost.Label, strLocalPath))
-                            Return Nothing
-                        End If
+            If kTVShows IsNot Nothing Then
+                If kTVShows.tvshows IsNot Nothing Then
+                    If kTVShows.tvshows.Count = 1 Then
+                        logger.Trace(String.Format("[APIKodi] [{0}] SearchTVShow: ""{1}"" | OK, found in host database! [ID:{2}]", _currenthost.Label, tDBElement.ShowPath, kTVShows.tvshows.Item(0).tvshowid))
+                        Return kTVShows.tvshows.Item(0)
+                    ElseIf kTVShows.tvshows.Count > 1 Then
+                        logger.Warn(String.Format("[APIKodi] [{0}] SearchTVShow: ""{1}"" | MORE THAN ONE tv show found in host database!", _currenthost.Label, tDBElement.ShowPath))
+                        Return Nothing
                     Else
-                        logger.Warn(String.Format("[APIKodi] [{0}] SearchTVShowByPath: ""{1}"" | NOT found in host database!", _currenthost.Label, strLocalPath))
+                        logger.Warn(String.Format("[APIKodi] [{0}] SearchTVShow: ""{1}"" | NOT found in host database!", _currenthost.Label, tDBElement.ShowPath))
                         Return Nothing
                     End If
                 Else
-                    logger.Error(String.Format("[APIKodi] [{0}] SearchTVShowByPath: ""{1}"" | No connection to Host!", _currenthost.Label, strLocalPath))
+                    logger.Warn(String.Format("[APIKodi] [{0}] SearchTVShow: ""{1}"" | NOT found in host database!", _currenthost.Label, tDBElement.ShowPath))
                     Return Nothing
                 End If
             Else
-                logger.Error(String.Format("[APIKodi] [{0}] SearchTVShowByPath: ""{1}"" | Source not mapped!", _currenthost.Label, strLocalPath))
+                logger.Error(String.Format("[APIKodi] [{0}] SearchTVShow: ""{1}"" | No connection to Host!", _currenthost.Label, tDBElement.ShowPath))
                 Return Nothing
             End If
         End Function
@@ -801,49 +889,38 @@ Namespace Kodi
         ''' updates all movie fields which are filled/set in Ember (also paths of images)
         ''' at the moment the movie to update on host is identified by searching and comparing filename of movie(special handling for DVDs/Blurays), meaning there might be problems when filename is appearing more than once in movie library
         ''' </remarks>
-        Public Async Function UpdateInfo_Movie(ByVal lngMovieID As Long, ByVal blnSendHostNotification As Boolean, ByVal blnSyncPlayCount As Boolean) As Task(Of Boolean)
+        Public Async Function UpdateInfo_Movie(ByVal lngMovieID As Long, ByVal blnSendHostNotification As Boolean, ByVal blnSyncPlayCount As Boolean, ByVal GenericSubEvent As IProgress(Of GenericSubEventCallBackAsync), ByVal GenericMainEvent As IProgress(Of GenericEventCallBackAsync)) As Task(Of Boolean)
             If _kodi Is Nothing Then
                 logger.Error("[APIKodi] UpdateMovieInfo: No host initialized! Abort!")
                 Return False
             End If
 
-            Dim blnNeedSave As Boolean = False
-            Dim isNew As Boolean = False
+            Dim bNeedSave As Boolean = False
+            Dim bIsNew As Boolean = False
             Dim uMovie As Database.DBElement = Master.DB.LoadMovieFromDB(lngMovieID)
 
             Try
                 logger.Trace(String.Format("[APIKodi] [{0}] UpdateMovieInfo: ""{1}"" | Start syncing process...", _currenthost.Label, uMovie.Movie.Title))
 
-                'search movie ID in Kodi DB
-                Dim KodiID As Integer = -1
-                Dim KodiMovie As XBMCRPC.Video.Details.Movie = Await SearchByPath_Movie(Directory.GetParent(uMovie.Filename).FullName).ConfigureAwait(False)
-                If KodiMovie Is Nothing Then
-                    KodiMovie = Await SearchByFilename_Movie(Path.GetFileName(uMovie.Filename)).ConfigureAwait(False)
-                End If
-                If KodiMovie IsNot Nothing Then
-                    KodiID = KodiMovie.movieid
-                End If
+                'search Movie ID in Kodi DB
+                Dim KodiElement As Video.Details.Movie = Await GetFullDetailsByID_Movie(Await GetMediaID(uMovie))
 
-                'movie isn't in database of host -> scan directory
-                If KodiID = -1 Then
+                If KodiElement Is Nothing Then
                     logger.Trace(String.Format("[APIKodi] [{0}] UpdateMovieInfo: ""{1}"" | NOT found in database, scan directory on host...", _currenthost.Label, uMovie.Movie.Title))
-                    Await VideoLibrary_ScanPath(lngMovieID, Enums.ContentType.Movie).ConfigureAwait(False)
-                    'wait a bit before trying going on, as scan might take a while on Kodi...
-                    Threading.Thread.Sleep(1000) 'TODO better solution for this?!
-                    KodiMovie = Await SearchByPath_Movie(Directory.GetParent(uMovie.Filename).FullName).ConfigureAwait(False)
-                    If KodiMovie IsNot Nothing Then
-                        isNew = True
-                        KodiID = KodiMovie.movieid
-                    End If
+                    Await VideoLibrary_ScanPath(uMovie).ConfigureAwait(False)
+                    While Await IsScanningVideo()
+                        Threading.Thread.Sleep(1000)
+                    End While
+                    KodiElement = Await GetFullDetailsByID_Movie(Await GetMediaID(uMovie))
+                    If KodiElement IsNot Nothing Then bIsNew = True
                 End If
 
-
-                If KodiID > -1 Then
+                If KodiElement IsNot Nothing Then
                     'check if we have to retrieve the PlayCount from Kodi
-                    If blnSyncPlayCount AndAlso Not uMovie.Movie.PlayCount = KodiMovie.playcount Then
-                        uMovie.Movie.PlayCount = KodiMovie.playcount
-                        uMovie.Movie.LastPlayed = KodiMovie.lastplayed
-                        blnNeedSave = True
+                    If blnSyncPlayCount AndAlso Not uMovie.Movie.PlayCount = KodiElement.playcount Then
+                        uMovie.Movie.PlayCount = KodiElement.playcount
+                        uMovie.Movie.LastPlayed = KodiElement.lastplayed
+                        bNeedSave = True
                     End If
 
                     'string or string.empty
@@ -875,7 +952,10 @@ Namespace Kodi
                     'integer or 0
                     Dim mPlaycount As Integer = If(uMovie.Movie.PlayCountSpecified, uMovie.Movie.PlayCount, 0)
                     Dim mRating As Double = If(uMovie.Movie.RatingSpecified, CType(Double.Parse(uMovie.Movie.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture), Double), 0)
-                    Dim mRuntime As Integer = If(uMovie.Movie.RuntimeSpecified, CType(uMovie.Movie.Runtime, Integer), 0) * 60 'API requires runtime in seconds
+                    Dim mRuntime As Integer = 0
+                    If uMovie.Movie.RuntimeSpecified AndAlso Integer.TryParse(uMovie.Movie.Runtime, 0) Then
+                        mRuntime = CType(uMovie.Movie.Runtime, Integer) * 60 'API requires runtime in seconds
+                    End If
                     Dim mTop250 As Integer = If(uMovie.Movie.Top250Specified, CType(uMovie.Movie.Top250, Integer), 0)
                     Dim mYear As Integer = If(uMovie.Movie.YearSpecified, CType(uMovie.Movie.Year, Integer), 0)
 
@@ -900,19 +980,19 @@ Namespace Kodi
 
 
                     'string or null/nothing
-                    Dim mBanner As String = If(Not String.IsNullOrEmpty(uMovie.ImagesContainer.Banner.LocalFilePath), _
+                    Dim mBanner As String = If(uMovie.ImagesContainer.Banner.LocalFilePathSpecified,
                                                   GetRemotePath(uMovie.ImagesContainer.Banner.LocalFilePath), Nothing)
-                    Dim mClearArt As String = If(Not String.IsNullOrEmpty(uMovie.ImagesContainer.ClearArt.LocalFilePath), _
+                    Dim mClearArt As String = If(uMovie.ImagesContainer.ClearArt.LocalFilePathSpecified,
                                                   GetRemotePath(uMovie.ImagesContainer.ClearArt.LocalFilePath), Nothing)
-                    Dim mClearLogo As String = If(Not String.IsNullOrEmpty(uMovie.ImagesContainer.ClearLogo.LocalFilePath), _
+                    Dim mClearLogo As String = If(uMovie.ImagesContainer.ClearLogo.LocalFilePathSpecified,
                                                   GetRemotePath(uMovie.ImagesContainer.ClearLogo.LocalFilePath), Nothing)
-                    Dim mDiscArt As String = If(Not String.IsNullOrEmpty(uMovie.ImagesContainer.DiscArt.LocalFilePath), _
+                    Dim mDiscArt As String = If(uMovie.ImagesContainer.DiscArt.LocalFilePathSpecified,
                                                   GetRemotePath(uMovie.ImagesContainer.DiscArt.LocalFilePath), Nothing)
-                    Dim mFanart As String = If(Not String.IsNullOrEmpty(uMovie.ImagesContainer.Fanart.LocalFilePath), _
+                    Dim mFanart As String = If(uMovie.ImagesContainer.Fanart.LocalFilePathSpecified,
                                                  GetRemotePath(uMovie.ImagesContainer.Fanart.LocalFilePath), Nothing)
-                    Dim mLandscape As String = If(Not String.IsNullOrEmpty(uMovie.ImagesContainer.Landscape.LocalFilePath), _
+                    Dim mLandscape As String = If(uMovie.ImagesContainer.Landscape.LocalFilePathSpecified,
                                                   GetRemotePath(uMovie.ImagesContainer.Landscape.LocalFilePath), Nothing)
-                    Dim mPoster As String = If(Not String.IsNullOrEmpty(uMovie.ImagesContainer.Poster.LocalFilePath), _
+                    Dim mPoster As String = If(uMovie.ImagesContainer.Poster.LocalFilePathSpecified,
                                                   GetRemotePath(uMovie.ImagesContainer.Poster.LocalFilePath), Nothing)
 
                     'all image paths will be set in artwork object
@@ -926,30 +1006,30 @@ Namespace Kodi
                     artwork.poster = mPoster
                     'artwork.thumb = mPoster ' not supported in Ember?!
 
-                    Dim response = Await _kodi.VideoLibrary.SetMovieDetails(KodiID, _
-                                                                        title:=mTitle, _
-                                                                        playcount:=mPlaycount, _
-                                                                        runtime:=mRuntime, _
-                                                                        director:=mDirectorList, _
-                                                                        studio:=mStudioList, _
-                                                                        year:=mYear, _
-                                                                        plot:=mPlot, _
-                                                                        genre:=mGenreList, _
-                                                                        rating:=mRating, _
-                                                                        mpaa:=mMPAA, _
-                                                                        imdbnumber:=mImdbnumber, _
-                                                                        votes:=mVotes, _
-                                                                        lastplayed:=mLastPlayed, _
-                                                                        originaltitle:=mOriginalTitle, _
-                                                                        trailer:=mTrailer, _
-                                                                        tagline:=mTagline, _
-                                                                        plotoutline:=mOutline, _
-                                                                        writer:=mWriterList, _
-                                                                        country:=mCountryList, _
-                                                                        top250:=mTop250, _
-                                                                        sorttitle:=mSortTitle, _
-                                                                        set:=mSet, _
-                                                                        tag:=mTagList, _
+                    Dim response = Await _kodi.VideoLibrary.SetMovieDetails(KodiElement.movieid,
+                                                                        title:=mTitle,
+                                                                        playcount:=mPlaycount,
+                                                                        runtime:=mRuntime,
+                                                                        director:=mDirectorList,
+                                                                        studio:=mStudioList,
+                                                                        year:=mYear,
+                                                                        plot:=mPlot,
+                                                                        genre:=mGenreList,
+                                                                        rating:=mRating,
+                                                                        mpaa:=mMPAA,
+                                                                        imdbnumber:=mImdbnumber,
+                                                                        votes:=mVotes,
+                                                                        lastplayed:=mLastPlayed,
+                                                                        originaltitle:=mOriginalTitle,
+                                                                        trailer:=mTrailer,
+                                                                        tagline:=mTagline,
+                                                                        plotoutline:=mOutline,
+                                                                        writer:=mWriterList,
+                                                                        country:=mCountryList,
+                                                                        top250:=mTop250,
+                                                                        sorttitle:=mSortTitle,
+                                                                        set:=mSet,
+                                                                        tag:=mTagList,
                                                                         art:=artwork).ConfigureAwait(False)
                     'not supported right now in Ember
                     'showlink:=mshowlink, _     
@@ -963,18 +1043,21 @@ Namespace Kodi
                         Return False
                     Else
                         'Remove old textures (cache)
-                        Dim resTextures = Await RemoveTextures(Directory.GetParent(uMovie.NfoPath).FullName)
+                        Await RemoveTextures(uMovie)
 
                         'Send message to Kodi?
                         If blnSendHostNotification = True Then
-                            Await SendMessage("Ember Media Manager", If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": " & uMovie.Movie.Title).ConfigureAwait(False)
+                            Await SendMessage("Ember Media Manager", If(bIsNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": " & uMovie.Movie.Title).ConfigureAwait(False)
                         End If
-                        If blnNeedSave Then
+                        If bNeedSave Then
                             logger.Trace(String.Format("[APIKodi] [{0}] UpdateMovieInfo: ""{1}"" | Save Playcount from host", _currenthost.Label, uMovie.Movie.Title))
                             Master.DB.SaveMovieToDB(uMovie, False, False, True, False)
-                            'RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {uMovie.ID}))
+                            GenericSubEvent.Report(New GenericSubEventCallBackAsync With {
+                                                   .tGenericEventCallBackAsync = New GenericEventCallBackAsync With
+                                                   {.tEventType = Enums.ModuleEventType.AfterEdit_Movie, .tParams = New List(Of Object)(New Object() {uMovie.ID})},
+                                                   .tProgress = GenericMainEvent})
                         End If
-                        logger.Trace(String.Format("[APIKodi] [{0}] UpdateMovieInfo: ""{1}"" | {2} on host", _currenthost.Label, uMovie.Movie.Title, If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated"))))
+                        logger.Trace(String.Format("[APIKodi] [{0}] UpdateMovieInfo: ""{1}"" | {2} on host", _currenthost.Label, uMovie.Movie.Title, If(bIsNew, "Added", "Updated")))
                         Return True
                     End If
                 Else
@@ -1003,44 +1086,43 @@ Namespace Kodi
                 Return False
             End If
 
-            Dim isNew As Boolean = False
+            Dim bIsNew As Boolean = False
             Dim uMovieset As Database.DBElement = Master.DB.LoadMovieSetFromDB(lngMovieSetID)
 
             Try
                 logger.Trace(String.Format("[APIKodi] [{0}] UpdateMovieSetInfo: ""{1}"" | Start syncing process...", _currenthost.Label, uMovieset.MovieSet.Title))
 
-                'search movieset ID in Kodi DB
-                Dim KodiMovieset As XBMCRPC.Video.Details.MovieSet = Await SearchByDetails_MovieSet(uMovieset).ConfigureAwait(False)
-                Dim KodiID As Integer = -1
-                If KodiMovieset IsNot Nothing Then
-                    KodiID = KodiMovieset.setid
-                End If
+                'search MovieSet ID in Kodi DB
+                Dim KodiElement As Video.Details.MovieSet = Await GetFullDetailsByID_MovieSet(Await GetMediaID(uMovieset))
 
-                'movieset isn't in database of host -> scan directory
-                If KodiID = -1 Then
+                If KodiElement Is Nothing Then
                     logger.Error(String.Format("[APIKodi] [{0}] UpdateMovieSetInfo: ""{1}"" | NOT found on host! Abort!", _currenthost.Label, uMovieset.MovieSet.Title))
                     Return False
                     'what to do in this case?
+                    'Await VideoLibrary_ScanPath(uMovieset).ConfigureAwait(False)
+                    'Threading.Thread.Sleep(2000) 'TODO better solution for this?!
+                    'KodiElement = Await GetFullDetailsByID_MovieSet(Await GetMediaID(uMovieset))
+                    'If KodiElement IsNot Nothing Then bIsNew = True
                 End If
 
-                If KodiID > -1 Then
+                If KodiElement IsNot Nothing Then
                     'string or string.empty
                     Dim mTitle As String = uMovieset.MovieSet.Title
 
                     'string or null/nothing
-                    Dim mBanner As String = If(Not String.IsNullOrEmpty(uMovieset.ImagesContainer.Banner.LocalFilePath), _
+                    Dim mBanner As String = If(uMovieset.ImagesContainer.Banner.LocalFilePathSpecified,
                                                   GetRemotePath_MovieSet(uMovieset.ImagesContainer.Banner.LocalFilePath), Nothing)
-                    Dim mClearArt As String = If(Not String.IsNullOrEmpty(uMovieset.ImagesContainer.ClearArt.LocalFilePath), _
+                    Dim mClearArt As String = If(uMovieset.ImagesContainer.ClearArt.LocalFilePathSpecified,
                                                   GetRemotePath_MovieSet(uMovieset.ImagesContainer.ClearArt.LocalFilePath), Nothing)
-                    Dim mClearLogo As String = If(Not String.IsNullOrEmpty(uMovieset.ImagesContainer.ClearLogo.LocalFilePath), _
+                    Dim mClearLogo As String = If(uMovieset.ImagesContainer.ClearLogo.LocalFilePathSpecified,
                                                   GetRemotePath_MovieSet(uMovieset.ImagesContainer.ClearLogo.LocalFilePath), Nothing)
-                    Dim mDiscArt As String = If(Not String.IsNullOrEmpty(uMovieset.ImagesContainer.DiscArt.LocalFilePath), _
+                    Dim mDiscArt As String = If(uMovieset.ImagesContainer.DiscArt.LocalFilePathSpecified,
                                                   GetRemotePath_MovieSet(uMovieset.ImagesContainer.DiscArt.LocalFilePath), Nothing)
-                    Dim mFanart As String = If(Not String.IsNullOrEmpty(uMovieset.ImagesContainer.Fanart.LocalFilePath), _
+                    Dim mFanart As String = If(uMovieset.ImagesContainer.Fanart.LocalFilePathSpecified,
                                                  GetRemotePath_MovieSet(uMovieset.ImagesContainer.Fanart.LocalFilePath), Nothing)
-                    Dim mLandscape As String = If(Not String.IsNullOrEmpty(uMovieset.ImagesContainer.Landscape.LocalFilePath), _
+                    Dim mLandscape As String = If(uMovieset.ImagesContainer.Landscape.LocalFilePathSpecified,
                                                   GetRemotePath_MovieSet(uMovieset.ImagesContainer.Landscape.LocalFilePath), Nothing)
-                    Dim mPoster As String = If(Not String.IsNullOrEmpty(uMovieset.ImagesContainer.Poster.LocalFilePath), _
+                    Dim mPoster As String = If(uMovieset.ImagesContainer.Poster.LocalFilePathSpecified,
                                                   GetRemotePath_MovieSet(uMovieset.ImagesContainer.Poster.LocalFilePath), Nothing)
 
                     'all image paths will be set in artwork object
@@ -1053,8 +1135,8 @@ Namespace Kodi
                     artwork.landscape = mLandscape
                     artwork.poster = mPoster
 
-                    Dim response = Await _kodi.VideoLibrary.SetMovieSetDetails(KodiID, _
-                                                                        title:=mTitle, _
+                    Dim response = Await _kodi.VideoLibrary.SetMovieSetDetails(KodiElement.setid,
+                                                                        title:=mTitle,
                                                                         art:=artwork).ConfigureAwait(False)
 
 
@@ -1063,13 +1145,13 @@ Namespace Kodi
                         Return False
                     Else
                         'Remove old textures (cache) 'TODO: Limit to images of this MovieSet
-                        Dim resTextures = Await RemoveTextures(_currenthost.MovieSetArtworksPath)
+                        Await RemoveTextures(uMovieset)
 
                         'Send message to Kodi?
                         If blnSendHostNotification = True Then
-                            Await SendMessage("Ember Media Manager", If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": " & uMovieset.MovieSet.Title).ConfigureAwait(False)
+                            Await SendMessage("Ember Media Manager", If(bIsNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": " & uMovieset.MovieSet.Title).ConfigureAwait(False)
                         End If
-                        logger.Trace(String.Format("[APIKodi] [{0}] UpdateMovieSetInfo: ""{1}"" | {2} on host", _currenthost.Label, uMovieset.MovieSet.Title, If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated"))))
+                        logger.Trace(String.Format("[APIKodi] [{0}] UpdateMovieSetInfo: ""{1}"" | {2} on host", _currenthost.Label, uMovieset.MovieSet.Title, If(bIsNew, "Added", "Updated")))
                         Return True
                     End If
                 Else
@@ -1093,45 +1175,50 @@ Namespace Kodi
         ''' updates all episode fields (also pathes of images)
         ''' at the moment episode on host is identified by searching and comparing filename of episode
         ''' </remarks>
-        Public Async Function UpdateInfo_TVEpisode(ByVal lngTVEpisodeID As Long, ByVal blnSendHostNotification As Boolean, ByVal blnSyncPlayCount As Boolean) As Task(Of Boolean)
+        Public Async Function UpdateInfo_TVEpisode(ByVal lngTVEpisodeID As Long, ByVal blnSendHostNotification As Boolean, ByVal blnSyncPlayCount As Boolean, ByVal GenericSubEvent As IProgress(Of GenericSubEventCallBackAsync), ByVal GenericMainEvent As IProgress(Of GenericEventCallBackAsync)) As Task(Of Boolean)
             If _kodi Is Nothing Then
                 logger.Error("[APIKodi] UpdateTVEpisodeInfo: No host initialized! Abort!")
                 Return False
             End If
 
-            Dim needSave As Boolean = False
-            Dim isNew As Boolean = False
+            Dim bNeedSave As Boolean = False
+            Dim bIsNew As Boolean = False
             Dim uEpisode As Database.DBElement = Master.DB.LoadTVEpisodeFromDB(lngTVEpisodeID, True)
 
             Try
                 logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVEpisodeInfo: ""{1}"" | Start syncing process...", _currenthost.Label, uEpisode.TVEpisode.Title))
 
-                'search ID in Kodi DB
-                Dim KodiEpsiode As XBMCRPC.Video.Details.Episode = Await SearchByDetails_TVEpisode(uEpisode.ShowPath, uEpisode.Filename, uEpisode.TVEpisode.Season, uEpisode.TVEpisode.Episode).ConfigureAwait(False)
-                Dim KodiID As Integer = -1
-                If Not KodiEpsiode Is Nothing Then
-                    KodiID = KodiEpsiode.episodeid
-                End If
+                'search TV Episode ID in Kodi DB
+                Dim KodiElement As Video.Details.Episode = Await GetFullDetailsByID_TVEpisode(Await GetMediaID(uEpisode))
 
-                'episode isn't in database of host -> scan directory
-                If KodiID = -1 Then
+                'scan episode path
+                If KodiElement Is Nothing Then
                     logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVEpisodeInfo: ""{1}"" | NOT found in database, scan directory on host...", _currenthost.Label, uEpisode.TVEpisode.Title))
-                    Await VideoLibrary_ScanPath(lngTVEpisodeID, Enums.ContentType.TVEpisode).ConfigureAwait(False)
-                    'wait a bit before trying going on, as scan might take a while on Kodi...
-                    Threading.Thread.Sleep(1000) 'TODO better solution for this?!
-                    KodiEpsiode = Await SearchByDetails_TVEpisode(uEpisode.ShowPath, uEpisode.Filename, uEpisode.TVEpisode.Season, uEpisode.TVEpisode.Episode).ConfigureAwait(False)
-                    If Not KodiEpsiode Is Nothing Then
-                        isNew = True
-                        KodiID = KodiEpsiode.episodeid
-                    End If
+                    Await VideoLibrary_ScanPath(uEpisode).ConfigureAwait(False)
+                    While Await IsScanningVideo()
+                        Threading.Thread.Sleep(1000)
+                    End While
+                    KodiElement = Await GetFullDetailsByID_TVEpisode(Await GetMediaID(uEpisode))
+                    If KodiElement IsNot Nothing Then bIsNew = True
                 End If
 
-                If KodiID > -1 Then
+                'scan tv show path path
+                If KodiElement Is Nothing Then
+                    logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVEpisodeInfo: ""{1}"" | NOT found in database, scan directory on host...", _currenthost.Label, uEpisode.TVEpisode.Title))
+                    Await VideoLibrary_ScanPath(uEpisode, True).ConfigureAwait(False)
+                    While Await IsScanningVideo()
+                        Threading.Thread.Sleep(1000)
+                    End While
+                    KodiElement = Await GetFullDetailsByID_TVEpisode(Await GetMediaID(uEpisode))
+                    If KodiElement IsNot Nothing Then bIsNew = True
+                End If
+
+                If KodiElement IsNot Nothing Then
                     'check if we have to retrieve the PlayCount from Kodi
-                    If blnSyncPlayCount AndAlso Not uEpisode.TVEpisode.Playcount = KodiEpsiode.playcount Then
-                        uEpisode.TVEpisode.Playcount = KodiEpsiode.playcount
-                        uEpisode.TVEpisode.LastPlayed = KodiEpsiode.lastplayed
-                        needSave = True
+                    If blnSyncPlayCount AndAlso Not uEpisode.TVEpisode.Playcount = KodiElement.playcount Then
+                        uEpisode.TVEpisode.Playcount = KodiElement.playcount
+                        uEpisode.TVEpisode.LastPlayed = KodiElement.lastplayed
+                        bNeedSave = True
                     End If
 
                     'string or string.empty
@@ -1154,7 +1241,10 @@ Namespace Kodi
                     'integer or 0
                     Dim mPlaycount As Integer = If(uEpisode.TVEpisode.PlaycountSpecified, CType(uEpisode.TVEpisode.Playcount, Integer), 0)
                     Dim mRating As Double = If(uEpisode.TVEpisode.RatingSpecified, CType(Double.Parse(uEpisode.TVEpisode.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture), Double), 0)
-                    Dim mRuntime As Integer = If(uEpisode.TVEpisode.RuntimeSpecified, CType(uEpisode.TVEpisode.Runtime, Integer), 0) * 60 'API requires runtime in seconds
+                    Dim mRuntime As Integer = 0
+                    If uEpisode.TVEpisode.RuntimeSpecified AndAlso Integer.TryParse(uEpisode.TVEpisode.Runtime, 0) Then
+                        mRuntime = CType(uEpisode.TVEpisode.Runtime, Integer) * 60 'API requires runtime in seconds
+                    End If
 
                     'arrays
                     'Directors
@@ -1163,24 +1253,28 @@ Namespace Kodi
                     'Writers (Credits)
                     Dim mWriterList As List(Of String) = If(uEpisode.TVEpisode.CreditsSpecified, uEpisode.TVEpisode.Credits, New List(Of String))
 
+                    'string or null/nothing
+                    Dim mFanart As String = If(uEpisode.ImagesContainer.Fanart.LocalFilePathSpecified,
+                                                 GetRemotePath(uEpisode.ImagesContainer.Fanart.LocalFilePath), Nothing)
+                    Dim mPoster As String = If(uEpisode.ImagesContainer.Poster.LocalFilePathSpecified,
+                                                  GetRemotePath(uEpisode.ImagesContainer.Poster.LocalFilePath), Nothing)
+
                     'all image paths will be set in artwork object
                     Dim artwork As New Media.Artwork.Set
-                    artwork.fanart = If(Not String.IsNullOrEmpty(uEpisode.ImagesContainer.Fanart.LocalFilePath), _
-                                                  GetRemotePath(uEpisode.ImagesContainer.Fanart.LocalFilePath), Nothing)
-                    artwork.poster = If(Not String.IsNullOrEmpty(uEpisode.ImagesContainer.Poster.LocalFilePath), _
-                                                  GetRemotePath(uEpisode.ImagesContainer.Poster.LocalFilePath), Nothing)
+                    artwork.fanart = mFanart
+                    artwork.poster = mPoster
                     'artwork.thumb = mPoster ' not supported in Ember?!
 
-                    Dim response = Await _kodi.VideoLibrary.SetEpisodeDetails(KodiID, _
-                                                                        title:=mTitle, _
-                                                                        playcount:=mPlaycount, _
-                                                                        runtime:=mRuntime, _
-                                                                        director:=mDirectorList, _
-                                                                        plot:=mPlot, _
-                                                                        rating:=mRating, _
-                                                                        votes:=mVotes, _
-                                                                        lastplayed:=mLastPlayed, _
-                                                                        writer:=mWriterList, _
+                    Dim response = Await _kodi.VideoLibrary.SetEpisodeDetails(KodiElement.episodeid,
+                                                                        title:=mTitle,
+                                                                        playcount:=mPlaycount,
+                                                                        runtime:=mRuntime,
+                                                                        director:=mDirectorList,
+                                                                        plot:=mPlot,
+                                                                        rating:=mRating,
+                                                                        votes:=mVotes,
+                                                                        lastplayed:=mLastPlayed,
+                                                                        writer:=mWriterList,
                                                                         art:=artwork).ConfigureAwait(False)
                     'not supported right now in Ember
                     'originaltitle:=moriginaltitle, _    
@@ -1196,18 +1290,21 @@ Namespace Kodi
                         Return False
                     Else
                         'Remove old textures (cache) 'TODO: Limit to images of this Epsiode
-                        Dim resTextures = Await RemoveTextures(Directory.GetParent(uEpisode.Filename).FullName)
+                        Await RemoveTextures(uEpisode)
 
                         'Send message to Kodi?
                         If blnSendHostNotification = True Then
-                            Await SendMessage("Ember Media Manager", If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": " & uEpisode.TVShow.Title & ": " & uEpisode.TVEpisode.Title).ConfigureAwait(False)
+                            Await SendMessage("Ember Media Manager", If(bIsNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": " & uEpisode.TVShow.Title & ": " & uEpisode.TVEpisode.Title).ConfigureAwait(False)
                         End If
-                        If needSave Then
+                        If bNeedSave Then
                             logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVEpisodeInfo: ""{1}"" | Save Playcount from host", _currenthost.Label, uEpisode.TVEpisode.Title))
                             Master.DB.SaveTVEpisodeToDB(uEpisode, False, False, True, False, False)
-                            'RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {uEpisode.ID}))
+                            GenericSubEvent.Report(New GenericSubEventCallBackAsync With {
+                                                   .tGenericEventCallBackAsync = New GenericEventCallBackAsync With
+                                                   {.tEventType = Enums.ModuleEventType.AfterEdit_TVEpisode, .tParams = New List(Of Object)(New Object() {uEpisode.ID})},
+                                                   .tProgress = GenericMainEvent})
                         End If
-                        logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVEpisodeInfo: ""{1}"" | {2} on host", _currenthost.Label, uEpisode.TVEpisode.Title, If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated"))))
+                        logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVEpisodeInfo: ""{1}"" | {2} on host", _currenthost.Label, uEpisode.TVEpisode.Title, If(bIsNew, "Added", "Updated")))
                         Return True
                     End If
                 Else
@@ -1235,42 +1332,34 @@ Namespace Kodi
                 Return False
             End If
 
-            Dim isNew As Boolean = False
+            Dim bIsNew As Boolean = False
             Dim uSeason As Database.DBElement = Master.DB.LoadTVSeasonFromDB(lngTVSeasonID, True)
 
             Try
                 logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVSeasonInfo: ""{1}: Season {2}"" | Start syncing process...", _currenthost.Label, uSeason.ShowPath, uSeason.TVSeason.Season))
 
-                'search season ID in Kodi DB
-                Dim KodiSeason As XBMCRPC.Video.Details.Season = Await SearchByDetails_TVSeason(uSeason.ShowPath, uSeason.TVSeason.Season).ConfigureAwait(False)
-                Dim KodiID As Integer = -1
-                If Not KodiSeason Is Nothing Then
-                    KodiID = KodiSeason.seasonid
-                End If
+                'search Movie ID in Kodi DB
+                Dim KodiElement As Video.Details.Season = Await GetFullDetailsByID_TVSeason(Await GetMediaID(uSeason))
 
-                'season isn't in database of host -> scan show directory?
-                If KodiID = -1 Then
+                If KodiElement Is Nothing Then
                     logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVSeasonInfo: ""{1}: Season {2}"" | NOT found in database, scan directory on host...", _currenthost.Label, uSeason.ShowPath, uSeason.TVSeason.Season))
-                    'what to do in this case?
-                    Await VideoLibrary_ScanPath(uSeason.ShowID, Enums.ContentType.TVShow).ConfigureAwait(False)
-                    'wait a bit before trying going on, as scan might take a while on Kodi...
-                    Threading.Thread.Sleep(1000) 'TODO better solution for this?!
-                    KodiSeason = Await SearchByDetails_TVSeason(uSeason.ShowPath, uSeason.TVSeason.Season).ConfigureAwait(False)
-                    If Not KodiSeason Is Nothing Then
-                        isNew = True
-                        KodiID = KodiSeason.seasonid
-                    End If
+                    Await VideoLibrary_ScanPath(uSeason).ConfigureAwait(False)
+                    While Await IsScanningVideo()
+                        Threading.Thread.Sleep(1000)
+                    End While
+                    KodiElement = Await GetFullDetailsByID_TVSeason(Await GetMediaID(uSeason))
+                    If KodiElement IsNot Nothing Then bIsNew = True
                 End If
 
-                If KodiID > -1 Then
+                If KodiElement IsNot Nothing Then
                     'string or null/nothing
-                    Dim mBanner As String = If(Not String.IsNullOrEmpty(uSeason.ImagesContainer.Banner.LocalFilePath), _
+                    Dim mBanner As String = If(uSeason.ImagesContainer.Banner.LocalFilePathSpecified,
                                                   GetRemotePath(uSeason.ImagesContainer.Banner.LocalFilePath), Nothing)
-                    Dim mFanart As String = If(Not String.IsNullOrEmpty(uSeason.ImagesContainer.Fanart.LocalFilePath), _
+                    Dim mFanart As String = If(uSeason.ImagesContainer.Fanart.LocalFilePathSpecified,
                                                  GetRemotePath(uSeason.ImagesContainer.Fanart.LocalFilePath), Nothing)
-                    Dim mLandscape As String = If(Not String.IsNullOrEmpty(uSeason.ImagesContainer.Landscape.LocalFilePath), _
+                    Dim mLandscape As String = If(uSeason.ImagesContainer.Landscape.LocalFilePathSpecified,
                                                   GetRemotePath(uSeason.ImagesContainer.Landscape.LocalFilePath), Nothing)
-                    Dim mPoster As String = If(Not String.IsNullOrEmpty(uSeason.ImagesContainer.Poster.LocalFilePath), _
+                    Dim mPoster As String = If(uSeason.ImagesContainer.Poster.LocalFilePathSpecified,
                                                   GetRemotePath(uSeason.ImagesContainer.Poster.LocalFilePath), Nothing)
 
                     'all image paths will be set in artwork object
@@ -1280,7 +1369,7 @@ Namespace Kodi
                     artwork.landscape = mLandscape
                     artwork.poster = mPoster
 
-                    Dim response = Await _kodi.VideoLibrary.SetSeasonDetails(KodiID, _
+                    Dim response = Await _kodi.VideoLibrary.SetSeasonDetails(KodiElement.seasonid,
                                                                              art:=artwork).ConfigureAwait(False)
 
                     If response.Contains("error") Then
@@ -1288,13 +1377,13 @@ Namespace Kodi
                         Return False
                     Else
                         'Remove old textures (cache) 'TODO: Limit to images of this Season
-                        Dim resTextures = Await RemoveTextures(uSeason.ShowPath)
+                        Await RemoveTextures(uSeason)
 
                         'Send message to Kodi?
                         If SendHostNotification = True Then
-                            Await SendMessage("Ember Media Manager", If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": " & uSeason.TVShow.Title & ": Season " & uSeason.TVSeason.Season).ConfigureAwait(False)
+                            Await SendMessage("Ember Media Manager", If(bIsNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": " & uSeason.TVShow.Title & ": Season " & uSeason.TVSeason.Season).ConfigureAwait(False)
                         End If
-                        logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVSeasonInfo: ""{1}: Season {2}"" | {3} on host", _currenthost.Label, uSeason.ShowPath, uSeason.TVSeason.Season, If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated"))))
+                        logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVSeasonInfo: ""{1}: Season {2}"" | {3} on host", _currenthost.Label, uSeason.ShowPath, uSeason.TVSeason.Season, If(bIsNew, "Added", "Updated")))
                         Return True
                     End If
                 Else
@@ -1324,33 +1413,26 @@ Namespace Kodi
                 Return False
             End If
 
-            Dim isNew As Boolean = False
+            Dim bIsNew As Boolean = False
             Dim uTVShow As Database.DBElement = Master.DB.LoadTVShowFromDB(lngTVShowID, False, False)
 
             Try
                 logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVShowInfo: ""{1}"" | Start syncing process...", _currenthost.Label, uTVShow.TVShow.Title))
 
-                'search ID in Kodi DB
-                Dim KodiTVShow As XBMCRPC.Video.Details.TVShow = Await SearchByPath_TVShow(uTVShow.ShowPath).ConfigureAwait(False)
-                Dim KodiID As Integer = -1
-                If Not KodiTVShow Is Nothing Then
-                    KodiID = KodiTVShow.tvshowid
-                End If
+                'search Movie ID in Kodi DB
+                Dim KodiElement As Video.Details.TVShow = Await GetFullDetailsByID_TVShow(Await GetMediaID(uTVShow))
 
-                'TVShow isn't in database of host -> scan directory
-                If KodiID = -1 Then
+                If KodiElement Is Nothing Then
                     logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVShowInfo: ""{1}"" | NOT found in database, scan directory on host...", _currenthost.Label, uTVShow.TVShow.Title))
-                    Await VideoLibrary_ScanPath(lngTVShowID, Enums.ContentType.TVShow).ConfigureAwait(False)
-                    'wait a bit before trying going on, as scan might take a while on Kodi...
-                    Threading.Thread.Sleep(1000) 'TODO better solution for this?!
-                    KodiTVShow = Await SearchByPath_TVShow(uTVShow.ShowPath).ConfigureAwait(False)
-                    If Not KodiTVShow Is Nothing Then
-                        isNew = True
-                        KodiID = KodiTVShow.tvshowid
-                    End If
+                    Await VideoLibrary_ScanPath(uTVShow).ConfigureAwait(False)
+                    While Await IsScanningVideo()
+                        Threading.Thread.Sleep(1000)
+                    End While
+                    KodiElement = Await GetFullDetailsByID_TVShow(Await GetMediaID(uTVShow))
+                    If KodiElement IsNot Nothing Then bIsNew = True
                 End If
 
-                If KodiID > -1 Then
+                If KodiElement IsNot Nothing Then
 
                     'TODO missing:
                     ' Dim mPlaycount As String = If(uTVShow.TVShow.PlayCountSpecified, uTVShow.TVShow.PlayCount, "0")
@@ -1392,27 +1474,20 @@ Namespace Kodi
                     Dim mTagList As List(Of String) = If(uTVShow.TVShow.Tags.Count > 0, uTVShow.TVShow.Tags, New List(Of String))
 
                     'string or null/nothing
-                    Dim mBanner As String = If(Not String.IsNullOrEmpty(uTVShow.ImagesContainer.Banner.LocalFilePath), _
+                    Dim mBanner As String = If(uTVShow.ImagesContainer.Banner.LocalFilePathSpecified,
                                                   GetRemotePath(uTVShow.ImagesContainer.Banner.LocalFilePath), Nothing)
-                    Dim mCharacterArt As String = If(Not String.IsNullOrEmpty(uTVShow.ImagesContainer.CharacterArt.LocalFilePath), _
+                    Dim mCharacterArt As String = If(uTVShow.ImagesContainer.CharacterArt.LocalFilePathSpecified,
                                                GetRemotePath(uTVShow.ImagesContainer.CharacterArt.LocalFilePath), Nothing)
-                    Dim mClearArt As String = If(Not String.IsNullOrEmpty(uTVShow.ImagesContainer.ClearArt.LocalFilePath), _
+                    Dim mClearArt As String = If(uTVShow.ImagesContainer.ClearArt.LocalFilePathSpecified,
                                                 GetRemotePath(uTVShow.ImagesContainer.ClearArt.LocalFilePath), Nothing)
-                    Dim mClearLogo As String = If(Not String.IsNullOrEmpty(uTVShow.ImagesContainer.ClearLogo.LocalFilePath), _
+                    Dim mClearLogo As String = If(uTVShow.ImagesContainer.ClearLogo.LocalFilePathSpecified,
                                                 GetRemotePath(uTVShow.ImagesContainer.ClearLogo.LocalFilePath), Nothing)
-                    Dim mFanart As String = If(Not String.IsNullOrEmpty(uTVShow.ImagesContainer.Fanart.LocalFilePath), _
+                    Dim mFanart As String = If(uTVShow.ImagesContainer.Fanart.LocalFilePathSpecified,
                                                GetRemotePath(uTVShow.ImagesContainer.Fanart.LocalFilePath), Nothing)
-                    Dim mLandscape As String = If(Not String.IsNullOrEmpty(uTVShow.ImagesContainer.Landscape.LocalFilePath), _
+                    Dim mLandscape As String = If(uTVShow.ImagesContainer.Landscape.LocalFilePathSpecified,
                                               GetRemotePath(uTVShow.ImagesContainer.Landscape.LocalFilePath), Nothing)
-                    Dim mPoster As String = If(Not String.IsNullOrEmpty(uTVShow.ImagesContainer.Poster.LocalFilePath), _
+                    Dim mPoster As String = If(uTVShow.ImagesContainer.Poster.LocalFilePathSpecified,
                                                  GetRemotePath(uTVShow.ImagesContainer.Poster.LocalFilePath), Nothing)
-                    'TODO Missing Artwork:
-                    'Dim mExtraThumbs As String = If(Not String.IsNullOrEmpty(uTVShow.ShowEThumbsPath), _
-                    '                           Web.HttpUtility.JavaScriptStringEncode(GetRemoteFilePath(uTVShow.ShowEThumbsPath, uTVShow.Source), True), "null")
-                    'Dim mThumb As String = If(Not String.IsNullOrEmpty(uTVShow.ShowThumbPath), _
-                    '                           Web.HttpUtility.JavaScriptStringEncode(GetRemoteFilePath(uTVShow.ShowThumbPath, uTVShow.Source), True), "null")
-                    'artwork.thumb = mPoster
-                    'artwork.extrathumbs = mExtraThumbs
 
                     'all image paths will be set in artwork object
                     Dim artwork As New Media.Artwork.Set
@@ -1424,20 +1499,20 @@ Namespace Kodi
                     artwork.landscape = mLandscape
                     artwork.poster = mPoster
 
-                    Dim response = Await _kodi.VideoLibrary.SetTVShowDetails(KodiID, _
-                                                                        title:=mTitle, _
-                                                                        studio:=mStudioList, _
-                                                                        plot:=mPlot, _
-                                                                        genre:=mGenreList, _
-                                                                        rating:=mRating, _
-                                                                        mpaa:=mMPAA, _
-                                                                        imdbnumber:=mImdbnumber, _
-                                                                        premiered:=mPremiered, _
-                                                                        votes:=mVotes, _
-                                                                        originaltitle:=mOriginalTitle, _
-                                                                        sorttitle:=mSortTitle, _
-                                                                        episodeguide:=mEpisodeGuide, _
-                                                                        tag:=mTagList, _
+                    Dim response = Await _kodi.VideoLibrary.SetTVShowDetails(KodiElement.tvshowid,
+                                                                        title:=mTitle,
+                                                                        studio:=mStudioList,
+                                                                        plot:=mPlot,
+                                                                        genre:=mGenreList,
+                                                                        rating:=mRating,
+                                                                        mpaa:=mMPAA,
+                                                                        imdbnumber:=mImdbnumber,
+                                                                        premiered:=mPremiered,
+                                                                        votes:=mVotes,
+                                                                        originaltitle:=mOriginalTitle,
+                                                                        sorttitle:=mSortTitle,
+                                                                        episodeguide:=mEpisodeGuide,
+                                                                        tag:=mTagList,
                                                                         art:=artwork).ConfigureAwait(False)
                     'not supported right now in Ember
                     'thumbnail:=mposter, _
@@ -1451,13 +1526,13 @@ Namespace Kodi
                         Return False
                     Else
                         'Remove old textures (cache) 'TODO: Limit to images of this Show (exkl. all season and episode images)
-                        Dim resTextures = Await RemoveTextures(uTVShow.ShowPath)
+                        Await RemoveTextures(uTVShow)
 
                         'Send message to Kodi?
                         If blnSendHostNotification = True Then
-                            Await SendMessage("Ember Media Manager", If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": " & uTVShow.TVShow.Title).ConfigureAwait(False)
+                            Await SendMessage("Ember Media Manager", If(bIsNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": " & uTVShow.TVShow.Title).ConfigureAwait(False)
                         End If
-                        logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVShowInfo: ""{1}"" | {2} on host", _currenthost.Label, uTVShow.TVShow.Title, If(isNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated"))))
+                        logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVShowInfo: ""{1}"" | {2} on host", _currenthost.Label, uTVShow.TVShow.Title, If(bIsNew, "Added", "Updated")))
                         Return True
                     End If
                 Else
@@ -1545,7 +1620,7 @@ Namespace Kodi
         ''' <remarks>
         ''' 2015/06/27 Cocotus - First implementation
         ''' </remarks>
-        Public Async Function VideoLibrary_ScanPath(ByVal lngEmbervideofileID As Long, ByVal ContentType As Enums.ContentType) As Task(Of Boolean)
+        Public Async Function VideoLibrary_ScanPath(ByVal tDBElement As Database.DBElement, Optional ByVal bUseShowPath As Boolean = False) As Task(Of Boolean)
             If _kodi Is Nothing Then
                 logger.Error("[APIKodi] ScanVideoPath: No host initialized! Abort!")
                 Return Nothing
@@ -1553,47 +1628,48 @@ Namespace Kodi
 
             Dim strLocalPath As String = String.Empty
 
-            Select Case ContentType
+            Select Case tDBElement.ContentType
                 Case Enums.ContentType.Movie
-                    Dim uMovie As Database.DBElement = Master.DB.LoadMovieFromDB(lngEmbervideofileID)
-                    If FileUtils.Common.isBDRip(uMovie.Filename) Then
+                    If FileUtils.Common.isBDRip(tDBElement.Filename) Then
                         'filename must point to m2ts file! 
                         'Ember-Filepath i.e.  E:\Media_1\Movie\Horror\Europa Report\BDMV\STREAM\00000.m2ts
                         'for adding new Bluray rips scan the root folder of movie, i.e: E:\Media_1\Movie\Horror\Europa Report\
-                        strLocalPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(uMovie.Filename).FullName).FullName).FullName
-                    ElseIf FileUtils.Common.isVideoTS(uMovie.Filename) Then
+                        strLocalPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(tDBElement.Filename).FullName).FullName).FullName
+                    ElseIf FileUtils.Common.isVideoTS(tDBElement.Filename) Then
                         'filename must point to IFO file!
                         'Ember-Filepath i.e.  E:\Media_1\Movie\Action\Crow\VIDEO_TS\VIDEO_TS.IFO
                         'for adding new DVDs scan the root folder of movie, i.e:  E:\Media_1\Movie\Action\Crow\
-                        strLocalPath = Directory.GetParent(Directory.GetParent(uMovie.Filename).FullName).FullName
+                        strLocalPath = Directory.GetParent(Directory.GetParent(tDBElement.Filename).FullName).FullName
                     Else
-                        If Path.GetFileNameWithoutExtension(uMovie.Filename).ToLower = "video_ts" Then
-                            strLocalPath = Directory.GetParent(Directory.GetParent(uMovie.Filename).FullName).FullName
+                        If Path.GetFileNameWithoutExtension(tDBElement.Filename).ToLower = "video_ts" Then
+                            strLocalPath = Directory.GetParent(Directory.GetParent(tDBElement.Filename).FullName).FullName
                         Else
-                            strLocalPath = Directory.GetParent(uMovie.Filename).FullName
+                            strLocalPath = Directory.GetParent(tDBElement.Filename).FullName
                         End If
                     End If
-                Case Enums.ContentType.TVShow
-                    Dim uShow As Database.DBElement = Master.DB.LoadTVShowFromDB(lngEmbervideofileID, False, False)
-                    If FileUtils.Common.isBDRip(uShow.ShowPath) Then
+                Case Enums.ContentType.TVSeason, Enums.ContentType.TVShow
+                    If FileUtils.Common.isBDRip(tDBElement.ShowPath) Then
                         'needs some testing?!
-                        strLocalPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(uShow.ShowPath).FullName).FullName).FullName
-                    ElseIf FileUtils.Common.isVideoTS(uShow.ShowPath) Then
+                        strLocalPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(tDBElement.ShowPath).FullName).FullName).FullName
+                    ElseIf FileUtils.Common.isVideoTS(tDBElement.ShowPath) Then
                         'needs some testing?!
-                        strLocalPath = Directory.GetParent(Directory.GetParent(uShow.ShowPath).FullName).FullName
+                        strLocalPath = Directory.GetParent(Directory.GetParent(tDBElement.ShowPath).FullName).FullName
                     Else
-                        strLocalPath = uShow.ShowPath
+                        strLocalPath = tDBElement.ShowPath
                     End If
                 Case Enums.ContentType.TVEpisode
-                    Dim uEpisode As Database.DBElement = Master.DB.LoadTVEpisodeFromDB(lngEmbervideofileID, False)
-                    If FileUtils.Common.isBDRip(uEpisode.Filename) Then
-                        'needs some testing?!
-                        strLocalPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(uEpisode.Filename).FullName).FullName).FullName
-                    ElseIf FileUtils.Common.isVideoTS(uEpisode.Filename) Then
-                        'needs some testing?!
-                        strLocalPath = Directory.GetParent(Directory.GetParent(uEpisode.Filename).FullName).FullName
+                    If Not bUseShowPath Then
+                        If FileUtils.Common.isBDRip(tDBElement.Filename) Then
+                            'needs some testing?!
+                            strLocalPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(tDBElement.Filename).FullName).FullName).FullName
+                        ElseIf FileUtils.Common.isVideoTS(tDBElement.Filename) Then
+                            'needs some testing?!
+                            strLocalPath = Directory.GetParent(Directory.GetParent(tDBElement.Filename).FullName).FullName
+                        Else
+                            strLocalPath = Directory.GetParent(tDBElement.Filename).FullName
+                        End If
                     Else
-                        strLocalPath = Directory.GetParent(uEpisode.Filename).FullName
+                        strLocalPath = tDBElement.ShowPath
                     End If
                 Case Else
                     logger.Warn(String.Format("[APIKodi] [{0}] ScanVideoPath: No videotype specified! Abort!", _currenthost.Label))
@@ -1609,7 +1685,7 @@ Namespace Kodi
                 logger.Trace(String.Format("[APIKodi] [{0}] ScanVideoPath: ""{1}"" | {2}", _currenthost.Label, strRemotePath, strResponse))
                 Return False
             Else
-                logger.Trace(String.Format("[APIKodi] [{0}] ScanVideoPath: ""{1}"" | {2}", _currenthost.Label, strRemotePath, strResponse))
+                logger.Trace(String.Format("[APIKodi] [{0}] ScanVideoPath: ""{1}"" | Start scanning process...", _currenthost.Label, strRemotePath))
                 Return True
             End If
         End Function
@@ -1642,7 +1718,7 @@ Namespace Kodi
         ''' <param name="ID">ID of Texture</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Async Function RemoveTexture(ByVal intID As Integer) As Task(Of String)
+        Private Async Function RemoveTexture(ByVal intID As Integer) As Task(Of String)
             If _kodi Is Nothing Then
                 logger.Error("[APIKodi] SendMessage: No host initialized! Abort!")
                 Return Nothing
@@ -1662,22 +1738,47 @@ Namespace Kodi
         ''' <param name="LocalPath"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Async Function RemoveTextures(ByVal strLocalPath As String) As Task(Of Boolean)
+        Private Async Function RemoveTextures(ByVal tDBElement As Database.DBElement) As Task(Of Boolean)
             If _kodi Is Nothing Then
                 logger.Error("[APIKodi] SendMessage: No host initialized! Abort!")
                 Return False
             End If
 
             Try
-                Dim TexturesResponce = Await GetTextures(GetRemotePath(strLocalPath))
-                For Each tTexture In TexturesResponce.textures
-                    Await RemoveTexture(tTexture.textureid)
-                Next
+                Dim TexturesResponce = Await GetTextures(tDBElement)
+                If TexturesResponce IsNot Nothing Then
+                    For Each tTexture In TexturesResponce.textures
+                        Await RemoveTexture(tTexture.textureid)
+                    Next
+                Else
+                    Return False
+                End If
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
                 Return False
             End Try
             Return True
+        End Function
+        ''' <summary>
+        ''' Scan video library of Kodi host
+        ''' </summary>
+        ''' <returns>string with status message, if failed: Nothing</returns>
+        ''' <remarks>
+        ''' 2015/06/27 Cocotus - First implementation
+        ''' </remarks>
+        Public Async Function IsScanningVideo() As Task(Of Boolean)
+            If _kodi Is Nothing Then
+                logger.Error("[APIKodi] IsScanningLibrary: No host initialized! Abort!")
+                Return False
+            End If
+
+            Try
+                Dim response As XBMC.GetInfoBooleansResponse = Await _kodi.XBMC.GetInfoBooleans(New List(Of String)(New String() {"Library.IsScanningVideo"}))
+                Return response.IsScanningVideo
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+                Return False
+            End Try
         End Function
 
 #Region "Helper functions/methods"
@@ -1689,7 +1790,7 @@ Namespace Kodi
         ''' <summary>
         ''' Retrieve ID of KODI playlist by playlist name
         ''' </summary>
-        ''' <returns>ID of playlist, 999 if error occurs</returns>
+        ''' <returns>ID of playlist, -1 if error occurs</returns>
         ''' <remarks>
         ''' 2015/11/29 Cocotus - First implementation
         ''' Not used in moment but left here to pick up later when TeamKodi has fixed playlist API...
@@ -1751,11 +1852,11 @@ Namespace Kodi
                 Else
                     logger.Error("[APIKodi] GetPlaylistID: Error during retrieving playlists! Abort!")
                 End If
-                Return 999
+                Return -1
 
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
-                Return 999
+                Return -1
             End Try
         End Function
 
@@ -1892,6 +1993,11 @@ Namespace Kodi
 #End Region 'Methods
 
 #Region "Nested Types"
+
+        Structure PathAndFilename
+            Dim strPath As String
+            Dim strFilename As String
+        End Structure
 
         Structure MySettings
             ''' <summary>

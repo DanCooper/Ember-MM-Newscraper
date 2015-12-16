@@ -5,7 +5,9 @@ using Newtonsoft.Json.Linq;
 using System.Runtime.Serialization;
 namespace XBMCRPC.XBMC
 {
-   public class GetInfoBooleansResponse
-   {
+    public class GetInfoBooleansResponse
+    {
+        [Newtonsoft.Json.JsonProperty(PropertyName = "Library.IsScanningVideo")]
+        public bool IsScanningVideo { get; set; }
     }
 }
