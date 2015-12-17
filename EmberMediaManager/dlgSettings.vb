@@ -7291,16 +7291,11 @@ Public Class dlgSettings
             chkTVEpisodePosterFrodo.Checked = True
             chkTVSeasonBannerFrodo.Checked = True
             chkTVSeasonFanartFrodo.Checked = True
-            chkTVSeasonLandscapeExtended.Checked = True
             chkTVSeasonPosterFrodo.Checked = True
             chkTVShowActorThumbsFrodo.Checked = True
             chkTVShowBannerFrodo.Checked = True
-            chkTVShowCharacterArtExtended.Checked = True
-            chkTVShowClearArtExtended.Checked = True
-            chkTVShowClearLogoExtended.Checked = True
             chkTVShowExtrafanartsFrodo.Checked = True
             chkTVShowFanartFrodo.Checked = True
-            chkTVShowLandscapeExtended.Checked = True
             chkTVShowNFOFrodo.Checked = True
             chkTVShowPosterFrodo.Checked = True
         End If
