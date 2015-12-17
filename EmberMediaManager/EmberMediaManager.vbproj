@@ -882,7 +882,9 @@
     <Content Include="Langs\html\template modernWallCard\bootstrap\js\npm.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Langs\html\template modernWallCard\default-poster.png" />
+    <Content Include="Langs\html\template modernWallCard\default-poster.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Langs\html\template modernWallCard\English_%28en_US%29.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -80,7 +80,7 @@ Public Class dlgExportMovies
     Private Sub btnSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSave.Click
         Cursor = Cursors.WaitCursor
         If Not String.IsNullOrEmpty(txtExportPath.Text) Then
-            CopyDirectory(strTempPath, clsAdvancedSettings.GetSetting("ExportPath", String.Empty), True)
+            CopyDirectory(strTempPath, txtExportPath.Text, True)
             btnSave.Enabled = False
             MessageBox.Show(String.Concat(Master.eLang.GetString(1003, "Template saved to:"), " ", txtExportPath.Text), Master.eLang.GetString(361, "Finished!"), MessageBoxButtons.OK)
         Else
@@ -104,7 +104,7 @@ Public Class dlgExportMovies
                     SQLcount.Read()
                     bwLoadInfo.ReportProgress(-1, SQLcount("mcount")) ' set maximum
                 End Using
-                SQLNewcommand.CommandText = String.Format("SELECT idMovie FROM '{0}' ORDER BY SortTitle COLLATE NOCASE;", strCurrList_Movies)
+                SQLNewcommand.CommandText = String.Format("SELECT idMovie FROM '{0}' ORDER BY SortedTitle COLLATE NOCASE;", strCurrList_Movies)
                 Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         While SQLreader.Read()
