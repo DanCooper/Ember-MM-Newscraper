@@ -2540,8 +2540,11 @@ Public Class frmMain
                             MediaInfo.UpdateTVMediaInfo(tEpisode)
                         End If
                         If tScrapeItem.ScrapeModifier.EpisodeFanart OrElse tScrapeItem.ScrapeModifier.EpisodePoster Then
+                            Dim ScrapeModifier_Episode As New Structures.ScrapeModifier With {
+                                .EpisodeFanart = tScrapeItem.ScrapeModifier.EpisodeFanart,
+                                .EpisodePoster = tScrapeItem.ScrapeModifier.EpisodePoster}
                             Dim SearchResultsContainer_Episodes As New MediaContainers.SearchResultsContainer
-                            ModulesManager.Instance.ScrapeImage_TV(tEpisode, SearchResultsContainer_Episodes, tScrapeItem.ScrapeModifier, False)
+                            ModulesManager.Instance.ScrapeImage_TV(tEpisode, SearchResultsContainer_Episodes, ScrapeModifier_Episode, False)
                             Images.SetPreferredImages(tEpisode, SearchResultsContainer_Episodes, tScrapeItem.ScrapeModifier)
                         End If
                     Next
