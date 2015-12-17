@@ -33,12 +33,6 @@ Partial Class dlgImgSelect
         Me.tblImgSelectBottom = New System.Windows.Forms.TableLayoutPanel()
         Me.btnOK = New System.Windows.Forms.Button()
         Me.btnCancel = New System.Windows.Forms.Button()
-        Me.pnlFilter = New System.Windows.Forms.Panel()
-        Me.tblFilter = New System.Windows.Forms.TableLayoutPanel()
-        Me.pnlSelectButtons = New System.Windows.Forms.Panel()
-        Me.tblSelectButtons = New System.Windows.Forms.TableLayoutPanel()
-        Me.btnSelectAll = New System.Windows.Forms.Button()
-        Me.btnSelectNone = New System.Windows.Forms.Button()
         Me.pnlImgSelectLeft = New System.Windows.Forms.Panel()
         Me.tblImgSelectLeft = New System.Windows.Forms.TableLayoutPanel()
         Me.pnlSubImages = New System.Windows.Forms.Panel()
@@ -67,15 +61,14 @@ Partial Class dlgImgSelect
         Me.cmnuSubImageRemove = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuSubImageRemoveAll = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuListImage = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.ListToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuListImageSelect = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuListImageSelectAll = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuListImagePreview = New System.Windows.Forms.ToolStripMenuItem()
         Me.pnlImgSelect.SuspendLayout()
         Me.pnlImgSelectTop.SuspendLayout()
         Me.tblImgSelectTop.SuspendLayout()
         Me.pnlImgSelectBottom.SuspendLayout()
         Me.tblImgSelectBottom.SuspendLayout()
-        Me.pnlFilter.SuspendLayout()
-        Me.pnlSelectButtons.SuspendLayout()
-        Me.tblSelectButtons.SuspendLayout()
         Me.pnlImgSelectLeft.SuspendLayout()
         Me.tblImgSelectLeft.SuspendLayout()
         Me.ssImgSelect.SuspendLayout()
@@ -103,7 +96,7 @@ Partial Class dlgImgSelect
         Me.pnlImgSelectMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlImgSelectMain.Location = New System.Drawing.Point(211, 203)
         Me.pnlImgSelectMain.Name = "pnlImgSelectMain"
-        Me.pnlImgSelectMain.Size = New System.Drawing.Size(1323, 471)
+        Me.pnlImgSelectMain.Size = New System.Drawing.Size(1323, 542)
         Me.pnlImgSelectMain.TabIndex = 3
         '
         'pnlImgSelectTop
@@ -144,37 +137,37 @@ Partial Class dlgImgSelect
         '
         'pnlImgSelectBottom
         '
+        Me.pnlImgSelectBottom.AutoSize = True
         Me.pnlImgSelectBottom.Controls.Add(Me.tblImgSelectBottom)
         Me.pnlImgSelectBottom.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlImgSelectBottom.Location = New System.Drawing.Point(211, 674)
+        Me.pnlImgSelectBottom.Location = New System.Drawing.Point(211, 745)
         Me.pnlImgSelectBottom.Name = "pnlImgSelectBottom"
-        Me.pnlImgSelectBottom.Size = New System.Drawing.Size(1323, 100)
+        Me.pnlImgSelectBottom.Size = New System.Drawing.Size(1323, 29)
         Me.pnlImgSelectBottom.TabIndex = 1
         '
         'tblImgSelectBottom
         '
-        Me.tblImgSelectBottom.ColumnCount = 5
-        Me.tblImgSelectBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblImgSelectBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblImgSelectBottom.AutoSize = True
+        Me.tblImgSelectBottom.ColumnCount = 3
         Me.tblImgSelectBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.tblImgSelectBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblImgSelectBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblImgSelectBottom.Controls.Add(Me.btnOK, 3, 0)
-        Me.tblImgSelectBottom.Controls.Add(Me.btnCancel, 4, 0)
-        Me.tblImgSelectBottom.Controls.Add(Me.pnlFilter, 0, 0)
-        Me.tblImgSelectBottom.Controls.Add(Me.pnlSelectButtons, 1, 0)
+        Me.tblImgSelectBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblImgSelectBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblImgSelectBottom.Controls.Add(Me.btnOK, 1, 0)
+        Me.tblImgSelectBottom.Controls.Add(Me.btnCancel, 2, 0)
         Me.tblImgSelectBottom.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblImgSelectBottom.Location = New System.Drawing.Point(0, 0)
         Me.tblImgSelectBottom.Name = "tblImgSelectBottom"
         Me.tblImgSelectBottom.RowCount = 1
         Me.tblImgSelectBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblImgSelectBottom.Size = New System.Drawing.Size(1323, 100)
+        Me.tblImgSelectBottom.Size = New System.Drawing.Size(1323, 29)
         Me.tblImgSelectBottom.TabIndex = 0
         '
         'btnOK
         '
         Me.btnOK.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.btnOK.Location = New System.Drawing.Point(1164, 41)
+        Me.btnOK.Location = New System.Drawing.Point(1164, 3)
         Me.btnOK.Name = "btnOK"
         Me.btnOK.Size = New System.Drawing.Size(75, 23)
         Me.btnOK.TabIndex = 0
@@ -185,85 +178,12 @@ Partial Class dlgImgSelect
         '
         Me.btnCancel.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.btnCancel.Location = New System.Drawing.Point(1245, 41)
+        Me.btnCancel.Location = New System.Drawing.Point(1245, 3)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(75, 23)
         Me.btnCancel.TabIndex = 1
         Me.btnCancel.Text = "Cancel"
         Me.btnCancel.UseVisualStyleBackColor = True
-        '
-        'pnlFilter
-        '
-        Me.pnlFilter.Controls.Add(Me.tblFilter)
-        Me.pnlFilter.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.pnlFilter.Location = New System.Drawing.Point(3, 3)
-        Me.pnlFilter.Name = "pnlFilter"
-        Me.pnlFilter.Size = New System.Drawing.Size(200, 100)
-        Me.pnlFilter.TabIndex = 2
-        '
-        'tblFilter
-        '
-        Me.tblFilter.ColumnCount = 2
-        Me.tblFilter.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.tblFilter.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.tblFilter.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblFilter.Location = New System.Drawing.Point(0, 0)
-        Me.tblFilter.Name = "tblFilter"
-        Me.tblFilter.RowCount = 2
-        Me.tblFilter.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.tblFilter.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.tblFilter.Size = New System.Drawing.Size(200, 100)
-        Me.tblFilter.TabIndex = 0
-        '
-        'pnlSelectButtons
-        '
-        Me.pnlSelectButtons.AutoSize = True
-        Me.pnlSelectButtons.Controls.Add(Me.tblSelectButtons)
-        Me.pnlSelectButtons.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.pnlSelectButtons.Location = New System.Drawing.Point(209, 3)
-        Me.pnlSelectButtons.Name = "pnlSelectButtons"
-        Me.pnlSelectButtons.Size = New System.Drawing.Size(82, 100)
-        Me.pnlSelectButtons.TabIndex = 3
-        '
-        'tblSelectButtons
-        '
-        Me.tblSelectButtons.AutoSize = True
-        Me.tblSelectButtons.ColumnCount = 1
-        Me.tblSelectButtons.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSelectButtons.Controls.Add(Me.btnSelectAll, 0, 1)
-        Me.tblSelectButtons.Controls.Add(Me.btnSelectNone, 0, 2)
-        Me.tblSelectButtons.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblSelectButtons.Location = New System.Drawing.Point(0, 0)
-        Me.tblSelectButtons.Name = "tblSelectButtons"
-        Me.tblSelectButtons.RowCount = 4
-        Me.tblSelectButtons.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.tblSelectButtons.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSelectButtons.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSelectButtons.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.tblSelectButtons.Size = New System.Drawing.Size(82, 100)
-        Me.tblSelectButtons.TabIndex = 0
-        '
-        'btnSelectAll
-        '
-        Me.btnSelectAll.AutoSize = True
-        Me.btnSelectAll.Enabled = False
-        Me.btnSelectAll.Location = New System.Drawing.Point(3, 24)
-        Me.btnSelectAll.Name = "btnSelectAll"
-        Me.btnSelectAll.Size = New System.Drawing.Size(75, 23)
-        Me.btnSelectAll.TabIndex = 0
-        Me.btnSelectAll.Text = "Select All"
-        Me.btnSelectAll.UseVisualStyleBackColor = True
-        '
-        'btnSelectNone
-        '
-        Me.btnSelectNone.AutoSize = True
-        Me.btnSelectNone.Enabled = False
-        Me.btnSelectNone.Location = New System.Drawing.Point(3, 53)
-        Me.btnSelectNone.Name = "btnSelectNone"
-        Me.btnSelectNone.Size = New System.Drawing.Size(76, 23)
-        Me.btnSelectNone.TabIndex = 1
-        Me.btnSelectNone.Text = "Select None"
-        Me.btnSelectNone.UseVisualStyleBackColor = True
         '
         'pnlImgSelectLeft
         '
@@ -535,15 +455,30 @@ Partial Class dlgImgSelect
         '
         'cmnuListImage
         '
-        Me.cmnuListImage.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ListToolStripMenuItem})
+        Me.cmnuListImage.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuListImageSelect, Me.cmnuListImageSelectAll, Me.cmnuListImagePreview})
         Me.cmnuListImage.Name = "cmnuListImage"
-        Me.cmnuListImage.Size = New System.Drawing.Size(93, 26)
+        Me.cmnuListImage.Size = New System.Drawing.Size(164, 70)
         '
-        'ListToolStripMenuItem
+        'cmnuListImageSelect
         '
-        Me.ListToolStripMenuItem.Name = "ListToolStripMenuItem"
-        Me.ListToolStripMenuItem.Size = New System.Drawing.Size(92, 22)
-        Me.ListToolStripMenuItem.Text = "List"
+        Me.cmnuListImageSelect.Image = Global.Ember_Media_Manager.My.Resources.Resources.menuAdd
+        Me.cmnuListImageSelect.Name = "cmnuListImageSelect"
+        Me.cmnuListImageSelect.Size = New System.Drawing.Size(163, 22)
+        Me.cmnuListImageSelect.Text = "Select Image"
+        '
+        'cmnuListImageSelectAll
+        '
+        Me.cmnuListImageSelectAll.Image = Global.Ember_Media_Manager.My.Resources.Resources.menuAdd
+        Me.cmnuListImageSelectAll.Name = "cmnuListImageSelectAll"
+        Me.cmnuListImageSelectAll.Size = New System.Drawing.Size(163, 22)
+        Me.cmnuListImageSelectAll.Text = "Select All Images"
+        '
+        'cmnuListImagePreview
+        '
+        Me.cmnuListImagePreview.Image = Global.Ember_Media_Manager.My.Resources.Resources.preview
+        Me.cmnuListImagePreview.Name = "cmnuListImagePreview"
+        Me.cmnuListImagePreview.Size = New System.Drawing.Size(163, 22)
+        Me.cmnuListImagePreview.Text = "Preview"
         '
         'dlgImgSelect
         '
@@ -565,13 +500,8 @@ Partial Class dlgImgSelect
         Me.pnlImgSelectTop.PerformLayout()
         Me.tblImgSelectTop.ResumeLayout(False)
         Me.pnlImgSelectBottom.ResumeLayout(False)
+        Me.pnlImgSelectBottom.PerformLayout()
         Me.tblImgSelectBottom.ResumeLayout(False)
-        Me.tblImgSelectBottom.PerformLayout()
-        Me.pnlFilter.ResumeLayout(False)
-        Me.pnlSelectButtons.ResumeLayout(False)
-        Me.pnlSelectButtons.PerformLayout()
-        Me.tblSelectButtons.ResumeLayout(False)
-        Me.tblSelectButtons.PerformLayout()
         Me.pnlImgSelectLeft.ResumeLayout(False)
         Me.pnlImgSelectLeft.PerformLayout()
         Me.tblImgSelectLeft.ResumeLayout(False)
@@ -598,12 +528,6 @@ Partial Class dlgImgSelect
     Friend WithEvents tblImgSelectBottom As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents btnOK As System.Windows.Forms.Button
     Friend WithEvents btnCancel As System.Windows.Forms.Button
-    Friend WithEvents pnlFilter As System.Windows.Forms.Panel
-    Friend WithEvents tblFilter As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents pnlSelectButtons As System.Windows.Forms.Panel
-    Friend WithEvents tblSelectButtons As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents btnSelectAll As System.Windows.Forms.Button
-    Friend WithEvents btnSelectNone As System.Windows.Forms.Button
     Friend WithEvents ssImgSelect As System.Windows.Forms.StatusStrip
     Friend WithEvents tmrReorderMainList As System.Windows.Forms.Timer
     Friend WithEvents lblStatus As System.Windows.Forms.ToolStripStatusLabel
@@ -626,9 +550,11 @@ Partial Class dlgImgSelect
     Friend WithEvents cmnuSubImage As ContextMenuStrip
     Friend WithEvents cmnuSubImageRemove As ToolStripMenuItem
     Friend WithEvents cmnuListImage As ContextMenuStrip
-    Friend WithEvents ListToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents cmnuListImageSelect As ToolStripMenuItem
     Friend WithEvents tblImgSelectTop As TableLayoutPanel
     Friend WithEvents cmnuSubImageRemoveAll As ToolStripMenuItem
     Friend WithEvents cmnuSubImageRestoreOriginal As ToolStripMenuItem
     Friend WithEvents cmnuSubImageRestorePreferred As ToolStripMenuItem
+    Friend WithEvents cmnuListImageSelectAll As ToolStripMenuItem
+    Friend WithEvents cmnuListImagePreview As ToolStripMenuItem
 End Class

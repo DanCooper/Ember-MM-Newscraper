@@ -103,6 +103,7 @@ Partial Public Class clsXMLSettings
     Private _movieextrafanartskeepexisting As Boolean
     Private _movieextrafanartsprefsizeonly As Boolean
     Private _movieextrafanartsprefsize As Enums.MovieFanartSize
+    Private _movieextrafanartspreselect As Boolean
     Private _movieextrafanartsresize As Boolean
     Private _movieextrafanartswidth As Integer
     Private _movieextrathumbsheight As Integer
@@ -110,6 +111,7 @@ Partial Public Class clsXMLSettings
     Private _movieextrathumbskeepexisting As Boolean
     Private _movieextrathumbsprefsizeonly As Boolean
     Private _movieextrathumbsprefsize As Enums.MovieFanartSize
+    Private _movieextrathumbspreselect As Boolean
     Private _movieextrathumbsresize As Boolean
     Private _movieextrathumbswidth As Integer
     Private _moviefanartheight As Integer
@@ -474,6 +476,7 @@ Partial Public Class clsXMLSettings
     Private _tvshowextrafanartsprefonly As Boolean
     Private _tvshowextrafanartsprefsize As Enums.TVFanartSize
     Private _tvshowextrafanartsprefsizeonly As Boolean
+    Private _tvshowextrafanartspreselect As Boolean
     Private _tvshowextrafanartsresize As Boolean
     Private _tvshowextrafanartsheight As Integer
     Private _tvshowextrafanartswidth As Integer
@@ -7454,6 +7457,33 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._tvshowmissingtheme = value
+        End Set
+    End Property
+
+    Public Property MovieExtrafanartsPreselect() As Boolean
+        Get
+            Return Me._movieextrafanartspreselect
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movieextrafanartspreselect = value
+        End Set
+    End Property
+
+    Public Property MovieExtrathumbsPreselect() As Boolean
+        Get
+            Return Me._movieextrathumbspreselect
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movieextrathumbspreselect = value
+        End Set
+    End Property
+
+    Public Property TVShowExtrafanartsPreselect() As Boolean
+        Get
+            Return Me._tvshowextrafanartspreselect
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvshowextrafanartspreselect = value
         End Set
     End Property
 

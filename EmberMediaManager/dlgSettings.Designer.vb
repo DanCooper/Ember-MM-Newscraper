@@ -1577,6 +1577,9 @@ Partial Class dlgSettings
         Me.scSettingsBody = New System.Windows.Forms.SplitContainer()
         Me.scSettingsMain = New System.Windows.Forms.SplitContainer()
         Me.tblSettingsFooter = New System.Windows.Forms.TableLayoutPanel()
+        Me.chkMovieExtrafanartsPreselect = New System.Windows.Forms.CheckBox()
+        Me.chkMovieExtrathumbsPreselect = New System.Windows.Forms.CheckBox()
+        Me.chkTVShowExtrafanartsPreselect = New System.Windows.Forms.CheckBox()
         Me.gbGeneralMiscOpts.SuspendLayout()
         Me.tblGeneralMisc.SuspendLayout()
         Me.gbGeneralThemes.SuspendLayout()
@@ -3450,11 +3453,13 @@ Partial Class dlgSettings
         Me.tblMovieImagesExtrathumbsOpts.Controls.Add(Me.chkMovieExtrathumbsResize, 0, 4)
         Me.tblMovieImagesExtrathumbsOpts.Controls.Add(Me.chkMovieExtrathumbsPrefOnly, 3, 1)
         Me.tblMovieImagesExtrathumbsOpts.Controls.Add(Me.chkMovieExtrathumbsKeepExisting, 0, 3)
+        Me.tblMovieImagesExtrathumbsOpts.Controls.Add(Me.chkMovieExtrathumbsPreselect, 0, 6)
         Me.tblMovieImagesExtrathumbsOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMovieImagesExtrathumbsOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblMovieImagesExtrathumbsOpts.Name = "tblMovieImagesExtrathumbsOpts"
-        Me.tblMovieImagesExtrathumbsOpts.RowCount = 7
+        Me.tblMovieImagesExtrathumbsOpts.RowCount = 8
         Me.tblMovieImagesExtrathumbsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblMovieImagesExtrathumbsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieImagesExtrathumbsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieImagesExtrathumbsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieImagesExtrathumbsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
@@ -3625,11 +3630,13 @@ Partial Class dlgSettings
         Me.tblMovieImagesExtrafanartsOpts.Controls.Add(Me.lblMovieExtrafanartsLimit, 0, 2)
         Me.tblMovieImagesExtrafanartsOpts.Controls.Add(Me.txtMovieExtrafanartsLimit, 1, 2)
         Me.tblMovieImagesExtrafanartsOpts.Controls.Add(Me.chkMovieExtrafanartsPrefOnly, 3, 1)
+        Me.tblMovieImagesExtrafanartsOpts.Controls.Add(Me.chkMovieExtrafanartsPreselect, 0, 6)
         Me.tblMovieImagesExtrafanartsOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMovieImagesExtrafanartsOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblMovieImagesExtrafanartsOpts.Name = "tblMovieImagesExtrafanartsOpts"
-        Me.tblMovieImagesExtrafanartsOpts.RowCount = 7
+        Me.tblMovieImagesExtrafanartsOpts.RowCount = 8
         Me.tblMovieImagesExtrafanartsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblMovieImagesExtrafanartsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieImagesExtrafanartsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieImagesExtrafanartsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieImagesExtrafanartsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
@@ -13902,7 +13909,7 @@ Partial Class dlgSettings
         Me.txtTVShowPosterHeight.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.txtTVShowPosterHeight.Enabled = False
         Me.txtTVShowPosterHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVShowPosterHeight.Location = New System.Drawing.Point(224, 96)
+        Me.txtTVShowPosterHeight.Location = New System.Drawing.Point(196, 96)
         Me.txtTVShowPosterHeight.Name = "txtTVShowPosterHeight"
         Me.txtTVShowPosterHeight.Size = New System.Drawing.Size(40, 22)
         Me.txtTVShowPosterHeight.TabIndex = 9
@@ -14175,7 +14182,7 @@ Partial Class dlgSettings
         Me.gbTVImagesShowExtrafanartsOpts.Location = New System.Drawing.Point(3, 198)
         Me.gbTVImagesShowExtrafanartsOpts.Name = "gbTVImagesShowExtrafanartsOpts"
         Me.tblTVImagesShow.SetRowSpan(Me.gbTVImagesShowExtrafanartsOpts, 3)
-        Me.gbTVImagesShowExtrafanartsOpts.Size = New System.Drawing.Size(245, 170)
+        Me.gbTVImagesShowExtrafanartsOpts.Size = New System.Drawing.Size(245, 193)
         Me.gbTVImagesShowExtrafanartsOpts.TabIndex = 14
         Me.gbTVImagesShowExtrafanartsOpts.TabStop = False
         Me.gbTVImagesShowExtrafanartsOpts.Text = "Extrafanarts"
@@ -14201,10 +14208,11 @@ Partial Class dlgSettings
         Me.tblTVImagesShowExtrafanartsOpts.Controls.Add(Me.chkTVShowExtrafanartsKeepExisting, 0, 3)
         Me.tblTVImagesShowExtrafanartsOpts.Controls.Add(Me.chkTVShowExtrafanartsPrefSizeOnly, 3, 1)
         Me.tblTVImagesShowExtrafanartsOpts.Controls.Add(Me.txtTVShowExtrafanartsHeight, 4, 5)
+        Me.tblTVImagesShowExtrafanartsOpts.Controls.Add(Me.chkTVShowExtrafanartsPreselect, 0, 6)
         Me.tblTVImagesShowExtrafanartsOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblTVImagesShowExtrafanartsOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblTVImagesShowExtrafanartsOpts.Name = "tblTVImagesShowExtrafanartsOpts"
-        Me.tblTVImagesShowExtrafanartsOpts.RowCount = 7
+        Me.tblTVImagesShowExtrafanartsOpts.RowCount = 8
         Me.tblTVImagesShowExtrafanartsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblTVImagesShowExtrafanartsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVImagesShowExtrafanartsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
@@ -14212,7 +14220,8 @@ Partial Class dlgSettings
         Me.tblTVImagesShowExtrafanartsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVImagesShowExtrafanartsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVImagesShowExtrafanartsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVImagesShowExtrafanartsOpts.Size = New System.Drawing.Size(239, 149)
+        Me.tblTVImagesShowExtrafanartsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblTVImagesShowExtrafanartsOpts.Size = New System.Drawing.Size(239, 172)
         Me.tblTVImagesShowExtrafanartsOpts.TabIndex = 15
         '
         'txtTVShowExtrafanartsWidth
@@ -14395,7 +14404,7 @@ Partial Class dlgSettings
         Me.txtTVShowBannerHeight.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.txtTVShowBannerHeight.Enabled = False
         Me.txtTVShowBannerHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVShowBannerHeight.Location = New System.Drawing.Point(224, 143)
+        Me.txtTVShowBannerHeight.Location = New System.Drawing.Point(196, 143)
         Me.txtTVShowBannerHeight.Name = "txtTVShowBannerHeight"
         Me.txtTVShowBannerHeight.Size = New System.Drawing.Size(40, 22)
         Me.txtTVShowBannerHeight.TabIndex = 9
@@ -14571,7 +14580,7 @@ Partial Class dlgSettings
         Me.txtTVShowFanartHeight.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.txtTVShowFanartHeight.Enabled = False
         Me.txtTVShowFanartHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVShowFanartHeight.Location = New System.Drawing.Point(224, 96)
+        Me.txtTVShowFanartHeight.Location = New System.Drawing.Point(196, 96)
         Me.txtTVShowFanartHeight.Name = "txtTVShowFanartHeight"
         Me.txtTVShowFanartHeight.Size = New System.Drawing.Size(40, 22)
         Me.txtTVShowFanartHeight.TabIndex = 7
@@ -14754,7 +14763,7 @@ Partial Class dlgSettings
         Me.txtTVAllSeasonsPosterHeight.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.txtTVAllSeasonsPosterHeight.Enabled = False
         Me.txtTVAllSeasonsPosterHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVAllSeasonsPosterHeight.Location = New System.Drawing.Point(224, 96)
+        Me.txtTVAllSeasonsPosterHeight.Location = New System.Drawing.Point(196, 96)
         Me.txtTVAllSeasonsPosterHeight.Name = "txtTVAllSeasonsPosterHeight"
         Me.txtTVAllSeasonsPosterHeight.Size = New System.Drawing.Size(40, 22)
         Me.txtTVAllSeasonsPosterHeight.TabIndex = 9
@@ -14950,7 +14959,7 @@ Partial Class dlgSettings
         Me.txtTVAllSeasonsBannerHeight.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.txtTVAllSeasonsBannerHeight.Enabled = False
         Me.txtTVAllSeasonsBannerHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVAllSeasonsBannerHeight.Location = New System.Drawing.Point(224, 143)
+        Me.txtTVAllSeasonsBannerHeight.Location = New System.Drawing.Point(196, 143)
         Me.txtTVAllSeasonsBannerHeight.Name = "txtTVAllSeasonsBannerHeight"
         Me.txtTVAllSeasonsBannerHeight.Size = New System.Drawing.Size(40, 22)
         Me.txtTVAllSeasonsBannerHeight.TabIndex = 9
@@ -15125,7 +15134,7 @@ Partial Class dlgSettings
         Me.txtTVAllSeasonsFanartHeight.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.txtTVAllSeasonsFanartHeight.Enabled = False
         Me.txtTVAllSeasonsFanartHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVAllSeasonsFanartHeight.Location = New System.Drawing.Point(224, 96)
+        Me.txtTVAllSeasonsFanartHeight.Location = New System.Drawing.Point(196, 96)
         Me.txtTVAllSeasonsFanartHeight.Name = "txtTVAllSeasonsFanartHeight"
         Me.txtTVAllSeasonsFanartHeight.Size = New System.Drawing.Size(40, 22)
         Me.txtTVAllSeasonsFanartHeight.TabIndex = 7
@@ -15308,7 +15317,7 @@ Partial Class dlgSettings
         Me.txtTVSeasonPosterHeight.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.txtTVSeasonPosterHeight.Enabled = False
         Me.txtTVSeasonPosterHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVSeasonPosterHeight.Location = New System.Drawing.Point(224, 96)
+        Me.txtTVSeasonPosterHeight.Location = New System.Drawing.Point(196, 96)
         Me.txtTVSeasonPosterHeight.Name = "txtTVSeasonPosterHeight"
         Me.txtTVSeasonPosterHeight.Size = New System.Drawing.Size(40, 22)
         Me.txtTVSeasonPosterHeight.TabIndex = 7
@@ -15624,7 +15633,7 @@ Partial Class dlgSettings
         Me.txtTVSeasonBannerHeight.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.txtTVSeasonBannerHeight.Enabled = False
         Me.txtTVSeasonBannerHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVSeasonBannerHeight.Location = New System.Drawing.Point(224, 143)
+        Me.txtTVSeasonBannerHeight.Location = New System.Drawing.Point(196, 143)
         Me.txtTVSeasonBannerHeight.Name = "txtTVSeasonBannerHeight"
         Me.txtTVSeasonBannerHeight.Size = New System.Drawing.Size(40, 22)
         Me.txtTVSeasonBannerHeight.TabIndex = 7
@@ -15679,7 +15688,7 @@ Partial Class dlgSettings
         Me.txtTVSeasonFanartHeight.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.txtTVSeasonFanartHeight.Enabled = False
         Me.txtTVSeasonFanartHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVSeasonFanartHeight.Location = New System.Drawing.Point(224, 96)
+        Me.txtTVSeasonFanartHeight.Location = New System.Drawing.Point(196, 96)
         Me.txtTVSeasonFanartHeight.Name = "txtTVSeasonFanartHeight"
         Me.txtTVSeasonFanartHeight.Size = New System.Drawing.Size(40, 22)
         Me.txtTVSeasonFanartHeight.TabIndex = 7
@@ -15929,7 +15938,7 @@ Partial Class dlgSettings
         Me.txtTVEpisodePosterHeight.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.txtTVEpisodePosterHeight.Enabled = False
         Me.txtTVEpisodePosterHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVEpisodePosterHeight.Location = New System.Drawing.Point(224, 96)
+        Me.txtTVEpisodePosterHeight.Location = New System.Drawing.Point(196, 96)
         Me.txtTVEpisodePosterHeight.Name = "txtTVEpisodePosterHeight"
         Me.txtTVEpisodePosterHeight.Size = New System.Drawing.Size(40, 22)
         Me.txtTVEpisodePosterHeight.TabIndex = 5
@@ -16009,7 +16018,7 @@ Partial Class dlgSettings
         Me.txtTVEpisodeFanartHeight.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.txtTVEpisodeFanartHeight.Enabled = False
         Me.txtTVEpisodeFanartHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVEpisodeFanartHeight.Location = New System.Drawing.Point(224, 96)
+        Me.txtTVEpisodeFanartHeight.Location = New System.Drawing.Point(196, 96)
         Me.txtTVEpisodeFanartHeight.Name = "txtTVEpisodeFanartHeight"
         Me.txtTVEpisodeFanartHeight.Size = New System.Drawing.Size(40, 22)
         Me.txtTVEpisodeFanartHeight.TabIndex = 7
@@ -21475,7 +21484,7 @@ Partial Class dlgSettings
         Me.chkMovieSetPosterPrefOnly.AutoSize = True
         Me.tblMovieSetImagesPosterOpts.SetColumnSpan(Me.chkMovieSetPosterPrefOnly, 2)
         Me.chkMovieSetPosterPrefOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieSetPosterPrefOnly.Location = New System.Drawing.Point(186, 25)
+        Me.chkMovieSetPosterPrefOnly.Location = New System.Drawing.Point(158, 25)
         Me.chkMovieSetPosterPrefOnly.Name = "chkMovieSetPosterPrefOnly"
         Me.chkMovieSetPosterPrefOnly.Size = New System.Drawing.Size(50, 17)
         Me.chkMovieSetPosterPrefOnly.TabIndex = 2
@@ -22058,6 +22067,45 @@ Partial Class dlgSettings
         Me.tblSettingsFooter.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.tblSettingsFooter.Size = New System.Drawing.Size(1207, 74)
         Me.tblSettingsFooter.TabIndex = 0
+        '
+        'chkMovieExtrafanartsPreselect
+        '
+        Me.chkMovieExtrafanartsPreselect.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkMovieExtrafanartsPreselect.AutoSize = True
+        Me.tblMovieImagesExtrafanartsOpts.SetColumnSpan(Me.chkMovieExtrafanartsPreselect, 5)
+        Me.chkMovieExtrafanartsPreselect.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieExtrafanartsPreselect.Location = New System.Drawing.Point(3, 152)
+        Me.chkMovieExtrafanartsPreselect.Name = "chkMovieExtrafanartsPreselect"
+        Me.chkMovieExtrafanartsPreselect.Size = New System.Drawing.Size(195, 17)
+        Me.chkMovieExtrafanartsPreselect.TabIndex = 3
+        Me.chkMovieExtrafanartsPreselect.Text = "Preselect in ""Image Select"" dialog"
+        Me.chkMovieExtrafanartsPreselect.UseVisualStyleBackColor = True
+        '
+        'chkMovieExtrathumbsPreselect
+        '
+        Me.chkMovieExtrathumbsPreselect.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkMovieExtrathumbsPreselect.AutoSize = True
+        Me.tblMovieImagesExtrathumbsOpts.SetColumnSpan(Me.chkMovieExtrathumbsPreselect, 5)
+        Me.chkMovieExtrathumbsPreselect.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieExtrathumbsPreselect.Location = New System.Drawing.Point(3, 152)
+        Me.chkMovieExtrathumbsPreselect.Name = "chkMovieExtrathumbsPreselect"
+        Me.chkMovieExtrathumbsPreselect.Size = New System.Drawing.Size(195, 17)
+        Me.chkMovieExtrathumbsPreselect.TabIndex = 3
+        Me.chkMovieExtrathumbsPreselect.Text = "Preselect in ""Image Select"" dialog"
+        Me.chkMovieExtrathumbsPreselect.UseVisualStyleBackColor = True
+        '
+        'chkTVShowExtrafanartsPreselect
+        '
+        Me.chkTVShowExtrafanartsPreselect.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkTVShowExtrafanartsPreselect.AutoSize = True
+        Me.tblTVImagesShowExtrafanartsOpts.SetColumnSpan(Me.chkTVShowExtrafanartsPreselect, 5)
+        Me.chkTVShowExtrafanartsPreselect.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkTVShowExtrafanartsPreselect.Location = New System.Drawing.Point(3, 152)
+        Me.chkTVShowExtrafanartsPreselect.Name = "chkTVShowExtrafanartsPreselect"
+        Me.chkTVShowExtrafanartsPreselect.Size = New System.Drawing.Size(195, 17)
+        Me.chkTVShowExtrafanartsPreselect.TabIndex = 14
+        Me.chkTVShowExtrafanartsPreselect.Text = "Preselect in ""Image Select"" dialog"
+        Me.chkTVShowExtrafanartsPreselect.UseVisualStyleBackColor = True
         '
         'dlgSettings
         '
@@ -24410,4 +24458,7 @@ End Sub
     Friend WithEvents chkTVUseExtended As CheckBox
     Friend WithEvents lblTVSourcesFilenamingKodiADEnabled As Label
     Friend WithEvents chkTVUseAD As CheckBox
+    Friend WithEvents chkMovieExtrathumbsPreselect As CheckBox
+    Friend WithEvents chkMovieExtrafanartsPreselect As CheckBox
+    Friend WithEvents chkTVShowExtrafanartsPreselect As CheckBox
 End Class
