@@ -2541,7 +2541,7 @@ Public Class frmMain
                         End If
                         If tScrapeItem.ScrapeModifier.EpisodeFanart OrElse tScrapeItem.ScrapeModifier.EpisodePoster Then
                             Dim SearchResultsContainer_Episodes As New MediaContainers.SearchResultsContainer
-                            ModulesManager.Instance.ScrapeImage_TV(tEpisode, SearchResultsContainer, tScrapeItem.ScrapeModifier, False)
+                            ModulesManager.Instance.ScrapeImage_TV(tEpisode, SearchResultsContainer_Episodes, tScrapeItem.ScrapeModifier, False)
                             Images.SetPreferredImages(tEpisode, SearchResultsContainer_Episodes, tScrapeItem.ScrapeModifier)
                         End If
                     Next
