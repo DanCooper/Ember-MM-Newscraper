@@ -2989,6 +2989,33 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieExtrafanartsPreselect() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieExtrafanartsPreselect
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieExtrafanartsPreselect = value
+        End Set
+    End Property
+
+    Public Property MovieExtrathumbsPreselect() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieExtrathumbsPreselect
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieExtrathumbsPreselect = value
+        End Set
+    End Property
+
+    Public Property TVShowExtrafanartsPreselect() As Boolean
+        Get
+            Return Settings._XMLSettings.TVShowExtrafanartsPreselect
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVShowExtrafanartsPreselect = value
+        End Set
+    End Property
+
     Public Property MovieExtrathumbsResize() As Boolean
         Get
             Return Settings._XMLSettings.MovieExtrathumbsResize
@@ -6761,6 +6788,7 @@ Public Class Settings
         MovieExtrafanartsKeepExisting = False
         MovieExtrafanartsPrefSizeOnly = False
         MovieExtrafanartsPrefSize = Enums.MovieFanartSize.Any
+        MovieExtrafanartsPreselect = True
         MovieExtrafanartsResize = False
         MovieExtrafanartsWidth = 0
         MovieExtrathumbsHeight = 0
@@ -6768,6 +6796,7 @@ Public Class Settings
         MovieExtrathumbsKeepExisting = False
         MovieExtrathumbsPrefSizeOnly = False
         MovieExtrathumbsPrefSize = 0
+        MovieExtrathumbsPreselect = True
         MovieExtrathumbsResize = False
         MovieExtrathumbsWidth = 0
         MovieFanartHeight = 0
@@ -7135,6 +7164,7 @@ Public Class Settings
         TVShowExtrafanartsPrefOnly = False
         TVShowExtrafanartsPrefSize = Enums.TVFanartSize.Any
         TVShowExtrafanartsPrefSizeOnly = False
+        TVShowExtrafanartsPreselect = True
         TVShowExtrafanartsResize = False
         TVShowExtrafanartsHeight = 0
         TVShowExtrafanartsWidth = 0

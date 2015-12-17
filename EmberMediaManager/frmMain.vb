@@ -2098,8 +2098,8 @@ Public Class frmMain
                     If Not ModulesManager.Instance.ScrapeImage_Movie(DBScrapeMovie, SearchResultsContainer, tScrapeItem.ScrapeModifier, Args.ScrapeList.Count = 1) Then
                         If Args.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.MovieImagesDisplayImageSelect Then
                             Using dImgSelect As New dlgImgSelect
-                                If dImgSelect.ShowDialog(DBScrapeMovie, SearchResultsContainer, tScrapeItem.ScrapeModifier) = Windows.Forms.DialogResult.OK Then
-                                    DBScrapeMovie = dImgSelect.Result
+                                If dImgSelect.ShowDialog(DBScrapeMovie, SearchResultsContainer, tScrapeItem.ScrapeModifier) = DialogResult.OK Then
+                                    Images.SetPreferredImages(DBScrapeMovie, dImgSelect.Result)
                                 End If
                             End Using
 
@@ -2377,7 +2377,7 @@ Public Class frmMain
                         If Args.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.MovieImagesDisplayImageSelect Then
                             Using dImgSelect As New dlgImgSelect
                                 If dImgSelect.ShowDialog(DBScrapeMovieSet, SearchResultsContainer, tScrapeItem.ScrapeModifier) = DialogResult.OK Then
-                                    DBScrapeMovieSet = dImgSelect.Result
+                                    Images.SetPreferredImages(DBScrapeMovieSet, dImgSelect.Result)
                                 End If
                             End Using
 
@@ -2523,7 +2523,7 @@ Public Class frmMain
                     If Args.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.TVImagesDisplayImageSelect Then
                         Using dImgSelect As New dlgImgSelect
                             If dImgSelect.ShowDialog(DBScrapeShow, SearchResultsContainer, tScrapeItem.ScrapeModifier) = DialogResult.OK Then
-                                DBScrapeShow = dImgSelect.Result
+                                Images.SetPreferredImages(DBScrapeShow, dImgSelect.Result)
                             End If
                         End Using
 
@@ -2690,7 +2690,7 @@ Public Class frmMain
                         If Args.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.TVImagesDisplayImageSelect Then
                             Using dImgSelect As New dlgImgSelect
                                 If dImgSelect.ShowDialog(DBScrapeEpisode, SearchResultsContainer, tScrapeItem.ScrapeModifier) = DialogResult.OK Then
-                                    DBScrapeEpisode = dImgSelect.Result
+                                    Images.SetPreferredImages(DBScrapeEpisode, dImgSelect.Result)
                                 End If
                             End Using
 
@@ -2828,7 +2828,7 @@ Public Class frmMain
                         If Args.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.TVImagesDisplayImageSelect Then
                             Using dImgSelect As New dlgImgSelect
                                 If dImgSelect.ShowDialog(DBScrapeSeason, SearchResultsContainer, tScrapeItem.ScrapeModifier) = DialogResult.OK Then
-                                    DBScrapeSeason = dImgSelect.Result
+                                    Images.SetPreferredImages(DBScrapeSeason, dImgSelect.Result)
                                 End If
                             End Using
 

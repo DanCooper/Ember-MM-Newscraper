@@ -117,48 +117,68 @@ Public Class Localization
     ' ************************************************************************************************
     ' This are functions for country/Language codes under ISO639 Alpha-2 and Alpha-3(ie: Used by DVD/GoogleAPI)
     Shared Function ISOGetLangByCode2(ByVal code As String) As String
-        Try
-            Return (From x As LanguagesLanguage In _ISOLanguages.Language Where (x.Alpha2 = code))(0).Name
-        Catch ex As Exception
-            'logger.Error(New StackFrame().GetMethod().Name, ex)
+        If Not String.IsNullOrEmpty(code) AndAlso Not code = "00" AndAlso Not code.ToLower = "xx" Then
+            Dim tLang = (From x As LanguagesLanguage In _ISOLanguages.Language Where (x.Alpha2 = code))(0)
+            If tLang IsNot Nothing AndAlso Not String.IsNullOrEmpty(tLang.Name) Then
+                Return tLang.Name
+            Else
+                Return Master.eLang.GetString(138, "Unknown")
+            End If
+        Else
             Return Master.eLang.GetString(1168, "Blank")
-        End Try
+        End If
     End Function
 
     Shared Function ISOGetLangByCode3(ByVal code As String) As String
-        Try
-            Return (From x As LanguagesLanguage In _ISOLanguages.Language Where (x.Alpha3 = code))(0).Name
-        Catch ex As Exception
-            'logger.Error(New StackFrame().GetMethod().Name, ex)
+        If Not String.IsNullOrEmpty(code) AndAlso Not code = "00" AndAlso Not code.ToLower = "xx" Then
+            Dim tLang = (From x As LanguagesLanguage In _ISOLanguages.Language Where (x.Alpha3 = code))(0)
+            If tLang IsNot Nothing AndAlso Not String.IsNullOrEmpty(tLang.Name) Then
+                Return tLang.Name
+            Else
+                Return Master.eLang.GetString(138, "Unknown")
+            End If
+        Else
             Return Master.eLang.GetString(1168, "Blank")
-        End Try
+        End If
     End Function
 
     Public Shared Function ISOLangGetCode2ByLang(ByVal lang As String) As String
-        Try
-            Return (From x As LanguagesLanguage In _ISOLanguages.Language Where (x.Name = lang))(0).Alpha2
-        Catch ex As Exception
-            'logger.Error(New StackFrame().GetMethod().Name, ex)
-            Return ""
-        End Try
+        If Not String.IsNullOrEmpty(lang) Then
+            Dim tLang = (From x As LanguagesLanguage In _ISOLanguages.Language Where (x.Name = lang))(0)
+            If tLang IsNot Nothing AndAlso Not String.IsNullOrEmpty(tLang.Alpha2) Then
+                Return tLang.Alpha2
+            Else
+                Return Master.eLang.GetString(138, "Unknown")
+            End If
+        Else
+            Return Master.eLang.GetString(1168, "Blank")
+        End If
     End Function
 
     Public Shared Function ISOLangGetCode2ByCode3(ByVal lang As String) As String
-        Try
-            Return (From x As LanguagesLanguage In _ISOLanguages.Language Where (x.Alpha3 = lang))(0).Alpha2
-        Catch ex As Exception
-            'logger.Error(New StackFrame().GetMethod().Name, ex)
-            Return ""
-        End Try
+        If Not String.IsNullOrEmpty(lang) Then
+            Dim tLang = (From x As LanguagesLanguage In _ISOLanguages.Language Where (x.Alpha3 = lang))(0)
+            If tLang IsNot Nothing AndAlso Not String.IsNullOrEmpty(tLang.Alpha3) Then
+                Return tLang.Alpha2
+            Else
+                Return Master.eLang.GetString(138, "Unknown")
+            End If
+        Else
+            Return Master.eLang.GetString(1168, "Blank")
+        End If
     End Function
 
     Public Shared Function ISOLangGetCode3ByLang(ByVal lang As String) As String
-        Try
-            Return (From x As LanguagesLanguage In _ISOLanguages.Language Where (x.Name = lang))(0).Alpha3
-        Catch ex As Exception
-            'logger.Error(New StackFrame().GetMethod().Name, ex)
-            Return ""
-        End Try
+        If Not String.IsNullOrEmpty(lang) Then
+            Dim tLang = (From x As LanguagesLanguage In _ISOLanguages.Language Where (x.Name = lang))(0)
+            If tLang IsNot Nothing AndAlso Not String.IsNullOrEmpty(tLang.Alpha3) Then
+                Return tLang.Alpha3
+            Else
+                Return Master.eLang.GetString(138, "Unknown")
+            End If
+        Else
+            Return Master.eLang.GetString(1168, "Blank")
+        End If
     End Function
 
     Public Shared Function ISOLangGetLanguagesList() As ArrayList

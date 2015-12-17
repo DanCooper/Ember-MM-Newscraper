@@ -2902,6 +2902,7 @@ Public Class dlgSettings
             chkMovieDisplayYear.Checked = .MovieDisplayYear
             chkMovieExtrafanartsKeepExisting.Checked = .MovieExtrafanartsKeepExisting
             chkMovieExtrafanartsPrefOnly.Checked = .MovieExtrafanartsPrefSizeOnly
+            chkMovieExtrafanartsPreselect.Checked = .MovieExtrafanartsPreselect
             chkMovieExtrafanartsResize.Checked = .MovieExtrafanartsResize
             If .MovieExtrafanartsResize Then
                 txtMovieExtrafanartsHeight.Text = .MovieExtrafanartsHeight.ToString
@@ -2909,6 +2910,7 @@ Public Class dlgSettings
             End If
             chkMovieExtrathumbsKeepExisting.Checked = .MovieExtrathumbsKeepExisting
             chkMovieExtrathumbsPrefOnly.Checked = .MovieExtrathumbsPrefSizeOnly
+            chkMovieExtrathumbsPreselect.Checked = .MovieExtrathumbsPreselect
             chkMovieExtrathumbsResize.Checked = .MovieExtrathumbsResize
             If .MovieExtrathumbsResize Then
                 txtMovieExtrathumbsHeight.Text = .MovieExtrathumbsHeight.ToString
@@ -3165,6 +3167,7 @@ Public Class dlgSettings
             End If
             chkTVShowExtrafanartsKeepExisting.Checked = .TVShowExtrafanartsKeepExisting
             chkTVShowExtrafanartsPrefSizeOnly.Checked = .TVShowExtrafanartsPrefOnly
+            chkTVShowExtrafanartsPreselect.Checked = .TVShowExtrafanartsPreselect
             chkTVShowExtrafanartsResize.Checked = .TVShowExtrafanartsResize
             If .TVShowExtrafanartsResize Then
                 txtTVShowExtrafanartsHeight.Text = .TVShowExtrafanartsHeight.ToString
@@ -3971,6 +3974,7 @@ Public Class dlgSettings
     Private Sub LoadMovieFanartSizes()
         Dim items As New Dictionary(Of String, Enums.MovieFanartSize)
         items.Add(Master.eLang.GetString(745, "Any"), Enums.MovieFanartSize.Any)
+        items.Add("3840x2160", Enums.MovieFanartSize.UHD2160)
         items.Add("1920x1080", Enums.MovieFanartSize.HD1080)
         items.Add("1280x720", Enums.MovieFanartSize.HD720)
         items.Add("Thumb", Enums.MovieFanartSize.Thumb)
@@ -4028,6 +4032,7 @@ Public Class dlgSettings
     Private Sub LoadTVFanartSizes()
         Dim items As New Dictionary(Of String, Enums.TVFanartSize)
         items.Add(Master.eLang.GetString(745, "Any"), Enums.TVFanartSize.Any)
+        items.Add("3840x2160", Enums.TVFanartSize.UHD2160)
         items.Add("1920x1080", Enums.TVFanartSize.HD1080)
         items.Add("1280x720", Enums.TVFanartSize.HD720)
         cbTVAllSeasonsFanartPrefSize.DataSource = items.ToList
@@ -4709,6 +4714,7 @@ Public Class dlgSettings
             .MovieExtrafanartsKeepExisting = chkMovieExtrafanartsKeepExisting.Checked
             .MovieExtrafanartsPrefSizeOnly = chkMovieExtrafanartsPrefOnly.Checked
             .MovieExtrafanartsPrefSize = CType(cbMovieExtrafanartsPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieFanartSize)).Value
+            .MovieExtrafanartsPreselect = chkMovieExtrafanartsPreselect.Checked
             .MovieExtrafanartsResize = chkMovieExtrafanartsResize.Checked
             .MovieExtrafanartsWidth = If(Not String.IsNullOrEmpty(txtMovieExtrafanartsWidth.Text), Convert.ToInt32(txtMovieExtrafanartsWidth.Text), 0)
             .MovieExtrathumbsHeight = If(Not String.IsNullOrEmpty(txtMovieExtrathumbsHeight.Text), Convert.ToInt32(txtMovieExtrathumbsHeight.Text), 0)
@@ -4716,6 +4722,7 @@ Public Class dlgSettings
             .MovieExtrathumbsKeepExisting = chkMovieExtrathumbsKeepExisting.Checked
             .MovieExtrathumbsPrefSizeOnly = chkMovieExtrathumbsPrefOnly.Checked
             .MovieExtrathumbsPrefSize = CType(cbMovieExtrathumbsPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieFanartSize)).Value
+            .MovieExtrathumbsPreselect = chkMovieExtrathumbsPreselect.Checked
             .MovieExtrathumbsResize = chkMovieExtrathumbsResize.Checked
             .MovieExtrathumbsWidth = If(Not String.IsNullOrEmpty(txtMovieExtrathumbsWidth.Text), Convert.ToInt32(txtMovieExtrathumbsWidth.Text), 0)
             .MovieFanartHeight = If(Not String.IsNullOrEmpty(txtMovieFanartHeight.Text), Convert.ToInt32(txtMovieFanartHeight.Text), 0)
@@ -5079,6 +5086,7 @@ Public Class dlgSettings
             .TVShowExtrafanartsPrefOnly = chkTVShowExtrafanartsPrefSizeOnly.Checked
             .TVShowExtrafanartsPrefSize = CType(cbTVShowExtrafanartsPrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVFanartSize)).Value
             .TVShowExtrafanartsPrefSizeOnly = chkTVShowExtrafanartsPrefSizeOnly.Checked
+            .TVShowExtrafanartsPreselect = chkTVShowExtrafanartsPreselect.Checked
             .TVShowExtrafanartsResize = chkTVShowExtrafanartsResize.Checked
             .TVShowExtrafanartsWidth = If(Not String.IsNullOrEmpty(txtTVShowExtrafanartsWidth.Text), Convert.ToInt32(txtTVShowExtrafanartsWidth.Text), 0)
             .TVShowFanartHeight = If(Not String.IsNullOrEmpty(txtTVShowFanartHeight.Text), Convert.ToInt32(txtTVShowFanartHeight.Text), 0)
@@ -6339,6 +6347,12 @@ Public Class dlgSettings
         lblTVAllSeasonsBannerPrefType.Text = strPreferredType
         lblTVSeasonBannerPrefType.Text = strPreferredType
         lblTVShowBannerPrefType.Text = strPreferredType
+
+        'Preselect in "Image Select" dialog
+        Dim strPreselectInImageSelectDialog As String = Master.eLang.GetString(1008, "Preselect in ""Image Select"" dialog")
+        chkMovieExtrafanartsPreselect.Text = strPreselectInImageSelectDialog
+        chkMovieExtrathumbsPreselect.Text = strPreselectInImageSelectDialog
+        chkTVShowExtrafanartsPreselect.Text = strPreselectInImageSelectDialog
 
         'Recusive
         Dim strRecursive = Master.eLang.GetString(411, "Recursive")
@@ -7659,6 +7673,7 @@ Public Class dlgSettings
         chkMovieExtrafanartsFrodo.CheckedChanged,
         chkMovieExtrafanartsKeepExisting.CheckedChanged,
         chkMovieExtrafanartsPrefOnly.CheckedChanged,
+        chkMovieExtrafanartsPreselect.CheckedChanged,
         chkMovieExtrathumbsEden.CheckedChanged,
         chkMovieExtrathumbsExpertBDMV.CheckedChanged,
         chkMovieExtrathumbsExpertSingle.CheckedChanged,
@@ -7666,6 +7681,7 @@ Public Class dlgSettings
         chkMovieExtrathumbsFrodo.CheckedChanged,
         chkMovieExtrathumbsKeepExisting.CheckedChanged,
         chkMovieExtrathumbsPrefOnly.CheckedChanged,
+        chkMovieExtrathumbsPreselect.CheckedChanged,
         chkMovieFanartBoxee.CheckedChanged,
         chkMovieFanartEden.CheckedChanged,
         chkMovieFanartFrodo.CheckedChanged,
@@ -7910,6 +7926,7 @@ Public Class dlgSettings
         chkTVShowExtrafanartsFrodo.CheckedChanged,
         chkTVShowExtrafanartsKeepExisting.CheckedChanged,
         chkTVShowExtrafanartsPrefSizeOnly.CheckedChanged,
+        chkTVShowExtrafanartsPreselect.CheckedChanged,
         chkTVShowFanartBoxee.CheckedChanged,
         chkTVShowFanartFrodo.CheckedChanged,
         chkTVShowFanartKeepExisting.CheckedChanged,
