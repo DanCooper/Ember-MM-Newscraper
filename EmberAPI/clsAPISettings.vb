@@ -6767,6 +6767,10 @@ Public Class Settings
         'Me.GeneralWindowLoc =
         'Me.GeneralWindowSize =
         GeneralWindowState = FormWindowState.Maximized
+        MovieActorThumbsExtExpertBDMV = ".jpg"
+        MovieActorThumbsExtExpertMulti = ".jpg"
+        MovieActorThumbsExtExpertSingle = ".jpg"
+        MovieActorThumbsExtExpertVTS = ".jpg"
         MovieActorThumbsKeepExisting = False
         MovieBackdropsAuto = False
         MovieBackdropsPath = String.Empty
@@ -7014,6 +7018,7 @@ Public Class Settings
         TVCleanDB = False
         TVDisplayMissingEpisodes = True
         TVDisplayStatus = False
+        TVEpisodeActorThumbsExtExpert = ".jpg"
         TVEpisodeActorThumbsKeepExisting = False
         TVEpisodeFanartHeight = 0
         TVEpisodeFanartKeepExisting = False
@@ -7148,6 +7153,7 @@ Public Class Settings
         TVSeasonPosterPrefSizeOnly = False
         TVSeasonPosterResize = False
         TVSeasonPosterWidth = 0
+        TVShowActorThumbsExtExpert = ".jpg"
         TVShowActorThumbsKeepExisting = False
         TVShowBannerHeight = 0
         TVShowBannerKeepExisting = False
