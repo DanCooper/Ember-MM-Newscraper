@@ -31,8 +31,8 @@ Partial Class frmSettingsHolder_MovieSet
         Me.txtApiKey = New System.Windows.Forms.TextBox()
         Me.btnUnlockAPI = New System.Windows.Forms.Button()
         Me.lblApiKey = New System.Windows.Forms.Label()
-        Me.chkFallBackEng = New System.Windows.Forms.CheckBox()
         Me.lblEMMAPI = New System.Windows.Forms.Label()
+        Me.chkFallBackEng = New System.Windows.Forms.CheckBox()
         Me.chkEnabled = New System.Windows.Forms.CheckBox()
         Me.pnlSettingsTop = New System.Windows.Forms.Panel()
         Me.tblSettingsTop = New System.Windows.Forms.TableLayoutPanel()
@@ -167,6 +167,18 @@ Partial Class frmSettingsHolder_MovieSet
         Me.lblApiKey.TabIndex = 0
         Me.lblApiKey.Text = "TMDB API Key:"
         '
+        'lblEMMAPI
+        '
+        Me.lblEMMAPI.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblEMMAPI.AutoSize = True
+        Me.tblScraperOpts.SetColumnSpan(Me.lblEMMAPI, 2)
+        Me.lblEMMAPI.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.lblEMMAPI.Location = New System.Drawing.Point(188, 3)
+        Me.lblEMMAPI.Name = "lblEMMAPI"
+        Me.lblEMMAPI.Size = New System.Drawing.Size(220, 13)
+        Me.lblEMMAPI.TabIndex = 12
+        Me.lblEMMAPI.Text = "Ember Media Manager Embedded API Key"
+        '
         'chkFallBackEng
         '
         Me.chkFallBackEng.Anchor = System.Windows.Forms.AnchorStyles.Left
@@ -179,18 +191,6 @@ Partial Class frmSettingsHolder_MovieSet
         Me.chkFallBackEng.TabIndex = 4
         Me.chkFallBackEng.Text = "Fallback to english"
         Me.chkFallBackEng.UseVisualStyleBackColor = True
-        '
-        'lblEMMAPI
-        '
-        Me.lblEMMAPI.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblEMMAPI.AutoSize = True
-        Me.tblScraperOpts.SetColumnSpan(Me.lblEMMAPI, 2)
-        Me.lblEMMAPI.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.lblEMMAPI.Location = New System.Drawing.Point(188, 3)
-        Me.lblEMMAPI.Name = "lblEMMAPI"
-        Me.lblEMMAPI.Size = New System.Drawing.Size(220, 13)
-        Me.lblEMMAPI.TabIndex = 12
-        Me.lblEMMAPI.Text = "Ember Media Manager Embedded API Key"
         '
         'chkEnabled
         '
@@ -329,8 +329,8 @@ Partial Class frmSettingsHolder_MovieSet
         Me.tblScraperFieldsOpts.ColumnCount = 2
         Me.tblScraperFieldsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblScraperFieldsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkPlot, 0, 1)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkTitle, 0, 0)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkPlot, 0, 0)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkTitle, 0, 1)
         Me.tblScraperFieldsOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblScraperFieldsOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblScraperFieldsOpts.Name = "tblScraperFieldsOpts"
@@ -345,7 +345,7 @@ Partial Class frmSettingsHolder_MovieSet
         '
         Me.chkPlot.AutoSize = True
         Me.chkPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkPlot.Location = New System.Drawing.Point(3, 26)
+        Me.chkPlot.Location = New System.Drawing.Point(3, 3)
         Me.chkPlot.Name = "chkPlot"
         Me.chkPlot.Size = New System.Drawing.Size(46, 17)
         Me.chkPlot.TabIndex = 10
@@ -356,7 +356,7 @@ Partial Class frmSettingsHolder_MovieSet
         '
         Me.chkTitle.AutoSize = True
         Me.chkTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTitle.Location = New System.Drawing.Point(3, 3)
+        Me.chkTitle.Location = New System.Drawing.Point(3, 26)
         Me.chkTitle.Name = "chkTitle"
         Me.chkTitle.Size = New System.Drawing.Size(47, 17)
         Me.chkTitle.TabIndex = 0
@@ -412,7 +412,7 @@ Partial Class frmSettingsHolder_MovieSet
         Me.lblInfoBottom.Name = "lblInfoBottom"
         Me.lblInfoBottom.Size = New System.Drawing.Size(205, 24)
         Me.lblInfoBottom.TabIndex = 4
-        Me.lblInfoBottom.Text = "These settings are specific to this module." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Please refer to the global settings " & _
+        Me.lblInfoBottom.Text = "These settings are specific to this module." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Please refer to the global settings " &
     "for more options."
         Me.lblInfoBottom.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '

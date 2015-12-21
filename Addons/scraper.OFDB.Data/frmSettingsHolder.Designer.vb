@@ -74,11 +74,11 @@ Partial Class frmSettingsHolder
         Me.tblScraperFieldsOpts.ColumnCount = 2
         Me.tblScraperFieldsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblScraperFieldsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkGenres, 0, 4)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkCertifications, 0, 3)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkTitle, 0, 0)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkPlot, 0, 1)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkOutline, 0, 2)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkCertifications, 0, 0)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkTitle, 0, 4)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkGenres, 0, 1)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkOutline, 0, 3)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkPlot, 0, 2)
         Me.tblScraperFieldsOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblScraperFieldsOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblScraperFieldsOpts.Name = "tblScraperFieldsOpts"
@@ -97,7 +97,7 @@ Partial Class frmSettingsHolder
         Me.chkGenres.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkGenres.AutoSize = True
         Me.chkGenres.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGenres.Location = New System.Drawing.Point(3, 95)
+        Me.chkGenres.Location = New System.Drawing.Point(3, 26)
         Me.chkGenres.Name = "chkGenres"
         Me.chkGenres.Size = New System.Drawing.Size(62, 17)
         Me.chkGenres.TabIndex = 3
@@ -109,7 +109,7 @@ Partial Class frmSettingsHolder
         Me.chkCertifications.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkCertifications.AutoSize = True
         Me.chkCertifications.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCertifications.Location = New System.Drawing.Point(3, 72)
+        Me.chkCertifications.Location = New System.Drawing.Point(3, 3)
         Me.chkCertifications.Name = "chkCertifications"
         Me.chkCertifications.Size = New System.Drawing.Size(94, 17)
         Me.chkCertifications.TabIndex = 5
@@ -121,7 +121,7 @@ Partial Class frmSettingsHolder
         Me.chkTitle.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkTitle.AutoSize = True
         Me.chkTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTitle.Location = New System.Drawing.Point(3, 3)
+        Me.chkTitle.Location = New System.Drawing.Point(3, 95)
         Me.chkTitle.Name = "chkTitle"
         Me.chkTitle.Size = New System.Drawing.Size(47, 17)
         Me.chkTitle.TabIndex = 0
@@ -133,7 +133,7 @@ Partial Class frmSettingsHolder
         Me.chkPlot.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkPlot.AutoSize = True
         Me.chkPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkPlot.Location = New System.Drawing.Point(3, 26)
+        Me.chkPlot.Location = New System.Drawing.Point(3, 49)
         Me.chkPlot.Name = "chkPlot"
         Me.chkPlot.Size = New System.Drawing.Size(46, 17)
         Me.chkPlot.TabIndex = 2
@@ -145,7 +145,7 @@ Partial Class frmSettingsHolder
         Me.chkOutline.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkOutline.AutoSize = True
         Me.chkOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkOutline.Location = New System.Drawing.Point(3, 49)
+        Me.chkOutline.Location = New System.Drawing.Point(3, 72)
         Me.chkOutline.Name = "chkOutline"
         Me.chkOutline.Size = New System.Drawing.Size(88, 17)
         Me.chkOutline.TabIndex = 1

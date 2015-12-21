@@ -339,23 +339,23 @@ Partial Class frmSettingsHolder_Movie
         Me.tblScraperFieldsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblScraperFieldsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblScraperFieldsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkTagline, 0, 5)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkOriginalTitle, 0, 1)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkTitle, 0, 0)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkYear, 0, 2)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkRelease, 0, 3)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkPlot, 0, 4)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkRating, 1, 0)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkCertifications, 1, 1)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkRuntime, 1, 2)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkTrailer, 1, 3)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkCollectionID, 1, 4)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkGenres, 1, 5)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkActors, 2, 0)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkDirectors, 2, 1)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkWriters, 2, 2)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkCountries, 2, 3)
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkStudios, 2, 4)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkActors, 0, 0)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkCertifications, 0, 1)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkCountries, 0, 3)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkCollectionID, 0, 2)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkOriginalTitle, 1, 0)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkGenres, 0, 5)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkDirectors, 0, 4)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkPlot, 1, 1)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkRating, 1, 2)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkRuntime, 1, 4)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkRelease, 1, 3)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkStudios, 1, 5)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkTagline, 2, 0)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkTitle, 2, 1)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkWriters, 2, 3)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkTrailer, 2, 2)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkYear, 2, 4)
         Me.tblScraperFieldsOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblScraperFieldsOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblScraperFieldsOpts.Name = "tblScraperFieldsOpts"
@@ -374,7 +374,7 @@ Partial Class frmSettingsHolder_Movie
         '
         Me.chkTagline.AutoSize = True
         Me.chkTagline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTagline.Location = New System.Drawing.Point(3, 118)
+        Me.chkTagline.Location = New System.Drawing.Point(201, 3)
         Me.chkTagline.Name = "chkTagline"
         Me.chkTagline.Size = New System.Drawing.Size(63, 17)
         Me.chkTagline.TabIndex = 9
@@ -385,7 +385,7 @@ Partial Class frmSettingsHolder_Movie
         '
         Me.chkOriginalTitle.AutoSize = True
         Me.chkOriginalTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkOriginalTitle.Location = New System.Drawing.Point(3, 26)
+        Me.chkOriginalTitle.Location = New System.Drawing.Point(103, 3)
         Me.chkOriginalTitle.Name = "chkOriginalTitle"
         Me.chkOriginalTitle.Size = New System.Drawing.Size(92, 17)
         Me.chkOriginalTitle.TabIndex = 78
@@ -396,7 +396,7 @@ Partial Class frmSettingsHolder_Movie
         '
         Me.chkTitle.AutoSize = True
         Me.chkTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTitle.Location = New System.Drawing.Point(3, 3)
+        Me.chkTitle.Location = New System.Drawing.Point(201, 26)
         Me.chkTitle.Name = "chkTitle"
         Me.chkTitle.Size = New System.Drawing.Size(47, 17)
         Me.chkTitle.TabIndex = 0
@@ -407,7 +407,7 @@ Partial Class frmSettingsHolder_Movie
         '
         Me.chkYear.AutoSize = True
         Me.chkYear.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkYear.Location = New System.Drawing.Point(3, 49)
+        Me.chkYear.Location = New System.Drawing.Point(201, 95)
         Me.chkYear.Name = "chkYear"
         Me.chkYear.Size = New System.Drawing.Size(47, 17)
         Me.chkYear.TabIndex = 1
@@ -418,7 +418,7 @@ Partial Class frmSettingsHolder_Movie
         '
         Me.chkRelease.AutoSize = True
         Me.chkRelease.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkRelease.Location = New System.Drawing.Point(3, 72)
+        Me.chkRelease.Location = New System.Drawing.Point(103, 72)
         Me.chkRelease.Name = "chkRelease"
         Me.chkRelease.Size = New System.Drawing.Size(92, 17)
         Me.chkRelease.TabIndex = 4
@@ -429,7 +429,7 @@ Partial Class frmSettingsHolder_Movie
         '
         Me.chkPlot.AutoSize = True
         Me.chkPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkPlot.Location = New System.Drawing.Point(3, 95)
+        Me.chkPlot.Location = New System.Drawing.Point(103, 26)
         Me.chkPlot.Name = "chkPlot"
         Me.chkPlot.Size = New System.Drawing.Size(46, 17)
         Me.chkPlot.TabIndex = 10
@@ -440,7 +440,7 @@ Partial Class frmSettingsHolder_Movie
         '
         Me.chkRating.AutoSize = True
         Me.chkRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkRating.Location = New System.Drawing.Point(101, 3)
+        Me.chkRating.Location = New System.Drawing.Point(103, 49)
         Me.chkRating.Name = "chkRating"
         Me.chkRating.Size = New System.Drawing.Size(60, 17)
         Me.chkRating.TabIndex = 6
@@ -451,7 +451,7 @@ Partial Class frmSettingsHolder_Movie
         '
         Me.chkCertifications.AutoSize = True
         Me.chkCertifications.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCertifications.Location = New System.Drawing.Point(101, 26)
+        Me.chkCertifications.Location = New System.Drawing.Point(3, 26)
         Me.chkCertifications.Name = "chkCertifications"
         Me.chkCertifications.Size = New System.Drawing.Size(94, 17)
         Me.chkCertifications.TabIndex = 2
@@ -462,7 +462,7 @@ Partial Class frmSettingsHolder_Movie
         '
         Me.chkRuntime.AutoSize = True
         Me.chkRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkRuntime.Location = New System.Drawing.Point(101, 49)
+        Me.chkRuntime.Location = New System.Drawing.Point(103, 95)
         Me.chkRuntime.Name = "chkRuntime"
         Me.chkRuntime.Size = New System.Drawing.Size(69, 17)
         Me.chkRuntime.TabIndex = 5
@@ -473,7 +473,7 @@ Partial Class frmSettingsHolder_Movie
         '
         Me.chkTrailer.AutoSize = True
         Me.chkTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTrailer.Location = New System.Drawing.Point(101, 72)
+        Me.chkTrailer.Location = New System.Drawing.Point(201, 49)
         Me.chkTrailer.Name = "chkTrailer"
         Me.chkTrailer.Size = New System.Drawing.Size(57, 17)
         Me.chkTrailer.TabIndex = 17
@@ -484,7 +484,7 @@ Partial Class frmSettingsHolder_Movie
         '
         Me.chkCollectionID.AutoSize = True
         Me.chkCollectionID.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCollectionID.Location = New System.Drawing.Point(101, 95)
+        Me.chkCollectionID.Location = New System.Drawing.Point(3, 49)
         Me.chkCollectionID.Name = "chkCollectionID"
         Me.chkCollectionID.Size = New System.Drawing.Size(92, 17)
         Me.chkCollectionID.TabIndex = 76
@@ -495,7 +495,7 @@ Partial Class frmSettingsHolder_Movie
         '
         Me.chkGenres.AutoSize = True
         Me.chkGenres.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGenres.Location = New System.Drawing.Point(101, 118)
+        Me.chkGenres.Location = New System.Drawing.Point(3, 118)
         Me.chkGenres.Name = "chkGenres"
         Me.chkGenres.Size = New System.Drawing.Size(62, 17)
         Me.chkGenres.TabIndex = 15
@@ -506,7 +506,7 @@ Partial Class frmSettingsHolder_Movie
         '
         Me.chkActors.AutoSize = True
         Me.chkActors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkActors.Location = New System.Drawing.Point(201, 3)
+        Me.chkActors.Location = New System.Drawing.Point(3, 3)
         Me.chkActors.Name = "chkActors"
         Me.chkActors.Size = New System.Drawing.Size(58, 17)
         Me.chkActors.TabIndex = 12
@@ -517,7 +517,7 @@ Partial Class frmSettingsHolder_Movie
         '
         Me.chkDirectors.AutoSize = True
         Me.chkDirectors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkDirectors.Location = New System.Drawing.Point(201, 26)
+        Me.chkDirectors.Location = New System.Drawing.Point(3, 95)
         Me.chkDirectors.Name = "chkDirectors"
         Me.chkDirectors.Size = New System.Drawing.Size(72, 17)
         Me.chkDirectors.TabIndex = 19
@@ -528,7 +528,7 @@ Partial Class frmSettingsHolder_Movie
         '
         Me.chkWriters.AutoSize = True
         Me.chkWriters.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkWriters.Location = New System.Drawing.Point(201, 49)
+        Me.chkWriters.Location = New System.Drawing.Point(201, 72)
         Me.chkWriters.Name = "chkWriters"
         Me.chkWriters.Size = New System.Drawing.Size(63, 17)
         Me.chkWriters.TabIndex = 77
@@ -539,7 +539,7 @@ Partial Class frmSettingsHolder_Movie
         '
         Me.chkCountries.AutoSize = True
         Me.chkCountries.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCountries.Location = New System.Drawing.Point(201, 72)
+        Me.chkCountries.Location = New System.Drawing.Point(3, 72)
         Me.chkCountries.Name = "chkCountries"
         Me.chkCountries.Size = New System.Drawing.Size(76, 17)
         Me.chkCountries.TabIndex = 18
@@ -550,7 +550,7 @@ Partial Class frmSettingsHolder_Movie
         '
         Me.chkStudios.AutoSize = True
         Me.chkStudios.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkStudios.Location = New System.Drawing.Point(201, 95)
+        Me.chkStudios.Location = New System.Drawing.Point(103, 118)
         Me.chkStudios.Name = "chkStudios"
         Me.chkStudios.Size = New System.Drawing.Size(65, 17)
         Me.chkStudios.TabIndex = 8
