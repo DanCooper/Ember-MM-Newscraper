@@ -4076,6 +4076,7 @@ Public Class dlgSettings
 
         Dim items3 As New Dictionary(Of String, Enums.TVEpisodePosterSize)
         items3.Add(Master.eLang.GetString(745, "Any"), Enums.TVEpisodePosterSize.Any)
+        items3.Add("3840x2160", Enums.TVEpisodePosterSize.UHD2160)
         items3.Add("1920x1080", Enums.TVEpisodePosterSize.HD1080)
         items3.Add("1280x720", Enums.TVEpisodePosterSize.HD720)
         items3.Add("400x225", Enums.TVEpisodePosterSize.SD225)
