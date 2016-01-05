@@ -31,10 +31,10 @@ Namespace Apple
     Public Class Scraper
 
 #Region "Fields"
-        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+
+        Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
         Private _VideoLinks As VideoLinkItemCollection
-
         Private _TrailerLinks As List(Of MediaContainers.Trailer)
 
 #End Region 'Fields
@@ -42,7 +42,6 @@ Namespace Apple
 #Region "Events"
 
         Public Event Exception(ByVal ex As Exception)
-
         Public Event VideoLinksRetrieved(ByVal bSuccess As Boolean)
         Public Event TrailerLinksRetrieved(ByVal bSuccess As Boolean)
 
@@ -114,7 +113,7 @@ Namespace Apple
                         Dim zResult As MatchCollection = Regex.Matches(sHtml, zPattern, RegexOptions.Singleline)
 
                         For ctr As Integer = 0 To zResult.Count - 1
-                            TrailerLinks.Add(New MediaContainers.Trailer With {.URLVideoStream = zResult.Item(ctr).Groups(1).Value, .Title = zResult.Item(ctr).Groups(2).Value, .Duration = zResult.Item(ctr).Groups(3).Value})
+                            TrailerLinks.Add(New MediaContainers.Trailer With {.URLVideoStream = zResult.Item(ctr).Groups("LINK").Value, .Title = zResult.Item(ctr).Groups("TITLE").Value, .Duration = zResult.Item(ctr).Groups("DURATION").Value})
                         Next
 
                         For Each trailer In TrailerLinks
@@ -219,59 +218,6 @@ Namespace Apple
 
     End Class
 
-    Public Class TrailerLinkItem
-
-#Region "Fields"
-
-        Private _Description As String
-        Private _FormatCodec As Enums.TrailerVideoCodec
-        Private _FormatQuality As Enums.TrailerVideoQuality
-        Private _URL As String
-
-#End Region 'Fields
-
-#Region "Properties"
-
-        Public Property Description() As String
-            Get
-                Return _Description
-            End Get
-            Set(ByVal value As String)
-                _Description = value
-            End Set
-        End Property
-
-        Public Property URL() As String
-            Get
-                Return _URL
-            End Get
-            Set(ByVal value As String)
-                _URL = value
-            End Set
-        End Property
-
-        Friend Property FormatCodec() As Enums.TrailerVideoCodec
-            Get
-                Return _FormatCodec
-            End Get
-            Set(ByVal value As Enums.TrailerVideoCodec)
-                _FormatCodec = value
-            End Set
-        End Property
-
-        Friend Property FormatQuality() As Enums.TrailerVideoQuality
-            Get
-                Return _FormatQuality
-            End Get
-            Set(ByVal value As Enums.TrailerVideoQuality)
-                _FormatQuality = value
-            End Set
-        End Property
-
-#End Region 'Properties
-
-    End Class
-
     Public Class VideoLinkItemCollection
         Inherits Generic.SortedList(Of Enums.TrailerVideoQuality, VideoLinkItem)
 
@@ -288,32 +234,6 @@ Namespace Apple
         ''' 2013/11/07 Dekker500 - Added parameter validation
         ''' </remarks>
         Public Shadows Sub Add(ByVal Link As VideoLinkItem)
-            If Link IsNot Nothing AndAlso Not MyBase.ContainsKey(Link.FormatQuality) Then
-                MyBase.Add(Link.FormatQuality, Link)
-            End If
-
-        End Sub
-
-#End Region 'Methods
-
-    End Class
-
-    Public Class TrailerLinkItemCollection
-        Inherits Generic.SortedList(Of Enums.TrailerVideoQuality, TrailerLinkItem)
-
-#Region "Methods"
-        ''' <summary>
-        ''' Adds the provided <c>VideoLinkItem</c> to the collection. 
-        ''' </summary>
-        ''' <param name="Link">The <c>VideoLinkItem</c> to be added. Nothing values or existing values will be ignored</param>
-        ''' <remarks>NOTE that the collection is arranged to allow only one
-        ''' of VideoLink of each <c>Enums.TrailerQuality</c>. This means that attempting
-        ''' to add a second <c>VideoLinkItem</c> with with an identical <c>Enums.TrailerQuality</c>
-        ''' will silently fail, while leaving the original untouched.
-        ''' 
-        ''' 2013/11/07 Dekker500 - Added parameter validation
-        ''' </remarks>
-        Public Shadows Sub Add(ByVal Link As TrailerLinkItem)
             If Link IsNot Nothing AndAlso Not MyBase.ContainsKey(Link.FormatQuality) Then
                 MyBase.Add(Link.FormatQuality, Link)
             End If

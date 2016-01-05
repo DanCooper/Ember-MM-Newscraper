@@ -88,21 +88,21 @@ Namespace Apple
             Try
                 If Not String.IsNullOrEmpty(originaltitle) Then
                     'constant URL-part of query
-                    Dim BaseURL As String = ""
+                    Dim BaseURL As String = String.Empty
                     'dynamic URL-part of query
-                    Dim SearchURL As String = ""
+                    Dim SearchURL As String = String.Empty
                     'webrequest-object of Ember used to scrape Webpages
                     Dim sHTTP As New HTTP
                     'retrieved JSON string
-                    Dim sjson As String = ""
+                    Dim sjson As String = String.Empty
                     'downloaded HTML of a webpage
-                    Dim sHtml As String = ""
+                    Dim sHtml As String = String.Empty
                     'title to search for
                     Dim searchtitle As String = originaltitle
                     'TODO: Optional: originaltitle may contain not supported characters which must be filtered/cleaned first!?
                     'searchtitle = StringUtils.RemovePunctuation(originaltitle)
                     'URL to moviepage which contains downloadlinks
-                    Dim TrailerWEBPageURL As String = ""
+                    Dim TrailerWEBPageURL As String = String.Empty
 
                     ' Step 1: Use Apple quicksearch which will return json response!
                     BaseURL = "http://trailers.apple.com/trailers/home/scripts/quickfind.php?q="
@@ -111,20 +111,20 @@ Namespace Apple
                     sHTTP = Nothing
 
                     ' Step 2: If json returned -> parse Json response and get Url to moviepage, else use google to search for trailer on Apple
-                    If sjson = "" OrElse sjson.Length < 50 Then
+                    If sjson = String.Empty OrElse sjson.Length < 50 Then
 
                         logger.Debug("[" & originaltitle & "] Apple Trailer - Movie NOT found on http://trailers.apple.com/ - URL: " & String.Format("http://trailers.apple.com/trailers/home/scripts/quickfind.php?q={0}", searchtitle))
                         'no json -> Google search
                         'Warning: will be blocked by Google when spamming webrequests!
                         BaseURL = "http://www.google.ch/search?q=apple+trailer+"
-                        searchtitle = Web.HttpUtility.UrlEncode(originaltitle)
+                        searchtitle = HttpUtility.UrlEncode(originaltitle)
                         SearchURL = String.Concat(BaseURL, searchtitle)
                         'performing google search to find available links on apple trailers
                         sHTTP = New HTTP
-                        sHtml = ""
+                        sHtml = String.Empty
                         sHtml = sHTTP.DownloadData(SearchURL)
                         sHTTP = Nothing
-                        If sHtml <> "" Then
+                        If Not String.IsNullOrEmpty(sHtml) Then
                             'Now extract links from googleresults
                             Dim trailerWEBURLResults As MatchCollection = Nothing
                             Dim googleresultPattern As String = "<a href=""/url\?q=(?<RESULTS>.*?)\/&amp;" 'Google search results
@@ -133,24 +133,24 @@ Namespace Apple
                             'check if something was found
                             If Not trailerWEBURLResults Is Nothing AndAlso trailerWEBURLResults.Count > 0 Then
                                 Dim compareresult As Integer = 100
-                                Dim comparestring As String = ""
-                                searchtitle = (StringUtils.RemovePunctuation(originaltitle.ToLower)).Replace(" ", "")
+                                Dim comparestring As String = String.Empty
+                                searchtitle = (StringUtils.RemovePunctuation(originaltitle.ToLower)).Replace(" ", String.Empty)
                                 For Each searchresult As Match In trailerWEBURLResults
-                                    TrailerWEBPageURL = ""
+                                    TrailerWEBPageURL = String.Empty
                                     TrailerWEBPageURL = searchresult.Groups(1).Value
                                     If Not String.IsNullOrEmpty(TrailerWEBPageURL) Then
                                         Dim resultcompore As Integer = 0
                                         If TrailerWEBPageURL.Contains("/") Then
                                             comparestring = TrailerWEBPageURL.Remove(0, TrailerWEBPageURL.LastIndexOf("/") + 1)
                                             compareresult = 100
-                                            comparestring = (StringUtils.RemovePunctuation(comparestring.ToLower)).Replace(" ", "")
+                                            comparestring = (StringUtils.RemovePunctuation(comparestring.ToLower)).Replace(" ", String.Empty)
                                             compareresult = StringUtils.ComputeLevenshtein(comparestring, searchtitle)
                                             If (originaltitle.Length <= 5 AndAlso compareresult = 0) OrElse (originaltitle.Length > 5 AndAlso compareresult <= 2) Then
                                                 logger.Debug("[" & originaltitle & "] Apple Trailer - Google: Movie found! URL: " & TrailerWEBPageURL)
                                                 Exit For
                                             Else
                                                 logger.Debug("[" & originaltitle & "] Apple Trailer - Google: wrong result! URL: " & TrailerWEBPageURL)
-                                                TrailerWEBPageURL = ""
+                                                TrailerWEBPageURL = String.Empty
                                             End If
                                         End If
                                     End If
@@ -164,9 +164,9 @@ Namespace Apple
 
                     Else
                         Dim serializer = New JavaScriptSerializer
-                        Dim jsonresult = serializer.Deserialize(Of AppleTrailerQuery)(sjson)
+                        Dim jsonresult = serializer.Deserialize(Of AppleTrailerQuery)(HttpUtility.HtmlDecode(sjson))
 
-                        If Not jsonresult Is Nothing AndAlso Not jsonresult.results Is Nothing AndAlso jsonresult.results.Count > 0 Then
+                        If Not jsonresult Is Nothing AndAlso Not jsonresult.error AndAlso Not jsonresult.results Is Nothing AndAlso jsonresult.results.Count > 0 Then
                             'TODO: maybe use less heavy URL: '"http://trailers.apple.com/" & jsonresult.results(0).location & "includes/playlists/itunes.inc"
                             Dim tmpurl As String = ("trailers.apple.com/" & jsonresult.results(0).location).Replace("//", "/")
                             TrailerWEBPageURL = "http://" & tmpurl
@@ -182,6 +182,7 @@ Namespace Apple
 
                     'Step 3: If URL to movie was found on http://trailers.apple.com/, download HTML of moviepage and search for trailerlinks
                     If Not String.IsNullOrEmpty(TrailerWEBPageURL) Then
+                        If Not TrailerWEBPageURL.EndsWith("/") Then TrailerWEBPageURL = String.Concat(TrailerWEBPageURL, "/")
                         logger.Info("[" & originaltitle & "] Apple Trailer - Movie found! Download URL: " & TrailerWEBPageURL)
                         Dim tDownloadURL As String = String.Empty
                         Dim tDescription As New List(Of String)
@@ -190,10 +191,10 @@ Namespace Apple
 
                         prevQual = Master.eSettings.MovieTrailerPrefVideoQual.ToString
 
-                        'Since prevQual value will be used to build trailerurl "All" should not be used at all!
-                        If prevQual.Contains("All") Then
+                        'Since prevQual value will be used to build trailerurl "Any" should not be used at all!
+                        If prevQual.Contains("Any") Then
                             prevQual = Master.eSettings.MovieTrailerMinVideoQual.ToString
-                            If prevQual.Contains("All") Then
+                            If prevQual.Contains("Any") Then
                                 prevQual = "480p"
                             End If
                         End If
@@ -203,15 +204,15 @@ Namespace Apple
                         ElseIf prevQual.Contains("1080") Then
                             prevQual = "1080p"
                         End If
-                        Dim urlHD As String = "/includes/extralarge.html"
-                        Dim urlHQ As String = "/includes/large.html"
+                        Dim urlHD As String = "includes/extralarge.html"
+                        Dim urlHQ As String = "includes/large.html"
 
                         Dim TrailerSiteURL = String.Concat(TrailerWEBPageURL, urlHQ)
                         'i.e http://trailers.apple.com/trailers/paramount/transformersageofextinction/includes/large.html
 
                         'find available links on apple movie site
                         sHTTP = New HTTP
-                        sHtml = ""
+                        sHtml = String.Empty
                         sHtml = sHTTP.DownloadData(TrailerSiteURL)
                         sHTTP = Nothing
 
@@ -225,7 +226,7 @@ Namespace Apple
                         If Not zResult Is Nothing AndAlso zResult.Count > 0 Then
                             For ctr As Integer = 0 To zResult.Count - 1
                                 ' Step 4: Add scraped trailer to global list
-                                _trailerlist.Add(New MediaContainers.Trailer With {.URLVideoStream = zResult.Item(ctr).Groups(1).Value, .Title = zResult.Item(ctr).Groups(2).Value, .Duration = zResult.Item(ctr).Groups(3).Value})
+                                _trailerlist.Add(New MediaContainers.Trailer With {.URLVideoStream = zResult.Item(ctr).Groups("LINK").Value, .Title = zResult.Item(ctr).Groups("TITLE").Value, .Duration = zResult.Item(ctr).Groups("DURATION").Value})
                             Next
 
                             For Each trailer In _trailerlist
@@ -241,13 +242,14 @@ Namespace Apple
                                 Dim yResult As MatchCollection = Regex.Matches(zHtml, uPattern, RegexOptions.Singleline)
 
                                 If yResult.Count > 0 Then
-                                    tDownloadURL = Web.HttpUtility.HtmlDecode(yResult.Item(0).Groups(1).Value)
+                                    tDownloadURL = HttpUtility.HtmlDecode(yResult.Item(0).Groups(1).Value)
                                     tDownloadURL = tDownloadURL.Replace("480p", prevQual)
                                     trailer.URLWebsite = tDownloadURL
                                     tDownloadURL = tDownloadURL.Replace("1080p", "h1080p")
                                     tDownloadURL = tDownloadURL.Replace("720p", "h720p")
                                     tDownloadURL = tDownloadURL.Replace("480p", "h480p")
                                     trailer.URLVideoStream = tDownloadURL
+                                    trailer.Scraper = "Apple"
                                     trailer.Source = "Apple"
                                     Select Case prevQual
                                         Case "1080p"
@@ -284,74 +286,102 @@ Namespace Apple
 
 #End Region 'Methods
 
+#Region "Nested Types"
+
+        Public Class AppleTrailerQuery
+
+#Region "Fields"
+
+            Private m_results As AppleTrailerQueryResult()
+
+#End Region 'Fields
+
+#Region "Properties"
+
+            Public Property [error] As Boolean
+
+            Public Property results As AppleTrailerQueryResult()
+                Get
+                    Return m_results
+                End Get
+                Set(value As AppleTrailerQueryResult())
+                    m_results = value
+                End Set
+            End Property
+
+#End Region 'Properties
+
+        End Class
+
+        Public Class AppleTrailerQueryResult
+
+#Region "Fields"
+
+            Private m_location As String
+            Private m_releasedate As String
+            Private m_trailers As AppleTrailerQuality()
+
+#End Region 'Fields
+
+#Region "Properties"
+
+            Public Property releasedate As String
+                Get
+                    Return m_releasedate
+                End Get
+                Set(value As String)
+                    m_releasedate = value
+                End Set
+            End Property
+
+            Public Property location As String
+                Get
+                    Return m_location
+                End Get
+                Set(value As String)
+                    m_location = value
+                End Set
+            End Property
+
+            Public Property trailers As AppleTrailerQuality()
+
+                Get
+                    Return m_trailers
+                End Get
+                Set(value As AppleTrailerQuality())
+                    m_trailers = value
+                End Set
+            End Property
+
+            Public Property title As String
+            Public Property studio As String
+            Public Property poster As String
+            Public Property moviesite As String
+            Public Property urltype As String
+            Public Property director As String
+            Public Property rating As String
+            Public Property genre As String()
+            Public Property actors As String()
+
+#End Region 'Properties
+
+        End Class
+
+        Public Class AppleTrailerQuality
+
+#Region "Fields"
+
+            Public Property exclusive As Boolean
+            Public Property hd As Boolean
+            Public Property postdate As String
+            Public Property type As String
+
+#End Region 'Fields
+
+        End Class
+
+#End Region 'Nested Types
+
     End Class
 
 End Namespace
-
-#Region "AppleTrailerJSONStructure"
-Public Class AppleTrailerQuery
-    Private m_results As AppleTrailerQueryResult()
-    'TODO error is protected keyword in VB -> how to mask it?!
-    ' Public Property errors As Boolean
-    Public Property results As AppleTrailerQueryResult()
-        Get
-            Return m_results
-        End Get
-        Set(value As AppleTrailerQueryResult())
-            m_results = value
-        End Set
-    End Property
-End Class
-
-Public Class AppleTrailerQueryResult
-    Private m_releasedate As String
-    Private m_location As String
-    Public Property releasedate As String
-        Get
-            Return m_releasedate
-        End Get
-        Set(value As String)
-            m_releasedate = value
-        End Set
-    End Property
-    Public Property location As String
-        Get
-            Return m_location
-        End Get
-        Set(value As String)
-            m_location = value
-        End Set
-    End Property
-
-
-    Public Property title As String
-    Public Property studio As String
-    Public Property poster As String
-    Public Property moviesite As String
-    Public Property urltype As String
-    Public Property director As String
-    Public Property rating As String
-    Public Property genre As String()
-    Public Property actors As String()
-
-
-    Private m_trailers As AppleTrailerQuality()
-    Public Property trailers As AppleTrailerQuality()
-
-        Get
-            Return m_trailers
-        End Get
-        Set(value As AppleTrailerQuality())
-            m_trailers = value
-        End Set
-    End Property
-
-End Class
-Public Class AppleTrailerQuality
-    Public Property type As String
-    Public Property postdate As String
-    Public Property exclusive As Boolean
-    Public Property hd As Boolean
-End Class
-
-#End Region
