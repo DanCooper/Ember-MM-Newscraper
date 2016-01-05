@@ -582,7 +582,7 @@ Namespace Kodi
                         Dim filterRule As New List.Filter.Rule.Textures
                         filterRule.field = List.Filter.Fields.Textures.url
                         filterRule.Operator = List.Filter.Operators.Is
-                        filterRule.value = GetRemotePath(tURL)
+                        filterRule.value = If(tDBElement.ContentType = Enums.ContentType.MovieSet, GetRemotePath_MovieSet(tURL), GetRemotePath(tURL))
                         filter.or.Add(filterRule)
                     Next
 
