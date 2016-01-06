@@ -1079,14 +1079,14 @@ Public Class ModulesManager
     ''' <summary>
     ''' Request that enabled movie scrapers perform their functions on the supplied movie
     ''' </summary>
-    ''' <param name="DBMovie">Movie to be scraped</param>
+    ''' <param name="DBElement">Movie to be scraped</param>
     ''' <param name="ScrapeType">What kind of scrape is being requested, such as whether user-validation is desired</param>
     ''' <param name="ScrapeOptions">What kind of data is being requested from the scrape</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
-    Public Function ScrapeData_Movie(ByRef DBMovie As Database.DBElement, ByRef ScrapeModifier As Structures.ScrapeModifier, ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal showMessage As Boolean) As Boolean
-        logger.Trace(String.Concat("[ScrapeData_Movie] [Start] ", DBMovie.Filename))
-        If DBMovie.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBMovie, showMessage) Then
+    Public Function ScrapeData_Movie(ByRef DBElement As Database.DBElement, ByRef ScrapeModifier As Structures.ScrapeModifier, ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal showMessage As Boolean) As Boolean
+        logger.Trace(String.Format("[APIModules] [ScrapeData_Movie] [Start] {0}", DBElement.Filename))
+        If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBElement, showMessage) Then
             Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_Movie) = externalScrapersModules_Data_Movie.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.ModuleResult_Data_Movie
             Dim ScrapedList As New List(Of MediaContainers.Movie)
@@ -1097,43 +1097,43 @@ Public Class ModulesManager
 
             'clean DBMovie if the movie is to be changed. For this, all existing (incorrect) information must be deleted and the images triggers set to remove.
             If (ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto) AndAlso ScrapeModifier.DoSearch Then
-                DBMovie.ImagesContainer = New MediaContainers.ImagesContainer
-                DBMovie.Movie = New MediaContainers.Movie
+                DBElement.ImagesContainer = New MediaContainers.ImagesContainer
+                DBElement.Movie = New MediaContainers.Movie
 
                 Dim tmpTitle As String = String.Empty
-                If FileUtils.Common.isVideoTS(DBMovie.Filename) Then
-                    tmpTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).Name, False)
-                ElseIf FileUtils.Common.isBDRip(DBMovie.Filename) Then
-                    tmpTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName).Name, False)
+                If FileUtils.Common.isVideoTS(DBElement.Filename) Then
+                    tmpTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(DBElement.Filename).FullName).Name, False)
+                ElseIf FileUtils.Common.isBDRip(DBElement.Filename) Then
+                    tmpTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(Directory.GetParent(DBElement.Filename).FullName).FullName).Name, False)
                 Else
-                    tmpTitle = StringUtils.FilterName_Movie(If(DBMovie.IsSingle, Directory.GetParent(DBMovie.Filename).Name, Path.GetFileNameWithoutExtension(DBMovie.Filename)))
+                    tmpTitle = StringUtils.FilterName_Movie(If(DBElement.IsSingle, Directory.GetParent(DBElement.Filename).Name, Path.GetFileNameWithoutExtension(DBElement.Filename)))
                 End If
 
                 Dim tmpYear As String = String.Empty
-                If FileUtils.Common.isVideoTS(DBMovie.Filename) Then
-                    tmpYear = StringUtils.GetYear(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).Name)
-                ElseIf FileUtils.Common.isBDRip(DBMovie.Filename) Then
-                    tmpYear = StringUtils.GetYear(Directory.GetParent(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName).Name)
+                If FileUtils.Common.isVideoTS(DBElement.Filename) Then
+                    tmpYear = StringUtils.GetYear(Directory.GetParent(Directory.GetParent(DBElement.Filename).FullName).Name)
+                ElseIf FileUtils.Common.isBDRip(DBElement.Filename) Then
+                    tmpYear = StringUtils.GetYear(Directory.GetParent(Directory.GetParent(Directory.GetParent(DBElement.Filename).FullName).FullName).Name)
                 Else
-                    If DBMovie.Source.UseFolderName AndAlso DBMovie.IsSingle Then
-                        tmpYear = StringUtils.GetYear(Directory.GetParent(DBMovie.Filename).Name)
+                    If DBElement.Source.UseFolderName AndAlso DBElement.IsSingle Then
+                        tmpYear = StringUtils.GetYear(Directory.GetParent(DBElement.Filename).Name)
                     Else
-                        tmpYear = StringUtils.GetYear(Path.GetFileNameWithoutExtension(DBMovie.Filename))
+                        tmpYear = StringUtils.GetYear(Path.GetFileNameWithoutExtension(DBElement.Filename))
                     End If
                 End If
 
-                DBMovie.Movie.Title = tmpTitle
-                DBMovie.Movie.Year = tmpYear
+                DBElement.Movie.Title = tmpTitle
+                DBElement.Movie.Year = tmpYear
             End If
 
             'create a clone of DBMovie
-            Dim oDBMovie As Database.DBElement = CType(DBMovie.CloneDeep, Database.DBElement)
+            Dim oDBMovie As Database.DBElement = CType(DBElement.CloneDeep, Database.DBElement)
 
             If (modules.Count() <= 0) Then
-                logger.Warn("[ScrapeData_Movie] [Abort] No scrapers enabled")
+                logger.Warn("[APIModules] [ScrapeData_Movie] [Abort] No scrapers enabled")
             Else
                 For Each _externalScraperModule As _externalScraperModuleClass_Data_Movie In modules
-                    logger.Trace("[ScrapeData_Movie] [Using] <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
+                    logger.Trace(String.Format("[APIModules] [ScrapeData_Movie] [Using] {0}", _externalScraperModule.ProcessorModule.ModuleName))
                     AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie
 
                     ret = _externalScraperModule.ProcessorModule.Scraper_Movie(oDBMovie, ScrapeModifier, ScrapeType, ScrapeOptions)
@@ -1148,33 +1148,33 @@ Public Class ModulesManager
                 Next
 
                 If ScrapedList.Count = 0 Then
-                    logger.Trace(String.Concat("[ScrapeData_Movie] [Cancelled] [No Scraper Results]", DBMovie.Filename))
+                    logger.Trace(String.Format("[APIModules] [ScrapeData_Movie] [Cancelled] [No Scraper Results] {0}", DBElement.Filename))
                     Return True 'Cancelled
                 End If
 
                 'Merge scraperresults considering global datascraper settings
-                DBMovie = NFO.MergeDataScraperResults_Movie(DBMovie, ScrapedList, ScrapeType, ScrapeOptions)
+                DBElement = NFO.MergeDataScraperResults_Movie(DBElement, ScrapedList, ScrapeType, ScrapeOptions)
 
                 'create cache paths for Actor Thumbs
-                DBMovie.Movie.CreateCachePaths_ActorsThumbs()
+                DBElement.Movie.CreateCachePaths_ActorsThumbs()
             End If
-            logger.Trace(String.Concat("[ScrapeData_Movie] [Done] ", DBMovie.Filename))
+            logger.Trace(String.Format("[APIModules] [ScrapeData_Movie] [Done] {0}", DBElement.Filename))
             Return ret.Cancelled
         Else
-            logger.Trace(String.Concat("[ScrapeData_Movie] [Abort] [Offline] ", DBMovie.Filename))
+            logger.Trace(String.Format("[APIModules] [ScrapeData_Movie] [Abort] [Offline] {0}", DBElement.Filename))
             Return True 'Cancelled
         End If
     End Function
     ''' <summary>
     ''' Request that enabled movie scrapers perform their functions on the supplied movie
     ''' </summary>
-    ''' <param name="DBMovieSet">MovieSet to be scraped. Scraper will directly manipulate this structure</param>
+    ''' <param name="DBElement">MovieSet to be scraped. Scraper will directly manipulate this structure</param>
     ''' <param name="ScrapeType">What kind of scrape is being requested, such as whether user-validation is desired</param>
     ''' <param name="ScrapeOptions">What kind of data is being requested from the scrape</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie set scrapers are enabled, a silent warning is generated.</remarks>
-    Public Function ScrapeData_MovieSet(ByRef DBMovieSet As Database.DBElement, ByRef ScrapeModifier As Structures.ScrapeModifier, ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal showMessage As Boolean) As Boolean
-        logger.Trace(String.Concat("[ScrapeData_MovieSet] [Start] ", DBMovieSet.MovieSet.Title))
+    Public Function ScrapeData_MovieSet(ByRef DBElement As Database.DBElement, ByRef ScrapeModifier As Structures.ScrapeModifier, ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal showMessage As Boolean) As Boolean
+        logger.Trace(String.Format("[APIModules] [ScrapeData_MovieSet] [Start] {0}", DBElement.MovieSet.Title))
         'If DBMovieSet.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_MovieSet(DBMovieSet, showMessage) Then
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_MovieSet) = externalScrapersModules_Data_MovieSet.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
         Dim ret As Interfaces.ModuleResult_Data_MovieSet
@@ -1186,28 +1186,28 @@ Public Class ModulesManager
 
         'clean DBMovie if the movie is to be changed. For this, all existing (incorrect) information must be deleted and the images triggers set to remove.
         If (ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto) AndAlso ScrapeModifier.DoSearch Then
-            Dim tmpTitle As String = DBMovieSet.MovieSet.Title
+            Dim tmpTitle As String = DBElement.MovieSet.Title
 
-            DBMovieSet.ImagesContainer = New MediaContainers.ImagesContainer
-            DBMovieSet.MovieSet = New MediaContainers.MovieSet
+            DBElement.ImagesContainer = New MediaContainers.ImagesContainer
+            DBElement.MovieSet = New MediaContainers.MovieSet
 
-            DBMovieSet.MovieSet.Title = tmpTitle
+            DBElement.MovieSet.Title = tmpTitle
         End If
 
         'create a clone of DBMovieSet
-        Dim oDBMovieSet As Database.DBElement = CType(DBMovieSet.CloneDeep, Database.DBElement)
+        Dim oDBMovieSet As Database.DBElement = CType(DBElement.CloneDeep, Database.DBElement)
 
         If (modules.Count() <= 0) Then
-            logger.Warn("[ScrapeData_MovieSet] [Abort] No scrapers enabled")
+            logger.Warn("[APIModules] [ScrapeData_MovieSet] [Abort] No scrapers enabled")
         Else
             For Each _externalScraperModule As _externalScraperModuleClass_Data_MovieSet In modules
-                logger.Trace("[ScrapeData_MovieSet] [Using] <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
+                logger.Trace(String.Format("[APIModules] [ScrapeData_MovieSet] [Using] {0}", _externalScraperModule.ProcessorModule.ModuleName))
                 AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_MovieSet
 
                 ret = _externalScraperModule.ProcessorModule.Scraper(oDBMovieSet, ScrapeModifier, ScrapeType, ScrapeOptions)
 
                 If ret.Cancelled Then
-                    logger.Trace(String.Concat("[ScrapeData_MovieSet] [Cancelled] [No Scraper Results]", DBMovieSet.MovieSet.Title))
+                    logger.Trace(String.Format("[APIModules] [ScrapeData_MovieSet] [Cancelled] [No Scraper Results] {0}", DBElement.MovieSet.Title))
                     Return ret.Cancelled
                 End If
 
@@ -1218,20 +1218,24 @@ Public Class ModulesManager
                 If ret.breakChain Then Exit For
             Next
 
-            If ScrapedList.Count = 0 Then Return True 'Cancelled
+            If ScrapedList.Count = 0 Then
+                logger.Trace(String.Format("[APIModules] [ScrapeData_MovieSet] [Cancelled] [No Scraper Results] {0}", DBElement.MovieSet.Title))
+                Return True 'Cancelled
+            End If
 
             'Merge scraperresults considering global datascraper settings
-            DBMovieSet = NFO.MergeDataScraperResults_MovieSet(DBMovieSet, ScrapedList, ScrapeType, ScrapeOptions)
+            DBElement = NFO.MergeDataScraperResults_MovieSet(DBElement, ScrapedList, ScrapeType, ScrapeOptions)
         End If
-        logger.Trace(String.Concat("[ScrapeData_MovieSet] [Done] ", DBMovieSet.MovieSet.Title))
+        logger.Trace(String.Format("[APIModules] [ScrapeData_MovieSet] [Done] {0}", DBElement.MovieSet.Title))
         Return ret.Cancelled
         'Else
         'Return True 'Cancelled
         'End If
     End Function
 
-    Public Function ScrapeData_TVEpisode(ByRef DBTV As Database.DBElement, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal showMessage As Boolean) As Boolean
-        If DBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTV, showMessage) Then
+    Public Function ScrapeData_TVEpisode(ByRef DBElement As Database.DBElement, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal showMessage As Boolean) As Boolean
+        logger.Trace(String.Format("[APIModules] [ScrapeData_TVEpisode] [Start] {0}", DBElement.Filename))
+        If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBElement, showMessage) Then
             Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_TV) = externalScrapersModules_Data_TV.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.ModuleResult_Data_TVEpisode
             Dim ScrapedList As New List(Of MediaContainers.EpisodeDetails)
@@ -1241,13 +1245,13 @@ Public Class ModulesManager
             End While
 
             'create a clone of DBTV
-            Dim oEpisode As Database.DBElement = CType(DBTV.CloneDeep, Database.DBElement)
+            Dim oEpisode As Database.DBElement = CType(DBElement.CloneDeep, Database.DBElement)
 
             If (modules.Count() <= 0) Then
-                logger.Warn("No TV scrapers are defined")
+                logger.Warn("[APIModules] [ScrapeData_TVEpisode] [Abort] No scrapers enabled")
             Else
                 For Each _externalScraperModule As _externalScraperModuleClass_Data_TV In modules
-                    logger.Trace("Scraping Episode data using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
+                    logger.Trace(String.Format("[APIModules] [ScrapeData_TVEpisode] [Using] {0}", _externalScraperModule.ProcessorModule.ModuleName))
                     AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
 
                     ret = _externalScraperModule.ProcessorModule.Scraper_TVEpisode(oEpisode, ScrapeOptions)
@@ -1261,13 +1265,16 @@ Public Class ModulesManager
                     If ret.breakChain Then Exit For
                 Next
 
-                If ScrapedList.Count = 0 Then Return True 'Cancelled
+                If ScrapedList.Count = 0 Then
+                    logger.Trace(String.Format("[APIModules] [ScrapeData_TVEpisode] [Cancelled] [No Scraper Results] {0}", DBElement.Filename))
+                    Return True 'Cancelled
+                End If
 
                 'Merge scraperresults considering global datascraper settings
-                DBTV = NFO.MergeDataScraperResults_TVEpisode_Single(DBTV, ScrapedList, ScrapeOptions)
+                DBElement = NFO.MergeDataScraperResults_TVEpisode_Single(DBElement, ScrapedList, ScrapeOptions)
 
                 'create cache paths for Actor Thumbs
-                DBTV.TVEpisode.CreateCachePaths_ActorsThumbs()
+                DBElement.TVEpisode.CreateCachePaths_ActorsThumbs()
             End If
             Return ret.Cancelled
         Else
@@ -1275,8 +1282,9 @@ Public Class ModulesManager
         End If
     End Function
 
-    Public Function ScrapeData_TVSeason(ByRef DBTV As Database.DBElement, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal showMessage As Boolean) As Boolean
-        If DBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTV, showMessage) Then
+    Public Function ScrapeData_TVSeason(ByRef DBElement As Database.DBElement, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal showMessage As Boolean) As Boolean
+        logger.Trace(String.Format("[APIModules] [ScrapeData_TVSeason] [Start] {0}: Season {1}", DBElement.TVShow.Title, DBElement.TVSeason.Season))
+        If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBElement, showMessage) Then
             Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_TV) = externalScrapersModules_Data_TV.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.ModuleResult_Data_TVSeason
             Dim ScrapedList As New List(Of MediaContainers.SeasonDetails)
@@ -1286,13 +1294,13 @@ Public Class ModulesManager
             End While
 
             'create a clone of DBTV
-            Dim oSeason As Database.DBElement = CType(DBTV.CloneDeep, Database.DBElement)
+            Dim oSeason As Database.DBElement = CType(DBElement.CloneDeep, Database.DBElement)
 
             If (modules.Count() <= 0) Then
-                logger.Warn("No TV scrapers are defined")
+                logger.Warn("[APIModules] [ScrapeData_TVSeason] [Abort] No scrapers enabled")
             Else
                 For Each _externalScraperModule As _externalScraperModuleClass_Data_TV In modules
-                    logger.Trace("Scraping Episode data using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
+                    logger.Trace(String.Format("[APIModules] [ScrapeData_TVSeason] [Using] {0}", _externalScraperModule.ProcessorModule.ModuleName))
                     AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
 
                     ret = _externalScraperModule.ProcessorModule.Scraper_TVSeason(oSeason, ScrapeOptions)
@@ -1306,10 +1314,13 @@ Public Class ModulesManager
                     If ret.breakChain Then Exit For
                 Next
 
-                If ScrapedList.Count = 0 Then Return True 'Cancelled
+                If ScrapedList.Count = 0 Then
+                    logger.Trace(String.Format("[APIModules] [ScrapeData_TVSeason] [Cancelled] [No Scraper Results] {0}: Season {1}", DBElement.TVShow.Title, DBElement.TVSeason.Season))
+                    Return True 'Cancelled
+                End If
 
                 'Merge scraperresults considering global datascraper settings
-                DBTV = NFO.MergeDataScraperResults_TVSeason(DBTV, ScrapedList, ScrapeOptions)
+                DBElement = NFO.MergeDataScraperResults_TVSeason(DBElement, ScrapedList, ScrapeOptions)
             End If
             Return ret.Cancelled
         Else
@@ -1319,13 +1330,14 @@ Public Class ModulesManager
     ''' <summary>
     ''' Request that enabled movie scrapers perform their functions on the supplied movie
     ''' </summary>
-    ''' <param name="DBTV">Show to be scraped</param>
+    ''' <param name="DBElement">Show to be scraped</param>
     ''' <param name="ScrapeType">What kind of scrape is being requested, such as whether user-validation is desired</param>
     ''' <param name="ScrapeOptions">What kind of data is being requested from the scrape</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
-    Public Function ScrapeData_TVShow(ByRef DBTV As Database.DBElement, ByRef ScrapeModifier As Structures.ScrapeModifier, ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal showMessage As Boolean) As Boolean
-        If DBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTV, showMessage) Then
+    Public Function ScrapeData_TVShow(ByRef DBElement As Database.DBElement, ByRef ScrapeModifier As Structures.ScrapeModifier, ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal showMessage As Boolean) As Boolean
+        logger.Trace(String.Format("[APIModules] [ScrapeData_TVShow] [Start] {0}", DBElement.TVShow.Title))
+        If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBElement, showMessage) Then
             Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_TV) = externalScrapersModules_Data_TV.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.ModuleResult_Data_TVShow
             Dim ScrapedList As New List(Of MediaContainers.TVShow)
@@ -1336,18 +1348,18 @@ Public Class ModulesManager
 
             'clean DBTV if the tv show is to be changed. For this, all existing (incorrect) information must be deleted and the images triggers set to remove.
             If (ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto) AndAlso ScrapeModifier.DoSearch Then
-                DBTV.ExtrafanartsPath = String.Empty
-                DBTV.ImagesContainer = New MediaContainers.ImagesContainer
-                DBTV.NfoPath = String.Empty
-                DBTV.Seasons.Clear()
-                DBTV.ThemePath = String.Empty
-                DBTV.TVShow = New MediaContainers.TVShow
+                DBElement.ExtrafanartsPath = String.Empty
+                DBElement.ImagesContainer = New MediaContainers.ImagesContainer
+                DBElement.NfoPath = String.Empty
+                DBElement.Seasons.Clear()
+                DBElement.ThemePath = String.Empty
+                DBElement.TVShow = New MediaContainers.TVShow
 
-                Dim tmpTitle As String = StringUtils.FilterName_TVShow(FileUtils.Common.GetDirectory(DBTV.ShowPath), False)
+                Dim tmpTitle As String = StringUtils.FilterName_TVShow(FileUtils.Common.GetDirectory(DBElement.ShowPath), False)
 
-                DBTV.TVShow.Title = tmpTitle
+                DBElement.TVShow.Title = tmpTitle
 
-                For Each sEpisode As Database.DBElement In DBTV.Episodes
+                For Each sEpisode As Database.DBElement In DBElement.Episodes
                     Dim iEpisode As Integer = sEpisode.TVEpisode.Episode
                     Dim iSeason As Integer = sEpisode.TVEpisode.Season
                     sEpisode.ImagesContainer = New MediaContainers.ImagesContainer
@@ -1357,13 +1369,13 @@ Public Class ModulesManager
             End If
 
             'create a clone of DBTV
-            Dim oShow As Database.DBElement = CType(DBTV.CloneDeep, Database.DBElement)
+            Dim oShow As Database.DBElement = CType(DBElement.CloneDeep, Database.DBElement)
 
             If (modules.Count() <= 0) Then
-                logger.Warn("No TV scrapers are defined")
+                logger.Warn("[APIModules] [ScrapeData_TVShow] [Abort] No scrapers enabled")
             Else
                 For Each _externalScraperModule As _externalScraperModuleClass_Data_TV In modules
-                    logger.Trace("Scraping TV Show data using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
+                    logger.Trace(String.Format("[APIModules] [ScrapeData_TVShow] [Using] {0}", _externalScraperModule.ProcessorModule.ModuleName))
                     AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
 
                     ret = _externalScraperModule.ProcessorModule.Scraper_TVShow(oShow, ScrapeModifier, ScrapeType, ScrapeOptions)
@@ -1377,15 +1389,18 @@ Public Class ModulesManager
                     If ret.breakChain Then Exit For
                 Next
 
-                If ScrapedList.Count = 0 Then Return True 'Cancelled
+                If ScrapedList.Count = 0 Then
+                    logger.Trace(String.Format("[APIModules] [ScrapeData_TVShow] [Cancelled] [No Scraper Results] {0}", DBElement.TVShow.Title))
+                    Return True 'Cancelled
+                End If
 
                 'Merge scraperresults considering global datascraper settings
-                DBTV = NFO.MergeDataScraperResults_TV(DBTV, ScrapedList, ScrapeType, ScrapeOptions, ScrapeModifier.withEpisodes)
+                DBElement = NFO.MergeDataScraperResults_TV(DBElement, ScrapedList, ScrapeType, ScrapeOptions, ScrapeModifier.withEpisodes)
 
                 'create cache paths for Actor Thumbs
-                DBTV.TVShow.CreateCachePaths_ActorsThumbs()
+                DBElement.TVShow.CreateCachePaths_ActorsThumbs()
                 If ScrapeModifier.withEpisodes Then
-                    For Each tEpisode As Database.DBElement In DBTV.Episodes
+                    For Each tEpisode As Database.DBElement In DBElement.Episodes
                         tEpisode.TVEpisode.CreateCachePaths_ActorsThumbs()
                     Next
                 End If
@@ -1398,12 +1413,13 @@ Public Class ModulesManager
     ''' <summary>
     ''' Request that enabled movie image scrapers perform their functions on the supplied movie
     ''' </summary>
-    ''' <param name="DBMovie">Movie to be scraped. Scraper will directly manipulate this structure</param>
+    ''' <param name="DBElement">Movie to be scraped. Scraper will directly manipulate this structure</param>
     ''' <param name="ImagesContainer">Container of images that the scraper should add to</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
-    Public Function ScrapeImage_Movie(ByRef DBMovie As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifier As Structures.ScrapeModifier, ByVal showMessage As Boolean) As Boolean
-        If DBMovie.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBMovie, showMessage) Then
+    Public Function ScrapeImage_Movie(ByRef DBElement As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifier As Structures.ScrapeModifier, ByVal showMessage As Boolean) As Boolean
+        logger.Trace(String.Format("[APIModules] [ScrapeImage_Movie] [Start] {0}", DBElement.Filename))
+        If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBElement, showMessage) Then
             Dim modules As IEnumerable(Of _externalScraperModuleClass_Image_Movie) = externalScrapersModules_Image_Movie.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.ModuleResult
 
@@ -1412,70 +1428,14 @@ Public Class ModulesManager
             End While
 
             If (modules.Count() <= 0) Then
-                logger.Warn("No movie image scrapers are defined")
+                logger.Warn("[APIModules] [ScrapeImage_Movie] [Abort] No scrapers enabled")
             Else
                 For Each _externalScraperModule As _externalScraperModuleClass_Image_Movie In modules
-                    logger.Trace("Scraping movie images using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
+                    logger.Trace(String.Format("[APIModules] [ScrapeImage_Movie] [Using] {0}", _externalScraperModule.ProcessorModule.ModuleName))
                     If QueryScraperCapabilities_Image_Movie(_externalScraperModule, ScrapeModifier) Then
                         AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie
-                        Try
-                            Dim aContainer As New MediaContainers.SearchResultsContainer
-                            ret = _externalScraperModule.ProcessorModule.Scraper(DBMovie, aContainer, ScrapeModifier)
-                            If aContainer IsNot Nothing Then
-                                ImagesContainer.MainBanners.AddRange(aContainer.MainBanners)
-                                ImagesContainer.MainCharacterArts.AddRange(aContainer.MainCharacterArts)
-                                ImagesContainer.MainClearArts.AddRange(aContainer.MainClearArts)
-                                ImagesContainer.MainClearLogos.AddRange(aContainer.MainClearLogos)
-                                ImagesContainer.MainDiscArts.AddRange(aContainer.MainDiscArts)
-                                ImagesContainer.MainFanarts.AddRange(aContainer.MainFanarts)
-                                ImagesContainer.MainLandscapes.AddRange(aContainer.MainLandscapes)
-                                ImagesContainer.MainPosters.AddRange(aContainer.MainPosters)
-                            End If
-                        Catch ex As Exception
-                            logger.Error(New StackFrame().GetMethod().Name & "Error scraping movie images using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
-                        End Try
-                        RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie
-                        If ret.breakChain Then Exit For
-                    End If
-                Next
-
-                'sorting
-                ImagesContainer.Sort(DBMovie)
-
-                'create cache paths
-                ImagesContainer.CreateCachePaths(DBMovie)
-            End If
-
-            Return ret.Cancelled
-        Else
-            Return True 'Cancelled
-        End If
-    End Function
-    ''' <summary>
-    ''' Request that enabled movieset image scrapers perform their functions on the supplied movie
-    ''' </summary>
-    ''' <param name="DBMovieSet">Movieset to be scraped. Scraper will directly manipulate this structure</param>
-    ''' <param name="ImagesContainer">Container of images that the scraper should add to</param>
-    ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
-    ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
-    Public Function ScrapeImage_MovieSet(ByRef DBMovieSet As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifier As Structures.ScrapeModifier) As Boolean
-        Dim modules As IEnumerable(Of _externalScraperModuleClass_Image_MovieSet) = externalScrapersModules_Image_MovieSet.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
-        Dim ret As Interfaces.ModuleResult
-
-        While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
-            Application.DoEvents()
-        End While
-
-        If (modules.Count() <= 0) Then
-            logger.Warn(New StackFrame().GetMethod().Name, "No movie image scrapers are defined")
-        Else
-            For Each _externalScraperModule As _externalScraperModuleClass_Image_MovieSet In modules
-                logger.Trace(New StackFrame().GetMethod().Name, "Scraping movieset images using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
-                If QueryScraperCapabilities_Image_MovieSet(_externalScraperModule, ScrapeModifier) Then
-                    AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_MovieSet
-                    Try
                         Dim aContainer As New MediaContainers.SearchResultsContainer
-                        ret = _externalScraperModule.ProcessorModule.Scraper(DBMovieSet, aContainer, ScrapeModifier)
+                        ret = _externalScraperModule.ProcessorModule.Scraper(DBElement, aContainer, ScrapeModifier)
                         If aContainer IsNot Nothing Then
                             ImagesContainer.MainBanners.AddRange(aContainer.MainBanners)
                             ImagesContainer.MainCharacterArts.AddRange(aContainer.MainCharacterArts)
@@ -1486,19 +1446,68 @@ Public Class ModulesManager
                             ImagesContainer.MainLandscapes.AddRange(aContainer.MainLandscapes)
                             ImagesContainer.MainPosters.AddRange(aContainer.MainPosters)
                         End If
-                    Catch ex As Exception
-                        logger.Error(New StackFrame().GetMethod().Name & "Error scraping movie images using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
-                    End Try
+                        RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie
+                        If ret.breakChain Then Exit For
+                    End If
+                Next
+
+                'sorting
+                ImagesContainer.Sort(DBElement)
+
+                'create cache paths
+                ImagesContainer.CreateCachePaths(DBElement)
+            End If
+
+            Return ret.Cancelled
+        Else
+            Return True 'Cancelled
+        End If
+    End Function
+    ''' <summary>
+    ''' Request that enabled movieset image scrapers perform their functions on the supplied movie
+    ''' </summary>
+    ''' <param name="DBElement">Movieset to be scraped. Scraper will directly manipulate this structure</param>
+    ''' <param name="ImagesContainer">Container of images that the scraper should add to</param>
+    ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
+    ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
+    Public Function ScrapeImage_MovieSet(ByRef DBElement As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifier As Structures.ScrapeModifier) As Boolean
+        logger.Trace(String.Format("[APIModules] [ScrapeImage_MovieSet] [Start] {0}", DBElement.MovieSet.Title))
+        Dim modules As IEnumerable(Of _externalScraperModuleClass_Image_MovieSet) = externalScrapersModules_Image_MovieSet.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
+        Dim ret As Interfaces.ModuleResult
+
+        While Not (bwloadGenericModules_done AndAlso bwloadScrapersModules_Movie_done AndAlso bwloadScrapersModules_MovieSet_done AndAlso bwloadScrapersModules_TV_done)
+            Application.DoEvents()
+        End While
+
+        If (modules.Count() <= 0) Then
+            logger.Warn("[APIModules] [ScrapeImage_MovieSet] [Abort] No scrapers enabled")
+        Else
+            For Each _externalScraperModule As _externalScraperModuleClass_Image_MovieSet In modules
+                logger.Trace(String.Format("[APIModules] [ScrapeImage_MovieSet] [Using] {0}", _externalScraperModule.ProcessorModule.ModuleName))
+                If QueryScraperCapabilities_Image_MovieSet(_externalScraperModule, ScrapeModifier) Then
+                    AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_MovieSet
+                    Dim aContainer As New MediaContainers.SearchResultsContainer
+                    ret = _externalScraperModule.ProcessorModule.Scraper(DBElement, aContainer, ScrapeModifier)
+                    If aContainer IsNot Nothing Then
+                        ImagesContainer.MainBanners.AddRange(aContainer.MainBanners)
+                        ImagesContainer.MainCharacterArts.AddRange(aContainer.MainCharacterArts)
+                        ImagesContainer.MainClearArts.AddRange(aContainer.MainClearArts)
+                        ImagesContainer.MainClearLogos.AddRange(aContainer.MainClearLogos)
+                        ImagesContainer.MainDiscArts.AddRange(aContainer.MainDiscArts)
+                        ImagesContainer.MainFanarts.AddRange(aContainer.MainFanarts)
+                        ImagesContainer.MainLandscapes.AddRange(aContainer.MainLandscapes)
+                        ImagesContainer.MainPosters.AddRange(aContainer.MainPosters)
+                    End If
                     RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_MovieSet
                     If ret.breakChain Then Exit For
                 End If
             Next
 
             'sorting
-            ImagesContainer.Sort(DBMovieSet)
+            ImagesContainer.Sort(DBElement)
 
             'create cache paths
-            ImagesContainer.CreateCachePaths(DBMovieSet)
+            ImagesContainer.CreateCachePaths(DBElement)
         End If
 
         Return ret.Cancelled
@@ -1506,13 +1515,14 @@ Public Class ModulesManager
     ''' <summary>
     ''' Request that enabled tv image scrapers perform their functions on the supplied movie
     ''' </summary>
-    ''' <param name="DBTV">TV Show to be scraped. Scraper will directly manipulate this structure</param>
+    ''' <param name="DBElement">TV Show to be scraped. Scraper will directly manipulate this structure</param>
     ''' <param name="ScrapeModifier">What kind of image is being scraped (poster, fanart, etc)</param>
     ''' <param name="ImagesContainer">Container of images that the scraper should add to</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
-    Public Function ScrapeImage_TV(ByRef DBTV As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifier As Structures.ScrapeModifier, ByVal showMessage As Boolean) As Boolean
-        If DBTV.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTV, showMessage) Then
+    Public Function ScrapeImage_TV(ByRef DBElement As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifier As Structures.ScrapeModifier, ByVal showMessage As Boolean) As Boolean
+        logger.Trace(String.Format("[APIModules] [ScrapeImage_TV] [Start] {0}", DBElement.TVShow.Title))
+        If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBElement, showMessage) Then
             Dim modules As IEnumerable(Of _externalScraperModuleClass_Image_TV) = externalScrapersModules_Image_TV.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.ModuleResult
 
@@ -1552,43 +1562,39 @@ Public Class ModulesManager
             End If
 
             If (modules.Count() <= 0) Then
-                logger.Warn("No tv show image scrapers are defined")
+                logger.Warn("[APIModules] [ScrapeImage_TV] [Abort] No scrapers enabled")
             Else
                 For Each _externalScraperModule As _externalScraperModuleClass_Image_TV In modules
-                    logger.Trace("Scraping tv show images using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
+                    logger.Trace(String.Format("[APIModules] [ScrapeImage_TV] [Using] {0}", _externalScraperModule.ProcessorModule.ModuleName))
                     If QueryScraperCapabilities_Image_TV(_externalScraperModule, ScrapeModifier) Then
                         AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
-                        Try
-                            Dim aContainer As New MediaContainers.SearchResultsContainer
-                            ret = _externalScraperModule.ProcessorModule.Scraper(DBTV, aContainer, ScrapeModifier)
-                            If aContainer IsNot Nothing Then
-                                ImagesContainer.EpisodeFanarts.AddRange(aContainer.EpisodeFanarts)
-                                ImagesContainer.EpisodePosters.AddRange(aContainer.EpisodePosters)
-                                ImagesContainer.SeasonBanners.AddRange(aContainer.SeasonBanners)
-                                ImagesContainer.SeasonFanarts.AddRange(aContainer.SeasonFanarts)
-                                ImagesContainer.SeasonLandscapes.AddRange(aContainer.SeasonLandscapes)
-                                ImagesContainer.SeasonPosters.AddRange(aContainer.SeasonPosters)
-                                ImagesContainer.MainBanners.AddRange(aContainer.MainBanners)
-                                ImagesContainer.MainCharacterArts.AddRange(aContainer.MainCharacterArts)
-                                ImagesContainer.MainClearArts.AddRange(aContainer.MainClearArts)
-                                ImagesContainer.MainClearLogos.AddRange(aContainer.MainClearLogos)
-                                ImagesContainer.MainFanarts.AddRange(aContainer.MainFanarts)
-                                ImagesContainer.MainLandscapes.AddRange(aContainer.MainLandscapes)
-                                ImagesContainer.MainPosters.AddRange(aContainer.MainPosters)
-                            End If
-                        Catch ex As Exception
-                            logger.Error(New StackFrame().GetMethod().Name & "Error scraping tv show images using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
-                        End Try
+                        Dim aContainer As New MediaContainers.SearchResultsContainer
+                        ret = _externalScraperModule.ProcessorModule.Scraper(DBElement, aContainer, ScrapeModifier)
+                        If aContainer IsNot Nothing Then
+                            ImagesContainer.EpisodeFanarts.AddRange(aContainer.EpisodeFanarts)
+                            ImagesContainer.EpisodePosters.AddRange(aContainer.EpisodePosters)
+                            ImagesContainer.SeasonBanners.AddRange(aContainer.SeasonBanners)
+                            ImagesContainer.SeasonFanarts.AddRange(aContainer.SeasonFanarts)
+                            ImagesContainer.SeasonLandscapes.AddRange(aContainer.SeasonLandscapes)
+                            ImagesContainer.SeasonPosters.AddRange(aContainer.SeasonPosters)
+                            ImagesContainer.MainBanners.AddRange(aContainer.MainBanners)
+                            ImagesContainer.MainCharacterArts.AddRange(aContainer.MainCharacterArts)
+                            ImagesContainer.MainClearArts.AddRange(aContainer.MainClearArts)
+                            ImagesContainer.MainClearLogos.AddRange(aContainer.MainClearLogos)
+                            ImagesContainer.MainFanarts.AddRange(aContainer.MainFanarts)
+                            ImagesContainer.MainLandscapes.AddRange(aContainer.MainLandscapes)
+                            ImagesContainer.MainPosters.AddRange(aContainer.MainPosters)
+                        End If
                         RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
                         If ret.breakChain Then Exit For
                     End If
                 Next
 
                 'sorting
-                ImagesContainer.Sort(DBTV)
+                ImagesContainer.Sort(DBElement)
 
                 'create cache paths
-                ImagesContainer.CreateCachePaths(DBTV)
+                ImagesContainer.CreateCachePaths(DBElement)
             End If
 
             Return ret.Cancelled
@@ -1599,12 +1605,13 @@ Public Class ModulesManager
     ''' <summary>
     ''' Request that enabled movie theme scrapers perform their functions on the supplied movie
     ''' </summary>
-    ''' <param name="DBMovie">Movie to be scraped. Scraper will directly manipulate this structure</param>
+    ''' <param name="DBElement">Movie to be scraped. Scraper will directly manipulate this structure</param>
     ''' <param name="URLList">List of Themes objects that the scraper will append to. Note that only the URL is returned, 
     ''' not the full content of the trailer</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks></remarks>
-    Public Function ScrapeTheme_Movie(ByRef DBMovie As Database.DBElement, ByRef URLList As List(Of Themes)) As Boolean
+    Public Function ScrapeTheme_Movie(ByRef DBElement As Database.DBElement, ByRef URLList As List(Of Themes)) As Boolean
+        logger.Trace(String.Format("[APIModules] [ScrapeTheme_Movie] [Start] {0}", DBElement.Filename))
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Theme_Movie) = externalScrapersModules_Theme_Movie.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
         Dim ret As Interfaces.ModuleResult
         Dim aList As List(Of Themes)
@@ -1614,22 +1621,18 @@ Public Class ModulesManager
         End While
 
         If (modules.Count() <= 0) Then
-            logger.Warn("No movie theme scrapers are defined")
+            logger.Warn("[APIModules] [ScrapeTheme_Movie] [Abort] No scrapers enabled")
         Else
             For Each _externalScraperModule As _externalScraperModuleClass_Theme_Movie In modules
-                logger.Trace("Scraping movie themes using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
+                logger.Trace(String.Format("[APIModules] [ScrapeTheme_Movie] [Using] {0}", _externalScraperModule.ProcessorModule.ModuleName))
                 AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie
-                Try
-                    aList = New List(Of Themes)
-                    ret = _externalScraperModule.ProcessorModule.Scraper(DBMovie, aList)
-                    If aList IsNot Nothing AndAlso aList.Count > 0 Then
-                        For Each aIm In aList
-                            URLList.Add(aIm)
-                        Next
-                    End If
-                Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Error scraping movie themes using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
-                End Try
+                aList = New List(Of Themes)
+                ret = _externalScraperModule.ProcessorModule.Scraper(DBElement, aList)
+                If aList IsNot Nothing AndAlso aList.Count > 0 Then
+                    For Each aIm In aList
+                        URLList.Add(aIm)
+                    Next
+                End If
                 RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie
                 If ret.breakChain Then Exit For
             Next
@@ -1639,13 +1642,14 @@ Public Class ModulesManager
     ''' <summary>
     ''' Request that enabled movie trailer scrapers perform their functions on the supplied movie
     ''' </summary>
-    ''' <param name="DBMovie">Movie to be scraped. Scraper will directly manipulate this structure</param>
+    ''' <param name="DBElement">Movie to be scraped. Scraper will directly manipulate this structure</param>
     ''' <param name="Type">NOT ACTUALLY USED!</param>
     ''' <param name="TrailerList">List of Trailer objects that the scraper will append to. Note that only the URL is returned, 
     ''' not the full content of the trailer</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks></remarks>
-    Public Function ScrapeTrailer_Movie(ByRef DBMovie As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef TrailerList As List(Of MediaContainers.Trailer)) As Boolean
+    Public Function ScrapeTrailer_Movie(ByRef DBElement As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef TrailerList As List(Of MediaContainers.Trailer)) As Boolean
+        logger.Trace(String.Format("[APIModules] [ScrapeTrailer_Movie] [Start] {0}", DBElement.Filename))
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Trailer_Movie) = externalScrapersModules_Trailer_Movie.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
         Dim ret As Interfaces.ModuleResult
 
@@ -1654,20 +1658,16 @@ Public Class ModulesManager
         End While
 
         If (modules.Count() <= 0) Then
-            logger.Warn("No movie trailer scrapers are defined")
+            logger.Warn("[APIModules] [ScrapeTrailer_Movie] [Abort] No scrapers enabled")
         Else
             For Each _externalScraperModule As _externalScraperModuleClass_Trailer_Movie In modules
-                logger.Trace("Scraping movie trailers using <{0}>", _externalScraperModule.ProcessorModule.ModuleName)
+                logger.Trace(String.Format("[APIModules] [ScrapeTrailer_Movie] [Using] {0}", _externalScraperModule.ProcessorModule.ModuleName))
                 AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie
-                Try
-                    Dim aList As New List(Of MediaContainers.Trailer)
-                    ret = _externalScraperModule.ProcessorModule.Scraper(DBMovie, Type, aList)
-                    If aList IsNot Nothing Then
-                        TrailerList.AddRange(aList)
-                    End If
-                Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Error scraping movie trailers using <" & _externalScraperModule.ProcessorModule.ModuleName & ">", ex)
-                End Try
+                Dim aList As New List(Of MediaContainers.Trailer)
+                ret = _externalScraperModule.ProcessorModule.Scraper(DBElement, Type, aList)
+                If aList IsNot Nothing Then
+                    TrailerList.AddRange(aList)
+                End If
                 RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie
                 If ret.breakChain Then Exit For
             Next

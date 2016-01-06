@@ -87,18 +87,36 @@ Namespace TVDBs
 
                 If Results.Banners IsNot Nothing Then
 
+                    'EpisodePoster
+                    If FilteredModifier.EpisodePoster AndAlso Results.Series.Episodes IsNot Nothing Then
+                        For Each tEpisode As TVDB.Model.Episode In Results.Series.Episodes
+                            Dim img As New MediaContainers.Image With {
+                            .Episode = tEpisode.Number,
+                            .Height = CStr(tEpisode.ThumbHeight),
+                            .LongLang = If(tEpisode.Language IsNot Nothing, Localization.ISOGetLangByCode2(tEpisode.Language), String.Empty),
+                            .Scraper = "TVDB",
+                            .Season = tEpisode.SeasonNumber,
+                            .ShortLang = If(tEpisode.Language IsNot Nothing, tEpisode.Language, String.Empty),
+                            .URLOriginal = String.Concat(_TVDBMirror.Address, "/banners/", tEpisode.PictureFilename),
+                            .URLThumb = If(Not String.IsNullOrEmpty(tEpisode.PictureFilename), String.Concat(_TVDBMirror.Address, "/banners/_cache/", tEpisode.PictureFilename), String.Empty),
+                            .Width = CStr(tEpisode.ThumbWidth)}
+
+                            alContainer.EpisodePosters.Add(img)
+                        Next
+                    End If
+
                     'MainBanner
                     If FilteredModifier.MainBanner Then
                         For Each image As TVDB.Model.Banner In Results.Banners.Where(Function(f) f.Type = TVDB.Model.BannerTyp.series)
-                            Dim img As New MediaContainers.Image With {.Height = "140", _
-                                                                       .LongLang = If(image.Language IsNot Nothing, Localization.ISOGetLangByCode2(image.Language), String.Empty), _
-                                                                       .Scraper = "TVDB", _
-                                                                       .Season = image.Season, _
-                                                                       .ShortLang = If(image.Language IsNot Nothing, image.Language, String.Empty), _
-                                                                       .URLOriginal = String.Concat(_TVDBMirror.Address, "/banners/", image.BannerPath), _
-                                                                       .URLThumb = If(Not String.IsNullOrEmpty(image.ThumbnailPath), String.Concat(_TVDBMirror.Address, "/banners/", image.ThumbnailPath), String.Empty), _
-                                                                       .VoteAverage = CStr(image.Rating), _
-                                                                       .VoteCount = image.RatingCount, _
+                            Dim img As New MediaContainers.Image With {.Height = "140",
+                                                                       .LongLang = If(image.Language IsNot Nothing, Localization.ISOGetLangByCode2(image.Language), String.Empty),
+                                                                       .Scraper = "TVDB",
+                                                                       .Season = image.Season,
+                                                                       .ShortLang = If(image.Language IsNot Nothing, image.Language, String.Empty),
+                                                                       .URLOriginal = String.Concat(_TVDBMirror.Address, "/banners/", image.BannerPath),
+                                                                       .URLThumb = If(Not String.IsNullOrEmpty(image.ThumbnailPath), String.Concat(_TVDBMirror.Address, "/banners/", image.ThumbnailPath), String.Empty),
+                                                                       .VoteAverage = CStr(image.Rating),
+                                                                       .VoteCount = image.RatingCount,
                                                                        .Width = "758"}
                             alContainer.MainBanners.Add(img)
                         Next
@@ -107,15 +125,15 @@ Namespace TVDBs
                     'SeasonBanner
                     If FilteredModifier.SeasonBanner Then
                         For Each image As TVDB.Model.Banner In Results.Banners.Where(Function(f) f.Type = TVDB.Model.BannerTyp.season AndAlso f.BannerPath.Contains("seasonswide"))
-                            Dim img As New MediaContainers.Image With {.Height = "140", _
-                                                                       .LongLang = If(image.Language IsNot Nothing, Localization.ISOGetLangByCode2(image.Language), String.Empty), _
-                                                                       .Scraper = "TVDB", _
-                                                                       .Season = image.Season, _
-                                                                       .ShortLang = If(image.Language IsNot Nothing, image.Language, String.Empty), _
-                                                                       .URLOriginal = String.Concat(_TVDBMirror.Address, "/banners/", image.BannerPath), _
-                                                                       .URLThumb = If(Not String.IsNullOrEmpty(image.ThumbnailPath), String.Concat(_TVDBMirror.Address, "/banners/", image.ThumbnailPath), String.Empty), _
-                                                                       .VoteAverage = CStr(image.Rating), _
-                                                                       .VoteCount = image.RatingCount, _
+                            Dim img As New MediaContainers.Image With {.Height = "140",
+                                                                       .LongLang = If(image.Language IsNot Nothing, Localization.ISOGetLangByCode2(image.Language), String.Empty),
+                                                                       .Scraper = "TVDB",
+                                                                       .Season = image.Season,
+                                                                       .ShortLang = If(image.Language IsNot Nothing, image.Language, String.Empty),
+                                                                       .URLOriginal = String.Concat(_TVDBMirror.Address, "/banners/", image.BannerPath),
+                                                                       .URLThumb = If(Not String.IsNullOrEmpty(image.ThumbnailPath), String.Concat(_TVDBMirror.Address, "/banners/", image.ThumbnailPath), String.Empty),
+                                                                       .VoteAverage = CStr(image.Rating),
+                                                                       .VoteCount = image.RatingCount,
                                                                        .Width = "758"}
                             alContainer.SeasonBanners.Add(img)
                         Next
@@ -124,15 +142,15 @@ Namespace TVDBs
                     'MainFanart
                     If FilteredModifier.MainFanart Then
                         For Each image As TVDB.Model.Banner In Results.Banners.Where(Function(f) f.Type = TVDB.Model.BannerTyp.fanart)
-                            alContainer.MainFanarts.Add(New MediaContainers.Image With {.Height = StringUtils.StringToSize(image.Dimension).Height.ToString, _
-                                                                                        .LongLang = If(image.Language IsNot Nothing, Localization.ISOGetLangByCode2(image.Language), String.Empty), _
-                                                                                        .Scraper = "TVDB", _
-                                                                                        .Season = image.Season, _
-                                                                                        .ShortLang = If(image.Language IsNot Nothing, image.Language, String.Empty), _
-                                                                                        .URLOriginal = String.Concat(_TVDBMirror.Address, "/banners/", image.BannerPath), _
-                                                                                        .URLThumb = If(Not String.IsNullOrEmpty(image.ThumbnailPath), String.Concat(_TVDBMirror.Address, "/banners/", image.ThumbnailPath), String.Empty), _
-                                                                                        .VoteAverage = CStr(image.Rating), _
-                                                                                        .VoteCount = image.RatingCount, _
+                            alContainer.MainFanarts.Add(New MediaContainers.Image With {.Height = StringUtils.StringToSize(image.Dimension).Height.ToString,
+                                                                                        .LongLang = If(image.Language IsNot Nothing, Localization.ISOGetLangByCode2(image.Language), String.Empty),
+                                                                                        .Scraper = "TVDB",
+                                                                                        .Season = image.Season,
+                                                                                        .ShortLang = If(image.Language IsNot Nothing, image.Language, String.Empty),
+                                                                                        .URLOriginal = String.Concat(_TVDBMirror.Address, "/banners/", image.BannerPath),
+                                                                                        .URLThumb = If(Not String.IsNullOrEmpty(image.ThumbnailPath), String.Concat(_TVDBMirror.Address, "/banners/", image.ThumbnailPath), String.Empty),
+                                                                                        .VoteAverage = CStr(image.Rating),
+                                                                                        .VoteCount = image.RatingCount,
                                                                                         .Width = StringUtils.StringToSize(image.Dimension).Width.ToString})
                         Next
                     End If
@@ -140,15 +158,15 @@ Namespace TVDBs
                     'MainPoster
                     If FilteredModifier.MainPoster Then
                         For Each image As TVDB.Model.Banner In Results.Banners.Where(Function(f) f.Type = TVDB.Model.BannerTyp.poster)
-                            Dim img As New MediaContainers.Image With {.Height = StringUtils.StringToSize(image.Dimension).Height.ToString, _
-                                                                       .LongLang = If(image.Language IsNot Nothing, Localization.ISOGetLangByCode2(image.Language), String.Empty), _
-                                                                       .Scraper = "TVDB", _
-                                                                       .Season = image.Season, _
-                                                                       .ShortLang = If(image.Language IsNot Nothing, image.Language, String.Empty), _
-                                                                       .URLOriginal = String.Concat(_TVDBMirror.Address, "/banners/", image.BannerPath), _
-                                                                       .URLThumb = If(Not String.IsNullOrEmpty(image.ThumbnailPath), String.Concat(_TVDBMirror.Address, "/banners/", image.ThumbnailPath), String.Empty), _
-                                                                       .VoteAverage = CStr(image.Rating), _
-                                                                       .VoteCount = image.RatingCount, _
+                            Dim img As New MediaContainers.Image With {.Height = StringUtils.StringToSize(image.Dimension).Height.ToString,
+                                                                       .LongLang = If(image.Language IsNot Nothing, Localization.ISOGetLangByCode2(image.Language), String.Empty),
+                                                                       .Scraper = "TVDB",
+                                                                       .Season = image.Season,
+                                                                       .ShortLang = If(image.Language IsNot Nothing, image.Language, String.Empty),
+                                                                       .URLOriginal = String.Concat(_TVDBMirror.Address, "/banners/", image.BannerPath),
+                                                                       .URLThumb = If(Not String.IsNullOrEmpty(image.ThumbnailPath), String.Concat(_TVDBMirror.Address, "/banners/", image.ThumbnailPath), String.Empty),
+                                                                       .VoteAverage = CStr(image.Rating),
+                                                                       .VoteCount = image.RatingCount,
                                                                        .Width = StringUtils.StringToSize(image.Dimension).Width.ToString}
                             alContainer.MainPosters.Add(img)
                         Next
@@ -157,15 +175,15 @@ Namespace TVDBs
                     'SeasonPoster
                     If FilteredModifier.SeasonPoster Then
                         For Each image As TVDB.Model.Banner In Results.Banners.Where(Function(f) f.Type = TVDB.Model.BannerTyp.season AndAlso Not f.BannerPath.Contains("seasonswide"))
-                            Dim img As New MediaContainers.Image With {.Height = "578", _
-                                                                       .LongLang = If(image.Language IsNot Nothing, Localization.ISOGetLangByCode2(image.Language), String.Empty), _
-                                                                       .Scraper = "TVDB", _
-                                                                       .Season = image.Season, _
-                                                                       .ShortLang = If(image.Language IsNot Nothing, image.Language, String.Empty), _
-                                                                       .URLThumb = If(Not String.IsNullOrEmpty(image.ThumbnailPath), String.Concat(_TVDBMirror.Address, "/banners/", image.ThumbnailPath), String.Empty), _
-                                                                       .URLOriginal = String.Concat(_TVDBMirror.Address, "/banners/", image.BannerPath), _
-                                                                       .VoteAverage = CStr(image.Rating), _
-                                                                       .VoteCount = image.RatingCount, _
+                            Dim img As New MediaContainers.Image With {.Height = "578",
+                                                                       .LongLang = If(image.Language IsNot Nothing, Localization.ISOGetLangByCode2(image.Language), String.Empty),
+                                                                       .Scraper = "TVDB",
+                                                                       .Season = image.Season,
+                                                                       .ShortLang = If(image.Language IsNot Nothing, image.Language, String.Empty),
+                                                                       .URLThumb = If(Not String.IsNullOrEmpty(image.ThumbnailPath), String.Concat(_TVDBMirror.Address, "/banners/", image.ThumbnailPath), String.Empty),
+                                                                       .URLOriginal = String.Concat(_TVDBMirror.Address, "/banners/", image.BannerPath),
+                                                                       .VoteAverage = CStr(image.Rating),
+                                                                       .VoteCount = image.RatingCount,
                                                                        .Width = "400"}
                             alContainer.SeasonPosters.Add(img)
                         Next

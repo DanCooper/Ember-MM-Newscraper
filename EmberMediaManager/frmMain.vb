@@ -2042,7 +2042,6 @@ Public Class frmMain
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, Nothing, False, DBScrapeMovie)
 
             If tScrapeItem.ScrapeModifier.MainNFO Then
-                bwMovieScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(253, "Scraping Data"), ":"))
                 If ModulesManager.Instance.ScrapeData_Movie(DBScrapeMovie, tScrapeItem.ScrapeModifier, Args.ScrapeType, Args.ScrapeOptions, Args.ScrapeList.Count = 1) Then
                     logger.Trace(String.Format("[Movie Scraper] [Cancelled] Scraping {0}", OldListTitle))
                     Cancelled = True
@@ -2072,6 +2071,7 @@ Public Class frmMain
 
             If Not Cancelled Then
                 If Master.eSettings.MovieScraperMetaDataScan AndAlso tScrapeItem.ScrapeModifier.MainMeta Then
+                    bwMovieScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(140, "Scanning Meta Data"), ":"))
                     MediaInfo.UpdateMediaInfo(DBScrapeMovie)
                 End If
                 If bwMovieScraper.CancellationPending Then Exit For
@@ -2518,7 +2518,7 @@ Public Class frmMain
 
                 'get all images
                 Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
-                    bwTVScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(254, "Scraping Images"), ":"))
+                bwTVScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(254, "Scraping Images"), ":"))
                 If Not ModulesManager.Instance.ScrapeImage_TV(DBScrapeShow, SearchResultsContainer, tScrapeItem.ScrapeModifier, Args.ScrapeList.Count = 1) Then
                     If Args.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.TVImagesDisplayImageSelect Then
                         Using dImgSelect As New dlgImgSelect
@@ -2533,28 +2533,21 @@ Public Class frmMain
                     End If
                 End If
 
-                If tScrapeItem.ScrapeModifier.withEpisodes Then
-                    bwTVScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(265, "Scraping Episode Images"), ":"))
-                    For Each tEpisode In DBScrapeShow.Episodes.Where(Function(f) Not String.IsNullOrEmpty(f.Filename))
-                        If Master.eSettings.TVScraperMetaDataScan AndAlso tScrapeItem.ScrapeModifier.EpisodeMeta Then
-                            MediaInfo.UpdateTVMediaInfo(tEpisode)
-                        End If
-                        If tScrapeItem.ScrapeModifier.EpisodeFanart OrElse tScrapeItem.ScrapeModifier.EpisodePoster Then
-                            Dim ScrapeModifier_Episode As New Structures.ScrapeModifier With {
-                                .EpisodeFanart = tScrapeItem.ScrapeModifier.EpisodeFanart,
-                                .EpisodePoster = tScrapeItem.ScrapeModifier.EpisodePoster}
-                            Dim SearchResultsContainer_Episodes As New MediaContainers.SearchResultsContainer
-                            ModulesManager.Instance.ScrapeImage_TV(tEpisode, SearchResultsContainer_Episodes, ScrapeModifier_Episode, False)
-                            Images.SetPreferredImages(tEpisode, SearchResultsContainer_Episodes, tScrapeItem.ScrapeModifier)
-                        End If
-                    Next
-                End If
-
                 If bwTVScraper.CancellationPending Then Exit For
 
                 'Theme
                 If tScrapeItem.ScrapeModifier.MainTheme Then
                     bwTVScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(266, "Scraping Themes"), ":"))
+                End If
+
+                If bwTVScraper.CancellationPending Then Exit For
+
+                'Episode Meta Data
+                If tScrapeItem.ScrapeModifier.withEpisodes AndAlso tScrapeItem.ScrapeModifier.EpisodeMeta AndAlso Master.eSettings.TVScraperMetaDataScan Then
+                    bwTVScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(140, "Scanning Meta Data"), ":"))
+                    For Each tEpisode In DBScrapeShow.Episodes.Where(Function(f) Not String.IsNullOrEmpty(f.Filename))
+                        MediaInfo.UpdateTVMediaInfo(tEpisode)
+                    Next
                 End If
 
                 If Not (Args.ScrapeType = Enums.ScrapeType.SingleScrape) Then
@@ -6073,7 +6066,10 @@ doCancel:
 
     Private Sub dgvMovies_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovies.CellEnter
         Dim currMainTabTag As Structures.MainTabType = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
-        If Not currMainTabTag.ContentType = Enums.ContentType.Movie Then Return
+        If Not currMainTabTag.ContentType = Enums.ContentType.Movie Then
+            Debug.WriteLine("[dgvMovies_CellEnter] Return")
+            Return
+        End If
 
         tmrWait_TVShow.Stop()
         tmrWait_TVSeason.Stop()
@@ -6084,9 +6080,11 @@ doCancel:
         tmrLoad_TVSeason.Stop()
         tmrLoad_TVEpisode.Stop()
         tmrLoad_MovieSet.Stop()
+        Debug.WriteLine("[dgvMovies_CellEnter] tmrLoad_Movie.Stop()")
         tmrLoad_Movie.Stop()
 
         currRow_Movie = e.RowIndex
+        Debug.WriteLine("[dgvMovies_CellEnter] tmrWait_Movie.Start()")
         tmrWait_Movie.Start()
     End Sub
 
@@ -6623,6 +6621,7 @@ doCancel:
         tmrLoad_TVShow.Stop()
         tmrLoad_TVSeason.Stop()
         tmrLoad_TVEpisode.Stop()
+        Debug.WriteLine("[dgvMovieSets_CellEnter] tmrLoad_Movie.Stop()")
         tmrLoad_Movie.Stop()
         tmrLoad_MovieSet.Stop()
 
@@ -7020,6 +7019,7 @@ doCancel:
         tmrWait_TVEpisode.Stop()
         tmrLoad_TVShow.Stop()
         tmrLoad_TVSeason.Stop()
+        Debug.WriteLine("[dgvTVEpisodes_CellEnter] tmrLoad_Movie.Stop()")
         tmrLoad_Movie.Stop()
         tmrLoad_MovieSet.Stop()
         tmrLoad_TVEpisode.Stop()
@@ -7453,6 +7453,7 @@ doCancel:
         tmrWait_TVEpisode.Stop()
         tmrWait_TVSeason.Stop()
         tmrLoad_TVShow.Stop()
+        Debug.WriteLine("[dgvTVSeasons_CellEnter] tmrLoad_Movie.Stop()")
         tmrLoad_Movie.Stop()
         tmrLoad_MovieSet.Stop()
         tmrLoad_TVEpisode.Stop()
@@ -7831,6 +7832,7 @@ doCancel:
         tmrWait_TVSeason.Stop()
         tmrWait_TVEpisode.Stop()
         tmrWait_TVShow.Stop()
+        Debug.WriteLine("[dgvTVShows_CellEnter] tmrLoad_Movie.Stop()")
         tmrLoad_Movie.Stop()
         tmrLoad_MovieSet.Stop()
         tmrLoad_TVSeason.Stop()
@@ -10473,7 +10475,6 @@ doCancel:
                 mnuMainToolsSortFiles.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfNoMovies = True, .IfTabMovies = True, .IfTabMovieSets = True, .IfTabTVShows = True}
 
                 Master.fLoading.SetLoadingMesg(Master.eLang.GetString(1165, "Initializing Main Form. Please wait..."))
-                ClearInfo()
 
                 Application.DoEvents()
 
@@ -17114,9 +17115,11 @@ doCancel:
 
     Private Sub tmrLoad_Movie_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrLoad_Movie.Tick
         tmrWait_Movie.Stop()
+        Debug.WriteLine("[tmrLoad_Movie_Tick] tmrLoad_Movie.Stop()")
         tmrLoad_Movie.Stop()
 
         If dgvMovies.SelectedRows.Count > 0 Then
+            Debug.WriteLine("[tmrLoad_Movie_Tick] Selceted Rows > 0")
 
             If dgvMovies.SelectedRows.Count > 1 Then
                 SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), dgvMovies.SelectedRows.Count))
@@ -17124,7 +17127,10 @@ doCancel:
                 SetStatus(dgvMovies.SelectedRows(0).Cells("MoviePath").Value.ToString)
             End If
 
+            Debug.WriteLine("[tmrLoad_Movie_Tick] SelectRow_Movie")
             SelectRow_Movie(dgvMovies.SelectedRows(0).Index)
+        Else
+            Debug.WriteLine("[tmrLoad_Movie_Tick] Selceted Rows = 0")
         End If
     End Sub
 
@@ -17330,12 +17336,17 @@ doCancel:
 
     Private Sub tmrWait_Movie_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrWait_Movie.Tick
         If Not prevRow_Movie = currRow_Movie Then
-            prevRow_Movie = currRow_Movie
+            Debug.WriteLine(String.Concat("[tmrWait_Movie_Tick] prevRow_Movie=", prevRow_Movie, " / currRow_Movie=", currRow_Movie))
+            Debug.WriteLine("[tmrWait_Movie_Tick] tmrWait_Movie.Stop()")
             tmrWait_Movie.Stop()
+            Debug.WriteLine("[tmrWait_Movie_Tick] tmrLoad_Movie.Start()")
             tmrLoad_Movie.Start()
-        Else
-            tmrLoad_Movie.Stop()
-            tmrWait_Movie.Stop()
+            'Else
+            '    Debug.WriteLine(String.Concat("[tmrWait_Movie_Tick] prevRow_Movie=", prevRow_Movie, " / currRow_Movie=", currRow_Movie))
+            '    Debug.WriteLine("[tmrWait_Movie_Tick] tmrLoad_Movie.Stop()")
+            '    tmrLoad_Movie.Stop()
+            '    Debug.WriteLine("[tmrWait_Movie_Tick] tmrWait_Movie.Stop()")
+            '    tmrWait_Movie.Stop()
         End If
     End Sub
 
