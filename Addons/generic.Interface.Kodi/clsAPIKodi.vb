@@ -415,7 +415,7 @@ Namespace Kodi
                         tRemoteSource = If(Source.RemotePath.EndsWith(Path.AltDirectorySeparatorChar), Source.RemotePath, String.Concat(Source.RemotePath, Path.AltDirectorySeparatorChar)).Trim
                         bRemoteIsUNC = True
                     End If
-                    strRemotePath = strLocalPath.Replace(tLocalSource, tRemoteSource)
+                    strRemotePath = strLocalPath.ToLower.Replace(tLocalSource.ToLower, tRemoteSource)
                     If bRemoteIsUNC Then
                         strRemotePath = strRemotePath.Replace(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
                     Else
@@ -1262,8 +1262,7 @@ Namespace Kodi
                     'all image paths will be set in artwork object
                     Dim artwork As New Media.Artwork.Set
                     artwork.fanart = mFanart
-                    artwork.poster = mPoster
-                    'artwork.thumb = mPoster ' not supported in Ember?!
+                    artwork.thumb = mPoster
 
                     Dim response = Await _kodi.VideoLibrary.SetEpisodeDetails(KodiElement.episodeid,
                                                                         title:=mTitle,
