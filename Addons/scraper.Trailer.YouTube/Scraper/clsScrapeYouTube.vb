@@ -27,7 +27,7 @@ Namespace YouTubes
 
 #Region "Fields"
 
-        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
 #End Region 'Fields
 

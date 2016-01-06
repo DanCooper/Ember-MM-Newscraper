@@ -18,7 +18,6 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-
 Imports NLog
 Imports EmberAPI
 Imports XBMCRPC
@@ -35,7 +34,7 @@ Namespace Kodi
         'current selected host, Kodi Host type already declared in EmberAPI (XML serialization) -> no MySettings declaration needed here
         Private _currenthost As New KodiInterface.Host
         'current selected client
-        Private _kodi As XBMCRPC.Client
+        Private _kodi As Client
         'helper object, needed for communication client (notification, eventhandler support)
         Private platformServices As IPlatformServices = New PlatformServices
         'Private NotificationsEnabled As Boolean
@@ -483,7 +482,7 @@ Namespace Kodi
             Dim listSources As New List(Of List.Items.SourcesItem)
             Try
                 Dim _APIKodi As New Kodi.APIKodi(kHost)
-                listSources = _APIKodi.GetSources(XBMCRPC.Files.Media.video).Result
+                listSources = _APIKodi.GetSources(Files.Media.video).Result
                 Return listSources
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -544,7 +543,7 @@ Namespace Kodi
 
         Private Async Function GetTextures(ByVal tDBElement As Database.DBElement) As Task(Of Textures.GetTexturesResponse)
             If _kodi Is Nothing Then
-                logger.Error("[APIKodi] SendMessage: No host initialized! Abort!")
+                logger.Error("[APIKodi] GetTextures: No host initialized! Abort!")
                 Return Nothing
             End If
 
@@ -583,7 +582,7 @@ Namespace Kodi
                         Dim filterRule As New List.Filter.Rule.Textures
                         filterRule.field = List.Filter.Fields.Textures.url
                         filterRule.Operator = List.Filter.Operators.Is
-                        filterRule.value = GetRemotePath(tURL)
+                        filterRule.value = If(tDBElement.ContentType = Enums.ContentType.MovieSet, GetRemotePath_MovieSet(tURL), GetRemotePath(tURL))
                         filter.or.Add(filterRule)
                     Next
 
@@ -1144,7 +1143,7 @@ Namespace Kodi
                         logger.Error(String.Format("[APIKodi] [{0}] UpdateMovieSetInfo: {1}", _currenthost.Label, response))
                         Return False
                     Else
-                        'Remove old textures (cache) 'TODO: Limit to images of this MovieSet
+                        'Remove old textures (cache)
                         Await RemoveTextures(uMovieset)
 
                         'Send message to Kodi?
@@ -1288,7 +1287,7 @@ Namespace Kodi
                         logger.Error(String.Format("[APIKodi] [{0}] UpdateTVEpisodeInfo: {1}", _currenthost.Label, response))
                         Return False
                     Else
-                        'Remove old textures (cache) 'TODO: Limit to images of this Epsiode
+                        'Remove old textures (cache)
                         Await RemoveTextures(uEpisode)
 
                         'Send message to Kodi?
@@ -1375,7 +1374,7 @@ Namespace Kodi
                         logger.Error(String.Format("[APIKodi] [{0}] UpdateTVSeasonInfo: {1}", _currenthost.Label, response))
                         Return False
                     Else
-                        'Remove old textures (cache) 'TODO: Limit to images of this Season
+                        'Remove old textures (cache)
                         Await RemoveTextures(uSeason)
 
                         'Send message to Kodi?
@@ -1524,7 +1523,7 @@ Namespace Kodi
                         logger.Error(String.Format("[APIKodi] [{0}] UpdateTVShowInfo: {1}", _currenthost.Label, response))
                         Return False
                     Else
-                        'Remove old textures (cache) 'TODO: Limit to images of this Show (exkl. all season and episode images)
+                        'Remove old textures (cache)
                         Await RemoveTextures(uTVShow)
 
                         'Send message to Kodi?

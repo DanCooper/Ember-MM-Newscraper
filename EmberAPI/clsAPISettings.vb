@@ -7441,6 +7441,7 @@ Public Class Settings
         If Not String.IsNullOrEmpty(MovieSetPathExpertSingle) Then Paths.Add(MovieSetPathExpertSingle)
         If Not String.IsNullOrEmpty(MovieSetPathExtended) Then Paths.Add(MovieSetPathExtended)
         If Not String.IsNullOrEmpty(MovieSetPathMSAA) Then Paths.Add(MovieSetPathMSAA)
+        Paths = Paths.Distinct().ToList() 'remove double entries
         Return Paths
     End Function
 
