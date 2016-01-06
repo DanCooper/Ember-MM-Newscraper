@@ -1600,6 +1600,7 @@ Public Class Scanner
                         End Using
                         SQLtransaction.Commit()
                     End Using
+                    Args.Scan.Movies = True
                     Exit For
                 End If
             Next
@@ -1643,28 +1644,18 @@ Public Class Scanner
                         ScanTVSourceDir(eSource)
                     Else
                         'Args.Folder is a tv show folder or a tv show subfolder -> get the tv show main path
-                        Dim ShowPath As String = String.Empty
+                        Dim ShowID As Long = -1
                         For Each hKey In TVShowPaths.Keys
                             If String.Concat(Args.Folder.ToLower, Path.DirectorySeparatorChar).StartsWith(String.Concat(hKey.ToString.ToLower, Path.DirectorySeparatorChar)) Then
-                                ShowPath = hKey.ToString
+                                ShowID = Convert.ToInt64(TVShowPaths.Item(hKey))
                                 Exit For
                             End If
                         Next
 
-                        If Not String.IsNullOrEmpty(ShowPath) AndAlso Directory.Exists(ShowPath) Then
-                            Dim currShowContainer As New Database.DBElement(Enums.ContentType.TVShow)
-                            currShowContainer.ActorThumbs = New List(Of String)
-                            currShowContainer.Episodes = New List(Of Database.DBElement)
-                            currShowContainer.EpisodeSorting = eSource.EpisodeSorting
-                            currShowContainer.Language = eSource.Language
-                            currShowContainer.Ordering = eSource.Ordering
-                            currShowContainer.Seasons = New List(Of Database.DBElement)
-                            currShowContainer.ShowID = -1
-                            currShowContainer.ShowPath = ShowPath
-                            currShowContainer.Source = eSource
-                            currShowContainer.Subtitles = New List(Of MediaInfo.Subtitle)
+                        If Not ShowID = -1 Then
+                            Dim currShowContainer As Database.DBElement = Master.DB.LoadTVShowFromDB(ShowID, False, False)
 
-                            Dim inInfo As DirectoryInfo = New DirectoryInfo(ShowPath)
+                            Dim inInfo As DirectoryInfo = New DirectoryInfo(currShowContainer.ShowPath)
                             Dim inList As IEnumerable(Of DirectoryInfo) = Nothing
                             Try
                                 inList = inInfo.GetDirectories.Where(Function(d) (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso isValidDir(d, True)).OrderBy(Function(d) d.Name)
@@ -1678,6 +1669,7 @@ Public Class Scanner
                             LoadTVShow(currShowContainer, True, True, True)
                         End If
                     End If
+                    Args.Scan.TV = True
                     Exit For
                 End If
             Next
