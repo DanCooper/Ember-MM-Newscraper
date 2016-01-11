@@ -2105,7 +2105,7 @@ Public Class frmMain
 
                             'autoscraping
                         ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
-                            Images.SetPreferredImages(DBScrapeMovie, SearchResultsContainer, tScrapeItem.ScrapeModifier)
+                            Images.SetPreferredImages(DBScrapeMovie, SearchResultsContainer, tScrapeItem.ScrapeModifier, IsAutoScraper:=True)
                         End If
                     End If
                 End If
@@ -2383,7 +2383,7 @@ Public Class frmMain
 
                             'autoscraping
                         ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
-                            Images.SetPreferredImages(DBScrapeMovieSet, SearchResultsContainer, tScrapeItem.ScrapeModifier)
+                            Images.SetPreferredImages(DBScrapeMovieSet, SearchResultsContainer, tScrapeItem.ScrapeModifier, IsAutoScraper:=True)
                         End If
                     End If
                 End If
@@ -2529,7 +2529,7 @@ Public Class frmMain
 
                         'autoscraping
                     ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
-                        Images.SetPreferredImages(DBScrapeShow, SearchResultsContainer, tScrapeItem.ScrapeModifier)
+                        Images.SetPreferredImages(DBScrapeShow, SearchResultsContainer, tScrapeItem.ScrapeModifier, IsAutoScraper:=True)
                     End If
                 End If
 
@@ -2689,7 +2689,7 @@ Public Class frmMain
 
                             'autoscraping
                         ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
-                            Images.SetPreferredImages(DBScrapeEpisode, SearchResultsContainer, tScrapeItem.ScrapeModifier)
+                            Images.SetPreferredImages(DBScrapeEpisode, SearchResultsContainer, tScrapeItem.ScrapeModifier, IsAutoScraper:=True)
                         End If
                     End If
                 End If
@@ -2827,7 +2827,7 @@ Public Class frmMain
 
                             'autoscraping
                         ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
-                            Images.SetPreferredImages(DBScrapeSeason, SearchResultsContainer, tScrapeItem.ScrapeModifier)
+                            Images.SetPreferredImages(DBScrapeSeason, SearchResultsContainer, tScrapeItem.ScrapeModifier, IsAutoScraper:=True)
                         End If
                     End If
                 End If
