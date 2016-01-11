@@ -2964,13 +2964,8 @@ Public Class Images
         End If
 
         If DoCalculateDuplicaImages = True Then
-            If IsAutoScraper AndAlso Master.eSettings.GeneralImageFilterAutoscraper Then
-                ' If process is autoscraper, then make sure that extraimages is not the same as main image of movie (i.e. fanart.jpg of movie should not be part of extrafanart)
-                FindDuplicateImages(imgResultList, EmberAPI.Enums.ContentType.Movie, CurrentImage:=CurrentMovieFanart, MatchTolerance:=Master.eSettings.GeneralImageFilterFanartMatchTolerance, Limit:=iLimit)
-            ElseIf Not IsAutoScraper AndAlso Master.eSettings.GeneralImageFilterImagedialog Then
-                'only remove duplicates in the scraped imagelist, do not consider main image of movie (else current image of movie would not be selectable in image preview window!)
-                FindDuplicateImages(imgResultList, EmberAPI.Enums.ContentType.Movie, MatchTolerance:=Master.eSettings.GeneralImageFilterFanartMatchTolerance, Limit:=iLimit)
-            End If
+            'make sure that extraimages is not the same as main image of movie (i.e. fanart.jpg of movie should not be part of extrafanart)
+            FindDuplicateImages(imgResultList, EmberAPI.Enums.ContentType.Movie, CurrentImage:=CurrentMovieFanart, MatchTolerance:=Master.eSettings.GeneralImageFilterFanartMatchTolerance, Limit:=iLimit)
         End If
 
         'If Master.eSettings.MovieFanartPrefSize = Enums.MovieFanartSize.Any Then
@@ -3039,13 +3034,8 @@ Public Class Images
         End If
 
         If DoCalculateDuplicaImages = True Then
-            If IsAutoScraper AndAlso Master.eSettings.GeneralImageFilterAutoscraper Then
-                ' If process is autoscraper, then make sure that extraimages is not the same as main image of movie (i.e. fanart.jpg of movie should not be part of extrafanart)
-                FindDuplicateImages(imgResultList, EmberAPI.Enums.ContentType.Movie, CurrentImage:=CurrentMovieFanart, MatchTolerance:=Master.eSettings.GeneralImageFilterFanartMatchTolerance, Limit:=iLimit)
-            ElseIf Not IsAutoScraper AndAlso Master.eSettings.GeneralImageFilterImagedialog Then
-                'only remove duplicates in the scraped imagelist, do not consider main image of movie (else current image of movie would not be selectable in image preview window!)
-                FindDuplicateImages(imgResultList, EmberAPI.Enums.ContentType.Movie, MatchTolerance:=Master.eSettings.GeneralImageFilterFanartMatchTolerance, Limit:=iLimit)
-            End If
+            'make sure that extraimages is not the same as main image of movie (i.e. fanart.jpg of movie should not be part of extrafanart)
+            FindDuplicateImages(imgResultList, EmberAPI.Enums.ContentType.Movie, CurrentImage:=CurrentMovieFanart, MatchTolerance:=Master.eSettings.GeneralImageFilterFanartMatchTolerance, Limit:=iLimit)
         End If
 
         'If Master.eSettings.MovieFanartPrefSize = Enums.MovieFanartSize.Any Then
@@ -3639,21 +3629,22 @@ Public Class Images
     ''' <param name="CurrentImage">Optional: Current image of video file (i.e. fanart.jpg). This will ensure, that the list of results doesn't contain this image</param>
     ''' <param name="MatchTolerance">Optional: 0: 100% identical images, 0-5: most likely identical, >10: different images</param>
     ''' <param name="Limit">Optional: only return a specific number of unique images, 0: check all images for duplicates and return all avalaible images for the video (unique+duplicates)</param>
+    ''' <param name="RemoveDuplicatesFromList">Optional: false: Limit parameter is not considered, do not remove images from the list, only set IsDuplicate property of duplicate images to true, false= remove duplicate images from list, so the returned list only contains unique (limit) images</param>
     ''' <returns>true: no errors, false: no images to compare</returns>
     ''' <remarks>
     ''' Find duplicate images in a given list of images and either mark them in list by setting IsDuplicate property or remove them from the list - behaviour depends on limit parameter
     ''' 2016/01/10 Cocotus - Optimized behaviour to support Limit parameter (will result in faster processing)
     ''' Basic usage: 
-    ''' If Limit = 0 -> ALL images of movie/episode will be downloaded and checked for duplicates. Whole Imagelist will be returned (may also contain duplicate images). Duplicated images will have Image-property "IsDuplicate"=true set
-    ''' If Limit > 0 -> "Limit"-images of movie/episode will be returned, meaning Imagelist.Count will never be bigger than Limit. Also the returned list will only contain unique images!
+    ''' If RemoveDuplicatesFromList = false -> ALL images of movie/episode will be downloaded and checked for duplicates. Whole Imagelist will be returned (may also contain duplicate images). Duplicated images will have Image-property "IsDuplicate"=true set
+    ''' If RemoveDuplicatesFromList = true -> "Limit"-images of movie/episode will be returned, meaning Imagelist.Count will never be bigger than Limit. Also the returned list will only contain unique images!
     ''' 2015/09/23 Cocotus - First implementation
     ''' Used to avoid duplicate images
     ''' </remarks>
-    Public Shared Function FindDuplicateImages(ByRef ImageList As List(Of MediaContainers.Image), ByVal ContentType As Enums.ContentType, Optional ByVal CurrentImage As MediaContainers.Image = Nothing, Optional ByVal MatchTolerance As Integer = 5, Optional ByVal Limit As Integer = 0) As Boolean
+    Public Shared Function FindDuplicateImages(ByRef ImageList As List(Of MediaContainers.Image), ByVal ContentType As Enums.ContentType, Optional ByVal CurrentImage As MediaContainers.Image = Nothing, Optional ByVal MatchTolerance As Integer = 5, Optional ByVal Limit As Integer = 0, Optional ByVal RemoveDuplicatesFromList As Boolean = True) As Boolean
         'if there are no images to compare, then leave immediately
         If ImageList.Count = 0 Then Return False
 
-        'list which will be filled with "limit" unique images (i.e. if Limit=10 -> lstUniqueImages will have 10 unique images (at best)). This list won't be filled if Limit=0
+        'list which will be filled with "limit" unique images (i.e. if Limit=10 -> lstUniqueImages will have 10 unique images (at best)). This list won't be filled if RemoveDuplicates = false
         Dim lstLimitImages As New List(Of MediaContainers.Image)
         'used for storing calculated similarity value between two images(temp-parameter, won't be returned)
         Dim currentimagesimilarity As Integer = 0
@@ -3663,12 +3654,13 @@ Public Class Images
         'check if we need to adjust limit parameter (i.e. if there aren't enough images)
         Select Case Limit
             Case 0
-                'returned imagelist contains ALL types of images (duplicates and unique)
                 Limit = ImageList.Count
             Case Is > ImageList.Count
-                'only unique images will be in returned imagelist(=lstUniqueImages )
                 Limit = ImageList.Count
         End Select
+
+        'If RemoveDuplicatesFromList = False then Limit parameter is not considered -> always go through whole list
+        If RemoveDuplicatesFromList = False Then Limit = ImageList.Count
 
         'current compared image in imagelist
         Dim tmpImage As Images = Nothing
@@ -3688,37 +3680,43 @@ Public Class Images
                     End If
 
                     '1. Step (Optional): Check if tmpimage is identical to (current) image (i.e. fanart) of movie!
-                    If CurrentImage IsNot Nothing AndAlso File.Exists(CurrentImage.LocalFilePath) Then
+                    If CurrentImage IsNot Nothing Then
                         'invalid comparison (one of images is nothing?!)
                         If tmpImage Is Nothing OrElse tmpImage.Image Is Nothing Then
                             currentimagesimilarity = 99
                             'image is Nothing -> no need to compare anything!
                             logger.Warn("[FindDuplicateImages] Image is nothing. Can't compare images! Image at Index: " & i)
                         Else
-                            currentimagesimilarity = ImageUtils.ImageComparison.GetSimilarity(tmpImage.Image, CurrentImage.LocalFilePath, ImageUtils.ImageComparison.Algorithm.AverageHash)
-                            'Combine with pHash?!
-                            'If currentimagesimilarity > MatchTolerance Then
-                            '    currentimagesimilarity = ImageUtils.ImageComparison.GetSimilarity(referenceitem.Image, CurrentImage.LocalFilePath, ImageUtils.ImageComparison.Algorithm.PHash)
-                            'End If
+                            If CurrentImage.LocalFilePathSpecified Then
+                                currentimagesimilarity = ImageUtils.ImageComparison.GetSimilarity(tmpImage.Image, CurrentImage.LocalFilePath, ImageUtils.ImageComparison.Algorithm.AverageHash)
+                            ElseIf CurrentImage.ImageThumb IsNot Nothing Then
+                                currentimagesimilarity = ImageUtils.ImageComparison.GetSimilarity(tmpImage.Image, CurrentImage.ImageThumb.Image, ImageUtils.ImageComparison.Algorithm.AverageHash)
+                            ElseIf CurrentImage.ImageOriginal IsNot Nothing Then
+                                currentimagesimilarity = ImageUtils.ImageComparison.GetSimilarity(tmpImage.Image, CurrentImage.ImageOriginal.Image, ImageUtils.ImageComparison.Algorithm.AverageHash)
+                            Else
+                                currentimagesimilarity = 99
+                                'image is Nothing -> no need to compare anything!
+                                logger.Warn("[FindDuplicateImages] Currentimage is nothing. Can't compare images!")
+                            End If
                         End If
                         'check for duplicate
                         If MatchTolerance >= currentimagesimilarity Then
                             logger.Trace("[FindDuplicateImages] Duplicate images found: Image1: " & ImageList.Item(i).URLOriginal & " Image2: Current image!")
-                            If Limit < ImageList.Count Then
+                            If RemoveDuplicatesFromList = True Then
                                 'investigate next image, start with next item in loop
                                 Continue For
                             End If
                         End If
                         'if all images will be analyzed then store index of image in imagelist with calculacted Similarityvalue
-                        If Limit = ImageList.Count Then
+                        If RemoveDuplicatesFromList = False Then
                             Dim newSimilarityvalue = Tuple.Create(i, currentimagesimilarity)
                             lstCalculatedSimilarity.Add(newSimilarityvalue)
                         End If
                     End If
 
 
-                    '2. Step: Calculate similarity for each image combination in imagelist (lstLimit or whole Imagelist depending on Limit-parameter) - basically we compare each image to find out which images are identical to each other
-                    If Limit < ImageList.Count Then
+                    '2. Step: Calculate similarity for each image combination in imagelist (lstLimit or whole Imagelist depending on RemoveDuplicates parameter) - basically we compare each image to find out which images are identical to each other
+                    If RemoveDuplicatesFromList = True Then
                         Dim IsUniqueImage As Boolean = True
                         Dim referenceimage As Images = Nothing
                         If lstLimitImages.Count > 0 Then
@@ -3803,9 +3801,9 @@ Public Class Images
         Next
 
         '3. Step:
-        'if Limit = ImageList.Count: mark duplicate image in imagelist at index calculated above
-        'if Limit < ImageList.Count: just return lstUniqueImages instead of imagelist
-        If Limit < ImageList.Count Then
+        'if RemoveDuplicatesFromList = false: mark duplicate image in imagelist at index calculated above
+        'if RemoveDuplicatesFromList = true: just return lstUniqueImages instead of imagelist
+        If RemoveDuplicatesFromList = True Then
             ImageList.Clear()
             ImageList.AddRange(lstLimitImages)
         Else
