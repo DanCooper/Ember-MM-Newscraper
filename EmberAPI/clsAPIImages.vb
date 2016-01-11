@@ -1731,79 +1731,6 @@ Public Class Images
             nPreferredImagesContainer.ImagesContainer.DiscArt = DBElement.ImagesContainer.DiscArt
         End If
 
-        'Main Extrafanarts
-        If DoMainExtrafanarts Then
-            Dim bKeepExisting As Boolean = False
-            Dim iLimit As Integer = 0
-            Dim iDifference As Integer = 0
-
-            Select Case tContentType
-                Case Enums.ContentType.Movie
-                    bKeepExisting = Master.eSettings.MovieExtrafanartsKeepExisting
-                    iLimit = Master.eSettings.MovieExtrafanartsLimit
-                Case Enums.ContentType.TVShow
-                    bKeepExisting = Master.eSettings.TVShowExtrafanartsKeepExisting
-                    iLimit = Master.eSettings.TVShowExtrafanartsLimit
-            End Select
-
-            If Not bKeepExisting OrElse Not DBElement.ImagesContainer.Extrafanarts.Count >= iLimit OrElse iLimit = 0 Then
-                iDifference = iLimit - DBElement.ImagesContainer.Extrafanarts.Count
-                Dim defImgList As New List(Of MediaContainers.Image)
-
-                Select Case tContentType
-                    Case Enums.ContentType.Movie
-                        GetPreferredMovieExtrafanarts(SearchResultsContainer.MainFanarts, defImgList, If(Not bKeepExisting, iLimit, iDifference), DBElement.ImagesContainer.Fanart, IsAutoScraper:=IsAutoScraper)
-                    Case Enums.ContentType.TVShow
-                        GetPreferredTVShowExtrafanarts(SearchResultsContainer.MainFanarts, defImgList, If(Not bKeepExisting, iLimit, iDifference))
-                End Select
-
-                If Not bKeepExisting Then
-                    nPreferredImagesContainer.ImagesContainer.Extrafanarts = defImgList
-                Else
-                    nPreferredImagesContainer.ImagesContainer.Extrafanarts.AddRange(DBElement.ImagesContainer.Extrafanarts)
-                    nPreferredImagesContainer.ImagesContainer.Extrafanarts.AddRange(defImgList)
-                End If
-            Else
-                nPreferredImagesContainer.ImagesContainer.Extrafanarts = DBElement.ImagesContainer.Extrafanarts
-            End If
-        Else
-            nPreferredImagesContainer.ImagesContainer.Extrafanarts = DBElement.ImagesContainer.Extrafanarts
-        End If
-
-        'Main Extrathumbs
-        If DoMainExtrathumbs Then
-            Dim bKeepExisting As Boolean = False
-            Dim iLimit As Integer = 0
-            Dim iDifference As Integer = 0
-
-            Select Case tContentType
-                Case Enums.ContentType.Movie
-                    bKeepExisting = Master.eSettings.MovieExtrathumbsKeepExisting
-                    iLimit = Master.eSettings.MovieExtrathumbsLimit
-            End Select
-
-            If Not bKeepExisting OrElse Not DBElement.ImagesContainer.Extrathumbs.Count >= iLimit OrElse iLimit = 0 Then
-                iDifference = iLimit - DBElement.ImagesContainer.Extrathumbs.Count
-                Dim defImgList As New List(Of MediaContainers.Image)
-
-                Select Case tContentType
-                    Case Enums.ContentType.Movie
-                        GetPreferredMovieExtrathumbs(SearchResultsContainer.MainFanarts, defImgList, If(Not bKeepExisting, iLimit, iDifference), DBElement.ImagesContainer.Fanart, IsAutoScraper:=IsAutoScraper)
-                End Select
-
-                If Not bKeepExisting Then
-                    nPreferredImagesContainer.ImagesContainer.Extrathumbs = defImgList
-                Else
-                    nPreferredImagesContainer.ImagesContainer.Extrathumbs.AddRange(DBElement.ImagesContainer.Extrathumbs)
-                    nPreferredImagesContainer.ImagesContainer.Extrathumbs.AddRange(defImgList)
-                End If
-            Else
-                nPreferredImagesContainer.ImagesContainer.Extrathumbs = DBElement.ImagesContainer.Extrathumbs
-            End If
-        Else
-            nPreferredImagesContainer.ImagesContainer.Extrathumbs = DBElement.ImagesContainer.Extrathumbs
-        End If
-
         'Main Fanart
         If DoMainFanart Then
             Dim defImg As MediaContainers.Image = Nothing
@@ -1844,6 +1771,79 @@ Public Class Images
             End If
         Else
             nPreferredImagesContainer.ImagesContainer.Fanart = DBElement.ImagesContainer.Fanart
+        End If
+
+        'Main Extrafanarts
+        If DoMainExtrafanarts Then
+            Dim bKeepExisting As Boolean = False
+            Dim iLimit As Integer = 0
+            Dim iDifference As Integer = 0
+
+            Select Case tContentType
+                Case Enums.ContentType.Movie
+                    bKeepExisting = Master.eSettings.MovieExtrafanartsKeepExisting
+                    iLimit = Master.eSettings.MovieExtrafanartsLimit
+                Case Enums.ContentType.TVShow
+                    bKeepExisting = Master.eSettings.TVShowExtrafanartsKeepExisting
+                    iLimit = Master.eSettings.TVShowExtrafanartsLimit
+            End Select
+
+            If Not bKeepExisting OrElse Not DBElement.ImagesContainer.Extrafanarts.Count >= iLimit OrElse iLimit = 0 Then
+                iDifference = iLimit - DBElement.ImagesContainer.Extrafanarts.Count
+                Dim defImgList As New List(Of MediaContainers.Image)
+
+                Select Case tContentType
+                    Case Enums.ContentType.Movie
+                        GetPreferredMovieExtrafanarts(SearchResultsContainer.MainFanarts, defImgList, If(Not bKeepExisting, iLimit, iDifference), nPreferredImagesContainer.ImagesContainer.Fanart, IsAutoScraper:=IsAutoScraper)
+                    Case Enums.ContentType.TVShow
+                        GetPreferredTVShowExtrafanarts(SearchResultsContainer.MainFanarts, defImgList, If(Not bKeepExisting, iLimit, iDifference))
+                End Select
+
+                If Not bKeepExisting Then
+                    nPreferredImagesContainer.ImagesContainer.Extrafanarts = defImgList
+                Else
+                    nPreferredImagesContainer.ImagesContainer.Extrafanarts.AddRange(DBElement.ImagesContainer.Extrafanarts)
+                    nPreferredImagesContainer.ImagesContainer.Extrafanarts.AddRange(defImgList)
+                End If
+            Else
+                nPreferredImagesContainer.ImagesContainer.Extrafanarts = DBElement.ImagesContainer.Extrafanarts
+            End If
+        Else
+            nPreferredImagesContainer.ImagesContainer.Extrafanarts = DBElement.ImagesContainer.Extrafanarts
+        End If
+
+        'Main Extrathumbs
+        If DoMainExtrathumbs Then
+            Dim bKeepExisting As Boolean = False
+            Dim iLimit As Integer = 0
+            Dim iDifference As Integer = 0
+
+            Select Case tContentType
+                Case Enums.ContentType.Movie
+                    bKeepExisting = Master.eSettings.MovieExtrathumbsKeepExisting
+                    iLimit = Master.eSettings.MovieExtrathumbsLimit
+            End Select
+
+            If Not bKeepExisting OrElse Not DBElement.ImagesContainer.Extrathumbs.Count >= iLimit OrElse iLimit = 0 Then
+                iDifference = iLimit - DBElement.ImagesContainer.Extrathumbs.Count
+                Dim defImgList As New List(Of MediaContainers.Image)
+
+                Select Case tContentType
+                    Case Enums.ContentType.Movie
+                        GetPreferredMovieExtrathumbs(SearchResultsContainer.MainFanarts, defImgList, If(Not bKeepExisting, iLimit, iDifference), nPreferredImagesContainer.ImagesContainer.Fanart, IsAutoScraper:=IsAutoScraper)
+                End Select
+
+                If Not bKeepExisting Then
+                    nPreferredImagesContainer.ImagesContainer.Extrathumbs = defImgList
+                Else
+                    nPreferredImagesContainer.ImagesContainer.Extrathumbs.AddRange(DBElement.ImagesContainer.Extrathumbs)
+                    nPreferredImagesContainer.ImagesContainer.Extrathumbs.AddRange(defImgList)
+                End If
+            Else
+                nPreferredImagesContainer.ImagesContainer.Extrathumbs = DBElement.ImagesContainer.Extrathumbs
+            End If
+        Else
+            nPreferredImagesContainer.ImagesContainer.Extrathumbs = DBElement.ImagesContainer.Extrathumbs
         End If
 
         'Main Landscape
