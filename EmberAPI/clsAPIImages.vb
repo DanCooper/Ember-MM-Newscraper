@@ -2924,7 +2924,7 @@ Public Class Images
 
         Dim DoCalculateDuplicaImages As Boolean = False
 
-        If Master.eSettings.GeneralImageFilter = True AndAlso ((IsAutoScraper = True AndAlso Master.eSettings.GeneralImageFilterAutoscraper = True) OrElse (IsAutoScraper = False AndAlso Master.eSettings.GeneralImageFilterImagedialog = True)) Then
+        If Master.eSettings.GeneralImageFilter = True AndAlso Master.eSettings.GeneralImageFilterFanart = True AndAlso ((IsAutoScraper = True AndAlso Master.eSettings.GeneralImageFilterAutoscraper = True) OrElse (IsAutoScraper = False AndAlso Master.eSettings.GeneralImageFilterImagedialog = True)) Then
             DoCalculateDuplicaImages = True
         End If
 
@@ -2996,7 +2996,7 @@ Public Class Images
         If ImageList.Count = 0 Then Return False
         Dim DoCalculateDuplicaImages As Boolean = False
 
-        If Master.eSettings.GeneralImageFilter = True AndAlso ((IsAutoScraper = True AndAlso Master.eSettings.GeneralImageFilterAutoscraper = True) OrElse (IsAutoScraper = False AndAlso Master.eSettings.GeneralImageFilterImagedialog = True)) Then
+        If Master.eSettings.GeneralImageFilter = True AndAlso Master.eSettings.GeneralImageFilterFanart = True AndAlso ((IsAutoScraper = True AndAlso Master.eSettings.GeneralImageFilterAutoscraper = True) OrElse (IsAutoScraper = False AndAlso Master.eSettings.GeneralImageFilterImagedialog = True)) Then
             DoCalculateDuplicaImages = True
         End If
 
@@ -3662,6 +3662,9 @@ Public Class Images
         'If RemoveDuplicatesFromList = False then Limit parameter is not considered -> always go through whole list
         If RemoveDuplicatesFromList = False Then Limit = ImageList.Count
 
+        'since the following algorithm removes duplicates from beginning of list and keeps the images instance which is lower in list, we reverse the list to place images in preferred language at the end of the list
+        ImageList.Reverse()
+
         'current compared image in imagelist
         Dim tmpImage As Images = Nothing
 
@@ -3690,9 +3693,21 @@ Public Class Images
                             If CurrentImage.LocalFilePathSpecified Then
                                 currentimagesimilarity = ImageUtils.ImageComparison.GetSimilarity(tmpImage.Image, CurrentImage.LocalFilePath, ImageUtils.ImageComparison.Algorithm.AverageHash)
                             ElseIf CurrentImage.ImageThumb IsNot Nothing Then
-                                currentimagesimilarity = ImageUtils.ImageComparison.GetSimilarity(tmpImage.Image, CurrentImage.ImageThumb.Image, ImageUtils.ImageComparison.Algorithm.AverageHash)
+                                If CurrentImage.ImageThumb.Image IsNot Nothing Then
+                                    currentimagesimilarity = ImageUtils.ImageComparison.GetSimilarity(tmpImage.Image, CurrentImage.ImageThumb.Image, ImageUtils.ImageComparison.Algorithm.AverageHash)
+                                Else
+                                    currentimagesimilarity = 99
+                                    'image is Nothing -> no need to compare anything!
+                                    logger.Warn("[FindDuplicateImages] Currentimage is nothing. Can't compare images!")
+                                End If
                             ElseIf CurrentImage.ImageOriginal IsNot Nothing Then
-                                currentimagesimilarity = ImageUtils.ImageComparison.GetSimilarity(tmpImage.Image, CurrentImage.ImageOriginal.Image, ImageUtils.ImageComparison.Algorithm.AverageHash)
+                                If CurrentImage.ImageOriginal.Image IsNot Nothing Then
+                                    currentimagesimilarity = ImageUtils.ImageComparison.GetSimilarity(tmpImage.Image, CurrentImage.ImageOriginal.Image, ImageUtils.ImageComparison.Algorithm.AverageHash)
+                                Else
+                                    currentimagesimilarity = 99
+                                    'image is Nothing -> no need to compare anything!
+                                    logger.Warn("[FindDuplicateImages] Currentimage is nothing. Can't compare images!")
+                                End If
                             Else
                                 currentimagesimilarity = 99
                                 'image is Nothing -> no need to compare anything!
@@ -3809,7 +3824,7 @@ Public Class Images
         Else
             'Sort Similaritylist by similarityvalue
             lstCalculatedSimilarity.Sort(Function(x, y) y.Item2.CompareTo(x.Item2))
-            '  lstCalculatedSimilarity.Reverse()
+            lstCalculatedSimilarity.Reverse()
             'logging used for debugging in tests
             'For Each calculatedimage In lstSimilarImages
             '    If calculatedimage.Item1 <= MatchTolerance Then
@@ -3830,7 +3845,9 @@ Public Class Images
                 End If
             Next
         End If
-        ' ImageList.Reverse()
+
+        'finished processing, reverse imagelist to put preferred languages back to top like its used to be
+        ImageList.Reverse()
         Return True
     End Function
 #End Region 'Methods

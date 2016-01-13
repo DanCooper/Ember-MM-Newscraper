@@ -207,6 +207,25 @@ Public Class dlgImgSelect
                 DoOnlySeason = DBElement.TVSeason.Season
             Case Else
                 tContentType = DBElement.ContentType
+                If Master.eSettings.GeneralImageFilter = True AndAlso Master.eSettings.GeneralImageFilterImagedialog = True Then
+                    'mark all duplicate images in searchcontainer for movie
+                    'posters
+                    If Master.eSettings.GeneralImageFilterPoster = True Then
+                        Images.FindDuplicateImages(tSearchResultsContainer.MainPosters, DBElement.ContentType, MatchTolerance:=Master.eSettings.GeneralImageFilterPosterMatchTolerance, RemoveDuplicatesFromList:=False)
+                        'this will consider IsDuplicate value of all images by moving all duplicate images to bottom
+                        Dim orderedList = tSearchResultsContainer.MainPosters.OrderByDescending(Function(x) x.IsDuplicate = False).ToList()
+                        tSearchResultsContainer.MainPosters.Clear()
+                        tSearchResultsContainer.MainPosters.AddRange(orderedList)
+                    End If
+                    'fanarts
+                    If Master.eSettings.GeneralImageFilterFanart = True Then
+                        Images.FindDuplicateImages(tSearchResultsContainer.MainFanarts, DBElement.ContentType, MatchTolerance:=Master.eSettings.GeneralImageFilterFanartMatchTolerance, RemoveDuplicatesFromList:=False)
+                        'this will consider IsDuplicate value of all images by moving all duplicate images to bottom
+                        Dim orderedList = tSearchResultsContainer.MainFanarts.OrderByDescending(Function(x) x.IsDuplicate = False).ToList()
+                        tSearchResultsContainer.MainFanarts.Clear()
+                        tSearchResultsContainer.MainFanarts.AddRange(orderedList)
+                    End If
+                End If
         End Select
 
         SetParameters()
@@ -326,6 +345,16 @@ Public Class dlgImgSelect
         pnlListImage_Panel(iIndex).Size = iListImage_Size_Panel
         pnlListImage_Panel(iIndex).Tag = tTag
         pnlListImage_Panel(iIndex).Top = iListImage_NextTop
+
+        'If image is marked as duplicate display it in different color
+        If tImage.IsDuplicate Then
+            lblListImage_Scraper(iIndex).Text = tTag.Image.Scraper & " DUPLICATE"
+            pnlListImage_Panel(iIndex).BackColor = Color.Tomato
+            lblListImage_DiscType(iIndex).BackColor = Color.Tomato
+            lblListImage_Language(iIndex).BackColor = Color.Tomato
+            lblListImage_Scraper(iIndex).BackColor = Color.Tomato
+            lblListImageList_Resolution(iIndex).BackColor = Color.Tomato
+        End If
 
         pnlImgSelectMain.Controls.Add(pnlListImage_Panel(iIndex))
         pnlListImage_Panel(iIndex).Controls.Add(pbListImage_Image(iIndex))
@@ -1302,15 +1331,15 @@ Public Class dlgImgSelect
 
     Private Sub DoSelectListImage(ByVal iIndex As Integer, ByVal tTag As iTag)
         For i As Integer = 0 To pnlListImage_Panel.Count - 1
-            pnlListImage_Panel(i).BackColor = Color.White
-            lblListImage_DiscType(i).BackColor = Color.White
-            lblListImage_DiscType(i).ForeColor = Color.Black
-            lblListImage_Language(i).BackColor = Color.White
-            lblListImage_Language(i).ForeColor = Color.Black
-            lblListImageList_Resolution(i).BackColor = Color.White
-            lblListImageList_Resolution(i).ForeColor = Color.Black
-            lblListImage_Scraper(i).BackColor = Color.White
-            lblListImage_Scraper(i).ForeColor = Color.Black
+                pnlListImage_Panel(i).BackColor = Color.White
+                lblListImage_DiscType(i).BackColor = Color.White
+                lblListImage_DiscType(i).ForeColor = Color.Black
+                lblListImage_Language(i).BackColor = Color.White
+                lblListImage_Language(i).ForeColor = Color.Black
+                lblListImageList_Resolution(i).BackColor = Color.White
+                lblListImageList_Resolution(i).ForeColor = Color.Black
+                lblListImage_Scraper(i).BackColor = Color.White
+                lblListImage_Scraper(i).ForeColor = Color.Black
         Next
 
         pnlListImage_Panel(iIndex).BackColor = Color.Gray
@@ -1322,7 +1351,6 @@ Public Class dlgImgSelect
         lblListImageList_Resolution(iIndex).ForeColor = Color.White
         lblListImage_Scraper(iIndex).BackColor = Color.Gray
         lblListImage_Scraper(iIndex).ForeColor = Color.White
-
         currListImage = tTag
         'SetImage(tTag)
     End Sub

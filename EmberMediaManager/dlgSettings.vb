@@ -2866,7 +2866,11 @@ Public Class dlgSettings
             chkGeneralDigitGrpSymbolVotes.Checked = .GeneralDigitGrpSymbolVotes
             chkGeneralImageFilter.Checked = .GeneralImageFilter
             chkGeneralImageFilterAutoscraper.Checked = .GeneralImageFilterAutoscraper
+            txtGeneralImageFilterFanartMatchRate.Enabled = .GeneralImageFilterFanart
+            chkGeneralImageFilterFanart.Checked = .GeneralImageFilterFanart
             chkGeneralImageFilterImagedialog.Checked = .GeneralImageFilterImagedialog
+            chkGeneralImageFilterPoster.Checked = .GeneralImageFilterPoster
+            txtGeneralImageFilterPosterMatchRate.Enabled = .GeneralImageFilterPoster
             chkGeneralDoubleClickScrape.Checked = .GeneralDoubleClickScrape
             chkGeneralDisplayBanner.Checked = .GeneralDisplayBanner
             chkGeneralDisplayCharacterArt.Checked = .GeneralDisplayCharacterArt
@@ -4667,7 +4671,9 @@ Public Class dlgSettings
             .GeneralImagesGlassOverlay = chkGeneralImagesGlassOverlay.Checked
             .GeneralImageFilter = chkGeneralImageFilter.Checked
             .GeneralImageFilterAutoscraper = chkGeneralImageFilterAutoscraper.Checked
+            .GeneralImageFilterFanart = chkGeneralImageFilterFanart.Checked
             .GeneralImageFilterImagedialog = chkGeneralImageFilterImagedialog.Checked
+            .GeneralImageFilterPoster = chkGeneralImageFilterPoster.Checked
             If Not String.IsNullOrEmpty(txtGeneralImageFilterFanartMatchRate.Text) AndAlso Integer.TryParse(txtGeneralImageFilterFanartMatchRate.Text, 4) Then
                 .GeneralImageFilterFanartMatchTolerance = Convert.ToInt32(txtGeneralImageFilterFanartMatchRate.Text)
             Else
@@ -6569,7 +6575,9 @@ Public Class dlgSettings
         chkGeneralImagesGlassOverlay.Text = Master.eLang.GetString(966, "Enable Images Glass Overlay")
         chkGeneralImageFilter.Text = Master.eLang.GetString(1459, "Activate ImageFilter to avoid duplicate images")
         chkGeneralImageFilterAutoscraper.Text = Master.eLang.GetString(1457, "Autoscraper")
+        chkGeneralImageFilterFanart.Text = Master.eLang.GetString(149, "Fanart")
         chkGeneralImageFilterImagedialog.Text = Master.eLang.GetString(1458, "Imagedialog")
+        chkGeneralImageFilterPoster.Text = Master.eLang.GetString(148, "Poster")
         chkGeneralOverwriteNfo.Text = Master.eLang.GetString(433, "Overwrite Non-conforming nfos")
         chkGeneralDisplayGenresText.Text = Master.eLang.GetString(453, "Always Display Genre Text")
         chkGeneralDisplayLangFlags.Text = Master.eLang.GetString(489, "Display Language Flags")
@@ -7555,13 +7563,35 @@ Public Class dlgSettings
 
     Private Sub chkGeneralImageFilter_CheckedChanged(sender As Object, e As EventArgs) Handles chkGeneralImageFilter.CheckedChanged
         SetApplyButton(True)
-
         chkGeneralImageFilterAutoscraper.Enabled = chkGeneralImageFilter.Checked
+        chkGeneralImageFilterFanart.Enabled = chkGeneralImageFilter.Checked
         chkGeneralImageFilterImagedialog.Enabled = chkGeneralImageFilter.Checked
+        chkGeneralImageFilterPoster.Enabled = chkGeneralImageFilter.Checked
         lblGeneralImageFilterFanartMatchRate.Enabled = chkGeneralImageFilter.Checked
         lblGeneralImageFilterPosterMatchRate.Enabled = chkGeneralImageFilter.Checked
         txtGeneralImageFilterFanartMatchRate.Enabled = chkGeneralImageFilter.Checked
         txtGeneralImageFilterPosterMatchRate.Enabled = chkGeneralImageFilter.Checked
+    End Sub
+
+    Private Sub chkGeneralImageFilterAutoscraperImagedialog_CheckedChanged(sender As Object, e As EventArgs) Handles chkGeneralImageFilterAutoscraper.CheckedChanged, chkGeneralImageFilterImagedialog.CheckedChanged
+        SetApplyButton(True)
+        If chkGeneralImageFilterImagedialog.Checked = False AndAlso chkGeneralImageFilterAutoscraper.Checked = False Then
+            chkGeneralImageFilterPoster.Enabled = False
+            chkGeneralImageFilterFanart.Enabled = False
+        Else
+            chkGeneralImageFilterPoster.Enabled = True
+            chkGeneralImageFilterFanart.Enabled = True
+        End If
+    End Sub
+    Private Sub chkGeneralImageFilterPoster_CheckedChanged(sender As Object, e As EventArgs) Handles chkGeneralImageFilterPoster.CheckedChanged
+        SetApplyButton(True)
+        lblGeneralImageFilterPosterMatchRate.Enabled = chkGeneralImageFilterPoster.Checked
+        txtGeneralImageFilterPosterMatchRate.Enabled = chkGeneralImageFilterPoster.Checked
+    End Sub
+    Private Sub chkGeneralImageFilterFanart_CheckedChanged(sender As Object, e As EventArgs) Handles chkGeneralImageFilterFanart.CheckedChanged
+        SetApplyButton(True)
+        lblGeneralImageFilterFanartMatchRate.Enabled = chkGeneralImageFilterFanart.Checked
+        txtGeneralImageFilterFanartMatchRate.Enabled = chkGeneralImageFilterFanart.Checked
     End Sub
 
     Private Sub txtGeneralImageFilterMatchRate_TextChanged(sender As Object, e As EventArgs) Handles txtGeneralImageFilterPosterMatchRate.LostFocus, txtGeneralImageFilterFanartMatchRate.LostFocus
@@ -7640,6 +7670,8 @@ Public Class dlgSettings
         chkGeneralDoubleClickScrape.CheckedChanged,
         chkGeneralImageFilterAutoscraper.CheckedChanged,
         chkGeneralImageFilterImagedialog.CheckedChanged,
+        chkGeneralImageFilterPoster.CheckedChanged,
+        chkGeneralImageFilterFanart.CheckedChanged,
         chkGeneralImagesGlassOverlay.CheckedChanged,
         chkGeneralOverwriteNfo.CheckedChanged,
         chkGeneralSourceFromFolder.CheckedChanged,

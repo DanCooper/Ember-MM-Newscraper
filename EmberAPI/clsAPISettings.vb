@@ -1782,6 +1782,14 @@ Public Class Settings
             Settings._XMLSettings.GeneralImageFilterAutoscraper = value
         End Set
     End Property
+    Public Property GeneralImageFilterFanart() As Boolean
+        Get
+            Return Settings._XMLSettings.GeneralImageFilterFanart
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.GeneralImageFilterFanart = value
+        End Set
+    End Property
 
     Public Property GeneralImageFilterImagedialog() As Boolean
         Get
@@ -1789,6 +1797,14 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.GeneralImageFilterImagedialog = value
+        End Set
+    End Property
+    Public Property GeneralImageFilterPoster() As Boolean
+        Get
+            Return Settings._XMLSettings.GeneralImageFilterPoster
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.GeneralImageFilterPoster = value
         End Set
     End Property
 
@@ -6745,6 +6761,8 @@ Public Class Settings
         GeneralImageFilter = True
         GeneralImageFilterAutoscraper = True
         GeneralImageFilterImagedialog = False
+        GeneralImageFilterFanart = True
+        GeneralImageFilterPoster = False
         GeneralImageFilterFanartMatchTolerance = 4
         GeneralImageFilterPosterMatchTolerance = 1
         GeneralLanguage = "English_(en_US)"

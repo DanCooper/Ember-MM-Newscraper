@@ -43,7 +43,9 @@ Partial Public Class clsXMLSettings
     Private _generalfilterpanelstateshow As Boolean
     Private _generalimagefilter As Boolean
     Private _generalimagefilterautoscraper As Boolean
+    Private _generalimagefilterfanart As Boolean
     Private _generalimagefilterimagedialog As Boolean
+    Private _generalimagefilterposter As Boolean
     Private _generalimagefilterpostermatchtolerance As Integer
     Private _generalimagefilterfanartmatchtolerance As Integer
     Private _generalmainfiltersortcolumn_movies As Integer
@@ -1992,6 +1994,25 @@ Partial Public Class clsXMLSettings
             Me._generalimagefilterimagedialog = value
         End Set
     End Property
+
+    Public Property GeneralImageFilterFanart() As Boolean
+        Get
+            Return Me._generalimagefilterfanart
+        End Get
+        Set(ByVal value As Boolean)
+            Me._generalimagefilterfanart = value
+        End Set
+    End Property
+
+    Public Property GeneralImageFilterPoster() As Boolean
+        Get
+            Return Me._generalimagefilterposter
+        End Get
+        Set(ByVal value As Boolean)
+            Me._generalimagefilterposter = value
+        End Set
+    End Property
+
     Public Property GeneralImageFilterPosterMatchTolerance() As Integer
         Get
             Return Me._generalimagefilterpostermatchtolerance
