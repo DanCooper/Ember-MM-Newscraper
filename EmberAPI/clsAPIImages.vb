@@ -3660,10 +3660,11 @@ Public Class Images
         End Select
 
         'If RemoveDuplicatesFromList = False then Limit parameter is not considered -> always go through whole list
-        If RemoveDuplicatesFromList = False Then Limit = ImageList.Count
-
-        'since the following algorithm removes duplicates from beginning of list and keeps the images instance which is lower in list, we reverse the list to place images in preferred language at the end of the list
-        ImageList.Reverse()
+        If RemoveDuplicatesFromList = False Then
+            Limit = ImageList.Count
+            'since the following algorithm marks duplicates from beginning of list and keeps the images instance which is lower in list, we reverse the list to place images in preferred language at the end of the list
+            ImageList.Reverse()
+        End If
 
         'current compared image in imagelist
         Dim tmpImage As Images = Nothing
@@ -3846,8 +3847,11 @@ Public Class Images
             Next
         End If
 
-        'finished processing, reverse imagelist to put preferred languages back to top like its used to be
-        ImageList.Reverse()
+        If RemoveDuplicatesFromList = False Then
+            'finished processing, reverse imagelist to put preferred languages back to top like its used to be
+            ImageList.Reverse()
+        End If
+
         Return True
     End Function
 #End Region 'Methods
