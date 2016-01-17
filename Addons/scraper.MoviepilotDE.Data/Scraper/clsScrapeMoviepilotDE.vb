@@ -122,6 +122,13 @@ Namespace MoviepilotDE
 
                     If descResult.Count > 0 Then
                         strDescription = descResult.Item(0).Groups(1).Value.Trim
+                    Else
+                        '2016/01/16 Support alternative/new moviepilot structure
+                        descPattern = "<div class='movie--description expander'>(?<DESCRIPTION>.*?)<\/div>"
+                        descResult = Regex.Matches(HTML, descPattern, RegexOptions.Singleline)
+                        If descResult.Count > 0 Then
+                            strDescription = descResult.Item(0).Groups(1).Value.Trim
+                        End If
                     End If
 
                     If Not String.IsNullOrEmpty(strDescription) Then
