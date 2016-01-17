@@ -4654,13 +4654,13 @@ Namespace MediaContainers
             _mainlandscapes.Sort()
             _mainposters.Sort()
 
-            'first order list by quality enumeration (0,1,2,3,4..) ascending, then put PrefSize images on top of list and later as workaround remove "Any" Quality(=0) to bottom of list because otherwise Any images would be shown before HD images (1,2,3)
+            'first order list by userrating (favorite images on top), then quality enumeration (0,1,2,3,4..) ascending, then put PrefSize images on top of list and later as workaround remove "Any" Quality(=0) to bottom of list because otherwise Any images would be shown before HD images (1,2,3)
             Dim sortedqualityimages As New List(Of Image)
             'quality sorting of moviefanarts
             If Not Master.eSettings.MovieExtrafanartsPrefSize = Enums.MovieFanartSize.Any Then
-                sortedqualityimages = _mainfanarts.OrderBy(Function(x) x.MovieFanartSize).OrderByDescending(Function(y) y.MovieFanartSize = Master.eSettings.MovieExtrafanartsPrefSize).OrderBy(Function(u) u.MovieFanartSize = Enums.MovieFanartSize.Any).ToList()
+                sortedqualityimages = _mainfanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MovieFanartSize).OrderByDescending(Function(y) y.MovieFanartSize = Master.eSettings.MovieExtrafanartsPrefSize).OrderBy(Function(u) u.MovieFanartSize = Enums.MovieFanartSize.Any).ToList()
             Else
-                sortedqualityimages = _mainfanarts.OrderBy(Function(x) x.MovieFanartSize).OrderBy(Function(u) u.MovieFanartSize = Enums.MovieFanartSize.Any).ToList()
+                sortedqualityimages = _mainfanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MovieFanartSize).OrderBy(Function(u) u.MovieFanartSize = Enums.MovieFanartSize.Any).ToList()
             End If
             If sortedqualityimages IsNot Nothing Then
                 _mainfanarts.Clear()
@@ -4669,9 +4669,9 @@ Namespace MediaContainers
             End If
             'quality sorting of movieposters
             If Not Master.eSettings.MoviePosterPrefSize = Enums.MoviePosterSize.Any Then
-                sortedqualityimages = _mainposters.OrderBy(Function(x) x.MoviePosterSize).OrderByDescending(Function(y) y.MoviePosterSize = Master.eSettings.MoviePosterPrefSize).OrderBy(Function(u) u.MoviePosterSize = Enums.MoviePosterSize.Any).ToList()
+                sortedqualityimages = _mainposters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MoviePosterSize).OrderByDescending(Function(y) y.MoviePosterSize = Master.eSettings.MoviePosterPrefSize).OrderBy(Function(u) u.MoviePosterSize = Enums.MoviePosterSize.Any).ToList()
             Else
-                sortedqualityimages = _mainposters.OrderBy(Function(x) x.MoviePosterSize).OrderBy(Function(u) u.MoviePosterSize = Enums.MoviePosterSize.Any).ToList()
+                sortedqualityimages = _mainposters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MoviePosterSize).OrderBy(Function(u) u.MoviePosterSize = Enums.MoviePosterSize.Any).ToList()
             End If
             If sortedqualityimages IsNot Nothing Then
                 _mainposters.Clear()
