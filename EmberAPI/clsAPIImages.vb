@@ -40,7 +40,7 @@ Public Class Images
 #Region "Constructors"
 
     Public Sub New()
-        Me.Clear()
+        Clear()
     End Sub
 
 #End Region 'Constructors
@@ -89,7 +89,7 @@ Public Class Images
             _image = New Bitmap(_ms)
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -269,26 +269,26 @@ Public Class Images
     Public Sub FromFile(ByVal sPath As String, Optional LoadBitmap As Boolean = False)
         If Not String.IsNullOrEmpty(sPath) AndAlso File.Exists(sPath) Then
             'Try
-            Me._ms = New MemoryStream()
+            _ms = New MemoryStream()
             Using fsImage As FileStream = File.OpenRead(sPath)
                 Dim memStream As New MemoryStream
                 memStream.SetLength(fsImage.Length)
                 fsImage.Read(memStream.GetBuffer, 0, CInt(Fix(fsImage.Length)))
-                Me._ms.Write(memStream.GetBuffer, 0, CInt(Fix(fsImage.Length)))
-                Me._ms.Flush()
+                _ms.Write(memStream.GetBuffer, 0, CInt(Fix(fsImage.Length)))
+                _ms.Flush()
                 If LoadBitmap Then
-                    _image = New Bitmap(Me._ms)
+                    _image = New Bitmap(_ms)
                 End If
             End Using
         Else
-            Me._ms = New MemoryStream
-            Me._image = Nothing
+            _ms = New MemoryStream
+            _image = Nothing
         End If
     End Sub
 
     Public Function FromMemoryStream() As Boolean
-        If Me.HasMemoryStream Then
-            Me._image = New Bitmap(Me._ms)
+        If HasMemoryStream Then
+            _image = New Bitmap(_ms)
             Return True
         Else
             Return False
@@ -312,14 +312,14 @@ Public Class Images
             End While
 
             If sHTTP.Image IsNot Nothing Then
-                If Me._ms IsNot Nothing Then
-                    Me._ms.Dispose()
+                If _ms IsNot Nothing Then
+                    _ms.Dispose()
                 End If
-                Me._ms = New MemoryStream()
+                _ms = New MemoryStream()
 
                 Dim retSave() As Byte
                 retSave = sHTTP.ms.ToArray
-                Me._ms.Write(retSave, 0, retSave.Length)
+                _ms.Write(retSave, 0, retSave.Length)
 
                 'I do not copy from the _ms as it could not be a JPG
                 '_image = New Bitmap(sHTTP.Image)
@@ -339,13 +339,13 @@ Public Class Images
     End Sub
 
     Public Sub ResizeExtraFanart(ByVal fromPath As String, ByVal toPath As String)
-        Me.FromFile(fromPath)
-        Me.Save(toPath)
+        FromFile(fromPath)
+        Save(toPath)
     End Sub
 
     Public Sub ResizeExtraThumb(ByVal fromPath As String, ByVal toPath As String)
-        Me.FromFile(fromPath)
-        Me.Save(toPath)
+        FromFile(fromPath)
+        Save(toPath)
     End Sub
     ''' <summary>
     ''' Stores the Image to the supplied <paramref name="sPath"/>
@@ -353,7 +353,7 @@ Public Class Images
     ''' <param name="sPath">Location to store the image</param>
     ''' <remarks></remarks>
     Public Sub Save(ByVal sPath As String)
-        If Me._ms.Length > 0 Then
+        If _ms.Length > 0 Then
             Dim retSave() As Byte
             Try
                 retSave = _ms.ToArray
@@ -382,7 +382,7 @@ Public Class Images
         Next
 
         'Secound, remove the old ones
-        Images.Delete_Movie(mMovie, Enums.ModifierType.MainActorThumbs)
+        Delete_Movie(mMovie, Enums.ModifierType.MainActorThumbs)
 
         'Thirdly, save all actor thumbs
         For Each tActor As MediaContainers.Person In mMovie.Movie.Actors
@@ -511,7 +511,7 @@ Public Class Images
         Next
 
         'Secound, remove the old ones
-        Images.Delete_Movie(mMovie, Enums.ModifierType.MainExtrafanarts)
+        Delete_Movie(mMovie, Enums.ModifierType.MainExtrafanarts)
 
         'Thirdly, save all Extrafanarts
         For Each eImg As MediaContainers.Image In mMovie.ImagesContainer.Extrafanarts
@@ -588,7 +588,7 @@ Public Class Images
         Next
 
         'Secound, remove the old ones
-        Images.Delete_Movie(mMovie, Enums.ModifierType.MainExtrathumbs)
+        Delete_Movie(mMovie, Enums.ModifierType.MainExtrathumbs)
 
         'Thirdly, save all Extrathumbs
         For Each eImg As MediaContainers.Image In mMovie.ImagesContainer.Extrathumbs.OrderBy(Function(f) f.Index)
@@ -3854,6 +3854,7 @@ Public Class Images
 
         Return True
     End Function
+
 #End Region 'Methods
 
 End Class
