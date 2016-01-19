@@ -345,7 +345,7 @@ Namespace TMDB
                 End If
 
                 'EpisodePoster
-                If FilteredModifier.EpisodePoster AndAlso Results.Stills IsNot Nothing Then
+                If FilteredModifiers.EpisodePoster AndAlso Results.Stills IsNot Nothing Then
                     For Each tImage In Results.Stills
                         Dim newImage As New MediaContainers.Image With {
                             .Episode = iEpisode,
