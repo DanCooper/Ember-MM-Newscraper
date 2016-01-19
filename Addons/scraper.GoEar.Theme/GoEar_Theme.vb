@@ -18,7 +18,6 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.IO
 Imports EmberAPI
 Imports NLog
 
@@ -28,9 +27,9 @@ Public Class GoEar_Theme
 
 
 #Region "Fields"
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
+    Public Shared ConfigScrapeModifiers As New Structures.ScrapeModifiers
     Public Shared _AssemblyName As String
 
     ''' <summary>
@@ -122,12 +121,12 @@ Public Class GoEar_Theme
     End Function
 
     Sub LoadSettings()
-        ConfigScrapeModifier.MainTheme = clsAdvancedSettings.GetBooleanSetting("DoTheme", True)
+        ConfigScrapeModifiers.MainTheme = clsAdvancedSettings.GetBooleanSetting("DoTheme", True)
     End Sub
 
     Sub SaveSettings()
         Using settings = New clsAdvancedSettings()
-            settings.SetBooleanSetting("DoTheme", ConfigScrapeModifier.MainTheme)
+            settings.SetBooleanSetting("DoTheme", ConfigScrapeModifiers.MainTheme)
         End Using
     End Sub
 

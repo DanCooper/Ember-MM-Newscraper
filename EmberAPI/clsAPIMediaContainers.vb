@@ -4679,7 +4679,7 @@ Namespace MediaContainers
                 sortedqualityimages.Clear()
             End If
 
-            'sort all List(Of Image) by preffered language/en/Blank/String.Empty/others
+            'sort all List(Of Image) by preferred language/en/Blank/String.Empty/others
             _episodeposters = FilterImages(_episodeposters, cSettings)
             _seasonbanners = FilterImages(_seasonbanners, cSettings)
             _seasonlandscapes = FilterImages(_seasonlandscapes, cSettings)

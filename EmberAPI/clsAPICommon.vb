@@ -23,7 +23,6 @@ Imports System.Text.RegularExpressions
 Imports System.Xml.Serialization
 Imports System.Drawing
 Imports System.Windows.Forms
-Imports System.Xml.Linq
 Imports NLog
 
 Public Class Containers
@@ -31,8 +30,8 @@ Public Class Containers
 #Region "Nested Types"
 
 
-    <System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True), _
-     System.Xml.Serialization.XmlRootAttribute([Namespace]:="", IsNullable:=False, ElementName:="CommandFile")> _
+    <XmlType(AnonymousType:=True),
+     XmlRoot([Namespace]:="", IsNullable:=False, ElementName:="CommandFile")>
     Public Class InstallCommands
         '''<remarks/>
 
@@ -47,24 +46,24 @@ Public Class Containers
 #Region "Properties"
 
         '''<remarks/>
-        <System.Xml.Serialization.XmlElementAttribute("transaction")> _
+        <XmlElement("transaction")>
         Public Property transaction() As List(Of CommandsTransaction)
             Get
-                Return Me.transactionField
+                Return transactionField
             End Get
             Set(value As List(Of CommandsTransaction))
-                Me.transactionField = value
+                transactionField = value
             End Set
         End Property
 
         '''<remarks/>
-        <System.Xml.Serialization.XmlElementAttribute("noTransaction")> _
+        <XmlElement("noTransaction")>
         Public Property noTransaction() As List(Of CommandsNoTransactionCommand)
             Get
-                Return Me.noTransactionField
+                Return noTransactionField
             End Get
             Set(value As List(Of CommandsNoTransactionCommand))
-                Me.noTransactionField = value
+                noTransactionField = value
             End Set
         End Property
 #End Region
@@ -91,7 +90,7 @@ Public Class Containers
     End Class
 
     '''<remarks/>
-    <System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
+    <XmlType(AnonymousType:=True)>
     Partial Public Class CommandsTransaction
 
         Private commandField As New List(Of CommandsTransactionCommand)
@@ -99,30 +98,30 @@ Public Class Containers
         Private nameField As String
 
         '''<remarks/>
-        <System.Xml.Serialization.XmlElementAttribute("command")> _
+        <XmlElement("command")>
         Public Property command() As List(Of CommandsTransactionCommand)
             Get
-                Return Me.commandField
+                Return commandField
             End Get
             Set(value As List(Of CommandsTransactionCommand))
-                Me.commandField = value
+                commandField = value
             End Set
         End Property
 
         '''<remarks/>
-        <System.Xml.Serialization.XmlAttributeAttribute()> _
+        <XmlAttribute()>
         Public Property name() As String
             Get
-                Return Me.nameField
+                Return nameField
             End Get
             Set(value As String)
-                Me.nameField = value
+                nameField = value
             End Set
         End Property
     End Class 'CommandsTransaction
 
     '''<remarks/>
-    <System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
+    <XmlType(AnonymousType:=True)>
     Partial Public Class CommandsTransactionCommand
 
         Private descriptionField As String
@@ -134,38 +133,38 @@ Public Class Containers
         '''<remarks/>
         Public Property description() As String
             Get
-                Return Me.descriptionField
+                Return descriptionField
             End Get
             Set(value As String)
-                Me.descriptionField = value
+                descriptionField = value
             End Set
         End Property
 
         '''<remarks/>
         Public Property execute() As String
             Get
-                Return Me.executeField
+                Return executeField
             End Get
             Set(value As String)
-                Me.executeField = value
+                executeField = value
             End Set
         End Property
 
         '''<remarks/>
-        <System.Xml.Serialization.XmlAttributeAttribute()> _
+        <XmlAttribute()>
         Public Property type() As String
             Get
-                Return Me.typeField
+                Return typeField
             End Get
             Set(value As String)
-                Me.typeField = value
+                typeField = value
             End Set
         End Property
 
     End Class 'CommandsTransactionCommand
 
     '''<remarks/>
-    <System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
+    <XmlType(AnonymousType:=True)>
     Partial Public Class CommandsNoTransactionCommand
 
         Private descriptionField As String
@@ -177,31 +176,31 @@ Public Class Containers
         '''<remarks/>
         Public Property description() As String
             Get
-                Return Me.descriptionField
+                Return descriptionField
             End Get
             Set(value As String)
-                Me.descriptionField = value
+                descriptionField = value
             End Set
         End Property
 
         '''<remarks/>
         Public Property execute() As String
             Get
-                Return Me.executeField
+                Return executeField
             End Get
             Set(value As String)
-                Me.executeField = value
+                executeField = value
             End Set
         End Property
 
         '''<remarks/>
-        <System.Xml.Serialization.XmlAttributeAttribute()> _
+        <XmlAttribute()>
         Public Property type() As String
             Get
-                Return Me.typeField
+                Return typeField
             End Get
             Set(value As String)
-                Me.typeField = value
+                typeField = value
             End Set
         End Property
 
@@ -220,7 +219,7 @@ Public Class Containers
 #Region "Constructors"
 
         Public Sub New()
-            Me.Clear()
+            Clear()
         End Sub
 
 #End Region 'Constructors
@@ -290,7 +289,7 @@ Public Class Containers
         ''' </summary>
         ''' <remarks></remarks>
         Public Sub New()
-            Me.Clear()
+            Clear()
         End Sub
 
 #End Region 'Constructors
@@ -299,84 +298,84 @@ Public Class Containers
 
         Public Property ImageIndex() As Integer
             Get
-                Return Me._imageindex
+                Return _imageindex
             End Get
             Set(ByVal value As Integer)
-                Me._imageindex = value
+                _imageindex = value
             End Set
         End Property
 
-        <System.Xml.Serialization.XmlIgnore()> _
+        <XmlIgnore()>
         Public Property Image() As Image
             Get
-                Return Me._image
+                Return _image
             End Get
             Set(ByVal value As Image)
-                Me._image = value
+                _image = value
             End Set
         End Property
 
         Public Property Name() As String
             Get
-                Return Me._name
+                Return _name
             End Get
             Set(ByVal value As String)
-                Me._name = value
+                _name = value
             End Set
         End Property
 
         Public Property Order() As Integer
             Get
-                Return Me._order
+                Return _order
             End Get
             Set(ByVal value As Integer)
-                Me._order = value
+                _order = value
             End Set
         End Property
 
-        <System.Xml.Serialization.XmlIgnore()> _
+        <XmlIgnore()>
         Public Property Panel() As Panel
             Get
-                Return Me._panel
+                Return _panel
             End Get
             Set(ByVal value As Panel)
-                Me._panel = value
+                _panel = value
             End Set
         End Property
 
         Public Property Parent() As String
             Get
-                Return Me._parent
+                Return _parent
             End Get
             Set(ByVal value As String)
-                Me._parent = value
+                _parent = value
             End Set
         End Property
 
         Public Property Prefix() As String
             Get
-                Return Me._prefix
+                Return _prefix
             End Get
             Set(ByVal value As String)
-                Me._prefix = value
+                _prefix = value
             End Set
         End Property
 
         Public Property Text() As String
             Get
-                Return Me._text
+                Return _text
             End Get
             Set(ByVal value As String)
-                Me._text = value
+                _text = value
             End Set
         End Property
 
         Public Property Type() As String
             Get
-                Return Me._type
+                Return _type
             End Get
             Set(ByVal value As String)
-                Me._type = value
+                _type = value
             End Set
         End Property
 
@@ -385,15 +384,15 @@ Public Class Containers
 #Region "Methods"
 
         Public Sub Clear()
-            Me._imageindex = 0
-            Me._image = Nothing
-            Me._name = String.Empty
-            Me._order = 0
-            Me._panel = New Panel
-            Me._parent = String.Empty
-            Me._prefix = String.Empty
-            Me._text = String.Empty
-            Me._type = String.Empty
+            _imageindex = 0
+            _image = Nothing
+            _name = String.Empty
+            _order = 0
+            _panel = New Panel
+            _parent = String.Empty
+            _prefix = String.Empty
+            _text = String.Empty
+            _type = String.Empty
         End Sub
 
 #End Region 'Methods
@@ -412,140 +411,140 @@ Public Class Containers
         Private _maxeversion As Single
         Private _screenshotpath As String
         Private _screenshotimage As Image
-        Private _files As Generic.SortedList(Of String, String)
+        Private _files As SortedList(Of String, String)
         Private _deletefiles As List(Of String)
 #End Region 'Fields
 
 #Region "Properties"
         Public Property ID() As Integer
             Get
-                Return Me._id
+                Return _id
             End Get
             Set(ByVal value As Integer)
-                Me._id = value
+                _id = value
             End Set
         End Property
 
         Public Property Name() As String
             Get
-                Return Me._name
+                Return _name
             End Get
             Set(ByVal value As String)
-                Me._name = value
+                _name = value
             End Set
         End Property
 
         Public Property Author() As String
             Get
-                Return Me._author
+                Return _author
             End Get
             Set(ByVal value As String)
-                Me._author = value
+                _author = value
             End Set
         End Property
 
         Public Property Description() As String
             Get
-                Return Me._description
+                Return _description
             End Get
             Set(ByVal value As String)
-                Me._description = value
+                _description = value
             End Set
         End Property
 
         Public Property Category() As String
             Get
-                Return Me._category
+                Return _category
             End Get
             Set(ByVal value As String)
-                Me._category = value
+                _category = value
             End Set
         End Property
 
         Public Property Version() As Single
             Get
-                Return Me._version
+                Return _version
             End Get
             Set(ByVal value As Single)
-                Me._version = value
+                _version = value
             End Set
         End Property
 
         Public Property MinEVersion() As Single
             Get
-                Return Me._mineversion
+                Return _mineversion
             End Get
             Set(ByVal value As Single)
-                Me._mineversion = value
+                _mineversion = value
             End Set
         End Property
 
         Public Property MaxEVersion() As Single
             Get
-                Return Me._maxeversion
+                Return _maxeversion
             End Get
             Set(ByVal value As Single)
-                Me._maxeversion = value
+                _maxeversion = value
             End Set
         End Property
 
         Public Property ScreenShotPath() As String
             Get
-                Return Me._screenshotpath
+                Return _screenshotpath
             End Get
             Set(ByVal value As String)
-                Me._screenshotpath = value
+                _screenshotpath = value
             End Set
         End Property
 
         Public Property ScreenShotImage() As Image
             Get
-                Return Me._screenshotimage
+                Return _screenshotimage
             End Get
             Set(ByVal value As Image)
-                Me._screenshotimage = value
+                _screenshotimage = value
             End Set
         End Property
 
-        Public Property Files() As Generic.SortedList(Of String, String)
+        Public Property Files() As SortedList(Of String, String)
             Get
-                Return Me._files
+                Return _files
             End Get
-            Set(ByVal value As Generic.SortedList(Of String, String))
-                Me._files = value
+            Set(ByVal value As SortedList(Of String, String))
+                _files = value
             End Set
         End Property
 
         Public Property DeleteFiles() As List(Of String)
             Get
-                Return Me._deletefiles
+                Return _deletefiles
             End Get
             Set(ByVal value As List(Of String))
-                Me._deletefiles = value
+                _deletefiles = value
             End Set
         End Property
 #End Region 'Properties
 
 #Region "Constructors"
         Public Sub New()
-            Me.Clear()
+            Clear()
         End Sub
 #End Region 'Constructors
 
 #Region "Methods"
         Public Sub Clear()
-            Me._id = -1
-            Me._name = String.Empty
-            Me._author = String.Empty
-            Me._description = String.Empty
-            Me._category = String.Empty
-            Me._version = -1
-            Me._mineversion = -1
-            Me._maxeversion = -1
-            Me._screenshotpath = String.Empty
-            Me._screenshotimage = Nothing
-            Me._files = New Generic.SortedList(Of String, String)
-            Me._deletefiles = New List(Of String)
+            _id = -1
+            _name = String.Empty
+            _author = String.Empty
+            _description = String.Empty
+            _category = String.Empty
+            _version = -1
+            _mineversion = -1
+            _maxeversion = -1
+            _screenshotpath = String.Empty
+            _screenshotimage = Nothing
+            _files = New SortedList(Of String, String)
+            _deletefiles = New List(Of String)
         End Sub
 #End Region 'Methods
 
@@ -957,7 +956,7 @@ Public Class Enums
     Public Enum TrailerVideoQuality As Integer
         Any = 0
         HD2160p = 1
-        HD2160p60fps = 1
+        HD2160p60fps = 2
         HD1440p = 3
         HD1080p = 4
         HD1080p60fps = 5
@@ -979,7 +978,7 @@ Public Class Functions
 
 #Region "Fields"
 
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
 #End Region 'Fields
 
@@ -1409,87 +1408,87 @@ Public Class Functions
     ''' <returns>Structures.MovieScrapeOptions representing the AndAlso union of the two parameters</returns>
     ''' <remarks></remarks>
     Public Shared Function ScrapeOptionsAndAlso(ByVal Options As Structures.ScrapeOptions, ByVal Options2 As Structures.ScrapeOptions) As Structures.ScrapeOptions
-        Dim filterOptions As New Structures.ScrapeOptions
-        filterOptions.bEpisodeActors = Options.bEpisodeActors AndAlso Options2.bEpisodeActors
-        filterOptions.bEpisodeAired = Options.bEpisodeAired AndAlso Options2.bEpisodeAired
-        filterOptions.bEpisodeCredits = Options.bEpisodeCredits AndAlso Options2.bEpisodeCredits
-        filterOptions.bEpisodeDirectors = Options.bEpisodeDirectors AndAlso Options2.bEpisodeDirectors
-        filterOptions.bEpisodeGuestStars = Options.bEpisodeGuestStars AndAlso Options2.bEpisodeGuestStars
-        filterOptions.bEpisodePlot = Options.bEpisodePlot AndAlso Options2.bEpisodePlot
-        filterOptions.bEpisodeRating = Options.bEpisodeRating AndAlso Options2.bEpisodeRating
-        filterOptions.bEpisodeRuntime = Options.bEpisodeRuntime AndAlso Options2.bEpisodeRuntime
-        filterOptions.bEpisodeTitle = Options.bEpisodeTitle AndAlso Options2.bEpisodeTitle
-        filterOptions.bMainActors = Options.bMainActors AndAlso Options2.bMainActors
-        filterOptions.bMainCertifications = Options.bMainCertifications AndAlso Options2.bMainCertifications
-        filterOptions.bMainCollectionID = Options.bMainCollectionID AndAlso Options2.bMainCollectionID
-        filterOptions.bMainCountries = Options.bMainCountries AndAlso Options2.bMainCountries
-        filterOptions.bMainCreators = Options.bMainCreators AndAlso Options2.bMainCreators
-        filterOptions.bMainDirectors = Options.bMainDirectors AndAlso Options2.bMainDirectors
-        filterOptions.bMainEpisodeGuide = Options.bMainEpisodeGuide AndAlso Options2.bMainEpisodeGuide
-        filterOptions.bMainGenres = Options.bMainGenres AndAlso Options2.bMainGenres
-        filterOptions.bMainMPAA = Options.bMainMPAA AndAlso Options2.bMainMPAA
-        filterOptions.bMainOriginalTitle = Options.bMainOriginalTitle AndAlso Options2.bMainOriginalTitle
-        filterOptions.bMainOutline = Options.bMainOutline AndAlso Options2.bMainOutline
-        filterOptions.bMainPlot = Options.bMainPlot AndAlso Options2.bMainPlot
-        filterOptions.bMainPremiered = Options.bMainPremiered AndAlso Options2.bMainPremiered
-        filterOptions.bMainRating = Options.bMainRating AndAlso Options2.bMainRating
-        filterOptions.bMainRelease = Options.bMainRelease AndAlso Options2.bMainRelease
-        filterOptions.bMainRuntime = Options.bMainRuntime AndAlso Options2.bMainRuntime
-        filterOptions.bMainStatus = Options.bMainStatus AndAlso Options2.bMainStatus
-        filterOptions.bMainStudios = Options.bMainStudios AndAlso Options2.bMainStudios
-        filterOptions.bMainTagline = Options.bMainTagline AndAlso Options2.bMainTagline
-        filterOptions.bMainTitle = Options.bMainTitle AndAlso Options2.bMainTitle
-        filterOptions.bMainTop250 = Options.bMainTop250 AndAlso Options2.bMainTop250
-        filterOptions.bMainTrailer = Options.bMainTrailer AndAlso Options2.bMainTrailer
-        filterOptions.bMainWriters = Options.bMainWriters AndAlso Options2.bMainWriters
-        filterOptions.bMainYear = Options.bMainYear AndAlso Options2.bMainYear
-        filterOptions.bSeasonAired = Options.bSeasonAired AndAlso Options2.bSeasonAired
-        filterOptions.bSeasonPlot = Options.bSeasonPlot AndAlso Options2.bSeasonPlot
-        filterOptions.bSeasonTitle = Options.bSeasonTitle AndAlso Options2.bSeasonTitle
-        Return filterOptions
+        Dim FilteredOptions As New Structures.ScrapeOptions
+        FilteredOptions.bEpisodeActors = Options.bEpisodeActors AndAlso Options2.bEpisodeActors
+        FilteredOptions.bEpisodeAired = Options.bEpisodeAired AndAlso Options2.bEpisodeAired
+        FilteredOptions.bEpisodeCredits = Options.bEpisodeCredits AndAlso Options2.bEpisodeCredits
+        FilteredOptions.bEpisodeDirectors = Options.bEpisodeDirectors AndAlso Options2.bEpisodeDirectors
+        FilteredOptions.bEpisodeGuestStars = Options.bEpisodeGuestStars AndAlso Options2.bEpisodeGuestStars
+        FilteredOptions.bEpisodePlot = Options.bEpisodePlot AndAlso Options2.bEpisodePlot
+        FilteredOptions.bEpisodeRating = Options.bEpisodeRating AndAlso Options2.bEpisodeRating
+        FilteredOptions.bEpisodeRuntime = Options.bEpisodeRuntime AndAlso Options2.bEpisodeRuntime
+        FilteredOptions.bEpisodeTitle = Options.bEpisodeTitle AndAlso Options2.bEpisodeTitle
+        FilteredOptions.bMainActors = Options.bMainActors AndAlso Options2.bMainActors
+        FilteredOptions.bMainCertifications = Options.bMainCertifications AndAlso Options2.bMainCertifications
+        FilteredOptions.bMainCollectionID = Options.bMainCollectionID AndAlso Options2.bMainCollectionID
+        FilteredOptions.bMainCountries = Options.bMainCountries AndAlso Options2.bMainCountries
+        FilteredOptions.bMainCreators = Options.bMainCreators AndAlso Options2.bMainCreators
+        FilteredOptions.bMainDirectors = Options.bMainDirectors AndAlso Options2.bMainDirectors
+        FilteredOptions.bMainEpisodeGuide = Options.bMainEpisodeGuide AndAlso Options2.bMainEpisodeGuide
+        FilteredOptions.bMainGenres = Options.bMainGenres AndAlso Options2.bMainGenres
+        FilteredOptions.bMainMPAA = Options.bMainMPAA AndAlso Options2.bMainMPAA
+        FilteredOptions.bMainOriginalTitle = Options.bMainOriginalTitle AndAlso Options2.bMainOriginalTitle
+        FilteredOptions.bMainOutline = Options.bMainOutline AndAlso Options2.bMainOutline
+        FilteredOptions.bMainPlot = Options.bMainPlot AndAlso Options2.bMainPlot
+        FilteredOptions.bMainPremiered = Options.bMainPremiered AndAlso Options2.bMainPremiered
+        FilteredOptions.bMainRating = Options.bMainRating AndAlso Options2.bMainRating
+        FilteredOptions.bMainRelease = Options.bMainRelease AndAlso Options2.bMainRelease
+        FilteredOptions.bMainRuntime = Options.bMainRuntime AndAlso Options2.bMainRuntime
+        FilteredOptions.bMainStatus = Options.bMainStatus AndAlso Options2.bMainStatus
+        FilteredOptions.bMainStudios = Options.bMainStudios AndAlso Options2.bMainStudios
+        FilteredOptions.bMainTagline = Options.bMainTagline AndAlso Options2.bMainTagline
+        FilteredOptions.bMainTitle = Options.bMainTitle AndAlso Options2.bMainTitle
+        FilteredOptions.bMainTop250 = Options.bMainTop250 AndAlso Options2.bMainTop250
+        FilteredOptions.bMainTrailer = Options.bMainTrailer AndAlso Options2.bMainTrailer
+        FilteredOptions.bMainWriters = Options.bMainWriters AndAlso Options2.bMainWriters
+        FilteredOptions.bMainYear = Options.bMainYear AndAlso Options2.bMainYear
+        FilteredOptions.bSeasonAired = Options.bSeasonAired AndAlso Options2.bSeasonAired
+        FilteredOptions.bSeasonPlot = Options.bSeasonPlot AndAlso Options2.bSeasonPlot
+        FilteredOptions.bSeasonTitle = Options.bSeasonTitle AndAlso Options2.bSeasonTitle
+        Return FilteredOptions
     End Function
 
-    Public Shared Function ScrapeModifierAndAlso(ByVal Options As Structures.ScrapeModifier, ByVal Options2 As Structures.ScrapeModifier) As Structures.ScrapeModifier
-        Dim FilteredModifier As New Structures.ScrapeModifier
-        FilteredModifier.AllSeasonsBanner = Options.AllSeasonsBanner AndAlso Options2.AllSeasonsBanner
-        FilteredModifier.AllSeasonsFanart = Options.AllSeasonsFanart AndAlso Options2.AllSeasonsFanart
-        FilteredModifier.AllSeasonsLandscape = Options.AllSeasonsLandscape AndAlso Options2.AllSeasonsLandscape
-        FilteredModifier.AllSeasonsPoster = Options.AllSeasonsPoster AndAlso Options2.AllSeasonsPoster
-        FilteredModifier.DoSearch = Options.DoSearch AndAlso Options2.DoSearch
-        FilteredModifier.EpisodeActorThumbs = Options.EpisodeActorThumbs AndAlso Options2.EpisodeActorThumbs
-        FilteredModifier.EpisodeFanart = Options.EpisodeFanart AndAlso Options2.EpisodeFanart
-        FilteredModifier.EpisodeMeta = Options.EpisodeMeta AndAlso Options2.EpisodeMeta
-        FilteredModifier.EpisodeNFO = Options.EpisodeNFO AndAlso Options2.EpisodeNFO
-        FilteredModifier.EpisodePoster = Options.EpisodePoster AndAlso Options2.EpisodePoster
-        FilteredModifier.EpisodeSubtitles = Options.EpisodeSubtitles AndAlso Options2.EpisodeSubtitles
-        FilteredModifier.EpisodeWatchedFile = Options.EpisodeWatchedFile AndAlso Options2.EpisodeWatchedFile
-        FilteredModifier.MainActorthumbs = Options.MainActorthumbs AndAlso Options2.MainActorthumbs
-        FilteredModifier.MainBanner = Options.MainBanner AndAlso Options2.MainBanner
-        FilteredModifier.MainCharacterArt = Options.MainCharacterArt AndAlso Options2.MainCharacterArt
-        FilteredModifier.MainClearArt = Options.MainClearArt AndAlso Options2.MainClearArt
-        FilteredModifier.MainClearLogo = Options.MainClearLogo AndAlso Options2.MainClearLogo
-        FilteredModifier.MainDiscArt = Options.MainDiscArt AndAlso Options2.MainDiscArt
-        FilteredModifier.MainExtrafanarts = Options.MainExtrafanarts AndAlso Options2.MainExtrafanarts
-        FilteredModifier.MainExtrathumbs = Options.MainExtrathumbs AndAlso Options2.MainExtrathumbs
-        FilteredModifier.MainFanart = Options.MainFanart AndAlso Options2.MainFanart
-        FilteredModifier.MainLandscape = Options.MainLandscape AndAlso Options2.MainLandscape
-        FilteredModifier.MainNFO = Options.MainNFO AndAlso Options2.MainNFO
-        FilteredModifier.MainPoster = Options.MainPoster AndAlso Options2.MainPoster
-        FilteredModifier.MainSubtitles = Options.MainSubtitles AndAlso Options2.MainSubtitles
-        FilteredModifier.MainTheme = Options.MainTheme AndAlso Options2.MainTheme
-        FilteredModifier.MainTrailer = Options.MainTrailer AndAlso Options2.MainTrailer
-        FilteredModifier.MainWatchedFile = Options.MainWatchedFile AndAlso Options2.MainWatchedFile
-        FilteredModifier.SeasonBanner = Options.SeasonBanner AndAlso Options2.SeasonBanner
-        FilteredModifier.SeasonFanart = Options.SeasonFanart AndAlso Options2.SeasonFanart
-        FilteredModifier.SeasonLandscape = Options.SeasonLandscape AndAlso Options2.SeasonLandscape
-        FilteredModifier.SeasonPoster = Options.SeasonPoster AndAlso Options2.SeasonPoster
-        FilteredModifier.withEpisodes = Options.withEpisodes AndAlso Options2.withEpisodes
-        FilteredModifier.withSeasons = Options.withSeasons AndAlso Options2.withSeasons
-        Return FilteredModifier
+    Public Shared Function ScrapeModifiersAndAlso(ByVal Options As Structures.ScrapeModifiers, ByVal Options2 As Structures.ScrapeModifiers) As Structures.ScrapeModifiers
+        Dim FilteredModifiers As New Structures.ScrapeModifiers
+        FilteredModifiers.AllSeasonsBanner = Options.AllSeasonsBanner AndAlso Options2.AllSeasonsBanner
+        FilteredModifiers.AllSeasonsFanart = Options.AllSeasonsFanart AndAlso Options2.AllSeasonsFanart
+        FilteredModifiers.AllSeasonsLandscape = Options.AllSeasonsLandscape AndAlso Options2.AllSeasonsLandscape
+        FilteredModifiers.AllSeasonsPoster = Options.AllSeasonsPoster AndAlso Options2.AllSeasonsPoster
+        FilteredModifiers.DoSearch = Options.DoSearch AndAlso Options2.DoSearch
+        FilteredModifiers.EpisodeActorThumbs = Options.EpisodeActorThumbs AndAlso Options2.EpisodeActorThumbs
+        FilteredModifiers.EpisodeFanart = Options.EpisodeFanart AndAlso Options2.EpisodeFanart
+        FilteredModifiers.EpisodeMeta = Options.EpisodeMeta AndAlso Options2.EpisodeMeta
+        FilteredModifiers.EpisodeNFO = Options.EpisodeNFO AndAlso Options2.EpisodeNFO
+        FilteredModifiers.EpisodePoster = Options.EpisodePoster AndAlso Options2.EpisodePoster
+        FilteredModifiers.EpisodeSubtitles = Options.EpisodeSubtitles AndAlso Options2.EpisodeSubtitles
+        FilteredModifiers.EpisodeWatchedFile = Options.EpisodeWatchedFile AndAlso Options2.EpisodeWatchedFile
+        FilteredModifiers.MainActorthumbs = Options.MainActorthumbs AndAlso Options2.MainActorthumbs
+        FilteredModifiers.MainBanner = Options.MainBanner AndAlso Options2.MainBanner
+        FilteredModifiers.MainCharacterArt = Options.MainCharacterArt AndAlso Options2.MainCharacterArt
+        FilteredModifiers.MainClearArt = Options.MainClearArt AndAlso Options2.MainClearArt
+        FilteredModifiers.MainClearLogo = Options.MainClearLogo AndAlso Options2.MainClearLogo
+        FilteredModifiers.MainDiscArt = Options.MainDiscArt AndAlso Options2.MainDiscArt
+        FilteredModifiers.MainExtrafanarts = Options.MainExtrafanarts AndAlso Options2.MainExtrafanarts
+        FilteredModifiers.MainExtrathumbs = Options.MainExtrathumbs AndAlso Options2.MainExtrathumbs
+        FilteredModifiers.MainFanart = Options.MainFanart AndAlso Options2.MainFanart
+        FilteredModifiers.MainLandscape = Options.MainLandscape AndAlso Options2.MainLandscape
+        FilteredModifiers.MainNFO = Options.MainNFO AndAlso Options2.MainNFO
+        FilteredModifiers.MainPoster = Options.MainPoster AndAlso Options2.MainPoster
+        FilteredModifiers.MainSubtitles = Options.MainSubtitles AndAlso Options2.MainSubtitles
+        FilteredModifiers.MainTheme = Options.MainTheme AndAlso Options2.MainTheme
+        FilteredModifiers.MainTrailer = Options.MainTrailer AndAlso Options2.MainTrailer
+        FilteredModifiers.MainWatchedFile = Options.MainWatchedFile AndAlso Options2.MainWatchedFile
+        FilteredModifiers.SeasonBanner = Options.SeasonBanner AndAlso Options2.SeasonBanner
+        FilteredModifiers.SeasonFanart = Options.SeasonFanart AndAlso Options2.SeasonFanart
+        FilteredModifiers.SeasonLandscape = Options.SeasonLandscape AndAlso Options2.SeasonLandscape
+        FilteredModifiers.SeasonPoster = Options.SeasonPoster AndAlso Options2.SeasonPoster
+        FilteredModifiers.withEpisodes = Options.withEpisodes AndAlso Options2.withEpisodes
+        FilteredModifiers.withSeasons = Options.withSeasons AndAlso Options2.withSeasons
+        Return FilteredModifiers
     End Function
 
-    Public Shared Sub SetScrapeModifier(ByRef ScrapeModifier As Structures.ScrapeModifier, ByVal MType As Enums.ModifierType, ByVal MValue As Boolean)
-        With ScrapeModifier
+    Public Shared Sub SetScrapeModifiers(ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByVal MType As Enums.ModifierType, ByVal MValue As Boolean)
+        With ScrapeModifiers
             Select Case MType
                 Case Enums.ModifierType.All
                     .AllSeasonsBanner = MValue
@@ -1526,8 +1525,8 @@ Public Class Functions
                     .SeasonLandscape = MValue
                     .SeasonNFO = MValue
                     .SeasonPoster = MValue
-                    '.withEpisodes should not be set here
-                    '.withSeasons should not be set here
+                '.withEpisodes should not be set here
+                '.withSeasons should not be set here
                 Case Enums.ModifierType.AllSeasonsBanner
                     .AllSeasonsBanner = MValue
                 Case Enums.ModifierType.AllSeasonsFanart
@@ -1751,7 +1750,7 @@ Public Class Structures
     Public Structure CustomUpdaterStruct
         Dim Canceled As Boolean
         Dim ScrapeOptions As ScrapeOptions
-        Dim ScrapeModifier As ScrapeModifier
+        Dim ScrapeModifiers As ScrapeModifiers
         Dim ScrapeType As Enums.ScrapeType
     End Structure
     ''' <summary>
@@ -1771,7 +1770,7 @@ Public Class Structures
         Dim TV As Boolean
     End Structure
 
-    Public Structure ScrapeModifier
+    Public Structure ScrapeModifiers
         Dim AllSeasonsBanner As Boolean
         Dim AllSeasonsFanart As Boolean
         Dim AllSeasonsLandscape As Boolean

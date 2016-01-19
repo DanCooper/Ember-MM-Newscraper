@@ -19,7 +19,6 @@
 ' ###############################################################################
 
 Imports EmberAPI
-Imports System.IO
 Imports NLog
 
 ''' <summary>
@@ -31,9 +30,9 @@ Public Class Apple_Trailer
 
 
 #Region "Fields"
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
+    Public Shared ConfigScrapeModifiers As New Structures.ScrapeModifiers
     Public Shared _AssemblyName As String
 
     Private _Name As String = "Apple_Trailer"
@@ -129,12 +128,12 @@ Public Class Apple_Trailer
 
     Sub LoadSettings()
         _MySettings.TrailerPrefQual = clsAdvancedSettings.GetSetting("TrailerPrefQual", "1080p")
-        ConfigScrapeModifier.MainTrailer = clsAdvancedSettings.GetBooleanSetting("DoTrailer", True)
+        ConfigScrapeModifiers.MainTrailer = clsAdvancedSettings.GetBooleanSetting("DoTrailer", True)
     End Sub
 
     Sub SaveSettings()
         Using settings = New clsAdvancedSettings()
-            settings.SetBooleanSetting("DoTrailer", ConfigScrapeModifier.MainTrailer)
+            settings.SetBooleanSetting("DoTrailer", ConfigScrapeModifiers.MainTrailer)
             settings.SetSetting("TrailerPrefQual", _setup.cbTrailerPrefQual.Text)
         End Using
     End Sub

@@ -848,12 +848,12 @@ Public Class Scanner
             'Scrape episode images
             If isNew Then
                 Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
-                Dim ScrapeModifier As New Structures.ScrapeModifier
-                If String.IsNullOrEmpty(cEpisode.ImagesContainer.Fanart.LocalFilePath) AndAlso Master.eSettings.TVEpisodeFanartAnyEnabled Then ScrapeModifier.EpisodeFanart = True
-                If String.IsNullOrEmpty(cEpisode.ImagesContainer.Poster.LocalFilePath) AndAlso Master.eSettings.TVEpisodePosterAnyEnabled Then ScrapeModifier.EpisodePoster = True
-                If ScrapeModifier.EpisodeFanart OrElse ScrapeModifier.EpisodePoster Then
-                    If Not ModulesManager.Instance.ScrapeImage_TV(cEpisode, SearchResultsContainer, ScrapeModifier, False) Then
-                        Images.SetPreferredImages(cEpisode, SearchResultsContainer, ScrapeModifier)
+                Dim ScrapeModifiers As New Structures.ScrapeModifiers
+                If String.IsNullOrEmpty(cEpisode.ImagesContainer.Fanart.LocalFilePath) AndAlso Master.eSettings.TVEpisodeFanartAnyEnabled Then ScrapeModifiers.EpisodeFanart = True
+                If String.IsNullOrEmpty(cEpisode.ImagesContainer.Poster.LocalFilePath) AndAlso Master.eSettings.TVEpisodePosterAnyEnabled Then ScrapeModifiers.EpisodePoster = True
+                If ScrapeModifiers.EpisodeFanart OrElse ScrapeModifiers.EpisodePoster Then
+                    If Not ModulesManager.Instance.ScrapeImage_TV(cEpisode, SearchResultsContainer, ScrapeModifiers, False) Then
+                        Images.SetPreferredImages(cEpisode, SearchResultsContainer, ScrapeModifiers)
                     End If
                 End If
             End If

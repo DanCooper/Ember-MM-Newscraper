@@ -590,7 +590,7 @@ Namespace TMDB
         ''' <param name="strID">TMDB ID of tv show to be scraped</param>
         ''' <param name="GetPoster">Scrape posters for the movie?</param>
         ''' <returns>True: success, false: no success</returns>
-        Public Function GetTVShowInfo(ByVal strID As String, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef FilteredOptions As Structures.ScrapeOptions, ByVal GetPoster As Boolean) As MediaContainers.TVShow
+        Public Function GetTVShowInfo(ByVal strID As String, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef FilteredOptions As Structures.ScrapeOptions, ByVal GetPoster As Boolean) As MediaContainers.TVShow
             If String.IsNullOrEmpty(strID) OrElse strID.Length < 2 Then Return Nothing
 
             Dim nTVShow As New MediaContainers.TVShow
@@ -841,16 +841,16 @@ Namespace TMDB
             If bwTMDB.CancellationPending Then Return Nothing
 
             'Seasons and Episodes
-            If ScrapeModifier.withEpisodes OrElse ScrapeModifier.withSeasons Then
+            If ScrapeModifiers.withEpisodes OrElse ScrapeModifiers.withSeasons Then
                 For Each aSeason As TMDbLib.Objects.TvShows.TvSeason In Result.Seasons
-                    GetTVSeasonInfo(nTVShow, Result.Id, aSeason.SeasonNumber, ScrapeModifier, FilteredOptions)
+                    GetTVSeasonInfo(nTVShow, Result.Id, aSeason.SeasonNumber, ScrapeModifiers, FilteredOptions)
                 Next
             End If
 
             Return nTVShow
         End Function
 
-        Public Sub GetTVSeasonInfo(ByRef nTVShow As MediaContainers.TVShow, ByVal ShowID As Integer, ByVal SeasonNumber As Integer, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef FilteredOptions As Structures.ScrapeOptions)
+        Public Sub GetTVSeasonInfo(ByRef nTVShow As MediaContainers.TVShow, ByVal ShowID As Integer, ByVal SeasonNumber As Integer, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef FilteredOptions As Structures.ScrapeOptions)
             Dim nSeason As New MediaContainers.SeasonDetails
 
             Dim APIResult As Task(Of TMDbLib.Objects.TvShows.TvSeason)
@@ -861,7 +861,7 @@ Namespace TMDB
             nSeason.TMDB = CStr(SeasonInfo.Id)
             If SeasonInfo.ExternalIds IsNot Nothing AndAlso SeasonInfo.ExternalIds.TvdbId IsNot Nothing Then nSeason.TVDB = CStr(SeasonInfo.ExternalIds.TvdbId)
 
-            If ScrapeModifier.withSeasons Then
+            If ScrapeModifiers.withSeasons Then
 
                 'Aired
                 If FilteredOptions.bSeasonAired Then
@@ -899,7 +899,7 @@ Namespace TMDB
                 nTVShow.KnownSeasons.Add(nSeason)
             End If
 
-            If ScrapeModifier.withEpisodes AndAlso SeasonInfo.Episodes IsNot Nothing Then
+            If ScrapeModifiers.withEpisodes AndAlso SeasonInfo.Episodes IsNot Nothing Then
                 For Each aEpisode As TMDbLib.Objects.TvShows.TvEpisode In SeasonInfo.Episodes
                     nTVShow.KnownEpisodes.Add(GetTVEpisodeInfo(aEpisode, FilteredOptions))
                     'nShowContainer.KnownEpisodes.Add(GetTVEpisodeInfo(ShowID, SeasonNumber, aEpisode.EpisodeNumber, Options))
@@ -1236,18 +1236,18 @@ Namespace TMDB
             Return Nothing
         End Function
 
-        Public Function GetSearchTVShowInfo(ByVal strShowName As String, ByRef oDBTV As Database.DBElement, ByVal eType As Enums.ScrapeType, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef FilteredOptions As Structures.ScrapeOptions) As MediaContainers.TVShow
+        Public Function GetSearchTVShowInfo(ByVal strShowName As String, ByRef oDBTV As Database.DBElement, ByVal eType As Enums.ScrapeType, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef FilteredOptions As Structures.ScrapeOptions) As MediaContainers.TVShow
             Dim r As SearchResults_TVShow = SearchTVShow(strShowName)
 
             Select Case eType
                 Case Enums.ScrapeType.AllAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MissingAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SingleField
                     If r.Matches.Count = 1 Then
-                        Return GetTVShowInfo(r.Matches.Item(0).TMDB, ScrapeModifier, FilteredOptions, False)
+                        Return GetTVShowInfo(r.Matches.Item(0).TMDB, ScrapeModifiers, FilteredOptions, False)
                     Else
                         Using dlgSearch As New dlgTMDBSearchResults_TV(_SpecialSettings, Me)
                             If dlgSearch.ShowDialog(r, strShowName, oDBTV.ShowPath) = DialogResult.OK Then
                                 If Not String.IsNullOrEmpty(dlgSearch.Result.TMDB) Then
-                                    Return GetTVShowInfo(dlgSearch.Result.TMDB, ScrapeModifier, FilteredOptions, False)
+                                    Return GetTVShowInfo(dlgSearch.Result.TMDB, ScrapeModifiers, FilteredOptions, False)
                                 End If
                             End If
                         End Using
@@ -1255,12 +1255,12 @@ Namespace TMDB
 
                 Case Enums.ScrapeType.AllSkip, Enums.ScrapeType.FilterSkip, Enums.ScrapeType.MarkedSkip, Enums.ScrapeType.MissingSkip, Enums.ScrapeType.NewSkip, Enums.ScrapeType.SelectedSkip
                     If r.Matches.Count = 1 Then
-                        Return GetTVShowInfo(r.Matches.Item(0).TMDB, ScrapeModifier, FilteredOptions, False)
+                        Return GetTVShowInfo(r.Matches.Item(0).TMDB, ScrapeModifiers, FilteredOptions, False)
                     End If
 
                 Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SingleScrape
                     If r.Matches.Count > 0 Then
-                        Return GetTVShowInfo(r.Matches.Item(0).TMDB, ScrapeModifier, FilteredOptions, False)
+                        Return GetTVShowInfo(r.Matches.Item(0).TMDB, ScrapeModifiers, FilteredOptions, False)
                     End If
             End Select
 
@@ -1380,7 +1380,7 @@ Namespace TMDB
                     e.Result = New Results With {.ResultType = SearchType.SearchDetails_MovieSet, .Result = r}
 
                 Case SearchType.SearchDetails_TVShow
-                    Dim r As MediaContainers.TVShow = GetTVShowInfo(Args.Parameter, Args.ScrapeModifier, Args.ScrapeOptions, True)
+                    Dim r As MediaContainers.TVShow = GetTVShowInfo(Args.Parameter, Args.ScrapeModifiers, Args.ScrapeOptions, True)
                     e.Result = New Results With {.ResultType = SearchType.SearchDetails_TVShow, .Result = r}
             End Select
         End Sub
@@ -1596,7 +1596,7 @@ Namespace TMDB
             Dim Movie As MediaContainers.Movie
             Dim MovieSet As MediaContainers.MovieSet
             Dim Parameter As String
-            Dim ScrapeModifier As Structures.ScrapeModifier
+            Dim ScrapeModifiers As Structures.ScrapeModifiers
             Dim ScrapeOptions As Structures.ScrapeOptions
             Dim Search As SearchType
             Dim TVShow As MediaContainers.TVShow

@@ -76,7 +76,7 @@ Namespace FanartTVs
             End Try
         End Sub
 
-        Public Function GetImages_Movie_MovieSet(ByVal imdbID_tmdbID As String, ByVal FilteredModifier As Structures.ScrapeModifier) As MediaContainers.SearchResultsContainer
+        Public Function GetImages_Movie_MovieSet(ByVal imdbID_tmdbID As String, ByVal FilteredModifiers As Structures.ScrapeModifiers) As MediaContainers.SearchResultsContainer
             Dim alImagesContainer As New MediaContainers.SearchResultsContainer
 
             Try
@@ -90,16 +90,16 @@ Namespace FanartTVs
                 If bwFANARTTV.CancellationPending Then Return Nothing
 
                 'Banner
-                If FilteredModifier.MainBanner AndAlso Results.List.Moviebanner IsNot Nothing Then
+                If FilteredModifiers.MainBanner AndAlso Results.List.Moviebanner IsNot Nothing Then
                     For Each image In Results.List.Moviebanner
-                        Dim tmpPoster As New MediaContainers.Image With { _
-                            .Height = "185", _
-                            .Likes = CInt(image.Likes), _
-                            .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
-                            .Scraper = "Fanart.tv", _
-                            .ShortLang = image.Lang, _
-                            .URLOriginal = image.Url, _
-                            .URLThumb = image.Url.Replace("/fanart/", "/preview/"), _
+                        Dim tmpPoster As New MediaContainers.Image With {
+                            .Height = "185",
+                            .Likes = CInt(image.Likes),
+                            .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)),
+                            .Scraper = "Fanart.tv",
+                            .ShortLang = image.Lang,
+                            .URLOriginal = image.Url,
+                            .URLThumb = image.Url.Replace("/fanart/", "/preview/"),
                             .Width = "1000"}
 
                         alImagesContainer.MainBanners.Add(tmpPoster)
@@ -107,17 +107,17 @@ Namespace FanartTVs
                 End If
 
                 'ClearArt
-                If FilteredModifier.MainClearArt Then
+                If FilteredModifiers.MainClearArt Then
                     If Results.List.Hdmovieclearart IsNot Nothing Then
                         For Each image In Results.List.Hdmovieclearart
-                            Dim tmpPoster As New MediaContainers.Image With { _
-                                .Height = "562", _
-                                .Likes = CInt(image.Likes), _
-                                .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
-                                .Scraper = "Fanart.tv", _
-                                .ShortLang = image.Lang, _
-                                .URLOriginal = image.Url, _
-                                .URLThumb = image.Url.Replace("/fanart/", "/preview/"), _
+                            Dim tmpPoster As New MediaContainers.Image With {
+                                .Height = "562",
+                                .Likes = CInt(image.Likes),
+                                .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)),
+                                .Scraper = "Fanart.tv",
+                                .ShortLang = image.Lang,
+                                .URLOriginal = image.Url,
+                                .URLThumb = image.Url.Replace("/fanart/", "/preview/"),
                                 .Width = "1000"}
 
                             alImagesContainer.MainClearArts.Add(tmpPoster)
@@ -125,14 +125,14 @@ Namespace FanartTVs
                     End If
                     If Results.List.Movieart IsNot Nothing AndAlso Not _SpecialSettings.ClearArtOnlyHD Then
                         For Each image In Results.List.Movieart
-                            Dim tmpPoster As New MediaContainers.Image With { _
-                                .Height = "281", _
-                                .Likes = CInt(image.Likes), _
-                                .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
-                                .Scraper = "Fanart.tv", _
-                                .ShortLang = image.Lang, _
-                                .URLOriginal = image.Url, _
-                                .URLThumb = image.Url.Replace("/fanart/", "/preview/"), _
+                            Dim tmpPoster As New MediaContainers.Image With {
+                                .Height = "281",
+                                .Likes = CInt(image.Likes),
+                                .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)),
+                                .Scraper = "Fanart.tv",
+                                .ShortLang = image.Lang,
+                                .URLOriginal = image.Url,
+                                .URLThumb = image.Url.Replace("/fanart/", "/preview/"),
                                 .Width = "500"}
 
                             alImagesContainer.MainClearArts.Add(tmpPoster)
@@ -141,17 +141,17 @@ Namespace FanartTVs
                 End If
 
                 'ClearLogo
-                If FilteredModifier.MainClearLogo Then
+                If FilteredModifiers.MainClearLogo Then
                     If Results.List.Hdmovielogo IsNot Nothing Then
                         For Each image In Results.List.Hdmovielogo
-                            Dim tmpPoster As New MediaContainers.Image With { _
-                                .Height = "310", _
-                                .Likes = CInt(image.Likes), _
-                                .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
-                                .Scraper = "Fanart.tv", _
-                                .ShortLang = image.Lang, _
-                                .URLOriginal = image.Url, _
-                                .URLThumb = image.Url.Replace("/fanart/", "/preview/"), _
+                            Dim tmpPoster As New MediaContainers.Image With {
+                                .Height = "310",
+                                .Likes = CInt(image.Likes),
+                                .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)),
+                                .Scraper = "Fanart.tv",
+                                .ShortLang = image.Lang,
+                                .URLOriginal = image.Url,
+                                .URLThumb = image.Url.Replace("/fanart/", "/preview/"),
                                 .Width = "800"}
 
                             alImagesContainer.MainClearLogos.Add(tmpPoster)
@@ -160,14 +160,14 @@ Namespace FanartTVs
 
                     If Results.List.Movielogo IsNot Nothing AndAlso Not _SpecialSettings.ClearLogoOnlyHD Then
                         For Each image In Results.List.Movielogo
-                            Dim tmpPoster As New MediaContainers.Image With { _
-                                .Height = "155", _
-                                .Likes = CInt(image.Likes), _
-                                .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
-                                .Scraper = "Fanart.tv", _
-                                .ShortLang = image.Lang, _
-                                .URLOriginal = image.Url, _
-                                .URLThumb = image.Url.Replace("/fanart/", "/preview/"), _
+                            Dim tmpPoster As New MediaContainers.Image With {
+                                .Height = "155",
+                                .Likes = CInt(image.Likes),
+                                .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)),
+                                .Scraper = "Fanart.tv",
+                                .ShortLang = image.Lang,
+                                .URLOriginal = image.Url,
+                                .URLThumb = image.Url.Replace("/fanart/", "/preview/"),
                                 .Width = "400"}
 
                             alImagesContainer.MainClearLogos.Add(tmpPoster)
@@ -176,18 +176,18 @@ Namespace FanartTVs
                 End If
 
                 'DiscArt
-                If FilteredModifier.MainDiscArt AndAlso Results.List.Moviedisc IsNot Nothing Then
+                If FilteredModifiers.MainDiscArt AndAlso Results.List.Moviedisc IsNot Nothing Then
                     For Each image In Results.List.Moviedisc
-                        Dim tmpPoster As New MediaContainers.Image With { _
-                            .Disc = CInt(image.Disc), _
-                            .DiscType = image.DiscType, _
-                            .Height = "1000", _
-                            .Likes = CInt(image.Likes), _
-                            .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
-                            .Scraper = "Fanart.tv", _
-                            .ShortLang = image.Lang, _
-                            .URLOriginal = image.Url, _
-                            .URLThumb = image.Url.Replace("/fanart/", "/preview/"), _
+                        Dim tmpPoster As New MediaContainers.Image With {
+                            .Disc = CInt(image.Disc),
+                            .DiscType = image.DiscType,
+                            .Height = "1000",
+                            .Likes = CInt(image.Likes),
+                            .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)),
+                            .Scraper = "Fanart.tv",
+                            .ShortLang = image.Lang,
+                            .URLOriginal = image.Url,
+                            .URLThumb = image.Url.Replace("/fanart/", "/preview/"),
                             .Width = "1000"}
 
                         alImagesContainer.MainDiscArts.Add(tmpPoster)
@@ -195,23 +195,23 @@ Namespace FanartTVs
                 End If
 
                 'Fanart
-                If (FilteredModifier.MainExtrafanarts OrElse FilteredModifier.MainExtrathumbs OrElse FilteredModifier.MainFanart) AndAlso Results.List.Moviebackground IsNot Nothing Then
+                If (FilteredModifiers.MainExtrafanarts OrElse FilteredModifiers.MainExtrathumbs OrElse FilteredModifiers.MainFanart) AndAlso Results.List.Moviebackground IsNot Nothing Then
                     For Each image In Results.List.Moviebackground
                         alImagesContainer.MainFanarts.Add(New MediaContainers.Image With {.URLOriginal = image.Url, .URLThumb = image.Url.Replace("/fanart/", "/preview/"), .Width = "1920", .Height = "1080", .Scraper = "Fanart.tv", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
                     Next
                 End If
 
                 'Landscape
-                If FilteredModifier.MainLandscape AndAlso Results.List.Moviethumb IsNot Nothing Then
+                If FilteredModifiers.MainLandscape AndAlso Results.List.Moviethumb IsNot Nothing Then
                     For Each image In Results.List.Moviethumb
-                        Dim tmpPoster As New MediaContainers.Image With { _
-                            .Height = "562", _
-                            .Likes = CInt(image.Likes), _
-                            .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
-                            .Scraper = "Fanart.tv", _
-                            .ShortLang = image.Lang, _
-                            .URLOriginal = image.Url, _
-                            .URLThumb = image.Url.Replace("/fanart/", "/preview/"), _
+                        Dim tmpPoster As New MediaContainers.Image With {
+                            .Height = "562",
+                            .Likes = CInt(image.Likes),
+                            .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)),
+                            .Scraper = "Fanart.tv",
+                            .ShortLang = image.Lang,
+                            .URLOriginal = image.Url,
+                            .URLThumb = image.Url.Replace("/fanart/", "/preview/"),
                             .Width = "1000"}
 
                         alImagesContainer.MainLandscapes.Add(tmpPoster)
@@ -219,16 +219,16 @@ Namespace FanartTVs
                 End If
 
                 'Poster
-                If FilteredModifier.MainPoster AndAlso Results.List.Movieposter IsNot Nothing Then
+                If FilteredModifiers.MainPoster AndAlso Results.List.Movieposter IsNot Nothing Then
                     For Each image In Results.List.Movieposter
-                        Dim tmpPoster As New MediaContainers.Image With { _
-                            .Height = "1426", _
-                            .Likes = CInt(image.Likes), _
-                            .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
-                            .Scraper = "Fanart.tv", _
-                            .ShortLang = image.Lang, _
-                            .URLOriginal = image.Url, _
-                            .URLThumb = image.Url.Replace("/fanart/", "/preview/"), _
+                        Dim tmpPoster As New MediaContainers.Image With {
+                            .Height = "1426",
+                            .Likes = CInt(image.Likes),
+                            .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)),
+                            .Scraper = "Fanart.tv",
+                            .ShortLang = image.Lang,
+                            .URLOriginal = image.Url,
+                            .URLThumb = image.Url.Replace("/fanart/", "/preview/"),
                             .Width = "1000"}
 
                         alImagesContainer.MainPosters.Add(tmpPoster)
@@ -242,7 +242,7 @@ Namespace FanartTVs
             Return alImagesContainer
         End Function
 
-        Public Function GetImages_TV(ByVal tvdbID As String, ByVal FilteredModifier As Structures.ScrapeModifier) As MediaContainers.SearchResultsContainer
+        Public Function GetImages_TV(ByVal tvdbID As String, ByVal FilteredModifiers As Structures.ScrapeModifiers) As MediaContainers.SearchResultsContainer
             Dim alContainer As New MediaContainers.SearchResultsContainer
 
             Try
@@ -256,17 +256,17 @@ Namespace FanartTVs
                 If bwFANARTTV.CancellationPending Then Return Nothing
 
                 'MainBanner
-                If FilteredModifier.MainBanner AndAlso Results.List.Tvbanner IsNot Nothing Then
+                If FilteredModifiers.MainBanner AndAlso Results.List.Tvbanner IsNot Nothing Then
                     For Each image In Results.List.Tvbanner
-                        Dim tmpPoster As New MediaContainers.Image With { _
-                            .Height = "185", _
-                            .Likes = CInt(image.Likes), _
-                            .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
-                            .Scraper = "Fanart.tv", _
-                            .ShortLang = image.Lang, _
-                            .TVBannerType = Enums.TVBannerType.Any, _
-                            .URLOriginal = image.Url, _
-                            .URLThumb = image.Url.Replace("/fanart/", "/preview/"), _
+                        Dim tmpPoster As New MediaContainers.Image With {
+                            .Height = "185",
+                            .Likes = CInt(image.Likes),
+                            .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)),
+                            .Scraper = "Fanart.tv",
+                            .ShortLang = image.Lang,
+                            .TVBannerType = Enums.TVBannerType.Any,
+                            .URLOriginal = image.Url,
+                            .URLThumb = image.Url.Replace("/fanart/", "/preview/"),
                             .Width = "1000"}
 
                         alContainer.MainBanners.Add(tmpPoster)
@@ -274,16 +274,16 @@ Namespace FanartTVs
                 End If
 
                 'MainCharacterArt
-                If FilteredModifier.MainCharacterArt AndAlso Results.List.Characterart IsNot Nothing Then
+                If FilteredModifiers.MainCharacterArt AndAlso Results.List.Characterart IsNot Nothing Then
                     For Each image In Results.List.Characterart
-                        Dim tmpPoster As New MediaContainers.Image With { _
-                            .Height = "512", _
-                            .Likes = CInt(image.Likes), _
-                            .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
-                            .Scraper = "Fanart.tv", _
-                            .ShortLang = image.Lang, _
-                            .URLOriginal = image.Url, _
-                            .URLThumb = image.Url.Replace("/fanart/", "/preview/"), _
+                        Dim tmpPoster As New MediaContainers.Image With {
+                            .Height = "512",
+                            .Likes = CInt(image.Likes),
+                            .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)),
+                            .Scraper = "Fanart.tv",
+                            .ShortLang = image.Lang,
+                            .URLOriginal = image.Url,
+                            .URLThumb = image.Url.Replace("/fanart/", "/preview/"),
                             .Width = "512"}
 
                         alContainer.MainCharacterArts.Add(tmpPoster)
@@ -291,17 +291,17 @@ Namespace FanartTVs
                 End If
 
                 'MainClearArt
-                If FilteredModifier.MainClearArt Then
+                If FilteredModifiers.MainClearArt Then
                     If Results.List.Hdclearart IsNot Nothing Then
                         For Each image In Results.List.Hdclearart
-                            Dim tmpPoster As New MediaContainers.Image With { _
-                                .Height = "562", _
-                                .Likes = CInt(image.Likes), _
-                                .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
-                                .Scraper = "Fanart.tv", _
-                                .ShortLang = image.Lang, _
-                                .URLOriginal = image.Url, _
-                                .URLThumb = image.Url.Replace("/fanart/", "/preview/"), _
+                            Dim tmpPoster As New MediaContainers.Image With {
+                                .Height = "562",
+                                .Likes = CInt(image.Likes),
+                                .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)),
+                                .Scraper = "Fanart.tv",
+                                .ShortLang = image.Lang,
+                                .URLOriginal = image.Url,
+                                .URLThumb = image.Url.Replace("/fanart/", "/preview/"),
                                 .Width = "1000"}
 
                             alContainer.MainClearArts.Add(tmpPoster)
@@ -309,14 +309,14 @@ Namespace FanartTVs
                     End If
                     If Results.List.Clearart IsNot Nothing AndAlso Not _SpecialSettings.ClearArtOnlyHD Then
                         For Each image In Results.List.Clearart
-                            Dim tmpPoster As New MediaContainers.Image With { _
-                                .Height = "281", _
-                                .Likes = CInt(image.Likes), _
-                                .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
-                                .Scraper = "Fanart.tv", _
-                                .ShortLang = image.Lang, _
-                                .URLOriginal = image.Url, _
-                                .URLThumb = image.Url.Replace("/fanart/", "/preview/"), _
+                            Dim tmpPoster As New MediaContainers.Image With {
+                                .Height = "281",
+                                .Likes = CInt(image.Likes),
+                                .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)),
+                                .Scraper = "Fanart.tv",
+                                .ShortLang = image.Lang,
+                                .URLOriginal = image.Url,
+                                .URLThumb = image.Url.Replace("/fanart/", "/preview/"),
                                 .Width = "500"}
 
                             alContainer.MainClearArts.Add(tmpPoster)
@@ -325,17 +325,17 @@ Namespace FanartTVs
                 End If
 
                 'MainClearLogo
-                If FilteredModifier.MainClearLogo Then
+                If FilteredModifiers.MainClearLogo Then
                     If Results.List.HdTListvlogo IsNot Nothing Then
                         For Each Image In Results.List.HdTListvlogo
-                            Dim tmpPoster As New MediaContainers.Image With { _
-                                .Height = "310", _
-                                .Likes = CInt(Image.Likes), _
-                                .LongLang = If(String.IsNullOrEmpty(Image.Lang), String.Empty, Localization.ISOGetLangByCode2(Image.Lang)), _
-                                .Scraper = "Fanart.tv", _
-                                .ShortLang = Image.Lang, _
-                                .URLOriginal = Image.Url, _
-                                .URLThumb = Image.Url.Replace("/fanart/", "/preview/"), _
+                            Dim tmpPoster As New MediaContainers.Image With {
+                                .Height = "310",
+                                .Likes = CInt(Image.Likes),
+                                .LongLang = If(String.IsNullOrEmpty(Image.Lang), String.Empty, Localization.ISOGetLangByCode2(Image.Lang)),
+                                .Scraper = "Fanart.tv",
+                                .ShortLang = Image.Lang,
+                                .URLOriginal = Image.Url,
+                                .URLThumb = Image.Url.Replace("/fanart/", "/preview/"),
                                 .Width = "800"}
 
                             alContainer.MainClearLogos.Add(tmpPoster)
@@ -343,14 +343,14 @@ Namespace FanartTVs
                     End If
                     If Results.List.Clearlogo IsNot Nothing AndAlso Not _SpecialSettings.ClearLogoOnlyHD Then
                         For Each Image In Results.List.Clearlogo
-                            Dim tmpPoster As New MediaContainers.Image With { _
-                                .Height = "155", _
-                                .Likes = CInt(Image.Likes), _
-                                .LongLang = If(String.IsNullOrEmpty(Image.Lang), String.Empty, Localization.ISOGetLangByCode2(Image.Lang)), _
-                                .Scraper = "Fanart.tv", _
-                                .ShortLang = Image.Lang, _
-                                .URLOriginal = Image.Url, _
-                                .URLThumb = Image.Url.Replace("/fanart/", "/preview/"), _
+                            Dim tmpPoster As New MediaContainers.Image With {
+                                .Height = "155",
+                                .Likes = CInt(Image.Likes),
+                                .LongLang = If(String.IsNullOrEmpty(Image.Lang), String.Empty, Localization.ISOGetLangByCode2(Image.Lang)),
+                                .Scraper = "Fanart.tv",
+                                .ShortLang = Image.Lang,
+                                .URLOriginal = Image.Url,
+                                .URLThumb = Image.Url.Replace("/fanart/", "/preview/"),
                                 .Width = "400"}
 
                             alContainer.MainClearLogos.Add(tmpPoster)
@@ -359,23 +359,23 @@ Namespace FanartTVs
                 End If
 
                 'MainFanart
-                If FilteredModifier.MainFanart AndAlso Results.List.Showbackground IsNot Nothing Then
+                If FilteredModifiers.MainFanart AndAlso Results.List.Showbackground IsNot Nothing Then
                     For Each image In Results.List.Showbackground
                         alContainer.MainFanarts.Add(New MediaContainers.Image With {.URLOriginal = image.Url, .Width = "1920", .Height = "1080", .URLThumb = image.Url.Replace("/fanart/", "/preview/"), .Scraper = "Fanart.tv", .ShortLang = image.Lang, .LongLang = If(String.IsNullOrEmpty(image.Lang), "", Localization.ISOGetLangByCode2(image.Lang)), .Likes = CInt(image.Likes)})
                     Next
                 End If
 
                 'MainLandscape
-                If FilteredModifier.MainLandscape AndAlso Results.List.Tvthumb IsNot Nothing Then
+                If FilteredModifiers.MainLandscape AndAlso Results.List.Tvthumb IsNot Nothing Then
                     For Each Image In Results.List.Tvthumb
-                        Dim tmpPoster As New MediaContainers.Image With { _
-                            .Height = "281", _
-                            .Likes = CInt(Image.Likes), _
-                            .LongLang = If(String.IsNullOrEmpty(Image.Lang), String.Empty, Localization.ISOGetLangByCode2(Image.Lang)), _
-                            .Scraper = "Fanart.tv", _
-                            .ShortLang = Image.Lang, _
-                            .URLOriginal = Image.Url, _
-                            .URLThumb = Image.Url.Replace("/fanart/", "/preview/"), _
+                        Dim tmpPoster As New MediaContainers.Image With {
+                            .Height = "281",
+                            .Likes = CInt(Image.Likes),
+                            .LongLang = If(String.IsNullOrEmpty(Image.Lang), String.Empty, Localization.ISOGetLangByCode2(Image.Lang)),
+                            .Scraper = "Fanart.tv",
+                            .ShortLang = Image.Lang,
+                            .URLOriginal = Image.Url,
+                            .URLThumb = Image.Url.Replace("/fanart/", "/preview/"),
                             .Width = "500"}
 
                         alContainer.MainLandscapes.Add(tmpPoster)
@@ -383,17 +383,17 @@ Namespace FanartTVs
                 End If
 
                 'MainPoster
-                If FilteredModifier.MainPoster AndAlso Results.List.Tvposter IsNot Nothing Then
+                If FilteredModifiers.MainPoster AndAlso Results.List.Tvposter IsNot Nothing Then
                     For Each image In Results.List.Tvposter
-                        Dim tmpPoster As New MediaContainers.Image With { _
-                            .Height = "1426", _
-                            .Likes = CInt(image.Likes), _
-                            .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
-                            .Scraper = "Fanart.tv", _
-                            .ShortLang = image.Lang, _
-                            .TVBannerType = Enums.TVBannerType.Any, _
-                            .URLOriginal = image.Url, _
-                            .URLThumb = image.Url.Replace("/fanart/", "/preview/"), _
+                        Dim tmpPoster As New MediaContainers.Image With {
+                            .Height = "1426",
+                            .Likes = CInt(image.Likes),
+                            .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)),
+                            .Scraper = "Fanart.tv",
+                            .ShortLang = image.Lang,
+                            .TVBannerType = Enums.TVBannerType.Any,
+                            .URLOriginal = image.Url,
+                            .URLThumb = image.Url.Replace("/fanart/", "/preview/"),
                             .Width = "1000"}
 
                         alContainer.MainPosters.Add(tmpPoster)
@@ -401,18 +401,18 @@ Namespace FanartTVs
                 End If
 
                 'SeasonBanner
-                If FilteredModifier.SeasonBanner AndAlso Results.List.Seasonbanner IsNot Nothing Then
+                If FilteredModifiers.SeasonBanner AndAlso Results.List.Seasonbanner IsNot Nothing Then
                     For Each image In Results.List.Seasonbanner
-                        Dim tmpPoster As New MediaContainers.Image With { _
-                            .Height = "185", _
-                            .Likes = CInt(image.Likes), _
-                            .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
-                            .Scraper = "Fanart.tv", _
-                            .Season = If(image.Season = "all", 999, CInt(image.Season)), _
-                            .ShortLang = image.Lang, _
-                            .TVBannerType = Enums.TVBannerType.Any, _
-                            .URLOriginal = image.Url, _
-                            .URLThumb = image.Url.Replace("/fanart/", "/preview/"), _
+                        Dim tmpPoster As New MediaContainers.Image With {
+                            .Height = "185",
+                            .Likes = CInt(image.Likes),
+                            .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)),
+                            .Scraper = "Fanart.tv",
+                            .Season = If(image.Season = "all", 999, CInt(image.Season)),
+                            .ShortLang = image.Lang,
+                            .TVBannerType = Enums.TVBannerType.Any,
+                            .URLOriginal = image.Url,
+                            .URLThumb = image.Url.Replace("/fanart/", "/preview/"),
                             .Width = "1000"}
 
                         alContainer.SeasonBanners.Add(tmpPoster)
@@ -420,18 +420,18 @@ Namespace FanartTVs
                 End If
 
                 'SeasonLandscape
-                If FilteredModifier.SeasonLandscape AndAlso Results.List.Seasonthumb IsNot Nothing Then
+                If FilteredModifiers.SeasonLandscape AndAlso Results.List.Seasonthumb IsNot Nothing Then
                     For Each Image In Results.List.Seasonthumb
-                        Dim tmpPoster As New MediaContainers.Image With { _
-                            .Height = "281", _
-                            .Likes = CInt(Image.Likes), _
-                            .LongLang = If(String.IsNullOrEmpty(Image.Lang), String.Empty, Localization.ISOGetLangByCode2(Image.Lang)), _
-                            .Scraper = "Fanart.tv", _
-                            .Season = If(Image.Season = "all", 999, CInt(Image.Season)), _
-                            .ShortLang = Image.Lang, _
-                            .TVBannerType = Enums.TVBannerType.Any, _
-                            .URLOriginal = Image.Url, _
-                            .URLThumb = Image.Url.Replace("/fanart/", "/preview/"), _
+                        Dim tmpPoster As New MediaContainers.Image With {
+                            .Height = "281",
+                            .Likes = CInt(Image.Likes),
+                            .LongLang = If(String.IsNullOrEmpty(Image.Lang), String.Empty, Localization.ISOGetLangByCode2(Image.Lang)),
+                            .Scraper = "Fanart.tv",
+                            .Season = If(Image.Season = "all", 999, CInt(Image.Season)),
+                            .ShortLang = Image.Lang,
+                            .TVBannerType = Enums.TVBannerType.Any,
+                            .URLOriginal = Image.Url,
+                            .URLThumb = Image.Url.Replace("/fanart/", "/preview/"),
                             .Width = "500"}
 
                         alContainer.SeasonLandscapes.Add(tmpPoster)
@@ -439,18 +439,18 @@ Namespace FanartTVs
                 End If
 
                 'SeasonPoster
-                If FilteredModifier.SeasonPoster AndAlso Results.List.Seasonposter IsNot Nothing Then
+                If FilteredModifiers.SeasonPoster AndAlso Results.List.Seasonposter IsNot Nothing Then
                     For Each image In Results.List.Seasonposter
-                        Dim tmpPoster As New MediaContainers.Image With { _
-                            .Height = "1426", _
-                            .Likes = CInt(image.Likes), _
-                            .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)), _
-                            .Scraper = "Fanart.tv", _
-                            .Season = If(image.Season = "all", 999, CInt(image.Season)), _
-                            .ShortLang = image.Lang, _
-                            .TVBannerType = Enums.TVBannerType.Any, _
-                            .URLOriginal = image.Url, _
-                            .URLThumb = image.Url.Replace("/fanart/", "/preview/"), _
+                        Dim tmpPoster As New MediaContainers.Image With {
+                            .Height = "1426",
+                            .Likes = CInt(image.Likes),
+                            .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)),
+                            .Scraper = "Fanart.tv",
+                            .Season = If(image.Season = "all", 999, CInt(image.Season)),
+                            .ShortLang = image.Lang,
+                            .TVBannerType = Enums.TVBannerType.Any,
+                            .URLOriginal = image.Url,
+                            .URLThumb = image.Url.Replace("/fanart/", "/preview/"),
                             .Width = "1000"}
 
                         alContainer.SeasonPosters.Add(tmpPoster)

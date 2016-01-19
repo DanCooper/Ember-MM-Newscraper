@@ -50,7 +50,7 @@ Namespace TMDB
             End Try
         End Sub
 
-        Public Function GetImages_Movie_MovieSet(ByVal TMDBID As String, ByVal FilteredModifier As Structures.ScrapeModifier, ByVal ContentType As Enums.ContentType) As MediaContainers.SearchResultsContainer
+        Public Function GetImages_Movie_MovieSet(ByVal TMDBID As String, ByVal FilteredModifiers As Structures.ScrapeModifiers, ByVal ContentType As Enums.ContentType) As MediaContainers.SearchResultsContainer
             Dim alImagesContainer As New MediaContainers.SearchResultsContainer
 
             If bwTMDB.CancellationPending Then Return Nothing
@@ -72,7 +72,7 @@ Namespace TMDB
                 End If
 
                 'MainFanart
-                If (FilteredModifier.MainExtrafanarts OrElse FilteredModifier.MainExtrathumbs OrElse FilteredModifier.MainFanart) AndAlso Results.Backdrops IsNot Nothing Then
+                If (FilteredModifiers.MainExtrafanarts OrElse FilteredModifiers.MainExtrathumbs OrElse FilteredModifiers.MainFanart) AndAlso Results.Backdrops IsNot Nothing Then
                     For Each tImage In Results.Backdrops
                         Dim newImage As New MediaContainers.Image With {
                             .Height = tImage.Height.ToString,
@@ -91,7 +91,7 @@ Namespace TMDB
                 End If
 
                 'MainPoster
-                If FilteredModifier.MainPoster AndAlso Results.Posters IsNot Nothing Then
+                If FilteredModifiers.MainPoster AndAlso Results.Posters IsNot Nothing Then
                     For Each tImage In Results.Posters
                         Dim newImage As New MediaContainers.Image With {
                                 .Height = tImage.Height.ToString,
@@ -116,7 +116,7 @@ Namespace TMDB
             Return alImagesContainer
         End Function
 
-        Public Function GetImages_TVShow(ByVal tmdbID As String, ByVal FilteredModifier As Structures.ScrapeModifier) As MediaContainers.SearchResultsContainer
+        Public Function GetImages_TVShow(ByVal tmdbID As String, ByVal FilteredModifiers As Structures.ScrapeModifiers) As MediaContainers.SearchResultsContainer
             Dim alContainer As New MediaContainers.SearchResultsContainer
 
             If bwTMDB.CancellationPending Then Return Nothing
@@ -133,7 +133,7 @@ Namespace TMDB
                 Dim Result As TMDbLib.Objects.TvShows.TvShow = APIResult.Result
 
                 'MainFanart
-                If FilteredModifier.MainFanart AndAlso Result.Images.Backdrops IsNot Nothing Then
+                If FilteredModifiers.MainFanart AndAlso Result.Images.Backdrops IsNot Nothing Then
                     For Each tImage In Result.Images.Backdrops
                         Dim newImage As New MediaContainers.Image With {
                             .Height = tImage.Height.ToString,
@@ -152,7 +152,7 @@ Namespace TMDB
                 End If
 
                 'MainPoster
-                If FilteredModifier.MainPoster AndAlso Result.Images.Posters IsNot Nothing Then
+                If FilteredModifiers.MainPoster AndAlso Result.Images.Posters IsNot Nothing Then
                     For Each tImage In Result.Images.Posters
                         Dim newImage As New MediaContainers.Image With {
                                 .Height = tImage.Height.ToString,
@@ -171,7 +171,7 @@ Namespace TMDB
                 End If
 
                 'SeasonPoster
-                If (FilteredModifier.SeasonPoster OrElse FilteredModifier.EpisodePoster) AndAlso Result.Seasons IsNot Nothing Then
+                If (FilteredModifiers.SeasonPoster OrElse FilteredModifiers.EpisodePoster) AndAlso Result.Seasons IsNot Nothing Then
                     For Each tSeason In Result.Seasons
                         Dim APIResult_Season As Task(Of TMDbLib.Objects.TvShows.TvSeason)
                         APIResult_Season = Task.Run(Function() _TMDBApi.GetTvSeason(CInt(tmdbID), tSeason.SeasonNumber, TMDbLib.Objects.TvShows.TvSeasonMethods.Images))
@@ -180,7 +180,7 @@ Namespace TMDB
                             Dim Result_Season As TMDbLib.Objects.TvShows.TvSeason = APIResult_Season.Result
 
                             'SeasonPoster
-                            If FilteredModifier.SeasonPoster AndAlso Result_Season.Images.Posters IsNot Nothing Then
+                            If FilteredModifiers.SeasonPoster AndAlso Result_Season.Images.Posters IsNot Nothing Then
                                 For Each tImage In Result_Season.Images.Posters
                                     Dim newImage As New MediaContainers.Image With {
                                         .Height = tImage.Height.ToString,
@@ -199,11 +199,11 @@ Namespace TMDB
                                 Next
                             End If
 
-                            If FilteredModifier.EpisodePoster AndAlso Result_Season.Episodes IsNot Nothing Then
+                            If FilteredModifiers.EpisodePoster AndAlso Result_Season.Episodes IsNot Nothing Then
                                 For Each tEpisode In Result_Season.Episodes
 
                                     'EpisodePoster
-                                    If FilteredModifier.EpisodePoster AndAlso tEpisode.StillPath IsNot Nothing Then
+                                    If FilteredModifiers.EpisodePoster AndAlso tEpisode.StillPath IsNot Nothing Then
 
                                         Dim newImage As New MediaContainers.Image With {
                                             .Episode = tEpisode.EpisodeNumber,
@@ -329,7 +329,7 @@ Namespace TMDB
             Return alContainer
         End Function
 
-        Public Function GetImages_TVEpisode(ByVal tmdbID As String, ByVal iSeason As Integer, ByVal iEpisode As Integer, ByVal FilteredModifier As Structures.ScrapeModifier) As MediaContainers.SearchResultsContainer
+        Public Function GetImages_TVEpisode(ByVal tmdbID As String, ByVal iSeason As Integer, ByVal iEpisode As Integer, ByVal FilteredModifiers As Structures.ScrapeModifiers) As MediaContainers.SearchResultsContainer
             Dim alContainer As New MediaContainers.SearchResultsContainer
 
             If bwTMDB.CancellationPending Then Return Nothing

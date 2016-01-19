@@ -39,7 +39,7 @@ Public Class dlgTVDBSearchResults
     Private _InfoCache As New Dictionary(Of String, MediaContainers.TVShow)
     Private _PosterCache As New Dictionary(Of String, Image)
     Private _filteredOptions As Structures.ScrapeOptions
-    Private _scrapeModifier As Structures.ScrapeModifier
+    Private _scrapeModifiers As Structures.ScrapeModifiers
 
     Private _tmpTVShow As New MediaContainers.TVShow
 
@@ -67,13 +67,13 @@ Public Class dlgTVDBSearchResults
         TVDB = _TVDB
     End Sub
 
-    Public Overloads Function ShowDialog(ByVal sShowTitle As String, ByVal sShowPath As String, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef FilteredOptions As Structures.ScrapeOptions) As DialogResult
+    Public Overloads Function ShowDialog(ByVal sShowTitle As String, ByVal sShowPath As String, ByRef ScrapeModifier As Structures.ScrapeModifiers, ByRef FilteredOptions As Structures.ScrapeOptions) As DialogResult
         tmrWait.Enabled = False
         tmrWait.Interval = 250
         tmrLoad.Enabled = False
         tmrLoad.Interval = 100
 
-        _scrapeModifier = ScrapeModifier
+        _scrapeModifiers = ScrapeModifier
         _filteredOptions = FilteredOptions
 
         Text = String.Concat(Master.eLang.GetString(794, "Search Results"), " - ", sShowTitle)
@@ -81,7 +81,7 @@ Public Class dlgTVDBSearchResults
         txtFileName.Text = sShowPath
         chkManual.Enabled = False
 
-        TVDB.SearchTVShowAsync(sShowTitle, _scrapeModifier, _filteredOptions)
+        TVDB.SearchTVShowAsync(sShowTitle, _scrapeModifiers, _filteredOptions)
 
         Return ShowDialog()
     End Function
@@ -112,7 +112,7 @@ Public Class dlgTVDBSearchResults
             chkManual.Enabled = False
             TVDB.CancelAsync()
 
-            TVDB.SearchTVShowAsync(txtSearch.Text, _scrapeModifier, _filteredOptions)
+            TVDB.SearchTVShowAsync(txtSearch.Text, _scrapeModifiers, _filteredOptions)
         End If
     End Sub
 

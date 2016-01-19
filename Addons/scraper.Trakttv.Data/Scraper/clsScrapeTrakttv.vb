@@ -162,13 +162,13 @@ Namespace TrakttvScraper
         ''' </summary>
         ''' <param name="strID">IMDBID of tv show to be scraped</param>
         ''' <param name="FilteredOptions">Module settings<param>
-        ''' <param name="ScrapeModifier">More options - scrape episode/season infos?</param>
+        ''' <param name="ScrapeModifiers">More options - scrape episode/season infos?</param>
         ''' <returns>True: success, false: no success</returns>
         ''' <remarks>
         ''' 2015/11/18 Cocotus - First implementation
         ''' trakt.tv API supports ONLY IMDB
         ''' </remarks>
-        Public Function GetTVShowInfo(ByVal strID As String, ByRef ScrapeModifier As Structures.ScrapeModifier, ByVal FilteredOptions As Structures.ScrapeOptions) As MediaContainers.TVShow
+        Public Function GetTVShowInfo(ByVal strID As String, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByVal FilteredOptions As Structures.ScrapeOptions) As MediaContainers.TVShow
             If String.IsNullOrEmpty(strID) OrElse strID.Length < 2 Then Return Nothing
 
             Dim nTVShow As New MediaContainers.TVShow

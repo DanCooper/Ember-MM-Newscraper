@@ -31,7 +31,7 @@ Public Class MPDB_Image
 
 #Region "Fields"
 
-    Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
+    Public Shared ConfigScrapeModifiers As New Structures.ScrapeModifiers
     Public Shared _AssemblyName As String
 
     Private MPDB As MPDB.Scraper
@@ -81,7 +81,7 @@ Public Class MPDB_Image
     Function QueryScraperCapabilities(ByVal cap As Enums.ModifierType) As Boolean Implements Interfaces.ScraperModule_Image_Movie.QueryScraperCapabilities
         Select Case cap
             Case Enums.ModifierType.MainPoster
-                Return ConfigScrapeModifier.MainPoster
+                Return ConfigScrapeModifiers.MainPoster
         End Select
         Return False
     End Function
@@ -132,10 +132,10 @@ Public Class MPDB_Image
     End Function
 
     Sub LoadSettings()
-        ConfigScrapeModifier.MainPoster = clsAdvancedSettings.GetBooleanSetting("DoPoster", True)
+        ConfigScrapeModifiers.MainPoster = clsAdvancedSettings.GetBooleanSetting("DoPoster", True)
     End Sub
 
-    Function Scraper(ByRef DBMovie As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifier As Structures.ScrapeModifier) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_Movie.Scraper
+    Function Scraper(ByRef DBMovie As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifier As Structures.ScrapeModifiers) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_Movie.Scraper
 
         LoadSettings()
 
@@ -146,7 +146,7 @@ Public Class MPDB_Image
 
     Sub SaveSettings()
         Using settings = New clsAdvancedSettings()
-            settings.SetBooleanSetting("DoPoster", ConfigScrapeModifier.MainPoster)
+            settings.SetBooleanSetting("DoPoster", ConfigScrapeModifiers.MainPoster)
         End Using
     End Sub
 
