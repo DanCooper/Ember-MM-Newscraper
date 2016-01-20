@@ -40,7 +40,8 @@ Public Class dlgIMDBSearchResults_TV
 
     Private _InfoCache As New Dictionary(Of String, MediaContainers.TVShow)
     Private _PosterCache As New Dictionary(Of String, Image)
-    Private _filterOptions As Structures.ScrapeOptions
+    Private _filteredOptions As Structures.ScrapeOptions
+    Private _scrapeModifiers As Structures.ScrapeModifiers
 
     Private _tmpTVShow As New MediaContainers.TVShow
 
@@ -68,14 +69,15 @@ Public Class dlgIMDBSearchResults_TV
         _IMDB = IMDB
     End Sub
 
-    Public Overloads Function ShowDialog(ByVal sShowTitle As String, ByVal sShowPath As String, ByVal filterOptions As Structures.ScrapeOptions) As Windows.Forms.DialogResult
+    Public Overloads Function ShowDialog(ByVal sShowTitle As String, ByVal sShowPath As String, ByVal ScrapeModifiers As Structures.ScrapeModifiers, ByVal FilteredOptions As Structures.ScrapeOptions) As Windows.Forms.DialogResult
         tmrWait.Enabled = False
         tmrWait.Interval = 250
         tmrLoad.Enabled = False
 
         tmrLoad.Interval = 100
 
-        _filterOptions = filterOptions
+        _filteredOptions = FilteredOptions
+        _scrapeModifiers = ScrapeModifiers
 
         Text = String.Concat(Master.eLang.GetString(794, "Search Results"), " - ", sShowTitle)
         txtSearch.Text = sShowTitle
@@ -85,7 +87,7 @@ Public Class dlgIMDBSearchResults_TV
         'chkManual.Enabled = False
         chkManual.Enabled = True
 
-        _IMDB.SearchTVShowAsync(sShowTitle, _filterOptions)
+        _IMDB.SearchTVShowAsync(sShowTitle, _scrapeModifiers, _filteredOptions)
 
         Return ShowDialog()
     End Function
@@ -117,7 +119,7 @@ Public Class dlgIMDBSearchResults_TV
             chkManual.Enabled = False
 
             _IMDB.CancelAsync()
-            _IMDB.SearchTVShowAsync(txtSearch.Text, _filterOptions)
+            _IMDB.SearchTVShowAsync(txtSearch.Text, _scrapeModifiers, _filteredOptions)
         End If
     End Sub
 
