@@ -406,6 +406,8 @@ Public Class TMDB_Image
         If DBTV.TVShow IsNot Nothing AndAlso String.IsNullOrEmpty(DBTV.TVShow.TMDB) Then
             If Not String.IsNullOrEmpty(DBTV.TVShow.TVDB) Then
                 DBTV.TVShow.TMDB = _scraper.GetTMDBbyTVDB(DBTV.TVShow.TVDB)
+            ElseIf Not String.IsNullOrEmpty(DBTV.TVShow.IMDB) Then
+                DBTV.TVShow.TMDB = _scraper.GetTMDBbyIMDB(DBTV.TVShow.IMDB)
             End If
         End If
 

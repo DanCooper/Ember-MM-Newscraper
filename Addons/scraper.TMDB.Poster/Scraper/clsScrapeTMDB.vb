@@ -372,6 +372,25 @@ Namespace TMDB
             Return alContainer
         End Function
 
+        Public Function GetTMDBbyIMDB(ByVal imdbID As String) As String
+            Dim tmdbID As String = String.Empty
+
+            Try
+                Dim APIResult As Task(Of TMDbLib.Objects.Find.FindContainer)
+                APIResult = Task.Run(Function() _TMDBApi.Find(TMDbLib.Objects.Find.FindExternalSource.Imdb, imdbID))
+
+                If APIResult IsNot Nothing AndAlso APIResult.Result IsNot Nothing AndAlso
+                    APIResult.Result.TvResults IsNot Nothing AndAlso APIResult.Result.TvResults.Count > 0 Then
+                    tmdbID = APIResult.Result.TvResults.Item(0).Id.ToString
+                End If
+
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+            End Try
+
+            Return tmdbID
+        End Function
+
         Public Function GetTMDBbyTVDB(ByVal tvdbID As String) As String
             Dim tmdbID As String = String.Empty
 
