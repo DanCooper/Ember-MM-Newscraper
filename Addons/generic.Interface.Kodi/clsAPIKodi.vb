@@ -18,11 +18,12 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports NLog
 Imports EmberAPI
-Imports XBMCRPC
-Imports System.IO
 Imports generic.Interface.Kodi.KodiInterface
+Imports NLog
+Imports System.IO
+Imports System.Text.RegularExpressions
+Imports XBMCRPC
 
 Namespace Kodi
 
@@ -414,7 +415,7 @@ Namespace Kodi
                         tRemoteSource = If(Source.RemotePath.EndsWith(Path.AltDirectorySeparatorChar), Source.RemotePath, String.Concat(Source.RemotePath, Path.AltDirectorySeparatorChar)).Trim
                         bRemoteIsUNC = True
                     End If
-                    strRemotePath = strLocalPath.ToLower.Replace(tLocalSource.ToLower, tRemoteSource)
+                    strRemotePath = Regex.Replace(strLocalPath, Regex.Escape(tLocalSource), tRemoteSource, RegexOptions.IgnoreCase)
                     If bRemoteIsUNC Then
                         strRemotePath = strRemotePath.Replace(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
                     Else
@@ -458,7 +459,7 @@ Namespace Kodi
                         tRemoteSource = If(HostPath.EndsWith(Path.AltDirectorySeparatorChar), HostPath, String.Concat(HostPath, Path.AltDirectorySeparatorChar)).Trim
                         RemoteIsUNC = True
                     End If
-                    RemotePath = strLocalPath.Replace(tLocalSource, tRemoteSource)
+                    RemotePath = Regex.Replace(strLocalPath, Regex.Escape(tLocalSource), tRemoteSource, RegexOptions.IgnoreCase)
                     If RemoteIsUNC Then
                         RemotePath = RemotePath.Replace(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
                     Else
