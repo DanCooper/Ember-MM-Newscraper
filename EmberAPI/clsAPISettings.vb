@@ -3572,15 +3572,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieSets() As List(Of String)
-        Get
-            Return Settings._XMLSettings.MovieSets
-        End Get
-        Set(ByVal value As List(Of String))
-            Settings._XMLSettings.MovieSets = value
-        End Set
-    End Property
-
     Public Property GeneralShowLangFlags() As Boolean
         Get
             Return Settings._XMLSettings.GeneralShowLangFlags
@@ -6985,7 +6976,6 @@ Public Class Settings
         MovieSetPosterPrefSize = Enums.MoviePosterSize.Any
         MovieSetPosterResize = False
         MovieSetPosterWidth = 0
-        MovieSets = New List(Of String)
         MovieSetScraperPlot = True
         MovieSetScraperTitle = True
         MovieSkipLessThan = 0
