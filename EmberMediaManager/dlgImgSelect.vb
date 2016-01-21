@@ -1419,7 +1419,7 @@ Public Class dlgImgSelect
     Private Function DownloadAllImages() As Boolean
         Dim iProgress As Integer = 1
 
-        bwImgDownload.ReportProgress(tSearchResultsContainer.EpisodeFanarts.Count + tSearchResultsContainer.EpisodePosters.Count +
+        bwImgDownload.ReportProgress(If(DoEpisodeFanart, tSearchResultsContainer.EpisodeFanarts.Count, 0) + If(DoEpisodePoster, tSearchResultsContainer.EpisodePosters.Count, 0) +
                                         tSearchResultsContainer.MainBanners.Count + tSearchResultsContainer.MainCharacterArts.Count +
                                         tSearchResultsContainer.MainClearArts.Count + tSearchResultsContainer.MainClearLogos.Count +
                                         tSearchResultsContainer.MainDiscArts.Count + tSearchResultsContainer.MainFanarts.Count +
@@ -2182,8 +2182,8 @@ Public Class dlgImgSelect
                 DoAllSeasonsFanart = tScrapeModifiers.AllSeasonsFanart AndAlso Master.eSettings.TVAllSeasonsFanartAnyEnabled
                 DoAllSeasonsLandscape = tScrapeModifiers.AllSeasonsLandscape AndAlso Master.eSettings.TVAllSeasonsLandscapeAnyEnabled
                 DoAllSeasonsPoster = tScrapeModifiers.AllSeasonsPoster AndAlso Master.eSettings.TVAllSeasonsPosterAnyEnabled
-                DoEpisodeFanart = tScrapeModifiers.EpisodeFanart AndAlso Master.eSettings.TVEpisodeFanartAnyEnabled
-                DoEpisodePoster = tScrapeModifiers.EpisodePoster AndAlso Master.eSettings.TVEpisodePosterAnyEnabled
+                'DoEpisodeFanart = tScrapeModifiers.EpisodeFanart AndAlso Master.eSettings.TVEpisodeFanartAnyEnabled
+                'DoEpisodePoster = tScrapeModifiers.EpisodePoster AndAlso Master.eSettings.TVEpisodePosterAnyEnabled
                 DoMainBanner = tScrapeModifiers.MainBanner AndAlso Master.eSettings.TVShowBannerAnyEnabled
                 DoMainCharacterArt = tScrapeModifiers.MainCharacterArt AndAlso Master.eSettings.TVShowCharacterArtAnyEnabled
                 DoMainClearArt = tScrapeModifiers.MainClearArt AndAlso Master.eSettings.TVShowClearArtAnyEnabled
