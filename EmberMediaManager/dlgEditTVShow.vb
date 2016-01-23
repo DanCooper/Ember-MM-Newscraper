@@ -113,7 +113,7 @@ Public Class dlgEditTVShow
             pbExtrafanartsImage(iIndex).SizeMode = PictureBoxSizeMode.Zoom
             pnlExtrafanartsImage(iIndex).Tag = tImage
             pbExtrafanartsImage(iIndex).Tag = tImage
-            pbExtrafanartsImage(iIndex).Image = CType(tImage.ImageOriginal.Image.Clone(), Image)
+            pbExtrafanartsImage(iIndex).Image = tImage.ImageOriginal.Image
             pnlExtrafanartsImage(iIndex).Left = iEFLeft
             pbExtrafanartsImage(iIndex).Left = 0
             pnlExtrafanartsImage(iIndex).Top = iEFTop

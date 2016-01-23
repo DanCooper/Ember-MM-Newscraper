@@ -17,6 +17,7 @@
 ' # You should have received a copy of the GNU General Public License            #
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
+
 Imports System.Drawing
 Imports System.Windows.Forms
 Imports System.Runtime.CompilerServices
@@ -27,11 +28,35 @@ Imports NLog
 Public Class ImageUtils
 
 #Region "Fields"
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
     Public Const DefaultPaddingARGB As Integer = -16777216  'This is FF000000, which is completely opaque black
-#End Region
+
+#End Region 'Fields
 
 #Region "Methods"
+    ''' <summary>
+    ''' Adds an overlay on the provided image to indicate that it is a "DUPLICATE"
+    ''' </summary>
+    ''' <param name="oImage">Source <c>Images</c></param>
+    ''' <returns><c>Image</c> with "DUPLICATE" overlay, or just the source <paramref name="oImage"/> if an error was encountered.</returns>
+    ''' <remarks></remarks>
+    Public Shared Function AddDuplicateStamp(ByVal oImage As Image) As Image
+        If oImage Is Nothing Then Return oImage
+
+        Using sImage As New Bitmap(oImage)
+            'now overlay "DUPLICATE" image
+            Using grOverlay As Graphics = Graphics.FromImage(sImage)
+                Dim oWidth As Integer = If(sImage.Width >= Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "Duplicate.png")).Width, Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "Duplicate.png")).Width, sImage.Width)
+                Dim oheight As Integer = If(sImage.Height >= Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "Duplicate.png")).Height, Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "Duplicate.png")).Height, sImage.Height)
+                grOverlay.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                grOverlay.DrawImage(Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "Duplicate.png")), 0, 0, oWidth, oheight)
+            End Using
+            Dim nImage As New Images
+            nImage.UpdateMSfromImg(sImage)
+            Return nImage.Image
+        End Using
+    End Function
     ''' <summary>
     ''' Adds an overlay on the provided image to indicate that it is "missing"
     ''' </summary>

@@ -214,16 +214,14 @@ Public Class dlgImgSelect
                         Images.FindDuplicateImages(tSearchResultsContainer.MainPosters, DBElement.ContentType, MatchTolerance:=Master.eSettings.GeneralImageFilterPosterMatchTolerance, RemoveDuplicatesFromList:=False)
                         'this will consider IsDuplicate value of all images by moving all duplicate images to bottom
                         Dim orderedList = tSearchResultsContainer.MainPosters.OrderByDescending(Function(x) x.IsDuplicate = False).ToList()
-                        tSearchResultsContainer.MainPosters.Clear()
-                        tSearchResultsContainer.MainPosters.AddRange(orderedList)
+                        tSearchResultsContainer.MainPosters = orderedList
                     End If
                     'fanarts
                     If Master.eSettings.GeneralImageFilterFanart Then
                         Images.FindDuplicateImages(tSearchResultsContainer.MainFanarts, DBElement.ContentType, MatchTolerance:=Master.eSettings.GeneralImageFilterFanartMatchTolerance, RemoveDuplicatesFromList:=False)
                         'this will consider IsDuplicate value of all images by moving all duplicate images to bottom
                         Dim orderedList = tSearchResultsContainer.MainFanarts.OrderByDescending(Function(x) x.IsDuplicate = False).ToList()
-                        tSearchResultsContainer.MainFanarts.Clear()
-                        tSearchResultsContainer.MainFanarts.AddRange(orderedList)
+                        tSearchResultsContainer.MainFanarts = orderedList
                     End If
                 End If
         End Select
@@ -331,7 +329,18 @@ Public Class dlgImgSelect
         lblListImage_Scraper(iIndex).Text = tTag.Image.Scraper
         lblListImage_Scraper(iIndex).TextAlign = ContentAlignment.MiddleCenter
         pbListImage_Image(iIndex).ContextMenuStrip = cmnuListImage
-        pbListImage_Image(iIndex).Image = If(tImage.ImageOriginal.Image IsNot Nothing, CType(tImage.ImageOriginal.Image.Clone(), Image), If(tImage.ImageThumb.Image IsNot Nothing, CType(tImage.ImageThumb.Image.Clone(), Image), Nothing))
+        If tImage.IsDuplicate Then
+            If tImage.ImageThumb.Image IsNot Nothing Then
+                pbListImage_Image(iIndex).Image = ImageUtils.AddDuplicateStamp(CType(tImage.ImageThumb.Image.Clone, Image))
+            ElseIf tImage.ImageOriginal.Image IsNot Nothing Then
+                pbListImage_Image(iIndex).Image = ImageUtils.AddDuplicateStamp(CType(tImage.ImageOriginal.Image.Clone, Image))
+            Else
+                pbListImage_Image(iIndex).Image = Nothing
+            End If
+        Else
+            pbListImage_Image(iIndex).Image = If(tImage.ImageThumb.Image IsNot Nothing, tImage.ImageThumb.Image,
+                If(tImage.ImageOriginal.Image IsNot Nothing, tImage.ImageOriginal.Image, Nothing))
+        End If
         pbListImage_Image(iIndex).Location = iListImage_Location_Image
         pbListImage_Image(iIndex).Name = iIndex.ToString
         pbListImage_Image(iIndex).Size = iListImage_Size_Image
@@ -345,16 +354,6 @@ Public Class dlgImgSelect
         pnlListImage_Panel(iIndex).Size = iListImage_Size_Panel
         pnlListImage_Panel(iIndex).Tag = tTag
         pnlListImage_Panel(iIndex).Top = iListImage_NextTop
-
-        'If image is marked as duplicate display it in different color
-        If tImage.IsDuplicate Then
-            lblListImage_Scraper(iIndex).Text = tTag.Image.Scraper & " DUPLICATE"
-            pnlListImage_Panel(iIndex).BackColor = Color.Tomato
-            lblListImage_DiscType(iIndex).BackColor = Color.Tomato
-            lblListImage_Language(iIndex).BackColor = Color.Tomato
-            lblListImage_Scraper(iIndex).BackColor = Color.Tomato
-            lblListImageList_Resolution(iIndex).BackColor = Color.Tomato
-        End If
 
         pnlImgSelectMain.Controls.Add(pnlListImage_Panel(iIndex))
         pnlListImage_Panel(iIndex).Controls.Add(pbListImage_Image(iIndex))
@@ -417,8 +416,8 @@ Public Class dlgImgSelect
         lblSubImage_Title(iIndex).Text = tTag.strSeason
         lblSubImage_Title(iIndex).TextAlign = ContentAlignment.MiddleCenter
         pbSubImage_Image(iIndex).ContextMenuStrip = cmnuSubImage
-        pbSubImage_Image(iIndex).Image = If(tImage.ImageOriginal.Image IsNot Nothing, CType(tImage.ImageOriginal.Image.Clone(), Image),
-            If(tImage.ImageThumb.Image IsNot Nothing, CType(tImage.ImageThumb.Image.Clone(), Image), Nothing))
+        pbSubImage_Image(iIndex).Image = If(tImage.ImageThumb.Image IsNot Nothing, tImage.ImageThumb.Image,
+            If(tImage.ImageOriginal.Image IsNot Nothing, tImage.ImageOriginal.Image, Nothing))
         pbSubImage_Image(iIndex).Location = iSubImage_Location_Image
         pbSubImage_Image(iIndex).Name = iIndex.ToString
         pbSubImage_Image(iIndex).Size = iSubImage_Size_Image
@@ -483,8 +482,8 @@ Public Class dlgImgSelect
         lblTopImage_Title(iIndex).Text = tTag.strTitle
         lblTopImage_Title(iIndex).TextAlign = ContentAlignment.MiddleCenter
         pbTopImage_Image(iIndex).ContextMenuStrip = cmnuTopImage
-        pbTopImage_Image(iIndex).Image = If(tImage.ImageOriginal.Image IsNot Nothing, CType(tImage.ImageOriginal.Image.Clone(), Image),
-            If(tImage.ImageThumb.Image IsNot Nothing, CType(tImage.ImageThumb.Image.Clone(), Image), Nothing))
+        pbTopImage_Image(iIndex).Image = If(tImage.ImageThumb.Image IsNot Nothing, tImage.ImageThumb.Image,
+            If(tImage.ImageOriginal.Image IsNot Nothing, tImage.ImageOriginal.Image, Nothing))
         pbTopImage_Image(iIndex).Location = iTopImage_Location_Image
         pbTopImage_Image(iIndex).Name = iIndex.ToString
         pbTopImage_Image(iIndex).Size = iTopImage_Size_Image
@@ -2015,8 +2014,8 @@ Public Class dlgImgSelect
                         pbSubImage_Image(iIndex).Tag = tTag
                         lblSubImage_Title(iIndex).Tag = tTag
                         lblSubImage_Resolution(iIndex).Tag = tTag
-                        pbSubImage_Image(iIndex).Image = If(tTag.Image.ImageOriginal.Image IsNot Nothing, CType(tTag.Image.ImageOriginal.Image.Clone(), Image),
-                                                         If(tTag.Image.ImageThumb.Image IsNot Nothing, CType(tTag.Image.ImageThumb.Image.Clone(), Image), Nothing))
+                        pbSubImage_Image(iIndex).Image = If(tTag.Image.ImageThumb.Image IsNot Nothing, tTag.Image.ImageThumb.Image,
+                            If(tTag.Image.ImageOriginal.Image IsNot Nothing, tTag.Image.ImageOriginal.Image, Nothing))
                     End If
                 End If
             Next
@@ -2034,8 +2033,8 @@ Public Class dlgImgSelect
                         pbTopImage_Image(iIndex).Tag = tTag
                         lblTopImage_Title(iIndex).Tag = tTag
                         lblTopImage_Resolution(iIndex).Tag = tTag
-                        pbTopImage_Image(iIndex).Image = If(tTag.Image.ImageOriginal.Image IsNot Nothing, CType(tTag.Image.ImageOriginal.Image.Clone(), Image),
-                                                         If(tTag.Image.ImageThumb.Image IsNot Nothing, CType(tTag.Image.ImageThumb.Image.Clone(), Image), Nothing))
+                        pbTopImage_Image(iIndex).Image = If(tTag.Image.ImageThumb.Image IsNot Nothing, tTag.Image.ImageThumb.Image,
+                            If(tTag.Image.ImageOriginal.Image IsNot Nothing, tTag.Image.ImageOriginal.Image, Nothing))
                     End If
                 End If
             Next
