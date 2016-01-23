@@ -280,7 +280,6 @@ Partial Public Class clsXMLSettings
     Private _moviesetposterprefsize As Enums.MoviePosterSize
     Private _moviesetposterresize As Boolean
     Private _moviesetposterwidth As Integer
-    Private _moviesets As New List(Of String)
     Private _moviesetscraperplot As Boolean
     Private _moviesetscrapertitle As Boolean
     Private _movieskiplessthan As Integer
@@ -4499,15 +4498,6 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Integer)
             Me._tvseasonposterwidth = value
-        End Set
-    End Property
-
-    Public Property MovieSets() As List(Of String)
-        Get
-            Return Me._moviesets
-        End Get
-        Set(ByVal value As List(Of String))
-            Me._moviesets = value
         End Set
     End Property
 
