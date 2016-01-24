@@ -905,6 +905,7 @@ Namespace Kodi
                 'search Movie ID in Kodi DB
                 Dim KodiElement As Video.Details.Movie = Await GetFullDetailsByID_Movie(Await GetMediaID(uMovie))
 
+                'scan movie path
                 If KodiElement Is Nothing Then
                     logger.Trace(String.Format("[APIKodi] [{0}] UpdateMovieInfo: ""{1}"" | NOT found in database, scan directory on host...", _currenthost.Label, uMovie.Movie.Title))
                     Await VideoLibrary_ScanPath(uMovie).ConfigureAwait(False)
@@ -1191,21 +1192,10 @@ Namespace Kodi
                 'search TV Episode ID in Kodi DB
                 Dim KodiElement As Video.Details.Episode = Await GetFullDetailsByID_TVEpisode(Await GetMediaID(uEpisode))
 
-                'scan episode path
+                'scan tv show path
                 If KodiElement Is Nothing Then
                     logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVEpisodeInfo: ""{1}"" | NOT found in database, scan directory on host...", _currenthost.Label, uEpisode.TVEpisode.Title))
                     Await VideoLibrary_ScanPath(uEpisode).ConfigureAwait(False)
-                    While Await IsScanningVideo()
-                        Threading.Thread.Sleep(1000)
-                    End While
-                    KodiElement = Await GetFullDetailsByID_TVEpisode(Await GetMediaID(uEpisode))
-                    If KodiElement IsNot Nothing Then bIsNew = True
-                End If
-
-                'scan tv show path path
-                If KodiElement Is Nothing Then
-                    logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVEpisodeInfo: ""{1}"" | NOT found in database, scan directory on host...", _currenthost.Label, uEpisode.TVEpisode.Title))
-                    Await VideoLibrary_ScanPath(uEpisode, True).ConfigureAwait(False)
                     While Await IsScanningVideo()
                         Threading.Thread.Sleep(1000)
                     End While
@@ -1340,6 +1330,7 @@ Namespace Kodi
                 'search Movie ID in Kodi DB
                 Dim KodiElement As Video.Details.Season = Await GetFullDetailsByID_TVSeason(Await GetMediaID(uSeason))
 
+                'scan tv show path
                 If KodiElement Is Nothing Then
                     logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVSeasonInfo: ""{1}: Season {2}"" | NOT found in database, scan directory on host...", _currenthost.Label, uSeason.ShowPath, uSeason.TVSeason.Season))
                     Await VideoLibrary_ScanPath(uSeason).ConfigureAwait(False)
@@ -1421,6 +1412,7 @@ Namespace Kodi
                 'search Movie ID in Kodi DB
                 Dim KodiElement As Video.Details.TVShow = Await GetFullDetailsByID_TVShow(Await GetMediaID(uTVShow))
 
+                'scan tv show path
                 If KodiElement Is Nothing Then
                     logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVShowInfo: ""{1}"" | NOT found in database, scan directory on host...", _currenthost.Label, uTVShow.TVShow.Title))
                     Await VideoLibrary_ScanPath(uTVShow).ConfigureAwait(False)
