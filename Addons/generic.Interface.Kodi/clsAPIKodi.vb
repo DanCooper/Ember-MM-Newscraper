@@ -1608,18 +1608,12 @@ Namespace Kodi
                 Return Nothing
             End Try
         End Function
-
         ''' <summary>
         ''' Scan specific directory for new content
         ''' </summary>
-        ''' <param name="EmbervideofileID">ID of specific videoitem (EmberDB)</param>
-        ''' <param name="EmbervideofileID">type of videoitem (EmberDB), at the moment following is supported: movie, tvshow, episode</param>
-        ''' <returns>true=Update successfull, false=error</returns>
-        ''' Notice: No exception handling here because this function is called/nested in other functions and an exception must not be consumed (meaning a disconnect host would not be recognized at once)
-        ''' <remarks>
-        ''' 2015/06/27 Cocotus - First implementation
-        ''' </remarks>
-        Public Async Function VideoLibrary_ScanPath(ByVal tDBElement As Database.DBElement, Optional ByVal bUseShowPath As Boolean = False) As Task(Of Boolean)
+        ''' <param name="tDBElement"></param>
+        ''' <returns></returns>
+        Public Async Function VideoLibrary_ScanPath(ByVal tDBElement As Database.DBElement) As Task(Of Boolean)
             If _kodi Is Nothing Then
                 logger.Error("[APIKodi] ScanVideoPath: No host initialized! Abort!")
                 Return Nothing
@@ -1646,29 +1640,12 @@ Namespace Kodi
                             strLocalPath = Directory.GetParent(tDBElement.Filename).FullName
                         End If
                     End If
-                Case Enums.ContentType.TVSeason, Enums.ContentType.TVShow
-                    If FileUtils.Common.isBDRip(tDBElement.ShowPath) Then
-                        'needs some testing?!
-                        strLocalPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(tDBElement.ShowPath).FullName).FullName).FullName
-                    ElseIf FileUtils.Common.isVideoTS(tDBElement.ShowPath) Then
-                        'needs some testing?!
-                        strLocalPath = Directory.GetParent(Directory.GetParent(tDBElement.ShowPath).FullName).FullName
-                    Else
-                        strLocalPath = tDBElement.ShowPath
-                    End If
-                Case Enums.ContentType.TVEpisode
-                    If Not bUseShowPath Then
-                        If FileUtils.Common.isBDRip(tDBElement.Filename) Then
-                            'needs some testing?!
-                            strLocalPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(tDBElement.Filename).FullName).FullName).FullName
-                        ElseIf FileUtils.Common.isVideoTS(tDBElement.Filename) Then
-                            'needs some testing?!
-                            strLocalPath = Directory.GetParent(Directory.GetParent(tDBElement.Filename).FullName).FullName
-                        Else
-                            strLocalPath = Directory.GetParent(tDBElement.Filename).FullName
-                        End If
-                    Else
-                        strLocalPath = tDBElement.ShowPath
+                Case Enums.ContentType.TVEpisode, Enums.ContentType.TVSeason, Enums.ContentType.TVShow
+                    'workaround for bug in Kodi JSON (needs DirectorySeparatorChar at the end of path to recognize new tv shows)
+                    If tDBElement.ShowPath.Contains(Path.DirectorySeparatorChar) Then
+                        strLocalPath = String.Concat(tDBElement.ShowPath, Path.DirectorySeparatorChar)
+                    ElseIf tDBElement.ShowPath.Contains(Path.AltDirectorySeparatorChar) Then
+                        strLocalPath = String.Concat(tDBElement.ShowPath, Path.AltDirectorySeparatorChar)
                     End If
                 Case Else
                     logger.Warn(String.Format("[APIKodi] [{0}] ScanVideoPath: No videotype specified! Abort!", _currenthost.Label))
