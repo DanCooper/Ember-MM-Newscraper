@@ -5543,7 +5543,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(ProjectDir)$(PlatformName)" "$(TargetDir)Bin" /E /I /R /Y
-del "$(TargetDir)Bin\SQLite.Interop.dll" /F /Q</PostBuildEvent>
+del "$(TargetDir)Bin\SQLite.Interop.dll" /F /Q
+xcopy "$(TargetDir)Modules\AxInterop.AXVLC.dll" "$(TargetDir)" /E /I /R /Y
+xcopy "$(TargetDir)Modules\Interop.AXVLC.dll" "$(TargetDir)" /E /I /R /Y</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

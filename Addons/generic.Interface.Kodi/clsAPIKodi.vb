@@ -18,11 +18,12 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports NLog
 Imports EmberAPI
-Imports XBMCRPC
-Imports System.IO
 Imports generic.Interface.Kodi.KodiInterface
+Imports NLog
+Imports System.IO
+Imports System.Text.RegularExpressions
+Imports XBMCRPC
 
 Namespace Kodi
 
@@ -414,7 +415,7 @@ Namespace Kodi
                         tRemoteSource = If(Source.RemotePath.EndsWith(Path.AltDirectorySeparatorChar), Source.RemotePath, String.Concat(Source.RemotePath, Path.AltDirectorySeparatorChar)).Trim
                         bRemoteIsUNC = True
                     End If
-                    strRemotePath = strLocalPath.ToLower.Replace(tLocalSource.ToLower, tRemoteSource)
+                    strRemotePath = Regex.Replace(strLocalPath, Regex.Escape(tLocalSource), tRemoteSource, RegexOptions.IgnoreCase)
                     If bRemoteIsUNC Then
                         strRemotePath = strRemotePath.Replace(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
                     Else
@@ -458,7 +459,7 @@ Namespace Kodi
                         tRemoteSource = If(HostPath.EndsWith(Path.AltDirectorySeparatorChar), HostPath, String.Concat(HostPath, Path.AltDirectorySeparatorChar)).Trim
                         RemoteIsUNC = True
                     End If
-                    RemotePath = strLocalPath.Replace(tLocalSource, tRemoteSource)
+                    RemotePath = Regex.Replace(strLocalPath, Regex.Escape(tLocalSource), tRemoteSource, RegexOptions.IgnoreCase)
                     If RemoteIsUNC Then
                         RemotePath = RemotePath.Replace(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
                     Else
@@ -904,6 +905,7 @@ Namespace Kodi
                 'search Movie ID in Kodi DB
                 Dim KodiElement As Video.Details.Movie = Await GetFullDetailsByID_Movie(Await GetMediaID(uMovie))
 
+                'scan movie path
                 If KodiElement Is Nothing Then
                     logger.Trace(String.Format("[APIKodi] [{0}] UpdateMovieInfo: ""{1}"" | NOT found in database, scan directory on host...", _currenthost.Label, uMovie.Movie.Title))
                     Await VideoLibrary_ScanPath(uMovie).ConfigureAwait(False)
@@ -1190,21 +1192,10 @@ Namespace Kodi
                 'search TV Episode ID in Kodi DB
                 Dim KodiElement As Video.Details.Episode = Await GetFullDetailsByID_TVEpisode(Await GetMediaID(uEpisode))
 
-                'scan episode path
+                'scan tv show path
                 If KodiElement Is Nothing Then
                     logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVEpisodeInfo: ""{1}"" | NOT found in database, scan directory on host...", _currenthost.Label, uEpisode.TVEpisode.Title))
                     Await VideoLibrary_ScanPath(uEpisode).ConfigureAwait(False)
-                    While Await IsScanningVideo()
-                        Threading.Thread.Sleep(1000)
-                    End While
-                    KodiElement = Await GetFullDetailsByID_TVEpisode(Await GetMediaID(uEpisode))
-                    If KodiElement IsNot Nothing Then bIsNew = True
-                End If
-
-                'scan tv show path path
-                If KodiElement Is Nothing Then
-                    logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVEpisodeInfo: ""{1}"" | NOT found in database, scan directory on host...", _currenthost.Label, uEpisode.TVEpisode.Title))
-                    Await VideoLibrary_ScanPath(uEpisode, True).ConfigureAwait(False)
                     While Await IsScanningVideo()
                         Threading.Thread.Sleep(1000)
                     End While
@@ -1339,6 +1330,7 @@ Namespace Kodi
                 'search Movie ID in Kodi DB
                 Dim KodiElement As Video.Details.Season = Await GetFullDetailsByID_TVSeason(Await GetMediaID(uSeason))
 
+                'scan tv show path
                 If KodiElement Is Nothing Then
                     logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVSeasonInfo: ""{1}: Season {2}"" | NOT found in database, scan directory on host...", _currenthost.Label, uSeason.ShowPath, uSeason.TVSeason.Season))
                     Await VideoLibrary_ScanPath(uSeason).ConfigureAwait(False)
@@ -1420,6 +1412,7 @@ Namespace Kodi
                 'search Movie ID in Kodi DB
                 Dim KodiElement As Video.Details.TVShow = Await GetFullDetailsByID_TVShow(Await GetMediaID(uTVShow))
 
+                'scan tv show path
                 If KodiElement Is Nothing Then
                     logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVShowInfo: ""{1}"" | NOT found in database, scan directory on host...", _currenthost.Label, uTVShow.TVShow.Title))
                     Await VideoLibrary_ScanPath(uTVShow).ConfigureAwait(False)
@@ -1607,18 +1600,12 @@ Namespace Kodi
                 Return Nothing
             End Try
         End Function
-
         ''' <summary>
         ''' Scan specific directory for new content
         ''' </summary>
-        ''' <param name="EmbervideofileID">ID of specific videoitem (EmberDB)</param>
-        ''' <param name="EmbervideofileID">type of videoitem (EmberDB), at the moment following is supported: movie, tvshow, episode</param>
-        ''' <returns>true=Update successfull, false=error</returns>
-        ''' Notice: No exception handling here because this function is called/nested in other functions and an exception must not be consumed (meaning a disconnect host would not be recognized at once)
-        ''' <remarks>
-        ''' 2015/06/27 Cocotus - First implementation
-        ''' </remarks>
-        Public Async Function VideoLibrary_ScanPath(ByVal tDBElement As Database.DBElement, Optional ByVal bUseShowPath As Boolean = False) As Task(Of Boolean)
+        ''' <param name="tDBElement"></param>
+        ''' <returns></returns>
+        Public Async Function VideoLibrary_ScanPath(ByVal tDBElement As Database.DBElement) As Task(Of Boolean)
             If _kodi Is Nothing Then
                 logger.Error("[APIKodi] ScanVideoPath: No host initialized! Abort!")
                 Return Nothing
@@ -1645,29 +1632,12 @@ Namespace Kodi
                             strLocalPath = Directory.GetParent(tDBElement.Filename).FullName
                         End If
                     End If
-                Case Enums.ContentType.TVSeason, Enums.ContentType.TVShow
-                    If FileUtils.Common.isBDRip(tDBElement.ShowPath) Then
-                        'needs some testing?!
-                        strLocalPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(tDBElement.ShowPath).FullName).FullName).FullName
-                    ElseIf FileUtils.Common.isVideoTS(tDBElement.ShowPath) Then
-                        'needs some testing?!
-                        strLocalPath = Directory.GetParent(Directory.GetParent(tDBElement.ShowPath).FullName).FullName
-                    Else
-                        strLocalPath = tDBElement.ShowPath
-                    End If
-                Case Enums.ContentType.TVEpisode
-                    If Not bUseShowPath Then
-                        If FileUtils.Common.isBDRip(tDBElement.Filename) Then
-                            'needs some testing?!
-                            strLocalPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(tDBElement.Filename).FullName).FullName).FullName
-                        ElseIf FileUtils.Common.isVideoTS(tDBElement.Filename) Then
-                            'needs some testing?!
-                            strLocalPath = Directory.GetParent(Directory.GetParent(tDBElement.Filename).FullName).FullName
-                        Else
-                            strLocalPath = Directory.GetParent(tDBElement.Filename).FullName
-                        End If
-                    Else
-                        strLocalPath = tDBElement.ShowPath
+                Case Enums.ContentType.TVEpisode, Enums.ContentType.TVSeason, Enums.ContentType.TVShow
+                    'workaround for bug in Kodi JSON (needs DirectorySeparatorChar at the end of path to recognize new tv shows)
+                    If tDBElement.ShowPath.Contains(Path.DirectorySeparatorChar) Then
+                        strLocalPath = String.Concat(tDBElement.ShowPath, Path.DirectorySeparatorChar)
+                    ElseIf tDBElement.ShowPath.Contains(Path.AltDirectorySeparatorChar) Then
+                        strLocalPath = String.Concat(tDBElement.ShowPath, Path.AltDirectorySeparatorChar)
                     End If
                 Case Else
                     logger.Warn(String.Format("[APIKodi] [{0}] ScanVideoPath: No videotype specified! Abort!", _currenthost.Label))

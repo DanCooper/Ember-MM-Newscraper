@@ -2950,8 +2950,6 @@ Public Class Images
             Next
         End If
 
-
-
         If (imgResultList Is Nothing OrElse imgResultList.Count < iLimit) AndAlso Not Master.eSettings.MovieExtrafanartsPrefSizeOnly AndAlso Not Master.eSettings.MovieExtrafanartsPrefSize = Enums.MovieFanartSize.Any Then
             For Each img As MediaContainers.Image In ImageList.Where(Function(f) Not String.IsNullOrEmpty(f.URLOriginal))
                 imgResultList.Add(img)
@@ -2965,7 +2963,7 @@ Public Class Images
 
         If DoCalculateDuplicaImages = True Then
             'make sure that extraimages is not the same as main image of movie (i.e. fanart.jpg of movie should not be part of extrafanart)
-            FindDuplicateImages(imgResultList, EmberAPI.Enums.ContentType.Movie, CurrentImage:=CurrentMovieFanart, MatchTolerance:=Master.eSettings.GeneralImageFilterFanartMatchTolerance, Limit:=iLimit)
+            FindDuplicateImages(imgResultList, Enums.ContentType.Movie, CurrentImage:=CurrentMovieFanart, MatchTolerance:=Master.eSettings.GeneralImageFilterFanartMatchTolerance, Limit:=iLimit)
         End If
 
         'If Master.eSettings.MovieFanartPrefSize = Enums.MovieFanartSize.Any Then
@@ -3035,7 +3033,7 @@ Public Class Images
 
         If DoCalculateDuplicaImages = True Then
             'make sure that extraimages is not the same as main image of movie (i.e. fanart.jpg of movie should not be part of extrafanart)
-            FindDuplicateImages(imgResultList, EmberAPI.Enums.ContentType.Movie, CurrentImage:=CurrentMovieFanart, MatchTolerance:=Master.eSettings.GeneralImageFilterFanartMatchTolerance, Limit:=iLimit)
+            FindDuplicateImages(imgResultList, Enums.ContentType.Movie, CurrentImage:=CurrentMovieFanart, MatchTolerance:=Master.eSettings.GeneralImageFilterFanartMatchTolerance, Limit:=iLimit)
         End If
 
         'If Master.eSettings.MovieFanartPrefSize = Enums.MovieFanartSize.Any Then

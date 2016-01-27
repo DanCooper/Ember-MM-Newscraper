@@ -125,14 +125,19 @@ Public Class NFO
                     DBMovie.Movie.Certifications.AddRange(scrapedmovie.Certifications)
                     new_Certification = True
                 Else
-                    For Each tCert In scrapedmovie.Certifications
-                        If tCert.StartsWith(APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.MovieScraperCertLang).name) Then
-                            DBMovie.Movie.Certifications.Clear()
-                            DBMovie.Movie.Certifications.Add(tCert)
-                            new_Certification = True
-                            Exit For
-                        End If
-                    Next
+                    Dim CertificationLanguage = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.MovieScraperCertLang)
+                    If CertificationLanguage IsNot Nothing AndAlso CertificationLanguage.name IsNot Nothing AndAlso Not String.IsNullOrEmpty(CertificationLanguage.name) Then
+                        For Each tCert In scrapedmovie.Certifications
+                            If tCert.StartsWith(CertificationLanguage.name) Then
+                                DBMovie.Movie.Certifications.Clear()
+                                DBMovie.Movie.Certifications.Add(tCert)
+                                new_Certification = True
+                                Exit For
+                            End If
+                        Next
+                    Else
+                        logger.Error("Movie Certification Language (Limit) not found. Please check your settings!")
+                    End If
                 End If
             ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperCert AndAlso Not Master.eSettings.MovieLockCert Then
                 DBMovie.Movie.Certifications.Clear()
@@ -575,14 +580,19 @@ Public Class NFO
                     DBTV.TVShow.Certifications.AddRange(scrapedshow.Certifications)
                     new_Certification = True
                 Else
-                    For Each tCert In scrapedshow.Certifications
-                        If tCert.StartsWith(APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.TVScraperShowCertLang).name) Then
-                            DBTV.TVShow.Certifications.Clear()
-                            DBTV.TVShow.Certifications.Add(tCert)
-                            new_Certification = True
-                            Exit For
-                        End If
-                    Next
+                    Dim CertificationLanguage = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.TVScraperShowCertLang)
+                    If CertificationLanguage IsNot Nothing AndAlso CertificationLanguage.name IsNot Nothing AndAlso Not String.IsNullOrEmpty(CertificationLanguage.name) Then
+                        For Each tCert In scrapedshow.Certifications
+                            If tCert.StartsWith(CertificationLanguage.name) Then
+                                DBTV.TVShow.Certifications.Clear()
+                                DBTV.TVShow.Certifications.Add(tCert)
+                                new_Certification = True
+                                Exit For
+                            End If
+                        Next
+                    Else
+                        logger.Error("TV Show Certification Language (Limit) not found. Please check your settings!")
+                    End If
                 End If
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowCert AndAlso Not Master.eSettings.TVLockShowCert Then
                 DBTV.TVShow.Certifications.Clear()

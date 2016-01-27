@@ -136,7 +136,7 @@ Public Class dlgEditMovie
             pbExtrafanartsImage(iIndex).SizeMode = PictureBoxSizeMode.Zoom
             pnlExtrafanartsImage(iIndex).Tag = tImage
             pbExtrafanartsImage(iIndex).Tag = tImage
-            pbExtrafanartsImage(iIndex).Image = CType(tImage.ImageOriginal.Image.Clone(), Image)
+            pbExtrafanartsImage(iIndex).Image = tImage.ImageOriginal.Image
             pnlExtrafanartsImage(iIndex).Left = iEFLeft
             pbExtrafanartsImage(iIndex).Left = 0
             pnlExtrafanartsImage(iIndex).Top = iEFTop
@@ -173,7 +173,7 @@ Public Class dlgEditMovie
             pbExtrathumbsImage(iIndex).SizeMode = PictureBoxSizeMode.Zoom
             pnlExtrathumbsImage(iIndex).Tag = tImage
             pbExtrathumbsImage(iIndex).Tag = tImage
-            pbExtrathumbsImage(iIndex).Image = CType(tImage.ImageOriginal.Image.Clone(), Image)
+            pbExtrathumbsImage(iIndex).Image = tImage.ImageOriginal.Image
             pnlExtrathumbsImage(iIndex).Left = iETLeft
             pbExtrathumbsImage(iIndex).Left = 0
             pnlExtrathumbsImage(iIndex).Top = iETTop
