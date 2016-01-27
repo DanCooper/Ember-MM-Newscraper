@@ -1,8 +1,83 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
+# Visual Studio 2012
+# SharpDevelop 4.4
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Addons", "Addons", "{4FD2B635-11BD-4532-96F6-97ECB41072A1}"
+	ProjectSection(SolutionItems) = postProject
+	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.BulkRename", "Addons\generic.EmberCore.BulkRename\generic.EmberCore.BulkRename.vbproj", "{EAAB0601-6478-44D2-A39C-89B0850D7833}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.Extractor", "Addons\generic.EmberCore.Extractor\generic.EmberCore.Extractor.vbproj", "{B413DEAF-4FDC-416A-B3E0-968C1C8F3F83}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.MediaFileManager", "Addons\generic.EmberCore.MediaFileManager\generic.EmberCore.MediaFileManager.vbproj", "{F6CACA89-E8E4-45D9-B942-97FBD4ADD106}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.MovieExporter", "Addons\generic.EmberCore.MovieExport\generic.EmberCore.MovieExporter.vbproj", "{B0BDF9C2-EB9C-4090-B9A9-B703DF00CCEF}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.Compatibility.NMT", "Addons\generic.EmberCore.NMT\generic.Compatibility.NMT.vbproj", "{84B2143A-D04F-4262-923D-21AEDF86E2B7}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.Notifications", "Addons\generic.EmberCore.Notifications\generic.EmberCore.Notifications.vbproj", "{2A08A524-88DA-432F-92E6-8DC63C5376DA}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Image.FanartTV", "Addons\scraper.FanartTV.Poster\scraper.Image.FanartTV.vbproj", "{A5277330-A443-46AB-A058-016A3B6AF8AC}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Image.IMPA", "Addons\scraper.IMPA.Poster\scraper.Image.IMPA.vbproj", "{D9878E03-87D7-429E-AA0C-A7116A31FA7F}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Image.MPDB", "Addons\scraper.MPDB.Poster\scraper.Image.MPDB.vbproj", "{72A8EF23-3379-4C72-B212-A14A3C286D9C}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Data.OFDB", "Addons\scraper.OFDB.Data\scraper.Data.OFDB.vbproj", "{39C49E1A-75BA-4AD1-9286-58E83D22BC1E}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Data.TMDB", "Addons\scraper.TMDB.Data\scraper.Data.TMDB.vbproj", "{A9188CF1-BD07-4D24-BC4A-906A43012F37}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Image.TMDB", "Addons\scraper.TMDB.Poster\scraper.Image.TMDB.vbproj", "{2B684C20-7E1A-4DA0-8C26-96DA1407B2C3}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Image.IMDB", "Addons\scraper.IMDB.Poster\scraper.Image.IMDB.vbproj", "{33F99994-12CA-4FAB-B62D-741F7AE35F4B}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Trailer.IMDB", "Addons\scraper.IMDB.Trailer\scraper.Trailer.IMDB.vbproj", "{194445BE-3721-4270-984D-FA978D5F34A0}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Trailer.TMDB", "Addons\scraper.TMDB.Trailer\scraper.Trailer.TMDB.vbproj", "{0BEBA16B-9A83-4BD5-A476-B366451F0907}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.Trakt", "Addons\generic.EmberCore.Trakt\generic.EmberCore.Trakt.vbproj", "{6F30E40B-6D85-4EE7-9474-5F82E96E1817}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.MediaSources", "Addons\generic.EmberCore.MediaSources\generic.EmberCore.MediaSources.vbproj", "{386116B7-7870-4F91-9DEC-C79062882E3E}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.MetadataEditor", "Addons\generic.Embercore.MetadataEditor\generic.EmberCore.MetadataEditor.vbproj", "{17FE77F6-AD33-4798-A677-926D1453B31E}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.GenresEditor", "Addons\generic.EmberCore.GenresEditor\generic.EmberCore.GenresEditor.vbproj", "{5B501BD8-D4BC-4719-B708-D4B91E3530D1}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.Compatibility.MediaBrowser", "Addons\generic.Compatibility.MediaBrowser\generic.Compatibility.MediaBrowser.vbproj", "{2918A276-E3E5-4625-A411-6863C6D29EE6}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Data.MoviepilotDE", "Addons\scraper.MoviepilotDE.Data\scraper.Data.MoviepilotDE.vbproj", "{5F7F16F4-1BE8-47FF-B48B-2527D4971645}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Theme.GoEar", "Addons\scraper.goear.Theme\scraper.Theme.GoEar.vbproj", "{4BFA47CB-1110-4BB5-9178-3B6EF98BC4EB}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Theme.TelevisionTunes", "Addons\scraper.TelevisionTunes.Theme\scraper.Theme.TelevisionTunes.vbproj", "{974598ED-C19D-41CA-9771-4DE837D708BC}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Trailer.Apple", "Addons\scraper.Apple.Trailer\scraper.Trailer.Apple.vbproj", "{3E5F4B11-1425-44CA-8146-309BEB292E97}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Data.IMDB", "Addons\scraper.IMDB.Data\scraper.Data.IMDB.vbproj", "{D3C1A3C4-A060-40DF-ACE4-143F7F102A24}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Trailer.HDTrailersNET", "Addons\scraper.HDTrailersNet.Trailer\scraper.Trailer.HDTrailersNET.vbproj", "{8F360D62-6DB6-442F-AB7C-80B8CFD4D89F}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Trailer.Davestrailerpage", "Addons\scraper.Davestrailerpage.Trailer\scraper.Trailer.Davestrailerpage.vbproj", "{2113C1FB-C2C9-437C-AAC3-D72507739F14}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.TagManager", "Addons\generic.EmberCore.TagManager\generic.EmberCore.TagManager.vbproj", "{E5B54E27-B13B-4C5D-BD3E-941837C4A598}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.MediaListEditor", "Addons\generic.EmberCore.FilterEditor\generic.EmberCore.MediaListEditor.vbproj", "{34933AD1-8691-44B9-BDB4-4BF022C34552}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Image.TVDB", "Addons\scraper.Image.TVDB\scraper.Image.TVDB.vbproj", "{D9441890-33EF-48DF-BCB9-BAC4FD749F89}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.ContextMenu", "Addons\generic.EmberCore.ContextMenu\generic.EmberCore.ContextMenu.vbproj", "{479B8D9D-8862-4919-88A2-59DF5AB328FE}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Data.TVDB", "Addons\scraper.Data.TVDB\scraper.Data.TVDB.vbproj", "{087BE07B-00AF-4B65-B988-6889C0D31568}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Trailer.YouTube", "Addons\scraper.Trailer.YouTube\scraper.Trailer.YouTube.vbproj", "{C2B5C245-6D01-47D0-812F-895C6C3C3393}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Trailer.VideobusterDE", "Addons\scraper.Trailer.VideobusterDE\scraper.Trailer.VideobusterDE.vbproj", "{8ECB31A8-60E7-45C9-9D9B-5DDD0C3C6302}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Data.Trakttv", "Addons\scraper.Trakttv.Data\scraper.Data.Trakttv.vbproj", "{953436C0-3624-4594-8E00-D3487EB197A7}"
+EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EmberMediaManager", "EmberMediaManager\EmberMediaManager.vbproj", "{9B57D3AB-AF12-4012-B945-284C2448DC81}"
 	ProjectSection(ProjectDependencies) = postProject
 		{EAAB0601-6478-44D2-A39C-89B0850D7833} = {EAAB0601-6478-44D2-A39C-89B0850D7833}
@@ -45,91 +120,7 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EmberMediaManager", "EmberM
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EmberAPI", "EmberAPI\EmberAPI.vbproj", "{208AA35E-C6AE-4D2D-A9DD-B6EFD19A4279}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Addons", "Addons", "{4FD2B635-11BD-4532-96F6-97ECB41072A1}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.BulkRename", "Addons\generic.EmberCore.BulkRename\generic.EmberCore.BulkRename.vbproj", "{EAAB0601-6478-44D2-A39C-89B0850D7833}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.Extractor", "Addons\generic.EmberCore.Extractor\generic.EmberCore.Extractor.vbproj", "{B413DEAF-4FDC-416A-B3E0-968C1C8F3F83}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.MediaFileManager", "Addons\generic.EmberCore.MediaFileManager\generic.EmberCore.MediaFileManager.vbproj", "{F6CACA89-E8E4-45D9-B942-97FBD4ADD106}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.MovieExporter", "Addons\generic.EmberCore.MovieExport\generic.EmberCore.MovieExporter.vbproj", "{B0BDF9C2-EB9C-4090-B9A9-B703DF00CCEF}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.Compatibility.NMT", "Addons\generic.EmberCore.NMT\generic.Compatibility.NMT.vbproj", "{84B2143A-D04F-4262-923D-21AEDF86E2B7}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.Notifications", "Addons\generic.EmberCore.Notifications\generic.EmberCore.Notifications.vbproj", "{2A08A524-88DA-432F-92E6-8DC63C5376DA}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Image.FanartTV", "Addons\scraper.FanartTV.Poster\scraper.Image.FanartTV.vbproj", "{A5277330-A443-46AB-A058-016A3B6AF8AC}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Image.IMPA", "Addons\scraper.IMPA.Poster\scraper.Image.IMPA.vbproj", "{D9878E03-87D7-429E-AA0C-A7116A31FA7F}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Image.MPDB", "Addons\scraper.MPDB.Poster\scraper.Image.MPDB.vbproj", "{72A8EF23-3379-4C72-B212-A14A3C286D9C}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Data.OFDB", "Addons\scraper.OFDB.Data\scraper.Data.OFDB.vbproj", "{39C49E1A-75BA-4AD1-9286-58E83D22BC1E}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Data.TMDB", "Addons\scraper.TMDB.Data\scraper.Data.TMDB.vbproj", "{A9188CF1-BD07-4D24-BC4A-906A43012F37}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Image.TMDB", "Addons\scraper.TMDB.Poster\scraper.Image.TMDB.vbproj", "{2B684C20-7E1A-4DA0-8C26-96DA1407B2C3}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Image.IMDB", "Addons\scraper.IMDB.Poster\scraper.Image.IMDB.vbproj", "{33F99994-12CA-4FAB-B62D-741F7AE35F4B}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Trailer.IMDB", "Addons\scraper.IMDB.Trailer\scraper.Trailer.IMDB.vbproj", "{194445BE-3721-4270-984D-FA978D5F34A0}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Trailer.TMDB", "Addons\scraper.TMDB.Trailer\scraper.Trailer.TMDB.vbproj", "{0BEBA16B-9A83-4BD5-A476-B366451F0907}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.Trakt", "Addons\generic.EmberCore.Trakt\generic.EmberCore.Trakt.vbproj", "{6F30E40B-6D85-4EE7-9474-5F82E96E1817}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.MediaSources", "Addons\generic.EmberCore.MediaSources\generic.EmberCore.MediaSources.vbproj", "{386116B7-7870-4F91-9DEC-C79062882E3E}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.MetadataEditor", "Addons\generic.Embercore.MetadataEditor\generic.EmberCore.MetadataEditor.vbproj", "{17FE77F6-AD33-4798-A677-926D1453B31E}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.GenresEditor", "Addons\generic.EmberCore.GenresEditor\generic.EmberCore.GenresEditor.vbproj", "{5B501BD8-D4BC-4719-B708-D4B91E3530D1}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.Compatibility.MediaBrowser", "Addons\generic.Compatibility.MediaBrowser\generic.Compatibility.MediaBrowser.vbproj", "{2918A276-E3E5-4625-A411-6863C6D29EE6}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trakttv", "Trakttv\Trakttv.csproj", "{857E14F3-060A-467E-9195-6165996D7BA3}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EmberAPI_Test", "EmberAPI_Test\EmberAPI_Test.vbproj", "{BFDAF0E3-A7AC-40E8-9CC8-8975838B7098}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Scraper_Test", "Scraper_Test\Scraper_Test.vbproj", "{125DE2A3-081B-41B2-9528-8BF387EB39C7}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "UnitTests", "UnitTests\UnitTests.vbproj", "{8160971E-1B33-4D0F-9355-2F8D3E833288}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Data.MoviepilotDE", "Addons\scraper.MoviepilotDE.Data\scraper.Data.MoviepilotDE.vbproj", "{5F7F16F4-1BE8-47FF-B48B-2527D4971645}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Theme.GoEar", "Addons\scraper.goear.Theme\scraper.Theme.GoEar.vbproj", "{4BFA47CB-1110-4BB5-9178-3B6EF98BC4EB}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Theme.TelevisionTunes", "Addons\scraper.TelevisionTunes.Theme\scraper.Theme.TelevisionTunes.vbproj", "{974598ED-C19D-41CA-9771-4DE837D708BC}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Trailer.Apple", "Addons\scraper.Apple.Trailer\scraper.Trailer.Apple.vbproj", "{3E5F4B11-1425-44CA-8146-309BEB292E97}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Data.IMDB", "Addons\scraper.IMDB.Data\scraper.Data.IMDB.vbproj", "{D3C1A3C4-A060-40DF-ACE4-143F7F102A24}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Trailer.HDTrailersNET", "Addons\scraper.HDTrailersNet.Trailer\scraper.Trailer.HDTrailersNET.vbproj", "{8F360D62-6DB6-442F-AB7C-80B8CFD4D89F}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Trailer.Davestrailerpage", "Addons\scraper.Davestrailerpage.Trailer\scraper.Trailer.Davestrailerpage.vbproj", "{2113C1FB-C2C9-437C-AAC3-D72507739F14}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.VLC", "Addons\generic.EmberCore.VLC\generic.EmberCore.VLC.vbproj", "{1E72DA8E-FAB2-41BC-92B1-F06A5D0C660A}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.TagManager", "Addons\generic.EmberCore.TagManager\generic.EmberCore.TagManager.vbproj", "{E5B54E27-B13B-4C5D-BD3E-941837C4A598}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.MediaListEditor", "Addons\generic.EmberCore.FilterEditor\generic.EmberCore.MediaListEditor.vbproj", "{34933AD1-8691-44B9-BDB4-4BF022C34552}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Image.TVDB", "Addons\scraper.Image.TVDB\scraper.Image.TVDB.vbproj", "{D9441890-33EF-48DF-BCB9-BAC4FD749F89}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.ContextMenu", "Addons\generic.EmberCore.ContextMenu\generic.EmberCore.ContextMenu.vbproj", "{479B8D9D-8862-4919-88A2-59DF5AB328FE}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.Interface.Kodi", "Addons\generic.Interface.Kodi\generic.Interface.Kodi.vbproj", "{6A95088D-E2A3-4CE3-ADFC-0D32DE3F3F76}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KodiAPI", "KodiAPI\KodiAPI.csproj", "{FE178193-F90C-42E8-BF0C-5D64E10AB6F0}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Data.TVDB", "Addons\scraper.Data.TVDB\scraper.Data.TVDB.vbproj", "{087BE07B-00AF-4B65-B988-6889C0D31568}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Trailer.YouTube", "Addons\scraper.Trailer.YouTube\scraper.Trailer.YouTube.vbproj", "{C2B5C245-6D01-47D0-812F-895C6C3C3393}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Trailer.VideobusterDE", "Addons\scraper.Trailer.VideobusterDE\scraper.Trailer.VideobusterDE.vbproj", "{8ECB31A8-60E7-45C9-9D9B-5DDD0C3C6302}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Data.Trakttv", "Addons\scraper.Trakttv.Data\scraper.Data.Trakttv.vbproj", "{953436C0-3624-4594-8E00-D3487EB197A7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -310,21 +301,6 @@ Global
 		{857E14F3-060A-467E-9195-6165996D7BA3}.Release|x64.Build.0 = Release|x64
 		{857E14F3-060A-467E-9195-6165996D7BA3}.Release|x86.ActiveCfg = Release|x86
 		{857E14F3-060A-467E-9195-6165996D7BA3}.Release|x86.Build.0 = Release|x86
-		{BFDAF0E3-A7AC-40E8-9CC8-8975838B7098}.Debug|x64.ActiveCfg = Debug|x64
-		{BFDAF0E3-A7AC-40E8-9CC8-8975838B7098}.Debug|x86.ActiveCfg = Debug|x86
-		{BFDAF0E3-A7AC-40E8-9CC8-8975838B7098}.Debug|x86.Build.0 = Debug|x86
-		{BFDAF0E3-A7AC-40E8-9CC8-8975838B7098}.Release|x64.ActiveCfg = Release|x64
-		{BFDAF0E3-A7AC-40E8-9CC8-8975838B7098}.Release|x86.ActiveCfg = Release|x86
-		{125DE2A3-081B-41B2-9528-8BF387EB39C7}.Debug|x64.ActiveCfg = Debug|x64
-		{125DE2A3-081B-41B2-9528-8BF387EB39C7}.Debug|x86.ActiveCfg = Debug|x86
-		{125DE2A3-081B-41B2-9528-8BF387EB39C7}.Debug|x86.Build.0 = Debug|x86
-		{125DE2A3-081B-41B2-9528-8BF387EB39C7}.Release|x64.ActiveCfg = Release|x64
-		{125DE2A3-081B-41B2-9528-8BF387EB39C7}.Release|x86.ActiveCfg = Release|x86
-		{8160971E-1B33-4D0F-9355-2F8D3E833288}.Debug|x64.ActiveCfg = Debug|x64
-		{8160971E-1B33-4D0F-9355-2F8D3E833288}.Debug|x86.ActiveCfg = Debug|x86
-		{8160971E-1B33-4D0F-9355-2F8D3E833288}.Debug|x86.Build.0 = Debug|x86
-		{8160971E-1B33-4D0F-9355-2F8D3E833288}.Release|x64.ActiveCfg = Release|x64
-		{8160971E-1B33-4D0F-9355-2F8D3E833288}.Release|x86.ActiveCfg = Release|x86
 		{5F7F16F4-1BE8-47FF-B48B-2527D4971645}.Debug|x64.ActiveCfg = Debug|x64
 		{5F7F16F4-1BE8-47FF-B48B-2527D4971645}.Debug|x64.Build.0 = Debug|x64
 		{5F7F16F4-1BE8-47FF-B48B-2527D4971645}.Debug|x86.ActiveCfg = Debug|x86
@@ -380,12 +356,6 @@ Global
 		{2113C1FB-C2C9-437C-AAC3-D72507739F14}.Release|x64.Build.0 = Release|x64
 		{2113C1FB-C2C9-437C-AAC3-D72507739F14}.Release|x86.ActiveCfg = Release|x86
 		{2113C1FB-C2C9-437C-AAC3-D72507739F14}.Release|x86.Build.0 = Release|x86
-		{1E72DA8E-FAB2-41BC-92B1-F06A5D0C660A}.Debug|x64.ActiveCfg = Debug|x64
-		{1E72DA8E-FAB2-41BC-92B1-F06A5D0C660A}.Debug|x86.ActiveCfg = Debug|x86
-		{1E72DA8E-FAB2-41BC-92B1-F06A5D0C660A}.Debug|x86.Build.0 = Debug|x86
-		{1E72DA8E-FAB2-41BC-92B1-F06A5D0C660A}.Release|x64.ActiveCfg = Release|x64
-		{1E72DA8E-FAB2-41BC-92B1-F06A5D0C660A}.Release|x86.ActiveCfg = Release|x86
-		{1E72DA8E-FAB2-41BC-92B1-F06A5D0C660A}.Release|x86.Build.0 = Release|x86
 		{E5B54E27-B13B-4C5D-BD3E-941837C4A598}.Debug|x64.ActiveCfg = Debug|x64
 		{E5B54E27-B13B-4C5D-BD3E-941837C4A598}.Debug|x64.Build.0 = Debug|x64
 		{E5B54E27-B13B-4C5D-BD3E-941837C4A598}.Debug|x86.ActiveCfg = Debug|x86
@@ -418,22 +388,6 @@ Global
 		{479B8D9D-8862-4919-88A2-59DF5AB328FE}.Release|x64.Build.0 = Release|x64
 		{479B8D9D-8862-4919-88A2-59DF5AB328FE}.Release|x86.ActiveCfg = Release|x86
 		{479B8D9D-8862-4919-88A2-59DF5AB328FE}.Release|x86.Build.0 = Release|x86
-		{6A95088D-E2A3-4CE3-ADFC-0D32DE3F3F76}.Debug|x64.ActiveCfg = Debug|x64
-		{6A95088D-E2A3-4CE3-ADFC-0D32DE3F3F76}.Debug|x64.Build.0 = Debug|x64
-		{6A95088D-E2A3-4CE3-ADFC-0D32DE3F3F76}.Debug|x86.ActiveCfg = Debug|x86
-		{6A95088D-E2A3-4CE3-ADFC-0D32DE3F3F76}.Debug|x86.Build.0 = Debug|x86
-		{6A95088D-E2A3-4CE3-ADFC-0D32DE3F3F76}.Release|x64.ActiveCfg = Release|x64
-		{6A95088D-E2A3-4CE3-ADFC-0D32DE3F3F76}.Release|x64.Build.0 = Release|x64
-		{6A95088D-E2A3-4CE3-ADFC-0D32DE3F3F76}.Release|x86.ActiveCfg = Release|x86
-		{6A95088D-E2A3-4CE3-ADFC-0D32DE3F3F76}.Release|x86.Build.0 = Release|x86
-		{FE178193-F90C-42E8-BF0C-5D64E10AB6F0}.Debug|x64.ActiveCfg = Debug|x64
-		{FE178193-F90C-42E8-BF0C-5D64E10AB6F0}.Debug|x64.Build.0 = Debug|x64
-		{FE178193-F90C-42E8-BF0C-5D64E10AB6F0}.Debug|x86.ActiveCfg = Debug|x86
-		{FE178193-F90C-42E8-BF0C-5D64E10AB6F0}.Debug|x86.Build.0 = Debug|x86
-		{FE178193-F90C-42E8-BF0C-5D64E10AB6F0}.Release|x64.ActiveCfg = Release|x64
-		{FE178193-F90C-42E8-BF0C-5D64E10AB6F0}.Release|x64.Build.0 = Release|x64
-		{FE178193-F90C-42E8-BF0C-5D64E10AB6F0}.Release|x86.ActiveCfg = Release|x86
-		{FE178193-F90C-42E8-BF0C-5D64E10AB6F0}.Release|x86.Build.0 = Release|x86
 		{087BE07B-00AF-4B65-B988-6889C0D31568}.Debug|x64.ActiveCfg = Debug|x64
 		{087BE07B-00AF-4B65-B988-6889C0D31568}.Debug|x64.Build.0 = Debug|x64
 		{087BE07B-00AF-4B65-B988-6889C0D31568}.Debug|x86.ActiveCfg = Debug|x86
@@ -498,12 +452,10 @@ Global
 		{D3C1A3C4-A060-40DF-ACE4-143F7F102A24} = {4FD2B635-11BD-4532-96F6-97ECB41072A1}
 		{8F360D62-6DB6-442F-AB7C-80B8CFD4D89F} = {4FD2B635-11BD-4532-96F6-97ECB41072A1}
 		{2113C1FB-C2C9-437C-AAC3-D72507739F14} = {4FD2B635-11BD-4532-96F6-97ECB41072A1}
-		{1E72DA8E-FAB2-41BC-92B1-F06A5D0C660A} = {4FD2B635-11BD-4532-96F6-97ECB41072A1}
 		{E5B54E27-B13B-4C5D-BD3E-941837C4A598} = {4FD2B635-11BD-4532-96F6-97ECB41072A1}
 		{34933AD1-8691-44B9-BDB4-4BF022C34552} = {4FD2B635-11BD-4532-96F6-97ECB41072A1}
 		{D9441890-33EF-48DF-BCB9-BAC4FD749F89} = {4FD2B635-11BD-4532-96F6-97ECB41072A1}
 		{479B8D9D-8862-4919-88A2-59DF5AB328FE} = {4FD2B635-11BD-4532-96F6-97ECB41072A1}
-		{6A95088D-E2A3-4CE3-ADFC-0D32DE3F3F76} = {4FD2B635-11BD-4532-96F6-97ECB41072A1}
 		{087BE07B-00AF-4B65-B988-6889C0D31568} = {4FD2B635-11BD-4532-96F6-97ECB41072A1}
 		{C2B5C245-6D01-47D0-812F-895C6C3C3393} = {4FD2B635-11BD-4532-96F6-97ECB41072A1}
 		{8ECB31A8-60E7-45C9-9D9B-5DDD0C3C6302} = {4FD2B635-11BD-4532-96F6-97ECB41072A1}

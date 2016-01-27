@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -382,7 +382,7 @@
         Y+LYRKx3E/BH0A+q+/2/oNT3d2EkoDujaOxOKBq7E4rG7gNJvwI/i/HNOE7bRQAAAABJRU5ErkJggg==
 </value>
   </data>
-  <metadata name="tmrDelay.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <data name="tmrDelay.TrayLocation" type="System.Drawing.Point, System.Drawing">
     <value>17, 17</value>
-  </metadata>
+  </data>
 </root>
