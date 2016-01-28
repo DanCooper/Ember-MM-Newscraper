@@ -2098,7 +2098,7 @@ Public Class Images
             'Main Images
             DBElement.ImagesContainer = PreferredImagesContainer.ImagesContainer
 
-            'Season Images
+            'Season Images while tvshow scraping
             For Each tSeason As Database.DBElement In DBElement.Seasons
                 Dim prefImages As MediaContainers.EpisodeOrSeasonImagesContainer = PreferredImagesContainer.Seasons.FirstOrDefault(Function(f) f.Season = tSeason.TVSeason.Season)
                 If prefImages IsNot Nothing Then
@@ -2109,7 +2109,7 @@ Public Class Images
                 End If
             Next
 
-            'Episode Images
+            'Episode Images while tvshow scraping
             For Each tEpisode As Database.DBElement In DBElement.Episodes
                 Dim prefImages As MediaContainers.EpisodeOrSeasonImagesContainer = PreferredImagesContainer.Episodes.FirstOrDefault(Function(f) f.Episode = tEpisode.TVEpisode.Episode AndAlso f.Season = tEpisode.TVEpisode.Season)
                 If prefImages IsNot Nothing Then
