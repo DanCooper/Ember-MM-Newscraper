@@ -4445,7 +4445,7 @@ Public Class Database
         End Using
         If Not BatchMode Then SQLtransaction.Commit()
 
-        If _episode.FilenameID > -1 Then
+        If _episode.FilenameIDSpecified Then
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_TVEpisode, Nothing, Nothing, False, _episode)
         End If
 

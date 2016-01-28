@@ -121,8 +121,7 @@ Public Class NFO
             If (Not DBMovie.Movie.CertificationsSpecified OrElse Not Master.eSettings.MovieLockCert) AndAlso ScrapeOptions.bMainCertifications AndAlso _
                 scrapedmovie.CertificationsSpecified AndAlso Master.eSettings.MovieScraperCert AndAlso Not new_Certification Then
                 If Master.eSettings.MovieScraperCertLang = Master.eLang.All Then
-                    DBMovie.Movie.Certifications.Clear()
-                    DBMovie.Movie.Certifications.AddRange(scrapedmovie.Certifications)
+                    DBMovie.Movie.Certifications = scrapedmovie.Certifications
                     new_Certification = True
                 Else
                     Dim CertificationLanguage = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.MovieScraperCertLang)
@@ -146,8 +145,7 @@ Public Class NFO
             'Credits
             If (Not DBMovie.Movie.CreditsSpecified OrElse Not Master.eSettings.MovieLockCredits) AndAlso _
                 scrapedmovie.CreditsSpecified AndAlso Master.eSettings.MovieScraperCredits AndAlso Not new_Credits Then
-                DBMovie.Movie.Credits.Clear()
-                DBMovie.Movie.Credits.AddRange(scrapedmovie.Credits)
+                DBMovie.Movie.Credits = scrapedmovie.Credits
                 new_Credits = True
             ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperCredits AndAlso Not Master.eSettings.MovieLockCredits Then
                 DBMovie.Movie.Credits.Clear()
@@ -180,8 +178,7 @@ Public Class NFO
             'Countries
             If (Not DBMovie.Movie.CountriesSpecified OrElse Not Master.eSettings.MovieLockCountry) AndAlso ScrapeOptions.bMainCountries AndAlso _
                 scrapedmovie.CountriesSpecified AndAlso Master.eSettings.MovieScraperCountry AndAlso Not new_Countries Then
-                DBMovie.Movie.Countries.Clear()
-                DBMovie.Movie.Countries.AddRange(scrapedmovie.Countries)
+                DBMovie.Movie.Countries = scrapedmovie.Countries
                 new_Countries = True
             ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperCountry AndAlso Not Master.eSettings.MovieLockCountry Then
                 DBMovie.Movie.Countries.Clear()
@@ -190,8 +187,7 @@ Public Class NFO
             'Directors
             If (Not DBMovie.Movie.DirectorsSpecified OrElse Not Master.eSettings.MovieLockDirector) AndAlso ScrapeOptions.bMainDirectors AndAlso _
                 scrapedmovie.DirectorsSpecified AndAlso Master.eSettings.MovieScraperDirector AndAlso Not new_Directors Then
-                DBMovie.Movie.Directors.Clear()
-                DBMovie.Movie.Directors.AddRange(scrapedmovie.Directors)
+                DBMovie.Movie.Directors = scrapedmovie.Directors
                 new_Directors = True
             ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperDirector AndAlso Not Master.eSettings.MovieLockDirector Then
                 DBMovie.Movie.Directors.Clear()
@@ -206,8 +202,7 @@ Public Class NFO
                 If Master.eSettings.MovieScraperGenreLimit > 0 AndAlso Master.eSettings.MovieScraperGenreLimit < tGenre.Count AndAlso tGenre.Count > 0 Then
                     tGenre.RemoveRange(Master.eSettings.MovieScraperGenreLimit, tGenre.Count - Master.eSettings.MovieScraperGenreLimit)
                 End If
-                DBMovie.Movie.Genres.Clear()
-                DBMovie.Movie.Genres.AddRange(tGenre)
+                DBMovie.Movie.Genres = tGenre
                 new_Genres = True
             ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperGenre AndAlso Not Master.eSettings.MovieLockGenre Then
                 DBMovie.Movie.Genres.Clear()
@@ -576,8 +571,7 @@ Public Class NFO
             If (Not DBTV.TVShow.CertificationsSpecified OrElse Not Master.eSettings.TVLockShowCert) AndAlso ScrapeOptions.bMainCertifications AndAlso _
                 scrapedshow.CertificationsSpecified AndAlso Master.eSettings.TVScraperShowCert AndAlso Not new_Certification Then
                 If Master.eSettings.TVScraperShowCertLang = Master.eLang.All Then
-                    DBTV.TVShow.Certifications.Clear()
-                    DBTV.TVShow.Certifications.AddRange(scrapedshow.Certifications)
+                    DBTV.TVShow.Certifications = scrapedshow.Certifications
                     new_Certification = True
                 Else
                     Dim CertificationLanguage = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.TVScraperShowCertLang)
@@ -609,8 +603,7 @@ Public Class NFO
             'Countries
             If (Not DBTV.TVShow.CountriesSpecified OrElse Not Master.eSettings.TVLockShowCountry) AndAlso ScrapeOptions.bMainCountries AndAlso _
                 scrapedshow.CountriesSpecified AndAlso Master.eSettings.TVScraperShowCountry AndAlso Not new_ShowCountries Then
-                DBTV.TVShow.Countries.Clear()
-                DBTV.TVShow.Countries.AddRange(scrapedshow.Countries)
+                DBTV.TVShow.Countries = scrapedshow.Countries
                 new_ShowCountries = True
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowCountry AndAlso Not Master.eSettings.TVLockShowCountry Then
                 DBTV.TVShow.Countries.Clear()
@@ -625,8 +618,7 @@ Public Class NFO
                 'If Master.eSettings.TVScraperShowGenreLimit > 0 AndAlso Master.eSettings.TVScraperShowGenreLimit < _genres.Count AndAlso _genres.Count > 0 Then
                 '    _genres.RemoveRange(Master.eSettings.TVScraperShowGenreLimit, _genres.Count - Master.eSettings.TVScraperShowGenreLimit)
                 'End If
-                DBTV.TVShow.Genres.Clear()
-                DBTV.TVShow.Genres.AddRange(tGenre)
+                DBTV.TVShow.Genres = tGenre
                 new_Genres = True
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowGenre AndAlso Not Master.eSettings.TVLockShowGenre Then
                 DBTV.TVShow.Genres.Clear()
