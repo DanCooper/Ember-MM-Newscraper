@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -176,10 +176,11 @@
         /HuoeWStxJsB2gW8qh8AcaOVUQAAAABJRU5ErkJggg==
 </value>
   </data>
-  <metadata name="colCustomTabName.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="colCustomTabName.UserAddedColumn" type="System.Boolean, mscorlib">
     <value>True</value>
-  </metadata>
-  <metadata name="colCustomTabList.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  </data>
+  <data name="colCustomTabList.UserAddedColumn" type="System.Boolean, mscorlib">
     <value>True</value>
-  </metadata>
+  </data>
 </root>

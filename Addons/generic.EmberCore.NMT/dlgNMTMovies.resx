@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -157,39 +157,40 @@
         /IK/A+oLK0Rr5wubW8gAAAAASUVORK5CYII=
 </value>
   </data>
-  <metadata name="export.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="export.UserAddedColumn" type="System.Boolean, mscorlib">
     <value>True</value>
-  </metadata>
-  <metadata name="EmberSource.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  </data>
+  <data name="EmberSource.UserAddedColumn" type="System.Boolean, mscorlib">
     <value>True</value>
-  </metadata>
-  <metadata name="Column1.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  </data>
+  <data name="Column1.UserAddedColumn" type="System.Boolean, mscorlib">
     <value>True</value>
-  </metadata>
-  <metadata name="Value.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  </data>
+  <data name="Value.UserAddedColumn" type="System.Boolean, mscorlib">
     <value>True</value>
-  </metadata>
-  <metadata name="sourcetype.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  </data>
+  <data name="sourcetype.UserAddedColumn" type="System.Boolean, mscorlib">
     <value>True</value>
-  </metadata>
-  <metadata name="Setting.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  </data>
+  <data name="Setting.UserAddedColumn" type="System.Boolean, mscorlib">
     <value>True</value>
-  </metadata>
-  <metadata name="DataGridViewComboBoxColumn1.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  </data>
+  <data name="DataGridViewComboBoxColumn1.UserAddedColumn" type="System.Boolean, mscorlib">
     <value>True</value>
-  </metadata>
-  <metadata name="tmrValidatedToBuild.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  </data>
+  <data name="tmrValidatedToBuild.TrayLocation" type="System.Drawing.Point, System.Drawing">
     <value>127, 17</value>
-  </metadata>
-  <metadata name="DataGridViewTextBoxColumn1.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  </data>
+  <data name="DataGridViewTextBoxColumn1.UserAddedColumn" type="System.Boolean, mscorlib">
     <value>True</value>
-  </metadata>
-  <metadata name="DataGridViewTextBoxColumn2.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  </data>
+  <data name="DataGridViewTextBoxColumn2.UserAddedColumn" type="System.Boolean, mscorlib">
     <value>True</value>
-  </metadata>
-  <metadata name="ilNMT.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  </data>
+  <data name="ilNMT.TrayLocation" type="System.Drawing.Point, System.Drawing">
     <value>271, 17</value>
-  </metadata>
+  </data>
   <data name="ilNMT.ImageStream" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
@@ -254,9 +255,9 @@
         /IK/A+oLK0Rr5wubW8gAAAAASUVORK5CYII=
 </value>
   </data>
-  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <data name="$this.TrayHeight" type="System.Int32, mscorlib">
     <value>81</value>
-  </metadata>
+  </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         AAABAAQAEBAAAAAAIABoBAAARgAAACAgAAAAACAAqBAAAK4EAAAwMAAAAAAgAKglAABWFQAAQEAAAAAA

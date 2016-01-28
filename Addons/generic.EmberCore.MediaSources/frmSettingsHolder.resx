@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -147,12 +147,13 @@
         AABJRU5ErkJggg==
 </value>
   </data>
-  <metadata name="DataGridViewTextBoxColumn1.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="DataGridViewTextBoxColumn1.UserAddedColumn" type="System.Boolean, mscorlib">
     <value>True</value>
-  </metadata>
-  <metadata name="DataGridViewTextBoxColumn2.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  </data>
+  <data name="DataGridViewTextBoxColumn2.UserAddedColumn" type="System.Boolean, mscorlib">
     <value>True</value>
-  </metadata>
+  </data>
   <data name="btnSetDefaults.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
@@ -201,10 +202,10 @@
         AABJRU5ErkJggg==
 </value>
   </data>
-  <metadata name="Search.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <data name="Search.UserAddedColumn" type="System.Boolean, mscorlib">
     <value>True</value>
-  </metadata>
-  <metadata name="DataGridViewComboBoxColumn1.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  </data>
+  <data name="DataGridViewComboBoxColumn1.UserAddedColumn" type="System.Boolean, mscorlib">
     <value>True</value>
-  </metadata>
+  </data>
 </root>

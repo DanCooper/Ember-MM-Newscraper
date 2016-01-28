@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -191,25 +191,17 @@
         /HuoeWStxJsB2gW8qh8AcaOVUQAAAABJRU5ErkJggg==
 </value>
   </data>
-  <metadata name="MappingSearchString.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="MappingSearchString.UserAddedColumn" type="System.Boolean, mscorlib">
     <value>True</value>
-  </metadata>
-  <metadata name="MappingSearchString.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  </data>
+  <data name="GenreEnabled.UserAddedColumn" type="System.Boolean, mscorlib">
     <value>True</value>
-  </metadata>
-  <metadata name="GenreEnabled.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  </data>
+  <data name="GenreName.UserAddedColumn" type="System.Boolean, mscorlib">
     <value>True</value>
-  </metadata>
-  <metadata name="GenreName.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="GenreEnabled.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="GenreName.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="StatusStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  </data>
+  <data name="StatusStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing">
     <value>17, 17</value>
-  </metadata>
+  </data>
 </root>
