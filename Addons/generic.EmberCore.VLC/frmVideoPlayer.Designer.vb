@@ -23,25 +23,12 @@ Partial Class frmVideoPlayer
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmVideoPlayer))
-        Me.AxVLCPlayer = New AxAXVLC.AxVLCPlugin2()
         Me.pnlPlayer = New System.Windows.Forms.Panel()
-        CType(Me.AxVLCPlayer, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlPlayer.SuspendLayout()
         Me.SuspendLayout()
         '
-        'AxVLCPlayer
-        '
-        Me.AxVLCPlayer.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.AxVLCPlayer.Enabled = True
-        Me.AxVLCPlayer.Location = New System.Drawing.Point(0, 0)
-        Me.AxVLCPlayer.Name = "AxVLCPlayer"
-        Me.AxVLCPlayer.OcxState = CType(resources.GetObject("AxVLCPlayer.OcxState"), System.Windows.Forms.AxHost.State)
-        Me.AxVLCPlayer.Size = New System.Drawing.Size(837, 471)
-        Me.AxVLCPlayer.TabIndex = 0
-        '
         'pnlPlayer
         '
-        Me.pnlPlayer.Controls.Add(Me.AxVLCPlayer)
         Me.pnlPlayer.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlPlayer.Location = New System.Drawing.Point(0, 0)
         Me.pnlPlayer.Name = "pnlPlayer"
@@ -63,12 +50,10 @@ Partial Class frmVideoPlayer
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "VideoPlayer"
-        CType(Me.AxVLCPlayer, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlPlayer.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents AxVLCPlayer As AxAXVLC.AxVLCPlugin2
     Friend WithEvents pnlPlayer As System.Windows.Forms.Panel
 
 End Class
