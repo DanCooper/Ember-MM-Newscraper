@@ -1561,4 +1561,9 @@
   <string id="1470">Automatically Sync Episodes During Multi-Scraper</string>
   <string id="1471">Automatically Sync Episodes During Single-Scraper</string>
   <string id="1472">Automatically Sync Episodes Before Edit</string>
+  <string id="1473">No Spoilers</string>
+  <string id="1474">Remove Black Bars</string>
+  <string id="1475">Create thumbs instead of using fanarts</string>
+  <string id="1476">Only create thumbs if no fanart found</string>
+  <string id="1477">Create Thumbnails</string>
 </strings>
