@@ -166,7 +166,7 @@ Public Class VLCPlayer
         Me.Enabled = _setup.chkEnabled.Checked
         _MySettings.UseAsAudioPlayer = _setup.chkUseAsAudioPlayer.Checked
         _MySettings.UseAsVideoPlayer = _setup.chkUseAsVideoPlayer.Checked
-        _MySettings.VLCPath = _setup.btnVLCPath.Text
+        _MySettings.VLCPath = _setup.txtVLCPath.Text
         SaveSettings()
         If DoDispose Then
             RemoveHandler Me._setup.ModuleEnabledChanged, AddressOf Handle_SetupChanged

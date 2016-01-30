@@ -19,6 +19,8 @@
 ' ################################################################################
 
 Imports EmberAPI
+Imports Microsoft.VisualBasic
+Imports System.IO
 
 Public Class frmSettingsHolder
 
@@ -73,7 +75,11 @@ Public Class frmSettingsHolder
             If fbdDialog.ShowDialog() = DialogResult.OK Then
                 txtVLCPath.Text = fbdDialog.SelectedPath
             End If
+            If Not File.Exists(Path.Combine(fbdDialog.SelectedPath, "libvlc.dll")) Then
+                MsgBox(Master.eLang.GetString(1478, "libvlc.dll not found in path"), MsgBoxStyle.Information)
+            End If
         End Using
+
     End Sub
 
     Private Sub tblSettingsMain_Paint(sender As Object, e As PaintEventArgs) Handles tblSettingsMain.Paint

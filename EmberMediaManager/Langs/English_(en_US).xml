@@ -1566,4 +1566,5 @@
   <string id="1475">Use as Video Player</string>
   <string id="1476">Select Expor tPath</string>
   <string id="1477">Select VLC Path</string>
+  <string id="1478">libvlc.dll not found in path</string>
 </strings>

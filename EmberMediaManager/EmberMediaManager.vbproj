@@ -5542,8 +5542,7 @@
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(ProjectDir)$(PlatformName)" "$(TargetDir)Bin" /E /I /R /Y
 del "$(TargetDir)Bin\SQLite.Interop.dll" /F /Q
-xcopy "$(TargetDir)Modules\AxInterop.AXVLC.dll" "$(TargetDir)" /E /I /R /Y
-xcopy "$(TargetDir)Modules\Interop.AXVLC.dll" "$(TargetDir)" /E /I /R /Y</PostBuildEvent>
+</PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.99.0\build\net45\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.99.0\build\net45\System.Data.SQLite.Core.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
