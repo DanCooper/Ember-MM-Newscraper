@@ -57,7 +57,8 @@ Public Class frmSettingsHolder
 
     Private Sub btnExportPath_Click(sender As Object, e As EventArgs) Handles btnExportPath.Click
         Using fbdDialog As New FolderBrowserDialog()
-            fbdDialog.Description = "Select ExportPath"
+            fbdDialog.Description = Master.eLang.GetString(1476, "Select Export Path")
+            fbdDialog.SelectedPath = txtExportPath.Text
             If fbdDialog.ShowDialog() = DialogResult.OK Then
                 txtExportPath.Text = fbdDialog.SelectedPath
             End If

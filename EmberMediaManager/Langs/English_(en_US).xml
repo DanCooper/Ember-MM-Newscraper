@@ -1561,4 +1561,9 @@
   <string id="1470">Automatically Sync Episodes During Multi-Scraper</string>
   <string id="1471">Automatically Sync Episodes During Single-Scraper</string>
   <string id="1472">Automatically Sync Episodes Before Edit</string>
+  <string id="1473">VLC x86 Path</string>
+  <string id="1474">Use as Audio Player</string>
+  <string id="1475">Use as Video Player</string>
+  <string id="1476">Select Expor tPath</string>
+  <string id="1477">Select VLC Path</string>
 </strings>

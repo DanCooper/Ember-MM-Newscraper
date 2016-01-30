@@ -7,8 +7,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{1E72DA8E-FAB2-41BC-92B1-F06A5D0C660A}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>generic.EmberCore.VLC</RootNamespace>
-    <AssemblyName>generic.EmberCore.VLC</AssemblyName>
+    <RootNamespace>generic.EmberCore.VLCPlayer</RootNamespace>
+    <AssemblyName>generic.EmberCore.VLCPlayer</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -141,7 +141,6 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="clsVLC.vb" />
     <Compile Include="frmSettingsHolder.Designer.vb">
       <DependentUpon>frmSettingsHolder.vb</DependentUpon>
     </Compile>

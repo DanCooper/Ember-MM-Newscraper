@@ -24,6 +24,7 @@ Imports System.IO
 Imports System.Text.RegularExpressions
 Imports EmberAPI
 Imports NLog
+Imports Vlc.DotNet.Forms
 
 
 Public Class frmVideoPlayer
@@ -31,6 +32,7 @@ Public Class frmVideoPlayer
 #Region "Fields"
 
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Dim PlayList As List(Of Uri)
 
 #End Region
 
@@ -45,7 +47,8 @@ Public Class frmVideoPlayer
 #Region "Methods"
 
     Public Sub SetUp()
-
+        PlayList = New List(Of Uri)
+        Me.myVlcControl.VlcLibDirectory = New DirectoryInfo(clsAdvancedSettings.GetSetting("VLCPath", String.Empty))
     End Sub
 
     Public Sub New()
@@ -68,27 +71,72 @@ Public Class frmVideoPlayer
     End Sub
 
     Public Sub PlayerPlay()
-        Me.AxVLCPlayer.playlist.play()
+        For Each aPath In PlayList
+            Me.myVlcControl.Play()
+        Next
     End Sub
 
     Public Sub PlayerStop()
-        Me.AxVLCPlayer.playlist.stop()
+        Me.myVlcControl.Stop()
     End Sub
 
     Public Sub PlaylistAdd(ByVal URL As String)
         If Not String.IsNullOrEmpty(URL) Then
-            Me.AxVLCPlayer.playlist.items.clear()
             If Regex.IsMatch(URL, "http:\/\/.*?") Then
-                Me.AxVLCPlayer.playlist.add(URL)
+                PlayList.Add(New Uri(URL))
             Else
-                Me.AxVLCPlayer.playlist.add(String.Concat("file:///", URL))
+                PlayList.Add(New Uri(String.Concat("file:///", URL)))
             End If
         End If
     End Sub
 
     Public Sub PlaylistClear()
-        Me.AxVLCPlayer.playlist.items.clear()
+        PlayList.Clear()
     End Sub
+
+    Private Sub OnVlcControlNeedLibDirectory(sender As Object, e As Vlc.DotNet.Forms.VlcLibDirectoryNeededEventArgs) Handles myVlcControl.VlcLibDirectoryNeeded
+        Using fbdDialog As New FolderBrowserDialog()
+            fbdDialog.Description = Master.eLang.GetString(1477, "Select VLC Path")
+            fbdDialog.SelectedPath = clsAdvancedSettings.GetSetting("VLCPath", String.Empty)
+
+            If fbdDialog.ShowDialog() = DialogResult.OK Then
+                myVlcControl.VlcLibDirectory = New DirectoryInfo(fbdDialog.SelectedPath)
+            End If
+        End Using
+    End Sub
+
+    Private Sub frmVideoPlayer_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+    End Sub
+
+    Private Sub OnVlcStopped(sender As Object, e As Vlc.DotNet.Core.VlcMediaPlayerStoppedEventArgs) Handles myVlcControl.Stopped
+
+    End Sub
+
+    Private Sub OnVlcPositionChanged(sender As Object, e As Vlc.DotNet.Core.VlcMediaPlayerPositionChangedEventArgs) Handles myVlcControl.PositionChanged
+
+    End Sub
+
+    Private Sub OnVlcPlaying(sender As Object, e As Vlc.DotNet.Core.VlcMediaPlayerPlayingEventArgs) Handles myVlcControl.Playing
+
+    End Sub
+
+    Private Sub OnVlcPaused(sender As Object, e As Vlc.DotNet.Core.VlcMediaPlayerPausedEventArgs) Handles myVlcControl.Paused
+
+    End Sub
+
+    Private Sub OnVlcMediaChanged(sender As Object, e As Vlc.DotNet.Core.VlcMediaPlayerMediaChangedEventArgs) Handles myVlcControl.MediaChanged
+
+    End Sub
+
+    Private Sub OnVlcMediaLengthChanged(sender As Object, e As Vlc.DotNet.Core.VlcMediaPlayerLengthChangedEventArgs) Handles myVlcControl.LengthChanged
+
+    End Sub
+
+    Private Sub myVlcControl_Click(sender As Object, e As EventArgs) Handles myVlcControl.Click
+
+    End Sub
+
 
 #End Region
 
