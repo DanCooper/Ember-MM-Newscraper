@@ -31,6 +31,7 @@ Public Class frmAudioPlayer
 #Region "Fields"
 
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Dim PlayList As List(Of Uri)
 
 #End Region
 
@@ -45,7 +46,8 @@ Public Class frmAudioPlayer
 #Region "Methods"
 
     Public Sub SetUp()
-
+        PlayList = New List(Of Uri)
+        Me.myVlcControl.VlcLibDirectory = New DirectoryInfo(clsAdvancedSettings.GetSetting("VLCPath", String.Empty))
     End Sub
 
     Public Sub New()
@@ -58,26 +60,38 @@ Public Class frmAudioPlayer
     End Sub
 
     Public Sub PlayerPlay()
-        Me.AxVLCPlayer.playlist.play()
+        For Each aPath In PlayList
+            Me.myVlcControl.Play()
+        Next
     End Sub
 
     Public Sub PlayerStop()
-        Me.AxVLCPlayer.playlist.stop()
+        Me.myVlcControl.Stop()
     End Sub
 
     Public Sub PlaylistAdd(ByVal URL As String)
         If Not String.IsNullOrEmpty(URL) Then
-            Me.AxVLCPlayer.playlist.items.clear()
             If Regex.IsMatch(URL, "http:\/\/.*?") Then
-                Me.AxVLCPlayer.playlist.add(URL)
+                PlayList.Add(New Uri(URL))
             Else
-                Me.AxVLCPlayer.playlist.add(String.Concat("file:///", URL))
+                PlayList.Add(New Uri(String.Concat("file:///", URL)))
             End If
         End If
     End Sub
 
     Public Sub PlaylistClear()
-        Me.AxVLCPlayer.playlist.items.clear()
+        PlayList.Clear()
+    End Sub
+
+    Private Sub OnVlcControlNeedLibDirectory(sender As Object, e As Vlc.DotNet.Forms.VlcLibDirectoryNeededEventArgs) Handles myVlcControl.VlcLibDirectoryNeeded
+        Using fbdDialog As New FolderBrowserDialog()
+            fbdDialog.Description = Master.eLang.GetString(1477, "Select VLC Path")
+            fbdDialog.SelectedPath = clsAdvancedSettings.GetSetting("VLCPath", String.Empty)
+
+            If fbdDialog.ShowDialog() = DialogResult.OK Then
+                myVlcControl.VlcLibDirectory = New DirectoryInfo(fbdDialog.SelectedPath)
+            End If
+        End Using
     End Sub
 
 #End Region
