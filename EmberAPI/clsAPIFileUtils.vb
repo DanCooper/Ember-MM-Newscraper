@@ -150,7 +150,9 @@ Namespace FileUtils
         ''' <param name="sPath">Path to Blu-Ray or DVD files.</param>
         ''' <param name="ForceBDMV">Assume path holds Blu-Ray files if <c>True</c></param>
         ''' <returns>Path/filename to the largest media file for the detected video type</returns>
-        ''' <remarks></remarks>
+        ''' <remarks>
+        '''  2016/01/26  Cocotus - Remove 1GB limit from query
+        ''' </remarks>
         Public Shared Function GetLongestFromRip(ByVal sPath As String, Optional ByVal ForceBDMV As Boolean = False) As String
             'TODO Needs error handling for when largest file is under 1GB. No default is set. Also, should error if path is not DVD or BR. Also, if ForceBDMV, complain if no files found
             Dim lFileList As New List(Of FileInfo)
@@ -160,8 +162,8 @@ Namespace FileUtils
                 Case isVideoTS(sPath)
                     lFileList.AddRange(New DirectoryInfo(Directory.GetParent(sPath).FullName).GetFiles("*.vob"))
             End Select
-            'Return filename/path of the largest file that is over 1 GB in size.
-            Return lFileList.Where(Function(s) s.Length > 1073741824).OrderByDescending(Function(s) s.Length).Select(Function(s) s.FullName).FirstOrDefault
+            'Return filename/path of the largest file
+            Return lFileList.OrderByDescending(Function(s) s.Length).Select(Function(s) s.FullName).FirstOrDefault
         End Function
 
         ''' <summary>

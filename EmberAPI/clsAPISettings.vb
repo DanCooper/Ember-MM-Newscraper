@@ -688,6 +688,41 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieExtrathumbsCreatorAutoThumbs() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieExtrathumbsCreatorAutoThumbs
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieExtrathumbsCreatorAutoThumbs = value
+        End Set
+    End Property
+    Public Property MovieExtrathumbsCreatorNoBlackBars() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieExtrathumbsCreatorNoBlackBars
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieExtrathumbsCreatorNoBlackBars = value
+        End Set
+    End Property
+
+    Public Property MovieExtrathumbsCreatorNoSpoilers() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieExtrathumbsCreatorNoSpoilers
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieExtrathumbsCreatorNoSpoilers = value
+        End Set
+    End Property
+
+    Public Property MovieExtrathumbsCreatorUseETasFA() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieExtrathumbsCreatorUseETasFA
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieExtrathumbsCreatorUseETasFA = value
+        End Set
+    End Property
+
     Public Property MovieExtrathumbsPrefSizeOnly() As Boolean
         Get
             Return Settings._XMLSettings.MovieExtrathumbsPrefSizeOnly
@@ -6804,6 +6839,10 @@ Public Class Settings
         MovieExtrafanartsPreselect = True
         MovieExtrafanartsResize = False
         MovieExtrafanartsWidth = 0
+        MovieExtrathumbsCreatorAutoThumbs = False
+        MovieExtrathumbsCreatorNoBlackBars = False
+        MovieExtrathumbsCreatorNoSpoilers = False
+        MovieExtrathumbsCreatorUseETasFA = False
         MovieExtrathumbsHeight = 0
         MovieExtrathumbsLimit = 4
         MovieExtrathumbsKeepExisting = False

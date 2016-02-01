@@ -1830,7 +1830,7 @@ Public Class Images
 
                 Select Case tContentType
                     Case Enums.ContentType.Movie
-                        GetPreferredMovieExtrathumbs(SearchResultsContainer.MainFanarts, defImgList, If(Not bKeepExisting, iLimit, iDifference), nPreferredImagesContainer.ImagesContainer.Fanart, IsAutoScraper:=IsAutoScraper)
+                        GetPreferredMovieExtrathumbs(SearchResultsContainer.MainFanarts, defImgList, If(Not bKeepExisting, iLimit, iDifference), nPreferredImagesContainer.ImagesContainer.Fanart, DBElement, IsAutoScraper:=IsAutoScraper)
                 End Select
 
                 If Not bKeepExisting Then
@@ -2990,7 +2990,17 @@ Public Class Images
     ''' <param name="ImageList">Source <c>List</c> of <c>MediaContainers.Image</c> holding available extrathumbs</param>
     ''' <returns><c>List</c> of image URLs that fit the preferred thumb size</returns>
     ''' <remarks></remarks>
-    Public Shared Function GetPreferredMovieExtrathumbs(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResultList As List(Of MediaContainers.Image), ByVal iLimit As Integer, ByVal CurrentMovieFanart As MediaContainers.Image, Optional ByVal IsAutoScraper As Boolean = False) As Boolean
+    Public Shared Function GetPreferredMovieExtrathumbs(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResultList As List(Of MediaContainers.Image), ByVal iLimit As Integer, ByVal CurrentMovieFanart As MediaContainers.Image, ByVal DBElement As Database.DBElement, Optional ByVal IsAutoScraper As Boolean = False) As Boolean
+
+        'Generate thumbnails?
+        If (Master.eSettings.MovieExtrathumbsCreatorAutoThumbs OrElse (Master.eSettings.MovieExtrathumbsCreatorUseETasFA AndAlso imgResultList.Count = 0)) AndAlso iLimit > 0 Then
+            imgResultList.Clear()
+            imgResultList = FFmpeg.FFmpeg.GenerateThumbnailsWithoutBars(DBElement, ThumbCount:=iLimit, NoSpoilers:=Master.eSettings.MovieExtrathumbsCreatorNoSpoilers, Timeout:=30000)
+            'dont't care about the following extrathumb PrefQuality setting(s) of scrapers since it doesn't make sense for frame extraction (we only respect the Keep and Limit setting and Resize options for extracted frames)
+            'if it necessary to mix scraped fanarts with extracted frames then special handling is needed in this function but for now don't care about this
+            Return True
+        End If
+
         If ImageList.Count = 0 Then Return False
         Dim DoCalculateDuplicaImages As Boolean = False
 
@@ -3031,22 +3041,11 @@ Public Class Images
             Next
         End If
 
+        'Use Imagefilter?
         If DoCalculateDuplicaImages = True Then
             'make sure that extraimages is not the same as main image of movie (i.e. fanart.jpg of movie should not be part of extrafanart)
             FindDuplicateImages(imgResultList, Enums.ContentType.Movie, CurrentImage:=CurrentMovieFanart, MatchTolerance:=Master.eSettings.GeneralImageFilterFanartMatchTolerance, Limit:=iLimit)
         End If
-
-        'If Master.eSettings.MovieFanartPrefSize = Enums.MovieFanartSize.Any Then
-        '    imgResult = ImageList.First
-        'End If
-
-        'If imgResult Is Nothing Then
-        '    imgResult = ImageList.Find(Function(f) f.MovieFanartSize = Master.eSettings.MovieFanartPrefSize)
-        'End If
-
-        'If imgResult Is Nothing AndAlso Not Master.eSettings.MovieFanartPrefSizeOnly AndAlso Not Master.eSettings.MovieFanartPrefSize = Enums.MovieFanartSize.Any Then
-        '    imgResult = ImageList.First
-        'End If
 
         If imgResultList IsNot Nothing AndAlso imgResultList.Count > 0 Then
             Return True

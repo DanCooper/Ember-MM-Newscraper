@@ -1281,6 +1281,20 @@ Public Class Functions
     End Function
 
     ''' <summary>
+    ''' Get a path to the FFProbe included with the Ember distribution
+    ''' </summary>
+    ''' <returns>A path to an instance of FFProbe</returns>
+    ''' <remarks>Windows distributions have FFProbe in the Bin subdirectory.
+    ''' Note that no validation is done to ensure that FFProbe actually exists.</remarks>
+    Public Shared Function GetFFProbe() As String
+        If Master.isWindows Then
+            Return String.Concat(Functions.AppPath, "Bin", Path.DirectorySeparatorChar, "ffprobe.exe")
+        Else
+            Return "ffprobe"
+        End If
+    End Function
+
+    ''' <summary>
     ''' Populate Master.SourcesList with a list of paths to all (media?) sources stored in the database
     ''' </summary>
     Public Shared Sub GetListOfSources()
@@ -1525,8 +1539,8 @@ Public Class Functions
                     .SeasonLandscape = MValue
                     .SeasonNFO = MValue
                     .SeasonPoster = MValue
-                '.withEpisodes should not be set here
-                '.withSeasons should not be set here
+                    '.withEpisodes should not be set here
+                    '.withSeasons should not be set here
                 Case Enums.ModifierType.AllSeasonsBanner
                     .AllSeasonsBanner = MValue
                 Case Enums.ModifierType.AllSeasonsFanart
