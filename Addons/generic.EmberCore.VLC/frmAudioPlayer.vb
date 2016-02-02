@@ -47,12 +47,12 @@ Public Class frmAudioPlayer
 
     Public Sub SetUp()
         PlayList = New List(Of Uri)
-        Me.myVlcControl.VlcLibDirectory = New DirectoryInfo(clsAdvancedSettings.GetSetting("VLCPath", String.Empty))
     End Sub
 
     Public Sub New()
 
         ' This call is required by the designer.
+        Me.myVlcControl.VlcLibDirectory = New DirectoryInfo(clsAdvancedSettings.GetSetting("VLCPath", String.Empty, "generic.EmberCore.VLCPlayer"))
         InitializeComponent()
         Me.SetUp()
         ' Add any initialization after the InitializeComponent() call.
