@@ -117,6 +117,7 @@ Namespace TrakttvScraper
 
                 If String.IsNullOrEmpty(_Token) Then
                     logger.Error(String.Concat("[GetMovieInfo] Can't login to trakt.tv account! Current movie: ", strID))
+                    Return Nothing
                 End If
 
                 'Rating / Votes
@@ -268,6 +269,7 @@ Namespace TrakttvScraper
 
             If String.IsNullOrEmpty(_Token) Then
                 logger.Error(String.Concat("[GetTVEpisodeInfo] Can't login to trakt.tv account! Current show: ", ShowID))
+                Return Nothing
             End If
 
             'Rating / Votes
@@ -288,7 +290,7 @@ Namespace TrakttvScraper
                             For Each ratedEpisode As TraktAPI.Model.TraktEpisodeRated In _traktRatedEpisodes
                                 If Not ratedEpisode Is Nothing AndAlso Not ratedEpisode.Show Is Nothing AndAlso Not ratedEpisode.Show.Ids Is Nothing AndAlso Not ratedEpisode.Episode Is Nothing Then
                                     'Check if information is stored...
-                                    If (ratedEpisode.Show.Ids.Tvdb.ToString = ShowID OrElse ratedEpisode.Show.Ids.Tmdb.ToString = ShowID OrElse ratedEpisode.Show.Ids.Imdb.ToString = ShowID) AndAlso ratedEpisode.Episode.Number = EpisodeNumber AndAlso ratedEpisode.Episode.Season = SeasonNumber Then
+                                    If (ratedEpisode.Show.Ids.Tvdb.ToString = ShowID OrElse ratedEpisode.Show.Ids.Tmdb.ToString = ShowID OrElse ratedEpisode.Show.Ids.Imdb.ToString = ShowID OrElse ratedEpisode.Show.Ids.Trakt.ToString = ShowID) AndAlso ratedEpisode.Episode.Number = EpisodeNumber AndAlso ratedEpisode.Episode.Season = SeasonNumber Then
                                         nEpisode.Rating = ratedEpisode.Rating.ToString
                                         Exit For
                                     End If
@@ -298,12 +300,37 @@ Namespace TrakttvScraper
                             logger.Info("[GetTVEpisodeInfo] No ratings of episodes scraped from trakt.tv! Current show: ", ShowID)
                         End If
                     End If
+                Else
+                    Return Nothing
                 End If
             End If
             Return nEpisode
         End Function
 
 
+        ''' <summary>
+        '''  Scrape traktID of item(Show/movie/episode)
+        ''' </summary>
+        ''' <param name="strID">TVDBID ID of tv show to be scraped</param>
+        ''' <returns>traktID of item</returns>
+        ''' <remarks>
+        ''' 2016/02/02 Cocotus - First implementation
+        ''' </remarks>
+        Public Function GetTraktIDByTVDBID(ByVal TVDBID As String) As Integer
+            If Not String.IsNullOrEmpty(TVDBID) Then
+                If String.IsNullOrEmpty(_Token) Then
+                    logger.Error(String.Concat("[GetTVEpisodeInfo] Can't login to trakt.tv account! Current show: ", TVDBID))
+                    Return 0
+                End If
+                'scrape community rating and votes
+                Dim traktsearchresult = TrakttvAPI.SearchById("tvdb", TVDBID)
+                If Not traktsearchresult Is Nothing AndAlso Not traktsearchresult.Count = 1 Then
+                    Return CInt(traktsearchresult(0).Show.Ids.Trakt)
+                Else
+                    logger.Info("[GetTVEpisodeInfo] Could not scrape traktID from trakt.tv! tvdbid of show: ", TVDBID)
+                End If
+            End If
+        End Function
 
 
 #End Region 'Methods

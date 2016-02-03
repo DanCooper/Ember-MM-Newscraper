@@ -85,7 +85,9 @@ namespace Trakttv
         public const string GETUserComments = "https://api-v2launch.trakt.tv/users/{0}/comments/{1}/{2}?extended=full,images";      
         public const string GETCommentReplies = "https://api-v2launch.trakt.tv/comments/{0}/replies";
         public const string GETComment = "https://api-v2launch.trakt.tv/comments/{0}";
-
+      
+        // Search requests
+        public const string GETSearchById = "https://api-v2launch.trakt.tv/search?id_type={0}&id={1}";
         #endregion
     }
 }
