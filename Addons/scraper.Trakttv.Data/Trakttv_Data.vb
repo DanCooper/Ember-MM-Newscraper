@@ -22,6 +22,7 @@ Imports System.IO
 
 Imports EmberAPI
 Imports NLog
+Imports Trakttv
 
 ''' <summary>
 ''' Native Scraper
@@ -324,11 +325,14 @@ Public Class Trakttv_Data
                 Else
                     nTVShow = _scraper.GetTVShowInfo(oDBElement.TVShow.IMDB, ScrapeModifiers, FilteredOptions)
                 End If
-                'ElseIf Not String.IsNullOrEmpty(oDBElement.TVShow.TVDB) Then
-                '    'TMDB-ID already available -> scrape and save data into an empty tv show container (nShow)
-                '    _scraper.GetTVShowInfo(oDBElement.TVShow.TVDB, nShow, FilteredOptions, False)           
-                'ElseIf Not String.IsNullOrEmpty(oDBElement.TVShow.TMDB) Then
-                '    _scraper.GetTVShowInfo(oDBElement.TVShow.TMDB, nShow, FilteredOptions, False)
+            ElseIf oDBElement.TVShow.TMDBSpecified Then
+                nTVShow = _scraper.GetTVShowInfo(oDBElement.TVShow.TMDB, ScrapeModifiers, FilteredOptions)
+            ElseIf oDBElement.TVShow.TVDBSpecified Then
+                Dim TraktResult As New TraktAPI.Model.TraktSearchResult
+                TraktResult = _scraper.GetIDs(oDBElement.TVShow.TVDB, "tvdb")
+                If TraktResult IsNot Nothing AndAlso TraktResult.Show IsNot Nothing AndAlso TraktResult.Show.Ids IsNot Nothing AndAlso TraktResult.Show.Ids.Trakt IsNot Nothing Then
+                    nTVShow = _scraper.GetTVShowInfo(CStr(TraktResult.Show.Ids.Trakt), ScrapeModifiers, FilteredOptions)
+                End If
             End If
         End If
 
@@ -368,9 +372,11 @@ Public Class Trakttv_Data
         ElseIf oDBElement.TVShow.TMDBSpecified Then
             nTVEpisode = _scraper.GetTVEpisodeInfo(oDBElement.TVShow.TMDB, oDBElement.TVEpisode.Season, oDBElement.TVEpisode.Episode, FilteredOptions)
         ElseIf oDBElement.TVShow.TVDBSpecified Then
-            Dim traktID As Integer = 0
-            traktID = _scraper.GetTraktIDByTVDBID(oDBElement.TVShow.TVDB)
-            nTVEpisode = _scraper.GetTVEpisodeInfo(CStr(traktID), oDBElement.TVEpisode.Season, oDBElement.TVEpisode.Episode, FilteredOptions)
+            Dim TraktResult As New TraktAPI.Model.TraktSearchResult
+            TraktResult = _scraper.GetIDs(oDBElement.TVShow.TVDB, "tvdb")
+            If TraktResult IsNot Nothing AndAlso TraktResult.Show IsNot Nothing AndAlso TraktResult.Show.Ids IsNot Nothing AndAlso TraktResult.Show.Ids.Trakt IsNot Nothing Then
+                nTVEpisode = _scraper.GetTVEpisodeInfo(CStr(TraktResult.Show.Ids.Trakt), oDBElement.TVEpisode.Season, oDBElement.TVEpisode.Episode, FilteredOptions)
+            End If
         End If
 
         'Set basic Episode setting (correct seaonnumber, epiodenumber) here because otherwise result will not be handled in MergeDataScraperResults_TVEpisode_Single
@@ -407,6 +413,15 @@ Public Class Trakttv_Data
     End Function
 
     Function GetTMDBID(ByVal sIMDBID As String, ByRef sTMDBID As String) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.GetTMDBID
+        If Not String.IsNullOrEmpty(sIMDBID) Then
+            LoadSettings_Movie()
+            Dim _scraper As New TrakttvScraper.Scraper(_SpecialSettings_Movie, 1)
+            Dim TraktResult As New TraktAPI.Model.TraktSearchResult
+            TraktResult = _scraper.GetIDs(sIMDBID, "imdb")
+            If TraktResult IsNot Nothing AndAlso TraktResult.Movie IsNot Nothing AndAlso TraktResult.Movie.Ids IsNot Nothing AndAlso TraktResult.Movie.Ids.Tmdb IsNot Nothing Then
+                sTMDBID = CStr(TraktResult.Movie.Ids.Tmdb)
+            End If
+        End If
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
