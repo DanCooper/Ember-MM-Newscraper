@@ -575,6 +575,23 @@ namespace Trakttv
 
         #endregion
 
+        #region GET SearchResults
+        /// <summary>
+        /// Lookup an item by using a Trakt.tv ID or other external ID. This is helpful to get an items info including the Trakt.tv ID.
+        /// </summary>
+        /// <param name="idType">ID that matches with the type. Example: tt0848228.</param>
+        /// <param name="id">Type of ID to lookup. Possible values: trakt-movie , trakt-show , trakt-episode , imdb , tmdb , tvdb , tvrage</param>
+        public static IEnumerable<TraktSearchResult> SearchById(string idType, string id)
+        {
+            string response = READFromTrakt(string.Format(TraktURIs.GETSearchById, idType, id));
+            return response.FromJSONArray<TraktSearchResult>();
+        }
+
+        #endregion
+
+
+
+
         #region POST User List
 
         /// <summary>
