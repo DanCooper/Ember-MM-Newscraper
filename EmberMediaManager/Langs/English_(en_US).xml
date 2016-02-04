@@ -1097,7 +1097,7 @@
   <string id="1005">New Mapping</string>
   <string id="1006">TV Movie Titles ({0})</string>
   <string id="1007">You've changed a setting that makes it necessary that the database is cleaned up.Please make sure that all sources are available!{0}{0}Should the process be continued?</string>
-  <string id="1008"></string>
+  <string id="1008">Sync Full</string>
   <string id="1009">Ember {0} - (New version available!)</string>
   <string id="1010">TV Show Landscape</string>
   <string id="1011">TV Show CharacterArt</string>
