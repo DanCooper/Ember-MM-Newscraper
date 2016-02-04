@@ -18,11 +18,7 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System
 Imports System.IO
-Imports System.Linq
-Imports System.Xml
-Imports System.Xml.Linq
 Imports NLog
 Imports System.Xml.Serialization
 
@@ -30,7 +26,7 @@ Public Class clsAdvancedSettings
     Implements IDisposable
 
 #Region "Fields"
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared eLogger As Logger = LogManager.GetCurrentClassLogger()
     Private Shared _AdvancedSettings As New clsXMLAdvancedSettings
 
     Private Shared _DoNotSave As Boolean = False
@@ -57,7 +53,7 @@ Public Class clsAdvancedSettings
             Dim configpath As String = FileUtils.Common.ReturnSettingsFile("Settings", "AdvancedSettings.xml")
             Load(configpath)
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -105,7 +101,7 @@ Public Class clsAdvancedSettings
             End If
 
         Catch ex As Exception
-            logger.Info(New StackFrame().GetMethod().Name, ex)
+            eLogger.Info(New StackFrame().GetMethod().Name, ex)
             Return defvalue
         End Try
     End Function
@@ -129,14 +125,14 @@ Public Class clsAdvancedSettings
             End If
 
         Catch ex As Exception
-            logger.Info("Key: " & key & " DefValue: " & defvalue & "  Assembly: " & Assembly & New StackFrame().GetMethod().Name, ex)
+            eLogger.Info("Key: " & key & " DefValue: " & defvalue & "  Assembly: " & Assembly & New StackFrame().GetMethod().Name, ex)
             Return defvalue
         End Try
     End Function
 
     Public Sub CleanSetting(ByVal key As String, Optional ByVal cAssembly As String = "")
         If _disposed Then
-            logger.Fatal(New StackFrame().GetMethod().Name, "AdvancedSettings.CleanSetting on disposed object")
+            eLogger.Fatal(New StackFrame().GetMethod().Name, "AdvancedSettings.CleanSetting on disposed object")
         End If
         Dim Assembly As String = cAssembly
         If Assembly = String.Empty Then
@@ -154,7 +150,7 @@ Public Class clsAdvancedSettings
 
     Public Sub ClearComplexSetting(ByVal key As String, Optional ByVal cAssembly As String = "")
         If _disposed Then
-            logger.Fatal(New StackFrame().GetMethod().Name, "AdvancedSettings.CleanComplexSetting on disposed object")
+            eLogger.Fatal(New StackFrame().GetMethod().Name, "AdvancedSettings.CleanComplexSetting on disposed object")
         End If
         Try
             Dim Assembly As String = cAssembly
@@ -182,14 +178,14 @@ Public Class clsAdvancedSettings
             Dim v = _AdvancedSettings.ComplexSettings.FirstOrDefault(Function(f) f.Table.Name = key AndAlso f.Table.Section = Assembly)
             Return If(v Is Nothing, Nothing, v.Table.Item)
         Catch ex As Exception
-            logger.Info(New StackFrame().GetMethod().Name, ex)
+            eLogger.Info(New StackFrame().GetMethod().Name, ex)
             Return Nothing
         End Try
     End Function
 
     Public Function SetComplexSetting(ByVal key As String, ByVal value As List(Of AdvancedSettingsComplexSettingsTableItem), Optional ByVal cAssembly As String = "") As Boolean
         If _disposed Then
-            logger.Fatal(New StackFrame().GetMethod().Name, "AdvancedSettings.SetComplexSetting on disposed object")
+            eLogger.Fatal(New StackFrame().GetMethod().Name, "AdvancedSettings.SetComplexSetting on disposed object")
         End If
         Try
             Dim Assembly As String = cAssembly
@@ -208,7 +204,7 @@ Public Class clsAdvancedSettings
 
             'If Not _DoNotSave Then Save()
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return True
     End Function
@@ -223,8 +219,8 @@ Public Class clsAdvancedSettings
                 objStreamReader.Close()
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-            logger.Info("An attempt is made to repair the AdvancedSettings.xml")
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Info("An attempt is made to repair the AdvancedSettings.xml")
             Try
                 Using srAdvancedSettings As New StreamReader(fname)
                     Dim sAdvancedSettings As String = srAdvancedSettings.ReadToEnd
@@ -238,9 +234,9 @@ Public Class clsAdvancedSettings
                         _AdvancedSettings = CType(xXMLSettings.Deserialize(reader), clsXMLAdvancedSettings)
                     End Using
                 End Using
-                logger.Info("AdvancedSettings.xml successfully repaired")
+                eLogger.Info("AdvancedSettings.xml successfully repaired")
             Catch ex2 As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex2)
+                eLogger.Error(New StackFrame().GetMethod().Name, ex2)
                 File.Copy(fname, String.Concat(fname, "_backup"), True)
                 _AdvancedSettings = New clsXMLAdvancedSettings
             End Try
@@ -270,7 +266,7 @@ Public Class clsAdvancedSettings
 
     Private Sub Save()
         If _disposed Then
-            logger.Fatal(New StackFrame().GetMethod().Name, "AdvancedSettings.Save on disposed object")
+            eLogger.Fatal(New StackFrame().GetMethod().Name, "AdvancedSettings.Save on disposed object")
         End If
         Try
             If _DoNotSave Then
@@ -294,7 +290,7 @@ Public Class clsAdvancedSettings
 
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -314,7 +310,7 @@ Public Class clsAdvancedSettings
             If cContent = Enums.ContentType.None Then
                 Dim v = _AdvancedSettings.Setting.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
                 If v Is Nothing Then
-                    _AdvancedSettings.Setting.Add(New AdvancedSettingsSetting With {.Section = Assembly, .Name = key, .Value = Convert.ToString(value), _
+                    _AdvancedSettings.Setting.Add(New AdvancedSettingsSetting With {.Section = Assembly, .Name = key, .Value = Convert.ToString(value),
                                                                                     .DefaultValue = If(isDefault, Convert.ToString(value), String.Empty)})
                 Else
                     _AdvancedSettings.Setting.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly).Value = Convert.ToString(value)
@@ -322,7 +318,7 @@ Public Class clsAdvancedSettings
             Else
                 Dim v = _AdvancedSettings.Setting.FirstOrDefault(Function(f) f.Name = key AndAlso f.Content = cContent AndAlso f.Section = Assembly)
                 If v Is Nothing Then
-                    _AdvancedSettings.Setting.Add(New AdvancedSettingsSetting With {.Section = Assembly, .Name = key, .Value = Convert.ToString(value), _
+                    _AdvancedSettings.Setting.Add(New AdvancedSettingsSetting With {.Section = Assembly, .Name = key, .Value = Convert.ToString(value),
                                                                                     .DefaultValue = If(isDefault, Convert.ToString(value), String.Empty), .Content = cContent})
                 Else
                     _AdvancedSettings.Setting.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly AndAlso f.Content = cContent).Value = Convert.ToString(value)
@@ -331,7 +327,7 @@ Public Class clsAdvancedSettings
 
             'If Not _DoNotSave Then Save()
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return True
     End Function
@@ -353,7 +349,7 @@ Public Class clsAdvancedSettings
 
                 Dim v = _AdvancedSettings.Setting.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
                 If v Is Nothing Then
-                    _AdvancedSettings.Setting.Add(New AdvancedSettingsSetting With {.Section = Assembly, .Name = key, .Value = value, _
+                    _AdvancedSettings.Setting.Add(New AdvancedSettingsSetting With {.Section = Assembly, .Name = key, .Value = value,
                                                                                     .DefaultValue = If(isDefault, value, String.Empty)})
                 Else
                     _AdvancedSettings.Setting.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly).Value = value
@@ -361,7 +357,7 @@ Public Class clsAdvancedSettings
             Else
                 Dim v = _AdvancedSettings.Setting.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly AndAlso f.Content = cContent)
                 If v Is Nothing Then
-                    _AdvancedSettings.Setting.Add(New AdvancedSettingsSetting With {.Section = Assembly, .Name = key, .Value = value, _
+                    _AdvancedSettings.Setting.Add(New AdvancedSettingsSetting With {.Section = Assembly, .Name = key, .Value = value,
                                                                                     .DefaultValue = If(isDefault, value, String.Empty), .Content = cContent})
                 Else
                     _AdvancedSettings.Setting.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly AndAlso f.Content = cContent).Value = value
@@ -370,7 +366,7 @@ Public Class clsAdvancedSettings
 
             'If Not _DoNotSave Then Save()
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return True
     End Function
@@ -380,7 +376,7 @@ Public Class clsAdvancedSettings
 
         Dim aPath As String
         If _disposed Then
-            logger.Error(New StackFrame().GetMethod().Name, "AdvancedSettings.SetDefaults on disposed object")
+            eLogger.Error(New StackFrame().GetMethod().Name, "AdvancedSettings.SetDefaults on disposed object")
             Throw New ObjectDisposedException("AdvancedSettings.SetDefaults on disposed object")
         End If
         _DoNotSave = True

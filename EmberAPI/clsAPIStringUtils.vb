@@ -34,7 +34,7 @@ Public Class StringUtils
 
 #Region "Fields"
 
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared eLogger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
 #End Region 'Fields
 
@@ -163,7 +163,7 @@ Public Class StringUtils
                 strResult = strPlotOutline.Trim()
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return strResult
     End Function
@@ -307,7 +307,7 @@ Public Class StringUtils
             Next
             Return newName.Trim
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Name: " & name & " generated an error message", ex)
+            eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Name: " & name & " generated an error message", ex)
         End Try
         Return name
     End Function
@@ -371,7 +371,7 @@ Public Class StringUtils
 
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return TVEpName.Trim
     End Function
@@ -465,7 +465,7 @@ Public Class StringUtils
                         Exit For
                     End If
                 Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Title: " & sTitle & " generated an error message", ex)
+                    eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Title: " & sTitle & " generated an error message", ex)
                 End Try
             Next
         End If
@@ -513,7 +513,7 @@ Public Class StringUtils
                         Exit For
                     End If
                 Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Title: " & sTitle & " generated an error message", ex)
+                    eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Title: " & sTitle & " generated an error message", ex)
                 End Try
             Next
         End If
@@ -561,7 +561,7 @@ Public Class StringUtils
                         Exit For
                     End If
                 Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Title: " & sTitle & " generated an error message", ex)
+                    eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Title: " & sTitle & " generated an error message", ex)
                 End Try
             Next
         End If
@@ -648,7 +648,7 @@ Public Class StringUtils
             Next
             Return result.ToString()
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Input <" & stext & "> generated an error message", ex)
+            eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Input <" & stext & "> generated an error message", ex)
         End Try
 
         'If we get here, something went wrong.
@@ -677,7 +677,7 @@ Public Class StringUtils
             End If
             Return bReturn
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Input <" & sName & "><" & VTS & "> generated an error message", ex)
+            eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Input <" & sName & "><" & VTS & "> generated an error message", ex)
         End Try
 
         'If we get here, something went wrong.
@@ -744,7 +744,7 @@ Public Class StringUtils
             Next
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Source of <" & sString & "> generated an error", ex)
+            eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Source of <" & sString & "> generated an error", ex)
             'Return the source string and move along
             sReturn = sString.Trim
         End Try
@@ -773,7 +773,7 @@ Public Class StringUtils
             'TODO Dekker500 - This used to be "sReturn.ToLower", but didn't make sense why it did... Investigate up the chain! (What does the case have to do with punctuation anyway???)
             sReturn = Regex.Replace(sReturn, "\s\s(\s+)?", " ")
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Source of <" & sString & "> generated an error", ex)
+            eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Source of <" & sString & "> generated an error", ex)
             'Return the source string and move along
             sReturn = sString
         End Try
@@ -801,7 +801,7 @@ Public Class StringUtils
                 Return New Size(Convert.ToInt32(SplitSize(0)), Convert.ToInt32(SplitSize(1)))
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Source of <" & sString & "> generated an error", ex)
+            eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Source of <" & sString & "> generated an error", ex)
         End Try
         'If you get here, something went wrong
         Return New Size(0, 0)
@@ -848,7 +848,7 @@ Public Class StringUtils
                 End If
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Source of <" & sString & "> generated an error", ex)
+            eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Source of <" & sString & "> generated an error", ex)
         End Try
 
         'If you get here, something went wrong

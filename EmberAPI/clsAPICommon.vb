@@ -978,7 +978,7 @@ Public Class Functions
 
 #Region "Fields"
 
-    Shared logger As Logger = LogManager.GetCurrentClassLogger()
+    Shared eLogger As Logger = LogManager.GetCurrentClassLogger()
 
 #End Region 'Fields
 
@@ -1228,7 +1228,7 @@ Public Class Functions
             End If
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Failed trying to identify last Extrafanart from path: " & sPath, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Failed trying to identify last Extrafanart from path: " & sPath, ex)
         End Try
 
         Return iMod
@@ -1261,7 +1261,7 @@ Public Class Functions
             End If
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Failed trying to identify last Extrathumb from path: " & sPath, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Failed trying to identify last Extrathumb from path: " & sPath, ex)
         End Try
 
         Return iMod
@@ -1331,7 +1331,7 @@ Public Class Functions
                                 Return sDir.FullName
                             End If
                         Catch ex As Exception
-                            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & " Failed to determine path for season " & iSeason & " in path: " & ShowPath, ex)
+                            eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & " Failed to determine path for season " & iSeason & " in path: " & ShowPath, ex)
                         End Try
                     Next
                 Next
@@ -1539,8 +1539,8 @@ Public Class Functions
                     .SeasonLandscape = MValue
                     .SeasonNFO = MValue
                     .SeasonPoster = MValue
-                    '.withEpisodes should not be set here
-                    '.withSeasons should not be set here
+                '.withEpisodes should not be set here
+                '.withSeasons should not be set here
                 Case Enums.ModifierType.AllSeasonsBanner
                     .AllSeasonsBanner = MValue
                 Case Enums.ModifierType.AllSeasonsFanart
@@ -1631,18 +1631,18 @@ Public Class Functions
     ''' This is to prevent malformed URIs from attacking the user's machine.</remarks>
     Public Shared Function Launch(ByRef Destination As String, Optional ByRef AllowLocalFiles As Boolean = False) As Boolean
         If String.IsNullOrEmpty(Destination) Then
-            logger.Error("Blank destination")
+            eLogger.Error("Blank destination")
             Return False
         End If
         Try
             Dim uriDestination As New Uri(Destination)
             If uriDestination.IsFile() Then
                 If (Not AllowLocalFiles) Then
-                    logger.Error("Destination is a file, which is not permitted for security reasons <{0}>", Destination)
+                    eLogger.Error("Destination is a file, which is not permitted for security reasons <{0}>", Destination)
                     Return False
                 Else
                     If (Not File.Exists(uriDestination.LocalPath)) Then
-                        logger.Error("Destination is a file, but it does not exist <{0}>", Destination)
+                        eLogger.Error("Destination is a file, but it does not exist <{0}>", Destination)
                         Return False
                     Else
                         If Master.isWindows Then
@@ -1670,7 +1670,7 @@ Public Class Functions
                 End Using
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Could not launch <" & Destination & ">", ex)
+            eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Could not launch <" & Destination & ">", ex)
             Return False
         End Try
         'If you got here, everything went fine
@@ -1701,7 +1701,7 @@ Public Class Functions
             'End If
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Could not launch <" & dllPath & ">", ex)
+            eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Could not launch <" & dllPath & ">", ex)
         End Try
     End Sub
 
@@ -1748,7 +1748,7 @@ Public Class Functions
                 My_Process.Close()
             End Using
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Could not launch <" & Process_Name & ">", ex)
+            eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Could not launch <" & Process_Name & ">", ex)
         End Try
 
         Return OutputString

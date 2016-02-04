@@ -26,7 +26,7 @@ Public Class CommandLine
 
 #Region "Fields"
 
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared eLogger As Logger = LogManager.GetCurrentClassLogger()
 
 #End Region 'Fields
 
@@ -57,7 +57,7 @@ Public Class CommandLine
     Public Sub RunCommandLine(ByVal Args() As String)
         If Args.Count = 0 Then Return
 
-        logger.Trace("Call CommandLine")
+        eLogger.Trace("Call CommandLine")
 
         Dim MoviePath As String = String.Empty
         Dim isSingle As Boolean = False
@@ -78,7 +78,7 @@ Public Class CommandLine
                             i += 1
                         End If
                     Else
-                        logger.Warn("[CommandLine] No path or invalid path specified for -addmoviesource command")
+                        eLogger.Warn("[CommandLine] No path or invalid path specified for -addmoviesource command")
                     End If
                 Case "-addtvshowsource"
                     If Args.Count - 1 > i Then
@@ -87,7 +87,7 @@ Public Class CommandLine
                             i += 1
                         End If
                     Else
-                        logger.Warn("[CommandLine] No path or invalid path specified for -addtvshowsource command")
+                        eLogger.Warn("[CommandLine] No path or invalid path specified for -addtvshowsource command")
                     End If
                 Case "-cleanvideodb"
                     RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"cleanvideodb"}))
@@ -99,7 +99,7 @@ Public Class CommandLine
                         i = SetModuleParameters(Args, i, sParams)
                         RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"run", strModuleName, sParams}))
                     Else
-                        logger.Warn("[CommandLine] Missing module name for command ""-run""")
+                        eLogger.Warn("[CommandLine] Missing module name for command ""-run""")
                     End If
                 Case "-scanfolder"
                     If Args.Count - 1 > i Then
@@ -109,7 +109,7 @@ Public Class CommandLine
                             i += 1
                         End If
                     Else
-                        logger.Warn("[CommandLine] No path or invalid path specified for command ""-scanfolder""")
+                        eLogger.Warn("[CommandLine] No path or invalid path specified for command ""-scanfolder""")
                     End If
                 Case "-scrapemovies"
                     If Args.Count - 1 > i AndAlso Not Args(i + 1).StartsWith("-") Then
@@ -165,10 +165,10 @@ Public Class CommandLine
                                 i = SetScraperMod(Args, i, CustomScrapeModifiers)
                                 RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.NewSkip, CustomScrapeModifiers}))
                             Case Else
-                                logger.Warn("[CommandLine] Invalid ScrapeType specified for command ""-scrapemovies""")
+                                eLogger.Warn("[CommandLine] Invalid ScrapeType specified for command ""-scrapemovies""")
                         End Select
                     Else
-                        logger.Warn("[CommandLine] No ScrapeType specified for command ""-scrapemovies""")
+                        eLogger.Warn("[CommandLine] No ScrapeType specified for command ""-scrapemovies""")
                     End If
                 Case "-scrapetvshows"
                     If Args.Count - 1 > i AndAlso Not Args(i + 1).StartsWith("-") Then
@@ -224,10 +224,10 @@ Public Class CommandLine
                                 i = SetScraperMod(Args, i, CustomScrapeModifiers)
                                 RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.NewSkip, CustomScrapeModifiers}))
                             Case Else
-                                logger.Warn("[CommandLine] Invalid ScrapeType specified for command ""-scrapemovies""")
+                                eLogger.Warn("[CommandLine] Invalid ScrapeType specified for command ""-scrapemovies""")
                         End Select
                     Else
-                        logger.Warn("[CommandLine] No ScrapeType specified for command ""-scrapemovies""")
+                        eLogger.Warn("[CommandLine] No ScrapeType specified for command ""-scrapemovies""")
                     End If
                 Case "--verbose"
                 Case "-nowindow"
@@ -279,7 +279,7 @@ Public Class CommandLine
                                                     New List(Of Object)(New Object() {"loadmedia", New Structures.ScanOrClean With {.TV = True}, -1, String.Empty}))
                     End If
                 Case Else
-                    logger.Warn(String.Concat("[CommandLine] Invalid command: ", Args(i)))
+                    eLogger.Warn(String.Concat("[CommandLine] Invalid command: ", Args(i)))
             End Select
         Next
     End Sub

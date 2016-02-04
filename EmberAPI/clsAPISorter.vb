@@ -25,7 +25,7 @@ Public Class ListViewColumnSorter
     Implements System.Collections.IComparer
 
 #Region "Fields"
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared eLogger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Private ByText As Boolean
     Private ColumnToSort As Integer
@@ -129,7 +129,7 @@ Public Class ListViewColumnSorter
                 Return 0
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
             Return 0
         End Try
     End Function

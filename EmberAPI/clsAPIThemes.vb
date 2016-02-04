@@ -19,14 +19,13 @@
 ' ################################################################################
 
 Imports System.IO
-Imports EmberAPI
 Imports NLog
 
 Public Class Themes
     Implements IDisposable
 
 #Region "Fields"
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared eLogger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Private _ext As String
     Private _title As String
@@ -196,7 +195,7 @@ Public Class Themes
             Try
                 File.Delete(sPath)
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Param: <" & sPath & ">", ex)
+                eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Param: <" & sPath & ">", ex)
             End Try
         End If
     End Sub
@@ -217,7 +216,7 @@ Public Class Themes
                 Next
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovie.Filename & ">", ex)
+            eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovie.Filename & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -237,7 +236,7 @@ Public Class Themes
                 Next
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVShow.Filename & ">", ex)
+            eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVShow.Filename & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -273,7 +272,7 @@ Public Class Themes
                     Me._url = sPath
                 End Using
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sPath & ">", ex)
+                eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sPath & ">", ex)
             End Try
         End If
     End Sub
@@ -303,13 +302,13 @@ Public Class Themes
 
                 Me._ext = Path.GetExtension(tTheme)
                 Me._url = sURL
-                logger.Debug("Theme downloaded: " & sURL)
+                eLogger.Debug("Theme downloaded: " & sURL)
             Else
-                logger.Warn("Theme NOT downloaded: " & sURL)
+                eLogger.Warn("Theme NOT downloaded: " & sURL)
             End If
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sURL & ">", ex)
+            eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sURL & ">", ex)
         End Try
 
         RemoveHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
@@ -334,7 +333,7 @@ Public Class Themes
             Next
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return strReturn
     End Function
@@ -351,7 +350,7 @@ Public Class Themes
             End Using
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -367,9 +366,9 @@ Public Class Themes
     Public Function IsAllowedToDownload(ByVal mMovie As Database.DBElement) As Boolean
         Try
             With Master.eSettings
-                If (String.IsNullOrEmpty(mMovie.ThemePath) OrElse .MovieThemeKeepExisting) AndAlso .MovieThemeTvTunesEnable AndAlso _
-                    (mMovie.IsSingle AndAlso .MovieThemeTvTunesMoviePath) OrElse _
-                    (mMovie.IsSingle AndAlso .MovieThemeTvTunesSub AndAlso Not String.IsNullOrEmpty(.MovieThemeTvTunesSubDir)) OrElse _
+                If (String.IsNullOrEmpty(mMovie.ThemePath) OrElse .MovieThemeKeepExisting) AndAlso .MovieThemeTvTunesEnable AndAlso
+                    (mMovie.IsSingle AndAlso .MovieThemeTvTunesMoviePath) OrElse
+                    (mMovie.IsSingle AndAlso .MovieThemeTvTunesSub AndAlso Not String.IsNullOrEmpty(.MovieThemeTvTunesSubDir)) OrElse
                     (.MovieThemeTvTunesCustom AndAlso Not String.IsNullOrEmpty(.MovieThemeTvTunesCustomPath)) Then
                     Return True
                 Else
@@ -377,7 +376,7 @@ Public Class Themes
                 End If
             End With
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
             Return False
         End Try
     End Function

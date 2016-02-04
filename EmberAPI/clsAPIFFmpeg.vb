@@ -15,7 +15,7 @@ Namespace FFmpeg
     Public Class FFmpeg
 #Region "Fields"
         Private ReadOnly _output As StringBuilder
-        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Shared eLogger As Logger = LogManager.GetCurrentClassLogger()
 #End Region
 
 #Region "Constructors"
@@ -72,7 +72,7 @@ Namespace FFmpeg
 
 
             If String.IsNullOrEmpty(ScanPath) Then
-                logger.Warn(String.Format(("[FFmpeg] GenerateThumbnailsWithoutBars: Could not set ScanPath. Abort creation of thumbnails! File: {0}"), DBElement.Filename))
+                eLogger.Warn(String.Format(("[FFmpeg] GenerateThumbnailsWithoutBars: Could not set ScanPath. Abort creation of thumbnails! File: {0}"), DBElement.Filename))
                 Return lstThumbContainer
             End If
 
@@ -104,7 +104,7 @@ Namespace FFmpeg
             'video should be long enough to avoid opening credits! (=5min)
             If VideoFileDuration < (301 + (ThumbCount * 2)) Then
                 'videofile should be at least 5min + thumbcount*2 long, otherwise exit and return empty imagecontainer
-                logger.Warn(String.Format(("[FFmpeg] GenerateThumbnailsWithoutBars: Duration of file is shorter than required minimum: {0} seconds. Abort automatic creation of thumbnails! ScanPath: {1}"), 300 + (ThumbCount * 2), ScanPath))
+                eLogger.Warn(String.Format(("[FFmpeg] GenerateThumbnailsWithoutBars: Duration of file is shorter than required minimum: {0} seconds. Abort automatic creation of thumbnails! ScanPath: {1}"), 300 + (ThumbCount * 2), ScanPath))
                 Return lstThumbContainer
             End If
             'calculate timeintervall for thumbnails (we always create double images, sort them later and only save the best ones)
@@ -167,7 +167,7 @@ Namespace FFmpeg
             End If
             Dim sortedThumbs = Directory.GetFiles(thumbPath, "*.jpg").OrderByDescending(Function(f) New FileInfo(f).Length).ToList
             If sortedThumbs.Count > 0 Then
-                logger.Info(String.Format(("[FFmpeg] GenerateThumbnailsWithoutBars: {0} thumbs created. File: {1}"), sortedThumbs.Count, ScanPath))
+                eLogger.Info(String.Format(("[FFmpeg] GenerateThumbnailsWithoutBars: {0} thumbs created. File: {1}"), sortedThumbs.Count, ScanPath))
                 'remove the old ones
                 ' Images.Delete_Movie(DBElement, Enums.ModifierType.MainExtrathumbs)
                 'Step 3: load all valid extrathumbs into imagecontainer
@@ -190,7 +190,7 @@ Namespace FFmpeg
                 '    End If
                 'Next
             Else
-                logger.Warn(String.Format(("[FFmpeg] GenerateThumbnailsWithoutBars: No thumbs created for {0}"), ScanPath))
+                eLogger.Warn(String.Format(("[FFmpeg] GenerateThumbnailsWithoutBars: No thumbs created for {0}"), ScanPath))
             End If
             Return lstThumbContainer
         End Function
@@ -212,7 +212,7 @@ Namespace FFmpeg
         ''' </remarks>
         Public Shared Function GetScreenSizeWithoutBars(ByVal DBElement As Database.DBElement, ByVal Duration As Integer, Optional ByVal ScanPath As String = "", Optional ByVal Timeout As Integer = 20000) As String
             If Duration < 4 Then
-                logger.Warn(String.Format(("[FFmpeg] GetScreenSizeWithoutBars: Duration of videofile [s]: {0} Thats not a valid duration! Detection of black bars not possible!"), Duration))
+                eLogger.Warn(String.Format(("[FFmpeg] GetScreenSizeWithoutBars: Duration of videofile [s]: {0} Thats not a valid duration! Detection of black bars not possible!"), Duration))
             End If
 
             'Retrieve the full file path to the source video file (if necessary)
@@ -254,20 +254,20 @@ Namespace FFmpeg
                             sortcrops.Add((Tuple.Create(mc(j).Groups(mc(j).Groups.Count - 1).Value, cropvalue)))
                         Next
                     Else
-                        logger.Info(String.Format(("[FFmpeg] GetScreenSizeWithoutBars: Result does not contain any cropvalues? Args: {0} Output: {1}"), String.Format("-ss {0} -i ""{1}"" -t {2} -vf cropdetect -f null NUL", (CInt(Duration / 4) * i), ScanPath, 2), cropscanresult))
+                        eLogger.Info(String.Format(("[FFmpeg] GetScreenSizeWithoutBars: Result does not contain any cropvalues? Args: {0} Output: {1}"), String.Format("-ss {0} -i ""{1}"" -t {2} -vf cropdetect -f null NUL", (CInt(Duration / 4) * i), ScanPath, 2), cropscanresult))
                     End If
                 Else
-                    logger.Warn(String.Format(("[FFmpeg] GetScreenSizeWithoutBars: Failure Scan! File: {0} Args: {1}"), DBElement.Filename, String.Format("-ss {0} -i ""{1}"" -t {2} -vf cropdetect -f null NUL", (CInt(Duration / 4) * i), ScanPath, 2)))
+                    eLogger.Warn(String.Format(("[FFmpeg] GetScreenSizeWithoutBars: Failure Scan! File: {0} Args: {1}"), DBElement.Filename, String.Format("-ss {0} -i ""{1}"" -t {2} -vf cropdetect -f null NUL", (CInt(Duration / 4) * i), ScanPath, 2)))
                 End If
             Next
 
             If sortcrops.Count < 1 Then
-                logger.Warn("[FFmpeg] GetScreenSizeWithoutBars: Resolution not found!" & " File: " & DBElement.Filename)
+                eLogger.Warn("[FFmpeg] GetScreenSizeWithoutBars: Resolution not found!" & " File: " & DBElement.Filename)
                 Return String.Empty
             Else
                 'sort list, highest resolution on top -> this one will be returned!
                 sortcrops = sortcrops.OrderByDescending(Function(X) X.Item2).ToList
-                logger.Info(String.Format(("[FFmpeg] GetScreenSizeWithoutBars: Resolution: {0} File: {1}"), sortcrops(0).Item1, DBElement.Filename))
+                eLogger.Info(String.Format(("[FFmpeg] GetScreenSizeWithoutBars: Resolution: {0} File: {1}"), sortcrops(0).Item1, DBElement.Filename))
                 Return sortcrops(0).Item1
             End If
         End Function
@@ -286,7 +286,7 @@ Namespace FFmpeg
         ''' </remarks>
         Public Shared Function GetMediaInfoByFFmpeg(ByVal DBElement As Database.DBElement, ScanPath As String, Optional ByVal Timeout As Integer = 20000) As String
             Dim args As String = String.Format(CultureInfo.InvariantCulture, "-i ""{0}""", ScanPath)
-            Return ExecuteFFmpeg(args:=args, timeout:=timeout, dbelement:=DBElement)
+            Return ExecuteFFmpeg(args:=args, timeout:=Timeout, dbelement:=DBElement)
         End Function
 
 
@@ -343,7 +343,7 @@ Namespace FFmpeg
 
                     'FileSize
                     If Not Double.TryParse(ffprobeResults.format.size, VideoInfo.Filesize) Then
-                        logger.Warn("[FFmpeg] GetMediaInfoByFFProbe: Invalid Size: " & ffprobeResults.format.size)
+                        eLogger.Warn("[FFmpeg] GetMediaInfoByFFProbe: Invalid Size: " & ffprobeResults.format.size)
                     End If
                     'Bitrate
                     Dim tmpnumber As Integer = 0
@@ -526,14 +526,14 @@ Namespace FFmpeg
                     If Not ex.Data.Contains("args") Then
                         ex.Data.Add("args", CurrentFFmpegTask.FFmpegArgs)
                     End If
-                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                    eLogger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
             End Using
 
             If Not processCompletedSuccessfully Then
-                logger.Warn(String.Format("Timed out while processing the file. Maybe increase timeout? Currently set to {0} ms", CurrentFFmpegTask.Timeout))
-                logger.Warn(String.Format("Arguments: ", CurrentFFmpegTask.FFmpegArgs))
-                logger.Warn(String.Format("Output: ", CurrentFFmpegTask.FFmpegOutput))
+                eLogger.Warn(String.Format("Timed out while processing the file. Maybe increase timeout? Currently set to {0} ms", CurrentFFmpegTask.Timeout))
+                eLogger.Warn(String.Format("Arguments: ", CurrentFFmpegTask.FFmpegArgs))
+                eLogger.Warn(String.Format("Output: ", CurrentFFmpegTask.FFmpegOutput))
             End If
         End Sub
 
@@ -649,7 +649,7 @@ Namespace FFmpeg
                         videofilepath = DBElement.Filename
                     End If
                 Case Enums.ContentType.TVSeason, Enums.ContentType.TVShow
-                    logger.Warn(String.Format(("[FFmpeg] GetVideoFileScanPath: Current DBElement is not a movie - not supported! File: {0}"), DBElement.Filename))
+                    eLogger.Warn(String.Format(("[FFmpeg] GetVideoFileScanPath: Current DBElement is not a movie - not supported! File: {0}"), DBElement.Filename))
                     If FileUtils.Common.isBDRip(DBElement.ShowPath) Then
                         'no tv support for now...
                     ElseIf FileUtils.Common.isVideoTS(DBElement.ShowPath) Then

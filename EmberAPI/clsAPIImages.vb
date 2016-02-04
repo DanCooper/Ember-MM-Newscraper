@@ -30,7 +30,7 @@ Public Class Images
 
 #Region "Fields"
 
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared eLogger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Private _image As Image
     Private _ms As MemoryStream
@@ -89,7 +89,7 @@ Public Class Images
             _image = New Bitmap(_ms)
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -111,7 +111,7 @@ Public Class Images
             Try
                 File.Delete(sPath)
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Param: <" & sPath & ">", ex)
+                eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Param: <" & sPath & ">", ex)
             End Try
         End If
     End Sub
@@ -143,7 +143,7 @@ Public Class Images
                 End Select
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovie.Filename & ">", ex)
+            eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovie.Filename & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -162,7 +162,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovieSet.MovieSet.Title & ">", ex)
+            eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovieSet.MovieSet.Title & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -181,7 +181,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVShow.ShowPath & ">", ex)
+            eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -208,7 +208,7 @@ Public Class Images
                 End Select
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVEpisode.ShowPath & ">", ex)
+            eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVEpisode.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -227,7 +227,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVSeason.ShowPath & ">", ex)
+            eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVSeason.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -257,7 +257,7 @@ Public Class Images
                 End Select
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVShow.ShowPath & ">", ex)
+            eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVShow.ShowPath & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -334,7 +334,7 @@ Public Class Images
             End If
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sURL & ">", ex)
+            eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sURL & ">", ex)
         End Try
     End Sub
 
@@ -368,7 +368,7 @@ Public Class Images
                     End Using
                 End If
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                eLogger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         Else
             Throw New ArgumentOutOfRangeException("Looks like MemoryStream is empty")
@@ -435,7 +435,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return strReturn
     End Function
@@ -454,7 +454,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return strReturn
     End Function
@@ -473,7 +473,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return strReturn
     End Function
@@ -492,7 +492,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return strReturn
     End Function
@@ -568,7 +568,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return efPath
@@ -642,7 +642,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return etPath
@@ -679,7 +679,7 @@ Public Class Images
             End If
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return strReturn
@@ -699,7 +699,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return strReturn
     End Function
@@ -730,7 +730,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return strReturn
     End Function
@@ -761,7 +761,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return strReturn
     End Function
@@ -780,7 +780,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return strReturn
     End Function
@@ -799,7 +799,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return strReturn
     End Function
@@ -818,7 +818,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return strReturn
     End Function
@@ -849,7 +849,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return strReturn
     End Function
@@ -868,7 +868,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return strReturn
     End Function
@@ -899,7 +899,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return strReturn
     End Function
@@ -930,7 +930,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return strReturn
@@ -962,7 +962,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return strReturn
@@ -982,7 +982,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return strReturn
@@ -1014,7 +1014,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return strReturn
@@ -1082,7 +1082,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return strReturn
     End Function
@@ -1115,7 +1115,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return strReturn
     End Function
@@ -1146,7 +1146,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return strReturn
     End Function
@@ -1177,7 +1177,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return strReturn
     End Function
@@ -1196,7 +1196,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return strReturn
     End Function
@@ -1227,7 +1227,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return strReturn
     End Function
@@ -1294,7 +1294,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return strReturn
     End Function
@@ -1315,7 +1315,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return strReturn
     End Function
@@ -1336,7 +1336,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return strReturn
     End Function
@@ -1357,7 +1357,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return strReturn
     End Function
@@ -1430,7 +1430,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return efPath
@@ -1464,7 +1464,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return strReturn
     End Function
@@ -1485,7 +1485,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return strReturn
     End Function
@@ -1518,7 +1518,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return strReturn
     End Function
@@ -3686,7 +3686,7 @@ Public Class Images
                         If tmpImage Is Nothing OrElse tmpImage.Image Is Nothing Then
                             currentimagesimilarity = 99
                             'image is Nothing -> no need to compare anything!
-                            logger.Warn("[FindDuplicateImages] Image is nothing. Can't compare images! Image at Index: " & i)
+                            eLogger.Warn("[FindDuplicateImages] Image is nothing. Can't compare images! Image at Index: " & i)
                         Else
                             If CurrentImage.LocalFilePathSpecified Then
                                 currentimagesimilarity = ImageUtils.ImageComparison.GetSimilarity(tmpImage.Image, CurrentImage.LocalFilePath, ImageUtils.ImageComparison.Algorithm.AverageHash)
@@ -3696,7 +3696,7 @@ Public Class Images
                                 Else
                                     currentimagesimilarity = 99
                                     'image is Nothing -> no need to compare anything!
-                                    logger.Warn("[FindDuplicateImages] Currentimage is nothing. Can't compare images!")
+                                    eLogger.Warn("[FindDuplicateImages] Currentimage is nothing. Can't compare images!")
                                 End If
                             ElseIf CurrentImage.ImageOriginal IsNot Nothing Then
                                 If CurrentImage.ImageOriginal.Image IsNot Nothing Then
@@ -3704,17 +3704,17 @@ Public Class Images
                                 Else
                                     currentimagesimilarity = 99
                                     'image is Nothing -> no need to compare anything!
-                                    logger.Warn("[FindDuplicateImages] Currentimage is nothing. Can't compare images!")
+                                    eLogger.Warn("[FindDuplicateImages] Currentimage is nothing. Can't compare images!")
                                 End If
                             Else
                                 currentimagesimilarity = 99
                                 'image is Nothing -> no need to compare anything!
-                                logger.Warn("[FindDuplicateImages] Currentimage is nothing. Can't compare images!")
+                                eLogger.Warn("[FindDuplicateImages] Currentimage is nothing. Can't compare images!")
                             End If
                         End If
                         'check for duplicate
                         If MatchTolerance >= currentimagesimilarity Then
-                            logger.Trace("[FindDuplicateImages] Duplicate images found: Image1: " & ImageList.Item(i).URLOriginal & " Image2: Current image!")
+                            eLogger.Trace("[FindDuplicateImages] Duplicate images found: Image1: " & ImageList.Item(i).URLOriginal & " Image2: Current image!")
                             If RemoveDuplicatesFromList = True Then
                                 'investigate next image, start with next item in loop
                                 Continue For
@@ -3737,7 +3737,7 @@ Public Class Images
                             If tmpImage Is Nothing OrElse tmpImage.Image Is Nothing Then
                                 currentimagesimilarity = 99
                                 'First image is nothing -> no need to compare anything!
-                                logger.Warn("[FindDuplicateImages] Image 1 is nothing. Can't compare images! Image at Index: " & i)
+                                eLogger.Warn("[FindDuplicateImages] Image 1 is nothing. Can't compare images! Image at Index: " & i)
                             Else
                                 For j = 0 To lstLimitImages.Count - 1
                                     'To compare images for similarity we need to load them
@@ -3754,7 +3754,7 @@ Public Class Images
                                     If referenceimage Is Nothing OrElse referenceimage.Image Is Nothing Then
                                         currentimagesimilarity = 99
                                         'Second (loaded) image is nothing -> no need to compare anything!
-                                        logger.Warn("[FindDuplicateImages] Image 2 is nothing. Can't compare images! Image at Index: " & j)
+                                        eLogger.Warn("[FindDuplicateImages] Image 2 is nothing. Can't compare images! Image at Index: " & j)
                                     Else
                                         currentimagesimilarity = ImageUtils.ImageComparison.GetSimilarity(tmpImage.Image, referenceimage.Image, ImageUtils.ImageComparison.Algorithm.AverageHash)
                                         'Combine with pHash?!
@@ -3763,7 +3763,7 @@ Public Class Images
                                         'End If
                                     End If
                                     If MatchTolerance >= currentimagesimilarity Then
-                                        logger.Trace("[FindDuplicateImages] Duplicate images found: Image1: " & ImageList.Item(i).URLOriginal & " Image2: " & lstLimitImages(j).URLOriginal)
+                                        eLogger.Trace("[FindDuplicateImages] Duplicate images found: Image1: " & ImageList.Item(i).URLOriginal & " Image2: " & lstLimitImages(j).URLOriginal)
                                         IsUniqueImage = False
                                         Exit For
                                     End If
@@ -3790,7 +3790,7 @@ Public Class Images
                             If referenceimage Is Nothing OrElse referenceimage.Image Is Nothing Then
                                 currentimagesimilarity = 99
                                 'Second (loaded) image is nothing -> no need to compare anything!
-                                logger.Warn("[FindDuplicateImages] Image 2 is nothing. Can't compare images! Image at Index: " & j)
+                                eLogger.Warn("[FindDuplicateImages] Image 2 is nothing. Can't compare images! Image at Index: " & j)
                             Else
                                 currentimagesimilarity = ImageUtils.ImageComparison.GetSimilarity(tmpImage.Image, referenceimage.Image, ImageUtils.ImageComparison.Algorithm.AverageHash)
                                 'Combine with pHash?!
@@ -3799,7 +3799,7 @@ Public Class Images
                                 'End If
                             End If
                             If MatchTolerance >= currentimagesimilarity Then
-                                logger.Trace("[FindDuplicateImages] Duplicate images found: Image1: " & ImageList.Item(i).URLOriginal & " Image2: " & ImageList.Item(j).URLOriginal)
+                                eLogger.Trace("[FindDuplicateImages] Duplicate images found: Image1: " & ImageList.Item(i).URLOriginal & " Image2: " & ImageList.Item(j).URLOriginal)
                             End If
                             'stores index of image in imagelist with calculacted Similarityvalue
                             Dim newSimilarityvalue = Tuple.Create(i, currentimagesimilarity)
@@ -3808,7 +3808,7 @@ Public Class Images
                     End If
                 End If
             Else
-                logger.Trace("[FindDuplicateImages] List of unique images contains " & lstLimitImages.Count & " images")
+                eLogger.Trace("[FindDuplicateImages] List of unique images contains " & lstLimitImages.Count & " images")
                 Exit For
             End If
         Next
@@ -3831,11 +3831,11 @@ Public Class Images
             '        logger.Trace("[RemoveDuplicateImages] Keep image with MatchTolerance: " & calculatedimage.Item2 & " at Index: " & calculatedimage.Item1 & " Name: " & ImageList.Item(calculatedimage.Item1).URLOriginal)
             '    End If
             'Next
-            logger.Trace("[FindDuplicateImages] Ignore all images with MatchTolerance less/equal then : " & MatchTolerance & "...")
+            eLogger.Trace("[FindDuplicateImages] Ignore all images with MatchTolerance less/equal then : " & MatchTolerance & "...")
             For i = ImageList.Count - 1 To 0 Step -1
                 If lstCalculatedSimilarity.Any(Function(c) c.Item1 = i AndAlso c.Item2 <= MatchTolerance) Then
                     If i > 0 Then
-                        logger.Trace("[FindDuplicateImages] Duplicate images found: Image1: " & ImageList.Item(i).URLOriginal & " Image2: " & ImageList.Item(i - 1).URLOriginal)
+                        eLogger.Trace("[FindDuplicateImages] Duplicate images found: Image1: " & ImageList.Item(i).URLOriginal & " Image2: " & ImageList.Item(i - 1).URLOriginal)
                     End If
                     'don't remove duplicate images directly, instead "mark" them as duplicate and handle filtering in following methods...
                     'ImageList.RemoveAt(i)

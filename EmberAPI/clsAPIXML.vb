@@ -27,7 +27,7 @@ Imports NLog
 Public Class APIXML
 
 #Region "Fields"
-    Shared logger As Logger = LogManager.GetCurrentClassLogger()
+    Shared eLogger As Logger = LogManager.GetCurrentClassLogger()
 
     Public Shared lFlags As New List(Of Flag)
     Public Shared alGenres As New List(Of String)
@@ -134,7 +134,7 @@ Public Class APIXML
                 Try
                     File.Copy(rPathD, rPath)
                 Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                    eLogger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
             End If
 
@@ -156,7 +156,7 @@ Public Class APIXML
                 Try
                     File.Copy(cPathD, cPath)
                 Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                    eLogger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
             End If
 
@@ -177,12 +177,12 @@ Public Class APIXML
                 Try
                     File.Copy(filterPathD, filterPath)
                 Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                    eLogger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
             End If
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -317,7 +317,7 @@ Public Class APIXML
                             Dim sLangFlag As Image = GetLanguageImage(fiAV.StreamDetails.Subtitle(i).Language)
                             sLangFlag.Tag = String.Format("{0}: {1}", Master.eLang.GetString(619, "Subtitle Stream"), i)
                             sLangFlag.Tag = String.Format("{0}{1}{2}: {3}", sLangFlag.Tag, Environment.NewLine, Master.eLang.GetString(610, "Language"), fiAV.StreamDetails.Subtitle(i).LongLanguage)
-                            sLangFlag.Tag = String.Format("{0}{1}{2}: {3}", sLangFlag.Tag, Environment.NewLine, Master.eLang.GetString(1287, "Forced"), _
+                            sLangFlag.Tag = String.Format("{0}{1}{2}: {3}", sLangFlag.Tag, Environment.NewLine, Master.eLang.GetString(1287, "Forced"),
                                                           If(fiAV.StreamDetails.Subtitle(i).SubsForced, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
                             iReturn(sIcon) = sLangFlag
                             sIcon += 1
@@ -325,7 +325,7 @@ Public Class APIXML
                             Dim sLangFlag As Image = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultLanguage.png"))
                             sLangFlag.Tag = String.Format("{0}: {1}", Master.eLang.GetString(619, "Subtitle Stream"), i)
                             sLangFlag.Tag = String.Format("{0}{1}{2}: {3}", sLangFlag.Tag, Environment.NewLine, Master.eLang.GetString(610, "Language"), Master.eLang.GetString(138, "Unknown"))
-                            sLangFlag.Tag = String.Format("{0}{1}{2}: {3}", sLangFlag.Tag, Environment.NewLine, Master.eLang.GetString(1287, "Forced"), _
+                            sLangFlag.Tag = String.Format("{0}{1}{2}: {3}", sLangFlag.Tag, Environment.NewLine, Master.eLang.GetString(1287, "Forced"),
                                                           If(fiAV.StreamDetails.Subtitle(i).SubsForced, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
                             iReturn(sIcon) = sLangFlag
                             aIcon += 1
@@ -345,7 +345,7 @@ Public Class APIXML
                 End If
 
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                eLogger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         Else
             iReturn(0) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultScreen.png"))
@@ -425,7 +425,7 @@ Public Class APIXML
             End If
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return String.Empty
@@ -450,7 +450,7 @@ Public Class APIXML
             End If
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return imgGenre
@@ -489,7 +489,7 @@ Public Class APIXML
                 End Using
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return imgRating
@@ -508,7 +508,7 @@ Public Class APIXML
                 Next
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return retRatings.ToArray
     End Function
@@ -526,7 +526,7 @@ Public Class APIXML
                 Next
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return retRatings.ToArray
     End Function
@@ -570,7 +570,7 @@ Public Class APIXML
                 End Using
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return imgRating

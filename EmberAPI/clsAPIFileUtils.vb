@@ -29,20 +29,20 @@ Namespace FileUtils
 
 #Region "Fields"
 
-        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Shared eLogger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
 #End Region 'Fields
 
 #Region "Methods"
 
-        Public Shared Sub DirectoryCopy( _
-                                       ByVal strSourceDir As String, _
-                                       ByVal strDestinationDir As String, _
-                                       ByVal withSubDirs As Boolean, _
+        Public Shared Sub DirectoryCopy(
+                                       ByVal strSourceDir As String,
+                                       ByVal strDestinationDir As String,
+                                       ByVal withSubDirs As Boolean,
                                        ByVal overwriteFiles As Boolean)
 
             If Not Directory.Exists(strSourceDir) Then
-                logger.Error(String.Concat("Source directory does not exist: ", strSourceDir))
+                eLogger.Error(String.Concat("Source directory does not exist: ", strSourceDir))
                 Exit Sub
             End If
 
@@ -73,14 +73,14 @@ Namespace FileUtils
             End If
         End Sub
 
-        Public Shared Sub DirectoryMove( _
-                                       ByVal strSourceDir As String, _
-                                       ByVal strDestinationDir As String, _
-                                       ByVal withSubDirs As Boolean, _
+        Public Shared Sub DirectoryMove(
+                                       ByVal strSourceDir As String,
+                                       ByVal strDestinationDir As String,
+                                       ByVal withSubDirs As Boolean,
                                        ByVal overwriteFiles As Boolean)
 
             If Not Directory.Exists(strSourceDir) Then
-                logger.Error(String.Concat("Source directory does not exist: ", strSourceDir))
+                eLogger.Error(String.Concat("Source directory does not exist: ", strSourceDir))
                 Exit Sub
             End If
 
@@ -222,7 +222,7 @@ Namespace FileUtils
                     End Using
                 End Using
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                eLogger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
         ''' <summary>
@@ -240,7 +240,7 @@ Namespace FileUtils
                 Return Path.Combine(Path.GetDirectoryName(sPath), Path.GetFileNameWithoutExtension(sPath))
                 'Return Path.Combine(Directory.GetParent(sPath).FullName, Path.GetFileNameWithoutExtension(sPath))
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Source: <" & sPath & ">", ex)
+                eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Source: <" & sPath & ">", ex)
                 Return String.Empty
             End Try
         End Function
@@ -297,24 +297,24 @@ Namespace FileUtils
                             If File.Exists(_cmd.execute) Then File.Delete(_cmd.execute)
                     End Select
                 Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                    eLogger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
             Next
             Dim destPath As String = Path.Combine(Functions.AppPath, "InstalledTasks_" & Format(DateTime.Now, "YYYYMMDD") & Format(DateTime.Now, "HHMMSS") & ".xml")
             Try
                 File.Move(fname, destPath)
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                eLogger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
 
         Public Shared Function CheckOnlineStatus_Movie(ByRef dbMovie As Database.DBElement, ByVal showMessage As Boolean) As Boolean
             While Not File.Exists(dbMovie.Filename)
                 If showMessage Then
-                    If MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".", Environment.NewLine, _
-                                                     Master.eLang.GetString(630, "Reconnect the source and press Retry"), ".", _
-                                                     Environment.NewLine, Environment.NewLine, _
-                                                     dbMovie.Filename), String.Empty, _
+                    If MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".", Environment.NewLine,
+                                                     Master.eLang.GetString(630, "Reconnect the source and press Retry"), ".",
+                                                     Environment.NewLine, Environment.NewLine,
+                                                     dbMovie.Filename), String.Empty,
                                                  MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) = Windows.Forms.DialogResult.Cancel Then Return False
                 Else
                     Return False
@@ -327,10 +327,10 @@ Namespace FileUtils
         Public Shared Function CheckOnlineStatus_TVEpisode(ByRef dbTV As Database.DBElement, ByVal showMessage As Boolean) As Boolean
             While Not File.Exists(dbTV.Filename)
                 If showMessage Then
-                    If MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".", Environment.NewLine, _
-                                                     Master.eLang.GetString(630, "Reconnect the source and press Retry"), ".", _
-                                                     Environment.NewLine, Environment.NewLine, _
-                                                     dbTV.Filename), String.Empty, _
+                    If MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".", Environment.NewLine,
+                                                     Master.eLang.GetString(630, "Reconnect the source and press Retry"), ".",
+                                                     Environment.NewLine, Environment.NewLine,
+                                                     dbTV.Filename), String.Empty,
                                                  MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) = Windows.Forms.DialogResult.Cancel Then Return False
                 Else
                     Return False
@@ -343,10 +343,10 @@ Namespace FileUtils
         Public Shared Function CheckOnlineStatus_TVShow(ByRef dbTV As Database.DBElement, ByVal showMessage As Boolean) As Boolean
             While Not Directory.Exists(dbTV.ShowPath)
                 If showMessage Then
-                    If MessageBox.Show(String.Concat(Master.eLang.GetString(719, "This path is no longer available"), ".", Environment.NewLine, _
-                                                     Master.eLang.GetString(630, "Reconnect the source and press Retry"), ".", _
-                                                     Environment.NewLine, Environment.NewLine, _
-                                                     dbTV.ShowPath), String.Empty, _
+                    If MessageBox.Show(String.Concat(Master.eLang.GetString(719, "This path is no longer available"), ".", Environment.NewLine,
+                                                     Master.eLang.GetString(630, "Reconnect the source and press Retry"), ".",
+                                                     Environment.NewLine, Environment.NewLine,
+                                                     dbTV.ShowPath), String.Empty,
                                                  MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) = Windows.Forms.DialogResult.Cancel Then Return False
                 Else
                     Return False
@@ -375,7 +375,7 @@ Namespace FileUtils
                     size += GetFileLength(fi)
                 Next
             Else
-                logger.Debug("Can't calculate foldersize! Not a valid directory: ", spathDirectory)
+                eLogger.Debug("Can't calculate foldersize! Not a valid directory: ", spathDirectory)
             End If
             'Return the size of the smallest file
             Return size
@@ -395,11 +395,11 @@ Namespace FileUtils
             Dim fileList As IEnumerable(Of System.IO.FileInfo) = dir.GetFiles("*.*", System.IO.SearchOption.AllDirectories)
             'Return the size of the largest file
             Dim maxSize As Long = (From file In fileList Let len = GetFileLength(file) Select len).Max()
-            logger.Debug("The length of the largest file under {0} is {1}", spathDirectory, maxSize)
+            eLogger.Debug("The length of the largest file under {0} is {1}", spathDirectory, maxSize)
             ' Return the FileInfo object for the largest file
             ' by sorting and selecting from beginning of list
             Dim longestFile As System.IO.FileInfo = (From file In fileList Let len = GetFileLength(file) Where len > 0 Order By len Descending Select file).First()
-            logger.Debug("The largest file under {0} is {1} with a length of {2} bytes", spathDirectory, longestFile.FullName, longestFile.Length)
+            eLogger.Debug("The largest file under {0} is {1} with a length of {2} bytes", spathDirectory, longestFile.FullName, longestFile.Length)
             Return longestFile.FullName
         End Function
 
@@ -417,7 +417,7 @@ Namespace FileUtils
             Dim fileList As IEnumerable(Of System.IO.FileInfo) = dir.GetFiles("*.*", System.IO.SearchOption.AllDirectories)
             'Return the FileInfo of the smallest file
             Dim smallestFile As System.IO.FileInfo = (From file In fileList Let len = GetFileLength(file) Where len > 0 Order By len Ascending Select file).First()
-            logger.Debug("The smallest file under {0} is {1} with a length of {2} bytes", spathDirectory, smallestFile.FullName, smallestFile.Length)
+            eLogger.Debug("The smallest file under {0} is {1} with a length of {2} bytes", spathDirectory, smallestFile.FullName, smallestFile.Length)
             Return smallestFile.FullName
         End Function
 
@@ -438,7 +438,7 @@ Namespace FileUtils
             Catch ex As System.IO.FileNotFoundException
                 ' If a file is no longer present,
                 ' just add zero bytes to the total.
-                logger.Error(String.Concat("Specific file is no longer present!", ex))
+                eLogger.Error(String.Concat("Specific file is no longer present!", ex))
                 retval = 0
             End Try
             Return retval
@@ -452,7 +452,7 @@ Namespace FileUtils
 
 #Region "Fields"
 
-        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Shared eLogger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
 #End Region 'Fields
 
@@ -474,7 +474,7 @@ Namespace FileUtils
                             File.Delete(fFile.FullName)
                         Next
                     Catch ex As Exception
-                        logger.Error(New StackFrame().GetMethod().Name, ex)
+                        eLogger.Error(New StackFrame().GetMethod().Name, ex)
                     End Try
                 End If
             End If
@@ -506,7 +506,7 @@ Namespace FileUtils
                                 End If
                             End If
                         Catch ex As Exception
-                            logger.Error(New StackFrame().GetMethod().Name, ex)
+                            eLogger.Error(New StackFrame().GetMethod().Name, ex)
                         End Try
                     Next
                 End If
@@ -555,7 +555,7 @@ Namespace FileUtils
                     Directory.Delete(sPath, True)
                 End If
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                eLogger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
 
@@ -782,7 +782,7 @@ Namespace FileUtils
                 ioFi = Nothing
                 dirInfo = Nothing
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                eLogger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
             Return ItemsToDelete
         End Function
@@ -795,7 +795,7 @@ Namespace FileUtils
 
 #Region "Fields"
 
-        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Shared eLogger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
 #End Region 'Fields
 
@@ -868,7 +868,7 @@ Namespace FileUtils
 
 #Region "Fields"
 
-        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Shared eLogger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
 #End Region 'Fields
 
@@ -1916,7 +1916,7 @@ Namespace FileUtils
                     End If
                 End If
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                eLogger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
             Select Case mType

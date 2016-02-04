@@ -33,7 +33,7 @@ Public Class Trailers
 
 #Region "Fields"
 
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared eLogger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Private _ext As String
     Private _isEdit As Boolean
@@ -116,7 +116,7 @@ Public Class Trailers
             Try
                 File.Delete(sPath)
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Param: <" & sPath & ">", ex)
+                eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Param: <" & sPath & ">", ex)
             End Try
         End If
     End Sub
@@ -137,7 +137,7 @@ Public Class Trailers
                 Next
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mMovie.Filename & ">", ex)
+            eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mMovie.Filename & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -172,7 +172,7 @@ Public Class Trailers
                     Me._ext = Path.GetExtension(sPath)
                 End Using
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sPath & ">", ex)
+                eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sPath & ">", ex)
             End Try
         End If
     End Sub
@@ -240,13 +240,13 @@ Public Class Trailers
                     Me._ms.Write(retSave, 0, retSave.Length)
 
                     Me._ext = Path.GetExtension(tTrailerOutput)
-                    logger.Debug("Trailer downloaded: " & sTrailerLinksContainer.VideoURL)
+                    eLogger.Debug("Trailer downloaded: " & sTrailerLinksContainer.VideoURL)
                 Else
-                    logger.Warn("Trailer NOT downloaded: " & sTrailerLinksContainer.VideoURL)
+                    eLogger.Warn("Trailer NOT downloaded: " & sTrailerLinksContainer.VideoURL)
                 End If
 
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sTrailerLinksContainer.VideoURL & ">", ex)
+                eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sTrailerLinksContainer.VideoURL & ">", ex)
             End Try
         End If
 
@@ -317,13 +317,13 @@ Public Class Trailers
                     Me._ms.Write(retSave, 0, retSave.Length)
 
                     Me._ext = Path.GetExtension(tTrailerOutput)
-                    logger.Debug("Trailer downloaded: " & sTrailer.URLVideoStream)
+                    eLogger.Debug("Trailer downloaded: " & sTrailer.URLVideoStream)
                 Else
-                    logger.Warn("Trailer NOT downloaded: " & sTrailer.URLVideoStream)
+                    eLogger.Warn("Trailer NOT downloaded: " & sTrailer.URLVideoStream)
                 End If
 
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sTrailer.URLVideoStream & ">", ex)
+                eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sTrailer.URLVideoStream & ">", ex)
             End Try
         End If
 
@@ -350,12 +350,12 @@ Public Class Trailers
                 retSave = WebPage.ms.ToArray
                 Me._ms.Write(retSave, 0, retSave.Length)
                 Me._ext = Path.GetExtension(tTrailer)
-                logger.Debug("Trailer downloaded: " & sURL)
+                eLogger.Debug("Trailer downloaded: " & sURL)
             Else
-                logger.Warn("Trailer NOT downloaded: " & sURL)
+                eLogger.Warn("Trailer NOT downloaded: " & sURL)
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sURL & ">", ex)
+            eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sURL & ">", ex)
         End Try
         RemoveHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
     End Sub
@@ -800,7 +800,7 @@ Public Class Trailers
             Next
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return strReturn
@@ -818,7 +818,7 @@ Public Class Trailers
             End Using
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -833,9 +833,9 @@ Public Class Trailers
     Public Function IsAllowedToDownload(ByVal mMovie As Database.DBElement) As Boolean
         Try
             With Master.eSettings
-                If (String.IsNullOrEmpty(mMovie.Trailer.LocalFilePath) OrElse .MovieTrailerKeepExisting) AndAlso _
-                    (.MovieTrailerEden OrElse .MovieTrailerFrodo OrElse .MovieTrailerNMJ OrElse .MovieTrailerYAMJ) OrElse _
-                    (.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(.MovieTrailerExpertBDMV) OrElse Not String.IsNullOrEmpty(.MovieTrailerExpertMulti) OrElse _
+                If (String.IsNullOrEmpty(mMovie.Trailer.LocalFilePath) OrElse .MovieTrailerKeepExisting) AndAlso
+                    (.MovieTrailerEden OrElse .MovieTrailerFrodo OrElse .MovieTrailerNMJ OrElse .MovieTrailerYAMJ) OrElse
+                    (.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(.MovieTrailerExpertBDMV) OrElse Not String.IsNullOrEmpty(.MovieTrailerExpertMulti) OrElse
                             Not String.IsNullOrEmpty(.MovieTrailerExpertMulti) OrElse Not String.IsNullOrEmpty(.MovieTrailerExpertSingle))) Then
                     Return True
                 Else
@@ -843,7 +843,7 @@ Public Class Trailers
                 End If
             End With
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            eLogger.Error(New StackFrame().GetMethod().Name, ex)
             Return False
         End Try
     End Function
