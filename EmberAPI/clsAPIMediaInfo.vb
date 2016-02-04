@@ -708,6 +708,7 @@ Public Class MediaInfo
                 Dim a_Profile As String = String.Empty
                 Dim sExt As String = Path.GetExtension(sPath).ToLower
                 Dim alternativeIFOFile As String = String.Empty
+                Dim strCommandUnmount As String = String.Empty
 
                 'New ISO Handling -> Use either DAEMON Tools or VitualCloneDrive to mount ISO!
                 If sExt = ".iso" OrElse FileUtils.Common.isVideoTS(sPath) OrElse FileUtils.Common.isBDRip(sPath) Then
@@ -715,7 +716,7 @@ Public Class MediaInfo
                     'ISO-File Scanning using either DAIMON Tools / VCDMount.exe to mount and read file!
                     If sExt = ".iso" Then
 
-                        Dim driveletter As String = Master.eSettings.GeneralDaemonDrive ' i.e. "F:\"
+                        Dim driveletter As String = Master.eSettings.GeneralDaemonDrive ' i.e. "F"
                         'Toolpath either VCDMOUNT.exe or DTLite.exe!
                         Dim ToolPath As String = Master.eSettings.GeneralDaemonPath
 
@@ -732,19 +733,24 @@ Public Class MediaInfo
                                 'Toolpath doesn't contain virtualclonedrive.exe -> assume daemon tools with DS type drive!
                             Else
                                 'Unmount
-                                '   Run_Process(ToolPath, " -unmount 0", False, True)
+                                strCommandUnmount = String.Concat("-unmount ", Regex.Replace(driveletter, ":\\", String.Empty))
+                                Functions.Run_Process(ToolPath, strCommandUnmount, False, True)
                                 'Mount
-                                Functions.Run_Process(ToolPath, " -mount 0, " & """" & sPath & """", False, True)
-                                System.Threading.Thread.Sleep(8000)
+                                'Mount ISO on Daemon Tools (Lite), i.e. C:\Program Files\DAEMON Tools Lite\DTAgent.exe -mount dt, E, "U:\isotest\test2iso.ISO"
+                                Functions.Run_Process(ToolPath, String.Concat("-mount dt, ",
+                                                                              Regex.Replace(driveletter, ":\\", String.Empty),
+                                                                              ", """,
+                                                                              sPath,
+                                                                              """"), False, True)
                             End If
 
                             'now check if it's bluray or dvd image/VIDEO_TS/BMDV Folder-Scanning!
-                            If Directory.Exists(driveletter & "VIDEO_TS") Then
-                                sPath = driveletter & "VIDEO_TS"
+                            If Directory.Exists(String.Concat(driveletter, ":\VIDEO_TS")) Then
+                                sPath = String.Concat(driveletter, ":\VIDEO_TS")
                                 SetMediaInfoScanPaths(sPath, fiIFO, alternativeIFOFile, True)
                                 'get foldersize information
-                            ElseIf Directory.Exists(driveletter & "BDMV\STREAM") Then
-                                sPath = driveletter & "BDMV\STREAM"
+                            ElseIf Directory.Exists(driveletter & ":\BDMV\STREAM") Then
+                                sPath = driveletter & ":\BDMV\STREAM"
                                 SetMediaInfoScanPaths(sPath, fiIFO, alternativeIFOFile, True)
                             End If
                         End If
@@ -933,7 +939,9 @@ Public Class MediaInfo
                     End If
                 Next
 
-
+                If Not String.IsNullOrEmpty(strCommandUnmount) Then
+                    Functions.Run_Process(Master.eSettings.GeneralDaemonPath, strCommandUnmount, False, True)
+                End If
 
                 Me.Close()
             End If
@@ -1150,8 +1158,6 @@ Public Class MediaInfo
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
-
-
     End Sub
 
 
