@@ -29,7 +29,7 @@ Public Class ImageUtils
 
 #Region "Fields"
 
-    Shared eLogger As Logger = LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
     Public Const DefaultPaddingARGB As Integer = -16777216  'This is FF000000, which is completely opaque black
 
 #End Region 'Fields
@@ -130,7 +130,7 @@ Public Class ImageUtils
                 End Using
             End Using
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -193,7 +193,7 @@ Public Class ImageUtils
 
             End Using
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -258,7 +258,7 @@ Public Class ImageUtils
             Catch ex As Exception
                 pbDestination.Left = 0
                 pbDestination.Size = New Size(maxWidth, maxHeight)
-                eLogger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         Else
             pbDestination.Left = 0
@@ -295,7 +295,7 @@ Public Class ImageUtils
             End Using
             bmOverlay = Nothing
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -347,7 +347,7 @@ Public Class ImageUtils
             End Using
             bmOverlay = Nothing
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return imgUnderlay
@@ -411,7 +411,7 @@ Public Class ImageUtils
     ''' <remarks>If an error is encountered, the source image is returned.</remarks>
     Public Shared Function AddGenreString(ByRef image As System.Drawing.Image, genreString As String) As Bitmap
         If (image Is Nothing) OrElse (image.Size.IsEmpty) Then
-            eLogger.Error("Invalid image parameter", New StackTrace().ToString())
+            logger.Error("Invalid image parameter", New StackTrace().ToString())
             Return Nothing
         End If
 
@@ -430,7 +430,7 @@ Public Class ImageUtils
                 End Using
             End Using
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return bmGenre
 

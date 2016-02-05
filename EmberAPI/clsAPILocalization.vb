@@ -31,7 +31,7 @@ Imports System.Windows.Forms
 Public Class Localization
 
 #Region "Fields"
-    Shared eLogger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     Shared help_logger As Logger = NLog.LogManager.GetLogger("HelpString")
     Shared lang_logger As Logger = NLog.LogManager.GetLogger("LanguageString")
 
@@ -71,11 +71,11 @@ Public Class Localization
             objStreamReader.Close()
 
             If _ISOLanguages.Language.Count = 0 Then
-                eLogger.Fatal("Cannot load Language.xml." & Environment.NewLine & "Path: {0}", lPath)
+                logger.Fatal("Cannot load Language.xml." & Environment.NewLine & "Path: {0}", lPath)
                 MessageBox.Show(String.Concat("Cannot load Language.xml.", Environment.NewLine, Environment.NewLine, "Path:", Environment.NewLine, lPath), "File Not Found", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             End If
         Else
-            eLogger.Fatal("Cannot find Language.xml." & Environment.NewLine & "Expected path: {0}", lPath)
+            logger.Fatal("Cannot find Language.xml." & Environment.NewLine & "Expected path: {0}", lPath)
             MessageBox.Show(String.Concat("Cannot find Language.xml.", Environment.NewLine, Environment.NewLine, "Expected path:", Environment.NewLine, lPath), "File Not Found", MessageBoxButtons.OK, MessageBoxIcon.Warning)
         End If
     End Sub
@@ -239,7 +239,7 @@ Public Class Localization
         Else
             x1 = From x As LanguageString In htStrings.string Where (x.id = ID)
             If x1.Count = 0 Then
-                eLogger.Error(New StackFrame().GetMethod().Name, String.Format("Missing language_string: {0} - {1} : '{2}'", Assembly, ID, strDefault))
+                logger.Error(New StackFrame().GetMethod().Name, String.Format("Missing language_string: {0} - {1} : '{2}'", Assembly, ID, strDefault))
                 tStr = strDefault
             Else
                 If Not String.IsNullOrEmpty(x1(0).Value) Then
@@ -337,7 +337,7 @@ Public Class Localization
                 End If
             End If
         Else
-            eLogger.Error("Cannot find {0}.xml." & Environment.NewLine & "Expected path: {1}", Language, lPath)
+            logger.Error("Cannot find {0}.xml." & Environment.NewLine & "Expected path: {1}", Language, lPath)
             MessageBox.Show(String.Concat(String.Format("Cannot find {0}.xml.", Language), Environment.NewLine, Environment.NewLine, "Expected path:", Environment.NewLine, lPath), "File Not Found", MessageBoxButtons.OK, MessageBoxIcon.Warning)
         End If
     End Sub

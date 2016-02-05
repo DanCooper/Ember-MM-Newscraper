@@ -25,7 +25,7 @@ Public Class Themes
     Implements IDisposable
 
 #Region "Fields"
-    Shared eLogger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Private _ext As String
     Private _title As String
@@ -195,7 +195,7 @@ Public Class Themes
             Try
                 File.Delete(sPath)
             Catch ex As Exception
-                eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Param: <" & sPath & ">", ex)
+                logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Param: <" & sPath & ">", ex)
             End Try
         End If
     End Sub
@@ -216,7 +216,7 @@ Public Class Themes
                 Next
             Next
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovie.Filename & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovie.Filename & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -236,7 +236,7 @@ Public Class Themes
                 Next
             Next
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVShow.Filename & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVShow.Filename & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -272,7 +272,7 @@ Public Class Themes
                     Me._url = sPath
                 End Using
             Catch ex As Exception
-                eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sPath & ">", ex)
+                logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sPath & ">", ex)
             End Try
         End If
     End Sub
@@ -302,13 +302,13 @@ Public Class Themes
 
                 Me._ext = Path.GetExtension(tTheme)
                 Me._url = sURL
-                eLogger.Debug("Theme downloaded: " & sURL)
+                logger.Debug("Theme downloaded: " & sURL)
             Else
-                eLogger.Warn("Theme NOT downloaded: " & sURL)
+                logger.Warn("Theme NOT downloaded: " & sURL)
             End If
 
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sURL & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sURL & ">", ex)
         End Try
 
         RemoveHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
@@ -333,7 +333,7 @@ Public Class Themes
             Next
 
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return strReturn
     End Function
@@ -350,7 +350,7 @@ Public Class Themes
             End Using
 
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -376,7 +376,7 @@ Public Class Themes
                 End If
             End With
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
             Return False
         End Try
     End Function

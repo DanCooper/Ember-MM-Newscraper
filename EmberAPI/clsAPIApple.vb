@@ -32,7 +32,7 @@ Namespace Apple
 
 #Region "Fields"
 
-        Shared eLogger As Logger = LogManager.GetCurrentClassLogger()
+        Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
         Private _VideoLinks As VideoLinkItemCollection
         Private _TrailerLinks As List(Of MediaContainers.Trailer)
@@ -76,7 +76,7 @@ Namespace Apple
                 _TrailerLinks = GetTrailerLinks(url, False)
 
             Catch ex As Exception
-                eLogger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
 
@@ -154,7 +154,7 @@ Namespace Apple
                 End If
 
             Catch ex As Exception
-                eLogger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
             Return TrailerLinks

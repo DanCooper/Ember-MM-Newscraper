@@ -31,7 +31,7 @@ Namespace IMDb
     Public Class Scraper
 
 #Region "Fields"
-        Shared eLogger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
         Private _VideoLinks As VideoLinkItemCollection
 
@@ -116,7 +116,7 @@ Namespace IMDb
                 End If
 
             Catch ex As Exception
-                eLogger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
             Return TrailerList
@@ -134,7 +134,7 @@ Namespace IMDb
                 _VideoLinks = ParseIMDbFormats(url, False)
 
             Catch ex As Exception
-                eLogger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
         ''' <summary>
@@ -240,7 +240,7 @@ Namespace IMDb
                 Return DownloadLinks
 
             Catch ex As Exception
-                eLogger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
                 Return New VideoLinkItemCollection
             Finally
                 sHTTP = Nothing

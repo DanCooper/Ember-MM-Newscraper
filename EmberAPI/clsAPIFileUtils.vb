@@ -29,7 +29,7 @@ Namespace FileUtils
 
 #Region "Fields"
 
-        Shared eLogger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
 #End Region 'Fields
 
@@ -42,7 +42,7 @@ Namespace FileUtils
                                        ByVal overwriteFiles As Boolean)
 
             If Not Directory.Exists(strSourceDir) Then
-                eLogger.Error(String.Concat("Source directory does not exist: ", strSourceDir))
+                logger.Error(String.Concat("Source directory does not exist: ", strSourceDir))
                 Exit Sub
             End If
 
@@ -80,7 +80,7 @@ Namespace FileUtils
                                        ByVal overwriteFiles As Boolean)
 
             If Not Directory.Exists(strSourceDir) Then
-                eLogger.Error(String.Concat("Source directory does not exist: ", strSourceDir))
+                logger.Error(String.Concat("Source directory does not exist: ", strSourceDir))
                 Exit Sub
             End If
 
@@ -222,7 +222,7 @@ Namespace FileUtils
                     End Using
                 End Using
             Catch ex As Exception
-                eLogger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
         ''' <summary>
@@ -240,7 +240,7 @@ Namespace FileUtils
                 Return Path.Combine(Path.GetDirectoryName(sPath), Path.GetFileNameWithoutExtension(sPath))
                 'Return Path.Combine(Directory.GetParent(sPath).FullName, Path.GetFileNameWithoutExtension(sPath))
             Catch ex As Exception
-                eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Source: <" & sPath & ">", ex)
+                logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Source: <" & sPath & ">", ex)
                 Return String.Empty
             End Try
         End Function
@@ -297,14 +297,14 @@ Namespace FileUtils
                             If File.Exists(_cmd.execute) Then File.Delete(_cmd.execute)
                     End Select
                 Catch ex As Exception
-                    eLogger.Error(New StackFrame().GetMethod().Name, ex)
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
             Next
             Dim destPath As String = Path.Combine(Functions.AppPath, "InstalledTasks_" & Format(DateTime.Now, "YYYYMMDD") & Format(DateTime.Now, "HHMMSS") & ".xml")
             Try
                 File.Move(fname, destPath)
             Catch ex As Exception
-                eLogger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
 
@@ -375,7 +375,7 @@ Namespace FileUtils
                     size += GetFileLength(fi)
                 Next
             Else
-                eLogger.Debug("Can't calculate foldersize! Not a valid directory: ", spathDirectory)
+                logger.Debug("Can't calculate foldersize! Not a valid directory: ", spathDirectory)
             End If
             'Return the size of the smallest file
             Return size
@@ -395,11 +395,11 @@ Namespace FileUtils
             Dim fileList As IEnumerable(Of System.IO.FileInfo) = dir.GetFiles("*.*", System.IO.SearchOption.AllDirectories)
             'Return the size of the largest file
             Dim maxSize As Long = (From file In fileList Let len = GetFileLength(file) Select len).Max()
-            eLogger.Debug("The length of the largest file under {0} is {1}", spathDirectory, maxSize)
+            logger.Debug("The length of the largest file under {0} is {1}", spathDirectory, maxSize)
             ' Return the FileInfo object for the largest file
             ' by sorting and selecting from beginning of list
             Dim longestFile As System.IO.FileInfo = (From file In fileList Let len = GetFileLength(file) Where len > 0 Order By len Descending Select file).First()
-            eLogger.Debug("The largest file under {0} is {1} with a length of {2} bytes", spathDirectory, longestFile.FullName, longestFile.Length)
+            logger.Debug("The largest file under {0} is {1} with a length of {2} bytes", spathDirectory, longestFile.FullName, longestFile.Length)
             Return longestFile.FullName
         End Function
 
@@ -417,7 +417,7 @@ Namespace FileUtils
             Dim fileList As IEnumerable(Of System.IO.FileInfo) = dir.GetFiles("*.*", System.IO.SearchOption.AllDirectories)
             'Return the FileInfo of the smallest file
             Dim smallestFile As System.IO.FileInfo = (From file In fileList Let len = GetFileLength(file) Where len > 0 Order By len Ascending Select file).First()
-            eLogger.Debug("The smallest file under {0} is {1} with a length of {2} bytes", spathDirectory, smallestFile.FullName, smallestFile.Length)
+            logger.Debug("The smallest file under {0} is {1} with a length of {2} bytes", spathDirectory, smallestFile.FullName, smallestFile.Length)
             Return smallestFile.FullName
         End Function
 
@@ -438,7 +438,7 @@ Namespace FileUtils
             Catch ex As System.IO.FileNotFoundException
                 ' If a file is no longer present,
                 ' just add zero bytes to the total.
-                eLogger.Error(String.Concat("Specific file is no longer present!", ex))
+                logger.Error(String.Concat("Specific file is no longer present!", ex))
                 retval = 0
             End Try
             Return retval
@@ -452,7 +452,7 @@ Namespace FileUtils
 
 #Region "Fields"
 
-        Shared eLogger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
 #End Region 'Fields
 
@@ -474,7 +474,7 @@ Namespace FileUtils
                             File.Delete(fFile.FullName)
                         Next
                     Catch ex As Exception
-                        eLogger.Error(New StackFrame().GetMethod().Name, ex)
+                        logger.Error(New StackFrame().GetMethod().Name, ex)
                     End Try
                 End If
             End If
@@ -506,7 +506,7 @@ Namespace FileUtils
                                 End If
                             End If
                         Catch ex As Exception
-                            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+                            logger.Error(New StackFrame().GetMethod().Name, ex)
                         End Try
                     Next
                 End If
@@ -555,7 +555,7 @@ Namespace FileUtils
                     Directory.Delete(sPath, True)
                 End If
             Catch ex As Exception
-                eLogger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End Sub
 
@@ -782,7 +782,7 @@ Namespace FileUtils
                 ioFi = Nothing
                 dirInfo = Nothing
             Catch ex As Exception
-                eLogger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
             Return ItemsToDelete
         End Function
@@ -795,7 +795,7 @@ Namespace FileUtils
 
 #Region "Fields"
 
-        Shared eLogger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
 #End Region 'Fields
 
@@ -868,7 +868,7 @@ Namespace FileUtils
 
 #Region "Fields"
 
-        Shared eLogger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
 #End Region 'Fields
 
@@ -1916,7 +1916,7 @@ Namespace FileUtils
                     End If
                 End If
             Catch ex As Exception
-                eLogger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
             Select Case mType

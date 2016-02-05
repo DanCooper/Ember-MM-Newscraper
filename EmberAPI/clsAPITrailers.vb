@@ -33,7 +33,7 @@ Public Class Trailers
 
 #Region "Fields"
 
-    Shared eLogger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Private _ext As String
     Private _isEdit As Boolean
@@ -116,7 +116,7 @@ Public Class Trailers
             Try
                 File.Delete(sPath)
             Catch ex As Exception
-                eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Param: <" & sPath & ">", ex)
+                logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Param: <" & sPath & ">", ex)
             End Try
         End If
     End Sub
@@ -137,7 +137,7 @@ Public Class Trailers
                 Next
             Next
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mMovie.Filename & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mMovie.Filename & ">", ex)
         End Try
     End Sub
     ''' <summary>
@@ -172,7 +172,7 @@ Public Class Trailers
                     Me._ext = Path.GetExtension(sPath)
                 End Using
             Catch ex As Exception
-                eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sPath & ">", ex)
+                logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sPath & ">", ex)
             End Try
         End If
     End Sub
@@ -240,13 +240,13 @@ Public Class Trailers
                     Me._ms.Write(retSave, 0, retSave.Length)
 
                     Me._ext = Path.GetExtension(tTrailerOutput)
-                    eLogger.Debug("Trailer downloaded: " & sTrailerLinksContainer.VideoURL)
+                    logger.Debug("Trailer downloaded: " & sTrailerLinksContainer.VideoURL)
                 Else
-                    eLogger.Warn("Trailer NOT downloaded: " & sTrailerLinksContainer.VideoURL)
+                    logger.Warn("Trailer NOT downloaded: " & sTrailerLinksContainer.VideoURL)
                 End If
 
             Catch ex As Exception
-                eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sTrailerLinksContainer.VideoURL & ">", ex)
+                logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sTrailerLinksContainer.VideoURL & ">", ex)
             End Try
         End If
 
@@ -317,13 +317,13 @@ Public Class Trailers
                     Me._ms.Write(retSave, 0, retSave.Length)
 
                     Me._ext = Path.GetExtension(tTrailerOutput)
-                    eLogger.Debug("Trailer downloaded: " & sTrailer.URLVideoStream)
+                    logger.Debug("Trailer downloaded: " & sTrailer.URLVideoStream)
                 Else
-                    eLogger.Warn("Trailer NOT downloaded: " & sTrailer.URLVideoStream)
+                    logger.Warn("Trailer NOT downloaded: " & sTrailer.URLVideoStream)
                 End If
 
             Catch ex As Exception
-                eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sTrailer.URLVideoStream & ">", ex)
+                logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sTrailer.URLVideoStream & ">", ex)
             End Try
         End If
 
@@ -350,12 +350,12 @@ Public Class Trailers
                 retSave = WebPage.ms.ToArray
                 Me._ms.Write(retSave, 0, retSave.Length)
                 Me._ext = Path.GetExtension(tTrailer)
-                eLogger.Debug("Trailer downloaded: " & sURL)
+                logger.Debug("Trailer downloaded: " & sURL)
             Else
-                eLogger.Warn("Trailer NOT downloaded: " & sURL)
+                logger.Warn("Trailer NOT downloaded: " & sURL)
             End If
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sURL & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sURL & ">", ex)
         End Try
         RemoveHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
     End Sub
@@ -800,7 +800,7 @@ Public Class Trailers
             Next
 
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return strReturn
@@ -818,7 +818,7 @@ Public Class Trailers
             End Using
 
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -843,7 +843,7 @@ Public Class Trailers
                 End If
             End With
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
             Return False
         End Try
     End Function

@@ -27,7 +27,7 @@ Imports NLog
 Public Class APIXML
 
 #Region "Fields"
-    Shared eLogger As Logger = LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     Public Shared lFlags As New List(Of Flag)
     Public Shared alGenres As New List(Of String)
@@ -134,7 +134,7 @@ Public Class APIXML
                 Try
                     File.Copy(rPathD, rPath)
                 Catch ex As Exception
-                    eLogger.Error(New StackFrame().GetMethod().Name, ex)
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
             End If
 
@@ -156,7 +156,7 @@ Public Class APIXML
                 Try
                     File.Copy(cPathD, cPath)
                 Catch ex As Exception
-                    eLogger.Error(New StackFrame().GetMethod().Name, ex)
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
             End If
 
@@ -177,12 +177,12 @@ Public Class APIXML
                 Try
                     File.Copy(filterPathD, filterPath)
                 Catch ex As Exception
-                    eLogger.Error(New StackFrame().GetMethod().Name, ex)
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
             End If
 
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -345,7 +345,7 @@ Public Class APIXML
                 End If
 
             Catch ex As Exception
-                eLogger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         Else
             iReturn(0) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultScreen.png"))
@@ -425,7 +425,7 @@ Public Class APIXML
             End If
 
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return String.Empty
@@ -450,7 +450,7 @@ Public Class APIXML
             End If
 
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return imgGenre
@@ -489,7 +489,7 @@ Public Class APIXML
                 End Using
             End If
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return imgRating
@@ -508,7 +508,7 @@ Public Class APIXML
                 Next
             End If
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return retRatings.ToArray
     End Function
@@ -526,7 +526,7 @@ Public Class APIXML
                 Next
             End If
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return retRatings.ToArray
     End Function
@@ -570,7 +570,7 @@ Public Class APIXML
                 End Using
             End If
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return imgRating

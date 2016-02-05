@@ -28,7 +28,7 @@ Public Class DVD
 
     Private Const ifo_CellInfoSize As Short = 24
     Private Const ifo_SECTOR_SIZE As Short = 2048
-    Shared eLogger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     'Variables
     Dim mAudioModes As New Hashtable
@@ -82,7 +82,7 @@ Public Class DVD
                     ReturnArray(2) = ParsedIFOFile.AudioAtt_VTS_VOBS(bytAudioIndex).NumberOfChannels.ToString
                 End If
             Catch ex As Exception
-                eLogger.Error("GetIFOAudio", ex)
+                logger.Error("GetIFOAudio", ex)
             End Try
             Return ReturnArray
         End Get
@@ -110,7 +110,7 @@ Public Class DVD
                     Return Localization.ISOGetLangByCode2(ParsedIFOFile.SubPictureAtt_VTS_VOBS(bytSubPicIndex).LanguageCode)
                 End If
             Catch ex As Exception
-                eLogger.Error("GetIFOSubPic", ex)
+                logger.Error("GetIFOSubPic", ex)
             End Try
             Return String.Empty
         End Get
@@ -156,7 +156,7 @@ Public Class DVD
                     ReturnArray(2) = String.Empty
                 End If
             Catch ex As Exception
-                eLogger.Error("GetIFOVideo", ex)
+                logger.Error("GetIFOVideo", ex)
             End Try
             Return ReturnArray
         End Get
@@ -187,7 +187,7 @@ Public Class DVD
                     Return fctPlayBackTimeToString(ParsedIFOFile.ProgramChainInformation(bytProChainIndex).PlayBackTime, MinsOnly)
                 End If
             Catch ex As Exception
-                eLogger.Error("GetProgramChainPlayBackTime", ex)
+                logger.Error("GetProgramChainPlayBackTime", ex)
             End Try
             Return String.Empty
         End Get
@@ -219,7 +219,7 @@ Public Class DVD
             hexStr = hexStr.Insert(0, "0x")
 
         Catch ex As Exception
-            eLogger.Error("CovertByteToHex", ex)
+            logger.Error("CovertByteToHex", ex)
         End Try
         Return hexStr
     End Function
@@ -272,7 +272,7 @@ Public Class DVD
                 Return True
             End If
         Catch ex As Exception
-            eLogger.Error("fctOpenIFOFile", ex)
+            logger.Error("fctOpenIFOFile", ex)
         End Try
         Return False
     End Function
@@ -326,7 +326,7 @@ Public Class DVD
             If (byteInfo(1) And 4) = 4 Then bytTempValue = Convert.ToByte(bytTempValue + 4)
             tVTSM.NumberOfChannels = Convert.ToByte(bytTempValue + 1)
         Catch ex As Exception
-            eLogger.Error("fctAudioAttVTSM_VTS", ex)
+            logger.Error("fctAudioAttVTSM_VTS", ex)
         End Try
         Return tVTSM
     End Function
@@ -440,7 +440,7 @@ Public Class DVD
             End If
 
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return tmpIFO
     End Function
@@ -460,7 +460,7 @@ Public Class DVD
                 Return String.Concat((PlayBack.hours).ToString("00"), "h ", (PlayBack.minutes).ToString("00"), "mn ", (PlayBack.seconds).ToString("00"), "s")
             End If
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return String.Empty
     End Function
@@ -491,7 +491,7 @@ Public Class DVD
             PCT.PlayBackTime.minutes = fctHexTimeToDecTime(Convert.ToByte(((strIFOFileBuffer).Substring(ChainLoc + 5, 1)).Chars(0)))
             PCT.PlayBackTime.seconds = fctHexTimeToDecTime(Convert.ToByte(((strIFOFileBuffer).Substring(ChainLoc + 6, 1)).Chars(0)))
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return PCT
     End Function
@@ -530,7 +530,7 @@ Public Class DVD
             If (byte2 And 8) = 8 Then bytTmpValue = Convert.ToByte(bytTmpValue + 2)
             tSRPT.Resolution = bytTmpValue
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return tSRPT
     End Function
@@ -558,7 +558,7 @@ Public Class DVD
                 End If
             Next
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return Convert.ToInt32(HexTotal)
     End Function
@@ -574,7 +574,7 @@ Public Class DVD
             SubPicATT.LanguageCode = (strSubPictureInfo).Substring(2, 1) & (strSubPictureInfo).Substring(3, 1)
             SubPicATT.CodeExtention = Convert.ToByte(oEnc.GetBytes((((strSubPictureInfo).Substring(5, 1)).Chars(0)))(0))
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return SubPicATT
     End Function
@@ -616,7 +616,7 @@ Public Class DVD
             If (byte2 And 8) = 8 Then bytTmpValue = Convert.ToByte(bytTmpValue + 2)
             tVTSVOB.Resolution = bytTmpValue
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return tVTSVOB
     End Function

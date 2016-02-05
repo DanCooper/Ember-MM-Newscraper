@@ -28,7 +28,7 @@ Imports NLog
 Public Class Settings
 
 #Region "Fields"
-    Shared eLogger As Logger = LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     Private Shared _XMLSettings As New clsXMLSettings
 
@@ -6632,8 +6632,8 @@ Public Class Settings
                 Master.eSettings = Me
             End If
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
-            eLogger.Info("An attempt is made to repair the Settings.xml")
+            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Info("An attempt is made to repair the Settings.xml")
             Try
                 Using srSettings As New StreamReader(configpath)
                     Dim sSettings As String = srSettings.ReadToEnd
@@ -6656,10 +6656,10 @@ Public Class Settings
                     End Using
                     'Now we deserialize just the data in a local, shared, variable. So we can reference to us
                     Master.eSettings = Me
-                    eLogger.Info("AdvancedSettings.xml successfully repaired")
+                    logger.Info("AdvancedSettings.xml successfully repaired")
                 End Using
             Catch ex2 As Exception
-                eLogger.Error(New StackFrame().GetMethod().Name, ex2)
+                logger.Error(New StackFrame().GetMethod().Name, ex2)
                 File.Copy(configpath, String.Concat(configpath, "_backup"), True)
                 Master.eSettings = New Settings
             End Try
@@ -6718,7 +6718,7 @@ Public Class Settings
             _XMLSettings.TVGeneralLanguages = tSettings.TVGeneralLanguages
 
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -6729,7 +6729,7 @@ Public Class Settings
             xmlSerial.Serialize(xmlWriter, Master.eSettings)
             xmlWriter.Close()
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>

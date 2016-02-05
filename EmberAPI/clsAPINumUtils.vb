@@ -25,7 +25,7 @@ Imports System.Text.RegularExpressions
 Public Class NumUtils
 
 #Region "Fields"
-    Shared eLogger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 #End Region
 
 #Region "Methods"
@@ -64,7 +64,7 @@ Public Class NumUtils
 
         'If we got here, something went wrong
         Dim trace = New StackTrace()
-        eLogger.Error("Failed to convert <{0}>", sNumber)
+        logger.Error("Failed to convert <{0}>", sNumber)
         Return 0.0F
 
     End Function

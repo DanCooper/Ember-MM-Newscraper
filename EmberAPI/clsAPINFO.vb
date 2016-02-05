@@ -29,7 +29,7 @@ Imports System.Windows.Forms
 Public Class NFO
 
 #Region "Fields"
-    Shared eLogger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 #End Region
 
 #Region "Methods"
@@ -135,7 +135,7 @@ Public Class NFO
                             End If
                         Next
                     Else
-                        eLogger.Error("Movie Certification Language (Limit) not found. Please check your settings!")
+                        logger.Error("Movie Certification Language (Limit) not found. Please check your settings!")
                     End If
                 End If
             ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperCert AndAlso Not Master.eSettings.MovieLockCert Then
@@ -585,7 +585,7 @@ Public Class NFO
                             End If
                         Next
                     Else
-                        eLogger.Error("TV Show Certification Language (Limit) not found. Please check your settings!")
+                        logger.Error("TV Show Certification Language (Limit) not found. Please check your settings!")
                     End If
                 End If
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowCert AndAlso Not Master.eSettings.TVLockShowCert Then
@@ -896,12 +896,12 @@ Public Class NFO
                             If mEpisode.TVEpisode.TitleSpecified Then
                                 DBTV.Episodes.Add(mEpisode)
                             Else
-                                eLogger.Warn(String.Format("Missing Episode Ignored | {0} - S{1}E{2} | No Episode Title found", mEpisode.TVShow.Title, mEpisode.TVEpisode.Season, mEpisode.TVEpisode.Episode))
+                                logger.Warn(String.Format("Missing Episode Ignored | {0} - S{1}E{2} | No Episode Title found", mEpisode.TVShow.Title, mEpisode.TVEpisode.Season, mEpisode.TVEpisode.Episode))
                             End If
                         End If
                     End If
                 Else
-                    eLogger.Warn("No valid episode or season number found")
+                    logger.Warn("No valid episode or season number found")
                 End If
             Next
         End If
@@ -1237,10 +1237,10 @@ Public Class NFO
                 If DBTVEpisode.TVEpisode.Episode = -1 Then DBTVEpisode.TVEpisode.Episode = iEpisode
                 If DBTVEpisode.TVEpisode.Season = -1 Then DBTVEpisode.TVEpisode.Season = iSeason
             Else
-                eLogger.Warn("No valid episode or season number found")
+                logger.Warn("No valid episode or season number found")
             End If
         Else
-            eLogger.Warn("Episode could not be clearly determined.")
+            logger.Warn("Episode could not be clearly determined.")
         End If
 
         Return DBTVEpisode
@@ -1263,7 +1263,7 @@ Public Class NFO
                 End Select
             End Using
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1376,7 +1376,7 @@ Public Class NFO
                 End If
             End If
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         If strOutput.ToString.Trim.Length > 0 Then
@@ -1474,7 +1474,7 @@ Public Class NFO
             Next
 
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return fiaOut
     End Function
@@ -1509,7 +1509,7 @@ Public Class NFO
                     If Integer.TryParse(miVideo.Width, 0) Then
                         iWidth = Convert.ToInt32(miVideo.Width)
                     Else
-                        eLogger.Warn("[GetBestVideo] Invalid width(not a number!) of videostream: " & miVideo.Width)
+                        logger.Warn("[GetBestVideo] Invalid width(not a number!) of videostream: " & miVideo.Width)
                     End If
                     If iWidth > iWidest Then
                         iWidest = iWidth
@@ -1541,7 +1541,7 @@ Public Class NFO
             Next
 
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return fivOut
     End Function
@@ -1561,7 +1561,7 @@ Public Class NFO
                 result = String.Format("{0}x{1} ({2})", iWidth, iHeight, sinADR.ToString("0.00"))
             End If
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         Return result
@@ -1706,7 +1706,7 @@ Public Class NFO
                 End Select
             End If
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
         If Not String.IsNullOrEmpty(resOut) Then
@@ -1864,7 +1864,7 @@ Public Class NFO
                 End If
 
             Catch ex As Exception
-                eLogger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
 
                 xmlMov.Clear()
                 If Not String.IsNullOrEmpty(sPath) Then
@@ -1937,7 +1937,7 @@ Public Class NFO
                 End If
 
             Catch ex As Exception
-                eLogger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
 
                 xmlMovSet.Clear()
                 'If Not String.IsNullOrEmpty(sPath) Then
@@ -2027,7 +2027,7 @@ Public Class NFO
                 End If
 
             Catch ex As Exception
-                eLogger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
 
                 'not really anything else to do with non-conforming nfos aside from rename them
                 If Not Master.eSettings.GeneralOverwriteNfo Then
@@ -2092,7 +2092,7 @@ Public Class NFO
                 End If
 
             Catch ex As Exception
-                eLogger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
 
                 'not really anything else to do with non-conforming nfos aside from rename them
                 If Not Master.eSettings.GeneralOverwriteNfo Then
@@ -2125,7 +2125,7 @@ Public Class NFO
                 End If
 
             Catch ex As Exception
-                eLogger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
 
                 'not really anything else to do with non-conforming nfos aside from rename them
                 If Not Master.eSettings.GeneralOverwriteNfo Then
@@ -2139,7 +2139,7 @@ Public Class NFO
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnNFORead_TVShow, params, doContinue, False)
 
             Catch ex As Exception
-                eLogger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
 
             'Boxee support
@@ -2215,7 +2215,7 @@ Public Class NFO
             End If
 
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -2261,7 +2261,7 @@ Public Class NFO
             End If
 
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -2287,7 +2287,7 @@ Public Class NFO
 
             xmlDoc = Nothing
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -2391,7 +2391,7 @@ Public Class NFO
             End If
 
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -2456,7 +2456,7 @@ Public Class NFO
                 Next
             End If
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -2468,7 +2468,7 @@ Public Class NFO
                 RenameToInfo(sPath)
             End If
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -2482,7 +2482,7 @@ Public Class NFO
                 End If
             End If
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -2494,7 +2494,7 @@ Public Class NFO
                 RenameToInfo(sPath)
             End If
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -2512,7 +2512,7 @@ Public Class NFO
             End If
             My.Computer.FileSystem.RenameFile(sPath, Path.GetFileName(strNewName))
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 

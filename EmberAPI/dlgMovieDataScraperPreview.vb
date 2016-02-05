@@ -27,7 +27,7 @@ Imports System.Drawing
 Public Class dlgMovieDataScraperPreview
 
 #Region "Fields"
-    Shared eLogger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
     Private lvwActorSorter As ListViewColumnSorter
     Dim _ScrapedList As New List(Of MediaContainers.Movie)
 #End Region
@@ -921,7 +921,7 @@ Public Class dlgMovieDataScraperPreview
             tbTrailer_TabIndexChanged(Nothing, Nothing)
 
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1022,7 +1022,7 @@ Public Class dlgMovieDataScraperPreview
                 scraperresult.Year = _nmovie.Year
             Next
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 #End Region
@@ -1058,7 +1058,7 @@ Public Class dlgMovieDataScraperPreview
             Me.FillInfo()
 
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1076,7 +1076,7 @@ Public Class dlgMovieDataScraperPreview
             Me.DialogResult = System.Windows.Forms.DialogResult.OK
             Me.Close()
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
             Me.DialogResult = System.Windows.Forms.DialogResult.OK
             Me.Close()
         End Try
@@ -1110,7 +1110,7 @@ Public Class dlgMovieDataScraperPreview
             ' Perform the sort with these new sort options.
             Me.lvActorsIMDB.Sort()
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1142,7 +1142,7 @@ Public Class dlgMovieDataScraperPreview
             ' Perform the sort with these new sort options.
             Me.lvActorsOFDB.Sort()
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1174,7 +1174,7 @@ Public Class dlgMovieDataScraperPreview
             ' Perform the sort with these new sort options.
             Me.lvActorsMoviepilot.Sort()
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1206,7 +1206,7 @@ Public Class dlgMovieDataScraperPreview
             ' Perform the sort with these new sort options.
             Me.lvActorsTMDB.Sort()
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -1250,7 +1250,7 @@ Public Class dlgMovieDataScraperPreview
                 btnPlayTrailer.Enabled = False
             End If
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
             btnPlayTrailer.Enabled = False
         End Try
     End Sub

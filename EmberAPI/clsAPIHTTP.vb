@@ -36,7 +36,7 @@ Public Class HTTP
 
 
 #Region "Fields"
-    Shared eLogger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Private dThread As New Threading.Thread(AddressOf DownloadImage)
     Private wrRequest As HttpWebRequest
@@ -166,7 +166,7 @@ Public Class HTTP
                 Me._responseuri = wrResponse.ResponseUri.ToString
             End Using
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & URL & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & URL & ">", ex)
         End Try
 
         Return sResponse
@@ -254,7 +254,7 @@ Public Class HTTP
                 Me._responseuri = wrResponse.ResponseUri.ToString
             End Using
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & URL & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & URL & ">", ex)
         End Try
 
         Return sResponse
@@ -384,7 +384,7 @@ Public Class HTTP
                 End If
             End Using
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & URL & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & URL & ">", ex)
             outFile = ""
         End Try
 
@@ -435,7 +435,7 @@ Public Class HTTP
                 End Using
             End If
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & Me._URL & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & Me._URL & ">", ex)
         End Try
     End Sub
 
@@ -459,7 +459,7 @@ Public Class HTTP
                 Return Functions.ReadStreamToEnd(wrResponse.GetResponseStream)
             End Using
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & URL & ">", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & URL & ">", ex)
         End Try
 
         Return Nothing

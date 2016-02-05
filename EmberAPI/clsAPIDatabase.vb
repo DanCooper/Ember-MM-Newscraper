@@ -34,7 +34,7 @@ Imports System.Text.RegularExpressions
 Public Class Database
 
 #Region "Fields"
-    Shared eLogger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Friend WithEvents bwPatchDB As New System.ComponentModel.BackgroundWorker
 
@@ -438,7 +438,7 @@ Public Class Database
 
         Using SQLtransaction As SQLite.SQLiteTransaction = _myvideosDBConn.BeginTransaction()
             If CleanMovies Then
-                eLogger.Info("Cleaning movies started")
+                logger.Info("Cleaning movies started")
                 Dim MoviePaths As List(Of String) = GetAllMoviePaths()
                 MoviePaths.Sort()
 
@@ -502,11 +502,11 @@ Public Class Database
                         End While
                     End Using
                 End Using
-                eLogger.Info("Cleaning movies done")
+                logger.Info("Cleaning movies done")
             End If
 
             If CleanMovieSets Then
-                eLogger.Info("Cleaning moviesets started")
+                logger.Info("Cleaning moviesets started")
                 Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
                     SQLcommand.CommandText = "SELECT sets.idSet, COUNT(MoviesSets.MovieID) AS 'Count' FROM sets LEFT OUTER JOIN MoviesSets ON sets.idSet = MoviesSets.SetID GROUP BY sets.idSet ORDER BY sets.idSet COLLATE NOCASE;"
                     Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
@@ -517,11 +517,11 @@ Public Class Database
                         End While
                     End Using
                 End Using
-                eLogger.Info("Cleaning moviesets done")
+                logger.Info("Cleaning moviesets done")
             End If
 
             If CleanTVShows Then
-                eLogger.Info("Cleaning tv shows started")
+                logger.Info("Cleaning tv shows started")
                 Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
                     If SourceID = -1 Then
                         SQLcommand.CommandText = "SELECT strFilename FROM files;"
@@ -538,81 +538,81 @@ Public Class Database
                         End While
                     End Using
 
-                    eLogger.Info("Removing tvshows with no more existing local episodes")
+                    logger.Info("Removing tvshows with no more existing local episodes")
                     SQLcommand.CommandText = "DELETE FROM tvshow WHERE NOT EXISTS (SELECT episode.idShow FROM episode WHERE episode.idShow = tvshow.idShow AND NOT episode.idFile = -1);"
                     SQLcommand.ExecuteNonQuery()
-                    eLogger.Info("Removing seasons with no more existing tvshows")
+                    logger.Info("Removing seasons with no more existing tvshows")
                     SQLcommand.CommandText = "DELETE FROM seasons WHERE idShow NOT IN (SELECT idShow FROM tvshow);"
                     SQLcommand.ExecuteNonQuery()
-                    eLogger.Info("Removing episodes with no more existing tvshows")
+                    logger.Info("Removing episodes with no more existing tvshows")
                     SQLcommand.CommandText = "DELETE FROM episode WHERE idShow NOT IN (SELECT idShow FROM tvshow);"
                     SQLcommand.ExecuteNonQuery()
-                    eLogger.Info("Removing episodes with orphaned paths")
+                    logger.Info("Removing episodes with orphaned paths")
                     SQLcommand.CommandText = "DELETE FROM episode WHERE NOT EXISTS (SELECT files.idFile FROM files WHERE files.idFile = episode.idFile OR episode.idFile = -1)"
                     SQLcommand.ExecuteNonQuery()
-                    eLogger.Info("Removing orphaned paths")
+                    logger.Info("Removing orphaned paths")
                     SQLcommand.CommandText = "DELETE FROM files WHERE NOT EXISTS (SELECT episode.idFile FROM episode WHERE episode.idFile = files.idFile AND NOT episode.idFile = -1)"
                     SQLcommand.ExecuteNonQuery()
                 End Using
 
-                eLogger.Info("Removing seasons with no more existing episodes")
+                logger.Info("Removing seasons with no more existing episodes")
                 DeleteEmptyTVSeasonsFromDB(True)
-                eLogger.Info("Cleaning tv shows done")
+                logger.Info("Cleaning tv shows done")
             End If
 
             'global cleaning
-            eLogger.Info("Cleaning global tables started")
+            logger.Info("Cleaning global tables started")
             Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
                 'clean all link tables
-                eLogger.Info("Cleaning actorlinkepisode table")
+                logger.Info("Cleaning actorlinkepisode table")
                 SQLcommand.CommandText = "DELETE FROM actorlinkepisode WHERE NOT EXISTS (SELECT 1 FROM episode WHERE episode.idEpisode = actorlinkepisode.idEpisode)"
                 SQLcommand.ExecuteNonQuery()
-                eLogger.Info("Cleaning actorlinkmovie table")
+                logger.Info("Cleaning actorlinkmovie table")
                 SQLcommand.CommandText = "DELETE FROM actorlinkmovie WHERE NOT EXISTS (SELECT 1 FROM movie WHERE movie.idMovie = actorlinkmovie.idMovie)"
                 SQLcommand.ExecuteNonQuery()
-                eLogger.Info("Cleaning actorlinktvshow table")
+                logger.Info("Cleaning actorlinktvshow table")
                 SQLcommand.CommandText = "DELETE FROM actorlinktvshow WHERE NOT EXISTS (SELECT 1 FROM tvshow WHERE tvshow.idShow = actorlinktvshow.idShow)"
                 SQLcommand.ExecuteNonQuery()
-                eLogger.Info("Cleaning countrylinkmovie table")
+                logger.Info("Cleaning countrylinkmovie table")
                 SQLcommand.CommandText = "DELETE FROM countrylinkmovie WHERE idMovie NOT IN (SELECT idMovie FROM movie);"
                 SQLcommand.ExecuteNonQuery()
-                eLogger.Info("Cleaning directorlinkepisode table")
+                logger.Info("Cleaning directorlinkepisode table")
                 SQLcommand.CommandText = "DELETE FROM directorlinkepisode WHERE idEpisode NOT IN (SELECT idEpisode FROM episode);"
                 SQLcommand.ExecuteNonQuery()
-                eLogger.Info("Cleaning directorlinkmovie table")
+                logger.Info("Cleaning directorlinkmovie table")
                 SQLcommand.CommandText = "DELETE FROM directorlinkmovie WHERE idMovie NOT IN (SELECT idMovie FROM movie);"
                 SQLcommand.ExecuteNonQuery()
-                eLogger.Info("Cleaning directorlinktvshow table")
+                logger.Info("Cleaning directorlinktvshow table")
                 SQLcommand.CommandText = "DELETE FROM directorlinktvshow WHERE idShow NOT IN (SELECT idShow FROM tvshow);"
                 SQLcommand.ExecuteNonQuery()
-                eLogger.Info("Cleaning genrelinkmovie table")
+                logger.Info("Cleaning genrelinkmovie table")
                 SQLcommand.CommandText = "DELETE FROM genrelinkmovie WHERE idMovie NOT IN (SELECT idMovie FROM movie);"
                 SQLcommand.ExecuteNonQuery()
-                eLogger.Info("Cleaning genrelinktvshow table")
+                logger.Info("Cleaning genrelinktvshow table")
                 SQLcommand.CommandText = "DELETE FROM genrelinktvshow WHERE idShow NOT IN (SELECT idShow FROM tvshow);"
                 SQLcommand.ExecuteNonQuery()
-                eLogger.Info("Cleaning MoviesSets table")
+                logger.Info("Cleaning MoviesSets table")
                 SQLcommand.CommandText = "DELETE FROM MoviesSets WHERE MovieID NOT IN (SELECT idMovie FROM movie);"
                 SQLcommand.ExecuteNonQuery()
-                eLogger.Info("Cleaning studiolinkmovie table")
+                logger.Info("Cleaning studiolinkmovie table")
                 SQLcommand.CommandText = "DELETE FROM studiolinkmovie WHERE idMovie NOT IN (SELECT idMovie FROM movie);"
                 SQLcommand.ExecuteNonQuery()
-                eLogger.Info("Cleaning studiolinktvshow table")
+                logger.Info("Cleaning studiolinktvshow table")
                 SQLcommand.CommandText = "DELETE FROM studiolinktvshow WHERE idShow NOT IN (SELECT idShow FROM tvshow);"
                 SQLcommand.ExecuteNonQuery()
-                eLogger.Info("Cleaning writerlinkepisode table")
+                logger.Info("Cleaning writerlinkepisode table")
                 SQLcommand.CommandText = "DELETE FROM writerlinkepisode WHERE idEpisode NOT IN (SELECT idEpisode FROM episode);"
                 SQLcommand.ExecuteNonQuery()
-                eLogger.Info("Cleaning writerlinkmovie table")
+                logger.Info("Cleaning writerlinkmovie table")
                 SQLcommand.CommandText = "DELETE FROM writerlinkmovie WHERE idMovie NOT IN (SELECT idMovie FROM movie);"
                 SQLcommand.ExecuteNonQuery()
                 'clean all main tables
-                eLogger.Info("Cleaning genre table")
+                logger.Info("Cleaning genre table")
                 SQLcommand.CommandText = String.Concat("DELETE FROM genre ",
                                                        "WHERE NOT EXISTS (SELECT 1 FROM genrelinkmovie WHERE genrelinkmovie.idGenre = genre.idGenre) ",
                                                          "AND NOT EXISTS (SELECT 1 FROM genrelinktvshow WHERE genrelinktvshow.idGenre = genre.idGenre)")
                 SQLcommand.ExecuteNonQuery()
-                eLogger.Info("Cleaning actor table of actors, directors and writers")
+                logger.Info("Cleaning actor table of actors, directors and writers")
                 SQLcommand.CommandText = String.Concat("DELETE FROM actors ",
                                                        "WHERE NOT EXISTS (SELECT 1 FROM actorlinkmovie WHERE actorlinkmovie.idActor = actors.idActor) ",
                                                          "AND NOT EXISTS (SELECT 1 FROM directorlinkmovie WHERE directorlinkmovie.idDirector = actors.idActor) ",
@@ -623,24 +623,24 @@ Public Class Database
                                                          "AND NOT EXISTS (SELECT 1 FROM directorlinkepisode WHERE directorlinkepisode.idDirector = actors.idActor) ",
                                                          "AND NOT EXISTS (SELECT 1 FROM writerlinkepisode WHERE writerlinkepisode.idWriter = actors.idActor)")
                 SQLcommand.ExecuteNonQuery()
-                eLogger.Info("Cleaning country table")
+                logger.Info("Cleaning country table")
                 SQLcommand.CommandText = "DELETE FROM country WHERE NOT EXISTS (SELECT 1 FROM countrylinkmovie WHERE countrylinkmovie.idCountry = country.idCountry)"
                 SQLcommand.ExecuteNonQuery()
-                eLogger.Info("Cleaning genre table")
+                logger.Info("Cleaning genre table")
                 SQLcommand.CommandText = String.Concat("DELETE FROM genre ",
                                                        "WHERE NOT EXISTS (SELECT 1 FROM genrelinkmovie WHERE genrelinkmovie.idGenre = genre.idGenre) ",
                                                          "AND NOT EXISTS (SELECT 1 FROM genrelinktvshow WHERE genrelinktvshow.idGenre = genre.idGenre)")
                 SQLcommand.ExecuteNonQuery()
-                eLogger.Info("Cleaning studio table")
+                logger.Info("Cleaning studio table")
                 SQLcommand.CommandText = String.Concat("DELETE FROM studio ",
                                                        "WHERE NOT EXISTS (SELECT 1 FROM studiolinkmovie WHERE studiolinkmovie.idStudio = studio.idStudio) ",
                                                          "AND NOT EXISTS (SELECT 1 FROM studiolinktvshow WHERE studiolinktvshow.idStudio = studio.idStudio)")
                 SQLcommand.ExecuteNonQuery()
             End Using
-            eLogger.Info("Cleaning global tables done")
+            logger.Info("Cleaning global tables done")
 
             SQLtransaction.Commit()
-            eLogger.Info("Cleaning videodatabase done")
+            logger.Info("Cleaning videodatabase done")
         End Using
 
         ' Housekeeping - consolidate and pack database using vacuum command http://www.sqlite.org/lang_vacuum.html
@@ -651,7 +651,7 @@ Public Class Database
     End Sub
 
     Public Sub CleanupGenres()
-        eLogger.Info("Cleanup Genres started")
+        logger.Info("Cleanup Genres started")
         Dim MovieList As New List(Of Long)
         Dim TVShowList As New List(Of Long)
 
@@ -672,7 +672,7 @@ Public Class Database
         End Using
 
         Using SQLtransaction As SQLiteTransaction = _myvideosDBConn.BeginTransaction()
-            eLogger.Info("Process all Movies")
+            logger.Info("Process all Movies")
             'Process all Movies, which are assigned to a genre
             For Each lMovieID In MovieList
                 Dim tmpDBElement As DBElement = LoadMovieFromDB(lMovieID)
@@ -680,25 +680,25 @@ Public Class Database
                     tmpDBElement.Movie.Genres = StringUtils.GenreFilter(tmpDBElement.Movie.Genres, False)
                     SaveMovieToDB(tmpDBElement, False, True, True, False)
                 Else
-                    eLogger.Info(String.Concat("Skip Movie (not online): ", tmpDBElement.Filename))
+                    logger.Info(String.Concat("Skip Movie (not online): ", tmpDBElement.Filename))
                 End If
             Next
 
             'Process all TVShows, which are assigned to a genre
-            eLogger.Info("Process all TVShows")
+            logger.Info("Process all TVShows")
             For Each lTVShowID In TVShowList
                 Dim tmpDBElement As DBElement = LoadTVShowFromDB(lTVShowID, False, False)
                 If tmpDBElement.IsOnline Then
                     tmpDBElement.TVShow.Genres = StringUtils.GenreFilter(tmpDBElement.TVShow.Genres, False)
                     SaveTVShowToDB(tmpDBElement, False, True, True, False, False)
                 Else
-                    eLogger.Info(String.Concat("Skip TV Show (not online): ", tmpDBElement.ShowPath))
+                    logger.Info(String.Concat("Skip TV Show (not online): ", tmpDBElement.ShowPath))
                 End If
             Next
 
             'Cleanup genre table
             Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
-                eLogger.Info("Cleaning genre table")
+                logger.Info("Cleaning genre table")
                 SQLcommand.CommandText = String.Concat("DELETE FROM genre ",
                                                        "WHERE NOT EXISTS (SELECT 1 FROM genrelinkmovie WHERE genrelinkmovie.idGenre = genre.idGenre) ",
                                                          "AND NOT EXISTS (SELECT 1 FROM genrelinktvshow WHERE genrelinktvshow.idGenre = genre.idGenre)")
@@ -707,7 +707,7 @@ Public Class Database
 
             SQLtransaction.Commit()
         End Using
-        eLogger.Info("Cleanup Genres done")
+        logger.Info("Cleanup Genres done")
     End Sub
     ''' <summary>
     ''' Remove the New flag from database entries (movies, tvshow, seasons, episode)
@@ -788,7 +788,7 @@ Public Class Database
 
             connection.Close()
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "There was a problem closing the media database.", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "There was a problem closing the media database.", ex)
         Finally
             connection.Dispose()
         End Try
@@ -833,7 +833,7 @@ Public Class Database
             _myvideosDBConn = New SQLiteConnection(String.Format(_connStringTemplate, MyVideosDBFile))
             _myvideosDBConn.Open()
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Unable to open media database connection.", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Unable to open media database connection.", ex)
         End Try
 
         Try
@@ -849,7 +849,7 @@ Public Class Database
                 End Using
             End If
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Error creating database", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Error creating database", ex)
             CloseMyVideosDB()
             File.Delete(MyVideosDBFile)
         End Try
@@ -940,7 +940,7 @@ Public Class Database
             End Using
             If Not BatchMode Then SQLtransaction.Commit()
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
             Return False
         End Try
         Return True
@@ -1009,7 +1009,7 @@ Public Class Database
             End Using
             If Not BatchMode Then SQLtransaction.Commit()
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
             Return False
         End Try
         Return True
@@ -1074,7 +1074,7 @@ Public Class Database
             End Using
             If Not BatchMode Then SQLtransaction.Commit()
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
             Return False
         End Try
         Return True
@@ -1196,7 +1196,7 @@ Public Class Database
             End Using
             If Not BatchMode Then SQLtransaction.Commit()
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
             Return False
         End Try
         Return True
@@ -1221,7 +1221,7 @@ Public Class Database
             End Using
             If Not BatchMode Then SQLtransaction.Commit()
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
             Return False
         End Try
         Return True
@@ -1245,7 +1245,7 @@ Public Class Database
             End Using
             If Not BatchMode Then SQLtransaction.Commit()
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
             Return False
         End Try
         Return True
@@ -1401,7 +1401,7 @@ Public Class Database
             SQLtransaction.Commit()
             Return True
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
             Return False
         End Try
     End Function
@@ -1418,7 +1418,7 @@ Public Class Database
             SQLtransaction.Commit()
             Return True
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
             Return False
         End Try
     End Function
@@ -1438,7 +1438,7 @@ Public Class Database
                 End Using
                 Return ViewProperty
             Catch ex As Exception
-                eLogger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End If
         Return ViewProperty
@@ -1535,13 +1535,13 @@ Public Class Database
                             eDir = SQLreader("Dirname").ToString
                             Master.ExcludeDirs.Add(eDir)
                         Catch ex As Exception
-                            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+                            logger.Error(New StackFrame().GetMethod().Name, ex)
                         End Try
                     End While
                 End Using
             End Using
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>
@@ -1907,7 +1907,7 @@ Public Class Database
                         msource.LastScan = SQLreader("strLastScan").ToString
                         Master.MovieSources.Add(msource)
                     Catch ex As Exception
-                        eLogger.Error(New StackFrame().GetMethod().Name, ex)
+                        logger.Error(New StackFrame().GetMethod().Name, ex)
                     End Try
                 End While
             End Using
@@ -2607,7 +2607,7 @@ Public Class Database
                         tvsource.LastScan = SQLreader("strLastScan").ToString
                         Master.TVShowSources.Add(tvsource)
                     Catch ex As Exception
-                        eLogger.Error(New StackFrame().GetMethod().Name, ex)
+                        logger.Error(New StackFrame().GetMethod().Name, ex)
                     End Try
                 End While
             End Using
@@ -2650,9 +2650,9 @@ Public Class Database
                                     SQLcommand.CommandText = _cmd.execute
                                     Try
                                         SQLcommand.ExecuteNonQuery()
-                                        eLogger.Info(String.Concat(Trans.name, ": ", _cmd.description))
+                                        logger.Info(String.Concat(Trans.name, ": ", _cmd.description))
                                     Catch ex As Exception
-                                        eLogger.Error(New StackFrame().GetMethod().Name, ex, Trans.name, _cmd.description)
+                                        logger.Error(New StackFrame().GetMethod().Name, ex, Trans.name, _cmd.description)
                                         TransOk = False
                                         Exit For
                                     End Try
@@ -2660,7 +2660,7 @@ Public Class Database
                             End If
                         Next
                         If TransOk Then
-                            eLogger.Trace(New StackFrame().GetMethod().Name, String.Format("Transaction {0} Commit", Trans.name))
+                            logger.Trace(New StackFrame().GetMethod().Name, String.Format("Transaction {0} Commit", Trans.name))
                             SQLtransaction.Commit()
                             ' Housekeeping - consolidate and pack database using vacuum command http://www.sqlite.org/lang_vacuum.html
                             Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -2668,7 +2668,7 @@ Public Class Database
                                 SQLcommand.ExecuteNonQuery()
                             End Using
                         Else
-                            eLogger.Trace(New StackFrame().GetMethod().Name, String.Format("Transaction {0} RollBack", Trans.name))
+                            logger.Trace(New StackFrame().GetMethod().Name, String.Format("Transaction {0} RollBack", Trans.name))
                             SQLtransaction.Rollback()
                         End If
                     End Using
@@ -2685,7 +2685,7 @@ Public Class Database
                                     SQLcommand.ExecuteNonQuery()
                                 End Using
                             Catch ex As Exception
-                                eLogger.Info(New StackFrame().GetMethod().Name, ex, SQLnotransaction, _cmd.description, _cmd.execute)
+                                logger.Info(New StackFrame().GetMethod().Name, ex, SQLnotransaction, _cmd.description, _cmd.execute)
                             End Try
                         End Using
                     End If
@@ -2765,7 +2765,7 @@ Public Class Database
             _myvideosDBConn.Close()
             File.Move(tempName, Args.newDBPath)
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Unable to open media database connection.", ex)
+            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Unable to open media database connection.", ex)
             _myvideosDBConn.Close()
         End Try
     End Sub
@@ -3434,7 +3434,7 @@ Public Class Database
                     If rdrMovie.Read Then
                         _movieDB.ID = Convert.ToInt64(rdrMovie(0))
                     Else
-                        eLogger.Error("Something very wrong here: SaveMovieToDB", _movieDB.ToString)
+                        logger.Error("Something very wrong here: SaveMovieToDB", _movieDB.ToString)
                         _movieDB.ID = -1
                         Return _movieDB
                     End If
@@ -3874,7 +3874,7 @@ Public Class Database
                     If rdrMovieSet.Read Then
                         _moviesetDB.ID = Convert.ToInt64(rdrMovieSet(0))
                     Else
-                        eLogger.Error("Something very wrong here: SaveMovieSetToDB", _moviesetDB.ToString, "Error")
+                        logger.Error("Something very wrong here: SaveMovieSetToDB", _moviesetDB.ToString, "Error")
                         _moviesetDB.ListTitle = "SETERROR"
                         Return _moviesetDB
                     End If
@@ -3969,7 +3969,7 @@ Public Class Database
                     If rdrMovieTag.Read Then
                         _tagDB.ID = CInt(Convert.ToInt64(rdrMovieTag(0)))
                     Else
-                        eLogger.Error("Something very wrong here: SaveMovieSetToDB", _tagDB.ToString, "Error")
+                        logger.Error("Something very wrong here: SaveMovieSetToDB", _tagDB.ToString, "Error")
                         _tagDB.Title = "SETERROR"
                         Return _tagDB
                     End If
@@ -4283,7 +4283,7 @@ Public Class Database
                     If rdrTVEp.Read Then
                         _episode.ID = Convert.ToInt64(rdrTVEp(0))
                     Else
-                        eLogger.Error("Something very wrong here: SaveTVEpToDB", _episode.ToString, "Error")
+                        logger.Error("Something very wrong here: SaveTVEpToDB", _episode.ToString, "Error")
                         _episode.ID = -1
                         Return _episode
                         Exit Function
@@ -4669,7 +4669,7 @@ Public Class Database
                         _show.ID = Convert.ToInt64(rdrTVShow(0))
                         _show.ShowID = _show.ID
                     Else
-                        eLogger.Error("Something very wrong here: SaveTVShowToDB", _show.ToString, "Error")
+                        logger.Error("Something very wrong here: SaveTVShowToDB", _show.ToString, "Error")
                         _show.ID = -1
                         _show.ShowID = _show.ID
                         Return _show
@@ -4816,7 +4816,7 @@ Public Class Database
     ''' <remarks></remarks>
     Public Function IsAddonInstalled(ByVal AddonID As Integer) As Single
         If AddonID < 0 Then
-            eLogger.Error(New StackFrame().GetMethod().Name, Environment.StackTrace, "Invalid AddonID: {0}" & AddonID)
+            logger.Error(New StackFrame().GetMethod().Name, Environment.StackTrace, "Invalid AddonID: {0}" & AddonID)
             'Throw New ArgumentOutOfRangeException("AddonID", "Must be a positive integer")
         End If
 
@@ -4832,7 +4832,7 @@ Public Class Database
                 End If
             End Using
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return 0
     End Function
@@ -4844,7 +4844,7 @@ Public Class Database
     ''' <remarks></remarks>
     Public Function UninstallAddon(ByVal AddonID As Integer) As Boolean
         If AddonID < 0 Then
-            eLogger.Error(New StackFrame().GetMethod().Name, Environment.StackTrace, "Invalid AddonID: {0}" & AddonID)
+            logger.Error(New StackFrame().GetMethod().Name, Environment.StackTrace, "Invalid AddonID: {0}" & AddonID)
             'Throw New ArgumentOutOfRangeException("AddonID", "Must be a positive integer")
         End If
 
@@ -4873,7 +4873,7 @@ Public Class Database
                 SQLtransaction.Commit()
             End Using
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
         Return Not needRestart
     End Function
@@ -4886,7 +4886,7 @@ Public Class Database
     Public Sub SaveAddonToDB(ByVal Addon As Containers.Addon)
         'TODO Need to add validation on Addon.ID, especially if it is passed in the parameter
         If Addon Is Nothing Then
-            eLogger.Error(New StackFrame().GetMethod().Name, Environment.StackTrace, "Invalid AddonID: empty")
+            logger.Error(New StackFrame().GetMethod().Name, Environment.StackTrace, "Invalid AddonID: empty")
         End If
         Try
             Using SQLtransaction As SQLite.SQLiteTransaction = _myvideosDBConn.BeginTransaction()
@@ -4918,7 +4918,7 @@ Public Class Database
                 SQLtransaction.Commit()
             End Using
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
     ''' <summary>

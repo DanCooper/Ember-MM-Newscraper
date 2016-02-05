@@ -27,7 +27,7 @@ Public Class MediaStub
 
 #Region "Fields"
 
-    Shared eLogger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
 #End Region 'Fields
 
@@ -54,7 +54,7 @@ Public Class MediaStub
                 End If
 
             Catch ex As Exception
-                eLogger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         End If
 
@@ -104,7 +104,7 @@ Public Class MediaStub
             End If
 
         Catch ex As Exception
-            eLogger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
