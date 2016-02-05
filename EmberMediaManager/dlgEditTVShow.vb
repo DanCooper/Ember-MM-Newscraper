@@ -113,7 +113,7 @@ Public Class dlgEditTVShow
             pbExtrafanartsImage(iIndex).SizeMode = PictureBoxSizeMode.Zoom
             pnlExtrafanartsImage(iIndex).Tag = tImage
             pbExtrafanartsImage(iIndex).Tag = tImage
-            pbExtrafanartsImage(iIndex).Image = CType(tImage.ImageOriginal.Image.Clone(), Image)
+            pbExtrafanartsImage(iIndex).Image = tImage.ImageOriginal.Image
             pnlExtrafanartsImage(iIndex).Left = iEFLeft
             pbExtrafanartsImage(iIndex).Left = 0
             pnlExtrafanartsImage(iIndex).Top = iEFTop
@@ -281,14 +281,14 @@ Public Class dlgEditTVShow
 
     Private Sub btnSetBannerScrape_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetBannerScrape.Click
         Dim aContainer As New MediaContainers.SearchResultsContainer
-        Dim ScrapeModifier As New Structures.ScrapeModifier
+        Dim ScrapeModifiers As New Structures.ScrapeModifiers
 
         Cursor = Cursors.WaitCursor
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainBanner, True)
-        If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifier, True) Then
+        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainBanner, True)
+        If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.MainBanners.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
+                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                     tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
                     If tmpDBElement.ImagesContainer.Banner.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Banner.ImageOriginal.FromMemoryStream Then
                         pbBanner.Image = tmpDBElement.ImagesContainer.Banner.ImageOriginal.Image
@@ -355,14 +355,14 @@ Public Class dlgEditTVShow
 
     Private Sub btnSetCharacterArtScrape_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetCharacterArtScrape.Click
         Dim aContainer As New MediaContainers.SearchResultsContainer
-        Dim ScrapeModifier As New Structures.ScrapeModifier
+        Dim ScrapeModifiers As New Structures.ScrapeModifiers
 
         Cursor = Cursors.WaitCursor
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainCharacterArt, True)
-        If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifier, True) Then
+        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainCharacterArt, True)
+        If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.MainCharacterArts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
+                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                     tmpDBElement.ImagesContainer.CharacterArt = dlgImgS.Result.ImagesContainer.CharacterArt
                     If tmpDBElement.ImagesContainer.CharacterArt.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.CharacterArt.ImageOriginal.FromMemoryStream Then
                         pbCharacterArt.Image = tmpDBElement.ImagesContainer.CharacterArt.ImageOriginal.Image
@@ -449,14 +449,14 @@ Public Class dlgEditTVShow
 
     Private Sub btnSetClearArtScrape_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetClearArtScrape.Click
         Dim aContainer As New MediaContainers.SearchResultsContainer
-        Dim ScrapeModifier As New Structures.ScrapeModifier
+        Dim ScrapeModifiers As New Structures.ScrapeModifiers
 
         Cursor = Cursors.WaitCursor
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainClearArt, True)
-        If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifier, True) Then
+        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainClearArt, True)
+        If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.MainClearArts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
+                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                     tmpDBElement.ImagesContainer.ClearArt = dlgImgS.Result.ImagesContainer.ClearArt
                     If tmpDBElement.ImagesContainer.ClearArt.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.ClearArt.ImageOriginal.FromMemoryStream Then
                         pbClearArt.Image = tmpDBElement.ImagesContainer.ClearArt.ImageOriginal.Image
@@ -523,14 +523,14 @@ Public Class dlgEditTVShow
 
     Private Sub btnSetClearLogoScrape_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetClearLogoScrape.Click
         Dim aContainer As New MediaContainers.SearchResultsContainer
-        Dim ScrapeModifier As New Structures.ScrapeModifier
+        Dim ScrapeModifiers As New Structures.ScrapeModifiers
 
         Cursor = Cursors.WaitCursor
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainClearLogo, True)
-        If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifier, True) Then
+        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainClearLogo, True)
+        If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.MainClearLogos.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
+                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                     tmpDBElement.ImagesContainer.ClearLogo = dlgImgS.Result.ImagesContainer.ClearLogo
                     If dlgImgS.Result.ImagesContainer.ClearLogo.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.ClearLogo.ImageOriginal.FromMemoryStream Then
                         pbClearLogo.Image = tmpDBElement.ImagesContainer.ClearLogo.ImageOriginal.Image
@@ -597,14 +597,14 @@ Public Class dlgEditTVShow
 
     Private Sub btnSetFanartScrape_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetFanartScrape.Click
         Dim aContainer As New MediaContainers.SearchResultsContainer
-        Dim ScrapeModifier As New Structures.ScrapeModifier
+        Dim ScrapeModifiers As New Structures.ScrapeModifiers
 
         Cursor = Cursors.WaitCursor
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainFanart, True)
-        If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifier, True) Then
+        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainFanart, True)
+        If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.MainFanarts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
+                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                     tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
                     If tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Fanart.ImageOriginal.FromMemoryStream Then
                         pbFanart.Image = tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
@@ -651,14 +651,14 @@ Public Class dlgEditTVShow
 
     Private Sub btnSetLandscapeScrape_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetLandscapeScrape.Click
         Dim aContainer As New MediaContainers.SearchResultsContainer
-        Dim ScrapeModifier As New Structures.ScrapeModifier
+        Dim ScrapeModifiers As New Structures.ScrapeModifiers
 
         Cursor = Cursors.WaitCursor
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainLandscape, True)
-        If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifier, True) Then
+        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainLandscape, True)
+        If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.MainLandscapes.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
+                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                     tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
                     If tmpDBElement.ImagesContainer.Landscape.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Landscape.ImageOriginal.FromMemoryStream Then
                         pbLandscape.Image = tmpDBElement.ImagesContainer.Landscape.ImageOriginal.Image
@@ -745,14 +745,14 @@ Public Class dlgEditTVShow
 
     Private Sub btnSetPosterScrape_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetPosterScrape.Click
         Dim aContainer As New MediaContainers.SearchResultsContainer
-        Dim ScrapeModifier As New Structures.ScrapeModifier
+        Dim ScrapeModifiers As New Structures.ScrapeModifiers
 
         Cursor = Cursors.WaitCursor
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.MainPoster, True)
-        If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifier, True) Then
+        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainPoster, True)
+        If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.MainPosters.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
+                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                     tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
                     If tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Poster.ImageOriginal.FromMemoryStream Then
                         pbPoster.Image = tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image

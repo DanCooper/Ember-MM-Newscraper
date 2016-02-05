@@ -35,10 +35,10 @@ Namespace FileUtils
 
 #Region "Methods"
 
-        Public Shared Sub DirectoryCopy( _
-                                       ByVal strSourceDir As String, _
-                                       ByVal strDestinationDir As String, _
-                                       ByVal withSubDirs As Boolean, _
+        Public Shared Sub DirectoryCopy(
+                                       ByVal strSourceDir As String,
+                                       ByVal strDestinationDir As String,
+                                       ByVal withSubDirs As Boolean,
                                        ByVal overwriteFiles As Boolean)
 
             If Not Directory.Exists(strSourceDir) Then
@@ -73,10 +73,10 @@ Namespace FileUtils
             End If
         End Sub
 
-        Public Shared Sub DirectoryMove( _
-                                       ByVal strSourceDir As String, _
-                                       ByVal strDestinationDir As String, _
-                                       ByVal withSubDirs As Boolean, _
+        Public Shared Sub DirectoryMove(
+                                       ByVal strSourceDir As String,
+                                       ByVal strDestinationDir As String,
+                                       ByVal withSubDirs As Boolean,
                                        ByVal overwriteFiles As Boolean)
 
             If Not Directory.Exists(strSourceDir) Then
@@ -150,7 +150,9 @@ Namespace FileUtils
         ''' <param name="sPath">Path to Blu-Ray or DVD files.</param>
         ''' <param name="ForceBDMV">Assume path holds Blu-Ray files if <c>True</c></param>
         ''' <returns>Path/filename to the largest media file for the detected video type</returns>
-        ''' <remarks></remarks>
+        ''' <remarks>
+        '''  2016/01/26  Cocotus - Remove 1GB limit from query
+        ''' </remarks>
         Public Shared Function GetLongestFromRip(ByVal sPath As String, Optional ByVal ForceBDMV As Boolean = False) As String
             'TODO Needs error handling for when largest file is under 1GB. No default is set. Also, should error if path is not DVD or BR. Also, if ForceBDMV, complain if no files found
             Dim lFileList As New List(Of FileInfo)
@@ -160,8 +162,8 @@ Namespace FileUtils
                 Case isVideoTS(sPath)
                     lFileList.AddRange(New DirectoryInfo(Directory.GetParent(sPath).FullName).GetFiles("*.vob"))
             End Select
-            'Return filename/path of the largest file that is over 1 GB in size.
-            Return lFileList.Where(Function(s) s.Length > 1073741824).OrderByDescending(Function(s) s.Length).Select(Function(s) s.FullName).FirstOrDefault
+            'Return filename/path of the largest file
+            Return lFileList.OrderByDescending(Function(s) s.Length).Select(Function(s) s.FullName).FirstOrDefault
         End Function
 
         ''' <summary>
@@ -309,10 +311,10 @@ Namespace FileUtils
         Public Shared Function CheckOnlineStatus_Movie(ByRef dbMovie As Database.DBElement, ByVal showMessage As Boolean) As Boolean
             While Not File.Exists(dbMovie.Filename)
                 If showMessage Then
-                    If MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".", Environment.NewLine, _
-                                                     Master.eLang.GetString(630, "Reconnect the source and press Retry"), ".", _
-                                                     Environment.NewLine, Environment.NewLine, _
-                                                     dbMovie.Filename), String.Empty, _
+                    If MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".", Environment.NewLine,
+                                                     Master.eLang.GetString(630, "Reconnect the source and press Retry"), ".",
+                                                     Environment.NewLine, Environment.NewLine,
+                                                     dbMovie.Filename), String.Empty,
                                                  MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) = Windows.Forms.DialogResult.Cancel Then Return False
                 Else
                     Return False
@@ -325,10 +327,10 @@ Namespace FileUtils
         Public Shared Function CheckOnlineStatus_TVEpisode(ByRef dbTV As Database.DBElement, ByVal showMessage As Boolean) As Boolean
             While Not File.Exists(dbTV.Filename)
                 If showMessage Then
-                    If MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".", Environment.NewLine, _
-                                                     Master.eLang.GetString(630, "Reconnect the source and press Retry"), ".", _
-                                                     Environment.NewLine, Environment.NewLine, _
-                                                     dbTV.Filename), String.Empty, _
+                    If MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".", Environment.NewLine,
+                                                     Master.eLang.GetString(630, "Reconnect the source and press Retry"), ".",
+                                                     Environment.NewLine, Environment.NewLine,
+                                                     dbTV.Filename), String.Empty,
                                                  MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) = Windows.Forms.DialogResult.Cancel Then Return False
                 Else
                     Return False
@@ -341,10 +343,10 @@ Namespace FileUtils
         Public Shared Function CheckOnlineStatus_TVShow(ByRef dbTV As Database.DBElement, ByVal showMessage As Boolean) As Boolean
             While Not Directory.Exists(dbTV.ShowPath)
                 If showMessage Then
-                    If MessageBox.Show(String.Concat(Master.eLang.GetString(719, "This path is no longer available"), ".", Environment.NewLine, _
-                                                     Master.eLang.GetString(630, "Reconnect the source and press Retry"), ".", _
-                                                     Environment.NewLine, Environment.NewLine, _
-                                                     dbTV.ShowPath), String.Empty, _
+                    If MessageBox.Show(String.Concat(Master.eLang.GetString(719, "This path is no longer available"), ".", Environment.NewLine,
+                                                     Master.eLang.GetString(630, "Reconnect the source and press Retry"), ".",
+                                                     Environment.NewLine, Environment.NewLine,
+                                                     dbTV.ShowPath), String.Empty,
                                                  MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) = Windows.Forms.DialogResult.Cancel Then Return False
                 Else
                     Return False

@@ -26,9 +26,9 @@ Public Class TMDB_Trailer
 
 
 #Region "Fields"
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
+    Public Shared ConfigScrapeModifiers As New Structures.ScrapeModifiers
     Public Shared _AssemblyName As String
 
     ''' <summary>
@@ -129,7 +129,7 @@ Public Class TMDB_Trailer
 
     Sub LoadSettings()
 
-        ConfigScrapeModifier.MainTrailer = clsAdvancedSettings.GetBooleanSetting("DoTrailer", True)
+        ConfigScrapeModifiers.MainTrailer = clsAdvancedSettings.GetBooleanSetting("DoTrailer", True)
         _SpecialSettings.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
         _SpecialSettings.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn", False)
         strPrivateAPIKey = clsAdvancedSettings.GetSetting("TMDBAPIKey", "")
@@ -160,7 +160,7 @@ Public Class TMDB_Trailer
         Using settings = New clsAdvancedSettings()
             settings.SetSetting("TMDBAPIKey", _setup.txtApiKey.Text)
             settings.SetBooleanSetting("FallBackEn", _SpecialSettings.FallBackEng)
-            settings.SetBooleanSetting("DoTrailer", ConfigScrapeModifier.MainTrailer)
+            settings.SetBooleanSetting("DoTrailer", ConfigScrapeModifiers.MainTrailer)
         End Using
     End Sub
 

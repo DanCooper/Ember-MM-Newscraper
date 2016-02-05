@@ -38,6 +38,7 @@ Public Class VLCPlayer
     Private _setup As frmSettingsHolder
     Private frmAudioPlayer As frmAudioPlayer
     Private frmVideoPlayer As frmVideoPlayer
+    Private clsVLC As Object
 
 #End Region 'Fields
 
@@ -104,6 +105,7 @@ Public Class VLCPlayer
 
         _setup.chkUseAsAudioPlayer.Checked = _MySettings.UseAsAudioPlayer
         _setup.chkUseAsVideoPlayer.Checked = _MySettings.UseAsVideoPlayer
+        _setup.txtVLCPath.Text = _MySettings.VLCPath
 
         SPanel.Name = Me._name
         SPanel.Text = "VLC Player"
@@ -118,45 +120,45 @@ Public Class VLCPlayer
     End Function
 
     Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.GenericModule.RunGeneric
-        If clsVLC.DoTest Then
-            Select Case mType
-                Case Enums.ModuleEventType.MediaPlayer_Audio
-                    If _MySettings.UseAsAudioPlayer Then
-                        frmAudioPlayer = New frmAudioPlayer
-                        _params(0) = frmAudioPlayer.pnlPlayer
+        Select Case mType
+            Case Enums.ModuleEventType.MediaPlayer_Audio
+                If _MySettings.UseAsAudioPlayer Then
+                    frmAudioPlayer = New frmAudioPlayer
+                    _params(0) = frmAudioPlayer.pnlPlayer
+                End If
+            Case Enums.ModuleEventType.MediaPlayer_Video
+                If _MySettings.UseAsVideoPlayer Then
+                    If _params.Count > 1 AndAlso _params(1) IsNot Nothing AndAlso Not String.IsNullOrEmpty(CStr(_params(1))) Then
+                        frmVideoPlayer = New frmVideoPlayer(CStr(_params(1)))
+                    Else
+                        frmVideoPlayer = New frmVideoPlayer
                     End If
-                Case Enums.ModuleEventType.MediaPlayer_Video
-                    If _MySettings.UseAsVideoPlayer Then
-                        If _params.Count > 1 AndAlso _params(1) IsNot Nothing AndAlso Not String.IsNullOrEmpty(CStr(_params(1))) Then
-                            frmVideoPlayer = New frmVideoPlayer(CStr(_params(1)))
-                        Else
-                            frmVideoPlayer = New frmVideoPlayer
-                        End If
-                        _params(0) = frmVideoPlayer.pnlPlayer
-                    End If
-                Case Enums.ModuleEventType.MediaPlayerPlay_Video
-                    frmVideoPlayer.PlayerPlay()
-                Case Enums.ModuleEventType.MediaPlayerPlaylistAdd_Video
-                    If _params(0) IsNot Nothing AndAlso Not String.IsNullOrEmpty(_params(0).ToString) Then
-                        frmVideoPlayer.PlaylistAdd(_params(0).ToString)
-                    End If
-                Case Enums.ModuleEventType.MediaPlayerPlaylistClear_Video
-                    frmVideoPlayer.PlaylistClear()
-                Case Enums.ModuleEventType.MediaPlayerStop_Video
-                    frmVideoPlayer.PlayerStop()
-            End Select
-        End If
+                    _params(0) = frmVideoPlayer.pnlPlayer
+                End If
+            Case Enums.ModuleEventType.MediaPlayerPlay_Video
+                frmVideoPlayer.PlayerPlay()
+            Case Enums.ModuleEventType.MediaPlayerPlaylistAdd_Video
+                If _params(0) IsNot Nothing AndAlso Not String.IsNullOrEmpty(_params(0).ToString) Then
+                    frmVideoPlayer.PlaylistAdd(_params(0).ToString)
+                End If
+            Case Enums.ModuleEventType.MediaPlayerPlaylistClear_Video
+                frmVideoPlayer.PlaylistClear()
+            Case Enums.ModuleEventType.MediaPlayerStop_Video
+                frmVideoPlayer.PlayerStop()
+        End Select
     End Function
 
     Sub LoadSettings()
         _MySettings.UseAsAudioPlayer = clsAdvancedSettings.GetBooleanSetting("UseAsAudioPlayer", False)
         _MySettings.UseAsVideoPlayer = clsAdvancedSettings.GetBooleanSetting("UseAsVideoPlayer", False)
+        _MySettings.VLCPath = clsAdvancedSettings.GetSetting("VLCPath", "")
     End Sub
 
     Sub SaveSettings()
         Using settings = New clsAdvancedSettings()
             settings.SetBooleanSetting("UseAsAudioPlayer", _MySettings.UseAsAudioPlayer)
             settings.SetBooleanSetting("UseAsVideoPlayer", _MySettings.UseAsVideoPlayer)
+            settings.SetSetting("VLCPath", _MySettings.VLCPath)
         End Using
     End Sub
 
@@ -164,6 +166,7 @@ Public Class VLCPlayer
         Me.Enabled = _setup.chkEnabled.Checked
         _MySettings.UseAsAudioPlayer = _setup.chkUseAsAudioPlayer.Checked
         _MySettings.UseAsVideoPlayer = _setup.chkUseAsVideoPlayer.Checked
+        _MySettings.VLCPath = _setup.txtVLCPath.Text
         SaveSettings()
         If DoDispose Then
             RemoveHandler Me._setup.ModuleEnabledChanged, AddressOf Handle_SetupChanged
@@ -190,6 +193,7 @@ Public Class VLCPlayer
 
         Dim UseAsAudioPlayer As Boolean
         Dim UseAsVideoPlayer As Boolean
+        Dim VLCPath As String
 
 #End Region 'Fields
 

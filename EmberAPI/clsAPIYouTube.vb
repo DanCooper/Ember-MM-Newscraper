@@ -18,14 +18,13 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports EmberAPI
 Imports NLog
 Imports System.Runtime.CompilerServices
 Imports System.Text.RegularExpressions
 Imports System.Web
 
 'The InternalsVisibleTo is required for unit testing the friend methods
-<Assembly: InternalsVisibleTo("EmberAPI_Test")> 
+<Assembly: InternalsVisibleTo("EmberAPI_Test")>
 
 Namespace YouTube
 
@@ -33,7 +32,7 @@ Namespace YouTube
 
 #Region "Fields"
 
-        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
         Private _youtubelinks As YouTubeLinkItemCollection
 
@@ -190,7 +189,7 @@ Namespace YouTube
                 For ctr As Integer = 0 To Result.Count - 1
                     tLength = Result.Item(ctr).Groups(1).Value
                     tLink = String.Concat("http://www.youtube.com", Result.Item(ctr).Groups(2).Value)
-                    tName = Web.HttpUtility.HtmlDecode(Result.Item(ctr).Groups(3).Value)
+                    tName = HttpUtility.HtmlDecode(Result.Item(ctr).Groups(3).Value)
                     If Not tName = "__title__" AndAlso Not tName = "__channel_name__" Then
                         tList.Add(New MediaContainers.Trailer With {.URLWebsite = tLink, .Title = tName, .Duration = tLength, .Source = "YouTube"})
                     End If
@@ -716,17 +715,17 @@ Namespace YouTube
 
 #Region "Fields"
 
-        Private _Description As String
-        Private _FormatCodec As New Enums.TrailerAudioCodec
-        Private _FormatQuality As New Enums.TrailerAudioQuality
-        Private _URL As String
+        Private _description As String
+        Private _formatcodec As New Enums.TrailerAudioCodec
+        Private _formatquality As New Enums.TrailerAudioQuality
+        Private _url As String
 
 #End Region 'Fields
 
 #Region "Constructors"
 
         Public Sub New()
-            Me.Clear()
+            Clear()
         End Sub
 
 #End Region 'Constructors
@@ -735,37 +734,37 @@ Namespace YouTube
 
         Public Property Description() As String
             Get
-                Return _Description
+                Return _description
             End Get
             Set(ByVal value As String)
-                _Description = value
+                _description = value
             End Set
         End Property
 
         Public Property URL() As String
             Get
-                Return _URL
+                Return _url
             End Get
             Set(ByVal value As String)
-                _URL = value
+                _url = value
             End Set
         End Property
 
         Public Property FormatCodec() As Enums.TrailerAudioCodec
             Get
-                Return _FormatCodec
+                Return _formatcodec
             End Get
             Set(ByVal value As Enums.TrailerAudioCodec)
-                _FormatCodec = value
+                _formatcodec = value
             End Set
         End Property
 
         Public Property FormatQuality() As Enums.TrailerAudioQuality
             Get
-                Return _FormatQuality
+                Return _formatquality
             End Get
             Set(ByVal value As Enums.TrailerAudioQuality)
-                _FormatQuality = value
+                _formatquality = value
             End Set
         End Property
 
@@ -774,14 +773,14 @@ Namespace YouTube
 #Region "Methods"
 
         Public Sub Clear()
-            Me.Description = String.Empty
-            Me._FormatCodec = Enums.TrailerAudioCodec.UNKNOWN
-            Me._FormatQuality = Enums.TrailerAudioQuality.UNKNOWN
-            Me._URL = String.Empty
+            _description = String.Empty
+            _formatcodec = Enums.TrailerAudioCodec.UNKNOWN
+            _formatquality = Enums.TrailerAudioQuality.UNKNOWN
+            _url = String.Empty
         End Sub
 
         Public Function CompareTo(ByVal other As AudioLinkItem) As Integer Implements IComparable(Of AudioLinkItem).CompareTo
-            Return (Me.FormatQuality).CompareTo(other.FormatQuality)
+            Return (FormatQuality).CompareTo(other.FormatQuality)
         End Function
 
 #End Region 'Methods
@@ -804,7 +803,7 @@ Namespace YouTube
 #Region "Constructors"
 
         Public Sub New()
-            Me.Clear()
+            Clear()
         End Sub
 
 #End Region 'Constructors
@@ -861,15 +860,15 @@ Namespace YouTube
 #Region "Methods"
 
         Public Sub Clear()
-            Me.Description = String.Empty
-            Me._formatcodec = Enums.TrailerVideoCodec.UNKNOWN
-            Me._formatquality = Enums.TrailerVideoQuality.UNKNOWN
-            Me._isdash = False
-            Me._url = String.Empty
+            _description = String.Empty
+            _formatcodec = Enums.TrailerVideoCodec.UNKNOWN
+            _formatquality = Enums.TrailerVideoQuality.UNKNOWN
+            _isdash = False
+            _url = String.Empty
         End Sub
 
         Public Function CompareTo(ByVal other As VideoLinkItem) As Integer Implements IComparable(Of VideoLinkItem).CompareTo
-            Return (Me.FormatQuality).CompareTo(other.FormatQuality)
+            Return (FormatQuality).CompareTo(other.FormatQuality)
         End Function
 
 #End Region 'Methods
@@ -890,7 +889,7 @@ Namespace YouTube
 #Region "Constructors"
 
         Public Sub New()
-            Me.Clear()
+            Clear()
         End Sub
 
 #End Region 'Constructors
@@ -938,10 +937,10 @@ Namespace YouTube
 #Region "Methods"
 
         Public Sub Clear()
-            Me._audiolinks = New List(Of AudioLinkItem)
-            Me._bestqualitiy = Enums.TrailerVideoQuality.Any
-            Me._title = String.Empty
-            Me._videolinks = New List(Of VideoLinkItem)
+            _audiolinks = New List(Of AudioLinkItem)
+            _bestqualitiy = Enums.TrailerVideoQuality.Any
+            _title = String.Empty
+            _videolinks = New List(Of VideoLinkItem)
         End Sub
 
 #End Region 'Methods

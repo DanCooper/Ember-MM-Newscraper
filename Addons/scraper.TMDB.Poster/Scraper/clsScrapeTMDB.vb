@@ -50,7 +50,7 @@ Namespace TMDB
             End Try
         End Sub
 
-        Public Function GetImages_Movie_MovieSet(ByVal TMDBID As String, ByVal FilteredModifier As Structures.ScrapeModifier, ByVal ContentType As Enums.ContentType) As MediaContainers.SearchResultsContainer
+        Public Function GetImages_Movie_MovieSet(ByVal TMDBID As String, ByVal FilteredModifiers As Structures.ScrapeModifiers, ByVal ContentType As Enums.ContentType) As MediaContainers.SearchResultsContainer
             Dim alImagesContainer As New MediaContainers.SearchResultsContainer
 
             If bwTMDB.CancellationPending Then Return Nothing
@@ -71,41 +71,41 @@ Namespace TMDB
                     Return Nothing
                 End If
 
-                'Fanart
-                If (FilteredModifier.MainExtrafanarts OrElse FilteredModifier.MainExtrathumbs OrElse FilteredModifier.MainFanart) AndAlso Results.Backdrops IsNot Nothing Then
-                    For Each image In Results.Backdrops
-                        Dim tmpImage As New MediaContainers.Image With { _
-                            .Height = image.Height.ToString, _
-                            .Likes = 0, _
-                            .LongLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(image.Iso_639_1)), _
-                            .Scraper = "TMDB", _
-                            .ShortLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, image.Iso_639_1), _
-                            .URLOriginal = _TMDBApi.Config.Images.BaseUrl & "original" & image.FilePath, _
-                            .URLThumb = _TMDBApi.Config.Images.BaseUrl & "w300" & image.FilePath, _
-                            .VoteAverage = image.VoteAverage.ToString, _
-                            .VoteCount = image.VoteCount, _
-                            .Width = image.Width.ToString}
+                'MainFanart
+                If (FilteredModifiers.MainExtrafanarts OrElse FilteredModifiers.MainExtrathumbs OrElse FilteredModifiers.MainFanart) AndAlso Results.Backdrops IsNot Nothing Then
+                    For Each tImage In Results.Backdrops
+                        Dim newImage As New MediaContainers.Image With {
+                            .Height = tImage.Height.ToString,
+                            .Likes = 0,
+                            .LongLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(tImage.Iso_639_1)),
+                            .Scraper = "TMDB",
+                            .ShortLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, tImage.Iso_639_1),
+                            .URLOriginal = _TMDBApi.Config.Images.BaseUrl & "original" & tImage.FilePath,
+                            .URLThumb = _TMDBApi.Config.Images.BaseUrl & "w300" & tImage.FilePath,
+                            .VoteAverage = tImage.VoteAverage.ToString,
+                            .VoteCount = tImage.VoteCount,
+                            .Width = tImage.Width.ToString}
 
-                        alImagesContainer.MainFanarts.Add(tmpImage)
+                        alImagesContainer.MainFanarts.Add(newImage)
                     Next
                 End If
 
-                'Poster
-                If FilteredModifier.MainPoster AndAlso Results.Posters IsNot Nothing Then
-                    For Each image In Results.Posters
-                        Dim tmpImage As New MediaContainers.Image With { _
-                                .Height = image.Height.ToString, _
-                                .Likes = 0, _
-                                .LongLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(image.Iso_639_1)), _
-                                .Scraper = "TMDB", _
-                                .ShortLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, image.Iso_639_1), _
-                                .URLOriginal = _TMDBApi.Config.Images.BaseUrl & "original" & image.FilePath, _
-                                .URLThumb = _TMDBApi.Config.Images.BaseUrl & "w185" & image.FilePath, _
-                                .VoteAverage = image.VoteAverage.ToString, _
-                                .VoteCount = image.VoteCount, _
-                                .Width = image.Width.ToString}
+                'MainPoster
+                If FilteredModifiers.MainPoster AndAlso Results.Posters IsNot Nothing Then
+                    For Each tImage In Results.Posters
+                        Dim newImage As New MediaContainers.Image With {
+                                .Height = tImage.Height.ToString,
+                                .Likes = 0,
+                                .LongLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(tImage.Iso_639_1)),
+                                .Scraper = "TMDB",
+                                .ShortLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, tImage.Iso_639_1),
+                                .URLOriginal = _TMDBApi.Config.Images.BaseUrl & "original" & tImage.FilePath,
+                                .URLThumb = _TMDBApi.Config.Images.BaseUrl & "w185" & tImage.FilePath,
+                                .VoteAverage = tImage.VoteAverage.ToString,
+                                .VoteCount = tImage.VoteCount,
+                                .Width = tImage.Width.ToString}
 
-                        alImagesContainer.MainPosters.Add(tmpImage)
+                        alImagesContainer.MainPosters.Add(newImage)
                     Next
                 End If
 
@@ -116,59 +116,211 @@ Namespace TMDB
             Return alImagesContainer
         End Function
 
-        Public Function GetImages_TVShow(ByVal tmdbID As String, ByVal FilteredModifier As Structures.ScrapeModifier) As MediaContainers.SearchResultsContainer
+        Public Function GetImages_TVShow(ByVal tmdbID As String, ByVal FilteredModifiers As Structures.ScrapeModifiers) As MediaContainers.SearchResultsContainer
             Dim alContainer As New MediaContainers.SearchResultsContainer
 
             If bwTMDB.CancellationPending Then Return Nothing
 
             Try
-                Dim Results As TMDbLib.Objects.General.ImagesWithId = Nothing
-                Dim APIResult As Task(Of TMDbLib.Objects.General.ImagesWithId)
-                APIResult = Task.Run(Function() _TMDBApi.GetTvShowImages(CInt(tmdbID)))
 
-                Results = APIResult.Result
+                Dim APIResult As Task(Of TMDbLib.Objects.TvShows.TvShow)
+                APIResult = Task.Run(Function() _TMDBApi.GetTvShow(CInt(tmdbID), TMDbLib.Objects.TvShows.TvShowMethods.Images))
 
-                If Results Is Nothing Then
+                If APIResult Is Nothing Then
                     Return Nothing
                 End If
 
-                'MainFanart
-                If FilteredModifier.MainFanart AndAlso Results.Backdrops IsNot Nothing Then
-                    For Each image In Results.Backdrops
-                        Dim tmpImage As New MediaContainers.Image With { _
-                            .Height = image.Height.ToString, _
-                            .Likes = 0, _
-                            .LongLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(image.Iso_639_1)), _
-                            .Scraper = "TMDB", _
-                            .ShortLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, image.Iso_639_1), _
-                            .URLOriginal = _TMDBApi.Config.Images.BaseUrl & "original" & image.FilePath, _
-                            .URLThumb = _TMDBApi.Config.Images.BaseUrl & "w300" & image.FilePath, _
-                            .VoteAverage = image.VoteAverage.ToString, _
-                            .VoteCount = image.VoteCount, _
-                            .Width = image.Width.ToString}
+                Dim Result As TMDbLib.Objects.TvShows.TvShow = APIResult.Result
 
-                        alContainer.MainFanarts.Add(tmpImage)
+                'MainFanart
+                If FilteredModifiers.MainFanart AndAlso Result.Images.Backdrops IsNot Nothing Then
+                    For Each tImage In Result.Images.Backdrops
+                        Dim newImage As New MediaContainers.Image With {
+                            .Height = tImage.Height.ToString,
+                            .Likes = 0,
+                            .LongLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(tImage.Iso_639_1)),
+                            .Scraper = "TMDB",
+                            .ShortLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, tImage.Iso_639_1),
+                            .URLOriginal = _TMDBApi.Config.Images.BaseUrl & "original" & tImage.FilePath,
+                            .URLThumb = _TMDBApi.Config.Images.BaseUrl & "w300" & tImage.FilePath,
+                            .VoteAverage = tImage.VoteAverage.ToString,
+                            .VoteCount = tImage.VoteCount,
+                            .Width = tImage.Width.ToString}
+
+                        alContainer.MainFanarts.Add(newImage)
                     Next
                 End If
 
                 'MainPoster
-                If FilteredModifier.MainPoster AndAlso Results.Posters IsNot Nothing Then
-                    For Each image In Results.Posters
-                        Dim tmpImage As New MediaContainers.Image With { _
-                                .Height = image.Height.ToString, _
-                                .Likes = 0, _
-                                .LongLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(image.Iso_639_1)), _
-                                .Scraper = "TMDB", _
-                                .ShortLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, image.Iso_639_1), _
-                                .URLOriginal = _TMDBApi.Config.Images.BaseUrl & "original" & image.FilePath, _
-                                .URLThumb = _TMDBApi.Config.Images.BaseUrl & "w185" & image.FilePath, _
-                                .VoteAverage = image.VoteAverage.ToString, _
-                                .VoteCount = image.VoteCount, _
-                                .Width = image.Width.ToString}
+                If FilteredModifiers.MainPoster AndAlso Result.Images.Posters IsNot Nothing Then
+                    For Each tImage In Result.Images.Posters
+                        Dim newImage As New MediaContainers.Image With {
+                                .Height = tImage.Height.ToString,
+                                .Likes = 0,
+                                .LongLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(tImage.Iso_639_1)),
+                                .Scraper = "TMDB",
+                                .ShortLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, tImage.Iso_639_1),
+                                .URLOriginal = _TMDBApi.Config.Images.BaseUrl & "original" & tImage.FilePath,
+                                .URLThumb = _TMDBApi.Config.Images.BaseUrl & "w185" & tImage.FilePath,
+                                .VoteAverage = tImage.VoteAverage.ToString,
+                                .VoteCount = tImage.VoteCount,
+                                .Width = tImage.Width.ToString}
 
-                        alContainer.MainPosters.Add(tmpImage)
+                        alContainer.MainPosters.Add(newImage)
                     Next
                 End If
+
+                'SeasonPoster
+                If (FilteredModifiers.SeasonPoster OrElse FilteredModifiers.EpisodePoster) AndAlso Result.Seasons IsNot Nothing Then
+                    For Each tSeason In Result.Seasons
+                        Dim APIResult_Season As Task(Of TMDbLib.Objects.TvShows.TvSeason)
+                        APIResult_Season = Task.Run(Function() _TMDBApi.GetTvSeason(CInt(tmdbID), tSeason.SeasonNumber, TMDbLib.Objects.TvShows.TvSeasonMethods.Images))
+
+                        If APIResult_Season IsNot Nothing Then
+                            Dim Result_Season As TMDbLib.Objects.TvShows.TvSeason = APIResult_Season.Result
+
+                            'SeasonPoster
+                            If FilteredModifiers.SeasonPoster AndAlso Result_Season.Images.Posters IsNot Nothing Then
+                                For Each tImage In Result_Season.Images.Posters
+                                    Dim newImage As New MediaContainers.Image With {
+                                        .Height = tImage.Height.ToString,
+                                        .Likes = 0,
+                                        .LongLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(tImage.Iso_639_1)),
+                                        .Scraper = "TMDB",
+                                        .Season = tSeason.SeasonNumber,
+                                        .ShortLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, tImage.Iso_639_1),
+                                        .URLOriginal = _TMDBApi.Config.Images.BaseUrl & "original" & tImage.FilePath,
+                                        .URLThumb = _TMDBApi.Config.Images.BaseUrl & "w185" & tImage.FilePath,
+                                        .VoteAverage = tImage.VoteAverage.ToString,
+                                        .VoteCount = tImage.VoteCount,
+                                        .Width = tImage.Width.ToString}
+
+                                    alContainer.SeasonPosters.Add(newImage)
+                                Next
+                            End If
+
+                            If FilteredModifiers.EpisodePoster AndAlso Result_Season.Episodes IsNot Nothing Then
+                                For Each tEpisode In Result_Season.Episodes
+
+                                    'EpisodePoster
+                                    If FilteredModifiers.EpisodePoster AndAlso tEpisode.StillPath IsNot Nothing Then
+
+                                        Dim newImage As New MediaContainers.Image With {
+                                            .Episode = tEpisode.EpisodeNumber,
+                                            .Scraper = "TMDB",
+                                            .Season = CInt(tEpisode.SeasonNumber),
+                                            .URLOriginal = _TMDBApi.Config.Images.BaseUrl & "original" & tEpisode.StillPath,
+                                            .URLThumb = _TMDBApi.Config.Images.BaseUrl & "w185" & tEpisode.StillPath}
+
+                                        alContainer.EpisodePosters.Add(newImage)
+
+                                        '    For Each tImage In tEpisode.Images.Stills
+                                        '        Dim newImage As New MediaContainers.Image With {
+                                        '            .Episode = tEpisode.EpisodeNumber,
+                                        '            .Height = tImage.Height.ToString,
+                                        '            .Likes = 0,
+                                        '            .LongLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(tImage.Iso_639_1)),
+                                        '            .Scraper = "TMDB",
+                                        '            .Season = CInt(tEpisode.SeasonNumber),
+                                        '            .ShortLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, tImage.Iso_639_1),
+                                        '            .URLOriginal = _TMDBApi.Config.Images.BaseUrl & "original" & tImage.FilePath,
+                                        '            .URLThumb = _TMDBApi.Config.Images.BaseUrl & "w185" & tImage.FilePath,
+                                        '            .VoteAverage = tImage.VoteAverage.ToString,
+                                        '            .VoteCount = tImage.VoteCount,
+                                        '            .Width = tImage.Width.ToString}
+
+                                        '        alContainer.EpisodePosters.Add(newImage)
+                                        '    Next
+                                    End If
+                                Next
+                            End If
+                        End If
+                    Next
+                End If
+
+
+                'Dim Results As TMDbLib.Objects.General.ImagesWithId = Nothing
+                'Dim APIResult As Task(Of TMDbLib.Objects.General.ImagesWithId)
+                'APIResult = Task.Run(Function() _TMDBApi.GetTvShowImages(CInt(tmdbID)))
+
+                'Results = APIResult.Result
+
+                'If Results Is Nothing Then
+                '    Return Nothing
+                'End If
+
+                ''MainFanart
+                'If FilteredModifier.MainFanart AndAlso Results.Backdrops IsNot Nothing Then
+                '    For Each image In Results.Backdrops
+                '        Dim tmpImage As New MediaContainers.Image With {
+                '            .Height = image.Height.ToString,
+                '            .Likes = 0,
+                '            .LongLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(image.Iso_639_1)),
+                '            .Scraper = "TMDB",
+                '            .ShortLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, image.Iso_639_1),
+                '            .URLOriginal = _TMDBApi.Config.Images.BaseUrl & "original" & image.FilePath,
+                '            .URLThumb = _TMDBApi.Config.Images.BaseUrl & "w300" & image.FilePath,
+                '            .VoteAverage = image.VoteAverage.ToString,
+                '            .VoteCount = image.VoteCount,
+                '            .Width = image.Width.ToString}
+
+                '        alContainer.MainFanarts.Add(tmpImage)
+                '    Next
+                'End If
+
+                ''MainPoster
+                'If FilteredModifier.MainPoster AndAlso Results.Posters IsNot Nothing Then
+                '    For Each image In Results.Posters
+                '        Dim tmpImage As New MediaContainers.Image With {
+                '                .Height = image.Height.ToString,
+                '                .Likes = 0,
+                '                .LongLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(image.Iso_639_1)),
+                '                .Scraper = "TMDB",
+                '                .ShortLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, image.Iso_639_1),
+                '                .URLOriginal = _TMDBApi.Config.Images.BaseUrl & "original" & image.FilePath,
+                '                .URLThumb = _TMDBApi.Config.Images.BaseUrl & "w185" & image.FilePath,
+                '                .VoteAverage = image.VoteAverage.ToString,
+                '                .VoteCount = image.VoteCount,
+                '                .Width = image.Width.ToString}
+
+                '        alContainer.MainPosters.Add(tmpImage)
+                '    Next
+                ''End If
+
+                'If FilteredModifier.EpisodePoster Then
+
+                '    Dim Results_Episode As TMDbLib.Objects.TvShows.TvShow = Nothing
+                '    Dim APIResult_Episode As Task(Of TMDbLib.Objects.TvShows.TvShow)
+                '    APIResult_Episode = Task.Run(Function() _TMDBApi.GetTvShow(CInt(tmdbID), TMDbLib.Objects.TvShows.TvShowMethods.Images))
+
+                '    Results_Episode = APIResult_Episode.Result
+
+                '    If Results_Episode Is Nothing Then
+                '        Return Nothing
+                '    End If
+
+                '    For Each tSeason In Results_Episode.Seasons
+                '        For Each tEpisode In tSeason.Episodes
+                '            For Each tImg In tEpisode.Images.Stills
+                '                Dim tmpImage As New MediaContainers.Image With {
+                '                    .Episode = tEpisode.EpisodeNumber,
+                '                    .Height = tImg.Height.ToString,
+                '                    .Likes = 0,
+                '                    .LongLang = If(String.IsNullOrEmpty(tImg.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(tImg.Iso_639_1)),
+                '                    .Scraper = "TMDB",
+                '                    .Season = CInt(tEpisode.SeasonNumber),
+                '                    .ShortLang = If(String.IsNullOrEmpty(tImg.Iso_639_1), String.Empty, tImg.Iso_639_1),
+                '                    .URLOriginal = _TMDBApi.Config.Images.BaseUrl & "original" & tImg.FilePath,
+                '                    .URLThumb = _TMDBApi.Config.Images.BaseUrl & "w185" & tImg.FilePath,
+                '                    .VoteAverage = tImg.VoteAverage.ToString,
+                '                    .VoteCount = tImg.VoteCount,
+                '                    .Width = tImg.Width.ToString}
+
+                '                alContainer.EpisodePosters.Add(tmpImage)
+                '            Next
+                '        Next
+                '    Next
+                'End If
 
             Catch ex As Exception
                 logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -177,7 +329,7 @@ Namespace TMDB
             Return alContainer
         End Function
 
-        Public Function GetImages_TVEpisode(ByVal tmdbID As String, ByVal iSeason As Integer, ByVal iEpisode As Integer, ByVal FilteredModifier As Structures.ScrapeModifier) As MediaContainers.SearchResultsContainer
+        Public Function GetImages_TVEpisode(ByVal tmdbID As String, ByVal iSeason As Integer, ByVal iEpisode As Integer, ByVal FilteredModifiers As Structures.ScrapeModifiers) As MediaContainers.SearchResultsContainer
             Dim alContainer As New MediaContainers.SearchResultsContainer
 
             If bwTMDB.CancellationPending Then Return Nothing
@@ -193,23 +345,23 @@ Namespace TMDB
                 End If
 
                 'EpisodePoster
-                If FilteredModifier.EpisodePoster AndAlso Results.Stills IsNot Nothing Then
-                    For Each image In Results.Stills
-                        Dim tmpImage As New MediaContainers.Image With { _
-                            .Episode = iEpisode, _
-                            .Height = image.Height.ToString, _
-                            .Likes = 0, _
-                            .LongLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(image.Iso_639_1)), _
-                            .Scraper = "TMDB", _
-                            .Season = iSeason, _
-                            .ShortLang = If(String.IsNullOrEmpty(image.Iso_639_1), String.Empty, image.Iso_639_1), _
-                            .URLOriginal = _TMDBApi.Config.Images.BaseUrl & "original" & image.FilePath, _
-                            .URLThumb = _TMDBApi.Config.Images.BaseUrl & "w185" & image.FilePath, _
-                            .VoteAverage = image.VoteAverage.ToString, _
-                            .VoteCount = image.VoteCount, _
-                            .Width = image.Width.ToString}
+                If FilteredModifiers.EpisodePoster AndAlso Results.Stills IsNot Nothing Then
+                    For Each tImage In Results.Stills
+                        Dim newImage As New MediaContainers.Image With {
+                            .Episode = iEpisode,
+                            .Height = tImage.Height.ToString,
+                            .Likes = 0,
+                            .LongLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(tImage.Iso_639_1)),
+                            .Scraper = "TMDB",
+                            .Season = iSeason,
+                            .ShortLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, tImage.Iso_639_1),
+                            .URLOriginal = _TMDBApi.Config.Images.BaseUrl & "original" & tImage.FilePath,
+                            .URLThumb = _TMDBApi.Config.Images.BaseUrl & "w185" & tImage.FilePath,
+                            .VoteAverage = tImage.VoteAverage.ToString,
+                            .VoteCount = tImage.VoteCount,
+                            .Width = tImage.Width.ToString}
 
-                        alContainer.EpisodePosters.Add(tmpImage)
+                        alContainer.EpisodePosters.Add(newImage)
                     Next
                 End If
 
@@ -218,6 +370,25 @@ Namespace TMDB
             End Try
 
             Return alContainer
+        End Function
+
+        Public Function GetTMDBbyIMDB(ByVal imdbID As String) As String
+            Dim tmdbID As String = String.Empty
+
+            Try
+                Dim APIResult As Task(Of TMDbLib.Objects.Find.FindContainer)
+                APIResult = Task.Run(Function() _TMDBApi.Find(TMDbLib.Objects.Find.FindExternalSource.Imdb, imdbID))
+
+                If APIResult IsNot Nothing AndAlso APIResult.Result IsNot Nothing AndAlso
+                    APIResult.Result.TvResults IsNot Nothing AndAlso APIResult.Result.TvResults.Count > 0 Then
+                    tmdbID = APIResult.Result.TvResults.Item(0).Id.ToString
+                End If
+
+            Catch ex As Exception
+                logger.Error(New StackFrame().GetMethod().Name, ex)
+            End Try
+
+            Return tmdbID
         End Function
 
         Public Function GetTMDBbyTVDB(ByVal tvdbID As String) As String

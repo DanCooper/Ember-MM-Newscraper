@@ -117,6 +117,7 @@ Namespace TrakttvScraper
 
                 If String.IsNullOrEmpty(_Token) Then
                     logger.Error(String.Concat("[GetMovieInfo] Can't login to trakt.tv account! Current movie: ", strID))
+                    Return Nothing
                 End If
 
                 'Rating / Votes
@@ -162,13 +163,13 @@ Namespace TrakttvScraper
         ''' </summary>
         ''' <param name="strID">IMDBID of tv show to be scraped</param>
         ''' <param name="FilteredOptions">Module settings<param>
-        ''' <param name="ScrapeModifier">More options - scrape episode/season infos?</param>
+        ''' <param name="ScrapeModifiers">More options - scrape episode/season infos?</param>
         ''' <returns>True: success, false: no success</returns>
         ''' <remarks>
         ''' 2015/11/18 Cocotus - First implementation
         ''' trakt.tv API supports ONLY IMDB
         ''' </remarks>
-        Public Function GetTVShowInfo(ByVal strID As String, ByRef ScrapeModifier As Structures.ScrapeModifier, ByVal FilteredOptions As Structures.ScrapeOptions) As MediaContainers.TVShow
+        Public Function GetTVShowInfo(ByVal strID As String, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByVal FilteredOptions As Structures.ScrapeOptions) As MediaContainers.TVShow
             If String.IsNullOrEmpty(strID) OrElse strID.Length < 2 Then Return Nothing
 
             Dim nTVShow As New MediaContainers.TVShow
@@ -199,7 +200,7 @@ Namespace TrakttvScraper
 
             If bwTrakttv.CancellationPending Then Return Nothing
 
-            'Seasons and Episodes?
+            'Seasons and Episodes? No automatic scraping for now...
             'If ScrapeModifier.withEpisodes OrElse ScrapeModifier.withSeasons Then
             '    For Each aSeason As MediaContainers.SeasonDetails In nShow.Seasons.Seasons
             '        aSeason = GetTVSeasonInfo(strID, aSeason.Season, FilteredOptions)
@@ -268,6 +269,7 @@ Namespace TrakttvScraper
 
             If String.IsNullOrEmpty(_Token) Then
                 logger.Error(String.Concat("[GetTVEpisodeInfo] Can't login to trakt.tv account! Current show: ", ShowID))
+                Return Nothing
             End If
 
             'Rating / Votes
@@ -288,7 +290,7 @@ Namespace TrakttvScraper
                             For Each ratedEpisode As TraktAPI.Model.TraktEpisodeRated In _traktRatedEpisodes
                                 If Not ratedEpisode Is Nothing AndAlso Not ratedEpisode.Show Is Nothing AndAlso Not ratedEpisode.Show.Ids Is Nothing AndAlso Not ratedEpisode.Episode Is Nothing Then
                                     'Check if information is stored...
-                                    If (ratedEpisode.Show.Ids.Tvdb.ToString = ShowID OrElse ratedEpisode.Show.Ids.Tmdb.ToString = ShowID OrElse ratedEpisode.Show.Ids.Imdb.ToString = ShowID) AndAlso ratedEpisode.Episode.Number = EpisodeNumber AndAlso ratedEpisode.Episode.Season = SeasonNumber Then
+                                    If (ratedEpisode.Show.Ids.Tvdb.ToString = ShowID OrElse ratedEpisode.Show.Ids.Tmdb.ToString = ShowID OrElse ratedEpisode.Show.Ids.Imdb.ToString = ShowID OrElse ratedEpisode.Show.Ids.Trakt.ToString = ShowID) AndAlso ratedEpisode.Episode.Number = EpisodeNumber AndAlso ratedEpisode.Episode.Season = SeasonNumber Then
                                         nEpisode.Rating = ratedEpisode.Rating.ToString
                                         Exit For
                                     End If
@@ -298,12 +300,38 @@ Namespace TrakttvScraper
                             logger.Info("[GetTVEpisodeInfo] No ratings of episodes scraped from trakt.tv! Current show: ", ShowID)
                         End If
                     End If
+                Else
+                    Return Nothing
                 End If
             End If
             Return nEpisode
         End Function
 
-
+        ''' <summary>
+        '''  Scrape IDs(IDs of TVDB TMDB IMDB TraktID and TVRage) for item(movie/episode/show)
+        ''' </summary>
+        ''' <param name="ID">TVDBID/IMDBID/TMDBID/TraktID of item</param>
+        ''' <param name="IDType">Type of ID to lookup. Possible values: trakt-movie , trakt-show , trakt-episode , imdb , tmdb , tvdb , tvrage</param>
+        ''' <returns>SearchResult-Container which contains Ids of TVDB TMDB IMDB TraktID and TVRage</returns>
+        ''' <remarks>
+        ''' 2016/02/02 Cocotus - First implementation
+        ''' </remarks>
+        Public Function GetIDs(ByVal ID As String, ByVal IDType As String) As TraktAPI.Model.TraktSearchResult
+            If Not String.IsNullOrEmpty(ID) Then
+                If String.IsNullOrEmpty(_Token) Then
+                    logger.Error(String.Concat("[GetIDs] Can't login to trakt.tv account! Current ID: ", ID))
+                    Return Nothing
+                End If
+                'search on trakt.tv
+                Dim traktsearchresult = TrakttvAPI.SearchById(IDType, ID)
+                If Not traktsearchresult Is Nothing AndAlso Not traktsearchresult.Count = 1 Then
+                    Return traktsearchresult(0)
+                Else
+                    logger.Info("[GetIDs] Could not scrape TraktID from trakt.tv! ID: ", ID)
+                End If
+            End If
+            Return Nothing
+        End Function
 
 
 #End Region 'Methods

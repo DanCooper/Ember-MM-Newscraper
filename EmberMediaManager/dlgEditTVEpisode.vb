@@ -1084,14 +1084,14 @@ Public Class dlgEditTVEpisode
 
     Private Sub btnSetFanartScrape_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetFanartScrape.Click
         Dim aContainer As New MediaContainers.SearchResultsContainer
-        Dim ScrapeModifier As New Structures.ScrapeModifier
+        Dim ScrapeModifiers As New Structures.ScrapeModifiers
 
         Cursor = Cursors.WaitCursor
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.EpisodeFanart, True)
-        If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifier, True) Then
+        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodeFanart, True)
+        If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.EpisodeFanarts.Count > 0 OrElse aContainer.MainFanarts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
+                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                     tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
                     If tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Fanart.ImageOriginal.FromMemoryStream Then
                         pbFanart.Image = tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
@@ -1158,14 +1158,14 @@ Public Class dlgEditTVEpisode
 
     Private Sub btnSetPosterScrape_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetPosterScrape.Click
         Dim aContainer As New MediaContainers.SearchResultsContainer
-        Dim ScrapeModifier As New Structures.ScrapeModifier
+        Dim ScrapeModifiers As New Structures.ScrapeModifiers
 
         Cursor = Cursors.WaitCursor
-        Functions.SetScrapeModifier(ScrapeModifier, Enums.ModifierType.EpisodePoster, True)
-        If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifier, True) Then
+        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodePoster, True)
+        If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.EpisodePosters.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifier) = DialogResult.OK Then
+                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                     tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
                     If tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Poster.ImageOriginal.FromMemoryStream Then
                         pbPoster.Image = tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image

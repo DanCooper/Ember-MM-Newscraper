@@ -234,7 +234,7 @@ Public Class dlgDeleteConfirm
                             For Each Season As KeyValuePair(Of Long, Long) In ItemsToDelete
                                 hadError = False
 
-                                Dim tSeason As Database.DBElement = Master.DB.LoadTVSeasonFromDB(Season.Value, Convert.ToInt32(Season.Key), True)
+                                Dim tSeason As Database.DBElement = Master.DB.LoadTVSeasonFromDB(Season.Value, Convert.ToInt32(Season.Key), True, True)
 
                                 ItemParentNode = .Nodes.Add(Season.Key.ToString, String.Format("{0} - {1}", tSeason.TVShow.Title, tSeason.TVSeason.Season))
                                 ItemParentNode.ImageKey = "MOVIE"

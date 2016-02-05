@@ -30,8 +30,8 @@ Public Class TelevisionTunes_Theme
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
-    Public Shared ConfigScrapeModifier_Movie As New Structures.ScrapeModifier
-    Public Shared ConfigScrapeModifier_TV As New Structures.ScrapeModifier
+    Public Shared ConfigScrapeModifier_Movie As New Structures.ScrapeModifiers
+    Public Shared ConfigScrapeModifier_TV As New Structures.ScrapeModifiers
     Public Shared _AssemblyName As String
 
     ''' <summary>

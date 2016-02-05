@@ -30,7 +30,7 @@ Partial Class dlgCustomScraper
     Friend WithEvents chkMainOptionsWriters As System.Windows.Forms.CheckBox
     Friend WithEvents chkMainOptionsYear As System.Windows.Forms.CheckBox
     Friend WithEvents gbMainScrapeOptions As System.Windows.Forms.GroupBox
-    Friend WithEvents gbMainScrapeModifier As System.Windows.Forms.GroupBox
+    Friend WithEvents gbMainScrapeModifiers As System.Windows.Forms.GroupBox
     Friend WithEvents gbScrapeType_Filter As System.Windows.Forms.GroupBox
     Friend WithEvents gbScrapeType_Mode As System.Windows.Forms.GroupBox
     Friend WithEvents lblTopDescription As System.Windows.Forms.Label
@@ -88,8 +88,8 @@ Partial Class dlgCustomScraper
         Me.rbScrapeType_Auto = New System.Windows.Forms.RadioButton()
         Me.rbScrapeType_Skip = New System.Windows.Forms.RadioButton()
         Me.rbScrapeType_Ask = New System.Windows.Forms.RadioButton()
-        Me.gbMainScrapeModifier = New System.Windows.Forms.GroupBox()
-        Me.tblMainScrapeModifier = New System.Windows.Forms.TableLayoutPanel()
+        Me.gbMainScrapeModifiers = New System.Windows.Forms.GroupBox()
+        Me.tblMainScrapeModifiers = New System.Windows.Forms.TableLayoutPanel()
         Me.chkMainModifierTrailer = New System.Windows.Forms.CheckBox()
         Me.chkMainModifierTheme = New System.Windows.Forms.CheckBox()
         Me.chkMainModifierLandscape = New System.Windows.Forms.CheckBox()
@@ -140,22 +140,22 @@ Partial Class dlgCustomScraper
         Me.tblBottom = New System.Windows.Forms.TableLayoutPanel()
         Me.pnlMain = New System.Windows.Forms.Panel()
         Me.tblMain = New System.Windows.Forms.TableLayoutPanel()
-        Me.gbSeasonScrapeModifier = New System.Windows.Forms.GroupBox()
-        Me.tblSeasonScrapeModifier = New System.Windows.Forms.TableLayoutPanel()
+        Me.gbSeasonScrapeModifiers = New System.Windows.Forms.GroupBox()
+        Me.tblSeasonScrapeModifiers = New System.Windows.Forms.TableLayoutPanel()
         Me.btnSeasonScrapeModifierNone = New System.Windows.Forms.Button()
         Me.chkSeasonModifierAll = New System.Windows.Forms.CheckBox()
         Me.chkSeasonModifierBanner = New System.Windows.Forms.CheckBox()
         Me.chkSeasonModifierFanart = New System.Windows.Forms.CheckBox()
         Me.chkSeasonModifierLandscape = New System.Windows.Forms.CheckBox()
         Me.chkSeasonModifierPoster = New System.Windows.Forms.CheckBox()
-        Me.gbSpecialScrapeModifier = New System.Windows.Forms.GroupBox()
-        Me.tblSpecialScrapeModifier = New System.Windows.Forms.TableLayoutPanel()
+        Me.gbSpecialScrapeModifiers = New System.Windows.Forms.GroupBox()
+        Me.tblSpecialScrapeModifiers = New System.Windows.Forms.TableLayoutPanel()
         Me.chkSpecialModifierAll = New System.Windows.Forms.CheckBox()
         Me.btnSpecialScrapeModifierNone = New System.Windows.Forms.Button()
         Me.chkSpecialModifierWithSeasons = New System.Windows.Forms.CheckBox()
         Me.chkSpecialModifierWithEpisodes = New System.Windows.Forms.CheckBox()
-        Me.gbEpisodeScrapeModifier = New System.Windows.Forms.GroupBox()
-        Me.tblEpisodeScrapeModifier = New System.Windows.Forms.TableLayoutPanel()
+        Me.gbEpisodeScrapeModifiers = New System.Windows.Forms.GroupBox()
+        Me.tblEpisodeScrapeModifiers = New System.Windows.Forms.TableLayoutPanel()
         Me.btnEpisodeScrapeModifierNone = New System.Windows.Forms.Button()
         Me.chkEpisodeModifierAll = New System.Windows.Forms.CheckBox()
         Me.chkEpisodeModifierPoster = New System.Windows.Forms.CheckBox()
@@ -190,20 +190,20 @@ Partial Class dlgCustomScraper
         Me.tblScrapeType_Filter.SuspendLayout()
         Me.gbScrapeType_Mode.SuspendLayout()
         Me.tblScrapeType_Mode.SuspendLayout()
-        Me.gbMainScrapeModifier.SuspendLayout()
-        Me.tblMainScrapeModifier.SuspendLayout()
+        Me.gbMainScrapeModifiers.SuspendLayout()
+        Me.tblMainScrapeModifiers.SuspendLayout()
         Me.gbMainScrapeOptions.SuspendLayout()
         Me.tblMainScrapeOptions.SuspendLayout()
         Me.pnlBottom.SuspendLayout()
         Me.tblBottom.SuspendLayout()
         Me.pnlMain.SuspendLayout()
         Me.tblMain.SuspendLayout()
-        Me.gbSeasonScrapeModifier.SuspendLayout()
-        Me.tblSeasonScrapeModifier.SuspendLayout()
-        Me.gbSpecialScrapeModifier.SuspendLayout()
-        Me.tblSpecialScrapeModifier.SuspendLayout()
-        Me.gbEpisodeScrapeModifier.SuspendLayout()
-        Me.tblEpisodeScrapeModifier.SuspendLayout()
+        Me.gbSeasonScrapeModifiers.SuspendLayout()
+        Me.tblSeasonScrapeModifiers.SuspendLayout()
+        Me.gbSpecialScrapeModifiers.SuspendLayout()
+        Me.tblSpecialScrapeModifiers.SuspendLayout()
+        Me.gbEpisodeScrapeModifiers.SuspendLayout()
+        Me.tblEpisodeScrapeModifiers.SuspendLayout()
         Me.gbEpisodeScrapeOptions.SuspendLayout()
         Me.tblEpisodeScrapeOptions.SuspendLayout()
         Me.gbSeasonScrapeOptions.SuspendLayout()
@@ -440,60 +440,60 @@ Partial Class dlgCustomScraper
         Me.rbScrapeType_Ask.Text = "Ask (Require Input If No Exact Match)"
         Me.rbScrapeType_Ask.UseVisualStyleBackColor = True
         '
-        'gbMainScrapeModifier
+        'gbMainScrapeModifiers
         '
-        Me.gbMainScrapeModifier.AutoSize = True
-        Me.gbMainScrapeModifier.Controls.Add(Me.tblMainScrapeModifier)
-        Me.gbMainScrapeModifier.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbMainScrapeModifier.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbMainScrapeModifier.Location = New System.Drawing.Point(3, 99)
-        Me.gbMainScrapeModifier.Name = "gbMainScrapeModifier"
-        Me.tblMain.SetRowSpan(Me.gbMainScrapeModifier, 3)
-        Me.gbMainScrapeModifier.Size = New System.Drawing.Size(230, 267)
-        Me.gbMainScrapeModifier.TabIndex = 2
-        Me.gbMainScrapeModifier.TabStop = False
-        Me.gbMainScrapeModifier.Text = "Main Modifiers"
+        Me.gbMainScrapeModifiers.AutoSize = True
+        Me.gbMainScrapeModifiers.Controls.Add(Me.tblMainScrapeModifiers)
+        Me.gbMainScrapeModifiers.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbMainScrapeModifiers.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbMainScrapeModifiers.Location = New System.Drawing.Point(3, 99)
+        Me.gbMainScrapeModifiers.Name = "gbMainScrapeModifiers"
+        Me.tblMain.SetRowSpan(Me.gbMainScrapeModifiers, 3)
+        Me.gbMainScrapeModifiers.Size = New System.Drawing.Size(230, 267)
+        Me.gbMainScrapeModifiers.TabIndex = 2
+        Me.gbMainScrapeModifiers.TabStop = False
+        Me.gbMainScrapeModifiers.Text = "Main Modifiers"
         '
-        'tblMainScrapeModifier
+        'tblMainScrapeModifiers
         '
-        Me.tblMainScrapeModifier.AutoSize = True
-        Me.tblMainScrapeModifier.ColumnCount = 3
-        Me.tblMainScrapeModifier.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMainScrapeModifier.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMainScrapeModifier.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMainScrapeModifier.Controls.Add(Me.chkMainModifierTrailer, 1, 7)
-        Me.tblMainScrapeModifier.Controls.Add(Me.chkMainModifierTheme, 1, 6)
-        Me.tblMainScrapeModifier.Controls.Add(Me.chkMainModifierLandscape, 1, 2)
-        Me.tblMainScrapeModifier.Controls.Add(Me.btnMainScrapeModifierNone, 1, 0)
-        Me.tblMainScrapeModifier.Controls.Add(Me.chkMainModifierPoster, 1, 5)
-        Me.tblMainScrapeModifier.Controls.Add(Me.chkMainModifierMetaData, 1, 3)
-        Me.tblMainScrapeModifier.Controls.Add(Me.chkMainModifierNFO, 1, 4)
-        Me.tblMainScrapeModifier.Controls.Add(Me.chkMainModifierDiscArt, 0, 6)
-        Me.tblMainScrapeModifier.Controls.Add(Me.chkMainModifierExtrafanarts, 0, 7)
-        Me.tblMainScrapeModifier.Controls.Add(Me.chkMainModifierExtrathumbs, 0, 8)
-        Me.tblMainScrapeModifier.Controls.Add(Me.chkMainModifierFanart, 1, 1)
-        Me.tblMainScrapeModifier.Controls.Add(Me.chkMainModifierClearLogo, 0, 5)
-        Me.tblMainScrapeModifier.Controls.Add(Me.chkMainModifierClearArt, 0, 4)
-        Me.tblMainScrapeModifier.Controls.Add(Me.chkMainModifierCharacterArt, 0, 3)
-        Me.tblMainScrapeModifier.Controls.Add(Me.chkMainModifierBanner, 0, 2)
-        Me.tblMainScrapeModifier.Controls.Add(Me.chkMainModifierActorThumbs, 0, 1)
-        Me.tblMainScrapeModifier.Controls.Add(Me.chkMainModifierAll, 0, 0)
-        Me.tblMainScrapeModifier.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblMainScrapeModifier.Location = New System.Drawing.Point(3, 18)
-        Me.tblMainScrapeModifier.Name = "tblMainScrapeModifier"
-        Me.tblMainScrapeModifier.RowCount = 10
-        Me.tblMainScrapeModifier.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMainScrapeModifier.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMainScrapeModifier.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMainScrapeModifier.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMainScrapeModifier.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMainScrapeModifier.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMainScrapeModifier.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMainScrapeModifier.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMainScrapeModifier.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMainScrapeModifier.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMainScrapeModifier.Size = New System.Drawing.Size(224, 246)
-        Me.tblMainScrapeModifier.TabIndex = 15
+        Me.tblMainScrapeModifiers.AutoSize = True
+        Me.tblMainScrapeModifiers.ColumnCount = 3
+        Me.tblMainScrapeModifiers.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMainScrapeModifiers.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMainScrapeModifiers.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMainScrapeModifiers.Controls.Add(Me.chkMainModifierTrailer, 1, 7)
+        Me.tblMainScrapeModifiers.Controls.Add(Me.chkMainModifierTheme, 1, 6)
+        Me.tblMainScrapeModifiers.Controls.Add(Me.chkMainModifierLandscape, 1, 2)
+        Me.tblMainScrapeModifiers.Controls.Add(Me.btnMainScrapeModifierNone, 1, 0)
+        Me.tblMainScrapeModifiers.Controls.Add(Me.chkMainModifierPoster, 1, 5)
+        Me.tblMainScrapeModifiers.Controls.Add(Me.chkMainModifierMetaData, 1, 3)
+        Me.tblMainScrapeModifiers.Controls.Add(Me.chkMainModifierNFO, 1, 4)
+        Me.tblMainScrapeModifiers.Controls.Add(Me.chkMainModifierDiscArt, 0, 6)
+        Me.tblMainScrapeModifiers.Controls.Add(Me.chkMainModifierExtrafanarts, 0, 7)
+        Me.tblMainScrapeModifiers.Controls.Add(Me.chkMainModifierExtrathumbs, 0, 8)
+        Me.tblMainScrapeModifiers.Controls.Add(Me.chkMainModifierFanart, 1, 1)
+        Me.tblMainScrapeModifiers.Controls.Add(Me.chkMainModifierClearLogo, 0, 5)
+        Me.tblMainScrapeModifiers.Controls.Add(Me.chkMainModifierClearArt, 0, 4)
+        Me.tblMainScrapeModifiers.Controls.Add(Me.chkMainModifierCharacterArt, 0, 3)
+        Me.tblMainScrapeModifiers.Controls.Add(Me.chkMainModifierBanner, 0, 2)
+        Me.tblMainScrapeModifiers.Controls.Add(Me.chkMainModifierActorThumbs, 0, 1)
+        Me.tblMainScrapeModifiers.Controls.Add(Me.chkMainModifierAll, 0, 0)
+        Me.tblMainScrapeModifiers.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblMainScrapeModifiers.Location = New System.Drawing.Point(3, 18)
+        Me.tblMainScrapeModifiers.Name = "tblMainScrapeModifiers"
+        Me.tblMainScrapeModifiers.RowCount = 10
+        Me.tblMainScrapeModifiers.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMainScrapeModifiers.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMainScrapeModifiers.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMainScrapeModifiers.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMainScrapeModifiers.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMainScrapeModifiers.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMainScrapeModifiers.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMainScrapeModifiers.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMainScrapeModifiers.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMainScrapeModifiers.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMainScrapeModifiers.Size = New System.Drawing.Size(224, 246)
+        Me.tblMainScrapeModifiers.TabIndex = 15
         '
         'chkMainModifierTrailer
         '
@@ -1094,10 +1094,10 @@ Partial Class dlgCustomScraper
         Me.tblMain.Controls.Add(Me.gbMainScrapeOptions, 1, 1)
         Me.tblMain.Controls.Add(Me.gbScrapeType_Filter, 0, 0)
         Me.tblMain.Controls.Add(Me.gbScrapeType_Mode, 1, 0)
-        Me.tblMain.Controls.Add(Me.gbMainScrapeModifier, 0, 1)
-        Me.tblMain.Controls.Add(Me.gbSeasonScrapeModifier, 2, 1)
-        Me.tblMain.Controls.Add(Me.gbSpecialScrapeModifier, 0, 4)
-        Me.tblMain.Controls.Add(Me.gbEpisodeScrapeModifier, 2, 2)
+        Me.tblMain.Controls.Add(Me.gbMainScrapeModifiers, 0, 1)
+        Me.tblMain.Controls.Add(Me.gbSeasonScrapeModifiers, 2, 1)
+        Me.tblMain.Controls.Add(Me.gbSpecialScrapeModifiers, 0, 4)
+        Me.tblMain.Controls.Add(Me.gbEpisodeScrapeModifiers, 2, 2)
         Me.tblMain.Controls.Add(Me.gbEpisodeScrapeOptions, 3, 2)
         Me.tblMain.Controls.Add(Me.gbSeasonScrapeOptions, 3, 1)
         Me.tblMain.Dock = System.Windows.Forms.DockStyle.Fill
@@ -1114,48 +1114,48 @@ Partial Class dlgCustomScraper
         Me.tblMain.Size = New System.Drawing.Size(976, 482)
         Me.tblMain.TabIndex = 0
         '
-        'gbSeasonScrapeModifier
+        'gbSeasonScrapeModifiers
         '
-        Me.gbSeasonScrapeModifier.AutoSize = True
-        Me.gbSeasonScrapeModifier.Controls.Add(Me.tblSeasonScrapeModifier)
-        Me.gbSeasonScrapeModifier.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbSeasonScrapeModifier.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbSeasonScrapeModifier.Location = New System.Drawing.Point(508, 99)
-        Me.gbSeasonScrapeModifier.Name = "gbSeasonScrapeModifier"
-        Me.gbSeasonScrapeModifier.Size = New System.Drawing.Size(230, 96)
-        Me.gbSeasonScrapeModifier.TabIndex = 2
-        Me.gbSeasonScrapeModifier.TabStop = False
-        Me.gbSeasonScrapeModifier.Text = "Seasons Modifiers"
+        Me.gbSeasonScrapeModifiers.AutoSize = True
+        Me.gbSeasonScrapeModifiers.Controls.Add(Me.tblSeasonScrapeModifiers)
+        Me.gbSeasonScrapeModifiers.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbSeasonScrapeModifiers.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbSeasonScrapeModifiers.Location = New System.Drawing.Point(508, 99)
+        Me.gbSeasonScrapeModifiers.Name = "gbSeasonScrapeModifiers"
+        Me.gbSeasonScrapeModifiers.Size = New System.Drawing.Size(230, 96)
+        Me.gbSeasonScrapeModifiers.TabIndex = 2
+        Me.gbSeasonScrapeModifiers.TabStop = False
+        Me.gbSeasonScrapeModifiers.Text = "Seasons Modifiers"
         '
-        'tblSeasonScrapeModifier
+        'tblSeasonScrapeModifiers
         '
-        Me.tblSeasonScrapeModifier.AutoSize = True
-        Me.tblSeasonScrapeModifier.ColumnCount = 3
-        Me.tblSeasonScrapeModifier.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSeasonScrapeModifier.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSeasonScrapeModifier.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSeasonScrapeModifier.Controls.Add(Me.btnSeasonScrapeModifierNone, 1, 0)
-        Me.tblSeasonScrapeModifier.Controls.Add(Me.chkSeasonModifierAll, 0, 0)
-        Me.tblSeasonScrapeModifier.Controls.Add(Me.chkSeasonModifierBanner, 0, 1)
-        Me.tblSeasonScrapeModifier.Controls.Add(Me.chkSeasonModifierFanart, 0, 2)
-        Me.tblSeasonScrapeModifier.Controls.Add(Me.chkSeasonModifierLandscape, 1, 1)
-        Me.tblSeasonScrapeModifier.Controls.Add(Me.chkSeasonModifierPoster, 1, 2)
-        Me.tblSeasonScrapeModifier.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblSeasonScrapeModifier.Location = New System.Drawing.Point(3, 18)
-        Me.tblSeasonScrapeModifier.Name = "tblSeasonScrapeModifier"
-        Me.tblSeasonScrapeModifier.RowCount = 4
-        Me.tblSeasonScrapeModifier.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSeasonScrapeModifier.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSeasonScrapeModifier.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSeasonScrapeModifier.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSeasonScrapeModifier.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblSeasonScrapeModifier.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblSeasonScrapeModifier.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblSeasonScrapeModifier.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblSeasonScrapeModifier.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblSeasonScrapeModifier.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblSeasonScrapeModifier.Size = New System.Drawing.Size(224, 75)
-        Me.tblSeasonScrapeModifier.TabIndex = 15
+        Me.tblSeasonScrapeModifiers.AutoSize = True
+        Me.tblSeasonScrapeModifiers.ColumnCount = 3
+        Me.tblSeasonScrapeModifiers.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSeasonScrapeModifiers.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSeasonScrapeModifiers.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSeasonScrapeModifiers.Controls.Add(Me.btnSeasonScrapeModifierNone, 1, 0)
+        Me.tblSeasonScrapeModifiers.Controls.Add(Me.chkSeasonModifierAll, 0, 0)
+        Me.tblSeasonScrapeModifiers.Controls.Add(Me.chkSeasonModifierBanner, 0, 1)
+        Me.tblSeasonScrapeModifiers.Controls.Add(Me.chkSeasonModifierFanart, 0, 2)
+        Me.tblSeasonScrapeModifiers.Controls.Add(Me.chkSeasonModifierLandscape, 1, 1)
+        Me.tblSeasonScrapeModifiers.Controls.Add(Me.chkSeasonModifierPoster, 1, 2)
+        Me.tblSeasonScrapeModifiers.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblSeasonScrapeModifiers.Location = New System.Drawing.Point(3, 18)
+        Me.tblSeasonScrapeModifiers.Name = "tblSeasonScrapeModifiers"
+        Me.tblSeasonScrapeModifiers.RowCount = 4
+        Me.tblSeasonScrapeModifiers.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSeasonScrapeModifiers.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSeasonScrapeModifiers.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSeasonScrapeModifiers.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSeasonScrapeModifiers.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblSeasonScrapeModifiers.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblSeasonScrapeModifiers.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblSeasonScrapeModifiers.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblSeasonScrapeModifiers.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblSeasonScrapeModifiers.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblSeasonScrapeModifiers.Size = New System.Drawing.Size(224, 75)
+        Me.tblSeasonScrapeModifiers.TabIndex = 15
         '
         'btnSeasonScrapeModifierNone
         '
@@ -1221,40 +1221,40 @@ Partial Class dlgCustomScraper
         Me.chkSeasonModifierPoster.Text = "Poster"
         Me.chkSeasonModifierPoster.UseVisualStyleBackColor = True
         '
-        'gbSpecialScrapeModifier
+        'gbSpecialScrapeModifiers
         '
-        Me.gbSpecialScrapeModifier.AutoSize = True
-        Me.gbSpecialScrapeModifier.Controls.Add(Me.tblSpecialScrapeModifier)
-        Me.gbSpecialScrapeModifier.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbSpecialScrapeModifier.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbSpecialScrapeModifier.Location = New System.Drawing.Point(3, 372)
-        Me.gbSpecialScrapeModifier.Name = "gbSpecialScrapeModifier"
-        Me.tblMain.SetRowSpan(Me.gbSpecialScrapeModifier, 2)
-        Me.gbSpecialScrapeModifier.Size = New System.Drawing.Size(230, 73)
-        Me.gbSpecialScrapeModifier.TabIndex = 4
-        Me.gbSpecialScrapeModifier.TabStop = False
-        Me.gbSpecialScrapeModifier.Text = "Special Modifiers"
+        Me.gbSpecialScrapeModifiers.AutoSize = True
+        Me.gbSpecialScrapeModifiers.Controls.Add(Me.tblSpecialScrapeModifiers)
+        Me.gbSpecialScrapeModifiers.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbSpecialScrapeModifiers.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbSpecialScrapeModifiers.Location = New System.Drawing.Point(3, 372)
+        Me.gbSpecialScrapeModifiers.Name = "gbSpecialScrapeModifiers"
+        Me.tblMain.SetRowSpan(Me.gbSpecialScrapeModifiers, 2)
+        Me.gbSpecialScrapeModifiers.Size = New System.Drawing.Size(230, 73)
+        Me.gbSpecialScrapeModifiers.TabIndex = 4
+        Me.gbSpecialScrapeModifiers.TabStop = False
+        Me.gbSpecialScrapeModifiers.Text = "Special Modifiers"
         '
-        'tblSpecialScrapeModifier
+        'tblSpecialScrapeModifiers
         '
-        Me.tblSpecialScrapeModifier.AutoSize = True
-        Me.tblSpecialScrapeModifier.ColumnCount = 3
-        Me.tblSpecialScrapeModifier.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSpecialScrapeModifier.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSpecialScrapeModifier.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSpecialScrapeModifier.Controls.Add(Me.chkSpecialModifierAll, 0, 0)
-        Me.tblSpecialScrapeModifier.Controls.Add(Me.btnSpecialScrapeModifierNone, 1, 0)
-        Me.tblSpecialScrapeModifier.Controls.Add(Me.chkSpecialModifierWithSeasons, 0, 1)
-        Me.tblSpecialScrapeModifier.Controls.Add(Me.chkSpecialModifierWithEpisodes, 1, 1)
-        Me.tblSpecialScrapeModifier.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblSpecialScrapeModifier.Location = New System.Drawing.Point(3, 18)
-        Me.tblSpecialScrapeModifier.Name = "tblSpecialScrapeModifier"
-        Me.tblSpecialScrapeModifier.RowCount = 3
-        Me.tblSpecialScrapeModifier.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSpecialScrapeModifier.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSpecialScrapeModifier.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSpecialScrapeModifier.Size = New System.Drawing.Size(224, 52)
-        Me.tblSpecialScrapeModifier.TabIndex = 0
+        Me.tblSpecialScrapeModifiers.AutoSize = True
+        Me.tblSpecialScrapeModifiers.ColumnCount = 3
+        Me.tblSpecialScrapeModifiers.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSpecialScrapeModifiers.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSpecialScrapeModifiers.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSpecialScrapeModifiers.Controls.Add(Me.chkSpecialModifierAll, 0, 0)
+        Me.tblSpecialScrapeModifiers.Controls.Add(Me.btnSpecialScrapeModifierNone, 1, 0)
+        Me.tblSpecialScrapeModifiers.Controls.Add(Me.chkSpecialModifierWithSeasons, 0, 1)
+        Me.tblSpecialScrapeModifiers.Controls.Add(Me.chkSpecialModifierWithEpisodes, 1, 1)
+        Me.tblSpecialScrapeModifiers.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblSpecialScrapeModifiers.Location = New System.Drawing.Point(3, 18)
+        Me.tblSpecialScrapeModifiers.Name = "tblSpecialScrapeModifiers"
+        Me.tblSpecialScrapeModifiers.RowCount = 3
+        Me.tblSpecialScrapeModifiers.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSpecialScrapeModifiers.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSpecialScrapeModifiers.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSpecialScrapeModifiers.Size = New System.Drawing.Size(224, 52)
+        Me.tblSpecialScrapeModifiers.TabIndex = 0
         '
         'chkSpecialModifierAll
         '
@@ -1298,44 +1298,44 @@ Partial Class dlgCustomScraper
         Me.chkSpecialModifierWithEpisodes.Text = "with Episodes"
         Me.chkSpecialModifierWithEpisodes.UseVisualStyleBackColor = True
         '
-        'gbEpisodeScrapeModifier
+        'gbEpisodeScrapeModifiers
         '
-        Me.gbEpisodeScrapeModifier.AutoSize = True
-        Me.gbEpisodeScrapeModifier.Controls.Add(Me.tblEpisodeScrapeModifier)
-        Me.gbEpisodeScrapeModifier.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbEpisodeScrapeModifier.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbEpisodeScrapeModifier.Location = New System.Drawing.Point(508, 201)
-        Me.gbEpisodeScrapeModifier.Name = "gbEpisodeScrapeModifier"
-        Me.gbEpisodeScrapeModifier.Size = New System.Drawing.Size(230, 119)
-        Me.gbEpisodeScrapeModifier.TabIndex = 2
-        Me.gbEpisodeScrapeModifier.TabStop = False
-        Me.gbEpisodeScrapeModifier.Text = "Episodes Modifiers"
+        Me.gbEpisodeScrapeModifiers.AutoSize = True
+        Me.gbEpisodeScrapeModifiers.Controls.Add(Me.tblEpisodeScrapeModifiers)
+        Me.gbEpisodeScrapeModifiers.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbEpisodeScrapeModifiers.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbEpisodeScrapeModifiers.Location = New System.Drawing.Point(508, 201)
+        Me.gbEpisodeScrapeModifiers.Name = "gbEpisodeScrapeModifiers"
+        Me.gbEpisodeScrapeModifiers.Size = New System.Drawing.Size(230, 119)
+        Me.gbEpisodeScrapeModifiers.TabIndex = 2
+        Me.gbEpisodeScrapeModifiers.TabStop = False
+        Me.gbEpisodeScrapeModifiers.Text = "Episodes Modifiers"
         '
-        'tblEpisodeScrapeModifier
+        'tblEpisodeScrapeModifiers
         '
-        Me.tblEpisodeScrapeModifier.AutoSize = True
-        Me.tblEpisodeScrapeModifier.ColumnCount = 3
-        Me.tblEpisodeScrapeModifier.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblEpisodeScrapeModifier.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblEpisodeScrapeModifier.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblEpisodeScrapeModifier.Controls.Add(Me.btnEpisodeScrapeModifierNone, 1, 0)
-        Me.tblEpisodeScrapeModifier.Controls.Add(Me.chkEpisodeModifierAll, 0, 0)
-        Me.tblEpisodeScrapeModifier.Controls.Add(Me.chkEpisodeModifierPoster, 1, 2)
-        Me.tblEpisodeScrapeModifier.Controls.Add(Me.chkEpisodeModifierNFO, 1, 1)
-        Me.tblEpisodeScrapeModifier.Controls.Add(Me.chkEpisodeModifierFanart, 0, 2)
-        Me.tblEpisodeScrapeModifier.Controls.Add(Me.chkEpisodeModifierActorThumbs, 0, 1)
-        Me.tblEpisodeScrapeModifier.Controls.Add(Me.chkEpisodeModifierMetaData, 0, 3)
-        Me.tblEpisodeScrapeModifier.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblEpisodeScrapeModifier.Location = New System.Drawing.Point(3, 18)
-        Me.tblEpisodeScrapeModifier.Name = "tblEpisodeScrapeModifier"
-        Me.tblEpisodeScrapeModifier.RowCount = 5
-        Me.tblEpisodeScrapeModifier.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblEpisodeScrapeModifier.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblEpisodeScrapeModifier.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblEpisodeScrapeModifier.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblEpisodeScrapeModifier.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblEpisodeScrapeModifier.Size = New System.Drawing.Size(224, 98)
-        Me.tblEpisodeScrapeModifier.TabIndex = 15
+        Me.tblEpisodeScrapeModifiers.AutoSize = True
+        Me.tblEpisodeScrapeModifiers.ColumnCount = 3
+        Me.tblEpisodeScrapeModifiers.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblEpisodeScrapeModifiers.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblEpisodeScrapeModifiers.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblEpisodeScrapeModifiers.Controls.Add(Me.btnEpisodeScrapeModifierNone, 1, 0)
+        Me.tblEpisodeScrapeModifiers.Controls.Add(Me.chkEpisodeModifierAll, 0, 0)
+        Me.tblEpisodeScrapeModifiers.Controls.Add(Me.chkEpisodeModifierPoster, 1, 2)
+        Me.tblEpisodeScrapeModifiers.Controls.Add(Me.chkEpisodeModifierNFO, 1, 1)
+        Me.tblEpisodeScrapeModifiers.Controls.Add(Me.chkEpisodeModifierFanart, 0, 2)
+        Me.tblEpisodeScrapeModifiers.Controls.Add(Me.chkEpisodeModifierActorThumbs, 0, 1)
+        Me.tblEpisodeScrapeModifiers.Controls.Add(Me.chkEpisodeModifierMetaData, 0, 3)
+        Me.tblEpisodeScrapeModifiers.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblEpisodeScrapeModifiers.Location = New System.Drawing.Point(3, 18)
+        Me.tblEpisodeScrapeModifiers.Name = "tblEpisodeScrapeModifiers"
+        Me.tblEpisodeScrapeModifiers.RowCount = 5
+        Me.tblEpisodeScrapeModifiers.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblEpisodeScrapeModifiers.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblEpisodeScrapeModifiers.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblEpisodeScrapeModifiers.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblEpisodeScrapeModifiers.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblEpisodeScrapeModifiers.Size = New System.Drawing.Size(224, 98)
+        Me.tblEpisodeScrapeModifiers.TabIndex = 15
         '
         'btnEpisodeScrapeModifierNone
         '
@@ -1717,10 +1717,10 @@ Partial Class dlgCustomScraper
         Me.gbScrapeType_Mode.PerformLayout()
         Me.tblScrapeType_Mode.ResumeLayout(False)
         Me.tblScrapeType_Mode.PerformLayout()
-        Me.gbMainScrapeModifier.ResumeLayout(False)
-        Me.gbMainScrapeModifier.PerformLayout()
-        Me.tblMainScrapeModifier.ResumeLayout(False)
-        Me.tblMainScrapeModifier.PerformLayout()
+        Me.gbMainScrapeModifiers.ResumeLayout(False)
+        Me.gbMainScrapeModifiers.PerformLayout()
+        Me.tblMainScrapeModifiers.ResumeLayout(False)
+        Me.tblMainScrapeModifiers.PerformLayout()
         Me.gbMainScrapeOptions.ResumeLayout(False)
         Me.gbMainScrapeOptions.PerformLayout()
         Me.tblMainScrapeOptions.ResumeLayout(False)
@@ -1732,18 +1732,18 @@ Partial Class dlgCustomScraper
         Me.pnlMain.PerformLayout()
         Me.tblMain.ResumeLayout(False)
         Me.tblMain.PerformLayout()
-        Me.gbSeasonScrapeModifier.ResumeLayout(False)
-        Me.gbSeasonScrapeModifier.PerformLayout()
-        Me.tblSeasonScrapeModifier.ResumeLayout(False)
-        Me.tblSeasonScrapeModifier.PerformLayout()
-        Me.gbSpecialScrapeModifier.ResumeLayout(False)
-        Me.gbSpecialScrapeModifier.PerformLayout()
-        Me.tblSpecialScrapeModifier.ResumeLayout(False)
-        Me.tblSpecialScrapeModifier.PerformLayout()
-        Me.gbEpisodeScrapeModifier.ResumeLayout(False)
-        Me.gbEpisodeScrapeModifier.PerformLayout()
-        Me.tblEpisodeScrapeModifier.ResumeLayout(False)
-        Me.tblEpisodeScrapeModifier.PerformLayout()
+        Me.gbSeasonScrapeModifiers.ResumeLayout(False)
+        Me.gbSeasonScrapeModifiers.PerformLayout()
+        Me.tblSeasonScrapeModifiers.ResumeLayout(False)
+        Me.tblSeasonScrapeModifiers.PerformLayout()
+        Me.gbSpecialScrapeModifiers.ResumeLayout(False)
+        Me.gbSpecialScrapeModifiers.PerformLayout()
+        Me.tblSpecialScrapeModifiers.ResumeLayout(False)
+        Me.tblSpecialScrapeModifiers.PerformLayout()
+        Me.gbEpisodeScrapeModifiers.ResumeLayout(False)
+        Me.gbEpisodeScrapeModifiers.PerformLayout()
+        Me.tblEpisodeScrapeModifiers.ResumeLayout(False)
+        Me.tblEpisodeScrapeModifiers.PerformLayout()
         Me.gbEpisodeScrapeOptions.ResumeLayout(False)
         Me.gbEpisodeScrapeOptions.PerformLayout()
         Me.tblEpisodeScrapeOptions.ResumeLayout(False)
@@ -1776,7 +1776,7 @@ Partial Class dlgCustomScraper
     Friend WithEvents pnlMain As System.Windows.Forms.Panel
     Friend WithEvents tblMain As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblScrapeType_Mode As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents tblMainScrapeModifier As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents tblMainScrapeModifiers As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents chkMainModifierCharacterArt As System.Windows.Forms.CheckBox
     Friend WithEvents tblMainScrapeOptions As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents chkMainOptionsStatus As System.Windows.Forms.CheckBox
@@ -1784,22 +1784,22 @@ Partial Class dlgCustomScraper
     Friend WithEvents chkMainOptionsEpisodeGuideURL As System.Windows.Forms.CheckBox
     Friend WithEvents chkMainOptionsPremiered As System.Windows.Forms.CheckBox
     Friend WithEvents tblTop As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents gbSeasonScrapeModifier As System.Windows.Forms.GroupBox
-    Friend WithEvents tblSeasonScrapeModifier As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents gbSeasonScrapeModifiers As System.Windows.Forms.GroupBox
+    Friend WithEvents tblSeasonScrapeModifiers As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents btnSeasonScrapeModifierNone As System.Windows.Forms.Button
     Friend WithEvents chkSeasonModifierAll As System.Windows.Forms.CheckBox
     Friend WithEvents chkSeasonModifierBanner As System.Windows.Forms.CheckBox
     Friend WithEvents chkSeasonModifierFanart As System.Windows.Forms.CheckBox
     Friend WithEvents chkSeasonModifierLandscape As System.Windows.Forms.CheckBox
     Friend WithEvents chkSeasonModifierPoster As System.Windows.Forms.CheckBox
-    Friend WithEvents gbSpecialScrapeModifier As System.Windows.Forms.GroupBox
-    Friend WithEvents tblSpecialScrapeModifier As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents gbSpecialScrapeModifiers As System.Windows.Forms.GroupBox
+    Friend WithEvents tblSpecialScrapeModifiers As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents chkSpecialModifierAll As System.Windows.Forms.CheckBox
     Friend WithEvents btnSpecialScrapeModifierNone As System.Windows.Forms.Button
     Friend WithEvents chkSpecialModifierWithSeasons As System.Windows.Forms.CheckBox
     Friend WithEvents chkSpecialModifierWithEpisodes As System.Windows.Forms.CheckBox
-    Friend WithEvents gbEpisodeScrapeModifier As System.Windows.Forms.GroupBox
-    Friend WithEvents tblEpisodeScrapeModifier As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents gbEpisodeScrapeModifiers As System.Windows.Forms.GroupBox
+    Friend WithEvents tblEpisodeScrapeModifiers As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents btnEpisodeScrapeModifierNone As System.Windows.Forms.Button
     Friend WithEvents chkEpisodeModifierAll As System.Windows.Forms.CheckBox
     Friend WithEvents chkEpisodeModifierFanart As System.Windows.Forms.CheckBox

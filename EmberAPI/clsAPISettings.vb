@@ -688,6 +688,41 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieExtrathumbsCreatorAutoThumbs() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieExtrathumbsCreatorAutoThumbs
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieExtrathumbsCreatorAutoThumbs = value
+        End Set
+    End Property
+    Public Property MovieExtrathumbsCreatorNoBlackBars() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieExtrathumbsCreatorNoBlackBars
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieExtrathumbsCreatorNoBlackBars = value
+        End Set
+    End Property
+
+    Public Property MovieExtrathumbsCreatorNoSpoilers() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieExtrathumbsCreatorNoSpoilers
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieExtrathumbsCreatorNoSpoilers = value
+        End Set
+    End Property
+
+    Public Property MovieExtrathumbsCreatorUseETasFA() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieExtrathumbsCreatorUseETasFA
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieExtrathumbsCreatorUseETasFA = value
+        End Set
+    End Property
+
     Public Property MovieExtrathumbsPrefSizeOnly() As Boolean
         Get
             Return Settings._XMLSettings.MovieExtrathumbsPrefSizeOnly
@@ -1782,6 +1817,14 @@ Public Class Settings
             Settings._XMLSettings.GeneralImageFilterAutoscraper = value
         End Set
     End Property
+    Public Property GeneralImageFilterFanart() As Boolean
+        Get
+            Return Settings._XMLSettings.GeneralImageFilterFanart
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.GeneralImageFilterFanart = value
+        End Set
+    End Property
 
     Public Property GeneralImageFilterImagedialog() As Boolean
         Get
@@ -1789,6 +1832,14 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.GeneralImageFilterImagedialog = value
+        End Set
+    End Property
+    Public Property GeneralImageFilterPoster() As Boolean
+        Get
+            Return Settings._XMLSettings.GeneralImageFilterPoster
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.GeneralImageFilterPoster = value
         End Set
     End Property
 
@@ -3553,15 +3604,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Integer)
             Settings._XMLSettings.TVSeasonPosterWidth = value
-        End Set
-    End Property
-
-    Public Property MovieSets() As List(Of String)
-        Get
-            Return Settings._XMLSettings.MovieSets
-        End Get
-        Set(ByVal value As List(Of String))
-            Settings._XMLSettings.MovieSets = value
         End Set
     End Property
 
@@ -6745,6 +6787,8 @@ Public Class Settings
         GeneralImageFilter = True
         GeneralImageFilterAutoscraper = True
         GeneralImageFilterImagedialog = False
+        GeneralImageFilterFanart = True
+        GeneralImageFilterPoster = False
         GeneralImageFilterFanartMatchTolerance = 4
         GeneralImageFilterPosterMatchTolerance = 1
         GeneralLanguage = "English_(en_US)"
@@ -6795,6 +6839,10 @@ Public Class Settings
         MovieExtrafanartsPreselect = True
         MovieExtrafanartsResize = False
         MovieExtrafanartsWidth = 0
+        MovieExtrathumbsCreatorAutoThumbs = False
+        MovieExtrathumbsCreatorNoBlackBars = False
+        MovieExtrathumbsCreatorNoSpoilers = False
+        MovieExtrathumbsCreatorUseETasFA = False
         MovieExtrathumbsHeight = 0
         MovieExtrathumbsLimit = 4
         MovieExtrathumbsKeepExisting = False
@@ -6967,7 +7015,6 @@ Public Class Settings
         MovieSetPosterPrefSize = Enums.MoviePosterSize.Any
         MovieSetPosterResize = False
         MovieSetPosterWidth = 0
-        MovieSets = New List(Of String)
         MovieSetScraperPlot = True
         MovieSetScraperTitle = True
         MovieSkipLessThan = 0
@@ -7441,6 +7488,7 @@ Public Class Settings
         If Not String.IsNullOrEmpty(MovieSetPathExpertSingle) Then Paths.Add(MovieSetPathExpertSingle)
         If Not String.IsNullOrEmpty(MovieSetPathExtended) Then Paths.Add(MovieSetPathExtended)
         If Not String.IsNullOrEmpty(MovieSetPathMSAA) Then Paths.Add(MovieSetPathMSAA)
+        Paths = Paths.Distinct().ToList() 'remove double entries
         Return Paths
     End Function
 

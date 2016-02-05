@@ -2866,7 +2866,11 @@ Public Class dlgSettings
             chkGeneralDigitGrpSymbolVotes.Checked = .GeneralDigitGrpSymbolVotes
             chkGeneralImageFilter.Checked = .GeneralImageFilter
             chkGeneralImageFilterAutoscraper.Checked = .GeneralImageFilterAutoscraper
+            txtGeneralImageFilterFanartMatchRate.Enabled = .GeneralImageFilterFanart
+            chkGeneralImageFilterFanart.Checked = .GeneralImageFilterFanart
             chkGeneralImageFilterImagedialog.Checked = .GeneralImageFilterImagedialog
+            chkGeneralImageFilterPoster.Checked = .GeneralImageFilterPoster
+            txtGeneralImageFilterPosterMatchRate.Enabled = .GeneralImageFilterPoster
             chkGeneralDoubleClickScrape.Checked = .GeneralDoubleClickScrape
             chkGeneralDisplayBanner.Checked = .GeneralDisplayBanner
             chkGeneralDisplayCharacterArt.Checked = .GeneralDisplayCharacterArt
@@ -2908,6 +2912,10 @@ Public Class dlgSettings
                 txtMovieExtrafanartsHeight.Text = .MovieExtrafanartsHeight.ToString
                 txtMovieExtrafanartsWidth.Text = .MovieExtrafanartsWidth.ToString
             End If
+            chkMovieExtrathumbsCreatorAutoThumbs.Checked = .MovieExtrathumbsCreatorAutoThumbs
+            chkMovieExtrathumbsCreatorNoBlackBars.Checked = .MovieExtrathumbsCreatorNoBlackBars
+            chkMovieExtrathumbsCreatorNoSpoilers.Checked = .MovieExtrathumbsCreatorNoSpoilers
+            chkMovieExtrathumbsCreatorUseETasFA.Checked = .MovieExtrathumbsCreatorUseETasFA
             chkMovieExtrathumbsKeepExisting.Checked = .MovieExtrathumbsKeepExisting
             chkMovieExtrathumbsPrefOnly.Checked = .MovieExtrathumbsPrefSizeOnly
             chkMovieExtrathumbsPreselect.Checked = .MovieExtrathumbsPreselect
@@ -4667,7 +4675,9 @@ Public Class dlgSettings
             .GeneralImagesGlassOverlay = chkGeneralImagesGlassOverlay.Checked
             .GeneralImageFilter = chkGeneralImageFilter.Checked
             .GeneralImageFilterAutoscraper = chkGeneralImageFilterAutoscraper.Checked
+            .GeneralImageFilterFanart = chkGeneralImageFilterFanart.Checked
             .GeneralImageFilterImagedialog = chkGeneralImageFilterImagedialog.Checked
+            .GeneralImageFilterPoster = chkGeneralImageFilterPoster.Checked
             If Not String.IsNullOrEmpty(txtGeneralImageFilterFanartMatchRate.Text) AndAlso Integer.TryParse(txtGeneralImageFilterFanartMatchRate.Text, 4) Then
                 .GeneralImageFilterFanartMatchTolerance = Convert.ToInt32(txtGeneralImageFilterFanartMatchRate.Text)
             Else
@@ -4718,6 +4728,10 @@ Public Class dlgSettings
             .MovieExtrafanartsPreselect = chkMovieExtrafanartsPreselect.Checked
             .MovieExtrafanartsResize = chkMovieExtrafanartsResize.Checked
             .MovieExtrafanartsWidth = If(Not String.IsNullOrEmpty(txtMovieExtrafanartsWidth.Text), Convert.ToInt32(txtMovieExtrafanartsWidth.Text), 0)
+            .MovieExtrathumbsCreatorAutoThumbs = chkMovieExtrathumbsCreatorAutoThumbs.Checked
+            .MovieExtrathumbsCreatorNoBlackBars = chkMovieExtrathumbsCreatorNoBlackBars.Checked
+            .MovieExtrathumbsCreatorNoSpoilers = chkMovieExtrathumbsCreatorNoSpoilers.Checked
+            .MovieExtrathumbsCreatorUseETasFA = chkMovieExtrathumbsCreatorUseETasFA.Checked
             .MovieExtrathumbsHeight = If(Not String.IsNullOrEmpty(txtMovieExtrathumbsHeight.Text), Convert.ToInt32(txtMovieExtrathumbsHeight.Text), 0)
             .MovieExtrathumbsLimit = If(Not String.IsNullOrEmpty(txtMovieExtrathumbsLimit.Text), Convert.ToInt32(txtMovieExtrathumbsLimit.Text), 0)
             .MovieExtrathumbsKeepExisting = chkMovieExtrathumbsKeepExisting.Checked
@@ -6569,7 +6583,9 @@ Public Class dlgSettings
         chkGeneralImagesGlassOverlay.Text = Master.eLang.GetString(966, "Enable Images Glass Overlay")
         chkGeneralImageFilter.Text = Master.eLang.GetString(1459, "Activate ImageFilter to avoid duplicate images")
         chkGeneralImageFilterAutoscraper.Text = Master.eLang.GetString(1457, "Autoscraper")
+        chkGeneralImageFilterFanart.Text = Master.eLang.GetString(149, "Fanart")
         chkGeneralImageFilterImagedialog.Text = Master.eLang.GetString(1458, "Imagedialog")
+        chkGeneralImageFilterPoster.Text = Master.eLang.GetString(148, "Poster")
         chkGeneralOverwriteNfo.Text = Master.eLang.GetString(433, "Overwrite Non-conforming nfos")
         chkGeneralDisplayGenresText.Text = Master.eLang.GetString(453, "Always Display Genre Text")
         chkGeneralDisplayLangFlags.Text = Master.eLang.GetString(489, "Display Language Flags")
@@ -6579,6 +6595,10 @@ Public Class dlgSettings
         chkMovieSourcesBackdropsAuto.Text = Master.eLang.GetString(521, "Automatically Save Fanart To Backdrops Folder")
         chkMovieCleanDB.Text = Master.eLang.GetString(668, "Clean database after updating library")
         chkMovieDisplayYear.Text = Master.eLang.GetString(464, "Display Year in List Title")
+        chkMovieExtrathumbsCreatorAutoThumbs.Text = Master.eLang.GetString(1475, "Create thumbs instead of using fanarts")
+        chkMovieExtrathumbsCreatorNoBlackBars.Text = Master.eLang.GetString(1474, "Remove Black Bars")
+        chkMovieExtrathumbsCreatorNoSpoilers.Text = Master.eLang.GetString(1473, "No Spoilers")
+        chkMovieExtrathumbsCreatorUseETasFA.Text = Master.eLang.GetString(1476, "Only create thumbs if no fanart found")
         chkMovieGeneralIgnoreLastScan.Text = Master.eLang.GetString(669, "Ignore last scan time when updating library")
         chkMovieGeneralMarkNew.Text = Master.eLang.GetString(459, "Mark New Movies")
         chkMovieLevTolerance.Text = Master.eLang.GetString(462, "Check Title Match Confidence")
@@ -6632,6 +6652,7 @@ Public Class dlgSettings
         gbMovieGeneralCustomMarker.Text = Master.eLang.GetString(1190, "Custom Marker")
         gbMovieSourcesBackdropsFolderOpts.Text = Master.eLang.GetString(520, "Backdrops Folder")
         gbMovieImagesFanartOpts.Text = Master.eLang.GetString(149, "Fanart")
+        gbMovieImagesExtrathumbsCreatorOpts.Text = Master.eLang.GetString(1477, "Create Thumbnails")
         gbMovieGeneralFiltersOpts.Text = Master.eLang.GetString(451, "Folder/File Name Filters")
         gbMovieGeneralMediaListOpts.Text = Master.eLang.GetString(460, "Media List Options")
         gbMovieScraperDefFIExtOpts.Text = Master.eLang.GetString(625, "Defaults by File Type")
@@ -7555,13 +7576,35 @@ Public Class dlgSettings
 
     Private Sub chkGeneralImageFilter_CheckedChanged(sender As Object, e As EventArgs) Handles chkGeneralImageFilter.CheckedChanged
         SetApplyButton(True)
-
         chkGeneralImageFilterAutoscraper.Enabled = chkGeneralImageFilter.Checked
+        chkGeneralImageFilterFanart.Enabled = chkGeneralImageFilter.Checked
         chkGeneralImageFilterImagedialog.Enabled = chkGeneralImageFilter.Checked
+        chkGeneralImageFilterPoster.Enabled = chkGeneralImageFilter.Checked
         lblGeneralImageFilterFanartMatchRate.Enabled = chkGeneralImageFilter.Checked
         lblGeneralImageFilterPosterMatchRate.Enabled = chkGeneralImageFilter.Checked
         txtGeneralImageFilterFanartMatchRate.Enabled = chkGeneralImageFilter.Checked
         txtGeneralImageFilterPosterMatchRate.Enabled = chkGeneralImageFilter.Checked
+    End Sub
+
+    Private Sub chkGeneralImageFilterAutoscraperImagedialog_CheckedChanged(sender As Object, e As EventArgs) Handles chkGeneralImageFilterAutoscraper.CheckedChanged, chkGeneralImageFilterImagedialog.CheckedChanged
+        SetApplyButton(True)
+        If chkGeneralImageFilterImagedialog.Checked = False AndAlso chkGeneralImageFilterAutoscraper.Checked = False Then
+            chkGeneralImageFilterPoster.Enabled = False
+            chkGeneralImageFilterFanart.Enabled = False
+        Else
+            chkGeneralImageFilterPoster.Enabled = True
+            chkGeneralImageFilterFanart.Enabled = True
+        End If
+    End Sub
+    Private Sub chkGeneralImageFilterPoster_CheckedChanged(sender As Object, e As EventArgs) Handles chkGeneralImageFilterPoster.CheckedChanged
+        SetApplyButton(True)
+        lblGeneralImageFilterPosterMatchRate.Enabled = chkGeneralImageFilterPoster.Checked
+        txtGeneralImageFilterPosterMatchRate.Enabled = chkGeneralImageFilterPoster.Checked
+    End Sub
+    Private Sub chkGeneralImageFilterFanart_CheckedChanged(sender As Object, e As EventArgs) Handles chkGeneralImageFilterFanart.CheckedChanged
+        SetApplyButton(True)
+        lblGeneralImageFilterFanartMatchRate.Enabled = chkGeneralImageFilterFanart.Checked
+        txtGeneralImageFilterFanartMatchRate.Enabled = chkGeneralImageFilterFanart.Checked
     End Sub
 
     Private Sub txtGeneralImageFilterMatchRate_TextChanged(sender As Object, e As EventArgs) Handles txtGeneralImageFilterPosterMatchRate.LostFocus, txtGeneralImageFilterFanartMatchRate.LostFocus
@@ -7581,6 +7624,18 @@ Public Class dlgSettings
                 MessageBox.Show(Master.eLang.GetString(1460, "Match Tolerance should be between 0 - 10 | 0 = 100% identical images, 10= different images"), Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK, MessageBoxIcon.Warning)
             End If
         End If
+    End Sub
+    Private Sub chkMovieExtrathumbsCreatorAutoThumbs_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieExtrathumbsCreatorAutoThumbs.CheckedChanged
+        If chkMovieExtrathumbsCreatorAutoThumbs.Checked = True Then
+            chkMovieExtrathumbsCreatorUseETasFA.Checked = False
+        End If
+        SetApplyButton(True)
+    End Sub
+    Private Sub chkMovieExtrathumbsCreatorUseETasFA_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieExtrathumbsCreatorUseETasFA.CheckedChanged
+        If chkMovieExtrathumbsCreatorUseETasFA.Checked = True Then
+            chkMovieExtrathumbsCreatorAutoThumbs.Checked = False
+        End If
+        SetApplyButton(True)
     End Sub
 
     Private Sub EnableApplyButton(ByVal sender As Object, ByVal e As EventArgs) Handles _
@@ -7640,6 +7695,8 @@ Public Class dlgSettings
         chkGeneralDoubleClickScrape.CheckedChanged,
         chkGeneralImageFilterAutoscraper.CheckedChanged,
         chkGeneralImageFilterImagedialog.CheckedChanged,
+        chkGeneralImageFilterPoster.CheckedChanged,
+        chkGeneralImageFilterFanart.CheckedChanged,
         chkGeneralImagesGlassOverlay.CheckedChanged,
         chkGeneralOverwriteNfo.CheckedChanged,
         chkGeneralSourceFromFolder.CheckedChanged,
@@ -7675,6 +7732,8 @@ Public Class dlgSettings
         chkMovieExtrafanartsKeepExisting.CheckedChanged,
         chkMovieExtrafanartsPrefOnly.CheckedChanged,
         chkMovieExtrafanartsPreselect.CheckedChanged,
+        chkMovieExtrathumbsCreatorNoSpoilers.CheckedChanged,
+        chkMovieExtrathumbsCreatorNoBlackBars.CheckedChanged,
         chkMovieExtrathumbsEden.CheckedChanged,
         chkMovieExtrathumbsExpertBDMV.CheckedChanged,
         chkMovieExtrathumbsExpertSingle.CheckedChanged,

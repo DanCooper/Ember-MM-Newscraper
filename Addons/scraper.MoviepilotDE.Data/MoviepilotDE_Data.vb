@@ -29,7 +29,7 @@ Public Class MoviepilotDE_Data
 
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
     Public Shared ConfigScrapeOptions As New Structures.ScrapeOptions
-    Public Shared ConfigScrapeModifier As New Structures.ScrapeModifier
+    Public Shared ConfigScrapeModifiers As New Structures.ScrapeModifiers
     Public Shared _AssemblyName As String
 
     Private _Name As String = "MoviepilotDE_Data"
@@ -150,7 +150,7 @@ Public Class MoviepilotDE_Data
     ''' <param name="Options">What kind of data is being requested from the scrape(global scraper settings)</param>
     ''' <returns>Database.DBElement Object (nMovie) which contains the scraped data</returns>
     ''' <remarks></remarks>
-    Function Scraper_Movie(ByRef oDBMovie As Database.DBElement, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_Movie Implements Interfaces.ScraperModule_Data_Movie.Scraper_Movie
+    Function Scraper_Movie(ByRef oDBMovie As Database.DBElement, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_Movie Implements Interfaces.ScraperModule_Data_Movie.Scraper_Movie
         logger.Trace("Started MoviepilotDE Scraper")
 
         LoadSettings()
@@ -158,7 +158,7 @@ Public Class MoviepilotDE_Data
         Dim nMovie As New MediaContainers.Movie
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions)
 
-        If ScrapeModifier.MainNFO Then
+        If ScrapeModifiers.MainNFO Then
             nMovie = _scraper.GetMovieInfo(oDBMovie.Movie.OriginalTitle, oDBMovie.Movie.Title, oDBMovie.Movie.Year, FilteredOptions)
         End If
 

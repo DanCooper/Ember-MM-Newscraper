@@ -43,7 +43,9 @@ Partial Public Class clsXMLSettings
     Private _generalfilterpanelstateshow As Boolean
     Private _generalimagefilter As Boolean
     Private _generalimagefilterautoscraper As Boolean
+    Private _generalimagefilterfanart As Boolean
     Private _generalimagefilterimagedialog As Boolean
+    Private _generalimagefilterposter As Boolean
     Private _generalimagefilterpostermatchtolerance As Integer
     Private _generalimagefilterfanartmatchtolerance As Integer
     Private _generalmainfiltersortcolumn_movies As Integer
@@ -106,6 +108,10 @@ Partial Public Class clsXMLSettings
     Private _movieextrafanartspreselect As Boolean
     Private _movieextrafanartsresize As Boolean
     Private _movieextrafanartswidth As Integer
+    Private _movieextrathumbscreatorautothumbs As Boolean
+    Private _movieextrathumbscreatornoblackbars As Boolean
+    Private _movieextrathumbscreatornospoilers As Boolean
+    Private _movieextrathumbscreatoruseetasfa As Boolean
     Private _movieextrathumbsheight As Integer
     Private _movieextrathumbslimit As Integer
     Private _movieextrathumbskeepexisting As Boolean
@@ -278,7 +284,6 @@ Partial Public Class clsXMLSettings
     Private _moviesetposterprefsize As Enums.MoviePosterSize
     Private _moviesetposterresize As Boolean
     Private _moviesetposterwidth As Integer
-    Private _moviesets As New List(Of String)
     Private _moviesetscraperplot As Boolean
     Private _moviesetscrapertitle As Boolean
     Private _movieskiplessthan As Integer
@@ -1634,6 +1639,42 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
+    Public Property MovieExtrathumbsCreatorAutoThumbs() As Boolean
+        Get
+            Return _movieextrathumbscreatorautothumbs
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movieextrathumbscreatorautothumbs = value
+        End Set
+    End Property
+
+    Public Property MovieExtrathumbsCreatorNoBlackBars() As Boolean
+        Get
+            Return _movieextrathumbscreatornoblackbars
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movieextrathumbscreatornoblackbars = value
+        End Set
+    End Property
+
+    Public Property MovieExtrathumbsCreatorNoSpoilers() As Boolean
+        Get
+            Return _movieextrathumbscreatornospoilers
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movieextrathumbscreatornospoilers = value
+        End Set
+    End Property
+
+    Public Property MovieExtrathumbsCreatorUseETasFA() As Boolean
+        Get
+            Return _movieextrathumbscreatoruseetasfa
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movieextrathumbscreatoruseetasfa = value
+        End Set
+    End Property
+
     Public Property MovieExtrathumbsPrefSizeOnly() As Boolean
         Get
             Return Me._movieextrathumbsprefsizeonly
@@ -1992,6 +2033,25 @@ Partial Public Class clsXMLSettings
             Me._generalimagefilterimagedialog = value
         End Set
     End Property
+
+    Public Property GeneralImageFilterFanart() As Boolean
+        Get
+            Return Me._generalimagefilterfanart
+        End Get
+        Set(ByVal value As Boolean)
+            Me._generalimagefilterfanart = value
+        End Set
+    End Property
+
+    Public Property GeneralImageFilterPoster() As Boolean
+        Get
+            Return Me._generalimagefilterposter
+        End Get
+        Set(ByVal value As Boolean)
+            Me._generalimagefilterposter = value
+        End Set
+    End Property
+
     Public Property GeneralImageFilterPosterMatchTolerance() As Integer
         Get
             Return Me._generalimagefilterpostermatchtolerance
@@ -4478,15 +4538,6 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Integer)
             Me._tvseasonposterwidth = value
-        End Set
-    End Property
-
-    Public Property MovieSets() As List(Of String)
-        Get
-            Return Me._moviesets
-        End Get
-        Set(ByVal value As List(Of String))
-            Me._moviesets = value
         End Set
     End Property
 

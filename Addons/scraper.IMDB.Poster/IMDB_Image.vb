@@ -33,7 +33,7 @@ Public Class IMDB_Image
 #Region "Fields"
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
-    Public Shared ConfigModifier As New Structures.ScrapeModifier
+    Public Shared ConfigModifier As New Structures.ScrapeModifiers
     Public Shared _AssemblyName As String
 
     Private _Name As String = "IMDB_Poster"
@@ -136,7 +136,7 @@ Public Class IMDB_Image
         ConfigModifier.MainPoster = clsAdvancedSettings.GetBooleanSetting("DoPoster", True)
     End Sub
 
-    Function Scraper(ByRef DBMovie As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifier As Structures.ScrapeModifier) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_Movie.Scraper
+    Function Scraper(ByRef DBMovie As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_Movie.Scraper
         logger.Trace("Started scrape", New StackTrace().ToString())
         LoadSettings()
 

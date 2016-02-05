@@ -25,12 +25,12 @@ Public Class dlgCustomScraper
 
 #Region "Fields"
 
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     Private CustomUpdater As New Structures.CustomUpdaterStruct
     Private _ContentType As Enums.ContentType
 
-    'ScrapeModifier
+    'ScrapeModifiers
     Private mEpisodeActorThumbsAllowed As Boolean
     Private mEpisodeFanartAllowed As Boolean
     Private mEpisodeMetaDataAllowed As Boolean
@@ -132,7 +132,7 @@ Public Class dlgCustomScraper
             SetParameters()
 
             CustomUpdater.ScrapeType = Enums.ScrapeType.AllAuto
-            'Functions.SetScrapeModifier(CustomUpdater.ScrapeModifier, Enums.ModifierType.All, True)
+            'Functions.SetScrapeModifiers(CustomUpdater.ScrapeModifiers, Enums.ModifierType.All, True)
 
             CheckEnable()
 
@@ -413,7 +413,7 @@ Public Class dlgCustomScraper
 
         'with Episodes
         If chkSpecialModifierWithEpisodes.Checked Then
-            gbEpisodeScrapeModifier.Enabled = True
+            gbEpisodeScrapeModifiers.Enabled = True
 
             'Episode Modifiers
             If chkEpisodeModifierAll.Checked Then
@@ -472,13 +472,13 @@ Public Class dlgCustomScraper
                 gbEpisodeScrapeOptions.Enabled = False
             End If
         Else
-            gbEpisodeScrapeModifier.Enabled = False
+            gbEpisodeScrapeModifiers.Enabled = False
             gbEpisodeScrapeOptions.Enabled = False
         End If
 
         'with Seasons
         If chkSpecialModifierWithSeasons.Checked Then
-            gbSeasonScrapeModifier.Enabled = True
+            gbSeasonScrapeModifiers.Enabled = True
 
             'Season Modifiers
             If chkSeasonModifierAll.Checked Then
@@ -516,42 +516,42 @@ Public Class dlgCustomScraper
                 gbSeasonScrapeOptions.Enabled = False
             End If
         Else
-            gbSeasonScrapeModifier.Enabled = False
+            gbSeasonScrapeModifiers.Enabled = False
             gbSeasonScrapeOptions.Enabled = False
         End If
 
-        'Scrape Modifier
-        CustomUpdater.ScrapeModifier.EpisodeActorThumbs = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierActorThumbs.Checked
-        CustomUpdater.ScrapeModifier.EpisodeFanart = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierFanart.Checked
-        CustomUpdater.ScrapeModifier.EpisodeMeta = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierMetaData.Checked
-        CustomUpdater.ScrapeModifier.EpisodeNFO = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked
-        CustomUpdater.ScrapeModifier.EpisodePoster = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierPoster.Checked
-        CustomUpdater.ScrapeModifier.MainActorthumbs = chkMainModifierActorThumbs.Checked
-        CustomUpdater.ScrapeModifier.MainBanner = chkMainModifierBanner.Checked
-        CustomUpdater.ScrapeModifier.MainCharacterArt = chkMainModifierCharacterArt.Checked
-        CustomUpdater.ScrapeModifier.MainClearArt = chkMainModifierClearArt.Checked
-        CustomUpdater.ScrapeModifier.MainClearLogo = chkMainModifierClearLogo.Checked
-        CustomUpdater.ScrapeModifier.MainDiscArt = chkMainModifierDiscArt.Checked
-        CustomUpdater.ScrapeModifier.MainFanart = chkMainModifierFanart.Checked
-        CustomUpdater.ScrapeModifier.MainExtrathumbs = chkMainModifierExtrathumbs.Checked
-        CustomUpdater.ScrapeModifier.MainExtrafanarts = chkMainModifierExtrafanarts.Checked
-        CustomUpdater.ScrapeModifier.MainFanart = chkMainModifierFanart.Checked
-        CustomUpdater.ScrapeModifier.MainLandscape = chkMainModifierLandscape.Checked
-        CustomUpdater.ScrapeModifier.MainMeta = chkMainModifierMetaData.Checked
-        CustomUpdater.ScrapeModifier.MainNFO = chkMainModifierNFO.Checked
-        CustomUpdater.ScrapeModifier.MainPoster = chkMainModifierPoster.Checked
-        CustomUpdater.ScrapeModifier.MainTheme = chkMainModifierTheme.Checked
-        CustomUpdater.ScrapeModifier.MainTrailer = chkMainModifierTrailer.Checked
-        CustomUpdater.ScrapeModifier.SeasonBanner = chkSpecialModifierWithSeasons.Checked AndAlso chkSeasonModifierBanner.Checked
-        CustomUpdater.ScrapeModifier.SeasonFanart = chkSpecialModifierWithSeasons.Checked AndAlso chkSeasonModifierFanart.Checked
-        CustomUpdater.ScrapeModifier.SeasonLandscape = chkSpecialModifierWithSeasons.Checked AndAlso chkSeasonModifierLandscape.Checked
-        CustomUpdater.ScrapeModifier.SeasonPoster = chkSpecialModifierWithSeasons.Checked AndAlso chkSeasonModifierPoster.Checked
-        CustomUpdater.ScrapeModifier.withEpisodes = chkSpecialModifierWithEpisodes.Checked
-        CustomUpdater.ScrapeModifier.withSeasons = chkSpecialModifierWithSeasons.Checked
-        CustomUpdater.ScrapeModifier.AllSeasonsBanner = CustomUpdater.ScrapeModifier.SeasonBanner
-        CustomUpdater.ScrapeModifier.AllSeasonsFanart = CustomUpdater.ScrapeModifier.SeasonFanart
-        CustomUpdater.ScrapeModifier.AllSeasonsLandscape = CustomUpdater.ScrapeModifier.SeasonLandscape
-        CustomUpdater.ScrapeModifier.AllSeasonsPoster = CustomUpdater.ScrapeModifier.SeasonPoster
+        'Scrape Modifiers
+        CustomUpdater.ScrapeModifiers.EpisodeActorThumbs = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierActorThumbs.Checked
+        CustomUpdater.ScrapeModifiers.EpisodeFanart = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierFanart.Checked
+        CustomUpdater.ScrapeModifiers.EpisodeMeta = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierMetaData.Checked
+        CustomUpdater.ScrapeModifiers.EpisodeNFO = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked
+        CustomUpdater.ScrapeModifiers.EpisodePoster = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierPoster.Checked
+        CustomUpdater.ScrapeModifiers.MainActorthumbs = chkMainModifierActorThumbs.Checked
+        CustomUpdater.ScrapeModifiers.MainBanner = chkMainModifierBanner.Checked
+        CustomUpdater.ScrapeModifiers.MainCharacterArt = chkMainModifierCharacterArt.Checked
+        CustomUpdater.ScrapeModifiers.MainClearArt = chkMainModifierClearArt.Checked
+        CustomUpdater.ScrapeModifiers.MainClearLogo = chkMainModifierClearLogo.Checked
+        CustomUpdater.ScrapeModifiers.MainDiscArt = chkMainModifierDiscArt.Checked
+        CustomUpdater.ScrapeModifiers.MainFanart = chkMainModifierFanart.Checked
+        CustomUpdater.ScrapeModifiers.MainExtrathumbs = chkMainModifierExtrathumbs.Checked
+        CustomUpdater.ScrapeModifiers.MainExtrafanarts = chkMainModifierExtrafanarts.Checked
+        CustomUpdater.ScrapeModifiers.MainFanart = chkMainModifierFanart.Checked
+        CustomUpdater.ScrapeModifiers.MainLandscape = chkMainModifierLandscape.Checked
+        CustomUpdater.ScrapeModifiers.MainMeta = chkMainModifierMetaData.Checked
+        CustomUpdater.ScrapeModifiers.MainNFO = chkMainModifierNFO.Checked
+        CustomUpdater.ScrapeModifiers.MainPoster = chkMainModifierPoster.Checked
+        CustomUpdater.ScrapeModifiers.MainTheme = chkMainModifierTheme.Checked
+        CustomUpdater.ScrapeModifiers.MainTrailer = chkMainModifierTrailer.Checked
+        CustomUpdater.ScrapeModifiers.SeasonBanner = chkSpecialModifierWithSeasons.Checked AndAlso chkSeasonModifierBanner.Checked
+        CustomUpdater.ScrapeModifiers.SeasonFanart = chkSpecialModifierWithSeasons.Checked AndAlso chkSeasonModifierFanart.Checked
+        CustomUpdater.ScrapeModifiers.SeasonLandscape = chkSpecialModifierWithSeasons.Checked AndAlso chkSeasonModifierLandscape.Checked
+        CustomUpdater.ScrapeModifiers.SeasonPoster = chkSpecialModifierWithSeasons.Checked AndAlso chkSeasonModifierPoster.Checked
+        CustomUpdater.ScrapeModifiers.withEpisodes = chkSpecialModifierWithEpisodes.Checked
+        CustomUpdater.ScrapeModifiers.withSeasons = chkSpecialModifierWithSeasons.Checked
+        CustomUpdater.ScrapeModifiers.AllSeasonsBanner = CustomUpdater.ScrapeModifiers.SeasonBanner
+        CustomUpdater.ScrapeModifiers.AllSeasonsFanart = CustomUpdater.ScrapeModifiers.SeasonFanart
+        CustomUpdater.ScrapeModifiers.AllSeasonsLandscape = CustomUpdater.ScrapeModifiers.SeasonLandscape
+        CustomUpdater.ScrapeModifiers.AllSeasonsPoster = CustomUpdater.ScrapeModifiers.SeasonPoster
 
         'Scrape Options
         CustomUpdater.ScrapeOptions.bEpisodeActors = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsActors.Checked
@@ -591,32 +591,32 @@ Public Class dlgCustomScraper
         CustomUpdater.ScrapeOptions.bSeasonPlot = chkSpecialModifierWithSeasons.Checked AndAlso chkMainModifierNFO.Checked AndAlso chkSeasonOptionsPlot.Checked     'TODO: check. Atm we save the season infos to tv show NFO
         CustomUpdater.ScrapeOptions.bSeasonTitle = chkSpecialModifierWithSeasons.Checked AndAlso chkMainModifierNFO.Checked AndAlso chkSeasonOptionsTitle.Checked     'TODO: check. Atm we save the season infos to tv show NFO
 
-        If CustomUpdater.ScrapeModifier.EpisodeActorThumbs OrElse
-            CustomUpdater.ScrapeModifier.EpisodeFanart OrElse
-            CustomUpdater.ScrapeModifier.EpisodeMeta OrElse
-            CustomUpdater.ScrapeModifier.EpisodePoster OrElse
-            CustomUpdater.ScrapeModifier.EpisodeSubtitles OrElse
-            CustomUpdater.ScrapeModifier.MainActorthumbs OrElse
-            CustomUpdater.ScrapeModifier.MainBanner OrElse
-            CustomUpdater.ScrapeModifier.MainCharacterArt OrElse
-            CustomUpdater.ScrapeModifier.MainClearArt OrElse
-            CustomUpdater.ScrapeModifier.MainClearLogo OrElse
-            CustomUpdater.ScrapeModifier.MainDiscArt OrElse
-            CustomUpdater.ScrapeModifier.MainExtrafanarts OrElse
-            CustomUpdater.ScrapeModifier.MainExtrathumbs OrElse
-            CustomUpdater.ScrapeModifier.MainFanart OrElse
-            CustomUpdater.ScrapeModifier.MainLandscape OrElse
-            CustomUpdater.ScrapeModifier.MainMeta OrElse
-            CustomUpdater.ScrapeModifier.MainPoster OrElse
-            CustomUpdater.ScrapeModifier.MainSubtitles OrElse
-            CustomUpdater.ScrapeModifier.MainTheme OrElse
-            CustomUpdater.ScrapeModifier.MainTrailer OrElse
-            CustomUpdater.ScrapeModifier.SeasonBanner OrElse
-            CustomUpdater.ScrapeModifier.SeasonFanart OrElse
-            CustomUpdater.ScrapeModifier.SeasonLandscape OrElse
-            CustomUpdater.ScrapeModifier.SeasonPoster Then
+        If CustomUpdater.ScrapeModifiers.EpisodeActorThumbs OrElse
+            CustomUpdater.ScrapeModifiers.EpisodeFanart OrElse
+            CustomUpdater.ScrapeModifiers.EpisodeMeta OrElse
+            CustomUpdater.ScrapeModifiers.EpisodePoster OrElse
+            CustomUpdater.ScrapeModifiers.EpisodeSubtitles OrElse
+            CustomUpdater.ScrapeModifiers.MainActorthumbs OrElse
+            CustomUpdater.ScrapeModifiers.MainBanner OrElse
+            CustomUpdater.ScrapeModifiers.MainCharacterArt OrElse
+            CustomUpdater.ScrapeModifiers.MainClearArt OrElse
+            CustomUpdater.ScrapeModifiers.MainClearLogo OrElse
+            CustomUpdater.ScrapeModifiers.MainDiscArt OrElse
+            CustomUpdater.ScrapeModifiers.MainExtrafanarts OrElse
+            CustomUpdater.ScrapeModifiers.MainExtrathumbs OrElse
+            CustomUpdater.ScrapeModifiers.MainFanart OrElse
+            CustomUpdater.ScrapeModifiers.MainLandscape OrElse
+            CustomUpdater.ScrapeModifiers.MainMeta OrElse
+            CustomUpdater.ScrapeModifiers.MainPoster OrElse
+            CustomUpdater.ScrapeModifiers.MainSubtitles OrElse
+            CustomUpdater.ScrapeModifiers.MainTheme OrElse
+            CustomUpdater.ScrapeModifiers.MainTrailer OrElse
+            CustomUpdater.ScrapeModifiers.SeasonBanner OrElse
+            CustomUpdater.ScrapeModifiers.SeasonFanart OrElse
+            CustomUpdater.ScrapeModifiers.SeasonLandscape OrElse
+            CustomUpdater.ScrapeModifiers.SeasonPoster Then
             btnOK.Enabled = True
-        ElseIf CustomUpdater.ScrapeModifier.EpisodeNFO AndAlso (
+        ElseIf CustomUpdater.ScrapeModifiers.EpisodeNFO AndAlso (
             CustomUpdater.ScrapeOptions.bEpisodeActors OrElse
             CustomUpdater.ScrapeOptions.bEpisodeAired OrElse
             CustomUpdater.ScrapeOptions.bEpisodeCredits OrElse
@@ -627,7 +627,7 @@ Public Class dlgCustomScraper
             CustomUpdater.ScrapeOptions.bEpisodeRuntime OrElse
             CustomUpdater.ScrapeOptions.bEpisodeTitle) Then
             btnOK.Enabled = True
-        ElseIf CustomUpdater.ScrapeModifier.MainNFO AndAlso (
+        ElseIf CustomUpdater.ScrapeModifiers.MainNFO AndAlso (
             CustomUpdater.ScrapeOptions.bMainActors OrElse
             CustomUpdater.ScrapeOptions.bMainCertifications OrElse
             CustomUpdater.ScrapeOptions.bMainCollectionID OrElse
@@ -670,11 +670,11 @@ Public Class dlgCustomScraper
                 Case Enums.ContentType.Movie
                     NameID = "idMovie"
                     NameTable = "movie"
-                    gbEpisodeScrapeModifier.Visible = False
+                    gbEpisodeScrapeModifiers.Visible = False
                     gbEpisodeScrapeOptions.Visible = False
-                    gbSeasonScrapeModifier.Visible = False
+                    gbSeasonScrapeModifiers.Visible = False
                     gbSeasonScrapeOptions.Visible = False
-                    gbSpecialScrapeModifier.Visible = False
+                    gbSpecialScrapeModifiers.Visible = False
 
                     mEpisodeActorThumbsAllowed = False
                     mEpisodeFanartAllowed = False
@@ -745,11 +745,11 @@ Public Class dlgCustomScraper
                 Case Enums.ContentType.MovieSet
                     NameID = "idSet"
                     NameTable = "sets"
-                    gbEpisodeScrapeModifier.Visible = False
+                    gbEpisodeScrapeModifiers.Visible = False
                     gbEpisodeScrapeOptions.Visible = False
-                    gbSeasonScrapeModifier.Visible = False
+                    gbSeasonScrapeModifiers.Visible = False
                     gbSeasonScrapeOptions.Visible = False
-                    gbSpecialScrapeModifier.Visible = False
+                    gbSpecialScrapeModifiers.Visible = False
 
                     mEpisodeActorThumbsAllowed = False
                     mEpisodeFanartAllowed = False
@@ -1206,7 +1206,7 @@ Public Class dlgCustomScraper
         chkMainOptionsWriters.Text = Master.eLang.GetString(394, "Writers")
         chkMainOptionsYear.Text = Master.eLang.GetString(278, "Year")
         gbMainScrapeOptions.Text = Master.eLang.GetString(390, "Options")
-        gbMainScrapeModifier.Text = Master.eLang.GetString(388, "Modifiers")
+        gbMainScrapeModifiers.Text = Master.eLang.GetString(388, "Modifiers")
         gbScrapeType_Filter.Text = Master.eLang.GetString(386, "Selection Filter")
         gbScrapeType_Mode.Text = Master.eLang.GetString(387, "Update Mode")
         lblTopDescription.Text = Master.eLang.GetString(385, "Create a custom scraper")

@@ -493,6 +493,27 @@ Public Class MediaExporter
         Return nInfo
     End Function
 
+    Private Function GetDetailAudioInfo(ByVal fInfo As MediaInfo.Fileinfo) As AVSInfo
+        Dim nInfo As New AVSInfo
+        Dim tAud As New MediaInfo.Audio
+        If fInfo IsNot Nothing Then       
+            If fInfo.StreamDetails.Audio.Count > 0 Then
+                Dim audioinfo As MediaInfo.Audio
+                For c = 0 To fInfo.StreamDetails.Audio.Count - 1
+                    audioinfo = fInfo.StreamDetails.Audio(c)
+                    If audioinfo IsNot Nothing Then
+                        nInfo.audBitrate = If(audioinfo.BitrateSpecified, nInfo.audBitrate & ";" & audioinfo.Bitrate, Master.eLang.GetString(138, "Unknown"))
+                        nInfo.audChannels = If(audioinfo.ChannelsSpecified, nInfo.audChannels & ";" & audioinfo.Channels, Master.eLang.GetString(138, "Unknown"))
+                        nInfo.audLanguage = If(audioinfo.LanguageSpecified, nInfo.audLanguage & ";" & audioinfo.Language, Master.eLang.GetString(138, "Unknown"))
+                        nInfo.audLongLanguage = If(audioinfo.LongLanguageSpecified, nInfo.audLongLanguage & ";" & audioinfo.LongLanguage, Master.eLang.GetString(138, "Unknown"))
+                        nInfo.audDetails = If(audioinfo.CodecSpecified, nInfo.audDetails & ";" & String.Format("{0}ch / {1}", If(String.IsNullOrEmpty(audioinfo.Channels), Master.eLang.GetString(138, "Unknown"), audioinfo.Channels), If(String.IsNullOrEmpty(audioinfo.Codec), Master.eLang.GetString(138, "Unknown"), audioinfo.Codec)).ToUpper, nInfo.audDetails)
+                    End If
+                Next
+            End If
+        End If
+        Return nInfo
+    End Function
+
     Private Function GetFileSize(ByVal fPath As String) As String
         Dim fSize As Long = 0
 
@@ -758,6 +779,13 @@ Public Class MediaExporter
         strRow = strRow.Replace("<$AUDIOLANGUAGE>", fInfo.audLanguage)
         strRow = strRow.Replace("<$AUDIOLONGLANGUAGE>", fInfo.audLongLanguage)
 
+        Dim aInfo As AVSInfo = GetDetailAudioInfo(tMovie.Movie.FileInfo)
+        strRow = strRow.Replace("<$DETAILALLAUDIO>", aInfo.audDetails)
+        strRow = strRow.Replace("<$AUDIOALLBITRATE>", aInfo.audBitrate)
+        strRow = strRow.Replace("<$AUDIOALLCHANNELS>", aInfo.audChannels)
+        strRow = strRow.Replace("<$AUDIOALLLANGUAGE>", aInfo.audLanguage)
+        strRow = strRow.Replace("<$AUDIOALLLONGLANGUAGE>", aInfo.audLongLanguage)
+
         'Subtitle
         strRow = strRow.Replace("<$SUBTITLELANGUAGE>", fInfo.subLanguage)
         strRow = strRow.Replace("<$SUBTITLELONGLANGUAGE>", fInfo.subLongLanguage)
@@ -859,6 +887,13 @@ Public Class MediaExporter
         strRow = strRow.Replace("<$AUDIOCHANNELS>", fInfo.audChannels)
         strRow = strRow.Replace("<$AUDIOLANGUAGE>", fInfo.audLanguage)
         strRow = strRow.Replace("<$AUDIOLONGLANGUAGE>", fInfo.audLongLanguage)
+
+        Dim aInfo As AVSInfo = GetDetailAudioInfo(tEpisode.TVEpisode.FileInfo)
+        strRow = strRow.Replace("<$DETAILALLAUDIO>", aInfo.audDetails)
+        strRow = strRow.Replace("<$AUDIOALLBITRATE>", aInfo.audBitrate)
+        strRow = strRow.Replace("<$AUDIOALLCHANNELS>", aInfo.audChannels)
+        strRow = strRow.Replace("<$AUDIOALLLANGUAGE>", aInfo.audLanguage)
+        strRow = strRow.Replace("<$AUDIOALLLONGLANGUAGE>", aInfo.audLongLanguage)
 
         'Subtitle
         strRow = strRow.Replace("<$SUBTITLELANGUAGE>", fInfo.subLanguage)

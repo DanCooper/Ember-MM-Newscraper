@@ -89,7 +89,7 @@ Public Class Interfaces
         ''' <param name="ScrapeOptions"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Function Scraper_Movie(ByRef oDBElement As Database.DBElement, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As ModuleResult_Data_Movie
+        Function Scraper_Movie(ByRef oDBElement As Database.DBElement, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As ModuleResult_Data_Movie
 
 #End Region 'Methods
 
@@ -125,12 +125,12 @@ Public Class Interfaces
         ''' 
         ''' </summary>
         ''' <param name="oDBElement">Clone of original DBMovieSet. To fill with new TMDB ID's for subsequent scrapers.</param>
-        ''' <param name="ScrapeModifier"></param>
+        ''' <param name="ScrapeModifiers"></param>
         ''' <param name="ScrapeType"></param>
         ''' <param name="ScrapeOptions"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Function Scraper(ByRef oDBElement As Database.DBElement, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As ModuleResult_Data_MovieSet
+        Function Scraper(ByRef oDBElement As Database.DBElement, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As ModuleResult_Data_MovieSet
 
 #End Region 'Methods
 
@@ -170,7 +170,7 @@ Public Class Interfaces
         ''' <param name="ScrapeOptions"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Function Scraper_TVShow(ByRef oDBTV As Database.DBElement, ByRef ScrapeModifier As Structures.ScrapeModifier, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As ModuleResult_Data_TVShow
+        Function Scraper_TVShow(ByRef oDBTV As Database.DBElement, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As ModuleResult_Data_TVShow
         ''' <summary>
         ''' Get single episode information
         ''' </summary>
@@ -220,7 +220,7 @@ Public Class Interfaces
         Function InjectSetupScraper() As Containers.SettingsPanel
         Function QueryScraperCapabilities(ByVal cap As Enums.ModifierType) As Boolean
         Sub SaveSetupScraper(ByVal DoDispose As Boolean)
-        Function Scraper(ByRef DBMovie As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifier As Structures.ScrapeModifier) As Interfaces.ModuleResult
+        Function Scraper(ByRef DBMovie As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers) As Interfaces.ModuleResult
 
 #End Region 'Methods
 
@@ -254,7 +254,7 @@ Public Class Interfaces
         Function InjectSetupScraper() As Containers.SettingsPanel
         Function QueryScraperCapabilities(ByVal cap As Enums.ModifierType) As Boolean
         Sub SaveSetupScraper(ByVal DoDispose As Boolean)
-        Function Scraper(ByRef DBMovieSet As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifier As Structures.ScrapeModifier) As Interfaces.ModuleResult
+        Function Scraper(ByRef DBMovieSet As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers) As Interfaces.ModuleResult
 
 #End Region 'Methods
 
@@ -288,7 +288,7 @@ Public Class Interfaces
         Function InjectSetupScraper() As Containers.SettingsPanel
         Function QueryScraperCapabilities(ByVal cap As Enums.ModifierType) As Boolean
         Sub SaveSetupScraper(ByVal DoDispose As Boolean)
-        Function Scraper(ByRef DBTV As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifier As Structures.ScrapeModifier) As Interfaces.ModuleResult
+        Function Scraper(ByRef DBTV As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers) As Interfaces.ModuleResult
 
 #End Region 'Methods
 

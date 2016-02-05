@@ -161,7 +161,7 @@ Public Class dlgImgSelect
     Private tResultImagesContainer As New MediaContainers.PreferredImagesContainer
     Private tSearchResultsContainer As New MediaContainers.SearchResultsContainer
 
-    Private tScrapeModifier As New Structures.ScrapeModifier
+    Private tScrapeModifiers As New Structures.ScrapeModifiers
     Private tContentType As Enums.ContentType
 
 #End Region 'Fields
@@ -190,14 +190,14 @@ Public Class dlgImgSelect
         pnlTopImages.Height = iTopImage_DistanceTop + iTopImage_Size_Panel.Height + 20
     End Sub
 
-    Public Overloads Function ShowDialog(ByVal DBElement As Database.DBElement, ByVal SearchResultsContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifier As Structures.ScrapeModifier) As DialogResult
+    Public Overloads Function ShowDialog(ByVal DBElement As Database.DBElement, ByVal SearchResultsContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers) As DialogResult
         tSearchResultsContainer = SearchResultsContainer
         tDBElement = DBElement
-        tScrapeModifier = ScrapeModifier
+        tScrapeModifiers = ScrapeModifiers
 
         Select Case DBElement.ContentType
             Case Enums.ContentType.TVShow
-                If ScrapeModifier.withEpisodes OrElse ScrapeModifier.withSeasons Then
+                If ScrapeModifiers.withEpisodes OrElse ScrapeModifiers.withSeasons Then
                     tContentType = Enums.ContentType.TV
                 Else
                     tContentType = Enums.ContentType.TVShow
@@ -207,6 +207,23 @@ Public Class dlgImgSelect
                 DoOnlySeason = DBElement.TVSeason.Season
             Case Else
                 tContentType = DBElement.ContentType
+                If Master.eSettings.GeneralImageFilter AndAlso Master.eSettings.GeneralImageFilterImagedialog Then
+                    'mark all duplicate images in searchcontainer for movie
+                    'posters
+                    If Master.eSettings.GeneralImageFilterPoster Then
+                        Images.FindDuplicateImages(tSearchResultsContainer.MainPosters, DBElement.ContentType, MatchTolerance:=Master.eSettings.GeneralImageFilterPosterMatchTolerance, RemoveDuplicatesFromList:=False)
+                        'this will consider IsDuplicate value of all images by moving all duplicate images to bottom
+                        Dim orderedList = tSearchResultsContainer.MainPosters.OrderByDescending(Function(x) x.IsDuplicate = False).ToList()
+                        tSearchResultsContainer.MainPosters = orderedList
+                    End If
+                    'fanarts
+                    If Master.eSettings.GeneralImageFilterFanart Then
+                        Images.FindDuplicateImages(tSearchResultsContainer.MainFanarts, DBElement.ContentType, MatchTolerance:=Master.eSettings.GeneralImageFilterFanartMatchTolerance, RemoveDuplicatesFromList:=False)
+                        'this will consider IsDuplicate value of all images by moving all duplicate images to bottom
+                        Dim orderedList = tSearchResultsContainer.MainFanarts.OrderByDescending(Function(x) x.IsDuplicate = False).ToList()
+                        tSearchResultsContainer.MainFanarts = orderedList
+                    End If
+                End If
         End Select
 
         SetParameters()
@@ -312,7 +329,18 @@ Public Class dlgImgSelect
         lblListImage_Scraper(iIndex).Text = tTag.Image.Scraper
         lblListImage_Scraper(iIndex).TextAlign = ContentAlignment.MiddleCenter
         pbListImage_Image(iIndex).ContextMenuStrip = cmnuListImage
-        pbListImage_Image(iIndex).Image = If(tImage.ImageOriginal.Image IsNot Nothing, CType(tImage.ImageOriginal.Image.Clone(), Image), If(tImage.ImageThumb.Image IsNot Nothing, CType(tImage.ImageThumb.Image.Clone(), Image), Nothing))
+        If tImage.IsDuplicate Then
+            If tImage.ImageThumb.Image IsNot Nothing Then
+                pbListImage_Image(iIndex).Image = ImageUtils.AddDuplicateStamp(CType(tImage.ImageThumb.Image.Clone, Image))
+            ElseIf tImage.ImageOriginal.Image IsNot Nothing Then
+                pbListImage_Image(iIndex).Image = ImageUtils.AddDuplicateStamp(CType(tImage.ImageOriginal.Image.Clone, Image))
+            Else
+                pbListImage_Image(iIndex).Image = Nothing
+            End If
+        Else
+            pbListImage_Image(iIndex).Image = If(tImage.ImageThumb.Image IsNot Nothing, tImage.ImageThumb.Image,
+                If(tImage.ImageOriginal.Image IsNot Nothing, tImage.ImageOriginal.Image, Nothing))
+        End If
         pbListImage_Image(iIndex).Location = iListImage_Location_Image
         pbListImage_Image(iIndex).Name = iIndex.ToString
         pbListImage_Image(iIndex).Size = iListImage_Size_Image
@@ -388,8 +416,8 @@ Public Class dlgImgSelect
         lblSubImage_Title(iIndex).Text = tTag.strSeason
         lblSubImage_Title(iIndex).TextAlign = ContentAlignment.MiddleCenter
         pbSubImage_Image(iIndex).ContextMenuStrip = cmnuSubImage
-        pbSubImage_Image(iIndex).Image = If(tImage.ImageOriginal.Image IsNot Nothing, CType(tImage.ImageOriginal.Image.Clone(), Image),
-            If(tImage.ImageThumb.Image IsNot Nothing, CType(tImage.ImageThumb.Image.Clone(), Image), Nothing))
+        pbSubImage_Image(iIndex).Image = If(tImage.ImageThumb.Image IsNot Nothing, tImage.ImageThumb.Image,
+            If(tImage.ImageOriginal.Image IsNot Nothing, tImage.ImageOriginal.Image, Nothing))
         pbSubImage_Image(iIndex).Location = iSubImage_Location_Image
         pbSubImage_Image(iIndex).Name = iIndex.ToString
         pbSubImage_Image(iIndex).Size = iSubImage_Size_Image
@@ -454,8 +482,8 @@ Public Class dlgImgSelect
         lblTopImage_Title(iIndex).Text = tTag.strTitle
         lblTopImage_Title(iIndex).TextAlign = ContentAlignment.MiddleCenter
         pbTopImage_Image(iIndex).ContextMenuStrip = cmnuTopImage
-        pbTopImage_Image(iIndex).Image = If(tImage.ImageOriginal.Image IsNot Nothing, CType(tImage.ImageOriginal.Image.Clone(), Image),
-            If(tImage.ImageThumb.Image IsNot Nothing, CType(tImage.ImageThumb.Image.Clone(), Image), Nothing))
+        pbTopImage_Image(iIndex).Image = If(tImage.ImageThumb.Image IsNot Nothing, tImage.ImageThumb.Image,
+            If(tImage.ImageOriginal.Image IsNot Nothing, tImage.ImageOriginal.Image, Nothing))
         pbTopImage_Image(iIndex).Location = iTopImage_Location_Image
         pbTopImage_Image(iIndex).Name = iIndex.ToString
         pbTopImage_Image(iIndex).Size = iTopImage_Size_Image
@@ -1322,7 +1350,6 @@ Public Class dlgImgSelect
         lblListImageList_Resolution(iIndex).ForeColor = Color.White
         lblListImage_Scraper(iIndex).BackColor = Color.Gray
         lblListImage_Scraper(iIndex).ForeColor = Color.White
-
         currListImage = tTag
         'SetImage(tTag)
     End Sub
@@ -1391,7 +1418,7 @@ Public Class dlgImgSelect
     Private Function DownloadAllImages() As Boolean
         Dim iProgress As Integer = 1
 
-        bwImgDownload.ReportProgress(tSearchResultsContainer.EpisodeFanarts.Count + tSearchResultsContainer.EpisodePosters.Count +
+        bwImgDownload.ReportProgress(If(DoEpisodeFanart, tSearchResultsContainer.EpisodeFanarts.Count, 0) + If(DoEpisodePoster, tSearchResultsContainer.EpisodePosters.Count, 0) +
                                         tSearchResultsContainer.MainBanners.Count + tSearchResultsContainer.MainCharacterArts.Count +
                                         tSearchResultsContainer.MainClearArts.Count + tSearchResultsContainer.MainClearLogos.Count +
                                         tSearchResultsContainer.MainDiscArts.Count + tSearchResultsContainer.MainFanarts.Count +
@@ -1870,7 +1897,7 @@ Public Class dlgImgSelect
     End Sub
 
     Public Sub GetPreferredImages()
-        tPreferredImagesContainer = Images.GetPreferredImagesContainer(tDBElement, tSearchResultsContainer, tScrapeModifier)
+        tPreferredImagesContainer = Images.GetPreferredImagesContainer(tDBElement, tSearchResultsContainer, tScrapeModifiers)
         tResultImagesContainer.Episodes.AddRange(tPreferredImagesContainer.Episodes)
         tResultImagesContainer.ImagesContainer.Banner = tPreferredImagesContainer.ImagesContainer.Banner
         tResultImagesContainer.ImagesContainer.CharacterArt = tPreferredImagesContainer.ImagesContainer.CharacterArt
@@ -1987,8 +2014,8 @@ Public Class dlgImgSelect
                         pbSubImage_Image(iIndex).Tag = tTag
                         lblSubImage_Title(iIndex).Tag = tTag
                         lblSubImage_Resolution(iIndex).Tag = tTag
-                        pbSubImage_Image(iIndex).Image = If(tTag.Image.ImageOriginal.Image IsNot Nothing, CType(tTag.Image.ImageOriginal.Image.Clone(), Image),
-                                                         If(tTag.Image.ImageThumb.Image IsNot Nothing, CType(tTag.Image.ImageThumb.Image.Clone(), Image), Nothing))
+                        pbSubImage_Image(iIndex).Image = If(tTag.Image.ImageThumb.Image IsNot Nothing, tTag.Image.ImageThumb.Image,
+                            If(tTag.Image.ImageOriginal.Image IsNot Nothing, tTag.Image.ImageOriginal.Image, Nothing))
                     End If
                 End If
             Next
@@ -2006,8 +2033,8 @@ Public Class dlgImgSelect
                         pbTopImage_Image(iIndex).Tag = tTag
                         lblTopImage_Title(iIndex).Tag = tTag
                         lblTopImage_Resolution(iIndex).Tag = tTag
-                        pbTopImage_Image(iIndex).Image = If(tTag.Image.ImageOriginal.Image IsNot Nothing, CType(tTag.Image.ImageOriginal.Image.Clone(), Image),
-                                                         If(tTag.Image.ImageThumb.Image IsNot Nothing, CType(tTag.Image.ImageThumb.Image.Clone(), Image), Nothing))
+                        pbTopImage_Image(iIndex).Image = If(tTag.Image.ImageThumb.Image IsNot Nothing, tTag.Image.ImageThumb.Image,
+                            If(tTag.Image.ImageOriginal.Image IsNot Nothing, tTag.Image.ImageOriginal.Image, Nothing))
                     End If
                 End If
             Next
@@ -2132,63 +2159,63 @@ Public Class dlgImgSelect
     Private Sub SetParameters()
         Select Case tContentType
             Case Enums.ContentType.Movie
-                DoMainBanner = tScrapeModifier.MainBanner AndAlso Master.eSettings.MovieBannerAnyEnabled
-                DoMainClearArt = tScrapeModifier.MainClearArt AndAlso Master.eSettings.MovieClearArtAnyEnabled
-                DoMainClearLogo = tScrapeModifier.MainClearLogo AndAlso Master.eSettings.MovieClearLogoAnyEnabled
-                DoMainDiscArt = tScrapeModifier.MainDiscArt AndAlso Master.eSettings.MovieDiscArtAnyEnabled
-                DoMainExtrafanarts = tScrapeModifier.MainExtrafanarts AndAlso Master.eSettings.MovieExtrafanartsAnyEnabled
-                DoMainExtrathumbs = tScrapeModifier.MainExtrathumbs AndAlso Master.eSettings.MovieExtrathumbsAnyEnabled
-                DoMainFanart = tScrapeModifier.MainFanart AndAlso Master.eSettings.MovieFanartAnyEnabled
-                DoMainLandscape = tScrapeModifier.MainLandscape AndAlso Master.eSettings.MovieLandscapeAnyEnabled
-                DoMainPoster = tScrapeModifier.MainPoster AndAlso Master.eSettings.MoviePosterAnyEnabled
+                DoMainBanner = tScrapeModifiers.MainBanner AndAlso Master.eSettings.MovieBannerAnyEnabled
+                DoMainClearArt = tScrapeModifiers.MainClearArt AndAlso Master.eSettings.MovieClearArtAnyEnabled
+                DoMainClearLogo = tScrapeModifiers.MainClearLogo AndAlso Master.eSettings.MovieClearLogoAnyEnabled
+                DoMainDiscArt = tScrapeModifiers.MainDiscArt AndAlso Master.eSettings.MovieDiscArtAnyEnabled
+                DoMainExtrafanarts = tScrapeModifiers.MainExtrafanarts AndAlso Master.eSettings.MovieExtrafanartsAnyEnabled
+                DoMainExtrathumbs = tScrapeModifiers.MainExtrathumbs AndAlso Master.eSettings.MovieExtrathumbsAnyEnabled
+                DoMainFanart = tScrapeModifiers.MainFanart AndAlso Master.eSettings.MovieFanartAnyEnabled
+                DoMainLandscape = tScrapeModifiers.MainLandscape AndAlso Master.eSettings.MovieLandscapeAnyEnabled
+                DoMainPoster = tScrapeModifiers.MainPoster AndAlso Master.eSettings.MoviePosterAnyEnabled
             Case Enums.ContentType.MovieSet
-                DoMainBanner = tScrapeModifier.MainBanner AndAlso Master.eSettings.MovieSetBannerAnyEnabled
-                DoMainClearArt = tScrapeModifier.MainClearArt AndAlso Master.eSettings.MovieSetClearArtAnyEnabled
-                DoMainClearLogo = tScrapeModifier.MainClearLogo AndAlso Master.eSettings.MovieSetClearLogoAnyEnabled
-                DoMainDiscArt = tScrapeModifier.MainDiscArt AndAlso Master.eSettings.MovieSetDiscArtAnyEnabled
-                DoMainFanart = tScrapeModifier.MainFanart AndAlso Master.eSettings.MovieSetFanartAnyEnabled
-                DoMainLandscape = tScrapeModifier.MainLandscape AndAlso Master.eSettings.MovieSetLandscapeAnyEnabled
-                DoMainPoster = tScrapeModifier.MainPoster AndAlso Master.eSettings.MovieSetPosterAnyEnabled
+                DoMainBanner = tScrapeModifiers.MainBanner AndAlso Master.eSettings.MovieSetBannerAnyEnabled
+                DoMainClearArt = tScrapeModifiers.MainClearArt AndAlso Master.eSettings.MovieSetClearArtAnyEnabled
+                DoMainClearLogo = tScrapeModifiers.MainClearLogo AndAlso Master.eSettings.MovieSetClearLogoAnyEnabled
+                DoMainDiscArt = tScrapeModifiers.MainDiscArt AndAlso Master.eSettings.MovieSetDiscArtAnyEnabled
+                DoMainFanart = tScrapeModifiers.MainFanart AndAlso Master.eSettings.MovieSetFanartAnyEnabled
+                DoMainLandscape = tScrapeModifiers.MainLandscape AndAlso Master.eSettings.MovieSetLandscapeAnyEnabled
+                DoMainPoster = tScrapeModifiers.MainPoster AndAlso Master.eSettings.MovieSetPosterAnyEnabled
             Case Enums.ContentType.TV
-                DoAllSeasonsBanner = tScrapeModifier.AllSeasonsBanner AndAlso Master.eSettings.TVAllSeasonsBannerAnyEnabled
-                DoAllSeasonsFanart = tScrapeModifier.AllSeasonsFanart AndAlso Master.eSettings.TVAllSeasonsFanartAnyEnabled
-                DoAllSeasonsLandscape = tScrapeModifier.AllSeasonsLandscape AndAlso Master.eSettings.TVAllSeasonsLandscapeAnyEnabled
-                DoAllSeasonsPoster = tScrapeModifier.AllSeasonsPoster AndAlso Master.eSettings.TVAllSeasonsPosterAnyEnabled
-                DoEpisodeFanart = tScrapeModifier.EpisodeFanart AndAlso Master.eSettings.TVEpisodeFanartAnyEnabled
-                DoEpisodePoster = tScrapeModifier.EpisodePoster AndAlso Master.eSettings.TVEpisodePosterAnyEnabled
-                DoMainBanner = tScrapeModifier.MainBanner AndAlso Master.eSettings.TVShowBannerAnyEnabled
-                DoMainCharacterArt = tScrapeModifier.MainCharacterArt AndAlso Master.eSettings.TVShowCharacterArtAnyEnabled
-                DoMainClearArt = tScrapeModifier.MainClearArt AndAlso Master.eSettings.TVShowClearArtAnyEnabled
-                DoMainClearLogo = tScrapeModifier.MainClearLogo AndAlso Master.eSettings.TVShowClearLogoAnyEnabled
-                DoMainExtrafanarts = tScrapeModifier.MainExtrafanarts AndAlso Master.eSettings.TVShowExtrafanartsAnyEnabled
-                DoMainFanart = tScrapeModifier.MainFanart AndAlso Master.eSettings.TVShowFanartAnyEnabled
-                DoMainLandscape = tScrapeModifier.MainLandscape AndAlso Master.eSettings.TVShowLandscapeAnyEnabled
-                DoMainPoster = tScrapeModifier.MainPoster AndAlso Master.eSettings.TVShowPosterAnyEnabled
-                DoSeasonBanner = tScrapeModifier.SeasonBanner AndAlso Master.eSettings.TVSeasonBannerAnyEnabled
-                DoSeasonFanart = tScrapeModifier.SeasonFanart AndAlso Master.eSettings.TVSeasonFanartAnyEnabled
-                DoSeasonLandscape = tScrapeModifier.SeasonLandscape AndAlso Master.eSettings.TVSeasonLandscapeAnyEnabled
-                DoSeasonPoster = tScrapeModifier.SeasonPoster AndAlso Master.eSettings.TVSeasonPosterAnyEnabled
+                DoAllSeasonsBanner = tScrapeModifiers.AllSeasonsBanner AndAlso Master.eSettings.TVAllSeasonsBannerAnyEnabled
+                DoAllSeasonsFanart = tScrapeModifiers.AllSeasonsFanart AndAlso Master.eSettings.TVAllSeasonsFanartAnyEnabled
+                DoAllSeasonsLandscape = tScrapeModifiers.AllSeasonsLandscape AndAlso Master.eSettings.TVAllSeasonsLandscapeAnyEnabled
+                DoAllSeasonsPoster = tScrapeModifiers.AllSeasonsPoster AndAlso Master.eSettings.TVAllSeasonsPosterAnyEnabled
+                'DoEpisodeFanart = tScrapeModifiers.EpisodeFanart AndAlso Master.eSettings.TVEpisodeFanartAnyEnabled
+                'DoEpisodePoster = tScrapeModifiers.EpisodePoster AndAlso Master.eSettings.TVEpisodePosterAnyEnabled
+                DoMainBanner = tScrapeModifiers.MainBanner AndAlso Master.eSettings.TVShowBannerAnyEnabled
+                DoMainCharacterArt = tScrapeModifiers.MainCharacterArt AndAlso Master.eSettings.TVShowCharacterArtAnyEnabled
+                DoMainClearArt = tScrapeModifiers.MainClearArt AndAlso Master.eSettings.TVShowClearArtAnyEnabled
+                DoMainClearLogo = tScrapeModifiers.MainClearLogo AndAlso Master.eSettings.TVShowClearLogoAnyEnabled
+                DoMainExtrafanarts = tScrapeModifiers.MainExtrafanarts AndAlso Master.eSettings.TVShowExtrafanartsAnyEnabled
+                DoMainFanart = tScrapeModifiers.MainFanart AndAlso Master.eSettings.TVShowFanartAnyEnabled
+                DoMainLandscape = tScrapeModifiers.MainLandscape AndAlso Master.eSettings.TVShowLandscapeAnyEnabled
+                DoMainPoster = tScrapeModifiers.MainPoster AndAlso Master.eSettings.TVShowPosterAnyEnabled
+                DoSeasonBanner = tScrapeModifiers.SeasonBanner AndAlso Master.eSettings.TVSeasonBannerAnyEnabled
+                DoSeasonFanart = tScrapeModifiers.SeasonFanart AndAlso Master.eSettings.TVSeasonFanartAnyEnabled
+                DoSeasonLandscape = tScrapeModifiers.SeasonLandscape AndAlso Master.eSettings.TVSeasonLandscapeAnyEnabled
+                DoSeasonPoster = tScrapeModifiers.SeasonPoster AndAlso Master.eSettings.TVSeasonPosterAnyEnabled
             Case Enums.ContentType.TVShow
-                DoMainBanner = tScrapeModifier.MainBanner AndAlso Master.eSettings.TVShowBannerAnyEnabled
-                DoMainCharacterArt = tScrapeModifier.MainCharacterArt AndAlso Master.eSettings.TVShowCharacterArtAnyEnabled
-                DoMainClearArt = tScrapeModifier.MainClearArt AndAlso Master.eSettings.TVShowClearArtAnyEnabled
-                DoMainClearLogo = tScrapeModifier.MainClearLogo AndAlso Master.eSettings.TVShowClearLogoAnyEnabled
-                DoMainExtrafanarts = tScrapeModifier.MainExtrafanarts AndAlso Master.eSettings.TVShowExtrafanartsAnyEnabled
-                DoMainFanart = tScrapeModifier.MainFanart AndAlso Master.eSettings.TVShowFanartAnyEnabled
-                DoMainLandscape = tScrapeModifier.MainLandscape AndAlso Master.eSettings.TVShowLandscapeAnyEnabled
-                DoMainPoster = tScrapeModifier.MainPoster AndAlso Master.eSettings.TVShowPosterAnyEnabled
+                DoMainBanner = tScrapeModifiers.MainBanner AndAlso Master.eSettings.TVShowBannerAnyEnabled
+                DoMainCharacterArt = tScrapeModifiers.MainCharacterArt AndAlso Master.eSettings.TVShowCharacterArtAnyEnabled
+                DoMainClearArt = tScrapeModifiers.MainClearArt AndAlso Master.eSettings.TVShowClearArtAnyEnabled
+                DoMainClearLogo = tScrapeModifiers.MainClearLogo AndAlso Master.eSettings.TVShowClearLogoAnyEnabled
+                DoMainExtrafanarts = tScrapeModifiers.MainExtrafanarts AndAlso Master.eSettings.TVShowExtrafanartsAnyEnabled
+                DoMainFanart = tScrapeModifiers.MainFanart AndAlso Master.eSettings.TVShowFanartAnyEnabled
+                DoMainLandscape = tScrapeModifiers.MainLandscape AndAlso Master.eSettings.TVShowLandscapeAnyEnabled
+                DoMainPoster = tScrapeModifiers.MainPoster AndAlso Master.eSettings.TVShowPosterAnyEnabled
             Case Enums.ContentType.TVEpisode
-                DoEpisodeFanart = tScrapeModifier.EpisodeFanart AndAlso Master.eSettings.TVEpisodeFanartAnyEnabled
-                DoEpisodePoster = tScrapeModifier.EpisodePoster AndAlso Master.eSettings.TVEpisodePosterAnyEnabled
+                DoEpisodeFanart = tScrapeModifiers.EpisodeFanart AndAlso Master.eSettings.TVEpisodeFanartAnyEnabled
+                DoEpisodePoster = tScrapeModifiers.EpisodePoster AndAlso Master.eSettings.TVEpisodePosterAnyEnabled
             Case Enums.ContentType.TVSeason
-                DoAllSeasonsBanner = tScrapeModifier.AllSeasonsBanner AndAlso Master.eSettings.TVAllSeasonsBannerAnyEnabled
-                DoAllSeasonsFanart = tScrapeModifier.AllSeasonsFanart AndAlso Master.eSettings.TVAllSeasonsFanartAnyEnabled
-                DoAllSeasonsLandscape = tScrapeModifier.AllSeasonsLandscape AndAlso Master.eSettings.TVAllSeasonsLandscapeAnyEnabled
-                DoAllSeasonsPoster = tScrapeModifier.AllSeasonsPoster AndAlso Master.eSettings.TVAllSeasonsPosterAnyEnabled
-                DoSeasonBanner = tScrapeModifier.SeasonBanner AndAlso Master.eSettings.TVSeasonBannerAnyEnabled
-                DoSeasonFanart = tScrapeModifier.SeasonFanart AndAlso Master.eSettings.TVSeasonFanartAnyEnabled
-                DoSeasonLandscape = tScrapeModifier.SeasonLandscape AndAlso Master.eSettings.TVSeasonLandscapeAnyEnabled
-                DoSeasonPoster = tScrapeModifier.SeasonPoster AndAlso Master.eSettings.TVSeasonPosterAnyEnabled
+                DoAllSeasonsBanner = tScrapeModifiers.AllSeasonsBanner AndAlso Master.eSettings.TVAllSeasonsBannerAnyEnabled
+                DoAllSeasonsFanart = tScrapeModifiers.AllSeasonsFanart AndAlso Master.eSettings.TVAllSeasonsFanartAnyEnabled
+                DoAllSeasonsLandscape = tScrapeModifiers.AllSeasonsLandscape AndAlso Master.eSettings.TVAllSeasonsLandscapeAnyEnabled
+                DoAllSeasonsPoster = tScrapeModifiers.AllSeasonsPoster AndAlso Master.eSettings.TVAllSeasonsPosterAnyEnabled
+                DoSeasonBanner = tScrapeModifiers.SeasonBanner AndAlso Master.eSettings.TVSeasonBannerAnyEnabled
+                DoSeasonFanart = tScrapeModifiers.SeasonFanart AndAlso Master.eSettings.TVSeasonFanartAnyEnabled
+                DoSeasonLandscape = tScrapeModifiers.SeasonLandscape AndAlso Master.eSettings.TVSeasonLandscapeAnyEnabled
+                DoSeasonPoster = tScrapeModifiers.SeasonPoster AndAlso Master.eSettings.TVSeasonPosterAnyEnabled
         End Select
     End Sub
 

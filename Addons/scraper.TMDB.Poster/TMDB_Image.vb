@@ -33,9 +33,9 @@ Public Class TMDB_Image
 
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
-    Public Shared ConfigModifier_Movie As New Structures.ScrapeModifier
-    Public Shared ConfigModifier_MovieSet As New Structures.ScrapeModifier
-    Public Shared ConfigModifier_TV As New Structures.ScrapeModifier
+    Public Shared ConfigModifier_Movie As New Structures.ScrapeModifiers
+    Public Shared ConfigModifier_MovieSet As New Structures.ScrapeModifiers
+    Public Shared ConfigModifier_TV As New Structures.ScrapeModifiers
     Public Shared _AssemblyName As String
 
     Private TMDBId As String
@@ -344,7 +344,7 @@ Public Class TMDB_Image
         ConfigModifier_TV.MainExtrafanarts = ConfigModifier_TV.MainFanart
     End Sub
 
-    Function Scraper_Movie(ByRef DBMovie As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifier As Structures.ScrapeModifier) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_Movie.Scraper
+    Function Scraper_Movie(ByRef DBMovie As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_Movie.Scraper
         logger.Trace("Started scrape TMDB")
 
         LoadSettings_Movie()
@@ -358,16 +358,16 @@ Public Class TMDB_Image
             Settings.APIKey = _SpecialSettings_Movie.APIKey
 
             Dim _scraper As New TMDB.Scraper(Settings)
-            Dim FilteredModifier As Structures.ScrapeModifier = Functions.ScrapeModifierAndAlso(ScrapeModifier, ConfigModifier_Movie)
+            Dim FilteredModifiers As Structures.ScrapeModifiers = Functions.ScrapeModifiersAndAlso(ScrapeModifiers, ConfigModifier_Movie)
 
-            ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovie.Movie.TMDBID, FilteredModifier, Enums.ContentType.Movie)
+            ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovie.Movie.TMDBID, FilteredModifiers, Enums.ContentType.Movie)
         End If
 
         logger.Trace("Finished TMDB Scraper")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Function Scraper_MovieSet(ByRef DBMovieSet As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifier As Structures.ScrapeModifier) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_MovieSet.Scraper
+    Function Scraper_MovieSet(ByRef DBMovieSet As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_MovieSet.Scraper
         logger.Trace("Started scrape TMDB")
 
         LoadSettings_MovieSet()
@@ -383,16 +383,16 @@ Public Class TMDB_Image
             Settings.APIKey = _SpecialSettings_MovieSet.APIKey
 
             Dim _scraper As New TMDB.Scraper(Settings)
-            Dim FilteredModifier As Structures.ScrapeModifier = Functions.ScrapeModifierAndAlso(ScrapeModifier, ConfigModifier_MovieSet)
+            Dim FilteredModifiers As Structures.ScrapeModifiers = Functions.ScrapeModifiersAndAlso(ScrapeModifiers, ConfigModifier_MovieSet)
 
-            ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovieSet.MovieSet.TMDB, FilteredModifier, Enums.ContentType.MovieSet)
+            ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovieSet.MovieSet.TMDB, FilteredModifiers, Enums.ContentType.MovieSet)
         End If
 
         logger.Trace("Finished TMDB Scraper")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Function Scraper_TV(ByRef DBTV As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifier As Structures.ScrapeModifier) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_TV.Scraper
+    Function Scraper_TV(ByRef DBTV As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_TV.Scraper
         logger.Trace("Started scrape TMDB")
 
         LoadSettings_TV()
@@ -401,33 +401,35 @@ Public Class TMDB_Image
         Settings.APIKey = _SpecialSettings_TV.APIKey
 
         Dim _scraper As New TMDB.Scraper(Settings)
-        Dim FilteredModifier As Structures.ScrapeModifier = Functions.ScrapeModifierAndAlso(ScrapeModifier, ConfigModifier_TV)
+        Dim FilteredModifiers As Structures.ScrapeModifiers = Functions.ScrapeModifiersAndAlso(ScrapeModifiers, ConfigModifier_TV)
 
         If DBTV.TVShow IsNot Nothing AndAlso String.IsNullOrEmpty(DBTV.TVShow.TMDB) Then
             If Not String.IsNullOrEmpty(DBTV.TVShow.TVDB) Then
                 DBTV.TVShow.TMDB = _scraper.GetTMDBbyTVDB(DBTV.TVShow.TVDB)
+            ElseIf Not String.IsNullOrEmpty(DBTV.TVShow.IMDB) Then
+                DBTV.TVShow.TMDB = _scraper.GetTMDBbyIMDB(DBTV.TVShow.IMDB)
             End If
         End If
 
         Select Case DBTV.ContentType
             Case Enums.ContentType.TVEpisode
                 If Not String.IsNullOrEmpty(DBTV.TVShow.TMDB) Then
-                    ImagesContainer = _scraper.GetImages_TVEpisode(DBTV.TVShow.TMDB, DBTV.TVEpisode.Season, DBTV.TVEpisode.Episode, FilteredModifier)
-                    If FilteredModifier.MainFanart Then
-                        ImagesContainer.MainFanarts = _scraper.GetImages_TVShow(DBTV.TVShow.TMDB, FilteredModifier).MainFanarts
+                    ImagesContainer = _scraper.GetImages_TVEpisode(DBTV.TVShow.TMDB, DBTV.TVEpisode.Season, DBTV.TVEpisode.Episode, FilteredModifiers)
+                    If FilteredModifiers.MainFanart Then
+                        ImagesContainer.MainFanarts = _scraper.GetImages_TVShow(DBTV.TVShow.TMDB, FilteredModifiers).MainFanarts
                     End If
                 Else
                     logger.Trace(String.Concat("No TMDB ID exist to search: ", DBTV.ListTitle))
                 End If
             Case Enums.ContentType.TVSeason
                 If Not String.IsNullOrEmpty(DBTV.TVShow.TMDB) Then
-                    ImagesContainer = _scraper.GetImages_TVShow(DBTV.TVShow.TMDB, FilteredModifier)
+                    ImagesContainer = _scraper.GetImages_TVShow(DBTV.TVShow.TMDB, FilteredModifiers)
                 Else
                     logger.Trace(String.Concat("No TVDB ID exist to search: ", DBTV.ListTitle))
                 End If
             Case Enums.ContentType.TVShow
                 If Not String.IsNullOrEmpty(DBTV.TVShow.TMDB) Then
-                    ImagesContainer = _scraper.GetImages_TVShow(DBTV.TVShow.TMDB, FilteredModifier)
+                    ImagesContainer = _scraper.GetImages_TVShow(DBTV.TVShow.TMDB, FilteredModifiers)
                 Else
                     logger.Trace(String.Concat("No TVDB ID exist to search: ", DBTV.ListTitle))
                 End If
