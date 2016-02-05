@@ -110,6 +110,11 @@ EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Trailer.Davestrailerpage", "Addons\scraper.Davestrailerpage.Trailer\scraper.Trailer.Davestrailerpage.vbproj", "{2113C1FB-C2C9-437C-AAC3-D72507739F14}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.VLCPlayer", "Addons\generic.EmberCore.VLC\generic.EmberCore.VLCPlayer.vbproj", "{1E72DA8E-FAB2-41BC-92B1-F06A5D0C660A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{914DE831-4DFA-44F6-96C1-27CF3B89A2CD} = {914DE831-4DFA-44F6-96C1-27CF3B89A2CD}
+		{24860783-A729-4A14-98C0-9A34BF138BDB} = {24860783-A729-4A14-98C0-9A34BF138BDB}
+		{47E251AE-A5EE-4526-BDC1-3C008936E80A} = {47E251AE-A5EE-4526-BDC1-3C008936E80A}
+	EndProjectSection
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "generic.EmberCore.TagManager", "Addons\generic.EmberCore.TagManager\generic.EmberCore.TagManager.vbproj", "{E5B54E27-B13B-4C5D-BD3E-941837C4A598}"
 EndProject
@@ -131,11 +136,11 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Trailer.Videobuster
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "scraper.Data.Trakttv", "Addons\scraper.Trakttv.Data\scraper.Data.Trakttv.vbproj", "{953436C0-3624-4594-8E00-D3487EB197A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vlc.DotNet.Core - CLR 4 - .Net 4.5", "..\..\Visual Studio 2015\Projects\Vlc.DotNet-master\src\Vlc.DotNet.Core\Vlc.DotNet.Core - CLR 4 - .Net 4.5.csproj", "{24860783-A729-4A14-98C0-9A34BF138BDB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vlc.DotNet.Core.Interops - CLR 4 - .Net 4.5", "VLC.DotNet\src\Vlc.DotNet.Core.Interops\Vlc.DotNet.Core.Interops - CLR 4 - .Net 4.5.csproj", "{47E251AE-A5EE-4526-BDC1-3C008936E80A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vlc.DotNet.Core.Interops - CLR 4 - .Net 4.5", "..\..\Visual Studio 2015\Projects\Vlc.DotNet-master\src\Vlc.DotNet.Core.Interops\Vlc.DotNet.Core.Interops - CLR 4 - .Net 4.5.csproj", "{47E251AE-A5EE-4526-BDC1-3C008936E80A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vlc.DotNet.Core - CLR 4 - .Net 4.5", "VLC.DotNet\src\Vlc.DotNet.Core\Vlc.DotNet.Core - CLR 4 - .Net 4.5.csproj", "{24860783-A729-4A14-98C0-9A34BF138BDB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vlc.DotNet.Forms - CLR 4 - .Net 4.5", "..\..\Visual Studio 2015\Projects\Vlc.DotNet-master\src\Vlc.DotNet.Forms\Vlc.DotNet.Forms - CLR 4 - .Net 4.5.csproj", "{914DE831-4DFA-44F6-96C1-27CF3B89A2CD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vlc.DotNet.Forms - CLR 4 - .Net 4.5", "VLC.DotNet\src\Vlc.DotNet.Forms\Vlc.DotNet.Forms - CLR 4 - .Net 4.5.csproj", "{914DE831-4DFA-44F6-96C1-27CF3B89A2CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -649,17 +654,8 @@ Global
 		{953436C0-3624-4594-8E00-D3487EB197A7}.Release|x64.Build.0 = Release|x64
 		{953436C0-3624-4594-8E00-D3487EB197A7}.Release|x86.ActiveCfg = Release|x86
 		{953436C0-3624-4594-8E00-D3487EB197A7}.Release|x86.Build.0 = Release|x86
-		{24860783-A729-4A14-98C0-9A34BF138BDB}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{24860783-A729-4A14-98C0-9A34BF138BDB}.Debug|x64.ActiveCfg = Debug|x64
-		{24860783-A729-4A14-98C0-9A34BF138BDB}.Debug|x64.Build.0 = Debug|x64
-		{24860783-A729-4A14-98C0-9A34BF138BDB}.Debug|x86.ActiveCfg = Debug|x86
-		{24860783-A729-4A14-98C0-9A34BF138BDB}.Debug|x86.Build.0 = Debug|x86
-		{24860783-A729-4A14-98C0-9A34BF138BDB}.Release|Any CPU.ActiveCfg = Release|x86
-		{24860783-A729-4A14-98C0-9A34BF138BDB}.Release|x64.ActiveCfg = Release|x64
-		{24860783-A729-4A14-98C0-9A34BF138BDB}.Release|x64.Build.0 = Release|x64
-		{24860783-A729-4A14-98C0-9A34BF138BDB}.Release|x86.ActiveCfg = Release|x86
-		{24860783-A729-4A14-98C0-9A34BF138BDB}.Release|x86.Build.0 = Release|x86
-		{47E251AE-A5EE-4526-BDC1-3C008936E80A}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{47E251AE-A5EE-4526-BDC1-3C008936E80A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47E251AE-A5EE-4526-BDC1-3C008936E80A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47E251AE-A5EE-4526-BDC1-3C008936E80A}.Debug|x64.ActiveCfg = Debug|x64
 		{47E251AE-A5EE-4526-BDC1-3C008936E80A}.Debug|x64.Build.0 = Debug|x64
 		{47E251AE-A5EE-4526-BDC1-3C008936E80A}.Debug|x86.ActiveCfg = Debug|x86
@@ -669,7 +665,19 @@ Global
 		{47E251AE-A5EE-4526-BDC1-3C008936E80A}.Release|x64.Build.0 = Release|x64
 		{47E251AE-A5EE-4526-BDC1-3C008936E80A}.Release|x86.ActiveCfg = Release|x86
 		{47E251AE-A5EE-4526-BDC1-3C008936E80A}.Release|x86.Build.0 = Release|x86
-		{914DE831-4DFA-44F6-96C1-27CF3B89A2CD}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{24860783-A729-4A14-98C0-9A34BF138BDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24860783-A729-4A14-98C0-9A34BF138BDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24860783-A729-4A14-98C0-9A34BF138BDB}.Debug|x64.ActiveCfg = Debug|x64
+		{24860783-A729-4A14-98C0-9A34BF138BDB}.Debug|x64.Build.0 = Debug|x64
+		{24860783-A729-4A14-98C0-9A34BF138BDB}.Debug|x86.ActiveCfg = Debug|x86
+		{24860783-A729-4A14-98C0-9A34BF138BDB}.Debug|x86.Build.0 = Debug|x86
+		{24860783-A729-4A14-98C0-9A34BF138BDB}.Release|Any CPU.ActiveCfg = Release|x86
+		{24860783-A729-4A14-98C0-9A34BF138BDB}.Release|x64.ActiveCfg = Release|x64
+		{24860783-A729-4A14-98C0-9A34BF138BDB}.Release|x64.Build.0 = Release|x64
+		{24860783-A729-4A14-98C0-9A34BF138BDB}.Release|x86.ActiveCfg = Release|x86
+		{24860783-A729-4A14-98C0-9A34BF138BDB}.Release|x86.Build.0 = Release|x86
+		{914DE831-4DFA-44F6-96C1-27CF3B89A2CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{914DE831-4DFA-44F6-96C1-27CF3B89A2CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{914DE831-4DFA-44F6-96C1-27CF3B89A2CD}.Debug|x64.ActiveCfg = Debug|x64
 		{914DE831-4DFA-44F6-96C1-27CF3B89A2CD}.Debug|x64.Build.0 = Debug|x64
 		{914DE831-4DFA-44F6-96C1-27CF3B89A2CD}.Debug|x86.ActiveCfg = Debug|x86

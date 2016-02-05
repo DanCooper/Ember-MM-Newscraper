@@ -36,7 +36,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\EmberMM - $(Configuration) - $(Platform)\</OutputPath>
+    <OutputPath>..\EmberMM\$(Configuration) - $(Platform)\</OutputPath>
     <DocumentationFile>Scraper_Test.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <DebugType>full</DebugType>
@@ -46,7 +46,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\EmberMM - $(Configuration) - $(Platform)\</OutputPath>
+    <OutputPath>..\EmberMM\$(Configuration) - $(Platform)\</OutputPath>
     <DocumentationFile>Scraper_Test.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
@@ -59,7 +59,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\EmberMM - $(Configuration) - $(Platform)\</OutputPath>
+    <OutputPath>..\EmberMM\$(Configuration) - $(Platform)\</OutputPath>
     <DocumentationFile>Scraper_Test.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <DebugType>full</DebugType>
@@ -68,7 +68,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\EmberMM - $(Configuration) - $(Platform)\</OutputPath>
+    <OutputPath>..\EmberMM\$(Configuration) - $(Platform)\</OutputPath>
     <DocumentationFile>Scraper_Test.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>

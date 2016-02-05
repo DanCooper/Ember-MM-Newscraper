@@ -24,7 +24,7 @@ Imports System.IO
 Imports System.Text.RegularExpressions
 Imports EmberAPI
 Imports NLog
-Imports Vlc.DotNet.Forms
+Imports Vlc.DotNet
 
 
 Public Class frmVideoPlayer
@@ -51,34 +51,55 @@ Public Class frmVideoPlayer
     End Sub
 
     Public Sub New()
+        Dim aVlcControl As Forms.VlcControl
+        Dim aPath As String
 
         ' This call is required by the designer.
-        ' Me.myVlcControl.VlcLibDirectory = New DirectoryInfo(clsAdvancedSettings.GetSetting("VLCPath", String.Empty, "generic.EmberCore.VLCPlayer"))
         InitializeComponent()
         Me.SetUp()
         ' Add any initialization after the InitializeComponent() call.
+        If Environment.Is64BitOperatingSystem Then
+            If Environment.Is64BitProcess Then
+                aPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "VideoLAN\VLC")
+            Else
+                aPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "VideoLAN\VLC")
+            End If
+        Else
+            aPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "VideoLAN\VLC")
+        End If
+        If Directory.Exists(aPath) Then
+            aVlcControl = New Forms.VlcControl
+            aVlcControl.BeginInit()
+            aVlcControl.Name = "VlcControl"
+            aVlcControl.VlcLibDirectory = New DirectoryInfo(aPath)
+            aVlcControl.Parent = pnlPlayer
+            aVlcControl.Dock = DockStyle.Fill
+            AddHandler aVlcControl.VlcLibDirectoryNeeded, AddressOf checkVLCDir
 
+            pnlPlayer.Controls.Add(aVlcControl)
+
+            aVlcControl.EndInit()
+        Else
+
+        End If
     End Sub
 
-    Public Sub New(ByVal URL As String)
-
-        ' This call is required by the designer.
-        'Me.myVlcControl.VlcLibDirectory = New DirectoryInfo(clsAdvancedSettings.GetSetting("VLCPath", String.Empty, "generic.EmberCore.VLCPlayer"))
-        InitializeComponent()
-        Me.SetUp()
-        PlaylistAdd(URL)
-        ' Add any initialization after the InitializeComponent() call.
-
+    Public Sub New(aFile As String)
+        MyBase.New()
+        PlaylistAdd(aFile)
     End Sub
-
     Public Sub PlayerPlay()
+        Dim aVlcControl As Vlc.DotNet.Forms.VlcControl
+        aVlcControl = CType(pnlPlayer.Controls.Find("VlcControl", True)(0), Vlc.DotNet.Forms.VlcControl)
         For Each aPath In PlayList
-            'Me.myVlcControl.Play(aPath)
+            aVlcControl.Play(aPath)
         Next
     End Sub
 
     Public Sub PlayerStop()
-        'Me.myVlcControl.Stop()
+        Dim aVlcControl As Vlc.DotNet.Forms.VlcControl
+        aVlcControl = CType(pnlPlayer.Controls.Find("VlcControl", True)(0), Vlc.DotNet.Forms.VlcControl)
+        aVlcControl.Stop()
     End Sub
 
     Public Sub PlaylistAdd(ByVal URL As String)
@@ -95,27 +116,35 @@ Public Class frmVideoPlayer
         PlayList.Clear()
     End Sub
 
-    Private Sub OnVlcControlNeedLibDirectory(sender As Object, e As Vlc.DotNet.Forms.VlcLibDirectoryNeededEventArgs)
-        Dim aP As String
+    Private Sub checkVLCDir(sender As Object, e As Forms.VlcLibDirectoryNeededEventArgs)
+        Dim aPath As String
+        Dim aTitle As String
 
         If Environment.Is64BitOperatingSystem Then
-            aP = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "VideoLAN\VLC")
+            If Environment.Is64BitProcess Then
+                aPath = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles)
+                aTitle = Master.eLang.GetString(1477, "Select VLC x64 bit Path")
+            Else
+                aPath = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86)
+                aTitle = Master.eLang.GetString(1477, "Select VLC x86 bit Path")
+            End If
         Else
-            aP = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "VideoLAN\VLC")
+            aPath = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles)
+            aTitle = Master.eLang.GetString(1477, "Select VLC x86 bit Path")
         End If
-
-        If Not File.Exists(Path.Combine(aP, "libvlc.dll")) Then
+        If Not File.Exists(Path.Combine(Path.Combine(aPath, "VideoLAN\VLC"), "libvlc.dll")) Then
             Using fbdDialog As New FolderBrowserDialog()
-                fbdDialog.Description = Master.eLang.GetString(1477, "Select VLC Path")
-                fbdDialog.SelectedPath = clsAdvancedSettings.GetSetting("VLCPath", String.Empty, "generic.EmberCore.VLCPlayer")
+                fbdDialog.Description = aTitle
+                fbdDialog.SelectedPath = aPath
 
                 If fbdDialog.ShowDialog() = DialogResult.OK Then
                     e.VlcLibDirectory = New DirectoryInfo(fbdDialog.SelectedPath)
                 End If
             End Using
         Else
-            e.VlcLibDirectory = New DirectoryInfo(aP)
+            e.VlcLibDirectory = New DirectoryInfo(Path.Combine(aPath, "VideoLAN\VLC"))
         End If
+        e.VlcLibDirectory = Nothing
     End Sub
 
 #End Region

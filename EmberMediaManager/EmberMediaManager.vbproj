@@ -54,7 +54,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>false</DefineTrace>
-    <OutputPath>..\EmberMM - $(Configuration) - $(Platform)\</OutputPath>
+    <OutputPath>..\EmberMM\$(Configuration) - $(Platform)\</OutputPath>
     <NoWarn>42353,42354,42355</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
@@ -70,7 +70,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\EmberMM - $(Configuration) - $(Platform)\</OutputPath>
+    <OutputPath>..\EmberMM\$(Configuration) - $(Platform)\</OutputPath>
     <Optimize>true</Optimize>
     <NoWarn>42353,42354,42355</NoWarn>
     <DebugType>pdbonly</DebugType>
@@ -88,7 +88,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
-    <OutputPath>..\EmberMM - $(Configuration) - $(Platform)\</OutputPath>
+    <OutputPath>..\EmberMM\$(Configuration) - $(Platform)\</OutputPath>
     <DocumentationFile>Ember Media Manager.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <NoWarn>42353,42354,42355</NoWarn>
@@ -99,7 +99,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\EmberMM - $(Configuration) - $(Platform)\</OutputPath>
+    <OutputPath>..\EmberMM\$(Configuration) - $(Platform)\</OutputPath>
     <DocumentationFile>Ember Media Manager.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <NoWarn>42353,42354,42355</NoWarn>
@@ -114,7 +114,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\EmberMM\$(Configuration) - $(Platform)\</OutputPath>
     <DocumentationFile>Ember Media Manager.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <NoWarn>42353,42354,42355</NoWarn>
@@ -125,7 +125,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\EmberMM\$(Configuration) - $(Platform)\</OutputPath>
     <DocumentationFile>Ember Media Manager.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <NoWarn>42353,42354,42355</NoWarn>
@@ -5564,7 +5564,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(ProjectDir)$(PlatformName)" "$(TargetDir)Bin" /E /I /R /Y
-del "$(TargetDir)Bin\SQLite.Interop.dll" /F /Q
+
 </PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.99.0\build\net45\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.99.0\build\net45\System.Data.SQLite.Core.targets')" />

@@ -21,43 +21,63 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\..\build\Vlc.DotNet.Core\Debug - x64 - .Net 4.5\</OutputPath>
+    <OutputPath>..\..\..\EmberMM\$(Configuration) - $(Platform)\</OutputPath>
+    <DocumentationFile>..\..\..\EmberMM\$(Configuration) - $(Platform)\Vlc.DotNet.Core.XML</DocumentationFile>
     <DefineConstants>TRACE;DEBUG;CLR4;NET45;X64</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>..\..\build\Vlc.DotNet.Core\Debug - x64 - .Net 4.5\Vlc.DotNet.Core.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>..\..\build\Vlc.DotNet.Core\Release - x64 - .Net 4.5\</OutputPath>
+    <OutputPath>..\..\..\EmberMM\$(Configuration) - $(Platform)\</OutputPath>
     <DefineConstants>TRACE;CLR4;NET45;X64</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>..\..\build\Vlc.DotNet.Core\Release - x64 - .Net 4.5\Vlc.DotNet.Core.XML</DocumentationFile>
+    <DocumentationFile>..\..\..\EmberMM\$(Configuration) - $(Platform)\Vlc.DotNet.Core.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\..\build\Vlc.DotNet.Core\Debug - x86 - .Net 4.5\</OutputPath>
+    <OutputPath>..\..\..\EmberMM\$(Configuration) - $(Platform)\</OutputPath>
     <DefineConstants>TRACE;DEBUG;CLR4;NET45;X86</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>..\..\build\Vlc.DotNet.Core\Debug - x86 - .Net 4.5\Vlc.DotNet.Core.XML</DocumentationFile>
+    <DocumentationFile>..\..\..\EmberMM\$(Configuration) - $(Platform)\Vlc.DotNet.Core.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>..\..\build\Vlc.DotNet.Core\Release - x86 - .Net 4.5\</OutputPath>
+    <OutputPath>..\..\..\EmberMM\$(Configuration) - $(Platform)\</OutputPath>
     <DefineConstants>TRACE;CLR4;NET45;X86</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>..\..\build\Vlc.DotNet.Core\Release - x86 - .Net 4.5\Vlc.DotNet.Core.XML</DocumentationFile>
+    <DocumentationFile>..\..\..\EmberMM\$(Configuration) - $(Platform)\Vlc.DotNet.Core.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\..\..\EmberMM\$(Configuration) - $(Platform)\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;CLR4;NET45;X86</DefineConstants>
+    <DocumentationFile>..\..\..\EmberMM\$(Configuration) - $(Platform)\Vlc.DotNet.Core.XML</DocumentationFile>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>..\..\..\EmberMM\$(Configuration) - $(Platform)\</OutputPath>
+    <DefineConstants>TRACE;CLR4;NET45;X86</DefineConstants>
+    <DocumentationFile>..\..\..\EmberMM\$(Configuration) - $(Platform)\Vlc.DotNet.Core.XML</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -153,7 +173,6 @@
       <Name>Vlc.DotNet.Core.Interops - CLR 4 - .Net 4.5</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <None Include="..\Vlc.DotNet.pfx.snk">
       <Link>Vlc.DotNet.pfx.snk</Link>
