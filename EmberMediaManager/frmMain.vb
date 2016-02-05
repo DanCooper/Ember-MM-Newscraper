@@ -16156,7 +16156,7 @@ doCancel:
 
         Try
             With Me
-                .MinimumSize = New Size(800, 600)
+                .MinimumSize = New Size(830, 600)
 
                 'All
                 Dim strAll As String = Master.eLang.GetString(68, "All")
