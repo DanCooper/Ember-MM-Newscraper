@@ -1539,8 +1539,8 @@ Public Class Functions
                     .SeasonLandscape = MValue
                     .SeasonNFO = MValue
                     .SeasonPoster = MValue
-                    '.withEpisodes should not be set here
-                    '.withSeasons should not be set here
+                '.withEpisodes should not be set here
+                '.withSeasons should not be set here
                 Case Enums.ModifierType.AllSeasonsBanner
                     .AllSeasonsBanner = MValue
                 Case Enums.ModifierType.AllSeasonsFanart

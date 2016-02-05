@@ -39,7 +39,7 @@ Public Class DVD
 
 #End Region 'Fields
 
-    #Region "Constructors"
+#Region "Constructors"
 
     Public Sub New()
         MyBase.New()
@@ -57,7 +57,7 @@ Public Class DVD
         mVideoCodingMode.Add("1", "mpeg2")
     End Sub
 
-    #End Region 'Constructors
+#End Region 'Constructors
 
 #Region "Properties"
     ''' <summary>
@@ -364,7 +364,7 @@ Public Class DVD
         Try
             'Read the IFO file into a temporary String
             Using _
-                objFS As FileStream = File.Open(strFileName, FileMode.Open, FileAccess.Read), _
+                objFS As FileStream = File.Open(strFileName, FileMode.Open, FileAccess.Read),
                 objBR As New BinaryReader(objFS)
 
                 strTmpIFOFileIn = System.Text.Encoding.Default.GetString(objBR.ReadBytes(Convert.ToInt32(objFS.Length)))

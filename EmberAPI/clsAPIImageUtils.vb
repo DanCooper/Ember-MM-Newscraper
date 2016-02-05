@@ -92,10 +92,10 @@ Public Class ImageUtils
         'first let's convert the background to grayscale
         Using g As Graphics = Graphics.FromImage(nImage)
             Dim cm As Imaging.ColorMatrix = New Imaging.ColorMatrix(New Single()() _
-               {New Single() {0.5, 0.5, 0.5, 0, 0}, _
-                New Single() {0.5, 0.5, 0.5, 0, 0}, _
-                New Single() {0.5, 0.5, 0.5, 0, 0}, _
-                New Single() {0, 0, 0, 1, 0}, _
+               {New Single() {0.5, 0.5, 0.5, 0, 0},
+                New Single() {0.5, 0.5, 0.5, 0, 0},
+                New Single() {0.5, 0.5, 0.5, 0, 0},
+                New Single() {0, 0, 0, 1, 0},
                 New Single() {0, 0, 0, 0, 1}})
 
             Dim ia As Imaging.ImageAttributes = New Imaging.ImageAttributes()
@@ -147,8 +147,8 @@ Public Class ImageUtils
     ''' the background of the rectangle specified by <paramref name="maxWidth"/> and <paramref name="maxHeight"/> will be filled
     ''' by <paramref name="PaddingARGB"/></remarks>
     Public Shared Sub ResizeImage(ByRef _image As Image, ByVal maxWidth As Integer, ByVal maxHeight As Integer, Optional ByVal usePadding As Boolean = False, Optional ByVal PaddingARGB As Integer = DefaultPaddingARGB)
-        If (_image Is Nothing) OrElse _
-            (maxWidth <= 0) OrElse _
+        If (_image Is Nothing) OrElse
+            (maxWidth <= 0) OrElse
             (maxHeight <= 0) Then
             Return
         End If
@@ -165,15 +165,15 @@ Public Class ImageUtils
             ' Get the source bitmap.
             Using bmSource As New Bitmap(_image)
                 ' Make a bitmap for the result.
-                Dim bmDest As New Bitmap( _
-                Convert.ToInt32(bmSource.Width * sPropPerc), _
+                Dim bmDest As New Bitmap(
+                Convert.ToInt32(bmSource.Width * sPropPerc),
                 Convert.ToInt32(bmSource.Height * sPropPerc))
                 ' Make a Graphics object for the result Bitmap.
                 Using grDest As Graphics = Graphics.FromImage(bmDest)
                     grDest.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
                     ' Copy the source image into the destination bitmap.
-                    grDest.DrawImage(bmSource, New Rectangle(0, 0, _
-                    bmDest.Width, bmDest.Height), New Rectangle(0, 0, _
+                    grDest.DrawImage(bmSource, New Rectangle(0, 0,
+                    bmDest.Width, bmDest.Height), New Rectangle(0, 0,
                     bmSource.Width, bmSource.Height), GraphicsUnit.Pixel)
                 End Using
 
@@ -234,14 +234,14 @@ Public Class ImageUtils
                 ' Get the source bitmap.
                 Using bmSource As New Bitmap(pbSource.Image)
                     ' Make a bitmap for the result.
-                    Dim bmDest As New Bitmap( _
-                            Convert.ToInt32(bmSource.Width * sPropPerc), _
+                    Dim bmDest As New Bitmap(
+                            Convert.ToInt32(bmSource.Width * sPropPerc),
                             Convert.ToInt32(bmSource.Height * sPropPerc))
                     ' Make a Graphics object for the result Bitmap.
                     Using grDest As Graphics = Graphics.FromImage(bmDest)
                         ' Copy the source image into the destination bitmap.
-                        grDest.DrawImage(bmSource, 0, 0, _
-                                         bmDest.Width + 1, _
+                        grDest.DrawImage(bmSource, 0, 0,
+                                         bmDest.Width + 1,
                                          bmDest.Height + 1)
                         ' Display the result.
                         pbDestination.Image = bmDest

@@ -846,7 +846,7 @@ Public Class Scanner
             End If
 
             'Scrape episode images
-            If isNew Then
+            If isNew AndAlso cEpisode.TVShow.TVDBSpecified AndAlso cEpisode.ShowIDSpecified Then
                 Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
                 Dim ScrapeModifiers As New Structures.ScrapeModifiers
                 If Not cEpisode.ImagesContainer.Fanart.LocalFilePathSpecified AndAlso Master.eSettings.TVEpisodeFanartAnyEnabled Then ScrapeModifiers.EpisodeFanart = True
@@ -959,17 +959,17 @@ Public Class Scanner
         Dim newSeasonsIndex As New List(Of Integer)
         Dim toNfo As Boolean = False
 
-        If DBTVShow.Episodes.Count > 0 OrElse Not DBTVShow.ID = -1 Then
+        If DBTVShow.EpisodesSpecified OrElse DBTVShow.IDSpecified Then
             If Not TVShowPaths.ContainsKey(DBTVShow.ShowPath.ToLower) Then
                 GetTVShowFolderContents(DBTVShow)
 
-                If Not String.IsNullOrEmpty(DBTVShow.NfoPath) Then
+                If DBTVShow.NfoPathSpecified Then
                     DBTVShow.TVShow = NFO.LoadTVShowFromNFO(DBTVShow.NfoPath)
                 Else
                     DBTVShow.TVShow = New MediaContainers.TVShow
                 End If
 
-                If String.IsNullOrEmpty(DBTVShow.TVShow.Title) Then
+                If Not DBTVShow.TVShow.TitleSpecified Then
                     'no title so assume it's an invalid nfo, clear nfo path if exists
                     DBTVShow.NfoPath = String.Empty
 
@@ -990,10 +990,10 @@ Public Class Scanner
                     End If
                 End If
 
-                If Not String.IsNullOrEmpty(DBTVShow.ListTitle) Then
+                If DBTVShow.ListTitleSpecified Then
 
                     'search local actor thumb for each actor in NFO
-                    If DBTVShow.TVShow.Actors.Count > 0 AndAlso DBTVShow.ActorThumbs.Count > 0 Then
+                    If DBTVShow.TVShow.ActorsSpecified AndAlso DBTVShow.ActorThumbsSpecified Then
                         For Each actor In DBTVShow.TVShow.Actors
                             actor.LocalFilePath = DBTVShow.ActorThumbs.FirstOrDefault(Function(s) Path.GetFileNameWithoutExtension(s).ToLower = actor.Name.Replace(" ", "_").ToLower)
                         Next
@@ -1014,10 +1014,10 @@ Public Class Scanner
                 DBTVShow.Episodes = newEpisodes
             End If
 
-            If DBTVShow.ShowID > -1 Then
+            If DBTVShow.ShowIDSpecified Then
                 For Each DBTVEpisode As Database.DBElement In DBTVShow.Episodes
                     DBTVEpisode = Master.DB.AddTVShowInfoToDBElement(DBTVEpisode, DBTVShow)
-                    If Not String.IsNullOrEmpty(DBTVEpisode.Filename) Then
+                    If DBTVEpisode.FilenameSpecified Then
                         Dim SeasonList As List(Of Integer) = LoadTVEpisode(DBTVEpisode, isNew, Batchmode, ReportProgress)
 
                         'add seasons
@@ -1041,6 +1041,7 @@ Public Class Scanner
                                     'Scrape season info
                                     ModulesManager.Instance.ScrapeData_TVSeason(tmpSeason, Master.DefaultOptions_TV, False)
                                 End If
+
                                 GetTVSeasonFolderContents(tmpSeason)
 
                                 'Scrape season images

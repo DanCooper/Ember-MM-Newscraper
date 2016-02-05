@@ -19,7 +19,6 @@
 ' ################################################################################
 
 Imports System.IO
-Imports EmberAPI
 Imports NLog
 
 Public Class Themes
@@ -367,9 +366,9 @@ Public Class Themes
     Public Function IsAllowedToDownload(ByVal mMovie As Database.DBElement) As Boolean
         Try
             With Master.eSettings
-                If (String.IsNullOrEmpty(mMovie.ThemePath) OrElse .MovieThemeKeepExisting) AndAlso .MovieThemeTvTunesEnable AndAlso _
-                    (mMovie.IsSingle AndAlso .MovieThemeTvTunesMoviePath) OrElse _
-                    (mMovie.IsSingle AndAlso .MovieThemeTvTunesSub AndAlso Not String.IsNullOrEmpty(.MovieThemeTvTunesSubDir)) OrElse _
+                If (String.IsNullOrEmpty(mMovie.ThemePath) OrElse .MovieThemeKeepExisting) AndAlso .MovieThemeTvTunesEnable AndAlso
+                    (mMovie.IsSingle AndAlso .MovieThemeTvTunesMoviePath) OrElse
+                    (mMovie.IsSingle AndAlso .MovieThemeTvTunesSub AndAlso Not String.IsNullOrEmpty(.MovieThemeTvTunesSubDir)) OrElse
                     (.MovieThemeTvTunesCustom AndAlso Not String.IsNullOrEmpty(.MovieThemeTvTunesCustomPath)) Then
                     Return True
                 Else

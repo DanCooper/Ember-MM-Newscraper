@@ -19,6 +19,8 @@
 ' ################################################################################
 
 Imports EmberAPI
+Imports Microsoft.VisualBasic
+Imports System.IO
 
 Public Class frmSettingsHolder
 
@@ -35,14 +37,6 @@ Public Class frmSettingsHolder
 
 #Region "Methods"
 
-    Private Sub btnTest_Click(sender As Object, e As EventArgs) Handles btnTestInstallation.Click
-        Try
-            clsVLC.DoTest(True)
-        Catch ex As Exception
-            MessageBox.Show("VLC ActiveX plugin is not registred", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End Try
-    End Sub
-
     Private Sub chkEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnabled.CheckedChanged
         RaiseEvent ModuleEnabledChanged(chkEnabled.Checked, 0)
     End Sub
@@ -55,6 +49,11 @@ Public Class frmSettingsHolder
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
+    Private Sub txtVLCPath_TextChanged(sender As Object, e As EventArgs) Handles txtVLCPath.TextChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+
     Public Sub New()
         InitializeComponent()
         Me.SetUp()
@@ -62,6 +61,29 @@ Public Class frmSettingsHolder
 
     Private Sub SetUp()
         Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
+        Me.gbGeneralOpts.Text = Master.eLang.GetString(38, "General Settings")
+        Me.lblVLCPath.Text = Master.eLang.GetString(1478, "VLC x86 Path")
+        Me.chkUseAsAudioPlayer.Text = Master.eLang.GetString(1480, "Use as Video Player")
+        Me.chkUseAsVideoPlayer.Text = Master.eLang.GetString(1479, "Use as Audio Player")
+    End Sub
+
+    Private Sub btnVLCPath_Click(sender As Object, e As EventArgs) Handles btnVLCPath.Click
+        Using fbdDialog As New FolderBrowserDialog()
+            fbdDialog.Description = Master.eLang.GetString(1482, "Select VLC Path")
+            fbdDialog.SelectedPath = txtVLCPath.Text
+
+            If fbdDialog.ShowDialog() = DialogResult.OK Then
+                txtVLCPath.Text = fbdDialog.SelectedPath
+            End If
+            If Not File.Exists(Path.Combine(fbdDialog.SelectedPath, "libvlc.dll")) Then
+                MsgBox(Master.eLang.GetString(1483, "libvlc.dll not found in path"), MsgBoxStyle.Information)
+            End If
+        End Using
+
+    End Sub
+
+    Private Sub tblSettingsMain_Paint(sender As Object, e As PaintEventArgs) Handles tblSettingsMain.Paint
+
     End Sub
 
 #End Region 'Methods

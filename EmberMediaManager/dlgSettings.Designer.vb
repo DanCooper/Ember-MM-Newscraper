@@ -4730,8 +4730,8 @@ Partial Class dlgSettings
         Me.cbGeneralDaemonDrive.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.cbGeneralDaemonDrive.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbGeneralDaemonDrive.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238,Byte))
-        Me.cbGeneralDaemonDrive.FormattingEnabled = true
-        Me.cbGeneralDaemonDrive.Items.AddRange(New Object() {"", "A:\", "B:\", "D:\", "E:\", "F:\", "G:\", "H:\", "I:\", "J:\", "K:\", "L:\", "M:\", "N:\", "O:\", "P:\", "Q:\", "R:\", "S:\", "T:\", "U:\", "V:\", "W:\", "X:\", "Y:\", "Z:\"})
+        Me.cbGeneralDaemonDrive.FormattingEnabled = True
+        Me.cbGeneralDaemonDrive.Items.AddRange(New Object() {"", "A", "B", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"})
         Me.cbGeneralDaemonDrive.Location = New System.Drawing.Point(3, 24)
         Me.cbGeneralDaemonDrive.Name = "cbGeneralDaemonDrive"
         Me.cbGeneralDaemonDrive.Size = New System.Drawing.Size(73, 21)

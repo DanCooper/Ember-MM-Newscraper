@@ -15,7 +15,7 @@ Namespace FFmpeg
     Public Class FFmpeg
 #Region "Fields"
         Private ReadOnly _output As StringBuilder
-        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Shared logger As Logger = LogManager.GetCurrentClassLogger()
 #End Region
 
 #Region "Constructors"
@@ -108,9 +108,9 @@ Namespace FFmpeg
                 Return lstThumbContainer
             End If
             'calculate timeintervall for thumbnails (we always create double images, sort them later and only save the best ones)
-            If NoSpoilers AndAlso VideoFileDuration > (1200 + (ThumbCount * 2)) Then
+            If NoSpoilers AndAlso VideoFileDuration > (600 + (ThumbCount * 2)) Then
                 'We don't want to see spoilers in thumbs -> don't create images of second half of video, also avoid ending credits (5min)
-                secondsbetweenThumbs = CInt(((VideoFileDuration / 2) - 600) / (ThumbCount * 2))
+                secondsbetweenThumbs = CInt(((VideoFileDuration / 2) - 300) / (ThumbCount * 2))
             ElseIf VideoFileDuration > (600 + (ThumbCount * 2)) Then
                 'don't avoid spoilers but avoid (possible) ending credits
                 secondsbetweenThumbs = CInt((VideoFileDuration - 600) / (ThumbCount * 2))
@@ -286,7 +286,7 @@ Namespace FFmpeg
         ''' </remarks>
         Public Shared Function GetMediaInfoByFFmpeg(ByVal DBElement As Database.DBElement, ScanPath As String, Optional ByVal Timeout As Integer = 20000) As String
             Dim args As String = String.Format(CultureInfo.InvariantCulture, "-i ""{0}""", ScanPath)
-            Return ExecuteFFmpeg(args:=args, timeout:=timeout, dbelement:=DBElement)
+            Return ExecuteFFmpeg(args:=args, timeout:=Timeout, dbelement:=DBElement)
         End Function
 
 

@@ -103,53 +103,53 @@ Public Class ModulesManager
         VersionList.Add(New VersionItem With {.AssemblyFileName = "*EmberAPP", .Name = "Ember Application", .Version = My.Application.Info.Version.ToString()})
         VersionList.Add(New VersionItem With {.AssemblyFileName = "*EmberAPI", .Name = "Ember API", .Version = Functions.EmberAPIVersion()})
         For Each _externalScraperModule As _externalScraperModuleClass_Data_Movie In externalScrapersModules_Data_Movie
-            VersionList.Add(New VersionItem With {.Name = _externalScraperModule.ProcessorModule.ModuleName, _
-              .AssemblyFileName = _externalScraperModule.AssemblyFileName, _
+            VersionList.Add(New VersionItem With {.Name = _externalScraperModule.ProcessorModule.ModuleName,
+              .AssemblyFileName = _externalScraperModule.AssemblyFileName,
               .Version = _externalScraperModule.ProcessorModule.ModuleVersion})
         Next
         For Each _externalScraperModule As _externalScraperModuleClass_Data_MovieSet In externalScrapersModules_Data_MovieSet
-            VersionList.Add(New VersionItem With {.Name = _externalScraperModule.ProcessorModule.ModuleName, _
-              .AssemblyFileName = _externalScraperModule.AssemblyFileName, _
+            VersionList.Add(New VersionItem With {.Name = _externalScraperModule.ProcessorModule.ModuleName,
+              .AssemblyFileName = _externalScraperModule.AssemblyFileName,
               .Version = _externalScraperModule.ProcessorModule.ModuleVersion})
         Next
         For Each _externalScraperModule As _externalScraperModuleClass_Data_TV In externalScrapersModules_Data_TV
-            VersionList.Add(New VersionItem With {.Name = _externalScraperModule.ProcessorModule.ModuleName, _
-              .AssemblyFileName = _externalScraperModule.AssemblyFileName, _
+            VersionList.Add(New VersionItem With {.Name = _externalScraperModule.ProcessorModule.ModuleName,
+              .AssemblyFileName = _externalScraperModule.AssemblyFileName,
               .Version = _externalScraperModule.ProcessorModule.ModuleVersion})
         Next
         For Each _externalScraperModule As _externalScraperModuleClass_Image_Movie In externalScrapersModules_Image_Movie
-            VersionList.Add(New VersionItem With {.Name = _externalScraperModule.ProcessorModule.ModuleName, _
-              .AssemblyFileName = _externalScraperModule.AssemblyFileName, _
+            VersionList.Add(New VersionItem With {.Name = _externalScraperModule.ProcessorModule.ModuleName,
+              .AssemblyFileName = _externalScraperModule.AssemblyFileName,
               .Version = _externalScraperModule.ProcessorModule.ModuleVersion})
         Next
         For Each _externalScraperModule As _externalScraperModuleClass_Image_MovieSet In externalScrapersModules_Image_MovieSet
-            VersionList.Add(New VersionItem With {.Name = _externalScraperModule.ProcessorModule.ModuleName, _
-              .AssemblyFileName = _externalScraperModule.AssemblyFileName, _
+            VersionList.Add(New VersionItem With {.Name = _externalScraperModule.ProcessorModule.ModuleName,
+              .AssemblyFileName = _externalScraperModule.AssemblyFileName,
               .Version = _externalScraperModule.ProcessorModule.ModuleVersion})
         Next
         For Each _externalScraperModule As _externalScraperModuleClass_Image_TV In externalScrapersModules_Image_TV
-            VersionList.Add(New VersionItem With {.Name = _externalScraperModule.ProcessorModule.ModuleName, _
-              .AssemblyFileName = _externalScraperModule.AssemblyFileName, _
+            VersionList.Add(New VersionItem With {.Name = _externalScraperModule.ProcessorModule.ModuleName,
+              .AssemblyFileName = _externalScraperModule.AssemblyFileName,
               .Version = _externalScraperModule.ProcessorModule.ModuleVersion})
         Next
         For Each _externalScraperModule As _externalScraperModuleClass_Theme_Movie In externalScrapersModules_Theme_Movie
-            VersionList.Add(New VersionItem With {.Name = _externalScraperModule.ProcessorModule.ModuleName, _
-              .AssemblyFileName = _externalScraperModule.AssemblyFileName, _
+            VersionList.Add(New VersionItem With {.Name = _externalScraperModule.ProcessorModule.ModuleName,
+              .AssemblyFileName = _externalScraperModule.AssemblyFileName,
               .Version = _externalScraperModule.ProcessorModule.ModuleVersion})
         Next
         For Each _externalTVThemeScraperModule As _externalScraperModuleClass_Theme_TV In externalScrapersModules_Theme_TV
-            VersionList.Add(New VersionItem With {.Name = _externalTVThemeScraperModule.ProcessorModule.ModuleName, _
-                    .AssemblyFileName = _externalTVThemeScraperModule.AssemblyFileName, _
+            VersionList.Add(New VersionItem With {.Name = _externalTVThemeScraperModule.ProcessorModule.ModuleName,
+                    .AssemblyFileName = _externalTVThemeScraperModule.AssemblyFileName,
                     .Version = _externalTVThemeScraperModule.ProcessorModule.ModuleVersion})
         Next
         For Each _externalScraperModule As _externalScraperModuleClass_Trailer_Movie In externalScrapersModules_Trailer_Movie
-            VersionList.Add(New VersionItem With {.Name = _externalScraperModule.ProcessorModule.ModuleName, _
-              .AssemblyFileName = _externalScraperModule.AssemblyFileName, _
+            VersionList.Add(New VersionItem With {.Name = _externalScraperModule.ProcessorModule.ModuleName,
+              .AssemblyFileName = _externalScraperModule.AssemblyFileName,
               .Version = _externalScraperModule.ProcessorModule.ModuleVersion})
         Next
         For Each _externalModule As _externalGenericModuleClass In externalProcessorModules
-            VersionList.Add(New VersionItem With {.Name = _externalModule.ProcessorModule.ModuleName, _
-              .AssemblyFileName = _externalModule.AssemblyFileName, _
+            VersionList.Add(New VersionItem With {.Name = _externalModule.ProcessorModule.ModuleName,
+              .AssemblyFileName = _externalModule.AssemblyFileName,
               .Version = _externalModule.ProcessorModule.ModuleVersion})
         Next
     End Sub
@@ -438,7 +438,7 @@ Public Class ModulesManager
                             externalScrapersModules_Data_Movie.Add(_externalScraperModule)
                             logger.Trace(String.Concat("Scraper Added: ", _externalScraperModule.AssemblyName, "_", _externalScraperModule.ContentType))
                             _externalScraperModule.ProcessorModule.Init(_externalScraperModule.AssemblyName)
-                            For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(x) x.AssemblyName = _externalScraperModule.AssemblyName AndAlso _
+                            For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(x) x.AssemblyName = _externalScraperModule.AssemblyName AndAlso
                                                                                                           x.ContentType = Enums.ContentType.Movie)
                                 _externalScraperModule.ProcessorModule.ScraperEnabled = i.ModuleEnabled
                                 DataScraperAnyEnabled = DataScraperAnyEnabled OrElse i.ModuleEnabled
@@ -466,7 +466,7 @@ Public Class ModulesManager
                                 externalScrapersModules_Image_Movie.Add(_externalScraperModule)
                                 logger.Trace(String.Concat("Scraper Added: ", _externalScraperModule.AssemblyName, "_", _externalScraperModule.ContentType))
                                 _externalScraperModule.ProcessorModule.Init(_externalScraperModule.AssemblyName)
-                                For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(x) x.AssemblyName = _externalScraperModule.AssemblyName AndAlso _
+                                For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(x) x.AssemblyName = _externalScraperModule.AssemblyName AndAlso
                                                                                                           x.ContentType = Enums.ContentType.Movie)
                                     _externalScraperModule.ProcessorModule.ScraperEnabled = i.ModuleEnabled
                                     ImageScraperAnyEnabled = ImageScraperAnyEnabled OrElse i.ModuleEnabled
@@ -494,7 +494,7 @@ Public Class ModulesManager
                                     externalScrapersModules_Trailer_Movie.Add(_externalScraperModule)
                                     logger.Trace(String.Concat("Scraper Added: ", _externalScraperModule.AssemblyName, "_", _externalScraperModule.ContentType))
                                     _externalScraperModule.ProcessorModule.Init(_externalScraperModule.AssemblyName)
-                                    For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(x) x.AssemblyName = _externalScraperModule.AssemblyName AndAlso _
+                                    For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(x) x.AssemblyName = _externalScraperModule.AssemblyName AndAlso
                                                                                                           x.ContentType = Enums.ContentType.Movie)
                                         _externalScraperModule.ProcessorModule.ScraperEnabled = i.ModuleEnabled
                                         TrailerScraperAnyEnabled = TrailerScraperAnyEnabled OrElse i.ModuleEnabled
@@ -522,7 +522,7 @@ Public Class ModulesManager
                                         externalScrapersModules_Theme_Movie.Add(_externalScraperModule)
                                         logger.Trace(String.Concat("Scraper Added: ", _externalScraperModule.AssemblyName, "_", _externalScraperModule.ContentType))
                                         _externalScraperModule.ProcessorModule.Init(_externalScraperModule.AssemblyName)
-                                        For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(x) x.AssemblyName = _externalScraperModule.AssemblyName AndAlso _
+                                        For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(x) x.AssemblyName = _externalScraperModule.AssemblyName AndAlso
                                                                                                           x.ContentType = Enums.ContentType.Movie)
                                             _externalScraperModule.ProcessorModule.ScraperEnabled = i.ModuleEnabled
                                             ThemeScraperAnyEnabled = ThemeScraperAnyEnabled OrElse i.ModuleEnabled
@@ -616,7 +616,7 @@ Public Class ModulesManager
                             externalScrapersModules_Data_MovieSet.Add(_externalScraperModule)
                             logger.Trace(String.Concat("Scraper Added: ", _externalScraperModule.AssemblyName, "_", _externalScraperModule.ContentType))
                             _externalScraperModule.ProcessorModule.Init(_externalScraperModule.AssemblyName)
-                            For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(x) x.AssemblyName = _externalScraperModule.AssemblyName AndAlso _
+                            For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(x) x.AssemblyName = _externalScraperModule.AssemblyName AndAlso
                                                                                                           x.ContentType = Enums.ContentType.MovieSet)
                                 _externalScraperModule.ProcessorModule.ScraperEnabled = i.ModuleEnabled
                                 DataScraperAnyEnabled = DataScraperAnyEnabled OrElse i.ModuleEnabled
@@ -644,7 +644,7 @@ Public Class ModulesManager
                                 externalScrapersModules_Image_MovieSet.Add(_externalScraperModule)
                                 logger.Trace(String.Concat("Scraper Added: ", _externalScraperModule.AssemblyName, "_", _externalScraperModule.ContentType))
                                 _externalScraperModule.ProcessorModule.Init(_externalScraperModule.AssemblyName)
-                                For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(x) x.AssemblyName = _externalScraperModule.AssemblyName AndAlso _
+                                For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(x) x.AssemblyName = _externalScraperModule.AssemblyName AndAlso
                                                                                                           x.ContentType = Enums.ContentType.MovieSet)
                                     _externalScraperModule.ProcessorModule.ScraperEnabled = i.ModuleEnabled
                                     ImageScraperAnyEnabled = ImageScraperAnyEnabled OrElse i.ModuleEnabled
@@ -720,7 +720,7 @@ Public Class ModulesManager
                             externalScrapersModules_Data_TV.Add(_externalScraperModule)
                             logger.Trace(String.Concat("Scraper Added: ", _externalScraperModule.AssemblyName, "_", _externalScraperModule.ContentType))
                             _externalScraperModule.ProcessorModule.Init(_externalScraperModule.AssemblyName)
-                            For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(x) x.AssemblyName = _externalScraperModule.AssemblyName AndAlso _
+                            For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(x) x.AssemblyName = _externalScraperModule.AssemblyName AndAlso
                                                                                                           x.ContentType = Enums.ContentType.TV)
                                 _externalScraperModule.ProcessorModule.ScraperEnabled = i.ModuleEnabled
                                 DataScraperAnyEnabled = DataScraperAnyEnabled OrElse i.ModuleEnabled
@@ -748,7 +748,7 @@ Public Class ModulesManager
                                 externalScrapersModules_Image_TV.Add(_externalScraperModule)
                                 logger.Trace(String.Concat("Scraper Added: ", _externalScraperModule.AssemblyName, "_", _externalScraperModule.ContentType))
                                 _externalScraperModule.ProcessorModule.Init(_externalScraperModule.AssemblyName)
-                                For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(x) x.AssemblyName = _externalScraperModule.AssemblyName AndAlso _
+                                For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(x) x.AssemblyName = _externalScraperModule.AssemblyName AndAlso
                                                                                                           x.ContentType = Enums.ContentType.TV)
                                     _externalScraperModule.ProcessorModule.ScraperEnabled = i.ModuleEnabled
                                     ImageScraperAnyEnabled = ImageScraperAnyEnabled OrElse i.ModuleEnabled
@@ -912,24 +912,24 @@ Public Class ModulesManager
 
         Select Case ImageType
             Case Enums.ModifierType.AllSeasonsBanner
-                If externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainBanner) OrElse _
+                If externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainBanner) OrElse
                     externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.SeasonBanner) Then Return True
             Case Enums.ModifierType.AllSeasonsFanart
-                If externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainFanart) OrElse _
+                If externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainFanart) OrElse
                     externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.SeasonFanart) Then Return True
             Case Enums.ModifierType.AllSeasonsLandscape
-                If externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainLandscape) OrElse _
+                If externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainLandscape) OrElse
                     externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.SeasonLandscape) Then Return True
             Case Enums.ModifierType.AllSeasonsPoster
-                If externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainPoster) OrElse _
+                If externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainPoster) OrElse
                     externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.SeasonPoster) Then Return True
             Case Enums.ModifierType.EpisodeFanart
-                If externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainFanart) OrElse _
+                If externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainFanart) OrElse
                     externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.EpisodeFanart) Then Return True
             Case Enums.ModifierType.MainExtrafanarts
                 Return externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainFanart)
             Case Enums.ModifierType.SeasonFanart
-                If externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainFanart) OrElse _
+                If externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.MainFanart) OrElse
                     externalScraperModule.ProcessorModule.QueryScraperCapabilities(Enums.ModifierType.SeasonFanart) Then Return True
             Case Else
                 Return externalScraperModule.ProcessorModule.QueryScraperCapabilities(ImageType)

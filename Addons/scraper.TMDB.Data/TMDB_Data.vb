@@ -837,6 +837,8 @@ Public Class TMDB_Data
             End If
             'if still no search result -> exit
             If nTVEpisode Is Nothing Then Return New Interfaces.ModuleResult_Data_TVEpisode With {.Result = Nothing}
+        Else
+            Return New Interfaces.ModuleResult_Data_TVEpisode With {.Result = Nothing}
         End If
 
         'set new informations for following scrapers
@@ -882,6 +884,8 @@ Public Class TMDB_Data
             End If
             'if still no search result -> exit
             If nTVSeason Is Nothing Then Return New Interfaces.ModuleResult_Data_TVSeason With {.Result = Nothing}
+        Else
+            Return New Interfaces.ModuleResult_Data_TVSeason With {.Result = Nothing}
         End If
 
         'set new informations for following scrapers
