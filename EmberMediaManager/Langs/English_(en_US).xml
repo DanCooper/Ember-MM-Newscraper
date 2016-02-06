@@ -1561,15 +1561,6 @@
   <string id="1470">Automatically Sync Episodes During Multi-Scraper</string>
   <string id="1471">Automatically Sync Episodes During Single-Scraper</string>
   <string id="1472">Automatically Sync Episodes Before Edit</string>
-<<<<<<< HEAD
-  <string id="1473">VLC x86 Path</string>
-  <string id="1474">Use as Audio Player</string>
-  <string id="1475">Use as Video Player</string>
-  <string id="1476">Select Expor tPath</string>
-  <string id="1477">Select VLC x64 bit Path</string>
-  <string id="1478">libvlc.dll not found in path</string>
-  <string id="1479">Select VLC x86 Path</string>
-=======
   <string id="1473">No Spoilers</string>
   <string id="1474">Remove Black Bars</string>
   <string id="1475">Create thumbs instead of using fanarts</string>
@@ -1581,5 +1572,11 @@
   <string id="1481">Select Expor tPath</string>
   <string id="1482">Select VLC Path</string>
   <string id="1483">libvlc.dll not found in path</string>
->>>>>>> upstream/master
+  <string id="1484">VLC x86 Path</string>
+  <string id="1485">Use as Audio Player</string>
+  <string id="1486">Use as Video Player</string>
+  <string id="1487">Select Expor tPath</string>
+  <string id="1488">Select VLC x64 bit Path</string>
+  <string id="1489">libvlc.dll not found in path</string>
+  <string id="1490">Select VLC x86 Path</string>
 </strings>
