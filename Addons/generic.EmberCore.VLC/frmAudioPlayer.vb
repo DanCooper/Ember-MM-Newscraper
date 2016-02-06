@@ -111,28 +111,21 @@ Public Class frmAudioPlayer
         PlayList.Clear()
     End Sub
 
-<<<<<<< HEAD
     Private Sub checkVLCDir(sender As Object, e As Forms.VlcLibDirectoryNeededEventArgs)
         Dim aPath As String
         Dim aTitle As String
-=======
-    Private Sub OnVlcControlNeedLibDirectory(sender As Object, e As Vlc.DotNet.Forms.VlcLibDirectoryNeededEventArgs) Handles myVlcControl.VlcLibDirectoryNeeded
-        Using fbdDialog As New FolderBrowserDialog()
-            fbdDialog.Description = Master.eLang.GetString(1482, "Select VLC Path")
-            fbdDialog.SelectedPath = clsAdvancedSettings.GetSetting("VLCPath", String.Empty)
->>>>>>> upstream/master
 
         If Environment.Is64BitOperatingSystem Then
             If Environment.Is64BitProcess Then
                 aPath = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles)
-                aTitle = Master.eLang.GetString(1477, "Select VLC x64 bit Path")
+                aTitle = Master.eLang.GetString(1488, "Select VLC x64 bit Path")
             Else
                 aPath = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86)
-                aTitle = Master.eLang.GetString(1477, "Select VLC x86 bit Path")
+                aTitle = Master.eLang.GetString(1490, "Select VLC x86 bit Path")
             End If
         Else
             aPath = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles)
-            aTitle = Master.eLang.GetString(1477, "Select VLC x86 bit Path")
+            aTitle = Master.eLang.GetString(1490, "Select VLC x86 bit Path")
         End If
         If Not File.Exists(Path.Combine(Path.Combine(aPath, "VideoLAN\VLC"), "libvlc.dll")) Then
             Using fbdDialog As New FolderBrowserDialog()

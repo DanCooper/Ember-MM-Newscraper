@@ -62,7 +62,16 @@ Public Class frmSettingsHolder
     Private Sub SetUp()
         Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
         Me.gbGeneralOpts.Text = Master.eLang.GetString(38, "General Settings")
-        Me.lblVLCPath.Text = Master.eLang.GetString(1478, "VLC x86 Path")
+        If Environment.Is64BitOperatingSystem Then
+            If Environment.Is64BitProcess Then
+                Me.lblVLCPath.Text = Master.eLang.GetString(1491, "VLC x64 Path")
+            Else
+                Me.lblVLCPath.Text = Master.eLang.GetString(1478, "VLC x86 Path")
+            End If
+        Else
+            Me.lblVLCPath.Text = Master.eLang.GetString(1478, "VLC x86 Path")
+        End If
+
         Me.chkUseAsAudioPlayer.Text = Master.eLang.GetString(1480, "Use as Video Player")
         Me.chkUseAsVideoPlayer.Text = Master.eLang.GetString(1479, "Use as Audio Player")
     End Sub
