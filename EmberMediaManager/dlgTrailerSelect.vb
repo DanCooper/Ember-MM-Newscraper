@@ -346,7 +346,6 @@ Public Class dlgTrailerSelect
 
     Private Sub btnTrailerScrape_Click(sender As Object, e As EventArgs) Handles btnTrailerScrape.Click
         Dim didCancel As Boolean = False
-        '     Me.lvTrailers.Clear()
         SetControlsEnabled(False)
         lblStatus.Text = Master.eLang.GetString(918, "Compiling trailer list...")
         pbStatus.Style = ProgressBarStyle.Marquee
@@ -370,7 +369,7 @@ Public Class dlgTrailerSelect
                 Args.bType = False
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         e.Result = Args.bType
@@ -384,6 +383,7 @@ Public Class dlgTrailerSelect
         If Not e.Cancelled Then
             If Convert.ToBoolean(e.Result) Then
                 If nList.Count > 0 Then
+                    Me.lvTrailers.Clear()
                     AddTrailersToList(nList)
                 Else
                     MessageBox.Show(Master.eLang.GetString(225, "No Trailers found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -641,7 +641,6 @@ Public Class dlgTrailerSelect
 #Region "Nested Types"
 
     Private Structure Arguments
-
 #Region "Fields"
 
         Dim bType As Boolean
@@ -650,6 +649,7 @@ Public Class dlgTrailerSelect
 #End Region 'Fields
 
     End Structure
+
 
 #End Region 'Nested Types
 

@@ -23,34 +23,15 @@ Partial Class frmVideoPlayer
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.pnlPlayer = New System.Windows.Forms.Panel()
-        Me.myVlcControl = New Vlc.DotNet.Forms.VlcControl()
-        Me.pnlPlayer.SuspendLayout()
-        CType(Me.myVlcControl, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'pnlPlayer
         '
-        Me.pnlPlayer.Controls.Add(Me.myVlcControl)
         Me.pnlPlayer.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlPlayer.Location = New System.Drawing.Point(0, 0)
         Me.pnlPlayer.Name = "pnlPlayer"
         Me.pnlPlayer.Size = New System.Drawing.Size(898, 471)
         Me.pnlPlayer.TabIndex = 3
-        '
-        'myVlcControl
-        '
-        Me.myVlcControl.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.myVlcControl.BackColor = System.Drawing.SystemColors.ButtonShadow
-        Me.myVlcControl.Location = New System.Drawing.Point(27, 39)
-        Me.myVlcControl.Name = "myVlcControl"
-        Me.myVlcControl.Size = New System.Drawing.Size(564, 338)
-        Me.myVlcControl.Spu = -1
-        Me.myVlcControl.TabIndex = 1
-        Me.myVlcControl.Text = "vlcRincewindControl1"
-        Me.myVlcControl.VlcLibDirectory = Nothing
-        Me.myVlcControl.VlcMediaplayerOptions = Nothing
         '
         'frmVideoPlayer
         '
@@ -66,11 +47,8 @@ Partial Class frmVideoPlayer
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "VideoPlayer"
-        Me.pnlPlayer.ResumeLayout(False)
-        CType(Me.myVlcControl, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
     Friend WithEvents pnlPlayer As System.Windows.Forms.Panel
-    Private WithEvents myVlcControl As Vlc.DotNet.Forms.VlcControl
 End Class

@@ -74,10 +74,10 @@ Public Class VLCPlayer
 
     Public ReadOnly Property ModuleType() As System.Collections.Generic.List(Of EmberAPI.Enums.ModuleEventType) Implements EmberAPI.Interfaces.GenericModule.ModuleType
         Get
-            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.MediaPlayer_Audio, Enums.ModuleEventType.MediaPlayer_Video, _
-                                                                                   Enums.ModuleEventType.MediaPlayerPlay_Audio, Enums.ModuleEventType.MediaPlayerPlay_Video, _
-                                                                                   Enums.ModuleEventType.MediaPlayerPlaylistAdd_Audio, Enums.ModuleEventType.MediaPlayerPlaylistAdd_Video, _
-                                                                                   Enums.ModuleEventType.MediaPlayerPlaylistClear_Audio, Enums.ModuleEventType.MediaPlayerPlaylistClear_Video, _
+            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.MediaPlayer_Audio, Enums.ModuleEventType.MediaPlayer_Video,
+                                                                                   Enums.ModuleEventType.MediaPlayerPlay_Audio, Enums.ModuleEventType.MediaPlayerPlay_Video,
+                                                                                   Enums.ModuleEventType.MediaPlayerPlaylistAdd_Audio, Enums.ModuleEventType.MediaPlayerPlaylistAdd_Video,
+                                                                                   Enums.ModuleEventType.MediaPlayerPlaylistClear_Audio, Enums.ModuleEventType.MediaPlayerPlaylistClear_Video,
                                                                                    Enums.ModuleEventType.MediaPlayerStop_Audio, Enums.ModuleEventType.MediaPlayerStop_Video})
         End Get
     End Property
@@ -151,7 +151,7 @@ Public Class VLCPlayer
     Sub LoadSettings()
         _MySettings.UseAsAudioPlayer = clsAdvancedSettings.GetBooleanSetting("UseAsAudioPlayer", False)
         _MySettings.UseAsVideoPlayer = clsAdvancedSettings.GetBooleanSetting("UseAsVideoPlayer", False)
-        _MySettings.VLCPath = clsAdvancedSettings.GetSetting("VLCPath", "")
+        _MySettings.VLCPath = clsAdvancedSettings.GetSetting("VLCPath", Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "VideoLAN\VLC"))
     End Sub
 
     Sub SaveSettings()

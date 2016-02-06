@@ -48,12 +48,12 @@ Public Class frmVideoPlayer
 
     Public Sub SetUp()
         PlayList = New List(Of Uri)
-        Me.myVlcControl.VlcLibDirectory = New DirectoryInfo(clsAdvancedSettings.GetSetting("VLCPath", String.Empty))
     End Sub
 
     Public Sub New()
 
         ' This call is required by the designer.
+        ' Me.myVlcControl.VlcLibDirectory = New DirectoryInfo(clsAdvancedSettings.GetSetting("VLCPath", String.Empty, "generic.EmberCore.VLCPlayer"))
         InitializeComponent()
         Me.SetUp()
         ' Add any initialization after the InitializeComponent() call.
@@ -63,6 +63,7 @@ Public Class frmVideoPlayer
     Public Sub New(ByVal URL As String)
 
         ' This call is required by the designer.
+        'Me.myVlcControl.VlcLibDirectory = New DirectoryInfo(clsAdvancedSettings.GetSetting("VLCPath", String.Empty, "generic.EmberCore.VLCPlayer"))
         InitializeComponent()
         Me.SetUp()
         PlaylistAdd(URL)
@@ -72,12 +73,12 @@ Public Class frmVideoPlayer
 
     Public Sub PlayerPlay()
         For Each aPath In PlayList
-            Me.myVlcControl.Play()
+            'Me.myVlcControl.Play(aPath)
         Next
     End Sub
 
     Public Sub PlayerStop()
-        Me.myVlcControl.Stop()
+        'Me.myVlcControl.Stop()
     End Sub
 
     Public Sub PlaylistAdd(ByVal URL As String)
@@ -94,49 +95,28 @@ Public Class frmVideoPlayer
         PlayList.Clear()
     End Sub
 
-    Private Sub OnVlcControlNeedLibDirectory(sender As Object, e As Vlc.DotNet.Forms.VlcLibDirectoryNeededEventArgs) Handles myVlcControl.VlcLibDirectoryNeeded
-        Using fbdDialog As New FolderBrowserDialog()
-            fbdDialog.Description = Master.eLang.GetString(1482, "Select VLC Path")
-            fbdDialog.SelectedPath = clsAdvancedSettings.GetSetting("VLCPath", String.Empty)
+    Private Sub OnVlcControlNeedLibDirectory(sender As Object, e As Vlc.DotNet.Forms.VlcLibDirectoryNeededEventArgs)
+        Dim aP As String
 
-            If fbdDialog.ShowDialog() = DialogResult.OK Then
-                myVlcControl.VlcLibDirectory = New DirectoryInfo(fbdDialog.SelectedPath)
-            End If
-        End Using
+        If Environment.Is64BitOperatingSystem Then
+            aP = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "VideoLAN\VLC")
+        Else
+            aP = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "VideoLAN\VLC")
+        End If
+
+        If Not File.Exists(Path.Combine(aP, "libvlc.dll")) Then
+            Using fbdDialog As New FolderBrowserDialog()
+                fbdDialog.Description = Master.eLang.GetString(1477, "Select VLC Path")
+                fbdDialog.SelectedPath = clsAdvancedSettings.GetSetting("VLCPath", String.Empty, "generic.EmberCore.VLCPlayer")
+
+                If fbdDialog.ShowDialog() = DialogResult.OK Then
+                    e.VlcLibDirectory = New DirectoryInfo(fbdDialog.SelectedPath)
+                End If
+            End Using
+        Else
+            e.VlcLibDirectory = New DirectoryInfo(aP)
+        End If
     End Sub
-
-    Private Sub frmVideoPlayer_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
-    End Sub
-
-    Private Sub OnVlcStopped(sender As Object, e As Vlc.DotNet.Core.VlcMediaPlayerStoppedEventArgs) Handles myVlcControl.Stopped
-
-    End Sub
-
-    Private Sub OnVlcPositionChanged(sender As Object, e As Vlc.DotNet.Core.VlcMediaPlayerPositionChangedEventArgs) Handles myVlcControl.PositionChanged
-
-    End Sub
-
-    Private Sub OnVlcPlaying(sender As Object, e As Vlc.DotNet.Core.VlcMediaPlayerPlayingEventArgs) Handles myVlcControl.Playing
-
-    End Sub
-
-    Private Sub OnVlcPaused(sender As Object, e As Vlc.DotNet.Core.VlcMediaPlayerPausedEventArgs) Handles myVlcControl.Paused
-
-    End Sub
-
-    Private Sub OnVlcMediaChanged(sender As Object, e As Vlc.DotNet.Core.VlcMediaPlayerMediaChangedEventArgs) Handles myVlcControl.MediaChanged
-
-    End Sub
-
-    Private Sub OnVlcMediaLengthChanged(sender As Object, e As Vlc.DotNet.Core.VlcMediaPlayerLengthChangedEventArgs) Handles myVlcControl.LengthChanged
-
-    End Sub
-
-    Private Sub myVlcControl_Click(sender As Object, e As EventArgs) Handles myVlcControl.Click
-
-    End Sub
-
 
 #End Region
 
