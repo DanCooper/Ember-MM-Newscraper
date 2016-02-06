@@ -18,11 +18,7 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System
 Imports System.IO
-Imports System.Linq
-Imports System.Xml
-Imports System.Xml.Linq
 Imports NLog
 Imports System.Xml.Serialization
 
@@ -30,7 +26,7 @@ Public Class clsAdvancedSettings
     Implements IDisposable
 
 #Region "Fields"
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
     Private Shared _AdvancedSettings As New clsXMLAdvancedSettings
 
     Private Shared _DoNotSave As Boolean = False
@@ -314,7 +310,7 @@ Public Class clsAdvancedSettings
             If cContent = Enums.ContentType.None Then
                 Dim v = _AdvancedSettings.Setting.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
                 If v Is Nothing Then
-                    _AdvancedSettings.Setting.Add(New AdvancedSettingsSetting With {.Section = Assembly, .Name = key, .Value = Convert.ToString(value), _
+                    _AdvancedSettings.Setting.Add(New AdvancedSettingsSetting With {.Section = Assembly, .Name = key, .Value = Convert.ToString(value),
                                                                                     .DefaultValue = If(isDefault, Convert.ToString(value), String.Empty)})
                 Else
                     _AdvancedSettings.Setting.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly).Value = Convert.ToString(value)
@@ -322,7 +318,7 @@ Public Class clsAdvancedSettings
             Else
                 Dim v = _AdvancedSettings.Setting.FirstOrDefault(Function(f) f.Name = key AndAlso f.Content = cContent AndAlso f.Section = Assembly)
                 If v Is Nothing Then
-                    _AdvancedSettings.Setting.Add(New AdvancedSettingsSetting With {.Section = Assembly, .Name = key, .Value = Convert.ToString(value), _
+                    _AdvancedSettings.Setting.Add(New AdvancedSettingsSetting With {.Section = Assembly, .Name = key, .Value = Convert.ToString(value),
                                                                                     .DefaultValue = If(isDefault, Convert.ToString(value), String.Empty), .Content = cContent})
                 Else
                     _AdvancedSettings.Setting.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly AndAlso f.Content = cContent).Value = Convert.ToString(value)
@@ -353,7 +349,7 @@ Public Class clsAdvancedSettings
 
                 Dim v = _AdvancedSettings.Setting.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
                 If v Is Nothing Then
-                    _AdvancedSettings.Setting.Add(New AdvancedSettingsSetting With {.Section = Assembly, .Name = key, .Value = value, _
+                    _AdvancedSettings.Setting.Add(New AdvancedSettingsSetting With {.Section = Assembly, .Name = key, .Value = value,
                                                                                     .DefaultValue = If(isDefault, value, String.Empty)})
                 Else
                     _AdvancedSettings.Setting.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly).Value = value
@@ -361,7 +357,7 @@ Public Class clsAdvancedSettings
             Else
                 Dim v = _AdvancedSettings.Setting.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly AndAlso f.Content = cContent)
                 If v Is Nothing Then
-                    _AdvancedSettings.Setting.Add(New AdvancedSettingsSetting With {.Section = Assembly, .Name = key, .Value = value, _
+                    _AdvancedSettings.Setting.Add(New AdvancedSettingsSetting With {.Section = Assembly, .Name = key, .Value = value,
                                                                                     .DefaultValue = If(isDefault, value, String.Empty), .Content = cContent})
                 Else
                     _AdvancedSettings.Setting.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly AndAlso f.Content = cContent).Value = value

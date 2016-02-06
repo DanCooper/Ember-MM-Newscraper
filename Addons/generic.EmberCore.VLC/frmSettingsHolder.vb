@@ -62,21 +62,21 @@ Public Class frmSettingsHolder
     Private Sub SetUp()
         Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
         Me.gbGeneralOpts.Text = Master.eLang.GetString(38, "General Settings")
-        Me.lblVLCPath.Text = Master.eLang.GetString(1473, "VLC x86 Path")
-        Me.chkUseAsAudioPlayer.Text = Master.eLang.GetString(1474, "Use as Video Player")
-        Me.chkUseAsVideoPlayer.Text = Master.eLang.GetString(1475, "Use as Audio Player")
+        Me.lblVLCPath.Text = Master.eLang.GetString(1478, "VLC x86 Path")
+        Me.chkUseAsAudioPlayer.Text = Master.eLang.GetString(1480, "Use as Video Player")
+        Me.chkUseAsVideoPlayer.Text = Master.eLang.GetString(1479, "Use as Audio Player")
     End Sub
 
     Private Sub btnVLCPath_Click(sender As Object, e As EventArgs) Handles btnVLCPath.Click
         Using fbdDialog As New FolderBrowserDialog()
-            fbdDialog.Description = Master.eLang.GetString(1477, "Select VLC Path")
+            fbdDialog.Description = Master.eLang.GetString(1482, "Select VLC Path")
             fbdDialog.SelectedPath = txtVLCPath.Text
 
             If fbdDialog.ShowDialog() = DialogResult.OK Then
                 txtVLCPath.Text = fbdDialog.SelectedPath
             End If
             If Not File.Exists(Path.Combine(fbdDialog.SelectedPath, "libvlc.dll")) Then
-                MsgBox(Master.eLang.GetString(1478, "libvlc.dll not found in path"), MsgBoxStyle.Information)
+                MsgBox(Master.eLang.GetString(1483, "libvlc.dll not found in path"), MsgBoxStyle.Information)
             End If
         End Using
 

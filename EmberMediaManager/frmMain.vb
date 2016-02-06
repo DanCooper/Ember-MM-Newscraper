@@ -1787,7 +1787,7 @@ Public Class frmMain
         MainLandscape.Clear()
         MainPoster.Clear()
 
-        currTV = Master.DB.LoadTVSeasonFromDB(Args.ID, True, True)
+        currTV = Master.DB.LoadTVSeasonFromDB(Args.ID, True, False, True)
 
         If bwLoadSeasonInfo.CancellationPending Then
             e.Cancel = True
@@ -2778,7 +2778,7 @@ Public Class frmMain
 
             dScrapeRow = tScrapeItem.DataRow
 
-            DBScrapeSeason = Master.DB.LoadTVSeasonFromDB(Convert.ToInt64(tScrapeItem.DataRow.Item("idSeason")), True)
+            DBScrapeSeason = Master.DB.LoadTVSeasonFromDB(Convert.ToInt64(tScrapeItem.DataRow.Item("idSeason")), True, False)
             'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, DBScrapeMovie)
 
             logger.Trace(String.Format("Start scraping: {0}: Season {1}", DBScrapeSeason.TVShow.Title, DBScrapeSeason.TVSeason.Season))
@@ -5829,7 +5829,7 @@ doCancel:
     Private Sub cmnuSeasonEdit_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonEdit.Click
         Dim indX As Integer = dgvTVSeasons.SelectedRows(0).Index
         Dim ID As Integer = Convert.ToInt32(dgvTVSeasons.Item("idSeason", indX).Value)
-        Dim tmpDBTVSeason As Database.DBElement = Master.DB.LoadTVSeasonFromDB(ID, True, True)
+        Dim tmpDBTVSeason As Database.DBElement = Master.DB.LoadTVSeasonFromDB(ID, True, False, True)
         Edit_TVSeason(tmpDBTVSeason)
     End Sub
 
@@ -7440,7 +7440,7 @@ doCancel:
 
         Dim indX As Integer = dgvTVSeasons.SelectedRows(0).Index
         Dim ID As Integer = Convert.ToInt32(dgvTVSeasons.Item("idSeason", indX).Value)
-        Dim tmpDBTVSeason As Database.DBElement = Master.DB.LoadTVSeasonFromDB(ID, True, True)
+        Dim tmpDBTVSeason As Database.DBElement = Master.DB.LoadTVSeasonFromDB(ID, True, False, True)
         Edit_TVSeason(tmpDBTVSeason)
     End Sub
 
@@ -7635,7 +7635,7 @@ doCancel:
 
             Dim indX As Integer = dgvTVSeasons.SelectedRows(0).Index
             Dim ID As Integer = Convert.ToInt32(dgvTVSeasons.Item("idSeason", indX).Value)
-            Dim tmpDBTVSeason As Database.DBElement = Master.DB.LoadTVSeasonFromDB(ID, True, True)
+            Dim tmpDBTVSeason As Database.DBElement = Master.DB.LoadTVSeasonFromDB(ID, True, False, True)
             Edit_TVSeason(tmpDBTVSeason)
         End If
     End Sub
@@ -13141,7 +13141,7 @@ doCancel:
 
                             Dim indX As Integer = dgvTVSeasons.SelectedRows(0).Index
                             Dim ID As Integer = Convert.ToInt32(dgvTVSeasons.Item("idSeason", indX).Value)
-                            Dim tmpDBElement As Database.DBElement = Master.DB.LoadTVSeasonFromDB(ID, True)
+                            Dim tmpDBElement As Database.DBElement = Master.DB.LoadTVSeasonFromDB(ID, True, False)
 
                             Dim aContainer As New MediaContainers.SearchResultsContainer
                             Dim ScrapeModifiers As New Structures.ScrapeModifiers
@@ -13633,7 +13633,7 @@ doCancel:
 
                             Dim indX As Integer = dgvTVSeasons.SelectedRows(0).Index
                             Dim ID As Integer = Convert.ToInt32(dgvTVSeasons.Item("idSeason", indX).Value)
-                            Dim tmpDBElement As Database.DBElement = Master.DB.LoadTVSeasonFromDB(ID, True)
+                            Dim tmpDBElement As Database.DBElement = Master.DB.LoadTVSeasonFromDB(ID, True, False)
 
                             Dim aContainer As New MediaContainers.SearchResultsContainer
                             Dim ScrapeModifiers As New Structures.ScrapeModifiers
@@ -13788,7 +13788,7 @@ doCancel:
 
                             Dim indX As Integer = dgvTVSeasons.SelectedRows(0).Index
                             Dim ID As Integer = Convert.ToInt32(dgvTVSeasons.Item("idSeason", indX).Value)
-                            Dim tmpDBElement As Database.DBElement = Master.DB.LoadTVSeasonFromDB(ID, True)
+                            Dim tmpDBElement As Database.DBElement = Master.DB.LoadTVSeasonFromDB(ID, True, False)
 
                             Dim aContainer As New MediaContainers.SearchResultsContainer
                             Dim ScrapeModifiers As New Structures.ScrapeModifiers
@@ -13920,7 +13920,7 @@ doCancel:
 
                             Dim indX As Integer = dgvTVSeasons.SelectedRows(0).Index
                             Dim ID As Integer = Convert.ToInt32(dgvTVSeasons.Item("idSeason", indX).Value)
-                            Dim tmpDBElement As Database.DBElement = Master.DB.LoadTVSeasonFromDB(ID, True)
+                            Dim tmpDBElement As Database.DBElement = Master.DB.LoadTVSeasonFromDB(ID, True, False)
 
                             Dim aContainer As New MediaContainers.SearchResultsContainer
                             Dim ScrapeModifiers As New Structures.ScrapeModifiers
@@ -14597,7 +14597,7 @@ doCancel:
     ''' <returns></returns>
     ''' <remarks></remarks>
     Private Function Reload_TVSeason(ByVal ID As Long, ByVal BatchMode As Boolean, ByVal showMessage As Boolean, reloadFull As Boolean) As Boolean
-        Dim DBTVSeason As Database.DBElement = Master.DB.LoadTVSeasonFromDB(ID, True)
+        Dim DBTVSeason As Database.DBElement = Master.DB.LoadTVSeasonFromDB(ID, True, False)
 
         If DBTVSeason.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTVSeason, showMessage) Then
             fScanner.GetTVSeasonFolderContents(DBTVSeason)
@@ -15166,7 +15166,7 @@ doCancel:
                 If Not currThemeType = Theming.ThemeType.Show Then ApplyTheme(Theming.ThemeType.Show)
                 ShowNoInfo(True, Enums.ContentType.TVSeason)
 
-                currTV = Master.DB.LoadTVSeasonFromDB(Convert.ToInt32(dgvTVSeasons.Item("idSeason", iRow).Value), True, True)
+                currTV = Master.DB.LoadTVSeasonFromDB(Convert.ToInt32(dgvTVSeasons.Item("idSeason", iRow).Value), True, False, True)
                 FillEpisodes(Convert.ToInt32(dgvTVSeasons.Item("idShow", iRow).Value), Convert.ToInt32(dgvTVSeasons.Item("Season", iRow).Value))
 
                 If Not fScanner.IsBusy AndAlso Not bwMetaData.IsBusy AndAlso Not bwLoadMovieInfo.IsBusy AndAlso Not bwLoadMovieSetInfo.IsBusy AndAlso

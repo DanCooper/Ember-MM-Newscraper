@@ -1097,7 +1097,7 @@
   <string id="1005">New Mapping</string>
   <string id="1006">TV Movie Titles ({0})</string>
   <string id="1007">You've changed a setting that makes it necessary that the database is cleaned up.Please make sure that all sources are available!{0}{0}Should the process be continued?</string>
-  <string id="1008"></string>
+  <string id="1008">Sync Full</string>
   <string id="1009">Ember {0} - (New version available!)</string>
   <string id="1010">TV Show Landscape</string>
   <string id="1011">TV Show CharacterArt</string>
@@ -1561,6 +1561,7 @@
   <string id="1470">Automatically Sync Episodes During Multi-Scraper</string>
   <string id="1471">Automatically Sync Episodes During Single-Scraper</string>
   <string id="1472">Automatically Sync Episodes Before Edit</string>
+<<<<<<< HEAD
   <string id="1473">VLC x86 Path</string>
   <string id="1474">Use as Audio Player</string>
   <string id="1475">Use as Video Player</string>
@@ -1568,4 +1569,17 @@
   <string id="1477">Select VLC x64 bit Path</string>
   <string id="1478">libvlc.dll not found in path</string>
   <string id="1479">Select VLC x86 Path</string>
+=======
+  <string id="1473">No Spoilers</string>
+  <string id="1474">Remove Black Bars</string>
+  <string id="1475">Create thumbs instead of using fanarts</string>
+  <string id="1476">Only create thumbs if no fanart found</string>
+  <string id="1477">Create Thumbnails</string>
+  <string id="1478">VLC x86 Path</string>
+  <string id="1479">Use as Audio Player</string>
+  <string id="1480">Use as Video Player</string>
+  <string id="1481">Select Expor tPath</string>
+  <string id="1482">Select VLC Path</string>
+  <string id="1483">libvlc.dll not found in path</string>
+>>>>>>> upstream/master
 </strings>
