@@ -472,6 +472,7 @@ Public Class dlgTrailerSelect
                 End Using
             End If
         Else
+            logger.Info("In else")
             If Not String.IsNullOrEmpty(lvTrailers.SelectedItems(0).SubItems(1).Text.ToString) Then
                 Dim vLink As String = lvTrailers.SelectedItems(0).SubItems(1).Text.ToString
                 If Regex.IsMatch(vLink, "https?:\/\/.*imdb.*\/video\/imdb\/.*") Then

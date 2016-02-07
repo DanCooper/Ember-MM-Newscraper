@@ -760,20 +760,20 @@ Partial Class dlgEditMovie
         Me.txtMPAADesc.Size = New System.Drawing.Size(213, 60)
         Me.txtMPAADesc.TabIndex = 39
         '
-        'btnEditActor
+        'btnActorEdit
         '
-        Me.btnActorEdit.Image = CType(resources.GetObject("btnEditActor.Image"), System.Drawing.Image)
+        Me.btnActorEdit.Image = CType(resources.GetObject("btnActorEdit.Image"), System.Drawing.Image)
         Me.btnActorEdit.Location = New System.Drawing.Point(302, 304)
-        Me.btnActorEdit.Name = "btnEditActor"
+        Me.btnActorEdit.Name = "btnActorEdit"
         Me.btnActorEdit.Size = New System.Drawing.Size(23, 23)
         Me.btnActorEdit.TabIndex = 32
         Me.btnActorEdit.UseVisualStyleBackColor = True
         '
-        'btnAddActor
+        'btnActorAdd
         '
-        Me.btnActorAdd.Image = CType(resources.GetObject("btnAddActor.Image"), System.Drawing.Image)
+        Me.btnActorAdd.Image = CType(resources.GetObject("btnActorAdd.Image"), System.Drawing.Image)
         Me.btnActorAdd.Location = New System.Drawing.Point(273, 304)
-        Me.btnActorAdd.Name = "btnAddActor"
+        Me.btnActorAdd.Name = "btnActorAdd"
         Me.btnActorAdd.Size = New System.Drawing.Size(23, 23)
         Me.btnActorAdd.TabIndex = 31
         Me.btnActorAdd.UseVisualStyleBackColor = True
@@ -788,11 +788,11 @@ Partial Class dlgEditMovie
         Me.btnManual.Text = "Manual Edit"
         Me.btnManual.UseVisualStyleBackColor = True
         '
-        'btnRemove
+        'btnActorRemove
         '
-        Me.btnActorRemove.Image = CType(resources.GetObject("btnRemove.Image"), System.Drawing.Image)
+        Me.btnActorRemove.Image = CType(resources.GetObject("btnActorRemove.Image"), System.Drawing.Image)
         Me.btnActorRemove.Location = New System.Drawing.Point(658, 304)
-        Me.btnActorRemove.Name = "btnRemove"
+        Me.btnActorRemove.Name = "btnActorRemove"
         Me.btnActorRemove.Size = New System.Drawing.Size(23, 23)
         Me.btnActorRemove.TabIndex = 35
         Me.btnActorRemove.UseVisualStyleBackColor = True

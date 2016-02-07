@@ -57,16 +57,20 @@ Public Class frmVideoPlayer
         ' This call is required by the designer.
         InitializeComponent()
         Me.SetUp()
-        ' Add any initialization after the InitializeComponent() call.
-        If Environment.Is64BitOperatingSystem Then
-            If Environment.Is64BitProcess Then
-                aPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "VideoLAN\VLC")
+        aPath = clsAdvancedSettings.GetSetting("VLCPath", "", "generic.EmberCore.VLCPlayer")
+        If Not File.Exists(Path.Combine(aPath, "libvlc.dll")) Then
+            ' Add any initialization after the InitializeComponent() call.
+            If Environment.Is64BitOperatingSystem Then
+                If Environment.Is64BitProcess Then
+                    aPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "VideoLAN\VLC")
+                Else
+                    aPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "VideoLAN\VLC")
+                End If
             Else
-                aPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "VideoLAN\VLC")
+                aPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "VideoLAN\VLC")
             End If
-        Else
-            aPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "VideoLAN\VLC")
         End If
+
         If Directory.Exists(aPath) Then
             aVlcControl = New Forms.VlcControl
             aVlcControl.BeginInit()
