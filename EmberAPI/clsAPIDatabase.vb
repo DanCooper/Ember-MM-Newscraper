@@ -2015,7 +2015,7 @@ Public Class Database
                             SQLCommand.CommandText = String.Concat("SELECT * FROM seasons WHERE idShow = ", ShowID, ";")
                             Using SQLReader As SQLiteDataReader = SQLCommand.ExecuteReader
                                 While SQLReader.Read
-                                    _TVSeasonsList.Add(Master.DB.LoadTVSeasonFromDB(Convert.ToInt64(SQLReader("idSeason")), False, LoadBitmap))
+                                    _TVSeasonsList.Add(Master.DB.LoadTVSeasonFromDB(Convert.ToInt64(SQLReader("idSeason")), False, False, LoadBitmap))
                                 End While
                             End Using
                         End Using
@@ -2315,7 +2315,7 @@ Public Class Database
     ''' <param name="LoadBitmap">load all images to memorystream</param>
     ''' <returns>Database.DBElement object</returns>
     ''' <remarks></remarks>
-    Public Function LoadTVSeasonFromDB(ByVal SeasonID As Long, ByVal withShow As Boolean, Optional ByVal LoadBitmap As Boolean = False) As DBElement
+    Public Function LoadTVSeasonFromDB(ByVal SeasonID As Long, ByVal withShow As Boolean, ByVal withEpisodes As Boolean, Optional ByVal LoadBitmap As Boolean = False) As DBElement
         Dim _TVDB As New DBElement(Enums.ContentType.TVSeason)
 
         _TVDB.ID = SeasonID
@@ -2348,6 +2348,14 @@ Public Class Database
         _TVDB.ImagesContainer.Poster.LocalFilePath = GetArtForItem(_TVDB.ID, "season", "poster")
         If LoadBitmap Then _TVDB.LoadAllImages(LoadBitmap, False)
 
+        'Episodes
+        If withEpisodes Then
+            For Each tEpisode As DBElement In LoadAllTVEpisodesFromDB(_TVDB.ShowID, withShow, False, _TVDB.TVSeason.Season)
+                tEpisode = AddTVShowInfoToDBElement(tEpisode, _TVDB)
+                _TVDB.Episodes.Add(tEpisode)
+            Next
+        End If
+
         'Show container
         If withShow Then
             _TVDB = Master.DB.AddTVShowInfoToDBElement(_TVDB)
@@ -2360,23 +2368,23 @@ Public Class Database
     ''' </summary>
     ''' <param name="ShowID">Show ID</param>
     ''' <param name="iSeason">Season number</param>
-    ''' <param name="WithShow">If <c>True</c>, also retrieve the TV Show information</param>
+    ''' <param name="withShow">If <c>True</c>, also retrieve the TV Show information</param>
     ''' <returns>Database.DBElement object</returns>
     ''' <remarks></remarks>
-    Public Function LoadTVSeasonFromDB(ByVal ShowID As Long, ByVal iSeason As Integer, ByVal WithShow As Boolean, Optional ByVal LoadBitmap As Boolean = False) As DBElement
+    Public Function LoadTVSeasonFromDB(ByVal ShowID As Long, ByVal iSeason As Integer, ByVal withShow As Boolean, ByVal withEpisodes As Boolean, Optional ByVal LoadBitmap As Boolean = False) As DBElement
         Dim _TVDB As New DBElement(Enums.ContentType.TVSeason)
 
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
 
         _TVDB.ShowID = ShowID
-        If WithShow Then AddTVShowInfoToDBElement(_TVDB)
+        If withShow Then AddTVShowInfoToDBElement(_TVDB)
 
         Using SQLcommandTVSeason As SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommandTVSeason.CommandText = String.Concat("SELECT idSeason FROM seasons WHERE idShow = ", ShowID, " AND Season = ", iSeason, ";")
             Using SQLReader As SQLiteDataReader = SQLcommandTVSeason.ExecuteReader
                 If SQLReader.HasRows Then
                     SQLReader.Read()
-                    _TVDB = LoadTVSeasonFromDB(CInt(SQLReader("idSeason")), WithShow, LoadBitmap)
+                    _TVDB = LoadTVSeasonFromDB(CInt(SQLReader("idSeason")), withShow, withEpisodes, LoadBitmap)
                 End If
             End Using
         End Using
@@ -2517,14 +2525,18 @@ Public Class Database
 
         'Seasons
         If withSeasons Then
-            _TVDB.Seasons = LoadAllTVSeasonsFromDB(_TVDB.ID, LoadBitmap)
-            _TVDB.TVShow.Seasons = LoadAllTVSeasonsDetailsFromDB(_TVDB.ID)
+            For Each tSeason As DBElement In LoadAllTVSeasonsFromDB(_TVDB.ID, LoadBitmap)
+                tSeason = AddTVShowInfoToDBElement(tSeason, _TVDB)
+                _TVDB.Seasons.Add(tSeason)
+                _TVDB.TVShow.Seasons.Seasons.Add(tSeason.TVSeason)
+            Next
+            '_TVDB.TVShow.Seasons = LoadAllTVSeasonsDetailsFromDB(_TVDB.ID)
         End If
 
         'Episodes
         If withEpisodes Then
             For Each tEpisode As DBElement In LoadAllTVEpisodesFromDB(_TVDB.ID, False, False, -1, withMissingEpisodes)
-                tEpisode = Master.DB.AddTVShowInfoToDBElement(tEpisode, _TVDB)
+                tEpisode = AddTVShowInfoToDBElement(tEpisode, _TVDB)
                 _TVDB.Episodes.Add(tEpisode)
             Next
         End If
@@ -4445,7 +4457,7 @@ Public Class Database
         End Using
         If Not BatchMode Then SQLtransaction.Commit()
 
-        If _episode.FilenameID > -1 Then
+        If _episode.FilenameIDSpecified Then
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_TVEpisode, Nothing, Nothing, False, _episode)
         End If
 

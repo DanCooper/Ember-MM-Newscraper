@@ -83,7 +83,7 @@ Public Class MediaInfo
             Dim tinfo = New MediaInfo.Fileinfo
 
             Dim pExt As String = Path.GetExtension(miMovie.Filename).ToLower
-            If Master.CanScanDiscImage OrElse Not (pExt = ".iso" OrElse _
+            If Master.CanScanDiscImage OrElse Not (pExt = ".iso" OrElse
                pExt = ".img" OrElse pExt = ".bin" OrElse pExt = ".cue" OrElse pExt = ".nrg" OrElse pExt = ".rar") Then
                 Dim MI As New MediaInfo
                 'MI.GetMIFromPath(miMovie.Movie.FileInfo, miMovie.Filename, False)
@@ -144,7 +144,7 @@ Public Class MediaInfo
             End If
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -155,7 +155,7 @@ Public Class MediaInfo
             Dim tinfo = New MediaInfo.Fileinfo
 
             Dim pExt As String = Path.GetExtension(miTV.Filename).ToLower
-            If Master.CanScanDiscImage OrElse Not (pExt = ".iso" OrElse _
+            If Master.CanScanDiscImage OrElse Not (pExt = ".iso" OrElse
                pExt = ".img" OrElse pExt = ".bin" OrElse pExt = ".cue" OrElse pExt = ".nrg" OrElse pExt = ".rar") Then
                 Dim MI As New MediaInfo
                 'MI.GetMIFromPath(miTV.TVEp.FileInfo, miTV.Filename, True)
@@ -214,7 +214,7 @@ Public Class MediaInfo
                 If Not _mi Is Nothing Then miTV.TVEpisode.FileInfo = _mi
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name,ex)
+            logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
     End Sub
 
@@ -245,7 +245,7 @@ Public Class MediaInfo
                     miVideo.Aspect = ifoVideo(2)
 
                     With miVideo
-                        If Not String.IsNullOrEmpty(.Codec) OrElse Not String.IsNullOrEmpty(.Duration) OrElse Not String.IsNullOrEmpty(.Aspect) OrElse _
+                        If Not String.IsNullOrEmpty(.Codec) OrElse Not String.IsNullOrEmpty(.Duration) OrElse Not String.IsNullOrEmpty(.Aspect) OrElse
                         Not String.IsNullOrEmpty(.Height) OrElse Not String.IsNullOrEmpty(.Width) Then
                             fiOut.StreamDetails.Video.Add(miVideo)
                         End If
@@ -293,7 +293,7 @@ Public Class MediaInfo
 
                     fiInfo = fiOut
                 Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name,ex)
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
 
                 'cocotus 20140118 For more accurate metadata scanning of BLURAY/DVD images use improved mediainfo scanning (ScanMI-function) -> don't hop in this branch!! 
@@ -371,7 +371,7 @@ Public Class MediaInfo
 
                     fiInfo = fiOut
                 Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name,ex)
+                    logger.Error(New StackFrame().GetMethod().Name, ex)
                 End Try
             Else
                 fiInfo = ScanMI(sPath)
@@ -394,35 +394,35 @@ Public Class MediaInfo
         MyBase.Finalize()
     End Sub
 
-    <DllImport("Bin\MediaInfo.DLL")> _
+    <DllImport("Bin\MediaInfo.DLL")>
     Private Shared Function MediaInfoA_Get(ByVal Handle As IntPtr, ByVal StreamKind As UIntPtr, ByVal StreamNumber As UIntPtr, ByVal Parameter As IntPtr, ByVal KindOfInfo As UIntPtr, ByVal KindOfSearch As UIntPtr) As IntPtr
     End Function
 
-    <DllImport("Bin\MediaInfo.DLL")> _
+    <DllImport("Bin\MediaInfo.DLL")>
     Private Shared Function MediaInfoA_Open(ByVal Handle As IntPtr, ByVal FileName As IntPtr) As UIntPtr
     End Function
 
-    <DllImport("Bin\MediaInfo.DLL")> _
+    <DllImport("Bin\MediaInfo.DLL")>
     Private Shared Sub MediaInfo_Close(ByVal Handle As IntPtr)
     End Sub
 
-    <DllImport("Bin\MediaInfo.DLL")> _
+    <DllImport("Bin\MediaInfo.DLL")>
     Private Shared Function MediaInfo_Count_Get(ByVal Handle As IntPtr, ByVal StreamKind As UIntPtr, ByVal StreamNumber As IntPtr) As Integer
     End Function
 
-    <DllImport("Bin\MediaInfo.DLL")> _
+    <DllImport("Bin\MediaInfo.DLL")>
     Private Shared Sub MediaInfo_Delete(ByVal Handle As IntPtr)
     End Sub
 
-    <DllImport("Bin\MediaInfo.DLL")> _
+    <DllImport("Bin\MediaInfo.DLL")>
     Private Shared Function MediaInfo_Get(ByVal Handle As IntPtr, ByVal StreamKind As UIntPtr, ByVal StreamNumber As UIntPtr, <MarshalAs(UnmanagedType.LPWStr)> ByVal Parameter As String, ByVal KindOfInfo As UIntPtr, ByVal KindOfSearch As UIntPtr) As IntPtr
     End Function
 
-    <DllImport("Bin\MediaInfo.DLL")> _
+    <DllImport("Bin\MediaInfo.DLL")>
     Private Shared Function MediaInfo_New() As IntPtr
     End Function
 
-    <DllImport("Bin\MediaInfo.DLL")> _
+    <DllImport("Bin\MediaInfo.DLL")>
     Private Shared Function MediaInfo_Open(ByVal Handle As IntPtr, <MarshalAs(UnmanagedType.LPWStr)> ByVal FileName As String) As UIntPtr
     End Function
 
@@ -708,6 +708,7 @@ Public Class MediaInfo
                 Dim a_Profile As String = String.Empty
                 Dim sExt As String = Path.GetExtension(sPath).ToLower
                 Dim alternativeIFOFile As String = String.Empty
+                Dim strCommandUnmount As String = String.Empty
 
                 'New ISO Handling -> Use either DAEMON Tools or VitualCloneDrive to mount ISO!
                 If sExt = ".iso" OrElse FileUtils.Common.isVideoTS(sPath) OrElse FileUtils.Common.isBDRip(sPath) Then
@@ -715,7 +716,7 @@ Public Class MediaInfo
                     'ISO-File Scanning using either DAIMON Tools / VCDMount.exe to mount and read file!
                     If sExt = ".iso" Then
 
-                        Dim driveletter As String = Master.eSettings.GeneralDaemonDrive ' i.e. "F:\"
+                        Dim driveletter As String = Master.eSettings.GeneralDaemonDrive ' i.e. "F"
                         'Toolpath either VCDMOUNT.exe or DTLite.exe!
                         Dim ToolPath As String = Master.eSettings.GeneralDaemonPath
 
@@ -732,19 +733,24 @@ Public Class MediaInfo
                                 'Toolpath doesn't contain virtualclonedrive.exe -> assume daemon tools with DS type drive!
                             Else
                                 'Unmount
-                                '   Run_Process(ToolPath, " -unmount 0", False, True)
+                                strCommandUnmount = String.Concat("-unmount ", Regex.Replace(driveletter, ":\\", String.Empty))
+                                Functions.Run_Process(ToolPath, strCommandUnmount, False, True)
                                 'Mount
-                                Functions.Run_Process(ToolPath, " -mount 0, " & """" & sPath & """", False, True)
-                                System.Threading.Thread.Sleep(8000)
+                                'Mount ISO on Daemon Tools (Lite), i.e. C:\Program Files\DAEMON Tools Lite\DTAgent.exe -mount dt, E, "U:\isotest\test2iso.ISO"
+                                Functions.Run_Process(ToolPath, String.Concat("-mount dt, ",
+                                                                              Regex.Replace(driveletter, ":\\", String.Empty),
+                                                                              ", """,
+                                                                              sPath,
+                                                                              """"), False, True)
                             End If
 
                             'now check if it's bluray or dvd image/VIDEO_TS/BMDV Folder-Scanning!
-                            If Directory.Exists(driveletter & "VIDEO_TS") Then
-                                sPath = driveletter & "VIDEO_TS"
+                            If Directory.Exists(String.Concat(driveletter, ":\VIDEO_TS")) Then
+                                sPath = String.Concat(driveletter, ":\VIDEO_TS")
                                 SetMediaInfoScanPaths(sPath, fiIFO, alternativeIFOFile, True)
                                 'get foldersize information
-                            ElseIf Directory.Exists(driveletter & "BDMV\STREAM") Then
-                                sPath = driveletter & "BDMV\STREAM"
+                            ElseIf Directory.Exists(driveletter & ":\BDMV\STREAM") Then
+                                sPath = driveletter & ":\BDMV\STREAM"
                                 SetMediaInfoScanPaths(sPath, fiIFO, alternativeIFOFile, True)
                             End If
                         End If
@@ -933,7 +939,9 @@ Public Class MediaInfo
                     End If
                 Next
 
-
+                If Not String.IsNullOrEmpty(strCommandUnmount) Then
+                    Functions.Run_Process(Master.eSettings.GeneralDaemonPath, strCommandUnmount, False, True)
+                End If
 
                 Me.Close()
             End If
@@ -1150,8 +1158,6 @@ Public Class MediaInfo
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
-
-
     End Sub
 
 

@@ -26,17 +26,22 @@ Partial Class frmSettingsHolder
         Me.tblSettingsTop = New System.Windows.Forms.TableLayoutPanel()
         Me.chkEnabled = New System.Windows.Forms.CheckBox()
         Me.pnlSettings = New System.Windows.Forms.Panel()
-        Me.btnTestInstallation = New System.Windows.Forms.Button()
         Me.pnlSettingsMain = New System.Windows.Forms.Panel()
         Me.tblSettingsMain = New System.Windows.Forms.TableLayoutPanel()
+        Me.gbGeneralOpts = New System.Windows.Forms.GroupBox()
+        Me.tblGeneralOpts = New System.Windows.Forms.TableLayoutPanel()
+        Me.lblVLCPath = New System.Windows.Forms.Label()
+        Me.btnVLCPath = New System.Windows.Forms.Button()
+        Me.txtVLCPath = New System.Windows.Forms.TextBox()
         Me.chkUseAsVideoPlayer = New System.Windows.Forms.CheckBox()
         Me.chkUseAsAudioPlayer = New System.Windows.Forms.CheckBox()
-        Me.lblMediaPlayerInfo = New System.Windows.Forms.Label()
         Me.pnlSettingsTop.SuspendLayout()
         Me.tblSettingsTop.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
         Me.pnlSettingsMain.SuspendLayout()
         Me.tblSettingsMain.SuspendLayout()
+        Me.gbGeneralOpts.SuspendLayout()
+        Me.tblGeneralOpts.SuspendLayout()
         Me.SuspendLayout()
         '
         'pnlSettingsTop
@@ -47,7 +52,7 @@ Partial Class frmSettingsHolder
         Me.pnlSettingsTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlSettingsTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlSettingsTop.Name = "pnlSettingsTop"
-        Me.pnlSettingsTop.Size = New System.Drawing.Size(390, 23)
+        Me.pnlSettingsTop.Size = New System.Drawing.Size(348, 23)
         Me.pnlSettingsTop.TabIndex = 0
         '
         'tblSettingsTop
@@ -65,14 +70,14 @@ Partial Class frmSettingsHolder
         Me.tblSettingsTop.RowCount = 2
         Me.tblSettingsTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsTop.Size = New System.Drawing.Size(390, 23)
+        Me.tblSettingsTop.Size = New System.Drawing.Size(348, 23)
         Me.tblSettingsTop.TabIndex = 1
         '
-        'cbEnabled
+        'chkEnabled
         '
         Me.chkEnabled.AutoSize = True
         Me.chkEnabled.Location = New System.Drawing.Point(8, 3)
-        Me.chkEnabled.Name = "cbEnabled"
+        Me.chkEnabled.Name = "chkEnabled"
         Me.chkEnabled.Size = New System.Drawing.Size(68, 17)
         Me.chkEnabled.TabIndex = 0
         Me.chkEnabled.Text = "Enabled"
@@ -86,18 +91,8 @@ Partial Class frmSettingsHolder
         Me.pnlSettings.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlSettings.Location = New System.Drawing.Point(0, 0)
         Me.pnlSettings.Name = "pnlSettings"
-        Me.pnlSettings.Size = New System.Drawing.Size(390, 257)
+        Me.pnlSettings.Size = New System.Drawing.Size(348, 215)
         Me.pnlSettings.TabIndex = 0
-        '
-        'btnTestInstallation
-        '
-        Me.btnTestInstallation.AutoSize = True
-        Me.btnTestInstallation.Location = New System.Drawing.Point(3, 98)
-        Me.btnTestInstallation.Name = "btnTestInstallation"
-        Me.btnTestInstallation.Size = New System.Drawing.Size(131, 23)
-        Me.btnTestInstallation.TabIndex = 1
-        Me.btnTestInstallation.Text = "Check VLC Installation"
-        Me.btnTestInstallation.UseVisualStyleBackColor = True
         '
         'pnlSettingsMain
         '
@@ -106,20 +101,18 @@ Partial Class frmSettingsHolder
         Me.pnlSettingsMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlSettingsMain.Location = New System.Drawing.Point(0, 23)
         Me.pnlSettingsMain.Name = "pnlSettingsMain"
-        Me.pnlSettingsMain.Size = New System.Drawing.Size(390, 234)
+        Me.pnlSettingsMain.Size = New System.Drawing.Size(348, 192)
         Me.pnlSettingsMain.TabIndex = 2
         '
         'tblSettingsMain
         '
         Me.tblSettingsMain.AutoScroll = True
         Me.tblSettingsMain.AutoSize = True
-        Me.tblSettingsMain.ColumnCount = 2
+        Me.tblSettingsMain.ColumnCount = 1
         Me.tblSettingsMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSettingsMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSettingsMain.Controls.Add(Me.btnTestInstallation, 0, 3)
+        Me.tblSettingsMain.Controls.Add(Me.gbGeneralOpts, 0, 4)
         Me.tblSettingsMain.Controls.Add(Me.chkUseAsVideoPlayer, 0, 1)
         Me.tblSettingsMain.Controls.Add(Me.chkUseAsAudioPlayer, 0, 0)
-        Me.tblSettingsMain.Controls.Add(Me.lblMediaPlayerInfo, 0, 2)
         Me.tblSettingsMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblSettingsMain.Location = New System.Drawing.Point(0, 0)
         Me.tblSettingsMain.Name = "tblSettingsMain"
@@ -129,8 +122,73 @@ Partial Class frmSettingsHolder
         Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsMain.Size = New System.Drawing.Size(390, 234)
+        Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblSettingsMain.Size = New System.Drawing.Size(348, 192)
         Me.tblSettingsMain.TabIndex = 0
+        '
+        'gbGeneralOpts
+        '
+        Me.gbGeneralOpts.AutoSize = True
+        Me.gbGeneralOpts.Controls.Add(Me.tblGeneralOpts)
+        Me.gbGeneralOpts.Dock = System.Windows.Forms.DockStyle.Top
+        Me.gbGeneralOpts.Location = New System.Drawing.Point(3, 49)
+        Me.gbGeneralOpts.Name = "gbGeneralOpts"
+        Me.gbGeneralOpts.Size = New System.Drawing.Size(342, 49)
+        Me.gbGeneralOpts.TabIndex = 21
+        Me.gbGeneralOpts.TabStop = False
+        Me.gbGeneralOpts.Text = "General Settings"
+        '
+        'tblGeneralOpts
+        '
+        Me.tblGeneralOpts.AutoSize = True
+        Me.tblGeneralOpts.ColumnCount = 4
+        Me.tblGeneralOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblGeneralOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblGeneralOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblGeneralOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblGeneralOpts.Controls.Add(Me.lblVLCPath, 0, 0)
+        Me.tblGeneralOpts.Controls.Add(Me.btnVLCPath, 2, 0)
+        Me.tblGeneralOpts.Controls.Add(Me.txtVLCPath, 1, 0)
+        Me.tblGeneralOpts.Dock = System.Windows.Forms.DockStyle.Top
+        Me.tblGeneralOpts.Location = New System.Drawing.Point(3, 18)
+        Me.tblGeneralOpts.Name = "tblGeneralOpts"
+        Me.tblGeneralOpts.RowCount = 1
+        Me.tblGeneralOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblGeneralOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblGeneralOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblGeneralOpts.Size = New System.Drawing.Size(336, 28)
+        Me.tblGeneralOpts.TabIndex = 23
+        '
+        'lblVLCPath
+        '
+        Me.lblVLCPath.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblVLCPath.AutoSize = True
+        Me.lblVLCPath.Location = New System.Drawing.Point(3, 7)
+        Me.lblVLCPath.Name = "lblVLCPath"
+        Me.lblVLCPath.Size = New System.Drawing.Size(72, 13)
+        Me.lblVLCPath.TabIndex = 12
+        Me.lblVLCPath.Text = "VLC x86 Path"
+        Me.lblVLCPath.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'btnVLCPath
+        '
+        Me.btnVLCPath.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.btnVLCPath.Location = New System.Drawing.Point(314, 3)
+        Me.btnVLCPath.Margin = New System.Windows.Forms.Padding(0)
+        Me.btnVLCPath.Name = "btnVLCPath"
+        Me.btnVLCPath.Size = New System.Drawing.Size(24, 22)
+        Me.btnVLCPath.TabIndex = 14
+        Me.btnVLCPath.Text = "..."
+        Me.btnVLCPath.TextAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnVLCPath.UseVisualStyleBackColor = True
+        '
+        'txtVLCPath
+        '
+        Me.txtVLCPath.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.txtVLCPath.Location = New System.Drawing.Point(81, 3)
+        Me.txtVLCPath.Name = "txtVLCPath"
+        Me.txtVLCPath.Size = New System.Drawing.Size(230, 22)
+        Me.txtVLCPath.TabIndex = 13
         '
         'chkUseAsVideoPlayer
         '
@@ -152,24 +210,13 @@ Partial Class frmSettingsHolder
         Me.chkUseAsAudioPlayer.Text = "Use as Audio Player"
         Me.chkUseAsAudioPlayer.UseVisualStyleBackColor = True
         '
-        'lblMediaPlayerInfo
-        '
-        Me.lblMediaPlayerInfo.AutoSize = True
-        Me.lblMediaPlayerInfo.Location = New System.Drawing.Point(3, 66)
-        Me.lblMediaPlayerInfo.Margin = New System.Windows.Forms.Padding(3, 20, 3, 3)
-        Me.lblMediaPlayerInfo.Name = "lblMediaPlayerInfo"
-        Me.lblMediaPlayerInfo.Size = New System.Drawing.Size(313, 26)
-        Me.lblMediaPlayerInfo.TabIndex = 4
-        Me.lblMediaPlayerInfo.Text = "Needs VLC x86 with installed ActiveX plugin." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Works only with official release (n" & _
-    "o Nightly Builds support)."
-        '
         'frmSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.AutoSize = True
         Me.BackColor = System.Drawing.Color.White
-        Me.ClientSize = New System.Drawing.Size(390, 257)
+        Me.ClientSize = New System.Drawing.Size(348, 215)
         Me.Controls.Add(Me.pnlSettings)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
@@ -189,6 +236,10 @@ Partial Class frmSettingsHolder
         Me.pnlSettingsMain.PerformLayout()
         Me.tblSettingsMain.ResumeLayout(False)
         Me.tblSettingsMain.PerformLayout()
+        Me.gbGeneralOpts.ResumeLayout(False)
+        Me.gbGeneralOpts.PerformLayout()
+        Me.tblGeneralOpts.ResumeLayout(False)
+        Me.tblGeneralOpts.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -197,11 +248,13 @@ Partial Class frmSettingsHolder
     Friend WithEvents chkEnabled As System.Windows.Forms.CheckBox
     Friend WithEvents pnlSettings As System.Windows.Forms.Panel
     Friend WithEvents tblSettingsTop As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents btnTestInstallation As System.Windows.Forms.Button
     Friend WithEvents pnlSettingsMain As System.Windows.Forms.Panel
     Friend WithEvents tblSettingsMain As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents chkUseAsVideoPlayer As System.Windows.Forms.CheckBox
     Friend WithEvents chkUseAsAudioPlayer As System.Windows.Forms.CheckBox
-    Friend WithEvents lblMediaPlayerInfo As System.Windows.Forms.Label
-
+    Friend WithEvents gbGeneralOpts As GroupBox
+    Friend WithEvents tblGeneralOpts As TableLayoutPanel
+    Friend WithEvents lblVLCPath As Label
+    Friend WithEvents btnVLCPath As Button
+    Friend WithEvents txtVLCPath As TextBox
 End Class

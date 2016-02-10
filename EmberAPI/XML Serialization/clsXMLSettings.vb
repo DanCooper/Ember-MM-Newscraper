@@ -108,6 +108,10 @@ Partial Public Class clsXMLSettings
     Private _movieextrafanartspreselect As Boolean
     Private _movieextrafanartsresize As Boolean
     Private _movieextrafanartswidth As Integer
+    Private _movieextrathumbscreatorautothumbs As Boolean
+    Private _movieextrathumbscreatornoblackbars As Boolean
+    Private _movieextrathumbscreatornospoilers As Boolean
+    Private _movieextrathumbscreatoruseetasfa As Boolean
     Private _movieextrathumbsheight As Integer
     Private _movieextrathumbslimit As Integer
     Private _movieextrathumbskeepexisting As Boolean
@@ -1632,6 +1636,42 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._movieextrafanartsprefsizeonly = value
+        End Set
+    End Property
+
+    Public Property MovieExtrathumbsCreatorAutoThumbs() As Boolean
+        Get
+            Return _movieextrathumbscreatorautothumbs
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movieextrathumbscreatorautothumbs = value
+        End Set
+    End Property
+
+    Public Property MovieExtrathumbsCreatorNoBlackBars() As Boolean
+        Get
+            Return _movieextrathumbscreatornoblackbars
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movieextrathumbscreatornoblackbars = value
+        End Set
+    End Property
+
+    Public Property MovieExtrathumbsCreatorNoSpoilers() As Boolean
+        Get
+            Return _movieextrathumbscreatornospoilers
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movieextrathumbscreatornospoilers = value
+        End Set
+    End Property
+
+    Public Property MovieExtrathumbsCreatorUseETasFA() As Boolean
+        Get
+            Return _movieextrathumbscreatoruseetasfa
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movieextrathumbscreatoruseetasfa = value
         End Set
     End Property
 

@@ -32,10 +32,6 @@
 ' # 4) Landscape.png - to be added at a later stage, today is not possible to save
 ' # language is in image properties
 
-Imports System.IO
-Imports System.IO.Compression
-Imports System.Text
-Imports System.Text.RegularExpressions
 Imports EmberAPI
 Imports NLog
 Imports System.Diagnostics
@@ -46,7 +42,7 @@ Namespace FanartTVs
 
 #Region "Fields"
 
-        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
         Friend WithEvents bwFANARTTV As New System.ComponentModel.BackgroundWorker
 

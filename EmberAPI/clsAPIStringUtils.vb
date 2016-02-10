@@ -613,7 +613,7 @@ Public Class StringUtils
     ''' <remarks>The year can only be 4 digits from 1900 - 2099. More or less digits and the string won't be modified.</remarks>
     Public Shared Function GetYear(ByVal sString As String) As String
         If String.IsNullOrEmpty(sString) Then Return String.Empty
-        Dim strYear As String = Regex.Match(sString, "((19|20)\d{2})").Value
+        Dim strYear As String = Regex.Match(sString, "((19|20)\d{2})", RegexOptions.RightToLeft).Value
         If Not String.IsNullOrEmpty(strYear) Then
             Return strYear.Trim
         End If
