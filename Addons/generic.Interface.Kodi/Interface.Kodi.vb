@@ -424,7 +424,7 @@ Public Class KodiInterface
                                     'connection test
                                     If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                         'run task
-                                        If Await Task.Run(Function() _APIKodi.UpdateInfo_TVSeason(mDBElement, _SpecialSettings.SendNotifications, _SpecialSettings.SyncPlayCounts AndAlso _SpecialSettings.SyncPlayCountsHost = mHost.Label, GenericSubEventProgressAsync, GenericEventProcess)) Then
+                                        If Await Task.Run(Function() _APIKodi.UpdateInfo_TVSeason(mDBElement, _SpecialSettings.SendNotifications, _SpecialSettings.SyncPlayCounts AndAlso _SpecialSettings.SyncPlayCountsHost = tHost.Label, GenericSubEventProgressAsync, GenericEventProcess)) Then
                                             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.TVSeason.Title), New Bitmap(My.Resources.logo)}))
                                         Else
                                             logger.Warn(String.Concat("[KodiInterface] [", tHost.Label, "] RunGeneric TV Season Update | Sync Failed:  ", mDBElement.TVSeason.Title))
