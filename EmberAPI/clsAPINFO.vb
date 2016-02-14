@@ -227,8 +227,10 @@ Public Class NFO
             End If
 
             'Outline
-            If (Not DBMovie.Movie.OutlineSpecified OrElse Not Master.eSettings.MovieLockOutline) AndAlso ScrapeOptions.bMainOutline AndAlso
-                scrapedmovie.OutlineSpecified AndAlso Master.eSettings.MovieScraperOutline AndAlso Not new_Outline Then
+            'If (Not DBMovie.Movie.OutlineSpecified OrElse Not Master.eSettings.MovieLockOutline) AndAlso ScrapeOptions.bMainOutline AndAlso
+            '    scrapedmovie.OutlineSpecified AndAlso Master.eSettings.MovieScraperOutline AndAlso Not new_Outline Then
+            If ((Not DBMovie.Movie.OutlineSpecified OrElse Not Master.eSettings.MovieLockOutline OrElse EmberAPI.StringUtils.isEnglishText(DBMovie.Movie.Outline)) AndAlso ScrapeOptions.bMainOutline AndAlso _
+                 scrapedmovie.OutlineSpecified AndAlso Master.eSettings.MovieScraperOutline AndAlso Not new_Outline) Then
                 DBMovie.Movie.Outline = scrapedmovie.Outline
                 new_Outline = True
             ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperOutline AndAlso Not Master.eSettings.MovieLockOutline Then
@@ -240,8 +242,10 @@ Public Class NFO
             End If
 
             'Plot
-            If (Not DBMovie.Movie.PlotSpecified OrElse Not Master.eSettings.MovieLockPlot) AndAlso ScrapeOptions.bMainPlot AndAlso
-                scrapedmovie.PlotSpecified AndAlso Master.eSettings.MovieScraperPlot AndAlso Not new_Plot Then
+            'If (Not DBMovie.Movie.PlotSpecified OrElse Not Master.eSettings.MovieLockPlot) AndAlso ScrapeOptions.bMainPlot AndAlso
+            '    scrapedmovie.PlotSpecified AndAlso Master.eSettings.MovieScraperPlot AndAlso Not new_Plot Then
+            If ((Not DBMovie.Movie.PlotSpecified OrElse Not Master.eSettings.MovieLockPlot OrElse EmberAPI.StringUtils.isEnglishText(DBMovie.Movie.Plot)) AndAlso ScrapeOptions.bMainPlot AndAlso _
+                scrapedmovie.PlotSpecified AndAlso Master.eSettings.MovieScraperPlot AndAlso Not new_Plot) Then
                 DBMovie.Movie.Plot = scrapedmovie.Plot
                 new_Plot = True
             ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperPlot AndAlso Not Master.eSettings.MovieLockPlot Then
