@@ -994,8 +994,6 @@ Public Class MediaInfo
             mystring = Text.RegularExpressions.Regex.Replace(AudioChannelstring, "[^/.0-9]", "").Trim
             'now get channel number
             If mystring.Length > 0 Then
-                ' fix for new dolby atmos stream info i.e. "ObjectBased / 8 channels"
-                mystring = mystring.Replace("/", "")
                 If Char.IsDigit(mystring(0)) Then
                     Try
                         'In case of "x/y" this will return x which is highest number, i.e 8/6 -> 8 (highest number always first!)
