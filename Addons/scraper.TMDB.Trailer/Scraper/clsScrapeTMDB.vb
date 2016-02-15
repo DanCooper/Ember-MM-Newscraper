@@ -99,16 +99,18 @@ Namespace TMDB
             If trailers IsNot Nothing AndAlso trailers.Results IsNot Nothing Then
                 For Each Video As TMDbLib.Objects.General.Video In trailers.Results.Where(Function(f) f.Site = "YouTube")
                     Dim tLink As String = String.Format("http://www.youtube.com/watch?v={0}", Video.Key)
-                    Dim tName As String = YouTube.Scraper.GetVideoTitle(tLink)
-                    alTrailers.Add(New MediaContainers.Trailer With { _
-                                   .LongLang = If(String.IsNullOrEmpty(Video.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(Video.Iso_639_1)), _
-                                   .Quality = GetVideoQuality(Video.Size), _
-                                   .Scraper = "TMDB", _
-                                   .ShortLang = If(String.IsNullOrEmpty(Video.Iso_639_1), String.Empty, Video.Iso_639_1), _
-                                   .Source = Video.Site, _
-                                   .Title = tName, _
-                                   .Type = GetVideoType(Video.Type), _
-                                   .URLWebsite = tLink})
+                    If YouTube.Scraper.IsAvailable(tLink) Then
+                        Dim tName As String = YouTube.Scraper.GetVideoTitle(tLink)
+                        alTrailers.Add(New MediaContainers.Trailer With {
+                                           .LongLang = If(String.IsNullOrEmpty(Video.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(Video.Iso_639_1)),
+                                           .Quality = GetVideoQuality(Video.Size),
+                                           .Scraper = "TMDB",
+                                           .ShortLang = If(String.IsNullOrEmpty(Video.Iso_639_1), String.Empty, Video.Iso_639_1),
+                                           .Source = Video.Site,
+                                           .Title = tName,
+                                           .Type = GetVideoType(Video.Type),
+                                           .URLWebsite = tLink})
+                    End If
                 Next
             End If
 
