@@ -1681,6 +1681,8 @@ Public Class Scanner
                             Catch
                             End Try
 
+                            ScanForTVFiles(currShowContainer, inInfo.FullName)
+
                             For Each sDirs As DirectoryInfo In inList
                                 ScanForTVFiles(currShowContainer, sDirs.FullName)
                             Next
