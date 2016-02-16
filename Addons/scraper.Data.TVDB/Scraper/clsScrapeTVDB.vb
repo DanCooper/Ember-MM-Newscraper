@@ -233,6 +233,13 @@ Namespace TVDBs
 
             If bwTVDB.CancellationPending Then Return Nothing
 
+            'EpisodeGuideURL
+            If FilteredOptions.bMainEpisodeGuide Then
+                nTVShow.EpisodeGuide.URL = String.Concat(_TVDBMirror.Address, "/api/", _SpecialSettings.APIKey, "/series/", TVShowInfo.Series.Id, "/all/", TVShowInfo.Language, ".zip")
+            End If
+
+            If bwTVDB.CancellationPending Then Return Nothing
+
             'Genres
             If FilteredOptions.bMainGenres Then
                 Dim aGenres As List(Of String) = Nothing
