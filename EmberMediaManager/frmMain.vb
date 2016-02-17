@@ -8234,7 +8234,20 @@ doCancel:
                 Dim par_idMovie As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("par_idMovie", DbType.Int32, 0, "idMovie")
                 Dim LevFail As Boolean = False
                 Dim pTitle As String = String.Empty
+                Dim bUseFolderName As Boolean = False
                 For Each drvRow As DataGridViewRow In dgvMovies.Rows
+
+                    Using SQLcommand_source As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                        SQLcommand.CommandText = String.Concat("SELECT * FROM moviesource WHERE idSource = ", Convert.ToInt64(drvRow.Cells("idSource").Value), ";")
+                        Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
+                            If SQLreader.HasRows Then
+                                SQLreader.Read()
+                                bUseFolderName = Convert.ToBoolean(SQLreader("bFoldername"))
+                            Else
+                                bUseFolderName = False
+                            End If
+                        End Using
+                    End Using
 
                     If Master.eSettings.MovieLevTolerance > 0 Then
                         If FileUtils.Common.isVideoTS(drvRow.Cells("MoviePath").Value.ToString) Then
@@ -8242,7 +8255,7 @@ doCancel:
                         ElseIf FileUtils.Common.isBDRip(drvRow.Cells("MoviePath").Value.ToString) Then
                             pTitle = Directory.GetParent(Directory.GetParent(Directory.GetParent(drvRow.Cells("MoviePath").Value.ToString).FullName).FullName).Name
                         Else
-                            If Convert.ToBoolean(drvRow.Cells("UseFolder").FormattedValue) AndAlso Convert.ToBoolean(drvRow.Cells("Type").FormattedValue) Then
+                            If bUseFolderName AndAlso Convert.ToBoolean(drvRow.Cells("Type").FormattedValue) Then
                                 pTitle = Directory.GetParent(drvRow.Cells("MoviePath").Value.ToString).Name
                             Else
                                 pTitle = Path.GetFileNameWithoutExtension(drvRow.Cells("MoviePath").Value.ToString)

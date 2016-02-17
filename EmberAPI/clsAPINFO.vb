@@ -609,6 +609,13 @@ Public Class NFO
                 DBTV.TVShow.Countries.Clear()
             End If
 
+            'EpisodeGuideURL
+            If ScrapeOptions.bMainEpisodeGuide AndAlso scrapedshow.EpisodeGuideSpecified AndAlso Master.eSettings.TVScraperShowEpiGuideURL Then
+                DBTV.TVShow.EpisodeGuide = scrapedshow.EpisodeGuide
+            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowEpiGuideURL Then
+                DBTV.TVShow.EpisodeGuide.Clear()
+            End If
+
             'Genres
             If (Not DBTV.TVShow.GenresSpecified OrElse Not Master.eSettings.TVLockShowGenre) AndAlso ScrapeOptions.bMainGenres AndAlso
                 scrapedshow.GenresSpecified AndAlso Master.eSettings.TVScraperShowGenre AndAlso Not new_Genres Then
