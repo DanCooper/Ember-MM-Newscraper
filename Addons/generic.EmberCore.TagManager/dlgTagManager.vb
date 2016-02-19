@@ -149,15 +149,15 @@ Public Class dlgTagManager
                     For i As Integer = 0 To .dgvMovies.Columns.Count - 1
                         .dgvMovies.Columns(i).Visible = False
                     Next
-                    .dgvMovies.Columns(26).Visible = True
-                    .dgvMovies.Columns(26).Resizable = DataGridViewTriState.True
-                    .dgvMovies.Columns(26).ReadOnly = True
-                    .dgvMovies.Columns(26).MinimumWidth = 83
-                    .dgvMovies.Columns(26).SortMode = DataGridViewColumnSortMode.Automatic
-                    .dgvMovies.Columns(26).ToolTipText = Master.eLang.GetString(21, "Title")
-                    .dgvMovies.Columns(26).HeaderText = Master.eLang.GetString(21, "Title")
+                    .dgvMovies.Columns("ListTitle").Visible = True
+                    .dgvMovies.Columns("ListTitle").Resizable = DataGridViewTriState.True
+                    .dgvMovies.Columns("ListTitle").ReadOnly = True
+                    .dgvMovies.Columns("ListTitle").MinimumWidth = 83
+                    .dgvMovies.Columns("ListTitle").SortMode = DataGridViewColumnSortMode.Automatic
+                    .dgvMovies.Columns("ListTitle").ToolTipText = Master.eLang.GetString(21, "Title")
+                    .dgvMovies.Columns("ListTitle").HeaderText = Master.eLang.GetString(21, "Title")
 
-                    .dgvMovies.Columns(0).ValueType = GetType(Int32)
+                    .dgvMovies.Columns("ID").ValueType = GetType(Int64)
                 End With
             End If
             Me.dgvMovies.ResumeLayout()
