@@ -44,8 +44,8 @@ Public Class dlgGenreManager
         Top = Master.AppPos.Top + (Master.AppPos.Height - Height) \ 2
         StartPosition = FormStartPosition.Manual
         SetUp()
+        Master.DB.LoadAllGenres()
         tmpGenreXML = CType(APIXML.GenreXML.CloneDeep, clsXMLGenres)
-        LoadGenresFromDatabase()
         PopulateGenres()
     End Sub
 
@@ -349,23 +349,6 @@ Public Class dlgGenreManager
     Private Sub GenreClearSelection()
         For Each dRow As DataGridViewRow In dgvGenres.Rows
             dRow.Cells(0).Value = False
-        Next
-    End Sub
-
-    Private Sub LoadGenresFromDatabase()
-        Dim tGenreList As List(Of String) = Master.DB.GetAllGenres
-
-        For Each tGenre As String In tGenreList
-            Dim gMapping As genreMapping = tmpGenreXML.Mappings.FirstOrDefault(Function(f) f.SearchString = tGenre)
-            If gMapping Is Nothing Then
-                'check if the tGenre is already existing in Gernes list
-                Dim gProperty As genreProperty = tmpGenreXML.Genres.FirstOrDefault(Function(f) f.Name = tGenre)
-                If gProperty Is Nothing Then
-                    tmpGenreXML.Genres.Add(New genreProperty With {.Name = tGenre})
-                End If
-                'add a new mapping if tGenre is not in the MappingTable
-                tmpGenreXML.Mappings.Add(New genreMapping With {.MappedTo = New List(Of String) From {tGenre}, .SearchString = tGenre})
-            End If
         Next
     End Sub
 

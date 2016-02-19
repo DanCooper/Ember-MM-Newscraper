@@ -10152,6 +10152,7 @@ doCancel:
 
             Master.fLoading.SetLoadingMesg(Master.eLang.GetString(858, "Loading database..."))
             Master.DB.ConnectMyVideosDB()
+            Master.DB.LoadAllGenres()
             Master.DB.LoadMovieSourcesFromDB()
             Master.DB.LoadTVShowSourcesFromDB()
             Master.DB.LoadExcludeDirsFromDB()
