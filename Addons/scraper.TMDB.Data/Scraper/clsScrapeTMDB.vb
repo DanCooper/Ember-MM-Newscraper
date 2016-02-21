@@ -297,7 +297,7 @@ Namespace TMDB
 
             'Collection ID
             If FilteredOptions.bMainCollectionID Then
-                If Result.BelongsToCollection Is Nothing OrElse (Result.BelongsToCollection IsNot Nothing) Then
+                If Result.BelongsToCollection Is Nothing Then
                     If _SpecialSettings.FallBackEng AndAlso ResultE.BelongsToCollection IsNot Nothing Then
                         nMovie.AddSet(Nothing, ResultE.BelongsToCollection.Name, Nothing, CStr(ResultE.BelongsToCollection.Id))
                         nMovie.TMDBColID = CStr(ResultE.BelongsToCollection.Id)
