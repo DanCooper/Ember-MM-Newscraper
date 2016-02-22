@@ -1079,7 +1079,7 @@
   <string id="987">Confirm</string>
   <string id="988">DAEMON Tools settings (only used for scanning image files (.iso))</string>
   <string id="989">Driveletter</string>
-  <string id="990">Path to DTLite.exe/VCDMount.exe</string>
+  <string id="990">Path to DTAgent.exe/VCDMount.exe</string>
   <string id="991">Actor Thumbs</string>
   <string id="992">Extrafanarts</string>
   <string id="993">Confirm All</string>

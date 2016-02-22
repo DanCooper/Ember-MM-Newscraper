@@ -203,8 +203,8 @@ Namespace TMDB
             Movie = APIResult.Result
             If Movie Is Nothing Then Return String.Empty
 
-            If Movie.BelongsToCollection IsNot Nothing AndAlso Movie.BelongsToCollection.Item(0).Id > 0 Then
-                Return CStr(Movie.BelongsToCollection.Item(0).Id)
+            If Movie.BelongsToCollection IsNot Nothing AndAlso Movie.BelongsToCollection.Id > 0 Then
+                Return CStr(Movie.BelongsToCollection.Id)
             Else
                 Return String.Empty
             End If
@@ -297,14 +297,14 @@ Namespace TMDB
 
             'Collection ID
             If FilteredOptions.bMainCollectionID Then
-                If Result.BelongsToCollection Is Nothing OrElse (Result.BelongsToCollection IsNot Nothing AndAlso Result.BelongsToCollection.Count = 0) Then
-                    If _SpecialSettings.FallBackEng AndAlso ResultE.BelongsToCollection IsNot Nothing AndAlso ResultE.BelongsToCollection.Count > 0 Then
-                        nMovie.AddSet(Nothing, ResultE.BelongsToCollection.Item(0).Name, Nothing, CStr(ResultE.BelongsToCollection.Item(0).Id))
-                        nMovie.TMDBColID = CStr(ResultE.BelongsToCollection.Item(0).Id)
+                If Result.BelongsToCollection Is Nothing Then
+                    If _SpecialSettings.FallBackEng AndAlso ResultE.BelongsToCollection IsNot Nothing Then
+                        nMovie.AddSet(Nothing, ResultE.BelongsToCollection.Name, Nothing, CStr(ResultE.BelongsToCollection.Id))
+                        nMovie.TMDBColID = CStr(ResultE.BelongsToCollection.Id)
                     End If
                 Else
-                    nMovie.AddSet(Nothing, Result.BelongsToCollection.Item(0).Name, Nothing, CStr(ResultE.BelongsToCollection.Item(0).Id))
-                    nMovie.TMDBColID = CStr(Result.BelongsToCollection.Item(0).Id)
+                    nMovie.AddSet(Nothing, Result.BelongsToCollection.Name, Nothing, CStr(ResultE.BelongsToCollection.Id))
+                    nMovie.TMDBColID = CStr(Result.BelongsToCollection.Id)
                 End If
             End If
 
@@ -487,7 +487,12 @@ Namespace TMDB
                 End If
 
                 If aTrailers IsNot Nothing AndAlso aTrailers.Count > 0 Then
-                    nMovie.Trailer = "http://www.youtube.com/watch?hd=1&v=" & aTrailers(0).Key
+                    For Each tTrailer In aTrailers
+                        If YouTube.Scraper.IsAvailable("http://www.youtube.com/watch?hd=1&v=" & tTrailer.Key) Then
+                            nMovie.Trailer = "http://www.youtube.com/watch?hd=1&v=" & tTrailer.Key
+                            Exit For
+                        End If
+                    Next
                 End If
             End If
 

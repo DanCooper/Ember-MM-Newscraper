@@ -1334,7 +1334,7 @@ Public Class Database
         Return cList.ToArray
     End Function
 
-    Public Function GetAllGenres() As List(Of String)
+    Public Sub LoadAllGenres()
         Dim gList As New List(Of String)
 
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -1346,8 +1346,20 @@ Public Class Database
             End Using
         End Using
 
-        Return gList
-    End Function
+        For Each tGenre As String In gList
+            Dim gMapping As genreMapping = APIXML.GenreXML.Mappings.FirstOrDefault(Function(f) f.SearchString = tGenre)
+            If gMapping Is Nothing Then
+                'check if the tGenre is already existing in Gernes list
+                Dim gProperty As genreProperty = APIXML.GenreXML.Genres.FirstOrDefault(Function(f) f.Name = tGenre)
+                If gProperty Is Nothing Then
+                    APIXML.GenreXML.Genres.Add(New genreProperty With {.isNew = False, .Name = tGenre})
+                End If
+                'add a new mapping if tGenre is not in the MappingTable
+                APIXML.GenreXML.Mappings.Add(New genreMapping With {.isNew = False, .MappedTo = New List(Of String) From {tGenre}, .SearchString = tGenre})
+            End If
+        Next
+        APIXML.GenreXML.Save()
+    End Sub
 
     Public Function GetAllMoviePaths() As List(Of String)
         Dim tList As New List(Of String)

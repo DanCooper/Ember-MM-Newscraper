@@ -100,6 +100,7 @@ Public Class TVDB_Data
         _setup = New frmSettingsHolder
         LoadSettings()
         _setup.chkEnabled.Checked = _ScraperEnabled
+        _setup.txtApiKey.Text = strPrivateAPIKey
         _setup.chkScraperEpisodeActors.Checked = ConfigScrapeOptions.bEpisodeActors
         _setup.chkScraperEpisodeAired.Checked = ConfigScrapeOptions.bEpisodeAired
         _setup.chkScraperEpisodeCredits.Checked = ConfigScrapeOptions.bEpisodeCredits
