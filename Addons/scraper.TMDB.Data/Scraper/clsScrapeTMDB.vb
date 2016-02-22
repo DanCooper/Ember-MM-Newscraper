@@ -177,7 +177,7 @@ Namespace TMDB
             APIResult = Task.Run(Function() _TMDBApi.GetMovie(DBMovie.Movie.ID))
 
             Movie = APIResult.Result
-            If Movie Is Nothing Then Return
+            If Movie Is Nothing OrElse Movie.Id = 0 Then Return
 
             DBMovie.Movie.TMDBID = CStr(Movie.Id)
         End Sub
@@ -189,7 +189,7 @@ Namespace TMDB
             APIResult = Task.Run(Function() _TMDBApi.GetMovie(imdbID))
 
             Movie = APIResult.Result
-            If Movie Is Nothing Then Return String.Empty
+            If Movie Is Nothing OrElse Movie.Id = 0 Then Return String.Empty
 
             Return CStr(Movie.Id)
         End Function
