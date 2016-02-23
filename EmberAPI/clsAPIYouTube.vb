@@ -88,13 +88,27 @@ Namespace YouTube
         ''' </summary>
         ''' <param name="strURL">The text to parse for the title</param>
         Public Shared Function GetVideoTitle(ByRef strURL As String) As String
-            Dim result As String = String.Empty
             If UrlUtils.IsYouTubeURL(strURL) Then
                 Dim raw_video_info As String = GetVideoDetails(UrlUtils.GetVideoID(strURL))
                 Dim rawAllData As Dictionary(Of String, String) = ToStringTable(raw_video_info).ToDictionary(Function(entry) entry(0), Function(entry) entry(1))
-                result = HttpUtility.UrlDecode(rawAllData("title"))
+                Try
+                    Return HttpUtility.UrlDecode(rawAllData("title"))
+                Catch ex As Exception
+                    Return HttpUtility.UrlDecode(rawAllData("reason"))
+                End Try
             End If
-            Return result
+            Return String.Empty
+        End Function
+
+        Public Shared Function IsAvailable(ByVal strURL As String) As Boolean
+            If UrlUtils.IsYouTubeURL(strURL) Then
+                Dim raw_video_info As String = GetVideoDetails(UrlUtils.GetVideoID(strURL))
+                Dim rawAllData As Dictionary(Of String, String) = ToStringTable(raw_video_info).ToDictionary(Function(entry) entry(0), Function(entry) entry(1))
+                If Not rawAllData.ContainsKey("errorcode") Then
+                    Return True
+                End If
+            End If
+            Return False
         End Function
 
         Private Shared Function ToStringTable(s As String) As IEnumerable(Of String())

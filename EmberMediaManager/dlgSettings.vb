@@ -6669,7 +6669,7 @@ Public Class dlgSettings
         lblFileSystemCleanerWarning.Text = Master.eLang.GetString(442, "WARNING: Using the Expert Mode Cleaner could potentially delete wanted files. Take care when using this tool.")
         lblFileSystemCleanerWhitelist.Text = Master.eLang.GetString(441, "Whitelisted Extensions:")
         lblGeneralDaemonDrive.Text = Master.eLang.GetString(989, "Driveletter")
-        lblGeneralDaemonPath.Text = Master.eLang.GetString(990, "Path to DTLite.exe")
+        lblGeneralDaemonPath.Text = Master.eLang.GetString(990, "Path to DTAgent.exe/VCDMount.exe")
         lblGeneralImageFilterPosterMatchRate.Text = Master.eLang.GetString(148, "Poster") & " " & Master.eLang.GetString(461, "Mismatch Tolerance:")
         lblGeneralImageFilterFanartMatchRate.Text = Master.eLang.GetString(149, "Fanart") & " " & Master.eLang.GetString(461, "Mismatch Tolerance:")
         lblGeneralMovieSetTheme.Text = String.Concat(Master.eLang.GetString(1155, "MovieSet Theme"), ":")
@@ -7095,11 +7095,11 @@ Public Class dlgSettings
         End Try
     End Sub
 
-    Private Sub btnGeneralDaemonPathBrowse_Click(sender As Object, e As EventArgs)
+    Private Sub btnGeneralDaemonPathBrowse_Click(sender As Object, e As EventArgs) Handles btnGeneralDaemonPathBrowse.Click
         Try
             With fileBrowse
-                .Filter = "Exe (*.exe*)|*.exe*|Exe (*.exe*)|*.exe*"
-                If .ShowDialog = Windows.Forms.DialogResult.OK Then
+                .Filter = "Virtual Drive|DTAgent.exe;VCDMount.exe"
+                If .ShowDialog = DialogResult.OK Then
                     If Not String.IsNullOrEmpty(.FileName) Then
                         txtGeneralDaemonPath.Text = .FileName
                         SetApplyButton(True)

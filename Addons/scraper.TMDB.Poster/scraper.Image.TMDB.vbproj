@@ -105,13 +105,34 @@
     <WarningsAsErrors>41998,41999,42004,42016,42017,42018,42019,42020,42021,42022,42024,42025,42026,42029,42030,42031,42032,42036,42099,42104,42105,42106,42107,42108,42109</WarningsAsErrors>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <NoWarn>42353,42354,42355</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <WarningsAsErrors>41998,41999,42004,42016,42017,42018,42019,42020,42021,42022,42024,42025,42026,42029,42030,42031,42032,42036,42099,42104,42105,42106,42107,42108,42109</WarningsAsErrors>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Release\</OutputPath>
+    <Optimize>true</Optimize>
+    <NoWarn>42353,42354,42355</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <WarningsAsErrors>41998,41999,42004,42016,42017,42018,42019,42020,42021,42022,42024,42025,42026,42029,42030,42031,42032,42036,42099,42104,42105,42106,42107,42108,42109</WarningsAsErrors>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NLog.4.2.3\lib\net45\NLog.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\RestSharp.105.2.3\lib\net45\RestSharp.dll</HintPath>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NLog.4.2.3\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -130,9 +151,9 @@
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="TMDbLib, Version=0.8.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\TMDbLib.0.8.5.0-alpha\lib\net45\TMDbLib.dll</HintPath>
+    <Reference Include="TMDbLib, Version=0.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\TMDbLib.0.9.0.0-alpha\lib\net45\TMDbLib.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>

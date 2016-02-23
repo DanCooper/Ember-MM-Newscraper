@@ -177,7 +177,7 @@ Namespace TMDB
             APIResult = Task.Run(Function() _TMDBApi.GetMovie(DBMovie.Movie.ID))
 
             Movie = APIResult.Result
-            If Movie Is Nothing Then Return
+            If Movie Is Nothing OrElse Movie.Id = 0 Then Return
 
             DBMovie.Movie.TMDBID = CStr(Movie.Id)
         End Sub
@@ -189,7 +189,7 @@ Namespace TMDB
             APIResult = Task.Run(Function() _TMDBApi.GetMovie(imdbID))
 
             Movie = APIResult.Result
-            If Movie Is Nothing Then Return String.Empty
+            If Movie Is Nothing OrElse Movie.Id = 0 Then Return String.Empty
 
             Return CStr(Movie.Id)
         End Function
@@ -203,8 +203,8 @@ Namespace TMDB
             Movie = APIResult.Result
             If Movie Is Nothing Then Return String.Empty
 
-            If Movie.BelongsToCollection IsNot Nothing AndAlso Movie.BelongsToCollection.Item(0).Id > 0 Then
-                Return CStr(Movie.BelongsToCollection.Item(0).Id)
+            If Movie.BelongsToCollection IsNot Nothing AndAlso Movie.BelongsToCollection.Id > 0 Then
+                Return CStr(Movie.BelongsToCollection.Id)
             Else
                 Return String.Empty
             End If
@@ -282,12 +282,12 @@ Namespace TMDB
                 If Result.Releases IsNot Nothing AndAlso Result.Releases.Countries IsNot Nothing AndAlso Result.Releases.Countries.Count > 0 Then
                     For Each cCountry In Result.Releases.Countries
                         If Not String.IsNullOrEmpty(cCountry.Certification) Then
-                            Try
-                                Dim tCountry As String = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = cCountry.Iso_3166_1.ToLower).name
-                                nMovie.Certifications.Add(String.Concat(tCountry, ":", cCountry.Certification))
-                            Catch ex As Exception
+                            Dim CertificationLanguage = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = cCountry.Iso_3166_1.ToLower)
+                            If CertificationLanguage IsNot Nothing AndAlso CertificationLanguage.name IsNot Nothing AndAlso Not String.IsNullOrEmpty(CertificationLanguage.name) Then
+                                nMovie.Certifications.Add(String.Concat(CertificationLanguage.name, ":", cCountry.Certification))
+                            Else
                                 logger.Warn("Unhandled certification language encountered: {0}", cCountry.Iso_3166_1.ToLower)
-                            End Try
+                            End If
                         End If
                     Next
                 End If
@@ -297,14 +297,14 @@ Namespace TMDB
 
             'Collection ID
             If FilteredOptions.bMainCollectionID Then
-                If Result.BelongsToCollection Is Nothing OrElse (Result.BelongsToCollection IsNot Nothing AndAlso Result.BelongsToCollection.Count = 0) Then
-                    If _SpecialSettings.FallBackEng AndAlso ResultE.BelongsToCollection IsNot Nothing AndAlso ResultE.BelongsToCollection.Count > 0 Then
-                        nMovie.AddSet(Nothing, ResultE.BelongsToCollection.Item(0).Name, Nothing, CStr(ResultE.BelongsToCollection.Item(0).Id))
-                        nMovie.TMDBColID = CStr(ResultE.BelongsToCollection.Item(0).Id)
+                If Result.BelongsToCollection Is Nothing Then
+                    If _SpecialSettings.FallBackEng AndAlso ResultE.BelongsToCollection IsNot Nothing Then
+                        nMovie.AddSet(Nothing, ResultE.BelongsToCollection.Name, Nothing, CStr(ResultE.BelongsToCollection.Id))
+                        nMovie.TMDBColID = CStr(ResultE.BelongsToCollection.Id)
                     End If
                 Else
-                    nMovie.AddSet(Nothing, Result.BelongsToCollection.Item(0).Name, Nothing, CStr(ResultE.BelongsToCollection.Item(0).Id))
-                    nMovie.TMDBColID = CStr(Result.BelongsToCollection.Item(0).Id)
+                    nMovie.AddSet(Nothing, Result.BelongsToCollection.Name, Nothing, CStr(ResultE.BelongsToCollection.Id))
+                    nMovie.TMDBColID = CStr(Result.BelongsToCollection.Id)
                 End If
             End If
 
@@ -487,7 +487,12 @@ Namespace TMDB
                 End If
 
                 If aTrailers IsNot Nothing AndAlso aTrailers.Count > 0 Then
-                    nMovie.Trailer = "http://www.youtube.com/watch?hd=1&v=" & aTrailers(0).Key
+                    For Each tTrailer In aTrailers
+                        If YouTube.Scraper.IsAvailable("http://www.youtube.com/watch?hd=1&v=" & tTrailer.Key) Then
+                            nMovie.Trailer = "http://www.youtube.com/watch?hd=1&v=" & tTrailer.Key
+                            Exit For
+                        End If
+                    Next
                 End If
             End If
 
@@ -649,12 +654,12 @@ Namespace TMDB
                 If Result.ContentRatings IsNot Nothing AndAlso Result.ContentRatings.Results IsNot Nothing AndAlso Result.ContentRatings.Results.Count > 0 Then
                     For Each aCountry In Result.ContentRatings.Results
                         If Not String.IsNullOrEmpty(aCountry.Rating) Then
-                            Try
-                                Dim tCountry As String = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = aCountry.Iso_3166_1.ToLower).name
-                                nTVShow.Certifications.Add(String.Concat(tCountry, ":", aCountry.Rating))
-                            Catch ex As Exception
+                            Dim CertificationLanguage = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = aCountry.Iso_3166_1.ToLower)
+                            If CertificationLanguage IsNot Nothing AndAlso CertificationLanguage.name IsNot Nothing AndAlso Not String.IsNullOrEmpty(CertificationLanguage.name) Then
+                                nTVShow.Certifications.Add(String.Concat(CertificationLanguage.name, ":", aCountry.Rating))
+                            Else
                                 logger.Warn("Unhandled certification language encountered: {0}", aCountry.Iso_3166_1.ToLower)
-                            End Try
+                            End If
                         End If
                     Next
                 End If
