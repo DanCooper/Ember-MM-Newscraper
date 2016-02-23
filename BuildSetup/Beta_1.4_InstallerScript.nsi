@@ -112,9 +112,8 @@ Section "Ember Media Manager" SecEmberMediaManager
   ;Cleanup old modules folder
   RMDir /r "$INSTDIR\Modules"
   
-  ;Cleanup old FanartTV API
-  Delete "$INSTDIR\FanartTVAPI.dll"
-  Delete "$INSTDIR\FanartTVAPI.XML"
+  ;Cleanup old files
+  Delete "$INSTDIR\*.*"
   
   ;ADD YOUR OWN FILES HERE...
   SetOutPath "$INSTDIR"
@@ -124,9 +123,6 @@ Section "Ember Media Manager" SecEmberMediaManager
   File "${emm_root}\${emm_folder}\NLog.config"
   File "${emm_root}\${emm_folder}\*.xml"
   File "${emm_root}\${emm_folder}\*.dll"
-  
-  ;workaround for 23.08.2014 beta
-  File "${emm_root}\${emm_folder}\Modules\scraper.Data.TMDB.dll"
   
   SetOutPath "$INSTDIR\Bin"
   File /r /x *.so "${emm_root}\${emm_folder}\Bin\*.*"

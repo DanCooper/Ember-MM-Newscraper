@@ -89,10 +89,10 @@ Namespace TMDB
             APIResult = Task.Run(Function() _TMDBApi.GetMovie(CInt(tmdbID), TMDbLib.Objects.Movies.MovieMethods.Videos))
 
             trailers = APIResult.Result.Videos
-            If trailers.Results Is Nothing OrElse trailers.Results.Count = 0 AndAlso _MySettings.FallBackEng Then
+            If trailers Is Nothing OrElse trailers.Results Is Nothing OrElse trailers.Results.Count = 0 AndAlso _MySettings.FallBackEng Then
                 APIResult = Task.Run(Function() _TMDBApiE.GetMovie(CInt(tmdbID), TMDbLib.Objects.Movies.MovieMethods.Videos))
                 trailers = APIResult.Result.Videos
-                If trailers.Results Is Nothing OrElse trailers.Results.Count = 0 Then
+                If trailers Is Nothing OrElse trailers.Results Is Nothing OrElse trailers.Results.Count = 0 Then
                     Return alTrailers
                 End If
             End If
