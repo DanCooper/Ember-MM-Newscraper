@@ -592,7 +592,7 @@ Public Class TMDB_Data
     ''' <returns>Database.DBElement Object (nMovie) which contains the scraped data</returns>
     ''' <remarks></remarks>
     Function Scraper_Movie(ByRef oDBElement As Database.DBElement, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_Movie Implements Interfaces.ScraperModule_Data_Movie.Scraper_Movie
-        logger.Trace("Started TMDB Scraper")
+        logger.Trace("[TMDB_Data] [Scraper_Movie] [Start]")
 
         LoadSettings_Movie()
         _SpecialSettings_Movie.PrefLanguage = oDBElement.Language
@@ -615,13 +615,17 @@ Public Class TMDB_Data
                     nMovie = _scraper.GetSearchMovieInfo(oDBElement.Movie.Title, oDBElement, ScrapeType, FilteredOptions)
                 End If
                 'if still no search result -> exit
-                If nMovie Is Nothing Then Return New Interfaces.ModuleResult_Data_Movie With {.Result = Nothing}
+                If nMovie Is Nothing Then
+                    logger.Trace("[TMDB_Data] [Scraper_Movie] [Abort] No search result found")
+                    Return New Interfaces.ModuleResult_Data_Movie With {.Result = Nothing}
+                End If
             End If
         End If
 
         If nMovie Is Nothing Then
             Select Case ScrapeType
                 Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto
+                    logger.Trace("[TMDB_Data] [Scraper_Movie] [Abort] No search result found")
                     Return New Interfaces.ModuleResult_Data_Movie With {.Result = Nothing}
             End Select
         End If
@@ -634,6 +638,7 @@ Public Class TMDB_Data
                         'if a movie is found, set DoSearch back to "false" for following scrapers
                         ScrapeModifiers.DoSearch = False
                     Else
+                        logger.Trace(String.Format("[TMDB_Data] [Scraper_Movie] [Cancelled] Cancelled by user"))
                         Return New Interfaces.ModuleResult_Data_Movie With {.Cancelled = True, .Result = Nothing}
                     End If
                 End Using
@@ -662,12 +667,12 @@ Public Class TMDB_Data
             End If
         End If
 
-        logger.Trace("Finished TMDB Scraper")
+        logger.Trace("[TMDB_Data] [Scraper_Movie] [Done]")
         Return New Interfaces.ModuleResult_Data_Movie With {.Result = nMovie}
     End Function
 
     Function Scraper_MovieSet(ByRef oDBElement As Database.DBElement, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_MovieSet Implements Interfaces.ScraperModule_Data_MovieSet.Scraper
-        logger.Trace(String.Format("[TMDB_Data] [Start]"))
+        logger.Trace("[TMDB_Data] [Scraper_MovieSet] [Start]")
 
         LoadSettings_MovieSet()
         _SpecialSettings_MovieSet.PrefLanguage = oDBElement.Language
@@ -688,7 +693,7 @@ Public Class TMDB_Data
                 End If
                 'if still no search result -> exit
                 If nMovieSet Is Nothing Then
-                    logger.Trace(String.Format("[TMDB_Data] [Abort] No search result found"))
+                    logger.Trace(String.Format("[TMDB_Data] [Scraper_MovieSet] [Abort] No search result found"))
                     Return New Interfaces.ModuleResult_Data_MovieSet With {.Result = Nothing}
                 End If
             End If
@@ -697,7 +702,7 @@ Public Class TMDB_Data
         If nMovieSet Is Nothing Then
             Select Case ScrapeType
                 Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto
-                    logger.Trace(String.Format("[TMDB_Data] [Abort] No search result found"))
+                    logger.Trace(String.Format("[TMDB_Data] [Scraper_MovieSet] [Abort] No search result found"))
                     Return New Interfaces.ModuleResult_Data_MovieSet With {.Result = Nothing}
             End Select
         End If
@@ -710,7 +715,7 @@ Public Class TMDB_Data
                         'if a movieset is found, set DoSearch back to "false" for following scrapers
                         ScrapeModifiers.DoSearch = False
                     Else
-                        logger.Trace(String.Format("[TMDB_Data] [Cancelled] Cancelled by user"))
+                        logger.Trace(String.Format("[TMDB_Data] [Scraper_MovieSet] [Cancelled] Cancelled by user"))
                         Return New Interfaces.ModuleResult_Data_MovieSet With {.Cancelled = True, .Result = Nothing}
                     End If
                 End Using
@@ -728,7 +733,7 @@ Public Class TMDB_Data
             End If
         End If
 
-        logger.Trace(String.Format("[TMDB_Data] [Done] With result"))
+        logger.Trace("[TMDB_Data] [Scraper_MovieSet] [Done]")
         Return New Interfaces.ModuleResult_Data_MovieSet With {.Result = nMovieSet}
     End Function
     ''' <summary>
@@ -739,7 +744,7 @@ Public Class TMDB_Data
     ''' <returns>Database.DBElement Object (nMovie) which contains the scraped data</returns>
     ''' <remarks></remarks>
     Function Scraper_TV(ByRef oDBElement As Database.DBElement, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_TVShow Implements Interfaces.ScraperModule_Data_TV.Scraper_TVShow
-        logger.Trace("Started TMDB Scraper")
+        logger.Trace("[TMDB_Data] [Scraper_TV] [Start]")
 
         LoadSettings_TV()
         _SpecialSettings_TV.PrefLanguage = oDBElement.Language
@@ -767,13 +772,17 @@ Public Class TMDB_Data
                     nTVShow = _scraper.GetSearchTVShowInfo(oDBElement.TVShow.Title, oDBElement, ScrapeType, ScrapeModifiers, FilteredOptions)
                 End If
                 'if still no search result -> exit
-                If nTVShow Is Nothing Then Return New Interfaces.ModuleResult_Data_TVShow With {.Result = Nothing}
+                If nTVShow Is Nothing Then
+                    logger.Trace(String.Format("[TMDB_Data] [Scraper_TV] [Abort] No search result found"))
+                    Return New Interfaces.ModuleResult_Data_TVShow With {.Result = Nothing}
+                End If
             End If
         End If
 
         If nTVShow Is Nothing Then
             Select Case ScrapeType
                 Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto
+                    logger.Trace(String.Format("[TMDB_Data] [Scraper_TV] [Abort] No search result found"))
                     Return New Interfaces.ModuleResult_Data_TVShow With {.Result = Nothing}
             End Select
         End If
@@ -786,6 +795,7 @@ Public Class TMDB_Data
                         'if a tvshow is found, set DoSearch back to "false" for following scrapers
                         ScrapeModifiers.DoSearch = False
                     Else
+                        logger.Trace(String.Format("[TMDB_Data] [Scraper_TV] [Cancelled] Cancelled by user"))
                         Return New Interfaces.ModuleResult_Data_TVShow With {.Cancelled = True, .Result = Nothing}
                     End If
                 End Using
@@ -808,12 +818,12 @@ Public Class TMDB_Data
             End If
         End If
 
-        logger.Trace("Finished TMDB Scraper")
+        logger.Trace("[TMDB_Data] [Scraper_TV] [Done]")
         Return New Interfaces.ModuleResult_Data_TVShow With {.Result = nTVShow}
     End Function
 
     Public Function Scraper_TVEpisode(ByRef oDBElement As Database.DBElement, ByVal ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_TVEpisode Implements Interfaces.ScraperModule_Data_TV.Scraper_TVEpisode
-        logger.Trace("Started TMDB Scraper")
+        logger.Trace("[TMDB_Data] [Scraper_TVEpisode] [Start]")
 
         LoadSettings_TV()
         _SpecialSettings_TV.PrefLanguage = oDBElement.Language
@@ -833,11 +843,16 @@ Public Class TMDB_Data
             ElseIf oDBElement.TVEpisode.AiredSpecified Then
                 nTVEpisode = _scraper.GetTVEpisodeInfo(CInt(oDBElement.TVShow.TMDB), oDBElement.TVEpisode.Aired, FilteredOptions)
             Else
+                logger.Trace(String.Format("[TMDB_Data] [Scraper_TVEpisode] [Abort] No search result found"))
                 Return New Interfaces.ModuleResult_Data_TVEpisode With {.Result = Nothing}
             End If
             'if still no search result -> exit
-            If nTVEpisode Is Nothing Then Return New Interfaces.ModuleResult_Data_TVEpisode With {.Result = Nothing}
+            If nTVEpisode Is Nothing Then
+                logger.Trace(String.Format("[TMDB_Data] [Scraper_TVEpisode] [Abort] No search result found"))
+                Return New Interfaces.ModuleResult_Data_TVEpisode With {.Result = Nothing}
+            End If
         Else
+            logger.Trace(String.Format("[TMDB_Data] [Scraper_TVEpisode] [Abort] No TV Show TMDB ID available"))
             Return New Interfaces.ModuleResult_Data_TVEpisode With {.Result = Nothing}
         End If
 
@@ -857,12 +872,12 @@ Public Class TMDB_Data
             End If
         End If
 
-        logger.Trace("Finished TMDB Scraper")
+        logger.Trace("[TMDB_Data] [Scraper_TVEpisode] [Done]")
         Return New Interfaces.ModuleResult_Data_TVEpisode With {.Result = nTVEpisode}
     End Function
 
     Public Function Scraper_TVSeason(ByRef oDBElement As Database.DBElement, ByVal ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_TVSeason Implements Interfaces.ScraperModule_Data_TV.Scraper_TVSeason
-        logger.Trace("Started TMDB Scraper")
+        logger.Trace("[TMDB_Data] [Scraper_TVSeason] [Start]")
 
         LoadSettings_TV()
         _SpecialSettings_TV.PrefLanguage = oDBElement.Language
@@ -877,14 +892,19 @@ Public Class TMDB_Data
         End If
 
         If oDBElement.TVShow.TMDBSpecified Then
-            If Not oDBElement.TVSeason.Season = -1 Then
+            If oDBElement.TVSeason.SeasonSpecified Then
                 nTVSeason = _scraper.GetTVSeasonInfo(CInt(oDBElement.TVShow.TMDB), oDBElement.TVSeason.Season, FilteredOptions)
             Else
+                logger.Trace(String.Format("[TMDB_Data] [Scraper_TVSeason] [Abort] Season is not specified"))
                 Return New Interfaces.ModuleResult_Data_TVSeason With {.Result = Nothing}
             End If
             'if still no search result -> exit
-            If nTVSeason Is Nothing Then Return New Interfaces.ModuleResult_Data_TVSeason With {.Result = Nothing}
+            If nTVSeason Is Nothing Then
+                logger.Trace(String.Format("[TMDB_Data] [Scraper_TVSeason] [Abort] No search result found"))
+                Return New Interfaces.ModuleResult_Data_TVSeason With {.Result = Nothing}
+            End If
         Else
+            logger.Trace(String.Format("[TMDB_Data] [Scraper_TVSeason] [Abort] No TV Show TMDB ID available"))
             Return New Interfaces.ModuleResult_Data_TVSeason With {.Result = Nothing}
         End If
 
@@ -898,7 +918,7 @@ Public Class TMDB_Data
             End If
         End If
 
-        logger.Trace("Finished TMDB Scraper")
+        logger.Trace("[TMDB_Data] [Scraper_TVSeason] [Done]")
         Return New Interfaces.ModuleResult_Data_TVSeason With {.Result = nTVSeason}
     End Function
 
