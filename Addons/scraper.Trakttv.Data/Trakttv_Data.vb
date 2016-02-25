@@ -270,7 +270,7 @@ Public Class Trakttv_Data
     ''' <returns>Database.DBElement Object (nMovie) which contains the scraped data</returns>
     ''' <remarks></remarks>
     Function Scraper_Movie(ByRef oDBElement As Database.DBElement, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_Movie Implements Interfaces.ScraperModule_Data_Movie.Scraper_Movie
-        logger.Trace("Started Trakttv Scraper")
+        logger.Trace("[Tracktv_Data] [Scraper_Movie] [Start]")
 
         LoadSettings_Movie()
 
@@ -294,7 +294,7 @@ Public Class Trakttv_Data
             End If
         End If
 
-        logger.Trace("Finished Trakttv Scraper")
+        logger.Trace("[Tracktv_Data] [Scraper_Movie] [Done]")
         Return New Interfaces.ModuleResult_Data_Movie With {.Result = nMovie}
     End Function
 
@@ -307,7 +307,7 @@ Public Class Trakttv_Data
     ''' <returns>modifies Database.DBElement Object which contains the scraped data</returns>
     ''' <remarks></remarks>
     Function Scraper_TV(ByRef oDBElement As Database.DBElement, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_TVShow Implements Interfaces.ScraperModule_Data_TV.Scraper_TVShow
-        logger.Trace("Started Trakttv Scraper")
+        logger.Trace("[Tracktv_Data] [Scraper_TV] [Start]")
 
         LoadSettings_TV()
 
@@ -336,7 +336,7 @@ Public Class Trakttv_Data
             End If
         End If
 
-        logger.Trace("Finished Trakttv Scraper")
+        logger.Trace("[Tracktv_Data] [Scraper_TV] [Done]")
         Return New Interfaces.ModuleResult_Data_TVShow With {.Result = nTVShow}
     End Function
 
@@ -348,7 +348,7 @@ Public Class Trakttv_Data
     ''' <returns>modifies Database.DBElement Object which contains the scraped data</returns>
     ''' <remarks></remarks>
     Public Function Scraper_TVEpisode(ByRef oDBElement As Database.DBElement, ByVal ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_TVEpisode Implements Interfaces.ScraperModule_Data_TV.Scraper_TVEpisode
-        logger.Trace("Started Trakttv Scraper")
+        logger.Trace("[Tracktv_Data] [Scraper_TVEpisode] [Start]")
 
         LoadSettings_TV()
 
@@ -382,7 +382,7 @@ Public Class Trakttv_Data
         'Set basic Episode setting (correct seaonnumber, epiodenumber) here because otherwise result will not be handled in MergeDataScraperResults_TVEpisode_Single
         nTVEpisode.Episode = oDBElement.TVEpisode.Episode
         nTVEpisode.Season = oDBElement.TVEpisode.Season
-        logger.Trace("Finished Trakttv Scraper")
+        logger.Trace("[Tracktv_Data] [Scraper_TVEpisode] [Done]")
         Return New Interfaces.ModuleResult_Data_TVEpisode With {.Result = nTVEpisode}
     End Function
 

@@ -2257,7 +2257,7 @@ Namespace MediaContainers
         <XmlIgnore()>
         Public ReadOnly Property SeasonSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_season.ToString)
+                Return Not String.IsNullOrEmpty(_season.ToString) AndAlso Not _season = -1
             End Get
         End Property
 

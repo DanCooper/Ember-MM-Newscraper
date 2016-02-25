@@ -529,7 +529,7 @@ Public Class FanartTV_Image
     End Sub
 
     Function Scraper_Movie(ByRef DBMovie As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_Movie.Scraper
-        logger.Trace("Started scrape FanartTV")
+        logger.Trace("[FanartTV_Image] [Scraper_Movie] [Start]")
 
         LoadSettings_Movie()
         Dim _scraper As New FanartTVs.Scraper(_SpecialSettings_Movie)
@@ -541,15 +541,15 @@ Public Class FanartTV_Image
         ElseIf Not String.IsNullOrEmpty(DBMovie.Movie.TMDBID) Then
             ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovie.Movie.TMDBID, FilteredModifiers)
         Else
-            logger.Trace(String.Concat("No IMDB and TMDB ID exist to search: ", DBMovie.ListTitle))
+            logger.Trace(String.Concat("[FanartTV_Image] [Scraper_Movie] [Abort] No IMDB and TMDB ID exist to search: ", DBMovie.ListTitle))
         End If
 
-        logger.Trace(New StackFrame().GetMethod().Name, "Finished scrape FanartTV")
+        logger.Trace("[FanartTV_Image] [Scraper_Movie] [Done]")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
     Function Scraper_MovieSet(ByRef DBMovieset As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_MovieSet.Scraper
-        logger.Trace("Started scrape FanartTV")
+        logger.Trace("[FanartTV_Image] [Scraper_MovieSet] [Start]")
 
         If String.IsNullOrEmpty(DBMovieset.MovieSet.TMDB) Then
             If DBMovieset.MovieList IsNot Nothing AndAlso DBMovieset.MovieList.Count > 0 Then
@@ -566,12 +566,12 @@ Public Class FanartTV_Image
             ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovieset.MovieSet.TMDB, FilteredModifiers)
         End If
 
-        logger.Trace("Finished scrape FanartTV")
+        logger.Trace("[FanartTV_Image] [Scraper_MovieSet] [Start]")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
     Function Scraper_TV(ByRef DBTV As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_TV.Scraper
-        logger.Trace("Started scrape FanartTV")
+        logger.Trace("[FanartTV_Image] [Scraper_TV] [Start]")
 
         LoadSettings_TV()
         Dim _scraper As New FanartTVs.Scraper(_SpecialSettings_TV)
@@ -585,25 +585,25 @@ Public Class FanartTV_Image
                         ImagesContainer.MainFanarts = _scraper.GetImages_TV(DBTV.TVShow.TVDB, FilteredModifiers).MainFanarts
                     End If
                 Else
-                    logger.Trace(String.Concat("No TVDB ID exist to search: ", DBTV.ListTitle))
+                    logger.Trace(String.Concat("[FanartTV_Image] [Scraper_TV] [Abort] No TVDB ID exist to search: ", DBTV.ListTitle))
                 End If
             Case Enums.ContentType.TVSeason
                 If Not String.IsNullOrEmpty(DBTV.TVShow.TVDB) Then
                     ImagesContainer = _scraper.GetImages_TV(DBTV.TVShow.TVDB, FilteredModifiers)
                 Else
-                    logger.Trace(String.Concat("No TVDB ID exist to search: ", DBTV.ListTitle))
+                    logger.Trace(String.Concat("[FanartTV_Image] [Scraper_TV] [Abort] No TVDB ID exist to search: ", DBTV.ListTitle))
                 End If
             Case Enums.ContentType.TVShow
                 If Not String.IsNullOrEmpty(DBTV.TVShow.TVDB) Then
                     ImagesContainer = _scraper.GetImages_TV(DBTV.TVShow.TVDB, FilteredModifiers)
                 Else
-                    logger.Trace(String.Concat("No TVDB ID exist to search: ", DBTV.ListTitle))
+                    logger.Trace(String.Concat("[FanartTV_Image] [Scraper_TV] [Abort] No TVDB ID exist to search: ", DBTV.ListTitle))
                 End If
             Case Else
-                logger.Error(String.Concat("Unhandled ContentType"))
+                logger.Error(String.Concat("[FanartTV_Image] [Scraper_TV] [Abort] Unhandled ContentType"))
         End Select
 
-        logger.Trace(New StackFrame().GetMethod().Name, "Finished scrape FanartTV")
+        logger.Trace("[FanartTV_Image] [Scraper_TV] [Start]")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 

@@ -18,17 +18,11 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System
-Imports System.Drawing
 Imports System.IO
-Imports System.Linq
 Imports System.Reflection
 Imports System.Text.RegularExpressions
 Imports EmberAPI
-Imports RestSharp
 Imports NLog
-Imports System.Xml.Serialization
-Imports System.Runtime.Serialization.Formatters.Binary
 
 Public Class frmMain
 
@@ -10115,131 +10109,122 @@ doCancel:
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub frmMain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Try
-            Visible = False
-            logger.Info(New StackFrame().GetMethod().Name, "Ember startup")
+        'Try
+        Visible = False
+        logger.Info(New StackFrame().GetMethod().Name, "Ember startup")
 
-            If Master.isWindows Then 'Dam mono on MacOSX don't have trayicon implemented yet
-                TrayIcon = New System.Windows.Forms.NotifyIcon(components)
-                TrayIcon.Icon = Icon
-                TrayIcon.ContextMenuStrip = cmnuTray
-                TrayIcon.Text = "Ember Media Manager"
-                TrayIcon.Visible = True
-            End If
+        If Master.isWindows Then 'Dam mono on MacOSX don't have trayicon implemented yet
+            TrayIcon = New System.Windows.Forms.NotifyIcon(components)
+            TrayIcon.Icon = Icon
+            TrayIcon.ContextMenuStrip = cmnuTray
+            TrayIcon.Text = "Ember Media Manager"
+            TrayIcon.Visible = True
+        End If
 
-            bwCheckVersion.RunWorkerAsync()
+        bwCheckVersion.RunWorkerAsync()
 
-            Master.fLoading.SetLoadingMesg(Master.eLang.GetString(854, "Basic setup"))
+        Master.fLoading.SetLoadingMesg(Master.eLang.GetString(854, "Basic setup"))
 
-            Dim currentDomain As AppDomain = AppDomain.CurrentDomain
-            ModulesManager.AssemblyList.Add(New ModulesManager.AssemblyListItem With {.AssemblyName = "EmberAPI",
-              .Assembly = Assembly.LoadFile(Path.Combine(Functions.AppPath, "EmberAPI.dll"))})
-            'Cocotus 2014/01/25 By switching Ember to NET4.5 dependency , the LoadFile method is not supported anymore
-            '  http://msdn.microsoft.com/de-de/library/system.reflection.assembly.loadfile(v=vs.110).aspx
-            '.Assembly = Assembly.LoadFile(Path.Combine(Functions.AppPath, "EmberAPI.dll"), Assembly.GetExecutingAssembly().Evidence)})    
-            AddHandler currentDomain.AssemblyResolve, AddressOf MyResolveEventHandler
+        AddHandler AppDomain.CurrentDomain.AssemblyResolve, AddressOf MyResolveEventHandler
 
-            clsAdvancedSettings.Start()
+        clsAdvancedSettings.Start()
 
-            'Create Modules Folders
-            Dim sPath = String.Concat(Functions.AppPath, "Modules")
-            If Not Directory.Exists(sPath) Then
-                Directory.CreateDirectory(sPath)
-            End If
+        'Create Modules Folders
+        Dim sPath = String.Concat(Functions.AppPath, "Modules")
+        If Not Directory.Exists(sPath) Then
+            Directory.CreateDirectory(sPath)
+        End If
 
-            Master.fLoading.SetLoadingMesg(Master.eLang.GetString(855, "Creating default options..."))
-            Functions.CreateDefaultOptions()
+        Master.fLoading.SetLoadingMesg(Master.eLang.GetString(855, "Creating default options..."))
+        Functions.CreateDefaultOptions()
 
-            Master.fLoading.SetLoadingMesg(Master.eLang.GetString(858, "Loading database..."))
-            Master.DB.ConnectMyVideosDB()
-            Master.DB.LoadAllGenres()
-            Master.DB.LoadMovieSourcesFromDB()
-            Master.DB.LoadTVShowSourcesFromDB()
-            Master.DB.LoadExcludeDirsFromDB()
+        Master.fLoading.SetLoadingMesg(Master.eLang.GetString(858, "Loading database..."))
+        Master.DB.ConnectMyVideosDB()
+        Master.DB.LoadAllGenres()
+        Master.DB.LoadMovieSourcesFromDB()
+        Master.DB.LoadTVShowSourcesFromDB()
+        Master.DB.LoadExcludeDirsFromDB()
 
-            'Setup/Load Modules Manager and set runtime objects (ember application) so they can be exposed to modules
-            'ExternalModulesManager = New ModulesManager
+        tpMovies.Tag = New Structures.MainTabType With {.ContentName = Master.eLang.GetString(36, "Movies"), .ContentType = Enums.ContentType.Movie, .DefaultList = "movielist"}
+        tpMovieSets.Tag = New Structures.MainTabType With {.ContentName = Master.eLang.GetString(366, "Sets"), .ContentType = Enums.ContentType.MovieSet, .DefaultList = "setslist"}
+        tpTVShows.Tag = New Structures.MainTabType With {.ContentName = Master.eLang.GetString(653, "TV Shows"), .ContentType = Enums.ContentType.TV, .DefaultList = "tvshowlist"}
+        ModulesManager.Instance.RuntimeObjects.MediaTabSelected = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
 
-            tpMovies.Tag = New Structures.MainTabType With {.ContentName = Master.eLang.GetString(36, "Movies"), .ContentType = Enums.ContentType.Movie, .DefaultList = "movielist"}
-            tpMovieSets.Tag = New Structures.MainTabType With {.ContentName = Master.eLang.GetString(366, "Sets"), .ContentType = Enums.ContentType.MovieSet, .DefaultList = "setslist"}
-            tpTVShows.Tag = New Structures.MainTabType With {.ContentName = Master.eLang.GetString(653, "TV Shows"), .ContentType = Enums.ContentType.TV, .DefaultList = "tvshowlist"}
-            ModulesManager.Instance.RuntimeObjects.MediaTabSelected = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
+        ModulesManager.Instance.RuntimeObjects.DelegateLoadMedia(AddressOf LoadMedia)
+        ModulesManager.Instance.RuntimeObjects.DelegateOpenImageViewer(AddressOf OpenImageViewer)
+        ModulesManager.Instance.RuntimeObjects.MainMenu = mnuMain
+        ModulesManager.Instance.RuntimeObjects.MainTabControl = tcMain
+        ModulesManager.Instance.RuntimeObjects.MainToolStrip = tsMain
+        ModulesManager.Instance.RuntimeObjects.MediaListMovies = dgvMovies
+        ModulesManager.Instance.RuntimeObjects.MediaListMovieSets = dgvMovieSets
+        ModulesManager.Instance.RuntimeObjects.MediaListTVEpisodes = dgvTVEpisodes
+        ModulesManager.Instance.RuntimeObjects.MediaListTVSeasons = dgvTVSeasons
+        ModulesManager.Instance.RuntimeObjects.MediaListTVShows = dgvTVShows
+        ModulesManager.Instance.RuntimeObjects.ContextMenuMovieList = cmnuMovie
+        ModulesManager.Instance.RuntimeObjects.ContextMenuMovieSetList = cmnuMovieSet
+        ModulesManager.Instance.RuntimeObjects.ContextMenuTVEpisodeList = cmnuEpisode
+        ModulesManager.Instance.RuntimeObjects.ContextMenuTVSeasonList = cmnuSeason
+        ModulesManager.Instance.RuntimeObjects.ContextMenuTVShowList = cmnuShow
+        ModulesManager.Instance.RuntimeObjects.TrayMenu = cmnuTray
 
-            ModulesManager.Instance.RuntimeObjects.DelegateLoadMedia(AddressOf LoadMedia)
-            ModulesManager.Instance.RuntimeObjects.DelegateOpenImageViewer(AddressOf OpenImageViewer)
-            ModulesManager.Instance.RuntimeObjects.MainMenu = mnuMain
-            ModulesManager.Instance.RuntimeObjects.MainTabControl = tcMain
-            ModulesManager.Instance.RuntimeObjects.MainToolStrip = tsMain
-            ModulesManager.Instance.RuntimeObjects.MediaListMovies = dgvMovies
-            ModulesManager.Instance.RuntimeObjects.MediaListMovieSets = dgvMovieSets
-            ModulesManager.Instance.RuntimeObjects.MediaListTVEpisodes = dgvTVEpisodes
-            ModulesManager.Instance.RuntimeObjects.MediaListTVSeasons = dgvTVSeasons
-            ModulesManager.Instance.RuntimeObjects.MediaListTVShows = dgvTVShows
-            ModulesManager.Instance.RuntimeObjects.ContextMenuMovieList = cmnuMovie
-            ModulesManager.Instance.RuntimeObjects.ContextMenuMovieSetList = cmnuMovieSet
-            ModulesManager.Instance.RuntimeObjects.ContextMenuTVEpisodeList = cmnuEpisode
-            ModulesManager.Instance.RuntimeObjects.ContextMenuTVSeasonList = cmnuSeason
-            ModulesManager.Instance.RuntimeObjects.ContextMenuTVShowList = cmnuShow
-            ModulesManager.Instance.RuntimeObjects.TrayMenu = cmnuTray
+        'start loading modules in background
+        ModulesManager.Instance.LoadAllModules()
 
-            'start loading modules in background
-            ModulesManager.Instance.LoadAllModules()
+        If Not Master.isCL Then
+            Master.fLoading.SetLoadingMesg(Master.eLang.GetString(857, "Creating GUI..."))
+        End If
 
-            If Not Master.isCL Then
-                Master.fLoading.SetLoadingMesg(Master.eLang.GetString(857, "Creating GUI..."))
-            End If
+        'setup some dummies so we don't get exceptions when resizing form/info panel
+        ReDim Preserve pnlGenre(0)
+        ReDim Preserve pbGenre(0)
+        pnlGenre(0) = New Panel()
+        pbGenre(0) = New PictureBox()
 
-            'setup some dummies so we don't get exceptions when resizing form/info panel
-            ReDim Preserve pnlGenre(0)
-            ReDim Preserve pbGenre(0)
-            pnlGenre(0) = New Panel()
-            pbGenre(0) = New PictureBox()
+        AddHandler fScanner.ScannerUpdated, AddressOf ScannerUpdated
+        AddHandler fScanner.ScanningCompleted, AddressOf ScanningCompleted
+        AddHandler ModulesManager.Instance.GenericEvent, AddressOf GenericRunCallBack
+        AddHandler fCommandLine.TaskEvent, AddressOf TaskRunCallBack
 
-            AddHandler fScanner.ScannerUpdated, AddressOf ScannerUpdated
-            AddHandler fScanner.ScanningCompleted, AddressOf ScanningCompleted
-            AddHandler ModulesManager.Instance.GenericEvent, AddressOf GenericRunCallBack
-            AddHandler fCommandLine.TaskEvent, AddressOf TaskRunCallBack
+        Functions.DGVDoubleBuffer(dgvMovies)
+        Functions.DGVDoubleBuffer(dgvMovieSets)
+        Functions.DGVDoubleBuffer(dgvTVShows)
+        Functions.DGVDoubleBuffer(dgvTVSeasons)
+        Functions.DGVDoubleBuffer(dgvTVEpisodes)
+        SetStyle(ControlStyles.DoubleBuffer, True)
+        SetStyle(ControlStyles.AllPaintingInWmPaint, True)
+        SetStyle(ControlStyles.UserPaint, True)
 
-            Functions.DGVDoubleBuffer(dgvMovies)
-            Functions.DGVDoubleBuffer(dgvMovieSets)
-            Functions.DGVDoubleBuffer(dgvTVShows)
-            Functions.DGVDoubleBuffer(dgvTVSeasons)
-            Functions.DGVDoubleBuffer(dgvTVEpisodes)
-            SetStyle(ControlStyles.DoubleBuffer, True)
-            SetStyle(ControlStyles.AllPaintingInWmPaint, True)
-            SetStyle(ControlStyles.UserPaint, True)
+        If TypeOf tsMain.Renderer Is ToolStripProfessionalRenderer Then
+            CType(tsMain.Renderer, ToolStripProfessionalRenderer).RoundedEdges = False
+        End If
 
-            If TypeOf tsMain.Renderer Is ToolStripProfessionalRenderer Then
-                CType(tsMain.Renderer, ToolStripProfessionalRenderer).RoundedEdges = False
-            End If
+        If Not Directory.Exists(Master.TempPath) Then Directory.CreateDirectory(Master.TempPath)
 
-            If Not Directory.Exists(Master.TempPath) Then Directory.CreateDirectory(Master.TempPath)
-
-            While Not ModulesManager.Instance.ModulesLoaded()
-                Master.fLoading.SetLoadingMesg(Master.eLang.GetString(856, "Loading modules..."))
-                Application.DoEvents()
-                Threading.Thread.Sleep(50)
-            End While
+        While Not ModulesManager.Instance.ModulesLoaded()
+            Master.fLoading.SetLoadingMesg(Master.eLang.GetString(856, "Loading modules..."))
+            Application.DoEvents()
+            Threading.Thread.Sleep(50)
+        End While
 
 
-            RemoveHandler dgvMovies.RowsAdded, AddressOf dgvMovies_RowsAdded
-            RemoveHandler dgvMovieSets.RowsAdded, AddressOf dgvMovieSets_RowsAdded
-            RemoveHandler dgvTVShows.RowsAdded, AddressOf dgvTVShows_RowsAdded
-            FillList(True, True, True)
-            AddHandler dgvMovies.RowsAdded, AddressOf dgvMovies_RowsAdded
-            AddHandler dgvMovieSets.RowsAdded, AddressOf dgvMovieSets_RowsAdded
-            AddHandler dgvTVShows.RowsAdded, AddressOf dgvTVShows_RowsAdded
+        RemoveHandler dgvMovies.RowsAdded, AddressOf dgvMovies_RowsAdded
+        RemoveHandler dgvMovieSets.RowsAdded, AddressOf dgvMovieSets_RowsAdded
+        RemoveHandler dgvTVShows.RowsAdded, AddressOf dgvTVShows_RowsAdded
+        FillList(True, True, True)
+        AddHandler dgvMovies.RowsAdded, AddressOf dgvMovies_RowsAdded
+        AddHandler dgvMovieSets.RowsAdded, AddressOf dgvMovieSets_RowsAdded
+        AddHandler dgvTVShows.RowsAdded, AddressOf dgvTVShows_RowsAdded
 
-            If Master.isCL Then ' Command Line
-                LoadWithCommandLine(Master.appArgs)
-            Else 'Regular Run (GUI)
-                LoadWithGUI()
-            End If
-            Master.fLoading.Close()
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-            Close()
-        End Try
+        If Master.isCL Then ' Command Line
+            LoadWithCommandLine(Master.appArgs)
+        Else 'Regular Run (GUI)
+            LoadWithGUI()
+        End If
+        Master.fLoading.Close()
+        'Catch ex As Exception
+        '    logger.Error(New StackFrame().GetMethod().Name, ex)
+        '    Close()
+        'End Try
     End Sub
     ''' <summary>
     ''' Performs startup routines specific to being initiated by the command line
@@ -10510,7 +10495,7 @@ doCancel:
                         Master.fLoading.SetLoadingMesg(Master.eLang.GetString(859, "Running Module..."))
                         Dim strModuleName As String = CStr(_params(1))
                         Dim oParameters As List(Of Object) = CType(_params(2), List(Of Object))
-                        Dim gModule As ModulesManager._externalGenericModuleClass = ModulesManager.Instance.externalProcessorModules.FirstOrDefault(Function(y) y.ProcessorModule.ModuleName = strModuleName)
+                        Dim gModule As ModulesManager._externalGenericModuleClass = ModulesManager.Instance.externalGenericModules.FirstOrDefault(Function(y) y.ProcessorModule.ModuleName = strModuleName)
                         If gModule IsNot Nothing Then
                             gModule.ProcessorModule.RunGeneric(Enums.ModuleEventType.CommandLine, oParameters, Nothing, Nothing)
                         End If
