@@ -447,7 +447,7 @@ Public Class IMDB_Data
     ''' <returns>Database.DBElement Object (nMovie) which contains the scraped data</returns>
     ''' <remarks></remarks>
     Function Scraper_Movie(ByRef oDBElement As Database.DBElement, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_Movie Implements Interfaces.ScraperModule_Data_Movie.Scraper_Movie
-        logger.Trace("Started IMDB Scraper")
+        logger.Trace("[IMDB_Data] [Scraper_Movie] [Start]")
 
         LoadSettings_Movie()
 
@@ -510,7 +510,7 @@ Public Class IMDB_Data
             End If
         End If
 
-        logger.Trace("Finished IMDB Scraper")
+        logger.Trace("[IMDB_Data] [Scraper_Movie] [Done]")
         Return New Interfaces.ModuleResult_Data_Movie With {.Result = nMovie}
     End Function
     ''' <summary>
@@ -521,7 +521,7 @@ Public Class IMDB_Data
     ''' <returns>Database.DBElement Object (nMovie) which contains the scraped data</returns>
     ''' <remarks></remarks>
     Function Scraper_TV(ByRef oDBElement As Database.DBElement, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_TVShow Implements Interfaces.ScraperModule_Data_TV.Scraper_TVShow
-        logger.Trace("Started IMDB Scraper")
+        logger.Trace("[IMDB_Data] [Scraper_TV] [Start]")
 
         LoadSettings_TV()
 
@@ -575,7 +575,7 @@ Public Class IMDB_Data
             End If
         End If
 
-        logger.Trace("Finished IMDB Scraper")
+        logger.Trace("[IMDB_Data] [Scraper_TV] [Done]")
         Return New Interfaces.ModuleResult_Data_TVShow With {.Result = nTVShow}
     End Function
 

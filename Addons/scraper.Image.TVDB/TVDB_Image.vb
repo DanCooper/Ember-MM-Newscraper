@@ -192,7 +192,7 @@ Public Class TVDB_Image
     End Sub
 
     Function Scraper(ByRef DBTV As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_TV.Scraper
-        logger.Trace("Started scrape TVDB")
+        logger.Trace("[TVDB_Image] [Scraper] [Start]")
 
         LoadSettings()
         Dim _scraper As New TVDBs.Scraper(_SpecialSettings)
@@ -207,24 +207,24 @@ Public Class TVDB_Image
                         ImagesContainer.MainFanarts = _scraper.GetImages_TV(DBTV.TVShow.TVDB, FilteredModifiers).MainFanarts
                     End If
                 Else
-                    logger.Trace(String.Concat("No TVDB ID exist to search: ", DBTV.ListTitle))
+                    logger.Trace(String.Concat("[TVDB_Image] [Scraper] [Abort] No TVDB ID exist to search: ", DBTV.ListTitle))
                 End If
             Case Enums.ContentType.TVSeason
                 If Not String.IsNullOrEmpty(DBTV.TVShow.TVDB) Then
                     ImagesContainer = _scraper.GetImages_TV(DBTV.TVShow.TVDB, FilteredModifiers)
                 Else
-                    logger.Trace(String.Concat("No TVDB ID exist to search: ", DBTV.ListTitle))
+                    logger.Trace(String.Concat("[TVDB_Image] [Scraper] [Abort] No TVDB ID exist to search: ", DBTV.ListTitle))
                 End If
             Case Enums.ContentType.TVShow
                 If Not String.IsNullOrEmpty(DBTV.TVShow.TVDB) Then
                     ImagesContainer = _scraper.GetImages_TV(DBTV.TVShow.TVDB, FilteredModifiers)
                 Else
-                    logger.Trace(String.Concat("No TVDB ID exist to search: ", DBTV.ListTitle))
+                    logger.Trace(String.Concat("[TVDB_Image] [Scraper] [Abort] No TVDB ID exist to search: ", DBTV.ListTitle))
                 End If
             Case Else
         End Select
 
-        logger.Trace(New StackFrame().GetMethod().Name, "Finished scrape TVDB")
+        logger.Trace("[TVDB_Image] [Scraper] [Done]")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 

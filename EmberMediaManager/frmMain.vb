@@ -18,17 +18,11 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System
-Imports System.Drawing
 Imports System.IO
-Imports System.Linq
 Imports System.Reflection
 Imports System.Text.RegularExpressions
 Imports EmberAPI
-Imports RestSharp
 Imports NLog
-Imports System.Xml.Serialization
-Imports System.Runtime.Serialization.Formatters.Binary
 
 Public Class frmMain
 
@@ -6042,15 +6036,31 @@ doCancel:
                     cmnuMovieLock.Text = If(setLock, Master.eLang.GetString(24, "Lock"), Master.eLang.GetString(108, "Unlock"))
                     cmnuMovieWatched.Text = If(setWatched, Master.eLang.GetString(981, "Watched"), Master.eLang.GetString(980, "Not Watched"))
 
-                    cmnuMovieGenresGenre.Items.Insert(0, Master.eLang.GetString(98, "Select Genre..."))
-                    cmnuMovieGenresGenre.SelectedItem = Master.eLang.GetString(98, "Select Genre...")
-                    cmnuMovieGenresAdd.Enabled = False
-                    cmnuMovieGenresSet.Enabled = False
-                    cmnuMovieGenresRemove.Enabled = False
-
                     cmnuMovieLanguageLanguages.Items.Insert(0, Master.eLang.GetString(1199, "Select Language..."))
                     cmnuMovieLanguageLanguages.SelectedItem = Master.eLang.GetString(1199, "Select Language...")
                     cmnuMovieLanguageSet.Enabled = False
+
+                    'Genre submenu
+                    mnuGenresGenre.Tag = String.Empty
+                    If Not mnuGenresGenre.Items.Contains(String.Concat(Master.eLang.GetString(27, "Select Genre"), "...")) Then
+                        mnuGenresGenre.Items.Insert(0, String.Concat(Master.eLang.GetString(27, "Select Genre"), "..."))
+                    End If
+                    mnuGenresGenre.SelectedItem = String.Concat(Master.eLang.GetString(27, "Select Genre"), "...")
+                    mnuGenresAdd.Enabled = False
+                    mnuGenresNew.Text = String.Empty
+                    mnuGenresRemove.Enabled = False
+                    mnuGenresSet.Enabled = False
+
+                    'Tag submenu
+                    mnuTagsTag.Tag = String.Empty
+                    If Not mnuTagsTag.Items.Contains(String.Concat(Master.eLang.GetString(1021, "Select Tag"), "...")) Then
+                        mnuTagsTag.Items.Insert(0, String.Concat(Master.eLang.GetString(1021, "Select Tag"), "..."))
+                    End If
+                    mnuTagsTag.SelectedItem = String.Concat(Master.eLang.GetString(1021, "Select Tag"), "...")
+                    mnuTagsAdd.Enabled = False
+                    mnuTagsNew.Text = String.Empty
+                    mnuTagsRemove.Enabled = False
+                    mnuTagsSet.Enabled = False
                 Else
                     cmnuMovieChange.Visible = True
                     cmnuMovieChangeAuto.Visible = True
@@ -6078,16 +6088,31 @@ doCancel:
                     cmnuMovieLock.Text = If(Convert.ToBoolean(dgvMovies.Item("Lock", e.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
                     cmnuMovieWatched.Text = If(Not String.IsNullOrEmpty(dgvMovies.Item("Playcount", e.RowIndex).Value.ToString) AndAlso Not dgvMovies.Item("Playcount", e.RowIndex).Value.ToString = "0", Master.eLang.GetString(980, "Not Watched"), Master.eLang.GetString(981, "Watched"))
 
-                    cmnuMovieGenresGenre.Tag = dgvMovies.Item("Genre", e.RowIndex).Value
-                    cmnuMovieGenresGenre.Items.Insert(0, Master.eLang.GetString(98, "Select Genre..."))
-                    cmnuMovieGenresGenre.SelectedItem = Master.eLang.GetString(98, "Select Genre...")
-                    cmnuMovieGenresAdd.Enabled = False
-                    cmnuMovieGenresSet.Enabled = False
-                    cmnuMovieGenresRemove.Enabled = False
-
                     Dim Lang As String = CStr(dgvMovies.Item("Language", e.RowIndex).Value)
                     cmnuMovieLanguageLanguages.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = Lang).name
                     cmnuMovieLanguageSet.Enabled = False
+
+                    'Genre submenu
+                    mnuGenresGenre.Tag = dgvMovies.Item("Genre", e.RowIndex).Value
+                    If Not mnuGenresGenre.Items.Contains(String.Concat(Master.eLang.GetString(27, "Select Genre"), "...")) Then
+                        mnuGenresGenre.Items.Insert(0, String.Concat(Master.eLang.GetString(27, "Select Genre"), "..."))
+                    End If
+                    mnuGenresGenre.SelectedItem = String.Concat(Master.eLang.GetString(27, "Select Genre"), "...")
+                    mnuGenresAdd.Enabled = False
+                    mnuGenresNew.Text = String.Empty
+                    mnuGenresRemove.Enabled = False
+                    mnuGenresSet.Enabled = False
+
+                    'Tag submenu
+                    mnuTagsTag.Tag = String.Empty  'dgvMovies.Item("Genre", e.RowIndex).Value
+                    If Not mnuTagsTag.Items.Contains(String.Concat(Master.eLang.GetString(1021, "Select Tag"), "...")) Then
+                        mnuTagsTag.Items.Insert(0, String.Concat(Master.eLang.GetString(1021, "Select Tag"), "..."))
+                    End If
+                    mnuTagsTag.SelectedItem = String.Concat(Master.eLang.GetString(1021, "Select Tag"), "...")
+                    mnuTagsAdd.Enabled = False
+                    mnuTagsNew.Text = String.Empty
+                    mnuTagsRemove.Enabled = False
+                    mnuTagsSet.Enabled = False
                 End If
             Else
                 cmnuMovie.Enabled = False
@@ -7995,6 +8020,28 @@ doCancel:
                     cmnuShowLanguageLanguages.Items.Insert(0, Master.eLang.GetString(1199, "Select Language..."))
                     cmnuShowLanguageLanguages.SelectedItem = Master.eLang.GetString(1199, "Select Language...")
                     cmnuShowLanguageSet.Enabled = False
+
+                    'Genre submenu
+                    mnuGenresGenre.Tag = String.Empty
+                    If Not mnuGenresGenre.Items.Contains(String.Concat(Master.eLang.GetString(27, "Select Genre"), "...")) Then
+                        mnuGenresGenre.Items.Insert(0, String.Concat(Master.eLang.GetString(27, "Select Genre"), "..."))
+                    End If
+                    mnuGenresGenre.SelectedItem = String.Concat(Master.eLang.GetString(27, "Select Genre"), "...")
+                    mnuGenresAdd.Enabled = False
+                    mnuGenresNew.Text = String.Empty
+                    mnuGenresRemove.Enabled = False
+                    mnuGenresSet.Enabled = False
+
+                    'Tag submenu
+                    mnuTagsTag.Tag = String.Empty
+                    If Not mnuTagsTag.Items.Contains(String.Concat(Master.eLang.GetString(1021, "Select Tag"), "...")) Then
+                        mnuTagsTag.Items.Insert(0, String.Concat(Master.eLang.GetString(1021, "Select Tag"), "..."))
+                    End If
+                    mnuTagsTag.SelectedItem = String.Concat(Master.eLang.GetString(1021, "Select Tag"), "...")
+                    mnuTagsAdd.Enabled = False
+                    mnuTagsNew.Text = String.Empty
+                    mnuTagsRemove.Enabled = False
+                    mnuTagsSet.Enabled = False
                 Else
                     ToolStripSeparator8.Visible = True
                     cmnuShowEdit.Visible = True
@@ -8024,6 +8071,28 @@ doCancel:
                     Dim Lang As String = CStr(dgvTVShows.Item("Language", dgvHTI.RowIndex).Value)
                     cmnuShowLanguageLanguages.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = Lang).name
                     cmnuShowLanguageSet.Enabled = False
+
+                    'Genre submenu
+                    mnuGenresGenre.Tag = dgvTVShows.Item("Genre", dgvHTI.RowIndex).Value
+                    If Not mnuGenresGenre.Items.Contains(String.Concat(Master.eLang.GetString(27, "Select Genre"), "...")) Then
+                        mnuGenresGenre.Items.Insert(0, String.Concat(Master.eLang.GetString(27, "Select Genre"), "..."))
+                    End If
+                    mnuGenresGenre.SelectedItem = String.Concat(Master.eLang.GetString(27, "Select Genre"), "...")
+                    mnuGenresAdd.Enabled = False
+                    mnuGenresNew.Text = String.Empty
+                    mnuGenresRemove.Enabled = False
+                    mnuGenresSet.Enabled = False
+
+                    'Tag submenu
+                    mnuTagsTag.Tag = String.Empty  'dgvTVShows.Item("Genre", dgvHTI.RowIndex).Value
+                    If Not mnuTagsTag.Items.Contains(String.Concat(Master.eLang.GetString(1021, "Select Tag"), "...")) Then
+                        mnuTagsTag.Items.Insert(0, String.Concat(Master.eLang.GetString(1021, "Select Tag"), "..."))
+                    End If
+                    mnuTagsTag.SelectedItem = String.Concat(Master.eLang.GetString(1021, "Select Tag"), "...")
+                    mnuTagsAdd.Enabled = False
+                    mnuTagsNew.Text = String.Empty
+                    mnuTagsRemove.Enabled = False
+                    mnuTagsSet.Enabled = False
                 End If
             Else
                 cmnuShow.Enabled = False
@@ -10115,131 +10184,122 @@ doCancel:
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub frmMain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Try
-            Visible = False
-            logger.Info(New StackFrame().GetMethod().Name, "Ember startup")
+        'Try
+        Visible = False
+        logger.Info(New StackFrame().GetMethod().Name, "Ember startup")
 
-            If Master.isWindows Then 'Dam mono on MacOSX don't have trayicon implemented yet
-                TrayIcon = New System.Windows.Forms.NotifyIcon(components)
-                TrayIcon.Icon = Icon
-                TrayIcon.ContextMenuStrip = cmnuTray
-                TrayIcon.Text = "Ember Media Manager"
-                TrayIcon.Visible = True
-            End If
+        If Master.isWindows Then 'Dam mono on MacOSX don't have trayicon implemented yet
+            TrayIcon = New System.Windows.Forms.NotifyIcon(components)
+            TrayIcon.Icon = Icon
+            TrayIcon.ContextMenuStrip = cmnuTray
+            TrayIcon.Text = "Ember Media Manager"
+            TrayIcon.Visible = True
+        End If
 
-            bwCheckVersion.RunWorkerAsync()
+        bwCheckVersion.RunWorkerAsync()
 
-            Master.fLoading.SetLoadingMesg(Master.eLang.GetString(854, "Basic setup"))
+        Master.fLoading.SetLoadingMesg(Master.eLang.GetString(854, "Basic setup"))
 
-            Dim currentDomain As AppDomain = AppDomain.CurrentDomain
-            ModulesManager.AssemblyList.Add(New ModulesManager.AssemblyListItem With {.AssemblyName = "EmberAPI",
-              .Assembly = Assembly.LoadFile(Path.Combine(Functions.AppPath, "EmberAPI.dll"))})
-            'Cocotus 2014/01/25 By switching Ember to NET4.5 dependency , the LoadFile method is not supported anymore
-            '  http://msdn.microsoft.com/de-de/library/system.reflection.assembly.loadfile(v=vs.110).aspx
-            '.Assembly = Assembly.LoadFile(Path.Combine(Functions.AppPath, "EmberAPI.dll"), Assembly.GetExecutingAssembly().Evidence)})    
-            AddHandler currentDomain.AssemblyResolve, AddressOf MyResolveEventHandler
+        AddHandler AppDomain.CurrentDomain.AssemblyResolve, AddressOf MyResolveEventHandler
 
-            clsAdvancedSettings.Start()
+        clsAdvancedSettings.Start()
 
-            'Create Modules Folders
-            Dim sPath = String.Concat(Functions.AppPath, "Modules")
-            If Not Directory.Exists(sPath) Then
-                Directory.CreateDirectory(sPath)
-            End If
+        'Create Modules Folders
+        Dim sPath = String.Concat(Functions.AppPath, "Modules")
+        If Not Directory.Exists(sPath) Then
+            Directory.CreateDirectory(sPath)
+        End If
 
-            Master.fLoading.SetLoadingMesg(Master.eLang.GetString(855, "Creating default options..."))
-            Functions.CreateDefaultOptions()
+        Master.fLoading.SetLoadingMesg(Master.eLang.GetString(855, "Creating default options..."))
+        Functions.CreateDefaultOptions()
 
-            Master.fLoading.SetLoadingMesg(Master.eLang.GetString(858, "Loading database..."))
-            Master.DB.ConnectMyVideosDB()
-            Master.DB.LoadAllGenres()
-            Master.DB.LoadMovieSourcesFromDB()
-            Master.DB.LoadTVShowSourcesFromDB()
-            Master.DB.LoadExcludeDirsFromDB()
+        Master.fLoading.SetLoadingMesg(Master.eLang.GetString(858, "Loading database..."))
+        Master.DB.ConnectMyVideosDB()
+        Master.DB.LoadAllGenres()
+        Master.DB.LoadMovieSourcesFromDB()
+        Master.DB.LoadTVShowSourcesFromDB()
+        Master.DB.LoadExcludeDirsFromDB()
 
-            'Setup/Load Modules Manager and set runtime objects (ember application) so they can be exposed to modules
-            'ExternalModulesManager = New ModulesManager
+        tpMovies.Tag = New Structures.MainTabType With {.ContentName = Master.eLang.GetString(36, "Movies"), .ContentType = Enums.ContentType.Movie, .DefaultList = "movielist"}
+        tpMovieSets.Tag = New Structures.MainTabType With {.ContentName = Master.eLang.GetString(366, "Sets"), .ContentType = Enums.ContentType.MovieSet, .DefaultList = "setslist"}
+        tpTVShows.Tag = New Structures.MainTabType With {.ContentName = Master.eLang.GetString(653, "TV Shows"), .ContentType = Enums.ContentType.TV, .DefaultList = "tvshowlist"}
+        ModulesManager.Instance.RuntimeObjects.MediaTabSelected = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
 
-            tpMovies.Tag = New Structures.MainTabType With {.ContentName = Master.eLang.GetString(36, "Movies"), .ContentType = Enums.ContentType.Movie, .DefaultList = "movielist"}
-            tpMovieSets.Tag = New Structures.MainTabType With {.ContentName = Master.eLang.GetString(366, "Sets"), .ContentType = Enums.ContentType.MovieSet, .DefaultList = "setslist"}
-            tpTVShows.Tag = New Structures.MainTabType With {.ContentName = Master.eLang.GetString(653, "TV Shows"), .ContentType = Enums.ContentType.TV, .DefaultList = "tvshowlist"}
-            ModulesManager.Instance.RuntimeObjects.MediaTabSelected = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
+        ModulesManager.Instance.RuntimeObjects.DelegateLoadMedia(AddressOf LoadMedia)
+        ModulesManager.Instance.RuntimeObjects.DelegateOpenImageViewer(AddressOf OpenImageViewer)
+        ModulesManager.Instance.RuntimeObjects.MainMenu = mnuMain
+        ModulesManager.Instance.RuntimeObjects.MainTabControl = tcMain
+        ModulesManager.Instance.RuntimeObjects.MainToolStrip = tsMain
+        ModulesManager.Instance.RuntimeObjects.MediaListMovies = dgvMovies
+        ModulesManager.Instance.RuntimeObjects.MediaListMovieSets = dgvMovieSets
+        ModulesManager.Instance.RuntimeObjects.MediaListTVEpisodes = dgvTVEpisodes
+        ModulesManager.Instance.RuntimeObjects.MediaListTVSeasons = dgvTVSeasons
+        ModulesManager.Instance.RuntimeObjects.MediaListTVShows = dgvTVShows
+        ModulesManager.Instance.RuntimeObjects.ContextMenuMovieList = cmnuMovie
+        ModulesManager.Instance.RuntimeObjects.ContextMenuMovieSetList = cmnuMovieSet
+        ModulesManager.Instance.RuntimeObjects.ContextMenuTVEpisodeList = cmnuEpisode
+        ModulesManager.Instance.RuntimeObjects.ContextMenuTVSeasonList = cmnuSeason
+        ModulesManager.Instance.RuntimeObjects.ContextMenuTVShowList = cmnuShow
+        ModulesManager.Instance.RuntimeObjects.TrayMenu = cmnuTray
 
-            ModulesManager.Instance.RuntimeObjects.DelegateLoadMedia(AddressOf LoadMedia)
-            ModulesManager.Instance.RuntimeObjects.DelegateOpenImageViewer(AddressOf OpenImageViewer)
-            ModulesManager.Instance.RuntimeObjects.MainMenu = mnuMain
-            ModulesManager.Instance.RuntimeObjects.MainTabControl = tcMain
-            ModulesManager.Instance.RuntimeObjects.MainToolStrip = tsMain
-            ModulesManager.Instance.RuntimeObjects.MediaListMovies = dgvMovies
-            ModulesManager.Instance.RuntimeObjects.MediaListMovieSets = dgvMovieSets
-            ModulesManager.Instance.RuntimeObjects.MediaListTVEpisodes = dgvTVEpisodes
-            ModulesManager.Instance.RuntimeObjects.MediaListTVSeasons = dgvTVSeasons
-            ModulesManager.Instance.RuntimeObjects.MediaListTVShows = dgvTVShows
-            ModulesManager.Instance.RuntimeObjects.ContextMenuMovieList = cmnuMovie
-            ModulesManager.Instance.RuntimeObjects.ContextMenuMovieSetList = cmnuMovieSet
-            ModulesManager.Instance.RuntimeObjects.ContextMenuTVEpisodeList = cmnuEpisode
-            ModulesManager.Instance.RuntimeObjects.ContextMenuTVSeasonList = cmnuSeason
-            ModulesManager.Instance.RuntimeObjects.ContextMenuTVShowList = cmnuShow
-            ModulesManager.Instance.RuntimeObjects.TrayMenu = cmnuTray
+        'start loading modules in background
+        ModulesManager.Instance.LoadAllModules()
 
-            'start loading modules in background
-            ModulesManager.Instance.LoadAllModules()
+        If Not Master.isCL Then
+            Master.fLoading.SetLoadingMesg(Master.eLang.GetString(857, "Creating GUI..."))
+        End If
 
-            If Not Master.isCL Then
-                Master.fLoading.SetLoadingMesg(Master.eLang.GetString(857, "Creating GUI..."))
-            End If
+        'setup some dummies so we don't get exceptions when resizing form/info panel
+        ReDim Preserve pnlGenre(0)
+        ReDim Preserve pbGenre(0)
+        pnlGenre(0) = New Panel()
+        pbGenre(0) = New PictureBox()
 
-            'setup some dummies so we don't get exceptions when resizing form/info panel
-            ReDim Preserve pnlGenre(0)
-            ReDim Preserve pbGenre(0)
-            pnlGenre(0) = New Panel()
-            pbGenre(0) = New PictureBox()
+        AddHandler fScanner.ScannerUpdated, AddressOf ScannerUpdated
+        AddHandler fScanner.ScanningCompleted, AddressOf ScanningCompleted
+        AddHandler ModulesManager.Instance.GenericEvent, AddressOf GenericRunCallBack
+        AddHandler fCommandLine.TaskEvent, AddressOf TaskRunCallBack
 
-            AddHandler fScanner.ScannerUpdated, AddressOf ScannerUpdated
-            AddHandler fScanner.ScanningCompleted, AddressOf ScanningCompleted
-            AddHandler ModulesManager.Instance.GenericEvent, AddressOf GenericRunCallBack
-            AddHandler fCommandLine.TaskEvent, AddressOf TaskRunCallBack
+        Functions.DGVDoubleBuffer(dgvMovies)
+        Functions.DGVDoubleBuffer(dgvMovieSets)
+        Functions.DGVDoubleBuffer(dgvTVShows)
+        Functions.DGVDoubleBuffer(dgvTVSeasons)
+        Functions.DGVDoubleBuffer(dgvTVEpisodes)
+        SetStyle(ControlStyles.DoubleBuffer, True)
+        SetStyle(ControlStyles.AllPaintingInWmPaint, True)
+        SetStyle(ControlStyles.UserPaint, True)
 
-            Functions.DGVDoubleBuffer(dgvMovies)
-            Functions.DGVDoubleBuffer(dgvMovieSets)
-            Functions.DGVDoubleBuffer(dgvTVShows)
-            Functions.DGVDoubleBuffer(dgvTVSeasons)
-            Functions.DGVDoubleBuffer(dgvTVEpisodes)
-            SetStyle(ControlStyles.DoubleBuffer, True)
-            SetStyle(ControlStyles.AllPaintingInWmPaint, True)
-            SetStyle(ControlStyles.UserPaint, True)
+        If TypeOf tsMain.Renderer Is ToolStripProfessionalRenderer Then
+            CType(tsMain.Renderer, ToolStripProfessionalRenderer).RoundedEdges = False
+        End If
 
-            If TypeOf tsMain.Renderer Is ToolStripProfessionalRenderer Then
-                CType(tsMain.Renderer, ToolStripProfessionalRenderer).RoundedEdges = False
-            End If
+        If Not Directory.Exists(Master.TempPath) Then Directory.CreateDirectory(Master.TempPath)
 
-            If Not Directory.Exists(Master.TempPath) Then Directory.CreateDirectory(Master.TempPath)
-
-            While Not ModulesManager.Instance.ModulesLoaded()
-                Master.fLoading.SetLoadingMesg(Master.eLang.GetString(856, "Loading modules..."))
-                Application.DoEvents()
-                Threading.Thread.Sleep(50)
-            End While
+        While Not ModulesManager.Instance.ModulesLoaded()
+            Master.fLoading.SetLoadingMesg(Master.eLang.GetString(856, "Loading modules..."))
+            Application.DoEvents()
+            Threading.Thread.Sleep(50)
+        End While
 
 
-            RemoveHandler dgvMovies.RowsAdded, AddressOf dgvMovies_RowsAdded
-            RemoveHandler dgvMovieSets.RowsAdded, AddressOf dgvMovieSets_RowsAdded
-            RemoveHandler dgvTVShows.RowsAdded, AddressOf dgvTVShows_RowsAdded
-            FillList(True, True, True)
-            AddHandler dgvMovies.RowsAdded, AddressOf dgvMovies_RowsAdded
-            AddHandler dgvMovieSets.RowsAdded, AddressOf dgvMovieSets_RowsAdded
-            AddHandler dgvTVShows.RowsAdded, AddressOf dgvTVShows_RowsAdded
+        RemoveHandler dgvMovies.RowsAdded, AddressOf dgvMovies_RowsAdded
+        RemoveHandler dgvMovieSets.RowsAdded, AddressOf dgvMovieSets_RowsAdded
+        RemoveHandler dgvTVShows.RowsAdded, AddressOf dgvTVShows_RowsAdded
+        FillList(True, True, True)
+        AddHandler dgvMovies.RowsAdded, AddressOf dgvMovies_RowsAdded
+        AddHandler dgvMovieSets.RowsAdded, AddressOf dgvMovieSets_RowsAdded
+        AddHandler dgvTVShows.RowsAdded, AddressOf dgvTVShows_RowsAdded
 
-            If Master.isCL Then ' Command Line
-                LoadWithCommandLine(Master.appArgs)
-            Else 'Regular Run (GUI)
-                LoadWithGUI()
-            End If
-            Master.fLoading.Close()
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-            Close()
-        End Try
+        If Master.isCL Then ' Command Line
+            LoadWithCommandLine(Master.appArgs)
+        Else 'Regular Run (GUI)
+            LoadWithGUI()
+        End If
+        Master.fLoading.Close()
+        'Catch ex As Exception
+        '    logger.Error(New StackFrame().GetMethod().Name, ex)
+        '    Close()
+        'End Try
     End Sub
     ''' <summary>
     ''' Performs startup routines specific to being initiated by the command line
@@ -10510,7 +10570,7 @@ doCancel:
                         Master.fLoading.SetLoadingMesg(Master.eLang.GetString(859, "Running Module..."))
                         Dim strModuleName As String = CStr(_params(1))
                         Dim oParameters As List(Of Object) = CType(_params(2), List(Of Object))
-                        Dim gModule As ModulesManager._externalGenericModuleClass = ModulesManager.Instance.externalProcessorModules.FirstOrDefault(Function(y) y.ProcessorModule.ModuleName = strModuleName)
+                        Dim gModule As ModulesManager._externalGenericModuleClass = ModulesManager.Instance.externalGenericModules.FirstOrDefault(Function(y) y.ProcessorModule.ModuleName = strModuleName)
                         If gModule IsNot Nothing Then
                             gModule.ProcessorModule.RunGeneric(Enums.ModuleEventType.CommandLine, oParameters, Nothing, Nothing)
                         End If
@@ -10563,19 +10623,285 @@ doCancel:
         End Select
     End Sub
 
-    Private Sub cmnuMovieGenresGenre_DropDown(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuMovieGenresGenre.DropDown
-        cmnuMovieGenresGenre.Items.Remove(Master.eLang.GetString(98, "Select Genre..."))
+    Private Sub mnuGenresAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuGenresAdd.Click
+        Dim strGenre As String = String.Empty
+        If Not String.IsNullOrEmpty(mnuGenresNew.Text) Then
+            strGenre = mnuGenresNew.Text.Trim
+        ElseIf Not String.IsNullOrEmpty(mnuGenresGenre.Text.Trim) Then
+            strGenre = mnuGenresGenre.Text.Trim
+        End If
+
+        If Not String.IsNullOrEmpty(strGenre) Then
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                Select Case _SelectedContentType
+                    Case "movie"
+                        For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
+                            Dim tmpDBElement As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells("idMovie").Value))
+                            If Not tmpDBElement.Movie.Genres.Contains(strGenre) Then
+                                tmpDBElement.Movie.Genres.Add(strGenre)
+                                Master.DB.SaveMovieToDB(tmpDBElement, False, True, True, False)
+                                RefreshRow_Movie(tmpDBElement.ID)
+                            End If
+                        Next
+                    Case "tvshow"
+                        For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
+                            Dim tmpDBElement As Database.DBElement = Master.DB.LoadTVShowFromDB(Convert.ToInt64(sRow.Cells("idShow").Value), False, False)
+                            If Not tmpDBElement.TVShow.Genres.Contains(strGenre) Then
+                                tmpDBElement.TVShow.Genres.Add(strGenre)
+                                Master.DB.SaveTVShowToDB(tmpDBElement, False, True, True, False, False)
+                                RefreshRow_TVShow(tmpDBElement.ID)
+                            End If
+                        Next
+                End Select
+                SQLtransaction.Commit()
+            End Using
+        End If
     End Sub
 
-    Private Sub cmnuMovieGenresGenre_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuMovieGenresGenre.SelectedIndexChanged
-        If dgvMovies.SelectedRows.Count > 1 Then
-            cmnuMovieGenresRemove.Enabled = True
-            cmnuMovieGenresAdd.Enabled = True
+    Private Sub mnuGenresGenre_DropDown(ByVal sender As Object, ByVal e As System.EventArgs) Handles mnuGenresGenre.DropDown
+        mnuGenresGenre.Items.Clear()
+        Dim mGenre() As Object = APIXML.GetGenreList
+        mnuGenresGenre.Items.AddRange(mGenre)
+
+        mnuGenresNew.Text = String.Empty
+    End Sub
+
+    Private Sub mnuGenresGenre_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles mnuGenresGenre.SelectedIndexChanged
+        Dim iSelectedRowsCount As Integer = 0
+        Select Case _SelectedContentType
+            Case "movie"
+                iSelectedRowsCount = dgvMovies.SelectedRows.Count
+            Case "tvshow"
+                iSelectedRowsCount = dgvTVShows.SelectedRows.Count
+        End Select
+
+        If iSelectedRowsCount > 1 Then
+            mnuGenresRemove.Enabled = True
+            mnuGenresAdd.Enabled = True
         Else
-            cmnuMovieGenresRemove.Enabled = cmnuMovieGenresGenre.Tag.ToString.Contains(cmnuMovieGenresGenre.Text)
-            cmnuMovieGenresAdd.Enabled = Not cmnuMovieGenresGenre.Tag.ToString.Contains(cmnuMovieGenresGenre.Text)
+            mnuGenresRemove.Enabled = mnuGenresGenre.Tag.ToString.Contains(mnuGenresGenre.Text)
+            mnuGenresAdd.Enabled = Not mnuGenresGenre.Tag.ToString.Contains(mnuGenresGenre.Text)
         End If
-        cmnuMovieGenresSet.Enabled = True
+        mnuGenresSet.Enabled = True
+    End Sub
+
+    Private Sub mnuGenresNew_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuGenresNew.TextChanged
+        If Not String.IsNullOrEmpty(mnuGenresNew.Text) Then
+            If Not mnuGenresGenre.Items.Contains(String.Concat(Master.eLang.GetString(27, "Select Genre"), "...")) Then
+                mnuGenresGenre.Items.Insert(0, String.Concat(Master.eLang.GetString(27, "Select Genre"), "..."))
+            End If
+            mnuGenresGenre.SelectedItem = String.Concat(Master.eLang.GetString(27, "Select Genre"), "...")
+        End If
+
+        mnuGenresAdd.Enabled = True
+        mnuGenresRemove.Enabled = False
+        mnuGenresSet.Enabled = True
+    End Sub
+
+    Private Sub mnuGenresRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuGenresRemove.Click
+        Dim strGenre As String = String.Empty
+        If Not String.IsNullOrEmpty(mnuGenresNew.Text) Then
+            strGenre = mnuGenresNew.Text.Trim
+        ElseIf Not String.IsNullOrEmpty(mnuGenresGenre.Text.Trim) Then
+            strGenre = mnuGenresGenre.Text.Trim
+        End If
+
+        If Not String.IsNullOrEmpty(strGenre) Then
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                Select Case _SelectedContentType
+                    Case "movie"
+                        For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
+                            Dim tmpDBElement As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells("idMovie").Value))
+                            If tmpDBElement.Movie.Genres.Contains(strGenre) Then
+                                tmpDBElement.Movie.Genres.Remove(strGenre)
+                                Master.DB.SaveMovieToDB(tmpDBElement, False, True, True, False)
+                                RefreshRow_Movie(tmpDBElement.ID)
+                            End If
+                        Next
+                    Case "tvshow"
+                        For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
+                            Dim tmpDBElement As Database.DBElement = Master.DB.LoadTVShowFromDB(Convert.ToInt64(sRow.Cells("idShow").Value), False, False)
+                            If tmpDBElement.TVShow.Genres.Contains(strGenre) Then
+                                tmpDBElement.TVShow.Genres.Remove(strGenre)
+                                Master.DB.SaveTVShowToDB(tmpDBElement, False, True, True, False, False)
+                                RefreshRow_TVShow(tmpDBElement.ID)
+                            End If
+                        Next
+                End Select
+                SQLtransaction.Commit()
+            End Using
+        End If
+    End Sub
+
+    Private Sub mnuGenresSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuGenresSet.Click
+        Dim strGenre As String = String.Empty
+        If Not String.IsNullOrEmpty(mnuGenresNew.Text) Then
+            strGenre = mnuGenresNew.Text.Trim
+        ElseIf Not String.IsNullOrEmpty(mnuGenresGenre.Text.Trim) Then
+            strGenre = mnuGenresGenre.Text.Trim
+        End If
+
+        If Not String.IsNullOrEmpty(strGenre) Then
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                Select Case _SelectedContentType
+                    Case "movie"
+                        For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
+                            Dim tmpDBElement As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells("idMovie").Value))
+                            tmpDBElement.Movie.Genres.Clear()
+                            tmpDBElement.Movie.Genres.Add(strGenre)
+                            Master.DB.SaveMovieToDB(tmpDBElement, False, True, True, False)
+                            RefreshRow_Movie(tmpDBElement.ID)
+                        Next
+                    Case "tvshow"
+                        For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
+                            Dim tmpDBElement As Database.DBElement = Master.DB.LoadTVShowFromDB(Convert.ToInt64(sRow.Cells("idShow").Value), False, False)
+                            tmpDBElement.TVShow.Genres.Clear()
+                            tmpDBElement.TVShow.Genres.Add(strGenre)
+                            Master.DB.SaveTVShowToDB(tmpDBElement, False, True, True, False, False)
+                            RefreshRow_TVShow(tmpDBElement.ID)
+                        Next
+                End Select
+                SQLtransaction.Commit()
+            End Using
+        End If
+    End Sub
+
+    Private Sub mnuTagsAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuTagsAdd.Click
+        Dim strTag As String = String.Empty
+        If Not String.IsNullOrEmpty(mnuTagsNew.Text) Then
+            strTag = mnuTagsNew.Text.Trim
+        ElseIf Not String.IsNullOrEmpty(mnutagstag.Text.Trim) Then
+            strTag = mnuTagsTag.Text.Trim
+        End If
+
+        If Not String.IsNullOrEmpty(strTag) Then
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                Select Case _SelectedContentType
+                    Case "movie"
+                        For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
+                            Dim tmpDBElement As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells("idMovie").Value))
+                            If Not tmpDBElement.Movie.Tags.Contains(strTag) Then
+                                tmpDBElement.Movie.Tags.Add(strTag)
+                                Master.DB.SaveMovieToDB(tmpDBElement, False, True, True, False)
+                                RefreshRow_Movie(tmpDBElement.ID)
+                            End If
+                        Next
+                    Case "tvshow"
+                        For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
+                            Dim tmpDBElement As Database.DBElement = Master.DB.LoadTVShowFromDB(Convert.ToInt64(sRow.Cells("idShow").Value), False, False)
+                            If Not tmpDBElement.TVShow.Tags.Contains(strTag) Then
+                                tmpDBElement.TVShow.Tags.Add(strTag)
+                                Master.DB.SaveTVShowToDB(tmpDBElement, False, True, True, False, False)
+                                RefreshRow_TVShow(tmpDBElement.ID)
+                            End If
+                        Next
+                End Select
+                SQLtransaction.Commit()
+            End Using
+        End If
+    End Sub
+
+    Private Sub mnuTagsNew_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuTagsNew.TextChanged
+        If Not String.IsNullOrEmpty(mnuTagsNew.Text) Then
+            If Not mnuTagsTag.Items.Contains(String.Concat(Master.eLang.GetString(1021, "Select Tag"), "...")) Then
+                mnuTagsTag.Items.Insert(0, String.Concat(Master.eLang.GetString(1021, "Select Tag"), "..."))
+            End If
+            mnuTagsTag.SelectedItem = String.Concat(Master.eLang.GetString(1021, "Select Tag"), "...")
+        End If
+
+        mnuTagsAdd.Enabled = True
+        mnuTagsRemove.Enabled = False
+        mnuTagsSet.Enabled = True
+    End Sub
+
+    Private Sub mnuTagsRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuTagsRemove.Click
+        Dim strTag As String = String.Empty
+        If Not String.IsNullOrEmpty(mnuTagsNew.Text) Then
+            strTag = mnuTagsNew.Text.Trim
+        ElseIf Not String.IsNullOrEmpty(mnuTagsTag.Text.Trim) Then
+            strTag = mnuTagsTag.Text.Trim
+        End If
+
+        If Not String.IsNullOrEmpty(strTag) Then
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                Select Case _SelectedContentType
+                    Case "movie"
+                        For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
+                            Dim tmpDBElement As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells("idMovie").Value))
+                            If tmpDBElement.Movie.Tags.Contains(strTag) Then
+                                tmpDBElement.Movie.Tags.Remove(strTag)
+                                Master.DB.SaveMovieToDB(tmpDBElement, False, True, True, False)
+                                RefreshRow_Movie(tmpDBElement.ID)
+                            End If
+                        Next
+                    Case "tvshow"
+                        For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
+                            Dim tmpDBElement As Database.DBElement = Master.DB.LoadTVShowFromDB(Convert.ToInt64(sRow.Cells("idShow").Value), False, False)
+                            If tmpDBElement.TVShow.Tags.Contains(strTag) Then
+                                tmpDBElement.TVShow.Tags.Remove(strTag)
+                                Master.DB.SaveTVShowToDB(tmpDBElement, False, True, True, False, False)
+                                RefreshRow_TVShow(tmpDBElement.ID)
+                            End If
+                        Next
+                End Select
+                SQLtransaction.Commit()
+            End Using
+        End If
+    End Sub
+
+    Private Sub mnuTagsSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuTagsSet.Click
+        Dim strTag As String = String.Empty
+        If Not String.IsNullOrEmpty(mnuTagsNew.Text) Then
+            strTag = mnuTagsNew.Text.Trim
+        ElseIf Not String.IsNullOrEmpty(mnuTagsTag.Text.Trim) Then
+            strTag = mnuTagsTag.Text.Trim
+        End If
+
+        If Not String.IsNullOrEmpty(strTag) Then
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                Select Case _SelectedContentType
+                    Case "movie"
+                        For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
+                            Dim tmpDBElement As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells("idMovie").Value))
+                            tmpDBElement.Movie.Tags.Clear()
+                            tmpDBElement.Movie.Tags.Add(strTag)
+                            Master.DB.SaveMovieToDB(tmpDBElement, False, True, True, False)
+                            RefreshRow_Movie(tmpDBElement.ID)
+                        Next
+                    Case "tvshow"
+                        For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
+                            Dim tmpDBElement As Database.DBElement = Master.DB.LoadTVShowFromDB(Convert.ToInt64(sRow.Cells("idShow").Value), False, False)
+                            tmpDBElement.TVShow.Tags.Clear()
+                            tmpDBElement.TVShow.Tags.Add(strTag)
+                            Master.DB.SaveTVShowToDB(tmpDBElement, False, True, True, False, False)
+                            RefreshRow_TVShow(tmpDBElement.ID)
+                        Next
+                End Select
+                SQLtransaction.Commit()
+            End Using
+        End If
+    End Sub
+
+    Private Sub mnuTagsTag_DropDown(ByVal sender As Object, ByVal e As System.EventArgs) Handles mnuTagsTag.DropDown
+        mnuTagsTag.Items.Clear()
+        Dim mTag() As Object = Master.DB.GetAllTags
+        mnuTagsTag.Items.AddRange(mTag)
+
+        mnuTagsNew.Text = String.Empty
+    End Sub
+
+    Private Sub mnuTagsTag_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles mnuTagsTag.SelectedIndexChanged
+        Dim iSelectedRowsCount As Integer = 0
+        Select Case _SelectedContentType
+            Case "movie"
+                iSelectedRowsCount = dgvMovies.SelectedRows.Count
+            Case "tvshow"
+                iSelectedRowsCount = dgvTVShows.SelectedRows.Count
+        End Select
+
+        mnuTagsAdd.Enabled = True
+        mnuTagsRemove.Enabled = False
+        mnuTagsSet.Enabled = True
     End Sub
 
     Private Sub cmnuMovieLanguageLanguages_DropDown(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuMovieLanguageLanguages.DropDown
@@ -10772,6 +11098,13 @@ doCancel:
 
         Else
             pbActors.Image = My.Resources.actor_silhouette
+        End If
+    End Sub
+
+    Private Sub mnuContextMenuStrip_Opened(sender As Object, e As EventArgs) Handles mnuGenres.Opened, mnuTags.Opened, mnuScrapeSubmenu.Opened
+        Dim tContextMenuStrip As ContextMenuStrip = CType(sender, ContextMenuStrip)
+        If tContextMenuStrip IsNot Nothing AndAlso tContextMenuStrip.OwnerItem IsNot Nothing AndAlso tContextMenuStrip.OwnerItem.Tag IsNot Nothing Then
+            _SelectedContentType = tContextMenuStrip.OwnerItem.Tag.ToString
         End If
     End Sub
 
@@ -11211,12 +11544,6 @@ doCancel:
                     mnuScrapeModifierTrailer.Visible = False
             End Select
         End With
-    End Sub
-
-    Private Sub mnuScrapeSubmenu_Opened(sender As Object, e As EventArgs) Handles mnuScrapeSubmenu.Opened
-        If mnuScrapeSubmenu.OwnerItem IsNot Nothing Then
-            _SelectedContentType = mnuScrapeSubmenu.OwnerItem.Tag.ToString
-        End If
     End Sub
 
     Private Sub mnuScrapeType_Opened(sender As Object, e As EventArgs) Handles mnuScrapeType.Opened
@@ -15434,51 +15761,10 @@ doCancel:
         End Using
     End Sub
 
-    Private Sub cmnuMovieGenresAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieGenresAdd.Click
-        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-            For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
-                Dim tmpDBMovie As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt32(sRow.Cells("idMovie").Value))
-                If Not tmpDBMovie.Movie.Genres.Contains(cmnuMovieGenresGenre.Text.Trim) Then
-                    tmpDBMovie.Movie.Genres.Add(cmnuMovieGenresGenre.Text.Trim)
-                    Master.DB.SaveMovieToDB(tmpDBMovie, False, True, True, False)
-                    RefreshRow_Movie(tmpDBMovie.ID)
-                End If
-            Next
-            SQLtransaction.Commit()
-        End Using
-    End Sub
-
-    Private Sub cmnuMovieGenresRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieGenresRemove.Click
-        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-            For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
-                Dim tmpDBMovie As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt32(sRow.Cells("idMovie").Value))
-                If tmpDBMovie.Movie.Genres.Contains(cmnuMovieGenresGenre.Text.Trim) Then
-                    tmpDBMovie.Movie.Genres.Remove(cmnuMovieGenresGenre.Text.Trim)
-                    Master.DB.SaveMovieToDB(tmpDBMovie, False, True, True, False)
-                    RefreshRow_Movie(tmpDBMovie.ID)
-                End If
-            Next
-            SQLtransaction.Commit()
-        End Using
-    End Sub
-
-    Private Sub cmnuMovieGenresSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieGenresSet.Click
-        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-            For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
-                Dim tmpDBMovie As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt32(sRow.Cells("idMovie").Value))
-                tmpDBMovie.Movie.Genres.Clear()
-                tmpDBMovie.Movie.Genres.Add(cmnuMovieGenresGenre.Text.Trim)
-                Master.DB.SaveMovieToDB(tmpDBMovie, False, True, True, False)
-                RefreshRow_Movie(tmpDBMovie.ID)
-            Next
-            SQLtransaction.Commit()
-        End Using
-    End Sub
-
     Private Sub cmnuMovieLanguageSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieLanguageSet.Click
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
-                Dim tmpDBMovie As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt32(sRow.Cells("idMovie").Value))
+                Dim tmpDBMovie As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells("idMovie").Value))
                 tmpDBMovie.Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = cmnuMovieLanguageLanguages.Text).abbreviation
                 tmpDBMovie.Movie.Language = tmpDBMovie.Language
                 Master.DB.SaveMovieToDB(tmpDBMovie, False, True, True, False)
@@ -15491,7 +15777,7 @@ doCancel:
     Private Sub cmnuMovieSetLanguageSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetLanguageSet.Click
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             For Each sRow As DataGridViewRow In dgvMovieSets.SelectedRows
-                Dim tmpDBMovieSet As Database.DBElement = Master.DB.LoadMovieSetFromDB(Convert.ToInt32(sRow.Cells("idSet").Value))
+                Dim tmpDBMovieSet As Database.DBElement = Master.DB.LoadMovieSetFromDB(Convert.ToInt64(sRow.Cells("idSet").Value))
                 tmpDBMovieSet.Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = cmnuMovieSetLanguageLanguages.Text).abbreviation
                 Master.DB.SaveMovieSetToDB(tmpDBMovieSet, False, True, False, False)
                 RefreshRow_MovieSet(tmpDBMovieSet.ID)
@@ -15503,7 +15789,7 @@ doCancel:
     Private Sub cmnuShowLanguageSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowLanguageSet.Click
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
-                Dim tmpDBTVShow As Database.DBElement = Master.DB.LoadTVShowFromDB(Convert.ToInt32(sRow.Cells("idShow").Value), True, False)
+                Dim tmpDBTVShow As Database.DBElement = Master.DB.LoadTVShowFromDB(Convert.ToInt64(sRow.Cells("idShow").Value), True, False)
                 tmpDBTVShow.Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = cmnuShowLanguageLanguages.Text).abbreviation
                 tmpDBTVShow.TVShow.Language = tmpDBTVShow.Language
                 Master.DB.SaveTVShowToDB(tmpDBTVShow, False, False, True, False, False)
@@ -15516,7 +15802,7 @@ doCancel:
     Private Sub cmnuMovieSetSortMethodSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetSortMethodSet.Click
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             For Each sRow As DataGridViewRow In dgvMovieSets.SelectedRows
-                Dim tmpDBMovieSet As Database.DBElement = Master.DB.LoadMovieSetFromDB(Convert.ToInt32(sRow.Cells("idSet").Value))
+                Dim tmpDBMovieSet As Database.DBElement = Master.DB.LoadMovieSetFromDB(Convert.ToInt64(sRow.Cells("idSet").Value))
                 tmpDBMovieSet.SortMethod = CType(cmnuMovieSetSortMethodMethods.ComboBox.SelectedValue, Enums.SortMethod_MovieSet)
                 Master.DB.SaveMovieSetToDB(tmpDBMovieSet, False, True, True)
                 RefreshRow_MovieSet(tmpDBMovieSet.ID)
@@ -15602,10 +15888,8 @@ doCancel:
                 End Using
             End Using
 
-            cmnuMovieGenresGenre.Items.Clear()
             clbFilterGenres_Movies.Items.Clear()
             Dim mGenre() As Object = APIXML.GetGenreList
-            cmnuMovieGenresGenre.Items.AddRange(mGenre)
             clbFilterGenres_Movies.Items.Add(Master.eLang.None)
             clbFilterGenres_Movies.Items.AddRange(mGenre)
 
@@ -16058,6 +16342,11 @@ doCancel:
             With Me
                 .MinimumSize = New Size(800, 600)
 
+                'Add
+                Dim strAdd As String = Master.eLang.GetString(28, "Add")
+                .mnuGenresAdd.Text = strAdd
+                .mnuTagsAdd.Text = strAdd
+
                 'All
                 Dim strAll As String = Master.eLang.GetString(68, "All")
                 .mnuScrapeSubmenuAll.Text = strAll
@@ -16182,6 +16471,11 @@ doCancel:
                 .cmnuTrayToolsReloadTVShows.Text = strReloadAllTVShows
                 .mnuMainToolsReloadTVShows.Text = strReloadAllTVShows
 
+                'Remove
+                Dim strRemove As String = Master.eLang.GetString(30, "Remove")
+                .mnuGenresRemove.Text = strRemove
+                .mnuTagsRemove.Text = strRemove
+
                 'Scrape Movies
                 Dim strScrapeMovies As String = Master.eLang.GetString(67, "Scrape Movies")
                 .mnuScrapeMovies.Text = strScrapeMovies
@@ -16199,11 +16493,20 @@ doCancel:
 
                 'Set
                 Dim strSet As String = Master.eLang.GetString(29, "Set")
-                .cmnuMovieGenresSet.Text = strSet
                 .cmnuMovieLanguageSet.Text = strSet
                 .cmnuMovieSetLanguageSet.Text = strSet
                 .cmnuMovieSetSortMethodSet.Text = strSet
                 .cmnuShowLanguageSet.Text = strSet
+                .mnuGenresSet.Text = strSet
+                .mnuTagsSet.Text = strSet
+
+                'Select Genre
+                Dim strSelectGenre As String = Master.eLang.GetString(27, "Select Genre")
+                .mnuGenresTitleSelect.Text = String.Concat(">> ", strSelectGenre, " <<")
+
+                'Select Tag
+                Dim strSelectTag As String = Master.eLang.GetString(1021, "Select Tag")
+                .mnuTagsTitleSelect.Text = String.Concat(">> ", strSelectTag, " <<")
 
                 'Update Single Data Field
                 Dim strUpdateSingelDataField As String = Master.eLang.GetString(1126, "Update Single Data Field")
@@ -16401,9 +16704,6 @@ doCancel:
                 .cmnuMovieEdit.Text = Master.eLang.GetString(25, "Edit Movie")
                 .cmnuMovieEditMetaData.Text = Master.eLang.GetString(603, "Edit Meta Data")
                 .cmnuMovieGenres.Text = Master.eLang.GetString(725, "Genres")
-                .cmnuMovieGenresAdd.Text = Master.eLang.GetString(28, "Add")
-                .cmnuMovieGenresRemove.Text = Master.eLang.GetString(30, "Remove")
-                .cmnuMovieGenresTitle.Text = Master.eLang.GetString(27, ">> Select Genre <<")
                 .cmnuMovieLock.Text = Master.eLang.GetString(24, "Lock")
                 .cmnuMovieMark.Text = Master.eLang.GetString(23, "Mark")
                 .cmnuMovieMarkAs.Text = Master.eLang.GetString(1192, "Mark as")

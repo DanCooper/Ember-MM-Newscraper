@@ -175,7 +175,9 @@ Public Class Database
 
     Private Function AddGenre(ByVal strGenre As String) As Long
         If String.IsNullOrEmpty(strGenre) Then Return -1
-        Return AddToTable("genre", "idGenre", "strGenre", strGenre)
+        Dim ID As Long = AddToTable("genre", "idGenre", "strGenre", strGenre)
+        LoadAllGenres()
+        Return ID
     End Function
 
     Private Sub AddGenreToMovie(ByVal idMovie As Long, ByVal idGenre As Long)
@@ -1285,6 +1287,26 @@ Public Class Database
         _TVDB.Source = _tmpTVDBShow.Source
         _TVDB.TVShow = _tmpTVDBShow.TVShow
         Return _TVDB
+    End Function
+
+    Public Function GetAllTags() As String()
+        Dim tList As New List(Of String)
+
+        Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = "SELECT strTag FROM tag;"
+            Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    If Not String.IsNullOrEmpty(SQLreader("strTag").ToString) Then
+                        If Not tList.Contains(SQLreader("strTag").ToString) Then
+                            tList.Add(SQLreader("strTag").ToString.Trim)
+                        End If
+                    End If
+                End While
+            End Using
+        End Using
+
+        tList.Sort()
+        Return tList.ToArray
     End Function
 
     Public Function GetTVShowEpisodeSorting(ByVal ShowID As Long) As Enums.EpisodeSorting

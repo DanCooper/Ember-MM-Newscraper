@@ -481,7 +481,7 @@ Public Class dlgSettings
             AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
         Next
         ModuleCounter = 1
-        For Each s As ModulesManager._externalGenericModuleClass In ModulesManager.Instance.externalProcessorModules
+        For Each s As ModulesManager._externalGenericModuleClass In ModulesManager.Instance.externalGenericModules
             tPanel = s.ProcessorModule.InjectSetup
             If Not tPanel Is Nothing Then
                 tPanel.Order += ModuleCounter
@@ -545,7 +545,7 @@ Public Class dlgSettings
             RemoveHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
             RemoveHandler s.ProcessorModule.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
         Next
-        For Each s As ModulesManager._externalGenericModuleClass In ModulesManager.Instance.externalProcessorModules
+        For Each s As ModulesManager._externalGenericModuleClass In ModulesManager.Instance.externalGenericModules
             RemoveHandler s.ProcessorModule.ModuleSetupChanged, AddressOf Handle_ModuleSetupChanged
             RemoveHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
             RemoveHandler s.ProcessorModule.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
@@ -5579,7 +5579,7 @@ Public Class dlgSettings
                 logger.Error(New StackFrame().GetMethod().Name, ex)
             End Try
         Next
-        For Each s As ModulesManager._externalGenericModuleClass In ModulesManager.Instance.externalProcessorModules
+        For Each s As ModulesManager._externalGenericModuleClass In ModulesManager.Instance.externalGenericModules
             Try
                 s.ProcessorModule.SaveSetup(Not isApply)
             Catch ex As Exception
