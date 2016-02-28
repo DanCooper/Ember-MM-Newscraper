@@ -170,7 +170,7 @@ Public Class OFDB_Data
     ''' <returns>Database.DBElement Object (nMovie) which contains the scraped data</returns>
     ''' <remarks></remarks>
     Function Scraper_Movie(ByRef oDBMovie As Database.DBElement, ByRef Modifier As Structures.ScrapeModifiers, ByRef Type As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_Movie Implements Interfaces.ScraperModule_Data_Movie.Scraper_Movie
-        logger.Trace("Started OFDB Scraper")
+        logger.Trace("[OFDB_Data] [Scraper_Movie] [Start]")
 
         LoadSettings()
 
@@ -179,7 +179,7 @@ Public Class OFDB_Data
 
         'datascraper needs imdb of movie!
         If String.IsNullOrEmpty(oDBMovie.Movie.ID) Then
-            logger.Trace("IMDB-ID of movie is needed, but not availaible! Leave OFDB scraper...")
+            logger.Trace("[OFDB_Data] [Scraper_Movie] [Abort] IMDB-ID of movie is needed, but not availaible")
             Return New Interfaces.ModuleResult_Data_Movie With {.Result = Nothing}
         End If
 
@@ -187,7 +187,7 @@ Public Class OFDB_Data
             nMovie = _scraper.GetMovieInfo(oDBMovie.Movie.ID, FilteredOptions)
         End If
 
-        logger.Trace("Finished OFDB Scraper")
+        logger.Trace("[OFDB_Data] [Scraper_Movie] [Done]")
         Return New Interfaces.ModuleResult_Data_Movie With {.Result = nMovie}
     End Function
 

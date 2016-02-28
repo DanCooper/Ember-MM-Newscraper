@@ -237,8 +237,8 @@ Public Class TVDB_Data
     ''' <param name="ScrapeOptions">What kind of data is being requested from the scrape(global scraper settings)</param>
     ''' <returns>Database.DBElement Object (nMovie) which contains the scraped data</returns>
     ''' <remarks></remarks>
-    Function Scraper(ByRef oDBTV As Database.DBElement, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_TVShow Implements Interfaces.ScraperModule_Data_TV.Scraper_TVShow
-        logger.Trace("Started TVDB Scraper")
+    Function Scraper_TV(ByRef oDBTV As Database.DBElement, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_TVShow Implements Interfaces.ScraperModule_Data_TV.Scraper_TVShow
+        logger.Trace("[TVDB_Data] [Scraper_TV] [Start]")
 
         LoadSettings()
 
@@ -260,13 +260,17 @@ Public Class TVDB_Data
                     nTVShow = _scraper.GetSearchTVShowInfo(oDBTV.TVShow.Title, oDBTV, ScrapeType, ScrapeModifiers, FilteredOptions)
                 End If
                 'if still no search result -> exit
-                If nTVShow Is Nothing Then Return New Interfaces.ModuleResult_Data_TVShow With {.Result = Nothing}
+                If nTVShow Is Nothing Then
+                    logger.Trace("[TVDB_Data] [Scraper_TV] [Abort] No search result found")
+                    Return New Interfaces.ModuleResult_Data_TVShow With {.Result = Nothing}
+                End If
             End If
         End If
 
         If nTVShow Is Nothing Then
             Select Case ScrapeType
                 Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto
+                    logger.Trace("[TVDB_Data] [Scraper_TV] [Abort] No search result found")
                     Return New Interfaces.ModuleResult_Data_TVShow With {.Result = Nothing}
             End Select
         End If
@@ -279,6 +283,7 @@ Public Class TVDB_Data
                         'if a tvshow is found, set DoSearch back to "false" for following scrapers
                         ScrapeModifiers.DoSearch = False
                     Else
+                        logger.Trace("[TVDB_Data] [Scraper_TV] [Abort] [Cancelled] Cancelled by user")
                         Return New Interfaces.ModuleResult_Data_TVShow With {.Cancelled = True, .Result = Nothing}
                     End If
                 End Using
@@ -298,12 +303,12 @@ Public Class TVDB_Data
             End If
         End If
 
-        logger.Trace("Finished TVDB Scraper")
+        logger.Trace("[TVDB_Data] [Scraper_TV] [Done]")
         Return New Interfaces.ModuleResult_Data_TVShow With {.Result = nTVShow}
     End Function
 
     Public Function Scraper_TVEpisode(ByRef oDBTVEpisode As Database.DBElement, ByVal ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_TVEpisode Implements Interfaces.ScraperModule_Data_TV.Scraper_TVEpisode
-        logger.Trace("Started TVDB Scraper")
+        logger.Trace("[TVDB_Data] [Scraper_TVEpisode] [Start]")
 
         LoadSettings()
 
@@ -321,6 +326,7 @@ Public Class TVDB_Data
             ElseIf Not String.IsNullOrEmpty(oDBTVEpisode.TVEpisode.Aired) Then
                 nTVEpisode = _scraper.GetTVEpisodeInfo(CInt(oDBTVEpisode.TVShow.TVDB), oDBTVEpisode.TVEpisode.Aired, FilteredOptions)
             Else
+                logger.Trace("[TVDB_Data] [Scraper_TVEpisode] [Abort] No TV Show TVDB ID and also no AiredDate available")
                 Return New Interfaces.ModuleResult_Data_TVEpisode With {.Result = Nothing}
             End If
         End If
@@ -338,7 +344,7 @@ Public Class TVDB_Data
             End If
         End If
 
-        logger.Trace("Finished TVDB Scraper")
+        logger.Trace("[TVDB_Data] [Scraper_TVEpisode] [Done]")
         Return New Interfaces.ModuleResult_Data_TVEpisode With {.Result = nTVEpisode}
     End Function
 

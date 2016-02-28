@@ -137,12 +137,12 @@ Public Class IMDB_Image
     End Sub
 
     Function Scraper(ByRef DBMovie As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_Movie.Scraper
-        logger.Trace("Started scrape", New StackTrace().ToString())
+        logger.Trace("[IMDB_Image] [Scraper] [Start]")
         LoadSettings()
 
         ImagesContainer = IMDB.GetIMDBPosters(DBMovie.Movie.IMDBID)
 
-        logger.Trace("Finished scrape", New StackTrace().ToString())
+        logger.Trace("[IMDB_Image] [Scraper] [Start]")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 

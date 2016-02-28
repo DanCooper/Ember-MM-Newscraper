@@ -345,7 +345,7 @@ Public Class TMDB_Image
     End Sub
 
     Function Scraper_Movie(ByRef DBMovie As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_Movie.Scraper
-        logger.Trace("Started scrape TMDB")
+        logger.Trace("[TMDB_Image] [Scraper_Movie] [Start]")
 
         LoadSettings_Movie()
 
@@ -363,12 +363,12 @@ Public Class TMDB_Image
             ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovie.Movie.TMDBID, FilteredModifiers, Enums.ContentType.Movie)
         End If
 
-        logger.Trace("Finished TMDB Scraper")
+        logger.Trace("[TMDB_Image] [Scraper_Movie] [Start]")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
     Function Scraper_MovieSet(ByRef DBMovieSet As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_MovieSet.Scraper
-        logger.Trace("Started scrape TMDB")
+        logger.Trace("[TMDB_Image] [Scraper_MovieSet] [Start]")
 
         LoadSettings_MovieSet()
 
@@ -388,12 +388,12 @@ Public Class TMDB_Image
             ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovieSet.MovieSet.TMDB, FilteredModifiers, Enums.ContentType.MovieSet)
         End If
 
-        logger.Trace("Finished TMDB Scraper")
+        logger.Trace("[TMDB_Image] [Scraper_MovieSet] [Start]")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
     Function Scraper_TV(ByRef DBTV As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_TV.Scraper
-        logger.Trace("Started scrape TMDB")
+        logger.Trace("[TMDB_Image] [Scraper_TV] [Start]")
 
         LoadSettings_TV()
 
@@ -419,25 +419,25 @@ Public Class TMDB_Image
                         ImagesContainer.MainFanarts = _scraper.GetImages_TVShow(DBTV.TVShow.TMDB, FilteredModifiers).MainFanarts
                     End If
                 Else
-                    logger.Trace(String.Concat("No TMDB ID exist to search: ", DBTV.ListTitle))
+                    logger.Trace(String.Concat("[TMDB_Image] [Scraper_TV] [Abort] No TMDB ID exist to search: ", DBTV.ListTitle))
                 End If
             Case Enums.ContentType.TVSeason
                 If Not String.IsNullOrEmpty(DBTV.TVShow.TMDB) Then
                     ImagesContainer = _scraper.GetImages_TVShow(DBTV.TVShow.TMDB, FilteredModifiers)
                 Else
-                    logger.Trace(String.Concat("No TVDB ID exist to search: ", DBTV.ListTitle))
+                    logger.Trace(String.Concat("[TMDB_Image] [Scraper_TV] [Abort] No TVDB ID exist to search: ", DBTV.ListTitle))
                 End If
             Case Enums.ContentType.TVShow
                 If Not String.IsNullOrEmpty(DBTV.TVShow.TMDB) Then
                     ImagesContainer = _scraper.GetImages_TVShow(DBTV.TVShow.TMDB, FilteredModifiers)
                 Else
-                    logger.Trace(String.Concat("No TVDB ID exist to search: ", DBTV.ListTitle))
+                    logger.Trace(String.Concat("[TMDB_Image] [Scraper_TV] [Abort] No TVDB ID exist to search: ", DBTV.ListTitle))
                 End If
             Case Else
-                logger.Error(String.Concat("Unhandled ContentType"))
+                logger.Error(String.Concat("[TMDB_Image] [Scraper_TV] [Abort] Unhandled ContentType"))
         End Select
 
-        logger.Trace("Finished TMDB Scraper")
+        logger.Trace("[TMDB_Image] [Scraper_TV] [Start]")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
