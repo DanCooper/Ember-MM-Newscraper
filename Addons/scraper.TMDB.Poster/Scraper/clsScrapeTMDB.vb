@@ -60,10 +60,10 @@ Namespace TMDB
                 Dim APIResult As Task(Of TMDbLib.Objects.General.ImagesWithId)
 
                 If ContentType = Enums.ContentType.Movie Then
-                    APIResult = Task.Run(Function() _TMDBApi.GetMovieImages(CInt(TMDBID)))
+                    APIResult = Task.Run(Function() _TMDBApi.GetMovieImagesAsync(CInt(TMDBID)))
                     Results = APIResult.Result
                 ElseIf ContentType = Enums.ContentType.MovieSet Then
-                    APIResult = Task.Run(Function() _TMDBApi.GetCollectionImages(CInt(TMDBID)))
+                    APIResult = Task.Run(Function() _TMDBApi.GetMovieImagesAsync(CInt(TMDBID)))
                     Results = APIResult.Result
                 End If
 
@@ -124,7 +124,7 @@ Namespace TMDB
             Try
 
                 Dim APIResult As Task(Of TMDbLib.Objects.TvShows.TvShow)
-                APIResult = Task.Run(Function() _TMDBApi.GetTvShow(CInt(tmdbID), TMDbLib.Objects.TvShows.TvShowMethods.Images))
+                APIResult = Task.Run(Function() _TMDBApi.GetTvShowAsync(CInt(tmdbID), TMDbLib.Objects.TvShows.TvShowMethods.Images))
 
                 If APIResult Is Nothing Then
                     Return Nothing
@@ -174,7 +174,7 @@ Namespace TMDB
                 If (FilteredModifiers.SeasonPoster OrElse FilteredModifiers.EpisodePoster) AndAlso Result.Seasons IsNot Nothing Then
                     For Each tSeason In Result.Seasons
                         Dim APIResult_Season As Task(Of TMDbLib.Objects.TvShows.TvSeason)
-                        APIResult_Season = Task.Run(Function() _TMDBApi.GetTvSeason(CInt(tmdbID), tSeason.SeasonNumber, TMDbLib.Objects.TvShows.TvSeasonMethods.Images))
+                        APIResult_Season = Task.Run(Function() _TMDBApi.GetTvSeasonAsync(CInt(tmdbID), tSeason.SeasonNumber, TMDbLib.Objects.TvShows.TvSeasonMethods.Images))
 
                         If APIResult_Season IsNot Nothing Then
                             Dim Result_Season As TMDbLib.Objects.TvShows.TvSeason = APIResult_Season.Result
@@ -337,7 +337,7 @@ Namespace TMDB
             Try
                 Dim Results As TMDbLib.Objects.General.StillImages = Nothing
                 Dim APIResult As Task(Of TMDbLib.Objects.General.StillImages)
-                APIResult = Task.Run(Function() _TMDBApi.GetTvEpisodeImages(CInt(tmdbID), iSeason, iEpisode))
+                APIResult = Task.Run(Function() _TMDBApi.GetTvEpisodeImagesAsync(CInt(tmdbID), iSeason, iEpisode))
                 Results = APIResult.Result
 
                 If Results Is Nothing Then
@@ -377,7 +377,7 @@ Namespace TMDB
 
             Try
                 Dim APIResult As Task(Of TMDbLib.Objects.Find.FindContainer)
-                APIResult = Task.Run(Function() _TMDBApi.Find(TMDbLib.Objects.Find.FindExternalSource.Imdb, imdbID))
+                APIResult = Task.Run(Function() _TMDBApi.FindAsync(TMDbLib.Objects.Find.FindExternalSource.Imdb, imdbID))
 
                 If APIResult IsNot Nothing AndAlso APIResult.Result IsNot Nothing AndAlso
                     APIResult.Result.TvResults IsNot Nothing AndAlso APIResult.Result.TvResults.Count > 0 Then
@@ -396,7 +396,7 @@ Namespace TMDB
 
             Try
                 Dim APIResult As Task(Of TMDbLib.Objects.Find.FindContainer)
-                APIResult = Task.Run(Function() _TMDBApi.Find(TMDbLib.Objects.Find.FindExternalSource.TvDb, tvdbID))
+                APIResult = Task.Run(Function() _TMDBApi.FindAsync(TMDbLib.Objects.Find.FindExternalSource.TvDb, tvdbID))
 
                 If APIResult IsNot Nothing AndAlso APIResult.Result IsNot Nothing AndAlso _
                     APIResult.Result.TvResults IsNot Nothing AndAlso APIResult.Result.TvResults.Count > 0 Then
