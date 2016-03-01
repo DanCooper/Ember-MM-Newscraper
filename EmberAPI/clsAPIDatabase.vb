@@ -2160,8 +2160,6 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("Aired")) Then .Aired = SQLreader("Aired").ToString
                         If Not DBNull.Value.Equals(SQLreader("Rating")) Then .Rating = SQLreader("Rating").ToString
                         If Not DBNull.Value.Equals(SQLreader("Plot")) Then .Plot = SQLreader("Plot").ToString
-                        If Not DBNull.Value.Equals(SQLreader("Director")) Then .Director = SQLreader("Director").ToString
-                        If Not DBNull.Value.Equals(SQLreader("Credits")) Then .OldCredits = SQLreader("Credits").ToString
                         If Not DBNull.Value.Equals(SQLreader("Playcount")) Then .Playcount = Convert.ToInt32(SQLreader("Playcount"))
                         If Not DBNull.Value.Equals(SQLreader("DateAdded")) Then .DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(SQLreader("DateAdded"))).ToString("yyyy-MM-dd HH:mm:ss")
                         If Not DBNull.Value.Equals(SQLreader("Runtime")) Then .Runtime = SQLreader("Runtime").ToString
@@ -2204,6 +2202,28 @@ Public Class Database
                     person.LocalFilePath = SQLreader("url").ToString
                     person.URLOriginal = SQLreader("strThumb").ToString
                     _TVDB.TVEpisode.Actors.Add(person)
+                End While
+            End Using
+        End Using
+
+        'Credits
+        Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = String.Concat("SELECT B.strActor FROM writerlinkepisode ",
+                                                   "AS A INNER JOIN actors AS B ON (A.idWriter = B.idActor) WHERE A.idEpisode = ", _TVDB.ID, ";")
+            Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    If Not DBNull.Value.Equals(SQLreader("strActor")) Then _TVDB.TVEpisode.Credits.Add(SQLreader("strActor").ToString)
+                End While
+            End Using
+        End Using
+
+        'Directors
+        Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = String.Concat("SELECT B.strActor FROM directorlinkepisode ",
+                                                   "AS A INNER JOIN actors AS B ON (A.idDirector = B.idActor) WHERE A.idEpisode = ", _TVDB.ID, ";")
+            Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    If Not DBNull.Value.Equals(SQLreader("strActor")) Then _TVDB.TVEpisode.Directors.Add(SQLreader("strActor").ToString)
                 End While
             End Using
         End Using
@@ -3525,34 +3545,34 @@ Public Class Database
             If Not _movieDB.ID = -1 Then
 
                 'Actors
-                Using SQLcommand_actorlinkmovie As SQLiteCommand = _myvideosDBConn.CreateCommand()
-                    SQLcommand_actorlinkmovie.CommandText = String.Format("DELETE FROM actorlinkmovie WHERE idMovie = {0};", _movieDB.ID)
-                    SQLcommand_actorlinkmovie.ExecuteNonQuery()
+                Using SQLcommand_actorlink As SQLiteCommand = _myvideosDBConn.CreateCommand()
+                    SQLcommand_actorlink.CommandText = String.Format("DELETE FROM actorlinkmovie WHERE idMovie = {0};", _movieDB.ID)
+                    SQLcommand_actorlink.ExecuteNonQuery()
                 End Using
                 AddCast(_movieDB.ID, "movie", "movie", _movieDB.Movie.Actors)
 
                 'Countries
-                Using SQLcommand_countrylinkmovie As SQLiteCommand = _myvideosDBConn.CreateCommand()
-                    SQLcommand_countrylinkmovie.CommandText = String.Format("DELETE FROM countrylinkmovie WHERE idMovie = {0};", _movieDB.ID)
-                    SQLcommand_countrylinkmovie.ExecuteNonQuery()
+                Using SQLcommand_countrylink As SQLiteCommand = _myvideosDBConn.CreateCommand()
+                    SQLcommand_countrylink.CommandText = String.Format("DELETE FROM countrylinkmovie WHERE idMovie = {0};", _movieDB.ID)
+                    SQLcommand_countrylink.ExecuteNonQuery()
                 End Using
                 For Each country As String In _movieDB.Movie.Countries
                     AddCountryToMovie(_movieDB.ID, AddCountry(country))
                 Next
 
                 'Directors
-                Using SQLcommand_directorlinkmovie As SQLiteCommand = _myvideosDBConn.CreateCommand()
-                    SQLcommand_directorlinkmovie.CommandText = String.Format("DELETE FROM directorlinkmovie WHERE idMovie = {0};", _movieDB.ID)
-                    SQLcommand_directorlinkmovie.ExecuteNonQuery()
+                Using SQLcommand_directorlink As SQLiteCommand = _myvideosDBConn.CreateCommand()
+                    SQLcommand_directorlink.CommandText = String.Format("DELETE FROM directorlinkmovie WHERE idMovie = {0};", _movieDB.ID)
+                    SQLcommand_directorlink.ExecuteNonQuery()
                 End Using
                 For Each director As String In _movieDB.Movie.Directors
                     AddDirectorToMovie(_movieDB.ID, AddActor(director, "", "", "", "", False))
                 Next
 
                 'Genres
-                Using SQLcommand_genrelinkmovie As SQLiteCommand = _myvideosDBConn.CreateCommand()
-                    SQLcommand_genrelinkmovie.CommandText = String.Format("DELETE FROM genrelinkmovie WHERE idMovie = {0};", _movieDB.ID)
-                    SQLcommand_genrelinkmovie.ExecuteNonQuery()
+                Using SQLcommand_genrelink As SQLiteCommand = _myvideosDBConn.CreateCommand()
+                    SQLcommand_genrelink.CommandText = String.Format("DELETE FROM genrelinkmovie WHERE idMovie = {0};", _movieDB.ID)
+                    SQLcommand_genrelink.ExecuteNonQuery()
                 End Using
                 For Each genre As String In _movieDB.Movie.Genres
                     AddGenreToMovie(_movieDB.ID, AddGenre(genre))
@@ -3572,9 +3592,9 @@ Public Class Database
                 If Not String.IsNullOrEmpty(_movieDB.ImagesContainer.Poster.LocalFilePath) Then SetArtForItem(_movieDB.ID, "movie", "poster", _movieDB.ImagesContainer.Poster.LocalFilePath)
 
                 'Studios
-                Using SQLcommand_studiolinkmovie As SQLiteCommand = _myvideosDBConn.CreateCommand()
-                    SQLcommand_studiolinkmovie.CommandText = String.Format("DELETE FROM studiolinkmovie WHERE idMovie = {0};", _movieDB.ID)
-                    SQLcommand_studiolinkmovie.ExecuteNonQuery()
+                Using SQLcommand_studiolink As SQLiteCommand = _myvideosDBConn.CreateCommand()
+                    SQLcommand_studiolink.CommandText = String.Format("DELETE FROM studiolinkmovie WHERE idMovie = {0};", _movieDB.ID)
+                    SQLcommand_studiolink.ExecuteNonQuery()
                 End Using
                 For Each studio As String In _movieDB.Movie.Studios
                     AddStudioToMovie(_movieDB.ID, AddStudio(studio))
@@ -3590,9 +3610,9 @@ Public Class Database
                 Next
 
                 'Writers
-                Using SQLcommand_writerlinkmovie As SQLiteCommand = _myvideosDBConn.CreateCommand()
-                    SQLcommand_writerlinkmovie.CommandText = String.Format("DELETE FROM writerlinkmovie WHERE idMovie = {0};", _movieDB.ID)
-                    SQLcommand_writerlinkmovie.ExecuteNonQuery()
+                Using SQLcommand_writerlink As SQLiteCommand = _myvideosDBConn.CreateCommand()
+                    SQLcommand_writerlink.CommandText = String.Format("DELETE FROM writerlinkmovie WHERE idMovie = {0};", _movieDB.ID)
+                    SQLcommand_writerlink.ExecuteNonQuery()
                 End Using
                 For Each writer As String In _movieDB.Movie.Credits
                     AddWriterToMovie(_movieDB.ID, AddActor(writer, "", "", "", "", False))
@@ -4210,18 +4230,18 @@ Public Class Database
             If IsNew Then
                 SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO episode (",
                  "idShow, idFile, idSource, New, Mark, Lock, Title, Season, Episode, ",
-                 "Rating, Plot, Aired, Director, Credits, NfoPath, Playcount, ",
+                 "Rating, Plot, Aired, NfoPath, Playcount, ",
                  "DisplaySeason, DisplayEpisode, DateAdded, Runtime, Votes, VideoSource, HasSub, SubEpisode, ",
                  "iLastPlayed, strIMDB, strTMDB, strTVDB",
-                 ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM episode;")
+                 ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM episode;")
 
             Else
                 SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO episode (",
                  "idEpisode, idShow, idFile, idSource, New, Mark, Lock, Title, Season, Episode, ",
-                 "Rating, Plot, Aired, Director, Credits, NfoPath, Playcount, ",
+                 "Rating, Plot, Aired, NfoPath, Playcount, ",
                  "DisplaySeason, DisplayEpisode, DateAdded, Runtime, Votes, VideoSource, HasSub, SubEpisode, ",
                  "iLastPlayed, strIMDB, strTMDB, strTVDB",
-                 ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM episode;")
+                 ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM episode;")
 
                 Dim parTVEpisodeID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parTVEpisodeID", DbType.UInt64, 0, "idEpisode")
                 parTVEpisodeID.Value = _episode.ID
@@ -4239,8 +4259,6 @@ Public Class Database
             Dim parRating As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parRating", DbType.String, 0, "Rating")
             Dim parPlot As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPlot", DbType.String, 0, "Plot")
             Dim parAired As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parAired", DbType.String, 0, "Aired")
-            Dim parDirector As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parDirector", DbType.String, 0, "Director")
-            Dim parCredits As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parCredits", DbType.String, 0, "Credits")
             Dim parNfoPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parNfoPath", DbType.String, 0, "NfoPath")
             Dim parPlaycount As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPlaycount", DbType.Int32, 0, "Playcount")
             Dim parDisplaySeason As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parDisplaySeason", DbType.String, 0, "DisplaySeason")
@@ -4337,8 +4355,6 @@ Public Class Database
                 parRating.Value = .Rating
                 parPlot.Value = .Plot
                 parAired.Value = .Aired
-                parDirector.Value = .Director
-                parCredits.Value = .OldCredits
                 If .PlaycountSpecified Then 'need to be NOTHING instead of "0"
                     parPlaycount.Value = .Playcount
                 End If
@@ -4375,16 +4391,25 @@ Public Class Database
             If Not _episode.ID = -1 Then
 
                 'Actors
-                Using SQLcommand_actorlinkepisode As SQLiteCommand = _myvideosDBConn.CreateCommand()
-                    SQLcommand_actorlinkepisode.CommandText = String.Concat("DELETE FROM actorlinkepisode WHERE idEpisode = ", _episode.ID, ";")
-                    SQLcommand_actorlinkepisode.ExecuteNonQuery()
+                Using SQLcommand_actorlink As SQLiteCommand = _myvideosDBConn.CreateCommand()
+                    SQLcommand_actorlink.CommandText = String.Concat("DELETE FROM actorlinkepisode WHERE idEpisode = ", _episode.ID, ";")
+                    SQLcommand_actorlink.ExecuteNonQuery()
                 End Using
                 AddCast(_episode.ID, "episode", "episode", _episode.TVEpisode.Actors)
 
+                'Directors
+                Using SQLcommand_directorlink As SQLiteCommand = _myvideosDBConn.CreateCommand()
+                    SQLcommand_directorlink.CommandText = String.Format("DELETE FROM directorlinkepisode WHERE idEpisode = {0};", _episode.ID)
+                    SQLcommand_directorlink.ExecuteNonQuery()
+                End Using
+                For Each director As String In _episode.TVEpisode.Directors
+                    AddDirectorToEpisode(_episode.ID, AddActor(director, "", "", "", "", False))
+                Next
+
                 'Guest Stars
-                Using SQLcommand_gueststarlinkepisode As SQLiteCommand = _myvideosDBConn.CreateCommand()
-                    SQLcommand_gueststarlinkepisode.CommandText = String.Concat("DELETE FROM gueststarlinkepisode WHERE idEpisode = ", _episode.ID, ";")
-                    SQLcommand_gueststarlinkepisode.ExecuteNonQuery()
+                Using SQLcommand_gueststarlink As SQLiteCommand = _myvideosDBConn.CreateCommand()
+                    SQLcommand_gueststarlink.CommandText = String.Concat("DELETE FROM gueststarlinkepisode WHERE idEpisode = ", _episode.ID, ";")
+                    SQLcommand_gueststarlink.ExecuteNonQuery()
                 End Using
                 AddGuestStar(_episode.ID, "episode", "episode", _episode.TVEpisode.GuestStars)
 
@@ -4397,9 +4422,9 @@ Public Class Database
                 If Not String.IsNullOrEmpty(_episode.ImagesContainer.Poster.LocalFilePath) Then SetArtForItem(_episode.ID, "episode", "thumb", _episode.ImagesContainer.Poster.LocalFilePath)
 
                 'Writers
-                Using SQLcommand_writerlinkepisode As SQLiteCommand = _myvideosDBConn.CreateCommand()
-                    SQLcommand_writerlinkepisode.CommandText = String.Concat("DELETE FROM writerlinkepisode WHERE idEpisode = ", _episode.ID, ";")
-                    SQLcommand_writerlinkepisode.ExecuteNonQuery()
+                Using SQLcommand_writerlink As SQLiteCommand = _myvideosDBConn.CreateCommand()
+                    SQLcommand_writerlink.CommandText = String.Concat("DELETE FROM writerlinkepisode WHERE idEpisode = ", _episode.ID, ";")
+                    SQLcommand_writerlink.ExecuteNonQuery()
                 End Using
                 For Each writer As String In _episode.TVEpisode.Credits
                     AddWriterToEpisode(_episode.ID, AddActor(writer, "", "", "", "", False))
@@ -4758,34 +4783,34 @@ Public Class Database
             If Not _show.ID = -1 Then
 
                 'Actors
-                Using SQLcommand_actorlinktvshow As SQLiteCommand = _myvideosDBConn.CreateCommand()
-                    SQLcommand_actorlinktvshow.CommandText = String.Format("DELETE FROM actorlinktvshow WHERE idShow = {0};", _show.ID)
-                    SQLcommand_actorlinktvshow.ExecuteNonQuery()
+                Using SQLcommand_actorlink As SQLiteCommand = _myvideosDBConn.CreateCommand()
+                    SQLcommand_actorlink.CommandText = String.Format("DELETE FROM actorlinktvshow WHERE idShow = {0};", _show.ID)
+                    SQLcommand_actorlink.ExecuteNonQuery()
                 End Using
                 AddCast(_show.ID, "tvshow", "show", _show.TVShow.Actors)
 
                 'Creators
-                Using SQLcommand_creatorlinktvshow As SQLiteCommand = _myvideosDBConn.CreateCommand()
-                    SQLcommand_creatorlinktvshow.CommandText = String.Format("DELETE FROM creatorlinktvshow WHERE idShow = {0};", _show.ID)
-                    SQLcommand_creatorlinktvshow.ExecuteNonQuery()
+                Using SQLcommand_creatorlink As SQLiteCommand = _myvideosDBConn.CreateCommand()
+                    SQLcommand_creatorlink.CommandText = String.Format("DELETE FROM creatorlinktvshow WHERE idShow = {0};", _show.ID)
+                    SQLcommand_creatorlink.ExecuteNonQuery()
                 End Using
                 For Each creator As String In _show.TVShow.Creators
                     AddCreatorToTvShow(_show.ID, AddActor(creator, "", "", "", "", False))
                 Next
 
                 'Countries
-                Using SQLcommand_countrylinktvshow As SQLiteCommand = _myvideosDBConn.CreateCommand()
-                    SQLcommand_countrylinktvshow.CommandText = String.Format("DELETE FROM countrylinktvshow WHERE idShow = {0};", _show.ID)
-                    SQLcommand_countrylinktvshow.ExecuteNonQuery()
+                Using SQLcommand_countrylink As SQLiteCommand = _myvideosDBConn.CreateCommand()
+                    SQLcommand_countrylink.CommandText = String.Format("DELETE FROM countrylinktvshow WHERE idShow = {0};", _show.ID)
+                    SQLcommand_countrylink.ExecuteNonQuery()
                 End Using
                 For Each country As String In _show.TVShow.Countries
                     AddCountryToTVShow(_show.ID, AddCountry(country))
                 Next
 
                 'Genres
-                Using SQLcommand_genrelinktvshow As SQLiteCommand = _myvideosDBConn.CreateCommand()
-                    SQLcommand_genrelinktvshow.CommandText = String.Format("DELETE FROM genrelinktvshow WHERE idShow = {0};", _show.ID)
-                    SQLcommand_genrelinktvshow.ExecuteNonQuery()
+                Using SQLcommand_genrelink As SQLiteCommand = _myvideosDBConn.CreateCommand()
+                    SQLcommand_genrelink.CommandText = String.Format("DELETE FROM genrelinktvshow WHERE idShow = {0};", _show.ID)
+                    SQLcommand_genrelink.ExecuteNonQuery()
                 End Using
                 For Each genre As String In _show.TVShow.Genres
                     AddGenreToTvShow(_show.ID, AddGenre(genre))
@@ -4805,9 +4830,9 @@ Public Class Database
                 If Not String.IsNullOrEmpty(_show.ImagesContainer.Poster.LocalFilePath) Then SetArtForItem(_show.ID, "tvshow", "poster", _show.ImagesContainer.Poster.LocalFilePath)
 
                 'Studios
-                Using SQLcommand_studiolinktvshow As SQLiteCommand = _myvideosDBConn.CreateCommand()
-                    SQLcommand_studiolinktvshow.CommandText = String.Format("DELETE FROM studiolinktvshow WHERE idShow = {0};", _show.ID)
-                    SQLcommand_studiolinktvshow.ExecuteNonQuery()
+                Using SQLcommand_studiolink As SQLiteCommand = _myvideosDBConn.CreateCommand()
+                    SQLcommand_studiolink.CommandText = String.Format("DELETE FROM studiolinktvshow WHERE idShow = {0};", _show.ID)
+                    SQLcommand_studiolink.ExecuteNonQuery()
                 End Using
                 For Each studio As String In _show.TVShow.Studios
                     AddStudioToTvShow(_show.ID, AddStudio(studio))

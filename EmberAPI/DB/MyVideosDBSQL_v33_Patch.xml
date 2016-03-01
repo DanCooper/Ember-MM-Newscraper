@@ -2,6 +2,178 @@
 <CommandFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <transaction name="MyVideosDBSQL_v33_to_v34">
     <command type="DB">
+      <description>remove Director/Credits from table episode</description>
+      <execute>
+        CREATE TABLE episode01(
+        idEpisode,
+        idShow,
+        idFile,
+        idSource,
+        Episode,
+        Title,
+        "New",
+        Mark,
+        Lock,
+        Season,
+        Rating,
+        Plot,
+        Aired,
+        NfoPath,
+        Playcount,
+        DisplaySeason,
+        DisplayEpisode,
+        DateAdded,
+        Runtime,
+        Votes,
+        VideoSource,
+        HasSub,
+        SubEpisode,
+        iLastPlayed,
+        strIMDB,
+        strTMDB,
+        strTVDB
+        );
+
+        INSERT INTO episode01
+        SELECT
+        idEpisode,
+        idShow,
+        idFile,
+        idSource,
+        Episode,
+        Title,
+        "New",
+        Mark,
+        Lock,
+        Season,
+        Rating,
+        Plot,
+        Aired,
+        NfoPath,
+        Playcount,
+        DisplaySeason,
+        DisplayEpisode,
+        DateAdded,
+        Runtime,
+        Votes,
+        VideoSource,
+        HasSub,
+        SubEpisode,
+        iLastPlayed,
+        strIMDB,
+        strTMDB,
+        strTVDB
+        FROM episode;
+
+        DROP TABLE episode;
+
+        CREATE TABLE episode (
+        idEpisode       integer PRIMARY KEY AUTOINCREMENT,
+        idShow          integer NOT NULL,
+        idFile          integer NOT NULL,
+        idSource        integer NOT NULL,
+        Episode         integer,
+        Title           text,
+        "New"           bool DEFAULT 0,
+        Mark            bool NOT NULL DEFAULT 0,
+        Lock            bool NOT NULL DEFAULT 0,
+        Season          integer,
+        Rating          text,
+        Plot            text,
+        Aired           text,
+        NfoPath         text,
+        Playcount       integer,
+        DisplaySeason   integer,
+        DisplayEpisode  integer,
+        DateAdded       integer,
+        Runtime         text,
+        Votes           text,
+        VideoSource     text,
+        HasSub          bool NOT NULL DEFAULT 0,
+        SubEpisode      integer,
+        iLastPlayed     integer,
+        strIMDB         text,
+        strTMDB         text,
+        strTVDB         text
+        );
+
+        CREATE TRIGGER delete_episode
+        AFTER DELETE
+        ON episode
+        BEGIN
+        DELETE FROM actorlinkepisode WHERE idEpisode=old.idEpisode;
+        DELETE FROM art WHERE media_id=old.idEpisode AND media_type='episode';
+        DELETE FROM directorlinkepisode WHERE idEpisode=old.idEpisode;
+        DELETE FROM files WHERE idFile=old.idFile;
+        DELETE FROM gueststarlinkepisode WHERE idEpisode=old.idEpisode;
+        DELETE FROM writerlinkepisode WHERE idEpisode=old.idEpisode;
+        DELETE FROM TVVStreams WHERE TVEpID=old.idEpisode;
+        DELETE FROM TVAStreams WHERE TVEpID=old.idEpisode;
+        DELETE FROM TVSubs WHERE TVEpID=old.idEpisode;
+        END;
+
+        INSERT INTO episode
+        (idEpisode,
+        idShow,
+        idFile,
+        idSource,
+        Episode,
+        Title,
+        "New",
+        Mark,
+        Lock,
+        Season,
+        Rating,
+        Plot,
+        Aired,
+        NfoPath,
+        Playcount,
+        DisplaySeason,
+        DisplayEpisode,
+        DateAdded,
+        Runtime,
+        Votes,
+        VideoSource,
+        HasSub,
+        SubEpisode,
+        iLastPlayed,
+        strIMDB,
+        strTMDB,
+        strTVDB)
+        SELECT
+        idEpisode,
+        idShow,
+        idFile,
+        idSource,
+        Episode,
+        Title,
+        "New",
+        Mark,
+        Lock,
+        Season,
+        Rating,
+        Plot,
+        Aired,
+        NfoPath,
+        Playcount,
+        DisplaySeason,
+        DisplayEpisode,
+        DateAdded,
+        Runtime,
+        Votes,
+        VideoSource,
+        HasSub,
+        SubEpisode,
+        iLastPlayed,
+        strIMDB,
+        strTMDB,
+        strTVDB
+        FROM episode01;
+
+        DROP TABLE episode01;
+      </execute>
+    </command>
+    <command type="DB">
       <description>remove Country/Credits/Director/Genre/Studio from table movie</description>
       <execute>
         CREATE TABLE movie01(
@@ -381,6 +553,7 @@
         DELETE FROM creatorlinktvshow WHERE idShow=old.idShow;
         DELETE FROM countrylinktvshow WHERE idShow=old.idShow;
         DELETE FROM directorlinktvshow WHERE idShow=old.idShow;
+        DELETE FROM episode WHERE idShow=old.idShow;
         DELETE FROM genrelinktvshow WHERE idShow=old.idShow;
         DELETE FROM movielinktvshow WHERE idShow=old.idShow;
         DELETE FROM seasons WHERE idShow=old.idShow;
@@ -450,6 +623,37 @@
       </execute>
     </command>
     <command type="DB">
+      <description>add Credits/Director to view episodelist</description>
+      <execute>
+        DROP VIEW episodelist;
+
+        CREATE VIEW episodelist
+        AS
+        SELECT
+        episode.*,
+        source.strName AS Source,
+        fanart.url AS FanartPath,
+        poster.url AS PosterPath,
+        GROUP_CONCAT(DISTINCT credits.strActor) AS Credits,
+        GROUP_CONCAT(DISTINCT directors.strActor) AS Director,
+        CASE WHEN episode.idFile IS -1 THEN 1 ELSE 0 END AS Missing
+        FROM
+        episode
+        LEFT OUTER JOIN tvshowsource AS source ON (source.idSource = episode.idSource)
+        LEFT OUTER JOIN art AS fanart ON (fanart.media_id = episode.idEpisode)
+        AND (fanart.media_type = 'episode')
+        AND (fanart.type = 'fanart')
+        LEFT OUTER JOIN art AS poster ON (poster.media_id = episode.idEpisode)
+        AND (poster.media_type = 'episode')
+        AND (poster.type = 'thumb')
+        LEFT OUTER JOIN writerlinkepisode AS writerlink ON (writerlink.idEpisode = episode.idEpisode)
+        LEFT OUTER JOIN actors AS credits ON (credits.idActor = writerlink.idWriter)
+        LEFT OUTER JOIN directorlinkepisode AS directorlink ON (directorlink.idEpisode = episode.idEpisode)
+        LEFT OUTER JOIN actors AS directors ON (directors.idActor = directorlink.idDirector)
+        GROUP BY episode.idEpisode;
+      </execute>
+    </command>
+    <command type="DB">
       <description>add Country/Credits/Director/Genre/Studio/Tag to view movielist</description>
       <execute>
         DROP VIEW movielist;
@@ -467,12 +671,12 @@
         fanart.url AS FanartPath,
         landscape.url AS LandscapePath,
         poster.url AS PosterPath,
-        GROUP_CONCAT(DISTINCT countries.strCountry) AS 'Country',
-        GROUP_CONCAT(DISTINCT credits.strActor) AS 'Credits',
-        GROUP_CONCAT(DISTINCT directors.strActor) AS 'Director',
-        GROUP_CONCAT(DISTINCT genres.strGenre) AS 'Genre',
-        GROUP_CONCAT(DISTINCT studios.strStudio) AS 'Studio',
-        GROUP_CONCAT(DISTINCT tags.strTag) AS 'Tag'
+        GROUP_CONCAT(DISTINCT countries.strCountry) AS Country,
+        GROUP_CONCAT(DISTINCT credits.strActor) AS Credits,
+        GROUP_CONCAT(DISTINCT directors.strActor) AS Director,
+        GROUP_CONCAT(DISTINCT genres.strGenre) AS Genre,
+        GROUP_CONCAT(DISTINCT studios.strStudio) AS Studio,
+        GROUP_CONCAT(DISTINCT tags.strTag) AS Tag
         FROM
         movie
         LEFT OUTER JOIN moviesource AS source ON (source.idSource = movie.idSource)
@@ -531,12 +735,12 @@
         fanart.url AS FanartPath,
         landscape.url AS LandscapePath,
         poster.url AS PosterPath,
-        GROUP_CONCAT(DISTINCT countries.strCountry) AS 'Country',
-        GROUP_CONCAT(DISTINCT creators.strActor) AS 'Creator',
-        GROUP_CONCAT(DISTINCT directors.strActor) AS 'Director',
-        GROUP_CONCAT(DISTINCT genres.strGenre) AS 'Genre',
-        GROUP_CONCAT(DISTINCT studios.strStudio) AS 'Studio',
-        GROUP_CONCAT(DISTINCT tags.strTag) AS 'Tag',
+        GROUP_CONCAT(DISTINCT countries.strCountry) AS Country,
+        GROUP_CONCAT(DISTINCT creators.strActor) AS Creator,
+        GROUP_CONCAT(DISTINCT directors.strActor) AS Director,
+        GROUP_CONCAT(DISTINCT genres.strGenre) AS Genre,
+        GROUP_CONCAT(DISTINCT studios.strStudio) AS Studio,
+        GROUP_CONCAT(DISTINCT tags.strTag) AS Tag,
         COUNT(DISTINCT episodelist.idEpisode) AS Episodes,
         COUNT(episodelist.Playcount) AS Playcount,
         CASE WHEN COUNT(DISTINCT episodelist.idEpisode) IS NOT 0 AND COUNT(DISTINCT episodelist.idEpisode) = COUNT(episodelist.Playcount) THEN 1 ELSE 0 END AS HasWatched,

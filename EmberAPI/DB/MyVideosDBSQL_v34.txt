@@ -172,7 +172,7 @@ CREATE TABLE episode (
         idEpisode       integer PRIMARY KEY AUTOINCREMENT,
         idShow          integer NOT NULL,
         idFile          integer NOT NULL,
-		idSource		integer NOT NULL,
+        idSource        integer NOT NULL,
         Episode         integer,
         Title           text,
         "New"           bool DEFAULT 0,
@@ -182,8 +182,6 @@ CREATE TABLE episode (
         Rating          text,
         Plot            text,
         Aired           text,
-        Director        text,
-        Credits         text,
         NfoPath         text,
         Playcount       integer,
         DisplaySeason   integer,
@@ -193,11 +191,11 @@ CREATE TABLE episode (
         Votes           text,
         VideoSource     text,
         HasSub          bool NOT NULL DEFAULT 0,
-        SubEpisode		integer,
-		iLastPlayed     integer,
-		strIMDB         text,
-		strTMDB         text,
-		strTVDB         text
+        SubEpisode      integer,
+        iLastPlayed     integer,
+        strIMDB         text,
+        strTMDB         text,
+        strTVDB         text
         );
 
         CREATE TRIGGER delete_episode
@@ -487,6 +485,7 @@ CREATE TABLE tvshow (
         DELETE FROM creatorlinktvshow WHERE idShow=old.idShow;
         DELETE FROM countrylinktvshow WHERE idShow=old.idShow;
         DELETE FROM directorlinktvshow WHERE idShow=old.idShow;
+        DELETE FROM episode WHERE idShow=old.idShow;
         DELETE FROM genrelinktvshow WHERE idShow=old.idShow;
         DELETE FROM movielinktvshow WHERE idShow=old.idShow;
         DELETE FROM seasons WHERE idShow=old.idShow;
@@ -692,19 +691,26 @@ CREATE VIEW episodelist
         AS
         SELECT
         episode.*,
-		source.strName AS Source,
+        source.strName AS Source,
         fanart.url AS FanartPath,
         poster.url AS PosterPath,
+        GROUP_CONCAT(DISTINCT credits.strActor) AS Credits,
+        GROUP_CONCAT(DISTINCT directors.strActor) AS Director,
         CASE WHEN episode.idFile IS -1 THEN 1 ELSE 0 END AS Missing
         FROM
         episode
-		LEFT OUTER JOIN tvshowsource AS source ON (source.idSource = episode.idSource)
+        LEFT OUTER JOIN tvshowsource AS source ON (source.idSource = episode.idSource)
         LEFT OUTER JOIN art AS fanart ON (fanart.media_id = episode.idEpisode)
         AND (fanart.media_type = 'episode')
         AND (fanart.type = 'fanart')
         LEFT OUTER JOIN art AS poster ON (poster.media_id = episode.idEpisode)
         AND (poster.media_type = 'episode')
-        AND (poster.type = 'thumb');
+        AND (poster.type = 'thumb')
+        LEFT OUTER JOIN writerlinkepisode AS writerlink ON (writerlink.idEpisode = episode.idEpisode)
+        LEFT OUTER JOIN actors AS credits ON (credits.idActor = writerlink.idWriter)
+        LEFT OUTER JOIN directorlinkepisode AS directorlink ON (directorlink.idEpisode = episode.idEpisode)
+        LEFT OUTER JOIN actors AS directors ON (directors.idActor = directorlink.idDirector)
+        GROUP BY episode.idEpisode;
 
 CREATE VIEW movielist
         AS
@@ -719,11 +725,11 @@ CREATE VIEW movielist
         fanart.url AS FanartPath,
         landscape.url AS LandscapePath,
         poster.url AS PosterPath,
-        GROUP_CONCAT(DISTINCT countries.strCountry) AS 'Country',
-        GROUP_CONCAT(DISTINCT credits.strActor) AS 'Credits',
-        GROUP_CONCAT(DISTINCT directors.strActor) AS 'Director',
-        GROUP_CONCAT(DISTINCT genres.strGenre) AS 'Genre',
-        GROUP_CONCAT(DISTINCT studios.strStudio) AS 'Studio',
+        GROUP_CONCAT(DISTINCT countries.strCountry) AS Country,
+        GROUP_CONCAT(DISTINCT credits.strActor) AS Credits,
+        GROUP_CONCAT(DISTINCT directors.strActor) AS Director,
+        GROUP_CONCAT(DISTINCT genres.strGenre) AS Genre,
+        GROUP_CONCAT(DISTINCT studios.strStudio) AS Studio,
         GROUP_CONCAT(DISTINCT tags.strTag) AS 'Tag'
         FROM
         movie
@@ -848,12 +854,12 @@ CREATE VIEW tvshowlist
         fanart.url AS FanartPath,
         landscape.url AS LandscapePath,
         poster.url AS PosterPath,
-        GROUP_CONCAT(DISTINCT countries.strCountry) AS 'Country',
-        GROUP_CONCAT(DISTINCT creators.strActor) AS 'Creator',
-        GROUP_CONCAT(DISTINCT directors.strActor) AS 'Director',
-        GROUP_CONCAT(DISTINCT genres.strGenre) AS 'Genre',
-        GROUP_CONCAT(DISTINCT studios.strStudio) AS 'Studio',
-        GROUP_CONCAT(DISTINCT tags.strTag) AS 'Tag',
+        GROUP_CONCAT(DISTINCT countries.strCountry) AS Country,
+        GROUP_CONCAT(DISTINCT creators.strActor) AS Creator,
+        GROUP_CONCAT(DISTINCT directors.strActor) AS Director,
+        GROUP_CONCAT(DISTINCT genres.strGenre) AS Genre,
+        GROUP_CONCAT(DISTINCT studios.strStudio) AS Studio,
+        GROUP_CONCAT(DISTINCT tags.strTag) AS Tag,
         COUNT(DISTINCT episodelist.idEpisode) AS Episodes,
         COUNT(episodelist.Playcount) AS Playcount,
         CASE WHEN COUNT(DISTINCT episodelist.idEpisode) IS NOT 0 AND COUNT(DISTINCT episodelist.idEpisode) = COUNT(episodelist.Playcount) THEN 1 ELSE 0 END AS HasWatched,
