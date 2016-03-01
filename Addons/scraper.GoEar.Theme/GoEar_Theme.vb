@@ -139,7 +139,7 @@ Public Class GoEar_Theme
         End If
     End Sub
 
-    Function Scraper_Movie(ByVal DBMovie As Database.DBElement, ByRef ThemeList As List(Of Themes)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Theme_Movie.Scraper_Movie
+    Function Scraper_Movie(ByVal DBMovie As Database.DBElement, ByRef ThemeList As List(Of Themes)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Theme_Movie.Scraper
         logger.Trace("[GoEar_Theme] [Scraper_Movie] [Start]")
 
         Dim tGoEar As New GoEar.Scraper(DBMovie.Movie.OriginalTitle, DBMovie.ListTitle)
