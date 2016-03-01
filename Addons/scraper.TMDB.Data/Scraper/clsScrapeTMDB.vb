@@ -1199,11 +1199,8 @@ Namespace TMDB
                     End If
 
                 Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SingleScrape
-                    Dim exactHaveYear As Integer = FindYear(oDBMovie.Filename, r.Matches)
-                    If r.Matches.Count = 1 Then
+                    If r.Matches.Count > 0 Then
                         Return GetMovieInfo(r.Matches.Item(0).TMDBID, False, FilteredOptions, True)
-                    ElseIf r.Matches.Count > 1 Then
-                        Return GetMovieInfo(r.Matches.Item(If(exactHaveYear >= 0, exactHaveYear, 0)).TMDBID, False, FilteredOptions, True)
                     End If
             End Select
 
@@ -1270,27 +1267,6 @@ Namespace TMDB
             End Select
 
             Return Nothing
-        End Function
-
-        Private Function FindYear(ByVal tmpname As String, ByVal lst As List(Of MediaContainers.Movie)) As Integer
-            Dim tmpyear As String = ""
-            Dim i As Integer
-            Dim ret As Integer = -1
-            tmpname = Path.GetFileNameWithoutExtension(tmpname)
-            tmpname = tmpname.Replace(".", " ").Trim.Replace("(", " ").Replace(")", "").Trim
-            i = tmpname.LastIndexOf(" ")
-            If i >= 0 Then
-                tmpyear = tmpname.Substring(i + 1, tmpname.Length - i - 1)
-                If Integer.TryParse(tmpyear, 0) AndAlso Convert.ToInt32(tmpyear) > 1950 Then 'let's assume there are no movies older then 1950
-                    For c = 0 To lst.Count - 1
-                        If lst(c).Year = tmpyear Then
-                            ret = c
-                            Exit For
-                        End If
-                    Next
-                End If
-            End If
-            Return ret
         End Function
 
         Public Sub GetSearchMovieInfoAsync(ByVal tmdbID As String, ByVal Movie As MediaContainers.Movie, ByRef FilteredOptions As Structures.ScrapeOptions)
@@ -1435,6 +1411,30 @@ Namespace TMDB
                 APIResult = Task.Run(Function() _TMDBApiE.SearchMovie(strMovie, Page, _SpecialSettings.GetAdultItems, iYear))
                 Movies = APIResult.Result
                 aE = True
+            End If
+
+            'try -1 year if no search result was found
+            If Movies.TotalResults = 0 AndAlso iYear > 0 AndAlso _SpecialSettings.SearchDeviant Then
+                APIResult = Task.Run(Function() _TMDBApiE.SearchMovie(strMovie, Page, _SpecialSettings.GetAdultItems, iYear - 1))
+                Movies = APIResult.Result
+
+                If Movies.TotalResults = 0 AndAlso _SpecialSettings.FallBackEng Then
+                    APIResult = Task.Run(Function() _TMDBApiE.SearchMovie(strMovie, Page, _SpecialSettings.GetAdultItems, iYear - 1))
+                    Movies = APIResult.Result
+                    aE = True
+                End If
+
+                'still no search result, try +1 year
+                If Movies.TotalResults = 0 Then
+                    APIResult = Task.Run(Function() _TMDBApiE.SearchMovie(strMovie, Page, _SpecialSettings.GetAdultItems, iYear + 1))
+                    Movies = APIResult.Result
+
+                    If Movies.TotalResults = 0 AndAlso _SpecialSettings.FallBackEng Then
+                        APIResult = Task.Run(Function() _TMDBApiE.SearchMovie(strMovie, Page, _SpecialSettings.GetAdultItems, iYear + 1))
+                        Movies = APIResult.Result
+                        aE = True
+                    End If
+                End If
             End If
 
             If Movies.TotalResults > 0 Then
