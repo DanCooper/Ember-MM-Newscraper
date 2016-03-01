@@ -336,9 +336,10 @@ Public Class TMDB_Data
         ConfigScrapeOptions_Movie.bMainYear = clsAdvancedSettings.GetBooleanSetting("DoYear", True, , Enums.ContentType.Movie)
 
         strPrivateAPIKey = clsAdvancedSettings.GetSetting("APIKey", String.Empty, , Enums.ContentType.Movie)
+        _SpecialSettings_Movie.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
         _SpecialSettings_Movie.FallBackEng = clsAdvancedSettings.GetBooleanSetting("FallBackEn", False, , Enums.ContentType.Movie)
         _SpecialSettings_Movie.GetAdultItems = clsAdvancedSettings.GetBooleanSetting("GetAdultItems", False, , Enums.ContentType.Movie)
-        _SpecialSettings_Movie.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
+        _SpecialSettings_Movie.SearchDeviant = clsAdvancedSettings.GetBooleanSetting("SearchDeviant", False, , Enums.ContentType.Movie)
     End Sub
 
     Sub LoadSettings_MovieSet()
@@ -410,6 +411,7 @@ Public Class TMDB_Data
             settings.SetBooleanSetting("DoYear", ConfigScrapeOptions_Movie.bMainYear, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("FallBackEn", _SpecialSettings_Movie.FallBackEng, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("GetAdultItems", _SpecialSettings_Movie.GetAdultItems, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("SearchDeviant", _SpecialSettings_Movie.SearchDeviant, , , Enums.ContentType.Movie)
             settings.SetSetting("APIKey", _setup_Movie.txtApiKey.Text, , , Enums.ContentType.Movie)
         End Using
     End Sub
@@ -478,6 +480,7 @@ Public Class TMDB_Data
         ConfigScrapeOptions_Movie.bMainYear = _setup_Movie.chkYear.Checked
         _SpecialSettings_Movie.FallBackEng = _setup_Movie.chkFallBackEng.Checked
         _SpecialSettings_Movie.GetAdultItems = _setup_Movie.chkGetAdultItems.Checked
+        _SpecialSettings_Movie.SearchDeviant = _setup_Movie.chkSearchDeviant.Checked
         SaveSettings_Movie()
         If DoDispose Then
             RemoveHandler _setup_Movie.SetupScraperChanged, AddressOf Handle_SetupScraperChanged_Movie
@@ -942,10 +945,11 @@ Public Class TMDB_Data
 
 #Region "Fields"
 
+        Dim APIKey As String
         Dim FallBackEng As Boolean
         Dim GetAdultItems As Boolean
-        Dim APIKey As String
         Dim PrefLanguage As String
+        Dim SearchDeviant As Boolean
 
 #End Region 'Fields
 

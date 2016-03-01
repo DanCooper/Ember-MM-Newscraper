@@ -16357,7 +16357,7 @@ doCancel:
 
         Try
             With Me
-                .MinimumSize = New Size(830, 600)
+                .MinimumSize = New Size(800, 600)
 
                 'Add
                 Dim strAdd As String = Master.eLang.GetString(28, "Add")
