@@ -566,7 +566,7 @@ Public Class FanartTV_Image
             ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovieset.MovieSet.TMDB, FilteredModifiers)
         End If
 
-        logger.Trace("[FanartTV_Image] [Scraper_MovieSet] [Start]")
+        logger.Trace("[FanartTV_Image] [Scraper_MovieSet] [Done]")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
@@ -603,7 +603,7 @@ Public Class FanartTV_Image
                 logger.Error(String.Concat("[FanartTV_Image] [Scraper_TV] [Abort] Unhandled ContentType"))
         End Select
 
-        logger.Trace("[FanartTV_Image] [Scraper_TV] [Start]")
+        logger.Trace("[FanartTV_Image] [Scraper_TV] [Done]")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 

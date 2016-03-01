@@ -142,7 +142,7 @@ Public Class IMDB_Image
 
         ImagesContainer = IMDB.GetIMDBPosters(DBMovie.Movie.IMDBID)
 
-        logger.Trace("[IMDB_Image] [Scraper] [Start]")
+        logger.Trace("[IMDB_Image] [Scraper] [Done]")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
