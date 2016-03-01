@@ -1437,6 +1437,36 @@ Namespace TMDB
                 aE = True
             End If
 
+            ''' MAM 03.02.2016
+            ''' wenn kein Ergebnis gefunden wurde, dann suche noch einmal mit einem Jahr weniger
+            ''' 
+            If iYear > 0 AndAlso Movies.TotalResults = 0 Then
+                APIResult = Task.Run(Function() _TMDBApiE.SearchMovie(strMovie, Page, _SpecialSettings.GetAdultItems, iYear - 1))
+                Movies = APIResult.Result
+
+            End If
+
+            If iYear > 0 AndAlso Movies.TotalResults = 0 AndAlso _SpecialSettings.FallBackEng Then
+                APIResult = Task.Run(Function() _TMDBApiE.SearchMovie(strMovie, Page, _SpecialSettings.GetAdultItems, iYear - 1))
+                Movies = APIResult.Result
+                aE = True
+            End If
+
+            ''' MAM 03.02.2016
+            ''' Immer noch nichts gefunden? dann probier nochmal das nächste Jahr
+            ''' 
+            If iYear > 0 AndAlso Movies.TotalResults = 0 Then
+                APIResult = Task.Run(Function() _TMDBApiE.SearchMovie(strMovie, Page, _SpecialSettings.GetAdultItems, iYear + 1))
+                Movies = APIResult.Result
+
+            End If
+
+            If iYear > 0 AndAlso Movies.TotalResults = 0 AndAlso _SpecialSettings.FallBackEng Then
+                APIResult = Task.Run(Function() _TMDBApiE.SearchMovie(strMovie, Page, _SpecialSettings.GetAdultItems, iYear + 1))
+                Movies = APIResult.Result
+                aE = True
+            End If
+
             If Movies.TotalResults > 0 Then
                 TotP = Movies.TotalPages
                 While Page <= TotP AndAlso Page <= 3
