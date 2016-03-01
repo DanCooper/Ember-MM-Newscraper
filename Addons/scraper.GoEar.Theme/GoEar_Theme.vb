@@ -139,8 +139,8 @@ Public Class GoEar_Theme
         End If
     End Sub
 
-    Function Scraper(ByVal DBMovie As Database.DBElement, ByRef ThemeList As List(Of Themes)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Theme_Movie.Scraper
-        logger.Trace("Started scrape")
+    Function Scraper_Movie(ByVal DBMovie As Database.DBElement, ByRef ThemeList As List(Of Themes)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Theme_Movie.Scraper_Movie
+        logger.Trace("[GoEar_Theme] [Scraper_Movie] [Start]")
 
         Dim tGoEar As New GoEar.Scraper(DBMovie.Movie.OriginalTitle, DBMovie.ListTitle)
 
@@ -148,7 +148,7 @@ Public Class GoEar_Theme
             ThemeList = tGoEar.ThemeList
         End If
 
-        logger.Trace("Finished scrape")
+        logger.Trace("[GoEar_Theme] [Scraper_Movie] [Done]")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
