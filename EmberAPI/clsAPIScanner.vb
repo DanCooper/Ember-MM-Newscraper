@@ -1082,7 +1082,7 @@ Public Class Scanner
             'save all new seasons to DB
             For Each newSeason As Integer In newSeasonsIndex
                 Dim tSeason As Database.DBElement = DBTVShow.Seasons.FirstOrDefault(Function(f) f.TVSeason.Season = newSeason)
-                If tSeason.TVSeason IsNot Nothing Then
+                If tSeason IsNot Nothing AndAlso tSeason.TVSeason IsNot Nothing Then
                     Master.DB.SaveTVSeasonToDB(tSeason, Batchmode, True)
                 End If
             Next
