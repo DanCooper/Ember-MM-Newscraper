@@ -17703,7 +17703,7 @@ doCancel:
     End Sub
 
     Private Sub txtSearchMovies_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtSearchMovies.KeyPress
-        e.Handled = Not StringUtils.AlphaNumericOnly(e.KeyChar, True)
+        e.Handled = If(e.KeyChar = Convert.ToChar(39), True, False)
         If e.KeyChar = Microsoft.VisualBasic.ChrW(Keys.Return) Then
             dgvMovies.Focus()
         End If
@@ -17718,7 +17718,7 @@ doCancel:
     End Sub
 
     Private Sub txtSearchMovieSets_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtSearchMovieSets.KeyPress
-        e.Handled = Not StringUtils.AlphaNumericOnly(e.KeyChar, True)
+        e.Handled = If(e.KeyChar = Convert.ToChar(39), True, False)
         If e.KeyChar = Microsoft.VisualBasic.ChrW(Keys.Return) Then
             dgvMovieSets.Focus()
         End If
@@ -17733,7 +17733,7 @@ doCancel:
     End Sub
 
     Private Sub txtSearchShows_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtSearchShows.KeyPress
-        e.Handled = Not StringUtils.AlphaNumericOnly(e.KeyChar, True)
+        e.Handled = If(e.KeyChar = Convert.ToChar(39), True, False)
         If e.KeyChar = Microsoft.VisualBasic.ChrW(Keys.Return) Then
             dgvTVShows.Focus()
         End If
