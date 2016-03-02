@@ -19,12 +19,11 @@
 ' ################################################################################
 
 Imports System.Text.RegularExpressions
-Imports EmberAPI
 Imports System.Runtime.CompilerServices
 Imports NLog
 
 'The InternalsVisibleTo is required for unit testing the friend methods
-<Assembly: InternalsVisibleTo("EmberAPI_Test")> 
+<Assembly: InternalsVisibleTo("EmberAPI_Test")>
 
 Namespace IMDb
 

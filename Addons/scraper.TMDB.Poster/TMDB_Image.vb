@@ -363,7 +363,7 @@ Public Class TMDB_Image
             ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovie.Movie.TMDBID, FilteredModifiers, Enums.ContentType.Movie)
         End If
 
-        logger.Trace("[TMDB_Image] [Scraper_Movie] [Start]")
+        logger.Trace("[TMDB_Image] [Scraper_Movie] [Done]")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
@@ -388,7 +388,7 @@ Public Class TMDB_Image
             ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovieSet.MovieSet.TMDB, FilteredModifiers, Enums.ContentType.MovieSet)
         End If
 
-        logger.Trace("[TMDB_Image] [Scraper_MovieSet] [Start]")
+        logger.Trace("[TMDB_Image] [Scraper_MovieSet] [Done]")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
@@ -437,7 +437,7 @@ Public Class TMDB_Image
                 logger.Error(String.Concat("[TMDB_Image] [Scraper_TV] [Abort] Unhandled ContentType"))
         End Select
 
-        logger.Trace("[TMDB_Image] [Scraper_TV] [Start]")
+        logger.Trace("[TMDB_Image] [Scraper_TV] [Done]")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 

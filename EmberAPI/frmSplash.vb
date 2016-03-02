@@ -1,6 +1,4 @@
-﻿Imports System.Windows.Forms
-
-' ################################################################################
+﻿' ################################################################################
 ' #                             EMBER MEDIA MANAGER                              #
 ' ################################################################################
 ' ################################################################################
@@ -20,6 +18,8 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
+Imports System.Windows.Forms
+
 Public Class frmSplash
 
 #Region "Delegates"
@@ -36,8 +36,8 @@ Public Class frmSplash
 #Region "Methods"
 
     Public Sub SetLoadingMesg(message As String, Optional aPart2 As String = "")
-        If (Me.InvokeRequired) Then
-            Me.Invoke(New DelegateTo_SetLoadingMesg(AddressOf SetLoadingMesg))
+        If (InvokeRequired) Then
+            Invoke(New DelegateTo_SetLoadingMesg(AddressOf SetLoadingMesg))
             Exit Sub
         End If
 
@@ -46,8 +46,8 @@ Public Class frmSplash
     End Sub
 
     Public Sub SetVersionMesg(message As String, bits As String)
-        If (Me.InvokeRequired) Then
-            Me.Invoke(New DelegateTo_SetLoadingMesg(AddressOf SetVersionMesg))
+        If (InvokeRequired) Then
+            Invoke(New DelegateTo_SetLoadingMesg(AddressOf SetVersionMesg))
             Exit Sub
         End If
         VersionNumber.Text = System.String.Format(
@@ -61,8 +61,8 @@ Public Class frmSplash
     End Sub
 
     Public Sub SetProgressBarStyle(style As ProgressBarStyle)
-        If (Me.InvokeRequired) Then
-            Me.Invoke(New DelegateTo_SetProgressBarStyle(AddressOf SetProgressBarStyle))
+        If (InvokeRequired) Then
+            Invoke(New DelegateTo_SetProgressBarStyle(AddressOf SetProgressBarStyle))
             Exit Sub
         End If
 
@@ -70,8 +70,8 @@ Public Class frmSplash
     End Sub
 
     Public Sub SetProgressBarSize(size As Integer)
-        If (Me.InvokeRequired) Then
-            Me.Invoke(New DelegateTo_SetProgressBarSize(AddressOf SetProgressBarSize))
+        If (InvokeRequired) Then
+            Invoke(New DelegateTo_SetProgressBarSize(AddressOf SetProgressBarSize))
             Exit Sub
         End If
 
@@ -79,18 +79,18 @@ Public Class frmSplash
     End Sub
 
     Public Overloads Sub Close()
-        If (Me.InvokeRequired) Then
-            Me.Invoke(New DelegateTo_Close(AddressOf Close))
+        If (InvokeRequired) Then
+            Invoke(New DelegateTo_Close(AddressOf Close))
             Exit Sub
         End If
 
         MyBase.Close()
-        Me.Dispose()
+        Dispose()
     End Sub
 
     Public Overloads Sub Show(owner As IWin32Window)
-        If (Me.InvokeRequired) Then
-            Me.Invoke(New DelegateTo_Show(AddressOf Show))
+        If (InvokeRequired) Then
+            Invoke(New DelegateTo_Show(AddressOf Show))
             Exit Sub
         End If
 
@@ -98,8 +98,8 @@ Public Class frmSplash
     End Sub
 
     Public Overloads Sub Hide()
-        If (Me.InvokeRequired) Then
-            Me.Invoke(New DelegateTo_Hide(AddressOf Hide))
+        If (InvokeRequired) Then
+            Invoke(New DelegateTo_Hide(AddressOf Hide))
             Exit Sub
         End If
 

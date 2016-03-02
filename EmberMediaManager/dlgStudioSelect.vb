@@ -1,6 +1,4 @@
-﻿Imports EmberAPI
-
-' ################################################################################
+﻿' ################################################################################
 ' #                             EMBER MEDIA MANAGER                              #
 ' ################################################################################
 ' ################################################################################
@@ -20,6 +18,8 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
+Imports EmberAPI
+
 Public Class dlgStudioSelect
 
 #Region "Fields"
@@ -34,9 +34,9 @@ Public Class dlgStudioSelect
     Public Sub New()
         ' This call is required by the designer.
         InitializeComponent()
-        Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
-        Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
-        Me.StartPosition = FormStartPosition.Manual
+        Left = Master.AppPos.Left + (Master.AppPos.Width - Width) \ 2
+        Top = Master.AppPos.Top + (Master.AppPos.Height - Height) \ 2
+        StartPosition = FormStartPosition.Manual
     End Sub
 
     Public Overloads Function ShowDialog(ByVal CurrMovie As Database.DBElement) As String
@@ -44,22 +44,22 @@ Public Class dlgStudioSelect
         ' Overload to pass data
         '\\
 
-        Me._CurrMovie = CurrMovie
+        _CurrMovie = CurrMovie
 
-        If MyBase.ShowDialog() = Windows.Forms.DialogResult.OK Then
-            Return Me._studio
+        If ShowDialog() = DialogResult.OK Then
+            Return _studio
         Else
             Return String.Empty
         End If
     End Function
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-        Me.DialogResult = Windows.Forms.DialogResult.Cancel
-        Me.Close()
+        DialogResult = DialogResult.Cancel
+        Close()
     End Sub
 
     Private Sub dlgStudioSelect_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Me.SetUp()
+        SetUp()
         'Dim DBMovie As New Database.DBElement
         'DBMovie.Movie = New MediaContainers.Movie
         'DBMovie.Movie.IMDBID = Me._MovieId
@@ -73,24 +73,24 @@ Public Class dlgStudioSelect
     End Sub
 
     Private Sub dlgStudioSelect_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
-        Me.Activate()
+        Activate()
     End Sub
 
     Private Sub lvStudios_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvStudios.SelectedIndexChanged
         If lvStudios.SelectedItems.Count > 0 Then
-            Me._studio = lvStudios.SelectedItems(0).Text
+            _studio = lvStudios.SelectedItems(0).Text
         End If
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-        Me.DialogResult = Windows.Forms.DialogResult.OK
-        Me.Close()
+        DialogResult = DialogResult.OK
+        Close()
     End Sub
 
     Private Sub SetUp()
-        Me.Text = Master.eLang.GetString(223, "Select Studio")
-        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
-        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+        Text = Master.eLang.GetString(223, "Select Studio")
+        OK_Button.Text = Master.eLang.GetString(179, "OK")
+        Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
     End Sub
 
 #End Region 'Methods
