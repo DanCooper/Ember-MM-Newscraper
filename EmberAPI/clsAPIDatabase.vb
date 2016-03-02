@@ -2603,6 +2603,19 @@ Public Class Database
             End Using
         End Using
 
+        'Studios
+        Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = String.Concat("SELECT studio.strStudio ",
+                                                   "FROM studio ",
+                                                   "INNER JOIN studiolinktvshow ON (studio.idStudio = studiolinktvshow.idStudio) ",
+                                                   "WHERE studiolinktvshow.idShow = ", _TVDB.ID, ";")
+            Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    If Not DBNull.Value.Equals(SQLreader("strStudio")) Then _TVDB.TVShow.Studios.Add(SQLreader("strStudio").ToString)
+                End While
+            End Using
+        End Using
+
         'Tags
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand.CommandText = String.Concat("SELECT B.strTag FROM taglinks ",
