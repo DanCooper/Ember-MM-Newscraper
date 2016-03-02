@@ -20,7 +20,6 @@
 
 Imports EmberAPI
 Imports NLog
-Imports System.Diagnostics
 
 Public Class dlgDeleteConfirm
 

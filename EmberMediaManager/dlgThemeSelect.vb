@@ -19,7 +19,6 @@
 ' ################################################################################
 
 Imports EmberAPI
-Imports System.IO
 Imports System.Net
 Imports NLog
 
@@ -56,9 +55,9 @@ Public Class dlgThemeSelect
     Public Sub New()
         ' This call is required by the designer.
         InitializeComponent()
-        Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
-        Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
-        Me.StartPosition = FormStartPosition.Manual
+        Left = Master.AppPos.Left + (Master.AppPos.Width - Width) \ 2
+        Top = Master.AppPos.Top + (Master.AppPos.Height - Height) \ 2
+        StartPosition = FormStartPosition.Manual
     End Sub
 
     Private Sub dlgThemeSelect_FormClosing(sender As Object, e As System.EventArgs) Handles Me.FormClosing
@@ -66,30 +65,30 @@ Public Class dlgThemeSelect
     End Sub
 
     Private Sub dlgThemeSelect_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.SetUp()
+        SetUp()
         AddHandler Themes.ProgressUpdated, AddressOf DownloadProgressUpdated
     End Sub
 
     Private Sub dlgThemeSelect_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
-        Me.Activate()
+        Activate()
     End Sub
 
     Private Sub CreateTable(ByVal tURLList As List(Of Themes))
         'set ListView
-        Me.lvThemes.MultiSelect = False
-        Me.lvThemes.FullRowSelect = True
-        Me.lvThemes.HideSelection = False
-        Me.lvThemes.Columns.Add("#", -1, HorizontalAlignment.Right)
-        Me.lvThemes.Columns.Add("URL", 0, HorizontalAlignment.Left)
-        Me.lvThemes.Columns.Add("Title", -2, HorizontalAlignment.Left)
-        Me.lvThemes.Columns.Add(Master.eLang.GetString(979, "Description"), -2, HorizontalAlignment.Left)
-        Me.lvThemes.Columns.Add("Length", -2, HorizontalAlignment.Left)
-        Me.lvThemes.Columns.Add("Bitrate", -2, HorizontalAlignment.Left)
-        Me.lvThemes.Columns.Add("WebURL", 0, HorizontalAlignment.Left)
+        lvThemes.MultiSelect = False
+        lvThemes.FullRowSelect = True
+        lvThemes.HideSelection = False
+        lvThemes.Columns.Add("#", -1, HorizontalAlignment.Right)
+        lvThemes.Columns.Add("URL", 0, HorizontalAlignment.Left)
+        lvThemes.Columns.Add("Title", -2, HorizontalAlignment.Left)
+        lvThemes.Columns.Add(Master.eLang.GetString(979, "Description"), -2, HorizontalAlignment.Left)
+        lvThemes.Columns.Add("Length", -2, HorizontalAlignment.Left)
+        lvThemes.Columns.Add("Bitrate", -2, HorizontalAlignment.Left)
+        lvThemes.Columns.Add("WebURL", 0, HorizontalAlignment.Left)
 
         'Me.txtYouTubeSearch.Text = DBMovie.Movie.Title & " Trailer"
 
-        Me._UrlList = tURLList
+        _UrlList = tURLList
         Dim ID As Integer = 1
         Dim str(7) As String
         For Each aUrl In _UrlList
@@ -106,26 +105,26 @@ Public Class dlgThemeSelect
             ID = ID + 1
         Next
         'Me.pnlStatus.Visible = False
-        Me.lvThemes.Enabled = True
+        lvThemes.Enabled = True
         'Me.txtYouTube.Enabled = True
         'Me.txtManual.Enabled = True
         'Me.btnBrowse.Enabled = True
         'Me.SetEnabled(False)
         If _UrlList.Count = 1 Then
-            Me.lvThemes.Select()
-            Me.lvThemes.Items(0).Selected = True
+            lvThemes.Select()
+            lvThemes.Items(0).Selected = True
         End If
     End Sub
 
     Public Overloads Function ShowDialog(ByRef DBElement As Database.DBElement, ByRef tURLList As List(Of Themes)) As DialogResult
         CreateTable(tURLList)
 
-        Return MyBase.ShowDialog()
+        Return ShowDialog()
     End Function
 
     Private Sub lvThemes_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvThemes.DoubleClick
-        Dim tURL As String = Me.lvThemes.SelectedItems(0).SubItems(1).Text.ToString
-        Dim tWebURL As String = Me.lvThemes.SelectedItems(0).SubItems(6).Text.ToString
+        Dim tURL As String = lvThemes.SelectedItems(0).SubItems(1).Text.ToString
+        Dim tWebURL As String = lvThemes.SelectedItems(0).SubItems(6).Text.ToString
         'Me.vlcPlayer.playlist.stop()
 
         If tURL.Contains("goear") Then
@@ -142,24 +141,24 @@ Public Class dlgThemeSelect
     Private Sub OK_Button_Click(sender As Object, e As EventArgs) Handles OK_Button.Click
         Dim didCancel As Boolean = False
 
-        Me.SetControlsEnabled(False)
-        Me.lblStatus.Text = Master.eLang.GetString(1329, "Downloading selected theme...")
-        Me.pbStatus.Style = ProgressBarStyle.Continuous
-        Me.pbStatus.Value = 0
-        Me.pnlStatus.Visible = True
+        SetControlsEnabled(False)
+        lblStatus.Text = Master.eLang.GetString(1329, "Downloading selected theme...")
+        pbStatus.Style = ProgressBarStyle.Continuous
+        pbStatus.Value = 0
+        pnlStatus.Visible = True
         Application.DoEvents()
 
-        If Me.lvThemes.SelectedItems.Count = 1 Then
-            Dim selID As Integer = CInt(Me.lvThemes.SelectedItems(0).SubItems(0).Text) - 1
-            Me.tTheme = _UrlList.Item(selID)
+        If lvThemes.SelectedItems.Count = 1 Then
+            Dim selID As Integer = CInt(lvThemes.SelectedItems(0).SubItems(0).Text) - 1
+            tTheme = _UrlList.Item(selID)
 
-            Me.bwDownloadTheme = New System.ComponentModel.BackgroundWorker
-            Me.bwDownloadTheme.WorkerReportsProgress = True
-            Me.bwDownloadTheme.WorkerSupportsCancellation = True
-            Me.bwDownloadTheme.RunWorkerAsync(New Arguments With {.Parameter = tTheme, .bType = True})
+            bwDownloadTheme = New System.ComponentModel.BackgroundWorker
+            bwDownloadTheme.WorkerReportsProgress = True
+            bwDownloadTheme.WorkerSupportsCancellation = True
+            bwDownloadTheme.RunWorkerAsync(New Arguments With {.Parameter = tTheme, .bType = True})
         Else
-            Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
-            Me.Close()
+            DialogResult = System.Windows.Forms.DialogResult.Cancel
+            Close()
         End If
     End Sub
 
@@ -167,8 +166,8 @@ Public Class dlgThemeSelect
         'Me.TrailerStop()
         'Me.vlcPlayer.playlist.stop()
 
-        Me.OK_Button.Enabled = isEnabled
-        Me.lvThemes.Enabled = isEnabled
+        OK_Button.Enabled = isEnabled
+        lvThemes.Enabled = isEnabled
     End Sub
 
     Private Sub bwDownloadTheme_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadTheme.DoWork
@@ -182,7 +181,7 @@ Public Class dlgThemeSelect
 
         e.Result = Args.bType
 
-        If Me.bwDownloadTheme.CancellationPending Then
+        If bwDownloadTheme.CancellationPending Then
             e.Cancel = True
         End If
     End Sub
@@ -195,10 +194,10 @@ Public Class dlgThemeSelect
     Private Sub bwDownloadTheme_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDownloadTheme.RunWorkerCompleted
         If Not e.Cancelled Then
             If Convert.ToBoolean(e.Result) Then
-                Me.DialogResult = System.Windows.Forms.DialogResult.OK
-                Me.Close()
+                DialogResult = System.Windows.Forms.DialogResult.OK
+                Close()
             Else
-                Me.pnlStatus.Visible = False
+                pnlStatus.Visible = False
                 'Me.SetControlsEnabled(True)
                 'Me.SetEnabled()
                 'Me.btnTrailerPlay.Enabled = False
@@ -212,20 +211,20 @@ Public Class dlgThemeSelect
     End Sub
 
     Private Sub SetUp()
-        Me.Text = Master.eLang.GetString(1069, "Select Theme")
+        Text = Master.eLang.GetString(1069, "Select Theme")
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-        If Me.bwDownloadTheme.IsBusy Then Me.bwDownloadTheme.CancelAsync()
+        If bwDownloadTheme.IsBusy Then bwDownloadTheme.CancelAsync()
 
-        While Me.bwDownloadTheme.IsBusy
+        While bwDownloadTheme.IsBusy
             Application.DoEvents()
             Threading.Thread.Sleep(50)
         End While
 
-        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Results = Nothing
-        Me.Close()
+        Close()
     End Sub
 
 #End Region 'Methods

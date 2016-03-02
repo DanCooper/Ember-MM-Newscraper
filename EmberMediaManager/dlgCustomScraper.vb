@@ -110,7 +110,7 @@ Public Class dlgCustomScraper
     End Sub
 
     Public Overloads Function ShowDialog() As Structures.CustomUpdaterStruct
-        If MyBase.ShowDialog() = Windows.Forms.DialogResult.OK Then
+        If MyBase.ShowDialog() = DialogResult.OK Then
             CustomUpdater.Canceled = False
         Else
             CustomUpdater.Canceled = True

@@ -18,7 +18,6 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.IO
 Imports EmberAPI
 
 Public Class dlgTVChangeEp
@@ -49,15 +48,15 @@ Public Class dlgTVChangeEp
     Public Sub New(ByRef DBShow As Database.DBElement)
         ' This call is required by the designer.
         InitializeComponent()
-        Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
-        Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
-        Me.StartPosition = FormStartPosition.Manual
+        Left = Master.AppPos.Left + (Master.AppPos.Width - Width) \ 2
+        Top = Master.AppPos.Top + (Master.AppPos.Height - Height) \ 2
+        StartPosition = FormStartPosition.Manual
         _DBShow = DBShow
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Close()
+        DialogResult = DialogResult.Cancel
+        Close()
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
@@ -67,18 +66,18 @@ Public Class dlgTVChangeEp
             Next
         End If
 
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.Close()
+        DialogResult = DialogResult.OK
+        Close()
     End Sub
 
     Private Sub ClearInfo()
         Me.pbPreview.Image = Nothing
-        Me.lblTitle.Text = String.Empty
-        Me.txtPlot.Text = String.Empty
+        lblTitle.Text = String.Empty
+        txtPlot.Text = String.Empty
     End Sub
 
     Private Sub dlgTVChangeEp_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.SetUp()
+        SetUp()
 
         Dim lGroup As New ListViewGroup
         Dim lItem As New ListViewItem
@@ -99,31 +98,31 @@ Public Class dlgTVChangeEp
     End Sub
 
     Private Sub lvEpisodes_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvEpisodes.SelectedIndexChanged
-        Me.ClearInfo()
+        ClearInfo()
         If lvEpisodes.SelectedItems.Count > 0 AndAlso lvEpisodes.SelectedItems(0).Tag IsNot Nothing Then
-            Me._selectedEpisode = DirectCast(lvEpisodes.SelectedItems(0).Tag, MediaContainers.EpisodeDetails)
+            _selectedEpisode = DirectCast(lvEpisodes.SelectedItems(0).Tag, MediaContainers.EpisodeDetails)
 
-            Me._selectedEpisode.ThumbPoster.LoadAndCache(Enums.ContentType.TV, False, True)
+            _selectedEpisode.ThumbPoster.LoadAndCache(Enums.ContentType.TV, False, True)
 
-            If Me._selectedEpisode.ThumbPoster.ImageThumb.Image IsNot Nothing Then
-                Me.pbPreview.Image = Me._selectedEpisode.ThumbPoster.ImageThumb.Image
-            ElseIf Me._selectedEpisode.ThumbPoster.ImageOriginal.Image IsNot Nothing Then
-                Me.pbPreview.Image = Me._selectedEpisode.ThumbPoster.ImageOriginal.Image
+            If _selectedEpisode.ThumbPoster.ImageThumb.Image IsNot Nothing Then
+                pbPreview.Image = _selectedEpisode.ThumbPoster.ImageThumb.Image
+            ElseIf _selectedEpisode.ThumbPoster.ImageOriginal.Image IsNot Nothing Then
+                pbPreview.Image = _selectedEpisode.ThumbPoster.ImageOriginal.Image
             End If
 
-            Me.lblTitle.Text = Me._selectedEpisode.Title
-            Me.txtPlot.Text = Me._selectedEpisode.Plot
+            lblTitle.Text = _selectedEpisode.Title
+            txtPlot.Text = _selectedEpisode.Plot
         End If
     End Sub
 
     Private Sub SetUp()
-        Me.Text = Master.eLang.GetString(772, "Change Episode")
+        Text = Master.eLang.GetString(772, "Change Episode")
 
-        Me.lvEpisodes.Columns(0).Text = Master.eLang.GetString(727, "Episode")
-        Me.lvEpisodes.Columns(1).Text = Master.eLang.GetString(21, "Title")
+        lvEpisodes.Columns(0).Text = Master.eLang.GetString(727, "Episode")
+        lvEpisodes.Columns(1).Text = Master.eLang.GetString(21, "Title")
 
-        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
-        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+        OK_Button.Text = Master.eLang.GetString(179, "OK")
+        Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
     End Sub
 
 #End Region 'Methods

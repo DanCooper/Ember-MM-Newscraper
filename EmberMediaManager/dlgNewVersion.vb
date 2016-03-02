@@ -34,9 +34,9 @@ Public Class dlgNewVersion
     Public Sub New()
         ' This call is required by the designer.
         InitializeComponent()
-        Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
-        Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
-        Me.StartPosition = FormStartPosition.Manual
+        Left = Master.AppPos.Left + (Master.AppPos.Width - Width) \ 2
+        Top = Master.AppPos.Top + (Master.AppPos.Height - Height) \ 2
+        StartPosition = FormStartPosition.Manual
     End Sub
 
     Private Sub btnYes_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnYes.Click
@@ -50,7 +50,7 @@ Public Class dlgNewVersion
             End Using
         End If
         DialogResult = Windows.Forms.DialogResult.Abort
-        Me.Close()
+        Close()
     End Sub
 
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUpgrade.Click
@@ -70,7 +70,7 @@ Public Class dlgNewVersion
         Else
             lblStart.Visible = False
             prbUpgrade.Visible = False
-            Me.lblUpgrade.Text = Master.eLang.GetString(210, "Failed to Load Upgrade Application")
+            lblUpgrade.Text = Master.eLang.GetString(210, "Failed to Load Upgrade Application")
             lblUpgrade.Visible = True
             'Error
         End If
@@ -85,13 +85,13 @@ Public Class dlgNewVersion
     End Sub
 
     Private Sub dlgNewVersion_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Me.txtChangelog.Text = Functions.GetChangelog.Replace("\n", Environment.NewLine)
+        txtChangelog.Text = Functions.GetChangelog.Replace("\n", Environment.NewLine)
 
-        Me.SetUp()
+        SetUp()
     End Sub
 
     Private Sub dlgNewVersion_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
-        Me.Activate()
+        Activate()
     End Sub
 
     Private Sub llClick_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles llblClick.LinkClicked
@@ -107,16 +107,16 @@ Public Class dlgNewVersion
     End Sub
 
     Private Sub SetUp()
-        Me.Text = Master.eLang.GetString(209, "A New Version Is Available")
-        Me.lblNew.Text = Me.Text
-        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        Me.llblClick.Text = Master.eLang.GetString(211, "Click Here")
-        Me.lblVisit.Text = Master.eLang.GetString(212, "to visit embermm.com.")
-        Me.lblStart.Text = Master.eLang.GetString(717, "Preparing for upgrade ...")
-        Me.lblUpgrade.Text = Master.eLang.GetString(718, "We are now ready to upgrade. Ember will now close so the Upgrade can start.\n\nDo you want to continue?").Replace("\n", Environment.NewLine)
-        Me.btnYes.Text = Master.eLang.GetString(300, "YES")
-        Me.btnNo.Text = Master.eLang.GetString(720, "NO")
-        Me.btnUpgrade.Text = Master.eLang.GetString(721, "Upgrade")
+        Text = Master.eLang.GetString(209, "A New Version Is Available")
+        lblNew.Text = Text
+        Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+        llblClick.Text = Master.eLang.GetString(211, "Click Here")
+        lblVisit.Text = Master.eLang.GetString(212, "to visit embermm.com.")
+        lblStart.Text = Master.eLang.GetString(717, "Preparing for upgrade ...")
+        lblUpgrade.Text = Master.eLang.GetString(718, "We are now ready to upgrade. Ember will now close so the Upgrade can start.\n\nDo you want to continue?").Replace("\n", Environment.NewLine)
+        btnYes.Text = Master.eLang.GetString(300, "YES")
+        btnNo.Text = Master.eLang.GetString(720, "NO")
+        btnUpgrade.Text = Master.eLang.GetString(721, "Upgrade")
     End Sub
 
 #End Region 'Methods
