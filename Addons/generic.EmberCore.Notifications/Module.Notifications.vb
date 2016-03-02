@@ -1,6 +1,4 @@
-﻿Imports EmberAPI
-
-' ################################################################################
+﻿' ################################################################################
 ' #                             EMBER MEDIA MANAGER                              #
 ' ################################################################################
 ' ################################################################################
@@ -19,6 +17,8 @@
 ' # You should have received a copy of the GNU General Public License            #
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
+
+Imports EmberAPI
 
 Public Class NotificationsModule
     Implements Interfaces.GenericModule
@@ -50,16 +50,22 @@ Public Class NotificationsModule
 
     Public Property Enabled() As Boolean Implements Interfaces.GenericModule.Enabled
         Get
-            Return Me._enabled
+            Return _enabled
         End Get
         Set(ByVal value As Boolean)
-            Me._enabled = value
+            _enabled = value
         End Set
+    End Property
+
+    ReadOnly Property IsBusy() As Boolean Implements Interfaces.GenericModule.IsBusy
+        Get
+            Return False
+        End Get
     End Property
 
     Public ReadOnly Property ModuleName() As String Implements Interfaces.GenericModule.ModuleName
         Get
-            Return Me._name
+            Return _name
         End Get
     End Property
 
@@ -87,21 +93,21 @@ Public Class NotificationsModule
 
     Public Function InjectSetup() As Containers.SettingsPanel Implements Interfaces.GenericModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
-        Me._setup = New frmSettingsHolder
-        Me._setup.chkEnabled.Checked = Me._enabled
-        Me._setup.chkOnError.Checked = eSettings.OnError
-        Me._setup.chkOnNewMovie.Checked = eSettings.OnNewMovie
-        Me._setup.chkOnMovieScraped.Checked = eSettings.OnMovieScraped
-        Me._setup.chkOnNewEp.Checked = eSettings.OnNewEp
-        SPanel.Name = Me._name
+        _setup = New frmSettingsHolder
+        _setup.chkEnabled.Checked = _enabled
+        _setup.chkOnError.Checked = eSettings.OnError
+        _setup.chkOnNewMovie.Checked = eSettings.OnNewMovie
+        _setup.chkOnMovieScraped.Checked = eSettings.OnMovieScraped
+        _setup.chkOnNewEp.Checked = eSettings.OnNewEp
+        SPanel.Name = _name
         SPanel.Text = Master.eLang.GetString(487, "Notifications")
         SPanel.Prefix = "Notify_"
         SPanel.Type = Master.eLang.GetString(802, "Modules")
-        SPanel.ImageIndex = If(Me._enabled, 9, 10)
+        SPanel.ImageIndex = If(_enabled, 9, 10)
         SPanel.Order = 100
-        SPanel.Panel = Me._setup.pnlSettings
-        AddHandler Me._setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
-        AddHandler Me._setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+        SPanel.Panel = _setup.pnlSettings
+        AddHandler _setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
+        AddHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         Return SPanel
     End Function
 
@@ -131,8 +137,8 @@ Public Class NotificationsModule
 
                 If ShowIt Then
                     dNotify = New frmNotify
-                    AddHandler dNotify.NotifierClicked, AddressOf Me.Handle_NotifierClicked
-                    AddHandler dNotify.NotifierClosed, AddressOf Me.Handle_NotifierClosed
+                    AddHandler dNotify.NotifierClicked, AddressOf Handle_NotifierClicked
+                    AddHandler dNotify.NotifierClosed, AddressOf Handle_NotifierClosed
                     dNotify.Show(_params(0).ToString, Convert.ToInt32(_params(1)), _params(2).ToString, _params(3).ToString, If(_params(4) IsNot Nothing, DirectCast(_params(4), Image), Nothing))
                 End If
             End If
@@ -142,7 +148,7 @@ Public Class NotificationsModule
     End Function
 
     Private Sub Handle_ModuleEnabledChanged(ByVal State As Boolean)
-        RaiseEvent ModuleEnabledChanged(Me._name, State, 0)
+        RaiseEvent ModuleEnabledChanged(_name, State, 0)
     End Sub
 
     Private Sub Handle_ModuleSettingsChanged()
@@ -154,8 +160,8 @@ Public Class NotificationsModule
     End Sub
 
     Private Sub Handle_NotifierClosed()
-        RemoveHandler Me.dNotify.NotifierClicked, AddressOf Me.Handle_NotifierClicked
-        RemoveHandler Me.dNotify.NotifierClosed, AddressOf Me.Handle_NotifierClosed
+        RemoveHandler dNotify.NotifierClicked, AddressOf Handle_NotifierClicked
+        RemoveHandler dNotify.NotifierClosed, AddressOf Handle_NotifierClosed
     End Sub
 
     Private Sub LoadSettings()
@@ -175,15 +181,15 @@ Public Class NotificationsModule
     End Sub
 
     Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
-        Me._enabled = _setup.chkEnabled.Checked
+        _enabled = _setup.chkEnabled.Checked
         eSettings.OnError = _setup.chkOnError.Checked
         eSettings.OnNewMovie = False '_setup.chkOnNewMovie.Checked
         eSettings.OnMovieScraped = _setup.chkOnMovieScraped.Checked
         eSettings.OnNewEp = False '_setup.chkOnNewEp.Checked
         SaveSettings()
         If DoDispose Then
-            RemoveHandler Me._setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
-            RemoveHandler Me._setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+            RemoveHandler _setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
+            RemoveHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
             _setup.Dispose()
         End If
     End Sub
@@ -207,37 +213,37 @@ Public Class NotificationsModule
 
         Public Property OnError() As Boolean
             Get
-                Return Me._onerror
+                Return _onerror
             End Get
             Set(ByVal value As Boolean)
-                Me._onerror = value
+                _onerror = value
             End Set
         End Property
 
         Public Property OnMovieScraped() As Boolean
             Get
-                Return Me._onmoviescraped
+                Return _onmoviescraped
             End Get
             Set(ByVal value As Boolean)
-                Me._onmoviescraped = value
+                _onmoviescraped = value
             End Set
         End Property
 
         Public Property OnNewEp() As Boolean
             Get
-                Return Me._onnewep
+                Return _onnewep
             End Get
             Set(ByVal value As Boolean)
-                Me._onnewep = value
+                _onnewep = value
             End Set
         End Property
 
         Public Property OnNewMovie() As Boolean
             Get
-                Return Me._onnewmovie
+                Return _onnewmovie
             End Get
             Set(ByVal value As Boolean)
-                Me._onnewmovie = value
+                _onnewmovie = value
             End Set
         End Property
 

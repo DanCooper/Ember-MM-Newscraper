@@ -126,8 +126,14 @@ Public Class NMTExporterModule
         If Not tsi Is Nothing Then tsi.DropDownItems.Add(MyTrayMenu)
     End Sub
 
+    ReadOnly Property IsBusy() As Boolean Implements Interfaces.GenericModule.IsBusy
+        Get
+            Return False
+        End Get
+    End Property
+
     Private Sub Handle_ModuleEnabledChanged(ByVal State As Boolean)
-        RaiseEvent ModuleEnabledChanged(Me._Name, State, 0)
+        RaiseEvent ModuleEnabledChanged(_Name, State, 0)
     End Sub
 
     Private Sub Handle_ModuleSettingsChanged()
@@ -151,18 +157,18 @@ Public Class NMTExporterModule
     End Sub
 
     Function InjectSetup() As Containers.SettingsPanel Implements Interfaces.GenericModule.InjectSetup
-        Me._setup = New frmSettingsHolder
-        Me._setup.chkEnabled.Checked = Me._enabled
+        _setup = New frmSettingsHolder
+        _setup.chkEnabled.Checked = _enabled
         Dim SPanel As New Containers.SettingsPanel
-        SPanel.Name = Me._Name
+        SPanel.Name = _Name
         SPanel.Text = Master.eLang.GetString(475, "NMT Jukebox Builder")
         SPanel.Prefix = "NMT_"
         SPanel.Type = Master.eLang.GetString(802, "Modules")
-        SPanel.ImageIndex = If(Me._enabled, 9, 10)
+        SPanel.ImageIndex = If(_enabled, 9, 10)
         SPanel.Order = 100
-        SPanel.Panel = Me._setup.pnlSettings
-        AddHandler Me._setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
-        AddHandler Me._setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+        SPanel.Panel = _setup.pnlSettings
+        AddHandler _setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
+        AddHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         Return SPanel
     End Function
 
@@ -177,10 +183,11 @@ Public Class NMTExporterModule
     End Sub
 
     Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
-        Me.Enabled = Me._setup.chkEnabled.Checked
+        Enabled = _setup.chkEnabled.Checked
     End Sub
 
 #End Region 'Methods
+
     Public Class Config
         Public Name As String
         Public Description As String
@@ -189,20 +196,20 @@ Public Class NMTExporterModule
         Public DesignVersion As String
         Public WhatsNew As Boolean
 
-        <XmlArrayItem("File")> _
+        <XmlArrayItem("File")>
         Public Files As New List(Of _File)
-        <XmlArrayItem("Param")> _
+        <XmlArrayItem("Param")>
         Public Params As New List(Of _Param)
-        <XmlArray("Properties")> _
-        <XmlArrayItem("Property")> _
+        <XmlArray("Properties")>
+        <XmlArrayItem("Property")>
         Public Properties As New List(Of _Property)
-        <XmlArray("ImageProcessing")> _
-        <XmlArrayItem("Image")> _
+        <XmlArray("ImageProcessing")>
+        <XmlArrayItem("Image")>
         Public ImageProcessing As New List(Of _ImageProcessing)
 
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public ReadMe As Boolean
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public TemplatePath As String
 
         Class _File
@@ -211,6 +218,7 @@ Public Class NMTExporterModule
             Public Process As Boolean
             Public Type As String
         End Class
+
         Class _Param
             Public name As String
             Public type As String
@@ -218,6 +226,7 @@ Public Class NMTExporterModule
             Public access As String
             Public description As String
         End Class
+
         Class _Property
             Public label As String
             Public name As String
@@ -225,35 +234,40 @@ Public Class NMTExporterModule
             Public group As String
             Public type As String
             Public value As String
-            <XmlArray("values")> _
-            <XmlArrayItem("value")> _
+            <XmlArray("values")>
+            <XmlArrayItem("value")>
             Public values As List(Of _value)
         End Class
+
         Class _value
-            <XmlText()> _
+            <XmlText()>
             Public value As String
-            <XmlAttribute("label")> _
+            <XmlAttribute("label")>
             Public label As String
         End Class
+
         Class _ImageProcessing
-            <XmlElement("Type")> _
+            <XmlElement("Type")>
             Public _type As String
-            <XmlArray("Commands")> _
-            <XmlArrayItem("Command")> _
+            <XmlArray("Commands")>
+            <XmlArrayItem("Command")>
             Public Commands As New List(Of _ImageProcessingCommand)
         End Class
+
         Class _ImageProcessingCommand
             Public execute As String
             Public params As String
             Public prefix As String
             Public sufix As String
         End Class
+
         Public Sub Save(ByVal fpath As String)
             Dim xmlSer As New XmlSerializer(GetType(Config))
             Using xmlSW As New StreamWriter(fpath)
                 xmlSer.Serialize(xmlSW, Me)
             End Using
         End Sub
+
         Public Shared Function Load(ByVal fpath As String) As Config
             Dim conf As Config = Nothing
             Try
@@ -274,5 +288,7 @@ Public Class NMTExporterModule
             End Try
             Return conf
         End Function
+
     End Class
+
 End Class

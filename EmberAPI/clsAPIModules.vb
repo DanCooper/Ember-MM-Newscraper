@@ -638,6 +638,19 @@ Public Class ModulesManager
         logger.Trace("[ModulesManager] [LoadModules] [Done]")
     End Sub
 
+    Function QueryAnyGenericIsBusy() As Boolean
+        While Not ModulesLoaded
+            Application.DoEvents()
+        End While
+
+        Dim modules As IEnumerable(Of _externalGenericModuleClass) = externalGenericModules.Where(Function(e) e.ProcessorModule.IsBusy)
+        If modules.Count() > 0 Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
     Function QueryScraperCapabilities_Image_Movie(ByVal externalScraperModule As _externalScraperModuleClass_Image_Movie, ByVal ScrapeModifiers As Structures.ScrapeModifiers) As Boolean
         While Not ModulesLoaded
             Application.DoEvents()

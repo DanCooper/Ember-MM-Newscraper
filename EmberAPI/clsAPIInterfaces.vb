@@ -37,6 +37,7 @@ Public Class Interfaces
 #Region "Properties"
 
         Property Enabled() As Boolean
+        ReadOnly Property IsBusy() As Boolean
         ReadOnly Property ModuleName() As String
         ReadOnly Property ModuleType() As List(Of Enums.ModuleEventType)
         ReadOnly Property ModuleVersion() As String
