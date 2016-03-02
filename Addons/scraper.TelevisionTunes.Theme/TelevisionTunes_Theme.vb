@@ -209,7 +209,7 @@ Public Class TelevisionTunes_Theme
     End Sub
 
     Function Scraper_Movie(ByVal DBMovie As Database.DBElement, ByRef ThemeList As List(Of Themes)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Theme_Movie.Scraper
-        logger.Trace("Started scrape")
+        logger.Trace("[TelevisionTunes_Theme] [Scraper_Movie] [Start]")
 
         Dim tTelevisionTunes As New TelevisionTunes.Scraper(DBMovie.Movie.OriginalTitle)
 
@@ -217,12 +217,12 @@ Public Class TelevisionTunes_Theme
             ThemeList = tTelevisionTunes.ThemeList
         End If
 
-        logger.Trace("Finished scrape")
+        logger.Trace("[TelevisionTunes_Theme] [Scraper_Movie] [Done]")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
     Function Scraper_TV(ByVal DBTV As Database.DBElement, ByRef ThemeList As List(Of Themes)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Theme_TV.Scraper
-        logger.Trace("Started scrape")
+        logger.Trace("[TelevisionTunes_Theme] [Scraper_TV] [Start]")
 
         Dim tTelevisionTunes As New TelevisionTunes.Scraper(DBTV.TVShow.Title)
 
@@ -230,7 +230,7 @@ Public Class TelevisionTunes_Theme
             ThemeList = tTelevisionTunes.ThemeList
         End If
 
-        logger.Trace("Finished scrape")
+        logger.Trace("[TelevisionTunes_Theme] [Scraper_TV] [Done]")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 

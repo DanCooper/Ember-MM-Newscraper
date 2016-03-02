@@ -18,7 +18,6 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.Text.RegularExpressions
 Imports EmberAPI
 
 Public Class dlgFIStreamEditor
@@ -36,9 +35,9 @@ Public Class dlgFIStreamEditor
     Public Sub New()
         ' This call is required by the designer.
         InitializeComponent()
-        Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
-        Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
-        Me.StartPosition = FormStartPosition.Manual
+        Left = Master.AppPos.Left + (Master.AppPos.Width - Width) \ 2
+        Top = Master.AppPos.Top + (Master.AppPos.Height - Height) \ 2
+        StartPosition = FormStartPosition.Manual
     End Sub
 
     Public Overloads Function ShowDialog(ByVal stream_type As String, ByVal movie As MediaInfo.Fileinfo, ByVal idx As Integer) As Object
@@ -98,7 +97,7 @@ Public Class dlgFIStreamEditor
                 End If
             End If
 
-            If MyBase.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            If ShowDialog() = Windows.Forms.DialogResult.OK Then
                 If stream_type = Master.eLang.GetString(595, "Video Streams") Then
                     stream_v.Codec = If(cbVideoCodec.SelectedItem Is Nothing, "", cbVideoCodec.SelectedItem.ToString)
                     stream_v.Aspect = txtVideoAspect.Text
@@ -144,8 +143,8 @@ Public Class dlgFIStreamEditor
     End Function
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Close()
+        DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Close()
     End Sub
 
     Private Sub cbAudioCodec_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbAudioCodec.SelectedIndexChanged
@@ -154,45 +153,45 @@ Public Class dlgFIStreamEditor
         'End If
     End Sub
     Private Sub cbVideoMultiViewLayout_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbVideoMultiViewLayout.SelectedIndexChanged
-        If Not Me.cbVideoMultiViewLayout.Text = String.Empty Then
-            Me.txtVideoMultiViewCount.Text = "2"
-            Me.txtVideoStereoMode.Text = MediaInfo.ConvertVStereoMode(cbVideoMultiViewLayout.Text)
+        If Not cbVideoMultiViewLayout.Text = String.Empty Then
+            txtVideoMultiViewCount.Text = "2"
+            txtVideoStereoMode.Text = MediaInfo.ConvertVStereoMode(cbVideoMultiViewLayout.Text)
         End If
     End Sub
 
     Private Sub dlgFIStreamEditor_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.SetUp()
+        SetUp()
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.Close()
+        DialogResult = System.Windows.Forms.DialogResult.OK
+        Close()
     End Sub
 
     Private Sub SetUp()
-        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
-        Me.Text = Master.eLang.GetString(613, "Stream Editor")
-        Me.chkSubtitleForced.Text = Master.eLang.GetString(1287, "Forced")
-        Me.gbAudioStreams.Text = Master.eLang.GetString(596, "Audio Streams")
-        Me.gbSubtitleStreams.Text = Master.eLang.GetString(597, "Subtitle  Streams")
-        Me.gbVideoStreams.Text = Master.eLang.GetString(595, "Video Streams")
-        Me.lblAudioChannels.Text = Master.eLang.GetString(611, "Channels")
-        Me.lblAudioCodec.Text = Me.lblVideoCodec.Text
-        Me.lblAudioLanguage.Text = Master.eLang.GetString(610, "Language")
-        Me.lblSubtitleLanguage.Text = Me.lblAudioLanguage.Text
-        Me.lblVideoAspect.Text = Master.eLang.GetString(614, "Aspect Ratio")
-        Me.lblVideoCodec.Text = Master.eLang.GetString(604, "Codec")
-        Me.lblVideoDuration.Text = Master.eLang.GetString(609, "Duration")
-        Me.lblVideoHeight.Text = Master.eLang.GetString(607, "Height")
-        Me.lblVideoLanguage.Text = Me.lblAudioLanguage.Text
-        Me.lblVideoMultiViewCount.Text = Master.eLang.GetString(1156, "MultiView Count")
-        Me.lblVideoMultiViewLayout.Text = Master.eLang.GetString(1157, "MultiView Layout")
-        Me.lblVideoStereoMode.Text = Master.eLang.GetString(1286, "StereoMode")
-        Me.lblVideoWidth.Text = Master.eLang.GetString(606, "Width")
-        Me.rbVideoInterlaced.Text = Master.eLang.GetString(615, "Interlaced")
-        Me.rbVideoProgressive.Text = Master.eLang.GetString(616, "Progressive")
-        Me.lblVideoFileSize.Text = Master.eLang.GetString(1455, "Filesize [MB]")
+        Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+        OK_Button.Text = Master.eLang.GetString(179, "OK")
+        Text = Master.eLang.GetString(613, "Stream Editor")
+        chkSubtitleForced.Text = Master.eLang.GetString(1287, "Forced")
+        gbAudioStreams.Text = Master.eLang.GetString(596, "Audio Streams")
+        gbSubtitleStreams.Text = Master.eLang.GetString(597, "Subtitle  Streams")
+        gbVideoStreams.Text = Master.eLang.GetString(595, "Video Streams")
+        lblAudioChannels.Text = Master.eLang.GetString(611, "Channels")
+        lblAudioCodec.Text = lblVideoCodec.Text
+        lblAudioLanguage.Text = Master.eLang.GetString(610, "Language")
+        lblSubtitleLanguage.Text = lblAudioLanguage.Text
+        lblVideoAspect.Text = Master.eLang.GetString(614, "Aspect Ratio")
+        lblVideoCodec.Text = Master.eLang.GetString(604, "Codec")
+        lblVideoDuration.Text = Master.eLang.GetString(609, "Duration")
+        lblVideoHeight.Text = Master.eLang.GetString(607, "Height")
+        lblVideoLanguage.Text = lblAudioLanguage.Text
+        lblVideoMultiViewCount.Text = Master.eLang.GetString(1156, "MultiView Count")
+        lblVideoMultiViewLayout.Text = Master.eLang.GetString(1157, "MultiView Layout")
+        lblVideoStereoMode.Text = Master.eLang.GetString(1286, "StereoMode")
+        lblVideoWidth.Text = Master.eLang.GetString(606, "Width")
+        rbVideoInterlaced.Text = Master.eLang.GetString(615, "Interlaced")
+        rbVideoProgressive.Text = Master.eLang.GetString(616, "Progressive")
+        lblVideoFileSize.Text = Master.eLang.GetString(1455, "Filesize [MB]")
     End Sub
 
 #End Region 'Methods

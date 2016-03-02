@@ -2047,6 +2047,7 @@ Public Class frmMain
                         If Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
                             Using dTrailerSelect As New dlgTrailerSelect
                                 'note msavazzi why is always False with Player? If dTrailerSelect.ShowDialog(DBScrapeMovie, SearchResults, False, True, False) = DialogResult.OK Then
+                                'DanCooper: the VLC COM interface is/was not able to call in multithread
                                 If dTrailerSelect.ShowDialog(DBScrapeMovie, SearchResults, False, True, clsAdvancedSettings.GetBooleanSetting("UseAsVideoPlayer", False, "generic.EmberCore.VLCPlayer")) = DialogResult.OK Then
                                     DBScrapeMovie.Trailer = dTrailerSelect.Result
                                 End If
@@ -2679,7 +2680,7 @@ Public Class frmMain
                 If ModulesManager.Instance.ScrapeData_TVSeason(DBScrapeSeason, Args.ScrapeOptions, Args.ScrapeList.Count = 1) Then
                     Cancelled = True
                     If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
-                        logger.Trace(String.Concat("Canceled scraping: {0}: Season {1}", DBScrapeSeason.TVShow.Title, DBScrapeSeason.TVSeason.Season))
+                        logger.Trace(String.Format("Canceled scraping: {0}: Season {1}", DBScrapeSeason.TVShow.Title, DBScrapeSeason.TVSeason.Season))
                         bwTVSeasonScraper.CancelAsync()
                     End If
                 End If
@@ -6104,7 +6105,7 @@ doCancel:
                     mnuGenresSet.Enabled = False
 
                     'Tag submenu
-                    mnuTagsTag.Tag = String.Empty  'dgvMovies.Item("Genre", e.RowIndex).Value
+                    mnuTagsTag.Tag = dgvMovies.Item("Tag", e.RowIndex).Value
                     If Not mnuTagsTag.Items.Contains(String.Concat(Master.eLang.GetString(1021, "Select Tag"), "...")) Then
                         mnuTagsTag.Items.Insert(0, String.Concat(Master.eLang.GetString(1021, "Select Tag"), "..."))
                     End If
@@ -8084,7 +8085,7 @@ doCancel:
                     mnuGenresSet.Enabled = False
 
                     'Tag submenu
-                    mnuTagsTag.Tag = String.Empty  'dgvTVShows.Item("Genre", dgvHTI.RowIndex).Value
+                    mnuTagsTag.Tag = dgvTVShows.Item("Tag", dgvHTI.RowIndex).Value
                     If Not mnuTagsTag.Items.Contains(String.Concat(Master.eLang.GetString(1021, "Select Tag"), "...")) Then
                         mnuTagsTag.Items.Insert(0, String.Concat(Master.eLang.GetString(1021, "Select Tag"), "..."))
                     End If
@@ -10693,9 +10694,15 @@ doCancel:
             mnuGenresGenre.SelectedItem = String.Concat(Master.eLang.GetString(27, "Select Genre"), "...")
         End If
 
-        mnuGenresAdd.Enabled = True
-        mnuGenresRemove.Enabled = False
-        mnuGenresSet.Enabled = True
+        If Not String.IsNullOrEmpty(mnuGenresNew.Text) Then
+            mnuGenresAdd.Enabled = True
+            mnuGenresRemove.Enabled = False
+            mnuGenresSet.Enabled = True
+        Else
+            mnuGenresAdd.Enabled = False
+            mnuGenresRemove.Enabled = False
+            mnuGenresSet.Enabled = False
+        End If
     End Sub
 
     Private Sub mnuGenresRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuGenresRemove.Click
@@ -10809,9 +10816,15 @@ doCancel:
             mnuTagsTag.SelectedItem = String.Concat(Master.eLang.GetString(1021, "Select Tag"), "...")
         End If
 
-        mnuTagsAdd.Enabled = True
-        mnuTagsRemove.Enabled = False
-        mnuTagsSet.Enabled = True
+        If Not String.IsNullOrEmpty(mnuTagsNew.Text) Then
+            mnuTagsAdd.Enabled = True
+            mnuTagsRemove.Enabled = False
+            mnuTagsSet.Enabled = True
+        Else
+            mnuTagsAdd.Enabled = False
+            mnuTagsRemove.Enabled = False
+            mnuTagsSet.Enabled = False
+        End If
     End Sub
 
     Private Sub mnuTagsRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuTagsRemove.Click
@@ -10899,8 +10912,13 @@ doCancel:
                 iSelectedRowsCount = dgvTVShows.SelectedRows.Count
         End Select
 
-        mnuTagsAdd.Enabled = True
-        mnuTagsRemove.Enabled = False
+        If iSelectedRowsCount > 1 Then
+            mnuTagsRemove.Enabled = True
+            mnuTagsAdd.Enabled = True
+        Else
+            mnuTagsRemove.Enabled = mnuTagsTag.Tag.ToString.Contains(mnuTagsTag.Text)
+            mnuTagsAdd.Enabled = Not mnuTagsTag.Tag.ToString.Contains(mnuTagsTag.Text)
+        End If
         mnuTagsSet.Enabled = True
     End Sub
 
@@ -17686,7 +17704,7 @@ doCancel:
     End Sub
 
     Private Sub txtSearchMovies_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtSearchMovies.KeyPress
-        e.Handled = Not StringUtils.AlphaNumericOnly(e.KeyChar, True)
+        e.Handled = If(e.KeyChar = Convert.ToChar(39), True, False)
         If e.KeyChar = Microsoft.VisualBasic.ChrW(Keys.Return) Then
             dgvMovies.Focus()
         End If
@@ -17701,7 +17719,7 @@ doCancel:
     End Sub
 
     Private Sub txtSearchMovieSets_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtSearchMovieSets.KeyPress
-        e.Handled = Not StringUtils.AlphaNumericOnly(e.KeyChar, True)
+        e.Handled = If(e.KeyChar = Convert.ToChar(39), True, False)
         If e.KeyChar = Microsoft.VisualBasic.ChrW(Keys.Return) Then
             dgvMovieSets.Focus()
         End If
@@ -17716,7 +17734,7 @@ doCancel:
     End Sub
 
     Private Sub txtSearchShows_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtSearchShows.KeyPress
-        e.Handled = Not StringUtils.AlphaNumericOnly(e.KeyChar, True)
+        e.Handled = If(e.KeyChar = Convert.ToChar(39), True, False)
         If e.KeyChar = Microsoft.VisualBasic.ChrW(Keys.Return) Then
             dgvTVShows.Focus()
         End If

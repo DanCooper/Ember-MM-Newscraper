@@ -17,7 +17,6 @@
 ' # You should have received a copy of the GNU General Public License            #
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
-'Class originally developed by blackducksoftware and highly modified for Ember Media Manager
 
 Imports System.IO
 Imports NLog

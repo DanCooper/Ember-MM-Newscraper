@@ -1,5 +1,4 @@
-﻿
-' ################################################################################
+﻿' ################################################################################
 ' #                             EMBER MEDIA MANAGER                              #
 ' ################################################################################
 ' ################################################################################
@@ -18,8 +17,8 @@
 ' # You should have received a copy of the GNU General Public License            #
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
+
 Imports EmberAPI
-Imports System.Resources
 
 Public NotInheritable Class dlgAbout
 
@@ -35,18 +34,18 @@ Public NotInheritable Class dlgAbout
     Public Sub New()
         ' This call is required by the designer.
         InitializeComponent()
-        Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
-        Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
-        Me.StartPosition = FormStartPosition.Manual
+        Left = Master.AppPos.Left + (Master.AppPos.Width - Width) \ 2
+        Top = Master.AppPos.Top + (Master.AppPos.Height - Height) \ 2
+        StartPosition = FormStartPosition.Manual
     End Sub
 
     Private Sub dlgAbout_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
-        Me.Activate()
-        Me.Refresh()
+        Activate()
+        Refresh()
     End Sub
 
     Private Sub frmAbout_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Dim iBackground As New Bitmap(Me.picDisplay.Width, Me.picDisplay.Height)
+        Dim iBackground As New Bitmap(picDisplay.Width, picDisplay.Height)
         Dim iLogo As New Bitmap(My.Resources.Logo)
         For xPix As Integer = 0 To iLogo.Width - 1
             For yPix As Integer = 0 To iLogo.Height - 1
@@ -67,13 +66,13 @@ Public NotInheritable Class dlgAbout
             Dim x As Integer = Convert.ToInt32((picDisplay.Width - My.Resources.Logo.Width) / 2)
             Dim y As Integer = Convert.ToInt32((picDisplay.Height - My.Resources.Logo.Height) / 2)
             g.DrawImage(iLogo, x, y, My.Resources.Logo.Width, My.Resources.Logo.Height)
-            Me.picDisplay.BackgroundImage = iBackground
+            picDisplay.BackgroundImage = iBackground
         End Using
 
-        Me.Text = "About Ember Media Manager"
+        Text = "About Ember Media Manager"
 
         ' Optimize Painting.
-        SetStyle(ControlStyles.AllPaintingInWmPaint Or ControlStyles.DoubleBuffer Or _
+        SetStyle(ControlStyles.AllPaintingInWmPaint Or ControlStyles.DoubleBuffer Or
                  ControlStyles.ResizeRedraw Or ControlStyles.UserPaint, True)
 
         Dim aBit As String = "x64"
@@ -103,11 +102,11 @@ Public NotInheritable Class dlgAbout
             End If
         Next
 
-        PicY = Me.picDisplay.ClientSize.Height
+        PicY = picDisplay.ClientSize.Height
     End Sub
 
     Private Sub OKButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OKButton.Click
-        Me.Close()
+        Close()
     End Sub
     ''' <summary>
     ''' Launch the default browser to the appropriate URL.
@@ -221,9 +220,9 @@ Public NotInheritable Class dlgAbout
             CurrentY = PicY + FontMod
             FontMod += CredList(i).Font.Size + 5
 
-            CurrentX = (Me.picDisplay.ClientSize.Width - e.Graphics.MeasureString(CredList(i).Text, CredList(i).Font).Width) / 2
+            CurrentX = (picDisplay.ClientSize.Width - e.Graphics.MeasureString(CredList(i).Text, CredList(i).Font).Width) / 2
 
-            If i = CredList.Count - 1 AndAlso CurrentY < -25 Then PicY = Me.picDisplay.ClientSize.Height
+            If i = CredList.Count - 1 AndAlso CurrentY < -25 Then PicY = picDisplay.ClientSize.Height
 
             e.Graphics.DrawString(CredList(i).Text, CredList(i).Font, Brushes.Black, CurrentX, CurrentY)
 
@@ -236,7 +235,7 @@ Public NotInheritable Class dlgAbout
 
         System.Threading.Thread.Sleep(30)
 
-        Me.picDisplay.Invalidate()
+        picDisplay.Invalidate()
     End Sub
 
 #End Region 'Methods
