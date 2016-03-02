@@ -96,7 +96,7 @@
   <string id="95">Display only marked movies.</string>
   <string id="96">Display only locked movies.</string>
   <string id="97">Display only movies from the selected source.</string>
-  <string id="98"></string>
+  <string id="98">Search -/+ 1 year if no search result was found</string>
   <string id="99">Canceling All Processes...</string>
   <string id="100">Actor</string>
   <string id="101">Are you sure you want to continue?</string>
