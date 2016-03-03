@@ -11135,6 +11135,36 @@ doCancel:
         End If
     End Sub
 
+    Private Sub mnuScrapeMovies_ButtonClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuScrapeMovies.ButtonClick
+        If Master.eSettings.MovieGeneralCustomScrapeButtonEnabled Then
+            Dim ScrapeModifiers As New Structures.ScrapeModifiers
+            Functions.SetScrapeModifiers(ScrapeModifiers, Master.eSettings.MovieGeneralCustomScrapeButtonModifierType, True)
+            CreateScrapeList_Movie(Master.eSettings.MovieGeneralCustomScrapeButtonScrapeType, Master.DefaultOptions_Movie, ScrapeModifiers)
+        Else
+            mnuScrapeMovies.ShowDropDown()
+        End If
+    End Sub
+
+    Private Sub mnuScrapeMovieSets_ButtonClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuScrapeMovieSets.ButtonClick
+        If Master.eSettings.MovieSetGeneralCustomScrapeButtonEnabled Then
+            Dim ScrapeModifiers As New Structures.ScrapeModifiers
+            Functions.SetScrapeModifiers(ScrapeModifiers, Master.eSettings.MovieSetGeneralCustomScrapeButtonModifierType, True)
+            CreateScrapeList_MovieSet(Master.eSettings.MovieSetGeneralCustomScrapeButtonScrapeType, Master.DefaultOptions_MovieSet, ScrapeModifiers)
+        Else
+            mnuScrapeMovieSets.ShowDropDown()
+        End If
+    End Sub
+
+    Private Sub mnuScrapeTVShows_ButtonClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuScrapeTVShows.ButtonClick
+        If Master.eSettings.TVGeneralCustomScrapeButtonEnabled Then
+            Dim ScrapeModifiers As New Structures.ScrapeModifiers
+            Functions.SetScrapeModifiers(ScrapeModifiers, Master.eSettings.TVGeneralCustomScrapeButtonModifierType, True)
+            CreateScrapeList_TV(Master.eSettings.TVGeneralCustomScrapeButtonScrapeType, Master.DefaultOptions_TV, ScrapeModifiers)
+        Else
+            mnuScrapeTVShows.ShowDropDown()
+        End If
+    End Sub
+
     Private Sub mnuScrapeOption_Opened(sender As Object, e As EventArgs) Handles mnuScrapeOption.Opened
         _SelectedContentType = mnuScrapeOption.OwnerItem.Tag.ToString
 

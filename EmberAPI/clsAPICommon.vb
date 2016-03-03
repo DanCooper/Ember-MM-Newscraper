@@ -818,24 +818,24 @@ Public Class Enums
     ''' </summary>
     ''' <remarks></remarks>
     Public Enum ScrapeType As Integer
-        SingleScrape = 0
-        AllAuto = 1
-        AllAsk = 2
-        AllSkip = 3
-        MissingAuto = 4
-        MissingAsk = 5
-        MissingSkip = 6
-        CleanFolders = 7
-        NewAuto = 8
-        NewAsk = 9
-        NewSkip = 10
-        MarkedAuto = 11
-        MarkedAsk = 12
-        MarkedSkip = 13
-        FilterAuto = 14
-        FilterAsk = 15
-        FilterSkip = 16
-        CopyBackdrops = 17
+        AllAuto = 0
+        AllAsk = 1
+        AllSkip = 2
+        MissingAuto = 3
+        MissingAsk = 4
+        MissingSkip = 5
+        CleanFolders = 6
+        NewAuto = 7
+        NewAsk = 8
+        NewSkip = 9
+        MarkedAuto = 10
+        MarkedAsk = 11
+        MarkedSkip = 12
+        FilterAuto = 13
+        FilterAsk = 14
+        FilterSkip = 15
+        CopyBackdrops = 16
+        SingleScrape = 17
         SingleField = 18
         SingleAuto = 19
         SelectedAuto = 20
