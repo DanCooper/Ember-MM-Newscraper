@@ -10135,7 +10135,7 @@ doCancel:
             Refresh()
 
             If ModulesManager.Instance.QueryAnyGenericIsBusy Then
-                If MessageBox.Show("One or more modules are busy. Do you want cancel all tasks?", "One or more external Modules are busy", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) = DialogResult.Yes Then
+                If MessageBox.Show("One or more modules are busy. Do you want to wait until all tasks are finished?", "One or more external Modules are busy", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) = DialogResult.Yes Then
                     While ModulesManager.Instance.QueryAnyGenericIsBusy
                         Application.DoEvents()
                         Threading.Thread.Sleep(50)
