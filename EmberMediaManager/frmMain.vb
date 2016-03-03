@@ -10134,6 +10134,15 @@ doCancel:
             pnlCancel.Visible = True
             Refresh()
 
+            If ModulesManager.Instance.QueryAnyGenericIsBusy Then
+                If MessageBox.Show("One or more modules are busy. Do you want cancel all tasks?", "One or more external Modules are busy", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) = DialogResult.Yes Then
+                    While ModulesManager.Instance.QueryAnyGenericIsBusy
+                        Application.DoEvents()
+                        Threading.Thread.Sleep(50)
+                    End While
+                End If
+            End If
+
             While fScanner.IsBusy OrElse bwLoadMovieInfo.IsBusy _
             OrElse bwLoadMovieSetInfo.IsBusy OrElse bwDownloadPic.IsBusy OrElse bwMovieScraper.IsBusy _
             OrElse bwReload_Movies.IsBusy OrElse bwReload_MovieSets.IsBusy OrElse bwCleanDB.IsBusy _
@@ -10777,7 +10786,7 @@ doCancel:
         Dim strTag As String = String.Empty
         If Not String.IsNullOrEmpty(mnuTagsNew.Text) Then
             strTag = mnuTagsNew.Text.Trim
-        ElseIf Not String.IsNullOrEmpty(mnutagstag.Text.Trim) Then
+        ElseIf Not String.IsNullOrEmpty(mnuTagsTag.Text.Trim) Then
             strTag = mnuTagsTag.Text.Trim
         End If
 
@@ -16996,6 +17005,11 @@ doCancel:
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub ShowSettings()
+        While ModulesManager.Instance.QueryAnyGenericIsBusy
+            Application.DoEvents()
+            Threading.Thread.Sleep(50)
+        End While
+
         Using dSettings As New dlgSettings
             Invoke(New MySettingsShow(AddressOf SettingsShow), dSettings)
         End Using

@@ -18,10 +18,7 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System
 Imports System.IO
-Imports System.Xml.Serialization
-
 Imports EmberAPI
 
 Public Class FrameExtrator
@@ -42,19 +39,19 @@ Public Class FrameExtrator
 
 #Region "Events"
 
-    Public Event GenericEvent(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object)) Implements EmberAPI.Interfaces.GenericModule.GenericEvent
+    Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object)) Implements Interfaces.GenericModule.GenericEvent
 
     Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.GenericModule.ModuleSetupChanged
 
     Public Event ModuleSettingsChanged() Implements Interfaces.GenericModule.ModuleSettingsChanged
 
-    Public Event SetupNeedsRestart() Implements EmberAPI.Interfaces.GenericModule.SetupNeedsRestart
+    Public Event SetupNeedsRestart() Implements Interfaces.GenericModule.SetupNeedsRestart
 
 #End Region 'Events
 
 #Region "Properties"
 
-    Public Property Enabled() As Boolean Implements EmberAPI.Interfaces.GenericModule.Enabled
+    Public Property Enabled() As Boolean Implements Interfaces.GenericModule.Enabled
         Get
             Return _enabled
         End Get
@@ -69,21 +66,27 @@ Public Class FrameExtrator
         End Set
     End Property
 
-    Public ReadOnly Property ModuleName() As String Implements EmberAPI.Interfaces.GenericModule.ModuleName
+    ReadOnly Property IsBusy() As Boolean Implements Interfaces.GenericModule.IsBusy
+        Get
+            Return False
+        End Get
+    End Property
+
+    Public ReadOnly Property ModuleName() As String Implements Interfaces.GenericModule.ModuleName
         Get
             Return _name
         End Get
     End Property
 
-    Public ReadOnly Property ModuleType() As System.Collections.Generic.List(Of EmberAPI.Enums.ModuleEventType) Implements EmberAPI.Interfaces.GenericModule.ModuleType
+    Public ReadOnly Property ModuleType() As List(Of Enums.ModuleEventType) Implements Interfaces.GenericModule.ModuleType
         Get
             Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.FrameExtrator_Movie, Enums.ModuleEventType.FrameExtrator_TVEpisode, Enums.ModuleEventType.RandomFrameExtrator})
         End Get
     End Property
 
-    Public ReadOnly Property ModuleVersion() As String Implements EmberAPI.Interfaces.GenericModule.ModuleVersion
+    Public ReadOnly Property ModuleVersion() As String Implements Interfaces.GenericModule.ModuleVersion
         Get
-            Return FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location).FileVersion.ToString
+            Return FileVersionInfo.GetVersionInfo(Reflection.Assembly.GetExecutingAssembly.Location).FileVersion.ToString
         End Get
     End Property
 
@@ -91,28 +94,28 @@ Public Class FrameExtrator
 
 #Region "Methods"
 
-    Public Sub Init(ByVal sAssemblyName As String, ByVal sExecutable As String) Implements EmberAPI.Interfaces.GenericModule.Init
+    Public Sub Init(ByVal sAssemblyName As String, ByVal sExecutable As String) Implements Interfaces.GenericModule.Init
         _AssemblyName = sAssemblyName
         'Master.eLang.LoadLanguage(Master.eSettings.Language, sExecutable)
     End Sub
 
-    Public Function InjectSetup() As EmberAPI.Containers.SettingsPanel Implements EmberAPI.Interfaces.GenericModule.InjectSetup
+    Public Function InjectSetup() As Containers.SettingsPanel Implements Interfaces.GenericModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
-        Me._setup = New frmSettingsHolder
-        Me._setup.cbEnabled.Checked = Me._enabled
-        SPanel.Name = Me._name
+        _setup = New frmSettingsHolder
+        _setup.cbEnabled.Checked = _enabled
+        SPanel.Name = _name
         SPanel.Text = Master.eLang.GetString(310, "Frame Extractor")
         SPanel.Prefix = "Extrator_"
         SPanel.Type = Master.eLang.GetString(802, "Modules")
-        SPanel.ImageIndex = If(Me._enabled, 9, 10)
+        SPanel.ImageIndex = If(_enabled, 9, 10)
         SPanel.Order = 100
-        SPanel.Panel = Me._setup.pnlSettings()
+        SPanel.Panel = _setup.pnlSettings()
         AddHandler _setup.ModuleEnabledChanged, AddressOf Handle_SetupChanged
         AddHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         Return SPanel
     End Function
 
-    Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.GenericModule.RunGeneric
+    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
         Select Case mType
             Case Enums.ModuleEventType.FrameExtrator_Movie
                 frmMovie = New frmMovieExtractor(_dbelement.Filename)
@@ -131,16 +134,16 @@ Public Class FrameExtrator
         End Select
     End Function
 
-    Sub Handle_GenericEvent(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object))
+    Sub Handle_GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
         RaiseEvent GenericEvent(mType, _params)
     End Sub
 
-    Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.GenericModule.SaveSetup
+    Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
         'Master.eSettings.XBMCComs.AddRange(_MySettings.XComs)
-        Me.Enabled = _setup.cbEnabled.Checked
+        Enabled = _setup.cbEnabled.Checked
         If DoDispose Then
-            RemoveHandler Me._setup.ModuleEnabledChanged, AddressOf Handle_SetupChanged
-            RemoveHandler Me._setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+            RemoveHandler _setup.ModuleEnabledChanged, AddressOf Handle_SetupChanged
+            RemoveHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
             _setup.Dispose()
         End If
     End Sub
@@ -163,7 +166,7 @@ Public Class FrameExtrator
     End Sub
 
     Private Sub Handle_SetupChanged(ByVal state As Boolean, ByVal difforder As Integer)
-        RaiseEvent ModuleEnabledChanged(Me._name, state, difforder)
+        RaiseEvent ModuleEnabledChanged(_name, state, difforder)
     End Sub
 
     Public Shared Function GetFFMpeg() As String
