@@ -2,23 +2,23 @@
 <AdvancedSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <ComplexSettings>
     <Table Section="*EmberAPP" Name="MovieSources">
-      <Item Name="(b[dr][-\s]?rip|blu[-\s]?ray)">bluray</Item>
-      <Item Name="(sd[-\s]?)?dvd">dvd</Item>
-      <Item Name="hd[-\s]?tv">hdtv</Item>
-      <Item Name="sd[-\s]?tv">sdtv</Item>
-      <Item Name="hd[-\s]?dvd">hddvd</Item>
-      <Item Name="vhs">vhs</Item>
-      <Item Name="bd25">bluray</Item>
-      <Item Name="bd50">bluray</Item>
-      <Item Name="pdtv">sdtv</Item>
-      <Item Name="dsr">sdtv</Item>
-      <Item Name="tvrip">sdtv</Item>
-      <Item Name="ntsc">sdtv</Item>
-      <Item Name="dvd5">dvd</Item>
-      <Item Name="dvd9">dvd</Item>
-      <Item Name="web-dl">web-dl</Item>
-      <Item Name="webrip">web-dl</Item>
-      <Item Name="3dbd">3dbd</Item>
+      <Item Name="(?i)[\W_](b[dr][-\s]?rip|blu[-\s]?ray)[\W_]">bluray</Item>
+      <Item Name="(?i)[\W_](sd[-\s]?)?dvd[\W_]">dvd</Item>
+      <Item Name="(?i)[\W_]hd[-\s]?tv[\W_]">hdtv</Item>
+      <Item Name="(?i)[\W_]sd[-\s]?tv[\W_]">sdtv</Item>
+      <Item Name="(?i)[\W_]hd[-\s]?dvd[\W_]">hddvd</Item>
+      <Item Name="(?i)[\W_]vhs[\W_]">vhs</Item>
+      <Item Name="(?i)[\W_]bd25[\W_]">bluray</Item>
+      <Item Name="(?i)[\W_]bd50[\W_]">bluray</Item>
+      <Item Name="(?i)[\W_]pdtv[\W_]">sdtv</Item>
+      <Item Name="(?i)[\W_]dsr[\W_]">sdtv</Item>
+      <Item Name="(?i)[\W_]tvrip[\W_]">sdtv</Item>
+      <Item Name="(?i)[\W_]ntsc[\W_]">sdtv</Item>
+      <Item Name="(?i)[\W_]dvd5[\W_]">dvd</Item>
+      <Item Name="(?i)[\W_]dvd9[\W_]">dvd</Item>
+      <Item Name="(?i)[\W_]web-dl[\W_]">web-dl</Item>
+      <Item Name="(?i)[\W_]webrip[\W_]">web-dl</Item>
+      <Item Name="(?i)[\W_]3dbd[\W_]">3dbd</Item>
     </Table>
   </ComplexSettings>
 </AdvancedSettings>

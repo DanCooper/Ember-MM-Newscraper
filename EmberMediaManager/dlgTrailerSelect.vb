@@ -112,7 +112,7 @@ Public Class dlgTrailerSelect
             lvTrailers.Items(0).Selected = True
         End If
 
-        Return MyBase.ShowDialog()
+        Return ShowDialog()
     End Function
 
     Protected Overrides Sub Finalize()
@@ -383,7 +383,7 @@ Public Class dlgTrailerSelect
         If Not e.Cancelled Then
             If Convert.ToBoolean(e.Result) Then
                 If nList.Count > 0 Then
-                    Me.lvTrailers.Clear()
+                    lvTrailers.Items.Clear()
                     AddTrailersToList(nList)
                 Else
                     MessageBox.Show(Master.eLang.GetString(225, "No Trailers found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)

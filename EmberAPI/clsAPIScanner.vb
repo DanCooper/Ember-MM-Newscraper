@@ -1,22 +1,22 @@
-﻿'################################################################################
-'#                             EMBER MEDIA MANAGER                              #
-'################################################################################
-'################################################################################
-'# This file is part of Ember Media Manager.                                    #
-'#                                                                              #
-'# Ember Media Manager is free software: you can redistribute it and/or modify  #
-'# it under the terms of the GNU General Public License as published by         #
-'# the Free Software Foundation, either version 3 of the License, or            #
-'# (at your option) any later version.                                          #
-'#                                                                              #
-'# Ember Media Manager is distributed in the hope that it will be useful,       #
-'# but WITHOUT ANY WARRANTY; without even the implied warranty of               #
-'# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                #
-'# GNU General Public License for more details.                                 #
-'#                                                                              #
-'# You should have received a copy of the GNU General Public License            #
-'# along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
-'################################################################################
+﻿' ################################################################################
+' #                             EMBER MEDIA MANAGER                              #
+' ################################################################################
+' ################################################################################
+' # This file is part of Ember Media Manager.                                    #
+' #                                                                              #
+' # Ember Media Manager is free software: you can redistribute it and/or modify  #
+' # it under the terms of the GNU General Public License as published by         #
+' # the Free Software Foundation, either version 3 of the License, or            #
+' # (at your option) any later version.                                          #
+' #                                                                              #
+' # Ember Media Manager is distributed in the hope that it will be useful,       #
+' # but WITHOUT ANY WARRANTY; without even the implied warranty of               #
+' # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                #
+' # GNU General Public License for more details.                                 #
+' #                                                                              #
+' # You should have received a copy of the GNU General Public License            #
+' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
+' ################################################################################
 
 Imports System.IO
 Imports System.Text.RegularExpressions
@@ -1082,7 +1082,7 @@ Public Class Scanner
             'save all new seasons to DB
             For Each newSeason As Integer In newSeasonsIndex
                 Dim tSeason As Database.DBElement = DBTVShow.Seasons.FirstOrDefault(Function(f) f.TVSeason.Season = newSeason)
-                If tSeason.TVSeason IsNot Nothing Then
+                If tSeason IsNot Nothing AndAlso tSeason.TVSeason IsNot Nothing Then
                     Master.DB.SaveTVSeasonToDB(tSeason, Batchmode, True)
                 End If
             Next
@@ -1329,7 +1329,7 @@ Public Class Scanner
                 Else
                     Dim HasFile As Boolean = False
                     Dim tList As IOrderedEnumerable(Of FileInfo) = lFi.Where(Function(f) Master.eSettings.FileSystemValidExts.Contains(f.Extension.ToLower) AndAlso
-                             Not Regex.IsMatch(f.Name, "[^\w\s]\s?(trailer|sample)", RegexOptions.IgnoreCase) AndAlso ((Master.eSettings.MovieSkipStackedSizeCheck AndAlso
+                             Not Regex.IsMatch(f.Name, String.Concat("[^\w\s]\s?(", clsAdvancedSettings.GetSetting("NotValidFileContains", "trailer|sample"), ")"), RegexOptions.IgnoreCase) AndAlso ((Master.eSettings.MovieSkipStackedSizeCheck AndAlso
                             StringUtils.IsStacked(f.Name)) OrElse (Not Convert.ToInt32(Master.eSettings.MovieSkipLessThan) > 0 OrElse f.Length >= Master.eSettings.MovieSkipLessThan * 1048576))).OrderBy(Function(f) f.FullName)
 
                     If tList.Count > 1 AndAlso sSource.IsSingle Then
@@ -1389,11 +1389,11 @@ Public Class Scanner
 
         For Each lFile As FileInfo In di.GetFiles.OrderBy(Function(s) s.Name)
             If Not TVEpisodePaths.Contains(lFile.FullName.ToLower) AndAlso Master.eSettings.FileSystemValidExts.Contains(lFile.Extension.ToLower) AndAlso
-                Not Regex.IsMatch(lFile.Name, "[^\w\s]\s?(trailer|sample)", RegexOptions.IgnoreCase) AndAlso
+                Not Regex.IsMatch(lFile.Name, String.Concat("[^\w\s]\s?(", clsAdvancedSettings.GetSetting("NotValidFileContains", "trailer|sample"), ")"), RegexOptions.IgnoreCase) AndAlso
                 (Not Convert.ToInt32(Master.eSettings.TVSkipLessThan) > 0 OrElse lFile.Length >= Master.eSettings.TVSkipLessThan * 1048576) Then
                 tShow.Episodes.Add(New Database.DBElement(Enums.ContentType.TVEpisode) With {.Filename = lFile.FullName, .TVEpisode = New MediaContainers.EpisodeDetails})
-            ElseIf Regex.IsMatch(lFile.Name, "[^\w\s]\s?(trailer|sample)", RegexOptions.IgnoreCase) AndAlso Master.eSettings.FileSystemValidExts.Contains(lFile.Extension.ToLower) Then
-                logger.Info(String.Format("VideoInfoScanner: file {0} has been ignored (trailer or sample file)", lFile.FullName))
+            ElseIf Regex.IsMatch(lFile.Name, String.Concat("[^\w\s]\s?(", clsAdvancedSettings.GetSetting("NotValidFileContains", "trailer|sample"), ")"), RegexOptions.IgnoreCase) AndAlso Master.eSettings.FileSystemValidExts.Contains(lFile.Extension.ToLower) Then
+                logger.Info(String.Format("[Sanner] [ScanForTVFiles] file {0} has been ignored (ignore list)", lFile.FullName))
             End If
         Next
 
@@ -1680,6 +1680,8 @@ Public Class Scanner
                                 inList = inInfo.GetDirectories.Where(Function(d) (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso isValidDir(d, True)).OrderBy(Function(d) d.Name)
                             Catch
                             End Try
+
+                            ScanForTVFiles(currShowContainer, inInfo.FullName)
 
                             For Each sDirs As DirectoryInfo In inList
                                 ScanForTVFiles(currShowContainer, sDirs.FullName)

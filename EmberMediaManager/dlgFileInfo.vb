@@ -17,8 +17,10 @@
 ' # You should have received a copy of the GNU General Public License            #
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
+
 Imports EmberAPI
 Imports NLog
+
 Public Class dlgFileInfo
 
 #Region "Fields"
@@ -48,7 +50,7 @@ Public Class dlgFileInfo
         SettingDefaults = True
         _FileInfo = fi
         _isEpisode = isEpisode
-        If MyBase.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
+        If ShowDialog() = DialogResult.OK Then
             Return _FileInfo
         Else
             Return Nothing
@@ -105,9 +107,9 @@ Public Class dlgFileInfo
 
     Private Sub btnClose_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClose.Click
         If NeedToRefresh Then
-            Me.DialogResult = System.Windows.Forms.DialogResult.OK
+            Me.DialogResult = DialogResult.OK
         Else
-            Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+            Me.DialogResult = DialogResult.Cancel
         End If
         Me.Close()
     End Sub

@@ -25,7 +25,7 @@
   <string id="24">Lock</string>
   <string id="25">Edit Movie</string>
   <string id="26">Details</string>
-  <string id="27">&gt;&gt; Select Genre &lt;&lt;</string>
+  <string id="27">Select Genre</string>
   <string id="28">Add</string>
   <string id="29">Set</string>
   <string id="30">Remove</string>
@@ -96,7 +96,7 @@
   <string id="95">Display only marked movies.</string>
   <string id="96">Display only locked movies.</string>
   <string id="97">Display only movies from the selected source.</string>
-  <string id="98">Select Genre...</string>
+  <string id="98">Search -/+ 1 year if no search result was found</string>
   <string id="99">Canceling All Processes...</string>
   <string id="100">Actor</string>
   <string id="101">Are you sure you want to continue?</string>
@@ -1079,7 +1079,7 @@
   <string id="987">Confirm</string>
   <string id="988">DAEMON Tools settings (only used for scanning image files (.iso))</string>
   <string id="989">Driveletter</string>
-  <string id="990">Path to DTLite.exe/VCDMount.exe</string>
+  <string id="990">Path to DTAgent.exe/VCDMount.exe</string>
   <string id="991">Actor Thumbs</string>
   <string id="992">Extrafanarts</string>
   <string id="993">Confirm All</string>
@@ -1110,7 +1110,7 @@
   <string id="1018">Season Landscape</string>
   <string id="1019">Season {0} Banner</string>
   <string id="1020">Season {0} Landscape</string>
-  <string id="1021"></string>
+  <string id="1021">Select Tag</string>
   <string id="1022"></string>
   <string id="1023"></string>
   <string id="1024"></string>

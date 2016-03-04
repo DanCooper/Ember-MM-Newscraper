@@ -724,13 +724,15 @@ Public Class MediaInfo
                         If Not String.IsNullOrEmpty(driveletter) AndAlso Not String.IsNullOrEmpty(ToolPath) Then
 
                             'Either DAEMONToolsLite or VirtualCloneDrive (http://www.slysoft.com/en/virtual-clonedrive.html)
-                            If ToolPath.ToUpper.Contains("VCDMOUNT") Then
-                                'First unmount, i.e "C:\Program Files\Elaborate Bytes\VirtualCloneDrive\VCDMount.exe" /u
-                                '  Run_Process(ToolPath, " /u", False, True)
+                            If ToolPath.ToLower.Contains("vcdmount") Then
+                                'Unmount, i.e "C:\Program Files\Elaborate Bytes\VirtualCloneDrive\VCDMount.exe" /u
+                                strCommandUnmount = String.Concat("/u")
+                                Functions.Run_Process(ToolPath, strCommandUnmount, False, True)
+                                'Mount
                                 'Mount ISO on virtual drive, i.e c:\Program Files (x86)\Elaborate Bytes\VirtualCloneDrive\vcdmount.exe U:\isotest\test2iso.ISO
                                 Functions.Run_Process(ToolPath, """" & sPath & """", False, True)
-                                System.Threading.Thread.Sleep(8000)
-                                'Toolpath doesn't contain virtualclonedrive.exe -> assume daemon tools with DS type drive!
+
+                                'Toolpath doesn't contain vcdmount.exe -> assume daemon tools with DS type drive!
                             Else
                                 'Unmount
                                 strCommandUnmount = String.Concat("-unmount ", Regex.Replace(driveletter, ":\\", String.Empty))
@@ -994,6 +996,8 @@ Public Class MediaInfo
             mystring = Text.RegularExpressions.Regex.Replace(AudioChannelstring, "[^/.0-9]", "").Trim
             'now get channel number
             If mystring.Length > 0 Then
+                ' fix for new dolby atmos stream info i.e. "ObjectBased / 8 channels"
+                mystring = mystring.Replace("/", "")
                 If Char.IsDigit(mystring(0)) Then
                     Try
                         'In case of "x/y" this will return x which is highest number, i.e 8/6 -> 8 (highest number always first!)

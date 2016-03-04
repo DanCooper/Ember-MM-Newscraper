@@ -106,7 +106,11 @@ Public Class frmSettingsHolder_Movie
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Private Sub chkGetAdult_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkGetAdultItems.CheckedChanged
+    Private Sub chkGetAdult_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkGetAdultItems.CheckedChanged, chkSearchDeviant.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkSearchDeviant_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkSearchDeviant.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -201,6 +205,7 @@ Public Class frmSettingsHolder_Movie
         chkRating.Text = Master.eLang.GetString(400, "Rating")
         chkRelease.Text = Master.eLang.GetString(57, "Release Date")
         chkRuntime.Text = Master.eLang.GetString(396, "Runtime")
+        chkSearchDeviant.Text = Master.eLang.GetString(98, "Search -/+ 1 year if no search result was found")
         chkStudios.Text = Master.eLang.GetString(226, "Studios")
         chkTagline.Text = Master.eLang.GetString(397, "Tagline")
         chkTitle.Text = Master.eLang.GetString(21, "Title")

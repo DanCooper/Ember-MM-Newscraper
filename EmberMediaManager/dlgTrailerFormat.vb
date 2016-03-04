@@ -43,16 +43,16 @@ Public Class dlgTrailerFormat
     Public Sub New()
         ' This call is required by the designer.
         InitializeComponent()
-        Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
-        Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
-        Me.StartPosition = FormStartPosition.Manual
+        Left = Master.AppPos.Left + (Master.AppPos.Width - Width) \ 2
+        Top = Master.AppPos.Top + (Master.AppPos.Height - Height) \ 2
+        StartPosition = FormStartPosition.Manual
     End Sub
 
     Public Overloads Function ShowDialog(ByVal URL As String) As TrailerLinksContainer
 
-        Me._url = URL
+        _url = URL
 
-        If MyBase.ShowDialog() = Windows.Forms.DialogResult.OK Then
+        If MyBase.ShowDialog() = DialogResult.OK Then
             Return _trailerlinkscontainer
         Else
             Return Nothing
@@ -64,25 +64,25 @@ Public Class dlgTrailerFormat
         prbStatus.Style = ProgressBarStyle.Marquee
         Application.DoEvents()
 
-        Me.bwParseTrailer = New System.ComponentModel.BackgroundWorker
-        Me.bwParseTrailer.WorkerReportsProgress = False
-        Me.bwParseTrailer.WorkerSupportsCancellation = True
-        Me.bwParseTrailer.RunWorkerAsync(New Arguments With {.bType = False, .Parameter = Me._url})
+        bwParseTrailer = New System.ComponentModel.BackgroundWorker
+        bwParseTrailer.WorkerReportsProgress = False
+        bwParseTrailer.WorkerSupportsCancellation = True
+        bwParseTrailer.RunWorkerAsync(New Arguments With {.bType = False, .Parameter = _url})
     End Sub
 
 
     Private Sub bwParseTrailer_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwParseTrailer.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Try
-            If EmberAPI.YouTube.UrlUtils.IsYouTubeURL(Me._url) Then
+            If EmberAPI.YouTube.UrlUtils.IsYouTubeURL(_url) Then
                 _isIMDb = False
                 _isYouTube = True
-                YouTube.GetVideoLinks(Me._url)
+                YouTube.GetVideoLinks(_url)
                 Args.bType = True
-            ElseIf Regex.IsMatch(Me._url, "https?:\/\/.*imdb.*") Then
+            ElseIf Regex.IsMatch(_url, "https?:\/\/.*imdb.*") Then
                 _isIMDb = True
                 _isYouTube = False
-                IMDb.GetVideoLinks(Me._url)
+                IMDb.GetVideoLinks(_url)
                 Args.bType = True
             End If
         Catch ex As Exception
@@ -91,7 +91,7 @@ Public Class dlgTrailerFormat
 
         e.Result = Args.bType
 
-        If Me.bwParseTrailer.CancellationPending Then
+        If bwParseTrailer.CancellationPending Then
             e.Cancel = True
         End If
     End Sub
@@ -99,15 +99,15 @@ Public Class dlgTrailerFormat
     Private Sub bwParseTrailer_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwParseTrailer.RunWorkerCompleted
         If Not e.Cancelled Then
             If Convert.ToBoolean(e.Result) Then
-                If Me._isYouTube Then
+                If _isYouTube Then
                     If YouTube.YouTubeLinks.VideoLinks.Count > 0 Then
-                        Me.pnlStatus.Visible = False
+                        pnlStatus.Visible = False
 
                         lbVideoFormats.DataSource = YouTube.YouTubeLinks.VideoLinks.ToList
                         lbVideoFormats.DisplayMember = "Description"
                         lbVideoFormats.ValueMember = "URL"
 
-                        Me.lbVideoFormats.Enabled = True
+                        lbVideoFormats.Enabled = True
 
                         If YouTube.YouTubeLinks.AudioLinks.Count > 0 Then
                             lbAudioFormats.DataSource = YouTube.YouTubeLinks.AudioLinks.ToList
@@ -120,33 +120,33 @@ Public Class dlgTrailerFormat
                             '    Me.lbFormats.SelectedIndex = 0
                             'End If
 
-                            Me.lbAudioFormats.Enabled = True
+                            lbAudioFormats.Enabled = True
                         End If
 
                         Dim prevQualLink As YouTube.VideoLinkItem
                         prevQualLink = YouTube.YouTubeLinks.VideoLinks.Find(Function(f) f.FormatQuality = Master.eSettings.MovieTrailerPrefVideoQual)
                         If prevQualLink IsNot Nothing Then
-                            Me.lbVideoFormats.SelectedItem = prevQualLink
-                        ElseIf Me.lbVideoFormats.Items.Count = 1 Then
-                            Me.lbVideoFormats.SelectedIndex = 0
+                            lbVideoFormats.SelectedItem = prevQualLink
+                        ElseIf lbVideoFormats.Items.Count = 1 Then
+                            lbVideoFormats.SelectedIndex = 0
                         End If
                     Else
                         MessageBox.Show(Master.eLang.GetString(1170, "Trailer could not be parsed"), Master.eLang.GetString(1134, "Error"), MessageBoxButtons.OK, MessageBoxIcon.Information)
                     End If
-                ElseIf Me._isIMDb Then
+                ElseIf _isIMDb Then
                     If IMDb.VideoLinks.Count > 0 Then
-                        Me.pnlStatus.Visible = False
+                        pnlStatus.Visible = False
 
                         lbVideoFormats.DataSource = IMDb.VideoLinks.Values.ToList
                         lbVideoFormats.DisplayMember = "Description"
                         lbVideoFormats.ValueMember = "URL"
 
                         If IMDb.VideoLinks.ContainsKey(Master.eSettings.MovieTrailerPrefVideoQual) Then
-                            Me.lbVideoFormats.SelectedIndex = IMDb.VideoLinks.IndexOfKey(Master.eSettings.MovieTrailerPrefVideoQual)
-                        ElseIf Me.lbVideoFormats.Items.Count = 1 Then
-                            Me.lbVideoFormats.SelectedIndex = 0
+                            lbVideoFormats.SelectedIndex = IMDb.VideoLinks.IndexOfKey(Master.eSettings.MovieTrailerPrefVideoQual)
+                        ElseIf lbVideoFormats.Items.Count = 1 Then
+                            lbVideoFormats.SelectedIndex = 0
                         End If
-                        Me.lbVideoFormats.Enabled = True
+                        lbVideoFormats.Enabled = True
                     Else
                         MessageBox.Show(Master.eLang.GetString(1170, "Trailer could not be parsed"), Master.eLang.GetString(1134, "Error"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
                     End If
@@ -155,17 +155,17 @@ Public Class dlgTrailerFormat
                 MessageBox.Show(Master.eLang.GetString(1170, "Trailer could not be parsed"), Master.eLang.GetString(1134, "Error"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             End If
         End If
-        Me.pnlStatus.Visible = False
+        pnlStatus.Visible = False
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Close()
+        DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Close()
     End Sub
 
     Private Sub dlgTrailerFormat_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Try
-            Me.SetUp()
+            SetUp()
 
             lbAudioFormats.DataSource = Nothing
             lbVideoFormats.DataSource = Nothing
@@ -181,17 +181,17 @@ Public Class dlgTrailerFormat
     Private Sub lbAudioFormats_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbAudioFormats.SelectedIndexChanged
         Try
             If _isYouTube Then
-                Me._trailerlinkscontainer.AudioURL = DirectCast(lbAudioFormats.SelectedItem, YouTube.AudioLinkItem).URL
+                _trailerlinkscontainer.AudioURL = DirectCast(lbAudioFormats.SelectedItem, YouTube.AudioLinkItem).URL
             ElseIf _isIMDb Then
-                Me._trailerlinkscontainer.AudioURL = String.Empty
+                _trailerlinkscontainer.AudioURL = String.Empty
             End If
 
-            If Me._trailerlinkscontainer.isDash AndAlso Me.lbVideoFormats.SelectedItems.Count > 0 AndAlso Me.lbAudioFormats.SelectedItems.Count > 0 Then
-                Me.OK_Button.Enabled = True
-            ElseIf Not Me._trailerlinkscontainer.isDash Then
-                Me.OK_Button.Enabled = True
+            If _trailerlinkscontainer.isDash AndAlso lbVideoFormats.SelectedItems.Count > 0 AndAlso lbAudioFormats.SelectedItems.Count > 0 Then
+                OK_Button.Enabled = True
+            ElseIf Not _trailerlinkscontainer.isDash Then
+                OK_Button.Enabled = True
             Else
-                Me.OK_Button.Enabled = False
+                OK_Button.Enabled = False
             End If
         Catch
         End Try
@@ -200,47 +200,47 @@ Public Class dlgTrailerFormat
     Private Sub lbVideoFormats_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbVideoFormats.SelectedIndexChanged
         Try
             If _isYouTube Then
-                Me._trailerlinkscontainer.VideoURL = DirectCast(lbVideoFormats.SelectedItem, YouTube.VideoLinkItem).URL
-                Me._trailerlinkscontainer.isDash = DirectCast(lbVideoFormats.SelectedItem, YouTube.VideoLinkItem).isDash
-                If Me._trailerlinkscontainer.isDash Then
-                    Me.lbAudioFormats.Enabled = True
+                _trailerlinkscontainer.VideoURL = DirectCast(lbVideoFormats.SelectedItem, YouTube.VideoLinkItem).URL
+                _trailerlinkscontainer.isDash = DirectCast(lbVideoFormats.SelectedItem, YouTube.VideoLinkItem).isDash
+                If _trailerlinkscontainer.isDash Then
+                    lbAudioFormats.Enabled = True
                 Else
-                    Me.lbAudioFormats.Enabled = False
+                    lbAudioFormats.Enabled = False
                 End If
             ElseIf _isIMDb Then
-                Me._trailerlinkscontainer.VideoURL = DirectCast(lbVideoFormats.SelectedItem, IMDb.VideoLinkItem).URL
-                Me._trailerlinkscontainer.isDash = False
+                _trailerlinkscontainer.VideoURL = DirectCast(lbVideoFormats.SelectedItem, IMDb.VideoLinkItem).URL
+                _trailerlinkscontainer.isDash = False
             End If
 
-            If Me.lbVideoFormats.SelectedItems.Count > 0 Then
-                If Me._trailerlinkscontainer.isDash Then
+            If lbVideoFormats.SelectedItems.Count > 0 Then
+                If _trailerlinkscontainer.isDash Then
                     If lbAudioFormats.SelectedItems.Count > 0 Then
-                        Me.OK_Button.Enabled = True
+                        OK_Button.Enabled = True
                     Else
-                        Me.OK_Button.Enabled = False
+                        OK_Button.Enabled = False
                     End If
                 Else
-                    Me.OK_Button.Enabled = True
+                    OK_Button.Enabled = True
                 End If
             Else
-                Me.OK_Button.Enabled = False
+                OK_Button.Enabled = False
             End If
         Catch
         End Try
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.Close()
+        DialogResult = System.Windows.Forms.DialogResult.OK
+        Close()
     End Sub
 
     Private Sub SetUp()
-        Me.Text = Master.eLang.GetString(923, "Select Format")
-        Me.lblStatus.Text = Master.eLang.GetString(924, "Getting available formats...")
-        Me.gbAudioFormats.Text = Master.eLang.GetString(1333, "Available Audio Formats")
-        Me.gbVideoFormats.Text = Master.eLang.GetString(925, "Available Video Formats")
-        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
-        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+        Text = Master.eLang.GetString(923, "Select Format")
+        lblStatus.Text = Master.eLang.GetString(924, "Getting available formats...")
+        gbAudioFormats.Text = Master.eLang.GetString(1333, "Available Audio Formats")
+        gbVideoFormats.Text = Master.eLang.GetString(925, "Available Video Formats")
+        OK_Button.Text = Master.eLang.GetString(179, "OK")
+        Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
     End Sub
 
 #End Region 'Methods

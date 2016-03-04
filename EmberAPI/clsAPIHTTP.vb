@@ -20,7 +20,6 @@
 
 Imports System.IO
 Imports System.IO.Compression
-Imports System.Text
 Imports System.Net
 Imports System.Drawing
 Imports NLog
