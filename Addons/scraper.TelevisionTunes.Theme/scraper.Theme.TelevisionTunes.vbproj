@@ -43,12 +43,12 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\EmberMM\$(Configuration) - $(Platform)\Modules\</OutputPath>
+    <OutputPath>..\..\EmberMM - $(Configuration) - $(Platform)\Modules\</OutputPath>
     <NoWarn>42353,42354,42355</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <WarningsAsErrors>41998,41999,42004,42016,42017,42018,42019,42020,42021,42022,42024,42025,42026,42029,42030,42031,42032,42036,42099,42104,42105,42106,42107,42108,42109</WarningsAsErrors>
-    <CodeAnalysisLogFile>..\..\EmberMM\$(Configuration) - $(Platform)\Modules\scraper.EmberCore.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisLogFile>..\..\EmberMM - $(Configuration) - $(Platform)\Modules\scraper.EmberCore.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
     <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
@@ -59,13 +59,13 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\EmberMM\$(Configuration) - $(Platform)\Modules\</OutputPath>
+    <OutputPath>..\..\EmberMM - $(Configuration) - $(Platform)\Modules\</OutputPath>
     <Optimize>true</Optimize>
     <NoWarn>42353,42354,42355</NoWarn>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <WarningsAsErrors>41998,41999,42004,42016,42017,42018,42019,42020,42021,42022,42024,42025,42026,42029,42030,42031,42032,42036,42099,42104,42105,42106,42107,42108,42109</WarningsAsErrors>
-    <CodeAnalysisLogFile>..\..\EmberMM\$(Configuration) - $(Platform)\Modules\scraper.EmberCore.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisLogFile>..\..\EmberMM - $(Configuration) - $(Platform)\Modules\scraper.EmberCore.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
     <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
     <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.vb</CodeAnalysisModuleSuppressionsFile>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
@@ -78,7 +78,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\EmberMM\$(Configuration) - $(Platform)\Modules\</OutputPath>
+    <OutputPath>..\..\EmberMM - $(Configuration) - $(Platform)\Modules\</OutputPath>
     <NoWarn>42353,42354,42355</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
@@ -88,7 +88,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\EmberMM\$(Configuration) - $(Platform)\Modules\</OutputPath>
+    <OutputPath>..\..\EmberMM - $(Configuration) - $(Platform)\Modules\</OutputPath>
     <Optimize>true</Optimize>
     <NoWarn>42353,42354,42355</NoWarn>
     <DebugType>pdbonly</DebugType>
@@ -101,7 +101,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\EmberMM\$(Configuration) - $(Platform)\Modules\</OutputPath>
+    <OutputPath>..\..\EmberMM - $(Configuration) - $(Platform)\Modules\</OutputPath>
     <NoWarn>42353,42354,42355</NoWarn>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -111,7 +111,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\EmberMM\$(Configuration) - $(Platform)\Modules\</OutputPath>
+    <OutputPath>..\..\EmberMM - $(Configuration) - $(Platform)\Modules\</OutputPath>
     <Optimize>true</Optimize>
     <NoWarn>42353,42354,42355</NoWarn>
     <DebugType>pdbonly</DebugType>
