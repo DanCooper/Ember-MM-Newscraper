@@ -18,14 +18,11 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System
 Imports System.Windows.Forms
 Imports System.IO
 Imports System.Xml.Serialization
 Imports System.Data.SQLite
-Imports System.Xml.Linq
 Imports NLog
-Imports System.Text.RegularExpressions
 
 ''' <summary>
 ''' Class defining and implementing the interface to the database
@@ -2599,6 +2596,19 @@ Public Class Database
             Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
                 While SQLreader.Read
                     If Not DBNull.Value.Equals(SQLreader("strGenre")) Then _TVDB.TVShow.Genres.Add(SQLreader("strGenre").ToString)
+                End While
+            End Using
+        End Using
+
+        'Studios
+        Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = String.Concat("SELECT studio.strStudio ",
+                                                   "FROM studio ",
+                                                   "INNER JOIN studiolinktvshow ON (studio.idStudio = studiolinktvshow.idStudio) ",
+                                                   "WHERE studiolinktvshow.idShow = ", _TVDB.ID, ";")
+            Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    If Not DBNull.Value.Equals(SQLreader("strStudio")) Then _TVDB.TVShow.Studios.Add(SQLreader("strStudio").ToString)
                 End While
             End Using
         End Using

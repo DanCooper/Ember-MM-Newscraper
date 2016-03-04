@@ -2047,6 +2047,7 @@ Public Class frmMain
                         If Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
                             Using dTrailerSelect As New dlgTrailerSelect
                                 'note msavazzi why is always False with Player? If dTrailerSelect.ShowDialog(DBScrapeMovie, SearchResults, False, True, False) = DialogResult.OK Then
+                                'DanCooper: the VLC COM interface is/was not able to call in multithread
                                 If dTrailerSelect.ShowDialog(DBScrapeMovie, SearchResults, False, True, clsAdvancedSettings.GetBooleanSetting("UseAsVideoPlayer", False, "generic.EmberCore.VLCPlayer")) = DialogResult.OK Then
                                     DBScrapeMovie.Trailer = dTrailerSelect.Result
                                 End If
@@ -10133,6 +10134,15 @@ doCancel:
             pnlCancel.Visible = True
             Refresh()
 
+            If ModulesManager.Instance.QueryAnyGenericIsBusy Then
+                If MessageBox.Show("One or more modules are busy. Do you want to wait until all tasks are finished?", "One or more external Modules are busy", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) = DialogResult.Yes Then
+                    While ModulesManager.Instance.QueryAnyGenericIsBusy
+                        Application.DoEvents()
+                        Threading.Thread.Sleep(50)
+                    End While
+                End If
+            End If
+
             While fScanner.IsBusy OrElse bwLoadMovieInfo.IsBusy _
             OrElse bwLoadMovieSetInfo.IsBusy OrElse bwDownloadPic.IsBusy OrElse bwMovieScraper.IsBusy _
             OrElse bwReload_Movies.IsBusy OrElse bwReload_MovieSets.IsBusy OrElse bwCleanDB.IsBusy _
@@ -10776,7 +10786,7 @@ doCancel:
         Dim strTag As String = String.Empty
         If Not String.IsNullOrEmpty(mnuTagsNew.Text) Then
             strTag = mnuTagsNew.Text.Trim
-        ElseIf Not String.IsNullOrEmpty(mnutagstag.Text.Trim) Then
+        ElseIf Not String.IsNullOrEmpty(mnuTagsTag.Text.Trim) Then
             strTag = mnuTagsTag.Text.Trim
         End If
 
@@ -11122,6 +11132,36 @@ doCancel:
         Dim tContextMenuStrip As ContextMenuStrip = CType(sender, ContextMenuStrip)
         If tContextMenuStrip IsNot Nothing AndAlso tContextMenuStrip.OwnerItem IsNot Nothing AndAlso tContextMenuStrip.OwnerItem.Tag IsNot Nothing Then
             _SelectedContentType = tContextMenuStrip.OwnerItem.Tag.ToString
+        End If
+    End Sub
+
+    Private Sub mnuScrapeMovies_ButtonClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuScrapeMovies.ButtonClick
+        If Master.eSettings.MovieGeneralCustomScrapeButtonEnabled Then
+            Dim ScrapeModifiers As New Structures.ScrapeModifiers
+            Functions.SetScrapeModifiers(ScrapeModifiers, Master.eSettings.MovieGeneralCustomScrapeButtonModifierType, True)
+            CreateScrapeList_Movie(Master.eSettings.MovieGeneralCustomScrapeButtonScrapeType, Master.DefaultOptions_Movie, ScrapeModifiers)
+        Else
+            mnuScrapeMovies.ShowDropDown()
+        End If
+    End Sub
+
+    Private Sub mnuScrapeMovieSets_ButtonClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuScrapeMovieSets.ButtonClick
+        If Master.eSettings.MovieSetGeneralCustomScrapeButtonEnabled Then
+            Dim ScrapeModifiers As New Structures.ScrapeModifiers
+            Functions.SetScrapeModifiers(ScrapeModifiers, Master.eSettings.MovieSetGeneralCustomScrapeButtonModifierType, True)
+            CreateScrapeList_MovieSet(Master.eSettings.MovieSetGeneralCustomScrapeButtonScrapeType, Master.DefaultOptions_MovieSet, ScrapeModifiers)
+        Else
+            mnuScrapeMovieSets.ShowDropDown()
+        End If
+    End Sub
+
+    Private Sub mnuScrapeTVShows_ButtonClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuScrapeTVShows.ButtonClick
+        If Master.eSettings.TVGeneralCustomScrapeButtonEnabled Then
+            Dim ScrapeModifiers As New Structures.ScrapeModifiers
+            Functions.SetScrapeModifiers(ScrapeModifiers, Master.eSettings.TVGeneralCustomScrapeButtonModifierType, True)
+            CreateScrapeList_TV(Master.eSettings.TVGeneralCustomScrapeButtonScrapeType, Master.DefaultOptions_TV, ScrapeModifiers)
+        Else
+            mnuScrapeTVShows.ShowDropDown()
         End If
     End Sub
 
@@ -16995,6 +17035,11 @@ doCancel:
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub ShowSettings()
+        While ModulesManager.Instance.QueryAnyGenericIsBusy
+            Application.DoEvents()
+            Threading.Thread.Sleep(50)
+        End While
+
         Using dSettings As New dlgSettings
             Invoke(New MySettingsShow(AddressOf SettingsShow), dSettings)
         End Using
@@ -17703,7 +17748,7 @@ doCancel:
     End Sub
 
     Private Sub txtSearchMovies_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtSearchMovies.KeyPress
-        e.Handled = Not StringUtils.AlphaNumericOnly(e.KeyChar, True)
+        e.Handled = If(e.KeyChar = Convert.ToChar(39), True, False)
         If e.KeyChar = Microsoft.VisualBasic.ChrW(Keys.Return) Then
             dgvMovies.Focus()
         End If
@@ -17718,7 +17763,7 @@ doCancel:
     End Sub
 
     Private Sub txtSearchMovieSets_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtSearchMovieSets.KeyPress
-        e.Handled = Not StringUtils.AlphaNumericOnly(e.KeyChar, True)
+        e.Handled = If(e.KeyChar = Convert.ToChar(39), True, False)
         If e.KeyChar = Microsoft.VisualBasic.ChrW(Keys.Return) Then
             dgvMovieSets.Focus()
         End If
@@ -17733,7 +17778,7 @@ doCancel:
     End Sub
 
     Private Sub txtSearchShows_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtSearchShows.KeyPress
-        e.Handled = Not StringUtils.AlphaNumericOnly(e.KeyChar, True)
+        e.Handled = If(e.KeyChar = Convert.ToChar(39), True, False)
         If e.KeyChar = Microsoft.VisualBasic.ChrW(Keys.Return) Then
             dgvTVShows.Focus()
         End If

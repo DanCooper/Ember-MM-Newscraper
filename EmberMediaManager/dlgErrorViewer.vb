@@ -18,7 +18,6 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.IO
 Imports System.Text
 Imports System.Net
 Imports EmberAPI
@@ -36,15 +35,15 @@ Public Class dlgErrorViewer
     Public Sub New()
         ' This call is required by the designer.
         InitializeComponent()
-        Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
-        Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
-        Me.StartPosition = FormStartPosition.Manual
+        Left = Master.AppPos.Left + (Master.AppPos.Width - Width) \ 2
+        Top = Master.AppPos.Top + (Master.AppPos.Height - Height) \ 2
+        StartPosition = FormStartPosition.Manual
     End Sub
 
     Public Overloads Sub Show(ByVal owner As System.Windows.Forms.Form)
-        If Me.Visible Then
-            Me.BuildErrorLog()
-            Me.Activate()
+        If Visible Then
+            BuildErrorLog()
+            Activate()
         Else
             MyBase.Owner = owner
             MyBase.Show(owner)
@@ -52,11 +51,11 @@ Public Class dlgErrorViewer
     End Sub
 
     Public Sub UpdateLog()
-        Me.BuildErrorLog()
+        BuildErrorLog()
     End Sub
 
     Private Sub btnCopy_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCopy.Click
-        Select Case Me.btnCopy.Tag.ToString
+        Select Case btnCopy.Tag.ToString
             Case "p"
                 Dim bReturn As String = String.Empty
                 Using wc As New WebClient
@@ -70,12 +69,12 @@ Public Class dlgErrorViewer
                 End Using
 
                 If Not String.IsNullOrEmpty(bReturn) OrElse Not bReturn.ToLower.Contains("error") Then
-                    Me.txtPastebinURL.Text = bReturn
+                    txtPastebinURL.Text = bReturn
                 Else
-                    Me.txtPastebinURL.Text = Master.eLang.GetString(807, "An error occurred when attempting to send data to Pastebin.com")
+                    txtPastebinURL.Text = Master.eLang.GetString(807, "An error occurred when attempting to send data to Pastebin.com")
                 End If
             Case Else
-                Clipboard.SetText(Me.sBuilder.ToString)
+                Clipboard.SetText(sBuilder.ToString)
         End Select
     End Sub
     ''' <summary>
@@ -84,44 +83,44 @@ Public Class dlgErrorViewer
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub BuildErrorLog()
-        Me.btnCopy.Enabled = False
+        btnCopy.Enabled = False
 
-        Me.sBuilder = New StringBuilder
+        sBuilder = New StringBuilder
 
-        Me.sBuilder.AppendLine("================= <Assembly Versions> =================")
-        Me.sBuilder.AppendLine(String.Empty)
-        Me.sBuilder.AppendLine("Platform: x86")
+        sBuilder.AppendLine("================= <Assembly Versions> =================")
+        sBuilder.AppendLine(String.Empty)
+        sBuilder.AppendLine("Platform: x86")
         For Each v As ModulesManager.VersionItem In ModulesManager.VersionList
-            Me.sBuilder.AppendLine(String.Format("{0} (Revision: {1})", v.Name, v.Version))
+            sBuilder.AppendLine(String.Format("{0} (Revision: {1})", v.Name, v.Version))
         Next
-        Me.sBuilder.AppendLine(String.Empty)
-        Me.sBuilder.AppendLine("================= <Assembly Versions> =================")
+        sBuilder.AppendLine(String.Empty)
+        sBuilder.AppendLine("================= <Assembly Versions> =================")
 
-        Me.sBuilder.AppendLine(String.Empty)
-        Me.sBuilder.AppendLine(String.Empty)
+        sBuilder.AppendLine(String.Empty)
+        sBuilder.AppendLine(String.Empty)
 
-        Me.txtError.Text = Me.sBuilder.ToString
+        txtError.Text = sBuilder.ToString
 
-        If Me.txtError.Lines.Count > 50 Then
-            Me.btnCopy.Text = Master.eLang.GetString(805, "Send to PasteBin.com")
-            Me.btnCopy.Tag = "p"
-            Me.btnCopy.Visible = True
-            Me.txtPastebinURL.Visible = True
-            Me.lblPastebinURL.Visible = True
+        If txtError.Lines.Count > 50 Then
+            btnCopy.Text = Master.eLang.GetString(805, "Send to PasteBin.com")
+            btnCopy.Tag = "p"
+            btnCopy.Visible = True
+            txtPastebinURL.Visible = True
+            lblPastebinURL.Visible = True
         Else
-            Me.btnCopy.Text = Master.eLang.GetString(806, "Copy to Clipboard")
-            Me.btnCopy.Tag = "c"
-            Me.btnCopy.Visible = True
-            Me.txtPastebinURL.Visible = False
-            Me.lblPastebinURL.Visible = False
+            btnCopy.Text = Master.eLang.GetString(806, "Copy to Clipboard")
+            btnCopy.Tag = "c"
+            btnCopy.Visible = True
+            txtPastebinURL.Visible = False
+            lblPastebinURL.Visible = False
         End If
 
-        Me.btnCopy.Enabled = True
+        btnCopy.Enabled = True
     End Sub
 
     Private Sub dlgErrorViewer_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.SetUp()
-        Me.BuildErrorLog()
+        SetUp()
+        BuildErrorLog()
     End Sub
 
     Private Sub llblURL_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles llblURL.LinkClicked
@@ -137,15 +136,15 @@ Public Class dlgErrorViewer
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-        Me.Close()
+        Close()
     End Sub
 
     Private Sub SetUp()
-        Me.Text = Master.eLang.GetString(808, "Error Log Viewer")
-        Me.lblInfo.Text = Master.eLang.GetString(809, "Before submitting bug reports, please verify that the bug has not already been reported. You can view a listing of all known bugs here:")
-        Me.llblURL.Text = Master.eLang.GetString(810, "https://sourceforge.net/apps/trac/emm-r/")
-        Me.lblPastebinURL.Text = Master.eLang.GetString(811, "PasteBin URL:")
-        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
+        Text = Master.eLang.GetString(808, "Error Log Viewer")
+        lblInfo.Text = Master.eLang.GetString(809, "Before submitting bug reports, please verify that the bug has not already been reported. You can view a listing of all known bugs here:")
+        llblURL.Text = Master.eLang.GetString(810, "https://sourceforge.net/apps/trac/emm-r/")
+        lblPastebinURL.Text = Master.eLang.GetString(811, "PasteBin URL:")
+        OK_Button.Text = Master.eLang.GetString(179, "OK")
     End Sub
 
 #End Region 'Methods

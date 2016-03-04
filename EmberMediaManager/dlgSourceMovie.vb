@@ -18,12 +18,10 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System
 Imports System.IO
 Imports System.Text.RegularExpressions
 Imports EmberAPI
 Imports NLog
-Imports System.Diagnostics
 
 Public Class dlgSourceMovie
 
@@ -46,45 +44,45 @@ Public Class dlgSourceMovie
     Public Sub New()
         ' This call is required by the designer.
         InitializeComponent()
-        Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
-        Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
-        Me.StartPosition = FormStartPosition.Manual
+        Left = Master.AppPos.Left + (Master.AppPos.Width - Width) \ 2
+        Top = Master.AppPos.Top + (Master.AppPos.Height - Height) \ 2
+        StartPosition = FormStartPosition.Manual
     End Sub
 
-    Public Overloads Function ShowDialog(ByVal id As Integer) As Windows.Forms.DialogResult
-        Me._id = id
+    Public Overloads Function ShowDialog(ByVal id As Integer) As DialogResult
+        _id = id
         btnBrowse.Enabled = False
         chkScanRecursive.Enabled = False
         chkSingle.Enabled = False
         txtSourcePath.Enabled = False
 
-        Return MyBase.ShowDialog()
+        Return ShowDialog()
     End Function
 
-    Public Overloads Function ShowDialog(ByVal strSearchPath As String) As Windows.Forms.DialogResult
-        Me.tmppath = strSearchPath
+    Public Overloads Function ShowDialog(ByVal strSearchPath As String) As DialogResult
+        tmppath = strSearchPath
 
-        Return MyBase.ShowDialog()
+        Return ShowDialog()
     End Function
 
-    Public Overloads Function ShowDialog(ByVal strSearchPath As String, ByVal strFolderPath As String) As Windows.Forms.DialogResult
-        Me.tmppath = strSearchPath
-        Me.txtSourcePath.Text = strFolderPath
+    Public Overloads Function ShowDialog(ByVal strSearchPath As String, ByVal strFolderPath As String) As DialogResult
+        tmppath = strSearchPath
+        txtSourcePath.Text = strFolderPath
 
-        Return MyBase.ShowDialog()
+        Return ShowDialog()
     End Function
 
     Private Sub btnBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowse.Click
         Try
-            With Me.fbdBrowse
-                If Not String.IsNullOrEmpty(Me.txtSourcePath.Text) Then
-                    .SelectedPath = Me.txtSourcePath.Text
+            With fbdBrowse
+                If Not String.IsNullOrEmpty(txtSourcePath.Text) Then
+                    .SelectedPath = txtSourcePath.Text
                 Else
-                    .SelectedPath = Me.tmppath
+                    .SelectedPath = tmppath
                 End If
-                If .ShowDialog = Windows.Forms.DialogResult.OK Then
+                If .ShowDialog = DialogResult.OK Then
                     If Not String.IsNullOrEmpty(.SelectedPath) Then
-                        Me.txtSourcePath.Text = .SelectedPath
+                        txtSourcePath.Text = .SelectedPath
                     End If
                 End If
             End With
@@ -94,24 +92,24 @@ Public Class dlgSourceMovie
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-        Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Close()
+        DialogResult = DialogResult.Cancel
+        Close()
     End Sub
 
     Private Sub cbSourceLanguage_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbSourceLanguage.SelectedIndexChanged
-        Me.OK_Button.Enabled = False
-        Me.tmrWait.Enabled = False
-        Me.tmrWait.Enabled = True
+        OK_Button.Enabled = False
+        tmrWait.Enabled = False
+        tmrWait.Enabled = True
     End Sub
 
     Private Sub CheckConditions()
         Dim isValid As Boolean = False
 
-        If String.IsNullOrEmpty(Me.txtSourceName.Text) Then
+        If String.IsNullOrEmpty(txtSourceName.Text) Then
             pbValid.Image = My.Resources.invalid
         Else
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT idSource FROM moviesource WHERE strName LIKE """, Me.txtSourceName.Text.Trim, """ AND idSource != ", Me._id, ";")
+                SQLcommand.CommandText = String.Concat("SELECT idSource FROM moviesource WHERE strName LIKE """, txtSourceName.Text.Trim, """ AND idSource != ", _id, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         SQLreader.Read()
@@ -129,62 +127,62 @@ Public Class dlgSourceMovie
             End Using
         End If
 
-        If Not String.IsNullOrEmpty(Me.txtSourcePath.Text) AndAlso Directory.Exists(Me.txtSourcePath.Text.Trim) AndAlso _
-            Not String.IsNullOrEmpty(Me.cbSourceLanguage.Text) AndAlso isValid Then
-            Me.OK_Button.Enabled = True
+        If Not String.IsNullOrEmpty(txtSourcePath.Text) AndAlso Directory.Exists(txtSourcePath.Text.Trim) AndAlso
+            Not String.IsNullOrEmpty(cbSourceLanguage.Text) AndAlso isValid Then
+            OK_Button.Enabled = True
         End If
     End Sub
 
     Private Sub chkSingle_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkSingle.CheckedChanged
-        Me.chkUseFolderName.Enabled = Me.chkSingle.Checked
+        chkUseFolderName.Enabled = chkSingle.Checked
 
-        If Not Me.chkSingle.Checked Then Me.chkUseFolderName.Checked = False
+        If Not chkSingle.Checked Then chkUseFolderName.Checked = False
     End Sub
 
     Private Sub chkUseFolderName_CheckedChanged(sender As Object, e As EventArgs) Handles chkUseFolderName.CheckedChanged
         If chkUseFolderName.Checked Then
-            Me.chkGetYear.Text = Master.eLang.GetString(585, "Get year from folder name")
+            chkGetYear.Text = Master.eLang.GetString(585, "Get year from folder name")
         Else
-            Me.chkGetYear.Text = Master.eLang.GetString(584, "Get year from file name")
+            chkGetYear.Text = Master.eLang.GetString(584, "Get year from file name")
         End If
     End Sub
 
     Private Sub dlgSourceMovie_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Me.SetUp()
+        SetUp()
 
-        If Not Me._id = -1 Then
-            Dim s As Database.DBSource = Master.MovieSources.FirstOrDefault(Function(y) y.ID = Me._id)
+        If Not _id = -1 Then
+            Dim s As Database.DBSource = Master.MovieSources.FirstOrDefault(Function(y) y.ID = _id)
             If s IsNot Nothing Then
-                Me.autoName = False
-                If Me.cbSourceLanguage.Items.Count > 0 Then
-                    Me.cbSourceLanguage.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = s.Language).name
+                autoName = False
+                If cbSourceLanguage.Items.Count > 0 Then
+                    cbSourceLanguage.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = s.Language).name
                 End If
-                Me.chkExclude.Checked = s.Exclude
-                Me.chkGetYear.Checked = s.GetYear
-                Me.chkScanRecursive.Checked = s.Recursive
-                Me.chkSingle.Checked = s.IsSingle
-                Me.chkUseFolderName.Checked = s.UseFolderName
-                Me.txtSourceName.Text = s.Name
-                Me.txtSourcePath.Text = s.Path
+                chkExclude.Checked = s.Exclude
+                chkGetYear.Checked = s.GetYear
+                chkScanRecursive.Checked = s.Recursive
+                chkSingle.Checked = s.IsSingle
+                chkUseFolderName.Checked = s.UseFolderName
+                txtSourceName.Text = s.Name
+                txtSourcePath.Text = s.Path
             End If
         Else
-            If Me.cbSourceLanguage.Items.Count > 0 Then
-                Me.cbSourceLanguage.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.MovieGeneralLanguage).name
+            If cbSourceLanguage.Items.Count > 0 Then
+                cbSourceLanguage.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.MovieGeneralLanguage).name
             End If
         End If
     End Sub
 
     Private Sub dlgSourceMovie_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
-        Me.Activate()
-        Me.txtSourcePath.Focus()
+        Activate()
+        txtSourcePath.Focus()
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
 
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                If Not Me._id = -1 Then
-                    SQLcommand.CommandText = String.Concat("UPDATE moviesource SET strName = (?), strPath = (?), bRecursive = (?), bFoldername = (?), bSingle = (?), strLastScan = (?), bExclude = (?), bGetYear = (?) , strLanguage = (?) WHERE idSource =", Me._id, ";")
+                If Not _id = -1 Then
+                    SQLcommand.CommandText = String.Concat("UPDATE moviesource SET strName = (?), strPath = (?), bRecursive = (?), bFoldername = (?), bSingle = (?), strLastScan = (?), bExclude = (?), bGetYear = (?) , strLanguage = (?) WHERE idSource =", _id, ";")
                 Else
                     SQLcommand.CommandText = "INSERT OR REPLACE INTO moviesource (strName, strPath, bRecursive, bFoldername, bSingle, strLastScan, bExclude, bGetYear, strLanguage) VALUES (?,?,?,?,?,?,?,?,?);"
                 End If
@@ -218,79 +216,79 @@ Public Class dlgSourceMovie
 
         Functions.GetListOfSources()
 
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.Close()
+        DialogResult = DialogResult.OK
+        Close()
     End Sub
 
     Private Sub SetUp()
-        Me.Text = Master.eLang.GetString(198, "Movie Source")
-        Me.OK_Button.Text = Master.eLang.GetString(179, "OK")
-        Me.Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
-        Me.lblHint.Text = Master.eLang.GetString(114, "* This MUST be enabled to use extrathumbs and file naming options like movie.tbn, fanart.jpg, etc.")
-        Me.lblSourceName.Text = Master.eLang.GetString(199, "Source Name:")
-        Me.lblSourcePath.Text = Master.eLang.GetString(200, "Source Path:")
-        Me.gbSourceOptions.Text = Master.eLang.GetString(201, "Source Options")
-        Me.lblSourceLanguage.Text = String.Concat(Master.eLang.GetString(1166, "Default Language"), ":")
-        Me.chkExclude.Text = Master.eLang.GetString(164, "Exclude path from library updates")
-        Me.chkGetYear.Text = Master.eLang.GetString(585, "Get year from folder name")
-        Me.chkSingle.Text = Master.eLang.GetString(202, "Movies are in separate folders *")
-        Me.chkUseFolderName.Text = Master.eLang.GetString(203, "Use Folder Name for Initial Listing")
-        Me.chkScanRecursive.Text = Master.eLang.GetString(204, "Scan Recursively")
-        Me.fbdBrowse.Description = Master.eLang.GetString(205, "Select the parent folder for your movie folders/files.")
+        Text = Master.eLang.GetString(198, "Movie Source")
+        OK_Button.Text = Master.eLang.GetString(179, "OK")
+        Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
+        lblHint.Text = Master.eLang.GetString(114, "* This MUST be enabled to use extrathumbs and file naming options like movie.tbn, fanart.jpg, etc.")
+        lblSourceName.Text = Master.eLang.GetString(199, "Source Name:")
+        lblSourcePath.Text = Master.eLang.GetString(200, "Source Path:")
+        gbSourceOptions.Text = Master.eLang.GetString(201, "Source Options")
+        lblSourceLanguage.Text = String.Concat(Master.eLang.GetString(1166, "Default Language"), ":")
+        chkExclude.Text = Master.eLang.GetString(164, "Exclude path from library updates")
+        chkGetYear.Text = Master.eLang.GetString(585, "Get year from folder name")
+        chkSingle.Text = Master.eLang.GetString(202, "Movies are in separate folders *")
+        chkUseFolderName.Text = Master.eLang.GetString(203, "Use Folder Name for Initial Listing")
+        chkScanRecursive.Text = Master.eLang.GetString(204, "Scan Recursively")
+        fbdBrowse.Description = Master.eLang.GetString(205, "Select the parent folder for your movie folders/files.")
 
-        Me.cbSourceLanguage.Items.Clear()
-        Me.cbSourceLanguage.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
+        cbSourceLanguage.Items.Clear()
+        cbSourceLanguage.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
     End Sub
 
     Private Sub tmrName_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrName.Tick
-        Me.tmrWait.Enabled = False
-        Me.CheckConditions()
-        Me.tmrName.Enabled = False
+        tmrWait.Enabled = False
+        CheckConditions()
+        tmrName.Enabled = False
     End Sub
 
     Private Sub tmrPathWait_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrPathWait.Tick
-        If Me.prevPathText = Me.currPathText Then
-            Me.tmrPath.Enabled = True
+        If prevPathText = currPathText Then
+            tmrPath.Enabled = True
         Else
-            If String.IsNullOrEmpty(txtSourceName.Text) OrElse Me.autoName Then
-                Me.txtSourceName.Text = FileUtils.Common.GetDirectory(Me.txtSourcePath.Text)
-                Me.autoName = True
+            If String.IsNullOrEmpty(txtSourceName.Text) OrElse autoName Then
+                txtSourceName.Text = FileUtils.Common.GetDirectory(txtSourcePath.Text)
+                autoName = True
             End If
-            Me.prevPathText = Me.currPathText
+            prevPathText = currPathText
         End If
     End Sub
 
     Private Sub tmrPath_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrPath.Tick
-        Me.tmrPathWait.Enabled = False
-        Me.CheckConditions()
-        Me.tmrPath.Enabled = False
+        tmrPathWait.Enabled = False
+        CheckConditions()
+        tmrPath.Enabled = False
     End Sub
 
     Private Sub tmrWait_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrWait.Tick
-        If Me.prevNameText = Me.currNameText Then
-            Me.tmrName.Enabled = True
+        If prevNameText = currNameText Then
+            tmrName.Enabled = True
         Else
-            Me.prevNameText = Me.currNameText
+            prevNameText = currNameText
         End If
     End Sub
 
     Private Sub txtSourceName_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtSourceName.KeyPress
-        Me.autoName = False
+        autoName = False
     End Sub
 
     Private Sub txtSourceName_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSourceName.TextChanged
-        Me.OK_Button.Enabled = False
-        Me.currNameText = Me.txtSourceName.Text
+        OK_Button.Enabled = False
+        currNameText = txtSourceName.Text
 
-        Me.tmrWait.Enabled = False
-        Me.tmrWait.Enabled = True
+        tmrWait.Enabled = False
+        tmrWait.Enabled = True
     End Sub
 
     Private Sub txtSourcePath_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSourcePath.TextChanged
-        Me.OK_Button.Enabled = False
-        Me.currPathText = Me.txtSourcePath.Text
-        Me.tmrPathWait.Enabled = False
-        Me.tmrPathWait.Enabled = True
+        OK_Button.Enabled = False
+        currPathText = txtSourcePath.Text
+        tmrPathWait.Enabled = False
+        tmrPathWait.Enabled = True
     End Sub
 
 #End Region 'Methods

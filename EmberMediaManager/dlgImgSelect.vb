@@ -23,7 +23,6 @@ Imports NLog
 
 Public Class dlgImgSelect
 
-
 #Region "Fields"
 
     Shared logger As Logger = LogManager.GetCurrentClassLogger()

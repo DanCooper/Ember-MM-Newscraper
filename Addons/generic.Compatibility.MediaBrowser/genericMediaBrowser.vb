@@ -20,7 +20,6 @@
 
 Imports System.Xml.Serialization
 Imports System.IO
-Imports System.Drawing
 Imports EmberAPI
 Imports NLog
 
@@ -38,38 +37,20 @@ Public Class genericMediaBrowser
 
 #Region "Events"
 
-    Public Event GenericEvent(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object)) Implements EmberAPI.Interfaces.GenericModule.GenericEvent
+    Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object)) Implements Interfaces.GenericModule.GenericEvent
 
-    Public Event ModuleSettingsChanged() Implements EmberAPI.Interfaces.GenericModule.ModuleSettingsChanged
+    Public Event ModuleSettingsChanged() Implements Interfaces.GenericModule.ModuleSettingsChanged
 
-    Public Event ModuleSetupChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements EmberAPI.Interfaces.GenericModule.ModuleSetupChanged
+    Public Event ModuleSetupChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.GenericModule.ModuleSetupChanged
 
-    Public Event SetupNeedsRestart() Implements EmberAPI.Interfaces.GenericModule.SetupNeedsRestart
+    Public Event SetupNeedsRestart() Implements Interfaces.GenericModule.SetupNeedsRestart
 
 
 #End Region 'Events
 
 #Region "Properties"
 
-    Public ReadOnly Property ModuleName() As String Implements EmberAPI.Interfaces.GenericModule.ModuleName
-        Get
-            Return "MediaBrowser Compatibility"
-        End Get
-    End Property
-
-    Public ReadOnly Property ModuleType() As System.Collections.Generic.List(Of EmberAPI.Enums.ModuleEventType) Implements EmberAPI.Interfaces.GenericModule.ModuleType
-        Get
-            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.Generic, Enums.ModuleEventType.OnFanartSave_Movie, Enums.ModuleEventType.OnNFOSave_Movie})
-        End Get
-    End Property
-
-    Public ReadOnly Property ModuleVersion() As String Implements EmberAPI.Interfaces.GenericModule.ModuleVersion
-        Get
-            Return FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location).FileVersion.ToString
-        End Get
-    End Property
-
-    Public Property Enabled() As Boolean Implements EmberAPI.Interfaces.GenericModule.Enabled
+    Public Property Enabled() As Boolean Implements Interfaces.GenericModule.Enabled
         Get
             Return _enabled
         End Get
@@ -83,30 +64,54 @@ Public Class genericMediaBrowser
             End If
         End Set
     End Property
+
+    Public ReadOnly Property ModuleName() As String Implements Interfaces.GenericModule.ModuleName
+        Get
+            Return "MediaBrowser Compatibility"
+        End Get
+    End Property
+
+    ReadOnly Property IsBusy() As Boolean Implements Interfaces.GenericModule.IsBusy
+        Get
+            Return False
+        End Get
+    End Property
+
+    Public ReadOnly Property ModuleType() As List(Of Enums.ModuleEventType) Implements Interfaces.GenericModule.ModuleType
+        Get
+            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.Generic, Enums.ModuleEventType.OnFanartSave_Movie, Enums.ModuleEventType.OnNFOSave_Movie})
+        End Get
+    End Property
+
+    Public ReadOnly Property ModuleVersion() As String Implements Interfaces.GenericModule.ModuleVersion
+        Get
+            Return FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location).FileVersion.ToString
+        End Get
+    End Property
+
 #End Region 'Properties
 
 #Region "Methods"
 
-    Public Sub Init(ByVal sAssemblyName As String, ByVal sExecutable As String) Implements EmberAPI.Interfaces.GenericModule.Init
+    Public Sub Init(ByVal sAssemblyName As String, ByVal sExecutable As String) Implements Interfaces.GenericModule.Init
         _AssemblyName = sAssemblyName
-        'Master.eLang.LoadLanguage(Master.eSettings.Language, sExecutable)
     End Sub
 
-    Public Function InjectSetup() As EmberAPI.Containers.SettingsPanel Implements EmberAPI.Interfaces.GenericModule.InjectSetup
+    Public Function InjectSetup() As EmberAPI.Containers.SettingsPanel Implements Interfaces.GenericModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
-        Me.fMediaBrowser = New frmMediaBrowser
-        Me.fMediaBrowser.chkEnabled.Checked = Me._enabled
+        fMediaBrowser = New frmMediaBrowser
+        fMediaBrowser.chkEnabled.Checked = _enabled
         'Me.fMediaBrowser.chkVideoTSParent.Checked = Master.eSettings.VideoTSParent
-        Me.fMediaBrowser.chkMyMovies.Checked = clsAdvancedSettings.GetBooleanSetting("MediaBrowserMyMovie", False)
-        Me.fMediaBrowser.chkBackdrop.Checked = clsAdvancedSettings.GetBooleanSetting("MediaBrowserBackdrop", False)
+        fMediaBrowser.chkMyMovies.Checked = clsAdvancedSettings.GetBooleanSetting("MediaBrowserMyMovie", False)
+        fMediaBrowser.chkBackdrop.Checked = clsAdvancedSettings.GetBooleanSetting("MediaBrowserBackdrop", False)
         SPanel.Name = _name
         SPanel.Text = Master.eLang.GetString(599, "MediaBrowser Compatibility")
         SPanel.Prefix = "MediaBrowser_"
         SPanel.Type = Master.eLang.GetString(802, "Modules")
-        SPanel.ImageIndex = If(Me._enabled, 9, 10)
+        SPanel.ImageIndex = If(_enabled, 9, 10)
         SPanel.Order = 100
-        SPanel.Panel = Me.fMediaBrowser.pnlSettings
-        AddHandler Me.fMediaBrowser.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+        SPanel.Panel = fMediaBrowser.pnlSettings
+        AddHandler fMediaBrowser.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         AddHandler fMediaBrowser.ModuleEnabledChanged, AddressOf Handle_SetupChanged
         AddHandler fMediaBrowser.GenericEvent, AddressOf DeploySyncSettings
         Return SPanel
@@ -118,19 +123,19 @@ Public Class genericMediaBrowser
     End Sub
 
     Private Sub Handle_SetupChanged(ByVal state As Boolean, ByVal difforder As Integer)
-        RaiseEvent ModuleSetupChanged(Me._name, state, difforder)
+        RaiseEvent ModuleSetupChanged(_name, state, difforder)
     End Sub
 
-    Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements EmberAPI.Interfaces.GenericModule.SaveSetup
-        Me.Enabled = Me.fMediaBrowser.chkEnabled.Checked
+    Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
+        Enabled = fMediaBrowser.chkEnabled.Checked
         'Master.eSettings.VideoTSParent = Me.fMediaBrowser.chkVideoTSParent.Checked
         Using settings = New clsAdvancedSettings()
-            settings.SetBooleanSetting("MediaBrowserMyMovie", Me.fMediaBrowser.chkMyMovies.Checked)
-            settings.SetBooleanSetting("MediaBrowserBackdrop", Me.fMediaBrowser.chkBackdrop.Checked)
+            settings.SetBooleanSetting("MediaBrowserMyMovie", fMediaBrowser.chkMyMovies.Checked)
+            settings.SetBooleanSetting("MediaBrowserBackdrop", fMediaBrowser.chkBackdrop.Checked)
         End Using
     End Sub
 
-    Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As EmberAPI.Interfaces.ModuleResult Implements EmberAPI.Interfaces.GenericModule.RunGeneric
+    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
         Dim doContinue As Boolean
         Dim mMovie As Database.DBElement
         Dim _image As Images
@@ -171,7 +176,7 @@ Public Class genericMediaBrowser
     End Sub
 
     Sub SyncSettings(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
-        If mType = Enums.ModuleEventType.SyncModuleSettings AndAlso Me.fMediaBrowser IsNot Nothing Then
+        If mType = Enums.ModuleEventType.SyncModuleSettings AndAlso fMediaBrowser IsNot Nothing Then
             RemoveHandler fMediaBrowser.GenericEvent, AddressOf DeploySyncSettings
             'Me.fMediaBrowser.chkVideoTSParent.Checked = Master.eSettings.VideoTSParent
             AddHandler fMediaBrowser.GenericEvent, AddressOf DeploySyncSettings
@@ -179,7 +184,7 @@ Public Class genericMediaBrowser
     End Sub
 
     Sub DeploySyncSettings(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
-        If Me.fMediaBrowser IsNot Nothing Then
+        If fMediaBrowser IsNot Nothing Then
             'Master.eSettings.VideoTSParent = Me.fMediaBrowser.chkVideoTSParent.Checked
             RaiseEvent GenericEvent(mType, _params)
         End If
@@ -188,7 +193,7 @@ Public Class genericMediaBrowser
 #End Region 'Methods
 
 #Region "Nested Types"
-    <XmlRoot("Title")> _
+    <XmlRoot("Title")>
     Public Class XMLmymovies
         Private _ID As String
         Private _CollectionNumber As String
@@ -214,387 +219,387 @@ Public Class genericMediaBrowser
         Private _Subtitles As New List(Of Subtitle)
         Private _MPAARating As String
 
-        <XmlElement("ID")> _
+        <XmlElement("ID")>
         Public Property ID() As String
             Get
-                Return Me._ID
+                Return _ID
             End Get
             Set(ByVal value As String)
-                Me._ID = value
+                _ID = value
             End Set
         End Property
 
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public ReadOnly Property IDSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._ID)
+                Return Not String.IsNullOrEmpty(_ID)
             End Get
         End Property
 
-        <XmlElement("CollectionNumber")> _
+        <XmlElement("CollectionNumber")>
         Public Property CollectionNumber() As String
             Get
-                Return Me._CollectionNumber
+                Return _CollectionNumber
             End Get
             Set(ByVal value As String)
-                Me._CollectionNumber = value
+                _CollectionNumber = value
             End Set
         End Property
 
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public ReadOnly Property CollectionNumberSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._CollectionNumber)
+                Return Not String.IsNullOrEmpty(_CollectionNumber)
             End Get
         End Property
 
-        <XmlElement("Type")> _
+        <XmlElement("Type")>
         Public Property Type() As String
             Get
-                Return Me._Type
+                Return _Type
             End Get
             Set(ByVal value As String)
-                Me._Type = value
+                _Type = value
             End Set
         End Property
 
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public ReadOnly Property TypeSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._Type)
+                Return Not String.IsNullOrEmpty(_Type)
             End Get
         End Property
 
-        <XmlElement("LocalTitle")> _
+        <XmlElement("LocalTitle")>
         Public Property LocalTitle() As String
             Get
-                Return Me._LocalTitle
+                Return _LocalTitle
             End Get
             Set(ByVal value As String)
-                Me._LocalTitle = value
+                _LocalTitle = value
             End Set
         End Property
 
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public ReadOnly Property LocalTitleSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._LocalTitle)
+                Return Not String.IsNullOrEmpty(_LocalTitle)
             End Get
         End Property
 
-        <XmlElement("OriginalTitle")> _
+        <XmlElement("OriginalTitle")>
         Public Property OriginalTitle() As String
             Get
-                Return Me._OriginalTitle
+                Return _OriginalTitle
             End Get
             Set(ByVal value As String)
-                Me._OriginalTitle = value
+                _OriginalTitle = value
             End Set
         End Property
 
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public ReadOnly Property OriginalTitleSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._OriginalTitle)
+                Return Not String.IsNullOrEmpty(_OriginalTitle)
             End Get
         End Property
 
-        <XmlElement("SortTitle")> _
+        <XmlElement("SortTitle")>
         Public Property SortTitle() As String
             Get
-                Return Me._SortTitle
+                Return _SortTitle
             End Get
             Set(ByVal value As String)
-                Me._SortTitle = value
+                _SortTitle = value
             End Set
         End Property
 
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public ReadOnly Property SortTitleSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._SortTitle)
+                Return Not String.IsNullOrEmpty(_SortTitle)
             End Get
         End Property
 
-        <XmlElement("ForcedTitle")> _
+        <XmlElement("ForcedTitle")>
         Public Property ForcedTitle() As String
             Get
-                Return Me._ForcedTitle
+                Return _ForcedTitle
             End Get
             Set(ByVal value As String)
-                Me._ForcedTitle = value
+                _ForcedTitle = value
             End Set
         End Property
 
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public ReadOnly Property ForcedTitleSpecified() As Boolean
             Get
                 Return True 'Not String.IsNullOrEmpty(Me._ForcedTitle)
             End Get
         End Property
 
-        <XmlElement("IMDBrating")> _
+        <XmlElement("IMDBrating")>
         Public Property IMDBrating() As String
             Get
-                Return Me._IMDBrating
+                Return _IMDBrating
             End Get
             Set(ByVal value As String)
-                Me._IMDBrating = value
+                _IMDBrating = value
             End Set
         End Property
 
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public ReadOnly Property IMDBratingSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._IMDBrating)
+                Return Not String.IsNullOrEmpty(_IMDBrating)
             End Get
         End Property
 
-        <XmlElement("MPAARating")> _
+        <XmlElement("MPAARating")>
         Public Property MPAARating() As String
             Get
-                Return Me._MPAARating
+                Return _MPAARating
             End Get
             Set(ByVal value As String)
-                Me._MPAARating = value
+                _MPAARating = value
             End Set
         End Property
 
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public ReadOnly Property MPAARatingSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._MPAARating)
+                Return Not String.IsNullOrEmpty(_MPAARating)
             End Get
         End Property
 
-        <XmlElement("ProductionYear")> _
+        <XmlElement("ProductionYear")>
         Public Property ProductionYear() As String
             Get
-                Return Me._ProductionYear
+                Return _ProductionYear
             End Get
             Set(ByVal value As String)
-                Me._ProductionYear = value
+                _ProductionYear = value
             End Set
         End Property
 
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public ReadOnly Property ProductionYearSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._ProductionYear)
+                Return Not String.IsNullOrEmpty(_ProductionYear)
             End Get
         End Property
 
-        <XmlElement("Added")> _
+        <XmlElement("Added")>
         Public Property Added() As String
             Get
-                Return Me._Added
+                Return _Added
             End Get
             Set(ByVal value As String)
-                Me._Added = value
+                _Added = value
             End Set
         End Property
 
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public ReadOnly Property AddedSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._Added)
+                Return Not String.IsNullOrEmpty(_Added)
             End Get
         End Property
 
-        <XmlElement("IMDB")> _
+        <XmlElement("IMDB")>
         Public Property IMDB() As String
             Get
-                Return Me._IMDbId
+                Return _IMDbId
             End Get
             Set(ByVal value As String)
-                Me._IMDbId = value
+                _IMDbId = value
             End Set
         End Property
 
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public ReadOnly Property IMDBSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._IMDbId)
+                Return Not String.IsNullOrEmpty(_IMDbId)
             End Get
         End Property
 
-        <XmlElement("IMDbId")> _
+        <XmlElement("IMDbId")>
         Public Property IMDbId() As String
             Get
-                Return Me._IMDbId
+                Return _IMDbId
             End Get
             Set(ByVal value As String)
-                Me._IMDbId = value
+                _IMDbId = value
             End Set
         End Property
 
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public ReadOnly Property _IMDbIdSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._IMDbId)
+                Return Not String.IsNullOrEmpty(_IMDbId)
             End Get
         End Property
 
-        <XmlElement("RunningTime")> _
+        <XmlElement("RunningTime")>
         Public Property RunningTime() As String
             Get
-                Return Me._RunningTime
+                Return _RunningTime
             End Get
             Set(ByVal value As String)
-                Me._RunningTime = value
+                _RunningTime = value
             End Set
         End Property
 
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public ReadOnly Property RunningTimeSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._RunningTime)
+                Return Not String.IsNullOrEmpty(_RunningTime)
             End Get
         End Property
 
-        <XmlElement("TMDbId")> _
+        <XmlElement("TMDbId")>
         Public Property TMDbId() As String
             Get
-                Return Me._TMDbId
+                Return _TMDbId
             End Get
             Set(ByVal value As String)
-                Me._TMDbId = value
+                _TMDbId = value
             End Set
         End Property
 
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public ReadOnly Property TMDbIdSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._TMDbId)
+                Return Not String.IsNullOrEmpty(_TMDbId)
             End Get
         End Property
 
-        <XmlArray("Studios")> _
-        <XmlArrayItem("Studio")> _
+        <XmlArray("Studios")>
+        <XmlArrayItem("Studio")>
         Public Property Studios() As List(Of Studio)
             Get
-                Return Me._Studios
+                Return _Studios
             End Get
             Set(ByVal value As List(Of Studio))
-                Me._Studios = value
+                _Studios = value
             End Set
         End Property
 
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public ReadOnly Property StudiosSpecified() As Boolean
             Get
-                Return (Me._Studios.Count > 0)
+                Return (_Studios.Count > 0)
             End Get
         End Property
 
-        <XmlElement("CDUniverseId")> _
+        <XmlElement("CDUniverseId")>
         Public Property CDUniverseId() As String
             Get
-                Return Me._CDUniverseId
+                Return _CDUniverseId
             End Get
             Set(ByVal value As String)
-                Me._CDUniverseId = value
+                _CDUniverseId = value
             End Set
         End Property
 
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public ReadOnly Property CDUniverseIdSpecified() As Boolean
             Get
                 Return True 'Not String.IsNullOrEmpty(Me._CDUniverseId)
             End Get
         End Property
 
-        <XmlArray("Persons")> _
-        <XmlArrayItem("Person")> _
+        <XmlArray("Persons")>
+        <XmlArrayItem("Person")>
         Public Property Persons() As List(Of Person)
             Get
-                Return Me._Persons
+                Return _Persons
             End Get
             Set(ByVal value As List(Of Person))
-                Me._Persons = value
+                _Persons = value
             End Set
         End Property
 
-        <XmlAttribute("ActorsComplete")> _
+        <XmlAttribute("ActorsComplete")>
         Public ActorsComplete As String
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public ReadOnly Property PersonsSpecified() As Boolean
             Get
-                Return (Me._Persons.Count > 0)
+                Return (_Persons.Count > 0)
             End Get
         End Property
 
-        <XmlArray("Genres")> _
-        <XmlArrayItem("Genre")> _
+        <XmlArray("Genres")>
+        <XmlArrayItem("Genre")>
         Public Property Genres() As List(Of Genre)
             Get
-                Return Me._Genres
+                Return _Genres
             End Get
             Set(ByVal value As List(Of Genre))
-                Me._Genres = value
+                _Genres = value
             End Set
         End Property
 
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public ReadOnly Property GenresSpecified() As Boolean
             Get
-                Return (Me._Genres.Count > 0)
+                Return (_Genres.Count > 0)
             End Get
         End Property
 
-        <XmlElement("Description")> _
+        <XmlElement("Description")>
         Public Property Description() As String
             Get
-                Return Me._Description
+                Return _Description
             End Get
             Set(ByVal value As String)
-                Me._Description = value
+                _Description = value
             End Set
         End Property
 
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public ReadOnly Property DescriptionSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._Description)
+                Return Not String.IsNullOrEmpty(_Description)
             End Get
         End Property
 
-        <XmlArray("AudioTracks")> _
-        <XmlArrayItem("AudioTrack")> _
+        <XmlArray("AudioTracks")>
+        <XmlArrayItem("AudioTrack")>
         Public Property AudioTracks() As List(Of AudioTrack)
             Get
-                Return Me._AudioTracks
+                Return _AudioTracks
             End Get
             Set(ByVal value As List(Of AudioTrack))
-                Me._AudioTracks = value
+                _AudioTracks = value
             End Set
         End Property
 
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public ReadOnly Property AudioTracksSpecified() As Boolean
             Get
-                Return (Me._AudioTracks.Count > 0)
+                Return (_AudioTracks.Count > 0)
             End Get
         End Property
 
-        <XmlArray("Subtitles")> _
-        <XmlArrayItem("Subtitle")> _
+        <XmlArray("Subtitles")>
+        <XmlArrayItem("Subtitle")>
         Public Property Subtitles() As List(Of Subtitle)
             Get
-                Return Me._Subtitles
+                Return _Subtitles
             End Get
             Set(ByVal value As List(Of Subtitle))
-                Me._Subtitles = value
+                _Subtitles = value
             End Set
 
         End Property
 
-        <XmlAttribute("NotPresent")> _
+        <XmlAttribute("NotPresent")>
         Public SubsNotPresent As String
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public ReadOnly Property SubtitlesSpecified() As Boolean
             Get
-                Return (Me._Subtitles.Count > 0)
+                Return (_Subtitles.Count > 0)
             End Get
         End Property
 

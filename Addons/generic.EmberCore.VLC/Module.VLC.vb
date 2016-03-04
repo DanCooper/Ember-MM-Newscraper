@@ -18,9 +18,7 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System
 Imports System.IO
-Imports System.Xml.Serialization
 
 Imports EmberAPI
 
@@ -64,6 +62,12 @@ Public Class VLCPlayer
             If _enabled = value Then Return
             _enabled = value
         End Set
+    End Property
+
+    ReadOnly Property IsBusy() As Boolean Implements Interfaces.GenericModule.IsBusy
+        Get
+            Return False
+        End Get
     End Property
 
     Public ReadOnly Property ModuleName() As String Implements EmberAPI.Interfaces.GenericModule.ModuleName

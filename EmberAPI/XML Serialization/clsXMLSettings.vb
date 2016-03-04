@@ -136,6 +136,9 @@ Partial Public Class clsXMLSettings
     Private _moviegeneralcustommarker2name As String
     Private _moviegeneralcustommarker3name As String
     Private _moviegeneralcustommarker4name As String
+    Private _moviegeneralcustomscrapebuttonenabled As Boolean
+    Private _moviegeneralcustomscrapebuttonmodifiertype As Enums.ModifierType
+    Private _moviegeneralcustomscrapebuttonscrapetype As Enums.ScrapeType
     Private _moviegeneralflaglang As String
     Private _moviegeneralignorelastscan As Boolean
     Private _moviegenerallanguage As String
@@ -260,6 +263,9 @@ Partial Public Class clsXMLSettings
     Private _moviesetfanartprefsize As Enums.MovieFanartSize
     Private _moviesetfanartresize As Boolean
     Private _moviesetfanartwidth As Integer
+    Private _moviesetgeneralcustomscrapebuttonenabled As Boolean
+    Private _moviesetgeneralcustomscrapebuttonmodifiertype As Enums.ModifierType
+    Private _moviesetgeneralcustomscrapebuttonscrapetype As Enums.ScrapeType
     Private _moviesetgeneralmarknew As Boolean
     Private _moviesetgeneralmedialistsorting As List(Of ListSorting)
     Private _moviesetimagescacheenabled As Boolean
@@ -355,6 +361,9 @@ Partial Public Class clsXMLSettings
     Private _tvepisodepropercase As Boolean
     Private _tvgeneralclickscrape As Boolean
     Private _tvgeneralclickscrapeask As Boolean
+    Private _tvgeneralcustomscrapebuttonenabled As Boolean
+    Private _tvgeneralcustomscrapebuttonmodifiertype As Enums.ModifierType
+    Private _tvgeneralcustomscrapebuttonscrapetype As Enums.ScrapeType
     Private _tvgeneralepisodelistsorting As List(Of ListSorting)
     Private _tvgeneralflaglang As String
     Private _tvgeneralignorelastscan As Boolean
@@ -2458,6 +2467,87 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As String)
             Me._moviegeneralcustommarker4name = value
+        End Set
+    End Property
+
+    Public Property MovieGeneralCustomScrapeButtonEnabled() As Boolean
+        Get
+            Return Me._moviegeneralcustomscrapebuttonenabled
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviegeneralcustomscrapebuttonenabled = value
+        End Set
+    End Property
+
+    Public Property MovieGeneralCustomScrapeButtonModifierType() As Enums.ModifierType
+        Get
+            Return Me._moviegeneralcustomscrapebuttonmodifiertype
+        End Get
+        Set(ByVal value As Enums.ModifierType)
+            Me._moviegeneralcustomscrapebuttonmodifiertype = value
+        End Set
+    End Property
+
+    Public Property MovieGeneralCustomScrapeButtonScrapeType() As Enums.ScrapeType
+        Get
+            Return Me._moviegeneralcustomscrapebuttonscrapetype
+        End Get
+        Set(ByVal value As Enums.ScrapeType)
+            Me._moviegeneralcustomscrapebuttonscrapetype = value
+        End Set
+    End Property
+
+    Public Property MovieSetGeneralCustomScrapeButtonEnabled() As Boolean
+        Get
+            Return Me._moviesetgeneralcustomscrapebuttonenabled
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetgeneralcustomscrapebuttonenabled = value
+        End Set
+    End Property
+
+    Public Property MovieSetGeneralCustomScrapeButtonModifierType() As Enums.ModifierType
+        Get
+            Return Me._moviesetgeneralcustomscrapebuttonmodifiertype
+        End Get
+        Set(ByVal value As Enums.ModifierType)
+            Me._moviesetgeneralcustomscrapebuttonmodifiertype = value
+        End Set
+    End Property
+
+    Public Property MovieSetGeneralCustomScrapeButtonScrapeType() As Enums.ScrapeType
+        Get
+            Return Me._moviesetgeneralcustomscrapebuttonscrapetype
+        End Get
+        Set(ByVal value As Enums.ScrapeType)
+            Me._moviesetgeneralcustomscrapebuttonscrapetype = value
+        End Set
+    End Property
+
+    Public Property TVGeneralCustomScrapeButtonEnabled() As Boolean
+        Get
+            Return Me._tvgeneralcustomscrapebuttonenabled
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvgeneralcustomscrapebuttonenabled = value
+        End Set
+    End Property
+
+    Public Property TVGeneralCustomScrapeButtonModifierType() As Enums.ModifierType
+        Get
+            Return Me._tvgeneralcustomscrapebuttonmodifiertype
+        End Get
+        Set(ByVal value As Enums.ModifierType)
+            Me._tvgeneralcustomscrapebuttonmodifiertype = value
+        End Set
+    End Property
+
+    Public Property TVGeneralCustomScrapeButtonScrapeType() As Enums.ScrapeType
+        Get
+            Return Me._tvgeneralcustomscrapebuttonscrapetype
+        End Get
+        Set(ByVal value As Enums.ScrapeType)
+            Me._tvgeneralcustomscrapebuttonscrapetype = value
         End Set
     End Property
 
