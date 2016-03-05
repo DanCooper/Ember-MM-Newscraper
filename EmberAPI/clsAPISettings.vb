@@ -1449,6 +1449,87 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieGeneralCustomScrapeButtonEnabled() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieGeneralCustomScrapeButtonEnabled
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieGeneralCustomScrapeButtonEnabled = value
+        End Set
+    End Property
+
+    Public Property MovieGeneralCustomScrapeButtonModifierType() As Enums.ModifierType
+        Get
+            Return Settings._XMLSettings.MovieGeneralCustomScrapeButtonModifierType
+        End Get
+        Set(ByVal value As Enums.ModifierType)
+            Settings._XMLSettings.MovieGeneralCustomScrapeButtonModifierType = value
+        End Set
+    End Property
+
+    Public Property MovieGeneralCustomScrapeButtonScrapeType() As Enums.ScrapeType
+        Get
+            Return Settings._XMLSettings.MovieGeneralCustomScrapeButtonScrapeType
+        End Get
+        Set(ByVal value As Enums.ScrapeType)
+            Settings._XMLSettings.MovieGeneralCustomScrapeButtonScrapeType = value
+        End Set
+    End Property
+
+    Public Property MovieSetGeneralCustomScrapeButtonEnabled() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieSetGeneralCustomScrapeButtonEnabled
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieSetGeneralCustomScrapeButtonEnabled = value
+        End Set
+    End Property
+
+    Public Property MovieSetGeneralCustomScrapeButtonModifierType() As Enums.ModifierType
+        Get
+            Return Settings._XMLSettings.MovieSetGeneralCustomScrapeButtonModifierType
+        End Get
+        Set(ByVal value As Enums.ModifierType)
+            Settings._XMLSettings.MovieSetGeneralCustomScrapeButtonModifierType = value
+        End Set
+    End Property
+
+    Public Property MovieSetGeneralCustomScrapeButtonScrapeType() As Enums.ScrapeType
+        Get
+            Return Settings._XMLSettings.MovieSetGeneralCustomScrapeButtonScrapeType
+        End Get
+        Set(ByVal value As Enums.ScrapeType)
+            Settings._XMLSettings.MovieSetGeneralCustomScrapeButtonScrapeType = value
+        End Set
+    End Property
+
+    Public Property TVGeneralCustomScrapeButtonEnabled() As Boolean
+        Get
+            Return Settings._XMLSettings.TVGeneralCustomScrapeButtonEnabled
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVGeneralCustomScrapeButtonEnabled = value
+        End Set
+    End Property
+
+    Public Property TVGeneralCustomScrapeButtonModifierType() As Enums.ModifierType
+        Get
+            Return Settings._XMLSettings.TVGeneralCustomScrapeButtonModifierType
+        End Get
+        Set(ByVal value As Enums.ModifierType)
+            Settings._XMLSettings.TVGeneralCustomScrapeButtonModifierType = value
+        End Set
+    End Property
+
+    Public Property TVGeneralCustomScrapeButtonScrapeType() As Enums.ScrapeType
+        Get
+            Return Settings._XMLSettings.TVGeneralCustomScrapeButtonScrapeType
+        End Get
+        Set(ByVal value As Enums.ScrapeType)
+            Settings._XMLSettings.TVGeneralCustomScrapeButtonScrapeType = value
+        End Set
+    End Property
+
     Public Property MovieGeneralMarkNew() As Boolean
         Get
             Return Settings._XMLSettings.MovieGeneralMarkNew
@@ -6867,6 +6948,9 @@ Public Class Settings
         MovieGeneralCustomMarker2Name = String.Empty
         MovieGeneralCustomMarker3Name = String.Empty
         MovieGeneralCustomMarker4Name = String.Empty
+        MovieGeneralCustomScrapeButtonEnabled = False
+        MovieGeneralCustomScrapeButtonModifierType = Enums.ModifierType.All
+        MovieGeneralCustomScrapeButtonScrapeType = Enums.ScrapeType.NewSkip
         MovieGeneralFlagLang = String.Empty
         MovieGeneralIgnoreLastScan = True
         MovieGeneralLanguage = "en"
@@ -6991,6 +7075,9 @@ Public Class Settings
         MovieSetFanartPrefSize = Enums.MovieFanartSize.Any
         MovieSetFanartResize = False
         MovieSetFanartWidth = 0
+        MovieSetGeneralCustomScrapeButtonEnabled = False
+        MovieSetGeneralCustomScrapeButtonModifierType = Enums.ModifierType.All
+        MovieSetGeneralCustomScrapeButtonScrapeType = Enums.ScrapeType.NewSkip
         MovieSetGeneralMarkNew = False
         MovieSetGeneralMediaListSorting = New List(Of ListSorting)
         MovieSetImagesCacheEnabled = False
@@ -7088,6 +7175,9 @@ Public Class Settings
         TVEpisodeProperCase = True
         TVGeneralClickScrape = False
         TVGeneralClickScrapeAsk = False
+        TVGeneralCustomScrapeButtonEnabled = False
+        TVGeneralCustomScrapeButtonModifierType = Enums.ModifierType.All
+        TVGeneralCustomScrapeButtonScrapeType = Enums.ScrapeType.NewSkip
         TVGeneralEpisodeListSorting = New List(Of ListSorting)
         TVGeneralFlagLang = String.Empty
         TVGeneralIgnoreLastScan = True

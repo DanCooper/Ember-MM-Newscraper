@@ -308,6 +308,8 @@ Namespace Kodi
                         codename = "Helix "
                     Case "625"
                         codename = "Isengard "
+                    Case "632"
+                        codename = "Jarvis "
                 End Select
                 Return codename & response.version.major.ToString & "." & response.version.minor
             Catch ex As Exception

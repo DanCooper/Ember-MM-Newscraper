@@ -2823,10 +2823,14 @@ Public Class dlgSettings
             cbMovieExtrafanartsPrefSize.SelectedValue = .MovieExtrafanartsPrefSize
             cbMovieExtrathumbsPrefSize.SelectedValue = .MovieExtrathumbsPrefSize
             cbMovieFanartPrefSize.SelectedValue = .MovieFanartPrefSize
+            cbMovieGeneralCustomScrapeButtonModifierType.SelectedValue = .MovieGeneralCustomScrapeButtonModifierType
+            cbMovieGeneralCustomScrapeButtonScrapeType.SelectedValue = .MovieGeneralCustomScrapeButtonScrapeType
             cbMovieLanguageOverlay.SelectedItem = If(String.IsNullOrEmpty(.MovieGeneralFlagLang), Master.eLang.Disabled, .MovieGeneralFlagLang)
             cbMoviePosterPrefSize.SelectedValue = .MoviePosterPrefSize
             cbMovieSetBannerPrefSize.SelectedValue = .MovieSetBannerPrefSize
             cbMovieSetFanartPrefSize.SelectedValue = .MovieSetFanartPrefSize
+            cbMovieSetGeneralCustomScrapeButtonModifierType.SelectedValue = .MovieSetGeneralCustomScrapeButtonModifierType
+            cbMovieSetGeneralCustomScrapeButtonScrapeType.SelectedValue = .MovieSetGeneralCustomScrapeButtonScrapeType
             cbMovieSetPosterPrefSize.SelectedValue = .MovieSetPosterPrefSize
             cbMovieTrailerMinVideoQual.SelectedValue = .MovieTrailerMinVideoQual
             cbMovieTrailerPrefVideoQual.SelectedValue = .MovieTrailerPrefVideoQual
@@ -2836,6 +2840,8 @@ Public Class dlgSettings
             cbTVAllSeasonsPosterPrefSize.SelectedValue = .TVAllSeasonsPosterPrefSize
             cbTVEpisodeFanartPrefSize.SelectedValue = .TVEpisodeFanartPrefSize
             cbTVEpisodePosterPrefSize.SelectedValue = .TVEpisodePosterPrefSize
+            cbTVGeneralCustomScrapeButtonModifierType.SelectedValue = .TVGeneralCustomScrapeButtonModifierType
+            cbTVGeneralCustomScrapeButtonScrapeType.SelectedValue = .TVGeneralCustomScrapeButtonScrapeType
             cbTVLanguageOverlay.SelectedItem = If(String.IsNullOrEmpty(.TVGeneralFlagLang), Master.eLang.Disabled, .TVGeneralFlagLang)
             cbTVScraperOptionsOrdering.SelectedValue = .TVScraperOptionsOrdering
             cbTVSeasonBannerPrefSize.SelectedValue = .TVSeasonBannerPrefSize
@@ -3225,6 +3231,21 @@ Public Class dlgSettings
             chkTVShowThemeKeepExisting.Checked = .TVShowThemeKeepExisting
             lstFileSystemCleanerWhitelist.Items.AddRange(.FileSystemCleanerWhitelistExts.ToArray)
             lstFileSystemNoStackExts.Items.AddRange(.FileSystemNoStackExts.ToArray)
+            If .MovieGeneralCustomScrapeButtonEnabled Then
+                rbMovieGeneralCustomScrapeButtonEnabled.Checked = True
+            Else
+                rbMovieGeneralCustomScrapeButtonDisabled.Checked = True
+            End If
+            If .MovieSetGeneralCustomScrapeButtonEnabled Then
+                rbMovieSetGeneralCustomScrapeButtonEnabled.Checked = True
+            Else
+                rbMovieSetGeneralCustomScrapeButtonDisabled.Checked = True
+            End If
+            If .TVGeneralCustomScrapeButtonEnabled Then
+                rbTVGeneralCustomScrapeButtonEnabled.Checked = True
+            Else
+                rbTVGeneralCustomScrapeButtonDisabled.Checked = True
+            End If
             tcFileSystemCleaner.SelectedTab = If(.FileSystemExpertCleaner, tpFileSystemCleanerExpert, tpFileSystemCleanerStandard)
             txtGeneralImageFilterPosterMatchRate.Text = .GeneralImageFilterPosterMatchTolerance.ToString
             txtGeneralImageFilterFanartMatchRate.Text = .GeneralImageFilterFanartMatchTolerance.ToString
@@ -3955,6 +3976,101 @@ Public Class dlgSettings
             End Try
             cbGeneralTVEpisodeTheme.Items.AddRange(eT.Cast(Of String)().Select(Function(AL) Path.GetFileNameWithoutExtension(AL).Replace("tvep-", String.Empty)).ToArray)
         End If
+    End Sub
+
+    Private Sub LoadCustomScraperButtonModifierTypes_Movie()
+        Dim items As New Dictionary(Of String, Enums.ModifierType)
+        items.Add(Master.eLang.GetString(70, "All Items"), Enums.ModifierType.All)
+        items.Add(Master.eLang.GetString(973, "Actor Thumbs Only"), Enums.ModifierType.MainActorThumbs)
+        items.Add(Master.eLang.GetString(1060, "Banner Only"), Enums.ModifierType.MainBanner)
+        items.Add(Master.eLang.GetString(1122, "ClearArt Only"), Enums.ModifierType.MainClearArt)
+        items.Add(Master.eLang.GetString(1123, "ClearLogo Only"), Enums.ModifierType.MainClearLogo)
+        items.Add(Master.eLang.GetString(1124, "DiscArt Only"), Enums.ModifierType.MainDiscArt)
+        items.Add(Master.eLang.GetString(975, "Extrafanarts Only"), Enums.ModifierType.MainExtrafanarts)
+        items.Add(Master.eLang.GetString(74, "Extrathumbs Only"), Enums.ModifierType.MainExtrathumbs)
+        items.Add(Master.eLang.GetString(73, "Fanart Only"), Enums.ModifierType.MainFanart)
+        items.Add(Master.eLang.GetString(1061, "Landscape Only"), Enums.ModifierType.MainLandscape)
+        items.Add(Master.eLang.GetString(76, "Meta Data Only"), Enums.ModifierType.MainMeta)
+        items.Add(Master.eLang.GetString(71, "NFO Only"), Enums.ModifierType.MainNFO)
+        items.Add(Master.eLang.GetString(72, "Poster Only"), Enums.ModifierType.MainPoster)
+        items.Add(Master.eLang.GetString(1125, "Theme Only"), Enums.ModifierType.MainTheme)
+        items.Add(Master.eLang.GetString(75, "Trailer Only"), Enums.ModifierType.MainTrailer)
+        cbMovieGeneralCustomScrapeButtonModifierType.DataSource = items.ToList
+        cbMovieGeneralCustomScrapeButtonModifierType.DisplayMember = "Key"
+        cbMovieGeneralCustomScrapeButtonModifierType.ValueMember = "Value"
+    End Sub
+
+    Private Sub LoadCustomScraperButtonModifierTypes_MovieSet()
+        Dim items As New Dictionary(Of String, Enums.ModifierType)
+        items.Add(Master.eLang.GetString(70, "All Items"), Enums.ModifierType.All)
+        items.Add(Master.eLang.GetString(1060, "Banner Only"), Enums.ModifierType.MainBanner)
+        items.Add(Master.eLang.GetString(1122, "ClearArt Only"), Enums.ModifierType.MainClearArt)
+        items.Add(Master.eLang.GetString(1123, "ClearLogo Only"), Enums.ModifierType.MainClearLogo)
+        items.Add(Master.eLang.GetString(1124, "DiscArt Only"), Enums.ModifierType.MainDiscArt)
+        items.Add(Master.eLang.GetString(73, "Fanart Only"), Enums.ModifierType.MainFanart)
+        items.Add(Master.eLang.GetString(1061, "Landscape Only"), Enums.ModifierType.MainLandscape)
+        items.Add(Master.eLang.GetString(71, "NFO Only"), Enums.ModifierType.MainNFO)
+        items.Add(Master.eLang.GetString(72, "Poster Only"), Enums.ModifierType.MainPoster)
+        cbMovieSetGeneralCustomScrapeButtonModifierType.DataSource = items.ToList
+        cbMovieSetGeneralCustomScrapeButtonModifierType.DisplayMember = "Key"
+        cbMovieSetGeneralCustomScrapeButtonModifierType.ValueMember = "Value"
+    End Sub
+
+    Private Sub LoadCustomScraperButtonModifierTypes_TV()
+        Dim items As New Dictionary(Of String, Enums.ModifierType)
+        items.Add(Master.eLang.GetString(70, "All Items"), Enums.ModifierType.All)
+        items.Add(Master.eLang.GetString(973, "Actor Thumbs Only"), Enums.ModifierType.MainActorThumbs)
+        items.Add(Master.eLang.GetString(1060, "Banner Only"), Enums.ModifierType.MainBanner)
+        items.Add(Master.eLang.GetString(1121, "CharacterArt Only"), Enums.ModifierType.MainCharacterArt)
+        items.Add(Master.eLang.GetString(1122, "ClearArt Only"), Enums.ModifierType.MainClearArt)
+        items.Add(Master.eLang.GetString(1123, "ClearLogo Only"), Enums.ModifierType.MainClearLogo)
+        items.Add(Master.eLang.GetString(975, "Extrafanarts Only"), Enums.ModifierType.MainExtrafanarts)
+        items.Add(Master.eLang.GetString(73, "Fanart Only"), Enums.ModifierType.MainFanart)
+        items.Add(Master.eLang.GetString(1061, "Landscape Only"), Enums.ModifierType.MainLandscape)
+        items.Add(Master.eLang.GetString(71, "NFO Only"), Enums.ModifierType.MainNFO)
+        items.Add(Master.eLang.GetString(72, "Poster Only"), Enums.ModifierType.MainPoster)
+        items.Add(Master.eLang.GetString(1125, "Theme Only"), Enums.ModifierType.MainTheme)
+        cbTVGeneralCustomScrapeButtonModifierType.DataSource = items.ToList
+        cbTVGeneralCustomScrapeButtonModifierType.DisplayMember = "Key"
+        cbTVGeneralCustomScrapeButtonModifierType.ValueMember = "Value"
+    End Sub
+
+    Private Sub LoadCustomScraperButtonScrapeTypes()
+        Dim strAll As String = Master.eLang.GetString(68, "All")
+        Dim strFilter As String = Master.eLang.GetString(624, "Current Filter")
+        Dim strMarked As String = Master.eLang.GetString(48, "Marked")
+        Dim strMissing As String = Master.eLang.GetString(40, "Missing Items")
+        Dim strNew As String = Master.eLang.GetString(47, "New")
+
+        Dim strAsk As String = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
+        Dim strAuto As String = Master.eLang.GetString(69, "Automatic (Force Best Match)")
+        Dim strSkip As String = Master.eLang.GetString(1041, "Skip (Skip If More Than One Match)")
+
+        Dim items As New Dictionary(Of String, Enums.ScrapeType)
+        items.Add(String.Concat(strAll, " - ", strAuto), Enums.ScrapeType.AllAuto)
+        items.Add(String.Concat(strAll, " - ", strAsk), Enums.ScrapeType.AllAsk)
+        items.Add(String.Concat(strAll, " - ", strSkip), Enums.ScrapeType.AllSkip)
+        items.Add(String.Concat(strMissing, " - ", strAuto), Enums.ScrapeType.MissingAuto)
+        items.Add(String.Concat(strMissing, " - ", strAsk), Enums.ScrapeType.MissingAsk)
+        items.Add(String.Concat(strMissing, " - ", strSkip), Enums.ScrapeType.MissingSkip)
+        items.Add(String.Concat(strNew, " - ", strAuto), Enums.ScrapeType.NewAuto)
+        items.Add(String.Concat(strNew, " - ", strAsk), Enums.ScrapeType.NewAsk)
+        items.Add(String.Concat(strNew, " - ", strSkip), Enums.ScrapeType.NewSkip)
+        items.Add(String.Concat(strMarked, " - ", strAuto), Enums.ScrapeType.MarkedAuto)
+        items.Add(String.Concat(strMarked, " - ", strAsk), Enums.ScrapeType.MarkedAsk)
+        items.Add(String.Concat(strMarked, " - ", strSkip), Enums.ScrapeType.MarkedSkip)
+        items.Add(String.Concat(strFilter, " - ", strAuto), Enums.ScrapeType.FilterAuto)
+        items.Add(String.Concat(strFilter, " - ", strAsk), Enums.ScrapeType.FilterAsk)
+        items.Add(String.Concat(strFilter, " - ", strSkip), Enums.ScrapeType.FilterSkip)
+        cbMovieGeneralCustomScrapeButtonScrapeType.DataSource = items.ToList
+        cbMovieGeneralCustomScrapeButtonScrapeType.DisplayMember = "Key"
+        cbMovieGeneralCustomScrapeButtonScrapeType.ValueMember = "Value"
+        cbMovieSetGeneralCustomScrapeButtonScrapeType.DataSource = items.ToList
+        cbMovieSetGeneralCustomScrapeButtonScrapeType.DisplayMember = "Key"
+        cbMovieSetGeneralCustomScrapeButtonScrapeType.ValueMember = "Value"
+        cbTVGeneralCustomScrapeButtonScrapeType.DataSource = items.ToList
+        cbTVGeneralCustomScrapeButtonScrapeType.DisplayMember = "Key"
+        cbTVGeneralCustomScrapeButtonScrapeType.ValueMember = "Value"
     End Sub
 
     Private Sub LoadGeneralDateTime()
@@ -4757,6 +4873,9 @@ Public Class dlgSettings
             .MovieGeneralCustomMarker2Name = txtMovieGeneralCustomMarker2.Text
             .MovieGeneralCustomMarker3Name = txtMovieGeneralCustomMarker3.Text
             .MovieGeneralCustomMarker4Name = txtMovieGeneralCustomMarker4.Text
+            .MovieGeneralCustomScrapeButtonEnabled = rbMovieGeneralCustomScrapeButtonEnabled.Checked
+            .MovieGeneralCustomScrapeButtonModifierType = CType(cbMovieGeneralCustomScrapeButtonModifierType.SelectedItem, KeyValuePair(Of String, Enums.ModifierType)).Value
+            .MovieGeneralCustomScrapeButtonScrapeType = CType(cbMovieGeneralCustomScrapeButtonScrapeType.SelectedItem, KeyValuePair(Of String, Enums.ScrapeType)).Value
             .MovieGeneralFlagLang = If(cbMovieLanguageOverlay.Text = Master.eLang.Disabled, String.Empty, cbMovieLanguageOverlay.Text)
             .MovieGeneralIgnoreLastScan = chkMovieGeneralIgnoreLastScan.Checked
             If Not String.IsNullOrEmpty(cbMovieGeneralLang.Text) Then
@@ -4830,6 +4949,9 @@ Public Class dlgSettings
             .MovieSetFanartPrefSize = CType(cbMovieSetFanartPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieFanartSize)).Value
             .MovieSetFanartResize = chkMovieSetFanartResize.Checked
             .MovieSetFanartWidth = If(Not String.IsNullOrEmpty(txtMovieSetFanartWidth.Text), Convert.ToInt32(txtMovieSetFanartWidth.Text), 0)
+            .MovieSetGeneralCustomScrapeButtonEnabled = rbMovieSetGeneralCustomScrapeButtonEnabled.Checked
+            .MovieSetGeneralCustomScrapeButtonModifierType = CType(cbMovieSetGeneralCustomScrapeButtonModifierType.SelectedItem, KeyValuePair(Of String, Enums.ModifierType)).Value
+            .MovieSetGeneralCustomScrapeButtonScrapeType = CType(cbMovieSetGeneralCustomScrapeButtonScrapeType.SelectedItem, KeyValuePair(Of String, Enums.ScrapeType)).Value
             .MovieSetGeneralMarkNew = chkMovieSetGeneralMarkNew.Checked
             .MovieSetGeneralMediaListSorting.Clear()
             .MovieSetGeneralMediaListSorting.AddRange(MovieSetGeneralMediaListSorting)
@@ -4985,6 +5107,9 @@ Public Class dlgSettings
             End If
             .TVGeneralClickScrape = chkTVGeneralClickScrape.Checked
             .TVGeneralClickScrapeAsk = chkTVGeneralClickScrapeAsk.Checked
+            .TVGeneralCustomScrapeButtonEnabled = rbTVGeneralCustomScrapeButtonEnabled.Checked
+            .TVGeneralCustomScrapeButtonModifierType = CType(cbTVGeneralCustomScrapeButtonModifierType.SelectedItem, KeyValuePair(Of String, Enums.ModifierType)).Value
+            .TVGeneralCustomScrapeButtonScrapeType = CType(cbTVGeneralCustomScrapeButtonScrapeType.SelectedItem, KeyValuePair(Of String, Enums.ScrapeType)).Value
             .TVGeneralMarkNewEpisodes = chkTVGeneralMarkNewEpisodes.Checked
             .TVGeneralMarkNewShows = chkTVGeneralMarkNewShows.Checked
             .TVGeneralSeasonListSorting.Clear()
@@ -6728,6 +6853,10 @@ Public Class dlgSettings
 
         LoadGeneralDateTime()
         LoadMovieBannerSizes()
+        LoadCustomScraperButtonModifierTypes_Movie()
+        LoadCustomScraperButtonModifierTypes_MovieSet()
+        LoadCustomScraperButtonModifierTypes_TV()
+        LoadCustomScraperButtonScrapeTypes()
         LoadMovieFanartSizes()
         LoadMoviePosterSizes()
         LoadMovieTrailerQualities()
@@ -7638,6 +7767,66 @@ Public Class dlgSettings
         SetApplyButton(True)
     End Sub
 
+    Private Sub rbMovieGeneralCustomScrapeButtonDisabled_CheckedChanged(sender As Object, e As EventArgs) Handles rbMovieGeneralCustomScrapeButtonDisabled.CheckedChanged
+        If rbMovieGeneralCustomScrapeButtonDisabled.Checked Then
+            cbMovieGeneralCustomScrapeButtonModifierType.Enabled = False
+            cbMovieGeneralCustomScrapeButtonScrapeType.Enabled = False
+            txtMovieGeneralCustomScrapeButtonModifierType.Enabled = False
+            txtMovieGeneralCustomScrapeButtonScrapeType.Enabled = False
+        End If
+        SetApplyButton(True)
+    End Sub
+
+    Private Sub rbMovieGeneralCustomScrapeButtonEnabled_CheckedChanged(sender As Object, e As EventArgs) Handles rbMovieGeneralCustomScrapeButtonEnabled.CheckedChanged
+        If rbMovieGeneralCustomScrapeButtonEnabled.Checked Then
+            cbMovieGeneralCustomScrapeButtonModifierType.Enabled = True
+            cbMovieGeneralCustomScrapeButtonScrapeType.Enabled = True
+            txtMovieGeneralCustomScrapeButtonModifierType.Enabled = True
+            txtMovieGeneralCustomScrapeButtonScrapeType.Enabled = True
+        End If
+        SetApplyButton(True)
+    End Sub
+
+    Private Sub rbMovieSetGeneralCustomScrapeButtonDisabled_CheckedChanged(sender As Object, e As EventArgs) Handles rbMovieSetGeneralCustomScrapeButtonDisabled.CheckedChanged
+        If rbMovieSetGeneralCustomScrapeButtonDisabled.Checked Then
+            cbMovieSetGeneralCustomScrapeButtonModifierType.Enabled = False
+            cbMovieSetGeneralCustomScrapeButtonScrapeType.Enabled = False
+            txtMovieSetGeneralCustomScrapeButtonModifierType.Enabled = False
+            txtMovieSetGeneralCustomScrapeButtonScrapeType.Enabled = False
+        End If
+        SetApplyButton(True)
+    End Sub
+
+    Private Sub rbMovieSetGeneralCustomScrapeButtonEnabled_CheckedChanged(sender As Object, e As EventArgs) Handles rbMovieSetGeneralCustomScrapeButtonEnabled.CheckedChanged
+        If rbMovieSetGeneralCustomScrapeButtonEnabled.Checked Then
+            cbMovieSetGeneralCustomScrapeButtonModifierType.Enabled = True
+            cbMovieSetGeneralCustomScrapeButtonScrapeType.Enabled = True
+            txtMovieSetGeneralCustomScrapeButtonModifierType.Enabled = True
+            txtMovieSetGeneralCustomScrapeButtonScrapeType.Enabled = True
+        End If
+        SetApplyButton(True)
+    End Sub
+
+    Private Sub rbTVGeneralCustomScrapeButtonDisabled_CheckedChanged(sender As Object, e As EventArgs) Handles rbTVGeneralCustomScrapeButtonDisabled.CheckedChanged
+        If rbTVGeneralCustomScrapeButtonDisabled.Checked Then
+            cbTVGeneralCustomScrapeButtonModifierType.Enabled = False
+            cbTVGeneralCustomScrapeButtonScrapeType.Enabled = False
+            txtTVGeneralCustomScrapeButtonModifierType.Enabled = False
+            txtTVGeneralCustomScrapeButtonScrapeType.Enabled = False
+        End If
+        SetApplyButton(True)
+    End Sub
+
+    Private Sub rbTVGeneralCustomScrapeButtonEnabled_CheckedChanged(sender As Object, e As EventArgs) Handles rbTVGeneralCustomScrapeButtonEnabled.CheckedChanged
+        If rbTVGeneralCustomScrapeButtonEnabled.Checked Then
+            cbTVGeneralCustomScrapeButtonModifierType.Enabled = True
+            cbTVGeneralCustomScrapeButtonScrapeType.Enabled = True
+            txtTVGeneralCustomScrapeButtonModifierType.Enabled = True
+            txtTVGeneralCustomScrapeButtonScrapeType.Enabled = True
+        End If
+        SetApplyButton(True)
+    End Sub
+
     Private Sub EnableApplyButton(ByVal sender As Object, ByVal e As EventArgs) Handles _
         cbGeneralDateTime.SelectedIndexChanged,
         cbGeneralMovieSetTheme.SelectedIndexChanged,
@@ -7648,12 +7837,16 @@ Public Class dlgSettings
         cbMovieExtrafanartsPrefSize.SelectedIndexChanged,
         cbMovieExtrathumbsPrefSize.SelectedIndexChanged,
         cbMovieFanartPrefSize.SelectedIndexChanged,
+        cbMovieGeneralCustomScrapeButtonModifierType.SelectedIndexChanged,
+        cbMovieGeneralCustomScrapeButtonScrapeType.SelectedIndexChanged,
         cbMovieGeneralLang.SelectedIndexChanged,
         cbMovieLanguageOverlay.SelectedIndexChanged,
         cbMoviePosterPrefSize.SelectedIndexChanged,
         cbMovieScraperCertLang.SelectedIndexChanged,
         cbMovieSetBannerPrefSize.SelectedIndexChanged,
         cbMovieSetFanartPrefSize.SelectedIndexChanged,
+        cbMovieSetGeneralCustomScrapeButtonModifierType.SelectedIndexChanged,
+        cbMovieSetGeneralCustomScrapeButtonScrapeType.SelectedIndexChanged,
         cbMovieSetPosterPrefSize.SelectedIndexChanged,
         cbMovieTrailerMinVideoQual.SelectedIndexChanged,
         cbTVAllSeasonsBannerPrefType.SelectedIndexChanged,
@@ -7661,6 +7854,8 @@ Public Class dlgSettings
         cbTVAllSeasonsPosterPrefSize.SelectedIndexChanged,
         cbTVEpisodeFanartPrefSize.SelectedIndexChanged,
         cbTVEpisodePosterPrefSize.SelectedIndexChanged,
+        cbTVGeneralCustomScrapeButtonModifierType.SelectedIndexChanged,
+        cbTVGeneralCustomScrapeButtonScrapeType.SelectedIndexChanged,
         cbTVGeneralLang.SelectedIndexChanged,
         cbTVLanguageOverlay.SelectedIndexChanged,
         cbTVScraperOptionsOrdering.SelectedIndexChanged,
