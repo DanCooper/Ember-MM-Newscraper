@@ -1002,11 +1002,11 @@ Public Class frmMain
             If btnFilterSortDateAdded_Movies.Tag.ToString = "DESC" Then
                 btnFilterSortDateAdded_Movies.Tag = "ASC"
                 btnFilterSortDateAdded_Movies.Image = My.Resources.asc
-                dgvMovies.Sort(dgvMovies.Columns("DateAdded"), ComponentModel.ListSortDirection.Ascending)
+                dgvMovies.Sort(dgvMovies.Columns("DateAdded"), System.ComponentModel.ListSortDirection.Ascending)
             Else
                 btnFilterSortDateAdded_Movies.Tag = "DESC"
                 btnFilterSortDateAdded_Movies.Image = My.Resources.desc
-                dgvMovies.Sort(dgvMovies.Columns("DateAdded"), ComponentModel.ListSortDirection.Descending)
+                dgvMovies.Sort(dgvMovies.Columns("DateAdded"), System.ComponentModel.ListSortDirection.Descending)
             End If
 
             SaveFilter_Movies()
@@ -1031,11 +1031,11 @@ Public Class frmMain
             If btnFilterSortDateModified_Movies.Tag.ToString = "DESC" Then
                 btnFilterSortDateModified_Movies.Tag = "ASC"
                 btnFilterSortDateModified_Movies.Image = My.Resources.asc
-                dgvMovies.Sort(dgvMovies.Columns("DateModified"), ComponentModel.ListSortDirection.Ascending)
+                dgvMovies.Sort(dgvMovies.Columns("DateModified"), System.ComponentModel.ListSortDirection.Ascending)
             Else
                 btnFilterSortDateModified_Movies.Tag = "DESC"
                 btnFilterSortDateModified_Movies.Image = My.Resources.desc
-                dgvMovies.Sort(dgvMovies.Columns("DateModified"), ComponentModel.ListSortDirection.Descending)
+                dgvMovies.Sort(dgvMovies.Columns("DateModified"), System.ComponentModel.ListSortDirection.Descending)
             End If
 
             SaveFilter_Movies()
@@ -1060,11 +1060,11 @@ Public Class frmMain
             If btnFilterSortTitle_Movies.Tag.ToString = "ASC" Then
                 btnFilterSortTitle_Movies.Tag = "DSC"
                 btnFilterSortTitle_Movies.Image = My.Resources.desc
-                dgvMovies.Sort(dgvMovies.Columns("SortedTitle"), ComponentModel.ListSortDirection.Descending)
+                dgvMovies.Sort(dgvMovies.Columns("SortedTitle"), System.ComponentModel.ListSortDirection.Descending)
             Else
                 btnFilterSortTitle_Movies.Tag = "ASC"
                 btnFilterSortTitle_Movies.Image = My.Resources.asc
-                dgvMovies.Sort(dgvMovies.Columns("SortedTitle"), ComponentModel.ListSortDirection.Ascending)
+                dgvMovies.Sort(dgvMovies.Columns("SortedTitle"), System.ComponentModel.ListSortDirection.Ascending)
             End If
 
             SaveFilter_Movies()
@@ -1089,11 +1089,11 @@ Public Class frmMain
             If btnFilterSortTitle_Shows.Tag.ToString = "ASC" Then
                 btnFilterSortTitle_Shows.Tag = "DSC"
                 btnFilterSortTitle_Shows.Image = My.Resources.desc
-                dgvTVShows.Sort(dgvTVShows.Columns("SortedTitle"), ComponentModel.ListSortDirection.Descending)
+                dgvTVShows.Sort(dgvTVShows.Columns("SortedTitle"), System.ComponentModel.ListSortDirection.Descending)
             Else
                 btnFilterSortTitle_Shows.Tag = "ASC"
                 btnFilterSortTitle_Shows.Image = My.Resources.asc
-                dgvTVShows.Sort(dgvTVShows.Columns("SortedTitle"), ComponentModel.ListSortDirection.Ascending)
+                dgvTVShows.Sort(dgvTVShows.Columns("SortedTitle"), System.ComponentModel.ListSortDirection.Ascending)
             End If
 
             SaveFilter_Shows()
@@ -1118,11 +1118,11 @@ Public Class frmMain
             If btnFilterSortRating_Movies.Tag.ToString = "DESC" Then
                 btnFilterSortRating_Movies.Tag = "ASC"
                 btnFilterSortRating_Movies.Image = My.Resources.asc
-                dgvMovies.Sort(dgvMovies.Columns("Rating"), ComponentModel.ListSortDirection.Ascending)
+                dgvMovies.Sort(dgvMovies.Columns("Rating"), System.ComponentModel.ListSortDirection.Ascending)
             Else
                 btnFilterSortRating_Movies.Tag = "DESC"
                 btnFilterSortRating_Movies.Image = My.Resources.desc
-                dgvMovies.Sort(dgvMovies.Columns("Rating"), ComponentModel.ListSortDirection.Descending)
+                dgvMovies.Sort(dgvMovies.Columns("Rating"), System.ComponentModel.ListSortDirection.Descending)
             End If
 
             SaveFilter_Movies()
@@ -1147,11 +1147,11 @@ Public Class frmMain
             If btnFilterSortYear_Movies.Tag.ToString = "DESC" Then
                 btnFilterSortYear_Movies.Tag = "ASC"
                 btnFilterSortYear_Movies.Image = My.Resources.asc
-                dgvMovies.Sort(dgvMovies.Columns("Year"), ComponentModel.ListSortDirection.Ascending)
+                dgvMovies.Sort(dgvMovies.Columns("Year"), System.ComponentModel.ListSortDirection.Ascending)
             Else
                 btnFilterSortYear_Movies.Tag = "DESC"
                 btnFilterSortYear_Movies.Image = My.Resources.desc
-                dgvMovies.Sort(dgvMovies.Columns("Year"), ComponentModel.ListSortDirection.Descending)
+                dgvMovies.Sort(dgvMovies.Columns("Year"), System.ComponentModel.ListSortDirection.Descending)
             End If
 
             SaveFilter_Movies()
@@ -10080,7 +10080,7 @@ doCancel:
                 If Master.isWindows Then .dgvTVSeasons.Columns("SeasonText").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                 ResizeTVLists(.dgvTVSeasons.Columns("SeasonText").Index)
 
-                .dgvTVSeasons.Sort(.dgvTVSeasons.Columns("SeasonText"), ComponentModel.ListSortDirection.Ascending)
+                .dgvTVSeasons.Sort(.dgvTVSeasons.Columns("SeasonText"), System.ComponentModel.ListSortDirection.Ascending)
 
                 FillEpisodes(ShowID, Convert.ToInt32(.dgvTVSeasons.Item("Season", 0).Value))
             End With
@@ -15210,7 +15210,7 @@ doCancel:
             End If
 
             If dgvMovies.DataSource IsNot Nothing Then
-                dgvMovies.Sort(dgvMovies.Columns(.GeneralMainFilterSortColumn_Movies), CType(.GeneralMainFilterSortOrder_Movies, ComponentModel.ListSortDirection))
+                dgvMovies.Sort(dgvMovies.Columns(.GeneralMainFilterSortColumn_Movies), CType(.GeneralMainFilterSortOrder_Movies, System.ComponentModel.ListSortDirection))
             End If
         End With
     End Sub
@@ -15223,7 +15223,7 @@ doCancel:
             End If
 
             If dgvMovieSets.DataSource IsNot Nothing Then
-                dgvMovieSets.Sort(dgvMovieSets.Columns(.GeneralMainFilterSortColumn_MovieSets), CType(.GeneralMainFilterSortOrder_MovieSets, ComponentModel.ListSortDirection))
+                dgvMovieSets.Sort(dgvMovieSets.Columns(.GeneralMainFilterSortColumn_MovieSets), CType(.GeneralMainFilterSortOrder_MovieSets, System.ComponentModel.ListSortDirection))
             End If
         End With
     End Sub
@@ -15236,7 +15236,7 @@ doCancel:
             End If
 
             If dgvTVShows.DataSource IsNot Nothing Then
-                dgvTVShows.Sort(dgvTVShows.Columns(.GeneralMainFilterSortColumn_Shows), CType(.GeneralMainFilterSortOrder_Shows, ComponentModel.ListSortDirection))
+                dgvTVShows.Sort(dgvTVShows.Columns(.GeneralMainFilterSortColumn_Shows), CType(.GeneralMainFilterSortOrder_Shows, System.ComponentModel.ListSortDirection))
             End If
         End With
     End Sub
