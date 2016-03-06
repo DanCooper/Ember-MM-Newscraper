@@ -1572,4 +1572,13 @@
   <string id="1481">Select Expor tPath</string>
   <string id="1482">Select VLC Path</string>
   <string id="1483">libvlc.dll not found in path</string>
+  <string id="1484">Remove following plays from watched history?</string>
+  <string id="1485">Start cleaning movie history</string>
+  <string id="1486">This will remove all plays in your watched movie history which were played on a specific time (i.e. 00:00:00)</string>
+  <string id="1487">This will remove all plays in your watched movie history which were registered in a specific timespan (i.e. 3 plays for one movie within 5 minutes, will delete the 2 last plays)</string>
+  <string id="1488">Timespan [minutes]</string>
+  <string id="1489">Timestamp [hh:mm:ss]</string>
+  <string id="1490">Cleaning</string>
+  <string id="1491">Delete history from a specific date</string>
+  <string id="1492">Delete history for a particular timespan</string>
 </strings>

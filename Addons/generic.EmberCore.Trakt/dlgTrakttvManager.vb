@@ -258,6 +258,18 @@ Public Class dlgTrakttvManager
             coltraktWatchlistYear.HeaderText = Master.eLang.GetString(278, "Year")
             coltraktWatchlistListedAt.HeaderText = Master.eLang.GetString(601, "Date Added")
             coltraktWatchlistIMDB.HeaderText = Master.eLang.GetString(1323, "URL")
+
+            'Tab: Cleaning
+            gbtraktCleaning.Text = Master.eLang.GetString(1490, "Cleaning")
+            gbtraktCleaningHistoryTimespan.Text = Master.eLang.GetString(1492, "Delete history for a particular timespan")
+            gbtraktCleaningHistoryTimestamp.Text = Master.eLang.GetString(1491, "Delete history from a specific date")
+            btntraktCleaningHistoryTimespan.Text = Master.eLang.GetString(1485, "Start cleaning movie history")
+            btntraktCleaningHistoryTimestamp.Text = Master.eLang.GetString(1485, "Start cleaning movie history")
+            lbltraktCleaningHistoryTimespan.Text = Master.eLang.GetString(1488, "Timespan [minutes]")
+            lbltraktCleaningHistoryTimespanDesc.Text = Master.eLang.GetString(1487, "This will remove all plays in your watched movie history which were registered in a specific timespan (i.e. 3 plays for one movie within 5 minutes, will delete the 2 last plays)")
+            lbltraktCleaningHistoryTimestampDesc.Text = Master.eLang.GetString(1486, "This will remove all plays in your watched movie history which were played on a specific time (i.e. 00:00:00)")
+            lbltraktCleaningHistoryTimestamp.Text = Master.eLang.GetString(1489, "Timestamp [hh:mm:ss]")
+ 
             'load existing movies from database into datatable
             Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT * FROM movielist ",
                                                                 "ORDER BY ListTitle COLLATE NOCASE;"))
@@ -1432,42 +1444,47 @@ Public Class dlgTrakttvManager
     ''' </remarks>
     Private Sub SaveEpisodePlaycount()
 
-        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-            Dim i As Integer = 0
-            'watched shows at trakt.tv
-            For Each watchedshow In myWatchedEpisodes
-                i += 1
+
+        Dim i As Integer = 0
+        Dim tmpDBTVEpisode As Database.DBElement = Nothing
+        Dim myDateString As String = String.Empty
+        Dim myDate As DateTime
+        'watched shows at trakt.tv
+        For Each watchedshow In myWatchedEpisodes
+            i += 1
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 'every season of watched show
                 For Each watchedseason In watchedshow.Seasons
                     'every episode of watched season
                     For Each watchedepisode In watchedseason.Episodes
                         For Each srow As DataRow In dtEpisodes.Rows
+
                             'search for episode in Emberdatabase and update playcount/lastplayed value
                             If watchedshow.Show.Ids.Tvdb.ToString = srow.Item("TVDB").ToString AndAlso watchedseason.Number.ToString = srow.Item("Season").ToString AndAlso watchedepisode.Number.ToString = srow.Item("Episode").ToString Then
-                                Dim tmpTVEpisode As Database.DBElement = Master.DB.LoadTVEpisodeFromDB(CLng(srow.Item("idEpisode")), True)
-                                tmpTVEpisode.TVEpisode.Playcount = watchedepisode.Plays
+                                'Dim tmpTVEpisode As Database.DBElement = Master.DB.LoadTVEpisodeFromDB(CLng(srow.Item("idEpisode")), True)
+                                tmpDBTVEpisode = Master.DB.LoadTVEpisodeFromDB(Convert.ToInt64(srow.Item("idEpisode")), True)
+                                tmpDBTVEpisode.TVEpisode.Playcount = watchedepisode.Plays
                                 'date is not user friendly formatted, so change format a bit
                                 '2014-09-01T09:10:11.000Z (original)
                                 'new format here: 2014-09-01  09:10:11
-                                Dim myDateString As String = watchedepisode.WatchedAt
-                                Dim myDate As DateTime
-                                Dim isDate As Boolean = DateTime.TryParse(myDateString, myDate)
-                                If isDate Then
-                                    tmpTVEpisode.TVEpisode.LastPlayed = myDate.ToString("yyyy-MM-dd HH:mm:ss")
+                                myDateString = watchedepisode.WatchedAt
+                                If DateTime.TryParse(myDateString, myDate) Then
+                                    tmpDBTVEpisode.TVEpisode.LastPlayed = myDate.ToString("yyyy-MM-dd HH:mm:ss")
                                 End If
-                                Master.DB.SaveTVEpisodeToDB(tmpTVEpisode, False, True, True, False, False)
+                                Master.DB.SaveTVEpisodeToDB(tmpDBTVEpisode, False, True, True, False, False)
                                 'Updated episode in Ember, next episode please!
                                 Exit For
                             End If
                         Next
                     Next
                 Next
-                ' Invoke to update UI from thread...
-                prgtraktPlaycount.Invoke(New UpdateProgressBarDelegate(AddressOf UpdateProgressBar), i)
-                Threading.Thread.Sleep(10)
-            Next
-            SQLtransaction.Commit()
-        End Using
+                SQLtransaction.Commit()
+            End Using
+            ' Invoke to update UI from thread...
+            prgtraktPlaycount.Invoke(New UpdateProgressBarDelegate(AddressOf UpdateProgressBar), i)
+            Threading.Thread.Sleep(10)
+        Next
+
     End Sub
 
 
@@ -3479,7 +3496,124 @@ Public Class dlgTrakttvManager
 
 #End Region
 
+
+#Region "Trakt.tv Cleaning"
+
+    ''' <summary>
+    ''' Remove plays on trakt.tv movie history for a specific timespan
+    ''' </summary>
+    ''' <param name="sender">"Start cleaning movie history"-Button in Form</param>
+    ''' <remarks>
+    ''' 2016/03/06 Cocotus - First implementation
+    ''' </remarks>
+    Private Sub btntraktCleaningHistoryTimespan_Click(sender As Object, e As EventArgs) Handles btntraktCleaningHistoryTimespan.Click
+        Dim timespan As Integer
+        If Int32.TryParse(cbotraktCleaningHistoryTimespan.Text, timespan) Then
+            RemoveInvalidPlaysFromHistory(timespan, String.Empty)
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Remove plays on trakt.tv movie history for a specific timestamp
+    ''' </summary>
+    ''' <param name="sender">"Start cleaning movie history"-Button in Form</param>
+    ''' <remarks>
+    ''' 2016/03/06 Cocotus - First implementation
+    ''' </remarks>
+    Private Sub btntraktCleaningHistoryTimestamp_Click(sender As Object, e As EventArgs) Handles btntraktCleaningHistoryTimestamp.Click
+        RemoveInvalidPlaysFromHistory(Nothing, txttraktCleaningHistoryTimestamp.Text)
+    End Sub
+
+
+    ''' <summary>
+    ''' Remove plays on trakt.tv movie history based on given timespan or timestamp
+    ''' </summary>
+    ''' <param name="playsTimeRange">Timeintervall in minute, i.e. "5" -> all plays from a movie within 5minute intervall will be deleted except first play from that intervall</param>
+    ''' <param name="playsTimeStamp">String in format "hh:mm:ss", i.e. "00:00:00" -> all plays at midnight will be removed if the movie has more than one play</param>
+    ''' <remarks>
+    ''' 2016/03/06 Cocotus - First implementation
+    ''' Idea: http://support.trakt.tv/forums/188762-general/suggestions/7134014-delete-history-from-a-specific-date
+    ''' This is used to clean user watched movie history from duplicate plays (i.e. sent because of a buggy trakt app)
+    ''' </remarks>
+    Private Sub RemoveInvalidPlaysFromHistory(ByVal playsTimeRange As Integer, ByVal playsTimeStamp As String)
+        Dim response As String = ""
+        Dim IDOfDuplicate As New Dictionary(Of String, String)
+        Dim IDNameOfDuplicate As New Dictionary(Of String, String)
+
+        ' Use new Trakttv wrapper class to get watched data!
+        traktToken = LoginToTrakt(traktUser, traktPassword, traktToken)
+        If Not String.IsNullOrEmpty(traktToken) Then
+            Dim traktTraktMovieHistory As List(Of TraktAPI.Model.TraktMovieHistory) = TrakttvAPI.GetUsersMovieWatchedHistory(traktUser)
+            If traktTraktMovieHistory IsNot Nothing Then
+                Dim duplicates = traktTraktMovieHistory.GroupBy(Function(i) i.Movie.Ids.Trakt).Where(Function(x) x.Count() > 1).[Select](Function(x) x).ToList()
+                Dim tmpdate As DateTime = Nothing
+                For Each group In duplicates
+                    If group.Count >= 2 Then
+                        'sort by oldest watchdate on top
+                        Dim sortedWatchedTimes = group.OrderBy(Function(z) z.WatchedAt_DateTime).ToList()
+                        logger.Info("Movie: {0} has been watched {1} times. First watched: {2}", CStr(sortedWatchedTimes(0).Movie.Title), group.Count, sortedWatchedTimes(0).WatchedAt_DateTime)
+                        'compare timespan between each watched instance of movie and if timespan to short mark entry as duplicate
+                        For i = 1 To sortedWatchedTimes.Count - 1
+                            logger.Info("Movie: {0} , calculated timespan: {1}", CStr(sortedWatchedTimes(i).Movie.Title), (sortedWatchedTimes(i).WatchedAt_DateTime - sortedWatchedTimes(i - 1).WatchedAt_DateTime).TotalMinutes)
+                            If Not String.IsNullOrEmpty(playsTimeStamp) Then
+                                'Remove all plays on a specific timestamp
+                                If IDOfDuplicate.ContainsKey(CStr(sortedWatchedTimes(i).Movie.Ids.Trakt)) = False AndAlso (sortedWatchedTimes(i).WatchedAt_DateTime.ToString.EndsWith(playsTimeStamp)) Then
+                                    IDOfDuplicate.Add(CStr(sortedWatchedTimes(i).Movie.Ids.Trakt), sortedWatchedTimes(i).HistoryID)
+                                    IDNameOfDuplicate.Add(CStr(sortedWatchedTimes(i).Movie.Title), sortedWatchedTimes(i).WatchedAt_DateTime.ToString)
+                                End If
+                            Else
+                                'Timespan mode, i.e. remove all plays within 5minute range
+                                If IDOfDuplicate.ContainsKey(CStr(sortedWatchedTimes(i).Movie.Ids.Trakt)) = False AndAlso ((sortedWatchedTimes(i).WatchedAt_DateTime - sortedWatchedTimes(i - 1).WatchedAt_DateTime).TotalMinutes < playsTimeRange) Then
+                                    IDOfDuplicate.Add(CStr(sortedWatchedTimes(i).Movie.Ids.Trakt), sortedWatchedTimes(i).HistoryID)
+                                    IDNameOfDuplicate.Add(CStr(sortedWatchedTimes(i).Movie.Title), sortedWatchedTimes(i).WatchedAt_DateTime.ToString)
+                                End If
+                            End If
+                        Next
+                    End If
+                Next
+            Else
+                logger.Info("Movie history could not be scraped from trakt.tv!")
+                Exit Sub
+            End If
+        End If
+
+        If IDOfDuplicate.Count > 0 Then
+            response = String.Format("{0}{1}", Master.eLang.GetString(1484, "Remove following plays from watched history?"), Environment.NewLine)
+            For Each entry In IDNameOfDuplicate
+                response = String.Format("{0}{1}: {2}{3}{4}: {5}{6}", response, Master.eLang.GetString(1379, "Movie"), entry.Key, Environment.NewLine, Master.eLang.GetString(981, "Watched"), entry.Value, Environment.NewLine)
+            Next
+            ' Use new Trakttv wrapper class to get watched data!
+            traktToken = LoginToTrakt(traktUser, traktPassword, traktToken)
+            If Not String.IsNullOrEmpty(traktToken) Then
+                Dim result As DialogResult = MessageBox.Show(response, Master.eLang.GetString(356, "Warning"), MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)
+                If result = Windows.Forms.DialogResult.Yes Then
+                    Dim tmpresponse As String = String.Empty
+                    Dim index As Integer = -1
+                    For Each itemtodelete In IDOfDuplicate
+                        index = index + 1
+                        Dim tmpTraktItemToDELETE As New TraktAPI.Model.TraktSyncHistoryID
+                        tmpTraktItemToDELETE.Ids = CType((itemtodelete.Value), Integer?)
+                        Dim traktResponse = TrakttvAPI.RemoveHistoryIDFromWatchedHistory(tmpTraktItemToDELETE)
+                        logger.Info("Deleted Item: " & IDNameOfDuplicate.ElementAt(index).Key)
+                        tmpresponse = String.Format("{0}{1}: {2}{3}{4}: {5}{6}", tmpresponse, Master.eLang.GetString(1379, "Movie"), IDNameOfDuplicate.ElementAt(index).Key, Environment.NewLine, Master.eLang.GetString(981, "Watched"), IDNameOfDuplicate.ElementAt(index).Value, Environment.NewLine)
+                    Next
+                    response = String.Format("{0}:{1}{2}", Master.eLang.GetString(1407, "Deleted"), Environment.NewLine, tmpresponse)
+                Else
+                    Exit Sub
+                End If
+            End If
+        Else
+            response = Master.eLang.GetString(833, "No Matches Found")
+        End If
+        MessageBox.Show(response, Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1)
+    End Sub
+#End Region
+
 #End Region 'Methods
+
+
+
+
 
 End Class
 
