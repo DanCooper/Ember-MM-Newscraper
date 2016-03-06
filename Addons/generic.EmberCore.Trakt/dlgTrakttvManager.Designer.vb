@@ -23,13 +23,13 @@ Partial Class dlgTrakttvManager
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgTrakttvManager))
-        Dim DataGridViewCellStyle15 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle16 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle17 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle18 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle19 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle20 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle21 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.pnlTop = New System.Windows.Forms.Panel()
         Me.lblTopDetails = New System.Windows.Forms.Label()
@@ -183,6 +183,18 @@ Partial Class dlgTrakttvManager
         Me.coltraktListGenres = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.coltraktListIMDB = New System.Windows.Forms.DataGridViewLinkColumn()
         Me.coltraktListTrailer = New System.Windows.Forms.DataGridViewLinkColumn()
+        Me.tbptraktCleaning = New System.Windows.Forms.TabPage()
+        Me.gbtraktCleaning = New System.Windows.Forms.GroupBox()
+        Me.gbtraktCleaningHistoryTimespan = New System.Windows.Forms.GroupBox()
+        Me.lbltraktCleaningHistoryTimespanDesc = New System.Windows.Forms.Label()
+        Me.cbotraktCleaningHistoryTimespan = New System.Windows.Forms.ComboBox()
+        Me.lbltraktCleaningHistoryTimespan = New System.Windows.Forms.Label()
+        Me.btntraktCleaningHistoryTimespan = New System.Windows.Forms.Button()
+        Me.gbtraktCleaningHistoryTimestamp = New System.Windows.Forms.GroupBox()
+        Me.lbltraktCleaningHistoryTimestamp = New System.Windows.Forms.Label()
+        Me.txttraktCleaningHistoryTimestamp = New System.Windows.Forms.TextBox()
+        Me.lbltraktCleaningHistoryTimestampDesc = New System.Windows.Forms.Label()
+        Me.btntraktCleaningHistoryTimestamp = New System.Windows.Forms.Button()
         Me.pnlBottom = New System.Windows.Forms.Panel()
         Me.tblBottom = New System.Windows.Forms.TableLayoutPanel()
         Me.pnlTop.SuspendLayout()
@@ -222,6 +234,10 @@ Partial Class dlgTrakttvManager
         Me.gbtraktListsViewerStep2.SuspendLayout()
         Me.gbtraktListsViewerStep1.SuspendLayout()
         CType(Me.dgvtraktList, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.tbptraktCleaning.SuspendLayout()
+        Me.gbtraktCleaning.SuspendLayout()
+        Me.gbtraktCleaningHistoryTimespan.SuspendLayout()
+        Me.gbtraktCleaningHistoryTimestamp.SuspendLayout()
         Me.pnlBottom.SuspendLayout()
         Me.tblBottom.SuspendLayout()
         Me.SuspendLayout()
@@ -400,6 +416,7 @@ Partial Class dlgTrakttvManager
         Me.tbTrakt.Controls.Add(Me.tbptraktListsSync)
         Me.tbTrakt.Controls.Add(Me.tbptraktComments)
         Me.tbTrakt.Controls.Add(Me.tbptraktListViewer)
+        Me.tbTrakt.Controls.Add(Me.tbptraktCleaning)
         Me.tbTrakt.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tbTrakt.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.tbTrakt.Location = New System.Drawing.Point(0, 0)
@@ -549,8 +566,8 @@ Partial Class dlgTrakttvManager
         '
         'coltraktPlaycountPlayed
         '
-        DataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.coltraktPlaycountPlayed.DefaultCellStyle = DataGridViewCellStyle15
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.coltraktPlaycountPlayed.DefaultCellStyle = DataGridViewCellStyle1
         Me.coltraktPlaycountPlayed.Frozen = True
         Me.coltraktPlaycountPlayed.HeaderText = "Played"
         Me.coltraktPlaycountPlayed.Name = "coltraktPlaycountPlayed"
@@ -567,8 +584,8 @@ Partial Class dlgTrakttvManager
         '
         'coltraktPlaycountProgress
         '
-        DataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.coltraktPlaycountProgress.DefaultCellStyle = DataGridViewCellStyle16
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.coltraktPlaycountProgress.DefaultCellStyle = DataGridViewCellStyle2
         Me.coltraktPlaycountProgress.HeaderText = "Progress"
         Me.coltraktPlaycountProgress.Name = "coltraktPlaycountProgress"
         Me.coltraktPlaycountProgress.ReadOnly = True
@@ -576,12 +593,12 @@ Partial Class dlgTrakttvManager
         '
         'coltraktPlaycountRating
         '
-        DataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle17.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        DataGridViewCellStyle17.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle17.Format = "N0"
-        DataGridViewCellStyle17.NullValue = Nothing
-        Me.coltraktPlaycountRating.DefaultCellStyle = DataGridViewCellStyle17
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle3.Format = "N0"
+        DataGridViewCellStyle3.NullValue = Nothing
+        Me.coltraktPlaycountRating.DefaultCellStyle = DataGridViewCellStyle3
         Me.coltraktPlaycountRating.HeaderText = "Rating"
         Me.coltraktPlaycountRating.Name = "coltraktPlaycountRating"
         Me.coltraktPlaycountRating.Width = 90
@@ -1158,8 +1175,8 @@ Partial Class dlgTrakttvManager
         Me.dgvMovies.AllowUserToDeleteRows = False
         Me.dgvMovies.AllowUserToResizeColumns = False
         Me.dgvMovies.AllowUserToResizeRows = False
-        DataGridViewCellStyle18.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle18
+        DataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle4
         Me.dgvMovies.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
         Me.dgvMovies.BackgroundColor = System.Drawing.Color.White
         Me.dgvMovies.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
@@ -1890,8 +1907,8 @@ Partial Class dlgTrakttvManager
         '
         'coltraktListYear
         '
-        DataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.coltraktListYear.DefaultCellStyle = DataGridViewCellStyle19
+        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.coltraktListYear.DefaultCellStyle = DataGridViewCellStyle5
         Me.coltraktListYear.Frozen = True
         Me.coltraktListYear.HeaderText = "Year"
         Me.coltraktListYear.Name = "coltraktListYear"
@@ -1900,9 +1917,9 @@ Partial Class dlgTrakttvManager
         '
         'coltraktListRating
         '
-        DataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle20.NullValue = Nothing
-        Me.coltraktListRating.DefaultCellStyle = DataGridViewCellStyle20
+        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle6.NullValue = Nothing
+        Me.coltraktListRating.DefaultCellStyle = DataGridViewCellStyle6
         Me.coltraktListRating.HeaderText = "Rating"
         Me.coltraktListRating.Name = "coltraktListRating"
         Me.coltraktListRating.ReadOnly = True
@@ -1917,8 +1934,8 @@ Partial Class dlgTrakttvManager
         '
         'coltraktListIMDB
         '
-        DataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.coltraktListIMDB.DefaultCellStyle = DataGridViewCellStyle21
+        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.coltraktListIMDB.DefaultCellStyle = DataGridViewCellStyle7
         Me.coltraktListIMDB.HeaderText = "IMDB"
         Me.coltraktListIMDB.Name = "coltraktListIMDB"
         Me.coltraktListIMDB.ReadOnly = True
@@ -1931,6 +1948,138 @@ Partial Class dlgTrakttvManager
         Me.coltraktListTrailer.Name = "coltraktListTrailer"
         Me.coltraktListTrailer.ReadOnly = True
         Me.coltraktListTrailer.Text = "Link"
+        '
+        'tbptraktCleaning
+        '
+        Me.tbptraktCleaning.Controls.Add(Me.gbtraktCleaning)
+        Me.tbptraktCleaning.Location = New System.Drawing.Point(4, 27)
+        Me.tbptraktCleaning.Name = "tbptraktCleaning"
+        Me.tbptraktCleaning.Padding = New System.Windows.Forms.Padding(3)
+        Me.tbptraktCleaning.Size = New System.Drawing.Size(1099, 489)
+        Me.tbptraktCleaning.TabIndex = 5
+        Me.tbptraktCleaning.Text = "Cleaning"
+        Me.tbptraktCleaning.UseVisualStyleBackColor = True
+        '
+        'gbtraktCleaning
+        '
+        Me.gbtraktCleaning.Controls.Add(Me.gbtraktCleaningHistoryTimespan)
+        Me.gbtraktCleaning.Controls.Add(Me.gbtraktCleaningHistoryTimestamp)
+        Me.gbtraktCleaning.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbtraktCleaning.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
+        Me.gbtraktCleaning.Location = New System.Drawing.Point(3, 3)
+        Me.gbtraktCleaning.Name = "gbtraktCleaning"
+        Me.gbtraktCleaning.Size = New System.Drawing.Size(1093, 483)
+        Me.gbtraktCleaning.TabIndex = 42
+        Me.gbtraktCleaning.TabStop = False
+        Me.gbtraktCleaning.Text = "Cleaning"
+        '
+        'gbtraktCleaningHistoryTimespan
+        '
+        Me.gbtraktCleaningHistoryTimespan.Controls.Add(Me.lbltraktCleaningHistoryTimespanDesc)
+        Me.gbtraktCleaningHistoryTimespan.Controls.Add(Me.cbotraktCleaningHistoryTimespan)
+        Me.gbtraktCleaningHistoryTimespan.Controls.Add(Me.lbltraktCleaningHistoryTimespan)
+        Me.gbtraktCleaningHistoryTimespan.Controls.Add(Me.btntraktCleaningHistoryTimespan)
+        Me.gbtraktCleaningHistoryTimespan.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
+        Me.gbtraktCleaningHistoryTimespan.Location = New System.Drawing.Point(355, 21)
+        Me.gbtraktCleaningHistoryTimespan.Name = "gbtraktCleaningHistoryTimespan"
+        Me.gbtraktCleaningHistoryTimespan.Size = New System.Drawing.Size(329, 164)
+        Me.gbtraktCleaningHistoryTimespan.TabIndex = 55
+        Me.gbtraktCleaningHistoryTimespan.TabStop = False
+        Me.gbtraktCleaningHistoryTimespan.Text = "Delete history for a specific timespan"
+        '
+        'lbltraktCleaningHistoryTimespanDesc
+        '
+        Me.lbltraktCleaningHistoryTimespanDesc.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbltraktCleaningHistoryTimespanDesc.Location = New System.Drawing.Point(6, 18)
+        Me.lbltraktCleaningHistoryTimespanDesc.Name = "lbltraktCleaningHistoryTimespanDesc"
+        Me.lbltraktCleaningHistoryTimespanDesc.Size = New System.Drawing.Size(315, 53)
+        Me.lbltraktCleaningHistoryTimespanDesc.TabIndex = 49
+        Me.lbltraktCleaningHistoryTimespanDesc.Text = "This will remove all plays in your watched movie history which were registered in" & _
+    " a specific timespan (i.e. 3 plays for one movie within 5 minutes, will delete 2" & _
+    " movies and keep first)"
+        '
+        'cbotraktCleaningHistoryTimespan
+        '
+        Me.cbotraktCleaningHistoryTimespan.FormattingEnabled = True
+        Me.cbotraktCleaningHistoryTimespan.Items.AddRange(New Object() {"", "2", "5", "10", "30", "60", "120", "180"})
+        Me.cbotraktCleaningHistoryTimespan.Location = New System.Drawing.Point(118, 73)
+        Me.cbotraktCleaningHistoryTimespan.Name = "cbotraktCleaningHistoryTimespan"
+        Me.cbotraktCleaningHistoryTimespan.Size = New System.Drawing.Size(54, 21)
+        Me.cbotraktCleaningHistoryTimespan.TabIndex = 53
+        '
+        'lbltraktCleaningHistoryTimespan
+        '
+        Me.lbltraktCleaningHistoryTimespan.AutoSize = True
+        Me.lbltraktCleaningHistoryTimespan.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbltraktCleaningHistoryTimespan.Location = New System.Drawing.Point(10, 76)
+        Me.lbltraktCleaningHistoryTimespan.Name = "lbltraktCleaningHistoryTimespan"
+        Me.lbltraktCleaningHistoryTimespan.Size = New System.Drawing.Size(98, 13)
+        Me.lbltraktCleaningHistoryTimespan.TabIndex = 52
+        Me.lbltraktCleaningHistoryTimespan.Text = "Timespan [minutes]"
+        Me.lbltraktCleaningHistoryTimespan.TextAlign = System.Drawing.ContentAlignment.BottomRight
+        '
+        'btntraktCleaningHistoryTimespan
+        '
+        Me.btntraktCleaningHistoryTimespan.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btntraktCleaningHistoryTimespan.Location = New System.Drawing.Point(6, 102)
+        Me.btntraktCleaningHistoryTimespan.Name = "btntraktCleaningHistoryTimespan"
+        Me.btntraktCleaningHistoryTimespan.Size = New System.Drawing.Size(312, 46)
+        Me.btntraktCleaningHistoryTimespan.TabIndex = 37
+        Me.btntraktCleaningHistoryTimespan.Text = "Start cleaning movie history"
+        Me.btntraktCleaningHistoryTimespan.UseVisualStyleBackColor = True
+        '
+        'gbtraktCleaningHistoryTimestamp
+        '
+        Me.gbtraktCleaningHistoryTimestamp.Controls.Add(Me.lbltraktCleaningHistoryTimestamp)
+        Me.gbtraktCleaningHistoryTimestamp.Controls.Add(Me.txttraktCleaningHistoryTimestamp)
+        Me.gbtraktCleaningHistoryTimestamp.Controls.Add(Me.lbltraktCleaningHistoryTimestampDesc)
+        Me.gbtraktCleaningHistoryTimestamp.Controls.Add(Me.btntraktCleaningHistoryTimestamp)
+        Me.gbtraktCleaningHistoryTimestamp.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
+        Me.gbtraktCleaningHistoryTimestamp.Location = New System.Drawing.Point(6, 21)
+        Me.gbtraktCleaningHistoryTimestamp.Name = "gbtraktCleaningHistoryTimestamp"
+        Me.gbtraktCleaningHistoryTimestamp.Size = New System.Drawing.Size(329, 164)
+        Me.gbtraktCleaningHistoryTimestamp.TabIndex = 44
+        Me.gbtraktCleaningHistoryTimestamp.TabStop = False
+        Me.gbtraktCleaningHistoryTimestamp.Text = "Delete history from a specific date"
+        '
+        'lbltraktCleaningHistoryTimestamp
+        '
+        Me.lbltraktCleaningHistoryTimestamp.AutoSize = True
+        Me.lbltraktCleaningHistoryTimestamp.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbltraktCleaningHistoryTimestamp.Location = New System.Drawing.Point(6, 77)
+        Me.lbltraktCleaningHistoryTimestamp.Name = "lbltraktCleaningHistoryTimestamp"
+        Me.lbltraktCleaningHistoryTimestamp.Size = New System.Drawing.Size(111, 13)
+        Me.lbltraktCleaningHistoryTimestamp.TabIndex = 54
+        Me.lbltraktCleaningHistoryTimestamp.Text = "Timestamp [hh:mm:ss]"
+        Me.lbltraktCleaningHistoryTimestamp.TextAlign = System.Drawing.ContentAlignment.BottomRight
+        '
+        'txttraktCleaningHistoryTimestamp
+        '
+        Me.txttraktCleaningHistoryTimestamp.Location = New System.Drawing.Point(123, 74)
+        Me.txttraktCleaningHistoryTimestamp.Name = "txttraktCleaningHistoryTimestamp"
+        Me.txttraktCleaningHistoryTimestamp.Size = New System.Drawing.Size(75, 22)
+        Me.txttraktCleaningHistoryTimestamp.TabIndex = 50
+        Me.txttraktCleaningHistoryTimestamp.Text = "00:00:00"
+        '
+        'lbltraktCleaningHistoryTimestampDesc
+        '
+        Me.lbltraktCleaningHistoryTimestampDesc.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lbltraktCleaningHistoryTimestampDesc.Location = New System.Drawing.Point(6, 18)
+        Me.lbltraktCleaningHistoryTimestampDesc.Name = "lbltraktCleaningHistoryTimestampDesc"
+        Me.lbltraktCleaningHistoryTimestampDesc.Size = New System.Drawing.Size(315, 53)
+        Me.lbltraktCleaningHistoryTimestampDesc.TabIndex = 49
+        Me.lbltraktCleaningHistoryTimestampDesc.Text = "This will remove all plays in your watched movie history which were played on a s" & _
+    "pecific time (i.e. ""0:00:00"")"
+        '
+        'btntraktCleaningHistoryTimestamp
+        '
+        Me.btntraktCleaningHistoryTimestamp.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btntraktCleaningHistoryTimestamp.Location = New System.Drawing.Point(6, 102)
+        Me.btntraktCleaningHistoryTimestamp.Name = "btntraktCleaningHistoryTimestamp"
+        Me.btntraktCleaningHistoryTimestamp.Size = New System.Drawing.Size(312, 46)
+        Me.btntraktCleaningHistoryTimestamp.TabIndex = 37
+        Me.btntraktCleaningHistoryTimestamp.Text = "Start cleaning movie history"
+        Me.btntraktCleaningHistoryTimestamp.UseVisualStyleBackColor = True
         '
         'pnlBottom
         '
@@ -2021,6 +2170,12 @@ Partial Class dlgTrakttvManager
         Me.gbtraktListsViewerStep2.PerformLayout()
         Me.gbtraktListsViewerStep1.ResumeLayout(False)
         CType(Me.dgvtraktList, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.tbptraktCleaning.ResumeLayout(False)
+        Me.gbtraktCleaning.ResumeLayout(False)
+        Me.gbtraktCleaningHistoryTimespan.ResumeLayout(False)
+        Me.gbtraktCleaningHistoryTimespan.PerformLayout()
+        Me.gbtraktCleaningHistoryTimestamp.ResumeLayout(False)
+        Me.gbtraktCleaningHistoryTimestamp.PerformLayout()
         Me.pnlBottom.ResumeLayout(False)
         Me.pnlBottom.PerformLayout()
         Me.tblBottom.ResumeLayout(False)
@@ -2183,5 +2338,17 @@ Partial Class dlgTrakttvManager
     Friend WithEvents coltraktCommentsImdb As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents btntraktListsSavePlaylist As System.Windows.Forms.Button
     Friend WithEvents btntraktListsSendToKodi As System.Windows.Forms.Button
+    Friend WithEvents tbptraktCleaning As System.Windows.Forms.TabPage
+    Friend WithEvents gbtraktCleaning As System.Windows.Forms.GroupBox
+    Friend WithEvents gbtraktCleaningHistoryTimestamp As System.Windows.Forms.GroupBox
+    Friend WithEvents lbltraktCleaningHistoryTimestampDesc As System.Windows.Forms.Label
+    Friend WithEvents btntraktCleaningHistoryTimestamp As System.Windows.Forms.Button
+    Friend WithEvents lbltraktCleaningHistoryTimespan As System.Windows.Forms.Label
+    Friend WithEvents txttraktCleaningHistoryTimestamp As System.Windows.Forms.TextBox
+    Friend WithEvents cbotraktCleaningHistoryTimespan As System.Windows.Forms.ComboBox
+    Friend WithEvents gbtraktCleaningHistoryTimespan As System.Windows.Forms.GroupBox
+    Friend WithEvents lbltraktCleaningHistoryTimespanDesc As System.Windows.Forms.Label
+    Friend WithEvents btntraktCleaningHistoryTimespan As System.Windows.Forms.Button
+    Friend WithEvents lbltraktCleaningHistoryTimestamp As System.Windows.Forms.Label
 
 End Class
