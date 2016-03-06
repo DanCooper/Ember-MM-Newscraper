@@ -16269,7 +16269,7 @@ doCancel:
                         ReloadAll_TVShow(dresult.NeedsReload_TVEpisode)
                     End If
                 End If
-                If dresult.NeedsDBUpdate_Movie Then
+                If dresult.NeedsDBUpdate_Movie OrElse dresult.NeedsDBUpdate_TV Then
                     If Not fScanner.IsBusy Then
                         While bwLoadMovieInfo.IsBusy OrElse bwMovieScraper.IsBusy OrElse bwReload_Movies.IsBusy OrElse
                             bwLoadMovieSetInfo.IsBusy OrElse bwMovieSetScraper.IsBusy OrElse bwReload_MovieSets.IsBusy OrElse
@@ -16277,7 +16277,7 @@ doCancel:
                             Application.DoEvents()
                             Threading.Thread.Sleep(50)
                         End While
-                        LoadMedia(New Structures.ScanOrClean With {.Movies = True, .TV = True})
+                        LoadMedia(New Structures.ScanOrClean With {.Movies = dresult.NeedsDBUpdate_Movie, .TV = dresult.NeedsDBUpdate_TV})
                     End If
                 End If
             End If
