@@ -17524,28 +17524,26 @@ doCancel:
         tmrSearchWait_Shows.Enabled = False
         tmrSearch_Shows.Enabled = False
         bDoingSearch_Shows = True
-        Try
-            If Not String.IsNullOrEmpty(txtSearchShows.Text) Then
+
+        If Not String.IsNullOrEmpty(txtSearchShows.Text) Then
+            FilterArray_Shows.Remove(filSearch_Shows)
+            filSearch_Shows = String.Empty
+
+            Select Case cbSearchShows.Text
+                Case Master.eLang.GetString(21, "Title")
+                    filSearch_Shows = String.Concat("Title LIKE '%", txtSearchShows.Text, "%'")
+                    FilterArray_Shows.Add(filSearch_Shows)
+            End Select
+
+            RunFilter_Shows(False)
+
+        Else
+            If Not String.IsNullOrEmpty(filSearch_Shows) Then
                 FilterArray_Shows.Remove(filSearch_Shows)
                 filSearch_Shows = String.Empty
-
-                Select Case cbSearchShows.Text
-                    Case Master.eLang.GetString(21, "Title")
-                        filSearch_Shows = String.Concat("Title LIKE '%", txtSearchShows.Text, "%'")
-                        FilterArray_Shows.Add(filSearch_Shows)
-                End Select
-
-                RunFilter_Shows(False)
-
-            Else
-                If Not String.IsNullOrEmpty(filSearch_Shows) Then
-                    FilterArray_Shows.Remove(filSearch_Shows)
-                    filSearch_Shows = String.Empty
-                End If
-                RunFilter_Shows(True)
             End If
-        Catch
-        End Try
+            RunFilter_Shows(True)
+        End If
     End Sub
 
     Private Sub tmrWait_TVEpisode_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrWait_TVEpisode.Tick
@@ -17748,7 +17746,7 @@ doCancel:
     End Sub
 
     Private Sub txtSearchMovies_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtSearchMovies.KeyPress
-        e.Handled = If(e.KeyChar = Convert.ToChar(39), True, False)
+        e.Handled = Not StringUtils.ValidFilterChar(e.KeyChar)
         If e.KeyChar = Microsoft.VisualBasic.ChrW(Keys.Return) Then
             dgvMovies.Focus()
         End If
@@ -17763,7 +17761,7 @@ doCancel:
     End Sub
 
     Private Sub txtSearchMovieSets_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtSearchMovieSets.KeyPress
-        e.Handled = If(e.KeyChar = Convert.ToChar(39), True, False)
+        e.Handled = Not StringUtils.ValidFilterChar(e.KeyChar)
         If e.KeyChar = Microsoft.VisualBasic.ChrW(Keys.Return) Then
             dgvMovieSets.Focus()
         End If
@@ -17778,7 +17776,7 @@ doCancel:
     End Sub
 
     Private Sub txtSearchShows_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtSearchShows.KeyPress
-        e.Handled = If(e.KeyChar = Convert.ToChar(39), True, False)
+        e.Handled = Not StringUtils.ValidFilterChar(e.KeyChar)
         If e.KeyChar = Microsoft.VisualBasic.ChrW(Keys.Return) Then
             dgvTVShows.Focus()
         End If
