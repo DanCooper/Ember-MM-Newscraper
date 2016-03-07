@@ -578,6 +578,13 @@ Namespace MediaContainers
             End Set
         End Property
 
+        <XmlIgnore()>
+        Public ReadOnly Property AnyUniqueIDSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(_imdb) OrElse Not String.IsNullOrEmpty(_tmdb) OrElse Not String.IsNullOrEmpty(_tvdb)
+            End Get
+        End Property
+
 #End Region 'Properties
 
 #Region "Methods"
@@ -1671,6 +1678,13 @@ Namespace MediaContainers
                 End Get
             End Property
 
+            <XmlIgnore()>
+            Public ReadOnly Property AnyUniqueIDSpecified() As Boolean
+                Get
+                    Return Not String.IsNullOrEmpty(_imdbid) OrElse Not String.IsNullOrEmpty(_tmdbid)
+                End Get
+            End Property
+
         End Class
 
 #End Region 'Properties
@@ -1973,6 +1987,13 @@ Namespace MediaContainers
         Public ReadOnly Property PlotSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(_plot)
+            End Get
+        End Property
+
+        <XmlIgnore()>
+        Public ReadOnly Property AnyUniqueIDSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(_tmdb) OrElse Not String.IsNullOrEmpty(_tmdb)
             End Get
         End Property
 
@@ -2326,6 +2347,13 @@ Namespace MediaContainers
         Public ReadOnly Property TVDBSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(_tvdb)
+            End Get
+        End Property
+
+        <XmlIgnore()>
+        Public ReadOnly Property AnyUniqueIDSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(_tmdb) OrElse Not String.IsNullOrEmpty(_tvdb)
             End Get
         End Property
 
@@ -3073,6 +3101,13 @@ Namespace MediaContainers
         Public ReadOnly Property KnownSeasonsSpecified() As Boolean
             Get
                 Return _knownseasons.Count > 0
+            End Get
+        End Property
+
+        <XmlIgnore()>
+        Public ReadOnly Property AnyUniqueIDSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(_imdb) OrElse Not String.IsNullOrEmpty(_tmdb) OrElse Not String.IsNullOrEmpty(_tvdb)
             End Get
         End Property
 
