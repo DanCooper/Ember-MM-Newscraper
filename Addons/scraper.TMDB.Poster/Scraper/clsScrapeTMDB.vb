@@ -63,7 +63,7 @@ Namespace TMDB
                     APIResult = Task.Run(Function() _TMDBApi.GetMovieImagesAsync(CInt(TMDBID)))
                     Results = APIResult.Result
                 ElseIf ContentType = Enums.ContentType.MovieSet Then
-                    APIResult = Task.Run(Function() _TMDBApi.GetMovieImagesAsync(CInt(TMDBID)))
+                    APIResult = Task.Run(Function() _TMDBApi.GetCollectionImagesAsync(CInt(TMDBID)))
                     Results = APIResult.Result
                 End If
 

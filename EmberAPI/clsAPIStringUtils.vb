@@ -71,6 +71,10 @@ Public Class StringUtils
             Return False
         End If
     End Function
+
+    Public Shared Function ValidFilterChar(ByVal KeyChar As Char) As Boolean
+        Return Not KeyChar = Convert.ToChar(39) AndAlso Not KeyChar = Convert.ToChar(91)
+    End Function
     ''' <summary>
     ''' 
     ''' </summary>
