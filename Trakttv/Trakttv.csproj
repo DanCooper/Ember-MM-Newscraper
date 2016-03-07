@@ -110,9 +110,11 @@
     <Compile Include="Model\Movie\TraktMovie.cs" />
     <Compile Include="Model\Movie\TraktMovieBase.cs" />
     <Compile Include="Model\Movie\TraktMovieCollected.cs" />
+    <Compile Include="Model\Movie\TraktMovieHistory.cs" />
     <Compile Include="Model\Movie\TraktMovieImages.cs" />
     <Compile Include="Model\Movie\TraktMovieSummary.cs" />
     <Compile Include="Model\Movie\TraktMovieWatched.cs" />
+    <Compile Include="Model\Movie\TraktSyncHistoryID.cs" />
     <Compile Include="Model\Movie\TraktSyncMovies.cs" />
     <Compile Include="Model\Movie\TraktSyncMoviesWatched.cs" />
     <Compile Include="Model\Movie\TraktSyncMovieWatched.cs" />

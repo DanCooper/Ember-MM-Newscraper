@@ -52,6 +52,7 @@ namespace Trakttv
         public const string GETWatchedMovies = "https://api-v2launch.trakt.tv/sync/watched/movies";
         public const string GETRatedMovies = "https://api-v2launch.trakt.tv/sync/ratings/movies";
         public const string GETMovieRating = "https://api-v2launch.trakt.tv/movies/{0}/ratings";
+        public const string GETWatchedHistoryMovies = "https://api-v2launch.trakt.tv/users/{0}/history/movies?extended=full&limit=5000";
 
         // Show requests
         public const string GETCollectionEpisodes = "https://api-v2launch.trakt.tv/sync/collection/shows";
