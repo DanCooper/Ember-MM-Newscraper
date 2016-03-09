@@ -409,7 +409,7 @@ Public Class dlgEditTVSeason
         With tmpDBElement.ImagesContainer
 
             'Load all images to MemoryStream and Bitmap
-            tmpDBElement.LoadAllImages(True, False)
+            tmpDBElement.LoadAllImages(True, True)
 
             'Banner
             If (Not tmpDBElement.TVSeason.Season = 999 AndAlso Master.eSettings.TVSeasonBannerAnyEnabled) OrElse

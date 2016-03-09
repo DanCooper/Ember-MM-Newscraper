@@ -782,7 +782,7 @@ Public Class Scanner
 
         'first we have to create a list of all already existing episode information for this file path
         If Not isNew Then
-            Dim EpisodeList As List(Of Database.DBElement) = Master.DB.LoadAllTVEpisodesFromDBByFileID(DBTVEpisode.FilenameID, False, False)
+            Dim EpisodeList As List(Of Database.DBElement) = Master.DB.LoadAllTVEpisodesFromDBByFileID(DBTVEpisode.FilenameID, False)
             For Each eEpisode As Database.DBElement In EpisodeList
                 existingEpisodeList.Add(New EpisodeItem With {.Episode = eEpisode.TVEpisode.Episode, .idEpisode = eEpisode.ID, .Season = eEpisode.TVEpisode.Season})
             Next

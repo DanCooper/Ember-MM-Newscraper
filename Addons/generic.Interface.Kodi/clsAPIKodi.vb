@@ -482,15 +482,13 @@ Namespace Kodi
         ''' Called from dlgHost.vb when user hits "Populate" button to get host sources
         ''' </remarks>
         Public Shared Function GetSources(ByVal kHost As KodiInterface.Host) As List(Of List.Items.SourcesItem)
-            Dim listSources As New List(Of List.Items.SourcesItem)
             Try
                 Dim _APIKodi As New Kodi.APIKodi(kHost)
-                listSources = _APIKodi.GetSources(Files.Media.video).Result
-                Return listSources
+                Return _APIKodi.GetSources(Files.Media.video).Result
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
+                Return Nothing
             End Try
-            Return listSources
         End Function
         ''' <summary>
         ''' Get all sources configured in Kodi host
@@ -509,37 +507,42 @@ Namespace Kodi
 
             Try
                 Dim response = Await _kodi.Files.GetSources(mediaType).ConfigureAwait(False)
-                Dim tmplist = response.sources.ToList
+                If response Is Nothing OrElse response.sources Is Nothing Then
+                    Return Nothing
+                Else
+                    Dim tmplist = response.sources.ToList
 
-                'type multipath sources contain multiple paths
-                Dim lstremotesources As New List(Of List.Items.SourcesItem)
-                Dim paths As New List(Of String)
-                Const MultiPath As String = "multipath://"
-                For Each remotesource In tmplist
-                    Dim newsource As New List.Items.SourcesItem
-                    If remotesource.file.StartsWith(MultiPath) Then
-                        logger.Warn("[APIKodi] GetSources: " & _currenthost.Label & ": " & remotesource.file & " - Multipath format, try to split...")
-                        'remove "multipath://" from path and split on "/"
-                        'i.e multipath://nfs%3a%2f%2f192.168.2.200%2fMedia_1%2fMovie%2f/nfs%3a%2f%2f192.168.2.200%2fMedia_2%2fMovie%2f/
-                        For Each path As String In remotesource.file.Remove(0, MultiPath.Length).Split("/"c)
-                            If Not String.IsNullOrEmpty(path) Then
-                                newsource = New List.Items.SourcesItem
-                                'URL decode each item
-                                newsource.file = Web.HttpUtility.UrlDecode(path)
-                                newsource.label = remotesource.label
-                                lstremotesources.Add(newsource)
-                            End If
-                        Next
-                    Else
-                        logger.Warn("[APIKodi] GetSources: " & _currenthost.Label & ": """ & remotesource.file, """")
-                        newsource.file = remotesource.file
-                        newsource.label = remotesource.label
-                        lstremotesources.Add(newsource)
-                    End If
-                Next
-                Return lstremotesources
+                    'type multipath sources contain multiple paths
+                    Dim lstremotesources As New List(Of List.Items.SourcesItem)
+                    Dim paths As New List(Of String)
+                    Const MultiPath As String = "multipath://"
+                    For Each remotesource In tmplist
+                        Dim newsource As New List.Items.SourcesItem
+                        If remotesource.file.StartsWith(MultiPath) Then
+                            logger.Warn("[APIKodi] GetSources: " & _currenthost.Label & ": " & remotesource.file & " - Multipath format, try to split...")
+                            'remove "multipath://" from path and split on "/"
+                            'i.e multipath://nfs%3a%2f%2f192.168.2.200%2fMedia_1%2fMovie%2f/nfs%3a%2f%2f192.168.2.200%2fMedia_2%2fMovie%2f/
+                            For Each path As String In remotesource.file.Remove(0, MultiPath.Length).Split("/"c)
+                                If Not String.IsNullOrEmpty(path) Then
+                                    newsource = New List.Items.SourcesItem
+                                    'URL decode each item
+                                    newsource.file = Web.HttpUtility.UrlDecode(path)
+                                    newsource.label = remotesource.label
+                                    lstremotesources.Add(newsource)
+                                End If
+                            Next
+                        Else
+                            logger.Warn("[APIKodi] GetSources: " & _currenthost.Label & ": """ & remotesource.file, """")
+                            newsource.file = remotesource.file
+                            newsource.label = remotesource.label
+                            lstremotesources.Add(newsource)
+                        End If
+                    Next
+
+                    Return lstremotesources
+                End If
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
                 Return Nothing
             End Try
         End Function

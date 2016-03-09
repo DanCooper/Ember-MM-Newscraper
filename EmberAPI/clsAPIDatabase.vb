@@ -1563,9 +1563,8 @@ Public Class Database
     ''' Load all the information for a movie.
     ''' </summary>
     ''' <param name="MovieID">ID of the movie to load, as stored in the database</param>
-    ''' <param name="exclExtraImages">exclude Extrafanarts and Extrathumbs from memorystream</param>
     ''' <returns>Database.DBElement object</returns>
-    Public Function LoadMovieFromDB(ByVal MovieID As Long, Optional ByVal LoadBitmap As Boolean = False, Optional ByVal exclExtraImages As Boolean = False) As DBElement
+    Public Function LoadMovieFromDB(ByVal MovieID As Long) As DBElement
         Dim _movieDB As New DBElement(Enums.ContentType.Movie)
 
         _movieDB.ID = MovieID
@@ -1827,7 +1826,6 @@ Public Class Database
                 iIndex += 1
             Next
         End If
-        If LoadBitmap Then _movieDB.LoadAllImages(LoadBitmap, exclExtraImages)
 
         'Check if the file is available and ready to edit
         If File.Exists(_movieDB.Filename) Then _movieDB.IsOnline = True
@@ -1839,16 +1837,14 @@ Public Class Database
     ''' Load all the information for a movie (by movie path)
     ''' </summary>
     ''' <param name="sPath">Full path to the movie file</param>
-    ''' <param name="withImages">load all images to memorystream</param>
-    ''' <param name="exclExtraImages">exclude Extrafanarts and Extrathumbs from memorystream</param>
     ''' <returns>Database.DBElement object</returns>
-    Public Function LoadMovieFromDB(ByVal sPath As String, Optional ByVal withImages As Boolean = False, Optional ByVal exclExtraImages As Boolean = False) As DBElement
+    Public Function LoadMovieFromDB(ByVal sPath As String) As DBElement
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
             ' One more Query Better then re-write all function again
             SQLcommand.CommandText = String.Concat("SELECT idMovie FROM movie WHERE MoviePath = ", sPath, ";")
             Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
                 If SQLreader.Read Then
-                    Return LoadMovieFromDB(Convert.ToInt64(SQLreader("idMovie")), withImages, exclExtraImages)
+                    Return LoadMovieFromDB(Convert.ToInt64(SQLreader("idMovie")))
                 End If
             End Using
         End Using
@@ -1860,9 +1856,8 @@ Public Class Database
     ''' Load all the information for a movieset.
     ''' </summary>
     ''' <param name="MovieSetID">ID of the movieset to load, as stored in the database</param>
-    ''' <param name="LoadBitmap">load all images to memorystream</param>
     ''' <returns>Database.DBElement object</returns>
-    Public Function LoadMovieSetFromDB(ByVal MovieSetID As Long, Optional ByVal LoadBitmap As Boolean = False) As DBElement
+    Public Function LoadMovieSetFromDB(ByVal MovieSetID As Long) As DBElement
         Dim _moviesetDB As New DBElement(Enums.ContentType.MovieSet)
 
         _moviesetDB.ID = MovieSetID
@@ -1903,7 +1898,7 @@ Public Class Database
             End If
             Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
                 While SQLreader.Read
-                    _moviesetDB.MovieList.Add(LoadMovieFromDB(Convert.ToInt64(SQLreader("MovieID")), False))
+                    _moviesetDB.MovieList.Add(LoadMovieFromDB(Convert.ToInt64(SQLreader("MovieID"))))
                 End While
             End Using
         End Using
@@ -1916,7 +1911,6 @@ Public Class Database
         _moviesetDB.ImagesContainer.Fanart.LocalFilePath = GetArtForItem(_moviesetDB.ID, "set", "fanart")
         _moviesetDB.ImagesContainer.Landscape.LocalFilePath = GetArtForItem(_moviesetDB.ID, "set", "landscape")
         _moviesetDB.ImagesContainer.Poster.LocalFilePath = GetArtForItem(_moviesetDB.ID, "set", "poster")
-        If LoadBitmap Then _moviesetDB.LoadAllImages(LoadBitmap, False)
 
         Return _moviesetDB
     End Function
@@ -2008,7 +2002,7 @@ Public Class Database
         Return _tagDB
     End Function
 
-    Public Function LoadAllTVEpisodesFromDB(ByVal ShowID As Long, ByVal withShow As Boolean, Optional ByVal LoadBitmap As Boolean = False, Optional ByVal OnlySeason As Integer = -1, Optional ByVal withMissingEpisodes As Boolean = False) As List(Of DBElement)
+    Public Function LoadAllTVEpisodesFromDB(ByVal ShowID As Long, ByVal withShow As Boolean, Optional ByVal OnlySeason As Integer = -1, Optional ByVal withMissingEpisodes As Boolean = False) As List(Of DBElement)
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
 
         Dim _TVEpisodesList As New List(Of DBElement)
@@ -2031,7 +2025,7 @@ Public Class Database
                             End If
                             Using SQLReader As SQLiteDataReader = SQLCommand.ExecuteReader
                                 While SQLReader.Read
-                                    _TVEpisodesList.Add(Master.DB.LoadTVEpisodeFromDB(Convert.ToInt64(SQLReader("idEpisode")), withShow, LoadBitmap))
+                                    _TVEpisodesList.Add(Master.DB.LoadTVEpisodeFromDB(Convert.ToInt64(SQLReader("idEpisode")), withShow))
                                 End While
                             End Using
                         End Using
@@ -2043,7 +2037,7 @@ Public Class Database
         Return _TVEpisodesList
     End Function
 
-    Public Function LoadAllTVEpisodesFromDBByFileID(ByVal FileID As Long, ByVal withShow As Boolean, Optional ByVal LoadBitmap As Boolean = False) As List(Of DBElement)
+    Public Function LoadAllTVEpisodesFromDBByFileID(ByVal FileID As Long, ByVal withShow As Boolean) As List(Of DBElement)
         If FileID < 0 Then Throw New ArgumentOutOfRangeException("idFile", "Value must be >= 0, was given: " & FileID)
 
         Dim _TVEpisodesList As New List(Of DBElement)
@@ -2053,7 +2047,7 @@ Public Class Database
             Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
                 If SQLreader.HasRows Then
                     While SQLreader.Read()
-                        _TVEpisodesList.Add(Master.DB.LoadTVEpisodeFromDB(Convert.ToInt64(SQLreader("idEpisode")), withShow, LoadBitmap))
+                        _TVEpisodesList.Add(Master.DB.LoadTVEpisodeFromDB(Convert.ToInt64(SQLreader("idEpisode")), withShow))
                     End While
                 End If
             End Using
@@ -2062,7 +2056,7 @@ Public Class Database
         Return _TVEpisodesList
     End Function
 
-    Public Function LoadAllTVSeasonsFromDB(ByVal ShowID As Long, Optional ByVal LoadBitmap As Boolean = False) As List(Of DBElement)
+    Public Function LoadAllTVSeasonsFromDB(ByVal ShowID As Long) As List(Of DBElement)
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
 
         Dim _TVSeasonsList As New List(Of DBElement)
@@ -2077,7 +2071,7 @@ Public Class Database
                             SQLCommand.CommandText = String.Concat("SELECT * FROM seasons WHERE idShow = ", ShowID, ";")
                             Using SQLReader As SQLiteDataReader = SQLCommand.ExecuteReader
                                 While SQLReader.Read
-                                    _TVSeasonsList.Add(Master.DB.LoadTVSeasonFromDB(Convert.ToInt64(SQLReader("idSeason")), False, False, LoadBitmap))
+                                    _TVSeasonsList.Add(Master.DB.LoadTVSeasonFromDB(Convert.ToInt64(SQLReader("idSeason")), False, False))
                                 End While
                             End Using
                         End Using
@@ -2122,9 +2116,8 @@ Public Class Database
     ''' </summary>
     ''' <param name="EpisodeID">Episode ID</param>
     ''' <param name="WithShow">>If <c>True</c>, also retrieve the TV Show information</param>
-    ''' <param name="LoadBitmap">load all images to memorystream</param>
     ''' <returns>Database.DBElement object</returns>
-    Public Function LoadTVEpisodeFromDB(ByVal EpisodeID As Long, ByVal withShow As Boolean, Optional ByVal LoadBitmap As Boolean = False) As DBElement
+    Public Function LoadTVEpisodeFromDB(ByVal EpisodeID As Long, ByVal withShow As Boolean) As DBElement
         Dim _TVDB As New DBElement(Enums.ContentType.TVEpisode)
         Dim PathID As Long = -1
 
@@ -2325,7 +2318,6 @@ Public Class Database
         'ImagesContainer
         _TVDB.ImagesContainer.Fanart.LocalFilePath = GetArtForItem(_TVDB.ID, "episode", "fanart")
         _TVDB.ImagesContainer.Poster.LocalFilePath = GetArtForItem(_TVDB.ID, "episode", "thumb")
-        If LoadBitmap Then _TVDB.LoadAllImages(LoadBitmap, False)
 
         'Show container
         If withShow Then
@@ -2342,14 +2334,13 @@ Public Class Database
     ''' </summary>
     ''' <param name="sPath">Full episode path</param>
     ''' <param name="WithShow">>If <c>True</c>, also retrieve the TV Show information</param>
-    ''' <param name="LoadBitmap">load all images to memorystream</param>
     ''' <returns>Database.DBElement object</returns>
-    Public Function LoadTVEpisodeFromDB(ByVal sPath As String, ByVal withShow As Boolean, Optional ByVal LoadBitmap As Boolean = False) As DBElement
+    Public Function LoadTVEpisodeFromDB(ByVal sPath As String, ByVal withShow As Boolean) As DBElement
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand.CommandText = String.Concat("SELECT idFile FROM files WHERE strFilename = ", sPath, ";")
             Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
                 If SQLreader.Read Then
-                    Return LoadTVEpisodeFromDB(Convert.ToInt64(SQLreader("idFile")), withShow, LoadBitmap)
+                    Return LoadTVEpisodeFromDB(Convert.ToInt64(SQLreader("idFile")), withShow)
                 End If
             End Using
         End Using
@@ -2363,16 +2354,15 @@ Public Class Database
     ''' <param name="iSeason">Season number</param>
     ''' <param name="iEpisode">Episode number</param>
     ''' <param name="WithShow">>If <c>True</c>, also retrieve the TV Show information</param>
-    ''' <param name="LoadBitmap">load all images to memorystream</param>
     ''' <returns>Database.DBElement object</returns>
     ''' <remarks></remarks>
-    Public Function LoadTVEpisodeFromDB(ByVal iShowID As Integer, ByVal iSeason As Integer, ByVal iEpisode As Integer, ByVal withShow As Boolean, Optional ByVal LoadBitmap As Boolean = False) As DBElement
+    Public Function LoadTVEpisodeFromDB(ByVal iShowID As Integer, ByVal iSeason As Integer, ByVal iEpisode As Integer, ByVal withShow As Boolean) As DBElement
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
             ' One more Query Better then re-write all function again
             SQLcommand.CommandText = String.Format("SELECT idEpisode FROM episode WHERE idShow = {0} AND Season = {1} AND Episode = {2};", iShowID, iSeason, iEpisode)
             Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
                 If SQLreader.Read Then
-                    Return LoadTVEpisodeFromDB(Convert.ToInt64(SQLreader("idEpisode")), withShow, LoadBitmap)
+                    Return LoadTVEpisodeFromDB(Convert.ToInt64(SQLreader("idEpisode")), withShow)
                 End If
             End Using
         End Using
@@ -2394,10 +2384,9 @@ Public Class Database
     ''' </summary>
     ''' <param name="SeasonID">Season ID</param>
     ''' <param name="WithShow">If <c>True</c>, also retrieve the TV Show information</param>
-    ''' <param name="LoadBitmap">load all images to memorystream</param>
     ''' <returns>Database.DBElement object</returns>
     ''' <remarks></remarks>
-    Public Function LoadTVSeasonFromDB(ByVal SeasonID As Long, ByVal withShow As Boolean, ByVal withEpisodes As Boolean, Optional ByVal LoadBitmap As Boolean = False) As DBElement
+    Public Function LoadTVSeasonFromDB(ByVal SeasonID As Long, ByVal withShow As Boolean, ByVal withEpisodes As Boolean) As DBElement
         Dim _TVDB As New DBElement(Enums.ContentType.TVSeason)
 
         _TVDB.ID = SeasonID
@@ -2428,11 +2417,10 @@ Public Class Database
         _TVDB.ImagesContainer.Fanart.LocalFilePath = GetArtForItem(_TVDB.ID, "season", "fanart")
         _TVDB.ImagesContainer.Landscape.LocalFilePath = GetArtForItem(_TVDB.ID, "season", "landscape")
         _TVDB.ImagesContainer.Poster.LocalFilePath = GetArtForItem(_TVDB.ID, "season", "poster")
-        If LoadBitmap Then _TVDB.LoadAllImages(LoadBitmap, False)
 
         'Episodes
         If withEpisodes Then
-            For Each tEpisode As DBElement In LoadAllTVEpisodesFromDB(_TVDB.ShowID, withShow, False, _TVDB.TVSeason.Season)
+            For Each tEpisode As DBElement In LoadAllTVEpisodesFromDB(_TVDB.ShowID, withShow, _TVDB.TVSeason.Season)
                 tEpisode = AddTVShowInfoToDBElement(tEpisode, _TVDB)
                 _TVDB.Episodes.Add(tEpisode)
             Next
@@ -2453,7 +2441,7 @@ Public Class Database
     ''' <param name="withShow">If <c>True</c>, also retrieve the TV Show information</param>
     ''' <returns>Database.DBElement object</returns>
     ''' <remarks></remarks>
-    Public Function LoadTVSeasonFromDB(ByVal ShowID As Long, ByVal iSeason As Integer, ByVal withShow As Boolean, ByVal withEpisodes As Boolean, Optional ByVal LoadBitmap As Boolean = False) As DBElement
+    Public Function LoadTVSeasonFromDB(ByVal ShowID As Long, ByVal iSeason As Integer, ByVal withShow As Boolean, ByVal withEpisodes As Boolean) As DBElement
         Dim _TVDB As New DBElement(Enums.ContentType.TVSeason)
 
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
@@ -2466,7 +2454,7 @@ Public Class Database
             Using SQLReader As SQLiteDataReader = SQLcommandTVSeason.ExecuteReader
                 If SQLReader.HasRows Then
                     SQLReader.Read()
-                    _TVDB = LoadTVSeasonFromDB(CInt(SQLReader("idSeason")), withShow, withEpisodes, LoadBitmap)
+                    _TVDB = LoadTVSeasonFromDB(CInt(SQLReader("idSeason")), withShow, withEpisodes)
                 End If
             End Using
         End Using
@@ -2477,10 +2465,8 @@ Public Class Database
     ''' Load all the information for a TV Show
     ''' </summary>
     ''' <param name="ShowID">Show ID</param>
-    ''' <param name="LoadBitmap">load all images to memorystream</param>
-    ''' <param name="exclExtraImages">exclude Extrafanarts and Extrathumbs from memorystream</param>
     ''' <returns>Database.DBElement object</returns>
-    Public Function LoadTVShowFromDB(ByVal ShowID As Long, ByVal withSeasons As Boolean, ByVal withEpisodes As Boolean, Optional ByVal LoadBitmap As Boolean = False, Optional ByVal exclExtraImages As Boolean = False, Optional ByVal withMissingEpisodes As Boolean = False) As DBElement
+    Public Function LoadTVShowFromDB(ByVal ShowID As Long, ByVal withSeasons As Boolean, ByVal withEpisodes As Boolean, Optional ByVal withMissingEpisodes As Boolean = False) As DBElement
         Dim _TVDB As New DBElement(Enums.ContentType.TVShow)
 
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
@@ -2640,11 +2626,10 @@ Public Class Database
                 _TVDB.ImagesContainer.Extrafanarts.Add(New MediaContainers.Image With {.LocalFilePath = ePath})
             Next
         End If
-        If LoadBitmap Then _TVDB.LoadAllImages(LoadBitmap, exclExtraImages)
 
         'Seasons
         If withSeasons Then
-            For Each tSeason As DBElement In LoadAllTVSeasonsFromDB(_TVDB.ID, LoadBitmap)
+            For Each tSeason As DBElement In LoadAllTVSeasonsFromDB(_TVDB.ID)
                 tSeason = AddTVShowInfoToDBElement(tSeason, _TVDB)
                 _TVDB.Seasons.Add(tSeason)
                 _TVDB.TVShow.Seasons.Seasons.Add(tSeason.TVSeason)
@@ -2654,7 +2639,7 @@ Public Class Database
 
         'Episodes
         If withEpisodes Then
-            For Each tEpisode As DBElement In LoadAllTVEpisodesFromDB(_TVDB.ID, False, False, -1, withMissingEpisodes)
+            For Each tEpisode As DBElement In LoadAllTVEpisodesFromDB(_TVDB.ID, False, -1, withMissingEpisodes)
                 tEpisode = AddTVShowInfoToDBElement(tEpisode, _TVDB)
                 _TVDB.Episodes.Add(tEpisode)
             Next
@@ -4340,10 +4325,12 @@ Public Class Database
 
             'First let's save it to NFO, even because we will need the NFO path, also save Images
             'art Table be be linked later
-            If ToNFO Then NFO.SaveTVEpToNFO(_episode)
-            If ToDisk Then
-                _episode.ImagesContainer.SaveAllImages(_episode)
-                _episode.TVEpisode.SaveAllActorThumbs(_episode)
+            If _episode.FilenameIDSpecified Then
+                If ToNFO Then NFO.SaveTVEpToNFO(_episode)
+                If ToDisk Then
+                    _episode.ImagesContainer.SaveAllImages(_episode)
+                    _episode.TVEpisode.SaveAllActorThumbs(_episode)
+                End If
             End If
 
             parTVShowID.Value = _episode.ShowID
@@ -5813,8 +5800,8 @@ Public Class Database
             Stream.Close()
         End Function
 
-        Public Sub LoadAllImages(ByVal LoadBitmap As Boolean, ByVal exclExtraImages As Boolean)
-            ImagesContainer.LoadAllImages(ContentType, LoadBitmap, exclExtraImages)
+        Public Sub LoadAllImages(ByVal LoadBitmap As Boolean, ByVal withExtraImages As Boolean)
+            ImagesContainer.LoadAllImages(ContentType, LoadBitmap, withExtraImages)
         End Sub
 
 #End Region 'Methods

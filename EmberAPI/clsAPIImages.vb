@@ -406,6 +406,7 @@ Public Class Images
             Save(tPath)
         Next
 
+        Clear() 'Dispose to save memory
         Return tPath
     End Function
     ''' <summary>
@@ -437,6 +438,8 @@ Public Class Images
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
+
+        Clear() 'Dispose to save memory
         Return strReturn
     End Function
     ''' <summary>
@@ -456,6 +459,8 @@ Public Class Images
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
+
+        Clear() 'Dispose to save memory
         Return strReturn
     End Function
     ''' <summary>
@@ -475,6 +480,8 @@ Public Class Images
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
+
+        Clear() 'Dispose to save memory
         Return strReturn
     End Function
     ''' <summary>
@@ -494,6 +501,8 @@ Public Class Images
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
+
+        Clear() 'Dispose to save memory
         Return strReturn
     End Function
     ''' <summary>
@@ -571,6 +580,7 @@ Public Class Images
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
+        Clear() 'Dispose to save memory
         Return efPath
     End Function
     ''' <summary>
@@ -645,6 +655,7 @@ Public Class Images
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
+        Clear() 'Dispose to save memory
         Return etPath
     End Function
     ''' <summary>
@@ -682,6 +693,7 @@ Public Class Images
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
+        Clear() 'Dispose to save memory
         Return strReturn
     End Function
     ''' <summary>
@@ -701,6 +713,8 @@ Public Class Images
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
+
+        Clear() 'Dispose to save memory
         Return strReturn
     End Function
     ''' <summary>
@@ -732,6 +746,8 @@ Public Class Images
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
+
+        Clear() 'Dispose to save memory
         Return strReturn
     End Function
     ''' <summary>
@@ -763,6 +779,8 @@ Public Class Images
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
+
+        Clear() 'Dispose to save memory
         Return strReturn
     End Function
     ''' <summary>
@@ -782,6 +800,8 @@ Public Class Images
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
+
+        Clear() 'Dispose to save memory
         Return strReturn
     End Function
     ''' <summary>
@@ -801,6 +821,8 @@ Public Class Images
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
+
+        Clear() 'Dispose to save memory
         Return strReturn
     End Function
     ''' <summary>
@@ -820,6 +842,8 @@ Public Class Images
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
+
+        Clear() 'Dispose to save memory
         Return strReturn
     End Function
     ''' <summary>
@@ -851,6 +875,8 @@ Public Class Images
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
+
+        Clear() 'Dispose to save memory
         Return strReturn
     End Function
     ''' <summary>
@@ -870,6 +896,8 @@ Public Class Images
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
+
+        Clear() 'Dispose to save memory
         Return strReturn
     End Function
     ''' <summary>
@@ -901,6 +929,8 @@ Public Class Images
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
+
+        Clear() 'Dispose to save memory
         Return strReturn
     End Function
     ''' <summary>
@@ -933,6 +963,7 @@ Public Class Images
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
+        Clear() 'Dispose to save memory
         Return strReturn
     End Function
     ''' <summary>
@@ -965,6 +996,7 @@ Public Class Images
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
+        Clear() 'Dispose to save memory
         Return strReturn
     End Function
     ''' <summary>
@@ -985,6 +1017,7 @@ Public Class Images
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
+        Clear() 'Dispose to save memory
         Return strReturn
     End Function
     ''' <summary>
@@ -1017,6 +1050,7 @@ Public Class Images
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
+        Clear() 'Dispose to save memory
         Return strReturn
     End Function
 
@@ -1051,6 +1085,7 @@ Public Class Images
             Save(tPath)
         Next
 
+        Clear() 'Dispose to save memory
         Return tPath
     End Function
     ''' <summary>
@@ -1084,6 +1119,8 @@ Public Class Images
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
+
+        Clear() 'Dispose to save memory
         Return strReturn
     End Function
     ''' <summary>
@@ -1117,6 +1154,8 @@ Public Class Images
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
+
+        Clear() 'Dispose to save memory
         Return strReturn
     End Function
     ''' <summary>
@@ -1148,6 +1187,8 @@ Public Class Images
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
+
+        Clear() 'Dispose to save memory
         Return strReturn
     End Function
     ''' <summary>
@@ -1179,6 +1220,8 @@ Public Class Images
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
+
+        Clear() 'Dispose to save memory
         Return strReturn
     End Function
     ''' <summary>
@@ -1198,6 +1241,8 @@ Public Class Images
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
+
+        Clear() 'Dispose to save memory
         Return strReturn
     End Function
     ''' <summary>
@@ -1229,6 +1274,8 @@ Public Class Images
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
+
+        Clear() 'Dispose to save memory
         Return strReturn
     End Function
 
@@ -1263,6 +1310,7 @@ Public Class Images
             Save(tPath)
         Next
 
+        Clear() 'Dispose to save memory
         Return tPath
     End Function
     ''' <summary>
@@ -1296,6 +1344,8 @@ Public Class Images
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
+
+        Clear() 'Dispose to save memory
         Return strReturn
     End Function
     ''' <summary>
@@ -1317,6 +1367,8 @@ Public Class Images
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
+
+        Clear() 'Dispose to save memory
         Return strReturn
     End Function
     ''' <summary>
@@ -1338,6 +1390,8 @@ Public Class Images
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
+
+        Clear() 'Dispose to save memory
         Return strReturn
     End Function
     ''' <summary>
@@ -1359,6 +1413,8 @@ Public Class Images
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
+
+        Clear() 'Dispose to save memory
         Return strReturn
     End Function
 
@@ -1433,6 +1489,7 @@ Public Class Images
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
 
+        Clear() 'Dispose to save memory
         Return efPath
     End Function
     ''' <summary>
@@ -1466,6 +1523,8 @@ Public Class Images
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
+
+        Clear() 'Dispose to save memory
         Return strReturn
     End Function
     ''' <summary>
@@ -1487,6 +1546,8 @@ Public Class Images
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
+
+        Clear() 'Dispose to save memory
         Return strReturn
     End Function
     ''' <summary>
@@ -1520,6 +1581,8 @@ Public Class Images
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
         End Try
+
+        Clear() 'Dispose to save memory
         Return strReturn
     End Function
 
@@ -3694,7 +3757,7 @@ Public Class Images
                 'To compare images for similarity we need to load them
                 'Checking for similarity means we need to load images to compare the content! -> Need to download the scraped image
                 'If the images aren't available in cache or stored local, download them
-                If ImageList(i).LoadAndCache(ContentType, LoadBitmap:=True) Then
+                If ImageList(i).LoadAndCache(ContentType, False, True) Then
                     If ImageList(i).ImageThumb IsNot Nothing AndAlso ImageList(i).ImageThumb.Image IsNot Nothing Then
                         tmpImage = ImageList(i).ImageThumb
                     ElseIf ImageList(i).ImageOriginal IsNot Nothing AndAlso ImageList(i).ImageOriginal.Image IsNot Nothing Then
@@ -3732,7 +3795,7 @@ Public Class Images
                                     'Checking for similarity means we need to load images to compare the content! -> Need to download the scraped image
                                     'If the images aren't available in cache or stored local, download them
                                     referenceimage = Nothing
-                                    If lstLimitImages(j).LoadAndCache(ContentType, LoadBitmap:=True) Then
+                                    If lstLimitImages(j).LoadAndCache(ContentType, False, True) Then
                                         If lstLimitImages(j).ImageThumb IsNot Nothing AndAlso lstLimitImages(j).ImageThumb.Image IsNot Nothing Then
                                             referenceimage = lstLimitImages(j).ImageThumb
                                         ElseIf lstLimitImages(j).ImageOriginal IsNot Nothing AndAlso lstLimitImages(j).ImageOriginal.Image IsNot Nothing Then
@@ -3768,7 +3831,7 @@ Public Class Images
                             'Checking for similarity means we need to load images to compare the content! -> Need to download the scraped image
                             'If the images aren't available in cache or stored local, download them
                             Dim referenceimage As Images = Nothing
-                            If ImageList(j).LoadAndCache(ContentType, LoadBitmap:=True) Then
+                            If ImageList(j).LoadAndCache(ContentType, False, True) Then
                                 If ImageList(j).ImageThumb IsNot Nothing AndAlso ImageList(j).ImageThumb.Image IsNot Nothing Then
                                     referenceimage = ImageList(j).ImageThumb
                                 ElseIf ImageList(j).ImageOriginal IsNot Nothing AndAlso ImageList(j).ImageOriginal.Image IsNot Nothing Then

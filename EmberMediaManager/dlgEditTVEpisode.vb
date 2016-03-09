@@ -532,7 +532,7 @@ Public Class dlgEditTVEpisode
         With tmpDBElement.ImagesContainer
 
             'Load all images to MemoryStream and Bitmap
-            tmpDBElement.LoadAllImages(True, False)
+            tmpDBElement.LoadAllImages(True, True)
 
             'Fanart
             If Master.eSettings.TVEpisodeFanartAnyEnabled Then
