@@ -211,7 +211,7 @@ Public Class dlgHost
             Next
             colHostSource.DataSource = lstKodiSources.ToArray
         Else
-            MessageBox.Show(Master.eLang.GetString(1434, "There was a problem communicating with host."), Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            MessageBox.Show(Master.eLang.GetString(1022, "There was a problem communicating with host or there are no sources configured in Kodi"), Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
         End If
 
         SetControlsEnabled(True)

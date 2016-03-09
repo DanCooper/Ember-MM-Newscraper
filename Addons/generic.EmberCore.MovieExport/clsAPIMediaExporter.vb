@@ -255,7 +255,7 @@ Public Class MediaExporter
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
                                 strPath = String.Format("images/{0}/{1}/{2}-fanart.jpg", tCounter_Global, tCounter_TVSeason, tCounter_TVEpisode)
                                 tImage.ImageOriginal.Save(Path.Combine(tBuildPath, strPath))
-                                tImage.ImageOriginal = New Images 'Dispose to save memory
+                                tImage.ImageOriginal.Clear()  'Dispose to save memory
                             End If
                         Else
                             strPath = String.Format("images/{0}/{1}/{2}-fanart.jpg", tCounter_Global, tCounter_TVSeason, tCounter_TVEpisode)
@@ -271,7 +271,7 @@ Public Class MediaExporter
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
                                 strPath = String.Format("images/{0}/{1}/{2}-poster.jpg", tCounter_Global, tCounter_TVSeason, tCounter_TVEpisode)
                                 tImage.ImageOriginal.Save(Path.Combine(tBuildPath, strPath))
-                                tImage.ImageOriginal = New Images 'Dispose to save memory
+                                tImage.ImageOriginal.Clear() 'Dispose to save memory
                             End If
                         Else
                             strPath = String.Format("images/{0}/{1}/{2}-poster.jpg", tCounter_Global, tCounter_TVSeason, tCounter_TVEpisode)
@@ -287,7 +287,7 @@ Public Class MediaExporter
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
                                 strPath = String.Format("images/{0}-banner.jpg", tCounter_Global)
                                 tImage.ImageOriginal.Save(Path.Combine(tBuildPath, strPath))
-                                tImage.ImageOriginal = New Images 'Dispose to save memory
+                                tImage.ImageOriginal.Clear() 'Dispose to save memory
                             End If
                         Else
                             strPath = String.Format("images/{0}-banner.jpg", tCounter_Global)
@@ -323,7 +323,7 @@ Public Class MediaExporter
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
                                 strPath = String.Format("images/{0}-fanart.jpg", tCounter_Global)
                                 tImage.ImageOriginal.Save(Path.Combine(tBuildPath, strPath))
-                                tImage.ImageOriginal = New Images 'Dispose to save memory
+                                tImage.ImageOriginal.Clear() 'Dispose to save memory
                             End If
                         Else
                             strPath = String.Format("images/{0}-fanart.jpg", tCounter_Global)
@@ -339,7 +339,7 @@ Public Class MediaExporter
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
                                 strPath = String.Format("images/{0}-landscape.jpg", tCounter_Global)
                                 tImage.ImageOriginal.Save(Path.Combine(tBuildPath, strPath))
-                                tImage.ImageOriginal = New Images 'Dispose to save memory
+                                tImage.ImageOriginal.Clear() 'Dispose to save memory
                             End If
                         Else
                             strPath = String.Format("images/{0}-landscape.jpg", tCounter_Global)
@@ -355,7 +355,7 @@ Public Class MediaExporter
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
                                 strPath = String.Format("images/{0}-poster.jpg", tCounter_Global)
                                 tImage.ImageOriginal.Save(Path.Combine(tBuildPath, strPath))
-                                tImage.ImageOriginal = New Images 'Dispose to save memory
+                                tImage.ImageOriginal.Clear() 'Dispose to save memory
                             End If
                         Else
                             strPath = String.Format("images/{0}-poster.jpg", tCounter_Global)
@@ -371,7 +371,7 @@ Public Class MediaExporter
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
                                 strPath = String.Format("images/{0}/{1}-banner.jpg", tCounter_Global, tCounter_TVSeason)
                                 tImage.ImageOriginal.Save(Path.Combine(tBuildPath, strPath))
-                                tImage.ImageOriginal = New Images 'Dispose to save memory
+                                tImage.ImageOriginal.Clear() 'Dispose to save memory
                             End If
                         Else
                             strPath = String.Format("images/{0}/{1}-banner.jpg", tCounter_Global, tCounter_TVSeason)
@@ -387,7 +387,7 @@ Public Class MediaExporter
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
                                 strPath = String.Format("images/{0}/{1}-fanart.jpg", tCounter_Global, tCounter_TVSeason)
                                 tImage.ImageOriginal.Save(Path.Combine(tBuildPath, strPath))
-                                tImage.ImageOriginal = New Images 'Dispose to save memory
+                                tImage.ImageOriginal.Clear() 'Dispose to save memory
                             End If
                         Else
                             strPath = String.Format("images/{0}/{1}-fanart.jpg", tCounter_Global, tCounter_TVSeason)
@@ -403,7 +403,7 @@ Public Class MediaExporter
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
                                 strPath = String.Format("images/{0}/{1}-landscape.jpg", tCounter_Global, tCounter_TVSeason)
                                 tImage.ImageOriginal.Save(Path.Combine(tBuildPath, strPath))
-                                tImage.ImageOriginal = New Images 'Dispose to save memory
+                                tImage.ImageOriginal.Clear() 'Dispose to save memory
                             End If
                         Else
                             strPath = String.Format("images/{0}/{1}-landscape.jpg", tCounter_Global, tCounter_TVSeason)
@@ -419,7 +419,7 @@ Public Class MediaExporter
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
                                 strPath = String.Format("images/{0}/{1}-poster.jpg", tCounter_Global, tCounter_TVSeason)
                                 tImage.ImageOriginal.Save(Path.Combine(tBuildPath, strPath))
-                                tImage.ImageOriginal = New Images 'Dispose to save memory
+                                tImage.ImageOriginal.Clear() 'Dispose to save memory
                             End If
                         Else
                             strPath = String.Format("images/{0}/{1}-poster.jpg", tCounter_Global, tCounter_TVSeason)
