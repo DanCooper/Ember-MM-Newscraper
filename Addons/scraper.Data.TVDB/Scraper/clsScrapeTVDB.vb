@@ -510,7 +510,7 @@ Namespace TVDBs
             End If
 
             'ThumbPoster
-            If EpisodeInfo.PictureFilename IsNot Nothing Then
+            If EpisodeInfo.PictureFilename IsNot Nothing AndAlso Not String.IsNullOrEmpty(EpisodeInfo.PictureFilename) Then
                 nEpisode.ThumbPoster.URLOriginal = String.Concat(_TVDBMirror.Address, "/banners/", EpisodeInfo.PictureFilename)
             End If
 
