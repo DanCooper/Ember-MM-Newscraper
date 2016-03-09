@@ -138,7 +138,7 @@ Public Class MovieExporterModule
                     SQLNewcommand.CommandText = String.Concat("SELECT idShow FROM tvshowlist ORDER BY SortedTitle COLLATE NOCASE;")
                     Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                         While SQLreader.Read()
-                            TVShowList.Add(Master.DB.LoadTVShowFromDB(Convert.ToInt32(SQLreader("idShow")), True, True, False, False, MySettings.ExportMissingEpisodes))
+                            TVShowList.Add(Master.DB.LoadTVShowFromDB(Convert.ToInt32(SQLreader("idShow")), True, True, MySettings.ExportMissingEpisodes))
                         End While
                     End Using
                 End Using

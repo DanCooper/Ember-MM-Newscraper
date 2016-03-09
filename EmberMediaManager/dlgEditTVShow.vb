@@ -1152,7 +1152,7 @@ Public Class dlgEditTVShow
         With tmpDBElement.ImagesContainer
 
             'Load all images to MemoryStream and Bitmap
-            tmpDBElement.LoadAllImages(True, False)
+            tmpDBElement.LoadAllImages(True, True)
 
             'Banner
             If Master.eSettings.TVShowBannerAnyEnabled Then
