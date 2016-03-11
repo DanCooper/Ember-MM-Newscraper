@@ -6489,7 +6489,7 @@ Public Class dlgSettings
         lblTVShowBannerPrefType.Text = strPreferredType
 
         'Preselect in "Image Select" dialog
-        Dim strPreselectInImageSelectDialog As String = Master.eLang.GetString(1008, "Preselect in ""Image Select"" dialog")
+        Dim strPreselectInImageSelectDialog As String = Master.eLang.GetString(1023, "Preselect in ""Image Select"" dialog")
         chkMovieExtrafanartsPreselect.Text = strPreselectInImageSelectDialog
         chkMovieExtrathumbsPreselect.Text = strPreselectInImageSelectDialog
         chkTVShowExtrafanartsPreselect.Text = strPreselectInImageSelectDialog
