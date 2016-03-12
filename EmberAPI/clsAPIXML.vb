@@ -67,7 +67,7 @@ Public Class APIXML
                 End Try
             End If
 
-            Dim gPath As String = FileUtils.Common.ReturnSettingsFile("Settings", "Core.Genres.xml")
+            Dim gPath As String = Path.Combine(Master.SettingsPath, "Core.Genres.xml")
             If File.Exists(gPath) Then
                 objStreamReader = New StreamReader(gPath)
                 Dim xGenres As New XmlSerializer(GenreXML.GetType)
@@ -116,7 +116,7 @@ Public Class APIXML
                 End Try
             End If
 
-            Dim rPath As String = FileUtils.Common.ReturnSettingsFile("Settings", "Ratings.xml")
+            Dim rPath As String = Path.Combine(Master.SettingsPath, "Ratings.xml")
             If File.Exists(rPath) Then
                 objStreamReader = New StreamReader(rPath)
                 Dim xRatings As New XmlSerializer(RatingXML.GetType)
@@ -138,7 +138,7 @@ Public Class APIXML
                 End Try
             End If
 
-            Dim cPath As String = FileUtils.Common.ReturnSettingsFile("Settings", "CertLanguages.xml")
+            Dim cPath As String = Path.Combine(Master.SettingsPath, "CertLanguages.xml")
             If File.Exists(cPath) Then
                 objStreamReader = New StreamReader(cPath)
                 Dim xCert As New XmlSerializer(CertLanguagesXML.GetType)
@@ -160,7 +160,7 @@ Public Class APIXML
                 End Try
             End If
 
-            Dim filterPath As String = FileUtils.Common.ReturnSettingsFile("Settings", "Queries.xml")
+            Dim filterPath As String = Path.Combine(Master.SettingsPath, "Queries.xml")
             If File.Exists(filterPath) Then
                 objStreamReader = New StreamReader(filterPath)
                 Dim xFilter As New XmlSerializer(FilterXML.GetType)

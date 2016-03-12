@@ -50,7 +50,7 @@ Public Class clsAdvancedSettings
 
     Public Shared Sub Start()
         Try
-            Dim configpath As String = FileUtils.Common.ReturnSettingsFile("Settings", "AdvancedSettings.xml")
+            Dim configpath As String = Path.Combine(Master.SettingsPath, "AdvancedSettings.xml")
             Load(configpath)
         Catch ex As Exception
             logger.Error(New StackFrame().GetMethod().Name, ex)
@@ -274,7 +274,7 @@ Public Class clsAdvancedSettings
                 Return
             End If
             'Cocotus All XML-config files in new Setting-folder!
-            Dim configpath As String = String.Concat(Functions.AppPath, "Settings", Path.DirectorySeparatorChar, "AdvancedSettings.xml")
+            Dim configpath As String = Path.Combine(Master.SettingsPath, "AdvancedSettings.xml")
             If File.Exists(configpath) Then
                 File.Delete(configpath)
             End If

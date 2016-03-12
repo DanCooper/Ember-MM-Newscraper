@@ -303,9 +303,9 @@ Public Class dlgTrakttvManager
             AddHandler Me.cbotraktListsFavorites.SelectedIndexChanged, AddressOf Me.cbotraktListsFavorites_SelectedIndexChanged
 
             'load kodi interface settings (if exists) since we will use the information of remote path to create a playlist for kodi
-            If File.Exists(FileUtils.Common.ReturnSettingsFile("Settings", "Interface.Kodi.xml")) Then
+            If File.Exists(Path.Combine(Master.SettingsPath, "Interface.Kodi.xml")) Then
                 Dim xmlSer As Xml.Serialization.XmlSerializer = Nothing
-                Using xmlSR As StreamReader = New StreamReader(FileUtils.Common.ReturnSettingsFile("Settings", "Interface.Kodi.xml"))
+                Using xmlSR As StreamReader = New StreamReader(Path.Combine(Master.SettingsPath, "Interface.Kodi.xml"))
                     xmlSer = New Xml.Serialization.XmlSerializer(GetType(Trakt_Generic.SpecialSettings))
                     _SpecialSettings = DirectCast(xmlSer.Deserialize(xmlSR), Trakt_Generic.SpecialSettings)
                 End Using

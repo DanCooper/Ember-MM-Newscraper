@@ -10195,9 +10195,7 @@ doCancel:
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub frmMain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        'Try
         Visible = False
-        logger.Info(New StackFrame().GetMethod().Name, "Ember startup")
 
         If Master.isWindows Then 'Dam mono on MacOSX don't have trayicon implemented yet
             TrayIcon = New System.Windows.Forms.NotifyIcon(components)
@@ -10307,10 +10305,6 @@ doCancel:
             LoadWithGUI()
         End If
         Master.fLoading.Close()
-        'Catch ex As Exception
-        '    logger.Error(New StackFrame().GetMethod().Name, ex)
-        '    Close()
-        'End Try
     End Sub
     ''' <summary>
     ''' Performs startup routines specific to being initiated by the command line
