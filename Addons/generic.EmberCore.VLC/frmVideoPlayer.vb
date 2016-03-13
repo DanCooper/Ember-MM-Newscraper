@@ -47,16 +47,11 @@ Public Class frmVideoPlayer
 #Region "Methods"
 
     Public Sub SetUp()
-        PlayList = New List(Of Uri)
-    End Sub
-
-    Public Sub New()
         Dim aVlcControl As Forms.VlcControl
         Dim aPath As String
 
-        ' This call is required by the designer.
-        InitializeComponent()
-        Me.SetUp()
+        PlayList = New List(Of Uri)
+
         aPath = clsAdvancedSettings.GetSetting("VLCPath", "", "generic.EmberCore.VLCPlayer")
         If Not File.Exists(Path.Combine(aPath, "libvlc.dll")) Then
             ' Add any initialization after the InitializeComponent() call.
@@ -88,8 +83,16 @@ Public Class frmVideoPlayer
         End If
     End Sub
 
+    Public Sub New()
+        ' This call is required by the designer.
+        InitializeComponent()
+        Me.SetUp()
+    End Sub
+
     Public Sub New(aFile As String)
         MyBase.New()
+        InitializeComponent()
+        Me.SetUp()
         PlaylistAdd(aFile)
     End Sub
     Public Sub PlayerPlay()

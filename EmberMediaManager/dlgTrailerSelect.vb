@@ -22,6 +22,8 @@ Imports System.IO
 Imports System.Text.RegularExpressions
 Imports EmberAPI
 Imports NLog
+Imports Vlc.DotNet
+
 
 Public Class dlgTrailerSelect
 
@@ -447,6 +449,15 @@ Public Class dlgTrailerSelect
             Threading.Thread.Sleep(50)
         End While
 
+        If _withPlayer Then
+            If Not String.IsNullOrEmpty(pnlTrailerPreview.Controls.Item(1).Name) Then
+                Dim aVlcControl As Vlc.DotNet.Forms.VlcControl
+                aVlcControl = CType(pnlTrailerPreview.Controls.Item(1).Controls.Find("VlcControl", True)(0), Vlc.DotNet.Forms.VlcControl)
+                aVlcControl.Stop()
+            End If
+        End If
+
+
         DialogResult = DialogResult.Cancel
         Me.Result = Nothing
         Close()
@@ -473,8 +484,8 @@ Public Class dlgTrailerSelect
             End If
         Else
             logger.Info("In else")
-            If Not String.IsNullOrEmpty(lvTrailers.SelectedItems(0).SubItems(1).Text.ToString) Then
-                Dim vLink As String = lvTrailers.SelectedItems(0).SubItems(1).Text.ToString
+            If Not String.IsNullOrEmpty(lvTrailers.SelectedItems(0).SubItems(2).Text.ToString) Then
+                Dim vLink As String = lvTrailers.SelectedItems(0).SubItems(2).Text.ToString
                 If Regex.IsMatch(vLink, "https?:\/\/.*imdb.*\/video\/imdb\/.*") Then
                     Using dFormats As New dlgTrailerFormat
                         Dim sFormat As TrailerLinksContainer = dFormats.ShowDialog(vLink)
@@ -619,6 +630,11 @@ Public Class dlgTrailerSelect
             pnlTrailerPreview.Controls.Add(DirectCast(paramsTrailerPreview(0), Panel))
             If Not String.IsNullOrEmpty(pnlTrailerPreview.Controls.Item(1).Name) Then
                 pnlTrailerPreviewNoPlayer.Visible = False
+                'DirectCast(pnlTrailerPreview.Controls.Item(1) Panel)
+                'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MediaPlayerPlay_Video, Nothing, Nothing, True)
+                Dim aVlcControl As Vlc.DotNet.Forms.VlcControl
+                aVlcControl = CType(pnlTrailerPreview.Controls.Item(1).Controls.Find("VlcControl", True)(0), Vlc.DotNet.Forms.VlcControl)
+                aVlcControl.Play(New Uri(Trailer))
             End If
         Else
 
