@@ -41,7 +41,7 @@ Namespace My
         Private Sub MyApplication_Startup(ByVal sender As Object, ByVal e As Microsoft.VisualBasic.ApplicationServices.StartupEventArgs) Handles Me.Startup
             logger.Info("====Ember Media Manager starting up====")
             logger.Info(String.Format("====Version {0}.{1}.{2}.{3}====", Application.Info.Version.Major, Application.Info.Version.Minor, Application.Info.Version.Build, Application.Info.Version.Revision))
-            Master.fLoading = New EmberAPI.frmSplash
+            Master.fLoading = New frmSplash
             Master.is32Bit = (IntPtr.Size = 4)
             Master.appArgs = e
 
@@ -59,6 +59,13 @@ Namespace My
                 '# Show UI
                 Master.fLoading.Show()
             End If
+
+            Dim aBit As String = "x64"
+            If Master.is32Bit Then
+                aBit = "x86"
+            End If
+            Master.fLoading.SetVersionMesg("Version {0}.{1}.{2}.{3} {4}", aBit)
+
             Application.DoEvents()
 
             Functions.TestMediaInfoDLL()
@@ -139,12 +146,6 @@ Namespace My
             Master.eLang.LoadAllLanguage(Master.eSettings.GeneralLanguage)
 
             Master.fLoading.SetLoadingMesg(Master.eLang.GetString(484, "Loading settings..."))
-
-            Dim aBit As String = "x64"
-            If Master.is32Bit Then
-                aBit = "x86"
-            End If
-            Master.fLoading.SetVersionMesg(Master.eLang.GetString(865, "Version {0}.{1}.{2}.{3} {4}"), aBit)
 
             Master.fLoading.SetLoadingMesg(Master.eLang.GetString(862, "Loading translations..."))
             APIXML.CacheXMLs()
