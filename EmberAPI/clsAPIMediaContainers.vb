@@ -1705,7 +1705,7 @@ Namespace MediaContainers
                 Sets.Remove(iSet(0))
             End If
 
-            Sets.Add(New [Set] With {.ID = SetID, .Title = SetName, .Order = If(Order > 0, Order.ToString, String.Empty), .TMDBColID = SetTMDBColID})
+            Sets.Add(New [Set] With {.ID = SetID, .Title = SetName, .Order = Order, .TMDBColID = SetTMDBColID})
         End Sub
 
         Public Sub AddTag(ByVal value As String)
@@ -4795,7 +4795,7 @@ Namespace MediaContainers
 #Region "Fields"
 
         Private _id As Long
-        Private _order As String
+        Private _order As Integer
         Private _title As String
         Private _tmdbcolid As String
 
@@ -4822,11 +4822,11 @@ Namespace MediaContainers
         End Property
 
         <XmlAttribute("order")>
-        Public Property Order() As String
+        Public Property Order() As Integer
             Get
                 Return _order
             End Get
-            Set(ByVal value As String)
+            Set(ByVal value As Integer)
                 _order = value
             End Set
         End Property
@@ -4834,7 +4834,7 @@ Namespace MediaContainers
         <XmlIgnore()>
         Public ReadOnly Property OrderSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_order)
+                Return Not _order = -1
             End Get
         End Property
 
@@ -4879,7 +4879,7 @@ Namespace MediaContainers
         Public Sub Clear()
             _id = -1
             _title = String.Empty
-            _order = String.Empty
+            _order = -1
             _tmdbcolid = String.Empty
         End Sub
 
