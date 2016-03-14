@@ -15956,7 +15956,7 @@ doCancel:
             clbFilterCountries_Movies.Items.AddRange(mCountry)
 
             clbFilterDataFields_Movies.Items.Clear()
-            clbFilterDataFields_Movies.Items.AddRange(New Object() {"Certification", "Credits", "Director", "Imdb", "MPAA", "OriginalTitle", "Outline", "Plot", "Rating", "ReleaseDate", "Runtime", "SortTitle", "Studio", "TMDB", "TMDBColID", "Tagline", "Title", "Trailer", "Votes", "Year"})
+            clbFilterDataFields_Movies.Items.AddRange(New Object() {"Certification", "Credits", "Director", "Imdb", "MPAA", "OriginalTitle", "Outline", "Plot", "Rating", "ReleaseDate", "Runtime", "SortTitle", "Studio", "TMDB", "TMDBColID", "Tagline", "Title", "Trailer", "VideoSource", "Votes", "Year"})
 
             cmnuMovieLanguageLanguages.Items.Clear()
             cmnuMovieLanguageLanguages.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
