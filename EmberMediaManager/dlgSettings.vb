@@ -2813,7 +2813,7 @@ Public Class dlgSettings
             btnMovieGeneralCustomMarker3.BackColor = Color.FromArgb(.MovieGeneralCustomMarker3Color)
             btnMovieGeneralCustomMarker4.BackColor = Color.FromArgb(.MovieGeneralCustomMarker4Color)
             cbGeneralDaemonDrive.SelectedItem = .GeneralDaemonDrive
-            cbGeneralDateTime.SelectedIndex = .GeneralDateTime
+            cbGeneralDateTime.SelectedValue = .GeneralDateTime
             cbGeneralLanguage.SelectedItem = .GeneralLanguage
             cbGeneralMovieTheme.SelectedItem = .GeneralMovieTheme
             cbGeneralMovieSetTheme.SelectedItem = .GeneralMovieSetTheme
