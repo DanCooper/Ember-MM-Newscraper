@@ -16292,11 +16292,10 @@ doCancel:
                     Application.DoEvents()
                     Threading.Thread.Sleep(50)
                 End While
-                Using dRestart As New dlgRestart
-                    If dRestart.ShowDialog = Windows.Forms.DialogResult.OK Then
-                        Application.Restart()
-                    End If
-                End Using
+                Dim dRestart As New dlgRestart
+                If dRestart.ShowDialog = DialogResult.OK Then
+                    Application.Restart()
+                End If
             End If
         Else
             SetMenus(False)
