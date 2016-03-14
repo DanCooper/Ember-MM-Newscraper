@@ -262,10 +262,6 @@ Public Class Localization
             htStrings.string.Clear()
         End If
         LoadLanguage(language)
-        ' no more module specific language files
-        'For Each s As String In ModulesManager.VersionList.Select(Function(m) m.AssemblyFileName).Distinct
-        '	LoadLanguage(language, s.Replace(".dll", String.Empty))
-        'Next
     End Sub
 
     Public Sub LoadHelpStrings(ByVal hPath As String)
@@ -285,7 +281,7 @@ Public Class Localization
         Dim lhPath As String = String.Empty
 
         If Not String.IsNullOrEmpty(Language) Then
-            If rAssembly = "" Then
+            If rAssembly = String.Empty Then
                 Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
             Else
                 Assembly = rAssembly

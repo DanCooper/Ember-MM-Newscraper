@@ -2761,10 +2761,6 @@ Public Class frmMain
     End Sub
 
     Private Sub bwNonScrape_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwNonScrape.RunWorkerCompleted
-        Dim configpath As String = FileUtils.Common.ReturnSettingsFile("Settings", "ScraperStatus.xml")
-        If File.Exists(configpath) Then
-            File.Delete(configpath)
-        End If
         tslLoading.Visible = False
         tspbLoading.Visible = False
         btnCancel.Visible = False
@@ -10199,9 +10195,7 @@ doCancel:
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub frmMain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        'Try
         Visible = False
-        logger.Info(New StackFrame().GetMethod().Name, "Ember startup")
 
         If Master.isWindows Then 'Dam mono on MacOSX don't have trayicon implemented yet
             TrayIcon = New System.Windows.Forms.NotifyIcon(components)
@@ -10311,10 +10305,6 @@ doCancel:
             LoadWithGUI()
         End If
         Master.fLoading.Close()
-        'Catch ex As Exception
-        '    logger.Error(New StackFrame().GetMethod().Name, ex)
-        '    Close()
-        'End Try
     End Sub
     ''' <summary>
     ''' Performs startup routines specific to being initiated by the command line
@@ -16302,11 +16292,10 @@ doCancel:
                     Application.DoEvents()
                     Threading.Thread.Sleep(50)
                 End While
-                Using dRestart As New dlgRestart
-                    If dRestart.ShowDialog = Windows.Forms.DialogResult.OK Then
-                        Application.Restart()
-                    End If
-                End Using
+                Dim dRestart As New dlgRestart
+                If dRestart.ShowDialog = DialogResult.OK Then
+                    Application.Restart()
+                End If
             End If
         Else
             SetMenus(False)
@@ -17057,17 +17046,6 @@ doCancel:
             SourceID = Convert.ToInt64(DirectCast(sender, ToolStripItem).Tag)
         End If
 
-        'Remove any previous scrape as there is no warranty that the new dataset will match with the old one
-        Dim aPath As String = FileUtils.Common.ReturnSettingsFile("Settings", "ScraperStatus.dat")
-        If File.Exists(aPath) Then
-            Try
-                File.Delete(aPath)
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-                Throw
-            End Try
-        End If
-
         LoadMedia(New Structures.ScanOrClean With {.Movies = True}, SourceID)
     End Sub
 
@@ -17077,18 +17055,6 @@ doCancel:
         If DirectCast(sender, ToolStripItem).Tag IsNot Nothing Then
             SourceID = Convert.ToInt64(DirectCast(sender, ToolStripItem).Tag)
         End If
-
-        'Remove any previous scrape as there is no warranty that the new dataset will match with the old one
-        Dim aPath As String = FileUtils.Common.ReturnSettingsFile("Settings", "ScraperStatus.dat")
-        If File.Exists(aPath) Then
-            Try
-                File.Delete(aPath)
-            Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
-                Throw
-            End Try
-        End If
-
 
         LoadMedia(New Structures.ScanOrClean With {.TV = True}, SourceID)
     End Sub

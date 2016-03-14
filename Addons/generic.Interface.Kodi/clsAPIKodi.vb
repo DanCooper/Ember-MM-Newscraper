@@ -373,8 +373,14 @@ Namespace Kodi
                         Next
                         tPathAndFilename.strPath = Directory.GetParent(Directory.GetParent(tDBElement.Filename).FullName).FullName
                     Else
-                        tPathAndFilename.strFilename = Path.GetFileName(tDBElement.Filename)
-                        tPathAndFilename.strPath = Directory.GetParent(tDBElement.Filename).FullName
+                        If StringUtils.IsStacked(Path.GetFileName(tDBElement.Filename)) Then
+                            tPathAndFilename.bIsMultiPart = True
+                            tPathAndFilename.strFilename = tDBElement.Filename
+                            tPathAndFilename.strPath = Directory.GetParent(tDBElement.Filename).FullName
+                        Else
+                            tPathAndFilename.strFilename = Path.GetFileName(tDBElement.Filename)
+                            tPathAndFilename.strPath = Directory.GetParent(tDBElement.Filename).FullName
+                        End If
                     End If
                 Case Enums.ContentType.TVShow
                     tPathAndFilename.strPath = tDBElement.ShowPath
@@ -625,7 +631,7 @@ Namespace Kodi
                     filter.and.Add(filterRule_Path)
                     Dim filterRule_Filename As New List.Filter.Rule.Movies
                     filterRule_Filename.field = List.Filter.Fields.Movies.filename
-                    filterRule_Filename.Operator = List.Filter.Operators.Is
+                    filterRule_Filename.Operator = If(tPathAndFilename.bIsMultiPart, List.Filter.Operators.contains, List.Filter.Operators.Is)
                     filterRule_Filename.value = strFilename
                     filter.and.Add(filterRule_Filename)
 
@@ -1995,6 +2001,7 @@ Namespace Kodi
 #Region "Nested Types"
 
         Structure PathAndFilename
+            Dim bIsMultiPart As Boolean
             Dim strPath As String
             Dim strFilename As String
         End Structure

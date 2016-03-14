@@ -811,13 +811,13 @@ Public Class Database
             'Throw New InvalidOperationException("A database connection is already open, can't open another.")
         End If
 
-        Dim MyVideosDBFile As String = FileUtils.Common.ReturnSettingsFile("Settings", MyVideosDB)
+        Dim MyVideosDBFile As String = Path.Combine(Master.SettingsPath, MyVideosDB)
 
         'check if an older DB version still exist
         If Not File.Exists(MyVideosDBFile) Then
             For i As Integer = MyVideosDBVersion - 1 To 2 Step -1
                 Dim oldMyVideosDB As String = String.Format("MyVideos{0}.emm", i)
-                Dim oldMyVideosDBFile As String = FileUtils.Common.ReturnSettingsFile("Settings", oldMyVideosDB)
+                Dim oldMyVideosDBFile As String = Path.Combine(Master.SettingsPath, oldMyVideosDB)
                 If File.Exists(oldMyVideosDBFile) Then
                     Master.fLoading.SetLoadingMesg(Master.eLang.GetString(1356, "Upgrading database..."))
                     PatchDatabase_MyVideos(oldMyVideosDBFile, MyVideosDBFile, i, MyVideosDBVersion)
