@@ -6038,8 +6038,11 @@ doCancel:
                     cmnuMovieLock.Text = If(setLock, Master.eLang.GetString(24, "Lock"), Master.eLang.GetString(108, "Unlock"))
                     cmnuMovieWatched.Text = If(setWatched, Master.eLang.GetString(981, "Watched"), Master.eLang.GetString(980, "Not Watched"))
 
-                    cmnuMovieLanguageLanguages.Items.Insert(0, Master.eLang.GetString(1199, "Select Language..."))
-                    cmnuMovieLanguageLanguages.SelectedItem = Master.eLang.GetString(1199, "Select Language...")
+                    'Language submenu
+                    If Not cmnuMovieLanguageLanguages.Items.Contains(String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")) Then
+                        cmnuMovieLanguageLanguages.Items.Insert(0, String.Concat(Master.eLang.GetString(1199, "Select Language"), "..."))
+                    End If
+                    cmnuMovieLanguageLanguages.SelectedItem = String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")
                     cmnuMovieLanguageSet.Enabled = False
 
                     'Genre submenu
@@ -6090,8 +6093,17 @@ doCancel:
                     cmnuMovieLock.Text = If(Convert.ToBoolean(dgvMovies.Item("Lock", e.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
                     cmnuMovieWatched.Text = If(Not String.IsNullOrEmpty(dgvMovies.Item("Playcount", e.RowIndex).Value.ToString) AndAlso Not dgvMovies.Item("Playcount", e.RowIndex).Value.ToString = "0", Master.eLang.GetString(980, "Not Watched"), Master.eLang.GetString(981, "Watched"))
 
-                    Dim Lang As String = CStr(dgvMovies.Item("Language", e.RowIndex).Value)
-                    cmnuMovieLanguageLanguages.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = Lang).name
+                    'Language submenu
+                    Dim strLang As String = CStr(dgvMovies.Item("Language", e.RowIndex).Value)
+                    Dim Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = strLang)
+                    If Language IsNot Nothing AndAlso Not String.IsNullOrEmpty(Language.name) Then
+                        cmnuMovieLanguageLanguages.SelectedItem = Language.name
+                    Else
+                        If Not cmnuMovieLanguageLanguages.Items.Contains(String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")) Then
+                            cmnuMovieLanguageLanguages.Items.Insert(0, String.Concat(Master.eLang.GetString(1199, "Select Language"), "..."))
+                        End If
+                        cmnuMovieLanguageLanguages.SelectedItem = String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")
+                    End If
                     cmnuMovieLanguageSet.Enabled = False
 
                     'Genre submenu
@@ -6608,8 +6620,11 @@ doCancel:
                     cmnuMovieSetSortMethodMethods.SelectedIndex = -1
                     cmnuMovieSetSortMethodSet.Enabled = False
 
-                    cmnuMovieSetLanguageLanguages.Items.Insert(0, Master.eLang.GetString(1199, "Select Language..."))
-                    cmnuMovieSetLanguageLanguages.SelectedItem = Master.eLang.GetString(1199, "Select Language...")
+                    'Language submenu
+                    If Not cmnuMovieSetLanguageLanguages.Items.Contains(String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")) Then
+                        cmnuMovieSetLanguageLanguages.Items.Insert(0, String.Concat(Master.eLang.GetString(1199, "Select Language"), "..."))
+                    End If
+                    cmnuMovieSetLanguageLanguages.SelectedItem = String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")
                     cmnuMovieSetLanguageSet.Enabled = False
                 Else
                     cmnuMovieSetReload.Visible = True
@@ -6641,8 +6656,17 @@ doCancel:
                     cmnuMovieSetSortMethodMethods.Text = DirectCast(CInt(dgvMovieSets.Item("SortMethod", e.RowIndex).Value), Enums.SortMethod_MovieSet).ToString
                     cmnuMovieSetSortMethodSet.Enabled = False
 
-                    Dim Lang As String = CStr(dgvMovieSets.Item("Language", e.RowIndex).Value)
-                    cmnuMovieSetLanguageLanguages.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = Lang).name
+                    'Language submenu
+                    Dim strLang As String = CStr(dgvMovieSets.Item("Language", e.RowIndex).Value)
+                    Dim Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = strLang)
+                    If Language IsNot Nothing AndAlso Not String.IsNullOrEmpty(Language.name) Then
+                        cmnuMovieSetLanguageLanguages.SelectedItem = Language.name
+                    Else
+                        If Not cmnuMovieSetLanguageLanguages.Items.Contains(String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")) Then
+                            cmnuMovieSetLanguageLanguages.Items.Insert(0, String.Concat(Master.eLang.GetString(1199, "Select Language"), "..."))
+                        End If
+                        cmnuMovieSetLanguageLanguages.SelectedItem = String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")
+                    End If
                     cmnuMovieSetLanguageSet.Enabled = False
                 End If
             Else
@@ -8019,8 +8043,11 @@ doCancel:
                     cmnuShowLock.Text = If(setLock, Master.eLang.GetString(24, "Lock"), Master.eLang.GetString(108, "Unlock"))
                     cmnuShowWatched.Text = If(setWatched, Master.eLang.GetString(981, "Watched"), Master.eLang.GetString(980, "Not Watched"))
 
-                    cmnuShowLanguageLanguages.Items.Insert(0, Master.eLang.GetString(1199, "Select Language..."))
-                    cmnuShowLanguageLanguages.SelectedItem = Master.eLang.GetString(1199, "Select Language...")
+                    'Language submenu
+                    If Not cmnuShowLanguageLanguages.Items.Contains(String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")) Then
+                        cmnuShowLanguageLanguages.Items.Insert(0, String.Concat(Master.eLang.GetString(1199, "Select Language"), "..."))
+                    End If
+                    cmnuShowLanguageLanguages.SelectedItem = String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")
                     cmnuShowLanguageSet.Enabled = False
 
                     'Genre submenu
@@ -8070,8 +8097,17 @@ doCancel:
                         cmnuShow.Enabled = True
                     End If
 
-                    Dim Lang As String = CStr(dgvTVShows.Item("Language", dgvHTI.RowIndex).Value)
-                    cmnuShowLanguageLanguages.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = Lang).name
+                    'Language submenu
+                    Dim strLang As String = CStr(dgvTVShows.Item("Language", dgvHTI.RowIndex).Value)
+                    Dim Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = strLang)
+                    If Language IsNot Nothing AndAlso Not String.IsNullOrEmpty(Language.name) Then
+                        cmnuShowLanguageLanguages.SelectedItem = Language.name
+                    Else
+                        If Not cmnuShowLanguageLanguages.Items.Contains(String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")) Then
+                            cmnuShowLanguageLanguages.Items.Insert(0, String.Concat(Master.eLang.GetString(1199, "Select Language"), "..."))
+                        End If
+                        cmnuShowLanguageLanguages.SelectedItem = String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")
+                    End If
                     cmnuShowLanguageSet.Enabled = False
 
                     'Genre submenu
@@ -10927,7 +10963,7 @@ doCancel:
     End Sub
 
     Private Sub cmnuMovieLanguageLanguages_DropDown(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuMovieLanguageLanguages.DropDown
-        cmnuMovieLanguageLanguages.Items.Remove(Master.eLang.GetString(1199, "Select Language..."))
+        cmnuMovieLanguageLanguages.Items.Remove(String.Concat(Master.eLang.GetString(1199, "Select Language"), "..."))
     End Sub
 
     Private Sub cmnuMovieLanguageLanguages_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuMovieLanguageLanguages.SelectedIndexChanged
@@ -10935,7 +10971,7 @@ doCancel:
     End Sub
 
     Private Sub cmnuMovieSetLanguageLanguages_DropDown(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuMovieSetLanguageLanguages.DropDown
-        cmnuMovieSetLanguageLanguages.Items.Remove(Master.eLang.GetString(1199, "Select Language..."))
+        cmnuMovieSetLanguageLanguages.Items.Remove(String.Concat(Master.eLang.GetString(1199, "Select Language"), "..."))
     End Sub
 
     Private Sub cmnuMovieSetLanguageLanguages_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuMovieSetLanguageLanguages.SelectedIndexChanged
@@ -10943,7 +10979,7 @@ doCancel:
     End Sub
 
     Private Sub cmnuShowLanguageLanguages_DropDown(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuShowLanguageLanguages.DropDown
-        cmnuShowLanguageLanguages.Items.Remove(Master.eLang.GetString(1199, "Select Language..."))
+        cmnuShowLanguageLanguages.Items.Remove(String.Concat(Master.eLang.GetString(1199, "Select Language"), "..."))
     End Sub
 
     Private Sub cmnuShowLanguageLanguages_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuShowLanguageLanguages.SelectedIndexChanged
