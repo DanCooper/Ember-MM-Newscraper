@@ -2612,7 +2612,7 @@ Namespace MediaContainers
         <XmlIgnore()>
         Public ReadOnly Property SortTitleSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_sorttitle) AndAlso Not _sorttitle = StringUtils.SortTokens_TV(_title)
+                Return Not String.IsNullOrEmpty(_sorttitle)
             End Get
         End Property
 
@@ -4737,32 +4737,22 @@ Namespace MediaContainers
         Private Function FilterImages(ByRef ImagesList As List(Of Image), ByVal cSettings As Settings) As List(Of Image)
             Dim FilteredList As New List(Of Image)
 
-            For Each tmpImage As Image In ImagesList.Where(Function(f) f.ShortLang = cSettings.MediaLanguage)
-                FilteredList.Add(tmpImage)
-            Next
+            FilteredList.AddRange(ImagesList.Where(Function(f) f.ShortLang = cSettings.MediaLanguage))
 
             If (cSettings.GetEnglishImages OrElse Not cSettings.MediaLanguageOnly) AndAlso Not cSettings.MediaLanguage = "en" Then
-                For Each tmpImage As Image In ImagesList.Where(Function(f) f.ShortLang = "en")
-                    FilteredList.Add(tmpImage)
-                Next
+                FilteredList.AddRange(ImagesList.Where(Function(f) f.ShortLang = "en"))
             End If
 
             If cSettings.GetBlankImages OrElse Not cSettings.MediaLanguageOnly Then
-                For Each tmpImage As Image In ImagesList.Where(Function(f) f.LongLang = Master.eLang.GetString(1168, "Blank"))
-                    FilteredList.Add(tmpImage)
-                Next
-                For Each tmpImage As Image In ImagesList.Where(Function(f) f.ShortLang = String.Empty)
-                    FilteredList.Add(tmpImage)
-                Next
+                FilteredList.AddRange(ImagesList.Where(Function(f) f.LongLang = Master.eLang.GetString(1168, "Blank")))
+                FilteredList.AddRange(ImagesList.Where(Function(f) f.ShortLang = String.Empty))
             End If
 
             If Not cSettings.MediaLanguageOnly Then
-                For Each tmpImage As Image In ImagesList.Where(Function(f) Not f.ShortLang = cSettings.MediaLanguage AndAlso
+                FilteredList.AddRange(ImagesList.Where(Function(f) Not f.ShortLang = cSettings.MediaLanguage AndAlso
                                                                    Not f.ShortLang = "en" AndAlso
                                                                    Not f.LongLang = Master.eLang.GetString(1168, "Blank") AndAlso
-                                                                   Not f.ShortLang = String.Empty)
-                    FilteredList.Add(tmpImage)
-                Next
+                                                                   Not f.ShortLang = String.Empty))
             End If
 
             Return FilteredList
