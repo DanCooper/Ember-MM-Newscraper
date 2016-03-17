@@ -4748,7 +4748,7 @@ Namespace MediaContainers
             End If
 
             If cSettings.GetBlankImages OrElse Not cSettings.MediaLanguageOnly Then
-                For Each tmpImage As Image In ImagesList.Where(Function(f) f.ShortLang = Master.eLang.GetString(1168, "Blank"))
+                For Each tmpImage As Image In ImagesList.Where(Function(f) f.LongLang = Master.eLang.GetString(1168, "Blank"))
                     FilteredList.Add(tmpImage)
                 Next
                 For Each tmpImage As Image In ImagesList.Where(Function(f) f.ShortLang = String.Empty)
@@ -4759,7 +4759,7 @@ Namespace MediaContainers
             If Not cSettings.MediaLanguageOnly Then
                 For Each tmpImage As Image In ImagesList.Where(Function(f) Not f.ShortLang = cSettings.MediaLanguage AndAlso
                                                                    Not f.ShortLang = "en" AndAlso
-                                                                   Not f.ShortLang = Master.eLang.GetString(1168, "Blank") AndAlso
+                                                                   Not f.LongLang = Master.eLang.GetString(1168, "Blank") AndAlso
                                                                    Not f.ShortLang = String.Empty)
                     FilteredList.Add(tmpImage)
                 Next
