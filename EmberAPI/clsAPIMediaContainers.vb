@@ -3596,6 +3596,9 @@ Namespace MediaContainers
 
         Private Sub DetectImageSize(ByRef strHeigth As String)
             Select Case strHeigth
+                Case "3000"
+                    _moviepostersize = Enums.MoviePosterSize.HD3000
+                    _tvpostersize = Enums.TVPosterSize.HD3000
                 Case "2160"
                     _moviefanartsize = Enums.MovieFanartSize.UHD2160
                     _tvepisodepostersize = Enums.TVEpisodePosterSize.UHD2160
@@ -3606,16 +3609,19 @@ Namespace MediaContainers
                     _moviepostersize = Enums.MoviePosterSize.HD1500
                     _tvpostersize = Enums.TVPosterSize.HD1500
                     _tvseasonpostersize = Enums.TVSeasonPosterSize.HD1500
+                Case "1440"
+                    _moviefanartsize = Enums.MovieFanartSize.QHD1440
+                    _tvfanartsize = Enums.TVFanartSize.QHD1440
                 Case "1426"
                     _moviepostersize = Enums.MoviePosterSize.HD1426
                     _tvpostersize = Enums.TVPosterSize.HD1426
                     _tvseasonpostersize = Enums.TVSeasonPosterSize.HD1426
-                Case "1000"
-                    _tvpostersize = Enums.TVPosterSize.HD1000
                 Case "1080"
                     _moviefanartsize = Enums.MovieFanartSize.HD1080
                     _tvepisodepostersize = Enums.TVEpisodePosterSize.HD1080
                     _tvfanartsize = Enums.TVFanartSize.HD1080
+                Case "1000"
+                    _tvpostersize = Enums.TVPosterSize.HD1000
                 Case "720"
                     _moviefanartsize = Enums.MovieFanartSize.HD720
                     _tvepisodepostersize = Enums.TVEpisodePosterSize.HD720
@@ -4656,24 +4662,24 @@ Namespace MediaContainers
             Next
         End Sub
 
-        Public Sub Sort(ByVal tDBElement As Database.DBElement)
-            Dim cSettings As New Settings
+        Public Sub SortAndFilter(ByVal tDBElement As Database.DBElement)
+            Dim cSettings As New FilterSettings
+
+            cSettings.ContentType = tDBElement.ContentType
+            cSettings.MediaLanguage = tDBElement.Language
 
             Select Case tDBElement.ContentType
                 Case Enums.ContentType.Movie
                     cSettings.GetBlankImages = Master.eSettings.MovieImagesGetBlankImages
                     cSettings.GetEnglishImages = Master.eSettings.MovieImagesGetEnglishImages
-                    cSettings.MediaLanguage = tDBElement.Language
                     cSettings.MediaLanguageOnly = Master.eSettings.MovieImagesMediaLanguageOnly
                 Case Enums.ContentType.MovieSet
                     cSettings.GetBlankImages = Master.eSettings.MovieSetImagesGetBlankImages
                     cSettings.GetEnglishImages = Master.eSettings.MovieSetImagesGetEnglishImages
-                    cSettings.MediaLanguage = tDBElement.Language
                     cSettings.MediaLanguageOnly = Master.eSettings.MovieSetImagesMediaLanguageOnly
                 Case Enums.ContentType.TV, Enums.ContentType.TVEpisode, Enums.ContentType.TVSeason, Enums.ContentType.TVShow
                     cSettings.GetBlankImages = Master.eSettings.TVImagesGetBlankImages
                     cSettings.GetEnglishImages = Master.eSettings.TVImagesGetEnglishImages
-                    cSettings.MediaLanguage = tDBElement.Language
                     cSettings.MediaLanguageOnly = Master.eSettings.TVImagesMediaLanguageOnly
             End Select
 
@@ -4693,33 +4699,12 @@ Namespace MediaContainers
             _mainlandscapes.Sort()
             _mainposters.Sort()
 
-            'first order list by userrating (favorite images on top), then quality enumeration (0,1,2,3,4..) ascending, then put PrefSize images on top of list and later as workaround remove "Any" Quality(=0) to bottom of list because otherwise Any images would be shown before HD images (1,2,3)
-            Dim sortedqualityimages As New List(Of Image)
-            'quality sorting of moviefanarts
-            If Not Master.eSettings.MovieExtrafanartsPrefSize = Enums.MovieFanartSize.Any Then
-                sortedqualityimages = _mainfanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MovieFanartSize).OrderByDescending(Function(y) y.MovieFanartSize = Master.eSettings.MovieExtrafanartsPrefSize).OrderBy(Function(u) u.MovieFanartSize = Enums.MovieFanartSize.Any).ToList()
-            Else
-                sortedqualityimages = _mainfanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MovieFanartSize).OrderBy(Function(u) u.MovieFanartSize = Enums.MovieFanartSize.Any).ToList()
-            End If
-            If sortedqualityimages IsNot Nothing Then
-                _mainfanarts.Clear()
-                _mainfanarts.AddRange(sortedqualityimages)
-                sortedqualityimages.Clear()
-            End If
-            'quality sorting of movieposters
-            If Not Master.eSettings.MoviePosterPrefSize = Enums.MoviePosterSize.Any Then
-                sortedqualityimages = _mainposters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MoviePosterSize).OrderByDescending(Function(y) y.MoviePosterSize = Master.eSettings.MoviePosterPrefSize).OrderBy(Function(u) u.MoviePosterSize = Enums.MoviePosterSize.Any).ToList()
-            Else
-                sortedqualityimages = _mainposters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MoviePosterSize).OrderBy(Function(u) u.MoviePosterSize = Enums.MoviePosterSize.Any).ToList()
-            End If
-            If sortedqualityimages IsNot Nothing Then
-                _mainposters.Clear()
-                _mainposters.AddRange(sortedqualityimages)
-                sortedqualityimages.Clear()
-            End If
+            'sort all List(Of Image) by Votes/Size/Type
+            SortImages(cSettings)
 
-            'sort all List(Of Image) by preferred language/en/Blank/String.Empty/others
-            _episodeposters = FilterImages(_episodeposters, cSettings)
+            'filter all List(Of Image) by preferred language/en/Blank/String.Empty/others
+            'Language preference settings aren't needed for sorting episode posters since here we only care about size of image (unlike poster/banner)
+            '_episodeposters = FilterImages(_episodeposters, cSettings)
             _seasonbanners = FilterImages(_seasonbanners, cSettings)
             _seasonlandscapes = FilterImages(_seasonlandscapes, cSettings)
             _seasonposters = FilterImages(_seasonposters, cSettings)
@@ -4734,7 +4719,148 @@ Namespace MediaContainers
             _mainposters = FilterImages(_mainposters, cSettings)
         End Sub
 
-        Private Function FilterImages(ByRef ImagesList As List(Of Image), ByVal cSettings As Settings) As List(Of Image)
+        Private Sub SortImages(ByVal cSettings As FilterSettings)
+            Select Case cSettings.ContentType
+                Case Enums.ContentType.Movie
+                    'Movie Banner
+                    If Not Master.eSettings.MovieBannerPrefSize = Enums.MovieBannerSize.Any Then
+                        _mainbanners = _mainbanners.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MovieBannerSize).OrderByDescending(Function(y) y.MovieBannerSize = Master.eSettings.MovieBannerPrefSize).ToList()
+                    Else
+                        _mainbanners = _mainbanners.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MovieBannerSize).ToList()
+                    End If
+                    'Movie ClearArt
+                    _maincleararts = _maincleararts.OrderByDescending(Function(z) z.VoteAverage).ToList()
+                    'Movie ClearLogo
+                    _mainclearlogos = _mainclearlogos.OrderByDescending(Function(z) z.VoteAverage).ToList()
+                    'Movie DiscArt
+                    _maindiscarts = _maindiscarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.DiscType).ToList()
+                    'Movie Fanart
+                    If Not Master.eSettings.MovieFanartPrefSize = Enums.MovieFanartSize.Any Then
+                        _mainfanarts = _mainfanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MovieFanartSize).OrderByDescending(Function(y) y.MovieFanartSize = Master.eSettings.MovieFanartPrefSize).ToList()
+                    Else
+                        _mainfanarts = _mainfanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MovieFanartSize).ToList()
+                    End If
+                    'Movie Landscape
+                    _mainlandscapes = _mainlandscapes.OrderByDescending(Function(z) z.VoteAverage).ToList()
+                    'Movie Poster
+                    If Not Master.eSettings.MoviePosterPrefSize = Enums.MoviePosterSize.Any Then
+                        _mainposters = _mainposters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MoviePosterSize).OrderByDescending(Function(y) y.MoviePosterSize = Master.eSettings.MoviePosterPrefSize).ToList()
+                    Else
+                        _mainposters = _mainposters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MoviePosterSize).ToList()
+                    End If
+                Case Enums.ContentType.MovieSet
+                    'MovieSet Banner
+                    If Not Master.eSettings.MovieSetBannerPrefSize = Enums.MovieBannerSize.Any Then
+                        _mainbanners = _mainbanners.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MovieBannerSize).OrderByDescending(Function(y) y.MovieBannerSize = Master.eSettings.MovieSetBannerPrefSize).ToList()
+                    Else
+                        _mainbanners = _mainbanners.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MovieBannerSize).ToList()
+                    End If
+                    'MovieSet ClearArt
+                    _maincleararts = _maincleararts.OrderByDescending(Function(z) z.VoteAverage).ToList()
+                    'MovieSet ClearLogo
+                    _mainclearlogos = _mainclearlogos.OrderByDescending(Function(z) z.VoteAverage).ToList()
+                    'MovieSet DiscArt
+                    _maindiscarts = _maindiscarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.DiscType).ToList()
+                    'MovieSet Fanart
+                    If Not Master.eSettings.MovieSetFanartPrefSize = Enums.MovieFanartSize.Any Then
+                        _mainfanarts = _mainfanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MovieFanartSize).OrderByDescending(Function(y) y.MovieFanartSize = Master.eSettings.MovieSetFanartPrefSize).ToList()
+                    Else
+                        _mainfanarts = _mainfanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MovieFanartSize).ToList()
+                    End If
+                    'MovieSet Landscape
+                    _mainlandscapes = _mainlandscapes.OrderByDescending(Function(z) z.VoteAverage).ToList()
+                    'MovieSet Poster
+                    If Not Master.eSettings.MovieSetPosterPrefSize = Enums.MoviePosterSize.Any Then
+                        _mainposters = _mainposters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MoviePosterSize).OrderByDescending(Function(y) y.MoviePosterSize = Master.eSettings.MovieSetPosterPrefSize).ToList()
+                    Else
+                        _mainposters = _mainposters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MoviePosterSize).ToList()
+                    End If
+                Case Enums.ContentType.TV, Enums.ContentType.TVShow
+                    'TVShow Banner
+                    If Not Master.eSettings.TVShowBannerPrefSize = Enums.TVBannerSize.Any Then
+                        _mainbanners = _mainbanners.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVBannerSize).OrderByDescending(Function(y) y.TVBannerSize = Master.eSettings.TVShowBannerPrefSize).ToList()
+                    Else
+                        _mainbanners = _mainbanners.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVBannerSize).ToList()
+                    End If
+                    'TVShow CharacterArt
+                    _maincharacterarts = _maincharacterarts.OrderByDescending(Function(z) z.VoteAverage).ToList()
+                    'TVShow ClearArt
+                    _maincleararts = _maincleararts.OrderByDescending(Function(z) z.VoteAverage).ToList()
+                    'TVShow ClearLogo
+                    _mainclearlogos = _mainclearlogos.OrderByDescending(Function(z) z.VoteAverage).ToList()
+                    'TVShow Fanart
+                    If Not Master.eSettings.TVShowFanartPrefSize = Enums.TVFanartSize.Any Then
+                        _mainfanarts = _mainfanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVFanartSize).OrderByDescending(Function(y) y.TVFanartSize = Master.eSettings.TVShowFanartPrefSize).ToList()
+                    Else
+                        _mainfanarts = _mainfanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVFanartSize).ToList()
+                    End If
+                    'TVShow Landscape
+                    _mainlandscapes = _mainlandscapes.OrderByDescending(Function(z) z.VoteAverage).ToList()
+                    'TVShow Poster
+                    If Not Master.eSettings.TVShowPosterPrefSize = Enums.TVPosterSize.Any Then
+                        _mainposters = _mainposters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVPosterSize).OrderByDescending(Function(y) y.TVPosterSize = Master.eSettings.TVShowPosterPrefSize).ToList()
+                    Else
+                        _mainposters = _mainposters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVPosterSize).ToList()
+                    End If
+                Case Enums.ContentType.TVEpisode
+                    'TVShow Fanart (TVEpisode preferred sorting)
+                    If Not Master.eSettings.TVEpisodeFanartPrefSize = Enums.TVFanartSize.Any Then
+                        _mainfanarts = _mainfanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVFanartSize).OrderByDescending(Function(y) y.TVFanartSize = Master.eSettings.TVEpisodeFanartPrefSize).ToList()
+                    Else
+                        _mainfanarts = _mainfanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVFanartSize).ToList()
+                    End If
+                Case Enums.ContentType.TVSeason
+                    'TVShow Fanart (TVSeason preferred sorting)
+                    If Not Master.eSettings.TVSeasonFanartPrefSize = Enums.TVFanartSize.Any Then
+                        _mainfanarts = _mainfanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVFanartSize).OrderByDescending(Function(y) y.TVFanartSize = Master.eSettings.TVSeasonFanartPrefSize).ToList()
+                    Else
+                        _mainfanarts = _mainfanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVFanartSize).ToList()
+                    End If
+                    'TVShow Poster (TVSeason preferred sorting)
+                    If Not Master.eSettings.TVSeasonPosterPrefSize = Enums.TVSeasonPosterSize.Any Then
+                        _mainposters = _mainposters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVSeasonPosterSize).OrderByDescending(Function(y) y.TVSeasonPosterSize = Master.eSettings.TVSeasonPosterPrefSize).ToList()
+                    Else
+                        _mainposters = _mainposters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVSeasonPosterSize).ToList()
+                    End If
+            End Select
+
+            'Unique image containers
+
+            'TVEpisode Fanart
+            If Not Master.eSettings.TVEpisodeFanartPrefSize = Enums.TVFanartSize.Any Then
+                _episodefanarts = _episodefanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVFanartSize).OrderByDescending(Function(y) y.TVFanartSize = Master.eSettings.TVEpisodeFanartPrefSize).ToList()
+            Else
+                _episodefanarts = _episodefanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVFanartSize).ToList()
+            End If
+            'TVEpisode Poster
+            If Not Master.eSettings.TVEpisodePosterPrefSize = Enums.TVEpisodePosterSize.Any Then
+                _episodeposters = _episodeposters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVEpisodePosterSize).OrderByDescending(Function(y) y.TVEpisodePosterSize = Master.eSettings.TVEpisodePosterPrefSize).ToList()
+            Else
+                _episodeposters = _episodeposters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVEpisodePosterSize).ToList()
+            End If
+            'TVSeason Banner
+            If Not Master.eSettings.TVSeasonBannerPrefSize = Enums.TVBannerSize.Any Then
+                _seasonbanners = _seasonbanners.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVBannerSize).OrderByDescending(Function(y) y.TVBannerSize = Master.eSettings.TVSeasonBannerPrefSize).ToList()
+            Else
+                _seasonbanners = _seasonbanners.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVBannerSize).ToList()
+            End If
+            'TVSeason Fanart
+            If Not Master.eSettings.TVSeasonFanartPrefSize = Enums.TVFanartSize.Any Then
+                _seasonfanarts = _seasonfanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVFanartSize).OrderByDescending(Function(y) y.TVFanartSize = Master.eSettings.TVSeasonFanartPrefSize).ToList()
+            Else
+                _seasonfanarts = _seasonfanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVFanartSize).ToList()
+            End If
+            'TVSeason Landscape
+            _seasonlandscapes = _seasonlandscapes.OrderByDescending(Function(z) z.VoteAverage).ToList()
+            'TVSeason Poster
+            If Not Master.eSettings.TVSeasonPosterPrefSize = Enums.TVSeasonPosterSize.Any Then
+                _seasonposters = _seasonposters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVSeasonPosterSize).OrderByDescending(Function(y) y.TVSeasonPosterSize = Master.eSettings.TVSeasonPosterPrefSize).ToList()
+            Else
+                _seasonposters = _seasonposters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVSeasonPosterSize).ToList()
+            End If
+        End Sub
+
+        Private Function FilterImages(ByRef ImagesList As List(Of Image), ByVal cSettings As FilterSettings) As List(Of Image)
             Dim FilteredList As New List(Of Image)
 
             FilteredList.AddRange(ImagesList.Where(Function(f) f.ShortLang = cSettings.MediaLanguage))
@@ -4762,10 +4888,11 @@ Namespace MediaContainers
 
 #Region "Nested Types"
 
-        Private Structure Settings
+        Private Structure FilterSettings
 
 #Region "Fields"
 
+            Dim ContentType As Enums.ContentType
             Dim GetBlankImages As Boolean
             Dim GetEnglishImages As Boolean
             Dim MediaLanguage As String

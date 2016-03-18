@@ -1293,7 +1293,7 @@ Public Class ModulesManager
                 Next
 
                 'sorting
-                ImagesContainer.Sort(DBElement)
+                ImagesContainer.SortAndFilter(DBElement)
 
                 'create cache paths
                 ImagesContainer.CreateCachePaths(DBElement)
@@ -1347,7 +1347,7 @@ Public Class ModulesManager
             Next
 
             'sorting
-            ImagesContainer.Sort(DBElement)
+            ImagesContainer.SortAndFilter(DBElement)
 
             'create cache paths
             ImagesContainer.CreateCachePaths(DBElement)
@@ -1435,7 +1435,7 @@ Public Class ModulesManager
                 Next
 
                 'sorting
-                ImagesContainer.Sort(DBElement)
+                ImagesContainer.SortAndFilter(DBElement)
 
                 'create cache paths
                 ImagesContainer.CreateCachePaths(DBElement)
