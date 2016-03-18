@@ -103,9 +103,13 @@ Namespace YouTube
         Public Shared Function IsAvailable(ByVal strURL As String) As Boolean
             If UrlUtils.IsYouTubeURL(strURL) Then
                 Dim raw_video_info As String = GetVideoDetails(UrlUtils.GetVideoID(strURL))
-                Dim rawAllData As Dictionary(Of String, String) = ToStringTable(raw_video_info).ToDictionary(Function(entry) entry(0), Function(entry) entry(1))
-                If Not rawAllData.ContainsKey("errorcode") Then
-                    Return True
+                If Not String.IsNullOrEmpty(raw_video_info) Then
+                    Dim rawAllData As Dictionary(Of String, String) = ToStringTable(raw_video_info).ToDictionary(Function(entry) entry(0), Function(entry) entry(1))
+                    If Not rawAllData.ContainsKey("errorcode") Then
+                        Return True
+                    End If
+                Else
+                    Return False
                 End If
             End If
             Return False

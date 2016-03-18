@@ -444,6 +444,11 @@ Namespace Kodi
         ''' <returns></returns>
         ''' <remarks>ATTENTION: It's not allowed to use "Remotepath.ToLower" (Kodi can't find UNC sources with wrong case)</remarks>
         Private Function GetRemotePath_MovieSet(ByVal strLocalPath As String) As String
+            If String.IsNullOrEmpty(_currenthost.MovieSetArtworksPath) Then
+                logger.Error(String.Format("[APIKodi] [{0}] [GetRemotePath_MovieSet]: No MovieSet Artwork path definied for this host!", _currenthost.Label))
+                Return Nothing
+            End If
+
             Dim HostPath As String = _currenthost.MovieSetArtworksPath
             Dim RemotePath As String = String.Empty
             Dim RemoteIsUNC As Boolean = False

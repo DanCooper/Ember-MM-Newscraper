@@ -2497,12 +2497,7 @@ Public Class dlgEditMovie
 
         tmpDBElement.IsMark = chkMark.Checked
 
-        If Not String.IsNullOrEmpty(txtSortTitle.Text) Then
-            tmpDBElement.Movie.SortTitle = txtSortTitle.Text.Trim
-        Else
-            tmpDBElement.Movie.SortTitle = StringUtils.SortTokens_Movie(txtTitle.Text.Trim)
-        End If
-
+        tmpDBElement.Movie.SortTitle = txtSortTitle.Text.Trim
         tmpDBElement.Movie.Tagline = txtTagline.Text.Trim
         tmpDBElement.Movie.Year = txtYear.Text.Trim
         tmpDBElement.Movie.Votes = txtVotes.Text.Trim
