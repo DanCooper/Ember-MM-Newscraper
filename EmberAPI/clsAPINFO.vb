@@ -1305,6 +1305,12 @@ Public Class NFO
                 Dim Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = mNFO.Language)
                 If Language IsNot Nothing Then
                     mNFO.Language = Language.abbreviation
+                Else
+                    'check if it's a valid Alpha2 code or remove the information the use the source default language
+                    Dim ShortLanguage = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = mNFO.Language)
+                    If ShortLanguage Is Nothing Then
+                        mNFO.Language = String.Empty
+                    End If
                 End If
             End If
 
@@ -1346,6 +1352,12 @@ Public Class NFO
                 Dim Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = mNFO.Language)
                 If Language IsNot Nothing Then
                     mNFO.Language = Language.abbreviation
+                Else
+                    'check if it's a valid Alpha2 code or remove the information the use the source default language
+                    Dim ShortLanguage = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = mNFO.Language)
+                    If ShortLanguage Is Nothing Then
+                        mNFO.Language = String.Empty
+                    End If
                 End If
             End If
 
