@@ -257,7 +257,7 @@ Public Class FileFolderRenamer
                     UpdatePaths_Episode(_tv, srcDir, destDir, _frename.FileName, _frename.NewFileName)
 
                     If toDB Then
-                        Master.DB.SaveTVEpisodeToDB(_tv, False, BatchMode, False, False, False)
+                        Master.DB.SaveTVEpisodeToDB(_tv, False, BatchMode, False, False, False, True)
                     End If
 
                     Dim fileCount As Integer = 0
@@ -1727,7 +1727,7 @@ Public Class FileFolderRenamer
             DoRenameSingle_Episode(EpisodeFile, _tmpEpisode, BatchMode, ShowError, toDB)
         Else
             If toDB Then
-                Master.DB.SaveTVEpisodeToDB(_tmpEpisode, False, BatchMode, False, False, False)
+                Master.DB.SaveTVEpisodeToDB(_tmpEpisode, False, BatchMode, False, False, False, True)
             End If
         End If
     End Sub

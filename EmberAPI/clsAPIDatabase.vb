@@ -4152,7 +4152,7 @@ Public Class Database
                 newEpisode.ID = -1
                 newEpisode.TVEpisode = tEpisode
                 newEpisode.TVEpisode.FileInfo = _episode.TVEpisode.FileInfo
-                SaveTVEpisodeToDB(newEpisode, True, Batchmode, True, True, True)
+                SaveTVEpisodeToDB(newEpisode, True, Batchmode, True, True, True, True)
             Next
         End Using
         If Not Batchmode Then SQLtransaction.Commit()
@@ -4168,15 +4168,9 @@ Public Class Database
     ''' <param name="doSeasonCheck">If <c>True</c> then check if it's needed to create a new season for this episode</param>
     ''' <param name="BatchMode">Is the function already part of a transaction?</param>
     ''' <param name="ToDisk">Create NFO and Images</param>
-    Public Function SaveTVEpisodeToDB(ByVal _episode As DBElement, ByVal IsNew As Boolean, ByVal BatchMode As Boolean, ByVal ToNFO As Boolean, ByVal ToDisk As Boolean, ByVal doSeasonCheck As Boolean) As DBElement
-        'TODO Must add parameter checking. Needs thought to ensure calling routines are not broken if exception thrown. 
-        'TODO Break this method into smaller chunks. Too important to be this complex
-
+    Public Function SaveTVEpisodeToDB(ByVal _episode As DBElement, ByVal IsNew As Boolean, ByVal BatchMode As Boolean, ByVal ToNFO As Boolean, ByVal ToDisk As Boolean, ByVal doSeasonCheck As Boolean, ByVal bDoSync As Boolean) As DBElement
         Dim SQLtransaction As SQLite.SQLiteTransaction = Nothing
         If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
-
-        'Copy fileinfo duration over to runtime var for xbmc to pick up episode runtime.
-        'NFO.LoadTVEpDuration(_TVEpDB)
 
         'delete so it will remove if there is a "missing" episode entry already. Only "missing" episodes must be deleted.
         Using SQLCommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -4184,8 +4178,8 @@ Public Class Database
             SQLCommand.ExecuteNonQuery()
         End Using
 
-        If Not String.IsNullOrEmpty(_episode.Filename) Then
-            If _episode.FilenameID > -1 Then
+        If _episode.FilenameSpecified Then
+            If _episode.FilenameIDSpecified Then
                 Using SQLpathcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
                     SQLpathcommand.CommandText = String.Concat("INSERT OR REPLACE INTO files (idFile, strFilename) VALUES (?,?);")
 
@@ -4385,7 +4379,7 @@ Public Class Database
                 SQLcommand.ExecuteNonQuery()
             End If
 
-            If Not _episode.ID = -1 Then
+            If _episode.IDSpecified Then
 
                 'Actors
                 Using SQLcommand_actorlink As SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -4549,7 +4543,7 @@ Public Class Database
                         Using SQLreader As SQLiteDataReader = SQLSeasonCheck.ExecuteReader()
                             If Not SQLreader.HasRows Then
                                 Dim _season As New DBElement(Enums.ContentType.TVSeason) With {.ShowID = _episode.ShowID, .TVSeason = New MediaContainers.SeasonDetails With {.Season = _episode.TVEpisode.Season}}
-                                SaveTVSeasonToDB(_season, True, False)
+                                SaveTVSeasonToDB(_season, True, False, True)
                             End If
                         End Using
                     End Using
@@ -4558,7 +4552,7 @@ Public Class Database
         End Using
         If Not BatchMode Then SQLtransaction.Commit()
 
-        If _episode.FilenameIDSpecified Then
+        If _episode.FilenameIDSpecified AndAlso bDoSync Then
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_TVEpisode, Nothing, Nothing, False, _episode)
         End If
 
@@ -4570,7 +4564,7 @@ Public Class Database
     ''' <param name="_season">Database.DBElement representing the season to be stored.</param>
     ''' <param name="BatchMode"></param>
     ''' <remarks>Note that this stores the season information, not the individual episodes within that season</remarks>
-    Public Function SaveTVSeasonToDB(ByRef _season As DBElement, ByVal BatchMode As Boolean, ByVal ToDisk As Boolean) As DBElement
+    Public Function SaveTVSeasonToDB(ByRef _season As DBElement, ByVal BatchMode As Boolean, ByVal ToDisk As Boolean, ByVal bDoSync As Boolean) As DBElement
         Dim doesExist As Boolean = False
         Dim ID As Long = -1
 
@@ -4654,7 +4648,9 @@ Public Class Database
 
         If Not BatchMode Then SQLtransaction.Commit()
 
-        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_TVSeason, Nothing, Nothing, False, _season)
+        If bDoSync Then
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_TVSeason, Nothing, Nothing, False, _season)
+        End If
 
         Return _season
     End Function
@@ -4850,7 +4846,7 @@ Public Class Database
         'save season informations
         If _show.SeasonsSpecified Then
             For Each nSeason As DBElement In _show.Seasons
-                SaveTVSeasonToDB(nSeason, True, True)
+                SaveTVSeasonToDB(nSeason, True, True, True)
             Next
             DeleteInvalidTVSeasonsFromDB(_show.Seasons, _show.ID, True)
         End If
@@ -4858,7 +4854,7 @@ Public Class Database
         'save episode informations
         If withEpisodes AndAlso _show.EpisodesSpecified Then
             For Each nEpisode As DBElement In _show.Episodes
-                SaveTVEpisodeToDB(nEpisode, If(nEpisode.ID >= 0, False, True), True, True, True, False)
+                SaveTVEpisodeToDB(nEpisode, If(nEpisode.ID >= 0, False, True), True, True, True, False, True)
             Next
             DeleteInvalidTVEpisodesFromDB(_show.Episodes, _show.ID, True)
         End If

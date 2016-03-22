@@ -1303,7 +1303,7 @@ Namespace Kodi
                         End If
                         If bNeedSave Then
                             logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVEpisodeInfo: ""{1}"" | Save Playcount from host", _currenthost.Label, mDBElement.TVEpisode.Title))
-                            Master.DB.SaveTVEpisodeToDB(mDBElement, False, False, True, False, False)
+                            Master.DB.SaveTVEpisodeToDB(mDBElement, False, False, True, False, False, True)
                             GenericSubEvent.Report(New GenericSubEventCallBackAsync With {
                                                    .tGenericEventCallBackAsync = New GenericEventCallBackAsync With
                                                    {.tEventType = Enums.ModuleEventType.AfterEdit_TVEpisode, .tParams = New List(Of Object)(New Object() {mDBElement.ID})},

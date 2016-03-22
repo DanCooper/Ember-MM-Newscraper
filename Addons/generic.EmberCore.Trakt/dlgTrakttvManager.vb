@@ -1471,7 +1471,7 @@ Public Class dlgTrakttvManager
                                 If DateTime.TryParse(myDateString, myDate) Then
                                     tmpDBTVEpisode.TVEpisode.LastPlayed = myDate.ToString("yyyy-MM-dd HH:mm:ss")
                                 End If
-                                Master.DB.SaveTVEpisodeToDB(tmpDBTVEpisode, False, True, True, False, False)
+                                Master.DB.SaveTVEpisodeToDB(tmpDBTVEpisode, False, True, True, False, False, True)
                                 'Updated episode in Ember, next episode please!
                                 Exit For
                             End If

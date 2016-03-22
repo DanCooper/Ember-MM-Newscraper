@@ -829,7 +829,7 @@ Public Class Scanner
                         If cEpisode.TVEpisode.Season = -1 Then cEpisode.TVEpisode.Season = sEpisode.Season
                         If cEpisode.TVEpisode.Episode = -1 Then cEpisode.TVEpisode.Episode = sEpisode.Episode
                         If Not ModulesManager.Instance.ScrapeData_TVEpisode(cEpisode, Master.DefaultOptions_TV, False) Then
-                            If Not String.IsNullOrEmpty(cEpisode.TVEpisode.Title) Then
+                            If cEpisode.TVEpisode.TitleSpecified Then
                                 ToNfo = True
 
                                 'if we had info for it (based on title) and mediainfo scanning is enabled
@@ -927,17 +927,17 @@ Public Class Scanner
                 If Not EpisodeID = -1 Then
                     'old episode entry found, we re-use the idEpisode
                     cEpisode.ID = EpisodeID
-                    Master.DB.SaveTVEpisodeToDB(cEpisode, False, Batchmode, ToNfo, ToNfo, False)
+                    Master.DB.SaveTVEpisodeToDB(cEpisode, False, Batchmode, ToNfo, ToNfo, False, True)
                 Else
                     'no existing episode found or the season or episode number has changed => we have to add it as new episode
-                    Master.DB.SaveTVEpisodeToDB(cEpisode, True, Batchmode, ToNfo, ToNfo, True)
+                    Master.DB.SaveTVEpisodeToDB(cEpisode, True, Batchmode, ToNfo, ToNfo, True, True)
                 End If
 
                 'add the season number to list
                 SeasonsList.Add(cEpisode.TVEpisode.Season)
             Else
-                'Do the Save, no Season check, we add a new seasons whit tv show
-                Master.DB.SaveTVEpisodeToDB(cEpisode, isNew, Batchmode, ToNfo, ToNfo, False)
+                'Do the Save, no Season check (we add a new seasons whit tv show), no Sync (we sync with tv show)
+                Master.DB.SaveTVEpisodeToDB(cEpisode, isNew, Batchmode, ToNfo, ToNfo, False, False)
                 'add the season number to list
                 SeasonsList.Add(cEpisode.TVEpisode.Season)
             End If
@@ -1086,9 +1086,12 @@ Public Class Scanner
             For Each newSeason As Integer In newSeasonsIndex
                 Dim tSeason As Database.DBElement = DBTVShow.Seasons.FirstOrDefault(Function(f) f.TVSeason.Season = newSeason)
                 If tSeason IsNot Nothing AndAlso tSeason.TVSeason IsNot Nothing Then
-                    Master.DB.SaveTVSeasonToDB(tSeason, Batchmode, True)
+                    Master.DB.SaveTVSeasonToDB(tSeason, Batchmode, True, False)
                 End If
             Next
+
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterUpdateDB_TV, Nothing, Nothing, False, DBTVShow)
+            Master.DB.SaveTVShowToDB(DBTVShow, isNew, Batchmode, False, False, True)
         End If
     End Sub
 
