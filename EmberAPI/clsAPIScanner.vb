@@ -608,20 +608,20 @@ Public Class Scanner
 
         GetMovieFolderContents(DBMovie)
 
-        If Not String.IsNullOrEmpty(DBMovie.NfoPath) Then
+        If DBMovie.NfoPathSpecified Then
             DBMovie.Movie = NFO.LoadMovieFromNFO(DBMovie.NfoPath, DBMovie.IsSingle)
-            If Not DBMovie.Movie.FileInfoSpecified AndAlso Not String.IsNullOrEmpty(DBMovie.Movie.Title) AndAlso Master.eSettings.MovieScraperMetaDataScan Then
+            If Not DBMovie.Movie.FileInfoSpecified AndAlso DBMovie.Movie.TitleSpecified AndAlso Master.eSettings.MovieScraperMetaDataScan Then
                 MediaInfo.UpdateMediaInfo(DBMovie)
             End If
         Else
             DBMovie.Movie = NFO.LoadMovieFromNFO(DBMovie.Filename, DBMovie.IsSingle)
-            If Not DBMovie.Movie.FileInfoSpecified AndAlso Not String.IsNullOrEmpty(DBMovie.Movie.Title) AndAlso Master.eSettings.MovieScraperMetaDataScan Then
+            If Not DBMovie.Movie.FileInfoSpecified AndAlso DBMovie.Movie.TitleSpecified AndAlso Master.eSettings.MovieScraperMetaDataScan Then
                 MediaInfo.UpdateMediaInfo(DBMovie)
             End If
         End If
 
         'Year
-        If String.IsNullOrEmpty(DBMovie.Movie.Year) AndAlso DBMovie.Source.GetYear Then
+        If Not DBMovie.Movie.YearSpecified AndAlso DBMovie.Source.GetYear Then
             If FileUtils.Common.isVideoTS(DBMovie.Filename) Then
                 DBMovie.Movie.Year = StringUtils.GetYear(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).Name)
             ElseIf FileUtils.Common.isBDRip(DBMovie.Filename) Then
@@ -636,7 +636,7 @@ Public Class Scanner
         End If
 
         'IMDB ID
-        If String.IsNullOrEmpty(DBMovie.Movie.IMDBID) Then
+        If Not DBMovie.Movie.IMDBIDSpecified Then
             If FileUtils.Common.isVideoTS(DBMovie.Filename) Then
                 DBMovie.Movie.IMDBID = StringUtils.GetIMDBID(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).Name)
             ElseIf FileUtils.Common.isBDRip(DBMovie.Filename) Then
@@ -651,29 +651,29 @@ Public Class Scanner
         End If
 
         'Title
-        If String.IsNullOrEmpty(DBMovie.Movie.Title) Then
+        If Not DBMovie.Movie.TitleSpecified Then
             'no title so assume it's an invalid nfo, clear nfo path if exists
             DBMovie.NfoPath = String.Empty
 
             If FileUtils.Common.isVideoTS(DBMovie.Filename) Then
                 DBMovie.Movie.Title = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).Name, False)
-                If String.IsNullOrEmpty(DBMovie.Movie.Title) Then
+                If Not DBMovie.Movie.TitleSpecified Then
                     DBMovie.Movie.Title = Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).Name
                 End If
             ElseIf FileUtils.Common.isBDRip(DBMovie.Filename) Then
                 DBMovie.Movie.Title = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName).Name, False)
-                If String.IsNullOrEmpty(DBMovie.Movie.Title) Then
+                If Not DBMovie.Movie.TitleSpecified Then
                     DBMovie.Movie.Title = Directory.GetParent(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName).Name
                 End If
             Else
                 If DBMovie.Source.UseFolderName AndAlso DBMovie.IsSingle Then
                     DBMovie.Movie.Title = StringUtils.FilterName_Movie(Directory.GetParent(DBMovie.Filename).Name, False)
-                    If String.IsNullOrEmpty(DBMovie.Movie.Title) Then
+                    If Not DBMovie.Movie.TitleSpecified Then
                         DBMovie.Movie.Title = Directory.GetParent(DBMovie.Filename).Name
                     End If
                 Else
                     DBMovie.Movie.Title = StringUtils.FilterName_Movie(Path.GetFileNameWithoutExtension(DBMovie.Filename), False)
-                    If String.IsNullOrEmpty(DBMovie.Movie.Title) Then
+                    If Not DBMovie.Movie.TitleSpecified Then
                         DBMovie.Movie.Title = Path.GetFileNameWithoutExtension(DBMovie.Filename)
                     End If
                 End If
@@ -704,9 +704,9 @@ Public Class Scanner
             Next
         End If
 
-        If Not String.IsNullOrEmpty(DBMovie.ListTitle) Then
+        If DBMovie.ListTitleSpecified Then
             'search local actor thumb for each actor in NFO
-            If DBMovie.Movie.Actors.Count > 0 AndAlso DBMovie.ActorThumbs.Count > 0 Then
+            If DBMovie.Movie.ActorsSpecified AndAlso DBMovie.ActorThumbsSpecified Then
                 For Each actor In DBMovie.Movie.Actors
                     actor.LocalFilePath = DBMovie.ActorThumbs.FirstOrDefault(Function(s) Path.GetFileNameWithoutExtension(s).ToLower = actor.Name.Replace(" ", "_").ToLower)
                 Next
@@ -717,7 +717,7 @@ Public Class Scanner
             If Not String.IsNullOrEmpty(vSource) Then
                 DBMovie.VideoSource = vSource
                 DBMovie.Movie.VideoSource = DBMovie.VideoSource
-            ElseIf String.IsNullOrEmpty(DBMovie.VideoSource) AndAlso clsAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
+            ElseIf Not DBMovie.VideoSourceSpecified AndAlso clsAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
                 DBMovie.VideoSource = clsAdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(DBMovie.Filename)), String.Empty, "*EmberAPP")
                 DBMovie.Movie.VideoSource = DBMovie.VideoSource
             ElseIf DBMovie.Movie.VideoSourceSpecified Then
@@ -737,7 +737,7 @@ Public Class Scanner
             End If
 
             'Do the Save
-            If ToNfo AndAlso Not String.IsNullOrEmpty(DBMovie.NfoPath) Then
+            If ToNfo AndAlso DBMovie.NfoPathSpecified Then
                 DBMovie = Master.DB.SaveMovieToDB(DBMovie, isNew, Batchmode, True, False)
             Else
                 DBMovie = Master.DB.SaveMovieToDB(DBMovie, isNew, Batchmode, False, False)
@@ -795,52 +795,38 @@ Public Class Scanner
             'It's a clone needed to prevent overwriting information of MultiEpisodes
             Dim cEpisode As Database.DBElement = CType(DBTVEpisode.CloneDeep, Database.DBElement)
 
-            If sEpisode.byDate Then
-                If cEpisode.NfoPathSpecified Then
+            If cEpisode.NfoPathSpecified Then
+                If sEpisode.byDate Then
                     cEpisode.TVEpisode = NFO.LoadTVEpFromNFO(cEpisode.NfoPath, sEpisode.Season, sEpisode.Aired)
-                    If Not cEpisode.TVEpisode.FileInfoSpecified AndAlso cEpisode.TVEpisode.TitleSpecified AndAlso Master.eSettings.TVScraperMetaDataScan Then
-                        MediaInfo.UpdateTVMediaInfo(cEpisode)
-                    End If
                 Else
-                    If isNew AndAlso cEpisode.TVShow.AnyUniqueIDSpecified AndAlso cEpisode.ShowIDSpecified Then
-                        If String.IsNullOrEmpty(cEpisode.TVEpisode.Aired) Then cEpisode.TVEpisode.Aired = sEpisode.Aired
-                        If Not ModulesManager.Instance.ScrapeData_TVEpisode(cEpisode, Master.DefaultOptions_TV, False) Then
-                            If Not String.IsNullOrEmpty(cEpisode.TVEpisode.Title) Then
-                                ToNfo = True
+                    cEpisode.TVEpisode = NFO.LoadTVEpFromNFO(cEpisode.NfoPath, sEpisode.Season, sEpisode.Episode)
+                End If
 
-                                'if we had info for it (based on title) and mediainfo scanning is enabled
-                                If Master.eSettings.TVScraperMetaDataScan Then
-                                    MediaInfo.UpdateTVMediaInfo(cEpisode)
-                                End If
-                            End If
-                        End If
-                    Else
-                        cEpisode.TVEpisode = New MediaContainers.EpisodeDetails
-                    End If
+                If Not cEpisode.TVEpisode.FileInfoSpecified AndAlso cEpisode.TVEpisode.TitleSpecified AndAlso Master.eSettings.TVScraperMetaDataScan Then
+                    MediaInfo.UpdateTVMediaInfo(cEpisode)
                 End If
             Else
-                If cEpisode.NfoPathSpecified Then
-                    cEpisode.TVEpisode = NFO.LoadTVEpFromNFO(cEpisode.NfoPath, sEpisode.Season, sEpisode.Episode)
-                    If Not cEpisode.TVEpisode.FileInfoSpecified AndAlso Not String.IsNullOrEmpty(cEpisode.TVEpisode.Title) AndAlso Master.eSettings.TVScraperMetaDataScan Then
-                        MediaInfo.UpdateTVMediaInfo(cEpisode)
-                    End If
-                Else
-                    If isNew AndAlso cEpisode.TVShow.AnyUniqueIDSpecified AndAlso cEpisode.ShowIDSpecified Then
+                If isNew AndAlso cEpisode.TVShow.AnyUniqueIDSpecified AndAlso cEpisode.ShowIDSpecified Then
+                    If sEpisode.byDate Then
+                        If Not cEpisode.TVEpisode.AiredSpecified Then cEpisode.TVEpisode.Aired = sEpisode.Aired
+                    Else
                         If cEpisode.TVEpisode.Season = -1 Then cEpisode.TVEpisode.Season = sEpisode.Season
                         If cEpisode.TVEpisode.Episode = -1 Then cEpisode.TVEpisode.Episode = sEpisode.Episode
-                        If Not ModulesManager.Instance.ScrapeData_TVEpisode(cEpisode, Master.DefaultOptions_TV, False) Then
-                            If cEpisode.TVEpisode.TitleSpecified Then
-                                ToNfo = True
+                    End If
 
-                                'if we had info for it (based on title) and mediainfo scanning is enabled
-                                If Master.eSettings.TVScraperMetaDataScan Then
-                                    MediaInfo.UpdateTVMediaInfo(cEpisode)
-                                End If
+                    'Scrape episode data
+                    If Not ModulesManager.Instance.ScrapeData_TVEpisode(cEpisode, Master.DefaultOptions_TV, False) Then
+                        If cEpisode.TVEpisode.TitleSpecified Then
+                            ToNfo = True
+
+                            'if we had info for it (based on title) and mediainfo scanning is enabled
+                            If Master.eSettings.TVScraperMetaDataScan Then
+                                MediaInfo.UpdateTVMediaInfo(cEpisode)
                             End If
                         End If
-                    Else
-                        cEpisode.TVEpisode = New MediaContainers.EpisodeDetails
                     End If
+                Else
+                    cEpisode.TVEpisode = New MediaContainers.EpisodeDetails
                 End If
             End If
 
@@ -907,10 +893,10 @@ Public Class Scanner
             If Not String.IsNullOrEmpty(vSource) Then
                 cEpisode.VideoSource = vSource
                 cEpisode.TVEpisode.VideoSource = cEpisode.VideoSource
-            ElseIf String.IsNullOrEmpty(cEpisode.VideoSource) AndAlso clsAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
+            ElseIf Not cEpisode.VideoSourceSpecified AndAlso clsAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
                 cEpisode.VideoSource = clsAdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(cEpisode.Filename)), String.Empty, "*EmberAPP")
                 cEpisode.TVEpisode.VideoSource = cEpisode.VideoSource
-            ElseIf Not String.IsNullOrEmpty(cEpisode.TVEpisode.VideoSource) Then
+            ElseIf cEpisode.TVEpisode.VideoSourceSpecified Then
                 cEpisode.VideoSource = cEpisode.TVEpisode.VideoSource
             End If
 
