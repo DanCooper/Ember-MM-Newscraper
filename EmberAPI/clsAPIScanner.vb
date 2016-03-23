@@ -714,13 +714,18 @@ Public Class Scanner
 
             'VideoSource
             Dim vSource As String = APIXML.GetVideoSource(DBMovie.Filename, False)
+            DBMovie.VideoSource = String.Empty
             If Not String.IsNullOrEmpty(vSource) Then
                 DBMovie.VideoSource = vSource
-                DBMovie.Movie.VideoSource = DBMovie.VideoSource
+                DBMovie.Movie.VideoSource = vSource
             ElseIf Not DBMovie.VideoSourceSpecified AndAlso clsAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
-                DBMovie.VideoSource = clsAdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(DBMovie.Filename)), String.Empty, "*EmberAPP")
-                DBMovie.Movie.VideoSource = DBMovie.VideoSource
-            ElseIf DBMovie.Movie.VideoSourceSpecified Then
+                vSource = clsAdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(DBMovie.Filename)), String.Empty, "*EmberAPP")
+                If Not String.IsNullOrEmpty(vSource) Then
+                    DBMovie.VideoSource = vSource
+                    DBMovie.Movie.VideoSource = vSource
+                End If
+            End If
+            If Not DBMovie.VideoSourceSpecified AndAlso DBMovie.Movie.VideoSourceSpecified Then
                 DBMovie.VideoSource = DBMovie.Movie.VideoSource
             End If
 
@@ -884,19 +889,20 @@ Public Class Scanner
                 End If
             End If
 
-            If Not cEpisode.TVEpisode.TitleSpecified Then
-                'nothing usable in the title after filters have runs
-                cEpisode.TVEpisode.Title = String.Format("{0} {1}", cEpisode.TVShow.Title, cEpisode.TVEpisode.Aired)
-            End If
-
+            'VideoSource
             Dim vSource As String = APIXML.GetVideoSource(cEpisode.Filename, True)
+            cEpisode.VideoSource = String.Empty
             If Not String.IsNullOrEmpty(vSource) Then
                 cEpisode.VideoSource = vSource
-                cEpisode.TVEpisode.VideoSource = cEpisode.VideoSource
+                cEpisode.TVEpisode.VideoSource = vSource
             ElseIf Not cEpisode.VideoSourceSpecified AndAlso clsAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
-                cEpisode.VideoSource = clsAdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(cEpisode.Filename)), String.Empty, "*EmberAPP")
-                cEpisode.TVEpisode.VideoSource = cEpisode.VideoSource
-            ElseIf cEpisode.TVEpisode.VideoSourceSpecified Then
+                vSource = clsAdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(cEpisode.Filename)), String.Empty, "*EmberAPP")
+                If Not String.IsNullOrEmpty(vSource) Then
+                    cEpisode.VideoSource = vSource
+                    cEpisode.TVEpisode.VideoSource = vSource
+                End If
+            End If
+            If Not cEpisode.VideoSourceSpecified AndAlso cEpisode.TVEpisode.VideoSourceSpecified Then
                 cEpisode.VideoSource = cEpisode.TVEpisode.VideoSource
             End If
 
