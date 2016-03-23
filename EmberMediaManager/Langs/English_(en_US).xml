@@ -466,7 +466,7 @@
   <string id="465">Hide</string>
   <string id="466">Automatically Rename Files After Edit</string>
   <string id="467">Automatically Rename Files After Edit Episodes</string>
-  <string id="468">Automatically Rename Files After DB Update</string>
+  <string id="468">Automatically Rename Files During DB Update</string>
   <string id="469">Episode Files Pattern</string>
   <string id="470">Default TV Renaming Patterns</string>
   <string id="471">File Naming</string>

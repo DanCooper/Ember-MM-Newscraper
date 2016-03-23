@@ -334,7 +334,7 @@ Public Class frmSettingsHolder
         chkRenameEditEpisodes.Text = Master.eLang.GetString(467, "Automatically Rename Files After Edit Episodes")
         chkRenameMultiMovies.Text = Master.eLang.GetString(281, "Automatically Rename Files During Multi-Scraper")
         chkRenameSingleMovies.Text = Master.eLang.GetString(282, "Automatically Rename Files During Single-Scraper")
-        chkRenameUpdateEpisodes.Text = Master.eLang.GetString(468, "Automatically Rename Files After DB Update")
+        chkRenameUpdateEpisodes.Text = Master.eLang.GetString(468, "Automatically Rename Files During DB Update")
         gbRenamerPatternsMovie.Text = Master.eLang.GetString(285, "Default Movie Renaming Patterns")
         gbRenamerPatternsTV.Text = Master.eLang.GetString(470, "Default TV Renaming Patterns")
         lblFilePatternEpisodes.Text = Master.eLang.GetString(469, "Episode Files Pattern")

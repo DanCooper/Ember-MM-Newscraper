@@ -3450,7 +3450,7 @@ Public Class Database
             'First let's save it to NFO, even because we will need the NFO path
             'Also save Images to get ExtrafanartsPath and ExtrathumbsPath
             'art Table will be linked later
-            If ToNFO Then NFO.SaveMovieToNFO(_movieDB)
+            If ToNFO Then NFO.SaveToNFO_Movie(_movieDB)
             If ToDisk Then
                 _movieDB.ImagesContainer.SaveAllImages(_movieDB)
                 _movieDB.Movie.SaveAllActorThumbs(_movieDB)
@@ -3768,7 +3768,7 @@ Public Class Database
                                             If Not DBNull.Value.Equals(SQLreader("idSet")) Then s.ID = CInt(SQLreader("idSet"))
                                             If Not DBNull.Value.Equals(SQLreader("SetName")) Then s.Title = CStr(SQLreader("SetName"))
                                             IsNewSet = False
-                                            NFO.SaveMovieToNFO(_movieDB) 'to save the "new" SetName
+                                            NFO.SaveToNFO_Movie(_movieDB) 'to save the "new" SetName
                                         Else
                                             IsNewSet = True
                                         End If
@@ -3946,7 +3946,7 @@ Public Class Database
             'First let's save it to NFO, even because we will need the NFO path, also save Images
             'art Table be be linked later
             If toDisk Then
-                NFO.SaveMovieSetToNFO(_moviesetDB)
+                NFO.SaveToNFO_MovieSet(_moviesetDB)
                 _moviesetDB.ImagesContainer.SaveAllImages(_moviesetDB)
             End If
 
@@ -4320,7 +4320,7 @@ Public Class Database
             'First let's save it to NFO, even because we will need the NFO path, also save Images
             'art Table be be linked later
             If _episode.FilenameIDSpecified Then
-                If ToNFO Then NFO.SaveTVEpToNFO(_episode)
+                If ToNFO Then NFO.SaveToNFO_TVEpisode(_episode)
                 If ToDisk Then
                     _episode.ImagesContainer.SaveAllImages(_episode)
                     _episode.TVEpisode.SaveAllActorThumbs(_episode)
@@ -4731,7 +4731,7 @@ Public Class Database
             'First let's save it to NFO, even because we will need the NFO path
             'Also Save Images to get ExtrafanartsPath
             'art Table be be linked later
-            If ToNFO Then NFO.SaveTVShowToNFO(_show)
+            If ToNFO Then NFO.SaveToNFO_TVShow(_show)
             If ToDisk Then
                 _show.ImagesContainer.SaveAllImages(_show)
                 _show.TVShow.SaveAllActorThumbs(_show)

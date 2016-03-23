@@ -14838,7 +14838,7 @@ doCancel:
         Dim DBMovie As Database.DBElement = Master.DB.LoadMovieFromDB(ID)
 
         If DBMovie.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBMovie, Not showMessage) Then
-            fScanner.LoadMovie(DBMovie, False, BatchMode)
+            fScanner.Load_Movie(DBMovie, False, BatchMode)
             If Not BatchMode Then RefreshRow_Movie(DBMovie.ID)
         Else
             If showMessage AndAlso MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".", Environment.NewLine,
@@ -14868,7 +14868,7 @@ doCancel:
     Private Function Reload_MovieSet(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False) As Boolean
         Dim DBMovieSet As Database.DBElement = Master.DB.LoadMovieSetFromDB(ID)
 
-        fScanner.LoadMovieSet(DBMovieSet, False, BatchMode)
+        fScanner.Load_MovieSet(DBMovieSet, False, BatchMode)
         If Not BatchMode Then RefreshRow_MovieSet(DBMovieSet.ID)
 
         Return False
@@ -14887,7 +14887,7 @@ doCancel:
         If DBTVEpisode.FilenameID = -1 Then Return False 'skipping missing episodes
 
         If DBTVEpisode.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(DBTVEpisode, showMessage) Then
-            fScanner.LoadTVEpisode(DBTVEpisode, False, BatchMode, False)
+            fScanner.Load_TVEpisode(DBTVEpisode, False, BatchMode, False)
             If Not BatchMode Then RefreshRow_TVEpisode(DBTVEpisode.ID)
         Else
             If showMessage AndAlso MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".", Environment.NewLine,
@@ -14914,7 +14914,7 @@ doCancel:
         Dim DBTVSeason As Database.DBElement = Master.DB.LoadTVSeasonFromDB(ID, True, False)
 
         If DBTVSeason.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTVSeason, showMessage) Then
-            fScanner.GetTVSeasonFolderContents(DBTVSeason)
+            fScanner.GetFolderContents_TVSeason(DBTVSeason)
             Master.DB.SaveTVSeasonToDB(DBTVSeason, BatchMode, False, True)
             If Not BatchMode Then RefreshRow_TVSeason(DBTVSeason.ID)
         Else
@@ -14934,7 +14934,7 @@ doCancel:
         Dim DBTVShow As Database.DBElement = Master.DB.LoadTVShowFromDB(ID, reloadFull, reloadFull)
 
         If DBTVShow.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTVShow, showMessage) Then
-            fScanner.LoadTVShow(DBTVShow, False, BatchMode, False)
+            fScanner.Load_TVShow(DBTVShow, False, BatchMode, False)
             If Not BatchMode Then RefreshRow_TVShow(DBTVShow.ID)
         Else
             If showMessage AndAlso MessageBox.Show(String.Concat(Master.eLang.GetString(719, "This path is no longer available"), ".", Environment.NewLine,

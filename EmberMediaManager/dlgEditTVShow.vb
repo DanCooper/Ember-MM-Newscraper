@@ -218,7 +218,7 @@ Public Class dlgEditTVShow
 
     Private Sub btnManual_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnManual.Click
         If dlgManualEdit.ShowDialog(tmpDBElement.NfoPath) = DialogResult.OK Then
-            tmpDBElement.TVShow = NFO.LoadTVShowFromNFO(tmpDBElement.NfoPath)
+            tmpDBElement.TVShow = NFO.LoadFromNFO_TVShow(tmpDBElement.NfoPath)
             FillInfo()
         End If
     End Sub
