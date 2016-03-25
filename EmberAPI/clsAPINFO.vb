@@ -1299,6 +1299,21 @@ Public Class NFO
                     End If
                 Next
             End If
+
+            'changes a LongLanguage to Alpha2 code
+            If mNFO.LanguageSpecified Then
+                Dim Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = mNFO.Language)
+                If Language IsNot Nothing Then
+                    mNFO.Language = Language.abbreviation
+                Else
+                    'check if it's a valid Alpha2 code or remove the information the use the source default language
+                    Dim ShortLanguage = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = mNFO.Language)
+                    If ShortLanguage Is Nothing Then
+                        mNFO.Language = String.Empty
+                    End If
+                End If
+            End If
+
             Return mNFO
         Else
             Return mNFO
@@ -1323,6 +1338,32 @@ Public Class NFO
             Return eNFO
         Else
             Return eNFO
+        End If
+    End Function
+
+    Public Shared Function CleanNFO_TVShow(ByVal mNFO As MediaContainers.TVShow) As MediaContainers.TVShow
+        If mNFO IsNot Nothing Then
+            mNFO.Genre = String.Join(" / ", mNFO.Genres.ToArray)
+            mNFO.Plot = mNFO.Plot.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
+            mNFO.Votes = Regex.Replace(mNFO.Votes, "\D", String.Empty)
+
+            'changes a LongLanguage to Alpha2 code
+            If mNFO.LanguageSpecified Then
+                Dim Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = mNFO.Language)
+                If Language IsNot Nothing Then
+                    mNFO.Language = Language.abbreviation
+                Else
+                    'check if it's a valid Alpha2 code or remove the information the use the source default language
+                    Dim ShortLanguage = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = mNFO.Language)
+                    If ShortLanguage Is Nothing Then
+                        mNFO.Language = String.Empty
+                    End If
+                End If
+            End If
+
+            Return mNFO
+        Else
+            Return mNFO
         End If
     End Function
 
@@ -1836,10 +1877,6 @@ Public Class NFO
     End Function
 
     Public Shared Function LoadMovieFromNFO(ByVal sPath As String, ByVal isSingle As Boolean) As MediaContainers.Movie
-        '//
-        ' Deserialze the NFO to pass all the data to a MediaContainers.Movie
-        '\\
-
         Dim xmlSer As XmlSerializer = Nothing
         Dim xmlMov As New MediaContainers.Movie
 
@@ -1907,10 +1944,6 @@ Public Class NFO
     End Function
 
     Public Shared Function LoadMovieSetFromNFO(ByVal sPath As String) As MediaContainers.MovieSet
-        '//
-        ' Deserialze the NFO to pass all the data to a MediaContainers.Movie
-        '\\
-
         Dim xmlSer As XmlSerializer = Nothing
         Dim xmlMovSet As New MediaContainers.MovieSet
 
@@ -2121,8 +2154,7 @@ Public Class NFO
                     Using xmlSR As StreamReader = New StreamReader(sPath)
                         xmlSer = New XmlSerializer(GetType(MediaContainers.TVShow))
                         xmlShow = DirectCast(xmlSer.Deserialize(xmlSR), MediaContainers.TVShow)
-                        xmlShow.Genre = String.Join(" / ", xmlShow.Genres.ToArray)
-                        xmlShow.Votes = Regex.Replace(xmlShow.Votes, "\D", String.Empty)
+                        xmlShow = CleanNFO_TVShow(xmlShow)
                     End Using
                 Else
                     'not really anything else to do with non-conforming nfos aside from rename them

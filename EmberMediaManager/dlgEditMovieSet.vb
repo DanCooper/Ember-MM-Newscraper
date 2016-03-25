@@ -50,6 +50,7 @@ Public Class dlgEditMovieSet
     Private bDoingSearch As Boolean = False
     Private FilterArray As New List(Of String)
     Private filMoviesInSet As String = String.Empty
+    Private filMoviesToRemove As String = String.Empty
     Private filSearch As String = String.Empty
     Private currTextSearch As String = String.Empty
     Private prevTextSearch As String = String.Empty
@@ -151,6 +152,7 @@ Public Class dlgEditMovieSet
 
             FillMoviesInSet()
             FillMoviesToRemove()
+            RunFilter_Movies()
             SetControlsEnabled(True)
             btnMovieUp.Enabled = False
             btnMovieDown.Enabled = False
@@ -178,6 +180,7 @@ Public Class dlgEditMovieSet
 
             FillMoviesInSet()
             FillMoviesToRemove()
+            RunFilter_Movies()
             SetControlsEnabled(True)
             btnMovieUp.Enabled = False
             btnMovieDown.Enabled = False
@@ -224,7 +227,7 @@ Public Class dlgEditMovieSet
                             tmpDBElement.MovieSet.TMDB = tmpMovie.Movie.TMDBColID
                         End If
                     End If
-                    Dim newMovie As New MovieInSet With {.DBMovie = tmpMovie, .ListTitle = String.Concat(StringUtils.SortTokens_Movie(tmpMovie.Movie.Title), If(Not String.IsNullOrEmpty(tmpMovie.Movie.Year), String.Format(" ({0})", tmpMovie.Movie.Year), String.Empty)), .ID = tmpMovie.ID}
+                    Dim newMovie As New MovieInSet With {.DBMovie = tmpMovie, .ListTitle = String.Concat(tmpMovie.ListTitle, If(Not String.IsNullOrEmpty(tmpMovie.Movie.Year) AndAlso Not Master.eSettings.MovieDisplayYear, String.Format(" ({0})", tmpMovie.Movie.Year), String.Empty)), .ID = tmpMovie.ID}
                     MoviesInSet.Add(newMovie)
                     bsMovies.Remove(sRow.DataBoundItem)
                 End If
@@ -235,6 +238,7 @@ Public Class dlgEditMovieSet
 
             FillMoviesInSet()
             FillMoviesToRemove()
+            RunFilter_Movies()
             SetControlsEnabled(True)
             btnMovieAdd.Enabled = False
         End If
@@ -809,24 +813,24 @@ Public Class dlgEditMovieSet
             Dim iProg As Integer = 0
             If Not (Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJCompatibleSets) Then
                 If tmpDBElement.SortMethod = Enums.SortMethod_MovieSet.Year Then
-                    SQLcommand.CommandText = String.Concat("SELECT MovieID, SetOrder FROM MoviesSets INNER JOIN movie ON (MoviesSets.MovieID = movie.idMovie) ",
-                                                           "WHERE SetID = ", tmpDBElement.ID, " ORDER BY movie.Year;")
+                    SQLcommand.CommandText = String.Concat("SELECT setlinkmovie.idMovie, iOrder FROM setlinkmovie INNER JOIN movie ON (setlinkmovie.idMovie = movie.idMovie) ",
+                                                           "WHERE idSet = ", tmpDBElement.ID, " ORDER BY movie.Year;")
                 ElseIf tmpDBElement.SortMethod = Enums.SortMethod_MovieSet.Title Then
-                    SQLcommand.CommandText = String.Concat("SELECT MovieID, SetOrder FROM MoviesSets INNER JOIN movielist ON (MoviesSets.MovieID = movielist.idMovie) ",
-                                                           "WHERE SetID = ", tmpDBElement.ID, " ORDER BY movielist.SortedTitle COLLATE NOCASE;")
+                    SQLcommand.CommandText = String.Concat("SELECT setlinkmovie.idMovie, iOrder FROM setlinkmovie INNER JOIN movielist ON (setlinkmovie.idMovie = movielist.idMovie) ",
+                                                           "WHERE idSet = ", tmpDBElement.ID, " ORDER BY movielist.SortedTitle COLLATE NOCASE;")
                 End If
             Else
-                SQLcommand.CommandText = String.Concat("SELECT MovieID, SetOrder FROM MoviesSets ",
-                                                       "WHERE SetID = ", tmpDBElement.ID, " ORDER BY SetOrder;")
+                SQLcommand.CommandText = String.Concat("SELECT idMovie, iOrder FROM setlinkmovie ",
+                                                       "WHERE idSet = ", tmpDBElement.ID, " ORDER BY iOrder;")
             End If
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 If SQLreader.HasRows Then
                     While SQLreader.Read()
                         If bwLoadMoviesInSet.CancellationPending Then Return
-                        Dim tmpMovie As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt64(SQLreader("MovieID")))
+                        Dim tmpMovie As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt64(SQLreader("idMovie")))
                         If Not String.IsNullOrEmpty(tmpMovie.Movie.Title) Then
-                            Dim tmpSetOrder As Integer = If(Not String.IsNullOrEmpty(SQLreader("SetOrder").ToString), CInt(SQLreader("SetOrder").ToString), Nothing)
-                            MoviesInSet.Add(New MovieInSet With {.DBMovie = tmpMovie, .ID = tmpMovie.ID, .ListTitle = String.Concat(tmpMovie.ListTitle, If(Not String.IsNullOrEmpty(tmpMovie.Movie.Year), String.Format(" ({0})", tmpMovie.Movie.Year), String.Empty)), .Order = tmpSetOrder})
+                            Dim tmpSetOrder As Integer = If(Not DBNull.Value.Equals(SQLreader("iOrder")), CInt(SQLreader("iOrder")), Nothing)
+                            MoviesInSet.Add(New MovieInSet With {.DBMovie = tmpMovie, .ID = tmpMovie.ID, .ListTitle = String.Concat(tmpMovie.ListTitle, If(Not String.IsNullOrEmpty(tmpMovie.Movie.Year) AndAlso Not Master.eSettings.MovieDisplayYear, String.Format(" ({0})", tmpMovie.Movie.Year), String.Empty)), .Order = tmpSetOrder})
                         End If
                         bwLoadMoviesInSet.ReportProgress(iProg, tmpMovie.Movie.Title)
                         iProg += 1
@@ -841,6 +845,7 @@ Public Class dlgEditMovieSet
             FillMoviesInSet()
         End If
 
+        RunFilter_Movies()
         lvMoviesInSet.Enabled = True
         btnMovieUp.Enabled = True
         btnMovieDown.Enabled = True
@@ -918,12 +923,10 @@ Public Class dlgEditMovieSet
             filMoviesInSet = String.Format("({0})", Microsoft.VisualBasic.Strings.Join(alMoviesInSet.ToArray, " AND "))
 
             FilterArray.Add(filMoviesInSet)
-            RunFilter_Movies()
         Else
             If Not String.IsNullOrEmpty(filMoviesInSet) Then
                 FilterArray.Remove(filMoviesInSet)
                 filMoviesInSet = String.Empty
-                RunFilter_Movies()
             End If
         End If
 
@@ -946,6 +949,30 @@ Public Class dlgEditMovieSet
             lvItem.SubItems.Add(tMovie.Order.ToString)
             lvItem.SubItems.Add(tMovie.ListTitle)
         Next
+
+        'filter out all movies that are already in list to remove
+        If MoviesToRemove.Count > 0 Then
+            FilterArray.Remove(filMoviesToRemove)
+
+            Dim alMoviesToRemove As New List(Of String)
+
+            For Each movie In MoviesToRemove
+                alMoviesToRemove.Add(movie.DBMovie.ID.ToString)
+            Next
+
+            For i As Integer = 0 To alMoviesToRemove.Count - 1
+                alMoviesToRemove.Item(i) = String.Format("idMovie NOT = {0}", alMoviesToRemove.Item(i))
+            Next
+
+            filMoviesToRemove = String.Format("({0})", Microsoft.VisualBasic.Strings.Join(alMoviesToRemove.ToArray, " AND "))
+
+            FilterArray.Add(filMoviesToRemove)
+        Else
+            If Not String.IsNullOrEmpty(filMoviesToRemove) Then
+                FilterArray.Remove(filMoviesToRemove)
+                filMoviesToRemove = String.Empty
+            End If
+        End If
 
         lvMoviesToRemove.ResumeLayout()
         btnMovieUp.Enabled = False
@@ -1018,7 +1045,7 @@ Public Class dlgEditMovieSet
         With tmpDBElement.ImagesContainer
 
             'Load all images to MemoryStream and Bitmap
-            tmpDBElement.LoadAllImages(True, False)
+            tmpDBElement.LoadAllImages(True, True)
 
             'Banner
             If Master.eSettings.MovieSetBannerAnyEnabled Then

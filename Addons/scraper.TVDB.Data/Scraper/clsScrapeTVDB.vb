@@ -221,7 +221,7 @@ Namespace TVDBs
             'Actors
             If FilteredOptions.bMainActors Then
                 If TVShowInfo.Actors IsNot Nothing Then
-                    For Each aCast As TVDB.Model.Actor In TVShowInfo.Actors.OrderBy(Function(f) f.SortOrder)
+                    For Each aCast As TVDB.Model.Actor In TVShowInfo.Actors.Where(Function(f) f.Name IsNot Nothing AndAlso f.Role IsNot Nothing).OrderBy(Function(f) f.SortOrder)
                         nTVShow.Actors.Add(New MediaContainers.Person With {.Name = aCast.Name,
                                                                           .Order = aCast.SortOrder,
                                                                           .Role = aCast.Role,
@@ -441,7 +441,7 @@ Namespace TVDBs
             'Actors
             If FilteredOptions.bEpisodeActors Then
                 If TVShowInfo.Actors IsNot Nothing Then
-                    For Each aCast As TVDB.Model.Actor In TVShowInfo.Actors.OrderBy(Function(f) f.SortOrder)
+                    For Each aCast As TVDB.Model.Actor In TVShowInfo.Actors.Where(Function(f) f.Name IsNot Nothing AndAlso f.Role IsNot Nothing).OrderBy(Function(f) f.SortOrder)
                         nEpisode.Actors.Add(New MediaContainers.Person With {.Name = aCast.Name,
                                                                           .Order = aCast.SortOrder,
                                                                           .Role = aCast.Role,
@@ -510,7 +510,7 @@ Namespace TVDBs
             End If
 
             'ThumbPoster
-            If EpisodeInfo.PictureFilename IsNot Nothing Then
+            If EpisodeInfo.PictureFilename IsNot Nothing AndAlso Not String.IsNullOrEmpty(EpisodeInfo.PictureFilename) Then
                 nEpisode.ThumbPoster.URLOriginal = String.Concat(_TVDBMirror.Address, "/banners/", EpisodeInfo.PictureFilename)
             End If
 

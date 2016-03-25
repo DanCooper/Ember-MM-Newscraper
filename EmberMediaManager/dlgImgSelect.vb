@@ -1206,10 +1206,10 @@ Public Class dlgImgSelect
 
         If DoMainExtrafanarts Then btnExtrafanarts.Enabled = True
         If DoMainExtrathumbs Then btnExtrathumbs.Enabled = True
-        If DoSeasonBanner Then btnSeasonBanner.Enabled = True
-        If DoSeasonFanart Then btnSeasonFanart.Enabled = True
-        If DoSeasonLandscape Then btnSeasonLandscape.Enabled = True
-        If DoSeasonPoster Then btnSeasonPoster.Enabled = True
+        If DoSeasonBanner AndAlso Not tContentType = Enums.ContentType.TVSeason Then btnSeasonBanner.Enabled = True
+        If DoSeasonFanart AndAlso Not tContentType = Enums.ContentType.TVSeason Then btnSeasonFanart.Enabled = True
+        If DoSeasonLandscape AndAlso Not tContentType = Enums.ContentType.TVSeason Then btnSeasonLandscape.Enabled = True
+        If DoSeasonPoster AndAlso Not tContentType = Enums.ContentType.TVSeason Then btnSeasonPoster.Enabled = True
 
         'If we don't have any TopImage we can hide the panel (this should only be True while Extrafanarts or Extrathumbs scraping)
         If Not noTopImages Then
@@ -2156,6 +2156,8 @@ Public Class dlgImgSelect
     End Sub
 
     Private Sub SetParameters()
+        Dim noSubImages As Boolean = True
+
         Select Case tContentType
             Case Enums.ContentType.Movie
                 DoMainBanner = tScrapeModifiers.MainBanner AndAlso Master.eSettings.MovieBannerAnyEnabled
@@ -2167,6 +2169,7 @@ Public Class dlgImgSelect
                 DoMainFanart = tScrapeModifiers.MainFanart AndAlso Master.eSettings.MovieFanartAnyEnabled
                 DoMainLandscape = tScrapeModifiers.MainLandscape AndAlso Master.eSettings.MovieLandscapeAnyEnabled
                 DoMainPoster = tScrapeModifiers.MainPoster AndAlso Master.eSettings.MoviePosterAnyEnabled
+                If DoMainExtrafanarts OrElse DoMainExtrathumbs Then noSubImages = False
             Case Enums.ContentType.MovieSet
                 DoMainBanner = tScrapeModifiers.MainBanner AndAlso Master.eSettings.MovieSetBannerAnyEnabled
                 DoMainClearArt = tScrapeModifiers.MainClearArt AndAlso Master.eSettings.MovieSetClearArtAnyEnabled
@@ -2194,6 +2197,7 @@ Public Class dlgImgSelect
                 DoSeasonFanart = tScrapeModifiers.SeasonFanart AndAlso Master.eSettings.TVSeasonFanartAnyEnabled
                 DoSeasonLandscape = tScrapeModifiers.SeasonLandscape AndAlso Master.eSettings.TVSeasonLandscapeAnyEnabled
                 DoSeasonPoster = tScrapeModifiers.SeasonPoster AndAlso Master.eSettings.TVSeasonPosterAnyEnabled
+                If DoMainExtrafanarts OrElse DoSeasonBanner OrElse DoSeasonFanart OrElse DoSeasonLandscape OrElse DoSeasonPoster Then noSubImages = False
             Case Enums.ContentType.TVShow
                 DoMainBanner = tScrapeModifiers.MainBanner AndAlso Master.eSettings.TVShowBannerAnyEnabled
                 DoMainCharacterArt = tScrapeModifiers.MainCharacterArt AndAlso Master.eSettings.TVShowCharacterArtAnyEnabled
@@ -2203,6 +2207,7 @@ Public Class dlgImgSelect
                 DoMainFanart = tScrapeModifiers.MainFanart AndAlso Master.eSettings.TVShowFanartAnyEnabled
                 DoMainLandscape = tScrapeModifiers.MainLandscape AndAlso Master.eSettings.TVShowLandscapeAnyEnabled
                 DoMainPoster = tScrapeModifiers.MainPoster AndAlso Master.eSettings.TVShowPosterAnyEnabled
+                If DoMainExtrafanarts Then noSubImages = False
             Case Enums.ContentType.TVEpisode
                 DoEpisodeFanart = tScrapeModifiers.EpisodeFanart AndAlso Master.eSettings.TVEpisodeFanartAnyEnabled
                 DoEpisodePoster = tScrapeModifiers.EpisodePoster AndAlso Master.eSettings.TVEpisodePosterAnyEnabled
@@ -2216,6 +2221,11 @@ Public Class dlgImgSelect
                 DoSeasonLandscape = tScrapeModifiers.SeasonLandscape AndAlso Master.eSettings.TVSeasonLandscapeAnyEnabled
                 DoSeasonPoster = tScrapeModifiers.SeasonPoster AndAlso Master.eSettings.TVSeasonPosterAnyEnabled
         End Select
+
+        'If we don't have any SubImage we can hide the panel
+        If noSubImages Then
+            pnlImgSelectLeft.Visible = False
+        End If
     End Sub
 
     Private Sub SetUp()

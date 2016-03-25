@@ -1611,6 +1611,7 @@ Partial Class dlgSettings
         Me.scSettingsBody = New System.Windows.Forms.SplitContainer()
         Me.scSettingsMain = New System.Windows.Forms.SplitContainer()
         Me.tblSettingsFooter = New System.Windows.Forms.TableLayoutPanel()
+        Me.tblMovieImagesExtrathumbsCreatorOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.gbGeneralMiscOpts.SuspendLayout()
         Me.tblGeneralMisc.SuspendLayout()
         Me.gbGeneralThemes.SuspendLayout()
@@ -2024,6 +2025,7 @@ Partial Class dlgSettings
         Me.scSettingsMain.Panel2.SuspendLayout()
         Me.scSettingsMain.SuspendLayout()
         Me.tblSettingsFooter.SuspendLayout()
+        Me.tblMovieImagesExtrathumbsCreatorOpts.SuspendLayout()
         Me.SuspendLayout()
         '
         'gbGeneralMiscOpts
@@ -2984,9 +2986,9 @@ Partial Class dlgSettings
         Me.gbMovieImagesLandscapeOpts.Controls.Add(Me.tblMovieImagesLandscapeOpts)
         Me.gbMovieImagesLandscapeOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieImagesLandscapeOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbMovieImagesLandscapeOpts.Location = New System.Drawing.Point(505, 447)
+        Me.gbMovieImagesLandscapeOpts.Location = New System.Drawing.Point(511, 447)
         Me.gbMovieImagesLandscapeOpts.Name = "gbMovieImagesLandscapeOpts"
-        Me.gbMovieImagesLandscapeOpts.Size = New System.Drawing.Size(245, 114)
+        Me.gbMovieImagesLandscapeOpts.Size = New System.Drawing.Size(245, 112)
         Me.gbMovieImagesLandscapeOpts.TabIndex = 14
         Me.gbMovieImagesLandscapeOpts.TabStop = False
         Me.gbMovieImagesLandscapeOpts.Text = "Landscape"
@@ -3004,7 +3006,7 @@ Partial Class dlgSettings
         Me.tblMovieImagesLandscapeOpts.RowCount = 2
         Me.tblMovieImagesLandscapeOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieImagesLandscapeOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieImagesLandscapeOpts.Size = New System.Drawing.Size(239, 93)
+        Me.tblMovieImagesLandscapeOpts.Size = New System.Drawing.Size(239, 91)
         Me.tblMovieImagesLandscapeOpts.TabIndex = 17
         '
         'chkMovieLandscapeKeepExisting
@@ -3025,7 +3027,7 @@ Partial Class dlgSettings
         Me.gbMovieImagesDiscArtOpts.Controls.Add(Me.tblMovieImagesDiscArtOpts)
         Me.gbMovieImagesDiscArtOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieImagesDiscArtOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbMovieImagesDiscArtOpts.Location = New System.Drawing.Point(505, 397)
+        Me.gbMovieImagesDiscArtOpts.Location = New System.Drawing.Point(511, 397)
         Me.gbMovieImagesDiscArtOpts.Name = "gbMovieImagesDiscArtOpts"
         Me.gbMovieImagesDiscArtOpts.Size = New System.Drawing.Size(245, 44)
         Me.gbMovieImagesDiscArtOpts.TabIndex = 15
@@ -3066,7 +3068,7 @@ Partial Class dlgSettings
         Me.gbMovieImagesClearLogoOpts.Controls.Add(Me.tblMovieImagesClearLogoOpts)
         Me.gbMovieImagesClearLogoOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieImagesClearLogoOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbMovieImagesClearLogoOpts.Location = New System.Drawing.Point(505, 347)
+        Me.gbMovieImagesClearLogoOpts.Location = New System.Drawing.Point(511, 347)
         Me.gbMovieImagesClearLogoOpts.Name = "gbMovieImagesClearLogoOpts"
         Me.gbMovieImagesClearLogoOpts.Size = New System.Drawing.Size(245, 44)
         Me.gbMovieImagesClearLogoOpts.TabIndex = 15
@@ -3107,7 +3109,7 @@ Partial Class dlgSettings
         Me.gbMovieImagesClearArtOpts.Controls.Add(Me.tblMovieImagesClearArtOpts)
         Me.gbMovieImagesClearArtOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieImagesClearArtOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbMovieImagesClearArtOpts.Location = New System.Drawing.Point(505, 297)
+        Me.gbMovieImagesClearArtOpts.Location = New System.Drawing.Point(511, 297)
         Me.gbMovieImagesClearArtOpts.Name = "gbMovieImagesClearArtOpts"
         Me.gbMovieImagesClearArtOpts.Size = New System.Drawing.Size(245, 44)
         Me.gbMovieImagesClearArtOpts.TabIndex = 15
@@ -3148,7 +3150,7 @@ Partial Class dlgSettings
         Me.gbMovieImagesActorThumbsOpts.Controls.Add(Me.tblMovieImagesActorThumbsOpts)
         Me.gbMovieImagesActorThumbsOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieImagesActorThumbsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbMovieImagesActorThumbsOpts.Location = New System.Drawing.Point(505, 247)
+        Me.gbMovieImagesActorThumbsOpts.Location = New System.Drawing.Point(511, 247)
         Me.gbMovieImagesActorThumbsOpts.Name = "gbMovieImagesActorThumbsOpts"
         Me.gbMovieImagesActorThumbsOpts.Size = New System.Drawing.Size(245, 44)
         Me.gbMovieImagesActorThumbsOpts.TabIndex = 16
@@ -3343,7 +3345,7 @@ Partial Class dlgSettings
         Me.gbMovieImagesBannerOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbMovieImagesBannerOpts.Location = New System.Drawing.Point(254, 99)
         Me.gbMovieImagesBannerOpts.Name = "gbMovieImagesBannerOpts"
-        Me.gbMovieImagesBannerOpts.Size = New System.Drawing.Size(245, 142)
+        Me.gbMovieImagesBannerOpts.Size = New System.Drawing.Size(251, 142)
         Me.gbMovieImagesBannerOpts.TabIndex = 12
         Me.gbMovieImagesBannerOpts.TabStop = False
         Me.gbMovieImagesBannerOpts.Text = "Banner"
@@ -3377,7 +3379,7 @@ Partial Class dlgSettings
         Me.tblMovieImagesBannerOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieImagesBannerOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieImagesBannerOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieImagesBannerOpts.Size = New System.Drawing.Size(239, 121)
+        Me.tblMovieImagesBannerOpts.Size = New System.Drawing.Size(245, 121)
         Me.tblMovieImagesBannerOpts.TabIndex = 17
         '
         'txtMovieBannerWidth
@@ -3496,7 +3498,7 @@ Partial Class dlgSettings
         Me.gbMovieImagesExtrathumbsOpts.Location = New System.Drawing.Point(254, 247)
         Me.gbMovieImagesExtrathumbsOpts.Name = "gbMovieImagesExtrathumbsOpts"
         Me.tblMovieImages.SetRowSpan(Me.gbMovieImagesExtrathumbsOpts, 5)
-        Me.gbMovieImagesExtrathumbsOpts.Size = New System.Drawing.Size(245, 314)
+        Me.gbMovieImagesExtrathumbsOpts.Size = New System.Drawing.Size(251, 312)
         Me.gbMovieImagesExtrathumbsOpts.TabIndex = 12
         Me.gbMovieImagesExtrathumbsOpts.TabStop = False
         Me.gbMovieImagesExtrathumbsOpts.Text = "Extrathumbs"
@@ -3536,20 +3538,21 @@ Partial Class dlgSettings
         Me.tblMovieImagesExtrathumbsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieImagesExtrathumbsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieImagesExtrathumbsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieImagesExtrathumbsOpts.Size = New System.Drawing.Size(239, 293)
+        Me.tblMovieImagesExtrathumbsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblMovieImagesExtrathumbsOpts.Size = New System.Drawing.Size(245, 291)
         Me.tblMovieImagesExtrathumbsOpts.TabIndex = 17
         '
         'gbMovieImagesExtrathumbsCreatorOpts
         '
+        Me.gbMovieImagesExtrathumbsCreatorOpts.AutoSize = True
         Me.tblMovieImagesExtrathumbsOpts.SetColumnSpan(Me.gbMovieImagesExtrathumbsCreatorOpts, 5)
-        Me.gbMovieImagesExtrathumbsCreatorOpts.Controls.Add(Me.chkMovieExtrathumbsCreatorNoBlackBars)
-        Me.gbMovieImagesExtrathumbsCreatorOpts.Controls.Add(Me.chkMovieExtrathumbsCreatorAutoThumbs)
-        Me.gbMovieImagesExtrathumbsCreatorOpts.Controls.Add(Me.chkMovieExtrathumbsCreatorNoSpoilers)
-        Me.gbMovieImagesExtrathumbsCreatorOpts.Controls.Add(Me.chkMovieExtrathumbsCreatorUseETasFA)
+        Me.gbMovieImagesExtrathumbsCreatorOpts.Controls.Add(Me.tblMovieImagesExtrathumbsCreatorOpts)
+        Me.gbMovieImagesExtrathumbsCreatorOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieImagesExtrathumbsCreatorOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbMovieImagesExtrathumbsCreatorOpts.Location = New System.Drawing.Point(3, 175)
         Me.gbMovieImagesExtrathumbsCreatorOpts.Name = "gbMovieImagesExtrathumbsCreatorOpts"
-        Me.gbMovieImagesExtrathumbsCreatorOpts.Size = New System.Drawing.Size(233, 115)
+        Me.tblMovieImagesExtrathumbsOpts.SetRowSpan(Me.gbMovieImagesExtrathumbsCreatorOpts, 2)
+        Me.gbMovieImagesExtrathumbsCreatorOpts.Size = New System.Drawing.Size(239, 113)
         Me.gbMovieImagesExtrathumbsCreatorOpts.TabIndex = 16
         Me.gbMovieImagesExtrathumbsCreatorOpts.TabStop = False
         Me.gbMovieImagesExtrathumbsCreatorOpts.Text = "Create Thumbnails"
@@ -3559,7 +3562,7 @@ Partial Class dlgSettings
         Me.chkMovieExtrathumbsCreatorNoBlackBars.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkMovieExtrathumbsCreatorNoBlackBars.AutoSize = True
         Me.chkMovieExtrathumbsCreatorNoBlackBars.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieExtrathumbsCreatorNoBlackBars.Location = New System.Drawing.Point(3, 90)
+        Me.chkMovieExtrathumbsCreatorNoBlackBars.Location = New System.Drawing.Point(3, 72)
         Me.chkMovieExtrathumbsCreatorNoBlackBars.Name = "chkMovieExtrathumbsCreatorNoBlackBars"
         Me.chkMovieExtrathumbsCreatorNoBlackBars.Size = New System.Drawing.Size(121, 17)
         Me.chkMovieExtrathumbsCreatorNoBlackBars.TabIndex = 12
@@ -3571,7 +3574,7 @@ Partial Class dlgSettings
         Me.chkMovieExtrathumbsCreatorAutoThumbs.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkMovieExtrathumbsCreatorAutoThumbs.AutoSize = True
         Me.chkMovieExtrathumbsCreatorAutoThumbs.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieExtrathumbsCreatorAutoThumbs.Location = New System.Drawing.Point(3, 21)
+        Me.chkMovieExtrathumbsCreatorAutoThumbs.Location = New System.Drawing.Point(3, 3)
         Me.chkMovieExtrathumbsCreatorAutoThumbs.Name = "chkMovieExtrathumbsCreatorAutoThumbs"
         Me.chkMovieExtrathumbsCreatorAutoThumbs.Size = New System.Drawing.Size(227, 17)
         Me.chkMovieExtrathumbsCreatorAutoThumbs.TabIndex = 11
@@ -3583,7 +3586,7 @@ Partial Class dlgSettings
         Me.chkMovieExtrathumbsCreatorNoSpoilers.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkMovieExtrathumbsCreatorNoSpoilers.AutoSize = True
         Me.chkMovieExtrathumbsCreatorNoSpoilers.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieExtrathumbsCreatorNoSpoilers.Location = New System.Drawing.Point(3, 67)
+        Me.chkMovieExtrathumbsCreatorNoSpoilers.Location = New System.Drawing.Point(3, 49)
         Me.chkMovieExtrathumbsCreatorNoSpoilers.Name = "chkMovieExtrathumbsCreatorNoSpoilers"
         Me.chkMovieExtrathumbsCreatorNoSpoilers.Size = New System.Drawing.Size(85, 17)
         Me.chkMovieExtrathumbsCreatorNoSpoilers.TabIndex = 10
@@ -3595,7 +3598,7 @@ Partial Class dlgSettings
         Me.chkMovieExtrathumbsCreatorUseETasFA.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkMovieExtrathumbsCreatorUseETasFA.AutoSize = True
         Me.chkMovieExtrathumbsCreatorUseETasFA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieExtrathumbsCreatorUseETasFA.Location = New System.Drawing.Point(3, 44)
+        Me.chkMovieExtrathumbsCreatorUseETasFA.Location = New System.Drawing.Point(3, 26)
         Me.chkMovieExtrathumbsCreatorUseETasFA.Name = "chkMovieExtrathumbsCreatorUseETasFA"
         Me.chkMovieExtrathumbsCreatorUseETasFA.Size = New System.Drawing.Size(222, 17)
         Me.chkMovieExtrathumbsCreatorUseETasFA.TabIndex = 9
@@ -3936,7 +3939,7 @@ Partial Class dlgSettings
         Me.gbMovieImagesFanartOpts.Controls.Add(Me.tblMovieImagesFanartOpts)
         Me.gbMovieImagesFanartOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieImagesFanartOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbMovieImagesFanartOpts.Location = New System.Drawing.Point(505, 99)
+        Me.gbMovieImagesFanartOpts.Location = New System.Drawing.Point(511, 99)
         Me.gbMovieImagesFanartOpts.Name = "gbMovieImagesFanartOpts"
         Me.gbMovieImagesFanartOpts.Size = New System.Drawing.Size(245, 142)
         Me.gbMovieImagesFanartOpts.TabIndex = 3
@@ -4090,7 +4093,7 @@ Partial Class dlgSettings
         Me.gbMovieImagesLanguageOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbMovieImagesLanguageOpts.Location = New System.Drawing.Point(307, 3)
         Me.gbMovieImagesLanguageOpts.Name = "gbMovieImagesLanguageOpts"
-        Me.gbMovieImagesLanguageOpts.Size = New System.Drawing.Size(443, 90)
+        Me.gbMovieImagesLanguageOpts.Size = New System.Drawing.Size(449, 90)
         Me.gbMovieImagesLanguageOpts.TabIndex = 17
         Me.gbMovieImagesLanguageOpts.TabStop = False
         Me.gbMovieImagesLanguageOpts.Text = "Preferred Language"
@@ -4112,7 +4115,7 @@ Partial Class dlgSettings
         Me.tblMovieImagesLanguageOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieImagesLanguageOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieImagesLanguageOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieImagesLanguageOpts.Size = New System.Drawing.Size(437, 69)
+        Me.tblMovieImagesLanguageOpts.Size = New System.Drawing.Size(443, 69)
         Me.tblMovieImagesLanguageOpts.TabIndex = 97
         '
         'chkMovieImagesGetBlankImages
@@ -21990,7 +21993,7 @@ Partial Class dlgSettings
         Me.chkMovieSetPosterPrefOnly.AutoSize = True
         Me.tblMovieSetImagesPosterOpts.SetColumnSpan(Me.chkMovieSetPosterPrefOnly, 2)
         Me.chkMovieSetPosterPrefOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieSetPosterPrefOnly.Location = New System.Drawing.Point(186, 25)
+        Me.chkMovieSetPosterPrefOnly.Location = New System.Drawing.Point(158, 25)
         Me.chkMovieSetPosterPrefOnly.Name = "chkMovieSetPosterPrefOnly"
         Me.chkMovieSetPosterPrefOnly.Size = New System.Drawing.Size(50, 17)
         Me.chkMovieSetPosterPrefOnly.TabIndex = 2
@@ -22573,6 +22576,28 @@ Partial Class dlgSettings
         Me.tblSettingsFooter.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.tblSettingsFooter.Size = New System.Drawing.Size(1207, 74)
         Me.tblSettingsFooter.TabIndex = 0
+        '
+        'tblMovieImagesExtrathumbsCreatorOpts
+        '
+        Me.tblMovieImagesExtrathumbsCreatorOpts.AutoSize = True
+        Me.tblMovieImagesExtrathumbsCreatorOpts.ColumnCount = 2
+        Me.tblMovieImagesExtrathumbsCreatorOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMovieImagesExtrathumbsCreatorOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMovieImagesExtrathumbsCreatorOpts.Controls.Add(Me.chkMovieExtrathumbsCreatorAutoThumbs, 0, 0)
+        Me.tblMovieImagesExtrathumbsCreatorOpts.Controls.Add(Me.chkMovieExtrathumbsCreatorNoBlackBars, 0, 3)
+        Me.tblMovieImagesExtrathumbsCreatorOpts.Controls.Add(Me.chkMovieExtrathumbsCreatorUseETasFA, 0, 1)
+        Me.tblMovieImagesExtrathumbsCreatorOpts.Controls.Add(Me.chkMovieExtrathumbsCreatorNoSpoilers, 0, 2)
+        Me.tblMovieImagesExtrathumbsCreatorOpts.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblMovieImagesExtrathumbsCreatorOpts.Location = New System.Drawing.Point(3, 18)
+        Me.tblMovieImagesExtrathumbsCreatorOpts.Name = "tblMovieImagesExtrathumbsCreatorOpts"
+        Me.tblMovieImagesExtrathumbsCreatorOpts.RowCount = 5
+        Me.tblMovieImagesExtrathumbsCreatorOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMovieImagesExtrathumbsCreatorOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMovieImagesExtrathumbsCreatorOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMovieImagesExtrathumbsCreatorOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMovieImagesExtrathumbsCreatorOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMovieImagesExtrathumbsCreatorOpts.Size = New System.Drawing.Size(233, 92)
+        Me.tblMovieImagesExtrathumbsCreatorOpts.TabIndex = 13
         '
         'dlgSettings
         '
@@ -23386,6 +23411,8 @@ Partial Class dlgSettings
         CType(Me.scSettingsMain, System.ComponentModel.ISupportInitialize).EndInit()
         Me.scSettingsMain.ResumeLayout(False)
         Me.tblSettingsFooter.ResumeLayout(False)
+        Me.tblMovieImagesExtrathumbsCreatorOpts.ResumeLayout(False)
+        Me.tblMovieImagesExtrathumbsCreatorOpts.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout
 
@@ -24973,4 +25000,5 @@ End Sub
     Friend WithEvents txtTVGeneralCustomScrapeButtonModifierType As Label
     Friend WithEvents rbTVGeneralCustomScrapeButtonEnabled As RadioButton
     Friend WithEvents rbTVGeneralCustomScrapeButtonDisabled As RadioButton
+    Friend WithEvents tblMovieImagesExtrathumbsCreatorOpts As TableLayoutPanel
 End Class

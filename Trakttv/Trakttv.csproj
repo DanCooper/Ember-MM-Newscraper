@@ -20,9 +20,10 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\EmberMM - $(Configuration) - $(Platform)\</OutputPath>
+    <OutputPath>bin\x86\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DocumentationFile>..\EmberMM - $(Configuration) - $(Platform)\TrakttvAPI.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
@@ -30,7 +31,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>..\EmberMM - $(Configuration) - $(Platform)\</OutputPath>
+    <OutputPath>bin\x86\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -38,33 +39,38 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
-    <DocumentationFile>..\EmberMM - $(Configuration) - $(Platform)\TrakttvAPI.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\EmberMM - $(Configuration) - $(Platform)\</OutputPath>
+    <OutputPath>bin\x64\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DocumentationFile>..\EmberMM - $(Configuration) - $(Platform)\TrakttvAPI.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>..\EmberMM - $(Configuration) - $(Platform)\</OutputPath>
+    <OutputPath>bin\x64\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>..\EmberMM - $(Configuration) - $(Platform)\TrakttvAPI.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>..\EmberMM - $(Configuration) - $(Platform)\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DocumentationFile>..\EmberMM - $(Configuration) - $(Platform)\TrakttvAPI.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
@@ -74,6 +80,8 @@
     <OutputPath>..\EmberMM - $(Configuration) - $(Platform)\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <DocumentationFile>..\EmberMM - $(Configuration) - $(Platform)\TrakttvAPI.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -110,9 +118,11 @@
     <Compile Include="Model\Movie\TraktMovie.cs" />
     <Compile Include="Model\Movie\TraktMovieBase.cs" />
     <Compile Include="Model\Movie\TraktMovieCollected.cs" />
+    <Compile Include="Model\Movie\TraktMovieHistory.cs" />
     <Compile Include="Model\Movie\TraktMovieImages.cs" />
     <Compile Include="Model\Movie\TraktMovieSummary.cs" />
     <Compile Include="Model\Movie\TraktMovieWatched.cs" />
+    <Compile Include="Model\Movie\TraktSyncHistoryID.cs" />
     <Compile Include="Model\Movie\TraktSyncMovies.cs" />
     <Compile Include="Model\Movie\TraktSyncMoviesWatched.cs" />
     <Compile Include="Model\Movie\TraktSyncMovieWatched.cs" />

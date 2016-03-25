@@ -6700,7 +6700,7 @@ Public Class Settings
 
     Public Sub Load()
         'Cocotus, Load from central "Settings" folder if it exists!
-        Dim configpath As String = FileUtils.Common.ReturnSettingsFile("Settings", "Settings.xml")
+        Dim configpath As String = Path.Combine(Master.SettingsPath, "Settings.xml")
 
         Try
             If File.Exists(configpath) Then
