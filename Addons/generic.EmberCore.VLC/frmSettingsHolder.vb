@@ -64,7 +64,7 @@ Public Class frmSettingsHolder
         Me.gbGeneralOpts.Text = Master.eLang.GetString(38, "General Settings")
         If Environment.Is64BitOperatingSystem Then
             If Environment.Is64BitProcess Then
-                Me.lblVLCPath.Text = Master.eLang.GetString(1491, "VLC x64 Path")
+                Me.lblVLCPath.Text = Master.eLang.GetString(1495, "VLC x64 Path")
             Else
                 Me.lblVLCPath.Text = Master.eLang.GetString(1478, "VLC x86 Path")
             End If

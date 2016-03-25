@@ -124,14 +124,14 @@ Public Class frmAudioPlayer
         If Environment.Is64BitOperatingSystem Then
             If Environment.Is64BitProcess Then
                 aPath = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles)
-                aTitle = Master.eLang.GetString(1488, "Select VLC x64 bit Path")
+                aTitle = Master.eLang.GetString(1493, "Select VLC x64 bit Path")
             Else
                 aPath = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86)
-                aTitle = Master.eLang.GetString(1490, "Select VLC x86 bit Path")
+                aTitle = Master.eLang.GetString(1494, "Select VLC x86 bit Path")
             End If
         Else
             aPath = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles)
-            aTitle = Master.eLang.GetString(1490, "Select VLC x86 bit Path")
+            aTitle = Master.eLang.GetString(1494, "Select VLC x86 bit Path")
         End If
         If Not File.Exists(Path.Combine(Path.Combine(aPath, "VideoLAN\VLC"), "libvlc.dll")) Then
             Using fbdDialog As New FolderBrowserDialog()

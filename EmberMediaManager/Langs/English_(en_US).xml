@@ -1581,12 +1581,7 @@
   <string id="1490">Cleaning</string>
   <string id="1491">Delete history from a specific date</string>
   <string id="1492">Delete history for a particular timespan</string>
-  <string id="1493">VLC x86 Path</string>
-  <string id="1494">Use as Audio Player</string>
-  <string id="1495">Use as Video Player</string>
-  <string id="1496">Select Expor tPath</string>
-  <string id="1497">Select VLC x64 bit Path</string>
-  <string id="1498">libvlc.dll not found in path</string>
-  <string id="1499">Select VLC x86 Path</string>
-  <string id="1500">VLC x64 Path</string>
+  <string id="1493">Select VLC x64 bit Path</string>
+  <string id="1494">Select VLC x86 Path</string>
+  <string id="1495">VLC x64 Path</string>
 </strings>
