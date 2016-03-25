@@ -51,12 +51,14 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>..\EmberMM - $(Configuration) - $(Platform)\</OutputPath>
     <OutputPath>bin\x86\Debug\</OutputPath>
     <DefineConstants>TRACE;DEBUG</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\EmberMM - $(Configuration) - $(Platform)\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>..\EmberMM - $(Configuration) - $(Platform)\KodiAPI.XML</DocumentationFile>
     <DocumentationFile>
     </DocumentationFile>
     <Optimize>true</Optimize>
@@ -67,9 +69,10 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\EmberMM - $(Configuration) - $(Platform)\</OutputPath>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>..\EmberMM - $(Configuration) - $(Platform)\KodiAPI.XML</DocumentationFile>
     <DefineConstants>TRACE;DEBUG</DefineConstants>
   </PropertyGroup>
   <ItemGroup>

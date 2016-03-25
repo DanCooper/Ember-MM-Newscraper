@@ -30,7 +30,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\EmberMM - Debug - x64\Modules\</OutputPath>
+    <OutputPath>..\..\EmberMM - $(Configuration) - $(Platform)\Modules\</OutputPath>
     <DocumentationFile>scraper.Trailer.VideobusterDE.xml</DocumentationFile>
     <NoWarn>
     </NoWarn>
@@ -41,7 +41,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\EmberMM - Release - x64\Modules\</OutputPath>
+    <OutputPath>..\..\EmberMM - $(Configuration) - $(Platform)\Modules\</OutputPath>
     <DocumentationFile>scraper.Trailer.VideobusterDE.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <NoWarn>
@@ -55,7 +55,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\EmberMM - Debug - x86\Modules\</OutputPath>
+    <OutputPath>..\..\EmberMM - $(Configuration) - $(Platform)\Modules\</OutputPath>
     <DocumentationFile>scraper.Trailer.VideobusterDE.xml</DocumentationFile>
     <NoWarn>
     </NoWarn>
@@ -66,7 +66,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\EmberMM - Release - x86\Modules\</OutputPath>
+    <OutputPath>..\..\EmberMM - $(Configuration) - $(Platform)\Modules\</OutputPath>
     <DocumentationFile>scraper.Trailer.VideobusterDE.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <NoWarn>
@@ -80,7 +80,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\EmberMM - $(Configuration) - $(Platform)\Modules\</OutputPath>
     <DocumentationFile>scraper.Trailer.VideobusterDE.xml</DocumentationFile>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -89,8 +89,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>scraper.Trailer.VideobusterDE.xml</DocumentationFile>
+    <OutputPath>..\..\EmberMM - $(Configuration) - $(Platform)\Modules\</OutputPath>    <DocumentationFile>scraper.Trailer.VideobusterDE.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
