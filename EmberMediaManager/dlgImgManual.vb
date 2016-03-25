@@ -24,9 +24,9 @@ Imports NLog
 Public Class dlgImgManual
 
 #Region "Fields"
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
-    'Dim DLType As New Enums.MovieImageType
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
+
     Dim tImage As New MediaContainers.Image
 
 #End Region 'Fields
@@ -59,24 +59,18 @@ Public Class dlgImgManual
     End Function
 
     Private Sub btnPreview_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPreview.Click
-        Try
-            tImage.ImageOriginal.FromWeb(txtURL.Text)
-
-            If tImage.ImageOriginal.Image IsNot Nothing Then
-
-                Using dImgView As New dlgImgView
-                    dImgView.ShowDialog(tImage.ImageOriginal.Image)
-                End Using
-
-            End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
+        tImage = New MediaContainers.Image With {.URLOriginal = txtURL.Text.Trim}
+        If tImage.LoadAndCache(Enums.ContentType.None, True, True) Then
+            Using dImgView As New dlgImgView
+                dImgView.ShowDialog(tImage.ImageOriginal.Image)
+            End Using
+        Else
+            tImage = New MediaContainers.Image
+        End If
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-        DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Close()
+        DialogResult = DialogResult.Cancel
     End Sub
 
     Private Sub dlgImgManual_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
@@ -86,12 +80,6 @@ Public Class dlgImgManual
 
     Private Sub dlgImgManual_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         SetUp()
-
-        'If Me.DLType = Enums.MovieImageType.Fanart Then
-        '    Me.Text = Master.eLang.GetString(182, "Manual Fanart Entry")
-        'Else
-        '    Me.Text = Master.eLang.GetString(183, "Manual Poster Entry")
-        'End If
     End Sub
 
     Private Sub dlgImgManual_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
@@ -100,18 +88,12 @@ Public Class dlgImgManual
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-
-        Try
-
-            If tImage.ImageOriginal.Image Is Nothing Then
-                tImage.ImageOriginal.FromWeb(txtURL.Text)
-            End If
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
-
-        DialogResult = System.Windows.Forms.DialogResult.OK
-        Close()
+        tImage = New MediaContainers.Image With {.URLOriginal = txtURL.Text.Trim}
+        If tImage.LoadAndCache(Enums.ContentType.None, True, True) Then
+            DialogResult = DialogResult.OK
+        Else
+            tImage = New MediaContainers.Image
+        End If
     End Sub
 
     Private Sub SetUp()
