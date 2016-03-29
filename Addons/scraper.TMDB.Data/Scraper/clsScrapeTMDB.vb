@@ -869,10 +869,12 @@ Namespace TMDB
                 seasonAPIResult = Task.Run(Function() _TMDBApi.GetTvSeasonAsync(ShowID, aSeason.SeasonNumber, TMDbLib.Objects.TvShows.TvSeasonMethods.Credits Or TMDbLib.Objects.TvShows.TvSeasonMethods.ExternalIds))
 
                 Dim SeasonInfo As TMDbLib.Objects.TvShows.TvSeason = seasonAPIResult.Result
-                For Each aEpisode As TMDbLib.Objects.TvShows.TvEpisode In SeasonInfo.Episodes.Where(Function(f) CBool(f.AirDate = CDate(Aired)))
-                    Return GetTVEpisodeInfo(aEpisode, FilteredOptions)
-                    'Return GetTVEpisodeInfo(ShowID, season.SeasonNumber, episode.EpisodeNumber, Options)
-                Next
+                Dim EpisodeList As IEnumerable(Of TMDbLib.Objects.TvShows.TvEpisode) = SeasonInfo.Episodes.Where(Function(f) CBool(f.AirDate = CDate(Aired)))
+                If EpisodeList IsNot Nothing AndAlso EpisodeList.Count = 1 Then
+                    Return GetTVEpisodeInfo(EpisodeList(0), FilteredOptions)
+                ElseIf EpisodeList.Count > 0 Then
+                    Return Nothing
+                End If
             Next
 
             Return Nothing

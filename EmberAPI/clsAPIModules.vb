@@ -972,6 +972,26 @@ Public Class ModulesManager
 
                     If ret.Result IsNot Nothing Then
                         ScrapedList.Add(ret.Result)
+
+                        'set new informations for following scrapers
+                        If ret.Result.IDSpecified Then
+                            oDBMovie.Movie.ID = ret.Result.ID
+                        End If
+                        If ret.Result.IMDBIDSpecified Then
+                            oDBMovie.Movie.IMDBID = ret.Result.IMDBID
+                        End If
+                        If ret.Result.OriginalTitleSpecified Then
+                            oDBMovie.Movie.OriginalTitle = ret.Result.OriginalTitle
+                        End If
+                        If ret.Result.TitleSpecified Then
+                            oDBMovie.Movie.Title = ret.Result.Title
+                        End If
+                        If ret.Result.TMDBIDSpecified Then
+                            oDBMovie.Movie.TMDBID = ret.Result.TMDBID
+                        End If
+                        If ret.Result.YearSpecified Then
+                            oDBMovie.Movie.Year = ret.Result.Year
+                        End If
                     End If
                     RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie
                     If ret.breakChain Then Exit For
@@ -1044,6 +1064,14 @@ Public Class ModulesManager
 
                 If ret.Result IsNot Nothing Then
                     ScrapedList.Add(ret.Result)
+
+                    'set new informations for following scrapers
+                    If ret.Result.TitleSpecified Then
+                        oDBMovieSet.MovieSet.Title = ret.Result.Title
+                    End If
+                    If ret.Result.TMDBSpecified Then
+                        oDBMovieSet.MovieSet.TMDB = ret.Result.TMDB
+                    End If
                 End If
                 RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_MovieSet
                 If ret.breakChain Then Exit For
@@ -1092,6 +1120,29 @@ Public Class ModulesManager
 
                     If ret.Result IsNot Nothing Then
                         ScrapedList.Add(ret.Result)
+
+                        'set new informations for following scrapers
+                        If ret.Result.AiredSpecified Then
+                            oEpisode.TVEpisode.Aired = ret.Result.Aired
+                        End If
+                        If ret.Result.EpisodeSpecified Then
+                            oEpisode.TVEpisode.Episode = ret.Result.Episode
+                        End If
+                        If ret.Result.IMDBSpecified Then
+                            oEpisode.TVEpisode.IMDB = ret.Result.IMDB
+                        End If
+                        If ret.Result.SeasonSpecified Then
+                            oEpisode.TVEpisode.Season = ret.Result.Season
+                        End If
+                        If ret.Result.TitleSpecified Then
+                            oEpisode.TVEpisode.Title = ret.Result.Title
+                        End If
+                        If ret.Result.TMDBSpecified Then
+                            oEpisode.TVEpisode.TMDB = ret.Result.TMDB
+                        End If
+                        If ret.Result.TVDBSpecified Then
+                            oEpisode.TVEpisode.TVDB = ret.Result.TVDB
+                        End If
                     End If
                     RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
                     If ret.breakChain Then Exit For
@@ -1144,6 +1195,14 @@ Public Class ModulesManager
 
                     If ret.Result IsNot Nothing Then
                         ScrapedList.Add(ret.Result)
+
+                        'set new informations for following scrapers
+                        If ret.Result.TMDBSpecified Then
+                            oSeason.TVSeason.TMDB = ret.Result.TMDB
+                        End If
+                        If ret.Result.TVDBSpecified Then
+                            oSeason.TVSeason.TVDB = ret.Result.TVDB
+                        End If
                     End If
                     RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
                     If ret.breakChain Then Exit For
@@ -1200,9 +1259,10 @@ Public Class ModulesManager
                 For Each sEpisode As Database.DBElement In DBElement.Episodes
                     Dim iEpisode As Integer = sEpisode.TVEpisode.Episode
                     Dim iSeason As Integer = sEpisode.TVEpisode.Season
+                    Dim strAired As String = sEpisode.TVEpisode.Aired
                     sEpisode.ImagesContainer = New MediaContainers.ImagesContainer
                     sEpisode.NfoPath = String.Empty
-                    sEpisode.TVEpisode = New MediaContainers.EpisodeDetails With {.Episode = iEpisode, .Season = iSeason}
+                    sEpisode.TVEpisode = New MediaContainers.EpisodeDetails With {.Aired = strAired, .Episode = iEpisode, .Season = iSeason}
                 Next
             End If
 
@@ -1222,6 +1282,23 @@ Public Class ModulesManager
 
                     If ret.Result IsNot Nothing Then
                         ScrapedList.Add(ret.Result)
+
+                        'set new informations for following scrapers
+                        If ret.Result.IMDBSpecified Then
+                            oShow.TVShow.IMDB = ret.Result.IMDB
+                        End If
+                        If ret.Result.OriginalTitleSpecified Then
+                            oShow.TVShow.OriginalTitle = ret.Result.OriginalTitle
+                        End If
+                        If ret.Result.TitleSpecified Then
+                            oShow.TVShow.Title = ret.Result.Title
+                        End If
+                        If ret.Result.TMDBSpecified Then
+                            oShow.TVShow.TMDB = ret.Result.TMDB
+                        End If
+                        If ret.Result.TVDBSpecified Then
+                            oShow.TVShow.TVDB = ret.Result.TVDB
+                        End If
                     End If
                     RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
                     If ret.breakChain Then Exit For

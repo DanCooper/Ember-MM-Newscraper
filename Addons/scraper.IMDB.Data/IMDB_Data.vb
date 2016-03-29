@@ -488,28 +488,6 @@ Public Class IMDB_Data
             End If
         End If
 
-        'set new informations for following scrapers
-        If nMovie IsNot Nothing Then
-            If nMovie.TitleSpecified Then
-                oDBElement.Movie.Title = nMovie.Title
-            End If
-            If nMovie.OriginalTitleSpecified Then
-                oDBElement.Movie.OriginalTitle = nMovie.OriginalTitle
-            End If
-            If nMovie.YearSpecified Then
-                oDBElement.Movie.Year = nMovie.Year
-            End If
-            If nMovie.IDSpecified Then
-                oDBElement.Movie.ID = nMovie.ID
-            End If
-            If nMovie.IMDBIDSpecified Then
-                oDBElement.Movie.IMDBID = nMovie.IMDBID
-            End If
-            If nMovie.TMDBIDSpecified Then
-                oDBElement.Movie.TMDBID = nMovie.TMDBID
-            End If
-        End If
-
         logger.Trace("[IMDB_Data] [Scraper_Movie] [Done]")
         Return New Interfaces.ModuleResult_Data_Movie With {.Result = nMovie}
     End Function
@@ -559,19 +537,6 @@ Public Class IMDB_Data
                         Return New Interfaces.ModuleResult_Data_TVShow With {.Cancelled = True, .Result = Nothing}
                     End If
                 End Using
-            End If
-        End If
-
-        'set new informations for following scrapers
-        If nTVShow IsNot Nothing Then
-            If nTVShow.TitleSpecified Then
-                oDBElement.TVShow.Title = nTVShow.Title
-            End If
-            If nTVShow.OriginalTitleSpecified Then
-                oDBElement.TVShow.OriginalTitle = nTVShow.OriginalTitle
-            End If
-            If nTVShow.IMDBSpecified Then
-                oDBElement.TVShow.IMDB = nTVShow.IMDB
             End If
         End If
 
