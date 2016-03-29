@@ -648,28 +648,6 @@ Public Class TMDB_Data
             End If
         End If
 
-        'set new informations for following scrapers
-        If nMovie IsNot Nothing Then
-            If nMovie.TitleSpecified Then
-                oDBElement.Movie.Title = nMovie.Title
-            End If
-            If nMovie.OriginalTitleSpecified Then
-                oDBElement.Movie.OriginalTitle = nMovie.OriginalTitle
-            End If
-            If nMovie.YearSpecified Then
-                oDBElement.Movie.Year = nMovie.Year
-            End If
-            If nMovie.IDSpecified Then
-                oDBElement.Movie.ID = nMovie.ID
-            End If
-            If nMovie.IMDBIDSpecified Then
-                oDBElement.Movie.IMDBID = nMovie.IMDBID
-            End If
-            If nMovie.TMDBIDSpecified Then
-                oDBElement.Movie.TMDBID = nMovie.TMDBID
-            End If
-        End If
-
         logger.Trace("[TMDB_Data] [Scraper_Movie] [Done]")
         Return New Interfaces.ModuleResult_Data_Movie With {.Result = nMovie}
     End Function
@@ -722,17 +700,6 @@ Public Class TMDB_Data
                         Return New Interfaces.ModuleResult_Data_MovieSet With {.Cancelled = True, .Result = Nothing}
                     End If
                 End Using
-            End If
-        End If
-
-        'set new informations for following scrapers
-
-        If nMovieSet IsNot Nothing Then
-            If nMovieSet.TitleSpecified Then
-                oDBElement.MovieSet.Title = nMovieSet.Title
-            End If
-            If nMovieSet.TMDBSpecified Then
-                oDBElement.MovieSet.TMDB = nMovieSet.TMDB
             End If
         End If
 
@@ -805,22 +772,6 @@ Public Class TMDB_Data
             End If
         End If
 
-        'set new informations for following scrapers
-        If nTVShow IsNot Nothing Then
-            If nTVShow.TitleSpecified Then
-                oDBElement.TVShow.Title = nTVShow.Title
-            End If
-            If nTVShow.TVDBSpecified Then
-                oDBElement.TVShow.TVDB = nTVShow.TVDB
-            End If
-            If nTVShow.IMDBSpecified Then
-                oDBElement.TVShow.IMDB = nTVShow.IMDB
-            End If
-            If nTVShow.TMDBSpecified Then
-                oDBElement.TVShow.TMDB = nTVShow.TMDB
-            End If
-        End If
-
         logger.Trace("[TMDB_Data] [Scraper_TV] [Done]")
         Return New Interfaces.ModuleResult_Data_TVShow With {.Result = nTVShow}
     End Function
@@ -859,22 +810,6 @@ Public Class TMDB_Data
             Return New Interfaces.ModuleResult_Data_TVEpisode With {.Result = Nothing}
         End If
 
-        'set new informations for following scrapers
-        If nTVEpisode IsNot Nothing Then
-            If nTVEpisode.TitleSpecified Then
-                oDBElement.TVEpisode.Title = nTVEpisode.Title
-            End If
-            If nTVEpisode.TVDBSpecified Then
-                oDBElement.TVEpisode.TVDB = nTVEpisode.TVDB
-            End If
-            If nTVEpisode.IMDBSpecified Then
-                oDBElement.TVEpisode.IMDB = nTVEpisode.IMDB
-            End If
-            If nTVEpisode.TMDBSpecified Then
-                oDBElement.TVEpisode.TMDB = nTVEpisode.TMDB
-            End If
-        End If
-
         logger.Trace("[TMDB_Data] [Scraper_TVEpisode] [Done]")
         Return New Interfaces.ModuleResult_Data_TVEpisode With {.Result = nTVEpisode}
     End Function
@@ -909,16 +844,6 @@ Public Class TMDB_Data
         Else
             logger.Trace(String.Format("[TMDB_Data] [Scraper_TVSeason] [Abort] No TV Show TMDB ID available"))
             Return New Interfaces.ModuleResult_Data_TVSeason With {.Result = Nothing}
-        End If
-
-        'set new informations for following scrapers
-        If nTVSeason IsNot Nothing Then
-            If nTVSeason.TMDBSpecified Then
-                oDBElement.TVSeason.TMDB = nTVSeason.TMDB
-            End If
-            If nTVSeason.TVDBSpecified Then
-                oDBElement.TVSeason.TVDB = nTVSeason.TVDB
-            End If
         End If
 
         logger.Trace("[TMDB_Data] [Scraper_TVSeason] [Done]")

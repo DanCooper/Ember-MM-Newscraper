@@ -886,7 +886,10 @@ Public Class NFO
                         Next
                     Else
                         'try to get the episode by AiredDate
-                        Dim dEpisodeList = DBTV.Episodes.Where(Function(f) Not String.IsNullOrEmpty(f.Filename) AndAlso Not String.IsNullOrEmpty(f.TVEpisode.Aired) AndAlso f.TVEpisode.Aired = strAiredDate)
+                        Dim dEpisodeList = DBTV.Episodes.Where(Function(f) f.FilenameSpecified AndAlso
+                                                                   f.TVEpisode.Episode = -1 AndAlso
+                                                                   f.TVEpisode.AiredSpecified AndAlso
+                                                                   f.TVEpisode.Aired = strAiredDate)
 
                         If dEpisodeList IsNot Nothing AndAlso dEpisodeList.Count > 0 Then
                             For Each nEpisode As Database.DBElement In dEpisodeList

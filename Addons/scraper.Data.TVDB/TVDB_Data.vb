@@ -290,19 +290,6 @@ Public Class TVDB_Data
             End If
         End If
 
-        'set new informations for following scrapers
-        If nTVShow IsNot Nothing Then
-            If nTVShow.TitleSpecified Then
-                oDBTV.TVShow.Title = nTVShow.Title
-            End If
-            If nTVShow.TVDBSpecified Then
-                oDBTV.TVShow.TVDB = nTVShow.TVDB
-            End If
-            If nTVShow.IMDBSpecified Then
-                oDBTV.TVShow.IMDB = nTVShow.IMDB
-            End If
-        End If
-
         logger.Trace("[TVDB_Data] [Scraper_TV] [Done]")
         Return New Interfaces.ModuleResult_Data_TVShow With {.Result = nTVShow}
     End Function
@@ -328,19 +315,6 @@ Public Class TVDB_Data
             Else
                 logger.Trace("[TVDB_Data] [Scraper_TVEpisode] [Abort] No TV Show TVDB ID and also no AiredDate available")
                 Return New Interfaces.ModuleResult_Data_TVEpisode With {.Result = Nothing}
-            End If
-        End If
-
-        'set new informations for following scrapers
-        If nTVEpisode IsNot Nothing Then
-            If nTVEpisode.TitleSpecified Then
-                oDBTVEpisode.TVEpisode.Title = nTVEpisode.Title
-            End If
-            If nTVEpisode.TVDBSpecified Then
-                oDBTVEpisode.TVEpisode.TVDB = nTVEpisode.TVDB
-            End If
-            If nTVEpisode.IMDBSpecified Then
-                oDBTVEpisode.TVEpisode.IMDB = nTVEpisode.IMDB
             End If
         End If
 
