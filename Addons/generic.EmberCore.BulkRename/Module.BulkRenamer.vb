@@ -127,7 +127,7 @@ Public Class BulkRenamerModule
                 End If
             Case Enums.ModuleEventType.DuringUpdateDB_TV
                 If MySettings.RenameUpdate_Episodes AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Episodes) Then
-                    'FileFolderRenamer.RenameSingle_Show(_dbelement, MySettings.FoldersPattern_Shows, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, True, False, False)
+                    FileFolderRenamer.RenameSingle_Episode(_dbelement, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, True, False, False)
                 End If
             Case Enums.ModuleEventType.ScraperMulti_Movie
                 If MySettings.RenameMulti_Movies AndAlso Not String.IsNullOrEmpty(MySettings.FoldersPattern_Movies) AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Movies) Then
@@ -153,16 +153,16 @@ Public Class BulkRenamerModule
                 If MySettings.RenameSingle_Shows AndAlso Not String.IsNullOrEmpty(MySettings.FoldersPattern_Shows) AndAlso Not String.IsNullOrEmpty(MySettings.FoldersPattern_Seasons) AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Episodes) Then
                     FileFolderRenamer.RenameSingle_Show(_dbelement, MySettings.FoldersPattern_Shows, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, False, False, False)
                 End If
-            Case Enums.ModuleEventType.AfterUpdateDB_TV
-                If MySettings.RenameUpdate_Episodes AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Episodes) Then
-                    Dim BatchMode As Boolean = DirectCast(_params(0), Boolean)
-                    Dim ToNFO As Boolean = DirectCast(_params(1), Boolean)
-                    Dim ShowErrors As Boolean = DirectCast(_params(2), Boolean)
-                    Dim ToDB As Boolean = DirectCast(_params(3), Boolean)
-                    Dim SourceID As Long = DirectCast(_params(4), Int64)
-                    Dim FFRenamer As New FileFolderRenamer
-                    FFRenamer.RenameAfterUpdateDB_TV(SourceID, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, BatchMode, ToNFO, ShowErrors, ToDB)
-                End If
+                'Case Enums.ModuleEventType.AfterUpdateDB_TV
+                '    If MySettings.RenameUpdate_Episodes AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Episodes) Then
+                '        Dim BatchMode As Boolean = DirectCast(_params(0), Boolean)
+                '        Dim ToNFO As Boolean = DirectCast(_params(1), Boolean)
+                '        Dim ShowErrors As Boolean = DirectCast(_params(2), Boolean)
+                '        Dim ToDB As Boolean = DirectCast(_params(3), Boolean)
+                '        Dim SourceID As Long = DirectCast(_params(4), Int64)
+                '        Dim FFRenamer As New FileFolderRenamer
+                '        FFRenamer.RenameAfterUpdateDB_TV(SourceID, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, BatchMode, ToNFO, ShowErrors, ToDB)
+                '    End If
         End Select
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function

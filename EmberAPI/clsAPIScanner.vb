@@ -948,6 +948,7 @@ Public Class Scanner
     End Function
 
     Public Sub Load_TVShow(ByRef DBTVShow As Database.DBElement, ByVal isNew As Boolean, ByVal Batchmode As Boolean, ByVal ReportProgress As Boolean)
+        Dim newEpisodesList As New List(Of Database.DBElement)
         Dim newSeasonsIndex As New List(Of Integer)
         Dim toNfo As Boolean = False
 
@@ -1007,7 +1008,6 @@ Public Class Scanner
             End If
 
             If DBTVShow.ShowIDSpecified Then
-                Dim newEpisodesList As New List(Of Database.DBElement)
                 For Each DBTVEpisode As Database.DBElement In DBTVShow.Episodes
                     DBTVEpisode = Master.DB.AddTVShowInfoToDBElement(DBTVEpisode, DBTVShow)
                     If DBTVEpisode.FilenameSpecified Then
@@ -1089,8 +1089,23 @@ Public Class Scanner
                 End If
             Next
 
-            'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterUpdateDB_TV, Nothing, Nothing, False, DBTVShow)
-            'Master.DB.SaveTVShowToDB(DBTVShow, False, Batchmode, False, False, False)
+            'process new episodes
+            For Each nEpisode In newEpisodesList
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.DuringUpdateDB_TV, Nothing, Nothing, False, nEpisode)
+            Next
+
+            'sync new episodes
+            For Each nEpisode In newEpisodesList
+                Master.DB.SaveTVEpisodeToDB(nEpisode, False, Batchmode, False, False, False, True)
+            Next
+
+            'sync new seasons
+            For Each newSeason As Integer In newSeasonsIndex
+                Dim tSeason As Database.DBElement = DBTVShow.Seasons.FirstOrDefault(Function(f) f.TVSeason.Season = newSeason)
+                If tSeason IsNot Nothing AndAlso tSeason.TVSeason IsNot Nothing Then
+                    Master.DB.SaveTVSeasonToDB(tSeason, Batchmode, False, True)
+                End If
+            Next
         End If
     End Sub
 
