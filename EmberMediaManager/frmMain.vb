@@ -2073,7 +2073,7 @@ Public Class frmMain
                 If Not (Args.ScrapeType = Enums.ScrapeType.SingleScrape) Then
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.ScraperMulti_Movie, Nothing, Nothing, False, DBScrapeMovie)
                     bwMovieScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":"))
-                    Master.DB.SaveMovieToDB(DBScrapeMovie, False, False, tScrapeItem.ScrapeModifiers.MainNFO OrElse tScrapeItem.ScrapeModifiers.MainMeta, True)
+                    Master.DB.SaveMovieToDB(DBScrapeMovie, False, tScrapeItem.ScrapeModifiers.MainNFO OrElse tScrapeItem.ScrapeModifiers.MainMeta, True)
                     bwMovieScraper.ReportProgress(-2, DBScrapeMovie.ID)
                     bwMovieScraper.ReportProgress(-1, If(Not OldListTitle = NewListTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle), NewListTitle))
                 End If
@@ -2291,9 +2291,9 @@ Public Class frmMain
                 If Not (Args.ScrapeType = Enums.ScrapeType.SingleScrape) Then
                     bwMovieSetScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":"))
                     If Not OldTitle = NewTitle OrElse Not OldTMDBColID = NewTMDBColID Then
-                        Master.DB.SaveMovieSetToDB(DBScrapeMovieSet, False, False, True, True)
+                        Master.DB.SaveMovieSetToDB(DBScrapeMovieSet, True, True, False)
                     Else
-                        Master.DB.SaveMovieSetToDB(DBScrapeMovieSet, False, False, True)
+                        Master.DB.SaveMovieSetToDB(DBScrapeMovieSet, True, False, False)
                     End If
                     bwMovieSetScraper.ReportProgress(-2, DBScrapeMovieSet.ID)
                     bwMovieSetScraper.ReportProgress(-1, If(Not OldListTitle = NewListTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle), NewListTitle))
@@ -2451,7 +2451,7 @@ Public Class frmMain
                 If Not (Args.ScrapeType = Enums.ScrapeType.SingleScrape) Then
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.ScraperMulti_TVShow, Nothing, Nothing, False, DBScrapeShow)
                     bwTVScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":"))
-                    Master.DB.SaveTVShowToDB(DBScrapeShow, False, False, tScrapeItem.ScrapeModifiers.MainNFO OrElse tScrapeItem.ScrapeModifiers.MainMeta, True, tScrapeItem.ScrapeModifiers.withEpisodes)
+                    Master.DB.SaveTVShowToDB(DBScrapeShow, False, tScrapeItem.ScrapeModifiers.MainNFO OrElse tScrapeItem.ScrapeModifiers.MainMeta, True, tScrapeItem.ScrapeModifiers.withEpisodes)
                     bwTVScraper.ReportProgress(-2, DBScrapeShow.ID)
                     bwTVScraper.ReportProgress(-1, If(Not OldListTitle = NewListTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle), NewListTitle))
                 End If
@@ -2597,7 +2597,7 @@ Public Class frmMain
                 If Not (Args.ScrapeType = Enums.ScrapeType.SingleScrape) Then
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.ScraperMulti_TVEpisode, Nothing, Nothing, False, DBScrapeEpisode)
                     bwTVEpisodeScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":"))
-                    Master.DB.SaveTVEpisodeToDB(DBScrapeEpisode, False, False, tScrapeItem.ScrapeModifiers.EpisodeNFO OrElse tScrapeItem.ScrapeModifiers.EpisodeMeta, True, True)
+                    Master.DB.SaveTVEpisodeToDB(DBScrapeEpisode, False, tScrapeItem.ScrapeModifiers.EpisodeNFO OrElse tScrapeItem.ScrapeModifiers.EpisodeMeta, True, True, True)
                     bwTVEpisodeScraper.ReportProgress(-2, DBScrapeEpisode.ID)
                     bwTVEpisodeScraper.ReportProgress(-1, If(Not OldEpisodeTitle = NewEpisodeTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldEpisodeTitle, NewEpisodeTitle), NewEpisodeTitle))
                 End If
@@ -2735,7 +2735,7 @@ Public Class frmMain
                 If Not (Args.ScrapeType = Enums.ScrapeType.SingleScrape) Then
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.ScraperMulti_TVSeason, Nothing, Nothing, False, DBScrapeSeason)
                     bwTVSeasonScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":"))
-                    Master.DB.SaveTVSeasonToDB(DBScrapeSeason, False, True)
+                    Master.DB.SaveTVSeasonToDB(DBScrapeSeason, False, True, True)
                     bwTVSeasonScraper.ReportProgress(-2, DBScrapeSeason.ID)
                 End If
             End If
@@ -5326,7 +5326,7 @@ doCancel:
 
         Using dNewSet As New dlgNewSet()
             If dNewSet.ShowDialog(tmpDBMovieSet) = Windows.Forms.DialogResult.OK Then
-                tmpDBMovieSet = Master.DB.SaveMovieSetToDB(dNewSet.Result, True)
+                tmpDBMovieSet = Master.DB.SaveMovieSetToDB(dNewSet.Result, False, False, False)
                 FillList(False, True, False)
                 Edit_MovieSet(tmpDBMovieSet)
             End If
@@ -8290,23 +8290,23 @@ doCancel:
         drow.ItemArray = v.ItemArray
     End Sub
 
-    Private Sub Edit_Movie(ByRef DBMovie As Database.DBElement)
+    Private Sub Edit_Movie(ByRef DBMovie As Database.DBElement, Optional ByVal EventType As Enums.ModuleEventType = Enums.ModuleEventType.AfterEdit_Movie)
         SetControlsEnabled(False)
         If DBMovie.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBMovie, True) Then
             Using dEditMovie As New dlgEditMovie
                 AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
                 Select Case dEditMovie.ShowDialog(DBMovie)
-                    Case Windows.Forms.DialogResult.OK
+                    Case DialogResult.OK
                         DBMovie = dEditMovie.Result
-                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_Movie, Nothing, Nothing, False, DBMovie)
+                        ModulesManager.Instance.RunGeneric(EventType, Nothing, Nothing, False, DBMovie)
                         tslLoading.Text = String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":")
-                        Master.DB.SaveMovieToDB(DBMovie, False, False, True, True)
+                        Master.DB.SaveMovieToDB(DBMovie, False, True, True)
                         RefreshRow_Movie(DBMovie.ID)
-                    Case Windows.Forms.DialogResult.Retry
+                    Case DialogResult.Retry
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
                         CreateScrapeList_Movie(Enums.ScrapeType.SingleScrape, Master.DefaultOptions_Movie, ScrapeModifiers)
-                    Case Windows.Forms.DialogResult.Abort
+                    Case DialogResult.Abort
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.DoSearch, True)
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
@@ -8326,17 +8326,17 @@ doCancel:
         Using dEditMovieSet As New dlgEditMovieSet
             'AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
             Select Case dEditMovieSet.ShowDialog(DBMovieSet)
-                Case Windows.Forms.DialogResult.OK
+                Case DialogResult.OK
                     DBMovieSet = dEditMovieSet.Result
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_MovieSet, Nothing, Nothing, False, DBMovieSet)
                     tslLoading.Text = String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":")
-                    Master.DB.SaveMovieSetToDB(DBMovieSet, False, False, True)
+                    Master.DB.SaveMovieSetToDB(DBMovieSet, False, True, False)
                     RefreshRow_MovieSet(DBMovieSet.ID)
-                Case Windows.Forms.DialogResult.Retry
+                Case DialogResult.Retry
                     Dim ScrapeModifier As New Structures.ScrapeModifiers
                     Functions.SetScrapeModifiers(ScrapeModifier, Enums.ModifierType.All, True)
                     CreateScrapeList_MovieSet(Enums.ScrapeType.SingleScrape, Master.DefaultOptions_MovieSet, ScrapeModifier)
-                Case Windows.Forms.DialogResult.Abort
+                Case DialogResult.Abort
                     Dim ScrapeModifier As New Structures.ScrapeModifiers
                     Functions.SetScrapeModifiers(ScrapeModifier, Enums.ModifierType.DoSearch, True)
                     Functions.SetScrapeModifiers(ScrapeModifier, Enums.ModifierType.All, True)
@@ -8350,17 +8350,17 @@ doCancel:
         SetControlsEnabled(True)
     End Sub
 
-    Private Sub Edit_TVEpisode(ByRef DBTVEpisode As Database.DBElement)
+    Private Sub Edit_TVEpisode(ByRef DBTVEpisode As Database.DBElement, Optional ByVal EventType As Enums.ModuleEventType = Enums.ModuleEventType.AfterEdit_TVEpisode)
         SetControlsEnabled(False)
         If DBTVEpisode.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(DBTVEpisode, True) Then
             Using dEditTVEpisode As New dlgEditTVEpisode
                 AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditTVEpisode.GenericRunCallBack
                 Select Case dEditTVEpisode.ShowDialog(DBTVEpisode)
-                    Case Windows.Forms.DialogResult.OK
+                    Case DialogResult.OK
                         DBTVEpisode = dEditTVEpisode.Result
-                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_TVEpisode, Nothing, Nothing, False, DBTVEpisode)
+                        ModulesManager.Instance.RunGeneric(EventType, Nothing, Nothing, False, DBTVEpisode)
                         tslLoading.Text = String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":")
-                        Master.DB.SaveTVEpisodeToDB(DBTVEpisode, False, False, True, True, True)
+                        Master.DB.SaveTVEpisodeToDB(DBTVEpisode, False, True, True, True, True)
                         RefreshRow_TVEpisode(DBTVEpisode.ID)
                     Case Else
                         If InfoCleared Then LoadInfo_TVEpisode(CInt(DBTVEpisode.ID))
@@ -8371,17 +8371,17 @@ doCancel:
         SetControlsEnabled(True)
     End Sub
 
-    Private Sub Edit_TVSeason(ByRef DBTVSeason As Database.DBElement)
+    Private Sub Edit_TVSeason(ByRef DBTVSeason As Database.DBElement, Optional ByVal EventType As Enums.ModuleEventType = Enums.ModuleEventType.AfterEdit_TVSeason)
         SetControlsEnabled(False)
         If DBTVSeason.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTVSeason, True) Then
             Using dEditTVSeason As New dlgEditTVSeason
                 'AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditTVSeason.GenericRunCallBack
                 Select Case dEditTVSeason.ShowDialog(DBTVSeason)
-                    Case Windows.Forms.DialogResult.OK
+                    Case DialogResult.OK
                         DBTVSeason = dEditTVSeason.Result
-                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_TVSeason, Nothing, Nothing, False, DBTVSeason)
+                        ModulesManager.Instance.RunGeneric(EventType, Nothing, Nothing, False, DBTVSeason)
                         tslLoading.Text = String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":")
-                        Master.DB.SaveTVSeasonToDB(DBTVSeason, False, True)
+                        Master.DB.SaveTVSeasonToDB(DBTVSeason, False, True, True)
                         RefreshRow_TVSeason(DBTVSeason.ID)
                     Case Else
                         'If Me.InfoCleared Then Me.LoadInfo_TVSeason(CInt(DBTVSeason.ID)) 'TODO: 
@@ -8392,23 +8392,23 @@ doCancel:
         SetControlsEnabled(True)
     End Sub
 
-    Private Sub Edit_TVShow(ByRef DBTVShow As Database.DBElement)
+    Private Sub Edit_TVShow(ByRef DBTVShow As Database.DBElement, Optional ByVal EventType As Enums.ModuleEventType = Enums.ModuleEventType.AfterEdit_TVShow)
         SetControlsEnabled(False)
         If DBTVShow.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTVShow, True) Then
             Using dEditTVShow As New dlgEditTVShow
                 'AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditTVShow.GenericRunCallBack
                 Select Case dEditTVShow.ShowDialog(DBTVShow)
-                    Case Windows.Forms.DialogResult.OK
+                    Case DialogResult.OK
                         DBTVShow = dEditTVShow.Result
-                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_TVShow, Nothing, Nothing, False, DBTVShow)
+                        ModulesManager.Instance.RunGeneric(EventType, Nothing, Nothing, False, DBTVShow)
                         tslLoading.Text = String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":")
-                        Master.DB.SaveTVShowToDB(DBTVShow, False, False, True, True, True)
+                        Master.DB.SaveTVShowToDB(DBTVShow, False, True, True, True)
                         RefreshRow_TVShow(DBTVShow.ID)
-                    Case Windows.Forms.DialogResult.Retry
+                    Case DialogResult.Retry
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
                         CreateScrapeList_TV(Enums.ScrapeType.SingleScrape, Master.DefaultOptions_TV, ScrapeModifiers)
-                    Case Windows.Forms.DialogResult.Abort
+                    Case DialogResult.Abort
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.DoSearch, True)
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
@@ -10680,7 +10680,7 @@ doCancel:
                             Dim tmpDBElement As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells("idMovie").Value))
                             If Not tmpDBElement.Movie.Genres.Contains(strGenre) Then
                                 tmpDBElement.Movie.Genres.Add(strGenre)
-                                Master.DB.SaveMovieToDB(tmpDBElement, False, True, True, False)
+                                Master.DB.SaveMovieToDB(tmpDBElement, True, True, False)
                                 RefreshRow_Movie(tmpDBElement.ID)
                             End If
                         Next
@@ -10689,7 +10689,7 @@ doCancel:
                             Dim tmpDBElement As Database.DBElement = Master.DB.LoadTVShowFromDB(Convert.ToInt64(sRow.Cells("idShow").Value), False, False)
                             If Not tmpDBElement.TVShow.Genres.Contains(strGenre) Then
                                 tmpDBElement.TVShow.Genres.Add(strGenre)
-                                Master.DB.SaveTVShowToDB(tmpDBElement, False, True, True, False, False)
+                                Master.DB.SaveTVShowToDB(tmpDBElement, True, True, False, False)
                                 RefreshRow_TVShow(tmpDBElement.ID)
                             End If
                         Next
@@ -10761,7 +10761,7 @@ doCancel:
                             Dim tmpDBElement As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells("idMovie").Value))
                             If tmpDBElement.Movie.Genres.Contains(strGenre) Then
                                 tmpDBElement.Movie.Genres.Remove(strGenre)
-                                Master.DB.SaveMovieToDB(tmpDBElement, False, True, True, False)
+                                Master.DB.SaveMovieToDB(tmpDBElement, True, True, False)
                                 RefreshRow_Movie(tmpDBElement.ID)
                             End If
                         Next
@@ -10770,7 +10770,7 @@ doCancel:
                             Dim tmpDBElement As Database.DBElement = Master.DB.LoadTVShowFromDB(Convert.ToInt64(sRow.Cells("idShow").Value), False, False)
                             If tmpDBElement.TVShow.Genres.Contains(strGenre) Then
                                 tmpDBElement.TVShow.Genres.Remove(strGenre)
-                                Master.DB.SaveTVShowToDB(tmpDBElement, False, True, True, False, False)
+                                Master.DB.SaveTVShowToDB(tmpDBElement, True, True, False, False)
                                 RefreshRow_TVShow(tmpDBElement.ID)
                             End If
                         Next
@@ -10796,7 +10796,7 @@ doCancel:
                             Dim tmpDBElement As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells("idMovie").Value))
                             tmpDBElement.Movie.Genres.Clear()
                             tmpDBElement.Movie.Genres.Add(strGenre)
-                            Master.DB.SaveMovieToDB(tmpDBElement, False, True, True, False)
+                            Master.DB.SaveMovieToDB(tmpDBElement, True, True, False)
                             RefreshRow_Movie(tmpDBElement.ID)
                         Next
                     Case "tvshow"
@@ -10804,7 +10804,7 @@ doCancel:
                             Dim tmpDBElement As Database.DBElement = Master.DB.LoadTVShowFromDB(Convert.ToInt64(sRow.Cells("idShow").Value), False, False)
                             tmpDBElement.TVShow.Genres.Clear()
                             tmpDBElement.TVShow.Genres.Add(strGenre)
-                            Master.DB.SaveTVShowToDB(tmpDBElement, False, True, True, False, False)
+                            Master.DB.SaveTVShowToDB(tmpDBElement, True, True, False, False)
                             RefreshRow_TVShow(tmpDBElement.ID)
                         Next
                 End Select
@@ -10829,7 +10829,7 @@ doCancel:
                             Dim tmpDBElement As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells("idMovie").Value))
                             If Not tmpDBElement.Movie.Tags.Contains(strTag) Then
                                 tmpDBElement.Movie.Tags.Add(strTag)
-                                Master.DB.SaveMovieToDB(tmpDBElement, False, True, True, False)
+                                Master.DB.SaveMovieToDB(tmpDBElement, True, True, False)
                                 RefreshRow_Movie(tmpDBElement.ID)
                             End If
                         Next
@@ -10838,7 +10838,7 @@ doCancel:
                             Dim tmpDBElement As Database.DBElement = Master.DB.LoadTVShowFromDB(Convert.ToInt64(sRow.Cells("idShow").Value), False, False)
                             If Not tmpDBElement.TVShow.Tags.Contains(strTag) Then
                                 tmpDBElement.TVShow.Tags.Add(strTag)
-                                Master.DB.SaveTVShowToDB(tmpDBElement, False, True, True, False, False)
+                                Master.DB.SaveTVShowToDB(tmpDBElement, True, True, False, False)
                                 RefreshRow_TVShow(tmpDBElement.ID)
                             End If
                         Next
@@ -10883,7 +10883,7 @@ doCancel:
                             Dim tmpDBElement As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells("idMovie").Value))
                             If tmpDBElement.Movie.Tags.Contains(strTag) Then
                                 tmpDBElement.Movie.Tags.Remove(strTag)
-                                Master.DB.SaveMovieToDB(tmpDBElement, False, True, True, False)
+                                Master.DB.SaveMovieToDB(tmpDBElement, True, True, False)
                                 RefreshRow_Movie(tmpDBElement.ID)
                             End If
                         Next
@@ -10892,7 +10892,7 @@ doCancel:
                             Dim tmpDBElement As Database.DBElement = Master.DB.LoadTVShowFromDB(Convert.ToInt64(sRow.Cells("idShow").Value), False, False)
                             If tmpDBElement.TVShow.Tags.Contains(strTag) Then
                                 tmpDBElement.TVShow.Tags.Remove(strTag)
-                                Master.DB.SaveTVShowToDB(tmpDBElement, False, True, True, False, False)
+                                Master.DB.SaveTVShowToDB(tmpDBElement, True, True, False, False)
                                 RefreshRow_TVShow(tmpDBElement.ID)
                             End If
                         Next
@@ -10918,7 +10918,7 @@ doCancel:
                             Dim tmpDBElement As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells("idMovie").Value))
                             tmpDBElement.Movie.Tags.Clear()
                             tmpDBElement.Movie.Tags.Add(strTag)
-                            Master.DB.SaveMovieToDB(tmpDBElement, False, True, True, False)
+                            Master.DB.SaveMovieToDB(tmpDBElement, True, True, False)
                             RefreshRow_Movie(tmpDBElement.ID)
                         Next
                     Case "tvshow"
@@ -10926,7 +10926,7 @@ doCancel:
                             Dim tmpDBElement As Database.DBElement = Master.DB.LoadTVShowFromDB(Convert.ToInt64(sRow.Cells("idShow").Value), False, False)
                             tmpDBElement.TVShow.Tags.Clear()
                             tmpDBElement.TVShow.Tags.Add(strTag)
-                            Master.DB.SaveTVShowToDB(tmpDBElement, False, True, True, False, False)
+                            Master.DB.SaveTVShowToDB(tmpDBElement, True, True, False, False)
                             RefreshRow_TVShow(tmpDBElement.ID)
                         Next
                 End Select
@@ -11972,7 +11972,7 @@ doCancel:
             tslLoading.Text = Master.eLang.GetString(576, "Verifying Movie Details:")
             Application.DoEvents()
 
-            Edit_Movie(DBMovie)
+            Edit_Movie(DBMovie, Enums.ModuleEventType.ScraperSingle_Movie)
         End If
 
         pnlCancel.Visible = False
@@ -12303,11 +12303,11 @@ doCancel:
     End Sub
 
     Private Sub InfoDownloaded_TV(ByRef DBTVShow As Database.DBElement)
-        If Not String.IsNullOrEmpty(DBTVShow.TVShow.Title) Then
+        If DBTVShow.TVShow.TitleSpecified Then
             tslLoading.Text = Master.eLang.GetString(761, "Verifying TV Show Details:")
             Application.DoEvents()
 
-            Edit_TVShow(DBTVShow)
+            Edit_TVShow(DBTVShow, Enums.ModuleEventType.ScraperSingle_TVShow)
         End If
 
         pnlCancel.Visible = False
@@ -12501,7 +12501,7 @@ doCancel:
             tslLoading.Text = Master.eLang.GetString(762, "Verifying TV Episode Details:")
             Application.DoEvents()
 
-            Edit_TVEpisode(DBTVEpisode)
+            Edit_TVEpisode(DBTVEpisode, Enums.ModuleEventType.ScraperSingle_TVEpisode)
         End If
 
         pnlCancel.Visible = False
@@ -12649,7 +12649,7 @@ doCancel:
             tslLoading.Text = Master.eLang.GetString(80, "Verifying TV Season Details:")
             Application.DoEvents()
 
-            Edit_TVSeason(DBTVSeason)
+            Edit_TVSeason(DBTVSeason, Enums.ModuleEventType.ScraperSingle_TVSeason)
         End If
 
         pnlCancel.Visible = False
@@ -13387,7 +13387,7 @@ doCancel:
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
-                                    Master.DB.SaveMovieToDB(tmpDBElement, False, False, False, True)
+                                    Master.DB.SaveMovieToDB(tmpDBElement, False, False, True)
                                     RefreshRow_Movie(ID)
                                 End If
                             Else
@@ -13412,7 +13412,7 @@ doCancel:
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
-                                    Master.DB.SaveMovieSetToDB(tmpDBElement, False, False, True)
+                                    Master.DB.SaveMovieSetToDB(tmpDBElement, False, True, False)
                                     RefreshRow_MovieSet(ID)
                                 End If
                             Else
@@ -13439,7 +13439,7 @@ doCancel:
                                     Dim dlgImgS As New dlgImgSelect()
                                     If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
-                                        Master.DB.SaveTVShowToDB(tmpDBElement, False, False, False, True, False)
+                                        Master.DB.SaveTVShowToDB(tmpDBElement, False, False, True, False)
                                         RefreshRow_TVShow(ID)
                                     End If
                                 Else
@@ -13470,7 +13470,7 @@ doCancel:
                                     Dim dlgImgS As New dlgImgSelect()
                                     If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
-                                        Master.DB.SaveTVSeasonToDB(tmpDBElement, False, True)
+                                        Master.DB.SaveTVSeasonToDB(tmpDBElement, False, True, True)
                                         RefreshRow_TVSeason(ID)
                                     End If
                                 Else
@@ -13525,7 +13525,7 @@ doCancel:
                                     Dim dlgImgS As New dlgImgSelect()
                                     If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.CharacterArt = dlgImgS.Result.ImagesContainer.CharacterArt
-                                        Master.DB.SaveTVShowToDB(tmpDBElement, False, False, False, True, False)
+                                        Master.DB.SaveTVShowToDB(tmpDBElement, False, False, True, False)
                                         RefreshRow_TVShow(ID)
                                     End If
                                 Else
@@ -13578,7 +13578,7 @@ doCancel:
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.ClearArt = dlgImgS.Result.ImagesContainer.ClearArt
-                                    Master.DB.SaveMovieToDB(tmpDBElement, False, False, False, True)
+                                    Master.DB.SaveMovieToDB(tmpDBElement, False, False, True)
                                     RefreshRow_Movie(ID)
                                 End If
                             Else
@@ -13603,7 +13603,7 @@ doCancel:
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.ClearArt = dlgImgS.Result.ImagesContainer.ClearArt
-                                    Master.DB.SaveMovieSetToDB(tmpDBElement, False, False, True)
+                                    Master.DB.SaveMovieSetToDB(tmpDBElement, False, True, False)
                                     RefreshRow_MovieSet(ID)
                                 End If
                             Else
@@ -13630,7 +13630,7 @@ doCancel:
                                     Dim dlgImgS As New dlgImgSelect()
                                     If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.ClearArt = dlgImgS.Result.ImagesContainer.ClearArt
-                                        Master.DB.SaveTVShowToDB(tmpDBElement, False, False, False, True, False)
+                                        Master.DB.SaveTVShowToDB(tmpDBElement, False, False, True, False)
                                         RefreshRow_TVShow(ID)
                                     End If
                                 Else
@@ -13683,7 +13683,7 @@ doCancel:
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.ClearLogo = dlgImgS.Result.ImagesContainer.ClearLogo
-                                    Master.DB.SaveMovieToDB(tmpDBElement, False, False, False, True)
+                                    Master.DB.SaveMovieToDB(tmpDBElement, False, False, True)
                                     RefreshRow_Movie(ID)
                                 End If
                             Else
@@ -13708,7 +13708,7 @@ doCancel:
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.ClearLogo = dlgImgS.Result.ImagesContainer.ClearLogo
-                                    Master.DB.SaveMovieSetToDB(tmpDBElement, False, False, True)
+                                    Master.DB.SaveMovieSetToDB(tmpDBElement, False, True, False)
                                     RefreshRow_MovieSet(ID)
                                 End If
                             Else
@@ -13735,7 +13735,7 @@ doCancel:
                                     Dim dlgImgS As New dlgImgSelect()
                                     If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.ClearLogo = dlgImgS.Result.ImagesContainer.ClearLogo
-                                        Master.DB.SaveTVShowToDB(tmpDBElement, False, False, False, True, False)
+                                        Master.DB.SaveTVShowToDB(tmpDBElement, False, False, True, False)
                                         RefreshRow_TVShow(ID)
                                     End If
                                 Else
@@ -13788,7 +13788,7 @@ doCancel:
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.DiscArt = dlgImgS.Result.ImagesContainer.DiscArt
-                                    Master.DB.SaveMovieToDB(tmpDBElement, False, False, False, True)
+                                    Master.DB.SaveMovieToDB(tmpDBElement, False, False, True)
                                     RefreshRow_Movie(ID)
                                 End If
                             Else
@@ -13813,7 +13813,7 @@ doCancel:
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.DiscArt = dlgImgS.Result.ImagesContainer.DiscArt
-                                    Master.DB.SaveMovieSetToDB(tmpDBElement, False, False, True)
+                                    Master.DB.SaveMovieSetToDB(tmpDBElement, False, True, False)
                                     RefreshRow_MovieSet(ID)
                                 End If
                             Else
@@ -13879,7 +13879,7 @@ doCancel:
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
-                                    Master.DB.SaveMovieToDB(tmpDBElement, False, False, False, True)
+                                    Master.DB.SaveMovieToDB(tmpDBElement, False, False, True)
                                     RefreshRow_Movie(ID)
                                 End If
                             Else
@@ -13904,7 +13904,7 @@ doCancel:
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
-                                    Master.DB.SaveMovieSetToDB(tmpDBElement, False, False, True)
+                                    Master.DB.SaveMovieSetToDB(tmpDBElement, False, True, False)
                                     RefreshRow_MovieSet(ID)
                                 End If
                             Else
@@ -13931,7 +13931,7 @@ doCancel:
                                     Dim dlgImgS As New dlgImgSelect()
                                     If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
-                                        Master.DB.SaveTVShowToDB(tmpDBElement, False, False, False, True, False)
+                                        Master.DB.SaveTVShowToDB(tmpDBElement, False, False, True, False)
                                         RefreshRow_TVShow(ID)
                                     End If
                                 Else
@@ -13962,7 +13962,7 @@ doCancel:
                                     Dim dlgImgS As New dlgImgSelect()
                                     If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
-                                        Master.DB.SaveTVSeasonToDB(tmpDBElement, False, True)
+                                        Master.DB.SaveTVSeasonToDB(tmpDBElement, False, True, True)
                                         RefreshRow_TVSeason(ID)
                                     End If
                                 Else
@@ -13989,7 +13989,7 @@ doCancel:
                                     Dim dlgImgS As New dlgImgSelect()
                                     If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
-                                        Master.DB.SaveTVEpisodeToDB(tmpDBElement, False, False, False, True, False)
+                                        Master.DB.SaveTVEpisodeToDB(tmpDBElement, False, False, True, False, True)
                                         RefreshRow_TVEpisode(ID)
                                     End If
                                 Else
@@ -14034,7 +14034,7 @@ doCancel:
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
-                                    Master.DB.SaveMovieToDB(tmpDBElement, False, False, False, True)
+                                    Master.DB.SaveMovieToDB(tmpDBElement, False, False, True)
                                     RefreshRow_Movie(ID)
                                 End If
                             Else
@@ -14059,7 +14059,7 @@ doCancel:
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
-                                    Master.DB.SaveMovieSetToDB(tmpDBElement, False, False, True)
+                                    Master.DB.SaveMovieSetToDB(tmpDBElement, False, True, False)
                                     RefreshRow_MovieSet(ID)
                                 End If
                             Else
@@ -14086,7 +14086,7 @@ doCancel:
                                     Dim dlgImgS As New dlgImgSelect()
                                     If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
-                                        Master.DB.SaveTVShowToDB(tmpDBElement, False, False, False, True, False)
+                                        Master.DB.SaveTVShowToDB(tmpDBElement, False, False, True, False)
                                         RefreshRow_TVShow(ID)
                                     End If
                                 Else
@@ -14117,7 +14117,7 @@ doCancel:
                                     Dim dlgImgS As New dlgImgSelect()
                                     If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
-                                        Master.DB.SaveTVSeasonToDB(tmpDBElement, False, True)
+                                        Master.DB.SaveTVSeasonToDB(tmpDBElement, False, True, True)
                                         RefreshRow_TVSeason(ID)
                                     End If
                                 Else
@@ -14166,7 +14166,7 @@ doCancel:
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
-                                    Master.DB.SaveMovieToDB(tmpDBElement, False, False, False, True)
+                                    Master.DB.SaveMovieToDB(tmpDBElement, False, False, True)
                                     RefreshRow_Movie(ID)
                                 End If
                             Else
@@ -14191,7 +14191,7 @@ doCancel:
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
-                                    Master.DB.SaveMovieSetToDB(tmpDBElement, False, False, True)
+                                    Master.DB.SaveMovieSetToDB(tmpDBElement, False, True, False)
                                     RefreshRow_MovieSet(ID)
                                 End If
                             Else
@@ -14218,7 +14218,7 @@ doCancel:
                                     Dim dlgImgS As New dlgImgSelect()
                                     If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
-                                        Master.DB.SaveTVShowToDB(tmpDBElement, False, False, False, True, False)
+                                        Master.DB.SaveTVShowToDB(tmpDBElement, False, False, True, False)
                                         RefreshRow_TVShow(ID)
                                     End If
                                 Else
@@ -14249,7 +14249,7 @@ doCancel:
                                     Dim dlgImgS As New dlgImgSelect()
                                     If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
-                                        Master.DB.SaveTVSeasonToDB(tmpDBElement, False, True)
+                                        Master.DB.SaveTVSeasonToDB(tmpDBElement, False, True, True)
                                         RefreshRow_TVSeason(ID)
                                     End If
                                 Else
@@ -14276,7 +14276,7 @@ doCancel:
                                     Dim dlgImgS As New dlgImgSelect()
                                     If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
-                                        Master.DB.SaveTVEpisodeToDB(tmpDBElement, False, False, False, True, False)
+                                        Master.DB.SaveTVEpisodeToDB(tmpDBElement, False, False, True, False, True)
                                         RefreshRow_TVEpisode(ID)
                                     End If
                                 Else
@@ -14838,7 +14838,7 @@ doCancel:
         Dim DBMovie As Database.DBElement = Master.DB.LoadMovieFromDB(ID)
 
         If DBMovie.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBMovie, Not showMessage) Then
-            fScanner.LoadMovie(DBMovie, False, BatchMode)
+            fScanner.Load_Movie(DBMovie, BatchMode)
             If Not BatchMode Then RefreshRow_Movie(DBMovie.ID)
         Else
             If showMessage AndAlso MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".", Environment.NewLine,
@@ -14868,7 +14868,7 @@ doCancel:
     Private Function Reload_MovieSet(ByVal ID As Long, Optional ByVal BatchMode As Boolean = False) As Boolean
         Dim DBMovieSet As Database.DBElement = Master.DB.LoadMovieSetFromDB(ID)
 
-        fScanner.LoadMovieSet(DBMovieSet, False, BatchMode)
+        fScanner.Load_MovieSet(DBMovieSet, BatchMode)
         If Not BatchMode Then RefreshRow_MovieSet(DBMovieSet.ID)
 
         Return False
@@ -14887,7 +14887,7 @@ doCancel:
         If DBTVEpisode.FilenameID = -1 Then Return False 'skipping missing episodes
 
         If DBTVEpisode.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(DBTVEpisode, showMessage) Then
-            fScanner.LoadTVEpisode(DBTVEpisode, False, BatchMode, False)
+            fScanner.Load_TVEpisode(DBTVEpisode, False, BatchMode, False)
             If Not BatchMode Then RefreshRow_TVEpisode(DBTVEpisode.ID)
         Else
             If showMessage AndAlso MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".", Environment.NewLine,
@@ -14914,8 +14914,8 @@ doCancel:
         Dim DBTVSeason As Database.DBElement = Master.DB.LoadTVSeasonFromDB(ID, True, False)
 
         If DBTVSeason.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTVSeason, showMessage) Then
-            fScanner.GetTVSeasonFolderContents(DBTVSeason)
-            Master.DB.SaveTVSeasonToDB(DBTVSeason, BatchMode, False)
+            fScanner.GetFolderContents_TVSeason(DBTVSeason)
+            Master.DB.SaveTVSeasonToDB(DBTVSeason, BatchMode, False, True)
             If Not BatchMode Then RefreshRow_TVSeason(DBTVSeason.ID)
         Else
             Return False
@@ -14934,7 +14934,7 @@ doCancel:
         Dim DBTVShow As Database.DBElement = Master.DB.LoadTVShowFromDB(ID, reloadFull, reloadFull)
 
         If DBTVShow.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTVShow, showMessage) Then
-            fScanner.LoadTVShow(DBTVShow, False, BatchMode, False)
+            fScanner.Load_TVShow(DBTVShow, False, BatchMode, False)
             If Not BatchMode Then RefreshRow_TVShow(DBTVShow.ID)
         Else
             If showMessage AndAlso MessageBox.Show(String.Concat(Master.eLang.GetString(719, "This path is no longer available"), ".", Environment.NewLine,
@@ -14960,7 +14960,7 @@ doCancel:
         Dim tmpMovieDB As Database.DBElement = Master.DB.LoadMovieFromDB(ID)
 
         If tmpMovieDB.IsOnline Then
-            Master.DB.SaveMovieToDB(tmpMovieDB, False, BatchMode, True, True)
+            Master.DB.SaveMovieToDB(tmpMovieDB, BatchMode, True, True)
             Return True
         Else
             Return False
@@ -15680,7 +15680,7 @@ doCancel:
                     tmpDBMovie.Movie.PlayCount = 0
                 End If
 
-                Master.DB.SaveMovieToDB(tmpDBMovie, False, True, True, False)
+                Master.DB.SaveMovieToDB(tmpDBMovie, True, True, False)
                 RefreshRow_Movie(tmpDBMovie.ID)
                 Application.DoEvents()
             Next
@@ -15722,7 +15722,7 @@ doCancel:
                     tmpDBTVEpisode.TVEpisode.Playcount = 0
                 End If
 
-                Master.DB.SaveTVEpisodeToDB(tmpDBTVEpisode, False, True, True, False, False)
+                Master.DB.SaveTVEpisodeToDB(tmpDBTVEpisode, True, True, False, False, True)
                 RefreshRow_TVEpisode(tmpDBTVEpisode.ID)
                 Application.DoEvents()
             Next
@@ -15777,7 +15777,7 @@ doCancel:
                                     tmpDBTVEpisode.TVEpisode.Playcount = 0
                                 End If
 
-                                Master.DB.SaveTVEpisodeToDB(tmpDBTVEpisode, False, True, True, False, False)
+                                Master.DB.SaveTVEpisodeToDB(tmpDBTVEpisode, True, True, False, False, True)
                                 RefreshRow_TVEpisode(tmpDBTVEpisode.ID)
                                 Application.DoEvents()
                             End While
@@ -15832,7 +15832,7 @@ doCancel:
                                 tmpDBTVEpisode.TVEpisode.Playcount = 0
                             End If
 
-                            Master.DB.SaveTVEpisodeToDB(tmpDBTVEpisode, False, True, True, False, False)
+                            Master.DB.SaveTVEpisodeToDB(tmpDBTVEpisode, True, True, False, False, True)
                             RefreshRow_TVEpisode(tmpDBTVEpisode.ID)
                             Application.DoEvents()
                         End While
@@ -15855,7 +15855,7 @@ doCancel:
                 Dim tmpDBMovie As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells("idMovie").Value))
                 tmpDBMovie.Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = cmnuMovieLanguageLanguages.Text).abbreviation
                 tmpDBMovie.Movie.Language = tmpDBMovie.Language
-                Master.DB.SaveMovieToDB(tmpDBMovie, False, True, True, False)
+                Master.DB.SaveMovieToDB(tmpDBMovie, True, True, False)
                 RefreshRow_Movie(tmpDBMovie.ID)
             Next
             SQLtransaction.Commit()
@@ -15867,7 +15867,7 @@ doCancel:
             For Each sRow As DataGridViewRow In dgvMovieSets.SelectedRows
                 Dim tmpDBMovieSet As Database.DBElement = Master.DB.LoadMovieSetFromDB(Convert.ToInt64(sRow.Cells("idSet").Value))
                 tmpDBMovieSet.Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = cmnuMovieSetLanguageLanguages.Text).abbreviation
-                Master.DB.SaveMovieSetToDB(tmpDBMovieSet, False, True, False, False)
+                Master.DB.SaveMovieSetToDB(tmpDBMovieSet, True, False, False)
                 RefreshRow_MovieSet(tmpDBMovieSet.ID)
             Next
             SQLtransaction.Commit()
@@ -15880,7 +15880,7 @@ doCancel:
                 Dim tmpDBTVShow As Database.DBElement = Master.DB.LoadTVShowFromDB(Convert.ToInt64(sRow.Cells("idShow").Value), True, False)
                 tmpDBTVShow.Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = cmnuShowLanguageLanguages.Text).abbreviation
                 tmpDBTVShow.TVShow.Language = tmpDBTVShow.Language
-                Master.DB.SaveTVShowToDB(tmpDBTVShow, False, False, True, False, False)
+                Master.DB.SaveTVShowToDB(tmpDBTVShow, False, True, False, False)
                 RefreshRow_TVShow(tmpDBTVShow.ID)
             Next
             SQLtransaction.Commit()
@@ -15892,7 +15892,7 @@ doCancel:
             For Each sRow As DataGridViewRow In dgvMovieSets.SelectedRows
                 Dim tmpDBMovieSet As Database.DBElement = Master.DB.LoadMovieSetFromDB(Convert.ToInt64(sRow.Cells("idSet").Value))
                 tmpDBMovieSet.SortMethod = CType(cmnuMovieSetSortMethodMethods.ComboBox.SelectedValue, Enums.SortMethod_MovieSet)
-                Master.DB.SaveMovieSetToDB(tmpDBMovieSet, False, True, True)
+                Master.DB.SaveMovieSetToDB(tmpDBMovieSet, True, True, False)
                 RefreshRow_MovieSet(tmpDBMovieSet.ID)
             Next
             SQLtransaction.Commit()
