@@ -257,7 +257,7 @@ Public Class FileFolderRenamer
                     UpdatePaths_Episode(_tv, srcDir, destDir, _frename.FileName, _frename.NewFileName)
 
                     If toDB Then
-                        Master.DB.SaveTVEpisodeToDB(_tv, False, BatchMode, False, False, False, True)
+                        Master.DB.SaveTVEpisodeToDB(_tv, BatchMode, False, False, False, True)
                     End If
 
                     Dim fileCount As Integer = 0
@@ -385,7 +385,7 @@ Public Class FileFolderRenamer
                     UpdatePaths_Movie(_movie, srcDir, destDir, _frename.FileName, _frename.NewFileName)
 
                     If toDB Then
-                        Master.DB.SaveMovieToDB(_movie, False, BatchMode, False, False)
+                        Master.DB.SaveMovieToDB(_movie, BatchMode, False, False)
                     End If
 
                     If Not _frename.IsSingle Then
@@ -463,7 +463,7 @@ Public Class FileFolderRenamer
                     Next
 
                     If toDB Then
-                        Master.DB.SaveTVShowToDB(_tv, False, BatchMode, False, False, True)
+                        Master.DB.SaveTVShowToDB(_tv, BatchMode, False, False, True)
                     End If
 
                     Dim fileCount As Integer = 0
@@ -1727,7 +1727,7 @@ Public Class FileFolderRenamer
             DoRenameSingle_Episode(EpisodeFile, _tmpEpisode, BatchMode, ShowError, toDB)
         Else
             If toDB Then
-                Master.DB.SaveTVEpisodeToDB(_tmpEpisode, False, BatchMode, False, False, False, True)
+                Master.DB.SaveTVEpisodeToDB(_tmpEpisode, BatchMode, False, False, False, True)
             End If
         End If
     End Sub
@@ -1742,7 +1742,7 @@ Public Class FileFolderRenamer
             DoRenameSingle_Movie(MovieFile, _tmpMovie, BatchMode, ShowError, toDB)
         Else
             If toDB Then
-                Master.DB.SaveMovieToDB(_tmpMovie, False, BatchMode, False, False)
+                Master.DB.SaveMovieToDB(_tmpMovie, BatchMode, False, False)
             End If
         End If
     End Sub
@@ -1768,7 +1768,7 @@ Public Class FileFolderRenamer
             DoRenameSingle_Show(ShowFile, _tmpShow, BatchMode, ShowError, toDB)
         Else
             If toDB Then
-                Master.DB.SaveTVShowToDB(_tmpShow, False, BatchMode, False, False, False)
+                Master.DB.SaveTVShowToDB(_tmpShow, BatchMode, False, False, False)
             End If
         End If
     End Sub

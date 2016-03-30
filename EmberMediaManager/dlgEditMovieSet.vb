@@ -1316,7 +1316,7 @@ Public Class dlgEditMovieSet
                 'Else
                 tMovie.DBMovie.Movie.AddSet(tmpDBElement.ID, tmpDBElement.MovieSet.Title, tMovie.Order, tmpDBElement.MovieSet.TMDB)
                 'End If
-                Master.DB.SaveMovieToDB(tMovie.DBMovie, False, True, True, False)
+                Master.DB.SaveMovieToDB(tMovie.DBMovie, True, True, False)
             Next
             SQLtransaction.Commit()
         End Using
@@ -1330,7 +1330,7 @@ Public Class dlgEditMovieSet
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             For Each tMovie As MovieInSet In MoviesToRemove
                 tMovie.DBMovie.Movie.RemoveSet(tmpDBElement.ID)
-                Master.DB.SaveMovieToDB(tMovie.DBMovie, False, True, True, False)
+                Master.DB.SaveMovieToDB(tMovie.DBMovie, True, True, False)
             Next
             SQLtransaction.Commit()
         End Using

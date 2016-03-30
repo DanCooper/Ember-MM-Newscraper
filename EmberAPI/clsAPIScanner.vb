@@ -603,7 +603,7 @@ Public Class Scanner
         Return True 'This is the Else
     End Function
 
-    Public Sub Load_Movie(ByRef DBMovie As Database.DBElement, ByVal isNew As Boolean, ByVal Batchmode As Boolean)
+    Public Sub Load_Movie(ByRef DBMovie As Database.DBElement, ByVal Batchmode As Boolean)
         Dim ToNfo As Boolean = False
 
         GetFolderContents_Movie(DBMovie)
@@ -736,21 +736,16 @@ Public Class Scanner
                 DBMovie.Language = DBMovie.Source.Language
             End If
 
-            'MarkNew
-            If isNew AndAlso Master.eSettings.MovieGeneralMarkNew Then
-                DBMovie.IsMark = True
-            End If
-
             'Do the Save
             If ToNfo AndAlso DBMovie.NfoPathSpecified Then
-                DBMovie = Master.DB.SaveMovieToDB(DBMovie, isNew, Batchmode, True, False)
+                DBMovie = Master.DB.SaveMovieToDB(DBMovie, Batchmode, True, False)
             Else
-                DBMovie = Master.DB.SaveMovieToDB(DBMovie, isNew, Batchmode, False, False)
+                DBMovie = Master.DB.SaveMovieToDB(DBMovie, Batchmode, False, False)
             End If
         End If
     End Sub
 
-    Public Sub Load_MovieSet(ByRef DBMovieSet As Database.DBElement, ByVal isNew As Boolean, ByVal Batchmode As Boolean)
+    Public Sub Load_MovieSet(ByRef DBMovieSet As Database.DBElement, ByVal Batchmode As Boolean)
         Dim ToNfo As Boolean = False
         Dim OldTitle As String = DBMovieSet.MovieSet.Title
 
@@ -774,10 +769,7 @@ Public Class Scanner
             DBMovieSet.ListTitle = OldTitle
         End If
 
-        If isNew AndAlso Master.eSettings.MovieSetGeneralMarkNew Then
-            DBMovieSet.IsMark = True
-        End If
-        DBMovieSet = Master.DB.SaveMovieSetToDB(DBMovieSet, isNew, Batchmode, False, Not OldTitle = DBMovieSet.MovieSet.Title)
+        DBMovieSet = Master.DB.SaveMovieSetToDB(DBMovieSet, Batchmode, False, Not OldTitle = DBMovieSet.MovieSet.Title)
     End Sub
 
     Public Function Load_TVEpisode(ByVal DBTVEpisode As Database.DBElement, ByVal isNew As Boolean, ByVal Batchmode As Boolean, ReportProgress As Boolean) As SeasonAndEpisodeItems
@@ -919,17 +911,17 @@ Public Class Scanner
                 If Not EpisodeID = -1 Then
                     'old episode entry found, we re-use the idEpisode
                     cEpisode.ID = EpisodeID
-                    Master.DB.SaveTVEpisodeToDB(cEpisode, False, Batchmode, ToNfo, ToNfo, False, True)
+                    Master.DB.SaveTVEpisodeToDB(cEpisode, Batchmode, ToNfo, ToNfo, False, True)
                 Else
                     'no existing episode found or the season or episode number has changed => we have to add it as new episode
-                    Master.DB.SaveTVEpisodeToDB(cEpisode, True, Batchmode, ToNfo, ToNfo, True, True)
+                    Master.DB.SaveTVEpisodeToDB(cEpisode, Batchmode, ToNfo, ToNfo, True, True)
                 End If
 
                 'add the season number to list
                 SeasonAndEpisodeList.Seasons.Add(cEpisode.TVEpisode.Season)
             Else
                 'Do the Save, no Season check (we add a new seasons whit tv show), no Sync (we sync with tv show)
-                cEpisode = Master.DB.SaveTVEpisodeToDB(cEpisode, isNew, Batchmode, ToNfo, ToNfo, False, False)
+                cEpisode = Master.DB.SaveTVEpisodeToDB(cEpisode, Batchmode, ToNfo, ToNfo, False, False)
                 'add the season number and the new saved episode to list
                 SeasonAndEpisodeList.Episodes.Add(cEpisode)
                 SeasonAndEpisodeList.Seasons.Add(cEpisode.TVEpisode.Season)
@@ -999,7 +991,7 @@ Public Class Scanner
                         DBTVShow.Language = DBTVShow.Source.Language
                     End If
 
-                    Master.DB.SaveTVShowToDB(DBTVShow, isNew, Batchmode, False, False, False)
+                    Master.DB.SaveTVShowToDB(DBTVShow, Batchmode, False, False, False)
                 End If
             Else
                 Dim newEpisodes As List(Of Database.DBElement) = DBTVShow.Episodes
@@ -1096,7 +1088,7 @@ Public Class Scanner
 
             'sync new episodes
             For Each nEpisode In newEpisodesList
-                Master.DB.SaveTVEpisodeToDB(nEpisode, False, Batchmode, False, False, False, True)
+                Master.DB.SaveTVEpisodeToDB(nEpisode, Batchmode, False, False, False, True, True)
             Next
 
             'sync new seasons
@@ -1342,7 +1334,7 @@ Public Class Scanner
                         currMovieContainer.Language = sSource.Language
                         currMovieContainer.Source = sSource
                         currMovieContainer.Subtitles = New List(Of MediaInfo.Subtitle)
-                        Load_Movie(currMovieContainer, True, True)
+                        Load_Movie(currMovieContainer, True)
                         bwPrelim.ReportProgress(0, New ProgressValue With {.Type = 0, .Message = currMovieContainer.Movie.Title})
                     End If
 
@@ -1384,7 +1376,7 @@ Public Class Scanner
                         currMovieContainer.Language = sSource.Language
                         currMovieContainer.Source = sSource
                         currMovieContainer.Subtitles = New List(Of MediaInfo.Subtitle)
-                        Load_Movie(currMovieContainer, True, True)
+                        Load_Movie(currMovieContainer, True)
                         bwPrelim.ReportProgress(0, New ProgressValue With {.Type = 0, .Message = currMovieContainer.Movie.Title})
                     Next
                 End If
