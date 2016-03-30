@@ -3507,7 +3507,8 @@ Public Class Database
                 par_movie_Title.Value = .Title
                 par_movie_Top250.Value = .Top250
                 par_movie_Trailer.Value = .Trailer
-                par_movie_Votes.Value = NumUtils.CleanVotes(.Votes)
+                .Votes = NumUtils.CleanVotes(.Votes)
+                par_movie_Votes.Value = .Votes
                 par_movie_Year.Value = .Year
             End With
 
@@ -4346,7 +4347,8 @@ Public Class Database
                     parPlaycount.Value = .Playcount
                 End If
                 parRuntime.Value = .Runtime
-                parVotes.Value = NumUtils.CleanVotes(.Votes)
+                .Votes = NumUtils.CleanVotes(.Votes)
+                parVotes.Value = .Votes
                 If .SubEpisodeSpecified Then
                     parSubEpisode.Value = .SubEpisode
                 End If
@@ -4715,7 +4717,8 @@ Public Class Database
                 parRating.Value = .Rating
                 parStatus.Value = .Status
                 parRuntime.Value = .Runtime
-                parVotes.Value = NumUtils.CleanVotes(.Votes)
+                .Votes = NumUtils.CleanVotes(.Votes)
+                parVotes.Value = .Votes
                 par_strIMDB.Value = .IMDB
                 par_strTMDB.Value = .TMDB
                 par_strOriginalTitle.Value = .OriginalTitle
