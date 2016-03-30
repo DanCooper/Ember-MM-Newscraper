@@ -623,7 +623,7 @@ Namespace Kodi
             Dim kMovies As VideoLibrary.GetMoviesResponse
 
             Dim tPathAndFilename As PathAndFilename = GetPathAndFilename(tDBElement)
-            Dim strFilename As String = tPathAndFilename.strFilename
+            Dim strFilename As String = If(tPathAndFilename.bIsMultiPart, GetRemotePath(tPathAndFilename.strFilename), tPathAndFilename.strFilename)
             Dim strRemotePath As String = GetRemotePath(tPathAndFilename.strPath)
 
             If Not String.IsNullOrEmpty(strRemotePath) Then
@@ -734,7 +734,7 @@ Namespace Kodi
             Dim kTVEpisodes As VideoLibrary.GetEpisodesResponse
 
             Dim tPathAndFilename As PathAndFilename = GetPathAndFilename(tDBElement)
-            Dim strFilename As String = tPathAndFilename.strFilename
+            Dim strFilename As String = If(tPathAndFilename.bIsMultiPart, GetRemotePath(tPathAndFilename.strFilename), tPathAndFilename.strFilename)
             Dim strRemotePath As String = GetRemotePath(tPathAndFilename.strPath)
 
             If Not String.IsNullOrEmpty(strRemotePath) Then
