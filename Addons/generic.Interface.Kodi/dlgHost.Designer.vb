@@ -48,7 +48,7 @@ Partial Class dlgHost
         Me.btnCancel = New System.Windows.Forms.Button()
         Me.gbHostMoviesetPath = New System.Windows.Forms.GroupBox()
         Me.tblHostMoviesetPath = New System.Windows.Forms.TableLayoutPanel()
-        Me.txtHostMoviesetPath = New System.Windows.Forms.TextBox()
+        Me.txtHostMoviesetPath = New EmberAPI.FormUtils.TextBox_with_Watermark()
         Me.tblHost = New System.Windows.Forms.TableLayoutPanel()
         Me.gbHostDetails.SuspendLayout()
         Me.tblHostDetails.SuspendLayout()
@@ -357,14 +357,13 @@ Partial Class dlgHost
         Me.tblHostMoviesetPath.AutoSize = True
         Me.tblHostMoviesetPath.ColumnCount = 1
         Me.tblHostMoviesetPath.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblHostMoviesetPath.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblHostMoviesetPath.Controls.Add(Me.txtHostMoviesetPath, 0, 0)
         Me.tblHostMoviesetPath.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblHostMoviesetPath.Location = New System.Drawing.Point(3, 18)
         Me.tblHostMoviesetPath.Name = "tblHostMoviesetPath"
         Me.tblHostMoviesetPath.RowCount = 1
         Me.tblHostMoviesetPath.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblHostMoviesetPath.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28.0!))
+        Me.tblHostMoviesetPath.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblHostMoviesetPath.Size = New System.Drawing.Size(594, 28)
         Me.tblHostMoviesetPath.TabIndex = 2
         '
@@ -375,8 +374,9 @@ Partial Class dlgHost
         Me.txtHostMoviesetPath.Location = New System.Drawing.Point(3, 3)
         Me.txtHostMoviesetPath.Name = "txtHostMoviesetPath"
         Me.txtHostMoviesetPath.Size = New System.Drawing.Size(588, 22)
-        Me.txtHostMoviesetPath.TabIndex = 1
-        Me.txtHostMoviesetPath.Text = "- Path to movieset artwork (based on host) -"
+        Me.txtHostMoviesetPath.TabIndex = 2
+        Me.txtHostMoviesetPath.WatermarkColor = System.Drawing.Color.Gray
+        Me.txtHostMoviesetPath.WatermarkText = "smb://SERVER/SHARE"
         '
         'tblHost
         '
@@ -458,10 +458,10 @@ Partial Class dlgHost
     Friend WithEvents btnCancel As System.Windows.Forms.Button
     Friend WithEvents btnHostCheck As System.Windows.Forms.Button
     Friend WithEvents gbHostMoviesetPath As System.Windows.Forms.GroupBox
-    Friend WithEvents txtHostMoviesetPath As System.Windows.Forms.TextBox
     Friend WithEvents tblHost As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblHostMoviesetPath As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents colHostEmberSource As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents colHostSource As System.Windows.Forms.DataGridViewComboBoxColumn
     Friend WithEvents colHostType As System.Windows.Forms.DataGridViewComboBoxColumn
+    Friend WithEvents txtHostMoviesetPath As EmberAPI.FormUtils.TextBox_with_Watermark
 End Class
