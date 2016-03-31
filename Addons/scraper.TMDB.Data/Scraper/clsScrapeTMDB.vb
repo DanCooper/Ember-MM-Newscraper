@@ -21,7 +21,6 @@
 Imports EmberAPI
 Imports NLog
 Imports System.Diagnostics
-Imports System.IO
 
 Namespace TMDB
 
@@ -157,7 +156,7 @@ Namespace TMDB
                     _TMDBApiE = _TMDBApi
                 End If
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         End Sub
 
@@ -339,7 +338,7 @@ Namespace TMDB
 
             'Genres
             If FilteredOptions.bMainGenres Then
-                Dim aGenres As System.Collections.Generic.List(Of TMDbLib.Objects.General.Genre) = Nothing
+                Dim aGenres As List(Of TMDbLib.Objects.General.Genre) = Nothing
                 If Result.Genres Is Nothing OrElse (Result.Genres IsNot Nothing AndAlso Result.Genres.Count = 0) Then
                     If _SpecialSettings.FallBackEng AndAlso ResultE.Genres IsNot Nothing AndAlso ResultE.Genres.Count > 0 Then
                         aGenres = ResultE.Genres
@@ -691,7 +690,7 @@ Namespace TMDB
 
             'Genres
             If FilteredOptions.bMainGenres Then
-                Dim aGenres As System.Collections.Generic.List(Of TMDbLib.Objects.General.Genre) = Nothing
+                Dim aGenres As List(Of TMDbLib.Objects.General.Genre) = Nothing
                 If Result.Genres Is Nothing OrElse (Result.Genres IsNot Nothing AndAlso Result.Genres.Count = 0) Then
                     If _SpecialSettings.FallBackEng AndAlso ResultE.Genres IsNot Nothing AndAlso ResultE.Genres.Count > 0 Then
                         aGenres = ResultE.Genres
@@ -780,7 +779,7 @@ Namespace TMDB
             'Runtime
             If FilteredOptions.bMainRuntime Then
                 If Result.EpisodeRunTime Is Nothing OrElse Result.EpisodeRunTime.Count = 0 Then
-                    If _SpecialSettings.FallBackEng AndAlso ResultE.EpisodeRunTime IsNot Nothing Then
+                    If _SpecialSettings.FallBackEng AndAlso ResultE.EpisodeRunTime IsNot Nothing AndAlso ResultE.EpisodeRunTime.Count > 0 Then
                         nTVShow.Runtime = CStr(ResultE.EpisodeRunTime.Item(0))
                     End If
                 Else
@@ -860,7 +859,7 @@ Namespace TMDB
             Dim ShowInfo As TMDbLib.Objects.TvShows.TvShow
 
             Dim showAPIResult As Task(Of TMDbLib.Objects.TvShows.TvShow)
-            showAPIResult = Task.Run(Function() _TMDBApi.GetTvShowAsync(CInt(ShowID)))
+            showAPIResult = Task.Run(Function() _TMDBApi.GetTvShowAsync(ShowID))
 
             ShowInfo = showAPIResult.Result
 
@@ -911,7 +910,7 @@ Namespace TMDB
             End If
 
             'Season # Standard
-            If CInt(EpisodeInfo.SeasonNumber) >= 0 Then
+            If EpisodeInfo.SeasonNumber >= 0 Then
                 nTVEpisode.Season = CInt(EpisodeInfo.SeasonNumber)
             End If
 
@@ -1035,8 +1034,8 @@ Namespace TMDB
                 End If
 
                 'Season #
-                If CInt(SeasonInfo.SeasonNumber) >= 0 Then
-                    nSeason.Season = CInt(SeasonInfo.SeasonNumber)
+                If SeasonInfo.SeasonNumber >= 0 Then
+                    nSeason.Season = SeasonInfo.SeasonNumber
                 End If
 
                 'Title
@@ -1080,8 +1079,8 @@ Namespace TMDB
             If SeasonInfo.ExternalIds IsNot Nothing AndAlso SeasonInfo.ExternalIds.TvdbId IsNot Nothing Then nTVSeason.TVDB = CStr(SeasonInfo.ExternalIds.TvdbId)
 
             'Season #
-            If CInt(SeasonInfo.SeasonNumber) >= 0 Then
-                nTVSeason.Season = CInt(SeasonInfo.SeasonNumber)
+            If SeasonInfo.SeasonNumber >= 0 Then
+                nTVSeason.Season = SeasonInfo.SeasonNumber
             End If
 
             'Aired
@@ -1130,7 +1129,7 @@ Namespace TMDB
                 End If
 
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
 
             Return tmdbID
@@ -1149,7 +1148,7 @@ Namespace TMDB
                 End If
 
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
 
             Return tmdbID
