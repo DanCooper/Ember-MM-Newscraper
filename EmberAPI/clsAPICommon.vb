@@ -655,27 +655,27 @@ Public Class Enums
 
     Public Enum ModuleEventType As Integer
         ''' <summary>
-        ''' Called after edit movie, movie is already saved to DB
+        ''' Called after edit movie
         ''' </summary>
         ''' <remarks></remarks>
         AfterEdit_Movie = 0
         ''' <summary>
-        ''' Called after edit movieset, movie is already saved to DB
+        ''' Called after edit movieset
         ''' </summary>
         ''' <remarks></remarks>
         AfterEdit_MovieSet = 1
         ''' <summary>
-        ''' Called after edit episode, episode is already saved to DB
+        ''' Called after edit episode
         ''' </summary>
         ''' <remarks></remarks>
         AfterEdit_TVEpisode = 2
         ''' <summary>
-        ''' Called after edit season, season is already saved to DB
+        ''' Called after edit season
         ''' </summary>
         ''' <remarks></remarks>
         AfterEdit_TVSeason = 3
         ''' <summary>
-        ''' Called after edit show, show is already saved to DB
+        ''' Called after edit show
         ''' </summary>
         ''' <remarks></remarks>
         AfterEdit_TVShow = 4
@@ -729,22 +729,22 @@ Public Class Enums
         OnTrailerSave_Movie = 37
         RandomFrameExtrator = 38
         ''' <summary>
-        ''' Called when auto scraper finishs but before save to DB
+        ''' Called during auto scraping
         ''' </summary>
         ''' <remarks></remarks>
         ScraperMulti_Movie = 39
         ''' <summary>
-        ''' Called when auto scraper finishs but before save to DB
+        ''' Called during auto scraping
         ''' </summary>
         ''' <remarks></remarks>
         ScraperMulti_TVEpisode = 40
         ''' <summary>
-        ''' Called when single scraper finishs, movie is already saved to DB
+        ''' Called during manual scraping
         ''' </summary>
         ''' <remarks></remarks>
         ScraperSingle_Movie = 41
         ''' <summary>
-        ''' Called when single scraper finishs, episode is already saved to DB
+        ''' Called during manual scraping
         ''' </summary>
         ''' <remarks></remarks>
         ScraperSingle_TVEpisode = 42
@@ -758,25 +758,26 @@ Public Class Enums
         Sync_TVShow = 50
         Task = 51
         ''' <summary>
-        ''' Called when auto scraper finishs but before save to DB
+        ''' Called during auto scraping
         ''' </summary>
         ''' <remarks></remarks>
         ScraperMulti_TVShow = 53
         ''' <summary>
-        ''' Called when single scraper finishs, tv show is already saved to DB
+        ''' Called during manual scraping
         ''' </summary>
         ''' <remarks></remarks>
         ScraperSingle_TVShow = 54
         ''' <summary>
-        ''' Called when auto scraper finishs but before save to DB
+        ''' Called during auto scraping
         ''' </summary>
         ''' <remarks></remarks>
         ScraperMulti_TVSeason = 55
         ''' <summary>
-        ''' Called when single scraper finishs, tv season is already saved to DB
+        ''' Called during manual scraping
         ''' </summary>
         ''' <remarks></remarks>
         ScraperSingle_TVSeason = 56
+        DuringUpdateDB_TV = 57
     End Enum
 
     Public Enum ScraperEventType As Integer

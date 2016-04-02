@@ -341,7 +341,7 @@ Public Class dlgEditMovie
 
     Private Sub btnManual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnManual.Click
         If dlgManualEdit.ShowDialog(tmpDBElement.NfoPath) = DialogResult.OK Then
-            tmpDBElement.Movie = NFO.LoadMovieFromNFO(tmpDBElement.NfoPath, tmpDBElement.IsSingle)
+            tmpDBElement.Movie = NFO.LoadFromNFO_Movie(tmpDBElement.NfoPath, tmpDBElement.IsSingle)
             FillInfo(False)
         End If
     End Sub

@@ -316,7 +316,7 @@ Partial Class frmSettingsHolder
         Me.chkRenameUpdateEpisodes.Name = "chkRenameUpdateEpisodes"
         Me.chkRenameUpdateEpisodes.Size = New System.Drawing.Size(252, 17)
         Me.chkRenameUpdateEpisodes.TabIndex = 5
-        Me.chkRenameUpdateEpisodes.Text = "Automatically Rename Files After DB Update"
+        Me.chkRenameUpdateEpisodes.Text = "Automatically Rename Files During DB Update"
         Me.chkRenameUpdateEpisodes.TextAlign = System.Drawing.ContentAlignment.TopLeft
         Me.chkRenameUpdateEpisodes.UseVisualStyleBackColor = True
         '
