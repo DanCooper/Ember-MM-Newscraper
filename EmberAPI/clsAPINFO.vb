@@ -1282,7 +1282,7 @@ Public Class NFO
             mNFO.Genre = String.Join(" / ", mNFO.Genres.ToArray)
             mNFO.Outline = mNFO.Outline.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
             mNFO.Plot = mNFO.Plot.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
-            mNFO.Votes = Regex.Replace(mNFO.Votes, "\D", String.Empty)
+            mNFO.Votes = NumUtils.CleanVotes(mNFO.Votes)
             If mNFO.FileInfoSpecified Then
                 If mNFO.FileInfo.StreamDetails.AudioSpecified Then
                     For Each aStream In mNFO.FileInfo.StreamDetails.Audio.Where(Function(f) f.LanguageSpecified AndAlso Not f.LongLanguageSpecified)
@@ -1325,7 +1325,7 @@ Public Class NFO
 
     Public Shared Function CleanNFO_TVEpisodes(ByVal eNFO As MediaContainers.EpisodeDetails) As MediaContainers.EpisodeDetails
         If eNFO IsNot Nothing Then
-            eNFO.Votes = Regex.Replace(eNFO.Votes, "\D", String.Empty)
+            eNFO.Votes = NumUtils.CleanVotes(eNFO.Votes)
             If eNFO.FileInfoSpecified Then
                 If eNFO.FileInfo.StreamDetails.AudioSpecified Then
                     For Each aStream In eNFO.FileInfo.StreamDetails.Audio.Where(Function(f) f.LanguageSpecified AndAlso Not f.LongLanguageSpecified)
@@ -1348,7 +1348,7 @@ Public Class NFO
         If mNFO IsNot Nothing Then
             mNFO.Genre = String.Join(" / ", mNFO.Genres.ToArray)
             mNFO.Plot = mNFO.Plot.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
-            mNFO.Votes = Regex.Replace(mNFO.Votes, "\D", String.Empty)
+            mNFO.Votes = NumUtils.CleanVotes(mNFO.Votes)
 
             'changes a LongLanguage to Alpha2 code
             If mNFO.LanguageSpecified Then
@@ -1361,6 +1361,14 @@ Public Class NFO
                     If ShortLanguage Is Nothing Then
                         mNFO.Language = String.Empty
                     End If
+                End If
+            End If
+
+            'Boxee support
+            If Master.eSettings.TVUseBoxee Then
+                If mNFO.BoxeeTvDbSpecified AndAlso Not mNFO.TVDBSpecified Then
+                    mNFO.TVDB = mNFO.BoxeeTvDb
+                    mNFO.BlankBoxeeId()
                 End If
             End If
 
@@ -2163,14 +2171,6 @@ Public Class NFO
                 logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
 
-            'Boxee support
-            If Master.eSettings.TVUseBoxee Then
-                If xmlShow.BoxeeTvDbSpecified() Then
-                    xmlShow.TVDB = xmlShow.BoxeeTvDb
-                    xmlShow.BlankBoxeeId()
-                End If
-            End If
-
             If xmlSer IsNot Nothing Then
                 xmlSer = Nothing
             End If
@@ -2244,9 +2244,13 @@ Public Class NFO
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnNFOSave_Movie, params, doContinue, False)
                 If Not doContinue Then Return
             Catch ex As Exception
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
 
-            If Not String.IsNullOrEmpty(tDBElement.Filename) Then
+            If tDBElement.FilenameSpecified Then
+                'Create a clone of MediaContainer to prevent changes on database data that only needed in NFO
+                Dim tMovie As MediaContainers.Movie = CType(tDBElement.Movie.CloneDeep, MediaContainers.Movie)
+
                 Dim xmlSer As New XmlSerializer(GetType(MediaContainers.Movie))
                 Dim doesExist As Boolean = False
                 Dim fAtt As New FileAttributes
@@ -2254,16 +2258,16 @@ Public Class NFO
 
                 'YAMJ support
                 If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieNFOYAMJ Then
-                    If tDBElement.Movie.TMDBIDSpecified Then
-                        tDBElement.Movie.TMDBID = String.Empty
+                    If tMovie.TMDBIDSpecified Then
+                        tMovie.TMDBID = String.Empty
                     End If
                 End If
 
                 'digit grouping symbol for Votes count
                 If Master.eSettings.GeneralDigitGrpSymbolVotes Then
-                    If tDBElement.Movie.VotesSpecified Then
-                        Dim vote As String = Double.Parse(tDBElement.Movie.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
-                        If vote IsNot Nothing Then tDBElement.Movie.Votes = vote
+                    If tMovie.VotesSpecified Then
+                        Dim vote As String = Double.Parse(tMovie.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
+                        If vote IsNot Nothing Then tMovie.Votes = vote
                     End If
                 End If
 
@@ -2284,7 +2288,7 @@ Public Class NFO
                         End If
                         Using xmlSW As New StreamWriter(a)
                             tDBElement.NfoPath = a
-                            xmlSer.Serialize(xmlSW, tDBElement.Movie)
+                            xmlSer.Serialize(xmlSW, tMovie)
                         End Using
                         If doesExist And fAttWritable Then File.SetAttributes(a, fAtt)
                     End If
@@ -2448,26 +2452,28 @@ Public Class NFO
         End Try
 
         Try
-            If Not String.IsNullOrEmpty(tDBElement.ShowPath) Then
-                Dim xmlSer As New XmlSerializer(GetType(MediaContainers.TVShow))
+            If tDBElement.ShowPathSpecified Then
+                'Create a clone of MediaContainer to prevent changes on database data that only needed in NFO
+                Dim tTVShow As MediaContainers.TVShow = CType(tDBElement.TVShow.CloneDeep, MediaContainers.TVShow)
 
+                Dim xmlSer As New XmlSerializer(GetType(MediaContainers.TVShow))
                 Dim doesExist As Boolean = False
                 Dim fAtt As New FileAttributes
                 Dim fAttWritable As Boolean = True
 
                 'Boxee support
                 If Master.eSettings.TVUseBoxee Then
-                    If tDBElement.TVShow.TVDBSpecified() Then
-                        tDBElement.TVShow.BoxeeTvDb = tDBElement.TVShow.TVDB
-                        tDBElement.TVShow.BlankId()
+                    If tTVShow.TVDBSpecified() Then
+                        tTVShow.BoxeeTvDb = tTVShow.TVDB
+                        tTVShow.BlankId()
                     End If
                 End If
 
                 'digit grouping symbol for Votes count
                 If Master.eSettings.GeneralDigitGrpSymbolVotes Then
-                    If tDBElement.TVShow.VotesSpecified Then
-                        Dim vote As String = Double.Parse(tDBElement.TVShow.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
-                        If vote IsNot Nothing Then tDBElement.TVShow.Votes = vote
+                    If tTVShow.VotesSpecified Then
+                        Dim vote As String = Double.Parse(tTVShow.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
+                        If vote IsNot Nothing Then tTVShow.Votes = vote
                     End If
                 End If
 
@@ -2490,7 +2496,7 @@ Public Class NFO
 
                         Using xmlSW As New StreamWriter(a)
                             tDBElement.NfoPath = a
-                            xmlSer.Serialize(xmlSW, tDBElement.TVShow)
+                            xmlSer.Serialize(xmlSW, tTVShow)
                         End Using
 
                         If doesExist And fAttWritable Then File.SetAttributes(a, fAtt)

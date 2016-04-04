@@ -783,6 +783,7 @@ Namespace MediaContainers
     <Serializable()>
     <XmlRoot("movie")>
     Public Class Movie
+        Implements ICloneable
         Implements IComparable(Of Movie)
 
 #Region "Fields"
@@ -1866,6 +1867,18 @@ Namespace MediaContainers
             _ysets = New SetContainer
         End Sub
 
+        Public Function CloneDeep() As Object Implements ICloneable.Clone
+            Dim Stream As New MemoryStream(50000)
+            Dim Formatter As New Runtime.Serialization.Formatters.Binary.BinaryFormatter()
+            ' Serialisierung über alle Objekte hinweg in einen Stream 
+            Formatter.Serialize(Stream, Me)
+            ' Zurück zum Anfang des Streams und... 
+            Stream.Seek(0, SeekOrigin.Begin)
+            ' ...aus dem Stream in ein Objekt deserialisieren 
+            CloneDeep = Formatter.Deserialize(Stream)
+            Stream.Close()
+        End Function
+
         Public Sub CreateCachePaths_ActorsThumbs()
             Dim sPath As String = Path.Combine(Master.TempPath, "Global")
 
@@ -2513,6 +2526,7 @@ Namespace MediaContainers
     <Serializable()>
     <XmlRoot("tvshow")>
     Public Class TVShow
+        Implements ICloneable
 
 #Region "Fields"
 
@@ -3222,6 +3236,18 @@ Namespace MediaContainers
             _votes = String.Empty
         End Sub
 
+        Public Function CloneDeep() As Object Implements ICloneable.Clone
+            Dim Stream As New MemoryStream(50000)
+            Dim Formatter As New Runtime.Serialization.Formatters.Binary.BinaryFormatter()
+            ' Serialisierung über alle Objekte hinweg in einen Stream 
+            Formatter.Serialize(Stream, Me)
+            ' Zurück zum Anfang des Streams und... 
+            Stream.Seek(0, SeekOrigin.Begin)
+            ' ...aus dem Stream in ein Objekt deserialisieren 
+            CloneDeep = Formatter.Deserialize(Stream)
+            Stream.Close()
+        End Function
+
         Public Sub CreateCachePaths_ActorsThumbs()
             Dim sPath As String = Path.Combine(Master.TempPath, "Global")
 
@@ -3234,11 +3260,11 @@ Namespace MediaContainers
         End Sub
 
         Public Sub BlankId()
-            _tvdb = Nothing
+            _tvdb = String.Empty
         End Sub
 
         Public Sub BlankBoxeeId()
-            _boxeeTvDb = Nothing
+            _boxeeTvDb = String.Empty
         End Sub
 
         Public Sub SaveAllActorThumbs(ByRef DBElement As Database.DBElement)
