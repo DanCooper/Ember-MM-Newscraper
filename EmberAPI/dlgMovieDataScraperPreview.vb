@@ -105,7 +105,7 @@ Public Class dlgMovieDataScraperPreview
                     If scraperresult.Scrapersource.ToUpper = "IMDB" Then
                         isActivatedIMDB = True
                         'Title
-                        If scraperresult.Title <> "" Then
+                        If scraperresult.TitleSpecified Then
                             .txtTitleIMDB.Text = scraperresult.Title
                             tbTitel.SelectedTab = tbTitelIMDB
                         Else
@@ -113,7 +113,7 @@ Public Class dlgMovieDataScraperPreview
                         End If
 
                         'OriginalTitle
-                        If scraperresult.OriginalTitle <> "" Then
+                        If scraperresult.OriginalTitleSpecified Then
                             .txtOriginalTitleIMDB.Text = scraperresult.OriginalTitle
                             tbOriginalTitel.SelectedTab = tbOriginalTitelIMDB
                         Else
@@ -121,55 +121,47 @@ Public Class dlgMovieDataScraperPreview
                         End If
 
                         'Cert
-                        If scraperresult.Certification <> "" Then
-                            .txtCertIMDB.Text = scraperresult.Certification
+                        If scraperresult.CertificationsSpecified Then
+                            .txtCertIMDB.Text = String.Join(" / ", scraperresult.Certifications.ToArray)
                             tbCert.SelectedTab = tbCertIMDB
                         Else
                             tbCert.TabPages.Remove(tbCertIMDB)
                         End If
 
                         'Country
-                        If scraperresult.Countries.Count > 0 Then
-                            For Each item In scraperresult.Countries
-                                .txtCountryIMDB.Text = item & ";" & .txtCountryIMDB.Text
-                            Next
+                        If scraperresult.CountriesSpecified Then
+                            .txtCountryIMDB.Text = String.Join(" / ", scraperresult.Countries.ToArray)
                             tbCountry.SelectedTab = tbCountryIMDB
                         Else
                             tbCountry.TabPages.Remove(tbCountryIMDB)
                         End If
 
                         'Credits
-                        If scraperresult.Credits.Count > 0 Then
-                            For Each item In scraperresult.Credits
-                                .txtCreditsIMDB.Text = item & ";" & .txtCreditsIMDB.Text
-                            Next
+                        If scraperresult.CreditsSpecified Then
+                            .txtCreditsIMDB.Text = String.Join(" / ", scraperresult.Credits.ToArray)
                             tbCredits.SelectedTab = tbCreditsIMDB
                         Else
                             tbCredits.TabPages.Remove(tbCreditsIMDB)
                         End If
 
                         'Director
-                        If scraperresult.Directors.Count > 0 Then
-                            For Each item In scraperresult.Directors
-                                .txtDirectorIMDB.Text = item & ";" & .txtDirectorIMDB.Text
-                            Next
+                        If scraperresult.DirectorsSpecified Then
+                            .txtDirectorIMDB.Text = String.Join(" / ", scraperresult.Directors.ToArray)
                             tbDirector.SelectedTab = tbDirectorIMDB
                         Else
                             tbDirector.TabPages.Remove(tbDirectorIMDB)
                         End If
 
                         'Genre
-                        If scraperresult.Genres.Count > 0 Then
-                            For Each item In scraperresult.Genres
-                                .txtGenreIMDB.Text = item & ";" & .txtGenreIMDB.Text
-                            Next
+                        If scraperresult.GenresSpecified Then
+                            .txtGenreIMDB.Text = String.Join(" / ", scraperresult.Genres.ToArray)
                             tbGenre.SelectedTab = tbGenreIMDB
                         Else
                             tbGenre.TabPages.Remove(tbGenreIMDB)
                         End If
 
                         'MPAA
-                        If scraperresult.MPAA <> "" Then
+                        If scraperresult.MPAASpecified Then
                             .txtMPAAIMDB.Text = scraperresult.MPAA
                             tbMPAA.SelectedTab = tbMPAAIMDB
                         Else
@@ -177,7 +169,7 @@ Public Class dlgMovieDataScraperPreview
                         End If
 
                         'Outline
-                        If scraperresult.Outline <> "" Then
+                        If scraperresult.OutlineSpecified Then
                             .txtOutlineIMDB.Text = scraperresult.Outline
                             tbOutline.SelectedTab = tbOutlineIMDB
                         Else
@@ -185,7 +177,7 @@ Public Class dlgMovieDataScraperPreview
                         End If
 
                         'Plot
-                        If scraperresult.Plot <> "" Then
+                        If scraperresult.PlotSpecified Then
                             .txtPlotIMDB.Text = scraperresult.Plot
                             tbPlot.SelectedTab = tbPlotIMDB
                         Else
@@ -193,7 +185,7 @@ Public Class dlgMovieDataScraperPreview
                         End If
 
                         'Rating
-                        If scraperresult.Rating <> "" AndAlso scraperresult.Rating <> "0" Then
+                        If scraperresult.RatingSpecified Then
                             .txtRatingIMDB.Text = scraperresult.Rating
                             tbRating.SelectedTab = tbRatingIMDB
                         Else
@@ -201,7 +193,7 @@ Public Class dlgMovieDataScraperPreview
                         End If
 
                         'ReleaseDate
-                        If scraperresult.ReleaseDate <> "" Then
+                        If scraperresult.ReleaseDateSpecified Then
                             .txtReleaseDateIMDB.Text = scraperresult.ReleaseDate
                             tbReleaseYear.SelectedTab = tbReleaseYearIMDB
                         Else
@@ -209,7 +201,7 @@ Public Class dlgMovieDataScraperPreview
                         End If
 
                         'Runtime
-                        If scraperresult.Runtime <> "" AndAlso scraperresult.Runtime <> "0" Then
+                        If scraperresult.RuntimeSpecified Then
                             .txtRuntimeIMDB.Text = scraperresult.Runtime
                             tbRuntime.SelectedTab = tbRuntimeIMDB
                         Else
@@ -217,23 +209,15 @@ Public Class dlgMovieDataScraperPreview
                         End If
 
                         'Studio
-                        'If scraperresult.Studio <> "" Then
-                        '    .txtStudioIMDB.Text = scraperresult.Studio
-                        '    tbStudio.SelectedTab = tbStudioIMDB
-                        'Else
-                        '    tbStudio.TabPages.Remove(tbStudioIMDB)
-                        'End If
-                        If scraperresult.Studios.Count > 0 Then
-                            For Each item In scraperresult.Studios
-                                .txtStudioIMDB.Text = item & ";" & .txtStudioIMDB.Text
-                            Next
+                        If scraperresult.StudiosSpecified Then
+                            .txtStudioIMDB.Text = String.Join(" / ", scraperresult.Studios.ToArray)
                             tbStudio.SelectedTab = tbStudioIMDB
                         Else
                             tbStudio.TabPages.Remove(tbStudioIMDB)
                         End If
 
                         'Tagline
-                        If scraperresult.Tagline <> "" Then
+                        If scraperresult.TaglineSpecified Then
                             .txtTaglineIMDB.Text = scraperresult.Tagline
                             tbTagline.SelectedTab = tbTaglineIMDB
                         Else
@@ -241,7 +225,7 @@ Public Class dlgMovieDataScraperPreview
                         End If
 
                         'Top250
-                        If scraperresult.Top250 <> "" Then
+                        If scraperresult.Top250Specified Then
                             .txtTOP250IMDB.Text = scraperresult.Top250
                             tbTOP250.SelectedTab = tbTOP250IMDB
                         Else
@@ -249,7 +233,7 @@ Public Class dlgMovieDataScraperPreview
                         End If
 
                         'Trailer
-                        If scraperresult.Trailer <> "" Then
+                        If scraperresult.TrailerSpecified Then
                             .txtTrailerIMDB.Text = scraperresult.Trailer
                             tbTrailer.SelectedTab = tbTrailerIMDB
                         Else
@@ -257,7 +241,7 @@ Public Class dlgMovieDataScraperPreview
                         End If
 
                         'Votes
-                        If scraperresult.Votes <> "" AndAlso scraperresult.Votes <> "0" Then
+                        If scraperresult.VotesSpecified Then
                             .txtVotesIMDB.Text = scraperresult.Votes
                             tbVotes.SelectedTab = tbVotesIMDB
                         Else
@@ -265,7 +249,7 @@ Public Class dlgMovieDataScraperPreview
                         End If
 
                         'Year
-                        If scraperresult.Year <> "" Then
+                        If scraperresult.YearSpecified Then
                             .txtYearIMDB.Text = scraperresult.Year
                             tbYear.SelectedTab = tbYearIMDB
                         Else
@@ -289,7 +273,7 @@ Public Class dlgMovieDataScraperPreview
                     ElseIf scraperresult.Scrapersource.ToUpper = "TMDB" Then
                         isActivatedTMDB = True
                         'Title
-                        If scraperresult.Title <> "" Then
+                        If scraperresult.TitleSpecified Then
                             .txtTitleTMDB.Text = scraperresult.Title
                             tbTitel.SelectedTab = tbTitelTMDB
                         Else
@@ -297,7 +281,7 @@ Public Class dlgMovieDataScraperPreview
                         End If
 
                         'OriginalTitle
-                        If scraperresult.OriginalTitle <> "" Then
+                        If scraperresult.OriginalTitleSpecified Then
                             .txtOriginalTitleTMDB.Text = scraperresult.OriginalTitle
                             tbOriginalTitel.SelectedTab = tbOriginalTitelTMDB
                         Else
@@ -305,8 +289,8 @@ Public Class dlgMovieDataScraperPreview
                         End If
 
                         'Cert
-                        If scraperresult.Certification <> "" Then
-                            .txtCertTMDB.Text = scraperresult.Certification
+                        If scraperresult.CertificationsSpecified Then
+                            .txtCertTMDB.Text = String.Join(" / ", scraperresult.Certifications.ToArray)
                             tbCert.SelectedTab = tbCertTMDB
                         Else
                             tbCert.TabPages.Remove(tbCertTMDB)

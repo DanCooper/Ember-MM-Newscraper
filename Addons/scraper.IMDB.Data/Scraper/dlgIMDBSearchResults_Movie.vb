@@ -295,8 +295,8 @@ Public Class dlgIMDBSearchResults_Movie
                 lblTitle.Text = _tmpMovie.Title
                 lblTagline.Text = _tmpMovie.Tagline
                 lblYear.Text = _tmpMovie.Year
-                lblDirectors.Text = _tmpMovie.Director
-                lblGenre.Text = _tmpMovie.Genre
+                lblDirectors.Text = String.Join(" / ", _tmpMovie.Directors.ToArray)
+                lblGenre.Text = String.Join(" / ", _tmpMovie.Genres.ToArray)
                 txtOutline.Text = _tmpMovie.Outline
                 lblIMDBID.Text = _tmpMovie.IMDBID
 

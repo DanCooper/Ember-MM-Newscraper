@@ -1279,7 +1279,6 @@ Public Class NFO
 
     Public Shared Function CleanNFO_Movies(ByVal mNFO As MediaContainers.Movie) As MediaContainers.Movie
         If mNFO IsNot Nothing Then
-            mNFO.Genre = String.Join(" / ", mNFO.Genres.ToArray)
             mNFO.Outline = mNFO.Outline.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
             mNFO.Plot = mNFO.Plot.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
             mNFO.Votes = NumUtils.CleanVotes(mNFO.Votes)
