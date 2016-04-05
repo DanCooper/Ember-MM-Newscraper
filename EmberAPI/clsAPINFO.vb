@@ -1696,6 +1696,8 @@ Public Class NFO
                     Case iWidth < 640
                         resOut = "SD"
                     'exact
+                    Case (iWidth = 3840 AndAlso iHeight = 2160) OrElse (iWidth = 3996 AndAlso iHeight = 2160) OrElse (iWidth = 4096 AndAlso iHeight = 2160) OrElse (iWidth = 5120 AndAlso iHeight = 2160)
+                        resOut = "2160"
                     Case (iWidth = 1920 AndAlso (iHeight = 1080 OrElse iHeight = 800)) OrElse (iWidth = 1440 AndAlso iHeight = 1080) OrElse (iWidth = 1280 AndAlso iHeight = 1080)
                         resOut = "1080"
                     Case (iWidth = 1366 AndAlso iHeight = 768) OrElse (iWidth = 1024 AndAlso iHeight = 768)
@@ -1709,6 +1711,8 @@ Public Class NFO
                     Case (iWidth = 852 OrElse iWidth = 720 OrElse iWidth = 704 OrElse iWidth = 640) AndAlso iHeight = 480
                         resOut = "480"
                     'by ADR
+                    Case sinADR >= 1.4 AndAlso iWidth = 3840
+                        resOut = "2160"
                     Case sinADR >= 1.4 AndAlso iWidth = 1920
                         resOut = "1080"
                     Case sinADR >= 1.4 AndAlso iWidth = 1366
@@ -1722,6 +1726,8 @@ Public Class NFO
                     Case sinADR >= 1.4 AndAlso iWidth = 852
                         resOut = "480"
                     'loose
+                    Case iWidth > 1920 AndAlso iHeight > 1080
+                        resOut = "2160"
                     Case iWidth >= 1200 AndAlso iHeight > 768
                         resOut = "1080"
                     Case iWidth >= 1000 AndAlso iHeight > 720

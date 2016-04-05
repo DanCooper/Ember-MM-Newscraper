@@ -7346,9 +7346,11 @@ Public Class Settings
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]tt\d*")            'IMDB ID
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]blu[\W_]?ray.*")
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]bd[\W_]?rip.*")
+            Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]3d.*")
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]dvd.*")
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]720.*")
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]1080.*")
+            Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]4k.*")
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]ac3.*")
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]dts.*")
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]divx.*")
@@ -7359,6 +7361,7 @@ Public Class Settings
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]hd(tv)?.*")
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]unrated.*")
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]uncut.*")
+            Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]german.*")
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]([a-z]{3}|multi)[sd]ub.*")
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]\[offline\].*")
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]ntsc.*")
@@ -7380,6 +7383,7 @@ Public Class Settings
             Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]dvd.*")
             Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]720.*")
             Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]1080.*") 'not really needed because the year title will catch this one, but just in case a user doesn't want the year filter but wants to filter 1080
+            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]4k.*")
             Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]ac3.*")
             Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]dts.*")
             Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]divx.*")
@@ -7410,6 +7414,7 @@ Public Class Settings
             Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]dvd.*")
             Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]720.*")
             Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]1080.*") 'not really needed because the year title will catch this one, but just in case a user doesn't want the year filter but wants to filter 1080
+            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]4k.*")
             Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]ac3.*")
             Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]dts.*")
             Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]divx.*")
