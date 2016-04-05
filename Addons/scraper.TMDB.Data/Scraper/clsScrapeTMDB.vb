@@ -1008,54 +1008,58 @@ Namespace TMDB
             Dim APIResult As Task(Of TMDbLib.Objects.TvShows.TvSeason)
             APIResult = Task.Run(Function() _TMDBApi.GetTvSeasonAsync(ShowID, SeasonNumber, TMDbLib.Objects.TvShows.TvSeasonMethods.Credits Or TMDbLib.Objects.TvShows.TvSeasonMethods.ExternalIds))
 
-            Dim SeasonInfo As TMDbLib.Objects.TvShows.TvSeason = APIResult.Result
+            If APIResult IsNot Nothing AndAlso APIResult.Result IsNot Nothing Then
+                Dim SeasonInfo As TMDbLib.Objects.TvShows.TvSeason = APIResult.Result
 
-            nSeason.TMDB = CStr(SeasonInfo.Id)
-            If SeasonInfo.ExternalIds IsNot Nothing AndAlso SeasonInfo.ExternalIds.TvdbId IsNot Nothing Then nSeason.TVDB = CStr(SeasonInfo.ExternalIds.TvdbId)
+                nSeason.TMDB = CStr(SeasonInfo.Id)
+                If SeasonInfo.ExternalIds IsNot Nothing AndAlso SeasonInfo.ExternalIds.TvdbId IsNot Nothing Then nSeason.TVDB = CStr(SeasonInfo.ExternalIds.TvdbId)
 
-            If ScrapeModifiers.withSeasons Then
+                If ScrapeModifiers.withSeasons Then
 
-                'Aired
-                If FilteredOptions.bSeasonAired Then
-                    If SeasonInfo.AirDate IsNot Nothing Then
-                        Dim ScrapedDate As String = CStr(SeasonInfo.AirDate)
-                        If Not String.IsNullOrEmpty(ScrapedDate) Then
-                            Dim RelDate As Date
-                            If Date.TryParse(ScrapedDate, RelDate) Then
-                                'always save date in same date format not depending on users language setting!
-                                nSeason.Aired = RelDate.ToString("yyyy-MM-dd")
-                            Else
-                                nSeason.Aired = ScrapedDate
+                    'Aired
+                    If FilteredOptions.bSeasonAired Then
+                        If SeasonInfo.AirDate IsNot Nothing Then
+                            Dim ScrapedDate As String = CStr(SeasonInfo.AirDate)
+                            If Not String.IsNullOrEmpty(ScrapedDate) Then
+                                Dim RelDate As Date
+                                If Date.TryParse(ScrapedDate, RelDate) Then
+                                    'always save date in same date format not depending on users language setting!
+                                    nSeason.Aired = RelDate.ToString("yyyy-MM-dd")
+                                Else
+                                    nSeason.Aired = ScrapedDate
+                                End If
                             End If
                         End If
                     End If
-                End If
 
-                'Plot
-                If FilteredOptions.bSeasonPlot Then
-                    If SeasonInfo.Overview IsNot Nothing Then
-                        nSeason.Plot = SeasonInfo.Overview
+                    'Plot
+                    If FilteredOptions.bSeasonPlot Then
+                        If SeasonInfo.Overview IsNot Nothing Then
+                            nSeason.Plot = SeasonInfo.Overview
+                        End If
                     End If
+
+                    'Season #
+                    If SeasonInfo.SeasonNumber >= 0 Then
+                        nSeason.Season = SeasonInfo.SeasonNumber
+                    End If
+
+                    'Title
+                    If SeasonInfo.Name IsNot Nothing Then
+                        nSeason.Title = SeasonInfo.Name
+                    End If
+
+                    nTVShow.KnownSeasons.Add(nSeason)
                 End If
 
-                'Season #
-                If SeasonInfo.SeasonNumber >= 0 Then
-                    nSeason.Season = SeasonInfo.SeasonNumber
+                If ScrapeModifiers.withEpisodes AndAlso SeasonInfo.Episodes IsNot Nothing Then
+                    For Each aEpisode As TMDbLib.Objects.TvShows.TvEpisode In SeasonInfo.Episodes
+                        nTVShow.KnownEpisodes.Add(GetTVEpisodeInfo(aEpisode, FilteredOptions))
+                        'nShowContainer.KnownEpisodes.Add(GetTVEpisodeInfo(ShowID, SeasonNumber, aEpisode.EpisodeNumber, Options))
+                    Next
                 End If
-
-                'Title
-                If SeasonInfo.Name IsNot Nothing Then
-                    nSeason.Title = SeasonInfo.Name
-                End If
-
-                nTVShow.KnownSeasons.Add(nSeason)
-            End If
-
-            If ScrapeModifiers.withEpisodes AndAlso SeasonInfo.Episodes IsNot Nothing Then
-                For Each aEpisode As TMDbLib.Objects.TvShows.TvEpisode In SeasonInfo.Episodes
-                    nTVShow.KnownEpisodes.Add(GetTVEpisodeInfo(aEpisode, FilteredOptions))
-                    'nShowContainer.KnownEpisodes.Add(GetTVEpisodeInfo(ShowID, SeasonNumber, aEpisode.EpisodeNumber, Options))
-                Next
+            Else
+                logger.Error(String.Format("Can't scrape or season not found: ShowID={0}, Season={1}", ShowID, SeasonNumber))
             End If
         End Sub
 
