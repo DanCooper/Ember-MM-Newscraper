@@ -1099,15 +1099,15 @@ Public Class dlgEditTVShow
         txtRuntime.Text = tmpDBElement.TVShow.Runtime
         txtSortTitle.Text = tmpDBElement.TVShow.SortTitle
         txtStatus.Text = tmpDBElement.TVShow.Status
-        txtStudio.Text = tmpDBElement.TVShow.Studio
+        txtStudio.Text = String.Join(" / ", tmpDBElement.TVShow.Studios.ToArray)
         txtVotes.Text = tmpDBElement.TVShow.Votes
 
         For i As Integer = 0 To clbGenre.Items.Count - 1
             clbGenre.SetItemChecked(i, False)
         Next
-        If Not String.IsNullOrEmpty(tmpDBElement.TVShow.Genre) Then
+        If tmpDBElement.TVShow.GenresSpecified Then
             Dim genreArray() As String
-            genreArray = tmpDBElement.TVShow.Genre.Split("/"c)
+            genreArray = tmpDBElement.TVShow.Genres.ToArray
             For g As Integer = 0 To genreArray.Count - 1
                 If clbGenre.FindString(genreArray(g).Trim) > 0 Then
                     clbGenre.SetItemChecked(clbGenre.FindString(genreArray(g).Trim), True)
@@ -1828,7 +1828,7 @@ Public Class dlgEditTVShow
         tmpDBElement.TVShow.Runtime = txtRuntime.Text.Trim
         tmpDBElement.TVShow.SortTitle = txtSortTitle.Text.Trim
         tmpDBElement.TVShow.Status = txtStatus.Text.Trim
-        tmpDBElement.TVShow.Studio = txtStudio.Text.Trim
+        tmpDBElement.TVShow.AddStudiosFromString(txtStudio.Text.Trim)
         tmpDBElement.TVShow.Votes = txtVotes.Text.Trim
 
         If Not String.IsNullOrEmpty(txtTitle.Text) Then
@@ -1846,13 +1846,13 @@ Public Class dlgEditTVShow
         If clbGenre.CheckedItems.Count > 0 Then
 
             If clbGenre.CheckedIndices.Contains(0) Then
-                tmpDBElement.TVShow.Genre = String.Empty
+                tmpDBElement.TVShow.Genres.Clear()
             Else
                 Dim strGenre As String = String.Empty
                 Dim isFirst As Boolean = True
                 Dim iChecked = From iCheck In clbGenre.CheckedItems
                 strGenre = String.Join(" / ", iChecked.ToArray)
-                tmpDBElement.TVShow.Genre = strGenre.Trim
+                tmpDBElement.TVShow.AddGenresFromString(strGenre.Trim)
             End If
         End If
 

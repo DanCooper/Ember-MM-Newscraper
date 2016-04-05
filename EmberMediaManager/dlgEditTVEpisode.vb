@@ -473,8 +473,8 @@ Public Class dlgEditTVEpisode
 
     Private Sub FillInfo()
         txtAired.Text = tmpDBElement.TVEpisode.Aired
-        txtCredits.Text = tmpDBElement.TVEpisode.OldCredits
-        txtDirectors.Text = tmpDBElement.TVEpisode.Director
+        txtCredits.Text = String.Join(" / ", tmpDBElement.TVEpisode.Credits.ToArray)
+        txtDirectors.Text = String.Join(" / ", tmpDBElement.TVEpisode.Directors.ToArray)
         txtEpisode.Text = tmpDBElement.TVEpisode.Episode.ToString
         txtPlot.Text = tmpDBElement.TVEpisode.Plot
         txtRuntime.Text = tmpDBElement.TVEpisode.Runtime
@@ -923,59 +923,57 @@ Public Class dlgEditTVEpisode
     End Sub
 
     Private Sub SetInfo()
-        With Me
-            tmpDBElement.TVEpisode.Aired = .txtAired.Text.Trim
-            tmpDBElement.TVEpisode.OldCredits = .txtCredits.Text.Trim
-            tmpDBElement.TVEpisode.Director = .txtDirectors.Text.Trim
-            tmpDBElement.TVEpisode.Episode = Convert.ToInt32(.txtEpisode.Text.Trim)
-            tmpDBElement.TVEpisode.Plot = .txtPlot.Text.Trim
-            tmpDBElement.TVEpisode.Rating = .tmpRating
-            tmpDBElement.TVEpisode.Runtime = .txtRuntime.Text.Trim
-            tmpDBElement.TVEpisode.Season = Convert.ToInt32(.txtSeason.Text.Trim)
-            tmpDBElement.TVEpisode.Title = .txtTitle.Text.Trim
-            tmpDBElement.TVEpisode.Votes = .txtVotes.Text.Trim
-            tmpDBElement.TVEpisode.VideoSource = .txtVideoSource.Text.Trim
-            tmpDBElement.VideoSource = .txtVideoSource.Text.Trim
+        tmpDBElement.TVEpisode.Aired = txtAired.Text.Trim
+        tmpDBElement.TVEpisode.AddCreditsFromString(txtCredits.Text.Trim)
+        tmpDBElement.TVEpisode.AddDirectorsFromString(txtDirectors.Text.Trim)
+        tmpDBElement.TVEpisode.Episode = Convert.ToInt32(txtEpisode.Text.Trim)
+        tmpDBElement.TVEpisode.Plot = txtPlot.Text.Trim
+        tmpDBElement.TVEpisode.Rating = tmpRating
+        tmpDBElement.TVEpisode.Runtime = txtRuntime.Text.Trim
+        tmpDBElement.TVEpisode.Season = Convert.ToInt32(txtSeason.Text.Trim)
+        tmpDBElement.TVEpisode.Title = txtTitle.Text.Trim
+        tmpDBElement.TVEpisode.Votes = txtVotes.Text.Trim
+        tmpDBElement.TVEpisode.VideoSource = txtVideoSource.Text.Trim
+        tmpDBElement.VideoSource = txtVideoSource.Text.Trim
 
-            'Actors
-            tmpDBElement.TVEpisode.Actors.Clear()
-            If .lvActors.Items.Count > 0 Then
-                Dim iOrder As Integer = 0
-                For Each lviActor As ListViewItem In .lvActors.Items
-                    Dim addActor As MediaContainers.Person = DirectCast(lviActor.Tag, MediaContainers.Person)
-                    addActor.Order = iOrder
-                    iOrder += 1
-                    tmpDBElement.TVEpisode.Actors.Add(addActor)
-                Next
-            End If
-
-            If chkWatched.Checked Then
-                'Only set to 1 if field was empty before (otherwise it would overwrite Playcount everytime which is not desirable)
-                If Not tmpDBElement.TVEpisode.PlaycountSpecified Then
-                    tmpDBElement.TVEpisode.Playcount = 1
-                    tmpDBElement.TVEpisode.LastPlayed = Date.Now.ToString("yyyy-MM-dd HH:mm:ss")
-                End If
-            Else
-                'Unchecked Watched State -> Set Playcount back to 0, but only if it was filled before (check could save time)
-                If tmpDBElement.TVEpisode.PlaycountSpecified Then
-                    tmpDBElement.TVEpisode.Playcount = 0
-                    tmpDBElement.TVEpisode.LastPlayed = String.Empty
-                End If
-            End If
-
-            Dim removeSubtitles As New List(Of MediaInfo.Subtitle)
-            For Each Subtitle In tmpDBElement.Subtitles
-                If Subtitle.toRemove Then
-                    removeSubtitles.Add(Subtitle)
-                End If
+        'Actors
+        tmpDBElement.TVEpisode.Actors.Clear()
+        If lvActors.Items.Count > 0 Then
+            Dim iOrder As Integer = 0
+            For Each lviActor As ListViewItem In lvActors.Items
+                Dim addActor As MediaContainers.Person = DirectCast(lviActor.Tag, MediaContainers.Person)
+                addActor.Order = iOrder
+                iOrder += 1
+                tmpDBElement.TVEpisode.Actors.Add(addActor)
             Next
-            For Each Subtitle In removeSubtitles
-                If File.Exists(Subtitle.SubsPath) Then
-                    File.Delete(Subtitle.SubsPath)
-                End If
-                tmpDBElement.Subtitles.Remove(Subtitle)
-            Next
-        End With
+        End If
+
+        If chkWatched.Checked Then
+            'Only set to 1 if field was empty before (otherwise it would overwrite Playcount everytime which is not desirable)
+            If Not tmpDBElement.TVEpisode.PlaycountSpecified Then
+                tmpDBElement.TVEpisode.Playcount = 1
+                tmpDBElement.TVEpisode.LastPlayed = Date.Now.ToString("yyyy-MM-dd HH:mm:ss")
+            End If
+        Else
+            'Unchecked Watched State -> Set Playcount back to 0, but only if it was filled before (check could save time)
+            If tmpDBElement.TVEpisode.PlaycountSpecified Then
+                tmpDBElement.TVEpisode.Playcount = 0
+                tmpDBElement.TVEpisode.LastPlayed = String.Empty
+            End If
+        End If
+
+        Dim removeSubtitles As New List(Of MediaInfo.Subtitle)
+        For Each Subtitle In tmpDBElement.Subtitles
+            If Subtitle.toRemove Then
+                removeSubtitles.Add(Subtitle)
+            End If
+        Next
+        For Each Subtitle In removeSubtitles
+            If File.Exists(Subtitle.SubsPath) Then
+                File.Delete(Subtitle.SubsPath)
+            End If
+            tmpDBElement.Subtitles.Remove(Subtitle)
+        Next
     End Sub
 
     Private Sub SetUp()
