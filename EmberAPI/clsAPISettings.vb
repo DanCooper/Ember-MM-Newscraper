@@ -1190,14 +1190,6 @@ Public Class Settings
             Settings._XMLSettings.MovieScraperUseDetailView = value
         End Set
     End Property
-    Public Property MovieScraperReleaseFormat() As Boolean
-        Get
-            Return Settings._XMLSettings.MovieScraperReleaseFormat
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieScraperReleaseFormat = value
-        End Set
-    End Property
 
     Public Property MovieLockOutline() As Boolean
         Get
@@ -7026,7 +7018,6 @@ Public Class Settings
         MovieScraperCountry = True
         MovieScraperDirector = True
         MovieScraperDurationRuntimeFormat = "<m>"
-        MovieScraperReleaseFormat = False
         MovieScraperGenre = True
         MovieScraperGenreLimit = 0
         MovieScraperMetaDataIFOScan = True

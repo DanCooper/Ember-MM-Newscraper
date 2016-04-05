@@ -252,7 +252,7 @@ Public Class NFO
                 DBMovie.Movie.Plot = StringUtils.RemoveBrackets(DBMovie.Movie.Plot)
             End If
 
-            'Rating
+            'Rating/Votes
             If (Not DBMovie.Movie.RatingSpecified OrElse Not Master.eSettings.MovieLockRating) AndAlso ScrapeOptions.bMainRating AndAlso
                 scrapedmovie.RatingSpecified AndAlso Master.eSettings.MovieScraperRating AndAlso Not new_Rating Then
                 DBMovie.Movie.Rating = scrapedmovie.Rating
@@ -266,16 +266,7 @@ Public Class NFO
             'ReleaseDate
             If (Not DBMovie.Movie.ReleaseDateSpecified OrElse Not Master.eSettings.MovieLockReleaseDate) AndAlso ScrapeOptions.bMainRelease AndAlso
                 scrapedmovie.ReleaseDateSpecified AndAlso Master.eSettings.MovieScraperRelease AndAlso Not new_ReleaseDate Then
-                If Master.eSettings.MovieScraperReleaseFormat = False Then
-                    Dim formatteddate As Date
-                    If DateTime.TryParseExact(scrapedmovie.ReleaseDate, "yyyy-MM-dd", System.Globalization.CultureInfo.CurrentUICulture, Globalization.DateTimeStyles.None, formatteddate) Then
-                        DBMovie.Movie.ReleaseDate = Strings.FormatDateTime(formatteddate, Microsoft.VisualBasic.DateFormat.ShortDate).ToString
-                    Else
-                        DBMovie.Movie.ReleaseDate = scrapedmovie.ReleaseDate
-                    End If
-                Else
-                    DBMovie.Movie.ReleaseDate = scrapedmovie.ReleaseDate
-                End If
+                DBMovie.Movie.ReleaseDate = NumUtils.DateToISO8601Date(scrapedmovie.ReleaseDate)
                 new_ReleaseDate = True
             ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperRelease AndAlso Not Master.eSettings.MovieLockReleaseDate Then
                 DBMovie.Movie.ReleaseDate = String.Empty
@@ -661,22 +652,13 @@ Public Class NFO
             'Premiered
             If (Not DBTV.TVShow.PremieredSpecified OrElse Not Master.eSettings.TVLockShowPremiered) AndAlso ScrapeOptions.bMainPremiered AndAlso
                 scrapedshow.PremieredSpecified AndAlso Master.eSettings.TVScraperShowPremiered AndAlso Not new_Premiered Then
-                If Master.eSettings.MovieScraperReleaseFormat = False Then
-                    Dim formatteddate As Date
-                    If DateTime.TryParseExact(scrapedshow.Premiered, "yyyy-MM-dd", System.Globalization.CultureInfo.CurrentUICulture, Globalization.DateTimeStyles.None, formatteddate) Then
-                        DBTV.TVShow.Premiered = Strings.FormatDateTime(formatteddate, Microsoft.VisualBasic.DateFormat.ShortDate).ToString
-                    Else
-                        DBTV.TVShow.Premiered = scrapedshow.Premiered
-                    End If
-                Else
-                    DBTV.TVShow.Premiered = scrapedshow.Premiered
-                End If
+                DBTV.TVShow.Premiered = NumUtils.DateToISO8601Date(scrapedshow.Premiered)
                 new_Premiered = True
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowPremiered AndAlso Not Master.eSettings.TVLockShowPremiered Then
                 DBTV.TVShow.Premiered = String.Empty
             End If
 
-            'Rating
+            'Rating/Votes
             If (Not DBTV.TVShow.RatingSpecified OrElse DBTV.TVShow.Rating = "0" OrElse Not Master.eSettings.TVLockShowRating) AndAlso ScrapeOptions.bMainRating AndAlso
                 scrapedshow.RatingSpecified AndAlso Not scrapedshow.Rating = "0" AndAlso Master.eSettings.TVScraperShowRating AndAlso Not new_Rating Then
                 DBTV.TVShow.Rating = scrapedshow.Rating
@@ -1085,7 +1067,7 @@ Public Class NFO
             'Aired
             If (Not DBTVEpisode.TVEpisode.AiredSpecified OrElse Not Master.eSettings.TVLockEpisodeAired) AndAlso ScrapeOptions.bEpisodeAired AndAlso
                 scrapedepisode.AiredSpecified AndAlso Master.eSettings.TVScraperEpisodeAired AndAlso Not new_Aired Then
-                DBTVEpisode.TVEpisode.Aired = scrapedepisode.Aired
+                DBTVEpisode.TVEpisode.Aired = NumUtils.DateToISO8601Date(scrapedepisode.Aired)
                 new_Aired = True
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeAired AndAlso Not Master.eSettings.TVLockEpisodeAired Then
                 DBTVEpisode.TVEpisode.Aired = String.Empty
@@ -1281,6 +1263,7 @@ Public Class NFO
         If mNFO IsNot Nothing Then
             mNFO.Outline = mNFO.Outline.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
             mNFO.Plot = mNFO.Plot.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
+            mNFO.ReleaseDate = NumUtils.DateToISO8601Date(mNFO.ReleaseDate)
             mNFO.Votes = NumUtils.CleanVotes(mNFO.Votes)
             If mNFO.FileInfoSpecified Then
                 If mNFO.FileInfo.StreamDetails.AudioSpecified Then
@@ -1324,6 +1307,7 @@ Public Class NFO
 
     Public Shared Function CleanNFO_TVEpisodes(ByVal eNFO As MediaContainers.EpisodeDetails) As MediaContainers.EpisodeDetails
         If eNFO IsNot Nothing Then
+            eNFO.Aired = NumUtils.DateToISO8601Date(eNFO.Aired)
             eNFO.Votes = NumUtils.CleanVotes(eNFO.Votes)
             If eNFO.FileInfoSpecified Then
                 If eNFO.FileInfo.StreamDetails.AudioSpecified Then
@@ -1346,6 +1330,7 @@ Public Class NFO
     Public Shared Function CleanNFO_TVShow(ByVal mNFO As MediaContainers.TVShow) As MediaContainers.TVShow
         If mNFO IsNot Nothing Then
             mNFO.Plot = mNFO.Plot.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
+            mNFO.Premiered = NumUtils.DateToISO8601Date(mNFO.Premiered)
             mNFO.Votes = NumUtils.CleanVotes(mNFO.Votes)
 
             'changes a LongLanguage to Alpha2 code

@@ -3371,12 +3371,12 @@ Public Class Database
 
             Try
                 If Not Master.eSettings.GeneralDateAddedIgnoreNFO AndAlso Not String.IsNullOrEmpty(_movieDB.Movie.DateAdded) Then
-                    Dim DateTimeAdded As DateTime = DateTime.ParseExact(_movieDB.Movie.DateAdded, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
+                    Dim DateTimeAdded As Date = Date.ParseExact(_movieDB.Movie.DateAdded, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
                     par_movie_DateAdded.Value = Functions.ConvertToUnixTimestamp(DateTimeAdded)
                 Else
                     Select Case Master.eSettings.GeneralDateTime
                         Case Enums.DateTime.Now
-                            par_movie_DateAdded.Value = If(Not _movieDB.IDSpecified, Functions.ConvertToUnixTimestamp(DateTime.Now), _movieDB.DateAdded)
+                            par_movie_DateAdded.Value = If(Not _movieDB.IDSpecified, Functions.ConvertToUnixTimestamp(Date.Now), _movieDB.DateAdded)
                         Case Enums.DateTime.mtime
                             Dim mtime As Date = File.GetLastWriteTime(_movieDB.Filename)
                             If mtime.Year > 1601 Then
@@ -3397,16 +3397,16 @@ Public Class Database
                 End If
                 _movieDB.Movie.DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(par_movie_DateAdded.Value)).ToString("yyyy-MM-dd HH:mm:ss")
             Catch
-                par_movie_DateAdded.Value = If(Not _movieDB.IDSpecified, Functions.ConvertToUnixTimestamp(DateTime.Now), _movieDB.DateAdded)
+                par_movie_DateAdded.Value = If(Not _movieDB.IDSpecified, Functions.ConvertToUnixTimestamp(Date.Now), _movieDB.DateAdded)
                 _movieDB.Movie.DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(par_movie_DateAdded.Value)).ToString("yyyy-MM-dd HH:mm:ss")
             End Try
 
             Try
                 If Not _movieDB.IDSpecified AndAlso _movieDB.Movie.DateModifiedSpecified Then
-                    Dim DateTimeDateModified As DateTime = DateTime.ParseExact(_movieDB.Movie.DateModified, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
+                    Dim DateTimeDateModified As Date = Date.ParseExact(_movieDB.Movie.DateModified, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
                     par_movie_DateModified.Value = Functions.ConvertToUnixTimestamp(DateTimeDateModified)
                 ElseIf _movieDB.IDSpecified Then
-                    par_movie_DateModified.Value = Functions.ConvertToUnixTimestamp(DateTime.Now)
+                    par_movie_DateModified.Value = Functions.ConvertToUnixTimestamp(Date.Now)
                 End If
                 If par_movie_DateModified.Value IsNot Nothing Then
                     _movieDB.Movie.DateModified = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(par_movie_DateModified.Value)).ToString("yyyy-MM-dd HH:mm:ss")
@@ -3414,19 +3414,19 @@ Public Class Database
                     _movieDB.Movie.DateModified = String.Empty
                 End If
             Catch
-                par_movie_DateModified.Value = If(Not _movieDB.IDSpecified, Functions.ConvertToUnixTimestamp(DateTime.Now), _movieDB.DateModified)
+                par_movie_DateModified.Value = If(Not _movieDB.IDSpecified, Functions.ConvertToUnixTimestamp(Date.Now), _movieDB.DateModified)
                 _movieDB.Movie.DateModified = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(par_movie_DateAdded.Value)).ToString("yyyy-MM-dd HH:mm:ss")
             End Try
 
             Dim DateTimeLastPlayedUnix As Double = -1
-            If Not String.IsNullOrEmpty(_movieDB.Movie.LastPlayed) Then
+            If _movieDB.Movie.LastPlayedSpecified Then
                 Try
-                    Dim DateTimeLastPlayed As DateTime = DateTime.ParseExact(_movieDB.Movie.LastPlayed, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
+                    Dim DateTimeLastPlayed As Date = Date.ParseExact(_movieDB.Movie.LastPlayed, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
                     DateTimeLastPlayedUnix = Functions.ConvertToUnixTimestamp(DateTimeLastPlayed)
                 Catch
                     'Kodi save it only as yyyy-MM-dd, try that
                     Try
-                        Dim DateTimeLastPlayed As DateTime = DateTime.ParseExact(_movieDB.Movie.LastPlayed, "yyyy-MM-dd", Globalization.CultureInfo.InvariantCulture)
+                        Dim DateTimeLastPlayed As Date = Date.ParseExact(_movieDB.Movie.LastPlayed, "yyyy-MM-dd", Globalization.CultureInfo.InvariantCulture)
                         DateTimeLastPlayedUnix = Functions.ConvertToUnixTimestamp(DateTimeLastPlayed)
                     Catch
                         DateTimeLastPlayedUnix = -1
@@ -3498,7 +3498,7 @@ Public Class Database
                 End If
                 par_movie_Plot.Value = .Plot
                 par_movie_Rating.Value = .Rating
-                par_movie_ReleaseDate.Value = .ReleaseDate
+                par_movie_ReleaseDate.Value = NumUtils.DateToISO8601Date(.ReleaseDate)
                 par_movie_Runtime.Value = .Runtime
                 par_movie_SortTitle.Value = .SortTitle
                 par_movie_TMDB.Value = .TMDBID
@@ -4261,12 +4261,12 @@ Public Class Database
 
             Try
                 If Not Master.eSettings.GeneralDateAddedIgnoreNFO AndAlso Not String.IsNullOrEmpty(_episode.TVEpisode.DateAdded) Then
-                    Dim DateTimeAdded As DateTime = DateTime.ParseExact(_episode.TVEpisode.DateAdded, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
+                    Dim DateTimeAdded As Date = Date.ParseExact(_episode.TVEpisode.DateAdded, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
                     parDateAdded.Value = Functions.ConvertToUnixTimestamp(DateTimeAdded)
                 Else
                     Select Case Master.eSettings.GeneralDateTime
                         Case Enums.DateTime.Now
-                            parDateAdded.Value = If(Not _episode.IDSpecified, Functions.ConvertToUnixTimestamp(DateTime.Now), _episode.DateAdded)
+                            parDateAdded.Value = If(Not _episode.IDSpecified, Functions.ConvertToUnixTimestamp(Date.Now), _episode.DateAdded)
                         Case Enums.DateTime.mtime
                             Dim mtime As Date = File.GetLastWriteTime(_episode.Filename)
                             If mtime.Year > 1601 Then
@@ -4287,19 +4287,19 @@ Public Class Database
                 End If
                 _episode.TVEpisode.DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(parDateAdded.Value)).ToString("yyyy-MM-dd HH:mm:ss")
             Catch ex As Exception
-                parDateAdded.Value = If(Not _episode.IDSpecified, Functions.ConvertToUnixTimestamp(DateTime.Now), _episode.DateAdded)
+                parDateAdded.Value = If(Not _episode.IDSpecified, Functions.ConvertToUnixTimestamp(Date.Now), _episode.DateAdded)
                 _episode.TVEpisode.DateAdded = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(parDateAdded.Value)).ToString("yyyy-MM-dd HH:mm:ss")
             End Try
 
             Dim DateTimeLastPlayedUnix As Double = -1
-            If Not String.IsNullOrEmpty(_episode.TVEpisode.LastPlayed) Then
+            If _episode.TVEpisode.LastPlayedSpecified Then
                 Try
-                    Dim DateTimeLastPlayed As DateTime = DateTime.ParseExact(_episode.TVEpisode.LastPlayed, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
+                    Dim DateTimeLastPlayed As Date = Date.ParseExact(_episode.TVEpisode.LastPlayed, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
                     DateTimeLastPlayedUnix = Functions.ConvertToUnixTimestamp(DateTimeLastPlayed)
                 Catch
                     'Kodi save it only as yyyy-MM-dd, try that
                     Try
-                        Dim DateTimeLastPlayed As DateTime = DateTime.ParseExact(_episode.TVEpisode.LastPlayed, "yyyy-MM-dd", Globalization.CultureInfo.InvariantCulture)
+                        Dim DateTimeLastPlayed As Date = Date.ParseExact(_episode.TVEpisode.LastPlayed, "yyyy-MM-dd", Globalization.CultureInfo.InvariantCulture)
                         DateTimeLastPlayedUnix = Functions.ConvertToUnixTimestamp(DateTimeLastPlayed)
                     Catch
                         DateTimeLastPlayedUnix = -1
@@ -4341,7 +4341,7 @@ Public Class Database
                 parDisplayEpisode.Value = .DisplayEpisode
                 parRating.Value = .Rating
                 parPlot.Value = .Plot
-                parAired.Value = .Aired
+                parAired.Value = NumUtils.DateToISO8601Date(.Aired)
                 If .PlaycountSpecified Then 'need to be NOTHING instead of "0"
                     parPlaycount.Value = .Playcount
                 End If
@@ -4710,7 +4710,7 @@ Public Class Database
                 parSortTitle.Value = .SortTitle
                 parEpisodeGuide.Value = .EpisodeGuide.URL
                 parPlot.Value = .Plot
-                parPremiered.Value = .Premiered
+                parPremiered.Value = NumUtils.DateToISO8601Date(.Premiered)
                 parMPAA.Value = .MPAA
                 parRating.Value = .Rating
                 parStatus.Value = .Status

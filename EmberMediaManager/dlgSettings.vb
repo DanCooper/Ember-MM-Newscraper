@@ -3047,7 +3047,6 @@ Public Class dlgSettings
             chkMovieScraperPlotForOutlineIfEmpty.Checked = .MovieScraperPlotForOutlineIfEmpty
             chkMovieScraperRating.Checked = .MovieScraperRating
             chkMovieScraperRelease.Checked = .MovieScraperRelease
-            chkMovieScraperReleaseFormat.Checked = .MovieScraperReleaseFormat
             chkMovieScraperRuntime.Checked = .MovieScraperRuntime
             chkMovieScraperStudio.Checked = .MovieScraperStudio
             chkMovieScraperStudioWithImg.Checked = .MovieScraperStudioWithImgOnly
@@ -5024,7 +5023,6 @@ Public Class dlgSettings
             .MovieScraperPlotForOutlineIfEmpty = chkMovieScraperPlotForOutlineIfEmpty.Checked
             .MovieScraperRating = chkMovieScraperRating.Checked
             .MovieScraperRelease = chkMovieScraperRelease.Checked
-            .MovieScraperReleaseFormat = chkMovieScraperReleaseFormat.Checked
             .MovieScraperRuntime = chkMovieScraperRuntime.Checked
             .MovieScraperStudio = chkMovieScraperStudio.Checked
             .MovieScraperStudioWithImgOnly = chkMovieScraperStudioWithImg.Checked
@@ -6740,7 +6738,6 @@ Public Class dlgSettings
         chkMovieScraperCleanPlotOutline.Text = Master.eLang.GetString(985, "Clean Plot/Outline")
         chkMovieScraperCollectionsAuto.Text = Master.eLang.GetString(1266, "Add Movie automatically to Collections")
         chkMovieScraperDetailView.Text = Master.eLang.GetString(1249, "Show scraped results in detailed view")
-        chkMovieScraperReleaseFormat.Text = Master.eLang.GetString(1272, "Date format Releasedate: yyyy-mm-dd")
         chkMovieScraperMetaDataIFOScan.Text = Master.eLang.GetString(628, "Enable IFO Parsing")
         chkMovieScraperMetaDataScan.Text = Master.eLang.GetString(517, "Scan Meta Data")
         chkMovieScraperPlotForOutline.Text = Master.eLang.GetString(965, "Use Plot for Plot Outline")
@@ -8015,7 +8012,6 @@ Public Class dlgSettings
         chkMovieScraperPlotForOutlineIfEmpty.CheckedChanged,
         chkMovieScraperRating.CheckedChanged,
         chkMovieScraperRelease.CheckedChanged,
-        chkMovieScraperReleaseFormat.CheckedChanged,
         chkMovieScraperRuntime.CheckedChanged,
         chkMovieScraperStudioWithImg.CheckedChanged,
         chkMovieScraperTagline.CheckedChanged,

@@ -9431,8 +9431,8 @@ doCancel:
             End If
 
             Try
-                If Not String.IsNullOrEmpty(currMovie.Movie.Rating) Then
-                    If Not String.IsNullOrEmpty(currMovie.Movie.Votes) Then
+                If currMovie.Movie.RatingSpecified Then
+                    If currMovie.Movie.VotesSpecified Then
                         Dim strRating As String = Double.Parse(currMovie.Movie.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
                         Dim strVotes As String = Double.Parse(currMovie.Movie.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
                         lblRating.Text = String.Concat(strRating, "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), strVotes), ")")
@@ -9443,7 +9443,7 @@ doCancel:
                 End If
             Catch ex As Exception
                 logger.Error(String.Concat("Error: Not valid Rating or Votes (", currMovie.Movie.Rating, " / ", currMovie.Movie.Votes, ")"))
-                lblRating.Text = "Error: Please rescrape Rating and Votes"
+                lblRating.Text = "Error: Please rescrape Rating"
             End Try
 
             If currMovie.Movie.RuntimeSpecified Then
@@ -9647,7 +9647,7 @@ doCancel:
             txtPlot.Text = currTV.TVEpisode.Plot
             lblDirectors.Text = String.Join(" / ", currTV.TVEpisode.Directors.ToArray)
             txtFilePath.Text = currTV.Filename
-            lblRuntime.Text = String.Format(Master.eLang.GetString(647, "Aired: {0}"), If(String.IsNullOrEmpty(currTV.TVEpisode.Aired), "?", currTV.TVEpisode.Aired))
+            lblRuntime.Text = String.Format(Master.eLang.GetString(647, "Aired: {0}"), If(currTV.TVEpisode.AiredSpecified, Date.Parse(currTV.TVEpisode.Aired).ToShortDateString, "?"))
 
             Try
                 If currTV.TVEpisode.RatingSpecified Then
@@ -9662,7 +9662,7 @@ doCancel:
                 End If
             Catch ex As Exception
                 logger.Error(String.Concat("Error: Not valid Rating or Votes (", currTV.TVEpisode.Rating, " / ", currTV.TVEpisode.Votes, ")"))
-                lblRating.Text = "Error: Please rescrape Rating and Votes"
+                lblRating.Text = "Error: Please rescrape Rating"
             End Try
 
             lblTagline.Text = String.Format(Master.eLang.GetString(648, "Season: {0}, Episode: {1}"),
@@ -9780,7 +9780,7 @@ doCancel:
         End If
 
         txtPlot.Text = currTV.TVSeason.Plot
-        lblRuntime.Text = String.Format(Master.eLang.GetString(645, "Premiered: {0}"), If(currTV.TVShow.PremieredSpecified, currTV.TVShow.Premiered, "?"))
+        lblRuntime.Text = String.Format(Master.eLang.GetString(645, "Premiered: {0}"), If(currTV.TVShow.PremieredSpecified, Date.Parse(currTV.TVShow.Premiered).ToShortDateString, "?"))
 
         Try
             If currTV.TVShow.RatingSpecified Then
@@ -9795,7 +9795,7 @@ doCancel:
             End If
         Catch ex As Exception
             logger.Error(String.Concat("Error: Not valid Rating or Votes (", currTV.TVShow.Rating, " / ", currTV.TVShow.Votes, ")"))
-            lblRating.Text = "Error: Please rescrape Rating and Votes"
+            lblRating.Text = "Error: Please rescrape Rating"
         End Try
 
         alActors = New List(Of String)
@@ -9899,7 +9899,7 @@ doCancel:
             End If
 
             txtPlot.Text = currTV.TVShow.Plot
-            lblRuntime.Text = String.Format(Master.eLang.GetString(645, "Premiered: {0}"), If(String.IsNullOrEmpty(currTV.TVShow.Premiered), "?", currTV.TVShow.Premiered))
+            lblRuntime.Text = String.Format(Master.eLang.GetString(645, "Premiered: {0}"), If(currTV.TVShow.PremieredSpecified, Date.Parse(currTV.TVShow.Premiered).ToShortDateString, "?"))
 
             Try
                 If currTV.TVShow.RatingSpecified Then
@@ -9914,7 +9914,7 @@ doCancel:
                 End If
             Catch ex As Exception
                 logger.Error(String.Concat("Error: Not valid Rating or Votes (", currTV.TVShow.Rating, " / ", currTV.TVShow.Votes, ")"))
-                lblRating.Text = "Error: Please rescrape Rating and Votes"
+                lblRating.Text = "Error: Please rescrape Rating"
             End Try
 
             alActors = New List(Of String)
