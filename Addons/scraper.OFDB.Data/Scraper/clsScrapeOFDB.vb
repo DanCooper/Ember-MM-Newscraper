@@ -204,7 +204,7 @@ Namespace OFDB
                     End If
                 End If
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Keys.Tab) & "Error scraping ODFB (too many connections?):" & strIMDBID, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Keys.Tab) & "Error scraping ODFB (too many connections?):" & strIMDBID)
             End Try
 
             Return strURL

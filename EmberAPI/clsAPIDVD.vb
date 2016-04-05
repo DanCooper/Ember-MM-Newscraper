@@ -81,7 +81,7 @@ Public Class DVD
                     ReturnArray(2) = ParsedIFOFile.AudioAtt_VTS_VOBS(bytAudioIndex).NumberOfChannels.ToString
                 End If
             Catch ex As Exception
-                logger.Error("GetIFOAudio", ex)
+                logger.Error(ex, "GetIFOAudio")
             End Try
             Return ReturnArray
         End Get
@@ -109,7 +109,7 @@ Public Class DVD
                     Return Localization.ISOGetLangByCode2(ParsedIFOFile.SubPictureAtt_VTS_VOBS(bytSubPicIndex).LanguageCode)
                 End If
             Catch ex As Exception
-                logger.Error("GetIFOSubPic", ex)
+                logger.Error(ex, "GetIFOSubPic")
             End Try
             Return String.Empty
         End Get
@@ -155,7 +155,7 @@ Public Class DVD
                     ReturnArray(2) = String.Empty
                 End If
             Catch ex As Exception
-                logger.Error("GetIFOVideo", ex)
+                logger.Error(ex, "GetIFOVideo")
             End Try
             Return ReturnArray
         End Get
@@ -186,7 +186,7 @@ Public Class DVD
                     Return fctPlayBackTimeToString(ParsedIFOFile.ProgramChainInformation(bytProChainIndex).PlayBackTime, MinsOnly)
                 End If
             Catch ex As Exception
-                logger.Error("GetProgramChainPlayBackTime", ex)
+                logger.Error(ex, "GetProgramChainPlayBackTime")
             End Try
             Return String.Empty
         End Get
@@ -218,7 +218,7 @@ Public Class DVD
             hexStr = hexStr.Insert(0, "0x")
 
         Catch ex As Exception
-            logger.Error("CovertByteToHex", ex)
+            logger.Error(ex, "CovertByteToHex")
         End Try
         Return hexStr
     End Function
@@ -271,7 +271,7 @@ Public Class DVD
                 Return True
             End If
         Catch ex As Exception
-            logger.Error("fctOpenIFOFile", ex)
+            logger.Error(ex, "fctOpenIFOFile")
         End Try
         Return False
     End Function
@@ -325,7 +325,7 @@ Public Class DVD
             If (byteInfo(1) And 4) = 4 Then bytTempValue = Convert.ToByte(bytTempValue + 4)
             tVTSM.NumberOfChannels = Convert.ToByte(bytTempValue + 1)
         Catch ex As Exception
-            logger.Error("fctAudioAttVTSM_VTS", ex)
+            logger.Error(ex, "fctAudioAttVTSM_VTS")
         End Try
         Return tVTSM
     End Function

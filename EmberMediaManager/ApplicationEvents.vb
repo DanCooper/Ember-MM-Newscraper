@@ -170,7 +170,7 @@ Namespace My
         ''' Basic wrapper for unhandled exceptions
         ''' </summary>
         Private Sub MyApplication_UnhandledException(ByVal sender As Object, ByVal e As Microsoft.VisualBasic.ApplicationServices.UnhandledExceptionEventArgs) Handles Me.UnhandledException
-            logger.Error(e.Exception.Source, e.Exception)
+            logger.Error(e.Exception, e.Exception.Source)
             MessageBox.Show(e.Exception.Message, "Ember Media Manager", MessageBoxButtons.OK, MessageBoxIcon.Error)
             My.Application.Log.WriteException(e.Exception, TraceEventType.Critical, "Unhandled Exception.")
         End Sub

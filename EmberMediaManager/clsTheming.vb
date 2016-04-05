@@ -281,7 +281,7 @@ Public Class Theming
 
             Return Convert.ToInt32(sFormula)
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & sFormula, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name & sFormula)
         End Try
 
         Return 0

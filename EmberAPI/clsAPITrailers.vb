@@ -323,7 +323,7 @@ Public Class Trailers
                 End If
 
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sTrailer.URLVideoStream & ">", ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sTrailer.URLVideoStream & ">")
             End Try
         End If
 
@@ -355,7 +355,7 @@ Public Class Trailers
                 logger.Warn("Trailer NOT downloaded: " & sURL)
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sURL & ">", ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sURL & ">")
         End Try
         RemoveHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
     End Sub

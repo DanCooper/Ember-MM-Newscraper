@@ -236,7 +236,7 @@ Public Class clsAdvancedSettings
                 End Using
                 logger.Info("AdvancedSettings.xml successfully repaired")
             Catch ex2 As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex2)
+                logger.Error(ex2, New StackFrame().GetMethod().Name)
                 File.Copy(fname, String.Concat(fname, "_backup"), True)
                 _AdvancedSettings = New clsXMLAdvancedSettings
             End Try
