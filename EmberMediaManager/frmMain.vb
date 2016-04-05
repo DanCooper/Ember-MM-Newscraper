@@ -9717,8 +9717,8 @@ doCancel:
             End If
 
             If currTV.TVShow.StudiosSpecified Then
-                pbStudio.Image = APIXML.GetStudioImage(currTV.TVShow.Studio.ToLower) 'ByDef all images file a lower case
-                pbStudio.Tag = currTV.TVShow.Studio
+                pbStudio.Image = APIXML.GetStudioImage(currTV.TVShow.Studios.Item(0).ToLower) 'ByDef all images file a lower case
+                pbStudio.Tag = currTV.TVShow.Studios.Item(0)
             Else
                 pbStudio.Image = APIXML.GetStudioImage("####")
                 pbStudio.Tag = String.Empty
@@ -9846,8 +9846,8 @@ doCancel:
         End If
 
         If currTV.TVShow.StudiosSpecified Then
-            pbStudio.Image = APIXML.GetStudioImage(currTV.TVShow.Studio.ToLower) 'ByDef all images file a lower case
-            pbStudio.Tag = currTV.TVShow.Studio
+            pbStudio.Image = APIXML.GetStudioImage(currTV.TVShow.Studios.Item(0).ToLower) 'ByDef all images file a lower case
+            pbStudio.Tag = currTV.TVShow.Studios.Item(0)
         Else
             pbStudio.Image = APIXML.GetStudioImage("####")
             pbStudio.Tag = String.Empty
@@ -9965,8 +9965,8 @@ doCancel:
             End If
 
             If currTV.TVShow.StudiosSpecified Then
-                pbStudio.Image = APIXML.GetStudioImage(currTV.TVShow.Studio.ToLower) 'ByDef all images file a lower case
-                pbStudio.Tag = currTV.TVShow.Studio
+                pbStudio.Image = APIXML.GetStudioImage(currTV.TVShow.Studios.Item(0).ToLower) 'ByDef all images file a lower case
+                pbStudio.Tag = currTV.TVShow.Studios.Item(0)
             Else
                 pbStudio.Image = APIXML.GetStudioImage("####")
                 pbStudio.Tag = String.Empty

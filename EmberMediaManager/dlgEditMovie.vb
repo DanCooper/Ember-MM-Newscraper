@@ -1616,16 +1616,17 @@ Public Class dlgEditMovie
             chkWatched.Checked = False
         End If
 
-        txtCerts.Text = tmpDBElement.Movie.Certification
-        txtCountries.Text = tmpDBElement.Movie.Country
-        txtCredits.Text = tmpDBElement.Movie.OldCredits
-        txtDirectors.Text = tmpDBElement.Movie.Director
+        txtCerts.Text = String.Join(" / ", tmpDBElement.Movie.Certifications.ToArray)
+        txtCountries.Text = String.Join(" / ", tmpDBElement.Movie.Countries.ToArray)
+        txtCredits.Text = String.Join(" / ", tmpDBElement.Movie.Credits.ToArray)
+        txtDirectors.Text = String.Join(" / ", tmpDBElement.Movie.Directors.ToArray)
         txtOriginalTitle.Text = tmpDBElement.Movie.OriginalTitle
         txtOutline.Text = tmpDBElement.Movie.Outline
         txtPlot.Text = tmpDBElement.Movie.Plot
         txtReleaseDate.Text = tmpDBElement.Movie.ReleaseDate
         txtRuntime.Text = tmpDBElement.Movie.Runtime
         txtSortTitle.Text = tmpDBElement.Movie.SortTitle
+        txtStudio.Text = String.Join(" / ", tmpDBElement.Movie.Studios.ToArray)
         txtTagline.Text = tmpDBElement.Movie.Tagline
         txtTitle.Text = tmpDBElement.Movie.Title
         txtTop250.Text = tmpDBElement.Movie.Top250
@@ -1659,10 +1660,6 @@ Public Class dlgEditMovie
         End If
 
         btnDLTrailer.Enabled = Master.DefaultOptions_Movie.bMainTrailer
-
-        If tmpDBElement.Movie.Studios.Count > 0 Then
-            txtStudio.Text = tmpDBElement.Movie.Studio
-        End If
 
         For i As Integer = 0 To clbGenre.Items.Count - 1
             clbGenre.SetItemChecked(i, False)
@@ -2504,16 +2501,16 @@ Public Class dlgEditMovie
         tmpDBElement.Movie.Outline = txtOutline.Text.Trim
         tmpDBElement.Movie.Plot = txtPlot.Text.Trim
         tmpDBElement.Movie.Top250 = txtTop250.Text.Trim
-        tmpDBElement.Movie.Country = txtCountries.Text.Trim
-        tmpDBElement.Movie.Director = txtDirectors.Text.Trim
+        tmpDBElement.Movie.AddCountriesFromString(txtCountries.Text.Trim)
+        tmpDBElement.Movie.AddDirectorsFromString(txtDirectors.Text.Trim)
         tmpDBElement.Movie.Title = txtTitle.Text.Trim
-        tmpDBElement.Movie.Certification = txtCerts.Text.Trim
+        tmpDBElement.Movie.AddCertificationsFromString(txtCerts.Text.Trim)
         tmpDBElement.Movie.OriginalTitle = txtOriginalTitle.Text.Trim
         tmpDBElement.Movie.MPAA = String.Concat(txtMPAA.Text, " ", txtMPAADesc.Text).Trim
         tmpDBElement.Movie.Runtime = txtRuntime.Text.Trim
         tmpDBElement.Movie.ReleaseDate = txtReleaseDate.Text.Trim
-        tmpDBElement.Movie.OldCredits = txtCredits.Text.Trim
-        tmpDBElement.Movie.Studio = txtStudio.Text.Trim
+        tmpDBElement.Movie.AddCreditsFromString(txtCredits.Text.Trim)
+        tmpDBElement.Movie.AddStudiosFromString(txtStudio.Text.Trim)
         tmpDBElement.VideoSource = txtVideoSource.Text.Trim
         tmpDBElement.Movie.VideoSource = txtVideoSource.Text.Trim
         tmpDBElement.Movie.Trailer = txtTrailer.Text.Trim
@@ -2544,13 +2541,13 @@ Public Class dlgEditMovie
 
         If clbGenre.CheckedItems.Count > 0 Then
             If clbGenre.CheckedIndices.Contains(0) Then
-                tmpDBElement.Movie.Genre = String.Empty
+                tmpDBElement.Movie.Genres.Clear()
             Else
                 Dim strGenre As String = String.Empty
                 Dim isFirst As Boolean = True
                 Dim iChecked = From iCheck In clbGenre.CheckedItems
                 strGenre = String.Join(" / ", iChecked.ToArray)
-                tmpDBElement.Movie.Genre = strGenre.Trim
+                tmpDBElement.Movie.AddGenresFromString(strGenre)
             End If
         End If
 

@@ -289,7 +289,7 @@ Public Class dlgIMDBSearchResults_TV
             lblTagline.Text = String.Empty
             lblYear.Text = _tmpTVShow.Premiered
             'Me.lblDirector.Text = _nShow.Directors
-            lblGenre.Text = _tmpTVShow.Genre
+            lblGenre.Text = String.Join(" / ", _tmpTVShow.Genres.ToArray)
             txtPlot.Text = _tmpTVShow.Plot
             lblIMDBID.Text = _tmpTVShow.IMDB
 
