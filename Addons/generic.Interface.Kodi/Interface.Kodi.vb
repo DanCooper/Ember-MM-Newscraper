@@ -889,7 +889,7 @@ Public Class KodiInterface
                 Try
                     File.SetAttributes(_xmlSettingsPath, FileAttributes.Normal)
                 Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                    logger.Error(ex, New StackFrame().GetMethod().Name)
                 End Try
             End If
             Using xmlSW As New StreamWriter(_xmlSettingsPath)

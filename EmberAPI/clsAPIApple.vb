@@ -75,7 +75,7 @@ Namespace Apple
                 _TrailerLinks = GetTrailerLinks(url, False)
 
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         End Sub
 
@@ -153,7 +153,7 @@ Namespace Apple
                 End If
 
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
 
             Return TrailerLinks

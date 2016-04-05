@@ -288,7 +288,7 @@ Public Class dlgTrailerSelect
                 txtLocalTrailer.Text = ofdTrailer.FileName
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -403,7 +403,7 @@ Public Class dlgTrailerSelect
             Result.TrailerOriginal.FromWeb(Args.Parameter)
             Result.URLWebsite = Args.Parameter.VideoURL
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         e.Result = Args.bType

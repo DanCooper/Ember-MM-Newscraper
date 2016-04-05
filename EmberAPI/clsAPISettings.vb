@@ -6713,7 +6713,7 @@ Public Class Settings
                 Master.eSettings = Me
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
             logger.Info("An attempt is made to repair the Settings.xml")
             Try
                 Using srSettings As New StreamReader(configpath)
@@ -6740,7 +6740,7 @@ Public Class Settings
                     logger.Info("AdvancedSettings.xml successfully repaired")
                 End Using
             Catch ex2 As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex2)
+                logger.Error(ex2, New StackFrame().GetMethod().Name)
                 File.Copy(configpath, String.Concat(configpath, "_backup"), True)
                 Master.eSettings = New Settings
             End Try
@@ -6799,7 +6799,7 @@ Public Class Settings
             _XMLSettings.TVGeneralLanguages = tSettings.TVGeneralLanguages
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -6810,7 +6810,7 @@ Public Class Settings
             xmlSerial.Serialize(xmlWriter, Master.eSettings)
             xmlWriter.Close()
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
     ''' <summary>

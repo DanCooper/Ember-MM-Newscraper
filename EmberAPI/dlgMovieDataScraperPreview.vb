@@ -999,7 +999,7 @@ Public Class dlgMovieDataScraperPreview
             FillInfo()
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -1017,7 +1017,7 @@ Public Class dlgMovieDataScraperPreview
             DialogResult = System.Windows.Forms.DialogResult.OK
             Close()
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
             DialogResult = System.Windows.Forms.DialogResult.OK
             Close()
         End Try
@@ -1051,7 +1051,7 @@ Public Class dlgMovieDataScraperPreview
             ' Perform the sort with these new sort options.
             lvActorsIMDB.Sort()
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -1083,7 +1083,7 @@ Public Class dlgMovieDataScraperPreview
             ' Perform the sort with these new sort options.
             lvActorsOFDB.Sort()
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -1115,7 +1115,7 @@ Public Class dlgMovieDataScraperPreview
             ' Perform the sort with these new sort options.
             lvActorsMoviepilot.Sort()
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -1147,7 +1147,7 @@ Public Class dlgMovieDataScraperPreview
             ' Perform the sort with these new sort options.
             lvActorsTMDB.Sort()
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -1191,7 +1191,7 @@ Public Class dlgMovieDataScraperPreview
                 btnPlayTrailer.Enabled = False
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
             btnPlayTrailer.Enabled = False
         End Try
     End Sub

@@ -547,7 +547,7 @@ Namespace FFmpeg
                     If Not ex.Data.Contains("args") Then
                         ex.Data.Add("args", CurrentFFmpegTask.FFmpegArgs)
                     End If
-                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                    logger.Error(ex, New StackFrame().GetMethod().Name)
                 End Try
             End Using
 

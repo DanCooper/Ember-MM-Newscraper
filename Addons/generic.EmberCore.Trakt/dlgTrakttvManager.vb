@@ -312,7 +312,7 @@ Public Class dlgTrakttvManager
             End If
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -520,7 +520,7 @@ Public Class dlgTrakttvManager
                 logger.Warn("[btntraktWatchlistGetMovies_Click] No token!")
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
             If Not myWatchlistEpisodes Is Nothing Then
                 myWatchlistEpisodes.Clear()
             End If
@@ -607,7 +607,7 @@ Public Class dlgTrakttvManager
                 logger.Info("[btntraktWatchlistSyncLibrary_Click] No movies in watchlist/Ember database - Abort process!")
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
     End Sub
@@ -698,7 +698,7 @@ Public Class dlgTrakttvManager
                 MessageBox.Show(Master.eLang.GetString(1365, "No changes made!"), Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK)
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
     End Sub
@@ -766,7 +766,7 @@ Public Class dlgTrakttvManager
                 End If
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -784,7 +784,7 @@ Public Class dlgTrakttvManager
                 End If
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -925,7 +925,7 @@ Public Class dlgTrakttvManager
             myWatchedMovies = Nothing
             myWatchedShows = Nothing
             myWatchedEpisodes = Nothing
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
             btntraktPlaycountSyncWatchedMovies.Enabled = False
             dgvtraktPlaycount.DataSource = Nothing
             dgvtraktPlaycount.Rows.Clear()
@@ -1024,7 +1024,7 @@ Public Class dlgTrakttvManager
             Me.Cursor = Cursors.Default
             dgvtraktPlaycount.Sort(coltraktPlaycountLastWatched, System.ComponentModel.ListSortDirection.Descending)
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
             myWatchedMovies = Nothing
             myWatchedShows = Nothing
             myWatchedEpisodes = Nothing
@@ -1556,7 +1556,7 @@ Public Class dlgTrakttvManager
                 End If
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
     End Sub
@@ -2419,7 +2419,7 @@ Public Class dlgTrakttvManager
                     End If
                 Next
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         End If
     End Sub
@@ -3292,7 +3292,7 @@ Public Class dlgTrakttvManager
                 logger.Warn("[btntraktCommentsGet_Click] No token!")
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
             If Not myCommentsMovies Is Nothing Then
                 myCommentsMovies.Clear()
             End If

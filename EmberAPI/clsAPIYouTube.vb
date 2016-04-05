@@ -73,7 +73,7 @@ Namespace YouTube
                 _youtubelinks = ParseYTFormats(strURL)
 
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         End Sub
 
@@ -142,7 +142,7 @@ Namespace YouTube
                     rawStream_Map = HttpUtility.UrlDecode(rawAllData("url_encoded_fmt_stream_map"))
                     rawDash_Map = HttpUtility.UrlDecode(rawAllData("adaptive_fmts"))
                 Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                    logger.Error(ex, New StackFrame().GetMethod().Name)
                 End Try
 
                 Try
@@ -175,7 +175,7 @@ Namespace YouTube
                     DownloadLinks.BestQuality = DownloadLinks.VideoLinks.Item(0).FormatQuality
                     DownloadLinks.Title = HttpUtility.UrlDecode(rawAllData("title"))
                 Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                    logger.Error(ex, New StackFrame().GetMethod().Name)
                 End Try
             End If
 
@@ -213,7 +213,7 @@ Namespace YouTube
                     End If
                 Next
             Catch ex As TimeoutException
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
 
             Return tList

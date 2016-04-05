@@ -55,7 +55,7 @@ Public Class dlgDeleteConfirm
             NewNode.ImageKey = "FILE"
             NewNode.SelectedImageKey = "FILE"
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
             Throw
         End Try
     End Sub
@@ -79,7 +79,7 @@ Public Class dlgDeleteConfirm
                 AddFileNode(NewNode, item)
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
             Throw
         End Try
     End Sub
@@ -145,7 +145,7 @@ Public Class dlgDeleteConfirm
             End With
             Return result
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Function
 
@@ -336,7 +336,7 @@ Public Class dlgDeleteConfirm
 
             End With
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 

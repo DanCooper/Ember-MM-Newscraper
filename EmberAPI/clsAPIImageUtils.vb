@@ -130,7 +130,7 @@ Public Class ImageUtils
                 End Using
             End Using
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
     ''' <summary>
@@ -193,7 +193,7 @@ Public Class ImageUtils
 
             End Using
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
     ''' <summary>
@@ -258,7 +258,7 @@ Public Class ImageUtils
             Catch ex As Exception
                 pbDestination.Left = 0
                 pbDestination.Size = New Size(maxWidth, maxHeight)
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         Else
             pbDestination.Left = 0
@@ -295,7 +295,7 @@ Public Class ImageUtils
             End Using
             bmOverlay = Nothing
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
     ''' <summary>
@@ -347,7 +347,7 @@ Public Class ImageUtils
             End Using
             bmOverlay = Nothing
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Return imgUnderlay
@@ -430,7 +430,7 @@ Public Class ImageUtils
                 End Using
             End Using
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
         Return bmGenre
 

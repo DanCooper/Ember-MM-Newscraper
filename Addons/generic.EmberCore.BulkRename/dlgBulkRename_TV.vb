@@ -146,7 +146,7 @@ Public Class dlgBulkRenamer_TV
                                     End If
                                 End If
                             Catch ex As Exception
-                                logger.Error(New StackFrame().GetMethod().Name, ex)
+                                logger.Error(ex, New StackFrame().GetMethod().Name)
                             End Try
                             iProg += 1
 
@@ -162,7 +162,7 @@ Public Class dlgBulkRenamer_TV
                 End Using
             End Using
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -185,7 +185,7 @@ Public Class dlgBulkRenamer_TV
             End If
             pnlCancel.Visible = False
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -259,7 +259,7 @@ Public Class dlgBulkRenamer_TV
             End If
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -321,7 +321,7 @@ Public Class dlgBulkRenamer_TV
             bwLoadInfo.RunWorkerAsync()
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -335,7 +335,7 @@ Public Class dlgBulkRenamer_TV
             lblCanceling.Visible = True
             lblFile.Visible = False
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -396,7 +396,7 @@ Public Class dlgBulkRenamer_TV
 
             dgvEpisodesList.Refresh()
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -472,7 +472,7 @@ Public Class dlgBulkRenamer_TV
                 End If
             End With
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -492,7 +492,7 @@ Public Class dlgBulkRenamer_TV
                 tThread.Start()
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -517,7 +517,7 @@ Public Class dlgBulkRenamer_TV
             If String.IsNullOrEmpty(txtFilePatternEpisodes.Text) Then txtFilePatternEpisodes.Text = "$F"
             tmrSimul.Enabled = True
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -526,7 +526,7 @@ Public Class dlgBulkRenamer_TV
             If String.IsNullOrEmpty(txtFolderPatternSeasons.Text) Then txtFolderPatternSeasons.Text = "$D"
             tmrSimul.Enabled = True
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -535,7 +535,7 @@ Public Class dlgBulkRenamer_TV
             If String.IsNullOrEmpty(txtFolderPatternShows.Text) Then txtFolderPatternShows.Text = "$Z"
             tmrSimul.Enabled = True
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 

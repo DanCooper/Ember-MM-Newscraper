@@ -18,10 +18,7 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.IO
-Imports System.IO.Compression
 Imports System.Net
-Imports System.Text
 Imports System.Text.RegularExpressions
 Imports NLog
 Imports EmberAPI
@@ -79,7 +76,7 @@ Namespace IMPA
                     Next
                 End If
             Catch ex As Exception
-                logger.Error("GetIMPAPosters", ex)
+                logger.Error(ex, "GetIMPAPosters")
             End Try
 
             Return alContainer
@@ -108,7 +105,7 @@ Namespace IMPA
                     Return String.Empty
                 End If
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name,ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
                 Return String.Empty
             End Try
         End Function

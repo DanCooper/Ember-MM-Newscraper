@@ -149,7 +149,7 @@ Public Class dlgTMDBSearchResults_MovieSet
                 _PosterCache.Add(Res.IMDBId, CType(Res.Result.Clone, Image))
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         Finally
             pnlPicStatus.Visible = False
         End Try
@@ -215,7 +215,7 @@ Public Class dlgTMDBSearchResults_MovieSet
                 pnlTop.BackgroundImage = iBackground
             End Using
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -359,7 +359,7 @@ Public Class dlgTMDBSearchResults_MovieSet
             End If
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -391,7 +391,7 @@ Public Class dlgTMDBSearchResults_MovieSet
                 Return DirectCast(bin.Deserialize(mem), MediaContainers.MovieSet)
             End Using
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Return Nothing

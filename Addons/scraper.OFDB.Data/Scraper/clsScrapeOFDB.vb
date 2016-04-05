@@ -58,7 +58,7 @@ Namespace OFDB
                     CleanString = sString
                 End If
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
             Return CleanString
         End Function
@@ -92,7 +92,7 @@ Namespace OFDB
                     End If
                 End If
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
 
             Return FSK
@@ -115,7 +115,7 @@ Namespace OFDB
                     End If
                 End If
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
 
             Return FullPlot
@@ -178,7 +178,7 @@ Namespace OFDB
 
                 Return nMovie
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
                 Return Nothing
             End Try
         End Function

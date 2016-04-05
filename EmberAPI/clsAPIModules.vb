@@ -207,7 +207,7 @@ Public Class ModulesManager
             Try
                 ret = _externalScraperModule.ProcessorModule.GetLanguages(Langs)
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
             If ret.breakChain Then Exit For
         Next
@@ -800,7 +800,7 @@ Public Class ModulesManager
                 Next
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Return ret.Cancelled
@@ -1830,7 +1830,7 @@ Public Class ModulesManager
                 Try
                     _externalScraperModule.ProcessorModule.ScraperEnabled = value
                 Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                    logger.Error(ex, New StackFrame().GetMethod().Name)
                 End Try
             Next
         End If

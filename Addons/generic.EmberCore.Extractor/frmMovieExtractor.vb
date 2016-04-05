@@ -104,7 +104,7 @@ Public Class frmMovieExtractor
             PreviousFrameValue = 0
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
             tbFrame.Maximum = 0
             tbFrame.Value = 0
             tbFrame.Enabled = False
@@ -130,7 +130,7 @@ Public Class frmMovieExtractor
             lblTime.Text = String.Format("{0}:{1:00}:{2:00}", sec2Time.Hours, sec2Time.Minutes, sec2Time.Seconds)
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -184,7 +184,7 @@ Public Class frmMovieExtractor
             End If
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
             PreviousFrameValue = 0
             lblTime.Text = String.Empty
             tbFrame.Maximum = 0
@@ -216,7 +216,7 @@ Public Class frmMovieExtractor
             RaiseEvent GenericEvent(Enums.ModuleEventType.FrameExtrator_Movie, New List(Of Object)(New Object() {"ExtrafanartToSave", sPath}))
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         btnFrameSaveAsExtrafanart.Enabled = False
@@ -240,7 +240,7 @@ Public Class frmMovieExtractor
             RaiseEvent GenericEvent(Enums.ModuleEventType.FrameExtrator_Movie, New List(Of Object)(New Object() {"ExtrathumbToSave", sPath}))
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         btnFrameSaveAsExtrathumb.Enabled = False
@@ -252,7 +252,7 @@ Public Class frmMovieExtractor
                 RaiseEvent GenericEvent(Enums.ModuleEventType.FrameExtrator_Movie, New List(Of Object)(New Object() {"FanartToSave"}))
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         btnFrameSaveAsFanart.Enabled = False
@@ -274,7 +274,7 @@ Public Class frmMovieExtractor
             'End If
             MessageBox.Show("This feature is currently unavailable", "No Beta Feature", MessageBoxButtons.OK, MessageBoxIcon.Information) 'TODO: re-add autothumbs
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 

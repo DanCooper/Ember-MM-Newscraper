@@ -167,7 +167,7 @@ Public Class StringUtils
                 strResult = strPlotOutline.Trim()
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
         Return strResult
     End Function
@@ -375,7 +375,7 @@ Public Class StringUtils
 
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
         Return TVEpName.Trim
     End Function

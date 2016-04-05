@@ -148,7 +148,7 @@ Public Class FileFolderRenamer
                 SQLtransaction.Commit()
             End Using
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -164,7 +164,7 @@ Public Class FileFolderRenamer
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -288,7 +288,7 @@ Public Class FileFolderRenamer
                 End If
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -417,7 +417,7 @@ Public Class FileFolderRenamer
                 End If
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -493,7 +493,7 @@ Public Class FileFolderRenamer
                 End If
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -613,7 +613,7 @@ Public Class FileFolderRenamer
             EpisodeFile.DirExist = Directory.Exists(Path.Combine(EpisodeFile.BasePath, EpisodeFile.NewPath)) AndAlso Not (EpisodeFile.Path.ToLower = EpisodeFile.NewPath.ToLower)
             EpisodeFile.IsRenamed = Not EpisodeFile.NewPath = EpisodeFile.Path OrElse Not EpisodeFile.NewFileName = EpisodeFile.FileName
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -656,7 +656,7 @@ Public Class FileFolderRenamer
             MovieFile.DirExist = Directory.Exists(Path.Combine(MovieFile.BasePath, MovieFile.NewPath)) AndAlso Not (MovieFile.Path.ToLower = MovieFile.NewPath.ToLower)
             MovieFile.IsRenamed = Not MovieFile.NewPath = MovieFile.Path OrElse Not MovieFile.NewFileName = MovieFile.FileName
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -681,7 +681,7 @@ Public Class FileFolderRenamer
             ShowFile.DirExist = Directory.Exists(Path.Combine(ShowFile.BasePath, ShowFile.NewPath)) AndAlso Not (ShowFile.Path.ToLower = ShowFile.NewPath.ToLower)
             ShowFile.IsRenamed = Not ShowFile.NewPath = ShowFile.Path
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -841,7 +841,7 @@ Public Class FileFolderRenamer
                     End If
                 End If
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         End If
 
@@ -1043,7 +1043,7 @@ Public Class FileFolderRenamer
                 End If
 
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         End If
 
@@ -1206,7 +1206,7 @@ Public Class FileFolderRenamer
                 Process_Episode(f, folderPatternSeasons, filePatternEpisodes)
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -1216,7 +1216,7 @@ Public Class FileFolderRenamer
                 Process_Movie(f, If(f.IsSingle, folderPattern, folderPatternIsNotSingle), filePattern)
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -1655,7 +1655,7 @@ Public Class FileFolderRenamer
                 Return String.Empty
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
             Return String.Empty
         End Try
     End Function
@@ -1697,7 +1697,7 @@ Public Class FileFolderRenamer
                                 End If
                             End If
                         Catch ex As Exception
-                            logger.Error(New StackFrame().GetMethod().Name, ex)
+                            logger.Error(ex, New StackFrame().GetMethod().Name)
                         End Try
                         iProg += 1
                     End While
