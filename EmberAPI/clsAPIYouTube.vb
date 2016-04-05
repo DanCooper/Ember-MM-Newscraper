@@ -124,7 +124,7 @@ Namespace YouTube
         ''' </summary>
         ''' <param name="strURL"><c>String</c> representation of the URL to query</param>
         ''' <remarks>Note that most callers should use <c>GetVideoLinks(ByVal url As String)</c> instead of this <c>Private</c> function.
-        ''' If the <paramref name="url">URL</paramref> leads to a YouTube video page, this method will parse
+        ''' If the <paramref name="strURL">URL</paramref> leads to a YouTube video page, this method will parse
         ''' the page to extract the various video stream links, and store them in the internal <c>VideoLinks</c> collection.
         ''' Note that only one link of each <c>Enums.TrailerQuality</c> will be kept.
         ''' </remarks>

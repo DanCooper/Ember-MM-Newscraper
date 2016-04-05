@@ -75,6 +75,7 @@ Public Class dlgHost
     ''' <remarks>
     ''' - triggered whenever user hits Edit or Add buttons in frmSettingsHolder form
     ''' 2015/06/26 Cocotus - First implementation
+    ''' </remarks>
     Private Sub dlgHost_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Setup()
 
@@ -100,6 +101,7 @@ Public Class dlgHost
     ''' <remarks>
     ''' - set labels/translation text
     ''' 2015/06/26 Cocotus - First implementation
+    ''' </remarks>
     Private Sub Setup()
         lblCompiling.Text = Master.eLang.GetString(326, "Loading...")
         Text = Master.eLang.GetString(1422, "Kodi Interface")
@@ -136,6 +138,7 @@ Public Class dlgHost
     ''' </summary>
     ''' <remarks>
     ''' 2015/06/26 Cocotus - First implementation
+    ''' </remarks>
     Private Sub PopulateHostSources()
         dgvHostSources.SuspendLayout()
         dgvHostSources.Rows.Clear()
@@ -191,6 +194,7 @@ Public Class dlgHost
     ''' 2015/06/26 Cocotus - First implementation
     ''' Send JSON API request to Kodi to get all sources from host
     ''' request will be executed in backgroundworker
+    ''' </remarks>
     Private Sub btnHostPopulateSources_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnHostPopulateSources.Click
         SetControlsEnabled(False)
         SetInfo()
@@ -247,6 +251,7 @@ Public Class dlgHost
     ''' <remarks>
     ''' 2015/06/26 Cocotus - First implementation
     ''' Request will be executed in backgroundworker
+    ''' </remarks>
     Private Sub bwLoadInfo_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadInfo.DoWork
         Select Case CInt(e.Argument)
             Case 1
@@ -264,6 +269,7 @@ Public Class dlgHost
     ''' <remarks>
     ''' 2015/06/26 Cocotus - First implementation
     ''' Send JSON API request to Kodi to check if entered host data is correct
+    ''' </remarks>
     Private Sub btnHostCheck_Click(sender As Object, e As EventArgs) Handles btnHostCheck.Click
         SetControlsEnabled(False)
         SetInfo()

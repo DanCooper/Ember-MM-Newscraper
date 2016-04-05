@@ -480,9 +480,6 @@ Public Class dlgTagManager
         newtag.Name = listname
         Return newtag
     End Function
-
-
-    ''' </remarks>
     ''' <summary>
     ''' Save tag state to Ember database/Nfo of movies
     ''' </summary>
