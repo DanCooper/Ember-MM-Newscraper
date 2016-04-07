@@ -778,7 +778,7 @@ Public Class Scanner
 
         'first we have to create a list of all already existing episode information for this file path
         If Not isNew Then
-            Dim EpisodesByFilenameList As List(Of Database.DBElement) = Master.DB.LoadAllTVEpisodesFromDBByFileID(DBTVEpisode.FilenameID, False)
+            Dim EpisodesByFilenameList As List(Of Database.DBElement) = Master.DB.LoadFromDB_TVEpisodes_ByFileID(DBTVEpisode.FilenameID, False)
             For Each eEpisode As Database.DBElement In EpisodesByFilenameList
                 EpisodesToRemoveList.Add(New EpisodeItem With {.Episode = eEpisode.TVEpisode.Episode, .idEpisode = eEpisode.ID, .Season = eEpisode.TVEpisode.Season})
             Next
@@ -932,7 +932,7 @@ Public Class Scanner
 
         If Not isNew Then
             For Each eEpisode As EpisodeItem In EpisodesToRemoveList
-                Master.DB.DeleteTVEpFromDB(eEpisode.idEpisode, False, False, Batchmode)
+                Master.DB.DeleteFromDB_TVEpisode(eEpisode.idEpisode, False, False, Batchmode)
             Next
         End If
 
@@ -995,7 +995,7 @@ Public Class Scanner
                 End If
             Else
                 Dim newEpisodes As List(Of Database.DBElement) = DBTVShow.Episodes
-                DBTVShow = Master.DB.LoadTVShowFromDB(Convert.ToInt64(TVShowPaths.Item(DBTVShow.ShowPath.ToLower)), True, False)
+                DBTVShow = Master.DB.LoadFromDB_TVSeason(Convert.ToInt64(TVShowPaths.Item(DBTVShow.ShowPath.ToLower)), True, False)
                 DBTVShow.Episodes = newEpisodes
             End If
 
@@ -1684,7 +1684,7 @@ Public Class Scanner
                         Next
 
                         If Not ShowID = -1 Then
-                            Dim currShowContainer As Database.DBElement = Master.DB.LoadTVShowFromDB(ShowID, False, False)
+                            Dim currShowContainer As Database.DBElement = Master.DB.LoadFromDB_TVSeason(ShowID, False, False)
 
                             Dim inInfo As DirectoryInfo = New DirectoryInfo(currShowContainer.ShowPath)
                             Dim inList As IEnumerable(Of DirectoryInfo) = Nothing
@@ -1724,7 +1724,7 @@ Public Class Scanner
                             Dim parLastScan As SQLite.SQLiteParameter = SQLUpdatecommand.Parameters.Add("parLastScan", DbType.String, 0, "strLastScan")
                             Dim parID As SQLite.SQLiteParameter = SQLUpdatecommand.Parameters.Add("parID", DbType.Int32, 0, "idSource")
                             While SQLreader.Read
-                                Dim sSource As Database.DBSource = Master.DB.LoadMovieSourceFromDB(Convert.ToInt64(SQLreader("idSource")))
+                                Dim sSource As Database.DBSource = Master.DB.LoadSourceFromDB_Movie(Convert.ToInt64(SQLreader("idSource")))
                                 Try
                                     SourceLastScan = If(sSource.LastScanSpecified, Convert.ToDateTime(sSource.LastScan), DateTime.Now)
                                 Catch ex As Exception
@@ -1801,7 +1801,7 @@ Public Class Scanner
                             Dim parLastScan As SQLite.SQLiteParameter = SQLUpdatecommand.Parameters.Add("parLastScan", DbType.String, 0, "strLastScan")
                             Dim parID As SQLite.SQLiteParameter = SQLUpdatecommand.Parameters.Add("parID", DbType.Int32, 0, "idSource")
                             While SQLreader.Read
-                                Dim sSource As Database.DBSource = Master.DB.LoadTVShowSourceFromDB(Convert.ToInt64(SQLreader("idSource")))
+                                Dim sSource As Database.DBSource = Master.DB.LoadSourceFromDB_TVShow(Convert.ToInt64(SQLreader("idSource")))
                                 Try
                                     SourceLastScan = If(sSource.LastScanSpecified, Convert.ToDateTime(sSource.LastScan), DateTime.Now)
                                 Catch ex As Exception
@@ -1828,7 +1828,7 @@ Public Class Scanner
         If (Master.eSettings.MovieCleanDB AndAlso Args.Scan.Movies) OrElse (Master.eSettings.MovieSetCleanDB AndAlso Args.Scan.Movies) OrElse (Master.eSettings.TVCleanDB AndAlso Args.Scan.TV) Then
             bwPrelim.ReportProgress(3, New ProgressValue With {.Type = -1, .Message = String.Empty})
             'remove any db entries that no longer exist
-            Master.DB.Clean(Master.eSettings.MovieCleanDB AndAlso Args.Scan.Movies, Master.eSettings.MovieSetCleanDB AndAlso Args.Scan.MovieSets, Master.eSettings.TVCleanDB AndAlso Args.Scan.TV, Args.SourceID)
+            Master.DB.DBClean(Master.eSettings.MovieCleanDB AndAlso Args.Scan.Movies, Master.eSettings.MovieSetCleanDB AndAlso Args.Scan.MovieSets, Master.eSettings.TVCleanDB AndAlso Args.Scan.TV, Args.SourceID)
         End If
 
         e.Result = Args
