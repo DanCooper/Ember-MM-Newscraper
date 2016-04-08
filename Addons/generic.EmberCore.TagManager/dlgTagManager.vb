@@ -96,7 +96,7 @@ Public Class dlgTagManager
 
         'load current movielist-view/selection
         For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListMovies.Rows
-            Dim DBElement As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells("idMovie").Value))
+            Dim DBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value))
             If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBElement, True) Then
                 lstFilteredMovies.Add(DBElement)
             End If
@@ -170,7 +170,7 @@ Public Class dlgTagManager
                     Dim tmpnewTag As New SyncTag
                     tmpnewTag.ID = CInt(sRow.Item("idTag"))
                     tmpnewTag.Name = CStr(sRow.Item("strTag"))
-                    Dim tmpTag = Master.DB.LoadMovieTagFromDB(CInt(sRow.Item("idTag")))
+                    Dim tmpTag = Master.DB.Load_Tag_Movie(CInt(sRow.Item("idTag")))
                     tmpnewTag.Movies = tmpTag.Movies
                     globalMovieTags.Add(tmpnewTag)
                     lbTags.Items.Add(sRow.Item("strTag").ToString)
@@ -281,7 +281,7 @@ Public Class dlgTagManager
     Private Sub btnAddMovie_Click(sender As Object, e As EventArgs) Handles btnAddMovie.Click
         If Me.dgvMovies.SelectedRows.Count > 0 Then
             For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
-                Dim tmpMovie As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells("ID").Value))
+                Dim tmpMovie As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells("ID").Value))
 
 
                 If Not String.IsNullOrEmpty(tmpMovie.Movie.Title) Then
@@ -511,13 +511,13 @@ Public Class dlgTagManager
                 'Step 2: save tag to DB
                 If list.IsNew = True Then
                     'save tag to database
-                    Master.DB.SaveMovieTagToDB(tmpDBMovieTag, True, False, True, True)
+                    Master.DB.Save_Tag_Movie(tmpDBMovieTag, True, False, True, True)
                 ElseIf list.IsDeleted = True Then
                     'remove tag from database/nfo
-                    Master.DB.DeleteTagFromDB(tmpDBMovieTag.ID, 1, False)
+                    Master.DB.Delete_Tag(tmpDBMovieTag.ID, 1, False)
                 ElseIf list.IsModified = True Then
                     'save tag to database
-                    Master.DB.SaveMovieTagToDB(tmpDBMovieTag, False, False, True, True)
+                    Master.DB.Save_Tag_Movie(tmpDBMovieTag, False, False, True, True)
                 End If
             Else
                 'no name !
@@ -542,10 +542,10 @@ Public Class dlgTagManager
             If tmovie.Movie.Title.EndsWith("_TODELETE") Then
                 tmovie.Movie.Tags.Remove(tag.Name)
                 tmovie.Movie.Title = tmovie.Movie.Title.Replace("_TODELETE", "")
-                Master.DB.SaveMovieToDB(tmovie, True, True, False)
+                Master.DB.Save_Movie(tmovie, True, True, False)
             Else
                 tmovie.Movie.Tags.Add(tag.Name)
-                Master.DB.SaveMovieToDB(tmovie, True, True, False)
+                Master.DB.Save_Movie(tmovie, True, True, False)
             End If
         Next
     End Sub
@@ -562,7 +562,7 @@ Public Class dlgTagManager
             lstFilteredMovies.Clear()
             'load current movielist-view/selection
             For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListMovies.Rows
-                Dim DBElement As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells("idMovie").Value))
+                Dim DBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value))
                 If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBElement, True) Then
                     lstFilteredMovies.Add(DBElement)
                 End If
@@ -578,7 +578,7 @@ Public Class dlgTagManager
             lstFilteredMovies.Clear()
             'load current movielist-view/selection
             For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows
-                Dim DBElement As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells("idMovie").Value))
+                Dim DBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value))
                 If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBElement, True) Then
                     lstFilteredMovies.Add(DBElement)
                 End If
@@ -597,7 +597,7 @@ Public Class dlgTagManager
             Master.DB.FillDataTable(dtmovies, String.Concat("SELECT * FROM movielist ", _
                                                                 "ORDER BY ListTitle COLLATE NOCASE;"))
             For Each sRow As DataRow In dtmovies.Rows
-                Dim DBElement As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow("idMovie")))
+                Dim DBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow("idMovie")))
                 If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBElement, True) Then
                     lstFilteredMovies.Add(DBElement)
                 End If

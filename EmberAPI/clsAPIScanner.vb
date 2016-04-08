@@ -738,9 +738,9 @@ Public Class Scanner
 
             'Do the Save
             If ToNfo AndAlso DBMovie.NfoPathSpecified Then
-                DBMovie = Master.DB.SaveMovieToDB(DBMovie, Batchmode, True, False)
+                DBMovie = Master.DB.Save_Movie(DBMovie, Batchmode, True, False)
             Else
-                DBMovie = Master.DB.SaveMovieToDB(DBMovie, Batchmode, False, False)
+                DBMovie = Master.DB.Save_Movie(DBMovie, Batchmode, False, False)
             End If
         End If
     End Sub
@@ -769,7 +769,7 @@ Public Class Scanner
             DBMovieSet.ListTitle = OldTitle
         End If
 
-        DBMovieSet = Master.DB.SaveMovieSetToDB(DBMovieSet, Batchmode, False, Not OldTitle = DBMovieSet.MovieSet.Title)
+        DBMovieSet = Master.DB.Save_MovieSet(DBMovieSet, Batchmode, False, Not OldTitle = DBMovieSet.MovieSet.Title)
     End Sub
 
     Public Function Load_TVEpisode(ByVal DBTVEpisode As Database.DBElement, ByVal isNew As Boolean, ByVal Batchmode As Boolean, ReportProgress As Boolean) As SeasonAndEpisodeItems
@@ -778,7 +778,7 @@ Public Class Scanner
 
         'first we have to create a list of all already existing episode information for this file path
         If Not isNew Then
-            Dim EpisodesByFilenameList As List(Of Database.DBElement) = Master.DB.LoadAllTVEpisodesFromDBByFileID(DBTVEpisode.FilenameID, False)
+            Dim EpisodesByFilenameList As List(Of Database.DBElement) = Master.DB.Load_AllTVEpisodes_ByFileID(DBTVEpisode.FilenameID, False)
             For Each eEpisode As Database.DBElement In EpisodesByFilenameList
                 EpisodesToRemoveList.Add(New EpisodeItem With {.Episode = eEpisode.TVEpisode.Episode, .idEpisode = eEpisode.ID, .Season = eEpisode.TVEpisode.Season})
             Next
@@ -911,17 +911,17 @@ Public Class Scanner
                 If Not EpisodeID = -1 Then
                     'old episode entry found, we re-use the idEpisode
                     cEpisode.ID = EpisodeID
-                    Master.DB.SaveTVEpisodeToDB(cEpisode, Batchmode, ToNfo, ToNfo, False, True)
+                    Master.DB.Save_TVEpisode(cEpisode, Batchmode, ToNfo, ToNfo, False, True)
                 Else
                     'no existing episode found or the season or episode number has changed => we have to add it as new episode
-                    Master.DB.SaveTVEpisodeToDB(cEpisode, Batchmode, ToNfo, ToNfo, True, True)
+                    Master.DB.Save_TVEpisode(cEpisode, Batchmode, ToNfo, ToNfo, True, True)
                 End If
 
                 'add the season number to list
                 SeasonAndEpisodeList.Seasons.Add(cEpisode.TVEpisode.Season)
             Else
                 'Do the Save, no Season check (we add a new seasons whit tv show), no Sync (we sync with tv show)
-                cEpisode = Master.DB.SaveTVEpisodeToDB(cEpisode, Batchmode, ToNfo, ToNfo, False, False)
+                cEpisode = Master.DB.Save_TVEpisode(cEpisode, Batchmode, ToNfo, ToNfo, False, False)
                 'add the season number and the new saved episode to list
                 SeasonAndEpisodeList.Episodes.Add(cEpisode)
                 SeasonAndEpisodeList.Seasons.Add(cEpisode.TVEpisode.Season)
@@ -932,7 +932,7 @@ Public Class Scanner
 
         If Not isNew Then
             For Each eEpisode As EpisodeItem In EpisodesToRemoveList
-                Master.DB.DeleteTVEpFromDB(eEpisode.idEpisode, False, False, Batchmode)
+                Master.DB.Delete_TVEpisode(eEpisode.idEpisode, False, False, Batchmode)
             Next
         End If
 
@@ -991,11 +991,11 @@ Public Class Scanner
                         DBTVShow.Language = DBTVShow.Source.Language
                     End If
 
-                    Master.DB.SaveTVShowToDB(DBTVShow, Batchmode, False, False, False)
+                    Master.DB.Save_TVShow(DBTVShow, Batchmode, False, False, False)
                 End If
             Else
                 Dim newEpisodes As List(Of Database.DBElement) = DBTVShow.Episodes
-                DBTVShow = Master.DB.LoadTVShowFromDB(Convert.ToInt64(TVShowPaths.Item(DBTVShow.ShowPath.ToLower)), True, False)
+                DBTVShow = Master.DB.Load_TVShow(Convert.ToInt64(TVShowPaths.Item(DBTVShow.ShowPath.ToLower)), True, False)
                 DBTVShow.Episodes = newEpisodes
             End If
 
@@ -1077,7 +1077,7 @@ Public Class Scanner
             For Each newSeason As Integer In newSeasonsIndex
                 Dim tSeason As Database.DBElement = DBTVShow.Seasons.FirstOrDefault(Function(f) f.TVSeason.Season = newSeason)
                 If tSeason IsNot Nothing AndAlso tSeason.TVSeason IsNot Nothing Then
-                    Master.DB.SaveTVSeasonToDB(tSeason, Batchmode, True, False)
+                    Master.DB.Save_TVSeason(tSeason, Batchmode, True, False)
                 End If
             Next
 
@@ -1088,14 +1088,14 @@ Public Class Scanner
 
             'sync new episodes
             For Each nEpisode In newEpisodesList
-                Master.DB.SaveTVEpisodeToDB(nEpisode, Batchmode, False, False, False, True, True)
+                Master.DB.Save_TVEpisode(nEpisode, Batchmode, False, False, False, True, True)
             Next
 
             'sync new seasons
             For Each newSeason As Integer In newSeasonsIndex
                 Dim tSeason As Database.DBElement = DBTVShow.Seasons.FirstOrDefault(Function(f) f.TVSeason.Season = newSeason)
                 If tSeason IsNot Nothing AndAlso tSeason.TVSeason IsNot Nothing Then
-                    Master.DB.SaveTVSeasonToDB(tSeason, Batchmode, False, True)
+                    Master.DB.Save_TVSeason(tSeason, Batchmode, False, True)
                 End If
             Next
         End If
@@ -1684,7 +1684,7 @@ Public Class Scanner
                         Next
 
                         If Not ShowID = -1 Then
-                            Dim currShowContainer As Database.DBElement = Master.DB.LoadTVShowFromDB(ShowID, False, False)
+                            Dim currShowContainer As Database.DBElement = Master.DB.Load_TVShow(ShowID, False, False)
 
                             Dim inInfo As DirectoryInfo = New DirectoryInfo(currShowContainer.ShowPath)
                             Dim inList As IEnumerable(Of DirectoryInfo) = Nothing
@@ -1724,7 +1724,7 @@ Public Class Scanner
                             Dim parLastScan As SQLite.SQLiteParameter = SQLUpdatecommand.Parameters.Add("parLastScan", DbType.String, 0, "strLastScan")
                             Dim parID As SQLite.SQLiteParameter = SQLUpdatecommand.Parameters.Add("parID", DbType.Int32, 0, "idSource")
                             While SQLreader.Read
-                                Dim sSource As Database.DBSource = Master.DB.LoadMovieSourceFromDB(Convert.ToInt64(SQLreader("idSource")))
+                                Dim sSource As Database.DBSource = Master.DB.Load_Source_Movie(Convert.ToInt64(SQLreader("idSource")))
                                 Try
                                     SourceLastScan = If(sSource.LastScanSpecified, Convert.ToDateTime(sSource.LastScan), DateTime.Now)
                                 Catch ex As Exception
@@ -1801,7 +1801,7 @@ Public Class Scanner
                             Dim parLastScan As SQLite.SQLiteParameter = SQLUpdatecommand.Parameters.Add("parLastScan", DbType.String, 0, "strLastScan")
                             Dim parID As SQLite.SQLiteParameter = SQLUpdatecommand.Parameters.Add("parID", DbType.Int32, 0, "idSource")
                             While SQLreader.Read
-                                Dim sSource As Database.DBSource = Master.DB.LoadTVShowSourceFromDB(Convert.ToInt64(SQLreader("idSource")))
+                                Dim sSource As Database.DBSource = Master.DB.Load_Source_TVShow(Convert.ToInt64(SQLreader("idSource")))
                                 Try
                                     SourceLastScan = If(sSource.LastScanSpecified, Convert.ToDateTime(sSource.LastScan), DateTime.Now)
                                 Catch ex As Exception

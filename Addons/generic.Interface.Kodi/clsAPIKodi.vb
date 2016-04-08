@@ -913,7 +913,7 @@ Namespace Kodi
 
             Dim bNeedSave As Boolean = False
             Dim bIsNew As Boolean = False
-            'Dim uMovie As Database.DBElement = Master.DB.LoadMovieFromDB(lngMovieID)
+            'Dim uMovie As Database.DBElement = Master.DB.Load_Movie(lngMovieID)
 
             Try
                 logger.Trace(String.Format("[APIKodi] [{0}] UpdateMovieInfo: ""{1}"" | Start syncing process...", _currenthost.Label, mDBElement.Movie.Title))
@@ -1068,7 +1068,7 @@ Namespace Kodi
                         End If
                         If bNeedSave Then
                             logger.Trace(String.Format("[APIKodi] [{0}] UpdateMovieInfo: ""{1}"" | Save Playcount from host", _currenthost.Label, mDBElement.Movie.Title))
-                            Master.DB.SaveMovieToDB(mDBElement, False, True, False)
+                            Master.DB.Save_Movie(mDBElement, False, True, False)
                             GenericSubEvent.Report(New GenericSubEventCallBackAsync With {
                                                    .tGenericEventCallBackAsync = New GenericEventCallBackAsync With
                                                    {.tEventType = Enums.ModuleEventType.AfterEdit_Movie, .tParams = New List(Of Object)(New Object() {mDBElement.ID})},
@@ -1104,7 +1104,7 @@ Namespace Kodi
             End If
 
             Dim bIsNew As Boolean = False
-            'Dim uMovieset As Database.DBElement = Master.DB.LoadMovieSetFromDB(lngMovieSetID)
+            'Dim uMovieset As Database.DBElement = Master.DB.Load_MovieSet(lngMovieSetID)
 
             Try
                 logger.Trace(String.Format("[APIKodi] [{0}] UpdateMovieSetInfo: ""{1}"" | Start syncing process...", _currenthost.Label, mDBElement.MovieSet.Title))
@@ -1303,7 +1303,7 @@ Namespace Kodi
                         End If
                         If bNeedSave Then
                             logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVEpisodeInfo: ""{1}"" | Save Playcount from host", _currenthost.Label, mDBElement.TVEpisode.Title))
-                            Master.DB.SaveTVEpisodeToDB(mDBElement, False, True, False, False, True)
+                            Master.DB.Save_TVEpisode(mDBElement, False, True, False, False, True)
                             GenericSubEvent.Report(New GenericSubEventCallBackAsync With {
                                                    .tGenericEventCallBackAsync = New GenericEventCallBackAsync With
                                                    {.tEventType = Enums.ModuleEventType.AfterEdit_TVEpisode, .tParams = New List(Of Object)(New Object() {mDBElement.ID})},

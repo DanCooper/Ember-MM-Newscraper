@@ -139,7 +139,7 @@ Public Class dlgBulkRenamer_Movie
                                 If Not DBNull.Value.Equals(SQLreader("NfoPath")) AndAlso Not DBNull.Value.Equals(SQLreader("idMovie")) Then
                                     _tmpPath = SQLreader("NfoPath").ToString
                                     If Not String.IsNullOrEmpty(_tmpPath) Then
-                                        Dim _currMovie As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt32(SQLreader("idMovie")))
+                                        Dim _currMovie As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt32(SQLreader("idMovie")))
                                         If Not _currMovie.ID = -1 AndAlso Not String.IsNullOrEmpty(_currMovie.Filename) Then
                                             Dim MovieFile As FileFolderRenamer.FileRename = FileFolderRenamer.GetInfo_Movie(_currMovie)
                                             FFRenamer.AddMovie(MovieFile)
