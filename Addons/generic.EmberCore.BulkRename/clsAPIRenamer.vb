@@ -141,7 +141,7 @@ Public Class FileFolderRenamer
                 For Each f As FileFolderRenamer.FileRename In _episodes.Where(Function(s) s.IsRenamed AndAlso Not s.FileExist AndAlso Not s.IsLocked)
                     iProg += 1
                     If Not f.ID = -1 Then
-                        _tvDB = Master.DB.LoadFromDB_TVEpisode(f.ID, True)
+                        _tvDB = Master.DB.LoadTVEpisodeFromDB(f.ID, True)
                         DoRenameSingle_Episode(f, _tvDB, True, False, True, sfunction, iProg)
                     End If
                 Next
@@ -159,7 +159,7 @@ Public Class FileFolderRenamer
             For Each f As FileFolderRenamer.FileRename In _movies.Where(Function(s) s.IsRenamed AndAlso Not s.FileExist AndAlso Not s.IsLocked)
                 iProg += 1
                 If Not f.ID = -1 Then
-                    _movieDB = Master.DB.LoadFromDB_Movie(f.ID)
+                    _movieDB = Master.DB.LoadMovieFromDB(f.ID)
                     DoRenameSingle_Movie(f, _movieDB, True, False, True, sfunction, iProg)
                 End If
             Next
@@ -1688,7 +1688,7 @@ Public Class FileFolderRenamer
                             If Not DBNull.Value.Equals(SQLreader("NfoPath")) AndAlso Not DBNull.Value.Equals(SQLreader("idEpisode")) Then
                                 _tmpPath = SQLreader("NfoPath").ToString
                                 If Not String.IsNullOrEmpty(_tmpPath) Then
-                                    Dim _currEpisode As Database.DBElement = Master.DB.LoadFromDB_TVEpisode(Convert.ToInt32(SQLreader("idEpisode")), True)
+                                    Dim _currEpisode As Database.DBElement = Master.DB.LoadTVEpisodeFromDB(Convert.ToInt32(SQLreader("idEpisode")), True)
                                     If Not _currEpisode.ID = -1 AndAlso Not _currEpisode.ShowID = -1 AndAlso Not String.IsNullOrEmpty(_currEpisode.Filename) Then
                                         'Me.bwLoadInfo.ReportProgress(iProg, String.Concat(_currShow.TVShow.Title, ": ", _currShow.TVEp.Title))
                                         Dim EpisodeFile As FileFolderRenamer.FileRename = FileFolderRenamer.GetInfo_Episode(_currEpisode)

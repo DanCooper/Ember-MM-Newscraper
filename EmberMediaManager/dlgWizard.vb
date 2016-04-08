@@ -968,7 +968,7 @@ Public Class dlgWizard
         Dim lvItem As ListViewItem
 
         lvMovies.Items.Clear()
-        Master.DB.LoadSourcesFromDB_Movie()
+        Master.DB.LoadMovieSourcesFromDB()
         For Each s As Database.DBSource In Master.MovieSources
             lvItem = New ListViewItem(CStr(s.ID))
             lvItem.SubItems.Add(s.Name)
@@ -985,7 +985,7 @@ Public Class dlgWizard
 
     Private Sub RefreshTVSources()
         Dim lvItem As ListViewItem
-        Master.DB.LoadSourcesFromDB_TVShow()
+        Master.DB.LoadTVShowSourcesFromDB()
         lvTVSources.Items.Clear()
         Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
             SQLcommand.CommandText = "SELECT * FROM tvshowsource;"

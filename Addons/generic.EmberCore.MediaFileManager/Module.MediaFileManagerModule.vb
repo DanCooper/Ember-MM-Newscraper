@@ -367,7 +367,7 @@ Public Class FileManagerExternalModule
                         If ContentType = Enums.ContentType.Movie Then
                             Dim FileDelete As New FileUtils.Delete
                             For Each movieID As Long In MediaToWork
-                                Dim mMovie As Database.DBElement = Master.DB.LoadFromDB_Movie(movieID)
+                                Dim mMovie As Database.DBElement = Master.DB.LoadMovieFromDB(movieID)
                                 ItemsToWork = FileDelete.GetItemsToDelete(False, mMovie)
                                 If ItemsToWork.Count = 1 AndAlso Directory.Exists(ItemsToWork(0).ToString) Then
                                     If _MySettings.TeraCopy Then
@@ -376,7 +376,7 @@ Public Class FileManagerExternalModule
                                         Select Case tMItem.OwnerItem.Tag.ToString
                                             Case "MOVE"
                                                 DirectoryMove(ItemsToWork(0).ToString, Path.Combine(dstPath, Path.GetFileName(ItemsToWork(0).ToString)), Master.eLang.GetString(316, "Moving Movie"))
-                                                Master.DB.DeleteFromDB_Movie(movieID, False)
+                                                Master.DB.DeleteMovieFromDB(movieID, False)
                                             Case "COPY"
                                                 DirectoryCopy(ItemsToWork(0).ToString, Path.Combine(dstPath, Path.GetFileName(ItemsToWork(0).ToString)), Master.eLang.GetString(317, "Copying Movie"))
                                         End Select
@@ -387,7 +387,7 @@ Public Class FileManagerExternalModule
                         ElseIf ContentType = Enums.ContentType.TVShow Then
                             Dim FileDelete As New FileUtils.Delete
                             For Each tShowID As Long In MediaToWork
-                                Dim mShow As Database.DBElement = Master.DB.LoadFromDB_TVSeason(tShowID, False, False)
+                                Dim mShow As Database.DBElement = Master.DB.LoadTVShowFromDB(tShowID, False, False)
                                 If Directory.Exists(mShow.ShowPath) Then
                                     If _MySettings.TeraCopy Then
                                         mTeraCopy.Sources.Add(mShow.ShowPath)
@@ -395,7 +395,7 @@ Public Class FileManagerExternalModule
                                         Select Case tMItem.OwnerItem.Tag.ToString
                                             Case "MOVE"
                                                 DirectoryMove(mShow.ShowPath, Path.Combine(dstPath, Path.GetFileName(mShow.ShowPath)), Master.eLang.GetString(899, "Moving TV Show"))
-                                                Master.DB.DeleteFromDB_TVShow(tShowID, False)
+                                                Master.DB.DeleteTVShowFromDB(tShowID, False)
                                             Case "COPY"
                                                 DirectoryCopy(mShow.ShowPath, Path.Combine(dstPath, Path.GetFileName(mShow.ShowPath)), Master.eLang.GetString(900, "Copying TV Show"))
                                         End Select

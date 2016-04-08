@@ -621,7 +621,7 @@ Public Class dlgSettings
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
         Finally
-            Master.DB.LoadFromDB_ExcludedDirs()
+            Master.DB.LoadExcludeDirsFromDB()
         End Try
     End Sub
 
@@ -653,7 +653,7 @@ Public Class dlgSettings
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
         Finally
-            Master.DB.LoadFromDB_ExcludedDirs()
+            Master.DB.LoadExcludeDirsFromDB()
         End Try
     End Sub
 
@@ -1013,7 +1013,7 @@ Public Class dlgSettings
 
     Private Sub btnMovieSourceRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSourceRemove.Click
         RemoveMovieSource()
-        Master.DB.LoadSourcesFromDB_Movie()
+        Master.DB.LoadMovieSourcesFromDB()
     End Sub
 
     Private Sub btnMovieScraperDefFIExtAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieScraperDefFIExtAdd.Click
@@ -1733,7 +1733,7 @@ Public Class dlgSettings
 
     Private Sub btnRemTVSource_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRemTVSource.Click
         RemoveTVSource()
-        Master.DB.LoadSourcesFromDB_TVShow()
+        Master.DB.LoadTVShowSourcesFromDB()
     End Sub
 
     Private Sub btnTVShowFilterDown_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVShowFilterDown.Click
@@ -4472,7 +4472,7 @@ Public Class dlgSettings
     Private Sub RefreshMovieSources()
         Dim lvItem As ListViewItem
         lvMovieSources.Items.Clear()
-        Master.DB.LoadSourcesFromDB_Movie()
+        Master.DB.LoadMovieSourcesFromDB()
         For Each s As Database.DBSource In Master.MovieSources
             lvItem = New ListViewItem(CStr(s.ID))
             lvItem.SubItems.Add(s.Name)
@@ -4490,7 +4490,7 @@ Public Class dlgSettings
     Private Sub RefreshTVSources()
         Dim lvItem As ListViewItem
         lvTVSources.Items.Clear()
-        Master.DB.LoadSourcesFromDB_TVShow()
+        Master.DB.LoadTVShowSourcesFromDB()
         For Each s As Database.DBSource In Master.TVShowSources
             lvItem = New ListViewItem(CStr(s.ID))
             lvItem.SubItems.Add(s.Name)
