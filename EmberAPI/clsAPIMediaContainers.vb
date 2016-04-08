@@ -278,18 +278,6 @@ Namespace MediaContainers
             End Get
         End Property
 
-        <Obsolete("This property is depreciated. Use Episode.Credits [List(Of String)] instead.")>
-        <XmlIgnore()>
-        Public Property OldCredits() As String
-            Get
-                Return String.Join(" / ", _credits.ToArray)
-            End Get
-            Set(ByVal value As String)
-                _credits.Clear()
-                AddCredit(value)
-            End Set
-        End Property
-
         <XmlElement("credits")>
         Public Property Credits() As List(Of String)
             Get
@@ -343,18 +331,6 @@ Namespace MediaContainers
             Get
                 Return Not String.IsNullOrEmpty(_lastplayed)
             End Get
-        End Property
-
-        <Obsolete("This property is depreciated. Use Episode.Directors [List(Of String)] instead.")>
-        <XmlIgnore()>
-        Public Property Director() As String
-            Get
-                Return String.Join(" / ", _directors.ToArray)
-            End Get
-            Set(ByVal value As String)
-                _directors.Clear()
-                AddDirector(value)
-            End Set
         End Property
 
         <XmlElement("director")>
@@ -622,7 +598,8 @@ Namespace MediaContainers
             _votes = String.Empty
         End Sub
 
-        Public Sub AddCredit(ByVal value As String)
+        Public Sub AddCreditsFromString(ByVal value As String)
+            _credits.Clear()
             If String.IsNullOrEmpty(value) Then Return
 
             If value.Contains("/") Then
@@ -641,7 +618,8 @@ Namespace MediaContainers
             End If
         End Sub
 
-        Public Sub AddDirector(ByVal value As String)
+        Public Sub AddDirectorsFromString(ByVal value As String)
+            _directors.Clear()
             If String.IsNullOrEmpty(value) Then Return
 
             If value.Contains("/") Then
@@ -783,6 +761,7 @@ Namespace MediaContainers
     <Serializable()>
     <XmlRoot("movie")>
     Public Class Movie
+        Implements ICloneable
         Implements IComparable(Of Movie)
 
 #Region "Fields"
@@ -1017,18 +996,6 @@ Namespace MediaContainers
             End Get
         End Property
 
-        <Obsolete("This property is depreciated. Use Movie.Countries [List(Of String)] instead.")>
-        <XmlIgnore()>
-        Public Property Country() As String
-            Get
-                Return String.Join(" / ", _countries.ToArray)
-            End Get
-            Set(ByVal value As String)
-                _countries.Clear()
-                AddCountry(value)
-            End Set
-        End Property
-
         <XmlElement("country")>
         Public Property Countries() As List(Of String)
             Get
@@ -1101,18 +1068,6 @@ Namespace MediaContainers
             End Get
         End Property
 
-        <Obsolete("This property is depreciated. Use Movie.Certifications [List(Of String)] instead.")>
-        <XmlIgnore()>
-        Public Property Certification() As String
-            Get
-                Return String.Join(" / ", _certifications.ToArray)
-            End Get
-            Set(ByVal value As String)
-                _certifications.Clear()
-                AddCertification(value)
-            End Set
-        End Property
-
         <XmlElement("certification")>
         Public Property Certifications() As List(Of String)
             Get
@@ -1155,18 +1110,6 @@ Namespace MediaContainers
             End Get
         End Property
 
-        <Obsolete("This property is depreciated. Use Movie.Genres [List(Of String)] instead.")>
-        <XmlIgnore()>
-        Public Property Genre() As String
-            Get
-                Return String.Join(" / ", _genres.ToArray)
-            End Get
-            Set(ByVal value As String)
-                _genres.Clear()
-                AddGenre(value)
-            End Set
-        End Property
-
         <XmlElement("genre")>
         Public Property Genres() As List(Of String)
             Get
@@ -1186,18 +1129,6 @@ Namespace MediaContainers
             Get
                 Return _genres.Count > 0
             End Get
-        End Property
-
-        <Obsolete("This property is depreciated. Use Movie.Studios [List(Of String)] instead.")>
-        <XmlIgnore()>
-        Public Property Studio() As String
-            Get
-                Return String.Join(" / ", _studios.ToArray)
-            End Get
-            Set(ByVal value As String)
-                _studios.Clear()
-                AddStudio(value)
-            End Set
         End Property
 
         <XmlElement("studio")>
@@ -1221,18 +1152,6 @@ Namespace MediaContainers
             End Get
         End Property
 
-        <Obsolete("This property is depreciated. Use Movie.Directors [List(Of String)] instead.")>
-        <XmlIgnore()>
-        Public Property Director() As String
-            Get
-                Return String.Join(" / ", _directors.ToArray)
-            End Get
-            Set(ByVal value As String)
-                _directors.Clear()
-                AddDirector(value)
-            End Set
-        End Property
-
         <XmlElement("director")>
         Public Property Directors() As List(Of String)
             Get
@@ -1252,18 +1171,6 @@ Namespace MediaContainers
             Get
                 Return _directors.Count > 0
             End Get
-        End Property
-
-        <Obsolete("This property is depreciated. Use Movie.Credits [List(Of String)] instead.")>
-        <XmlIgnore()>
-        Public Property OldCredits() As String
-            Get
-                Return String.Join(" / ", _credits.ToArray)
-            End Get
-            Set(ByVal value As String)
-                _credits.Clear()
-                AddCredit(value)
-            End Set
         End Property
 
         <XmlElement("credits")>
@@ -1715,7 +1622,8 @@ Namespace MediaContainers
             End If
         End Sub
 
-        Public Sub AddCertification(ByVal value As String)
+        Public Sub AddCertificationsFromString(ByVal value As String)
+            _certifications.Clear()
             If String.IsNullOrEmpty(value) Then Return
 
             If value.Contains(" / ") Then
@@ -1733,7 +1641,8 @@ Namespace MediaContainers
             End If
         End Sub
 
-        Public Sub AddGenre(ByVal value As String)
+        Public Sub AddGenresFromString(ByVal value As String)
+            _genres.Clear()
             If String.IsNullOrEmpty(value) Then Return
 
             If value.Contains(" / ") Then
@@ -1751,7 +1660,8 @@ Namespace MediaContainers
             End If
         End Sub
 
-        Public Sub AddStudio(ByVal value As String)
+        Public Sub AddStudiosFromString(ByVal value As String)
+            _studios.Clear()
             If String.IsNullOrEmpty(value) Then Return
 
             If value.Contains(" / ") Then
@@ -1769,7 +1679,8 @@ Namespace MediaContainers
             End If
         End Sub
 
-        Public Sub AddDirector(ByVal value As String)
+        Public Sub AddDirectorsFromString(ByVal value As String)
+            _directors.Clear()
             If String.IsNullOrEmpty(value) Then Return
 
             If value.Contains(" / ") Then
@@ -1788,7 +1699,8 @@ Namespace MediaContainers
             End If
         End Sub
 
-        Public Sub AddCredit(ByVal value As String)
+        Public Sub AddCreditsFromString(ByVal value As String)
+            _credits.Clear()
             If String.IsNullOrEmpty(value) Then Return
 
             If value.Contains(" / ") Then
@@ -1807,7 +1719,8 @@ Namespace MediaContainers
             End If
         End Sub
 
-        Public Sub AddCountry(ByVal value As String)
+        Public Sub AddCountriesFromString(ByVal value As String)
+            _countries.Clear()
             If String.IsNullOrEmpty(value) Then Return
 
             If value.Contains(" / ") Then
@@ -1865,6 +1778,18 @@ Namespace MediaContainers
             _year = String.Empty
             _ysets = New SetContainer
         End Sub
+
+        Public Function CloneDeep() As Object Implements ICloneable.Clone
+            Dim Stream As New MemoryStream(50000)
+            Dim Formatter As New Runtime.Serialization.Formatters.Binary.BinaryFormatter()
+            ' Serialisierung über alle Objekte hinweg in einen Stream 
+            Formatter.Serialize(Stream, Me)
+            ' Zurück zum Anfang des Streams und... 
+            Stream.Seek(0, SeekOrigin.Begin)
+            ' ...aus dem Stream in ein Objekt deserialisieren 
+            CloneDeep = Formatter.Deserialize(Stream)
+            Stream.Close()
+        End Function
 
         Public Sub CreateCachePaths_ActorsThumbs()
             Dim sPath As String = Path.Combine(Master.TempPath, "Global")
@@ -2513,6 +2438,7 @@ Namespace MediaContainers
     <Serializable()>
     <XmlRoot("tvshow")>
     Public Class TVShow
+        Implements ICloneable
 
 #Region "Fields"
 
@@ -2538,7 +2464,6 @@ Namespace MediaContainers
         Private _seasons As New Seasons
         Private _sorttitle As String
         Private _status As String
-        Private _studio As String
         Private _studios As New List(Of String)
         Private _tags As New List(Of String)
         Private _title As String
@@ -2752,18 +2677,6 @@ Namespace MediaContainers
             End Get
         End Property
 
-        <Obsolete("This property is depreciated. Use TVShow.Genres [List(Of String)] instead.")>
-        <XmlIgnore()>
-        Public Property Genre() As String
-            Get
-                Return String.Join(" / ", _genres.ToArray)
-            End Get
-            Set(ByVal value As String)
-                _genres.Clear()
-                AddGenre(value)
-            End Set
-        End Property
-
         <XmlElement("genre")>
         Public Property Genres() As List(Of String)
             Get
@@ -2823,18 +2736,6 @@ Namespace MediaContainers
             End Get
         End Property
 
-        <Obsolete("This property is depreciated. Use Movie.Certifications [List(Of String)] instead.")>
-        <XmlIgnore()>
-        Public Property Certification() As String
-            Get
-                Return String.Join(" / ", _certifications.ToArray)
-            End Get
-            Set(ByVal value As String)
-                _certifications.Clear()
-                AddCertification(value)
-            End Set
-        End Property
-
         <XmlElement("certification")>
         Public Property Certifications() As List(Of String)
             Get
@@ -2854,18 +2755,6 @@ Namespace MediaContainers
             Get
                 Return _certifications.Count > 0
             End Get
-        End Property
-
-        <Obsolete("This property is depreciated. Use Movie.Countries [List(Of String)] instead.")>
-        <XmlIgnore()>
-        Public Property Country() As String
-            Get
-                Return String.Join(" / ", _countries.ToArray)
-            End Get
-            Set(ByVal value As String)
-                _countries.Clear()
-                AddCountry(value)
-            End Set
         End Property
 
         <XmlElement("country")>
@@ -2904,18 +2793,6 @@ Namespace MediaContainers
             Get
                 Return Not String.IsNullOrEmpty(_premiered)
             End Get
-        End Property
-
-        <Obsolete("This property is depreciated. Use TVShow.Studios [List(Of String)] instead.")>
-        <XmlIgnore()>
-        Public Property Studio() As String
-            Get
-                Return String.Join(" / ", _studios.ToArray)
-            End Get
-            Set(ByVal value As String)
-                _studios.Clear()
-                AddStudio(value)
-            End Set
         End Property
 
         <XmlElement("studio")>
@@ -3117,7 +2994,8 @@ Namespace MediaContainers
 
 #Region "Methods"
 
-        Public Sub AddCertification(ByVal value As String)
+        Public Sub AddCertificationsFromString(ByVal value As String)
+            _certifications.Clear()
             If String.IsNullOrEmpty(value) Then Return
 
             If value.Contains(" / ") Then
@@ -3135,7 +3013,8 @@ Namespace MediaContainers
             End If
         End Sub
 
-        Public Sub AddCountry(ByVal value As String)
+        Public Sub AddCountriesFromString(ByVal value As String)
+            _countries.Clear()
             If String.IsNullOrEmpty(value) Then Return
 
             If value.Contains(" / ") Then
@@ -3154,7 +3033,8 @@ Namespace MediaContainers
             End If
         End Sub
 
-        Public Sub AddGenre(ByVal value As String)
+        Public Sub AddGenresFromString(ByVal value As String)
+            _genres.Clear()
             If String.IsNullOrEmpty(value) Then Return
 
             If value.Contains("/") Then
@@ -3172,7 +3052,8 @@ Namespace MediaContainers
             End If
         End Sub
 
-        Public Sub AddStudio(ByVal value As String)
+        Public Sub AddStudiosFromString(ByVal value As String)
+            _studios.Clear()
             If String.IsNullOrEmpty(value) Then Return
 
             If value.Contains("/") Then
@@ -3214,13 +3095,24 @@ Namespace MediaContainers
             _seasons.Clear()
             _sorttitle = String.Empty
             _status = String.Empty
-            _studio = String.Empty
             _studios.Clear()
             _tags.Clear()
             _title = String.Empty
             _tmdb = String.Empty
             _votes = String.Empty
         End Sub
+
+        Public Function CloneDeep() As Object Implements ICloneable.Clone
+            Dim Stream As New MemoryStream(50000)
+            Dim Formatter As New Runtime.Serialization.Formatters.Binary.BinaryFormatter()
+            ' Serialisierung über alle Objekte hinweg in einen Stream 
+            Formatter.Serialize(Stream, Me)
+            ' Zurück zum Anfang des Streams und... 
+            Stream.Seek(0, SeekOrigin.Begin)
+            ' ...aus dem Stream in ein Objekt deserialisieren 
+            CloneDeep = Formatter.Deserialize(Stream)
+            Stream.Close()
+        End Function
 
         Public Sub CreateCachePaths_ActorsThumbs()
             Dim sPath As String = Path.Combine(Master.TempPath, "Global")
@@ -3234,11 +3126,11 @@ Namespace MediaContainers
         End Sub
 
         Public Sub BlankId()
-            _tvdb = Nothing
+            _tvdb = String.Empty
         End Sub
 
         Public Sub BlankBoxeeId()
-            _boxeeTvDb = Nothing
+            _boxeeTvDb = String.Empty
         End Sub
 
         Public Sub SaveAllActorThumbs(ByRef DBElement As Database.DBElement)

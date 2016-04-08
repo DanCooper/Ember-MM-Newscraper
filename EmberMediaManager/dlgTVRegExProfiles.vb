@@ -84,7 +84,7 @@ Public Class dlgTVRegExProfiles
         Next
     End Sub
 
-    Public Function GetProfiles() As Boolean
+    Public Sub GetProfiles()
         Dim sHTTP As New HTTP
         Dim xmlSer As XmlSerializer = Nothing
         Dim updateXML As String = sHTTP.DownloadData("http://pcjco.dommel.be/emm-r/updates/setup/TVRegExProfiles.xml")
@@ -95,7 +95,7 @@ Public Class dlgTVRegExProfiles
                 MyTVShowRegExProfiles = DirectCast(xmlSer.Deserialize(xmlSR), TVShowRegExProfiles)
             End Using
         End If
-    End Function
+    End Sub
 
     Sub SetUp()
         Text = Master.eLang.GetString(819, "TV RegEx Profiles")

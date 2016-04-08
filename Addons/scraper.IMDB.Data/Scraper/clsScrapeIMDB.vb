@@ -609,7 +609,7 @@ mPlot:          'Plot
 
                 Return nMovie
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
                 Return Nothing
             End Try
         End Function
@@ -865,7 +865,7 @@ mPlot:          'Plot
 
                 Return nTVShow
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
                 Return Nothing
             End Try
 
@@ -966,7 +966,7 @@ mPlot:          'Plot
 
                 Return Nothing
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
                 Return Nothing
             End Try
         End Function
@@ -1065,7 +1065,7 @@ mPlot:          'Plot
                                            .Parameter = imdbID, .Movie = nMovie, .Options_Movie = FilteredOptions})
                 End If
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         End Sub
 
@@ -1078,7 +1078,7 @@ mPlot:          'Plot
                                            .Parameter = imdbID, .TVShow = nShow, .Options_TV = Options})
                 End If
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         End Sub
 
@@ -1090,7 +1090,7 @@ mPlot:          'Plot
                     bwIMDB.RunWorkerAsync(New Arguments With {.Search = SearchType.Movies, .Parameter = sMovieTitle, .Year = sMovieYear, .Options_Movie = FilteredOptions})
                 End If
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         End Sub
 

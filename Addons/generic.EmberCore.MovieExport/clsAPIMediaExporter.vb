@@ -1040,7 +1040,7 @@ Public Class MediaExporter
             End If
             Return True
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
             Return False
         End Try
     End Function

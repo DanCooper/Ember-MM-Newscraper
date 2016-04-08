@@ -73,7 +73,7 @@ Namespace YouTube
                 _youtubelinks = ParseYTFormats(strURL)
 
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         End Sub
 
@@ -124,7 +124,7 @@ Namespace YouTube
         ''' </summary>
         ''' <param name="strURL"><c>String</c> representation of the URL to query</param>
         ''' <remarks>Note that most callers should use <c>GetVideoLinks(ByVal url As String)</c> instead of this <c>Private</c> function.
-        ''' If the <paramref name="url">URL</paramref> leads to a YouTube video page, this method will parse
+        ''' If the <paramref name="strURL">URL</paramref> leads to a YouTube video page, this method will parse
         ''' the page to extract the various video stream links, and store them in the internal <c>VideoLinks</c> collection.
         ''' Note that only one link of each <c>Enums.TrailerQuality</c> will be kept.
         ''' </remarks>
@@ -142,7 +142,7 @@ Namespace YouTube
                     rawStream_Map = HttpUtility.UrlDecode(rawAllData("url_encoded_fmt_stream_map"))
                     rawDash_Map = HttpUtility.UrlDecode(rawAllData("adaptive_fmts"))
                 Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                    logger.Error(ex, New StackFrame().GetMethod().Name)
                 End Try
 
                 Try
@@ -175,7 +175,7 @@ Namespace YouTube
                     DownloadLinks.BestQuality = DownloadLinks.VideoLinks.Item(0).FormatQuality
                     DownloadLinks.Title = HttpUtility.UrlDecode(rawAllData("title"))
                 Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                    logger.Error(ex, New StackFrame().GetMethod().Name)
                 End Try
             End If
 
@@ -213,7 +213,7 @@ Namespace YouTube
                     End If
                 Next
             Catch ex As TimeoutException
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
 
             Return tList

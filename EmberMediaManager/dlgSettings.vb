@@ -619,7 +619,7 @@ Public Class dlgSettings
             sResult.NeedsDBClean_Movie = True
             sResult.NeedsDBClean_TV = True
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         Finally
             Master.DB.LoadExcludeDirsFromDB()
         End Try
@@ -651,7 +651,7 @@ Public Class dlgSettings
                 sResult.NeedsDBUpdate_TV = True
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         Finally
             Master.DB.LoadExcludeDirsFromDB()
         End Try
@@ -849,7 +849,7 @@ Public Class dlgSettings
                 lstMovieFilters.Focus()
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -981,7 +981,7 @@ Public Class dlgSettings
                 lstTVEpisodeFilter.Focus()
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -997,7 +997,7 @@ Public Class dlgSettings
                 lstTVEpisodeFilter.Focus()
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -1084,7 +1084,7 @@ Public Class dlgSettings
                 lvTVSourcesRegexTVShowMatching.Focus()
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -1111,7 +1111,7 @@ Public Class dlgSettings
                 lvTVSourcesRegexTVShowMatching.Focus()
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -1141,7 +1141,7 @@ Public Class dlgSettings
                 lvMovieGeneralMediaListSorting.Focus()
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -1171,7 +1171,7 @@ Public Class dlgSettings
                 lvMovieSetGeneralMediaListSorting.Focus()
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -1201,7 +1201,7 @@ Public Class dlgSettings
                 lvTVGeneralEpisodeListSorting.Focus()
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -1231,7 +1231,7 @@ Public Class dlgSettings
                 lvTVGeneralSeasonListSorting.Focus()
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -1261,7 +1261,7 @@ Public Class dlgSettings
                 lvTVGeneralShowListSorting.Focus()
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -1291,7 +1291,7 @@ Public Class dlgSettings
                 lvMovieGeneralMediaListSorting.Focus()
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -1321,7 +1321,7 @@ Public Class dlgSettings
                 lvMovieSetGeneralMediaListSorting.Focus()
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -1351,7 +1351,7 @@ Public Class dlgSettings
                 lvTVGeneralEpisodeListSorting.Focus()
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -1381,7 +1381,7 @@ Public Class dlgSettings
                 lvTVGeneralSeasonListSorting.Focus()
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -1411,7 +1411,7 @@ Public Class dlgSettings
                 lvTVGeneralShowListSorting.Focus()
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -1748,7 +1748,7 @@ Public Class dlgSettings
                 lstTVShowFilter.Focus()
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -1764,7 +1764,7 @@ Public Class dlgSettings
                 lstTVShowFilter.Focus()
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -1781,7 +1781,7 @@ Public Class dlgSettings
                 lstMovieFilters.Focus()
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -3047,7 +3047,6 @@ Public Class dlgSettings
             chkMovieScraperPlotForOutlineIfEmpty.Checked = .MovieScraperPlotForOutlineIfEmpty
             chkMovieScraperRating.Checked = .MovieScraperRating
             chkMovieScraperRelease.Checked = .MovieScraperRelease
-            chkMovieScraperReleaseFormat.Checked = .MovieScraperReleaseFormat
             chkMovieScraperRuntime.Checked = .MovieScraperRuntime
             chkMovieScraperStudio.Checked = .MovieScraperStudio
             chkMovieScraperStudioWithImg.Checked = .MovieScraperStudioWithImgOnly
@@ -3318,7 +3317,7 @@ Public Class dlgSettings
                     End If
                 End If
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
 
             Try
@@ -3332,7 +3331,7 @@ Public Class dlgSettings
                     End If
                 End If
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
 
             Try
@@ -3349,7 +3348,7 @@ Public Class dlgSettings
                     End If
                 End If
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
 
             Try
@@ -3363,7 +3362,7 @@ Public Class dlgSettings
                     End If
                 End If
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
 
             If Not String.IsNullOrEmpty(.ProxyURI) AndAlso .ProxyPort >= 0 Then
@@ -3830,7 +3829,7 @@ Public Class dlgSettings
                     s.ProcessorModule.ScraperOrderChanged()
                 Next
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         End If
         ResumeLayout()
@@ -5024,7 +5023,6 @@ Public Class dlgSettings
             .MovieScraperPlotForOutlineIfEmpty = chkMovieScraperPlotForOutlineIfEmpty.Checked
             .MovieScraperRating = chkMovieScraperRating.Checked
             .MovieScraperRelease = chkMovieScraperRelease.Checked
-            .MovieScraperReleaseFormat = chkMovieScraperReleaseFormat.Checked
             .MovieScraperRuntime = chkMovieScraperRuntime.Checked
             .MovieScraperStudio = chkMovieScraperStudio.Checked
             .MovieScraperStudioWithImgOnly = chkMovieScraperStudioWithImg.Checked
@@ -5649,70 +5647,70 @@ Public Class dlgSettings
             Try
                 s.ProcessorModule.SaveSetupScraper(Not isApply)
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         Next
         For Each s As ModulesManager._externalScraperModuleClass_Data_MovieSet In ModulesManager.Instance.externalScrapersModules_Data_MovieSet
             Try
                 s.ProcessorModule.SaveSetupScraper(Not isApply)
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         Next
         For Each s As ModulesManager._externalScraperModuleClass_Data_TV In ModulesManager.Instance.externalScrapersModules_Data_TV
             Try
                 s.ProcessorModule.SaveSetupScraper(Not isApply)
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         Next
         For Each s As ModulesManager._externalScraperModuleClass_Image_Movie In ModulesManager.Instance.externalScrapersModules_Image_Movie
             Try
                 s.ProcessorModule.SaveSetupScraper(Not isApply)
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         Next
         For Each s As ModulesManager._externalScraperModuleClass_Image_MovieSet In ModulesManager.Instance.externalScrapersModules_Image_MovieSet
             Try
                 s.ProcessorModule.SaveSetupScraper(Not isApply)
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         Next
         For Each s As ModulesManager._externalScraperModuleClass_Image_TV In ModulesManager.Instance.externalScrapersModules_Image_TV
             Try
                 s.ProcessorModule.SaveSetupScraper(Not isApply)
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         Next
         For Each s As ModulesManager._externalScraperModuleClass_Theme_Movie In ModulesManager.Instance.externalScrapersModules_Theme_Movie
             Try
                 s.ProcessorModule.SaveSetupScraper(Not isApply)
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         Next
         For Each s As ModulesManager._externalScraperModuleClass_Theme_TV In ModulesManager.Instance.externalScrapersModules_Theme_TV
             Try
                 s.ProcessorModule.SaveSetupScraper(Not isApply)
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         Next
         For Each s As ModulesManager._externalScraperModuleClass_Trailer_Movie In ModulesManager.Instance.externalScrapersModules_Trailer_Movie
             Try
                 s.ProcessorModule.SaveSetupScraper(Not isApply)
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         Next
         For Each s As ModulesManager._externalGenericModuleClass In ModulesManager.Instance.externalGenericModules
             Try
                 s.ProcessorModule.SaveSetup(Not isApply)
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         Next
         ModulesManager.Instance.SaveSettings()
@@ -6740,7 +6738,6 @@ Public Class dlgSettings
         chkMovieScraperCleanPlotOutline.Text = Master.eLang.GetString(985, "Clean Plot/Outline")
         chkMovieScraperCollectionsAuto.Text = Master.eLang.GetString(1266, "Add Movie automatically to Collections")
         chkMovieScraperDetailView.Text = Master.eLang.GetString(1249, "Show scraped results in detailed view")
-        chkMovieScraperReleaseFormat.Text = Master.eLang.GetString(1272, "Date format Releasedate: yyyy-mm-dd")
         chkMovieScraperMetaDataIFOScan.Text = Master.eLang.GetString(628, "Enable IFO Parsing")
         chkMovieScraperMetaDataScan.Text = Master.eLang.GetString(517, "Scan Meta Data")
         chkMovieScraperPlotForOutline.Text = Master.eLang.GetString(965, "Use Plot for Plot Outline")
@@ -7149,7 +7146,7 @@ Public Class dlgSettings
                 End If
             End With
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -7164,7 +7161,7 @@ Public Class dlgSettings
                 End If
             End With
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -7179,7 +7176,7 @@ Public Class dlgSettings
                 End If
             End With
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -7194,7 +7191,7 @@ Public Class dlgSettings
                 End If
             End With
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -7209,7 +7206,7 @@ Public Class dlgSettings
                 End If
             End With
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -7224,7 +7221,7 @@ Public Class dlgSettings
                 End If
             End With
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -7240,7 +7237,7 @@ Public Class dlgSettings
                 End If
             End With
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -7248,7 +7245,7 @@ Public Class dlgSettings
         Try
             Process.Start("INTL.CPL")
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -8015,7 +8012,6 @@ Public Class dlgSettings
         chkMovieScraperPlotForOutlineIfEmpty.CheckedChanged,
         chkMovieScraperRating.CheckedChanged,
         chkMovieScraperRelease.CheckedChanged,
-        chkMovieScraperReleaseFormat.CheckedChanged,
         chkMovieScraperRuntime.CheckedChanged,
         chkMovieScraperStudioWithImg.CheckedChanged,
         chkMovieScraperTagline.CheckedChanged,

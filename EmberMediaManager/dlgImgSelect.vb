@@ -1638,7 +1638,7 @@ Public Class dlgImgSelect
         Return False
     End Function
 
-    Private Function DownloadDefaultImages() As Boolean
+    Private Sub DownloadDefaultImages()
 
         'Episode Fanart
         If DoEpisodeFanart Then
@@ -1735,7 +1735,7 @@ Public Class dlgImgSelect
                 tImg.Poster.LoadAndCache(tContentType, False, True)
             Next
         End If
-    End Function
+    End Sub
 
     Private Sub FillListImages(ByRef tTag As iTag)
         Dim iCount As Integer = 0

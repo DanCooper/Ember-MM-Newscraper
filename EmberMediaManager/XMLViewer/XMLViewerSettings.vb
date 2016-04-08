@@ -45,7 +45,7 @@ Public Class XMLViewerSettings
     Public Property AttributeValue() As Color
 
     ''' <summary>
-    ''' The color of the tags and operators like "<,/> and =".
+    ''' The color of the tags and operators like , and =.
     ''' </summary>
     Public Property Tag() As Color
 

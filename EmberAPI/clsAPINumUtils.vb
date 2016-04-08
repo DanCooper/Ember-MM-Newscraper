@@ -25,7 +25,9 @@ Imports System.Text.RegularExpressions
 Public Class NumUtils
 
 #Region "Fields"
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
+
 #End Region
 
 #Region "Methods"
@@ -71,9 +73,18 @@ Public Class NumUtils
 
     Public Shared Function CleanVotes(ByVal strVotes As String) As String
         If Not String.IsNullOrEmpty(strVotes) Then
-            Dim strCleanVotes As String = String.Empty
-            strCleanVotes = Regex.Replace(strVotes, "\D", String.Empty).Trim
-            Return strCleanVotes
+            Return Regex.Replace(strVotes, "\D", String.Empty).Trim
+        Else
+            Return String.Empty
+        End If
+    End Function
+
+    Public Shared Function DateToISO8601Date(ByVal strDate As String) As String
+        If String.IsNullOrEmpty(strDate) Then Return String.Empty
+
+        Dim parsedDate As Date
+        If Date.TryParse(strDate, parsedDate) Then
+            Return parsedDate.ToString("yyyy-MM-dd")
         Else
             Return String.Empty
         End If

@@ -53,7 +53,7 @@ Public Class clsAdvancedSettings
             Dim configpath As String = Path.Combine(Master.SettingsPath, "AdvancedSettings.xml")
             Load(configpath)
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -101,7 +101,7 @@ Public Class clsAdvancedSettings
             End If
 
         Catch ex As Exception
-            logger.Info(New StackFrame().GetMethod().Name, ex)
+            logger.Info(ex, New StackFrame().GetMethod().Name)
             Return defvalue
         End Try
     End Function
@@ -125,7 +125,7 @@ Public Class clsAdvancedSettings
             End If
 
         Catch ex As Exception
-            logger.Info("Key: " & key & " DefValue: " & defvalue & "  Assembly: " & Assembly & New StackFrame().GetMethod().Name, ex)
+            logger.Info(ex, "Key: " & key & " DefValue: " & defvalue & "  Assembly: " & Assembly & New StackFrame().GetMethod().Name)
             Return defvalue
         End Try
     End Function
@@ -178,7 +178,7 @@ Public Class clsAdvancedSettings
             Dim v = _AdvancedSettings.ComplexSettings.FirstOrDefault(Function(f) f.Table.Name = key AndAlso f.Table.Section = Assembly)
             Return If(v Is Nothing, Nothing, v.Table.Item)
         Catch ex As Exception
-            logger.Info(New StackFrame().GetMethod().Name, ex)
+            logger.Info(ex, New StackFrame().GetMethod().Name)
             Return Nothing
         End Try
     End Function
@@ -204,7 +204,7 @@ Public Class clsAdvancedSettings
 
             'If Not _DoNotSave Then Save()
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
         Return True
     End Function
@@ -219,7 +219,7 @@ Public Class clsAdvancedSettings
                 objStreamReader.Close()
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
             logger.Info("An attempt is made to repair the AdvancedSettings.xml")
             Try
                 Using srAdvancedSettings As New StreamReader(fname)
@@ -236,7 +236,7 @@ Public Class clsAdvancedSettings
                 End Using
                 logger.Info("AdvancedSettings.xml successfully repaired")
             Catch ex2 As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex2)
+                logger.Error(ex2, New StackFrame().GetMethod().Name)
                 File.Copy(fname, String.Concat(fname, "_backup"), True)
                 _AdvancedSettings = New clsXMLAdvancedSettings
             End Try
@@ -290,7 +290,7 @@ Public Class clsAdvancedSettings
 
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -327,7 +327,7 @@ Public Class clsAdvancedSettings
 
             'If Not _DoNotSave Then Save()
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
         Return True
     End Function
@@ -366,7 +366,7 @@ Public Class clsAdvancedSettings
 
             'If Not _DoNotSave Then Save()
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
         Return True
     End Function
