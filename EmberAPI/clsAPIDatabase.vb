@@ -3520,6 +3520,7 @@ Public Class Database
             If Not _movieDB.IDSpecified Then
                 If Master.eSettings.MovieGeneralMarkNew Then
                     par_movie_Mark.Value = True
+                    _movieDB.IsMark = True
                 End If
                 Using rdrMovie As SQLiteDataReader = SQLcommand_movie.ExecuteReader()
                     If rdrMovie.Read Then
@@ -3960,6 +3961,7 @@ Public Class Database
             If Not _moviesetDB.IDSpecified Then
                 If Master.eSettings.MovieSetGeneralMarkNew Then
                     parMark.Value = True
+                    _moviesetDB.IsMark = True
                 End If
                 Using rdrMovieSet As SQLiteDataReader = SQLcommand.ExecuteReader()
                     If rdrMovieSet.Read Then
@@ -4358,6 +4360,7 @@ Public Class Database
             If Not _episode.IDSpecified Then
                 If Master.eSettings.TVGeneralMarkNewEpisodes Then
                     parMark.Value = True
+                    _episode.IsMark = True
                 End If
                 Using rdrTVEp As SQLiteDataReader = SQLcommand.ExecuteReader()
                     If rdrTVEp.Read Then
@@ -4747,6 +4750,7 @@ Public Class Database
             If Not _show.IDSpecified Then
                 If Master.eSettings.TVGeneralMarkNewShows Then
                     parMark.Value = True
+                    _show.IsMark = True
                 End If
                 Using rdrTVShow As SQLiteDataReader = SQLcommand.ExecuteReader()
                     If rdrTVShow.Read Then
