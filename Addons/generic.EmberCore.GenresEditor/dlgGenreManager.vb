@@ -168,7 +168,7 @@ Public Class dlgGenreManager
     End Sub
 
     Private Sub bwCleanDatabase_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCleanDatabase.DoWork
-        Master.DB.CleanupGenres()
+        Master.DB.Cleanup_Genres()
     End Sub
 
     Private Sub bwCleanDatabase_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwCleanDatabase.ProgressChanged

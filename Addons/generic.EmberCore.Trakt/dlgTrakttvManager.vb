@@ -1421,10 +1421,10 @@ Public Class dlgTrakttvManager
                 i += 1
                 For Each srow As DataRow In dtMovies.Rows
                     If watchedMovieData.Movie.Ids.Imdb = srow.Item("Imdb").ToString Then
-                        Dim tmpMovie As Database.DBElement = Master.DB.LoadMovieFromDB(CLng(srow.Item("idMovie")))
+                        Dim tmpMovie As Database.DBElement = Master.DB.Load_Movie(CLng(srow.Item("idMovie")))
                         tmpMovie.Movie.PlayCount = watchedMovieData.Plays
                         tmpMovie.Movie.LastPlayed = CStr(watchedMovieData.LastWatchedAt)
-                        Master.DB.SaveMovieToDB(tmpMovie, False, True, False)
+                        Master.DB.Save_Movie(tmpMovie, False, True, False)
                         Exit For
                     End If
                 Next
@@ -1462,7 +1462,7 @@ Public Class dlgTrakttvManager
                             'search for episode in Emberdatabase and update playcount/lastplayed value
                             If watchedshow.Show.Ids.Tvdb.ToString = srow.Item("TVDB").ToString AndAlso watchedseason.Number.ToString = srow.Item("Season").ToString AndAlso watchedepisode.Number.ToString = srow.Item("Episode").ToString Then
                                 'Dim tmpTVEpisode As Database.DBElement = Master.DB.LoadTVEpisodeFromDB(CLng(srow.Item("idEpisode")), True)
-                                tmpDBTVEpisode = Master.DB.LoadTVEpisodeFromDB(Convert.ToInt64(srow.Item("idEpisode")), True)
+                                tmpDBTVEpisode = Master.DB.Load_TVEpisode(Convert.ToInt64(srow.Item("idEpisode")), True)
                                 tmpDBTVEpisode.TVEpisode.Playcount = watchedepisode.Plays
                                 'date is not user friendly formatted, so change format a bit
                                 '2014-09-01T09:10:11.000Z (original)
@@ -1471,7 +1471,7 @@ Public Class dlgTrakttvManager
                                 If DateTime.TryParse(myDateString, myDate) Then
                                     tmpDBTVEpisode.TVEpisode.LastPlayed = myDate.ToString("yyyy-MM-dd HH:mm:ss")
                                 End If
-                                Master.DB.SaveTVEpisodeToDB(tmpDBTVEpisode, True, True, False, False, True)
+                                Master.DB.Save_TVEpisode(tmpDBTVEpisode, True, True, False, False, True)
                                 'Updated episode in Ember, next episode please!
                                 Exit For
                             End If
@@ -1940,7 +1940,7 @@ Public Class dlgTrakttvManager
                     Else
                         'tag already in DB, just edit it! 
                         'load tag from database
-                        currMovieTag = Master.DB.LoadMovieTagFromDB(listDBID)
+                        currMovieTag = Master.DB.Load_Tag_Movie(listDBID)
                         'delete existing movies from tag (we will add again in next step!)
                         If currMovieTag.Movies IsNot Nothing AndAlso currMovieTag.Movies.Count > 0 Then
                             'clear all movies!
@@ -1953,7 +1953,7 @@ Public Class dlgTrakttvManager
                         'If movie is part of DB in Ember (compare IMDB) add it - else ignore!
                         For Each sRow As DataRow In dtMovies.Rows
                             If Not String.IsNullOrEmpty(sRow.Item("idMovie").ToString) AndAlso "tt" & sRow.Item("Imdb").ToString = listmovie.Ids.Imdb Then
-                                Dim tmpMovie As Database.DBElement = Master.DB.LoadMovieFromDB(CLng(sRow.Item("idMovie")))
+                                Dim tmpMovie As Database.DBElement = Master.DB.Load_Movie(CLng(sRow.Item("idMovie")))
                                 currMovieTag.Movies.Add(tmpMovie)
                                 Exit For
                             End If
@@ -1962,9 +1962,9 @@ Public Class dlgTrakttvManager
 
                     'Step 4: save tag to DB
                     If listDBID > -1 Then
-                        Master.DB.SaveMovieTagToDB(currMovieTag, False, False, True, True)
+                        Master.DB.Save_Tag_Movie(currMovieTag, False, False, True, True)
                     Else
-                        Master.DB.SaveMovieTagToDB(currMovieTag, True, False, True, True)
+                        Master.DB.Save_Tag_Movie(currMovieTag, True, False, True, True)
                     End If
                     Exit For
                 End If
@@ -2025,7 +2025,7 @@ Public Class dlgTrakttvManager
 
         If Me.dgvMovies.SelectedRows.Count > 0 Then
             For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
-                Dim tmpMovie As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells(0).Value))
+                Dim tmpMovie As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells(0).Value))
                 If Not String.IsNullOrEmpty(tmpMovie.Movie.Title) AndAlso Not Me.lbtraktListsMoviesinLists.Items.Contains(tmpMovie.Movie.Title) Then
                     'create new traktlistitem of selected movie
                     Dim newTraktListItem As New TraktAPI.Model.TraktListItem
@@ -2338,7 +2338,7 @@ Public Class dlgTrakttvManager
                 Next
                 If TagID > -1 Then
                     Dim iProg As Integer = 0
-                    Dim tmpTag = Master.DB.LoadMovieTagFromDB(TagID)
+                    Dim tmpTag = Master.DB.Load_Tag_Movie(TagID)
                     For Each tmpMovie In tmpTag.Movies
                         If Not String.IsNullOrEmpty(tmpMovie.Movie.Title) Then
                             'create new traktlistitem of selected movie

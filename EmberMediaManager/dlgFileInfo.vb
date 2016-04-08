@@ -86,9 +86,9 @@ Public Class dlgFileInfo
                         End If
                         If btnClose.Visible = True AndAlso Not SettingDefaults Then 'Only Save imediatly when running stand alone
                             If _isEpisode Then
-                                Master.DB.SaveTVEpisodeToDB(_DBElement, False, True, False, False, True)
+                                Master.DB.Save_TVEpisode(_DBElement, False, True, False, False, True)
                             Else
-                                Master.DB.SaveMovieToDB(_DBElement, False, True, False)
+                                Master.DB.Save_Movie(_DBElement, False, True, False)
                             End If
                         End If
                         NeedToRefresh = True
@@ -145,9 +145,9 @@ Public Class dlgFileInfo
                 End If
                 If btnClose.Visible = True AndAlso Not SettingDefaults Then 'Only Save imediatly when running stand alone
                     If _isEpisode Then
-                        Master.DB.SaveTVEpisodeToDB(_DBElement, False, True, False, False, True)
+                        Master.DB.Save_TVEpisode(_DBElement, False, True, False, False, True)
                     Else
-                        Master.DB.SaveMovieToDB(_DBElement, False, True, False)
+                        Master.DB.Save_Movie(_DBElement, False, True, False)
                     End If
                 End If
                 NeedToRefresh = True
@@ -195,9 +195,9 @@ Public Class dlgFileInfo
                         End If
                         If btnClose.Visible = True AndAlso Not SettingDefaults Then 'Only Save imediatly when running stand alone
                             If _isEpisode Then
-                                Master.DB.SaveTVEpisodeToDB(_DBElement, False, True, False, False, True)
+                                Master.DB.Save_TVEpisode(_DBElement, False, True, False, False, True)
                             Else
-                                Master.DB.SaveMovieToDB(_DBElement, False, True, False)
+                                Master.DB.Save_Movie(_DBElement, False, True, False)
                             End If
                         End If
                         NeedToRefresh = True

@@ -218,7 +218,7 @@ Public Class dlgEditMovieSet
         If dgvMovies.SelectedRows.Count > 0 Then
             SetControlsEnabled(False)
             For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
-                Dim tmpMovie As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells(0).Value))
+                Dim tmpMovie As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells(0).Value))
                 If Not String.IsNullOrEmpty(tmpMovie.Movie.Title) Then
                     If String.IsNullOrEmpty(txtCollectionID.Text) AndAlso tmpMovie.Movie.TMDBColIDSpecified Then
                         Dim result As DialogResult = MessageBox.Show(String.Format(Master.eLang.GetString(1264, "Should the Collection ID of the movie ""{0}"" be used as ID for this Collection?"), tmpMovie.Movie.Title), Master.eLang.GetString(1263, "TMDB Collection ID found"), MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)
@@ -827,7 +827,7 @@ Public Class dlgEditMovieSet
                 If SQLreader.HasRows Then
                     While SQLreader.Read()
                         If bwLoadMoviesInSet.CancellationPending Then Return
-                        Dim tmpMovie As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt64(SQLreader("idMovie")))
+                        Dim tmpMovie As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(SQLreader("idMovie")))
                         If Not String.IsNullOrEmpty(tmpMovie.Movie.Title) Then
                             Dim tmpSetOrder As Integer = If(Not DBNull.Value.Equals(SQLreader("iOrder")), CInt(SQLreader("iOrder")), Nothing)
                             MoviesInSet.Add(New MovieInSet With {.DBMovie = tmpMovie, .ID = tmpMovie.ID, .ListTitle = String.Concat(tmpMovie.ListTitle, If(Not String.IsNullOrEmpty(tmpMovie.Movie.Year) AndAlso Not Master.eSettings.MovieDisplayYear, String.Format(" ({0})", tmpMovie.Movie.Year), String.Empty)), .Order = tmpSetOrder})
@@ -1316,7 +1316,7 @@ Public Class dlgEditMovieSet
                 'Else
                 tMovie.DBMovie.Movie.AddSet(tmpDBElement.ID, tmpDBElement.MovieSet.Title, tMovie.Order, tmpDBElement.MovieSet.TMDB)
                 'End If
-                Master.DB.SaveMovieToDB(tMovie.DBMovie, True, True, False)
+                Master.DB.Save_Movie(tMovie.DBMovie, True, True, False)
             Next
             SQLtransaction.Commit()
         End Using
@@ -1330,7 +1330,7 @@ Public Class dlgEditMovieSet
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             For Each tMovie As MovieInSet In MoviesToRemove
                 tMovie.DBMovie.Movie.RemoveSet(tmpDBElement.ID)
-                Master.DB.SaveMovieToDB(tMovie.DBMovie, True, True, False)
+                Master.DB.Save_Movie(tMovie.DBMovie, True, True, False)
             Next
             SQLtransaction.Commit()
         End Using

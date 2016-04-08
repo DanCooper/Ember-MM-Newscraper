@@ -108,7 +108,7 @@ Public Class dlgExportMovies
                 Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         While SQLreader.Read()
-                            Dim _tmpMovie As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt32(SQLreader("idMovie")))
+                            Dim _tmpMovie As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt32(SQLreader("idMovie")))
                             lstMovieList.Add(_tmpMovie)
                             bwLoadInfo.ReportProgress(iProg, _tmpMovie.ListTitle) '  show File
                             iProg += 1
@@ -142,7 +142,7 @@ Public Class dlgExportMovies
                 Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     If SQLreader.HasRows Then
                         While SQLreader.Read()
-                            Dim _tmpTVShow As Database.DBElement = Master.DB.LoadTVShowFromDB(Convert.ToInt32(SQLreader("idShow")), True, True, bExportMissingEpisodes)
+                            Dim _tmpTVShow As Database.DBElement = Master.DB.Load_TVShow(Convert.ToInt32(SQLreader("idShow")), True, True, bExportMissingEpisodes)
                             lstTVShowList.Add(_tmpTVShow)
                             bwLoadInfo.ReportProgress(iProg, _tmpTVShow.ListTitle) '  show File
                             iProg += 1
