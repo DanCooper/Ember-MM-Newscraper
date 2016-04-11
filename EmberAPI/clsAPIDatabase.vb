@@ -930,6 +930,9 @@ Public Class Database
     Public Function Delete_Movie(ByVal ID As Long, ByVal BatchMode As Boolean) As Boolean
         If ID < 0 Then Throw New ArgumentOutOfRangeException("idMovie", "Value must be >= 0, was given: " & ID)
 
+        Dim _movieDB As Database.DBElement = Load_Movie(ID)
+        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Remove_Movie, Nothing, Nothing, False, _movieDB)
+
         Try
             Dim SQLtransaction As SQLiteTransaction = Nothing
             If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
@@ -1089,6 +1092,9 @@ Public Class Database
         Dim SQLtransaction As SQLiteTransaction = Nothing
         Dim doesExist As Boolean = False
 
+        Dim _tvepisodeDB As Database.DBElement = Load_TVEpisode(ID, True)
+        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Remove_TVEpisode, Nothing, Nothing, False, _tvepisodeDB)
+
         If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand.CommandText = String.Concat("SELECT idFile, Episode, Season, idShow FROM episode WHERE idEpisode = ", ID, ";")
@@ -1234,6 +1240,9 @@ Public Class Database
     ''' <returns>True if successful, false if deletion failed.</returns>
     Public Function Delete_TVShow(ByVal ID As Long, ByVal BatchMode As Boolean) As Boolean
         If ID < 0 Then Throw New ArgumentOutOfRangeException("idShow", "Value must be >= 0, was given: " & ID)
+
+        Dim _tvshowDB As Database.DBElement = Load_TVShow_Full(ID)
+        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Remove_TVShow, Nothing, Nothing, False, _tvshowDB)
 
         Try
             Dim SQLtransaction As SQLiteTransaction = Nothing
@@ -2337,7 +2346,7 @@ Public Class Database
     ''' <remarks></remarks>
     Public Function Load_TVShow_Full(ByVal ShowID As Long) As DBElement
         If ShowID < 0 Then Throw New ArgumentOutOfRangeException("ShowID", "Value must be >= 0, was given: " & ShowID)
-        Return Master.DB.Load_TVShow(ShowID, True, True)
+        Return Master.DB.Load_TVShow(ShowID, True, True, True)
     End Function
     ''' <summary>
     ''' Load all the information for a TV Season

@@ -1326,7 +1326,7 @@ Namespace Kodi
         ''' </summary>
         ''' <param name="mDBElement">TVSeason as DBElement</param>
         ''' <param name="SendHostNotification">Send notification to host</param>
-        ''' <returns>true=Update successfull, false=error or movieset not found in KodiDB</returns>
+        ''' <returns>true=Update successfull, false=error or season not found in KodiDB</returns>
         ''' <remarks>
         ''' 2015/06/27 Cocotus - First implementation, main code by DanCooper
         ''' updates all movieset fields which are filled/set in Ember (also paths of images)
@@ -1343,7 +1343,7 @@ Namespace Kodi
             Try
                 logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVSeasonInfo: ""{1}: Season {2}"" | Start syncing process...", _currenthost.Label, mDBElement.ShowPath, mDBElement.TVSeason.Season))
 
-                'search Movie ID in Kodi DB
+                'search TVSeason ID in Kodi DB
                 Dim KodiElement As Video.Details.Season = Await GetFullDetailsByID_TVSeason(Await GetMediaID(mDBElement))
 
                 'scan tv show path
@@ -1434,7 +1434,7 @@ Namespace Kodi
             Try
                 logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVShowInfo: ""{1}"" | Start syncing process...", _currenthost.Label, mDBElement.TVShow.Title))
 
-                'search Movie ID in Kodi DB
+                'search TVShow ID in Kodi DB
                 Dim KodiElement As Video.Details.TVShow = Await GetFullDetailsByID_TVShow(Await GetMediaID(mDBElement))
 
                 'scan tv show path
@@ -1720,6 +1720,141 @@ Namespace Kodi
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)
                 Return Nothing
+            End Try
+        End Function
+        ''' <summary>
+        ''' Remove Movie details at Kodi
+        ''' </summary>
+        ''' <param name="mDBElement">Movie as DBElement</param>
+        ''' <param name="SendHostNotification">Send notification to host</param>
+        ''' <returns>true=Remove successfull, false=error or movie not found in KodiDB</returns>
+        ''' <remarks>
+        ''' </remarks>
+        Public Async Function Remove_Movie(ByVal mDBElement As Database.DBElement, ByVal blnSendHostNotification As Boolean, ByVal GenericSubEvent As IProgress(Of GenericSubEventCallBackAsync), ByVal GenericMainEvent As IProgress(Of GenericEventCallBackAsync)) As Task(Of Boolean)
+            If _kodi Is Nothing Then
+                logger.Error("[APIKodi] [Remove_Movie]: No host initialized! Abort!")
+                Return False
+            End If
+
+            Try
+                logger.Trace(String.Format("[APIKodi] [{0}] [Remove_Movie]: ""{1}"" | Start removing process...", _currenthost.Label, mDBElement.Movie.Title))
+
+                'search Movie ID in Kodi DB
+                Dim KodiElement As Video.Details.Movie = Await GetFullDetailsByID_Movie(Await GetMediaID(mDBElement))
+
+                If KodiElement IsNot Nothing Then
+                    Dim response = Await _kodi.VideoLibrary.RemoveMovie(KodiElement.movieid).ConfigureAwait(False)
+
+                    If response.Contains("error") Then
+                        logger.Error(String.Format("[APIKodi] [{0}] [Remove_Movie]: {1}", _currenthost.Label, response))
+                        Return False
+                    Else
+                        'Send message to Kodi?
+                        If blnSendHostNotification = True Then
+                            Await SendMessage("Ember Media Manager", String.Format("{0}: {1}", Master.eLang.GetString(1024, "Removed"), mDBElement.Movie.Title)).ConfigureAwait(False)
+                        End If
+                        logger.Trace(String.Format("[APIKodi] [{0}] [Remove_Movie]: ""{1}"" | {2} on host", _currenthost.Label, mDBElement.Movie.Title, "Removed"))
+                        Return True
+                    End If
+                Else
+                    logger.Error(String.Format("[APIKodi] [{0}] [Remove_Movie]: ""{1}"" | NOT found on host! Abort!", _currenthost.Label, mDBElement.Movie.Title))
+                    Return False
+                End If
+
+            Catch ex As Exception
+                logger.Error(ex, New StackFrame().GetMethod().Name)
+                Return False
+            End Try
+        End Function
+        ''' <summary>
+        ''' Remove TVEpisode details at Kodi
+        ''' </summary>
+        ''' <param name="mDBElement">TVEpisode as DBElement</param>
+        ''' <param name="SendHostNotification">Send notification to host</param>
+        ''' <returns>true=Remove successfull, false=error or episode not found in KodiDB</returns>
+        ''' <remarks>
+        ''' </remarks>
+        Public Async Function Remove_TVEpisode(ByVal mDBElement As Database.DBElement, ByVal blnSendHostNotification As Boolean, ByVal GenericSubEvent As IProgress(Of GenericSubEventCallBackAsync), ByVal GenericMainEvent As IProgress(Of GenericEventCallBackAsync)) As Task(Of Boolean)
+            If _kodi Is Nothing Then
+                logger.Error("[APIKodi] [Remove_TVEpisode]: No host initialized! Abort!")
+                Return False
+            End If
+
+            Try
+                logger.Trace(String.Format("[APIKodi] [{0}] [Remove_TVEpisode]: ""{1}"" | Start removing process...", _currenthost.Label, mDBElement.TVEpisode.Title))
+
+                'search TV Episode ID in Kodi DB
+                Dim KodiElement As Video.Details.Episode = Await GetFullDetailsByID_TVEpisode(Await GetMediaID(mDBElement))
+
+                If KodiElement IsNot Nothing Then
+                    Dim response = Await _kodi.VideoLibrary.RemoveEpisode(KodiElement.episodeid).ConfigureAwait(False)
+
+                    If response.Contains("error") Then
+                        logger.Error(String.Format("[APIKodi] [{0}] [Remove_TVEpisode]: {1}", _currenthost.Label, response))
+                        Return False
+                    Else
+                        'Send message to Kodi?
+                        If blnSendHostNotification = True Then
+                            Await SendMessage("Ember Media Manager", String.Format("{0}: {1}: {2}", Master.eLang.GetString(1024, "Removed"), mDBElement.TVShow.Title, mDBElement.TVEpisode.Title)).ConfigureAwait(False)
+                        End If
+                        logger.Trace(String.Format("[APIKodi] [{0}] [Remove_TVEpisode]: ""{1}"" | {2} on host", _currenthost.Label, mDBElement.TVEpisode.Title, "Removed"))
+                        Return True
+                    End If
+                Else
+                    logger.Error(String.Format("[APIKodi] [{0}] [Remove_TVEpisode]: ""{1}"" | NOT found on host! Abort!", _currenthost.Label, mDBElement.TVEpisode.Title))
+                    Return False
+                End If
+
+            Catch ex As Exception
+                logger.Error(ex, New StackFrame().GetMethod().Name)
+                Return False
+            End Try
+        End Function
+        ''' <summary>
+        ''' Remove TVShow details at Kodi
+        ''' </summary>
+        ''' <param name="mDBElement">TVShow as DBElement</param>
+        ''' <param name="SendHostNotification">Send notification to host</param>
+        ''' <returns>true=Remove successfull, false=error or tv show not found in KodiDB</returns>
+        ''' <remarks>
+        ''' </remarks>
+        Public Async Function Remove_TVShow(ByVal mDBElement As Database.DBElement, ByVal blnSendHostNotification As Boolean, ByVal GenericSubEvent As IProgress(Of GenericSubEventCallBackAsync), ByVal GenericMainEvent As IProgress(Of GenericEventCallBackAsync)) As Task(Of Boolean)
+            If _kodi Is Nothing Then
+                logger.Error("[APIKodi] [Remove_TVShow]: No host initialized! Abort!")
+                Return False
+            End If
+
+            Try
+                logger.Trace(String.Format("[APIKodi] [{0}] [Remove_TVShow]: ""{1}"" | Start removing process...", _currenthost.Label, mDBElement.TVShow.Title))
+
+                'search TVShow ID in Kodi DB
+                Dim KodiElement As Video.Details.TVShow = Await GetFullDetailsByID_TVShow(Await GetMediaID(mDBElement))
+
+                If KodiElement IsNot Nothing Then
+                    Dim response = Await _kodi.VideoLibrary.RemoveTVShow(KodiElement.tvshowid).ConfigureAwait(False)
+
+                    If response.Contains("error") Then
+                        logger.Error(String.Format("[APIKodi] [{0}] [Remove_TVShow]: {1}", _currenthost.Label, response))
+                        Return False
+                    Else
+                        'Remove old textures (cache)
+                        Await RemoveTextures(mDBElement)
+
+                        'Send message to Kodi?
+                        If blnSendHostNotification = True Then
+                            Await SendMessage("Ember Media Manager", String.Format("{0}: {1}", Master.eLang.GetString(1024, "Removed"), mDBElement.TVShow.Title)).ConfigureAwait(False)
+                        End If
+
+                        logger.Trace(String.Format("[APIKodi] [{0}] [Remove_TVShow]: ""{1}"" | {2} on host", _currenthost.Label, mDBElement.TVShow.Title, "Removed"))
+                        Return True
+                    End If
+                Else
+                    logger.Error(String.Format("[APIKodi] [{0}] [Remove_TVShow]: ""{1}"" | NOT found on host! Abort!", _currenthost.Label, mDBElement.TVShow.Title))
+                    Return False
+                End If
+            Catch ex As Exception
+                logger.Error(ex, New StackFrame().GetMethod().Name)
+                Return False
             End Try
         End Function
         ''' <summary>

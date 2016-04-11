@@ -728,56 +728,61 @@ Public Class Enums
         OnThemeSave_Movie = 36
         OnTrailerSave_Movie = 37
         RandomFrameExtrator = 38
+        Remove_Movie = 39
+        Remove_MovieSet = 40
+        Remove_TVEpisode = 41
+        Remove_TVSeason = 42
+        Remove_TVShow = 43
         ''' <summary>
         ''' Called during auto scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperMulti_Movie = 39
+        ScraperMulti_Movie = 44
         ''' <summary>
         ''' Called during auto scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperMulti_TVEpisode = 40
+        ScraperMulti_TVEpisode = 45
         ''' <summary>
         ''' Called during manual scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperSingle_Movie = 41
+        ScraperSingle_Movie = 46
         ''' <summary>
         ''' Called during manual scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperSingle_TVEpisode = 42
-        ShowMovie = 43
-        ShowTVShow = 44
-        SyncModuleSettings = 45
-        Sync_Movie = 46
-        Sync_MovieSet = 47
-        Sync_TVEpisode = 48
-        Sync_TVSeason = 49
-        Sync_TVShow = 50
-        Task = 51
+        ScraperSingle_TVEpisode = 47
+        ShowMovie = 48
+        ShowTVShow = 49
+        SyncModuleSettings = 50
+        Sync_Movie = 51
+        Sync_MovieSet = 52
+        Sync_TVEpisode = 53
+        Sync_TVSeason = 54
+        Sync_TVShow = 55
+        Task = 56
         ''' <summary>
         ''' Called during auto scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperMulti_TVShow = 53
+        ScraperMulti_TVShow = 57
         ''' <summary>
         ''' Called during manual scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperSingle_TVShow = 54
+        ScraperSingle_TVShow = 58
         ''' <summary>
         ''' Called during auto scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperMulti_TVSeason = 55
+        ScraperMulti_TVSeason = 59
         ''' <summary>
         ''' Called during manual scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperSingle_TVSeason = 56
-        DuringUpdateDB_TV = 57
+        ScraperSingle_TVSeason = 60
+        DuringUpdateDB_TV = 61
     End Enum
 
     Public Enum ScraperEventType As Integer
