@@ -4620,7 +4620,6 @@ Public Class dlgSettings
                 Functions.GetListOfSources()
 
                 SetApplyButton(True)
-                sResult.NeedsDBClean_Movie = True
             End If
         End If
     End Sub
@@ -4723,8 +4722,8 @@ Public Class dlgSettings
                 lvTVSources.Sort()
                 lvTVSources.EndUpdate()
                 lvTVSources.Refresh()
+
                 SetApplyButton(True)
-                sResult.NeedsDBClean_TV = True
             End If
         End If
     End Sub
