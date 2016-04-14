@@ -1423,7 +1423,7 @@ Public Class dlgEditMovieSet
         btnSetPosterScrape.Text = strScrape
 
         Dim mTitle As String = tmpDBElement.MovieSet.Title
-        Dim sTitle As String = String.Concat(Master.eLang.GetString(1131, "Edit MovieSet"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
+        Dim sTitle As String = String.Concat(Master.eLang.GetString(207, "Edit MovieSet"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
         Text = sTitle
         Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
         OK_Button.Text = Master.eLang.GetString(179, "OK")
@@ -1434,7 +1434,7 @@ Public Class dlgEditMovieSet
         lblMovieSorting.Text = String.Concat(Master.eLang.GetString(665, "Movies sorted by"), ":")
         lblPlot.Text = Master.eLang.GetString(241, "Plot:")
         lblTopDetails.Text = Master.eLang.GetString(1132, "Edit the details for the selected movieset.")
-        lblTopTitle.Text = Master.eLang.GetString(1131, "Edit Movieset")
+        lblTopTitle.Text = Master.eLang.GetString(207, "Edit MovieSet")
         tpBanner.Text = Master.eLang.GetString(838, "Banner")
         tpClearArt.Text = Master.eLang.GetString(1096, "ClearArt")
         tpClearLogo.Text = Master.eLang.GetString(1097, "ClearLogo")

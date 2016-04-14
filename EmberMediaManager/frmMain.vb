@@ -5652,7 +5652,7 @@ doCancel:
         FillList(False, False, True)
     End Sub
 
-    Private Sub cmnuEpisodeRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeRescrape.Click
+    Private Sub cmnuEpisodeRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeScrape.Click
         If dgvTVEpisodes.SelectedRows.Count = 1 Then
             Dim ScrapeModifiers As New Structures.ScrapeModifiers
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
@@ -5660,12 +5660,12 @@ doCancel:
         End If
     End Sub
 
-    Private Sub cmnuShowRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowRefresh.Click
+    Private Sub cmnuShowRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowScrapeRefreshData.Click
         'Me.SetControlsEnabled(False, True)
         'RefreshData_TVShow()
     End Sub
 
-    Private Sub cmnuMovieRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieRescrape.Click
+    Private Sub cmnuMovieRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieScrape.Click
         If dgvMovies.SelectedRows.Count = 1 Then
             Dim ScrapeModifiers As New Structures.ScrapeModifiers
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
@@ -5673,7 +5673,7 @@ doCancel:
         End If
     End Sub
 
-    Private Sub cmnuMovieSetRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetRescrape.Click
+    Private Sub cmnuMovieSetRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetScrape.Click
         If dgvMovieSets.SelectedRows.Count = 1 Then
             Dim ScrapeModifiers As New Structures.ScrapeModifiers
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
@@ -5681,7 +5681,7 @@ doCancel:
         End If
     End Sub
 
-    Private Sub cmnuShowRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowRescrape.Click
+    Private Sub cmnuShowRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowScrape.Click
         If dgvTVShows.SelectedRows.Count > 0 Then
             Dim ScrapeModifiers As New Structures.ScrapeModifiers
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
@@ -5763,7 +5763,7 @@ doCancel:
         End If
     End Sub
 
-    Private Sub cmnuSeasonRescrape_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonRescrape.Click
+    Private Sub cmnuSeasonRescrape_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonScrape.Click
         If dgvTVSeasons.SelectedRows.Count > 0 Then
             Dim ScrapeModifiers As New Structures.ScrapeModifiers
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
@@ -5980,159 +5980,6 @@ doCancel:
         currRow_Movie = e.RowIndex
         Debug.WriteLine("[dgvMovies_CellEnter] tmrWait_Movie.Start()")
         tmrWait_Movie.Start()
-    End Sub
-
-    Private Sub dgvMovies_CellMouseDown(sender As Object, e As System.Windows.Forms.DataGridViewCellMouseEventArgs) Handles dgvMovies.CellMouseDown
-        If e.Button = MouseButtons.Right And dgvMovies.RowCount > 0 Then
-            If bwCleanDB.IsBusy OrElse bwMovieScraper.IsBusy OrElse bwNonScrape.IsBusy Then
-                cmnuMovieTitle.Text = Master.eLang.GetString(845, ">> No Item Selected <<")
-                Return
-            End If
-
-            cmnuMovie.Enabled = False
-
-
-            If e.RowIndex >= 0 AndAlso dgvMovies.SelectedRows.Count > 0 Then
-
-                cmnuMovie.Enabled = True
-                cmnuMovieChange.Visible = False
-                cmnuMovieChangeAuto.Visible = False
-                cmnuMovieEdit.Visible = False
-                cmnuMovieEditMetaData.Visible = False
-                cmnuMovieRescrapeSelected.Visible = True
-                cmnuMovieRescrape.Visible = False
-                cmnuMovieSingleDataField.Visible = True
-                'Me.cmuRenamer.Visible = False
-                cmnuMovieSep4.Visible = False
-
-                If dgvMovies.SelectedRows.Count > 1 AndAlso dgvMovies.Rows(e.RowIndex).Selected Then
-                    Dim setMark As Boolean = False
-                    Dim setLock As Boolean = False
-                    Dim setWatched As Boolean = False
-                    cmnuMovieSep4.Visible = True
-
-                    cmnuMovieTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
-
-                    For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
-                        'if any one item is set as unmarked, set menu to mark
-                        'else they are all marked, so set menu to unmark
-                        If Not Convert.ToBoolean(sRow.Cells("Mark").Value) Then
-                            setMark = True
-                            If setLock AndAlso setWatched Then Exit For
-                        End If
-                        'if any one item is set as unlocked, set menu to lock
-                        'else they are all locked so set menu to unlock
-                        If Not Convert.ToBoolean(sRow.Cells("Lock").Value) Then
-                            setLock = True
-                            If setMark AndAlso setWatched Then Exit For
-                        End If
-                        'if any one item is set as unwatched, set menu to watched
-                        'else they are all watched so set menu to not watched
-                        If String.IsNullOrEmpty(sRow.Cells("Playcount").Value.ToString) OrElse sRow.Cells("Playcount").Value.ToString = "0" Then
-                            setWatched = True
-                            If setLock AndAlso setMark Then Exit For
-                        End If
-                    Next
-
-                    cmnuMovieMark.Text = If(setMark, Master.eLang.GetString(23, "Mark"), Master.eLang.GetString(107, "Unmark"))
-                    cmnuMovieLock.Text = If(setLock, Master.eLang.GetString(24, "Lock"), Master.eLang.GetString(108, "Unlock"))
-                    cmnuMovieWatched.Text = If(setWatched, Master.eLang.GetString(981, "Watched"), Master.eLang.GetString(980, "Not Watched"))
-
-                    'Language submenu
-                    If Not cmnuMovieLanguageLanguages.Items.Contains(String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")) Then
-                        cmnuMovieLanguageLanguages.Items.Insert(0, String.Concat(Master.eLang.GetString(1199, "Select Language"), "..."))
-                    End If
-                    cmnuMovieLanguageLanguages.SelectedItem = String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")
-                    cmnuMovieLanguageSet.Enabled = False
-
-                    'Genre submenu
-                    mnuGenresGenre.Tag = String.Empty
-                    If Not mnuGenresGenre.Items.Contains(String.Concat(Master.eLang.GetString(27, "Select Genre"), "...")) Then
-                        mnuGenresGenre.Items.Insert(0, String.Concat(Master.eLang.GetString(27, "Select Genre"), "..."))
-                    End If
-                    mnuGenresGenre.SelectedItem = String.Concat(Master.eLang.GetString(27, "Select Genre"), "...")
-                    mnuGenresAdd.Enabled = False
-                    mnuGenresNew.Text = String.Empty
-                    mnuGenresRemove.Enabled = False
-                    mnuGenresSet.Enabled = False
-
-                    'Tag submenu
-                    mnuTagsTag.Tag = String.Empty
-                    If Not mnuTagsTag.Items.Contains(String.Concat(Master.eLang.GetString(1021, "Select Tag"), "...")) Then
-                        mnuTagsTag.Items.Insert(0, String.Concat(Master.eLang.GetString(1021, "Select Tag"), "..."))
-                    End If
-                    mnuTagsTag.SelectedItem = String.Concat(Master.eLang.GetString(1021, "Select Tag"), "...")
-                    mnuTagsAdd.Enabled = False
-                    mnuTagsNew.Text = String.Empty
-                    mnuTagsRemove.Enabled = False
-                    mnuTagsSet.Enabled = False
-                Else
-                    cmnuMovieChange.Visible = True
-                    cmnuMovieChangeAuto.Visible = True
-                    cmnuMovieEdit.Visible = True
-                    cmnuMovieEditMetaData.Visible = True
-                    cmnuMovieRescrapeSelected.Visible = True
-                    cmnuMovieRescrape.Visible = True
-                    cmnuMovieSingleDataField.Visible = True
-                    cmnuMovieSep3.Visible = True
-                    cmnuMovieSep4.Visible = True
-
-                    cmnuMovieTitle.Text = String.Concat(">> ", dgvMovies.Item("Title", e.RowIndex).Value, " <<")
-
-                    If Not dgvMovies.Rows(e.RowIndex).Selected Then
-                        prevRow_Movie = -1
-                        dgvMovies.CurrentCell = Nothing
-                        dgvMovies.ClearSelection()
-                        dgvMovies.Rows(e.RowIndex).Selected = True
-                        dgvMovies.CurrentCell = dgvMovies.Item("ListTitle", e.RowIndex)
-                    Else
-                        cmnuMovie.Enabled = True
-                    End If
-
-                    cmnuMovieMark.Text = If(Convert.ToBoolean(dgvMovies.Item("Mark", e.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
-                    cmnuMovieLock.Text = If(Convert.ToBoolean(dgvMovies.Item("Lock", e.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
-                    cmnuMovieWatched.Text = If(Not String.IsNullOrEmpty(dgvMovies.Item("Playcount", e.RowIndex).Value.ToString) AndAlso Not dgvMovies.Item("Playcount", e.RowIndex).Value.ToString = "0", Master.eLang.GetString(980, "Not Watched"), Master.eLang.GetString(981, "Watched"))
-
-                    'Language submenu
-                    Dim strLang As String = CStr(dgvMovies.Item("Language", e.RowIndex).Value)
-                    Dim Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = strLang)
-                    If Language IsNot Nothing AndAlso Not String.IsNullOrEmpty(Language.name) Then
-                        cmnuMovieLanguageLanguages.SelectedItem = Language.name
-                    Else
-                        If Not cmnuMovieLanguageLanguages.Items.Contains(String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")) Then
-                            cmnuMovieLanguageLanguages.Items.Insert(0, String.Concat(Master.eLang.GetString(1199, "Select Language"), "..."))
-                        End If
-                        cmnuMovieLanguageLanguages.SelectedItem = String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")
-                    End If
-                    cmnuMovieLanguageSet.Enabled = False
-
-                    'Genre submenu
-                    mnuGenresGenre.Tag = dgvMovies.Item("Genre", e.RowIndex).Value
-                    If Not mnuGenresGenre.Items.Contains(String.Concat(Master.eLang.GetString(27, "Select Genre"), "...")) Then
-                        mnuGenresGenre.Items.Insert(0, String.Concat(Master.eLang.GetString(27, "Select Genre"), "..."))
-                    End If
-                    mnuGenresGenre.SelectedItem = String.Concat(Master.eLang.GetString(27, "Select Genre"), "...")
-                    mnuGenresAdd.Enabled = False
-                    mnuGenresNew.Text = String.Empty
-                    mnuGenresRemove.Enabled = False
-                    mnuGenresSet.Enabled = False
-
-                    'Tag submenu
-                    mnuTagsTag.Tag = dgvMovies.Item("Tag", e.RowIndex).Value
-                    If Not mnuTagsTag.Items.Contains(String.Concat(Master.eLang.GetString(1021, "Select Tag"), "...")) Then
-                        mnuTagsTag.Items.Insert(0, String.Concat(Master.eLang.GetString(1021, "Select Tag"), "..."))
-                    End If
-                    mnuTagsTag.SelectedItem = String.Concat(Master.eLang.GetString(1021, "Select Tag"), "...")
-                    mnuTagsAdd.Enabled = False
-                    mnuTagsNew.Text = String.Empty
-                    mnuTagsRemove.Enabled = False
-                    mnuTagsSet.Enabled = False
-                End If
-            Else
-                cmnuMovie.Enabled = False
-                cmnuMovieTitle.Text = Master.eLang.GetString(845, ">> No Item Selected <<")
-            End If
-        End If
     End Sub
 
     Private Sub dgvMovies_CellMouseEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovies.CellMouseEnter
@@ -6400,6 +6247,150 @@ doCancel:
         End Try
     End Sub
 
+    Private Sub dgvMovies_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dgvMovies.MouseDown
+        If e.Button = MouseButtons.Right And dgvMovies.RowCount > 0 Then
+            If bwCleanDB.IsBusy OrElse bwMovieScraper.IsBusy OrElse bwNonScrape.IsBusy Then
+                cmnuMovieTitle.Text = Master.eLang.GetString(845, ">> No Item Selected <<")
+                Return
+            End If
+
+            cmnuMovie.Enabled = False
+
+            Dim dgvHTI As DataGridView.HitTestInfo = dgvMovies.HitTest(e.X, e.Y)
+
+            If dgvHTI.Type = DataGridViewHitTestType.Cell Then
+                If dgvMovies.SelectedRows.Count > 1 AndAlso dgvMovies.Rows(dgvHTI.RowIndex).Selected Then
+                    Dim setMark As Boolean = False
+                    Dim setLock As Boolean = False
+                    Dim setWatched As Boolean = False
+
+                    cmnuMovie.Enabled = True
+                    cmnuMovieChange.Visible = False
+                    cmnuMovieChangeAuto.Visible = False
+                    cmnuMovieEdit.Visible = False
+                    cmnuMovieEditMetaData.Visible = False
+                    cmnuMovieScrape.Visible = False
+
+                    For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
+                        'if any one item is set as unmarked, set menu to mark
+                        'else they are all marked, so set menu to unmark
+                        If Not Convert.ToBoolean(sRow.Cells("Mark").Value) Then
+                            setMark = True
+                            If setLock AndAlso setWatched Then Exit For
+                        End If
+                        'if any one item is set as unlocked, set menu to lock
+                        'else they are all locked so set menu to unlock
+                        If Not Convert.ToBoolean(sRow.Cells("Lock").Value) Then
+                            setLock = True
+                            If setMark AndAlso setWatched Then Exit For
+                        End If
+                        'if any one item is set as unwatched, set menu to watched
+                        'else they are all watched so set menu to not watched
+                        If String.IsNullOrEmpty(sRow.Cells("Playcount").Value.ToString) OrElse sRow.Cells("Playcount").Value.ToString = "0" Then
+                            setWatched = True
+                            If setLock AndAlso setMark Then Exit For
+                        End If
+                    Next
+
+                    cmnuMovieMark.Text = If(setMark, Master.eLang.GetString(23, "Mark"), Master.eLang.GetString(107, "Unmark"))
+                    cmnuMovieLock.Text = If(setLock, Master.eLang.GetString(24, "Lock"), Master.eLang.GetString(108, "Unlock"))
+                    cmnuMovieTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
+                    cmnuMovieWatched.Text = If(setWatched, Master.eLang.GetString(981, "Watched"), Master.eLang.GetString(980, "Not Watched"))
+
+                    'Language submenu
+                    mnuLanguagesLanguage.Tag = String.Empty
+                    If Not mnuLanguagesLanguage.Items.Contains(String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")) Then
+                        mnuLanguagesLanguage.Items.Insert(0, String.Concat(Master.eLang.GetString(1199, "Select Language"), "..."))
+                    End If
+                    mnuLanguagesLanguage.SelectedItem = String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")
+                    mnuLanguagesSet.Enabled = False
+
+                    'Genre submenu
+                    mnuGenresGenre.Tag = String.Empty
+                    If Not mnuGenresGenre.Items.Contains(String.Concat(Master.eLang.GetString(27, "Select Genre"), "...")) Then
+                        mnuGenresGenre.Items.Insert(0, String.Concat(Master.eLang.GetString(27, "Select Genre"), "..."))
+                    End If
+                    mnuGenresGenre.SelectedItem = String.Concat(Master.eLang.GetString(27, "Select Genre"), "...")
+                    mnuGenresAdd.Enabled = False
+                    mnuGenresNew.Text = String.Empty
+                    mnuGenresRemove.Enabled = False
+                    mnuGenresSet.Enabled = False
+
+                    'Tag submenu
+                    mnuTagsTag.Tag = String.Empty
+                    If Not mnuTagsTag.Items.Contains(String.Concat(Master.eLang.GetString(1021, "Select Tag"), "...")) Then
+                        mnuTagsTag.Items.Insert(0, String.Concat(Master.eLang.GetString(1021, "Select Tag"), "..."))
+                    End If
+                    mnuTagsTag.SelectedItem = String.Concat(Master.eLang.GetString(1021, "Select Tag"), "...")
+                    mnuTagsAdd.Enabled = False
+                    mnuTagsNew.Text = String.Empty
+                    mnuTagsRemove.Enabled = False
+                    mnuTagsSet.Enabled = False
+                Else
+                    cmnuMovieChange.Visible = True
+                    cmnuMovieChangeAuto.Visible = True
+                    cmnuMovieEdit.Visible = True
+                    cmnuMovieEditMetaData.Visible = True
+                    cmnuMovieScrape.Visible = True
+
+                    cmnuMovieMark.Text = If(Convert.ToBoolean(dgvMovies.Item("Mark", dgvHTI.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
+                    cmnuMovieLock.Text = If(Convert.ToBoolean(dgvMovies.Item("Lock", dgvHTI.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
+                    cmnuMovieTitle.Text = String.Concat(">> ", dgvMovies.Item("Title", dgvHTI.RowIndex).Value, " <<")
+                    cmnuMovieWatched.Text = If(Not String.IsNullOrEmpty(dgvMovies.Item("Playcount", dgvHTI.RowIndex).Value.ToString) AndAlso Not dgvMovies.Item("Playcount", dgvHTI.RowIndex).Value.ToString = "0", Master.eLang.GetString(980, "Not Watched"), Master.eLang.GetString(981, "Watched"))
+
+                    If Not dgvMovies.Rows(dgvHTI.RowIndex).Selected Then
+                        prevRow_Movie = -1
+                        dgvMovies.CurrentCell = Nothing
+                        dgvMovies.ClearSelection()
+                        dgvMovies.Rows(dgvHTI.RowIndex).Selected = True
+                        dgvMovies.CurrentCell = dgvMovies.Item("ListTitle", dgvHTI.RowIndex)
+                        'cmnuMovie.Enabled = True
+                    Else
+                        cmnuMovie.Enabled = True
+                    End If
+
+                    'Language submenu
+                    Dim strLang As String = dgvMovies.Item("Language", dgvHTI.RowIndex).Value.ToString
+                    Dim Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = strLang)
+                    If Language IsNot Nothing AndAlso Not String.IsNullOrEmpty(Language.name) Then
+                        mnuLanguagesLanguage.SelectedItem = Language.name
+                    Else
+                        If Not mnuLanguagesLanguage.Items.Contains(String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")) Then
+                            mnuLanguagesLanguage.Items.Insert(0, String.Concat(Master.eLang.GetString(1199, "Select Language"), "..."))
+                        End If
+                        mnuLanguagesLanguage.SelectedItem = String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")
+                    End If
+                    mnuLanguagesSet.Enabled = False
+
+                    'Genre submenu
+                    mnuGenresGenre.Tag = dgvMovies.Item("Genre", dgvHTI.RowIndex).Value
+                    If Not mnuGenresGenre.Items.Contains(String.Concat(Master.eLang.GetString(27, "Select Genre"), "...")) Then
+                        mnuGenresGenre.Items.Insert(0, String.Concat(Master.eLang.GetString(27, "Select Genre"), "..."))
+                    End If
+                    mnuGenresGenre.SelectedItem = String.Concat(Master.eLang.GetString(27, "Select Genre"), "...")
+                    mnuGenresAdd.Enabled = False
+                    mnuGenresNew.Text = String.Empty
+                    mnuGenresRemove.Enabled = False
+                    mnuGenresSet.Enabled = False
+
+                    'Tag submenu
+                    mnuTagsTag.Tag = dgvMovies.Item("Tag", dgvHTI.RowIndex).Value
+                    If Not mnuTagsTag.Items.Contains(String.Concat(Master.eLang.GetString(1021, "Select Tag"), "...")) Then
+                        mnuTagsTag.Items.Insert(0, String.Concat(Master.eLang.GetString(1021, "Select Tag"), "..."))
+                    End If
+                    mnuTagsTag.SelectedItem = String.Concat(Master.eLang.GetString(1021, "Select Tag"), "...")
+                    mnuTagsAdd.Enabled = False
+                    mnuTagsNew.Text = String.Empty
+                    mnuTagsRemove.Enabled = False
+                    mnuTagsSet.Enabled = False
+                End If
+            Else
+                cmnuMovie.Enabled = False
+                cmnuMovieTitle.Text = Master.eLang.GetString(845, ">> No Item Selected <<")
+            End If
+        End If
+    End Sub
+
     Private Sub dgvMovies_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvMovies.Resize
         ResizeMoviesList()
     End Sub
@@ -6564,125 +6555,6 @@ doCancel:
 
         currRow_MovieSet = e.RowIndex
         tmrWait_MovieSet.Start()
-    End Sub
-
-    Private Sub dgvMovieSets_CellMouseDown(sender As Object, e As System.Windows.Forms.DataGridViewCellMouseEventArgs) Handles dgvMovieSets.CellMouseDown
-        If e.Button = MouseButtons.Right And dgvMovieSets.RowCount > 0 Then
-            If bwCleanDB.IsBusy OrElse bwMovieSetScraper.IsBusy OrElse bwNonScrape.IsBusy Then
-                cmnuMovieSetTitle.Text = Master.eLang.GetString(845, ">> No Item Selected <<")
-                Return
-            End If
-
-            cmnuMovieSet.Enabled = False
-
-
-            If e.RowIndex >= 0 AndAlso dgvMovieSets.SelectedRows.Count > 0 Then
-
-                cmnuMovieSet.Enabled = True
-                cmnuMovieSetReload.Visible = True
-                cmnuMovieSetSep3.Visible = True
-                cmnuMovieSetEdit.Visible = False
-                cmnuMovieSetRemove.Visible = True
-                cmnuMovieSetSep3.Visible = False
-                cmnuMovieSetRescrape.Visible = False
-
-                If dgvMovieSets.SelectedRows.Count > 1 AndAlso dgvMovieSets.Rows(e.RowIndex).Selected Then
-                    Dim setMark As Boolean = False
-                    Dim setLock As Boolean = False
-                    'Dim setWatched As Boolean = False
-
-                    cmnuMovieSetTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
-
-                    For Each sRow As DataGridViewRow In dgvMovieSets.SelectedRows
-                        'if any one item is set as unmarked, set menu to mark
-                        'else they are all marked, so set menu to unmark
-                        If Not Convert.ToBoolean(sRow.Cells("Mark").Value) Then
-                            setMark = True
-                            If setLock Then Exit For
-                        End If
-                        'if any one item is set as unlocked, set menu to lock
-                        'else they are all locked so set menu to unlock
-                        If Not Convert.ToBoolean(sRow.Cells("Lock").Value) Then
-                            setLock = True
-                            If setMark Then Exit For
-                        End If
-                        ''if any one item is set as unwatched, set menu to watched
-                        ''else they are all watched so set menu to not watched
-                        'If Not Convert.ToBoolean(sRow.Cells("HasWatched").Value) Then
-                        '    setWatched = True
-                        '    If setLock AndAlso setMark Then Exit For
-                        'End If
-                    Next
-
-                    cmnuMovieSetMark.Text = If(setMark, Master.eLang.GetString(23, "Mark"), Master.eLang.GetString(107, "Unmark"))
-                    cmnuMovieSetLock.Text = If(setLock, Master.eLang.GetString(24, "Lock"), Master.eLang.GetString(108, "Unlock"))
-
-                    cmnuMovieSetSortMethodMethods.SelectedIndex = -1
-                    cmnuMovieSetSortMethodSet.Enabled = False
-
-                    'Language submenu
-                    If Not cmnuMovieSetLanguageLanguages.Items.Contains(String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")) Then
-                        cmnuMovieSetLanguageLanguages.Items.Insert(0, String.Concat(Master.eLang.GetString(1199, "Select Language"), "..."))
-                    End If
-                    cmnuMovieSetLanguageLanguages.SelectedItem = String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")
-                    cmnuMovieSetLanguageSet.Enabled = False
-                Else
-                    cmnuMovieSetReload.Visible = True
-                    cmnuMovieSetMark.Visible = True
-                    cmnuMovieSetLock.Visible = True
-                    cmnuMovieSetSep2.Visible = True
-                    cmnuMovieSetNew.Visible = True
-                    cmnuMovieSetEdit.Visible = True
-                    cmnuMovieSetRemove.Visible = True
-                    cmnuMovieSetSep3.Visible = True
-                    cmnuMovieSetRescrape.Visible = True
-
-                    cmnuMovieSetTitle.Text = String.Concat(">> ", dgvMovieSets.Item("SetName", e.RowIndex).Value, " <<")
-
-                    If Not dgvMovieSets.Rows(e.RowIndex).Selected Then
-                        prevRow_MovieSet = -1
-                        dgvMovieSets.CurrentCell = Nothing
-                        dgvMovieSets.ClearSelection()
-                        dgvMovieSets.Rows(e.RowIndex).Selected = True
-                        dgvMovieSets.CurrentCell = dgvMovieSets.Item("ListTitle", e.RowIndex)
-                    Else
-                        cmnuMovieSet.Enabled = True
-                    End If
-
-                    cmnuMovieSetMark.Text = If(Convert.ToBoolean(dgvMovieSets.Item("Mark", e.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
-                    cmnuMovieSetLock.Text = If(Convert.ToBoolean(dgvMovieSets.Item("Lock", e.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
-
-                    Dim SortMethod As Integer = CInt(dgvMovieSets.Item("SortMethod", e.RowIndex).Value)
-                    cmnuMovieSetSortMethodMethods.Text = DirectCast(CInt(dgvMovieSets.Item("SortMethod", e.RowIndex).Value), Enums.SortMethod_MovieSet).ToString
-                    cmnuMovieSetSortMethodSet.Enabled = False
-
-                    'Language submenu
-                    Dim strLang As String = CStr(dgvMovieSets.Item("Language", e.RowIndex).Value)
-                    Dim Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = strLang)
-                    If Language IsNot Nothing AndAlso Not String.IsNullOrEmpty(Language.name) Then
-                        cmnuMovieSetLanguageLanguages.SelectedItem = Language.name
-                    Else
-                        If Not cmnuMovieSetLanguageLanguages.Items.Contains(String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")) Then
-                            cmnuMovieSetLanguageLanguages.Items.Insert(0, String.Concat(Master.eLang.GetString(1199, "Select Language"), "..."))
-                        End If
-                        cmnuMovieSetLanguageLanguages.SelectedItem = String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")
-                    End If
-                    cmnuMovieSetLanguageSet.Enabled = False
-                End If
-            Else
-                cmnuMovieSet.Enabled = True
-                cmnuMovieSetReload.Visible = False
-                cmnuMovieSetMark.Visible = False
-                cmnuMovieSetLock.Visible = False
-                cmnuMovieSetSep2.Visible = False
-                cmnuMovieSetNew.Visible = True
-                cmnuMovieSetEdit.Visible = False
-                cmnuMovieSetRemove.Visible = False
-                cmnuMovieSetSep3.Visible = False
-                cmnuMovieSetRescrape.Visible = False
-                cmnuMovieSetTitle.Text = Master.eLang.GetString(845, ">> No Item Selected <<")
-            End If
-        End If
     End Sub
 
     Private Sub dgvMovieSets_CellMouseEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovieSets.CellMouseEnter
@@ -6856,6 +6728,156 @@ doCancel:
             SetStatus(currMovieSet.ListTitle)
             Dim tmpDBMovieSet As Database.DBElement = Master.DB.Load_MovieSet(ID)
             Edit_MovieSet(tmpDBMovieSet)
+        End If
+    End Sub
+
+    Private Sub dgvMovieSets_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dgvMovieSets.MouseDown
+        If e.Button = MouseButtons.Right And dgvMovieSets.RowCount > 0 Then
+            If bwCleanDB.IsBusy OrElse bwMovieSetScraper.IsBusy OrElse bwNonScrape.IsBusy Then
+                cmnuMovieSetTitle.Text = Master.eLang.GetString(845, ">> No Item Selected <<")
+                Return
+            End If
+
+            cmnuMovieSet.Enabled = False
+
+            Dim dgvHTI As DataGridView.HitTestInfo = dgvMovieSets.HitTest(e.X, e.Y)
+
+            If dgvHTI.Type = DataGridViewHitTestType.Cell Then
+                If dgvMovieSets.SelectedRows.Count > 1 AndAlso dgvMovieSets.Rows(dgvHTI.RowIndex).Selected Then
+                    Dim setMark As Boolean = False
+                    Dim setLock As Boolean = False
+
+                    cmnuMovieSet.Enabled = True
+                    cmnuMovieSetBrowseTMDB.Visible = True
+                    cmnuMovieSetDatabaseSeparator.Visible = True
+                    cmnuMovieSetEdit.Visible = False
+                    cmnuMovieSetEditSeparator.Visible = True
+                    cmnuMovieSetEditSortMethod.Visible = True
+                    cmnuMovieSetLanguage.Visible = True
+                    cmnuMovieSetLock.Visible = True
+                    cmnuMovieSetMark.Visible = True
+                    cmnuMovieSetNew.Visible = True
+                    cmnuMovieSetNewSeparator.Visible = True
+                    cmnuMovieSetReload.Visible = True
+                    cmnuMovieSetRemove.Visible = True
+                    cmnuMovieSetRemoveSeparator.Visible = True
+                    cmnuMovieSetScrape.Visible = False
+                    cmnuMovieSetScrapeSelected.Visible = True
+                    cmnuMovieSetScrapeSeparator.Visible = True
+                    cmnuMovieSetScrapeSingleDataField.Visible = True
+                    cmnuMovieSetSep3.Visible = True
+                    cmnuMovieSetTitle.Visible = True
+
+                    For Each sRow As DataGridViewRow In dgvMovieSets.SelectedRows
+                        'if any one item is set as unmarked, set menu to mark
+                        'else they are all marked, so set menu to unmark
+                        If Not Convert.ToBoolean(sRow.Cells("Mark").Value) Then
+                            setMark = True
+                            If setLock Then Exit For
+                        End If
+                        'if any one item is set as unlocked, set menu to lock
+                        'else they are all locked so set menu to unlock
+                        If Not Convert.ToBoolean(sRow.Cells("Lock").Value) Then
+                            setLock = True
+                            If setMark Then Exit For
+                        End If
+                        ''if any one item is set as unwatched, set menu to watched
+                        ''else they are all watched so set menu to not watched
+                        'If Not Convert.ToBoolean(sRow.Cells("HasWatched").Value) Then
+                        '    setWatched = True
+                        '    If setLock AndAlso setMark Then Exit For
+                        'End If
+                    Next
+
+                    cmnuMovieSetMark.Text = If(setMark, Master.eLang.GetString(23, "Mark"), Master.eLang.GetString(107, "Unmark"))
+                    cmnuMovieSetLock.Text = If(setLock, Master.eLang.GetString(24, "Lock"), Master.eLang.GetString(108, "Unlock"))
+                    cmnuMovieSetTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
+
+                    cmnuMovieSetEditSortMethodMethods.SelectedIndex = -1
+                    cmnuMovieSetEditSortMethodSet.Enabled = False
+
+                    'Language submenu
+                    mnuLanguagesLanguage.Tag = String.Empty
+                    If Not mnuLanguagesLanguage.Items.Contains(String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")) Then
+                        mnuLanguagesLanguage.Items.Insert(0, String.Concat(Master.eLang.GetString(1199, "Select Language"), "..."))
+                    End If
+                    mnuLanguagesLanguage.SelectedItem = String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")
+                    mnuLanguagesSet.Enabled = False
+                Else
+                    cmnuMovieSetBrowseTMDB.Visible = True
+                    cmnuMovieSetDatabaseSeparator.Visible = True
+                    cmnuMovieSetEdit.Visible = True
+                    cmnuMovieSetEditSeparator.Visible = True
+                    cmnuMovieSetEditSortMethod.Visible = True
+                    cmnuMovieSetLanguage.Visible = True
+                    cmnuMovieSetLock.Visible = True
+                    cmnuMovieSetMark.Visible = True
+                    cmnuMovieSetNew.Visible = True
+                    cmnuMovieSetNewSeparator.Visible = True
+                    cmnuMovieSetReload.Visible = True
+                    cmnuMovieSetRemove.Visible = True
+                    cmnuMovieSetRemoveSeparator.Visible = True
+                    cmnuMovieSetScrape.Visible = True
+                    cmnuMovieSetScrapeSelected.Visible = True
+                    cmnuMovieSetScrapeSeparator.Visible = True
+                    cmnuMovieSetScrapeSingleDataField.Visible = True
+                    cmnuMovieSetSep3.Visible = True
+                    cmnuMovieSetTitle.Visible = True
+
+                    cmnuMovieSetMark.Text = If(Convert.ToBoolean(dgvMovieSets.Item("Mark", dgvHTI.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
+                    cmnuMovieSetLock.Text = If(Convert.ToBoolean(dgvMovieSets.Item("Lock", dgvHTI.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
+                    cmnuMovieSetTitle.Text = String.Concat(">> ", dgvMovieSets.Item("SetName", dgvHTI.RowIndex).Value, " <<")
+
+                    If Not dgvMovieSets.Rows(dgvHTI.RowIndex).Selected Then
+                        prevRow_MovieSet = -1
+                        dgvMovieSets.CurrentCell = Nothing
+                        dgvMovieSets.ClearSelection()
+                        dgvMovieSets.Rows(dgvHTI.RowIndex).Selected = True
+                        dgvMovieSets.CurrentCell = dgvMovieSets.Item("ListTitle", dgvHTI.RowIndex)
+                        'cmnuMovieSet.Enabled = True
+                    Else
+                        cmnuMovieSet.Enabled = True
+                    End If
+
+                    Dim SortMethod As Integer = CInt(dgvMovieSets.Item("SortMethod", dgvHTI.RowIndex).Value)
+                    cmnuMovieSetEditSortMethodMethods.Text = DirectCast(CInt(dgvMovieSets.Item("SortMethod", dgvHTI.RowIndex).Value), Enums.SortMethod_MovieSet).ToString
+                    cmnuMovieSetEditSortMethodSet.Enabled = False
+
+                    'Language submenu
+                    Dim strLang As String = dgvMovieSets.Item("Language", dgvHTI.RowIndex).Value.ToString
+                    Dim Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = strLang)
+                    If Language IsNot Nothing AndAlso Not String.IsNullOrEmpty(Language.name) Then
+                        mnuLanguagesLanguage.SelectedItem = Language.name
+                    Else
+                        If Not mnuLanguagesLanguage.Items.Contains(String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")) Then
+                            mnuLanguagesLanguage.Items.Insert(0, String.Concat(Master.eLang.GetString(1199, "Select Language"), "..."))
+                        End If
+                        mnuLanguagesLanguage.SelectedItem = String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")
+                    End If
+                    mnuLanguagesSet.Enabled = False
+                End If
+            Else
+                cmnuMovieSet.Enabled = True
+                cmnuMovieSetBrowseTMDB.Visible = False
+                cmnuMovieSetDatabaseSeparator.Visible = False
+                cmnuMovieSetEdit.Visible = False
+                cmnuMovieSetEditSeparator.Visible = False
+                cmnuMovieSetEditSortMethod.Visible = False
+                cmnuMovieSetLanguage.Visible = False
+                cmnuMovieSetLock.Visible = False
+                cmnuMovieSetMark.Visible = False
+                cmnuMovieSetNew.Visible = True
+                cmnuMovieSetNewSeparator.Visible = False
+                cmnuMovieSetReload.Visible = False
+                cmnuMovieSetRemove.Visible = False
+                cmnuMovieSetRemoveSeparator.Visible = False
+                cmnuMovieSetScrape.Visible = False
+                cmnuMovieSetScrapeSelected.Visible = False
+                cmnuMovieSetScrapeSeparator.Visible = False
+                cmnuMovieSetScrapeSingleDataField.Visible = False
+                cmnuMovieSetSep3.Visible = False
+                cmnuMovieSetTitle.Visible = False
+            End If
         End If
     End Sub
 
@@ -7231,12 +7253,12 @@ doCancel:
 
                         ShowEpisodeMenuItems(True)
 
-                        ToolStripSeparator9.Visible = False
+                        cmnuEpisodeEditSeparator.Visible = False
                         cmnuEpisodeEdit.Visible = False
-                        ToolStripSeparator10.Visible = False
-                        cmnuEpisodeRescrape.Visible = False
+                        cmnuEpisodeScrapeSeparator.Visible = False
+                        cmnuEpisodeScrape.Visible = False
                         cmnuEpisodeChange.Visible = False
-                        ToolStripSeparator12.Visible = False
+                        cmnuEpisodeSep3.Visible = False
                         cmnuEpisodeOpenFolder.Visible = False
 
                         For Each sRow As DataGridViewRow In dgvTVEpisodes.SelectedRows
@@ -7285,12 +7307,12 @@ doCancel:
                     Else
                         ShowEpisodeMenuItems(True)
 
-                        ToolStripSeparator9.Visible = True
+                        cmnuEpisodeEditSeparator.Visible = True
                         cmnuEpisodeEdit.Visible = True
-                        ToolStripSeparator10.Visible = True
-                        cmnuEpisodeRescrape.Visible = True
+                        cmnuEpisodeScrapeSeparator.Visible = True
+                        cmnuEpisodeScrape.Visible = True
                         cmnuEpisodeChange.Visible = True
-                        ToolStripSeparator12.Visible = True
+                        cmnuEpisodeSep3.Visible = True
                         cmnuEpisodeOpenFolder.Visible = True
 
                         cmnuEpisodeMark.Text = If(Convert.ToBoolean(dgvTVEpisodes.Item("Mark", dgvHTI.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
@@ -7602,13 +7624,9 @@ doCancel:
                     Dim setWatched As Boolean = False
 
                     cmnuSeason.Enabled = True
-                    cmnuSeasonTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
-                    ToolStripSeparator16.Visible = False
                     cmnuSeasonEdit.Visible = False
-                    ToolStripSeparator14.Visible = False
-                    cmnuSeasonRescrape.Visible = False
-                    ToolStripSeparator15.Visible = False
-                    cmnuSeasonOpenFolder.Visible = False
+                    cmnuSeasonEditSeparator.Visible = False
+                    cmnuSeasonScrape.Visible = False
 
                     For Each sRow As DataGridViewRow In dgvTVSeasons.SelectedRows
                         'if any one item is set as unmarked, set menu to mark
@@ -7633,24 +7651,22 @@ doCancel:
 
                     cmnuSeasonMark.Text = If(setMark, Master.eLang.GetString(23, "Mark"), Master.eLang.GetString(107, "Unmark"))
                     cmnuSeasonLock.Text = If(setLock, Master.eLang.GetString(24, "Lock"), Master.eLang.GetString(108, "Unlock"))
+                    cmnuSeasonTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
                     cmnuSeasonWatched.Text = If(setWatched, Master.eLang.GetString(981, "Watched"), Master.eLang.GetString(980, "Not Watched"))
 
                 Else
-                    ToolStripSeparator16.Visible = True
                     cmnuSeasonEdit.Visible = True
-                    ToolStripSeparator14.Visible = True
-                    cmnuSeasonRescrape.Visible = True
-                    ToolStripSeparator15.Visible = True
-                    cmnuSeasonOpenFolder.Visible = True
+                    cmnuSeasonEditSeparator.Visible = True
+                    cmnuSeasonScrape.Visible = True
                     If CInt(dgvTVSeasons.Item("Season", dgvHTI.RowIndex).Value) = 999 Then
                         cmnuSeasonWatched.Enabled = False
                     Else
                         cmnuSeasonWatched.Enabled = True
                     End If
 
-                    cmnuSeasonTitle.Text = String.Concat(">> ", dgvTVSeasons.Item("SeasonText", dgvHTI.RowIndex).Value, " <<")
                     cmnuSeasonMark.Text = If(Convert.ToBoolean(dgvTVSeasons.Item("Mark", dgvHTI.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
                     cmnuSeasonLock.Text = If(Convert.ToBoolean(dgvTVSeasons.Item("Lock", dgvHTI.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
+                    cmnuSeasonTitle.Text = String.Concat(">> ", dgvTVSeasons.Item("SeasonText", dgvHTI.RowIndex).Value, " <<")
                     If Not CInt(dgvTVSeasons.Item("Season", dgvHTI.RowIndex).Value) = 999 Then cmnuSeasonWatched.Text = If(Convert.ToBoolean(dgvTVSeasons.Item("HasWatched", dgvHTI.RowIndex).Value), Master.eLang.GetString(980, "Not Watched"), Master.eLang.GetString(981, "Watched"))
                     cmnuSeasonEdit.Enabled = Convert.ToInt32(dgvTVSeasons.Item("Season", dgvHTI.RowIndex).Value) >= 0
 
@@ -8001,22 +8017,17 @@ doCancel:
             cmnuShow.Enabled = False
 
             Dim dgvHTI As DataGridView.HitTestInfo = dgvTVShows.HitTest(e.X, e.Y)
-            If dgvHTI.Type = DataGridViewHitTestType.Cell Then
 
+            If dgvHTI.Type = DataGridViewHitTestType.Cell Then
                 If dgvTVShows.SelectedRows.Count > 1 AndAlso dgvTVShows.Rows(dgvHTI.RowIndex).Selected Then
                     Dim setMark As Boolean = False
                     Dim setLock As Boolean = False
                     Dim setWatched As Boolean = False
 
                     cmnuShow.Enabled = True
-                    cmnuShowTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
-                    ToolStripSeparator8.Visible = False
-                    cmnuShowEdit.Visible = False
-                    ToolStripSeparator7.Visible = False
-                    ' Me.cmnuRescrapeShow.Visible = False
                     cmnuShowChange.Visible = False
-                    cmnuShowOpenFolder.Visible = False
-                    ToolStripSeparator20.Visible = False
+                    cmnuShowEdit.Visible = False
+                    cmnuShowScrape.Visible = False
 
                     For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
                         'if any one item is set as unmarked, set menu to mark
@@ -8041,14 +8052,16 @@ doCancel:
 
                     cmnuShowMark.Text = If(setMark, Master.eLang.GetString(23, "Mark"), Master.eLang.GetString(107, "Unmark"))
                     cmnuShowLock.Text = If(setLock, Master.eLang.GetString(24, "Lock"), Master.eLang.GetString(108, "Unlock"))
+                    cmnuShowTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
                     cmnuShowWatched.Text = If(setWatched, Master.eLang.GetString(981, "Watched"), Master.eLang.GetString(980, "Not Watched"))
 
                     'Language submenu
-                    If Not cmnuShowLanguageLanguages.Items.Contains(String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")) Then
-                        cmnuShowLanguageLanguages.Items.Insert(0, String.Concat(Master.eLang.GetString(1199, "Select Language"), "..."))
+                    mnuLanguagesLanguage.Tag = String.Empty
+                    If Not mnuLanguagesLanguage.Items.Contains(String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")) Then
+                        mnuLanguagesLanguage.Items.Insert(0, String.Concat(Master.eLang.GetString(1199, "Select Language"), "..."))
                     End If
-                    cmnuShowLanguageLanguages.SelectedItem = String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")
-                    cmnuShowLanguageSet.Enabled = False
+                    mnuLanguagesLanguage.SelectedItem = String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")
+                    mnuLanguagesSet.Enabled = False
 
                     'Genre submenu
                     mnuGenresGenre.Tag = String.Empty
@@ -8072,18 +8085,13 @@ doCancel:
                     mnuTagsRemove.Enabled = False
                     mnuTagsSet.Enabled = False
                 Else
-                    ToolStripSeparator8.Visible = True
-                    cmnuShowEdit.Visible = True
-                    ToolStripSeparator7.Visible = True
-                    cmnuShowRefresh.Visible = True
-                    cmnuShowRescrape.Visible = True
                     cmnuShowChange.Visible = True
-                    cmnuShowOpenFolder.Visible = True
-                    ToolStripSeparator20.Visible = True
+                    cmnuShowEdit.Visible = True
+                    cmnuShowScrape.Visible = True
 
-                    cmnuShowTitle.Text = String.Concat(">> ", dgvTVShows.Item("ListTitle", dgvHTI.RowIndex).Value, " <<")
                     cmnuShowMark.Text = If(Convert.ToBoolean(dgvTVShows.Item("Mark", dgvHTI.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
                     cmnuShowLock.Text = If(Convert.ToBoolean(dgvTVShows.Item("Lock", dgvHTI.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
+                    cmnuShowTitle.Text = String.Concat(">> ", dgvTVShows.Item("Title", dgvHTI.RowIndex).Value, " <<")
                     cmnuShowWatched.Text = If(Convert.ToBoolean(dgvTVShows.Item("HasWatched", dgvHTI.RowIndex).Value), Master.eLang.GetString(980, "Not Watched"), Master.eLang.GetString(981, "Watched"))
 
                     If Not dgvTVShows.Rows(dgvHTI.RowIndex).Selected OrElse Not currList = 0 Then
@@ -8093,22 +8101,23 @@ doCancel:
                         dgvTVShows.ClearSelection()
                         dgvTVShows.Rows(dgvHTI.RowIndex).Selected = True
                         dgvTVShows.CurrentCell = dgvTVShows.Item("ListTitle", dgvHTI.RowIndex)
+                        'cmnuShow.Enabled = True
                     Else
                         cmnuShow.Enabled = True
                     End If
 
                     'Language submenu
-                    Dim strLang As String = CStr(dgvTVShows.Item("Language", dgvHTI.RowIndex).Value)
+                    Dim strLang As String = dgvTVShows.Item("Language", dgvHTI.RowIndex).Value.ToString
                     Dim Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = strLang)
                     If Language IsNot Nothing AndAlso Not String.IsNullOrEmpty(Language.name) Then
-                        cmnuShowLanguageLanguages.SelectedItem = Language.name
+                        mnuLanguagesLanguage.SelectedItem = Language.name
                     Else
-                        If Not cmnuShowLanguageLanguages.Items.Contains(String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")) Then
-                            cmnuShowLanguageLanguages.Items.Insert(0, String.Concat(Master.eLang.GetString(1199, "Select Language"), "..."))
+                        If Not mnuLanguagesLanguage.Items.Contains(String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")) Then
+                            mnuLanguagesLanguage.Items.Insert(0, String.Concat(Master.eLang.GetString(1199, "Select Language"), "..."))
                         End If
-                        cmnuShowLanguageLanguages.SelectedItem = String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")
+                        mnuLanguagesLanguage.SelectedItem = String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")
                     End If
-                    cmnuShowLanguageSet.Enabled = False
+                    mnuLanguagesSet.Enabled = False
 
                     'Genre submenu
                     mnuGenresGenre.Tag = dgvTVShows.Item("Genre", dgvHTI.RowIndex).Value
@@ -10813,6 +10822,54 @@ doCancel:
         End If
     End Sub
 
+    Private Sub mnuLanguagesLanguage_DropDown(ByVal sender As Object, ByVal e As System.EventArgs) Handles mnuLanguagesLanguage.DropDown
+        If mnuLanguagesLanguage.Items.Contains(String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")) Then
+            mnuLanguagesLanguage.Items.Remove(String.Concat(Master.eLang.GetString(1199, "Select Language"), "..."))
+        End If
+    End Sub
+
+    Private Sub mnuLanguagesLanguage_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles mnuLanguagesLanguage.SelectedIndexChanged
+        mnuLanguagesSet.Enabled = True
+    End Sub
+
+    Private Sub mnuLanguagesSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuLanguagesSet.Click
+        Dim strLanguage As String = String.Empty
+        If Not String.IsNullOrEmpty(mnuLanguagesLanguage.Text.Trim) Then
+            strLanguage = mnuLanguagesLanguage.Text.Trim
+        End If
+
+        If Not String.IsNullOrEmpty(strLanguage) Then
+            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                Select Case _SelectedContentType
+                    Case "movie"
+                        For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
+                            Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value))
+                            tmpDBElement.Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = strLanguage).abbreviation
+                            tmpDBElement.Movie.Language = tmpDBElement.Language
+                            Master.DB.Save_Movie(tmpDBElement, True, True, False)
+                            RefreshRow_Movie(tmpDBElement.ID)
+                        Next
+                    Case "movieset"
+                        For Each sRow As DataGridViewRow In dgvMovieSets.SelectedRows
+                            Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(Convert.ToInt64(sRow.Cells("idSet").Value))
+                            tmpDBElement.Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = strLanguage).abbreviation
+                            Master.DB.Save_MovieSet(tmpDBElement, True, True, False)
+                            RefreshRow_MovieSet(tmpDBElement.ID)
+                        Next
+                    Case "tvshow"
+                        For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
+                            Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(Convert.ToInt64(sRow.Cells("idShow").Value), False, False)
+                            tmpDBElement.Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = strLanguage).abbreviation
+                            tmpDBElement.TVShow.Language = tmpDBElement.Language
+                            Master.DB.Save_TVShow(tmpDBElement, True, True, False, False)
+                            RefreshRow_TVShow(tmpDBElement.ID)
+                        Next
+                End Select
+                SQLtransaction.Commit()
+            End Using
+        End If
+    End Sub
+
     Private Sub mnuTagsAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuTagsAdd.Click
         Dim strTag As String = String.Empty
         If Not String.IsNullOrEmpty(mnuTagsNew.Text) Then
@@ -10962,32 +11019,8 @@ doCancel:
         mnuTagsSet.Enabled = True
     End Sub
 
-    Private Sub cmnuMovieLanguageLanguages_DropDown(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuMovieLanguageLanguages.DropDown
-        cmnuMovieLanguageLanguages.Items.Remove(String.Concat(Master.eLang.GetString(1199, "Select Language"), "..."))
-    End Sub
-
-    Private Sub cmnuMovieLanguageLanguages_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuMovieLanguageLanguages.SelectedIndexChanged
-        cmnuMovieLanguageSet.Enabled = True
-    End Sub
-
-    Private Sub cmnuMovieSetLanguageLanguages_DropDown(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuMovieSetLanguageLanguages.DropDown
-        cmnuMovieSetLanguageLanguages.Items.Remove(String.Concat(Master.eLang.GetString(1199, "Select Language"), "..."))
-    End Sub
-
-    Private Sub cmnuMovieSetLanguageLanguages_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuMovieSetLanguageLanguages.SelectedIndexChanged
-        cmnuMovieSetLanguageSet.Enabled = True
-    End Sub
-
-    Private Sub cmnuShowLanguageLanguages_DropDown(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuShowLanguageLanguages.DropDown
-        cmnuShowLanguageLanguages.Items.Remove(String.Concat(Master.eLang.GetString(1199, "Select Language"), "..."))
-    End Sub
-
-    Private Sub cmnuShowLanguageLanguages_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuShowLanguageLanguages.SelectedIndexChanged
-        cmnuShowLanguageSet.Enabled = True
-    End Sub
-
-    Private Sub cmnuMovieSetSortMethodMethods_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuMovieSetSortMethodMethods.SelectedIndexChanged
-        cmnuMovieSetSortMethodSet.Enabled = True
+    Private Sub cmnuMovieSetSortMethodMethods_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuMovieSetEditSortMethodMethods.SelectedIndexChanged
+        cmnuMovieSetEditSortMethodSet.Enabled = True
     End Sub
 
     Private Sub lblFilterGenreClose_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lblFilterGenresClose_Movies.Click
@@ -11159,7 +11192,7 @@ doCancel:
         End If
     End Sub
 
-    Private Sub mnuContextMenuStrip_Opened(sender As Object, e As EventArgs) Handles mnuGenres.Opened, mnuTags.Opened, mnuScrapeSubmenu.Opened
+    Private Sub mnuContextMenuStrip_Opened(sender As Object, e As EventArgs) Handles mnuGenres.Opened, mnuLanguages.Opened, mnuTags.Opened, mnuScrapeSubmenu.Opened
         Dim tContextMenuStrip As ContextMenuStrip = CType(sender, ContextMenuStrip)
         If tContextMenuStrip IsNot Nothing AndAlso tContextMenuStrip.OwnerItem IsNot Nothing AndAlso tContextMenuStrip.OwnerItem.Tag IsNot Nothing Then
             _SelectedContentType = tContextMenuStrip.OwnerItem.Tag.ToString
@@ -15849,49 +15882,11 @@ doCancel:
         End Using
     End Sub
 
-    Private Sub cmnuMovieLanguageSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieLanguageSet.Click
-        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-            For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
-                Dim tmpDBMovie As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value))
-                tmpDBMovie.Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = cmnuMovieLanguageLanguages.Text).abbreviation
-                tmpDBMovie.Movie.Language = tmpDBMovie.Language
-                Master.DB.Save_Movie(tmpDBMovie, True, True, False)
-                RefreshRow_Movie(tmpDBMovie.ID)
-            Next
-            SQLtransaction.Commit()
-        End Using
-    End Sub
-
-    Private Sub cmnuMovieSetLanguageSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetLanguageSet.Click
+    Private Sub cmnuMovieSetSortMethodSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetEditSortMethodSet.Click
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             For Each sRow As DataGridViewRow In dgvMovieSets.SelectedRows
                 Dim tmpDBMovieSet As Database.DBElement = Master.DB.Load_MovieSet(Convert.ToInt64(sRow.Cells("idSet").Value))
-                tmpDBMovieSet.Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = cmnuMovieSetLanguageLanguages.Text).abbreviation
-                Master.DB.Save_MovieSet(tmpDBMovieSet, True, False, False)
-                RefreshRow_MovieSet(tmpDBMovieSet.ID)
-            Next
-            SQLtransaction.Commit()
-        End Using
-    End Sub
-
-    Private Sub cmnuShowLanguageSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowLanguageSet.Click
-        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-            For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
-                Dim tmpDBTVShow As Database.DBElement = Master.DB.Load_TVShow(Convert.ToInt64(sRow.Cells("idShow").Value), True, False)
-                tmpDBTVShow.Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = cmnuShowLanguageLanguages.Text).abbreviation
-                tmpDBTVShow.TVShow.Language = tmpDBTVShow.Language
-                Master.DB.Save_TVShow(tmpDBTVShow, False, True, False, False)
-                RefreshRow_TVShow(tmpDBTVShow.ID)
-            Next
-            SQLtransaction.Commit()
-        End Using
-    End Sub
-
-    Private Sub cmnuMovieSetSortMethodSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetSortMethodSet.Click
-        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-            For Each sRow As DataGridViewRow In dgvMovieSets.SelectedRows
-                Dim tmpDBMovieSet As Database.DBElement = Master.DB.Load_MovieSet(Convert.ToInt64(sRow.Cells("idSet").Value))
-                tmpDBMovieSet.SortMethod = CType(cmnuMovieSetSortMethodMethods.ComboBox.SelectedValue, Enums.SortMethod_MovieSet)
+                tmpDBMovieSet.SortMethod = CType(cmnuMovieSetEditSortMethodMethods.ComboBox.SelectedValue, Enums.SortMethod_MovieSet)
                 Master.DB.Save_MovieSet(tmpDBMovieSet, True, True, False)
                 RefreshRow_MovieSet(tmpDBMovieSet.ID)
             Next
@@ -15994,22 +15989,13 @@ doCancel:
             clbFilterDataFields_Movies.Items.Clear()
             clbFilterDataFields_Movies.Items.AddRange(New Object() {"Certification", "Credits", "Director", "Imdb", "MPAA", "OriginalTitle", "Outline", "Plot", "Rating", "ReleaseDate", "Runtime", "SortTitle", "Studio", "TMDB", "TMDBColID", "Tagline", "Title", "Trailer", "VideoSource", "Votes", "Year"})
 
-            cmnuMovieLanguageLanguages.Items.Clear()
-            cmnuMovieLanguageLanguages.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
-
-            cmnuMovieSetLanguageLanguages.Items.Clear()
-            cmnuMovieSetLanguageLanguages.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
-
-            cmnuShowLanguageLanguages.Items.Clear()
-            cmnuShowLanguageLanguages.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
-
             Dim SortMethods As New Dictionary(Of String, Enums.SortMethod_MovieSet)
             SortMethods.Add(Master.eLang.GetString(278, "Year"), Enums.SortMethod_MovieSet.Year)
             SortMethods.Add(Master.eLang.GetString(21, "Title"), Enums.SortMethod_MovieSet.Title)
-            cmnuMovieSetSortMethodMethods.ComboBox.DataSource = SortMethods.ToList
-            cmnuMovieSetSortMethodMethods.ComboBox.DisplayMember = "Key"
-            cmnuMovieSetSortMethodMethods.ComboBox.ValueMember = "Value"
-            cmnuMovieSetSortMethodMethods.ComboBox.BindingContext = BindingContext
+            cmnuMovieSetEditSortMethodMethods.ComboBox.DataSource = SortMethods.ToList
+            cmnuMovieSetEditSortMethodMethods.ComboBox.DisplayMember = "Key"
+            cmnuMovieSetEditSortMethodMethods.ComboBox.ValueMember = "Value"
+            cmnuMovieSetEditSortMethodMethods.ComboBox.BindingContext = BindingContext
 
             listViews_Movies.Clear()
             listViews_Movies.Add(Master.eLang.GetString(786, "Default List"), "movielist")
@@ -16040,6 +16026,9 @@ doCancel:
             cbFilterLists_Shows.DisplayMember = "Key"
             cbFilterLists_Shows.ValueMember = "Value"
             cbFilterLists_Shows.SelectedIndex = 0
+
+            mnuLanguagesLanguage.Items.Clear()
+            mnuLanguagesLanguage.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language.OrderBy(Function(f) f.name) Select lLang.name).ToArray)
 
             'not technically a menu, but it's a good place to put it
             If ReloadFilters Then
@@ -16459,10 +16448,6 @@ doCancel:
                 .cmnuMovieSetLanguage.Text = strChangeLanguage
                 .cmnuShowLanguage.Text = strChangeLanguage
 
-                'Change Movie Sorting
-                Dim strChangeMovieSorting As String = Master.eLang.GetString(939, "Change Movie Sorting")
-                .cmnuMovieSetSortMethod.Text = strChangeMovieSorting
-
                 'Current Filter
                 Dim strCurrentFilter As String = Master.eLang.GetString(624, "Current Filter")
                 .mnuScrapeSubmenuFilter.Text = strCurrentFilter
@@ -16511,9 +16496,23 @@ doCancel:
                 Dim strDiscArtOnly As String = Master.eLang.GetString(1124, "DiscArt Only")
                 .mnuScrapeModifierDiscArt.Text = strDiscArtOnly
 
+                'Edit Genres
+                Dim strEditGenres As String = Master.eLang.GetString(1051, "Edit Genres")
+                .cmnuMovieEditGenres.Text = strEditGenres
+                .cmnuShowEditGenres.Text = strEditGenres
+
+                'Edit Movie Sorting
+                Dim strEditMovieSorting As String = Master.eLang.GetString(939, "Edit Movie Sorting")
+                .cmnuMovieSetEditSortMethod.Text = strEditMovieSorting
+
                 'Edit Season
                 Dim strEditSeason As String = Master.eLang.GetString(769, "Edit Season")
                 .cmnuSeasonEdit.Text = strEditSeason
+
+                'Edit Tags
+                Dim strEditTags As String = Master.eLang.GetString(1052, "Edit Tags")
+                .cmnuMovieEditTags.Text = strEditTags
+                .cmnuShowEditTags.Text = strEditTags
 
                 'Extrafanarts Only
                 Dim strExtrafanartsOnly As String = Master.eLang.GetString(975, "Extrafanarts Only")
@@ -16580,11 +16579,9 @@ doCancel:
 
                 'Set
                 Dim strSet As String = Master.eLang.GetString(29, "Set")
-                .cmnuMovieLanguageSet.Text = strSet
-                .cmnuMovieSetLanguageSet.Text = strSet
-                .cmnuMovieSetSortMethodSet.Text = strSet
-                .cmnuShowLanguageSet.Text = strSet
+                .cmnuMovieSetEditSortMethodSet.Text = strSet
                 .mnuGenresSet.Text = strSet
+                .mnuLanguagesSet.Text = strSet
                 .mnuTagsSet.Text = strSet
 
                 'Select Genre
@@ -16596,12 +16593,12 @@ doCancel:
                 .mnuTagsTitleSelect.Text = String.Concat(">> ", strSelectTag, " <<")
 
                 'Update Single Data Field
-                Dim strUpdateSingelDataField As String = Master.eLang.GetString(1126, "Update Single Data Field")
-                .cmnuEpisodeSingleDataField.Text = strUpdateSingelDataField
-                .cmnuMovieSingleDataField.Text = strUpdateSingelDataField
-                .cmnuMovieSetSingleDataField.Text = strUpdateSingelDataField
-                .cmnuSeasonSingleDataField.Text = strUpdateSingelDataField
-                .cmnuShowSingleDataField.Text = strUpdateSingelDataField
+                Dim strUpdateSingelDataField As String = Master.eLang.GetString(1126, "(Re)Scrape Single Data Field")
+                .cmnuEpisodeScrapeSingleDataField.Text = strUpdateSingelDataField
+                .cmnuMovieScrapeSingleDataField.Text = strUpdateSingelDataField
+                .cmnuMovieSetScrapeSingleDataField.Text = strUpdateSingelDataField
+                .cmnuSeasonScrapeSingleDataField.Text = strUpdateSingelDataField
+                .cmnuShowScrapeSingleDataField.Text = strUpdateSingelDataField
 
                 'Theme Only
                 Dim strThemeOnly As String = Master.eLang.GetString(1125, "Theme Only")
@@ -16776,21 +16773,19 @@ doCancel:
 
                 .cmnuEpisodeChange.Text = Master.eLang.GetString(772, "Change Episode")
                 .cmnuEpisodeEdit.Text = Master.eLang.GetString(656, "Edit Episode")
-                .cmnuEpisodeEdit.Text = Master.eLang.GetString(656, "Edit Episode")
                 .cmnuEpisodeLock.Text = Master.eLang.GetString(24, "Lock")
                 .cmnuEpisodeMark.Text = Master.eLang.GetString(23, "Mark")
                 .cmnuEpisodeReload.Text = Master.eLang.GetString(22, "Reload")
                 .cmnuEpisodeRemove.Text = Master.eLang.GetString(30, "Remove")
                 .cmnuEpisodeRemoveFromDB.Text = Master.eLang.GetString(646, "Remove from Database")
                 .cmnuEpisodeRemoveFromDisk.Text = Master.eLang.GetString(773, "Delete Episode")
-                .cmnuEpisodeRescrape.Text = Master.eLang.GetString(147, "(Re)Scrape Episode")
+                .cmnuEpisodeScrape.Text = Master.eLang.GetString(147, "(Re)Scrape Episode")
                 .cmnuMovieBrowseIMDB.Text = Master.eLang.GetString(1281, "Open IMDB-Page")
                 .cmnuMovieBrowseTMDB.Text = Master.eLang.GetString(1282, "Open TMDB-Page")
                 .cmnuMovieChange.Text = Master.eLang.GetString(32, "Change Movie")
                 .cmnuMovieChangeAuto.Text = Master.eLang.GetString(1294, "Change Movie (Auto)")
                 .cmnuMovieEdit.Text = Master.eLang.GetString(25, "Edit Movie")
                 .cmnuMovieEditMetaData.Text = Master.eLang.GetString(603, "Edit Meta Data")
-                .cmnuMovieGenres.Text = Master.eLang.GetString(725, "Genres")
                 .cmnuMovieLock.Text = Master.eLang.GetString(24, "Lock")
                 .cmnuMovieMark.Text = Master.eLang.GetString(23, "Mark")
                 .cmnuMovieMarkAs.Text = Master.eLang.GetString(1192, "Mark as")
@@ -16807,11 +16802,11 @@ doCancel:
                 .cmnuMovieRemove.Text = Master.eLang.GetString(30, "Remove")
                 .cmnuMovieRemoveFromDB.Text = Master.eLang.GetString(646, "Remove From Database")
                 .cmnuMovieRemoveFromDisk.Text = Master.eLang.GetString(34, "Delete Movie")
-                .cmnuMovieRescrape.Text = Master.eLang.GetString(163, "(Re)Scrape Movie")
-                .cmnuMovieRescrapeSelected.Text = Master.eLang.GetString(31, "(Re)Scrape Selected Movies")
-                .cmnuMovieSetEdit.Text = Master.eLang.GetString(1131, "Edit MovieSet")
-                .cmnuMovieSetNew.Text = Master.eLang.GetString(208, "Add New Set")
-                .cmnuMovieSetRescrape.Text = Master.eLang.GetString(1233, "(Re)Scrape MovieSet")
+                .cmnuMovieScrape.Text = Master.eLang.GetString(163, "(Re)Scrape Movie")
+                .cmnuMovieScrapeSelected.Text = Master.eLang.GetString(31, "(Re)Scrape Selected Movies")
+                .cmnuMovieSetEdit.Text = Master.eLang.GetString(207, "Edit MovieSet")
+                .cmnuMovieSetNew.Text = Master.eLang.GetString(208, "Add New MovieSet")
+                .cmnuMovieSetScrape.Text = Master.eLang.GetString(1233, "(Re)Scrape MovieSet")
                 .cmnuMovieTitle.Text = Master.eLang.GetString(21, "Title")
                 .cmnuSeasonRemoveFromDB.Text = Master.eLang.GetString(646, "Remove from Database")
                 .cmnuSeasonLock.Text = Master.eLang.GetString(24, "Lock")
@@ -16819,7 +16814,7 @@ doCancel:
                 .cmnuSeasonReload.Text = Master.eLang.GetString(22, "Reload")
                 .cmnuSeasonRemove.Text = Master.eLang.GetString(30, "Remove")
                 .cmnuSeasonRemoveFromDisk.Text = Master.eLang.GetString(771, "Delete Season")
-                .cmnuSeasonRescrape.Text = Master.eLang.GetString(146, "(Re)Scrape Season")
+                .cmnuSeasonScrape.Text = Master.eLang.GetString(146, "(Re)Scrape Season")
                 .cmnuShowChange.Text = Master.eLang.GetString(767, "Change Show")
                 .cmnuShowClearCache.Text = Master.eLang.GetString(565, "Clear Cache")
                 .cmnuShowClearCacheDataAndImages.Text = Master.eLang.GetString(583, "Data and Images")
@@ -16833,8 +16828,8 @@ doCancel:
                 .cmnuShowRemove.Text = Master.eLang.GetString(30, "Remove")
                 .cmnuShowRemoveFromDB.Text = Master.eLang.GetString(646, "Remove from Database")
                 .cmnuShowRemoveFromDisk.Text = Master.eLang.GetString(768, "Delete TV Show")
-                .cmnuShowRefresh.Text = Master.eLang.GetString(1066, "Refresh Data")
-                .cmnuShowRescrape.Text = Master.eLang.GetString(766, "(Re)Scrape Show")
+                .cmnuShowScrapeRefreshData.Text = Master.eLang.GetString(1066, "Refresh Data")
+                .cmnuShowScrape.Text = Master.eLang.GetString(766, "(Re)Scrape Show")
                 .cmnuTrayExit.Text = Master.eLang.GetString(2, "E&xit")
                 .cmnuTraySettings.Text = Master.eLang.GetString(4, "&Settings...")
                 .cmnuTrayTools.Text = Master.eLang.GetString(8, "&Tools")
