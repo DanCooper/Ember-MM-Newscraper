@@ -12104,75 +12104,77 @@ doCancel:
             ScrapeList.Add(New ScrapeItem With {.DataRow = drvRow, .ScrapeModifiers = sModifier})
         Next
 
-        SetControlsEnabled(False)
+        If Not ScrapeList.Count = 0 Then
+            SetControlsEnabled(False)
 
-        tspbLoading.Value = 0
-        If ScrapeList.Count > 1 Then
-            tspbLoading.Style = ProgressBarStyle.Continuous
-            tspbLoading.Maximum = ScrapeList.Count
-        Else
-            tspbLoading.Maximum = 100
-            tspbLoading.Style = ProgressBarStyle.Marquee
+            tspbLoading.Value = 0
+            If ScrapeList.Count > 1 Then
+                tspbLoading.Style = ProgressBarStyle.Continuous
+                tspbLoading.Maximum = ScrapeList.Count
+            Else
+                tspbLoading.Maximum = 100
+                tspbLoading.Style = ProgressBarStyle.Marquee
+            End If
+
+            Select Case sType
+                Case Enums.ScrapeType.AllAsk
+                    tslLoading.Text = Master.eLang.GetString(127, "Scraping Media (All Movies - Ask):")
+                Case Enums.ScrapeType.AllAuto
+                    tslLoading.Text = Master.eLang.GetString(128, "Scraping Media (All Movies - Auto):")
+                Case Enums.ScrapeType.AllSkip
+                    tslLoading.Text = Master.eLang.GetString(853, "Scraping Media (All Movies - Skip):")
+                Case Enums.ScrapeType.MissingAuto
+                    tslLoading.Text = Master.eLang.GetString(132, "Scraping Media (Movies Missing Items - Auto):")
+                Case Enums.ScrapeType.MissingAsk
+                    tslLoading.Text = Master.eLang.GetString(133, "Scraping Media (Movies Missing Items - Ask):")
+                Case Enums.ScrapeType.MissingSkip
+                    tslLoading.Text = Master.eLang.GetString(1042, "Scraping Media (Movies Missing Items - Skip):")
+                Case Enums.ScrapeType.NewAsk
+                    tslLoading.Text = Master.eLang.GetString(134, "Scraping Media (New Movies - Ask):")
+                Case Enums.ScrapeType.NewAuto
+                    tslLoading.Text = Master.eLang.GetString(135, "Scraping Media (New Movies - Auto):")
+                Case Enums.ScrapeType.NewSkip
+                    tslLoading.Text = Master.eLang.GetString(1043, "Scraping Media (New Movies - Skip):")
+                Case Enums.ScrapeType.MarkedAsk
+                    tslLoading.Text = Master.eLang.GetString(136, "Scraping Media (Marked Movies - Ask):")
+                Case Enums.ScrapeType.MarkedAuto
+                    tslLoading.Text = Master.eLang.GetString(137, "Scraping Media (Marked Movies - Auto):")
+                Case Enums.ScrapeType.MarkedSkip
+                    tslLoading.Text = Master.eLang.GetString(1044, "Scraping Media (Marked Movies - Skip):")
+                Case Enums.ScrapeType.FilterAsk
+                    tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
+                Case Enums.ScrapeType.FilterAuto
+                    tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
+                Case Enums.ScrapeType.FilterAuto
+                    tslLoading.Text = Master.eLang.GetString(1045, "Scraping Media (Current Filter - Skip):")
+                Case Enums.ScrapeType.SelectedAsk
+                    tslLoading.Text = Master.eLang.GetString(1128, "Scraping Media (Selected Movies - Ask):")
+                Case Enums.ScrapeType.SelectedAuto
+                    tslLoading.Text = Master.eLang.GetString(1129, "Scraping Media (Selected Movies - Auto):")
+                Case Enums.ScrapeType.SelectedSkip
+                    tslLoading.Text = Master.eLang.GetString(1130, "Scraping Media (Selected Movies - Skip):")
+                Case Enums.ScrapeType.SingleField
+                    tslLoading.Text = Master.eLang.GetString(1127, "Scraping Media (Selected Movies - Single Field):")
+                Case Enums.ScrapeType.SingleScrape, Enums.ScrapeType.SingleAuto
+                    tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
+            End Select
+
+            If Not sType = Enums.ScrapeType.SingleScrape Then
+                btnCancel.Text = Master.eLang.GetString(54, "Cancel Scraper")
+                lblCanceling.Text = Master.eLang.GetString(53, "Canceling Scraper...")
+                btnCancel.Visible = True
+                lblCanceling.Visible = False
+                prbCanceling.Visible = False
+                pnlCancel.Visible = True
+            End If
+
+            tslLoading.Visible = True
+            tspbLoading.Visible = True
+            Application.DoEvents()
+            bwMovieScraper.WorkerSupportsCancellation = True
+            bwMovieScraper.WorkerReportsProgress = True
+            bwMovieScraper.RunWorkerAsync(New Arguments With {.ScrapeOptions = ScrapeOptions, .ScrapeList = ScrapeList, .ScrapeType = sType})
         End If
-
-        Select Case sType
-            Case Enums.ScrapeType.AllAsk
-                tslLoading.Text = Master.eLang.GetString(127, "Scraping Media (All Movies - Ask):")
-            Case Enums.ScrapeType.AllAuto
-                tslLoading.Text = Master.eLang.GetString(128, "Scraping Media (All Movies - Auto):")
-            Case Enums.ScrapeType.AllSkip
-                tslLoading.Text = Master.eLang.GetString(853, "Scraping Media (All Movies - Skip):")
-            Case Enums.ScrapeType.MissingAuto
-                tslLoading.Text = Master.eLang.GetString(132, "Scraping Media (Movies Missing Items - Auto):")
-            Case Enums.ScrapeType.MissingAsk
-                tslLoading.Text = Master.eLang.GetString(133, "Scraping Media (Movies Missing Items - Ask):")
-            Case Enums.ScrapeType.MissingSkip
-                tslLoading.Text = Master.eLang.GetString(1042, "Scraping Media (Movies Missing Items - Skip):")
-            Case Enums.ScrapeType.NewAsk
-                tslLoading.Text = Master.eLang.GetString(134, "Scraping Media (New Movies - Ask):")
-            Case Enums.ScrapeType.NewAuto
-                tslLoading.Text = Master.eLang.GetString(135, "Scraping Media (New Movies - Auto):")
-            Case Enums.ScrapeType.NewSkip
-                tslLoading.Text = Master.eLang.GetString(1043, "Scraping Media (New Movies - Skip):")
-            Case Enums.ScrapeType.MarkedAsk
-                tslLoading.Text = Master.eLang.GetString(136, "Scraping Media (Marked Movies - Ask):")
-            Case Enums.ScrapeType.MarkedAuto
-                tslLoading.Text = Master.eLang.GetString(137, "Scraping Media (Marked Movies - Auto):")
-            Case Enums.ScrapeType.MarkedSkip
-                tslLoading.Text = Master.eLang.GetString(1044, "Scraping Media (Marked Movies - Skip):")
-            Case Enums.ScrapeType.FilterAsk
-                tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
-            Case Enums.ScrapeType.FilterAuto
-                tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
-            Case Enums.ScrapeType.FilterAuto
-                tslLoading.Text = Master.eLang.GetString(1045, "Scraping Media (Current Filter - Skip):")
-            Case Enums.ScrapeType.SelectedAsk
-                tslLoading.Text = Master.eLang.GetString(1128, "Scraping Media (Selected Movies - Ask):")
-            Case Enums.ScrapeType.SelectedAuto
-                tslLoading.Text = Master.eLang.GetString(1129, "Scraping Media (Selected Movies - Auto):")
-            Case Enums.ScrapeType.SelectedSkip
-                tslLoading.Text = Master.eLang.GetString(1130, "Scraping Media (Selected Movies - Skip):")
-            Case Enums.ScrapeType.SingleField
-                tslLoading.Text = Master.eLang.GetString(1127, "Scraping Media (Selected Movies - Single Field):")
-            Case Enums.ScrapeType.SingleScrape, Enums.ScrapeType.SingleAuto
-                tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
-        End Select
-
-        If Not sType = Enums.ScrapeType.SingleScrape Then
-            btnCancel.Text = Master.eLang.GetString(54, "Cancel Scraper")
-            lblCanceling.Text = Master.eLang.GetString(53, "Canceling Scraper...")
-            btnCancel.Visible = True
-            lblCanceling.Visible = False
-            prbCanceling.Visible = False
-            pnlCancel.Visible = True
-        End If
-
-        tslLoading.Visible = True
-        tspbLoading.Visible = True
-        Application.DoEvents()
-        bwMovieScraper.WorkerSupportsCancellation = True
-        bwMovieScraper.WorkerReportsProgress = True
-        bwMovieScraper.RunWorkerAsync(New Arguments With {.ScrapeOptions = ScrapeOptions, .ScrapeList = ScrapeList, .ScrapeType = sType})
     End Sub
 
     Private Sub InfoDownloaded_MovieSet(ByRef DBMovieSet As Database.DBElement)
@@ -12263,76 +12265,78 @@ doCancel:
             ScrapeList.Add(New ScrapeItem With {.DataRow = drvRow, .ScrapeModifiers = sModifier})
         Next
 
-        SetControlsEnabled(False)
+        If Not ScrapeList.Count = 0 Then
+            SetControlsEnabled(False)
 
-        tspbLoading.Value = 0
-        If ScrapeList.Count > 1 Then
-            tspbLoading.Style = ProgressBarStyle.Continuous
-            tspbLoading.Maximum = ScrapeList.Count
-        Else
-            tspbLoading.Maximum = 100
-            tspbLoading.Style = ProgressBarStyle.Marquee
+            tspbLoading.Value = 0
+            If ScrapeList.Count > 1 Then
+                tspbLoading.Style = ProgressBarStyle.Continuous
+                tspbLoading.Maximum = ScrapeList.Count
+            Else
+                tspbLoading.Maximum = 100
+                tspbLoading.Style = ProgressBarStyle.Marquee
+            End If
+
+            Select Case sType
+                Case Enums.ScrapeType.AllAsk
+                    tslLoading.Text = Master.eLang.GetString(1215, "Scraping Media (All MovieSets - Ask):")
+                Case Enums.ScrapeType.AllAuto
+                    tslLoading.Text = Master.eLang.GetString(1216, "Scraping Media (All MovieSets - Auto):")
+                Case Enums.ScrapeType.AllSkip
+                    tslLoading.Text = Master.eLang.GetString(1217, "Scraping Media (All MovieSets - Skip):")
+                Case Enums.ScrapeType.MissingAuto
+                    tslLoading.Text = Master.eLang.GetString(1218, "Scraping Media (MovieSets Missing Items - Auto):")
+                Case Enums.ScrapeType.MissingAsk
+                    tslLoading.Text = Master.eLang.GetString(1219, "Scraping Media (MovieSets Missing Items - Ask):")
+                Case Enums.ScrapeType.MissingSkip
+                    tslLoading.Text = Master.eLang.GetString(1220, "Scraping Media (MovieSets Missing Items - Skip):")
+                Case Enums.ScrapeType.NewAsk
+                    tslLoading.Text = Master.eLang.GetString(1221, "Scraping Media (New MovieSets - Ask):")
+                Case Enums.ScrapeType.NewAuto
+                    tslLoading.Text = Master.eLang.GetString(1222, "Scraping Media (New MovieSets - Auto):")
+                Case Enums.ScrapeType.NewSkip
+                    tslLoading.Text = Master.eLang.GetString(1223, "Scraping Media (New MovieSets - Skip):")
+                Case Enums.ScrapeType.MarkedAsk
+                    tslLoading.Text = Master.eLang.GetString(1224, "Scraping Media (Marked MovieSets - Ask):")
+                Case Enums.ScrapeType.MarkedAuto
+                    tslLoading.Text = Master.eLang.GetString(1225, "Scraping Media (Marked MovieSets - Auto):")
+                Case Enums.ScrapeType.MarkedSkip
+                    tslLoading.Text = Master.eLang.GetString(1226, "Scraping Media (Marked MovieSets - Skip):")
+                Case Enums.ScrapeType.FilterAsk
+                    tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
+                Case Enums.ScrapeType.FilterAuto
+                    tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
+                Case Enums.ScrapeType.FilterAuto
+                    tslLoading.Text = Master.eLang.GetString(1045, "Scraping Media (Current Filter - Skip):")
+                Case Enums.ScrapeType.AllAsk
+                    tslLoading.Text = Master.eLang.GetString(1358, "Scraping Media (Selected MovieSets - Ask):")
+                Case Enums.ScrapeType.AllAuto
+                    tslLoading.Text = Master.eLang.GetString(1359, "Scraping Media (Selected MovieSets - Auto):")
+                Case Enums.ScrapeType.AllSkip
+                    tslLoading.Text = Master.eLang.GetString(1360, "Scraping Media (Selected MovieSets - Skip):")
+                Case Enums.ScrapeType.SingleField
+                    tslLoading.Text = Master.eLang.GetString(1357, "Scraping Media (Selected MovieSets - Single Field):")
+                Case Enums.ScrapeType.SingleScrape, Enums.ScrapeType.SingleAuto
+                    tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
+            End Select
+
+
+            If Not sType = Enums.ScrapeType.SingleScrape Then
+                btnCancel.Text = Master.eLang.GetString(54, "Cancel Scraper")
+                lblCanceling.Text = Master.eLang.GetString(53, "Canceling Scraper...")
+                btnCancel.Visible = True
+                lblCanceling.Visible = False
+                prbCanceling.Visible = False
+                pnlCancel.Visible = True
+            End If
+
+            tslLoading.Visible = True
+            tspbLoading.Visible = True
+            Application.DoEvents()
+            bwMovieSetScraper.WorkerSupportsCancellation = True
+            bwMovieSetScraper.WorkerReportsProgress = True
+            bwMovieSetScraper.RunWorkerAsync(New Arguments With {.ScrapeOptions = ScrapeOptions, .ScrapeList = ScrapeList, .ScrapeType = sType})
         End If
-
-        Select Case sType
-            Case Enums.ScrapeType.AllAsk
-                tslLoading.Text = Master.eLang.GetString(1215, "Scraping Media (All MovieSets - Ask):")
-            Case Enums.ScrapeType.AllAuto
-                tslLoading.Text = Master.eLang.GetString(1216, "Scraping Media (All MovieSets - Auto):")
-            Case Enums.ScrapeType.AllSkip
-                tslLoading.Text = Master.eLang.GetString(1217, "Scraping Media (All MovieSets - Skip):")
-            Case Enums.ScrapeType.MissingAuto
-                tslLoading.Text = Master.eLang.GetString(1218, "Scraping Media (MovieSets Missing Items - Auto):")
-            Case Enums.ScrapeType.MissingAsk
-                tslLoading.Text = Master.eLang.GetString(1219, "Scraping Media (MovieSets Missing Items - Ask):")
-            Case Enums.ScrapeType.MissingSkip
-                tslLoading.Text = Master.eLang.GetString(1220, "Scraping Media (MovieSets Missing Items - Skip):")
-            Case Enums.ScrapeType.NewAsk
-                tslLoading.Text = Master.eLang.GetString(1221, "Scraping Media (New MovieSets - Ask):")
-            Case Enums.ScrapeType.NewAuto
-                tslLoading.Text = Master.eLang.GetString(1222, "Scraping Media (New MovieSets - Auto):")
-            Case Enums.ScrapeType.NewSkip
-                tslLoading.Text = Master.eLang.GetString(1223, "Scraping Media (New MovieSets - Skip):")
-            Case Enums.ScrapeType.MarkedAsk
-                tslLoading.Text = Master.eLang.GetString(1224, "Scraping Media (Marked MovieSets - Ask):")
-            Case Enums.ScrapeType.MarkedAuto
-                tslLoading.Text = Master.eLang.GetString(1225, "Scraping Media (Marked MovieSets - Auto):")
-            Case Enums.ScrapeType.MarkedSkip
-                tslLoading.Text = Master.eLang.GetString(1226, "Scraping Media (Marked MovieSets - Skip):")
-            Case Enums.ScrapeType.FilterAsk
-                tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
-            Case Enums.ScrapeType.FilterAuto
-                tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
-            Case Enums.ScrapeType.FilterAuto
-                tslLoading.Text = Master.eLang.GetString(1045, "Scraping Media (Current Filter - Skip):")
-            Case Enums.ScrapeType.AllAsk
-                tslLoading.Text = Master.eLang.GetString(1358, "Scraping Media (Selected MovieSets - Ask):")
-            Case Enums.ScrapeType.AllAuto
-                tslLoading.Text = Master.eLang.GetString(1359, "Scraping Media (Selected MovieSets - Auto):")
-            Case Enums.ScrapeType.AllSkip
-                tslLoading.Text = Master.eLang.GetString(1360, "Scraping Media (Selected MovieSets - Skip):")
-            Case Enums.ScrapeType.SingleField
-                tslLoading.Text = Master.eLang.GetString(1357, "Scraping Media (Selected MovieSets - Single Field):")
-            Case Enums.ScrapeType.SingleScrape, Enums.ScrapeType.SingleAuto
-                tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
-        End Select
-
-
-        If Not sType = Enums.ScrapeType.SingleScrape Then
-            btnCancel.Text = Master.eLang.GetString(54, "Cancel Scraper")
-            lblCanceling.Text = Master.eLang.GetString(53, "Canceling Scraper...")
-            btnCancel.Visible = True
-            lblCanceling.Visible = False
-            prbCanceling.Visible = False
-            pnlCancel.Visible = True
-        End If
-
-        tslLoading.Visible = True
-        tspbLoading.Visible = True
-        Application.DoEvents()
-        bwMovieSetScraper.WorkerSupportsCancellation = True
-        bwMovieSetScraper.WorkerReportsProgress = True
-        bwMovieSetScraper.RunWorkerAsync(New Arguments With {.ScrapeOptions = ScrapeOptions, .ScrapeList = ScrapeList, .ScrapeType = sType})
     End Sub
 
     Private Sub InfoDownloaded_TV(ByRef DBTVShow As Database.DBElement)
@@ -12458,75 +12462,77 @@ doCancel:
             ScrapeList.Add(New ScrapeItem With {.DataRow = drvRow, .ScrapeModifiers = sModifier})
         Next
 
-        SetControlsEnabled(False)
+        If Not ScrapeList.Count = 0 Then
+            SetControlsEnabled(False)
 
-        tspbLoading.Value = 0
-        If ScrapeList.Count > 1 Then
-            tspbLoading.Style = ProgressBarStyle.Continuous
-            tspbLoading.Maximum = ScrapeList.Count
-        Else
-            tspbLoading.Maximum = 100
-            tspbLoading.Style = ProgressBarStyle.Marquee
+            tspbLoading.Value = 0
+            If ScrapeList.Count > 1 Then
+                tspbLoading.Style = ProgressBarStyle.Continuous
+                tspbLoading.Maximum = ScrapeList.Count
+            Else
+                tspbLoading.Maximum = 100
+                tspbLoading.Style = ProgressBarStyle.Marquee
+            End If
+
+            Select Case sType
+                Case Enums.ScrapeType.AllAsk
+                    tslLoading.Text = Master.eLang.GetString(127, "Scraping Media (All Movies - Ask):")
+                Case Enums.ScrapeType.AllAuto
+                    tslLoading.Text = Master.eLang.GetString(128, "Scraping Media (All Movies - Auto):")
+                Case Enums.ScrapeType.AllSkip
+                    tslLoading.Text = Master.eLang.GetString(853, "Scraping Media (All Movies - Skip):")
+                Case Enums.ScrapeType.MissingAuto
+                    tslLoading.Text = Master.eLang.GetString(132, "Scraping Media (Movies Missing Items - Auto):")
+                Case Enums.ScrapeType.MissingAsk
+                    tslLoading.Text = Master.eLang.GetString(133, "Scraping Media (Movies Missing Items - Ask):")
+                Case Enums.ScrapeType.MissingSkip
+                    tslLoading.Text = Master.eLang.GetString(1042, "Scraping Media (Movies Missing Items - Skip):")
+                Case Enums.ScrapeType.NewAsk
+                    tslLoading.Text = Master.eLang.GetString(134, "Scraping Media (New Movies - Ask):")
+                Case Enums.ScrapeType.NewAuto
+                    tslLoading.Text = Master.eLang.GetString(135, "Scraping Media (New Movies - Auto):")
+                Case Enums.ScrapeType.NewSkip
+                    tslLoading.Text = Master.eLang.GetString(1043, "Scraping Media (New Movies - Skip):")
+                Case Enums.ScrapeType.MarkedAsk
+                    tslLoading.Text = Master.eLang.GetString(136, "Scraping Media (Marked Movies - Ask):")
+                Case Enums.ScrapeType.MarkedAuto
+                    tslLoading.Text = Master.eLang.GetString(137, "Scraping Media (Marked Movies - Auto):")
+                Case Enums.ScrapeType.MarkedSkip
+                    tslLoading.Text = Master.eLang.GetString(1044, "Scraping Media (Marked Movies - Skip):")
+                Case Enums.ScrapeType.FilterAsk
+                    tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
+                Case Enums.ScrapeType.FilterAuto
+                    tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
+                Case Enums.ScrapeType.FilterAuto
+                    tslLoading.Text = Master.eLang.GetString(1045, "Scraping Media (Current Filter - Skip):")
+                Case Enums.ScrapeType.SelectedAsk
+                    tslLoading.Text = Master.eLang.GetString(1128, "Scraping Media (Selected Movies - Ask):")
+                Case Enums.ScrapeType.SelectedAuto
+                    tslLoading.Text = Master.eLang.GetString(1129, "Scraping Media (Selected Movies - Auto):")
+                Case Enums.ScrapeType.SelectedSkip
+                    tslLoading.Text = Master.eLang.GetString(1130, "Scraping Media (Selected Movies - Skip):")
+                Case Enums.ScrapeType.SingleField
+                    tslLoading.Text = Master.eLang.GetString(1127, "Scraping Media (Selected Movies - Single Field):")
+                Case Enums.ScrapeType.SingleScrape, Enums.ScrapeType.SingleAuto
+                    tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
+            End Select
+
+            If Not sType = Enums.ScrapeType.SingleScrape Then
+                btnCancel.Text = Master.eLang.GetString(54, "Cancel Scraper")
+                lblCanceling.Text = Master.eLang.GetString(53, "Canceling Scraper...")
+                btnCancel.Visible = True
+                lblCanceling.Visible = False
+                prbCanceling.Visible = False
+                pnlCancel.Visible = True
+            End If
+
+            tslLoading.Visible = True
+            tspbLoading.Visible = True
+            Application.DoEvents()
+            bwTVScraper.WorkerSupportsCancellation = True
+            bwTVScraper.WorkerReportsProgress = True
+            bwTVScraper.RunWorkerAsync(New Arguments With {.ScrapeOptions = ScrapeOptions, .ScrapeList = ScrapeList, .ScrapeType = sType})
         End If
-
-        Select Case sType
-            Case Enums.ScrapeType.AllAsk
-                tslLoading.Text = Master.eLang.GetString(127, "Scraping Media (All Movies - Ask):")
-            Case Enums.ScrapeType.AllAuto
-                tslLoading.Text = Master.eLang.GetString(128, "Scraping Media (All Movies - Auto):")
-            Case Enums.ScrapeType.AllSkip
-                tslLoading.Text = Master.eLang.GetString(853, "Scraping Media (All Movies - Skip):")
-            Case Enums.ScrapeType.MissingAuto
-                tslLoading.Text = Master.eLang.GetString(132, "Scraping Media (Movies Missing Items - Auto):")
-            Case Enums.ScrapeType.MissingAsk
-                tslLoading.Text = Master.eLang.GetString(133, "Scraping Media (Movies Missing Items - Ask):")
-            Case Enums.ScrapeType.MissingSkip
-                tslLoading.Text = Master.eLang.GetString(1042, "Scraping Media (Movies Missing Items - Skip):")
-            Case Enums.ScrapeType.NewAsk
-                tslLoading.Text = Master.eLang.GetString(134, "Scraping Media (New Movies - Ask):")
-            Case Enums.ScrapeType.NewAuto
-                tslLoading.Text = Master.eLang.GetString(135, "Scraping Media (New Movies - Auto):")
-            Case Enums.ScrapeType.NewSkip
-                tslLoading.Text = Master.eLang.GetString(1043, "Scraping Media (New Movies - Skip):")
-            Case Enums.ScrapeType.MarkedAsk
-                tslLoading.Text = Master.eLang.GetString(136, "Scraping Media (Marked Movies - Ask):")
-            Case Enums.ScrapeType.MarkedAuto
-                tslLoading.Text = Master.eLang.GetString(137, "Scraping Media (Marked Movies - Auto):")
-            Case Enums.ScrapeType.MarkedSkip
-                tslLoading.Text = Master.eLang.GetString(1044, "Scraping Media (Marked Movies - Skip):")
-            Case Enums.ScrapeType.FilterAsk
-                tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
-            Case Enums.ScrapeType.FilterAuto
-                tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
-            Case Enums.ScrapeType.FilterAuto
-                tslLoading.Text = Master.eLang.GetString(1045, "Scraping Media (Current Filter - Skip):")
-            Case Enums.ScrapeType.SelectedAsk
-                tslLoading.Text = Master.eLang.GetString(1128, "Scraping Media (Selected Movies - Ask):")
-            Case Enums.ScrapeType.SelectedAuto
-                tslLoading.Text = Master.eLang.GetString(1129, "Scraping Media (Selected Movies - Auto):")
-            Case Enums.ScrapeType.SelectedSkip
-                tslLoading.Text = Master.eLang.GetString(1130, "Scraping Media (Selected Movies - Skip):")
-            Case Enums.ScrapeType.SingleField
-                tslLoading.Text = Master.eLang.GetString(1127, "Scraping Media (Selected Movies - Single Field):")
-            Case Enums.ScrapeType.SingleScrape, Enums.ScrapeType.SingleAuto
-                tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
-        End Select
-
-        If Not sType = Enums.ScrapeType.SingleScrape Then
-            btnCancel.Text = Master.eLang.GetString(54, "Cancel Scraper")
-            lblCanceling.Text = Master.eLang.GetString(53, "Canceling Scraper...")
-            btnCancel.Visible = True
-            lblCanceling.Visible = False
-            prbCanceling.Visible = False
-            pnlCancel.Visible = True
-        End If
-
-        tslLoading.Visible = True
-        tspbLoading.Visible = True
-        Application.DoEvents()
-        bwTVScraper.WorkerSupportsCancellation = True
-        bwTVScraper.WorkerReportsProgress = True
-        bwTVScraper.RunWorkerAsync(New Arguments With {.ScrapeOptions = ScrapeOptions, .ScrapeList = ScrapeList, .ScrapeType = sType})
     End Sub
 
     Private Sub InfoDownloaded_TVEpisode(ByRef DBTVEpisode As Database.DBElement)
@@ -12606,75 +12612,77 @@ doCancel:
             ScrapeList.Add(New ScrapeItem With {.DataRow = drvRow, .ScrapeModifiers = sModifier})
         Next
 
-        SetControlsEnabled(False)
+        If Not ScrapeList.Count = 0 Then
+            SetControlsEnabled(False)
 
-        tspbLoading.Value = 0
-        If ScrapeList.Count > 1 Then
-            tspbLoading.Style = ProgressBarStyle.Continuous
-            tspbLoading.Maximum = ScrapeList.Count
-        Else
-            tspbLoading.Maximum = 100
-            tspbLoading.Style = ProgressBarStyle.Marquee
+            tspbLoading.Value = 0
+            If ScrapeList.Count > 1 Then
+                tspbLoading.Style = ProgressBarStyle.Continuous
+                tspbLoading.Maximum = ScrapeList.Count
+            Else
+                tspbLoading.Maximum = 100
+                tspbLoading.Style = ProgressBarStyle.Marquee
+            End If
+
+            Select Case sType
+                Case Enums.ScrapeType.AllAsk
+                    tslLoading.Text = Master.eLang.GetString(127, "Scraping Media (All Movies - Ask):")
+                Case Enums.ScrapeType.AllAuto
+                    tslLoading.Text = Master.eLang.GetString(128, "Scraping Media (All Movies - Auto):")
+                Case Enums.ScrapeType.AllSkip
+                    tslLoading.Text = Master.eLang.GetString(853, "Scraping Media (All Movies - Skip):")
+                Case Enums.ScrapeType.MissingAuto
+                    tslLoading.Text = Master.eLang.GetString(132, "Scraping Media (Movies Missing Items - Auto):")
+                Case Enums.ScrapeType.MissingAsk
+                    tslLoading.Text = Master.eLang.GetString(133, "Scraping Media (Movies Missing Items - Ask):")
+                Case Enums.ScrapeType.MissingSkip
+                    tslLoading.Text = Master.eLang.GetString(1042, "Scraping Media (Movies Missing Items - Skip):")
+                Case Enums.ScrapeType.NewAsk
+                    tslLoading.Text = Master.eLang.GetString(134, "Scraping Media (New Movies - Ask):")
+                Case Enums.ScrapeType.NewAuto
+                    tslLoading.Text = Master.eLang.GetString(135, "Scraping Media (New Movies - Auto):")
+                Case Enums.ScrapeType.NewSkip
+                    tslLoading.Text = Master.eLang.GetString(1043, "Scraping Media (New Movies - Skip):")
+                Case Enums.ScrapeType.MarkedAsk
+                    tslLoading.Text = Master.eLang.GetString(136, "Scraping Media (Marked Movies - Ask):")
+                Case Enums.ScrapeType.MarkedAuto
+                    tslLoading.Text = Master.eLang.GetString(137, "Scraping Media (Marked Movies - Auto):")
+                Case Enums.ScrapeType.MarkedSkip
+                    tslLoading.Text = Master.eLang.GetString(1044, "Scraping Media (Marked Movies - Skip):")
+                Case Enums.ScrapeType.FilterAsk
+                    tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
+                Case Enums.ScrapeType.FilterAuto
+                    tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
+                Case Enums.ScrapeType.FilterAuto
+                    tslLoading.Text = Master.eLang.GetString(1045, "Scraping Media (Current Filter - Skip):")
+                Case Enums.ScrapeType.AllAsk
+                    tslLoading.Text = Master.eLang.GetString(1128, "Scraping Media (Selected Movies - Ask):")
+                Case Enums.ScrapeType.AllAuto
+                    tslLoading.Text = Master.eLang.GetString(1129, "Scraping Media (Selected Movies - Auto):")
+                Case Enums.ScrapeType.AllSkip
+                    tslLoading.Text = Master.eLang.GetString(1130, "Scraping Media (Selected Movies - Skip):")
+                Case Enums.ScrapeType.SingleField
+                    tslLoading.Text = Master.eLang.GetString(1127, "Scraping Media (Selected Movies - Single Field):")
+                Case Enums.ScrapeType.SingleScrape, Enums.ScrapeType.SingleAuto
+                    tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
+            End Select
+
+            If Not sType = Enums.ScrapeType.SingleScrape Then
+                btnCancel.Text = Master.eLang.GetString(54, "Cancel Scraper")
+                lblCanceling.Text = Master.eLang.GetString(53, "Canceling Scraper...")
+                btnCancel.Visible = True
+                lblCanceling.Visible = False
+                prbCanceling.Visible = False
+                pnlCancel.Visible = True
+            End If
+
+            tslLoading.Visible = True
+            tspbLoading.Visible = True
+            Application.DoEvents()
+            bwTVEpisodeScraper.WorkerSupportsCancellation = True
+            bwTVEpisodeScraper.WorkerReportsProgress = True
+            bwTVEpisodeScraper.RunWorkerAsync(New Arguments With {.ScrapeOptions = ScrapeOptions, .ScrapeList = ScrapeList, .ScrapeType = sType})
         End If
-
-        Select Case sType
-            Case Enums.ScrapeType.AllAsk
-                tslLoading.Text = Master.eLang.GetString(127, "Scraping Media (All Movies - Ask):")
-            Case Enums.ScrapeType.AllAuto
-                tslLoading.Text = Master.eLang.GetString(128, "Scraping Media (All Movies - Auto):")
-            Case Enums.ScrapeType.AllSkip
-                tslLoading.Text = Master.eLang.GetString(853, "Scraping Media (All Movies - Skip):")
-            Case Enums.ScrapeType.MissingAuto
-                tslLoading.Text = Master.eLang.GetString(132, "Scraping Media (Movies Missing Items - Auto):")
-            Case Enums.ScrapeType.MissingAsk
-                tslLoading.Text = Master.eLang.GetString(133, "Scraping Media (Movies Missing Items - Ask):")
-            Case Enums.ScrapeType.MissingSkip
-                tslLoading.Text = Master.eLang.GetString(1042, "Scraping Media (Movies Missing Items - Skip):")
-            Case Enums.ScrapeType.NewAsk
-                tslLoading.Text = Master.eLang.GetString(134, "Scraping Media (New Movies - Ask):")
-            Case Enums.ScrapeType.NewAuto
-                tslLoading.Text = Master.eLang.GetString(135, "Scraping Media (New Movies - Auto):")
-            Case Enums.ScrapeType.NewSkip
-                tslLoading.Text = Master.eLang.GetString(1043, "Scraping Media (New Movies - Skip):")
-            Case Enums.ScrapeType.MarkedAsk
-                tslLoading.Text = Master.eLang.GetString(136, "Scraping Media (Marked Movies - Ask):")
-            Case Enums.ScrapeType.MarkedAuto
-                tslLoading.Text = Master.eLang.GetString(137, "Scraping Media (Marked Movies - Auto):")
-            Case Enums.ScrapeType.MarkedSkip
-                tslLoading.Text = Master.eLang.GetString(1044, "Scraping Media (Marked Movies - Skip):")
-            Case Enums.ScrapeType.FilterAsk
-                tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
-            Case Enums.ScrapeType.FilterAuto
-                tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
-            Case Enums.ScrapeType.FilterAuto
-                tslLoading.Text = Master.eLang.GetString(1045, "Scraping Media (Current Filter - Skip):")
-            Case Enums.ScrapeType.AllAsk
-                tslLoading.Text = Master.eLang.GetString(1128, "Scraping Media (Selected Movies - Ask):")
-            Case Enums.ScrapeType.AllAuto
-                tslLoading.Text = Master.eLang.GetString(1129, "Scraping Media (Selected Movies - Auto):")
-            Case Enums.ScrapeType.AllSkip
-                tslLoading.Text = Master.eLang.GetString(1130, "Scraping Media (Selected Movies - Skip):")
-            Case Enums.ScrapeType.SingleField
-                tslLoading.Text = Master.eLang.GetString(1127, "Scraping Media (Selected Movies - Single Field):")
-            Case Enums.ScrapeType.SingleScrape, Enums.ScrapeType.SingleAuto
-                tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
-        End Select
-
-        If Not sType = Enums.ScrapeType.SingleScrape Then
-            btnCancel.Text = Master.eLang.GetString(54, "Cancel Scraper")
-            lblCanceling.Text = Master.eLang.GetString(53, "Canceling Scraper...")
-            btnCancel.Visible = True
-            lblCanceling.Visible = False
-            prbCanceling.Visible = False
-            pnlCancel.Visible = True
-        End If
-
-        tslLoading.Visible = True
-        tspbLoading.Visible = True
-        Application.DoEvents()
-        bwTVEpisodeScraper.WorkerSupportsCancellation = True
-        bwTVEpisodeScraper.WorkerReportsProgress = True
-        bwTVEpisodeScraper.RunWorkerAsync(New Arguments With {.ScrapeOptions = ScrapeOptions, .ScrapeList = ScrapeList, .ScrapeType = sType})
     End Sub
 
     Private Sub InfoDownloaded_TVSeason(ByRef DBTVSeason As Database.DBElement)
@@ -12763,75 +12771,77 @@ doCancel:
             ScrapeList.Add(New ScrapeItem With {.DataRow = drvRow, .ScrapeModifiers = sModifier})
         Next
 
-        SetControlsEnabled(False)
+        If Not ScrapeList.Count = 0 Then
+            SetControlsEnabled(False)
 
-        tspbLoading.Value = 0
-        If ScrapeList.Count > 1 Then
-            tspbLoading.Style = ProgressBarStyle.Continuous
-            tspbLoading.Maximum = ScrapeList.Count
-        Else
-            tspbLoading.Maximum = 100
-            tspbLoading.Style = ProgressBarStyle.Marquee
+            tspbLoading.Value = 0
+            If ScrapeList.Count > 1 Then
+                tspbLoading.Style = ProgressBarStyle.Continuous
+                tspbLoading.Maximum = ScrapeList.Count
+            Else
+                tspbLoading.Maximum = 100
+                tspbLoading.Style = ProgressBarStyle.Marquee
+            End If
+
+            Select Case sType
+                Case Enums.ScrapeType.AllAsk
+                    tslLoading.Text = Master.eLang.GetString(127, "Scraping Media (All Movies - Ask):")
+                Case Enums.ScrapeType.AllAuto
+                    tslLoading.Text = Master.eLang.GetString(128, "Scraping Media (All Movies - Auto):")
+                Case Enums.ScrapeType.AllSkip
+                    tslLoading.Text = Master.eLang.GetString(853, "Scraping Media (All Movies - Skip):")
+                Case Enums.ScrapeType.MissingAuto
+                    tslLoading.Text = Master.eLang.GetString(132, "Scraping Media (Movies Missing Items - Auto):")
+                Case Enums.ScrapeType.MissingAsk
+                    tslLoading.Text = Master.eLang.GetString(133, "Scraping Media (Movies Missing Items - Ask):")
+                Case Enums.ScrapeType.MissingSkip
+                    tslLoading.Text = Master.eLang.GetString(1042, "Scraping Media (Movies Missing Items - Skip):")
+                Case Enums.ScrapeType.NewAsk
+                    tslLoading.Text = Master.eLang.GetString(134, "Scraping Media (New Movies - Ask):")
+                Case Enums.ScrapeType.NewAuto
+                    tslLoading.Text = Master.eLang.GetString(135, "Scraping Media (New Movies - Auto):")
+                Case Enums.ScrapeType.NewSkip
+                    tslLoading.Text = Master.eLang.GetString(1043, "Scraping Media (New Movies - Skip):")
+                Case Enums.ScrapeType.MarkedAsk
+                    tslLoading.Text = Master.eLang.GetString(136, "Scraping Media (Marked Movies - Ask):")
+                Case Enums.ScrapeType.MarkedAuto
+                    tslLoading.Text = Master.eLang.GetString(137, "Scraping Media (Marked Movies - Auto):")
+                Case Enums.ScrapeType.MarkedSkip
+                    tslLoading.Text = Master.eLang.GetString(1044, "Scraping Media (Marked Movies - Skip):")
+                Case Enums.ScrapeType.FilterAsk
+                    tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
+                Case Enums.ScrapeType.FilterAuto
+                    tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
+                Case Enums.ScrapeType.FilterAuto
+                    tslLoading.Text = Master.eLang.GetString(1045, "Scraping Media (Current Filter - Skip):")
+                Case Enums.ScrapeType.SelectedAsk
+                    tslLoading.Text = Master.eLang.GetString(1128, "Scraping Media (Selected Movies - Ask):")
+                Case Enums.ScrapeType.SelectedAuto
+                    tslLoading.Text = Master.eLang.GetString(1129, "Scraping Media (Selected Movies - Auto):")
+                Case Enums.ScrapeType.SelectedSkip
+                    tslLoading.Text = Master.eLang.GetString(1130, "Scraping Media (Selected Movies - Skip):")
+                Case Enums.ScrapeType.SingleField
+                    tslLoading.Text = Master.eLang.GetString(1127, "Scraping Media (Selected Movies - Single Field):")
+                Case Enums.ScrapeType.SingleScrape, Enums.ScrapeType.SingleAuto
+                    tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
+            End Select
+
+            If Not sType = Enums.ScrapeType.SingleScrape Then
+                btnCancel.Text = Master.eLang.GetString(54, "Cancel Scraper")
+                lblCanceling.Text = Master.eLang.GetString(53, "Canceling Scraper...")
+                btnCancel.Visible = True
+                lblCanceling.Visible = False
+                prbCanceling.Visible = False
+                pnlCancel.Visible = True
+            End If
+
+            tslLoading.Visible = True
+            tspbLoading.Visible = True
+            Application.DoEvents()
+            bwTVSeasonScraper.WorkerSupportsCancellation = True
+            bwTVSeasonScraper.WorkerReportsProgress = True
+            bwTVSeasonScraper.RunWorkerAsync(New Arguments With {.ScrapeOptions = ScrapeOptions, .ScrapeList = ScrapeList, .ScrapeType = sType})
         End If
-
-        Select Case sType
-            Case Enums.ScrapeType.AllAsk
-                tslLoading.Text = Master.eLang.GetString(127, "Scraping Media (All Movies - Ask):")
-            Case Enums.ScrapeType.AllAuto
-                tslLoading.Text = Master.eLang.GetString(128, "Scraping Media (All Movies - Auto):")
-            Case Enums.ScrapeType.AllSkip
-                tslLoading.Text = Master.eLang.GetString(853, "Scraping Media (All Movies - Skip):")
-            Case Enums.ScrapeType.MissingAuto
-                tslLoading.Text = Master.eLang.GetString(132, "Scraping Media (Movies Missing Items - Auto):")
-            Case Enums.ScrapeType.MissingAsk
-                tslLoading.Text = Master.eLang.GetString(133, "Scraping Media (Movies Missing Items - Ask):")
-            Case Enums.ScrapeType.MissingSkip
-                tslLoading.Text = Master.eLang.GetString(1042, "Scraping Media (Movies Missing Items - Skip):")
-            Case Enums.ScrapeType.NewAsk
-                tslLoading.Text = Master.eLang.GetString(134, "Scraping Media (New Movies - Ask):")
-            Case Enums.ScrapeType.NewAuto
-                tslLoading.Text = Master.eLang.GetString(135, "Scraping Media (New Movies - Auto):")
-            Case Enums.ScrapeType.NewSkip
-                tslLoading.Text = Master.eLang.GetString(1043, "Scraping Media (New Movies - Skip):")
-            Case Enums.ScrapeType.MarkedAsk
-                tslLoading.Text = Master.eLang.GetString(136, "Scraping Media (Marked Movies - Ask):")
-            Case Enums.ScrapeType.MarkedAuto
-                tslLoading.Text = Master.eLang.GetString(137, "Scraping Media (Marked Movies - Auto):")
-            Case Enums.ScrapeType.MarkedSkip
-                tslLoading.Text = Master.eLang.GetString(1044, "Scraping Media (Marked Movies - Skip):")
-            Case Enums.ScrapeType.FilterAsk
-                tslLoading.Text = Master.eLang.GetString(622, "Scraping Media (Current Filter - Ask):")
-            Case Enums.ScrapeType.FilterAuto
-                tslLoading.Text = Master.eLang.GetString(623, "Scraping Media (Current Filter - Auto):")
-            Case Enums.ScrapeType.FilterAuto
-                tslLoading.Text = Master.eLang.GetString(1045, "Scraping Media (Current Filter - Skip):")
-            Case Enums.ScrapeType.SelectedAsk
-                tslLoading.Text = Master.eLang.GetString(1128, "Scraping Media (Selected Movies - Ask):")
-            Case Enums.ScrapeType.SelectedAuto
-                tslLoading.Text = Master.eLang.GetString(1129, "Scraping Media (Selected Movies - Auto):")
-            Case Enums.ScrapeType.SelectedSkip
-                tslLoading.Text = Master.eLang.GetString(1130, "Scraping Media (Selected Movies - Skip):")
-            Case Enums.ScrapeType.SingleField
-                tslLoading.Text = Master.eLang.GetString(1127, "Scraping Media (Selected Movies - Single Field):")
-            Case Enums.ScrapeType.SingleScrape, Enums.ScrapeType.SingleAuto
-                tslLoading.Text = Master.eLang.GetString(139, "Scraping:")
-        End Select
-
-        If Not sType = Enums.ScrapeType.SingleScrape Then
-            btnCancel.Text = Master.eLang.GetString(54, "Cancel Scraper")
-            lblCanceling.Text = Master.eLang.GetString(53, "Canceling Scraper...")
-            btnCancel.Visible = True
-            lblCanceling.Visible = False
-            prbCanceling.Visible = False
-            pnlCancel.Visible = True
-        End If
-
-        tslLoading.Visible = True
-        tspbLoading.Visible = True
-        Application.DoEvents()
-        bwTVSeasonScraper.WorkerSupportsCancellation = True
-        bwTVSeasonScraper.WorkerReportsProgress = True
-        bwTVSeasonScraper.RunWorkerAsync(New Arguments With {.ScrapeOptions = ScrapeOptions, .ScrapeList = ScrapeList, .ScrapeType = sType})
     End Sub
 
     Function MyResolveEventHandler(ByVal sender As Object, ByVal args As ResolveEventArgs) As [Assembly]
