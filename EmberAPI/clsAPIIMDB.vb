@@ -115,7 +115,7 @@ Namespace IMDb
                 End If
 
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
 
             Return TrailerList
@@ -133,7 +133,7 @@ Namespace IMDb
                 _VideoLinks = ParseIMDbFormats(url, False)
 
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         End Sub
         ''' <summary>
@@ -239,7 +239,7 @@ Namespace IMDb
                 Return DownloadLinks
 
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
                 Return New VideoLinkItemCollection
             Finally
                 sHTTP = Nothing

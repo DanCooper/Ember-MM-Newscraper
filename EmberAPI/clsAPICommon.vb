@@ -559,7 +559,7 @@ Public Class Enums
 #Region "Enumerations"
 
     Public Enum SortMethod_MovieSet As Integer
-        Year = 0    'default in Kodi, so let's on the first position of enumeration
+        Year = 0    'default in Kodi, so have to be on the first position of enumeration
         Title = 1
     End Enum
     ''' <summary>
@@ -655,27 +655,27 @@ Public Class Enums
 
     Public Enum ModuleEventType As Integer
         ''' <summary>
-        ''' Called after edit movie, movie is already saved to DB
+        ''' Called after edit movie
         ''' </summary>
         ''' <remarks></remarks>
         AfterEdit_Movie = 0
         ''' <summary>
-        ''' Called after edit movieset, movie is already saved to DB
+        ''' Called after edit movieset
         ''' </summary>
         ''' <remarks></remarks>
         AfterEdit_MovieSet = 1
         ''' <summary>
-        ''' Called after edit episode, episode is already saved to DB
+        ''' Called after edit episode
         ''' </summary>
         ''' <remarks></remarks>
         AfterEdit_TVEpisode = 2
         ''' <summary>
-        ''' Called after edit season, season is already saved to DB
+        ''' Called after edit season
         ''' </summary>
         ''' <remarks></remarks>
         AfterEdit_TVSeason = 3
         ''' <summary>
-        ''' Called after edit show, show is already saved to DB
+        ''' Called after edit show
         ''' </summary>
         ''' <remarks></remarks>
         AfterEdit_TVShow = 4
@@ -728,55 +728,61 @@ Public Class Enums
         OnThemeSave_Movie = 36
         OnTrailerSave_Movie = 37
         RandomFrameExtrator = 38
+        Remove_Movie = 39
+        Remove_MovieSet = 40
+        Remove_TVEpisode = 41
+        Remove_TVSeason = 42
+        Remove_TVShow = 43
         ''' <summary>
-        ''' Called when auto scraper finishs but before save to DB
+        ''' Called during auto scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperMulti_Movie = 39
+        ScraperMulti_Movie = 44
         ''' <summary>
-        ''' Called when auto scraper finishs but before save to DB
+        ''' Called during auto scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperMulti_TVEpisode = 40
+        ScraperMulti_TVEpisode = 45
         ''' <summary>
-        ''' Called when single scraper finishs, movie is already saved to DB
+        ''' Called during manual scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperSingle_Movie = 41
+        ScraperSingle_Movie = 46
         ''' <summary>
-        ''' Called when single scraper finishs, episode is already saved to DB
+        ''' Called during manual scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperSingle_TVEpisode = 42
-        ShowMovie = 43
-        ShowTVShow = 44
-        SyncModuleSettings = 45
-        Sync_Movie = 46
-        Sync_MovieSet = 47
-        Sync_TVEpisode = 48
-        Sync_TVSeason = 49
-        Sync_TVShow = 50
-        Task = 51
+        ScraperSingle_TVEpisode = 47
+        ShowMovie = 48
+        ShowTVShow = 49
+        SyncModuleSettings = 50
+        Sync_Movie = 51
+        Sync_MovieSet = 52
+        Sync_TVEpisode = 53
+        Sync_TVSeason = 54
+        Sync_TVShow = 55
+        Task = 56
         ''' <summary>
-        ''' Called when auto scraper finishs but before save to DB
+        ''' Called during auto scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperMulti_TVShow = 53
+        ScraperMulti_TVShow = 57
         ''' <summary>
-        ''' Called when single scraper finishs, tv show is already saved to DB
+        ''' Called during manual scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperSingle_TVShow = 54
+        ScraperSingle_TVShow = 58
         ''' <summary>
-        ''' Called when auto scraper finishs but before save to DB
+        ''' Called during auto scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperMulti_TVSeason = 55
+        ScraperMulti_TVSeason = 59
         ''' <summary>
-        ''' Called when single scraper finishs, tv season is already saved to DB
+        ''' Called during manual scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperSingle_TVSeason = 56
+        ScraperSingle_TVSeason = 60
+        DuringUpdateDB_TV = 61
     End Enum
 
     Public Enum ScraperEventType As Integer
@@ -845,65 +851,69 @@ Public Class Enums
     End Enum
 
     Public Enum MovieBannerSize As Integer
-        Any = 0
-        HD185 = 1       'Fanart.tv has only 1000x185
+        HD185 = 0       'Fanart.tv has only 1000x185
+        Any = 99
     End Enum
 
     Public Enum MovieFanartSize As Integer
-        Any = 0
-        UHD2160 = 1
+        UHD2160 = 0
+        QHD1440 = 1
         HD1080 = 2
         HD720 = 3
         Thumb = 4
+        Any = 99
     End Enum
 
     Public Enum MoviePosterSize As Integer
-        Any = 0
+        HD3000 = 0
         HD2100 = 1
         HD1500 = 2
         HD1426 = 3
+        Any = 99
     End Enum
 
     Public Enum TVBannerSize As Integer
-        Any = 0
-        HD185 = 1       'Fanart.tv only 1000x185 (season and tv show banner)
-        HD140 = 2       'TVDB has only 758x140 (season and tv show banner)
+        HD185 = 0       'Fanart.tv only 1000x185 (season and tv show banner)
+        HD140 = 1       'TVDB has only 758x140 (season and tv show banner)
+        Any = 99
     End Enum
 
     Public Enum TVBannerType As Integer
-        Any = 0
-        Blank = 1       'will leave the title and show logo off the banner
-        Graphical = 2   'will show the series name in the show's official font or will display the actual logo for the show
-        Text = 3        'will show the series name as plain text in an Arial font
+        Blank = 0       'will leave the title and show logo off the banner
+        Graphical = 1   'will show the series name in the show's official font or will display the actual logo for the show
+        Text = 2        'will show the series name as plain text in an Arial font
+        Any = 99
     End Enum
 
     Public Enum TVFanartSize As Integer
-        Any = 0
-        UHD2160 = 1
+        UHD2160 = 0
+        QHD1440 = 1
         HD1080 = 2      'Fanart.tv has only 1920x1080
-        HD720 = 3       'TVDB has 1280x720 and 1920x1080
+        HD720 = 3      'TVDB has 1280x720 and 1920x1080
+        Any = 99
     End Enum
 
     Public Enum TVPosterSize As Integer
-        Any = 0
+        HD3000 = 0
         HD1500 = 1
         HD1426 = 2      'Fanart.tv has only 1000x1426
         HD1000 = 3      'TVDB has only 680x1000
+        Any = 99
     End Enum
 
     Public Enum TVEpisodePosterSize As Integer
-        Any = 0
-        UHD2160 = 1
-        HD1080 = 2
-        HD720 = 3
-        SD225 = 4      'TVDB has only 400 x 300 (400x225 for 16:9 images)
+        UHD2160 = 0
+        HD1080 = 1
+        HD720 = 2
+        SD225 = 3      'TVDB has only 400 x 300 (400x225 for 16:9 images)
+        Any = 99
     End Enum
 
     Public Enum TVSeasonPosterSize As Integer
-        Any = 0
-        HD1500 = 1
-        HD1426 = 2
-        HD578 = 3
+        HD1500 = 0
+        HD1426 = 1
+        HD578 = 2
+        Any = 99
     End Enum
     ''' <summary>
     ''' Enum representing the trailer codec options
@@ -912,31 +922,31 @@ Public Class Enums
     Public Enum TrailerAudioCodec As Integer
         MP4 = 0
         WebM = 1
-        UNKNOWN = 2
+        UNKNOWN = 99
     End Enum
     ''' <summary>
     ''' Enum representing the trailer quality options
     ''' </summary>
     ''' <remarks></remarks>
     Public Enum TrailerAudioQuality As Integer
-        Any = 0
-        AAC256kbps = 1
-        AAC128kbps = 2
-        AAC48kbps = 3
-        Vorbis192kbps = 4
-        Vorbis128kbps = 5
-        UNKNOWN = 6
+        AAC256kbps = 0
+        AAC128kbps = 1
+        AAC48kbps = 2
+        Vorbis192kbps = 3
+        Vorbis128kbps = 4
+        UNKNOWN = 5
+        Any = 99
     End Enum
     ''' <summary>
     ''' Enum representing the trailer type options
     ''' </summary>
     ''' <remarks></remarks>
     Public Enum TrailerType As Integer
-        Any = 0
-        Clip = 1
-        Featurette = 2
-        Teaser = 3
-        Trailer = 4
+        Clip = 0
+        Featurette = 1
+        Teaser = 2
+        Trailer = 3
+        Any = 99
     End Enum
     ''' <summary>
     ''' Enum representing the trailer codec options
@@ -954,20 +964,20 @@ Public Class Enums
     ''' </summary>
     ''' <remarks></remarks>
     Public Enum TrailerVideoQuality As Integer
-        Any = 0
-        HD2160p = 1
-        HD2160p60fps = 2
-        HD1440p = 3
-        HD1080p = 4
-        HD1080p60fps = 5
-        HD720p = 6
-        HD720p60fps = 7
-        HQ480p = 8 'or 576 for 4:3 media
-        SQ360p = 9
-        SQ240p = 10 'or 270
-        SQ144p = 11
-        SQ144p15fps = 12
-        UNKNOWN = 13
+        HD2160p = 0
+        HD2160p60fps = 1
+        HD1440p = 2
+        HD1080p = 3
+        HD1080p60fps = 4
+        HD720p = 5
+        HD720p60fps = 6
+        HQ480p = 7 'or 576 for 4:3 media
+        SQ360p = 8
+        SQ240p = 9 'or 270
+        SQ144p = 10
+        SQ144p15fps = 11
+        UNKNOWN = 12
+        Any = 99
     End Enum
 
 #End Region 'Enumerations
@@ -1228,7 +1238,7 @@ Public Class Functions
             End If
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Failed trying to identify last Extrafanart from path: " & sPath, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Failed trying to identify last Extrafanart from path: " & sPath)
         End Try
 
         Return iMod
@@ -1261,7 +1271,7 @@ Public Class Functions
             End If
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Failed trying to identify last Extrathumb from path: " & sPath, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Failed trying to identify last Extrathumb from path: " & sPath)
         End Try
 
         Return iMod
@@ -1331,7 +1341,7 @@ Public Class Functions
                                 Return sDir.FullName
                             End If
                         Catch ex As Exception
-                            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & " Failed to determine path for season " & iSeason & " in path: " & ShowPath, ex)
+                            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & " Failed to determine path for season " & iSeason & " in path: " & ShowPath)
                         End Try
                     Next
                 Next
@@ -1670,7 +1680,7 @@ Public Class Functions
                 End Using
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Could not launch <" & Destination & ">", ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Could not launch <" & Destination & ">")
             Return False
         End Try
         'If you got here, everything went fine
@@ -1701,7 +1711,7 @@ Public Class Functions
             'End If
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Could not launch <" & dllPath & ">", ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Could not launch <" & dllPath & ">")
         End Try
     End Sub
 
@@ -1748,7 +1758,7 @@ Public Class Functions
                 My_Process.Close()
             End Using
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Could not launch <" & Process_Name & ">", ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Could not launch <" & Process_Name & ">")
         End Try
 
         Return OutputString

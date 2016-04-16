@@ -109,7 +109,7 @@ Public Class ImageUtils
     End Function
     ''' <summary>
     ''' Draw a gradiated ellipse on the supplied <paramref name="graphics"/>, defined by <paramref name="bounds"/>,
-    ''' with a line color of <paramref name="color2"/> and a center/fill of <paramref name="color1"/>.
+    ''' with a line color of <paramref name="outerColor"/> and a center/fill of <paramref name="centerColor"/>.
     ''' </summary>
     ''' <param name="graphics"><c>Graphics</c> surface to draw on</param>
     ''' <param name="bounds"><c>Rectangle</c> that defines the boundaries of the ellipse</param>
@@ -130,7 +130,7 @@ Public Class ImageUtils
                 End Using
             End Using
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
     ''' <summary>
@@ -193,7 +193,7 @@ Public Class ImageUtils
 
             End Using
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
     ''' <summary>
@@ -204,8 +204,8 @@ Public Class ImageUtils
     ''' </summary>
     ''' <param name="pbDestination">Destination picture box</param>
     ''' <param name="pbSource">Source picture box</param>
-    ''' <param name="maxHeight">Maximum height for <paramref name="pbResize"/></param>
-    ''' <param name="maxWidth">Maximum width for <paramref name="pbResize"/></param>
+    ''' <param name="maxHeight">Maximum height for <paramref name="pbDestination"/></param>
+    ''' <param name="maxWidth">Maximum width for <paramref name="pbDestination"/></param>
     ''' <remarks>Why not use "Zoom" for fanart background? - To keep the image at the top. Zoom centers vertically.</remarks>
     Public Shared Sub ResizePB(ByRef pbDestination As PictureBox, ByRef pbSource As PictureBox, ByVal maxHeight As Integer, ByVal maxWidth As Integer)
         If pbSource Is Nothing OrElse pbSource.Image Is Nothing Then Return
@@ -258,7 +258,7 @@ Public Class ImageUtils
             Catch ex As Exception
                 pbDestination.Left = 0
                 pbDestination.Size = New Size(maxWidth, maxHeight)
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         Else
             pbDestination.Left = 0
@@ -295,7 +295,7 @@ Public Class ImageUtils
             End Using
             bmOverlay = Nothing
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
     ''' <summary>
@@ -347,7 +347,7 @@ Public Class ImageUtils
             End Using
             bmOverlay = Nothing
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Return imgUnderlay
@@ -430,7 +430,7 @@ Public Class ImageUtils
                 End Using
             End Using
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
         Return bmGenre
 

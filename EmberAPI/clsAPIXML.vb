@@ -67,7 +67,7 @@ Public Class APIXML
                 End Try
             End If
 
-            Dim gPath As String = FileUtils.Common.ReturnSettingsFile("Settings", "Core.Genres.xml")
+            Dim gPath As String = Path.Combine(Master.SettingsPath, "Core.Genres.xml")
             If File.Exists(gPath) Then
                 objStreamReader = New StreamReader(gPath)
                 Dim xGenres As New XmlSerializer(GenreXML.GetType)
@@ -116,7 +116,7 @@ Public Class APIXML
                 End Try
             End If
 
-            Dim rPath As String = FileUtils.Common.ReturnSettingsFile("Settings", "Ratings.xml")
+            Dim rPath As String = Path.Combine(Master.SettingsPath, "Ratings.xml")
             If File.Exists(rPath) Then
                 objStreamReader = New StreamReader(rPath)
                 Dim xRatings As New XmlSerializer(RatingXML.GetType)
@@ -134,11 +134,11 @@ Public Class APIXML
                 Try
                     File.Copy(rPathD, rPath)
                 Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                    logger.Error(ex, New StackFrame().GetMethod().Name)
                 End Try
             End If
 
-            Dim cPath As String = FileUtils.Common.ReturnSettingsFile("Settings", "CertLanguages.xml")
+            Dim cPath As String = Path.Combine(Master.SettingsPath, "CertLanguages.xml")
             If File.Exists(cPath) Then
                 objStreamReader = New StreamReader(cPath)
                 Dim xCert As New XmlSerializer(CertLanguagesXML.GetType)
@@ -156,11 +156,11 @@ Public Class APIXML
                 Try
                     File.Copy(cPathD, cPath)
                 Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                    logger.Error(ex, New StackFrame().GetMethod().Name)
                 End Try
             End If
 
-            Dim filterPath As String = FileUtils.Common.ReturnSettingsFile("Settings", "Queries.xml")
+            Dim filterPath As String = Path.Combine(Master.SettingsPath, "Queries.xml")
             If File.Exists(filterPath) Then
                 objStreamReader = New StreamReader(filterPath)
                 Dim xFilter As New XmlSerializer(FilterXML.GetType)
@@ -177,12 +177,12 @@ Public Class APIXML
                 Try
                     File.Copy(filterPathD, filterPath)
                 Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                    logger.Error(ex, New StackFrame().GetMethod().Name)
                 End Try
             End If
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -345,7 +345,7 @@ Public Class APIXML
                 End If
 
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         Else
             iReturn(0) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultScreen.png"))
@@ -425,7 +425,7 @@ Public Class APIXML
             End If
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Return String.Empty
@@ -450,7 +450,7 @@ Public Class APIXML
             End If
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Return imgGenre
@@ -489,7 +489,7 @@ Public Class APIXML
                 End Using
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Return imgRating
@@ -508,7 +508,7 @@ Public Class APIXML
                 Next
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
         Return retRatings.ToArray
     End Function
@@ -526,7 +526,7 @@ Public Class APIXML
                 Next
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
         Return retRatings.ToArray
     End Function
@@ -570,7 +570,7 @@ Public Class APIXML
                 End Using
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Return imgRating

@@ -278,6 +278,12 @@ Public Class CommandLine
                         RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine,
                                                     New List(Of Object)(New Object() {"loadmedia", New Structures.ScanOrClean With {.TV = True}, -1, String.Empty}))
                     End If
+                Case "-profile"
+                    'has been handled in ApplicationEvents.vb
+                    If Args.Count - 1 > i AndAlso Not Args(i + 1).StartsWith("-") Then
+                        'skip profile name
+                        i += 1
+                    End If
                 Case Else
                     logger.Warn(String.Concat("[CommandLine] Invalid command: ", Args(i)))
             End Select

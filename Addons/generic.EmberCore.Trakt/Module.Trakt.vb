@@ -114,7 +114,7 @@ Public Class Trakt_Generic
         'Try
         '    dlgTrakttvManager.CLSyncPlaycount()
         'Catch ex As Exception
-        '    logger.Error(New StackFrame().GetMethod().Name, ex)
+        '    logger.Error(ex, New StackFrame().GetMethod().Name)
         'End Try
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
@@ -343,7 +343,7 @@ Public Class Trakt_Generic
     '            End If
     '        End If
     '    Catch ex As Exception
-    '        logger.Error(New StackFrame().GetMethod().Name, ex)
+    '        logger.Error(ex, New StackFrame().GetMethod().Name)
     '    End Try
     'End Sub
 

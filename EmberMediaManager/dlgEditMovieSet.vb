@@ -218,7 +218,7 @@ Public Class dlgEditMovieSet
         If dgvMovies.SelectedRows.Count > 0 Then
             SetControlsEnabled(False)
             For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
-                Dim tmpMovie As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt64(sRow.Cells(0).Value))
+                Dim tmpMovie As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells(0).Value))
                 If Not String.IsNullOrEmpty(tmpMovie.Movie.Title) Then
                     If String.IsNullOrEmpty(txtCollectionID.Text) AndAlso tmpMovie.Movie.TMDBColIDSpecified Then
                         Dim result As DialogResult = MessageBox.Show(String.Format(Master.eLang.GetString(1264, "Should the Collection ID of the movie ""{0}"" be used as ID for this Collection?"), tmpMovie.Movie.Title), Master.eLang.GetString(1263, "TMDB Collection ID found"), MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)
@@ -326,7 +326,7 @@ Public Class dlgEditMovieSet
                 End If
             End Using
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -376,7 +376,7 @@ Public Class dlgEditMovieSet
                 lblBannerSize.Visible = True
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -397,7 +397,7 @@ Public Class dlgEditMovieSet
                 End If
             End Using
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -447,7 +447,7 @@ Public Class dlgEditMovieSet
                 lblClearArtSize.Visible = True
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -468,7 +468,7 @@ Public Class dlgEditMovieSet
                 End If
             End Using
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -518,7 +518,7 @@ Public Class dlgEditMovieSet
                 lblClearLogoSize.Visible = True
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -539,7 +539,7 @@ Public Class dlgEditMovieSet
                 End If
             End Using
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -589,7 +589,7 @@ Public Class dlgEditMovieSet
                 lblDiscArtSize.Visible = True
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -610,7 +610,7 @@ Public Class dlgEditMovieSet
                 End If
             End Using
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -660,7 +660,7 @@ Public Class dlgEditMovieSet
                 lblFanartSize.Visible = True
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -681,7 +681,7 @@ Public Class dlgEditMovieSet
                 End If
             End Using
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -708,7 +708,7 @@ Public Class dlgEditMovieSet
                     End If
                 End If
             Else
-                MessageBox.Show(Master.eLang.GetString(972, "No Landscapes found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
+                MessageBox.Show(Master.eLang.GetString(1197, "No Landscapes found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
         End If
         Cursor = Cursors.Default
@@ -731,7 +731,7 @@ Public Class dlgEditMovieSet
                 lblLandscapeSize.Visible = True
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -752,7 +752,7 @@ Public Class dlgEditMovieSet
                 End If
             End Using
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -802,7 +802,7 @@ Public Class dlgEditMovieSet
                 lblPosterSize.Visible = True
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -813,23 +813,23 @@ Public Class dlgEditMovieSet
             Dim iProg As Integer = 0
             If Not (Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJCompatibleSets) Then
                 If tmpDBElement.SortMethod = Enums.SortMethod_MovieSet.Year Then
-                    SQLcommand.CommandText = String.Concat("SELECT MovieID, SetOrder FROM MoviesSets INNER JOIN movie ON (MoviesSets.MovieID = movie.idMovie) ",
-                                                           "WHERE SetID = ", tmpDBElement.ID, " ORDER BY movie.Year;")
+                    SQLcommand.CommandText = String.Concat("SELECT setlinkmovie.idMovie, iOrder FROM setlinkmovie INNER JOIN movie ON (setlinkmovie.idMovie = movie.idMovie) ",
+                                                           "WHERE idSet = ", tmpDBElement.ID, " ORDER BY movie.Year;")
                 ElseIf tmpDBElement.SortMethod = Enums.SortMethod_MovieSet.Title Then
-                    SQLcommand.CommandText = String.Concat("SELECT MovieID, SetOrder FROM MoviesSets INNER JOIN movielist ON (MoviesSets.MovieID = movielist.idMovie) ",
-                                                           "WHERE SetID = ", tmpDBElement.ID, " ORDER BY movielist.SortedTitle COLLATE NOCASE;")
+                    SQLcommand.CommandText = String.Concat("SELECT setlinkmovie.idMovie, iOrder FROM setlinkmovie INNER JOIN movielist ON (setlinkmovie.idMovie = movielist.idMovie) ",
+                                                           "WHERE idSet = ", tmpDBElement.ID, " ORDER BY movielist.SortedTitle COLLATE NOCASE;")
                 End If
             Else
-                SQLcommand.CommandText = String.Concat("SELECT MovieID, SetOrder FROM MoviesSets ",
-                                                       "WHERE SetID = ", tmpDBElement.ID, " ORDER BY SetOrder;")
+                SQLcommand.CommandText = String.Concat("SELECT idMovie, iOrder FROM setlinkmovie ",
+                                                       "WHERE idSet = ", tmpDBElement.ID, " ORDER BY iOrder;")
             End If
             Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                 If SQLreader.HasRows Then
                     While SQLreader.Read()
                         If bwLoadMoviesInSet.CancellationPending Then Return
-                        Dim tmpMovie As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt64(SQLreader("MovieID")))
+                        Dim tmpMovie As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(SQLreader("idMovie")))
                         If Not String.IsNullOrEmpty(tmpMovie.Movie.Title) Then
-                            Dim tmpSetOrder As Integer = If(Not String.IsNullOrEmpty(SQLreader("SetOrder").ToString), CInt(SQLreader("SetOrder").ToString), Nothing)
+                            Dim tmpSetOrder As Integer = If(Not DBNull.Value.Equals(SQLreader("iOrder")), CInt(SQLreader("iOrder")), Nothing)
                             MoviesInSet.Add(New MovieInSet With {.DBMovie = tmpMovie, .ID = tmpMovie.ID, .ListTitle = String.Concat(tmpMovie.ListTitle, If(Not String.IsNullOrEmpty(tmpMovie.Movie.Year) AndAlso Not Master.eSettings.MovieDisplayYear, String.Format(" ({0})", tmpMovie.Movie.Year), String.Empty)), .Order = tmpSetOrder})
                         End If
                         bwLoadMoviesInSet.ReportProgress(iProg, tmpMovie.Movie.Title)
@@ -1316,7 +1316,7 @@ Public Class dlgEditMovieSet
                 'Else
                 tMovie.DBMovie.Movie.AddSet(tmpDBElement.ID, tmpDBElement.MovieSet.Title, tMovie.Order, tmpDBElement.MovieSet.TMDB)
                 'End If
-                Master.DB.SaveMovieToDB(tMovie.DBMovie, False, True, True, False)
+                Master.DB.Save_Movie(tMovie.DBMovie, True, True, False)
             Next
             SQLtransaction.Commit()
         End Using
@@ -1330,7 +1330,7 @@ Public Class dlgEditMovieSet
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             For Each tMovie As MovieInSet In MoviesToRemove
                 tMovie.DBMovie.Movie.RemoveSet(tmpDBElement.ID)
-                Master.DB.SaveMovieToDB(tMovie.DBMovie, False, True, True, False)
+                Master.DB.Save_Movie(tMovie.DBMovie, True, True, False)
             Next
             SQLtransaction.Commit()
         End Using
@@ -1423,7 +1423,7 @@ Public Class dlgEditMovieSet
         btnSetPosterScrape.Text = strScrape
 
         Dim mTitle As String = tmpDBElement.MovieSet.Title
-        Dim sTitle As String = String.Concat(Master.eLang.GetString(1131, "Edit MovieSet"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
+        Dim sTitle As String = String.Concat(Master.eLang.GetString(207, "Edit MovieSet"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
         Text = sTitle
         Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
         OK_Button.Text = Master.eLang.GetString(179, "OK")
@@ -1434,7 +1434,7 @@ Public Class dlgEditMovieSet
         lblMovieSorting.Text = String.Concat(Master.eLang.GetString(665, "Movies sorted by"), ":")
         lblPlot.Text = Master.eLang.GetString(241, "Plot:")
         lblTopDetails.Text = Master.eLang.GetString(1132, "Edit the details for the selected movieset.")
-        lblTopTitle.Text = Master.eLang.GetString(1131, "Edit Movieset")
+        lblTopTitle.Text = Master.eLang.GetString(207, "Edit MovieSet")
         tpBanner.Text = Master.eLang.GetString(838, "Banner")
         tpClearArt.Text = Master.eLang.GetString(1096, "ClearArt")
         tpClearLogo.Text = Master.eLang.GetString(1097, "ClearLogo")

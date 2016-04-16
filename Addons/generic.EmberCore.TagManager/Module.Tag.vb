@@ -109,11 +109,6 @@ Public Class Tag_Generic
     ''' TODO
     ''' </remarks>
     Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
-        Try
-            'TODO Any function for commandline tag managment should be referenced here
-        Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
-        End Try
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
     Sub Disable()

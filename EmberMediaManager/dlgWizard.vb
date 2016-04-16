@@ -133,7 +133,7 @@ Public Class dlgWizard
                 End If
             End With
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -148,7 +148,7 @@ Public Class dlgWizard
                 End If
             End With
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
     Private Sub cbTVGeneralLang_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbTVGeneralLang.SelectedIndexChanged
@@ -417,7 +417,7 @@ Public Class dlgWizard
                 End If
             End With
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -538,7 +538,7 @@ Public Class dlgWizard
                 End If
             End With
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -968,7 +968,7 @@ Public Class dlgWizard
         Dim lvItem As ListViewItem
 
         lvMovies.Items.Clear()
-        Master.DB.LoadMovieSourcesFromDB()
+        Master.DB.Load_Sources_Movie()
         For Each s As Database.DBSource In Master.MovieSources
             lvItem = New ListViewItem(CStr(s.ID))
             lvItem.SubItems.Add(s.Name)
@@ -985,7 +985,7 @@ Public Class dlgWizard
 
     Private Sub RefreshTVSources()
         Dim lvItem As ListViewItem
-        Master.DB.LoadTVShowSourcesFromDB()
+        Master.DB.Load_Sources_TVShow()
         lvTVSources.Items.Clear()
         Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
             SQLcommand.CommandText = "SELECT * FROM tvshowsource;"

@@ -97,7 +97,7 @@ Namespace TVDBs
                 _TVDBMirror = New TVDB.Model.Mirror With {.Address = "http://thetvdb.com", .ContainsBannerFile = True, .ContainsXmlFile = True, .ContainsZipFile = False}
 
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         End Sub
 
@@ -374,10 +374,14 @@ Namespace TVDBs
             End If
             Dim TVShowInfo = APIResult.Result
 
-            Dim EpisodeInfo As TVDB.Model.Episode = TVShowInfo.Series.Episodes.FirstOrDefault(Function(f) f.FirstAired = CDate(Aired))
-            Dim nEpisode As MediaContainers.EpisodeDetails = GetTVEpisodeInfo(EpisodeInfo, TVShowInfo, FilteredOptions)
+            Dim EpisodeList As IEnumerable(Of TVDB.Model.Episode) = TVShowInfo.Series.Episodes.Where(Function(f) f.FirstAired = CDate(Aired))
+            If EpisodeList IsNot Nothing AndAlso EpisodeList.Count = 1 Then
+                Dim nEpisode As MediaContainers.EpisodeDetails = GetTVEpisodeInfo(EpisodeList(0), TVShowInfo, FilteredOptions)
+                Return nEpisode
+            Else
+                Return Nothing
+            End If
 
-            Return nEpisode
         End Function
 
         Public Function GetTVEpisodeInfo(ByRef EpisodeInfo As TVDB.Model.Episode, ByRef TVShowInfo As TVDB.Model.SeriesDetails, ByRef FilteredOptions As Structures.ScrapeOptions) As MediaContainers.EpisodeDetails

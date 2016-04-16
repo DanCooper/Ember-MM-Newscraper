@@ -278,18 +278,6 @@ Namespace MediaContainers
             End Get
         End Property
 
-        <Obsolete("This property is depreciated. Use Episode.Credits [List(Of String)] instead.")>
-        <XmlIgnore()>
-        Public Property OldCredits() As String
-            Get
-                Return String.Join(" / ", _credits.ToArray)
-            End Get
-            Set(ByVal value As String)
-                _credits.Clear()
-                AddCredit(value)
-            End Set
-        End Property
-
         <XmlElement("credits")>
         Public Property Credits() As List(Of String)
             Get
@@ -343,18 +331,6 @@ Namespace MediaContainers
             Get
                 Return Not String.IsNullOrEmpty(_lastplayed)
             End Get
-        End Property
-
-        <Obsolete("This property is depreciated. Use Episode.Directors [List(Of String)] instead.")>
-        <XmlIgnore()>
-        Public Property Director() As String
-            Get
-                Return String.Join(" / ", _directors.ToArray)
-            End Get
-            Set(ByVal value As String)
-                _directors.Clear()
-                AddDirector(value)
-            End Set
         End Property
 
         <XmlElement("director")>
@@ -622,7 +598,8 @@ Namespace MediaContainers
             _votes = String.Empty
         End Sub
 
-        Public Sub AddCredit(ByVal value As String)
+        Public Sub AddCreditsFromString(ByVal value As String)
+            _credits.Clear()
             If String.IsNullOrEmpty(value) Then Return
 
             If value.Contains("/") Then
@@ -641,7 +618,8 @@ Namespace MediaContainers
             End If
         End Sub
 
-        Public Sub AddDirector(ByVal value As String)
+        Public Sub AddDirectorsFromString(ByVal value As String)
+            _directors.Clear()
             If String.IsNullOrEmpty(value) Then Return
 
             If value.Contains("/") Then
@@ -783,6 +761,7 @@ Namespace MediaContainers
     <Serializable()>
     <XmlRoot("movie")>
     Public Class Movie
+        Implements ICloneable
         Implements IComparable(Of Movie)
 
 #Region "Fields"
@@ -894,7 +873,7 @@ Namespace MediaContainers
         <XmlIgnore()>
         Public ReadOnly Property SortTitleSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_sorttitle) AndAlso Not _sorttitle = StringUtils.SortTokens_Movie(_title)
+                Return Not String.IsNullOrEmpty(_sorttitle)
             End Get
         End Property
 
@@ -1017,18 +996,6 @@ Namespace MediaContainers
             End Get
         End Property
 
-        <Obsolete("This property is depreciated. Use Movie.Countries [List(Of String)] instead.")>
-        <XmlIgnore()>
-        Public Property Country() As String
-            Get
-                Return String.Join(" / ", _countries.ToArray)
-            End Get
-            Set(ByVal value As String)
-                _countries.Clear()
-                AddCountry(value)
-            End Set
-        End Property
-
         <XmlElement("country")>
         Public Property Countries() As List(Of String)
             Get
@@ -1101,18 +1068,6 @@ Namespace MediaContainers
             End Get
         End Property
 
-        <Obsolete("This property is depreciated. Use Movie.Certifications [List(Of String)] instead.")>
-        <XmlIgnore()>
-        Public Property Certification() As String
-            Get
-                Return String.Join(" / ", _certifications.ToArray)
-            End Get
-            Set(ByVal value As String)
-                _certifications.Clear()
-                AddCertification(value)
-            End Set
-        End Property
-
         <XmlElement("certification")>
         Public Property Certifications() As List(Of String)
             Get
@@ -1155,18 +1110,6 @@ Namespace MediaContainers
             End Get
         End Property
 
-        <Obsolete("This property is depreciated. Use Movie.Genres [List(Of String)] instead.")>
-        <XmlIgnore()>
-        Public Property Genre() As String
-            Get
-                Return String.Join(" / ", _genres.ToArray)
-            End Get
-            Set(ByVal value As String)
-                _genres.Clear()
-                AddGenre(value)
-            End Set
-        End Property
-
         <XmlElement("genre")>
         Public Property Genres() As List(Of String)
             Get
@@ -1186,18 +1129,6 @@ Namespace MediaContainers
             Get
                 Return _genres.Count > 0
             End Get
-        End Property
-
-        <Obsolete("This property is depreciated. Use Movie.Studios [List(Of String)] instead.")>
-        <XmlIgnore()>
-        Public Property Studio() As String
-            Get
-                Return String.Join(" / ", _studios.ToArray)
-            End Get
-            Set(ByVal value As String)
-                _studios.Clear()
-                AddStudio(value)
-            End Set
         End Property
 
         <XmlElement("studio")>
@@ -1221,18 +1152,6 @@ Namespace MediaContainers
             End Get
         End Property
 
-        <Obsolete("This property is depreciated. Use Movie.Directors [List(Of String)] instead.")>
-        <XmlIgnore()>
-        Public Property Director() As String
-            Get
-                Return String.Join(" / ", _directors.ToArray)
-            End Get
-            Set(ByVal value As String)
-                _directors.Clear()
-                AddDirector(value)
-            End Set
-        End Property
-
         <XmlElement("director")>
         Public Property Directors() As List(Of String)
             Get
@@ -1252,18 +1171,6 @@ Namespace MediaContainers
             Get
                 Return _directors.Count > 0
             End Get
-        End Property
-
-        <Obsolete("This property is depreciated. Use Movie.Credits [List(Of String)] instead.")>
-        <XmlIgnore()>
-        Public Property OldCredits() As String
-            Get
-                Return String.Join(" / ", _credits.ToArray)
-            End Get
-            Set(ByVal value As String)
-                _credits.Clear()
-                AddCredit(value)
-            End Set
         End Property
 
         <XmlElement("credits")>
@@ -1705,7 +1612,7 @@ Namespace MediaContainers
                 Sets.Remove(iSet(0))
             End If
 
-            Sets.Add(New [Set] With {.ID = SetID, .Title = SetName, .Order = If(Order > 0, Order.ToString, String.Empty), .TMDBColID = SetTMDBColID})
+            Sets.Add(New [Set] With {.ID = SetID, .Title = SetName, .Order = Order, .TMDBColID = SetTMDBColID})
         End Sub
 
         Public Sub AddTag(ByVal value As String)
@@ -1715,7 +1622,8 @@ Namespace MediaContainers
             End If
         End Sub
 
-        Public Sub AddCertification(ByVal value As String)
+        Public Sub AddCertificationsFromString(ByVal value As String)
+            _certifications.Clear()
             If String.IsNullOrEmpty(value) Then Return
 
             If value.Contains(" / ") Then
@@ -1733,7 +1641,8 @@ Namespace MediaContainers
             End If
         End Sub
 
-        Public Sub AddGenre(ByVal value As String)
+        Public Sub AddGenresFromString(ByVal value As String)
+            _genres.Clear()
             If String.IsNullOrEmpty(value) Then Return
 
             If value.Contains(" / ") Then
@@ -1751,7 +1660,8 @@ Namespace MediaContainers
             End If
         End Sub
 
-        Public Sub AddStudio(ByVal value As String)
+        Public Sub AddStudiosFromString(ByVal value As String)
+            _studios.Clear()
             If String.IsNullOrEmpty(value) Then Return
 
             If value.Contains(" / ") Then
@@ -1769,7 +1679,8 @@ Namespace MediaContainers
             End If
         End Sub
 
-        Public Sub AddDirector(ByVal value As String)
+        Public Sub AddDirectorsFromString(ByVal value As String)
+            _directors.Clear()
             If String.IsNullOrEmpty(value) Then Return
 
             If value.Contains(" / ") Then
@@ -1788,7 +1699,8 @@ Namespace MediaContainers
             End If
         End Sub
 
-        Public Sub AddCredit(ByVal value As String)
+        Public Sub AddCreditsFromString(ByVal value As String)
+            _credits.Clear()
             If String.IsNullOrEmpty(value) Then Return
 
             If value.Contains(" / ") Then
@@ -1807,7 +1719,8 @@ Namespace MediaContainers
             End If
         End Sub
 
-        Public Sub AddCountry(ByVal value As String)
+        Public Sub AddCountriesFromString(ByVal value As String)
+            _countries.Clear()
             If String.IsNullOrEmpty(value) Then Return
 
             If value.Contains(" / ") Then
@@ -1865,6 +1778,18 @@ Namespace MediaContainers
             _year = String.Empty
             _ysets = New SetContainer
         End Sub
+
+        Public Function CloneDeep() As Object Implements ICloneable.Clone
+            Dim Stream As New MemoryStream(50000)
+            Dim Formatter As New Runtime.Serialization.Formatters.Binary.BinaryFormatter()
+            ' Serialisierung über alle Objekte hinweg in einen Stream 
+            Formatter.Serialize(Stream, Me)
+            ' Zurück zum Anfang des Streams und... 
+            Stream.Seek(0, SeekOrigin.Begin)
+            ' ...aus dem Stream in ein Objekt deserialisieren 
+            CloneDeep = Formatter.Deserialize(Stream)
+            Stream.Close()
+        End Function
 
         Public Sub CreateCachePaths_ActorsThumbs()
             Dim sPath As String = Path.Combine(Master.TempPath, "Global")
@@ -2513,6 +2438,7 @@ Namespace MediaContainers
     <Serializable()>
     <XmlRoot("tvshow")>
     Public Class TVShow
+        Implements ICloneable
 
 #Region "Fields"
 
@@ -2538,7 +2464,6 @@ Namespace MediaContainers
         Private _seasons As New Seasons
         Private _sorttitle As String
         Private _status As String
-        Private _studio As String
         Private _studios As New List(Of String)
         Private _tags As New List(Of String)
         Private _title As String
@@ -2612,7 +2537,7 @@ Namespace MediaContainers
         <XmlIgnore()>
         Public ReadOnly Property SortTitleSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_sorttitle) AndAlso Not _sorttitle = StringUtils.SortTokens_TV(_title)
+                Return Not String.IsNullOrEmpty(_sorttitle)
             End Get
         End Property
 
@@ -2752,18 +2677,6 @@ Namespace MediaContainers
             End Get
         End Property
 
-        <Obsolete("This property is depreciated. Use TVShow.Genres [List(Of String)] instead.")>
-        <XmlIgnore()>
-        Public Property Genre() As String
-            Get
-                Return String.Join(" / ", _genres.ToArray)
-            End Get
-            Set(ByVal value As String)
-                _genres.Clear()
-                AddGenre(value)
-            End Set
-        End Property
-
         <XmlElement("genre")>
         Public Property Genres() As List(Of String)
             Get
@@ -2823,18 +2736,6 @@ Namespace MediaContainers
             End Get
         End Property
 
-        <Obsolete("This property is depreciated. Use Movie.Certifications [List(Of String)] instead.")>
-        <XmlIgnore()>
-        Public Property Certification() As String
-            Get
-                Return String.Join(" / ", _certifications.ToArray)
-            End Get
-            Set(ByVal value As String)
-                _certifications.Clear()
-                AddCertification(value)
-            End Set
-        End Property
-
         <XmlElement("certification")>
         Public Property Certifications() As List(Of String)
             Get
@@ -2854,18 +2755,6 @@ Namespace MediaContainers
             Get
                 Return _certifications.Count > 0
             End Get
-        End Property
-
-        <Obsolete("This property is depreciated. Use Movie.Countries [List(Of String)] instead.")>
-        <XmlIgnore()>
-        Public Property Country() As String
-            Get
-                Return String.Join(" / ", _countries.ToArray)
-            End Get
-            Set(ByVal value As String)
-                _countries.Clear()
-                AddCountry(value)
-            End Set
         End Property
 
         <XmlElement("country")>
@@ -2904,18 +2793,6 @@ Namespace MediaContainers
             Get
                 Return Not String.IsNullOrEmpty(_premiered)
             End Get
-        End Property
-
-        <Obsolete("This property is depreciated. Use TVShow.Studios [List(Of String)] instead.")>
-        <XmlIgnore()>
-        Public Property Studio() As String
-            Get
-                Return String.Join(" / ", _studios.ToArray)
-            End Get
-            Set(ByVal value As String)
-                _studios.Clear()
-                AddStudio(value)
-            End Set
         End Property
 
         <XmlElement("studio")>
@@ -3117,7 +2994,8 @@ Namespace MediaContainers
 
 #Region "Methods"
 
-        Public Sub AddCertification(ByVal value As String)
+        Public Sub AddCertificationsFromString(ByVal value As String)
+            _certifications.Clear()
             If String.IsNullOrEmpty(value) Then Return
 
             If value.Contains(" / ") Then
@@ -3135,7 +3013,8 @@ Namespace MediaContainers
             End If
         End Sub
 
-        Public Sub AddCountry(ByVal value As String)
+        Public Sub AddCountriesFromString(ByVal value As String)
+            _countries.Clear()
             If String.IsNullOrEmpty(value) Then Return
 
             If value.Contains(" / ") Then
@@ -3154,7 +3033,8 @@ Namespace MediaContainers
             End If
         End Sub
 
-        Public Sub AddGenre(ByVal value As String)
+        Public Sub AddGenresFromString(ByVal value As String)
+            _genres.Clear()
             If String.IsNullOrEmpty(value) Then Return
 
             If value.Contains("/") Then
@@ -3172,7 +3052,8 @@ Namespace MediaContainers
             End If
         End Sub
 
-        Public Sub AddStudio(ByVal value As String)
+        Public Sub AddStudiosFromString(ByVal value As String)
+            _studios.Clear()
             If String.IsNullOrEmpty(value) Then Return
 
             If value.Contains("/") Then
@@ -3214,13 +3095,24 @@ Namespace MediaContainers
             _seasons.Clear()
             _sorttitle = String.Empty
             _status = String.Empty
-            _studio = String.Empty
             _studios.Clear()
             _tags.Clear()
             _title = String.Empty
             _tmdb = String.Empty
             _votes = String.Empty
         End Sub
+
+        Public Function CloneDeep() As Object Implements ICloneable.Clone
+            Dim Stream As New MemoryStream(50000)
+            Dim Formatter As New Runtime.Serialization.Formatters.Binary.BinaryFormatter()
+            ' Serialisierung über alle Objekte hinweg in einen Stream 
+            Formatter.Serialize(Stream, Me)
+            ' Zurück zum Anfang des Streams und... 
+            Stream.Seek(0, SeekOrigin.Begin)
+            ' ...aus dem Stream in ein Objekt deserialisieren 
+            CloneDeep = Formatter.Deserialize(Stream)
+            Stream.Close()
+        End Function
 
         Public Sub CreateCachePaths_ActorsThumbs()
             Dim sPath As String = Path.Combine(Master.TempPath, "Global")
@@ -3234,11 +3126,11 @@ Namespace MediaContainers
         End Sub
 
         Public Sub BlankId()
-            _tvdb = Nothing
+            _tvdb = String.Empty
         End Sub
 
         Public Sub BlankBoxeeId()
-            _boxeeTvDb = Nothing
+            _boxeeTvDb = String.Empty
         End Sub
 
         Public Sub SaveAllActorThumbs(ByRef DBElement As Database.DBElement)
@@ -3596,6 +3488,9 @@ Namespace MediaContainers
 
         Private Sub DetectImageSize(ByRef strHeigth As String)
             Select Case strHeigth
+                Case "3000"
+                    _moviepostersize = Enums.MoviePosterSize.HD3000
+                    _tvpostersize = Enums.TVPosterSize.HD3000
                 Case "2160"
                     _moviefanartsize = Enums.MovieFanartSize.UHD2160
                     _tvepisodepostersize = Enums.TVEpisodePosterSize.UHD2160
@@ -3606,16 +3501,19 @@ Namespace MediaContainers
                     _moviepostersize = Enums.MoviePosterSize.HD1500
                     _tvpostersize = Enums.TVPosterSize.HD1500
                     _tvseasonpostersize = Enums.TVSeasonPosterSize.HD1500
+                Case "1440"
+                    _moviefanartsize = Enums.MovieFanartSize.QHD1440
+                    _tvfanartsize = Enums.TVFanartSize.QHD1440
                 Case "1426"
                     _moviepostersize = Enums.MoviePosterSize.HD1426
                     _tvpostersize = Enums.TVPosterSize.HD1426
                     _tvseasonpostersize = Enums.TVSeasonPosterSize.HD1426
-                Case "1000"
-                    _tvpostersize = Enums.TVPosterSize.HD1000
                 Case "1080"
                     _moviefanartsize = Enums.MovieFanartSize.HD1080
                     _tvepisodepostersize = Enums.TVEpisodePosterSize.HD1080
                     _tvfanartsize = Enums.TVFanartSize.HD1080
+                Case "1000"
+                    _tvpostersize = Enums.TVPosterSize.HD1000
                 Case "720"
                     _moviefanartsize = Enums.MovieFanartSize.HD720
                     _tvepisodepostersize = Enums.TVEpisodePosterSize.HD720
@@ -4656,24 +4554,24 @@ Namespace MediaContainers
             Next
         End Sub
 
-        Public Sub Sort(ByVal tDBElement As Database.DBElement)
-            Dim cSettings As New Settings
+        Public Sub SortAndFilter(ByVal tDBElement As Database.DBElement)
+            Dim cSettings As New FilterSettings
+
+            cSettings.ContentType = tDBElement.ContentType
+            cSettings.MediaLanguage = tDBElement.Language
 
             Select Case tDBElement.ContentType
                 Case Enums.ContentType.Movie
                     cSettings.GetBlankImages = Master.eSettings.MovieImagesGetBlankImages
                     cSettings.GetEnglishImages = Master.eSettings.MovieImagesGetEnglishImages
-                    cSettings.MediaLanguage = tDBElement.Language
                     cSettings.MediaLanguageOnly = Master.eSettings.MovieImagesMediaLanguageOnly
                 Case Enums.ContentType.MovieSet
                     cSettings.GetBlankImages = Master.eSettings.MovieSetImagesGetBlankImages
                     cSettings.GetEnglishImages = Master.eSettings.MovieSetImagesGetEnglishImages
-                    cSettings.MediaLanguage = tDBElement.Language
                     cSettings.MediaLanguageOnly = Master.eSettings.MovieSetImagesMediaLanguageOnly
                 Case Enums.ContentType.TV, Enums.ContentType.TVEpisode, Enums.ContentType.TVSeason, Enums.ContentType.TVShow
                     cSettings.GetBlankImages = Master.eSettings.TVImagesGetBlankImages
                     cSettings.GetEnglishImages = Master.eSettings.TVImagesGetEnglishImages
-                    cSettings.MediaLanguage = tDBElement.Language
                     cSettings.MediaLanguageOnly = Master.eSettings.TVImagesMediaLanguageOnly
             End Select
 
@@ -4693,33 +4591,12 @@ Namespace MediaContainers
             _mainlandscapes.Sort()
             _mainposters.Sort()
 
-            'first order list by userrating (favorite images on top), then quality enumeration (0,1,2,3,4..) ascending, then put PrefSize images on top of list and later as workaround remove "Any" Quality(=0) to bottom of list because otherwise Any images would be shown before HD images (1,2,3)
-            Dim sortedqualityimages As New List(Of Image)
-            'quality sorting of moviefanarts
-            If Not Master.eSettings.MovieExtrafanartsPrefSize = Enums.MovieFanartSize.Any Then
-                sortedqualityimages = _mainfanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MovieFanartSize).OrderByDescending(Function(y) y.MovieFanartSize = Master.eSettings.MovieExtrafanartsPrefSize).OrderBy(Function(u) u.MovieFanartSize = Enums.MovieFanartSize.Any).ToList()
-            Else
-                sortedqualityimages = _mainfanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MovieFanartSize).OrderBy(Function(u) u.MovieFanartSize = Enums.MovieFanartSize.Any).ToList()
-            End If
-            If sortedqualityimages IsNot Nothing Then
-                _mainfanarts.Clear()
-                _mainfanarts.AddRange(sortedqualityimages)
-                sortedqualityimages.Clear()
-            End If
-            'quality sorting of movieposters
-            If Not Master.eSettings.MoviePosterPrefSize = Enums.MoviePosterSize.Any Then
-                sortedqualityimages = _mainposters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MoviePosterSize).OrderByDescending(Function(y) y.MoviePosterSize = Master.eSettings.MoviePosterPrefSize).OrderBy(Function(u) u.MoviePosterSize = Enums.MoviePosterSize.Any).ToList()
-            Else
-                sortedqualityimages = _mainposters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MoviePosterSize).OrderBy(Function(u) u.MoviePosterSize = Enums.MoviePosterSize.Any).ToList()
-            End If
-            If sortedqualityimages IsNot Nothing Then
-                _mainposters.Clear()
-                _mainposters.AddRange(sortedqualityimages)
-                sortedqualityimages.Clear()
-            End If
+            'sort all List(Of Image) by Votes/Size/Type
+            SortImages(cSettings)
 
-            'sort all List(Of Image) by preferred language/en/Blank/String.Empty/others
-            _episodeposters = FilterImages(_episodeposters, cSettings)
+            'filter all List(Of Image) by preferred language/en/Blank/String.Empty/others
+            'Language preference settings aren't needed for sorting episode posters since here we only care about size of image (unlike poster/banner)
+            '_episodeposters = FilterImages(_episodeposters, cSettings)
             _seasonbanners = FilterImages(_seasonbanners, cSettings)
             _seasonlandscapes = FilterImages(_seasonlandscapes, cSettings)
             _seasonposters = FilterImages(_seasonposters, cSettings)
@@ -4734,35 +4611,166 @@ Namespace MediaContainers
             _mainposters = FilterImages(_mainposters, cSettings)
         End Sub
 
-        Private Function FilterImages(ByRef ImagesList As List(Of Image), ByVal cSettings As Settings) As List(Of Image)
+        Private Sub SortImages(ByVal cSettings As FilterSettings)
+            Select Case cSettings.ContentType
+                Case Enums.ContentType.Movie
+                    'Movie Banner
+                    If Not Master.eSettings.MovieBannerPrefSize = Enums.MovieBannerSize.Any Then
+                        _mainbanners = _mainbanners.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MovieBannerSize).OrderByDescending(Function(y) y.MovieBannerSize = Master.eSettings.MovieBannerPrefSize).ToList()
+                    Else
+                        _mainbanners = _mainbanners.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MovieBannerSize).ToList()
+                    End If
+                    'Movie ClearArt
+                    _maincleararts = _maincleararts.OrderByDescending(Function(z) z.VoteAverage).ToList()
+                    'Movie ClearLogo
+                    _mainclearlogos = _mainclearlogos.OrderByDescending(Function(z) z.VoteAverage).ToList()
+                    'Movie DiscArt
+                    _maindiscarts = _maindiscarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.DiscType).ToList()
+                    'Movie Fanart
+                    If Not Master.eSettings.MovieFanartPrefSize = Enums.MovieFanartSize.Any Then
+                        _mainfanarts = _mainfanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MovieFanartSize).OrderByDescending(Function(y) y.MovieFanartSize = Master.eSettings.MovieFanartPrefSize).ToList()
+                    Else
+                        _mainfanarts = _mainfanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MovieFanartSize).ToList()
+                    End If
+                    'Movie Landscape
+                    _mainlandscapes = _mainlandscapes.OrderByDescending(Function(z) z.VoteAverage).ToList()
+                    'Movie Poster
+                    If Not Master.eSettings.MoviePosterPrefSize = Enums.MoviePosterSize.Any Then
+                        _mainposters = _mainposters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MoviePosterSize).OrderByDescending(Function(y) y.MoviePosterSize = Master.eSettings.MoviePosterPrefSize).ToList()
+                    Else
+                        _mainposters = _mainposters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MoviePosterSize).ToList()
+                    End If
+                Case Enums.ContentType.MovieSet
+                    'MovieSet Banner
+                    If Not Master.eSettings.MovieSetBannerPrefSize = Enums.MovieBannerSize.Any Then
+                        _mainbanners = _mainbanners.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MovieBannerSize).OrderByDescending(Function(y) y.MovieBannerSize = Master.eSettings.MovieSetBannerPrefSize).ToList()
+                    Else
+                        _mainbanners = _mainbanners.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MovieBannerSize).ToList()
+                    End If
+                    'MovieSet ClearArt
+                    _maincleararts = _maincleararts.OrderByDescending(Function(z) z.VoteAverage).ToList()
+                    'MovieSet ClearLogo
+                    _mainclearlogos = _mainclearlogos.OrderByDescending(Function(z) z.VoteAverage).ToList()
+                    'MovieSet DiscArt
+                    _maindiscarts = _maindiscarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.DiscType).ToList()
+                    'MovieSet Fanart
+                    If Not Master.eSettings.MovieSetFanartPrefSize = Enums.MovieFanartSize.Any Then
+                        _mainfanarts = _mainfanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MovieFanartSize).OrderByDescending(Function(y) y.MovieFanartSize = Master.eSettings.MovieSetFanartPrefSize).ToList()
+                    Else
+                        _mainfanarts = _mainfanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MovieFanartSize).ToList()
+                    End If
+                    'MovieSet Landscape
+                    _mainlandscapes = _mainlandscapes.OrderByDescending(Function(z) z.VoteAverage).ToList()
+                    'MovieSet Poster
+                    If Not Master.eSettings.MovieSetPosterPrefSize = Enums.MoviePosterSize.Any Then
+                        _mainposters = _mainposters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MoviePosterSize).OrderByDescending(Function(y) y.MoviePosterSize = Master.eSettings.MovieSetPosterPrefSize).ToList()
+                    Else
+                        _mainposters = _mainposters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.MoviePosterSize).ToList()
+                    End If
+                Case Enums.ContentType.TV, Enums.ContentType.TVShow
+                    'TVShow Banner
+                    If Not Master.eSettings.TVShowBannerPrefSize = Enums.TVBannerSize.Any Then
+                        _mainbanners = _mainbanners.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVBannerSize).OrderByDescending(Function(y) y.TVBannerSize = Master.eSettings.TVShowBannerPrefSize).ToList()
+                    Else
+                        _mainbanners = _mainbanners.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVBannerSize).ToList()
+                    End If
+                    'TVShow CharacterArt
+                    _maincharacterarts = _maincharacterarts.OrderByDescending(Function(z) z.VoteAverage).ToList()
+                    'TVShow ClearArt
+                    _maincleararts = _maincleararts.OrderByDescending(Function(z) z.VoteAverage).ToList()
+                    'TVShow ClearLogo
+                    _mainclearlogos = _mainclearlogos.OrderByDescending(Function(z) z.VoteAverage).ToList()
+                    'TVShow Fanart
+                    If Not Master.eSettings.TVShowFanartPrefSize = Enums.TVFanartSize.Any Then
+                        _mainfanarts = _mainfanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVFanartSize).OrderByDescending(Function(y) y.TVFanartSize = Master.eSettings.TVShowFanartPrefSize).ToList()
+                    Else
+                        _mainfanarts = _mainfanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVFanartSize).ToList()
+                    End If
+                    'TVShow Landscape
+                    _mainlandscapes = _mainlandscapes.OrderByDescending(Function(z) z.VoteAverage).ToList()
+                    'TVShow Poster
+                    If Not Master.eSettings.TVShowPosterPrefSize = Enums.TVPosterSize.Any Then
+                        _mainposters = _mainposters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVPosterSize).OrderByDescending(Function(y) y.TVPosterSize = Master.eSettings.TVShowPosterPrefSize).ToList()
+                    Else
+                        _mainposters = _mainposters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVPosterSize).ToList()
+                    End If
+                Case Enums.ContentType.TVEpisode
+                    'TVShow Fanart (TVEpisode preferred sorting)
+                    If Not Master.eSettings.TVEpisodeFanartPrefSize = Enums.TVFanartSize.Any Then
+                        _mainfanarts = _mainfanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVFanartSize).OrderByDescending(Function(y) y.TVFanartSize = Master.eSettings.TVEpisodeFanartPrefSize).ToList()
+                    Else
+                        _mainfanarts = _mainfanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVFanartSize).ToList()
+                    End If
+                Case Enums.ContentType.TVSeason
+                    'TVShow Fanart (TVSeason preferred sorting)
+                    If Not Master.eSettings.TVSeasonFanartPrefSize = Enums.TVFanartSize.Any Then
+                        _mainfanarts = _mainfanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVFanartSize).OrderByDescending(Function(y) y.TVFanartSize = Master.eSettings.TVSeasonFanartPrefSize).ToList()
+                    Else
+                        _mainfanarts = _mainfanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVFanartSize).ToList()
+                    End If
+                    'TVShow Poster (TVSeason preferred sorting)
+                    If Not Master.eSettings.TVSeasonPosterPrefSize = Enums.TVSeasonPosterSize.Any Then
+                        _mainposters = _mainposters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVSeasonPosterSize).OrderByDescending(Function(y) y.TVSeasonPosterSize = Master.eSettings.TVSeasonPosterPrefSize).ToList()
+                    Else
+                        _mainposters = _mainposters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVSeasonPosterSize).ToList()
+                    End If
+            End Select
+
+            'Unique image containers
+
+            'TVEpisode Fanart
+            If Not Master.eSettings.TVEpisodeFanartPrefSize = Enums.TVFanartSize.Any Then
+                _episodefanarts = _episodefanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVFanartSize).OrderByDescending(Function(y) y.TVFanartSize = Master.eSettings.TVEpisodeFanartPrefSize).ToList()
+            Else
+                _episodefanarts = _episodefanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVFanartSize).ToList()
+            End If
+            'TVEpisode Poster
+            If Not Master.eSettings.TVEpisodePosterPrefSize = Enums.TVEpisodePosterSize.Any Then
+                _episodeposters = _episodeposters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVEpisodePosterSize).OrderByDescending(Function(y) y.TVEpisodePosterSize = Master.eSettings.TVEpisodePosterPrefSize).ToList()
+            Else
+                _episodeposters = _episodeposters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVEpisodePosterSize).ToList()
+            End If
+            'TVSeason Banner
+            If Not Master.eSettings.TVSeasonBannerPrefSize = Enums.TVBannerSize.Any Then
+                _seasonbanners = _seasonbanners.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVBannerSize).OrderByDescending(Function(y) y.TVBannerSize = Master.eSettings.TVSeasonBannerPrefSize).ToList()
+            Else
+                _seasonbanners = _seasonbanners.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVBannerSize).ToList()
+            End If
+            'TVSeason Fanart
+            If Not Master.eSettings.TVSeasonFanartPrefSize = Enums.TVFanartSize.Any Then
+                _seasonfanarts = _seasonfanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVFanartSize).OrderByDescending(Function(y) y.TVFanartSize = Master.eSettings.TVSeasonFanartPrefSize).ToList()
+            Else
+                _seasonfanarts = _seasonfanarts.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVFanartSize).ToList()
+            End If
+            'TVSeason Landscape
+            _seasonlandscapes = _seasonlandscapes.OrderByDescending(Function(z) z.VoteAverage).ToList()
+            'TVSeason Poster
+            If Not Master.eSettings.TVSeasonPosterPrefSize = Enums.TVSeasonPosterSize.Any Then
+                _seasonposters = _seasonposters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVSeasonPosterSize).OrderByDescending(Function(y) y.TVSeasonPosterSize = Master.eSettings.TVSeasonPosterPrefSize).ToList()
+            Else
+                _seasonposters = _seasonposters.OrderByDescending(Function(z) z.VoteAverage).OrderBy(Function(x) x.TVSeasonPosterSize).ToList()
+            End If
+        End Sub
+
+        Private Function FilterImages(ByRef ImagesList As List(Of Image), ByVal cSettings As FilterSettings) As List(Of Image)
             Dim FilteredList As New List(Of Image)
 
-            For Each tmpImage As Image In ImagesList.Where(Function(f) f.ShortLang = cSettings.MediaLanguage)
-                FilteredList.Add(tmpImage)
-            Next
+            FilteredList.AddRange(ImagesList.Where(Function(f) f.ShortLang = cSettings.MediaLanguage))
 
             If (cSettings.GetEnglishImages OrElse Not cSettings.MediaLanguageOnly) AndAlso Not cSettings.MediaLanguage = "en" Then
-                For Each tmpImage As Image In ImagesList.Where(Function(f) f.ShortLang = "en")
-                    FilteredList.Add(tmpImage)
-                Next
+                FilteredList.AddRange(ImagesList.Where(Function(f) f.ShortLang = "en"))
             End If
 
             If cSettings.GetBlankImages OrElse Not cSettings.MediaLanguageOnly Then
-                For Each tmpImage As Image In ImagesList.Where(Function(f) f.ShortLang = Master.eLang.GetString(1168, "Blank"))
-                    FilteredList.Add(tmpImage)
-                Next
-                For Each tmpImage As Image In ImagesList.Where(Function(f) f.ShortLang = String.Empty)
-                    FilteredList.Add(tmpImage)
-                Next
+                FilteredList.AddRange(ImagesList.Where(Function(f) f.LongLang = Master.eLang.GetString(1168, "Blank")))
+                FilteredList.AddRange(ImagesList.Where(Function(f) f.ShortLang = String.Empty))
             End If
 
             If Not cSettings.MediaLanguageOnly Then
-                For Each tmpImage As Image In ImagesList.Where(Function(f) Not f.ShortLang = cSettings.MediaLanguage AndAlso
+                FilteredList.AddRange(ImagesList.Where(Function(f) Not f.ShortLang = cSettings.MediaLanguage AndAlso
                                                                    Not f.ShortLang = "en" AndAlso
-                                                                   Not f.ShortLang = Master.eLang.GetString(1168, "Blank") AndAlso
-                                                                   Not f.ShortLang = String.Empty)
-                    FilteredList.Add(tmpImage)
-                Next
+                                                                   Not f.LongLang = Master.eLang.GetString(1168, "Blank") AndAlso
+                                                                   Not f.ShortLang = String.Empty))
             End If
 
             Return FilteredList
@@ -4772,10 +4780,11 @@ Namespace MediaContainers
 
 #Region "Nested Types"
 
-        Private Structure Settings
+        Private Structure FilterSettings
 
 #Region "Fields"
 
+            Dim ContentType As Enums.ContentType
             Dim GetBlankImages As Boolean
             Dim GetEnglishImages As Boolean
             Dim MediaLanguage As String
@@ -4795,7 +4804,7 @@ Namespace MediaContainers
 #Region "Fields"
 
         Private _id As Long
-        Private _order As String
+        Private _order As Integer
         Private _title As String
         Private _tmdbcolid As String
 
@@ -4822,11 +4831,11 @@ Namespace MediaContainers
         End Property
 
         <XmlAttribute("order")>
-        Public Property Order() As String
+        Public Property Order() As Integer
             Get
                 Return _order
             End Get
-            Set(ByVal value As String)
+            Set(ByVal value As Integer)
                 _order = value
             End Set
         End Property
@@ -4834,7 +4843,7 @@ Namespace MediaContainers
         <XmlIgnore()>
         Public ReadOnly Property OrderSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_order)
+                Return Not _order = -1
             End Get
         End Property
 
@@ -4879,7 +4888,7 @@ Namespace MediaContainers
         Public Sub Clear()
             _id = -1
             _title = String.Empty
-            _order = String.Empty
+            _order = -1
             _tmdbcolid = String.Empty
         End Sub
 

@@ -27,9 +27,9 @@ Imports System.Windows.Forms
 Public Class Localization
 
 #Region "Fields"
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
-    Shared help_logger As Logger = NLog.LogManager.GetLogger("HelpString")
-    Shared lang_logger As Logger = NLog.LogManager.GetLogger("LanguageString")
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
+    Shared help_logger As Logger = LogManager.GetLogger("HelpString")
+    Shared lang_logger As Logger = LogManager.GetLogger("LanguageString")
 
     Private Shared htArrayStrings As New List(Of Locs)
     Private Shared htHelpStrings As New clsXMLLanguageHelp
@@ -213,13 +213,11 @@ Public Class Localization
 
         x1 = From x As HelpString In htHelpStrings.string Where (x.control = ctrlName)
         If x1.Count = 0 Then
-            'logger.Info(New StackFrame().GetMethod().Name, String.Format("Missing language_help_string: {0}", ctrlName))
+            help_logger.Warn(String.Format("Missing language_help_string: {0}", ctrlName), New StackFrame().GetMethod().Name)
             aStr = String.Empty
         Else
             aStr = x1(0).Value
         End If
-
-        help_logger.Trace("helpstring : '{0}'", aStr)
 
         Return aStr
     End Function
@@ -235,7 +233,7 @@ Public Class Localization
         Else
             x1 = From x As LanguageString In htStrings.string Where (x.id = ID)
             If x1.Count = 0 Then
-                logger.Error(New StackFrame().GetMethod().Name, String.Format("Missing language_string: {0} - {1} : '{2}'", Assembly, ID, strDefault))
+                lang_logger.Warn(String.Format("Missing language_string: {0} - {1} : '{2}'", Assembly, ID, strDefault), New StackFrame().GetMethod().Name)
                 tStr = strDefault
             Else
                 If Not String.IsNullOrEmpty(x1(0).Value) Then
@@ -245,8 +243,6 @@ Public Class Localization
                 End If
             End If
         End If
-
-        lang_logger.Trace("language_string: {0} - {1} : '{2}'", Assembly, ID, tStr)
 
         Return tStr
     End Function
@@ -262,10 +258,6 @@ Public Class Localization
             htStrings.string.Clear()
         End If
         LoadLanguage(language)
-        ' no more module specific language files
-        'For Each s As String In ModulesManager.VersionList.Select(Function(m) m.AssemblyFileName).Distinct
-        '	LoadLanguage(language, s.Replace(".dll", String.Empty))
-        'Next
     End Sub
 
     Public Sub LoadHelpStrings(ByVal hPath As String)
@@ -285,7 +277,7 @@ Public Class Localization
         Dim lhPath As String = String.Empty
 
         If Not String.IsNullOrEmpty(Language) Then
-            If rAssembly = "" Then
+            If rAssembly = String.Empty Then
                 Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
             Else
                 Assembly = rAssembly

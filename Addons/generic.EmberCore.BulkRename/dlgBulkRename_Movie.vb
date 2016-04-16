@@ -139,7 +139,7 @@ Public Class dlgBulkRenamer_Movie
                                 If Not DBNull.Value.Equals(SQLreader("NfoPath")) AndAlso Not DBNull.Value.Equals(SQLreader("idMovie")) Then
                                     _tmpPath = SQLreader("NfoPath").ToString
                                     If Not String.IsNullOrEmpty(_tmpPath) Then
-                                        Dim _currMovie As Database.DBElement = Master.DB.LoadMovieFromDB(Convert.ToInt32(SQLreader("idMovie")))
+                                        Dim _currMovie As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt32(SQLreader("idMovie")))
                                         If Not _currMovie.ID = -1 AndAlso Not String.IsNullOrEmpty(_currMovie.Filename) Then
                                             Dim MovieFile As FileFolderRenamer.FileRename = FileFolderRenamer.GetInfo_Movie(_currMovie)
                                             FFRenamer.AddMovie(MovieFile)
@@ -148,7 +148,7 @@ Public Class dlgBulkRenamer_Movie
                                     End If
                                 End If
                             Catch ex As Exception
-                                logger.Error(New StackFrame().GetMethod().Name, ex)
+                                logger.Error(ex, New StackFrame().GetMethod().Name)
                             End Try
                             iProg += 1
 
@@ -164,7 +164,7 @@ Public Class dlgBulkRenamer_Movie
                 End Using
             End Using
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -187,7 +187,7 @@ Public Class dlgBulkRenamer_Movie
             End If
             pnlCancel.Visible = False
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -261,7 +261,7 @@ Public Class dlgBulkRenamer_Movie
             End If
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -323,7 +323,7 @@ Public Class dlgBulkRenamer_Movie
             bwLoadInfo.RunWorkerAsync()
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -337,7 +337,7 @@ Public Class dlgBulkRenamer_Movie
             lblCanceling.Visible = True
             lblFile.Visible = False
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -399,7 +399,7 @@ Public Class dlgBulkRenamer_Movie
 
             dgvMoviesList.Refresh()
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -475,7 +475,7 @@ Public Class dlgBulkRenamer_Movie
                 End If
             End With
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -495,7 +495,7 @@ Public Class dlgBulkRenamer_Movie
                 tThread.Start()
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -520,7 +520,7 @@ Public Class dlgBulkRenamer_Movie
             If String.IsNullOrEmpty(txtFilePattern.Text) Then txtFilePattern.Text = "$F"
             tmrSimul.Enabled = True
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -529,7 +529,7 @@ Public Class dlgBulkRenamer_Movie
             If String.IsNullOrEmpty(txtFolderPatternNotSingle.Text) Then txtFolderPatternNotSingle.Text = "$D"
             tmrSimul.Enabled = True
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -538,7 +538,7 @@ Public Class dlgBulkRenamer_Movie
             If String.IsNullOrEmpty(txtFolderPattern.Text) Then txtFolderPattern.Text = "$D"
             tmrSimul.Enabled = True
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 

@@ -86,9 +86,9 @@ Public Class dlgFileInfo
                         End If
                         If btnClose.Visible = True AndAlso Not SettingDefaults Then 'Only Save imediatly when running stand alone
                             If _isEpisode Then
-                                Master.DB.SaveTVEpisodeToDB(_DBElement, False, False, True, False, False)
+                                Master.DB.Save_TVEpisode(_DBElement, False, True, False, False, True)
                             Else
-                                Master.DB.SaveMovieToDB(_DBElement, False, False, True, False)
+                                Master.DB.Save_Movie(_DBElement, False, True, False)
                             End If
                         End If
                         NeedToRefresh = True
@@ -97,7 +97,7 @@ Public Class dlgFileInfo
                 End Using
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -145,16 +145,16 @@ Public Class dlgFileInfo
                 End If
                 If btnClose.Visible = True AndAlso Not SettingDefaults Then 'Only Save imediatly when running stand alone
                     If _isEpisode Then
-                        Master.DB.SaveTVEpisodeToDB(_DBElement, False, False, True, False, False)
+                        Master.DB.Save_TVEpisode(_DBElement, False, True, False, False, True)
                     Else
-                        Master.DB.SaveMovieToDB(_DBElement, False, False, True, False)
+                        Master.DB.Save_Movie(_DBElement, False, True, False)
                     End If
                 End If
                 NeedToRefresh = True
                 LoadInfo()
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -195,9 +195,9 @@ Public Class dlgFileInfo
                         End If
                         If btnClose.Visible = True AndAlso Not SettingDefaults Then 'Only Save imediatly when running stand alone
                             If _isEpisode Then
-                                Master.DB.SaveTVEpisodeToDB(_DBElement, False, False, True, False, False)
+                                Master.DB.Save_TVEpisode(_DBElement, False, True, False, False, True)
                             Else
-                                Master.DB.SaveMovieToDB(_DBElement, False, False, True, False)
+                                Master.DB.Save_Movie(_DBElement, False, True, False)
                             End If
                         End If
                         NeedToRefresh = True
@@ -206,7 +206,7 @@ Public Class dlgFileInfo
                 End Using
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -338,7 +338,7 @@ Public Class dlgFileInfo
 
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 

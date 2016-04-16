@@ -176,7 +176,7 @@ Public Class dlgThemeSelect
             Results.WebTheme.FromWeb(Args.Parameter.URL, Args.Parameter.WebURL)
             Results.URL = Args.Parameter.URL
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         e.Result = Args.bType

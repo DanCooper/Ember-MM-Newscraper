@@ -222,7 +222,7 @@ Namespace FileUtils
                     End Using
                 End Using
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         End Sub
         ''' <summary>
@@ -240,7 +240,7 @@ Namespace FileUtils
                 Return Path.Combine(Path.GetDirectoryName(sPath), Path.GetFileNameWithoutExtension(sPath))
                 'Return Path.Combine(Directory.GetParent(sPath).FullName, Path.GetFileNameWithoutExtension(sPath))
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Source: <" & sPath & ">", ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Source: <" & sPath & ">")
                 Return String.Empty
             End Try
         End Function
@@ -297,14 +297,14 @@ Namespace FileUtils
                             If File.Exists(_cmd.execute) Then File.Delete(_cmd.execute)
                     End Select
                 Catch ex As Exception
-                    logger.Error(New StackFrame().GetMethod().Name, ex)
+                    logger.Error(ex, New StackFrame().GetMethod().Name)
                 End Try
             Next
             Dim destPath As String = Path.Combine(Functions.AppPath, "InstalledTasks_" & Format(DateTime.Now, "YYYYMMDD") & Format(DateTime.Now, "HHMMSS") & ".xml")
             Try
                 File.Move(fname, destPath)
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         End Sub
 
@@ -474,7 +474,7 @@ Namespace FileUtils
                             File.Delete(fFile.FullName)
                         Next
                     Catch ex As Exception
-                        logger.Error(New StackFrame().GetMethod().Name, ex)
+                        logger.Error(ex, New StackFrame().GetMethod().Name)
                     End Try
                 End If
             End If
@@ -506,7 +506,7 @@ Namespace FileUtils
                                 End If
                             End If
                         Catch ex As Exception
-                            logger.Error(New StackFrame().GetMethod().Name, ex)
+                            logger.Error(ex, New StackFrame().GetMethod().Name)
                         End Try
                     Next
                 End If
@@ -555,7 +555,7 @@ Namespace FileUtils
                     Directory.Delete(sPath, True)
                 End If
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         End Sub
 
@@ -782,7 +782,7 @@ Namespace FileUtils
                 ioFi = Nothing
                 dirInfo = Nothing
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
             Return ItemsToDelete
         End Function
@@ -1918,7 +1918,7 @@ Namespace FileUtils
                     End If
                 End If
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
 
             Select Case mType
@@ -2321,7 +2321,7 @@ Namespace FileUtils
                     di = Nothing
                 End If
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         End Sub
 

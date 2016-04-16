@@ -55,7 +55,7 @@ Public Class dlgDeleteConfirm
             NewNode.ImageKey = "FILE"
             NewNode.SelectedImageKey = "FILE"
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
             Throw
         End Try
     End Sub
@@ -79,7 +79,7 @@ Public Class dlgDeleteConfirm
                 AddFileNode(NewNode, item)
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
             Throw
         End Try
     End Sub
@@ -89,7 +89,7 @@ Public Class dlgDeleteConfirm
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-        DialogResult = System.Windows.Forms.DialogResult.Cancel
+        DialogResult = DialogResult.Cancel
         Close()
     End Sub
 
@@ -104,13 +104,13 @@ Public Class dlgDeleteConfirm
                     For Each ItemParentNode As TreeNode In .Nodes
                         Select Case _deltype
                             Case Enums.DelType.Movies
-                                Master.DB.DeleteMovieFromDB(Convert.ToInt64(ItemParentNode.Tag), True)
+                                Master.DB.Delete_Movie(Convert.ToInt64(ItemParentNode.Tag), True)
                             Case Enums.DelType.Shows
-                                Master.DB.DeleteTVShowFromDB(Convert.ToInt64(ItemParentNode.Tag), True)
+                                Master.DB.Delete_TVShow(Convert.ToInt64(ItemParentNode.Tag), True)
                             Case Enums.DelType.Seasons
                                 tPair = DirectCast(ItemParentNode.Tag, KeyValuePair(Of Long, Long))
                             Case Enums.DelType.Episodes
-                                Master.DB.DeleteTVEpFromDB(Convert.ToInt64(ItemParentNode.Tag), False, True, True)
+                                Master.DB.Delete_TVEpisode(Convert.ToInt64(ItemParentNode.Tag), False, True, True)
                         End Select
 
                         If ItemParentNode.Nodes.Count > 0 Then
@@ -121,7 +121,7 @@ Public Class dlgDeleteConfirm
                                             Dim oDir As New IO.DirectoryInfo(node.Tag.ToString)
                                             If oDir.Exists Then
                                                 oDir.Delete(True)
-                                                If _deltype = Enums.DelType.Seasons Then Master.DB.DeleteTVSeasonFromDB(tPair.Value, Convert.ToInt32(tPair.Key), True)
+                                                If _deltype = Enums.DelType.Seasons Then Master.DB.Delete_TVSeason(tPair.Value, Convert.ToInt32(tPair.Key), True)
                                                 Exit For
                                             End If
 
@@ -129,7 +129,7 @@ Public Class dlgDeleteConfirm
                                             Dim oFile As New IO.FileInfo(node.Tag.ToString)
                                             If oFile.Exists Then
                                                 oFile.Delete()
-                                                If _deltype = Enums.DelType.Seasons AndAlso Master.eSettings.FileSystemValidExts.Contains(IO.Path.GetExtension(node.Tag.ToString)) Then Master.DB.DeleteTVEpFromDBByPath(node.Tag.ToString, True, True)
+                                                If _deltype = Enums.DelType.Seasons AndAlso Master.eSettings.FileSystemValidExts.Contains(IO.Path.GetExtension(node.Tag.ToString)) Then Master.DB.Delete_TVEpisode(node.Tag.ToString, True, True)
                                             End If
                                     End Select
 
@@ -139,13 +139,14 @@ Public Class dlgDeleteConfirm
                         End If
 
                     Next
-                    If _deltype = Enums.DelType.Seasons OrElse _deltype = Enums.DelType.Episodes Then Master.DB.DeleteEmptyTVSeasonsFromDB(True)
+                    If _deltype = Enums.DelType.Seasons OrElse _deltype = Enums.DelType.Episodes Then Master.DB.Delete_Empty_TVSeasons(True)
                     SQLtransaction.Commit()
                 End Using
             End With
             Return result
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
+            Return False
         End Try
     End Function
 
@@ -155,9 +156,9 @@ Public Class dlgDeleteConfirm
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         If DeleteSelectedItems() Then
-            DialogResult = System.Windows.Forms.DialogResult.OK
+            DialogResult = DialogResult.OK
         Else
-            DialogResult = System.Windows.Forms.DialogResult.Cancel
+            DialogResult = DialogResult.Cancel
         End If
         Close()
     End Sub
@@ -177,7 +178,7 @@ Public Class dlgDeleteConfirm
                         For Each MovieId As Long In ItemsToDelete.Keys
                             hadError = False
 
-                            Dim mMovie As Database.DBElement = Master.DB.LoadMovieFromDB(MovieId)
+                            Dim mMovie As Database.DBElement = Master.DB.Load_Movie(MovieId)
 
                             ItemParentNode = .Nodes.Add(mMovie.ID.ToString, mMovie.ListTitle)
                             ItemParentNode.ImageKey = "MOVIE"
@@ -213,7 +214,7 @@ Public Class dlgDeleteConfirm
                         For Each ShowID As Long In ItemsToDelete.Keys
                             hadError = False
 
-                            Dim tShow As Database.DBElement = Master.DB.LoadTVShowFromDB(ShowID, False, False)
+                            Dim tShow As Database.DBElement = Master.DB.Load_TVShow(ShowID, False, False)
 
                             ItemParentNode = .Nodes.Add(ShowID.ToString, tShow.TVShow.Title)
                             ItemParentNode.ImageKey = "MOVIE"
@@ -233,7 +234,7 @@ Public Class dlgDeleteConfirm
                             For Each Season As KeyValuePair(Of Long, Long) In ItemsToDelete
                                 hadError = False
 
-                                Dim tSeason As Database.DBElement = Master.DB.LoadTVSeasonFromDB(Season.Value, Convert.ToInt32(Season.Key), True, True)
+                                Dim tSeason As Database.DBElement = Master.DB.Load_TVSeason(Season.Value, Convert.ToInt32(Season.Key), True, True)
 
                                 ItemParentNode = .Nodes.Add(Season.Key.ToString, String.Format("{0} - {1}", tSeason.TVShow.Title, tSeason.TVSeason.Season))
                                 ItemParentNode.ImageKey = "MOVIE"
@@ -299,7 +300,7 @@ Public Class dlgDeleteConfirm
                             For Each Ep As Long In ItemsToDelete.Keys
                                 hadError = False
 
-                                Dim tEpisode As Database.DBElement = Master.DB.LoadTVEpisodeFromDB(Ep, True)
+                                Dim tEpisode As Database.DBElement = Master.DB.Load_TVEpisode(Ep, True)
 
                                 ItemParentNode = .Nodes.Add(Ep.ToString, tEpisode.TVEpisode.Title)
                                 ItemParentNode.ImageKey = "MOVIE"
@@ -336,7 +337,7 @@ Public Class dlgDeleteConfirm
 
             End With
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 

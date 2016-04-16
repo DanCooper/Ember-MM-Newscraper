@@ -1190,14 +1190,6 @@ Public Class Settings
             Settings._XMLSettings.MovieScraperUseDetailView = value
         End Set
     End Property
-    Public Property MovieScraperReleaseFormat() As Boolean
-        Get
-            Return Settings._XMLSettings.MovieScraperReleaseFormat
-        End Get
-        Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieScraperReleaseFormat = value
-        End Set
-    End Property
 
     Public Property MovieLockOutline() As Boolean
         Get
@@ -6700,7 +6692,7 @@ Public Class Settings
 
     Public Sub Load()
         'Cocotus, Load from central "Settings" folder if it exists!
-        Dim configpath As String = FileUtils.Common.ReturnSettingsFile("Settings", "Settings.xml")
+        Dim configpath As String = Path.Combine(Master.SettingsPath, "Settings.xml")
 
         Try
             If File.Exists(configpath) Then
@@ -6713,7 +6705,7 @@ Public Class Settings
                 Master.eSettings = Me
             End If
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
             logger.Info("An attempt is made to repair the Settings.xml")
             Try
                 Using srSettings As New StreamReader(configpath)
@@ -6740,7 +6732,7 @@ Public Class Settings
                     logger.Info("AdvancedSettings.xml successfully repaired")
                 End Using
             Catch ex2 As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex2)
+                logger.Error(ex2, New StackFrame().GetMethod().Name)
                 File.Copy(configpath, String.Concat(configpath, "_backup"), True)
                 Master.eSettings = New Settings
             End Try
@@ -6799,7 +6791,7 @@ Public Class Settings
             _XMLSettings.TVGeneralLanguages = tSettings.TVGeneralLanguages
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -6810,7 +6802,7 @@ Public Class Settings
             xmlSerial.Serialize(xmlWriter, Master.eSettings)
             xmlWriter.Close()
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
     ''' <summary>
@@ -7026,7 +7018,6 @@ Public Class Settings
         MovieScraperCountry = True
         MovieScraperDirector = True
         MovieScraperDurationRuntimeFormat = "<m>"
-        MovieScraperReleaseFormat = False
         MovieScraperGenre = True
         MovieScraperGenreLimit = 0
         MovieScraperMetaDataIFOScan = True
@@ -7355,9 +7346,13 @@ Public Class Settings
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]tt\d*")            'IMDB ID
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]blu[\W_]?ray.*")
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]bd[\W_]?rip.*")
+            Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]3d.*")
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]dvd.*")
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]720.*")
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]1080.*")
+            Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]1440.*")
+            Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]2160.*")
+            Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]4k.*")
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]ac3.*")
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]dts.*")
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]divx.*")
@@ -7368,6 +7363,7 @@ Public Class Settings
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]hd(tv)?.*")
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]unrated.*")
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]uncut.*")
+            Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]german.*")
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]([a-z]{3}|multi)[sd]ub.*")
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]\[offline\].*")
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]ntsc.*")
@@ -7388,7 +7384,10 @@ Public Class Settings
             Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]bd[\W_]?rip.*")
             Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]dvd.*")
             Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]720.*")
-            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]1080.*") 'not really needed because the year title will catch this one, but just in case a user doesn't want the year filter but wants to filter 1080
+            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]1080.*")
+            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]1440.*")
+            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]2160.*")
+            Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]4k.*")
             Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]ac3.*")
             Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]dts.*")
             Master.eSettings.TVShowFilterCustom.Add("(?i)[\W_]divx.*")
@@ -7418,7 +7417,10 @@ Public Class Settings
             Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]bd[\W_]?rip.*")
             Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]dvd.*")
             Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]720.*")
-            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]1080.*") 'not really needed because the year title will catch this one, but just in case a user doesn't want the year filter but wants to filter 1080
+            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]1080.*")
+            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]1440.*")
+            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]2160.*")
+            Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]4k.*")
             Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]ac3.*")
             Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]dts.*")
             Master.eSettings.TVEpisodeFilterCustom.Add("(?i)[\W_]divx.*")

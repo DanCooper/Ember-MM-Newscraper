@@ -21,7 +21,6 @@
 Imports EmberAPI
 Imports NLog
 Imports System.Diagnostics
-Imports System.IO
 
 Namespace TMDB
 
@@ -157,7 +156,7 @@ Namespace TMDB
                     _TMDBApiE = _TMDBApi
                 End If
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         End Sub
 
@@ -339,7 +338,7 @@ Namespace TMDB
 
             'Genres
             If FilteredOptions.bMainGenres Then
-                Dim aGenres As System.Collections.Generic.List(Of TMDbLib.Objects.General.Genre) = Nothing
+                Dim aGenres As List(Of TMDbLib.Objects.General.Genre) = Nothing
                 If Result.Genres Is Nothing OrElse (Result.Genres IsNot Nothing AndAlso Result.Genres.Count = 0) Then
                     If _SpecialSettings.FallBackEng AndAlso ResultE.Genres IsNot Nothing AndAlso ResultE.Genres.Count > 0 Then
                         aGenres = ResultE.Genres
@@ -691,7 +690,7 @@ Namespace TMDB
 
             'Genres
             If FilteredOptions.bMainGenres Then
-                Dim aGenres As System.Collections.Generic.List(Of TMDbLib.Objects.General.Genre) = Nothing
+                Dim aGenres As List(Of TMDbLib.Objects.General.Genre) = Nothing
                 If Result.Genres Is Nothing OrElse (Result.Genres IsNot Nothing AndAlso Result.Genres.Count = 0) Then
                     If _SpecialSettings.FallBackEng AndAlso ResultE.Genres IsNot Nothing AndAlso ResultE.Genres.Count > 0 Then
                         aGenres = ResultE.Genres
@@ -780,7 +779,7 @@ Namespace TMDB
             'Runtime
             If FilteredOptions.bMainRuntime Then
                 If Result.EpisodeRunTime Is Nothing OrElse Result.EpisodeRunTime.Count = 0 Then
-                    If _SpecialSettings.FallBackEng AndAlso ResultE.EpisodeRunTime IsNot Nothing Then
+                    If _SpecialSettings.FallBackEng AndAlso ResultE.EpisodeRunTime IsNot Nothing AndAlso ResultE.EpisodeRunTime.Count > 0 Then
                         nTVShow.Runtime = CStr(ResultE.EpisodeRunTime.Item(0))
                     End If
                 Else
@@ -860,7 +859,7 @@ Namespace TMDB
             Dim ShowInfo As TMDbLib.Objects.TvShows.TvShow
 
             Dim showAPIResult As Task(Of TMDbLib.Objects.TvShows.TvShow)
-            showAPIResult = Task.Run(Function() _TMDBApi.GetTvShowAsync(CInt(ShowID)))
+            showAPIResult = Task.Run(Function() _TMDBApi.GetTvShowAsync(ShowID))
 
             ShowInfo = showAPIResult.Result
 
@@ -869,10 +868,12 @@ Namespace TMDB
                 seasonAPIResult = Task.Run(Function() _TMDBApi.GetTvSeasonAsync(ShowID, aSeason.SeasonNumber, TMDbLib.Objects.TvShows.TvSeasonMethods.Credits Or TMDbLib.Objects.TvShows.TvSeasonMethods.ExternalIds))
 
                 Dim SeasonInfo As TMDbLib.Objects.TvShows.TvSeason = seasonAPIResult.Result
-                For Each aEpisode As TMDbLib.Objects.TvShows.TvEpisode In SeasonInfo.Episodes.Where(Function(f) CBool(f.AirDate = CDate(Aired)))
-                    Return GetTVEpisodeInfo(aEpisode, FilteredOptions)
-                    'Return GetTVEpisodeInfo(ShowID, season.SeasonNumber, episode.EpisodeNumber, Options)
-                Next
+                Dim EpisodeList As IEnumerable(Of TMDbLib.Objects.TvShows.TvEpisode) = SeasonInfo.Episodes.Where(Function(f) CBool(f.AirDate = CDate(Aired)))
+                If EpisodeList IsNot Nothing AndAlso EpisodeList.Count = 1 Then
+                    Return GetTVEpisodeInfo(EpisodeList(0), FilteredOptions)
+                ElseIf EpisodeList.Count > 0 Then
+                    Return Nothing
+                End If
             Next
 
             Return Nothing
@@ -882,15 +883,20 @@ Namespace TMDB
             Dim APIResult As Task(Of TMDbLib.Objects.TvShows.TvEpisode)
             APIResult = Task.Run(Function() _TMDBApi.GetTvEpisodeAsync(tmdbID, SeasonNumber, EpisodeNumber, TMDbLib.Objects.TvShows.TvEpisodeMethods.Credits Or TMDbLib.Objects.TvShows.TvEpisodeMethods.ExternalIds))
 
-            Dim EpisodeInfo As TMDbLib.Objects.TvShows.TvEpisode = APIResult.Result
+            If APIResult IsNot Nothing AndAlso APIResult.Result IsNot Nothing Then
+                Dim EpisodeInfo As TMDbLib.Objects.TvShows.TvEpisode = APIResult.Result
 
-            If EpisodeInfo Is Nothing OrElse EpisodeInfo.Id Is Nothing OrElse Not EpisodeInfo.Id > 0 Then
+                If EpisodeInfo Is Nothing OrElse EpisodeInfo.Id Is Nothing OrElse Not EpisodeInfo.Id > 0 Then
+                    logger.Error(String.Format("Can't scrape or episode not found: tmdbID={0}, Season{1}, Episode{2}", tmdbID, SeasonNumber, EpisodeNumber))
+                    Return Nothing
+                End If
+
+                Dim nEpisode As MediaContainers.EpisodeDetails = GetTVEpisodeInfo(EpisodeInfo, FilteredOptions)
+                Return nEpisode
+            Else
                 logger.Error(String.Format("Can't scrape or episode not found: tmdbID={0}, Season{1}, Episode{2}", tmdbID, SeasonNumber, EpisodeNumber))
                 Return Nothing
             End If
-
-            Dim nEpisode As MediaContainers.EpisodeDetails = GetTVEpisodeInfo(EpisodeInfo, FilteredOptions)
-            Return nEpisode
         End Function
 
         Public Function GetTVEpisodeInfo(ByRef EpisodeInfo As TMDbLib.Objects.TvShows.TvEpisode, ByRef FilteredOptions As Structures.ScrapeOptions) As MediaContainers.EpisodeDetails
@@ -909,7 +915,7 @@ Namespace TMDB
             End If
 
             'Season # Standard
-            If CInt(EpisodeInfo.SeasonNumber) >= 0 Then
+            If EpisodeInfo.SeasonNumber >= 0 Then
                 nTVEpisode.Season = CInt(EpisodeInfo.SeasonNumber)
             End If
 
@@ -1002,54 +1008,58 @@ Namespace TMDB
             Dim APIResult As Task(Of TMDbLib.Objects.TvShows.TvSeason)
             APIResult = Task.Run(Function() _TMDBApi.GetTvSeasonAsync(ShowID, SeasonNumber, TMDbLib.Objects.TvShows.TvSeasonMethods.Credits Or TMDbLib.Objects.TvShows.TvSeasonMethods.ExternalIds))
 
-            Dim SeasonInfo As TMDbLib.Objects.TvShows.TvSeason = APIResult.Result
+            If APIResult IsNot Nothing AndAlso APIResult.Result IsNot Nothing Then
+                Dim SeasonInfo As TMDbLib.Objects.TvShows.TvSeason = APIResult.Result
 
-            nSeason.TMDB = CStr(SeasonInfo.Id)
-            If SeasonInfo.ExternalIds IsNot Nothing AndAlso SeasonInfo.ExternalIds.TvdbId IsNot Nothing Then nSeason.TVDB = CStr(SeasonInfo.ExternalIds.TvdbId)
+                nSeason.TMDB = CStr(SeasonInfo.Id)
+                If SeasonInfo.ExternalIds IsNot Nothing AndAlso SeasonInfo.ExternalIds.TvdbId IsNot Nothing Then nSeason.TVDB = CStr(SeasonInfo.ExternalIds.TvdbId)
 
-            If ScrapeModifiers.withSeasons Then
+                If ScrapeModifiers.withSeasons Then
 
-                'Aired
-                If FilteredOptions.bSeasonAired Then
-                    If SeasonInfo.AirDate IsNot Nothing Then
-                        Dim ScrapedDate As String = CStr(SeasonInfo.AirDate)
-                        If Not String.IsNullOrEmpty(ScrapedDate) Then
-                            Dim RelDate As Date
-                            If Date.TryParse(ScrapedDate, RelDate) Then
-                                'always save date in same date format not depending on users language setting!
-                                nSeason.Aired = RelDate.ToString("yyyy-MM-dd")
-                            Else
-                                nSeason.Aired = ScrapedDate
+                    'Aired
+                    If FilteredOptions.bSeasonAired Then
+                        If SeasonInfo.AirDate IsNot Nothing Then
+                            Dim ScrapedDate As String = CStr(SeasonInfo.AirDate)
+                            If Not String.IsNullOrEmpty(ScrapedDate) Then
+                                Dim RelDate As Date
+                                If Date.TryParse(ScrapedDate, RelDate) Then
+                                    'always save date in same date format not depending on users language setting!
+                                    nSeason.Aired = RelDate.ToString("yyyy-MM-dd")
+                                Else
+                                    nSeason.Aired = ScrapedDate
+                                End If
                             End If
                         End If
                     End If
-                End If
 
-                'Plot
-                If FilteredOptions.bSeasonPlot Then
-                    If SeasonInfo.Overview IsNot Nothing Then
-                        nSeason.Plot = SeasonInfo.Overview
+                    'Plot
+                    If FilteredOptions.bSeasonPlot Then
+                        If SeasonInfo.Overview IsNot Nothing Then
+                            nSeason.Plot = SeasonInfo.Overview
+                        End If
                     End If
+
+                    'Season #
+                    If SeasonInfo.SeasonNumber >= 0 Then
+                        nSeason.Season = SeasonInfo.SeasonNumber
+                    End If
+
+                    'Title
+                    If SeasonInfo.Name IsNot Nothing Then
+                        nSeason.Title = SeasonInfo.Name
+                    End If
+
+                    nTVShow.KnownSeasons.Add(nSeason)
                 End If
 
-                'Season #
-                If CInt(SeasonInfo.SeasonNumber) >= 0 Then
-                    nSeason.Season = CInt(SeasonInfo.SeasonNumber)
+                If ScrapeModifiers.withEpisodes AndAlso SeasonInfo.Episodes IsNot Nothing Then
+                    For Each aEpisode As TMDbLib.Objects.TvShows.TvEpisode In SeasonInfo.Episodes
+                        nTVShow.KnownEpisodes.Add(GetTVEpisodeInfo(aEpisode, FilteredOptions))
+                        'nShowContainer.KnownEpisodes.Add(GetTVEpisodeInfo(ShowID, SeasonNumber, aEpisode.EpisodeNumber, Options))
+                    Next
                 End If
-
-                'Title
-                If SeasonInfo.Name IsNot Nothing Then
-                    nSeason.Title = SeasonInfo.Name
-                End If
-
-                nTVShow.KnownSeasons.Add(nSeason)
-            End If
-
-            If ScrapeModifiers.withEpisodes AndAlso SeasonInfo.Episodes IsNot Nothing Then
-                For Each aEpisode As TMDbLib.Objects.TvShows.TvEpisode In SeasonInfo.Episodes
-                    nTVShow.KnownEpisodes.Add(GetTVEpisodeInfo(aEpisode, FilteredOptions))
-                    'nShowContainer.KnownEpisodes.Add(GetTVEpisodeInfo(ShowID, SeasonNumber, aEpisode.EpisodeNumber, Options))
-                Next
+            Else
+                logger.Error(String.Format("Can't scrape or season not found: ShowID={0}, Season={1}", ShowID, SeasonNumber))
             End If
         End Sub
 
@@ -1057,15 +1067,20 @@ Namespace TMDB
             Dim APIResult As Task(Of TMDbLib.Objects.TvShows.TvSeason)
             APIResult = Task.Run(Function() _TMDBApi.GetTvSeasonAsync(tmdbID, SeasonNumber, TMDbLib.Objects.TvShows.TvSeasonMethods.Credits Or TMDbLib.Objects.TvShows.TvSeasonMethods.ExternalIds))
 
-            Dim SeasonInfo As TMDbLib.Objects.TvShows.TvSeason = APIResult.Result
+            If APIResult IsNot Nothing AndAlso APIResult.Result IsNot Nothing Then
+                Dim SeasonInfo As TMDbLib.Objects.TvShows.TvSeason = APIResult.Result
 
-            If SeasonInfo Is Nothing OrElse SeasonInfo.Id Is Nothing OrElse Not SeasonInfo.Id > 0 Then
+                If SeasonInfo Is Nothing OrElse SeasonInfo.Id Is Nothing OrElse Not SeasonInfo.Id > 0 Then
+                    logger.Error(String.Format("Can't scrape or season not found: tmdbID={0}, Season={1}", tmdbID, SeasonNumber))
+                    Return Nothing
+                End If
+
+                Dim nTVSeason As MediaContainers.SeasonDetails = GetTVSeasonInfo(SeasonInfo, FilteredOptions)
+                Return nTVSeason
+            Else
                 logger.Error(String.Format("Can't scrape or season not found: tmdbID={0}, Season={1}", tmdbID, SeasonNumber))
                 Return Nothing
             End If
-
-            Dim nTVSeason As MediaContainers.SeasonDetails = GetTVSeasonInfo(SeasonInfo, FilteredOptions)
-            Return nTVSeason
         End Function
 
         Public Function GetTVSeasonInfo(ByRef SeasonInfo As TMDbLib.Objects.TvShows.TvSeason, ByRef FilteredOptions As Structures.ScrapeOptions) As MediaContainers.SeasonDetails
@@ -1078,8 +1093,8 @@ Namespace TMDB
             If SeasonInfo.ExternalIds IsNot Nothing AndAlso SeasonInfo.ExternalIds.TvdbId IsNot Nothing Then nTVSeason.TVDB = CStr(SeasonInfo.ExternalIds.TvdbId)
 
             'Season #
-            If CInt(SeasonInfo.SeasonNumber) >= 0 Then
-                nTVSeason.Season = CInt(SeasonInfo.SeasonNumber)
+            If SeasonInfo.SeasonNumber >= 0 Then
+                nTVSeason.Season = SeasonInfo.SeasonNumber
             End If
 
             'Aired
@@ -1128,7 +1143,7 @@ Namespace TMDB
                 End If
 
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
 
             Return tmdbID
@@ -1147,7 +1162,7 @@ Namespace TMDB
                 End If
 
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
 
             Return tmdbID

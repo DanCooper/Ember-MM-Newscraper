@@ -89,7 +89,7 @@ Public Class Images
             _image = New Bitmap(_ms)
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
     ''' <summary>
@@ -111,7 +111,7 @@ Public Class Images
             Try
                 File.Delete(sPath)
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Param: <" & sPath & ">", ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Param: <" & sPath & ">")
             End Try
         End If
     End Sub
@@ -143,7 +143,7 @@ Public Class Images
                 End Select
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovie.Filename & ">", ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovie.Filename & ">")
         End Try
     End Sub
     ''' <summary>
@@ -162,7 +162,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovieSet.MovieSet.Title & ">", ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovieSet.MovieSet.Title & ">")
         End Try
     End Sub
     ''' <summary>
@@ -181,7 +181,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVShow.ShowPath & ">", ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVShow.ShowPath & ">")
         End Try
     End Sub
     ''' <summary>
@@ -208,7 +208,7 @@ Public Class Images
                 End Select
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVEpisode.ShowPath & ">", ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVEpisode.ShowPath & ">")
         End Try
     End Sub
     ''' <summary>
@@ -227,7 +227,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVSeason.ShowPath & ">", ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVSeason.ShowPath & ">")
         End Try
     End Sub
     ''' <summary>
@@ -257,7 +257,7 @@ Public Class Images
                 End Select
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVShow.ShowPath & ">", ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVShow.ShowPath & ">")
         End Try
     End Sub
     ''' <summary>
@@ -334,7 +334,7 @@ Public Class Images
             End If
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sURL & ">", ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sURL & ">")
         End Try
     End Sub
 
@@ -368,7 +368,7 @@ Public Class Images
                     End Using
                 End If
             Catch ex As Exception
-                logger.Error(New StackFrame().GetMethod().Name, ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         Else
             Throw New ArgumentOutOfRangeException("Looks like MemoryStream is empty")
@@ -436,7 +436,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Clear() 'Dispose to save memory
@@ -457,7 +457,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Clear() 'Dispose to save memory
@@ -478,7 +478,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Clear() 'Dispose to save memory
@@ -499,7 +499,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Clear() 'Dispose to save memory
@@ -577,7 +577,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Clear() 'Dispose to save memory
@@ -652,7 +652,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Clear() 'Dispose to save memory
@@ -690,7 +690,7 @@ Public Class Images
             End If
 
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Clear() 'Dispose to save memory
@@ -711,7 +711,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Clear() 'Dispose to save memory
@@ -744,7 +744,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Clear() 'Dispose to save memory
@@ -777,7 +777,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Clear() 'Dispose to save memory
@@ -798,7 +798,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Clear() 'Dispose to save memory
@@ -819,7 +819,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Clear() 'Dispose to save memory
@@ -840,7 +840,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Clear() 'Dispose to save memory
@@ -873,7 +873,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Clear() 'Dispose to save memory
@@ -894,7 +894,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Clear() 'Dispose to save memory
@@ -927,7 +927,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Clear() 'Dispose to save memory
@@ -960,7 +960,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Clear() 'Dispose to save memory
@@ -993,7 +993,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Clear() 'Dispose to save memory
@@ -1014,7 +1014,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Clear() 'Dispose to save memory
@@ -1047,7 +1047,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Clear() 'Dispose to save memory
@@ -1117,7 +1117,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Clear() 'Dispose to save memory
@@ -1152,7 +1152,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Clear() 'Dispose to save memory
@@ -1185,7 +1185,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Clear() 'Dispose to save memory
@@ -1218,7 +1218,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Clear() 'Dispose to save memory
@@ -1239,7 +1239,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Clear() 'Dispose to save memory
@@ -1272,7 +1272,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Clear() 'Dispose to save memory
@@ -1342,7 +1342,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Clear() 'Dispose to save memory
@@ -1365,7 +1365,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Clear() 'Dispose to save memory
@@ -1388,7 +1388,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Clear() 'Dispose to save memory
@@ -1411,7 +1411,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Clear() 'Dispose to save memory
@@ -1486,7 +1486,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Clear() 'Dispose to save memory
@@ -1521,7 +1521,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Clear() 'Dispose to save memory
@@ -1544,7 +1544,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Clear() 'Dispose to save memory
@@ -1579,7 +1579,7 @@ Public Class Images
                 strReturn = a
             Next
         Catch ex As Exception
-            logger.Error(New StackFrame().GetMethod().Name, ex)
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         Clear() 'Dispose to save memory
