@@ -75,12 +75,8 @@ Public Class StringUtils
     Public Shared Function ValidFilterChar(ByVal KeyChar As Char) As Boolean
         Return Not KeyChar = Convert.ToChar(39) AndAlso Not KeyChar = Convert.ToChar(91)
     End Function
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="aGenres"></param>
-    ''' <returns></returns>
-    Public Shared Function GenreFilter(ByVal aGenres As List(Of String), Optional ByVal addNewGenres As Boolean = True) As List(Of String)
+
+    Public Shared Function GenreFilter(ByRef aGenres As List(Of String), Optional ByVal addNewGenres As Boolean = True) As Boolean
         Dim nGernes As New List(Of String)
 
         If Not aGenres.Count = 0 Then
@@ -102,7 +98,19 @@ Public Class StringUtils
             Next
         End If
 
-        Return nGernes
+        'Cleanup for comparing
+        nGernes = nGernes.Distinct().ToList()
+        aGenres.Sort()
+        nGernes.Sort()
+
+        'Comparing (check if something has been changed)
+        Dim bNoChanges = aGenres.SequenceEqual(nGernes)
+
+        'Set new Genre list
+        aGenres = nGernes
+
+        'Return if the list has been changed or not
+        Return Not bNoChanges
     End Function
     ''' <summary>
     ''' When given a valid path to a video/media file, return the path but without stacking markers.
