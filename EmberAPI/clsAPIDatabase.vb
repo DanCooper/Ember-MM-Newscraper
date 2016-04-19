@@ -650,7 +650,7 @@ Public Class Database
     End Sub
 
     Public Sub Cleanup_Genres()
-        logger.Info("Cleanup Genres started")
+        logger.Info("[Database] [Cleanup_Genres] Started")
         Dim MovieList As New List(Of Long)
         Dim TVShowList As New List(Of Long)
 
@@ -671,33 +671,35 @@ Public Class Database
         End Using
 
         Using SQLtransaction As SQLiteTransaction = _myvideosDBConn.BeginTransaction()
-            logger.Info("Process all Movies")
+            logger.Info("[Database] [Cleanup_Genres] Process all Movies")
             'Process all Movies, which are assigned to a genre
             For Each lMovieID In MovieList
                 Dim tmpDBElement As DBElement = Load_Movie(lMovieID)
                 If tmpDBElement.IsOnline Then
-                    tmpDBElement.Movie.Genres = StringUtils.GenreFilter(tmpDBElement.Movie.Genres, False)
-                    Save_Movie(tmpDBElement, True, True, False)
+                    If StringUtils.GenreFilter(tmpDBElement.Movie.Genres, False) Then
+                        Save_Movie(tmpDBElement, True, True, False)
+                    End If
                 Else
-                    logger.Info(String.Concat("Skip Movie (not online): ", tmpDBElement.Filename))
+                    logger.Warn(String.Concat("[Database] [Cleanup_Genres] Skip Movie (not online): ", tmpDBElement.Filename))
                 End If
             Next
 
             'Process all TVShows, which are assigned to a genre
-            logger.Info("Process all TVShows")
+            logger.Info("[Database] [Cleanup_Genres] Process all TVShows")
             For Each lTVShowID In TVShowList
                 Dim tmpDBElement As DBElement = Load_TVShow(lTVShowID, False, False)
                 If tmpDBElement.IsOnline Then
-                    tmpDBElement.TVShow.Genres = StringUtils.GenreFilter(tmpDBElement.TVShow.Genres, False)
-                    Save_TVShow(tmpDBElement, True, True, False, False)
+                    If StringUtils.GenreFilter(tmpDBElement.TVShow.Genres, False) Then
+                        Save_TVShow(tmpDBElement, True, True, False, False)
+                    End If
                 Else
-                    logger.Info(String.Concat("Skip TV Show (not online): ", tmpDBElement.ShowPath))
+                    logger.Warn(String.Concat("[Database] [Cleanup_Genres] Skip TV Show (not online): ", tmpDBElement.ShowPath))
                 End If
             Next
 
             'Cleanup genre table
             Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
-                logger.Info("Cleaning genre table")
+                logger.Info("[Database] [Cleanup_Genres] Cleaning genre table")
                 SQLcommand.CommandText = String.Concat("DELETE FROM genre ",
                                                        "WHERE NOT EXISTS (SELECT 1 FROM genrelinkmovie WHERE genrelinkmovie.idGenre = genre.idGenre) ",
                                                          "AND NOT EXISTS (SELECT 1 FROM genrelinktvshow WHERE genrelinktvshow.idGenre = genre.idGenre)")
@@ -706,7 +708,7 @@ Public Class Database
 
             SQLtransaction.Commit()
         End Using
-        logger.Info("Cleanup Genres done")
+        logger.Info("[Database] [Cleanup_Genres] Done")
     End Sub
     ''' <summary>
     ''' Remove the New flag from database entries (movies, tvshow, seasons, episode)

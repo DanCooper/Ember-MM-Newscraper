@@ -197,12 +197,12 @@ Public Class NFO
             If (Not DBMovie.Movie.GenresSpecified OrElse Not Master.eSettings.MovieLockGenre) AndAlso ScrapeOptions.bMainGenres AndAlso
                 scrapedmovie.GenresSpecified AndAlso Master.eSettings.MovieScraperGenre AndAlso Not new_Genres Then
 
-                Dim tGenre As List(Of String) = StringUtils.GenreFilter(scrapedmovie.Genres)
+                StringUtils.GenreFilter(scrapedmovie.Genres)
 
-                If Master.eSettings.MovieScraperGenreLimit > 0 AndAlso Master.eSettings.MovieScraperGenreLimit < tGenre.Count AndAlso tGenre.Count > 0 Then
-                    tGenre.RemoveRange(Master.eSettings.MovieScraperGenreLimit, tGenre.Count - Master.eSettings.MovieScraperGenreLimit)
+                If Master.eSettings.MovieScraperGenreLimit > 0 AndAlso Master.eSettings.MovieScraperGenreLimit < scrapedmovie.Genres.Count AndAlso scrapedmovie.Genres.Count > 0 Then
+                    scrapedmovie.Genres.RemoveRange(Master.eSettings.MovieScraperGenreLimit, scrapedmovie.Genres.Count - Master.eSettings.MovieScraperGenreLimit)
                 End If
-                DBMovie.Movie.Genres = tGenre
+                DBMovie.Movie.Genres = scrapedmovie.Genres
                 new_Genres = True
             ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperGenre AndAlso Not Master.eSettings.MovieLockGenre Then
                 DBMovie.Movie.Genres.Clear()
@@ -611,12 +611,12 @@ Public Class NFO
             If (Not DBTV.TVShow.GenresSpecified OrElse Not Master.eSettings.TVLockShowGenre) AndAlso ScrapeOptions.bMainGenres AndAlso
                 scrapedshow.GenresSpecified AndAlso Master.eSettings.TVScraperShowGenre AndAlso Not new_Genres Then
 
-                Dim tGenre As List(Of String) = StringUtils.GenreFilter(scrapedshow.Genres)
+                StringUtils.GenreFilter(scrapedshow.Genres)
 
                 'If Master.eSettings.TVScraperShowGenreLimit > 0 AndAlso Master.eSettings.TVScraperShowGenreLimit < _genres.Count AndAlso _genres.Count > 0 Then
                 '    _genres.RemoveRange(Master.eSettings.TVScraperShowGenreLimit, _genres.Count - Master.eSettings.TVScraperShowGenreLimit)
                 'End If
-                DBTV.TVShow.Genres = tGenre
+                DBTV.TVShow.Genres = scrapedshow.Genres
                 new_Genres = True
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowGenre AndAlso Not Master.eSettings.TVLockShowGenre Then
                 DBTV.TVShow.Genres.Clear()
