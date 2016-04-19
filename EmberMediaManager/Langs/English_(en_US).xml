@@ -205,8 +205,8 @@
   <string id="204">Scan Recursively</string>
   <string id="205">Select the parent folder for your movie folders/files.</string>
   <string id="206">Set Name:</string>
-  <string id="207">Edit Set</string>
-  <string id="208">Add New Set</string>
+  <string id="207">Edit MovieSet</string>
+  <string id="208">Add New MovieSet</string>
   <string id="209">A New Version Is Available</string>
   <string id="210">Failed to Load Upgrade Application</string>
   <string id="211">Click Here</string>
@@ -937,7 +937,7 @@
   <string id="936">Get your API Key from www.themoviedb.org</string>
   <string id="937">Unable to retrieve movie details for the entered TVDB ID. Please check your entry and try again.</string>
   <string id="938">TheMovieDB API is missing or not valid</string>
-  <string id="939">Change Movie Sorting</string>
+  <string id="939">Edit Movie Sorting</string>
   <string id="940">Directors</string>
   <string id="941">TVDB ID</string>
   <string id="942">Get your API Key from thetvdb.com</string>
@@ -1122,7 +1122,7 @@
   <string id="1030">Select the folder where you wish to store your movie sets images...</string>
   <string id="1031">Removal OK</string>
   <string id="1032">Removal failed</string>
-  <string id="1033"></string>
+  <string id="1033">Are you sure you want to remove the selected sources? This will remove the tv shows from these sources from the Ember database.</string>
   <string id="1034"></string>
   <string id="1035">Landscape</string>
   <string id="1036">Manual Landscape Entry</string>
@@ -1140,8 +1140,8 @@
   <string id="1048"></string>
   <string id="1049">Save as Fanart</string>
   <string id="1050">Save as Extrafanart</string>
-  <string id="1051"></string>
-  <string id="1052"></string>
+  <string id="1051">Edit Genres</string>
+  <string id="1052">Edit Tags</string>
   <string id="1053"></string>
   <string id="1054"></string>
   <string id="1055"></string>
@@ -1215,12 +1215,12 @@
   <string id="1123">ClearLogo Only</string>
   <string id="1124">DiscArt Only</string>
   <string id="1125">Theme Only</string>
-  <string id="1126">Update Single Data Field</string>
+  <string id="1126">(Re)Scrape Single Data Field</string>
   <string id="1127">Scraping Media (Selected Movies - Single Field):</string>
   <string id="1128">Scraping Media (Selected Movies - Ask):</string>
   <string id="1129">Scraping Media (Selected Movies - Auto):</string>
   <string id="1130">Scraping Media (Selected Movies - Skip):</string>
-  <string id="1131">Edit MovieSet</string>
+  <string id="1131"></string>
   <string id="1132">Edit the details for the selected movieset.</string>
   <string id="1133">You need your own API key for that</string>
   <string id="1134">Error</string>
@@ -1569,7 +1569,7 @@
   <string id="1478">VLC x86 Path</string>
   <string id="1479">Use as Audio Player</string>
   <string id="1480">Use as Video Player</string>
-  <string id="1481">Select Expor tPath</string>
+  <string id="1481">Select Export Path</string>
   <string id="1482">Select VLC Path</string>
   <string id="1483">libvlc.dll not found in path</string>
   <string id="1484">Remove following plays from watched history?</string>
