@@ -251,12 +251,16 @@ Public Class TVDB_Data
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions)
 
         If ScrapeModifiers.MainNFO AndAlso Not ScrapeModifiers.DoSearch Then
-            If Not String.IsNullOrEmpty(oDBTV.TVShow.TVDB) Then
+            If oDBTV.TVShow.TVDBSpecified Then
                 'TVDB-ID already available -> scrape and save data into an empty tv show container (nShow)
+                nTVShow = _scraper.GetTVShowInfo(oDBTV.TVShow.TVDB, ScrapeModifiers, FilteredOptions, False)
+            ElseIf oDBTV.TVShow.IMDBSpecified Then
+                oDBTV.TVShow.TVDB = _scraper.GetTVDBbyIMDB(oDBTV.TVShow.IMDB)
+                If Not oDBTV.TVShow.TVDBSpecified Then Return New Interfaces.ModuleResult_Data_TVShow With {.Result = Nothing}
                 nTVShow = _scraper.GetTVShowInfo(oDBTV.TVShow.TVDB, ScrapeModifiers, FilteredOptions, False)
             ElseIf Not ScrapeType = Enums.ScrapeType.SingleScrape Then
                 'no TVDB-ID for tv show --> search first and try to get ID!
-                If Not String.IsNullOrEmpty(oDBTV.TVShow.Title) Then
+                If oDBTV.TVShow.TitleSpecified Then
                     nTVShow = _scraper.GetSearchTVShowInfo(oDBTV.TVShow.Title, oDBTV, ScrapeType, ScrapeModifiers, FilteredOptions)
                 End If
                 'if still no search result -> exit
@@ -276,7 +280,7 @@ Public Class TVDB_Data
         End If
 
         If ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto Then
-            If String.IsNullOrEmpty(oDBTV.TVShow.TVDB) Then
+            If Not oDBTV.TVShow.TVDBSpecified Then
                 Using dlgSearch As New dlgTVDBSearchResults(Settings, _scraper)
                     If dlgSearch.ShowDialog(oDBTV.TVShow.Title, oDBTV.ShowPath, ScrapeModifiers, FilteredOptions) = DialogResult.OK Then
                         nTVShow = _scraper.GetTVShowInfo(dlgSearch.Result.TVDB, ScrapeModifiers, FilteredOptions, False)
