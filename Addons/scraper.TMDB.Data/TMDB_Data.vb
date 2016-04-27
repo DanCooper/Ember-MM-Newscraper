@@ -608,10 +608,10 @@ Public Class TMDB_Data
         If ScrapeModifiers.MainNFO AndAlso Not ScrapeModifiers.DoSearch Then
             If oDBElement.Movie.TMDBIDSpecified Then
                 'TMDB-ID already available -> scrape and save data into an empty movie container (nMovie)
-                nMovie = _scraper.GetMovieInfo(oDBElement.Movie.TMDBID, False, FilteredOptions, False)
+                nMovie = _scraper.GetMovieInfo(oDBElement.Movie.TMDBID, FilteredOptions, False)
             ElseIf oDBElement.Movie.IDSpecified Then
                 'IMDB-ID already available -> scrape and save data into an empty movie container (nMovie)
-                nMovie = _scraper.GetMovieInfo(oDBElement.Movie.ID, False, FilteredOptions, False)
+                nMovie = _scraper.GetMovieInfo(oDBElement.Movie.ID, FilteredOptions, False)
             ElseIf Not ScrapeType = Enums.ScrapeType.SingleScrape Then
                 'no IMDB-ID or TMDB-ID for movie --> search first and try to get ID!
                 If oDBElement.Movie.TitleSpecified Then
@@ -637,7 +637,7 @@ Public Class TMDB_Data
             If Not oDBElement.Movie.TMDBIDSpecified Then
                 Using dlgSearch As New dlgTMDBSearchResults_Movie(_SpecialSettings_Movie, _scraper)
                     If dlgSearch.ShowDialog(oDBElement.Movie.Title, oDBElement.Filename, FilteredOptions, oDBElement.Movie.Year) = DialogResult.OK Then
-                        nMovie = _scraper.GetMovieInfo(dlgSearch.Result.TMDBID, False, FilteredOptions, False)
+                        nMovie = _scraper.GetMovieInfo(dlgSearch.Result.TMDBID, FilteredOptions, False)
                         'if a movie is found, set DoSearch back to "false" for following scrapers
                         ScrapeModifiers.DoSearch = False
                     Else
@@ -666,7 +666,7 @@ Public Class TMDB_Data
         If ScrapeModifiers.MainNFO AndAlso Not ScrapeModifiers.DoSearch Then
             If oDBElement.MovieSet.TMDBSpecified Then
                 'TMDB-ID already available -> scrape and save data into an empty movieset container (nMovieSet)
-                nMovieSet = _scraper.GetMovieSetInfo(oDBElement.MovieSet.TMDB, False, FilteredOptions, False)
+                nMovieSet = _scraper.GetMovieSetInfo(oDBElement.MovieSet.TMDB, FilteredOptions, False)
             ElseIf Not ScrapeType = Enums.ScrapeType.SingleScrape Then
                 'no ITMDB-ID for movieset --> search first and try to get ID!
                 If oDBElement.MovieSet.TitleSpecified Then
@@ -692,7 +692,7 @@ Public Class TMDB_Data
             If Not oDBElement.MovieSet.TMDBSpecified Then
                 Using dlgSearch As New dlgTMDBSearchResults_MovieSet(_SpecialSettings_MovieSet, _scraper)
                     If dlgSearch.ShowDialog(oDBElement.MovieSet.Title, FilteredOptions) = DialogResult.OK Then
-                        nMovieSet = _scraper.GetMovieSetInfo(dlgSearch.Result.TMDB, False, FilteredOptions, False)
+                        nMovieSet = _scraper.GetMovieSetInfo(dlgSearch.Result.TMDB, FilteredOptions, False)
                         'if a movieset is found, set DoSearch back to "false" for following scrapers
                         ScrapeModifiers.DoSearch = False
                     Else
