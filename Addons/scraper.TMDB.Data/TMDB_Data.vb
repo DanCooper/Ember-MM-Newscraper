@@ -192,6 +192,7 @@ Public Class TMDB_Data
         _setup_Movie.chkRating.Checked = ConfigScrapeOptions_Movie.bMainRating
         _setup_Movie.chkRelease.Checked = ConfigScrapeOptions_Movie.bMainRelease
         _setup_Movie.chkRuntime.Checked = ConfigScrapeOptions_Movie.bMainRuntime
+        _setup_Movie.chkSearchDeviant.Checked = _SpecialSettings_Movie.SearchDeviant
         _setup_Movie.chkStudios.Checked = ConfigScrapeOptions_Movie.bMainStudios
         _setup_Movie.chkTagline.Checked = ConfigScrapeOptions_Movie.bMainTagline
         _setup_Movie.chkTitle.Checked = ConfigScrapeOptions_Movie.bMainTitle
