@@ -79,7 +79,7 @@ Public Class dlgBulkRenamer_TV
     End Sub
 
     Private Sub bwDoRename_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDoRename.DoWork
-        FFRenamer.DoRename_Episodes(AddressOf ShowProgressRename)
+        FFRenamer.DoRename_TVEpisodes(AddressOf ShowProgressRename)
     End Sub
 
     Private Sub bwDoRename_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwDoRename.ProgressChanged
@@ -140,8 +140,8 @@ Public Class dlgBulkRenamer_TV
                                         Dim _currShow As Database.DBElement = Master.DB.Load_TVEpisode(Convert.ToInt32(SQLreader("idEpisode")), True)
                                         If Not _currShow.ID = -1 AndAlso Not _currShow.ShowID = -1 AndAlso Not String.IsNullOrEmpty(_currShow.Filename) Then
                                             bwLoadInfo.ReportProgress(iProg, String.Concat(_currShow.TVShow.Title, ": ", _currShow.TVEpisode.Title))
-                                            Dim EpisodeFile As FileFolderRenamer.FileRename = FileFolderRenamer.GetInfo_Episode(_currShow)
-                                            FFRenamer.AddEpisode(EpisodeFile)
+                                            Dim EpisodeFile As FileFolderRenamer.FileRename = FileFolderRenamer.GetInfo_TVEpisode(_currShow)
+                                            FFRenamer.Add_TVEpisode(EpisodeFile)
                                         End If
                                     End If
                                 End If
@@ -208,8 +208,8 @@ Public Class dlgBulkRenamer_TV
     End Sub
 
     Private Sub cmsEpisodeList_Opening(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles cmsEpisodeList.Opening
-        Dim count As Integer = FFRenamer.GetCount_Episodes
-        Dim lockcount As Integer = FFRenamer.GetCountLocked_Episodes
+        Dim count As Integer = FFRenamer.GetCountAll_TVEpisodes
+        Dim lockcount As Integer = FFRenamer.GetCountLocked_TVEpisodes
         If count > 0 Then
             If lockcount > 0 Then
                 tsmUnlockAll.Visible = True
@@ -343,7 +343,7 @@ Public Class dlgBulkRenamer_TV
         Dim Sta As MyStart = New MyStart(AddressOf Start)
         Dim Fin As MyFinish = New MyFinish(AddressOf Finish)
         Invoke(Sta)
-        FFRenamer.ProccessFiles_Episodes(txtFolderPatternSeasons.Text, txtFilePatternEpisodes.Text)
+        FFRenamer.ProccessFiles_TVEpisodes(txtFolderPatternSeasons.Text, txtFilePatternEpisodes.Text)
         Invoke(Fin)
     End Sub
 
@@ -358,7 +358,7 @@ Public Class dlgBulkRenamer_TV
         lblCompiling.Text = Master.eLang.GetString(173, "Renaming...")
         lblFile.Visible = True
         pbCompile.Style = ProgressBarStyle.Continuous
-        pbCompile.Maximum = FFRenamer.GetEpisodesCount
+        pbCompile.Maximum = FFRenamer.GetCountMax_TVEpisodes
         pbCompile.Value = 0
         Application.DoEvents()
         'Start worker
@@ -370,7 +370,7 @@ Public Class dlgBulkRenamer_TV
 
     Sub setLock(ByVal lock As Boolean)
         For Each row As DataGridViewRow In dgvEpisodesList.SelectedRows
-            FFRenamer.SetIsLocked_Episodes(row.Cells(1).Value.ToString, row.Cells(2).Value.ToString, lock)
+            FFRenamer.SetIsLocked_TVEpisodes(row.Cells(1).Value.ToString, row.Cells(2).Value.ToString, lock)
             row.Cells(5).Value = lock
         Next
 
@@ -384,7 +384,7 @@ Public Class dlgBulkRenamer_TV
 
     Sub setLockAll(ByVal lock As Boolean)
         Try
-            FFRenamer.SetIsLocked_Episodes(String.Empty, String.Empty, False)
+            FFRenamer.SetIsLocked_TVEpisodes(String.Empty, String.Empty, False)
             For Each row As DataGridViewRow In dgvEpisodesList.Rows
                 row.Cells(5).Value = lock
             Next
@@ -446,7 +446,7 @@ Public Class dlgBulkRenamer_TV
                     .Tag = False
                     .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
                 End If
-                bsEpisodes.DataSource = FFRenamer.GetEpisodes
+                bsEpisodes.DataSource = FFRenamer.GetTable_TVEpisodes
                 .DataSource = bsEpisodes
                 .Columns(5).Visible = False
                 .Columns(6).Visible = False

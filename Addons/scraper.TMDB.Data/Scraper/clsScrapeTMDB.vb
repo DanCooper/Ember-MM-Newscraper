@@ -212,12 +212,9 @@ Namespace TMDB
         '''  Scrape MovieDetails from TMDB
         ''' </summary>
         ''' <param name="strID">TMDBID or ID (IMDB ID starts with "tt") of movie to be scraped</param>
-        ''' <param name="FullCrew">Module setting: Scrape full cast?</param>
         ''' <param name="GetPoster">Scrape posters for the movie?</param>
-        ''' <param name="Options">Module settings<param>
-        ''' <param name="IsSearch">Not used at moment</param>
         ''' <returns>True: success, false: no success</returns>
-        Public Function GetMovieInfo(ByVal strID As String, ByVal GetPoster As Boolean, ByVal FilteredOptions As Structures.ScrapeOptions, ByVal IsSearch As Boolean) As MediaContainers.Movie
+        Public Function GetMovieInfo(ByVal strID As String, ByVal FilteredOptions As Structures.ScrapeOptions, ByVal GetPoster As Boolean) As MediaContainers.Movie
             If String.IsNullOrEmpty(strID) OrElse strID.Length < 2 Then Return Nothing
 
             Dim nMovie As New MediaContainers.Movie
@@ -513,7 +510,7 @@ Namespace TMDB
             Return nMovie
         End Function
 
-        Public Function GetMovieSetInfo(ByVal strID As String, ByVal GetPoster As Boolean, ByVal FilteredOptions As Structures.ScrapeOptions, ByVal IsSearch As Boolean) As MediaContainers.MovieSet
+        Public Function GetMovieSetInfo(ByVal strID As String, ByVal FilteredOptions As Structures.ScrapeOptions, ByVal GetPoster As Boolean) As MediaContainers.MovieSet
             If String.IsNullOrEmpty(strID) OrElse Not Integer.TryParse(strID, 0) Then Return Nothing
 
             Dim nMovieSet As New MediaContainers.MovieSet
@@ -1199,12 +1196,12 @@ Namespace TMDB
             Select Case eType
                 Case Enums.ScrapeType.AllAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MissingAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SingleField
                     If r.Matches.Count = 1 Then
-                        Return GetMovieInfo(r.Matches.Item(0).TMDBID, False, FilteredOptions, True)
+                        Return GetMovieInfo(r.Matches.Item(0).TMDBID, FilteredOptions, False)
                     Else
                         Using dlgSearch As New dlgTMDBSearchResults_Movie(_SpecialSettings, Me)
                             If dlgSearch.ShowDialog(r, strMovieName, oDBMovie.Filename) = DialogResult.OK Then
                                 If Not String.IsNullOrEmpty(dlgSearch.Result.TMDBID) Then
-                                    Return GetMovieInfo(dlgSearch.Result.TMDBID, False, FilteredOptions, True)
+                                    Return GetMovieInfo(dlgSearch.Result.TMDBID, FilteredOptions, False)
                                 End If
                             End If
                         End Using
@@ -1212,12 +1209,12 @@ Namespace TMDB
 
                 Case Enums.ScrapeType.AllSkip, Enums.ScrapeType.FilterSkip, Enums.ScrapeType.MarkedSkip, Enums.ScrapeType.MissingSkip, Enums.ScrapeType.NewSkip, Enums.ScrapeType.SelectedSkip
                     If r.Matches.Count = 1 Then
-                        Return GetMovieInfo(r.Matches.Item(0).TMDBID, False, FilteredOptions, True)
+                        Return GetMovieInfo(r.Matches.Item(0).TMDBID, FilteredOptions, False)
                     End If
 
                 Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SingleScrape
                     If r.Matches.Count > 0 Then
-                        Return GetMovieInfo(r.Matches.Item(0).TMDBID, False, FilteredOptions, True)
+                        Return GetMovieInfo(r.Matches.Item(0).TMDBID, FilteredOptions, False)
                     End If
             End Select
 
@@ -1230,12 +1227,12 @@ Namespace TMDB
             Select Case eType
                 Case Enums.ScrapeType.AllAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MissingAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SingleField
                     If r.Matches.Count = 1 Then
-                        Return GetMovieSetInfo(r.Matches.Item(0).TMDB, False, FilteredOptions, True)
+                        Return GetMovieSetInfo(r.Matches.Item(0).TMDB, FilteredOptions, False)
                     Else
                         Using dlgSearch As New dlgTMDBSearchResults_MovieSet(_SpecialSettings, Me)
                             If dlgSearch.ShowDialog(r, strMovieSetName) = DialogResult.OK Then
                                 If Not String.IsNullOrEmpty(dlgSearch.Result.TMDB) Then
-                                    Return GetMovieSetInfo(dlgSearch.Result.TMDB, False, FilteredOptions, True)
+                                    Return GetMovieSetInfo(dlgSearch.Result.TMDB, FilteredOptions, False)
                                 End If
                             End If
                         End Using
@@ -1243,12 +1240,12 @@ Namespace TMDB
 
                 Case Enums.ScrapeType.AllSkip, Enums.ScrapeType.FilterSkip, Enums.ScrapeType.MarkedSkip, Enums.ScrapeType.MissingSkip, Enums.ScrapeType.NewSkip, Enums.ScrapeType.SelectedSkip
                     If r.Matches.Count = 1 Then
-                        Return GetMovieSetInfo(r.Matches.Item(0).TMDB, False, FilteredOptions, True)
+                        Return GetMovieSetInfo(r.Matches.Item(0).TMDB, FilteredOptions, False)
                     End If
 
                 Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SingleScrape
                     If r.Matches.Count > 0 Then
-                        Return GetMovieSetInfo(r.Matches.Item(0).TMDB, False, FilteredOptions, True)
+                        Return GetMovieSetInfo(r.Matches.Item(0).TMDB, FilteredOptions, False)
                     End If
             End Select
 
@@ -1370,11 +1367,11 @@ Namespace TMDB
                     e.Result = New Results With {.ResultType = SearchType.TVShows, .Result = r}
 
                 Case SearchType.SearchDetails_Movie
-                    Dim r As MediaContainers.Movie = GetMovieInfo(Args.Parameter, True, Args.ScrapeOptions, True)
+                    Dim r As MediaContainers.Movie = GetMovieInfo(Args.Parameter, Args.ScrapeOptions, True)
                     e.Result = New Results With {.ResultType = SearchType.SearchDetails_Movie, .Result = r}
 
                 Case SearchType.SearchDetails_MovieSet
-                    Dim r As MediaContainers.MovieSet = GetMovieSetInfo(Args.Parameter, True, Args.ScrapeOptions, True)
+                    Dim r As MediaContainers.MovieSet = GetMovieSetInfo(Args.Parameter, Args.ScrapeOptions, True)
                     e.Result = New Results With {.ResultType = SearchType.SearchDetails_MovieSet, .Result = r}
 
                 Case SearchType.SearchDetails_TVShow
