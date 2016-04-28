@@ -20,7 +20,6 @@
 
 Imports EmberAPI
 Imports NLog
-Imports System.Diagnostics
 Imports Trakttv
 Imports System.IO
 Imports System.Text.RegularExpressions
@@ -46,9 +45,9 @@ Public Class dlgTrakttvManager
     Private dtEpisodes As New DataTable
 
     'trakt.tv authentification data, user settings
-    Private traktUser As String = ""
-    Private traktPassword As String = ""
-    Private traktToken As String = ""
+    Private traktUser As String = String.Empty
+    Private traktPassword As String = String.Empty
+    Private traktToken As String = String.Empty
 
     'trakt.tv display progress rate of user watched shows (very time consuming!) (Sync Playcount Tab), user setting
     Private traktGetShowProgress As Boolean = False
@@ -100,9 +99,9 @@ Public Class dlgTrakttvManager
     Sub New()
         ' This call is required by the Windows Form Designer.
         InitializeComponent()
-        Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
-        Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
-        Me.StartPosition = FormStartPosition.Manual
+        Left = Master.AppPos.Left + (Master.AppPos.Width - Width) \ 2
+        Top = Master.AppPos.Top + (Master.AppPos.Height - Height) \ 2
+        StartPosition = FormStartPosition.Manual
         SetUp()
     End Sub
 
@@ -123,26 +122,26 @@ Public Class dlgTrakttvManager
     Sub SetUp()
         Try
             'set trakt.tv authentification data on start
-            traktUser = clsAdvancedSettings.GetSetting("Username", "")
-            traktPassword = clsAdvancedSettings.GetSetting("Password", "")
+            traktUser = clsAdvancedSettings.GetSetting("Username", String.Empty)
+            traktPassword = clsAdvancedSettings.GetSetting("Password", String.Empty)
 
             'if there's missing data we can't use any trakt.tv API calls -> block GUI
-            If traktUser = "" OrElse traktPassword = "" Then
+            If String.IsNullOrEmpty(traktUser) OrElse String.IsNullOrEmpty(traktPassword) Then
                 tbTrakt.Enabled = False
             End If
 
             traktGetShowProgress = CBool(clsAdvancedSettings.GetSetting("GetShowProgress", "False"))
 
-            Me.lblTopTitle.Text = Me.Text
-            Me.Text = Master.eLang.GetString(871, "Trakt.tv Manager")
-            Me.OK_Button.Text = Master.eLang.GetString(19, "Close")
-            Me.tbptraktPlaycount.Text = Master.eLang.GetString(1303, "Sync Playcount")
-            Me.tbptraktListViewer.Text = Master.eLang.GetString(1304, "List Viewer")
-            Me.tbptraktListsSync.Text = Master.eLang.GetString(1305, "Sync Lists/Tags")
-            Me.lblCompiling.Text = Master.eLang.GetString(326, "Loading...")
-            Me.lblCanceling.Text = Master.eLang.GetString(370, "Canceling Load...")
-            Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel")
-            Me.lblTopDetails.Text = Master.eLang.GetString(1306, "Sync lists and playcount with your trakt.tv account.")
+            lblTopTitle.Text = Text
+            Text = Master.eLang.GetString(871, "Trakt.tv Manager")
+            OK_Button.Text = Master.eLang.GetString(19, "Close")
+            tbptraktPlaycount.Text = Master.eLang.GetString(1303, "Sync Playcount")
+            tbptraktListViewer.Text = Master.eLang.GetString(1304, "List Viewer")
+            tbptraktListsSync.Text = Master.eLang.GetString(1305, "Sync Lists/Tags")
+            lblCompiling.Text = Master.eLang.GetString(326, "Loading...")
+            lblCanceling.Text = Master.eLang.GetString(370, "Canceling Load...")
+            btnCancel.Text = Master.eLang.GetString(167, "Cancel")
+            lblTopDetails.Text = Master.eLang.GetString(1306, "Sync lists and playcount with your trakt.tv account.")
 
 
             'Tab: Sync Playcount
@@ -189,7 +188,7 @@ Public Class dlgTrakttvManager
             coltraktCommentsDate.HeaderText = Master.eLang.GetString(601, "Adding Date")
 
             'Tab: Sync Lists/Tags
-            Me.lbltraktListsCurrentList.Text = Master.eLang.GetString(368, "None Selected")
+            lbltraktListsCurrentList.Text = Master.eLang.GetString(368, "None Selected")
             gbtraktListsGET.Text = Master.eLang.GetString(1307, "Load personal lists")
             gbtraktListsSYNC.Text = Master.eLang.GetString(1308, "Save personal lists")
             gbtraktLists.Text = Master.eLang.GetString(1309, "Personal trakt.tv Lists")
@@ -269,27 +268,27 @@ Public Class dlgTrakttvManager
             lbltraktCleaningHistoryTimespanDesc.Text = Master.eLang.GetString(1487, "This will remove all plays in your watched movie history which were registered in a specific timespan (i.e. 3 plays for one movie within 5 minutes, will delete the 2 last plays)")
             lbltraktCleaningHistoryTimestampDesc.Text = Master.eLang.GetString(1486, "This will remove all plays in your watched movie history which were played on a specific time (i.e. 00:00:00)")
             lbltraktCleaningHistoryTimestamp.Text = Master.eLang.GetString(1489, "Timestamp [hh:mm:ss]")
- 
+
             'load existing movies from database into datatable
-            Master.DB.FillDataTable(Me.dtMovies, String.Concat("SELECT * FROM movielist ",
+            Master.DB.FillDataTable(dtMovies, String.Concat("SELECT * FROM movielist ",
                                                                 "ORDER BY ListTitle COLLATE NOCASE;"))
             'load existing episodes from database into datatable
-            Master.DB.FillDataTable(Me.dtEpisodes, String.Concat("SELECT * FROM episodelist INNER JOIN tvshowlist ON (tvshowlist.idShow  = episodelist.idShow) WHERE Missing = 0;"))
+            Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episodelist INNER JOIN tvshowlist ON (tvshowlist.idShow  = episodelist.idShow) WHERE Missing = 0;"))
 
 
-            RemoveHandler Me.cbotraktListsFavorites.SelectedIndexChanged, AddressOf Me.cbotraktListsFavorites_SelectedIndexChanged
-            Me.cbotraktListsFavorites.Items.Clear()
+            RemoveHandler cbotraktListsFavorites.SelectedIndexChanged, AddressOf cbotraktListsFavorites_SelectedIndexChanged
+            cbotraktListsFavorites.Items.Clear()
             'Cocotus 2014/10/11 Automatically populate available videosources from user settings to sourcefilter instead of using hardcoded list here!
             Dim mylists As New List(Of AdvancedSettingsComplexSettingsTableItem)
             mylists = clsAdvancedSettings.GetComplexSetting("TraktFavoriteLists", "generic.EmberCore.Trakt")
-            If Not mylists Is Nothing Then
+            If mylists IsNot Nothing Then
                 cbotraktListsFavorites.Enabled = True
                 For Each k In mylists
-                    If cbotraktListsFavorites.Items.Contains(k.Value) = False Then
-                        Me.cbotraktListsFavorites.Items.Add(k.Name)
+                    If Not cbotraktListsFavorites.Items.Contains(k.Value) Then
+                        cbotraktListsFavorites.Items.Add(k.Name)
                     End If
                 Next
-                Me.cbotraktListsFavorites.SelectedIndex = 0
+                cbotraktListsFavorites.SelectedIndex = 0
                 txttraktListURL.Text = mylists.Item(0).Value
             Else
                 cbotraktListsFavorites.Enabled = False
@@ -300,7 +299,7 @@ Public Class dlgTrakttvManager
             dgvtraktWatchlist.Sort(coltraktWatchlistListedAt, System.ComponentModel.ListSortDirection.Descending)
             dgvtraktComments.Sort(coltraktCommentsDate, System.ComponentModel.ListSortDirection.Descending)
 
-            AddHandler Me.cbotraktListsFavorites.SelectedIndexChanged, AddressOf Me.cbotraktListsFavorites_SelectedIndexChanged
+            AddHandler cbotraktListsFavorites.SelectedIndexChanged, AddressOf cbotraktListsFavorites_SelectedIndexChanged
 
             'load kodi interface settings (if exists) since we will use the information of remote path to create a playlist for kodi
             If File.Exists(Path.Combine(Master.SettingsPath, "Interface.Kodi.xml")) Then
@@ -350,16 +349,16 @@ Public Class dlgTrakttvManager
                 btntraktListRemoveFavorite.Enabled = False
                 cbotraktListsFavorites.Enabled = True
                 cbotraktListsFavorites.Items.Clear()
-                cbotraktListsFavorites.Text = ""
-                cbotraktListsFavorites.SelectedText = ""
+                cbotraktListsFavorites.Text = String.Empty
+                cbotraktListsFavorites.SelectedText = String.Empty
                 cbotraktListsFavorites.SelectedIndex = -1
                 For Each k In updatedsettings
-                    If cbotraktListsFavorites.Items.Contains(k.Value) = False Then
-                        Me.cbotraktListsFavorites.Items.Add(k.Name)
+                    If Not cbotraktListsFavorites.Items.Contains(k.Value) Then
+                        cbotraktListsFavorites.Items.Add(k.Name)
                     End If
                 Next
-                txttraktListURL.Text = ""
-                lbltraktListDescriptionText.Text = ""
+                txttraktListURL.Text = String.Empty
+                lbltraktListDescriptionText.Text = String.Empty
             End Using
         End If
     End Sub
@@ -376,13 +375,13 @@ Public Class dlgTrakttvManager
         Using settings = New clsAdvancedSettings()
             If mylists IsNot Nothing Then
                 If mylists.FindIndex(Function(f) f.Value = txttraktListURL.Text) = -1 Then
-                    mylists.Add(New AdvancedSettingsComplexSettingsTableItem With {.Name = Me.cbotraktListsScraped.SelectedItem.ToString, .Value = txttraktListURL.Text})
+                    mylists.Add(New AdvancedSettingsComplexSettingsTableItem With {.Name = cbotraktListsScraped.SelectedItem.ToString, .Value = txttraktListURL.Text})
 
                     settings.SetComplexSetting("TraktFavoriteLists", mylists, "generic.EmberCore.Trakt")
                 End If
             Else
                 mylists = New List(Of AdvancedSettingsComplexSettingsTableItem)()
-                mylists.Add(New AdvancedSettingsComplexSettingsTableItem With {.Name = Me.cbotraktListsScraped.SelectedItem.ToString, .Value = txttraktListURL.Text})
+                mylists.Add(New AdvancedSettingsComplexSettingsTableItem With {.Name = cbotraktListsScraped.SelectedItem.ToString, .Value = txttraktListURL.Text})
                 settings.SetComplexSetting("TraktFavoriteLists", mylists, "generic.EmberCore.Trakt")
             End If
         End Using
@@ -390,12 +389,12 @@ Public Class dlgTrakttvManager
         btntraktListRemoveFavorite.Enabled = True
         cbotraktListsFavorites.Enabled = True
         cbotraktListsFavorites.Items.Clear()
-        cbotraktListsFavorites.Text = ""
-        cbotraktListsFavorites.SelectedText = ""
+        cbotraktListsFavorites.Text = String.Empty
+        cbotraktListsFavorites.SelectedText = String.Empty
         cbotraktListsFavorites.SelectedIndex = -1
         For Each k In mylists
-            If cbotraktListsFavorites.Items.Contains(k.Value) = False Then
-                Me.cbotraktListsFavorites.Items.Add(k.Name)
+            If Not cbotraktListsFavorites.Items.Contains(k.Value) Then
+                cbotraktListsFavorites.Items.Add(k.Name)
             End If
         Next
     End Sub
@@ -407,8 +406,8 @@ Public Class dlgTrakttvManager
     ''' 2014/10/12 Cocotus - First implementation
     ''' </remarks>
     Private Sub OK_Button_Click(sender As Object, e As EventArgs) Handles OK_Button.Click
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.Close()
+        DialogResult = System.Windows.Forms.DialogResult.OK
+        Close()
     End Sub
 
     ''' <summary>
@@ -431,10 +430,10 @@ Public Class dlgTrakttvManager
 
         If String.IsNullOrEmpty(_trakttoken) Then
             Dim response = Trakttv.TraktMethods.LoginToAccount(account)
-            If Not response Is Nothing Then
+            If response IsNot Nothing Then
                 _trakttoken = response.Token
             Else
-                _trakttoken = ""
+                _trakttoken = String.Empty
             End If
         Else
             TraktSettings.Token = _trakttoken
@@ -452,7 +451,7 @@ Public Class dlgTrakttvManager
     ''' </remarks>
     Private Sub btntraktWatchlistGetMovies_Click(sender As Object, e As EventArgs) Handles btntraktWatchlistGetMovies.Click
         Try
-            If Not myWatchlistEpisodes Is Nothing Then
+            If myWatchlistEpisodes IsNot Nothing Then
                 myWatchlistEpisodes.Clear()
             End If
             dgvtraktWatchlist.DataSource = Nothing
@@ -471,7 +470,7 @@ Public Class dlgTrakttvManager
 
                 For Each Item As TraktAPI.Model.TraktMovieWatchList In traktWatchListMovies
                     'Check if information is stored...
-                    If Not Item.Movie.Title Is Nothing AndAlso Item.Movie.Title <> "" AndAlso Not Item.Movie.Ids.Imdb Is Nothing AndAlso Item.Movie.Ids.Imdb <> "" Then
+                    If Item.Movie.Title IsNot Nothing AndAlso Not String.IsNullOrEmpty(Item.Movie.Title) AndAlso Item.Movie.Ids.Imdb IsNot Nothing AndAlso Not String.IsNullOrEmpty(Item.Movie.Ids.Imdb) Then
                         'check if movie is already in dictionary!
                         If Not dictMovieWatchlist.ContainsKey(Item.Movie.Title) Then
                             'Now store imdbid, title
@@ -490,7 +489,7 @@ Public Class dlgTrakttvManager
 
                 'Set up /load listofwatchedmovies into datagridview
                 dgvtraktWatchlist.AutoGenerateColumns = True
-                If Not myWatchlistMovies Is Nothing Then
+                If myWatchlistMovies IsNot Nothing Then
                     btntraktWatchlistSyncLibrary.Enabled = True
                     btntraktWatchlistClean.Enabled = True
                     btntraktWatchlistSendEmberUnwatched.Enabled = True
@@ -521,7 +520,7 @@ Public Class dlgTrakttvManager
             End If
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
-            If Not myWatchlistEpisodes Is Nothing Then
+            If myWatchlistEpisodes IsNot Nothing Then
                 myWatchlistEpisodes.Clear()
             End If
             dgvtraktWatchlist.DataSource = Nothing
@@ -545,10 +544,10 @@ Public Class dlgTrakttvManager
 
         Try
             'Check if theres at least one movie in trakt.tv watchlist and in Ember database - otherwise abort
-            If myWatchlistMovies.Count > 0 AndAlso Me.dtMovies.Rows.Count > 0 Then
+            If myWatchlistMovies.Count > 0 AndAlso dtMovies.Rows.Count > 0 Then
                 Dim lstmovietoremove As New List(Of TraktAPI.Model.TraktMovie)
-                For Each sRow As DataRow In Me.dtMovies.Rows
-                    If sRow.Item("Playcount").ToString <> "0" AndAlso sRow.Item("Playcount").ToString <> "" Then
+                For Each sRow As DataRow In dtMovies.Rows
+                    If sRow.Item("Playcount").ToString <> "0" AndAlso Not String.IsNullOrEmpty(sRow.Item("Playcount").ToString) Then
                         For Each Item As TraktAPI.Model.TraktMovieWatchList In myWatchlistMovies
                             If Item.Movie.Ids.Imdb.Contains(sRow.Item("Imdb").ToString) Then
                                 Dim tmptraktbasemovie As New TraktAPI.Model.TraktMovie
@@ -568,24 +567,24 @@ Public Class dlgTrakttvManager
                         Dim deletemoviemodel As New TraktAPI.Model.TraktSyncMovies
                         deletemoviemodel.Movies = lstmovietoremove
                         Dim response = TrakttvAPI.RemoveMoviesFromWatchlist(deletemoviemodel)
-                        If Not response Is Nothing Then
-                            If Not response.Added Is Nothing Then
+                        If response IsNot Nothing Then
+                            If response.Added IsNot Nothing Then
                                 logger.Info("[btntraktWatchlistSyncLibrary_Click] Trakt Response. Added movies: " & response.Added.Movies)
                             End If
-                            If Not response.NotFound Is Nothing Then
+                            If response.NotFound IsNot Nothing Then
                                 logger.Info("[btntraktWatchlistSyncLibrary_Click] Trakt Response. Not found movies: " & response.NotFound.Movies.Count)
                             End If
-                            If Not response.Existing Is Nothing Then
+                            If response.Existing IsNot Nothing Then
                                 logger.Info("[btntraktWatchlistSyncLibrary_Click] Trakt Response. Existing movies: " & response.Existing.Movies)
                             End If
-                            If Not response.Deleted Is Nothing Then
+                            If response.Deleted IsNot Nothing Then
                                 logger.Info("[btntraktWatchlistSyncLibrary_Click] Trakt Response. Removed movies: " & response.Deleted.Movies)
                             End If
                         End If
-                        If Not response Is Nothing AndAlso Not response.Deleted Is Nothing AndAlso response.Deleted.Movies > 0 Then
+                        If response IsNot Nothing AndAlso response.Deleted IsNot Nothing AndAlso response.Deleted.Movies > 0 Then
                             MessageBox.Show(response.Deleted.Movies.ToString & " " & Master.eLang.GetString(1364, "Movies removed from trakt.tv watchlist!"), Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK)
                             myWatchlistMovies.Clear()
-                            If Not myWatchlistEpisodes Is Nothing Then
+                            If myWatchlistEpisodes IsNot Nothing Then
                                 myWatchlistEpisodes.Clear()
                             End If
                             dgvtraktWatchlist.DataSource = Nothing
@@ -623,8 +622,8 @@ Public Class dlgTrakttvManager
     Private Sub btntraktWatchlistSendEmberUnwatched_Click(sender As Object, e As EventArgs) Handles btntraktWatchlistSendEmberUnwatched.Click
         Try
             Dim lstmovietoadd As New List(Of TraktAPI.Model.TraktMovie)
-            For Each sRow As DataRow In Me.dtMovies.Rows
-                If sRow.Item("Playcount").ToString = "0" OrElse sRow.Item("Playcount").ToString = "" Then
+            For Each sRow As DataRow In dtMovies.Rows
+                If sRow.Item("Playcount").ToString = "0" OrElse String.IsNullOrEmpty(sRow.Item("Playcount").ToString) Then
                     Dim tmptraktmovie As New TraktAPI.Model.TraktMovie
                     Dim tmptraktbasemovie As New TraktAPI.Model.TraktMovieBase
                     tmptraktmovie.Title = sRow.Item("Title").ToString
@@ -662,10 +661,10 @@ Public Class dlgTrakttvManager
                     Dim traktsyncmovies As New TraktAPI.Model.TraktSyncMovies
                     traktsyncmovies.Movies = lstmovietoadd
                     Dim response = TrakttvAPI.AddMoviesToWatchlist(traktsyncmovies)
-                    If Not response Is Nothing AndAlso Not response.Added Is Nothing AndAlso response.Added.Movies > 0 Then
+                    If response IsNot Nothing AndAlso response.Added IsNot Nothing AndAlso response.Added.Movies > 0 Then
                         MessageBox.Show(response.Added.Movies.ToString & " " & Master.eLang.GetString(1366, "Movies added to trakt.tv watchlist!"), Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK)
                         myWatchlistMovies.Clear()
-                        If Not myWatchlistEpisodes Is Nothing Then
+                        If myWatchlistEpisodes IsNot Nothing Then
                             myWatchlistEpisodes.Clear()
                         End If
                         dgvtraktWatchlist.DataSource = Nothing
@@ -676,17 +675,17 @@ Public Class dlgTrakttvManager
                     Else
                         MessageBox.Show(Master.eLang.GetString(1365, "No changes made!"), Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK)
                     End If
-                    If Not response Is Nothing Then
-                        If Not response.Added Is Nothing Then
+                    If response IsNot Nothing Then
+                        If response.Added IsNot Nothing Then
                             logger.Info("[btntraktWatchlistSendEmberUnwatched_Click] Trakt Response. Added movies: " & response.Added.Movies)
                         End If
-                        If Not response.NotFound Is Nothing Then
+                        If response.NotFound IsNot Nothing Then
                             logger.Info("[btntraktWatchlistSendEmberUnwatched_Click] Trakt Response. Not found movies: " & response.NotFound.Movies.Count)
                         End If
-                        If Not response.Existing Is Nothing Then
+                        If response.Existing IsNot Nothing Then
                             logger.Info("[btntraktWatchlistSendEmberUnwatched_Click] Trakt Response. Existing movies: " & response.Existing.Movies)
                         End If
-                        If Not response.Deleted Is Nothing Then
+                        If response.Deleted IsNot Nothing Then
                             logger.Info("[btntraktWatchlistSendEmberUnwatched_Click] Trakt Response. Removed movies: " & response.Deleted.Movies)
                         End If
                     End If
@@ -732,24 +731,24 @@ Public Class dlgTrakttvManager
                         Dim deletemoviemodel As New TraktAPI.Model.TraktSyncMovies
                         deletemoviemodel.Movies = lstmovietoremove
                         Dim response = TrakttvAPI.RemoveMoviesFromWatchlist(deletemoviemodel)
-                        If Not response Is Nothing Then
-                            If Not response.Added Is Nothing Then
+                        If response IsNot Nothing Then
+                            If response.Added IsNot Nothing Then
                                 logger.Info("[btntraktWatchlistClean_Click] Trakt Response. Added movies: " & response.Added.Movies)
                             End If
-                            If Not response.NotFound Is Nothing Then
+                            If response.NotFound IsNot Nothing Then
                                 logger.Info("[btntraktWatchlistClean_Click] Trakt Response. Not found movies: " & response.NotFound.Movies.Count)
                             End If
-                            If Not response.Existing Is Nothing Then
+                            If response.Existing IsNot Nothing Then
                                 logger.Info("[btntraktWatchlistClean_Click] Trakt Response. Existing movies: " & response.Existing.Movies)
                             End If
-                            If Not response.Deleted Is Nothing Then
+                            If response.Deleted IsNot Nothing Then
                                 logger.Info("[btntraktWatchlistClean_Click] Trakt Response. Removed movies: " & response.Deleted.Movies)
                             End If
                         End If
-                        If Not response Is Nothing AndAlso Not response.Deleted Is Nothing AndAlso response.Deleted.Movies > 0 Then
+                        If response IsNot Nothing AndAlso response.Deleted IsNot Nothing AndAlso response.Deleted.Movies > 0 Then
                             MessageBox.Show(response.Deleted.Movies.ToString & " " & Master.eLang.GetString(1364, "Movies removed from trakt.tv watchlist!"), Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK)
                             myWatchlistMovies.Clear()
-                            If Not myWatchlistEpisodes Is Nothing Then
+                            If myWatchlistEpisodes IsNot Nothing Then
                                 myWatchlistEpisodes.Clear()
                             End If
                             dgvtraktWatchlist.DataSource = Nothing
@@ -830,7 +829,7 @@ Public Class dlgTrakttvManager
     ''' </remarks>
     Private Sub btntraktPlaycountGetMovies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btntraktPlaycountGetMovies.Click
         Try
-            Me.Cursor = Cursors.WaitCursor
+            Cursor = Cursors.WaitCursor
             myWatchedEpisodes = Nothing
             myWatchedShows = Nothing
             dgvtraktPlaycount.DataSource = Nothing
@@ -862,7 +861,7 @@ Public Class dlgTrakttvManager
                 ' Go through each item in collection	 
                 For Each Item As TraktAPI.Model.TraktMovieWatched In traktWatchedMovies
                     'Check if information is stored...
-                    If Not Item.Movie.Title Is Nothing AndAlso Item.Movie.Title <> "" AndAlso Not Item.Movie.Ids.Imdb Is Nothing AndAlso Item.Movie.Ids.Imdb <> "" Then
+                    If Item.Movie.Title IsNot Nothing AndAlso Not String.IsNullOrEmpty(Item.Movie.Title) AndAlso Item.Movie.Ids.Imdb IsNot Nothing AndAlso Not String.IsNullOrEmpty(Item.Movie.Ids.Imdb) Then
 
                         Dim tmpwatchedratedmovie As New TraktAPI.Model.TraktMovieWatchedRated
                         'listed-At is not user friendly formatted, so change format a bit
@@ -877,10 +876,10 @@ Public Class dlgTrakttvManager
                         tmpwatchedratedmovie.Movie = Item.Movie
                         tmpwatchedratedmovie.Plays = Item.Plays
 
-                        If traktRatedMovies Is Nothing = False Then
+                        If traktRatedMovies IsNot Nothing Then
                             For Each RatedMovie As TraktAPI.Model.TraktMovieRated In traktRatedMovies
                                 'Check if information is stored...
-                                If Not RatedMovie.Movie.Title Is Nothing AndAlso RatedMovie.Movie.Title <> "" AndAlso Not RatedMovie.Movie.Ids.Imdb Is Nothing AndAlso RatedMovie.Movie.Ids.Imdb <> "" AndAlso RatedMovie.Movie.Ids.Trakt = Item.Movie.Ids.Trakt Then
+                                If RatedMovie.Movie.Title IsNot Nothing AndAlso Not String.IsNullOrEmpty(RatedMovie.Movie.Title) AndAlso RatedMovie.Movie.Ids.Imdb IsNot Nothing AndAlso Not String.IsNullOrEmpty(RatedMovie.Movie.Ids.Imdb) AndAlso RatedMovie.Movie.Ids.Trakt = Item.Movie.Ids.Trakt Then
                                     tmpwatchedratedmovie.RatedAt = RatedMovie.RatedAt
                                     tmpwatchedratedmovie.Rating = RatedMovie.Rating
                                     Exit For
@@ -906,20 +905,20 @@ Public Class dlgTrakttvManager
             End If
 
             dgvtraktPlaycount.AutoGenerateColumns = True
-            If Not myWatchedMovies Is Nothing Then
+            If myWatchedMovies IsNot Nothing Then
                 btntraktPlaycountSyncLibrary.Enabled = True
                 btntraktPlaycountSyncWatchedMovies.Enabled = True
                 'we map to dgv manually
                 dgvtraktPlaycount.AutoGenerateColumns = False
                 'fill rows
                 For Each Item As TraktAPI.Model.TraktMovieWatchedRated In myWatchedMovies
-                    dgvtraktPlaycount.Rows.Add(New Object() {Item.Movie.Title, Item.Plays, Item.LastWatchedAt, "", Item.Rating})
+                    dgvtraktPlaycount.Rows.Add(New Object() {Item.Movie.Title, Item.Plays, Item.LastWatchedAt, String.Empty, Item.Rating})
                 Next
             Else
                 btntraktPlaycountSyncLibrary.Enabled = False
                 btntraktPlaycountSyncWatchedMovies.Enabled = True
             End If
-            Me.Cursor = Cursors.Default
+            Cursor = Cursors.Default
             dgvtraktPlaycount.Sort(coltraktPlaycountLastWatched, System.ComponentModel.ListSortDirection.Descending)
         Catch ex As Exception
             myWatchedMovies = Nothing
@@ -930,7 +929,7 @@ Public Class dlgTrakttvManager
             dgvtraktPlaycount.DataSource = Nothing
             dgvtraktPlaycount.Rows.Clear()
             btntraktPlaycountSyncLibrary.Enabled = False
-            Me.Cursor = Cursors.Default
+            Cursor = Cursors.Default
         End Try
     End Sub
 
@@ -942,7 +941,7 @@ Public Class dlgTrakttvManager
     ''' </remarks>
     Private Sub btntraktPlaycountGetSeries_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btntraktPlaycountGetSeries.Click
         Try
-            Me.Cursor = Cursors.WaitCursor
+            Cursor = Cursors.WaitCursor
             myWatchedMovies = Nothing
             myWatchedShows = Nothing
             myWatchedEpisodes = Nothing
@@ -959,17 +958,17 @@ Public Class dlgTrakttvManager
                 Dim traktWatchedEpisodes As IEnumerable(Of TraktAPI.Model.TraktEpisodeWatched) = TrakttvAPI.GetWatchedEpisodes
 
                 ' Go through each item in collection	
-                If traktWatchedEpisodes Is Nothing = False Then
+                If traktWatchedEpisodes IsNot Nothing Then
                     For Each watchedtvshow In traktWatchedEpisodes
 
-                        If Not watchedtvshow.Show.Title Is Nothing AndAlso watchedtvshow.Show.Title <> "" AndAlso Not watchedtvshow.Show.Ids.Tvdb Is Nothing AndAlso watchedtvshow.Show.Ids.Tvdb.ToString <> "" Then
+                        If watchedtvshow.Show.Title IsNot Nothing AndAlso Not String.IsNullOrEmpty(watchedtvshow.Show.Title) AndAlso watchedtvshow.Show.Ids.Tvdb IsNot Nothing AndAlso Not String.IsNullOrEmpty(watchedtvshow.Show.Ids.Tvdb.ToString) Then
                             Dim tmpwatchedshow As New TraktAPI.Model.TraktShowWatchedProgress
                             Dim traktShowProgress As New TraktAPI.Model.TraktShowProgress
 
                             If traktGetShowProgress = True Then
                                 traktShowProgress = TrakttvAPI.GetProgressShow(watchedtvshow.Show.Ids.Trakt.ToString)
                             End If
-                            If Not traktShowProgress Is Nothing Then
+                            If traktShowProgress IsNot Nothing Then
                                 tmpwatchedshow.EpisodesAired = traktShowProgress.Aired
                                 tmpwatchedshow.EpisodesWatched = traktShowProgress.Completed
                             Else
@@ -1004,7 +1003,7 @@ Public Class dlgTrakttvManager
                 End If
 
                 dgvtraktPlaycount.AutoGenerateColumns = True
-                If Not myWatchedShows Is Nothing Then
+                If myWatchedShows IsNot Nothing Then
                     btntraktPlaycountSyncLibrary.Enabled = True
                     btntraktPlaycountSyncWatchedSeries.Enabled = True
                     'we map to dgv manually
@@ -1012,16 +1011,16 @@ Public Class dlgTrakttvManager
                     'fill rows
                     For Each watchedshow In myWatchedShows
                         If traktGetShowProgress = True Then
-                            dgvtraktPlaycount.Rows.Add(New Object() {watchedshow.ShowTitle, watchedshow.EpisodePlaycount, watchedshow.LastWatchedEpisode, watchedshow.EpisodesWatched.ToString & "/" & watchedshow.EpisodesAired.ToString, ""})
+                            dgvtraktPlaycount.Rows.Add(New Object() {watchedshow.ShowTitle, watchedshow.EpisodePlaycount, watchedshow.LastWatchedEpisode, watchedshow.EpisodesWatched.ToString & "/" & watchedshow.EpisodesAired.ToString, String.Empty})
                         Else
-                            dgvtraktPlaycount.Rows.Add(New Object() {watchedshow.ShowTitle, watchedshow.EpisodePlaycount, watchedshow.LastWatchedEpisode, "", ""})
+                            dgvtraktPlaycount.Rows.Add(New Object() {watchedshow.ShowTitle, watchedshow.EpisodePlaycount, watchedshow.LastWatchedEpisode, String.Empty, String.Empty})
                         End If
                     Next
                 Else
                     btntraktPlaycountSyncLibrary.Enabled = False
                 End If
             End If
-            Me.Cursor = Cursors.Default
+            Cursor = Cursors.Default
             dgvtraktPlaycount.Sort(coltraktPlaycountLastWatched, System.ComponentModel.ListSortDirection.Descending)
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
@@ -1032,7 +1031,7 @@ Public Class dlgTrakttvManager
             dgvtraktPlaycount.DataSource = Nothing
             dgvtraktPlaycount.Rows.Clear()
             btntraktPlaycountSyncLibrary.Enabled = False
-            Me.Cursor = Cursors.Default
+            Cursor = Cursors.Default
         End Try
     End Sub
 
@@ -1053,7 +1052,7 @@ Public Class dlgTrakttvManager
             Dim tmpTraktSynchronize As New TraktAPI.Model.TraktSyncMoviesRated
             tmpTraktSynchronize.Movies = New List(Of TraktAPI.Model.TraktSyncMovieRated)
             For Each watchedMovieData In myWatchedMovies
-                If watchedMovieData.Modified = True Then
+                If watchedMovieData.Modified Then
                     Dim tmpTraktRatedSyncMovie As New TraktAPI.Model.TraktSyncMovieRated
                     tmpTraktRatedSyncMovie.Ids = watchedMovieData.Movie.Ids
                     tmpTraktRatedSyncMovie.RatedAt = Date.Now.ToString
@@ -1065,11 +1064,11 @@ Public Class dlgTrakttvManager
                     response = response & watchedMovieData.Movie.Title & Environment.NewLine
                 End If
             Next
-            If postRatings = True Then
+            If postRatings Then
                 Dim result As DialogResult = MessageBox.Show(response, Master.eLang.GetString(356, "Warning"), MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)
                 If result = Windows.Forms.DialogResult.Yes Then
                     Dim traktResponse = TrakttvAPI.AddMoviesToRatings(tmpTraktSynchronize)
-                    If Not traktResponse Is Nothing Then
+                    If traktResponse IsNot Nothing Then
                         If traktResponse.Added.Movies > 0 Then
                             logger.Info("Added Ratings to trakt.tv!")
                             response = Master.eLang.GetString(1372, "Added Ratings to trakt.tv!")
@@ -1097,7 +1096,7 @@ Public Class dlgTrakttvManager
     Private Sub btntraktPlaycountSyncDeleteItem_Click(sender As Object, e As EventArgs) Handles btntraktPlaycountSyncDeleteItem.Click
 
         Dim ID As New Dictionary(Of String, String)
-        Dim response As String = ""
+        Dim response As String = String.Empty
         Dim IsMovie As Boolean = True
         If myWatchedMovies Is Nothing Then
             IsMovie = False
@@ -1105,8 +1104,8 @@ Public Class dlgTrakttvManager
 
         ID.Clear()
         'if isMovie=false then it's a single TvShow to delete, else a single movie
-        If IsMovie = True Then
-            If Not myWatchedMovies Is Nothing Then
+        If IsMovie Then
+            If myWatchedMovies IsNot Nothing Then
                 'lookup for movie title (since we don't have a IMDB column in datagrid)
                 response = Master.eLang.GetString(1406, "Delete selected item from trakt.tv history") & "?" & Environment.NewLine
                 For Each selectedcell As DataGridViewCell In dgvtraktPlaycount.SelectedCells
@@ -1124,7 +1123,7 @@ Public Class dlgTrakttvManager
                 Next
             End If
         Else
-            If Not myWatchedShows Is Nothing Then
+            If myWatchedShows IsNot Nothing Then
                 'lookup for show title (since we don't have a TVDBID column in datagrid)
                 response = Master.eLang.GetString(1406, "Delete selected item from trakt.tv history") & "?" & Environment.NewLine
                 For Each selectedcell As DataGridViewCell In dgvtraktPlaycount.SelectedCells
@@ -1146,14 +1145,14 @@ Public Class dlgTrakttvManager
 
                 Dim result As DialogResult = MessageBox.Show(response, Master.eLang.GetString(356, "Warning"), MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)
                 If result = Windows.Forms.DialogResult.Yes Then
-                    Dim tmpresponse As String = ""
-                    If IsMovie = True Then
+                    Dim tmpresponse As String = String.Empty
+                    If IsMovie Then
                         For Each itemtodelete In ID
                             Dim tmpTraktItemToDELETE As New TraktAPI.Model.TraktMovie
                             tmpTraktItemToDELETE.Ids = New TraktAPI.Model.TraktMovieBase
                             tmpTraktItemToDELETE.Ids.Imdb = itemtodelete.Key
                             Dim traktResponse = TrakttvAPI.RemoveMovieFromWatchedHistory(tmpTraktItemToDELETE)
-                            If Not traktResponse Is Nothing Then
+                            If traktResponse IsNot Nothing Then
                                 If traktResponse.Deleted.Movies > 0 Then
                                     logger.Info("Deleted Item: " & itemtodelete.Value)
                                     tmpresponse = tmpresponse + Master.eLang.GetString(1407, "Deleted") & ": " & itemtodelete.Value & Environment.NewLine
@@ -1175,7 +1174,7 @@ Public Class dlgTrakttvManager
                             tmpTraktItemToDELETE.Ids = New TraktAPI.Model.TraktShowBase
                             tmpTraktItemToDELETE.Ids.Tvdb = CType(itemtodelete.Key, Integer?)
                             Dim traktResponse = TrakttvAPI.RemoveShowFromWatchedHistoryEx(tmpTraktItemToDELETE)
-                            If Not traktResponse Is Nothing Then
+                            If traktResponse IsNot Nothing Then
                                 If traktResponse.Deleted.Shows > 0 OrElse traktResponse.Deleted.Episodes > 0 Then
                                     logger.Info("Deleted Item: " & itemtodelete.Value)
                                     tmpresponse = tmpresponse + Master.eLang.GetString(1407, "Deleted") & ": " & itemtodelete.Value & Environment.NewLine
@@ -1208,15 +1207,15 @@ Public Class dlgTrakttvManager
     ''' This sub handles submitting playcount of movies to trakt.tv
     ''' </remarks>
     Private Sub btntraktPlaycountSyncWatchedMovies_Click(sender As Object, e As EventArgs) Handles btntraktPlaycountSyncWatchedMovies.Click
-        If Me.dtMovies.Rows.Count > 0 Then
+        If dtMovies.Rows.Count > 0 Then
             Dim tmpTraktSynchronize As New TraktAPI.Model.TraktSyncMoviesWatched
             Dim response As String = Master.eLang.GetString(1402, "Send to your watch history") & "? " & Master.eLang.GetString(36, "Movies") & ":" & Environment.NewLine
             tmpTraktSynchronize.Movies = New List(Of TraktAPI.Model.TraktSyncMovieWatched)
             Dim SyncThisItem As Boolean = True
-            For Each sRow As DataRow In Me.dtMovies.Rows
-                If sRow.Item("Playcount").ToString <> "0" AndAlso sRow.Item("Playcount").ToString <> "" AndAlso sRow.Item("Imdb").ToString <> "" Then
+            For Each sRow As DataRow In dtMovies.Rows
+                If sRow.Item("Playcount").ToString <> "0" AndAlso Not String.IsNullOrEmpty(sRow.Item("Playcount").ToString) AndAlso Not String.IsNullOrEmpty(sRow.Item("Imdb").ToString) Then
                     SyncThisItem = True
-                    If Not myWatchedMovies Is Nothing Then
+                    If myWatchedMovies IsNot Nothing Then
                         For Each watchedMovieData In myWatchedMovies
                             If watchedMovieData.Movie.Ids.Imdb = sRow.Item("Imdb").ToString Then
                                 SyncThisItem = False
@@ -1224,7 +1223,7 @@ Public Class dlgTrakttvManager
                             End If
                         Next
                     End If
-                    If SyncThisItem = True Then
+                    If SyncThisItem Then
                         Dim tmpTraktWatchedSyncMovie As New TraktAPI.Model.TraktSyncMovieWatched
                         tmpTraktWatchedSyncMovie.Ids = New TraktAPI.Model.TraktMovieBase
                         If Not sRow.Item("Imdb").ToString.StartsWith("tt") Then
@@ -1251,7 +1250,7 @@ Public Class dlgTrakttvManager
                     Dim result As DialogResult = MessageBox.Show(response, Master.eLang.GetString(356, "Warning"), MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)
                     If result = Windows.Forms.DialogResult.Yes Then
                         Dim traktResponse = TrakttvAPI.AddMoviesToWatchedHistory(tmpTraktSynchronize)
-                        If Not traktResponse Is Nothing Then
+                        If traktResponse IsNot Nothing Then
                             If traktResponse.Added.Movies > 0 Then
                                 logger.Info("Added to watch history!")
                                 response = Master.eLang.GetString(1403, "Added to watch history") & "!"
@@ -1284,22 +1283,22 @@ Public Class dlgTrakttvManager
     ''' This sub handles submitting playcount of episodes to trakt.tv
     ''' </remarks>
     Private Sub btntraktPlaycountSyncWatchedSeries_Click(sender As Object, e As EventArgs) Handles btntraktPlaycountSyncWatchedSeries.Click
-        If Me.dtEpisodes.Rows.Count > 0 Then
+        If dtEpisodes.Rows.Count > 0 Then
             Dim tmpTraktSynchronize As New TraktAPI.Model.TraktSyncShowsWatchedEx
             Dim response As String = Master.eLang.GetString(1402, "Send to your watch history") & "? " & Master.eLang.GetString(682, "Episodes") & ":" & Environment.NewLine
             tmpTraktSynchronize.Shows = New List(Of TraktAPI.Model.TraktSyncShowWatchedEx)
             Dim SyncThisItem As Boolean = True
-            For Each sRow As DataRow In Me.dtEpisodes.Rows
-                If sRow.Item("Playcount").ToString <> "0" AndAlso sRow.Item("Playcount").ToString <> "" AndAlso sRow.Item("TVDB").ToString <> "" Then
+            For Each sRow As DataRow In dtEpisodes.Rows
+                If sRow.Item("Playcount").ToString <> "0" AndAlso Not String.IsNullOrEmpty(sRow.Item("Playcount").ToString) AndAlso Not String.IsNullOrEmpty(sRow.Item("TVDB").ToString) Then
                     SyncThisItem = True
-                    If Not myWatchedEpisodes Is Nothing Then
+                    If myWatchedEpisodes IsNot Nothing Then
                         For Each watchedshow In myWatchedEpisodes
-                            If SyncThisItem = False Then Exit For
+                            If Not SyncThisItem Then Exit For
                             If watchedshow.Show.Ids.Tvdb.ToString = sRow.Item("TVDB").ToString Then
-                                If SyncThisItem = False Then Exit For
+                                If Not SyncThisItem Then Exit For
                                 'every season of watched show
                                 For Each watchedseason In watchedshow.Seasons
-                                    If SyncThisItem = False Then Exit For
+                                    If Not SyncThisItem Then Exit For
                                     'every episode of watched season
                                     For Each watchedepisode In watchedseason.Episodes
                                         ' now go to every episode of current season
@@ -1312,7 +1311,7 @@ Public Class dlgTrakttvManager
                             End If
                         Next
                     End If
-                    If SyncThisItem = True Then
+                    If SyncThisItem Then
                         Dim tmpTraktWatchedSyncShowData As New TraktAPI.Model.TraktSyncShowWatchedEx
                         tmpTraktWatchedSyncShowData.Ids = New TraktAPI.Model.TraktShowBase
                         tmpTraktWatchedSyncShowData.Ids.Tvdb = CType(sRow.Item("TVDB").ToString, Integer?)
@@ -1346,7 +1345,7 @@ Public Class dlgTrakttvManager
                     Dim result As DialogResult = MessageBox.Show(response, Master.eLang.GetString(356, "Warning"), MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)
                     If result = Windows.Forms.DialogResult.Yes Then
                         Dim traktResponse = TrakttvAPI.AddShowsToWatchedHistoryEx(tmpTraktSynchronize)
-                        If Not traktResponse Is Nothing Then
+                        If traktResponse IsNot Nothing Then
                             If traktResponse.Added.Episodes > 0 Then
                                 logger.Info("Added to watch history!")
                                 response = Master.eLang.GetString(1403, "Added to watch history") & "!"
@@ -1379,7 +1378,7 @@ Public Class dlgTrakttvManager
     Private Sub btntraktPlaycountSyncLibrary_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btntraktPlaycountSyncLibrary.Click
 
         'check if playcount(s) of movies or episodes should be saved - only one type will be done!
-        If Not myWatchedMovies Is Nothing Then
+        If myWatchedMovies IsNot Nothing Then
             'Save movie playcount!
             prgtraktPlaycount.Value = 0
             prgtraktPlaycount.Maximum = myWatchedMovies.Count
@@ -1390,7 +1389,7 @@ Public Class dlgTrakttvManager
             traktthread = New Threading.Thread(AddressOf SaveMoviePlaycount)
             traktthread.IsBackground = True
             traktthread.Start()
-        ElseIf Not myWatchedEpisodes Is Nothing Then
+        ElseIf myWatchedEpisodes IsNot Nothing Then
             'save episodes playcount!
             prgtraktPlaycount.Value = 0
             prgtraktPlaycount.Maximum = myWatchedEpisodes.Count
@@ -1419,18 +1418,19 @@ Public Class dlgTrakttvManager
             Dim i As Integer = 0
             For Each watchedMovieData In myWatchedMovies
                 i += 1
-                For Each srow As DataRow In dtMovies.Rows
-                    If watchedMovieData.Movie.Ids.Imdb = srow.Item("Imdb").ToString Then
-                        Dim tmpMovie As Database.DBElement = Master.DB.Load_Movie(CLng(srow.Item("idMovie")))
-                        tmpMovie.Movie.PlayCount = watchedMovieData.Plays
-                        tmpMovie.Movie.LastPlayed = CStr(watchedMovieData.LastWatchedAt)
-                        Master.DB.Save_Movie(tmpMovie, False, True, False)
-                        Exit For
-                    End If
-                Next
+                Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                    SQLCommand.CommandText = String.Format("SELECT DISTINCT idMovie FROM movie WHERE IMDB = {0} OR TMDB = {1};", watchedMovieData.Movie.Ids.Imdb, watchedMovieData.Movie.Ids.Tmdb)
+                    Using SQLreader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader()
+                        While SQLreader.Read
+                            Dim tmpMovie As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(SQLreader("idMovie")))
+                            tmpMovie.Movie.PlayCount = watchedMovieData.Plays
+                            tmpMovie.Movie.LastPlayed = watchedMovieData.LastWatchedAt
+                            Master.DB.Save_Movie(tmpMovie, True, True, False)
+                        End While
+                    End Using
+                End Using
                 ' Invoke to update UI from thread...
                 prgtraktPlaycount.Invoke(New UpdateProgressBarDelegate(AddressOf UpdateProgressBar), i)
-                Threading.Thread.Sleep(10)
             Next
             SQLtransaction.Commit()
         End Using
@@ -1496,7 +1496,7 @@ Public Class dlgTrakttvManager
     ''' 2015/02/21 Cocotus - First implementation
     ''' Edit rating and store new value in globalwatchedMovieData
     Private Sub dgvtraktPlaycount_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvtraktPlaycount.CellEndEdit
-        If e.RowIndex > -1 AndAlso e.ColumnIndex = 4 AndAlso dgvtraktPlaycount.CurrentCell.RowIndex > -1 AndAlso Not myWatchedMovies Is Nothing Then
+        If e.RowIndex > -1 AndAlso e.ColumnIndex = 4 AndAlso dgvtraktPlaycount.CurrentCell.RowIndex > -1 AndAlso myWatchedMovies IsNot Nothing Then
             For Each watchedMovieData In myWatchedMovies
                 If dgvtraktPlaycount.Rows(dgvtraktPlaycount.CurrentCell.RowIndex).Cells(0).Value.Equals(watchedMovieData.Movie.Title) Then
                     Dim tmpeditedrating As String = CStr(dgvtraktPlaycount.Rows(dgvtraktPlaycount.CurrentCell.RowIndex).Cells(4).Value)
@@ -1544,12 +1544,12 @@ Public Class dlgTrakttvManager
             End If
 
             prgtraktPlaycount.Value = i
-            If Not myWatchedMovies Is Nothing Then
+            If myWatchedMovies IsNot Nothing Then
                 If i = myWatchedMovies.Count - 1 Then
                     lbltraktPlaycountstate.Text = "Done!"
                     lbltraktPlaycountstate.Visible = True
                 End If
-            ElseIf Not myWatchedEpisodes Is Nothing Then
+            ElseIf myWatchedEpisodes IsNot Nothing Then
                 If i = myWatchedEpisodes.Count - 1 Then
                     lbltraktPlaycountstate.Text = "Done!"
                     lbltraktPlaycountstate.Visible = True
@@ -1596,11 +1596,11 @@ Public Class dlgTrakttvManager
         End If
 
         'check if something was scraped
-        If Not traktUserLists Is Nothing Then
+        If traktUserLists IsNot Nothing Then
             'go through each userlist in scraped listcollection 
             For Each userlist As TraktAPI.Model.TraktListDetail In traktUserLists
                 'check if name of list is stored...
-                If Not userlist.Name Is Nothing Then
+                If userlist.Name IsNot Nothing Then
                     'check if slug(identifier of a trakt.tv list) is available
                     Dim listname As String = userlist.Ids.Slug
                     If Not String.IsNullOrEmpty(listname) Then
@@ -1609,12 +1609,12 @@ Public Class dlgTrakttvManager
                             Dim traktUserListItems As IEnumerable(Of TraktAPI.Model.TraktListItem) = Nothing
                             traktUserListItems = TrakttvAPI.GetUserListItems(traktUser, listname)
                             'check if items of userlist are valid and contain required data
-                            If Not traktUserListItems Is Nothing AndAlso traktUserListItems.Count >= 0 Then
+                            If traktUserListItems IsNot Nothing AndAlso traktUserListItems.Count >= 0 Then
                                 Dim addlist As Boolean = True
                                 Dim tmpMovieList As New List(Of TraktAPI.Model.TraktMovie)
                                 'if list contains movies (= not empty list)  check if there's only movies - Ember doesn't support episodes right now!
                                 For Each item As TraktAPI.Model.TraktListItem In traktUserListItems
-                                    If Not item.Type Is Nothing AndAlso item.Type = "movie" AndAlso Not item.Movie.Title Is Nothing AndAlso item.Movie.Title <> "" AndAlso Not item.Movie.Year Is Nothing AndAlso Not item.Movie.Ids.Imdb Is Nothing AndAlso item.Movie.Ids.Imdb <> "" Then
+                                    If item.Type IsNot Nothing AndAlso item.Type = "movie" AndAlso item.Movie.Title IsNot Nothing AndAlso Not String.IsNullOrEmpty(item.Movie.Title) AndAlso item.Movie.Year IsNot Nothing AndAlso item.Movie.Ids.Imdb IsNot Nothing AndAlso Not String.IsNullOrEmpty(item.Movie.Ids.Imdb) Then
                                         'valid movie!
                                         Dim tmplistmovie As New TraktAPI.Model.TraktMovie
                                         tmplistmovie.Ids = item.Movie.Ids
@@ -1626,7 +1626,7 @@ Public Class dlgTrakttvManager
                                         Exit For
                                     End If
                                 Next
-                                If addlist = True Then
+                                If addlist Then
                                     'add valid scraped (movie-)userlist to globallist(including its listitems)
                                     Dim tmpTraktSyncList As New TraktAPI.Model.TraktSyncList
                                     tmpTraktSyncList.Name = userlist.Name
@@ -1665,36 +1665,34 @@ Public Class dlgTrakttvManager
         End If
 
         'if there's any list that could be scraped then fill other listboxes/datagridview and finish loading process
-        If Not traktLists Is Nothing AndAlso traktLists.Count > 0 Then
+        If traktLists IsNot Nothing AndAlso traktLists.Count > 0 Then
 
             If dgvMovies.Rows.Count = 0 Then
                 'fill movie datagridview
-                Me.dgvMovies.SuspendLayout()
+                dgvMovies.SuspendLayout()
                 Me.bsMovies.DataSource = Nothing
                 Me.dgvMovies.DataSource = Nothing
-                If Me.dtMovies.Rows.Count > 0 Then
-                    With Me
-                        .bsMovies.DataSource = .dtMovies
-                        .dgvMovies.DataSource = .bsMovies
 
-                        .dgvMovies.Columns(0).Visible = False
-                        .dgvMovies.Columns(1).Visible = False
-                        .dgvMovies.Columns(2).Visible = False
-                        .dgvMovies.Columns(3).Resizable = DataGridViewTriState.True
-                        .dgvMovies.Columns(3).ReadOnly = True
-                        .dgvMovies.Columns(3).MinimumWidth = 83
-                        .dgvMovies.Columns(3).SortMode = DataGridViewColumnSortMode.Automatic
-                        .dgvMovies.Columns(3).ToolTipText = Master.eLang.GetString(21, "Title")
-                        .dgvMovies.Columns(3).HeaderText = Master.eLang.GetString(21, "Title")
+                If dtMovies.Rows.Count > 0 Then
+                    bsMovies.DataSource = dtMovies
+                    dgvMovies.DataSource = bsMovies
 
-                        For i As Integer = 4 To .dgvMovies.Columns.Count - 1
-                            .dgvMovies.Columns(i).Visible = False
-                        Next
+                    For i As Integer = 0 To dgvMovies.Columns.Count - 1
+                        dgvMovies.Columns(i).Visible = False
+                    Next
 
-                        .dgvMovies.Columns(0).ValueType = GetType(Int32)
-                    End With
+                    dgvMovies.Columns("ListTitle").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
+                    dgvMovies.Columns("ListTitle").Resizable = DataGridViewTriState.True
+                    dgvMovies.Columns("ListTitle").ReadOnly = True
+                    dgvMovies.Columns("ListTitle").MinimumWidth = 83
+                    dgvMovies.Columns("ListTitle").SortMode = DataGridViewColumnSortMode.Automatic
+                    dgvMovies.Columns("ListTitle").Visible = True
+                    dgvMovies.Columns("ListTitle").ToolTipText = Master.eLang.GetString(21, "Title")
+                    dgvMovies.Columns("ListTitle").HeaderText = Master.eLang.GetString(21, "Title")
+
+                    dgvMovies.Columns("idMovie").ValueType = GetType(Int32)
                 End If
-                Me.dgvMovies.ResumeLayout()
+                dgvMovies.ResumeLayout()
             End If
 
 
@@ -1705,16 +1703,16 @@ Public Class dlgTrakttvManager
             'enable filled traktlistbox + "new traktlist" button + movieinlist listbox
             lbtraktLists.Enabled = True
             btntraktListsNewList.Enabled = True
-            Me.lbtraktListsMoviesinLists.Enabled = True
+            lbtraktListsMoviesinLists.Enabled = True
             'select first item in listbox
-            If Me.lbtraktLists.Items.Count > 0 Then
+            If lbtraktLists.Items.Count > 0 Then
                 lbtraktLists.SelectedIndex = 0
             End If
 
 
             If lbDBLists.Items.Count = 0 Then
                 'fill lbDBLists(Listbox) - all lists/tags from Ember database!
-                Master.DB.FillDataTable(Me.dtMovieTags, String.Concat("SELECT * FROM tag ",
+                Master.DB.FillDataTable(dtMovieTags, String.Concat("SELECT * FROM tag ",
                                                                   "ORDER BY strTag COLLATE NOCASE;"))
 
 
@@ -1727,10 +1725,10 @@ Public Class dlgTrakttvManager
 
                 'enable filled DBList (if there's any tag/list in database)
                 If lbDBLists.Items.Count > 0 Then
-                    Me.lbDBLists.Enabled = True
+                    lbDBLists.Enabled = True
                 Else
-                    Me.lbDBLists.Enabled = False
-                    Me.btntraktListsGetDatabase.Enabled = False
+                    lbDBLists.Enabled = False
+                    btntraktListsGetDatabase.Enabled = False
                 End If
             End If
             'enable available movie datagridview
@@ -1739,10 +1737,10 @@ Public Class dlgTrakttvManager
         Else
             lbtraktLists.Enabled = False
             btntraktListsNewList.Enabled = False
-            Me.lbtraktListsMoviesinLists.Enabled = False
+            lbtraktListsMoviesinLists.Enabled = False
             logger.Info("No userlist(s) available!")
-            txttraktListsDetailsName.Text = ""
-            txttraktListsDetailsDescription.Text = ""
+            txttraktListsDetailsName.Text = String.Empty
+            txttraktListsDetailsDescription.Text = String.Empty
             chkltraktListsDetailsComments.Checked = False
             chktraktListsDetailsNumbers.Checked = False
         End If
@@ -1776,18 +1774,18 @@ Public Class dlgTrakttvManager
             Dim listdelete As Boolean = False
             '1. If attribute ListDelete = true of list, then delete list on trakt.tv!
             For i = traktLists.Count - 1 To 0 Step -1
-                If traktLists(i).ListDelete = True AndAlso Not traktLists(i).Ids Is Nothing AndAlso Not String.IsNullOrEmpty(traktLists(i).Ids.Slug) Then
+                If traktLists(i).ListDelete AndAlso traktLists(i).Ids IsNot Nothing AndAlso Not String.IsNullOrEmpty(traktLists(i).Ids.Slug) Then
                     listdelete = True
                     response = response & traktLists(i).Name & Environment.NewLine
                 End If
             Next
-            If listdelete = True Then
+            If listdelete Then
                 Dim result As DialogResult = MessageBox.Show(response, Master.eLang.GetString(356, "Warning"), MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)
                 If result = Windows.Forms.DialogResult.Yes Then
                     For i = traktLists.Count - 1 To 0 Step -1
-                        If traktLists(i).ListDelete = True AndAlso Not traktLists(i).Ids Is Nothing AndAlso Not String.IsNullOrEmpty(traktLists(i).Ids.Slug) Then
+                        If traktLists(i).ListDelete AndAlso traktLists(i).Ids IsNot Nothing AndAlso Not String.IsNullOrEmpty(traktLists(i).Ids.Slug) Then
                             Dim traktResponseDeleteUserList = TrakttvAPI.RemoveUserList(traktUser, traktLists(i).Ids.Slug)
-                            If traktResponseDeleteUserList = False Then
+                            If Not traktResponseDeleteUserList Then
                                 logger.Info("[" & traktLists(i).Ids.Slug & "] " & "Delete list on trakt.tv FAILED!")
                             Else
                                 logger.Info("[" & traktLists(i).Ids.Slug & "] " & "List on trakt.tv deleted!")
@@ -1801,16 +1799,16 @@ Public Class dlgTrakttvManager
             response = "Lists created (Please rename them directly in your trakt.tv dashboard!): " & Environment.NewLine
             For Each traktlist In traktLists
                 'Check if list qualifies for posting on trak.tv (modified/edited, name must be filled)
-                If Not traktlist.Name Is Nothing AndAlso (traktlist.ListItemsModified = True OrElse traktlist.ListModified = True OrElse traktlist.NewList = True) Then
+                If traktlist.Name IsNot Nothing AndAlso (traktlist.ListItemsModified OrElse traktlist.ListModified OrElse traktlist.NewList) Then
                     Dim NameOriginalList As String = traktlist.Name
-                    Dim SlugOriginalList As String = ""
+                    Dim SlugOriginalList As String = String.Empty
                     SlugOriginalList = traktlist.Ids.Slug
-                    If SlugOriginalList = "" Then
+                    If String.IsNullOrEmpty(SlugOriginalList) Then
                         SlugOriginalList = TraktMethods.ConvertToSlug(traktlist.Name)
                     End If
 
                     '2.POST either NEWLIST_<Listname> (edited existing list) or <Listname> to trakt.tv and add every list which has been edited/created in Ember
-                    If traktlist.NewList = False Then
+                    If Not traktlist.NewList Then
                         traktlist.Name = "NEWLIST_" & NameOriginalList
                     Else
                         traktlist.Name = NameOriginalList
@@ -1826,7 +1824,7 @@ Public Class dlgTrakttvManager
                     Dim traktResponseCreateCustomList = TrakttvAPI.AddUserList(tmpTraktList, traktUser)
 
                     '3.POST ListItems to trakt.tv NEWLIST_<Listname> to add movies!
-                    If Not traktResponseCreateCustomList Is Nothing AndAlso Not traktResponseCreateCustomList.Ids Is Nothing Then
+                    If traktResponseCreateCustomList IsNot Nothing AndAlso traktResponseCreateCustomList.Ids IsNot Nothing Then
                         If Not String.IsNullOrEmpty(traktResponseCreateCustomList.Ids.Slug) Then
                             traktlist.Ids.Slug = traktResponseCreateCustomList.Ids.Slug
                             Dim traktResponseAddItemsToList As TraktAPI.Model.TraktResponse = Nothing
@@ -1853,7 +1851,7 @@ Public Class dlgTrakttvManager
                             'logger.Info("[" & SlugOriginalList & "] " & "Delete list on trakt.tv!")
                             'Dim traktResponseDeleteUserList = TrakttvAPI.DeleteUserList(traktUser, SlugOriginalList)
                             ''4. POST ListUpdate NEWLIST_<Listname> and change name of list to <Listname>
-                            'If traktResponseDeleteUserList = False Then
+                            'If Not traktResponseDeleteUserList Then
                             '    logger.Info("[" & SlugOriginalList & "] " & "Delete list on trakt.tv FAILED!")
                             'End If
                             'Dim tmpTraktListDetail As New TraktAPI.Model.TraktListDetail
@@ -1864,7 +1862,7 @@ Public Class dlgTrakttvManager
                             'tmpTraktListDetail.Privacy = traktlist.Privacy
                             'Dim traktResponseUpdateCustomList = TrakttvAPI.UpdateCustomList(tmpTraktListDetail, traktUser, traktlist.Ids.Slug)
 
-                            'If Not traktResponseUpdateCustomList Is Nothing Then
+                            'If traktResponseUpdateCustomList IsNot Nothing Then
                             '    logger.Info("[" & traktlist.Ids.Slug & "] " & "List updated on trakt.tv!")
 
                             '    'everything went as planned! Set Modified marker back
@@ -1917,11 +1915,11 @@ Public Class dlgTrakttvManager
         Dim listDBID As Integer = -1
 
         'check if list was selected
-        If Me.lbtraktLists.SelectedItems.Count = 1 Then
+        If lbtraktLists.SelectedItems.Count = 1 Then
             'search selected list in globalist
             For Each list In traktLists
                 listDBID = -1
-                If list.Name = Me.lbtraktLists.SelectedItem.ToString Then
+                If list.Name = lbtraktLists.SelectedItem.ToString Then
                     'go through each Ember DBList/Tag and check if current traktlist is already in Ember DB. Get TagID of tag if thats the case
                     For Each sRow As DataRow In dtMovieTags.Rows
                         If Not String.IsNullOrEmpty(sRow.Item("strTag").ToString) AndAlso sRow.Item("strTag").ToString = list.Name Then
@@ -1983,11 +1981,11 @@ Public Class dlgTrakttvManager
     ''' 2015/02/09 Cocotus - Fixed for API v2
     ''' </remarks>
     Private Sub btntraktListsRemove_Click(sender As Object, e As EventArgs) Handles btntraktListsRemove.Click
-        If Me.lbtraktListsMoviesinLists.SelectedItems.Count > 0 Then
-            For Each selectedmovie In Me.lbtraktListsMoviesinLists.SelectedItems
+        If lbtraktListsMoviesinLists.SelectedItems.Count > 0 Then
+            For Each selectedmovie In lbtraktListsMoviesinLists.SelectedItems
                 'update globallist
                 For Each list In traktLists
-                    If list.Name = Me.lbtraktLists.SelectedItem.ToString Then
+                    If list.Name = lbtraktLists.SelectedItem.ToString Then
                         For Each movie In list.Movies
                             If movie.Title = selectedmovie.ToString Then
                                 list.ListItemsModified = True
@@ -2007,7 +2005,7 @@ Public Class dlgTrakttvManager
                 Next
 
             Next
-            Me.LoadSelectedList()
+            LoadSelectedList()
         End If
     End Sub
 
@@ -2023,18 +2021,18 @@ Public Class dlgTrakttvManager
     ''' </remarks>
     Private Sub btntraktListsAddMovie_Click(sender As Object, e As EventArgs) Handles btntraktListsAddMovie.Click
 
-        If Me.dgvMovies.SelectedRows.Count > 0 Then
-            For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
+        If dgvMovies.SelectedRows.Count > 0 Then
+            For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
                 Dim tmpMovie As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells(0).Value))
-                If Not String.IsNullOrEmpty(tmpMovie.Movie.Title) AndAlso Not Me.lbtraktListsMoviesinLists.Items.Contains(tmpMovie.Movie.Title) Then
+                If Not String.IsNullOrEmpty(tmpMovie.Movie.Title) AndAlso Not lbtraktListsMoviesinLists.Items.Contains(tmpMovie.Movie.Title) Then
                     'create new traktlistitem of selected movie
                     Dim newTraktListItem As New TraktAPI.Model.TraktListItem
                     newTraktListItem = createTraktListItem(tmpMovie)
                     'add new movie to list (global & selectedlist)
-                    If Not newTraktListItem Is Nothing Then
+                    If newTraktListItem IsNot Nothing Then
                         For Each list In traktLists
-                            If list.Name = Me.lbtraktLists.SelectedItem.ToString Then
-                                If Not list.TraktListItems Is Nothing Then
+                            If list.Name = lbtraktLists.SelectedItem.ToString Then
+                                If list.TraktListItems IsNot Nothing Then
                                     list.TraktListItems.Add(newTraktListItem)
                                     'valid movie!
                                     Dim tmplistmovie As New TraktAPI.Model.TraktMovie
@@ -2055,15 +2053,15 @@ Public Class dlgTrakttvManager
                         'Me.lbtraktListstMovies.Items.Remove(lbtraktListstMovies.SelectedItems(0))
                         ' bsMovies.Remove(sRow.DataBoundItem)
                     Else
-                        logger.Info("[" & Me.lbtraktLists.SelectedItem.ToString & "] " & tmpMovie.Movie.Title & " Created Listitem is invalid! Error when trying to add movie to list!")
+                        logger.Info("[" & lbtraktLists.SelectedItem.ToString & "] " & tmpMovie.Movie.Title & " Created Listitem is invalid! Error when trying to add movie to list!")
                     End If
 
                 End If
             Next
 
-            Me.dgvMovies.ClearSelection()
+            dgvMovies.ClearSelection()
             Me.dgvMovies.CurrentCell = Nothing
-            Me.LoadSelectedList()
+            LoadSelectedList()
         End If
     End Sub
 
@@ -2125,55 +2123,55 @@ Public Class dlgTrakttvManager
     Private Sub lbtraktLists_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lbtraktLists.SelectedIndexChanged
 
         'clear movieinlist -listbox since we select another one
-        Me.lbtraktListsMoviesinLists.Items.Clear()
+        lbtraktListsMoviesinLists.Items.Clear()
 
         'check if list was selected
-        If Me.lbtraktLists.SelectedItems.Count > 0 Then
+        If lbtraktLists.SelectedItems.Count > 0 Then
             gbtraktListsDetails.Enabled = True
 
             'display listtitle in label
-            Me.lbltraktListsCurrentList.Text = Me.lbtraktLists.SelectedItem.ToString
+            lbltraktListsCurrentList.Text = lbtraktLists.SelectedItem.ToString
             Dim foundlist As Boolean = False
             'search selected list in globalist
             For Each movieinlist In traktLists
-                If movieinlist.Name = Me.lbtraktLists.SelectedItem.ToString Then
+                If movieinlist.Name = lbtraktLists.SelectedItem.ToString Then
 
                     'add all movies from currlist into listbox
-                    Me.LoadSelectedList()
+                    LoadSelectedList()
 
                     'Enable remove/edit list buttons
-                    Me.btntraktListsEditList.Enabled = True
-                    Me.btntraktListsRemoveList.Enabled = True
-                    Me.btntraktListsAddMovie.Enabled = True
-                    Me.btntraktListsSaveToDatabase.Enabled = True
+                    btntraktListsEditList.Enabled = True
+                    btntraktListsRemoveList.Enabled = True
+                    btntraktListsAddMovie.Enabled = True
+                    btntraktListsSaveToDatabase.Enabled = True
                     txttraktListsEditList.Enabled = True
-                    txttraktListsEditList.Text = Me.lbtraktLists.SelectedItem.ToString
+                    txttraktListsEditList.Text = lbtraktLists.SelectedItem.ToString
                     foundlist = True
                     Exit For
                 End If
             Next
 
-            If foundlist = False Then
-                logger.Info("[" & Me.lbtraktLists.SelectedItem.ToString & "] No list selected!")
-                Me.lbltraktListsCurrentList.Text = Master.eLang.GetString(368, "None Selected")
-                Me.btntraktListsEditList.Enabled = False
-                Me.btntraktListsRemoveList.Enabled = False
-                Me.btntraktListsAddMovie.Enabled = False
-                Me.btntraktListsRemove.Enabled = False
-                Me.btntraktListsSaveToDatabase.Enabled = False
-                txttraktListsEditList.Text = ""
+            If Not foundlist Then
+                logger.Info("[" & lbtraktLists.SelectedItem.ToString & "] No list selected!")
+                lbltraktListsCurrentList.Text = Master.eLang.GetString(368, "None Selected")
+                btntraktListsEditList.Enabled = False
+                btntraktListsRemoveList.Enabled = False
+                btntraktListsAddMovie.Enabled = False
+                btntraktListsRemove.Enabled = False
+                btntraktListsSaveToDatabase.Enabled = False
+                txttraktListsEditList.Text = String.Empty
             End If
 
             ' no list selected, disable remove/edit list buttons, reset label
         Else
-            Me.lbltraktListsCurrentList.Text = Master.eLang.GetString(368, "None Selected")
-            Me.btntraktListsEditList.Enabled = False
-            Me.btntraktListsRemoveList.Enabled = False
-            Me.btntraktListsAddMovie.Enabled = False
-            Me.btntraktListsRemove.Enabled = False
-            txttraktListsEditList.Text = ""
+            lbltraktListsCurrentList.Text = Master.eLang.GetString(368, "None Selected")
+            btntraktListsEditList.Enabled = False
+            btntraktListsRemoveList.Enabled = False
+            btntraktListsAddMovie.Enabled = False
+            btntraktListsRemove.Enabled = False
+            txttraktListsEditList.Text = String.Empty
             gbtraktListsDetails.Enabled = False
-            Me.btntraktListsSaveToDatabase.Enabled = False
+            btntraktListsSaveToDatabase.Enabled = False
         End If
 
 
@@ -2186,11 +2184,11 @@ Public Class dlgTrakttvManager
     ''' 2014/10/12 Cocotus - First implementation
     ''' </remarks>
     Private Sub LoadSelectedList()
-        Me.lbtraktListsMoviesinLists.SuspendLayout()
-        Me.lbtraktListsMoviesinLists.Items.Clear()
+        lbtraktListsMoviesinLists.SuspendLayout()
+        lbtraktListsMoviesinLists.Items.Clear()
 
         For Each movielist In traktLists
-            If movielist.Name = Me.lbtraktLists.SelectedItem.ToString Then
+            If movielist.Name = lbtraktLists.SelectedItem.ToString Then
 
                 'Fill Detailview
                 txttraktListsDetailsName.Text = movielist.Name
@@ -2206,14 +2204,14 @@ Public Class dlgTrakttvManager
                         cbotraktListsDetailsPrivacy.SelectedIndex = 2
                 End Select
                 For Each tMovie In movielist.Movies
-                    Me.btntraktListsRemove.Enabled = True
-                    Me.lbtraktListsMoviesinLists.Items.Add(tMovie.Title)
+                    btntraktListsRemove.Enabled = True
+                    lbtraktListsMoviesinLists.Items.Add(tMovie.Title)
                 Next
                 Exit For
             End If
         Next
 
-        Me.lbtraktListsMoviesinLists.ResumeLayout()
+        lbtraktListsMoviesinLists.ResumeLayout()
     End Sub
 
     ''' <summary>
@@ -2225,11 +2223,11 @@ Public Class dlgTrakttvManager
     ''' 2014/10/12 Cocotus - First implementation
     ''' </remarks>
     Private Sub btntraktListsRemoveList_Click(sender As Object, e As EventArgs) Handles btntraktListsRemoveList.Click
-        If Me.lbtraktLists.SelectedItems.Count > 0 Then
-            Dim strList As String = Me.lbtraktLists.SelectedItem.ToString
+        If lbtraktLists.SelectedItems.Count > 0 Then
+            Dim strList As String = lbtraktLists.SelectedItem.ToString
             For Each _list In traktLists
                 If _list.Name = strList Then
-                    'If list was not scraped but created in Ember(slug = ""), just remove it 
+                    'If list was not scraped but created in Ember(slug = String.Empty), just remove it 
                     If String.IsNullOrEmpty(_list.Ids.Slug) Then
                         traktLists.Remove(_list)
                         'list is already in trakt.tv -> mark as Delete on next Sync
@@ -2241,7 +2239,7 @@ Public Class dlgTrakttvManager
                     Exit For
                 End If
             Next
-            Me.LoadLists()
+            LoadLists()
         End If
     End Sub
 
@@ -2256,13 +2254,13 @@ Public Class dlgTrakttvManager
     ''' </remarks>
     Private Sub btntraktListsEditList_Click(sender As Object, e As EventArgs) Handles btntraktListsEditList.Click
         'check if list is selected (we need one to edit)
-        If Me.lbtraktLists.SelectedItems.Count > 0 Then
+        If lbtraktLists.SelectedItems.Count > 0 Then
             'currentlistname
-            Dim strList As String = Me.lbtraktLists.SelectedItem.ToString
+            Dim strList As String = lbtraktLists.SelectedItem.ToString
             'newlistname (from textbox)
-            Dim newListname As String = Me.txttraktListsEditList.Text
+            Dim newListname As String = txttraktListsEditList.Text
             'only update if both names(old and new) are available, also don't edit if newname is already a used listname
-            If Not String.IsNullOrEmpty(strList) AndAlso Not String.IsNullOrEmpty(newListname) AndAlso Not Me.lbtraktLists.Items.Contains(newListname) Then
+            If Not String.IsNullOrEmpty(strList) AndAlso Not String.IsNullOrEmpty(newListname) AndAlso Not lbtraktLists.Items.Contains(newListname) Then
                 'update listname in globallist
                 For Each _list In traktLists
                     If _list.Name = strList Then
@@ -2273,7 +2271,7 @@ Public Class dlgTrakttvManager
                     End If
                 Next
                 'since globallist is updated, we need to load globallist again to reflect changes
-                Me.LoadLists()
+                LoadLists()
             End If
         End If
     End Sub
@@ -2290,7 +2288,7 @@ Public Class dlgTrakttvManager
         Dim newList As New TraktAPI.Model.TraktSyncList
         'create new list
         newList = CreateNewEmberlist("NewList", "Created by EmberManager")
-        If Not newList Is Nothing Then
+        If newList IsNot Nothing Then
             btntraktListsSyncTrakt.Enabled = True
             'add created list to existing globallist
             traktLists.Add(newList)
@@ -2313,16 +2311,16 @@ Public Class dlgTrakttvManager
 
 
         'check if list was selected
-        If Me.lbDBLists.SelectedItems.Count > 0 Then
+        If lbDBLists.SelectedItems.Count > 0 Then
             'Search for DBList in trakt.tv lists
             Dim newList As New TraktAPI.Model.TraktSyncList
             'create new list
-            newList = CreateNewEmberlist(Me.lbDBLists.SelectedItem.ToString, "Created by EmberManager")
-            If Not newList Is Nothing Then
+            newList = CreateNewEmberlist(lbDBLists.SelectedItem.ToString, "Created by EmberManager")
+            If newList IsNot Nothing Then
                 btntraktListsSyncTrakt.Enabled = True
                 'check if listname of DBList also exist on traktlist!
                 For Each _list In traktLists
-                    If _list.Name = Me.lbDBLists.SelectedItem.ToString Then
+                    If _list.Name = lbDBLists.SelectedItem.ToString Then
                         newList = _list
                         Exit For
                     End If
@@ -2331,7 +2329,7 @@ Public Class dlgTrakttvManager
                 'go through each movie and look if it's part of selected list - if thats the case then create traktlistitem and add to newlist
                 Dim TagID As Integer = -1
                 For Each sRow As DataRow In dtMovieTags.Rows
-                    If sRow.Item("strTag").ToString = Me.lbDBLists.SelectedItem.ToString Then
+                    If sRow.Item("strTag").ToString = lbDBLists.SelectedItem.ToString Then
                         TagID = CInt(sRow.Item("idTag"))
                         Exit For
                     End If
@@ -2345,7 +2343,7 @@ Public Class dlgTrakttvManager
                             Dim newTraktListItem As New TraktAPI.Model.TraktListItem
                             newTraktListItem = createTraktListItem(tmpMovie)
                             'add new movie to list
-                            If Not newTraktListItem Is Nothing Then
+                            If newTraktListItem IsNot Nothing Then
                                 Dim addmovietolist As Boolean = True
                                 For Each movie In newList.Movies
                                     If movie.Title = tmpMovie.Movie.Title Then
@@ -2353,7 +2351,7 @@ Public Class dlgTrakttvManager
                                         Exit For
                                     End If
                                 Next
-                                If addmovietolist = True Then
+                                If addmovietolist Then
                                     newList.TraktListItems.Add(newTraktListItem)
                                     'valid movie!
                                     Dim tmplistmovie As New TraktAPI.Model.TraktMovie
@@ -2364,7 +2362,7 @@ Public Class dlgTrakttvManager
                                     newList.ListItemsModified = True
                                 End If
                             Else
-                                logger.Info("[" & Me.lbDBLists.SelectedItem.ToString & "] " & tmpMovie.Movie.Title & " Created Listitem is invalid! Error when trying to add movie to list!")
+                                logger.Info("[" & lbDBLists.SelectedItem.ToString & "] " & tmpMovie.Movie.Title & " Created Listitem is invalid! Error when trying to add movie to list!")
                             End If
                         End If
                     Next
@@ -2372,7 +2370,7 @@ Public Class dlgTrakttvManager
 
                 'add created list to existing globallist, remove if already exist to avoid duplicate
                 For Each _list In traktLists
-                    If _list.Name = Me.lbDBLists.SelectedItem.ToString Then
+                    If _list.Name = lbDBLists.SelectedItem.ToString Then
                         traktLists.Remove(_list)
                         Exit For
                     End If
@@ -2397,10 +2395,10 @@ Public Class dlgTrakttvManager
     ''' </remarks>
     Private Sub btntraktListsDetailsUpdate_Click(sender As Object, e As EventArgs) Handles btntraktListsDetailsUpdate.Click
         'check if one list is selected
-        If Me.lbtraktLists.SelectedItems.Count > 0 Then
+        If lbtraktLists.SelectedItems.Count > 0 Then
             Try
                 For Each movielist In traktLists
-                    If movielist.Name = Me.lbtraktLists.SelectedItem.ToString Then
+                    If movielist.Name = lbtraktLists.SelectedItem.ToString Then
                         'update listdetails
                         movielist.Description = txttraktListsDetailsDescription.Text
                         movielist.AllowComments = chkltraktListsDetailsComments.Checked
@@ -2451,7 +2449,7 @@ Public Class dlgTrakttvManager
         newtraktlist.Movies = tmplistmovie
         newtraktlist.Ids = New TraktAPI.Model.TraktMovieBase
 
-        Dim listslug As String = "" ' TraktMethods.ConvertToSlug(listname)
+        Dim listslug As String = String.Empty ' TraktMethods.ConvertToSlug(listname)
         Dim listallowshouts As Boolean = False
         Dim listshownumbers As Boolean = False
 
@@ -2475,33 +2473,33 @@ Public Class dlgTrakttvManager
     ''' 2014/10/12 Cocotus - First implementation
     ''' </remarks>
     Private Sub LoadLists()
-        Me.lbtraktLists.SuspendLayout()
+        lbtraktLists.SuspendLayout()
 
         'first clear all listboxes before adding information again
-        Me.lbtraktLists.Items.Clear()
-        Me.lbtraktListsMoviesinLists.Items.Clear()
-        Me.lbltraktListsCurrentList.Text = Master.eLang.GetString(368, "None Selected")
+        lbtraktLists.Items.Clear()
+        lbtraktListsMoviesinLists.Items.Clear()
+        lbltraktListsCurrentList.Text = Master.eLang.GetString(368, "None Selected")
         'add lists to listbox
         For Each tmptraktlist In traktLists
             lbtraktLists.Items.Add(tmptraktlist.Name)
         Next
-        Me.btntraktListsEditList.Enabled = False
-        Me.btntraktListsRemoveList.Enabled = False
-        Me.btntraktListsAddMovie.Enabled = False
-        Me.btntraktListsRemove.Enabled = False
-        txttraktListsEditList.Text = ""
-        Me.lbtraktLists.ResumeLayout()
+        btntraktListsEditList.Enabled = False
+        btntraktListsRemoveList.Enabled = False
+        btntraktListsAddMovie.Enabled = False
+        btntraktListsRemove.Enabled = False
+        txttraktListsEditList.Text = String.Empty
+        lbtraktLists.ResumeLayout()
     End Sub
 
     Private Sub tbptraktLists_Enter(sender As Object, e As EventArgs) Handles tbptraktListsSync.Enter
-        Me.Activate()
+        Activate()
     End Sub
 
     Private Sub lbDBLists_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lbDBLists.SelectedIndexChanged
-        If Me.lbDBLists.SelectedItems.Count > 0 Then
-            Me.btntraktListsGetDatabase.Enabled = True
+        If lbDBLists.SelectedItems.Count > 0 Then
+            btntraktListsGetDatabase.Enabled = True
         Else
-            Me.btntraktListsGetDatabase.Enabled = False
+            btntraktListsGetDatabase.Enabled = False
         End If
     End Sub
 
@@ -2539,7 +2537,7 @@ Public Class dlgTrakttvManager
                 userLists.Clear()
                 Dim traktList As IEnumerable(Of TraktAPI.Model.TraktListDetail) = Nothing
                 traktList = TrakttvAPI.GetUserLists(tmpfriend.User.Username)
-                If Not traktLists Is Nothing Then
+                If traktLists IsNot Nothing Then
                     userLists.AddRange(traktList)
                     For Each tmplist In userLists
                         userListURL.Add("http://trakt.tv/users/" & tmpfriend.User.Username & "/lists/" & tmplist.Ids.Slug)
@@ -2578,7 +2576,7 @@ Public Class dlgTrakttvManager
                 userLists.Clear()
                 Dim traktList As IEnumerable(Of TraktAPI.Model.TraktListDetail) = Nothing
                 traktList = TrakttvAPI.GetUserLists(tmpfollwing.User.Username)
-                If Not traktLists Is Nothing Then
+                If traktLists IsNot Nothing Then
                     userLists.AddRange(traktList)
                     For Each tmplist In userLists
                         userListURL.Add("http://trakt.tv/users/" & tmpfollwing.User.Username & "/lists/" & tmplist.Ids.Slug)
@@ -2672,7 +2670,7 @@ Public Class dlgTrakttvManager
         userList = Nothing
         userLists.Clear()
         'display description of list
-        lbltraktListDescriptionText.Text = ""
+        lbltraktListDescriptionText.Text = String.Empty
         If Not String.IsNullOrEmpty(txttraktListURL.Text) Then
             'Check if url is valid, i.e http://trakt.tv/users/nielsz/lists/active-imdb-top-250
             Dim tmp As String = txttraktListURL.Text
@@ -2684,11 +2682,11 @@ Public Class dlgTrakttvManager
                     If Not String.IsNullOrEmpty(traktToken) Then
                         Dim traktListItems As IEnumerable(Of TraktAPI.Model.TraktListItem) = Nothing
                         traktListItems = TrakttvAPI.GetUserListItems(parts(0), parts(2), "full")
-                        If Not traktListItems Is Nothing Then
+                        If traktListItems IsNot Nothing Then
                             userListItems.AddRange(traktListItems)
                             Dim traktList As IEnumerable(Of TraktAPI.Model.TraktListDetail) = Nothing
                             traktList = TrakttvAPI.GetUserLists(parts(0))
-                            If Not traktLists Is Nothing Then
+                            If traktLists IsNot Nothing Then
                                 userLists.AddRange(traktList)
                                 For Each tmplist In userLists
                                     If tmplist.Ids.Slug = parts(2) Then
@@ -2709,7 +2707,7 @@ Public Class dlgTrakttvManager
 
 
             'Check if current userlist is valid and contains required data
-            If Not userListItems Is Nothing AndAlso Not userList Is Nothing Then
+            If userListItems IsNot Nothing AndAlso userList IsNot Nothing Then
                 '  lbtraktLists.Items.Clear()
 
                 'fill rows
@@ -2719,19 +2717,19 @@ Public Class dlgTrakttvManager
                 For i = userListItems.Count - 1 To 0 Step -1
                     debugcount = debugcount - 1
                     'if list contains movies (= not empty list)  check if there's only movies - Ember doesn't support episodes right now! 'userListItems(i).Movie.Rating.ToString '
-                    If Not userListItems(i).Type Is Nothing AndAlso userListItems(i).Type = "movie" AndAlso Not userListItems(i).Movie Is Nothing AndAlso Not userListItems(i).Movie.Title Is Nothing AndAlso userListItems(i).Movie.Title <> "" AndAlso Not userListItems(i).Movie.Ids Is Nothing AndAlso userListItems(i).Movie.Ids.Imdb <> "" Then
+                    If userListItems(i).Type IsNot Nothing AndAlso userListItems(i).Type = "movie" AndAlso userListItems(i).Movie IsNot Nothing AndAlso userListItems(i).Movie.Title IsNot Nothing AndAlso Not String.IsNullOrEmpty(userListItems(i).Movie.Title) AndAlso userListItems(i).Movie.Ids IsNot Nothing AndAlso Not String.IsNullOrEmpty(userListItems(i).Movie.Ids.Imdb) Then
                         'valid movie!
 
                         'Dim traktShowProgress As TraktAPI.Model.TraktShowProgress = TrakttvAPI.GetProgressSh(watchedtvshow.Show.Ids.Trakt.ToString)
-                        'If Not traktShowProgress Is Nothing Then
+                        'If traktShowProgress IsNot Nothing Then
                         '    traktShowsProgress.Add(traktShowProgress)
                         'End If
 
                         If userListItems(i).Movie.Rating Is Nothing Then
                             If userListItems(i).Movie.Genres Is Nothing Then
-                                dgvtraktList.Rows.Add(New Object() {userListItems(i).Movie.Title, userListItems(i).Movie.Year, "", "", userListItems(i).Movie.Ids.Imdb, userListItems(i).Movie.Trailer})
+                                dgvtraktList.Rows.Add(New Object() {userListItems(i).Movie.Title, userListItems(i).Movie.Year, String.Empty, String.Empty, userListItems(i).Movie.Ids.Imdb, userListItems(i).Movie.Trailer})
                             Else
-                                Dim genrestring As String = ""
+                                Dim genrestring As String = String.Empty
                                 For Each genre In userListItems(i).Movie.Genres
                                     If Not String.IsNullOrEmpty(genre) Then
                                         genrestring = genrestring & genre & "/"
@@ -2740,15 +2738,15 @@ Public Class dlgTrakttvManager
                                 If genrestring.EndsWith("/") Then
                                     genrestring = genrestring.Remove(genrestring.Length - 1)
                                 End If
-                                dgvtraktList.Rows.Add(New Object() {userListItems(i).Movie.Title, userListItems(i).Movie.Year, "", genrestring, userListItems(i).Movie.Ids.Imdb, userListItems(i).Movie.Trailer})
+                                dgvtraktList.Rows.Add(New Object() {userListItems(i).Movie.Title, userListItems(i).Movie.Year, String.Empty, genrestring, userListItems(i).Movie.Ids.Imdb, userListItems(i).Movie.Trailer})
                             End If
                         Else
                             userListItems(i).Movie.Rating = Math.Round(CDbl(userListItems(i).Movie.Rating), 1)
                             If userListItems(i).Movie.Genres Is Nothing Then
-                                dgvtraktList.Rows.Add(New Object() {userListItems(i).Movie.Title, userListItems(i).Movie.Year, userListItems(i).Movie.Rating.ToString, "", userListItems(i).Movie.Ids.Imdb, userListItems(i).Movie.Trailer})
+                                dgvtraktList.Rows.Add(New Object() {userListItems(i).Movie.Title, userListItems(i).Movie.Year, userListItems(i).Movie.Rating.ToString, String.Empty, userListItems(i).Movie.Ids.Imdb, userListItems(i).Movie.Trailer})
                             Else
 
-                                Dim genrestring As String = ""
+                                Dim genrestring As String = String.Empty
                                 For Each genre In userListItems(i).Movie.Genres
                                     If Not String.IsNullOrEmpty(genre) Then
                                         genrestring = genrestring & genre & "/"
@@ -2829,11 +2827,11 @@ Public Class dlgTrakttvManager
         ' Load module settings of kodi interface to build remote paths
         If _SpecialSettings.Hosts IsNot Nothing AndAlso _SpecialSettings.Hosts.Count > 0 Then
             Dim m3uString As String = "#EXTM3U" & Environment.NewLine
-            Dim basedirectory As String = ""
+            Dim basedirectory As String = String.Empty
             For Each item In userListItems
                 'search movie in global moviedatatable
                 For Each sRow As DataRow In dtMovies.Rows
-                    If Not item Is Nothing AndAlso Not item.Movie Is Nothing Then
+                    If item IsNot Nothing AndAlso item.Movie IsNot Nothing Then
                         If item.Movie.Ids.Imdb = "tt" & sRow.Item("IMDB").ToString Then
                             basedirectory = GetRemotePath(Directory.GetParent(sRow.Item("MoviePath").ToString).FullName)
                             If basedirectory.LastIndexOf("/"c) > basedirectory.LastIndexOf("\"c) Then
@@ -2896,18 +2894,18 @@ Public Class dlgTrakttvManager
     ''' </remarks>
     Private Function BuildHTML(ByVal userlistitem As List(Of TraktAPI.Model.TraktListItem), ByVal exportonlyunknownmovies As Boolean) As String
 
-        Dim HTML As String = ""
+        Dim HTML As String = String.Empty
         Dim HTMLHEADER As String = "<html><body><table><thead><tr><tr><th>" & Master.eLang.GetString(21, "Title") & "</th><th>" & Master.eLang.GetString(278, "Year") & "</th><th>" & Master.eLang.GetString(400, "Rating") & "</th><th>" & Master.eLang.GetString(20, "Genre") & "</th><th>" & Master.eLang.GetString(64, "Overview") & "</th><th>" & Master.eLang.GetString(885, "IMDB") & "</th><th>" & Master.eLang.GetString(151, "Trailer") & "</th></tr></thead>"
-        Dim HTMLDATAROW As String = ""
+        Dim HTMLDATAROW As String = String.Empty
         Dim HTMLFOOTER As String = "</table></body></html>"
 
-        If exportonlyunknownmovies = True Then
+        If exportonlyunknownmovies Then
 
             For Each item In userlistitem
                 Dim foundmovieinlibrary As Boolean = False
                 'search movie in global moviedatatable
                 For Each sRow As DataRow In dtMovies.Rows
-                    If Not item Is Nothing AndAlso Not item.Movie Is Nothing Then
+                    If item IsNot Nothing AndAlso item.Movie IsNot Nothing Then
                         If item.Movie.Ids.Imdb = "tt" & sRow.Item("IMDB").ToString Then
                             foundmovieinlibrary = True
                             Exit For
@@ -2916,8 +2914,8 @@ Public Class dlgTrakttvManager
                         logger.Info("[" & item.Movie.Title & "] " & "Movie Item is Nothing! Could not be compared against library!")
                     End If
                 Next
-                If foundmovieinlibrary = False Then
-                    If Not item Is Nothing AndAlso Not item.Movie Is Nothing Then
+                If Not foundmovieinlibrary Then
+                    If item IsNot Nothing AndAlso item.Movie IsNot Nothing Then
                         If item.Movie.Rating Is Nothing Then
                             If item.Movie.Genres Is Nothing Then
                                 HTMLDATAROW = HTMLDATAROW & "<tr><td>" & item.Movie.Title & "</td><td>" & item.Movie.Year & "</td><td>" & "" & "</td><td>" & "" & "</td><td>" & item.Movie.Overview & "</td><td><a href=""http://www.imdb.com/title/" & item.Movie.Ids.Imdb & """>IMDB</a></td><td><a href=""" & item.Movie.Trailer & """>Trailer</a></td></tr>"
@@ -2928,7 +2926,7 @@ Public Class dlgTrakttvManager
                             If item.Movie.Genres Is Nothing Then
                                 HTMLDATAROW = HTMLDATAROW & "<tr><td>" & item.Movie.Title & "</td><td>" & item.Movie.Year & "</td><td>" & item.Movie.Rating.ToString & "</td><td>" & "" & "</td><td>" & item.Movie.Overview & "</td><td><a href=""http://www.imdb.com/title/" & item.Movie.Ids.Imdb & """>IMDB</a></td><td><a href=""" & item.Movie.Trailer & """>Trailer</a></td></tr>"
                             Else
-                                Dim genrestring As String = ""
+                                Dim genrestring As String = String.Empty
                                 For Each genre In item.Movie.Genres
                                     If Not String.IsNullOrEmpty(genre) Then
                                         genrestring = genrestring & genre & "/"
@@ -2950,7 +2948,7 @@ Public Class dlgTrakttvManager
             Next
         Else
             For Each item In userlistitem
-                If Not item Is Nothing AndAlso Not item.Movie Is Nothing Then
+                If item IsNot Nothing AndAlso item.Movie IsNot Nothing Then
                     If item.Movie.Rating Is Nothing Then
                         If item.Movie.Genres Is Nothing Then
                             HTMLDATAROW = HTMLDATAROW & "<tr><td>" & item.Movie.Title & "</td><td>" & item.Movie.Year & "</td><td>" & "" & "</td><td>" & "" & "</td><td>" & item.Movie.Overview & "</td><td><a href=""http://www.imdb.com/title/" & item.Movie.Ids.Imdb & """>IMDB</a></td><td><a href=""" & item.Movie.Trailer & """>Trailer</a></td></tr>"
@@ -2961,7 +2959,7 @@ Public Class dlgTrakttvManager
                         If item.Movie.Genres Is Nothing Then
                             HTMLDATAROW = HTMLDATAROW & "<tr><td>" & item.Movie.Title & "</td><td>" & item.Movie.Year & "</td><td>" & item.Movie.Rating.ToString & "</td><td>" & "" & "</td><td>" & item.Movie.Overview & "</td><td><a href=""http://www.imdb.com/title/" & item.Movie.Ids.Imdb & """>IMDB</a></td><td><a href=""" & item.Movie.Trailer & """>Trailer</a></td></tr>"
                         Else
-                            Dim genrestring As String = ""
+                            Dim genrestring As String = String.Empty
                             For Each genre In item.Movie.Genres
                                 If Not String.IsNullOrEmpty(genre) Then
                                     genrestring = genrestring & genre & "/"
@@ -2995,13 +2993,13 @@ Public Class dlgTrakttvManager
         dgvtraktList.DataSource = Nothing
         dgvtraktList.Rows.Clear()
 
-        If chktraktListsCompare.Checked = True Then
+        If chktraktListsCompare.Checked Then
 
 
             For Each item In userListItems
                 Dim foundmovieinlibrary As Boolean = False
                 'search movie in globalist
-                If Not item Is Nothing AndAlso Not item.Movie Is Nothing Then
+                If item IsNot Nothing AndAlso item.Movie IsNot Nothing Then
                     For Each sRow As DataRow In dtMovies.Rows
                         If item.Movie.Ids.Imdb = "tt" & sRow.Item("IMDB").ToString Then
                             foundmovieinlibrary = True
@@ -3012,20 +3010,20 @@ Public Class dlgTrakttvManager
                     logger.Info("[" & item.Movie.Title & "] " & "Movie Item is Nothing! Could not be compared against library!")
                 End If
 
-                If foundmovieinlibrary = False Then
-                    If Not item Is Nothing AndAlso Not item.Movie Is Nothing Then
+                If Not foundmovieinlibrary Then
+                    If item IsNot Nothing AndAlso item.Movie IsNot Nothing Then
                         'valid movie!
                         If item.Movie.Rating Is Nothing Then
                             If item.Movie.Genres Is Nothing Then
-                                dgvtraktList.Rows.Add(New Object() {item.Movie.Title, item.Movie.Year, "", "", item.Movie.Ids.Imdb, item.Movie.Trailer})
+                                dgvtraktList.Rows.Add(New Object() {item.Movie.Title, item.Movie.Year, String.Empty, String.Empty, item.Movie.Ids.Imdb, item.Movie.Trailer})
                             Else
-                                dgvtraktList.Rows.Add(New Object() {item.Movie.Title, item.Movie.Year, "", String.Join("/", item.Movie.Genres.ToArray).Trim, item.Movie.Ids.Imdb, item.Movie.Trailer})
+                                dgvtraktList.Rows.Add(New Object() {item.Movie.Title, item.Movie.Year, String.Empty, String.Join("/", item.Movie.Genres.ToArray).Trim, item.Movie.Ids.Imdb, item.Movie.Trailer})
                             End If
                         Else
                             If item.Movie.Genres Is Nothing Then
-                                dgvtraktList.Rows.Add(New Object() {item.Movie.Title, item.Movie.Year, item.Movie.Rating.ToString, "", item.Movie.Ids.Imdb, item.Movie.Trailer})
+                                dgvtraktList.Rows.Add(New Object() {item.Movie.Title, item.Movie.Year, item.Movie.Rating.ToString, String.Empty, item.Movie.Ids.Imdb, item.Movie.Trailer})
                             Else
-                                Dim genrestring As String = ""
+                                Dim genrestring As String = String.Empty
                                 For Each genre In item.Movie.Genres
                                     If Not String.IsNullOrEmpty(genre) Then
                                         genrestring = genrestring & genre & "/"
@@ -3048,19 +3046,19 @@ Public Class dlgTrakttvManager
         Else
             'fill rows
             For Each item In userListItems
-                If Not item Is Nothing AndAlso Not item.Movie Is Nothing Then
+                If item IsNot Nothing AndAlso item.Movie IsNot Nothing Then
                     'valid movie!
                     If item.Movie.Rating Is Nothing Then
                         If item.Movie.Genres Is Nothing Then
-                            dgvtraktList.Rows.Add(New Object() {item.Movie.Title, item.Movie.Year, "", "", item.Movie.Ids.Imdb, item.Movie.Trailer})
+                            dgvtraktList.Rows.Add(New Object() {item.Movie.Title, item.Movie.Year, String.Empty, String.Empty, item.Movie.Ids.Imdb, item.Movie.Trailer})
                         Else
-                            dgvtraktList.Rows.Add(New Object() {item.Movie.Title, item.Movie.Year, "", String.Join("/", item.Movie.Genres.ToArray).Trim, item.Movie.Ids.Imdb, item.Movie.Trailer})
+                            dgvtraktList.Rows.Add(New Object() {item.Movie.Title, item.Movie.Year, String.Empty, String.Join("/", item.Movie.Genres.ToArray).Trim, item.Movie.Ids.Imdb, item.Movie.Trailer})
                         End If
                     Else
                         If item.Movie.Genres Is Nothing Then
-                            dgvtraktList.Rows.Add(New Object() {item.Movie.Title, item.Movie.Year, item.Movie.Rating.ToString, "", item.Movie.Ids.Imdb, item.Movie.Trailer})
+                            dgvtraktList.Rows.Add(New Object() {item.Movie.Title, item.Movie.Year, item.Movie.Rating.ToString, String.Empty, item.Movie.Ids.Imdb, item.Movie.Trailer})
                         Else
-                            Dim genrestring As String = ""
+                            Dim genrestring As String = String.Empty
                             For Each genre In item.Movie.Genres
                                 If Not String.IsNullOrEmpty(genre) Then
                                     genrestring = genrestring & genre & "/"
@@ -3155,7 +3153,7 @@ Public Class dlgTrakttvManager
     ''' 2015/01/01 Cocotus
     ''' </remarks>
     Private Sub cbotraktListsScraped_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbotraktListsScraped.SelectedIndexChanged
-        If Not String.IsNullOrEmpty(Me.cbotraktListsScraped.SelectedItem.ToString) Then
+        If Not String.IsNullOrEmpty(cbotraktListsScraped.SelectedItem.ToString) Then
             txttraktListURL.Text = userListURL.Item(cbotraktListsScraped.SelectedIndex)
         End If
     End Sub
@@ -3175,7 +3173,7 @@ Public Class dlgTrakttvManager
         Dim RemoteIsUNC As Boolean = False
         Dim pathfound As Boolean = False
         For Each host In _SpecialSettings.Hosts
-            If pathfound = True Then
+            If pathfound Then
                 Exit For
             End If
             For Each Source In host.Sources
@@ -3226,7 +3224,7 @@ Public Class dlgTrakttvManager
     ''' </remarks>
     Private Sub btntraktCommentsGet_Click(sender As Object, e As EventArgs) Handles btntraktCommentsGet.Click
         Try
-            If Not myCommentsMovies Is Nothing Then
+            If myCommentsMovies IsNot Nothing Then
                 myCommentsMovies.Clear()
             End If
             dgvtraktComments.DataSource = Nothing
@@ -3242,7 +3240,7 @@ Public Class dlgTrakttvManager
 
                 For Each Item As TraktAPI.Model.TraktCommentItem In traktMovieComments
                     'Check if information is stored...
-                    If Not Item.Movie.Title Is Nothing AndAlso Item.Movie.Title <> "" AndAlso Not Item.Movie.Ids.Imdb Is Nothing AndAlso Item.Movie.Ids.Imdb <> "" Then
+                    If Item.Movie.Title IsNot Nothing AndAlso Not String.IsNullOrEmpty(Item.Movie.Title) AndAlso Item.Movie.Ids.Imdb IsNot Nothing AndAlso Not String.IsNullOrEmpty(Item.Movie.Ids.Imdb) Then
                         Dim myDateString As String = Item.Comment.CreatedAt
                         Dim myDate As DateTime
                         Dim isDate As Boolean = DateTime.TryParse(myDateString, myDate)
@@ -3260,10 +3258,10 @@ Public Class dlgTrakttvManager
                 'we map to dgv manually
                 dgvtraktWatchlist.AutoGenerateColumns = False
                 Dim HasCommentOnTrakt As Boolean = False
-                For Each sRow As DataRow In Me.dtMovies.Rows
-                    If sRow.Item("Title").ToString <> "" AndAlso sRow.Item("Imdb").ToString <> "" Then
+                For Each sRow As DataRow In dtMovies.Rows
+                    If Not String.IsNullOrEmpty(sRow.Item("Title").ToString) AndAlso Not String.IsNullOrEmpty(sRow.Item("Imdb").ToString) Then
                         HasCommentOnTrakt = False
-                        If Not myCommentsMovies Is Nothing Then
+                        If myCommentsMovies IsNot Nothing Then
                             For Each Item As TraktAPI.Model.TraktCommentItem In myCommentsMovies
                                 If Item.Movie.Ids.Imdb = "tt" & sRow.Item("Imdb").ToString Then
                                     'listed-At is not user friendly formatted, so change format a bit
@@ -3283,7 +3281,7 @@ Public Class dlgTrakttvManager
                                 End If
                             Next
                         End If
-                        If HasCommentOnTrakt = False Then
+                        If Not HasCommentOnTrakt Then
                             dgvtraktComments.Rows.Add(New Object() {sRow.Item("Title").ToString, "", "", "", "", sRow.Item("Imdb").ToString})
                         End If
                     End If
@@ -3293,7 +3291,7 @@ Public Class dlgTrakttvManager
             End If
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
-            If Not myCommentsMovies Is Nothing Then
+            If myCommentsMovies IsNot Nothing Then
                 myCommentsMovies.Clear()
             End If
             dgvtraktComments.DataSource = Nothing
@@ -3326,7 +3324,7 @@ Public Class dlgTrakttvManager
             Dim result As DialogResult = MessageBox.Show(response, Master.eLang.GetString(356, "Warning"), MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)
             If result = Windows.Forms.DialogResult.Yes Then
                 Dim traktResponse = TrakttvAPI.AddCommentForMovie(tmpTraktSynchronize)
-                If Not traktResponse Is Nothing Then
+                If traktResponse IsNot Nothing Then
                     If traktResponse.Id > 0 Then
                         logger.Info("Added comment to trakt.tv!")
                         response = Master.eLang.GetString(1412, "Added comment to trakt.tv!")
@@ -3395,7 +3393,7 @@ Public Class dlgTrakttvManager
             Dim result As DialogResult = MessageBox.Show(response, Master.eLang.GetString(356, "Warning"), MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)
             If result = Windows.Forms.DialogResult.Yes Then
                 Dim traktResponse = TrakttvAPI.UpdateComment(CStr(dgvtraktComments.CurrentRow.Cells(4).Value), tmpTraktSynchronize)
-                If Not traktResponse Is Nothing Then
+                If traktResponse IsNot Nothing Then
                     If traktResponse.Id > 0 Then
                         logger.Info("Updated comment on trakt.tv!")
                         response = Master.eLang.GetString(1408, "Updated") & "!"
@@ -3435,12 +3433,12 @@ Public Class dlgTrakttvManager
     ''' enable/disable Send/Update/Delete Comment-Button 
     Private Sub dgvtraktComments_SelectionChanged(sender As Object, e As EventArgs) Handles dgvtraktComments.SelectionChanged
         If dgvtraktComments.CurrentRow.Index > -1 Then
-            lbltraktCommentsDetailsDate2.Text = ""
-            lbltraktCommentsDetailsLikes2.Text = ""
-            lbltraktCommentsDetailsRating2.Text = ""
-            lbltraktCommentsDetailsReplies2.Text = ""
-            lbltraktCommentsDetailsType2.Text = ""
-            txttraktCommentsDetailsComment.Text = ""
+            lbltraktCommentsDetailsDate2.Text = String.Empty
+            lbltraktCommentsDetailsLikes2.Text = String.Empty
+            lbltraktCommentsDetailsRating2.Text = String.Empty
+            lbltraktCommentsDetailsReplies2.Text = String.Empty
+            lbltraktCommentsDetailsType2.Text = String.Empty
+            txttraktCommentsDetailsComment.Text = String.Empty
 
             For Each movie As DataRow In dtMovies.Rows
                 If movie.Item("Imdb").ToString = dgvtraktComments.CurrentRow.Cells(5).Value.ToString AndAlso movie.Table.Columns.Contains("Comment") Then
@@ -3536,7 +3534,7 @@ Public Class dlgTrakttvManager
     ''' This is used to clean user watched movie history from duplicate plays (i.e. sent because of a buggy trakt app)
     ''' </remarks>
     Private Sub RemoveInvalidPlaysFromHistory(ByVal playsTimeRange As Integer, ByVal playsTimeStamp As String)
-        Dim response As String = ""
+        Dim response As String = String.Empty
         Dim IDOfDuplicate As New Dictionary(Of String, String)
         Dim IDNameOfDuplicate As New Dictionary(Of String, String)
 
@@ -3557,13 +3555,13 @@ Public Class dlgTrakttvManager
                             logger.Info("Movie: {0} , calculated timespan: {1}", CStr(sortedWatchedTimes(i).Movie.Title), (sortedWatchedTimes(i).WatchedAt_DateTime - sortedWatchedTimes(i - 1).WatchedAt_DateTime).TotalMinutes)
                             If Not String.IsNullOrEmpty(playsTimeStamp) Then
                                 'Remove all plays on a specific timestamp
-                                If IDOfDuplicate.ContainsKey(CStr(sortedWatchedTimes(i).Movie.Ids.Trakt)) = False AndAlso (sortedWatchedTimes(i).WatchedAt_DateTime.ToString.EndsWith(playsTimeStamp)) Then
+                                If Not IDOfDuplicate.ContainsKey(CStr(sortedWatchedTimes(i).Movie.Ids.Trakt)) AndAlso (sortedWatchedTimes(i).WatchedAt_DateTime.ToString.EndsWith(playsTimeStamp)) Then
                                     IDOfDuplicate.Add(CStr(sortedWatchedTimes(i).Movie.Ids.Trakt), sortedWatchedTimes(i).HistoryID)
                                     IDNameOfDuplicate.Add(CStr(sortedWatchedTimes(i).Movie.Title), sortedWatchedTimes(i).WatchedAt_DateTime.ToString)
                                 End If
                             Else
                                 'Timespan mode, i.e. remove all plays within 5minute range
-                                If IDOfDuplicate.ContainsKey(CStr(sortedWatchedTimes(i).Movie.Ids.Trakt)) = False AndAlso ((sortedWatchedTimes(i).WatchedAt_DateTime - sortedWatchedTimes(i - 1).WatchedAt_DateTime).TotalMinutes < playsTimeRange) Then
+                                If Not IDOfDuplicate.ContainsKey(CStr(sortedWatchedTimes(i).Movie.Ids.Trakt)) AndAlso ((sortedWatchedTimes(i).WatchedAt_DateTime - sortedWatchedTimes(i - 1).WatchedAt_DateTime).TotalMinutes < playsTimeRange) Then
                                     IDOfDuplicate.Add(CStr(sortedWatchedTimes(i).Movie.Ids.Trakt), sortedWatchedTimes(i).HistoryID)
                                     IDNameOfDuplicate.Add(CStr(sortedWatchedTimes(i).Movie.Title), sortedWatchedTimes(i).WatchedAt_DateTime.ToString)
                                 End If
@@ -3610,10 +3608,6 @@ Public Class dlgTrakttvManager
 #End Region
 
 #End Region 'Methods
-
-
-
-
 
 End Class
 
@@ -3705,11 +3699,11 @@ End Class
 '            Dim request = New RestSharp.RestRequest(RestSharp.Method.[GET])
 '            Dim response = client.Execute(Of List(Of TraktWatchedMovieData))(request)
 
-'            If Not response Is Nothing Then
+'            If response IsNot Nothing Then
 '                'Now loop through to every entry
 '                For Each Item As TraktWatchedMovieData In response.Data
 '                    'Check if information is stored...
-'                    If Not Item.title Is Nothing AndAlso Item.title <> "" AndAlso Not Item.imdb_id Is Nothing AndAlso Item.imdb_id <> "" Then
+'                    If Item.title IsNot Nothing AndAlso Not String.IsNullOrEmpty(Item.title) AndAlso Item.imdb_id IsNot Nothing AndAlso Not String.IsNullOrEmpty(Item.imdb_id) Then
 '                        If Not dictMovieWatched.ContainsKey(Item.title) Then
 '                            'Now store imdbid, title and playcount information into dictionary (for now no other info needed...)
 '                            If Item.imdb_id.Length > 2 AndAlso Item.imdb_id.Substring(0, 2) = "tt" Then
@@ -3761,11 +3755,11 @@ End Class
 '            Dim request = New RestSharp.RestRequest(RestSharp.Method.[GET])
 '            Dim response = client.Execute(Of List(Of TraktWatchedEpisodeData))(request)
 
-'            If Not response Is Nothing Then
+'            If response IsNot Nothing Then
 '                'Now loop through to every entry
 '                For Each Item As TraktWatchedEpisodeData In response.Data
 '                    'Check if information is stored...
-'                    If Not Item.title Is Nothing AndAlso Item.title <> "" AndAlso Not Item.tvdb_id Is Nothing AndAlso Item.tvdb_id <> "" Then
+'                    If Item.title IsNot Nothing AndAlso Not String.IsNullOrEmpty(Item.title) AndAlso Item.tvdb_id IsNot Nothing AndAlso Not String.IsNullOrEmpty(Item.tvdb_id) Then
 '                        If Not dictMovieWatched.ContainsKey(Item.title) Then
 '                            'Now store tvdbID, title and the season-episode-list in dictionary...
 '                            dictMovieWatched.Add(Item.title, New KeyValuePair(Of String, List(Of SeasonClass))(Item.tvdb_id, Item.seasons))
