@@ -2004,7 +2004,7 @@ Public Class ModulesManager
             End Set
         End Property
 
-        Public Property ListShows() As String
+        Public Property ListTVShows() As String
             Get
                 Return If(_ListShows IsNot Nothing, _ListShows, "tvshowlist")
             End Get
