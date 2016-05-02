@@ -455,10 +455,10 @@ Public Class BulkRenamerModule
                 End Using
             Case Enums.ContentType.TV
                 Using dBulkRename As New dlgBulkRenamer_TV
-                    dBulkRename.FilterShows = ModulesManager.Instance.RuntimeObjects.FilterShows
-                    dBulkRename.FilterShowsSearch = ModulesManager.Instance.RuntimeObjects.FilterShowsSearch
-                    dBulkRename.FilterShowsType = ModulesManager.Instance.RuntimeObjects.FilterShowsType
-                    dBulkRename.ListShows = ModulesManager.Instance.RuntimeObjects.ListShows
+                    dBulkRename.FilterShows = ModulesManager.Instance.RuntimeObjects.FilterTVShows
+                    dBulkRename.FilterShowsSearch = ModulesManager.Instance.RuntimeObjects.FilterTVShowsSearch
+                    dBulkRename.FilterShowsType = ModulesManager.Instance.RuntimeObjects.FilterTVShowsType
+                    dBulkRename.ListShows = ModulesManager.Instance.RuntimeObjects.ListTVShows
                     dBulkRename.txtFilePatternEpisodes.Text = MySettings.FilesPattern_Episodes
                     dBulkRename.txtFolderPatternSeasons.Text = MySettings.FoldersPattern_Seasons
                     dBulkRename.txtFolderPatternShows.Text = MySettings.FoldersPattern_Shows

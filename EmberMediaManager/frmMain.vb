@@ -4244,7 +4244,7 @@ doCancel:
 
             If Reload Then FillList(False, False, True)
 
-            ModulesManager.Instance.RuntimeObjects.FilterShows = String.Empty
+            ModulesManager.Instance.RuntimeObjects.FilterTVShows = String.Empty
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
@@ -15243,16 +15243,16 @@ doCancel:
                 End If
 
                 bsTVShows.Filter = FilterString
-                ModulesManager.Instance.RuntimeObjects.FilterShows = FilterString
+                ModulesManager.Instance.RuntimeObjects.FilterTVShows = FilterString
             Else
                 bsTVShows.RemoveFilter()
-                ModulesManager.Instance.RuntimeObjects.FilterShows = String.Empty
+                ModulesManager.Instance.RuntimeObjects.FilterTVShows = String.Empty
             End If
 
             If doFill Then
                 FillList(False, False, True)
-                ModulesManager.Instance.RuntimeObjects.FilterShowsSearch = txtSearchShows.Text
-                ModulesManager.Instance.RuntimeObjects.FilterShowsType = cbSearchShows.Text
+                ModulesManager.Instance.RuntimeObjects.FilterTVShowsSearch = txtSearchShows.Text
+                ModulesManager.Instance.RuntimeObjects.FilterTVShowsType = cbSearchShows.Text
             Else
                 txtSearchShows.Focus()
             End If
