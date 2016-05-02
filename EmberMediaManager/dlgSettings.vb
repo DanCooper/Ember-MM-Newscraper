@@ -3311,7 +3311,12 @@ Public Class dlgSettings
                     If .MovieScraperCertLang = Master.eLang.All Then
                         cbMovieScraperCertLang.SelectedIndex = 0
                     ElseIf Not String.IsNullOrEmpty(.MovieScraperCertLang) Then
-                        cbMovieScraperCertLang.Text = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = .MovieScraperCertLang).name
+                        Dim tLanguage As CertLanguages = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = .MovieScraperCertLang)
+                        If tLanguage IsNot Nothing AndAlso tLanguage.name IsNot Nothing AndAlso String.IsNullOrEmpty(tLanguage.name) Then
+                            cbMovieScraperCertLang.Text = tLanguage.name
+                        Else
+                            cbMovieScraperCertLang.SelectedIndex = 0
+                        End If
                     Else
                         cbMovieScraperCertLang.SelectedIndex = 0
                     End If
@@ -3325,7 +3330,12 @@ Public Class dlgSettings
                 cbMovieGeneralLang.Items.AddRange((From lLang In .TVGeneralLanguages.Language Select lLang.name).ToArray)
                 If cbMovieGeneralLang.Items.Count > 0 Then
                     If Not String.IsNullOrEmpty(.MovieGeneralLanguage) Then
-                        cbMovieGeneralLang.Text = .TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = .MovieGeneralLanguage).name
+                        Dim tLanguage As TVDBLanguagesLanguage = .TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = .MovieGeneralLanguage)
+                        If tLanguage IsNot Nothing AndAlso tLanguage.name IsNot Nothing AndAlso String.IsNullOrEmpty(tLanguage.name) Then
+                            cbMovieGeneralLang.Text = tLanguage.name
+                        Else
+                            cbMovieGeneralLang.Text = .TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = "en").name
+                        End If
                     Else
                         cbMovieGeneralLang.Text = .TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = "en").name
                     End If
@@ -3342,7 +3352,12 @@ Public Class dlgSettings
                     If .TVScraperShowCertLang = Master.eLang.All Then
                         cbTVScraperShowCertLang.SelectedIndex = 0
                     ElseIf Not String.IsNullOrEmpty(.TVScraperShowCertLang) Then
-                        cbTVScraperShowCertLang.Text = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = .TVScraperShowCertLang).name
+                        Dim tLanguage As CertLanguages = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = .TVScraperShowCertLang)
+                        If tLanguage IsNot Nothing AndAlso tLanguage.name IsNot Nothing AndAlso String.IsNullOrEmpty(tLanguage.name) Then
+                            cbTVScraperShowCertLang.Text = tLanguage.name
+                        Else
+                            cbTVScraperShowCertLang.SelectedIndex = 0
+                        End If
                     Else
                         cbTVScraperShowCertLang.SelectedIndex = 0
                     End If
@@ -3356,7 +3371,12 @@ Public Class dlgSettings
                 cbTVGeneralLang.Items.AddRange((From lLang In .TVGeneralLanguages.Language Select lLang.name).ToArray)
                 If cbTVGeneralLang.Items.Count > 0 Then
                     If Not String.IsNullOrEmpty(.TVGeneralLanguage) Then
-                        cbTVGeneralLang.Text = .TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = .TVGeneralLanguage).name
+                        Dim tLanguage As TVDBLanguagesLanguage = .TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = .TVGeneralLanguage)
+                        If tLanguage IsNot Nothing AndAlso tLanguage.name IsNot Nothing AndAlso String.IsNullOrEmpty(tLanguage.name) Then
+                            cbTVGeneralLang.Text = tLanguage.name
+                        Else
+                            cbTVGeneralLang.Text = .TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = "en").name
+                        End If
                     Else
                         cbTVGeneralLang.Text = .TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = "en").name
                     End If

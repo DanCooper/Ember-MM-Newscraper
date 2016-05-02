@@ -1569,7 +1569,7 @@
   <string id="1478">VLC x86 Path</string>
   <string id="1479">Use as Audio Player</string>
   <string id="1480">Use as Video Player</string>
-  <string id="1481">Select Expor tPath</string>
+  <string id="1481">Select Export Path</string>
   <string id="1482">Select VLC Path</string>
   <string id="1483">libvlc.dll not found in path</string>
   <string id="1484">Remove following plays from watched history?</string>

@@ -142,7 +142,7 @@ Public Class dlgBulkRenamer_Movie
                                         Dim _currMovie As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt32(SQLreader("idMovie")))
                                         If Not _currMovie.ID = -1 AndAlso Not String.IsNullOrEmpty(_currMovie.Filename) Then
                                             Dim MovieFile As FileFolderRenamer.FileRename = FileFolderRenamer.GetInfo_Movie(_currMovie)
-                                            FFRenamer.AddMovie(MovieFile)
+                                            FFRenamer.Add_Movie(MovieFile)
                                             bwLoadInfo.ReportProgress(iProg, _currMovie.ListTitle)
                                         End If
                                     End If
@@ -210,7 +210,7 @@ Public Class dlgBulkRenamer_Movie
     End Sub
 
     Private Sub cmsMovieList_Opening(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles cmsMovieList.Opening
-        Dim count As Integer = FFRenamer.GetCount_Movies
+        Dim count As Integer = FFRenamer.GetCountAll_Movies
         Dim lockcount As Integer = FFRenamer.GetCountLocked_Movies
         If count > 0 Then
             If lockcount > 0 Then
@@ -360,7 +360,7 @@ Public Class dlgBulkRenamer_Movie
         lblCompiling.Text = Master.eLang.GetString(173, "Renaming...")
         lblFile.Visible = True
         pbCompile.Style = ProgressBarStyle.Continuous
-        pbCompile.Maximum = FFRenamer.GetMoviesCount
+        pbCompile.Maximum = FFRenamer.GetCountMax_Movies
         pbCompile.Value = 0
         Application.DoEvents()
         'Start worker
@@ -449,7 +449,7 @@ Public Class dlgBulkRenamer_Movie
                     .Tag = False
                     .AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
                 End If
-                bsMovies.DataSource = FFRenamer.GetMovies
+                bsMovies.DataSource = FFRenamer.GetTable_Movies
                 .DataSource = bsMovies
                 .Columns(5).Visible = False
                 .Columns(6).Visible = False

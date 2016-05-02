@@ -111,7 +111,7 @@ Namespace TVDBs
         End Sub
 
         Public Function GetSearchTVShowInfo(ByVal sShowName As String, ByRef oDBTV As Database.DBElement, ByVal iType As Enums.ScrapeType, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef FilteredOptions As Structures.ScrapeOptions) As MediaContainers.TVShow
-            Dim r As SearchResults = SearchTVShow(sShowName)
+            Dim r As SearchResults = SearchTVShowByName(sShowName)
 
             Select Case iType
                 Case Enums.ScrapeType.AllAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MissingAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SingleField
@@ -141,7 +141,7 @@ Namespace TVDBs
             Return Nothing
         End Function
 
-        Private Function SearchTVShow(ByVal sShow As String) As SearchResults
+        Private Function SearchTVShowByName(ByVal sShow As String) As SearchResults
             If String.IsNullOrEmpty(sShow) Then Return New SearchResults
             Dim R As New SearchResults
             Dim Shows As List(Of TVDB.Model.Series)
@@ -528,6 +528,21 @@ Namespace TVDBs
             Return nEpisode
         End Function
 
+        Public Function GetTVDBbyIMDB(ByVal strIMDB As String) As String
+            Dim Shows As List(Of TVDB.Model.Series)
+
+            Shows = _TVDBApi.GetSeriesByRemoteId(strIMDB, String.Empty, _TVDBMirror).Result
+            If Shows Is Nothing Then
+                Return String.Empty
+            End If
+
+            If Shows.Count = 1 Then
+                Return Shows.Item(0).Id.ToString
+            End If
+
+            Return String.Empty
+        End Function
+
         Private Function StringToListOfPerson(ByVal strActors As String) As List(Of MediaContainers.Person)
             Dim gActors As New List(Of MediaContainers.Person)
             Dim gRole As String = Master.eLang.GetString(947, "Guest Star")
@@ -569,7 +584,7 @@ Namespace TVDBs
 
             Select Case Args.Search
                 Case SearchType.TVShows
-                    Dim r As SearchResults = SearchTVShow(Args.Parameter)
+                    Dim r As SearchResults = SearchTVShowByName(Args.Parameter)
                     e.Result = New Results With {.ResultType = SearchType.TVShows, .Result = r}
 
                 Case SearchType.SearchDetails_TVShow

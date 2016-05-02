@@ -123,11 +123,11 @@ Public Class BulkRenamerModule
                 End If
             Case Enums.ModuleEventType.AfterEdit_TVEpisode
                 If MySettings.RenameEdit_Episodes AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Episodes) Then
-                    FileFolderRenamer.RenameSingle_Episode(_dbelement, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, False, False, False)
+                    FileFolderRenamer.RenameSingle_TVEpisode(_dbelement, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, False, False, False)
                 End If
             Case Enums.ModuleEventType.DuringUpdateDB_TV
-                If MySettings.RenameUpdate_Episodes AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Episodes) Then
-                    FileFolderRenamer.RenameSingle_Episode(_dbelement, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, True, False, False)
+                If _dbelement.NfoPathSpecified AndAlso MySettings.RenameUpdate_Episodes AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Episodes) Then
+                    FileFolderRenamer.RenameSingle_TVEpisode(_dbelement, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, True, False, False)
                 End If
             Case Enums.ModuleEventType.ScraperMulti_Movie
                 If MySettings.RenameMulti_Movies AndAlso Not String.IsNullOrEmpty(MySettings.FoldersPattern_Movies) AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Movies) Then
@@ -135,11 +135,11 @@ Public Class BulkRenamerModule
                 End If
             Case Enums.ModuleEventType.ScraperMulti_TVEpisode
                 If MySettings.RenameMulti_Shows AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Episodes) Then
-                    FileFolderRenamer.RenameSingle_Episode(_dbelement, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, False, False, False)
+                    FileFolderRenamer.RenameSingle_TVEpisode(_dbelement, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, False, False, False)
                 End If
             Case Enums.ModuleEventType.ScraperMulti_TVShow
                 If MySettings.RenameMulti_Shows AndAlso Not String.IsNullOrEmpty(MySettings.FoldersPattern_Shows) AndAlso Not String.IsNullOrEmpty(MySettings.FoldersPattern_Seasons) AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Episodes) Then
-                    FileFolderRenamer.RenameSingle_Show(_dbelement, MySettings.FoldersPattern_Shows, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, False, False, False)
+                    FileFolderRenamer.RenameSingle_TVShow(_dbelement, MySettings.FoldersPattern_Shows, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, False, False, False)
                 End If
             Case Enums.ModuleEventType.ScraperSingle_Movie
                 If MySettings.RenameSingle_Movies AndAlso Not String.IsNullOrEmpty(MySettings.FoldersPattern_Movies) AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Movies) Then
@@ -147,11 +147,11 @@ Public Class BulkRenamerModule
                 End If
             Case Enums.ModuleEventType.ScraperSingle_TVEpisode
                 If MySettings.RenameSingle_Shows AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Episodes) Then
-                    FileFolderRenamer.RenameSingle_Episode(_dbelement, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, False, False, False)
+                    FileFolderRenamer.RenameSingle_TVEpisode(_dbelement, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, False, False, False)
                 End If
             Case Enums.ModuleEventType.ScraperSingle_TVShow
                 If MySettings.RenameSingle_Shows AndAlso Not String.IsNullOrEmpty(MySettings.FoldersPattern_Shows) AndAlso Not String.IsNullOrEmpty(MySettings.FoldersPattern_Seasons) AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Episodes) Then
-                    FileFolderRenamer.RenameSingle_Show(_dbelement, MySettings.FoldersPattern_Shows, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, False, False, False)
+                    FileFolderRenamer.RenameSingle_TVShow(_dbelement, MySettings.FoldersPattern_Shows, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, False, False, False)
                 End If
                 'Case Enums.ModuleEventType.AfterUpdateDB_TV
                 '    If MySettings.RenameUpdate_Episodes AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Episodes) Then
@@ -184,7 +184,7 @@ Public Class BulkRenamerModule
         For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListTVEpisodes.SelectedRows
             Dim DBElement As Database.DBElement = Master.DB.Load_TVEpisode(Convert.ToInt64(sRow.Cells("idEpisode").Value), True)
             If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(DBElement, True) Then
-                FileFolderRenamer.RenameSingle_Episode(DBElement, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, False, True, True)
+                FileFolderRenamer.RenameSingle_TVEpisode(DBElement, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, False, True, True)
                 RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {Convert.ToInt64(sRow.Cells("idEpisode").Value)}))
             End If
         Next
@@ -196,7 +196,7 @@ Public Class BulkRenamerModule
         For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListTVShows.SelectedRows
             Dim DBElement As Database.DBElement = Master.DB.Load_TVShow(Convert.ToInt64(sRow.Cells("idShow").Value), True, True)
             If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBElement, True) Then
-                FileFolderRenamer.RenameSingle_Show(DBElement, MySettings.FoldersPattern_Shows, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, False, True, True)
+                FileFolderRenamer.RenameSingle_TVShow(DBElement, MySettings.FoldersPattern_Shows, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, False, True, True)
                 RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVShow, New List(Of Object)(New Object() {Convert.ToInt64(sRow.Cells("idShow").Value)}))
             End If
         Next
@@ -455,10 +455,10 @@ Public Class BulkRenamerModule
                 End Using
             Case Enums.ContentType.TV
                 Using dBulkRename As New dlgBulkRenamer_TV
-                    dBulkRename.FilterShows = ModulesManager.Instance.RuntimeObjects.FilterShows
-                    dBulkRename.FilterShowsSearch = ModulesManager.Instance.RuntimeObjects.FilterShowsSearch
-                    dBulkRename.FilterShowsType = ModulesManager.Instance.RuntimeObjects.FilterShowsType
-                    dBulkRename.ListShows = ModulesManager.Instance.RuntimeObjects.ListShows
+                    dBulkRename.FilterShows = ModulesManager.Instance.RuntimeObjects.FilterTVShows
+                    dBulkRename.FilterShowsSearch = ModulesManager.Instance.RuntimeObjects.FilterTVShowsSearch
+                    dBulkRename.FilterShowsType = ModulesManager.Instance.RuntimeObjects.FilterTVShowsType
+                    dBulkRename.ListShows = ModulesManager.Instance.RuntimeObjects.ListTVShows
                     dBulkRename.txtFilePatternEpisodes.Text = MySettings.FilesPattern_Episodes
                     dBulkRename.txtFolderPatternSeasons.Text = MySettings.FoldersPattern_Seasons
                     dBulkRename.txtFolderPatternShows.Text = MySettings.FoldersPattern_Shows

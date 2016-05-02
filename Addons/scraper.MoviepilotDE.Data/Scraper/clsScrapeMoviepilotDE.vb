@@ -168,6 +168,14 @@ Namespace MoviepilotDE
                             End If
                         End If
                     End If
+                    '2016/04/17 Fix for moviepilot outline structure changes
+                    If String.IsNullOrEmpty(strOutline) Then
+                        descPattern = "<div class='movie--teaser(?<DUMMY>.*?)<p>(?<OUTLINE>.*?)<\/p>"
+                        descResult = Regex.Matches(HTML, descPattern, RegexOptions.Singleline)
+                        If descResult.Count > 0 AndAlso descResult.Item(0).Groups.Count = 3 Then
+                            strOutline = Web.HttpUtility.HtmlDecode(descResult.Item(0).Groups(2).Value.Trim)
+                        End If
+                    End If
                 End If
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)

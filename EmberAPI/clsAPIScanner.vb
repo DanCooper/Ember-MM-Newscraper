@@ -1073,7 +1073,7 @@ Public Class Scanner
                 End If
             End If
 
-            'save all new seasons to DB
+            'save all new seasons to DB (no sync)
             For Each newSeason As Integer In newSeasonsIndex
                 Dim tSeason As Database.DBElement = DBTVShow.Seasons.FirstOrDefault(Function(f) f.TVSeason.Season = newSeason)
                 If tSeason IsNot Nothing AndAlso tSeason.TVSeason IsNot Nothing Then
