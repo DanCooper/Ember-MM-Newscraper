@@ -497,37 +497,37 @@ Public Class APIXML
 
     Public Shared Function GetRatingList_Movie() As Object()
         Dim retRatings As New List(Of String)
-        Try
-            If Not Master.eSettings.MovieScraperCertForMPAA Then
-                For Each r In RatingXML.movies.FindAll(Function(f) f.country.ToLower = "usa")
-                    retRatings.Add(r.searchstring)
-                Next
-            Else
-                For Each r In RatingXML.movies.FindAll(Function(f) f.country.ToLower = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.MovieScraperCertLang).name.ToLower)
+        If Master.eSettings.MovieScraperCertForMPAA AndAlso Not Master.eSettings.MovieScraperCertLang = Master.eLang.All Then
+            Dim tCountry = CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.MovieScraperCertLang)
+            If tCountry IsNot Nothing AndAlso Not String.IsNullOrEmpty(tCountry.name) Then
+                For Each r In RatingXML.movies.FindAll(Function(f) f.country.ToLower = tCountry.name.ToLower)
                     retRatings.Add(r.searchstring)
                 Next
             End If
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
+        Else
+            For Each r In RatingXML.movies.FindAll(Function(f) f.country.ToLower = "usa")
+                retRatings.Add(r.searchstring)
+            Next
+        End If
+
         Return retRatings.ToArray
     End Function
 
     Public Shared Function GetRatingList_TV() As Object()
         Dim retRatings As New List(Of String)
-        Try
-            If Not Master.eSettings.TVScraperShowCertForMPAA Then
-                For Each r In RatingXML.tv.FindAll(Function(f) f.country.ToLower = "usa")
-                    retRatings.Add(r.searchstring)
-                Next
-            Else
-                For Each r In RatingXML.tv.FindAll(Function(f) f.country.ToLower = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.TVScraperShowCertLang).name.ToLower)
+        If Master.eSettings.TVScraperShowCertForMPAA AndAlso Not Master.eSettings.TVScraperShowCertLang = Master.eLang.All Then
+            Dim tCountry = CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.TVScraperShowCertLang)
+            If tCountry IsNot Nothing AndAlso Not String.IsNullOrEmpty(tCountry.name) Then
+                For Each r In RatingXML.tv.FindAll(Function(f) f.country.ToLower = tCountry.name.ToLower)
                     retRatings.Add(r.searchstring)
                 Next
             End If
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
+        Else
+            For Each r In RatingXML.tv.FindAll(Function(f) f.country.ToLower = "usa")
+                retRatings.Add(r.searchstring)
+            Next
+        End If
+
         Return retRatings.ToArray
     End Function
 
