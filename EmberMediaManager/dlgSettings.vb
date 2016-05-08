@@ -5006,7 +5006,7 @@ Public Class dlgSettings
             .MovieScraperCertForMPAAFallback = chkMovieScraperCertForMPAAFallback.Checked
             .MovieScraperCertFSK = chkMovieScraperCertFSK.Checked
             .MovieScraperCertOnlyValue = chkMovieScraperCertOnlyValue.Checked
-            If cbMovieScraperCertLang.Text <> String.Empty Then
+            If Not String.IsNullOrEmpty(cbMovieScraperCertLang.Text) Then
                 If cbMovieScraperCertLang.SelectedIndex = 0 Then
                     .MovieScraperCertLang = Master.eLang.All
                 Else
@@ -5189,7 +5189,7 @@ Public Class dlgSettings
             .TVScraperShowCertForMPAAFallback = chkTVScraperShowCertForMPAAFallback.Checked
             .TVScraperShowCertFSK = chkTVScraperShowCertFSK.Checked
             .TVScraperShowCertOnlyValue = chkTVScraperShowCertOnlyValue.Checked
-            If cbTVScraperShowCertLang.Text <> String.Empty Then
+            If Not String.IsNullOrEmpty(cbTVScraperShowCertLang.Text) Then
                 If cbTVScraperShowCertLang.SelectedIndex = 0 Then
                     .TVScraperShowCertLang = Master.eLang.All
                 Else
