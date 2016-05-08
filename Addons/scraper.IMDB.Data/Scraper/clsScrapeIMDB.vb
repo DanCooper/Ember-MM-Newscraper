@@ -771,12 +771,47 @@ mPlot:          'Plot
             Return nTVEpisode
         End Function
 
-        Public Sub GetTVSeasonInfo(ByRef nTVShow As MediaContainers.TVShow, ByVal strTVShowID As String, ByVal SeasonNumber As Integer, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef FilteredOptions As Structures.ScrapeOptions)
+        Public Function GetTVEpisodeInfo(ByVal strTVShowIMDBID As String, ByVal iSeasonNumber As Integer, ByVal iEpisodeNumber As Integer, ByRef FilteredOptions As Structures.ScrapeOptions) As MediaContainers.EpisodeDetails
+            If String.IsNullOrEmpty(strTVShowIMDBID) OrElse iSeasonNumber = -1 OrElse iEpisodeNumber = -1 Then Return Nothing
+
+            Dim strTVEpisodeIMDBID As String = String.Empty
+
+            Dim HTML As String
+            intHTTP = New HTTP
+            HTML = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/", strTVShowIMDBID, "/episodes?season=", iSeasonNumber))
+            intHTTP.Dispose()
+            intHTTP = Nothing
+
+            Dim D, W As Integer
+            D = HTML.IndexOf("<div class=""list detail eplist"">")
+            'Check if doesnt find genres
+            If D > 0 Then
+                W = HTML.IndexOf("<hr>", D)
+
+                If W > 0 Then
+                    Dim rEpisodes As MatchCollection = Regex.Matches(HTML.Substring(D, W - D), TVEPISODE_PATTERN, RegexOptions.Singleline Or RegexOptions.IgnoreCase)
+                    If rEpisodes.Count > 0 Then
+                        For Each tEpisode As Match In rEpisodes
+                            If CInt(tEpisode.Groups("EPISODE").Value) = iEpisodeNumber Then
+                                Dim nEpisode As MediaContainers.EpisodeDetails = GetTVEpisodeInfo(tEpisode.Groups("IMDB").Value, FilteredOptions)
+                                If nEpisode IsNot Nothing Then
+                                    Return nEpisode
+                                End If
+                            End If
+                        Next
+                    End If
+                End If
+            End If
+
+            Return Nothing
+        End Function
+
+        Public Sub GetTVSeasonInfo(ByRef nTVShow As MediaContainers.TVShow, ByVal strTVShowIMDBID As String, ByVal iSeasonNumber As Integer, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef FilteredOptions As Structures.ScrapeOptions)
 
             If ScrapeModifiers.withEpisodes Then
                 Dim HTML As String
                 intHTTP = New HTTP
-                HTML = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/", strTVShowID, "/episodes?season=", SeasonNumber))
+                HTML = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/", strTVShowIMDBID, "/episodes?season=", iSeasonNumber))
                 intHTTP.Dispose()
                 intHTTP = Nothing
 
@@ -787,7 +822,6 @@ mPlot:          'Plot
                     W = HTML.IndexOf("<hr>", D)
 
                     If W > 0 Then
-                        Dim test = HTML.Substring(D, W - D)
                         Dim rEpisodes As MatchCollection = Regex.Matches(HTML.Substring(D, W - D), TVEPISODE_PATTERN, RegexOptions.Singleline Or RegexOptions.IgnoreCase)
                         If rEpisodes.Count > 0 Then
                             For Each tEpisode As Match In rEpisodes

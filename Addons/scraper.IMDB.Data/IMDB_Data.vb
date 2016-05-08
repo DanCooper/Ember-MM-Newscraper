@@ -554,7 +554,7 @@ Public Class IMDB_Data
         If oDBTVEpisode.TVEpisode.IMDBSpecified Then
             nTVEpisode = _scraper.GetTVEpisodeInfo(oDBTVEpisode.TVEpisode.IMDB, FilteredOptions)
         ElseIf oDBTVEpisode.TVShow.IMDBSpecified AndAlso oDBTVEpisode.TVEpisode.SeasonSpecified AndAlso oDBTVEpisode.TVEpisode.EpisodeSpecified Then
-            'nTVEpisode = _scraper.GetTVEpisodeInfo(CInt(oDBTVEpisode.TVShow.TVDB), oDBTVEpisode.TVEpisode.Aired, FilteredOptions)
+            nTVEpisode = _scraper.GetTVEpisodeInfo(oDBTVEpisode.TVShow.IMDB, oDBTVEpisode.TVEpisode.Season, oDBTVEpisode.TVEpisode.Episode, FilteredOptions)
         Else
             logger.Trace("[IMDB_Data] [Scraper_TVEpisode] [Abort] No Episode and TV Show IMDB ID available")
             Return New Interfaces.ModuleResult_Data_TVEpisode With {.Result = Nothing}
