@@ -25,9 +25,10 @@ Imports System.IO
 Namespace MediaContainers
 
 
-    <Serializable()> _
-    <XmlRoot("episodedetails")> _
+    <Serializable()>
+    <XmlRoot("episodedetails")>
     Public Class EpisodeDetails
+        Implements ICloneable
 
 #Region "Fields"
 
@@ -637,6 +638,18 @@ Namespace MediaContainers
                 End If
             End If
         End Sub
+
+        Public Function CloneDeep() As Object Implements ICloneable.Clone
+            Dim Stream As New MemoryStream(50000)
+            Dim Formatter As New Runtime.Serialization.Formatters.Binary.BinaryFormatter()
+            ' Serialisierung über alle Objekte hinweg in einen Stream 
+            Formatter.Serialize(Stream, Me)
+            ' Zurück zum Anfang des Streams und... 
+            Stream.Seek(0, SeekOrigin.Begin)
+            ' ...aus dem Stream in ein Objekt deserialisieren 
+            CloneDeep = Formatter.Deserialize(Stream)
+            Stream.Close()
+        End Function
 
         Public Sub CreateCachePaths_ActorsThumbs()
             Dim sPath As String = Path.Combine(Master.TempPath, "Global")

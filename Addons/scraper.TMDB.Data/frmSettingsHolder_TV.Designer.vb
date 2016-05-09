@@ -106,7 +106,7 @@ Partial Class frmSettingsHolder_TV
         Me.gbScraperOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbScraperOpts.Location = New System.Drawing.Point(3, 218)
         Me.gbScraperOpts.Name = "gbScraperOpts"
-        Me.gbScraperOpts.Size = New System.Drawing.Size(452, 116)
+        Me.gbScraperOpts.Size = New System.Drawing.Size(488, 116)
         Me.gbScraperOpts.TabIndex = 1
         Me.gbScraperOpts.TabStop = False
         Me.gbScraperOpts.Text = "Scraper Options"
@@ -136,7 +136,7 @@ Partial Class frmSettingsHolder_TV
         Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperOpts.Size = New System.Drawing.Size(446, 95)
+        Me.tblScraperOpts.Size = New System.Drawing.Size(482, 95)
         Me.tblScraperOpts.TabIndex = 98
         '
         'pbTMDBApiKeyInfo
@@ -344,7 +344,7 @@ Partial Class frmSettingsHolder_TV
         Me.gbScraperFieldsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbScraperFieldsOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbScraperFieldsOpts.Name = "gbScraperFieldsOpts"
-        Me.gbScraperFieldsOpts.Size = New System.Drawing.Size(452, 209)
+        Me.gbScraperFieldsOpts.Size = New System.Drawing.Size(488, 209)
         Me.gbScraperFieldsOpts.TabIndex = 3
         Me.gbScraperFieldsOpts.TabStop = False
         Me.gbScraperFieldsOpts.Text = "Scraper Fields - Scraper specific"
@@ -366,7 +366,7 @@ Partial Class frmSettingsHolder_TV
         Me.tblScraperFieldsOpts.RowCount = 2
         Me.tblScraperFieldsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperFieldsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperFieldsOpts.Size = New System.Drawing.Size(446, 188)
+        Me.tblScraperFieldsOpts.Size = New System.Drawing.Size(482, 188)
         Me.tblScraperFieldsOpts.TabIndex = 99
         '
         'gbScraperFieldsShow
@@ -566,7 +566,7 @@ Partial Class frmSettingsHolder_TV
         Me.gbScraperFieldsEpisode.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbScraperFieldsEpisode.Location = New System.Drawing.Point(269, 3)
         Me.gbScraperFieldsEpisode.Name = "gbScraperFieldsEpisode"
-        Me.gbScraperFieldsEpisode.Size = New System.Drawing.Size(174, 182)
+        Me.gbScraperFieldsEpisode.Size = New System.Drawing.Size(210, 182)
         Me.gbScraperFieldsEpisode.TabIndex = 1
         Me.gbScraperFieldsEpisode.TabStop = False
         Me.gbScraperFieldsEpisode.Text = "Episode"
@@ -596,7 +596,7 @@ Partial Class frmSettingsHolder_TV
         Me.tblScraperFieldsEpisode.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperFieldsEpisode.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperFieldsEpisode.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblScraperFieldsEpisode.Size = New System.Drawing.Size(168, 161)
+        Me.tblScraperFieldsEpisode.Size = New System.Drawing.Size(204, 161)
         Me.tblScraperFieldsEpisode.TabIndex = 0
         '
         'chkScraperEpisodeAired
@@ -625,7 +625,7 @@ Partial Class frmSettingsHolder_TV
         '
         Me.chkScraperEpisodeRating.AutoSize = True
         Me.chkScraperEpisodeRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScraperEpisodeRating.Location = New System.Drawing.Point(81, 49)
+        Me.chkScraperEpisodeRating.Location = New System.Drawing.Point(117, 49)
         Me.chkScraperEpisodeRating.Name = "chkScraperEpisodeRating"
         Me.chkScraperEpisodeRating.Size = New System.Drawing.Size(60, 17)
         Me.chkScraperEpisodeRating.TabIndex = 5
@@ -638,16 +638,16 @@ Partial Class frmSettingsHolder_TV
         Me.chkScraperEpisodeCredits.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkScraperEpisodeCredits.Location = New System.Drawing.Point(3, 49)
         Me.chkScraperEpisodeCredits.Name = "chkScraperEpisodeCredits"
-        Me.chkScraperEpisodeCredits.Size = New System.Drawing.Size(62, 17)
+        Me.chkScraperEpisodeCredits.Size = New System.Drawing.Size(108, 17)
         Me.chkScraperEpisodeCredits.TabIndex = 8
-        Me.chkScraperEpisodeCredits.Text = "Credits"
+        Me.chkScraperEpisodeCredits.Text = "Credits (Writers)"
         Me.chkScraperEpisodeCredits.UseVisualStyleBackColor = True
         '
         'chkScraperEpisodePlot
         '
         Me.chkScraperEpisodePlot.AutoSize = True
         Me.chkScraperEpisodePlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScraperEpisodePlot.Location = New System.Drawing.Point(81, 26)
+        Me.chkScraperEpisodePlot.Location = New System.Drawing.Point(117, 26)
         Me.chkScraperEpisodePlot.Name = "chkScraperEpisodePlot"
         Me.chkScraperEpisodePlot.Size = New System.Drawing.Size(46, 17)
         Me.chkScraperEpisodePlot.TabIndex = 6
@@ -658,7 +658,7 @@ Partial Class frmSettingsHolder_TV
         '
         Me.chkScraperEpisodeTitle.AutoSize = True
         Me.chkScraperEpisodeTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScraperEpisodeTitle.Location = New System.Drawing.Point(81, 72)
+        Me.chkScraperEpisodeTitle.Location = New System.Drawing.Point(117, 72)
         Me.chkScraperEpisodeTitle.Name = "chkScraperEpisodeTitle"
         Me.chkScraperEpisodeTitle.Size = New System.Drawing.Size(47, 17)
         Me.chkScraperEpisodeTitle.TabIndex = 0
@@ -669,7 +669,7 @@ Partial Class frmSettingsHolder_TV
         '
         Me.chkScraperEpisodeGuestStars.AutoSize = True
         Me.chkScraperEpisodeGuestStars.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.chkScraperEpisodeGuestStars.Location = New System.Drawing.Point(81, 3)
+        Me.chkScraperEpisodeGuestStars.Location = New System.Drawing.Point(117, 3)
         Me.chkScraperEpisodeGuestStars.Name = "chkScraperEpisodeGuestStars"
         Me.chkScraperEpisodeGuestStars.Size = New System.Drawing.Size(84, 17)
         Me.chkScraperEpisodeGuestStars.TabIndex = 10

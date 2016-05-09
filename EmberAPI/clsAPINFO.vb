@@ -659,8 +659,8 @@ Public Class NFO
             End If
 
             'Rating/Votes
-            If (Not DBTV.TVShow.RatingSpecified OrElse DBTV.TVShow.Rating = "0" OrElse Not Master.eSettings.TVLockShowRating) AndAlso ScrapeOptions.bMainRating AndAlso
-                scrapedshow.RatingSpecified AndAlso Not scrapedshow.Rating = "0" AndAlso Master.eSettings.TVScraperShowRating AndAlso Not new_Rating Then
+            If (Not DBTV.TVShow.RatingSpecified OrElse Not Master.eSettings.TVLockShowRating) AndAlso ScrapeOptions.bMainRating AndAlso
+                scrapedshow.RatingSpecified AndAlso Master.eSettings.TVScraperShowRating AndAlso Not new_Rating Then
                 DBTV.TVShow.Rating = scrapedshow.Rating
                 DBTV.TVShow.Votes = NumUtils.CleanVotes(scrapedshow.Votes)
                 new_Rating = True
@@ -2231,7 +2231,6 @@ Public Class NFO
     End Sub
 
     Public Shared Sub SaveToNFO_Movie(ByRef tDBElement As Database.DBElement)
-
         Try
             Try
                 Dim params As New List(Of Object)(New Object() {tDBElement})
@@ -2296,7 +2295,6 @@ Public Class NFO
     End Sub
 
     Public Shared Sub SaveToNFO_MovieSet(ByRef tDBElement As Database.DBElement)
-
         Try
             'Try
             '    Dim params As New List(Of Object)(New Object() {moviesetToSave})
@@ -2342,10 +2340,11 @@ Public Class NFO
     End Sub
 
     Public Shared Sub SaveToNFO_TVEpisode(ByRef tDBElement As Database.DBElement)
-
         Try
+            If tDBElement.FilenameSpecified Then
+                'Create a clone of MediaContainer to prevent changes on database data that only needed in NFO
+                Dim tTVEpisode As MediaContainers.EpisodeDetails = CType(tDBElement.TVEpisode.CloneDeep, MediaContainers.EpisodeDetails)
 
-            If Not String.IsNullOrEmpty(tDBElement.Filename) Then
                 Dim xmlSer As New XmlSerializer(GetType(MediaContainers.EpisodeDetails))
 
                 Dim tPath As String = String.Empty
@@ -2388,12 +2387,12 @@ Public Class NFO
                             End While
                         End Using
 
-                        EpList.Add(tDBElement.TVEpisode)
+                        EpList.Add(tTVEpisode)
 
                         Dim NS As New XmlSerializerNamespaces
                         NS.Add(String.Empty, String.Empty)
 
-                        For Each tvEp As MediaContainers.EpisodeDetails In EpList.OrderBy(Function(s) s.Season)
+                        For Each tvEp As MediaContainers.EpisodeDetails In EpList.OrderBy(Function(s) s.Season).OrderBy(Function(e) e.Episode)
 
                             'digit grouping symbol for Votes count
                             If Master.eSettings.GeneralDigitGrpSymbolVotes Then
@@ -2437,7 +2436,6 @@ Public Class NFO
     End Sub
 
     Public Shared Sub SaveToNFO_TVShow(ByRef tDBElement As Database.DBElement)
-
         Try
             Dim params As New List(Of Object)(New Object() {tDBElement})
             Dim doContinue As Boolean = True

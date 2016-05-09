@@ -1396,6 +1396,36 @@ Public Class Database
         Return tList
     End Function
 
+    Public Function GetAllTVEpisodePaths() As List(Of String)
+        Dim tList As New List(Of String)
+
+        Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = "SELECT strFilename FROM files;"
+            Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    tList.Add(SQLreader("strFilename").ToString.ToLower)
+                End While
+            End Using
+        End Using
+
+        Return tList
+    End Function
+
+    Public Function GetAllTVShowPaths() As Hashtable
+        Dim tList As New Hashtable
+
+        Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = "SELECT idShow, TVShowPath FROM tvshow;"
+            Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    tList.Add(SQLreader("TVShowPath").ToString.ToLower, SQLreader("idShow"))
+                End While
+            End Using
+        End Using
+
+        Return tList
+    End Function
+
     Public Function GetTVSeasonIDFromEpisode(ByVal DBElement As DBElement) As Long
         Dim sID As Long = -1
         If DBElement.TVEpisode IsNot Nothing Then

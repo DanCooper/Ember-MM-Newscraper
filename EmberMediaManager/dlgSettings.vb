@@ -3312,7 +3312,7 @@ Public Class dlgSettings
                         cbMovieScraperCertLang.SelectedIndex = 0
                     ElseIf Not String.IsNullOrEmpty(.MovieScraperCertLang) Then
                         Dim tLanguage As CertLanguages = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = .MovieScraperCertLang)
-                        If tLanguage IsNot Nothing AndAlso tLanguage.name IsNot Nothing AndAlso String.IsNullOrEmpty(tLanguage.name) Then
+                        If tLanguage IsNot Nothing AndAlso tLanguage.name IsNot Nothing AndAlso Not String.IsNullOrEmpty(tLanguage.name) Then
                             cbMovieScraperCertLang.Text = tLanguage.name
                         Else
                             cbMovieScraperCertLang.SelectedIndex = 0
@@ -3331,7 +3331,7 @@ Public Class dlgSettings
                 If cbMovieGeneralLang.Items.Count > 0 Then
                     If Not String.IsNullOrEmpty(.MovieGeneralLanguage) Then
                         Dim tLanguage As TVDBLanguagesLanguage = .TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = .MovieGeneralLanguage)
-                        If tLanguage IsNot Nothing AndAlso tLanguage.name IsNot Nothing AndAlso String.IsNullOrEmpty(tLanguage.name) Then
+                        If tLanguage IsNot Nothing AndAlso tLanguage.name IsNot Nothing AndAlso Not String.IsNullOrEmpty(tLanguage.name) Then
                             cbMovieGeneralLang.Text = tLanguage.name
                         Else
                             cbMovieGeneralLang.Text = .TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = "en").name
@@ -3353,7 +3353,7 @@ Public Class dlgSettings
                         cbTVScraperShowCertLang.SelectedIndex = 0
                     ElseIf Not String.IsNullOrEmpty(.TVScraperShowCertLang) Then
                         Dim tLanguage As CertLanguages = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = .TVScraperShowCertLang)
-                        If tLanguage IsNot Nothing AndAlso tLanguage.name IsNot Nothing AndAlso String.IsNullOrEmpty(tLanguage.name) Then
+                        If tLanguage IsNot Nothing AndAlso tLanguage.name IsNot Nothing AndAlso Not String.IsNullOrEmpty(tLanguage.name) Then
                             cbTVScraperShowCertLang.Text = tLanguage.name
                         Else
                             cbTVScraperShowCertLang.SelectedIndex = 0
@@ -3372,7 +3372,7 @@ Public Class dlgSettings
                 If cbTVGeneralLang.Items.Count > 0 Then
                     If Not String.IsNullOrEmpty(.TVGeneralLanguage) Then
                         Dim tLanguage As TVDBLanguagesLanguage = .TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = .TVGeneralLanguage)
-                        If tLanguage IsNot Nothing AndAlso tLanguage.name IsNot Nothing AndAlso String.IsNullOrEmpty(tLanguage.name) Then
+                        If tLanguage IsNot Nothing AndAlso tLanguage.name IsNot Nothing AndAlso Not String.IsNullOrEmpty(tLanguage.name) Then
                             cbTVGeneralLang.Text = tLanguage.name
                         Else
                             cbTVGeneralLang.Text = .TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = "en").name
@@ -5006,7 +5006,7 @@ Public Class dlgSettings
             .MovieScraperCertForMPAAFallback = chkMovieScraperCertForMPAAFallback.Checked
             .MovieScraperCertFSK = chkMovieScraperCertFSK.Checked
             .MovieScraperCertOnlyValue = chkMovieScraperCertOnlyValue.Checked
-            If cbMovieScraperCertLang.Text <> String.Empty Then
+            If Not String.IsNullOrEmpty(cbMovieScraperCertLang.Text) Then
                 If cbMovieScraperCertLang.SelectedIndex = 0 Then
                     .MovieScraperCertLang = Master.eLang.All
                 Else
@@ -5189,7 +5189,7 @@ Public Class dlgSettings
             .TVScraperShowCertForMPAAFallback = chkTVScraperShowCertForMPAAFallback.Checked
             .TVScraperShowCertFSK = chkTVScraperShowCertFSK.Checked
             .TVScraperShowCertOnlyValue = chkTVScraperShowCertOnlyValue.Checked
-            If cbTVScraperShowCertLang.Text <> String.Empty Then
+            If Not String.IsNullOrEmpty(cbTVScraperShowCertLang.Text) Then
                 If cbTVScraperShowCertLang.SelectedIndex = 0 Then
                     .TVScraperShowCertLang = Master.eLang.All
                 Else

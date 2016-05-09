@@ -1953,12 +1953,12 @@ Public Class ModulesManager
         Private _FilterMovies As String
         Private _FilterMoviesSearch As String
         Private _FilterMoviesType As String
-        Private _FilterShows As String
-        Private _FilterShowsSearch As String
-        Private _FilterShowsType As String
+        Private _FilterTVShows As String
+        Private _FilterTVShowsSearch As String
+        Private _FilterTVShowsType As String
         Private _ListMovieSets As String
         Private _ListMovies As String
-        Private _ListShows As String
+        Private _ListTVShows As String
         Private _LoadMedia As LoadMedia
         Private _MainMenu As MenuStrip
         Private _MainTabControl As TabControl
@@ -2004,12 +2004,12 @@ Public Class ModulesManager
             End Set
         End Property
 
-        Public Property ListShows() As String
+        Public Property ListTVShows() As String
             Get
-                Return If(_ListShows IsNot Nothing, _ListShows, "tvshowlist")
+                Return If(_ListTVShows IsNot Nothing, _ListTVShows, "tvshowlist")
             End Get
             Set(ByVal value As String)
-                _ListShows = value
+                _ListTVShows = value
             End Set
         End Property
 
@@ -2039,30 +2039,30 @@ Public Class ModulesManager
                 _FilterMoviesType = value
             End Set
         End Property
-        Public Property FilterShows() As String
+        Public Property FilterTVShows() As String
             Get
-                Return _FilterShows
+                Return _FilterTVShows
             End Get
             Set(ByVal value As String)
-                _FilterShows = value
+                _FilterTVShows = value
             End Set
         End Property
 
-        Public Property FilterShowsSearch() As String
+        Public Property FilterTVShowsSearch() As String
             Get
-                Return _FilterShowsSearch
+                Return _FilterTVShowsSearch
             End Get
             Set(ByVal value As String)
-                _FilterShowsSearch = value
+                _FilterTVShowsSearch = value
             End Set
         End Property
 
-        Public Property FilterShowsType() As String
+        Public Property FilterTVShowsType() As String
             Get
-                Return _FilterShowsType
+                Return _FilterTVShowsType
             End Get
             Set(ByVal value As String)
-                _FilterShowsType = value
+                _FilterTVShowsType = value
             End Set
         End Property
 

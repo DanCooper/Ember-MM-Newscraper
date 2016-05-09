@@ -1012,30 +1012,30 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property GeneralFilterPanelStateMovie() As Boolean
+    Public Property GeneralFilterPanelIsRaisedMovie() As Boolean
         Get
-            Return Settings._XMLSettings.GeneralFilterPanelStateMovie
+            Return Settings._XMLSettings.GeneralFilterPanelIsRaisedMovie
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.GeneralFilterPanelStateMovie = value
+            Settings._XMLSettings.GeneralFilterPanelIsRaisedMovie = value
         End Set
     End Property
 
-    Public Property GeneralFilterPanelStateMovieSet() As Boolean
+    Public Property GeneralFilterPanelIsRaisedMovieSet() As Boolean
         Get
-            Return Settings._XMLSettings.GeneralFilterPanelStateMovieSet
+            Return Settings._XMLSettings.GeneralFilterPanelIsRaisedMovieSet
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.GeneralFilterPanelStateMovieSet = value
+            Settings._XMLSettings.GeneralFilterPanelIsRaisedMovieSet = value
         End Set
     End Property
 
-    Public Property GeneralFilterPanelStateShow() As Boolean
+    Public Property GeneralFilterPanelIsRaisedTVShow() As Boolean
         Get
-            Return Settings._XMLSettings.GeneralFilterPanelStateShow
+            Return Settings._XMLSettings.GeneralFilterPanelIsRaisedTVShow
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.GeneralFilterPanelStateShow = value
+            Settings._XMLSettings.GeneralFilterPanelIsRaisedTVShow = value
         End Set
     End Property
 
@@ -1093,21 +1093,21 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property GeneralMovieInfoPanelState() As Integer
+    Public Property GeneralInfoPanelStateMovie() As Integer
         Get
-            Return Settings._XMLSettings.GeneralMovieInfoPanelState
+            Return Settings._XMLSettings.GeneralInfoPanelStateMovie
         End Get
         Set(ByVal value As Integer)
-            Settings._XMLSettings.GeneralMovieInfoPanelState = value
+            Settings._XMLSettings.GeneralInfoPanelStateMovie = value
         End Set
     End Property
 
-    Public Property GeneralMovieSetInfoPanelState() As Integer
+    Public Property GeneralInfoPanelStateMovieSet() As Integer
         Get
-            Return Settings._XMLSettings.GeneralMovieSetInfoPanelState
+            Return Settings._XMLSettings.GeneralInfoPanelStateMovieSet
         End Get
         Set(ByVal value As Integer)
-            Settings._XMLSettings.GeneralMovieSetInfoPanelState = value
+            Settings._XMLSettings.GeneralInfoPanelStateMovieSet = value
         End Set
     End Property
 
@@ -3734,12 +3734,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property GeneralTVShowInfoPanelState() As Integer
+    Public Property GeneralInfoPanelStateTVShow() As Integer
         Get
-            Return Settings._XMLSettings.GeneralTVShowInfoPanelState
+            Return Settings._XMLSettings.GeneralInfoPanelStateTVShow
         End Get
         Set(ByVal value As Integer)
-            Settings._XMLSettings.GeneralTVShowInfoPanelState = value
+            Settings._XMLSettings.GeneralInfoPanelStateTVShow = value
         End Set
     End Property
 
@@ -4049,30 +4049,30 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property GeneralMainSplitterPanelState() As Integer
+    Public Property GeneralSplitterDistanceMain() As Integer
         Get
-            Return Settings._XMLSettings.GeneralMainSplitterPanelState
+            Return Settings._XMLSettings.GeneralSplitterDistanceMain
         End Get
         Set(ByVal value As Integer)
-            Settings._XMLSettings.GeneralMainSplitterPanelState = value
+            Settings._XMLSettings.GeneralSplitterDistanceMain = value
         End Set
     End Property
 
-    Public Property GeneralShowSplitterPanelState() As Integer
+    Public Property GeneralSplitterDistanceTVShow() As Integer
         Get
-            Return Settings._XMLSettings.GeneralShowSplitterPanelState
+            Return Settings._XMLSettings.GeneralSplitterDistanceTVShow
         End Get
         Set(ByVal value As Integer)
-            Settings._XMLSettings.GeneralShowSplitterPanelState = value
+            Settings._XMLSettings.GeneralSplitterDistanceTVShow = value
         End Set
     End Property
 
-    Public Property GeneralSeasonSplitterPanelState() As Integer
+    Public Property GeneralSplitterDistanceTVSeason() As Integer
         Get
-            Return Settings._XMLSettings.GeneralSeasonSplitterPanelState
+            Return Settings._XMLSettings.GeneralSplitterDistanceTVSeason
         End Get
         Set(ByVal value As Integer)
-            Settings._XMLSettings.GeneralSeasonSplitterPanelState = value
+            Settings._XMLSettings.GeneralSplitterDistanceTVSeason = value
         End Set
     End Property
 
@@ -6837,16 +6837,6 @@ Public Class Settings
         GeneralDateAddedIgnoreNFO = False
         GeneralDateTime = Enums.DateTime.Now
         GeneralDigitGrpSymbolVotes = False
-        GeneralDoubleClickScrape = False
-        GeneralFilterPanelStateMovie = False
-        GeneralFilterPanelStateMovieSet = False
-        GeneralFilterPanelStateShow = False
-        GeneralMainFilterSortColumn_Movies = 3
-        GeneralMainFilterSortColumn_MovieSets = 1
-        GeneralMainFilterSortColumn_Shows = 1
-        GeneralMainFilterSortOrder_Movies = 0
-        GeneralMainFilterSortOrder_MovieSets = 0
-        GeneralMainFilterSortOrder_Shows = 0
         GeneralDisplayBanner = True
         GeneralDisplayCharacterArt = True
         GeneralDisplayClearArt = True
@@ -6856,33 +6846,41 @@ Public Class Settings
         GeneralDisplayFanartSmall = True
         GeneralDisplayLandscape = True
         GeneralDisplayPoster = True
-        GeneralImagesGlassOverlay = False
+        GeneralDoubleClickScrape = False
+        GeneralFilterPanelIsRaisedMovie = False
+        GeneralFilterPanelIsRaisedMovieSet = False
+        GeneralFilterPanelIsRaisedTVShow = False
         GeneralImageFilter = True
         GeneralImageFilterAutoscraper = True
-        GeneralImageFilterImagedialog = False
         GeneralImageFilterFanart = True
-        GeneralImageFilterPoster = False
         GeneralImageFilterFanartMatchTolerance = 4
+        GeneralImageFilterImagedialog = False
+        GeneralImageFilterPoster = False
         GeneralImageFilterPosterMatchTolerance = 1
+        GeneralImagesGlassOverlay = False
+        GeneralInfoPanelStateMovie = 200
+        GeneralInfoPanelStateMovieSet = 200
+        GeneralInfoPanelStateTVShow = 200
         GeneralLanguage = "English_(en_US)"
-        GeneralMainSplitterPanelState = 550
-        GeneralMovieInfoPanelState = 200
-        GeneralMovieSetInfoPanelState = 200
-        GeneralMovieTheme = "Default"
+        GeneralMainFilterSortColumn_MovieSets = 1
+        GeneralMainFilterSortColumn_Movies = 3
+        GeneralMainFilterSortColumn_Shows = 1
+        GeneralMainFilterSortOrder_MovieSets = 0
+        GeneralMainFilterSortOrder_Movies = 0
+        GeneralMainFilterSortOrder_Shows = 0
         GeneralMovieSetTheme = "Default"
+        GeneralMovieTheme = "Default"
         GeneralOverwriteNfo = False
-        GeneralSeasonSplitterPanelState = 200
         GeneralShowGenresText = True
-        GeneralShowLangFlags = True
         GeneralShowImgDims = True
         GeneralShowImgNames = True
-        GeneralShowSplitterPanelState = 200
+        GeneralShowLangFlags = True
         GeneralSourceFromFolder = False
+        GeneralSplitterDistanceMain = 550
+        GeneralSplitterDistanceTVSeason = 200
+        GeneralSplitterDistanceTVShow = 200
         GeneralTVEpisodeTheme = "Default"
-        GeneralTVShowInfoPanelState = 200
         GeneralTVShowTheme = "Default"
-        'Me.GeneralWindowLoc =
-        'Me.GeneralWindowSize =
         GeneralWindowState = FormWindowState.Maximized
         MovieActorThumbsExtExpertBDMV = ".jpg"
         MovieActorThumbsExtExpertMulti = ".jpg"
