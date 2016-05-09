@@ -116,6 +116,86 @@ Public Class frmSettingsHolder_TV
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
+    Private Sub chkScraperShowActors_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperShowActors.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScraperShowCertifications_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperShowCertifications.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScraperShowCountries_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperShowCountries.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScraperShowCreators_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperShowCreators.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScraperShowGenres_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperShowGenres.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScraperShowOriginalTitle_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperShowOriginalTitle.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScraperShowPlot_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperShowPlot.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScraperShowPremiered_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperShowPremiered.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScraperShowRating_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperShowRating.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScraperShowRuntime_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperShowRuntime.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScraperShowStudios_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperShowStudios.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScraperShowTitle_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperShowTitle.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScraperEpActors_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperEpActors.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScraperEpAired_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperEpAired.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScraperEpCredits_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperEpCredits.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScraperEpDirectors_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperEpDirectors.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScraperEpPlot_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperEpPlot.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScraperEpRating_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperEpRating.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkScraperEpTitle_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperEpTitle.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkFallBackworldwide_CheckedChanged(sender As Object, e As EventArgs) Handles chkFallBackworldwide.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
     Sub orderChanged()
         Dim order As Integer = ModulesManager.Instance.externalScrapersModules_Data_TV.FirstOrDefault(Function(p) p.AssemblyName = IMDB_Data._AssemblyName).ModuleOrder
         If ModulesManager.Instance.externalScrapersModules_Data_TV.Count > 1 Then

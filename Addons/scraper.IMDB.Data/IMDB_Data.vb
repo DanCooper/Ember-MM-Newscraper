@@ -340,6 +340,7 @@ Public Class IMDB_Data
             settings.SetBooleanSetting("DoPlot", ConfigScrapeOptions_TV.bMainPlot, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("DoPremiered", ConfigScrapeOptions_TV.bMainPremiered, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("DoRating", ConfigScrapeOptions_TV.bMainRating, , , Enums.ContentType.TVShow)
+            settings.SetBooleanSetting("DoRuntime", ConfigScrapeOptions_TV.bMainRuntime, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("DoStudio", ConfigScrapeOptions_TV.bMainStudios, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("DoTitle", ConfigScrapeOptions_TV.bMainTitle, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("FallBackWorldwide", _SpecialSettings_TV.FallBackWorldwide, , , Enums.ContentType.TVShow)
@@ -396,6 +397,7 @@ Public Class IMDB_Data
         ConfigScrapeOptions_TV.bEpisodeTitle = _setup_TV.chkScraperEpTitle.Checked
         ConfigScrapeOptions_TV.bMainActors = _setup_TV.chkScraperShowActors.Checked
         ConfigScrapeOptions_TV.bMainCertifications = _setup_TV.chkScraperShowCertifications.Checked
+        ConfigScrapeOptions_TV.bMainCountries = _setup_TV.chkScraperShowCountries.Checked
         ConfigScrapeOptions_TV.bMainCreators = _setup_TV.chkScraperShowCreators.Checked
         ConfigScrapeOptions_TV.bMainGenres = _setup_TV.chkScraperShowGenres.Checked
         ConfigScrapeOptions_TV.bMainOriginalTitle = _setup_TV.chkScraperShowOriginalTitle.Checked

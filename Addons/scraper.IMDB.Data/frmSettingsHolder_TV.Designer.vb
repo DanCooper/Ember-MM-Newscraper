@@ -41,27 +41,27 @@ Partial Class frmSettingsHolder_TV
         Me.tblScraperFieldsOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.gbScraperFieldsShow = New System.Windows.Forms.GroupBox()
         Me.tblScraperFieldsShow = New System.Windows.Forms.TableLayoutPanel()
-        Me.chkScraperShowTitle = New System.Windows.Forms.CheckBox()
         Me.chkScraperShowActors = New System.Windows.Forms.CheckBox()
-        Me.chkScraperShowStudios = New System.Windows.Forms.CheckBox()
-        Me.chkScraperShowRating = New System.Windows.Forms.CheckBox()
-        Me.chkScraperShowPremiered = New System.Windows.Forms.CheckBox()
-        Me.chkScraperShowRuntime = New System.Windows.Forms.CheckBox()
-        Me.chkScraperShowPlot = New System.Windows.Forms.CheckBox()
         Me.chkScraperShowCertifications = New System.Windows.Forms.CheckBox()
+        Me.chkScraperShowCountries = New System.Windows.Forms.CheckBox()
+        Me.chkScraperShowCreators = New System.Windows.Forms.CheckBox()
         Me.chkScraperShowGenres = New System.Windows.Forms.CheckBox()
         Me.chkScraperShowOriginalTitle = New System.Windows.Forms.CheckBox()
-        Me.chkScraperShowCreators = New System.Windows.Forms.CheckBox()
-        Me.chkScraperShowCountries = New System.Windows.Forms.CheckBox()
+        Me.chkScraperShowStudios = New System.Windows.Forms.CheckBox()
+        Me.chkScraperShowTitle = New System.Windows.Forms.CheckBox()
+        Me.chkScraperShowRuntime = New System.Windows.Forms.CheckBox()
+        Me.chkScraperShowRating = New System.Windows.Forms.CheckBox()
+        Me.chkScraperShowPremiered = New System.Windows.Forms.CheckBox()
+        Me.chkScraperShowPlot = New System.Windows.Forms.CheckBox()
         Me.gbScraperFieldsEpisode = New System.Windows.Forms.GroupBox()
         Me.tblScraperFieldsEpisode = New System.Windows.Forms.TableLayoutPanel()
-        Me.chkScraperEpTitle = New System.Windows.Forms.CheckBox()
         Me.chkScraperEpAired = New System.Windows.Forms.CheckBox()
-        Me.chkScraperEpRating = New System.Windows.Forms.CheckBox()
         Me.chkScraperEpActors = New System.Windows.Forms.CheckBox()
         Me.chkScraperEpCredits = New System.Windows.Forms.CheckBox()
         Me.chkScraperEpDirectors = New System.Windows.Forms.CheckBox()
+        Me.chkScraperEpRating = New System.Windows.Forms.CheckBox()
         Me.chkScraperEpPlot = New System.Windows.Forms.CheckBox()
+        Me.chkScraperEpTitle = New System.Windows.Forms.CheckBox()
         Me.pnlSettingsBottom = New System.Windows.Forms.Panel()
         Me.tblSettingsBottom = New System.Windows.Forms.TableLayoutPanel()
         Me.pbIconBottom = New System.Windows.Forms.PictureBox()
@@ -351,17 +351,6 @@ Partial Class frmSettingsHolder_TV
         Me.tblScraperFieldsShow.Size = New System.Drawing.Size(183, 138)
         Me.tblScraperFieldsShow.TabIndex = 0
         '
-        'chkScraperShowTitle
-        '
-        Me.chkScraperShowTitle.AutoSize = True
-        Me.chkScraperShowTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScraperShowTitle.Location = New System.Drawing.Point(103, 118)
-        Me.chkScraperShowTitle.Name = "chkScraperShowTitle"
-        Me.chkScraperShowTitle.Size = New System.Drawing.Size(47, 17)
-        Me.chkScraperShowTitle.TabIndex = 0
-        Me.chkScraperShowTitle.Text = "Title"
-        Me.chkScraperShowTitle.UseVisualStyleBackColor = True
-        '
         'chkScraperShowActors
         '
         Me.chkScraperShowActors.AutoSize = True
@@ -373,61 +362,6 @@ Partial Class frmSettingsHolder_TV
         Me.chkScraperShowActors.Text = "Actors"
         Me.chkScraperShowActors.UseVisualStyleBackColor = True
         '
-        'chkScraperShowStudios
-        '
-        Me.chkScraperShowStudios.AutoSize = True
-        Me.chkScraperShowStudios.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScraperShowStudios.Location = New System.Drawing.Point(103, 95)
-        Me.chkScraperShowStudios.Name = "chkScraperShowStudios"
-        Me.chkScraperShowStudios.Size = New System.Drawing.Size(65, 17)
-        Me.chkScraperShowStudios.TabIndex = 7
-        Me.chkScraperShowStudios.Text = "Studios"
-        Me.chkScraperShowStudios.UseVisualStyleBackColor = True
-        '
-        'chkScraperShowRating
-        '
-        Me.chkScraperShowRating.AutoSize = True
-        Me.chkScraperShowRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScraperShowRating.Location = New System.Drawing.Point(103, 49)
-        Me.chkScraperShowRating.Name = "chkScraperShowRating"
-        Me.chkScraperShowRating.Size = New System.Drawing.Size(60, 17)
-        Me.chkScraperShowRating.TabIndex = 6
-        Me.chkScraperShowRating.Text = "Rating"
-        Me.chkScraperShowRating.UseVisualStyleBackColor = True
-        '
-        'chkScraperShowPremiered
-        '
-        Me.chkScraperShowPremiered.AutoSize = True
-        Me.chkScraperShowPremiered.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScraperShowPremiered.Location = New System.Drawing.Point(103, 26)
-        Me.chkScraperShowPremiered.Name = "chkScraperShowPremiered"
-        Me.chkScraperShowPremiered.Size = New System.Drawing.Size(77, 17)
-        Me.chkScraperShowPremiered.TabIndex = 5
-        Me.chkScraperShowPremiered.Text = "Premiered"
-        Me.chkScraperShowPremiered.UseVisualStyleBackColor = True
-        '
-        'chkScraperShowRuntime
-        '
-        Me.chkScraperShowRuntime.AutoSize = True
-        Me.chkScraperShowRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScraperShowRuntime.Location = New System.Drawing.Point(103, 72)
-        Me.chkScraperShowRuntime.Name = "chkScraperShowRuntime"
-        Me.chkScraperShowRuntime.Size = New System.Drawing.Size(69, 17)
-        Me.chkScraperShowRuntime.TabIndex = 10
-        Me.chkScraperShowRuntime.Text = "Runtime"
-        Me.chkScraperShowRuntime.UseVisualStyleBackColor = True
-        '
-        'chkScraperShowPlot
-        '
-        Me.chkScraperShowPlot.AutoSize = True
-        Me.chkScraperShowPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScraperShowPlot.Location = New System.Drawing.Point(103, 3)
-        Me.chkScraperShowPlot.Name = "chkScraperShowPlot"
-        Me.chkScraperShowPlot.Size = New System.Drawing.Size(46, 17)
-        Me.chkScraperShowPlot.TabIndex = 4
-        Me.chkScraperShowPlot.Text = "Plot"
-        Me.chkScraperShowPlot.UseVisualStyleBackColor = True
-        '
         'chkScraperShowCertifications
         '
         Me.chkScraperShowCertifications.AutoSize = True
@@ -438,6 +372,28 @@ Partial Class frmSettingsHolder_TV
         Me.chkScraperShowCertifications.TabIndex = 3
         Me.chkScraperShowCertifications.Text = "Certifications"
         Me.chkScraperShowCertifications.UseVisualStyleBackColor = True
+        '
+        'chkScraperShowCountries
+        '
+        Me.chkScraperShowCountries.AutoSize = True
+        Me.chkScraperShowCountries.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScraperShowCountries.Location = New System.Drawing.Point(3, 49)
+        Me.chkScraperShowCountries.Name = "chkScraperShowCountries"
+        Me.chkScraperShowCountries.Size = New System.Drawing.Size(76, 17)
+        Me.chkScraperShowCountries.TabIndex = 10
+        Me.chkScraperShowCountries.Text = "Countries"
+        Me.chkScraperShowCountries.UseVisualStyleBackColor = True
+        '
+        'chkScraperShowCreators
+        '
+        Me.chkScraperShowCreators.AutoSize = True
+        Me.chkScraperShowCreators.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScraperShowCreators.Location = New System.Drawing.Point(3, 72)
+        Me.chkScraperShowCreators.Name = "chkScraperShowCreators"
+        Me.chkScraperShowCreators.Size = New System.Drawing.Size(69, 17)
+        Me.chkScraperShowCreators.TabIndex = 10
+        Me.chkScraperShowCreators.Text = "Creators"
+        Me.chkScraperShowCreators.UseVisualStyleBackColor = True
         '
         'chkScraperShowGenres
         '
@@ -461,27 +417,71 @@ Partial Class frmSettingsHolder_TV
         Me.chkScraperShowOriginalTitle.Text = "Original Title"
         Me.chkScraperShowOriginalTitle.UseVisualStyleBackColor = True
         '
-        'chkScraperShowCreators
+        'chkScraperShowStudios
         '
-        Me.chkScraperShowCreators.AutoSize = True
-        Me.chkScraperShowCreators.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScraperShowCreators.Location = New System.Drawing.Point(3, 72)
-        Me.chkScraperShowCreators.Name = "chkScraperShowCreators"
-        Me.chkScraperShowCreators.Size = New System.Drawing.Size(69, 17)
-        Me.chkScraperShowCreators.TabIndex = 10
-        Me.chkScraperShowCreators.Text = "Creators"
-        Me.chkScraperShowCreators.UseVisualStyleBackColor = True
+        Me.chkScraperShowStudios.AutoSize = True
+        Me.chkScraperShowStudios.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScraperShowStudios.Location = New System.Drawing.Point(103, 95)
+        Me.chkScraperShowStudios.Name = "chkScraperShowStudios"
+        Me.chkScraperShowStudios.Size = New System.Drawing.Size(65, 17)
+        Me.chkScraperShowStudios.TabIndex = 7
+        Me.chkScraperShowStudios.Text = "Studios"
+        Me.chkScraperShowStudios.UseVisualStyleBackColor = True
         '
-        'chkScraperShowCountries
+        'chkScraperShowTitle
         '
-        Me.chkScraperShowCountries.AutoSize = True
-        Me.chkScraperShowCountries.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScraperShowCountries.Location = New System.Drawing.Point(3, 49)
-        Me.chkScraperShowCountries.Name = "chkScraperShowCountries"
-        Me.chkScraperShowCountries.Size = New System.Drawing.Size(76, 17)
-        Me.chkScraperShowCountries.TabIndex = 10
-        Me.chkScraperShowCountries.Text = "Countries"
-        Me.chkScraperShowCountries.UseVisualStyleBackColor = True
+        Me.chkScraperShowTitle.AutoSize = True
+        Me.chkScraperShowTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScraperShowTitle.Location = New System.Drawing.Point(103, 118)
+        Me.chkScraperShowTitle.Name = "chkScraperShowTitle"
+        Me.chkScraperShowTitle.Size = New System.Drawing.Size(47, 17)
+        Me.chkScraperShowTitle.TabIndex = 0
+        Me.chkScraperShowTitle.Text = "Title"
+        Me.chkScraperShowTitle.UseVisualStyleBackColor = True
+        '
+        'chkScraperShowRuntime
+        '
+        Me.chkScraperShowRuntime.AutoSize = True
+        Me.chkScraperShowRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScraperShowRuntime.Location = New System.Drawing.Point(103, 72)
+        Me.chkScraperShowRuntime.Name = "chkScraperShowRuntime"
+        Me.chkScraperShowRuntime.Size = New System.Drawing.Size(69, 17)
+        Me.chkScraperShowRuntime.TabIndex = 10
+        Me.chkScraperShowRuntime.Text = "Runtime"
+        Me.chkScraperShowRuntime.UseVisualStyleBackColor = True
+        '
+        'chkScraperShowRating
+        '
+        Me.chkScraperShowRating.AutoSize = True
+        Me.chkScraperShowRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScraperShowRating.Location = New System.Drawing.Point(103, 49)
+        Me.chkScraperShowRating.Name = "chkScraperShowRating"
+        Me.chkScraperShowRating.Size = New System.Drawing.Size(60, 17)
+        Me.chkScraperShowRating.TabIndex = 6
+        Me.chkScraperShowRating.Text = "Rating"
+        Me.chkScraperShowRating.UseVisualStyleBackColor = True
+        '
+        'chkScraperShowPremiered
+        '
+        Me.chkScraperShowPremiered.AutoSize = True
+        Me.chkScraperShowPremiered.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScraperShowPremiered.Location = New System.Drawing.Point(103, 26)
+        Me.chkScraperShowPremiered.Name = "chkScraperShowPremiered"
+        Me.chkScraperShowPremiered.Size = New System.Drawing.Size(77, 17)
+        Me.chkScraperShowPremiered.TabIndex = 5
+        Me.chkScraperShowPremiered.Text = "Premiered"
+        Me.chkScraperShowPremiered.UseVisualStyleBackColor = True
+        '
+        'chkScraperShowPlot
+        '
+        Me.chkScraperShowPlot.AutoSize = True
+        Me.chkScraperShowPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScraperShowPlot.Location = New System.Drawing.Point(103, 3)
+        Me.chkScraperShowPlot.Name = "chkScraperShowPlot"
+        Me.chkScraperShowPlot.Size = New System.Drawing.Size(46, 17)
+        Me.chkScraperShowPlot.TabIndex = 4
+        Me.chkScraperShowPlot.Text = "Plot"
+        Me.chkScraperShowPlot.UseVisualStyleBackColor = True
         '
         'gbScraperFieldsEpisode
         '
@@ -522,17 +522,6 @@ Partial Class frmSettingsHolder_TV
         Me.tblScraperFieldsEpisode.Size = New System.Drawing.Size(180, 138)
         Me.tblScraperFieldsEpisode.TabIndex = 0
         '
-        'chkScraperEpTitle
-        '
-        Me.chkScraperEpTitle.AutoSize = True
-        Me.chkScraperEpTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScraperEpTitle.Location = New System.Drawing.Point(117, 49)
-        Me.chkScraperEpTitle.Name = "chkScraperEpTitle"
-        Me.chkScraperEpTitle.Size = New System.Drawing.Size(47, 17)
-        Me.chkScraperEpTitle.TabIndex = 0
-        Me.chkScraperEpTitle.Text = "Title"
-        Me.chkScraperEpTitle.UseVisualStyleBackColor = True
-        '
         'chkScraperEpAired
         '
         Me.chkScraperEpAired.AutoSize = True
@@ -543,17 +532,6 @@ Partial Class frmSettingsHolder_TV
         Me.chkScraperEpAired.TabIndex = 4
         Me.chkScraperEpAired.Text = "Aired"
         Me.chkScraperEpAired.UseVisualStyleBackColor = True
-        '
-        'chkScraperEpRating
-        '
-        Me.chkScraperEpRating.AutoSize = True
-        Me.chkScraperEpRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkScraperEpRating.Location = New System.Drawing.Point(117, 26)
-        Me.chkScraperEpRating.Name = "chkScraperEpRating"
-        Me.chkScraperEpRating.Size = New System.Drawing.Size(60, 17)
-        Me.chkScraperEpRating.TabIndex = 5
-        Me.chkScraperEpRating.Text = "Rating"
-        Me.chkScraperEpRating.UseVisualStyleBackColor = True
         '
         'chkScraperEpActors
         '
@@ -588,6 +566,17 @@ Partial Class frmSettingsHolder_TV
         Me.chkScraperEpDirectors.Text = "Director"
         Me.chkScraperEpDirectors.UseVisualStyleBackColor = True
         '
+        'chkScraperEpRating
+        '
+        Me.chkScraperEpRating.AutoSize = True
+        Me.chkScraperEpRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScraperEpRating.Location = New System.Drawing.Point(117, 26)
+        Me.chkScraperEpRating.Name = "chkScraperEpRating"
+        Me.chkScraperEpRating.Size = New System.Drawing.Size(60, 17)
+        Me.chkScraperEpRating.TabIndex = 5
+        Me.chkScraperEpRating.Text = "Rating"
+        Me.chkScraperEpRating.UseVisualStyleBackColor = True
+        '
         'chkScraperEpPlot
         '
         Me.chkScraperEpPlot.AutoSize = True
@@ -598,6 +587,17 @@ Partial Class frmSettingsHolder_TV
         Me.chkScraperEpPlot.TabIndex = 6
         Me.chkScraperEpPlot.Text = "Plot"
         Me.chkScraperEpPlot.UseVisualStyleBackColor = True
+        '
+        'chkScraperEpTitle
+        '
+        Me.chkScraperEpTitle.AutoSize = True
+        Me.chkScraperEpTitle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkScraperEpTitle.Location = New System.Drawing.Point(117, 49)
+        Me.chkScraperEpTitle.Name = "chkScraperEpTitle"
+        Me.chkScraperEpTitle.Size = New System.Drawing.Size(47, 17)
+        Me.chkScraperEpTitle.TabIndex = 0
+        Me.chkScraperEpTitle.Text = "Title"
+        Me.chkScraperEpTitle.UseVisualStyleBackColor = True
         '
         'pnlSettingsBottom
         '
