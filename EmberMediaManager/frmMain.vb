@@ -15328,16 +15328,16 @@ doCancel:
         Master.eSettings.GeneralMainFilterSortOrder_Shows = Order
     End Sub
 
-    Private Sub ScannerUpdated(ByVal iType As Integer, ByVal sText As String)
-        Select Case iType
-            Case 1
-                SetStatus(String.Concat(Master.eLang.GetString(814, "Added Episode:"), " " & sText))
-            Case 2
-                SetStatus(Master.eLang.GetString(116, "Performing Preliminary Tasks (Gathering Data)..."))
-            Case 3
+    Private Sub ScannerUpdated(ByVal eProgressValue As Scanner.ProgressValue)
+        Select Case eProgressValue.Type
+            Case Enums.ScannerEventType.AddedMovie
+                SetStatus(String.Concat(Master.eLang.GetString(815, "Added Movie:"), " ", eProgressValue.Message))
+            Case Enums.ScannerEventType.AddedTVEpisode
+                SetStatus(String.Concat(Master.eLang.GetString(814, "Added Episode:"), " ", eProgressValue.Message))
+            Case Enums.ScannerEventType.CleaningDatabase
                 SetStatus(Master.eLang.GetString(644, "Cleaning Database..."))
-            Case Else
-                SetStatus(String.Concat(Master.eLang.GetString(815, "Added Movie:"), " " & sText))
+            Case Enums.ScannerEventType.PreliminaryTasks
+                SetStatus(Master.eLang.GetString(116, "Performing Preliminary Tasks (Gathering Data)..."))
         End Select
     End Sub
 

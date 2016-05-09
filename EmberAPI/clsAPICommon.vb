@@ -872,6 +872,13 @@ Public Class Enums
         Any = 99
     End Enum
 
+    Public Enum ScannerEventType As Integer
+        AddedMovie = 0
+        AddedTVEpisode = 1
+        CleaningDatabase = 2
+        PreliminaryTasks = 3
+    End Enum
+
     Public Enum TVBannerSize As Integer
         HD185 = 0       'Fanart.tv only 1000x185 (season and tv show banner)
         HD140 = 1       'TVDB has only 758x140 (season and tv show banner)
