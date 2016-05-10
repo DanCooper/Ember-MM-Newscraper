@@ -24,6 +24,7 @@ Imports Trakttv
 Imports System.IO
 Imports System.Text.RegularExpressions
 Imports System.Windows.Forms
+Imports System.Text
 
 Public Class dlgTrakttvManager
 
@@ -1381,18 +1382,21 @@ Public Class dlgTrakttvManager
         If myWatchedMovies IsNot Nothing Then
             'Save movie playcount!
             prgtraktPlaycount.Value = 0
-            prgtraktPlaycount.Maximum = myWatchedMovies.Count
+            prgtraktPlaycount.Maximum = myWatchedMovies.Where(Function(f) f.Movie.Ids.Imdb IsNot Nothing OrElse
+                                                                  f.Movie.Ids.Tmdb IsNot Nothing).Count
             prgtraktPlaycount.Minimum = 0
             prgtraktPlaycount.Step = 1
             btntraktPlaycountSyncLibrary.Enabled = False
             Dim traktthread As Threading.Thread
-            traktthread = New Threading.Thread(AddressOf SaveMoviePlaycount)
+            traktthread = New Threading.Thread(AddressOf SavePlaycounts_Movies)
             traktthread.IsBackground = True
             traktthread.Start()
         ElseIf myWatchedEpisodes IsNot Nothing Then
             'save episodes playcount!
             prgtraktPlaycount.Value = 0
-            prgtraktPlaycount.Maximum = myWatchedEpisodes.Count
+            prgtraktPlaycount.Maximum = myWatchedEpisodes.Where(Function(f) f.Show.Ids.Imdb IsNot Nothing OrElse
+                                                                  f.Show.Ids.Tmdb IsNot Nothing OrElse
+                                                                  f.Show.Ids.Tvdb IsNot Nothing).Count
             'start not with empty progressbar(no problem for movies) because it takes long to update for first tv show and user might think it hangs -> set value 1 to show something is going on
             If myWatchedEpisodes.Count > 1 Then
                 prgtraktPlaycount.Value = 1
@@ -1401,7 +1405,7 @@ Public Class dlgTrakttvManager
             prgtraktPlaycount.Step = 1
             btntraktPlaycountSyncLibrary.Enabled = False
             Dim traktthread As Threading.Thread
-            traktthread = New Threading.Thread(AddressOf SaveEpisodePlaycount)
+            traktthread = New Threading.Thread(AddressOf SavePlaycounts_TVEpisodes)
             traktthread.IsBackground = True
             traktthread.Start()
         End If
@@ -1413,18 +1417,33 @@ Public Class dlgTrakttvManager
     ''' <remarks>
     ''' Used in thread: Saves playcount to database
     ''' </remarks>
-    Private Sub SaveMoviePlaycount()
+    Private Sub SavePlaycounts_Movies()
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             Dim i As Integer = 0
-            For Each watchedMovieData In myWatchedMovies
+            'filter watched movies at trakt.tv to movies with an Unique ID only
+            For Each watchedMovie In myWatchedMovies.Where(Function(f) f.Movie.Ids.Imdb IsNot Nothing OrElse
+                                                                  f.Movie.Ids.Tmdb IsNot Nothing)
                 i += 1
                 Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    SQLCommand.CommandText = String.Format("SELECT DISTINCT idMovie FROM movie WHERE IMDB = {0} OR TMDB = {1};", watchedMovieData.Movie.Ids.Imdb, watchedMovieData.Movie.Ids.Tmdb)
+                    Dim DateTimeLastPlayedUnix As Double = -1
+                    Dim DateTimeLastPlayed As Date = Date.ParseExact(watchedMovie.LastWatchedAt, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
+                    Try
+                        DateTimeLastPlayedUnix = Functions.ConvertToUnixTimestamp(DateTimeLastPlayed)
+                    Catch ex As Exception
+                        DateTimeLastPlayedUnix = -1
+                    End Try
+
+                    'build query, search only with known Unique IDs
+                    Dim UniqueIDs As New List(Of String)
+                    If watchedMovie.Movie.Ids.Imdb IsNot Nothing Then UniqueIDs.Add(String.Format("IMDB = {0}", watchedMovie.Movie.Ids.Imdb))
+                    If watchedMovie.Movie.Ids.Tmdb IsNot Nothing Then UniqueIDs.Add(String.Format("TMDB = {0}", watchedMovie.Movie.Ids.Tmdb))
+
+                    SQLCommand.CommandText = String.Format("SELECT DISTINCT idMovie FROM movie WHERE ((Playcount IS NULL OR NOT Playcount = {0}) OR (iLastPlayed IS NULL OR NOT iLastPlayed = {1})) AND ({2});", watchedMovie.Plays, DateTimeLastPlayedUnix, String.Join(" OR ", UniqueIDs.ToArray))
                     Using SQLreader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader()
                         While SQLreader.Read
                             Dim tmpMovie As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(SQLreader("idMovie")))
-                            tmpMovie.Movie.PlayCount = watchedMovieData.Plays
-                            tmpMovie.Movie.LastPlayed = watchedMovieData.LastWatchedAt
+                            tmpMovie.Movie.PlayCount = watchedMovie.Plays
+                            tmpMovie.Movie.LastPlayed = watchedMovie.LastWatchedAt
                             Master.DB.Save_Movie(tmpMovie, True, True, False)
                         End While
                     End Using
@@ -1442,49 +1461,63 @@ Public Class dlgTrakttvManager
     ''' <remarks>
     ''' Used in thread: Saves playcount to database
     ''' </remarks>
-    Private Sub SaveEpisodePlaycount()
-
-
-        Dim i As Integer = 0
-        Dim tmpDBTVEpisode As Database.DBElement = Nothing
-        Dim myDateString As String = String.Empty
+    Private Sub SavePlaycounts_TVEpisodes()
         Dim myDate As DateTime
-        'watched shows at trakt.tv
-        For Each watchedshow In myWatchedEpisodes
-            i += 1
-            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-                'every season of watched show
-                For Each watchedseason In watchedshow.Seasons
-                    'every episode of watched season
-                    For Each watchedepisode In watchedseason.Episodes
-                        For Each srow As DataRow In dtEpisodes.Rows
-
-                            'search for episode in Emberdatabase and update playcount/lastplayed value
-                            If watchedshow.Show.Ids.Tvdb.ToString = srow.Item("TVDB").ToString AndAlso watchedseason.Number.ToString = srow.Item("Season").ToString AndAlso watchedepisode.Number.ToString = srow.Item("Episode").ToString Then
-                                'Dim tmpTVEpisode As Database.DBElement = Master.DB.LoadTVEpisodeFromDB(CLng(srow.Item("idEpisode")), True)
-                                tmpDBTVEpisode = Master.DB.Load_TVEpisode(Convert.ToInt64(srow.Item("idEpisode")), True)
-                                tmpDBTVEpisode.TVEpisode.Playcount = watchedepisode.Plays
-                                'date is not user friendly formatted, so change format a bit
-                                '2014-09-01T09:10:11.000Z (original)
-                                'new format here: 2014-09-01  09:10:11
-                                myDateString = watchedepisode.WatchedAt
-                                If DateTime.TryParse(myDateString, myDate) Then
-                                    tmpDBTVEpisode.TVEpisode.LastPlayed = myDate.ToString("yyyy-MM-dd HH:mm:ss")
-                                End If
-                                Master.DB.Save_TVEpisode(tmpDBTVEpisode, True, True, False, False, True)
-                                'Updated episode in Ember, next episode please!
-                                Exit For
+        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+            Dim i As Integer = 0
+            'filter watched tv shows at trakt.tv to tv shows with an Unique ID only
+            For Each watchedTVShow In myWatchedEpisodes.Where(Function(f) f.Show.Ids.Imdb IsNot Nothing OrElse
+                                                                  f.Show.Ids.Tmdb IsNot Nothing OrElse
+                                                                  f.Show.Ids.Tvdb IsNot Nothing)
+                i += 1
+                For Each watchedTVSeason In watchedTVShow.Seasons
+                    For Each watchedTVEpisode In watchedTVSeason.Episodes
+                        Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                            'date is not user friendly formatted, so change format a bit
+                            '2014-09-01T09:10:11.000Z (original)
+                            'new format here: 2014-09-01  09:10:11
+                            Dim myDateString As String = String.Empty
+                            If DateTime.TryParse(watchedTVEpisode.WatchedAt, myDate) Then
+                                myDateString = myDate.ToString("yyyy-MM-dd HH:mm:ss")
                             End If
-                        Next
+
+                            Dim DateTimeLastPlayedUnix As Double = -1
+                            Dim DateTimeLastPlayed As Date = Date.ParseExact(myDateString, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
+                            Try
+                                DateTimeLastPlayedUnix = Functions.ConvertToUnixTimestamp(DateTimeLastPlayed)
+                            Catch ex As Exception
+                                DateTimeLastPlayedUnix = -1
+                            End Try
+
+                            'build query, search only with known Unique IDs
+                            Dim UniqueIDs As New List(Of String)
+                            If watchedTVShow.Show.Ids.Tvdb IsNot Nothing Then UniqueIDs.Add(String.Format("tvshow.TVDB = {0}", watchedTVShow.Show.Ids.Tvdb))
+                            If watchedTVShow.Show.Ids.Imdb IsNot Nothing Then UniqueIDs.Add(String.Format("tvshow.strIMDB = '{0}'", watchedTVShow.Show.Ids.Imdb))
+                            If watchedTVShow.Show.Ids.Tmdb IsNot Nothing Then UniqueIDs.Add(String.Format("tvshow.strTMDB = {0}", watchedTVShow.Show.Ids.Tmdb))
+
+                            SQLCommand.CommandText = String.Concat("SELECT DISTINCT episode.idEpisode FROM episode INNER JOIN tvshow ON (episode.idShow = tvshow.idShow) ",
+                                                                   "WHERE NOT idFile = -1 ",
+                                                                   "AND (episode.Season = ", watchedTVSeason.Number, " And episode.Episode = ", watchedTVEpisode.Number, ") ",
+                                                                   "And ((episode.Playcount Is NULL Or Not episode.Playcount = ", watchedTVEpisode.Plays, ") ",
+                                                                   "Or (episode.iLastPlayed Is NULL Or Not episode.iLastPlayed = ", DateTimeLastPlayedUnix, ")) ",
+                                                                   "And (", String.Join(" Or ", UniqueIDs.ToArray), ");")
+
+                            Using SQLreader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader()
+                                While SQLreader.Read
+                                    Dim tmpTVEpisode As Database.DBElement = Master.DB.Load_TVEpisode(Convert.ToInt64(SQLreader("idEpisode")), True)
+                                    tmpTVEpisode.TVEpisode.Playcount = watchedTVEpisode.Plays
+                                    tmpTVEpisode.TVEpisode.LastPlayed = myDateString
+                                    Master.DB.Save_TVEpisode(tmpTVEpisode, True, True, False, False, True)
+                                End While
+                            End Using
+                        End Using
                     Next
                 Next
-                SQLtransaction.Commit()
-            End Using
-            ' Invoke to update UI from thread...
-            prgtraktPlaycount.Invoke(New UpdateProgressBarDelegate(AddressOf UpdateProgressBar), i)
-            Threading.Thread.Sleep(10)
-        Next
-
+                ' Invoke to update UI from thread...
+                prgtraktPlaycount.Invoke(New UpdateProgressBarDelegate(AddressOf UpdateProgressBar), i)
+            Next
+            SQLtransaction.Commit()
+        End Using
     End Sub
 
 
