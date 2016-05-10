@@ -2931,6 +2931,7 @@ Public Class dlgSettings
             chkMovieGeneralMarkNew.Checked = .MovieGeneralMarkNew
             chkMovieImagesCacheEnabled.Checked = .MovieImagesCacheEnabled
             chkMovieImagesDisplayImageSelect.Checked = .MovieImagesDisplayImageSelect
+            chkMovieImagesForceLanguage.Checked = .MovieImagesForceLanguage
             If .MovieImagesMediaLanguageOnly Then
                 chkMovieImagesMediaLanguageOnly.Checked = True
                 chkMovieImagesGetBlankImages.Checked = .MovieImagesGetBlankImages
@@ -2994,6 +2995,7 @@ Public Class dlgSettings
             chkMovieSetGeneralMarkNew.Checked = .MovieSetGeneralMarkNew
             chkMovieSetImagesCacheEnabled.Checked = .MovieSetImagesCacheEnabled
             chkMovieSetImagesDisplayImageSelect.Checked = .MovieSetImagesDisplayImageSelect
+            chkMovieSetImagesForceLanguage.Checked = .MovieSetImagesForceLanguage
             If .MovieSetImagesMediaLanguageOnly Then
                 chkMovieSetImagesMediaLanguageOnly.Checked = True
                 chkMovieSetImagesGetBlankImages.Checked = .MovieSetImagesGetBlankImages
@@ -3100,6 +3102,7 @@ Public Class dlgSettings
             chkTVGeneralIgnoreLastScan.Checked = .TVGeneralIgnoreLastScan
             chkTVImagesCacheEnabled.Checked = .TVImagesCacheEnabled
             chkTVImagesDisplayImageSelect.Checked = .TVImagesDisplayImageSelect
+            chkTVImagesForceLanguage.Checked = .TVImagesForceLanguage
             If .TVImagesMediaLanguageOnly Then
                 chkTVImagesMediaLanguageOnly.Checked = True
                 chkTVImagesGetBlankImages.Checked = .TVImagesGetBlankImages
@@ -3340,6 +3343,54 @@ Public Class dlgSettings
             End Try
 
             Try
+                cbMovieImagesForcedLanguage.Items.Clear()
+                cbMovieImagesForcedLanguage.Items.AddRange((From lLang In APIXML.ScraperLanguagesXML.Languages Select lLang.Name).Distinct.ToArray)
+                If cbMovieImagesForcedLanguage.Items.Count > 0 Then
+                    If Not String.IsNullOrEmpty(.MovieImagesForcedLanguage) Then
+                        Dim tLanguage As languageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbrevation_MainLanguage = .MovieImagesForcedLanguage)
+                        If tLanguage IsNot Nothing Then
+                            cbMovieImagesForcedLanguage.Text = tLanguage.Name
+                        Else
+                            tLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(.MovieImagesForcedLanguage))
+                            If tLanguage IsNot Nothing Then
+                                cbMovieImagesForcedLanguage.Text = tLanguage.Name
+                            Else
+                                cbMovieImagesForcedLanguage.Text = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbrevation_MainLanguage = "en").Name
+                            End If
+                        End If
+                    Else
+                        cbMovieImagesForcedLanguage.Text = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbrevation_MainLanguage = "en").Name
+                    End If
+                End If
+            Catch ex As Exception
+                logger.Error(ex, New StackFrame().GetMethod().Name)
+            End Try
+
+            Try
+                cbMovieSetImagesForcedLanguage.Items.Clear()
+                cbMovieSetImagesForcedLanguage.Items.AddRange((From lLang In APIXML.ScraperLanguagesXML.Languages Select lLang.Name).Distinct.ToArray)
+                If cbMovieSetImagesForcedLanguage.Items.Count > 0 Then
+                    If Not String.IsNullOrEmpty(.MovieSetImagesForcedLanguage) Then
+                        Dim tLanguage As languageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbrevation_MainLanguage = .MovieSetImagesForcedLanguage)
+                        If tLanguage IsNot Nothing Then
+                            cbMovieSetImagesForcedLanguage.Text = tLanguage.Name
+                        Else
+                            tLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(.MovieSetImagesForcedLanguage))
+                            If tLanguage IsNot Nothing Then
+                                cbMovieSetImagesForcedLanguage.Text = tLanguage.Name
+                            Else
+                                cbMovieSetImagesForcedLanguage.Text = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbrevation_MainLanguage = "en").Name
+                            End If
+                        End If
+                    Else
+                        cbMovieSetImagesForcedLanguage.Text = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbrevation_MainLanguage = "en").Name
+                    End If
+                End If
+            Catch ex As Exception
+                logger.Error(ex, New StackFrame().GetMethod().Name)
+            End Try
+
+            Try
                 cbTVScraperShowCertLang.Items.Clear()
                 cbTVScraperShowCertLang.Items.Add(Master.eLang.All)
                 cbTVScraperShowCertLang.Items.AddRange((From lLang In APIXML.CertLanguagesXML.Language Select lLang.name).ToArray)
@@ -3379,6 +3430,30 @@ Public Class dlgSettings
                         End If
                     Else
                         cbTVGeneralLang.Text = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = "en-US").Description
+                    End If
+                End If
+            Catch ex As Exception
+                logger.Error(ex, New StackFrame().GetMethod().Name)
+            End Try
+
+            Try
+                cbTVImagesForcedLanguage.Items.Clear()
+                cbTVImagesForcedLanguage.Items.AddRange((From lLang In APIXML.ScraperLanguagesXML.Languages Select lLang.Name).Distinct.ToArray)
+                If cbTVImagesForcedLanguage.Items.Count > 0 Then
+                    If Not String.IsNullOrEmpty(.TVImagesForcedLanguage) Then
+                        Dim tLanguage As languageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbrevation_MainLanguage = .TVImagesForcedLanguage)
+                        If tLanguage IsNot Nothing Then
+                            cbTVImagesForcedLanguage.Text = tLanguage.Name
+                        Else
+                            tLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(.TVImagesForcedLanguage))
+                            If tLanguage IsNot Nothing Then
+                                cbTVImagesForcedLanguage.Text = tLanguage.Name
+                            Else
+                                cbTVImagesForcedLanguage.Text = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbrevation_MainLanguage = "en").Name
+                            End If
+                        End If
+                    Else
+                        cbTVImagesForcedLanguage.Text = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbrevation_MainLanguage = "en").Name
                     End If
                 End If
             Catch ex As Exception
@@ -4908,6 +4983,10 @@ Public Class dlgSettings
             .MovieGeneralMediaListSorting.AddRange(MovieGeneralMediaListSorting)
             .MovieImagesCacheEnabled = chkMovieImagesCacheEnabled.Checked
             .MovieImagesDisplayImageSelect = chkMovieImagesDisplayImageSelect.Checked
+            If Not String.IsNullOrEmpty(cbMovieImagesForcedLanguage.Text) Then
+                .MovieImagesForcedLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Name = cbMovieImagesForcedLanguage.Text).Abbrevation_MainLanguage
+            End If
+            .MovieImagesForceLanguage = chkMovieImagesForceLanguage.Checked
             .MovieImagesGetBlankImages = chkMovieImagesGetBlankImages.Checked
             .MovieImagesGetEnglishImages = chkMovieImagesGetEnglishImages.Checked
             .MovieImagesMediaLanguageOnly = chkMovieImagesMediaLanguageOnly.Checked
@@ -4979,6 +5058,10 @@ Public Class dlgSettings
             .MovieSetGeneralMediaListSorting.AddRange(MovieSetGeneralMediaListSorting)
             .MovieSetImagesCacheEnabled = chkMovieSetImagesCacheEnabled.Checked
             .MovieSetImagesDisplayImageSelect = chkMovieSetImagesDisplayImageSelect.Checked
+            If Not String.IsNullOrEmpty(cbMovieSetImagesForcedLanguage.Text) Then
+                .MovieSetImagesForcedLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Name = cbMovieSetImagesForcedLanguage.Text).Abbrevation_MainLanguage
+            End If
+            .MovieSetImagesForceLanguage = chkMovieSetImagesForceLanguage.Checked
             .MovieSetImagesGetBlankImages = chkMovieSetImagesGetBlankImages.Checked
             .MovieSetImagesGetEnglishImages = chkMovieSetImagesGetEnglishImages.Checked
             .MovieSetImagesMediaLanguageOnly = chkMovieSetImagesMediaLanguageOnly.Checked
@@ -5139,6 +5222,10 @@ Public Class dlgSettings
             .TVGeneralShowListSorting.AddRange(TVGeneralShowListSorting)
             .TVImagesCacheEnabled = chkTVImagesCacheEnabled.Checked
             .TVImagesDisplayImageSelect = chkTVImagesDisplayImageSelect.Checked
+            If Not String.IsNullOrEmpty(cbTVImagesForcedLanguage.Text) Then
+                .TVImagesForcedLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Name = cbTVImagesForcedLanguage.Text).Abbrevation_MainLanguage
+            End If
+            .TVImagesForceLanguage = chkTVImagesForceLanguage.Checked
             .TVImagesGetBlankImages = chkTVImagesGetBlankImages.Checked
             .TVImagesGetEnglishImages = chkTVImagesGetEnglishImages.Checked
             .TVImagesMediaLanguageOnly = chkTVImagesMediaLanguageOnly.Checked
@@ -6135,6 +6222,12 @@ Public Class dlgSettings
         Dim strFileType As String = String.Concat(Master.eLang.GetString(626, "File Type"), ":")
         lblMovieScraperDefFIExt.Text = strFileType
         lblTVScraperDefFIExt.Text = strFileType
+
+        'Force Language
+        Dim strForceLanguage As String = Master.eLang.GetString(1034, "Force Language")
+        chkMovieImagesForceLanguage.Text = strForceLanguage
+        chkMovieSetImagesForceLanguage.Text = strForceLanguage
+        chkTVImagesForceLanguage.Text = strForceLanguage
 
         'Genres
         Dim strGenres As String = Master.eLang.GetString(725, "Genres")
@@ -7686,6 +7779,12 @@ Public Class dlgSettings
         e.Handled = (e.KeyCode = Keys.Enter)
     End Sub
 
+    Private Sub chkMovieImagesForceLanguage_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieImagesForceLanguage.CheckedChanged
+        SetApplyButton(True)
+
+        cbMovieImagesForcedLanguage.Enabled = chkMovieImagesForceLanguage.Checked
+    End Sub
+
     Private Sub chkMovieImagesMediaLanguageOnly_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieImagesMediaLanguageOnly.CheckedChanged
         SetApplyButton(True)
 
@@ -7698,6 +7797,12 @@ Public Class dlgSettings
         End If
     End Sub
 
+    Private Sub chkMovieSetImagesForceLanguage_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieSetImagesForceLanguage.CheckedChanged
+        SetApplyButton(True)
+
+        cbMovieSetImagesForcedLanguage.Enabled = chkMovieSetImagesForceLanguage.Checked
+    End Sub
+
     Private Sub chkMovieSetImagesMediaLanguageOnly_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieSetImagesMediaLanguageOnly.CheckedChanged
         SetApplyButton(True)
 
@@ -7708,6 +7813,12 @@ Public Class dlgSettings
             chkMovieSetImagesGetBlankImages.Checked = False
             chkMovieSetImagesGetEnglishImages.Checked = False
         End If
+    End Sub
+
+    Private Sub chkTVImagesForceLanguage_CheckedChanged(sender As Object, e As EventArgs) Handles chkTVImagesForceLanguage.CheckedChanged
+        SetApplyButton(True)
+
+        cbTVImagesForcedLanguage.Enabled = chkTVImagesForceLanguage.Checked
     End Sub
 
     Private Sub chkTVImagesMediaLanguageOnly_CheckedChanged(sender As Object, e As EventArgs) Handles chkTVImagesMediaLanguageOnly.CheckedChanged
@@ -7859,6 +7970,7 @@ Public Class dlgSettings
         cbMovieGeneralCustomScrapeButtonModifierType.SelectedIndexChanged,
         cbMovieGeneralCustomScrapeButtonScrapeType.SelectedIndexChanged,
         cbMovieGeneralLang.SelectedIndexChanged,
+        cbMovieImagesForcedLanguage.SelectedIndexChanged,
         cbMovieLanguageOverlay.SelectedIndexChanged,
         cbMoviePosterPrefSize.SelectedIndexChanged,
         cbMovieScraperCertLang.SelectedIndexChanged,
@@ -7866,6 +7978,7 @@ Public Class dlgSettings
         cbMovieSetFanartPrefSize.SelectedIndexChanged,
         cbMovieSetGeneralCustomScrapeButtonModifierType.SelectedIndexChanged,
         cbMovieSetGeneralCustomScrapeButtonScrapeType.SelectedIndexChanged,
+        cbMovieSetImagesForcedLanguage.SelectedIndexChanged,
         cbMovieSetPosterPrefSize.SelectedIndexChanged,
         cbMovieTrailerMinVideoQual.SelectedIndexChanged,
         cbTVAllSeasonsBannerPrefType.SelectedIndexChanged,
@@ -7876,6 +7989,7 @@ Public Class dlgSettings
         cbTVGeneralCustomScrapeButtonModifierType.SelectedIndexChanged,
         cbTVGeneralCustomScrapeButtonScrapeType.SelectedIndexChanged,
         cbTVGeneralLang.SelectedIndexChanged,
+        cbTVImagesForcedLanguage.SelectedIndexChanged,
         cbTVLanguageOverlay.SelectedIndexChanged,
         cbTVScraperOptionsOrdering.SelectedIndexChanged,
         cbTVSeasonBannerPrefType.SelectedIndexChanged,

@@ -4418,12 +4418,21 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieImagesPrefLanguage() As String
+    Public Property MovieImagesForcedLanguage() As String
         Get
-            Return Settings._XMLSettings.MovieImagesPrefLanguage
+            Return Settings._XMLSettings.MovieImagesForcedLanguage
         End Get
         Set(ByVal value As String)
-            Settings._XMLSettings.MovieImagesPrefLanguage = value
+            Settings._XMLSettings.MovieImagesForcedLanguage = value
+        End Set
+    End Property
+
+    Public Property MovieImagesForceLanguage() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieImagesForceLanguage
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieImagesForceLanguage = value
         End Set
     End Property
 
@@ -4433,6 +4442,24 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.MovieImagesMediaLanguageOnly = value
+        End Set
+    End Property
+
+    Public Property MovieSetImagesForcedLanguage() As String
+        Get
+            Return Settings._XMLSettings.MovieSetImagesForcedLanguage
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.MovieSetImagesForcedLanguage = value
+        End Set
+    End Property
+
+    Public Property MovieSetImagesForceLanguage() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieSetImagesForceLanguage
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieSetImagesForceLanguage = value
         End Set
     End Property
 
@@ -4481,12 +4508,21 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVImagesPrefLanguage() As String
+    Public Property TVImagesForceLanguage() As Boolean
         Get
-            Return Settings._XMLSettings.TVImagesPrefLanguage
+            Return Settings._XMLSettings.TVImagesForceLanguage
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVImagesForceLanguage = value
+        End Set
+    End Property
+
+    Public Property TVImagesForcedLanguage() As String
+        Get
+            Return Settings._XMLSettings.TVImagesForcedLanguage
         End Get
         Set(ByVal value As String)
-            Settings._XMLSettings.TVImagesPrefLanguage = value
+            Settings._XMLSettings.TVImagesForcedLanguage = value
         End Set
     End Property
 
@@ -6917,11 +6953,12 @@ Public Class Settings
         MovieGeneralMediaListSorting = New List(Of ListSorting)
         MovieImagesCacheEnabled = False
         MovieImagesDisplayImageSelect = True
+        MovieImagesForcedLanguage = "en"
+        MovieImagesForceLanguage = False
         MovieImagesGetBlankImages = False
         MovieImagesGetEnglishImages = False
         MovieImagesMediaLanguageOnly = False
         MovieImagesNotSaveURLToNfo = False
-        MovieImagesPrefLanguage = "en-US"
         MovieIMDBURL = String.Empty
         MovieLandscapeKeepExisting = False
         MovieLevTolerance = 0
@@ -7040,6 +7077,8 @@ Public Class Settings
         MovieSetGeneralMediaListSorting = New List(Of ListSorting)
         MovieSetImagesCacheEnabled = False
         MovieSetImagesDisplayImageSelect = True
+        MovieSetImagesForcedLanguage = "en"
+        MovieSetImagesForceLanguage = False
         MovieSetImagesGetBlankImages = False
         MovieSetImagesGetEnglishImages = False
         MovieSetImagesMediaLanguageOnly = False
@@ -7146,10 +7185,11 @@ Public Class Settings
         TVGeneralShowListSorting = New List(Of ListSorting)
         TVImagesCacheEnabled = True
         TVImagesDisplayImageSelect = True
+        TVImagesForcedLanguage = "en"
+        TVImagesForceLanguage = False
         TVImagesGetBlankImages = False
         TVImagesGetEnglishImages = False
         TVImagesMediaLanguageOnly = False
-        TVImagesPrefLanguage = "en-US"
         TVLockEpisodeActors = False
         TVLockEpisodeAired = False
         TVLockEpisodeCredits = False

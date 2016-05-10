@@ -146,10 +146,11 @@ Partial Public Class clsXMLSettings
     Private _moviegeneralmedialistsorting As List(Of ListSorting)
     Private _movieimagescacheenabled As Boolean
     Private _movieimagesdisplayimageselect As Boolean
+    Private _movieimagesforcedlanguage As String
+    Private _movieimagesforcelanguage As Boolean
     Private _movieimagesgetblankimages As Boolean
     Private _movieimagesgetenglishimages As Boolean
     Private _movieimagesmedialanguageonly As Boolean
-    Private _movieimagespreflanguage As String
     Private _movieimdburl As String
     Private _movielandscapekeepexisting As Boolean
     Private _movielevtolerance As Integer
@@ -269,6 +270,8 @@ Partial Public Class clsXMLSettings
     Private _moviesetgeneralmedialistsorting As List(Of ListSorting)
     Private _moviesetimagescacheenabled As Boolean
     Private _moviesetimagesdisplayimageselect As Boolean
+    Private _moviesetimagesforcedlanguage As String
+    Private _moviesetimagesforcelanguage As Boolean
     Private _moviesetimagesgetblankimages As Boolean
     Private _moviesetimagesgetenglishimages As Boolean
     Private _moviesetimagesmedialanguageonly As Boolean
@@ -373,10 +376,11 @@ Partial Public Class clsXMLSettings
     Private _tvgeneralshowlistsorting As List(Of ListSorting)
     Private _tvimagescacheenabled As Boolean
     Private _tvimagesdisplayimageselect As Boolean
+    Private _tvimagesforcedlanguage As String
+    Private _tvimagesforcelanguage As Boolean
     Private _tvimagesgetblankimages As Boolean
     Private _tvimagesgetenglishimages As Boolean
     Private _tvimagesmedialanguageonly As Boolean
-    Private _tvimagespreflanguage As String
     Private _tvlockepisodeactors As Boolean
     Private _tvlockepisodeaired As Boolean
     Private _tvlockepisodecredits As Boolean
@@ -6402,12 +6406,39 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieImagesPrefLanguage() As String
+    Public Property MovieImagesForcedLanguage() As String
         Get
-            Return Me._movieimagespreflanguage
+            Return Me._movieimagesforcedlanguage
         End Get
         Set(ByVal value As String)
-            Me._movieimagespreflanguage = value
+            Me._movieimagesforcedlanguage = value
+        End Set
+    End Property
+
+    Public Property MovieImagesForceLanguage() As Boolean
+        Get
+            Return Me._movieimagesforcelanguage
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movieimagesforcelanguage = value
+        End Set
+    End Property
+
+    Public Property MovieSetImagesForcedLanguage() As String
+        Get
+            Return Me._moviesetimagesforcedlanguage
+        End Get
+        Set(ByVal value As String)
+            Me._moviesetimagesforcedlanguage = value
+        End Set
+    End Property
+
+    Public Property MovieSetImagesForceLanguage() As Boolean
+        Get
+            Return Me._moviesetimagesforcelanguage
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetimagesforcelanguage = value
         End Set
     End Property
 
@@ -6465,12 +6496,21 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property TVImagesPrefLanguage() As String
+    Public Property TVImagesForcedLanguage() As String
         Get
-            Return Me._tvimagespreflanguage
+            Return Me._tvimagesforcedlanguage
         End Get
         Set(ByVal value As String)
-            Me._tvimagespreflanguage = value
+            Me._tvimagesforcedlanguage = value
+        End Set
+    End Property
+
+    Public Property TVImagesForceLanguage() As Boolean
+        Get
+            Return Me._tvimagesforcelanguage
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvimagesforcelanguage = value
         End Set
     End Property
 
