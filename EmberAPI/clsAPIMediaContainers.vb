@@ -4571,7 +4571,7 @@ Namespace MediaContainers
             Dim cSettings As New FilterSettings
 
             cSettings.ContentType = tDBElement.ContentType
-            cSettings.MediaLanguage = tDBElement.Language
+            cSettings.MediaLanguage = tDBElement.Language_Main
 
             Select Case tDBElement.ContentType
                 Case Enums.ContentType.Movie

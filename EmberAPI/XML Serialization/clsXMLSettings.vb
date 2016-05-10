@@ -367,7 +367,6 @@ Partial Public Class clsXMLSettings
     Private _tvgeneralflaglang As String
     Private _tvgeneralignorelastscan As Boolean
     Private _tvgenerallanguage As String
-    Private _tvgenerallanguages As clsXMLTVDBLanguages
     Private _tvgeneralmarknewepisodes As Boolean
     Private _tvgeneralmarknewshows As Boolean
     Private _tvgeneralseasonlistsorting As List(Of ListSorting)
@@ -1038,7 +1037,7 @@ Partial Public Class clsXMLSettings
             Return Me._moviegenerallanguage
         End Get
         Set(ByVal value As String)
-            Me._moviegenerallanguage = If(String.IsNullOrEmpty(value), "en", value)
+            Me._moviegenerallanguage = If(String.IsNullOrEmpty(value), "en-US", value)
         End Set
     End Property
 
@@ -1047,16 +1046,7 @@ Partial Public Class clsXMLSettings
             Return Me._tvgenerallanguage
         End Get
         Set(ByVal value As String)
-            Me._tvgenerallanguage = If(String.IsNullOrEmpty(value), "en", value)
-        End Set
-    End Property
-
-    Public Property TVGeneralLanguages() As clsXMLTVDBLanguages
-        Get
-            Return Me._tvgenerallanguages
-        End Get
-        Set(ByVal value As clsXMLTVDBLanguages)
-            Me._tvgenerallanguages = value
+            Me._tvgenerallanguage = If(String.IsNullOrEmpty(value), "en-US", value)
         End Set
     End Property
 

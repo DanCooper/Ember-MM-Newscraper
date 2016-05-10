@@ -23,6 +23,7 @@ Imports System.IO
 Imports System.Xml.Serialization
 Imports System.Data.SQLite
 Imports NLog
+Imports System.Text.RegularExpressions
 
 ''' <summary>
 ''' Class defining and implementing the interface to the database
@@ -3205,13 +3206,13 @@ Public Class Database
     End Sub
 
     Private Sub Prepare_Language(ByVal table As String, ByVal BatchMode As Boolean)
-        bwPatchDB.ReportProgress(-1, "Set all language to ""en"" ...")
+        bwPatchDB.ReportProgress(-1, "Set all languages to ""en-US"" ...")
 
         Dim SQLtransaction As SQLiteTransaction = Nothing
         If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
 
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommand.CommandText = String.Format("UPDATE {0} SET Language = 'en';", table)
+            SQLcommand.CommandText = String.Format("UPDATE {0} SET Language = 'en-US';", table)
             SQLcommand.ExecuteNonQuery()
         End Using
 
@@ -5465,6 +5466,12 @@ Public Class Database
         Public ReadOnly Property LanguageSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(_language)
+            End Get
+        End Property
+
+        Public ReadOnly Property Language_Main() As String
+            Get
+                Return Regex.Replace(_language, "-.*", String.Empty).Trim
             End Get
         End Property
 

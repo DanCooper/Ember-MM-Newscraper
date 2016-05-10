@@ -97,7 +97,7 @@ Public Class Settings
             Return Settings._XMLSettings.MovieGeneralLanguage
         End Get
         Set(ByVal value As String)
-            Settings._XMLSettings.MovieGeneralLanguage = If(String.IsNullOrEmpty(value), "en", value)
+            Settings._XMLSettings.MovieGeneralLanguage = If(String.IsNullOrEmpty(value), "en-US", value)
         End Set
     End Property
 
@@ -106,16 +106,7 @@ Public Class Settings
             Return Settings._XMLSettings.TVGeneralLanguage
         End Get
         Set(ByVal value As String)
-            Settings._XMLSettings.TVGeneralLanguage = If(String.IsNullOrEmpty(value), "en", value)
-        End Set
-    End Property
-
-    Public Property TVGeneralLanguages() As clsXMLTVDBLanguages
-        Get
-            Return Settings._XMLSettings.TVGeneralLanguages
-        End Get
-        Set(ByVal value As clsXMLTVDBLanguages)
-            Settings._XMLSettings.TVGeneralLanguages = value
+            Settings._XMLSettings.TVGeneralLanguage = If(String.IsNullOrEmpty(value), "en-US", value)
         End Set
     End Property
 
@@ -6740,10 +6731,6 @@ Public Class Settings
 
         SetDefaultsForLists(Enums.DefaultType.All, False)
 
-        If Master.eSettings.TVGeneralLanguages Is Nothing OrElse Master.eSettings.TVGeneralLanguages.Language.Count <= 0 Then
-            LoadTVLanguages()
-        End If
-
         ' Fix added to avoid to have no movie NFO saved
         If Not (Master.eSettings.MovieUseBoxee Or Master.eSettings.MovieUseEden Or Master.eSettings.MovieUseExpert Or Master.eSettings.MovieUseFrodo Or Master.eSettings.MovieUseNMJ Or Master.eSettings.MovieUseYAMJ) Then
             Master.eSettings.MovieUseFrodo = True
@@ -6775,24 +6762,6 @@ Public Class Settings
             Master.eSettings.TVShowNFOFrodo = True
             Master.eSettings.TVShowPosterFrodo = True
         End If
-    End Sub
-
-    Public Sub LoadTVLanguages()
-        Try
-            Dim configpath As String = FileUtils.Common.ReturnSettingsFile("Defaults", "DefaultTVLanguages.xml")
-
-            Dim objStreamReader As New StreamReader(configpath)
-            Dim xXMLSettings As New XmlSerializer(_XMLSettings.GetType)
-            Dim tSettings As New clsXMLSettings
-
-            tSettings = CType(xXMLSettings.Deserialize(objStreamReader), clsXMLSettings)
-            objStreamReader.Close()
-
-            _XMLSettings.TVGeneralLanguages = tSettings.TVGeneralLanguages
-
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
     End Sub
 
     Public Sub Save()
@@ -6943,7 +6912,7 @@ Public Class Settings
         MovieGeneralCustomScrapeButtonScrapeType = Enums.ScrapeType.NewSkip
         MovieGeneralFlagLang = String.Empty
         MovieGeneralIgnoreLastScan = True
-        MovieGeneralLanguage = "en"
+        MovieGeneralLanguage = "en-US"
         MovieGeneralMarkNew = False
         MovieGeneralMediaListSorting = New List(Of ListSorting)
         MovieImagesCacheEnabled = False
@@ -6952,7 +6921,7 @@ Public Class Settings
         MovieImagesGetEnglishImages = False
         MovieImagesMediaLanguageOnly = False
         MovieImagesNotSaveURLToNfo = False
-        MovieImagesPrefLanguage = "en"
+        MovieImagesPrefLanguage = "en-US"
         MovieIMDBURL = String.Empty
         MovieLandscapeKeepExisting = False
         MovieLevTolerance = 0
@@ -7170,8 +7139,7 @@ Public Class Settings
         TVGeneralEpisodeListSorting = New List(Of ListSorting)
         TVGeneralFlagLang = String.Empty
         TVGeneralIgnoreLastScan = True
-        TVGeneralLanguage = "en"
-        TVGeneralLanguages = New clsXMLTVDBLanguages
+        TVGeneralLanguage = "en-US"
         TVGeneralMarkNewEpisodes = False
         TVGeneralMarkNewShows = False
         TVGeneralSeasonListSorting = New List(Of ListSorting)
@@ -7181,7 +7149,7 @@ Public Class Settings
         TVImagesGetBlankImages = False
         TVImagesGetEnglishImages = False
         TVImagesMediaLanguageOnly = False
-        TVImagesPrefLanguage = "en"
+        TVImagesPrefLanguage = "en-US"
         TVLockEpisodeActors = False
         TVLockEpisodeAired = False
         TVLockEpisodeCredits = False
@@ -7333,8 +7301,6 @@ Public Class Settings
         TVSortTokensIsEmpty = False
         Username = String.Empty
         Version = String.Empty
-
-        LoadTVLanguages()
     End Sub
 
     Public Sub SetDefaultsForLists(ByVal Type As Enums.DefaultType, ByVal Force As Boolean)
@@ -7824,92 +7790,6 @@ Public Class Settings
 
     Public Function TvShowThemeAnyEnabled() As Boolean
         Return TVShowThemeTvTunesEnable AndAlso (TVShowThemeTvTunesShowPath OrElse (TVShowThemeTvTunesCustom AndAlso Not String.IsNullOrEmpty(TVShowThemeTvTunesCustomPath) OrElse (TVShowThemeTvTunesSub AndAlso Not String.IsNullOrEmpty(TVShowThemeTvTunesSubDir))))
-    End Function
-
-    Private Shared Function CompareLanguagesLong(
-        ByVal x As TVDBLanguagesLanguage, ByVal y As TVDBLanguagesLanguage) As Integer
-
-        If x Is Nothing Then
-            If y Is Nothing Then
-                ' If x is Nothing and y is Nothing, they're
-                ' equal.
-                Return 0
-            Else
-                ' If x is Nothing and y is not Nothing, y
-                ' is greater.
-                Return -1
-            End If
-        Else
-            ' If x is not Nothing...
-            '
-            If y Is Nothing Then
-                ' ...and y is Nothing, x is greater.
-                Return 1
-            Else
-                ' ...and y is not Nothing, compare the
-                ' lengths of the two strings.
-                '
-
-                'Dim retval As Integer = _
-                '    x.LongLang.Length.CompareTo(y.LongLang.Length)
-
-                'If retval <> 0 Then
-                '    ' If the strings are not of equal length,
-                '    ' the longer string is greater.
-                '    '
-                '    Return retval
-                'Else
-                '    ' If the strings are of equal length,
-                '    ' sort them with ordinary string comparison.
-                '    '
-                Return x.name.CompareTo(y.name)
-                'End If
-            End If
-        End If
-
-    End Function
-
-    Private Shared Function CompareLanguagesShort(
-        ByVal x As TVDBLanguagesLanguage, ByVal y As TVDBLanguagesLanguage) As Integer
-
-        If x Is Nothing Then
-            If y Is Nothing Then
-                ' If x is Nothing and y is Nothing, they're
-                ' equal.
-                Return 0
-            Else
-                ' If x is Nothing and y is not Nothing, y
-                ' is greater.
-                Return -1
-            End If
-        Else
-            ' If x is not Nothing...
-            '
-            If y Is Nothing Then
-                ' ...and y is Nothing, x is greater.
-                Return 1
-            Else
-                ' ...and y is not Nothing, compare the
-                ' lengths of the two strings.
-                '
-
-                'Dim retval As Integer = _
-                '    x.ShortLang.Length.CompareTo(y.ShortLang.Length)
-
-                'If retval <> 0 Then
-                '    ' If the strings are not of equal length,
-                '    ' the longer string is greater.
-                '    '
-                '    Return retval
-                'Else
-                '    ' If the strings are of equal length,
-                '    ' sort them with ordinary string comparison.
-                '    '
-                Return x.abbreviation.CompareTo(y.abbreviation)
-                'End If
-            End If
-        End If
-
     End Function
 
 #End Region 'Methods

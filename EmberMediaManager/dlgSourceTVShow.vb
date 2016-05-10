@@ -71,22 +71,18 @@ Public Class dlgSourceTVShow
     End Function
 
     Private Sub btnBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowse.Click
-        Try
-            With fbdBrowse
-                If Not String.IsNullOrEmpty(txtSourcePath.Text) Then
-                    .SelectedPath = txtSourcePath.Text
-                Else
-                    .SelectedPath = tmppath
+        With fbdBrowse
+            If Not String.IsNullOrEmpty(txtSourcePath.Text) Then
+                .SelectedPath = txtSourcePath.Text
+            Else
+                .SelectedPath = tmppath
+            End If
+            If .ShowDialog = Windows.Forms.DialogResult.OK Then
+                If Not String.IsNullOrEmpty(.SelectedPath) Then
+                    txtSourcePath.Text = .SelectedPath
                 End If
-                If .ShowDialog = Windows.Forms.DialogResult.OK Then
-                    If Not String.IsNullOrEmpty(.SelectedPath) Then
-                        txtSourcePath.Text = .SelectedPath
-                    End If
-                End If
-            End With
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
+            End If
+        End With
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
@@ -152,7 +148,17 @@ Public Class dlgSourceTVShow
             If s IsNot Nothing Then
                 autoName = False
                 If cbSourceLanguage.Items.Count > 0 Then
-                    cbSourceLanguage.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = s.Language).name
+                    Dim tLanguage As languageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = s.Language)
+                    If tLanguage IsNot Nothing Then
+                        cbSourceLanguage.Text = tLanguage.Description
+                    Else
+                        tLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(s.Language))
+                        If tLanguage IsNot Nothing Then
+                            cbSourceLanguage.Text = tLanguage.Description
+                        Else
+                            cbSourceLanguage.Text = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = "en-US").Description
+                        End If
+                    End If
                 End If
                 cbSourceOrdering.SelectedIndex = s.Ordering
                 cbSourceEpisodeSorting.SelectedIndex = s.EpisodeSorting
@@ -162,7 +168,7 @@ Public Class dlgSourceTVShow
             End If
         Else
             If cbSourceLanguage.Items.Count > 0 Then
-                cbSourceLanguage.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.TVGeneralLanguage).name
+                cbSourceLanguage.Text = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = Master.eSettings.TVGeneralLanguage).Description
             End If
             cbSourceEpisodeSorting.SelectedIndex = Enums.EpisodeSorting.Episode
             cbSourceOrdering.SelectedIndex = Enums.Ordering.Standard
@@ -193,9 +199,9 @@ Public Class dlgSourceTVShow
                 parPath.Value = Regex.Replace(txtSourcePath.Text.Trim, "^(\\)+\\\\", "\\")
                 parExclude.Value = chkExclude.Checked
                 If Not String.IsNullOrEmpty(cbSourceLanguage.Text) Then
-                    parLanguage.Value = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = cbSourceLanguage.Text).abbreviation
+                    parLanguage.Value = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = cbSourceLanguage.Text).Abbreviation
                 Else
-                    parLanguage.Value = "en"
+                    parLanguage.Value = "en-US"
                 End If
                 If Not String.IsNullOrEmpty(cbSourceOrdering.Text) Then
                     parOrdering.Value = DirectCast(cbSourceOrdering.SelectedIndex, Enums.Ordering)
@@ -231,7 +237,7 @@ Public Class dlgSourceTVShow
         fbdBrowse.Description = Master.eLang.GetString(706, "Select the parent folder for your TV Series folders/files.")
 
         cbSourceLanguage.Items.Clear()
-        cbSourceLanguage.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
+        cbSourceLanguage.Items.AddRange((From lLang In APIXML.ScraperLanguagesXML.Languages Select lLang.Description).ToArray)
 
         cbSourceOrdering.Items.Clear()
         cbSourceOrdering.Items.AddRange(New String() {Master.eLang.GetString(438, "Standard"), Master.eLang.GetString(1067, "DVD"), Master.eLang.GetString(839, "Absolute"), Master.eLang.GetString(1332, "Day Of Year")})

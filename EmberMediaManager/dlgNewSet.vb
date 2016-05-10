@@ -62,7 +62,15 @@ Public Class dlgNewSet
         SetUp()
 
         If cbLanguage.Items.Count > 0 Then
-            cbLanguage.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.MovieGeneralLanguage).name
+            Dim tLang As languageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = Master.eSettings.MovieGeneralLanguage)
+            If tLang IsNot Nothing Then
+                cbLanguage.Text = tLang.Description
+            Else
+                tLang = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(Master.eSettings.MovieGeneralLanguage))
+                If tLang IsNot Nothing Then
+                    cbLanguage.Text = tLang.Description
+                End If
+            End If
         End If
     End Sub
 
@@ -73,7 +81,7 @@ Public Class dlgNewSet
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOK.Click
         tmpDBElement.MovieSet.Title = txtTitle.Text.Trim
-        tmpDBElement.Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = cbLanguage.Text).abbreviation
+        tmpDBElement.Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = cbLanguage.Text).Abbreviation
         tmpDBElement.ListTitle = StringUtils.SortTokens_MovieSet(txtTitle.Text.Trim)
 
         DialogResult = System.Windows.Forms.DialogResult.OK
@@ -115,7 +123,7 @@ Public Class dlgNewSet
         lblTitle.Text = String.Concat(Master.eLang.GetString(21, "Title"), ":")
 
         cbLanguage.Items.Clear()
-        cbLanguage.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
+        cbLanguage.Items.AddRange((From lLang In APIXML.ScraperLanguagesXML.Languages Select lLang.Description).ToArray)
     End Sub
 
 #End Region 'Methods

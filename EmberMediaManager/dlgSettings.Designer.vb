@@ -711,7 +711,6 @@ Partial Class dlgSettings
         Me.cbTVLanguageOverlay = New System.Windows.Forms.ComboBox()
         Me.gbTVSourcesDefaultsOpts = New System.Windows.Forms.GroupBox()
         Me.tblTVSourcesDefaultsOpts = New System.Windows.Forms.TableLayoutPanel()
-        Me.btnTVGeneralLangFetch = New System.Windows.Forms.Button()
         Me.cbTVGeneralLang = New System.Windows.Forms.ComboBox()
         Me.lblTVSourcesDefaultsOrdering = New System.Windows.Forms.Label()
         Me.cbTVScraperOptionsOrdering = New System.Windows.Forms.ComboBox()
@@ -10831,7 +10830,7 @@ Partial Class dlgSettings
         Me.gbTVSourcesDefaultsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbTVSourcesDefaultsOpts.Location = New System.Drawing.Point(541, 114)
         Me.gbTVSourcesDefaultsOpts.Name = "gbTVSourcesDefaultsOpts"
-        Me.gbTVSourcesDefaultsOpts.Size = New System.Drawing.Size(278, 144)
+        Me.gbTVSourcesDefaultsOpts.Size = New System.Drawing.Size(278, 115)
         Me.gbTVSourcesDefaultsOpts.TabIndex = 4
         Me.gbTVSourcesDefaultsOpts.TabStop = False
         Me.gbTVSourcesDefaultsOpts.Text = "Defaults for new Sources"
@@ -10842,34 +10841,21 @@ Partial Class dlgSettings
         Me.tblTVSourcesDefaultsOpts.ColumnCount = 2
         Me.tblTVSourcesDefaultsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVSourcesDefaultsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVSourcesDefaultsOpts.Controls.Add(Me.btnTVGeneralLangFetch, 0, 2)
         Me.tblTVSourcesDefaultsOpts.Controls.Add(Me.cbTVGeneralLang, 0, 1)
-        Me.tblTVSourcesDefaultsOpts.Controls.Add(Me.lblTVSourcesDefaultsOrdering, 0, 3)
-        Me.tblTVSourcesDefaultsOpts.Controls.Add(Me.cbTVScraperOptionsOrdering, 0, 4)
+        Me.tblTVSourcesDefaultsOpts.Controls.Add(Me.lblTVSourcesDefaultsOrdering, 0, 2)
+        Me.tblTVSourcesDefaultsOpts.Controls.Add(Me.cbTVScraperOptionsOrdering, 0, 3)
         Me.tblTVSourcesDefaultsOpts.Controls.Add(Me.lblTVSourcesDefaultsLanguage, 0, 0)
         Me.tblTVSourcesDefaultsOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblTVSourcesDefaultsOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblTVSourcesDefaultsOpts.Name = "tblTVSourcesDefaultsOpts"
-        Me.tblTVSourcesDefaultsOpts.RowCount = 6
+        Me.tblTVSourcesDefaultsOpts.RowCount = 5
+        Me.tblTVSourcesDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblTVSourcesDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVSourcesDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblTVSourcesDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVSourcesDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVSourcesDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblTVSourcesDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVSourcesDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVSourcesDefaultsOpts.Size = New System.Drawing.Size(272, 123)
+        Me.tblTVSourcesDefaultsOpts.Size = New System.Drawing.Size(272, 94)
         Me.tblTVSourcesDefaultsOpts.TabIndex = 5
-        '
-        'btnTVGeneralLangFetch
-        '
-        Me.btnTVGeneralLangFetch.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.btnTVGeneralLangFetch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnTVGeneralLangFetch.Location = New System.Drawing.Point(3, 50)
-        Me.btnTVGeneralLangFetch.Name = "btnTVGeneralLangFetch"
-        Me.btnTVGeneralLangFetch.Size = New System.Drawing.Size(160, 23)
-        Me.btnTVGeneralLangFetch.TabIndex = 10
-        Me.btnTVGeneralLangFetch.Text = "Fetch Available Languages"
-        Me.btnTVGeneralLangFetch.UseVisualStyleBackColor = True
         '
         'cbTVGeneralLang
         '
@@ -10886,7 +10872,7 @@ Partial Class dlgSettings
         Me.lblTVSourcesDefaultsOrdering.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVSourcesDefaultsOrdering.AutoSize = True
         Me.lblTVSourcesDefaultsOrdering.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblTVSourcesDefaultsOrdering.Location = New System.Drawing.Point(3, 79)
+        Me.lblTVSourcesDefaultsOrdering.Location = New System.Drawing.Point(3, 50)
         Me.lblTVSourcesDefaultsOrdering.Name = "lblTVSourcesDefaultsOrdering"
         Me.lblTVSourcesDefaultsOrdering.Size = New System.Drawing.Size(142, 13)
         Me.lblTVSourcesDefaultsOrdering.TabIndex = 7
@@ -10899,7 +10885,7 @@ Partial Class dlgSettings
         Me.cbTVScraperOptionsOrdering.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbTVScraperOptionsOrdering.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbTVScraperOptionsOrdering.FormattingEnabled = True
-        Me.cbTVScraperOptionsOrdering.Location = New System.Drawing.Point(3, 99)
+        Me.cbTVScraperOptionsOrdering.Location = New System.Drawing.Point(3, 70)
         Me.cbTVScraperOptionsOrdering.Name = "cbTVScraperOptionsOrdering"
         Me.cbTVScraperOptionsOrdering.Size = New System.Drawing.Size(160, 21)
         Me.cbTVScraperOptionsOrdering.TabIndex = 8
@@ -13501,7 +13487,7 @@ Partial Class dlgSettings
         Me.gbTVSourcesMiscOpts.Controls.Add(Me.tblTVSourcesMiscOpts)
         Me.gbTVSourcesMiscOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbTVSourcesMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbTVSourcesMiscOpts.Location = New System.Drawing.Point(541, 264)
+        Me.gbTVSourcesMiscOpts.Location = New System.Drawing.Point(541, 235)
         Me.gbTVSourcesMiscOpts.Name = "gbTVSourcesMiscOpts"
         Me.gbTVSourcesMiscOpts.Size = New System.Drawing.Size(278, 118)
         Me.gbTVSourcesMiscOpts.TabIndex = 4
@@ -24091,7 +24077,6 @@ End Sub
     Friend WithEvents chkMoviePosterBoxee As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieNFOBoxee As System.Windows.Forms.CheckBox
     Friend WithEvents gbTVSourcesDefaultsOpts As System.Windows.Forms.GroupBox
-    Friend WithEvents btnTVGeneralLangFetch As System.Windows.Forms.Button
     Friend WithEvents cbTVGeneralLang As System.Windows.Forms.ComboBox
     Friend WithEvents tpTVSourcesFileNamingBoxee As System.Windows.Forms.TabPage
     Friend WithEvents gbTVSourcesFilenamingBoxeeDefaultsOpts As System.Windows.Forms.GroupBox

@@ -282,7 +282,6 @@ Partial Class dlgWizard
         Me.Label7 = New System.Windows.Forms.Label()
         Me.pnlTVShowSource = New System.Windows.Forms.Panel()
         Me.Label10 = New System.Windows.Forms.Label()
-        Me.btnTVGeneralLangFetch = New System.Windows.Forms.Button()
         Me.cbTVGeneralLang = New System.Windows.Forms.ComboBox()
         Me.lvTVSources = New System.Windows.Forms.ListView()
         Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -3688,7 +3687,7 @@ Partial Class dlgWizard
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(519, 93)
         Me.Label3.TabIndex = 0
-        Me.Label3.Text = "First, let's tell Ember Media Manager where to locate all your movies. You can ad" & _
+        Me.Label3.Text = "First, let's tell Ember Media Manager where to locate all your movies. You can ad" &
     "d as many sources as you wish."
         Me.Label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
@@ -3721,7 +3720,7 @@ Partial Class dlgWizard
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(337, 46)
         Me.Label6.TabIndex = 1
-        Me.Label6.Text = "That wasn't so hard was it?  As mentioned earlier, you can change these or any ot" & _
+        Me.Label6.Text = "That wasn't so hard was it?  As mentioned earlier, you can change these or any ot" &
     "her options in the Settings dialog."
         Me.Label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
@@ -3741,7 +3740,6 @@ Partial Class dlgWizard
         Me.pnlTVShowSource.BackColor = System.Drawing.Color.White
         Me.pnlTVShowSource.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.pnlTVShowSource.Controls.Add(Me.Label10)
-        Me.pnlTVShowSource.Controls.Add(Me.btnTVGeneralLangFetch)
         Me.pnlTVShowSource.Controls.Add(Me.cbTVGeneralLang)
         Me.pnlTVShowSource.Controls.Add(Me.lvTVSources)
         Me.pnlTVShowSource.Controls.Add(Me.btnTVRemoveSource)
@@ -3760,19 +3758,9 @@ Partial Class dlgWizard
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(332, 41)
         Me.Label10.TabIndex = 7
-        Me.Label10.Text = "Now select the default language you would like Ember to look for when scraping TV" & _
+        Me.Label10.Text = "Now select the default language you would like Ember to look for when scraping TV" &
     " Show items."
         Me.Label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'btnTVGeneralLangFetch
-        '
-        Me.btnTVGeneralLangFetch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnTVGeneralLangFetch.Location = New System.Drawing.Point(184, 351)
-        Me.btnTVGeneralLangFetch.Name = "btnTVGeneralLangFetch"
-        Me.btnTVGeneralLangFetch.Size = New System.Drawing.Size(166, 23)
-        Me.btnTVGeneralLangFetch.TabIndex = 8
-        Me.btnTVGeneralLangFetch.Text = "Fetch Available Languages"
-        Me.btnTVGeneralLangFetch.UseVisualStyleBackColor = True
         '
         'cbTVGeneralLang
         '
@@ -3860,7 +3848,7 @@ Partial Class dlgWizard
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(522, 64)
         Me.Label9.TabIndex = 0
-        Me.Label9.Text = "Next, let's tell Ember Media Manager where to locate all your TV Shows. You can a" & _
+        Me.Label9.Text = "Next, let's tell Ember Media Manager where to locate all your TV Shows. You can a" &
     "dd as many sources as you wish."
         Me.Label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
@@ -6227,7 +6215,6 @@ Partial Class dlgWizard
     Friend WithEvents Label11 As System.Windows.Forms.Label
     Friend WithEvents fbdBrowse As System.Windows.Forms.FolderBrowserDialog
     Friend WithEvents Label10 As System.Windows.Forms.Label
-    Friend WithEvents btnTVGeneralLangFetch As System.Windows.Forms.Button
     Friend WithEvents cbTVGeneralLang As System.Windows.Forms.ComboBox
     Friend WithEvents ColumnHeader4 As System.Windows.Forms.ColumnHeader
     Friend WithEvents ColumnHeader5 As System.Windows.Forms.ColumnHeader
