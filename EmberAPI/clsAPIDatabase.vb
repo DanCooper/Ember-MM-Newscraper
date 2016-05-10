@@ -23,6 +23,7 @@ Imports System.IO
 Imports System.Xml.Serialization
 Imports System.Data.SQLite
 Imports NLog
+Imports System.Text.RegularExpressions
 
 ''' <summary>
 ''' Class defining and implementing the interface to the database
@@ -555,7 +556,7 @@ Public Class Database
                 End Using
 
                 logger.Info("Removing seasons with no more existing episodes")
-                Delete_Empty_TVSeasons(True)
+                Delete_Empty_TVSeasons(-1, True)
                 logger.Info("Cleaning tv shows done")
             End If
 
@@ -857,16 +858,21 @@ Public Class Database
         Return isNew
     End Function
     ''' <summary>
-    ''' Remove all empty TV Seasons there are no episodes defined
+    ''' Remove all empty TV Seasons there has no episodes defined
     ''' </summary>
+    ''' <param name="lShowID">Show ID</param>
     ''' <param name="BatchMode">If <c>False</c>, the action is wrapped in a transaction</param>
     ''' <remarks></remarks>
-    Public Sub Delete_Empty_TVSeasons(ByVal BatchMode As Boolean)
+    Public Sub Delete_Empty_TVSeasons(ByVal lShowID As Long, ByVal BatchMode As Boolean)
         Dim SQLtransaction As SQLiteTransaction = Nothing
 
         If Not BatchMode Then SQLtransaction = Master.DB.MyVideosDBConn.BeginTransaction()
         Using SQLCommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLCommand.CommandText = "DELETE FROM seasons WHERE NOT EXISTS (SELECT episode.Season FROM episode WHERE episode.Season = seasons.Season AND episode.idShow = seasons.idShow) AND seasons.Season <> 999"
+            If Not lShowID = -1 Then
+                SQLCommand.CommandText = String.Format("DELETE FROM seasons WHERE seasons.idShow = {0} AND NOT EXISTS (SELECT episode.Season FROM episode WHERE episode.Season = seasons.Season AND episode.idShow = seasons.idShow) AND seasons.Season <> 999", lShowID)
+            Else
+                SQLCommand.CommandText = String.Format("DELETE FROM seasons WHERE NOT EXISTS (SELECT episode.Season FROM episode WHERE episode.Season = seasons.Season AND episode.idShow = seasons.idShow) AND seasons.Season <> 999")
+            End If
             SQLCommand.ExecuteNonQuery()
         End Using
         If Not BatchMode Then SQLtransaction.Commit()
@@ -1087,19 +1093,19 @@ Public Class Database
     ''' <summary>
     ''' Remove all information related to a TV episode from the database.
     ''' </summary>
-    ''' <param name="ID">ID of the episode to remove, as stored in the database.</param>
+    ''' <param name="lTVEpisodeID">ID of the episode to remove, as stored in the database.</param>
     ''' <param name="BatchMode">Is this function already part of a transaction?</param>
     ''' <returns>True if successful, false if deletion failed.</returns>
-    Public Function Delete_TVEpisode(ByVal ID As Long, ByVal Force As Boolean, ByVal DoCleanSeasons As Boolean, ByVal BatchMode As Boolean) As Boolean
+    Public Function Delete_TVEpisode(ByVal lTVEpisodeID As Long, ByVal Force As Boolean, ByVal DoCleanSeasons As Boolean, ByVal BatchMode As Boolean) As Boolean
         Dim SQLtransaction As SQLiteTransaction = Nothing
         Dim doesExist As Boolean = False
 
-        Dim _tvepisodeDB As Database.DBElement = Load_TVEpisode(ID, True)
+        Dim _tvepisodeDB As Database.DBElement = Load_TVEpisode(lTVEpisodeID, True)
         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Remove_TVEpisode, Nothing, Nothing, False, _tvepisodeDB)
 
         If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommand.CommandText = String.Concat("SELECT idFile, Episode, Season, idShow FROM episode WHERE idEpisode = ", ID, ";")
+            SQLcommand.CommandText = String.Concat("SELECT idFile, Episode, Season, idShow FROM episode WHERE idEpisode = ", lTVEpisodeID, ";")
             Using SQLReader As SQLiteDataReader = SQLcommand.ExecuteReader
                 While SQLReader.Read
                     Using SQLECommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -1107,7 +1113,7 @@ Public Class Database
                         If Not Force Then
                             'check if there is another episode with same season and episode number (in this case we don't need a another "Missing" episode)
                             Using SQLcommand_select As SQLiteCommand = _myvideosDBConn.CreateCommand
-                                SQLcommand_select.CommandText = String.Format("SELECT COUNT(episode.idEpisode) AS eCount FROM episode WHERE NOT idEpisode = {0} AND Season = {1} AND Episode = {2} AND idShow = {3}", ID, SQLReader("Season"), SQLReader("Episode"), SQLReader("idShow"))
+                                SQLcommand_select.CommandText = String.Format("SELECT COUNT(episode.idEpisode) AS eCount FROM episode WHERE NOT idEpisode = {0} AND Season = {1} AND Episode = {2} AND idShow = {3}", lTVEpisodeID, SQLReader("Season"), SQLReader("Episode"), SQLReader("idShow"))
                                 Using SQLReader_select As SQLiteDataReader = SQLcommand_select.ExecuteReader
                                     While SQLReader_select.Read
                                         If CInt(SQLReader_select("eCount")) > 0 Then doesExist = True
@@ -1117,10 +1123,10 @@ Public Class Database
                         End If
 
                         If Force OrElse doesExist Then
-                            SQLECommand.CommandText = String.Concat("DELETE FROM episode WHERE idEpisode = ", ID, ";")
+                            SQLECommand.CommandText = String.Concat("DELETE FROM episode WHERE idEpisode = ", lTVEpisodeID, ";")
                             SQLECommand.ExecuteNonQuery()
 
-                            If DoCleanSeasons Then Master.DB.Delete_Empty_TVSeasons(True)
+                            If DoCleanSeasons Then Master.DB.Delete_Empty_TVSeasons(Convert.ToInt64(SQLReader("idShow")), True)
                         ElseIf Not Convert.ToInt64(SQLReader("idFile")) = -1 Then 'already marked as missing, no need for another query
                             'check if there is another episode that use the same idFile
                             Dim multiEpisode As Boolean = False
@@ -1136,25 +1142,23 @@ Public Class Database
                                 SQLECommand.CommandText = String.Concat("DELETE FROM files WHERE idFile = ", Convert.ToInt64(SQLReader("idFile")), ";")
                                 SQLECommand.ExecuteNonQuery()
                             End If
-                            SQLECommand.CommandText = String.Concat("DELETE FROM TVVStreams WHERE TVEpID = ", ID, ";")
+                            SQLECommand.CommandText = String.Concat("DELETE FROM TVVStreams WHERE TVEpID = ", lTVEpisodeID, ";")
                             SQLECommand.ExecuteNonQuery()
-                            SQLECommand.CommandText = String.Concat("DELETE FROM TVAStreams WHERE TVEpID = ", ID, ";")
+                            SQLECommand.CommandText = String.Concat("DELETE FROM TVAStreams WHERE TVEpID = ", lTVEpisodeID, ";")
                             SQLECommand.ExecuteNonQuery()
-                            SQLECommand.CommandText = String.Concat("DELETE FROM TVSubs WHERE TVEpID = ", ID, ";")
+                            SQLECommand.CommandText = String.Concat("DELETE FROM TVSubs WHERE TVEpID = ", lTVEpisodeID, ";")
                             SQLECommand.ExecuteNonQuery()
-                            SQLECommand.CommandText = String.Concat("DELETE FROM art WHERE media_id = ", ID, " AND media_type = 'episode';")
+                            SQLECommand.CommandText = String.Concat("DELETE FROM art WHERE media_id = ", lTVEpisodeID, " AND media_type = 'episode';")
                             SQLECommand.ExecuteNonQuery()
                             SQLECommand.CommandText = String.Concat("UPDATE episode SET New = 0, ",
                                                                     "idFile = -1, NfoPath = '', ",
-                                                                    "VideoSource = '' WHERE idEpisode = ", ID, ";")
+                                                                    "VideoSource = '' WHERE idEpisode = ", lTVEpisodeID, ";")
                             SQLECommand.ExecuteNonQuery()
                         End If
                     End Using
                 End While
             End Using
         End Using
-
-        If DoCleanSeasons Then Master.DB.Delete_Empty_TVSeasons(True)
 
         If Not BatchMode Then
             SQLtransaction.Commit()
@@ -3205,13 +3209,13 @@ Public Class Database
     End Sub
 
     Private Sub Prepare_Language(ByVal table As String, ByVal BatchMode As Boolean)
-        bwPatchDB.ReportProgress(-1, "Set all language to ""en"" ...")
+        bwPatchDB.ReportProgress(-1, "Set all languages to ""en-US"" ...")
 
         Dim SQLtransaction As SQLiteTransaction = Nothing
         If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
 
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommand.CommandText = String.Format("UPDATE {0} SET Language = 'en';", table)
+            SQLcommand.CommandText = String.Format("UPDATE {0} SET Language = 'en-US';", table)
             SQLcommand.ExecuteNonQuery()
         End Using
 
@@ -4853,7 +4857,7 @@ Public Class Database
         End If
 
         'delete empty seasons after saving all known episodes
-        Delete_Empty_TVSeasons(True)
+        Delete_Empty_TVSeasons(_show.ID, True)
 
         If Not BatchMode Then SQLtransaction.Commit()
 
@@ -5465,6 +5469,12 @@ Public Class Database
         Public ReadOnly Property LanguageSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(_language)
+            End Get
+        End Property
+
+        Public ReadOnly Property Language_Main() As String
+            Get
+                Return Regex.Replace(_language, "-.*", String.Empty).Trim
             End Get
         End Property
 

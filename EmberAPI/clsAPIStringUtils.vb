@@ -24,11 +24,10 @@ Imports System.Text
 Imports System.Text.RegularExpressions
 Imports System.Drawing
 Imports System.Runtime.CompilerServices
-Imports System.Net
 Imports NLog
 
 'The InternalsVisibleTo is required for unit testing the friend methods
-<Assembly: InternalsVisibleTo("EmberAPI_Test")> 
+<Assembly: InternalsVisibleTo("EmberAPI_Test")>
 
 Public Class StringUtils
 
@@ -1038,7 +1037,7 @@ Public Class StringUtils
     Public Shared Function EncryptToSHA1(ByVal inputstring As String) As String
         Dim strToHash As String = inputstring
         Dim Result As String = ""
-        Dim OSha1 As New  _
+        Dim OSha1 As New _
         System.Security.Cryptography.SHA1CryptoServiceProvider
 
         'Step 1

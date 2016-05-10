@@ -195,7 +195,7 @@ Public Class TVDB_Image
         logger.Trace("[TVDB_Image] [Scraper] [Start]")
 
         LoadSettings()
-        Dim _scraper As New TVDBs.Scraper(_SpecialSettings)
+        Dim _scraper As New Scraper(_SpecialSettings)
 
         Dim FilteredModifiers As Structures.ScrapeModifiers = Functions.ScrapeModifiersAndAlso(ScrapeModifiers, ConfigModifier)
 

@@ -6334,9 +6334,9 @@ doCancel:
 
                     'Language submenu
                     Dim strLang As String = dgvMovies.Item("Language", dgvHTI.RowIndex).Value.ToString
-                    Dim Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = strLang)
-                    If Language IsNot Nothing AndAlso Not String.IsNullOrEmpty(Language.name) Then
-                        mnuLanguagesLanguage.SelectedItem = Language.name
+                    Dim Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = strLang)
+                    If Language IsNot Nothing AndAlso Not String.IsNullOrEmpty(Language.Description) Then
+                        mnuLanguagesLanguage.SelectedItem = Language.Description
                     Else
                         If Not mnuLanguagesLanguage.Items.Contains(String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")) Then
                             mnuLanguagesLanguage.Items.Insert(0, String.Concat(Master.eLang.GetString(1199, "Select Language"), "..."))
@@ -6828,9 +6828,9 @@ doCancel:
 
                     'Language submenu
                     Dim strLang As String = dgvMovieSets.Item("Language", dgvHTI.RowIndex).Value.ToString
-                    Dim Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = strLang)
-                    If Language IsNot Nothing AndAlso Not String.IsNullOrEmpty(Language.name) Then
-                        mnuLanguagesLanguage.SelectedItem = Language.name
+                    Dim Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = strLang)
+                    If Language IsNot Nothing AndAlso Not String.IsNullOrEmpty(Language.Description) Then
+                        mnuLanguagesLanguage.SelectedItem = Language.Description
                     Else
                         If Not mnuLanguagesLanguage.Items.Contains(String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")) Then
                             mnuLanguagesLanguage.Items.Insert(0, String.Concat(Master.eLang.GetString(1199, "Select Language"), "..."))
@@ -8091,9 +8091,9 @@ doCancel:
 
                     'Language submenu
                     Dim strLang As String = dgvTVShows.Item("Language", dgvHTI.RowIndex).Value.ToString
-                    Dim Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = strLang)
-                    If Language IsNot Nothing AndAlso Not String.IsNullOrEmpty(Language.name) Then
-                        mnuLanguagesLanguage.SelectedItem = Language.name
+                    Dim Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = strLang)
+                    If Language IsNot Nothing AndAlso Not String.IsNullOrEmpty(Language.Description) Then
+                        mnuLanguagesLanguage.SelectedItem = Language.Description
                     Else
                         If Not mnuLanguagesLanguage.Items.Contains(String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")) Then
                             mnuLanguagesLanguage.Items.Insert(0, String.Concat(Master.eLang.GetString(1199, "Select Language"), "..."))
@@ -10827,7 +10827,7 @@ doCancel:
                     Case "movie"
                         For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value))
-                            tmpDBElement.Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = strLanguage).abbreviation
+                            tmpDBElement.Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = strLanguage).Abbreviation
                             tmpDBElement.Movie.Language = tmpDBElement.Language
                             Master.DB.Save_Movie(tmpDBElement, True, True, False)
                             RefreshRow_Movie(tmpDBElement.ID)
@@ -10835,14 +10835,14 @@ doCancel:
                     Case "movieset"
                         For Each sRow As DataGridViewRow In dgvMovieSets.SelectedRows
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(Convert.ToInt64(sRow.Cells("idSet").Value))
-                            tmpDBElement.Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = strLanguage).abbreviation
+                            tmpDBElement.Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = strLanguage).Abbreviation
                             Master.DB.Save_MovieSet(tmpDBElement, True, True, False)
                             RefreshRow_MovieSet(tmpDBElement.ID)
                         Next
                     Case "tvshow"
                         For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(Convert.ToInt64(sRow.Cells("idShow").Value), False, False)
-                            tmpDBElement.Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = strLanguage).abbreviation
+                            tmpDBElement.Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = strLanguage).Abbreviation
                             tmpDBElement.TVShow.Language = tmpDBElement.Language
                             Master.DB.Save_TVShow(tmpDBElement, True, True, False, False)
                             RefreshRow_TVShow(tmpDBElement.ID)
@@ -16021,7 +16021,7 @@ doCancel:
             cbFilterLists_Shows.SelectedIndex = 0
 
             mnuLanguagesLanguage.Items.Clear()
-            mnuLanguagesLanguage.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language.OrderBy(Function(f) f.name) Select lLang.name).ToArray)
+            mnuLanguagesLanguage.Items.AddRange((From lLang In APIXML.ScraperLanguagesXML.Languages.OrderBy(Function(f) f.Description) Select lLang.Description).ToArray)
 
             'not technically a menu, but it's a good place to put it
             If ReloadFilters Then

@@ -139,7 +139,7 @@ Public Class dlgDeleteConfirm
                         End If
 
                     Next
-                    If _deltype = Enums.DelType.Seasons OrElse _deltype = Enums.DelType.Episodes Then Master.DB.Delete_Empty_TVSeasons(True)
+                    If _deltype = Enums.DelType.Seasons OrElse _deltype = Enums.DelType.Episodes Then Master.DB.Delete_Empty_TVSeasons(-1, True)
                     SQLtransaction.Commit()
                 End Using
             End With
