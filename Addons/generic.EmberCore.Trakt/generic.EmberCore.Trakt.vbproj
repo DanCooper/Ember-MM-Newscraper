@@ -160,6 +160,7 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="clsAPITrakt.vb" />
     <Compile Include="dlgTrakttvManager.Designer.vb">
       <DependentUpon>dlgTrakttvManager.vb</DependentUpon>
     </Compile>

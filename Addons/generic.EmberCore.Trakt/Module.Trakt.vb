@@ -36,11 +36,11 @@ Public Class Trakt_Generic
 
 #Region "Fields"
 
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
     Private _setup As frmSettingsHolder
     Private _AssemblyName As String = String.Empty
-    Private WithEvents cmnuTrayToolsTrakt As New System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents mnuMainToolsTrakt As New System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents cmnuTrayToolsTrakt As New ToolStripMenuItem
+    Private WithEvents mnuMainToolsTrakt As New ToolStripMenuItem
     Private _enabled As Boolean = False
     Private _Name As String = "Trakt.tv Manager"
     Private MySettings As New _MySettings
@@ -111,11 +111,13 @@ Public Class Trakt_Generic
     ''' TODO: Needs some testing (error handling..)!? Idea: Can be executed via commandline to update/sync playcounts of movies and episodes
     ''' </remarks>
     Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
-        'Try
-        '    dlgTrakttvManager.CLSyncPlaycount()
-        'Catch ex As Exception
-        '    logger.Error(ex, New StackFrame().GetMethod().Name)
-        'End Try
+        Select Case mType
+            Case Enums.ModuleEventType.CommandLine
+                LoadSettings()
+                Dim _scraper As New clsAPITrakt(MySettings)
+                _scraper.SyncToEmber_All()
+        End Select
+
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
@@ -164,7 +166,7 @@ Public Class Trakt_Generic
     End Sub
 
     Private Sub Handle_ModuleEnabledChanged(ByVal State As Boolean)
-        RaiseEvent ModuleEnabledChanged(Me._Name, State, 0)
+        RaiseEvent ModuleEnabledChanged(_Name, State, 0)
     End Sub
 
     Private Sub Handle_ModuleSettingsChanged()
@@ -177,35 +179,35 @@ Public Class Trakt_Generic
     End Sub
     Function InjectSetup() As Containers.SettingsPanel Implements Interfaces.GenericModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
-        Me._setup = New frmSettingsHolder
-        Me._setup.chkEnabled.Checked = Me._enabled
-        Me._setup.txtUsername.Text = MySettings.Username
-        Me._setup.txtPassword.Text = MySettings.Password
-        Me._setup.chkGetShowProgress.Checked = MySettings.GetShowProgress
+        _setup = New frmSettingsHolder
+        _setup.chkEnabled.Checked = _enabled
+        _setup.txtUsername.Text = MySettings.Username
+        _setup.txtPassword.Text = MySettings.Password
+        _setup.chkGetShowProgress.Checked = MySettings.GetShowProgress
         'LastPlayed
-        Me._setup.chkSyncLastPlayedEditMovies.Checked = MySettings.SyncLastPlayedEditMovies
-        Me._setup.chkSyncLastPlayedEditEpisodes.Checked = MySettings.SyncLastPlayedEditEpisodes
-        Me._setup.chkSyncLastPlayedMultiEpisodes.Checked = MySettings.SyncLastPlayedMultiEpisodes
-        Me._setup.chkSyncLastPlayedMultiMovies.Checked = MySettings.SyncLastPlayedMultiMovies
-        Me._setup.chkSyncLastPlayedSingleEpisodes.Checked = MySettings.SyncLastPlayedSingleEpisodes
-        Me._setup.chkSyncLastPlayedSingleMovies.Checked = MySettings.SyncLastPlayedSingleMovies
+        _setup.chkSyncLastPlayedEditMovies.Checked = MySettings.SyncLastPlayedEditMovies
+        _setup.chkSyncLastPlayedEditEpisodes.Checked = MySettings.SyncLastPlayedEditEpisodes
+        _setup.chkSyncLastPlayedMultiEpisodes.Checked = MySettings.SyncLastPlayedMultiEpisodes
+        _setup.chkSyncLastPlayedMultiMovies.Checked = MySettings.SyncLastPlayedMultiMovies
+        _setup.chkSyncLastPlayedSingleEpisodes.Checked = MySettings.SyncLastPlayedSingleEpisodes
+        _setup.chkSyncLastPlayedSingleMovies.Checked = MySettings.SyncLastPlayedSingleMovies
         'Playcount
-        Me._setup.chkSyncPlaycountEditMovies.Checked = MySettings.SyncPlaycountEditMovies
-        Me._setup.chkSyncPlaycountEditEpisodes.Checked = MySettings.SyncPlaycountEditEpisodes
-        Me._setup.chkSyncPlaycountMultiEpisodes.Checked = MySettings.SyncPlaycountMultiEpisodes
-        Me._setup.chkSyncPlaycountMultiMovies.Checked = MySettings.SyncPlaycountMultiMovies
-        Me._setup.chkSyncPlaycountSingleEpisodes.Checked = MySettings.SyncPlaycountSingleEpisodes
-        Me._setup.chkSyncPlaycountSingleMovies.Checked = MySettings.SyncPlaycountSingleMovies
+        _setup.chkSyncPlaycountEditMovies.Checked = MySettings.SyncPlaycountEditMovies
+        _setup.chkSyncPlaycountEditEpisodes.Checked = MySettings.SyncPlaycountEditEpisodes
+        _setup.chkSyncPlaycountMultiEpisodes.Checked = MySettings.SyncPlaycountMultiEpisodes
+        _setup.chkSyncPlaycountMultiMovies.Checked = MySettings.SyncPlaycountMultiMovies
+        _setup.chkSyncPlaycountSingleEpisodes.Checked = MySettings.SyncPlaycountSingleEpisodes
+        _setup.chkSyncPlaycountSingleMovies.Checked = MySettings.SyncPlaycountSingleMovies
 
-        SPanel.Name = Me._Name
+        SPanel.Name = _Name
         SPanel.Text = Master.eLang.GetString(871, "Trakt.tv Manager")
         SPanel.Prefix = "Trakt_"
         SPanel.Type = Master.eLang.GetString(802, "Modules")
-        SPanel.ImageIndex = If(Me._enabled, 9, 10)
+        SPanel.ImageIndex = If(_enabled, 9, 10)
         SPanel.Order = 100
-        SPanel.Panel = Me._setup.pnlSettings
-        AddHandler Me._setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
-        AddHandler Me._setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+        SPanel.Panel = _setup.pnlSettings
+        AddHandler _setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
+        AddHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         Return SPanel
     End Function
 
@@ -239,29 +241,29 @@ Public Class Trakt_Generic
         MySettings.SyncPlaycountSingleMovies = clsAdvancedSettings.GetBooleanSetting("SyncPlaycountSingleMovies", False)
     End Sub
     Sub SaveSetupModule(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
-        Me.Enabled = Me._setup.chkEnabled.Checked
-        MySettings.Username = Me._setup.txtUsername.Text
-        MySettings.Password = Me._setup.txtPassword.Text
-        MySettings.GetShowProgress = Me._setup.chkGetShowProgress.Checked
+        Enabled = _setup.chkEnabled.Checked
+        MySettings.Username = _setup.txtUsername.Text
+        MySettings.Password = _setup.txtPassword.Text
+        MySettings.GetShowProgress = _setup.chkGetShowProgress.Checked
         'LastPlayed
-        MySettings.SyncLastPlayedEditMovies = Me._setup.chkSyncLastPlayedEditMovies.Checked
-        MySettings.SyncLastPlayedEditEpisodes = Me._setup.chkSyncLastPlayedEditEpisodes.Checked
-        MySettings.SyncLastPlayedMultiEpisodes = Me._setup.chkSyncLastPlayedMultiEpisodes.Checked
-        MySettings.SyncLastPlayedMultiMovies = Me._setup.chkSyncLastPlayedMultiMovies.Checked
-        MySettings.SyncLastPlayedSingleEpisodes = Me._setup.chkSyncLastPlayedSingleEpisodes.Checked
-        MySettings.SyncLastPlayedSingleMovies = Me._setup.chkSyncLastPlayedSingleMovies.Checked
+        MySettings.SyncLastPlayedEditMovies = _setup.chkSyncLastPlayedEditMovies.Checked
+        MySettings.SyncLastPlayedEditEpisodes = _setup.chkSyncLastPlayedEditEpisodes.Checked
+        MySettings.SyncLastPlayedMultiEpisodes = _setup.chkSyncLastPlayedMultiEpisodes.Checked
+        MySettings.SyncLastPlayedMultiMovies = _setup.chkSyncLastPlayedMultiMovies.Checked
+        MySettings.SyncLastPlayedSingleEpisodes = _setup.chkSyncLastPlayedSingleEpisodes.Checked
+        MySettings.SyncLastPlayedSingleMovies = _setup.chkSyncLastPlayedSingleMovies.Checked
         'Playcount
-        MySettings.SyncPlaycountEditMovies = Me._setup.chkSyncPlaycountEditMovies.Checked
-        MySettings.SyncPlaycountEditEpisodes = Me._setup.chkSyncPlaycountEditEpisodes.Checked
-        MySettings.SyncPlaycountMultiEpisodes = Me._setup.chkSyncPlaycountMultiEpisodes.Checked
-        MySettings.SyncPlaycountMultiMovies = Me._setup.chkSyncPlaycountMultiMovies.Checked
-        MySettings.SyncPlaycountSingleEpisodes = Me._setup.chkSyncPlaycountSingleEpisodes.Checked
-        MySettings.SyncPlaycountSingleMovies = Me._setup.chkSyncPlaycountSingleMovies.Checked
+        MySettings.SyncPlaycountEditMovies = _setup.chkSyncPlaycountEditMovies.Checked
+        MySettings.SyncPlaycountEditEpisodes = _setup.chkSyncPlaycountEditEpisodes.Checked
+        MySettings.SyncPlaycountMultiEpisodes = _setup.chkSyncPlaycountMultiEpisodes.Checked
+        MySettings.SyncPlaycountMultiMovies = _setup.chkSyncPlaycountMultiMovies.Checked
+        MySettings.SyncPlaycountSingleEpisodes = _setup.chkSyncPlaycountSingleEpisodes.Checked
+        MySettings.SyncPlaycountSingleMovies = _setup.chkSyncPlaycountSingleMovies.Checked
 
         SaveSettings()
         If DoDispose Then
-            RemoveHandler Me._setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
-            RemoveHandler Me._setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+            RemoveHandler _setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
+            RemoveHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
             _setup.Dispose()
         End If
     End Sub
@@ -430,13 +432,14 @@ Public Class Trakt_Generic
     '        End If
 #End Region
 
-   
+
 
 #End Region 'Methods
 
 #Region "Nested Types"
 
     Structure _MySettings
+
 #Region "Fields"
         Dim Username As String
         Dim Password As String
@@ -459,6 +462,7 @@ Public Class Trakt_Generic
 
         Dim Sync As Boolean
 #End Region 'Fields
+
     End Structure
 
 
@@ -466,8 +470,8 @@ Public Class Trakt_Generic
     ''' structure used to read setting file of Kodi Interface
     ''' </summary>
     ''' <remarks></remarks>
-    <Serializable()> _
-    <XmlRoot("interface.kodi")> _
+    <Serializable()>
+    <XmlRoot("interface.kodi")>
     Class SpecialSettings
 
 #Region "Fields"
@@ -481,50 +485,51 @@ Public Class Trakt_Generic
 
 #Region "Properties"
 
-        <XmlElement("sendnotifications")> _
+        <XmlElement("sendnotifications")>
         Public Property SendNotifications() As Boolean
             Get
-                Return Me._sendnotifications
+                Return _sendnotifications
             End Get
             Set(ByVal value As Boolean)
-                Me._sendnotifications = value
+                _sendnotifications = value
             End Set
         End Property
 
-        <XmlElement("syncplaycounts")> _
+        <XmlElement("syncplaycounts")>
         Public Property SyncPlayCounts() As Boolean
             Get
-                Return Me._syncplaycounts
+                Return _syncplaycounts
             End Get
             Set(ByVal value As Boolean)
-                Me._syncplaycounts = value
+                _syncplaycounts = value
             End Set
         End Property
 
-        <XmlElement("syncplaycountshost")> _
+        <XmlElement("syncplaycountshost")>
         Public Property SyncPlayCountsHost() As String
             Get
-                Return Me._syncplaycountshost
+                Return _syncplaycountshost
             End Get
             Set(ByVal value As String)
-                Me._syncplaycountshost = value
+                _syncplaycountshost = value
             End Set
         End Property
 
-        <XmlElement("host")> _
+        <XmlElement("host")>
         Public Property Hosts() As List(Of Host)
             Get
-                Return Me._hosts
+                Return _hosts
             End Get
             Set(ByVal value As List(Of Host))
-                Me._hosts = value
+                _hosts = value
             End Set
         End Property
 
 #End Region 'Properties
+
     End Class
 
-    <Serializable()> _
+    <Serializable()>
     Class Host
 #Region "Fields"
         Private _address As String
@@ -538,90 +543,90 @@ Public Class Trakt_Generic
 #End Region 'Fields
 
 #Region "Properties"
-        <XmlElement("label")> _
+        <XmlElement("label")>
         Public Property Label() As String
             Get
-                Return Me._label
+                Return _label
             End Get
             Set(ByVal value As String)
-                Me._label = value
+                _label = value
             End Set
         End Property
 
-        <XmlElement("address")> _
+        <XmlElement("address")>
         Public Property Address() As String
             Get
-                Return Me._address
+                Return _address
             End Get
             Set(ByVal value As String)
-                Me._address = value
+                _address = value
             End Set
         End Property
 
-        <XmlElement("port")> _
+        <XmlElement("port")>
         Public Property Port() As Integer
             Get
-                Return Me._port
+                Return _port
             End Get
             Set(ByVal value As Integer)
-                Me._port = value
+                _port = value
             End Set
         End Property
 
-        <XmlElement("username")> _
+        <XmlElement("username")>
         Public Property Username() As String
             Get
-                Return Me._username
+                Return _username
             End Get
             Set(ByVal value As String)
-                Me._username = value
+                _username = value
             End Set
         End Property
 
-        <XmlElement("password")> _
+        <XmlElement("password")>
         Public Property Password() As String
             Get
-                Return Me._password
+                Return _password
             End Get
             Set(ByVal value As String)
-                Me._password = value
+                _password = value
             End Set
         End Property
 
-        <XmlElement("realtimesync")> _
+        <XmlElement("realtimesync")>
         Public Property RealTimeSync() As Boolean
             Get
-                Return Me._realtimesync
+                Return _realtimesync
             End Get
             Set(ByVal value As Boolean)
-                Me._realtimesync = value
+                _realtimesync = value
             End Set
         End Property
 
-        <XmlElement("moviesetartworkspath")> _
+        <XmlElement("moviesetartworkspath")>
         Public Property MovieSetArtworksPath() As String
             Get
-                Return Me._moviesetartworkspath
+                Return _moviesetartworkspath
             End Get
             Set(ByVal value As String)
-                Me._moviesetartworkspath = value
+                _moviesetartworkspath = value
             End Set
         End Property
 
-        <XmlElement("source")> _
+        <XmlElement("source")>
         Public Property Sources() As List(Of Source)
             Get
-                Return Me._sources
+                Return _sources
             End Get
             Set(ByVal value As List(Of Source))
-                Me._sources = value
+                _sources = value
             End Set
         End Property
 #End Region 'Properties
     End Class
 
 
-    <Serializable()> _
+    <Serializable()>
     Class Source
 #Region "Fields"
         Private _contenttype As Enums.ContentType
@@ -629,33 +634,33 @@ Public Class Trakt_Generic
         Private _remotepath As String
 #End Region 'Fields
 #Region "Properties"
-        <XmlElement("contenttype")> _
+        <XmlElement("contenttype")>
         Public Property ContentType() As Enums.ContentType
             Get
-                Return Me._contenttype
+                Return _contenttype
             End Get
             Set(ByVal value As Enums.ContentType)
-                Me._contenttype = value
+                _contenttype = value
             End Set
         End Property
 
-        <XmlElement("localpath")> _
+        <XmlElement("localpath")>
         Public Property LocalPath() As String
             Get
-                Return Me._localpath
+                Return _localpath
             End Get
             Set(ByVal value As String)
-                Me._localpath = value
+                _localpath = value
             End Set
         End Property
 
-        <XmlElement("remotepath")> _
+        <XmlElement("remotepath")>
         Public Property RemotePath() As String
             Get
-                Return Me._remotepath
+                Return _remotepath
             End Get
             Set(ByVal value As String)
-                Me._remotepath = value
+                _remotepath = value
             End Set
         End Property
 #End Region 'Properties
