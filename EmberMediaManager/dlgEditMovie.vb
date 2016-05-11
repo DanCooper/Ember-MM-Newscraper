@@ -1451,7 +1451,6 @@ Public Class dlgEditMovie
         pbPoster.AllowDrop = True
 
         SetUp()
-        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, tmpDBElement)
         lvwActorSorter = New ListViewColumnSorter()
         lvActors.ListViewItemSorter = lvwActorSorter
         'lvwExtrathumbsSorter = New ListViewColumnSorter() With {.SortByText = True, .Order = SortOrder.Ascending, .NumericSort = True}

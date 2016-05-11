@@ -43,19 +43,18 @@ Public Class Trakt_Generic
     Private WithEvents mnuMainToolsTrakt As New ToolStripMenuItem
     Private _enabled As Boolean = False
     Private _Name As String = "Trakt.tv Manager"
-    Private MySettings As New _MySettings
+    Private _MySettings As New MySettings
+    Private _TraktAPI As clsAPITrakt
+    Private _needNewAPI As Boolean = False
 
 #End Region 'Fields
 
 #Region "Events"
 
-    Public Event GenericEvent(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object)) Implements EmberAPI.Interfaces.GenericModule.GenericEvent
-
+    Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) Implements EmberAPI.Interfaces.GenericModule.GenericEvent
     Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.GenericModule.ModuleSetupChanged
-
-    Public Event ModuleSettingsChanged() Implements EmberAPI.Interfaces.GenericModule.ModuleSettingsChanged
-
-    Public Event SetupNeedsRestart() Implements EmberAPI.Interfaces.GenericModule.SetupNeedsRestart
+    Public Event ModuleSettingsChanged() Implements Interfaces.GenericModule.ModuleSettingsChanged
+    Public Event SetupNeedsRestart() Implements Interfaces.GenericModule.SetupNeedsRestart
 
 #End Region 'Events
 
@@ -63,7 +62,9 @@ Public Class Trakt_Generic
 
     Public ReadOnly Property ModuleType() As List(Of Enums.ModuleEventType) Implements Interfaces.GenericModule.ModuleType
         Get
-            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.Generic, Enums.ModuleEventType.CommandLine})
+            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.Generic, Enums.ModuleEventType.CommandLine,
+                                                      Enums.ModuleEventType.BeforeEdit_Movie, Enums.ModuleEventType.ScraperMulti_Movie,
+                                                      Enums.ModuleEventType.BeforeEdit_TVEpisode})
         End Get
     End Property
 
@@ -96,7 +97,7 @@ Public Class Trakt_Generic
 
     ReadOnly Property ModuleVersion() As String Implements Interfaces.GenericModule.ModuleVersion
         Get
-            Return FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location).FileVersion.ToString
+            Return FileVersionInfo.GetVersionInfo(Reflection.Assembly.GetExecutingAssembly.Location).FileVersion.ToString
         End Get
     End Property
 
@@ -104,18 +105,23 @@ Public Class Trakt_Generic
 
 #Region "Methods"
 
-    ''' <summary>
-    ''' Commandline call: Update/Sync playcounts of movies and episodes
-    ''' </summary>
-    ''' <remarks>
-    ''' TODO: Needs some testing (error handling..)!? Idea: Can be executed via commandline to update/sync playcounts of movies and episodes
-    ''' </remarks>
     Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
+        LoadSettings()
         Select Case mType
+            Case Enums.ModuleEventType.BeforeEdit_Movie
+                If _MySettings.SyncPlaycountEditMovies AndAlso _dbelement IsNot Nothing Then
+                    _TraktAPI.SetWatchedState_Movie(_dbelement)
+                End If
+            Case Enums.ModuleEventType.BeforeEdit_TVEpisode
+                If _MySettings.SyncPlaycountEditEpisodes AndAlso _dbelement IsNot Nothing Then
+                    _TraktAPI.SetWatchedState_Movie(_dbelement)
+                End If
             Case Enums.ModuleEventType.CommandLine
-                LoadSettings()
-                Dim _scraper As New clsAPITrakt(MySettings)
-                _scraper.SyncToEmber_All()
+                _TraktAPI.SyncToEmber_All()
+            Case Enums.ModuleEventType.ScraperMulti_Movie
+                If _MySettings.SyncPlaycountMultiMovies AndAlso _dbelement IsNot Nothing Then
+                    _TraktAPI.SetWatchedState_Movie(_dbelement)
+                End If
         End Select
 
         Return New Interfaces.ModuleResult With {.breakChain = False}
@@ -134,6 +140,8 @@ Public Class Trakt_Generic
     End Sub
 
     Sub Enable()
+        _TraktAPI = New clsAPITrakt(_MySettings)
+
         Dim tsi As New ToolStripMenuItem
 
         'mnuMainTools menu
@@ -149,7 +157,7 @@ Public Class Trakt_Generic
         AddToolsStripItem(tsi, cmnuTrayToolsTrakt)
     End Sub
 
-    Public Sub AddToolsStripItem(control As System.Windows.Forms.ToolStripMenuItem, value As System.Windows.Forms.ToolStripItem)
+    Public Sub AddToolsStripItem(control As ToolStripMenuItem, value As System.Windows.Forms.ToolStripItem)
         If control.Owner.InvokeRequired Then
             control.Owner.Invoke(New Delegate_AddToolsStripItem(AddressOf AddToolsStripItem), New Object() {control, value})
         Else
@@ -170,34 +178,39 @@ Public Class Trakt_Generic
     End Sub
 
     Private Sub Handle_ModuleSettingsChanged()
-        RaiseEvent ModuleSettingsChanged()
+        _needNewAPI = True
+    End Sub
+
+    Private Sub Handle_AccountSettingsChanged()
+        _needNewAPI = True
     End Sub
 
     Sub Init(ByVal sAssemblyName As String, ByVal sExecutable As String) Implements Interfaces.GenericModule.Init
         _AssemblyName = sAssemblyName
         LoadSettings()
     End Sub
+
     Function InjectSetup() As Containers.SettingsPanel Implements Interfaces.GenericModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
         _setup = New frmSettingsHolder
         _setup.chkEnabled.Checked = _enabled
-        _setup.txtUsername.Text = MySettings.Username
-        _setup.txtPassword.Text = MySettings.Password
-        _setup.chkGetShowProgress.Checked = MySettings.GetShowProgress
+        _setup.txtUsername.Text = _MySettings.Username
+        _setup.txtPassword.Text = _MySettings.Password
+        _setup.chkGetShowProgress.Checked = _MySettings.GetShowProgress
         'LastPlayed
-        _setup.chkSyncLastPlayedEditMovies.Checked = MySettings.SyncLastPlayedEditMovies
-        _setup.chkSyncLastPlayedEditEpisodes.Checked = MySettings.SyncLastPlayedEditEpisodes
-        _setup.chkSyncLastPlayedMultiEpisodes.Checked = MySettings.SyncLastPlayedMultiEpisodes
-        _setup.chkSyncLastPlayedMultiMovies.Checked = MySettings.SyncLastPlayedMultiMovies
-        _setup.chkSyncLastPlayedSingleEpisodes.Checked = MySettings.SyncLastPlayedSingleEpisodes
-        _setup.chkSyncLastPlayedSingleMovies.Checked = MySettings.SyncLastPlayedSingleMovies
+        _setup.chkSyncLastPlayedEditMovies.Checked = _MySettings.SyncLastPlayedEditMovies
+        _setup.chkSyncLastPlayedEditEpisodes.Checked = _MySettings.SyncLastPlayedEditEpisodes
+        _setup.chkSyncLastPlayedMultiEpisodes.Checked = _MySettings.SyncLastPlayedMultiEpisodes
+        _setup.chkSyncLastPlayedMultiMovies.Checked = _MySettings.SyncLastPlayedMultiMovies
+        _setup.chkSyncLastPlayedSingleEpisodes.Checked = _MySettings.SyncLastPlayedSingleEpisodes
+        _setup.chkSyncLastPlayedSingleMovies.Checked = _MySettings.SyncLastPlayedSingleMovies
         'Playcount
-        _setup.chkSyncPlaycountEditMovies.Checked = MySettings.SyncPlaycountEditMovies
-        _setup.chkSyncPlaycountEditEpisodes.Checked = MySettings.SyncPlaycountEditEpisodes
-        _setup.chkSyncPlaycountMultiEpisodes.Checked = MySettings.SyncPlaycountMultiEpisodes
-        _setup.chkSyncPlaycountMultiMovies.Checked = MySettings.SyncPlaycountMultiMovies
-        _setup.chkSyncPlaycountSingleEpisodes.Checked = MySettings.SyncPlaycountSingleEpisodes
-        _setup.chkSyncPlaycountSingleMovies.Checked = MySettings.SyncPlaycountSingleMovies
+        _setup.chkSyncPlaycountEditMovies.Checked = _MySettings.SyncPlaycountEditMovies
+        _setup.chkSyncPlaycountEditEpisodes.Checked = _MySettings.SyncPlaycountEditEpisodes
+        _setup.chkSyncPlaycountMultiEpisodes.Checked = _MySettings.SyncPlaycountMultiEpisodes
+        _setup.chkSyncPlaycountMultiMovies.Checked = _MySettings.SyncPlaycountMultiMovies
+        _setup.chkSyncPlaycountSingleEpisodes.Checked = _MySettings.SyncPlaycountSingleEpisodes
+        _setup.chkSyncPlaycountSingleMovies.Checked = _MySettings.SyncPlaycountSingleMovies
 
         SPanel.Name = _Name
         SPanel.Text = Master.eLang.GetString(871, "Trakt.tv Manager")
@@ -208,6 +221,7 @@ Public Class Trakt_Generic
         SPanel.Panel = _setup.pnlSettings
         AddHandler _setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
         AddHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+        AddHandler _setup.AccountSettingsChanged, AddressOf Handle_AccountSettingsChanged
         Return SPanel
     End Function
 
@@ -221,229 +235,99 @@ Public Class Trakt_Generic
         RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", True}))
         RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"filllist", True, True, True}))
     End Sub
+
     Sub LoadSettings()
-        MySettings.Username = clsAdvancedSettings.GetSetting("Username", "")
-        MySettings.Password = clsAdvancedSettings.GetSetting("Password", "")
-        MySettings.GetShowProgress = clsAdvancedSettings.GetBooleanSetting("GetShowProgress", False)
+        _MySettings.GetShowProgress = clsAdvancedSettings.GetBooleanSetting("GetShowProgress", False)
+        _MySettings.Password = clsAdvancedSettings.GetSetting("Password", String.Empty)
+        _MySettings.Token = clsAdvancedSettings.GetSetting("Token", String.Empty)
+        _MySettings.Username = clsAdvancedSettings.GetSetting("Username", String.Empty)
         'LastPlayed
-        MySettings.SyncLastPlayedEditMovies = clsAdvancedSettings.GetBooleanSetting("SyncLastPlayedEditMovies", False)
-        MySettings.SyncLastPlayedEditEpisodes = clsAdvancedSettings.GetBooleanSetting("SyncLastPlayedEditEpisodes", False)
-        MySettings.SyncLastPlayedMultiEpisodes = clsAdvancedSettings.GetBooleanSetting("SyncLastPlayedMultiEpisodes", False)
-        MySettings.SyncLastPlayedMultiMovies = clsAdvancedSettings.GetBooleanSetting("SyncLastPlayedMultiMovies", False)
-        MySettings.SyncLastPlayedSingleEpisodes = clsAdvancedSettings.GetBooleanSetting("SyncLastPlayedSingleEpisodes", False)
-        MySettings.SyncLastPlayedSingleMovies = clsAdvancedSettings.GetBooleanSetting("SyncLastPlayedSingleMovies", False)
+        _MySettings.SyncLastPlayedEditMovies = clsAdvancedSettings.GetBooleanSetting("SyncLastPlayedEditMovies", False)
+        _MySettings.SyncLastPlayedEditEpisodes = clsAdvancedSettings.GetBooleanSetting("SyncLastPlayedEditEpisodes", False)
+        _MySettings.SyncLastPlayedMultiEpisodes = clsAdvancedSettings.GetBooleanSetting("SyncLastPlayedMultiEpisodes", False)
+        _MySettings.SyncLastPlayedMultiMovies = clsAdvancedSettings.GetBooleanSetting("SyncLastPlayedMultiMovies", False)
+        _MySettings.SyncLastPlayedSingleEpisodes = clsAdvancedSettings.GetBooleanSetting("SyncLastPlayedSingleEpisodes", False)
+        _MySettings.SyncLastPlayedSingleMovies = clsAdvancedSettings.GetBooleanSetting("SyncLastPlayedSingleMovies", False)
         'Playcount
-        MySettings.SyncPlaycountEditMovies = clsAdvancedSettings.GetBooleanSetting("SyncPlaycountEditMovies", False)
-        MySettings.SyncPlaycountEditEpisodes = clsAdvancedSettings.GetBooleanSetting("SyncPlaycountEditEpisodes", False)
-        MySettings.SyncPlaycountMultiEpisodes = clsAdvancedSettings.GetBooleanSetting("SyncPlaycountMultiEpisodes", False)
-        MySettings.SyncPlaycountMultiMovies = clsAdvancedSettings.GetBooleanSetting("SyncPlaycountMultiMovies", False)
-        MySettings.SyncPlaycountSingleEpisodes = clsAdvancedSettings.GetBooleanSetting("SyncPlaycountSingleEpisodes", False)
-        MySettings.SyncPlaycountSingleMovies = clsAdvancedSettings.GetBooleanSetting("SyncPlaycountSingleMovies", False)
+        _MySettings.SyncPlaycountEditMovies = clsAdvancedSettings.GetBooleanSetting("SyncPlaycountEditMovies", False)
+        _MySettings.SyncPlaycountEditEpisodes = clsAdvancedSettings.GetBooleanSetting("SyncPlaycountEditEpisodes", False)
+        _MySettings.SyncPlaycountMultiEpisodes = clsAdvancedSettings.GetBooleanSetting("SyncPlaycountMultiEpisodes", False)
+        _MySettings.SyncPlaycountMultiMovies = clsAdvancedSettings.GetBooleanSetting("SyncPlaycountMultiMovies", False)
+        _MySettings.SyncPlaycountSingleEpisodes = clsAdvancedSettings.GetBooleanSetting("SyncPlaycountSingleEpisodes", False)
+        _MySettings.SyncPlaycountSingleMovies = clsAdvancedSettings.GetBooleanSetting("SyncPlaycountSingleMovies", False)
     End Sub
+
     Sub SaveSetupModule(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
         Enabled = _setup.chkEnabled.Checked
-        MySettings.Username = _setup.txtUsername.Text
-        MySettings.Password = _setup.txtPassword.Text
-        MySettings.GetShowProgress = _setup.chkGetShowProgress.Checked
+        _MySettings.GetShowProgress = _setup.chkGetShowProgress.Checked
+        _MySettings.Password = _setup.txtPassword.Text
+        _MySettings.Username = _setup.txtUsername.Text
         'LastPlayed
-        MySettings.SyncLastPlayedEditMovies = _setup.chkSyncLastPlayedEditMovies.Checked
-        MySettings.SyncLastPlayedEditEpisodes = _setup.chkSyncLastPlayedEditEpisodes.Checked
-        MySettings.SyncLastPlayedMultiEpisodes = _setup.chkSyncLastPlayedMultiEpisodes.Checked
-        MySettings.SyncLastPlayedMultiMovies = _setup.chkSyncLastPlayedMultiMovies.Checked
-        MySettings.SyncLastPlayedSingleEpisodes = _setup.chkSyncLastPlayedSingleEpisodes.Checked
-        MySettings.SyncLastPlayedSingleMovies = _setup.chkSyncLastPlayedSingleMovies.Checked
+        _MySettings.SyncLastPlayedEditMovies = _setup.chkSyncLastPlayedEditMovies.Checked
+        _MySettings.SyncLastPlayedEditEpisodes = _setup.chkSyncLastPlayedEditEpisodes.Checked
+        _MySettings.SyncLastPlayedMultiEpisodes = _setup.chkSyncLastPlayedMultiEpisodes.Checked
+        _MySettings.SyncLastPlayedMultiMovies = _setup.chkSyncLastPlayedMultiMovies.Checked
+        _MySettings.SyncLastPlayedSingleEpisodes = _setup.chkSyncLastPlayedSingleEpisodes.Checked
+        _MySettings.SyncLastPlayedSingleMovies = _setup.chkSyncLastPlayedSingleMovies.Checked
         'Playcount
-        MySettings.SyncPlaycountEditMovies = _setup.chkSyncPlaycountEditMovies.Checked
-        MySettings.SyncPlaycountEditEpisodes = _setup.chkSyncPlaycountEditEpisodes.Checked
-        MySettings.SyncPlaycountMultiEpisodes = _setup.chkSyncPlaycountMultiEpisodes.Checked
-        MySettings.SyncPlaycountMultiMovies = _setup.chkSyncPlaycountMultiMovies.Checked
-        MySettings.SyncPlaycountSingleEpisodes = _setup.chkSyncPlaycountSingleEpisodes.Checked
-        MySettings.SyncPlaycountSingleMovies = _setup.chkSyncPlaycountSingleMovies.Checked
+        _MySettings.SyncPlaycountEditMovies = _setup.chkSyncPlaycountEditMovies.Checked
+        _MySettings.SyncPlaycountEditEpisodes = _setup.chkSyncPlaycountEditEpisodes.Checked
+        _MySettings.SyncPlaycountMultiEpisodes = _setup.chkSyncPlaycountMultiEpisodes.Checked
+        _MySettings.SyncPlaycountMultiMovies = _setup.chkSyncPlaycountMultiMovies.Checked
+        _MySettings.SyncPlaycountSingleEpisodes = _setup.chkSyncPlaycountSingleEpisodes.Checked
+        _MySettings.SyncPlaycountSingleMovies = _setup.chkSyncPlaycountSingleMovies.Checked
 
         SaveSettings()
+
+        If _needNewAPI Then
+            _MySettings.Token = String.Empty
+            _TraktAPI = New clsAPITrakt(_MySettings)
+            _needNewAPI = False
+        End If
+
         If DoDispose Then
             RemoveHandler _setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
             RemoveHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+            RemoveHandler _setup.AccountSettingsChanged, AddressOf Handle_AccountSettingsChanged
             _setup.Dispose()
         End If
     End Sub
 
     Sub SaveSettings()
         Using settings = New clsAdvancedSettings()
-            settings.SetSetting("Username", MySettings.Username)
-            settings.SetSetting("Password", MySettings.Password)
-            settings.SetBooleanSetting("GetShowProgress", MySettings.GetShowProgress)
+            settings.SetSetting("Password", _MySettings.Password)
+            settings.SetSetting("Token", _MySettings.Token)
+            settings.SetSetting("Username", _MySettings.Username)
+            settings.SetBooleanSetting("GetShowProgress", _MySettings.GetShowProgress)
             'LastPlayed
-            settings.SetBooleanSetting("SyncLastPlayedEditMovies", MySettings.SyncLastPlayedEditMovies)
-            settings.SetBooleanSetting("SyncLastPlayedEditEpisodes", MySettings.SyncLastPlayedEditEpisodes)
-            settings.SetBooleanSetting("SyncLastPlayedMultiEpisodes", MySettings.SyncLastPlayedMultiEpisodes)
-            settings.SetBooleanSetting("SyncLastPlayedMultiMovies", MySettings.SyncLastPlayedMultiMovies)
-            settings.SetBooleanSetting("SyncLastPlayedSingleEpisodes", MySettings.SyncLastPlayedSingleEpisodes)
-            settings.SetBooleanSetting("SyncLastPlayedSingleMovies", MySettings.SyncLastPlayedSingleMovies)
+            settings.SetBooleanSetting("SyncLastPlayedEditMovies", _MySettings.SyncLastPlayedEditMovies)
+            settings.SetBooleanSetting("SyncLastPlayedEditEpisodes", _MySettings.SyncLastPlayedEditEpisodes)
+            settings.SetBooleanSetting("SyncLastPlayedMultiEpisodes", _MySettings.SyncLastPlayedMultiEpisodes)
+            settings.SetBooleanSetting("SyncLastPlayedMultiMovies", _MySettings.SyncLastPlayedMultiMovies)
+            settings.SetBooleanSetting("SyncLastPlayedSingleEpisodes", _MySettings.SyncLastPlayedSingleEpisodes)
+            settings.SetBooleanSetting("SyncLastPlayedSingleMovies", _MySettings.SyncLastPlayedSingleMovies)
             'Playcount
-            settings.SetBooleanSetting("SyncPlaycountEditMovies", MySettings.SyncPlaycountEditMovies)
-            settings.SetBooleanSetting("SyncPlaycountEditEpisodes", MySettings.SyncPlaycountEditEpisodes)
-            settings.SetBooleanSetting("SyncPlaycountMultiEpisodes", MySettings.SyncPlaycountMultiEpisodes)
-            settings.SetBooleanSetting("SyncPlaycountMultiMovies", MySettings.SyncPlaycountMultiMovies)
-            settings.SetBooleanSetting("SyncPlaycountSingleEpisodes", MySettings.SyncPlaycountSingleEpisodes)
-            settings.SetBooleanSetting("SyncPlaycountSingleMovies", MySettings.SyncPlaycountSingleMovies)
+            settings.SetBooleanSetting("SyncPlaycountEditMovies", _MySettings.SyncPlaycountEditMovies)
+            settings.SetBooleanSetting("SyncPlaycountEditEpisodes", _MySettings.SyncPlaycountEditEpisodes)
+            settings.SetBooleanSetting("SyncPlaycountMultiEpisodes", _MySettings.SyncPlaycountMultiEpisodes)
+            settings.SetBooleanSetting("SyncPlaycountMultiMovies", _MySettings.SyncPlaycountMultiMovies)
+            settings.SetBooleanSetting("SyncPlaycountSingleEpisodes", _MySettings.SyncPlaycountSingleEpisodes)
+            settings.SetBooleanSetting("SyncPlaycountSingleMovies", _MySettings.SyncPlaycountSingleMovies)
         End Using
     End Sub
-
-#Region "Sync functions"
-    ''Token generated after successfull login to trakt.tv account - without a token no scraping is possible
-    'Private _Token As String
-    ''collection of watched movies - contains last played date and playcount
-    'Private _traktWatchedMovies As IEnumerable(Of TraktAPI.Model.TraktMovieWatched) = Nothing
-    ''collection of watched episodes - contains last played date and playcount
-    'Private _traktWatchedEpisodes As IEnumerable(Of TraktAPI.Model.TraktEpisodeWatched) = Nothing
-
-    ''' <summary>
-    '''  Login to trakttv and retrieve personal video data
-    ''' </summary>
-    ''' <param name="SpecialSettings">Special settings of trakttv scraper module</param>
-    ''' <param name="Scrapermode">0= movie scraper, 1= tv scraper</param>
-    ''' <remarks>
-    ''' 2015/11/18 Cocotus - First implementation
-    ''' Constructor for trakt.tv data scraper - use this to do things that only needs to be done one time
-    ''' Connect to trakt.tv and scrape personal video data (personal ratings, last played) only once to minimize amount of queries to trakt.tv server
-    ''' </remarks>
-    'Public Sub New(ByVal SpecialSettings As Trakttv_Data.SpecialSettings, ByVal Scrapermode As Byte)
-    '    Try
-    '        _SpecialSettings = SpecialSettings
-
-    '        _Token = Trakttv.TraktMethods.LoginToTrakt(_SpecialSettings.TrakttvUserName, _SpecialSettings.TrakttvPassword)
-    '        If String.IsNullOrEmpty(_Token) Then
-    '            logger.Error(String.Concat("[New] Can't login to trakt.tv account!"))
-    '        Else
-    '            'Movie Mode
-    '            If Scrapermode = 0 Then
-    '                'Retrieve at scraper startup all user video data on trakt.tv like personal playcount, last played, ratings (only need to do this once and NOT for every scraped movie/show)
-    '                _traktWatchedMovies = TrakttvAPI.GetWatchedMovies
-    '                If _traktWatchedMovies Is Nothing Then
-    '                    logger.Error(String.Concat("[New] Could not scrape personal trakt.tv watched data!"))
-    '                End If
-    '                If _SpecialSettings.UsePersonalRatings Then
-    '                    _traktRatedMovies = TrakttvAPI.GetRatedMovies
-    '                    If _traktRatedMovies Is Nothing Then
-    '                        logger.Error(String.Concat("[New] Could not scrape personal trakt.tv ratings!"))
-    '                    End If
-    '                End If
-    '                'TV Mode
-    '            ElseIf Scrapermode = 1 Then
-    '                'Retrieve at scraper startup all user video data on trakt.tv like personal playcount, last played, ratings (only need to do this once and NOT for every scraped movie/show)
-    '                _traktWatchedEpisodes = TrakttvAPI.GetWatchedEpisodes
-    '                If _traktWatchedEpisodes Is Nothing Then
-    '                    logger.Error(String.Concat("[New] Could not scrape personal trakt.tv watched data!"))
-    '                End If
-    '                If _SpecialSettings.UsePersonalRatings Then
-    '                    _traktRatedEpisodes = TrakttvAPI.GetRatedEpisodes
-    '                    If _traktRatedEpisodes Is Nothing Then
-    '                        logger.Error(String.Concat("[New] Could not scrape personal trakt.tv ratings!"))
-    '                    End If
-    '                End If
-    '            End If
-    '        End If
-    '    Catch ex As Exception
-    '        logger.Error(ex, New StackFrame().GetMethod().Name)
-    '    End Try
-    'End Sub
-
-    ''Playcount / LastPlayed
-    '            If _SpecialSettings.Playcount OrElse _SpecialSettings.LastPlayed Then
-    ''scrape playcount and lastplayed date
-    '                If Not _traktWatchedMovies Is Nothing Then
-    '' Go through each item in collection	 
-    '                    For Each watchedMovie As TraktAPI.Model.TraktMovieWatched In _traktWatchedMovies
-    '                        If Not watchedMovie.Movie.Ids Is Nothing Then
-    ''Check if information is stored...
-    '                            If (Not String.IsNullOrEmpty(nMovie.IMDBID) AndAlso Not watchedMovie.Movie.Ids.Imdb Is Nothing AndAlso watchedMovie.Movie.Ids.Imdb = strID) OrElse (Not String.IsNullOrEmpty(nMovie.TMDBID) AndAlso Not watchedMovie.Movie.Ids.Tmdb Is Nothing AndAlso watchedMovie.Movie.Ids.Tmdb.ToString = strID) Then
-    '                                If _SpecialSettings.Playcount Then
-    '                                    nMovie.PlayCount = watchedMovie.Plays
-    '                                End If
-    '                                If _SpecialSettings.LastPlayed Then
-    ''listed-At is not user friendly formatted, so change format a bit
-    ''"listed_at": 2014-09-01T09:10:11.000Z (original)
-    ''new format here: 2014-09-01  09:10:11
-    'Dim myDateString As String = watchedMovie.LastWatchedAt
-    'Dim myDate As DateTime
-    'Dim isDate As Boolean = DateTime.TryParse(myDateString, myDate)
-    '                                    If isDate Then
-    '                                        nMovie.LastPlayed = myDate.ToString("yyyy-MM-dd HH:mm:ss")
-    '                                    End If
-    '                                End If
-    '                                Exit For
-    '                            End If
-    '                        End If
-    '                    Next
-    '                Else
-    '                    logger.Info("[GetMovieInfo] No playcounts/lastplayed values of movies scraped from trakt.tv! Current movie: " & strID)
-    '                End If
-    '            End If
-
-    ''Playcount / LastPlayed
-    '        If _SpecialSettings.EpisodePlaycount OrElse _SpecialSettings.EpisodeLastPlayed Then
-    ''scrape playcount and lastplayed date
-    '            If Not _traktWatchedEpisodes Is Nothing Then
-    'Dim SyncThisItem = True
-    '                For Each watchedshow In _traktWatchedEpisodes
-    '                    If SyncThisItem = False Then Exit For
-    ''find correct tvshow
-    '                    If Not watchedshow Is Nothing AndAlso Not watchedshow.Show Is Nothing AndAlso Not watchedshow.Show.Ids Is Nothing AndAlso (watchedshow.Show.Ids.Tvdb.ToString = ShowID OrElse watchedshow.Show.Ids.Tmdb.ToString = ShowID OrElse watchedshow.Show.Ids.Imdb.ToString = ShowID) Then
-    ''loop through every season of watched show
-    '                        For Each watchedseason In watchedshow.Seasons
-    '                            If SyncThisItem = False Then Exit For
-    ''..and find the correct season!
-    '                            If watchedseason.Number = SeasonNumber Then
-    ''loop through every episode of watched season
-    '                                For Each watchedEpi In watchedseason.Episodes
-    '                                    If SyncThisItem = False Then Exit For
-    ''...and find correct episode
-    '                                    If watchedEpi.Number = EpisodeNumber Then
-    ''playcount
-    '                                        If _SpecialSettings.EpisodePlaycount Then
-    '                                            nEpisode.Playcount = watchedEpi.Plays
-    '                                        End If
-    ''lastplayed
-    '                                        If _SpecialSettings.EpisodeLastPlayed Then
-    ''listed-At is not user friendly formatted, so change format a bit
-    ''"listed_at": 2014-09-01T09:10:11.000Z (original)
-    ''new format here: 2014-09-01  09:10:11
-    'Dim myDateString As String = watchedEpi.WatchedAt
-    'Dim myDate As DateTime
-    'Dim isDate As Boolean = DateTime.TryParse(myDateString, myDate)
-    '                                            If isDate Then
-    '                                                nEpisode.LastPlayed = myDate.ToString("yyyy-MM-dd HH:mm:ss")
-    '                                            End If
-    '                                        End If
-    '                                        SyncThisItem = False
-    '                                        Exit For
-    '                                    End If
-    '                                Next
-    '                            End If
-    '                        Next
-    '                    Else
-    '                        logger.Info("[GetTVEpisodeInfo] Invalid show data! Current show: ", ShowID)
-    '                    End If
-    '                Next
-    '            Else
-    '                logger.Info("[GetTVEpisodeInfo] No playcounts/lastplayed values of episodes scraped from trakt.tv! Current show: ", ShowID)
-    '            End If
-    '        End If
-#End Region
-
-
 
 #End Region 'Methods
 
 #Region "Nested Types"
 
-    Structure _MySettings
+    Structure MySettings
 
 #Region "Fields"
-        Dim Username As String
-        Dim Password As String
+
         Dim GetShowProgress As Boolean
+        Dim Password As String
+        Dim Token As String
+        Dim Username As String
 
         'LastPlayed
         Dim SyncLastPlayedEditMovies As Boolean
@@ -460,7 +344,6 @@ Public Class Trakt_Generic
         Dim SyncPlaycountSingleEpisodes As Boolean
         Dim SyncPlaycountSingleMovies As Boolean
 
-        Dim Sync As Boolean
 #End Region 'Fields
 
     End Structure

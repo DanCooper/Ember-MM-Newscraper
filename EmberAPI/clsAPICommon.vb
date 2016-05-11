@@ -695,23 +695,28 @@ Public Class Enums
         ''' <remarks></remarks>
         BeforeEdit_Movie = 7
         ''' <summary>
+        ''' Called when Manual editing or reading from nfo
+        ''' </summary>
+        ''' <remarks></remarks>
+        BeforeEdit_TVEpisode = 8
+        ''' <summary>
         ''' Command Line Module Call
         ''' </summary>
         ''' <remarks></remarks>
-        CommandLine = 8
-        FrameExtrator_Movie = 9
-        FrameExtrator_TVEpisode = 10
-        Generic = 11
-        MediaPlayer_Audio = 12
-        MediaPlayer_Video = 13
-        MediaPlayerPlay_Audio = 14
-        MediaPlayerPlay_Video = 15
-        MediaPlayerPlaylistAdd_Audio = 16
-        MediaPlayerPlaylistAdd_Video = 17
-        MediaPlayerPlaylistClear_Audio = 18
-        MediaPlayerPlaylistClear_Video = 19
-        MediaPlayerStop_Audio = 20
-        MediaPlayerStop_Video = 21
+        CommandLine = 9
+        FrameExtrator_Movie = 10
+        FrameExtrator_TVEpisode = 11
+        Generic = 12
+        MediaPlayer_Audio = 13
+        MediaPlayer_Video = 14
+        MediaPlayerPlay_Audio = 15
+        MediaPlayerPlay_Video = 16
+        MediaPlayerPlaylistAdd_Audio = 17
+        MediaPlayerPlaylistAdd_Video = 18
+        MediaPlayerPlaylistClear_Audio = 19
+        MediaPlayerPlaylistClear_Video = 20
+        MediaPlayerStop_Audio = 21
+        MediaPlayerStop_Video = 22
         Notification = 23
         OnBannerSave_Movie = 24
         OnClearArtSave_Movie = 25

@@ -29,8 +29,7 @@ Public Class clsAPITrakt
 
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Private _SpecialSettings As New Trakt_Generic._MySettings
-    Private _strToken As String = String.Empty
+    Private _SpecialSettings As New Trakt_Generic.MySettings
 
 #End Region 'Fields
 
@@ -42,14 +41,26 @@ Public Class clsAPITrakt
 
 #Region "Methods"
 
-    Public Sub New(ByVal SpecialSettings As Trakt_Generic._MySettings)
+    Public Sub New(ByRef SpecialSettings As Trakt_Generic.MySettings)
         _SpecialSettings = SpecialSettings
         Try
-            CreateToken(_SpecialSettings.Username, _SpecialSettings.Password, String.Empty)
+            CreateToken(_SpecialSettings.Username, _SpecialSettings.Password, _SpecialSettings.Token)
+            SpecialSettings.Token = _SpecialSettings.Token
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
+
+    Private Function CheckConnection() As Boolean
+        If String.IsNullOrEmpty(TraktSettings.Token) Then
+            CreateToken(_SpecialSettings.Username, _SpecialSettings.Password, String.Empty)
+        End If
+        If Not String.IsNullOrEmpty(TraktSettings.Token) Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
     ''' <summary>
     '''  Trakt-Login process for using v2 API (Token based authentification) 
     ''' </summary>
@@ -60,72 +71,57 @@ Public Class clsAPITrakt
     ''' <remarks>
     ''' 2015/01/17 Cocotus - First implementation of new V2 Authentification process for trakt.tv API
     ''' </remarks>
-    Private Sub CreateToken(ByVal strUsername As String, ByVal strPassword As String, ByVal strToken As String)
+    Private Function CreateToken(ByVal strUsername As String, ByVal strPassword As String, ByRef strToken As String) As String
         ' Use Trakttv wrapper
         Dim account As New TraktAPI.Model.TraktAuthentication
         account.Username = strUsername
         account.Password = strPassword
         TraktSettings.Password = strPassword
         TraktSettings.Username = strUsername
+        TraktSettings.Token = strToken
 
         If String.IsNullOrEmpty(strToken) Then
             Dim response = TraktMethods.LoginToAccount(account)
-            If response IsNot Nothing Then
-                _strToken = response.Token
-            Else
-                _strToken = String.Empty
-            End If
-        Else
-            TraktSettings.Token = _strToken
+            strToken = TraktSettings.Token
         End If
-    End Sub
+
+        Return TraktSettings.Token
+    End Function
 
     Public Function GetRated_Movies() As IEnumerable(Of TraktAPI.Model.TraktMovieRated)
-        If String.IsNullOrEmpty(_strToken) Then
-            CreateToken(_SpecialSettings.Username, _SpecialSettings.Password, String.Empty)
+        If CheckConnection() Then
+            Dim lRatedMovies As IEnumerable(Of TraktAPI.Model.TraktMovieRated) = TrakttvAPI.GetRatedMovies
+            Return lRatedMovies
+        Else
+            Return Nothing
         End If
-
-        If String.IsNullOrEmpty(_strToken) Then Return Nothing
-
-        Dim lRatedMovies As IEnumerable(Of TraktAPI.Model.TraktMovieRated) = TrakttvAPI.GetRatedMovies
-
-        Return lRatedMovies
     End Function
 
     Public Function GetRated_TVEpisodes() As IEnumerable(Of TraktAPI.Model.TraktEpisodeRated)
-        If String.IsNullOrEmpty(_strToken) Then
-            CreateToken(_SpecialSettings.Username, _SpecialSettings.Password, String.Empty)
+        If CheckConnection() Then
+            Dim lRatedTVEpisodes As IEnumerable(Of TraktAPI.Model.TraktEpisodeRated) = TrakttvAPI.GetRatedEpisodes
+            Return lRatedTVEpisodes
+        Else
+            Return Nothing
         End If
-
-        If String.IsNullOrEmpty(_strToken) Then Return Nothing
-
-        Dim lRatedTVEpisodes As IEnumerable(Of TraktAPI.Model.TraktEpisodeRated) = TrakttvAPI.GetRatedEpisodes
-
-        Return lRatedTVEpisodes
     End Function
 
     Public Function GetWatched_Movies() As IEnumerable(Of TraktAPI.Model.TraktMovieWatched)
-        If String.IsNullOrEmpty(_strToken) Then
-            CreateToken(_SpecialSettings.Username, _SpecialSettings.Password, String.Empty)
+        If CheckConnection() Then
+            Dim lWatchedMovies As IEnumerable(Of TraktAPI.Model.TraktMovieWatched) = TrakttvAPI.GetWatchedMovies
+            Return lWatchedMovies
+        Else
+            Return Nothing
         End If
-
-        If String.IsNullOrEmpty(_strToken) Then Return Nothing
-
-        Dim lWatchedMovies As IEnumerable(Of TraktAPI.Model.TraktMovieWatched) = TrakttvAPI.GetWatchedMovies
-
-        Return lWatchedMovies
     End Function
 
     Public Function GetWatched_TVEpisodes() As IEnumerable(Of TraktAPI.Model.TraktEpisodeWatched)
-        If String.IsNullOrEmpty(_strToken) Then
-            CreateToken(_SpecialSettings.Username, _SpecialSettings.Password, String.Empty)
+        If CheckConnection() Then
+            Dim lWatchedTVEpisodes As IEnumerable(Of TraktAPI.Model.TraktEpisodeWatched) = TrakttvAPI.GetWatchedEpisodes
+            Return lWatchedTVEpisodes
+        Else
+            Return Nothing
         End If
-
-        If String.IsNullOrEmpty(_strToken) Then Return Nothing
-
-        Dim lWatchedTVEpisodes As IEnumerable(Of TraktAPI.Model.TraktEpisodeWatched) = TrakttvAPI.GetWatchedEpisodes
-
-        Return lWatchedTVEpisodes
     End Function
 
     Public Function GetWatchedRated_Movies() As List(Of TraktAPI.Model.TraktMovieWatchedRated)
@@ -248,6 +244,29 @@ Public Class clsAPITrakt
             SQLtransaction.Commit()
         End Using
     End Sub
+
+    Public Function SetWatchedState_Movie(ByRef tDBElement As Database.DBElement) As Boolean
+        If Not tDBElement.Movie.AnyUniqueIDSpecified Then Return False
+
+        If CheckConnection() Then
+            Dim strIMDBID As String = tDBElement.Movie.ID
+            Dim intTMDBID As Integer = -1
+            Integer.TryParse(tDBElement.Movie.TMDBID, intTMDBID)
+
+            Dim lWatchedMovies As IEnumerable(Of TraktAPI.Model.TraktMovieWatched) = GetWatched_Movies()
+            If lWatchedMovies IsNot Nothing AndAlso lWatchedMovies.Count > 0 Then
+                Dim tMovie = lWatchedMovies.FirstOrDefault(Function(f) (f.Movie.Ids.Imdb IsNot Nothing AndAlso f.Movie.Ids.Imdb = strIMDBID) OrElse
+                                                  (f.Movie.Ids.Tmdb IsNot Nothing AndAlso CInt(f.Movie.Ids.Tmdb) = intTMDBID))
+                If tMovie IsNot Nothing Then
+                    tDBElement.Movie.LastPlayed = Functions.ConvertToProperDateTime(tMovie.LastWatchedAt)
+                    tDBElement.Movie.PlayCount = tMovie.Plays
+                    Return True
+                End If
+            End If
+        End If
+
+        Return False
+    End Function
 
     Public Sub SyncToEmber_All(Optional ByVal sfunction As ShowProgress = Nothing)
         SyncToEmber_Movies(sfunction)

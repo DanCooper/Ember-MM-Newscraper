@@ -229,7 +229,6 @@ Partial Class frmSettingsHolder
         Me.gbSettingsPlaycount.AutoSize = True
         Me.gbSettingsPlaycount.Controls.Add(Me.tblSettingsPlaycount)
         Me.gbSettingsPlaycount.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbSettingsPlaycount.Enabled = False
         Me.gbSettingsPlaycount.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbSettingsPlaycount.Location = New System.Drawing.Point(392, 109)
         Me.gbSettingsPlaycount.Name = "gbSettingsPlaycount"
@@ -267,6 +266,7 @@ Partial Class frmSettingsHolder
         'chkSyncPlaycountSingleMovies
         '
         Me.chkSyncPlaycountSingleMovies.AutoSize = True
+        Me.chkSyncPlaycountSingleMovies.Enabled = False
         Me.chkSyncPlaycountSingleMovies.Location = New System.Drawing.Point(3, 3)
         Me.chkSyncPlaycountSingleMovies.Name = "chkSyncPlaycountSingleMovies"
         Me.chkSyncPlaycountSingleMovies.Size = New System.Drawing.Size(276, 17)
@@ -297,6 +297,7 @@ Partial Class frmSettingsHolder
         'chkSyncPlaycountMultiEpisodes
         '
         Me.chkSyncPlaycountMultiEpisodes.AutoSize = True
+        Me.chkSyncPlaycountMultiEpisodes.Enabled = False
         Me.chkSyncPlaycountMultiEpisodes.Location = New System.Drawing.Point(3, 95)
         Me.chkSyncPlaycountMultiEpisodes.Name = "chkSyncPlaycountMultiEpisodes"
         Me.chkSyncPlaycountMultiEpisodes.Size = New System.Drawing.Size(281, 17)
@@ -307,6 +308,7 @@ Partial Class frmSettingsHolder
         'chkSyncPlaycountSingleEpisodes
         '
         Me.chkSyncPlaycountSingleEpisodes.AutoSize = True
+        Me.chkSyncPlaycountSingleEpisodes.Enabled = False
         Me.chkSyncPlaycountSingleEpisodes.Location = New System.Drawing.Point(3, 72)
         Me.chkSyncPlaycountSingleEpisodes.Name = "chkSyncPlaycountSingleEpisodes"
         Me.chkSyncPlaycountSingleEpisodes.Size = New System.Drawing.Size(286, 17)
@@ -317,6 +319,7 @@ Partial Class frmSettingsHolder
         'chkSyncPlaycountEditEpisodes
         '
         Me.chkSyncPlaycountEditEpisodes.AutoSize = True
+        Me.chkSyncPlaycountEditEpisodes.Enabled = False
         Me.chkSyncPlaycountEditEpisodes.Location = New System.Drawing.Point(3, 118)
         Me.chkSyncPlaycountEditEpisodes.Name = "chkSyncPlaycountEditEpisodes"
         Me.chkSyncPlaycountEditEpisodes.Size = New System.Drawing.Size(230, 17)
