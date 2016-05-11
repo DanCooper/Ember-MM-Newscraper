@@ -180,7 +180,7 @@ Public Class FileFolderRenamer
                 'Rename Directory
                 If Not srcDir = destDir Then
                     Try
-                        If Not sfunction Is Nothing Then
+                        If sfunction IsNot Nothing Then
                             If Not sfunction(_frename.NewPath, iProg) Then Return
                         End If
 
@@ -230,7 +230,7 @@ Public Class FileFolderRenamer
                                 dstFile = Path.Combine(destDir, lFile.Name.Replace(_frename.FileName.Trim, _frename.NewFileName.Trim))
                                 If Not srcFile = dstFile Then
                                     Try
-                                        If Not sfunction Is Nothing Then
+                                        If sfunction IsNot Nothing Then
                                             If Not sfunction(_frename.NewFileName, iProg) Then Return
                                         End If
 
@@ -309,7 +309,7 @@ Public Class FileFolderRenamer
                 'Rename/Create Directory
                 If Not srcDir = destDir Then
                     Try
-                        If Not sfunction Is Nothing Then
+                        If sfunction IsNot Nothing Then
                             If Not sfunction(_frename.NewPath, iProg) Then Return
                         End If
 
@@ -355,7 +355,7 @@ Public Class FileFolderRenamer
                                 dstFile = Path.Combine(destDir, lFile.Name.Replace(_frename.FileName.Trim, _frename.NewFileName.Trim))
                                 If Not srcFile = dstFile Then
                                     Try
-                                        If Not sfunction Is Nothing Then
+                                        If sfunction IsNot Nothing Then
                                             If Not sfunction(_frename.NewFileName, iProg) Then Return
                                         End If
 
