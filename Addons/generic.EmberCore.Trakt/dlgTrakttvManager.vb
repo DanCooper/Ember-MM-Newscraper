@@ -1497,10 +1497,10 @@ Public Class dlgTrakttvManager
 
                             SQLCommand.CommandText = String.Concat("SELECT DISTINCT episode.idEpisode FROM episode INNER JOIN tvshow ON (episode.idShow = tvshow.idShow) ",
                                                                    "WHERE NOT idFile = -1 ",
-                                                                   "AND (episode.Season = ", watchedTVSeason.Number, " And episode.Episode = ", watchedTVEpisode.Number, ") ",
-                                                                   "And ((episode.Playcount Is NULL Or Not episode.Playcount = ", watchedTVEpisode.Plays, ") ",
-                                                                   "Or (episode.iLastPlayed Is NULL Or Not episode.iLastPlayed = ", DateTimeLastPlayedUnix, ")) ",
-                                                                   "And (", String.Join(" Or ", UniqueIDs.ToArray), ");")
+                                                                   "AND (episode.Season = ", watchedTVSeason.Number, " AND episode.Episode = ", watchedTVEpisode.Number, ") ",
+                                                                   "AND ((episode.Playcount IS NULL OR NOT episode.Playcount = ", watchedTVEpisode.Plays, ") ",
+                                                                   "OR (episode.iLastPlayed IS NULL OR NOT episode.iLastPlayed = ", DateTimeLastPlayedUnix, ")) ",
+                                                                   "AND (", String.Join(" OR ", UniqueIDs.ToArray), ");")
 
                             Using SQLreader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader()
                                 While SQLreader.Read
