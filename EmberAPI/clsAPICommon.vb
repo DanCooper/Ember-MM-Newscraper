@@ -1110,6 +1110,17 @@ Public Class Functions
         Dim diff As System.TimeSpan = data - origin
         Return Math.Floor(diff.TotalSeconds)
     End Function
+
+    Public Shared Function ConvertToProperDateTime(ByVal strDateTime As String) As String
+        If String.IsNullOrEmpty(strDateTime) Then Return String.Empty
+
+        Dim parsedDateTime As DateTime
+        If DateTime.TryParse(strDateTime, parsedDateTime) Then
+            Return parsedDateTime.ToString("yyyy-MM-dd HH:mm:ss")
+        Else
+            Return String.Empty
+        End If
+    End Function
     ''' <summary>
     ''' Create a collection of default Movie and TV scrape options
     ''' based off the currently selected options. 
