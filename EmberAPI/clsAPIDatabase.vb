@@ -4138,28 +4138,37 @@ Public Class Database
     End Function
 
     Public Sub Change_TVEpisode(ByVal _episode As DBElement, ByVal ListOfEpisodes As List(Of MediaContainers.EpisodeDetails), Optional ByVal Batchmode As Boolean = False)
+        Dim newEpisodesList As New List(Of DBElement)
+
         Dim SQLtransaction As SQLiteTransaction = Nothing
         If Not Batchmode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
         Using SQLPCommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
 
             'first step: remove all existing episode informations for this file and set it to "Missing"
-            Delete_TVEpisode(_episode.Filename, False, Batchmode)
+            Delete_TVEpisode(_episode.Filename, False, True)
 
             'second step: create new episode DBElements and save it to database
             For Each tEpisode As MediaContainers.EpisodeDetails In ListOfEpisodes
                 Dim newEpisode As New DBElement(Enums.ContentType.TVEpisode)
+                newEpisode = New DBElement(Enums.ContentType.TVEpisode)
                 newEpisode = CType(_episode.CloneDeep, DBElement)
                 newEpisode.FilenameID = -1
                 newEpisode.ID = -1
                 newEpisode.TVEpisode = tEpisode
                 newEpisode.TVEpisode.FileInfo = _episode.TVEpisode.FileInfo
-                Save_TVEpisode(newEpisode, Batchmode, True, True, True, True)
+                Save_TVEpisode(newEpisode, True, True, True, True, False)
+                newEpisodesList.Add(newEpisode)
+            Next
+
+            For Each tEpisode As DBElement In newEpisodesList
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.DuringUpdateDB_TV, Nothing, Nothing, False, tEpisode)
+            Next
+
+            For Each tEpisode As DBElement In newEpisodesList
+                Save_TVEpisode(tEpisode, True, False, False, False, True, True)
             Next
         End Using
         If Not Batchmode Then SQLtransaction.Commit()
-
-        Dim params As New List(Of Object)(New Object() {False, False, False, True, _episode.Source.ID})
-        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterUpdateDB_TV, params, Nothing)
     End Sub
     ''' <summary>
     ''' Saves all episode information from a Database.DBElement object to the database
