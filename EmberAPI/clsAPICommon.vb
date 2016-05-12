@@ -695,94 +695,114 @@ Public Class Enums
         ''' <remarks></remarks>
         BeforeEdit_Movie = 7
         ''' <summary>
+        ''' Called when Manual editing or reading from nfo
+        ''' </summary>
+        ''' <remarks></remarks>
+        BeforeEdit_MovieSet = 8
+        ''' <summary>
+        ''' Called when Manual editing or reading from nfo
+        ''' </summary>
+        ''' <remarks></remarks>
+        BeforeEdit_TVEpisode = 9
+        ''' <summary>
+        ''' Called when Manual editing or reading from nfo
+        ''' </summary>
+        ''' <remarks></remarks>
+        BeforeEdit_TVSeason = 10
+        ''' <summary>
+        ''' Called when Manual editing or reading from nfo
+        ''' </summary>
+        ''' <remarks></remarks>
+        BeforeEdit_TVShow = 11
+        ''' <summary>
         ''' Command Line Module Call
         ''' </summary>
         ''' <remarks></remarks>
-        CommandLine = 8
-        FrameExtrator_Movie = 9
-        FrameExtrator_TVEpisode = 10
-        Generic = 11
-        MediaPlayer_Audio = 12
-        MediaPlayer_Video = 13
-        MediaPlayerPlay_Audio = 14
-        MediaPlayerPlay_Video = 15
-        MediaPlayerPlaylistAdd_Audio = 16
-        MediaPlayerPlaylistAdd_Video = 17
-        MediaPlayerPlaylistClear_Audio = 18
-        MediaPlayerPlaylistClear_Video = 19
-        MediaPlayerStop_Audio = 20
-        MediaPlayerStop_Video = 21
-        Notification = 23
+        CommandLine = 12
+        FrameExtrator_Movie = 13
+        FrameExtrator_TVEpisode = 14
+        Generic = 15
+        MediaPlayer_Audio = 16
+        MediaPlayer_Video = 17
+        MediaPlayerPlay_Audio = 18
+        MediaPlayerPlay_Video = 19
+        MediaPlayerPlaylistAdd_Audio = 20
+        MediaPlayerPlaylistAdd_Video = 21
+        MediaPlayerPlaylistClear_Audio = 22
+        MediaPlayerPlaylistClear_Video = 23
+        MediaPlayerStop_Audio = 24
+        MediaPlayerStop_Video = 25
+        Notification = 26
         OnBannerSave_Movie = 24
-        OnClearArtSave_Movie = 25
-        OnClearLogoSave_Movie = 26
-        OnDiscArtSave_Movie = 27
-        OnFanartDelete_Movie = 28
-        OnFanartSave_Movie = 29
-        OnLandscapeSave_Movie = 30
-        OnNFORead_TVShow = 31
-        OnNFOSave_Movie = 32
-        OnNFOSave_TVShow = 33
-        OnPosterDelete_Movie = 34
-        OnPosterSave_Movie = 35
-        OnThemeSave_Movie = 36
-        OnTrailerSave_Movie = 37
-        RandomFrameExtrator = 38
-        Remove_Movie = 39
-        Remove_MovieSet = 40
-        Remove_TVEpisode = 41
-        Remove_TVSeason = 42
-        Remove_TVShow = 43
+        OnClearArtSave_Movie = 28
+        OnClearLogoSave_Movie = 29
+        OnDiscArtSave_Movie = 30
+        OnFanartDelete_Movie = 31
+        OnFanartSave_Movie = 32
+        OnLandscapeSave_Movie = 33
+        OnNFORead_TVShow = 34
+        OnNFOSave_Movie = 35
+        OnNFOSave_TVShow = 36
+        OnPosterDelete_Movie = 37
+        OnPosterSave_Movie = 38
+        OnThemeSave_Movie = 39
+        OnTrailerSave_Movie = 40
+        RandomFrameExtrator = 41
+        Remove_Movie = 42
+        Remove_MovieSet = 43
+        Remove_TVEpisode = 44
+        Remove_TVSeason = 45
+        Remove_TVShow = 46
         ''' <summary>
         ''' Called during auto scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperMulti_Movie = 44
+        ScraperMulti_Movie = 47
         ''' <summary>
         ''' Called during auto scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperMulti_TVEpisode = 45
+        ScraperMulti_TVEpisode = 48
         ''' <summary>
         ''' Called during manual scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperSingle_Movie = 46
+        ScraperSingle_Movie = 49
         ''' <summary>
         ''' Called during manual scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperSingle_TVEpisode = 47
-        ShowMovie = 48
-        ShowTVShow = 49
-        SyncModuleSettings = 50
-        Sync_Movie = 51
-        Sync_MovieSet = 52
-        Sync_TVEpisode = 53
-        Sync_TVSeason = 54
-        Sync_TVShow = 55
-        Task = 56
+        ScraperSingle_TVEpisode = 50
+        ShowMovie = 51
+        ShowTVShow = 52
+        SyncModuleSettings = 53
+        Sync_Movie = 54
+        Sync_MovieSet = 55
+        Sync_TVEpisode = 56
+        Sync_TVSeason = 57
+        Sync_TVShow = 58
+        Task = 59
         ''' <summary>
         ''' Called during auto scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperMulti_TVShow = 57
+        ScraperMulti_TVShow = 60
         ''' <summary>
         ''' Called during manual scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperSingle_TVShow = 58
+        ScraperSingle_TVShow = 61
         ''' <summary>
         ''' Called during auto scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperMulti_TVSeason = 59
+        ScraperMulti_TVSeason = 62
         ''' <summary>
         ''' Called during manual scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperSingle_TVSeason = 60
-        DuringUpdateDB_TV = 61
+        ScraperSingle_TVSeason = 63
+        DuringUpdateDB_TV = 64
     End Enum
 
     Public Enum ScraperEventType As Integer

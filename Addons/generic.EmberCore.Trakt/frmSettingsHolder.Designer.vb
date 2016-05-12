@@ -229,7 +229,6 @@ Partial Class frmSettingsHolder
         Me.gbSettingsPlaycount.AutoSize = True
         Me.gbSettingsPlaycount.Controls.Add(Me.tblSettingsPlaycount)
         Me.gbSettingsPlaycount.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbSettingsPlaycount.Enabled = False
         Me.gbSettingsPlaycount.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbSettingsPlaycount.Location = New System.Drawing.Point(392, 109)
         Me.gbSettingsPlaycount.Name = "gbSettingsPlaycount"

@@ -1552,6 +1552,13 @@ Namespace MediaContainers
             End Get
         End Property
 
+        <XmlIgnore()>
+        Public ReadOnly Property AnyUniqueIDSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(ID) OrElse Not String.IsNullOrEmpty(TMDBID)
+            End Get
+        End Property
+
         <Serializable()>
         Class _MovieID
             Private _imdbid As String

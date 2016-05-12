@@ -131,6 +131,7 @@ namespace Trakttv
                 {
                     var response = ex.Response as HttpWebResponse;
                     errorMessage = string.Format("API error! Code = '{0}', Description = '{1}'", (int)response.StatusCode, response.StatusDescription);
+                    logger.Error(errorMessage);
                 }
 
                 if (OnDataError != null)
