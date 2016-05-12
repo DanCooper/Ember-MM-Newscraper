@@ -244,7 +244,7 @@
     <Compile Include="XML Serialization\clsXMLRatings.vb" />
     <Compile Include="XML Serialization\clsXMLSettings.vb" />
     <Compile Include="XML Serialization\clsXMLMovieCertLanguages.vb" />
-    <Compile Include="XML Serialization\clsXMLTVDBLanguages.vb" />
+    <Compile Include="XML Serialization\clsXMLScraperLanguages.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="dlgMovieDataScraperPreview.resx">
@@ -523,7 +523,7 @@
     <Content Include="Defaults\DefaultQueries.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Defaults\DefaultTVLanguages.xml">
+    <Content Include="Defaults\Core.ScraperLanguages.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Defaults\DefaultGenre.jpg">

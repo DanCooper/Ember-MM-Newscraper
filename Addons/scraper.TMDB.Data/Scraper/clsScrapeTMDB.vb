@@ -151,7 +151,7 @@ Namespace TMDB
                 If _SpecialSettings.FallBackEng Then
                     _TMDBApiE = New TMDbLib.Client.TMDbClient(_SpecialSettings.APIKey)
                     _TMDBApiE.GetConfig()
-                    _TMDBApiE.DefaultLanguage = "en"
+                    _TMDBApiE.DefaultLanguage = "en-US"
                 Else
                     _TMDBApiE = _TMDBApi
                 End If

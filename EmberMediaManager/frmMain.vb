@@ -1918,7 +1918,6 @@ Public Class frmMain
             logger.Trace(String.Format("[Movie Scraper] [Start] Scraping {0}", OldListTitle))
 
             DBScrapeMovie = Master.DB.Load_Movie(Convert.ToInt64(tScrapeItem.DataRow.Item("idMovie")))
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, Nothing, False, DBScrapeMovie)
 
             If tScrapeItem.ScrapeModifiers.MainNFO Then
                 If ModulesManager.Instance.ScrapeData_Movie(DBScrapeMovie, tScrapeItem.ScrapeModifiers, Args.ScrapeType, Args.ScrapeOptions, Args.ScrapeList.Count = 1) Then
@@ -6334,9 +6333,9 @@ doCancel:
 
                     'Language submenu
                     Dim strLang As String = dgvMovies.Item("Language", dgvHTI.RowIndex).Value.ToString
-                    Dim Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = strLang)
-                    If Language IsNot Nothing AndAlso Not String.IsNullOrEmpty(Language.name) Then
-                        mnuLanguagesLanguage.SelectedItem = Language.name
+                    Dim Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = strLang)
+                    If Language IsNot Nothing AndAlso Not String.IsNullOrEmpty(Language.Description) Then
+                        mnuLanguagesLanguage.SelectedItem = Language.Description
                     Else
                         If Not mnuLanguagesLanguage.Items.Contains(String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")) Then
                             mnuLanguagesLanguage.Items.Insert(0, String.Concat(Master.eLang.GetString(1199, "Select Language"), "..."))
@@ -6828,9 +6827,9 @@ doCancel:
 
                     'Language submenu
                     Dim strLang As String = dgvMovieSets.Item("Language", dgvHTI.RowIndex).Value.ToString
-                    Dim Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = strLang)
-                    If Language IsNot Nothing AndAlso Not String.IsNullOrEmpty(Language.name) Then
-                        mnuLanguagesLanguage.SelectedItem = Language.name
+                    Dim Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = strLang)
+                    If Language IsNot Nothing AndAlso Not String.IsNullOrEmpty(Language.Description) Then
+                        mnuLanguagesLanguage.SelectedItem = Language.Description
                     Else
                         If Not mnuLanguagesLanguage.Items.Contains(String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")) Then
                             mnuLanguagesLanguage.Items.Insert(0, String.Concat(Master.eLang.GetString(1199, "Select Language"), "..."))
@@ -8091,9 +8090,9 @@ doCancel:
 
                     'Language submenu
                     Dim strLang As String = dgvTVShows.Item("Language", dgvHTI.RowIndex).Value.ToString
-                    Dim Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = strLang)
-                    If Language IsNot Nothing AndAlso Not String.IsNullOrEmpty(Language.name) Then
-                        mnuLanguagesLanguage.SelectedItem = Language.name
+                    Dim Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = strLang)
+                    If Language IsNot Nothing AndAlso Not String.IsNullOrEmpty(Language.Description) Then
+                        mnuLanguagesLanguage.SelectedItem = Language.Description
                     Else
                         If Not mnuLanguagesLanguage.Items.Contains(String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")) Then
                             mnuLanguagesLanguage.Items.Insert(0, String.Concat(Master.eLang.GetString(1199, "Select Language"), "..."))
@@ -8286,6 +8285,7 @@ doCancel:
         SetControlsEnabled(False)
         If DBMovie.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBMovie, True) Then
             Using dEditMovie As New dlgEditMovie
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, Nothing, False, DBMovie)
                 AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
                 Select Case dEditMovie.ShowDialog(DBMovie)
                     Case DialogResult.OK
@@ -8316,6 +8316,7 @@ doCancel:
         SetControlsEnabled(False)
         'If DBMovieSet.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBMovieSet, True) Then
         Using dEditMovieSet As New dlgEditMovieSet
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_MovieSet, Nothing, Nothing, False, DBMovieSet)
             'AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
             Select Case dEditMovieSet.ShowDialog(DBMovieSet)
                 Case DialogResult.OK
@@ -8346,6 +8347,7 @@ doCancel:
         SetControlsEnabled(False)
         If DBTVEpisode.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(DBTVEpisode, True) Then
             Using dEditTVEpisode As New dlgEditTVEpisode
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_TVEpisode, Nothing, Nothing, False, DBTVEpisode)
                 AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditTVEpisode.GenericRunCallBack
                 Select Case dEditTVEpisode.ShowDialog(DBTVEpisode)
                     Case DialogResult.OK
@@ -8367,6 +8369,7 @@ doCancel:
         SetControlsEnabled(False)
         If DBTVSeason.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTVSeason, True) Then
             Using dEditTVSeason As New dlgEditTVSeason
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_TVSeason, Nothing, Nothing, False, DBTVSeason)
                 'AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditTVSeason.GenericRunCallBack
                 Select Case dEditTVSeason.ShowDialog(DBTVSeason)
                     Case DialogResult.OK
@@ -8388,6 +8391,7 @@ doCancel:
         SetControlsEnabled(False)
         If DBTVShow.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTVShow, True) Then
             Using dEditTVShow As New dlgEditTVShow
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_TVShow, Nothing, Nothing, False, DBTVShow)
                 'AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditTVShow.GenericRunCallBack
                 Select Case dEditTVShow.ShowDialog(DBTVShow)
                     Case DialogResult.OK
@@ -10827,7 +10831,7 @@ doCancel:
                     Case "movie"
                         For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value))
-                            tmpDBElement.Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = strLanguage).abbreviation
+                            tmpDBElement.Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = strLanguage).Abbreviation
                             tmpDBElement.Movie.Language = tmpDBElement.Language
                             Master.DB.Save_Movie(tmpDBElement, True, True, False)
                             RefreshRow_Movie(tmpDBElement.ID)
@@ -10835,14 +10839,14 @@ doCancel:
                     Case "movieset"
                         For Each sRow As DataGridViewRow In dgvMovieSets.SelectedRows
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(Convert.ToInt64(sRow.Cells("idSet").Value))
-                            tmpDBElement.Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = strLanguage).abbreviation
+                            tmpDBElement.Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = strLanguage).Abbreviation
                             Master.DB.Save_MovieSet(tmpDBElement, True, True, False)
                             RefreshRow_MovieSet(tmpDBElement.ID)
                         Next
                     Case "tvshow"
                         For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(Convert.ToInt64(sRow.Cells("idShow").Value), False, False)
-                            tmpDBElement.Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = strLanguage).abbreviation
+                            tmpDBElement.Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = strLanguage).Abbreviation
                             tmpDBElement.TVShow.Language = tmpDBElement.Language
                             Master.DB.Save_TVShow(tmpDBElement, True, True, False, False)
                             RefreshRow_TVShow(tmpDBElement.ID)
@@ -15328,16 +15332,16 @@ doCancel:
         Master.eSettings.GeneralMainFilterSortOrder_Shows = Order
     End Sub
 
-    Private Sub ScannerUpdated(ByVal iType As Integer, ByVal sText As String)
-        Select Case iType
-            Case 1
-                SetStatus(String.Concat(Master.eLang.GetString(814, "Added Episode:"), " " & sText))
-            Case 2
-                SetStatus(Master.eLang.GetString(116, "Performing Preliminary Tasks (Gathering Data)..."))
-            Case 3
+    Private Sub ScannerUpdated(ByVal eProgressValue As Scanner.ProgressValue)
+        Select Case eProgressValue.Type
+            Case Enums.ScannerEventType.AddedMovie
+                SetStatus(String.Concat(Master.eLang.GetString(815, "Added Movie:"), " ", eProgressValue.Message))
+            Case Enums.ScannerEventType.AddedTVEpisode
+                SetStatus(String.Concat(Master.eLang.GetString(814, "Added Episode:"), " ", eProgressValue.Message))
+            Case Enums.ScannerEventType.CleaningDatabase
                 SetStatus(Master.eLang.GetString(644, "Cleaning Database..."))
-            Case Else
-                SetStatus(String.Concat(Master.eLang.GetString(815, "Added Movie:"), " " & sText))
+            Case Enums.ScannerEventType.PreliminaryTasks
+                SetStatus(Master.eLang.GetString(116, "Performing Preliminary Tasks (Gathering Data)..."))
         End Select
     End Sub
 
@@ -16021,7 +16025,7 @@ doCancel:
             cbFilterLists_Shows.SelectedIndex = 0
 
             mnuLanguagesLanguage.Items.Clear()
-            mnuLanguagesLanguage.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language.OrderBy(Function(f) f.name) Select lLang.name).ToArray)
+            mnuLanguagesLanguage.Items.AddRange((From lLang In APIXML.ScraperLanguagesXML.Languages.OrderBy(Function(f) f.Description) Select lLang.Description).ToArray)
 
             'not technically a menu, but it's a good place to put it
             If ReloadFilters Then

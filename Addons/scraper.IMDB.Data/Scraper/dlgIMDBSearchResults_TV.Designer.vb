@@ -30,8 +30,8 @@ Partial Class dlgIMDBSearchResults_TV
         Me.lblTitle = New System.Windows.Forms.Label()
         Me.lblTagline = New System.Windows.Forms.Label()
         Me.txtPlot = New System.Windows.Forms.TextBox()
-        Me.lblYear = New System.Windows.Forms.Label()
-        Me.lblDirectors = New System.Windows.Forms.Label()
+        Me.lblPremiered = New System.Windows.Forms.Label()
+        Me.lblCreators = New System.Windows.Forms.Label()
         Me.lblGenre = New System.Windows.Forms.Label()
         Me.txtIMDBID = New System.Windows.Forms.TextBox()
         Me.pnlTop = New System.Windows.Forms.Panel()
@@ -42,7 +42,7 @@ Partial Class dlgIMDBSearchResults_TV
         Me.btnVerify = New System.Windows.Forms.Button()
         Me.lblIMDBID = New System.Windows.Forms.Label()
         Me.lblPremieredHeader = New System.Windows.Forms.Label()
-        Me.lblDirectorsHeader = New System.Windows.Forms.Label()
+        Me.lblCreatorsHeader = New System.Windows.Forms.Label()
         Me.lblGenreHeader = New System.Windows.Forms.Label()
         Me.lblIMDBHeader = New System.Windows.Forms.Label()
         Me.lblPlotHeader = New System.Windows.Forms.Label()
@@ -135,24 +135,24 @@ Partial Class dlgIMDBSearchResults_TV
         '
         'lblYear
         '
-        Me.lblYear.AutoSize = True
-        Me.lblYear.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblYear.Location = New System.Drawing.Point(476, 160)
-        Me.lblYear.Name = "lblYear"
-        Me.lblYear.Size = New System.Drawing.Size(31, 13)
-        Me.lblYear.TabIndex = 13
-        Me.lblYear.Text = "0000"
-        Me.lblYear.Visible = False
+        Me.lblPremiered.AutoSize = True
+        Me.lblPremiered.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblPremiered.Location = New System.Drawing.Point(476, 160)
+        Me.lblPremiered.Name = "lblYear"
+        Me.lblPremiered.Size = New System.Drawing.Size(31, 13)
+        Me.lblPremiered.TabIndex = 13
+        Me.lblPremiered.Text = "0000"
+        Me.lblPremiered.Visible = False
         '
-        'lblDirectors
+        'lblCreators
         '
-        Me.lblDirectors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblDirectors.Location = New System.Drawing.Point(476, 186)
-        Me.lblDirectors.Name = "lblDirectors"
-        Me.lblDirectors.Size = New System.Drawing.Size(165, 16)
-        Me.lblDirectors.TabIndex = 15
-        Me.lblDirectors.Text = "Directors"
-        Me.lblDirectors.Visible = False
+        Me.lblCreators.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblCreators.Location = New System.Drawing.Point(476, 186)
+        Me.lblCreators.Name = "lblCreators"
+        Me.lblCreators.Size = New System.Drawing.Size(165, 16)
+        Me.lblCreators.TabIndex = 15
+        Me.lblCreators.Text = "Creators"
+        Me.lblCreators.Visible = False
         '
         'lblGenre
         '
@@ -265,16 +265,16 @@ Partial Class dlgIMDBSearchResults_TV
         Me.lblPremieredHeader.Text = "Premiered:"
         Me.lblPremieredHeader.Visible = False
         '
-        'lblDirectorsHeader
+        'lblCreatorsHeader
         '
-        Me.lblDirectorsHeader.AutoSize = True
-        Me.lblDirectorsHeader.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblDirectorsHeader.Location = New System.Drawing.Point(414, 186)
-        Me.lblDirectorsHeader.Name = "lblDirectorsHeader"
-        Me.lblDirectorsHeader.Size = New System.Drawing.Size(56, 13)
-        Me.lblDirectorsHeader.TabIndex = 14
-        Me.lblDirectorsHeader.Text = "Directors:"
-        Me.lblDirectorsHeader.Visible = False
+        Me.lblCreatorsHeader.AutoSize = True
+        Me.lblCreatorsHeader.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblCreatorsHeader.Location = New System.Drawing.Point(414, 186)
+        Me.lblCreatorsHeader.Name = "lblCreatorsHeader"
+        Me.lblCreatorsHeader.Size = New System.Drawing.Size(53, 13)
+        Me.lblCreatorsHeader.TabIndex = 14
+        Me.lblCreatorsHeader.Text = "Creators:"
+        Me.lblCreatorsHeader.Visible = False
         '
         'lblGenreHeader
         '
@@ -410,7 +410,7 @@ Partial Class dlgIMDBSearchResults_TV
         Me.Controls.Add(Me.lblPlotHeader)
         Me.Controls.Add(Me.lblIMDBHeader)
         Me.Controls.Add(Me.lblGenreHeader)
-        Me.Controls.Add(Me.lblDirectorsHeader)
+        Me.Controls.Add(Me.lblCreatorsHeader)
         Me.Controls.Add(Me.lblPremieredHeader)
         Me.Controls.Add(Me.lblIMDBID)
         Me.Controls.Add(Me.btnVerify)
@@ -418,8 +418,8 @@ Partial Class dlgIMDBSearchResults_TV
         Me.Controls.Add(Me.pnlTop)
         Me.Controls.Add(Me.txtIMDBID)
         Me.Controls.Add(Me.lblGenre)
-        Me.Controls.Add(Me.lblDirectors)
-        Me.Controls.Add(Me.lblYear)
+        Me.Controls.Add(Me.lblCreators)
+        Me.Controls.Add(Me.lblPremiered)
         Me.Controls.Add(Me.txtPlot)
         Me.Controls.Add(Me.lblTagline)
         Me.Controls.Add(Me.lblTitle)
@@ -451,8 +451,8 @@ Partial Class dlgIMDBSearchResults_TV
     Friend WithEvents lblTitle As System.Windows.Forms.Label
     Friend WithEvents lblTagline As System.Windows.Forms.Label
     Friend WithEvents txtPlot As System.Windows.Forms.TextBox
-    Friend WithEvents lblYear As System.Windows.Forms.Label
-    Friend WithEvents lblDirectors As System.Windows.Forms.Label
+    Friend WithEvents lblPremiered As System.Windows.Forms.Label
+    Friend WithEvents lblCreators As System.Windows.Forms.Label
     Friend WithEvents lblGenre As System.Windows.Forms.Label
     Friend WithEvents txtIMDBID As System.Windows.Forms.TextBox
     Friend WithEvents pnlTop As System.Windows.Forms.Panel
@@ -463,7 +463,7 @@ Partial Class dlgIMDBSearchResults_TV
     Friend WithEvents btnVerify As System.Windows.Forms.Button
     Friend WithEvents lblIMDBID As System.Windows.Forms.Label
     Friend WithEvents lblPremieredHeader As System.Windows.Forms.Label
-    Friend WithEvents lblDirectorsHeader As System.Windows.Forms.Label
+    Friend WithEvents lblCreatorsHeader As System.Windows.Forms.Label
     Friend WithEvents lblGenreHeader As System.Windows.Forms.Label
     Friend WithEvents lblIMDBHeader As System.Windows.Forms.Label
     Friend WithEvents lblPlotHeader As System.Windows.Forms.Label

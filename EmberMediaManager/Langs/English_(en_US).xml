@@ -1123,7 +1123,7 @@
   <string id="1031">Removal OK</string>
   <string id="1032">Removal failed</string>
   <string id="1033">Are you sure you want to remove the selected sources? This will remove the tv shows from these sources from the Ember database.</string>
-  <string id="1034"></string>
+  <string id="1034">Force Language</string>
   <string id="1035">Landscape</string>
   <string id="1036">Manual Landscape Entry</string>
   <string id="1037">Manual Banner Entry</string>

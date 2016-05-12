@@ -197,23 +197,6 @@ Public Class ModulesManager
         Return TMDBID
     End Function
 
-    Public Function GetTVLanguages() As clsXMLTVDBLanguages
-        Dim ret As Interfaces.ModuleResult
-        Dim Langs As New clsXMLTVDBLanguages
-        While Not ModulesLoaded
-            Application.DoEvents()
-        End While
-        For Each _externalScraperModule As _externalScraperModuleClass_Data_TV In externalScrapersModules_Data_TV.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
-            Try
-                ret = _externalScraperModule.ProcessorModule.GetLanguages(Langs)
-            Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name)
-            End Try
-            If ret.breakChain Then Exit For
-        Next
-        Return Langs
-    End Function
-
     Public Sub GetVersions()
         Dim dlgVersions As New dlgVersions
         Dim li As ListViewItem
