@@ -63,8 +63,9 @@ Public Class Trakt_Generic
     Public ReadOnly Property ModuleType() As List(Of Enums.ModuleEventType) Implements Interfaces.GenericModule.ModuleType
         Get
             Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.Generic, Enums.ModuleEventType.CommandLine,
-                                                      Enums.ModuleEventType.BeforeEdit_Movie, Enums.ModuleEventType.ScraperMulti_Movie,
-                                                      Enums.ModuleEventType.BeforeEdit_TVEpisode})
+                                                      Enums.ModuleEventType.BeforeEdit_Movie, Enums.ModuleEventType.ScraperMulti_Movie, Enums.ModuleEventType.ScraperSingle_Movie,
+                                                      Enums.ModuleEventType.BeforeEdit_TVEpisode, Enums.ModuleEventType.ScraperMulti_TVEpisode, Enums.ModuleEventType.ScraperSingle_TVEpisode,
+                                                      Enums.ModuleEventType.BeforeEdit_TVShow, Enums.ModuleEventType.ScraperMulti_TVShow, Enums.ModuleEventType.ScraperSingle_TVShow})
         End Get
     End Property
 
@@ -114,13 +115,25 @@ Public Class Trakt_Generic
                 End If
             Case Enums.ModuleEventType.BeforeEdit_TVEpisode
                 If _MySettings.SyncPlaycountEditEpisodes AndAlso _dbelement IsNot Nothing Then
-                    _TraktAPI.SetWatchedState_Movie(_dbelement)
+                    _TraktAPI.SetWatchedState_TVEpisode(_dbelement)
                 End If
             Case Enums.ModuleEventType.CommandLine
                 _TraktAPI.SyncToEmber_All()
             Case Enums.ModuleEventType.ScraperMulti_Movie
                 If _MySettings.SyncPlaycountMultiMovies AndAlso _dbelement IsNot Nothing Then
                     _TraktAPI.SetWatchedState_Movie(_dbelement)
+                End If
+            Case Enums.ModuleEventType.ScraperMulti_TVShow, Enums.ModuleEventType.ScraperMulti_TVEpisode
+                If _MySettings.SyncPlaycountMultiEpisodes AndAlso _dbelement IsNot Nothing Then
+                    _TraktAPI.SetWatchedState_TVEpisode(_dbelement)
+                End If
+            Case Enums.ModuleEventType.ScraperSingle_Movie
+                If _MySettings.SyncPlaycountSingleMovies AndAlso _dbelement IsNot Nothing Then
+                    _TraktAPI.SetWatchedState_Movie(_dbelement)
+                End If
+            Case Enums.ModuleEventType.ScraperSingle_TVShow, Enums.ModuleEventType.ScraperSingle_TVEpisode
+                If _MySettings.SyncPlaycountSingleEpisodes AndAlso _dbelement IsNot Nothing Then
+                    _TraktAPI.SetWatchedState_TVEpisode(_dbelement)
                 End If
         End Select
 

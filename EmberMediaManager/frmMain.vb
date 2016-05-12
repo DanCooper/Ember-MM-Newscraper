@@ -8316,6 +8316,7 @@ doCancel:
         SetControlsEnabled(False)
         'If DBMovieSet.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBMovieSet, True) Then
         Using dEditMovieSet As New dlgEditMovieSet
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_MovieSet, Nothing, Nothing, False, DBMovieSet)
             'AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
             Select Case dEditMovieSet.ShowDialog(DBMovieSet)
                 Case DialogResult.OK
@@ -8346,6 +8347,7 @@ doCancel:
         SetControlsEnabled(False)
         If DBTVEpisode.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(DBTVEpisode, True) Then
             Using dEditTVEpisode As New dlgEditTVEpisode
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_TVEpisode, Nothing, Nothing, False, DBTVEpisode)
                 AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditTVEpisode.GenericRunCallBack
                 Select Case dEditTVEpisode.ShowDialog(DBTVEpisode)
                     Case DialogResult.OK
@@ -8367,6 +8369,7 @@ doCancel:
         SetControlsEnabled(False)
         If DBTVSeason.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTVSeason, True) Then
             Using dEditTVSeason As New dlgEditTVSeason
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_TVSeason, Nothing, Nothing, False, DBTVSeason)
                 'AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditTVSeason.GenericRunCallBack
                 Select Case dEditTVSeason.ShowDialog(DBTVSeason)
                     Case DialogResult.OK
@@ -8388,6 +8391,7 @@ doCancel:
         SetControlsEnabled(False)
         If DBTVShow.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTVShow, True) Then
             Using dEditTVShow As New dlgEditTVShow
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_TVShow, Nothing, Nothing, False, DBTVShow)
                 'AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditTVShow.GenericRunCallBack
                 Select Case dEditTVShow.ShowDialog(DBTVShow)
                     Case DialogResult.OK

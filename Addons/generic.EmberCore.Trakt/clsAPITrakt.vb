@@ -88,6 +88,17 @@ Public Class clsAPITrakt
         Return TraktSettings.Token
     End Function
 
+    Public Function GetProcess_TVShow(ByVal strTraktID As String) As TraktAPI.Model.TraktShowProgress
+        If String.IsNullOrEmpty(strTraktID) Then Return Nothing
+
+        If CheckConnection() Then
+            Dim tProgressTVShow As TraktAPI.Model.TraktShowProgress = TrakttvAPI.GetProgressShow(strTraktID)
+            Return tProgressTVShow
+        Else
+            Return Nothing
+        End If
+    End Function
+
     Public Function GetRated_Movies() As IEnumerable(Of TraktAPI.Model.TraktMovieRated)
         If CheckConnection() Then
             Dim lRatedMovies As IEnumerable(Of TraktAPI.Model.TraktMovieRated) = TrakttvAPI.GetRatedMovies
@@ -122,6 +133,44 @@ Public Class clsAPITrakt
         Else
             Return Nothing
         End If
+    End Function
+
+    Public Function GetWatchedProcess_TVShows() As List(Of TraktAPI.Model.TraktShowWatchedProgress)
+        Dim WatchedTVShows = GetWatched_TVEpisodes()
+        Return GetWatchedProgress_TVShows(WatchedTVShows)
+    End Function
+
+    Public Function GetWatchedProgress_TVShows(ByVal WatchedTVEpisodes As IEnumerable(Of TraktAPI.Model.TraktEpisodeWatched)) As List(Of TraktAPI.Model.TraktShowWatchedProgress)
+        If WatchedTVEpisodes Is Nothing Then Return Nothing
+
+        Dim lWatchedProgressTVShows As New List(Of TraktAPI.Model.TraktShowWatchedProgress)
+
+        For Each tWatchedTVShow In WatchedTVEpisodes
+            Dim nWatchedProgressTVShow As New TraktAPI.Model.TraktShowWatchedProgress
+            nWatchedProgressTVShow.LastWatchedEpisode = Functions.ConvertToProperDateTime(tWatchedTVShow.WatchedAt)
+            nWatchedProgressTVShow.EpisodePlaycount = tWatchedTVShow.Plays
+            nWatchedProgressTVShow.ShowID = tWatchedTVShow.Show.Ids.Trakt.ToString
+            nWatchedProgressTVShow.ShowTitle = tWatchedTVShow.Show.Title
+
+            'get progress
+            If _SpecialSettings.GetShowProgress Then
+                Dim nProgressTVShow As TraktAPI.Model.TraktShowProgress = GetProcess_TVShow(nWatchedProgressTVShow.ShowID)
+                If nProgressTVShow IsNot Nothing Then
+                    nWatchedProgressTVShow.EpisodesAired = nProgressTVShow.Aired
+                    nWatchedProgressTVShow.EpisodesWatched = nProgressTVShow.Completed
+                Else
+                    nWatchedProgressTVShow.EpisodesAired = 0
+                    nWatchedProgressTVShow.EpisodesWatched = 0
+                End If
+            Else
+                nWatchedProgressTVShow.EpisodesAired = 0
+                nWatchedProgressTVShow.EpisodesWatched = 0
+            End If
+
+            lWatchedProgressTVShows.Add(nWatchedProgressTVShow)
+        Next
+
+        Return lWatchedProgressTVShows
     End Function
 
     Public Function GetWatchedRated_Movies() As List(Of TraktAPI.Model.TraktMovieWatchedRated)
@@ -261,6 +310,53 @@ Public Class clsAPITrakt
                     tDBElement.Movie.LastPlayed = Functions.ConvertToProperDateTime(tMovie.LastWatchedAt)
                     tDBElement.Movie.PlayCount = tMovie.Plays
                     Return True
+                End If
+            End If
+        End If
+
+        Return False
+    End Function
+
+    Public Function SetWatchedState_TVEpisode(ByRef tDBElement As Database.DBElement) As Boolean
+        If Not tDBElement.TVShow.AnyUniqueIDSpecified Then Return False
+
+        If CheckConnection() Then
+            Dim strIMDBID As String = tDBElement.TVShow.IMDB
+            Dim intTMDBID As Integer = -1
+            Dim intTVDBID As Integer = -1
+            Integer.TryParse(tDBElement.TVShow.TMDB, intTMDBID)
+            Integer.TryParse(tDBElement.TVShow.TVDB, intTVDBID)
+
+            Dim lWatchedTVEpisodes As IEnumerable(Of TraktAPI.Model.TraktEpisodeWatched) = GetWatched_TVEpisodes()
+            If lWatchedTVEpisodes IsNot Nothing AndAlso lWatchedTVEpisodes.Count > 0 Then
+                Dim tTVShow = lWatchedTVEpisodes.FirstOrDefault(Function(f) (f.Show.Ids.Tvdb IsNot Nothing AndAlso CInt(f.Show.Ids.Tvdb) = intTVDBID) OrElse
+                                                                   (f.Show.Ids.Imdb IsNot Nothing AndAlso f.Show.Ids.Imdb = strIMDBID) OrElse
+                                                                   (f.Show.Ids.Tmdb IsNot Nothing AndAlso CInt(f.Show.Ids.Tmdb) = intTMDBID))
+                If tTVShow IsNot Nothing Then
+                    Select Case tDBElement.ContentType
+                        Case Enums.ContentType.TVEpisode
+                            Dim intEpisode = tDBElement.TVEpisode.Episode
+                            Dim intSeason = tDBElement.TVEpisode.Season
+
+                            Dim tTVEpisode = tTVShow.Seasons.FirstOrDefault(Function(f) f.Number = intSeason).Episodes.FirstOrDefault(Function(f) f.Number = intEpisode)
+                            If tTVEpisode IsNot Nothing Then
+                                tDBElement.TVEpisode.LastPlayed = Functions.ConvertToProperDateTime(tTVEpisode.WatchedAt)
+                                tDBElement.TVEpisode.Playcount = tTVEpisode.Plays
+                                Return True
+                            End If
+                        Case Enums.ContentType.TVShow
+                            For Each tEpisode As Database.DBElement In tDBElement.Episodes.Where(Function(f) f.FilenameSpecified)
+                                Dim intEpisode = tEpisode.TVEpisode.Episode
+                                Dim intSeason = tEpisode.TVEpisode.Season
+
+                                Dim tTVEpisode = tTVShow.Seasons.FirstOrDefault(Function(f) f.Number = intSeason).Episodes.FirstOrDefault(Function(f) f.Number = intEpisode)
+                                If tTVEpisode IsNot Nothing Then
+                                    tEpisode.TVEpisode.LastPlayed = Functions.ConvertToProperDateTime(tTVEpisode.WatchedAt)
+                                    tEpisode.TVEpisode.Playcount = tTVEpisode.Plays
+                                End If
+                            Next
+                            Return True
+                    End Select
                 End If
             End If
         End If
