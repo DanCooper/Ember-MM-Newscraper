@@ -35,7 +35,7 @@ Public Class clsAPITrakt
 
 #Region "Delegates"
 
-    Public Delegate Function ShowProgress(ByVal strTitle As String, ByVal iProgress As Integer) As Boolean
+    Public Delegate Function ShowProgress(ByVal iProgress As Integer, ByVal strMessage As String) As Boolean
 
 #End Region 'Delegates
 
@@ -179,6 +179,29 @@ Public Class clsAPITrakt
         Return GetWatchedRated_Movies(WatchedMovies, RatedMovies)
     End Function
 
+    Public Function RemoveFromCollection_Movie(ByVal tDBElement As Database.DBElement) As Boolean
+        If tDBElement Is Nothing OrElse Not tDBElement.ContentType = Enums.ContentType.Movie Then Return False
+
+        Dim tmpMovie As New TraktAPI.Model.TraktMovie With {.Ids = New TraktAPI.Model.TraktMovieBase}
+        tmpMovie.Ids.Imdb = tDBElement.Movie.ID
+        tmpMovie.Ids.Tmdb = If(tDBElement.Movie.TMDBIDSpecified, CInt(tDBElement.Movie.TMDBID), Nothing)
+        tmpMovie.Title = tDBElement.Movie.Title
+        tmpMovie.Year = If(tDBElement.Movie.YearSpecified, CInt(tDBElement.Movie.Year), Nothing)
+
+        Dim traktResponse = TrakttvAPI.RemoveMovieFromCollection(tmpMovie)
+        If traktResponse IsNot Nothing Then
+            If traktResponse.Deleted.Movies = 1 Then
+                logger.Info(String.Concat("Removed Item on Trakt.tv: ", tmpMovie.Title))
+            ElseIf traktResponse.NotFound.Movies.Count = 1 Then
+                logger.Info(String.Concat("Item not found on Trakt.tv: ", traktResponse.NotFound.Movies.Item(0).Title, " / ", traktResponse.NotFound.Movies.Item(0).Year, " / ", traktResponse.NotFound.Movies.Item(0).Ids.Imdb))
+            Else
+                logger.Info(String.Concat("Item was not in your collection on Trakt.tv: ", tmpMovie.Title))
+            End If
+        Else
+            logger.Error(Master.eLang.GetString(1134, "Error!"))
+        End If
+    End Function
+
     Public Function GetWatchedRated_Movies(ByVal WatchedMovies As IEnumerable(Of TraktAPI.Model.TraktMovieWatched), ByVal RatedMovies As IEnumerable(Of TraktAPI.Model.TraktMovieRated)) As List(Of TraktAPI.Model.TraktMovieWatchedRated)
         If WatchedMovies Is Nothing Then Return Nothing
 
@@ -236,7 +259,7 @@ Public Class clsAPITrakt
                 End Using
                 i += 1
                 If sfunction IsNot Nothing Then
-                    sfunction(watchedMovie.Movie.Title, i)
+                    sfunction(i, watchedMovie.Movie.Title)
                 End If
             Next
             SQLtransaction.Commit()
@@ -287,7 +310,7 @@ Public Class clsAPITrakt
                 Next
                 i += 1
                 If sfunction IsNot Nothing Then
-                    sfunction(watchedTVShow.Show.Title, i)
+                    sfunction(i, watchedTVShow.Show.Title)
                 End If
             Next
             SQLtransaction.Commit()

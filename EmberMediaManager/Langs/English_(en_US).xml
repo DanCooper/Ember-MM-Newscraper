@@ -1136,7 +1136,7 @@
   <string id="1044">Scraping Media (Marked Movies - Skip):</string>
   <string id="1045">Scraping Media (Current Filter - Skip):</string>
   <string id="1046">Include Adult Items</string>
-  <string id="1047"></string>
+  <string id="1047">Not Found</string>
   <string id="1048"></string>
   <string id="1049">Save as Fanart</string>
   <string id="1050">Save as Extrafanart</string>
@@ -1495,7 +1495,7 @@
   <string id="1403">Added to watch history</string>
   <string id="1404">Submit watched episodes to trakt.tv history</string>
   <string id="1405">Submit watched movies to trakt.tv history</string>
-  <string id="1406">Delete selected item from trakt.tv history</string>
+  <string id="1406">Delete selected item(s) from trakt.tv history</string>
   <string id="1407">Deleted</string>
   <string id="1408">Updated</string>
   <string id="1409">Update comment on trakt.tv</string>

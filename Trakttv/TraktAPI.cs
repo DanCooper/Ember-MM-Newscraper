@@ -862,6 +862,26 @@ namespace Trakttv
 
         #endregion
 
+        #region POST Collection
+
+        public static TraktResponse RemoveMovieFromCollection(TraktMovie movie)
+        {
+            var movies = new TraktSyncMovies
+            {
+                Movies = new List<TraktMovie>() { movie }
+            };
+
+            return RemoveMoviesFromCollection(movies);
+        }
+
+        public static TraktResponse RemoveMoviesFromCollection(TraktSyncMovies movies)
+        {
+            var response = SENDToTrakt(TraktURIs.SENDCollectionRemove, movies.ToJSON());
+            return response.FromJSON<TraktResponse>();
+        }
+
+        #endregion
+
         #region POST Watched History
 
         public static TraktResponse AddMoviesToWatchedHistory(TraktSyncMoviesWatched movies)
