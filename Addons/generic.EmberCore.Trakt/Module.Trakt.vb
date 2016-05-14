@@ -62,10 +62,22 @@ Public Class Trakt_Generic
 
     Public ReadOnly Property ModuleType() As List(Of Enums.ModuleEventType) Implements Interfaces.GenericModule.ModuleType
         Get
-            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.Generic, Enums.ModuleEventType.CommandLine,
-                                                      Enums.ModuleEventType.BeforeEdit_Movie, Enums.ModuleEventType.ScraperMulti_Movie, Enums.ModuleEventType.ScraperSingle_Movie,
-                                                      Enums.ModuleEventType.BeforeEdit_TVEpisode, Enums.ModuleEventType.ScraperMulti_TVEpisode, Enums.ModuleEventType.ScraperSingle_TVEpisode,
-                                                      Enums.ModuleEventType.BeforeEdit_TVShow, Enums.ModuleEventType.ScraperMulti_TVShow, Enums.ModuleEventType.ScraperSingle_TVShow})
+            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {
+                                                      Enums.ModuleEventType.BeforeEdit_Movie,
+                                                      Enums.ModuleEventType.BeforeEdit_TVEpisode,
+                                                      Enums.ModuleEventType.BeforeEdit_TVShow,
+                                                      Enums.ModuleEventType.CommandLine,
+                                                      Enums.ModuleEventType.Generic,
+                                                      Enums.ModuleEventType.Remove_Movie,
+                                                      Enums.ModuleEventType.Remove_TVEpisode,
+                                                      Enums.ModuleEventType.Remove_TVSeason,
+                                                      Enums.ModuleEventType.Remove_TVShow,
+                                                      Enums.ModuleEventType.ScraperMulti_Movie,
+                                                      Enums.ModuleEventType.ScraperMulti_TVEpisode,
+                                                      Enums.ModuleEventType.ScraperMulti_TVShow,
+                                                      Enums.ModuleEventType.ScraperSingle_Movie,
+                                                      Enums.ModuleEventType.ScraperSingle_TVEpisode,
+                                                      Enums.ModuleEventType.ScraperSingle_TVShow})
         End Get
     End Property
 
@@ -122,6 +134,10 @@ Public Class Trakt_Generic
             Case Enums.ModuleEventType.ScraperMulti_Movie
                 If _MySettings.SyncPlaycountMultiMovies AndAlso _dbelement IsNot Nothing Then
                     _TraktAPI.SetWatchedState_Movie(_dbelement)
+                End If
+            Case Enums.ModuleEventType.Remove_Movie
+                If _MySettings.RemoveFromCollection_Movies AndAlso _dbelement IsNot Nothing Then
+                    _TraktAPI.RemoveFromCollection_Movie(_dbelement)
                 End If
             Case Enums.ModuleEventType.ScraperMulti_TVShow, Enums.ModuleEventType.ScraperMulti_TVEpisode
                 If _MySettings.SyncPlaycountMultiEpisodes AndAlso _dbelement IsNot Nothing Then
@@ -341,6 +357,8 @@ Public Class Trakt_Generic
         Dim Password As String
         Dim Token As String
         Dim Username As String
+
+        Dim RemoveFromCollection_Movies As Boolean
 
         'LastPlayed
         Dim SyncLastPlayedEditMovies As Boolean
