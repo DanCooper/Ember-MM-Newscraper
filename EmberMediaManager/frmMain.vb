@@ -17468,11 +17468,9 @@ doCancel:
 
     Private Sub tmrLoad_Movie_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrLoad_Movie.Tick
         tmrWait_Movie.Stop()
-        Debug.WriteLine("[tmrLoad_Movie_Tick] tmrLoad_Movie.Stop()")
         tmrLoad_Movie.Stop()
 
         If dgvMovies.SelectedRows.Count > 0 Then
-            Debug.WriteLine("[tmrLoad_Movie_Tick] Selceted Rows > 0")
 
             If dgvMovies.SelectedRows.Count > 1 Then
                 SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), dgvMovies.SelectedRows.Count))
@@ -17480,10 +17478,7 @@ doCancel:
                 SetStatus(dgvMovies.SelectedRows(0).Cells("MoviePath").Value.ToString)
             End If
 
-            Debug.WriteLine("[tmrLoad_Movie_Tick] SelectRow_Movie")
             SelectRow_Movie(dgvMovies.SelectedRows(0).Index)
-        Else
-            Debug.WriteLine("[tmrLoad_Movie_Tick] Selceted Rows = 0")
         End If
     End Sub
 
@@ -17687,17 +17682,12 @@ doCancel:
 
     Private Sub tmrWait_Movie_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrWait_Movie.Tick
         If Not prevRow_Movie = currRow_Movie Then
-            Debug.WriteLine(String.Concat("[tmrWait_Movie_Tick] prevRow_Movie=", prevRow_Movie, " / currRow_Movie=", currRow_Movie))
-            Debug.WriteLine("[tmrWait_Movie_Tick] tmrWait_Movie.Stop()")
+            prevRow_Movie = currRow_Movie
             tmrWait_Movie.Stop()
-            Debug.WriteLine("[tmrWait_Movie_Tick] tmrLoad_Movie.Start()")
             tmrLoad_Movie.Start()
-            'Else
-            '    Debug.WriteLine(String.Concat("[tmrWait_Movie_Tick] prevRow_Movie=", prevRow_Movie, " / currRow_Movie=", currRow_Movie))
-            '    Debug.WriteLine("[tmrWait_Movie_Tick] tmrLoad_Movie.Stop()")
-            '    tmrLoad_Movie.Stop()
-            '    Debug.WriteLine("[tmrWait_Movie_Tick] tmrWait_Movie.Stop()")
-            '    tmrWait_Movie.Stop()
+        Else
+            tmrLoad_Movie.Stop()
+            tmrWait_Movie.Stop()
         End If
     End Sub
 
