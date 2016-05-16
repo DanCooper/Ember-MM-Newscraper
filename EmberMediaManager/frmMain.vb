@@ -380,202 +380,195 @@ Public Class frmMain
 #Region "Methods"
 
     Public Sub ClearInfo()
+        InfoCleared = True
 
+        If bwDownloadPic.IsBusy Then bwDownloadPic.CancelAsync()
+        If bwLoadMovieInfo.IsBusy Then bwLoadMovieInfo.CancelAsync()
+        If bwLoadMovieSetInfo.IsBusy Then bwLoadMovieSetInfo.CancelAsync()
+        If bwLoadMovieSetPosters.IsBusy Then bwLoadMovieSetPosters.CancelAsync()
+        If bwLoadShowInfo.IsBusy Then bwLoadShowInfo.CancelAsync()
+        If bwLoadSeasonInfo.IsBusy Then bwLoadSeasonInfo.CancelAsync()
+        If bwLoadEpInfo.IsBusy Then bwLoadEpInfo.CancelAsync()
+
+        While bwDownloadPic.IsBusy OrElse bwLoadMovieInfo.IsBusy OrElse bwLoadMovieSetInfo.IsBusy OrElse
+                    bwLoadShowInfo.IsBusy OrElse bwLoadSeasonInfo.IsBusy OrElse bwLoadEpInfo.IsBusy OrElse
+                    bwLoadMovieSetPosters.IsBusy
+            Application.DoEvents()
+            Threading.Thread.Sleep(50)
+        End While
+
+        If pbFanart.Image IsNot Nothing Then
+            pbFanart.Image.Dispose()
+            pbFanart.Image = Nothing
+        End If
+        MainFanart.Clear()
+
+        If pbBanner.Image IsNot Nothing Then
+            pbBanner.Image.Dispose()
+            pbBanner.Image = Nothing
+        End If
+        pnlBanner.Visible = False
+        MainBanner.Clear()
+
+        If pbCharacterArt.Image IsNot Nothing Then
+            pbCharacterArt.Image.Dispose()
+            pbCharacterArt.Image = Nothing
+        End If
+        pnlCharacterArt.Visible = False
+        MainCharacterArt.Clear()
+
+        If pbClearArt.Image IsNot Nothing Then
+            pbClearArt.Image.Dispose()
+            pbClearArt.Image = Nothing
+        End If
+        pnlClearArt.Visible = False
+        MainClearArt.Clear()
+
+        If pbClearLogo.Image IsNot Nothing Then
+            pbClearLogo.Image.Dispose()
+            pbClearLogo.Image = Nothing
+        End If
+        pnlClearLogo.Visible = False
+        MainClearLogo.Clear()
+
+        If pbPoster.Image IsNot Nothing Then
+            pbPoster.Image.Dispose()
+            pbPoster.Image = Nothing
+        End If
+        pnlPoster.Visible = False
+        MainPoster.Clear()
+
+        If pbFanartSmall.Image IsNot Nothing Then
+            pbFanartSmall.Image.Dispose()
+            pbFanartSmall.Image = Nothing
+        End If
+        pnlFanartSmall.Visible = False
+        MainFanartSmall.Clear()
+
+        If pbLandscape.Image IsNot Nothing Then
+            pbLandscape.Image.Dispose()
+            pbLandscape.Image = Nothing
+        End If
+        pnlLandscape.Visible = False
+        MainLandscape.Clear()
+
+        If pbDiscArt.Image IsNot Nothing Then
+            pbDiscArt.Image.Dispose()
+            pbDiscArt.Image = Nothing
+        End If
+        pnlDiscArt.Visible = False
+        MainDiscArt.Clear()
+
+        'remove all the current genres
         Try
-            With Me
-                .InfoCleared = True
-
-                If .bwDownloadPic.IsBusy Then .bwDownloadPic.CancelAsync()
-                If .bwLoadMovieInfo.IsBusy Then .bwLoadMovieInfo.CancelAsync()
-                If .bwLoadMovieSetInfo.IsBusy Then .bwLoadMovieSetInfo.CancelAsync()
-                If .bwLoadMovieSetPosters.IsBusy Then .bwLoadMovieSetPosters.CancelAsync()
-                If .bwLoadShowInfo.IsBusy Then .bwLoadShowInfo.CancelAsync()
-                If .bwLoadSeasonInfo.IsBusy Then .bwLoadSeasonInfo.CancelAsync()
-                If .bwLoadEpInfo.IsBusy Then .bwLoadEpInfo.CancelAsync()
-
-                While .bwDownloadPic.IsBusy OrElse .bwLoadMovieInfo.IsBusy OrElse .bwLoadMovieSetInfo.IsBusy OrElse
-                    .bwLoadShowInfo.IsBusy OrElse .bwLoadSeasonInfo.IsBusy OrElse .bwLoadEpInfo.IsBusy OrElse
-                    .bwLoadMovieSetPosters.IsBusy
-                    Application.DoEvents()
-                    Threading.Thread.Sleep(50)
-                End While
-
-                If .pbFanart.Image IsNot Nothing Then
-                    .pbFanart.Image.Dispose()
-                    .pbFanart.Image = Nothing
-                End If
-                .MainFanart.Clear()
-
-                If .pbBanner.Image IsNot Nothing Then
-                    .pbBanner.Image.Dispose()
-                    .pbBanner.Image = Nothing
-                End If
-                .pnlBanner.Visible = False
-                .MainBanner.Clear()
-
-                If .pbCharacterArt.Image IsNot Nothing Then
-                    .pbCharacterArt.Image.Dispose()
-                    .pbCharacterArt.Image = Nothing
-                End If
-                .pnlCharacterArt.Visible = False
-                .MainCharacterArt.Clear()
-
-                If .pbClearArt.Image IsNot Nothing Then
-                    .pbClearArt.Image.Dispose()
-                    .pbClearArt.Image = Nothing
-                End If
-                .pnlClearArt.Visible = False
-                .MainClearArt.Clear()
-
-                If .pbClearLogo.Image IsNot Nothing Then
-                    .pbClearLogo.Image.Dispose()
-                    .pbClearLogo.Image = Nothing
-                End If
-                .pnlClearLogo.Visible = False
-                .MainClearLogo.Clear()
-
-                If .pbPoster.Image IsNot Nothing Then
-                    .pbPoster.Image.Dispose()
-                    .pbPoster.Image = Nothing
-                End If
-                .pnlPoster.Visible = False
-                .MainPoster.Clear()
-
-                If .pbFanartSmall.Image IsNot Nothing Then
-                    .pbFanartSmall.Image.Dispose()
-                    .pbFanartSmall.Image = Nothing
-                End If
-                .pnlFanartSmall.Visible = False
-                .MainFanartSmall.Clear()
-
-                If .pbLandscape.Image IsNot Nothing Then
-                    .pbLandscape.Image.Dispose()
-                    .pbLandscape.Image = Nothing
-                End If
-                .pnlLandscape.Visible = False
-                .MainLandscape.Clear()
-
-                If .pbDiscArt.Image IsNot Nothing Then
-                    .pbDiscArt.Image.Dispose()
-                    .pbDiscArt.Image = Nothing
-                End If
-                .pnlDiscArt.Visible = False
-                .MainDiscArt.Clear()
-
-                'remove all the current genres
-                Try
-                    For iDel As Integer = 0 To .pnlGenre.Count - 1
-                        .scMain.Panel2.Controls.Remove(.pbGenre(iDel))
-                        .scMain.Panel2.Controls.Remove(.pnlGenre(iDel))
-                    Next
-                Catch
-                End Try
-
-                If .pbMPAA.Image IsNot Nothing Then
-                    .pbMPAA.Image = Nothing
-                End If
-                .pnlMPAA.Visible = False
-
-                .lblFanartSmallSize.Text = String.Empty
-                .lblTitle.Text = String.Empty
-                .lblOriginalTitle.Text = String.Empty
-                .lblPosterSize.Text = String.Empty
-                .lblRating.Text = String.Empty
-                .lblRuntime.Text = String.Empty
-                .lblStudio.Text = String.Empty
-                .pnlTop250.Visible = False
-                .lblTop250.Text = String.Empty
-                .pbStar1.Image = Nothing
-                .pbStar2.Image = Nothing
-                .pbStar3.Image = Nothing
-                .pbStar4.Image = Nothing
-                .pbStar5.Image = Nothing
-                .pbStar6.Image = Nothing
-                .pbStar7.Image = Nothing
-                .pbStar8.Image = Nothing
-                .pbStar9.Image = Nothing
-                .pbStar10.Image = Nothing
-                ToolTips.SetToolTip(pbStar1, "")
-                ToolTips.SetToolTip(pbStar2, "")
-                ToolTips.SetToolTip(pbStar3, "")
-                ToolTips.SetToolTip(pbStar4, "")
-                ToolTips.SetToolTip(pbStar5, "")
-                ToolTips.SetToolTip(pbStar6, "")
-                ToolTips.SetToolTip(pbStar7, "")
-                ToolTips.SetToolTip(pbStar8, "")
-                ToolTips.SetToolTip(pbStar9, "")
-                ToolTips.SetToolTip(pbStar10, "")
-
-                .lstActors.Items.Clear()
-                If .alActors IsNot Nothing Then
-                    .alActors.Clear()
-                    .alActors = Nothing
-                End If
-                If .pbActors.Image IsNot Nothing Then
-                    .pbActors.Image.Dispose()
-                    .pbActors.Image = Nothing
-                End If
-                .MainActors.Clear()
-                .lblDirectors.Text = String.Empty
-                .lblReleaseDate.Text = String.Empty
-                .txtCertifications.Text = String.Empty
-                .txtIMDBID.Text = String.Empty
-                .txtFilePath.Text = String.Empty
-                .txtOutline.Text = String.Empty
-                .txtPlot.Text = String.Empty
-                .txtTMDBID.Text = String.Empty
-                .lblTagline.Text = String.Empty
-                If .pbMPAA.Image IsNot Nothing Then
-                    .pbMPAA.Image.Dispose()
-                    .pbMPAA.Image = Nothing
-                End If
-                .pbStudio.Image = Nothing
-                .pbVideo.Image = Nothing
-                .pbVType.Image = Nothing
-                .pbAudio.Image = Nothing
-                .pbResolution.Image = Nothing
-                .pbChannels.Image = Nothing
-                .pbAudioLang0.Image = Nothing
-                .pbAudioLang1.Image = Nothing
-                .pbAudioLang2.Image = Nothing
-                .pbAudioLang3.Image = Nothing
-                .pbAudioLang4.Image = Nothing
-                .pbAudioLang5.Image = Nothing
-                .pbAudioLang6.Image = Nothing
-                ToolTips.SetToolTip(.pbAudioLang0, "")
-                ToolTips.SetToolTip(.pbAudioLang1, "")
-                ToolTips.SetToolTip(.pbAudioLang2, "")
-                ToolTips.SetToolTip(.pbAudioLang3, "")
-                ToolTips.SetToolTip(.pbAudioLang4, "")
-                ToolTips.SetToolTip(.pbAudioLang5, "")
-                ToolTips.SetToolTip(.pbAudioLang6, "")
-                .pbSubtitleLang0.Image = Nothing
-                .pbSubtitleLang1.Image = Nothing
-                .pbSubtitleLang2.Image = Nothing
-                .pbSubtitleLang3.Image = Nothing
-                .pbSubtitleLang4.Image = Nothing
-                .pbSubtitleLang5.Image = Nothing
-                .pbSubtitleLang6.Image = Nothing
-                ToolTips.SetToolTip(.pbSubtitleLang0, "")
-                ToolTips.SetToolTip(.pbSubtitleLang1, "")
-                ToolTips.SetToolTip(.pbSubtitleLang2, "")
-                ToolTips.SetToolTip(.pbSubtitleLang3, "")
-                ToolTips.SetToolTip(.pbSubtitleLang4, "")
-                ToolTips.SetToolTip(.pbSubtitleLang5, "")
-                ToolTips.SetToolTip(.pbSubtitleLang6, "")
-
-                .txtMetaData.Text = String.Empty
-                .pnlTop.Visible = False
-                '.tslStatus.Text = String.Empty
-
-                .lvMoviesInSet.Items.Clear()
-                .ilMoviesInSet.Images.Clear()
-
-                Application.DoEvents()
-            End With
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
+            For iDel As Integer = 0 To pnlGenre.Count - 1
+                scMain.Panel2.Controls.Remove(pbGenre(iDel))
+                scMain.Panel2.Controls.Remove(pnlGenre(iDel))
+            Next
+        Catch
         End Try
+
+        If pbMPAA.Image IsNot Nothing Then
+            pbMPAA.Image = Nothing
+        End If
+        pnlMPAA.Visible = False
+
+        lblFanartSmallSize.Text = String.Empty
+        lblTitle.Text = String.Empty
+        lblOriginalTitle.Text = String.Empty
+        lblPosterSize.Text = String.Empty
+        lblRating.Text = String.Empty
+        lblRuntime.Text = String.Empty
+        lblStudio.Text = String.Empty
+        pnlTop250.Visible = False
+        lblTop250.Text = String.Empty
+        pbStar1.Image = Nothing
+        pbStar2.Image = Nothing
+        pbStar3.Image = Nothing
+        pbStar4.Image = Nothing
+        pbStar5.Image = Nothing
+        pbStar6.Image = Nothing
+        pbStar7.Image = Nothing
+        pbStar8.Image = Nothing
+        pbStar9.Image = Nothing
+        pbStar10.Image = Nothing
+        ToolTips.SetToolTip(pbStar1, "")
+        ToolTips.SetToolTip(pbStar2, "")
+        ToolTips.SetToolTip(pbStar3, "")
+        ToolTips.SetToolTip(pbStar4, "")
+        ToolTips.SetToolTip(pbStar5, "")
+        ToolTips.SetToolTip(pbStar6, "")
+        ToolTips.SetToolTip(pbStar7, "")
+        ToolTips.SetToolTip(pbStar8, "")
+        ToolTips.SetToolTip(pbStar9, "")
+        ToolTips.SetToolTip(pbStar10, "")
+
+        lstActors.Items.Clear()
+        If alActors IsNot Nothing Then
+            alActors.Clear()
+            alActors = Nothing
+        End If
+        If pbActors.Image IsNot Nothing Then
+            pbActors.Image.Dispose()
+            pbActors.Image = Nothing
+        End If
+        MainActors.Clear()
+        lblDirectors.Text = String.Empty
+        lblReleaseDate.Text = String.Empty
+        txtCertifications.Text = String.Empty
+        txtIMDBID.Text = String.Empty
+        txtFilePath.Text = String.Empty
+        txtOutline.Text = String.Empty
+        txtPlot.Text = String.Empty
+        txtTMDBID.Text = String.Empty
+        lblTagline.Text = String.Empty
+        If pbMPAA.Image IsNot Nothing Then
+            pbMPAA.Image.Dispose()
+            pbMPAA.Image = Nothing
+        End If
+        pbStudio.Image = Nothing
+        pbVideo.Image = Nothing
+        pbVType.Image = Nothing
+        pbAudio.Image = Nothing
+        pbResolution.Image = Nothing
+        pbChannels.Image = Nothing
+        pbAudioLang0.Image = Nothing
+        pbAudioLang1.Image = Nothing
+        pbAudioLang2.Image = Nothing
+        pbAudioLang3.Image = Nothing
+        pbAudioLang4.Image = Nothing
+        pbAudioLang5.Image = Nothing
+        pbAudioLang6.Image = Nothing
+        ToolTips.SetToolTip(pbAudioLang0, "")
+        ToolTips.SetToolTip(pbAudioLang1, "")
+        ToolTips.SetToolTip(pbAudioLang2, "")
+        ToolTips.SetToolTip(pbAudioLang3, "")
+        ToolTips.SetToolTip(pbAudioLang4, "")
+        ToolTips.SetToolTip(pbAudioLang5, "")
+        ToolTips.SetToolTip(pbAudioLang6, "")
+        pbSubtitleLang0.Image = Nothing
+        pbSubtitleLang1.Image = Nothing
+        pbSubtitleLang2.Image = Nothing
+        pbSubtitleLang3.Image = Nothing
+        pbSubtitleLang4.Image = Nothing
+        pbSubtitleLang5.Image = Nothing
+        pbSubtitleLang6.Image = Nothing
+        ToolTips.SetToolTip(pbSubtitleLang0, "")
+        ToolTips.SetToolTip(pbSubtitleLang1, "")
+        ToolTips.SetToolTip(pbSubtitleLang2, "")
+        ToolTips.SetToolTip(pbSubtitleLang3, "")
+        ToolTips.SetToolTip(pbSubtitleLang4, "")
+        ToolTips.SetToolTip(pbSubtitleLang5, "")
+        ToolTips.SetToolTip(pbSubtitleLang6, "")
+
+        txtMetaData.Text = String.Empty
+        pnlTop.Visible = False
+        '.tslStatus.Text = String.Empty
+
+        lvMoviesInSet.Items.Clear()
+        ilMoviesInSet.Images.Clear()
+
+        Application.DoEvents()
     End Sub
 
     Private Function CheckColumnHide_Movies(ByVal ColumnName As String) As Boolean
@@ -8125,10 +8118,22 @@ doCancel:
     End Sub
 
     Private Sub dgvTVShows_RowsRemoved(sender As Object, e As DataGridViewRowsRemovedEventArgs) Handles dgvTVShows.RowsRemoved
+        If dgvTVShows.RowCount = 0 OrElse dgvTVShows.SelectedRows.Count = 0 Then
+            bsTVSeasons.DataSource = Nothing
+            dgvTVSeasons.DataSource = Nothing
+            bsTVEpisodes.DataSource = Nothing
+            dgvTVEpisodes.DataSource = Nothing
+        End If
         SetTVCount()
     End Sub
 
     Private Sub dgvTVShows_RowsAdded(sender As Object, e As DataGridViewRowsAddedEventArgs) Handles dgvTVShows.RowsAdded
+        If dgvTVShows.RowCount = 0 OrElse dgvTVShows.SelectedRows.Count = 0 Then
+            bsTVSeasons.DataSource = Nothing
+            dgvTVSeasons.DataSource = Nothing
+            bsTVEpisodes.DataSource = Nothing
+            dgvTVEpisodes.DataSource = Nothing
+        End If
         SetTVCount()
     End Sub
 
