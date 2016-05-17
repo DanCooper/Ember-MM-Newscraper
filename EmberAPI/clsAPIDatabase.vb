@@ -803,7 +803,7 @@ Public Class Database
     Public Function Connect_MyVideos() As Boolean
 
         'set database version
-        Dim MyVideosDBVersion As Integer = 37
+        Dim MyVideosDBVersion As Integer = 38
 
         'set database filename
         Dim MyVideosDB As String = String.Format("MyVideos{0}.emm", MyVideosDBVersion)
@@ -2688,6 +2688,7 @@ Public Class Database
                     _source.Exclude = Convert.ToBoolean(SQLreader("bExclude"))
                     _source.EpisodeSorting = DirectCast(Convert.ToInt32(SQLreader("iEpisodeSorting")), Enums.EpisodeSorting)
                     _source.LastScan = SQLreader("strLastScan").ToString
+                    _source.IsSingle = Convert.ToBoolean(SQLreader("bSingle"))
                 End If
             End Using
         End Using
@@ -2714,6 +2715,7 @@ Public Class Database
                         tvsource.Exclude = Convert.ToBoolean(SQLreader("bExclude"))
                         tvsource.EpisodeSorting = DirectCast(Convert.ToInt32(SQLreader("iEpisodeSorting")), Enums.EpisodeSorting)
                         tvsource.LastScan = SQLreader("strLastScan").ToString
+                        tvsource.IsSingle = Convert.ToBoolean(SQLreader("bSingle"))
                         Master.TVShowSources.Add(tvsource)
                     Catch ex As Exception
                         logger.Error(ex, New StackFrame().GetMethod().Name)
