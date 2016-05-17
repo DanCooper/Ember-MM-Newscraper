@@ -170,7 +170,17 @@ Public Class dlgSourceTVShow
             End If
         Else
             If cbSourceLanguage.Items.Count > 0 Then
-                cbSourceLanguage.Text = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = Master.eSettings.TVGeneralLanguage).Description
+                Dim tLanguage As languageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = Master.eSettings.TVGeneralLanguage)
+                If tLanguage IsNot Nothing Then
+                    cbSourceLanguage.Text = tLanguage.Description
+                Else
+                    tLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(Master.eSettings.TVGeneralLanguage))
+                    If tLanguage IsNot Nothing Then
+                        cbSourceLanguage.Text = tLanguage.Description
+                    Else
+                        cbSourceLanguage.Text = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = "en-US").Description
+                    End If
+                End If
             End If
             cbSourceEpisodeSorting.SelectedIndex = Enums.EpisodeSorting.Episode
             cbSourceOrdering.SelectedIndex = Enums.Ordering.Standard
