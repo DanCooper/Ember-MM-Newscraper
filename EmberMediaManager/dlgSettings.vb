@@ -783,7 +783,7 @@ Public Class dlgSettings
 
     Private Sub btnTVSourceAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSourceAdd.Click
         Using dSource As New dlgSourceTVShow
-            If dSource.ShowDialog = Windows.Forms.DialogResult.OK Then
+            If dSource.ShowDialog = DialogResult.OK Then
                 RefreshTVSources()
                 SetApplyButton(True)
                 sResult.NeedsDBUpdate_TV = True
@@ -819,7 +819,7 @@ Public Class dlgSettings
     Private Sub btnMovieBackdropsPathBrowse_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSourcesBackdropsFolderPathBrowse.Click
         With fbdBrowse
             fbdBrowse.Description = Master.eLang.GetString(552, "Select the folder where you wish to store your backdrops...")
-            If .ShowDialog = Windows.Forms.DialogResult.OK Then
+            If .ShowDialog = DialogResult.OK Then
                 If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
                     txtMovieSourcesBackdropsFolderPath.Text = .SelectedPath.ToString
                 End If
@@ -855,7 +855,7 @@ Public Class dlgSettings
 
     Private Sub btnMovieGeneralCustomMarker1_Click(sender As Object, e As EventArgs) Handles btnMovieGeneralCustomMarker1.Click
         With cdColor
-            If .ShowDialog = Windows.Forms.DialogResult.OK Then
+            If .ShowDialog = DialogResult.OK Then
                 If Not .Color = Nothing Then
                     btnMovieGeneralCustomMarker1.BackColor = .Color
                     SetApplyButton(True)
@@ -866,7 +866,7 @@ Public Class dlgSettings
 
     Private Sub btnMovieGeneralCustomMarker2_Click(sender As Object, e As EventArgs) Handles btnMovieGeneralCustomMarker2.Click
         With cdColor
-            If .ShowDialog = Windows.Forms.DialogResult.OK Then
+            If .ShowDialog = DialogResult.OK Then
                 If Not .Color = Nothing Then
                     btnMovieGeneralCustomMarker2.BackColor = .Color
                     SetApplyButton(True)
@@ -877,7 +877,7 @@ Public Class dlgSettings
 
     Private Sub btnMovieGeneralCustomMarker3_Click(sender As Object, e As EventArgs) Handles btnMovieGeneralCustomMarker3.Click
         With cdColor
-            If .ShowDialog = Windows.Forms.DialogResult.OK Then
+            If .ShowDialog = DialogResult.OK Then
                 If Not .Color = Nothing Then
                     btnMovieGeneralCustomMarker3.BackColor = .Color
                     SetApplyButton(True)
@@ -888,7 +888,7 @@ Public Class dlgSettings
 
     Private Sub btnMovieGeneralCustomMarker4_Click(sender As Object, e As EventArgs) Handles btnMovieGeneralCustomMarker4.Click
         With cdColor
-            If .ShowDialog = Windows.Forms.DialogResult.OK Then
+            If .ShowDialog = DialogResult.OK Then
                 If Not .Color = Nothing Then
                     btnMovieGeneralCustomMarker4.BackColor = .Color
                     SetApplyButton(True)
@@ -926,7 +926,7 @@ Public Class dlgSettings
     Private Sub btnMovieSourceEdit_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSourceEdit.Click
         If lvMovieSources.SelectedItems.Count > 0 Then
             Using dMovieSource As New dlgSourceMovie
-                If dMovieSource.ShowDialog(Convert.ToInt32(lvMovieSources.SelectedItems(0).Text)) = Windows.Forms.DialogResult.OK Then
+                If dMovieSource.ShowDialog(Convert.ToInt32(lvMovieSources.SelectedItems(0).Text)) = DialogResult.OK Then
                     RefreshMovieSources()
                     sResult.NeedsReload_Movie = True 'TODO: Check if we have to use Reload or DBUpdate
                     SetApplyButton(True)
@@ -960,7 +960,7 @@ Public Class dlgSettings
     Private Sub btnTVSourceEdit_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSourceEdit.Click
         If lvTVSources.SelectedItems.Count > 0 Then
             Using dTVSource As New dlgSourceTVShow
-                If dTVSource.ShowDialog(Convert.ToInt32(lvTVSources.SelectedItems(0).Text)) = Windows.Forms.DialogResult.OK Then
+                If dTVSource.ShowDialog(Convert.ToInt32(lvTVSources.SelectedItems(0).Text)) = DialogResult.OK Then
                     RefreshTVSources()
                     sResult.NeedsReload_TVShow = True
                     SetApplyButton(True)
@@ -1003,7 +1003,7 @@ Public Class dlgSettings
 
     Private Sub btnMovieSourceAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSourceAdd.Click
         Using dSource As New dlgSourceMovie
-            If dSource.ShowDialog = Windows.Forms.DialogResult.OK Then
+            If dSource.ShowDialog = DialogResult.OK Then
                 RefreshMovieSources()
                 SetApplyButton(True)
                 sResult.NeedsDBUpdate_Movie = True
@@ -1526,7 +1526,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnTVShowFilterReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVShowFilterReset.Click
-        If MessageBox.Show(Master.eLang.GetString(840, "Are you sure you want to reset to the default list of show filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
+        If MessageBox.Show(Master.eLang.GetString(840, "Are you sure you want to reset to the default list of show filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ShowFilters, True)
             RefreshTVShowFilters()
             SetApplyButton(True)
@@ -1534,7 +1534,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnTVEpisodeFilterReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVEpisodeFilterReset.Click
-        If MessageBox.Show(Master.eLang.GetString(841, "Are you sure you want to reset to the default list of episode filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
+        If MessageBox.Show(Master.eLang.GetString(841, "Are you sure you want to reset to the default list of episode filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.EpFilters, True)
             RefreshTVEpisodeFilters()
             SetApplyButton(True)
@@ -1542,7 +1542,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnMovieFilterReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieFilterReset.Click
-        If MessageBox.Show(Master.eLang.GetString(842, "Are you sure you want to reset to the default list of movie filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
+        If MessageBox.Show(Master.eLang.GetString(842, "Are you sure you want to reset to the default list of movie filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieFilters, True)
             RefreshMovieFilters()
             SetApplyButton(True)
@@ -1550,7 +1550,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnFileSystemValidVideoExtsReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemValidVideoExtsReset.Click
-        If MessageBox.Show(Master.eLang.GetString(843, "Are you sure you want to reset to the default list of valid video extensions?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
+        If MessageBox.Show(Master.eLang.GetString(843, "Are you sure you want to reset to the default list of valid video extensions?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ValidExts, True)
             RefreshFileSystemValidExts()
             SetApplyButton(True)
@@ -1558,7 +1558,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnFileSystemValidSubtitlesExtsReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemValidSubtitlesExtsReset.Click
-        If MessageBox.Show(Master.eLang.GetString(1283, "Are you sure you want to reset to the default list of valid subtitle extensions?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
+        If MessageBox.Show(Master.eLang.GetString(1283, "Are you sure you want to reset to the default list of valid subtitle extensions?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ValidSubtitleExts, True)
             RefreshFileSystemValidSubtitlesExts()
             SetApplyButton(True)
@@ -1566,7 +1566,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnFileSystemValidThemeExtsReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemValidThemeExtsReset.Click
-        If MessageBox.Show(Master.eLang.GetString(1080, "Are you sure you want to reset to the default list of valid theme extensions?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
+        If MessageBox.Show(Master.eLang.GetString(1080, "Are you sure you want to reset to the default list of valid theme extensions?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ValidThemeExts, True)
             RefreshFileSystemValidThemeExts()
             SetApplyButton(True)
@@ -1575,7 +1575,7 @@ Public Class dlgSettings
 
     Private Sub btnTVSourcesRegexTVShowMatchingGet_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSourcesRegexTVShowMatchingGet.Click
         Using dd As New dlgTVRegExProfiles
-            If dd.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            If dd.ShowDialog() = DialogResult.OK Then
                 TVShowMatching.Clear()
                 TVShowMatching.AddRange(dd.ShowRegex)
                 LoadTVShowMatching()
@@ -1585,7 +1585,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnTVSourcesRegexTVShowMatchingReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSourcesRegexTVShowMatchingReset.Click
-        If MessageBox.Show(Master.eLang.GetString(844, "Are you sure you want to reset to the default list of show regex?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
+        If MessageBox.Show(Master.eLang.GetString(844, "Are you sure you want to reset to the default list of show regex?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVShowMatching, True)
             TVShowMatching.Clear()
             TVShowMatching.AddRange(Master.eSettings.TVShowMatching)
@@ -4483,7 +4483,7 @@ Public Class dlgSettings
     Private Sub lvMovieSources_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles lvMovieSources.DoubleClick
         If lvMovieSources.SelectedItems.Count > 0 Then
             Using dMovieSource As New dlgSourceMovie
-                If dMovieSource.ShowDialog(Convert.ToInt32(lvMovieSources.SelectedItems(0).Text)) = Windows.Forms.DialogResult.OK Then
+                If dMovieSource.ShowDialog(Convert.ToInt32(lvMovieSources.SelectedItems(0).Text)) = DialogResult.OK Then
                     RefreshMovieSources()
                     sResult.NeedsReload_Movie = True 'TODO: Check if we have to use Reload or DBUpdate
                     SetApplyButton(True)
@@ -4515,7 +4515,7 @@ Public Class dlgSettings
     Private Sub lvTVSources_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles lvTVSources.DoubleClick
         If lvTVSources.SelectedItems.Count > 0 Then
             Using dTVSource As New dlgSourceTVShow
-                If dTVSource.ShowDialog(Convert.ToInt32(lvTVSources.SelectedItems(0).Text)) = Windows.Forms.DialogResult.OK Then
+                If dTVSource.ShowDialog(Convert.ToInt32(lvTVSources.SelectedItems(0).Text)) = DialogResult.OK Then
                     RefreshTVSources()
                     sResult.NeedsReload_TVShow = True
                     SetApplyButton(True)
@@ -4594,6 +4594,7 @@ Public Class dlgSettings
             lvItem.SubItems.Add(s.Ordering.ToString)
             lvItem.SubItems.Add(If(s.Exclude, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
             lvItem.SubItems.Add(s.EpisodeSorting.ToString)
+            lvItem.SubItems.Add(If(s.IsSingle, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
             lvTVSources.Items.Add(lvItem)
         Next
     End Sub
@@ -4692,7 +4693,7 @@ Public Class dlgSettings
 
     Private Sub RemoveMovieSource()
         If lvMovieSources.SelectedItems.Count > 0 Then
-            If MessageBox.Show(Master.eLang.GetString(418, "Are you sure you want to remove the selected sources? This will remove the movies from these sources from the Ember database."), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
+            If MessageBox.Show(Master.eLang.GetString(418, "Are you sure you want to remove the selected sources? This will remove the movies from these sources from the Ember database."), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                 lvMovieSources.BeginUpdate()
 
                 Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
@@ -4798,7 +4799,7 @@ Public Class dlgSettings
 
     Private Sub RemoveTVSource()
         If lvTVSources.SelectedItems.Count > 0 Then
-            If MessageBox.Show(Master.eLang.GetString(1033, "Are you sure you want to remove the selected sources? This will remove the tv shows from these sources from the Ember database."), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
+            If MessageBox.Show(Master.eLang.GetString(1033, "Are you sure you want to remove the selected sources? This will remove the tv shows from these sources from the Ember database."), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                 lvTVSources.BeginUpdate()
 
                 Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
@@ -7250,7 +7251,7 @@ Public Class dlgSettings
         Try
             With fbdBrowse
                 fbdBrowse.Description = Master.eLang.GetString(1030, "Select the folder where you wish to store your movie sets images...")
-                If .ShowDialog = Windows.Forms.DialogResult.OK Then
+                If .ShowDialog = DialogResult.OK Then
                     If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
                         txtMovieSetPathExtended.Text = .SelectedPath.ToString
                     End If
@@ -7265,7 +7266,7 @@ Public Class dlgSettings
         Try
             With fbdBrowse
                 fbdBrowse.Description = Master.eLang.GetString(1030, "Select the folder where you wish to store your movie sets images...")
-                If .ShowDialog = Windows.Forms.DialogResult.OK Then
+                If .ShowDialog = DialogResult.OK Then
                     If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
                         txtMovieSetPathMSAA.Text = .SelectedPath.ToString
                     End If
@@ -7280,7 +7281,7 @@ Public Class dlgSettings
         Try
             With fbdBrowse
                 fbdBrowse.Description = Master.eLang.GetString(1030, "Select the folder where you wish to store your movie sets images...")
-                If .ShowDialog = Windows.Forms.DialogResult.OK Then
+                If .ShowDialog = DialogResult.OK Then
                     If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
                         txtMovieSetPathExpertSingle.Text = .SelectedPath.ToString
                     End If
@@ -7295,7 +7296,7 @@ Public Class dlgSettings
         Try
             With fbdBrowse
                 fbdBrowse.Description = Master.eLang.GetString(1077, "Select the folder where you wish to store your themes...")
-                If .ShowDialog = Windows.Forms.DialogResult.OK Then
+                If .ShowDialog = DialogResult.OK Then
                     If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
                         txtMovieThemeTvTunesCustomPath.Text = .SelectedPath.ToString
                     End If
@@ -7310,7 +7311,7 @@ Public Class dlgSettings
         Try
             With fbdBrowse
                 fbdBrowse.Description = Master.eLang.GetString(1077, "Select the folder where you wish to store your themes...")
-                If .ShowDialog = Windows.Forms.DialogResult.OK Then
+                If .ShowDialog = DialogResult.OK Then
                     If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
                         txtTVShowThemeTvTunesCustomPath.Text = .SelectedPath.ToString
                     End If
@@ -7325,7 +7326,7 @@ Public Class dlgSettings
         Try
             With fbdBrowse
                 fbdBrowse.Description = Master.eLang.GetString(1029, "Select the folder where you wish to store your watched files...")
-                If .ShowDialog = Windows.Forms.DialogResult.OK Then
+                If .ShowDialog = DialogResult.OK Then
                     If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
                         txtMovieYAMJWatchedFolder.Text = .SelectedPath.ToString
                     End If

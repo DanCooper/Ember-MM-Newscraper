@@ -141,7 +141,7 @@ Namespace IMDB
         Private Const TABLE_PATTERN As String = "<table.*?>\n?(.*?)</table>"
         Private Const TABLE_PATTERN_TV As String = "<table class=""results"">(.*?)</table>"
         Private Const TD_PATTERN_1 As String = "<td\sclass=""nm"">(.*?)</td>"
-        Private Const TD_PATTERN_2 As String = "(?<=<td\sclass=""char"">)(.*?)(?=</td>)(\s\(.*?\))?"
+        Private Const TD_PATTERN_2 As String = "(?<=<td\sclass=""char"">)(?<name>.*?)(?=</td>)(\s\(.*?\))?"
         Private Const TD_PATTERN_3 As String = "<td\sclass=""hs"">(.*?)</td>"
         Private Const TD_PATTERN_4 As String = "<td>(?<title>.*?)</td>"
         Private Const TITLE_PATTERN As String = "<a\shref=[""""'](?<url>.*?)[""""'].*?>(?<name>.*?)</a>((\s)+?(\((?<year>\d{4})(\/.*?)?\)))?((\s)+?(\((?<type>.*?)\)))?"
@@ -363,10 +363,13 @@ Namespace IMDB
                     Dim rCast As MatchCollection = Regex.Matches(ActorsTable, TR_PATTERN)
 
                     For Each tCast In rCast
+                        Dim tActor As New MediaContainers.Person
                         Dim t1 = Regex.Match(Regex.Match(tCast.ToString, TD_PATTERN_1).ToString, HREF_PATTERN)
                         Dim t2 = Regex.Match(Regex.Match(tCast.ToString, TD_PATTERN_2).ToString, HREF_PATTERN)
+                        If Not t2.Success Then
+                            t2 = Regex.Match(tCast.ToString, TD_PATTERN_2)
+                        End If
                         Dim t3 = Regex.Match(Regex.Match(tCast.ToString, TD_PATTERN_3).ToString, IMG_PATTERN)
-                        Dim tActor As New MediaContainers.Person
                         tActor.Name = HttpUtility.HtmlDecode(t1.Groups("name").ToString.Trim)
                         tActor.Role = HttpUtility.HtmlDecode(t2.Groups("name").ToString.Trim)
                         tActor.URLOriginal = If(t3.Groups("thumb").ToString.IndexOf("addtiny") > 0 OrElse t3.Groups("thumb").ToString.IndexOf("no_photo") > 0, String.Empty, HttpUtility.HtmlDecode(t3.Groups("thumb").ToString.Trim).Replace("._SX23_SY30_.jpg", String.Concat("._", ThumbsSize, "_.jpg")))
@@ -651,10 +654,13 @@ mPlot:          'Plot
                 Dim rCast As MatchCollection = Regex.Matches(ActorsTable, TR_PATTERN)
 
                 For Each tCast In rCast
+                    Dim tActor As New MediaContainers.Person
                     Dim t1 = Regex.Match(Regex.Match(tCast.ToString, TD_PATTERN_1).ToString, HREF_PATTERN)
                     Dim t2 = Regex.Match(Regex.Match(tCast.ToString, TD_PATTERN_2).ToString, HREF_PATTERN)
+                    If Not t2.Success Then
+                        t2 = Regex.Match(tCast.ToString, TD_PATTERN_2)
+                    End If
                     Dim t3 = Regex.Match(Regex.Match(tCast.ToString, TD_PATTERN_3).ToString, IMG_PATTERN)
-                    Dim tActor As New MediaContainers.Person
                     tActor.Name = HttpUtility.HtmlDecode(t1.Groups("name").ToString.Trim)
                     tActor.Role = HttpUtility.HtmlDecode(t2.Groups("name").ToString.Trim)
                     tActor.URLOriginal = If(t3.Groups("thumb").ToString.IndexOf("addtiny") > 0 OrElse t3.Groups("thumb").ToString.IndexOf("no_photo") > 0, String.Empty, HttpUtility.HtmlDecode(t3.Groups("thumb").ToString.Trim).Replace("._SX23_SY30_.jpg", String.Concat("._", ThumbsSize, "_.jpg")))
@@ -869,10 +875,13 @@ mPlot:          'Plot
                     Dim rCast As MatchCollection = Regex.Matches(ActorsTable, TR_PATTERN)
 
                     For Each tCast In rCast
+                        Dim tActor As New MediaContainers.Person
                         Dim t1 = Regex.Match(Regex.Match(tCast.ToString, TD_PATTERN_1).ToString, HREF_PATTERN)
                         Dim t2 = Regex.Match(Regex.Match(tCast.ToString, TD_PATTERN_2).ToString, HREF_PATTERN)
+                        If Not t2.Success Then
+                            t2 = Regex.Match(tCast.ToString, TD_PATTERN_2)
+                        End If
                         Dim t3 = Regex.Match(Regex.Match(tCast.ToString, TD_PATTERN_3).ToString, IMG_PATTERN)
-                        Dim tActor As New MediaContainers.Person
                         tActor.Name = HttpUtility.HtmlDecode(t1.Groups("name").ToString.Trim)
                         tActor.Role = HttpUtility.HtmlDecode(t2.Groups("name").ToString.Trim)
                         tActor.URLOriginal = If(t3.Groups("thumb").ToString.IndexOf("addtiny") > 0 OrElse t3.Groups("thumb").ToString.IndexOf("no_photo") > 0, String.Empty, HttpUtility.HtmlDecode(t3.Groups("thumb").ToString.Trim).Replace("._SX23_SY30_.jpg", String.Concat("._", ThumbsSize, "_.jpg")))

@@ -29,7 +29,7 @@ Namespace FileUtils
 
 #Region "Fields"
 
-        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
 #End Region 'Fields
 
@@ -366,10 +366,10 @@ Namespace FileUtils
             Dim size As Long = 0
             If System.IO.Directory.Exists(spathDirectory) Then
                 ' Take a snapshot of the file system.
-                Dim dir As New System.IO.DirectoryInfo(spathDirectory)
+                Dim dir As New DirectoryInfo(spathDirectory)
                 ' This method assumes that the application has discovery permissions
                 ' for all folders under the specified path.
-                Dim fileList As IEnumerable(Of System.IO.FileInfo) = dir.GetFiles("*.*", System.IO.SearchOption.AllDirectories)
+                Dim fileList As IEnumerable(Of FileInfo) = dir.GetFiles("*.*", SearchOption.AllDirectories)
 
                 For Each fi As FileInfo In fileList
                     size += GetFileLength(fi)
@@ -389,16 +389,16 @@ Namespace FileUtils
         ''' <remarks></remarks>
         Public Shared Function GetLargestFilePathFromDir(spathDirectory As String) As String
             ' Take a snapshot of the file system.
-            Dim dir As New System.IO.DirectoryInfo(spathDirectory)
+            Dim dir As New DirectoryInfo(spathDirectory)
             ' This method assumes that the application has discovery permissions
             ' for all folders under the specified path.
-            Dim fileList As IEnumerable(Of System.IO.FileInfo) = dir.GetFiles("*.*", System.IO.SearchOption.AllDirectories)
+            Dim fileList As IEnumerable(Of FileInfo) = dir.GetFiles("*.*", SearchOption.AllDirectories)
             'Return the size of the largest file
             Dim maxSize As Long = (From file In fileList Let len = GetFileLength(file) Select len).Max()
             logger.Debug("The length of the largest file under {0} is {1}", spathDirectory, maxSize)
             ' Return the FileInfo object for the largest file
             ' by sorting and selecting from beginning of list
-            Dim longestFile As System.IO.FileInfo = (From file In fileList Let len = GetFileLength(file) Where len > 0 Order By len Descending Select file).First()
+            Dim longestFile As FileInfo = (From file In fileList Let len = GetFileLength(file) Where len > 0 Order By len Descending Select file).First()
             logger.Debug("The largest file under {0} is {1} with a length of {2} bytes", spathDirectory, longestFile.FullName, longestFile.Length)
             Return longestFile.FullName
         End Function
@@ -411,12 +411,12 @@ Namespace FileUtils
         ''' <remarks></remarks>
         Public Shared Function GetSmallestFilePathFromDir(spathDirectory As String) As String
             ' Take a snapshot of the file system.
-            Dim dir As New System.IO.DirectoryInfo(spathDirectory)
+            Dim dir As New DirectoryInfo(spathDirectory)
             ' This method assumes that the application has discovery permissions
             ' for all folders under the specified path.
-            Dim fileList As IEnumerable(Of System.IO.FileInfo) = dir.GetFiles("*.*", System.IO.SearchOption.AllDirectories)
+            Dim fileList As IEnumerable(Of FileInfo) = dir.GetFiles("*.*", SearchOption.AllDirectories)
             'Return the FileInfo of the smallest file
-            Dim smallestFile As System.IO.FileInfo = (From file In fileList Let len = GetFileLength(file) Where len > 0 Order By len Ascending Select file).First()
+            Dim smallestFile As FileInfo = (From file In fileList Let len = GetFileLength(file) Where len > 0 Order By len Ascending Select file).First()
             logger.Debug("The smallest file under {0} is {1} with a length of {2} bytes", spathDirectory, smallestFile.FullName, smallestFile.Length)
             Return smallestFile.FullName
         End Function
@@ -431,11 +431,11 @@ Namespace FileUtils
         ''' ' that can be raised when accessing the FileInfo.Length property.
         ''' ' In this particular case, it is safe to swallow the exception.
         ''' </remarks>
-        Private Shared Function GetFileLength(fi As System.IO.FileInfo) As Long
+        Private Shared Function GetFileLength(fi As FileInfo) As Long
             Dim retval As Long
             Try
                 retval = fi.Length
-            Catch ex As System.IO.FileNotFoundException
+            Catch ex As FileNotFoundException
                 ' If a file is no longer present,
                 ' just add zero bytes to the total.
                 logger.Error(String.Concat("Specific file is no longer present!", ex))
@@ -452,7 +452,7 @@ Namespace FileUtils
 
 #Region "Fields"
 
-        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
 #End Region 'Fields
 
@@ -584,9 +584,9 @@ Namespace FileUtils
                 Dim MovieFile As New FileInfo(mMovie.Filename)
                 Dim MovieDir As DirectoryInfo = MovieFile.Directory
                 'TODO: check VIDEO_TS parent
-                If FileUtils.Common.isVideoTS(MovieDir.FullName) Then
+                If Common.isVideoTS(MovieDir.FullName) Then
                     dPath = String.Concat(Path.Combine(MovieDir.Parent.FullName, MovieDir.Parent.Name), ".ext")
-                ElseIf FileUtils.Common.isBDRip(MovieDir.FullName) Then
+                ElseIf Common.isBDRip(MovieDir.FullName) Then
                     dPath = String.Concat(Path.Combine(MovieDir.Parent.Parent.FullName, MovieDir.Parent.Parent.Name), ".ext")
                 Else
                     dPath = mMovie.Filename
@@ -640,7 +640,7 @@ Namespace FileUtils
                         End If
                         If Not String.IsNullOrEmpty(tPath) Then
                             If IO.File.Exists(tPath) Then
-                                ItemsToDelete.Add(New IO.FileInfo(tPath))
+                                ItemsToDelete.Add(New FileInfo(tPath))
                             End If
                         End If
                     End If
@@ -657,7 +657,7 @@ Namespace FileUtils
                                 ItemsToDelete.Add(MovieDir)
                             Else
                                 'just delete the movie file itself
-                                ItemsToDelete.Add(New IO.FileInfo(mMovie.Filename))
+                                ItemsToDelete.Add(New FileInfo(mMovie.Filename))
                             End If
                         End If
                     Else
@@ -795,7 +795,7 @@ Namespace FileUtils
 
 #Region "Fields"
 
-        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
 #End Region 'Fields
 
@@ -804,7 +804,7 @@ Namespace FileUtils
         Public Shared Function CheckDroppedImage(ByVal e As DragEventArgs) As Boolean
             Dim strFile() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
             If strFile IsNot Nothing Then
-                Dim fi As New System.IO.FileInfo(strFile(0))
+                Dim fi As New FileInfo(strFile(0))
                 If fi.Extension = ".gif" Or fi.Extension = ".bmp" Or fi.Extension = ".jpg" Or fi.Extension = ".jpeg" Or fi.Extension = ".png" Then
                     Return True
                 End If
@@ -868,7 +868,7 @@ Namespace FileUtils
 
 #Region "Fields"
 
-        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
 #End Region 'Fields
 
@@ -893,8 +893,8 @@ Namespace FileUtils
             Dim fileParPath As String = Directory.GetParent(filePath).FullName
             Dim isSingle As Boolean = DBElement.IsSingle
 
-            Dim isVideoTS As Boolean = FileUtils.Common.isVideoTS(fPath)
-            Dim isBDRip As Boolean = FileUtils.Common.isBDRip(fPath)
+            Dim isVideoTS As Boolean = Common.isVideoTS(fPath)
+            Dim isBDRip As Boolean = Common.isBDRip(fPath)
             Dim isVideoTSFile As Boolean = fileName.ToLower = "video_ts"
 
             If isVideoTS Then basePath = Directory.GetParent(Directory.GetParent(fPath).FullName).FullName
@@ -1836,7 +1836,7 @@ Namespace FileUtils
             If String.IsNullOrEmpty(DBElement.Filename) Then Return FilenameList
 
             Dim fEpisodeFileName As String = Path.GetFileNameWithoutExtension(DBElement.Filename)
-            Dim fEpisodePath As String = FileUtils.Common.RemoveExtFromPath(DBElement.Filename)
+            Dim fEpisodePath As String = Common.RemoveExtFromPath(DBElement.Filename)
             Dim fEpisodeParentPath As String = Directory.GetParent(DBElement.Filename).FullName
             Dim sSeason As String = DBElement.TVEpisode.Season.ToString.PadLeft(2, Convert.ToChar("0"))
 
@@ -2198,7 +2198,7 @@ Namespace FileUtils
 
 #Region "Fields"
 
-        Dim logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Dim logger As Logger = LogManager.GetCurrentClassLogger()
 
 #End Region 'Fields
 

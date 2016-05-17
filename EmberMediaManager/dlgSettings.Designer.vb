@@ -1616,6 +1616,7 @@ Partial Class dlgSettings
         Me.scSettingsBody = New System.Windows.Forms.SplitContainer()
         Me.scSettingsMain = New System.Windows.Forms.SplitContainer()
         Me.tblSettingsFooter = New System.Windows.Forms.TableLayoutPanel()
+        Me.colTVSourcesSingle = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.gbGeneralMiscOpts.SuspendLayout()
         Me.tblGeneralMisc.SuspendLayout()
         Me.gbGeneralThemes.SuspendLayout()
@@ -11017,7 +11018,7 @@ Partial Class dlgSettings
         '
         'lvTVSources
         '
-        Me.lvTVSources.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colTVSourcesID, Me.colTVSourcesName, Me.colTVSourcesPath, Me.colTVSourcesLanguage, Me.colTVSourcesOrdering, Me.colTVSourcesExclude, Me.colTVSourcesSorting})
+        Me.lvTVSources.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colTVSourcesID, Me.colTVSourcesName, Me.colTVSourcesPath, Me.colTVSourcesLanguage, Me.colTVSourcesOrdering, Me.colTVSourcesExclude, Me.colTVSourcesSorting, Me.colTVSourcesSingle})
         Me.tblTVSourcesGeneral.SetColumnSpan(Me.lvTVSources, 2)
         Me.lvTVSources.Dock = System.Windows.Forms.DockStyle.Fill
         Me.lvTVSources.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
@@ -11045,7 +11046,7 @@ Partial Class dlgSettings
         'colTVSourcesPath
         '
         Me.colTVSourcesPath.Text = "Path"
-        Me.colTVSourcesPath.Width = 308
+        Me.colTVSourcesPath.Width = 250
         '
         'colTVSourcesLanguage
         '
@@ -22652,6 +22653,10 @@ Partial Class dlgSettings
         Me.tblSettingsFooter.Size = New System.Drawing.Size(1207, 74)
         Me.tblSettingsFooter.TabIndex = 0
         '
+        'colTVSourcesSingle
+        '
+        Me.colTVSourcesSingle.Text = "Single TV Show"
+        '
         'dlgSettings
         '
         Me.AcceptButton = Me.btnOK
@@ -25058,4 +25063,5 @@ End Sub
     Friend WithEvents cbTVImagesForcedLanguage As ComboBox
     Friend WithEvents chkMovieSetImagesForceLanguage As CheckBox
     Friend WithEvents cbMovieSetImagesForcedLanguage As ComboBox
+    Friend WithEvents colTVSourcesSingle As ColumnHeader
 End Class
