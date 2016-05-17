@@ -125,7 +125,7 @@ Public Class Images
         If String.IsNullOrEmpty(DBMovie.Filename) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, ImageType)
+            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, ImageType, True)
                 Select Case ImageType
                     Case Enums.ModifierType.MainActorThumbs
                         Dim tmpPath As String = Directory.GetParent(a.Replace("<placeholder>", "dummy")).FullName
@@ -374,6 +374,69 @@ Public Class Images
             Throw New ArgumentOutOfRangeException("Looks like MemoryStream is empty")
         End If
     End Sub
+    ''' <summary>
+    ''' Save the image as a movie image
+    ''' </summary>
+    ''' <param name="mMovie"><c>Database.DBElement</c> representing the movie being referred to</param>
+    ''' <param name="tImageType"></param>
+    ''' <returns><c>String</c> path to the saved image</returns>
+    ''' <remarks></remarks>
+    Public Function SaveAs_Movie(ByVal mMovie As Database.DBElement, ByVal tImageType As Enums.ModifierType) As String
+        Dim strReturn As String = String.Empty
+
+        Dim doResize As Boolean = False
+        Dim bResizeEnabled As Boolean = False
+        Dim intHeight As Integer = -1
+        Dim intWidth As Integer = -1
+
+        Select Case tImageType
+            Case Enums.ModifierType.MainBanner
+                bResizeEnabled = Master.eSettings.MovieBannerResize
+                intHeight = Master.eSettings.MovieBannerHeight
+                intWidth = Master.eSettings.MovieBannerWidth
+            Case Enums.ModifierType.MainExtrafanarts
+                bResizeEnabled = Master.eSettings.MovieExtrafanartsResize
+                intHeight = Master.eSettings.MovieExtrafanartsHeight
+                intWidth = Master.eSettings.MovieExtrafanartsWidth
+            Case Enums.ModifierType.MainExtrathumbs
+                bResizeEnabled = Master.eSettings.MovieExtrathumbsResize
+                intHeight = Master.eSettings.MovieExtrathumbsHeight
+                intWidth = Master.eSettings.MovieExtrathumbsWidth
+            Case Enums.ModifierType.MainFanart
+                bResizeEnabled = Master.eSettings.MovieFanartResize
+                intHeight = Master.eSettings.MovieFanartHeight
+                intWidth = Master.eSettings.MovieFanartWidth
+            Case Enums.ModifierType.MainPoster
+                bResizeEnabled = Master.eSettings.MoviePosterResize
+                intHeight = Master.eSettings.MoviePosterHeight
+                intWidth = Master.eSettings.MoviePosterWidth
+        End Select
+
+        If bResizeEnabled Then
+            If _image Is Nothing Then FromMemoryStream()
+            If _image IsNot Nothing Then
+                doResize = _image.Width > intWidth OrElse _image.Height > intHeight
+            End If
+        End If
+
+        Try
+            If doResize Then
+                ImageUtils.ResizeImage(_image, intWidth, intHeight)
+                'need to align _immage and _ms
+                UpdateMSfromImg(_image)
+            End If
+
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie, tImageType)
+                Save(a)
+                strReturn = a
+            Next
+        Catch ex As Exception
+            logger.Error(ex, New StackFrame().GetMethod().Name)
+        End Try
+
+        Clear() 'Dispose to save memory
+        Return strReturn
+    End Function
 
     Public Shared Sub SaveMovieActorThumbs(ByVal mMovie As Database.DBElement)
         'First, (Down)Load all actor thumbs from LocalFilePath or URL
@@ -408,102 +471,6 @@ Public Class Images
 
         Clear() 'Dispose to save memory
         Return tPath
-    End Function
-    ''' <summary>
-    ''' Save the image as a movie banner
-    ''' </summary>
-    ''' <param name="mMovie"><c>Database.DBElement</c> representing the movie being referred to</param>
-    ''' <returns><c>String</c> path to the saved image</returns>
-    ''' <remarks></remarks>
-    Public Function SaveAsMovieBanner(ByVal mMovie As Database.DBElement) As String
-        Dim strReturn As String = String.Empty
-
-        Dim doResize As Boolean = False
-        If Master.eSettings.MovieBannerResize Then
-            If _image Is Nothing Then FromMemoryStream()
-            doResize = _image.Width > Master.eSettings.MovieBannerWidth OrElse _image.Height > Master.eSettings.MovieBannerHeight
-        End If
-
-        Try
-            If doResize Then
-                ImageUtils.ResizeImage(_image, Master.eSettings.MovieBannerWidth, Master.eSettings.MovieBannerHeight)
-                'need to align _immage and _ms
-                UpdateMSfromImg(_image)
-            End If
-
-            For Each a In FileUtils.GetFilenameList.Movie(mMovie, Enums.ModifierType.MainBanner)
-                Save(a)
-                strReturn = a
-            Next
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-
-        Clear() 'Dispose to save memory
-        Return strReturn
-    End Function
-    ''' <summary>
-    ''' Save the image as a movie ClearArt
-    ''' </summary>
-    ''' <param name="mMovie"><c>Database.DBElement</c> representing the movie being referred to</param>
-    ''' <returns><c>String</c> path to the saved image</returns>
-    ''' <remarks></remarks>
-    Public Function SaveAsMovieClearArt(ByVal mMovie As Database.DBElement) As String
-        Dim strReturn As String = String.Empty
-
-        Try
-            For Each a In FileUtils.GetFilenameList.Movie(mMovie, Enums.ModifierType.MainClearArt)
-                Save(a)
-                strReturn = a
-            Next
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-
-        Clear() 'Dispose to save memory
-        Return strReturn
-    End Function
-    ''' <summary>
-    ''' Save the image as a movie ClearLogo
-    ''' </summary>
-    ''' <param name="mMovie"><c>Database.DBElement</c> representing the movie being referred to</param>
-    ''' <returns><c>String</c> path to the saved image</returns>
-    ''' <remarks></remarks>
-    Public Function SaveAsMovieClearLogo(ByVal mMovie As Database.DBElement) As String
-        Dim strReturn As String = String.Empty
-
-        Try
-            For Each a In FileUtils.GetFilenameList.Movie(mMovie, Enums.ModifierType.MainClearLogo)
-                Save(a)
-                strReturn = a
-            Next
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-
-        Clear() 'Dispose to save memory
-        Return strReturn
-    End Function
-    ''' <summary>
-    ''' Save the image as a movie landscape
-    ''' </summary>
-    ''' <param name="mMovie"><c>Database.DBElement</c> representing the movie being referred to</param>
-    ''' <returns><c>String</c> path to the saved image</returns>
-    ''' <remarks></remarks>
-    Public Function SaveAsMovieDiscArt(ByVal mMovie As Database.DBElement) As String
-        Dim strReturn As String = String.Empty
-
-        Try
-            For Each a In FileUtils.GetFilenameList.Movie(mMovie, Enums.ModifierType.MainDiscArt)
-                Save(a)
-                strReturn = a
-            Next
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-
-        Clear() 'Dispose to save memory
-        Return strReturn
     End Function
     ''' <summary>
     ''' Save all movie Extrafanarts
@@ -657,98 +624,6 @@ Public Class Images
 
         Clear() 'Dispose to save memory
         Return etPath
-    End Function
-    ''' <summary>
-    ''' Save the image as a movie fanart
-    ''' </summary>
-    ''' <param name="mMovie"><c></c> representing the movie being referred to</param>
-    ''' <returns><c>String</c> path to the saved image</returns>
-    ''' <remarks></remarks>
-    Public Function SaveAsMovieFanart(ByVal mMovie As Database.DBElement) As String
-        Dim strReturn As String = String.Empty
-
-        Dim doResize As Boolean = False
-        If Master.eSettings.MovieFanartResize Then
-            If _image Is Nothing Then FromMemoryStream()
-            doResize = _image.Width > Master.eSettings.MovieFanartWidth OrElse _image.Height > Master.eSettings.MovieFanartHeight
-        End If
-
-        Try
-            If doResize Then
-                ImageUtils.ResizeImage(_image, Master.eSettings.MovieFanartWidth, Master.eSettings.MovieFanartHeight)
-                'need to align _immage and _ms
-                UpdateMSfromImg(_image)
-            End If
-
-            For Each a In FileUtils.GetFilenameList.Movie(mMovie, Enums.ModifierType.MainFanart)
-                Save(a)
-                strReturn = a
-            Next
-
-            If Master.eSettings.MovieBackdropsAuto AndAlso Directory.Exists(Master.eSettings.MovieBackdropsPath) Then
-                Save(String.Concat(Master.eSettings.MovieBackdropsPath, Path.DirectorySeparatorChar, StringUtils.CleanFileName(mMovie.Movie.OriginalTitle), "_tt", mMovie.Movie.IMDBID, ".jpg"))
-            End If
-
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-
-        Clear() 'Dispose to save memory
-        Return strReturn
-    End Function
-    ''' <summary>
-    ''' Save the image as a movie landscape
-    ''' </summary>
-    ''' <param name="mMovie"><c>Database.DBElement</c> representing the movie being referred to</param>
-    ''' <returns><c>String</c> path to the saved image</returns>
-    ''' <remarks></remarks>
-    Public Function SaveAsMovieLandscape(ByVal mMovie As Database.DBElement) As String
-        Dim strReturn As String = String.Empty
-
-        Try
-            For Each a In FileUtils.GetFilenameList.Movie(mMovie, Enums.ModifierType.MainLandscape)
-                Save(a)
-                strReturn = a
-            Next
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-
-        Clear() 'Dispose to save memory
-        Return strReturn
-    End Function
-    ''' <summary>
-    ''' Save the image as a movie poster
-    ''' </summary>
-    ''' <param name="mMovie"><c>Database.DBElement</c> representing the movie being referred to</param>
-    ''' <returns><c>String</c> path to the saved image</returns>
-    ''' <remarks></remarks>
-    Public Function SaveAsMoviePoster(ByVal mMovie As Database.DBElement) As String
-        Dim strReturn As String = String.Empty
-
-        Dim doResize As Boolean = False
-        If Master.eSettings.MoviePosterResize Then
-            If _image Is Nothing Then FromMemoryStream()
-            doResize = _image.Width > Master.eSettings.MoviePosterWidth OrElse _image.Height > Master.eSettings.MoviePosterHeight
-        End If
-
-        Try
-            If doResize Then
-                ImageUtils.ResizeImage(_image, Master.eSettings.MoviePosterWidth, Master.eSettings.MoviePosterHeight)
-                'need to align _immage and _ms
-                UpdateMSfromImg(_image)
-            End If
-
-            For Each a In FileUtils.GetFilenameList.Movie(mMovie, Enums.ModifierType.MainPoster)
-                Save(a)
-                strReturn = a
-            Next
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-
-        Clear() 'Dispose to save memory
-        Return strReturn
     End Function
     ''' <summary>
     ''' Save the image as a movieset banner

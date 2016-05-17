@@ -2751,7 +2751,7 @@ Public Class frmMain
     End Sub
 
     Private Sub bwNonScrape_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwNonScrape.DoWork
-        Dim scrapeMovie As Database.DBElement
+        'Dim scrapeMovie As Database.DBElement
         Dim iCount As Integer = 0
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
@@ -2759,26 +2759,28 @@ Public Class frmMain
 
                 Select Case Args.ScrapeType
                     Case Enums.ScrapeType.CleanFolders
-                        Dim fDeleter As New FileUtils.Delete
-                        For Each drvRow As DataRow In dtMovies.Rows
-                            Try
-                                bwNonScrape.ReportProgress(iCount, drvRow.Item("Title"))
-                                iCount += 1
-                                If Convert.ToBoolean(drvRow.Item("Lock")) Then Continue For
+                        FileUtils.CleanUp.DoCleanUp()
 
-                                If bwNonScrape.CancellationPending Then GoTo doCancel
+                        'Dim fDeleter As New FileUtils.Delete
+                        'For Each drvRow As DataRow In dtMovies.Rows
+                        '    Try
+                        '        bwNonScrape.ReportProgress(iCount, drvRow.Item("Title"))
+                        '        iCount += 1
+                        '        If Convert.ToBoolean(drvRow.Item("Lock")) Then Continue For
 
-                                scrapeMovie = Master.DB.Load_Movie(Convert.ToInt64(drvRow.Item("idMovie")))
+                        '        If bwNonScrape.CancellationPending Then GoTo doCancel
 
-                                fDeleter.GetItemsToDelete(True, scrapeMovie)
+                        '        scrapeMovie = Master.DB.Load_Movie(Convert.ToInt64(drvRow.Item("idMovie")))
 
-                                Reload_Movie(Convert.ToInt64(drvRow.Item("idMovie")), True, False)
+                        '        fDeleter.GetItemsToDelete(True, scrapeMovie)
 
-                                bwNonScrape.ReportProgress(iCount, String.Format("[[{0}]]", drvRow.Item("idMovie").ToString))
-                            Catch ex As Exception
-                                logger.Error(ex, New StackFrame().GetMethod().Name)
-                            End Try
-                        Next
+                        '        Reload_Movie(Convert.ToInt64(drvRow.Item("idMovie")), True, False)
+
+                        '        bwNonScrape.ReportProgress(iCount, String.Format("[[{0}]]", drvRow.Item("idMovie").ToString))
+                        '    Catch ex As Exception
+                        '        logger.Error(ex, New StackFrame().GetMethod().Name)
+                        '    End Try
+                        'Next
                     Case Enums.ScrapeType.CopyBackdrops 'TODO: check MovieBackdropsPath and VIDEO_TS parent
                         Dim sPath As String = String.Empty
                         For Each drvRow As DataRow In dtMovies.Rows
@@ -15721,7 +15723,7 @@ doCancel:
             (.FileSystemExpertCleaner AndAlso (.FileSystemCleanerWhitelist OrElse .FileSystemCleanerWhitelistExts.Count > 0)) Then
                 mnuMainToolsCleanFiles.Enabled = isEnabled AndAlso dgvMovies.RowCount > 0 AndAlso tcMain.SelectedIndex = 0
             Else
-                mnuMainToolsCleanFiles.Enabled = False
+                mnuMainToolsCleanFiles.Enabled = True  'False
             End If
             If Not String.IsNullOrEmpty(.MovieBackdropsPath) AndAlso dgvMovies.RowCount > 0 Then
                 mnuMainToolsBackdrops.Enabled = True
@@ -16001,7 +16003,7 @@ doCancel:
             (.FileSystemExpertCleaner AndAlso (.FileSystemCleanerWhitelist OrElse .FileSystemCleanerWhitelistExts.Count > 0)) Then
                 mnuMainToolsCleanFiles.Enabled = True AndAlso dgvMovies.RowCount > 0 AndAlso currMainTabTag.ContentType = Enums.ContentType.Movie
             Else
-                mnuMainToolsCleanFiles.Enabled = False
+                mnuMainToolsCleanFiles.Enabled = True 'False
             End If
 
             mnuMainToolsBackdrops.Enabled = Directory.Exists(.MovieBackdropsPath)

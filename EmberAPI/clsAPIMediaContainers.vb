@@ -3787,7 +3787,7 @@ Namespace MediaContainers
 
                     'Movie Banner
                     If Banner.LoadAndCache(tContentType, True) Then
-                        Banner.LocalFilePath = Banner.ImageOriginal.SaveAsMovieBanner(DBElement)
+                        Banner.LocalFilePath = Banner.ImageOriginal.SaveAs_Movie(DBElement, Enums.ModifierType.MainBanner)
                     Else
                         Images.Delete_Movie(DBElement, Enums.ModifierType.MainBanner)
                         Banner = New Image
@@ -3795,7 +3795,7 @@ Namespace MediaContainers
 
                     'Movie ClearArt
                     If ClearArt.LoadAndCache(tContentType, True) Then
-                        ClearArt.LocalFilePath = ClearArt.ImageOriginal.SaveAsMovieClearArt(DBElement)
+                        ClearArt.LocalFilePath = ClearArt.ImageOriginal.SaveAs_Movie(DBElement, Enums.ModifierType.MainClearArt)
                     Else
                         Images.Delete_Movie(DBElement, Enums.ModifierType.MainClearArt)
                         ClearArt = New Image
@@ -3803,7 +3803,8 @@ Namespace MediaContainers
 
                     'Movie ClearLogo
                     If ClearLogo.LoadAndCache(tContentType, True) Then
-                        ClearLogo.LocalFilePath = ClearLogo.ImageOriginal.SaveAsMovieClearLogo(DBElement)
+                        'Images.Delete_Movie(DBElement, Enums.ModifierType.MainClearLogo)
+                        ClearLogo.LocalFilePath = ClearLogo.ImageOriginal.SaveAs_Movie(DBElement, Enums.ModifierType.MainClearLogo)
                     Else
                         Images.Delete_Movie(DBElement, Enums.ModifierType.MainClearLogo)
                         ClearLogo = New Image
@@ -3811,7 +3812,7 @@ Namespace MediaContainers
 
                     'Movie DiscArt
                     If DiscArt.LoadAndCache(tContentType, True) Then
-                        DiscArt.LocalFilePath = DiscArt.ImageOriginal.SaveAsMovieDiscArt(DBElement)
+                        DiscArt.LocalFilePath = DiscArt.ImageOriginal.SaveAs_Movie(DBElement, Enums.ModifierType.MainDiscArt)
                     Else
                         Images.Delete_Movie(DBElement, Enums.ModifierType.MainDiscArt)
                         DiscArt = New Image
@@ -3837,7 +3838,7 @@ Namespace MediaContainers
 
                     'Movie Fanart
                     If Fanart.LoadAndCache(tContentType, True) Then
-                        Fanart.LocalFilePath = Fanart.ImageOriginal.SaveAsMovieFanart(DBElement)
+                        Fanart.LocalFilePath = Fanart.ImageOriginal.SaveAs_Movie(DBElement, Enums.ModifierType.MainFanart)
                     Else
                         Images.Delete_Movie(DBElement, Enums.ModifierType.MainFanart)
                         Fanart = New Image
@@ -3845,7 +3846,7 @@ Namespace MediaContainers
 
                     'Movie Landscape
                     If Landscape.LoadAndCache(tContentType, True) Then
-                        Landscape.LocalFilePath = Landscape.ImageOriginal.SaveAsMovieLandscape(DBElement)
+                        Landscape.LocalFilePath = Landscape.ImageOriginal.SaveAs_Movie(DBElement, Enums.ModifierType.MainLandscape)
                     Else
                         Images.Delete_Movie(DBElement, Enums.ModifierType.MainLandscape)
                         Landscape = New Image
@@ -3853,7 +3854,7 @@ Namespace MediaContainers
 
                     'Movie Poster
                     If Poster.LoadAndCache(tContentType, True) Then
-                        Poster.LocalFilePath = Poster.ImageOriginal.SaveAsMoviePoster(DBElement)
+                        Poster.LocalFilePath = Poster.ImageOriginal.SaveAs_Movie(DBElement, Enums.ModifierType.MainPoster)
                     Else
                         Images.Delete_Movie(DBElement, Enums.ModifierType.MainPoster)
                         Poster = New Image
