@@ -597,7 +597,7 @@ Public Class TMDB_Data
         LoadSettings_Movie()
         _SpecialSettings_Movie.PrefLanguage = oDBElement.Language
 
-        Dim nMovie As New MediaContainers.Movie
+        Dim nMovie As MediaContainers.Movie = Nothing
         Dim _scraper As New TMDB.Scraper(_SpecialSettings_Movie)
 
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions_Movie)
@@ -657,7 +657,7 @@ Public Class TMDB_Data
         LoadSettings_MovieSet()
         _SpecialSettings_MovieSet.PrefLanguage = oDBElement.Language
 
-        Dim nMovieSet As New MediaContainers.MovieSet
+        Dim nMovieSet As MediaContainers.MovieSet = Nothing
         Dim _scraper As New TMDB.Scraper(_SpecialSettings_MovieSet)
 
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions_MovieSet)
@@ -720,7 +720,7 @@ Public Class TMDB_Data
         LoadSettings_TV()
         _SpecialSettings_TV.PrefLanguage = oDBElement.Language
 
-        Dim nTVShow As New MediaContainers.TVShow
+        Dim nTVShow As MediaContainers.TVShow = Nothing
         Dim _scraper As New TMDB.Scraper(_SpecialSettings_TV)
 
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions_TV)

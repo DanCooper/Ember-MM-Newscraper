@@ -447,7 +447,7 @@ Public Class IMDB_Data
 
         LoadSettings_Movie()
 
-        Dim nMovie As New MediaContainers.Movie
+        Dim nMovie As MediaContainers.Movie = Nothing
         Dim _scraper As New IMDB.Scraper(_SpecialSettings_Movie)
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions_Movie)
 
@@ -501,7 +501,7 @@ Public Class IMDB_Data
 
         LoadSettings_TV()
 
-        Dim nTVShow As New MediaContainers.TVShow
+        Dim nTVShow As MediaContainers.TVShow = Nothing
         Dim _scraper As New IMDB.Scraper(_SpecialSettings_TV)
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions_TV)
 
