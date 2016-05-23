@@ -628,6 +628,8 @@ Public Class TMDB_Data
                     logger.Trace("[TMDB_Data] [Scraper_Movie] [Abort] No search result found")
                     Return New Interfaces.ModuleResult_Data_Movie With {.Result = Nothing}
             End Select
+        Else
+            Return New Interfaces.ModuleResult_Data_Movie With {.Result = nMovie}
         End If
 
         If ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto Then
@@ -683,6 +685,8 @@ Public Class TMDB_Data
                     logger.Trace(String.Format("[TMDB_Data] [Scraper_MovieSet] [Abort] No search result found"))
                     Return New Interfaces.ModuleResult_Data_MovieSet With {.Result = Nothing}
             End Select
+        Else
+            Return New Interfaces.ModuleResult_Data_MovieSet With {.Result = nMovieSet}
         End If
 
         If ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto Then
@@ -752,6 +756,8 @@ Public Class TMDB_Data
                     logger.Trace(String.Format("[TMDB_Data] [Scraper_TV] [Abort] No search result found"))
                     Return New Interfaces.ModuleResult_Data_TVShow With {.Result = Nothing}
             End Select
+        Else
+            Return New Interfaces.ModuleResult_Data_TVShow With {.Result = nTVShow}
         End If
 
         If ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto Then
