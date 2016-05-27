@@ -40,7 +40,7 @@ Public Class Scanner
 
 #Region "Events"
 
-    Public Event ScannerUpdated(ByVal iType As Integer, ByVal sText As String)
+    Public Event ScannerUpdated(ByVal eProgressValue As ProgressValue)
 
     Public Event ScanningCompleted()
 
@@ -927,7 +927,7 @@ Public Class Scanner
                 SeasonAndEpisodeList.Seasons.Add(cEpisode.TVEpisode.Season)
             End If
 
-            If ReportProgress Then bwPrelim.ReportProgress(1, New ProgressValue With {.Type = 1, .Message = String.Format("{0}: {1}", cEpisode.TVShow.Title, cEpisode.TVEpisode.Title)})
+            If ReportProgress Then bwPrelim.ReportProgress(-1, New ProgressValue With {.Type = Enums.ScannerEventType.AddedTVEpisode, .Message = String.Format("{0}: {1}", cEpisode.TVShow.Title, cEpisode.TVEpisode.Title)})
         Next
 
         If Not isNew Then
@@ -1073,7 +1073,7 @@ Public Class Scanner
                 End If
             End If
 
-            'save all new seasons to DB
+            'save all new seasons to DB (no sync)
             For Each newSeason As Integer In newSeasonsIndex
                 Dim tSeason As Database.DBElement = DBTVShow.Seasons.FirstOrDefault(Function(f) f.TVSeason.Season = newSeason)
                 If tSeason IsNot Nothing AndAlso tSeason.TVSeason IsNot Nothing Then
@@ -1196,7 +1196,7 @@ Public Class Scanner
                 Else
                     If Not RegexGetSeasonAndEpisodeNumber(sMatch, eItem, defaultSeason) Then Continue For
                     retEpisodeItemsList.Add(eItem)
-                    logger.Info(String.Format("[Scanner] [RegexGetTVEpisode] Found episode match {0} (s{1}e{2}) [{3}]", sPath, eItem.Season, eItem.Episode, rShow.Regexp))
+                    logger.Info(String.Format("[Scanner] [RegexGetTVEpisode] Found episode match {0} (s{1}e{2}{3}) [{4}]", sPath, eItem.Season, eItem.Episode, If(Not eItem.SubEpisode = -1, String.Concat(".", eItem.SubEpisode), String.Empty), rShow.Regexp))
                 End If
 
                 ' Grab the remainder from first regexp run
@@ -1335,7 +1335,7 @@ Public Class Scanner
                         currMovieContainer.Source = sSource
                         currMovieContainer.Subtitles = New List(Of MediaInfo.Subtitle)
                         Load_Movie(currMovieContainer, True)
-                        bwPrelim.ReportProgress(0, New ProgressValue With {.Type = 0, .Message = currMovieContainer.Movie.Title})
+                        bwPrelim.ReportProgress(-1, New ProgressValue With {.Type = Enums.ScannerEventType.AddedMovie, .Message = currMovieContainer.Movie.Title})
                     End If
 
                 Else
@@ -1377,7 +1377,7 @@ Public Class Scanner
                         currMovieContainer.Source = sSource
                         currMovieContainer.Subtitles = New List(Of MediaInfo.Subtitle)
                         Load_Movie(currMovieContainer, True)
-                        bwPrelim.ReportProgress(0, New ProgressValue With {.Type = 0, .Message = currMovieContainer.Movie.Title})
+                        bwPrelim.ReportProgress(-1, New ProgressValue With {.Type = Enums.ScannerEventType.AddedMovie, .Message = currMovieContainer.Movie.Title})
                     Next
                 End If
 
@@ -1486,9 +1486,8 @@ Public Class Scanner
             Dim inInfo As DirectoryInfo
             Dim inList As IEnumerable(Of DirectoryInfo) = Nothing
 
-            'first check if user added a show folder as a source
-            If (dInfo.GetDirectories.Count = 0 AndAlso dInfo.GetFiles.Count > 0) OrElse dInfo.GetDirectories.Where(Function(s) Not Functions.IsSeasonDirectory(s.FullName)).Count = 0 Then
-                'only files in the folder or all folders match the season regex... assume it's a single show folder
+            'tv show folder as a source
+            If sSource.IsSingle Then
                 currShowContainer = New Database.DBElement(Enums.ContentType.TVShow)
                 currShowContainer.EpisodeSorting = sSource.EpisodeSorting
                 currShowContainer.Language = sSource.Language
@@ -1499,18 +1498,19 @@ Public Class Scanner
 
                 If Master.eSettings.TVScanOrderModify Then
                     Try
-                        inList = dInfo.GetDirectories.Where(Function(d) Functions.IsSeasonDirectory(d.FullName) AndAlso (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso IsValidDir(d, True)).OrderBy(Function(d) d.LastWriteTime)
+                        inList = dInfo.GetDirectories.Where(Function(d) (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso IsValidDir(d, True)).OrderBy(Function(d) d.LastWriteTime)
                     Catch
                     End Try
                 Else
                     Try
-                        inList = dInfo.GetDirectories.Where(Function(d) Functions.IsSeasonDirectory(d.FullName) AndAlso (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso IsValidDir(d, True)).OrderBy(Function(d) d.Name)
+                        inList = dInfo.GetDirectories.Where(Function(d) (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso IsValidDir(d, True)).OrderBy(Function(d) d.Name)
                     Catch
                     End Try
                 End If
 
                 For Each sDirs As DirectoryInfo In inList
                     ScanForFiles_TV(currShowContainer, sDirs.FullName)
+                    ScanSubDirectory_TV(currShowContainer, sDirs.FullName)
                 Next
 
                 Load_TVShow(currShowContainer, True, True, True)
@@ -1620,9 +1620,11 @@ Public Class Scanner
         Master.DB.ClearNew()
 
         If Args.Scan.SpecificFolder AndAlso Not String.IsNullOrEmpty(Args.Folder) AndAlso Directory.Exists(Args.Folder) Then
+
             For Each eSource In Master.MovieSources
                 Dim tSource As String = If(eSource.Path.EndsWith(Path.DirectorySeparatorChar), eSource.Path, String.Concat(eSource.Path, Path.DirectorySeparatorChar)).ToLower.Trim
                 Dim tFolder As String = If(Args.Folder.EndsWith(Path.DirectorySeparatorChar), Args.Folder, String.Concat(Args.Folder, Path.DirectorySeparatorChar)).ToLower.Trim
+
                 If tFolder.StartsWith(tSource) Then
                     MoviePaths = Master.DB.GetAllMoviePaths
                     Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
@@ -1639,36 +1641,10 @@ Public Class Scanner
             For Each eSource In Master.TVShowSources
                 Dim tSource As String = If(eSource.Path.EndsWith(Path.DirectorySeparatorChar), eSource.Path, String.Concat(eSource.Path, Path.DirectorySeparatorChar)).ToLower.Trim
                 Dim tFolder As String = If(Args.Folder.EndsWith(Path.DirectorySeparatorChar), Args.Folder, String.Concat(Args.Folder, Path.DirectorySeparatorChar)).ToLower.Trim
+
                 If tFolder.StartsWith(tSource) Then
-                    bwPrelim.ReportProgress(2, New ProgressValue With {.Type = -1, .Message = String.Empty})
-
-                    TVShowPaths.Clear()
-                    Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                        SQLcommand.CommandText = "SELECT idShow, TVShowPath FROM tvshow;"
-                        Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                            While SQLreader.Read
-                                TVShowPaths.Add(SQLreader("TVShowPath").ToString.ToLower, SQLreader("idShow"))
-                                If bwPrelim.CancellationPending Then
-                                    e.Cancel = True
-                                    Return
-                                End If
-                            End While
-                        End Using
-                    End Using
-
-                    TVEpisodePaths.Clear()
-                    Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                        SQLcommand.CommandText = "SELECT strFilename FROM files;"
-                        Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                            While SQLreader.Read
-                                TVEpisodePaths.Add(SQLreader("strFilename").ToString.ToLower)
-                                If bwPrelim.CancellationPending Then
-                                    e.Cancel = True
-                                    Return
-                                End If
-                            End While
-                        End Using
-                    End Using
+                    TVEpisodePaths = Master.DB.GetAllTVEpisodePaths
+                    TVShowPaths = Master.DB.GetAllTVShowPaths
 
                     If Args.Folder.ToLower = eSource.Path.ToLower Then
                         'Args.Folder is a tv show source folder -> scan the whole source
@@ -1710,6 +1686,7 @@ Public Class Scanner
 
         If Not Args.Scan.SpecificFolder AndAlso Args.Scan.Movies Then
             MoviePaths = Master.DB.GetAllMoviePaths
+
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     If Not Args.SourceID = -1 Then
@@ -1757,35 +1734,8 @@ Public Class Scanner
         End If
 
         If Not Args.Scan.SpecificFolder AndAlso Args.Scan.TV Then
-            bwPrelim.ReportProgress(2, New ProgressValue With {.Type = -1, .Message = String.Empty})
-
-            TVShowPaths.Clear()
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                SQLcommand.CommandText = "SELECT idShow, TVShowPath FROM tvshow;"
-                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    While SQLreader.Read
-                        TVShowPaths.Add(SQLreader("TVShowPath").ToString.ToLower, SQLreader("idShow"))
-                        If bwPrelim.CancellationPending Then
-                            e.Cancel = True
-                            Return
-                        End If
-                    End While
-                End Using
-            End Using
-
-            TVEpisodePaths.Clear()
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                SQLcommand.CommandText = "SELECT strFilename FROM files;"
-                Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                    While SQLreader.Read
-                        TVEpisodePaths.Add(SQLreader("strFilename").ToString.ToLower)
-                        If bwPrelim.CancellationPending Then
-                            e.Cancel = True
-                            Return
-                        End If
-                    End While
-                End Using
-            End Using
+            TVEpisodePaths = Master.DB.GetAllTVEpisodePaths
+            TVShowPaths = Master.DB.GetAllTVShowPaths
 
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
@@ -1826,7 +1776,7 @@ Public Class Scanner
 
         'no separate MovieSet scanning possible, so we clean MovieSets when movies were scanned
         If (Master.eSettings.MovieCleanDB AndAlso Args.Scan.Movies) OrElse (Master.eSettings.MovieSetCleanDB AndAlso Args.Scan.Movies) OrElse (Master.eSettings.TVCleanDB AndAlso Args.Scan.TV) Then
-            bwPrelim.ReportProgress(3, New ProgressValue With {.Type = -1, .Message = String.Empty})
+            bwPrelim.ReportProgress(-1, New ProgressValue With {.Type = Enums.ScannerEventType.CleaningDatabase, .Message = String.Empty})
             'remove any db entries that no longer exist
             Master.DB.Clean(Master.eSettings.MovieCleanDB AndAlso Args.Scan.Movies, Master.eSettings.MovieSetCleanDB AndAlso Args.Scan.MovieSets, Master.eSettings.TVCleanDB AndAlso Args.Scan.TV, Args.SourceID)
         End If
@@ -1836,12 +1786,12 @@ Public Class Scanner
 
     Private Sub bwPrelim_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwPrelim.ProgressChanged
         Dim tProgressValue As ProgressValue = DirectCast(e.UserState, ProgressValue)
-        RaiseEvent ScannerUpdated(e.ProgressPercentage, tProgressValue.Message)
+        RaiseEvent ScannerUpdated(tProgressValue)
 
         Select Case tProgressValue.Type
-            Case 0
+            Case Enums.ScannerEventType.AddedMovie
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"newmovie", 3, Master.eLang.GetString(817, "New Movie Added"), tProgressValue.Message, Nothing}))
-            Case 1
+            Case Enums.ScannerEventType.AddedTVEpisode
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"newep", 4, Master.eLang.GetString(818, "New Episode Added"), tProgressValue.Message, Nothing}))
         End Select
     End Sub
@@ -1877,12 +1827,12 @@ Public Class Scanner
 
     End Structure
 
-    Private Structure ProgressValue
+    Public Structure ProgressValue
 
 #Region "Fields"
 
         Dim Message As String
-        Dim Type As Integer
+        Dim Type As Enums.ScannerEventType
 
 #End Region 'Fields
 

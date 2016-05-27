@@ -131,6 +131,7 @@ namespace Trakttv
                 {
                     var response = ex.Response as HttpWebResponse;
                     errorMessage = string.Format("API error! Code = '{0}', Description = '{1}'", (int)response.StatusCode, response.StatusDescription);
+                    logger.Error(errorMessage);
                 }
 
                 if (OnDataError != null)
@@ -857,6 +858,26 @@ namespace Trakttv
         {
             var response = SENDToTrakt(string.Format(TraktURIs.SENDCommentReply, commentID), comment.ToJSON());
             return response.FromJSON<TraktComment>();
+        }
+
+        #endregion
+
+        #region POST Collection
+
+        public static TraktResponse RemoveMovieFromCollection(TraktMovie movie)
+        {
+            var movies = new TraktSyncMovies
+            {
+                Movies = new List<TraktMovie>() { movie }
+            };
+
+            return RemoveMoviesFromCollection(movies);
+        }
+
+        public static TraktResponse RemoveMoviesFromCollection(TraktSyncMovies movies)
+        {
+            var response = SENDToTrakt(TraktURIs.SENDCollectionRemove, movies.ToJSON());
+            return response.FromJSON<TraktResponse>();
         }
 
         #endregion

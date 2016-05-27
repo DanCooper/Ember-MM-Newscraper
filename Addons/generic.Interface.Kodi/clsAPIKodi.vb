@@ -1011,13 +1011,17 @@ Namespace Kodi
 
                 'scan movie path
                 If KodiElement Is Nothing Then
-                    logger.Trace(String.Format("[APIKodi] [{0}] UpdateInfo_Movie: ""{1}"" | NOT found in database, scan directory on host...", _currenthost.Label, mDBElement.Movie.Title))
-                    Await VideoLibrary_ScanPath(mDBElement).ConfigureAwait(False)
-                    While Await IsScanningVideo()
-                        Threading.Thread.Sleep(1000)
-                    End While
-                    KodiElement = Await GetFullDetailsByID_Movie(Await GetMediaID(mDBElement))
-                    If KodiElement IsNot Nothing Then bIsNew = True
+                    logger.Trace(String.Format("[APIKodi] [{0}] UpdateMovieInfo: ""{1}"" | NOT found in database, scan directory on host...", _currenthost.Label, mDBElement.Movie.Title))
+                    If Await VideoLibrary_ScanPath(mDBElement).ConfigureAwait(False) Then
+                        While Await IsScanningVideo()
+                            Threading.Thread.Sleep(1000)
+                        End While
+                        KodiElement = Await GetFullDetailsByID_Movie(Await GetMediaID(mDBElement))
+                        If KodiElement IsNot Nothing Then bIsNew = True
+                    Else
+                        logger.Error(String.Format("[APIKodi] [{0}] UpdateMovieInfo: ""{1}"" | NOT found on host! Abort!", _currenthost.Label, mDBElement.Movie.Title))
+                        Return False
+                    End If
                 End If
 
                 If KodiElement IsNot Nothing Then
@@ -1282,13 +1286,17 @@ Namespace Kodi
 
                 'scan tv show path
                 If KodiElement Is Nothing Then
-                    logger.Trace(String.Format("[APIKodi] [{0}] UpdateInfo_TVEpisode: ""{1}"" | NOT found in database, scan directory on host...", _currenthost.Label, mDBElement.TVEpisode.Title))
-                    Await VideoLibrary_ScanPath(mDBElement).ConfigureAwait(False)
-                    While Await IsScanningVideo()
-                        Threading.Thread.Sleep(1000)
-                    End While
-                    KodiElement = Await GetFullDetailsByID_TVEpisode(Await GetMediaID(mDBElement))
-                    If KodiElement IsNot Nothing Then bIsNew = True
+                    logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVEpisodeInfo: ""{1}"" | NOT found in database, scan directory on host...", _currenthost.Label, mDBElement.TVEpisode.Title))
+                    If Await VideoLibrary_ScanPath(mDBElement).ConfigureAwait(False) Then
+                        While Await IsScanningVideo()
+                            Threading.Thread.Sleep(1000)
+                        End While
+                        KodiElement = Await GetFullDetailsByID_TVEpisode(Await GetMediaID(mDBElement))
+                        If KodiElement IsNot Nothing Then bIsNew = True
+                    Else
+                        logger.Error(String.Format("[APIKodi] [{0}] UpdateTVEpisodeInfo: ""{1}"" | NOT found on host! Abort!", _currenthost.Label, mDBElement.TVEpisode.Title))
+                        Return False
+                    End If
                 End If
 
                 If KodiElement IsNot Nothing Then
@@ -1406,13 +1414,17 @@ Namespace Kodi
 
                 'scan tv show path
                 If KodiElement Is Nothing Then
-                    logger.Trace(String.Format("[APIKodi] [{0}] UpdateInfo_TVSeason: ""{1}: Season {2}"" | NOT found in database, scan directory on host...", _currenthost.Label, mDBElement.ShowPath, mDBElement.TVSeason.Season))
-                    Await VideoLibrary_ScanPath(mDBElement).ConfigureAwait(False)
-                    While Await IsScanningVideo()
-                        Threading.Thread.Sleep(1000)
-                    End While
-                    KodiElement = Await GetFullDetailsByID_TVSeason(Await GetMediaID(mDBElement))
-                    If KodiElement IsNot Nothing Then bIsNew = True
+                    logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVSeasonInfo: ""{1}: Season {2}"" | NOT found in database, scan directory on host...", _currenthost.Label, mDBElement.ShowPath, mDBElement.TVSeason.Season))
+                    If Await VideoLibrary_ScanPath(mDBElement).ConfigureAwait(False) Then
+                        While Await IsScanningVideo()
+                            Threading.Thread.Sleep(1000)
+                        End While
+                        KodiElement = Await GetFullDetailsByID_TVSeason(Await GetMediaID(mDBElement))
+                        If KodiElement IsNot Nothing Then bIsNew = True
+                    Else
+                        logger.Error(String.Format("[APIKodi] [{0}] UpdateTVSeasonInfo: ""{1}: Season {2}"" | NOT found on host! Abort!", _currenthost.Label, mDBElement.ShowPath, mDBElement.TVSeason.Season))
+                        Return False
+                    End If
                 End If
 
                 If KodiElement IsNot Nothing Then
@@ -1496,13 +1508,17 @@ Namespace Kodi
 
                 'scan tv show path
                 If KodiElement Is Nothing Then
-                    logger.Trace(String.Format("[APIKodi] [{0}] UpdateInfo_TVShow: ""{1}"" | NOT found in database, scan directory on host...", _currenthost.Label, mDBElement.TVShow.Title))
-                    Await VideoLibrary_ScanPath(mDBElement).ConfigureAwait(False)
-                    While Await IsScanningVideo()
-                        Threading.Thread.Sleep(1000)
-                    End While
-                    KodiElement = Await GetFullDetailsByID_TVShow(Await GetMediaID(mDBElement))
-                    If KodiElement IsNot Nothing Then bIsNew = True
+                    logger.Trace(String.Format("[APIKodi] [{0}] UpdateTVShowInfo: ""{1}"" | NOT found in database, scan directory on host...", _currenthost.Label, mDBElement.TVShow.Title))
+                    If Await VideoLibrary_ScanPath(mDBElement).ConfigureAwait(False) Then
+                        While Await IsScanningVideo()
+                            Threading.Thread.Sleep(1000)
+                        End While
+                        KodiElement = Await GetFullDetailsByID_TVShow(Await GetMediaID(mDBElement))
+                        If KodiElement IsNot Nothing Then bIsNew = True
+                    Else
+                        logger.Error(String.Format("[APIKodi] [{0}] UpdateTVShowInfo: ""{1}"" | NOT found on host! Abort!", _currenthost.Label, mDBElement.TVShow.Title))
+                        Return False
+                    End If
                 End If
 
                 If KodiElement IsNot Nothing Then
@@ -1744,7 +1760,7 @@ Namespace Kodi
             End Select
 
             Dim strRemotePath As String = GetRemotePath(strLocalPath)
-            If strRemotePath Is Nothing Then
+            If String.IsNullOrEmpty(strRemotePath) Then
                 Return False
             End If
             logger.Trace(String.Format("[APIKodi] [{0}] VideoLibrary_ScanPaths: ""{1}"" | Start scanning process...", _currenthost.Label, strRemotePath))

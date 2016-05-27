@@ -1123,7 +1123,7 @@
   <string id="1031">Removal OK</string>
   <string id="1032">Removal failed</string>
   <string id="1033">Are you sure you want to remove the selected sources? This will remove the tv shows from these sources from the Ember database.</string>
-  <string id="1034"></string>
+  <string id="1034">Force Language</string>
   <string id="1035">Landscape</string>
   <string id="1036">Manual Landscape Entry</string>
   <string id="1037">Manual Banner Entry</string>
@@ -1136,13 +1136,13 @@
   <string id="1044">Scraping Media (Marked Movies - Skip):</string>
   <string id="1045">Scraping Media (Current Filter - Skip):</string>
   <string id="1046">Include Adult Items</string>
-  <string id="1047">Get Playcount</string>
-  <string id="1048"></string>
+  <string id="1047">Not Found</string>
+  <string id="1048">Selected folder contains a single TV Show</string>
   <string id="1049">Save as Fanart</string>
   <string id="1050">Save as Extrafanart</string>
   <string id="1051">Edit Genres</string>
   <string id="1052">Edit Tags</string>
-  <string id="1053"></string>
+  <string id="1053">Single TV Show</string>
   <string id="1054"></string>
   <string id="1055"></string>
   <string id="1056"></string>
@@ -1159,7 +1159,7 @@
   <string id="1067">DVD</string>
   <string id="1068">Scrapers - Themes</string>
   <string id="1069">Select Theme</string>
-  <string id="1070"></string>
+  <string id="1070">Get Playcount</string>
   <string id="1071"></string>
   <string id="1072"></string>
   <string id="1073"></string>
@@ -1495,7 +1495,7 @@
   <string id="1403">Added to watch history</string>
   <string id="1404">Submit watched episodes to trakt.tv history</string>
   <string id="1405">Submit watched movies to trakt.tv history</string>
-  <string id="1406">Delete selected item from trakt.tv history</string>
+  <string id="1406">Delete selected item(s) from trakt.tv history</string>
   <string id="1407">Deleted</string>
   <string id="1408">Updated</string>
   <string id="1409">Update comment on trakt.tv</string>

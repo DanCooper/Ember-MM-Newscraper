@@ -25,9 +25,10 @@ Imports System.IO
 Namespace MediaContainers
 
 
-    <Serializable()> _
-    <XmlRoot("episodedetails")> _
+    <Serializable()>
+    <XmlRoot("episodedetails")>
     Public Class EpisodeDetails
+        Implements ICloneable
 
 #Region "Fields"
 
@@ -637,6 +638,18 @@ Namespace MediaContainers
                 End If
             End If
         End Sub
+
+        Public Function CloneDeep() As Object Implements ICloneable.Clone
+            Dim Stream As New MemoryStream(50000)
+            Dim Formatter As New Runtime.Serialization.Formatters.Binary.BinaryFormatter()
+            ' Serialisierung über alle Objekte hinweg in einen Stream 
+            Formatter.Serialize(Stream, Me)
+            ' Zurück zum Anfang des Streams und... 
+            Stream.Seek(0, SeekOrigin.Begin)
+            ' ...aus dem Stream in ein Objekt deserialisieren 
+            CloneDeep = Formatter.Deserialize(Stream)
+            Stream.Close()
+        End Function
 
         Public Sub CreateCachePaths_ActorsThumbs()
             Dim sPath As String = Path.Combine(Master.TempPath, "Global")
@@ -1536,6 +1549,13 @@ Namespace MediaContainers
         Public ReadOnly Property TMDBColIDSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(_tmdbcolid)
+            End Get
+        End Property
+
+        <XmlIgnore()>
+        Public ReadOnly Property AnyUniqueIDSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(ID) OrElse Not String.IsNullOrEmpty(TMDBID)
             End Get
         End Property
 
@@ -4558,18 +4578,24 @@ Namespace MediaContainers
             Dim cSettings As New FilterSettings
 
             cSettings.ContentType = tDBElement.ContentType
-            cSettings.MediaLanguage = tDBElement.Language
+            cSettings.MediaLanguage = tDBElement.Language_Main
 
             Select Case tDBElement.ContentType
                 Case Enums.ContentType.Movie
+                    cSettings.ForcedLanguage = Master.eSettings.MovieImagesForcedLanguage
+                    cSettings.ForceLanguage = Master.eSettings.MovieImagesForceLanguage
                     cSettings.GetBlankImages = Master.eSettings.MovieImagesGetBlankImages
                     cSettings.GetEnglishImages = Master.eSettings.MovieImagesGetEnglishImages
                     cSettings.MediaLanguageOnly = Master.eSettings.MovieImagesMediaLanguageOnly
                 Case Enums.ContentType.MovieSet
+                    cSettings.ForcedLanguage = Master.eSettings.MovieSetImagesForcedLanguage
+                    cSettings.ForceLanguage = Master.eSettings.MovieSetImagesForceLanguage
                     cSettings.GetBlankImages = Master.eSettings.MovieSetImagesGetBlankImages
                     cSettings.GetEnglishImages = Master.eSettings.MovieSetImagesGetEnglishImages
                     cSettings.MediaLanguageOnly = Master.eSettings.MovieSetImagesMediaLanguageOnly
                 Case Enums.ContentType.TV, Enums.ContentType.TVEpisode, Enums.ContentType.TVSeason, Enums.ContentType.TVShow
+                    cSettings.ForcedLanguage = Master.eSettings.TVImagesForcedLanguage
+                    cSettings.ForceLanguage = Master.eSettings.TVImagesForceLanguage
                     cSettings.GetBlankImages = Master.eSettings.TVImagesGetBlankImages
                     cSettings.GetEnglishImages = Master.eSettings.TVImagesGetEnglishImages
                     cSettings.MediaLanguageOnly = Master.eSettings.TVImagesMediaLanguageOnly
@@ -4755,9 +4781,15 @@ Namespace MediaContainers
         Private Function FilterImages(ByRef ImagesList As List(Of Image), ByVal cSettings As FilterSettings) As List(Of Image)
             Dim FilteredList As New List(Of Image)
 
+            If cSettings.ForceLanguage AndAlso Not String.IsNullOrEmpty(cSettings.ForcedLanguage) Then
+                FilteredList.AddRange(ImagesList.Where(Function(f) f.ShortLang = cSettings.ForcedLanguage))
+            End If
+
             FilteredList.AddRange(ImagesList.Where(Function(f) f.ShortLang = cSettings.MediaLanguage))
 
-            If (cSettings.GetEnglishImages OrElse Not cSettings.MediaLanguageOnly) AndAlso Not cSettings.MediaLanguage = "en" Then
+            If (cSettings.GetEnglishImages OrElse Not cSettings.MediaLanguageOnly) AndAlso
+                Not (cSettings.ForceLanguage AndAlso cSettings.ForcedLanguage = "en") AndAlso
+                Not cSettings.MediaLanguage = "en" Then
                 FilteredList.AddRange(ImagesList.Where(Function(f) f.ShortLang = "en"))
             End If
 
@@ -4767,10 +4799,11 @@ Namespace MediaContainers
             End If
 
             If Not cSettings.MediaLanguageOnly Then
-                FilteredList.AddRange(ImagesList.Where(Function(f) Not f.ShortLang = cSettings.MediaLanguage AndAlso
-                                                                   Not f.ShortLang = "en" AndAlso
-                                                                   Not f.LongLang = Master.eLang.GetString(1168, "Blank") AndAlso
-                                                                   Not f.ShortLang = String.Empty))
+                FilteredList.AddRange(ImagesList.Where(Function(f) Not f.ShortLang = If(cSettings.ForceLanguage, cSettings.ForcedLanguage, String.Empty) AndAlso
+                                                           Not f.ShortLang = cSettings.MediaLanguage AndAlso
+                                                           Not f.ShortLang = "en" AndAlso
+                                                           Not f.LongLang = Master.eLang.GetString(1168, "Blank") AndAlso
+                                                           Not f.ShortLang = String.Empty))
             End If
 
             Return FilteredList
@@ -4785,6 +4818,8 @@ Namespace MediaContainers
 #Region "Fields"
 
             Dim ContentType As Enums.ContentType
+            Dim ForceLanguage As Boolean
+            Dim ForcedLanguage As String
             Dim GetBlankImages As Boolean
             Dim GetEnglishImages As Boolean
             Dim MediaLanguage As String

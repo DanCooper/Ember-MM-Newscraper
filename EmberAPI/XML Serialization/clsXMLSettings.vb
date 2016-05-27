@@ -32,28 +32,11 @@ Partial Public Class clsXMLSettings
     Private _filesystemvalidsubtitlesexts As List(Of String)
     Private _filesystemvalidthemeexts As List(Of String)
     Private _generalcheckupdates As Boolean
-    Private _generaldateaddedignorenfo As Boolean
-    Private _generaldigitgrpsymbolvotes As Boolean
-    Private _generaldatetime As Enums.DateTime
     Private _generaldaemondrive As String
     Private _generaldaemonpath As String
-    Private _generaldoubleclickscrape As Boolean
-    Private _generalfilterpanelstatemovie As Boolean
-    Private _generalfilterpanelstatemovieset As Boolean
-    Private _generalfilterpanelstateshow As Boolean
-    Private _generalimagefilter As Boolean
-    Private _generalimagefilterautoscraper As Boolean
-    Private _generalimagefilterfanart As Boolean
-    Private _generalimagefilterimagedialog As Boolean
-    Private _generalimagefilterposter As Boolean
-    Private _generalimagefilterpostermatchtolerance As Integer
-    Private _generalimagefilterfanartmatchtolerance As Integer
-    Private _generalmainfiltersortcolumn_movies As Integer
-    Private _generalmainfiltersortcolumn_moviesets As Integer
-    Private _generalmainfiltersortcolumn_shows As Integer
-    Private _generalmainfiltersortorder_movies As Integer
-    Private _generalmainfiltersortorder_moviesets As Integer
-    Private _generalmainfiltersortorder_shows As Integer
+    Private _generaldateaddedignorenfo As Boolean
+    Private _generaldatetime As Enums.DateTime
+    Private _generaldigitgrpsymbolvotes As Boolean
     Private _generaldisplaybanner As Boolean
     Private _generaldisplaycharacterart As Boolean
     Private _generaldisplayclearart As Boolean
@@ -63,23 +46,40 @@ Partial Public Class clsXMLSettings
     Private _generaldisplayfanartsmall As Boolean
     Private _generaldisplaylandscape As Boolean
     Private _generaldisplayposter As Boolean
+    Private _generaldoubleclickscrape As Boolean
+    Private _generalfilterpanelisraisedmovie As Boolean
+    Private _generalfilterpanelisraisedmovieset As Boolean
+    Private _generalfilterpanelisraisedtvshow As Boolean
+    Private _generalimagefilter As Boolean
+    Private _generalimagefilterautoscraper As Boolean
+    Private _generalimagefilterfanart As Boolean
+    Private _generalimagefilterfanartmatchtolerance As Integer
+    Private _generalimagefilterimagedialog As Boolean
+    Private _generalimagefilterposter As Boolean
+    Private _generalimagefilterpostermatchtolerance As Integer
     Private _generalimagesglassoverlay As Boolean
+    Private _generalinfopanelstatemovie As Integer
+    Private _generalinfopanelstatemovieset As Integer
+    Private _generalinfopanelstatetvshow As Integer
     Private _generallanguage As String
-    Private _generalmainsplitterpanelstate As Integer
-    Private _generalmovieinfopanelstate As Integer
-    Private _generalmoviesetinfopanelstate As Integer
-    Private _generalmovietheme As String
+    Private _generalmainfiltersortcolumn_movies As Integer
+    Private _generalmainfiltersortcolumn_moviesets As Integer
+    Private _generalmainfiltersortcolumn_shows As Integer
+    Private _generalmainfiltersortorder_movies As Integer
+    Private _generalmainfiltersortorder_moviesets As Integer
+    Private _generalmainfiltersortorder_shows As Integer
     Private _generalmoviesettheme As String
+    Private _generalmovietheme As String
     Private _generaloverwritenfo As Boolean
-    Private _generalseasonsplitterpanelstate As Integer
     Private _generalshowgenrestext As Boolean
-    Private _generalshowlangflags As Boolean
     Private _generalshowimgdims As Boolean
     Private _generalshowimgnames As Boolean
-    Private _generalshowsplitterpanelstate As Integer
+    Private _generalshowlangflags As Boolean
     Private _generalsourcefromfolder As Boolean
+    Private _generalsplitterdistancemain As Integer
+    Private _generalsplitterdistancetvseason As Integer
+    Private _generalsplitterdistancetvshow As Integer
     Private _generaltvepisodetheme As String
-    Private _generaltvshowinfopanelstate As Integer
     Private _generaltvshowtheme As String
     Private _generalwindowloc As New Point
     Private _generalwindowsize As New Size
@@ -146,10 +146,11 @@ Partial Public Class clsXMLSettings
     Private _moviegeneralmedialistsorting As List(Of ListSorting)
     Private _movieimagescacheenabled As Boolean
     Private _movieimagesdisplayimageselect As Boolean
+    Private _movieimagesforcedlanguage As String
+    Private _movieimagesforcelanguage As Boolean
     Private _movieimagesgetblankimages As Boolean
     Private _movieimagesgetenglishimages As Boolean
     Private _movieimagesmedialanguageonly As Boolean
-    Private _movieimagespreflanguage As String
     Private _movieimdburl As String
     Private _movielandscapekeepexisting As Boolean
     Private _movielevtolerance As Integer
@@ -269,6 +270,8 @@ Partial Public Class clsXMLSettings
     Private _moviesetgeneralmedialistsorting As List(Of ListSorting)
     Private _moviesetimagescacheenabled As Boolean
     Private _moviesetimagesdisplayimageselect As Boolean
+    Private _moviesetimagesforcedlanguage As String
+    Private _moviesetimagesforcelanguage As Boolean
     Private _moviesetimagesgetblankimages As Boolean
     Private _moviesetimagesgetenglishimages As Boolean
     Private _moviesetimagesmedialanguageonly As Boolean
@@ -367,17 +370,17 @@ Partial Public Class clsXMLSettings
     Private _tvgeneralflaglang As String
     Private _tvgeneralignorelastscan As Boolean
     Private _tvgenerallanguage As String
-    Private _tvgenerallanguages As clsXMLTVDBLanguages
     Private _tvgeneralmarknewepisodes As Boolean
     Private _tvgeneralmarknewshows As Boolean
     Private _tvgeneralseasonlistsorting As List(Of ListSorting)
     Private _tvgeneralshowlistsorting As List(Of ListSorting)
     Private _tvimagescacheenabled As Boolean
     Private _tvimagesdisplayimageselect As Boolean
+    Private _tvimagesforcedlanguage As String
+    Private _tvimagesforcelanguage As Boolean
     Private _tvimagesgetblankimages As Boolean
     Private _tvimagesgetenglishimages As Boolean
     Private _tvimagesmedialanguageonly As Boolean
-    Private _tvimagespreflanguage As String
     Private _tvlockepisodeactors As Boolean
     Private _tvlockepisodeaired As Boolean
     Private _tvlockepisodecredits As Boolean
@@ -844,6 +847,15 @@ Partial Public Class clsXMLSettings
 
 #Region "Properties"
 
+    Public Property Version() As String
+        Get
+            Return Me._version
+        End Get
+        Set(ByVal value As String)
+            Me._version = value
+        End Set
+    End Property
+
     Public Property MovieActorThumbsNMJ() As Boolean
         Get
             Return Me._movieactorthumbsnmj
@@ -1029,7 +1041,7 @@ Partial Public Class clsXMLSettings
             Return Me._moviegenerallanguage
         End Get
         Set(ByVal value As String)
-            Me._moviegenerallanguage = If(String.IsNullOrEmpty(value), "en", value)
+            Me._moviegenerallanguage = If(String.IsNullOrEmpty(value), "en-US", value)
         End Set
     End Property
 
@@ -1038,16 +1050,7 @@ Partial Public Class clsXMLSettings
             Return Me._tvgenerallanguage
         End Get
         Set(ByVal value As String)
-            Me._tvgenerallanguage = If(String.IsNullOrEmpty(value), "en", value)
-        End Set
-    End Property
-
-    Public Property TVGeneralLanguages() As clsXMLTVDBLanguages
-        Get
-            Return Me._tvgenerallanguages
-        End Get
-        Set(ByVal value As clsXMLTVDBLanguages)
-            Me._tvgenerallanguages = value
+            Me._tvgenerallanguage = If(String.IsNullOrEmpty(value), "en-US", value)
         End Set
     End Property
 
@@ -1375,8 +1378,8 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    <XmlArray("EmberModules")> _
-    <XmlArrayItem("Module")> _
+    <XmlArray("EmberModules")>
+    <XmlArrayItem("Module")>
     Public Property EmberModules() As List(Of ModulesManager._XMLEmberModuleClass)
         Get
             Return Me._embermodules
@@ -1979,30 +1982,30 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property GeneralFilterPanelStateMovie() As Boolean
+    Public Property GeneralFilterPanelIsRaisedMovie() As Boolean
         Get
-            Return Me._generalfilterpanelstatemovie
+            Return Me._generalfilterpanelisraisedmovie
         End Get
         Set(ByVal value As Boolean)
-            Me._generalfilterpanelstatemovie = value
+            Me._generalfilterpanelisraisedmovie = value
         End Set
     End Property
 
-    Public Property GeneralFilterPanelStateMovieSet() As Boolean
+    Public Property GeneralFilterPanelIsRaisedMovieSet() As Boolean
         Get
-            Return Me._generalfilterpanelstatemovieset
+            Return Me._generalfilterpanelisraisedmovieset
         End Get
         Set(ByVal value As Boolean)
-            Me._generalfilterpanelstatemovieset = value
+            Me._generalfilterpanelisraisedmovieset = value
         End Set
     End Property
 
-    Public Property GeneralFilterPanelStateShow() As Boolean
+    Public Property GeneralFilterPanelIsRaisedTVShow() As Boolean
         Get
-            Return Me._generalfilterpanelstateshow
+            Return Me._generalfilterpanelisraisedtvshow
         End Get
         Set(ByVal value As Boolean)
-            Me._generalfilterpanelstateshow = value
+            Me._generalfilterpanelisraisedtvshow = value
         End Set
     End Property
 
@@ -2122,21 +2125,21 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property GeneralMovieInfoPanelState() As Integer
+    Public Property GeneralInfoPanelStateMovie() As Integer
         Get
-            Return Me._generalmovieinfopanelstate
+            Return Me._generalinfopanelstatemovie
         End Get
         Set(ByVal value As Integer)
-            Me._generalmovieinfopanelstate = value
+            Me._generalinfopanelstatemovie = value
         End Set
     End Property
 
-    Public Property GeneralMovieSetInfoPanelState() As Integer
+    Public Property GeneralInfoPanelStateMovieSet() As Integer
         Get
-            Return Me._generalmoviesetinfopanelstate
+            Return Me._generalinfopanelstatemovieset
         End Get
         Set(ByVal value As Integer)
-            Me._generalmoviesetinfopanelstate = value
+            Me._generalinfopanelstatemovieset = value
         End Set
     End Property
 
@@ -4675,12 +4678,12 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property GeneralTVShowInfoPanelState() As Integer
+    Public Property GeneralInfoPanelStateTVShow() As Integer
         Get
-            Return Me._generaltvshowinfopanelstate
+            Return Me._generalinfopanelstatetvshow
         End Get
         Set(ByVal value As Integer)
-            Me._generaltvshowinfopanelstate = value
+            Me._generalinfopanelstatetvshow = value
         End Set
     End Property
 
@@ -4936,30 +4939,30 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property GeneralMainSplitterPanelState() As Integer
+    Public Property GeneralSplitterDistanceMain() As Integer
         Get
-            Return Me._generalmainsplitterpanelstate
+            Return Me._generalsplitterdistancemain
         End Get
         Set(ByVal value As Integer)
-            Me._generalmainsplitterpanelstate = value
+            Me._generalsplitterdistancemain = value
         End Set
     End Property
 
-    Public Property GeneralShowSplitterPanelState() As Integer
+    Public Property GeneralSplitterDistanceTVShow() As Integer
         Get
-            Return Me._generalshowsplitterpanelstate
+            Return Me._generalsplitterdistancetvshow
         End Get
         Set(ByVal value As Integer)
-            Me._generalshowsplitterpanelstate = value
+            Me._generalsplitterdistancetvshow = value
         End Set
     End Property
 
-    Public Property GeneralSeasonSplitterPanelState() As Integer
+    Public Property GeneralSplitterDistanceTVSeason() As Integer
         Get
-            Return Me._generalseasonsplitterpanelstate
+            Return Me._generalsplitterdistancetvseason
         End Get
         Set(ByVal value As Integer)
-            Me._generalseasonsplitterpanelstate = value
+            Me._generalsplitterdistancetvseason = value
         End Set
     End Property
 
@@ -5239,15 +5242,6 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As List(Of String))
             Me._filesystemvalidthemeexts = value
-        End Set
-    End Property
-
-    Public Property Version() As String
-        Get
-            Return Me._version
-        End Get
-        Set(ByVal value As String)
-            Me._version = value
         End Set
     End Property
 
@@ -6412,12 +6406,39 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieImagesPrefLanguage() As String
+    Public Property MovieImagesForcedLanguage() As String
         Get
-            Return Me._movieimagespreflanguage
+            Return Me._movieimagesforcedlanguage
         End Get
         Set(ByVal value As String)
-            Me._movieimagespreflanguage = value
+            Me._movieimagesforcedlanguage = value
+        End Set
+    End Property
+
+    Public Property MovieImagesForceLanguage() As Boolean
+        Get
+            Return Me._movieimagesforcelanguage
+        End Get
+        Set(ByVal value As Boolean)
+            Me._movieimagesforcelanguage = value
+        End Set
+    End Property
+
+    Public Property MovieSetImagesForcedLanguage() As String
+        Get
+            Return Me._moviesetimagesforcedlanguage
+        End Get
+        Set(ByVal value As String)
+            Me._moviesetimagesforcedlanguage = value
+        End Set
+    End Property
+
+    Public Property MovieSetImagesForceLanguage() As Boolean
+        Get
+            Return Me._moviesetimagesforcelanguage
+        End Get
+        Set(ByVal value As Boolean)
+            Me._moviesetimagesforcelanguage = value
         End Set
     End Property
 
@@ -6475,12 +6496,21 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property TVImagesPrefLanguage() As String
+    Public Property TVImagesForcedLanguage() As String
         Get
-            Return Me._tvimagespreflanguage
+            Return Me._tvimagesforcedlanguage
         End Get
         Set(ByVal value As String)
-            Me._tvimagespreflanguage = value
+            Me._tvimagesforcedlanguage = value
+        End Set
+    End Property
+
+    Public Property TVImagesForceLanguage() As Boolean
+        Get
+            Return Me._tvimagesforcelanguage
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvimagesforcelanguage = value
         End Set
     End Property
 

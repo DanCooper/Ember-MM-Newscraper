@@ -244,7 +244,7 @@
     <Compile Include="XML Serialization\clsXMLRatings.vb" />
     <Compile Include="XML Serialization\clsXMLSettings.vb" />
     <Compile Include="XML Serialization\clsXMLMovieCertLanguages.vb" />
-    <Compile Include="XML Serialization\clsXMLTVDBLanguages.vb" />
+    <Compile Include="XML Serialization\clsXMLScraperLanguages.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="dlgMovieDataScraperPreview.resx">
@@ -511,6 +511,13 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="DB\MyVideosDBSQL_v38.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="DB\MyVideosDBSQL_v37_Patch.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="Defaults\DefaultAdvancedSettings - AudioFormatConverts.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -523,7 +530,7 @@
     <Content Include="Defaults\DefaultQueries.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Defaults\DefaultTVLanguages.xml">
+    <Content Include="Defaults\Core.ScraperLanguages.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Defaults\DefaultGenre.jpg">

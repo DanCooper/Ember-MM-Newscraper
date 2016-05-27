@@ -1089,7 +1089,17 @@ Public Class dlgEditTVShow
         cbOrdering.SelectedIndex = tmpDBElement.Ordering
         cbEpisodeSorting.SelectedIndex = tmpDBElement.EpisodeSorting
         If cbSourceLanguage.Items.Count > 0 Then
-            cbSourceLanguage.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = tmpDBElement.Language).name
+            Dim tLanguage As languageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = tmpDBElement.Language)
+            If tLanguage IsNot Nothing Then
+                cbSourceLanguage.Text = tLanguage.Description
+            Else
+                tLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(tmpDBElement.Language_Main))
+                If tLanguage IsNot Nothing Then
+                    cbSourceLanguage.Text = tLanguage.Description
+                Else
+                    cbSourceLanguage.Text = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = "en-US").Description
+                End If
+            End If
         End If
 
         txtTitle.Text = tmpDBElement.TVShow.Title
@@ -1815,10 +1825,11 @@ Public Class dlgEditTVShow
     Private Sub SetInfo()
         tmpDBElement.Ordering = DirectCast(cbOrdering.SelectedIndex, Enums.Ordering)
         tmpDBElement.EpisodeSorting = DirectCast(cbEpisodeSorting.SelectedIndex, Enums.EpisodeSorting)
+
         If Not String.IsNullOrEmpty(cbSourceLanguage.Text) Then
-            tmpDBElement.Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = cbSourceLanguage.Text).abbreviation
+            tmpDBElement.Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = cbSourceLanguage.Text).Abbreviation
         Else
-            tmpDBElement.Language = "en"
+            tmpDBElement.Language = "en-US"
         End If
 
         tmpDBElement.TVShow.Title = txtTitle.Text.Trim
@@ -1954,7 +1965,7 @@ Public Class dlgEditTVShow
         cbEpisodeSorting.Items.AddRange(New String() {Master.eLang.GetString(755, "Episode #"), Master.eLang.GetString(728, "Aired")})
 
         cbSourceLanguage.Items.Clear()
-        cbSourceLanguage.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
+        cbSourceLanguage.Items.AddRange((From lLang In APIXML.ScraperLanguagesXML.Languages Select lLang.Description).ToArray)
     End Sub
 
 #End Region 'Methods

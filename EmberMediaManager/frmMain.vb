@@ -27,27 +27,27 @@ Imports NLog
 Public Class frmMain
 
 #Region "Fields"
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Friend WithEvents bwCheckVersion As New System.ComponentModel.BackgroundWorker
-    Friend WithEvents bwCleanDB As New System.ComponentModel.BackgroundWorker
-    Friend WithEvents bwDownloadPic As New System.ComponentModel.BackgroundWorker
-    Friend WithEvents bwLoadEpInfo As New System.ComponentModel.BackgroundWorker
-    Friend WithEvents bwLoadMovieInfo As New System.ComponentModel.BackgroundWorker
-    Friend WithEvents bwLoadMovieSetInfo As New System.ComponentModel.BackgroundWorker
-    Friend WithEvents bwLoadMovieSetPosters As New System.ComponentModel.BackgroundWorker
-    Friend WithEvents bwLoadSeasonInfo As New System.ComponentModel.BackgroundWorker
-    Friend WithEvents bwLoadShowInfo As New System.ComponentModel.BackgroundWorker
-    Friend WithEvents bwMovieScraper As New System.ComponentModel.BackgroundWorker
-    Friend WithEvents bwMovieSetScraper As New System.ComponentModel.BackgroundWorker
-    Friend WithEvents bwNonScrape As New System.ComponentModel.BackgroundWorker
-    Friend WithEvents bwReload_Movies As New System.ComponentModel.BackgroundWorker
-    Friend WithEvents bwReload_MovieSets As New System.ComponentModel.BackgroundWorker
-    Friend WithEvents bwReload_TVShows As New System.ComponentModel.BackgroundWorker
-    Friend WithEvents bwRewrite_Movies As New System.ComponentModel.BackgroundWorker
-    Friend WithEvents bwTVScraper As New System.ComponentModel.BackgroundWorker
-    Friend WithEvents bwTVEpisodeScraper As New System.ComponentModel.BackgroundWorker
-    Friend WithEvents bwTVSeasonScraper As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwCheckVersion As New ComponentModel.BackgroundWorker
+    Friend WithEvents bwCleanDB As New ComponentModel.BackgroundWorker
+    Friend WithEvents bwDownloadPic As New ComponentModel.BackgroundWorker
+    Friend WithEvents bwLoadEpInfo As New ComponentModel.BackgroundWorker
+    Friend WithEvents bwLoadMovieInfo As New ComponentModel.BackgroundWorker
+    Friend WithEvents bwLoadMovieSetInfo As New ComponentModel.BackgroundWorker
+    Friend WithEvents bwLoadMovieSetPosters As New ComponentModel.BackgroundWorker
+    Friend WithEvents bwLoadSeasonInfo As New ComponentModel.BackgroundWorker
+    Friend WithEvents bwLoadShowInfo As New ComponentModel.BackgroundWorker
+    Friend WithEvents bwMovieScraper As New ComponentModel.BackgroundWorker
+    Friend WithEvents bwMovieSetScraper As New ComponentModel.BackgroundWorker
+    Friend WithEvents bwNonScrape As New ComponentModel.BackgroundWorker
+    Friend WithEvents bwReload_Movies As New ComponentModel.BackgroundWorker
+    Friend WithEvents bwReload_MovieSets As New ComponentModel.BackgroundWorker
+    Friend WithEvents bwReload_TVShows As New ComponentModel.BackgroundWorker
+    Friend WithEvents bwRewrite_Movies As New ComponentModel.BackgroundWorker
+    Friend WithEvents bwTVScraper As New ComponentModel.BackgroundWorker
+    Friend WithEvents bwTVEpisodeScraper As New ComponentModel.BackgroundWorker
+    Friend WithEvents bwTVSeasonScraper As New ComponentModel.BackgroundWorker
 
     Public fCommandLine As New CommandLine
 
@@ -55,13 +55,12 @@ Public Class frmMain
     Private TasksDone As Boolean = True
 
     Private alActors As New List(Of String)
-    Private FilterRaise_Movies As Boolean = False
-    Private FilterRaise_MovieSets As Boolean = False
-    Private FilterRaise_Shows As Boolean = False
-    Private aniRaise As Boolean = False
-    Private MovieInfoPanelState As Integer = 0 '0 = down, 1 = mid, 2 = up
-    Private MovieSetInfoPanelState As Integer = 0 '0 = down, 1 = mid, 2 = up
-    Private TVShowInfoPanelState As Integer = 0 '0 = down, 1 = mid, 2 = up
+    Private FilterPanelIsRaised_Movie As Boolean = False
+    Private FilterPanelIsRaised_MovieSet As Boolean = False
+    Private FilterPanelIsRaised_TVShow As Boolean = False
+    Private InfoPanelState_Movie As Integer = 0 '0 = down, 1 = mid, 2 = up
+    Private InfoPanelState_MovieSet As Integer = 0 '0 = down, 1 = mid, 2 = up
+    Private InfoPanelState_TVShow As Integer = 0 '0 = down, 1 = mid, 2 = up
 
     Private bsMovies As New BindingSource
     Private bsMovieSets As New BindingSource
@@ -74,7 +73,6 @@ Public Class frmMain
     Private dtTVEpisodes As New DataTable
     Private dtTVSeasons As New DataTable
     Private dtTVShows As New DataTable
-    Private dScrapeRow As DataRow = Nothing
 
     Private fScanner As New Scanner
     Private GenreImage As Image
@@ -87,14 +85,14 @@ Public Class frmMain
     Private MainClearLogo As New Images
     Private MainDiscArt As New Images
     Private MainFanart As New Images
-    Private MainPoster As New Images
     Private MainFanartSmall As New Images
     Private MainLandscape As New Images
+    Private MainPoster As New Images
     Private pbGenre() As PictureBox = Nothing
     Private pnlGenre() As Panel = Nothing
     Private ReportDownloadPercent As Boolean = False
     Private ScraperDone As Boolean = False
-    Private sHTTP As New EmberAPI.HTTP
+    Private sHTTP As New HTTP
 
     'Loading Delays
     Private currRow_Movie As Integer = -1
@@ -104,9 +102,9 @@ Public Class frmMain
     Private currRow_TVShow As Integer = -1
     Private currList As Integer = 0
     Private currThemeType As Theming.ThemeType
-    Private prevRow_TVEpisode As Integer = -1
     Private prevRow_Movie As Integer = -1
     Private prevRow_MovieSet As Integer = -1
+    Private prevRow_TVEpisode As Integer = -1
     Private prevRow_TVSeason As Integer = -1
     Private prevRow_TVShow As Integer = -1
 
@@ -119,8 +117,8 @@ Public Class frmMain
     Private listViews_MovieSets As New Dictionary(Of String, String)
 
     'list shows
-    Private currList_Shows As String = "tvshowlist" 'default tv show list SQLite view
-    Private listViews_Shows As New Dictionary(Of String, String)
+    Private currList_TVShows As String = "tvshowlist" 'default tv show list SQLite view
+    Private listViews_TVShows As New Dictionary(Of String, String)
 
     'filter movies
     Private bDoingSearch_Movies As Boolean = False
@@ -144,14 +142,14 @@ Public Class frmMain
     Private prevTextSearch_MovieSets As String = String.Empty
 
     'filter shows
-    Private bDoingSearch_Shows As Boolean = False
-    Private FilterArray_Shows As New List(Of String)
-    Private filSearch_Shows As String = String.Empty
-    Private filSource_Shows As String = String.Empty
-    Private filGenre_Shows As String = String.Empty
-    Private filMissing_Shows As String = String.Empty
-    Private currTextSearch_Shows As String = String.Empty
-    Private prevTextSearch_Shows As String = String.Empty
+    Private bDoingSearch_TVShows As Boolean = False
+    Private FilterArray_TVShows As New List(Of String)
+    Private filSearch_TVShows As String = String.Empty
+    Private filSource_TVShows As String = String.Empty
+    Private filGenre_TVShows As String = String.Empty
+    Private filMissing_TVShows As String = String.Empty
+    Private currTextSearch_TVShows As String = String.Empty
+    Private prevTextSearch_TVShows As String = String.Empty
 
     'Theme Information
     Private _bannermaxheight As Integer = 160
@@ -197,7 +195,8 @@ Public Class frmMain
     Delegate Sub DelegateEvent_MovieSet(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object)
     Delegate Sub DelegateEvent_TVShow(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object)
 
-    Delegate Sub MydtListUpdate(ByVal drow As DataRow, ByVal v As DataRow)
+    Delegate Sub Delegate_dtListRemoveRow(ByVal dTable As DataTable, ByVal dRow As DataRow)
+    Delegate Sub Delegate_dtListUpdateRow(ByVal dRow As DataRow, ByVal v As DataRow)
 
     Delegate Sub MySettingsShow(ByVal dlg As dlgSettings)
 
@@ -381,202 +380,195 @@ Public Class frmMain
 #Region "Methods"
 
     Public Sub ClearInfo()
+        InfoCleared = True
 
+        If bwDownloadPic.IsBusy Then bwDownloadPic.CancelAsync()
+        If bwLoadMovieInfo.IsBusy Then bwLoadMovieInfo.CancelAsync()
+        If bwLoadMovieSetInfo.IsBusy Then bwLoadMovieSetInfo.CancelAsync()
+        If bwLoadMovieSetPosters.IsBusy Then bwLoadMovieSetPosters.CancelAsync()
+        If bwLoadShowInfo.IsBusy Then bwLoadShowInfo.CancelAsync()
+        If bwLoadSeasonInfo.IsBusy Then bwLoadSeasonInfo.CancelAsync()
+        If bwLoadEpInfo.IsBusy Then bwLoadEpInfo.CancelAsync()
+
+        While bwDownloadPic.IsBusy OrElse bwLoadMovieInfo.IsBusy OrElse bwLoadMovieSetInfo.IsBusy OrElse
+                    bwLoadShowInfo.IsBusy OrElse bwLoadSeasonInfo.IsBusy OrElse bwLoadEpInfo.IsBusy OrElse
+                    bwLoadMovieSetPosters.IsBusy
+            Application.DoEvents()
+            Threading.Thread.Sleep(50)
+        End While
+
+        If pbFanart.Image IsNot Nothing Then
+            pbFanart.Image.Dispose()
+            pbFanart.Image = Nothing
+        End If
+        MainFanart.Clear()
+
+        If pbBanner.Image IsNot Nothing Then
+            pbBanner.Image.Dispose()
+            pbBanner.Image = Nothing
+        End If
+        pnlBanner.Visible = False
+        MainBanner.Clear()
+
+        If pbCharacterArt.Image IsNot Nothing Then
+            pbCharacterArt.Image.Dispose()
+            pbCharacterArt.Image = Nothing
+        End If
+        pnlCharacterArt.Visible = False
+        MainCharacterArt.Clear()
+
+        If pbClearArt.Image IsNot Nothing Then
+            pbClearArt.Image.Dispose()
+            pbClearArt.Image = Nothing
+        End If
+        pnlClearArt.Visible = False
+        MainClearArt.Clear()
+
+        If pbClearLogo.Image IsNot Nothing Then
+            pbClearLogo.Image.Dispose()
+            pbClearLogo.Image = Nothing
+        End If
+        pnlClearLogo.Visible = False
+        MainClearLogo.Clear()
+
+        If pbPoster.Image IsNot Nothing Then
+            pbPoster.Image.Dispose()
+            pbPoster.Image = Nothing
+        End If
+        pnlPoster.Visible = False
+        MainPoster.Clear()
+
+        If pbFanartSmall.Image IsNot Nothing Then
+            pbFanartSmall.Image.Dispose()
+            pbFanartSmall.Image = Nothing
+        End If
+        pnlFanartSmall.Visible = False
+        MainFanartSmall.Clear()
+
+        If pbLandscape.Image IsNot Nothing Then
+            pbLandscape.Image.Dispose()
+            pbLandscape.Image = Nothing
+        End If
+        pnlLandscape.Visible = False
+        MainLandscape.Clear()
+
+        If pbDiscArt.Image IsNot Nothing Then
+            pbDiscArt.Image.Dispose()
+            pbDiscArt.Image = Nothing
+        End If
+        pnlDiscArt.Visible = False
+        MainDiscArt.Clear()
+
+        'remove all the current genres
         Try
-            With Me
-                .InfoCleared = True
-
-                If .bwDownloadPic.IsBusy Then .bwDownloadPic.CancelAsync()
-                If .bwLoadMovieInfo.IsBusy Then .bwLoadMovieInfo.CancelAsync()
-                If .bwLoadMovieSetInfo.IsBusy Then .bwLoadMovieSetInfo.CancelAsync()
-                If .bwLoadMovieSetPosters.IsBusy Then .bwLoadMovieSetPosters.CancelAsync()
-                If .bwLoadShowInfo.IsBusy Then .bwLoadShowInfo.CancelAsync()
-                If .bwLoadSeasonInfo.IsBusy Then .bwLoadSeasonInfo.CancelAsync()
-                If .bwLoadEpInfo.IsBusy Then .bwLoadEpInfo.CancelAsync()
-
-                While .bwDownloadPic.IsBusy OrElse .bwLoadMovieInfo.IsBusy OrElse .bwLoadMovieSetInfo.IsBusy OrElse
-                    .bwLoadShowInfo.IsBusy OrElse .bwLoadSeasonInfo.IsBusy OrElse .bwLoadEpInfo.IsBusy OrElse
-                    .bwLoadMovieSetPosters.IsBusy
-                    Application.DoEvents()
-                    Threading.Thread.Sleep(50)
-                End While
-
-                If .pbFanart.Image IsNot Nothing Then
-                    .pbFanart.Image.Dispose()
-                    .pbFanart.Image = Nothing
-                End If
-                .MainFanart.Clear()
-
-                If .pbBanner.Image IsNot Nothing Then
-                    .pbBanner.Image.Dispose()
-                    .pbBanner.Image = Nothing
-                End If
-                .pnlBanner.Visible = False
-                .MainBanner.Clear()
-
-                If .pbCharacterArt.Image IsNot Nothing Then
-                    .pbCharacterArt.Image.Dispose()
-                    .pbCharacterArt.Image = Nothing
-                End If
-                .pnlCharacterArt.Visible = False
-                .MainCharacterArt.Clear()
-
-                If .pbClearArt.Image IsNot Nothing Then
-                    .pbClearArt.Image.Dispose()
-                    .pbClearArt.Image = Nothing
-                End If
-                .pnlClearArt.Visible = False
-                .MainClearArt.Clear()
-
-                If .pbClearLogo.Image IsNot Nothing Then
-                    .pbClearLogo.Image.Dispose()
-                    .pbClearLogo.Image = Nothing
-                End If
-                .pnlClearLogo.Visible = False
-                .MainClearLogo.Clear()
-
-                If .pbPoster.Image IsNot Nothing Then
-                    .pbPoster.Image.Dispose()
-                    .pbPoster.Image = Nothing
-                End If
-                .pnlPoster.Visible = False
-                .MainPoster.Clear()
-
-                If .pbFanartSmall.Image IsNot Nothing Then
-                    .pbFanartSmall.Image.Dispose()
-                    .pbFanartSmall.Image = Nothing
-                End If
-                .pnlFanartSmall.Visible = False
-                .MainFanartSmall.Clear()
-
-                If .pbLandscape.Image IsNot Nothing Then
-                    .pbLandscape.Image.Dispose()
-                    .pbLandscape.Image = Nothing
-                End If
-                .pnlLandscape.Visible = False
-                .MainLandscape.Clear()
-
-                If .pbDiscArt.Image IsNot Nothing Then
-                    .pbDiscArt.Image.Dispose()
-                    .pbDiscArt.Image = Nothing
-                End If
-                .pnlDiscArt.Visible = False
-                .MainDiscArt.Clear()
-
-                'remove all the current genres
-                Try
-                    For iDel As Integer = 0 To .pnlGenre.Count - 1
-                        .scMain.Panel2.Controls.Remove(.pbGenre(iDel))
-                        .scMain.Panel2.Controls.Remove(.pnlGenre(iDel))
-                    Next
-                Catch
-                End Try
-
-                If .pbMPAA.Image IsNot Nothing Then
-                    .pbMPAA.Image = Nothing
-                End If
-                .pnlMPAA.Visible = False
-
-                .lblFanartSmallSize.Text = String.Empty
-                .lblTitle.Text = String.Empty
-                .lblOriginalTitle.Text = String.Empty
-                .lblPosterSize.Text = String.Empty
-                .lblRating.Text = String.Empty
-                .lblRuntime.Text = String.Empty
-                .lblStudio.Text = String.Empty
-                .pnlTop250.Visible = False
-                .lblTop250.Text = String.Empty
-                .pbStar1.Image = Nothing
-                .pbStar2.Image = Nothing
-                .pbStar3.Image = Nothing
-                .pbStar4.Image = Nothing
-                .pbStar5.Image = Nothing
-                .pbStar6.Image = Nothing
-                .pbStar7.Image = Nothing
-                .pbStar8.Image = Nothing
-                .pbStar9.Image = Nothing
-                .pbStar10.Image = Nothing
-                ToolTips.SetToolTip(pbStar1, "")
-                ToolTips.SetToolTip(pbStar2, "")
-                ToolTips.SetToolTip(pbStar3, "")
-                ToolTips.SetToolTip(pbStar4, "")
-                ToolTips.SetToolTip(pbStar5, "")
-                ToolTips.SetToolTip(pbStar6, "")
-                ToolTips.SetToolTip(pbStar7, "")
-                ToolTips.SetToolTip(pbStar8, "")
-                ToolTips.SetToolTip(pbStar9, "")
-                ToolTips.SetToolTip(pbStar10, "")
-
-                .lstActors.Items.Clear()
-                If .alActors IsNot Nothing Then
-                    .alActors.Clear()
-                    .alActors = Nothing
-                End If
-                If .pbActors.Image IsNot Nothing Then
-                    .pbActors.Image.Dispose()
-                    .pbActors.Image = Nothing
-                End If
-                .MainActors.Clear()
-                .lblDirectors.Text = String.Empty
-                .lblReleaseDate.Text = String.Empty
-                .txtCertifications.Text = String.Empty
-                .txtIMDBID.Text = String.Empty
-                .txtFilePath.Text = String.Empty
-                .txtOutline.Text = String.Empty
-                .txtPlot.Text = String.Empty
-                .txtTMDBID.Text = String.Empty
-                .lblTagline.Text = String.Empty
-                If .pbMPAA.Image IsNot Nothing Then
-                    .pbMPAA.Image.Dispose()
-                    .pbMPAA.Image = Nothing
-                End If
-                .pbStudio.Image = Nothing
-                .pbVideo.Image = Nothing
-                .pbVType.Image = Nothing
-                .pbAudio.Image = Nothing
-                .pbResolution.Image = Nothing
-                .pbChannels.Image = Nothing
-                .pbAudioLang0.Image = Nothing
-                .pbAudioLang1.Image = Nothing
-                .pbAudioLang2.Image = Nothing
-                .pbAudioLang3.Image = Nothing
-                .pbAudioLang4.Image = Nothing
-                .pbAudioLang5.Image = Nothing
-                .pbAudioLang6.Image = Nothing
-                ToolTips.SetToolTip(.pbAudioLang0, "")
-                ToolTips.SetToolTip(.pbAudioLang1, "")
-                ToolTips.SetToolTip(.pbAudioLang2, "")
-                ToolTips.SetToolTip(.pbAudioLang3, "")
-                ToolTips.SetToolTip(.pbAudioLang4, "")
-                ToolTips.SetToolTip(.pbAudioLang5, "")
-                ToolTips.SetToolTip(.pbAudioLang6, "")
-                .pbSubtitleLang0.Image = Nothing
-                .pbSubtitleLang1.Image = Nothing
-                .pbSubtitleLang2.Image = Nothing
-                .pbSubtitleLang3.Image = Nothing
-                .pbSubtitleLang4.Image = Nothing
-                .pbSubtitleLang5.Image = Nothing
-                .pbSubtitleLang6.Image = Nothing
-                ToolTips.SetToolTip(.pbSubtitleLang0, "")
-                ToolTips.SetToolTip(.pbSubtitleLang1, "")
-                ToolTips.SetToolTip(.pbSubtitleLang2, "")
-                ToolTips.SetToolTip(.pbSubtitleLang3, "")
-                ToolTips.SetToolTip(.pbSubtitleLang4, "")
-                ToolTips.SetToolTip(.pbSubtitleLang5, "")
-                ToolTips.SetToolTip(.pbSubtitleLang6, "")
-
-                .txtMetaData.Text = String.Empty
-                .pnlTop.Visible = False
-                '.tslStatus.Text = String.Empty
-
-                .lvMoviesInSet.Items.Clear()
-                .ilMoviesInSet.Images.Clear()
-
-                Application.DoEvents()
-            End With
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
+            For iDel As Integer = 0 To pnlGenre.Count - 1
+                scMain.Panel2.Controls.Remove(pbGenre(iDel))
+                scMain.Panel2.Controls.Remove(pnlGenre(iDel))
+            Next
+        Catch
         End Try
+
+        If pbMPAA.Image IsNot Nothing Then
+            pbMPAA.Image = Nothing
+        End If
+        pnlMPAA.Visible = False
+
+        lblFanartSmallSize.Text = String.Empty
+        lblTitle.Text = String.Empty
+        lblOriginalTitle.Text = String.Empty
+        lblPosterSize.Text = String.Empty
+        lblRating.Text = String.Empty
+        lblRuntime.Text = String.Empty
+        lblStudio.Text = String.Empty
+        pnlTop250.Visible = False
+        lblTop250.Text = String.Empty
+        pbStar1.Image = Nothing
+        pbStar2.Image = Nothing
+        pbStar3.Image = Nothing
+        pbStar4.Image = Nothing
+        pbStar5.Image = Nothing
+        pbStar6.Image = Nothing
+        pbStar7.Image = Nothing
+        pbStar8.Image = Nothing
+        pbStar9.Image = Nothing
+        pbStar10.Image = Nothing
+        ToolTips.SetToolTip(pbStar1, "")
+        ToolTips.SetToolTip(pbStar2, "")
+        ToolTips.SetToolTip(pbStar3, "")
+        ToolTips.SetToolTip(pbStar4, "")
+        ToolTips.SetToolTip(pbStar5, "")
+        ToolTips.SetToolTip(pbStar6, "")
+        ToolTips.SetToolTip(pbStar7, "")
+        ToolTips.SetToolTip(pbStar8, "")
+        ToolTips.SetToolTip(pbStar9, "")
+        ToolTips.SetToolTip(pbStar10, "")
+
+        lstActors.Items.Clear()
+        If alActors IsNot Nothing Then
+            alActors.Clear()
+            alActors = Nothing
+        End If
+        If pbActors.Image IsNot Nothing Then
+            pbActors.Image.Dispose()
+            pbActors.Image = Nothing
+        End If
+        MainActors.Clear()
+        lblDirectors.Text = String.Empty
+        lblReleaseDate.Text = String.Empty
+        txtCertifications.Text = String.Empty
+        txtIMDBID.Text = String.Empty
+        txtFilePath.Text = String.Empty
+        txtOutline.Text = String.Empty
+        txtPlot.Text = String.Empty
+        txtTMDBID.Text = String.Empty
+        lblTagline.Text = String.Empty
+        If pbMPAA.Image IsNot Nothing Then
+            pbMPAA.Image.Dispose()
+            pbMPAA.Image = Nothing
+        End If
+        pbStudio.Image = Nothing
+        pbVideo.Image = Nothing
+        pbVType.Image = Nothing
+        pbAudio.Image = Nothing
+        pbResolution.Image = Nothing
+        pbChannels.Image = Nothing
+        pbAudioLang0.Image = Nothing
+        pbAudioLang1.Image = Nothing
+        pbAudioLang2.Image = Nothing
+        pbAudioLang3.Image = Nothing
+        pbAudioLang4.Image = Nothing
+        pbAudioLang5.Image = Nothing
+        pbAudioLang6.Image = Nothing
+        ToolTips.SetToolTip(pbAudioLang0, "")
+        ToolTips.SetToolTip(pbAudioLang1, "")
+        ToolTips.SetToolTip(pbAudioLang2, "")
+        ToolTips.SetToolTip(pbAudioLang3, "")
+        ToolTips.SetToolTip(pbAudioLang4, "")
+        ToolTips.SetToolTip(pbAudioLang5, "")
+        ToolTips.SetToolTip(pbAudioLang6, "")
+        pbSubtitleLang0.Image = Nothing
+        pbSubtitleLang1.Image = Nothing
+        pbSubtitleLang2.Image = Nothing
+        pbSubtitleLang3.Image = Nothing
+        pbSubtitleLang4.Image = Nothing
+        pbSubtitleLang5.Image = Nothing
+        pbSubtitleLang6.Image = Nothing
+        ToolTips.SetToolTip(pbSubtitleLang0, "")
+        ToolTips.SetToolTip(pbSubtitleLang1, "")
+        ToolTips.SetToolTip(pbSubtitleLang2, "")
+        ToolTips.SetToolTip(pbSubtitleLang3, "")
+        ToolTips.SetToolTip(pbSubtitleLang4, "")
+        ToolTips.SetToolTip(pbSubtitleLang5, "")
+        ToolTips.SetToolTip(pbSubtitleLang6, "")
+
+        txtMetaData.Text = String.Empty
+        pnlTop.Visible = False
+        '.tslStatus.Text = String.Empty
+
+        lvMoviesInSet.Items.Clear()
+        ilMoviesInSet.Images.Clear()
+
+        Application.DoEvents()
     End Sub
 
     Private Function CheckColumnHide_Movies(ByVal ColumnName As String) As Boolean
@@ -728,7 +720,7 @@ Public Class frmMain
 
         Dim currMainTabTag As Structures.MainTabType = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
 
-        Select Case If(currMainTabTag.ContentType = Enums.ContentType.Movie, MovieInfoPanelState, If(currMainTabTag.ContentType = Enums.ContentType.MovieSet, MovieSetInfoPanelState, TVShowInfoPanelState))
+        Select Case If(currMainTabTag.ContentType = Enums.ContentType.Movie, InfoPanelState_Movie, If(currMainTabTag.ContentType = Enums.ContentType.MovieSet, InfoPanelState_MovieSet, InfoPanelState_TVShow))
             Case 1
                 If btnMid.Visible Then
                     pnlInfoPanel.Height = _ipmid
@@ -738,11 +730,11 @@ Public Class frmMain
                 ElseIf btnUp.Visible Then
                     pnlInfoPanel.Height = _ipup
                     If currMainTabTag.ContentType = Enums.ContentType.Movie Then
-                        MovieInfoPanelState = 2
+                        InfoPanelState_Movie = 2
                     ElseIf currMainTabTag.ContentType = Enums.ContentType.MovieSet Then
-                        MovieSetInfoPanelState = 2
+                        InfoPanelState_MovieSet = 2
                     ElseIf currMainTabTag.ContentType = Enums.ContentType.TV Then
-                        TVShowInfoPanelState = 2
+                        InfoPanelState_TVShow = 2
                     End If
                     btnUp.Enabled = False
                     btnMid.Enabled = True
@@ -750,11 +742,11 @@ Public Class frmMain
                 Else
                     pnlInfoPanel.Height = 25
                     If currMainTabTag.ContentType = Enums.ContentType.Movie Then
-                        MovieInfoPanelState = 0
+                        InfoPanelState_Movie = 0
                     ElseIf currMainTabTag.ContentType = Enums.ContentType.MovieSet Then
-                        MovieSetInfoPanelState = 0
+                        InfoPanelState_MovieSet = 0
                     ElseIf currMainTabTag.ContentType = Enums.ContentType.TV Then
-                        TVShowInfoPanelState = 0
+                        InfoPanelState_TVShow = 0
                     End If
                     btnUp.Enabled = True
                     btnMid.Enabled = True
@@ -770,11 +762,11 @@ Public Class frmMain
                     pnlInfoPanel.Height = _ipmid
 
                     If currMainTabTag.ContentType = Enums.ContentType.Movie Then
-                        MovieInfoPanelState = 1
+                        InfoPanelState_Movie = 1
                     ElseIf currMainTabTag.ContentType = Enums.ContentType.MovieSet Then
-                        MovieSetInfoPanelState = 1
+                        InfoPanelState_MovieSet = 1
                     ElseIf currMainTabTag.ContentType = Enums.ContentType.TV Then
-                        TVShowInfoPanelState = 1
+                        InfoPanelState_TVShow = 1
                     End If
 
                     btnUp.Enabled = True
@@ -783,11 +775,11 @@ Public Class frmMain
                 Else
                     pnlInfoPanel.Height = 25
                     If currMainTabTag.ContentType = Enums.ContentType.Movie Then
-                        MovieInfoPanelState = 0
+                        InfoPanelState_Movie = 0
                     ElseIf currMainTabTag.ContentType = Enums.ContentType.MovieSet Then
-                        MovieSetInfoPanelState = 0
+                        InfoPanelState_MovieSet = 0
                     ElseIf currMainTabTag.ContentType = Enums.ContentType.TV Then
-                        TVShowInfoPanelState = 0
+                        InfoPanelState_TVShow = 0
                     End If
                     btnUp.Enabled = True
                     btnMid.Enabled = True
@@ -796,11 +788,11 @@ Public Class frmMain
             Case Else
                 pnlInfoPanel.Height = 25
                 If currMainTabTag.ContentType = Enums.ContentType.Movie Then
-                    MovieInfoPanelState = 0
+                    InfoPanelState_Movie = 0
                 ElseIf currMainTabTag.ContentType = Enums.ContentType.MovieSet Then
-                    MovieSetInfoPanelState = 0
+                    InfoPanelState_MovieSet = 0
                 ElseIf currMainTabTag.ContentType = Enums.ContentType.TV Then
-                    TVShowInfoPanelState = 0
+                    InfoPanelState_TVShow = 0
                 End If
 
                 btnUp.Enabled = True
@@ -854,44 +846,43 @@ Public Class frmMain
         Dim currMainTabTag As Structures.MainTabType = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
         tcMain.Focus()
         If currMainTabTag.ContentType = Enums.ContentType.Movie Then
-            MovieInfoPanelState = 0
+            InfoPanelState_Movie = 0
         ElseIf currMainTabTag.ContentType = Enums.ContentType.MovieSet Then
-            MovieSetInfoPanelState = 0
+            InfoPanelState_MovieSet = 0
         ElseIf currMainTabTag.ContentType = Enums.ContentType.TV Then
-            TVShowInfoPanelState = 0
+            InfoPanelState_TVShow = 0
         End If
-        aniRaise = False
         tmrAni.Start()
     End Sub
 
     Private Sub btnFilterDown_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilterDown_Movies.Click
-        FilterRaise_Movies = False
+        FilterPanelIsRaised_Movie = False
         FilterMovement_Movies()
     End Sub
 
     Private Sub btnFilterDown_MovieSets_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilterDown_MovieSets.Click
-        FilterRaise_MovieSets = False
+        FilterPanelIsRaised_MovieSet = False
         FilterMovement_MovieSets()
     End Sub
 
     Private Sub btnFilterDown_Shows_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilterDown_Shows.Click
-        FilterRaise_Shows = False
+        FilterPanelIsRaised_TVShow = False
         FilterMovement_Shows()
     End Sub
 
     Private Sub btnFilterUp_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilterUp_Movies.Click
-        FilterRaise_Movies = True
+        FilterPanelIsRaised_Movie = True
         FilterMovement_Movies()
     End Sub
 
     Private Sub btnFilterUp_MovieSets_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilterUp_MovieSets.Click
 
-        FilterRaise_MovieSets = True
+        FilterPanelIsRaised_MovieSet = True
         FilterMovement_MovieSets()
     End Sub
 
     Private Sub btnFilterUp_Shows_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilterUp_Shows.Click
-        FilterRaise_Shows = True
+        FilterPanelIsRaised_TVShow = True
         FilterMovement_Shows()
     End Sub
 
@@ -922,20 +913,13 @@ Public Class frmMain
     Private Sub btnMid_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMid.Click
         Dim currMainTabTag As Structures.MainTabType = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
         tcMain.Focus()
-        If pnlInfoPanel.Height = IPUp Then
-            aniRaise = False
-        Else
-            aniRaise = True
-        End If
-
         If currMainTabTag.ContentType = Enums.ContentType.Movie Then
-            MovieInfoPanelState = 1
+            InfoPanelState_Movie = 1
         ElseIf currMainTabTag.ContentType = Enums.ContentType.MovieSet Then
-            MovieSetInfoPanelState = 1
+            InfoPanelState_MovieSet = 1
         ElseIf currMainTabTag.ContentType = Enums.ContentType.TV Then
-            TVShowInfoPanelState = 1
+            InfoPanelState_TVShow = 1
         End If
-
         tmrAni.Start()
     End Sub
 
@@ -1162,271 +1146,264 @@ Public Class frmMain
         Dim currMainTabTag As Structures.MainTabType = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
         tcMain.Focus()
         If currMainTabTag.ContentType = Enums.ContentType.Movie Then
-            MovieInfoPanelState = 2
+            InfoPanelState_Movie = 2
         ElseIf currMainTabTag.ContentType = Enums.ContentType.MovieSet Then
-            MovieSetInfoPanelState = 2
+            InfoPanelState_MovieSet = 2
         ElseIf currMainTabTag.ContentType = Enums.ContentType.TV Then
-            TVShowInfoPanelState = 2
+            InfoPanelState_TVShow = 2
         End If
-        aniRaise = True
         tmrAni.Start()
     End Sub
 
     Private Sub BuildStars(ByVal sinRating As Single)
-        '//
-        ' Convert # rating to star images
-        '\\
-
         Try
-            With Me
-                .pbStar1.Image = Nothing
-                .pbStar2.Image = Nothing
-                .pbStar3.Image = Nothing
-                .pbStar4.Image = Nothing
-                .pbStar5.Image = Nothing
-                .pbStar6.Image = Nothing
-                .pbStar7.Image = Nothing
-                .pbStar8.Image = Nothing
-                .pbStar9.Image = Nothing
-                .pbStar10.Image = Nothing
+            pbStar1.Image = Nothing
+            pbStar2.Image = Nothing
+            pbStar3.Image = Nothing
+            pbStar4.Image = Nothing
+            pbStar5.Image = Nothing
+            pbStar6.Image = Nothing
+            pbStar7.Image = Nothing
+            pbStar8.Image = Nothing
+            pbStar9.Image = Nothing
+            pbStar10.Image = Nothing
 
-                Dim tTip As String = String.Concat(Master.eLang.GetString(245, "Rating:"), String.Format(" {0:N}", sinRating))
-                ToolTips.SetToolTip(.pbStar1, tTip)
-                ToolTips.SetToolTip(.pbStar2, tTip)
-                ToolTips.SetToolTip(.pbStar3, tTip)
-                ToolTips.SetToolTip(.pbStar4, tTip)
-                ToolTips.SetToolTip(.pbStar5, tTip)
-                ToolTips.SetToolTip(.pbStar6, tTip)
-                ToolTips.SetToolTip(.pbStar7, tTip)
-                ToolTips.SetToolTip(.pbStar8, tTip)
-                ToolTips.SetToolTip(.pbStar9, tTip)
-                ToolTips.SetToolTip(.pbStar10, tTip)
+            Dim tTip As String = String.Concat(Master.eLang.GetString(245, "Rating:"), String.Format(" {0:N}", sinRating))
+            ToolTips.SetToolTip(pbStar1, tTip)
+            ToolTips.SetToolTip(pbStar2, tTip)
+            ToolTips.SetToolTip(pbStar3, tTip)
+            ToolTips.SetToolTip(pbStar4, tTip)
+            ToolTips.SetToolTip(pbStar5, tTip)
+            ToolTips.SetToolTip(pbStar6, tTip)
+            ToolTips.SetToolTip(pbStar7, tTip)
+            ToolTips.SetToolTip(pbStar8, tTip)
+            ToolTips.SetToolTip(pbStar9, tTip)
+            ToolTips.SetToolTip(pbStar10, tTip)
 
-                If sinRating >= 0.5 Then ' if rating is less than .5 out of ten, consider it a 0
-                    Select Case (sinRating)
-                        Case Is <= 0.5
-                            .pbStar1.Image = My.Resources.starhalf
-                            .pbStar2.Image = My.Resources.starempty
-                            .pbStar3.Image = My.Resources.starempty
-                            .pbStar4.Image = My.Resources.starempty
-                            .pbStar5.Image = My.Resources.starempty
-                            .pbStar6.Image = My.Resources.starempty
-                            .pbStar7.Image = My.Resources.starempty
-                            .pbStar8.Image = My.Resources.starempty
-                            .pbStar9.Image = My.Resources.starempty
-                            .pbStar10.Image = My.Resources.starempty
-                        Case Is <= 1
-                            .pbStar1.Image = My.Resources.star
-                            .pbStar2.Image = My.Resources.starempty
-                            .pbStar3.Image = My.Resources.starempty
-                            .pbStar4.Image = My.Resources.starempty
-                            .pbStar5.Image = My.Resources.starempty
-                            .pbStar6.Image = My.Resources.starempty
-                            .pbStar7.Image = My.Resources.starempty
-                            .pbStar8.Image = My.Resources.starempty
-                            .pbStar9.Image = My.Resources.starempty
-                            .pbStar10.Image = My.Resources.starempty
-                        Case Is <= 1.5
-                            .pbStar1.Image = My.Resources.star
-                            .pbStar2.Image = My.Resources.starhalf
-                            .pbStar3.Image = My.Resources.starempty
-                            .pbStar4.Image = My.Resources.starempty
-                            .pbStar5.Image = My.Resources.starempty
-                            .pbStar6.Image = My.Resources.starempty
-                            .pbStar7.Image = My.Resources.starempty
-                            .pbStar8.Image = My.Resources.starempty
-                            .pbStar9.Image = My.Resources.starempty
-                            .pbStar10.Image = My.Resources.starempty
-                        Case Is <= 2
-                            .pbStar1.Image = My.Resources.star
-                            .pbStar2.Image = My.Resources.star
-                            .pbStar3.Image = My.Resources.starempty
-                            .pbStar4.Image = My.Resources.starempty
-                            .pbStar5.Image = My.Resources.starempty
-                            .pbStar6.Image = My.Resources.starempty
-                            .pbStar7.Image = My.Resources.starempty
-                            .pbStar8.Image = My.Resources.starempty
-                            .pbStar9.Image = My.Resources.starempty
-                            .pbStar10.Image = My.Resources.starempty
-                        Case Is <= 2.5
-                            .pbStar1.Image = My.Resources.star
-                            .pbStar2.Image = My.Resources.star
-                            .pbStar3.Image = My.Resources.starhalf
-                            .pbStar4.Image = My.Resources.starempty
-                            .pbStar5.Image = My.Resources.starempty
-                            .pbStar6.Image = My.Resources.starempty
-                            .pbStar7.Image = My.Resources.starempty
-                            .pbStar8.Image = My.Resources.starempty
-                            .pbStar9.Image = My.Resources.starempty
-                            .pbStar10.Image = My.Resources.starempty
-                        Case Is <= 3
-                            .pbStar1.Image = My.Resources.star
-                            .pbStar2.Image = My.Resources.star
-                            .pbStar3.Image = My.Resources.star
-                            .pbStar4.Image = My.Resources.starempty
-                            .pbStar5.Image = My.Resources.starempty
-                            .pbStar6.Image = My.Resources.starempty
-                            .pbStar7.Image = My.Resources.starempty
-                            .pbStar8.Image = My.Resources.starempty
-                            .pbStar9.Image = My.Resources.starempty
-                            .pbStar10.Image = My.Resources.starempty
-                        Case Is <= 3.5
-                            .pbStar1.Image = My.Resources.star
-                            .pbStar2.Image = My.Resources.star
-                            .pbStar3.Image = My.Resources.star
-                            .pbStar4.Image = My.Resources.starhalf
-                            .pbStar5.Image = My.Resources.starempty
-                            .pbStar6.Image = My.Resources.starempty
-                            .pbStar7.Image = My.Resources.starempty
-                            .pbStar8.Image = My.Resources.starempty
-                            .pbStar9.Image = My.Resources.starempty
-                            .pbStar10.Image = My.Resources.starempty
-                        Case Is <= 4
-                            .pbStar1.Image = My.Resources.star
-                            .pbStar2.Image = My.Resources.star
-                            .pbStar3.Image = My.Resources.star
-                            .pbStar4.Image = My.Resources.star
-                            .pbStar5.Image = My.Resources.starempty
-                            .pbStar6.Image = My.Resources.starempty
-                            .pbStar7.Image = My.Resources.starempty
-                            .pbStar8.Image = My.Resources.starempty
-                            .pbStar9.Image = My.Resources.starempty
-                            .pbStar10.Image = My.Resources.starempty
-                        Case Is <= 4.5
-                            .pbStar1.Image = My.Resources.star
-                            .pbStar2.Image = My.Resources.star
-                            .pbStar3.Image = My.Resources.star
-                            .pbStar4.Image = My.Resources.star
-                            .pbStar5.Image = My.Resources.starhalf
-                            .pbStar6.Image = My.Resources.starempty
-                            .pbStar7.Image = My.Resources.starempty
-                            .pbStar8.Image = My.Resources.starempty
-                            .pbStar9.Image = My.Resources.starempty
-                            .pbStar10.Image = My.Resources.starempty
-                        Case Is <= 5
-                            .pbStar1.Image = My.Resources.star
-                            .pbStar2.Image = My.Resources.star
-                            .pbStar3.Image = My.Resources.star
-                            .pbStar4.Image = My.Resources.star
-                            .pbStar5.Image = My.Resources.star
-                            .pbStar6.Image = My.Resources.starempty
-                            .pbStar7.Image = My.Resources.starempty
-                            .pbStar8.Image = My.Resources.starempty
-                            .pbStar9.Image = My.Resources.starempty
-                            .pbStar10.Image = My.Resources.starempty
-                        Case Is <= 5.5
-                            .pbStar1.Image = My.Resources.star
-                            .pbStar2.Image = My.Resources.star
-                            .pbStar3.Image = My.Resources.star
-                            .pbStar4.Image = My.Resources.star
-                            .pbStar5.Image = My.Resources.star
-                            .pbStar6.Image = My.Resources.starhalf
-                            .pbStar7.Image = My.Resources.starempty
-                            .pbStar8.Image = My.Resources.starempty
-                            .pbStar9.Image = My.Resources.starempty
-                            .pbStar10.Image = My.Resources.starempty
-                        Case Is <= 6
-                            .pbStar1.Image = My.Resources.star
-                            .pbStar2.Image = My.Resources.star
-                            .pbStar3.Image = My.Resources.star
-                            .pbStar4.Image = My.Resources.star
-                            .pbStar5.Image = My.Resources.star
-                            .pbStar6.Image = My.Resources.star
-                            .pbStar7.Image = My.Resources.starempty
-                            .pbStar8.Image = My.Resources.starempty
-                            .pbStar9.Image = My.Resources.starempty
-                            .pbStar10.Image = My.Resources.starempty
-                        Case Is <= 6.5
-                            .pbStar1.Image = My.Resources.star
-                            .pbStar2.Image = My.Resources.star
-                            .pbStar3.Image = My.Resources.star
-                            .pbStar4.Image = My.Resources.star
-                            .pbStar5.Image = My.Resources.star
-                            .pbStar6.Image = My.Resources.star
-                            .pbStar7.Image = My.Resources.starhalf
-                            .pbStar8.Image = My.Resources.starempty
-                            .pbStar9.Image = My.Resources.starempty
-                            .pbStar10.Image = My.Resources.starempty
-                        Case Is <= 7
-                            .pbStar1.Image = My.Resources.star
-                            .pbStar2.Image = My.Resources.star
-                            .pbStar3.Image = My.Resources.star
-                            .pbStar4.Image = My.Resources.star
-                            .pbStar5.Image = My.Resources.star
-                            .pbStar6.Image = My.Resources.star
-                            .pbStar7.Image = My.Resources.star
-                            .pbStar8.Image = My.Resources.starempty
-                            .pbStar9.Image = My.Resources.starempty
-                            .pbStar10.Image = My.Resources.starempty
-                        Case Is <= 7.5
-                            .pbStar1.Image = My.Resources.star
-                            .pbStar2.Image = My.Resources.star
-                            .pbStar3.Image = My.Resources.star
-                            .pbStar4.Image = My.Resources.star
-                            .pbStar5.Image = My.Resources.star
-                            .pbStar6.Image = My.Resources.star
-                            .pbStar7.Image = My.Resources.star
-                            .pbStar8.Image = My.Resources.starhalf
-                            .pbStar9.Image = My.Resources.starempty
-                            .pbStar10.Image = My.Resources.starempty
-                        Case Is <= 8
-                            .pbStar1.Image = My.Resources.star
-                            .pbStar2.Image = My.Resources.star
-                            .pbStar3.Image = My.Resources.star
-                            .pbStar4.Image = My.Resources.star
-                            .pbStar5.Image = My.Resources.star
-                            .pbStar6.Image = My.Resources.star
-                            .pbStar7.Image = My.Resources.star
-                            .pbStar8.Image = My.Resources.star
-                            .pbStar9.Image = My.Resources.starempty
-                            .pbStar10.Image = My.Resources.starempty
-                        Case Is <= 8.5
-                            .pbStar1.Image = My.Resources.star
-                            .pbStar2.Image = My.Resources.star
-                            .pbStar3.Image = My.Resources.star
-                            .pbStar4.Image = My.Resources.star
-                            .pbStar5.Image = My.Resources.star
-                            .pbStar6.Image = My.Resources.star
-                            .pbStar7.Image = My.Resources.star
-                            .pbStar8.Image = My.Resources.star
-                            .pbStar9.Image = My.Resources.starhalf
-                            .pbStar10.Image = My.Resources.starempty
-                        Case Is <= 9
-                            .pbStar1.Image = My.Resources.star
-                            .pbStar2.Image = My.Resources.star
-                            .pbStar3.Image = My.Resources.star
-                            .pbStar4.Image = My.Resources.star
-                            .pbStar5.Image = My.Resources.star
-                            .pbStar6.Image = My.Resources.star
-                            .pbStar7.Image = My.Resources.star
-                            .pbStar8.Image = My.Resources.star
-                            .pbStar9.Image = My.Resources.star
-                            .pbStar10.Image = My.Resources.starempty
-                        Case Is <= 9.5
-                            .pbStar1.Image = My.Resources.star
-                            .pbStar2.Image = My.Resources.star
-                            .pbStar3.Image = My.Resources.star
-                            .pbStar4.Image = My.Resources.star
-                            .pbStar5.Image = My.Resources.star
-                            .pbStar6.Image = My.Resources.star
-                            .pbStar7.Image = My.Resources.star
-                            .pbStar8.Image = My.Resources.star
-                            .pbStar9.Image = My.Resources.star
-                            .pbStar10.Image = My.Resources.starhalf
-                        Case Else
-                            .pbStar1.Image = My.Resources.star
-                            .pbStar2.Image = My.Resources.star
-                            .pbStar3.Image = My.Resources.star
-                            .pbStar4.Image = My.Resources.star
-                            .pbStar5.Image = My.Resources.star
-                            .pbStar6.Image = My.Resources.star
-                            .pbStar7.Image = My.Resources.star
-                            .pbStar8.Image = My.Resources.star
-                            .pbStar9.Image = My.Resources.star
-                            .pbStar10.Image = My.Resources.star
-                    End Select
-                End If
-            End With
+            If sinRating >= 0.5 Then ' if rating is less than .5 out of ten, consider it a 0
+                Select Case (sinRating)
+                    Case Is <= 0.5
+                        pbStar1.Image = My.Resources.starhalf
+                        pbStar2.Image = My.Resources.starempty
+                        pbStar3.Image = My.Resources.starempty
+                        pbStar4.Image = My.Resources.starempty
+                        pbStar5.Image = My.Resources.starempty
+                        pbStar6.Image = My.Resources.starempty
+                        pbStar7.Image = My.Resources.starempty
+                        pbStar8.Image = My.Resources.starempty
+                        pbStar9.Image = My.Resources.starempty
+                        pbStar10.Image = My.Resources.starempty
+                    Case Is <= 1
+                        pbStar1.Image = My.Resources.star
+                        pbStar2.Image = My.Resources.starempty
+                        pbStar3.Image = My.Resources.starempty
+                        pbStar4.Image = My.Resources.starempty
+                        pbStar5.Image = My.Resources.starempty
+                        pbStar6.Image = My.Resources.starempty
+                        pbStar7.Image = My.Resources.starempty
+                        pbStar8.Image = My.Resources.starempty
+                        pbStar9.Image = My.Resources.starempty
+                        pbStar10.Image = My.Resources.starempty
+                    Case Is <= 1.5
+                        pbStar1.Image = My.Resources.star
+                        pbStar2.Image = My.Resources.starhalf
+                        pbStar3.Image = My.Resources.starempty
+                        pbStar4.Image = My.Resources.starempty
+                        pbStar5.Image = My.Resources.starempty
+                        pbStar6.Image = My.Resources.starempty
+                        pbStar7.Image = My.Resources.starempty
+                        pbStar8.Image = My.Resources.starempty
+                        pbStar9.Image = My.Resources.starempty
+                        pbStar10.Image = My.Resources.starempty
+                    Case Is <= 2
+                        pbStar1.Image = My.Resources.star
+                        pbStar2.Image = My.Resources.star
+                        pbStar3.Image = My.Resources.starempty
+                        pbStar4.Image = My.Resources.starempty
+                        pbStar5.Image = My.Resources.starempty
+                        pbStar6.Image = My.Resources.starempty
+                        pbStar7.Image = My.Resources.starempty
+                        pbStar8.Image = My.Resources.starempty
+                        pbStar9.Image = My.Resources.starempty
+                        pbStar10.Image = My.Resources.starempty
+                    Case Is <= 2.5
+                        pbStar1.Image = My.Resources.star
+                        pbStar2.Image = My.Resources.star
+                        pbStar3.Image = My.Resources.starhalf
+                        pbStar4.Image = My.Resources.starempty
+                        pbStar5.Image = My.Resources.starempty
+                        pbStar6.Image = My.Resources.starempty
+                        pbStar7.Image = My.Resources.starempty
+                        pbStar8.Image = My.Resources.starempty
+                        pbStar9.Image = My.Resources.starempty
+                        pbStar10.Image = My.Resources.starempty
+                    Case Is <= 3
+                        pbStar1.Image = My.Resources.star
+                        pbStar2.Image = My.Resources.star
+                        pbStar3.Image = My.Resources.star
+                        pbStar4.Image = My.Resources.starempty
+                        pbStar5.Image = My.Resources.starempty
+                        pbStar6.Image = My.Resources.starempty
+                        pbStar7.Image = My.Resources.starempty
+                        pbStar8.Image = My.Resources.starempty
+                        pbStar9.Image = My.Resources.starempty
+                        pbStar10.Image = My.Resources.starempty
+                    Case Is <= 3.5
+                        pbStar1.Image = My.Resources.star
+                        pbStar2.Image = My.Resources.star
+                        pbStar3.Image = My.Resources.star
+                        pbStar4.Image = My.Resources.starhalf
+                        pbStar5.Image = My.Resources.starempty
+                        pbStar6.Image = My.Resources.starempty
+                        pbStar7.Image = My.Resources.starempty
+                        pbStar8.Image = My.Resources.starempty
+                        pbStar9.Image = My.Resources.starempty
+                        pbStar10.Image = My.Resources.starempty
+                    Case Is <= 4
+                        pbStar1.Image = My.Resources.star
+                        pbStar2.Image = My.Resources.star
+                        pbStar3.Image = My.Resources.star
+                        pbStar4.Image = My.Resources.star
+                        pbStar5.Image = My.Resources.starempty
+                        pbStar6.Image = My.Resources.starempty
+                        pbStar7.Image = My.Resources.starempty
+                        pbStar8.Image = My.Resources.starempty
+                        pbStar9.Image = My.Resources.starempty
+                        pbStar10.Image = My.Resources.starempty
+                    Case Is <= 4.5
+                        pbStar1.Image = My.Resources.star
+                        pbStar2.Image = My.Resources.star
+                        pbStar3.Image = My.Resources.star
+                        pbStar4.Image = My.Resources.star
+                        pbStar5.Image = My.Resources.starhalf
+                        pbStar6.Image = My.Resources.starempty
+                        pbStar7.Image = My.Resources.starempty
+                        pbStar8.Image = My.Resources.starempty
+                        pbStar9.Image = My.Resources.starempty
+                        pbStar10.Image = My.Resources.starempty
+                    Case Is <= 5
+                        pbStar1.Image = My.Resources.star
+                        pbStar2.Image = My.Resources.star
+                        pbStar3.Image = My.Resources.star
+                        pbStar4.Image = My.Resources.star
+                        pbStar5.Image = My.Resources.star
+                        pbStar6.Image = My.Resources.starempty
+                        pbStar7.Image = My.Resources.starempty
+                        pbStar8.Image = My.Resources.starempty
+                        pbStar9.Image = My.Resources.starempty
+                        pbStar10.Image = My.Resources.starempty
+                    Case Is <= 5.5
+                        pbStar1.Image = My.Resources.star
+                        pbStar2.Image = My.Resources.star
+                        pbStar3.Image = My.Resources.star
+                        pbStar4.Image = My.Resources.star
+                        pbStar5.Image = My.Resources.star
+                        pbStar6.Image = My.Resources.starhalf
+                        pbStar7.Image = My.Resources.starempty
+                        pbStar8.Image = My.Resources.starempty
+                        pbStar9.Image = My.Resources.starempty
+                        pbStar10.Image = My.Resources.starempty
+                    Case Is <= 6
+                        pbStar1.Image = My.Resources.star
+                        pbStar2.Image = My.Resources.star
+                        pbStar3.Image = My.Resources.star
+                        pbStar4.Image = My.Resources.star
+                        pbStar5.Image = My.Resources.star
+                        pbStar6.Image = My.Resources.star
+                        pbStar7.Image = My.Resources.starempty
+                        pbStar8.Image = My.Resources.starempty
+                        pbStar9.Image = My.Resources.starempty
+                        pbStar10.Image = My.Resources.starempty
+                    Case Is <= 6.5
+                        pbStar1.Image = My.Resources.star
+                        pbStar2.Image = My.Resources.star
+                        pbStar3.Image = My.Resources.star
+                        pbStar4.Image = My.Resources.star
+                        pbStar5.Image = My.Resources.star
+                        pbStar6.Image = My.Resources.star
+                        pbStar7.Image = My.Resources.starhalf
+                        pbStar8.Image = My.Resources.starempty
+                        pbStar9.Image = My.Resources.starempty
+                        pbStar10.Image = My.Resources.starempty
+                    Case Is <= 7
+                        pbStar1.Image = My.Resources.star
+                        pbStar2.Image = My.Resources.star
+                        pbStar3.Image = My.Resources.star
+                        pbStar4.Image = My.Resources.star
+                        pbStar5.Image = My.Resources.star
+                        pbStar6.Image = My.Resources.star
+                        pbStar7.Image = My.Resources.star
+                        pbStar8.Image = My.Resources.starempty
+                        pbStar9.Image = My.Resources.starempty
+                        pbStar10.Image = My.Resources.starempty
+                    Case Is <= 7.5
+                        pbStar1.Image = My.Resources.star
+                        pbStar2.Image = My.Resources.star
+                        pbStar3.Image = My.Resources.star
+                        pbStar4.Image = My.Resources.star
+                        pbStar5.Image = My.Resources.star
+                        pbStar6.Image = My.Resources.star
+                        pbStar7.Image = My.Resources.star
+                        pbStar8.Image = My.Resources.starhalf
+                        pbStar9.Image = My.Resources.starempty
+                        pbStar10.Image = My.Resources.starempty
+                    Case Is <= 8
+                        pbStar1.Image = My.Resources.star
+                        pbStar2.Image = My.Resources.star
+                        pbStar3.Image = My.Resources.star
+                        pbStar4.Image = My.Resources.star
+                        pbStar5.Image = My.Resources.star
+                        pbStar6.Image = My.Resources.star
+                        pbStar7.Image = My.Resources.star
+                        pbStar8.Image = My.Resources.star
+                        pbStar9.Image = My.Resources.starempty
+                        pbStar10.Image = My.Resources.starempty
+                    Case Is <= 8.5
+                        pbStar1.Image = My.Resources.star
+                        pbStar2.Image = My.Resources.star
+                        pbStar3.Image = My.Resources.star
+                        pbStar4.Image = My.Resources.star
+                        pbStar5.Image = My.Resources.star
+                        pbStar6.Image = My.Resources.star
+                        pbStar7.Image = My.Resources.star
+                        pbStar8.Image = My.Resources.star
+                        pbStar9.Image = My.Resources.starhalf
+                        pbStar10.Image = My.Resources.starempty
+                    Case Is <= 9
+                        pbStar1.Image = My.Resources.star
+                        pbStar2.Image = My.Resources.star
+                        pbStar3.Image = My.Resources.star
+                        pbStar4.Image = My.Resources.star
+                        pbStar5.Image = My.Resources.star
+                        pbStar6.Image = My.Resources.star
+                        pbStar7.Image = My.Resources.star
+                        pbStar8.Image = My.Resources.star
+                        pbStar9.Image = My.Resources.star
+                        pbStar10.Image = My.Resources.starempty
+                    Case Is <= 9.5
+                        pbStar1.Image = My.Resources.star
+                        pbStar2.Image = My.Resources.star
+                        pbStar3.Image = My.Resources.star
+                        pbStar4.Image = My.Resources.star
+                        pbStar5.Image = My.Resources.star
+                        pbStar6.Image = My.Resources.star
+                        pbStar7.Image = My.Resources.star
+                        pbStar8.Image = My.Resources.star
+                        pbStar9.Image = My.Resources.star
+                        pbStar10.Image = My.Resources.starhalf
+                    Case Else
+                        pbStar1.Image = My.Resources.star
+                        pbStar2.Image = My.Resources.star
+                        pbStar3.Image = My.Resources.star
+                        pbStar4.Image = My.Resources.star
+                        pbStar5.Image = My.Resources.star
+                        pbStar6.Image = My.Resources.star
+                        pbStar7.Image = My.Resources.star
+                        pbStar8.Image = My.Resources.star
+                        pbStar9.Image = My.Resources.star
+                        pbStar10.Image = My.Resources.star
+                End Select
+            End If
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
@@ -1930,12 +1907,11 @@ Public Class frmMain
             OldListTitle = tScrapeItem.DataRow.Item("ListTitle").ToString
             bwMovieScraper.ReportProgress(1, OldListTitle)
 
-            dScrapeRow = tScrapeItem.DataRow
+            Dim dScrapeRow As DataRow = tScrapeItem.DataRow
 
             logger.Trace(String.Format("[Movie Scraper] [Start] Scraping {0}", OldListTitle))
 
             DBScrapeMovie = Master.DB.Load_Movie(Convert.ToInt64(tScrapeItem.DataRow.Item("idMovie")))
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, Nothing, False, DBScrapeMovie)
 
             If tScrapeItem.ScrapeModifiers.MainNFO Then
                 If ModulesManager.Instance.ScrapeData_Movie(DBScrapeMovie, tScrapeItem.ScrapeModifiers, Args.ScrapeType, Args.ScrapeOptions, Args.ScrapeList.Count = 1) Then
@@ -2162,7 +2138,7 @@ Public Class frmMain
             OldTMDBColID = tScrapeItem.DataRow.Item("TMDBColID").ToString
             bwMovieSetScraper.ReportProgress(1, OldListTitle)
 
-            dScrapeRow = tScrapeItem.DataRow
+            Dim dScrapeRow As DataRow = tScrapeItem.DataRow
 
             logger.Trace(String.Format("[MovieSet Scraper] [Start] Scraping {0}", OldListTitle))
 
@@ -2376,7 +2352,7 @@ Public Class frmMain
             OldListTitle = tScrapeItem.DataRow.Item("ListTitle").ToString
             bwTVScraper.ReportProgress(1, OldListTitle)
 
-            dScrapeRow = tScrapeItem.DataRow
+            Dim dScrapeRow As DataRow = tScrapeItem.DataRow
 
             logger.Trace(String.Format("[TVScraper] [Start] Scraping {0}", OldListTitle))
 
@@ -2529,7 +2505,7 @@ Public Class frmMain
             OldEpisodeTitle = tScrapeItem.DataRow.Item("Title").ToString
             bwTVEpisodeScraper.ReportProgress(1, OldEpisodeTitle)
 
-            dScrapeRow = tScrapeItem.DataRow
+            Dim dScrapeRow As DataRow = tScrapeItem.DataRow
 
             logger.Trace(String.Format("[TVEpisodeScraper] [Start] Scraping {0}", OldEpisodeTitle))
 
@@ -2673,7 +2649,7 @@ Public Class frmMain
 
             If bwTVSeasonScraper.CancellationPending Then Exit For
 
-            dScrapeRow = tScrapeItem.DataRow
+            Dim dScrapeRow As DataRow = tScrapeItem.DataRow
 
             DBScrapeSeason = Master.DB.Load_TVSeason(Convert.ToInt64(tScrapeItem.DataRow.Item("idSeason")), True, False)
             'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, DBScrapeMovie)
@@ -3105,9 +3081,9 @@ doCancel:
             Application.DoEvents()
             Threading.Thread.Sleep(50)
         End While
-        If Not currList_Shows = CType(cbFilterLists_Shows.SelectedItem, KeyValuePair(Of String, String)).Value Then
-            currList_Shows = CType(cbFilterLists_Shows.SelectedItem, KeyValuePair(Of String, String)).Value
-            ModulesManager.Instance.RuntimeObjects.ListShows = currList_Shows
+        If Not currList_TVShows = CType(cbFilterLists_Shows.SelectedItem, KeyValuePair(Of String, String)).Value Then
+            currList_TVShows = CType(cbFilterLists_Shows.SelectedItem, KeyValuePair(Of String, String)).Value
+            ModulesManager.Instance.RuntimeObjects.ListTVShows = currList_TVShows
             FillList(False, False, True)
         End If
     End Sub
@@ -3159,7 +3135,7 @@ doCancel:
 
     Private Sub SetFilterMissing_Shows()
         Dim MissingFilter As New List(Of String)
-        FilterArray_Shows.Remove(filMissing_Shows)
+        FilterArray_TVShows.Remove(filMissing_TVShows)
         If chkFilterMissing_Shows.Checked Then
             With Master.eSettings
                 If .TVShowMissingBanner Then MissingFilter.Add("BannerPath IS NULL OR BannerPath=''")
@@ -3173,8 +3149,8 @@ doCancel:
                 If .TVShowMissingPoster Then MissingFilter.Add("PosterPath IS NULL OR PosterPath=''")
                 If .TVShowMissingTheme Then MissingFilter.Add("ThemePath IS NULL OR ThemePath=''")
             End With
-            filMissing_Shows = Microsoft.VisualBasic.Strings.Join(MissingFilter.ToArray, " OR ")
-            If filMissing_Shows IsNot Nothing Then FilterArray_Shows.Add(filMissing_Shows)
+            filMissing_TVShows = Microsoft.VisualBasic.Strings.Join(MissingFilter.ToArray, " OR ")
+            If filMissing_TVShows IsNot Nothing Then FilterArray_TVShows.Add(filMissing_TVShows)
         End If
         RunFilter_Shows()
     End Sub
@@ -3291,7 +3267,7 @@ doCancel:
     End Sub
 
     Private Sub cbSearchShows_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbSearchShows.SelectedIndexChanged
-        currTextSearch_Shows = txtSearchShows.Text
+        currTextSearch_TVShows = txtSearchShows.Text
 
         tmrSearchWait_Shows.Enabled = False
         tmrSearch_Shows.Enabled = False
@@ -3353,9 +3329,9 @@ doCancel:
 
     Private Sub chkFilterLock_Shows_Movies_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkFilterLock_Shows.Click
         If chkFilterLock_Shows.Checked Then
-            FilterArray_Shows.Add("Lock = 1")
+            FilterArray_TVShows.Add("Lock = 1")
         Else
-            FilterArray_Shows.Remove("Lock = 1")
+            FilterArray_TVShows.Remove("Lock = 1")
         End If
         RunFilter_Shows()
     End Sub
@@ -3380,9 +3356,9 @@ doCancel:
 
     Private Sub chkFilterMark_Shows_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkFilterMark_Shows.Click
         If chkFilterMark_Shows.Checked Then
-            FilterArray_Shows.Add("mark = 1")
+            FilterArray_TVShows.Add("mark = 1")
         Else
-            FilterArray_Shows.Remove("mark = 1")
+            FilterArray_TVShows.Remove("mark = 1")
         End If
         RunFilter_Shows()
     End Sub
@@ -3455,18 +3431,18 @@ doCancel:
 
     Private Sub chkFilterNewEpisodes_Shows_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkFilterNewEpisodes_Shows.Click
         If chkFilterNewEpisodes_Shows.Checked Then
-            FilterArray_Shows.Add("NewEpisodes > 0")
+            FilterArray_TVShows.Add("NewEpisodes > 0")
         Else
-            FilterArray_Shows.Remove("NewEpisodes > 0")
+            FilterArray_TVShows.Remove("NewEpisodes > 0")
         End If
         RunFilter_Shows()
     End Sub
 
     Private Sub chkFilterNewShows_Shows_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkFilterNewShows_Shows.Click
         If chkFilterNewShows_Shows.Checked Then
-            FilterArray_Shows.Add("new = 1")
+            FilterArray_TVShows.Add("new = 1")
         Else
-            FilterArray_Shows.Remove("new = 1")
+            FilterArray_TVShows.Remove("new = 1")
         End If
         RunFilter_Shows()
     End Sub
@@ -3780,7 +3756,7 @@ doCancel:
 
             If clbFilterGenres_Shows.CheckedItems.Count > 0 Then
                 txtFilterGenre_Shows.Text = String.Empty
-                FilterArray_Shows.Remove(filGenre_Shows)
+                FilterArray_TVShows.Remove(filGenre_TVShows)
 
                 Dim alGenres As New List(Of String)
                 alGenres.AddRange(clbFilterGenres_Shows.CheckedItems.OfType(Of String).ToList)
@@ -3800,18 +3776,18 @@ doCancel:
                 Next
 
                 If rbFilterAnd_Shows.Checked Then
-                    filGenre_Shows = String.Format("({0})", Microsoft.VisualBasic.Strings.Join(alGenres.ToArray, " AND "))
+                    filGenre_TVShows = String.Format("({0})", Microsoft.VisualBasic.Strings.Join(alGenres.ToArray, " AND "))
                 Else
-                    filGenre_Shows = String.Format("({0})", Microsoft.VisualBasic.Strings.Join(alGenres.ToArray, " OR "))
+                    filGenre_TVShows = String.Format("({0})", Microsoft.VisualBasic.Strings.Join(alGenres.ToArray, " OR "))
                 End If
 
-                FilterArray_Shows.Add(filGenre_Shows)
+                FilterArray_TVShows.Add(filGenre_TVShows)
                 RunFilter_Shows()
             Else
-                If Not String.IsNullOrEmpty(filGenre_Shows) Then
+                If Not String.IsNullOrEmpty(filGenre_TVShows) Then
                     txtFilterGenre_Shows.Text = String.Empty
-                    FilterArray_Shows.Remove(filGenre_Shows)
-                    filGenre_Shows = String.Empty
+                    FilterArray_TVShows.Remove(filGenre_TVShows)
+                    filGenre_TVShows = String.Empty
                     RunFilter_Shows()
                 End If
             End If
@@ -3952,7 +3928,7 @@ doCancel:
 
             If clbFilterSource_Shows.CheckedItems.Count > 0 Then
                 txtFilterSource_Shows.Text = String.Empty
-                FilterArray_Shows.Remove(filSource_Shows)
+                FilterArray_TVShows.Remove(filSource_TVShows)
 
                 Dim alSource As New List(Of String)
                 alSource.AddRange(clbFilterSource_Shows.CheckedItems.OfType(Of String).ToList)
@@ -3963,15 +3939,15 @@ doCancel:
                     alSource.Item(i) = String.Format("Source = '{0}'", alSource.Item(i))
                 Next
 
-                filSource_Shows = String.Format("({0})", Microsoft.VisualBasic.Strings.Join(alSource.ToArray, " OR "))
+                filSource_TVShows = String.Format("({0})", Microsoft.VisualBasic.Strings.Join(alSource.ToArray, " OR "))
 
-                FilterArray_Shows.Add(filSource_Shows)
+                FilterArray_TVShows.Add(filSource_TVShows)
                 RunFilter_Shows()
             Else
-                If Not String.IsNullOrEmpty(filSource_Shows) Then
+                If Not String.IsNullOrEmpty(filSource_TVShows) Then
                     txtFilterSource_Shows.Text = String.Empty
-                    FilterArray_Shows.Remove(filSource_Shows)
-                    filSource_Shows = String.Empty
+                    FilterArray_TVShows.Remove(filSource_TVShows)
+                    filSource_TVShows = String.Empty
                     RunFilter_Shows()
                 End If
             End If
@@ -4201,11 +4177,11 @@ doCancel:
     Private Sub ClearFilters_Shows(Optional ByVal Reload As Boolean = False)
         Try
             bsTVShows.RemoveFilter()
-            FilterArray_Shows.Clear()
-            filSearch_Shows = String.Empty
-            filGenre_Shows = String.Empty
+            FilterArray_TVShows.Clear()
+            filSearch_TVShows = String.Empty
+            filGenre_TVShows = String.Empty
             'Me.filYear_Shows = String.Empty
-            filSource_Shows = String.Empty
+            filSource_TVShows = String.Empty
 
             RemoveHandler txtSearchShows.TextChanged, AddressOf txtSearchShows_TextChanged
             txtSearchShows.Text = String.Empty
@@ -4261,7 +4237,7 @@ doCancel:
 
             If Reload Then FillList(False, False, True)
 
-            ModulesManager.Instance.RuntimeObjects.FilterShows = String.Empty
+            ModulesManager.Instance.RuntimeObjects.FilterTVShows = String.Empty
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
@@ -4378,7 +4354,7 @@ doCancel:
             If SeasonsToDelete.Count > 0 Then
                 Using dlg As New dlgDeleteConfirm
                     If dlg.ShowDialog(SeasonsToDelete, Enums.DelType.Seasons) = Windows.Forms.DialogResult.OK Then
-                        FillSeasons(Convert.ToInt32(dgvTVSeasons.Item("idShow", currRow_TVSeason).Value))
+                        FillSeasons(Convert.ToInt64(dgvTVSeasons.Item("idShow", currRow_TVSeason).Value))
                         SetTVCount()
                     End If
                 End Using
@@ -4405,7 +4381,7 @@ doCancel:
             If EpsToDelete.Count > 0 Then
                 Using dlg As New dlgDeleteConfirm
                     If dlg.ShowDialog(EpsToDelete, Enums.DelType.Episodes) = Windows.Forms.DialogResult.OK Then
-                        FillEpisodes(Convert.ToInt32(dgvTVSeasons.Item("idShow", currRow_TVSeason).Value), Convert.ToInt32(dgvTVSeasons.Item("Season", currRow_TVSeason).Value))
+                        FillEpisodes(Convert.ToInt64(dgvTVSeasons.Item("idShow", currRow_TVSeason).Value), Convert.ToInt32(dgvTVSeasons.Item("Season", currRow_TVSeason).Value))
                         SetTVCount()
                     End If
                 End Using
@@ -4447,7 +4423,7 @@ doCancel:
         If dgvTVEpisodes.SelectedRows.Count > 1 Then Return
 
         Dim indX As Integer = dgvTVEpisodes.SelectedRows(0).Index
-        Dim ID As Integer = Convert.ToInt32(dgvTVEpisodes.Item("idEpisode", indX).Value)
+        Dim ID As Long = Convert.ToInt64(dgvTVEpisodes.Item("idEpisode", indX).Value)
         Dim tmpDBTVEpisode As Database.DBElement = Master.DB.Load_TVEpisode(ID, True)
         Edit_TVEpisode(tmpDBTVEpisode)
     End Sub
@@ -4456,7 +4432,7 @@ doCancel:
         If dgvMovies.SelectedRows.Count > 1 Then Return
 
         Dim indX As Integer = dgvMovies.SelectedRows(0).Index
-        Dim ID As Integer = Convert.ToInt32(dgvMovies.Item("idMovie", indX).Value)
+        Dim ID As Long = Convert.ToInt64(dgvMovies.Item("idMovie", indX).Value)
         Dim tmpDBMovie As Database.DBElement = Master.DB.Load_Movie(ID)
         Edit_Movie(tmpDBMovie)
     End Sub
@@ -4465,7 +4441,7 @@ doCancel:
         If dgvTVShows.SelectedRows.Count > 1 Then Return
 
         Dim indX As Integer = dgvTVShows.SelectedRows(0).Index
-        Dim ID As Integer = Convert.ToInt32(dgvTVShows.Item("idShow", indX).Value)
+        Dim ID As Long = Convert.ToInt64(dgvTVShows.Item("idShow", indX).Value)
         Dim tmpDBMTVShow As Database.DBElement = Master.DB.Load_TVShow(ID, True, False)
         Edit_TVShow(tmpDBMTVShow)
     End Sub
@@ -4563,7 +4539,7 @@ doCancel:
                 If LockCount = 0 OrElse NotLockCount = 0 Then
                     Using SQLSeacommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                         Dim parSeaLock As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parSeaLock", DbType.Boolean, 0, "Lock")
-                        Dim parSeaID As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parSeaID", DbType.Int32, 0, "idShow")
+                        Dim parTVShowID As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parTVShowID", DbType.Int64, 0, "idShow")
                         Dim parSeason As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parSeason", DbType.Int32, 0, "Season")
                         SQLSeacommand.CommandText = "UPDATE seasons SET Lock = (?) WHERE idShow = (?) AND Season = (?);"
                         If LockCount = 0 Then
@@ -4571,7 +4547,7 @@ doCancel:
                         ElseIf NotLockCount = 0 Then
                             parSeaLock.Value = True
                         End If
-                        parSeaID.Value = Convert.ToInt32(dgvTVSeasons.SelectedRows(0).Cells("idShow").Value)
+                        parTVShowID.Value = Convert.ToInt64(dgvTVSeasons.SelectedRows(0).Cells("idShow").Value)
                         parSeason.Value = Convert.ToInt32(dgvTVSeasons.SelectedRows(0).Cells("Season").Value)
                         SQLSeacommand.ExecuteNonQuery()
                         dgvTVSeasons.SelectedRows(0).Cells("Lock").Value = parSeaLock.Value
@@ -4840,7 +4816,7 @@ doCancel:
                 If MarkCount = 0 OrElse NotMarkCount = 0 Then
                     Using SQLSeacommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                         Dim parSeaMark As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parSeaMark", DbType.Boolean, 0, "Mark")
-                        Dim parSeaID As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parSeaID", DbType.Int32, 0, "idShow")
+                        Dim parTVShowID As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parTVShowID", DbType.Int64, 0, "idShow")
                         Dim parSeason As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parSeason", DbType.Int32, 0, "Season")
                         SQLSeacommand.CommandText = "UPDATE seasons SET Mark = (?) WHERE idShow = (?) AND Season = (?);"
                         If MarkCount = 0 Then
@@ -4848,7 +4824,7 @@ doCancel:
                         ElseIf NotMarkCount = 0 Then
                             parSeaMark.Value = True
                         End If
-                        parSeaID.Value = Convert.ToInt32(dgvTVSeasons.SelectedRows(0).Cells("idShow").Value)
+                        parTVShowID.Value = Convert.ToInt64(dgvTVSeasons.SelectedRows(0).Cells("idShow").Value)
                         parSeason.Value = Convert.ToInt32(dgvTVSeasons.SelectedRows(0).Cells("Season").Value)
                         SQLSeacommand.ExecuteNonQuery()
                         dgvTVSeasons.SelectedRows(0).Cells("Mark").Value = parSeaMark.Value
@@ -5271,7 +5247,7 @@ doCancel:
     Private Sub cmnuMovieEditMetaData_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieEditMetaData.Click
         If dgvMovies.SelectedRows.Count > 1 Then Return
         Dim indX As Integer = dgvMovies.SelectedRows(0).Index
-        Dim ID As Integer = Convert.ToInt32(dgvMovies.Item("idMovie", indX).Value)
+        Dim ID As Long = Convert.ToInt64(dgvMovies.Item("idMovie", indX).Value)
         Dim DBElement As Database.DBElement = Master.DB.Load_Movie(ID)
         Using dEditMeta As New dlgFileInfo(DBElement, False)
             Select Case dEditMeta.ShowDialog()
@@ -5314,7 +5290,7 @@ doCancel:
         If dgvMovieSets.SelectedRows.Count > 1 Then Return
 
         Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
-        Dim ID As Integer = Convert.ToInt32(dgvMovieSets.Item("idSet", indX).Value)
+        Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item("idSet", indX).Value)
         Dim tmpDBMovieSet As Database.DBElement = Master.DB.Load_MovieSet(ID)
         Edit_MovieSet(tmpDBMovieSet)
     End Sub
@@ -5361,12 +5337,13 @@ doCancel:
 
             For Each sRow As DataGridViewRow In dgvMovieSets.SelectedRows
                 Master.DB.Delete_MovieSet(Convert.ToInt64(sRow.Cells("idSet").Value), True)
+                RemoveRow_MovieSet(Convert.ToInt64(sRow.Cells("idSet").Value))
             Next
 
             SQLtransaction.Commit()
         End Using
 
-        FillList(True, True, False)
+        FillList(True, False, False)
     End Sub
 
     Private Sub cmnuEpisodeReload_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeReload.Click
@@ -5397,7 +5374,7 @@ doCancel:
         dgvTVEpisodes.Cursor = Cursors.Default
         SetControlsEnabled(True)
 
-        If doFill Then FillEpisodes(Convert.ToInt32(dgvTVEpisodes.SelectedRows(0).Cells("idEpisode").Value), Convert.ToInt32(dgvTVEpisodes.SelectedRows(0).Cells("Season").Value))
+        If doFill Then FillEpisodes(Convert.ToInt64(dgvTVEpisodes.SelectedRows(0).Cells("idEpisode").Value), Convert.ToInt32(dgvTVEpisodes.SelectedRows(0).Cells("Season").Value))
     End Sub
 
     Private Sub cmnuSeasonReload_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuSeasonReload.Click
@@ -5439,7 +5416,7 @@ doCancel:
         dgvTVEpisodes.Cursor = Cursors.Default
         SetControlsEnabled(True)
 
-        If doFill Then FillSeasons(Convert.ToInt32(dgvTVSeasons.SelectedRows(0).Cells("idShow").Value))
+        If doFill Then FillSeasons(Convert.ToInt64(dgvTVSeasons.SelectedRows(0).Cells("idShow").Value))
     End Sub
 
     Private Sub cmnuSeasonReloadFull_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuSeasonReloadFull.Click
@@ -5481,7 +5458,7 @@ doCancel:
         dgvTVEpisodes.Cursor = Cursors.Default
         SetControlsEnabled(True)
 
-        If doFill Then FillSeasons(Convert.ToInt32(dgvTVSeasons.SelectedRows(0).Cells("idShow").Value))
+        If doFill Then FillSeasons(Convert.ToInt64(dgvTVSeasons.SelectedRows(0).Cells("idShow").Value))
     End Sub
 
     Private Sub cmnuShowReload_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowReload.Click
@@ -5587,16 +5564,13 @@ doCancel:
             Dim idShow As Integer = CInt(dgvTVSeasons.SelectedRows(0).Cells("idShow").Value)
             For Each sRow As DataGridViewRow In dgvTVSeasons.SelectedRows
                 If Not CInt(sRow.Cells("Season").Value) = 999 Then
-                    Master.DB.Delete_TVSeason(Convert.ToInt32(sRow.Cells("idSeason").Value), True)
+                    Master.DB.Delete_TVSeason(Convert.ToInt64(sRow.Cells("idSeason").Value), True)
+                    RemoveRow_TVSeason(Convert.ToInt64(sRow.Cells("idSeason").Value))
                 End If
             Next
             Reload_TVShow(idShow, True, True, False)
             SQLtransaction.Commit()
         End Using
-
-        If dgvTVSeasons.RowCount > 0 Then
-            FillSeasons(Convert.ToInt32(dgvTVSeasons.SelectedRows(0).Cells("idShow").Value))
-        End If
 
         SetTVCount()
     End Sub
@@ -5610,13 +5584,13 @@ doCancel:
             For Each sRow As DataGridViewRow In dgvTVEpisodes.SelectedRows
                 If Not SeasonsList.Contains(CInt(sRow.Cells("Season").Value)) Then SeasonsList.Add(CInt(sRow.Cells("Season").Value))
                 If Not Convert.ToInt64(sRow.Cells("idFile").Value) = -1 Then
-                    Master.DB.Delete_TVEpisode(Convert.ToInt32(sRow.Cells("idEpisode").Value), False, False, True) 'set the episode as "missing episode"
+                    Master.DB.Delete_TVEpisode(Convert.ToInt64(sRow.Cells("idEpisode").Value), False, False, True) 'set the episode as "missing episode"
+                    RefreshRow_TVEpisode(Convert.ToInt64(sRow.Cells("idEpisode").Value))
                 Else
-                    Master.DB.Delete_TVEpisode(Convert.ToInt32(sRow.Cells("idEpisode").Value), True, False, True) 'remove the "missing episode" from DB
+                    Master.DB.Delete_TVEpisode(Convert.ToInt64(sRow.Cells("idEpisode").Value), True, False, True) 'remove the "missing episode" from DB
+                    RemoveRow_TVEpisode(Convert.ToInt64(sRow.Cells("idEpisode").Value))
                 End If
             Next
-
-            'Master.DB.CleanSeasons(True)
 
             For Each iSeason In SeasonsList
                 RefreshRow_TVSeason(idShow, iSeason)
@@ -5626,16 +5600,6 @@ doCancel:
             SQLtransaction.Commit()
         End Using
 
-        Dim cSeas As Integer = 0
-
-        If Not currRow_TVSeason = -1 Then
-            cSeas = currRow_TVSeason
-        End If
-
-        If dgvTVEpisodes.RowCount > 0 Then
-            FillEpisodes(Convert.ToInt32(dgvTVSeasons.Item("idShow", cSeas).Value), Convert.ToInt32(dgvTVSeasons.Item("Season", cSeas).Value))
-        End If
-
         SetTVCount()
     End Sub
 
@@ -5644,12 +5608,13 @@ doCancel:
 
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
-                Master.DB.Delete_TVShow(Convert.ToInt32(sRow.Cells("idShow").Value), True)
+                Master.DB.Delete_TVShow(Convert.ToInt64(sRow.Cells("idShow").Value), True)
+                RemoveRow_TVShow(Convert.ToInt64(sRow.Cells("idShow").Value))
             Next
             SQLtransaction.Commit()
         End Using
 
-        FillList(False, False, True)
+        SetTVCount()
     End Sub
 
     Private Sub cmnuEpisodeRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeScrape.Click
@@ -5721,7 +5686,7 @@ doCancel:
 
     Private Sub cmnuSeasonEdit_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonEdit.Click
         Dim indX As Integer = dgvTVSeasons.SelectedRows(0).Index
-        Dim ID As Integer = Convert.ToInt32(dgvTVSeasons.Item("idSeason", indX).Value)
+        Dim ID As Long = Convert.ToInt64(dgvTVSeasons.Item("idSeason", indX).Value)
         Dim tmpDBTVSeason As Database.DBElement = Master.DB.Load_TVSeason(ID, True, False)
         Edit_TVSeason(tmpDBTVSeason)
     End Sub
@@ -5739,7 +5704,7 @@ doCancel:
                 For Each sRow As DataGridViewRow In dgvTVSeasons.SelectedRows
                     SeasonPath = Functions.GetSeasonDirectoryFromShowPath(currTV.ShowPath, Convert.ToInt32(sRow.Cells("Season").Value))
 
-                    Using Explorer As New Diagnostics.Process
+                    Using Explorer As New Process
                         If Master.isWindows Then
                             Explorer.StartInfo.FileName = "explorer.exe"
                             If String.IsNullOrEmpty(SeasonPath) Then
@@ -5953,7 +5918,7 @@ doCancel:
         If fScanner.IsBusy OrElse bwLoadMovieInfo.IsBusy OrElse bwReload_Movies.IsBusy OrElse bwRewrite_Movies.IsBusy OrElse bwMovieScraper.IsBusy OrElse bwCleanDB.IsBusy Then Return
 
         Dim indX As Integer = dgvMovies.SelectedRows(0).Index
-        Dim ID As Integer = Convert.ToInt32(dgvMovies.Item("idMovie", indX).Value)
+        Dim ID As Long = Convert.ToInt64(dgvMovies.Item("idMovie", indX).Value)
         Dim tmpDBMovie As Database.DBElement = Master.DB.Load_Movie(ID)
         Edit_Movie(tmpDBMovie)
     End Sub
@@ -6238,7 +6203,7 @@ doCancel:
                 If dgvMovies.SelectedRows.Count > 1 Then Return
 
                 Dim indX As Integer = dgvMovies.SelectedRows(0).Index
-                Dim ID As Integer = Convert.ToInt32(dgvMovies.Item("idMovie", indX).Value)
+                Dim ID As Long = Convert.ToInt64(dgvMovies.Item("idMovie", indX).Value)
                 Dim tmpDBMovie As Database.DBElement = Master.DB.Load_Movie(ID)
                 Edit_Movie(tmpDBMovie)
             End If
@@ -6351,9 +6316,9 @@ doCancel:
 
                     'Language submenu
                     Dim strLang As String = dgvMovies.Item("Language", dgvHTI.RowIndex).Value.ToString
-                    Dim Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = strLang)
-                    If Language IsNot Nothing AndAlso Not String.IsNullOrEmpty(Language.name) Then
-                        mnuLanguagesLanguage.SelectedItem = Language.name
+                    Dim Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = strLang)
+                    If Language IsNot Nothing AndAlso Not String.IsNullOrEmpty(Language.Description) Then
+                        mnuLanguagesLanguage.SelectedItem = Language.Description
                     Else
                         If Not mnuLanguagesLanguage.Items.Contains(String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")) Then
                             mnuLanguagesLanguage.Items.Insert(0, String.Concat(Master.eLang.GetString(1199, "Select Language"), "..."))
@@ -6532,7 +6497,7 @@ doCancel:
         If fScanner.IsBusy OrElse bwLoadMovieSetInfo.IsBusy OrElse bwReload_MovieSets.IsBusy OrElse bwMovieSetScraper.IsBusy OrElse bwCleanDB.IsBusy Then Return
 
         Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
-        Dim ID As Integer = Convert.ToInt32(dgvMovieSets.Item("idSet", indX).Value)
+        Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item("idSet", indX).Value)
         Dim tmpDBMovieSet As Database.DBElement = Master.DB.Load_MovieSet(ID)
         Edit_MovieSet(tmpDBMovieSet)
     End Sub
@@ -6723,7 +6688,7 @@ doCancel:
             bwCleanDB.IsBusy Then Return
 
             Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
-            Dim ID As Integer = Convert.ToInt32(dgvMovieSets.Item("idSet", indX).Value)
+            Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item("idSet", indX).Value)
             currMovieSet = Master.DB.Load_MovieSet(ID)
             SetStatus(currMovieSet.ListTitle)
             Dim tmpDBMovieSet As Database.DBElement = Master.DB.Load_MovieSet(ID)
@@ -6845,9 +6810,9 @@ doCancel:
 
                     'Language submenu
                     Dim strLang As String = dgvMovieSets.Item("Language", dgvHTI.RowIndex).Value.ToString
-                    Dim Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = strLang)
-                    If Language IsNot Nothing AndAlso Not String.IsNullOrEmpty(Language.name) Then
-                        mnuLanguagesLanguage.SelectedItem = Language.name
+                    Dim Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = strLang)
+                    If Language IsNot Nothing AndAlso Not String.IsNullOrEmpty(Language.Description) Then
+                        mnuLanguagesLanguage.SelectedItem = Language.Description
                     Else
                         If Not mnuLanguagesLanguage.Items.Contains(String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")) Then
                             mnuLanguagesLanguage.Items.Insert(0, String.Concat(Master.eLang.GetString(1199, "Select Language"), "..."))
@@ -6974,7 +6939,7 @@ doCancel:
             OrElse bwRewrite_Movies.IsBusy OrElse bwMovieScraper.IsBusy OrElse bwMovieSetScraper.IsBusy OrElse bwCleanDB.IsBusy Then Return
 
         Dim indX As Integer = dgvTVEpisodes.SelectedRows(0).Index
-        Dim ID As Integer = Convert.ToInt32(dgvTVEpisodes.Item("idEpisode", indX).Value)
+        Dim ID As Long = Convert.ToInt64(dgvTVEpisodes.Item("idEpisode", indX).Value)
         Dim tmpDBTVEpisode As Database.DBElement = Master.DB.Load_TVEpisode(ID, True)
         Edit_TVEpisode(tmpDBTVEpisode)
     End Sub
@@ -7186,7 +7151,7 @@ doCancel:
             If fScanner.IsBusy OrElse bwLoadShowInfo.IsBusy OrElse bwLoadEpInfo.IsBusy OrElse bwReload_Movies.IsBusy OrElse bwMovieScraper.IsBusy OrElse bwCleanDB.IsBusy Then Return
 
             Dim indX As Integer = dgvTVEpisodes.SelectedRows(0).Index
-            Dim ID As Integer = Convert.ToInt32(dgvTVEpisodes.Item("idEpisode", indX).Value)
+            Dim ID As Long = Convert.ToInt64(dgvTVEpisodes.Item("idEpisode", indX).Value)
             Dim tmpDBTVEpisode As Database.DBElement = Master.DB.Load_TVEpisode(ID, True)
             Edit_TVEpisode(tmpDBTVEpisode)
         End If
@@ -7409,7 +7374,7 @@ doCancel:
         If fScanner.IsBusy OrElse bwLoadShowInfo.IsBusy OrElse bwLoadSeasonInfo.IsBusy OrElse bwLoadEpInfo.IsBusy OrElse bwReload_Movies.IsBusy OrElse bwMovieScraper.IsBusy OrElse bwCleanDB.IsBusy Then Return
 
         Dim indX As Integer = dgvTVSeasons.SelectedRows(0).Index
-        Dim ID As Integer = Convert.ToInt32(dgvTVSeasons.Item("idSeason", indX).Value)
+        Dim ID As Long = Convert.ToInt64(dgvTVSeasons.Item("idSeason", indX).Value)
         Dim tmpDBTVSeason As Database.DBElement = Master.DB.Load_TVSeason(ID, True, False)
         Edit_TVSeason(tmpDBTVSeason)
     End Sub
@@ -7604,7 +7569,7 @@ doCancel:
             If fScanner.IsBusy OrElse bwLoadShowInfo.IsBusy OrElse bwLoadSeasonInfo.IsBusy OrElse bwLoadEpInfo.IsBusy OrElse bwReload_Movies.IsBusy OrElse bwMovieScraper.IsBusy OrElse bwCleanDB.IsBusy Then Return
 
             Dim indX As Integer = dgvTVSeasons.SelectedRows(0).Index
-            Dim ID As Integer = Convert.ToInt32(dgvTVSeasons.Item("idSeason", indX).Value)
+            Dim ID As Long = Convert.ToInt64(dgvTVSeasons.Item("idSeason", indX).Value)
             Dim tmpDBTVSeason As Database.DBElement = Master.DB.Load_TVSeason(ID, True, False)
             Edit_TVSeason(tmpDBTVSeason)
         End If
@@ -7783,7 +7748,7 @@ doCancel:
         If fScanner.IsBusy OrElse bwLoadShowInfo.IsBusy OrElse bwLoadSeasonInfo.IsBusy OrElse bwLoadEpInfo.IsBusy OrElse bwReload_Movies.IsBusy OrElse bwMovieScraper.IsBusy OrElse bwCleanDB.IsBusy Then Return
 
         Dim indX As Integer = dgvTVShows.SelectedRows(0).Index
-        Dim ID As Integer = Convert.ToInt32(dgvTVShows.Item("idShow", indX).Value)
+        Dim ID As Long = Convert.ToInt64(dgvTVShows.Item("idShow", indX).Value)
         Dim tmpDBTVShow As Database.DBElement = Master.DB.Load_TVShow(ID, True, False)
         Edit_TVShow(tmpDBTVShow)
     End Sub
@@ -8005,7 +7970,7 @@ doCancel:
             If fScanner.IsBusy OrElse bwLoadShowInfo.IsBusy OrElse bwLoadSeasonInfo.IsBusy OrElse bwLoadEpInfo.IsBusy OrElse bwReload_Movies.IsBusy OrElse bwMovieScraper.IsBusy OrElse bwCleanDB.IsBusy Then Return
 
             Dim indX As Integer = dgvTVShows.SelectedRows(0).Index
-            Dim ID As Integer = Convert.ToInt32(dgvTVShows.Item("idShow", indX).Value)
+            Dim ID As Long = Convert.ToInt64(dgvTVShows.Item("idShow", indX).Value)
             Dim tmpDBTVShow As Database.DBElement = Master.DB.Load_TVShow(ID, True, False)
             Edit_TVShow(tmpDBTVShow)
         End If
@@ -8108,9 +8073,9 @@ doCancel:
 
                     'Language submenu
                     Dim strLang As String = dgvTVShows.Item("Language", dgvHTI.RowIndex).Value.ToString
-                    Dim Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = strLang)
-                    If Language IsNot Nothing AndAlso Not String.IsNullOrEmpty(Language.name) Then
-                        mnuLanguagesLanguage.SelectedItem = Language.name
+                    Dim Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = strLang)
+                    If Language IsNot Nothing AndAlso Not String.IsNullOrEmpty(Language.Description) Then
+                        mnuLanguagesLanguage.SelectedItem = Language.Description
                     Else
                         If Not mnuLanguagesLanguage.Items.Contains(String.Concat(Master.eLang.GetString(1199, "Select Language"), "...")) Then
                             mnuLanguagesLanguage.Items.Insert(0, String.Concat(Master.eLang.GetString(1199, "Select Language"), "..."))
@@ -8153,10 +8118,22 @@ doCancel:
     End Sub
 
     Private Sub dgvTVShows_RowsRemoved(sender As Object, e As DataGridViewRowsRemovedEventArgs) Handles dgvTVShows.RowsRemoved
+        If dgvTVShows.RowCount = 0 OrElse dgvTVShows.SelectedRows.Count = 0 Then
+            bsTVSeasons.DataSource = Nothing
+            dgvTVSeasons.DataSource = Nothing
+            bsTVEpisodes.DataSource = Nothing
+            dgvTVEpisodes.DataSource = Nothing
+        End If
         SetTVCount()
     End Sub
 
     Private Sub dgvTVShows_RowsAdded(sender As Object, e As DataGridViewRowsAddedEventArgs) Handles dgvTVShows.RowsAdded
+        If dgvTVShows.RowCount = 0 OrElse dgvTVShows.SelectedRows.Count = 0 Then
+            bsTVSeasons.DataSource = Nothing
+            dgvTVSeasons.DataSource = Nothing
+            bsTVEpisodes.DataSource = Nothing
+            dgvTVEpisodes.DataSource = Nothing
+        End If
         SetTVCount()
     End Sub
 
@@ -8295,14 +8272,19 @@ doCancel:
         dgvMovies.Invalidate()
     End Sub
 
-    Sub dtListUpdate(ByVal drow As DataRow, ByVal v As DataRow)
-        drow.ItemArray = v.ItemArray
+    Sub dtListRemoveRow(ByVal dTable As DataTable, ByVal dRow As DataRow)
+        dTable.Rows.Remove(dRow)
+    End Sub
+
+    Sub dtListUpdateRow(ByVal dRow As DataRow, ByVal newRow As DataRow)
+        dRow.ItemArray = newRow.ItemArray
     End Sub
 
     Private Sub Edit_Movie(ByRef DBMovie As Database.DBElement, Optional ByVal EventType As Enums.ModuleEventType = Enums.ModuleEventType.AfterEdit_Movie)
         SetControlsEnabled(False)
         If DBMovie.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBMovie, True) Then
             Using dEditMovie As New dlgEditMovie
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, Nothing, False, DBMovie)
                 AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
                 Select Case dEditMovie.ShowDialog(DBMovie)
                     Case DialogResult.OK
@@ -8333,6 +8315,7 @@ doCancel:
         SetControlsEnabled(False)
         'If DBMovieSet.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBMovieSet, True) Then
         Using dEditMovieSet As New dlgEditMovieSet
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_MovieSet, Nothing, Nothing, False, DBMovieSet)
             'AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
             Select Case dEditMovieSet.ShowDialog(DBMovieSet)
                 Case DialogResult.OK
@@ -8363,6 +8346,7 @@ doCancel:
         SetControlsEnabled(False)
         If DBTVEpisode.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(DBTVEpisode, True) Then
             Using dEditTVEpisode As New dlgEditTVEpisode
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_TVEpisode, Nothing, Nothing, False, DBTVEpisode)
                 AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditTVEpisode.GenericRunCallBack
                 Select Case dEditTVEpisode.ShowDialog(DBTVEpisode)
                     Case DialogResult.OK
@@ -8384,6 +8368,7 @@ doCancel:
         SetControlsEnabled(False)
         If DBTVSeason.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTVSeason, True) Then
             Using dEditTVSeason As New dlgEditTVSeason
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_TVSeason, Nothing, Nothing, False, DBTVSeason)
                 'AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditTVSeason.GenericRunCallBack
                 Select Case dEditTVSeason.ShowDialog(DBTVSeason)
                     Case DialogResult.OK
@@ -8405,6 +8390,7 @@ doCancel:
         SetControlsEnabled(False)
         If DBTVShow.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTVShow, True) Then
             Using dEditTVShow As New dlgEditTVShow
+                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_TVShow, Nothing, Nothing, False, DBTVShow)
                 'AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditTVShow.GenericRunCallBack
                 Select Case dEditTVShow.ShowDialog(DBTVShow)
                     Case DialogResult.OK
@@ -8551,7 +8537,7 @@ doCancel:
         End If
     End Sub
 
-    Private Sub FillEpisodes(ByVal ShowID As Integer, ByVal Season As Integer)
+    Private Sub FillEpisodes(ByVal ShowID As Long, ByVal Season As Integer)
         Dim sEpisodeSorting As Enums.EpisodeSorting = Master.DB.GetTVShowEpisodeSorting(ShowID)
 
         bsTVEpisodes.DataSource = Nothing
@@ -8728,7 +8714,7 @@ doCancel:
             bsTVEpisodes.DataSource = Nothing
             dgvTVEpisodes.DataSource = Nothing
             ClearInfo()
-            Master.DB.FillDataTable(dtTVShows, String.Concat("SELECT * FROM '", currList_Shows, "' ",
+            Master.DB.FillDataTable(dtTVShows, String.Concat("SELECT * FROM '", currList_TVShows, "' ",
                                                               "ORDER BY ListTitle COLLATE NOCASE;"))
         End If
 
@@ -9997,9 +9983,9 @@ doCancel:
                 dgvTVShows.Enabled = True
             End If
 
-            If bDoingSearch_Shows Then
+            If bDoingSearch_TVShows Then
                 txtSearchShows.Focus()
-                bDoingSearch_Shows = False
+                bDoingSearch_TVShows = False
             Else
                 dgvTVShows.Focus()
             End If
@@ -10025,7 +10011,7 @@ doCancel:
         ResumeLayout()
     End Sub
 
-    Private Sub FillSeasons(ByVal ShowID As Integer)
+    Private Sub FillSeasons(ByVal ShowID As Long)
         bsTVSeasons.DataSource = Nothing
         dgvTVSeasons.DataSource = Nothing
         bsTVEpisodes.DataSource = Nothing
@@ -10147,15 +10133,12 @@ doCancel:
     Private Sub frmMain_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
 
         Try
-
             Dim doSave As Boolean = True
 
             SetControlsEnabled(False, True)
             EnableFilters_Movies(False)
             EnableFilters_MovieSets(False)
             EnableFilters_Shows(False)
-
-            Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision)
 
             If fScanner.IsBusy OrElse Master.isCL Then
                 doSave = False
@@ -10204,24 +10187,26 @@ doCancel:
                 Master.DB.Close_MyVideos()
             End If
 
-            If Not Master.isCL Then
-                Master.eSettings.GeneralWindowLoc = Location
-                Master.eSettings.GeneralWindowSize = Size
-                Master.eSettings.GeneralWindowState = WindowState
-                Master.eSettings.GeneralMovieInfoPanelState = MovieInfoPanelState
-                Master.eSettings.GeneralMovieSetInfoPanelState = MovieSetInfoPanelState
-                Master.eSettings.GeneralTVShowInfoPanelState = TVShowInfoPanelState
-                Master.eSettings.GeneralFilterPanelStateMovie = FilterRaise_Movies
-                Master.eSettings.GeneralFilterPanelStateMovieSet = FilterRaise_MovieSets
-                Master.eSettings.GeneralFilterPanelStateShow = FilterRaise_Shows
-                Master.eSettings.GeneralMainSplitterPanelState = scMain.SplitterDistance
+            Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision)
+
+            If Not Master.isCL AndAlso Not WindowState = FormWindowState.Minimized Then
+                'disable filters to proper save TV Show/Season SplitterDistance
                 pnlFilter_Movies.Visible = False
                 pnlFilter_MovieSets.Visible = False
                 pnlFilter_Shows.Visible = False
-                Master.eSettings.GeneralSeasonSplitterPanelState = scTVSeasonsEpisodes.SplitterDistance
-                Master.eSettings.GeneralShowSplitterPanelState = scTV.SplitterDistance
-            End If
-            If Not WindowState = FormWindowState.Minimized Then 'TODO: check why we don't save settings if Ember is minimized
+                Application.DoEvents()
+                Master.eSettings.GeneralFilterPanelIsRaisedMovie = FilterPanelIsRaised_Movie
+                Master.eSettings.GeneralFilterPanelIsRaisedMovieSet = FilterPanelIsRaised_MovieSet
+                Master.eSettings.GeneralFilterPanelIsRaisedTVShow = FilterPanelIsRaised_TVShow
+                Master.eSettings.GeneralInfoPanelStateMovie = InfoPanelState_Movie
+                Master.eSettings.GeneralInfoPanelStateMovieSet = InfoPanelState_MovieSet
+                Master.eSettings.GeneralInfoPanelStateTVShow = InfoPanelState_TVShow
+                Master.eSettings.GeneralSplitterDistanceMain = scMain.SplitterDistance
+                Master.eSettings.GeneralSplitterDistanceTVSeason = scTVSeasonsEpisodes.SplitterDistance
+                Master.eSettings.GeneralSplitterDistanceTVShow = scTV.SplitterDistance
+                Master.eSettings.GeneralWindowLoc = Location
+                Master.eSettings.GeneralWindowSize = Size
+                Master.eSettings.GeneralWindowState = WindowState
                 Master.eSettings.Save()
             End If
 
@@ -10409,8 +10394,18 @@ doCancel:
                     Master.AppPos = Bounds
                 End If
 
-                MovieInfoPanelState = Master.eSettings.GeneralMovieInfoPanelState
-                Select Case MovieInfoPanelState
+                'SplitterDistance
+                Try ' On error just ignore this a let it use default
+                    scMain.SplitterDistance = Master.eSettings.GeneralSplitterDistanceMain
+                    scTV.SplitterDistance = Master.eSettings.GeneralSplitterDistanceTVShow
+                    scTVSeasonsEpisodes.SplitterDistance = Master.eSettings.GeneralSplitterDistanceTVSeason
+                Catch ex As Exception
+                    logger.Error(ex, New StackFrame().GetMethod().Name)
+                End Try
+
+                'Info panels
+                InfoPanelState_Movie = Master.eSettings.GeneralInfoPanelStateMovie
+                Select Case InfoPanelState_Movie
                     Case 0
                         pnlInfoPanel.Height = 25
                         btnDown.Enabled = False
@@ -10428,12 +10423,12 @@ doCancel:
                         btnMid.Enabled = True
                 End Select
 
-                MovieSetInfoPanelState = Master.eSettings.GeneralMovieSetInfoPanelState
+                InfoPanelState_MovieSet = Master.eSettings.GeneralInfoPanelStateMovieSet
+                InfoPanelState_TVShow = Master.eSettings.GeneralInfoPanelStateTVShow
 
-                TVShowInfoPanelState = Master.eSettings.GeneralTVShowInfoPanelState
-
-                FilterRaise_Movies = Master.eSettings.GeneralFilterPanelStateMovie
-                If FilterRaise_Movies Then
+                'Filter panels
+                FilterPanelIsRaised_Movie = Master.eSettings.GeneralFilterPanelIsRaisedMovie
+                If FilterPanelIsRaised_Movie Then
                     'Me.pnlFilter_Movies.Height = Functions.Quantize(Me.gbFilterSpecific_Movies.Height + Me.lblFilter_Movies.Height + 15, 5)
                     pnlFilter_Movies.AutoSize = True
                     btnFilterDown_Movies.Enabled = True
@@ -10446,8 +10441,8 @@ doCancel:
                     btnFilterUp_Movies.Enabled = True
                 End If
 
-                FilterRaise_MovieSets = Master.eSettings.GeneralFilterPanelStateMovieSet
-                If FilterRaise_MovieSets Then
+                FilterPanelIsRaised_MovieSet = Master.eSettings.GeneralFilterPanelIsRaisedMovieSet
+                If FilterPanelIsRaised_MovieSet Then
                     'Me.pnlFilter_MovieSets.Height = Functions.Quantize(Me.gbFilterSpecific_MovieSets.Height + Me.lblFilter_MovieSets.Height + 15, 5)
                     pnlFilter_MovieSets.AutoSize = True
                     btnFilterDown_MovieSets.Enabled = True
@@ -10460,8 +10455,8 @@ doCancel:
                     btnFilterUp_MovieSets.Enabled = True
                 End If
 
-                FilterRaise_Shows = Master.eSettings.GeneralFilterPanelStateShow
-                If FilterRaise_Shows Then
+                FilterPanelIsRaised_TVShow = Master.eSettings.GeneralFilterPanelIsRaisedTVShow
+                If FilterPanelIsRaised_TVShow Then
                     'Me.pnlFilter_Shows.Height = Functions.Quantize(Me.gbFilterSpecific_Shows.Height + Me.lblFilter_Shows.Height + 15, 5)
                     pnlFilter_Shows.AutoSize = True
                     btnFilterDown_Shows.Enabled = True
@@ -10474,16 +10469,7 @@ doCancel:
                     btnFilterUp_Shows.Enabled = True
                 End If
 
-                Try ' On error just ignore this a let it use default
-                    scMain.SplitterDistance = Master.eSettings.GeneralMainSplitterPanelState
-                    scTV.SplitterDistance = Master.eSettings.GeneralShowSplitterPanelState
-                    scTVSeasonsEpisodes.SplitterDistance = Master.eSettings.GeneralSeasonSplitterPanelState
-                Catch ex As Exception
-                End Try
-
                 pnlFilter_Movies.Visible = True
-                pnlFilter_MovieSets.Visible = False
-                pnlFilter_Shows.Visible = False
 
                 'MenuItem Tags for better Enable/Disable handling
                 mnuMainToolsCleanDB.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfNoMovies = True, .IfTabMovies = True, .IfTabMovieSets = True, .IfNoMovieSets = True, .IfNoTVShows = True, .IfTabTVShows = True}
@@ -10844,7 +10830,7 @@ doCancel:
                     Case "movie"
                         For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value))
-                            tmpDBElement.Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = strLanguage).abbreviation
+                            tmpDBElement.Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = strLanguage).Abbreviation
                             tmpDBElement.Movie.Language = tmpDBElement.Language
                             Master.DB.Save_Movie(tmpDBElement, True, True, False)
                             RefreshRow_Movie(tmpDBElement.ID)
@@ -10852,14 +10838,14 @@ doCancel:
                     Case "movieset"
                         For Each sRow As DataGridViewRow In dgvMovieSets.SelectedRows
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(Convert.ToInt64(sRow.Cells("idSet").Value))
-                            tmpDBElement.Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = strLanguage).abbreviation
+                            tmpDBElement.Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = strLanguage).Abbreviation
                             Master.DB.Save_MovieSet(tmpDBElement, True, True, False)
                             RefreshRow_MovieSet(tmpDBElement.ID)
                         Next
                     Case "tvshow"
                         For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(Convert.ToInt64(sRow.Cells("idShow").Value), False, False)
-                            tmpDBElement.Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = strLanguage).abbreviation
+                            tmpDBElement.Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = strLanguage).Abbreviation
                             tmpDBElement.TVShow.Language = tmpDBElement.Language
                             Master.DB.Save_TVShow(tmpDBElement, True, True, False, False)
                             RefreshRow_TVShow(tmpDBElement.ID)
@@ -11065,7 +11051,7 @@ doCancel:
         pnlFilterSources_Shows.Tag = String.Empty
     End Sub
 
-    Private Sub LoadInfo_Movie(ByVal ID As Integer, ByVal sPath As String, ByVal doInfo As Boolean)
+    Private Sub LoadInfo_Movie(ByVal ID As Long, ByVal sPath As String, ByVal doInfo As Boolean)
         dgvMovies.SuspendLayout()
         SetControlsEnabled(False)
         ShowNoInfo(False)
@@ -11081,13 +11067,13 @@ doCancel:
                 Application.DoEvents()
             End While
 
-            bwLoadMovieInfo = New System.ComponentModel.BackgroundWorker
+            bwLoadMovieInfo = New ComponentModel.BackgroundWorker
             bwLoadMovieInfo.WorkerSupportsCancellation = True
             bwLoadMovieInfo.RunWorkerAsync(New Arguments With {.ID = ID})
         End If
     End Sub
 
-    Private Sub LoadInfo_MovieSet(ByVal ID As Integer, ByVal doInfo As Boolean)
+    Private Sub LoadInfo_MovieSet(ByVal ID As Long, ByVal doInfo As Boolean)
         dgvMovieSets.SuspendLayout()
         SetControlsEnabled(False)
         ShowNoInfo(False)
@@ -11103,13 +11089,13 @@ doCancel:
                 Application.DoEvents()
             End While
 
-            bwLoadMovieSetInfo = New System.ComponentModel.BackgroundWorker
+            bwLoadMovieSetInfo = New ComponentModel.BackgroundWorker
             bwLoadMovieSetInfo.WorkerSupportsCancellation = True
             bwLoadMovieSetInfo.RunWorkerAsync(New Arguments With {.ID = ID})
         End If
     End Sub
 
-    Private Sub LoadInfo_TVEpisode(ByVal ID As Integer)
+    Private Sub LoadInfo_TVEpisode(ByVal ID As Long)
         dgvTVEpisodes.SuspendLayout()
         SetControlsEnabled(False)
         ShowNoInfo(False)
@@ -11118,12 +11104,12 @@ doCancel:
 
         ClearInfo()
 
-        bwLoadEpInfo = New System.ComponentModel.BackgroundWorker
+        bwLoadEpInfo = New ComponentModel.BackgroundWorker
         bwLoadEpInfo.WorkerSupportsCancellation = True
         bwLoadEpInfo.RunWorkerAsync(New Arguments With {.ID = ID})
     End Sub
 
-    Private Sub LoadInfo_TVSeason(ByVal SeasonID As Integer, Optional ByVal isMissing As Boolean = False)
+    Private Sub LoadInfo_TVSeason(ByVal SeasonID As Long, Optional ByVal isMissing As Boolean = False)
         dgvTVSeasons.SuspendLayout()
         SetControlsEnabled(False)
         ShowNoInfo(False)
@@ -11134,12 +11120,12 @@ doCancel:
 
         ClearInfo()
 
-        bwLoadSeasonInfo = New System.ComponentModel.BackgroundWorker
+        bwLoadSeasonInfo = New ComponentModel.BackgroundWorker
         bwLoadSeasonInfo.WorkerSupportsCancellation = True
         bwLoadSeasonInfo.RunWorkerAsync(New Arguments With {.ID = SeasonID, .setEnabled = Not isMissing})
     End Sub
 
-    Private Sub LoadInfo_TVShow(ByVal ID As Integer)
+    Private Sub LoadInfo_TVShow(ByVal ID As Long)
         dgvTVShows.SuspendLayout()
         SetControlsEnabled(False)
         ShowNoInfo(False)
@@ -11148,7 +11134,7 @@ doCancel:
 
         ClearInfo()
 
-        bwLoadShowInfo = New System.ComponentModel.BackgroundWorker
+        bwLoadShowInfo = New ComponentModel.BackgroundWorker
         bwLoadShowInfo.WorkerSupportsCancellation = True
         bwLoadShowInfo.RunWorkerAsync(New Arguments With {.ID = ID})
 
@@ -11182,7 +11168,7 @@ doCancel:
                     End While
                 End If
 
-                bwDownloadPic = New System.ComponentModel.BackgroundWorker
+                bwDownloadPic = New ComponentModel.BackgroundWorker
                 bwDownloadPic.WorkerSupportsCancellation = True
                 bwDownloadPic.RunWorkerAsync(New Arguments With {.pURL = alActors.Item(lstActors.SelectedIndex).ToString})
             End If
@@ -13418,7 +13404,7 @@ doCancel:
                         SetControlsEnabled(False)
 
                         Dim indX As Integer = dgvMovies.SelectedRows(0).Index
-                        Dim ID As Integer = Convert.ToInt32(dgvMovies.Item("idMovie", indX).Value)
+                        Dim ID As Long = Convert.ToInt64(dgvMovies.Item("idMovie", indX).Value)
                         Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -13443,7 +13429,7 @@ doCancel:
                         SetControlsEnabled(False)
 
                         Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
-                        Dim ID As Integer = Convert.ToInt32(dgvMovieSets.Item("idSet", indX).Value)
+                        Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item("idSet", indX).Value)
                         Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -13470,7 +13456,7 @@ doCancel:
                             SetControlsEnabled(False)
 
                             Dim indX As Integer = dgvTVShows.SelectedRows(0).Index
-                            Dim ID As Integer = Convert.ToInt32(dgvTVShows.Item("idShow", indX).Value)
+                            Dim ID As Long = Convert.ToInt64(dgvTVShows.Item("idShow", indX).Value)
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(ID, False, False)
 
                             Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -13497,7 +13483,7 @@ doCancel:
                             SetControlsEnabled(False)
 
                             Dim indX As Integer = dgvTVSeasons.SelectedRows(0).Index
-                            Dim ID As Integer = Convert.ToInt32(dgvTVSeasons.Item("idSeason", indX).Value)
+                            Dim ID As Long = Convert.ToInt64(dgvTVSeasons.Item("idSeason", indX).Value)
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVSeason(ID, True, False)
 
                             Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -13556,7 +13542,7 @@ doCancel:
                             SetControlsEnabled(False)
 
                             Dim indX As Integer = dgvTVShows.SelectedRows(0).Index
-                            Dim ID As Integer = Convert.ToInt32(dgvTVShows.Item("idShow", indX).Value)
+                            Dim ID As Long = Convert.ToInt64(dgvTVShows.Item("idShow", indX).Value)
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(ID, False, False)
 
                             Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -13609,7 +13595,7 @@ doCancel:
                         SetControlsEnabled(False)
 
                         Dim indX As Integer = dgvMovies.SelectedRows(0).Index
-                        Dim ID As Integer = Convert.ToInt32(dgvMovies.Item("idMovie", indX).Value)
+                        Dim ID As Long = Convert.ToInt64(dgvMovies.Item("idMovie", indX).Value)
                         Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -13634,7 +13620,7 @@ doCancel:
                         SetControlsEnabled(False)
 
                         Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
-                        Dim ID As Integer = Convert.ToInt32(dgvMovieSets.Item("idSet", indX).Value)
+                        Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item("idSet", indX).Value)
                         Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -13661,7 +13647,7 @@ doCancel:
                             SetControlsEnabled(False)
 
                             Dim indX As Integer = dgvTVShows.SelectedRows(0).Index
-                            Dim ID As Integer = Convert.ToInt32(dgvTVShows.Item("idShow", indX).Value)
+                            Dim ID As Long = Convert.ToInt64(dgvTVShows.Item("idShow", indX).Value)
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(ID, False, False)
 
                             Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -13714,7 +13700,7 @@ doCancel:
                         SetControlsEnabled(False)
 
                         Dim indX As Integer = dgvMovies.SelectedRows(0).Index
-                        Dim ID As Integer = Convert.ToInt32(dgvMovies.Item("idMovie", indX).Value)
+                        Dim ID As Long = Convert.ToInt64(dgvMovies.Item("idMovie", indX).Value)
                         Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -13739,7 +13725,7 @@ doCancel:
                         SetControlsEnabled(False)
 
                         Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
-                        Dim ID As Integer = Convert.ToInt32(dgvMovieSets.Item("idSet", indX).Value)
+                        Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item("idSet", indX).Value)
                         Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -13766,7 +13752,7 @@ doCancel:
                             SetControlsEnabled(False)
 
                             Dim indX As Integer = dgvTVShows.SelectedRows(0).Index
-                            Dim ID As Integer = Convert.ToInt32(dgvTVShows.Item("idShow", indX).Value)
+                            Dim ID As Long = Convert.ToInt64(dgvTVShows.Item("idShow", indX).Value)
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(ID, False, False)
 
                             Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -13819,7 +13805,7 @@ doCancel:
                         SetControlsEnabled(False)
 
                         Dim indX As Integer = dgvMovies.SelectedRows(0).Index
-                        Dim ID As Integer = Convert.ToInt32(dgvMovies.Item("idMovie", indX).Value)
+                        Dim ID As Long = Convert.ToInt64(dgvMovies.Item("idMovie", indX).Value)
                         Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -13844,7 +13830,7 @@ doCancel:
                         SetControlsEnabled(False)
 
                         Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
-                        Dim ID As Integer = Convert.ToInt32(dgvMovieSets.Item("idSet", indX).Value)
+                        Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item("idSet", indX).Value)
                         Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -13910,7 +13896,7 @@ doCancel:
                         SetControlsEnabled(False)
 
                         Dim indX As Integer = dgvMovies.SelectedRows(0).Index
-                        Dim ID As Integer = Convert.ToInt32(dgvMovies.Item("idMovie", indX).Value)
+                        Dim ID As Long = Convert.ToInt64(dgvMovies.Item("idMovie", indX).Value)
                         Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -13935,7 +13921,7 @@ doCancel:
                         SetControlsEnabled(False)
 
                         Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
-                        Dim ID As Integer = Convert.ToInt32(dgvMovieSets.Item("idSet", indX).Value)
+                        Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item("idSet", indX).Value)
                         Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -13962,7 +13948,7 @@ doCancel:
                             SetControlsEnabled(False)
 
                             Dim indX As Integer = dgvTVShows.SelectedRows(0).Index
-                            Dim ID As Integer = Convert.ToInt32(dgvTVShows.Item("idShow", indX).Value)
+                            Dim ID As Long = Convert.ToInt64(dgvTVShows.Item("idShow", indX).Value)
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(ID, False, False)
 
                             Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -13989,7 +13975,7 @@ doCancel:
                             SetControlsEnabled(False)
 
                             Dim indX As Integer = dgvTVSeasons.SelectedRows(0).Index
-                            Dim ID As Integer = Convert.ToInt32(dgvTVSeasons.Item("idSeason", indX).Value)
+                            Dim ID As Long = Convert.ToInt64(dgvTVSeasons.Item("idSeason", indX).Value)
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVSeason(ID, True, False)
 
                             Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -14020,7 +14006,7 @@ doCancel:
                             SetControlsEnabled(False)
 
                             Dim indX As Integer = dgvTVEpisodes.SelectedRows(0).Index
-                            Dim ID As Integer = Convert.ToInt32(dgvTVEpisodes.Item("idEpisode", indX).Value)
+                            Dim ID As Long = Convert.ToInt64(dgvTVEpisodes.Item("idEpisode", indX).Value)
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVEpisode(ID, True)
 
                             Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -14065,7 +14051,7 @@ doCancel:
                         SetControlsEnabled(False)
 
                         Dim indX As Integer = dgvMovies.SelectedRows(0).Index
-                        Dim ID As Integer = Convert.ToInt32(dgvMovies.Item("idMovie", indX).Value)
+                        Dim ID As Long = Convert.ToInt64(dgvMovies.Item("idMovie", indX).Value)
                         Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -14090,7 +14076,7 @@ doCancel:
                         SetControlsEnabled(False)
 
                         Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
-                        Dim ID As Integer = Convert.ToInt32(dgvMovieSets.Item("idSet", indX).Value)
+                        Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item("idSet", indX).Value)
                         Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -14117,7 +14103,7 @@ doCancel:
                             SetControlsEnabled(False)
 
                             Dim indX As Integer = dgvTVShows.SelectedRows(0).Index
-                            Dim ID As Integer = Convert.ToInt32(dgvTVShows.Item("idShow", indX).Value)
+                            Dim ID As Long = Convert.ToInt64(dgvTVShows.Item("idShow", indX).Value)
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(ID, False, False)
 
                             Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -14144,7 +14130,7 @@ doCancel:
                             SetControlsEnabled(False)
 
                             Dim indX As Integer = dgvTVSeasons.SelectedRows(0).Index
-                            Dim ID As Integer = Convert.ToInt32(dgvTVSeasons.Item("idSeason", indX).Value)
+                            Dim ID As Long = Convert.ToInt64(dgvTVSeasons.Item("idSeason", indX).Value)
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVSeason(ID, True, False)
 
                             Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -14197,7 +14183,7 @@ doCancel:
                         SetControlsEnabled(False)
 
                         Dim indX As Integer = dgvMovies.SelectedRows(0).Index
-                        Dim ID As Integer = Convert.ToInt32(dgvMovies.Item("idMovie", indX).Value)
+                        Dim ID As Long = Convert.ToInt64(dgvMovies.Item("idMovie", indX).Value)
                         Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -14222,7 +14208,7 @@ doCancel:
                         SetControlsEnabled(False)
 
                         Dim indX As Integer = dgvMovieSets.SelectedRows(0).Index
-                        Dim ID As Integer = Convert.ToInt32(dgvMovieSets.Item("idSet", indX).Value)
+                        Dim ID As Long = Convert.ToInt64(dgvMovieSets.Item("idSet", indX).Value)
                         Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
 
                         Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -14249,7 +14235,7 @@ doCancel:
                             SetControlsEnabled(False)
 
                             Dim indX As Integer = dgvTVShows.SelectedRows(0).Index
-                            Dim ID As Integer = Convert.ToInt32(dgvTVShows.Item("idShow", indX).Value)
+                            Dim ID As Long = Convert.ToInt64(dgvTVShows.Item("idShow", indX).Value)
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(ID, False, False)
 
                             Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -14276,7 +14262,7 @@ doCancel:
                             SetControlsEnabled(False)
 
                             Dim indX As Integer = dgvTVSeasons.SelectedRows(0).Index
-                            Dim ID As Integer = Convert.ToInt32(dgvTVSeasons.Item("idSeason", indX).Value)
+                            Dim ID As Long = Convert.ToInt64(dgvTVSeasons.Item("idSeason", indX).Value)
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVSeason(ID, True, False)
 
                             Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -14307,7 +14293,7 @@ doCancel:
                             SetControlsEnabled(False)
 
                             Dim indX As Integer = dgvTVEpisodes.SelectedRows(0).Index
-                            Dim ID As Integer = Convert.ToInt32(dgvTVEpisodes.Item("idEpisode", indX).Value)
+                            Dim ID As Long = Convert.ToInt64(dgvTVEpisodes.Item("idEpisode", indX).Value)
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVEpisode(ID, True)
 
                             Dim aContainer As New MediaContainers.SearchResultsContainer
@@ -14421,7 +14407,7 @@ doCancel:
     Private Sub rbFilterAnd_Shows_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterAnd_Shows.Click
         If clbFilterGenres_Shows.CheckedItems.Count > 0 Then
             txtFilterGenre_Shows.Text = String.Empty
-            FilterArray_Shows.Remove(filGenre_Shows)
+            FilterArray_TVShows.Remove(filGenre_TVShows)
 
             Dim alGenres As New List(Of String)
             alGenres.AddRange(clbFilterGenres_Shows.CheckedItems.OfType(Of String).ToList)
@@ -14436,9 +14422,9 @@ doCancel:
                 End If
             Next
 
-            filGenre_Shows = Microsoft.VisualBasic.Strings.Join(alGenres.ToArray, " AND ")
+            filGenre_TVShows = Microsoft.VisualBasic.Strings.Join(alGenres.ToArray, " AND ")
 
-            FilterArray_Shows.Add(filGenre_Shows)
+            FilterArray_TVShows.Add(filGenre_TVShows)
         End If
 
         'If clbFilterCountries_Movies.CheckedItems.Count > 0 Then
@@ -14553,7 +14539,7 @@ doCancel:
     Private Sub rbFilterOr_Shows_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbFilterOr_Shows.Click
         If clbFilterGenres_Shows.CheckedItems.Count > 0 Then
             txtFilterGenre_Shows.Text = String.Empty
-            FilterArray_Shows.Remove(filGenre_Shows)
+            FilterArray_TVShows.Remove(filGenre_TVShows)
 
             Dim alGenres As New List(Of String)
             alGenres.AddRange(clbFilterGenres_Shows.CheckedItems.OfType(Of String).ToList)
@@ -14568,9 +14554,9 @@ doCancel:
                 End If
             Next
 
-            filGenre_Shows = Microsoft.VisualBasic.Strings.Join(alGenres.ToArray, " OR ")
+            filGenre_TVShows = Microsoft.VisualBasic.Strings.Join(alGenres.ToArray, " OR ")
 
-            FilterArray_Shows.Add(filGenre_Shows)
+            FilterArray_TVShows.Add(filGenre_TVShows)
         End If
 
         'If clbFilterCountries_Movies.CheckedItems.Count > 0 Then
@@ -14719,7 +14705,7 @@ doCancel:
     ''' <param name="MovieID"></param>
     ''' <remarks></remarks>
     Private Sub RefreshRow_Movie(ByVal MovieID As Long)
-        Dim myDelegate As New MydtListUpdate(AddressOf dtListUpdate)
+        Dim myDelegate As New Delegate_dtListUpdateRow(AddressOf dtListUpdateRow)
         Dim newRow As DataRow = Nothing
         Dim newTable As New DataTable
 
@@ -14748,7 +14734,7 @@ doCancel:
     ''' <param name="MovieSetID"></param>
     ''' <remarks></remarks>
     Private Sub RefreshRow_MovieSet(ByVal MovieSetID As Long)
-        Dim myDelegate As New MydtListUpdate(AddressOf dtListUpdate)
+        Dim myDelegate As New Delegate_dtListUpdateRow(AddressOf dtListUpdateRow)
         Dim newRow As DataRow = Nothing
         Dim newTable As New DataTable
 
@@ -14777,7 +14763,7 @@ doCancel:
     ''' <param name="EpisodeID"></param>
     ''' <remarks></remarks>
     Private Sub RefreshRow_TVEpisode(ByVal EpisodeID As Long)
-        Dim myDelegate As New MydtListUpdate(AddressOf dtListUpdate)
+        Dim myDelegate As New Delegate_dtListUpdateRow(AddressOf dtListUpdateRow)
         Dim newRow As DataRow = Nothing
         Dim newTable As New DataTable
 
@@ -14806,7 +14792,7 @@ doCancel:
     ''' <param name="SeasonID"></param>
     ''' <remarks></remarks>
     Private Sub RefreshRow_TVSeason(ByVal SeasonID As Long)
-        Dim myDelegate As New MydtListUpdate(AddressOf dtListUpdate)
+        Dim myDelegate As New Delegate_dtListUpdateRow(AddressOf dtListUpdateRow)
         Dim newRow As DataRow = Nothing
         Dim newTable As New DataTable
 
@@ -14836,7 +14822,7 @@ doCancel:
             Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                 SQLreader.Read()
                 If SQLreader.HasRows Then
-                    RefreshRow_TVSeason(Convert.ToInt32(SQLreader("idSeason")))
+                    RefreshRow_TVSeason(Convert.ToInt64(SQLreader("idSeason")))
                 End If
             End Using
         End Using
@@ -14847,7 +14833,7 @@ doCancel:
     ''' <param name="ShowID"></param>
     ''' <remarks></remarks>
     Private Sub RefreshRow_TVShow(ByVal ShowID As Long, Optional ByVal Force As Boolean = False)
-        Dim myDelegate As New MydtListUpdate(AddressOf dtListUpdate)
+        Dim myDelegate As New Delegate_dtListUpdateRow(AddressOf dtListUpdateRow)
         Dim newRow As DataRow = Nothing
         Dim newTable As New DataTable
 
@@ -14994,6 +14980,101 @@ doCancel:
         Return False
     End Function
     ''' <summary>
+    ''' Removes a single Movie row from list
+    ''' </summary>
+    ''' <param name="ID">Movie ID</param>
+    ''' <remarks></remarks>
+    Private Sub RemoveRow_Movie(ByVal ID As Long)
+        Dim myDelegate As New Delegate_dtListRemoveRow(AddressOf dtListRemoveRow)
+
+        Dim dRow = From drvRow In dtMovies.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item("idMovie")) = ID Select drvRow
+
+        If dRow(0) IsNot Nothing Then
+            If InvokeRequired Then
+                Invoke(myDelegate, New Object() {dtMovies, dRow(0)})
+            Else
+                dtMovies.Rows.Remove(DirectCast(dRow(0), DataRow))
+            End If
+        End If
+        currRow_Movie = -1
+    End Sub
+    ''' <summary>
+    ''' Removes a single MovieSet row from list
+    ''' </summary>
+    ''' <param name="ID">MovieSet ID</param>
+    ''' <remarks></remarks>
+    Private Sub RemoveRow_MovieSet(ByVal ID As Long)
+        Dim myDelegate As New Delegate_dtListRemoveRow(AddressOf dtListRemoveRow)
+
+        Dim dRow = From drvRow In dtMovieSets.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item("idSet")) = ID Select drvRow
+
+        If dRow(0) IsNot Nothing Then
+            If InvokeRequired Then
+                Invoke(myDelegate, New Object() {dtMovieSets, dRow(0)})
+            Else
+                dtMovieSets.Rows.Remove(DirectCast(dRow(0), DataRow))
+            End If
+        End If
+        currRow_MovieSet = -1
+    End Sub
+    ''' <summary>
+    ''' Removes a single TVEpisode row from list
+    ''' </summary>
+    ''' <param name="ID">TVEpisode ID</param>
+    ''' <remarks></remarks>
+    Private Sub RemoveRow_TVEpisode(ByVal ID As Long)
+        Dim myDelegate As New Delegate_dtListRemoveRow(AddressOf dtListRemoveRow)
+
+        Dim dRow = From drvRow In dtTVEpisodes.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item("idEpisode")) = ID Select drvRow
+
+        If dRow(0) IsNot Nothing Then
+            If InvokeRequired Then
+                Invoke(myDelegate, New Object() {dtTVEpisodes, dRow(0)})
+            Else
+                dtTVEpisodes.Rows.Remove(DirectCast(dRow(0), DataRow))
+            End If
+        End If
+        currRow_TVEpisode = -1
+    End Sub
+    ''' <summary>
+    ''' Removes a single TVSeason row from list
+    ''' </summary>
+    ''' <param name="ID">TVSeason ID</param>
+    ''' <remarks></remarks>
+    Private Sub RemoveRow_TVSeason(ByVal ID As Long)
+        Dim myDelegate As New Delegate_dtListRemoveRow(AddressOf dtListRemoveRow)
+
+        Dim dRow = From drvRow In dtTVSeasons.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item("idSeason")) = ID Select drvRow
+
+        If dRow(0) IsNot Nothing Then
+            If InvokeRequired Then
+                Invoke(myDelegate, New Object() {dtTVSeasons, dRow(0)})
+            Else
+                dtTVSeasons.Rows.Remove(DirectCast(dRow(0), DataRow))
+            End If
+        End If
+        currRow_TVSeason = -1
+    End Sub
+    ''' <summary>
+    ''' Removes a single TVShow row from list
+    ''' </summary>
+    ''' <param name="ID">TVShow ID</param>
+    ''' <remarks></remarks>
+    Private Sub RemoveRow_TVShow(ByVal ID As Long)
+        Dim myDelegate As New Delegate_dtListRemoveRow(AddressOf dtListRemoveRow)
+
+        Dim dRow = From drvRow In dtTVShows.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item("idShow")) = ID Select drvRow
+
+        If dRow(0) IsNot Nothing Then
+            If InvokeRequired Then
+                Invoke(myDelegate, New Object() {dtTVShows, dRow(0)})
+            Else
+                dtTVShows.Rows.Remove(DirectCast(dRow(0), DataRow))
+            End If
+        End If
+        currRow_TVShow = -1
+    End Sub
+    ''' <summary>
     ''' Load existing movie content and save it again with all selected filenames
     ''' </summary>
     ''' <param name="ID">Movie ID</param>
@@ -15010,17 +15091,18 @@ doCancel:
         End If
     End Function
 
-    Private Sub cmnuMovieRemoveFromDatabase_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieRemoveFromDB.Click
+    Private Sub cmnuMovieRemoveFromDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieRemoveFromDB.Click
         ClearInfo()
 
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
                 Master.DB.Delete_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value), True)
+                RemoveRow_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value))
             Next
             SQLtransaction.Commit()
         End Using
 
-        FillList(True, True, False)
+        FillList(False, True, False)
     End Sub
 
     Private Sub ResizeMoviesList()
@@ -15250,26 +15332,26 @@ doCancel:
             bsTVEpisodes.DataSource = Nothing
             dgvTVEpisodes.DataSource = Nothing
 
-            If FilterArray_Shows.Count > 0 Then
+            If FilterArray_TVShows.Count > 0 Then
                 Dim FilterString As String = String.Empty
 
                 If rbFilterAnd_Shows.Checked Then
-                    FilterString = Microsoft.VisualBasic.Strings.Join(FilterArray_Shows.ToArray, " AND ")
+                    FilterString = Microsoft.VisualBasic.Strings.Join(FilterArray_TVShows.ToArray, " AND ")
                 Else
-                    FilterString = Microsoft.VisualBasic.Strings.Join(FilterArray_Shows.ToArray, " OR ")
+                    FilterString = Microsoft.VisualBasic.Strings.Join(FilterArray_TVShows.ToArray, " OR ")
                 End If
 
                 bsTVShows.Filter = FilterString
-                ModulesManager.Instance.RuntimeObjects.FilterShows = FilterString
+                ModulesManager.Instance.RuntimeObjects.FilterTVShows = FilterString
             Else
                 bsTVShows.RemoveFilter()
-                ModulesManager.Instance.RuntimeObjects.FilterShows = String.Empty
+                ModulesManager.Instance.RuntimeObjects.FilterTVShows = String.Empty
             End If
 
             If doFill Then
                 FillList(False, False, True)
-                ModulesManager.Instance.RuntimeObjects.FilterShowsSearch = txtSearchShows.Text
-                ModulesManager.Instance.RuntimeObjects.FilterShowsType = cbSearchShows.Text
+                ModulesManager.Instance.RuntimeObjects.FilterTVShowsSearch = txtSearchShows.Text
+                ModulesManager.Instance.RuntimeObjects.FilterTVShowsType = cbSearchShows.Text
             Else
                 txtSearchShows.Focus()
             End If
@@ -15284,7 +15366,7 @@ doCancel:
             End If
 
             If dgvMovies.DataSource IsNot Nothing Then
-                dgvMovies.Sort(dgvMovies.Columns(.GeneralMainFilterSortColumn_Movies), CType(.GeneralMainFilterSortOrder_Movies, System.ComponentModel.ListSortDirection))
+                dgvMovies.Sort(dgvMovies.Columns(.GeneralMainFilterSortColumn_Movies), CType(.GeneralMainFilterSortOrder_Movies, ComponentModel.ListSortDirection))
             End If
         End With
     End Sub
@@ -15297,7 +15379,7 @@ doCancel:
             End If
 
             If dgvMovieSets.DataSource IsNot Nothing Then
-                dgvMovieSets.Sort(dgvMovieSets.Columns(.GeneralMainFilterSortColumn_MovieSets), CType(.GeneralMainFilterSortOrder_MovieSets, System.ComponentModel.ListSortDirection))
+                dgvMovieSets.Sort(dgvMovieSets.Columns(.GeneralMainFilterSortColumn_MovieSets), CType(.GeneralMainFilterSortOrder_MovieSets, ComponentModel.ListSortDirection))
             End If
         End With
     End Sub
@@ -15310,7 +15392,7 @@ doCancel:
             End If
 
             If dgvTVShows.DataSource IsNot Nothing Then
-                dgvTVShows.Sort(dgvTVShows.Columns(.GeneralMainFilterSortColumn_Shows), CType(.GeneralMainFilterSortOrder_Shows, System.ComponentModel.ListSortDirection))
+                dgvTVShows.Sort(dgvTVShows.Columns(.GeneralMainFilterSortColumn_Shows), CType(.GeneralMainFilterSortOrder_Shows, ComponentModel.ListSortDirection))
             End If
         End With
     End Sub
@@ -15345,16 +15427,16 @@ doCancel:
         Master.eSettings.GeneralMainFilterSortOrder_Shows = Order
     End Sub
 
-    Private Sub ScannerUpdated(ByVal iType As Integer, ByVal sText As String)
-        Select Case iType
-            Case 1
-                SetStatus(String.Concat(Master.eLang.GetString(814, "Added Episode:"), " " & sText))
-            Case 2
-                SetStatus(Master.eLang.GetString(116, "Performing Preliminary Tasks (Gathering Data)..."))
-            Case 3
+    Private Sub ScannerUpdated(ByVal eProgressValue As Scanner.ProgressValue)
+        Select Case eProgressValue.Type
+            Case Enums.ScannerEventType.AddedMovie
+                SetStatus(String.Concat(Master.eLang.GetString(815, "Added Movie:"), " ", eProgressValue.Message))
+            Case Enums.ScannerEventType.AddedTVEpisode
+                SetStatus(String.Concat(Master.eLang.GetString(814, "Added Episode:"), " ", eProgressValue.Message))
+            Case Enums.ScannerEventType.CleaningDatabase
                 SetStatus(Master.eLang.GetString(644, "Cleaning Database..."))
-            Case Else
-                SetStatus(String.Concat(Master.eLang.GetString(815, "Added Movie:"), " " & sText))
+            Case Enums.ScannerEventType.PreliminaryTasks
+                SetStatus(Master.eLang.GetString(116, "Performing Preliminary Tasks (Gathering Data)..."))
         End Select
     End Sub
 
@@ -15443,7 +15525,7 @@ doCancel:
                     cmnuMovie.Enabled = True
                 End If
             Else
-                LoadInfo_Movie(Convert.ToInt32(dgvMovies.Item("idMovie", iRow).Value), dgvMovies.Item("MoviePath", iRow).Value.ToString, True)
+                LoadInfo_Movie(Convert.ToInt64(dgvMovies.Item("idMovie", iRow).Value), dgvMovies.Item("MoviePath", iRow).Value.ToString, True)
             End If
         End If
     End Sub
@@ -15474,7 +15556,7 @@ doCancel:
                     cmnuMovie.Enabled = True
                 End If
             Else
-                LoadInfo_MovieSet(Convert.ToInt32(dgvMovieSets.Item("idSet", iRow).Value), True)
+                LoadInfo_MovieSet(Convert.ToInt64(dgvMovieSets.Item("idSet", iRow).Value), True)
             End If
         End If
     End Sub
@@ -15492,14 +15574,14 @@ doCancel:
                 String.IsNullOrEmpty(dgvTVEpisodes.Item("PosterPath", iRow).Value.ToString) AndAlso Not Convert.ToInt64(dgvTVEpisodes.Item("idFile", iRow).Value) = -1 Then
                 ShowNoInfo(True, Enums.ContentType.TVEpisode)
 
-                currTV = Master.DB.Load_TVEpisode(Convert.ToInt32(dgvTVEpisodes.Item("idEpisode", iRow).Value), True)
+                currTV = Master.DB.Load_TVEpisode(Convert.ToInt64(dgvTVEpisodes.Item("idEpisode", iRow).Value), True)
                 FillScreenInfoWith_TVEpisode()
 
                 If Not Convert.ToInt64(dgvTVEpisodes.Item("idFile", iRow).Value) = -1 AndAlso Not fScanner.IsBusy AndAlso Not bwLoadMovieInfo.IsBusy AndAlso Not bwLoadMovieSetInfo.IsBusy AndAlso Not bwLoadShowInfo.IsBusy AndAlso Not bwLoadSeasonInfo.IsBusy AndAlso Not bwLoadEpInfo.IsBusy AndAlso Not bwReload_Movies.IsBusy AndAlso Not bwReload_MovieSets.IsBusy AndAlso Not bwCleanDB.IsBusy Then
                     cmnuEpisode.Enabled = True
                 End If
             Else
-                LoadInfo_TVEpisode(Convert.ToInt32(dgvTVEpisodes.SelectedRows(0).Cells("idEpisode").Value))
+                LoadInfo_TVEpisode(Convert.ToInt64(dgvTVEpisodes.SelectedRows(0).Cells("idEpisode").Value))
             End If
         End If
     End Sub
@@ -15523,8 +15605,8 @@ doCancel:
                 If Not currThemeType = Theming.ThemeType.Show Then ApplyTheme(Theming.ThemeType.Show)
                 ShowNoInfo(True, Enums.ContentType.TVSeason)
 
-                currTV = Master.DB.Load_TVSeason(Convert.ToInt32(dgvTVSeasons.Item("idSeason", iRow).Value), True, False)
-                FillEpisodes(Convert.ToInt32(dgvTVSeasons.Item("idShow", iRow).Value), Convert.ToInt32(dgvTVSeasons.Item("Season", iRow).Value))
+                currTV = Master.DB.Load_TVSeason(Convert.ToInt64(dgvTVSeasons.Item("idSeason", iRow).Value), True, False)
+                FillEpisodes(Convert.ToInt64(dgvTVSeasons.Item("idShow", iRow).Value), Convert.ToInt32(dgvTVSeasons.Item("Season", iRow).Value))
 
                 If Not fScanner.IsBusy AndAlso Not bwLoadMovieInfo.IsBusy AndAlso Not bwLoadMovieSetInfo.IsBusy AndAlso
                     Not bwLoadShowInfo.IsBusy AndAlso Not bwLoadSeasonInfo.IsBusy AndAlso Not bwLoadEpInfo.IsBusy AndAlso Not bwReload_Movies.IsBusy AndAlso
@@ -15532,9 +15614,9 @@ doCancel:
                     cmnuSeason.Enabled = True
                 End If
             Else
-                LoadInfo_TVSeason(Convert.ToInt32(dgvTVSeasons.Item("idSeason", iRow).Value),
+                LoadInfo_TVSeason(Convert.ToInt64(dgvTVSeasons.Item("idSeason", iRow).Value),
                                   If(CInt(dgvTVSeasons.Item("Season", iRow).Value) = 999, False, CBool(dgvTVSeasons.Item("Missing", iRow).Value)))
-                FillEpisodes(Convert.ToInt32(dgvTVSeasons.Item("idShow", iRow).Value), Convert.ToInt32(dgvTVSeasons.Item("Season", iRow).Value))
+                FillEpisodes(Convert.ToInt64(dgvTVSeasons.Item("idShow", iRow).Value), Convert.ToInt32(dgvTVSeasons.Item("Season", iRow).Value))
             End If
         End If
     End Sub
@@ -15560,13 +15642,13 @@ doCancel:
                 ShowNoInfo(True, Enums.ContentType.TVShow)
 
                 currTV = Master.DB.Load_TVShow(Convert.ToInt64(dgvTVShows.Item("idShow", iRow).Value), False, False)
-                FillSeasons(Convert.ToInt32(dgvTVShows.Item("idShow", iRow).Value))
+                FillSeasons(Convert.ToInt64(dgvTVShows.Item("idShow", iRow).Value))
 
                 If Not fScanner.IsBusy AndAlso Not bwLoadMovieInfo.IsBusy AndAlso Not bwLoadMovieSetInfo.IsBusy AndAlso Not bwLoadShowInfo.IsBusy AndAlso Not bwLoadSeasonInfo.IsBusy AndAlso Not bwLoadEpInfo.IsBusy AndAlso Not bwReload_Movies.IsBusy AndAlso Not bwReload_MovieSets.IsBusy AndAlso Not bwCleanDB.IsBusy Then
                     cmnuShow.Enabled = True
                 End If
             Else
-                LoadInfo_TVShow(Convert.ToInt32(dgvTVShows.Item("idShow", iRow).Value))
+                LoadInfo_TVShow(Convert.ToInt64(dgvTVShows.Item("idShow", iRow).Value))
             End If
         End If
     End Sub
@@ -16027,18 +16109,18 @@ doCancel:
             cbFilterLists_MovieSets.ValueMember = "Value"
             cbFilterLists_MovieSets.SelectedIndex = 0
 
-            listViews_Shows.Clear()
-            listViews_Shows.Add(Master.eLang.GetString(786, "Default List"), "tvshowlist")
+            listViews_TVShows.Clear()
+            listViews_TVShows.Add(Master.eLang.GetString(786, "Default List"), "tvshowlist")
             For Each cList As String In Master.DB.GetViewList(Enums.ContentType.TVShow)
-                listViews_Shows.Add(Regex.Replace(cList, "tvshow-", String.Empty).Trim, cList)
+                listViews_TVShows.Add(Regex.Replace(cList, "tvshow-", String.Empty).Trim, cList)
             Next
-            cbFilterLists_Shows.DataSource = listViews_Shows.ToList
+            cbFilterLists_Shows.DataSource = listViews_TVShows.ToList
             cbFilterLists_Shows.DisplayMember = "Key"
             cbFilterLists_Shows.ValueMember = "Value"
             cbFilterLists_Shows.SelectedIndex = 0
 
             mnuLanguagesLanguage.Items.Clear()
-            mnuLanguagesLanguage.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language.OrderBy(Function(f) f.name) Select lLang.name).ToArray)
+            mnuLanguagesLanguage.Items.AddRange((From lLang In APIXML.ScraperLanguagesXML.Languages.OrderBy(Function(f) f.Description) Select lLang.Description).ToArray)
 
             'not technically a menu, but it's a good place to put it
             If ReloadFilters Then
@@ -16166,7 +16248,7 @@ doCancel:
         'set all lists back to default before run "FillList"
         currList_Movies = "movielist"
         currList_MovieSets = "setslist"
-        currList_Shows = "tvshowlist"
+        currList_TVShows = "tvshowlist"
 
         If Not dresult.DidCancel Then
 
@@ -16409,7 +16491,7 @@ doCancel:
         Dim currTag As Structures.MainTabType = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
         If currTag.ContentType = Enums.ContentType.TV Then
             If dgvTVShows.RowCount > 0 Then
-                Dim epCount As Integer = Master.DB.GetViewMediaCount(currList_Shows, True)
+                Dim epCount As Integer = Master.DB.GetViewMediaCount(currList_TVShows, True)
                 tcMain.SelectedTab.Text = String.Format("{0} ({1}/{2})", currTag.ContentName, dgvTVShows.RowCount, epCount)
             Else
                 tcMain.SelectedTab.Text = currTag.ContentName
@@ -17126,7 +17208,6 @@ doCancel:
                 pnlSearchMovieSets.Visible = False
                 pnlSearchTVShows.Visible = False
                 btnMarkAll.Visible = True
-                scTV.Visible = False
                 dgvMovieSets.Visible = False
                 dgvMovies.Visible = True
                 ApplyTheme(Theming.ThemeType.Movie)
@@ -17169,7 +17250,6 @@ doCancel:
                 pnlSearchMovieSets.Visible = True
                 pnlSearchTVShows.Visible = False
                 btnMarkAll.Visible = False
-                scTV.Visible = False
                 dgvMovies.Visible = False
                 dgvMovieSets.Visible = True
                 ApplyTheme(Theming.ThemeType.MovieSet)
@@ -17192,9 +17272,9 @@ doCancel:
                 End If
 
             Case Enums.ContentType.TV
-                currList_Shows = currMainTabTag.DefaultList
-                cbFilterLists_Shows.SelectedValue = currList_Shows
-                ModulesManager.Instance.RuntimeObjects.ListShows = currList_Shows
+                currList_TVShows = currMainTabTag.DefaultList
+                cbFilterLists_Shows.SelectedValue = currList_TVShows
+                ModulesManager.Instance.RuntimeObjects.ListTVShows = currList_TVShows
                 FillList(False, False, True)
                 mnuMainTools.Enabled = True
                 cmnuTrayTools.Enabled = True
@@ -17213,7 +17293,6 @@ doCancel:
                 pnlSearchMovieSets.Visible = False
                 pnlSearchTVShows.Visible = True
                 btnMarkAll.Visible = False
-                scTV.Visible = True
                 ApplyTheme(Theming.ThemeType.Show)
                 If bwLoadMovieInfo.IsBusy Then bwLoadMovieInfo.CancelAsync()
                 If bwLoadMovieSetInfo.IsBusy Then bwLoadMovieSetInfo.CancelAsync()
@@ -17238,7 +17317,7 @@ doCancel:
     Private Sub tmrAni_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrAni.Tick
         Try
             Dim currMainTabTag As Structures.MainTabType = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
-            Select Case If(currMainTabTag.ContentType = Enums.ContentType.Movie, MovieInfoPanelState, If(currMainTabTag.ContentType = Enums.ContentType.MovieSet, MovieSetInfoPanelState, TVShowInfoPanelState))
+            Select Case If(currMainTabTag.ContentType = Enums.ContentType.Movie, InfoPanelState_Movie, If(currMainTabTag.ContentType = Enums.ContentType.MovieSet, InfoPanelState_MovieSet, InfoPanelState_TVShow))
                 Case 0
                     pnlInfoPanel.Height = 25
 
@@ -17252,7 +17331,7 @@ doCancel:
             MoveGenres()
             MoveMPAA()
 
-            Dim aType As Integer = If(currMainTabTag.ContentType = Enums.ContentType.Movie, MovieInfoPanelState, If(currMainTabTag.ContentType = Enums.ContentType.MovieSet, MovieSetInfoPanelState, TVShowInfoPanelState))
+            Dim aType As Integer = If(currMainTabTag.ContentType = Enums.ContentType.Movie, InfoPanelState_Movie, If(currMainTabTag.ContentType = Enums.ContentType.MovieSet, InfoPanelState_MovieSet, InfoPanelState_TVShow))
             Select Case aType
                 Case 0
                     If pnlInfoPanel.Height = 25 Then
@@ -17283,7 +17362,7 @@ doCancel:
     End Sub
 
     Private Sub FilterMovement_Movies()
-        If FilterRaise_Movies Then
+        If FilterPanelIsRaised_Movie Then
             pnlFilter_Movies.AutoSize = True
         Else
             pnlFilter_Movies.AutoSize = False
@@ -17302,7 +17381,7 @@ doCancel:
     End Sub
 
     Private Sub FilterMovement_MovieSets()
-        If FilterRaise_MovieSets Then
+        If FilterPanelIsRaised_MovieSet Then
             pnlFilter_MovieSets.AutoSize = True
         Else
             pnlFilter_MovieSets.AutoSize = False
@@ -17321,7 +17400,7 @@ doCancel:
     End Sub
 
     Private Sub FilterMovement_Shows()
-        If FilterRaise_Shows Then
+        If FilterPanelIsRaised_TVShow Then
             pnlFilter_Shows.AutoSize = True
         Else
             pnlFilter_Shows.AutoSize = False
@@ -17389,11 +17468,9 @@ doCancel:
 
     Private Sub tmrLoad_Movie_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrLoad_Movie.Tick
         tmrWait_Movie.Stop()
-        Debug.WriteLine("[tmrLoad_Movie_Tick] tmrLoad_Movie.Stop()")
         tmrLoad_Movie.Stop()
 
         If dgvMovies.SelectedRows.Count > 0 Then
-            Debug.WriteLine("[tmrLoad_Movie_Tick] Selceted Rows > 0")
 
             If dgvMovies.SelectedRows.Count > 1 Then
                 SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), dgvMovies.SelectedRows.Count))
@@ -17401,10 +17478,7 @@ doCancel:
                 SetStatus(dgvMovies.SelectedRows(0).Cells("MoviePath").Value.ToString)
             End If
 
-            Debug.WriteLine("[tmrLoad_Movie_Tick] SelectRow_Movie")
             SelectRow_Movie(dgvMovies.SelectedRows(0).Index)
-        Else
-            Debug.WriteLine("[tmrLoad_Movie_Tick] Selceted Rows = 0")
         End If
     End Sub
 
@@ -17525,34 +17599,34 @@ doCancel:
 
     Private Sub tmrSearchWait_Shows_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrSearchWait_Shows.Tick
         tmrSearch_Shows.Enabled = False
-        If prevTextSearch_Shows = currTextSearch_Shows Then
+        If prevTextSearch_TVShows = currTextSearch_TVShows Then
             tmrSearch_Shows.Enabled = True
         Else
-            prevTextSearch_Shows = currTextSearch_Shows
+            prevTextSearch_TVShows = currTextSearch_TVShows
         End If
     End Sub
 
     Private Sub tmrSearch_Shows_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrSearch_Shows.Tick
         tmrSearchWait_Shows.Enabled = False
         tmrSearch_Shows.Enabled = False
-        bDoingSearch_Shows = True
+        bDoingSearch_TVShows = True
 
         If Not String.IsNullOrEmpty(txtSearchShows.Text) Then
-            FilterArray_Shows.Remove(filSearch_Shows)
-            filSearch_Shows = String.Empty
+            FilterArray_TVShows.Remove(filSearch_TVShows)
+            filSearch_TVShows = String.Empty
 
             Select Case cbSearchShows.Text
                 Case Master.eLang.GetString(21, "Title")
-                    filSearch_Shows = String.Concat("Title LIKE '%", txtSearchShows.Text, "%'")
-                    FilterArray_Shows.Add(filSearch_Shows)
+                    filSearch_TVShows = String.Concat("Title LIKE '%", txtSearchShows.Text, "%'")
+                    FilterArray_TVShows.Add(filSearch_TVShows)
             End Select
 
             RunFilter_Shows(False)
 
         Else
-            If Not String.IsNullOrEmpty(filSearch_Shows) Then
-                FilterArray_Shows.Remove(filSearch_Shows)
-                filSearch_Shows = String.Empty
+            If Not String.IsNullOrEmpty(filSearch_TVShows) Then
+                FilterArray_TVShows.Remove(filSearch_TVShows)
+                filSearch_TVShows = String.Empty
             End If
             RunFilter_Shows(True)
         End If
@@ -17608,17 +17682,12 @@ doCancel:
 
     Private Sub tmrWait_Movie_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrWait_Movie.Tick
         If Not prevRow_Movie = currRow_Movie Then
-            Debug.WriteLine(String.Concat("[tmrWait_Movie_Tick] prevRow_Movie=", prevRow_Movie, " / currRow_Movie=", currRow_Movie))
-            Debug.WriteLine("[tmrWait_Movie_Tick] tmrWait_Movie.Stop()")
+            prevRow_Movie = currRow_Movie
             tmrWait_Movie.Stop()
-            Debug.WriteLine("[tmrWait_Movie_Tick] tmrLoad_Movie.Start()")
             tmrLoad_Movie.Start()
-            'Else
-            '    Debug.WriteLine(String.Concat("[tmrWait_Movie_Tick] prevRow_Movie=", prevRow_Movie, " / currRow_Movie=", currRow_Movie))
-            '    Debug.WriteLine("[tmrWait_Movie_Tick] tmrLoad_Movie.Stop()")
-            '    tmrLoad_Movie.Stop()
-            '    Debug.WriteLine("[tmrWait_Movie_Tick] tmrWait_Movie.Stop()")
-            '    tmrWait_Movie.Stop()
+        Else
+            tmrLoad_Movie.Stop()
+            tmrWait_Movie.Stop()
         End If
     End Sub
 
@@ -17795,7 +17864,7 @@ doCancel:
     End Sub
 
     Private Sub txtSearchShows_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSearchShows.TextChanged
-        currTextSearch_Shows = txtSearchShows.Text
+        currTextSearch_TVShows = txtSearchShows.Text
 
         tmrSearchWait_Shows.Enabled = False
         tmrSearch_Shows.Enabled = False
@@ -17956,7 +18025,7 @@ doCancel:
 
 #Region "Fields"
 
-        Dim ID As Integer
+        Dim ID As Long
         Dim IsTV As Boolean
         Dim DBElement As Database.DBElement
         Dim Path As String

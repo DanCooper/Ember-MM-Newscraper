@@ -839,7 +839,7 @@ Public Class KodiInterface
                         Dim mnuHostGetPlaycount As New ToolStripMenuItem
                         mnuHostGetPlaycount.Image = New Bitmap(My.Resources.menuSync)
                         mnuHostGetPlaycount.Tag = mHost
-                        mnuHostGetPlaycount.Text = Master.eLang.GetString(1047, "Get Playcount")
+                        mnuHostGetPlaycount.Text = Master.eLang.GetString(1070, "Get Playcount")
                         Select Case tContentType
                             Case Enums.ContentType.Movie
                                 AddHandler mnuHostGetPlaycount.Click, AddressOf cmnuHostGetPlaycount_Movie_Click
@@ -930,7 +930,7 @@ Public Class KodiInterface
                         Dim mnuHostGetPlaycount As New ToolStripMenuItem
                         mnuHostGetPlaycount.Image = New Bitmap(My.Resources.menuSync)
                         mnuHostGetPlaycount.Tag = mHost
-                        mnuHostGetPlaycount.Text = String.Format("{0} ({1})", Master.eLang.GetString(1047, "Get Playcount"), _SpecialSettings.SyncPlayCountsHost)
+                        mnuHostGetPlaycount.Text = String.Format("{0} ({1})", Master.eLang.GetString(1070, "Get Playcount"), _SpecialSettings.SyncPlayCountsHost)
                         Select Case tContentType
                             Case Enums.ContentType.Movie
                                 AddHandler mnuHostGetPlaycount.Click, AddressOf cmnuHostGetPlaycount_Movie_Click

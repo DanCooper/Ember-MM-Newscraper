@@ -29,15 +29,16 @@ Public Class APIXML
 #Region "Fields"
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Public Shared lFlags As New List(Of Flag)
+    Public Shared CertLanguagesXML As New clsXMLCertLanguages
+    Public Shared FilterXML As New clsXMLFilter
+    Public Shared GenreXML As New clsXMLGenres
+    Public Shared RatingXML As New clsXMLRatings
+    Public Shared ScraperLanguagesXML As New clsXMLScraperLanguages
+    Public Shared SourceList As New List(Of String)(New String() {"bluray", "hddvd", "hdtv", "dvd", "sdtv", "vhs"})
     Public Shared alGenres As New List(Of String)
     Public Shared dLanguages As New Dictionary(Of String, String)
     Public Shared dStudios As New Dictionary(Of String, String)
-    Public Shared GenreXML As New clsXMLGenres
-    Public Shared CertLanguagesXML As New clsXMLCertLanguages
-    Public Shared RatingXML As New clsXMLRatings
-    Public Shared SourceList As New List(Of String)(New String() {"bluray", "hddvd", "hdtv", "dvd", "sdtv", "vhs"})
-    Public Shared FilterXML As New clsXMLFilter
+    Public Shared lFlags As New List(Of Flag)
 
 #End Region 'Fields
 
@@ -158,6 +159,23 @@ Public Class APIXML
                 Catch ex As Exception
                     logger.Error(ex, New StackFrame().GetMethod().Name)
                 End Try
+            End If
+
+            Dim slPath As String = Path.Combine(Master.SettingsPath, "Core.ScraperLanguages.xml")
+            If File.Exists(slPath) Then
+                objStreamReader = New StreamReader(slPath)
+                Dim xLang As New XmlSerializer(ScraperLanguagesXML.GetType)
+
+                ScraperLanguagesXML = CType(xLang.Deserialize(objStreamReader), clsXMLScraperLanguages)
+                objStreamReader.Close()
+            Else
+                Dim slPathD As String = FileUtils.Common.ReturnSettingsFile("Defaults", "Core.ScraperLanguages.xml")
+                objStreamReader = New StreamReader(slPathD)
+                Dim xLang As New XmlSerializer(ScraperLanguagesXML.GetType)
+
+                ScraperLanguagesXML = CType(xLang.Deserialize(objStreamReader), clsXMLScraperLanguages)
+                objStreamReader.Close()
+                ScraperLanguagesXML.Save()
             End If
 
             Dim filterPath As String = Path.Combine(Master.SettingsPath, "Queries.xml")
@@ -497,37 +515,37 @@ Public Class APIXML
 
     Public Shared Function GetRatingList_Movie() As Object()
         Dim retRatings As New List(Of String)
-        Try
-            If Not Master.eSettings.MovieScraperCertForMPAA Then
-                For Each r In RatingXML.movies.FindAll(Function(f) f.country.ToLower = "usa")
-                    retRatings.Add(r.searchstring)
-                Next
-            Else
-                For Each r In RatingXML.movies.FindAll(Function(f) f.country.ToLower = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.MovieScraperCertLang).name.ToLower)
+        If Master.eSettings.MovieScraperCertForMPAA AndAlso Not Master.eSettings.MovieScraperCertLang = Master.eLang.All Then
+            Dim tCountry = CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.MovieScraperCertLang)
+            If tCountry IsNot Nothing AndAlso Not String.IsNullOrEmpty(tCountry.name) Then
+                For Each r In RatingXML.movies.FindAll(Function(f) f.country.ToLower = tCountry.name.ToLower)
                     retRatings.Add(r.searchstring)
                 Next
             End If
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
+        Else
+            For Each r In RatingXML.movies.FindAll(Function(f) f.country.ToLower = "usa")
+                retRatings.Add(r.searchstring)
+            Next
+        End If
+
         Return retRatings.ToArray
     End Function
 
     Public Shared Function GetRatingList_TV() As Object()
         Dim retRatings As New List(Of String)
-        Try
-            If Not Master.eSettings.TVScraperShowCertForMPAA Then
-                For Each r In RatingXML.tv.FindAll(Function(f) f.country.ToLower = "usa")
-                    retRatings.Add(r.searchstring)
-                Next
-            Else
-                For Each r In RatingXML.tv.FindAll(Function(f) f.country.ToLower = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.TVScraperShowCertLang).name.ToLower)
+        If Master.eSettings.TVScraperShowCertForMPAA AndAlso Not Master.eSettings.TVScraperShowCertLang = Master.eLang.All Then
+            Dim tCountry = CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.TVScraperShowCertLang)
+            If tCountry IsNot Nothing AndAlso Not String.IsNullOrEmpty(tCountry.name) Then
+                For Each r In RatingXML.tv.FindAll(Function(f) f.country.ToLower = tCountry.name.ToLower)
                     retRatings.Add(r.searchstring)
                 Next
             End If
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
+        Else
+            For Each r In RatingXML.tv.FindAll(Function(f) f.country.ToLower = "usa")
+                retRatings.Add(r.searchstring)
+            Next
+        End If
+
         Return retRatings.ToArray
     End Function
 

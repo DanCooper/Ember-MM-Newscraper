@@ -189,6 +189,8 @@ Partial Class dlgSettings
         Me.chkMovieImagesGetBlankImages = New System.Windows.Forms.CheckBox()
         Me.chkMovieImagesGetEnglishImages = New System.Windows.Forms.CheckBox()
         Me.chkMovieImagesMediaLanguageOnly = New System.Windows.Forms.CheckBox()
+        Me.cbMovieImagesForcedLanguage = New System.Windows.Forms.ComboBox()
+        Me.chkMovieImagesForceLanguage = New System.Windows.Forms.CheckBox()
         Me.gbMovieGeneralMediaListOpts = New System.Windows.Forms.GroupBox()
         Me.tblMovieGeneralMediaListOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.gbMovieGeneralMediaListSortTokensOpts = New System.Windows.Forms.GroupBox()
@@ -711,7 +713,6 @@ Partial Class dlgSettings
         Me.cbTVLanguageOverlay = New System.Windows.Forms.ComboBox()
         Me.gbTVSourcesDefaultsOpts = New System.Windows.Forms.GroupBox()
         Me.tblTVSourcesDefaultsOpts = New System.Windows.Forms.TableLayoutPanel()
-        Me.btnTVGeneralLangFetch = New System.Windows.Forms.Button()
         Me.cbTVGeneralLang = New System.Windows.Forms.ComboBox()
         Me.lblTVSourcesDefaultsOrdering = New System.Windows.Forms.Label()
         Me.cbTVScraperOptionsOrdering = New System.Windows.Forms.ComboBox()
@@ -980,6 +981,8 @@ Partial Class dlgSettings
         Me.chkTVImagesGetBlankImages = New System.Windows.Forms.CheckBox()
         Me.chkTVImagesGetEnglishImages = New System.Windows.Forms.CheckBox()
         Me.chkTVImagesMediaLanguageOnly = New System.Windows.Forms.CheckBox()
+        Me.chkTVImagesForceLanguage = New System.Windows.Forms.CheckBox()
+        Me.cbTVImagesForcedLanguage = New System.Windows.Forms.ComboBox()
         Me.tpTVImagesTVShow = New System.Windows.Forms.TabPage()
         Me.tblTVImagesShow = New System.Windows.Forms.TableLayoutPanel()
         Me.gbTVImagesShowPosterOpts = New System.Windows.Forms.GroupBox()
@@ -1560,6 +1563,8 @@ Partial Class dlgSettings
         Me.chkMovieSetImagesGetBlankImages = New System.Windows.Forms.CheckBox()
         Me.chkMovieSetImagesGetEnglishImages = New System.Windows.Forms.CheckBox()
         Me.chkMovieSetImagesMediaLanguageOnly = New System.Windows.Forms.CheckBox()
+        Me.chkMovieSetImagesForceLanguage = New System.Windows.Forms.CheckBox()
+        Me.cbMovieSetImagesForcedLanguage = New System.Windows.Forms.ComboBox()
         Me.gbMovieSetImagesOpts = New System.Windows.Forms.GroupBox()
         Me.tblMovieSetImagesOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.chkMovieSetImagesCacheEnabled = New System.Windows.Forms.CheckBox()
@@ -1611,6 +1616,7 @@ Partial Class dlgSettings
         Me.scSettingsBody = New System.Windows.Forms.SplitContainer()
         Me.scSettingsMain = New System.Windows.Forms.SplitContainer()
         Me.tblSettingsFooter = New System.Windows.Forms.TableLayoutPanel()
+        Me.colTVSourcesSingle = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.gbGeneralMiscOpts.SuspendLayout()
         Me.tblGeneralMisc.SuspendLayout()
         Me.gbGeneralThemes.SuspendLayout()
@@ -2864,7 +2870,7 @@ Partial Class dlgSettings
         Me.pnlMovieImages.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.pnlMovieImages.Location = New System.Drawing.Point(900, 900)
         Me.pnlMovieImages.Name = "pnlMovieImages"
-        Me.pnlMovieImages.Size = New System.Drawing.Size(774, 653)
+        Me.pnlMovieImages.Size = New System.Drawing.Size(759, 589)
         Me.pnlMovieImages.TabIndex = 12
         Me.pnlMovieImages.Visible = False
         '
@@ -2903,7 +2909,7 @@ Partial Class dlgSettings
         Me.tblMovieImages.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieImages.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieImages.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieImages.Size = New System.Drawing.Size(774, 653)
+        Me.tblMovieImages.Size = New System.Drawing.Size(759, 589)
         Me.tblMovieImages.TabIndex = 17
         '
         'gbMovieImagesOpts
@@ -2915,7 +2921,7 @@ Partial Class dlgSettings
         Me.gbMovieImagesOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbMovieImagesOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbMovieImagesOpts.Name = "gbMovieImagesOpts"
-        Me.gbMovieImagesOpts.Size = New System.Drawing.Size(298, 90)
+        Me.gbMovieImagesOpts.Size = New System.Drawing.Size(298, 117)
         Me.gbMovieImagesOpts.TabIndex = 0
         Me.gbMovieImagesOpts.TabStop = False
         Me.gbMovieImagesOpts.Text = "Images"
@@ -2937,7 +2943,7 @@ Partial Class dlgSettings
         Me.tblMovieImagesOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieImagesOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieImagesOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieImagesOpts.Size = New System.Drawing.Size(292, 69)
+        Me.tblMovieImagesOpts.Size = New System.Drawing.Size(292, 96)
         Me.tblMovieImagesOpts.TabIndex = 17
         '
         'chkMovieImagesNotSaveURLToNfo
@@ -2985,7 +2991,7 @@ Partial Class dlgSettings
         Me.gbMovieImagesLandscapeOpts.Controls.Add(Me.tblMovieImagesLandscapeOpts)
         Me.gbMovieImagesLandscapeOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieImagesLandscapeOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbMovieImagesLandscapeOpts.Location = New System.Drawing.Point(511, 447)
+        Me.gbMovieImagesLandscapeOpts.Location = New System.Drawing.Point(511, 474)
         Me.gbMovieImagesLandscapeOpts.Name = "gbMovieImagesLandscapeOpts"
         Me.gbMovieImagesLandscapeOpts.Size = New System.Drawing.Size(245, 112)
         Me.gbMovieImagesLandscapeOpts.TabIndex = 14
@@ -3026,7 +3032,7 @@ Partial Class dlgSettings
         Me.gbMovieImagesDiscArtOpts.Controls.Add(Me.tblMovieImagesDiscArtOpts)
         Me.gbMovieImagesDiscArtOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieImagesDiscArtOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbMovieImagesDiscArtOpts.Location = New System.Drawing.Point(511, 397)
+        Me.gbMovieImagesDiscArtOpts.Location = New System.Drawing.Point(511, 424)
         Me.gbMovieImagesDiscArtOpts.Name = "gbMovieImagesDiscArtOpts"
         Me.gbMovieImagesDiscArtOpts.Size = New System.Drawing.Size(245, 44)
         Me.gbMovieImagesDiscArtOpts.TabIndex = 15
@@ -3067,7 +3073,7 @@ Partial Class dlgSettings
         Me.gbMovieImagesClearLogoOpts.Controls.Add(Me.tblMovieImagesClearLogoOpts)
         Me.gbMovieImagesClearLogoOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieImagesClearLogoOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbMovieImagesClearLogoOpts.Location = New System.Drawing.Point(511, 347)
+        Me.gbMovieImagesClearLogoOpts.Location = New System.Drawing.Point(511, 374)
         Me.gbMovieImagesClearLogoOpts.Name = "gbMovieImagesClearLogoOpts"
         Me.gbMovieImagesClearLogoOpts.Size = New System.Drawing.Size(245, 44)
         Me.gbMovieImagesClearLogoOpts.TabIndex = 15
@@ -3108,7 +3114,7 @@ Partial Class dlgSettings
         Me.gbMovieImagesClearArtOpts.Controls.Add(Me.tblMovieImagesClearArtOpts)
         Me.gbMovieImagesClearArtOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieImagesClearArtOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbMovieImagesClearArtOpts.Location = New System.Drawing.Point(511, 297)
+        Me.gbMovieImagesClearArtOpts.Location = New System.Drawing.Point(511, 324)
         Me.gbMovieImagesClearArtOpts.Name = "gbMovieImagesClearArtOpts"
         Me.gbMovieImagesClearArtOpts.Size = New System.Drawing.Size(245, 44)
         Me.gbMovieImagesClearArtOpts.TabIndex = 15
@@ -3149,7 +3155,7 @@ Partial Class dlgSettings
         Me.gbMovieImagesActorThumbsOpts.Controls.Add(Me.tblMovieImagesActorThumbsOpts)
         Me.gbMovieImagesActorThumbsOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieImagesActorThumbsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbMovieImagesActorThumbsOpts.Location = New System.Drawing.Point(511, 247)
+        Me.gbMovieImagesActorThumbsOpts.Location = New System.Drawing.Point(511, 274)
         Me.gbMovieImagesActorThumbsOpts.Name = "gbMovieImagesActorThumbsOpts"
         Me.gbMovieImagesActorThumbsOpts.Size = New System.Drawing.Size(245, 44)
         Me.gbMovieImagesActorThumbsOpts.TabIndex = 16
@@ -3190,7 +3196,7 @@ Partial Class dlgSettings
         Me.gbMovieImagesPosterOpts.Controls.Add(Me.tblMovieImagesPosterOpts)
         Me.gbMovieImagesPosterOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieImagesPosterOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbMovieImagesPosterOpts.Location = New System.Drawing.Point(3, 99)
+        Me.gbMovieImagesPosterOpts.Location = New System.Drawing.Point(3, 126)
         Me.gbMovieImagesPosterOpts.Name = "gbMovieImagesPosterOpts"
         Me.gbMovieImagesPosterOpts.Size = New System.Drawing.Size(245, 142)
         Me.gbMovieImagesPosterOpts.TabIndex = 2
@@ -3342,7 +3348,7 @@ Partial Class dlgSettings
         Me.gbMovieImagesBannerOpts.Controls.Add(Me.tblMovieImagesBannerOpts)
         Me.gbMovieImagesBannerOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieImagesBannerOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbMovieImagesBannerOpts.Location = New System.Drawing.Point(254, 99)
+        Me.gbMovieImagesBannerOpts.Location = New System.Drawing.Point(254, 126)
         Me.gbMovieImagesBannerOpts.Name = "gbMovieImagesBannerOpts"
         Me.gbMovieImagesBannerOpts.Size = New System.Drawing.Size(251, 142)
         Me.gbMovieImagesBannerOpts.TabIndex = 12
@@ -3494,7 +3500,7 @@ Partial Class dlgSettings
         Me.gbMovieImagesExtrathumbsOpts.Controls.Add(Me.tblMovieImagesExtrathumbsOpts)
         Me.gbMovieImagesExtrathumbsOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieImagesExtrathumbsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbMovieImagesExtrathumbsOpts.Location = New System.Drawing.Point(254, 247)
+        Me.gbMovieImagesExtrathumbsOpts.Location = New System.Drawing.Point(254, 274)
         Me.gbMovieImagesExtrathumbsOpts.Name = "gbMovieImagesExtrathumbsOpts"
         Me.tblMovieImages.SetRowSpan(Me.gbMovieImagesExtrathumbsOpts, 5)
         Me.gbMovieImagesExtrathumbsOpts.Size = New System.Drawing.Size(251, 312)
@@ -3771,7 +3777,7 @@ Partial Class dlgSettings
         Me.gbMovieImagesExtrafanartsOpts.Controls.Add(Me.tblMovieImagesExtrafanartsOpts)
         Me.gbMovieImagesExtrafanartsOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieImagesExtrafanartsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbMovieImagesExtrafanartsOpts.Location = New System.Drawing.Point(3, 247)
+        Me.gbMovieImagesExtrafanartsOpts.Location = New System.Drawing.Point(3, 274)
         Me.gbMovieImagesExtrafanartsOpts.Name = "gbMovieImagesExtrafanartsOpts"
         Me.tblMovieImages.SetRowSpan(Me.gbMovieImagesExtrafanartsOpts, 4)
         Me.gbMovieImagesExtrafanartsOpts.Size = New System.Drawing.Size(245, 194)
@@ -3960,7 +3966,7 @@ Partial Class dlgSettings
         Me.gbMovieImagesFanartOpts.Controls.Add(Me.tblMovieImagesFanartOpts)
         Me.gbMovieImagesFanartOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieImagesFanartOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbMovieImagesFanartOpts.Location = New System.Drawing.Point(511, 99)
+        Me.gbMovieImagesFanartOpts.Location = New System.Drawing.Point(511, 126)
         Me.gbMovieImagesFanartOpts.Name = "gbMovieImagesFanartOpts"
         Me.gbMovieImagesFanartOpts.Size = New System.Drawing.Size(245, 142)
         Me.gbMovieImagesFanartOpts.TabIndex = 3
@@ -4114,7 +4120,7 @@ Partial Class dlgSettings
         Me.gbMovieImagesLanguageOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbMovieImagesLanguageOpts.Location = New System.Drawing.Point(307, 3)
         Me.gbMovieImagesLanguageOpts.Name = "gbMovieImagesLanguageOpts"
-        Me.gbMovieImagesLanguageOpts.Size = New System.Drawing.Size(449, 90)
+        Me.gbMovieImagesLanguageOpts.Size = New System.Drawing.Size(449, 117)
         Me.gbMovieImagesLanguageOpts.TabIndex = 17
         Me.gbMovieImagesLanguageOpts.TabStop = False
         Me.gbMovieImagesLanguageOpts.Text = "Preferred Language"
@@ -4125,18 +4131,21 @@ Partial Class dlgSettings
         Me.tblMovieImagesLanguageOpts.ColumnCount = 2
         Me.tblMovieImagesLanguageOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieImagesLanguageOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMovieImagesLanguageOpts.Controls.Add(Me.chkMovieImagesGetBlankImages, 0, 2)
-        Me.tblMovieImagesLanguageOpts.Controls.Add(Me.chkMovieImagesGetEnglishImages, 0, 1)
-        Me.tblMovieImagesLanguageOpts.Controls.Add(Me.chkMovieImagesMediaLanguageOnly, 0, 0)
+        Me.tblMovieImagesLanguageOpts.Controls.Add(Me.chkMovieImagesGetBlankImages, 0, 3)
+        Me.tblMovieImagesLanguageOpts.Controls.Add(Me.chkMovieImagesGetEnglishImages, 0, 2)
+        Me.tblMovieImagesLanguageOpts.Controls.Add(Me.chkMovieImagesMediaLanguageOnly, 0, 1)
+        Me.tblMovieImagesLanguageOpts.Controls.Add(Me.cbMovieImagesForcedLanguage, 1, 0)
+        Me.tblMovieImagesLanguageOpts.Controls.Add(Me.chkMovieImagesForceLanguage, 0, 0)
         Me.tblMovieImagesLanguageOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMovieImagesLanguageOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblMovieImagesLanguageOpts.Name = "tblMovieImagesLanguageOpts"
-        Me.tblMovieImagesLanguageOpts.RowCount = 4
+        Me.tblMovieImagesLanguageOpts.RowCount = 5
         Me.tblMovieImagesLanguageOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieImagesLanguageOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieImagesLanguageOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieImagesLanguageOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieImagesLanguageOpts.Size = New System.Drawing.Size(443, 69)
+        Me.tblMovieImagesLanguageOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMovieImagesLanguageOpts.Size = New System.Drawing.Size(443, 96)
         Me.tblMovieImagesLanguageOpts.TabIndex = 97
         '
         'chkMovieImagesGetBlankImages
@@ -4145,7 +4154,7 @@ Partial Class dlgSettings
         Me.chkMovieImagesGetBlankImages.AutoSize = True
         Me.chkMovieImagesGetBlankImages.Enabled = False
         Me.chkMovieImagesGetBlankImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieImagesGetBlankImages.Location = New System.Drawing.Point(3, 49)
+        Me.chkMovieImagesGetBlankImages.Location = New System.Drawing.Point(3, 76)
         Me.chkMovieImagesGetBlankImages.Name = "chkMovieImagesGetBlankImages"
         Me.chkMovieImagesGetBlankImages.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
         Me.chkMovieImagesGetBlankImages.Size = New System.Drawing.Size(160, 17)
@@ -4159,7 +4168,7 @@ Partial Class dlgSettings
         Me.chkMovieImagesGetEnglishImages.AutoSize = True
         Me.chkMovieImagesGetEnglishImages.Enabled = False
         Me.chkMovieImagesGetEnglishImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieImagesGetEnglishImages.Location = New System.Drawing.Point(3, 26)
+        Me.chkMovieImagesGetEnglishImages.Location = New System.Drawing.Point(3, 53)
         Me.chkMovieImagesGetEnglishImages.Name = "chkMovieImagesGetEnglishImages"
         Me.chkMovieImagesGetEnglishImages.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
         Me.chkMovieImagesGetEnglishImages.Size = New System.Drawing.Size(169, 17)
@@ -4172,12 +4181,36 @@ Partial Class dlgSettings
         Me.chkMovieImagesMediaLanguageOnly.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkMovieImagesMediaLanguageOnly.AutoSize = True
         Me.chkMovieImagesMediaLanguageOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieImagesMediaLanguageOnly.Location = New System.Drawing.Point(3, 3)
+        Me.chkMovieImagesMediaLanguageOnly.Location = New System.Drawing.Point(3, 30)
         Me.chkMovieImagesMediaLanguageOnly.Name = "chkMovieImagesMediaLanguageOnly"
         Me.chkMovieImagesMediaLanguageOnly.Size = New System.Drawing.Size(237, 17)
         Me.chkMovieImagesMediaLanguageOnly.TabIndex = 15
         Me.chkMovieImagesMediaLanguageOnly.Text = "Only Get Images for the Media Language"
         Me.chkMovieImagesMediaLanguageOnly.UseVisualStyleBackColor = True
+        '
+        'cbMovieImagesForcedLanguage
+        '
+        Me.cbMovieImagesForcedLanguage.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.cbMovieImagesForcedLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbMovieImagesForcedLanguage.Enabled = False
+        Me.cbMovieImagesForcedLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbMovieImagesForcedLanguage.FormattingEnabled = True
+        Me.cbMovieImagesForcedLanguage.Location = New System.Drawing.Point(246, 3)
+        Me.cbMovieImagesForcedLanguage.Name = "cbMovieImagesForcedLanguage"
+        Me.cbMovieImagesForcedLanguage.Size = New System.Drawing.Size(194, 21)
+        Me.cbMovieImagesForcedLanguage.TabIndex = 1
+        '
+        'chkMovieImagesForceLanguage
+        '
+        Me.chkMovieImagesForceLanguage.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkMovieImagesForceLanguage.AutoSize = True
+        Me.chkMovieImagesForceLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieImagesForceLanguage.Location = New System.Drawing.Point(3, 5)
+        Me.chkMovieImagesForceLanguage.Name = "chkMovieImagesForceLanguage"
+        Me.chkMovieImagesForceLanguage.Size = New System.Drawing.Size(108, 17)
+        Me.chkMovieImagesForceLanguage.TabIndex = 15
+        Me.chkMovieImagesForceLanguage.Text = "Force Language"
+        Me.chkMovieImagesForceLanguage.UseVisualStyleBackColor = True
         '
         'gbMovieGeneralMediaListOpts
         '
@@ -10831,7 +10864,7 @@ Partial Class dlgSettings
         Me.gbTVSourcesDefaultsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbTVSourcesDefaultsOpts.Location = New System.Drawing.Point(541, 114)
         Me.gbTVSourcesDefaultsOpts.Name = "gbTVSourcesDefaultsOpts"
-        Me.gbTVSourcesDefaultsOpts.Size = New System.Drawing.Size(278, 144)
+        Me.gbTVSourcesDefaultsOpts.Size = New System.Drawing.Size(278, 115)
         Me.gbTVSourcesDefaultsOpts.TabIndex = 4
         Me.gbTVSourcesDefaultsOpts.TabStop = False
         Me.gbTVSourcesDefaultsOpts.Text = "Defaults for new Sources"
@@ -10842,34 +10875,21 @@ Partial Class dlgSettings
         Me.tblTVSourcesDefaultsOpts.ColumnCount = 2
         Me.tblTVSourcesDefaultsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVSourcesDefaultsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVSourcesDefaultsOpts.Controls.Add(Me.btnTVGeneralLangFetch, 0, 2)
         Me.tblTVSourcesDefaultsOpts.Controls.Add(Me.cbTVGeneralLang, 0, 1)
-        Me.tblTVSourcesDefaultsOpts.Controls.Add(Me.lblTVSourcesDefaultsOrdering, 0, 3)
-        Me.tblTVSourcesDefaultsOpts.Controls.Add(Me.cbTVScraperOptionsOrdering, 0, 4)
+        Me.tblTVSourcesDefaultsOpts.Controls.Add(Me.lblTVSourcesDefaultsOrdering, 0, 2)
+        Me.tblTVSourcesDefaultsOpts.Controls.Add(Me.cbTVScraperOptionsOrdering, 0, 3)
         Me.tblTVSourcesDefaultsOpts.Controls.Add(Me.lblTVSourcesDefaultsLanguage, 0, 0)
         Me.tblTVSourcesDefaultsOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblTVSourcesDefaultsOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblTVSourcesDefaultsOpts.Name = "tblTVSourcesDefaultsOpts"
-        Me.tblTVSourcesDefaultsOpts.RowCount = 6
+        Me.tblTVSourcesDefaultsOpts.RowCount = 5
+        Me.tblTVSourcesDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblTVSourcesDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVSourcesDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblTVSourcesDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVSourcesDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVSourcesDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblTVSourcesDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVSourcesDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVSourcesDefaultsOpts.Size = New System.Drawing.Size(272, 123)
+        Me.tblTVSourcesDefaultsOpts.Size = New System.Drawing.Size(272, 94)
         Me.tblTVSourcesDefaultsOpts.TabIndex = 5
-        '
-        'btnTVGeneralLangFetch
-        '
-        Me.btnTVGeneralLangFetch.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.btnTVGeneralLangFetch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnTVGeneralLangFetch.Location = New System.Drawing.Point(3, 50)
-        Me.btnTVGeneralLangFetch.Name = "btnTVGeneralLangFetch"
-        Me.btnTVGeneralLangFetch.Size = New System.Drawing.Size(160, 23)
-        Me.btnTVGeneralLangFetch.TabIndex = 10
-        Me.btnTVGeneralLangFetch.Text = "Fetch Available Languages"
-        Me.btnTVGeneralLangFetch.UseVisualStyleBackColor = True
         '
         'cbTVGeneralLang
         '
@@ -10886,7 +10906,7 @@ Partial Class dlgSettings
         Me.lblTVSourcesDefaultsOrdering.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVSourcesDefaultsOrdering.AutoSize = True
         Me.lblTVSourcesDefaultsOrdering.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblTVSourcesDefaultsOrdering.Location = New System.Drawing.Point(3, 79)
+        Me.lblTVSourcesDefaultsOrdering.Location = New System.Drawing.Point(3, 50)
         Me.lblTVSourcesDefaultsOrdering.Name = "lblTVSourcesDefaultsOrdering"
         Me.lblTVSourcesDefaultsOrdering.Size = New System.Drawing.Size(142, 13)
         Me.lblTVSourcesDefaultsOrdering.TabIndex = 7
@@ -10899,7 +10919,7 @@ Partial Class dlgSettings
         Me.cbTVScraperOptionsOrdering.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbTVScraperOptionsOrdering.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbTVScraperOptionsOrdering.FormattingEnabled = True
-        Me.cbTVScraperOptionsOrdering.Location = New System.Drawing.Point(3, 99)
+        Me.cbTVScraperOptionsOrdering.Location = New System.Drawing.Point(3, 70)
         Me.cbTVScraperOptionsOrdering.Name = "cbTVScraperOptionsOrdering"
         Me.cbTVScraperOptionsOrdering.Size = New System.Drawing.Size(160, 21)
         Me.cbTVScraperOptionsOrdering.TabIndex = 8
@@ -10998,7 +11018,7 @@ Partial Class dlgSettings
         '
         'lvTVSources
         '
-        Me.lvTVSources.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colTVSourcesID, Me.colTVSourcesName, Me.colTVSourcesPath, Me.colTVSourcesLanguage, Me.colTVSourcesOrdering, Me.colTVSourcesExclude, Me.colTVSourcesSorting})
+        Me.lvTVSources.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colTVSourcesID, Me.colTVSourcesName, Me.colTVSourcesPath, Me.colTVSourcesLanguage, Me.colTVSourcesOrdering, Me.colTVSourcesExclude, Me.colTVSourcesSorting, Me.colTVSourcesSingle})
         Me.tblTVSourcesGeneral.SetColumnSpan(Me.lvTVSources, 2)
         Me.lvTVSources.Dock = System.Windows.Forms.DockStyle.Fill
         Me.lvTVSources.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
@@ -11026,7 +11046,7 @@ Partial Class dlgSettings
         'colTVSourcesPath
         '
         Me.colTVSourcesPath.Text = "Path"
-        Me.colTVSourcesPath.Width = 308
+        Me.colTVSourcesPath.Width = 250
         '
         'colTVSourcesLanguage
         '
@@ -13501,7 +13521,7 @@ Partial Class dlgSettings
         Me.gbTVSourcesMiscOpts.Controls.Add(Me.tblTVSourcesMiscOpts)
         Me.gbTVSourcesMiscOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbTVSourcesMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbTVSourcesMiscOpts.Location = New System.Drawing.Point(541, 264)
+        Me.gbTVSourcesMiscOpts.Location = New System.Drawing.Point(541, 235)
         Me.gbTVSourcesMiscOpts.Name = "gbTVSourcesMiscOpts"
         Me.gbTVSourcesMiscOpts.Size = New System.Drawing.Size(278, 118)
         Me.gbTVSourcesMiscOpts.TabIndex = 4
@@ -14084,7 +14104,7 @@ Partial Class dlgSettings
         Me.gbTVImagesOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVImagesOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbTVImagesOpts.Name = "gbTVImagesOpts"
-        Me.gbTVImagesOpts.Size = New System.Drawing.Size(298, 90)
+        Me.gbTVImagesOpts.Size = New System.Drawing.Size(298, 117)
         Me.gbTVImagesOpts.TabIndex = 1
         Me.gbTVImagesOpts.TabStop = False
         Me.gbTVImagesOpts.Text = "Images"
@@ -14106,7 +14126,7 @@ Partial Class dlgSettings
         Me.tblTVImagesOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVImagesOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVImagesOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVImagesOpts.Size = New System.Drawing.Size(292, 69)
+        Me.tblTVImagesOpts.Size = New System.Drawing.Size(292, 96)
         Me.tblTVImagesOpts.TabIndex = 17
         '
         'chkTVImagesCacheEnabled
@@ -14157,7 +14177,7 @@ Partial Class dlgSettings
         Me.gbTVImagesLanguageOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbTVImagesLanguageOpts.Location = New System.Drawing.Point(307, 3)
         Me.gbTVImagesLanguageOpts.Name = "gbTVImagesLanguageOpts"
-        Me.gbTVImagesLanguageOpts.Size = New System.Drawing.Size(249, 90)
+        Me.gbTVImagesLanguageOpts.Size = New System.Drawing.Size(403, 117)
         Me.gbTVImagesLanguageOpts.TabIndex = 18
         Me.gbTVImagesLanguageOpts.TabStop = False
         Me.gbTVImagesLanguageOpts.Text = "Preferred Language"
@@ -14165,25 +14185,25 @@ Partial Class dlgSettings
         'tblTVImagesLanguageOpts
         '
         Me.tblTVImagesLanguageOpts.AutoSize = True
-        Me.tblTVImagesLanguageOpts.ColumnCount = 2
+        Me.tblTVImagesLanguageOpts.ColumnCount = 3
         Me.tblTVImagesLanguageOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVImagesLanguageOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVImagesLanguageOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblTVImagesLanguageOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblTVImagesLanguageOpts.Controls.Add(Me.chkTVImagesGetBlankImages, 0, 2)
-        Me.tblTVImagesLanguageOpts.Controls.Add(Me.chkTVImagesGetEnglishImages, 0, 1)
-        Me.tblTVImagesLanguageOpts.Controls.Add(Me.chkTVImagesMediaLanguageOnly, 0, 0)
+        Me.tblTVImagesLanguageOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVImagesLanguageOpts.Controls.Add(Me.chkTVImagesGetBlankImages, 0, 3)
+        Me.tblTVImagesLanguageOpts.Controls.Add(Me.chkTVImagesGetEnglishImages, 0, 2)
+        Me.tblTVImagesLanguageOpts.Controls.Add(Me.chkTVImagesMediaLanguageOnly, 0, 1)
+        Me.tblTVImagesLanguageOpts.Controls.Add(Me.chkTVImagesForceLanguage, 0, 0)
+        Me.tblTVImagesLanguageOpts.Controls.Add(Me.cbTVImagesForcedLanguage, 1, 0)
         Me.tblTVImagesLanguageOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblTVImagesLanguageOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblTVImagesLanguageOpts.Name = "tblTVImagesLanguageOpts"
-        Me.tblTVImagesLanguageOpts.RowCount = 4
+        Me.tblTVImagesLanguageOpts.RowCount = 5
         Me.tblTVImagesLanguageOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVImagesLanguageOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVImagesLanguageOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVImagesLanguageOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVImagesLanguageOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblTVImagesLanguageOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblTVImagesLanguageOpts.Size = New System.Drawing.Size(243, 69)
+        Me.tblTVImagesLanguageOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblTVImagesLanguageOpts.Size = New System.Drawing.Size(397, 96)
         Me.tblTVImagesLanguageOpts.TabIndex = 97
         '
         'chkTVImagesGetBlankImages
@@ -14192,7 +14212,7 @@ Partial Class dlgSettings
         Me.chkTVImagesGetBlankImages.AutoSize = True
         Me.chkTVImagesGetBlankImages.Enabled = False
         Me.chkTVImagesGetBlankImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTVImagesGetBlankImages.Location = New System.Drawing.Point(3, 49)
+        Me.chkTVImagesGetBlankImages.Location = New System.Drawing.Point(3, 76)
         Me.chkTVImagesGetBlankImages.Name = "chkTVImagesGetBlankImages"
         Me.chkTVImagesGetBlankImages.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
         Me.chkTVImagesGetBlankImages.Size = New System.Drawing.Size(160, 17)
@@ -14206,7 +14226,7 @@ Partial Class dlgSettings
         Me.chkTVImagesGetEnglishImages.AutoSize = True
         Me.chkTVImagesGetEnglishImages.Enabled = False
         Me.chkTVImagesGetEnglishImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTVImagesGetEnglishImages.Location = New System.Drawing.Point(3, 26)
+        Me.chkTVImagesGetEnglishImages.Location = New System.Drawing.Point(3, 53)
         Me.chkTVImagesGetEnglishImages.Name = "chkTVImagesGetEnglishImages"
         Me.chkTVImagesGetEnglishImages.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
         Me.chkTVImagesGetEnglishImages.Size = New System.Drawing.Size(169, 17)
@@ -14219,12 +14239,35 @@ Partial Class dlgSettings
         Me.chkTVImagesMediaLanguageOnly.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkTVImagesMediaLanguageOnly.AutoSize = True
         Me.chkTVImagesMediaLanguageOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTVImagesMediaLanguageOnly.Location = New System.Drawing.Point(3, 3)
+        Me.chkTVImagesMediaLanguageOnly.Location = New System.Drawing.Point(3, 30)
         Me.chkTVImagesMediaLanguageOnly.Name = "chkTVImagesMediaLanguageOnly"
         Me.chkTVImagesMediaLanguageOnly.Size = New System.Drawing.Size(237, 17)
         Me.chkTVImagesMediaLanguageOnly.TabIndex = 15
         Me.chkTVImagesMediaLanguageOnly.Text = "Only Get Images for the Media Language"
         Me.chkTVImagesMediaLanguageOnly.UseVisualStyleBackColor = True
+        '
+        'chkTVImagesForceLanguage
+        '
+        Me.chkTVImagesForceLanguage.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkTVImagesForceLanguage.AutoSize = True
+        Me.chkTVImagesForceLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkTVImagesForceLanguage.Location = New System.Drawing.Point(3, 5)
+        Me.chkTVImagesForceLanguage.Name = "chkTVImagesForceLanguage"
+        Me.chkTVImagesForceLanguage.Size = New System.Drawing.Size(108, 17)
+        Me.chkTVImagesForceLanguage.TabIndex = 15
+        Me.chkTVImagesForceLanguage.Text = "Force Language"
+        Me.chkTVImagesForceLanguage.UseVisualStyleBackColor = True
+        '
+        'cbTVImagesForcedLanguage
+        '
+        Me.cbTVImagesForcedLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbTVImagesForcedLanguage.Enabled = False
+        Me.cbTVImagesForcedLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cbTVImagesForcedLanguage.FormattingEnabled = True
+        Me.cbTVImagesForcedLanguage.Location = New System.Drawing.Point(246, 3)
+        Me.cbTVImagesForcedLanguage.Name = "cbTVImagesForcedLanguage"
+        Me.cbTVImagesForcedLanguage.Size = New System.Drawing.Size(148, 21)
+        Me.cbTVImagesForcedLanguage.TabIndex = 18
         '
         'tpTVImagesTVShow
         '
@@ -21710,7 +21753,7 @@ Partial Class dlgSettings
         Me.pnlMovieSetImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.pnlMovieSetImages.Location = New System.Drawing.Point(900, 900)
         Me.pnlMovieSetImages.Name = "pnlMovieSetImages"
-        Me.pnlMovieSetImages.Size = New System.Drawing.Size(796, 348)
+        Me.pnlMovieSetImages.Size = New System.Drawing.Size(796, 371)
         Me.pnlMovieSetImages.TabIndex = 27
         Me.pnlMovieSetImages.Visible = False
         '
@@ -21742,7 +21785,7 @@ Partial Class dlgSettings
         Me.tblMovieSetImages.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSetImages.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSetImages.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieSetImages.Size = New System.Drawing.Size(796, 348)
+        Me.tblMovieSetImages.Size = New System.Drawing.Size(796, 371)
         Me.tblMovieSetImages.TabIndex = 16
         '
         'gbMovieSetImagesDiscArtOpts
@@ -21751,7 +21794,7 @@ Partial Class dlgSettings
         Me.gbMovieSetImagesDiscArtOpts.Controls.Add(Me.tblMovieSetImagesDiscArtOpts)
         Me.gbMovieSetImagesDiscArtOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieSetImagesDiscArtOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbMovieSetImagesDiscArtOpts.Location = New System.Drawing.Point(519, 247)
+        Me.gbMovieSetImagesDiscArtOpts.Location = New System.Drawing.Point(519, 274)
         Me.gbMovieSetImagesDiscArtOpts.Name = "gbMovieSetImagesDiscArtOpts"
         Me.gbMovieSetImagesDiscArtOpts.Size = New System.Drawing.Size(245, 44)
         Me.gbMovieSetImagesDiscArtOpts.TabIndex = 19
@@ -21793,7 +21836,7 @@ Partial Class dlgSettings
         Me.gbMovieSetImagesLanguageOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbMovieSetImagesLanguageOpts.Location = New System.Drawing.Point(307, 3)
         Me.gbMovieSetImagesLanguageOpts.Name = "gbMovieSetImagesLanguageOpts"
-        Me.gbMovieSetImagesLanguageOpts.Size = New System.Drawing.Size(457, 90)
+        Me.gbMovieSetImagesLanguageOpts.Size = New System.Drawing.Size(457, 117)
         Me.gbMovieSetImagesLanguageOpts.TabIndex = 18
         Me.gbMovieSetImagesLanguageOpts.TabStop = False
         Me.gbMovieSetImagesLanguageOpts.Text = "Preferred Language"
@@ -21805,18 +21848,21 @@ Partial Class dlgSettings
         Me.tblMovieSetImagesLanguageOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSetImagesLanguageOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSetImagesLanguageOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblMovieSetImagesLanguageOpts.Controls.Add(Me.chkMovieSetImagesGetBlankImages, 0, 2)
-        Me.tblMovieSetImagesLanguageOpts.Controls.Add(Me.chkMovieSetImagesGetEnglishImages, 0, 1)
-        Me.tblMovieSetImagesLanguageOpts.Controls.Add(Me.chkMovieSetImagesMediaLanguageOnly, 0, 0)
+        Me.tblMovieSetImagesLanguageOpts.Controls.Add(Me.chkMovieSetImagesGetBlankImages, 0, 3)
+        Me.tblMovieSetImagesLanguageOpts.Controls.Add(Me.chkMovieSetImagesGetEnglishImages, 0, 2)
+        Me.tblMovieSetImagesLanguageOpts.Controls.Add(Me.chkMovieSetImagesMediaLanguageOnly, 0, 1)
+        Me.tblMovieSetImagesLanguageOpts.Controls.Add(Me.chkMovieSetImagesForceLanguage, 0, 0)
+        Me.tblMovieSetImagesLanguageOpts.Controls.Add(Me.cbMovieSetImagesForcedLanguage, 1, 0)
         Me.tblMovieSetImagesLanguageOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMovieSetImagesLanguageOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblMovieSetImagesLanguageOpts.Name = "tblMovieSetImagesLanguageOpts"
-        Me.tblMovieSetImagesLanguageOpts.RowCount = 4
+        Me.tblMovieSetImagesLanguageOpts.RowCount = 5
         Me.tblMovieSetImagesLanguageOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSetImagesLanguageOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSetImagesLanguageOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSetImagesLanguageOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieSetImagesLanguageOpts.Size = New System.Drawing.Size(451, 69)
+        Me.tblMovieSetImagesLanguageOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMovieSetImagesLanguageOpts.Size = New System.Drawing.Size(451, 96)
         Me.tblMovieSetImagesLanguageOpts.TabIndex = 97
         '
         'chkMovieSetImagesGetBlankImages
@@ -21825,7 +21871,7 @@ Partial Class dlgSettings
         Me.chkMovieSetImagesGetBlankImages.AutoSize = True
         Me.chkMovieSetImagesGetBlankImages.Enabled = False
         Me.chkMovieSetImagesGetBlankImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieSetImagesGetBlankImages.Location = New System.Drawing.Point(3, 49)
+        Me.chkMovieSetImagesGetBlankImages.Location = New System.Drawing.Point(3, 76)
         Me.chkMovieSetImagesGetBlankImages.Name = "chkMovieSetImagesGetBlankImages"
         Me.chkMovieSetImagesGetBlankImages.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
         Me.chkMovieSetImagesGetBlankImages.Size = New System.Drawing.Size(160, 17)
@@ -21839,7 +21885,7 @@ Partial Class dlgSettings
         Me.chkMovieSetImagesGetEnglishImages.AutoSize = True
         Me.chkMovieSetImagesGetEnglishImages.Enabled = False
         Me.chkMovieSetImagesGetEnglishImages.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieSetImagesGetEnglishImages.Location = New System.Drawing.Point(3, 26)
+        Me.chkMovieSetImagesGetEnglishImages.Location = New System.Drawing.Point(3, 53)
         Me.chkMovieSetImagesGetEnglishImages.Name = "chkMovieSetImagesGetEnglishImages"
         Me.chkMovieSetImagesGetEnglishImages.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
         Me.chkMovieSetImagesGetEnglishImages.Size = New System.Drawing.Size(169, 17)
@@ -21852,12 +21898,36 @@ Partial Class dlgSettings
         Me.chkMovieSetImagesMediaLanguageOnly.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkMovieSetImagesMediaLanguageOnly.AutoSize = True
         Me.chkMovieSetImagesMediaLanguageOnly.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieSetImagesMediaLanguageOnly.Location = New System.Drawing.Point(3, 3)
+        Me.chkMovieSetImagesMediaLanguageOnly.Location = New System.Drawing.Point(3, 30)
         Me.chkMovieSetImagesMediaLanguageOnly.Name = "chkMovieSetImagesMediaLanguageOnly"
         Me.chkMovieSetImagesMediaLanguageOnly.Size = New System.Drawing.Size(237, 17)
         Me.chkMovieSetImagesMediaLanguageOnly.TabIndex = 15
         Me.chkMovieSetImagesMediaLanguageOnly.Text = "Only Get Images for the Media Language"
         Me.chkMovieSetImagesMediaLanguageOnly.UseVisualStyleBackColor = True
+        '
+        'chkMovieSetImagesForceLanguage
+        '
+        Me.chkMovieSetImagesForceLanguage.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkMovieSetImagesForceLanguage.AutoSize = True
+        Me.chkMovieSetImagesForceLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieSetImagesForceLanguage.Location = New System.Drawing.Point(3, 5)
+        Me.chkMovieSetImagesForceLanguage.Name = "chkMovieSetImagesForceLanguage"
+        Me.chkMovieSetImagesForceLanguage.Size = New System.Drawing.Size(108, 17)
+        Me.chkMovieSetImagesForceLanguage.TabIndex = 15
+        Me.chkMovieSetImagesForceLanguage.Text = "Force Language"
+        Me.chkMovieSetImagesForceLanguage.UseVisualStyleBackColor = True
+        '
+        'cbMovieSetImagesForcedLanguage
+        '
+        Me.cbMovieSetImagesForcedLanguage.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.cbMovieSetImagesForcedLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbMovieSetImagesForcedLanguage.Enabled = False
+        Me.cbMovieSetImagesForcedLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbMovieSetImagesForcedLanguage.FormattingEnabled = True
+        Me.cbMovieSetImagesForcedLanguage.Location = New System.Drawing.Point(246, 3)
+        Me.cbMovieSetImagesForcedLanguage.Name = "cbMovieSetImagesForcedLanguage"
+        Me.cbMovieSetImagesForcedLanguage.Size = New System.Drawing.Size(202, 21)
+        Me.cbMovieSetImagesForcedLanguage.TabIndex = 1
         '
         'gbMovieSetImagesOpts
         '
@@ -21868,7 +21938,7 @@ Partial Class dlgSettings
         Me.gbMovieSetImagesOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbMovieSetImagesOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbMovieSetImagesOpts.Name = "gbMovieSetImagesOpts"
-        Me.gbMovieSetImagesOpts.Size = New System.Drawing.Size(298, 90)
+        Me.gbMovieSetImagesOpts.Size = New System.Drawing.Size(298, 117)
         Me.gbMovieSetImagesOpts.TabIndex = 16
         Me.gbMovieSetImagesOpts.TabStop = False
         Me.gbMovieSetImagesOpts.Text = "Images"
@@ -21888,7 +21958,7 @@ Partial Class dlgSettings
         Me.tblMovieSetImagesOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSetImagesOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSetImagesOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieSetImagesOpts.Size = New System.Drawing.Size(292, 69)
+        Me.tblMovieSetImagesOpts.Size = New System.Drawing.Size(292, 96)
         Me.tblMovieSetImagesOpts.TabIndex = 17
         '
         'chkMovieSetImagesCacheEnabled
@@ -21922,7 +21992,7 @@ Partial Class dlgSettings
         Me.gbMovieSetImagesPosterOpts.Controls.Add(Me.tblMovieSetImagesPosterOpts)
         Me.gbMovieSetImagesPosterOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieSetImagesPosterOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbMovieSetImagesPosterOpts.Location = New System.Drawing.Point(3, 99)
+        Me.gbMovieSetImagesPosterOpts.Location = New System.Drawing.Point(3, 126)
         Me.gbMovieSetImagesPosterOpts.Name = "gbMovieSetImagesPosterOpts"
         Me.gbMovieSetImagesPosterOpts.Size = New System.Drawing.Size(245, 142)
         Me.gbMovieSetImagesPosterOpts.TabIndex = 2
@@ -22074,7 +22144,7 @@ Partial Class dlgSettings
         Me.gbMovieSetImagesClearLogoOpts.Controls.Add(Me.tblMovieSetImagesClearLogoOpts)
         Me.gbMovieSetImagesClearLogoOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieSetImagesClearLogoOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbMovieSetImagesClearLogoOpts.Location = New System.Drawing.Point(254, 247)
+        Me.gbMovieSetImagesClearLogoOpts.Location = New System.Drawing.Point(254, 274)
         Me.gbMovieSetImagesClearLogoOpts.Name = "gbMovieSetImagesClearLogoOpts"
         Me.gbMovieSetImagesClearLogoOpts.Size = New System.Drawing.Size(259, 44)
         Me.gbMovieSetImagesClearLogoOpts.TabIndex = 15
@@ -22113,7 +22183,7 @@ Partial Class dlgSettings
         Me.gbMovieSetImagesClearArtOpts.Controls.Add(Me.tblMovieSetImagesClearArtOpts)
         Me.gbMovieSetImagesClearArtOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieSetImagesClearArtOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbMovieSetImagesClearArtOpts.Location = New System.Drawing.Point(3, 247)
+        Me.gbMovieSetImagesClearArtOpts.Location = New System.Drawing.Point(3, 274)
         Me.gbMovieSetImagesClearArtOpts.Name = "gbMovieSetImagesClearArtOpts"
         Me.gbMovieSetImagesClearArtOpts.Size = New System.Drawing.Size(245, 44)
         Me.gbMovieSetImagesClearArtOpts.TabIndex = 15
@@ -22152,7 +22222,7 @@ Partial Class dlgSettings
         Me.gbMovieSetImagesBannerOpts.Controls.Add(Me.tblMovieSetImagesBannerOpts)
         Me.gbMovieSetImagesBannerOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieSetImagesBannerOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbMovieSetImagesBannerOpts.Location = New System.Drawing.Point(254, 99)
+        Me.gbMovieSetImagesBannerOpts.Location = New System.Drawing.Point(254, 126)
         Me.gbMovieSetImagesBannerOpts.Name = "gbMovieSetImagesBannerOpts"
         Me.gbMovieSetImagesBannerOpts.Size = New System.Drawing.Size(259, 142)
         Me.gbMovieSetImagesBannerOpts.TabIndex = 12
@@ -22302,7 +22372,7 @@ Partial Class dlgSettings
         Me.gbMovieSetImagesFanartOpts.Controls.Add(Me.tblMovieSetImagesFanartOpts)
         Me.gbMovieSetImagesFanartOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieSetImagesFanartOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbMovieSetImagesFanartOpts.Location = New System.Drawing.Point(519, 99)
+        Me.gbMovieSetImagesFanartOpts.Location = New System.Drawing.Point(519, 126)
         Me.gbMovieSetImagesFanartOpts.Name = "gbMovieSetImagesFanartOpts"
         Me.gbMovieSetImagesFanartOpts.Size = New System.Drawing.Size(245, 142)
         Me.gbMovieSetImagesFanartOpts.TabIndex = 3
@@ -22453,7 +22523,7 @@ Partial Class dlgSettings
         Me.gbMovieSetImagesLandscapeOpts.Controls.Add(Me.tblMovieSetImagesLandscapeOpts)
         Me.gbMovieSetImagesLandscapeOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieSetImagesLandscapeOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbMovieSetImagesLandscapeOpts.Location = New System.Drawing.Point(3, 297)
+        Me.gbMovieSetImagesLandscapeOpts.Location = New System.Drawing.Point(3, 324)
         Me.gbMovieSetImagesLandscapeOpts.Name = "gbMovieSetImagesLandscapeOpts"
         Me.gbMovieSetImagesLandscapeOpts.Size = New System.Drawing.Size(245, 44)
         Me.gbMovieSetImagesLandscapeOpts.TabIndex = 14
@@ -22582,6 +22652,10 @@ Partial Class dlgSettings
         Me.tblSettingsFooter.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.tblSettingsFooter.Size = New System.Drawing.Size(1207, 74)
         Me.tblSettingsFooter.TabIndex = 0
+        '
+        'colTVSourcesSingle
+        '
+        Me.colTVSourcesSingle.Text = "Single TV Show"
         '
         'dlgSettings
         '
@@ -24091,7 +24165,6 @@ End Sub
     Friend WithEvents chkMoviePosterBoxee As System.Windows.Forms.CheckBox
     Friend WithEvents chkMovieNFOBoxee As System.Windows.Forms.CheckBox
     Friend WithEvents gbTVSourcesDefaultsOpts As System.Windows.Forms.GroupBox
-    Friend WithEvents btnTVGeneralLangFetch As System.Windows.Forms.Button
     Friend WithEvents cbTVGeneralLang As System.Windows.Forms.ComboBox
     Friend WithEvents tpTVSourcesFileNamingBoxee As System.Windows.Forms.TabPage
     Friend WithEvents gbTVSourcesFilenamingBoxeeDefaultsOpts As System.Windows.Forms.GroupBox
@@ -24984,4 +25057,11 @@ End Sub
     Friend WithEvents rbTVGeneralCustomScrapeButtonEnabled As RadioButton
     Friend WithEvents rbTVGeneralCustomScrapeButtonDisabled As RadioButton
     Friend WithEvents tblMovieImagesExtrathumbsCreatorOpts As TableLayoutPanel
+    Friend WithEvents cbMovieImagesForcedLanguage As ComboBox
+    Friend WithEvents chkMovieImagesForceLanguage As CheckBox
+    Friend WithEvents chkTVImagesForceLanguage As CheckBox
+    Friend WithEvents cbTVImagesForcedLanguage As ComboBox
+    Friend WithEvents chkMovieSetImagesForceLanguage As CheckBox
+    Friend WithEvents cbMovieSetImagesForcedLanguage As ComboBox
+    Friend WithEvents colTVSourcesSingle As ColumnHeader
 End Class

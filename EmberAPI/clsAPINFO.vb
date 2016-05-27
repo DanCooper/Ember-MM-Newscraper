@@ -659,8 +659,8 @@ Public Class NFO
             End If
 
             'Rating/Votes
-            If (Not DBTV.TVShow.RatingSpecified OrElse DBTV.TVShow.Rating = "0" OrElse Not Master.eSettings.TVLockShowRating) AndAlso ScrapeOptions.bMainRating AndAlso
-                scrapedshow.RatingSpecified AndAlso Not scrapedshow.Rating = "0" AndAlso Master.eSettings.TVScraperShowRating AndAlso Not new_Rating Then
+            If (Not DBTV.TVShow.RatingSpecified OrElse Not Master.eSettings.TVLockShowRating) AndAlso ScrapeOptions.bMainRating AndAlso
+                scrapedshow.RatingSpecified AndAlso Master.eSettings.TVScraperShowRating AndAlso Not new_Rating Then
                 DBTV.TVShow.Rating = scrapedshow.Rating
                 DBTV.TVShow.Votes = NumUtils.CleanVotes(scrapedshow.Votes)
                 new_Rating = True
@@ -1287,12 +1287,12 @@ Public Class NFO
 
             'changes a LongLanguage to Alpha2 code
             If mNFO.LanguageSpecified Then
-                Dim Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = mNFO.Language)
+                Dim Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Name = mNFO.Language)
                 If Language IsNot Nothing Then
-                    mNFO.Language = Language.abbreviation
+                    mNFO.Language = Language.Abbreviation
                 Else
                     'check if it's a valid Alpha2 code or remove the information the use the source default language
-                    Dim ShortLanguage = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = mNFO.Language)
+                    Dim ShortLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = mNFO.Language)
                     If ShortLanguage Is Nothing Then
                         mNFO.Language = String.Empty
                     End If
@@ -1335,12 +1335,12 @@ Public Class NFO
 
             'changes a LongLanguage to Alpha2 code
             If mNFO.LanguageSpecified Then
-                Dim Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = mNFO.Language)
+                Dim Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Name = mNFO.Language)
                 If Language IsNot Nothing Then
-                    mNFO.Language = Language.abbreviation
+                    mNFO.Language = Language.Abbreviation
                 Else
                     'check if it's a valid Alpha2 code or remove the information the use the source default language
-                    Dim ShortLanguage = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = mNFO.Language)
+                    Dim ShortLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = mNFO.Language)
                     If ShortLanguage Is Nothing Then
                         mNFO.Language = String.Empty
                     End If
@@ -2231,7 +2231,6 @@ Public Class NFO
     End Sub
 
     Public Shared Sub SaveToNFO_Movie(ByRef tDBElement As Database.DBElement)
-
         Try
             Try
                 Dim params As New List(Of Object)(New Object() {tDBElement})
@@ -2296,7 +2295,6 @@ Public Class NFO
     End Sub
 
     Public Shared Sub SaveToNFO_MovieSet(ByRef tDBElement As Database.DBElement)
-
         Try
             'Try
             '    Dim params As New List(Of Object)(New Object() {moviesetToSave})
@@ -2342,93 +2340,92 @@ Public Class NFO
     End Sub
 
     Public Shared Sub SaveToNFO_TVEpisode(ByRef tDBElement As Database.DBElement)
-
         Try
+            If tDBElement.FilenameSpecified Then
+                'Create a clone of MediaContainer to prevent changes on database data that only needed in NFO
+                Dim tTVEpisode As MediaContainers.EpisodeDetails = CType(tDBElement.TVEpisode.CloneDeep, MediaContainers.EpisodeDetails)
 
-            If Not String.IsNullOrEmpty(tDBElement.Filename) Then
                 Dim xmlSer As New XmlSerializer(GetType(MediaContainers.EpisodeDetails))
 
-                Dim tPath As String = String.Empty
                 Dim doesExist As Boolean = False
                 Dim fAtt As New FileAttributes
                 Dim fAttWritable As Boolean = True
                 Dim EpList As New List(Of MediaContainers.EpisodeDetails)
                 Dim sBuilder As New StringBuilder
 
-                Dim tmpName As String = Path.GetFileNameWithoutExtension(tDBElement.Filename)
-                tPath = String.Concat(Path.Combine(Directory.GetParent(tDBElement.Filename).FullName, tmpName), ".nfo")
-
-                If Not Master.eSettings.GeneralOverwriteNfo Then
-                    RenameNonConfNFO_TVEpisode(tPath, False)
-                End If
-
-                doesExist = File.Exists(tPath)
-                If Not doesExist OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
-
-                    If doesExist Then
-                        fAtt = File.GetAttributes(tPath)
-                        Try
-                            File.SetAttributes(tPath, FileAttributes.Normal)
-                        Catch ex As Exception
-                            fAttWritable = False
-                        End Try
+                For Each a In FileUtils.GetFilenameList.TVEpisode(tDBElement, Enums.ModifierType.EpisodeNFO)
+                    If Not Master.eSettings.GeneralOverwriteNfo Then
+                        RenameNonConfNFO_TVEpisode(a, False)
                     End If
 
-                    Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                        SQLCommand.CommandText = "SELECT idEpisode FROM episode WHERE idEpisode <> (?) AND idFile IN (SELECT idFile FROM files WHERE strFilename = (?)) ORDER BY Episode"
-                        Dim parID As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parID", DbType.Int64, 0, "idEpisode")
-                        Dim parFilename As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parFilename", DbType.String, 0, "strFilename")
+                    doesExist = File.Exists(a)
+                    If Not doesExist OrElse (Not CBool(File.GetAttributes(a) And FileAttributes.ReadOnly)) Then
 
-                        parID.Value = tDBElement.ID
-                        parFilename.Value = tDBElement.Filename
-
-                        Using SQLreader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
-                            While SQLreader.Read
-                                EpList.Add(Master.DB.Load_TVEpisode(Convert.ToInt64(SQLreader("idEpisode")), False).TVEpisode)
-                            End While
-                        End Using
-
-                        EpList.Add(tDBElement.TVEpisode)
-
-                        Dim NS As New XmlSerializerNamespaces
-                        NS.Add(String.Empty, String.Empty)
-
-                        For Each tvEp As MediaContainers.EpisodeDetails In EpList.OrderBy(Function(s) s.Season)
-
-                            'digit grouping symbol for Votes count
-                            If Master.eSettings.GeneralDigitGrpSymbolVotes Then
-                                If tvEp.VotesSpecified Then
-                                    Dim vote As String = Double.Parse(tvEp.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
-                                    If vote IsNot Nothing Then tvEp.Votes = vote
-                                End If
-                            End If
-
-                            'removing <displayepisode> and <displayseason> if disabled
-                            If Not Master.eSettings.TVScraperUseDisplaySeasonEpisode Then
-                                tvEp.DisplayEpisode = -1
-                                tvEp.DisplaySeason = -1
-                            End If
-
-                            Using xmlSW As New Utf8StringWriter
-                                xmlSer.Serialize(xmlSW, tvEp, NS)
-                                If sBuilder.Length > 0 Then
-                                    sBuilder.Append(Environment.NewLine)
-                                    xmlSW.GetStringBuilder.Remove(0, xmlSW.GetStringBuilder.ToString.IndexOf(Environment.NewLine) + 1)
-                                End If
-                                sBuilder.Append(xmlSW.ToString)
-                            End Using
-                        Next
-
-                        tDBElement.NfoPath = tPath
-
-                        If sBuilder.Length > 0 Then
-                            Using fSW As New StreamWriter(tPath)
-                                fSW.Write(sBuilder.ToString)
-                            End Using
+                        If doesExist Then
+                            fAtt = File.GetAttributes(a)
+                            Try
+                                File.SetAttributes(a, FileAttributes.Normal)
+                            Catch ex As Exception
+                                fAttWritable = False
+                            End Try
                         End If
-                    End Using
-                    If doesExist And fAttWritable Then File.SetAttributes(tPath, fAtt)
-                End If
+
+                        Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                            SQLCommand.CommandText = "SELECT idEpisode FROM episode WHERE idEpisode <> (?) AND idFile IN (SELECT idFile FROM files WHERE strFilename = (?)) ORDER BY Episode"
+                            Dim parID As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parID", DbType.Int64, 0, "idEpisode")
+                            Dim parFilename As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parFilename", DbType.String, 0, "strFilename")
+
+                            parID.Value = tDBElement.ID
+                            parFilename.Value = tDBElement.Filename
+
+                            Using SQLreader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
+                                While SQLreader.Read
+                                    EpList.Add(Master.DB.Load_TVEpisode(Convert.ToInt64(SQLreader("idEpisode")), False).TVEpisode)
+                                End While
+                            End Using
+
+                            EpList.Add(tTVEpisode)
+
+                            Dim NS As New XmlSerializerNamespaces
+                            NS.Add(String.Empty, String.Empty)
+
+                            For Each tvEp As MediaContainers.EpisodeDetails In EpList.OrderBy(Function(s) s.Season).OrderBy(Function(e) e.Episode)
+
+                                'digit grouping symbol for Votes count
+                                If Master.eSettings.GeneralDigitGrpSymbolVotes Then
+                                    If tvEp.VotesSpecified Then
+                                        Dim vote As String = Double.Parse(tvEp.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
+                                        If vote IsNot Nothing Then tvEp.Votes = vote
+                                    End If
+                                End If
+
+                                'removing <displayepisode> and <displayseason> if disabled
+                                If Not Master.eSettings.TVScraperUseDisplaySeasonEpisode Then
+                                    tvEp.DisplayEpisode = -1
+                                    tvEp.DisplaySeason = -1
+                                End If
+
+                                Using xmlSW As New Utf8StringWriter
+                                    xmlSer.Serialize(xmlSW, tvEp, NS)
+                                    If sBuilder.Length > 0 Then
+                                        sBuilder.Append(Environment.NewLine)
+                                        xmlSW.GetStringBuilder.Remove(0, xmlSW.GetStringBuilder.ToString.IndexOf(Environment.NewLine) + 1)
+                                    End If
+                                    sBuilder.Append(xmlSW.ToString)
+                                End Using
+                            Next
+
+                            tDBElement.NfoPath = a
+
+                            If sBuilder.Length > 0 Then
+                                Using fSW As New StreamWriter(a)
+                                    fSW.Write(sBuilder.ToString)
+                                End Using
+                            End If
+                        End Using
+                        If doesExist And fAttWritable Then File.SetAttributes(a, fAtt)
+                    End If
+                Next
             End If
 
         Catch ex As Exception
@@ -2437,7 +2434,6 @@ Public Class NFO
     End Sub
 
     Public Shared Sub SaveToNFO_TVShow(ByRef tDBElement As Database.DBElement)
-
         Try
             Dim params As New List(Of Object)(New Object() {tDBElement})
             Dim doContinue As Boolean = True

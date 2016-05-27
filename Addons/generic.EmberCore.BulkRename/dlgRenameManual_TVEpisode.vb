@@ -43,7 +43,7 @@ Public Class dlgRenameManual_TVEpisode
     End Sub
 
     Private Sub bwRename_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwRename.DoWork
-        FileFolderRenamer.RenameSingle_Episode(_DBElement, txtFolder.Text, txtFile.Text, False, True, True)
+        FileFolderRenamer.RenameSingle_TVEpisode(_DBElement, txtFolder.Text, txtFile.Text, False, True, True)
     End Sub
 
     Private Sub bwRename_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwRename.RunWorkerCompleted
