@@ -26,22 +26,19 @@ Partial Class frmSettingsHolder
         Me.tblSettingsTop = New System.Windows.Forms.TableLayoutPanel()
         Me.chkEnabled = New System.Windows.Forms.CheckBox()
         Me.tblSettingsMain = New System.Windows.Forms.TableLayoutPanel()
-        Me.gbSettingsLastPlayed = New System.Windows.Forms.GroupBox()
-        Me.tblSettingsLastPlayed = New System.Windows.Forms.TableLayoutPanel()
-        Me.chkSyncLastPlayedSingleMovies = New System.Windows.Forms.CheckBox()
-        Me.chkSyncLastPlayedMultiMovies = New System.Windows.Forms.CheckBox()
-        Me.chkSyncLastPlayedEditMovies = New System.Windows.Forms.CheckBox()
-        Me.chkSyncLastPlayedMultiEpisodes = New System.Windows.Forms.CheckBox()
-        Me.chkSyncLastPlayedSingleEpisodes = New System.Windows.Forms.CheckBox()
-        Me.chkSyncLastPlayedEditEpisodes = New System.Windows.Forms.CheckBox()
-        Me.gbSettingsPlaycount = New System.Windows.Forms.GroupBox()
-        Me.tblSettingsPlaycount = New System.Windows.Forms.TableLayoutPanel()
-        Me.chkSyncPlaycountSingleMovies = New System.Windows.Forms.CheckBox()
-        Me.chkSyncPlaycountMultiMovies = New System.Windows.Forms.CheckBox()
-        Me.chkSyncPlaycountEditMovies = New System.Windows.Forms.CheckBox()
-        Me.chkSyncPlaycountMultiEpisodes = New System.Windows.Forms.CheckBox()
-        Me.chkSyncPlaycountSingleEpisodes = New System.Windows.Forms.CheckBox()
-        Me.chkSyncPlaycountEditEpisodes = New System.Windows.Forms.CheckBox()
+        Me.gbGetWatchedState = New System.Windows.Forms.GroupBox()
+        Me.tblGetWatchedState = New System.Windows.Forms.TableLayoutPanel()
+        Me.chkGetWatchedState = New System.Windows.Forms.CheckBox()
+        Me.gbGetWatchedStateTVEpisodes = New System.Windows.Forms.GroupBox()
+        Me.TableLayoutPanel3 = New System.Windows.Forms.TableLayoutPanel()
+        Me.chkGetWatchedStateBeforeEdit_TVEpisode = New System.Windows.Forms.CheckBox()
+        Me.chkGetWatchedStateScraperMulti_TVEpisode = New System.Windows.Forms.CheckBox()
+        Me.chkGetWatchedStateScraperSingle_TVEpisode = New System.Windows.Forms.CheckBox()
+        Me.gbGetWatchedStateMovies = New System.Windows.Forms.GroupBox()
+        Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
+        Me.chkGetWatchedStateBeforeEdit_Movie = New System.Windows.Forms.CheckBox()
+        Me.chkGetWatchedStateScraperMulti_Movie = New System.Windows.Forms.CheckBox()
+        Me.chkGetWatchedStateScraperSingle_Movie = New System.Windows.Forms.CheckBox()
         Me.gbSettingsGeneral = New System.Windows.Forms.GroupBox()
         Me.tblSettingsGeneral = New System.Windows.Forms.TableLayoutPanel()
         Me.txtPassword = New System.Windows.Forms.TextBox()
@@ -54,10 +51,12 @@ Partial Class frmSettingsHolder
         Me.pnlSettingsTop.SuspendLayout()
         Me.tblSettingsTop.SuspendLayout()
         Me.tblSettingsMain.SuspendLayout()
-        Me.gbSettingsLastPlayed.SuspendLayout()
-        Me.tblSettingsLastPlayed.SuspendLayout()
-        Me.gbSettingsPlaycount.SuspendLayout()
-        Me.tblSettingsPlaycount.SuspendLayout()
+        Me.gbGetWatchedState.SuspendLayout()
+        Me.tblGetWatchedState.SuspendLayout()
+        Me.gbGetWatchedStateTVEpisodes.SuspendLayout()
+        Me.TableLayoutPanel3.SuspendLayout()
+        Me.gbGetWatchedStateMovies.SuspendLayout()
+        Me.TableLayoutPanel2.SuspendLayout()
         Me.gbSettingsGeneral.SuspendLayout()
         Me.tblSettingsGeneral.SuspendLayout()
         Me.pnlSettingsMain.SuspendLayout()
@@ -72,7 +71,7 @@ Partial Class frmSettingsHolder
         Me.pnlSettingsTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlSettingsTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlSettingsTop.Name = "pnlSettingsTop"
-        Me.pnlSettingsTop.Size = New System.Drawing.Size(778, 23)
+        Me.pnlSettingsTop.Size = New System.Drawing.Size(423, 23)
         Me.pnlSettingsTop.TabIndex = 0
         '
         'tblSettingsTop
@@ -89,7 +88,7 @@ Partial Class frmSettingsHolder
         Me.tblSettingsTop.RowCount = 2
         Me.tblSettingsTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsTop.Size = New System.Drawing.Size(778, 23)
+        Me.tblSettingsTop.Size = New System.Drawing.Size(423, 23)
         Me.tblSettingsTop.TabIndex = 21
         '
         'chkEnabled
@@ -110,8 +109,7 @@ Partial Class frmSettingsHolder
         Me.tblSettingsMain.ColumnCount = 2
         Me.tblSettingsMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblSettingsMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSettingsMain.Controls.Add(Me.gbSettingsLastPlayed, 0, 3)
-        Me.tblSettingsMain.Controls.Add(Me.gbSettingsPlaycount, 0, 3)
+        Me.tblSettingsMain.Controls.Add(Me.gbGetWatchedState, 0, 3)
         Me.tblSettingsMain.Controls.Add(Me.gbSettingsGeneral, 0, 0)
         Me.tblSettingsMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblSettingsMain.Location = New System.Drawing.Point(0, 0)
@@ -122,212 +120,194 @@ Partial Class frmSettingsHolder
         Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblSettingsMain.Size = New System.Drawing.Size(778, 557)
+        Me.tblSettingsMain.Size = New System.Drawing.Size(423, 285)
         Me.tblSettingsMain.TabIndex = 21
         '
-        'gbSettingsLastPlayed
+        'gbGetWatchedState
         '
-        Me.gbSettingsLastPlayed.AutoSize = True
-        Me.gbSettingsLastPlayed.Controls.Add(Me.tblSettingsLastPlayed)
-        Me.gbSettingsLastPlayed.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbSettingsLastPlayed.Enabled = False
-        Me.gbSettingsLastPlayed.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbSettingsLastPlayed.Location = New System.Drawing.Point(3, 109)
-        Me.gbSettingsLastPlayed.Name = "gbSettingsLastPlayed"
-        Me.gbSettingsLastPlayed.Size = New System.Drawing.Size(383, 159)
-        Me.gbSettingsLastPlayed.TabIndex = 56
-        Me.gbSettingsLastPlayed.TabStop = False
-        Me.gbSettingsLastPlayed.Text = "Last Played"
+        Me.gbGetWatchedState.AutoSize = True
+        Me.gbGetWatchedState.Controls.Add(Me.tblGetWatchedState)
+        Me.gbGetWatchedState.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbGetWatchedState.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbGetWatchedState.Location = New System.Drawing.Point(3, 109)
+        Me.gbGetWatchedState.Name = "gbGetWatchedState"
+        Me.gbGetWatchedState.Size = New System.Drawing.Size(383, 140)
+        Me.gbGetWatchedState.TabIndex = 55
+        Me.gbGetWatchedState.TabStop = False
+        Me.gbGetWatchedState.Text = "Watched State"
         '
-        'tblSettingsLastPlayed
+        'tblGetWatchedState
         '
-        Me.tblSettingsLastPlayed.AutoSize = True
-        Me.tblSettingsLastPlayed.ColumnCount = 1
-        Me.tblSettingsLastPlayed.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSettingsLastPlayed.Controls.Add(Me.chkSyncLastPlayedSingleMovies, 0, 0)
-        Me.tblSettingsLastPlayed.Controls.Add(Me.chkSyncLastPlayedMultiMovies, 0, 1)
-        Me.tblSettingsLastPlayed.Controls.Add(Me.chkSyncLastPlayedEditMovies, 0, 2)
-        Me.tblSettingsLastPlayed.Controls.Add(Me.chkSyncLastPlayedMultiEpisodes, 0, 4)
-        Me.tblSettingsLastPlayed.Controls.Add(Me.chkSyncLastPlayedSingleEpisodes, 0, 3)
-        Me.tblSettingsLastPlayed.Controls.Add(Me.chkSyncLastPlayedEditEpisodes, 0, 5)
-        Me.tblSettingsLastPlayed.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblSettingsLastPlayed.Location = New System.Drawing.Point(3, 18)
-        Me.tblSettingsLastPlayed.Name = "tblSettingsLastPlayed"
-        Me.tblSettingsLastPlayed.RowCount = 7
-        Me.tblSettingsLastPlayed.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsLastPlayed.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsLastPlayed.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsLastPlayed.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsLastPlayed.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsLastPlayed.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsLastPlayed.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsLastPlayed.Size = New System.Drawing.Size(377, 138)
-        Me.tblSettingsLastPlayed.TabIndex = 7
+        Me.tblGetWatchedState.AutoSize = True
+        Me.tblGetWatchedState.ColumnCount = 3
+        Me.tblGetWatchedState.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblGetWatchedState.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblGetWatchedState.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblGetWatchedState.Controls.Add(Me.chkGetWatchedState, 0, 0)
+        Me.tblGetWatchedState.Controls.Add(Me.gbGetWatchedStateTVEpisodes, 1, 1)
+        Me.tblGetWatchedState.Controls.Add(Me.gbGetWatchedStateMovies, 0, 1)
+        Me.tblGetWatchedState.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblGetWatchedState.Location = New System.Drawing.Point(3, 18)
+        Me.tblGetWatchedState.Name = "tblGetWatchedState"
+        Me.tblGetWatchedState.RowCount = 3
+        Me.tblGetWatchedState.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblGetWatchedState.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblGetWatchedState.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblGetWatchedState.Size = New System.Drawing.Size(377, 119)
+        Me.tblGetWatchedState.TabIndex = 7
         '
-        'chkSyncLastPlayedSingleMovies
+        'chkGetWatchedState
         '
-        Me.chkSyncLastPlayedSingleMovies.AutoSize = True
-        Me.chkSyncLastPlayedSingleMovies.Location = New System.Drawing.Point(3, 3)
-        Me.chkSyncLastPlayedSingleMovies.Name = "chkSyncLastPlayedSingleMovies"
-        Me.chkSyncLastPlayedSingleMovies.Size = New System.Drawing.Size(276, 17)
-        Me.chkSyncLastPlayedSingleMovies.TabIndex = 45
-        Me.chkSyncLastPlayedSingleMovies.Text = "Automatically Sync Movies During Single-Scraper"
-        Me.chkSyncLastPlayedSingleMovies.UseVisualStyleBackColor = True
+        Me.chkGetWatchedState.AutoSize = True
+        Me.tblGetWatchedState.SetColumnSpan(Me.chkGetWatchedState, 2)
+        Me.chkGetWatchedState.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkGetWatchedState.Location = New System.Drawing.Point(3, 3)
+        Me.chkGetWatchedState.Name = "chkGetWatchedState"
+        Me.chkGetWatchedState.Size = New System.Drawing.Size(122, 17)
+        Me.chkGetWatchedState.TabIndex = 87
+        Me.chkGetWatchedState.Text = "Get Watched State"
+        Me.chkGetWatchedState.UseVisualStyleBackColor = True
         '
-        'chkSyncLastPlayedMultiMovies
+        'gbGetWatchedStateTVEpisodes
         '
-        Me.chkSyncLastPlayedMultiMovies.AutoSize = True
-        Me.chkSyncLastPlayedMultiMovies.Location = New System.Drawing.Point(3, 26)
-        Me.chkSyncLastPlayedMultiMovies.Name = "chkSyncLastPlayedMultiMovies"
-        Me.chkSyncLastPlayedMultiMovies.Size = New System.Drawing.Size(271, 17)
-        Me.chkSyncLastPlayedMultiMovies.TabIndex = 46
-        Me.chkSyncLastPlayedMultiMovies.Text = "Automatically Sync Movies During Multi-Scraper"
-        Me.chkSyncLastPlayedMultiMovies.UseVisualStyleBackColor = True
+        Me.gbGetWatchedStateTVEpisodes.AutoSize = True
+        Me.gbGetWatchedStateTVEpisodes.Controls.Add(Me.TableLayoutPanel3)
+        Me.gbGetWatchedStateTVEpisodes.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbGetWatchedStateTVEpisodes.Enabled = False
+        Me.gbGetWatchedStateTVEpisodes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbGetWatchedStateTVEpisodes.Location = New System.Drawing.Point(167, 26)
+        Me.gbGetWatchedStateTVEpisodes.Name = "gbGetWatchedStateTVEpisodes"
+        Me.gbGetWatchedStateTVEpisodes.Size = New System.Drawing.Size(158, 90)
+        Me.gbGetWatchedStateTVEpisodes.TabIndex = 90
+        Me.gbGetWatchedStateTVEpisodes.TabStop = False
+        Me.gbGetWatchedStateTVEpisodes.Text = "Episodes"
         '
-        'chkSyncLastPlayedEditMovies
+        'TableLayoutPanel3
         '
-        Me.chkSyncLastPlayedEditMovies.AutoSize = True
-        Me.chkSyncLastPlayedEditMovies.Location = New System.Drawing.Point(3, 49)
-        Me.chkSyncLastPlayedEditMovies.Name = "chkSyncLastPlayedEditMovies"
-        Me.chkSyncLastPlayedEditMovies.Size = New System.Drawing.Size(220, 17)
-        Me.chkSyncLastPlayedEditMovies.TabIndex = 48
-        Me.chkSyncLastPlayedEditMovies.Text = "Automatically Sync Movies Before Edit"
-        Me.chkSyncLastPlayedEditMovies.UseVisualStyleBackColor = True
+        Me.TableLayoutPanel3.AutoSize = True
+        Me.TableLayoutPanel3.ColumnCount = 2
+        Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.TableLayoutPanel3.Controls.Add(Me.chkGetWatchedStateBeforeEdit_TVEpisode, 0, 0)
+        Me.TableLayoutPanel3.Controls.Add(Me.chkGetWatchedStateScraperMulti_TVEpisode, 0, 2)
+        Me.TableLayoutPanel3.Controls.Add(Me.chkGetWatchedStateScraperSingle_TVEpisode, 0, 1)
+        Me.TableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel3.Location = New System.Drawing.Point(3, 18)
+        Me.TableLayoutPanel3.Name = "TableLayoutPanel3"
+        Me.TableLayoutPanel3.RowCount = 4
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel3.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel3.Size = New System.Drawing.Size(152, 69)
+        Me.TableLayoutPanel3.TabIndex = 0
         '
-        'chkSyncLastPlayedMultiEpisodes
+        'chkGetWatchedStateBeforeEdit_TVEpisode
         '
-        Me.chkSyncLastPlayedMultiEpisodes.AutoSize = True
-        Me.chkSyncLastPlayedMultiEpisodes.Location = New System.Drawing.Point(3, 95)
-        Me.chkSyncLastPlayedMultiEpisodes.Name = "chkSyncLastPlayedMultiEpisodes"
-        Me.chkSyncLastPlayedMultiEpisodes.Size = New System.Drawing.Size(281, 17)
-        Me.chkSyncLastPlayedMultiEpisodes.TabIndex = 49
-        Me.chkSyncLastPlayedMultiEpisodes.Text = "Automatically Sync Episodes During Multi-Scraper"
-        Me.chkSyncLastPlayedMultiEpisodes.UseVisualStyleBackColor = True
+        Me.chkGetWatchedStateBeforeEdit_TVEpisode.AutoSize = True
+        Me.chkGetWatchedStateBeforeEdit_TVEpisode.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkGetWatchedStateBeforeEdit_TVEpisode.Location = New System.Drawing.Point(3, 3)
+        Me.chkGetWatchedStateBeforeEdit_TVEpisode.Name = "chkGetWatchedStateBeforeEdit_TVEpisode"
+        Me.chkGetWatchedStateBeforeEdit_TVEpisode.Size = New System.Drawing.Size(83, 17)
+        Me.chkGetWatchedStateBeforeEdit_TVEpisode.TabIndex = 87
+        Me.chkGetWatchedStateBeforeEdit_TVEpisode.Text = "Before Edit"
+        Me.chkGetWatchedStateBeforeEdit_TVEpisode.UseVisualStyleBackColor = True
         '
-        'chkSyncLastPlayedSingleEpisodes
+        'chkGetWatchedStateScraperMulti_TVEpisode
         '
-        Me.chkSyncLastPlayedSingleEpisodes.AutoSize = True
-        Me.chkSyncLastPlayedSingleEpisodes.Location = New System.Drawing.Point(3, 72)
-        Me.chkSyncLastPlayedSingleEpisodes.Name = "chkSyncLastPlayedSingleEpisodes"
-        Me.chkSyncLastPlayedSingleEpisodes.Size = New System.Drawing.Size(286, 17)
-        Me.chkSyncLastPlayedSingleEpisodes.TabIndex = 51
-        Me.chkSyncLastPlayedSingleEpisodes.Text = "Automatically Sync Episodes During Single-Scraper"
-        Me.chkSyncLastPlayedSingleEpisodes.UseVisualStyleBackColor = True
+        Me.chkGetWatchedStateScraperMulti_TVEpisode.AutoSize = True
+        Me.chkGetWatchedStateScraperMulti_TVEpisode.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkGetWatchedStateScraperMulti_TVEpisode.Location = New System.Drawing.Point(3, 49)
+        Me.chkGetWatchedStateScraperMulti_TVEpisode.Name = "chkGetWatchedStateScraperMulti_TVEpisode"
+        Me.chkGetWatchedStateScraperMulti_TVEpisode.Size = New System.Drawing.Size(141, 17)
+        Me.chkGetWatchedStateScraperMulti_TVEpisode.TabIndex = 87
+        Me.chkGetWatchedStateScraperMulti_TVEpisode.Text = "During Multi-Scraping"
+        Me.chkGetWatchedStateScraperMulti_TVEpisode.UseVisualStyleBackColor = True
         '
-        'chkSyncLastPlayedEditEpisodes
+        'chkGetWatchedStateScraperSingle_TVEpisode
         '
-        Me.chkSyncLastPlayedEditEpisodes.AutoSize = True
-        Me.chkSyncLastPlayedEditEpisodes.Location = New System.Drawing.Point(3, 118)
-        Me.chkSyncLastPlayedEditEpisodes.Name = "chkSyncLastPlayedEditEpisodes"
-        Me.chkSyncLastPlayedEditEpisodes.Size = New System.Drawing.Size(230, 17)
-        Me.chkSyncLastPlayedEditEpisodes.TabIndex = 52
-        Me.chkSyncLastPlayedEditEpisodes.Text = "Automatically Sync Episodes Before Edit"
-        Me.chkSyncLastPlayedEditEpisodes.UseVisualStyleBackColor = True
+        Me.chkGetWatchedStateScraperSingle_TVEpisode.AutoSize = True
+        Me.chkGetWatchedStateScraperSingle_TVEpisode.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkGetWatchedStateScraperSingle_TVEpisode.Location = New System.Drawing.Point(3, 26)
+        Me.chkGetWatchedStateScraperSingle_TVEpisode.Name = "chkGetWatchedStateScraperSingle_TVEpisode"
+        Me.chkGetWatchedStateScraperSingle_TVEpisode.Size = New System.Drawing.Size(146, 17)
+        Me.chkGetWatchedStateScraperSingle_TVEpisode.TabIndex = 87
+        Me.chkGetWatchedStateScraperSingle_TVEpisode.Text = "During Single-Scraping"
+        Me.chkGetWatchedStateScraperSingle_TVEpisode.UseVisualStyleBackColor = True
         '
-        'gbSettingsPlaycount
+        'gbGetWatchedStateMovies
         '
-        Me.gbSettingsPlaycount.AutoSize = True
-        Me.gbSettingsPlaycount.Controls.Add(Me.tblSettingsPlaycount)
-        Me.gbSettingsPlaycount.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbSettingsPlaycount.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbSettingsPlaycount.Location = New System.Drawing.Point(392, 109)
-        Me.gbSettingsPlaycount.Name = "gbSettingsPlaycount"
-        Me.gbSettingsPlaycount.Size = New System.Drawing.Size(383, 159)
-        Me.gbSettingsPlaycount.TabIndex = 55
-        Me.gbSettingsPlaycount.TabStop = False
-        Me.gbSettingsPlaycount.Text = "Playcount"
+        Me.gbGetWatchedStateMovies.AutoSize = True
+        Me.gbGetWatchedStateMovies.Controls.Add(Me.TableLayoutPanel2)
+        Me.gbGetWatchedStateMovies.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbGetWatchedStateMovies.Enabled = False
+        Me.gbGetWatchedStateMovies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbGetWatchedStateMovies.Location = New System.Drawing.Point(3, 26)
+        Me.gbGetWatchedStateMovies.Name = "gbGetWatchedStateMovies"
+        Me.gbGetWatchedStateMovies.Size = New System.Drawing.Size(158, 90)
+        Me.gbGetWatchedStateMovies.TabIndex = 89
+        Me.gbGetWatchedStateMovies.TabStop = False
+        Me.gbGetWatchedStateMovies.Text = "Movies"
         '
-        'tblSettingsPlaycount
+        'TableLayoutPanel2
         '
-        Me.tblSettingsPlaycount.AutoSize = True
-        Me.tblSettingsPlaycount.ColumnCount = 1
-        Me.tblSettingsPlaycount.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSettingsPlaycount.Controls.Add(Me.chkSyncPlaycountSingleMovies, 0, 0)
-        Me.tblSettingsPlaycount.Controls.Add(Me.chkSyncPlaycountMultiMovies, 0, 2)
-        Me.tblSettingsPlaycount.Controls.Add(Me.chkSyncPlaycountEditMovies, 0, 3)
-        Me.tblSettingsPlaycount.Controls.Add(Me.chkSyncPlaycountMultiEpisodes, 0, 5)
-        Me.tblSettingsPlaycount.Controls.Add(Me.chkSyncPlaycountSingleEpisodes, 0, 4)
-        Me.tblSettingsPlaycount.Controls.Add(Me.chkSyncPlaycountEditEpisodes, 0, 6)
-        Me.tblSettingsPlaycount.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblSettingsPlaycount.Location = New System.Drawing.Point(3, 18)
-        Me.tblSettingsPlaycount.Name = "tblSettingsPlaycount"
-        Me.tblSettingsPlaycount.RowCount = 7
-        Me.tblSettingsPlaycount.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsPlaycount.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsPlaycount.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsPlaycount.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsPlaycount.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsPlaycount.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsPlaycount.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsPlaycount.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblSettingsPlaycount.Size = New System.Drawing.Size(377, 138)
-        Me.tblSettingsPlaycount.TabIndex = 7
+        Me.TableLayoutPanel2.AutoSize = True
+        Me.TableLayoutPanel2.ColumnCount = 2
+        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.TableLayoutPanel2.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.TableLayoutPanel2.Controls.Add(Me.chkGetWatchedStateBeforeEdit_Movie, 0, 0)
+        Me.TableLayoutPanel2.Controls.Add(Me.chkGetWatchedStateScraperMulti_Movie, 0, 2)
+        Me.TableLayoutPanel2.Controls.Add(Me.chkGetWatchedStateScraperSingle_Movie, 0, 1)
+        Me.TableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel2.Location = New System.Drawing.Point(3, 18)
+        Me.TableLayoutPanel2.Name = "TableLayoutPanel2"
+        Me.TableLayoutPanel2.RowCount = 4
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel2.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel2.Size = New System.Drawing.Size(152, 69)
+        Me.TableLayoutPanel2.TabIndex = 0
         '
-        'chkSyncPlaycountSingleMovies
+        'chkGetWatchedStateBeforeEdit_Movie
         '
-        Me.chkSyncPlaycountSingleMovies.AutoSize = True
-        Me.chkSyncPlaycountSingleMovies.Location = New System.Drawing.Point(3, 3)
-        Me.chkSyncPlaycountSingleMovies.Name = "chkSyncPlaycountSingleMovies"
-        Me.chkSyncPlaycountSingleMovies.Size = New System.Drawing.Size(276, 17)
-        Me.chkSyncPlaycountSingleMovies.TabIndex = 45
-        Me.chkSyncPlaycountSingleMovies.Text = "Automatically Sync Movies During Single-Scraper"
-        Me.chkSyncPlaycountSingleMovies.UseVisualStyleBackColor = True
+        Me.chkGetWatchedStateBeforeEdit_Movie.AutoSize = True
+        Me.chkGetWatchedStateBeforeEdit_Movie.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkGetWatchedStateBeforeEdit_Movie.Location = New System.Drawing.Point(3, 3)
+        Me.chkGetWatchedStateBeforeEdit_Movie.Name = "chkGetWatchedStateBeforeEdit_Movie"
+        Me.chkGetWatchedStateBeforeEdit_Movie.Size = New System.Drawing.Size(83, 17)
+        Me.chkGetWatchedStateBeforeEdit_Movie.TabIndex = 87
+        Me.chkGetWatchedStateBeforeEdit_Movie.Text = "Before Edit"
+        Me.chkGetWatchedStateBeforeEdit_Movie.UseVisualStyleBackColor = True
         '
-        'chkSyncPlaycountMultiMovies
+        'chkGetWatchedStateScraperMulti_Movie
         '
-        Me.chkSyncPlaycountMultiMovies.AutoSize = True
-        Me.chkSyncPlaycountMultiMovies.Location = New System.Drawing.Point(3, 26)
-        Me.chkSyncPlaycountMultiMovies.Name = "chkSyncPlaycountMultiMovies"
-        Me.chkSyncPlaycountMultiMovies.Size = New System.Drawing.Size(271, 17)
-        Me.chkSyncPlaycountMultiMovies.TabIndex = 46
-        Me.chkSyncPlaycountMultiMovies.Text = "Automatically Sync Movies During Multi-Scraper"
-        Me.chkSyncPlaycountMultiMovies.UseVisualStyleBackColor = True
+        Me.chkGetWatchedStateScraperMulti_Movie.AutoSize = True
+        Me.chkGetWatchedStateScraperMulti_Movie.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkGetWatchedStateScraperMulti_Movie.Location = New System.Drawing.Point(3, 49)
+        Me.chkGetWatchedStateScraperMulti_Movie.Name = "chkGetWatchedStateScraperMulti_Movie"
+        Me.chkGetWatchedStateScraperMulti_Movie.Size = New System.Drawing.Size(141, 17)
+        Me.chkGetWatchedStateScraperMulti_Movie.TabIndex = 87
+        Me.chkGetWatchedStateScraperMulti_Movie.Text = "During Multi-Scraping"
+        Me.chkGetWatchedStateScraperMulti_Movie.UseVisualStyleBackColor = True
         '
-        'chkSyncPlaycountEditMovies
+        'chkGetWatchedStateScraperSingle_Movie
         '
-        Me.chkSyncPlaycountEditMovies.AutoSize = True
-        Me.chkSyncPlaycountEditMovies.Location = New System.Drawing.Point(3, 49)
-        Me.chkSyncPlaycountEditMovies.Name = "chkSyncPlaycountEditMovies"
-        Me.chkSyncPlaycountEditMovies.Size = New System.Drawing.Size(220, 17)
-        Me.chkSyncPlaycountEditMovies.TabIndex = 48
-        Me.chkSyncPlaycountEditMovies.Text = "Automatically Sync Movies Before Edit"
-        Me.chkSyncPlaycountEditMovies.UseVisualStyleBackColor = True
-        '
-        'chkSyncPlaycountMultiEpisodes
-        '
-        Me.chkSyncPlaycountMultiEpisodes.AutoSize = True
-        Me.chkSyncPlaycountMultiEpisodes.Location = New System.Drawing.Point(3, 95)
-        Me.chkSyncPlaycountMultiEpisodes.Name = "chkSyncPlaycountMultiEpisodes"
-        Me.chkSyncPlaycountMultiEpisodes.Size = New System.Drawing.Size(281, 17)
-        Me.chkSyncPlaycountMultiEpisodes.TabIndex = 49
-        Me.chkSyncPlaycountMultiEpisodes.Text = "Automatically Sync Episodes During Multi-Scraper"
-        Me.chkSyncPlaycountMultiEpisodes.UseVisualStyleBackColor = True
-        '
-        'chkSyncPlaycountSingleEpisodes
-        '
-        Me.chkSyncPlaycountSingleEpisodes.AutoSize = True
-        Me.chkSyncPlaycountSingleEpisodes.Location = New System.Drawing.Point(3, 72)
-        Me.chkSyncPlaycountSingleEpisodes.Name = "chkSyncPlaycountSingleEpisodes"
-        Me.chkSyncPlaycountSingleEpisodes.Size = New System.Drawing.Size(286, 17)
-        Me.chkSyncPlaycountSingleEpisodes.TabIndex = 51
-        Me.chkSyncPlaycountSingleEpisodes.Text = "Automatically Sync Episodes During Single-Scraper"
-        Me.chkSyncPlaycountSingleEpisodes.UseVisualStyleBackColor = True
-        '
-        'chkSyncPlaycountEditEpisodes
-        '
-        Me.chkSyncPlaycountEditEpisodes.AutoSize = True
-        Me.chkSyncPlaycountEditEpisodes.Location = New System.Drawing.Point(3, 118)
-        Me.chkSyncPlaycountEditEpisodes.Name = "chkSyncPlaycountEditEpisodes"
-        Me.chkSyncPlaycountEditEpisodes.Size = New System.Drawing.Size(230, 17)
-        Me.chkSyncPlaycountEditEpisodes.TabIndex = 52
-        Me.chkSyncPlaycountEditEpisodes.Text = "Automatically Sync Episodes Before Edit"
-        Me.chkSyncPlaycountEditEpisodes.UseVisualStyleBackColor = True
+        Me.chkGetWatchedStateScraperSingle_Movie.AutoSize = True
+        Me.chkGetWatchedStateScraperSingle_Movie.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkGetWatchedStateScraperSingle_Movie.Location = New System.Drawing.Point(3, 26)
+        Me.chkGetWatchedStateScraperSingle_Movie.Name = "chkGetWatchedStateScraperSingle_Movie"
+        Me.chkGetWatchedStateScraperSingle_Movie.Size = New System.Drawing.Size(146, 17)
+        Me.chkGetWatchedStateScraperSingle_Movie.TabIndex = 87
+        Me.chkGetWatchedStateScraperSingle_Movie.Text = "During Single-Scraping"
+        Me.chkGetWatchedStateScraperSingle_Movie.UseVisualStyleBackColor = True
         '
         'gbSettingsGeneral
         '
         Me.gbSettingsGeneral.AutoSize = True
         Me.gbSettingsGeneral.Controls.Add(Me.tblSettingsGeneral)
         Me.gbSettingsGeneral.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbSettingsGeneral.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbSettingsGeneral.Location = New System.Drawing.Point(3, 3)
         Me.gbSettingsGeneral.Name = "gbSettingsGeneral"
         Me.gbSettingsGeneral.Size = New System.Drawing.Size(383, 100)
@@ -367,6 +347,7 @@ Partial Class frmSettingsHolder
         'txtPassword
         '
         Me.txtPassword.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.txtPassword.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtPassword.Location = New System.Drawing.Point(67, 31)
         Me.txtPassword.Name = "txtPassword"
         Me.txtPassword.Size = New System.Drawing.Size(200, 22)
@@ -376,6 +357,7 @@ Partial Class frmSettingsHolder
         '
         Me.lblPassword.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblPassword.AutoSize = True
+        Me.lblPassword.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblPassword.Location = New System.Drawing.Point(3, 35)
         Me.lblPassword.Name = "lblPassword"
         Me.lblPassword.Size = New System.Drawing.Size(56, 13)
@@ -385,6 +367,7 @@ Partial Class frmSettingsHolder
         'txtUsername
         '
         Me.txtUsername.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.txtUsername.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtUsername.Location = New System.Drawing.Point(67, 3)
         Me.txtUsername.Name = "txtUsername"
         Me.txtUsername.Size = New System.Drawing.Size(200, 22)
@@ -394,6 +377,7 @@ Partial Class frmSettingsHolder
         '
         Me.lblUsername.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblUsername.AutoSize = True
+        Me.lblUsername.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblUsername.Location = New System.Drawing.Point(3, 7)
         Me.lblUsername.Name = "lblUsername"
         Me.lblUsername.Size = New System.Drawing.Size(58, 13)
@@ -403,6 +387,7 @@ Partial Class frmSettingsHolder
         'chkGetShowProgress
         '
         Me.chkGetShowProgress.AutoSize = True
+        Me.chkGetShowProgress.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkGetShowProgress.Location = New System.Drawing.Point(67, 59)
         Me.chkGetShowProgress.Name = "chkGetShowProgress"
         Me.chkGetShowProgress.Size = New System.Drawing.Size(307, 17)
@@ -417,7 +402,7 @@ Partial Class frmSettingsHolder
         Me.pnlSettingsMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlSettingsMain.Location = New System.Drawing.Point(0, 23)
         Me.pnlSettingsMain.Name = "pnlSettingsMain"
-        Me.pnlSettingsMain.Size = New System.Drawing.Size(778, 557)
+        Me.pnlSettingsMain.Size = New System.Drawing.Size(423, 285)
         Me.pnlSettingsMain.TabIndex = 1
         '
         'pnlSettings
@@ -428,7 +413,7 @@ Partial Class frmSettingsHolder
         Me.pnlSettings.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlSettings.Location = New System.Drawing.Point(0, 0)
         Me.pnlSettings.Name = "pnlSettings"
-        Me.pnlSettings.Size = New System.Drawing.Size(778, 580)
+        Me.pnlSettings.Size = New System.Drawing.Size(423, 308)
         Me.pnlSettings.TabIndex = 1
         '
         'frmSettingsHolder
@@ -437,7 +422,7 @@ Partial Class frmSettingsHolder
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.AutoSize = True
         Me.BackColor = System.Drawing.Color.White
-        Me.ClientSize = New System.Drawing.Size(778, 580)
+        Me.ClientSize = New System.Drawing.Size(423, 308)
         Me.Controls.Add(Me.pnlSettings)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
@@ -453,14 +438,18 @@ Partial Class frmSettingsHolder
         Me.tblSettingsTop.PerformLayout()
         Me.tblSettingsMain.ResumeLayout(False)
         Me.tblSettingsMain.PerformLayout()
-        Me.gbSettingsLastPlayed.ResumeLayout(False)
-        Me.gbSettingsLastPlayed.PerformLayout()
-        Me.tblSettingsLastPlayed.ResumeLayout(False)
-        Me.tblSettingsLastPlayed.PerformLayout()
-        Me.gbSettingsPlaycount.ResumeLayout(False)
-        Me.gbSettingsPlaycount.PerformLayout()
-        Me.tblSettingsPlaycount.ResumeLayout(False)
-        Me.tblSettingsPlaycount.PerformLayout()
+        Me.gbGetWatchedState.ResumeLayout(False)
+        Me.gbGetWatchedState.PerformLayout()
+        Me.tblGetWatchedState.ResumeLayout(False)
+        Me.tblGetWatchedState.PerformLayout()
+        Me.gbGetWatchedStateTVEpisodes.ResumeLayout(False)
+        Me.gbGetWatchedStateTVEpisodes.PerformLayout()
+        Me.TableLayoutPanel3.ResumeLayout(False)
+        Me.TableLayoutPanel3.PerformLayout()
+        Me.gbGetWatchedStateMovies.ResumeLayout(False)
+        Me.gbGetWatchedStateMovies.PerformLayout()
+        Me.TableLayoutPanel2.ResumeLayout(False)
+        Me.TableLayoutPanel2.PerformLayout()
         Me.gbSettingsGeneral.ResumeLayout(False)
         Me.gbSettingsGeneral.PerformLayout()
         Me.tblSettingsGeneral.ResumeLayout(False)
@@ -486,21 +475,17 @@ Partial Class frmSettingsHolder
     Friend WithEvents txtUsername As System.Windows.Forms.TextBox
     Friend WithEvents lblUsername As System.Windows.Forms.Label
     Friend WithEvents chkGetShowProgress As System.Windows.Forms.CheckBox
-    Friend WithEvents gbSettingsPlaycount As System.Windows.Forms.GroupBox
-    Friend WithEvents tblSettingsPlaycount As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents chkSyncPlaycountSingleMovies As System.Windows.Forms.CheckBox
-    Friend WithEvents chkSyncPlaycountMultiMovies As System.Windows.Forms.CheckBox
-    Friend WithEvents gbSettingsLastPlayed As System.Windows.Forms.GroupBox
-    Friend WithEvents tblSettingsLastPlayed As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents chkSyncLastPlayedSingleMovies As System.Windows.Forms.CheckBox
-    Friend WithEvents chkSyncLastPlayedMultiMovies As System.Windows.Forms.CheckBox
-    Friend WithEvents chkSyncLastPlayedEditMovies As System.Windows.Forms.CheckBox
-    Friend WithEvents chkSyncLastPlayedMultiEpisodes As System.Windows.Forms.CheckBox
-    Friend WithEvents chkSyncLastPlayedSingleEpisodes As System.Windows.Forms.CheckBox
-    Friend WithEvents chkSyncLastPlayedEditEpisodes As System.Windows.Forms.CheckBox
-    Friend WithEvents chkSyncPlaycountEditMovies As System.Windows.Forms.CheckBox
-    Friend WithEvents chkSyncPlaycountMultiEpisodes As System.Windows.Forms.CheckBox
-    Friend WithEvents chkSyncPlaycountSingleEpisodes As System.Windows.Forms.CheckBox
-    Friend WithEvents chkSyncPlaycountEditEpisodes As System.Windows.Forms.CheckBox
-
+    Friend WithEvents gbGetWatchedState As System.Windows.Forms.GroupBox
+    Friend WithEvents tblGetWatchedState As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents gbGetWatchedStateMovies As Windows.Forms.GroupBox
+    Friend WithEvents TableLayoutPanel2 As Windows.Forms.TableLayoutPanel
+    Friend WithEvents chkGetWatchedStateBeforeEdit_Movie As Windows.Forms.CheckBox
+    Friend WithEvents chkGetWatchedStateScraperMulti_Movie As Windows.Forms.CheckBox
+    Friend WithEvents chkGetWatchedStateScraperSingle_Movie As Windows.Forms.CheckBox
+    Friend WithEvents gbGetWatchedStateTVEpisodes As Windows.Forms.GroupBox
+    Friend WithEvents TableLayoutPanel3 As Windows.Forms.TableLayoutPanel
+    Friend WithEvents chkGetWatchedStateBeforeEdit_TVEpisode As Windows.Forms.CheckBox
+    Friend WithEvents chkGetWatchedStateScraperMulti_TVEpisode As Windows.Forms.CheckBox
+    Friend WithEvents chkGetWatchedStateScraperSingle_TVEpisode As Windows.Forms.CheckBox
+    Friend WithEvents chkGetWatchedState As Windows.Forms.CheckBox
 End Class

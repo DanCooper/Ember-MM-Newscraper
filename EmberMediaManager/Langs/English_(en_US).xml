@@ -1159,7 +1159,7 @@
   <string id="1067">DVD</string>
   <string id="1068">Scrapers - Themes</string>
   <string id="1069">Select Theme</string>
-  <string id="1070">Get Playcount</string>
+  <string id="1070">Get Watched State</string>
   <string id="1071">Watched State</string>
   <string id="1072"></string>
   <string id="1073"></string>
@@ -1555,12 +1555,12 @@
   <string id="1464">Use personal rating (if available)</string>
   <string id="1465">Export to Kodi playlist</string>
   <string id="1466">Send list to playlist in Kodi</string>
-  <string id="1467">Automatically Sync Movies During Multi-Scraper</string>
-  <string id="1468">Automatically Sync Movies During Single-Scraper</string>
-  <string id="1469">Automatically Sync Movies Before Edit</string>
-  <string id="1470">Automatically Sync Episodes During Multi-Scraper</string>
-  <string id="1471">Automatically Sync Episodes During Single-Scraper</string>
-  <string id="1472">Automatically Sync Episodes Before Edit</string>
+  <string id="1467"></string>
+  <string id="1468"></string>
+  <string id="1469"></string>
+  <string id="1470"></string>
+  <string id="1471"></string>
+  <string id="1472"></string>
   <string id="1473">No Spoilers</string>
   <string id="1474">Remove Black Bars</string>
   <string id="1475">Create thumbs instead of using fanarts</string>

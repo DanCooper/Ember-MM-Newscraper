@@ -19,12 +19,13 @@
 ' ################################################################################
 
 Imports EmberAPI
-Imports System.Windows.Forms
-Imports System.Drawing
 Imports NLog
+Imports System.Drawing
+Imports System.IO
+Imports System.Windows.Forms
 Imports System.Xml.Serialization
 
-Public Class Trakt_Generic
+Public Class TraktInterface
     Implements Interfaces.GenericModule
 
 #Region "Delegates"
@@ -37,13 +38,14 @@ Public Class Trakt_Generic
 #Region "Fields"
 
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
+    Private _xmlSettingsPath As String = Path.Combine(Master.SettingsPath, "Interface.Trakt.xml")
     Private _setup As frmSettingsHolder
     Private _AssemblyName As String = String.Empty
     Private WithEvents cmnuTrayToolsTrakt As New ToolStripMenuItem
     Private WithEvents mnuMainToolsTrakt As New ToolStripMenuItem
-    Private _enabled As Boolean = False
+    Private _Enabled As Boolean = False
     Private _Name As String = "Trakt.tv Manager"
-    Private _MySettings As New MySettings
+    Private _SpecialSettings As New SpecialSettings
     Private _TraktAPI As clsAPITrakt
     Private _needNewAPI As Boolean = False
 
@@ -74,21 +76,23 @@ Public Class Trakt_Generic
                                                       Enums.ModuleEventType.Remove_TVShow,
                                                       Enums.ModuleEventType.ScraperMulti_Movie,
                                                       Enums.ModuleEventType.ScraperMulti_TVEpisode,
+                                                      Enums.ModuleEventType.ScraperMulti_TVSeason,
                                                       Enums.ModuleEventType.ScraperMulti_TVShow,
                                                       Enums.ModuleEventType.ScraperSingle_Movie,
                                                       Enums.ModuleEventType.ScraperSingle_TVEpisode,
+                                                      Enums.ModuleEventType.ScraperSingle_TVSeason,
                                                       Enums.ModuleEventType.ScraperSingle_TVShow})
         End Get
     End Property
 
     Property Enabled() As Boolean Implements Interfaces.GenericModule.Enabled
         Get
-            Return _enabled
+            Return _Enabled
         End Get
         Set(ByVal value As Boolean)
-            If _enabled = value Then Return
-            _enabled = value
-            If _enabled Then
+            If _Enabled = value Then Return
+            _Enabled = value
+            If _Enabled Then
                 Enable()
             Else
                 Disable()
@@ -119,36 +123,35 @@ Public Class Trakt_Generic
 #Region "Methods"
 
     Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
-        LoadSettings()
         Select Case mType
             Case Enums.ModuleEventType.BeforeEdit_Movie
-                If _MySettings.SyncPlaycountEditMovies AndAlso _dbelement IsNot Nothing Then
+                If _SpecialSettings.GetWatchedState AndAlso _SpecialSettings.GetWatchedStateBeforeEdit_Movie AndAlso _dbelement IsNot Nothing Then
                     _TraktAPI.SetWatchedState_Movie(_dbelement)
                 End If
             Case Enums.ModuleEventType.BeforeEdit_TVEpisode
-                If _MySettings.SyncPlaycountEditEpisodes AndAlso _dbelement IsNot Nothing Then
+                If _SpecialSettings.GetWatchedState AndAlso _SpecialSettings.GetWatchedStateBeforeEdit_TVEpisode AndAlso _dbelement IsNot Nothing Then
                     _TraktAPI.SetWatchedState_TVEpisode(_dbelement)
                 End If
             Case Enums.ModuleEventType.CommandLine
                 _TraktAPI.SyncToEmber_All()
             Case Enums.ModuleEventType.ScraperMulti_Movie
-                If _MySettings.SyncPlaycountMultiMovies AndAlso _dbelement IsNot Nothing Then
+                If _SpecialSettings.GetWatchedState AndAlso _SpecialSettings.GetWatchedStateScraperMulti_Movie AndAlso _dbelement IsNot Nothing Then
                     _TraktAPI.SetWatchedState_Movie(_dbelement)
                 End If
             Case Enums.ModuleEventType.Remove_Movie
-                If _MySettings.RemoveFromCollection_Movies AndAlso _dbelement IsNot Nothing Then
+                If _SpecialSettings.CollectionRemove_Movie AndAlso _dbelement IsNot Nothing Then
                     _TraktAPI.RemoveFromCollection_Movie(_dbelement)
                 End If
             Case Enums.ModuleEventType.ScraperMulti_TVShow, Enums.ModuleEventType.ScraperMulti_TVEpisode
-                If _MySettings.SyncPlaycountMultiEpisodes AndAlso _dbelement IsNot Nothing Then
+                If _SpecialSettings.GetWatchedState AndAlso _SpecialSettings.GetWatchedStateScraperMulti_TVEpisode AndAlso _dbelement IsNot Nothing Then
                     _TraktAPI.SetWatchedState_TVEpisode(_dbelement)
                 End If
             Case Enums.ModuleEventType.ScraperSingle_Movie
-                If _MySettings.SyncPlaycountSingleMovies AndAlso _dbelement IsNot Nothing Then
+                If _SpecialSettings.GetWatchedState AndAlso _SpecialSettings.GetWatchedStateScraperSingle_Movie AndAlso _dbelement IsNot Nothing Then
                     _TraktAPI.SetWatchedState_Movie(_dbelement)
                 End If
             Case Enums.ModuleEventType.ScraperSingle_TVShow, Enums.ModuleEventType.ScraperSingle_TVEpisode
-                If _MySettings.SyncPlaycountSingleEpisodes AndAlso _dbelement IsNot Nothing Then
+                If _SpecialSettings.GetWatchedState AndAlso _SpecialSettings.GetWatchedStateScraperSingle_TVEpisode AndAlso _dbelement IsNot Nothing Then
                     _TraktAPI.SetWatchedState_TVEpisode(_dbelement)
                 End If
         End Select
@@ -169,7 +172,8 @@ Public Class Trakt_Generic
     End Sub
 
     Sub Enable()
-        _TraktAPI = New clsAPITrakt(_MySettings)
+        _TraktAPI = New clsAPITrakt(_SpecialSettings)
+        _SpecialSettings.Token = _TraktAPI.Token
 
         Dim tsi As New ToolStripMenuItem
 
@@ -222,30 +226,24 @@ Public Class Trakt_Generic
     Function InjectSetup() As Containers.SettingsPanel Implements Interfaces.GenericModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
         _setup = New frmSettingsHolder
-        _setup.chkEnabled.Checked = _enabled
-        _setup.txtUsername.Text = _MySettings.Username
-        _setup.txtPassword.Text = _MySettings.Password
-        _setup.chkGetShowProgress.Checked = _MySettings.GetShowProgress
-        'LastPlayed
-        _setup.chkSyncLastPlayedEditMovies.Checked = _MySettings.SyncLastPlayedEditMovies
-        _setup.chkSyncLastPlayedEditEpisodes.Checked = _MySettings.SyncLastPlayedEditEpisodes
-        _setup.chkSyncLastPlayedMultiEpisodes.Checked = _MySettings.SyncLastPlayedMultiEpisodes
-        _setup.chkSyncLastPlayedMultiMovies.Checked = _MySettings.SyncLastPlayedMultiMovies
-        _setup.chkSyncLastPlayedSingleEpisodes.Checked = _MySettings.SyncLastPlayedSingleEpisodes
-        _setup.chkSyncLastPlayedSingleMovies.Checked = _MySettings.SyncLastPlayedSingleMovies
-        'Playcount
-        _setup.chkSyncPlaycountEditMovies.Checked = _MySettings.SyncPlaycountEditMovies
-        _setup.chkSyncPlaycountEditEpisodes.Checked = _MySettings.SyncPlaycountEditEpisodes
-        _setup.chkSyncPlaycountMultiEpisodes.Checked = _MySettings.SyncPlaycountMultiEpisodes
-        _setup.chkSyncPlaycountMultiMovies.Checked = _MySettings.SyncPlaycountMultiMovies
-        _setup.chkSyncPlaycountSingleEpisodes.Checked = _MySettings.SyncPlaycountSingleEpisodes
-        _setup.chkSyncPlaycountSingleMovies.Checked = _MySettings.SyncPlaycountSingleMovies
+        LoadSettings()
+        _setup.chkEnabled.Checked = _Enabled
+        _setup.chkGetShowProgress.Checked = _SpecialSettings.GetShowProgress
+        _setup.chkGetWatchedState.Checked = _SpecialSettings.GetWatchedState
+        _setup.chkGetWatchedStateBeforeEdit_Movie.Checked = _SpecialSettings.GetWatchedStateBeforeEdit_Movie
+        _setup.chkGetWatchedStateBeforeEdit_TVEpisode.Checked = _SpecialSettings.GetWatchedStateBeforeEdit_TVEpisode
+        _setup.chkGetWatchedStateScraperMulti_Movie.Checked = _SpecialSettings.GetWatchedStateScraperMulti_Movie
+        _setup.chkGetWatchedStateScraperMulti_TVEpisode.Checked = _SpecialSettings.GetWatchedStateScraperMulti_TVEpisode
+        _setup.chkGetWatchedStateScraperSingle_Movie.Checked = _SpecialSettings.GetWatchedStateScraperSingle_Movie
+        _setup.chkGetWatchedStateScraperSingle_TVEpisode.Checked = _SpecialSettings.GetWatchedStateScraperSingle_TVEpisode
+        _setup.txtPassword.Text = _SpecialSettings.Password
+        _setup.txtUsername.Text = _SpecialSettings.Username
 
         SPanel.Name = _Name
-        SPanel.Text = Master.eLang.GetString(871, "Trakt.tv Manager")
+        SPanel.Text = "Trakt.tv Interface"
         SPanel.Prefix = "Trakt_"
         SPanel.Type = Master.eLang.GetString(802, "Modules")
-        SPanel.ImageIndex = If(_enabled, 9, 10)
+        SPanel.ImageIndex = If(_Enabled, 9, 10)
         SPanel.Order = 100
         SPanel.Panel = _setup.pnlSettings
         AddHandler _setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
@@ -266,53 +264,37 @@ Public Class Trakt_Generic
     End Sub
 
     Sub LoadSettings()
-        _MySettings.GetShowProgress = clsAdvancedSettings.GetBooleanSetting("GetShowProgress", False)
-        _MySettings.Password = clsAdvancedSettings.GetSetting("Password", String.Empty)
-        _MySettings.Token = clsAdvancedSettings.GetSetting("Token", String.Empty)
-        _MySettings.Username = clsAdvancedSettings.GetSetting("Username", String.Empty)
-        'LastPlayed
-        _MySettings.SyncLastPlayedEditMovies = clsAdvancedSettings.GetBooleanSetting("SyncLastPlayedEditMovies", False)
-        _MySettings.SyncLastPlayedEditEpisodes = clsAdvancedSettings.GetBooleanSetting("SyncLastPlayedEditEpisodes", False)
-        _MySettings.SyncLastPlayedMultiEpisodes = clsAdvancedSettings.GetBooleanSetting("SyncLastPlayedMultiEpisodes", False)
-        _MySettings.SyncLastPlayedMultiMovies = clsAdvancedSettings.GetBooleanSetting("SyncLastPlayedMultiMovies", False)
-        _MySettings.SyncLastPlayedSingleEpisodes = clsAdvancedSettings.GetBooleanSetting("SyncLastPlayedSingleEpisodes", False)
-        _MySettings.SyncLastPlayedSingleMovies = clsAdvancedSettings.GetBooleanSetting("SyncLastPlayedSingleMovies", False)
-        'Playcount
-        _MySettings.SyncPlaycountEditMovies = clsAdvancedSettings.GetBooleanSetting("SyncPlaycountEditMovies", False)
-        _MySettings.SyncPlaycountEditEpisodes = clsAdvancedSettings.GetBooleanSetting("SyncPlaycountEditEpisodes", False)
-        _MySettings.SyncPlaycountMultiEpisodes = clsAdvancedSettings.GetBooleanSetting("SyncPlaycountMultiEpisodes", False)
-        _MySettings.SyncPlaycountMultiMovies = clsAdvancedSettings.GetBooleanSetting("SyncPlaycountMultiMovies", False)
-        _MySettings.SyncPlaycountSingleEpisodes = clsAdvancedSettings.GetBooleanSetting("SyncPlaycountSingleEpisodes", False)
-        _MySettings.SyncPlaycountSingleMovies = clsAdvancedSettings.GetBooleanSetting("SyncPlaycountSingleMovies", False)
+        _SpecialSettings.Clear()
+        If File.Exists(_xmlSettingsPath) Then
+            Dim xmlSer As XmlSerializer = Nothing
+            Using xmlSR As StreamReader = New StreamReader(_xmlSettingsPath)
+                xmlSer = New XmlSerializer(GetType(SpecialSettings))
+                _SpecialSettings = DirectCast(xmlSer.Deserialize(xmlSR), SpecialSettings)
+            End Using
+        End If
     End Sub
 
     Sub SaveSetupModule(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
         Enabled = _setup.chkEnabled.Checked
-        _MySettings.GetShowProgress = _setup.chkGetShowProgress.Checked
-        _MySettings.Password = _setup.txtPassword.Text
-        _MySettings.Username = _setup.txtUsername.Text
-        'LastPlayed
-        _MySettings.SyncLastPlayedEditMovies = _setup.chkSyncLastPlayedEditMovies.Checked
-        _MySettings.SyncLastPlayedEditEpisodes = _setup.chkSyncLastPlayedEditEpisodes.Checked
-        _MySettings.SyncLastPlayedMultiEpisodes = _setup.chkSyncLastPlayedMultiEpisodes.Checked
-        _MySettings.SyncLastPlayedMultiMovies = _setup.chkSyncLastPlayedMultiMovies.Checked
-        _MySettings.SyncLastPlayedSingleEpisodes = _setup.chkSyncLastPlayedSingleEpisodes.Checked
-        _MySettings.SyncLastPlayedSingleMovies = _setup.chkSyncLastPlayedSingleMovies.Checked
-        'Playcount
-        _MySettings.SyncPlaycountEditMovies = _setup.chkSyncPlaycountEditMovies.Checked
-        _MySettings.SyncPlaycountEditEpisodes = _setup.chkSyncPlaycountEditEpisodes.Checked
-        _MySettings.SyncPlaycountMultiEpisodes = _setup.chkSyncPlaycountMultiEpisodes.Checked
-        _MySettings.SyncPlaycountMultiMovies = _setup.chkSyncPlaycountMultiMovies.Checked
-        _MySettings.SyncPlaycountSingleEpisodes = _setup.chkSyncPlaycountSingleEpisodes.Checked
-        _MySettings.SyncPlaycountSingleMovies = _setup.chkSyncPlaycountSingleMovies.Checked
-
-        SaveSettings()
+        _SpecialSettings.GetShowProgress = _setup.chkGetShowProgress.Checked
+        _SpecialSettings.GetWatchedState = _setup.chkGetWatchedState.Checked
+        _SpecialSettings.GetWatchedStateBeforeEdit_Movie = _setup.chkGetWatchedStateBeforeEdit_Movie.Checked
+        _SpecialSettings.GetWatchedStateBeforeEdit_TVEpisode = _setup.chkGetWatchedStateBeforeEdit_TVEpisode.Checked
+        _SpecialSettings.GetWatchedStateScraperMulti_Movie = _setup.chkGetWatchedStateScraperMulti_Movie.Checked
+        _SpecialSettings.GetWatchedStateScraperMulti_TVEpisode = _setup.chkGetWatchedStateScraperMulti_TVEpisode.Checked
+        _SpecialSettings.GetWatchedStateScraperSingle_Movie = _setup.chkGetWatchedStateScraperSingle_Movie.Checked
+        _SpecialSettings.GetWatchedStateScraperSingle_TVEpisode = _setup.chkGetWatchedStateScraperSingle_TVEpisode.Checked
+        _SpecialSettings.Password = _setup.txtPassword.Text
+        _SpecialSettings.Username = _setup.txtUsername.Text
 
         If _needNewAPI Then
-            _MySettings.Token = String.Empty
-            _TraktAPI = New clsAPITrakt(_MySettings)
+            _SpecialSettings.Token = String.Empty
+            _TraktAPI = New clsAPITrakt(_SpecialSettings)
+            _SpecialSettings.Token = _TraktAPI.Token
             _needNewAPI = False
         End If
+
+        SaveSettings()
 
         If DoDispose Then
             RemoveHandler _setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
@@ -323,61 +305,199 @@ Public Class Trakt_Generic
     End Sub
 
     Sub SaveSettings()
-        Using settings = New clsAdvancedSettings()
-            settings.SetSetting("Password", _MySettings.Password)
-            settings.SetSetting("Token", _MySettings.Token)
-            settings.SetSetting("Username", _MySettings.Username)
-            settings.SetBooleanSetting("GetShowProgress", _MySettings.GetShowProgress)
-            'LastPlayed
-            settings.SetBooleanSetting("SyncLastPlayedEditMovies", _MySettings.SyncLastPlayedEditMovies)
-            settings.SetBooleanSetting("SyncLastPlayedEditEpisodes", _MySettings.SyncLastPlayedEditEpisodes)
-            settings.SetBooleanSetting("SyncLastPlayedMultiEpisodes", _MySettings.SyncLastPlayedMultiEpisodes)
-            settings.SetBooleanSetting("SyncLastPlayedMultiMovies", _MySettings.SyncLastPlayedMultiMovies)
-            settings.SetBooleanSetting("SyncLastPlayedSingleEpisodes", _MySettings.SyncLastPlayedSingleEpisodes)
-            settings.SetBooleanSetting("SyncLastPlayedSingleMovies", _MySettings.SyncLastPlayedSingleMovies)
-            'Playcount
-            settings.SetBooleanSetting("SyncPlaycountEditMovies", _MySettings.SyncPlaycountEditMovies)
-            settings.SetBooleanSetting("SyncPlaycountEditEpisodes", _MySettings.SyncPlaycountEditEpisodes)
-            settings.SetBooleanSetting("SyncPlaycountMultiEpisodes", _MySettings.SyncPlaycountMultiEpisodes)
-            settings.SetBooleanSetting("SyncPlaycountMultiMovies", _MySettings.SyncPlaycountMultiMovies)
-            settings.SetBooleanSetting("SyncPlaycountSingleEpisodes", _MySettings.SyncPlaycountSingleEpisodes)
-            settings.SetBooleanSetting("SyncPlaycountSingleMovies", _MySettings.SyncPlaycountSingleMovies)
-        End Using
+        If Not File.Exists(_xmlSettingsPath) OrElse (Not CBool(File.GetAttributes(_xmlSettingsPath) And FileAttributes.ReadOnly)) Then
+            If File.Exists(_xmlSettingsPath) Then
+                Dim fAtt As FileAttributes = File.GetAttributes(_xmlSettingsPath)
+                Try
+                    File.SetAttributes(_xmlSettingsPath, FileAttributes.Normal)
+                Catch ex As Exception
+                    logger.Error(ex, New StackFrame().GetMethod().Name)
+                End Try
+            End If
+            Using xmlSW As New StreamWriter(_xmlSettingsPath)
+                Dim xmlSer As New XmlSerializer(GetType(SpecialSettings))
+                xmlSer.Serialize(xmlSW, _SpecialSettings)
+            End Using
+        End If
     End Sub
 
 #End Region 'Methods
 
 #Region "Nested Types"
 
-    Structure MySettings
+    <Serializable()>
+    <XmlRoot("interface.trakt")>
+    Class SpecialSettings
 
 #Region "Fields"
 
-        Dim GetShowProgress As Boolean
-        Dim Password As String
-        Dim Token As String
-        Dim Username As String
-
-        Dim RemoveFromCollection_Movies As Boolean
-
-        'LastPlayed
-        Dim SyncLastPlayedEditMovies As Boolean
-        Dim SyncLastPlayedEditEpisodes As Boolean
-        Dim SyncLastPlayedMultiEpisodes As Boolean
-        Dim SyncLastPlayedMultiMovies As Boolean
-        Dim SyncLastPlayedSingleEpisodes As Boolean
-        Dim SyncLastPlayedSingleMovies As Boolean
-        'Playcount
-        Dim SyncPlaycountEditMovies As Boolean
-        Dim SyncPlaycountEditEpisodes As Boolean
-        Dim SyncPlaycountMultiEpisodes As Boolean
-        Dim SyncPlaycountMultiMovies As Boolean
-        Dim SyncPlaycountSingleEpisodes As Boolean
-        Dim SyncPlaycountSingleMovies As Boolean
+        Private _collectionremove_movie As Boolean
+        Private _getshowprogress As Boolean
+        Private _getwatchedstate As Boolean
+        Private _getwatchedstatebeforeedit_movie As Boolean
+        Private _getwatchedstatebeforeedit_tvepisode As Boolean
+        Private _getwatchedstatescrapermulti_movie As Boolean
+        Private _getwatchedstatescrapermulti_tvepisode As Boolean
+        Private _getwatchedstatescrapersingle_movie As Boolean
+        Private _getwatchedstatescrapersingle_tvepisode As Boolean
+        Private _password As String
+        Private _token As String
+        Private _username As String
 
 #End Region 'Fields
 
-    End Structure
+#Region "Properties"
+
+        <XmlElement("collectionremove_movie")>
+        Public Property CollectionRemove_Movie() As Boolean
+            Get
+                Return _collectionremove_movie
+            End Get
+            Set(ByVal value As Boolean)
+                _collectionremove_movie = value
+            End Set
+        End Property
+
+        <XmlElement("getshowprogress")>
+        Public Property GetShowProgress() As Boolean
+            Get
+                Return _getshowprogress
+            End Get
+            Set(ByVal value As Boolean)
+                _getshowprogress = value
+            End Set
+        End Property
+
+        <XmlElement("getwatchedstate")>
+        Public Property GetWatchedState() As Boolean
+            Get
+                Return _getwatchedstate
+            End Get
+            Set(ByVal value As Boolean)
+                _getwatchedstate = value
+            End Set
+        End Property
+
+        <XmlElement("getwatchedstatebeforeedit_movie")>
+        Public Property GetWatchedStateBeforeEdit_Movie() As Boolean
+            Get
+                Return _getwatchedstatebeforeedit_movie
+            End Get
+            Set(ByVal value As Boolean)
+                _getwatchedstatebeforeedit_movie = value
+            End Set
+        End Property
+
+        <XmlElement("getwatchedstatebeforeedit_tvepisode")>
+        Public Property GetWatchedStateBeforeEdit_TVEpisode() As Boolean
+            Get
+                Return _getwatchedstatebeforeedit_tvepisode
+            End Get
+            Set(ByVal value As Boolean)
+                _getwatchedstatebeforeedit_tvepisode = value
+            End Set
+        End Property
+
+        <XmlElement("getwatchedstatescrapermulti_movie")>
+        Public Property GetWatchedStateScraperMulti_Movie() As Boolean
+            Get
+                Return _getwatchedstatescrapermulti_movie
+            End Get
+            Set(ByVal value As Boolean)
+                _getwatchedstatescrapermulti_movie = value
+            End Set
+        End Property
+
+        <XmlElement("getwatchedstatescrapermulti_tvepisode")>
+        Public Property GetWatchedStateScraperMulti_TVEpisode() As Boolean
+            Get
+                Return _getwatchedstatescrapermulti_tvepisode
+            End Get
+            Set(ByVal value As Boolean)
+                _getwatchedstatescrapermulti_tvepisode = value
+            End Set
+        End Property
+
+        <XmlElement("getwatchedstatescrapersingle_movie")>
+        Public Property GetWatchedStateScraperSingle_Movie() As Boolean
+            Get
+                Return _getwatchedstatescrapersingle_movie
+            End Get
+            Set(ByVal value As Boolean)
+                _getwatchedstatescrapersingle_movie = value
+            End Set
+        End Property
+
+        <XmlElement("getwatchedstatescrapersingle_tvepisode")>
+        Public Property GetWatchedStateScraperSingle_TVEpisode() As Boolean
+            Get
+                Return _getwatchedstatescrapersingle_tvepisode
+            End Get
+            Set(ByVal value As Boolean)
+                _getwatchedstatescrapersingle_tvepisode = value
+            End Set
+        End Property
+
+        <XmlElement("password")>
+        Public Property Password() As String
+            Get
+                Return _password
+            End Get
+            Set(ByVal value As String)
+                _password = value
+            End Set
+        End Property
+
+        <XmlElement("token")>
+        Public Property Token() As String
+            Get
+                Return _token
+            End Get
+            Set(ByVal value As String)
+                _token = value
+            End Set
+        End Property
+
+        <XmlElement("username")>
+        Public Property Username() As String
+            Get
+                Return _username
+            End Get
+            Set(ByVal value As String)
+                _username = value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+        Public Sub New()
+            Clear()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+
+        Public Sub Clear()
+            _collectionremove_movie = False
+            _getshowprogress = False
+            _getwatchedstate = False
+            _getwatchedstatebeforeedit_movie = False
+            _getwatchedstatebeforeedit_tvepisode = False
+            _getwatchedstatescrapermulti_movie = False
+            _getwatchedstatescrapermulti_tvepisode = False
+            _getwatchedstatescrapersingle_movie = False
+            _getwatchedstatescrapersingle_tvepisode = False
+            _password = String.Empty
+            _token = String.Empty
+            _username = String.Empty
+        End Sub
+
+#End Region 'Methods
+
+    End Class
 
 
     ''' <summary>
@@ -386,7 +506,7 @@ Public Class Trakt_Generic
     ''' <remarks></remarks>
     <Serializable()>
     <XmlRoot("interface.kodi")>
-    Class SpecialSettings
+    Class KodiSettings
 
 #Region "Fields"
 
