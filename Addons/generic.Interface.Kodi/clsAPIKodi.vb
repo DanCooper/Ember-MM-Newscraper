@@ -1021,7 +1021,7 @@ Namespace Kodi
                     'string or string.empty
                     Dim mDateAdded As String = If(mDBElement.Movie.DateAddedSpecified, mDBElement.Movie.DateAdded, Nothing)
                     Dim mImdbnumber As String = mDBElement.Movie.ID
-                    Dim mLastPlayed As String = If(mDBElement.Movie.LastPlayedSpecified, mDBElement.Movie.LastPlayed, Nothing)
+                    Dim mLastPlayed As String = mDBElement.Movie.LastPlayed
                     Dim mMPAA As String = mDBElement.Movie.MPAA
                     Dim mOriginalTitle As String = mDBElement.Movie.OriginalTitle
                     Dim mOutline As String = mDBElement.Movie.Outline
