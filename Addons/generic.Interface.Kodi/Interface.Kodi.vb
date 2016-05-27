@@ -176,16 +176,43 @@ Public Class KodiInterface
     ''' Timer tick event is async so we can queue with await all API tasks
     ''' </remarks>
     Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
-        If Not Master.isCL AndAlso
-            mType = Enums.ModuleEventType.Sync_Movie AndAlso
-            mType = Enums.ModuleEventType.Sync_MovieSet AndAlso
-            mType = Enums.ModuleEventType.Sync_TVEpisode AndAlso
-            mType = Enums.ModuleEventType.Sync_TVSeason AndAlso
-            mType = Enums.ModuleEventType.Sync_TVShow Then
+        If Not Master.isCL AndAlso (
+            mType = Enums.ModuleEventType.Sync_Movie OrElse
+            mType = Enums.ModuleEventType.Sync_MovieSet OrElse
+            mType = Enums.ModuleEventType.Sync_TVEpisode OrElse
+            mType = Enums.ModuleEventType.Sync_TVSeason OrElse
+            mType = Enums.ModuleEventType.Sync_TVShow) Then
             'add job to tasklist and get everything done
             AddTask(New KodiTask With {.mType = mType, .mDBElement = _dbelement})
             Return New Interfaces.ModuleResult With {.breakChain = False}
         Else
+            Select Case mType
+                Case Enums.ModuleEventType.BeforeEdit_Movie
+                    If Not _SpecialSettings.GetWatchedState OrElse Not _SpecialSettings.GetWatchedStateBeforeEdit_Movie Then
+                        Return New Interfaces.ModuleResult
+                    End If
+                Case Enums.ModuleEventType.BeforeEdit_TVEpisode
+                    If Not _SpecialSettings.GetWatchedState OrElse Not _SpecialSettings.GetWatchedStateBeforeEdit_TVEpisode Then
+                        Return New Interfaces.ModuleResult
+                    End If
+                Case Enums.ModuleEventType.ScraperMulti_Movie
+                    If Not _SpecialSettings.GetWatchedState OrElse Not _SpecialSettings.GetWatchedStateScraperMulti_Movie Then
+                        Return New Interfaces.ModuleResult
+                    End If
+                Case Enums.ModuleEventType.ScraperMulti_TVEpisode, Enums.ModuleEventType.ScraperMulti_TVSeason, Enums.ModuleEventType.ScraperMulti_TVShow
+                    If Not _SpecialSettings.GetWatchedState OrElse Not _SpecialSettings.GetWatchedStateScraperMulti_TVEpisode Then
+                        Return New Interfaces.ModuleResult
+                    End If
+                Case Enums.ModuleEventType.ScraperSingle_Movie
+                    If Not _SpecialSettings.GetWatchedState OrElse Not _SpecialSettings.GetWatchedStateScraperSingle_Movie Then
+                        Return New Interfaces.ModuleResult
+                    End If
+                Case Enums.ModuleEventType.ScraperSingle_TVEpisode, Enums.ModuleEventType.ScraperSingle_TVSeason, Enums.ModuleEventType.ScraperSingle_TVShow
+                    If Not _SpecialSettings.GetWatchedState OrElse Not _SpecialSettings.GetWatchedStateScraperSingle_TVEpisode Then
+                        Return New Interfaces.ModuleResult
+                    End If
+            End Select
+
             Dim mDBElement As Database.DBElement = _dbelement
             Dim tTask As Task(Of Boolean) = Task.Run(Function() DoCommandLine(mType, mDBElement))
             While Not tTask.IsCompleted
@@ -264,8 +291,8 @@ Public Class KodiInterface
 
                 'Before Edit Movie / Scraper Multi Movie / Scraper Single Movie
                 Case Enums.ModuleEventType.BeforeEdit_Movie, Enums.ModuleEventType.ScraperMulti_Movie, Enums.ModuleEventType.ScraperSingle_Movie
-                    If mDBElement IsNot Nothing AndAlso Not String.IsNullOrEmpty(_SpecialSettings.SyncPlayCountsHost) Then
-                        mHost = _SpecialSettings.Hosts.FirstOrDefault(Function(f) f.Label = _SpecialSettings.SyncPlayCountsHost)
+                    If mDBElement IsNot Nothing AndAlso Not String.IsNullOrEmpty(_SpecialSettings.GetWatchedStateHost) Then
+                        mHost = _SpecialSettings.Hosts.FirstOrDefault(Function(f) f.Label = _SpecialSettings.GetWatchedStateHost)
                         If mHost IsNot Nothing Then
                             Dim _APIKodi As New Kodi.APIKodi(mHost)
 
@@ -297,14 +324,14 @@ Public Class KodiInterface
                                 getError = True
                             End If
                         Else
-                            logger.Warn(String.Format("[KodiInterface] [GenericRunCallBack]: Hostname ({0}) not found in host list!", _SpecialSettings.SyncPlayCountsHost))
+                            logger.Warn(String.Format("[KodiInterface] [GenericRunCallBack]: Hostname ({0}) not found in host list!", _SpecialSettings.GetWatchedStateHost))
                         End If
                     End If
 
                 'Before Edit TVEpisode / Scraper Multi TVEpisode / Scraper Single TVEpisode
                 Case Enums.ModuleEventType.BeforeEdit_TVEpisode, Enums.ModuleEventType.ScraperMulti_TVEpisode, Enums.ModuleEventType.ScraperSingle_TVEpisode
-                    If mDBElement IsNot Nothing AndAlso Not String.IsNullOrEmpty(_SpecialSettings.SyncPlayCountsHost) Then
-                        mHost = _SpecialSettings.Hosts.FirstOrDefault(Function(f) f.Label = _SpecialSettings.SyncPlayCountsHost)
+                    If mDBElement IsNot Nothing AndAlso Not String.IsNullOrEmpty(_SpecialSettings.GetWatchedStateHost) Then
+                        mHost = _SpecialSettings.Hosts.FirstOrDefault(Function(f) f.Label = _SpecialSettings.GetWatchedStateHost)
                         If mHost IsNot Nothing Then
                             Dim _APIKodi As New Kodi.APIKodi(mHost)
 
@@ -336,13 +363,13 @@ Public Class KodiInterface
                                 getError = True
                             End If
                         Else
-                            logger.Warn(String.Format("[KodiInterface] [GenericRunCallBack]: Hostname ({0}) not found in host list!", _SpecialSettings.SyncPlayCountsHost))
+                            logger.Warn(String.Format("[KodiInterface] [GenericRunCallBack]: Hostname ({0}) not found in host list!", _SpecialSettings.GetWatchedStateHost))
                         End If
                     End If
 
                 Case Enums.ModuleEventType.ScraperMulti_TVSeason, Enums.ModuleEventType.ScraperMulti_TVShow, Enums.ModuleEventType.ScraperSingle_TVSeason, Enums.ModuleEventType.ScraperSingle_TVShow
-                    If mDBElement IsNot Nothing AndAlso Not String.IsNullOrEmpty(_SpecialSettings.SyncPlayCountsHost) Then
-                        mHost = _SpecialSettings.Hosts.FirstOrDefault(Function(f) f.Label = _SpecialSettings.SyncPlayCountsHost)
+                    If mDBElement IsNot Nothing AndAlso Not String.IsNullOrEmpty(_SpecialSettings.GetWatchedStateHost) Then
+                        mHost = _SpecialSettings.Hosts.FirstOrDefault(Function(f) f.Label = _SpecialSettings.GetWatchedStateHost)
                         If mHost IsNot Nothing Then
                             Dim _APIKodi As New Kodi.APIKodi(mHost)
 
@@ -378,7 +405,7 @@ Public Class KodiInterface
                                 getError = True
                             End If
                         Else
-                            logger.Warn(String.Format("[KodiInterface] [GenericRunCallBack]: Hostname ({0}) not found in host list!", _SpecialSettings.SyncPlayCountsHost))
+                            logger.Warn(String.Format("[KodiInterface] [GenericRunCallBack]: Hostname ({0}) not found in host list!", _SpecialSettings.GetWatchedStateHost))
                         End If
                     End If
 
@@ -945,8 +972,8 @@ Public Class KodiInterface
                 tMenu.DropDownItems.Add(mnuHostSyncFullItem)
             End If
             If tContentType = Enums.ContentType.Movie OrElse tContentType = Enums.ContentType.TVEpisode OrElse tContentType = Enums.ContentType.TVSeason OrElse tContentType = Enums.ContentType.TVShow Then
-                If _SpecialSettings.SyncPlayCounts AndAlso Not String.IsNullOrEmpty(_SpecialSettings.SyncPlayCountsHost) Then
-                    Dim mHost As Host = _SpecialSettings.Hosts.FirstOrDefault(Function(f) f.Label = _SpecialSettings.SyncPlayCountsHost)
+                If _SpecialSettings.GetWatchedState AndAlso Not String.IsNullOrEmpty(_SpecialSettings.GetWatchedStateHost) Then
+                    Dim mHost As Host = _SpecialSettings.Hosts.FirstOrDefault(Function(f) f.Label = _SpecialSettings.GetWatchedStateHost)
                     If mHost IsNot Nothing Then
                         Dim mnuHostGetPlaycount As New ToolStripMenuItem
                         mnuHostGetPlaycount.Image = New Bitmap(My.Resources.menuSync)
@@ -1036,13 +1063,13 @@ Public Class KodiInterface
                 tMenu.DropDownItems.Add(mnuHost)
             Next
             If tContentType = Enums.ContentType.Movie OrElse tContentType = Enums.ContentType.TVEpisode OrElse tContentType = Enums.ContentType.TVSeason OrElse tContentType = Enums.ContentType.TVShow Then
-                If _SpecialSettings.SyncPlayCounts AndAlso Not String.IsNullOrEmpty(_SpecialSettings.SyncPlayCountsHost) Then
-                    Dim mHost As Host = _SpecialSettings.Hosts.FirstOrDefault(Function(f) f.Label = _SpecialSettings.SyncPlayCountsHost)
+                If _SpecialSettings.GetWatchedState AndAlso Not String.IsNullOrEmpty(_SpecialSettings.GetWatchedStateHost) Then
+                    Dim mHost As Host = _SpecialSettings.Hosts.FirstOrDefault(Function(f) f.Label = _SpecialSettings.GetWatchedStateHost)
                     If mHost IsNot Nothing Then
                         Dim mnuHostGetPlaycount As New ToolStripMenuItem
                         mnuHostGetPlaycount.Image = New Bitmap(My.Resources.menuSync)
                         mnuHostGetPlaycount.Tag = mHost
-                        mnuHostGetPlaycount.Text = String.Format("{0} ({1})", Master.eLang.GetString(1070, "Get Playcount"), _SpecialSettings.SyncPlayCountsHost)
+                        mnuHostGetPlaycount.Text = String.Format("{0} ({1})", Master.eLang.GetString(1070, "Get Playcount"), _SpecialSettings.GetWatchedStateHost)
                         Select Case tContentType
                             Case Enums.ContentType.Movie
                                 AddHandler mnuHostGetPlaycount.Click, AddressOf cmnuHostGetPlaycount_Movie_Click
@@ -1248,20 +1275,26 @@ Public Class KodiInterface
         _setup = New frmSettingsHolder
         LoadSettings()
         _setup.chkEnabled.Checked = _Enabled
+        _setup.chkGetWatchedState.Checked = _SpecialSettings.GetWatchedState
+        _setup.chkGetWatchedStateBeforeEdit_Movie.Checked = _SpecialSettings.GetWatchedStateBeforeEdit_Movie
+        _setup.chkGetWatchedStateBeforeEdit_TVEpisode.Checked = _SpecialSettings.GetWatchedStateBeforeEdit_TVEpisode
+        _setup.chkGetWatchedStateScraperMulti_Movie.Checked = _SpecialSettings.GetWatchedStateScraperMulti_Movie
+        _setup.chkGetWatchedStateScraperMulti_TVEpisode.Checked = _SpecialSettings.GetWatchedStateScraperMulti_TVEpisode
+        _setup.chkGetWatchedStateScraperSingle_Movie.Checked = _SpecialSettings.GetWatchedStateScraperSingle_Movie
+        _setup.chkGetWatchedStateScraperSingle_TVEpisode.Checked = _SpecialSettings.GetWatchedStateScraperSingle_TVEpisode
         _setup.chkNotification.Checked = _SpecialSettings.SendNotifications
-        _setup.chkPlayCount.Checked = _SpecialSettings.SyncPlayCounts
-        If _SpecialSettings.SyncPlayCounts Then
-            _setup.cbPlayCountHost.Enabled = True
+        If _SpecialSettings.GetWatchedState Then
+            _setup.cbGetWatchedStateHost.Enabled = True
         Else
-            _setup.cbPlayCountHost.Enabled = False
+            _setup.cbGetWatchedStateHost.Enabled = False
         End If
         _setup.HostList = _SpecialSettings.Hosts
         _setup.lbHosts.Items.Clear()
         For Each tHost As Host In _setup.HostList
-            _setup.cbPlayCountHost.Items.Add(tHost.Label)
+            _setup.cbGetWatchedStateHost.Items.Add(tHost.Label)
             _setup.lbHosts.Items.Add(tHost.Label)
         Next
-        _setup.cbPlayCountHost.SelectedIndex = _setup.cbPlayCountHost.FindStringExact(_SpecialSettings.SyncPlayCountsHost)
+        _setup.cbGetWatchedStateHost.SelectedIndex = _setup.cbGetWatchedStateHost.FindStringExact(_SpecialSettings.GetWatchedStateHost)
 
         SPanel.Name = _Name
         SPanel.Text = "Kodi Interface"
@@ -1279,8 +1312,14 @@ Public Class KodiInterface
     Sub SaveSetupModule(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
         Enabled = _setup.chkEnabled.Checked
         _SpecialSettings.SendNotifications = _setup.chkNotification.Checked
-        _SpecialSettings.SyncPlayCounts = _setup.chkPlayCount.Checked AndAlso _setup.cbPlayCountHost.SelectedItem IsNot Nothing
-        _SpecialSettings.SyncPlayCountsHost = If(_setup.cbPlayCountHost.SelectedItem IsNot Nothing, _setup.cbPlayCountHost.SelectedItem.ToString(), String.Empty)
+        _SpecialSettings.GetWatchedState = _setup.chkGetWatchedState.Checked AndAlso _setup.cbGetWatchedStateHost.SelectedItem IsNot Nothing
+        _SpecialSettings.GetWatchedStateBeforeEdit_Movie = _setup.chkGetWatchedStateBeforeEdit_Movie.Checked
+        _SpecialSettings.GetWatchedStateBeforeEdit_TVEpisode = _setup.chkGetWatchedStateBeforeEdit_TVEpisode.Checked
+        _SpecialSettings.GetWatchedStateScraperMulti_Movie = _setup.chkGetWatchedStateScraperMulti_Movie.Checked
+        _SpecialSettings.GetWatchedStateScraperMulti_TVEpisode = _setup.chkGetWatchedStateScraperMulti_TVEpisode.Checked
+        _SpecialSettings.GetWatchedStateScraperSingle_Movie = _setup.chkGetWatchedStateScraperSingle_Movie.Checked
+        _SpecialSettings.GetWatchedStateScraperSingle_TVEpisode = _setup.chkGetWatchedStateScraperSingle_TVEpisode.Checked
+        _SpecialSettings.GetWatchedStateHost = If(_setup.cbGetWatchedStateHost.SelectedItem IsNot Nothing, _setup.cbGetWatchedStateHost.SelectedItem.ToString(), String.Empty)
         SaveSettings()
         If Enabled Then PopulateMenus()
         If DoDispose Then
@@ -1864,8 +1903,14 @@ Public Class KodiInterface
 
         Private _hosts As New List(Of Host)
         Private _sendnotifications As Boolean
-        Private _syncplaycounts As Boolean
-        Private _syncplaycountshost As String
+        Private _getwatchedstate As Boolean
+        Private _getwatchedstatebeforeedit_movie As Boolean
+        Private _getwatchedstatebeforeedit_tvepisode As Boolean
+        Private _getwatchedstatescrapermulti_movie As Boolean
+        Private _getwatchedstatescrapermulti_tvepisode As Boolean
+        Private _getwatchedstatescrapersingle_movie As Boolean
+        Private _getwatchedstatescrapersingle_tvepisode As Boolean
+        Private _getwatchedstatehost As String
 
 #End Region 'Fields
 
@@ -1881,23 +1926,83 @@ Public Class KodiInterface
             End Set
         End Property
 
-        <XmlElement("syncplaycounts")>
-        Public Property SyncPlayCounts() As Boolean
+        <XmlElement("getwatchedstate")>
+        Public Property GetWatchedState() As Boolean
             Get
-                Return _syncplaycounts
+                Return _getwatchedstate
             End Get
             Set(ByVal value As Boolean)
-                _syncplaycounts = value
+                _getwatchedstate = value
             End Set
         End Property
 
-        <XmlElement("syncplaycountshost")>
-        Public Property SyncPlayCountsHost() As String
+        <XmlElement("getwatchedstatebeforeedit_movie")>
+        Public Property GetWatchedStateBeforeEdit_Movie() As Boolean
             Get
-                Return _syncplaycountshost
+                Return _getwatchedstatebeforeedit_movie
+            End Get
+            Set(ByVal value As Boolean)
+                _getwatchedstatebeforeedit_movie = value
+            End Set
+        End Property
+
+        <XmlElement("getwatchedstatebeforeedit_tvepisode")>
+        Public Property GetWatchedStateBeforeEdit_TVEpisode() As Boolean
+            Get
+                Return _getwatchedstatebeforeedit_tvepisode
+            End Get
+            Set(ByVal value As Boolean)
+                _getwatchedstatebeforeedit_tvepisode = value
+            End Set
+        End Property
+
+        <XmlElement("getwatchedstatehost")>
+        Public Property GetWatchedStateHost() As String
+            Get
+                Return _getwatchedstatehost
             End Get
             Set(ByVal value As String)
-                _syncplaycountshost = value
+                _getwatchedstatehost = value
+            End Set
+        End Property
+
+        <XmlElement("getwatchedstatescrapermulti_movie")>
+        Public Property GetWatchedStateScraperMulti_Movie() As Boolean
+            Get
+                Return _getwatchedstatescrapermulti_movie
+            End Get
+            Set(ByVal value As Boolean)
+                _getwatchedstatescrapermulti_movie = value
+            End Set
+        End Property
+
+        <XmlElement("getwatchedstatescrapermulti_tvepisode")>
+        Public Property GetWatchedStateScraperMulti_TVEpisode() As Boolean
+            Get
+                Return _getwatchedstatescrapermulti_tvepisode
+            End Get
+            Set(ByVal value As Boolean)
+                _getwatchedstatescrapermulti_tvepisode = value
+            End Set
+        End Property
+
+        <XmlElement("getwatchedstatescrapersingle_movie")>
+        Public Property GetWatchedStateScraperSingle_Movie() As Boolean
+            Get
+                Return _getwatchedstatescrapersingle_movie
+            End Get
+            Set(ByVal value As Boolean)
+                _getwatchedstatescrapersingle_movie = value
+            End Set
+        End Property
+
+        <XmlElement("getwatchedstatescrapersingle_tvepisode")>
+        Public Property GetWatchedStateScraperSingle_TVEpisode() As Boolean
+            Get
+                Return _getwatchedstatescrapersingle_tvepisode
+            End Get
+            Set(ByVal value As Boolean)
+                _getwatchedstatescrapersingle_tvepisode = value
             End Set
         End Property
 
@@ -1926,12 +2031,17 @@ Public Class KodiInterface
         Public Sub Clear()
             _hosts.Clear()
             _sendnotifications = False
-            _syncplaycounts = False
-            _syncplaycountshost = String.Empty
+            _getwatchedstate = False
+            _getwatchedstatebeforeedit_movie = False
+            _getwatchedstatebeforeedit_tvepisode = False
+            _getwatchedstatehost = String.Empty
+            _getwatchedstatescrapermulti_movie = False
+            _getwatchedstatescrapermulti_tvepisode = False
+            _getwatchedstatescrapersingle_movie = False
+            _getwatchedstatescrapersingle_tvepisode = False
         End Sub
 
 #End Region 'Methods
-
 
     End Class
 

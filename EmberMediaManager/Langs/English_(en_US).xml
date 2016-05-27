@@ -1143,10 +1143,10 @@
   <string id="1051">Edit Genres</string>
   <string id="1052">Edit Tags</string>
   <string id="1053">Single TV Show</string>
-  <string id="1054"></string>
-  <string id="1055"></string>
-  <string id="1056"></string>
-  <string id="1057"></string>
+  <string id="1054">After Edit</string>
+  <string id="1055">Before Edit</string>
+  <string id="1056">During Multi-Scraping</string>
+  <string id="1057">During Single-Scraping</string>
   <string id="1058"></string>
   <string id="1059">Landscape</string>
   <string id="1060">Banner Only</string>
@@ -1160,7 +1160,7 @@
   <string id="1068">Scrapers - Themes</string>
   <string id="1069">Select Theme</string>
   <string id="1070">Get Playcount</string>
-  <string id="1071"></string>
+  <string id="1071">Watched State</string>
   <string id="1072"></string>
   <string id="1073"></string>
   <string id="1074"></string>
@@ -1542,7 +1542,7 @@
   <string id="1451">Cleaning Failed</string>
   <string id="1452">Playcount</string>
   <string id="1453">Not Found On Kodi Host</string>
-  <string id="1454">Retrieve PlayCount from</string>
+  <string id="1454">Get Watched State from</string>
   <string id="1455">Filesize [MB]</string>
   <string id="1456">Include Distributors</string>
   <string id="1457">Autoscraper</string>
