@@ -146,8 +146,16 @@ Namespace YouTube
                 End Try
 
                 Try
-                    Dim StreamList = rawStream_Map.Split(","c).[Select](Function(data) StreamInfo.FromStringTable(ToStringTable(data))).ToArray()
-                    Dim DashList = rawDash_Map.Split(","c).[Select](Function(data) StreamInfo.FromStringTable(ToStringTable(data))).ToArray()
+                    Dim StreamList() As StreamInfo = New StreamInfo() {}
+                    Dim DashList() As StreamInfo = New StreamInfo() {}
+
+                    If Not String.IsNullOrEmpty(rawStream_Map) Then
+                        StreamList = rawStream_Map.Split(","c).[Select](Function(data) StreamInfo.FromStringTable(ToStringTable(data))).ToArray()
+                    End If
+
+                    If Not String.IsNullOrEmpty(rawDash_Map) Then
+                        DashList = rawDash_Map.Split(","c).[Select](Function(data) StreamInfo.FromStringTable(ToStringTable(data))).ToArray()
+                    End If
 
                     If StreamList.Count > 0 Then
                         Dim fmtDownloadlinks As YouTubeLinkItemCollection = SelectYTiTag(StreamList)
