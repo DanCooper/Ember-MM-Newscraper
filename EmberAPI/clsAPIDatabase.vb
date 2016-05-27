@@ -678,7 +678,7 @@ Public Class Database
                 Dim tmpDBElement As DBElement = Load_Movie(lMovieID)
                 If tmpDBElement.IsOnline Then
                     If StringUtils.GenreFilter(tmpDBElement.Movie.Genres, False) Then
-                        Save_Movie(tmpDBElement, True, True, False)
+                        Save_Movie(tmpDBElement, True, True, False, False)
                     End If
                 Else
                     logger.Warn(String.Concat("[Database] [Cleanup_Genres] Skip Movie (not online): ", tmpDBElement.Filename))
@@ -984,7 +984,7 @@ Public Class Database
             If moviesToSave.Count > 0 Then
                 For Each movie In moviesToSave
                     movie.Movie.RemoveSet(ID)
-                    Save_Movie(movie, BatchMode, True, False)
+                    Save_Movie(movie, BatchMode, True, False, False)
                 Next
             End If
 
@@ -1069,7 +1069,7 @@ Public Class Database
             If moviesToSave.Count > 0 Then
                 For Each movie In moviesToSave
                     movie.Movie.Tags.Remove(tagName)
-                    Save_Movie(movie, BatchMode, True, False)
+                    Save_Movie(movie, BatchMode, True, False, False)
                 Next
             End If
 
@@ -2494,7 +2494,7 @@ Public Class Database
 
                     _TVDB.IsMark = Convert.ToBoolean(SQLreader("Mark"))
                     _TVDB.IsLock = Convert.ToBoolean(SQLreader("Lock"))
-                    _TVDB.Ordering = DirectCast(Convert.ToInt32(SQLreader("Ordering")), Enums.Ordering)
+                    _TVDB.Ordering = DirectCast(Convert.ToInt32(SQLreader("Ordering")), Enums.EpisodeOrdering)
                     _TVDB.EpisodeSorting = DirectCast(Convert.ToInt32(SQLreader("EpisodeSorting")), Enums.EpisodeSorting)
                     _TVDB.TVShow = New MediaContainers.TVShow
                     With _TVDB.TVShow
@@ -2684,7 +2684,7 @@ Public Class Database
                     _source.Name = SQLreader("strName").ToString
                     _source.Path = SQLreader("strPath").ToString
                     _source.Language = SQLreader("strLanguage").ToString
-                    _source.Ordering = DirectCast(Convert.ToInt32(SQLreader("iOrdering")), Enums.Ordering)
+                    _source.Ordering = DirectCast(Convert.ToInt32(SQLreader("iOrdering")), Enums.EpisodeOrdering)
                     _source.Exclude = Convert.ToBoolean(SQLreader("bExclude"))
                     _source.EpisodeSorting = DirectCast(Convert.ToInt32(SQLreader("iEpisodeSorting")), Enums.EpisodeSorting)
                     _source.LastScan = SQLreader("strLastScan").ToString
@@ -2711,7 +2711,7 @@ Public Class Database
                         tvsource.Name = SQLreader("strName").ToString
                         tvsource.Path = SQLreader("strPath").ToString
                         tvsource.Language = SQLreader("strLanguage").ToString
-                        tvsource.Ordering = DirectCast(Convert.ToInt32(SQLreader("iOrdering")), Enums.Ordering)
+                        tvsource.Ordering = DirectCast(Convert.ToInt32(SQLreader("iOrdering")), Enums.EpisodeOrdering)
                         tvsource.Exclude = Convert.ToBoolean(SQLreader("bExclude"))
                         tvsource.EpisodeSorting = DirectCast(Convert.ToInt32(SQLreader("iEpisodeSorting")), Enums.EpisodeSorting)
                         tvsource.LastScan = SQLreader("strLastScan").ToString
@@ -3305,7 +3305,7 @@ Public Class Database
     ''' <param name="ToNFo">Save informations to NFO</param>
     ''' <param name="ToDisk">Save Images, Themes and Trailers to disk</param>
     ''' <returns>Database.DBElement object</returns>
-    Public Function Save_Movie(ByVal _movieDB As DBElement, ByVal BatchMode As Boolean, ByVal ToNFO As Boolean, ByVal ToDisk As Boolean) As DBElement
+    Public Function Save_Movie(ByVal _movieDB As DBElement, ByVal BatchMode As Boolean, ByVal ToNFO As Boolean, ByVal ToDisk As Boolean, ByVal ForceFileCleanup As Boolean) As DBElement
         Dim SQLtransaction As SQLiteTransaction = Nothing
         If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
         Using SQLcommand_movie As SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -3456,9 +3456,9 @@ Public Class Database
             'First let's save it to NFO, even because we will need the NFO path
             'Also save Images to get ExtrafanartsPath and ExtrathumbsPath
             'art Table will be linked later
-            If ToNFO Then NFO.SaveToNFO_Movie(_movieDB)
+            If ToNFO Then NFO.SaveToNFO_Movie(_movieDB, ForceFileCleanup)
             If ToDisk Then
-                _movieDB.ImagesContainer.SaveAllImages(_movieDB)
+                _movieDB.ImagesContainer.SaveAllImages(_movieDB, ForceFileCleanup)
                 _movieDB.Movie.SaveAllActorThumbs(_movieDB)
                 _movieDB.Trailer.SaveAllTrailers(_movieDB)
             End If
@@ -3773,7 +3773,7 @@ Public Class Database
                                             If Not DBNull.Value.Equals(SQLreader("idSet")) Then s.ID = CInt(SQLreader("idSet"))
                                             If Not DBNull.Value.Equals(SQLreader("SetName")) Then s.Title = CStr(SQLreader("SetName"))
                                             IsNewSet = False
-                                            NFO.SaveToNFO_Movie(_movieDB) 'to save the "new" SetName
+                                            NFO.SaveToNFO_Movie(_movieDB, False) 'to save the "new" SetName
                                         Else
                                             IsNewSet = True
                                         End If
@@ -3949,7 +3949,7 @@ Public Class Database
             'art Table be be linked later
             If toDisk Then
                 NFO.SaveToNFO_MovieSet(_moviesetDB)
-                _moviesetDB.ImagesContainer.SaveAllImages(_moviesetDB)
+                _moviesetDB.ImagesContainer.SaveAllImages(_moviesetDB, False)
             End If
 
             parNfoPath.Value = _moviesetDB.NfoPath
@@ -4022,7 +4022,7 @@ Public Class Database
             If MoviesInSet.Count > 0 Then
                 For Each tMovie In MoviesInSet
                     tMovie.DBMovie.Movie.AddSet(_moviesetDB.ID, _moviesetDB.MovieSet.Title, tMovie.Order, _moviesetDB.MovieSet.TMDB)
-                    Master.DB.Save_Movie(tMovie.DBMovie, BatchMode, True, False)
+                    Master.DB.Save_Movie(tMovie.DBMovie, BatchMode, True, False, False)
                 Next
             End If
         End If
@@ -4120,7 +4120,7 @@ Public Class Database
                     Dim mMovie As DBElement = Load_Movie(tMovie.ID) 'TODO: check why we load mMovie to overwrite tMovie with himself
                     tMovie = mMovie
                     mMovie.Movie.AddTag(_tagDB.Title)
-                    Master.DB.Save_Movie(mMovie, BatchMode, True, False)
+                    Master.DB.Save_Movie(mMovie, BatchMode, True, False, False)
                 Next
             End If
             'clean nfo of movies who aren't part of tag anymore (remove tag)
@@ -4129,7 +4129,7 @@ Public Class Database
                     Dim mMovie As DBElement = Load_Movie(tMovie.ID) 'TODO: check why we load mMovie to overwrite tMovie with himself
                     tMovie = mMovie
                     mMovie.Movie.Tags.Remove(_tagDB.Title)
-                    Master.DB.Save_Movie(mMovie, BatchMode, True, False)
+                    Master.DB.Save_Movie(mMovie, BatchMode, True, False, False)
                 Next
             End If
         End If
@@ -4333,7 +4333,7 @@ Public Class Database
             If _episode.FilenameIDSpecified Then
                 If ToNFO Then NFO.SaveToNFO_TVEpisode(_episode)
                 If ToDisk Then
-                    _episode.ImagesContainer.SaveAllImages(_episode)
+                    _episode.ImagesContainer.SaveAllImages(_episode, False)
                     _episode.TVEpisode.SaveAllActorThumbs(_episode)
                 End If
             End If
@@ -4645,7 +4645,7 @@ Public Class Database
         _season.ID = ID
 
         'Images
-        If ToDisk Then _season.ImagesContainer.SaveAllImages(_season)
+        If ToDisk Then _season.ImagesContainer.SaveAllImages(_season, False)
 
         Using SQLcommand_art As SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand_art.CommandText = String.Concat("DELETE FROM art WHERE media_id = ", _season.ID, " AND media_type = 'season';")
@@ -4742,7 +4742,7 @@ Public Class Database
             'art Table be be linked later
             If ToNFO Then NFO.SaveToNFO_TVShow(_show)
             If ToDisk Then
-                _show.ImagesContainer.SaveAllImages(_show)
+                _show.ImagesContainer.SaveAllImages(_show, False)
                 _show.TVShow.SaveAllActorThumbs(_show)
             End If
 
@@ -5221,7 +5221,7 @@ Public Class Database
         Private _movielist As List(Of DBElement)
         Private _movieset As MediaContainers.MovieSet
         Private _nfopath As String
-        Private _ordering As Enums.Ordering
+        Private _ordering As Enums.EpisodeOrdering
         Private _outoftolerance As Boolean
         Private _seasons As New List(Of DBElement)
         Private _showid As Long
@@ -5564,11 +5564,11 @@ Public Class Database
             End Get
         End Property
 
-        Public Property Ordering() As Enums.Ordering
+        Public Property Ordering() As Enums.EpisodeOrdering
             Get
                 Return _ordering
             End Get
-            Set(ByVal value As Enums.Ordering)
+            Set(ByVal value As Enums.EpisodeOrdering)
                 _ordering = value
             End Set
         End Property
@@ -5782,7 +5782,7 @@ Public Class Database
             _movielist = New List(Of DBElement)
             _movieset = Nothing
             _nfopath = String.Empty
-            _ordering = Enums.Ordering.Standard
+            _ordering = Enums.EpisodeOrdering.Standard
             _outoftolerance = False
             _seasons = New List(Of DBElement)
             _showid = -1
@@ -5831,7 +5831,7 @@ Public Class Database
         Private _language As String
         Private _lastscan As String
         Private _name As String
-        Private _ordering As Enums.Ordering
+        Private _ordering As Enums.EpisodeOrdering
         Private _path As String
         Private _recursive As Boolean
         Private _usefoldername As Boolean
@@ -5944,11 +5944,11 @@ Public Class Database
             End Get
         End Property
 
-        Public Property Ordering() As Enums.Ordering
+        Public Property Ordering() As Enums.EpisodeOrdering
             Get
                 Return _ordering
             End Get
-            Set(ByVal value As Enums.Ordering)
+            Set(ByVal value As Enums.EpisodeOrdering)
                 _ordering = value
             End Set
         End Property
@@ -5999,7 +5999,7 @@ Public Class Database
             _language = String.Empty
             _lastscan = String.Empty
             _name = String.Empty
-            _ordering = Enums.Ordering.Standard
+            _ordering = Enums.EpisodeOrdering.Standard
             _path = String.Empty
             _recursive = False
             _usefoldername = False

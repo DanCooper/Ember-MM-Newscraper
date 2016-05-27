@@ -183,7 +183,7 @@ Public Class dlgSourceTVShow
                 End If
             End If
             cbSourceEpisodeSorting.SelectedIndex = Enums.EpisodeSorting.Episode
-            cbSourceOrdering.SelectedIndex = Enums.Ordering.Standard
+            cbSourceOrdering.SelectedIndex = Enums.EpisodeOrdering.Standard
         End If
     End Sub
 
@@ -218,9 +218,9 @@ Public Class dlgSourceTVShow
                     parLanguage.Value = "en-US"
                 End If
                 If Not String.IsNullOrEmpty(cbSourceOrdering.Text) Then
-                    parOrdering.Value = DirectCast(cbSourceOrdering.SelectedIndex, Enums.Ordering)
+                    parOrdering.Value = DirectCast(cbSourceOrdering.SelectedIndex, Enums.EpisodeOrdering)
                 Else
-                    parOrdering.Value = Enums.Ordering.Standard
+                    parOrdering.Value = Enums.EpisodeOrdering.Standard
                 End If
                 If Not String.IsNullOrEmpty(cbSourceEpisodeSorting.Text) Then
                     parEpisodeSorting.Value = DirectCast(cbSourceEpisodeSorting.SelectedIndex, Enums.EpisodeSorting)

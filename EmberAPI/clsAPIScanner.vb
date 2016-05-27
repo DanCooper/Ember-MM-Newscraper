@@ -739,9 +739,9 @@ Public Class Scanner
 
             'Do the Save
             If ToNfo AndAlso DBMovie.NfoPathSpecified Then
-                DBMovie = Master.DB.Save_Movie(DBMovie, Batchmode, True, False)
+                DBMovie = Master.DB.Save_Movie(DBMovie, Batchmode, True, False, False)
             Else
-                DBMovie = Master.DB.Save_Movie(DBMovie, Batchmode, False, False)
+                DBMovie = Master.DB.Save_Movie(DBMovie, Batchmode, False, False, False)
             End If
         End If
     End Sub
@@ -857,7 +857,7 @@ Public Class Scanner
 
             If sEpisode.byDate Then
                 If cEpisode.TVEpisode.Season = -1 Then cEpisode.TVEpisode.Season = sEpisode.Season
-                If cEpisode.TVEpisode.Episode = -1 AndAlso cEpisode.Ordering = Enums.Ordering.DayOfYear Then
+                If cEpisode.TVEpisode.Episode = -1 AndAlso cEpisode.Ordering = Enums.EpisodeOrdering.DayOfYear Then
                     Dim eDate As Date = DateTime.ParseExact(sEpisode.Aired, "yyyy-MM-dd", Globalization.CultureInfo.InvariantCulture)
                     cEpisode.TVEpisode.Episode = eDate.DayOfYear
                 ElseIf cEpisode.TVEpisode.Episode = -1 Then

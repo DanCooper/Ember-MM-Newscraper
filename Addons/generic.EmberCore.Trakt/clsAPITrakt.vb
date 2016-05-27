@@ -253,7 +253,7 @@ Public Class clsAPITrakt
                             Dim tmpMovie As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(SQLreader("idMovie")))
                             tmpMovie.Movie.PlayCount = watchedMovie.Plays
                             tmpMovie.Movie.LastPlayed = Functions.ConvertToProperDateTime(watchedMovie.LastWatchedAt)
-                            Master.DB.Save_Movie(tmpMovie, True, True, False)
+                            Master.DB.Save_Movie(tmpMovie, True, True, False, False)
                         End While
                     End Using
                 End Using

@@ -4308,11 +4308,11 @@ Public Class dlgSettings
     End Sub
 
     Private Sub LoadTVScraperOptionsOrdering()
-        Dim items As New Dictionary(Of String, Enums.Ordering)
-        items.Add(Master.eLang.GetString(438, "Standard"), Enums.Ordering.Standard)
-        items.Add(Master.eLang.GetString(1067, "DVD"), Enums.Ordering.DVD)
-        items.Add(Master.eLang.GetString(839, "Absolute"), Enums.Ordering.Absolute)
-        items.Add(Master.eLang.GetString(1332, "Day Of Year"), Enums.Ordering.DayOfYear)
+        Dim items As New Dictionary(Of String, Enums.EpisodeOrdering)
+        items.Add(Master.eLang.GetString(438, "Standard"), Enums.EpisodeOrdering.Standard)
+        items.Add(Master.eLang.GetString(1067, "DVD"), Enums.EpisodeOrdering.DVD)
+        items.Add(Master.eLang.GetString(839, "Absolute"), Enums.EpisodeOrdering.Absolute)
+        items.Add(Master.eLang.GetString(1332, "Day Of Year"), Enums.EpisodeOrdering.DayOfYear)
         cbTVScraperOptionsOrdering.DataSource = items.ToList
         cbTVScraperOptionsOrdering.DisplayMember = "Key"
         cbTVScraperOptionsOrdering.ValueMember = "Value"
@@ -5266,7 +5266,7 @@ Public Class dlgSettings
             .TVScraperEpisodeRuntime = chkTVScraperEpisodeRuntime.Checked
             .TVScraperEpisodeTitle = chkTVScraperEpisodeTitle.Checked
             .TVScraperMetaDataScan = chkTVScraperMetaDataScan.Checked
-            .TVScraperOptionsOrdering = CType(cbTVScraperOptionsOrdering.SelectedItem, KeyValuePair(Of String, Enums.Ordering)).Value
+            .TVScraperOptionsOrdering = CType(cbTVScraperOptionsOrdering.SelectedItem, KeyValuePair(Of String, Enums.EpisodeOrdering)).Value
             .TVScraperSeasonAired = chkTVScraperSeasonAired.Checked
             .TVScraperSeasonPlot = chkTVScraperSeasonPlot.Checked
             .TVScraperSeasonTitle = chkTVScraperSeasonTitle.Checked

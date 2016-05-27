@@ -398,11 +398,11 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVScraperOptionsOrdering() As Enums.Ordering
+    Public Property TVScraperOptionsOrdering() As Enums.EpisodeOrdering
         Get
             Return Settings._XMLSettings.TVScraperOptionsOrdering
         End Get
-        Set(ByVal value As Enums.Ordering)
+        Set(ByVal value As Enums.EpisodeOrdering)
             Settings._XMLSettings.TVScraperOptionsOrdering = value
         End Set
     End Property
@@ -7233,7 +7233,7 @@ Public Class Settings
         TVScraperEpisodeRuntime = True
         TVScraperEpisodeTitle = True
         TVScraperMetaDataScan = True
-        TVScraperOptionsOrdering = Enums.Ordering.Standard
+        TVScraperOptionsOrdering = Enums.EpisodeOrdering.Standard
         TVScraperSeasonAired = True
         TVScraperSeasonPlot = True
         TVScraperSeasonTitle = False

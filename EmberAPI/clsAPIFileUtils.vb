@@ -33,9 +33,15 @@ Namespace FileUtils
 
 #End Region 'Fields
 
+#Region "Delegates"
+
+        Public Delegate Function ReportProgress(ByVal iProgress As Integer, ByVal strMessage As String) As Boolean
+
+#End Region 'Delegates
+
 #Region "Methods"
 
-        Public Shared Function DoCleanUp() As Boolean
+        Public Shared Function DoCleanUp(Optional ByVal sfunction As ReportProgress = Nothing) As Boolean
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     SQLCommand.CommandText = String.Format("SELECT idMovie FROM movie ORDER BY Title ASC;")
@@ -44,7 +50,7 @@ Namespace FileUtils
                             Dim tmpMovie As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt32(SQLReader("idMovie")))
                             Dim fScanner As New Scanner
                             fScanner.GetFolderContents_Movie(tmpMovie, True)
-                            Master.DB.Save_Movie(tmpMovie, True, True, True)
+                            Master.DB.Save_Movie(tmpMovie, True, True, True, True)
                         End While
                     End Using
                 End Using
@@ -67,6 +73,35 @@ Namespace FileUtils
 #End Region 'Fields
 
 #Region "Methods"
+
+        Public Shared Sub CopyFanartToBackdropsPath(ByVal strSourceFilename As String, ByVal ContentType As Enums.ContentType)
+            If Not String.IsNullOrEmpty(strSourceFilename) AndAlso File.Exists(strSourceFilename) Then
+                Dim strDestinationFilename As String = String.Empty
+                Select Case ContentType
+                    Case Enums.ContentType.Movie
+                        If String.IsNullOrEmpty(Master.eSettings.MovieBackdropsPath) Then Return
+
+                        If isVideoTS(strSourceFilename) Then
+                            strDestinationFilename = Path.Combine(Master.eSettings.MovieBackdropsPath, String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(strSourceFilename).FullName).FullName, Directory.GetParent(Directory.GetParent(strSourceFilename).FullName).Name), "-fanart.jpg"))
+                        ElseIf isBDRip(strSourceFilename) Then
+                            strDestinationFilename = Path.Combine(Master.eSettings.MovieBackdropsPath, String.Concat(Directory.GetParent(Directory.GetParent(Directory.GetParent(strSourceFilename).FullName).FullName).Name, "-fanart.jpg"))
+                        Else
+                            strDestinationFilename = Path.Combine(Master.eSettings.MovieBackdropsPath, String.Concat(Directory.GetParent(strSourceFilename).Name, "-fanart.jpg"))
+                        End If
+                End Select
+
+                If Not String.IsNullOrEmpty(strDestinationFilename) Then
+                    Try
+                        If Not Directory.Exists(Directory.GetParent(strDestinationFilename).FullName) Then
+                            Directory.CreateDirectory(Directory.GetParent(strDestinationFilename).FullName)
+                        End If
+                        File.Copy(strSourceFilename, strDestinationFilename, True)
+                    Catch ex As Exception
+                        logger.Error(ex, New StackFrame().GetMethod().Name)
+                    End Try
+                End If
+            End If
+        End Sub
 
         Public Shared Sub DirectoryCopy(
                                        ByVal strSourceDir As String,
@@ -648,27 +683,16 @@ Namespace FileUtils
                 Else
 
                     If Not isCleaner Then
+                        'cleanup backdrops
                         Dim fPath As String = mMovie.ImagesContainer.Fanart.LocalFilePath
                         Dim tPath As String = String.Empty
                         If Not String.IsNullOrEmpty(fPath) AndAlso File.Exists(fPath) Then
                             If Common.isVideoTS(fPath) Then
-                                If Path.GetFileName(fPath).ToLower = "fanart.jpg" Then
-                                    tPath = Path.Combine(Master.eSettings.MovieBackdropsPath, String.Concat(Directory.GetParent(Directory.GetParent(fPath).FullName).Name, "-fanart.jpg"))
-                                Else
-                                    tPath = Path.Combine(Master.eSettings.MovieBackdropsPath, Path.GetFileName(fPath))
-                                End If
-                            ElseIf Common.isBDRip(fPath) Then 'TODO: this looks wrong: MovieBackdropsPath ???
-                                If Path.GetFileName(fPath).ToLower = "fanart.jpg" Then
-                                    tPath = Path.Combine(Master.eSettings.MovieBackdropsPath, String.Concat(Directory.GetParent(Directory.GetParent(Directory.GetParent(fPath).FullName).FullName).Name, "-fanart.jpg"))
-                                Else
-                                    tPath = Path.Combine(Master.eSettings.MovieBackdropsPath, Path.GetFileName(fPath))
-                                End If
+                                tPath = Path.Combine(Master.eSettings.MovieBackdropsPath, String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(fPath).FullName).FullName, Directory.GetParent(Directory.GetParent(fPath).FullName).Name), "-fanart.jpg"))
+                            ElseIf Common.isBDRip(fPath) Then
+                                tPath = Path.Combine(Master.eSettings.MovieBackdropsPath, String.Concat(Directory.GetParent(Directory.GetParent(Directory.GetParent(fPath).FullName).FullName).Name, "-fanart.jpg"))
                             Else
-                                If Path.GetFileName(fPath).ToLower = "fanart.jpg" Then
-                                    tPath = Path.Combine(Master.eSettings.MovieBackdropsPath, String.Concat(Path.GetFileNameWithoutExtension(mMovie.Filename), "-fanart.jpg"))
-                                Else
-                                    tPath = Path.Combine(Master.eSettings.MovieBackdropsPath, Path.GetFileName(fPath))
-                                End If
+                                tPath = Path.Combine(Master.eSettings.MovieBackdropsPath, String.Concat(Directory.GetParent(fPath).Name, "-fanart.jpg"))
                             End If
                         End If
                         If Not String.IsNullOrEmpty(tPath) Then
@@ -855,19 +879,19 @@ Namespace FileUtils
                 Dim baseURL As String = parseBaseURL(clipboardHtml)
 
                 If (imageSrc.ToLower().IndexOf("http://") = 0) Or (imageSrc.ToLower().IndexOf("https://") = 0) Then
-                    tImage.ImageOriginal.FromWeb(imageSrc)
+                    tImage.ImageOriginal.LoadFromWeb(imageSrc)
                     If tImage.ImageOriginal.Image IsNot Nothing Then
                         Return tImage
                     End If
                 Else
-                    tImage.ImageOriginal.FromWeb(baseURL + imageSrc.Substring(1))
+                    tImage.ImageOriginal.LoadFromWeb(baseURL + imageSrc.Substring(1))
                     If tImage.ImageOriginal.Image IsNot Nothing Then
                         Return tImage
                     End If
                 End If
             ElseIf e.Data.GetDataPresent(DataFormats.FileDrop, False) Then
                 Dim localImage() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
-                tImage.ImageOriginal.FromFile(localImage(0).ToString, True)
+                tImage.ImageOriginal.LoadFromFile(localImage(0).ToString, True)
                 If tImage.ImageOriginal.Image IsNot Nothing Then
                     Return tImage
                 End If

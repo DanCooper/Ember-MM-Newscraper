@@ -1506,12 +1506,12 @@ Public Class frmMain
                 Dim SeasonID As Long = Master.DB.GetTVSeasonIDFromEpisode(currTV)
                 Dim TVSeasonFanart As String = Master.DB.GetArtForItem(SeasonID, "season", "fanart")
                 If Not String.IsNullOrEmpty(TVSeasonFanart) Then
-                    MainFanart.FromFile(TVSeasonFanart, True)
+                    MainFanart.LoadFromFile(TVSeasonFanart, True)
                     NeedsGS = True
                 Else
                     Dim TVShowFanart As String = Master.DB.GetArtForItem(currTV.ShowID, "tvshow", "fanart")
                     If Not String.IsNullOrEmpty(TVShowFanart) Then
-                        MainFanart.FromFile(TVShowFanart, True)
+                        MainFanart.LoadFromFile(TVShowFanart, True)
                         NeedsGS = True
                     End If
                 End If
@@ -1767,7 +1767,7 @@ Public Class frmMain
             Else
                 Dim TVShowFanart As String = Master.DB.GetArtForItem(currTV.ShowID, "tvshow", "fanart")
                 If Not String.IsNullOrEmpty(TVShowFanart) Then
-                    MainFanart.FromFile(TVShowFanart, True)
+                    MainFanart.LoadFromFile(TVShowFanart, True)
                     NeedsGS = True
                 End If
             End If
@@ -2049,7 +2049,7 @@ Public Class frmMain
                 If Not (Args.ScrapeType = Enums.ScrapeType.SingleScrape) Then
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.ScraperMulti_Movie, Nothing, Nothing, False, DBScrapeMovie)
                     bwMovieScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":"))
-                    Master.DB.Save_Movie(DBScrapeMovie, False, tScrapeItem.ScrapeModifiers.MainNFO OrElse tScrapeItem.ScrapeModifiers.MainMeta, True)
+                    Master.DB.Save_Movie(DBScrapeMovie, False, tScrapeItem.ScrapeModifiers.MainNFO OrElse tScrapeItem.ScrapeModifiers.MainMeta, True, False)
                     bwMovieScraper.ReportProgress(-2, DBScrapeMovie.ID)
                     bwMovieScraper.ReportProgress(-1, If(Not OldListTitle = NewListTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle), NewListTitle))
                 End If
@@ -2754,12 +2754,11 @@ Public Class frmMain
         'Dim scrapeMovie As Database.DBElement
         Dim iCount As Integer = 0
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
-        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-            If dtMovies.Rows.Count > 0 Then
+        If dtMovies.Rows.Count > 0 Then
 
-                Select Case Args.ScrapeType
-                    Case Enums.ScrapeType.CleanFolders
-                        FileUtils.CleanUp.DoCleanUp()
+            Select Case Args.TaskType
+                Case Enums.TaskType.CleanFolders
+                    FileUtils.CleanUp.DoCleanUp()
 
                         'Dim fDeleter As New FileUtils.Delete
                         'For Each drvRow As DataRow In dtMovies.Rows
@@ -2781,52 +2780,18 @@ Public Class frmMain
                         '        logger.Error(ex, New StackFrame().GetMethod().Name)
                         '    End Try
                         'Next
-                    Case Enums.ScrapeType.CopyBackdrops 'TODO: check MovieBackdropsPath and VIDEO_TS parent
-                        Dim sPath As String = String.Empty
-                        For Each drvRow As DataRow In dtMovies.Rows
-                            bwNonScrape.ReportProgress(iCount, drvRow.Item("Title").ToString)
-                            iCount += 1
+                Case Enums.TaskType.CopyBackdrops
+                    Dim sPath As String = String.Empty
+                    For Each drvRow As DataRow In dtMovies.Rows
+                        If bwNonScrape.CancellationPending Then Return
 
-                            If bwNonScrape.CancellationPending Then GoTo doCancel
-                            sPath = drvRow.Item("FanartPath").ToString
-                            If Not String.IsNullOrEmpty(sPath) Then
-                                If FileUtils.Common.isVideoTS(sPath) Then
-                                    'If Master.eSettings.VideoTSParent Then
-                                    '    FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.MovieBackdropsPath, String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName, Directory.GetParent(Directory.GetParent(sPath).FullName).Name), "-fanart.jpg")))
-                                    'Else
-                                    If Path.GetFileName(sPath).ToLower = "fanart.jpg" Then
-                                        FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.MovieBackdropsPath, String.Concat(Directory.GetParent(Directory.GetParent(sPath).FullName).Name, "-fanart.jpg")))
-                                    Else
-                                        FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.MovieBackdropsPath, Path.GetFileName(sPath)))
-                                    End If
-                                    'End If
-                                ElseIf FileUtils.Common.isBDRip(sPath) Then
-                                    'If Master.eSettings.VideoTSParent Then
-                                    '    FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.MovieBackdropsPath, String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).FullName, Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).Name), "-fanart.jpg")))
-                                    'Else
-                                    If Path.GetFileName(sPath).ToLower = "fanart.jpg" Then
-                                        FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.MovieBackdropsPath, String.Concat(Directory.GetParent(Directory.GetParent(Directory.GetParent(sPath).FullName).FullName).Name, "-fanart.jpg")))
-                                    Else
-                                        FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.MovieBackdropsPath, Path.GetFileName(sPath)))
-                                    End If
-                                    'End If
-                                Else
-                                    If Path.GetFileName(sPath).ToLower = "fanart.jpg" Then
-                                        FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.MovieBackdropsPath, String.Concat(Path.GetFileNameWithoutExtension(drvRow.Item("MoviePath").ToString), "-fanart.jpg")))
-                                    Else
-                                        FileUtils.Common.MoveFileWithStream(sPath, Path.Combine(Master.eSettings.MovieBackdropsPath, Path.GetFileName(sPath)))
-                                    End If
+                        bwNonScrape.ReportProgress(iCount, drvRow.Item("Title").ToString)
+                        iCount += 1
 
-                                End If
-                            End If
-                        Next
-                End Select
-doCancel:
-                If Not Args.ScrapeType = Enums.ScrapeType.CopyBackdrops Then
-                    SQLtransaction.Commit()
-                End If
-            End If
-        End Using
+                        FileUtils.Common.CopyFanartToBackdropsPath(drvRow.Item("FanartPath").ToString, Enums.ContentType.Movie)
+                    Next
+            End Select
+        End If
     End Sub
 
     Private Sub bwNonScrape_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwNonScrape.ProgressChanged
@@ -3999,8 +3964,8 @@ doCancel:
                     sWarning = String.Concat(Master.eLang.GetString(103, "WARNING: If you continue, all files of the following types will be permanently deleted:"), Environment.NewLine, Environment.NewLine, sWarningFile, Environment.NewLine, Master.eLang.GetString(101, "Are you sure you want to continue?"))
                 End If
             End With
-            If MessageBox.Show(sWarning, Master.eLang.GetString(104, "Are you sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Warning) = Windows.Forms.DialogResult.Yes Then
-                NonScrape(Enums.ScrapeType.CleanFolders, Nothing)
+            If MessageBox.Show(sWarning, Master.eLang.GetString(104, "Are you sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Warning) = DialogResult.Yes Then
+                NonScrape(Enums.TaskType.CleanFolders)
             End If
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
@@ -4249,7 +4214,7 @@ doCancel:
         If dgvTVShows.SelectedRows.Count > 0 Then
             Dim doOpen As Boolean = True
             If dgvTVShows.SelectedRows.Count > 10 Then
-                If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvTVShows.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then doOpen = False
+                If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvTVShows.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then doOpen = False
             End If
 
             If doOpen Then
@@ -4311,7 +4276,7 @@ doCancel:
         If Not ModulesManager.Instance.ScrapeData_TVShow(tmpShow, ScrapeModifiers, Enums.ScrapeType.SingleScrape, Master.DefaultOptions_TV, True) Then
             If tmpShow.Episodes.Count > 0 Then
                 Dim dlgChangeEp As New dlgTVChangeEp(tmpShow)
-                If dlgChangeEp.ShowDialog = Windows.Forms.DialogResult.OK Then
+                If dlgChangeEp.ShowDialog = DialogResult.OK Then
                     If dlgChangeEp.Result.Count > 0 Then
                         Master.DB.Change_TVEpisode(tmpEpisode, dlgChangeEp.Result, False)
                     End If
@@ -4355,7 +4320,7 @@ doCancel:
 
             If SeasonsToDelete.Count > 0 Then
                 Using dlg As New dlgDeleteConfirm
-                    If dlg.ShowDialog(SeasonsToDelete, Enums.DelType.Seasons) = Windows.Forms.DialogResult.OK Then
+                    If dlg.ShowDialog(SeasonsToDelete, Enums.ContentType.TVSeason) = DialogResult.OK Then
                         FillSeasons(Convert.ToInt64(dgvTVSeasons.Item("idShow", currRow_TVSeason).Value))
                         SetTVCount()
                     End If
@@ -4382,7 +4347,7 @@ doCancel:
 
             If EpsToDelete.Count > 0 Then
                 Using dlg As New dlgDeleteConfirm
-                    If dlg.ShowDialog(EpsToDelete, Enums.DelType.Episodes) = Windows.Forms.DialogResult.OK Then
+                    If dlg.ShowDialog(EpsToDelete, Enums.ContentType.TVEpisode) = DialogResult.OK Then
                         FillEpisodes(Convert.ToInt64(dgvTVSeasons.Item("idShow", currRow_TVSeason).Value), Convert.ToInt32(dgvTVSeasons.Item("Season", currRow_TVSeason).Value))
                         SetTVCount()
                     End If
@@ -4410,7 +4375,7 @@ doCancel:
 
             If ShowsToDelete.Count > 0 Then
                 Using dlg As New dlgDeleteConfirm
-                    If dlg.ShowDialog(ShowsToDelete, Enums.DelType.Shows) = Windows.Forms.DialogResult.OK Then
+                    If dlg.ShowDialog(ShowsToDelete, Enums.ContentType.TVShow) = DialogResult.OK Then
                         FillList(False, False, True)
                     End If
                 End Using
@@ -4454,7 +4419,7 @@ doCancel:
             Dim ePath As String = String.Empty
 
             If dgvTVEpisodes.SelectedRows.Count > 10 Then
-                If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvTVEpisodes.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then doOpen = False
+                If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvTVEpisodes.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then doOpen = False
             End If
 
             If doOpen Then
@@ -5253,7 +5218,7 @@ doCancel:
         Dim DBElement As Database.DBElement = Master.DB.Load_Movie(ID)
         Using dEditMeta As New dlgFileInfo(DBElement, False)
             Select Case dEditMeta.ShowDialog()
-                Case Windows.Forms.DialogResult.OK
+                Case DialogResult.OK
                     RefreshRow_Movie(ID)
             End Select
         End Using
@@ -5303,7 +5268,7 @@ doCancel:
         Dim tmpDBMovieSet = New Database.DBElement(Enums.ContentType.MovieSet) With {.MovieSet = New MediaContainers.MovieSet}
 
         Using dNewSet As New dlgNewSet()
-            If dNewSet.ShowDialog(tmpDBMovieSet) = Windows.Forms.DialogResult.OK Then
+            If dNewSet.ShowDialog(tmpDBMovieSet) = DialogResult.OK Then
                 tmpDBMovieSet = Master.DB.Save_MovieSet(dNewSet.Result, False, False, False)
                 FillList(False, True, False)
                 Edit_MovieSet(tmpDBMovieSet)
@@ -5334,14 +5299,19 @@ doCancel:
     End Sub
 
     Private Sub cmnuMovieSetRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetRemove.Click
+        Dim lItemsToRemove As New List(Of Long)
         ClearInfo()
+
+        For Each sRow As DataGridViewRow In dgvMovieSets.SelectedRows
+            lItemsToRemove.Add(Convert.ToInt64(sRow.Cells("idSet").Value))
+        Next
+
+
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-
-            For Each sRow As DataGridViewRow In dgvMovieSets.SelectedRows
-                Master.DB.Delete_MovieSet(Convert.ToInt64(sRow.Cells("idSet").Value), True)
-                RemoveRow_MovieSet(Convert.ToInt64(sRow.Cells("idSet").Value))
+            For Each tID As Long In lItemsToRemove
+                Master.DB.Delete_MovieSet(tID, True)
+                RemoveRow_MovieSet(tID)
             Next
-
             SQLtransaction.Commit()
         End Using
 
@@ -5560,17 +5530,22 @@ doCancel:
     End Sub
 
     Private Sub cmnuSeasonRemoveFromDB_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonRemoveFromDB.Click
+        Dim lItemsToRemove As New List(Of Long)
         ClearInfo()
+
+        For Each sRow As DataGridViewRow In dgvTVSeasons.SelectedRows
+            lItemsToRemove.Add(Convert.ToInt64(sRow.Cells("idSeason").Value))
+        Next
 
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             Dim idShow As Integer = CInt(dgvTVSeasons.SelectedRows(0).Cells("idShow").Value)
-            For Each sRow As DataGridViewRow In dgvTVSeasons.SelectedRows
-                If Not CInt(sRow.Cells("Season").Value) = 999 Then
-                    Master.DB.Delete_TVSeason(Convert.ToInt64(sRow.Cells("idSeason").Value), True)
-                    RemoveRow_TVSeason(Convert.ToInt64(sRow.Cells("idSeason").Value))
+            For Each tID As Long In lItemsToRemove
+                If Not tID = 999 Then
+                    Master.DB.Delete_TVSeason(tID, True)
+                    RemoveRow_TVSeason(tID)
                 End If
             Next
-            Reload_TVShow(idShow, True, True, False)
+            Reload_TVShow(idShow, True, True, False) 'TODO: check if needed
             SQLtransaction.Commit()
         End Using
 
@@ -5578,19 +5553,24 @@ doCancel:
     End Sub
 
     Private Sub cmnuEpisodeRemoveFromDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeRemoveFromDB.Click
+        Dim lItemsToRemove As New Dictionary(Of Long, Boolean)
         Dim SeasonsList As New List(Of Integer)
         ClearInfo()
 
+        For Each sRow As DataGridViewRow In dgvTVEpisodes.SelectedRows
+            If Not SeasonsList.Contains(CInt(sRow.Cells("Season").Value)) Then SeasonsList.Add(CInt(sRow.Cells("Season").Value))
+            lItemsToRemove.Add(Convert.ToInt64(sRow.Cells("idEpisode").Value), Convert.ToInt64(sRow.Cells("idFile").Value) = -1)
+        Next
+
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             Dim idShow As Integer = CInt(dgvTVEpisodes.SelectedRows(0).Cells("idShow").Value)
-            For Each sRow As DataGridViewRow In dgvTVEpisodes.SelectedRows
-                If Not SeasonsList.Contains(CInt(sRow.Cells("Season").Value)) Then SeasonsList.Add(CInt(sRow.Cells("Season").Value))
-                If Not Convert.ToInt64(sRow.Cells("idFile").Value) = -1 Then
-                    Master.DB.Delete_TVEpisode(Convert.ToInt64(sRow.Cells("idEpisode").Value), False, False, True) 'set the episode as "missing episode"
-                    RefreshRow_TVEpisode(Convert.ToInt64(sRow.Cells("idEpisode").Value))
+            For Each tID As KeyValuePair(Of Long, Boolean) In lItemsToRemove
+                If tID.Value Then
+                    Master.DB.Delete_TVEpisode(tID.Key, True, False, True) 'remove the "missing episode" from DB
+                    RemoveRow_TVEpisode(tID.Key)
                 Else
-                    Master.DB.Delete_TVEpisode(Convert.ToInt64(sRow.Cells("idEpisode").Value), True, False, True) 'remove the "missing episode" from DB
-                    RemoveRow_TVEpisode(Convert.ToInt64(sRow.Cells("idEpisode").Value))
+                    Master.DB.Delete_TVEpisode(tID.Key, False, False, True) 'set the episode as "missing episode"
+                    RefreshRow_TVEpisode(tID.Key)
                 End If
             Next
 
@@ -5606,12 +5586,17 @@ doCancel:
     End Sub
 
     Private Sub cmnuShowRemoveFromDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowRemoveFromDB.Click
+        Dim lItemsToRemove As New List(Of Long)
         ClearInfo()
 
+        For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
+            lItemsToRemove.Add(Convert.ToInt64(sRow.Cells("idShow").Value))
+        Next
+
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-            For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
-                Master.DB.Delete_TVShow(Convert.ToInt64(sRow.Cells("idShow").Value), True)
-                RemoveRow_TVShow(Convert.ToInt64(sRow.Cells("idShow").Value))
+            For Each tID As Long In lItemsToRemove
+                Master.DB.Delete_TVShow(tID, True)
+                RemoveRow_TVShow(tID)
             Next
             SQLtransaction.Commit()
         End Using
@@ -5699,7 +5684,7 @@ doCancel:
             Dim SeasonPath As String = String.Empty
 
             If dgvTVSeasons.SelectedRows.Count > 10 Then
-                If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvTVSeasons.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then doOpen = False
+                If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvTVSeasons.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then doOpen = False
             End If
 
             If doOpen Then
@@ -5741,7 +5726,7 @@ doCancel:
     Private Sub mnuMainToolsSortFiles_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsSortFiles.Click, cmnuTrayToolsSortFiles.Click
         SetControlsEnabled(False)
         Using dSortFiles As New dlgSortFiles
-            If dSortFiles.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            If dSortFiles.ShowDialog() = DialogResult.OK Then
                 LoadMedia(New Structures.ScanOrClean With {.Movies = True})
             Else
                 SetControlsEnabled(True)
@@ -5750,7 +5735,7 @@ doCancel:
     End Sub
 
     Private Sub mnuMainToolsBackdrops_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsBackdrops.Click, cmnuTrayToolsBackdrops.Click
-        NonScrape(Enums.ScrapeType.CopyBackdrops, Nothing)
+        NonScrape(Enums.TaskType.CopyBackdrops)
     End Sub
     ''' <summary>
     ''' Populate the form's Genre panel and picture box arrays with the 
@@ -5798,28 +5783,23 @@ doCancel:
 
 
     Private Sub cmnuMovieRemoveFromDisk_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieRemoveFromDisk.Click
-        Try
-            Dim MoviesToDelete As New Dictionary(Of Long, Long)
-            Dim MovieId As Int64 = -1
+        Dim MoviesToDelete As New Dictionary(Of Long, Long)
+        Dim MovieId As Int64 = -1
 
-            For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
-                MovieId = Convert.ToInt64(sRow.Cells("idMovie").Value)
-                If Not MoviesToDelete.ContainsKey(MovieId) Then
-                    MoviesToDelete.Add(MovieId, 0)
-                End If
-            Next
-
-            If MoviesToDelete.Count > 0 Then
-                Using dlg As New dlgDeleteConfirm
-                    If dlg.ShowDialog(MoviesToDelete, Enums.DelType.Movies) = Windows.Forms.DialogResult.OK Then
-                        FillList(True, True, False)
-                    End If
-                End Using
+        For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
+            MovieId = Convert.ToInt64(sRow.Cells("idMovie").Value)
+            If Not MoviesToDelete.ContainsKey(MovieId) Then
+                MoviesToDelete.Add(MovieId, 0)
             End If
+        Next
 
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
+        If MoviesToDelete.Count > 0 Then
+            Using dlg As New dlgDeleteConfirm
+                If dlg.ShowDialog(MoviesToDelete, Enums.ContentType.Movie) = DialogResult.OK Then
+                    FillList(True, True, False)
+                End If
+            End Using
+        End If
     End Sub
 
     Private Sub dgvMovies_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovies.CellClick
@@ -8293,7 +8273,7 @@ doCancel:
                         DBMovie = dEditMovie.Result
                         ModulesManager.Instance.RunGeneric(EventType, Nothing, Nothing, False, DBMovie)
                         tslLoading.Text = String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":")
-                        Master.DB.Save_Movie(DBMovie, False, True, True)
+                        Master.DB.Save_Movie(DBMovie, False, True, True, False)
                         RefreshRow_Movie(DBMovie.ID)
                     Case DialogResult.Retry
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
@@ -9177,7 +9157,7 @@ doCancel:
         Dim lenSize As Integer
         Dim rect As Rectangle
 
-        If MainPoster.Image IsNot Nothing OrElse MainPoster.FromMemoryStream Then
+        If MainPoster.Image IsNot Nothing OrElse MainPoster.LoadFromMemoryStream Then
             lblPosterSize.Text = String.Format("{0} x {1}", MainPoster.Image.Width, MainPoster.Image.Height)
             pbPosterCache.Image = MainPoster.Image
             ImageUtils.ResizePB(pbPoster, pbPosterCache, PosterMaxHeight, PosterMaxWidth)
@@ -9201,7 +9181,7 @@ doCancel:
             End If
         End If
 
-        If MainFanartSmall.Image IsNot Nothing OrElse MainFanartSmall.FromMemoryStream Then
+        If MainFanartSmall.Image IsNot Nothing OrElse MainFanartSmall.LoadFromMemoryStream Then
             lblFanartSmallSize.Text = String.Format("{0} x {1}", MainFanartSmall.Image.Width, MainFanartSmall.Image.Height)
             pbFanartSmallCache.Image = MainFanartSmall.Image
             ImageUtils.ResizePB(pbFanartSmall, pbFanartSmallCache, FanartSmallMaxHeight, FanartSmallMaxWidth)
@@ -9227,7 +9207,7 @@ doCancel:
             End If
         End If
 
-        If MainLandscape.Image IsNot Nothing OrElse MainLandscape.FromMemoryStream Then
+        If MainLandscape.Image IsNot Nothing OrElse MainLandscape.LoadFromMemoryStream Then
             lblLandscapeSize.Text = String.Format("{0} x {1}", MainLandscape.Image.Width, MainLandscape.Image.Height)
             pbLandscapeCache.Image = MainLandscape.Image
             ImageUtils.ResizePB(pbLandscape, pbLandscapeCache, LandscapeMaxHeight, LandscapeMaxWidth)
@@ -9253,7 +9233,7 @@ doCancel:
             End If
         End If
 
-        If MainClearArt.Image IsNot Nothing OrElse MainClearArt.FromMemoryStream Then
+        If MainClearArt.Image IsNot Nothing OrElse MainClearArt.LoadFromMemoryStream Then
             lblClearArtSize.Text = String.Format("{0} x {1}", MainClearArt.Image.Width, MainClearArt.Image.Height)
             pbClearArtCache.Image = MainClearArt.Image
             ImageUtils.ResizePB(pbClearArt, pbClearArtCache, ClearArtMaxHeight, ClearArtMaxWidth)
@@ -9279,7 +9259,7 @@ doCancel:
             End If
         End If
 
-        If MainCharacterArt.Image IsNot Nothing OrElse MainCharacterArt.FromMemoryStream Then
+        If MainCharacterArt.Image IsNot Nothing OrElse MainCharacterArt.LoadFromMemoryStream Then
             lblCharacterArtSize.Text = String.Format("{0} x {1}", MainCharacterArt.Image.Width, MainCharacterArt.Image.Height)
             pbCharacterArtCache.Image = MainCharacterArt.Image
             ImageUtils.ResizePB(pbCharacterArt, pbCharacterArtCache, CharacterArtMaxHeight, CharacterArtMaxWidth)
@@ -9305,7 +9285,7 @@ doCancel:
             End If
         End If
 
-        If MainDiscArt.Image IsNot Nothing OrElse MainDiscArt.FromMemoryStream Then
+        If MainDiscArt.Image IsNot Nothing OrElse MainDiscArt.LoadFromMemoryStream Then
             lblDiscArtSize.Text = String.Format("{0} x {1}", MainDiscArt.Image.Width, MainDiscArt.Image.Height)
             pbDiscArtCache.Image = MainDiscArt.Image
             ImageUtils.ResizePB(pbDiscArt, pbDiscArtCache, DiscArtMaxHeight, DiscArtMaxWidth)
@@ -9331,7 +9311,7 @@ doCancel:
             End If
         End If
 
-        If MainBanner.Image IsNot Nothing OrElse MainBanner.FromMemoryStream Then
+        If MainBanner.Image IsNot Nothing OrElse MainBanner.LoadFromMemoryStream Then
             lblBannerSize.Text = String.Format("{0} x {1}", MainBanner.Image.Width, MainBanner.Image.Height)
             pbBannerCache.Image = MainBanner.Image
             ImageUtils.ResizePB(pbBanner, pbBannerCache, BannerMaxHeight, BannerMaxWidth)
@@ -9357,7 +9337,7 @@ doCancel:
             End If
         End If
 
-        If MainClearLogo.Image IsNot Nothing OrElse MainClearLogo.FromMemoryStream Then
+        If MainClearLogo.Image IsNot Nothing OrElse MainClearLogo.LoadFromMemoryStream Then
             lblClearLogoSize.Text = String.Format("{0} x {1}", MainClearLogo.Image.Width, MainClearLogo.Image.Height)
             pbClearLogoCache.Image = MainClearLogo.Image
             ImageUtils.ResizePB(pbClearLogo, pbClearLogoCache, ClearLogoMaxHeight, ClearLogoMaxWidth)
@@ -9383,7 +9363,7 @@ doCancel:
             End If
         End If
 
-        If MainFanart.Image IsNot Nothing OrElse MainFanart.FromMemoryStream Then
+        If MainFanart.Image IsNot Nothing OrElse MainFanart.LoadFromMemoryStream Then
             pbFanartCache.Image = MainFanart.Image
 
             ImageUtils.ResizePB(pbFanart, pbFanartCache, scMain.Panel2.Height - 90, scMain.Panel2.Width)
@@ -10574,14 +10554,14 @@ doCancel:
                 Select Case _params(0).ToString
                     Case "addmoviesource"
                         Using dSource As New dlgSourceMovie
-                            If dSource.ShowDialog(CStr(_params(1)), CStr(_params(1))) = Windows.Forms.DialogResult.OK Then
+                            If dSource.ShowDialog(CStr(_params(1)), CStr(_params(1))) = DialogResult.OK Then
                                 Master.DB.Load_Sources_Movie()
                                 SetMenus(True)
                             End If
                         End Using
                     Case "addtvshowsource"
                         Using dSource As New dlgSourceTVShow
-                            If dSource.ShowDialog(CStr(_params(1)), CStr(_params(1))) = Windows.Forms.DialogResult.OK Then
+                            If dSource.ShowDialog(CStr(_params(1)), CStr(_params(1))) = DialogResult.OK Then
                                 Master.DB.Load_Sources_TVShow()
                                 SetMenus(True)
                             End If
@@ -10677,7 +10657,7 @@ doCancel:
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value))
                             If Not tmpDBElement.Movie.Genres.Contains(strGenre) Then
                                 tmpDBElement.Movie.Genres.Add(strGenre)
-                                Master.DB.Save_Movie(tmpDBElement, True, True, False)
+                                Master.DB.Save_Movie(tmpDBElement, True, True, False, False)
                                 RefreshRow_Movie(tmpDBElement.ID)
                             End If
                         Next
@@ -10758,7 +10738,7 @@ doCancel:
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value))
                             If tmpDBElement.Movie.Genres.Contains(strGenre) Then
                                 tmpDBElement.Movie.Genres.Remove(strGenre)
-                                Master.DB.Save_Movie(tmpDBElement, True, True, False)
+                                Master.DB.Save_Movie(tmpDBElement, True, True, False, False)
                                 RefreshRow_Movie(tmpDBElement.ID)
                             End If
                         Next
@@ -10793,7 +10773,7 @@ doCancel:
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value))
                             tmpDBElement.Movie.Genres.Clear()
                             tmpDBElement.Movie.Genres.Add(strGenre)
-                            Master.DB.Save_Movie(tmpDBElement, True, True, False)
+                            Master.DB.Save_Movie(tmpDBElement, True, True, False, False)
                             RefreshRow_Movie(tmpDBElement.ID)
                         Next
                     Case "tvshow"
@@ -10834,7 +10814,7 @@ doCancel:
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value))
                             tmpDBElement.Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = strLanguage).Abbreviation
                             tmpDBElement.Movie.Language = tmpDBElement.Language
-                            Master.DB.Save_Movie(tmpDBElement, True, True, False)
+                            Master.DB.Save_Movie(tmpDBElement, True, True, False, False)
                             RefreshRow_Movie(tmpDBElement.ID)
                         Next
                     Case "movieset"
@@ -10874,7 +10854,7 @@ doCancel:
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value))
                             If Not tmpDBElement.Movie.Tags.Contains(strTag) Then
                                 tmpDBElement.Movie.Tags.Add(strTag)
-                                Master.DB.Save_Movie(tmpDBElement, True, True, False)
+                                Master.DB.Save_Movie(tmpDBElement, True, True, False, False)
                                 RefreshRow_Movie(tmpDBElement.ID)
                             End If
                         Next
@@ -10928,7 +10908,7 @@ doCancel:
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value))
                             If tmpDBElement.Movie.Tags.Contains(strTag) Then
                                 tmpDBElement.Movie.Tags.Remove(strTag)
-                                Master.DB.Save_Movie(tmpDBElement, True, True, False)
+                                Master.DB.Save_Movie(tmpDBElement, True, True, False, False)
                                 RefreshRow_Movie(tmpDBElement.ID)
                             End If
                         Next
@@ -10963,7 +10943,7 @@ doCancel:
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value))
                             tmpDBElement.Movie.Tags.Clear()
                             tmpDBElement.Movie.Tags.Add(strTag)
-                            Master.DB.Save_Movie(tmpDBElement, True, True, False)
+                            Master.DB.Save_Movie(tmpDBElement, True, True, False, False)
                             RefreshRow_Movie(tmpDBElement.ID)
                         Next
                     Case "tvshow"
@@ -11152,7 +11132,7 @@ doCancel:
             End If
 
             If Not alActors.Item(lstActors.SelectedIndex).ToString.Trim.StartsWith("http") Then
-                MainActors.FromFile(alActors.Item(lstActors.SelectedIndex).ToString, True)
+                MainActors.LoadFromFile(alActors.Item(lstActors.SelectedIndex).ToString, True)
 
                 If MainActors.Image IsNot Nothing Then
                     pbActors.Image = MainActors.Image
@@ -12841,15 +12821,15 @@ doCancel:
         Return asm
     End Function
 
-    Private Sub NonScrape(ByVal sType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions)
+    Private Sub NonScrape(ByVal sType As Enums.TaskType)
         Cursor = Cursors.WaitCursor
 
         Select Case sType
-            Case Enums.ScrapeType.CleanFolders
+            Case Enums.TaskType.CleanFolders
                 btnCancel.Text = Master.eLang.GetString(120, "Cancel Cleaner")
                 lblCanceling.Text = Master.eLang.GetString(119, "Canceling File Cleaner...")
                 tslLoading.Text = Master.eLang.GetString(129, "Cleaning Files:")
-            Case Enums.ScrapeType.CopyBackdrops
+            Case Enums.TaskType.CopyBackdrops
                 btnCancel.Text = Master.eLang.GetString(122, "Cancel Copy")
                 lblCanceling.Text = Master.eLang.GetString(121, "Canceling Backdrop Copy...")
                 tslLoading.Text = Master.eLang.GetString(130, "Copying Fanart to Backdrops Folder:")
@@ -12872,14 +12852,14 @@ doCancel:
 
         bwNonScrape.WorkerReportsProgress = True
         bwNonScrape.WorkerSupportsCancellation = True
-        bwNonScrape.RunWorkerAsync(New Arguments With {.ScrapeType = sType, .ScrapeOptions = ScrapeOptions})
+        bwNonScrape.RunWorkerAsync(New Arguments With {.TaskType = sType})
     End Sub
 
     Private Sub cmnuMovieOpenFolder_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieOpenFolder.Click
         If dgvMovies.SelectedRows.Count > 0 Then
             Dim doOpen As Boolean = True
             If dgvMovies.SelectedRows.Count > 10 Then
-                If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvMovies.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then doOpen = False
+                If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvMovies.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then doOpen = False
             End If
 
             If doOpen Then
@@ -13026,7 +13006,7 @@ doCancel:
             If dgvTVEpisodes.SelectedRows.Count > 0 Then
                 Dim doOpen As Boolean = True
                 If dgvTVEpisodes.SelectedRows.Count > 10 Then
-                    If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvTVEpisodes.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then doOpen = False
+                    If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvTVEpisodes.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then doOpen = False
                 End If
 
                 If doOpen Then
@@ -13057,7 +13037,7 @@ doCancel:
             If dgvTVEpisodes.SelectedRows.Count > 0 Then
                 Dim doOpen As Boolean = True
                 If dgvTVEpisodes.SelectedRows.Count > 10 Then
-                    If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvTVEpisodes.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then doOpen = False
+                    If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvTVEpisodes.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then doOpen = False
                 End If
                 If doOpen Then
                     Dim ShowID As String = dgvTVShows.SelectedRows(0).Cells("strTMDB").Value.ToString
@@ -13084,7 +13064,7 @@ doCancel:
             If dgvTVEpisodes.SelectedRows.Count > 0 Then
                 Dim doOpen As Boolean = True
                 If dgvTVEpisodes.SelectedRows.Count > 10 Then
-                    If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvTVEpisodes.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then doOpen = False
+                    If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvTVEpisodes.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then doOpen = False
                 End If
                 If doOpen Then
                     Dim ShowID As String = dgvTVShows.SelectedRows(0).Cells("TVDB").Value.ToString
@@ -13113,7 +13093,7 @@ doCancel:
             If dgvMovies.SelectedRows.Count > 0 Then
                 Dim doOpen As Boolean = True
                 If dgvMovies.SelectedRows.Count > 10 Then
-                    If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvMovies.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then doOpen = False
+                    If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvMovies.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then doOpen = False
                 End If
 
                 If doOpen Then
@@ -13144,7 +13124,7 @@ doCancel:
             If dgvMovies.SelectedRows.Count > 0 Then
                 Dim doOpen As Boolean = True
                 If dgvMovies.SelectedRows.Count > 10 Then
-                    If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvMovies.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then doOpen = False
+                    If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvMovies.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then doOpen = False
                 End If
                 If doOpen Then
                     For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
@@ -13172,7 +13152,7 @@ doCancel:
             If dgvMovieSets.SelectedRows.Count > 0 Then
                 Dim doOpen As Boolean = True
                 If dgvMovieSets.SelectedRows.Count > 10 Then
-                    If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvMovieSets.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then doOpen = False
+                    If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvMovieSets.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then doOpen = False
                 End If
                 If doOpen Then
                     For Each sRow As DataGridViewRow In dgvMovieSets.SelectedRows
@@ -13200,7 +13180,7 @@ doCancel:
             If dgvTVSeasons.SelectedRows.Count > 0 Then
                 Dim doOpen As Boolean = True
                 If dgvTVSeasons.SelectedRows.Count > 10 Then
-                    If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvTVSeasons.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then doOpen = False
+                    If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvTVSeasons.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then doOpen = False
                 End If
 
                 If doOpen Then
@@ -13230,7 +13210,7 @@ doCancel:
             If dgvTVSeasons.SelectedRows.Count > 0 Then
                 Dim doOpen As Boolean = True
                 If dgvTVSeasons.SelectedRows.Count > 10 Then
-                    If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvTVSeasons.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then doOpen = False
+                    If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvTVSeasons.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then doOpen = False
                 End If
                 If doOpen Then
                     Dim ShowID As String = dgvTVShows.SelectedRows(0).Cells("strTMDB").Value.ToString
@@ -13257,7 +13237,7 @@ doCancel:
             If dgvTVSeasons.SelectedRows.Count > 0 Then
                 Dim doOpen As Boolean = True
                 If dgvTVSeasons.SelectedRows.Count > 10 Then
-                    If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvTVSeasons.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then doOpen = False
+                    If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvTVSeasons.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then doOpen = False
                 End If
                 If doOpen Then
                     Dim ShowID As String = dgvTVShows.SelectedRows(0).Cells("TVDB").Value.ToString
@@ -13286,7 +13266,7 @@ doCancel:
             If dgvTVShows.SelectedRows.Count > 0 Then
                 Dim doOpen As Boolean = True
                 If dgvTVShows.SelectedRows.Count > 10 Then
-                    If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvTVShows.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then doOpen = False
+                    If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvTVShows.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then doOpen = False
                 End If
 
                 If doOpen Then
@@ -13316,7 +13296,7 @@ doCancel:
             If dgvTVShows.SelectedRows.Count > 0 Then
                 Dim doOpen As Boolean = True
                 If dgvTVShows.SelectedRows.Count > 10 Then
-                    If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvTVShows.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then doOpen = False
+                    If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvTVShows.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then doOpen = False
                 End If
                 If doOpen Then
                     For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
@@ -13344,7 +13324,7 @@ doCancel:
             If dgvTVShows.SelectedRows.Count > 0 Then
                 Dim doOpen As Boolean = True
                 If dgvTVShows.SelectedRows.Count > 10 Then
-                    If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvTVShows.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then doOpen = False
+                    If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvTVShows.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then doOpen = False
                 End If
                 If doOpen Then
                     For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
@@ -13418,7 +13398,7 @@ doCancel:
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
-                                    Master.DB.Save_Movie(tmpDBElement, False, False, True)
+                                    Master.DB.Save_Movie(tmpDBElement, False, False, True, False)
                                     RefreshRow_Movie(ID)
                                 End If
                             Else
@@ -13609,7 +13589,7 @@ doCancel:
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.ClearArt = dlgImgS.Result.ImagesContainer.ClearArt
-                                    Master.DB.Save_Movie(tmpDBElement, False, False, True)
+                                    Master.DB.Save_Movie(tmpDBElement, False, False, True, False)
                                     RefreshRow_Movie(ID)
                                 End If
                             Else
@@ -13714,7 +13694,7 @@ doCancel:
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.ClearLogo = dlgImgS.Result.ImagesContainer.ClearLogo
-                                    Master.DB.Save_Movie(tmpDBElement, False, False, True)
+                                    Master.DB.Save_Movie(tmpDBElement, False, False, True, False)
                                     RefreshRow_Movie(ID)
                                 End If
                             Else
@@ -13819,7 +13799,7 @@ doCancel:
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.DiscArt = dlgImgS.Result.ImagesContainer.DiscArt
-                                    Master.DB.Save_Movie(tmpDBElement, False, False, True)
+                                    Master.DB.Save_Movie(tmpDBElement, False, False, True, False)
                                     RefreshRow_Movie(ID)
                                 End If
                             Else
@@ -13910,7 +13890,7 @@ doCancel:
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
-                                    Master.DB.Save_Movie(tmpDBElement, False, False, True)
+                                    Master.DB.Save_Movie(tmpDBElement, False, False, True, False)
                                     RefreshRow_Movie(ID)
                                 End If
                             Else
@@ -14065,7 +14045,7 @@ doCancel:
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
-                                    Master.DB.Save_Movie(tmpDBElement, False, False, True)
+                                    Master.DB.Save_Movie(tmpDBElement, False, False, True, False)
                                     RefreshRow_Movie(ID)
                                 End If
                             Else
@@ -14197,7 +14177,7 @@ doCancel:
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
-                                    Master.DB.Save_Movie(tmpDBElement, False, False, True)
+                                    Master.DB.Save_Movie(tmpDBElement, False, False, True, False)
                                     RefreshRow_Movie(ID)
                                 End If
                             Else
@@ -14875,7 +14855,7 @@ doCancel:
             If showMessage AndAlso MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".", Environment.NewLine,
                                                          Master.eLang.GetString(703, "Whould you like to remove it from the library?")),
                                                      Master.eLang.GetString(654, "Remove movie from library"),
-                                                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
+                                                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                 Master.DB.Delete_Movie(ID, BatchMode)
                 Return True
             Else
@@ -14924,7 +14904,7 @@ doCancel:
             If showMessage AndAlso MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".", Environment.NewLine,
                                                          Master.eLang.GetString(703, "Whould you like to remove it from the library?")),
                                                      Master.eLang.GetString(738, "Remove episode from library"),
-                                                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
+                                                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                 Master.DB.Delete_TVEpisode(DBTVEpisode.Filename, False, BatchMode)
                 Return True
             Else
@@ -14971,7 +14951,7 @@ doCancel:
             If showMessage AndAlso MessageBox.Show(String.Concat(Master.eLang.GetString(719, "This path is no longer available"), ".", Environment.NewLine,
                                                          Master.eLang.GetString(703, "Whould you like to remove it from the library?")),
                                                      Master.eLang.GetString(776, "Remove tv show from library"),
-                                                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
+                                                     MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                 Master.DB.Delete_TVShow(ID, BatchMode)
                 Return True
             Else
@@ -15086,7 +15066,7 @@ doCancel:
         Dim tmpMovieDB As Database.DBElement = Master.DB.Load_Movie(ID)
 
         If tmpMovieDB.IsOnline Then
-            Master.DB.Save_Movie(tmpMovieDB, BatchMode, True, True)
+            Master.DB.Save_Movie(tmpMovieDB, BatchMode, True, True, False)
             Return True
         Else
             Return False
@@ -15094,12 +15074,17 @@ doCancel:
     End Function
 
     Private Sub cmnuMovieRemoveFromDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieRemoveFromDB.Click
+        Dim lItemsToRemove As New List(Of Long)
         ClearInfo()
 
+        For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
+            lItemsToRemove.Add(Convert.ToInt64(sRow.Cells("idMovie").Value))
+        Next
+
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-            For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
-                Master.DB.Delete_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value), True)
-                RemoveRow_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value))
+            For Each tID As Long In lItemsToRemove
+                Master.DB.Delete_Movie(tID, True)
+                RemoveRow_Movie(tID)
             Next
             SQLtransaction.Commit()
         End Using
@@ -15807,7 +15792,7 @@ doCancel:
                     tmpDBMovie.Movie.PlayCount = 0
                 End If
 
-                Master.DB.Save_Movie(tmpDBMovie, True, True, False)
+                Master.DB.Save_Movie(tmpDBMovie, True, True, False, False)
                 RefreshRow_Movie(tmpDBMovie.ID)
                 Application.DoEvents()
             Next
@@ -16006,7 +15991,7 @@ doCancel:
                 mnuMainToolsCleanFiles.Enabled = True 'False
             End If
 
-            mnuMainToolsBackdrops.Enabled = Directory.Exists(.MovieBackdropsPath)
+            mnuMainToolsBackdrops.Enabled = Not String.IsNullOrEmpty(.MovieBackdropsPath)
 
             ' for future use
             mnuMainToolsClearCache.Enabled = False
@@ -17901,7 +17886,7 @@ doCancel:
     Private Sub CheckUpdatesToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainHelpUpdate.Click
         If Functions.CheckNeedUpdate() Then
             Using dNewVer As New dlgNewVersion
-                If dNewVer.ShowDialog() = Windows.Forms.DialogResult.Abort Then
+                If dNewVer.ShowDialog() = DialogResult.Abort Then
                     tmrAppExit.Enabled = True
                     CloseApp = True
                 End If
@@ -18038,6 +18023,7 @@ doCancel:
         Dim Season As Integer
         Dim setEnabled As Boolean
         Dim SetName As String
+        Dim TaskType As Enums.TaskType
         Dim withEpisodes As Boolean
         Dim withSeasons As Boolean
 
