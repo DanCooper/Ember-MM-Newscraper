@@ -104,9 +104,15 @@ Public Class KodiInterface
     Public ReadOnly Property ModuleType() As List(Of Enums.ModuleEventType) Implements Interfaces.GenericModule.ModuleType
         Get
             Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {
+                                                      Enums.ModuleEventType.BeforeEdit_Movie,
+                                                      Enums.ModuleEventType.BeforeEdit_TVEpisode,
                                                       Enums.ModuleEventType.Remove_Movie,
                                                       Enums.ModuleEventType.Remove_TVEpisode,
                                                       Enums.ModuleEventType.Remove_TVShow,
+                                                      Enums.ModuleEventType.ScraperMulti_Movie,
+                                                      Enums.ModuleEventType.ScraperMulti_TVEpisode,
+                                                      Enums.ModuleEventType.ScraperSingle_Movie,
+                                                      Enums.ModuleEventType.ScraperSingle_TVEpisode,
                                                       Enums.ModuleEventType.Sync_Movie,
                                                       Enums.ModuleEventType.Sync_MovieSet,
                                                       Enums.ModuleEventType.Sync_TVEpisode,
@@ -166,7 +172,13 @@ Public Class KodiInterface
     ''' Timer tick event is async so we can queue with await all API tasks
     ''' </remarks>
     Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
-        If Not Master.isCL Then
+        If Not Master.isCL AndAlso
+            Not mType = Enums.ModuleEventType.BeforeEdit_Movie AndAlso
+            Not mType = Enums.ModuleEventType.BeforeEdit_TVEpisode AndAlso
+            Not mType = Enums.ModuleEventType.ScraperMulti_Movie AndAlso
+            Not mType = Enums.ModuleEventType.ScraperMulti_TVEpisode AndAlso
+            Not mType = Enums.ModuleEventType.ScraperSingle_Movie AndAlso
+            Not mType = Enums.ModuleEventType.ScraperSingle_TVEpisode Then
             'add job to tasklist and get everything done
             AddTask(New KodiTask With {.mType = mType, .mDBElement = _dbelement})
             Return New Interfaces.ModuleResult With {.breakChain = False}
@@ -246,6 +258,84 @@ Public Class KodiInterface
         'check if at least one host is configured, else skip
         If _SpecialSettings.Hosts.Count > 0 Then
             Select Case mType
+
+                'Before Edit Movie / Scraper Multi Movie / Scraper Single Movie
+                Case Enums.ModuleEventType.BeforeEdit_Movie, Enums.ModuleEventType.ScraperMulti_Movie, Enums.ModuleEventType.ScraperSingle_Movie
+                    If mDBElement IsNot Nothing AndAlso Not String.IsNullOrEmpty(_SpecialSettings.SyncPlayCountsHost) Then
+                        mHost = _SpecialSettings.Hosts.FirstOrDefault(Function(f) f.Label = _SpecialSettings.SyncPlayCountsHost)
+                        If mHost IsNot Nothing Then
+                            Dim _APIKodi As New Kodi.APIKodi(mHost)
+
+                            'connection test
+                            If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
+                                If mDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(mDBElement, True) Then
+                                    If mDBElement.NfoPathSpecified Then
+                                        'run task
+                                        Dim Result = Await Task.Run(Function() _APIKodi.GetPlaycount_Movie(mDBElement, GenericSubEventProgressAsync, GenericEventProcess))
+                                        If Result IsNot Nothing Then
+                                            mDBElement.Movie.LastPlayed = Result.LastPlayed
+                                            mDBElement.Movie.PlayCount = Result.PlayCount
+                                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.Movie.Title), New Bitmap(My.Resources.logo)}))
+                                        Else
+                                            logger.Warn(String.Concat("[KodiInterface] [", mHost.Label, "] [GenericRunCallBack] | Sync Failed:  ", mDBElement.Movie.Title))
+                                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", mDBElement.Movie.Title), Nothing}))
+                                            getError = True
+                                        End If
+                                    Else
+                                        logger.Warn("[KodiInterface] [GenericRunCallBack]: Please Scrape In Ember First!")
+                                        'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
+                                        getError = True
+                                    End If
+                                Else
+                                    logger.Warn("[KodiInterface] [GenericRunCallBack]: Not online!")
+                                    getError = True
+                                End If
+                            Else
+                                getError = True
+                            End If
+                        Else
+                            logger.Warn(String.Format("[KodiInterface] [GenericRunCallBack]: Hostname ({0}) not found in host list!", _SpecialSettings.SyncPlayCountsHost))
+                        End If
+                    End If
+
+                'Before Edit TVEpisode / Scraper Multi TVEpisode / Scraper Single TVEpisode
+                Case Enums.ModuleEventType.BeforeEdit_TVEpisode, Enums.ModuleEventType.ScraperMulti_TVEpisode, Enums.ModuleEventType.ScraperSingle_TVEpisode
+                    If mDBElement IsNot Nothing AndAlso Not String.IsNullOrEmpty(_SpecialSettings.SyncPlayCountsHost) Then
+                        mHost = _SpecialSettings.Hosts.FirstOrDefault(Function(f) f.Label = _SpecialSettings.SyncPlayCountsHost)
+                        If mHost IsNot Nothing Then
+                            Dim _APIKodi As New Kodi.APIKodi(mHost)
+
+                            'connection test
+                            If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
+                                If mDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(mDBElement, True) Then
+                                    If mDBElement.NfoPathSpecified Then
+                                        'run task
+                                        Dim Result = Await Task.Run(Function() _APIKodi.GetPlaycount_TVEpisode(mDBElement, GenericSubEventProgressAsync, GenericEventProcess))
+                                        If Result IsNot Nothing Then
+                                            mDBElement.TVEpisode.LastPlayed = Result.LastPlayed
+                                            mDBElement.TVEpisode.Playcount = Result.PlayCount
+                                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.TVEpisode.Title), New Bitmap(My.Resources.logo)}))
+                                        Else
+                                            logger.Warn(String.Concat("[KodiInterface] [", mHost.Label, "] [GenericRunCallBack] | Sync Failed:  ", mDBElement.TVEpisode.Title))
+                                            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", mDBElement.TVEpisode.Title), Nothing}))
+                                            getError = True
+                                        End If
+                                    Else
+                                        logger.Warn("[KodiInterface] [GenericRunCallBack]: Please Scrape In Ember First!")
+                                        'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
+                                        getError = True
+                                    End If
+                                Else
+                                    logger.Warn("[KodiInterface] [GenericRunCallBack]: Not online!")
+                                    getError = True
+                                End If
+                            Else
+                                getError = True
+                            End If
+                        Else
+                            logger.Warn(String.Format("[KodiInterface] [GenericRunCallBack]: Hostname ({0}) not found in host list!", _SpecialSettings.SyncPlayCountsHost))
+                        End If
+                    End If
 
                 'Remove Movie
                 Case Enums.ModuleEventType.Remove_Movie
@@ -631,12 +721,13 @@ Public Class KodiInterface
                                             If mDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(mDBElement, True) Then
                                                 If mDBElement.NfoPathSpecified Then
                                                     'run task
-                                                    If Await Task.Run(Function() _APIKodi.GetPlaycount_Movie(mDBElement, GenericSubEventProgressAsync, GenericEventProcess)) Then
+                                                    Dim Result = Await Task.Run(Function() _APIKodi.GetPlaycount_Movie(mDBElement, GenericSubEventProgressAsync, GenericEventProcess))
+                                                    If Result IsNot Nothing Then
+                                                        mDBElement.Movie.LastPlayed = Result.LastPlayed
+                                                        mDBElement.Movie.PlayCount = Result.PlayCount
+                                                        Master.DB.Save_Movie(mDBElement, False, True, False)
+                                                        RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {mDBElement.ID}))
                                                         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.Movie.Title), New Bitmap(My.Resources.logo)}))
-                                                    Else
-                                                        logger.Warn(String.Concat("[KodiInterface] [", mHost.Label, "] [GenericRunCallBack] | Sync Failed:  ", mDBElement.Movie.Title))
-                                                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", mDBElement.Movie.Title), Nothing}))
-                                                        getError = True
                                                     End If
                                                 Else
                                                     logger.Warn("[KodiInterface] [GenericRunCallBack]: Please Scrape In Ember First!")
@@ -653,12 +744,13 @@ Public Class KodiInterface
                                             If mDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(mDBElement, True) Then
                                                 If mDBElement.NfoPathSpecified Then
                                                     'run task
-                                                    If Await Task.Run(Function() _APIKodi.GetPlaycount_TVEpisode(mDBElement, GenericSubEventProgressAsync, GenericEventProcess)) Then
+                                                    Dim Result = Await Task.Run(Function() _APIKodi.GetPlaycount_TVEpisode(mDBElement, GenericSubEventProgressAsync, GenericEventProcess))
+                                                    If Result IsNot Nothing Then
+                                                        mDBElement.TVEpisode.LastPlayed = Result.LastPlayed
+                                                        mDBElement.TVEpisode.Playcount = Result.PlayCount
+                                                        Master.DB.Save_TVEpisode(mDBElement, False, True, False, False, True)
+                                                        RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {mDBElement.ID}))
                                                         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.TVEpisode.Title), New Bitmap(My.Resources.logo)}))
-                                                    Else
-                                                        logger.Warn(String.Concat("[KodiInterface] [", mHost.Label, "] [GenericRunCallBack] | Sync Failed:  ", mDBElement.TVEpisode.Title))
-                                                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", mDBElement.TVEpisode.Title), Nothing}))
-                                                        getError = True
                                                     End If
                                                 Else
                                                     logger.Warn("[KodiInterface] [GenericRunCallBack]: Please Scrape In Ember First!")
@@ -677,12 +769,13 @@ Public Class KodiInterface
                                                     If tEpisode.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(tEpisode, True) Then
                                                         If tEpisode.NfoPathSpecified Then
                                                             'run task
-                                                            If Await Task.Run(Function() _APIKodi.GetPlaycount_TVEpisode(tEpisode, GenericSubEventProgressAsync, GenericEventProcess)) Then
+                                                            Dim Result = Await Task.Run(Function() _APIKodi.GetPlaycount_TVEpisode(tEpisode, GenericSubEventProgressAsync, GenericEventProcess))
+                                                            If Result IsNot Nothing Then
+                                                                tEpisode.TVEpisode.LastPlayed = Result.LastPlayed
+                                                                tEpisode.TVEpisode.Playcount = Result.PlayCount
+                                                                Master.DB.Save_TVEpisode(tEpisode, False, True, False, False, True)
+                                                                RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {tEpisode.ID}))
                                                                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", tEpisode.TVEpisode.Title), New Bitmap(My.Resources.logo)}))
-                                                            Else
-                                                                logger.Warn(String.Concat("[KodiInterface] [", mHost.Label, "] [GenericRunCallBack] | Sync Failed:  ", tEpisode.TVEpisode.Title))
-                                                                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", tEpisode.TVEpisode.Title), Nothing}))
-                                                                getError = True
                                                             End If
                                                         Else
                                                             logger.Warn("[KodiInterface] [GenericRunCallBack]: Please Scrape In Ember First!")
@@ -696,19 +789,20 @@ Public Class KodiInterface
                                                 Next
                                             End If
 
-                                        'Get TVSeason Playcount
+                                        'Get TVShow Playcount
                                         Case Enums.ContentType.TVShow
                                             If mDBElement.Episodes IsNot Nothing Then
                                                 For Each tEpisode In mDBElement.Episodes
                                                     If tEpisode.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(tEpisode, True) Then
                                                         If tEpisode.NfoPathSpecified Then
                                                             'run task
-                                                            If Await Task.Run(Function() _APIKodi.GetPlaycount_TVEpisode(tEpisode, GenericSubEventProgressAsync, GenericEventProcess)) Then
+                                                            Dim Result = Await Task.Run(Function() _APIKodi.GetPlaycount_TVEpisode(tEpisode, GenericSubEventProgressAsync, GenericEventProcess))
+                                                            If Result IsNot Nothing Then
+                                                                tEpisode.TVEpisode.LastPlayed = Result.LastPlayed
+                                                                tEpisode.TVEpisode.Playcount = Result.PlayCount
+                                                                Master.DB.Save_TVEpisode(tEpisode, False, True, False, False, True)
+                                                                RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {tEpisode.ID}))
                                                                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", tEpisode.TVEpisode.Title), New Bitmap(My.Resources.logo)}))
-                                                            Else
-                                                                logger.Warn(String.Concat("[KodiInterface] [", mHost.Label, "] [GenericRunCallBack] | Sync Failed:  ", tEpisode.TVEpisode.Title))
-                                                                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", tEpisode.TVEpisode.Title), Nothing}))
-                                                                getError = True
                                                             End If
                                                         Else
                                                             logger.Warn("[KodiInterface] [GenericRunCallBack]: Please Scrape In Ember First!")

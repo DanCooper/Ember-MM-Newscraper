@@ -352,10 +352,10 @@ Namespace Kodi
         ''' <returns>true=Update successfull, false=error or movie not found in KodiDB</returns>
         ''' <remarks>
         ''' </remarks>
-        Public Async Function GetPlaycount_Movie(ByVal mDBElement As Database.DBElement, ByVal GenericSubEvent As IProgress(Of GenericSubEventCallBackAsync), ByVal GenericMainEvent As IProgress(Of GenericEventCallBackAsync)) As Task(Of Boolean)
+        Public Async Function GetPlaycount_Movie(ByVal mDBElement As Database.DBElement, ByVal GenericSubEvent As IProgress(Of GenericSubEventCallBackAsync), ByVal GenericMainEvent As IProgress(Of GenericEventCallBackAsync)) As Task(Of WatchedState)
             If _kodi Is Nothing Then
                 logger.Error("[APIKodi] GetPlaycount_Movie: No host initialized! Abort!")
-                Return False
+                Return Nothing
             End If
 
             Try
@@ -366,28 +366,24 @@ Namespace Kodi
 
                 If KodiElement IsNot Nothing Then
                     'check if we have to retrieve the PlayCount from Kodi
-                    If Not mDBElement.Movie.PlayCount = KodiElement.playcount Then
-                        mDBElement.Movie.PlayCount = KodiElement.playcount
-                        mDBElement.Movie.LastPlayed = KodiElement.lastplayed
-
-                        logger.Trace(String.Format("[APIKodi] [{0}] GetPlaycount_Movie: ""{1}"" | Save Playcount from host", _currenthost.Label, mDBElement.Movie.Title))
-                        Master.DB.Save_Movie(mDBElement, False, True, False)
-                        GenericSubEvent.Report(New GenericSubEventCallBackAsync With {
-                                                   .tGenericEventCallBackAsync = New GenericEventCallBackAsync With
-                                                   {.tEventType = Enums.ModuleEventType.AfterEdit_Movie, .tParams = New List(Of Object)(New Object() {mDBElement.ID})},
-                                                   .tProgress = GenericMainEvent})
+                    If Not mDBElement.Movie.PlayCount = KodiElement.playcount OrElse Not mDBElement.Movie.LastPlayed = KodiElement.lastplayed Then
+                        Dim WatchedState As New WatchedState
+                        WatchedState.PlayCount = KodiElement.playcount
+                        WatchedState.LastPlayed = KodiElement.lastplayed
+                        logger.Trace(String.Format("[APIKodi] [{0}] GetPlaycount_Movie: ""{1}"" | Synced to Ember", _currenthost.Label, mDBElement.Movie.Title))
+                        Return WatchedState
+                    Else
+                        logger.Trace(String.Format("[APIKodi] [{0}] GetPlaycount_Movie: ""{1}"" | Nothing to sync", _currenthost.Label, mDBElement.Movie.Title))
+                        Return Nothing
                     End If
-
-                    logger.Trace(String.Format("[APIKodi] [{0}] GetPlaycount_Movie: ""{1}"" | {2} in Ember database", _currenthost.Label, mDBElement.Movie.Title, "Updated"))
-                    Return True
                 Else
                     logger.Error(String.Format("[APIKodi] [{0}] GetPlaycount_Movie: ""{1}"" | NOT found on host! Abort!", _currenthost.Label, mDBElement.Movie.Title))
-                    Return False
+                    Return Nothing
                 End If
 
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)
-                Return False
+                Return Nothing
             End Try
         End Function
         ''' <summary>
@@ -397,10 +393,10 @@ Namespace Kodi
         ''' <returns>true=Update successfull, false=error or episode not found in KodiDB</returns>
         ''' <remarks>
         ''' </remarks>
-        Public Async Function GetPlaycount_TVEpisode(ByVal mDBElement As Database.DBElement, ByVal GenericSubEvent As IProgress(Of GenericSubEventCallBackAsync), ByVal GenericMainEvent As IProgress(Of GenericEventCallBackAsync)) As Task(Of Boolean)
+        Public Async Function GetPlaycount_TVEpisode(ByVal mDBElement As Database.DBElement, ByVal GenericSubEvent As IProgress(Of GenericSubEventCallBackAsync), ByVal GenericMainEvent As IProgress(Of GenericEventCallBackAsync)) As Task(Of WatchedState)
             If _kodi Is Nothing Then
                 logger.Error("[APIKodi] GetPlaycount_TVEpisode: No host initialized! Abort!")
-                Return False
+                Return Nothing
             End If
 
             Try
@@ -411,27 +407,23 @@ Namespace Kodi
 
                 If KodiElement IsNot Nothing Then
                     'check if we have to retrieve the PlayCount from Kodi
-                    If Not mDBElement.TVEpisode.Playcount = KodiElement.playcount Then
-                        mDBElement.TVEpisode.Playcount = KodiElement.playcount
-                        mDBElement.TVEpisode.LastPlayed = KodiElement.lastplayed
-
-                        logger.Trace(String.Format("[APIKodi] [{0}] GetPlaycount_TVEpisode: ""{1}"" | Save Playcount from host", _currenthost.Label, mDBElement.TVEpisode.Title))
-                        Master.DB.Save_TVEpisode(mDBElement, False, True, False, False, True)
-                        GenericSubEvent.Report(New GenericSubEventCallBackAsync With {
-                                               .tGenericEventCallBackAsync = New GenericEventCallBackAsync With
-                                               {.tEventType = Enums.ModuleEventType.AfterEdit_TVEpisode, .tParams = New List(Of Object)(New Object() {mDBElement.ID})},
-                                               .tProgress = GenericMainEvent})
+                    If Not mDBElement.TVEpisode.Playcount = KodiElement.playcount OrElse Not mDBElement.TVEpisode.LastPlayed = KodiElement.lastplayed Then
+                        Dim WatchedState As New WatchedState
+                        WatchedState.PlayCount = KodiElement.playcount
+                        WatchedState.LastPlayed = KodiElement.lastplayed
+                        logger.Trace(String.Format("[APIKodi] [{0}] GetPlaycount_TVEpisode: ""{1}"" | Synced to Ember", _currenthost.Label, mDBElement.TVEpisode.Title))
+                        Return WatchedState
+                    Else
+                        logger.Trace(String.Format("[APIKodi] [{0}] GetPlaycount_TVEpisode: ""{1}"" | Nothing to sync", _currenthost.Label, mDBElement.TVEpisode.Title))
+                        Return Nothing
                     End If
-
-                    logger.Trace(String.Format("[APIKodi] [{0}] GetPlaycount_TVEpisode: ""{1}"" | {2} in Ember database", _currenthost.Label, mDBElement.TVEpisode.Title, "Updated"))
-                    Return True
                 Else
                     logger.Error(String.Format("[APIKodi] [{0}] GetPlaycount_TVEpisode: ""{1}"" | NOT found on host! Abort!", _currenthost.Label, mDBElement.TVEpisode.Title))
-                    Return False
+                    Return Nothing
                 End If
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)
-                Return False
+                Return Nothing
             End Try
         End Function
 
@@ -2000,10 +1992,6 @@ Namespace Kodi
             End Try
         End Function
 
-#Region "Helper functions/methods"
-
-#End Region 'Helper functions/methods
-
 #Region "Unused code"
 
         ''' <summary>
@@ -2219,40 +2207,55 @@ Namespace Kodi
             Dim strFilename As String
         End Structure
 
-        Structure MySettings
-            ''' <summary>
-            ''' Username for Kodi webservice. Optional. Default is kodi for Kodi hosts ( xbmc for XBMC hosts )
-            ''' </summary>
-            ''' <returns>Username for Kodi webservice</returns>
-            ''' <history>
-            ''' 9/13/2015 Cocotus created
-            ''' </history>
-            Dim Username As String
-            ''' <summary>
-            ''' Password for Kodi webservice. Optional. As configured in Kodi / XBMC Setup
-            ''' </summary>
-            ''' <returns>Password for Kodi webservice</returns>
-            ''' <history>
-            ''' 9/13/2015 Cocotus created
-            ''' </history>
-            Dim Password As String
-            ''' <summary>
-            ''' IP address or DNS host name of Kodi / XBMC media player
-            ''' </summary>
-            ''' <returns>Address of Kodi webservice</returns>
-            ''' <history>
-            ''' 9/13/2015 Cocotus created
-            ''' </history>
-            Dim HostIP As String
-            ''' <summary>
-            ''' Kodi webport.Typically 80 or 8080. As configured in Kodi / XBMC Setup
-            ''' </summary>
-            ''' <returns>Kodi webport</returns>
-            ''' <history>
-            ''' 9/13/2015 Cocotus created
-            ''' </history>
-            Dim WebPort As Integer
-        End Structure
+        Public Class WatchedState
+
+#Region "Fields"
+
+            Private _lastplayed As String
+            Private _playcount As Integer
+
+#End Region 'Fields
+
+#Region "Properties"
+            Public Property LastPlayed() As String
+                Get
+                    Return _lastplayed
+                End Get
+                Set(ByVal value As String)
+                    _lastplayed = value
+                End Set
+            End Property
+
+            Public Property PlayCount() As Integer
+                Get
+                    Return _playcount
+                End Get
+                Set(ByVal value As Integer)
+                    _playcount = value
+                End Set
+            End Property
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+            Public Sub New()
+                Clear()
+            End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+
+            Public Sub Clear()
+                _lastplayed = String.Empty
+                _playcount = 0
+            End Sub
+
+#End Region 'Methods
+
+
+        End Class
 
 #End Region 'Nested Types
 
