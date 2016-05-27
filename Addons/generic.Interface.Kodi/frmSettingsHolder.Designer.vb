@@ -38,6 +38,8 @@ Partial Class frmSettingsHolder
         Me.pnlSettingsTop = New System.Windows.Forms.Panel()
         Me.tblSettingsTop = New System.Windows.Forms.TableLayoutPanel()
         Me.chkEnabled = New System.Windows.Forms.CheckBox()
+        Me.gpPlaycount = New System.Windows.Forms.GroupBox()
+        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.pnlSettings.SuspendLayout()
         Me.pnlSettingsMain.SuspendLayout()
         Me.tbllSettingsMain.SuspendLayout()
@@ -45,6 +47,8 @@ Partial Class frmSettingsHolder
         Me.tblSettingsGeneral.SuspendLayout()
         Me.pnlSettingsTop.SuspendLayout()
         Me.tblSettingsTop.SuspendLayout()
+        Me.gpPlaycount.SuspendLayout()
+        Me.TableLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'pnlSettings
@@ -56,7 +60,7 @@ Partial Class frmSettingsHolder
         Me.pnlSettings.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlSettings.Location = New System.Drawing.Point(0, 0)
         Me.pnlSettings.Name = "pnlSettings"
-        Me.pnlSettings.Size = New System.Drawing.Size(508, 280)
+        Me.pnlSettings.Size = New System.Drawing.Size(510, 266)
         Me.pnlSettings.TabIndex = 84
         '
         'pnlSettingsMain
@@ -66,7 +70,7 @@ Partial Class frmSettingsHolder
         Me.pnlSettingsMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlSettingsMain.Location = New System.Drawing.Point(0, 23)
         Me.pnlSettingsMain.Name = "pnlSettingsMain"
-        Me.pnlSettingsMain.Size = New System.Drawing.Size(508, 257)
+        Me.pnlSettingsMain.Size = New System.Drawing.Size(510, 243)
         Me.pnlSettingsMain.TabIndex = 5
         '
         'tbllSettingsMain
@@ -83,7 +87,7 @@ Partial Class frmSettingsHolder
         Me.tbllSettingsMain.RowCount = 2
         Me.tbllSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tbllSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tbllSettingsMain.Size = New System.Drawing.Size(508, 257)
+        Me.tbllSettingsMain.Size = New System.Drawing.Size(510, 243)
         Me.tbllSettingsMain.TabIndex = 1
         '
         'gbSettingsGeneral
@@ -93,7 +97,7 @@ Partial Class frmSettingsHolder
         Me.gbSettingsGeneral.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbSettingsGeneral.Location = New System.Drawing.Point(3, 3)
         Me.gbSettingsGeneral.Name = "gbSettingsGeneral"
-        Me.gbSettingsGeneral.Size = New System.Drawing.Size(470, 216)
+        Me.gbSettingsGeneral.Size = New System.Drawing.Size(482, 216)
         Me.gbSettingsGeneral.TabIndex = 0
         Me.gbSettingsGeneral.TabStop = False
         Me.gbSettingsGeneral.Text = "General Settings"
@@ -108,23 +112,20 @@ Partial Class frmSettingsHolder
         Me.tblSettingsGeneral.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblSettingsGeneral.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblSettingsGeneral.Controls.Add(Me.lbHosts, 0, 0)
-        Me.tblSettingsGeneral.Controls.Add(Me.btnEditHost, 2, 4)
-        Me.tblSettingsGeneral.Controls.Add(Me.cbPlayCountHost, 3, 2)
-        Me.tblSettingsGeneral.Controls.Add(Me.btnRemoveHost, 1, 4)
+        Me.tblSettingsGeneral.Controls.Add(Me.btnEditHost, 2, 2)
+        Me.tblSettingsGeneral.Controls.Add(Me.btnRemoveHost, 1, 2)
         Me.tblSettingsGeneral.Controls.Add(Me.chkNotification, 3, 0)
-        Me.tblSettingsGeneral.Controls.Add(Me.btnAddHost, 0, 4)
-        Me.tblSettingsGeneral.Controls.Add(Me.chkPlayCount, 3, 1)
+        Me.tblSettingsGeneral.Controls.Add(Me.btnAddHost, 0, 2)
+        Me.tblSettingsGeneral.Controls.Add(Me.gpPlaycount, 3, 1)
         Me.tblSettingsGeneral.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblSettingsGeneral.Location = New System.Drawing.Point(3, 18)
         Me.tblSettingsGeneral.Name = "tblSettingsGeneral"
-        Me.tblSettingsGeneral.RowCount = 6
+        Me.tblSettingsGeneral.RowCount = 4
         Me.tblSettingsGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsGeneral.Size = New System.Drawing.Size(464, 195)
+        Me.tblSettingsGeneral.Size = New System.Drawing.Size(476, 195)
         Me.tblSettingsGeneral.TabIndex = 87
         '
         'lbHosts
@@ -135,7 +136,7 @@ Partial Class frmSettingsHolder
         Me.lbHosts.FormattingEnabled = True
         Me.lbHosts.Location = New System.Drawing.Point(3, 3)
         Me.lbHosts.Name = "lbHosts"
-        Me.tblSettingsGeneral.SetRowSpan(Me.lbHosts, 4)
+        Me.tblSettingsGeneral.SetRowSpan(Me.lbHosts, 2)
         Me.lbHosts.Size = New System.Drawing.Size(300, 160)
         Me.lbHosts.Sorted = True
         Me.lbHosts.TabIndex = 8
@@ -156,10 +157,9 @@ Partial Class frmSettingsHolder
         '
         'cbPlayCountHost
         '
-        Me.cbPlayCountHost.Dock = System.Windows.Forms.DockStyle.Fill
         Me.cbPlayCountHost.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbPlayCountHost.FormattingEnabled = True
-        Me.cbPlayCountHost.Location = New System.Drawing.Point(309, 49)
+        Me.cbPlayCountHost.Location = New System.Drawing.Point(3, 26)
         Me.cbPlayCountHost.Name = "cbPlayCountHost"
         Me.cbPlayCountHost.Size = New System.Drawing.Size(152, 21)
         Me.cbPlayCountHost.TabIndex = 86
@@ -206,7 +206,7 @@ Partial Class frmSettingsHolder
         '
         Me.chkPlayCount.AutoSize = True
         Me.chkPlayCount.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkPlayCount.Location = New System.Drawing.Point(309, 26)
+        Me.chkPlayCount.Location = New System.Drawing.Point(3, 3)
         Me.chkPlayCount.Name = "chkPlayCount"
         Me.chkPlayCount.Size = New System.Drawing.Size(152, 17)
         Me.chkPlayCount.TabIndex = 85
@@ -221,7 +221,7 @@ Partial Class frmSettingsHolder
         Me.pnlSettingsTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlSettingsTop.Location = New System.Drawing.Point(0, 0)
         Me.pnlSettingsTop.Name = "pnlSettingsTop"
-        Me.pnlSettingsTop.Size = New System.Drawing.Size(508, 23)
+        Me.pnlSettingsTop.Size = New System.Drawing.Size(510, 23)
         Me.pnlSettingsTop.TabIndex = 0
         '
         'tblSettingsTop
@@ -238,7 +238,7 @@ Partial Class frmSettingsHolder
         Me.tblSettingsTop.RowCount = 2
         Me.tblSettingsTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsTop.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsTop.Size = New System.Drawing.Size(508, 23)
+        Me.tblSettingsTop.Size = New System.Drawing.Size(510, 23)
         Me.tblSettingsTop.TabIndex = 5
         '
         'chkEnabled
@@ -251,13 +251,42 @@ Partial Class frmSettingsHolder
         Me.chkEnabled.Text = "Enabled"
         Me.chkEnabled.UseVisualStyleBackColor = True
         '
+        'gpPlaycount
+        '
+        Me.gpPlaycount.AutoSize = True
+        Me.gpPlaycount.Controls.Add(Me.TableLayoutPanel1)
+        Me.gpPlaycount.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gpPlaycount.Location = New System.Drawing.Point(309, 26)
+        Me.gpPlaycount.Name = "gpPlaycount"
+        Me.gpPlaycount.Size = New System.Drawing.Size(164, 137)
+        Me.gpPlaycount.TabIndex = 87
+        Me.gpPlaycount.TabStop = False
+        Me.gpPlaycount.Text = "Watched State"
+        '
+        'TableLayoutPanel1
+        '
+        Me.TableLayoutPanel1.AutoSize = True
+        Me.TableLayoutPanel1.ColumnCount = 2
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.TableLayoutPanel1.Controls.Add(Me.chkPlayCount, 0, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.cbPlayCountHost, 0, 1)
+        Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(3, 18)
+        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+        Me.TableLayoutPanel1.RowCount = 2
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(158, 116)
+        Me.TableLayoutPanel1.TabIndex = 0
+        '
         'frmSettingsHolder
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.AutoSize = True
         Me.BackColor = System.Drawing.Color.White
-        Me.ClientSize = New System.Drawing.Size(508, 280)
+        Me.ClientSize = New System.Drawing.Size(510, 266)
         Me.Controls.Add(Me.pnlSettings)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
@@ -281,6 +310,10 @@ Partial Class frmSettingsHolder
         Me.pnlSettingsTop.PerformLayout()
         Me.tblSettingsTop.ResumeLayout(False)
         Me.tblSettingsTop.PerformLayout()
+        Me.gpPlaycount.ResumeLayout(False)
+        Me.gpPlaycount.PerformLayout()
+        Me.TableLayoutPanel1.ResumeLayout(False)
+        Me.TableLayoutPanel1.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -300,4 +333,6 @@ Partial Class frmSettingsHolder
     Friend WithEvents chkPlayCount As System.Windows.Forms.CheckBox
     Friend WithEvents tbllSettingsMain As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblSettingsGeneral As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents gpPlaycount As GroupBox
+    Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
 End Class
