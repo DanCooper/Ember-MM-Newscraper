@@ -976,9 +976,9 @@ Public Class KodiInterface
                     Dim mHost As Host = _SpecialSettings.Hosts.FirstOrDefault(Function(f) f.Label = _SpecialSettings.GetWatchedStateHost)
                     If mHost IsNot Nothing Then
                         Dim mnuHostGetPlaycount As New ToolStripMenuItem
-                        mnuHostGetPlaycount.Image = New Bitmap(My.Resources.menuSync)
+                        mnuHostGetPlaycount.Image = New Bitmap(My.Resources.menuWatchedState)
                         mnuHostGetPlaycount.Tag = mHost
-                        mnuHostGetPlaycount.Text = Master.eLang.GetString(1070, "Get Playcount")
+                        mnuHostGetPlaycount.Text = Master.eLang.GetString(1070, "Get Watched State")
                         Select Case tContentType
                             Case Enums.ContentType.Movie
                                 AddHandler mnuHostGetPlaycount.Click, AddressOf cmnuHostGetPlaycount_Movie_Click
@@ -1067,9 +1067,9 @@ Public Class KodiInterface
                     Dim mHost As Host = _SpecialSettings.Hosts.FirstOrDefault(Function(f) f.Label = _SpecialSettings.GetWatchedStateHost)
                     If mHost IsNot Nothing Then
                         Dim mnuHostGetPlaycount As New ToolStripMenuItem
-                        mnuHostGetPlaycount.Image = New Bitmap(My.Resources.menuSync)
+                        mnuHostGetPlaycount.Image = New Bitmap(My.Resources.menuWatchedState)
                         mnuHostGetPlaycount.Tag = mHost
-                        mnuHostGetPlaycount.Text = String.Format("{0} ({1})", Master.eLang.GetString(1070, "Get Playcount"), _SpecialSettings.GetWatchedStateHost)
+                        mnuHostGetPlaycount.Text = String.Format("{0} ({1})", Master.eLang.GetString(1070, "Get Watched State"), _SpecialSettings.GetWatchedStateHost)
                         Select Case tContentType
                             Case Enums.ContentType.Movie
                                 AddHandler mnuHostGetPlaycount.Click, AddressOf cmnuHostGetPlaycount_Movie_Click
@@ -1320,7 +1320,9 @@ Public Class KodiInterface
         _SpecialSettings.GetWatchedStateScraperSingle_Movie = _setup.chkGetWatchedStateScraperSingle_Movie.Checked
         _SpecialSettings.GetWatchedStateScraperSingle_TVEpisode = _setup.chkGetWatchedStateScraperSingle_TVEpisode.Checked
         _SpecialSettings.GetWatchedStateHost = If(_setup.cbGetWatchedStateHost.SelectedItem IsNot Nothing, _setup.cbGetWatchedStateHost.SelectedItem.ToString(), String.Empty)
+
         SaveSettings()
+
         If Enabled Then PopulateMenus()
         If DoDispose Then
             RemoveHandler _setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
@@ -1916,16 +1918,6 @@ Public Class KodiInterface
 
 #Region "Properties"
 
-        <XmlElement("sendnotifications")>
-        Public Property SendNotifications() As Boolean
-            Get
-                Return _sendnotifications
-            End Get
-            Set(ByVal value As Boolean)
-                _sendnotifications = value
-            End Set
-        End Property
-
         <XmlElement("getwatchedstate")>
         Public Property GetWatchedState() As Boolean
             Get
@@ -2013,6 +2005,16 @@ Public Class KodiInterface
             End Get
             Set(ByVal value As List(Of Host))
                 _hosts = value
+            End Set
+        End Property
+
+        <XmlElement("sendnotifications")>
+        Public Property SendNotifications() As Boolean
+            Get
+                Return _sendnotifications
+            End Get
+            Set(ByVal value As Boolean)
+                _sendnotifications = value
             End Set
         End Property
 

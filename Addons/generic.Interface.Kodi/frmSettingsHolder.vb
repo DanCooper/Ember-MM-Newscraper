@@ -73,7 +73,7 @@ Public Class frmSettingsHolder
         gbGetWatchedState.Text = Master.eLang.GetString(1071, "Watched State")
         gbGetWatchedStateMovies.Text = Master.eLang.GetString(36, "Movies")
         gbGetWatchedStateTVEpisodes.Text = Master.eLang.GetString(682, "Episodes")
-        gbSettingsGeneral.Text = Master.eLang.GetString(420, "Settings")
+        gbHosts.Text = Master.eLang.GetString(420, "Settings")
     End Sub
 
     ''' <summary>
@@ -209,7 +209,7 @@ Public Class frmSettingsHolder
     ''' <remarks>
     ''' 2015/07/08 Cocotus - First implementation
     ''' </remarks>
-    Private Sub chkPlayCount_CheckedChanged(sender As Object, e As EventArgs) Handles chkGetWatchedState.CheckedChanged
+    Private Sub chkGetWatchedState_CheckedChanged(sender As Object, e As EventArgs) Handles chkGetWatchedState.CheckedChanged
         cbGetWatchedStateHost.Enabled = chkGetWatchedState.Checked
         gbGetWatchedStateMovies.Enabled = chkGetWatchedState.Checked
         gbGetWatchedStateTVEpisodes.Enabled = chkGetWatchedState.Checked
@@ -217,13 +217,14 @@ Public Class frmSettingsHolder
     End Sub
 
     Private Sub EnableApplyButton() Handles cbGetWatchedStateHost.SelectedIndexChanged,
-            chkGetWatchedStateBeforeEdit_Movie.CheckedChanged,
-            chkGetWatchedStateBeforeEdit_TVEpisode.CheckedChanged,
-            chkGetWatchedStateScraperMulti_Movie.CheckedChanged,
-            chkGetWatchedStateScraperMulti_TVEpisode.CheckedChanged,
-            chkGetWatchedStateScraperSingle_Movie.CheckedChanged,
-            chkGetWatchedStateScraperSingle_TVEpisode.CheckedChanged,
-            chkNotification.CheckedChanged
+        chkGetWatchedStateBeforeEdit_Movie.CheckedChanged,
+        chkGetWatchedStateBeforeEdit_TVEpisode.CheckedChanged,
+        chkGetWatchedStateScraperMulti_Movie.CheckedChanged,
+        chkGetWatchedStateScraperMulti_TVEpisode.CheckedChanged,
+        chkGetWatchedStateScraperSingle_Movie.CheckedChanged,
+        chkGetWatchedStateScraperSingle_TVEpisode.CheckedChanged,
+        chkNotification.CheckedChanged
+
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
