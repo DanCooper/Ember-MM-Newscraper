@@ -216,6 +216,9 @@
   <ItemGroup>
     <None Include="Resources\menuRemove.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\menuWatchedState.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

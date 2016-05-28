@@ -6886,6 +6886,8 @@ Public Class Settings
         GeneralSplitterDistanceTVShow = 200
         GeneralTVEpisodeTheme = "Default"
         GeneralTVShowTheme = "Default"
+        GeneralWindowLoc = New Point(10, 10)
+        GeneralWindowSize = New Size(1024, 768)
         GeneralWindowState = FormWindowState.Maximized
         MovieActorThumbsExtExpertBDMV = ".jpg"
         MovieActorThumbsExtExpertMulti = ".jpg"
