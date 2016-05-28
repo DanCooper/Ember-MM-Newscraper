@@ -191,10 +191,19 @@ Namespace TVDBs
             If String.IsNullOrEmpty(strID) OrElse strID.Length < 2 Then Return Nothing
 
             Dim nTVShow As New MediaContainers.TVShow
+            Dim strTVDBID As String = String.Empty
 
             If bwTVDB.CancellationPending Then Return Nothing
 
-            Dim APIResult As Task(Of TVDB.Model.SeriesDetails) = Task.Run(Function() GetFullSeriesById(CInt(strID)))
+            If strID.StartsWith("tt") Then
+                strTVDBID = GetTVDBbyIMDB(strID)
+            Else
+                strTVDBID = strID
+            End If
+
+            If String.IsNullOrEmpty(strTVDBID) Then Return Nothing
+
+            Dim APIResult As Task(Of TVDB.Model.SeriesDetails) = Task.Run(Function() GetFullSeriesById(CInt(strTVDBID)))
             If APIResult Is Nothing OrElse APIResult.Result Is Nothing Then
                 Return Nothing
             End If
