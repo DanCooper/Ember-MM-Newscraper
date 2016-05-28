@@ -196,6 +196,7 @@ Public Class frmMain
     Delegate Sub DelegateEvent_MovieSet(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object)
     Delegate Sub DelegateEvent_TVShow(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object)
 
+    Delegate Sub Delegate_dtListAddRow(ByVal dTable As DataTable, ByVal dRow As DataRow)
     Delegate Sub Delegate_dtListRemoveRow(ByVal dTable As DataTable, ByVal dRow As DataRow)
     Delegate Sub Delegate_dtListUpdateRow(ByVal dRow As DataRow, ByVal v As DataRow)
 
@@ -606,24 +607,19 @@ Public Class frmMain
             Application.DoEvents()
 
             ClearInfo()
-            ClearFilters_Movies()
+            'ClearFilters_Movies()
             ClearFilters_MovieSets()
             ClearFilters_Shows()
-            EnableFilters_Movies(False)
+            'EnableFilters_Movies(False)
             EnableFilters_MovieSets(False)
             EnableFilters_Shows(False)
 
             SetControlsEnabled(False)
-            txtSearchMovies.Text = String.Empty
+            'txtSearchMovies.Text = String.Empty
             txtSearchMovieSets.Text = String.Empty
             txtSearchShows.Text = String.Empty
 
             fScanner.CancelAndWait()
-
-            If Scan.Movies Then
-                prevRow_Movie = -1
-                dgvMovies.DataSource = Nothing
-            End If
 
             If Scan.MovieSets Then
                 prevRow_MovieSet = -1
@@ -8254,6 +8250,10 @@ Public Class frmMain
         dgvMovies.Invalidate()
     End Sub
 
+    Sub dtListAddRow(ByVal dTable As DataTable, ByVal dRow As DataRow)
+        dTable.Rows.Add(dRow)
+    End Sub
+
     Sub dtListRemoveRow(ByVal dTable As DataTable, ByVal dRow As DataRow)
         dTable.Rows.Remove(dRow)
     End Sub
@@ -14674,6 +14674,34 @@ Public Class frmMain
         RewriteAll_Movie()
     End Sub
     ''' <summary>
+    ''' Adds a new single Movie row with informations from DB
+    ''' </summary>
+    ''' <param name="lngID"></param>
+    ''' <remarks></remarks>
+    Private Sub AddRow_Movie(ByVal lngID As Long)
+        If lngID = -1 Then Return
+
+        Dim myDelegate As New Delegate_dtListAddRow(AddressOf dtListAddRow)
+        Dim newRow As DataRow = Nothing
+        Dim newTable As New DataTable
+
+        Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM movielist WHERE idMovie={0}", lngID))
+        If newTable.Rows.Count = 1 Then
+            newRow = newTable.Rows.Item(0)
+        End If
+
+        Dim dRow = dtMovies.NewRow()
+        dRow.ItemArray = newRow.ItemArray
+
+        If newRow IsNot Nothing Then
+            If InvokeRequired Then
+                Invoke(myDelegate, New Object() {dtMovies, dRow})
+            Else
+                dtMovies.Rows.Add(dRow)
+            End If
+        End If
+    End Sub
+    ''' <summary>
     ''' Refresh a single Movie row with informations from DB
     ''' </summary>
     ''' <param name="MovieID"></param>
@@ -15410,6 +15438,7 @@ Public Class frmMain
         Select Case eProgressValue.Type
             Case Enums.ScannerEventType.AddedMovie
                 SetStatus(String.Concat(Master.eLang.GetString(815, "Added Movie:"), " ", eProgressValue.Message))
+                AddRow_Movie(eProgressValue.ID)
             Case Enums.ScannerEventType.AddedTVEpisode
                 SetStatus(String.Concat(Master.eLang.GetString(814, "Added Episode:"), " ", eProgressValue.Message))
             Case Enums.ScannerEventType.CleaningDatabase
@@ -15422,7 +15451,7 @@ Public Class frmMain
     Private Sub ScanningCompleted()
         If Not Master.isCL Then
             SetStatus(String.Empty)
-            FillList(True, True, True)
+            FillList(False, True, True)
             tspbLoading.Visible = False
             tslLoading.Visible = False
             LoadingDone = True

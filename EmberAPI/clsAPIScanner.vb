@@ -1336,7 +1336,7 @@ Public Class Scanner
                         currMovieContainer.Source = sSource
                         currMovieContainer.Subtitles = New List(Of MediaInfo.Subtitle)
                         Load_Movie(currMovieContainer, True)
-                        bwPrelim.ReportProgress(-1, New ProgressValue With {.Type = Enums.ScannerEventType.AddedMovie, .Message = currMovieContainer.Movie.Title})
+                        bwPrelim.ReportProgress(-1, New ProgressValue With {.Type = Enums.ScannerEventType.AddedMovie, .ID = currMovieContainer.ID, .Message = currMovieContainer.Movie.Title})
                     End If
 
                 Else
@@ -1378,7 +1378,7 @@ Public Class Scanner
                         currMovieContainer.Source = sSource
                         currMovieContainer.Subtitles = New List(Of MediaInfo.Subtitle)
                         Load_Movie(currMovieContainer, True)
-                        bwPrelim.ReportProgress(-1, New ProgressValue With {.Type = Enums.ScannerEventType.AddedMovie, .Message = currMovieContainer.Movie.Title})
+                        bwPrelim.ReportProgress(-1, New ProgressValue With {.Type = Enums.ScannerEventType.AddedMovie, .ID = currMovieContainer.ID, .Message = currMovieContainer.Movie.Title})
                     Next
                 End If
 
@@ -1832,6 +1832,7 @@ Public Class Scanner
 
 #Region "Fields"
 
+        Dim ID As Long
         Dim Message As String
         Dim Type As Enums.ScannerEventType
 
