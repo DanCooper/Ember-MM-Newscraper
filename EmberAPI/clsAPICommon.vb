@@ -890,9 +890,15 @@ Public Class Enums
         None = 99
     End Enum
 
-    Public Enum TaskType As Integer
-        CleanFolders = 0
-        CopyBackdrops = 1
+    Public Enum TaskManagerEventType As Integer
+        RefreshRow = 0
+        SimpleMessage = 1
+    End Enum
+
+    Public Enum TaskManagerType As Integer
+        CopyBackdrops = 0
+        Reload = 1
+        SetWatchedState = 2
     End Enum
 
     Public Enum TVBannerSize As Integer

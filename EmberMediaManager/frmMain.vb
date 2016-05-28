@@ -40,7 +40,6 @@ Public Class frmMain
     Friend WithEvents bwLoadShowInfo As New ComponentModel.BackgroundWorker
     Friend WithEvents bwMovieScraper As New ComponentModel.BackgroundWorker
     Friend WithEvents bwMovieSetScraper As New ComponentModel.BackgroundWorker
-    Friend WithEvents bwNonScrape As New ComponentModel.BackgroundWorker
     Friend WithEvents bwReload_Movies As New ComponentModel.BackgroundWorker
     Friend WithEvents bwReload_MovieSets As New ComponentModel.BackgroundWorker
     Friend WithEvents bwReload_TVShows As New ComponentModel.BackgroundWorker
@@ -75,6 +74,8 @@ Public Class frmMain
     Private dtTVShows As New DataTable
 
     Private fScanner As New Scanner
+    Private fTaskManager As New TaskManager
+
     Private GenreImage As Image
     Private InfoCleared As Boolean = False
     Private LoadingDone As Boolean = False
@@ -818,12 +819,11 @@ Public Class frmMain
         If bwReload_MovieSets.IsBusy Then bwReload_MovieSets.CancelAsync()
         If bwReload_TVShows.IsBusy Then bwReload_TVShows.CancelAsync()
         If bwRewrite_Movies.IsBusy Then bwRewrite_Movies.CancelAsync()
-        If bwNonScrape.IsBusy Then bwNonScrape.CancelAsync()
         If bwTVEpisodeScraper.IsBusy Then bwTVEpisodeScraper.CancelAsync()
         If bwTVScraper.IsBusy Then bwTVScraper.CancelAsync()
         If bwTVSeasonScraper.IsBusy Then bwTVSeasonScraper.CancelAsync()
         While bwMovieScraper.IsBusy OrElse bwReload_Movies.IsBusy OrElse bwMovieSetScraper.IsBusy OrElse bwReload_MovieSets.IsBusy OrElse
-            bwNonScrape.IsBusy OrElse bwReload_TVShows.IsBusy OrElse bwRewrite_Movies.IsBusy OrElse bwTVEpisodeScraper.IsBusy OrElse bwTVScraper.IsBusy OrElse
+            bwReload_TVShows.IsBusy OrElse bwRewrite_Movies.IsBusy OrElse bwTVEpisodeScraper.IsBusy OrElse bwTVScraper.IsBusy OrElse
             bwTVSeasonScraper.IsBusy
             Application.DoEvents()
             Threading.Thread.Sleep(50)
@@ -1592,7 +1592,7 @@ Public Class frmMain
             If Not e.Cancelled Then
                 FillScreenInfoWith_Movie()
             Else
-                If Not bwMovieScraper.IsBusy AndAlso Not bwReload_Movies.IsBusy AndAlso Not bwRewrite_Movies.IsBusy AndAlso Not bwCleanDB.IsBusy AndAlso Not bwNonScrape.IsBusy Then
+                If Not bwMovieScraper.IsBusy AndAlso Not bwReload_Movies.IsBusy AndAlso Not bwRewrite_Movies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
                     SetControlsEnabled(True)
                     EnableFilters_Movies(True)
                 Else
@@ -1652,7 +1652,7 @@ Public Class frmMain
             If Not e.Cancelled Then
                 FillScreenInfoWith_MovieSet()
             Else
-                If Not bwMovieSetScraper.IsBusy AndAlso Not bwReload_MovieSets.IsBusy AndAlso Not bwCleanDB.IsBusy AndAlso Not bwNonScrape.IsBusy Then
+                If Not bwMovieSetScraper.IsBusy AndAlso Not bwReload_MovieSets.IsBusy AndAlso Not bwCleanDB.IsBusy Then
                     SetControlsEnabled(True)
                     EnableFilters_MovieSets(True)
                 Else
@@ -2734,83 +2734,6 @@ Public Class frmMain
             tspbLoading.Value += e.ProgressPercentage
             SetStatus(e.UserState.ToString)
         End If
-    End Sub
-
-    Private Sub bwNonScrape_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwNonScrape.RunWorkerCompleted
-        tslLoading.Visible = False
-        tspbLoading.Visible = False
-        btnCancel.Visible = False
-        lblCanceling.Visible = False
-        prbCanceling.Visible = False
-        pnlCancel.Visible = False
-        SetControlsEnabled(True)
-        EnableFilters_Movies(True)
-        EnableFilters_MovieSets(True)
-        EnableFilters_Shows(True)
-        Cursor = Cursors.Default
-    End Sub
-
-    Private Sub bwNonScrape_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwNonScrape.DoWork
-        'Dim scrapeMovie As Database.DBElement
-        Dim iCount As Integer = 0
-        Dim Args As Arguments = DirectCast(e.Argument, Arguments)
-        If dtMovies.Rows.Count > 0 Then
-
-            Select Case Args.TaskType
-                Case Enums.TaskType.CleanFolders
-                    FileUtils.CleanUp.DoCleanUp()
-
-                        'Dim fDeleter As New FileUtils.Delete
-                        'For Each drvRow As DataRow In dtMovies.Rows
-                        '    Try
-                        '        bwNonScrape.ReportProgress(iCount, drvRow.Item("Title"))
-                        '        iCount += 1
-                        '        If Convert.ToBoolean(drvRow.Item("Lock")) Then Continue For
-
-                        '        If bwNonScrape.CancellationPending Then GoTo doCancel
-
-                        '        scrapeMovie = Master.DB.Load_Movie(Convert.ToInt64(drvRow.Item("idMovie")))
-
-                        '        fDeleter.GetItemsToDelete(True, scrapeMovie)
-
-                        '        Reload_Movie(Convert.ToInt64(drvRow.Item("idMovie")), True, False)
-
-                        '        bwNonScrape.ReportProgress(iCount, String.Format("[[{0}]]", drvRow.Item("idMovie").ToString))
-                        '    Catch ex As Exception
-                        '        logger.Error(ex, New StackFrame().GetMethod().Name)
-                        '    End Try
-                        'Next
-                Case Enums.TaskType.CopyBackdrops
-                    Dim sPath As String = String.Empty
-                    For Each drvRow As DataRow In dtMovies.Rows
-                        If bwNonScrape.CancellationPending Then Return
-
-                        bwNonScrape.ReportProgress(iCount, drvRow.Item("Title").ToString)
-                        iCount += 1
-
-                        FileUtils.Common.CopyFanartToBackdropsPath(drvRow.Item("FanartPath").ToString, Enums.ContentType.Movie)
-                    Next
-            End Select
-        End If
-    End Sub
-
-    Private Sub bwNonScrape_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwNonScrape.ProgressChanged
-        If Not Master.isCL Then
-            If Regex.IsMatch(e.UserState.ToString, "\[\[[0-9]+\]\]") AndAlso dgvMovies.SelectedRows.Count > 0 Then
-                Try
-                    If dgvMovies.SelectedRows(0).Cells("idMovie").Value.ToString = e.UserState.ToString.Replace("[[", String.Empty).Replace("]]", String.Empty).Trim Then
-                        SelectRow_Movie(dgvMovies.SelectedRows(0).Index)
-                    End If
-                Catch ex As Exception
-                    logger.Error(ex, New StackFrame().GetMethod().Name)
-                End Try
-            Else
-                SetStatus(e.UserState.ToString)
-                tspbLoading.Value = e.ProgressPercentage
-            End If
-        End If
-
-        dgvMovies.Invalidate()
     End Sub
 
     Private Sub bwReload_Movies_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwReload_Movies.DoWork
@@ -3941,35 +3864,36 @@ Public Class frmMain
     End Sub
 
     Private Sub CleanFiles()
-        Try
-            Dim sWarning As String = String.Empty
-            Dim sWarningFile As String = String.Empty
-            With Master.eSettings
-                If .FileSystemExpertCleaner Then
-                    sWarning = String.Concat(Master.eLang.GetString(102, "WARNING: If you continue, all non-whitelisted file types will be deleted!"), Environment.NewLine, Environment.NewLine, Master.eLang.GetString(101, "Are you sure you want to continue?"))
-                Else
-                    If .CleanDotFanartJPG Then sWarningFile += String.Concat("<movie>.fanart.jpg", Environment.NewLine)
-                    If .CleanFanartJPG Then sWarningFile += String.Concat("fanart.jpg", Environment.NewLine)
-                    If .CleanFolderJPG Then sWarningFile += String.Concat("folder.jpg", Environment.NewLine)
-                    If .CleanMovieFanartJPG Then sWarningFile += String.Concat("<movie>-fanart.jpg", Environment.NewLine)
-                    If .CleanMovieJPG Then sWarningFile += String.Concat("movie.jpg", Environment.NewLine)
-                    If .CleanMovieNameJPG Then sWarningFile += String.Concat("<movie>.jpg", Environment.NewLine)
-                    If .CleanMovieNFO Then sWarningFile += String.Concat("movie.nfo", Environment.NewLine)
-                    If .CleanMovieNFOB Then sWarningFile += String.Concat("<movie>.nfo", Environment.NewLine)
-                    If .CleanMovieTBN Then sWarningFile += String.Concat("movie.tbn", Environment.NewLine)
-                    If .CleanMovieTBNB Then sWarningFile += String.Concat("<movie>.tbn", Environment.NewLine)
-                    If .CleanPosterJPG Then sWarningFile += String.Concat("poster.jpg", Environment.NewLine)
-                    If .CleanPosterTBN Then sWarningFile += String.Concat("poster.tbn", Environment.NewLine)
-                    If .CleanExtrathumbs Then sWarningFile += String.Concat("/extrathumbs/", Environment.NewLine)
-                    sWarning = String.Concat(Master.eLang.GetString(103, "WARNING: If you continue, all files of the following types will be permanently deleted:"), Environment.NewLine, Environment.NewLine, sWarningFile, Environment.NewLine, Master.eLang.GetString(101, "Are you sure you want to continue?"))
-                End If
-            End With
-            If MessageBox.Show(sWarning, Master.eLang.GetString(104, "Are you sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Warning) = DialogResult.Yes Then
-                NonScrape(Enums.TaskType.CleanFolders)
-            End If
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
+        FileUtils.CleanUp.DoCleanUp()
+        'Try
+        '    Dim sWarning As String = String.Empty
+        '    Dim sWarningFile As String = String.Empty
+        '    With Master.eSettings
+        '        If .FileSystemExpertCleaner Then
+        '            sWarning = String.Concat(Master.eLang.GetString(102, "WARNING: If you continue, all non-whitelisted file types will be deleted!"), Environment.NewLine, Environment.NewLine, Master.eLang.GetString(101, "Are you sure you want to continue?"))
+        '        Else
+        '            If .CleanDotFanartJPG Then sWarningFile += String.Concat("<movie>.fanart.jpg", Environment.NewLine)
+        '            If .CleanFanartJPG Then sWarningFile += String.Concat("fanart.jpg", Environment.NewLine)
+        '            If .CleanFolderJPG Then sWarningFile += String.Concat("folder.jpg", Environment.NewLine)
+        '            If .CleanMovieFanartJPG Then sWarningFile += String.Concat("<movie>-fanart.jpg", Environment.NewLine)
+        '            If .CleanMovieJPG Then sWarningFile += String.Concat("movie.jpg", Environment.NewLine)
+        '            If .CleanMovieNameJPG Then sWarningFile += String.Concat("<movie>.jpg", Environment.NewLine)
+        '            If .CleanMovieNFO Then sWarningFile += String.Concat("movie.nfo", Environment.NewLine)
+        '            If .CleanMovieNFOB Then sWarningFile += String.Concat("<movie>.nfo", Environment.NewLine)
+        '            If .CleanMovieTBN Then sWarningFile += String.Concat("movie.tbn", Environment.NewLine)
+        '            If .CleanMovieTBNB Then sWarningFile += String.Concat("<movie>.tbn", Environment.NewLine)
+        '            If .CleanPosterJPG Then sWarningFile += String.Concat("poster.jpg", Environment.NewLine)
+        '            If .CleanPosterTBN Then sWarningFile += String.Concat("poster.tbn", Environment.NewLine)
+        '            If .CleanExtrathumbs Then sWarningFile += String.Concat("/extrathumbs/", Environment.NewLine)
+        '            sWarning = String.Concat(Master.eLang.GetString(103, "WARNING: If you continue, all files of the following types will be permanently deleted:"), Environment.NewLine, Environment.NewLine, sWarningFile, Environment.NewLine, Master.eLang.GetString(101, "Are you sure you want to continue?"))
+        '        End If
+        '    End With
+        '    If MessageBox.Show(sWarning, Master.eLang.GetString(104, "Are you sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Warning) = DialogResult.Yes Then
+        '        NonScrape(Enums.TaskManagerType.CleanFolders)
+        '    End If
+        'Catch ex As Exception
+        '    logger.Error(ex, New StackFrame().GetMethod().Name)
+        'End Try
     End Sub
 
     Private Sub mnuMainToolsCleanFiles_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsCleanFiles.Click, cmnuTrayToolsCleanFiles.Click
@@ -4449,20 +4373,36 @@ Public Class frmMain
         End If
     End Sub
 
+    Private Sub cmnuMovieUnwatched_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUnwatched.Click
+        SetWatchedState_Movie(False)
+    End Sub
+
     Private Sub cmnuMovieWatched_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieWatched.Click
-        SetWatchedState_Movie()
+        SetWatchedState_Movie(True)
+    End Sub
+
+    Private Sub cmnuEpisodeUnwatched_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeUnwatched.Click
+        SetWatchedState_TVEpisode(False)
     End Sub
 
     Private Sub cmnuEpisodeWatched_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeWatched.Click
-        SetWatchedState_TVEpisode()
+        SetWatchedState_TVEpisode(True)
+    End Sub
+
+    Private Sub cmnuSeasonUnwatched_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuSeasonUnwatched.Click
+        SetWatchedState_TVSeason(False)
     End Sub
 
     Private Sub cmnuHasWatchedSeason_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuSeasonWatched.Click
-        SetWatchedState_TVSeason()
+        SetWatchedState_TVSeason(True)
+    End Sub
+
+    Private Sub cmnuShowUnwatched_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowUnwatched.Click
+        SetWatchedState_TVShow(False)
     End Sub
 
     Private Sub cmnuShowWatched_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowWatched.Click
-        SetWatchedState_TVShow()
+        SetWatchedState_TVShow(True)
     End Sub
 
     Private Sub cmnuEpisodeLock_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeLock.Click
@@ -5735,7 +5675,7 @@ Public Class frmMain
     End Sub
 
     Private Sub mnuMainToolsBackdrops_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsBackdrops.Click, cmnuTrayToolsBackdrops.Click
-        NonScrape(Enums.TaskType.CopyBackdrops)
+        fTaskManager.AddTask(New TaskManager.TaskItem With {.ContentType = Enums.ContentType.Movie, .TaskType = Enums.TaskManagerType.CopyBackdrops})
     End Sub
     ''' <summary>
     ''' Populate the form's Genre panel and picture box arrays with the 
@@ -5823,7 +5763,8 @@ Public Class frmMain
                     currRow_Movie = dgvMovies.SelectedRows(0).Index
                 End If
             Else
-                SetWatchedState_Movie()
+                SetWatchedState_Movie(If(Not String.IsNullOrEmpty(dgvMovies.Rows(e.RowIndex).Cells("Playcount").Value.ToString) AndAlso
+                                      Not dgvMovies.Rows(e.RowIndex).Cells("Playcount").Value.ToString = "0", False, True))
             End If
 
         ElseIf Master.eSettings.MovieClickScrape AndAlso colName = "HasSet" AndAlso Not bwMovieScraper.IsBusy Then
@@ -6196,7 +6137,7 @@ Public Class frmMain
 
     Private Sub dgvMovies_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dgvMovies.MouseDown
         If e.Button = MouseButtons.Right And dgvMovies.RowCount > 0 Then
-            If bwCleanDB.IsBusy OrElse bwMovieScraper.IsBusy OrElse bwNonScrape.IsBusy Then
+            If bwCleanDB.IsBusy OrElse bwMovieScraper.IsBusy Then
                 cmnuMovieTitle.Text = Master.eLang.GetString(845, ">> No Item Selected <<")
                 Return
             End If
@@ -6209,7 +6150,8 @@ Public Class frmMain
                 If dgvMovies.SelectedRows.Count > 1 AndAlso dgvMovies.Rows(dgvHTI.RowIndex).Selected Then
                     Dim setMark As Boolean = False
                     Dim setLock As Boolean = False
-                    Dim setWatched As Boolean = False
+                    Dim bEnableUnwatched As Boolean = False
+                    Dim bEnableWatched As Boolean = False
 
                     cmnuMovie.Enabled = True
                     cmnuMovieChange.Visible = False
@@ -6223,26 +6165,34 @@ Public Class frmMain
                         'else they are all marked, so set menu to unmark
                         If Not Convert.ToBoolean(sRow.Cells("Mark").Value) Then
                             setMark = True
-                            If setLock AndAlso setWatched Then Exit For
+                            If setLock AndAlso bEnableUnwatched AndAlso bEnableWatched Then Exit For
                         End If
                         'if any one item is set as unlocked, set menu to lock
                         'else they are all locked so set menu to unlock
                         If Not Convert.ToBoolean(sRow.Cells("Lock").Value) Then
                             setLock = True
-                            If setMark AndAlso setWatched Then Exit For
+                            If setMark AndAlso bEnableUnwatched AndAlso bEnableWatched Then Exit For
                         End If
-                        'if any one item is set as unwatched, set menu to watched
-                        'else they are all watched so set menu to not watched
+                        'if any one item is set as unwatched, enable menu "Mark as Watched"
+                        'if any one item is set as watched, enable menu "Mark as Unwatched"
                         If String.IsNullOrEmpty(sRow.Cells("Playcount").Value.ToString) OrElse sRow.Cells("Playcount").Value.ToString = "0" Then
-                            setWatched = True
-                            If setLock AndAlso setMark Then Exit For
+                            bEnableWatched = True
+                            If setLock AndAlso setMark AndAlso bEnableUnwatched Then Exit For
+                        Else
+                            bEnableUnwatched = True
+                            If setLock AndAlso setMark AndAlso bEnableWatched Then Exit For
                         End If
                     Next
 
                     cmnuMovieMark.Text = If(setMark, Master.eLang.GetString(23, "Mark"), Master.eLang.GetString(107, "Unmark"))
                     cmnuMovieLock.Text = If(setLock, Master.eLang.GetString(24, "Lock"), Master.eLang.GetString(108, "Unlock"))
                     cmnuMovieTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
-                    cmnuMovieWatched.Text = If(setWatched, Master.eLang.GetString(981, "Watched"), Master.eLang.GetString(980, "Not Watched"))
+
+                    'Watched / Unwatched menu
+                    cmnuMovieUnwatched.Enabled = bEnableUnwatched
+                    cmnuMovieUnwatched.Visible = bEnableUnwatched
+                    cmnuMovieWatched.Enabled = bEnableWatched
+                    cmnuMovieWatched.Visible = bEnableWatched
 
                     'Language submenu
                     mnuLanguagesLanguage.Tag = String.Empty
@@ -6283,7 +6233,13 @@ Public Class frmMain
                     cmnuMovieMark.Text = If(Convert.ToBoolean(dgvMovies.Item("Mark", dgvHTI.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
                     cmnuMovieLock.Text = If(Convert.ToBoolean(dgvMovies.Item("Lock", dgvHTI.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
                     cmnuMovieTitle.Text = String.Concat(">> ", dgvMovies.Item("Title", dgvHTI.RowIndex).Value, " <<")
-                    cmnuMovieWatched.Text = If(Not String.IsNullOrEmpty(dgvMovies.Item("Playcount", dgvHTI.RowIndex).Value.ToString) AndAlso Not dgvMovies.Item("Playcount", dgvHTI.RowIndex).Value.ToString = "0", Master.eLang.GetString(980, "Not Watched"), Master.eLang.GetString(981, "Watched"))
+
+                    'Watched / Unwatched menu
+                    Dim bIsWatched As Boolean = Not String.IsNullOrEmpty(dgvMovies.Item("Playcount", dgvHTI.RowIndex).Value.ToString) AndAlso Not dgvMovies.Item("Playcount", dgvHTI.RowIndex).Value.ToString = "0"
+                    cmnuMovieUnwatched.Enabled = bIsWatched
+                    cmnuMovieUnwatched.Visible = bIsWatched
+                    cmnuMovieWatched.Enabled = Not bIsWatched
+                    cmnuMovieWatched.Visible = Not bIsWatched
 
                     If Not dgvMovies.Rows(dgvHTI.RowIndex).Selected Then
                         prevRow_Movie = -1
@@ -6680,7 +6636,7 @@ Public Class frmMain
 
     Private Sub dgvMovieSets_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dgvMovieSets.MouseDown
         If e.Button = MouseButtons.Right And dgvMovieSets.RowCount > 0 Then
-            If bwCleanDB.IsBusy OrElse bwMovieSetScraper.IsBusy OrElse bwNonScrape.IsBusy Then
+            If bwCleanDB.IsBusy OrElse bwMovieSetScraper.IsBusy Then
                 cmnuMovieSetTitle.Text = Master.eLang.GetString(845, ">> No Item Selected <<")
                 Return
             End If
@@ -6878,7 +6834,8 @@ Public Class frmMain
                     End If
                 End If
             Else
-                SetWatchedState_TVEpisode()
+                SetWatchedState_TVEpisode(If(Not String.IsNullOrEmpty(dgvTVEpisodes.Rows(e.RowIndex).Cells("Playcount").Value.ToString) AndAlso
+                                      Not dgvTVEpisodes.Rows(e.RowIndex).Cells("Playcount").Value.ToString = "0", False, True))
             End If
 
         ElseIf Master.eSettings.TVGeneralClickScrape AndAlso
@@ -7196,7 +7153,8 @@ Public Class frmMain
                     Else
                         Dim setMark As Boolean = False
                         Dim setLock As Boolean = False
-                        Dim setWatched As Boolean = False
+                        Dim bEnableUnwatched As Boolean = False
+                        Dim bEnableWatched As Boolean = False
 
                         ShowEpisodeMenuItems(True)
 
@@ -7213,25 +7171,33 @@ Public Class frmMain
                             'else they are all marked, so set menu to unmark
                             If Not Convert.ToBoolean(sRow.Cells("Mark").Value) Then
                                 setMark = True
-                                If setLock AndAlso setWatched Then Exit For
+                                If setLock AndAlso bEnableUnwatched AndAlso bEnableWatched Then Exit For
                             End If
                             'if any one item is set as unlocked, set menu to lock
                             'else they are all locked so set menu to unlock
                             If Not Convert.ToBoolean(sRow.Cells("Lock").Value) Then
                                 setLock = True
-                                If setMark AndAlso setWatched Then Exit For
+                                If setMark AndAlso bEnableUnwatched AndAlso bEnableWatched Then Exit For
                             End If
-                            'if any one item is set as unwatched, set menu to watched
-                            'else they are all watched so set menu to not watched
+                            'if any one item is set as unwatched, enable menu "Mark as Watched"
+                            'if any one item is set as watched, enable menu "Mark as Unwatched"
                             If String.IsNullOrEmpty(sRow.Cells("Playcount").Value.ToString) OrElse sRow.Cells("Playcount").Value.ToString = "0" Then
-                                setWatched = True
-                                If setLock AndAlso setMark Then Exit For
+                                bEnableWatched = True
+                                If setLock AndAlso setMark AndAlso bEnableUnwatched Then Exit For
+                            Else
+                                bEnableUnwatched = True
+                                If setLock AndAlso setMark AndAlso bEnableWatched Then Exit For
                             End If
                         Next
 
                         cmnuEpisodeMark.Text = If(setMark, Master.eLang.GetString(23, "Mark"), Master.eLang.GetString(107, "Unmark"))
                         cmnuEpisodeLock.Text = If(setLock, Master.eLang.GetString(24, "Lock"), Master.eLang.GetString(108, "Unlock"))
-                        cmnuEpisodeWatched.Text = If(setWatched, Master.eLang.GetString(981, "Watched"), Master.eLang.GetString(980, "Not Watched"))
+
+                        'Watched / Unwatched menu
+                        cmnuEpisodeUnwatched.Enabled = bEnableUnwatched
+                        cmnuEpisodeUnwatched.Visible = bEnableUnwatched
+                        cmnuEpisodeWatched.Enabled = bEnableWatched
+                        cmnuEpisodeWatched.Visible = bEnableWatched
                     End If
                 Else
                     cmnuEpisodeTitle.Text = String.Concat(">> ", dgvTVEpisodes.Item("Title", dgvHTI.RowIndex).Value, " <<")
@@ -7264,7 +7230,13 @@ Public Class frmMain
 
                         cmnuEpisodeMark.Text = If(Convert.ToBoolean(dgvTVEpisodes.Item("Mark", dgvHTI.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
                         cmnuEpisodeLock.Text = If(Convert.ToBoolean(dgvTVEpisodes.Item("Lock", dgvHTI.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
-                        cmnuEpisodeWatched.Text = If(Not String.IsNullOrEmpty(dgvTVEpisodes.Item("Playcount", dgvHTI.RowIndex).Value.ToString) AndAlso Not dgvTVEpisodes.Item("Playcount", dgvHTI.RowIndex).Value.ToString = "0", Master.eLang.GetString(980, "Not Watched"), Master.eLang.GetString(981, "Watched"))
+
+                        'Watched / Unwatched menu
+                        Dim bIsWatched As Boolean = Not String.IsNullOrEmpty(dgvTVEpisodes.Item("Playcount", dgvHTI.RowIndex).Value.ToString) AndAlso Not dgvTVEpisodes.Item("Playcount", dgvHTI.RowIndex).Value.ToString = "0"
+                        cmnuEpisodeUnwatched.Enabled = bIsWatched
+                        cmnuEpisodeUnwatched.Visible = bIsWatched
+                        cmnuEpisodeWatched.Enabled = Not bIsWatched
+                        cmnuEpisodeWatched.Visible = Not bIsWatched
                     End If
 
                 End If
@@ -7315,7 +7287,9 @@ Public Class frmMain
                     End If
                 End If
             Else
-                SetWatchedState_TVSeason()
+                If Not CInt(dgvTVSeasons.Rows(e.RowIndex).Cells("Season").Value) = 999 Then
+                    SetWatchedState_TVSeason(If(CBool(dgvTVSeasons.Rows(e.RowIndex).Cells("HasWatched").Value), False, True))
+                End If
             End If
 
         ElseIf Master.eSettings.TVGeneralClickScrape AndAlso
@@ -7568,7 +7542,8 @@ Public Class frmMain
                 If dgvTVSeasons.SelectedRows.Count > 1 AndAlso dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected Then
                     Dim setMark As Boolean = False
                     Dim setLock As Boolean = False
-                    Dim setWatched As Boolean = False
+                    Dim bEnableUnwatched As Boolean = False
+                    Dim bEnableWatched As Boolean = False
 
                     cmnuSeason.Enabled = True
                     cmnuSeasonEdit.Visible = False
@@ -7580,42 +7555,52 @@ Public Class frmMain
                         'else they are all marked, so set menu to unmark
                         If Not Convert.ToBoolean(sRow.Cells("Mark").Value) Then
                             setMark = True
-                            If setLock AndAlso setWatched Then Exit For
+                            If setLock AndAlso bEnableUnwatched AndAlso bEnableWatched Then Exit For
                         End If
                         'if any one item is set as unlocked, set menu to lock
                         'else they are all locked so set menu to unlock
                         If Not Convert.ToBoolean(sRow.Cells("Lock").Value) Then
                             setLock = True
-                            If setMark AndAlso setWatched Then Exit For
+                            If setMark AndAlso bEnableUnwatched AndAlso bEnableWatched Then Exit For
                         End If
-                        'if any one item is set as unwatched, set menu to watched
-                        'else they are all watched so set menu to not watched
+                        'if any one item is set as unwatched, enable menu "Mark as Watched"
+                        'if any one item is set as watched, enable menu "Mark as Unwatched"
                         If Not CInt(sRow.Cells("Season").Value) = 999 AndAlso Not Convert.ToBoolean(sRow.Cells("HasWatched").Value) Then
-                            setWatched = True
-                            If setLock AndAlso setMark Then Exit For
+                            bEnableWatched = True
+                            If setLock AndAlso setMark AndAlso bEnableUnwatched Then Exit For
+                        Else
+                            bEnableUnwatched = True
+                            If setLock AndAlso setMark AndAlso bEnableWatched Then Exit For
                         End If
                     Next
 
                     cmnuSeasonMark.Text = If(setMark, Master.eLang.GetString(23, "Mark"), Master.eLang.GetString(107, "Unmark"))
                     cmnuSeasonLock.Text = If(setLock, Master.eLang.GetString(24, "Lock"), Master.eLang.GetString(108, "Unlock"))
                     cmnuSeasonTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
-                    cmnuSeasonWatched.Text = If(setWatched, Master.eLang.GetString(981, "Watched"), Master.eLang.GetString(980, "Not Watched"))
+
+                    'Watched / Unwatched menu
+                    cmnuSeasonUnwatched.Enabled = bEnableUnwatched
+                    cmnuSeasonUnwatched.Visible = bEnableUnwatched
+                    cmnuSeasonWatched.Enabled = bEnableWatched
+                    cmnuSeasonWatched.Visible = bEnableWatched
 
                 Else
                     cmnuSeasonEdit.Visible = True
                     cmnuSeasonEditSeparator.Visible = True
                     cmnuSeasonScrape.Visible = True
-                    If CInt(dgvTVSeasons.Item("Season", dgvHTI.RowIndex).Value) = 999 Then
-                        cmnuSeasonWatched.Enabled = False
-                    Else
-                        cmnuSeasonWatched.Enabled = True
-                    End If
 
                     cmnuSeasonMark.Text = If(Convert.ToBoolean(dgvTVSeasons.Item("Mark", dgvHTI.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
                     cmnuSeasonLock.Text = If(Convert.ToBoolean(dgvTVSeasons.Item("Lock", dgvHTI.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
                     cmnuSeasonTitle.Text = String.Concat(">> ", dgvTVSeasons.Item("SeasonText", dgvHTI.RowIndex).Value, " <<")
-                    If Not CInt(dgvTVSeasons.Item("Season", dgvHTI.RowIndex).Value) = 999 Then cmnuSeasonWatched.Text = If(Convert.ToBoolean(dgvTVSeasons.Item("HasWatched", dgvHTI.RowIndex).Value), Master.eLang.GetString(980, "Not Watched"), Master.eLang.GetString(981, "Watched"))
                     cmnuSeasonEdit.Enabled = Convert.ToInt32(dgvTVSeasons.Item("Season", dgvHTI.RowIndex).Value) >= 0
+
+                    'Watched / Unwatched menu
+                    Dim bIsWatched As Boolean = Convert.ToBoolean(dgvTVShows.Item("HasWatched", dgvHTI.RowIndex).Value)
+                    Dim bIsAllSeasons As Boolean = CInt(dgvTVSeasons.Item("Season", dgvHTI.RowIndex).Value) = 999
+                    cmnuSeasonUnwatched.Enabled = bIsWatched AndAlso Not bIsAllSeasons
+                    cmnuSeasonUnwatched.Visible = bIsWatched AndAlso Not bIsAllSeasons
+                    cmnuSeasonWatched.Enabled = Not bIsWatched AndAlso Not bIsAllSeasons
+                    cmnuSeasonWatched.Visible = Not bIsWatched AndAlso Not bIsAllSeasons
 
                     If Not dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected OrElse Not currList = 1 Then
                         prevRow_TVSeason = -1
@@ -7676,7 +7661,7 @@ Public Class frmMain
                     End If
                 End If
             Else
-                SetWatchedState_TVShow()
+                SetWatchedState_TVShow(If(CBool(dgvTVShows.Rows(e.RowIndex).Cells("HasWatched").Value), False, True))
             End If
 
         ElseIf Master.eSettings.TVGeneralClickScrape AndAlso
@@ -7969,7 +7954,8 @@ Public Class frmMain
                 If dgvTVShows.SelectedRows.Count > 1 AndAlso dgvTVShows.Rows(dgvHTI.RowIndex).Selected Then
                     Dim setMark As Boolean = False
                     Dim setLock As Boolean = False
-                    Dim setWatched As Boolean = False
+                    Dim bEnableUnwatched As Boolean = False
+                    Dim bEnableWatched As Boolean = False
 
                     cmnuShow.Enabled = True
                     cmnuShowChange.Visible = False
@@ -7981,26 +7967,34 @@ Public Class frmMain
                         'else they are all marked, so set menu to unmark
                         If Not Convert.ToBoolean(sRow.Cells("Mark").Value) Then
                             setMark = True
-                            If setLock AndAlso setWatched Then Exit For
+                            If setLock AndAlso bEnableUnwatched AndAlso bEnableWatched Then Exit For
                         End If
                         'if any one item is set as unlocked, set menu to lock
                         'else they are all locked so set menu to unlock
                         If Not Convert.ToBoolean(sRow.Cells("Lock").Value) Then
                             setLock = True
-                            If setMark AndAlso setWatched Then Exit For
+                            If setMark AndAlso bEnableUnwatched AndAlso bEnableWatched Then Exit For
                         End If
-                        'if any one item is set as unwatched, set menu to watched
-                        'else they are all watched so set menu to not watched
+                        'if any one item is set as unwatched, enable menu "Mark as Watched"
+                        'if any one item is set as watched, enable menu "Mark as Unwatched"
                         If Not Convert.ToBoolean(sRow.Cells("HasWatched").Value) Then
-                            setWatched = True
-                            If setLock AndAlso setMark Then Exit For
+                            bEnableWatched = True
+                            If setLock AndAlso setMark AndAlso bEnableUnwatched Then Exit For
+                        Else
+                            bEnableUnwatched = True
+                            If setLock AndAlso setMark AndAlso bEnableWatched Then Exit For
                         End If
                     Next
 
                     cmnuShowMark.Text = If(setMark, Master.eLang.GetString(23, "Mark"), Master.eLang.GetString(107, "Unmark"))
                     cmnuShowLock.Text = If(setLock, Master.eLang.GetString(24, "Lock"), Master.eLang.GetString(108, "Unlock"))
                     cmnuShowTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
-                    cmnuShowWatched.Text = If(setWatched, Master.eLang.GetString(981, "Watched"), Master.eLang.GetString(980, "Not Watched"))
+
+                    'Watched / Unwatched menu
+                    cmnuShowUnwatched.Enabled = bEnableUnwatched
+                    cmnuShowUnwatched.Visible = bEnableUnwatched
+                    cmnuShowWatched.Enabled = bEnableWatched
+                    cmnuShowWatched.Visible = bEnableWatched
 
                     'Language submenu
                     mnuLanguagesLanguage.Tag = String.Empty
@@ -8039,7 +8033,13 @@ Public Class frmMain
                     cmnuShowMark.Text = If(Convert.ToBoolean(dgvTVShows.Item("Mark", dgvHTI.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
                     cmnuShowLock.Text = If(Convert.ToBoolean(dgvTVShows.Item("Lock", dgvHTI.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
                     cmnuShowTitle.Text = String.Concat(">> ", dgvTVShows.Item("Title", dgvHTI.RowIndex).Value, " <<")
-                    cmnuShowWatched.Text = If(Convert.ToBoolean(dgvTVShows.Item("HasWatched", dgvHTI.RowIndex).Value), Master.eLang.GetString(980, "Not Watched"), Master.eLang.GetString(981, "Watched"))
+
+                    'Watched / Unwatched menu
+                    Dim bIsWatched As Boolean = Convert.ToBoolean(dgvTVShows.Item("HasWatched", dgvHTI.RowIndex).Value)
+                    cmnuShowUnwatched.Enabled = bIsWatched
+                    cmnuShowUnwatched.Visible = bIsWatched
+                    cmnuShowWatched.Enabled = Not bIsWatched
+                    cmnuShowWatched.Visible = Not bIsWatched
 
                     If Not dgvTVShows.Rows(dgvHTI.RowIndex).Selected OrElse Not currList = 0 Then
                         prevRow_TVShow = -1
@@ -9522,7 +9522,7 @@ Public Class frmMain
 
             InfoCleared = False
 
-            If Not bwMovieScraper.IsBusy AndAlso Not bwReload_Movies.IsBusy AndAlso Not bwCleanDB.IsBusy AndAlso Not bwNonScrape.IsBusy Then
+            If Not bwMovieScraper.IsBusy AndAlso Not bwReload_Movies.IsBusy AndAlso Not bwCleanDB.IsBusy Then
                 SetControlsEnabled(True)
                 EnableFilters_Movies(True)
             Else
@@ -9581,7 +9581,7 @@ Public Class frmMain
 
             InfoCleared = False
 
-            If Not bwMovieSetScraper.IsBusy AndAlso Not bwReload_MovieSets.IsBusy AndAlso Not bwCleanDB.IsBusy AndAlso Not bwNonScrape.IsBusy Then
+            If Not bwMovieSetScraper.IsBusy AndAlso Not bwReload_MovieSets.IsBusy AndAlso Not bwCleanDB.IsBusy Then
                 SetControlsEnabled(True)
                 EnableFilters_MovieSets(True)
             Else
@@ -10276,10 +10276,12 @@ Public Class frmMain
         pnlGenre(0) = New Panel()
         pbGenre(0) = New PictureBox()
 
+        AddHandler fCommandLine.TaskEvent, AddressOf TaskRunCallBack
         AddHandler fScanner.ScannerUpdated, AddressOf ScannerUpdated
         AddHandler fScanner.ScanningCompleted, AddressOf ScanningCompleted
+        AddHandler fTaskManager.ProgressUpdate, AddressOf TaskManagerProgressUpdate
+        'AddHandler fTaskManager.TaskManagerDone, AddressOf ScanningCompleted
         AddHandler ModulesManager.Instance.GenericEvent, AddressOf GenericRunCallBack
-        AddHandler fCommandLine.TaskEvent, AddressOf TaskRunCallBack
 
         Functions.DGVDoubleBuffer(dgvMovies)
         Functions.DGVDoubleBuffer(dgvMovieSets)
@@ -10638,6 +10640,30 @@ Public Class frmMain
 
             Case Else
                 logger.Warn("Callback for <{0}> with no handler.", mType)
+        End Select
+    End Sub
+
+    Private Sub TaskManagerProgressUpdate(ByVal eProgressValue As TaskManager.ProgressValue)
+        Select Case eProgressValue.EventType
+
+            Case Enums.TaskManagerEventType.RefreshRow
+                Select Case eProgressValue.ContentType
+                    Case Enums.ContentType.Movie
+                        RefreshRow_Movie(eProgressValue.ID)
+                    Case Enums.ContentType.TVEpisode
+                        RefreshRow_TVEpisode(eProgressValue.ID)
+                    Case Enums.ContentType.TVSeason
+                        RefreshRow_TVSeason(eProgressValue.ID)
+                    Case Enums.ContentType.TVShow
+                        RefreshRow_TVShow(eProgressValue.ID)
+                End Select
+
+            Case Enums.TaskManagerEventType.SimpleMessage
+                SetStatus(eProgressValue.Message)
+                'tspbLoading.Value = e.ProgressPercentage
+
+            Case Else
+                logger.Warn("Callback for <{0}> with no handler.", eProgressValue.EventType)
         End Select
     End Sub
 
@@ -12820,40 +12846,6 @@ Public Class frmMain
         End If
         Return asm
     End Function
-
-    Private Sub NonScrape(ByVal sType As Enums.TaskType)
-        Cursor = Cursors.WaitCursor
-
-        Select Case sType
-            Case Enums.TaskType.CleanFolders
-                btnCancel.Text = Master.eLang.GetString(120, "Cancel Cleaner")
-                lblCanceling.Text = Master.eLang.GetString(119, "Canceling File Cleaner...")
-                tslLoading.Text = Master.eLang.GetString(129, "Cleaning Files:")
-            Case Enums.TaskType.CopyBackdrops
-                btnCancel.Text = Master.eLang.GetString(122, "Cancel Copy")
-                lblCanceling.Text = Master.eLang.GetString(121, "Canceling Backdrop Copy...")
-                tslLoading.Text = Master.eLang.GetString(130, "Copying Fanart to Backdrops Folder:")
-            Case Else
-                logger.Warn("Invalid sType: <{0}>", sType)
-        End Select
-
-        btnCancel.Visible = True
-        lblCanceling.Visible = False
-        prbCanceling.Visible = False
-        pnlCancel.Visible = True
-        tslLoading.Visible = True
-        tspbLoading.Value = 0
-        tspbLoading.Maximum = dtMovies.Rows.Count
-        tspbLoading.Visible = True
-        SetControlsEnabled(False, True)
-        EnableFilters_Movies(False)
-        EnableFilters_MovieSets(False)
-        EnableFilters_Shows(False)
-
-        bwNonScrape.WorkerReportsProgress = True
-        bwNonScrape.WorkerSupportsCancellation = True
-        bwNonScrape.RunWorkerAsync(New Arguments With {.TaskType = sType})
-    End Sub
 
     Private Sub cmnuMovieOpenFolder_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieOpenFolder.Click
         If dgvMovies.SelectedRows.Count > 0 Then
@@ -15508,7 +15500,7 @@ Public Class frmMain
                 currMovie = Master.DB.Load_Movie(Convert.ToInt64(dgvMovies.Item("idMovie", iRow).Value))
                 FillScreenInfoWith_Movie()
 
-                If Not bwMovieScraper.IsBusy AndAlso Not bwMovieSetScraper.IsBusy AndAlso Not bwNonScrape.IsBusy AndAlso Not fScanner.IsBusy AndAlso Not bwLoadMovieInfo.IsBusy AndAlso Not bwLoadShowInfo.IsBusy AndAlso Not bwLoadSeasonInfo.IsBusy AndAlso Not bwLoadEpInfo.IsBusy AndAlso Not bwReload_Movies.IsBusy AndAlso Not bwReload_MovieSets.IsBusy AndAlso Not bwCleanDB.IsBusy Then
+                If Not bwMovieScraper.IsBusy AndAlso Not bwMovieSetScraper.IsBusy AndAlso Not fScanner.IsBusy AndAlso Not bwLoadMovieInfo.IsBusy AndAlso Not bwLoadShowInfo.IsBusy AndAlso Not bwLoadSeasonInfo.IsBusy AndAlso Not bwLoadEpInfo.IsBusy AndAlso Not bwReload_Movies.IsBusy AndAlso Not bwReload_MovieSets.IsBusy AndAlso Not bwCleanDB.IsBusy Then
                     cmnuMovie.Enabled = True
                 End If
             Else
@@ -15539,7 +15531,7 @@ Public Class frmMain
                 currMovieSet = Master.DB.Load_MovieSet(Convert.ToInt64(dgvMovieSets.Item("idSet", iRow).Value))
                 FillScreenInfoWith_MovieSet()
 
-                If Not bwMovieScraper.IsBusy AndAlso Not bwMovieSetScraper.IsBusy AndAlso Not bwNonScrape.IsBusy AndAlso Not fScanner.IsBusy AndAlso Not bwLoadMovieInfo.IsBusy AndAlso Not bwLoadShowInfo.IsBusy AndAlso Not bwLoadSeasonInfo.IsBusy AndAlso Not bwLoadEpInfo.IsBusy AndAlso Not bwReload_Movies.IsBusy AndAlso Not bwReload_MovieSets.IsBusy AndAlso Not bwCleanDB.IsBusy Then
+                If Not bwMovieScraper.IsBusy AndAlso Not bwMovieSetScraper.IsBusy AndAlso Not fScanner.IsBusy AndAlso Not bwLoadMovieInfo.IsBusy AndAlso Not bwLoadShowInfo.IsBusy AndAlso Not bwLoadSeasonInfo.IsBusy AndAlso Not bwLoadEpInfo.IsBusy AndAlso Not bwReload_Movies.IsBusy AndAlso Not bwReload_MovieSets.IsBusy AndAlso Not bwCleanDB.IsBusy Then
                     cmnuMovie.Enabled = True
                 End If
             Else
@@ -15761,205 +15753,70 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub SetWatchedState_Movie()
+    Private Sub SetWatchedState_Movie(ByVal bSetToWatched As Boolean)
         Dim lItemsToChange As New List(Of Long)
-        Dim setWatched As Boolean = False
 
         If dgvMovies.SelectedRows.Count > 0 Then
             For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
                 lItemsToChange.Add(Convert.ToInt64(sRow.Cells("idMovie").Value))
-                If String.IsNullOrEmpty(sRow.Cells("Playcount").Value.ToString) OrElse sRow.Cells("Playcount").Value.ToString = "0" Then
-                    setWatched = True
-                End If
             Next
 
-            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-                For Each tID As Long In lItemsToChange
-
-                    Dim tmpDBMovie As Database.DBElement = Master.DB.Load_Movie(tID)
-
-                    If dgvMovies.SelectedRows.Count > 1 AndAlso setWatched Then
-                        tmpDBMovie.Movie.LastPlayed = If(tmpDBMovie.Movie.LastPlayedSpecified, tmpDBMovie.Movie.LastPlayed, Date.Now.ToString("yyyy-MM-dd HH:mm:ss"))
-                        tmpDBMovie.Movie.PlayCount = If(tmpDBMovie.Movie.PlayCountSpecified, tmpDBMovie.Movie.PlayCount, 1)
-                    ElseIf Not tmpDBMovie.Movie.PlayCountSpecified Then
-                        tmpDBMovie.Movie.LastPlayed = Date.Now.ToString("yyyy-MM-dd HH:mm:ss")
-                        tmpDBMovie.Movie.PlayCount = 1
-                    Else
-                        tmpDBMovie.Movie.LastPlayed = String.Empty
-                        tmpDBMovie.Movie.PlayCount = 0
-                    End If
-
-                    Master.DB.Save_Movie(tmpDBMovie, True, True, False, False)
-                    RefreshRow_Movie(tmpDBMovie.ID)
-                    Application.DoEvents()
-                Next
-                SQLtransaction.Commit()
-            End Using
+            fTaskManager.AddTask(New TaskManager.TaskItem With {
+                                 .CommonBoolean = bSetToWatched,
+                                 .ListOfID = lItemsToChange,
+                                 .ContentType = Enums.ContentType.Movie,
+                                 .TaskType = Enums.TaskManagerType.SetWatchedState})
         End If
     End Sub
 
-    Private Sub SetWatchedState_TVEpisode()
+    Private Sub SetWatchedState_TVEpisode(ByVal bSetToWatched As Boolean)
         Dim lItemsToChange As New List(Of Long)
-        Dim setWatched As Boolean = False
-        Dim SeasonsList As New List(Of Integer)
-        Dim idShow As Long = -1
 
         If dgvTVEpisodes.SelectedRows.Count > 0 Then
-            idShow = CLng(dgvTVEpisodes.SelectedRows(0).Cells("idShow").Value)
             For Each sRow As DataGridViewRow In dgvTVEpisodes.SelectedRows
-                If Not SeasonsList.Contains(CInt(sRow.Cells("Season").Value)) Then SeasonsList.Add(CInt(sRow.Cells("Season").Value))
                 lItemsToChange.Add(Convert.ToInt64(sRow.Cells("idEpisode").Value))
-                If String.IsNullOrEmpty(sRow.Cells("Playcount").Value.ToString) OrElse sRow.Cells("Playcount").Value.ToString = "0" Then
-                    setWatched = True
-                End If
             Next
 
-            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-                For Each tID As Long In lItemsToChange
-
-                    Dim tmpDBTVEpisode As Database.DBElement = Master.DB.Load_TVEpisode(tID, True)
-
-                    If dgvTVEpisodes.SelectedRows.Count > 1 AndAlso setWatched Then
-                        tmpDBTVEpisode.TVEpisode.LastPlayed = If(tmpDBTVEpisode.TVEpisode.LastPlayedSpecified, tmpDBTVEpisode.TVEpisode.LastPlayed, Date.Now.ToString("yyyy-MM-dd HH:mm:ss"))
-                        tmpDBTVEpisode.TVEpisode.Playcount = If(tmpDBTVEpisode.TVEpisode.PlaycountSpecified, tmpDBTVEpisode.TVEpisode.Playcount, 1)
-                    ElseIf Not tmpDBTVEpisode.TVEpisode.PlaycountSpecified Then
-                        tmpDBTVEpisode.TVEpisode.LastPlayed = Date.Now.ToString("yyyy-MM-dd HH:mm:ss")
-                        tmpDBTVEpisode.TVEpisode.Playcount = 1
-                    Else
-                        tmpDBTVEpisode.TVEpisode.LastPlayed = String.Empty
-                        tmpDBTVEpisode.TVEpisode.Playcount = 0
-                    End If
-
-                    Master.DB.Save_TVEpisode(tmpDBTVEpisode, True, True, False, False, True)
-                    RefreshRow_TVEpisode(tmpDBTVEpisode.ID)
-                    Application.DoEvents()
-                Next
-                For Each iSeason In SeasonsList
-                    RefreshRow_TVSeason(idShow, iSeason)
-                    Application.DoEvents()
-                Next
-
-                If Not idShow = -1 Then
-                    RefreshRow_TVShow(idShow)
-                End If
-
-                Application.DoEvents()
-                SQLtransaction.Commit()
-            End Using
+            fTaskManager.AddTask(New TaskManager.TaskItem With {
+                                 .CommonBoolean = bSetToWatched,
+                                 .ListOfID = lItemsToChange,
+                                 .ContentType = Enums.ContentType.TVEpisode,
+                                 .TaskType = Enums.TaskManagerType.SetWatchedState})
         End If
     End Sub
 
-    Private Sub SetWatchedState_TVSeason()
-        Dim setWatched As Boolean = False
-        Dim ShowsList As New List(Of Integer)
+    Private Sub SetWatchedState_TVSeason(ByVal bSetToWatched As Boolean)
+        Dim lItemsToChange As New List(Of Long)
 
-        If dgvTVSeasons.SelectedRows.Count > 1 Then
+        If dgvTVSeasons.SelectedRows.Count > 0 Then
             For Each sRow As DataGridViewRow In dgvTVSeasons.SelectedRows
                 If Not CInt(sRow.Cells("Season").Value) = 999 Then
-                    'if any one item is set as not watched, set menu to watched
-                    'else they are all watched so set menu to not watched
-                    If Not CBool(sRow.Cells("HasWatched").Value) Then
-                        setWatched = True
-                        Exit For
-                    End If
+                    lItemsToChange.Add(Convert.ToInt64(sRow.Cells("idSeason").Value))
                 End If
             Next
+
+            fTaskManager.AddTask(New TaskManager.TaskItem With {
+                                 .CommonBoolean = bSetToWatched,
+                                 .ListOfID = lItemsToChange,
+                                 .ContentType = Enums.ContentType.TVSeason,
+                                 .TaskType = Enums.TaskManagerType.SetWatchedState})
         End If
-
-        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-            For Each sRow As DataGridViewRow In dgvTVSeasons.SelectedRows
-                If Not CInt(sRow.Cells("Season").Value) = 999 Then
-                    Dim hasWatched As Boolean = CBool(sRow.Cells("HasWatched").Value)
-                    Dim iSeason As Integer = CInt(sRow.Cells("Season").Value)
-                    Dim iShow As Integer = CInt(sRow.Cells("idShow").Value)
-                    If Not ShowsList.Contains(iShow) Then ShowsList.Add(iShow)
-                    Using SQLcommand_get As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                        SQLcommand_get.CommandText = String.Format("SELECT idEpisode FROM episode WHERE NOT idFile = -1 AND idShow = {0} AND Season = {1};", iShow, iSeason)
-                        Using SQLreader As SQLite.SQLiteDataReader = SQLcommand_get.ExecuteReader()
-                            While SQLreader.Read
-                                Dim tmpDBTVEpisode As Database.DBElement = Master.DB.Load_TVEpisode(Convert.ToInt64(SQLreader("idEpisode")), True)
-
-                                If dgvTVSeasons.SelectedRows.Count > 1 AndAlso setWatched Then
-                                    tmpDBTVEpisode.TVEpisode.LastPlayed = If(tmpDBTVEpisode.TVEpisode.LastPlayedSpecified, tmpDBTVEpisode.TVEpisode.LastPlayed, Date.Now.ToString("yyyy-MM-dd HH:mm:ss"))
-                                    tmpDBTVEpisode.TVEpisode.Playcount = If(tmpDBTVEpisode.TVEpisode.PlaycountSpecified, tmpDBTVEpisode.TVEpisode.Playcount, 1)
-                                ElseIf Not hasWatched Then
-                                    tmpDBTVEpisode.TVEpisode.LastPlayed = Date.Now.ToString("yyyy-MM-dd HH:mm:ss")
-                                    tmpDBTVEpisode.TVEpisode.Playcount = If(tmpDBTVEpisode.TVEpisode.PlaycountSpecified, tmpDBTVEpisode.TVEpisode.Playcount, 1)
-                                Else
-                                    tmpDBTVEpisode.TVEpisode.LastPlayed = String.Empty
-                                    tmpDBTVEpisode.TVEpisode.Playcount = 0
-                                End If
-
-                                Master.DB.Save_TVEpisode(tmpDBTVEpisode, True, True, False, False, True)
-                                RefreshRow_TVEpisode(tmpDBTVEpisode.ID)
-                                Application.DoEvents()
-                            End While
-                        End Using
-                    End Using
-                    RefreshRow_TVSeason(iShow, iSeason)
-                    Application.DoEvents()
-                End If
-            Next
-            For Each iShowID In ShowsList
-                RefreshRow_TVShow(iShowID)
-                Application.DoEvents()
-            Next
-            SQLtransaction.Commit()
-        End Using
     End Sub
 
-    Private Sub SetWatchedState_TVShow()
-        Dim setWatched As Boolean = False
-        Dim SeasonsList As New List(Of Integer)
-        If dgvTVShows.SelectedRows.Count > 1 Then
+    Private Sub SetWatchedState_TVShow(ByVal bSetToWatched As Boolean)
+        Dim lItemsToChange As New List(Of Long)
+
+        If dgvTVShows.SelectedRows.Count > 0 Then
             For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
-                'if any one item is set as not watched, set menu to watched
-                'else they are all watched so set menu to not watched
-                If Not CBool(sRow.Cells("HasWatched").Value) Then
-                    setWatched = True
-                    Exit For
-                End If
+                lItemsToChange.Add(Convert.ToInt64(sRow.Cells("idShow").Value))
             Next
+
+            fTaskManager.AddTask(New TaskManager.TaskItem With {
+                                 .CommonBoolean = bSetToWatched,
+                                 .ListOfID = lItemsToChange,
+                                 .ContentType = Enums.ContentType.TVShow,
+                                 .TaskType = Enums.TaskManagerType.SetWatchedState})
         End If
-
-        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-            For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
-                Dim hasWatched As Boolean = CBool(sRow.Cells("HasWatched").Value)
-                Dim ShowID As Integer = CInt(sRow.Cells("idShow").Value)
-                Using SQLcommand_get As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    SQLcommand_get.CommandText = String.Format("SELECT idEpisode, Season FROM episode WHERE NOT idFile = -1 AND idShow = {0};", ShowID)
-                    Using SQLreader As SQLite.SQLiteDataReader = SQLcommand_get.ExecuteReader()
-                        While SQLreader.Read
-                            If Not SeasonsList.Contains(CInt(SQLreader("Season"))) Then SeasonsList.Add(CInt(SQLreader("Season")))
-
-                            Dim tmpDBTVEpisode As Database.DBElement = Master.DB.Load_TVEpisode(Convert.ToInt64(SQLreader("idEpisode")), True)
-
-                            If dgvTVShows.SelectedRows.Count > 1 AndAlso setWatched Then
-                                tmpDBTVEpisode.TVEpisode.LastPlayed = If(tmpDBTVEpisode.TVEpisode.LastPlayedSpecified, tmpDBTVEpisode.TVEpisode.LastPlayed, Date.Now.ToString("yyyy-MM-dd HH:mm:ss"))
-                                tmpDBTVEpisode.TVEpisode.Playcount = If(tmpDBTVEpisode.TVEpisode.PlaycountSpecified, tmpDBTVEpisode.TVEpisode.Playcount, 1)
-                            ElseIf Not hasWatched Then
-                                tmpDBTVEpisode.TVEpisode.LastPlayed = Date.Now.ToString("yyyy-MM-dd HH:mm:ss")
-                                tmpDBTVEpisode.TVEpisode.Playcount = If(tmpDBTVEpisode.TVEpisode.PlaycountSpecified, tmpDBTVEpisode.TVEpisode.Playcount, 1)
-                            Else
-                                tmpDBTVEpisode.TVEpisode.LastPlayed = String.Empty
-                                tmpDBTVEpisode.TVEpisode.Playcount = 0
-                            End If
-
-                            Master.DB.Save_TVEpisode(tmpDBTVEpisode, True, True, False, False, True)
-                            RefreshRow_TVEpisode(tmpDBTVEpisode.ID)
-                            Application.DoEvents()
-                        End While
-                    End Using
-                End Using
-                For Each iSeason In SeasonsList
-                    RefreshRow_TVSeason(ShowID, iSeason)
-                    Application.DoEvents()
-                Next
-                RefreshRow_TVShow(ShowID)
-                Application.DoEvents()
-            Next
-            SQLtransaction.Commit()
-        End Using
     End Sub
 
     Private Sub cmnuMovieSetSortMethodSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetEditSortMethodSet.Click
@@ -16609,6 +16466,20 @@ Public Class frmMain
                 'Landscape Only
                 Dim strLandscapeOnly As String = Master.eLang.GetString(1061, "Landscape Only")
                 .mnuScrapeModifierLandscape.Text = strLandscapeOnly
+
+                'Mark as Watched
+                Dim strMarkAsWatched As String = Master.eLang.GetString(1072, "Mark as Watched")
+                cmnuMovieWatched.Text = strMarkAsWatched
+                cmnuEpisodeWatched.Text = strMarkAsWatched
+                cmnuSeasonWatched.Text = strMarkAsWatched
+                cmnuShowWatched.Text = strMarkAsWatched
+
+                'Mark as Unwatched
+                Dim strMarkAsUnwatched As String = Master.eLang.GetString(1073, "Mark as Unatched")
+                cmnuMovieUnwatched.Text = strMarkAsUnwatched
+                cmnuEpisodeUnwatched.Text = strMarkAsUnwatched
+                cmnuSeasonUnwatched.Text = strMarkAsUnwatched
+                cmnuShowUnwatched.Text = strMarkAsUnwatched
 
                 'Meta Data Only
                 Dim strMetaDataOnly As String = Master.eLang.GetString(76, "Meta Data Only")
@@ -18024,7 +17895,7 @@ Public Class frmMain
         Dim Season As Integer
         Dim setEnabled As Boolean
         Dim SetName As String
-        Dim TaskType As Enums.TaskType
+        Dim TaskType As Enums.TaskManagerType
         Dim withEpisodes As Boolean
         Dim withSeasons As Boolean
 
