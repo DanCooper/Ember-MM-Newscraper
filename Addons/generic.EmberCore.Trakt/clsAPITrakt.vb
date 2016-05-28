@@ -29,7 +29,7 @@ Public Class clsAPITrakt
 
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Private _SpecialSettings As New Trakt_Generic.MySettings
+    Private _SpecialSettings As New TraktInterface.SpecialSettings
 
 #End Region 'Fields
 
@@ -39,9 +39,19 @@ Public Class clsAPITrakt
 
 #End Region 'Delegates
 
+#Region "Properties"
+
+    ReadOnly Property Token() As String
+        Get
+            Return _SpecialSettings.Token
+        End Get
+    End Property
+
+#End Region 'Properties
+
 #Region "Methods"
 
-    Public Sub New(ByRef SpecialSettings As Trakt_Generic.MySettings)
+    Public Sub New(ByRef SpecialSettings As TraktInterface.SpecialSettings)
         _SpecialSettings = SpecialSettings
         Try
             CreateToken(_SpecialSettings.Username, _SpecialSettings.Password, _SpecialSettings.Token)

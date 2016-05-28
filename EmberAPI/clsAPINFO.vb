@@ -2368,87 +2368,85 @@ Public Class NFO
 
                 Dim xmlSer As New XmlSerializer(GetType(MediaContainers.EpisodeDetails))
 
-                Dim tPath As String = String.Empty
                 Dim doesExist As Boolean = False
                 Dim fAtt As New FileAttributes
                 Dim fAttWritable As Boolean = True
                 Dim EpList As New List(Of MediaContainers.EpisodeDetails)
                 Dim sBuilder As New StringBuilder
 
-                Dim tmpName As String = Path.GetFileNameWithoutExtension(tDBElement.Filename)
-                tPath = String.Concat(Path.Combine(Directory.GetParent(tDBElement.Filename).FullName, tmpName), ".nfo")
-
-                If Not Master.eSettings.GeneralOverwriteNfo Then
-                    RenameNonConfNFO_TVEpisode(tPath, False)
-                End If
-
-                doesExist = File.Exists(tPath)
-                If Not doesExist OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
-
-                    If doesExist Then
-                        fAtt = File.GetAttributes(tPath)
-                        Try
-                            File.SetAttributes(tPath, FileAttributes.Normal)
-                        Catch ex As Exception
-                            fAttWritable = False
-                        End Try
+                For Each a In FileUtils.GetFilenameList.TVEpisode(tDBElement, Enums.ModifierType.EpisodeNFO)
+                    If Not Master.eSettings.GeneralOverwriteNfo Then
+                        RenameNonConfNFO_TVEpisode(a, False)
                     End If
 
-                    Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                        SQLCommand.CommandText = "SELECT idEpisode FROM episode WHERE idEpisode <> (?) AND idFile IN (SELECT idFile FROM files WHERE strFilename = (?)) ORDER BY Episode"
-                        Dim parID As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parID", DbType.Int64, 0, "idEpisode")
-                        Dim parFilename As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parFilename", DbType.String, 0, "strFilename")
+                    doesExist = File.Exists(a)
+                    If Not doesExist OrElse (Not CBool(File.GetAttributes(a) And FileAttributes.ReadOnly)) Then
 
-                        parID.Value = tDBElement.ID
-                        parFilename.Value = tDBElement.Filename
-
-                        Using SQLreader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
-                            While SQLreader.Read
-                                EpList.Add(Master.DB.Load_TVEpisode(Convert.ToInt64(SQLreader("idEpisode")), False).TVEpisode)
-                            End While
-                        End Using
-
-                        EpList.Add(tTVEpisode)
-
-                        Dim NS As New XmlSerializerNamespaces
-                        NS.Add(String.Empty, String.Empty)
-
-                        For Each tvEp As MediaContainers.EpisodeDetails In EpList.OrderBy(Function(s) s.Season).OrderBy(Function(e) e.Episode)
-
-                            'digit grouping symbol for Votes count
-                            If Master.eSettings.GeneralDigitGrpSymbolVotes Then
-                                If tvEp.VotesSpecified Then
-                                    Dim vote As String = Double.Parse(tvEp.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
-                                    If vote IsNot Nothing Then tvEp.Votes = vote
-                                End If
-                            End If
-
-                            'removing <displayepisode> and <displayseason> if disabled
-                            If Not Master.eSettings.TVScraperUseDisplaySeasonEpisode Then
-                                tvEp.DisplayEpisode = -1
-                                tvEp.DisplaySeason = -1
-                            End If
-
-                            Using xmlSW As New Utf8StringWriter
-                                xmlSer.Serialize(xmlSW, tvEp, NS)
-                                If sBuilder.Length > 0 Then
-                                    sBuilder.Append(Environment.NewLine)
-                                    xmlSW.GetStringBuilder.Remove(0, xmlSW.GetStringBuilder.ToString.IndexOf(Environment.NewLine) + 1)
-                                End If
-                                sBuilder.Append(xmlSW.ToString)
-                            End Using
-                        Next
-
-                        tDBElement.NfoPath = tPath
-
-                        If sBuilder.Length > 0 Then
-                            Using fSW As New StreamWriter(tPath)
-                                fSW.Write(sBuilder.ToString)
-                            End Using
+                        If doesExist Then
+                            fAtt = File.GetAttributes(a)
+                            Try
+                                File.SetAttributes(a, FileAttributes.Normal)
+                            Catch ex As Exception
+                                fAttWritable = False
+                            End Try
                         End If
-                    End Using
-                    If doesExist And fAttWritable Then File.SetAttributes(tPath, fAtt)
-                End If
+
+                        Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                            SQLCommand.CommandText = "SELECT idEpisode FROM episode WHERE idEpisode <> (?) AND idFile IN (SELECT idFile FROM files WHERE strFilename = (?)) ORDER BY Episode"
+                            Dim parID As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parID", DbType.Int64, 0, "idEpisode")
+                            Dim parFilename As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parFilename", DbType.String, 0, "strFilename")
+
+                            parID.Value = tDBElement.ID
+                            parFilename.Value = tDBElement.Filename
+
+                            Using SQLreader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
+                                While SQLreader.Read
+                                    EpList.Add(Master.DB.Load_TVEpisode(Convert.ToInt64(SQLreader("idEpisode")), False).TVEpisode)
+                                End While
+                            End Using
+
+                            EpList.Add(tTVEpisode)
+
+                            Dim NS As New XmlSerializerNamespaces
+                            NS.Add(String.Empty, String.Empty)
+
+                            For Each tvEp As MediaContainers.EpisodeDetails In EpList.OrderBy(Function(s) s.Season).OrderBy(Function(e) e.Episode)
+
+                                'digit grouping symbol for Votes count
+                                If Master.eSettings.GeneralDigitGrpSymbolVotes Then
+                                    If tvEp.VotesSpecified Then
+                                        Dim vote As String = Double.Parse(tvEp.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
+                                        If vote IsNot Nothing Then tvEp.Votes = vote
+                                    End If
+                                End If
+
+                                'removing <displayepisode> and <displayseason> if disabled
+                                If Not Master.eSettings.TVScraperUseDisplaySeasonEpisode Then
+                                    tvEp.DisplayEpisode = -1
+                                    tvEp.DisplaySeason = -1
+                                End If
+
+                                Using xmlSW As New Utf8StringWriter
+                                    xmlSer.Serialize(xmlSW, tvEp, NS)
+                                    If sBuilder.Length > 0 Then
+                                        sBuilder.Append(Environment.NewLine)
+                                        xmlSW.GetStringBuilder.Remove(0, xmlSW.GetStringBuilder.ToString.IndexOf(Environment.NewLine) + 1)
+                                    End If
+                                    sBuilder.Append(xmlSW.ToString)
+                                End Using
+                            Next
+
+                            tDBElement.NfoPath = a
+
+                            If sBuilder.Length > 0 Then
+                                Using fSW As New StreamWriter(a)
+                                    fSW.Write(sBuilder.ToString)
+                                End Using
+                            End If
+                        End Using
+                        If doesExist And fAttWritable Then File.SetAttributes(a, fAtt)
+                    End If
+                Next
             End If
 
         Catch ex As Exception

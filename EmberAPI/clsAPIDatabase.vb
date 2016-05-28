@@ -1939,7 +1939,7 @@ Public Class Database
                 End If
             Else
                 SQLcommand.CommandText = String.Concat("SELECT setlinkmovie.idMovie FROM setlinkmovie ",
-                                                       "WHERE idSet = ", _moviesetDB.ID, " ORDER BY SetOrder;")
+                                                       "WHERE idSet = ", _moviesetDB.ID, " ORDER BY iOrder;")
             End If
             Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
                 While SQLreader.Read
@@ -3872,9 +3872,9 @@ Public Class Database
                                         SQLcommand_setlinkmovie.CommandText = String.Concat("INSERT OR REPLACE INTO setlinkmovie (",
                                                                                          "idMovie, idSet, iOrder",
                                                                                          ") VALUES (?,?,?);")
-                                        Dim par_setlinkmovie_idMovie As SQLiteParameter = SQLcommand_setlinkmovie.Parameters.Add("parSets_MovieID", DbType.Int64, 0, "idMovie")
-                                        Dim par_setlinkmovie_idSet As SQLiteParameter = SQLcommand_setlinkmovie.Parameters.Add("parSets_SetID", DbType.Int64, 0, "idSet")
-                                        Dim par_setlinkmovie_iOrder As SQLiteParameter = SQLcommand_setlinkmovie.Parameters.Add("parSets_SetOrder", DbType.Int32, 0, "iOrder")
+                                        Dim par_setlinkmovie_idMovie As SQLiteParameter = SQLcommand_setlinkmovie.Parameters.Add("parSets_idMovie", DbType.Int64, 0, "idMovie")
+                                        Dim par_setlinkmovie_idSet As SQLiteParameter = SQLcommand_setlinkmovie.Parameters.Add("parSets_idSet", DbType.Int64, 0, "idSet")
+                                        Dim par_setlinkmovie_iOrder As SQLiteParameter = SQLcommand_setlinkmovie.Parameters.Add("parSets_iOrder", DbType.Int32, 0, "iOrder")
 
                                         par_setlinkmovie_idMovie.Value = _movieDB.ID
                                         par_setlinkmovie_idSet.Value = s.ID

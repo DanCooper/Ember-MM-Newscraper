@@ -24,7 +24,6 @@ Imports Trakttv
 Imports System.IO
 Imports System.Text.RegularExpressions
 Imports System.Windows.Forms
-Imports System.Text
 
 Public Class dlgTrakttvManager
 
@@ -36,7 +35,7 @@ Public Class dlgTrakttvManager
     Friend WithEvents bwSaveWatchedStateToEmber_TVEpisodes As New System.ComponentModel.BackgroundWorker
 
     'trakt.tv authentification data and user settings
-    Private _MySettings As New Trakt_Generic.MySettings
+    Private _MySettings As New TraktInterface.SpecialSettings
 
     Private _TraktAPI As clsAPITrakt
 
@@ -86,7 +85,7 @@ Public Class dlgTrakttvManager
     'binding for movie datagridview
     Private bsMovies As New BindingSource
 
-    Private _SpecialSettings As New Trakt_Generic.SpecialSettings
+    Private _SpecialSettings As New TraktInterface.KodiSettings
     'Not used at moment
     'Friend WithEvents bwLoadMovies As New System.ComponentModel.BackgroundWorker
 
@@ -305,8 +304,8 @@ Public Class dlgTrakttvManager
             If File.Exists(Path.Combine(Master.SettingsPath, "Interface.Kodi.xml")) Then
                 Dim xmlSer As Xml.Serialization.XmlSerializer = Nothing
                 Using xmlSR As StreamReader = New StreamReader(Path.Combine(Master.SettingsPath, "Interface.Kodi.xml"))
-                    xmlSer = New Xml.Serialization.XmlSerializer(GetType(Trakt_Generic.SpecialSettings))
-                    _SpecialSettings = DirectCast(xmlSer.Deserialize(xmlSR), Trakt_Generic.SpecialSettings)
+                    xmlSer = New Xml.Serialization.XmlSerializer(GetType(TraktInterface.KodiSettings))
+                    _SpecialSettings = DirectCast(xmlSer.Deserialize(xmlSR), TraktInterface.KodiSettings)
                 End Using
             End If
 

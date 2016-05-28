@@ -44,26 +44,20 @@ Public Class frmSettingsHolder
     Private Sub SetUp()
         chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
         chkGetShowProgress.Text = Master.eLang.GetString(1388, "Display watched progress for shows (Time consuming!)")
+        chkGetWatchedState.Text = Master.eLang.GetString(1070, "Get Watched State")
+        chkGetWatchedStateBeforeEdit_Movie.Text = Master.eLang.GetString(1055, "Before Edit")
+        chkGetWatchedStateBeforeEdit_TVEpisode.Text = Master.eLang.GetString(1055, "Before Edit")
+        chkGetWatchedStateScraperMulti_Movie.Text = Master.eLang.GetString(1056, "During Multi-Scraping")
+        chkGetWatchedStateScraperMulti_TVEpisode.Text = Master.eLang.GetString(1056, "During Multi-Scraping")
+        chkGetWatchedStateScraperSingle_Movie.Text = Master.eLang.GetString(1057, "During Single-Scraping")
+        chkGetWatchedStateScraperSingle_TVEpisode.Text = Master.eLang.GetString(1057, "During Single-Scraping")
+        gbGetWatchedState.Text = Master.eLang.GetString(1071, "Watched State")
+        gbGetWatchedStateMovies.Text = Master.eLang.GetString(36, "Movies")
+        gbGetWatchedStateTVEpisodes.Text = Master.eLang.GetString(682, "Episodes")
         gbSettingsGeneral.Text = Master.eLang.GetString(38, "General Settings")
         lblPassword.Text = Master.eLang.GetString(426, "Password")
         lblUsername.Text = Master.eLang.GetString(425, "Username")
         txtPassword.PasswordChar = "*"c
-        'LastPlayed
-        gbSettingsLastPlayed.Text = Master.eLang.GetString(1369, "Last watched")
-        chkSyncLastPlayedEditMovies.Text = Master.eLang.GetString(1469, "Automatically Sync Movies Before Edit")
-        chkSyncLastPlayedEditEpisodes.Text = Master.eLang.GetString(1472, "Automatically Sync Episodes Before Edit")
-        chkSyncLastPlayedMultiEpisodes.Text = Master.eLang.GetString(1470, "Automatically Sync Episodes During Multi-Scraper")
-        chkSyncLastPlayedMultiMovies.Text = Master.eLang.GetString(1467, "Automatically Sync Movies During Multi-Scraper")
-        chkSyncLastPlayedSingleEpisodes.Text = Master.eLang.GetString(1471, "Automatically Sync Episodes During Single-Scraper")
-        chkSyncLastPlayedSingleMovies.Text = Master.eLang.GetString(1468, "Automatically Sync Movies During Single-Scraper")
-        'Playcount
-        gbSettingsPlaycount.Text = Master.eLang.GetString(1452, "Playcount")
-        chkSyncPlaycountEditMovies.Text = Master.eLang.GetString(1469, "Automatically Sync Movies Before Edit")
-        chkSyncPlaycountEditEpisodes.Text = Master.eLang.GetString(1472, "Automatically Sync Episodes Before Edit")
-        chkSyncPlaycountMultiEpisodes.Text = Master.eLang.GetString(1470, "Automatically Sync Episodes During Multi-Scraper")
-        chkSyncPlaycountMultiMovies.Text = Master.eLang.GetString(1467, "Automatically Sync Movies During Multi-Scraper")
-        chkSyncPlaycountSingleEpisodes.Text = Master.eLang.GetString(1471, "Automatically Sync Episodes During Single-Scraper")
-        chkSyncPlaycountSingleMovies.Text = Master.eLang.GetString(1468, "Automatically Sync Movies During Single-Scraper")
     End Sub
 
     Private Sub txtUsername_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtUsername.TextChanged
@@ -76,57 +70,20 @@ Public Class frmSettingsHolder
         RaiseEvent AccountSettingsChanged()
     End Sub
 
-    Private Sub chkGetShowProgress_CheckedChanged(sender As Object, e As EventArgs) Handles chkGetShowProgress.CheckedChanged
+    Private Sub chkGetWatchedState_CheckedChanged(sender As Object, e As EventArgs) Handles chkGetWatchedState.CheckedChanged
+        gbGetWatchedStateMovies.Enabled = chkGetWatchedState.Checked
+        gbGetWatchedStateTVEpisodes.Enabled = chkGetWatchedState.Checked
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    'LastPlayed
-    Private Sub chkSyncLastPlayedEditMovies_CheckedChanged(sender As Object, e As EventArgs) Handles chkSyncLastPlayedEditMovies.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
+    Private Sub EnableApplyButton() Handles chkGetShowProgress.CheckedChanged,
+        chkGetWatchedStateBeforeEdit_Movie.CheckedChanged,
+        chkGetWatchedStateBeforeEdit_TVEpisode.CheckedChanged,
+        chkGetWatchedStateScraperMulti_Movie.CheckedChanged,
+        chkGetWatchedStateScraperMulti_TVEpisode.CheckedChanged,
+        chkGetWatchedStateScraperSingle_Movie.CheckedChanged,
+        chkGetWatchedStateScraperSingle_TVEpisode.CheckedChanged
 
-    Private Sub chkSyncLastPlayedEditEpisodes_CheckedChanged(sender As Object, e As EventArgs) Handles chkSyncLastPlayedEditEpisodes.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkSyncLastPlayedMultiEpisodes_CheckedChanged(sender As Object, e As EventArgs) Handles chkSyncLastPlayedMultiEpisodes.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkSyncLastPlayedMultiMovies_CheckedChanged(sender As Object, e As EventArgs) Handles chkSyncLastPlayedMultiMovies.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkSyncLastPlayedSingleEpisodes_CheckedChanged(sender As Object, e As EventArgs) Handles chkSyncLastPlayedSingleEpisodes.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkSyncLastPlayedSingleMovies_CheckedChanged(sender As Object, e As EventArgs) Handles chkSyncLastPlayedSingleMovies.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    'Playcount
-    Private Sub chkSyncPlaycountEditMovies_CheckedChanged(sender As Object, e As EventArgs) Handles chkSyncPlaycountEditMovies.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkSyncPlaycountEditEpisodes_CheckedChanged(sender As Object, e As EventArgs) Handles chkSyncPlaycountEditEpisodes.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkSyncPlaycountMultiEpisodes_CheckedChanged(sender As Object, e As EventArgs) Handles chkSyncPlaycountMultiEpisodes.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkSyncPlaycountMultiMovies_CheckedChanged(sender As Object, e As EventArgs) Handles chkSyncPlaycountMultiMovies.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkSyncPlaycountSingleEpisodes_CheckedChanged(sender As Object, e As EventArgs) Handles chkSyncPlaycountSingleEpisodes.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkSyncPlaycountSingleMovies_CheckedChanged(sender As Object, e As EventArgs) Handles chkSyncPlaycountSingleMovies.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
