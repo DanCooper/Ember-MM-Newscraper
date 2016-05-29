@@ -3936,7 +3936,7 @@ Namespace MediaContainers
 
                     'Episode Poster
                     If Poster.LoadAndCache(tContentType, True) Then
-                        Poster.LocalFilePath = Poster.ImageOriginal.Save_TVEpisode(DBElement, Enums.ModifierType.EpisodeFanart)
+                        Poster.LocalFilePath = Poster.ImageOriginal.Save_TVEpisode(DBElement, Enums.ModifierType.EpisodePoster)
                     Else
                         Images.Delete_TVEpisode(DBElement, Enums.ModifierType.EpisodePoster)
                         Poster = New Image
