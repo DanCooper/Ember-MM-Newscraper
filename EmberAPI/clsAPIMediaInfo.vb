@@ -320,7 +320,7 @@ Public Class MediaInfo
                         End Try
                     Else
                         Try
-                            sFile.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, Path.GetFileName(FileUtils.Common.RemoveStackingMarkers(sPath, True))))
+                            sFile.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, String.Concat(Path.GetFileNameWithoutExtension(FileUtils.Common.RemoveStackingMarkers(sPath, True)), "*")))
                         Catch
                         End Try
                     End If
@@ -565,7 +565,7 @@ Public Class MediaInfo
                 Dim ts As New TimeSpan(0, 0, Convert.ToInt32(Duration))
                 Return String.Format("{0}h {1}min {2}s", ts.Hours, ts.Minutes, ts.Seconds)
             Else
-                Dim sDuration As Match = Regex.Match(Duration, "(([0-9]+)h)?\s?(([0-9]+)mn)?\s?(([0-9]+)s)?")
+                Dim sDuration As Match = Regex.Match(Duration, "(([0-9]+)h)?\s?(([0-9]+)mi?n)?\s?(([0-9]+)s)?")
                 Dim sHour As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(2).Value), (Convert.ToInt32(sDuration.Groups(2).Value)), 0)
                 Dim sMin As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(4).Value), (Convert.ToInt32(sDuration.Groups(4).Value)), 0)
                 Dim sSec As Integer = If(Not String.IsNullOrEmpty(sDuration.Groups(6).Value), (Convert.ToInt32(sDuration.Groups(6).Value)), 0)
