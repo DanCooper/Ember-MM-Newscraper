@@ -124,7 +124,7 @@ Public Class Scanner
             Else
                 Try
                     Dim sName As String = Path.GetFileNameWithoutExtension(FileUtils.Common.RemoveStackingMarkers(DBMovie.Filename, True))
-                    fList.AddRange(Directory.GetFiles(parPath, If(sName.EndsWith("*"), sName, String.Concat(sName, "*"))))
+                    fList.AddRange(Directory.GetFiles(parPath, String.Concat(sName, "*")))
                 Catch ex As Exception
                     logger.Error(ex, New StackFrame().GetMethod().Name)
                 End Try
@@ -622,17 +622,7 @@ Public Class Scanner
 
         'Year
         If Not DBMovie.Movie.YearSpecified AndAlso DBMovie.Source.GetYear Then
-            If FileUtils.Common.isVideoTS(DBMovie.Filename) Then
-                DBMovie.Movie.Year = StringUtils.GetYear(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).Name)
-            ElseIf FileUtils.Common.isBDRip(DBMovie.Filename) Then
-                DBMovie.Movie.Year = StringUtils.GetYear(Directory.GetParent(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName).Name)
-            Else
-                If DBMovie.Source.UseFolderName AndAlso DBMovie.IsSingle Then
-                    DBMovie.Movie.Year = StringUtils.GetYear(Directory.GetParent(DBMovie.Filename).Name)
-                Else
-                    DBMovie.Movie.Year = StringUtils.GetYear(Path.GetFileNameWithoutExtension(DBMovie.Filename))
-                End If
-            End If
+            DBMovie.Movie.Year = StringUtils.FilterYearFromPath_Movie(DBMovie.Filename, DBMovie.IsSingle, DBMovie.Source.UseFolderName)
         End If
 
         'IMDB ID

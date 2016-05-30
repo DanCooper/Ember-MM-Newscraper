@@ -385,6 +385,27 @@ Public Class StringUtils
             Return strTitle.Trim
         End If
     End Function
+    ''' <summary>
+    ''' Get the four-digit year from the given <c>String</c>
+    ''' </summary>
+    ''' <param name="strPath"><c>String</c> full file path (including file extension) to get year from</param>
+    ''' <returns>Only the year of source <c>String</c> without brackets</returns>
+    ''' <remarks>The year can only be 4 digits from 1900 - 2099. More or less digits and the string won't be modified.</remarks>
+    Public Shared Function FilterYearFromPath_Movie(ByVal strPath As String, ByVal IsSingle As Boolean, ByVal UseForderName As Boolean) As String
+        If String.IsNullOrEmpty(strPath) Then Return String.Empty
+
+        'get raw string to get year from
+        Dim strRawString As String = String.Empty
+        If FileUtils.Common.isVideoTS(strPath) Then
+            strRawString = Directory.GetParent(Directory.GetParent(strPath).FullName).Name
+        ElseIf FileUtils.Common.isBDRip(strPath) Then
+            strRawString = Directory.GetParent(Directory.GetParent(Directory.GetParent(strPath).FullName).FullName).Name
+        Else
+            strRawString = If(IsSingle AndAlso UseForderName, Directory.GetParent(strPath).Name, Path.GetFileNameWithoutExtension(strPath))
+        End If
+
+        Return Regex.Match(strRawString, "((19|20)\d{2})", RegexOptions.RightToLeft).Value.Trim
+    End Function
 
     Public Shared Function ListTitle_Movie(ByVal MovieTitle As String, ByVal MovieYear As String) As String
         Dim ListTitle As String = MovieTitle
@@ -586,20 +607,6 @@ Public Class StringUtils
         If String.IsNullOrEmpty(sString) Then Return String.Empty
         Dim strIMDBID As String = Regex.Match(sString, "tt\d*").Value
         Return strIMDBID.Trim
-    End Function
-    ''' <summary>
-    ''' Get the four-digit year from the given <c>String</c>
-    ''' </summary>
-    ''' <param name="sString"><c>String</c> from which to get the year</param>
-    ''' <returns>Only the year of source <c>String</c> without brackets</returns>
-    ''' <remarks>The year can only be 4 digits from 1900 - 2099. More or less digits and the string won't be modified.</remarks>
-    Public Shared Function GetYear(ByVal sString As String) As String
-        If String.IsNullOrEmpty(sString) Then Return String.Empty
-        Dim strYear As String = Regex.Match(sString, "((19|20)\d{2})", RegexOptions.RightToLeft).Value
-        If Not String.IsNullOrEmpty(strYear) Then
-            Return strYear.Trim
-        End If
-        Return String.Empty
     End Function
     ''' <summary>
     ''' Converts a string to an HTML-encoded string.
