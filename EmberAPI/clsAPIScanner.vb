@@ -627,17 +627,7 @@ Public Class Scanner
 
         'IMDB ID
         If Not DBMovie.Movie.IMDBIDSpecified Then
-            If FileUtils.Common.isVideoTS(DBMovie.Filename) Then
-                DBMovie.Movie.IMDBID = StringUtils.GetIMDBID(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).Name)
-            ElseIf FileUtils.Common.isBDRip(DBMovie.Filename) Then
-                DBMovie.Movie.IMDBID = StringUtils.GetIMDBID(Directory.GetParent(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName).Name)
-            Else
-                If DBMovie.Source.UseFolderName AndAlso DBMovie.IsSingle Then
-                    DBMovie.Movie.IMDBID = StringUtils.GetIMDBID(Directory.GetParent(DBMovie.Filename).Name)
-                Else
-                    DBMovie.Movie.IMDBID = StringUtils.GetIMDBID(Path.GetFileNameWithoutExtension(DBMovie.Filename))
-                End If
-            End If
+            DBMovie.Movie.IMDBID = StringUtils.FilterIMDBIDFromPath(DBMovie.Filename)
         End If
 
         'Title
