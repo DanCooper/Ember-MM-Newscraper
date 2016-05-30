@@ -204,10 +204,10 @@ Public Class APIXML
         End Try
     End Sub
 
-    Public Shared Function GetAVImages(ByVal fiAV As MediaInfo.Fileinfo, ByVal fName As String, ByVal ForTV As Boolean, ByVal videoSource As String) As Image()
+    Public Shared Function GetAVImages(ByVal fiAV As MediaContainers.Fileinfo, ByVal fName As String, ByVal ForTV As Boolean, ByVal videoSource As String) As Image()
         Dim iReturn(18) As Image
-        Dim tVideo As MediaInfo.Video = NFO.GetBestVideo(fiAV)
-        Dim tAudio As MediaInfo.Audio = NFO.GetBestAudio(fiAV, ForTV)
+        Dim tVideo As MediaContainers.Video = NFO.GetBestVideo(fiAV)
+        Dim tAudio As MediaContainers.Audio = NFO.GetBestAudio(fiAV, ForTV)
 
         If lFlags.Count > 0 OrElse dLanguages.Count > 0 Then
             Try

@@ -24,9 +24,9 @@ Public Class dlgFIStreamEditor
 
 #Region "Fields"
 
-    Private stream_a As New MediaInfo.Audio
-    Private stream_s As New MediaInfo.Subtitle
-    Private stream_v As New MediaInfo.Video
+    Private stream_a As New MediaContainers.Audio
+    Private stream_s As New MediaContainers.Subtitle
+    Private stream_v As New MediaContainers.Video
 
 #End Region 'Fields
 
@@ -40,7 +40,7 @@ Public Class dlgFIStreamEditor
         StartPosition = FormStartPosition.Manual
     End Sub
 
-    Public Overloads Function ShowDialog(ByVal stream_type As String, ByVal movie As MediaInfo.Fileinfo, ByVal idx As Integer) As Object
+    Public Overloads Function ShowDialog(ByVal stream_type As String, ByVal movie As MediaContainers.Fileinfo, ByVal idx As Integer) As Object
         Try
 
             gbVideoStreams.Visible = False

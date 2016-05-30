@@ -255,6 +255,20 @@ Namespace FileUtils
             End If
         End Function
         ''' <summary>
+        ''' Determine whether the given string represents a file that needs to be treated as if it is stacked (single media in multiple files)
+        ''' If the system setting "DisableMultiPartMedia" is False, then always return False
+        ''' </summary>
+        ''' <param name="strPath"><c>String</c> to evaluate</param>
+        ''' <returns><c>True</c> if the string represents a stacked file, or <c>False</c> otherwise</returns>
+        ''' <remarks></remarks>
+        Public Shared Function isStacked(ByVal strPath As String) As Boolean
+            If Not strPath = RemoveStackingMarkers(strPath) Then
+                Return True
+            Else
+                Return False
+            End If
+        End Function
+        ''' <summary>
         ''' Deermine whether the path provided contains a DVD image
         ''' </summary>
         ''' <param name="sPath">Path to be evaluated</param>
@@ -511,6 +525,38 @@ Namespace FileUtils
             End Try
             Return retval
         End Function
+        ''' <summary>
+        ''' When given a valid path to a video/media file, return the path but without stacking markers.
+        ''' </summary>
+        ''' <param name="strPath"><c>String</c> full file path (including file extension) to clean</param>
+        ''' <returns>The <c>String</c> path with the stacking markers removed</returns>
+        ''' <remarks>The following are default stacking extensions that can be added to file names These are for video file names that are in the same folder:
+        ''' # can be 1 through 9. No spaces between the extension and number. 
+        ''' <list>
+        '''   <item>part#​</item>
+        '''   <item>cd#​</item>
+        '''   <item>dvd#</item>
+        '''   <item>pt#</item>
+        '''   <item>disk#</item>
+        '''   <item>disc#</item>
+        ''' </list>
+        ''' Note that text after the stacking marker are left untouched.
+        ''' </remarks>
+        Public Shared Function RemoveStackingMarkers(ByVal strPath As String, Optional ByVal Asterix As Boolean = False) As String
+            'Don't do anything if DisableMultiPartMedia is True or sPath is String.Empty
+            If clsAdvancedSettings.GetBooleanSetting("DisableMultiPartMedia", False) OrElse String.IsNullOrEmpty(strPath) Then Return strPath
+
+            Dim FilePattern As String = clsAdvancedSettings.GetSetting("FileStacking", "(.*?)([ _.-]*(?:cd|dvd|p(?:ar)?t|dis[ck])[ _.-]*[0-9]+)(.*?)(\.[^.]+)$")
+            Dim FolderPattern As String = clsAdvancedSettings.GetSetting("FolderStacking", "((cd|dvd|dis[ck])[0-9]+)$")
+
+            Dim FileStacking = Regex.Match(strPath, FilePattern, RegexOptions.IgnoreCase)
+            If FileStacking.Success Then
+                Dim strPathCleaned As String = strPath.Replace(FileStacking.Groups(2).Value, String.Empty)
+                Return strPathCleaned
+            Else
+                Return strPath
+            End If
+        End Function
 
 #End Region 'Methods
 
@@ -660,7 +706,7 @@ Namespace FileUtils
                     dPath = mMovie.Filename
                 End If
 
-                Dim sOrName As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(dPath))
+                Dim sOrName As String = Path.GetFileNameWithoutExtension(Common.RemoveStackingMarkers(dPath))
                 Dim sPathShort As String = Directory.GetParent(dPath).FullName
                 Dim sPathNoExt As String = Common.RemoveExtFromPath(dPath)
 
@@ -945,7 +991,7 @@ Namespace FileUtils
             Dim basePath As String = String.Empty
             Dim fPath As String = DBElement.Filename
             Dim fileName As String = Path.GetFileNameWithoutExtension(fPath)
-            Dim fileNameStack As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(fPath))
+            Dim fileNameStack As String = Path.GetFileNameWithoutExtension(Common.RemoveStackingMarkers(fPath))
             Dim filePath As String = Path.Combine(Directory.GetParent(fPath).FullName, fileName)
             Dim filePathStack As String = Path.Combine(Directory.GetParent(fPath).FullName, fileNameStack)
             Dim fileParPath As String = Directory.GetParent(filePath).FullName
@@ -2362,7 +2408,7 @@ Namespace FileUtils
                         'tmpName = tmpName.Replace("-fanart", String.Empty)
                         'tmpName = tmpName.Replace("-trailer", String.Empty)
                         'tmpName = Regex.Replace(tmpName, "\[trailer(\d+)\]", String.Empty)
-                        tmpName = StringUtils.CleanStackingMarkers(tmpName)
+                        tmpName = Common.RemoveStackingMarkers(tmpName)
                         '...determine the best destination path name...
                         tmpPath = Path.Combine(sPath, tmpName)
                         '...create the destination directory if it doesn't already exist

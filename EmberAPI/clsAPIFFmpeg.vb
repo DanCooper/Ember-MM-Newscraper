@@ -341,14 +341,14 @@ Namespace FFmpeg
         ''' Notice: Implemented a first version of ffprobe mediainfo scanning that may be used in future as alternative for MediaInfo scanning
         ''' Its not used right now
         ''' </remarks>
-        Public Shared Function ParseMediaInfoByFFProbe(ByVal jsonOutput As String) As MediaInfo.Fileinfo
+        Public Shared Function ParseMediaInfoByFFProbe(ByVal jsonOutput As String) As MediaContainers.Fileinfo
 
             'deserialize JSON
             Dim ffprobeResults As FFProbeResults = JsonConvert.DeserializeObject(Of FFProbeResults)(jsonOutput)
-            Dim MediaInfo As New MediaInfo.Fileinfo
-            Dim VideoInfo As New MediaInfo.Video
-            Dim AudioInfo As New MediaInfo.Audio
-            Dim SubtitleInfo As New MediaInfo.Subtitle
+            Dim MediaInfo As New MediaContainers.Fileinfo
+            Dim VideoInfo As New MediaContainers.Video
+            Dim AudioInfo As New MediaContainers.Audio
+            Dim SubtitleInfo As New MediaContainers.Subtitle
 
             'VideoInformation/AudioInformation(s)
             For Each stream As FFProbeStream In ffprobeResults.streams
@@ -359,7 +359,7 @@ Namespace FFmpeg
 
                 ' Process the video stream (skip MJPEG streams) and use only the first Video stream with a width (ignore subsequent ones)
                 If (stream.codec_type.Trim().ToLower() = "video") AndAlso (stream.codec_name.Trim().ToLower() <> "mjpeg") Then
-                    VideoInfo = New MediaInfo.Video
+                    VideoInfo = New MediaContainers.Video
 
 
                     'FileSize
@@ -416,7 +416,7 @@ Namespace FFmpeg
 
                 ElseIf stream.codec_type.Trim().ToLower() = "audio" Then
                     ' Create a new Audio object for each stream we find
-                    AudioInfo = New MediaInfo.Audio
+                    AudioInfo = New MediaContainers.Audio
 
                     ' Audio codec name
                     AudioInfo.Codec = stream.codec_name
@@ -441,7 +441,7 @@ Namespace FFmpeg
 
                 ElseIf stream.codec_type.Trim().ToLower() = "subtitle" Then
                     ' Create a new Subtitle object for each stream we find
-                    SubtitleInfo = New MediaInfo.Subtitle
+                    SubtitleInfo = New MediaContainers.Subtitle
                     'Language
                     SubtitleInfo.Language = (If(stream.tags Is Nothing, "", stream.tags.language))
 

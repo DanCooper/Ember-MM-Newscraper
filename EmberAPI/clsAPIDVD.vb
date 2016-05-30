@@ -447,7 +447,7 @@ Public Class DVD
     ''' Converts a DVD_Time_Type to a String
     ''' </summary>
     ''' <param name="PlayBack">Time structure to be converted</param>
-    ''' <param name="MinsOnly">If <c>True</c> only convert and return the minutes portion of the DVD time. So 1h33m would return 93. If <c>False</c> it would convert all elements, and return 01h33mn00s</param>
+    ''' <param name="MinsOnly">If <c>True</c> only convert and return the minutes portion of the DVD time. So 1h33m would return 93. If <c>False</c> it would convert all elements, and return 01h33min00s</param>
     ''' <returns>DVD Time converted to String.</returns>
     ''' <remarks></remarks>
     Private Function fctPlayBackTimeToString(ByRef PlayBack As DVD_Time_Type, Optional ByVal MinsOnly As Boolean = False) As String
@@ -456,7 +456,7 @@ Public Class DVD
             If MinsOnly Then
                 Return ((PlayBack.hours * 60) + PlayBack.minutes).ToString
             Else
-                Return String.Concat((PlayBack.hours).ToString("00"), "h ", (PlayBack.minutes).ToString("00"), "mn ", (PlayBack.seconds).ToString("00"), "s")
+                Return String.Concat((PlayBack.hours).ToString("00"), "h ", (PlayBack.minutes).ToString("00"), "min ", (PlayBack.seconds).ToString("00"), "s")
             End If
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)

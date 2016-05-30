@@ -962,7 +962,7 @@ Public Class dlgEditTVEpisode
             End If
         End If
 
-        Dim removeSubtitles As New List(Of MediaInfo.Subtitle)
+        Dim removeSubtitles As New List(Of MediaContainers.Subtitle)
         For Each Subtitle In tmpDBElement.Subtitles
             If Subtitle.toRemove Then
                 removeSubtitles.Add(Subtitle)
@@ -1262,13 +1262,13 @@ Public Class dlgEditTVEpisode
         Try
             If lvSubtitles.SelectedItems.Count > 0 Then
                 Dim i As ListViewItem = lvSubtitles.SelectedItems(0)
-                Dim tmpFileInfo As New MediaInfo.Fileinfo
+                Dim tmpFileInfo As New MediaContainers.Fileinfo
                 tmpFileInfo.StreamDetails.Subtitle.AddRange(tmpDBElement.Subtitles)
                 Using dEditStream As New dlgFIStreamEditor
                     Dim stream As Object = dEditStream.ShowDialog(i.Tag.ToString, tmpFileInfo, Convert.ToInt16(i.Text))
                     If Not stream Is Nothing Then
                         If i.Tag.ToString = Master.eLang.GetString(597, "Subtitle Stream") Then
-                            tmpDBElement.Subtitles(Convert.ToInt16(i.Text)) = DirectCast(stream, MediaInfo.Subtitle)
+                            tmpDBElement.Subtitles(Convert.ToInt16(i.Text)) = DirectCast(stream, MediaContainers.Subtitle)
                         End If
                         'NeedToRefresh = True
                         LoadSubtitles()
@@ -1320,7 +1320,7 @@ Public Class dlgEditTVEpisode
 
                 g.Items.Add(i)
                 lvSubtitles.Items.Add(i)
-                Dim s As MediaInfo.Subtitle
+                Dim s As MediaContainers.Subtitle
                 For c = 0 To tmpDBElement.Subtitles.Count - 1
                     s = tmpDBElement.Subtitles(c)
                     If Not s Is Nothing Then
