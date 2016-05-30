@@ -604,7 +604,7 @@ Public Class MediaInfo
         'The whole content of this function is a strip of of the "big" ScanMI function. It is used to scan IFO files of VIDEO_TS media to retrieve language info
         Dim fiOut As New Fileinfo
 
-        Me.Handle = MediaInfo_New()
+        Handle = MediaInfo_New()
 
         If Master.isWindows Then
             UseAnsi = False
@@ -612,28 +612,28 @@ Public Class MediaInfo
             UseAnsi = True
         End If
 
-        Me.Open(IFOPath)
+        Open(IFOPath)
 
 
         'Audio Scan
         Dim AudioStreams As Integer
-        AudioStreams = Me.Count_Get(StreamKind.Audio)
+        AudioStreams = Count_Get(StreamKind.Audio)
         Dim miAudio As New Audio
         Dim aLang As String = String.Empty
         Dim a_Profile As String = String.Empty
 
         For a As Integer = 0 To AudioStreams - 1
             miAudio = New Audio
-            miAudio.Codec = ConvertAFormat(Me.Get_(StreamKind.Audio, a, "CodecID"), Me.Get_(StreamKind.Audio, a, "Format"),
-                                           Me.Get_(StreamKind.Audio, a, "CodecID/Hint"), Me.Get_(StreamKind.Audio, a, "Format_Profile"))
-            miAudio.Channels = FormatAudioChannel(Me.Get_(StreamKind.Audio, a, "Channel(s)"))
+            miAudio.Codec = ConvertAFormat(Get_(StreamKind.Audio, a, "CodecID"), Get_(StreamKind.Audio, a, "Format"),
+                                           Get_(StreamKind.Audio, a, "CodecID/Hint"), Get_(StreamKind.Audio, a, "Format_Profile"))
+            miAudio.Channels = FormatAudioChannel(Get_(StreamKind.Audio, a, "Channel(s)"))
 
             'cocotus, 2013/02 Added support for new MediaInfo-fields
             'Audio-Bitrate
-            miAudio.Bitrate = FormatBitrate(Me.Get_(StreamKind.Audio, a, "BitRate/String"))
+            miAudio.Bitrate = FormatBitrate(Get_(StreamKind.Audio, a, "BitRate/String"))
             'cocotus end
 
-            aLang = Me.Get_(StreamKind.Audio, a, "Language/String")
+            aLang = Get_(StreamKind.Audio, a, "Language/String")
             If Not String.IsNullOrEmpty(aLang) Then
                 miAudio.LongLanguage = aLang
                 If Localization.ISOLangGetCode3ByLang(miAudio.LongLanguage) <> "" Then
@@ -645,13 +645,13 @@ Public Class MediaInfo
 
         'Subtitle Scan
         Dim SubtitleStreams As Integer
-        SubtitleStreams = Me.Count_Get(StreamKind.Text)
+        SubtitleStreams = Count_Get(StreamKind.Text)
         Dim miSubtitle As New Subtitle
 
         Dim sLang As String = String.Empty
         For s As Integer = 0 To SubtitleStreams - 1
             miSubtitle = New MediaInfo.Subtitle
-            sLang = Me.Get_(StreamKind.Text, s, "Language/String")
+            sLang = Get_(StreamKind.Text, s, "Language/String")
             If Not String.IsNullOrEmpty(sLang) Then
                 miSubtitle.LongLanguage = sLang
                 If Localization.ISOLangGetCode3ByLang(miSubtitle.LongLanguage) <> "" Then
@@ -659,7 +659,7 @@ Public Class MediaInfo
                 End If
             End If
             If Not String.IsNullOrEmpty(miSubtitle.Language) Then
-                miSubtitle.SubsForced = FormatBoolean(Me.Get_(StreamKind.Text, s, "Forced/String"))
+                miSubtitle.SubsForced = FormatBoolean(Get_(StreamKind.Text, s, "Forced/String"))
                 miSubtitle.SubsType = "Embedded"
                 fiOut.StreamDetails.Subtitle.Add(miSubtitle)
             End If
@@ -668,20 +668,20 @@ Public Class MediaInfo
         'Video Scan
         Dim miVideo As New Video
         Dim VideoStreams As Integer
-        VideoStreams = Me.Count_Get(StreamKind.Visual)
+        VideoStreams = Count_Get(StreamKind.Visual)
         For v As Integer = 0 To VideoStreams - 1
             miVideo = New Video
             'cocotus, It's possible that duration returns empty when retrieved from videostream data - so instead use "General" section of MediaInfo.dll to read duration (is always filled!)
             'More here: http://forum.xbmc.org/showthread.php?tid=169900 
-            miVideo.Duration = Me.Get_(StreamKind.Visual, v, "Duration/String1")
+            miVideo.Duration = Get_(StreamKind.Visual, v, "Duration/String1")
             If miVideo.Duration = String.Empty Then
-                miVideo.Duration = Me.Get_(StreamKind.General, 0, "Duration/String1")
+                miVideo.Duration = Get_(StreamKind.General, 0, "Duration/String1")
             End If
             fiOut.StreamDetails.Video.Add(miVideo)
         Next
 
 
-        Me.Close()
+        Close()
 
         Return fiOut
 
@@ -766,7 +766,7 @@ Public Class MediaInfo
                 End If
 
                 If Not sPath = String.Empty Then
-                    Me.Handle = MediaInfo_New()
+                    Handle = MediaInfo_New()
 
                     If Master.isWindows Then
                         UseAnsi = False
@@ -774,11 +774,11 @@ Public Class MediaInfo
                         UseAnsi = True
                     End If
 
-                    Me.Open(sPath)
+                    Open(sPath)
 
-                    VideoStreams = Me.Count_Get(StreamKind.Visual)
-                    AudioStreams = Me.Count_Get(StreamKind.Audio)
-                    SubtitleStreams = Me.Count_Get(StreamKind.Text)
+                    VideoStreams = Count_Get(StreamKind.Visual)
+                    AudioStreams = Count_Get(StreamKind.Audio)
+                    SubtitleStreams = Count_Get(StreamKind.Text)
 
                     '2014/07/05 Fix for VIDEO_TS scanning: Use second largest (=alternativeIFOFile) IFO File if largest File doesn't contain needed information (=duration)! (rare case!)
                     If sPath.ToUpper.Contains("VIDEO_TS") Then
@@ -790,17 +790,17 @@ Public Class MediaInfo
                             Else
                                 'cocotus, It's possible that duration returns empty when retrieved from videostream data - so instead use "General" section of MediaInfo.dll to read duration (is always filled!)
                                 'More here: http://forum.xbmc.org/showthread.php?tid=169900 
-                                miVideo.Duration = Me.Get_(StreamKind.Visual, 0, "Duration/String1")
+                                miVideo.Duration = Get_(StreamKind.Visual, 0, "Duration/String1")
                                 If miVideo.Duration = String.Empty Then
-                                    miVideo.Duration = Me.Get_(StreamKind.General, 0, "Duration/String1")
+                                    miVideo.Duration = Get_(StreamKind.General, 0, "Duration/String1")
                                 End If
                             End If
                         Else
                             'cocotus, It's possible that duration returns empty when retrieved from videostream data - so instead use "General" section of MediaInfo.dll to read duration (is always filled!)
                             'More here: http://forum.xbmc.org/showthread.php?tid=169900 
-                            miVideo.Duration = Me.Get_(StreamKind.Visual, 0, "Duration/String1")
+                            miVideo.Duration = Get_(StreamKind.Visual, 0, "Duration/String1")
                             If miVideo.Duration = String.Empty Then
-                                miVideo.Duration = Me.Get_(StreamKind.General, 0, "Duration/String1")
+                                miVideo.Duration = Get_(StreamKind.General, 0, "Duration/String1")
                             End If
                         End If
                         'if ms instead of hours or minutes than wrong IFO!
@@ -816,20 +816,20 @@ Public Class MediaInfo
                     miVideo = New Video
                     'cocotus, 2013/02 Added support for new MediaInfo-fields
                     'Video-Bitrate
-                    miVideo.Bitrate = FormatBitrate(Me.Get_(StreamKind.Visual, v, "BitRate/String"))
+                    miVideo.Bitrate = FormatBitrate(Get_(StreamKind.Visual, v, "BitRate/String"))
                     'MultiViewCount (Support for 3D Movie, If > 1 -> 3D Movie)
-                    miVideo.MultiViewCount = Me.Get_(StreamKind.Visual, v, "MultiView_Count")
+                    miVideo.MultiViewCount = Get_(StreamKind.Visual, v, "MultiView_Count")
                     'MultiViewLayout (http://matroska.org/technical/specs/index.html#StereoMode)
-                    miVideo.MultiViewLayout = Me.Get_(StreamKind.Visual, v, "MultiView_Layout")
+                    miVideo.MultiViewLayout = Get_(StreamKind.Visual, v, "MultiView_Layout")
                     'Encoder-settings
                     'miVideo.EncodedSettings = Me.Get_(StreamKind.Visual, v, "Encoded_Library_Settings")
                     'cocotus end
                     miVideo.StereoMode = ConvertVStereoMode(miVideo.MultiViewLayout)
 
-                    miVideo.Width = Me.Get_(StreamKind.Visual, v, "Width")
-                    miVideo.Height = Me.Get_(StreamKind.Visual, v, "Height")
-                    miVideo.Codec = ConvertVFormat(Me.Get_(StreamKind.Visual, v, "CodecID"), Me.Get_(StreamKind.Visual, v, "Format"),
-                                                   Me.Get_(StreamKind.Visual, v, "Format_Version"))
+                    miVideo.Width = Get_(StreamKind.Visual, v, "Width")
+                    miVideo.Height = Get_(StreamKind.Visual, v, "Height")
+                    miVideo.Codec = ConvertVFormat(Get_(StreamKind.Visual, v, "CodecID"), Get_(StreamKind.Visual, v, "Format"),
+                                                   Get_(StreamKind.Visual, v, "Format_Version"))
 
                     'IFO Scan results (used when scanning VIDEO_TS files)
                     If fiIFO.StreamDetails.Video.Count > 0 Then
@@ -838,25 +838,25 @@ Public Class MediaInfo
                         Else
                             'cocotus, It's possible that duration returns empty when retrieved from videostream data - so instead use "General" section of MediaInfo.dll to read duration (is always filled!)
                             'More here: http://forum.xbmc.org/showthread.php?tid=169900 
-                            miVideo.Duration = Me.Get_(StreamKind.Visual, v, "Duration/String1")
+                            miVideo.Duration = Get_(StreamKind.Visual, v, "Duration/String1")
                             If miVideo.Duration = String.Empty Then
-                                miVideo.Duration = Me.Get_(StreamKind.General, 0, "Duration/String1")
+                                miVideo.Duration = Get_(StreamKind.General, 0, "Duration/String1")
                             End If
                         End If
                     Else
                         'cocotus, It's possible that duration returns empty when retrieved from videostream data - so instead use "General" section of MediaInfo.dll to read duration (is always filled!)
                         'More here: http://forum.xbmc.org/showthread.php?tid=169900 
-                        miVideo.Duration = Me.Get_(StreamKind.Visual, v, "Duration/String1")
+                        miVideo.Duration = Get_(StreamKind.Visual, v, "Duration/String1")
                         If miVideo.Duration = String.Empty Then
-                            miVideo.Duration = Me.Get_(StreamKind.General, 0, "Duration/String1")
+                            miVideo.Duration = Get_(StreamKind.General, 0, "Duration/String1")
                         End If
                     End If
 
 
-                    miVideo.Aspect = Me.Get_(StreamKind.Visual, v, "DisplayAspectRatio")
-                    miVideo.Scantype = Me.Get_(StreamKind.Visual, v, "ScanType")
+                    miVideo.Aspect = Get_(StreamKind.Visual, v, "DisplayAspectRatio")
+                    miVideo.Scantype = Get_(StreamKind.Visual, v, "ScanType")
 
-                    vLang = Me.Get_(StreamKind.Visual, v, "Language/String")
+                    vLang = Get_(StreamKind.Visual, v, "Language/String")
                     If Not String.IsNullOrEmpty(vLang) Then
                         miVideo.LongLanguage = vLang
                         If Localization.ISOLangGetCode3ByLang(miVideo.LongLanguage) <> "" Then
@@ -867,7 +867,7 @@ Public Class MediaInfo
                     If sExt = ".iso" OrElse FileUtils.Common.isVideoTS(sPath) OrElse FileUtils.Common.isBDRip(sPath) Then
                         miVideo.Filesize = FileUtils.Common.GetFolderSize(Directory.GetParent(sPath).FullName)
                     Else
-                        miVideo.Filesize = If(Double.TryParse(Me.Get_(StreamKind.General, 0, "FileSize"), 0), CDbl(Me.Get_(StreamKind.General, 0, "FileSize")), 0)
+                        miVideo.Filesize = If(Double.TryParse(Get_(StreamKind.General, 0, "FileSize"), 0), CDbl(Get_(StreamKind.General, 0, "FileSize")), 0)
                     End If
 
                     'With miVideo
@@ -882,16 +882,16 @@ Public Class MediaInfo
 
                 For a As Integer = 0 To AudioStreams - 1
                     miAudio = New Audio
-                    miAudio.Codec = ConvertAFormat(Me.Get_(StreamKind.Audio, a, "CodecID"), Me.Get_(StreamKind.Audio, a, "Format"),
-                                                   Me.Get_(StreamKind.Audio, a, "CodecID/Hint"), Me.Get_(StreamKind.Audio, a, "Format_Profile"))
-                    miAudio.Channels = FormatAudioChannel(Me.Get_(StreamKind.Audio, a, "Channel(s)"))
+                    miAudio.Codec = ConvertAFormat(Get_(StreamKind.Audio, a, "CodecID"), Get_(StreamKind.Audio, a, "Format"),
+                                                   Get_(StreamKind.Audio, a, "CodecID/Hint"), Get_(StreamKind.Audio, a, "Format_Profile"))
+                    miAudio.Channels = FormatAudioChannel(Get_(StreamKind.Audio, a, "Channel(s)"))
 
                     'cocotus, 2013/02 Added support for new MediaInfo-fields
                     'Audio-Bitrate
-                    miAudio.Bitrate = FormatBitrate(Me.Get_(StreamKind.Audio, a, "BitRate/String"))
+                    miAudio.Bitrate = FormatBitrate(Get_(StreamKind.Audio, a, "BitRate/String"))
                     'cocotus end
 
-                    aLang = Me.Get_(StreamKind.Audio, a, "Language/String")
+                    aLang = Get_(StreamKind.Audio, a, "Language/String")
                     If Not String.IsNullOrEmpty(aLang) Then
                         miAudio.LongLanguage = aLang
                         If Localization.ISOLangGetCode3ByLang(miAudio.LongLanguage) <> "" Then
@@ -918,7 +918,7 @@ Public Class MediaInfo
 
                     miSubtitle = New MediaInfo.Subtitle
 
-                    sLang = Me.Get_(StreamKind.Text, s, "Language/String")
+                    sLang = Get_(StreamKind.Text, s, "Language/String")
                     If Not String.IsNullOrEmpty(sLang) Then
                         miSubtitle.LongLanguage = sLang
                         If Localization.ISOLangGetCode3ByLang(miSubtitle.LongLanguage) <> "" Then
@@ -935,7 +935,7 @@ Public Class MediaInfo
                     End If
 
                     If Not String.IsNullOrEmpty(miSubtitle.Language) Then
-                        miSubtitle.SubsForced = FormatBoolean(Me.Get_(StreamKind.Text, s, "Forced/String"))
+                        miSubtitle.SubsForced = FormatBoolean(Get_(StreamKind.Text, s, "Forced/String"))
                         miSubtitle.SubsType = "Embedded"
                         fiOut.StreamDetails.Subtitle.Add(miSubtitle)
                     End If
@@ -945,7 +945,7 @@ Public Class MediaInfo
                     Functions.Run_Process(Master.eSettings.GeneralDaemonPath, strCommandUnmount, False, True)
                 End If
 
-                Me.Close()
+                Close()
             End If
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
@@ -959,14 +959,14 @@ Public Class MediaInfo
             rawbitrate = rawbitrate.Substring(0, rawbitrate.ToUpper.IndexOf(" K"))
             Dim mystring As String = ""
             'use regex to get rid of all letters(if that ever happens just in case) and also remove spaces
-            mystring = Text.RegularExpressions.Regex.Replace(rawbitrate, "[^.0-9]", "").Trim
+            mystring = Regex.Replace(rawbitrate, "[^.0-9]", "").Trim
             rawbitrate = mystring
         ElseIf rawbitrate.ToUpper.IndexOf(" M") > 0 Then
             'can happen if video is ripped from bluray
             rawbitrate = rawbitrate.Substring(0, rawbitrate.ToUpper.IndexOf(" M"))
             Dim mystring As String = ""
             'use regex to get rid of all letters(if that ever happens just in case) and also remove spaces
-            mystring = Text.RegularExpressions.Regex.Replace(rawbitrate, "[^.0-9]", "").Trim
+            mystring = Regex.Replace(rawbitrate, "[^.0-9]", "").Trim
             Try
                 rawbitrate = (CDbl(mystring) * 100).ToString
             Catch ex As Exception
@@ -1188,95 +1188,95 @@ Public Class MediaInfo
         <XmlElement("bitrate")>
         Public Property Bitrate() As String
             Get
-                Return Me._bitrate.Trim()
+                Return _bitrate.Trim()
             End Get
             Set(ByVal Value As String)
-                Me._bitrate = Value
+                _bitrate = Value
             End Set
         End Property
 
         <XmlIgnore>
         Public ReadOnly Property BitrateSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._bitrate)
+                Return Not String.IsNullOrEmpty(_bitrate)
             End Get
         End Property
 
         <XmlElement("channels")>
         Public Property Channels() As String
             Get
-                Return Me._channels.Trim()
+                Return _channels.Trim()
             End Get
             Set(ByVal Value As String)
-                Me._channels = Value
+                _channels = Value
             End Set
         End Property
 
         <XmlIgnore>
         Public ReadOnly Property ChannelsSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._channels)
+                Return Not String.IsNullOrEmpty(_channels)
             End Get
         End Property
 
         <XmlElement("codec")>
         Public Property Codec() As String
             Get
-                Return Me._codec.Trim()
+                Return _codec.Trim()
             End Get
             Set(ByVal Value As String)
-                Me._codec = Value
+                _codec = Value
             End Set
         End Property
 
         <XmlIgnore>
         Public ReadOnly Property CodecSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._codec)
+                Return Not String.IsNullOrEmpty(_codec)
             End Get
         End Property
 
         <XmlIgnore>
         Public Property HasPreferred() As Boolean
             Get
-                Return Me._haspreferred
+                Return _haspreferred
             End Get
             Set(ByVal value As Boolean)
-                Me._haspreferred = value
+                _haspreferred = value
             End Set
         End Property
 
         <XmlElement("language")>
         Public Property Language() As String
             Get
-                Return Me._language.Trim()
+                Return _language.Trim()
             End Get
             Set(ByVal Value As String)
-                Me._language = Value
+                _language = Value
             End Set
         End Property
 
         <XmlIgnore>
         Public ReadOnly Property LanguageSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._language)
+                Return Not String.IsNullOrEmpty(_language)
             End Get
         End Property
 
         <XmlElement("longlanguage")>
         Public Property LongLanguage() As String
             Get
-                Return Me._longlanguage.Trim()
+                Return _longlanguage.Trim()
             End Get
             Set(ByVal value As String)
-                Me._longlanguage = value
+                _longlanguage = value
             End Set
         End Property
 
         <XmlIgnore>
         Public ReadOnly Property LongLanguageSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._longlanguage)
+                Return Not String.IsNullOrEmpty(_longlanguage)
             End Get
         End Property
 
@@ -1336,51 +1336,51 @@ Public Class MediaInfo
         <XmlElement("audio")>
         Public Property Audio() As List(Of Audio)
             Get
-                Return Me._audio
+                Return _audio
             End Get
             Set(ByVal Value As List(Of Audio))
-                Me._audio = Value
+                _audio = Value
             End Set
         End Property
 
         <XmlIgnore>
         Public ReadOnly Property AudioSpecified() As Boolean
             Get
-                Return Me._audio.Count > 0
+                Return _audio.Count > 0
             End Get
         End Property
 
         <XmlElement("subtitle")>
         Public Property Subtitle() As List(Of Subtitle)
             Get
-                Return Me._subtitle
+                Return _subtitle
             End Get
             Set(ByVal Value As List(Of Subtitle))
-                Me._subtitle = Value
+                _subtitle = Value
             End Set
         End Property
 
         <XmlIgnore>
         Public ReadOnly Property SubtitleSpecified() As Boolean
             Get
-                Return Me._subtitle.Count > 0
+                Return _subtitle.Count > 0
             End Get
         End Property
 
         <XmlElement("video")>
         Public Property Video() As List(Of Video)
             Get
-                Return Me._video
+                Return _video
             End Get
             Set(ByVal Value As List(Of Video))
-                Me._video = Value
+                _video = Value
             End Set
         End Property
 
         <XmlIgnore>
         Public ReadOnly Property VideoSpecified() As Boolean
             Get
-                Return Me._video.Count > 0
+                Return _video.Count > 0
             End Get
         End Property
 
@@ -1407,34 +1407,34 @@ Public Class MediaInfo
         <XmlElement("language")>
         Public Property Language() As String
             Get
-                Return Me._language
+                Return _language
             End Get
             Set(ByVal Value As String)
-                Me._language = Value
+                _language = Value
             End Set
         End Property
 
         <XmlIgnore>
         Public ReadOnly Property LanguageSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._language)
+                Return Not String.IsNullOrEmpty(_language)
             End Get
         End Property
 
         <XmlElement("longlanguage")>
         Public Property LongLanguage() As String
             Get
-                Return Me._longlanguage
+                Return _longlanguage
             End Get
             Set(ByVal value As String)
-                Me._longlanguage = value
+                _longlanguage = value
             End Set
         End Property
 
         <XmlIgnore>
         Public ReadOnly Property LongLanguageSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._longlanguage)
+                Return Not String.IsNullOrEmpty(_longlanguage)
             End Get
         End Property
 
@@ -1451,7 +1451,7 @@ Public Class MediaInfo
         <XmlIgnore>
         Public ReadOnly Property SubsForcedSpecified() As Boolean
             Get
-                Return Me._subs_foced
+                Return _subs_foced
             End Get
         End Property
 
@@ -1468,7 +1468,7 @@ Public Class MediaInfo
         <XmlIgnore>
         Public ReadOnly Property SubsPathSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._subs_path)
+                Return Not String.IsNullOrEmpty(_subs_path)
             End Get
         End Property
 
@@ -1485,7 +1485,7 @@ Public Class MediaInfo
         <XmlIgnore>
         Public ReadOnly Property SubsTypeSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._subs_type)
+                Return Not String.IsNullOrEmpty(_subs_type)
             End Get
         End Property
 
@@ -1531,170 +1531,170 @@ Public Class MediaInfo
         <XmlElement("aspect")>
         Public Property Aspect() As String
             Get
-                Return Me._aspect.Trim()
+                Return _aspect.Trim()
             End Get
             Set(ByVal Value As String)
-                Me._aspect = Value
+                _aspect = Value
             End Set
         End Property
 
         <XmlIgnore>
         Public ReadOnly Property AspectSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._aspect)
+                Return Not String.IsNullOrEmpty(_aspect)
             End Get
         End Property
 
         <XmlElement("bitrate")>
         Public Property Bitrate() As String
             Get
-                Return Me._bitrate.Trim()
+                Return _bitrate.Trim()
             End Get
             Set(ByVal Value As String)
-                Me._bitrate = Value
+                _bitrate = Value
             End Set
         End Property
 
         <XmlIgnore>
         Public ReadOnly Property BitrateSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._bitrate)
+                Return Not String.IsNullOrEmpty(_bitrate)
             End Get
         End Property
 
         <XmlElement("codec")>
         Public Property Codec() As String
             Get
-                Return Me._codec.Trim()
+                Return _codec.Trim()
             End Get
             Set(ByVal Value As String)
-                Me._codec = Value
+                _codec = Value
             End Set
         End Property
 
         <XmlIgnore>
         Public ReadOnly Property CodecSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._codec)
+                Return Not String.IsNullOrEmpty(_codec)
             End Get
         End Property
 
         <XmlElement("durationinseconds")>
         Public Property Duration() As String
             Get
-                Return Me._duration.Trim()
+                Return _duration.Trim()
             End Get
             Set(ByVal Value As String)
-                Me._duration = Value
+                _duration = Value
             End Set
         End Property
 
         <XmlIgnore()>
         Public ReadOnly Property DurationSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._duration)
+                Return Not String.IsNullOrEmpty(_duration)
             End Get
         End Property
 
         <XmlElement("height")>
         Public Property Height() As String
             Get
-                Return Me._height.Trim()
+                Return _height.Trim()
             End Get
             Set(ByVal Value As String)
-                Me._height = Value
+                _height = Value
             End Set
         End Property
 
         <XmlIgnore>
         Public ReadOnly Property HeightSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._height)
+                Return Not String.IsNullOrEmpty(_height)
             End Get
         End Property
 
         <XmlElement("language")>
         Public Property Language() As String
             Get
-                Return Me._language.Trim()
+                Return _language.Trim()
             End Get
             Set(ByVal Value As String)
-                Me._language = Value
+                _language = Value
             End Set
         End Property
 
         <XmlIgnore>
         Public ReadOnly Property LanguageSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._language)
+                Return Not String.IsNullOrEmpty(_language)
             End Get
         End Property
 
         <XmlElement("longlanguage")>
         Public Property LongLanguage() As String
             Get
-                Return Me._longlanguage.Trim()
+                Return _longlanguage.Trim()
             End Get
             Set(ByVal value As String)
-                Me._longlanguage = value
+                _longlanguage = value
             End Set
         End Property
 
         <XmlIgnore>
         Public ReadOnly Property LongLanguageSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._longlanguage)
+                Return Not String.IsNullOrEmpty(_longlanguage)
             End Get
         End Property
 
         <XmlElement("multiview_count")>
         Public Property MultiViewCount() As String
             Get
-                Return Me._multiview_count.Trim()
+                Return _multiview_count.Trim()
             End Get
             Set(ByVal Value As String)
-                Me._multiview_count = Value
+                _multiview_count = Value
             End Set
         End Property
 
         <XmlIgnore>
         Public ReadOnly Property MultiViewCountSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._multiview_count)
+                Return Not String.IsNullOrEmpty(_multiview_count)
             End Get
         End Property
 
         <XmlElement("multiview_layout")>
         Public Property MultiViewLayout() As String
             Get
-                Return Me._multiview_layout.Trim()
+                Return _multiview_layout.Trim()
             End Get
             Set(ByVal Value As String)
-                Me._multiview_layout = Value
+                _multiview_layout = Value
             End Set
         End Property
 
         <XmlIgnore>
         Public ReadOnly Property MultiViewLayoutSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._multiview_layout)
+                Return Not String.IsNullOrEmpty(_multiview_layout)
             End Get
         End Property
 
         <XmlElement("scantype")>
         Public Property Scantype() As String
             Get
-                Return Me._scantype.Trim()
+                Return _scantype.Trim()
             End Get
             Set(ByVal Value As String)
-                Me._scantype = Value
+                _scantype = Value
             End Set
         End Property
 
         <XmlIgnore>
         Public ReadOnly Property ScantypeSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._scantype)
+                Return Not String.IsNullOrEmpty(_scantype)
             End Get
         End Property
 
@@ -1708,52 +1708,52 @@ Public Class MediaInfo
         <XmlElement("stereomode")>
         Public Property StereoMode() As String
             Get
-                Return Me._stereomode.Trim()
+                Return _stereomode.Trim()
             End Get
             Set(ByVal Value As String)
-                Me._stereomode = Value
+                _stereomode = Value
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore>
         Public ReadOnly Property StereoModeSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._stereomode)
+                Return Not String.IsNullOrEmpty(_stereomode)
             End Get
         End Property
 
-        <XmlElement("width")> _
+        <XmlElement("width")>
         Public Property Width() As String
             Get
-                Return Me._width.Trim()
+                Return _width.Trim()
             End Get
             Set(ByVal Value As String)
-                Me._width = Value
+                _width = Value
             End Set
         End Property
 
-        <XmlIgnore> _
+        <XmlIgnore>
         Public ReadOnly Property WidthSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(Me._width)
+                Return Not String.IsNullOrEmpty(_width)
             End Get
         End Property
 
-        <XmlElement("filesize")> _
+        <XmlElement("filesize")>
         Public Property Filesize() As Double
             Get
-                Return Me._filesize
+                Return _filesize
             End Get
             Set(ByVal Value As Double)
                 'for now save filesize in bytes(default)
-                Me._filesize = Value
+                _filesize = Value
             End Set
         End Property
 
-        <XmlIgnore()> _
+        <XmlIgnore()>
         Public ReadOnly Property FilesizeSpecified() As Boolean
             Get
-                If Me._filesize = 0 Then
+                If _filesize = 0 Then
                     Return False
                 Else
                     Return True
