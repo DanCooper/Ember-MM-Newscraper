@@ -615,13 +615,13 @@ Public Class FileFolderRenamer
             Try
                 'Resolution
                 If _tmpMovie.Movie.FileInfo.StreamDetails.VideoSpecified Then
-                    Dim tVid As MediaInfo.Video = NFO.GetBestVideo(_tmpMovie.Movie.FileInfo)
+                    Dim tVid As MediaContainers.Video = NFO.GetBestVideo(_tmpMovie.Movie.FileInfo)
                     Dim tRes As String = NFO.GetResFromDimensions(tVid)
                     MovieFile.Resolution = String.Format("{0}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(138, "Unknown"), tRes))
                 End If
 
                 If _tmpMovie.Movie.FileInfo.StreamDetails.AudioSpecified Then
-                    Dim tAud As MediaInfo.Audio = NFO.GetBestAudio(_tmpMovie.Movie.FileInfo, False)
+                    Dim tAud As MediaContainers.Audio = NFO.GetBestAudio(_tmpMovie.Movie.FileInfo, False)
 
                     'Audio Channels
                     If tAud.ChannelsSpecified Then
@@ -845,13 +845,13 @@ Public Class FileFolderRenamer
             Try
                 'Resolution
                 If _tmpTVEpisode.TVEpisode.FileInfo.StreamDetails.VideoSpecified Then
-                    Dim tVid As MediaInfo.Video = NFO.GetBestVideo(_tmpTVEpisode.TVEpisode.FileInfo)
+                    Dim tVid As MediaContainers.Video = NFO.GetBestVideo(_tmpTVEpisode.TVEpisode.FileInfo)
                     Dim tRes As String = NFO.GetResFromDimensions(tVid)
                     EpisodeFile.Resolution = String.Format("{0}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(138, "Unknown"), tRes))
                 End If
 
                 If _tmpTVEpisode.TVEpisode.FileInfo.StreamDetails.AudioSpecified Then
-                    Dim tAud As MediaInfo.Audio = NFO.GetBestAudio(_tmpTVEpisode.TVEpisode.FileInfo, False)
+                    Dim tAud As MediaContainers.Audio = NFO.GetBestAudio(_tmpTVEpisode.TVEpisode.FileInfo, False)
 
                     'Audio Channels
                     If tAud.ChannelsSpecified Then

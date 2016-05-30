@@ -1351,7 +1351,7 @@ Public Class NFO
         End If
     End Function
 
-    Public Shared Function FIToString(ByVal miFI As MediaInfo.Fileinfo, ByVal isTV As Boolean) As String
+    Public Shared Function FIToString(ByVal miFI As MediaContainers.Fileinfo, ByVal isTV As Boolean) As String
         '//
         ' Convert Fileinfo into a string to be displayed in the GUI
         '\\
@@ -1368,7 +1368,7 @@ Public Class NFO
                     If miFI.StreamDetails.VideoSpecified Then strOutput.AppendFormat("{0}: {1}{2}", Master.eLang.GetString(595, "Video Streams"), miFI.StreamDetails.Video.Count.ToString, Environment.NewLine)
                     If miFI.StreamDetails.AudioSpecified Then strOutput.AppendFormat("{0}: {1}{2}", Master.eLang.GetString(596, "Audio Streams"), miFI.StreamDetails.Audio.Count.ToString, Environment.NewLine)
                     If miFI.StreamDetails.SubtitleSpecified Then strOutput.AppendFormat("{0}: {1}{2}", Master.eLang.GetString(597, "Subtitle  Streams"), miFI.StreamDetails.Subtitle.Count.ToString, Environment.NewLine)
-                    For Each miVideo As MediaInfo.Video In miFI.StreamDetails.Video
+                    For Each miVideo As MediaContainers.Video In miFI.StreamDetails.Video
                         strOutput.AppendFormat("{0}{1} {2}{0}", Environment.NewLine, Master.eLang.GetString(617, "Video Stream"), iVS)
                         If miVideo.WidthSpecified AndAlso miVideo.HeightSpecified Then strOutput.AppendFormat("- {0}{1}", String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), miVideo.Width, miVideo.Height), Environment.NewLine)
                         If miVideo.AspectSpecified Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(614, "Aspect Ratio"), miVideo.Aspect, Environment.NewLine)
@@ -1387,7 +1387,7 @@ Public Class NFO
 
                     strOutput.Append(Environment.NewLine)
 
-                    For Each miAudio As MediaInfo.Audio In miFI.StreamDetails.Audio
+                    For Each miAudio As MediaContainers.Audio In miFI.StreamDetails.Audio
                         'audio
                         strOutput.AppendFormat("{0}{1} {2}{0}", Environment.NewLine, Master.eLang.GetString(618, "Audio Stream"), iAS.ToString)
                         If miAudio.CodecSpecified Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(604, "Codec"), miAudio.Codec, Environment.NewLine)
@@ -1399,7 +1399,7 @@ Public Class NFO
 
                     strOutput.Append(Environment.NewLine)
 
-                    For Each miSub As MediaInfo.Subtitle In miFI.StreamDetails.Subtitle
+                    For Each miSub As MediaContainers.Subtitle In miFI.StreamDetails.Subtitle
                         'subtitles
                         strOutput.AppendFormat("{0}{1} {2}{0}", Environment.NewLine, Master.eLang.GetString(619, "Subtitle Stream"), iSS.ToString)
                         If miSub.LongLanguageSpecified Then strOutput.AppendFormat("- {0}: {1}", Master.eLang.GetString(610, "Language"), miSub.LongLanguage)
@@ -1433,14 +1433,14 @@ Public Class NFO
     ''' 
     ''' 2014/08/12 cocotus - Should work better: If there's more than one audiostream which highest channelcount, the one with highest bitrate or the DTSHD stream will be returned
     ''' </remarks>
-    Public Shared Function GetBestAudio(ByVal miFIA As MediaInfo.Fileinfo, ByVal ForTV As Boolean) As MediaInfo.Audio
+    Public Shared Function GetBestAudio(ByVal miFIA As MediaContainers.Fileinfo, ByVal ForTV As Boolean) As MediaContainers.Audio
         '//
         ' Get the highest values from file info
         '\\
 
-        Dim fiaOut As New MediaInfo.Audio
+        Dim fiaOut As New MediaContainers.Audio
         Try
-            Dim cmiFIA As New MediaInfo.Fileinfo
+            Dim cmiFIA As New MediaContainers.Fileinfo
 
             Dim getPrefLanguage As Boolean = False
             Dim hasPrefLanguage As Boolean = False
@@ -1469,7 +1469,7 @@ Public Class NFO
             End If
 
             If getPrefLanguage AndAlso miFIA.StreamDetails.Audio.Where(Function(f) f.LongLanguage.ToLower = prefLanguage).Count > 0 Then
-                For Each Stream As MediaInfo.Audio In miFIA.StreamDetails.Audio
+                For Each Stream As MediaContainers.Audio In miFIA.StreamDetails.Audio
                     If Stream.LongLanguage.ToLower = prefLanguage Then
                         cmiFIA.StreamDetails.Audio.Add(Stream)
                     End If
@@ -1478,9 +1478,9 @@ Public Class NFO
                 cmiFIA.StreamDetails.Audio.AddRange(miFIA.StreamDetails.Audio)
             End If
 
-            For Each miAudio As MediaInfo.Audio In cmiFIA.StreamDetails.Audio
+            For Each miAudio As MediaContainers.Audio In cmiFIA.StreamDetails.Audio
                 If Not String.IsNullOrEmpty(miAudio.Channels) Then
-                    sinChans = NumUtils.ConvertToSingle(EmberAPI.MediaInfo.FormatAudioChannel(miAudio.Channels))
+                    sinChans = NumUtils.ConvertToSingle(MediaInfo.FormatAudioChannel(miAudio.Channels))
                     sinBitrate = 0
                     If Integer.TryParse(miAudio.Bitrate, 0) Then
                         sinBitrate = CInt(miAudio.Bitrate)
@@ -1511,12 +1511,12 @@ Public Class NFO
         Return fiaOut
     End Function
 
-    Public Shared Function GetBestVideo(ByVal miFIV As MediaInfo.Fileinfo) As MediaInfo.Video
+    Public Shared Function GetBestVideo(ByVal miFIV As MediaContainers.Fileinfo) As MediaContainers.Video
         '//
         ' Get the highest values from file info
         '\\
 
-        Dim fivOut As New MediaInfo.Video
+        Dim fivOut As New MediaContainers.Video
         Try
             Dim iWidest As Integer = 0
             Dim iWidth As Integer = 0
@@ -1536,7 +1536,7 @@ Public Class NFO
             fivOut.Filesize = 0
             'cocotus end
 
-            For Each miVideo As MediaInfo.Video In miFIV.StreamDetails.Video
+            For Each miVideo As MediaContainers.Video In miFIV.StreamDetails.Video
                 If Not String.IsNullOrEmpty(miVideo.Width) Then
                     If Integer.TryParse(miVideo.Width, 0) Then
                         iWidth = Convert.ToInt32(miVideo.Width)
@@ -1578,7 +1578,7 @@ Public Class NFO
         Return fivOut
     End Function
 
-    Public Shared Function GetDimensionsFromVideo(ByVal fiRes As MediaInfo.Video) As String
+    Public Shared Function GetDimensionsFromVideo(ByVal fiRes As MediaContainers.Video) As String
         '//
         ' Get the dimension values of the video from the information provided by MediaInfo.dll
         '\\
@@ -1674,7 +1674,7 @@ Public Class NFO
     ''' </summary>
     ''' <param name="fiRes"></param>
     ''' <returns></returns>
-    Public Shared Function GetResFromDimensions(ByVal fiRes As MediaInfo.Video) As String
+    Public Shared Function GetResFromDimensions(ByVal fiRes As MediaContainers.Video) As String
         Dim resOut As String = String.Empty
         Try
             If Not String.IsNullOrEmpty(fiRes.Width) AndAlso Not String.IsNullOrEmpty(fiRes.Height) AndAlso Not String.IsNullOrEmpty(fiRes.Aspect) Then

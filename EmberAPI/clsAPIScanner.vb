@@ -87,7 +87,7 @@ Public Class Scanner
         DBMovie.ExtrathumbsPath = String.Empty
         DBMovie.ImagesContainer = New MediaContainers.ImagesContainer
         DBMovie.NfoPath = String.Empty
-        DBMovie.Subtitles = New List(Of MediaInfo.Subtitle)
+        DBMovie.Subtitles = New List(Of MediaContainers.Subtitle)
         DBMovie.ThemePath = String.Empty
         DBMovie.Trailer = New MediaContainers.Trailer
 
@@ -237,7 +237,7 @@ Public Class Scanner
             For Each ext In Master.eSettings.FileSystemValidSubtitlesExts
                 If fFile.ToLower.EndsWith(ext) Then
                     Dim isForced As Boolean = Path.GetFileNameWithoutExtension(fFile).ToLower.EndsWith("forced")
-                    DBMovie.Subtitles.Add(New MediaInfo.Subtitle With {.SubsPath = fFile, .SubsType = "External", .SubsForced = isForced})
+                    DBMovie.Subtitles.Add(New MediaContainers.Subtitle With {.SubsPath = fFile, .SubsType = "External", .SubsForced = isForced})
                 End If
             Next
         Next
@@ -343,7 +343,7 @@ Public Class Scanner
         DBTVEpisode.ActorThumbs.Clear()
         DBTVEpisode.ImagesContainer = New MediaContainers.ImagesContainer
         DBTVEpisode.NfoPath = String.Empty
-        DBTVEpisode.Subtitles = New List(Of MediaInfo.Subtitle)
+        DBTVEpisode.Subtitles = New List(Of MediaContainers.Subtitle)
 
         Try
             fList.AddRange(Directory.GetFiles(Directory.GetParent(DBTVEpisode.Filename).FullName, String.Concat(Path.GetFileNameWithoutExtension(DBTVEpisode.Filename), "*.*")))
@@ -383,7 +383,7 @@ Public Class Scanner
                 Dim FullFilePathWithoutExt As String = Path.Combine(Directory.GetParent(DBTVEpisode.Filename).FullName, Path.GetFileNameWithoutExtension(DBTVEpisode.Filename)).ToLower
                 If fFile.ToLower.StartsWith(FullFilePathWithoutExt) AndAlso fFile.ToLower.EndsWith(ext) Then
                     Dim isForced As Boolean = Path.GetFileNameWithoutExtension(fFile).ToLower.EndsWith("forced")
-                    DBTVEpisode.Subtitles.Add(New MediaInfo.Subtitle With {.SubsPath = fFile, .SubsType = "External", .SubsForced = isForced})
+                    DBTVEpisode.Subtitles.Add(New MediaContainers.Subtitle With {.SubsPath = fFile, .SubsType = "External", .SubsForced = isForced})
                 End If
             Next
         Next
@@ -1283,7 +1283,7 @@ Public Class Scanner
                         currMovieContainer.IsSingle = True
                         currMovieContainer.Language = sSource.Language
                         currMovieContainer.Source = sSource
-                        currMovieContainer.Subtitles = New List(Of MediaInfo.Subtitle)
+                        currMovieContainer.Subtitles = New List(Of MediaContainers.Subtitle)
                         Load_Movie(currMovieContainer, True)
                         bwPrelim.ReportProgress(-1, New ProgressValue With {.Type = Enums.ScannerEventType.AddedMovie, .Message = currMovieContainer.Movie.Title})
                     End If
@@ -1325,7 +1325,7 @@ Public Class Scanner
                         currMovieContainer.IsSingle = sSource.IsSingle
                         currMovieContainer.Language = sSource.Language
                         currMovieContainer.Source = sSource
-                        currMovieContainer.Subtitles = New List(Of MediaInfo.Subtitle)
+                        currMovieContainer.Subtitles = New List(Of MediaContainers.Subtitle)
                         Load_Movie(currMovieContainer, True)
                         bwPrelim.ReportProgress(-1, New ProgressValue With {.Type = Enums.ScannerEventType.AddedMovie, .Message = currMovieContainer.Movie.Title})
                     Next

@@ -1741,9 +1741,9 @@ Public Class Database
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand.CommandText = String.Concat("SELECT * FROM MoviesVStreams WHERE MovieID = ", _movieDB.ID, ";")
             Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
-                Dim video As MediaInfo.Video
+                Dim video As MediaContainers.Video
                 While SQLreader.Read
-                    video = New MediaInfo.Video
+                    video = New MediaContainers.Video
                     If Not DBNull.Value.Equals(SQLreader("Video_Width")) Then video.Width = SQLreader("Video_Width").ToString
                     If Not DBNull.Value.Equals(SQLreader("Video_Height")) Then video.Height = SQLreader("Video_Height").ToString
                     If Not DBNull.Value.Equals(SQLreader("Video_Codec")) Then video.Codec = SQLreader("Video_Codec").ToString
@@ -1766,9 +1766,9 @@ Public Class Database
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand.CommandText = String.Concat("SELECT * FROM MoviesAStreams WHERE MovieID = ", _movieDB.ID, ";")
             Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
-                Dim audio As MediaInfo.Audio
+                Dim audio As MediaContainers.Audio
                 While SQLreader.Read
-                    audio = New MediaInfo.Audio
+                    audio = New MediaContainers.Audio
                     If Not DBNull.Value.Equals(SQLreader("Audio_Language")) Then audio.Language = SQLreader("Audio_Language").ToString
                     If Not DBNull.Value.Equals(SQLreader("Audio_LongLanguage")) Then audio.LongLanguage = SQLreader("Audio_LongLanguage").ToString
                     If Not DBNull.Value.Equals(SQLreader("Audio_Codec")) Then audio.Codec = SQLreader("Audio_Codec").ToString
@@ -1783,9 +1783,9 @@ Public Class Database
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand.CommandText = String.Concat("SELECT * FROM MoviesSubs WHERE MovieID = ", _movieDB.ID, " AND NOT Subs_Type = 'External';")
             Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
-                Dim subtitle As MediaInfo.Subtitle
+                Dim subtitle As MediaContainers.Subtitle
                 While SQLreader.Read
-                    subtitle = New MediaInfo.Subtitle
+                    subtitle = New MediaContainers.Subtitle
                     If Not DBNull.Value.Equals(SQLreader("Subs_Language")) Then subtitle.Language = SQLreader("Subs_Language").ToString
                     If Not DBNull.Value.Equals(SQLreader("Subs_LongLanguage")) Then subtitle.LongLanguage = SQLreader("Subs_LongLanguage").ToString
                     If Not DBNull.Value.Equals(SQLreader("Subs_Type")) Then subtitle.SubsType = SQLreader("Subs_Type").ToString
@@ -1800,9 +1800,9 @@ Public Class Database
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand.CommandText = String.Concat("SELECT * FROM MoviesSubs WHERE MovieID = ", _movieDB.ID, " AND Subs_Type = 'External';")
             Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
-                Dim subtitle As MediaInfo.Subtitle
+                Dim subtitle As MediaContainers.Subtitle
                 While SQLreader.Read
-                    subtitle = New MediaInfo.Subtitle
+                    subtitle = New MediaContainers.Subtitle
                     If Not DBNull.Value.Equals(SQLreader("Subs_Language")) Then subtitle.Language = SQLreader("Subs_Language").ToString
                     If Not DBNull.Value.Equals(SQLreader("Subs_LongLanguage")) Then subtitle.LongLanguage = SQLreader("Subs_LongLanguage").ToString
                     If Not DBNull.Value.Equals(SQLreader("Subs_Type")) Then subtitle.SubsType = SQLreader("Subs_Type").ToString
@@ -2288,9 +2288,9 @@ Public Class Database
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand.CommandText = String.Concat("SELECT * FROM TVVStreams WHERE TVEpID = ", _TVDB.ID, ";")
             Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
-                Dim video As MediaInfo.Video
+                Dim video As MediaContainers.Video
                 While SQLreader.Read
-                    video = New MediaInfo.Video
+                    video = New MediaContainers.Video
                     If Not DBNull.Value.Equals(SQLreader("Video_Width")) Then video.Width = SQLreader("Video_Width").ToString
                     If Not DBNull.Value.Equals(SQLreader("Video_Height")) Then video.Height = SQLreader("Video_Height").ToString
                     If Not DBNull.Value.Equals(SQLreader("Video_Codec")) Then video.Codec = SQLreader("Video_Codec").ToString
@@ -2313,9 +2313,9 @@ Public Class Database
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand.CommandText = String.Concat("SELECT * FROM TVAStreams WHERE TVEpID = ", _TVDB.ID, ";")
             Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
-                Dim audio As MediaInfo.Audio
+                Dim audio As MediaContainers.Audio
                 While SQLreader.Read
-                    audio = New MediaInfo.Audio
+                    audio = New MediaContainers.Audio
                     If Not DBNull.Value.Equals(SQLreader("Audio_Language")) Then audio.Language = SQLreader("Audio_Language").ToString
                     If Not DBNull.Value.Equals(SQLreader("Audio_LongLanguage")) Then audio.LongLanguage = SQLreader("Audio_LongLanguage").ToString
                     If Not DBNull.Value.Equals(SQLreader("Audio_Codec")) Then audio.Codec = SQLreader("Audio_Codec").ToString
@@ -2330,9 +2330,9 @@ Public Class Database
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand.CommandText = String.Concat("SELECT * FROM TVSubs WHERE TVEpID = ", _TVDB.ID, " AND NOT Subs_Type = 'External';")
             Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
-                Dim subtitle As MediaInfo.Subtitle
+                Dim subtitle As MediaContainers.Subtitle
                 While SQLreader.Read
-                    subtitle = New MediaInfo.Subtitle
+                    subtitle = New MediaContainers.Subtitle
                     If Not DBNull.Value.Equals(SQLreader("Subs_Language")) Then subtitle.Language = SQLreader("Subs_Language").ToString
                     If Not DBNull.Value.Equals(SQLreader("Subs_LongLanguage")) Then subtitle.LongLanguage = SQLreader("Subs_LongLanguage").ToString
                     If Not DBNull.Value.Equals(SQLreader("Subs_Type")) Then subtitle.SubsType = SQLreader("Subs_Type").ToString
@@ -2347,9 +2347,9 @@ Public Class Database
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand.CommandText = String.Concat("SELECT * FROM TVSubs WHERE TVEpID = ", _TVDB.ID, " AND Subs_Type = 'External';")
             Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
-                Dim subtitle As MediaInfo.Subtitle
+                Dim subtitle As MediaContainers.Subtitle
                 While SQLreader.Read
-                    subtitle = New MediaInfo.Subtitle
+                    subtitle = New MediaContainers.Subtitle
                     If Not DBNull.Value.Equals(SQLreader("Subs_Language")) Then subtitle.Language = SQLreader("Subs_Language").ToString
                     If Not DBNull.Value.Equals(SQLreader("Subs_LongLanguage")) Then subtitle.LongLanguage = SQLreader("Subs_LongLanguage").ToString
                     If Not DBNull.Value.Equals(SQLreader("Subs_Type")) Then subtitle.SubsType = SQLreader("Subs_Type").ToString
@@ -5228,7 +5228,7 @@ Public Class Database
         Private _showpath As String
         Private _sortmethod As Enums.SortMethod_MovieSet
         Private _source As New DBSource
-        Private _subtitles As New List(Of MediaInfo.Subtitle)
+        Private _subtitles As New List(Of MediaContainers.Subtitle)
         Private _themepath As String
         Private _trailer As New MediaContainers.Trailer
         Private _tvepisode As MediaContainers.EpisodeDetails
@@ -5651,11 +5651,11 @@ Public Class Database
             End Get
         End Property
 
-        Public Property Subtitles() As List(Of MediaInfo.Subtitle)
+        Public Property Subtitles() As List(Of MediaContainers.Subtitle)
             Get
                 Return _subtitles
             End Get
-            Set(ByVal value As List(Of MediaInfo.Subtitle))
+            Set(ByVal value As List(Of MediaContainers.Subtitle))
                 _subtitles = value
             End Set
         End Property
@@ -5789,7 +5789,7 @@ Public Class Database
             _showpath = String.Empty
             _sortmethod = Enums.SortMethod_MovieSet.Year
             _source = New DBSource
-            _subtitles = New List(Of MediaInfo.Subtitle)
+            _subtitles = New List(Of MediaContainers.Subtitle)
             _themepath = String.Empty
             _trailer = New MediaContainers.Trailer
             _tvepisode = Nothing
