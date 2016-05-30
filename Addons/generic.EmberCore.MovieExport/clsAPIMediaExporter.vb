@@ -518,10 +518,10 @@ Public Class MediaExporter
         Dim fSize As Long = 0
 
         If Not String.IsNullOrEmpty(fPath) Then
-            If StringUtils.IsStacked(Path.GetFileNameWithoutExtension(fPath), True) OrElse FileUtils.Common.isVideoTS(fPath) OrElse FileUtils.Common.isBDRip(fPath) Then
+            If FileUtils.Common.isStacked(fPath) OrElse FileUtils.Common.isVideoTS(fPath) OrElse FileUtils.Common.isBDRip(fPath) Then
                 Try
                     Dim sExt As String = Path.GetExtension(fPath).ToLower
-                    Dim oFile As String = StringUtils.CleanStackingMarkers(fPath, False)
+                    Dim oFile As String = FileUtils.Common.RemoveStackingMarkers(fPath)
                     Dim sFile As New List(Of String)
                     Dim bIsVTS As Boolean = False
 
@@ -541,7 +541,7 @@ Public Class MediaExporter
                         End Try
                     Else
                         Try
-                            sFile.AddRange(Directory.GetFiles(Directory.GetParent(fPath).FullName, StringUtils.CleanStackingMarkers(Path.GetFileName(fPath), True)))
+                            sFile.AddRange(Directory.GetFiles(Directory.GetParent(fPath).FullName, FileUtils.Common.RemoveStackingMarkers(Path.GetFileName(fPath), True)))
                         Catch
                         End Try
                     End If

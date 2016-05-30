@@ -473,7 +473,7 @@ Public Class Database
                                 Master.DB.Delete_Movie(Convert.ToInt64(SQLReader("idMovie")), True)
                             ElseIf Master.eSettings.MovieSkipLessThan > 0 Then
                                 fInfo = New FileInfo(SQLReader("MoviePath").ToString)
-                                If ((Not Master.eSettings.MovieSkipStackedSizeCheck OrElse Not StringUtils.IsStacked(fInfo.Name)) AndAlso fInfo.Length < Master.eSettings.MovieSkipLessThan * 1048576) Then
+                                If ((Not Master.eSettings.MovieSkipStackedSizeCheck OrElse Not FileUtils.Common.isStacked(fInfo.FullName)) AndAlso fInfo.Length < Master.eSettings.MovieSkipLessThan * 1048576) Then
                                     MoviePaths.Remove(SQLReader("MoviePath").ToString)
                                     Master.DB.Delete_Movie(Convert.ToInt64(SQLReader("idMovie")), True)
                                 End If
@@ -1391,7 +1391,7 @@ Public Class Database
                     If Master.eSettings.FileSystemNoStackExts.Contains(Path.GetExtension(mPath)) Then
                         tList.Add(mPath)
                     Else
-                        tList.Add(StringUtils.CleanStackingMarkers(mPath))
+                        tList.Add(FileUtils.Common.RemoveStackingMarkers(mPath))
                     End If
                 End While
             End Using

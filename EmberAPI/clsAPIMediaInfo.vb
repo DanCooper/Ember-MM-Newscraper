@@ -298,9 +298,9 @@ Public Class MediaInfo
 
                 'cocotus 20140118 For more accurate metadata scanning of BLURAY/DVD images use improved mediainfo scanning (ScanMI-function) -> don't hop in this branch!! 
                 '  ElseIf StringUtils.IsStacked(Path.GetFileNameWithoutExtension(sPath), True) OrElse FileUtils.Common.isVideoTS(sPath) OrElse FileUtils.Common.isBDRip(sPath) Then
-            ElseIf StringUtils.IsStacked(Path.GetFileNameWithoutExtension(sPath), True) Then
+            ElseIf FileUtils.Common.IsStacked(sPath) Then
                 Try
-                    Dim oFile As String = StringUtils.CleanStackingMarkers(sPath, False)
+                    Dim oFile As String = FileUtils.Common.RemoveStackingMarkers(sPath, False)
                     Dim sFile As New List(Of String)
                     Dim bIsVTS As Boolean = False
 
@@ -320,7 +320,7 @@ Public Class MediaInfo
                         End Try
                     Else
                         Try
-                            sFile.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, StringUtils.CleanStackingMarkers(Path.GetFileName(sPath), True)))
+                            sFile.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, Path.GetFileName(FileUtils.Common.RemoveStackingMarkers(sPath, True))))
                         Catch
                         End Try
                     End If
@@ -337,7 +337,7 @@ Public Class MediaInfo
                         'make sure the file is actually part of the stack
                         'handles movie.cd1.ext, movie.cd2.ext and movie.extras.ext
                         'disregards movie.extras.ext in this case
-                        If bIsVTS OrElse (oFile = StringUtils.CleanStackingMarkers(File, False)) Then
+                        If bIsVTS OrElse (oFile = FileUtils.Common.RemoveStackingMarkers(File)) Then
                             tInfo = ScanMI(File)
 
                             tVideo = NFO.GetBestVideo(tInfo)

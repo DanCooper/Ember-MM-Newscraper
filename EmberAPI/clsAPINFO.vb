@@ -397,17 +397,7 @@ Public Class NFO
                 DBMovie.ListTitle = tTitle
             End If
         Else
-            If FileUtils.Common.isVideoTS(DBMovie.Filename) Then
-                DBMovie.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).Name)
-            ElseIf FileUtils.Common.isBDRip(DBMovie.Filename) Then
-                DBMovie.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName).Name)
-            Else
-                If DBMovie.Source.UseFolderName AndAlso DBMovie.IsSingle Then
-                    DBMovie.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(DBMovie.Filename).Name)
-                Else
-                    DBMovie.ListTitle = StringUtils.FilterName_Movie(Path.GetFileNameWithoutExtension(DBMovie.Filename))
-                End If
-            End If
+            DBMovie.ListTitle = StringUtils.FilterTitleFromPath_Movie(DBMovie.Filename, DBMovie.IsSingle, DBMovie.Source.UseFolderName)
         End If
 
         Return DBMovie
@@ -1624,7 +1614,7 @@ Public Class NFO
             Catch
             End Try
         Else
-            Dim fName As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath)).ToLower
+            Dim fName As String = Path.GetFileNameWithoutExtension(FileUtils.Common.RemoveStackingMarkers(sPath)).ToLower
             Dim oName As String = Path.GetFileNameWithoutExtension(sPath)
             fName = If(fName.EndsWith("*"), fName, String.Concat(fName, "*"))
             oName = If(oName.EndsWith("*"), oName, String.Concat(oName, "*"))

@@ -68,7 +68,7 @@ Public Class dlgRenameManual_Movie
             txtFile.Visible = False
             txtFolder.Text = Directory.GetParent(Directory.GetParent(Directory.GetParent(_DBElement.Filename).FullName).FullName).Name
         Else
-            Dim FileName = Path.GetFileNameWithoutExtension(StringUtils.CleanStackingMarkers(_DBElement.Filename)).Trim
+            Dim FileName = Path.GetFileNameWithoutExtension(FileUtils.Common.RemoveStackingMarkers(_DBElement.Filename)).Trim
             Dim stackMark As String = Path.GetFileNameWithoutExtension(_DBElement.Filename).Replace(FileName, String.Empty).ToLower
             If Not FileName.ToLower = "video_ts" Then
                 If Not stackMark = String.Empty AndAlso _DBElement.Movie.Title.ToLower.EndsWith(stackMark) Then

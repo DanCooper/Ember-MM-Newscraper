@@ -913,14 +913,7 @@ Public Class ModulesManager
                 DBElement.ImagesContainer = New MediaContainers.ImagesContainer
                 DBElement.Movie = New MediaContainers.Movie
 
-                Dim tmpTitle As String = String.Empty
-                If FileUtils.Common.isVideoTS(DBElement.Filename) Then
-                    tmpTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(DBElement.Filename).FullName).Name, False)
-                ElseIf FileUtils.Common.isBDRip(DBElement.Filename) Then
-                    tmpTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(Directory.GetParent(DBElement.Filename).FullName).FullName).Name, False)
-                Else
-                    tmpTitle = StringUtils.FilterName_Movie(If(DBElement.IsSingle, Directory.GetParent(DBElement.Filename).Name, Path.GetFileNameWithoutExtension(DBElement.Filename)))
-                End If
+                Dim tmpTitle As String = StringUtils.FilterTitleFromPath_Movie(DBElement.Filename, DBElement.IsSingle, DBElement.Source.UseFolderName)
 
                 Dim tmpYear As String = String.Empty
                 If FileUtils.Common.isVideoTS(DBElement.Filename) Then
@@ -1235,9 +1228,7 @@ Public Class ModulesManager
                 DBElement.ThemePath = String.Empty
                 DBElement.TVShow = New MediaContainers.TVShow
 
-                Dim tmpTitle As String = StringUtils.FilterName_TVShow(FileUtils.Common.GetDirectory(DBElement.ShowPath), False)
-
-                DBElement.TVShow.Title = tmpTitle
+                DBElement.TVShow.Title = StringUtils.FilterTitleFromPath_TVShow(DBElement.ShowPath)
 
                 For Each sEpisode As Database.DBElement In DBElement.Episodes
                     Dim iEpisode As Integer = sEpisode.TVEpisode.Episode

@@ -76,7 +76,7 @@ Public Class Scanner
         Dim parPath As String = String.Empty
 
         Dim fileName As String = Path.GetFileNameWithoutExtension(DBMovie.Filename)
-        Dim fileNameStack As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(DBMovie.Filename))
+        Dim fileNameStack As String = Path.GetFileNameWithoutExtension(FileUtils.Common.RemoveStackingMarkers(DBMovie.Filename))
         Dim filePath As String = Path.Combine(Directory.GetParent(DBMovie.Filename).FullName, fileName)
         Dim filePathStack As String = Path.Combine(Directory.GetParent(DBMovie.Filename).FullName, fileNameStack)
         Dim fileParPath As String = Directory.GetParent(filePath).FullName
@@ -123,7 +123,7 @@ Public Class Scanner
                 fList.AddRange(Directory.GetFiles(parPath))
             Else
                 Try
-                    Dim sName As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(DBMovie.Filename), True)
+                    Dim sName As String = Path.GetFileNameWithoutExtension(FileUtils.Common.RemoveStackingMarkers(DBMovie.Filename, True))
                     fList.AddRange(Directory.GetFiles(parPath, If(sName.EndsWith("*"), sName, String.Concat(sName, "*"))))
                 Catch ex As Exception
                     logger.Error(ex, New StackFrame().GetMethod().Name)
@@ -654,30 +654,7 @@ Public Class Scanner
         If Not DBMovie.Movie.TitleSpecified Then
             'no title so assume it's an invalid nfo, clear nfo path if exists
             DBMovie.NfoPath = String.Empty
-
-            If FileUtils.Common.isVideoTS(DBMovie.Filename) Then
-                DBMovie.Movie.Title = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).Name, False)
-                If Not DBMovie.Movie.TitleSpecified Then
-                    DBMovie.Movie.Title = Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).Name
-                End If
-            ElseIf FileUtils.Common.isBDRip(DBMovie.Filename) Then
-                DBMovie.Movie.Title = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName).Name, False)
-                If Not DBMovie.Movie.TitleSpecified Then
-                    DBMovie.Movie.Title = Directory.GetParent(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName).Name
-                End If
-            Else
-                If DBMovie.Source.UseFolderName AndAlso DBMovie.IsSingle Then
-                    DBMovie.Movie.Title = StringUtils.FilterName_Movie(Directory.GetParent(DBMovie.Filename).Name, False)
-                    If Not DBMovie.Movie.TitleSpecified Then
-                        DBMovie.Movie.Title = Directory.GetParent(DBMovie.Filename).Name
-                    End If
-                Else
-                    DBMovie.Movie.Title = StringUtils.FilterName_Movie(Path.GetFileNameWithoutExtension(DBMovie.Filename), False)
-                    If Not DBMovie.Movie.TitleSpecified Then
-                        DBMovie.Movie.Title = Path.GetFileNameWithoutExtension(DBMovie.Filename)
-                    End If
-                End If
-            End If
+            DBMovie.Movie.Title = StringUtils.FilterTitleFromPath_Movie(DBMovie.Filename, DBMovie.IsSingle, DBMovie.Source.UseFolderName)
         End If
 
         'ListTitle
@@ -844,7 +821,7 @@ Public Class Scanner
                 'no title so assume it's an invalid nfo, clear nfo path if exists
                 cEpisode.NfoPath = String.Empty
                 'set title based on episode file
-                If Not Master.eSettings.TVEpisodeNoFilter Then cEpisode.TVEpisode.Title = StringUtils.FilterName_TVEpisode(Path.GetFileNameWithoutExtension(cEpisode.Filename), cEpisode.TVShow.Title)
+                If Not Master.eSettings.TVEpisodeNoFilter Then cEpisode.TVEpisode.Title = StringUtils.FilterTitleFromPath_TVEpisode(cEpisode.Filename, cEpisode.TVShow.Title)
             End If
 
             'search local actor thumb for each actor in NFO
@@ -954,29 +931,22 @@ Public Class Scanner
                     DBTVShow.TVShow = New MediaContainers.TVShow
                 End If
 
+                'Title
                 If Not DBTVShow.TVShow.TitleSpecified Then
                     'no title so assume it's an invalid nfo, clear nfo path if exists
                     DBTVShow.NfoPath = String.Empty
+                    DBTVShow.TVShow.Title = StringUtils.FilterTitleFromPath_TVShow(DBTVShow.ShowPath)
+                End If
 
-                    DBTVShow.ListTitle = StringUtils.FilterName_TVShow(FileUtils.Common.GetDirectory(DBTVShow.ShowPath))
-                    DBTVShow.TVShow.Title = StringUtils.FilterName_TVShow(FileUtils.Common.GetDirectory(DBTVShow.ShowPath), False)
-
-                    'everything was filtered out... just set to directory name
-                    If String.IsNullOrEmpty(DBTVShow.TVShow.Title) Then
-                        DBTVShow.ListTitle = FileUtils.Common.GetDirectory(DBTVShow.ShowPath)
-                        DBTVShow.TVShow.Title = FileUtils.Common.GetDirectory(DBTVShow.ShowPath)
-                    End If
+                'ListTitle
+                Dim tTitle As String = StringUtils.SortTokens_TV(DBTVShow.TVShow.Title)
+                If Master.eSettings.TVDisplayStatus AndAlso Not String.IsNullOrEmpty(DBTVShow.TVShow.Status) Then
+                    DBTVShow.ListTitle = String.Format("{0} ({1})", tTitle, DBTVShow.TVShow.Status)
                 Else
-                    Dim tTitle As String = StringUtils.SortTokens_TV(DBTVShow.TVShow.Title)
-                    If Master.eSettings.TVDisplayStatus AndAlso Not String.IsNullOrEmpty(DBTVShow.TVShow.Status) Then
-                        DBTVShow.ListTitle = String.Format("{0} ({1})", tTitle, DBTVShow.TVShow.Status)
-                    Else
-                        DBTVShow.ListTitle = tTitle
-                    End If
+                    DBTVShow.ListTitle = tTitle
                 End If
 
                 If DBTVShow.ListTitleSpecified Then
-
                     'search local actor thumb for each actor in NFO
                     If DBTVShow.TVShow.ActorsSpecified AndAlso DBTVShow.ActorThumbsSpecified Then
                         For Each actor In DBTVShow.TVShow.Actors
@@ -1321,11 +1291,11 @@ Public Class Scanner
                 End If
 
                 If (vtsSingle OrElse bdmvSingle) AndAlso Not String.IsNullOrEmpty(tFile) Then
-                    If Not MoviePaths.Contains(StringUtils.CleanStackingMarkers(tFile.ToLower)) Then
+                    If Not MoviePaths.Contains(FileUtils.Common.RemoveStackingMarkers(tFile.ToLower)) Then
                         If Master.eSettings.FileSystemNoStackExts.Contains(Path.GetExtension(tFile).ToLower) Then
                             MoviePaths.Add(tFile.ToLower)
                         Else
-                            MoviePaths.Add(StringUtils.CleanStackingMarkers(tFile).ToLower)
+                            MoviePaths.Add(FileUtils.Common.RemoveStackingMarkers(tFile).ToLower)
                         End If
                         currMovieContainer = New Database.DBElement(Enums.ContentType.Movie)
                         currMovieContainer.ActorThumbs = New List(Of String)
@@ -1342,11 +1312,11 @@ Public Class Scanner
                     Dim HasFile As Boolean = False
                     Dim tList As IOrderedEnumerable(Of FileInfo) = lFi.Where(Function(f) Master.eSettings.FileSystemValidExts.Contains(f.Extension.ToLower) AndAlso
                              Not Regex.IsMatch(f.Name, String.Concat("[^\w\s]\s?(", clsAdvancedSettings.GetSetting("NotValidFileContains", "trailer|sample"), ")"), RegexOptions.IgnoreCase) AndAlso ((Master.eSettings.MovieSkipStackedSizeCheck AndAlso
-                            StringUtils.IsStacked(f.Name)) OrElse (Not Convert.ToInt32(Master.eSettings.MovieSkipLessThan) > 0 OrElse f.Length >= Master.eSettings.MovieSkipLessThan * 1048576))).OrderBy(Function(f) f.FullName)
+                            FileUtils.Common.isStacked(f.FullName)) OrElse (Not Convert.ToInt32(Master.eSettings.MovieSkipLessThan) > 0 OrElse f.Length >= Master.eSettings.MovieSkipLessThan * 1048576))).OrderBy(Function(f) f.FullName)
 
                     If tList.Count > 1 AndAlso sSource.IsSingle Then
                         'check if we already have a movie from this folder
-                        If MoviePaths.Where(Function(f) tList.Where(Function(l) StringUtils.CleanStackingMarkers(l.FullName).ToLower = f).Count > 0).Count > 0 Then
+                        If MoviePaths.Where(Function(f) tList.Where(Function(l) FileUtils.Common.RemoveStackingMarkers(l.FullName).ToLower = f).Count > 0).Count > 0 Then
                             HasFile = True
                         End If
                     End If
@@ -1354,12 +1324,12 @@ Public Class Scanner
                     If Not HasFile Then
                         For Each lFile As FileInfo In tList
 
-                            If Not MoviePaths.Contains(StringUtils.CleanStackingMarkers(lFile.FullName).ToLower) Then
+                            If Not MoviePaths.Contains(FileUtils.Common.RemoveStackingMarkers(lFile.FullName).ToLower) Then
                                 If Master.eSettings.FileSystemNoStackExts.Contains(lFile.Extension.ToLower) Then
                                     MoviePaths.Add(lFile.FullName.ToLower)
                                     SkipStack = True
                                 Else
-                                    MoviePaths.Add(StringUtils.CleanStackingMarkers(lFile.FullName).ToLower)
+                                    MoviePaths.Add(FileUtils.Common.RemoveStackingMarkers(lFile.FullName).ToLower)
                                 End If
                                 fList.Add(lFile.FullName)
                             End If

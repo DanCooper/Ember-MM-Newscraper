@@ -720,7 +720,7 @@ Public Class FileFolderRenamer
             If Path.GetFileName(_tmpMovie.Filename.ToLower) = "video_ts.ifo" Then
                 MovieFile.FileName = "VIDEO_TS"
             Else
-                MovieFile.FileName = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(_tmpMovie.Filename))
+                MovieFile.FileName = Path.GetFileNameWithoutExtension(FileUtils.Common.RemoveStackingMarkers(_tmpMovie.Filename))
                 Dim stackMark As String = Path.GetFileNameWithoutExtension(_tmpMovie.Filename).Replace(MovieFile.FileName, String.Empty).ToLower
                 If Not stackMark = String.Empty AndAlso _tmpMovie.Movie.Title.ToLower.EndsWith(stackMark) Then
                     MovieFile.FileName = Path.GetFileNameWithoutExtension(_tmpMovie.Filename)
@@ -945,7 +945,7 @@ Public Class FileFolderRenamer
             If Path.GetFileName(_tmpTVEpisode.Filename.ToLower) = "video_ts.ifo" Then
                 EpisodeFile.FileName = "VIDEO_TS"
             Else
-                EpisodeFile.FileName = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(_tmpTVEpisode.Filename))
+                EpisodeFile.FileName = Path.GetFileNameWithoutExtension(FileUtils.Common.RemoveStackingMarkers(_tmpTVEpisode.Filename))
                 Dim stackMark As String = Path.GetFileNameWithoutExtension(_tmpTVEpisode.Filename).Replace(EpisodeFile.FileName, String.Empty).ToLower
                 If Not stackMark = String.Empty AndAlso _tmpTVEpisode.TVEpisode.Title.ToLower.EndsWith(stackMark) Then
                     EpisodeFile.FileName = Path.GetFileNameWithoutExtension(_tmpTVEpisode.Filename)

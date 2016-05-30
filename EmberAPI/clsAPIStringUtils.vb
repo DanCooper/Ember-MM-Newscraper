@@ -112,41 +112,6 @@ Public Class StringUtils
         Return Not bNoChanges
     End Function
     ''' <summary>
-    ''' When given a valid path to a video/media file, return the path but without stacking markers.
-    ''' </summary>
-    ''' <param name="sPath"><c>String</c> path to clean</param>
-    ''' <param name="Asterisk">If <c>True</c>, any stacking markers will be replaced with an asterix (*). If <c>False</c>, stacking markers will be replace by a space ( )</param>
-    ''' <returns>The <c>String</c> path with the stacking markers removed, and replaced with a (space) or an asterix (*)</returns>
-    ''' <remarks>Stacking markers are found using a regex similar to this:
-    '''          "[\s_\-\.]+\(?(cd|dvd|p(?:ar)?t|dis[ck])+[_\-\.]?[0-9]+\)?"
-    ''' Markers are identified with a prefix, an optional separator, followed by a number.
-    ''' Therefore the following examples would all be replaced:
-    ''' <list>
-    '''   <item>cd1</item>
-    '''   <item>cd-1</item>
-    '''   <item>dvd_2</item>
-    '''   <item>p3</item>
-    '''   <item>pt4</item>
-    '''   <item>part.5</item>
-    '''   <item>disc-6</item>
-    '''   <item>disk_73</item>
-    ''' </list>
-    ''' Note that text after the stacking marker are left untouched.
-    ''' </remarks>
-    Public Shared Function CleanStackingMarkers(ByVal sPath As String, Optional ByVal Asterisk As Boolean = False) As String
-        'Don't do anything if DisableMultiPartMedia is True
-        If clsAdvancedSettings.GetBooleanSetting("DisableMultiPartMedia", False) Then Return sPath
-        If String.IsNullOrEmpty(sPath) Then Return String.Empty
-        Dim pattern As String = clsAdvancedSettings.GetSetting("DeleteStackMarkers", "[\s_\-\.]+\(?(cd|dvd|p(?:ar)?t|dis[ck])+[_\-\.]?[0-9]+\)?")
-        Dim replacement = If(Asterisk, "*", " ")
-        Dim sReturn As String = Regex.Replace(sPath, pattern, replacement, RegexOptions.IgnoreCase)
-        If Not sReturn.Trim = sPath.Trim Then
-            'Replace any double white space by a single white space
-            sReturn = Regex.Replace(sReturn, "\s\s(\s+)?", " ").Trim
-        End If
-        Return sReturn.Trim
-    End Function
-    ''' <summary>
     ''' Removes all URLs and HTML tags
     ''' </summary>
     ''' <param name="strPlotOutline"></param>
@@ -320,107 +285,113 @@ Public Class StringUtils
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Name: " & name & " generated an error message")
         End Try
-        Return name
+        Return name.Trim
     End Function
     ''' <summary>
-    ''' Cleans up a name by stripping it down to the basic title with no additional decorations.
+    ''' Cleans up a movie path by stripping it down to the basic title with no additional decorations.
     ''' </summary>
-    ''' <param name="movieName">The <c>String</c> movie name to clean</param>
-    ''' <param name="doExtras">If <c>True</c>, consider optional cleanups such as changing to Title Case, 
-    ''' and re-positioning starting [The/A/An] to the end.</param>
-    ''' <param name="remPunct">If <c>True</c> remove any non-word character [^a-zA-Z0-9_]
-    ''' and duplicate whitespaces, replacing them all with a simple space </param>
-    ''' <returns>The filtered name as a <c>String</c></returns>
+    ''' <param name="strPath"><c>String</c> full file path (including file extension) to get title from</param>
+    ''' <returns>The filtered title as a <c>String</c></returns>
     ''' <remarks></remarks>
-    Public Shared Function FilterName_Movie(ByVal movieName As String, Optional ByVal doExtras As Boolean = True, Optional ByVal remPunct As Boolean = False) As String
-        If String.IsNullOrEmpty(movieName) Then Return String.Empty
+    Public Shared Function FilterTitleFromPath_Movie(ByVal strPath As String, ByVal IsSingle As Boolean, ByVal UseForderName As Boolean) As String
+        If String.IsNullOrEmpty(strPath) Then Return String.Empty
 
-        movieName = ApplyFilters(movieName, Master.eSettings.MovieFilterCustom)
+        'removing stack markers
+        strPath = FileUtils.Common.RemoveStackingMarkers(strPath)
 
-        movieName = CleanStackingMarkers(movieName.Trim)
-
-        'Convert String To Proper Case
-        If Master.eSettings.MovieProperCase AndAlso doExtras Then
-            movieName = ProperCase(movieName)
+        'get raw title from path
+        Dim strRawTitle As String = String.Empty
+        If FileUtils.Common.isVideoTS(strPath) Then
+            strRawTitle = Directory.GetParent(Directory.GetParent(strPath).FullName).Name
+        ElseIf FileUtils.Common.isBDRip(strPath) Then
+            strRawTitle = Directory.GetParent(Directory.GetParent(Directory.GetParent(strPath).FullName).FullName).Name
+        Else
+            strRawTitle = If(IsSingle AndAlso UseForderName, Directory.GetParent(strPath).Name, Path.GetFileNameWithoutExtension(strPath))
         End If
 
-        If doExtras Then movieName = SortTokens_Movie(movieName.Trim)
-        If remPunct Then movieName = RemovePunctuation(movieName.Trim)
-
-        Return movieName.Trim
-    End Function
-    ''' <summary>
-    ''' Cleans up a name by stripping it down to the basic title with no additional decorations.
-    ''' </summary>
-    ''' <param name="TVEpName">The <c>String</c> TV Episode name to clean</param>
-    ''' <param name="TVShowName">The <c>String</c> EV Show name to clean</param>
-    ''' <param name="doExtras">If <c>True</c>, consider optional cleanups such as changing to Title Case</param>
-    ''' <param name="remPunct">If <c>True</c> remove any non-word character [^a-zA-Z0-9_]
-    ''' and duplicate whitespaces, replacing them all with a simple space </param>
-    ''' <returns>The filtered name as a <c>String</c></returns>
-    ''' <remarks></remarks>
-    Public Shared Function FilterName_TVEpisode(ByVal TVEpName As String, ByVal TVShowName As String, Optional ByVal doExtras As Boolean = True, Optional ByVal remPunct As Boolean = False) As String
-        Try
-
-            If String.IsNullOrEmpty(TVEpName) Then Return String.Empty
-            TVEpName = TVEpName.Trim
-            TVEpName = ApplyFilters(TVEpName, Master.eSettings.TVEpisodeFilterCustom)
-            TVEpName = CleanStackingMarkers(TVEpName)
-
-            'remove the show name from the episode name
-            If Not String.IsNullOrEmpty(TVShowName) Then TVEpName = TVEpName.Replace(TVShowName.Trim, String.Empty)
-
-            'Convert String To Proper Case
-            If Master.eSettings.TVEpisodeProperCase AndAlso doExtras Then
-                TVEpName = ProperCase(TVEpName.Trim)
-            End If
-
-            'TODO Dekker500 Why are we not using this next line (FilterTokens)?
-            ' Answer: No FilterTokens for episodes, also no ListTitle (make no sense)
-            'If doExtras Then TVEpName = FilterTokens(TVEpName.Trim)
-            If remPunct Then TVEpName = RemovePunctuation(TVEpName.Trim)
-
-
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-        Return TVEpName.Trim
-    End Function
-    ''' <summary>
-    ''' Cleans up a name by stripping it down to the basic title with no additional decorations.
-    ''' </summary>
-    ''' <param name="TVShowName">The <c>String</c> TV Show name to clean</param>
-    ''' <param name="doExtras">If <c>True</c>, consider optional cleanups such as changing to Title Case</param>
-    ''' <param name="remPunct">If <c>True</c> remove any non-word character [^a-zA-Z0-9_]
-    ''' and duplicate whitespaces, replacing them all with a simple space </param>
-    ''' <returns>The filtered name as a <c>String</c></returns>
-    ''' <remarks></remarks>
-    Public Shared Function FilterName_TVShow(ByVal TVShowName As String, Optional ByVal doExtras As Boolean = True, Optional ByVal remPunct As Boolean = False) As String
-        '//
-        ' Clean all the crap out of the name
-        '\\
-        If String.IsNullOrEmpty(TVShowName) Then Return String.Empty
-        TVShowName = TVShowName.Trim
-        TVShowName = ApplyFilters(TVShowName, Master.eSettings.TVShowFilterCustom)
-        'TVShowName = CleanStackingMarkers(TVShowName)
+        'filter raw title by filter list
+        Dim strTitle As String = ApplyFilters(strRawTitle, Master.eSettings.MovieFilterCustom)
 
         'Convert String To Proper Case
-        If Master.eSettings.TVShowProperCase AndAlso doExtras Then
-            TVShowName = ProperCase(TVShowName)
+        If Master.eSettings.MovieProperCase Then
+            strTitle = ProperCase(strTitle)
         End If
 
-        If doExtras Then TVShowName = SortTokens_TV(TVShowName.Trim)
-        If remPunct Then TVShowName = RemovePunctuation(CleanStackingMarkers(TVShowName.Trim))
+        'everything was filtered out... just set to file or directory name
+        If String.IsNullOrEmpty(strTitle) Then
+            Return strRawTitle.Trim
+        Else
+            Return strTitle.Trim
+        End If
+    End Function
+    ''' <summary>
+    ''' Cleans up a tv episode path by stripping it down to the basic title with no additional decorations.
+    ''' </summary>
+    ''' <param name="strPath"><c>String</c> full file path (including file extension) to get title from</param>
+    ''' <param name="strTVShowName">The <c>String</c> TV Show name to remove it from TV Episode title</param>
+    ''' <returns>The filtered title as a <c>String</c></returns>
+    ''' <remarks></remarks>
+    Public Shared Function FilterTitleFromPath_TVEpisode(ByVal strPath As String, ByVal strTVShowName As String) As String
+        If String.IsNullOrEmpty(strPath) Then Return String.Empty
 
-        Return TVShowName.Trim
+        'removing stack markers
+        strPath = FileUtils.Common.RemoveStackingMarkers(strPath)
+
+        'get raw title from path
+        Dim strRawTitle As String = Path.GetFileNameWithoutExtension(strPath)
+
+        'filter raw title by filter list
+        Dim strTitle As String = ApplyFilters(strRawTitle, Master.eSettings.TVEpisodeFilterCustom)
+
+        'remove the tv show name from the episode title
+        If Not String.IsNullOrEmpty(strTVShowName) Then strTitle = strTitle.Replace(strTVShowName.Trim, String.Empty).Trim
+
+        'Convert String To Proper Case
+        If Master.eSettings.TVEpisodeProperCase Then
+            strTitle = ProperCase(strTitle)
+        End If
+
+        'everything was filtered out... just set to file name
+        If String.IsNullOrEmpty(strTitle) Then
+            Return strRawTitle.Trim
+        Else
+            Return strTitle.Trim
+        End If
+    End Function
+    ''' <summary>
+    ''' Cleans up a tv show path by stripping it down to the basic title with no additional decorations.
+    ''' </summary>
+    ''' <param name="strPath"><c>String</c> full tv show main path to get title from</param>
+    ''' <returns>The filtered name as a <c>String</c></returns>
+    ''' <remarks></remarks>
+    Public Shared Function FilterTitleFromPath_TVShow(ByVal strPath As String) As String
+        If String.IsNullOrEmpty(strPath) Then Return String.Empty
+
+        'get raw title from path
+        Dim strRawTitle As String = FileUtils.Common.GetDirectory(strPath)
+
+        'filter raw title by filter list
+        Dim strTitle As String = ApplyFilters(strRawTitle, Master.eSettings.TVShowFilterCustom)
+
+        'Convert String To Proper Case
+        If Master.eSettings.TVShowProperCase Then
+            strTitle = ProperCase(strTitle)
+        End If
+
+        'everything was filtered out... just set to directory name
+        If String.IsNullOrEmpty(strTitle) Then
+            Return strRawTitle.Trim
+        Else
+            Return strTitle.Trim
+        End If
     End Function
 
     Public Shared Function ListTitle_Movie(ByVal MovieTitle As String, ByVal MovieYear As String) As String
         Dim ListTitle As String = MovieTitle
         If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(MovieYear) Then
-            ListTitle = String.Format("{0} ({1})", StringUtils.SortTokens_Movie(MovieTitle.Trim), MovieYear.Trim)
+            ListTitle = String.Format("{0} ({1})", SortTokens_Movie(MovieTitle.Trim), MovieYear.Trim)
         Else
-            ListTitle = StringUtils.SortTokens_Movie(MovieTitle.Trim)
+            ListTitle = SortTokens_Movie(MovieTitle.Trim)
         End If
         Return ListTitle
     End Function
@@ -428,9 +399,9 @@ Public Class StringUtils
     Public Shared Function ListTitle_TVShow(ByVal TVShowTitle As String, ByVal MovieYear As String) As String
         Dim ListTitle As String = TVShowTitle
         If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(MovieYear) Then
-            ListTitle = String.Format("{0} ({1})", StringUtils.SortTokens_Movie(TVShowTitle.Trim), MovieYear.Trim)
+            ListTitle = String.Format("{0} ({1})", SortTokens_Movie(TVShowTitle.Trim), MovieYear.Trim)
         Else
-            ListTitle = StringUtils.SortTokens_Movie(TVShowTitle.Trim)
+            ListTitle = SortTokens_Movie(TVShowTitle.Trim)
         End If
         Return ListTitle
     End Function
@@ -455,7 +426,7 @@ Public Class StringUtils
 
         If Master.eSettings.MovieSortTokens.Count > 0 Then
             Dim tokenContents As String
-            Dim onlyTokenFromTitle As RegularExpressions.Match
+            Dim onlyTokenFromTitle As Match
             Dim titleWithoutToken As String
             For Each sToken As String In Master.eSettings.MovieSortTokens
                 Try
@@ -503,7 +474,7 @@ Public Class StringUtils
 
         If Master.eSettings.MovieSetSortTokens.Count > 0 Then
             Dim tokenContents As String
-            Dim onlyTokenFromTitle As RegularExpressions.Match
+            Dim onlyTokenFromTitle As Match
             Dim titleWithoutToken As String
             For Each sToken As String In Master.eSettings.MovieSetSortTokens
                 Try
@@ -551,7 +522,7 @@ Public Class StringUtils
 
         If Master.eSettings.TVSortTokens.Count > 0 Then
             Dim tokenContents As String
-            Dim onlyTokenFromTitle As RegularExpressions.Match
+            Dim onlyTokenFromTitle As Match
             Dim titleWithoutToken As String
             For Each sToken As String In Master.eSettings.TVSortTokens
                 Try
@@ -664,35 +635,6 @@ Public Class StringUtils
 
         'If we get here, something went wrong.
         Return String.Empty
-    End Function
-    ''' <summary>
-    ''' Determine whether the given string represents a file that needs to be treated as if it is stacked (single media in multiple files)
-    ''' If the system setting "DisableMultiPartMedia" is False, then always return False
-    ''' </summary>
-    ''' <param name="sName"><c>String</c> to evaluate</param>
-    ''' <param name="VTS">If <c>True</c> then DVD file structure stacking is also considered. Default is <c>False</c></param>
-    ''' <returns><c>True</c> if the string represents a stacked file, or <c>False</c> otherwise</returns>
-    ''' <remarks>A stacked file is one that appears to be a part of a series of files that belong together.
-    ''' Examples would be "filename.cd1.1080p.avi", "movie.part1.mkv" or "film.disc.1.iso".
-    ''' A special case of stacking is the DVD file structure, which has segments in a format such as:
-    ''' "VTS_01_0.VOB", "VTS_03_2.VOB", etc.
-    ''' </remarks>
-    Public Shared Function IsStacked(ByVal sName As String, Optional ByVal VTS As Boolean = False) As Boolean
-        If String.IsNullOrEmpty(sName) Then Return False
-        If clsAdvancedSettings.GetBooleanSetting("DisableMultiPartMedia", False) Then Return False
-        Dim sCheckStackMarkers As String = clsAdvancedSettings.GetSetting("CheckStackMarkers", "[\s_\-\.]+\(?(cd|dvd|p(?:ar)?t|dis[ck])+[_\-\.]?[0-9]+\)?")
-        Try
-            Dim bReturn As Boolean = Regex.IsMatch(sName, sCheckStackMarkers, RegexOptions.IgnoreCase)
-            If VTS And Not bReturn Then
-                bReturn = Regex.IsMatch(sName, "^vts_[0-9]+_[0-9]+", RegexOptions.IgnoreCase)
-            End If
-            Return bReturn
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Input <" & sName & "><" & VTS & "> generated an error message")
-        End Try
-
-        'If we get here, something went wrong.
-        Return False
     End Function
     ''' <summary>
     ''' Determine whether the format of the supplied URL is valid. No actual Internet query is made to see if
