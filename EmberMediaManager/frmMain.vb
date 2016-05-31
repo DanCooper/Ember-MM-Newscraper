@@ -8223,9 +8223,11 @@ doCancel:
                 Dim parOutOfTolerance As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parOutOfTolerance", DbType.Boolean, 0, "OutOfTolerance")
                 Dim par_idMovie As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("par_idMovie", DbType.Int32, 0, "idMovie")
                 Dim LevFail As Boolean = False
-                Dim pTitle As String = String.Empty
+                Dim bIsSingle As Boolean = False
                 Dim bUseFolderName As Boolean = False
                 For Each drvRow As DataGridViewRow In dgvMovies.Rows
+
+                    bIsSingle = CBool(drvRow.Cells("Type").Value)
 
                     Using SQLcommand_source As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                         SQLcommand.CommandText = String.Concat("SELECT * FROM moviesource WHERE idSource = ", Convert.ToInt64(drvRow.Cells("idSource").Value), ";")
@@ -8240,19 +8242,7 @@ doCancel:
                     End Using
 
                     If Master.eSettings.MovieLevTolerance > 0 Then
-                        If FileUtils.Common.isVideoTS(drvRow.Cells("MoviePath").Value.ToString) Then
-                            pTitle = Directory.GetParent(Directory.GetParent(drvRow.Cells("MoviePath").Value.ToString).FullName).Name
-                        ElseIf FileUtils.Common.isBDRip(drvRow.Cells("MoviePath").Value.ToString) Then
-                            pTitle = Directory.GetParent(Directory.GetParent(Directory.GetParent(drvRow.Cells("MoviePath").Value.ToString).FullName).FullName).Name
-                        Else
-                            If bUseFolderName AndAlso Convert.ToBoolean(drvRow.Cells("Type").FormattedValue) Then
-                                pTitle = Directory.GetParent(drvRow.Cells("MoviePath").Value.ToString).Name
-                            Else
-                                pTitle = Path.GetFileNameWithoutExtension(drvRow.Cells("MoviePath").Value.ToString)
-                            End If
-                        End If
-
-                        LevFail = StringUtils.ComputeLevenshtein(StringUtils.FilterName_Movie(drvRow.Cells("Title").Value.ToString, False, True).ToLower, StringUtils.FilterName_Movie(pTitle, False, True).ToLower) > Master.eSettings.MovieLevTolerance
+                        LevFail = StringUtils.ComputeLevenshtein(drvRow.Cells("Title").Value.ToString, StringUtils.FilterTitleFromPath_Movie(drvRow.Cells("MoviePath").Value.ToString, bIsSingle, bUseFolderName)) > Master.eSettings.MovieLevTolerance
 
                         parOutOfTolerance.Value = LevFail
                         drvRow.Cells("OutOfTolerance").Value = LevFail
@@ -17828,7 +17818,7 @@ doCancel:
     End Sub
 
     Private Sub txtSearchMovies_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtSearchMovies.KeyPress
-        e.Handled = Not StringUtils.ValidFilterChar(e.KeyChar)
+        e.Handled = Not StringUtils.isValidFilterChar(e.KeyChar)
         If e.KeyChar = Microsoft.VisualBasic.ChrW(Keys.Return) Then
             dgvMovies.Focus()
         End If
@@ -17843,7 +17833,7 @@ doCancel:
     End Sub
 
     Private Sub txtSearchMovieSets_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtSearchMovieSets.KeyPress
-        e.Handled = Not StringUtils.ValidFilterChar(e.KeyChar)
+        e.Handled = Not StringUtils.isValidFilterChar(e.KeyChar)
         If e.KeyChar = Microsoft.VisualBasic.ChrW(Keys.Return) Then
             dgvMovieSets.Focus()
         End If
@@ -17858,7 +17848,7 @@ doCancel:
     End Sub
 
     Private Sub txtSearchShows_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtSearchShows.KeyPress
-        e.Handled = Not StringUtils.ValidFilterChar(e.KeyChar)
+        e.Handled = Not StringUtils.isValidFilterChar(e.KeyChar)
         If e.KeyChar = Microsoft.VisualBasic.ChrW(Keys.Return) Then
             dgvTVShows.Focus()
         End If

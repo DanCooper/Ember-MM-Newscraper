@@ -7843,7 +7843,7 @@ Public Class Settings
 #Region "Fields"
 
         Private _filetype As String
-        Private _metadata As MediaInfo.Fileinfo
+        Private _metadata As MediaContainers.Fileinfo
 
 #End Region 'Fields
 
@@ -7866,11 +7866,11 @@ Public Class Settings
             End Set
         End Property
 
-        Public Property MetaData() As MediaInfo.Fileinfo
+        Public Property MetaData() As MediaContainers.Fileinfo
             Get
                 Return _metadata
             End Get
-            Set(ByVal value As MediaInfo.Fileinfo)
+            Set(ByVal value As MediaContainers.Fileinfo)
                 _metadata = value
             End Set
         End Property
@@ -7881,7 +7881,7 @@ Public Class Settings
 
         Public Sub Clear()
             _filetype = String.Empty
-            _metadata = New MediaInfo.Fileinfo
+            _metadata = New MediaContainers.Fileinfo
         End Sub
 
 #End Region 'Methods

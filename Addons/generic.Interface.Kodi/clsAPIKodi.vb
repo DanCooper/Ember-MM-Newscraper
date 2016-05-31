@@ -450,7 +450,7 @@ Namespace Kodi
                         Next
                         tPathAndFilename.strPath = Directory.GetParent(Directory.GetParent(tDBElement.Filename).FullName).FullName
                     Else
-                        If StringUtils.IsStacked(Path.GetFileName(tDBElement.Filename)) Then
+                        If FileUtils.Common.isStacked(tDBElement.Filename) Then
                             tPathAndFilename.bIsMultiPart = True
                             tPathAndFilename.strFilename = tDBElement.Filename
                             tPathAndFilename.strPath = Directory.GetParent(tDBElement.Filename).FullName
