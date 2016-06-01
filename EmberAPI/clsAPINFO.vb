@@ -830,12 +830,12 @@ Public Class NFO
                 Dim iEpisode As Integer = -1
                 Dim iSeason As Integer = -1
                 Dim strAiredDate As String = aKnownEpisode.AiredDate
-                If DBTV.Ordering = Enums.Ordering.Absolute Then
+                If DBTV.Ordering = Enums.EpisodeOrdering.Absolute Then
                     iEpisode = aKnownEpisode.EpisodeAbsolute
-                ElseIf DBTV.Ordering = Enums.Ordering.DVD Then
+                ElseIf DBTV.Ordering = Enums.EpisodeOrdering.DVD Then
                     iEpisode = CInt(aKnownEpisode.EpisodeDVD)
                     iSeason = aKnownEpisode.SeasonDVD
-                ElseIf DBTV.Ordering = Enums.Ordering.Standard Then
+                ElseIf DBTV.Ordering = Enums.EpisodeOrdering.Standard Then
                     iEpisode = aKnownEpisode.Episode
                     iSeason = aKnownEpisode.Season
                 End If
@@ -1204,12 +1204,12 @@ Public Class NFO
             Dim iEpisode As Integer = -1
             Dim iSeason As Integer = -1
             Dim strAiredDate As String = KnownEpisodesIndex.Item(0).AiredDate
-            If DBTVEpisode.Ordering = Enums.Ordering.Absolute Then
+            If DBTVEpisode.Ordering = Enums.EpisodeOrdering.Absolute Then
                 iEpisode = KnownEpisodesIndex.Item(0).EpisodeAbsolute
-            ElseIf DBTVEpisode.Ordering = Enums.Ordering.DVD Then
+            ElseIf DBTVEpisode.Ordering = Enums.EpisodeOrdering.DVD Then
                 iEpisode = CInt(KnownEpisodesIndex.Item(0).EpisodeDVD)
                 iSeason = KnownEpisodesIndex.Item(0).SeasonDVD
-            ElseIf DBTVEpisode.Ordering = Enums.Ordering.Standard Then
+            ElseIf DBTVEpisode.Ordering = Enums.EpisodeOrdering.Standard Then
                 iEpisode = KnownEpisodesIndex.Item(0).Episode
                 iSeason = KnownEpisodesIndex.Item(0).Season
             End If
@@ -1350,6 +1350,24 @@ Public Class NFO
             Return mNFO
         End If
     End Function
+    ''' <summary>
+    ''' Delete all movie NFOs
+    ''' </summary>
+    ''' <param name="DBMovie"></param>
+    ''' <remarks></remarks>
+    Public Shared Sub DeleteNFO_Movie(ByVal DBMovie As Database.DBElement, ByVal ForceFileCleanup As Boolean)
+        If String.IsNullOrEmpty(DBMovie.Filename) Then Return
+
+        Try
+            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainNFO, ForceFileCleanup)
+                If File.Exists(a) Then
+                    File.Delete(a)
+                End If
+            Next
+        Catch ex As Exception
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovie.Filename & ">")
+        End Try
+    End Sub
 
     Public Shared Function FIToString(ByVal miFI As MediaContainers.Fileinfo, ByVal isTV As Boolean) As String
         '//
@@ -2220,7 +2238,7 @@ Public Class NFO
         End Try
     End Sub
 
-    Public Shared Sub SaveToNFO_Movie(ByRef tDBElement As Database.DBElement)
+    Public Shared Sub SaveToNFO_Movie(ByRef tDBElement As Database.DBElement, ByVal ForceFileCleanup As Boolean)
         Try
             Try
                 Dim params As New List(Of Object)(New Object() {tDBElement})
@@ -2232,6 +2250,9 @@ Public Class NFO
             End Try
 
             If tDBElement.FilenameSpecified Then
+                'cleanup old NFOs if needed
+                If ForceFileCleanup Then DeleteNFO_Movie(tDBElement, ForceFileCleanup)
+
                 'Create a clone of MediaContainer to prevent changes on database data that only needed in NFO
                 Dim tMovie As MediaContainers.Movie = CType(tDBElement.Movie.CloneDeep, MediaContainers.Movie)
 

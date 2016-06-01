@@ -261,7 +261,7 @@ Public Class FileFolderRenamer
                     UpdatePaths_Movie(_movie, srcDir, destDir, _frename.FileName, _frename.NewFileName)
 
                     If toDB Then
-                        Master.DB.Save_Movie(_movie, BatchMode, False, False)
+                        Master.DB.Save_Movie(_movie, BatchMode, False, False, False)
                     End If
 
                     If Not _frename.IsSingle Then
@@ -1670,7 +1670,7 @@ Public Class FileFolderRenamer
             DoRenameSingle_Movie(MovieFile, _tmpMovie, BatchMode, ShowError, toDB)
         Else
             If toDB Then
-                Master.DB.Save_Movie(_tmpMovie, BatchMode, False, False)
+                Master.DB.Save_Movie(_tmpMovie, BatchMode, False, False, False)
             End If
         End If
     End Sub

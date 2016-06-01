@@ -290,7 +290,7 @@ Public Class dlgEditTVShow
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                     tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
-                    If tmpDBElement.ImagesContainer.Banner.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Banner.ImageOriginal.FromMemoryStream Then
+                    If tmpDBElement.ImagesContainer.Banner.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Banner.ImageOriginal.LoadFromMemoryStream Then
                         pbBanner.Image = tmpDBElement.ImagesContainer.Banner.ImageOriginal.Image
                         lblBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbBanner.Image.Width, pbBanner.Image.Height)
                         lblBannerSize.Visible = True
@@ -318,7 +318,7 @@ Public Class dlgEditTVShow
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
                 Dim tImage As New MediaContainers.Image
-                tImage.ImageOriginal.FromFile(ofdImage.FileName, True)
+                tImage.ImageOriginal.LoadFromFile(ofdImage.FileName, True)
                 If tImage.ImageOriginal.Image IsNot Nothing Then
                     tmpDBElement.ImagesContainer.Banner = tImage
                     pbBanner.Image = tImage.ImageOriginal.Image
@@ -364,7 +364,7 @@ Public Class dlgEditTVShow
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                     tmpDBElement.ImagesContainer.CharacterArt = dlgImgS.Result.ImagesContainer.CharacterArt
-                    If tmpDBElement.ImagesContainer.CharacterArt.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.CharacterArt.ImageOriginal.FromMemoryStream Then
+                    If tmpDBElement.ImagesContainer.CharacterArt.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.CharacterArt.ImageOriginal.LoadFromMemoryStream Then
                         pbCharacterArt.Image = tmpDBElement.ImagesContainer.CharacterArt.ImageOriginal.Image
                         lblCharacterArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbCharacterArt.Image.Width, pbCharacterArt.Image.Height)
                         lblCharacterArtSize.Visible = True
@@ -392,7 +392,7 @@ Public Class dlgEditTVShow
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
                 Dim tImage As New MediaContainers.Image
-                tImage.ImageOriginal.FromFile(ofdImage.FileName, True)
+                tImage.ImageOriginal.LoadFromFile(ofdImage.FileName, True)
                 If tImage.ImageOriginal.Image IsNot Nothing Then
                     tmpDBElement.ImagesContainer.CharacterArt = tImage
                     pbCharacterArt.Image = tImage.ImageOriginal.Image
@@ -458,7 +458,7 @@ Public Class dlgEditTVShow
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                     tmpDBElement.ImagesContainer.ClearArt = dlgImgS.Result.ImagesContainer.ClearArt
-                    If tmpDBElement.ImagesContainer.ClearArt.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.ClearArt.ImageOriginal.FromMemoryStream Then
+                    If tmpDBElement.ImagesContainer.ClearArt.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.ClearArt.ImageOriginal.LoadFromMemoryStream Then
                         pbClearArt.Image = tmpDBElement.ImagesContainer.ClearArt.ImageOriginal.Image
                         lblClearArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbClearArt.Image.Width, pbClearArt.Image.Height)
                         lblClearArtSize.Visible = True
@@ -486,7 +486,7 @@ Public Class dlgEditTVShow
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
                 Dim tImage As New MediaContainers.Image
-                tImage.ImageOriginal.FromFile(ofdImage.FileName, True)
+                tImage.ImageOriginal.LoadFromFile(ofdImage.FileName, True)
                 If tImage.ImageOriginal.Image IsNot Nothing Then
                     tmpDBElement.ImagesContainer.ClearArt = tImage
                     pbClearArt.Image = tImage.ImageOriginal.Image
@@ -532,7 +532,7 @@ Public Class dlgEditTVShow
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                     tmpDBElement.ImagesContainer.ClearLogo = dlgImgS.Result.ImagesContainer.ClearLogo
-                    If dlgImgS.Result.ImagesContainer.ClearLogo.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.ClearLogo.ImageOriginal.FromMemoryStream Then
+                    If dlgImgS.Result.ImagesContainer.ClearLogo.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.ClearLogo.ImageOriginal.LoadFromMemoryStream Then
                         pbClearLogo.Image = tmpDBElement.ImagesContainer.ClearLogo.ImageOriginal.Image
                         lblClearLogoSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbClearLogo.Image.Width, pbClearLogo.Image.Height)
                         lblClearLogoSize.Visible = True
@@ -560,7 +560,7 @@ Public Class dlgEditTVShow
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
                 Dim tImage As New MediaContainers.Image
-                tImage.ImageOriginal.FromFile(ofdImage.FileName, True)
+                tImage.ImageOriginal.LoadFromFile(ofdImage.FileName, True)
                 If tImage.ImageOriginal.Image IsNot Nothing Then
                     tmpDBElement.ImagesContainer.ClearLogo = tImage
                     pbClearLogo.Image = tImage.ImageOriginal.Image
@@ -606,7 +606,7 @@ Public Class dlgEditTVShow
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                     tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
-                    If tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Fanart.ImageOriginal.FromMemoryStream Then
+                    If tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Fanart.ImageOriginal.LoadFromMemoryStream Then
                         pbFanart.Image = tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
                         lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbFanart.Image.Width, pbFanart.Image.Height)
                         lblFanartSize.Visible = True
@@ -634,7 +634,7 @@ Public Class dlgEditTVShow
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
                 Dim tImage As New MediaContainers.Image
-                tImage.ImageOriginal.FromFile(ofdImage.FileName, True)
+                tImage.ImageOriginal.LoadFromFile(ofdImage.FileName, True)
                 If tImage.ImageOriginal.Image IsNot Nothing Then
                     tmpDBElement.ImagesContainer.Fanart = tImage
                     pbFanart.Image = tImage.ImageOriginal.Image
@@ -660,7 +660,7 @@ Public Class dlgEditTVShow
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                     tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
-                    If tmpDBElement.ImagesContainer.Landscape.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Landscape.ImageOriginal.FromMemoryStream Then
+                    If tmpDBElement.ImagesContainer.Landscape.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Landscape.ImageOriginal.LoadFromMemoryStream Then
                         pbLandscape.Image = tmpDBElement.ImagesContainer.Landscape.ImageOriginal.Image
                         lblLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbLandscape.Image.Width, pbLandscape.Image.Height)
                         lblLandscapeSize.Visible = True
@@ -688,7 +688,7 @@ Public Class dlgEditTVShow
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
                 Dim tImage As New MediaContainers.Image
-                tImage.ImageOriginal.FromFile(ofdImage.FileName, True)
+                tImage.ImageOriginal.LoadFromFile(ofdImage.FileName, True)
                 If tImage.ImageOriginal.Image IsNot Nothing Then
                     tmpDBElement.ImagesContainer.Landscape = tImage
                     pbLandscape.Image = tImage.ImageOriginal.Image
@@ -754,7 +754,7 @@ Public Class dlgEditTVShow
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                     tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
-                    If tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Poster.ImageOriginal.FromMemoryStream Then
+                    If tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Poster.ImageOriginal.LoadFromMemoryStream Then
                         pbPoster.Image = tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image
                         lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbPoster.Image.Width, pbPoster.Image.Height)
                         lblPosterSize.Visible = True
@@ -782,7 +782,7 @@ Public Class dlgEditTVShow
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
                 Dim tImage As New MediaContainers.Image
-                tImage.ImageOriginal.FromFile(ofdImage.FileName, True)
+                tImage.ImageOriginal.LoadFromFile(ofdImage.FileName, True)
                 If tImage.ImageOriginal.Image IsNot Nothing Then
                     tmpDBElement.ImagesContainer.Poster = tImage
                     pbPoster.Image = tImage.ImageOriginal.Image
@@ -1823,7 +1823,7 @@ Public Class dlgEditTVShow
     End Sub
 
     Private Sub SetInfo()
-        tmpDBElement.Ordering = DirectCast(cbOrdering.SelectedIndex, Enums.Ordering)
+        tmpDBElement.Ordering = DirectCast(cbOrdering.SelectedIndex, Enums.EpisodeOrdering)
         tmpDBElement.EpisodeSorting = DirectCast(cbEpisodeSorting.SelectedIndex, Enums.EpisodeSorting)
 
         If Not String.IsNullOrEmpty(cbSourceLanguage.Text) Then
