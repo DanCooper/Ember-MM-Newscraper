@@ -3747,9 +3747,9 @@ Public Class frmMain
 
                 For i As Integer = 0 To alDataFields.Count - 1
                     If cbFilterDataField_Movies.SelectedIndex = 0 Then
-                        alDataFields.Item(i) = String.Format("{0} LIKE ''", alDataFields.Item(i))
+                        alDataFields.Item(i) = String.Format("{0} IS NULL OR {0} = ''", alDataFields.Item(i))
                     Else
-                        alDataFields.Item(i) = String.Format("{0} NOT LIKE ''", alDataFields.Item(i))
+                        alDataFields.Item(i) = String.Format("{0} NOT IS NULL AND {0} NOT = ''", alDataFields.Item(i))
                     End If
                 Next
 
@@ -14342,9 +14342,9 @@ Public Class frmMain
 
             For i As Integer = 0 To alDataFields.Count - 1
                 If cbFilterDataField_Movies.SelectedIndex = 0 Then
-                    alDataFields.Item(i) = String.Format("{0} LIKE ''", alDataFields.Item(i))
+                    alDataFields.Item(i) = String.Format("{0} IS NULL OR {0} = ''", alDataFields.Item(i))
                 Else
-                    alDataFields.Item(i) = String.Format("{0} NOT LIKE ''", alDataFields.Item(i))
+                    alDataFields.Item(i) = String.Format("{0} NOT IS NULL AND {0} NOT = ''", alDataFields.Item(i))
                 End If
             Next
 
@@ -14474,9 +14474,9 @@ Public Class frmMain
 
             For i As Integer = 0 To alDataFields.Count - 1
                 If cbFilterDataField_Movies.SelectedIndex = 0 Then
-                    alDataFields.Item(i) = String.Format("{0} LIKE ''", alDataFields.Item(i))
+                    alDataFields.Item(i) = String.Format("{0} IS NULL OR {0} = ''", alDataFields.Item(i))
                 Else
-                    alDataFields.Item(i) = String.Format("{0} NOT LIKE ''", alDataFields.Item(i))
+                    alDataFields.Item(i) = String.Format("{0} NOT IS NULL AND {0} NOT = ''", alDataFields.Item(i))
                 End If
             Next
 
