@@ -594,13 +594,6 @@ Public Class Enums
         TVSortTokens = 16
     End Enum
 
-    Public Enum DelType As Integer
-        Movies = 0
-        Shows = 1
-        Seasons = 2
-        Episodes = 3
-    End Enum
-
     Public Enum ContentType As Integer
         None = 0
         Generic = 1
@@ -804,27 +797,11 @@ Public Class Enums
         ScraperSingle_TVSeason = 63
         DuringUpdateDB_TV = 64
     End Enum
-
-    Public Enum ScraperEventType As Integer
-        BannerItem = 0
-        CharacterArtItem = 1
-        ClearArtItem = 2
-        ClearLogoItem = 3
-        DiscArtItem = 4
-        ExtrafanartsItem = 5
-        ExtrathumbsItem = 6
-        FanartItem = 7
-        LandscapeItem = 8
-        NFOItem = 9
-        PosterItem = 10
-        ThemeItem = 11
-        TrailerItem = 12
-    End Enum
     ''' <summary>
     ''' Enum representing valid TV series ordering.
     ''' </summary>
     ''' <remarks></remarks>
-    Public Enum Ordering As Integer
+    Public Enum EpisodeOrdering As Integer
         Standard = 0
         DVD = 1
         Absolute = 2
@@ -837,37 +814,6 @@ Public Class Enums
     Public Enum EpisodeSorting As Integer
         Episode = 0
         Aired = 1
-    End Enum
-    ''' <summary>
-    ''' Enum representing which Movies/TVShows should be scraped,
-    ''' and whether results should be automatically chosen or asked of the user.
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Enum ScrapeType As Integer
-        AllAuto = 0
-        AllAsk = 1
-        AllSkip = 2
-        MissingAuto = 3
-        MissingAsk = 4
-        MissingSkip = 5
-        CleanFolders = 6
-        NewAuto = 7
-        NewAsk = 8
-        NewSkip = 9
-        MarkedAuto = 10
-        MarkedAsk = 11
-        MarkedSkip = 12
-        FilterAuto = 13
-        FilterAsk = 14
-        FilterSkip = 15
-        CopyBackdrops = 16
-        SingleScrape = 17
-        SingleField = 18
-        SingleAuto = 19
-        SelectedAuto = 20
-        SelectedAsk = 21
-        SelectedSkip = 22
-        None = 99
     End Enum
 
     Public Enum MovieBannerSize As Integer
@@ -897,6 +843,62 @@ Public Class Enums
         AddedTVEpisode = 1
         CleaningDatabase = 2
         PreliminaryTasks = 3
+    End Enum
+
+    Public Enum ScraperEventType As Integer
+        BannerItem = 0
+        CharacterArtItem = 1
+        ClearArtItem = 2
+        ClearLogoItem = 3
+        DiscArtItem = 4
+        ExtrafanartsItem = 5
+        ExtrathumbsItem = 6
+        FanartItem = 7
+        LandscapeItem = 8
+        NFOItem = 9
+        PosterItem = 10
+        ThemeItem = 11
+        TrailerItem = 12
+    End Enum
+    ''' <summary>
+    ''' Enum representing which Movies/TVShows should be scraped,
+    ''' and whether results should be automatically chosen or asked of the user.
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Enum ScrapeType As Integer
+        AllAuto = 0
+        AllAsk = 1
+        AllSkip = 2
+        MissingAuto = 3
+        MissingAsk = 4
+        MissingSkip = 5
+        NewAuto = 6
+        NewAsk = 7
+        NewSkip = 8
+        MarkedAuto = 9
+        MarkedAsk = 10
+        MarkedSkip = 11
+        FilterAuto = 12
+        FilterAsk = 13
+        FilterSkip = 14
+        SingleScrape = 15
+        SingleField = 16
+        SingleAuto = 17
+        SelectedAuto = 18
+        SelectedAsk = 19
+        SelectedSkip = 20
+        None = 99
+    End Enum
+
+    Public Enum TaskManagerEventType As Integer
+        RefreshRow = 0
+        SimpleMessage = 1
+    End Enum
+
+    Public Enum TaskManagerType As Integer
+        CopyBackdrops = 0
+        Reload = 1
+        SetWatchedState = 2
     End Enum
 
     Public Enum TVBannerSize As Integer

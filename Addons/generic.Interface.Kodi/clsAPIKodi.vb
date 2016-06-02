@@ -1723,14 +1723,8 @@ Namespace Kodi
             Select Case tDBElement.ContentType
                 Case Enums.ContentType.Movie
                     If FileUtils.Common.isBDRip(tDBElement.Filename) Then
-                        'filename must point to m2ts file! 
-                        'Ember-Filepath i.e.  E:\Media_1\Movie\Horror\Europa Report\BDMV\STREAM\00000.m2ts
-                        'for adding new Bluray rips scan the root folder of movie, i.e: E:\Media_1\Movie\Horror\Europa Report\
                         strLocalPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(tDBElement.Filename).FullName).FullName).FullName
                     ElseIf FileUtils.Common.isVideoTS(tDBElement.Filename) Then
-                        'filename must point to IFO file!
-                        'Ember-Filepath i.e.  E:\Media_1\Movie\Action\Crow\VIDEO_TS\VIDEO_TS.IFO
-                        'for adding new DVDs scan the root folder of movie, i.e:  E:\Media_1\Movie\Action\Crow\
                         strLocalPath = Directory.GetParent(Directory.GetParent(tDBElement.Filename).FullName).FullName
                     Else
                         If Path.GetFileNameWithoutExtension(tDBElement.Filename).ToLower = "video_ts" Then

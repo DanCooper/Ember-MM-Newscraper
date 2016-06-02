@@ -177,6 +177,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="clsAPIIMDB.vb" />
+    <Compile Include="clsAPITaskManager.vb" />
     <Compile Include="clsAPIThemes.vb" />
     <Compile Include="clsAPICommon.vb" />
     <Compile Include="clsAPIDatabase.vb" />

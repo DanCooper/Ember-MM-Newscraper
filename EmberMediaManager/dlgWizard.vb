@@ -985,7 +985,7 @@ Public Class dlgWizard
                     lvItem.SubItems.Add(SQLreader("strName").ToString)
                     lvItem.SubItems.Add(SQLreader("strPath").ToString)
                     lvItem.SubItems.Add(APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = SQLreader("strLanguage").ToString).Description)
-                    lvItem.SubItems.Add(DirectCast(Convert.ToInt32(SQLreader("iOrdering")), Enums.Ordering).ToString)
+                    lvItem.SubItems.Add(DirectCast(Convert.ToInt32(SQLreader("iOrdering")), Enums.EpisodeOrdering).ToString)
                     lvItem.SubItems.Add(If(Convert.ToBoolean(SQLreader("bExclude")), Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
                     lvItem.SubItems.Add(DirectCast(Convert.ToInt32(SQLreader("iEpisodeSorting")), Enums.EpisodeSorting).ToString)
                     tmppath = SQLreader("strPath").ToString

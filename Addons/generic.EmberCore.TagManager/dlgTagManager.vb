@@ -526,9 +526,6 @@ Public Class dlgTagManager
         RefreshModule()
         MessageBox.Show(Master.eLang.GetString(1376, "Saved changes") & "!", Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK)
     End Sub
-
-
-
     ''' <summary>
     ''' Save changes in tag to movie nfo
     ''' </summary>
@@ -542,10 +539,10 @@ Public Class dlgTagManager
             If tmovie.Movie.Title.EndsWith("_TODELETE") Then
                 tmovie.Movie.Tags.Remove(tag.Name)
                 tmovie.Movie.Title = tmovie.Movie.Title.Replace("_TODELETE", "")
-                Master.DB.Save_Movie(tmovie, True, True, False)
+                Master.DB.Save_Movie(tmovie, True, True, False, False)
             Else
                 tmovie.Movie.Tags.Add(tag.Name)
-                Master.DB.Save_Movie(tmovie, True, True, False)
+                Master.DB.Save_Movie(tmovie, True, True, False, False)
             End If
         Next
     End Sub

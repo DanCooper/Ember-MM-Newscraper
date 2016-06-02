@@ -239,7 +239,7 @@ Public Class TVDB_Data
         Settings.APIKey = _SpecialSettings.APIKey
         Settings.Language = oDBTV.Language_Main
 
-        Dim nTVShow As New MediaContainers.TVShow
+        Dim nTVShow As MediaContainers.TVShow = Nothing
         Dim _scraper As New TVDBs.Scraper(Settings)
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions)
 
@@ -270,6 +270,8 @@ Public Class TVDB_Data
                     logger.Trace("[TVDB_Data] [Scraper_TV] [Abort] No search result found")
                     Return New Interfaces.ModuleResult_Data_TVShow With {.Result = Nothing}
             End Select
+        Else
+            Return New Interfaces.ModuleResult_Data_TVShow With {.Result = nTVShow}
         End If
 
         If ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto Then
