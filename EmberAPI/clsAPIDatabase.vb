@@ -524,16 +524,16 @@ Public Class Database
                 logger.Info("Cleaning tv shows started")
                 Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
                     If SourceID = -1 Then
-                        SQLcommand.CommandText = "SELECT strFilename FROM files;"
+                        SQLcommand.CommandText = "SELECT files.strFilename, episode.idEpisode FROM files INNER JOIN episode ON (files.idFile = episode.idFile) ORDER BY files.strFilename;"
                     Else
-                        SQLcommand.CommandText = String.Format("SELECT files.strFilename FROM files INNER JOIN episode ON (files.idFile = episode.idFile) WHERE episode.idSource = {0};", SourceID)
+                        SQLcommand.CommandText = String.Format("SELECT files.strFilename, episode.idEpisode FROM files INNER JOIN episode ON (files.idFile = episode.idFile) WHERE episode.idSource = {0} ORDER BY files.strFilename;", SourceID)
                     End If
 
                     Using SQLReader As SQLiteDataReader = SQLcommand.ExecuteReader()
                         While SQLReader.Read
                             If Not File.Exists(SQLReader("strFilename").ToString) OrElse Not Master.eSettings.FileSystemValidExts.Contains(Path.GetExtension(SQLReader("strFilename").ToString).ToLower) OrElse
                                 Master.ExcludeDirs.Exists(Function(s) SQLReader("strFilename").ToString.ToLower.StartsWith(s.ToLower)) Then
-                                Master.DB.Delete_TVEpisode(SQLReader("strFilename").ToString, False, True)
+                                Master.DB.Delete_TVEpisode(Convert.ToInt64(SQLReader("idEpisode")), False, False, True)
                             End If
                         End While
                     End Using
