@@ -1978,8 +1978,13 @@ Namespace Kodi
 
             Try
                 Dim response As XBMC.GetInfoBooleansResponse = Await _kodi.XBMC.GetInfoBooleans(New List(Of String)(New String() {"Library.IsScanningVideo"}))
-                logger.Trace(String.Format("[APIKodi] [{0}] IsScanningVideo: {1}", _currenthost.Label, response.IsScanningVideo.ToString))
-                Return response.IsScanningVideo
+                If response IsNot Nothing Then
+                    logger.Trace(String.Format("[APIKodi] [{0}] IsScanningVideo: {1}", _currenthost.Label, response.IsScanningVideo.ToString))
+                    Return response.IsScanningVideo
+                Else
+                    logger.Error(String.Format("[APIKodi] [{0}] IsScanningVideo: No answer from Host", _currenthost.Label))
+                    Return False
+                End If
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)
                 Return False
