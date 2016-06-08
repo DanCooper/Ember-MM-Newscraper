@@ -4804,7 +4804,7 @@ Public Class dlgSettings
 
                 Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                     Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                        Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.UInt64, 0, "idSource")
+                        Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.Int64, 0, "idSource")
                         While lvTVSources.SelectedItems.Count > 0
                             parSource.Value = lvTVSources.SelectedItems(0).SubItems(0).Text
                             SQLcommand.CommandText = String.Concat("DELETE FROM tvshowsource WHERE idSource = (?);")

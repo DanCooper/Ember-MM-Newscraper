@@ -3327,10 +3327,10 @@ Public Class Database
                  "DateAdded, EFanartsPath, ThemePath, ",
                  "TMDB, TMDBColID, DateModified, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet, iLastPlayed, Language",
                  ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movie;")
-                Dim parMovieID As SQLiteParameter = SQLcommand_movie.Parameters.Add("paridMovie", DbType.UInt64, 0, "idMovie")
+                Dim parMovieID As SQLiteParameter = SQLcommand_movie.Parameters.Add("paridMovie", DbType.Int64, 0, "idMovie")
                 parMovieID.Value = _movieDB.ID
             End If
-            Dim par_movie_idSource As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_idSource", DbType.UInt64, 0, "idSource")
+            Dim par_movie_idSource As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_idSource", DbType.Int64, 0, "idSource")
             Dim par_movie_MoviePath As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_MoviePath", DbType.String, 0, "MoviePath")
             Dim par_movie_Type As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_Type", DbType.Boolean, 0, "Type")
             Dim par_movie_ListTitle As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_ListTitle", DbType.String, 0, "ListTitle")
@@ -3353,7 +3353,7 @@ Public Class Database
             Dim par_movie_Certification As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_Certification", DbType.String, 0, "Certification")
             Dim par_movie_Runtime As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_Runtime", DbType.String, 0, "Runtime")
             Dim par_movie_ReleaseDate As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_ReleaseDate", DbType.String, 0, "ReleaseDate")
-            Dim par_movie_Playcount As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_Playcount", DbType.Int32, 0, "Playcount")
+            Dim par_movie_Playcount As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_Playcount", DbType.Int64, 0, "Playcount")
             Dim par_movie_Trailer As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_Trailer", DbType.String, 0, "Trailer")
             Dim par_movie_NfoPath As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_NfoPath", DbType.String, 0, "NfoPath")
             Dim par_movie_TrailerPath As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_TrailerPath", DbType.String, 0, "TrailerPath")
@@ -3362,18 +3362,18 @@ Public Class Database
             Dim par_movie_FanartURL As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_FanartURL", DbType.String, 0, "FanartURL")
             Dim par_movie_OutOfTolerance As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_OutOfTolerance", DbType.Boolean, 0, "OutOfTolerance")
             Dim par_movie_VideoSource As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_VideoSource", DbType.String, 0, "VideoSource")
-            Dim par_movie_DateAdded As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_DateAdded", DbType.UInt64, 0, "DateAdded")
+            Dim par_movie_DateAdded As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_DateAdded", DbType.Int64, 0, "DateAdded")
             Dim par_movie_ExtrafanartsPath As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_EFanartsPath", DbType.String, 0, "EFanartsPath")
             Dim par_movie_ThemePath As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_ThemePath", DbType.String, 0, "ThemePath")
             Dim par_movie_TMDB As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_TMDB", DbType.String, 0, "TMDB")
             Dim par_movie_TMDBColID As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_TMDBColID", DbType.String, 0, "TMDBColID")
-            Dim par_movie_DateModified As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_DateModified", DbType.UInt64, 0, "DateModified")
+            Dim par_movie_DateModified As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_DateModified", DbType.Int64, 0, "DateModified")
             Dim par_movie_MarkCustom1 As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_MarkCustom1", DbType.Boolean, 0, "MarkCustom1")
             Dim par_movie_MarkCustom2 As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_MarkCustom2", DbType.Boolean, 0, "MarkCustom2")
             Dim par_movie_MarkCustom3 As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_MarkCustom3", DbType.Boolean, 0, "MarkCustom3")
             Dim par_movie_MarkCustom4 As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_MarkCustom4", DbType.Boolean, 0, "MarkCustom4")
             Dim par_movie_HasSet As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_HasSet", DbType.Boolean, 0, "HasSet")
-            Dim par_movie_iLastPlayed As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_iLastPlayed", DbType.UInt64, 0, "iLastPlayed")
+            Dim par_movie_iLastPlayed As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_iLastPlayed", DbType.Int64, 0, "iLastPlayed")
             Dim par_movie_Language As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_Language", DbType.String, 0, "Language")
 
             Try
@@ -3629,8 +3629,8 @@ Public Class Database
                        "Video_Language, Video_LongLanguage, Video_Bitrate, Video_MultiViewCount, Video_FileSize, Video_MultiViewLayout, ",
                        "Video_StereoMode) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);")
 
-                    Dim parVideo_MovieID As SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_MovieID", DbType.UInt64, 0, "MovieID")
-                    Dim parVideo_StreamID As SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_StreamID", DbType.UInt64, 0, "StreamID")
+                    Dim parVideo_MovieID As SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_MovieID", DbType.Int64, 0, "MovieID")
+                    Dim parVideo_StreamID As SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_StreamID", DbType.Int64, 0, "StreamID")
                     Dim parVideo_Width As SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_Width", DbType.String, 0, "Video_Width")
                     Dim parVideo_Height As SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_Height", DbType.String, 0, "Video_Height")
                     Dim parVideo_Codec As SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_Codec", DbType.String, 0, "Video_Codec")
@@ -3641,7 +3641,7 @@ Public Class Database
                     Dim parVideo_LongLanguage As SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_LongLanguage", DbType.String, 0, "Video_LongLanguage")
                     Dim parVideo_Bitrate As SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_Bitrate", DbType.String, 0, "Video_Bitrate")
                     Dim parVideo_MultiViewCount As SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_MultiViewCount", DbType.String, 0, "Video_MultiViewCount")
-                    Dim parVideo_FileSize As SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_FileSize", DbType.UInt64, 0, "Video_FileSize")
+                    Dim parVideo_FileSize As SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_FileSize", DbType.Int64, 0, "Video_FileSize")
                     Dim parVideo_MultiViewLayout As SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_MultiViewLayout", DbType.String, 0, "Video_MultiViewLayout")
                     Dim parVideo_StereoMode As SQLiteParameter = SQLcommandMoviesVStreams.Parameters.Add("parVideo_StereoMode", DbType.String, 0, "Video_StereoMode")
 
@@ -3674,8 +3674,8 @@ Public Class Database
                       "MovieID, StreamID, Audio_Language, Audio_LongLanguage, Audio_Codec, Audio_Channel, Audio_Bitrate",
                       ") VALUES (?,?,?,?,?,?,?);")
 
-                    Dim parAudio_MovieID As SQLiteParameter = SQLcommandMoviesAStreams.Parameters.Add("parAudio_MovieID", DbType.UInt64, 0, "MovieID")
-                    Dim parAudio_StreamID As SQLiteParameter = SQLcommandMoviesAStreams.Parameters.Add("parAudio_StreamID", DbType.UInt64, 0, "StreamID")
+                    Dim parAudio_MovieID As SQLiteParameter = SQLcommandMoviesAStreams.Parameters.Add("parAudio_MovieID", DbType.Int64, 0, "MovieID")
+                    Dim parAudio_StreamID As SQLiteParameter = SQLcommandMoviesAStreams.Parameters.Add("parAudio_StreamID", DbType.Int64, 0, "StreamID")
                     Dim parAudio_Language As SQLiteParameter = SQLcommandMoviesAStreams.Parameters.Add("parAudio_Language", DbType.String, 0, "Audio_Language")
                     Dim parAudio_LongLanguage As SQLiteParameter = SQLcommandMoviesAStreams.Parameters.Add("parAudio_LongLanguage", DbType.String, 0, "Audio_LongLanguage")
                     Dim parAudio_Codec As SQLiteParameter = SQLcommandMoviesAStreams.Parameters.Add("parAudio_Codec", DbType.String, 0, "Audio_Codec")
@@ -3703,8 +3703,8 @@ Public Class Database
                     SQLcommandMoviesSubs.CommandText = String.Concat("INSERT OR REPLACE INTO MoviesSubs (",
                        "MovieID, StreamID, Subs_Language, Subs_LongLanguage,Subs_Type, Subs_Path, Subs_Forced",
                        ") VALUES (?,?,?,?,?,?,?);")
-                    Dim parSubs_MovieID As SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_MovieID", DbType.UInt64, 0, "MovieID")
-                    Dim parSubs_StreamID As SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_StreamID", DbType.UInt64, 0, "StreamID")
+                    Dim parSubs_MovieID As SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_MovieID", DbType.Int64, 0, "MovieID")
+                    Dim parSubs_StreamID As SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_StreamID", DbType.Int64, 0, "StreamID")
                     Dim parSubs_Language As SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_Language", DbType.String, 0, "Subs_Language")
                     Dim parSubs_LongLanguage As SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_LongLanguage", DbType.String, 0, "Subs_LongLanguage")
                     Dim parSubs_Type As SQLiteParameter = SQLcommandMoviesSubs.Parameters.Add("parSubs_Type", DbType.String, 0, "Subs_Type")
@@ -3754,7 +3754,7 @@ Public Class Database
                              ") VALUES (?,?,?);")
                                 Dim par_setlinkmovie_idMovie As SQLiteParameter = SQLcommand_setlinkmovie.Parameters.Add("parSets_idMovie", DbType.Int64, 0, "idMovie")
                                 Dim par_setlinkmovie_idSet As SQLiteParameter = SQLcommand_setlinkmovie.Parameters.Add("parSets_idSet", DbType.Int64, 0, "idSet")
-                                Dim par_setlinkmovie_iOrder As SQLiteParameter = SQLcommand_setlinkmovie.Parameters.Add("parSets_iOrder", DbType.Int32, 0, "iOrder")
+                                Dim par_setlinkmovie_iOrder As SQLiteParameter = SQLcommand_setlinkmovie.Parameters.Add("parSets_iOrder", DbType.Int64, 0, "iOrder")
 
                                 par_setlinkmovie_idMovie.Value = _movieDB.ID
                                 par_setlinkmovie_idSet.Value = s.ID
@@ -3806,7 +3806,7 @@ Public Class Database
                                                                                      ") VALUES (?,?,?);")
                                     Dim par_setlinkmovie_idMovie As SQLiteParameter = SQLcommand_setlinkmovie.Parameters.Add("parSets_idMovie", DbType.Int64, 0, "idMovie")
                                     Dim par_setlinkmovie_idSet As SQLiteParameter = SQLcommand_setlinkmovie.Parameters.Add("parSets_idSet", DbType.Int64, 0, "idSet")
-                                    Dim par_setlinkmovie_iOrder As SQLiteParameter = SQLcommand_setlinkmovie.Parameters.Add("parSets_iOrder", DbType.Int32, 0, "iOrder")
+                                    Dim par_setlinkmovie_iOrder As SQLiteParameter = SQLcommand_setlinkmovie.Parameters.Add("parSets_iOrder", DbType.Int64, 0, "iOrder")
 
                                     par_setlinkmovie_idMovie.Value = _movieDB.ID
                                     par_setlinkmovie_idSet.Value = s.ID
@@ -3836,7 +3836,7 @@ Public Class Database
                                     Dim par_sets_New As SQLiteParameter = SQLcommand_sets.Parameters.Add("parSets_New", DbType.Boolean, 0, "New")
                                     Dim par_sets_Mark As SQLiteParameter = SQLcommand_sets.Parameters.Add("parSets_Mark", DbType.Boolean, 0, "Mark")
                                     Dim par_sets_Lock As SQLiteParameter = SQLcommand_sets.Parameters.Add("parSets_Lock", DbType.Boolean, 0, "Lock")
-                                    Dim par_sets_SortMethod As SQLiteParameter = SQLcommand_sets.Parameters.Add("parSets_SortMethod", DbType.Int32, 0, "SortMethod")
+                                    Dim par_sets_SortMethod As SQLiteParameter = SQLcommand_sets.Parameters.Add("parSets_SortMethod", DbType.Int64, 0, "SortMethod")
                                     Dim par_sets_Language As SQLiteParameter = SQLcommand_sets.Parameters.Add("parSets_Language", DbType.String, 0, "Language")
 
                                     par_sets_SetName.Value = s.Title
@@ -3874,7 +3874,7 @@ Public Class Database
                                                                                          ") VALUES (?,?,?);")
                                         Dim par_setlinkmovie_idMovie As SQLiteParameter = SQLcommand_setlinkmovie.Parameters.Add("parSets_idMovie", DbType.Int64, 0, "idMovie")
                                         Dim par_setlinkmovie_idSet As SQLiteParameter = SQLcommand_setlinkmovie.Parameters.Add("parSets_idSet", DbType.Int64, 0, "idSet")
-                                        Dim par_setlinkmovie_iOrder As SQLiteParameter = SQLcommand_setlinkmovie.Parameters.Add("parSets_iOrder", DbType.Int32, 0, "iOrder")
+                                        Dim par_setlinkmovie_iOrder As SQLiteParameter = SQLcommand_setlinkmovie.Parameters.Add("parSets_iOrder", DbType.Int64, 0, "iOrder")
 
                                         par_setlinkmovie_idMovie.Value = _movieDB.ID
                                         par_setlinkmovie_idSet.Value = s.ID
@@ -3931,7 +3931,7 @@ Public Class Database
                 SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO sets (",
                  "idSet, ListTitle, NfoPath, TMDBColID, Plot, SetName, New, Mark, Lock, SortMethod, Language",
                  ") VALUES (?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM sets;")
-                Dim parMovieSetID As SQLiteParameter = SQLcommand.Parameters.Add("parMovieSetID", DbType.UInt64, 0, "idSet")
+                Dim parMovieSetID As SQLiteParameter = SQLcommand.Parameters.Add("parMovieSetID", DbType.Int64, 0, "idSet")
                 parMovieSetID.Value = _moviesetDB.ID
             End If
             Dim parListTitle As SQLiteParameter = SQLcommand.Parameters.Add("parListTitle", DbType.String, 0, "ListTitle")
@@ -4054,7 +4054,7 @@ Public Class Database
             Else
                 SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO tag (",
                           "idTag, strTag) VALUES (?,?); SELECT LAST_INSERT_ROWID() FROM tag;")
-                Dim parTagID As SQLiteParameter = SQLcommand.Parameters.Add("parTagID", DbType.UInt64, 0, "idTag")
+                Dim parTagID As SQLiteParameter = SQLcommand.Parameters.Add("parTagID", DbType.Int64, 0, "idTag")
                 parTagID.Value = _tagDB.ID
             End If
             Dim parTitle As SQLiteParameter = SQLcommand.Parameters.Add("parTitle", DbType.String, 0, "strTag")
@@ -4194,7 +4194,7 @@ Public Class Database
                 Using SQLpathcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
                     SQLpathcommand.CommandText = String.Concat("INSERT OR REPLACE INTO files (idFile, strFilename) VALUES (?,?);")
 
-                    Dim parID As SQLiteParameter = SQLpathcommand.Parameters.Add("parFileID", DbType.UInt64, 0, "idFile")
+                    Dim parID As SQLiteParameter = SQLpathcommand.Parameters.Add("parFileID", DbType.Int64, 0, "idFile")
                     Dim parFilename As SQLiteParameter = SQLpathcommand.Parameters.Add("parFilename", DbType.String, 0, "strFilename")
                     parID.Value = _episode.FilenameID
                     parFilename.Value = _episode.Filename
@@ -4243,13 +4243,13 @@ Public Class Database
                  "iLastPlayed, strIMDB, strTMDB, strTVDB",
                  ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM episode;")
 
-                Dim parTVEpisodeID As SQLiteParameter = SQLcommand.Parameters.Add("parTVEpisodeID", DbType.UInt64, 0, "idEpisode")
+                Dim parTVEpisodeID As SQLiteParameter = SQLcommand.Parameters.Add("parTVEpisodeID", DbType.Int64, 0, "idEpisode")
                 parTVEpisodeID.Value = _episode.ID
             End If
 
-            Dim parTVShowID As SQLiteParameter = SQLcommand.Parameters.Add("parTVShowID", DbType.UInt64, 0, "idShow")
+            Dim parTVShowID As SQLiteParameter = SQLcommand.Parameters.Add("parTVShowID", DbType.Int64, 0, "idShow")
             Dim parTVFileID As SQLiteParameter = SQLcommand.Parameters.Add("parTVFileID", DbType.Int64, 0, "idFile")
-            Dim parSourceID As SQLiteParameter = SQLcommand.Parameters.Add("parSourceID", DbType.UInt64, 0, "idSource")
+            Dim parSourceID As SQLiteParameter = SQLcommand.Parameters.Add("parSourceID", DbType.Int64, 0, "idSource")
             Dim parNew As SQLiteParameter = SQLcommand.Parameters.Add("parNew", DbType.Boolean, 0, "new")
             Dim parMark As SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
             Dim parLock As SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "lock")
@@ -4260,16 +4260,16 @@ Public Class Database
             Dim parPlot As SQLiteParameter = SQLcommand.Parameters.Add("parPlot", DbType.String, 0, "Plot")
             Dim parAired As SQLiteParameter = SQLcommand.Parameters.Add("parAired", DbType.String, 0, "Aired")
             Dim parNfoPath As SQLiteParameter = SQLcommand.Parameters.Add("parNfoPath", DbType.String, 0, "NfoPath")
-            Dim parPlaycount As SQLiteParameter = SQLcommand.Parameters.Add("parPlaycount", DbType.Int32, 0, "Playcount")
+            Dim parPlaycount As SQLiteParameter = SQLcommand.Parameters.Add("parPlaycount", DbType.Int64, 0, "Playcount")
             Dim parDisplaySeason As SQLiteParameter = SQLcommand.Parameters.Add("parDisplaySeason", DbType.String, 0, "DisplaySeason")
             Dim parDisplayEpisode As SQLiteParameter = SQLcommand.Parameters.Add("parDisplayEpisode", DbType.String, 0, "DisplayEpisode")
-            Dim parDateAdded As SQLiteParameter = SQLcommand.Parameters.Add("parDateAdded", DbType.UInt64, 0, "DateAdded")
+            Dim parDateAdded As SQLiteParameter = SQLcommand.Parameters.Add("parDateAdded", DbType.Int64, 0, "DateAdded")
             Dim parRuntime As SQLiteParameter = SQLcommand.Parameters.Add("parRuntime", DbType.String, 0, "Runtime")
             Dim parVotes As SQLiteParameter = SQLcommand.Parameters.Add("parVotes", DbType.String, 0, "Votes")
             Dim parVideoSource As SQLiteParameter = SQLcommand.Parameters.Add("parVideoSource", DbType.String, 0, "VideoSource")
             Dim parHasSub As SQLiteParameter = SQLcommand.Parameters.Add("parHasSub", DbType.Boolean, 0, "HasSub")
             Dim parSubEpisode As SQLiteParameter = SQLcommand.Parameters.Add("parSubEpisode", DbType.String, 0, "SubEpisode")
-            Dim par_iLastPlayed As SQLiteParameter = SQLcommand.Parameters.Add("par_iLastPlayed", DbType.UInt64, 0, "iLastPlayed")
+            Dim par_iLastPlayed As SQLiteParameter = SQLcommand.Parameters.Add("par_iLastPlayed", DbType.Int64, 0, "iLastPlayed")
             Dim par_strIMDB As SQLiteParameter = SQLcommand.Parameters.Add("par_strIMDB", DbType.String, 0, "strIMDB")
             Dim par_strTMDB As SQLiteParameter = SQLcommand.Parameters.Add("par_strTMDB", DbType.String, 0, "strTMDB")
             Dim par_strTVDB As SQLiteParameter = SQLcommand.Parameters.Add("par_strTVDB", DbType.String, 0, "strTVDB")
@@ -4439,8 +4439,8 @@ Public Class Database
                        "Video_Language, Video_LongLanguage, Video_Bitrate, Video_MultiViewCount, Video_FileSize, Video_MultiViewLayout, ",
                        "Video_StereoMode) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);")
 
-                    Dim parVideo_EpID As SQLiteParameter = SQLcommandTVVStreams.Parameters.Add("parVideo_EpID", DbType.UInt64, 0, "TVEpID")
-                    Dim parVideo_StreamID As SQLiteParameter = SQLcommandTVVStreams.Parameters.Add("parVideo_StreamID", DbType.UInt64, 0, "StreamID")
+                    Dim parVideo_EpID As SQLiteParameter = SQLcommandTVVStreams.Parameters.Add("parVideo_EpID", DbType.Int64, 0, "TVEpID")
+                    Dim parVideo_StreamID As SQLiteParameter = SQLcommandTVVStreams.Parameters.Add("parVideo_StreamID", DbType.Int64, 0, "StreamID")
                     Dim parVideo_Width As SQLiteParameter = SQLcommandTVVStreams.Parameters.Add("parVideo_Width", DbType.String, 0, "Video_Width")
                     Dim parVideo_Height As SQLiteParameter = SQLcommandTVVStreams.Parameters.Add("parVideo_Height", DbType.String, 0, "Video_Height")
                     Dim parVideo_Codec As SQLiteParameter = SQLcommandTVVStreams.Parameters.Add("parVideo_Codec", DbType.String, 0, "Video_Codec")
@@ -4451,7 +4451,7 @@ Public Class Database
                     Dim parVideo_LongLanguage As SQLiteParameter = SQLcommandTVVStreams.Parameters.Add("parVideo_LongLanguage", DbType.String, 0, "Video_LongLanguage")
                     Dim parVideo_Bitrate As SQLiteParameter = SQLcommandTVVStreams.Parameters.Add("parVideo_Bitrate", DbType.String, 0, "Video_Bitrate")
                     Dim parVideo_MultiViewCount As SQLiteParameter = SQLcommandTVVStreams.Parameters.Add("parVideo_MultiViewCount", DbType.String, 0, "Video_MultiViewCount")
-                    Dim parVideo_FileSize As SQLiteParameter = SQLcommandTVVStreams.Parameters.Add("parVideo_FileSize", DbType.UInt64, 0, "Video_FileSize")
+                    Dim parVideo_FileSize As SQLiteParameter = SQLcommandTVVStreams.Parameters.Add("parVideo_FileSize", DbType.Int64, 0, "Video_FileSize")
                     Dim parVideo_MultiViewLayout As SQLiteParameter = SQLcommandTVVStreams.Parameters.Add("parVideo_MultiViewLayout", DbType.String, 0, "Video_MultiViewLayout")
                     Dim parVideo_StereoMode As SQLiteParameter = SQLcommandTVVStreams.Parameters.Add("parVideo_StereoMode", DbType.String, 0, "Video_StereoMode")
 
@@ -4482,8 +4482,8 @@ Public Class Database
                        "TVEpID, StreamID, Audio_Language, Audio_LongLanguage, Audio_Codec, Audio_Channel, Audio_Bitrate",
                        ") VALUES (?,?,?,?,?,?,?);")
 
-                    Dim parAudio_EpID As SQLiteParameter = SQLcommandTVAStreams.Parameters.Add("parAudio_EpID", DbType.UInt64, 0, "TVEpID")
-                    Dim parAudio_StreamID As SQLiteParameter = SQLcommandTVAStreams.Parameters.Add("parAudio_StreamID", DbType.UInt64, 0, "StreamID")
+                    Dim parAudio_EpID As SQLiteParameter = SQLcommandTVAStreams.Parameters.Add("parAudio_EpID", DbType.Int64, 0, "TVEpID")
+                    Dim parAudio_StreamID As SQLiteParameter = SQLcommandTVAStreams.Parameters.Add("parAudio_StreamID", DbType.Int64, 0, "StreamID")
                     Dim parAudio_Language As SQLiteParameter = SQLcommandTVAStreams.Parameters.Add("parAudio_Language", DbType.String, 0, "Audio_Language")
                     Dim parAudio_LongLanguage As SQLiteParameter = SQLcommandTVAStreams.Parameters.Add("parAudio_LongLanguage", DbType.String, 0, "Audio_LongLanguage")
                     Dim parAudio_Codec As SQLiteParameter = SQLcommandTVAStreams.Parameters.Add("parAudio_Codec", DbType.String, 0, "Audio_Codec")
@@ -4511,8 +4511,8 @@ Public Class Database
                     SQLcommandTVSubs.CommandText = String.Concat("INSERT OR REPLACE INTO TVSubs (",
                        "TVEpID, StreamID, Subs_Language, Subs_LongLanguage, Subs_Type, Subs_Path, Subs_Forced",
                        ") VALUES (?,?,?,?,?,?,?);")
-                    Dim parSubs_EpID As SQLiteParameter = SQLcommandTVSubs.Parameters.Add("parSubs_EpID", DbType.UInt64, 0, "TVEpID")
-                    Dim parSubs_StreamID As SQLiteParameter = SQLcommandTVSubs.Parameters.Add("parSubs_StreamID", DbType.UInt64, 0, "StreamID")
+                    Dim parSubs_EpID As SQLiteParameter = SQLcommandTVSubs.Parameters.Add("parSubs_EpID", DbType.Int64, 0, "TVEpID")
+                    Dim parSubs_StreamID As SQLiteParameter = SQLcommandTVSubs.Parameters.Add("parSubs_StreamID", DbType.Int64, 0, "StreamID")
                     Dim parSubs_Language As SQLiteParameter = SQLcommandTVSubs.Parameters.Add("parSubs_Language", DbType.String, 0, "Subs_Language")
                     Dim parSubs_LongLanguage As SQLiteParameter = SQLcommandTVSubs.Parameters.Add("parSubs_LongLanguage", DbType.String, 0, "Subs_LongLanguage")
                     Dim parSubs_Type As SQLiteParameter = SQLcommandTVSubs.Parameters.Add("parSubs_Type", DbType.String, 0, "Subs_Type")
@@ -4597,8 +4597,8 @@ Public Class Database
                 SQLcommand_insert_seasons.CommandText = String.Concat("INSERT INTO seasons (",
                                                                       "idSeason, idShow, Season, SeasonText, Lock, Mark, New, strTVDB, strTMDB, strAired, strPlot",
                                                                       ") VALUES (NULL,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM seasons;")
-                Dim par_seasons_idShow As SQLiteParameter = SQLcommand_insert_seasons.Parameters.Add("par_seasons_idShow", DbType.UInt64, 0, "idShow")
-                Dim par_seasons_Season As SQLiteParameter = SQLcommand_insert_seasons.Parameters.Add("par_seasons_Season", DbType.Int32, 0, "Season")
+                Dim par_seasons_idShow As SQLiteParameter = SQLcommand_insert_seasons.Parameters.Add("par_seasons_idShow", DbType.Int64, 0, "idShow")
+                Dim par_seasons_Season As SQLiteParameter = SQLcommand_insert_seasons.Parameters.Add("par_seasons_Season", DbType.Int64, 0, "Season")
                 Dim par_seasons_SeasonText As SQLiteParameter = SQLcommand_insert_seasons.Parameters.Add("par_seasons_SeasonText", DbType.String, 0, "SeasonText")
                 Dim par_seasons_Lock As SQLiteParameter = SQLcommand_insert_seasons.Parameters.Add("par_seasons_Lock", DbType.Boolean, 0, "Lock")
                 Dim par_seasons_Mark As SQLiteParameter = SQLcommand_insert_seasons.Parameters.Add("par_seasons_Mark", DbType.Boolean, 0, "Mark")
@@ -4689,11 +4689,11 @@ Public Class Database
                  "Status, ThemePath, EFanartsPath, Runtime, Title, Votes, EpisodeSorting, SortTitle, ",
                  "strIMDB, strTMDB, strOriginalTitle",
                  ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM tvshow;")
-                Dim parTVShowID As SQLiteParameter = SQLcommand.Parameters.Add("parTVShowID", DbType.UInt64, 0, "idShow")
+                Dim parTVShowID As SQLiteParameter = SQLcommand.Parameters.Add("parTVShowID", DbType.Int64, 0, "idShow")
                 parTVShowID.Value = _show.ID
             End If
 
-            Dim parTVSourceID As SQLiteParameter = SQLcommand.Parameters.Add("parTVSourceID", DbType.UInt64, 0, "idSource")
+            Dim parTVSourceID As SQLiteParameter = SQLcommand.Parameters.Add("parTVSourceID", DbType.Int64, 0, "idSource")
             Dim parTVShowPath As SQLiteParameter = SQLcommand.Parameters.Add("parTVShowPath", DbType.String, 0, "TVShowPath")
             Dim parNew As SQLiteParameter = SQLcommand.Parameters.Add("parNew", DbType.Boolean, 0, "new")
             Dim parMark As SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
@@ -4994,7 +4994,7 @@ Public Class Database
                 Using SQLCommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
                     SQLCommand.CommandText = String.Concat("INSERT OR REPLACE INTO Addons (",
                       "AddonID, Version) VALUES (?,?);")
-                    Dim parAddonID As SQLiteParameter = SQLCommand.Parameters.Add("parAddonID", DbType.Int32, 0, "AddonID")
+                    Dim parAddonID As SQLiteParameter = SQLCommand.Parameters.Add("parAddonID", DbType.Int64, 0, "AddonID")
                     Dim parVersion As SQLiteParameter = SQLCommand.Parameters.Add("parVersion", DbType.String, 0, "Version")
 
                     parAddonID.Value = Addon.ID
@@ -5007,7 +5007,7 @@ Public Class Database
 
                     Using SQLFileCommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
                         SQLFileCommand.CommandText = String.Concat("INSERT INTO AddonFiles (AddonID, FilePath) VALUES (?,?);")
-                        Dim parFileAddonID As SQLiteParameter = SQLFileCommand.Parameters.Add("parFileAddonID", DbType.Int32, 0, "AddonID")
+                        Dim parFileAddonID As SQLiteParameter = SQLFileCommand.Parameters.Add("parFileAddonID", DbType.Int64, 0, "AddonID")
                         Dim parFilePath As SQLiteParameter = SQLFileCommand.Parameters.Add("parFilePath", DbType.String, 0, "FilePath")
                         parFileAddonID.Value = Addon.ID
                         For Each fFile As KeyValuePair(Of String, String) In Addon.Files
