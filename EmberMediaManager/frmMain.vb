@@ -2263,9 +2263,9 @@ Public Class frmMain
                 If Not (Args.ScrapeType = Enums.ScrapeType.SingleScrape) Then
                     bwMovieSetScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":"))
                     If Not OldTitle = NewTitle OrElse Not OldTMDBColID = NewTMDBColID Then
-                        Master.DB.Save_MovieSet(DBScrapeMovieSet, True, True, False)
+                        Master.DB.Save_MovieSet(DBScrapeMovieSet, True, True, True)
                     Else
-                        Master.DB.Save_MovieSet(DBScrapeMovieSet, True, False, False)
+                        Master.DB.Save_MovieSet(DBScrapeMovieSet, True, True, False)
                     End If
                     bwMovieSetScraper.ReportProgress(-2, DBScrapeMovieSet.ID)
                     bwMovieSetScraper.ReportProgress(-1, If(Not OldListTitle = NewListTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle), NewListTitle))
@@ -4418,7 +4418,7 @@ Public Class frmMain
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "Lock")
-                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "idShow")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int64, 0, "idShow")
                     SQLcommand.CommandText = "UPDATE tvshow SET Lock = (?) WHERE idShow = (?);"
                     For Each sRow As DataGridViewRow In dgvTVEpisodes.SelectedRows
                         parLock.Value = If(dgvTVEpisodes.SelectedRows.Count > 1, setLock, Not Convert.ToBoolean(sRow.Cells("Lock").Value))
@@ -4443,7 +4443,7 @@ Public Class frmMain
                     Using SQLSeacommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                         Dim parSeaLock As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parSeaLock", DbType.Boolean, 0, "Lock")
                         Dim parTVShowID As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parTVShowID", DbType.Int64, 0, "idShow")
-                        Dim parSeason As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parSeason", DbType.Int32, 0, "Season")
+                        Dim parSeason As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parSeason", DbType.Int64, 0, "Season")
                         SQLSeacommand.CommandText = "UPDATE seasons SET Lock = (?) WHERE idShow = (?) AND Season = (?);"
                         If LockCount = 0 Then
                             parSeaLock.Value = False
@@ -4483,8 +4483,8 @@ Public Class frmMain
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "mark")
-                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "idShow")
-                    Dim parSeason As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSeason", DbType.Int32, 0, "Season")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int64, 0, "idShow")
+                    Dim parSeason As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSeason", DbType.Int64, 0, "Season")
                     SQLcommand.CommandText = "UPDATE seasons SET Lock = (?) WHERE idShow = (?) AND Season = (?);"
                     For Each sRow As DataGridViewRow In dgvTVSeasons.SelectedRows
                         parLock.Value = If(dgvTVSeasons.SelectedRows.Count > 1, setLock, Not Convert.ToBoolean(sRow.Cells("Lock").Value))
@@ -4495,8 +4495,8 @@ Public Class frmMain
 
                         Using SQLECommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                             Dim parELock As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parELock", DbType.Boolean, 0, "mark")
-                            Dim parEID As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parEID", DbType.Int32, 0, "idShow")
-                            Dim parESeason As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parESeason", DbType.Int32, 0, "Season")
+                            Dim parEID As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parEID", DbType.Int64, 0, "idShow")
+                            Dim parESeason As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parESeason", DbType.Int64, 0, "Season")
                             SQLECommand.CommandText = "UPDATE episode SET Lock = (?) WHERE idShow = (?) AND Season = (?);"
                             parELock.Value = parLock.Value
                             parEID.Value = parID.Value
@@ -4537,7 +4537,7 @@ Public Class frmMain
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "lock")
-                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "idShow")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int64, 0, "idShow")
                     SQLcommand.CommandText = "UPDATE tvshow SET lock = (?) WHERE idShow = (?);"
                     For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
                         parLock.Value = If(dgvTVShows.SelectedRows.Count > 1, setLock, Not Convert.ToBoolean(sRow.Cells("Lock").Value))
@@ -4547,7 +4547,7 @@ Public Class frmMain
 
                         Using SQLSeaCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                             Dim parSeaLock As SQLite.SQLiteParameter = SQLSeaCommand.Parameters.Add("parSeaLock", DbType.Boolean, 0, "lock")
-                            Dim parSeaID As SQLite.SQLiteParameter = SQLSeaCommand.Parameters.Add("parSeaID", DbType.Int32, 0, "idShow")
+                            Dim parSeaID As SQLite.SQLiteParameter = SQLSeaCommand.Parameters.Add("parSeaID", DbType.Int64, 0, "idShow")
                             SQLSeaCommand.CommandText = "UPDATE seasons SET lock = (?) WHERE idShow = (?);"
                             parSeaLock.Value = parLock.Value
                             parSeaID.Value = parID.Value
@@ -4560,7 +4560,7 @@ Public Class frmMain
 
                         Using SQLECommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                             Dim parELock As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parELock", DbType.Boolean, 0, "lock")
-                            Dim parEID As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parEID", DbType.Int32, 0, "idShow")
+                            Dim parEID As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parEID", DbType.Int64, 0, "idShow")
                             SQLECommand.CommandText = "UPDATE episode SET lock = (?) WHERE idShow = (?);"
                             parELock.Value = parLock.Value
                             parEID.Value = parID.Value
@@ -4611,7 +4611,7 @@ Public Class frmMain
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "lock")
-                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "idMovie")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int64, 0, "idMovie")
                     SQLcommand.CommandText = "UPDATE movie SET lock = (?) WHERE idMovie = (?);"
                     For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
                         parLock.Value = If(dgvMovies.SelectedRows.Count > 1, setLock, Not Convert.ToBoolean(sRow.Cells("Lock").Value))
@@ -4653,7 +4653,7 @@ Public Class frmMain
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     Dim parLock As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "lock")
-                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "idSet")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int64, 0, "idSet")
                     SQLcommand.CommandText = "UPDATE sets SET Lock = (?) WHERE idSet = (?);"
                     For Each sRow As DataGridViewRow In dgvMovieSets.SelectedRows
                         parLock.Value = If(dgvMovieSets.SelectedRows.Count > 1, setLock, Not Convert.ToBoolean(sRow.Cells("Lock").Value))
@@ -4695,7 +4695,7 @@ Public Class frmMain
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
-                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "idEpisode")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int64, 0, "idEpisode")
                     SQLcommand.CommandText = "UPDATE episode SET mark = (?) WHERE idEpisode = (?);"
                     For Each sRow As DataGridViewRow In dgvTVEpisodes.SelectedRows
                         parMark.Value = If(dgvTVEpisodes.SelectedRows.Count > 1, setMark, Not Convert.ToBoolean(sRow.Cells("Mark").Value))
@@ -4720,7 +4720,7 @@ Public Class frmMain
                     Using SQLSeacommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                         Dim parSeaMark As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parSeaMark", DbType.Boolean, 0, "Mark")
                         Dim parTVShowID As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parTVShowID", DbType.Int64, 0, "idShow")
-                        Dim parSeason As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parSeason", DbType.Int32, 0, "Season")
+                        Dim parSeason As SQLite.SQLiteParameter = SQLSeacommand.Parameters.Add("parSeason", DbType.Int64, 0, "Season")
                         SQLSeacommand.CommandText = "UPDATE seasons SET Mark = (?) WHERE idShow = (?) AND Season = (?);"
                         If MarkCount = 0 Then
                             parSeaMark.Value = False
@@ -4760,8 +4760,8 @@ Public Class frmMain
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
-                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "idShow")
-                    Dim parSeason As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSeason", DbType.Int32, 0, "Season")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int64, 0, "idShow")
+                    Dim parSeason As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSeason", DbType.Int64, 0, "Season")
                     SQLcommand.CommandText = "UPDATE seasons SET mark = (?) WHERE idShow = (?) AND Season = (?);"
                     For Each sRow As DataGridViewRow In dgvTVSeasons.SelectedRows
                         parMark.Value = If(dgvTVSeasons.SelectedRows.Count > 1, setMark, Not Convert.ToBoolean(sRow.Cells("Mark").Value))
@@ -4772,8 +4772,8 @@ Public Class frmMain
 
                         Using SQLECommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                             Dim parEMark As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parEMark", DbType.Boolean, 0, "mark")
-                            Dim parEID As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parEID", DbType.Int32, 0, "idShow")
-                            Dim parESeason As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parESeason", DbType.Int32, 0, "Season")
+                            Dim parEID As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parEID", DbType.Int64, 0, "idShow")
+                            Dim parESeason As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parESeason", DbType.Int64, 0, "Season")
                             SQLECommand.CommandText = "UPDATE episode SET mark = (?) WHERE idShow = (?) AND Season = (?);"
                             parEMark.Value = parMark.Value
                             parEID.Value = parID.Value
@@ -4814,7 +4814,7 @@ Public Class frmMain
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
-                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "idShow")
+                    Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int64, 0, "idShow")
                     SQLcommand.CommandText = "UPDATE tvshow SET mark = (?) WHERE idShow = (?);"
                     For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
                         parMark.Value = If(dgvTVShows.SelectedRows.Count > 1, setMark, Not Convert.ToBoolean(sRow.Cells("Mark").Value))
@@ -4824,7 +4824,7 @@ Public Class frmMain
 
                         Using SQLSeaCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                             Dim parSeaMark As SQLite.SQLiteParameter = SQLSeaCommand.Parameters.Add("parSeaMark", DbType.Boolean, 0, "mark")
-                            Dim parSeaID As SQLite.SQLiteParameter = SQLSeaCommand.Parameters.Add("parSeaID", DbType.Int32, 0, "idShow")
+                            Dim parSeaID As SQLite.SQLiteParameter = SQLSeaCommand.Parameters.Add("parSeaID", DbType.Int64, 0, "idShow")
                             SQLSeaCommand.CommandText = "UPDATE seasons SET mark = (?) WHERE idShow = (?);"
                             parSeaMark.Value = parMark.Value
                             parSeaID.Value = parID.Value
@@ -4837,7 +4837,7 @@ Public Class frmMain
 
                         Using SQLECommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                             Dim parEMark As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parEMark", DbType.Boolean, 0, "mark")
-                            Dim parEID As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parEID", DbType.Int32, 0, "idShow")
+                            Dim parEID As SQLite.SQLiteParameter = SQLECommand.Parameters.Add("parEID", DbType.Int64, 0, "idShow")
                             SQLECommand.CommandText = "UPDATE episode SET mark = (?) WHERE idShow = (?);"
                             parEMark.Value = parMark.Value
                             parEID.Value = parID.Value
@@ -4887,7 +4887,7 @@ Public Class frmMain
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                 Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "Mark")
-                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "idMovie")
+                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int64, 0, "idMovie")
                 SQLcommand.CommandText = "UPDATE movie SET Mark = (?) WHERE idMovie = (?);"
                 For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
                     parMark.Value = If(dgvMovies.SelectedRows.Count > 1, setMark, Not Convert.ToBoolean(sRow.Cells("Mark").Value))
@@ -4933,7 +4933,7 @@ Public Class frmMain
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                 Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "Mark")
-                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "idSet")
+                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int64, 0, "idSet")
                 SQLcommand.CommandText = "UPDATE sets SET Mark = (?) WHERE idSet = (?);"
                 For Each sRow As DataGridViewRow In dgvMovieSets.SelectedRows
                     parMark.Value = If(dgvMovieSets.SelectedRows.Count > 1, setMark, Not Convert.ToBoolean(sRow.Cells("Mark").Value))
@@ -4979,7 +4979,7 @@ Public Class frmMain
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                 Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMarkCustom1", DbType.Boolean, 0, "MarkCustom1")
-                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "idMovie")
+                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int64, 0, "idMovie")
                 SQLcommand.CommandText = "UPDATE movie SET MarkCustom1 = (?) WHERE idMovie = (?);"
                 For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
                     parMark.Value = If(dgvMovies.SelectedRows.Count > 1, setMark, Not Convert.ToBoolean(sRow.Cells("MarkCustom1").Value))
@@ -5025,7 +5025,7 @@ Public Class frmMain
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                 Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMarkCustom2", DbType.Boolean, 0, "MarkCustom2")
-                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "idMovie")
+                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int64, 0, "idMovie")
                 SQLcommand.CommandText = "UPDATE movie SET MarkCustom2 = (?) WHERE idMovie = (?);"
                 For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
                     parMark.Value = If(dgvMovies.SelectedRows.Count > 1, setMark, Not Convert.ToBoolean(sRow.Cells("MarkCustom2").Value))
@@ -5071,7 +5071,7 @@ Public Class frmMain
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                 Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMarkCustom3", DbType.Boolean, 0, "MarkCustom3")
-                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "idMovie")
+                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int64, 0, "idMovie")
                 SQLcommand.CommandText = "UPDATE movie SET MarkCustom3 = (?) WHERE idMovie = (?);"
                 For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
                     parMark.Value = If(dgvMovies.SelectedRows.Count > 1, setMark, Not Convert.ToBoolean(sRow.Cells("MarkCustom3").Value))
@@ -5117,7 +5117,7 @@ Public Class frmMain
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                 Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMarkCustom4", DbType.Boolean, 0, "MarkCustom4")
-                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int32, 0, "idMovie")
+                Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int64, 0, "idMovie")
                 SQLcommand.CommandText = "UPDATE movie SET MarkCustom4 = (?) WHERE idMovie = (?);"
                 For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
                     parMark.Value = If(dgvMovies.SelectedRows.Count > 1, setMark, Not Convert.ToBoolean(sRow.Cells("MarkCustom4").Value))
@@ -8199,7 +8199,7 @@ Public Class frmMain
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                 SQLcommand.CommandText = "UPDATE movie SET OutOfTolerance = (?) WHERE idMovie = (?);"
                 Dim parOutOfTolerance As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parOutOfTolerance", DbType.Boolean, 0, "OutOfTolerance")
-                Dim par_idMovie As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("par_idMovie", DbType.Int32, 0, "idMovie")
+                Dim par_idMovie As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("par_idMovie", DbType.Int64, 0, "idMovie")
                 Dim LevFail As Boolean = False
                 Dim bIsSingle As Boolean = False
                 Dim bUseFolderName As Boolean = False
