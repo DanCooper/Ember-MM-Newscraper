@@ -2263,9 +2263,9 @@ Public Class frmMain
                 If Not (Args.ScrapeType = Enums.ScrapeType.SingleScrape) Then
                     bwMovieSetScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":"))
                     If Not OldTitle = NewTitle OrElse Not OldTMDBColID = NewTMDBColID Then
-                        Master.DB.Save_MovieSet(DBScrapeMovieSet, True, True, False)
+                        Master.DB.Save_MovieSet(DBScrapeMovieSet, True, True, True)
                     Else
-                        Master.DB.Save_MovieSet(DBScrapeMovieSet, True, False, False)
+                        Master.DB.Save_MovieSet(DBScrapeMovieSet, True, True, False)
                     End If
                     bwMovieSetScraper.ReportProgress(-2, DBScrapeMovieSet.ID)
                     bwMovieSetScraper.ReportProgress(-1, If(Not OldListTitle = NewListTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle), NewListTitle))
