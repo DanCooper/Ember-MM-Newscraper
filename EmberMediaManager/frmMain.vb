@@ -5705,7 +5705,6 @@ Public Class frmMain
             End If
 
         ElseIf Master.eSettings.MovieClickScrape AndAlso colName = "HasSet" AndAlso Not bwMovieScraper.IsBusy Then
-            Dim movie As Int32 = CType(dgvMovies.Rows(e.RowIndex).Cells("idMovie").Value, Int32)
             Dim objCell As DataGridViewCell = CType(dgvMovies.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
 
             dgvMovies.ClearSelection()
@@ -5724,7 +5723,6 @@ Public Class frmMain
             colName = "FanartPath" OrElse colName = "LandscapePath" OrElse colName = "NfoPath" OrElse
             colName = "PosterPath" OrElse colName = "ThemePath" OrElse colName = "TrailerPath") AndAlso
             Not bwMovieScraper.IsBusy Then
-            Dim movie As Int32 = CType(dgvMovies.Rows(e.RowIndex).Cells("idMovie").Value, Int32)
             Dim objCell As DataGridViewCell = CType(dgvMovies.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
 
             'EMM not able to scrape subtitles yet.
@@ -6333,7 +6331,6 @@ Public Class frmMain
         ElseIf Master.eSettings.MovieSetClickScrape AndAlso
             (colName = "BannerPath" OrElse colName = "ClearArtPath" OrElse colName = "ClearLogoPath" OrElse colName = "DiscArtPath" OrElse
              colName = "FanartPath" OrElse colName = "LandscapePath" OrElse colName = "NfoPath" OrElse colName = "PosterPath") AndAlso Not bwMovieSetScraper.IsBusy Then
-            Dim movieset As Int32 = CType(dgvMovieSets.Rows(e.RowIndex).Cells("idSet").Value, Int32)
             Dim objCell As DataGridViewCell = CType(dgvMovieSets.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
 
             dgvMovieSets.ClearSelection()
@@ -6778,7 +6775,6 @@ Public Class frmMain
         ElseIf Master.eSettings.TVGeneralClickScrape AndAlso
             (colName = "FanartPath" OrElse colName = "NfoPath" OrElse colName = "PosterPath") AndAlso
             Not bwTVEpisodeScraper.IsBusy Then
-            Dim episode As Int32 = CType(dgvTVEpisodes.Rows(e.RowIndex).Cells("idEpisode").Value, Int32)
             Dim objCell As DataGridViewCell = CType(dgvTVEpisodes.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
 
             'EMM not able to scrape subtitles yet.
@@ -7233,7 +7229,6 @@ Public Class frmMain
             (colName = "BannerPath" OrElse colName = "FanartPath" OrElse
              colName = "LandscapePath" OrElse colName = "PosterPath") AndAlso
             Not bwTVSeasonScraper.IsBusy Then
-            Dim season As Int32 = CType(dgvTVSeasons.Rows(e.RowIndex).Cells("idSeason").Value, Int32)
             Dim objCell As DataGridViewCell = CType(dgvTVSeasons.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
 
             'EMM not able to scrape subtitles yet.
@@ -7606,7 +7601,6 @@ Public Class frmMain
             colName = "ClearLogoPath" OrElse colName = "EFanartsPath" OrElse colName = "FanartPath" OrElse
             colName = "LandscapePath" OrElse colName = "NfoPath" OrElse colName = "PosterPath" OrElse
             colName = "ThemePath") AndAlso Not bwTVScraper.IsBusy Then
-            Dim tvshow As Int32 = CType(dgvTVShows.Rows(e.RowIndex).Cells("idShow").Value, Int32)
             Dim objCell As DataGridViewCell = CType(dgvTVShows.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
 
             'EMM not able to scrape subtitles yet.
