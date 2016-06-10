@@ -18,6 +18,7 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
+Imports NLog
 Imports System.Xml.Serialization
 Imports System.Text.RegularExpressions
 Imports System.IO
@@ -922,12 +923,62 @@ Namespace MediaContainers
     End Class
 
     <Serializable()>
+    <XmlRoot("kset")>
+    Public Class KSet
+
+#Region "Fields"
+
+        Private _plot As String
+        Private _title As String
+        Private _tmdb As String
+
+#End Region 'Fields
+
+#Region "Properties"
+
+        <XmlElement("name")>
+        Property Title() As String
+            Get
+                Return _title
+            End Get
+            Set(ByVal value As String)
+                _title = value
+            End Set
+        End Property
+
+        <XmlElement("overview")>
+        Property Plot() As String
+            Get
+                Return _plot
+            End Get
+            Set(ByVal value As String)
+                _plot = value
+            End Set
+        End Property
+
+        <XmlElement("tmdb")>
+        Property TMDB() As String
+            Get
+                Return _tmdb
+            End Get
+            Set(ByVal value As String)
+                _tmdb = value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+    End Class
+
+    <Serializable()>
     <XmlRoot("movie")>
     Public Class Movie
         Implements ICloneable
         Implements IComparable(Of Movie)
 
 #Region "Fields"
+
+        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
         Private _actors As New List(Of Person)
         Private _certifications As New List(Of String)
@@ -963,9 +1014,10 @@ Namespace MediaContainers
         Private _trailer As String
         Private _videosource As String
         Private _votes As String
-        Private _xsets As New List(Of [Set])
+        Private _set_x As Object
+        Private _set_y As New SetContainer
+        Private _sets As New List(Of SetDetails)
         Private _year As String
-        Private _ysets As New SetContainer
 
 #End Region 'Fields
 
@@ -1587,50 +1639,46 @@ Namespace MediaContainers
         End Property
 
         <XmlIgnore()>
-        Public Property Sets() As List(Of [Set])
+        Public Property Sets() As List(Of SetDetails)
             Get
-                Return If(Master.eSettings.MovieYAMJCompatibleSets, _ysets.Sets, _xsets)
+                Return _sets
             End Get
-            Set(ByVal value As List(Of [Set]))
-                If Master.eSettings.MovieYAMJCompatibleSets Then
-                    _ysets.Sets = value
-                Else
-                    _xsets = value
-                End If
+            Set(ByVal value As List(Of SetDetails))
+                _sets = value
             End Set
         End Property
 
-        <XmlElement("set")>
-        Public Property XSets() As List(Of [Set])
+        <XmlAnyElement("set")>
+        Public Property XSets() As Object
             Get
-                Return _xsets
+                Return Sets
             End Get
-            Set(ByVal value As List(Of [Set]))
-                _xsets = value
+            Set(ByVal value As Object)
+                AddSet(value)
             End Set
         End Property
 
         <XmlIgnore()>
         Public ReadOnly Property XSetsSpecified() As Boolean
             Get
-                Return _xsets.Count > 0
+                Return _sets.Count > 0
             End Get
         End Property
 
         <XmlElement("sets")>
         Public Property YSets() As SetContainer
             Get
-                Return _ysets
+                Return _set_y
             End Get
             Set(ByVal value As SetContainer)
-                _ysets = value
+                _set_y = value
             End Set
         End Property
 
         <XmlIgnore()>
         Public ReadOnly Property YSetsSpecified() As Boolean
             Get
-                Return _ysets.Sets.Count > 0
+                Return _set_y.Sets.Count > 0
             End Get
         End Property
 
@@ -1763,16 +1811,45 @@ Namespace MediaContainers
                     Return Not String.IsNullOrEmpty(_imdbid) OrElse Not String.IsNullOrEmpty(_tmdbid)
                 End Get
             End Property
-
         End Class
 
 #End Region 'Properties
 
 #Region "Methods"
 
+        Public Sub AddSet(ByVal xmlObject As Object)
+            Try
+                If xmlObject IsNot Nothing Then
+                    Dim tSetInfo As New SetDetails
+                    Dim tInfo As Xml.XmlNode() = CType(xmlObject, Xml.XmlNode())
+                    If tInfo.Count > 0 Then
+                        For Each tElement In tInfo
+                            Select Case tElement.Name.ToLower
+                                Case "name"
+                                    tSetInfo.Title = tElement.InnerText
+                                Case "overview"
+                                    tSetInfo.Plot = tElement.InnerText
+                                Case "tmdb", "tmdbcolid"
+                                    tSetInfo.TMDB = tElement.InnerText
+                                Case "#text"
+                                    tSetInfo.Title = tElement.InnerText
+                            End Select
+                        Next
+                        If tSetInfo.TitleSpecified Then
+                            Sets.Add(tSetInfo)
+                        End If
+                    End If
+                End If
+            Catch ex As Exception
+                logger.Error(ex, New StackFrame().GetMethod().Name)
+            End Try
+
+            'Sets.Add(New SetDetails With {.ID = SetID, .Title = SetName, .Order = Order, .TMDB = SetTMDBColID})
+        End Sub
+
         Public Sub AddSet(ByVal SetID As Long, ByVal SetName As String, ByVal Order As Integer, ByVal SetTMDBColID As String)
-            Dim tSet = From bSet As [Set] In Sets Where bSet.ID = SetID
-            Dim iSet = From bset As [Set] In Sets Where bset.TMDBColID = SetTMDBColID
+            Dim tSet = From bSet As SetDetails In Sets Where bSet.ID = SetID
+            Dim iSet = From bset As SetDetails In Sets Where bset.TMDB = SetTMDBColID
 
             If tSet.Count > 0 Then
                 Sets.Remove(tSet(0))
@@ -1782,7 +1859,7 @@ Namespace MediaContainers
                 Sets.Remove(iSet(0))
             End If
 
-            Sets.Add(New [Set] With {.ID = SetID, .Title = SetName, .Order = Order, .TMDBColID = SetTMDBColID})
+            Sets.Add(New SetDetails With {.ID = SetID, .Title = SetName, .Order = Order, .TMDB = SetTMDBColID})
         End Sub
 
         Public Sub AddTag(ByVal value As String)
@@ -1944,9 +2021,9 @@ Namespace MediaContainers
             _trailer = String.Empty
             _videosource = String.Empty
             _votes = String.Empty
-            _xsets.Clear()
+            _set_x = String.Empty
             _year = String.Empty
-            _ysets = New SetContainer
+            _set_y = New SetContainer
         End Sub
 
         Public Function CloneDeep() As Object Implements ICloneable.Clone
@@ -1981,14 +2058,14 @@ Namespace MediaContainers
         End Function
 
         Public Sub RemoveSet(ByVal SetName As String)
-            Dim tSet = From bSet As [Set] In Sets Where bSet.Title = SetName
+            Dim tSet = From bSet As SetDetails In Sets Where bSet.Title = SetName
             If tSet.Count > 0 Then
                 Sets.Remove(tSet(0))
             End If
         End Sub
 
         Public Sub RemoveSet(ByVal SetID As Long)
-            Dim tSet = From bSet As [Set] In Sets Where bSet.ID = SetID
+            Dim tSet = From bSet As SetDetails In Sets Where bSet.ID = SetID
             If tSet.Count > 0 Then
                 Sets.Remove(tSet(0))
             End If
@@ -2559,54 +2636,6 @@ Namespace MediaContainers
 
         Public Sub Clear()
             _seasons.Clear()
-        End Sub
-
-#End Region 'Methods
-
-    End Class
-
-    <Serializable()>
-    Public Class SetContainer
-
-#Region "Fields"
-
-        Private _set As New List(Of [Set])
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Clear()
-        End Sub
-
-#End Region 'Constructors
-
-#Region "Properties"
-
-        <XmlElement("set")>
-        Public Property Sets() As List(Of [Set])
-            Get
-                Return _set
-            End Get
-            Set(ByVal value As List(Of [Set]))
-                _set = value
-            End Set
-        End Property
-
-        <XmlIgnore()>
-        Public ReadOnly Property SetsSpecified() As Boolean
-            Get
-                Return _set.Count > 0
-            End Get
-        End Property
-
-#End Region 'Properties
-
-#Region "Methods"
-
-        Public Sub Clear()
-            _set = New List(Of [Set])
         End Sub
 
 #End Region 'Methods
@@ -5042,14 +5071,63 @@ Namespace MediaContainers
     End Class
 
     <Serializable()>
-    Public Class [Set]
+    Public Class SetContainer
+
+#Region "Fields"
+
+        Private _set As New List(Of SetDetails)
+
+#End Region 'Fields
+
+#Region "Constructors"
+
+        Public Sub New()
+            Clear()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Properties"
+
+        <XmlElement("set")>
+        Public Property Sets() As List(Of SetDetails)
+            Get
+                Return _set
+            End Get
+            Set(ByVal value As List(Of SetDetails))
+                _set = value
+            End Set
+        End Property
+
+        <XmlIgnore()>
+        Public ReadOnly Property SetsSpecified() As Boolean
+            Get
+                Return _set.Count > 0
+            End Get
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub Clear()
+            _set = New List(Of SetDetails)
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+    <Serializable()>
+    Public Class SetDetails
 
 #Region "Fields"
 
         Private _id As Long
         Private _order As Integer
+        Private _plot As String
         Private _title As String
-        Private _tmdbcolid As String
+        Private _tmdb As String
 
 #End Region 'Fields
 
@@ -5073,7 +5151,7 @@ Namespace MediaContainers
             End Set
         End Property
 
-        <XmlAttribute("order")>
+        <XmlIgnore()>
         Public Property Order() As Integer
             Get
                 Return _order
@@ -5090,20 +5168,20 @@ Namespace MediaContainers
             End Get
         End Property
 
-        <XmlAttribute("tmdbcolid")>
-        Public Property TMDBColID() As String
+        <XmlIgnore()>
+        Public Property Plot() As String
             Get
-                Return _tmdbcolid
+                Return _plot
             End Get
             Set(ByVal value As String)
-                _tmdbcolid = value
+                _plot = value
             End Set
         End Property
 
         <XmlIgnore()>
-        Public ReadOnly Property TMDBColIDSpecified() As Boolean
+        Public ReadOnly Property PlotSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_tmdbcolid)
+                Return Not String.IsNullOrEmpty(_plot)
             End Get
         End Property
 
@@ -5124,15 +5202,33 @@ Namespace MediaContainers
             End Get
         End Property
 
+        <XmlIgnore()>
+        Public Property TMDB() As String
+            Get
+                Return _tmdb
+            End Get
+            Set(ByVal value As String)
+                _tmdb = value
+            End Set
+        End Property
+
+        <XmlIgnore()>
+        Public ReadOnly Property TMDBSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(_tmdb)
+            End Get
+        End Property
+
 #End Region 'Properties
 
 #Region "Methods"
 
         Public Sub Clear()
             _id = -1
-            _title = String.Empty
             _order = -1
-            _tmdbcolid = String.Empty
+            _plot = String.Empty
+            _title = String.Empty
+            _tmdb = String.Empty
         End Sub
 
 #End Region 'Methods

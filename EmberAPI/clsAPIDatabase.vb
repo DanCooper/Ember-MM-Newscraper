@@ -1815,16 +1815,16 @@ Public Class Database
 
         'MovieSets
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommand.CommandText = String.Concat("SELECT A.idMovie, A.idSet, A.iOrder, B.idSet, B.SetName FROM setlinkmovie ",
+            SQLcommand.CommandText = String.Concat("SELECT A.idMovie, A.idSet, A.iOrder, B.idSet, B.SetName, B.TMDBColID FROM setlinkmovie ",
                                                    "AS A INNER JOIN sets AS B ON (A.idSet = B.idSet) WHERE A.idMovie = ", _movieDB.ID, ";")
             Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
-                Dim sets As MediaContainers.Set
                 While SQLreader.Read
-                    sets = New MediaContainers.Set
-                    If Not DBNull.Value.Equals(SQLreader("idSet")) Then sets.ID = Convert.ToInt64(SQLreader("idSet"))
-                    If Not DBNull.Value.Equals(SQLreader("iOrder")) Then sets.Order = CInt(SQLreader("iOrder"))
-                    If Not DBNull.Value.Equals(SQLreader("SetName")) Then sets.Title = SQLreader("SetName").ToString
-                    _movieDB.Movie.Sets.Add(sets)
+                    Dim tSet As New MediaContainers.SetDetails
+                    If Not DBNull.Value.Equals(SQLreader("idSet")) Then tSet.ID = Convert.ToInt64(SQLreader("idSet"))
+                    If Not DBNull.Value.Equals(SQLreader("iOrder")) Then tSet.Order = CInt(SQLreader("iOrder"))
+                    If Not DBNull.Value.Equals(SQLreader("SetName")) Then tSet.Title = SQLreader("SetName").ToString
+                    If Not DBNull.Value.Equals(SQLreader("TMDBColID")) Then tSet.TMDB = SQLreader("TMDBColID").ToString
+                    _movieDB.Movie.Sets.Add(tSet)
                 End While
             End Using
         End Using
@@ -3746,7 +3746,7 @@ Public Class Database
                 End Using
 
                 Dim IsNewSet As Boolean
-                For Each s As MediaContainers.Set In _movieDB.Movie.Sets
+                For Each s As MediaContainers.SetDetails In _movieDB.Movie.Sets
                     If s.TitleSpecified Then
                         IsNewSet = Not s.ID > 0
                         If Not IsNewSet Then
@@ -3765,10 +3765,10 @@ Public Class Database
                             End Using
                         Else
                             'first check if a Set with same TMDBColID is already existing
-                            If Not String.IsNullOrEmpty(s.TMDBColID) Then
+                            If s.TMDBSpecified Then
                                 Using SQLcommand_sets As SQLiteCommand = _myvideosDBConn.CreateCommand()
                                     SQLcommand_sets.CommandText = String.Concat("SELECT idSet, SetName ",
-                                                                               "FROM sets WHERE TMDBColID LIKE """, s.TMDBColID, """;")
+                                                                               "FROM sets WHERE TMDBColID LIKE """, s.TMDB, """;")
                                     Using SQLreader As SQLiteDataReader = SQLcommand_sets.ExecuteReader()
                                         If SQLreader.HasRows Then
                                             SQLreader.Read()
@@ -3820,7 +3820,7 @@ Public Class Database
                                 Using SQLcommand_sets As SQLiteCommand = _myvideosDBConn.CreateCommand()
                                     SQLcommand_sets.CommandText = String.Format("UPDATE sets SET TMDBColID=? WHERE idSet={0}", s.ID)
                                     Dim par_sets_TMDBColID As SQLiteParameter = SQLcommand_sets.Parameters.Add("parSets_TMDBColID", DbType.String, 0, "strThumb")
-                                    par_sets_TMDBColID.Value = s.TMDBColID
+                                    par_sets_TMDBColID.Value = s.TMDB
                                     SQLcommand_sets.ExecuteNonQuery()
                                 End Using
                             Else
@@ -3843,7 +3843,7 @@ Public Class Database
 
                                     par_sets_SetName.Value = s.Title
                                     par_sets_ListTitle.Value = StringUtils.SortTokens_MovieSet(s.Title)
-                                    par_sets_TMDBColID.Value = s.TMDBColID
+                                    par_sets_TMDBColID.Value = s.TMDB
                                     par_sets_Plot.Value = String.Empty
                                     par_sets_NfoPath.Value = String.Empty
                                     par_sets_New.Value = True

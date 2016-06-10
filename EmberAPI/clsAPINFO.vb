@@ -29,7 +29,9 @@ Imports System.Windows.Forms
 Public Class NFO
 
 #Region "Fields"
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
+
 #End Region
 
 #Region "Methods"
