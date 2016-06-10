@@ -1356,7 +1356,7 @@ Public Class NFO
     ''' <param name="DBMovie"></param>
     ''' <remarks></remarks>
     Public Shared Sub DeleteNFO_Movie(ByVal DBMovie As Database.DBElement, ByVal ForceFileCleanup As Boolean)
-        If String.IsNullOrEmpty(DBMovie.Filename) Then Return
+        If Not DBMovie.FilenameSpecified Then Return
 
         Try
             For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainNFO, ForceFileCleanup)
@@ -1366,6 +1366,24 @@ Public Class NFO
             Next
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovie.Filename & ">")
+        End Try
+    End Sub
+    ''' <summary>
+    ''' Delete all movie NFOs
+    ''' </summary>
+    ''' <param name="DBMovieSet"></param>
+    ''' <remarks></remarks>
+    Public Shared Sub DeleteNFO_MovieSet(ByVal DBMovieSet As Database.DBElement, ByVal ForceFileCleanup As Boolean, Optional bForceOldTitle As Boolean = False)
+        If Not DBMovieSet.MovieSet.TitleSpecified Then Return
+
+        Try
+            For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet, Enums.ModifierType.MainNFO, bForceOldTitle)
+                If File.Exists(a) Then
+                    File.Delete(a)
+                End If
+            Next
+        Catch ex As Exception
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovieSet.Filename & ">")
         End Try
     End Sub
 
@@ -2316,6 +2334,8 @@ Public Class NFO
             'End Try
 
             If Not String.IsNullOrEmpty(tDBElement.MovieSet.Title) Then
+                If tDBElement.MovieSet.TitleHasChanged Then DeleteNFO_MovieSet(tDBElement, False, True)
+
                 Dim xmlSer As New XmlSerializer(GetType(MediaContainers.MovieSet))
                 Dim doesExist As Boolean = False
                 Dim fAtt As New FileAttributes

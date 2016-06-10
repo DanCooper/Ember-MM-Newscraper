@@ -1923,6 +1923,8 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("TMDBColID")) Then .TMDB = SQLreader("TMDBColID").ToString
                         If Not DBNull.Value.Equals(SQLreader("Plot")) Then .Plot = SQLreader("Plot").ToString
                         If Not DBNull.Value.Equals(SQLreader("SetName")) Then .Title = SQLreader("SetName").ToString
+                        .OldTitle = .Title
+                        .OldTMDB = .TMDB
                     End With
                 End If
             End Using
@@ -3917,9 +3919,8 @@ Public Class Database
     ''' <param name="_moviesetDB">Media.Movie object to save to the database</param>
     ''' <param name="BatchMode">Is the function already part of a transaction?</param>
     ''' <param name="ToDisk">Create NFO and Images</param>
-    ''' <param name="withMovies">Save the information also to all linked movies?</param>
     ''' <returns>Database.DBElement object</returns>
-    Public Function Save_MovieSet(ByVal _moviesetDB As DBElement, ByVal BatchMode As Boolean, ByVal toDisk As Boolean, ByVal withMovies As Boolean) As DBElement
+    Public Function Save_MovieSet(ByVal _moviesetDB As DBElement, ByVal BatchMode As Boolean, ByVal toDisk As Boolean) As DBElement
         Dim SQLtransaction As SQLiteTransaction = Nothing
         If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -3997,7 +3998,7 @@ Public Class Database
         If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.Landscape.LocalFilePath) Then SetArtForItem(_moviesetDB.ID, "set", "landscape", _moviesetDB.ImagesContainer.Landscape.LocalFilePath)
         If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.Poster.LocalFilePath) Then SetArtForItem(_moviesetDB.ID, "set", "poster", _moviesetDB.ImagesContainer.Poster.LocalFilePath)
 
-        If withMovies Then
+        If _moviesetDB.MovieSet.TitleHasChanged OrElse _moviesetDB.MovieSet.TMDBHasChanged Then
             Dim MoviesInSet As New List(Of MovieInSet)
 
             'get all movies linked to this MovieSet

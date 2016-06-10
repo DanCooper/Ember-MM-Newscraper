@@ -1169,7 +1169,7 @@ Public Class dlgEditMovieSet
             RemoveSetFromMovies()
         End If
 
-        DialogResult = System.Windows.Forms.DialogResult.OK
+        DialogResult = DialogResult.OK
         Close()
     End Sub
 
@@ -1360,13 +1360,6 @@ Public Class dlgEditMovieSet
             Cancel_Button.Enabled = False
             btnSearchMovie.Enabled = False
             btnRescrape.Enabled = False
-
-            'it is important that existing NFO and images will be deleted before the new name is saved!
-            If needsMovieUpdate Then
-                If tmpDBElement.NfoPath IsNot Nothing AndAlso Not String.IsNullOrEmpty(tmpDBElement.NfoPath) Then
-                    File.Delete(tmpDBElement.NfoPath)
-                End If
-            End If
 
             tmpDBElement.IsMark = chkMark.Checked
             tmpDBElement.SortMethod = DirectCast(cbMovieSorting.SelectedIndex, Enums.SortMethod_MovieSet)

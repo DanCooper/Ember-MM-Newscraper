@@ -1827,12 +1827,12 @@ Namespace FileUtils
         ''' <param name="mType"></param>
         ''' <returns><c>List(Of String)</c> all filenames with full path</returns>
         ''' <remarks></remarks>
-        Public Shared Function MovieSet(ByVal DBElement As Database.DBElement, ByVal mType As Enums.ModifierType) As List(Of String)
+        Public Shared Function MovieSet(ByVal DBElement As Database.DBElement, ByVal mType As Enums.ModifierType, Optional ByVal bForceOldTitle As Boolean = False) As List(Of String)
             Dim FilenameList As New List(Of String)
 
             If String.IsNullOrEmpty(DBElement.MovieSet.Title) Then Return FilenameList
 
-            Dim fSetTitle As String = DBElement.MovieSet.Title
+            Dim fSetTitle As String = If(bForceOldTitle, DBElement.MovieSet.OldTitle, DBElement.MovieSet.Title)
             For Each Invalid As Char In Path.GetInvalidFileNameChars
                 fSetTitle = fSetTitle.Replace(Invalid, "-")
             Next
