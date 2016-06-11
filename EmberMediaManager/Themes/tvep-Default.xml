@@ -172,6 +172,18 @@ or a "32-bit ARGB value"
       <visible>false</visible>
     </object>
 
+    <object name="lblTrailerPathHeader">
+      <visible>false</visible>
+    </object>
+
+    <object name="txtTrailerPath">
+      <visible>false</visible>
+    </object>
+
+    <object name="btnTrailerPlay">
+      <visible>false</visible>
+    </object>
+
     <!-- BEGIN INTERNAL TO PNLMOVIESINSET -->
     <object name="lblMoviesInSetHeader">
       <visible>false</visible>
@@ -334,7 +346,7 @@ or a "32-bit ARGB value"
       <fontstyle>0</fontstyle>
     </object>
     
-    <object name="btnPlay">
+    <object name="btnFilePlay">
       <width>20</width>
       <height>20</height>
       <left>txtFilePath.Left + txtFilePath.Width + 3</left>
