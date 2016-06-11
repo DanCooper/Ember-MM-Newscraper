@@ -589,7 +589,7 @@ Namespace Kodi
         ''' </remarks>
         Private Async Function GetSources(mediaType As Files.Media) As Task(Of List(Of List.Items.SourcesItem))
             If _kodi Is Nothing Then
-                logger.Error("[APIKodi] GetSources: No host initialized! Abort!")
+                logger.Error("[APIKodi] [GetSources] No host initialized! Abort!")
                 Return Nothing
             End If
 
@@ -607,7 +607,7 @@ Namespace Kodi
                     For Each remotesource In tmplist
                         Dim newsource As New List.Items.SourcesItem
                         If remotesource.file.StartsWith(MultiPath) Then
-                            logger.Warn("[APIKodi] GetSources: " & _currenthost.Label & ": " & remotesource.file & " - Multipath format, try to split...")
+                            logger.Trace(String.Format("[APIKodi] [{0}] [GetSources] Multipath format, try to split: {1}", _currenthost.Label, remotesource.file))
                             'remove "multipath://" from path and split on "/"
                             'i.e multipath://nfs%3a%2f%2f192.168.2.200%2fMedia_1%2fMovie%2f/nfs%3a%2f%2f192.168.2.200%2fMedia_2%2fMovie%2f/
                             For Each path As String In remotesource.file.Remove(0, MultiPath.Length).Split("/"c)
@@ -617,13 +617,14 @@ Namespace Kodi
                                     newsource.file = Web.HttpUtility.UrlDecode(path)
                                     newsource.label = remotesource.label
                                     lstremotesources.Add(newsource)
+                                    logger.Trace(String.Format("[APIKodi] [{0}] [GetSources] Added Source: {1}", _currenthost.Label, newsource.file))
                                 End If
                             Next
                         Else
-                            logger.Warn("[APIKodi] GetSources: " & _currenthost.Label & ": """ & remotesource.file, """")
                             newsource.file = remotesource.file
                             newsource.label = remotesource.label
                             lstremotesources.Add(newsource)
+                            logger.Trace(String.Format("[APIKodi] [{0}] [GetSources] Added Source: {1}", _currenthost.Label, remotesource.file))
                         End If
                     Next
 
@@ -637,7 +638,7 @@ Namespace Kodi
 
         Private Async Function GetTextures(ByVal tDBElement As Database.DBElement) As Task(Of Textures.GetTexturesResponse)
             If _kodi Is Nothing Then
-                logger.Error("[APIKodi] GetTextures: No host initialized! Abort!")
+                logger.Error("[APIKodi] [GetTextures] No host initialized! Abort!")
                 Return Nothing
             End If
 
@@ -693,7 +694,7 @@ Namespace Kodi
 
         Private Async Function SearchMovie(ByVal tDBElement As Database.DBElement) As Task(Of Video.Details.Movie)
             If _kodi Is Nothing Then
-                logger.Error("[APIKodi] SearchMovie: No host initialized! Abort!")
+                logger.Error("[APIKodi] [SearchMovie] No host initialized! Abort!")
                 Return Nothing
             End If
 
@@ -723,28 +724,28 @@ Namespace Kodi
                     Return Nothing
                 End Try
             Else
-                logger.Error(String.Format("[APIKodi] [{0}] SearchMovie: ""{1}"" | Source not mapped!", _currenthost.Label, tDBElement.Source.Path))
+                logger.Error(String.Format("[APIKodi] [{0}] [SearchMovie] ""{1}"" | Source not mapped!", _currenthost.Label, tDBElement.Source.Path))
                 Return Nothing
             End If
 
             If kMovies IsNot Nothing Then
                 If kMovies.movies IsNot Nothing Then
                     If kMovies.movies.Count = 1 Then
-                        logger.Trace(String.Format("[APIKodi] [{0}] SearchMovie: ""{1}"" | OK, found in host database! [ID:{2}]", _currenthost.Label, tDBElement.Filename, kMovies.movies.Item(0).movieid))
+                        logger.Trace(String.Format("[APIKodi] [{0}] [SearchMovie] ""{1}"" | OK, found in host database! [ID:{2}]", _currenthost.Label, tDBElement.Filename, kMovies.movies.Item(0).movieid))
                         Return kMovies.movies.Item(0)
                     ElseIf kMovies.movies.Count > 1 Then
-                        logger.Warn(String.Format("[APIKodi] [{0}] SearchMovie: ""{1}"" | MORE THAN ONE movie found in host database!", _currenthost.Label, tDBElement.Filename))
+                        logger.Warn(String.Format("[APIKodi] [{0}] [SearchMovie] ""{1}"" | MORE THAN ONE movie found in host database!", _currenthost.Label, tDBElement.Filename))
                         Return Nothing
                     Else
-                        logger.Warn(String.Format("[APIKodi] [{0}] SearchMovie: ""{1}"" | NOT found in host database!", _currenthost.Label, tDBElement.Filename))
+                        logger.Warn(String.Format("[APIKodi] [{0}] [SearchMovie] ""{1}"" | NOT found in host database!", _currenthost.Label, tDBElement.Filename))
                         Return Nothing
                     End If
                 Else
-                    logger.Warn(String.Format("[APIKodi] [{0}] SearchMovie: ""{1}"" | NOT found in host database!", _currenthost.Label, tDBElement.Filename))
+                    logger.Warn(String.Format("[APIKodi] [{0}] [SearchMovie] ""{1}"" | NOT found in host database!", _currenthost.Label, tDBElement.Filename))
                     Return Nothing
                 End If
             Else
-                logger.Error(String.Format("[APIKodi] [{0}] SearchMovie: ""{1}"" | No connection to Host!", _currenthost.Label, tDBElement.Filename))
+                logger.Error(String.Format("[APIKodi] [{0}] [SearchMovie] ""{1}"" | No connection to Host!", _currenthost.Label, tDBElement.Filename))
                 Return Nothing
             End If
         End Function

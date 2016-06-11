@@ -220,6 +220,16 @@ Public Class StringUtils
         End Try
         Return strResult
     End Function
+
+    Public Shared Function ConvertFromKodiTrailerFormatToYouTubeURL(ByVal strURL As String) As String
+        If String.IsNullOrEmpty(strURL) Then Return String.Empty
+        Return strURL.Replace("plugin://plugin.video.youtube/?action=play_video&videoid=", "http://www.youtube.com/watch?v=")
+    End Function
+
+    Public Shared Function ConvertFromYouTubeURLToKodiTrailerFormat(ByVal strURL As String) As String
+        If String.IsNullOrEmpty(strURL) Then Return String.Empty
+        Return String.Concat("plugin://plugin.video.youtube/?action=play_video&videoid=", YouTube.UrlUtils.GetVideoID(strURL))
+    End Function
     ''' <summary>
     ''' Converts the supplied <c>String</c> to title-case, and converts certain keywords to uppercase
     ''' </summary>

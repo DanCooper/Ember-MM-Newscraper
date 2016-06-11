@@ -523,6 +523,7 @@ Public Class frmMain
         txtOutline.Text = String.Empty
         txtPlot.Text = String.Empty
         txtTMDBID.Text = String.Empty
+        txtTrailerPath.Text = String.Empty
         lblTagline.Text = String.Empty
         If pbMPAA.Image IsNot Nothing Then
             pbMPAA.Image.Dispose()
@@ -942,7 +943,7 @@ Public Class frmMain
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub btnPlay_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPlay.Click
+    Private Sub btnPlay_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilePlay.Click
         Functions.Launch(txtFilePath.Text, True)
         'Try
         '    If Not String.IsNullOrEmpty(Me.txtFilePath.Text) Then
@@ -962,6 +963,19 @@ Public Class frmMain
         'Catch ex As Exception
         '    logger.Error(ex, New StackFrame().GetMethod().Name)
         'End Try
+    End Sub
+    ''' <summary>
+    ''' Launch trailer using system default player
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
+    Private Sub btnTrailerPlay_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTrailerPlay.Click
+        If txtTrailerPath.Text.StartsWith("plugin://plugin.video.youtube") Then
+            Functions.Launch(StringUtils.ConvertFromKodiTrailerFormatToYouTubeURL(txtTrailerPath.Text), True)
+        Else
+            Functions.Launch(txtTrailerPath.Text, True)
+        End If
     End Sub
     ''' <summary>
     ''' sorts the movielist by adding date
@@ -9437,6 +9451,7 @@ Public Class frmMain
             txtTMDBID.Text = currMovie.Movie.TMDBID
 
             txtFilePath.Text = currMovie.Filename
+            txtTrailerPath.Text = If(Not String.IsNullOrEmpty(currMovie.Trailer.LocalFilePath), currMovie.Trailer.LocalFilePath, currMovie.Movie.Trailer)
 
             lblReleaseDate.Text = currMovie.Movie.ReleaseDate
             txtCertifications.Text = String.Join(" / ", currMovie.Movie.Certifications.ToArray)
@@ -16793,6 +16808,7 @@ Public Class frmMain
                 .lblPlotHeader.Text = Master.eLang.GetString(65, "Plot")
                 .lblPosterTitle.Text = Master.eLang.GetString(148, "Poster")
                 .lblReleaseDateHeader.Text = Master.eLang.GetString(57, "Release Date")
+                .lblTrailerPathHeader.Text = Master.eLang.GetString(1058, "Trailer Path")
                 .mnuMainDonate.Text = Master.eLang.GetString(708, "Donate")
                 .mnuMainDonate.Text = Master.eLang.GetString(708, "Donate")
                 .mnuMainEdit.Text = Master.eLang.GetString(3, "&Edit")
@@ -16879,7 +16895,7 @@ Public Class frmMain
                 TT.SetToolTip(.txtSearchMovies, Master.eLang.GetString(88, "Search the movie titles by entering text here."))
                 TT.SetToolTip(.txtSearchMovieSets, Master.eLang.GetString(1267, "Search the movie titles by entering text here."))
                 TT.SetToolTip(.txtSearchShows, Master.eLang.GetString(1268, "Search the tv show titles by entering text here."))
-                TT.SetToolTip(.btnPlay, Master.eLang.GetString(89, "Play the movie file with the system default media player."))
+                TT.SetToolTip(.btnFilePlay, Master.eLang.GetString(89, "Play the movie file with the system default media player."))
                 TT.SetToolTip(.btnMetaDataRefresh, Master.eLang.GetString(90, "Rescan and save the meta data for the selected movie."))
                 TT.SetToolTip(.chkFilterDuplicates_Movies, Master.eLang.GetString(91, "Display only movies that have duplicate IMDB IDs."))
                 TT.SetToolTip(.chkFilterTolerance_Movies, Master.eLang.GetString(92, "Display only movies whose title matching is out of tolerance."))
