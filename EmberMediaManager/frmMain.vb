@@ -2110,7 +2110,6 @@ Public Class frmMain
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Dim Cancelled As Boolean = False
         Dim DBScrapeMovieSet As New Database.DBElement(Enums.ContentType.MovieSet)
-        Dim cloneMovieSet As New Database.DBElement(Enums.ContentType.MovieSet)
 
         logger.Trace(String.Format("[MovieSet Scraper] [Start] MovieSets Count [{0}]", Args.ScrapeList.Count.ToString))
 
@@ -2139,17 +2138,6 @@ Public Class frmMain
             logger.Trace(String.Format("[MovieSet Scraper] [Start] Scraping {0}", OldListTitle))
 
             DBScrapeMovieSet = Master.DB.Load_MovieSet(Convert.ToInt64(tScrapeItem.DataRow.Item("idSet")))
-
-            'clone the existing MovieSet with old paths and title to remove old images if the title is changed during the scraping
-            cloneMovieSet.ImagesContainer.Banner.LocalFilePath = DBScrapeMovieSet.ImagesContainer.Banner.LocalFilePath
-            cloneMovieSet.ImagesContainer.ClearArt.LocalFilePath = DBScrapeMovieSet.ImagesContainer.ClearArt.LocalFilePath
-            cloneMovieSet.ImagesContainer.ClearLogo.LocalFilePath = DBScrapeMovieSet.ImagesContainer.ClearLogo.LocalFilePath
-            cloneMovieSet.ImagesContainer.DiscArt.LocalFilePath = DBScrapeMovieSet.ImagesContainer.DiscArt.LocalFilePath
-            cloneMovieSet.ImagesContainer.Fanart.LocalFilePath = DBScrapeMovieSet.ImagesContainer.Fanart.LocalFilePath
-            cloneMovieSet.ImagesContainer.Landscape.LocalFilePath = DBScrapeMovieSet.ImagesContainer.Landscape.LocalFilePath
-            cloneMovieSet.ImagesContainer.Poster.LocalFilePath = DBScrapeMovieSet.ImagesContainer.Poster.LocalFilePath
-            cloneMovieSet.MovieSet = New MediaContainers.MovieSet
-            cloneMovieSet.MovieSet.Title = DBScrapeMovieSet.MovieSet.Title
 
             'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEditMovieSet, Nothing, DBScrapeMovieSet)
 
@@ -2188,49 +2176,6 @@ Public Class frmMain
                     bwMovieSetScraper.ReportProgress(0, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle))
                 End If
 
-                'rename old images with no longer valid <title>-imagetype.* file names to new MovieSet title
-                If Not NewTitle = OldTitle AndAlso Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
-                    'load all old images to memorystream
-                    'save old images with new MovieSet title
-                    'If Not String.IsNullOrEmpty(cloneMovieSet.ImagesContainer.Banner.LocalFile) AndAlso File.Exists(cloneMovieSet.ImagesContainer.Banner.LocalFile) Then
-                    '    Banner.WebImage.FromFile(cloneMovieSet.ImagesContainer.Banner.LocalFile)
-                    '    DBScrapeMovieSet.ImagesContainer.Banner.LocalFile = Banner.WebImage.SaveAsMovieSetBanner(DBScrapeMovieSet)
-                    'End If
-                    'If Not String.IsNullOrEmpty(cloneMovieSet.ImagesContainer.ClearArt.LocalFile) AndAlso File.Exists(cloneMovieSet.ImagesContainer.ClearArt.LocalFile) Then
-                    '    ClearArt.WebImage.FromFile(cloneMovieSet.ImagesContainer.ClearArt.LocalFile)
-                    '    DBScrapeMovieSet.ImagesContainer.ClearArt.LocalFile = ClearArt.WebImage.SaveAsMovieSetClearArt(DBScrapeMovieSet)
-                    'End If
-                    'If Not String.IsNullOrEmpty(cloneMovieSet.ImagesContainer.ClearLogo.LocalFile) AndAlso File.Exists(cloneMovieSet.ImagesContainer.ClearLogo.LocalFile) Then
-                    '    ClearLogo.WebImage.FromFile(cloneMovieSet.ImagesContainer.ClearLogo.LocalFile)
-                    '    DBScrapeMovieSet.ImagesContainer.ClearLogo.LocalFile = ClearLogo.WebImage.SaveAsMovieSetClearLogo(DBScrapeMovieSet)
-                    'End If
-                    'If Not String.IsNullOrEmpty(cloneMovieSet.ImagesContainer.DiscArt.LocalFile) AndAlso File.Exists(cloneMovieSet.ImagesContainer.DiscArt.LocalFile) Then
-                    '    DiscArt.WebImage.FromFile(cloneMovieSet.ImagesContainer.DiscArt.LocalFile)
-                    '    DBScrapeMovieSet.ImagesContainer.DiscArt.LocalFile = DiscArt.WebImage.SaveAsMovieSetDiscArt(DBScrapeMovieSet)
-                    'End If
-                    'If Not String.IsNullOrEmpty(cloneMovieSet.ImagesContainer.Fanart.LocalFile) AndAlso File.Exists(cloneMovieSet.ImagesContainer.Fanart.LocalFile) Then
-                    '    Fanart.WebImage.FromFile(cloneMovieSet.ImagesContainer.Fanart.LocalFile)
-                    '    DBScrapeMovieSet.ImagesContainer.Fanart.LocalFile = Fanart.WebImage.SaveAsMovieSetFanart(DBScrapeMovieSet)
-                    'End If
-                    'If Not String.IsNullOrEmpty(cloneMovieSet.ImagesContainer.Landscape.LocalFile) AndAlso File.Exists(cloneMovieSet.ImagesContainer.Landscape.LocalFile) Then
-                    '    Landscape.WebImage.FromFile(cloneMovieSet.ImagesContainer.Landscape.LocalFile)
-                    '    DBScrapeMovieSet.ImagesContainer.Landscape.LocalFile = Landscape.WebImage.SaveAsMovieSetLandscape(DBScrapeMovieSet)
-                    'End If
-                    'If Not String.IsNullOrEmpty(cloneMovieSet.ImagesContainer.Poster.LocalFile) AndAlso File.Exists(cloneMovieSet.ImagesContainer.Poster.LocalFile) Then
-                    '    Poster.WebImage.FromFile(cloneMovieSet.ImagesContainer.Poster.LocalFile)
-                    '    DBScrapeMovieSet.ImagesContainer.Poster.LocalFile = Poster.WebImage.SaveAsMovieSetPoster(DBScrapeMovieSet)
-                    'End If
-
-                    ''delete old images
-                    'Images.DeleteMovieSetBanner(cloneMovieSet)
-                    'Images.DeleteMovieSetClearArt(cloneMovieSet)
-                    'Images.DeleteMovieSetClearLogo(cloneMovieSet)
-                    'Images.DeleteMovieSetDiscArt(cloneMovieSet)
-                    'Images.DeleteMovieSetFanart(cloneMovieSet)
-                    'Images.DeleteMovieSetLandscape(cloneMovieSet)
-                    'Images.DeleteMovieSetPoster(cloneMovieSet)
-                End If
-
                 'get all images
                 If tScrapeItem.ScrapeModifiers.MainBanner OrElse
                     tScrapeItem.ScrapeModifiers.MainClearArt OrElse
@@ -2262,11 +2207,7 @@ Public Class frmMain
 
                 If Not (Args.ScrapeType = Enums.ScrapeType.SingleScrape) Then
                     bwMovieSetScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":"))
-                    If Not OldTitle = NewTitle OrElse Not OldTMDBColID = NewTMDBColID Then
-                        Master.DB.Save_MovieSet(DBScrapeMovieSet, True, True, True)
-                    Else
-                        Master.DB.Save_MovieSet(DBScrapeMovieSet, True, True, False)
-                    End If
+                    Master.DB.Save_MovieSet(DBScrapeMovieSet, True, True)
                     bwMovieSetScraper.ReportProgress(-2, DBScrapeMovieSet.ID)
                     bwMovieSetScraper.ReportProgress(-1, If(Not OldListTitle = NewListTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle), NewListTitle))
                 End If
@@ -5205,7 +5146,7 @@ Public Class frmMain
 
         Using dNewSet As New dlgNewSet()
             If dNewSet.ShowDialog(tmpDBMovieSet) = DialogResult.OK Then
-                tmpDBMovieSet = Master.DB.Save_MovieSet(dNewSet.Result, False, False, False)
+                tmpDBMovieSet = Master.DB.Save_MovieSet(dNewSet.Result, False, False)
                 FillList(False, True, False)
                 Edit_MovieSet(tmpDBMovieSet)
             End If
@@ -5764,7 +5705,6 @@ Public Class frmMain
             End If
 
         ElseIf Master.eSettings.MovieClickScrape AndAlso colName = "HasSet" AndAlso Not bwMovieScraper.IsBusy Then
-            Dim movie As Int32 = CType(dgvMovies.Rows(e.RowIndex).Cells("idMovie").Value, Int32)
             Dim objCell As DataGridViewCell = CType(dgvMovies.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
 
             dgvMovies.ClearSelection()
@@ -5783,7 +5723,6 @@ Public Class frmMain
             colName = "FanartPath" OrElse colName = "LandscapePath" OrElse colName = "NfoPath" OrElse
             colName = "PosterPath" OrElse colName = "ThemePath" OrElse colName = "TrailerPath") AndAlso
             Not bwMovieScraper.IsBusy Then
-            Dim movie As Int32 = CType(dgvMovies.Rows(e.RowIndex).Cells("idMovie").Value, Int32)
             Dim objCell As DataGridViewCell = CType(dgvMovies.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
 
             'EMM not able to scrape subtitles yet.
@@ -6392,7 +6331,6 @@ Public Class frmMain
         ElseIf Master.eSettings.MovieSetClickScrape AndAlso
             (colName = "BannerPath" OrElse colName = "ClearArtPath" OrElse colName = "ClearLogoPath" OrElse colName = "DiscArtPath" OrElse
              colName = "FanartPath" OrElse colName = "LandscapePath" OrElse colName = "NfoPath" OrElse colName = "PosterPath") AndAlso Not bwMovieSetScraper.IsBusy Then
-            Dim movieset As Int32 = CType(dgvMovieSets.Rows(e.RowIndex).Cells("idSet").Value, Int32)
             Dim objCell As DataGridViewCell = CType(dgvMovieSets.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
 
             dgvMovieSets.ClearSelection()
@@ -6837,7 +6775,6 @@ Public Class frmMain
         ElseIf Master.eSettings.TVGeneralClickScrape AndAlso
             (colName = "FanartPath" OrElse colName = "NfoPath" OrElse colName = "PosterPath") AndAlso
             Not bwTVEpisodeScraper.IsBusy Then
-            Dim episode As Int32 = CType(dgvTVEpisodes.Rows(e.RowIndex).Cells("idEpisode").Value, Int32)
             Dim objCell As DataGridViewCell = CType(dgvTVEpisodes.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
 
             'EMM not able to scrape subtitles yet.
@@ -7292,7 +7229,6 @@ Public Class frmMain
             (colName = "BannerPath" OrElse colName = "FanartPath" OrElse
              colName = "LandscapePath" OrElse colName = "PosterPath") AndAlso
             Not bwTVSeasonScraper.IsBusy Then
-            Dim season As Int32 = CType(dgvTVSeasons.Rows(e.RowIndex).Cells("idSeason").Value, Int32)
             Dim objCell As DataGridViewCell = CType(dgvTVSeasons.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
 
             'EMM not able to scrape subtitles yet.
@@ -7665,7 +7601,6 @@ Public Class frmMain
             colName = "ClearLogoPath" OrElse colName = "EFanartsPath" OrElse colName = "FanartPath" OrElse
             colName = "LandscapePath" OrElse colName = "NfoPath" OrElse colName = "PosterPath" OrElse
             colName = "ThemePath") AndAlso Not bwTVScraper.IsBusy Then
-            Dim tvshow As Int32 = CType(dgvTVShows.Rows(e.RowIndex).Cells("idShow").Value, Int32)
             Dim objCell As DataGridViewCell = CType(dgvTVShows.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
 
             'EMM not able to scrape subtitles yet.
@@ -8294,7 +8229,7 @@ Public Class frmMain
                     DBMovieSet = dEditMovieSet.Result
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_MovieSet, Nothing, Nothing, False, DBMovieSet)
                     tslLoading.Text = String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":")
-                    Master.DB.Save_MovieSet(DBMovieSet, False, True, False)
+                    Master.DB.Save_MovieSet(DBMovieSet, False, True)
                     RefreshRow_MovieSet(DBMovieSet.ID)
                 Case DialogResult.Retry
                     Dim ScrapeModifier As New Structures.ScrapeModifiers
@@ -10837,7 +10772,7 @@ Public Class frmMain
                         For Each sRow As DataGridViewRow In dgvMovieSets.SelectedRows
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(Convert.ToInt64(sRow.Cells("idSet").Value))
                             tmpDBElement.Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = strLanguage).Abbreviation
-                            Master.DB.Save_MovieSet(tmpDBElement, True, True, False)
+                            Master.DB.Save_MovieSet(tmpDBElement, True, True)
                             RefreshRow_MovieSet(tmpDBElement.ID)
                         Next
                     Case "tvshow"
@@ -13405,7 +13340,7 @@ Public Class frmMain
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
-                                    Master.DB.Save_MovieSet(tmpDBElement, False, True, False)
+                                    Master.DB.Save_MovieSet(tmpDBElement, False, True)
                                     RefreshRow_MovieSet(ID)
                                 End If
                             Else
@@ -13596,7 +13531,7 @@ Public Class frmMain
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.ClearArt = dlgImgS.Result.ImagesContainer.ClearArt
-                                    Master.DB.Save_MovieSet(tmpDBElement, False, True, False)
+                                    Master.DB.Save_MovieSet(tmpDBElement, False, True)
                                     RefreshRow_MovieSet(ID)
                                 End If
                             Else
@@ -13701,7 +13636,7 @@ Public Class frmMain
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.ClearLogo = dlgImgS.Result.ImagesContainer.ClearLogo
-                                    Master.DB.Save_MovieSet(tmpDBElement, False, True, False)
+                                    Master.DB.Save_MovieSet(tmpDBElement, False, True)
                                     RefreshRow_MovieSet(ID)
                                 End If
                             Else
@@ -13806,7 +13741,7 @@ Public Class frmMain
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.DiscArt = dlgImgS.Result.ImagesContainer.DiscArt
-                                    Master.DB.Save_MovieSet(tmpDBElement, False, True, False)
+                                    Master.DB.Save_MovieSet(tmpDBElement, False, True)
                                     RefreshRow_MovieSet(ID)
                                 End If
                             Else
@@ -13897,7 +13832,7 @@ Public Class frmMain
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
-                                    Master.DB.Save_MovieSet(tmpDBElement, False, True, False)
+                                    Master.DB.Save_MovieSet(tmpDBElement, False, True)
                                     RefreshRow_MovieSet(ID)
                                 End If
                             Else
@@ -14052,7 +13987,7 @@ Public Class frmMain
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
-                                    Master.DB.Save_MovieSet(tmpDBElement, False, True, False)
+                                    Master.DB.Save_MovieSet(tmpDBElement, False, True)
                                     RefreshRow_MovieSet(ID)
                                 End If
                             Else
@@ -14184,7 +14119,7 @@ Public Class frmMain
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
-                                    Master.DB.Save_MovieSet(tmpDBElement, False, True, False)
+                                    Master.DB.Save_MovieSet(tmpDBElement, False, True)
                                     RefreshRow_MovieSet(ID)
                                 End If
                             Else
@@ -15843,7 +15778,7 @@ Public Class frmMain
             For Each sRow As DataGridViewRow In dgvMovieSets.SelectedRows
                 Dim tmpDBMovieSet As Database.DBElement = Master.DB.Load_MovieSet(Convert.ToInt64(sRow.Cells("idSet").Value))
                 tmpDBMovieSet.SortMethod = CType(cmnuMovieSetEditSortMethodMethods.ComboBox.SelectedValue, Enums.SortMethod_MovieSet)
-                Master.DB.Save_MovieSet(tmpDBMovieSet, True, True, False)
+                Master.DB.Save_MovieSet(tmpDBMovieSet, True, True)
                 RefreshRow_MovieSet(tmpDBMovieSet.ID)
             Next
             SQLtransaction.Commit()

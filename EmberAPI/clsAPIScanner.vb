@@ -727,7 +727,7 @@ Public Class Scanner
             DBMovieSet.ListTitle = OldTitle
         End If
 
-        DBMovieSet = Master.DB.Save_MovieSet(DBMovieSet, Batchmode, False, Not OldTitle = DBMovieSet.MovieSet.Title)
+        DBMovieSet = Master.DB.Save_MovieSet(DBMovieSet, Batchmode, False)
     End Sub
 
     Public Function Load_TVEpisode(ByVal DBTVEpisode As Database.DBElement, ByVal isNew As Boolean, ByVal Batchmode As Boolean, ReportProgress As Boolean) As SeasonAndEpisodeItems
