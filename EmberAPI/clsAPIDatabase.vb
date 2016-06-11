@@ -4022,7 +4022,7 @@ Public Class Database
             'write new movie NFOs
             If MoviesInSet.Count > 0 Then
                 For Each tMovie In MoviesInSet
-                    tMovie.DBMovie.Movie.AddSet(_moviesetDB.ID, _moviesetDB.MovieSet.Title, tMovie.Order, _moviesetDB.MovieSet.TMDB)
+                    tMovie.DBMovie.Movie.AddSet(_moviesetDB.ID, _moviesetDB.MovieSet.Title, tMovie.Order, _moviesetDB.MovieSet.TMDB, _moviesetDB.MovieSet.Plot)
                     Master.DB.Save_Movie(tMovie.DBMovie, BatchMode, True, False, False)
                 Next
             End If

@@ -22,6 +22,7 @@ Imports NLog
 Imports System.Xml.Serialization
 Imports System.Text.RegularExpressions
 Imports System.IO
+Imports System.Xml
 
 Namespace MediaContainers
 
@@ -159,7 +160,7 @@ Namespace MediaContainers
         Private _episodeabsolute As Integer
         Private _episodecombined As Double
         Private _episodedvd As Double
-        Private _fileInfo As New MediaContainers.Fileinfo
+        Private _fileInfo As New Fileinfo
         Private _gueststars As New List(Of Person)
         Private _imdb As String
         Private _lastplayed As String
@@ -506,11 +507,11 @@ Namespace MediaContainers
         End Property
 
         <XmlElement("fileinfo")>
-        Public Property FileInfo() As MediaContainers.Fileinfo
+        Public Property FileInfo() As Fileinfo
             Get
                 Return _fileInfo
             End Get
-            Set(ByVal value As MediaContainers.Fileinfo)
+            Set(ByVal value As Fileinfo)
                 _fileInfo = value
             End Set
         End Property
@@ -694,7 +695,7 @@ Namespace MediaContainers
             _episodeabsolute = -1
             _episodecombined = -1
             _episodedvd = -1
-            _fileInfo = New MediaContainers.Fileinfo
+            _fileInfo = New Fileinfo
             _gueststars.Clear()
             _imdb = String.Empty
             _lastplayed = String.Empty
@@ -1014,8 +1015,6 @@ Namespace MediaContainers
         Private _trailer As String
         Private _videosource As String
         Private _votes As String
-        Private _set_x As Object
-        Private _set_y As New SetContainer
         Private _sets As New List(Of SetDetails)
         Private _year As String
 
@@ -1648,39 +1647,32 @@ Namespace MediaContainers
             End Set
         End Property
 
-        <XmlAnyElement("set")>
-        Public Property XSets() As Object
+        <XmlIgnore()>
+        Public ReadOnly Property SetsSpecified() As Boolean
             Get
-                Return Sets
+                Return Sets.Count > 0
+            End Get
+        End Property
+
+        <XmlAnyElement("set")>
+        Public Property Set_Kodi() As Object
+            Get
+                Return CreateSetNode()
             End Get
             Set(ByVal value As Object)
                 AddSet(value)
             End Set
         End Property
 
-        <XmlIgnore()>
-        Public ReadOnly Property XSetsSpecified() As Boolean
-            Get
-                Return _sets.Count > 0
-            End Get
-        End Property
-
-        <XmlElement("sets")>
-        Public Property YSets() As SetContainer
-            Get
-                Return _set_y
-            End Get
-            Set(ByVal value As SetContainer)
-                _set_y = value
-            End Set
-        End Property
-
-        <XmlIgnore()>
-        Public ReadOnly Property YSetsSpecified() As Boolean
-            Get
-                Return _set_y.Sets.Count > 0
-            End Get
-        End Property
+        '<XmlElement("sets")>
+        'Public Property Sets_YAMJ() As SetContainer
+        '    Get
+        '        Return _sets
+        '    End Get
+        '    Set(ByVal value As SetContainer)
+        '        _set_y = value
+        '    End Set
+        'End Property
 
         <XmlElement("fileinfo")>
         Public Property FileInfo() As Fileinfo
@@ -1816,38 +1808,47 @@ Namespace MediaContainers
 #End Region 'Properties
 
 #Region "Methods"
-
+        ''' <summary>
+        ''' converts both versions of moviesets declaration in movie.nfo to a proper Sets object
+        ''' </summary>
+        ''' <remarks>      
+        ''' <set>setname</set>        
+        ''' 
+        ''' <set>
+        '''     <name>setname</name>
+        '''     <overview>plot</overview>
+        ''' </set>       
+        ''' </remarks>
+        ''' <param name="xmlObject"></param>
         Public Sub AddSet(ByVal xmlObject As Object)
             Try
-                If xmlObject IsNot Nothing Then
-                    Dim tSetInfo As New SetDetails
-                    Dim tInfo As Xml.XmlNode() = CType(xmlObject, Xml.XmlNode())
-                    If tInfo.Count > 0 Then
-                        For Each tElement In tInfo
-                            Select Case tElement.Name.ToLower
-                                Case "name"
-                                    tSetInfo.Title = tElement.InnerText
-                                Case "overview"
-                                    tSetInfo.Plot = tElement.InnerText
-                                Case "tmdb", "tmdbcolid"
-                                    tSetInfo.TMDB = tElement.InnerText
-                                Case "#text"
-                                    tSetInfo.Title = tElement.InnerText
-                            End Select
-                        Next
-                        If tSetInfo.TitleSpecified Then
-                            Sets.Add(tSetInfo)
-                        End If
-                    End If
+                If xmlObject IsNot Nothing AndAlso TryCast(xmlObject, XmlElement) IsNot Nothing Then
+                    Dim nSetInfo As New SetDetails
+                    Dim xElement As XmlElement = CType(xmlObject, XmlElement)
+                    For Each xChild In xElement.ChildNodes
+                        Dim xNode = CType(xChild, XmlNode)
+                        Select Case xNode.NodeType
+                            Case XmlNodeType.Element
+                                Select Case xNode.Name
+                                    Case "name"
+                                        nSetInfo.Title = xNode.InnerText
+                                    Case "overview"
+                                        nSetInfo.Plot = xNode.InnerText
+                                    Case "tmdb"
+                                        nSetInfo.TMDB = xNode.InnerText
+                                End Select
+                            Case XmlNodeType.Text
+                                nSetInfo.Title = xNode.InnerText
+                        End Select
+                    Next
+                    If nSetInfo.TitleSpecified Then Sets.Add(nSetInfo)
                 End If
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
-
-            'Sets.Add(New SetDetails With {.ID = SetID, .Title = SetName, .Order = Order, .TMDB = SetTMDBColID})
         End Sub
 
-        Public Sub AddSet(ByVal SetID As Long, ByVal SetName As String, ByVal Order As Integer, ByVal SetTMDBColID As String)
+        Public Sub AddSet(ByVal SetID As Long, ByVal SetName As String, ByVal Order As Integer, ByVal SetTMDBColID As String, ByVal strPlot As String)
             Dim tSet = From bSet As SetDetails In Sets Where bSet.ID = SetID
             Dim iSet = From bset As SetDetails In Sets Where bset.TMDB = SetTMDBColID
 
@@ -1859,7 +1860,7 @@ Namespace MediaContainers
                 Sets.Remove(iSet(0))
             End If
 
-            Sets.Add(New SetDetails With {.ID = SetID, .Title = SetName, .Order = Order, .TMDB = SetTMDBColID})
+            Sets.Add(New SetDetails With {.ID = SetID, .Title = SetName, .Order = Order, .Plot = strPlot, .TMDB = SetTMDBColID})
         End Sub
 
         Public Sub AddTag(ByVal value As String)
@@ -1996,7 +1997,7 @@ Namespace MediaContainers
             _datemodified = String.Empty
             _directors.Clear()
             _fanart = New Fanart
-            _fileInfo = New MediaContainers.Fileinfo
+            _fileInfo = New Fileinfo
             _genres.Clear()
             _language = String.Empty
             _lev = 0
@@ -2009,6 +2010,7 @@ Namespace MediaContainers
             _releaseDate = String.Empty
             _runtime = String.Empty
             _scrapersource = String.Empty
+            _sets.Clear()
             _sorttitle = String.Empty
             _studios.Clear()
             _tagline = String.Empty
@@ -2021,9 +2023,7 @@ Namespace MediaContainers
             _trailer = String.Empty
             _videosource = String.Empty
             _votes = String.Empty
-            _set_x = String.Empty
             _year = String.Empty
-            _set_y = New SetContainer
         End Sub
 
         Public Function CloneDeep() As Object Implements ICloneable.Clone
@@ -2048,6 +2048,74 @@ Namespace MediaContainers
                 End If
             Next
         End Sub
+
+        Public Function CreateSetNode() As XmlDocument
+            If _sets.Count > 0 AndAlso _sets.Item(0).TitleSpecified Then
+                Dim firstSet As SetDetails = _sets.Item(0)
+
+                If Master.eSettings.MovieUseFrodo Then
+                    'creates a set node like:
+                    '<set> 
+                    '  <name>Die Hard Collection</name>
+                    '  <overview>Hardest cop ever!</overview>
+                    '  <tmdb>1570</tmdb>
+                    '</set>
+
+                    Dim XmlDoc As New XmlDocument
+
+                    'Write down the XML declaration
+                    Dim XmlDeclaration As XmlDeclaration = XmlDoc.CreateXmlDeclaration("1.0", "UTF-8", Nothing)
+
+                    'Create the root element
+                    Dim RootNode As XmlElement = XmlDoc.CreateElement("set")
+                    XmlDoc.InsertBefore(XmlDeclaration, XmlDoc.DocumentElement)
+                    XmlDoc.AppendChild(RootNode)
+
+                    'Create a new <name> element and add it to the root node
+                    Dim NodeName As XmlElement = XmlDoc.CreateElement("name")
+                    RootNode.AppendChild(NodeName)
+                    Dim NodeName_Text As XmlText = XmlDoc.CreateTextNode(firstSet.Title)
+                    NodeName.AppendChild(NodeName_Text)
+
+                    If firstSet.PlotSpecified Then
+                        'Create a new <overview> element and add it to the root node
+                        Dim NodeOverview As XmlElement = XmlDoc.CreateElement("overview")
+                        RootNode.AppendChild(NodeOverview)
+                        Dim NodeOverview_Text As XmlText = XmlDoc.CreateTextNode(firstSet.Plot)
+                        NodeOverview.AppendChild(NodeOverview_Text)
+                    End If
+
+                    If firstSet.TMDBSpecified Then
+                        'Create a new <tmdb> element and add it to the root node
+                        Dim NodeTMDB As XmlElement = XmlDoc.CreateElement("tmdb")
+                        RootNode.AppendChild(NodeTMDB)
+                        Dim NodeTMDB_Text As XmlText = XmlDoc.CreateTextNode(firstSet.TMDB)
+                        NodeTMDB.AppendChild(NodeTMDB_Text)
+                    End If
+
+                    Return XmlDoc
+                Else
+                    'creates a set node like:
+                    '<set>Die Hard Collection</set>
+
+                    Dim XmlDoc As New XmlDocument
+
+                    'Write down the XML declaration
+                    Dim XmlDeclaration As XmlDeclaration = XmlDoc.CreateXmlDeclaration("1.0", "UTF-8", Nothing)
+
+                    'Create the root element
+                    Dim RootNode As XmlElement = XmlDoc.CreateElement("set")
+                    XmlDoc.InsertBefore(XmlDeclaration, XmlDoc.DocumentElement)
+                    XmlDoc.AppendChild(RootNode)
+                    Dim RootNode_Text As XmlText = XmlDoc.CreateTextNode(firstSet.Title)
+                    RootNode.AppendChild(RootNode_Text)
+
+                    Return XmlDoc
+                End If
+            Else
+                Return Nothing
+            End If
+        End Function
 
         Public Function CompareTo(ByVal other As Movie) As Integer Implements IComparable(Of Movie).CompareTo
             Dim retVal As Integer = (Lev).CompareTo(other.Lev)

@@ -1314,7 +1314,7 @@ Public Class dlgEditMovieSet
                 'If Not Master.eSettings.MovieYAMJCompatibleSets Then
                 '    tMovie.DBMovie.Movie.AddSet(mSet.Set, 0)
                 'Else
-                tMovie.DBMovie.Movie.AddSet(tmpDBElement.ID, tmpDBElement.MovieSet.Title, tMovie.Order, tmpDBElement.MovieSet.TMDB)
+                tMovie.DBMovie.Movie.AddSet(tmpDBElement.ID, tmpDBElement.MovieSet.Title, tMovie.Order, tmpDBElement.MovieSet.TMDB, tmpDBElement.MovieSet.Plot)
                 'End If
                 Master.DB.Save_Movie(tMovie.DBMovie, True, True, False, False)
             Next
