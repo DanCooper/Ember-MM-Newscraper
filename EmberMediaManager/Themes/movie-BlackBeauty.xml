@@ -62,13 +62,9 @@ fontstyle code 5.
   </images>
    
   <infopanel>
-    
+    <backcolor>#2A2728</backcolor>
     <ipup>500</ipup> <!-- Must be in multiples of 5!! -->
     <ipmid>280</ipmid> <!-- Must be in multiples of 5!! -->
-    
-    <object name="pnlInfoPanel">
-      <backcolor>#2A2728</backcolor>
-    </object>
     
     <object name="lblInfoPanelHeader">
       <width>pnlInfoPanel.Width - 8</width>
@@ -235,7 +231,7 @@ fontstyle code 5.
     </object>
 
     <object name="lblFilePathHeader">
-      <width>lblPlotHeader.Width</width>
+      <width>(lblPlotHeader.Width / 2) - 3</width>
       <height>18</height>
       <left>3</left>
       <top>234</top>
@@ -260,10 +256,44 @@ fontstyle code 5.
       <fontstyle>0</fontstyle>
     </object>
     
-    <object name="btnPlay">
+    <object name="btnFilePlay">
       <width>20</width>
       <height>20</height>
       <left>txtFilePath.Width + 6</left>
+      <top>254</top>
+      <anchor>9</anchor>
+    </object>
+
+    <object name="lblTrailerPathHeader">
+      <width>(lblPlotHeader.Width / 2) - 3</width>
+      <height>18</height>
+      <left>(lblPlotHeader.Width / 2) + 6</left>
+      <top>234</top>
+      <backcolor>FireBrick</backcolor>
+      <forecolor>White</forecolor>
+      <anchor>9</anchor>
+      <font>Arial</font>
+      <fontsize>9</fontsize>
+      <fontstyle>1</fontstyle>
+    </object>
+
+    <object name="txtTrailerPath">
+      <width>lblTrailerPathHeader.Width - 23</width>
+      <height>20</height>
+      <left>lblTrailerPathHeader.Left</left>
+      <top>254</top>
+      <backcolor>#2A2728</backcolor>
+      <forecolor>White</forecolor>
+      <anchor>9</anchor>
+      <font>Arial</font>
+      <fontsize>9</fontsize>
+      <fontstyle>0</fontstyle>
+    </object>
+
+    <object name="btnTrailerPlay">
+      <width>20</width>
+      <height>20</height>
+      <left>txtTrailerPath.Left + txtTrailerPath.Width + 3</left>
       <top>254</top>
       <anchor>9</anchor>
     </object>

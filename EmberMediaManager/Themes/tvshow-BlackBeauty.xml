@@ -179,8 +179,20 @@ or a "32-bit ARGB value"
     <object name="txtFilePath">
       <visible>false</visible>
     </object>
-    
-    <object name="btnPlay">
+
+    <object name="btnFilePlay">
+      <visible>false</visible>
+    </object>
+
+    <object name="lblTrailerPathHeader">
+      <visible>false</visible>
+    </object>
+
+    <object name="txtTrailerPath">
+      <visible>false</visible>
+    </object>
+
+    <object name="btnTrailerPlay">
       <visible>false</visible>
     </object>
 
