@@ -335,7 +335,7 @@ Public Class NFO
             If (Not DBMovie.Movie.TrailerSpecified OrElse Not Master.eSettings.MovieLockTrailer) AndAlso ScrapeOptions.bMainTrailer AndAlso
                 scrapedmovie.TrailerSpecified AndAlso Master.eSettings.MovieScraperTrailer AndAlso Not new_Trailer Then
                 If Master.eSettings.MovieScraperXBMCTrailerFormat AndAlso YouTube.UrlUtils.IsYouTubeURL(scrapedmovie.Trailer) Then
-                    DBMovie.Movie.Trailer = String.Concat("plugin://plugin.video.youtube/?action=play_video&videoid=", YouTube.UrlUtils.GetVideoID(scrapedmovie.Trailer))
+                    DBMovie.Movie.Trailer = StringUtils.ConvertFromYouTubeURLToKodiTrailerFormat(scrapedmovie.Trailer)
                 Else
                     DBMovie.Movie.Trailer = scrapedmovie.Trailer
                 End If
@@ -397,17 +397,7 @@ Public Class NFO
                 DBMovie.ListTitle = tTitle
             End If
         Else
-            If FileUtils.Common.isVideoTS(DBMovie.Filename) Then
-                DBMovie.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).Name)
-            ElseIf FileUtils.Common.isBDRip(DBMovie.Filename) Then
-                DBMovie.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName).Name)
-            Else
-                If DBMovie.Source.UseFolderName AndAlso DBMovie.IsSingle Then
-                    DBMovie.ListTitle = StringUtils.FilterName_Movie(Directory.GetParent(DBMovie.Filename).Name)
-                Else
-                    DBMovie.ListTitle = StringUtils.FilterName_Movie(Path.GetFileNameWithoutExtension(DBMovie.Filename))
-                End If
-            End If
+            DBMovie.ListTitle = StringUtils.FilterTitleFromPath_Movie(DBMovie.Filename, DBMovie.IsSingle, DBMovie.Source.UseFolderName)
         End If
 
         Return DBMovie
@@ -659,8 +649,8 @@ Public Class NFO
             End If
 
             'Rating/Votes
-            If (Not DBTV.TVShow.RatingSpecified OrElse DBTV.TVShow.Rating = "0" OrElse Not Master.eSettings.TVLockShowRating) AndAlso ScrapeOptions.bMainRating AndAlso
-                scrapedshow.RatingSpecified AndAlso Not scrapedshow.Rating = "0" AndAlso Master.eSettings.TVScraperShowRating AndAlso Not new_Rating Then
+            If (Not DBTV.TVShow.RatingSpecified OrElse Not Master.eSettings.TVLockShowRating) AndAlso ScrapeOptions.bMainRating AndAlso
+                scrapedshow.RatingSpecified AndAlso Master.eSettings.TVScraperShowRating AndAlso Not new_Rating Then
                 DBTV.TVShow.Rating = scrapedshow.Rating
                 DBTV.TVShow.Votes = NumUtils.CleanVotes(scrapedshow.Votes)
                 new_Rating = True
@@ -840,12 +830,12 @@ Public Class NFO
                 Dim iEpisode As Integer = -1
                 Dim iSeason As Integer = -1
                 Dim strAiredDate As String = aKnownEpisode.AiredDate
-                If DBTV.Ordering = Enums.Ordering.Absolute Then
+                If DBTV.Ordering = Enums.EpisodeOrdering.Absolute Then
                     iEpisode = aKnownEpisode.EpisodeAbsolute
-                ElseIf DBTV.Ordering = Enums.Ordering.DVD Then
+                ElseIf DBTV.Ordering = Enums.EpisodeOrdering.DVD Then
                     iEpisode = CInt(aKnownEpisode.EpisodeDVD)
                     iSeason = aKnownEpisode.SeasonDVD
-                ElseIf DBTV.Ordering = Enums.Ordering.Standard Then
+                ElseIf DBTV.Ordering = Enums.EpisodeOrdering.Standard Then
                     iEpisode = aKnownEpisode.Episode
                     iSeason = aKnownEpisode.Season
                 End If
@@ -1214,12 +1204,12 @@ Public Class NFO
             Dim iEpisode As Integer = -1
             Dim iSeason As Integer = -1
             Dim strAiredDate As String = KnownEpisodesIndex.Item(0).AiredDate
-            If DBTVEpisode.Ordering = Enums.Ordering.Absolute Then
+            If DBTVEpisode.Ordering = Enums.EpisodeOrdering.Absolute Then
                 iEpisode = KnownEpisodesIndex.Item(0).EpisodeAbsolute
-            ElseIf DBTVEpisode.Ordering = Enums.Ordering.DVD Then
+            ElseIf DBTVEpisode.Ordering = Enums.EpisodeOrdering.DVD Then
                 iEpisode = CInt(KnownEpisodesIndex.Item(0).EpisodeDVD)
                 iSeason = KnownEpisodesIndex.Item(0).SeasonDVD
-            ElseIf DBTVEpisode.Ordering = Enums.Ordering.Standard Then
+            ElseIf DBTVEpisode.Ordering = Enums.EpisodeOrdering.Standard Then
                 iEpisode = KnownEpisodesIndex.Item(0).Episode
                 iSeason = KnownEpisodesIndex.Item(0).Season
             End If
@@ -1287,12 +1277,12 @@ Public Class NFO
 
             'changes a LongLanguage to Alpha2 code
             If mNFO.LanguageSpecified Then
-                Dim Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = mNFO.Language)
+                Dim Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Name = mNFO.Language)
                 If Language IsNot Nothing Then
-                    mNFO.Language = Language.abbreviation
+                    mNFO.Language = Language.Abbreviation
                 Else
                     'check if it's a valid Alpha2 code or remove the information the use the source default language
-                    Dim ShortLanguage = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = mNFO.Language)
+                    Dim ShortLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = mNFO.Language)
                     If ShortLanguage Is Nothing Then
                         mNFO.Language = String.Empty
                     End If
@@ -1335,12 +1325,12 @@ Public Class NFO
 
             'changes a LongLanguage to Alpha2 code
             If mNFO.LanguageSpecified Then
-                Dim Language = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = mNFO.Language)
+                Dim Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Name = mNFO.Language)
                 If Language IsNot Nothing Then
-                    mNFO.Language = Language.abbreviation
+                    mNFO.Language = Language.Abbreviation
                 Else
                     'check if it's a valid Alpha2 code or remove the information the use the source default language
-                    Dim ShortLanguage = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = mNFO.Language)
+                    Dim ShortLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = mNFO.Language)
                     If ShortLanguage Is Nothing Then
                         mNFO.Language = String.Empty
                     End If
@@ -1360,8 +1350,44 @@ Public Class NFO
             Return mNFO
         End If
     End Function
+    ''' <summary>
+    ''' Delete all movie NFOs
+    ''' </summary>
+    ''' <param name="DBMovie"></param>
+    ''' <remarks></remarks>
+    Public Shared Sub DeleteNFO_Movie(ByVal DBMovie As Database.DBElement, ByVal ForceFileCleanup As Boolean)
+        If Not DBMovie.FilenameSpecified Then Return
 
-    Public Shared Function FIToString(ByVal miFI As MediaInfo.Fileinfo, ByVal isTV As Boolean) As String
+        Try
+            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainNFO, ForceFileCleanup)
+                If File.Exists(a) Then
+                    File.Delete(a)
+                End If
+            Next
+        Catch ex As Exception
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovie.Filename & ">")
+        End Try
+    End Sub
+    ''' <summary>
+    ''' Delete all movie NFOs
+    ''' </summary>
+    ''' <param name="DBMovieSet"></param>
+    ''' <remarks></remarks>
+    Public Shared Sub DeleteNFO_MovieSet(ByVal DBMovieSet As Database.DBElement, ByVal ForceFileCleanup As Boolean, Optional bForceOldTitle As Boolean = False)
+        If Not DBMovieSet.MovieSet.TitleSpecified Then Return
+
+        Try
+            For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet, Enums.ModifierType.MainNFO, bForceOldTitle)
+                If File.Exists(a) Then
+                    File.Delete(a)
+                End If
+            Next
+        Catch ex As Exception
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovieSet.Filename & ">")
+        End Try
+    End Sub
+
+    Public Shared Function FIToString(ByVal miFI As MediaContainers.Fileinfo, ByVal isTV As Boolean) As String
         '//
         ' Convert Fileinfo into a string to be displayed in the GUI
         '\\
@@ -1378,7 +1404,7 @@ Public Class NFO
                     If miFI.StreamDetails.VideoSpecified Then strOutput.AppendFormat("{0}: {1}{2}", Master.eLang.GetString(595, "Video Streams"), miFI.StreamDetails.Video.Count.ToString, Environment.NewLine)
                     If miFI.StreamDetails.AudioSpecified Then strOutput.AppendFormat("{0}: {1}{2}", Master.eLang.GetString(596, "Audio Streams"), miFI.StreamDetails.Audio.Count.ToString, Environment.NewLine)
                     If miFI.StreamDetails.SubtitleSpecified Then strOutput.AppendFormat("{0}: {1}{2}", Master.eLang.GetString(597, "Subtitle  Streams"), miFI.StreamDetails.Subtitle.Count.ToString, Environment.NewLine)
-                    For Each miVideo As MediaInfo.Video In miFI.StreamDetails.Video
+                    For Each miVideo As MediaContainers.Video In miFI.StreamDetails.Video
                         strOutput.AppendFormat("{0}{1} {2}{0}", Environment.NewLine, Master.eLang.GetString(617, "Video Stream"), iVS)
                         If miVideo.WidthSpecified AndAlso miVideo.HeightSpecified Then strOutput.AppendFormat("- {0}{1}", String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), miVideo.Width, miVideo.Height), Environment.NewLine)
                         If miVideo.AspectSpecified Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(614, "Aspect Ratio"), miVideo.Aspect, Environment.NewLine)
@@ -1397,7 +1423,7 @@ Public Class NFO
 
                     strOutput.Append(Environment.NewLine)
 
-                    For Each miAudio As MediaInfo.Audio In miFI.StreamDetails.Audio
+                    For Each miAudio As MediaContainers.Audio In miFI.StreamDetails.Audio
                         'audio
                         strOutput.AppendFormat("{0}{1} {2}{0}", Environment.NewLine, Master.eLang.GetString(618, "Audio Stream"), iAS.ToString)
                         If miAudio.CodecSpecified Then strOutput.AppendFormat("- {0}: {1}{2}", Master.eLang.GetString(604, "Codec"), miAudio.Codec, Environment.NewLine)
@@ -1409,7 +1435,7 @@ Public Class NFO
 
                     strOutput.Append(Environment.NewLine)
 
-                    For Each miSub As MediaInfo.Subtitle In miFI.StreamDetails.Subtitle
+                    For Each miSub As MediaContainers.Subtitle In miFI.StreamDetails.Subtitle
                         'subtitles
                         strOutput.AppendFormat("{0}{1} {2}{0}", Environment.NewLine, Master.eLang.GetString(619, "Subtitle Stream"), iSS.ToString)
                         If miSub.LongLanguageSpecified Then strOutput.AppendFormat("- {0}: {1}", Master.eLang.GetString(610, "Language"), miSub.LongLanguage)
@@ -1443,14 +1469,14 @@ Public Class NFO
     ''' 
     ''' 2014/08/12 cocotus - Should work better: If there's more than one audiostream which highest channelcount, the one with highest bitrate or the DTSHD stream will be returned
     ''' </remarks>
-    Public Shared Function GetBestAudio(ByVal miFIA As MediaInfo.Fileinfo, ByVal ForTV As Boolean) As MediaInfo.Audio
+    Public Shared Function GetBestAudio(ByVal miFIA As MediaContainers.Fileinfo, ByVal ForTV As Boolean) As MediaContainers.Audio
         '//
         ' Get the highest values from file info
         '\\
 
-        Dim fiaOut As New MediaInfo.Audio
+        Dim fiaOut As New MediaContainers.Audio
         Try
-            Dim cmiFIA As New MediaInfo.Fileinfo
+            Dim cmiFIA As New MediaContainers.Fileinfo
 
             Dim getPrefLanguage As Boolean = False
             Dim hasPrefLanguage As Boolean = False
@@ -1479,7 +1505,7 @@ Public Class NFO
             End If
 
             If getPrefLanguage AndAlso miFIA.StreamDetails.Audio.Where(Function(f) f.LongLanguage.ToLower = prefLanguage).Count > 0 Then
-                For Each Stream As MediaInfo.Audio In miFIA.StreamDetails.Audio
+                For Each Stream As MediaContainers.Audio In miFIA.StreamDetails.Audio
                     If Stream.LongLanguage.ToLower = prefLanguage Then
                         cmiFIA.StreamDetails.Audio.Add(Stream)
                     End If
@@ -1488,9 +1514,9 @@ Public Class NFO
                 cmiFIA.StreamDetails.Audio.AddRange(miFIA.StreamDetails.Audio)
             End If
 
-            For Each miAudio As MediaInfo.Audio In cmiFIA.StreamDetails.Audio
+            For Each miAudio As MediaContainers.Audio In cmiFIA.StreamDetails.Audio
                 If Not String.IsNullOrEmpty(miAudio.Channels) Then
-                    sinChans = NumUtils.ConvertToSingle(EmberAPI.MediaInfo.FormatAudioChannel(miAudio.Channels))
+                    sinChans = NumUtils.ConvertToSingle(MediaInfo.FormatAudioChannel(miAudio.Channels))
                     sinBitrate = 0
                     If Integer.TryParse(miAudio.Bitrate, 0) Then
                         sinBitrate = CInt(miAudio.Bitrate)
@@ -1521,12 +1547,12 @@ Public Class NFO
         Return fiaOut
     End Function
 
-    Public Shared Function GetBestVideo(ByVal miFIV As MediaInfo.Fileinfo) As MediaInfo.Video
+    Public Shared Function GetBestVideo(ByVal miFIV As MediaContainers.Fileinfo) As MediaContainers.Video
         '//
         ' Get the highest values from file info
         '\\
 
-        Dim fivOut As New MediaInfo.Video
+        Dim fivOut As New MediaContainers.Video
         Try
             Dim iWidest As Integer = 0
             Dim iWidth As Integer = 0
@@ -1546,7 +1572,7 @@ Public Class NFO
             fivOut.Filesize = 0
             'cocotus end
 
-            For Each miVideo As MediaInfo.Video In miFIV.StreamDetails.Video
+            For Each miVideo As MediaContainers.Video In miFIV.StreamDetails.Video
                 If Not String.IsNullOrEmpty(miVideo.Width) Then
                     If Integer.TryParse(miVideo.Width, 0) Then
                         iWidth = Convert.ToInt32(miVideo.Width)
@@ -1588,7 +1614,7 @@ Public Class NFO
         Return fivOut
     End Function
 
-    Public Shared Function GetDimensionsFromVideo(ByVal fiRes As MediaInfo.Video) As String
+    Public Shared Function GetDimensionsFromVideo(ByVal fiRes As MediaContainers.Video) As String
         '//
         ' Get the dimension values of the video from the information provided by MediaInfo.dll
         '\\
@@ -1624,7 +1650,7 @@ Public Class NFO
             Catch
             End Try
         Else
-            Dim fName As String = StringUtils.CleanStackingMarkers(Path.GetFileNameWithoutExtension(sPath)).ToLower
+            Dim fName As String = Path.GetFileNameWithoutExtension(FileUtils.Common.RemoveStackingMarkers(sPath)).ToLower
             Dim oName As String = Path.GetFileNameWithoutExtension(sPath)
             fName = If(fName.EndsWith("*"), fName, String.Concat(fName, "*"))
             oName = If(oName.EndsWith("*"), oName, String.Concat(oName, "*"))
@@ -1684,7 +1710,7 @@ Public Class NFO
     ''' </summary>
     ''' <param name="fiRes"></param>
     ''' <returns></returns>
-    Public Shared Function GetResFromDimensions(ByVal fiRes As MediaInfo.Video) As String
+    Public Shared Function GetResFromDimensions(ByVal fiRes As MediaContainers.Video) As String
         Dim resOut As String = String.Empty
         Try
             If Not String.IsNullOrEmpty(fiRes.Width) AndAlso Not String.IsNullOrEmpty(fiRes.Height) AndAlso Not String.IsNullOrEmpty(fiRes.Aspect) Then
@@ -2230,8 +2256,7 @@ Public Class NFO
         End Try
     End Sub
 
-    Public Shared Sub SaveToNFO_Movie(ByRef tDBElement As Database.DBElement)
-
+    Public Shared Sub SaveToNFO_Movie(ByRef tDBElement As Database.DBElement, ByVal ForceFileCleanup As Boolean)
         Try
             Try
                 Dim params As New List(Of Object)(New Object() {tDBElement})
@@ -2243,6 +2268,9 @@ Public Class NFO
             End Try
 
             If tDBElement.FilenameSpecified Then
+                'cleanup old NFOs if needed
+                If ForceFileCleanup Then DeleteNFO_Movie(tDBElement, ForceFileCleanup)
+
                 'Create a clone of MediaContainer to prevent changes on database data that only needed in NFO
                 Dim tMovie As MediaContainers.Movie = CType(tDBElement.Movie.CloneDeep, MediaContainers.Movie)
 
@@ -2296,7 +2324,6 @@ Public Class NFO
     End Sub
 
     Public Shared Sub SaveToNFO_MovieSet(ByRef tDBElement As Database.DBElement)
-
         Try
             'Try
             '    Dim params As New List(Of Object)(New Object() {moviesetToSave})
@@ -2307,6 +2334,8 @@ Public Class NFO
             'End Try
 
             If Not String.IsNullOrEmpty(tDBElement.MovieSet.Title) Then
+                If tDBElement.MovieSet.TitleHasChanged Then DeleteNFO_MovieSet(tDBElement, False, True)
+
                 Dim xmlSer As New XmlSerializer(GetType(MediaContainers.MovieSet))
                 Dim doesExist As Boolean = False
                 Dim fAtt As New FileAttributes
@@ -2342,93 +2371,92 @@ Public Class NFO
     End Sub
 
     Public Shared Sub SaveToNFO_TVEpisode(ByRef tDBElement As Database.DBElement)
-
         Try
+            If tDBElement.FilenameSpecified Then
+                'Create a clone of MediaContainer to prevent changes on database data that only needed in NFO
+                Dim tTVEpisode As MediaContainers.EpisodeDetails = CType(tDBElement.TVEpisode.CloneDeep, MediaContainers.EpisodeDetails)
 
-            If Not String.IsNullOrEmpty(tDBElement.Filename) Then
                 Dim xmlSer As New XmlSerializer(GetType(MediaContainers.EpisodeDetails))
 
-                Dim tPath As String = String.Empty
                 Dim doesExist As Boolean = False
                 Dim fAtt As New FileAttributes
                 Dim fAttWritable As Boolean = True
                 Dim EpList As New List(Of MediaContainers.EpisodeDetails)
                 Dim sBuilder As New StringBuilder
 
-                Dim tmpName As String = Path.GetFileNameWithoutExtension(tDBElement.Filename)
-                tPath = String.Concat(Path.Combine(Directory.GetParent(tDBElement.Filename).FullName, tmpName), ".nfo")
-
-                If Not Master.eSettings.GeneralOverwriteNfo Then
-                    RenameNonConfNFO_TVEpisode(tPath, False)
-                End If
-
-                doesExist = File.Exists(tPath)
-                If Not doesExist OrElse (Not CBool(File.GetAttributes(tPath) And FileAttributes.ReadOnly)) Then
-
-                    If doesExist Then
-                        fAtt = File.GetAttributes(tPath)
-                        Try
-                            File.SetAttributes(tPath, FileAttributes.Normal)
-                        Catch ex As Exception
-                            fAttWritable = False
-                        End Try
+                For Each a In FileUtils.GetFilenameList.TVEpisode(tDBElement, Enums.ModifierType.EpisodeNFO)
+                    If Not Master.eSettings.GeneralOverwriteNfo Then
+                        RenameNonConfNFO_TVEpisode(a, False)
                     End If
 
-                    Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                        SQLCommand.CommandText = "SELECT idEpisode FROM episode WHERE idEpisode <> (?) AND idFile IN (SELECT idFile FROM files WHERE strFilename = (?)) ORDER BY Episode"
-                        Dim parID As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parID", DbType.Int64, 0, "idEpisode")
-                        Dim parFilename As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parFilename", DbType.String, 0, "strFilename")
+                    doesExist = File.Exists(a)
+                    If Not doesExist OrElse (Not CBool(File.GetAttributes(a) And FileAttributes.ReadOnly)) Then
 
-                        parID.Value = tDBElement.ID
-                        parFilename.Value = tDBElement.Filename
-
-                        Using SQLreader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
-                            While SQLreader.Read
-                                EpList.Add(Master.DB.Load_TVEpisode(Convert.ToInt64(SQLreader("idEpisode")), False).TVEpisode)
-                            End While
-                        End Using
-
-                        EpList.Add(tDBElement.TVEpisode)
-
-                        Dim NS As New XmlSerializerNamespaces
-                        NS.Add(String.Empty, String.Empty)
-
-                        For Each tvEp As MediaContainers.EpisodeDetails In EpList.OrderBy(Function(s) s.Season)
-
-                            'digit grouping symbol for Votes count
-                            If Master.eSettings.GeneralDigitGrpSymbolVotes Then
-                                If tvEp.VotesSpecified Then
-                                    Dim vote As String = Double.Parse(tvEp.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
-                                    If vote IsNot Nothing Then tvEp.Votes = vote
-                                End If
-                            End If
-
-                            'removing <displayepisode> and <displayseason> if disabled
-                            If Not Master.eSettings.TVScraperUseDisplaySeasonEpisode Then
-                                tvEp.DisplayEpisode = -1
-                                tvEp.DisplaySeason = -1
-                            End If
-
-                            Using xmlSW As New Utf8StringWriter
-                                xmlSer.Serialize(xmlSW, tvEp, NS)
-                                If sBuilder.Length > 0 Then
-                                    sBuilder.Append(Environment.NewLine)
-                                    xmlSW.GetStringBuilder.Remove(0, xmlSW.GetStringBuilder.ToString.IndexOf(Environment.NewLine) + 1)
-                                End If
-                                sBuilder.Append(xmlSW.ToString)
-                            End Using
-                        Next
-
-                        tDBElement.NfoPath = tPath
-
-                        If sBuilder.Length > 0 Then
-                            Using fSW As New StreamWriter(tPath)
-                                fSW.Write(sBuilder.ToString)
-                            End Using
+                        If doesExist Then
+                            fAtt = File.GetAttributes(a)
+                            Try
+                                File.SetAttributes(a, FileAttributes.Normal)
+                            Catch ex As Exception
+                                fAttWritable = False
+                            End Try
                         End If
-                    End Using
-                    If doesExist And fAttWritable Then File.SetAttributes(tPath, fAtt)
-                End If
+
+                        Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                            SQLCommand.CommandText = "SELECT idEpisode FROM episode WHERE idEpisode <> (?) AND idFile IN (SELECT idFile FROM files WHERE strFilename = (?)) ORDER BY Episode"
+                            Dim parID As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parID", DbType.Int64, 0, "idEpisode")
+                            Dim parFilename As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parFilename", DbType.String, 0, "strFilename")
+
+                            parID.Value = tDBElement.ID
+                            parFilename.Value = tDBElement.Filename
+
+                            Using SQLreader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
+                                While SQLreader.Read
+                                    EpList.Add(Master.DB.Load_TVEpisode(Convert.ToInt64(SQLreader("idEpisode")), False).TVEpisode)
+                                End While
+                            End Using
+
+                            EpList.Add(tTVEpisode)
+
+                            Dim NS As New XmlSerializerNamespaces
+                            NS.Add(String.Empty, String.Empty)
+
+                            For Each tvEp As MediaContainers.EpisodeDetails In EpList.OrderBy(Function(s) s.Season).OrderBy(Function(e) e.Episode)
+
+                                'digit grouping symbol for Votes count
+                                If Master.eSettings.GeneralDigitGrpSymbolVotes Then
+                                    If tvEp.VotesSpecified Then
+                                        Dim vote As String = Double.Parse(tvEp.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
+                                        If vote IsNot Nothing Then tvEp.Votes = vote
+                                    End If
+                                End If
+
+                                'removing <displayepisode> and <displayseason> if disabled
+                                If Not Master.eSettings.TVScraperUseDisplaySeasonEpisode Then
+                                    tvEp.DisplayEpisode = -1
+                                    tvEp.DisplaySeason = -1
+                                End If
+
+                                Using xmlSW As New Utf8StringWriter
+                                    xmlSer.Serialize(xmlSW, tvEp, NS)
+                                    If sBuilder.Length > 0 Then
+                                        sBuilder.Append(Environment.NewLine)
+                                        xmlSW.GetStringBuilder.Remove(0, xmlSW.GetStringBuilder.ToString.IndexOf(Environment.NewLine) + 1)
+                                    End If
+                                    sBuilder.Append(xmlSW.ToString)
+                                End Using
+                            Next
+
+                            tDBElement.NfoPath = a
+
+                            If sBuilder.Length > 0 Then
+                                Using fSW As New StreamWriter(a)
+                                    fSW.Write(sBuilder.ToString)
+                                End Using
+                            End If
+                        End Using
+                        If doesExist And fAttWritable Then File.SetAttributes(a, fAtt)
+                    End If
+                Next
             End If
 
         Catch ex As Exception
@@ -2437,7 +2465,6 @@ Public Class NFO
     End Sub
 
     Public Shared Sub SaveToNFO_TVShow(ByRef tDBElement As Database.DBElement)
-
         Try
             Dim params As New List(Of Object)(New Object() {tDBElement})
             Dim doContinue As Boolean = True

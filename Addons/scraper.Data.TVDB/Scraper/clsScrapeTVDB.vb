@@ -179,20 +179,6 @@ Namespace TVDBs
             Dim Result As TVDB.Model.SeriesDetails = Await _TVDBApi.GetFullSeriesById(tvdbID, _SpecialSettings.Language, _TVDBMirror)
             Return Result
         End Function
-
-        Public Shared Function GetLanguages(ByVal sAPIKey As String) As clsXMLTVDBLanguages
-            Dim sHTTP As New HTTP
-            Dim aTVDBLang As New clsXMLTVDBLanguages
-
-            Dim apiXML As String = sHTTP.DownloadData(String.Format("http://thetvdb.com/api/{0}/languages.xml", sAPIKey))
-            sHTTP = Nothing
-            Using reader As StringReader = New StringReader(apiXML)
-                Dim xTVDBLang As New XmlSerializer(aTVDBLang.GetType)
-                aTVDBLang = CType(xTVDBLang.Deserialize(reader), clsXMLTVDBLanguages)
-            End Using
-
-            Return aTVDBLang
-        End Function
         ''' <summary>
         ''' 
         ''' </summary>
@@ -205,10 +191,19 @@ Namespace TVDBs
             If String.IsNullOrEmpty(strID) OrElse strID.Length < 2 Then Return Nothing
 
             Dim nTVShow As New MediaContainers.TVShow
+            Dim strTVDBID As String = String.Empty
 
             If bwTVDB.CancellationPending Then Return Nothing
 
-            Dim APIResult As Task(Of TVDB.Model.SeriesDetails) = Task.Run(Function() GetFullSeriesById(CInt(strID)))
+            If strID.StartsWith("tt") Then
+                strTVDBID = GetTVDBbyIMDB(strID)
+            Else
+                strTVDBID = strID
+            End If
+
+            If String.IsNullOrEmpty(strTVDBID) Then Return Nothing
+
+            Dim APIResult As Task(Of TVDB.Model.SeriesDetails) = Task.Run(Function() GetFullSeriesById(CInt(strTVDBID)))
             If APIResult Is Nothing OrElse APIResult.Result Is Nothing Then
                 Return Nothing
             End If

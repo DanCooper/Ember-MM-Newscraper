@@ -29,15 +29,16 @@ Public Class APIXML
 #Region "Fields"
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Public Shared lFlags As New List(Of Flag)
+    Public Shared CertLanguagesXML As New clsXMLCertLanguages
+    Public Shared FilterXML As New clsXMLFilter
+    Public Shared GenreXML As New clsXMLGenres
+    Public Shared RatingXML As New clsXMLRatings
+    Public Shared ScraperLanguagesXML As New clsXMLScraperLanguages
+    Public Shared SourceList As New List(Of String)(New String() {"bluray", "hddvd", "hdtv", "dvd", "sdtv", "vhs"})
     Public Shared alGenres As New List(Of String)
     Public Shared dLanguages As New Dictionary(Of String, String)
     Public Shared dStudios As New Dictionary(Of String, String)
-    Public Shared GenreXML As New clsXMLGenres
-    Public Shared CertLanguagesXML As New clsXMLCertLanguages
-    Public Shared RatingXML As New clsXMLRatings
-    Public Shared SourceList As New List(Of String)(New String() {"bluray", "hddvd", "hdtv", "dvd", "sdtv", "vhs"})
-    Public Shared FilterXML As New clsXMLFilter
+    Public Shared lFlags As New List(Of Flag)
 
 #End Region 'Fields
 
@@ -160,6 +161,23 @@ Public Class APIXML
                 End Try
             End If
 
+            Dim slPath As String = Path.Combine(Master.SettingsPath, "Core.ScraperLanguages.xml")
+            If File.Exists(slPath) Then
+                objStreamReader = New StreamReader(slPath)
+                Dim xLang As New XmlSerializer(ScraperLanguagesXML.GetType)
+
+                ScraperLanguagesXML = CType(xLang.Deserialize(objStreamReader), clsXMLScraperLanguages)
+                objStreamReader.Close()
+            Else
+                Dim slPathD As String = FileUtils.Common.ReturnSettingsFile("Defaults", "Core.ScraperLanguages.xml")
+                objStreamReader = New StreamReader(slPathD)
+                Dim xLang As New XmlSerializer(ScraperLanguagesXML.GetType)
+
+                ScraperLanguagesXML = CType(xLang.Deserialize(objStreamReader), clsXMLScraperLanguages)
+                objStreamReader.Close()
+                ScraperLanguagesXML.Save()
+            End If
+
             Dim filterPath As String = Path.Combine(Master.SettingsPath, "Queries.xml")
             If File.Exists(filterPath) Then
                 objStreamReader = New StreamReader(filterPath)
@@ -186,10 +204,10 @@ Public Class APIXML
         End Try
     End Sub
 
-    Public Shared Function GetAVImages(ByVal fiAV As MediaInfo.Fileinfo, ByVal fName As String, ByVal ForTV As Boolean, ByVal videoSource As String) As Image()
+    Public Shared Function GetAVImages(ByVal fiAV As MediaContainers.Fileinfo, ByVal fName As String, ByVal ForTV As Boolean, ByVal videoSource As String) As Image()
         Dim iReturn(18) As Image
-        Dim tVideo As MediaInfo.Video = NFO.GetBestVideo(fiAV)
-        Dim tAudio As MediaInfo.Audio = NFO.GetBestAudio(fiAV, ForTV)
+        Dim tVideo As MediaContainers.Video = NFO.GetBestVideo(fiAV)
+        Dim tAudio As MediaContainers.Audio = NFO.GetBestAudio(fiAV, ForTV)
 
         If lFlags.Count > 0 OrElse dLanguages.Count > 0 Then
             Try

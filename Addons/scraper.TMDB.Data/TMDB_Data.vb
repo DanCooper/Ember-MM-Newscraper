@@ -537,10 +537,6 @@ Public Class TMDB_Data
         End If
     End Sub
 
-    Public Function GetLangs(ByRef Langs As clsXMLTVDBLanguages) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_TV.GetLanguages
-        Return New Interfaces.ModuleResult With {.breakChain = False}
-    End Function
-
     Function GetMovieStudio(ByRef DBMovie As Database.DBElement, ByRef sStudio As List(Of String)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.GetMovieStudio
         If (DBMovie.Movie Is Nothing OrElse (String.IsNullOrEmpty(DBMovie.Movie.IMDBID) AndAlso String.IsNullOrEmpty(DBMovie.Movie.TMDBID))) Then
             logger.Error("Attempting to get studio for undefined movie")
@@ -601,7 +597,7 @@ Public Class TMDB_Data
         LoadSettings_Movie()
         _SpecialSettings_Movie.PrefLanguage = oDBElement.Language
 
-        Dim nMovie As New MediaContainers.Movie
+        Dim nMovie As MediaContainers.Movie = Nothing
         Dim _scraper As New TMDB.Scraper(_SpecialSettings_Movie)
 
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions_Movie)
@@ -632,6 +628,8 @@ Public Class TMDB_Data
                     logger.Trace("[TMDB_Data] [Scraper_Movie] [Abort] No search result found")
                     Return New Interfaces.ModuleResult_Data_Movie With {.Result = Nothing}
             End Select
+        Else
+            Return New Interfaces.ModuleResult_Data_Movie With {.Result = nMovie}
         End If
 
         If ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto Then
@@ -659,7 +657,7 @@ Public Class TMDB_Data
         LoadSettings_MovieSet()
         _SpecialSettings_MovieSet.PrefLanguage = oDBElement.Language
 
-        Dim nMovieSet As New MediaContainers.MovieSet
+        Dim nMovieSet As MediaContainers.MovieSet = Nothing
         Dim _scraper As New TMDB.Scraper(_SpecialSettings_MovieSet)
 
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions_MovieSet)
@@ -687,6 +685,8 @@ Public Class TMDB_Data
                     logger.Trace(String.Format("[TMDB_Data] [Scraper_MovieSet] [Abort] No search result found"))
                     Return New Interfaces.ModuleResult_Data_MovieSet With {.Result = Nothing}
             End Select
+        Else
+            Return New Interfaces.ModuleResult_Data_MovieSet With {.Result = nMovieSet}
         End If
 
         If ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto Then
@@ -720,7 +720,7 @@ Public Class TMDB_Data
         LoadSettings_TV()
         _SpecialSettings_TV.PrefLanguage = oDBElement.Language
 
-        Dim nTVShow As New MediaContainers.TVShow
+        Dim nTVShow As MediaContainers.TVShow = Nothing
         Dim _scraper As New TMDB.Scraper(_SpecialSettings_TV)
 
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions_TV)
@@ -756,6 +756,8 @@ Public Class TMDB_Data
                     logger.Trace(String.Format("[TMDB_Data] [Scraper_TV] [Abort] No search result found"))
                     Return New Interfaces.ModuleResult_Data_TVShow With {.Result = Nothing}
             End Select
+        Else
+            Return New Interfaces.ModuleResult_Data_TVShow With {.Result = nTVShow}
         End If
 
         If ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto Then

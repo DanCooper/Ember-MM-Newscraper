@@ -27,7 +27,7 @@ Public Class dlgSourceTVShow
 
 #Region "Fields"
 
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     Private currNameText As String = String.Empty
     Private currPathText As String = String.Empty
@@ -49,21 +49,22 @@ Public Class dlgSourceTVShow
         StartPosition = FormStartPosition.Manual
     End Sub
 
-    Public Overloads Function ShowDialog(ByVal id As Integer) As Windows.Forms.DialogResult
+    Public Overloads Function ShowDialog(ByVal id As Integer) As DialogResult
         _id = id
         btnBrowse.Enabled = False
+        chkSingle.Enabled = False
         txtSourcePath.Enabled = False
 
         Return ShowDialog()
     End Function
 
-    Public Overloads Function ShowDialog(ByVal strSearchPath As String) As Windows.Forms.DialogResult
+    Public Overloads Function ShowDialog(ByVal strSearchPath As String) As DialogResult
         tmppath = strSearchPath
 
         Return ShowDialog()
     End Function
 
-    Public Overloads Function ShowDialog(ByVal strSearchPath As String, ByVal strFolderPath As String) As Windows.Forms.DialogResult
+    Public Overloads Function ShowDialog(ByVal strSearchPath As String, ByVal strFolderPath As String) As DialogResult
         tmppath = strSearchPath
         txtSourcePath.Text = strFolderPath
 
@@ -71,26 +72,22 @@ Public Class dlgSourceTVShow
     End Function
 
     Private Sub btnBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowse.Click
-        Try
-            With fbdBrowse
-                If Not String.IsNullOrEmpty(txtSourcePath.Text) Then
-                    .SelectedPath = txtSourcePath.Text
-                Else
-                    .SelectedPath = tmppath
+        With fbdBrowse
+            If Not String.IsNullOrEmpty(txtSourcePath.Text) Then
+                .SelectedPath = txtSourcePath.Text
+            Else
+                .SelectedPath = tmppath
+            End If
+            If .ShowDialog = DialogResult.OK Then
+                If Not String.IsNullOrEmpty(.SelectedPath) Then
+                    txtSourcePath.Text = .SelectedPath
                 End If
-                If .ShowDialog = Windows.Forms.DialogResult.OK Then
-                    If Not String.IsNullOrEmpty(.SelectedPath) Then
-                        txtSourcePath.Text = .SelectedPath
-                    End If
-                End If
-            End With
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
+            End If
+        End With
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-        DialogResult = System.Windows.Forms.DialogResult.Cancel
+        DialogResult = DialogResult.Cancel
         Close()
     End Sub
 
@@ -144,7 +141,7 @@ Public Class dlgSourceTVShow
         End If
     End Sub
 
-    Private Sub dlgMovieSource_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Private Sub dlgSourceTVShow_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         SetUp()
 
         If Not _id = -1 Then
@@ -152,24 +149,45 @@ Public Class dlgSourceTVShow
             If s IsNot Nothing Then
                 autoName = False
                 If cbSourceLanguage.Items.Count > 0 Then
-                    cbSourceLanguage.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = s.Language).name
+                    Dim tLanguage As languageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = s.Language)
+                    If tLanguage IsNot Nothing Then
+                        cbSourceLanguage.Text = tLanguage.Description
+                    Else
+                        tLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(s.Language))
+                        If tLanguage IsNot Nothing Then
+                            cbSourceLanguage.Text = tLanguage.Description
+                        Else
+                            cbSourceLanguage.Text = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = "en-US").Description
+                        End If
+                    End If
                 End If
                 cbSourceOrdering.SelectedIndex = s.Ordering
                 cbSourceEpisodeSorting.SelectedIndex = s.EpisodeSorting
                 chkExclude.Checked = s.Exclude
+                chkSingle.Checked = s.IsSingle
                 txtSourceName.Text = s.Name
                 txtSourcePath.Text = s.Path
             End If
         Else
             If cbSourceLanguage.Items.Count > 0 Then
-                cbSourceLanguage.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.TVGeneralLanguage).name
+                Dim tLanguage As languageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = Master.eSettings.TVGeneralLanguage)
+                If tLanguage IsNot Nothing Then
+                    cbSourceLanguage.Text = tLanguage.Description
+                Else
+                    tLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(Master.eSettings.TVGeneralLanguage))
+                    If tLanguage IsNot Nothing Then
+                        cbSourceLanguage.Text = tLanguage.Description
+                    Else
+                        cbSourceLanguage.Text = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = "en-US").Description
+                    End If
+                End If
             End If
             cbSourceEpisodeSorting.SelectedIndex = Enums.EpisodeSorting.Episode
-            cbSourceOrdering.SelectedIndex = Enums.Ordering.Standard
+            cbSourceOrdering.SelectedIndex = Enums.EpisodeOrdering.Standard
         End If
     End Sub
 
-    Private Sub dlgTVSource_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
+    Private Sub dlgSourceTVShow_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
         Activate()
         txtSourcePath.Focus()
     End Sub
@@ -179,9 +197,9 @@ Public Class dlgSourceTVShow
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                 If Not _id = -1 Then
-                    SQLcommand.CommandText = String.Concat("UPDATE tvshowsource SET strName = (?), strPath = (?), strLanguage = (?), iOrdering = (?), bExclude = (?), iEpisodeSorting = (?) WHERE idSource =", _id, ";")
+                    SQLcommand.CommandText = String.Concat("UPDATE tvshowsource SET strName = (?), strPath = (?), strLanguage = (?), iOrdering = (?), bExclude = (?), iEpisodeSorting = (?) , bSingle = (?) WHERE idSource =", _id, ";")
                 Else
-                    SQLcommand.CommandText = "INSERT OR REPLACE INTO tvshowsource (strName, strPath, strLanguage, iOrdering, bExclude, iEpisodeSorting) VALUES (?,?,?,?,?,?);"
+                    SQLcommand.CommandText = "INSERT OR REPLACE INTO tvshowsource (strName, strPath, strLanguage, iOrdering, bExclude, iEpisodeSorting, bSingle) VALUES (?,?,?,?,?,?,?);"
                 End If
                 Dim parName As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parName", DbType.String, 0, "strName")
                 Dim parPath As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parPath", DbType.String, 0, "strPath")
@@ -189,18 +207,20 @@ Public Class dlgSourceTVShow
                 Dim parOrdering As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parOrdering", DbType.Int16, 0, "iOrdering")
                 Dim parExclude As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parExclude", DbType.Boolean, 0, "bExclude")
                 Dim parEpisodeSorting As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parEpisodeSorting", DbType.Int16, 0, "iEpisodeSorting")
+                Dim parSingle As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSingle", DbType.Boolean, 0, "bSingle")
                 parName.Value = txtSourceName.Text.Trim
                 parPath.Value = Regex.Replace(txtSourcePath.Text.Trim, "^(\\)+\\\\", "\\")
                 parExclude.Value = chkExclude.Checked
+                parSingle.Value = chkSingle.Checked
                 If Not String.IsNullOrEmpty(cbSourceLanguage.Text) Then
-                    parLanguage.Value = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = cbSourceLanguage.Text).abbreviation
+                    parLanguage.Value = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = cbSourceLanguage.Text).Abbreviation
                 Else
-                    parLanguage.Value = "en"
+                    parLanguage.Value = "en-US"
                 End If
                 If Not String.IsNullOrEmpty(cbSourceOrdering.Text) Then
-                    parOrdering.Value = DirectCast(cbSourceOrdering.SelectedIndex, Enums.Ordering)
+                    parOrdering.Value = DirectCast(cbSourceOrdering.SelectedIndex, Enums.EpisodeOrdering)
                 Else
-                    parOrdering.Value = Enums.Ordering.Standard
+                    parOrdering.Value = Enums.EpisodeOrdering.Standard
                 End If
                 If Not String.IsNullOrEmpty(cbSourceEpisodeSorting.Text) Then
                     parEpisodeSorting.Value = DirectCast(cbSourceEpisodeSorting.SelectedIndex, Enums.EpisodeSorting)
@@ -213,7 +233,7 @@ Public Class dlgSourceTVShow
             SQLtransaction.Commit()
         End Using
 
-        DialogResult = System.Windows.Forms.DialogResult.OK
+        DialogResult = DialogResult.OK
         Close()
     End Sub
 
@@ -222,6 +242,7 @@ Public Class dlgSourceTVShow
         OK_Button.Text = Master.eLang.GetString(179, "OK")
         Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
         chkExclude.Text = Master.eLang.GetString(164, "Exclude path from library updates")
+        chkSingle.Text = Master.eLang.GetString(1048, "Selected folder contains a single TV Show")
         gbSourceOptions.Text = Master.eLang.GetString(201, "Source Options")
         lblSourceEpisodeSorting.Text = String.Concat(Master.eLang.GetString(364, "Show Episodes by"), ":")
         lblSourceLanguage.Text = String.Concat(Master.eLang.GetString(1166, "Default Language"), ":")
@@ -231,7 +252,7 @@ Public Class dlgSourceTVShow
         fbdBrowse.Description = Master.eLang.GetString(706, "Select the parent folder for your TV Series folders/files.")
 
         cbSourceLanguage.Items.Clear()
-        cbSourceLanguage.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
+        cbSourceLanguage.Items.AddRange((From lLang In APIXML.ScraperLanguagesXML.Languages Select lLang.Description).ToArray)
 
         cbSourceOrdering.Items.Clear()
         cbSourceOrdering.Items.AddRange(New String() {Master.eLang.GetString(438, "Standard"), Master.eLang.GetString(1067, "DVD"), Master.eLang.GetString(839, "Absolute"), Master.eLang.GetString(1332, "Day Of Year")})

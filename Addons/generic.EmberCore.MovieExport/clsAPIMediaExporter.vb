@@ -254,7 +254,7 @@ Public Class MediaExporter
                                 ImageUtils.ResizeImage(nImg, tExportSettings.EpisodeFanarts_MaxWidth, tExportSettings.EpisodeFanarts_MaxHeight)
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
                                 strPath = String.Format("images/{0}/{1}/{2}-fanart.jpg", tCounter_Global, tCounter_TVSeason, tCounter_TVEpisode)
-                                tImage.ImageOriginal.Save(Path.Combine(tBuildPath, strPath))
+                                tImage.ImageOriginal.SaveToFile(Path.Combine(tBuildPath, strPath))
                                 tImage.ImageOriginal.Clear()  'Dispose to save memory
                             End If
                         Else
@@ -270,7 +270,7 @@ Public Class MediaExporter
                                 ImageUtils.ResizeImage(nImg, tExportSettings.EpisodePosters_MaxWidth, tExportSettings.EpisodePosters_MaxHeight)
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
                                 strPath = String.Format("images/{0}/{1}/{2}-poster.jpg", tCounter_Global, tCounter_TVSeason, tCounter_TVEpisode)
-                                tImage.ImageOriginal.Save(Path.Combine(tBuildPath, strPath))
+                                tImage.ImageOriginal.SaveToFile(Path.Combine(tBuildPath, strPath))
                                 tImage.ImageOriginal.Clear() 'Dispose to save memory
                             End If
                         Else
@@ -286,7 +286,7 @@ Public Class MediaExporter
                                 ImageUtils.ResizeImage(nImg, tExportSettings.MainBanners_MaxWidth, tExportSettings.MainBanners_MaxHeight)
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
                                 strPath = String.Format("images/{0}-banner.jpg", tCounter_Global)
-                                tImage.ImageOriginal.Save(Path.Combine(tBuildPath, strPath))
+                                tImage.ImageOriginal.SaveToFile(Path.Combine(tBuildPath, strPath))
                                 tImage.ImageOriginal.Clear() 'Dispose to save memory
                             End If
                         Else
@@ -322,7 +322,7 @@ Public Class MediaExporter
                                 ImageUtils.ResizeImage(nImg, tExportSettings.MainFanarts_MaxWidth, tExportSettings.MainFanarts_MaxHeight)
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
                                 strPath = String.Format("images/{0}-fanart.jpg", tCounter_Global)
-                                tImage.ImageOriginal.Save(Path.Combine(tBuildPath, strPath))
+                                tImage.ImageOriginal.SaveToFile(Path.Combine(tBuildPath, strPath))
                                 tImage.ImageOriginal.Clear() 'Dispose to save memory
                             End If
                         Else
@@ -338,7 +338,7 @@ Public Class MediaExporter
                                 ImageUtils.ResizeImage(nImg, tExportSettings.MainLandscapes_MaxWidth, tExportSettings.MainLandscapes_MaxHeight)
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
                                 strPath = String.Format("images/{0}-landscape.jpg", tCounter_Global)
-                                tImage.ImageOriginal.Save(Path.Combine(tBuildPath, strPath))
+                                tImage.ImageOriginal.SaveToFile(Path.Combine(tBuildPath, strPath))
                                 tImage.ImageOriginal.Clear() 'Dispose to save memory
                             End If
                         Else
@@ -354,7 +354,7 @@ Public Class MediaExporter
                                 ImageUtils.ResizeImage(nImg, tExportSettings.MainPosters_MaxWidth, tExportSettings.MainPosters_MaxHeight)
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
                                 strPath = String.Format("images/{0}-poster.jpg", tCounter_Global)
-                                tImage.ImageOriginal.Save(Path.Combine(tBuildPath, strPath))
+                                tImage.ImageOriginal.SaveToFile(Path.Combine(tBuildPath, strPath))
                                 tImage.ImageOriginal.Clear() 'Dispose to save memory
                             End If
                         Else
@@ -370,7 +370,7 @@ Public Class MediaExporter
                                 ImageUtils.ResizeImage(nImg, tExportSettings.SeasonBanners_MaxWidth, tExportSettings.SeasonBanners_MaxHeight)
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
                                 strPath = String.Format("images/{0}/{1}-banner.jpg", tCounter_Global, tCounter_TVSeason)
-                                tImage.ImageOriginal.Save(Path.Combine(tBuildPath, strPath))
+                                tImage.ImageOriginal.SaveToFile(Path.Combine(tBuildPath, strPath))
                                 tImage.ImageOriginal.Clear() 'Dispose to save memory
                             End If
                         Else
@@ -386,7 +386,7 @@ Public Class MediaExporter
                                 ImageUtils.ResizeImage(nImg, tExportSettings.SeasonFanarts_MaxWidth, tExportSettings.SeasonFanarts_MaxHeight)
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
                                 strPath = String.Format("images/{0}/{1}-fanart.jpg", tCounter_Global, tCounter_TVSeason)
-                                tImage.ImageOriginal.Save(Path.Combine(tBuildPath, strPath))
+                                tImage.ImageOriginal.SaveToFile(Path.Combine(tBuildPath, strPath))
                                 tImage.ImageOriginal.Clear() 'Dispose to save memory
                             End If
                         Else
@@ -402,7 +402,7 @@ Public Class MediaExporter
                                 ImageUtils.ResizeImage(nImg, tExportSettings.SeasonLandscapes_MaxWidth, tExportSettings.SeasonLandscapes_MaxHeight)
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
                                 strPath = String.Format("images/{0}/{1}-landscape.jpg", tCounter_Global, tCounter_TVSeason)
-                                tImage.ImageOriginal.Save(Path.Combine(tBuildPath, strPath))
+                                tImage.ImageOriginal.SaveToFile(Path.Combine(tBuildPath, strPath))
                                 tImage.ImageOriginal.Clear() 'Dispose to save memory
                             End If
                         Else
@@ -418,7 +418,7 @@ Public Class MediaExporter
                                 ImageUtils.ResizeImage(nImg, tExportSettings.SeasonPosters_MaxWidth, tExportSettings.SeasonPosters_MaxHeight)
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
                                 strPath = String.Format("images/{0}/{1}-poster.jpg", tCounter_Global, tCounter_TVSeason)
-                                tImage.ImageOriginal.Save(Path.Combine(tBuildPath, strPath))
+                                tImage.ImageOriginal.SaveToFile(Path.Combine(tBuildPath, strPath))
                                 tImage.ImageOriginal.Clear() 'Dispose to save memory
                             End If
                         Else
@@ -432,11 +432,11 @@ Public Class MediaExporter
         Return strPath
     End Function
 
-    Private Function GetAVSInfo(ByVal fInfo As MediaInfo.Fileinfo) As AVSInfo
+    Private Function GetAVSInfo(ByVal fInfo As MediaContainers.Fileinfo) As AVSInfo
         Dim nInfo As New AVSInfo
 
-        Dim tVid As New MediaInfo.Video
-        Dim tAud As New MediaInfo.Audio
+        Dim tVid As New MediaContainers.Video
+        Dim tAud As New MediaContainers.Audio
         Dim tRes As String = String.Empty
 
 
@@ -472,7 +472,7 @@ Public Class MediaExporter
             End If
 
             If fInfo.StreamDetails.Subtitle.Count > 0 Then
-                Dim subtitleinfo As MediaInfo.Subtitle
+                Dim subtitleinfo As MediaContainers.Subtitle
                 For c = 0 To fInfo.StreamDetails.Subtitle.Count - 1
                     subtitleinfo = fInfo.StreamDetails.Subtitle(c)
                     If Not subtitleinfo Is Nothing Then
@@ -493,12 +493,12 @@ Public Class MediaExporter
         Return nInfo
     End Function
 
-    Private Function GetDetailAudioInfo(ByVal fInfo As MediaInfo.Fileinfo) As AVSInfo
+    Private Function GetDetailAudioInfo(ByVal fInfo As MediaContainers.Fileinfo) As AVSInfo
         Dim nInfo As New AVSInfo
-        Dim tAud As New MediaInfo.Audio
-        If fInfo IsNot Nothing Then       
+        Dim tAud As New MediaContainers.Audio
+        If fInfo IsNot Nothing Then
             If fInfo.StreamDetails.Audio.Count > 0 Then
-                Dim audioinfo As MediaInfo.Audio
+                Dim audioinfo As MediaContainers.Audio
                 For c = 0 To fInfo.StreamDetails.Audio.Count - 1
                     audioinfo = fInfo.StreamDetails.Audio(c)
                     If audioinfo IsNot Nothing Then
@@ -518,10 +518,10 @@ Public Class MediaExporter
         Dim fSize As Long = 0
 
         If Not String.IsNullOrEmpty(fPath) Then
-            If StringUtils.IsStacked(Path.GetFileNameWithoutExtension(fPath), True) OrElse FileUtils.Common.isVideoTS(fPath) OrElse FileUtils.Common.isBDRip(fPath) Then
+            If FileUtils.Common.isStacked(fPath) OrElse FileUtils.Common.isVideoTS(fPath) OrElse FileUtils.Common.isBDRip(fPath) Then
                 Try
                     Dim sExt As String = Path.GetExtension(fPath).ToLower
-                    Dim oFile As String = StringUtils.CleanStackingMarkers(fPath, False)
+                    Dim oFile As String = FileUtils.Common.RemoveStackingMarkers(fPath)
                     Dim sFile As New List(Of String)
                     Dim bIsVTS As Boolean = False
 
@@ -541,7 +541,7 @@ Public Class MediaExporter
                         End Try
                     Else
                         Try
-                            sFile.AddRange(Directory.GetFiles(Directory.GetParent(fPath).FullName, StringUtils.CleanStackingMarkers(Path.GetFileName(fPath), True)))
+                            sFile.AddRange(Directory.GetFiles(Directory.GetParent(fPath).FullName, FileUtils.Common.RemoveStackingMarkers(Path.GetFileName(fPath), True)))
                         Catch
                         End Try
                     End If
@@ -625,15 +625,15 @@ Public Class MediaExporter
 
     Private Function ProcessPattern_Flags(ByVal tDBElement As Database.DBElement, ByVal strRow As String, ByVal tContentType As Enums.ContentType) As String
         If APIXML.lFlags.Count > 0 Then
-            Dim fiAV As New MediaInfo.Fileinfo
+            Dim fiAV As New MediaContainers.Fileinfo
             Select Case tContentType
                 Case Enums.ContentType.Movie
                     fiAV = tDBElement.Movie.FileInfo
                 Case Enums.ContentType.TVEpisode
                     fiAV = tDBElement.TVEpisode.FileInfo
             End Select
-            Dim tVideo As MediaInfo.Video = NFO.GetBestVideo(fiAV)
-            Dim tAudio As MediaInfo.Audio = NFO.GetBestAudio(fiAV, False)
+            Dim tVideo As MediaContainers.Video = NFO.GetBestVideo(fiAV)
+            Dim tAudio As MediaContainers.Audio = NFO.GetBestAudio(fiAV, False)
 
             Dim vresFlag As APIXML.Flag = APIXML.lFlags.FirstOrDefault(Function(f) f.Name = NFO.GetResFromDimensions(tVideo).ToLower AndAlso f.Type = APIXML.FlagType.VideoResolution)
             If vresFlag IsNot Nothing Then

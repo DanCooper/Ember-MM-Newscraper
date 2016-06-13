@@ -49,6 +49,7 @@ Partial Class dlgSourceTVShow
         Me.cbSourceLanguage = New System.Windows.Forms.ComboBox()
         Me.pnlBottom = New System.Windows.Forms.Panel()
         Me.tblBottom = New System.Windows.Forms.TableLayoutPanel()
+        Me.chkSingle = New System.Windows.Forms.CheckBox()
         CType(Me.pbValid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlMain.SuspendLayout()
         Me.tblMain.SuspendLayout()
@@ -62,7 +63,7 @@ Partial Class dlgSourceTVShow
         '
         Me.OK_Button.Enabled = False
         Me.OK_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.OK_Button.Location = New System.Drawing.Point(289, 3)
+        Me.OK_Button.Location = New System.Drawing.Point(285, 3)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
         Me.OK_Button.TabIndex = 7
@@ -72,7 +73,7 @@ Partial Class dlgSourceTVShow
         '
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Cancel_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Cancel_Button.Location = New System.Drawing.Point(362, 3)
+        Me.Cancel_Button.Location = New System.Drawing.Point(358, 3)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
         Me.Cancel_Button.TabIndex = 8
@@ -165,7 +166,7 @@ Partial Class dlgSourceTVShow
         Me.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlMain.Location = New System.Drawing.Point(0, 0)
         Me.pnlMain.Name = "pnlMain"
-        Me.pnlMain.Size = New System.Drawing.Size(432, 242)
+        Me.pnlMain.Size = New System.Drawing.Size(428, 267)
         Me.pnlMain.TabIndex = 2
         '
         'tblMain
@@ -195,7 +196,7 @@ Partial Class dlgSourceTVShow
         Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMain.Size = New System.Drawing.Size(432, 242)
+        Me.tblMain.Size = New System.Drawing.Size(428, 267)
         Me.tblMain.TabIndex = 16
         '
         'gbSourceOptions
@@ -207,7 +208,7 @@ Partial Class dlgSourceTVShow
         Me.gbSourceOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbSourceOptions.Location = New System.Drawing.Point(6, 103)
         Me.gbSourceOptions.Name = "gbSourceOptions"
-        Me.gbSourceOptions.Size = New System.Drawing.Size(408, 125)
+        Me.gbSourceOptions.Size = New System.Drawing.Size(408, 148)
         Me.gbSourceOptions.TabIndex = 13
         Me.gbSourceOptions.TabStop = False
         Me.gbSourceOptions.Text = "Source Options"
@@ -219,23 +220,25 @@ Partial Class dlgSourceTVShow
         Me.tblSourceOptions.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblSourceOptions.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblSourceOptions.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSourceOptions.Controls.Add(Me.chkExclude, 0, 0)
-        Me.tblSourceOptions.Controls.Add(Me.cbSourceEpisodeSorting, 1, 3)
-        Me.tblSourceOptions.Controls.Add(Me.lblSourceLanguage, 0, 1)
-        Me.tblSourceOptions.Controls.Add(Me.lblSourceEpisodeSorting, 0, 3)
-        Me.tblSourceOptions.Controls.Add(Me.lblSourceOrdering, 0, 2)
-        Me.tblSourceOptions.Controls.Add(Me.cbSourceOrdering, 1, 2)
-        Me.tblSourceOptions.Controls.Add(Me.cbSourceLanguage, 1, 1)
+        Me.tblSourceOptions.Controls.Add(Me.chkExclude, 0, 1)
+        Me.tblSourceOptions.Controls.Add(Me.cbSourceEpisodeSorting, 1, 4)
+        Me.tblSourceOptions.Controls.Add(Me.lblSourceLanguage, 0, 2)
+        Me.tblSourceOptions.Controls.Add(Me.lblSourceEpisodeSorting, 0, 4)
+        Me.tblSourceOptions.Controls.Add(Me.lblSourceOrdering, 0, 3)
+        Me.tblSourceOptions.Controls.Add(Me.cbSourceOrdering, 1, 3)
+        Me.tblSourceOptions.Controls.Add(Me.cbSourceLanguage, 1, 2)
+        Me.tblSourceOptions.Controls.Add(Me.chkSingle, 0, 0)
         Me.tblSourceOptions.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblSourceOptions.Location = New System.Drawing.Point(3, 18)
         Me.tblSourceOptions.Name = "tblSourceOptions"
-        Me.tblSourceOptions.RowCount = 5
+        Me.tblSourceOptions.RowCount = 6
         Me.tblSourceOptions.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSourceOptions.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSourceOptions.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSourceOptions.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSourceOptions.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSourceOptions.Size = New System.Drawing.Size(402, 104)
+        Me.tblSourceOptions.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSourceOptions.Size = New System.Drawing.Size(402, 127)
         Me.tblSourceOptions.TabIndex = 4
         '
         'chkExclude
@@ -243,7 +246,7 @@ Partial Class dlgSourceTVShow
         Me.chkExclude.AutoSize = True
         Me.tblSourceOptions.SetColumnSpan(Me.chkExclude, 2)
         Me.chkExclude.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkExclude.Location = New System.Drawing.Point(3, 3)
+        Me.chkExclude.Location = New System.Drawing.Point(3, 26)
         Me.chkExclude.Name = "chkExclude"
         Me.chkExclude.Size = New System.Drawing.Size(199, 17)
         Me.chkExclude.TabIndex = 3
@@ -255,7 +258,7 @@ Partial Class dlgSourceTVShow
         Me.cbSourceEpisodeSorting.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbSourceEpisodeSorting.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbSourceEpisodeSorting.FormattingEnabled = True
-        Me.cbSourceEpisodeSorting.Location = New System.Drawing.Point(151, 80)
+        Me.cbSourceEpisodeSorting.Location = New System.Drawing.Point(151, 103)
         Me.cbSourceEpisodeSorting.Name = "cbSourceEpisodeSorting"
         Me.cbSourceEpisodeSorting.Size = New System.Drawing.Size(172, 21)
         Me.cbSourceEpisodeSorting.TabIndex = 6
@@ -265,7 +268,7 @@ Partial Class dlgSourceTVShow
         Me.lblSourceLanguage.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblSourceLanguage.AutoSize = True
         Me.lblSourceLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblSourceLanguage.Location = New System.Drawing.Point(3, 30)
+        Me.lblSourceLanguage.Location = New System.Drawing.Point(3, 53)
         Me.lblSourceLanguage.Name = "lblSourceLanguage"
         Me.lblSourceLanguage.Size = New System.Drawing.Size(102, 13)
         Me.lblSourceLanguage.TabIndex = 12
@@ -277,7 +280,7 @@ Partial Class dlgSourceTVShow
         Me.lblSourceEpisodeSorting.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblSourceEpisodeSorting.AutoSize = True
         Me.lblSourceEpisodeSorting.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblSourceEpisodeSorting.Location = New System.Drawing.Point(3, 84)
+        Me.lblSourceEpisodeSorting.Location = New System.Drawing.Point(3, 107)
         Me.lblSourceEpisodeSorting.Name = "lblSourceEpisodeSorting"
         Me.lblSourceEpisodeSorting.Size = New System.Drawing.Size(103, 13)
         Me.lblSourceEpisodeSorting.TabIndex = 14
@@ -289,7 +292,7 @@ Partial Class dlgSourceTVShow
         Me.lblSourceOrdering.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblSourceOrdering.AutoSize = True
         Me.lblSourceOrdering.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblSourceOrdering.Location = New System.Drawing.Point(3, 57)
+        Me.lblSourceOrdering.Location = New System.Drawing.Point(3, 80)
         Me.lblSourceOrdering.Name = "lblSourceOrdering"
         Me.lblSourceOrdering.Size = New System.Drawing.Size(142, 13)
         Me.lblSourceOrdering.TabIndex = 10
@@ -301,7 +304,7 @@ Partial Class dlgSourceTVShow
         Me.cbSourceOrdering.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbSourceOrdering.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbSourceOrdering.FormattingEnabled = True
-        Me.cbSourceOrdering.Location = New System.Drawing.Point(151, 53)
+        Me.cbSourceOrdering.Location = New System.Drawing.Point(151, 76)
         Me.cbSourceOrdering.Name = "cbSourceOrdering"
         Me.cbSourceOrdering.Size = New System.Drawing.Size(172, 21)
         Me.cbSourceOrdering.TabIndex = 5
@@ -310,7 +313,7 @@ Partial Class dlgSourceTVShow
         '
         Me.cbSourceLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbSourceLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cbSourceLanguage.Location = New System.Drawing.Point(151, 26)
+        Me.cbSourceLanguage.Location = New System.Drawing.Point(151, 49)
         Me.cbSourceLanguage.Name = "cbSourceLanguage"
         Me.cbSourceLanguage.Size = New System.Drawing.Size(172, 21)
         Me.cbSourceLanguage.TabIndex = 4
@@ -320,9 +323,9 @@ Partial Class dlgSourceTVShow
         Me.pnlBottom.AutoSize = True
         Me.pnlBottom.Controls.Add(Me.tblBottom)
         Me.pnlBottom.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlBottom.Location = New System.Drawing.Point(0, 242)
+        Me.pnlBottom.Location = New System.Drawing.Point(0, 267)
         Me.pnlBottom.Name = "pnlBottom"
-        Me.pnlBottom.Size = New System.Drawing.Size(432, 29)
+        Me.pnlBottom.Size = New System.Drawing.Size(428, 29)
         Me.pnlBottom.TabIndex = 3
         '
         'tblBottom
@@ -340,8 +343,20 @@ Partial Class dlgSourceTVShow
         Me.tblBottom.RowCount = 1
         Me.tblBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblBottom.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblBottom.Size = New System.Drawing.Size(432, 29)
+        Me.tblBottom.Size = New System.Drawing.Size(428, 29)
         Me.tblBottom.TabIndex = 0
+        '
+        'chkSingle
+        '
+        Me.chkSingle.AutoSize = True
+        Me.tblSourceOptions.SetColumnSpan(Me.chkSingle, 2)
+        Me.chkSingle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkSingle.Location = New System.Drawing.Point(3, 3)
+        Me.chkSingle.Name = "chkSingle"
+        Me.chkSingle.Size = New System.Drawing.Size(240, 17)
+        Me.chkSingle.TabIndex = 15
+        Me.chkSingle.Text = "Selected folder contains a single TV Show"
+        Me.chkSingle.UseVisualStyleBackColor = True
         '
         'dlgSourceTVShow
         '
@@ -351,7 +366,7 @@ Partial Class dlgSourceTVShow
         Me.AutoSize = True
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(432, 271)
+        Me.ClientSize = New System.Drawing.Size(428, 296)
         Me.Controls.Add(Me.pnlMain)
         Me.Controls.Add(Me.pnlBottom)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -403,5 +418,5 @@ Partial Class dlgSourceTVShow
     Friend WithEvents tblSourceOptions As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents pnlBottom As System.Windows.Forms.Panel
     Friend WithEvents tblBottom As System.Windows.Forms.TableLayoutPanel
-
+    Friend WithEvents chkSingle As CheckBox
 End Class

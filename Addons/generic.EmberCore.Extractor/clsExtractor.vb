@@ -248,8 +248,8 @@ Public Class ThumbGenerator
                         _setfa = "TRUE"
                         Dim exFanart As New Images
                         If String.IsNullOrEmpty(_movie.ImagesContainer.Fanart.LocalFilePath) Then
-                            exFanart.FromFile(Path.Combine(tPath, "thumb1.jpg"))
-                            _setfa = exFanart.SaveAsMovieFanart(_movie)
+                            exFanart.LoadFromFile(Path.Combine(tPath, "thumb1.jpg"))
+                            _setfa = exFanart.Save_Movie(_movie, Enums.ModifierType.MainFanart)
                         End If
                     End If
 

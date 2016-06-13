@@ -28,7 +28,7 @@ Public Class dlgFileInfo
 
     Private NeedToRefresh As Boolean = False
     Private SettingDefaults As Boolean = False
-    Private _FileInfo As MediaInfo.Fileinfo
+    Private _FileInfo As MediaContainers.Fileinfo
     Private _isEpisode As Boolean = False
     Private _DBElement As Database.DBElement
 
@@ -46,7 +46,7 @@ Public Class dlgFileInfo
         _isEpisode = isEpisode
     End Sub
 
-    Public Overloads Function ShowDialog(ByVal fi As MediaInfo.Fileinfo, ByVal isEpisode As Boolean) As MediaInfo.Fileinfo
+    Public Overloads Function ShowDialog(ByVal fi As MediaContainers.Fileinfo, ByVal isEpisode As Boolean) As MediaContainers.Fileinfo
         SettingDefaults = True
         _FileInfo = fi
         _isEpisode = isEpisode
@@ -76,19 +76,19 @@ Public Class dlgFileInfo
                             End If
                         End If
                         If cbStreamType.SelectedItem.ToString = Master.eLang.GetString(595, "Video Streams") Then
-                            _FileInfo.StreamDetails.Video.Add(DirectCast(stream, MediaInfo.Video))
+                            _FileInfo.StreamDetails.Video.Add(DirectCast(stream, MediaContainers.Video))
                         End If
                         If cbStreamType.SelectedItem.ToString = Master.eLang.GetString(596, "Audio Streams") Then
-                            _FileInfo.StreamDetails.Audio.Add(DirectCast(stream, MediaInfo.Audio))
+                            _FileInfo.StreamDetails.Audio.Add(DirectCast(stream, MediaContainers.Audio))
                         End If
                         If cbStreamType.SelectedItem.ToString = Master.eLang.GetString(597, "Subtitle Streams") Then
-                            _FileInfo.StreamDetails.Subtitle.Add(DirectCast(stream, MediaInfo.Subtitle))
+                            _FileInfo.StreamDetails.Subtitle.Add(DirectCast(stream, MediaContainers.Subtitle))
                         End If
                         If btnClose.Visible = True AndAlso Not SettingDefaults Then 'Only Save imediatly when running stand alone
                             If _isEpisode Then
                                 Master.DB.Save_TVEpisode(_DBElement, False, True, False, False, True)
                             Else
-                                Master.DB.Save_Movie(_DBElement, False, True, False)
+                                Master.DB.Save_Movie(_DBElement, False, True, False, False)
                             End If
                         End If
                         NeedToRefresh = True
@@ -147,7 +147,7 @@ Public Class dlgFileInfo
                     If _isEpisode Then
                         Master.DB.Save_TVEpisode(_DBElement, False, True, False, False, True)
                     Else
-                        Master.DB.Save_Movie(_DBElement, False, True, False)
+                        Master.DB.Save_Movie(_DBElement, False, True, False, False)
                     End If
                 End If
                 NeedToRefresh = True
@@ -185,19 +185,19 @@ Public Class dlgFileInfo
                             End If
                         End If
                         If i.Tag.ToString = Master.eLang.GetString(595, "Video Streams") Then
-                            _FileInfo.StreamDetails.Video(Convert.ToInt16(i.Text)) = DirectCast(stream, MediaInfo.Video)
+                            _FileInfo.StreamDetails.Video(Convert.ToInt16(i.Text)) = DirectCast(stream, MediaContainers.Video)
                         End If
                         If i.Tag.ToString = Master.eLang.GetString(596, "Audio Streams") Then
-                            _FileInfo.StreamDetails.Audio(Convert.ToInt16(i.Text)) = DirectCast(stream, MediaInfo.Audio)
+                            _FileInfo.StreamDetails.Audio(Convert.ToInt16(i.Text)) = DirectCast(stream, MediaContainers.Audio)
                         End If
                         If i.Tag.ToString = Master.eLang.GetString(597, "Subtitle Streams") Then
-                            _FileInfo.StreamDetails.Subtitle(Convert.ToInt16(i.Text)) = DirectCast(stream, MediaInfo.Subtitle)
+                            _FileInfo.StreamDetails.Subtitle(Convert.ToInt16(i.Text)) = DirectCast(stream, MediaContainers.Subtitle)
                         End If
                         If btnClose.Visible = True AndAlso Not SettingDefaults Then 'Only Save imediatly when running stand alone
                             If _isEpisode Then
                                 Master.DB.Save_TVEpisode(_DBElement, False, True, False, False, True)
                             Else
-                                Master.DB.Save_Movie(_DBElement, False, True, False)
+                                Master.DB.Save_Movie(_DBElement, False, True, False, False)
                             End If
                         End If
                         NeedToRefresh = True
@@ -243,7 +243,7 @@ Public Class dlgFileInfo
                 g.Items.Add(i)
                 lvStreams.Items.Add(i)
 
-                Dim v As MediaInfo.Video
+                Dim v As MediaContainers.Video
                 For c = 0 To _FileInfo.StreamDetails.Video.Count - 1
                     v = _FileInfo.StreamDetails.Video(c)
                     If Not v Is Nothing Then
@@ -285,7 +285,7 @@ Public Class dlgFileInfo
 
                 g.Items.Add(i)
                 lvStreams.Items.Add(i)
-                Dim a As MediaInfo.Audio
+                Dim a As MediaContainers.Audio
                 For c = 0 To _FileInfo.StreamDetails.Audio.Count - 1
                     a = _FileInfo.StreamDetails.Audio(c)
                     If Not a Is Nothing Then
@@ -319,7 +319,7 @@ Public Class dlgFileInfo
 
                 g.Items.Add(i)
                 lvStreams.Items.Add(i)
-                Dim s As MediaInfo.Subtitle
+                Dim s As MediaContainers.Subtitle
                 For c = 0 To _FileInfo.StreamDetails.Subtitle.Count - 1
                     s = _FileInfo.StreamDetails.Subtitle(c)
                     If Not s Is Nothing Then

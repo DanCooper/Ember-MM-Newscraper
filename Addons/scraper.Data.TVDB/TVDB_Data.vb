@@ -223,13 +223,6 @@ Public Class TVDB_Data
             _setup.Dispose()
         End If
     End Sub
-
-    Public Function GetLangs(ByRef Langs As clsXMLTVDBLanguages) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_TV.GetLanguages
-        LoadSettings()
-
-        Langs = TVDBs.Scraper.GetLanguages(_SpecialSettings.APIKey)
-        Return New Interfaces.ModuleResult With {.breakChain = True}
-    End Function
     ''' <summary>
     '''  Scrape TVShowDetails from TVDB
     ''' </summary>
@@ -244,9 +237,9 @@ Public Class TVDB_Data
 
         Dim Settings As New SpecialSettings
         Settings.APIKey = _SpecialSettings.APIKey
-        Settings.Language = oDBTV.Language
+        Settings.Language = oDBTV.Language_Main
 
-        Dim nTVShow As New MediaContainers.TVShow
+        Dim nTVShow As MediaContainers.TVShow = Nothing
         Dim _scraper As New TVDBs.Scraper(Settings)
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions)
 
@@ -277,6 +270,8 @@ Public Class TVDB_Data
                     logger.Trace("[TVDB_Data] [Scraper_TV] [Abort] No search result found")
                     Return New Interfaces.ModuleResult_Data_TVShow With {.Result = Nothing}
             End Select
+        Else
+            Return New Interfaces.ModuleResult_Data_TVShow With {.Result = nTVShow}
         End If
 
         If ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto Then
@@ -305,7 +300,7 @@ Public Class TVDB_Data
 
         Dim Settings As New SpecialSettings
         Settings.APIKey = _SpecialSettings.APIKey
-        Settings.Language = oDBTVEpisode.Language
+        Settings.Language = oDBTVEpisode.Language_Main
 
         Dim nTVEpisode As New MediaContainers.EpisodeDetails
         Dim _scraper As New TVDBs.Scraper(Settings)

@@ -783,7 +783,7 @@ Public Class dlgSettings
 
     Private Sub btnTVSourceAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSourceAdd.Click
         Using dSource As New dlgSourceTVShow
-            If dSource.ShowDialog = Windows.Forms.DialogResult.OK Then
+            If dSource.ShowDialog = DialogResult.OK Then
                 RefreshTVSources()
                 SetApplyButton(True)
                 sResult.NeedsDBUpdate_TV = True
@@ -819,7 +819,7 @@ Public Class dlgSettings
     Private Sub btnMovieBackdropsPathBrowse_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSourcesBackdropsFolderPathBrowse.Click
         With fbdBrowse
             fbdBrowse.Description = Master.eLang.GetString(552, "Select the folder where you wish to store your backdrops...")
-            If .ShowDialog = Windows.Forms.DialogResult.OK Then
+            If .ShowDialog = DialogResult.OK Then
                 If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
                     txtMovieSourcesBackdropsFolderPath.Text = .SelectedPath.ToString
                 End If
@@ -855,7 +855,7 @@ Public Class dlgSettings
 
     Private Sub btnMovieGeneralCustomMarker1_Click(sender As Object, e As EventArgs) Handles btnMovieGeneralCustomMarker1.Click
         With cdColor
-            If .ShowDialog = Windows.Forms.DialogResult.OK Then
+            If .ShowDialog = DialogResult.OK Then
                 If Not .Color = Nothing Then
                     btnMovieGeneralCustomMarker1.BackColor = .Color
                     SetApplyButton(True)
@@ -866,7 +866,7 @@ Public Class dlgSettings
 
     Private Sub btnMovieGeneralCustomMarker2_Click(sender As Object, e As EventArgs) Handles btnMovieGeneralCustomMarker2.Click
         With cdColor
-            If .ShowDialog = Windows.Forms.DialogResult.OK Then
+            If .ShowDialog = DialogResult.OK Then
                 If Not .Color = Nothing Then
                     btnMovieGeneralCustomMarker2.BackColor = .Color
                     SetApplyButton(True)
@@ -877,7 +877,7 @@ Public Class dlgSettings
 
     Private Sub btnMovieGeneralCustomMarker3_Click(sender As Object, e As EventArgs) Handles btnMovieGeneralCustomMarker3.Click
         With cdColor
-            If .ShowDialog = Windows.Forms.DialogResult.OK Then
+            If .ShowDialog = DialogResult.OK Then
                 If Not .Color = Nothing Then
                     btnMovieGeneralCustomMarker3.BackColor = .Color
                     SetApplyButton(True)
@@ -888,7 +888,7 @@ Public Class dlgSettings
 
     Private Sub btnMovieGeneralCustomMarker4_Click(sender As Object, e As EventArgs) Handles btnMovieGeneralCustomMarker4.Click
         With cdColor
-            If .ShowDialog = Windows.Forms.DialogResult.OK Then
+            If .ShowDialog = DialogResult.OK Then
                 If Not .Color = Nothing Then
                     btnMovieGeneralCustomMarker4.BackColor = .Color
                     SetApplyButton(True)
@@ -899,7 +899,7 @@ Public Class dlgSettings
 
     Private Sub btnMovieScraperDefFIExtEdit_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieScraperDefFIExtEdit.Click
         Using dEditMeta As New dlgFileInfo(New Database.DBElement(Enums.ContentType.Movie), False)
-            Dim fi As New MediaInfo.Fileinfo
+            Dim fi As New MediaContainers.Fileinfo
             For Each x As Settings.MetadataPerType In MovieMeta
                 If x.FileType = lstMovieScraperDefFIExt.SelectedItems(0).ToString Then
                     fi = dEditMeta.ShowDialog(x.MetaData, False)
@@ -907,7 +907,7 @@ Public Class dlgSettings
                         MovieMeta.Remove(x)
                         Dim m As New Settings.MetadataPerType
                         m.FileType = x.FileType
-                        m.MetaData = New MediaInfo.Fileinfo
+                        m.MetaData = New MediaContainers.Fileinfo
                         m.MetaData = fi
                         MovieMeta.Add(m)
                         LoadMovieMetadata()
@@ -926,7 +926,7 @@ Public Class dlgSettings
     Private Sub btnMovieSourceEdit_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSourceEdit.Click
         If lvMovieSources.SelectedItems.Count > 0 Then
             Using dMovieSource As New dlgSourceMovie
-                If dMovieSource.ShowDialog(Convert.ToInt32(lvMovieSources.SelectedItems(0).Text)) = Windows.Forms.DialogResult.OK Then
+                If dMovieSource.ShowDialog(Convert.ToInt32(lvMovieSources.SelectedItems(0).Text)) = DialogResult.OK Then
                     RefreshMovieSources()
                     sResult.NeedsReload_Movie = True 'TODO: Check if we have to use Reload or DBUpdate
                     SetApplyButton(True)
@@ -937,7 +937,7 @@ Public Class dlgSettings
 
     Private Sub btnTVScraperDefFIExtEdit_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVScraperDefFIExtEdit.Click
         Using dEditMeta As New dlgFileInfo(New Database.DBElement(Enums.ContentType.TVEpisode), True)
-            Dim fi As New MediaInfo.Fileinfo
+            Dim fi As New MediaContainers.Fileinfo
             For Each x As Settings.MetadataPerType In TVMeta
                 If x.FileType = lstTVScraperDefFIExt.SelectedItems(0).ToString Then
                     fi = dEditMeta.ShowDialog(x.MetaData, True)
@@ -945,7 +945,7 @@ Public Class dlgSettings
                         TVMeta.Remove(x)
                         Dim m As New Settings.MetadataPerType
                         m.FileType = x.FileType
-                        m.MetaData = New MediaInfo.Fileinfo
+                        m.MetaData = New MediaContainers.Fileinfo
                         m.MetaData = fi
                         TVMeta.Add(m)
                         LoadTVMetadata()
@@ -960,7 +960,7 @@ Public Class dlgSettings
     Private Sub btnTVSourceEdit_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSourceEdit.Click
         If lvTVSources.SelectedItems.Count > 0 Then
             Using dTVSource As New dlgSourceTVShow
-                If dTVSource.ShowDialog(Convert.ToInt32(lvTVSources.SelectedItems(0).Text)) = Windows.Forms.DialogResult.OK Then
+                If dTVSource.ShowDialog(Convert.ToInt32(lvTVSources.SelectedItems(0).Text)) = DialogResult.OK Then
                     RefreshTVSources()
                     sResult.NeedsReload_TVShow = True
                     SetApplyButton(True)
@@ -1003,7 +1003,7 @@ Public Class dlgSettings
 
     Private Sub btnMovieSourceAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSourceAdd.Click
         Using dSource As New dlgSourceMovie
-            If dSource.ShowDialog = Windows.Forms.DialogResult.OK Then
+            If dSource.ShowDialog = DialogResult.OK Then
                 RefreshMovieSources()
                 SetApplyButton(True)
                 sResult.NeedsDBUpdate_Movie = True
@@ -1019,12 +1019,12 @@ Public Class dlgSettings
     Private Sub btnMovieScraperDefFIExtAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieScraperDefFIExtAdd.Click
         If Not txtMovieScraperDefFIExt.Text.StartsWith(".") Then txtMovieScraperDefFIExt.Text = String.Concat(".", txtMovieScraperDefFIExt.Text)
         Using dEditMeta As New dlgFileInfo(New Database.DBElement(Enums.ContentType.Movie), False)
-            Dim fi As New MediaInfo.Fileinfo
+            Dim fi As New MediaContainers.Fileinfo
             fi = dEditMeta.ShowDialog(fi, False)
             If Not fi Is Nothing Then
                 Dim m As New Settings.MetadataPerType
                 m.FileType = txtMovieScraperDefFIExt.Text
-                m.MetaData = New MediaInfo.Fileinfo
+                m.MetaData = New MediaContainers.Fileinfo
                 m.MetaData = fi
                 MovieMeta.Add(m)
                 LoadMovieMetadata()
@@ -1038,12 +1038,12 @@ Public Class dlgSettings
     Private Sub btnTVScraperDefFIExtAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVScraperDefFIExtAdd.Click
         If Not txtTVScraperDefFIExt.Text.StartsWith(".") Then txtTVScraperDefFIExt.Text = String.Concat(".", txtTVScraperDefFIExt.Text)
         Using dEditMeta As New dlgFileInfo(New Database.DBElement(Enums.ContentType.TVEpisode), True)
-            Dim fi As New MediaInfo.Fileinfo
+            Dim fi As New MediaContainers.Fileinfo
             fi = dEditMeta.ShowDialog(fi, True)
             If Not fi Is Nothing Then
                 Dim m As New Settings.MetadataPerType
                 m.FileType = txtTVScraperDefFIExt.Text
-                m.MetaData = New MediaInfo.Fileinfo
+                m.MetaData = New MediaContainers.Fileinfo
                 m.MetaData = fi
                 TVMeta.Add(m)
                 LoadTVMetadata()
@@ -1526,7 +1526,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnTVShowFilterReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVShowFilterReset.Click
-        If MessageBox.Show(Master.eLang.GetString(840, "Are you sure you want to reset to the default list of show filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
+        If MessageBox.Show(Master.eLang.GetString(840, "Are you sure you want to reset to the default list of show filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ShowFilters, True)
             RefreshTVShowFilters()
             SetApplyButton(True)
@@ -1534,7 +1534,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnTVEpisodeFilterReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVEpisodeFilterReset.Click
-        If MessageBox.Show(Master.eLang.GetString(841, "Are you sure you want to reset to the default list of episode filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
+        If MessageBox.Show(Master.eLang.GetString(841, "Are you sure you want to reset to the default list of episode filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.EpFilters, True)
             RefreshTVEpisodeFilters()
             SetApplyButton(True)
@@ -1542,7 +1542,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnMovieFilterReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieFilterReset.Click
-        If MessageBox.Show(Master.eLang.GetString(842, "Are you sure you want to reset to the default list of movie filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
+        If MessageBox.Show(Master.eLang.GetString(842, "Are you sure you want to reset to the default list of movie filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieFilters, True)
             RefreshMovieFilters()
             SetApplyButton(True)
@@ -1550,7 +1550,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnFileSystemValidVideoExtsReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemValidVideoExtsReset.Click
-        If MessageBox.Show(Master.eLang.GetString(843, "Are you sure you want to reset to the default list of valid video extensions?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
+        If MessageBox.Show(Master.eLang.GetString(843, "Are you sure you want to reset to the default list of valid video extensions?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ValidExts, True)
             RefreshFileSystemValidExts()
             SetApplyButton(True)
@@ -1558,7 +1558,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnFileSystemValidSubtitlesExtsReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemValidSubtitlesExtsReset.Click
-        If MessageBox.Show(Master.eLang.GetString(1283, "Are you sure you want to reset to the default list of valid subtitle extensions?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
+        If MessageBox.Show(Master.eLang.GetString(1283, "Are you sure you want to reset to the default list of valid subtitle extensions?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ValidSubtitleExts, True)
             RefreshFileSystemValidSubtitlesExts()
             SetApplyButton(True)
@@ -1566,7 +1566,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnFileSystemValidThemeExtsReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemValidThemeExtsReset.Click
-        If MessageBox.Show(Master.eLang.GetString(1080, "Are you sure you want to reset to the default list of valid theme extensions?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
+        If MessageBox.Show(Master.eLang.GetString(1080, "Are you sure you want to reset to the default list of valid theme extensions?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ValidThemeExts, True)
             RefreshFileSystemValidThemeExts()
             SetApplyButton(True)
@@ -1575,7 +1575,7 @@ Public Class dlgSettings
 
     Private Sub btnTVSourcesRegexTVShowMatchingGet_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSourcesRegexTVShowMatchingGet.Click
         Using dd As New dlgTVRegExProfiles
-            If dd.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            If dd.ShowDialog() = DialogResult.OK Then
                 TVShowMatching.Clear()
                 TVShowMatching.AddRange(dd.ShowRegex)
                 LoadTVShowMatching()
@@ -1585,7 +1585,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnTVSourcesRegexTVShowMatchingReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSourcesRegexTVShowMatchingReset.Click
-        If MessageBox.Show(Master.eLang.GetString(844, "Are you sure you want to reset to the default list of show regex?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
+        If MessageBox.Show(Master.eLang.GetString(844, "Are you sure you want to reset to the default list of show regex?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVShowMatching, True)
             TVShowMatching.Clear()
             TVShowMatching.AddRange(Master.eSettings.TVShowMatching)
@@ -1706,16 +1706,6 @@ Public Class dlgSettings
         RefreshTVSortTokens()
         sResult.NeedsReload_TVShow = True
         SetApplyButton(True)
-    End Sub
-
-    Private Sub btnTVGeneralLangFetch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVGeneralLangFetch.Click
-        Master.eSettings.TVGeneralLanguages = ModulesManager.Instance.GetTVLanguages()
-        cbTVGeneralLang.Items.Clear()
-        cbTVGeneralLang.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
-
-        If cbTVGeneralLang.Items.Count > 0 Then
-            cbTVGeneralLang.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.TVGeneralLanguage).name
-        End If
     End Sub
 
     Private Sub btnTVScraperDefFIExtRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVScraperDefFIExtRemove.Click
@@ -2941,6 +2931,7 @@ Public Class dlgSettings
             chkMovieGeneralMarkNew.Checked = .MovieGeneralMarkNew
             chkMovieImagesCacheEnabled.Checked = .MovieImagesCacheEnabled
             chkMovieImagesDisplayImageSelect.Checked = .MovieImagesDisplayImageSelect
+            chkMovieImagesForceLanguage.Checked = .MovieImagesForceLanguage
             If .MovieImagesMediaLanguageOnly Then
                 chkMovieImagesMediaLanguageOnly.Checked = True
                 chkMovieImagesGetBlankImages.Checked = .MovieImagesGetBlankImages
@@ -3004,6 +2995,7 @@ Public Class dlgSettings
             chkMovieSetGeneralMarkNew.Checked = .MovieSetGeneralMarkNew
             chkMovieSetImagesCacheEnabled.Checked = .MovieSetImagesCacheEnabled
             chkMovieSetImagesDisplayImageSelect.Checked = .MovieSetImagesDisplayImageSelect
+            chkMovieSetImagesForceLanguage.Checked = .MovieSetImagesForceLanguage
             If .MovieSetImagesMediaLanguageOnly Then
                 chkMovieSetImagesMediaLanguageOnly.Checked = True
                 chkMovieSetImagesGetBlankImages.Checked = .MovieSetImagesGetBlankImages
@@ -3110,6 +3102,7 @@ Public Class dlgSettings
             chkTVGeneralIgnoreLastScan.Checked = .TVGeneralIgnoreLastScan
             chkTVImagesCacheEnabled.Checked = .TVImagesCacheEnabled
             chkTVImagesDisplayImageSelect.Checked = .TVImagesDisplayImageSelect
+            chkTVImagesForceLanguage.Checked = .TVImagesForceLanguage
             If .TVImagesMediaLanguageOnly Then
                 chkTVImagesMediaLanguageOnly.Checked = True
                 chkTVImagesGetBlankImages.Checked = .TVImagesGetBlankImages
@@ -3312,7 +3305,7 @@ Public Class dlgSettings
                         cbMovieScraperCertLang.SelectedIndex = 0
                     ElseIf Not String.IsNullOrEmpty(.MovieScraperCertLang) Then
                         Dim tLanguage As CertLanguages = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = .MovieScraperCertLang)
-                        If tLanguage IsNot Nothing AndAlso tLanguage.name IsNot Nothing AndAlso String.IsNullOrEmpty(tLanguage.name) Then
+                        If tLanguage IsNot Nothing AndAlso tLanguage.name IsNot Nothing AndAlso Not String.IsNullOrEmpty(tLanguage.name) Then
                             cbMovieScraperCertLang.Text = tLanguage.name
                         Else
                             cbMovieScraperCertLang.SelectedIndex = 0
@@ -3327,17 +3320,70 @@ Public Class dlgSettings
 
             Try
                 cbMovieGeneralLang.Items.Clear()
-                cbMovieGeneralLang.Items.AddRange((From lLang In .TVGeneralLanguages.Language Select lLang.name).ToArray)
+                cbMovieGeneralLang.Items.AddRange((From lLang In APIXML.ScraperLanguagesXML.Languages Select lLang.Description).ToArray)
                 If cbMovieGeneralLang.Items.Count > 0 Then
                     If Not String.IsNullOrEmpty(.MovieGeneralLanguage) Then
-                        Dim tLanguage As TVDBLanguagesLanguage = .TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = .MovieGeneralLanguage)
-                        If tLanguage IsNot Nothing AndAlso tLanguage.name IsNot Nothing AndAlso String.IsNullOrEmpty(tLanguage.name) Then
-                            cbMovieGeneralLang.Text = tLanguage.name
+                        Dim tLanguage As languageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = .MovieGeneralLanguage)
+                        If tLanguage IsNot Nothing Then
+                            cbMovieGeneralLang.Text = tLanguage.Description
                         Else
-                            cbMovieGeneralLang.Text = .TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = "en").name
+                            tLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(.MovieGeneralLanguage))
+                            If tLanguage IsNot Nothing Then
+                                cbMovieGeneralLang.Text = tLanguage.Description
+                            Else
+                                cbMovieGeneralLang.Text = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = "en-US").Description
+                            End If
                         End If
                     Else
-                        cbMovieGeneralLang.Text = .TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = "en").name
+                        cbMovieGeneralLang.Text = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = "en-US").Description
+                    End If
+                End If
+            Catch ex As Exception
+                logger.Error(ex, New StackFrame().GetMethod().Name)
+            End Try
+
+            Try
+                cbMovieImagesForcedLanguage.Items.Clear()
+                cbMovieImagesForcedLanguage.Items.AddRange((From lLang In APIXML.ScraperLanguagesXML.Languages Select lLang.Name).Distinct.ToArray)
+                If cbMovieImagesForcedLanguage.Items.Count > 0 Then
+                    If Not String.IsNullOrEmpty(.MovieImagesForcedLanguage) Then
+                        Dim tLanguage As languageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbrevation_MainLanguage = .MovieImagesForcedLanguage)
+                        If tLanguage IsNot Nothing Then
+                            cbMovieImagesForcedLanguage.Text = tLanguage.Name
+                        Else
+                            tLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(.MovieImagesForcedLanguage))
+                            If tLanguage IsNot Nothing Then
+                                cbMovieImagesForcedLanguage.Text = tLanguage.Name
+                            Else
+                                cbMovieImagesForcedLanguage.Text = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbrevation_MainLanguage = "en").Name
+                            End If
+                        End If
+                    Else
+                        cbMovieImagesForcedLanguage.Text = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbrevation_MainLanguage = "en").Name
+                    End If
+                End If
+            Catch ex As Exception
+                logger.Error(ex, New StackFrame().GetMethod().Name)
+            End Try
+
+            Try
+                cbMovieSetImagesForcedLanguage.Items.Clear()
+                cbMovieSetImagesForcedLanguage.Items.AddRange((From lLang In APIXML.ScraperLanguagesXML.Languages Select lLang.Name).Distinct.ToArray)
+                If cbMovieSetImagesForcedLanguage.Items.Count > 0 Then
+                    If Not String.IsNullOrEmpty(.MovieSetImagesForcedLanguage) Then
+                        Dim tLanguage As languageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbrevation_MainLanguage = .MovieSetImagesForcedLanguage)
+                        If tLanguage IsNot Nothing Then
+                            cbMovieSetImagesForcedLanguage.Text = tLanguage.Name
+                        Else
+                            tLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(.MovieSetImagesForcedLanguage))
+                            If tLanguage IsNot Nothing Then
+                                cbMovieSetImagesForcedLanguage.Text = tLanguage.Name
+                            Else
+                                cbMovieSetImagesForcedLanguage.Text = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbrevation_MainLanguage = "en").Name
+                            End If
+                        End If
+                    Else
+                        cbMovieSetImagesForcedLanguage.Text = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbrevation_MainLanguage = "en").Name
                     End If
                 End If
             Catch ex As Exception
@@ -3353,7 +3399,7 @@ Public Class dlgSettings
                         cbTVScraperShowCertLang.SelectedIndex = 0
                     ElseIf Not String.IsNullOrEmpty(.TVScraperShowCertLang) Then
                         Dim tLanguage As CertLanguages = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = .TVScraperShowCertLang)
-                        If tLanguage IsNot Nothing AndAlso tLanguage.name IsNot Nothing AndAlso String.IsNullOrEmpty(tLanguage.name) Then
+                        If tLanguage IsNot Nothing AndAlso tLanguage.name IsNot Nothing AndAlso Not String.IsNullOrEmpty(tLanguage.name) Then
                             cbTVScraperShowCertLang.Text = tLanguage.name
                         Else
                             cbTVScraperShowCertLang.SelectedIndex = 0
@@ -3368,17 +3414,46 @@ Public Class dlgSettings
 
             Try
                 cbTVGeneralLang.Items.Clear()
-                cbTVGeneralLang.Items.AddRange((From lLang In .TVGeneralLanguages.Language Select lLang.name).ToArray)
+                cbTVGeneralLang.Items.AddRange((From lLang In APIXML.ScraperLanguagesXML.Languages Select lLang.Description).ToArray)
                 If cbTVGeneralLang.Items.Count > 0 Then
                     If Not String.IsNullOrEmpty(.TVGeneralLanguage) Then
-                        Dim tLanguage As TVDBLanguagesLanguage = .TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = .TVGeneralLanguage)
-                        If tLanguage IsNot Nothing AndAlso tLanguage.name IsNot Nothing AndAlso String.IsNullOrEmpty(tLanguage.name) Then
-                            cbTVGeneralLang.Text = tLanguage.name
+                        Dim tLanguage As languageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = .TVGeneralLanguage)
+                        If tLanguage IsNot Nothing AndAlso tLanguage.Description IsNot Nothing AndAlso Not String.IsNullOrEmpty(tLanguage.Description) Then
+                            cbTVGeneralLang.Text = tLanguage.Description
                         Else
-                            cbTVGeneralLang.Text = .TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = "en").name
+                            tLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(.TVGeneralLanguage))
+                            If tLanguage IsNot Nothing Then
+                                cbTVGeneralLang.Text = tLanguage.Description
+                            Else
+                                cbTVGeneralLang.Text = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = "en-US").Description
+                            End If
                         End If
                     Else
-                        cbTVGeneralLang.Text = .TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = "en").name
+                        cbTVGeneralLang.Text = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = "en-US").Description
+                    End If
+                End If
+            Catch ex As Exception
+                logger.Error(ex, New StackFrame().GetMethod().Name)
+            End Try
+
+            Try
+                cbTVImagesForcedLanguage.Items.Clear()
+                cbTVImagesForcedLanguage.Items.AddRange((From lLang In APIXML.ScraperLanguagesXML.Languages Select lLang.Name).Distinct.ToArray)
+                If cbTVImagesForcedLanguage.Items.Count > 0 Then
+                    If Not String.IsNullOrEmpty(.TVImagesForcedLanguage) Then
+                        Dim tLanguage As languageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbrevation_MainLanguage = .TVImagesForcedLanguage)
+                        If tLanguage IsNot Nothing Then
+                            cbTVImagesForcedLanguage.Text = tLanguage.Name
+                        Else
+                            tLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(.TVImagesForcedLanguage))
+                            If tLanguage IsNot Nothing Then
+                                cbTVImagesForcedLanguage.Text = tLanguage.Name
+                            Else
+                                cbTVImagesForcedLanguage.Text = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbrevation_MainLanguage = "en").Name
+                            End If
+                        End If
+                    Else
+                        cbTVImagesForcedLanguage.Text = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbrevation_MainLanguage = "en").Name
                     End If
                 End If
             Catch ex As Exception
@@ -4233,11 +4308,11 @@ Public Class dlgSettings
     End Sub
 
     Private Sub LoadTVScraperOptionsOrdering()
-        Dim items As New Dictionary(Of String, Enums.Ordering)
-        items.Add(Master.eLang.GetString(438, "Standard"), Enums.Ordering.Standard)
-        items.Add(Master.eLang.GetString(1067, "DVD"), Enums.Ordering.DVD)
-        items.Add(Master.eLang.GetString(839, "Absolute"), Enums.Ordering.Absolute)
-        items.Add(Master.eLang.GetString(1332, "Day Of Year"), Enums.Ordering.DayOfYear)
+        Dim items As New Dictionary(Of String, Enums.EpisodeOrdering)
+        items.Add(Master.eLang.GetString(438, "Standard"), Enums.EpisodeOrdering.Standard)
+        items.Add(Master.eLang.GetString(1067, "DVD"), Enums.EpisodeOrdering.DVD)
+        items.Add(Master.eLang.GetString(839, "Absolute"), Enums.EpisodeOrdering.Absolute)
+        items.Add(Master.eLang.GetString(1332, "Day Of Year"), Enums.EpisodeOrdering.DayOfYear)
         cbTVScraperOptionsOrdering.DataSource = items.ToList
         cbTVScraperOptionsOrdering.DisplayMember = "Key"
         cbTVScraperOptionsOrdering.ValueMember = "Value"
@@ -4294,7 +4369,7 @@ Public Class dlgSettings
     Private Sub lstMovieScraperDefFIExt_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles lstMovieScraperDefFIExt.DoubleClick
         If lstMovieScraperDefFIExt.SelectedItems.Count > 0 Then
             Using dEditMeta As New dlgFileInfo(New Database.DBElement(Enums.ContentType.Movie), False)
-                Dim fi As New MediaInfo.Fileinfo
+                Dim fi As New MediaContainers.Fileinfo
                 For Each x As Settings.MetadataPerType In MovieMeta
                     If x.FileType = lstMovieScraperDefFIExt.SelectedItems(0).ToString Then
                         fi = dEditMeta.ShowDialog(x.MetaData, False)
@@ -4302,7 +4377,7 @@ Public Class dlgSettings
                             MovieMeta.Remove(x)
                             Dim m As New Settings.MetadataPerType
                             m.FileType = x.FileType
-                            m.MetaData = New MediaInfo.Fileinfo
+                            m.MetaData = New MediaContainers.Fileinfo
                             m.MetaData = fi
                             MovieMeta.Add(m)
                             LoadMovieMetadata()
@@ -4365,7 +4440,7 @@ Public Class dlgSettings
     Private Sub lstTVScraperDefFIExt_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles lstTVScraperDefFIExt.DoubleClick
         If lstTVScraperDefFIExt.SelectedItems.Count > 0 Then
             Using dEditMeta As New dlgFileInfo(New Database.DBElement(Enums.ContentType.TVEpisode), True)
-                Dim fi As New MediaInfo.Fileinfo
+                Dim fi As New MediaContainers.Fileinfo
                 For Each x As Settings.MetadataPerType In TVMeta
                     If x.FileType = lstTVScraperDefFIExt.SelectedItems(0).ToString Then
                         fi = dEditMeta.ShowDialog(x.MetaData, True)
@@ -4373,7 +4448,7 @@ Public Class dlgSettings
                             TVMeta.Remove(x)
                             Dim m As New Settings.MetadataPerType
                             m.FileType = x.FileType
-                            m.MetaData = New MediaInfo.Fileinfo
+                            m.MetaData = New MediaContainers.Fileinfo
                             m.MetaData = fi
                             TVMeta.Add(m)
                             LoadTVMetadata()
@@ -4408,7 +4483,7 @@ Public Class dlgSettings
     Private Sub lvMovieSources_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles lvMovieSources.DoubleClick
         If lvMovieSources.SelectedItems.Count > 0 Then
             Using dMovieSource As New dlgSourceMovie
-                If dMovieSource.ShowDialog(Convert.ToInt32(lvMovieSources.SelectedItems(0).Text)) = Windows.Forms.DialogResult.OK Then
+                If dMovieSource.ShowDialog(Convert.ToInt32(lvMovieSources.SelectedItems(0).Text)) = DialogResult.OK Then
                     RefreshMovieSources()
                     sResult.NeedsReload_Movie = True 'TODO: Check if we have to use Reload or DBUpdate
                     SetApplyButton(True)
@@ -4440,7 +4515,7 @@ Public Class dlgSettings
     Private Sub lvTVSources_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles lvTVSources.DoubleClick
         If lvTVSources.SelectedItems.Count > 0 Then
             Using dTVSource As New dlgSourceTVShow
-                If dTVSource.ShowDialog(Convert.ToInt32(lvTVSources.SelectedItems(0).Text)) = Windows.Forms.DialogResult.OK Then
+                If dTVSource.ShowDialog(Convert.ToInt32(lvTVSources.SelectedItems(0).Text)) = DialogResult.OK Then
                     RefreshTVSources()
                     sResult.NeedsReload_TVShow = True
                     SetApplyButton(True)
@@ -4519,6 +4594,7 @@ Public Class dlgSettings
             lvItem.SubItems.Add(s.Ordering.ToString)
             lvItem.SubItems.Add(If(s.Exclude, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
             lvItem.SubItems.Add(s.EpisodeSorting.ToString)
+            lvItem.SubItems.Add(If(s.IsSingle, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
             lvTVSources.Items.Add(lvItem)
         Next
     End Sub
@@ -4617,7 +4693,7 @@ Public Class dlgSettings
 
     Private Sub RemoveMovieSource()
         If lvMovieSources.SelectedItems.Count > 0 Then
-            If MessageBox.Show(Master.eLang.GetString(418, "Are you sure you want to remove the selected sources? This will remove the movies from these sources from the Ember database."), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
+            If MessageBox.Show(Master.eLang.GetString(418, "Are you sure you want to remove the selected sources? This will remove the movies from these sources from the Ember database."), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                 lvMovieSources.BeginUpdate()
 
                 Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
@@ -4723,12 +4799,12 @@ Public Class dlgSettings
 
     Private Sub RemoveTVSource()
         If lvTVSources.SelectedItems.Count > 0 Then
-            If MessageBox.Show(Master.eLang.GetString(1033, "Are you sure you want to remove the selected sources? This will remove the tv shows from these sources from the Ember database."), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
+            If MessageBox.Show(Master.eLang.GetString(1033, "Are you sure you want to remove the selected sources? This will remove the tv shows from these sources from the Ember database."), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                 lvTVSources.BeginUpdate()
 
                 Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                     Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                        Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.UInt64, 0, "idSource")
+                        Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.Int64, 0, "idSource")
                         While lvTVSources.SelectedItems.Count > 0
                             parSource.Value = lvTVSources.SelectedItems(0).SubItems(0).Text
                             SQLcommand.CommandText = String.Concat("DELETE FROM tvshowsource WHERE idSource = (?);")
@@ -4901,13 +4977,17 @@ Public Class dlgSettings
             .MovieGeneralFlagLang = If(cbMovieLanguageOverlay.Text = Master.eLang.Disabled, String.Empty, cbMovieLanguageOverlay.Text)
             .MovieGeneralIgnoreLastScan = chkMovieGeneralIgnoreLastScan.Checked
             If Not String.IsNullOrEmpty(cbMovieGeneralLang.Text) Then
-                .MovieGeneralLanguage = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = cbMovieGeneralLang.Text).abbreviation
+                .MovieGeneralLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = cbMovieGeneralLang.Text).Abbreviation
             End If
             .MovieGeneralMarkNew = chkMovieGeneralMarkNew.Checked
             .MovieGeneralMediaListSorting.Clear()
             .MovieGeneralMediaListSorting.AddRange(MovieGeneralMediaListSorting)
             .MovieImagesCacheEnabled = chkMovieImagesCacheEnabled.Checked
             .MovieImagesDisplayImageSelect = chkMovieImagesDisplayImageSelect.Checked
+            If Not String.IsNullOrEmpty(cbMovieImagesForcedLanguage.Text) Then
+                .MovieImagesForcedLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Name = cbMovieImagesForcedLanguage.Text).Abbrevation_MainLanguage
+            End If
+            .MovieImagesForceLanguage = chkMovieImagesForceLanguage.Checked
             .MovieImagesGetBlankImages = chkMovieImagesGetBlankImages.Checked
             .MovieImagesGetEnglishImages = chkMovieImagesGetEnglishImages.Checked
             .MovieImagesMediaLanguageOnly = chkMovieImagesMediaLanguageOnly.Checked
@@ -4979,6 +5059,10 @@ Public Class dlgSettings
             .MovieSetGeneralMediaListSorting.AddRange(MovieSetGeneralMediaListSorting)
             .MovieSetImagesCacheEnabled = chkMovieSetImagesCacheEnabled.Checked
             .MovieSetImagesDisplayImageSelect = chkMovieSetImagesDisplayImageSelect.Checked
+            If Not String.IsNullOrEmpty(cbMovieSetImagesForcedLanguage.Text) Then
+                .MovieSetImagesForcedLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Name = cbMovieSetImagesForcedLanguage.Text).Abbrevation_MainLanguage
+            End If
+            .MovieSetImagesForceLanguage = chkMovieSetImagesForceLanguage.Checked
             .MovieSetImagesGetBlankImages = chkMovieSetImagesGetBlankImages.Checked
             .MovieSetImagesGetEnglishImages = chkMovieSetImagesGetEnglishImages.Checked
             .MovieSetImagesMediaLanguageOnly = chkMovieSetImagesMediaLanguageOnly.Checked
@@ -5006,7 +5090,7 @@ Public Class dlgSettings
             .MovieScraperCertForMPAAFallback = chkMovieScraperCertForMPAAFallback.Checked
             .MovieScraperCertFSK = chkMovieScraperCertFSK.Checked
             .MovieScraperCertOnlyValue = chkMovieScraperCertOnlyValue.Checked
-            If cbMovieScraperCertLang.Text <> String.Empty Then
+            If Not String.IsNullOrEmpty(cbMovieScraperCertLang.Text) Then
                 If cbMovieScraperCertLang.SelectedIndex = 0 Then
                     .MovieScraperCertLang = Master.eLang.All
                 Else
@@ -5124,7 +5208,7 @@ Public Class dlgSettings
             'cocotus, 2014/05/21 Fixed: If cbTVGeneralLang.Text is empty it will crash here -> no AdvancedSettings.xml will be built/saved!!(happens when user has not yet set TVLanguage via Fetch language button!)
             'old:    .TVGeneralLanguage = Master.eSettings.TVGeneralLanguages.FirstOrDefault(Function(l) l.LongLang = cbTVGeneralLang.Text).ShortLang
             If Not String.IsNullOrEmpty(cbTVGeneralLang.Text) Then
-                .TVGeneralLanguage = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = cbTVGeneralLang.Text).abbreviation
+                .TVGeneralLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = cbTVGeneralLang.Text).Abbreviation
             End If
             .TVGeneralClickScrape = chkTVGeneralClickScrape.Checked
             .TVGeneralClickScrapeAsk = chkTVGeneralClickScrapeAsk.Checked
@@ -5139,6 +5223,10 @@ Public Class dlgSettings
             .TVGeneralShowListSorting.AddRange(TVGeneralShowListSorting)
             .TVImagesCacheEnabled = chkTVImagesCacheEnabled.Checked
             .TVImagesDisplayImageSelect = chkTVImagesDisplayImageSelect.Checked
+            If Not String.IsNullOrEmpty(cbTVImagesForcedLanguage.Text) Then
+                .TVImagesForcedLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Name = cbTVImagesForcedLanguage.Text).Abbrevation_MainLanguage
+            End If
+            .TVImagesForceLanguage = chkTVImagesForceLanguage.Checked
             .TVImagesGetBlankImages = chkTVImagesGetBlankImages.Checked
             .TVImagesGetEnglishImages = chkTVImagesGetEnglishImages.Checked
             .TVImagesMediaLanguageOnly = chkTVImagesMediaLanguageOnly.Checked
@@ -5178,7 +5266,7 @@ Public Class dlgSettings
             .TVScraperEpisodeRuntime = chkTVScraperEpisodeRuntime.Checked
             .TVScraperEpisodeTitle = chkTVScraperEpisodeTitle.Checked
             .TVScraperMetaDataScan = chkTVScraperMetaDataScan.Checked
-            .TVScraperOptionsOrdering = CType(cbTVScraperOptionsOrdering.SelectedItem, KeyValuePair(Of String, Enums.Ordering)).Value
+            .TVScraperOptionsOrdering = CType(cbTVScraperOptionsOrdering.SelectedItem, KeyValuePair(Of String, Enums.EpisodeOrdering)).Value
             .TVScraperSeasonAired = chkTVScraperSeasonAired.Checked
             .TVScraperSeasonPlot = chkTVScraperSeasonPlot.Checked
             .TVScraperSeasonTitle = chkTVScraperSeasonTitle.Checked
@@ -5189,7 +5277,7 @@ Public Class dlgSettings
             .TVScraperShowCertForMPAAFallback = chkTVScraperShowCertForMPAAFallback.Checked
             .TVScraperShowCertFSK = chkTVScraperShowCertFSK.Checked
             .TVScraperShowCertOnlyValue = chkTVScraperShowCertOnlyValue.Checked
-            If cbTVScraperShowCertLang.Text <> String.Empty Then
+            If Not String.IsNullOrEmpty(cbTVScraperShowCertLang.Text) Then
                 If cbTVScraperShowCertLang.SelectedIndex = 0 Then
                     .TVScraperShowCertLang = Master.eLang.All
                 Else
@@ -6136,6 +6224,12 @@ Public Class dlgSettings
         lblMovieScraperDefFIExt.Text = strFileType
         lblTVScraperDefFIExt.Text = strFileType
 
+        'Force Language
+        Dim strForceLanguage As String = Master.eLang.GetString(1034, "Force Language")
+        chkMovieImagesForceLanguage.Text = strForceLanguage
+        chkMovieSetImagesForceLanguage.Text = strForceLanguage
+        chkTVImagesForceLanguage.Text = strForceLanguage
+
         'Genres
         Dim strGenres As String = Master.eLang.GetString(725, "Genres")
         lblMovieScraperGlobalGenres.Text = strGenres
@@ -6705,7 +6799,6 @@ Public Class dlgSettings
         btnMovieSourceRemove.Text = Master.eLang.GetString(30, "Remove")
         btnOK.Text = Master.eLang.GetString(179, "OK")
         btnRemTVSource.Text = Master.eLang.GetString(30, "Remove")
-        btnTVGeneralLangFetch.Text = Master.eLang.GetString(742, "Fetch Available Languages")
         btnTVSourcesRegexTVShowMatchingAdd.Tag = String.Empty
         btnTVSourcesRegexTVShowMatchingAdd.Text = Master.eLang.GetString(690, "Edit Regex")
         btnTVSourcesRegexTVShowMatchingClear.Text = Master.eLang.GetString(123, "Clear")
@@ -7158,7 +7251,7 @@ Public Class dlgSettings
         Try
             With fbdBrowse
                 fbdBrowse.Description = Master.eLang.GetString(1030, "Select the folder where you wish to store your movie sets images...")
-                If .ShowDialog = Windows.Forms.DialogResult.OK Then
+                If .ShowDialog = DialogResult.OK Then
                     If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
                         txtMovieSetPathExtended.Text = .SelectedPath.ToString
                     End If
@@ -7173,7 +7266,7 @@ Public Class dlgSettings
         Try
             With fbdBrowse
                 fbdBrowse.Description = Master.eLang.GetString(1030, "Select the folder where you wish to store your movie sets images...")
-                If .ShowDialog = Windows.Forms.DialogResult.OK Then
+                If .ShowDialog = DialogResult.OK Then
                     If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
                         txtMovieSetPathMSAA.Text = .SelectedPath.ToString
                     End If
@@ -7188,7 +7281,7 @@ Public Class dlgSettings
         Try
             With fbdBrowse
                 fbdBrowse.Description = Master.eLang.GetString(1030, "Select the folder where you wish to store your movie sets images...")
-                If .ShowDialog = Windows.Forms.DialogResult.OK Then
+                If .ShowDialog = DialogResult.OK Then
                     If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
                         txtMovieSetPathExpertSingle.Text = .SelectedPath.ToString
                     End If
@@ -7203,7 +7296,7 @@ Public Class dlgSettings
         Try
             With fbdBrowse
                 fbdBrowse.Description = Master.eLang.GetString(1077, "Select the folder where you wish to store your themes...")
-                If .ShowDialog = Windows.Forms.DialogResult.OK Then
+                If .ShowDialog = DialogResult.OK Then
                     If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
                         txtMovieThemeTvTunesCustomPath.Text = .SelectedPath.ToString
                     End If
@@ -7218,7 +7311,7 @@ Public Class dlgSettings
         Try
             With fbdBrowse
                 fbdBrowse.Description = Master.eLang.GetString(1077, "Select the folder where you wish to store your themes...")
-                If .ShowDialog = Windows.Forms.DialogResult.OK Then
+                If .ShowDialog = DialogResult.OK Then
                     If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
                         txtTVShowThemeTvTunesCustomPath.Text = .SelectedPath.ToString
                     End If
@@ -7233,7 +7326,7 @@ Public Class dlgSettings
         Try
             With fbdBrowse
                 fbdBrowse.Description = Master.eLang.GetString(1029, "Select the folder where you wish to store your watched files...")
-                If .ShowDialog = Windows.Forms.DialogResult.OK Then
+                If .ShowDialog = DialogResult.OK Then
                     If Not String.IsNullOrEmpty(.SelectedPath.ToString) AndAlso Directory.Exists(.SelectedPath) Then
                         txtMovieYAMJWatchedFolder.Text = .SelectedPath.ToString
                     End If
@@ -7687,6 +7780,12 @@ Public Class dlgSettings
         e.Handled = (e.KeyCode = Keys.Enter)
     End Sub
 
+    Private Sub chkMovieImagesForceLanguage_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieImagesForceLanguage.CheckedChanged
+        SetApplyButton(True)
+
+        cbMovieImagesForcedLanguage.Enabled = chkMovieImagesForceLanguage.Checked
+    End Sub
+
     Private Sub chkMovieImagesMediaLanguageOnly_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieImagesMediaLanguageOnly.CheckedChanged
         SetApplyButton(True)
 
@@ -7699,6 +7798,12 @@ Public Class dlgSettings
         End If
     End Sub
 
+    Private Sub chkMovieSetImagesForceLanguage_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieSetImagesForceLanguage.CheckedChanged
+        SetApplyButton(True)
+
+        cbMovieSetImagesForcedLanguage.Enabled = chkMovieSetImagesForceLanguage.Checked
+    End Sub
+
     Private Sub chkMovieSetImagesMediaLanguageOnly_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieSetImagesMediaLanguageOnly.CheckedChanged
         SetApplyButton(True)
 
@@ -7709,6 +7814,12 @@ Public Class dlgSettings
             chkMovieSetImagesGetBlankImages.Checked = False
             chkMovieSetImagesGetEnglishImages.Checked = False
         End If
+    End Sub
+
+    Private Sub chkTVImagesForceLanguage_CheckedChanged(sender As Object, e As EventArgs) Handles chkTVImagesForceLanguage.CheckedChanged
+        SetApplyButton(True)
+
+        cbTVImagesForcedLanguage.Enabled = chkTVImagesForceLanguage.Checked
     End Sub
 
     Private Sub chkTVImagesMediaLanguageOnly_CheckedChanged(sender As Object, e As EventArgs) Handles chkTVImagesMediaLanguageOnly.CheckedChanged
@@ -7860,6 +7971,7 @@ Public Class dlgSettings
         cbMovieGeneralCustomScrapeButtonModifierType.SelectedIndexChanged,
         cbMovieGeneralCustomScrapeButtonScrapeType.SelectedIndexChanged,
         cbMovieGeneralLang.SelectedIndexChanged,
+        cbMovieImagesForcedLanguage.SelectedIndexChanged,
         cbMovieLanguageOverlay.SelectedIndexChanged,
         cbMoviePosterPrefSize.SelectedIndexChanged,
         cbMovieScraperCertLang.SelectedIndexChanged,
@@ -7867,6 +7979,7 @@ Public Class dlgSettings
         cbMovieSetFanartPrefSize.SelectedIndexChanged,
         cbMovieSetGeneralCustomScrapeButtonModifierType.SelectedIndexChanged,
         cbMovieSetGeneralCustomScrapeButtonScrapeType.SelectedIndexChanged,
+        cbMovieSetImagesForcedLanguage.SelectedIndexChanged,
         cbMovieSetPosterPrefSize.SelectedIndexChanged,
         cbMovieTrailerMinVideoQual.SelectedIndexChanged,
         cbTVAllSeasonsBannerPrefType.SelectedIndexChanged,
@@ -7877,6 +7990,7 @@ Public Class dlgSettings
         cbTVGeneralCustomScrapeButtonModifierType.SelectedIndexChanged,
         cbTVGeneralCustomScrapeButtonScrapeType.SelectedIndexChanged,
         cbTVGeneralLang.SelectedIndexChanged,
+        cbTVImagesForcedLanguage.SelectedIndexChanged,
         cbTVLanguageOverlay.SelectedIndexChanged,
         cbTVScraperOptionsOrdering.SelectedIndexChanged,
         cbTVSeasonBannerPrefType.SelectedIndexChanged,

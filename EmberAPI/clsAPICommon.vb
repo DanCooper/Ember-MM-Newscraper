@@ -594,13 +594,6 @@ Public Class Enums
         TVSortTokens = 16
     End Enum
 
-    Public Enum DelType As Integer
-        Movies = 0
-        Shows = 1
-        Seasons = 2
-        Episodes = 3
-    End Enum
-
     Public Enum ContentType As Integer
         None = 0
         Generic = 1
@@ -695,116 +688,120 @@ Public Class Enums
         ''' <remarks></remarks>
         BeforeEdit_Movie = 7
         ''' <summary>
+        ''' Called when Manual editing or reading from nfo
+        ''' </summary>
+        ''' <remarks></remarks>
+        BeforeEdit_MovieSet = 8
+        ''' <summary>
+        ''' Called when Manual editing or reading from nfo
+        ''' </summary>
+        ''' <remarks></remarks>
+        BeforeEdit_TVEpisode = 9
+        ''' <summary>
+        ''' Called when Manual editing or reading from nfo
+        ''' </summary>
+        ''' <remarks></remarks>
+        BeforeEdit_TVSeason = 10
+        ''' <summary>
+        ''' Called when Manual editing or reading from nfo
+        ''' </summary>
+        ''' <remarks></remarks>
+        BeforeEdit_TVShow = 11
+        ''' <summary>
         ''' Command Line Module Call
         ''' </summary>
         ''' <remarks></remarks>
-        CommandLine = 8
-        FrameExtrator_Movie = 9
-        FrameExtrator_TVEpisode = 10
-        Generic = 11
-        MediaPlayer_Audio = 12
-        MediaPlayer_Video = 13
-        MediaPlayerPlay_Audio = 14
-        MediaPlayerPlay_Video = 15
-        MediaPlayerPlaylistAdd_Audio = 16
-        MediaPlayerPlaylistAdd_Video = 17
-        MediaPlayerPlaylistClear_Audio = 18
-        MediaPlayerPlaylistClear_Video = 19
-        MediaPlayerStop_Audio = 20
-        MediaPlayerStop_Video = 21
-        Notification = 23
+        CommandLine = 12
+        FrameExtrator_Movie = 13
+        FrameExtrator_TVEpisode = 14
+        Generic = 15
+        MediaPlayer_Audio = 16
+        MediaPlayer_Video = 17
+        MediaPlayerPlay_Audio = 18
+        MediaPlayerPlay_Video = 19
+        MediaPlayerPlaylistAdd_Audio = 20
+        MediaPlayerPlaylistAdd_Video = 21
+        MediaPlayerPlaylistClear_Audio = 22
+        MediaPlayerPlaylistClear_Video = 23
+        MediaPlayerStop_Audio = 24
+        MediaPlayerStop_Video = 25
+        Notification = 26
         OnBannerSave_Movie = 24
-        OnClearArtSave_Movie = 25
-        OnClearLogoSave_Movie = 26
-        OnDiscArtSave_Movie = 27
-        OnFanartDelete_Movie = 28
-        OnFanartSave_Movie = 29
-        OnLandscapeSave_Movie = 30
-        OnNFORead_TVShow = 31
-        OnNFOSave_Movie = 32
-        OnNFOSave_TVShow = 33
-        OnPosterDelete_Movie = 34
-        OnPosterSave_Movie = 35
-        OnThemeSave_Movie = 36
-        OnTrailerSave_Movie = 37
-        RandomFrameExtrator = 38
-        Remove_Movie = 39
-        Remove_MovieSet = 40
-        Remove_TVEpisode = 41
-        Remove_TVSeason = 42
-        Remove_TVShow = 43
+        OnClearArtSave_Movie = 28
+        OnClearLogoSave_Movie = 29
+        OnDiscArtSave_Movie = 30
+        OnFanartDelete_Movie = 31
+        OnFanartSave_Movie = 32
+        OnLandscapeSave_Movie = 33
+        OnNFORead_TVShow = 34
+        OnNFOSave_Movie = 35
+        OnNFOSave_TVShow = 36
+        OnPosterDelete_Movie = 37
+        OnPosterSave_Movie = 38
+        OnThemeSave_Movie = 39
+        OnTrailerSave_Movie = 40
+        RandomFrameExtrator = 41
+        Remove_Movie = 42
+        Remove_MovieSet = 43
+        Remove_TVEpisode = 44
+        Remove_TVSeason = 45
+        Remove_TVShow = 46
         ''' <summary>
         ''' Called during auto scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperMulti_Movie = 44
+        ScraperMulti_Movie = 47
         ''' <summary>
         ''' Called during auto scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperMulti_TVEpisode = 45
+        ScraperMulti_TVEpisode = 48
         ''' <summary>
         ''' Called during manual scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperSingle_Movie = 46
+        ScraperSingle_Movie = 49
         ''' <summary>
         ''' Called during manual scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperSingle_TVEpisode = 47
-        ShowMovie = 48
-        ShowTVShow = 49
-        SyncModuleSettings = 50
-        Sync_Movie = 51
-        Sync_MovieSet = 52
-        Sync_TVEpisode = 53
-        Sync_TVSeason = 54
-        Sync_TVShow = 55
-        Task = 56
+        ScraperSingle_TVEpisode = 50
+        ShowMovie = 51
+        ShowTVShow = 52
+        SyncModuleSettings = 53
+        Sync_Movie = 54
+        Sync_MovieSet = 55
+        Sync_TVEpisode = 56
+        Sync_TVSeason = 57
+        Sync_TVShow = 58
+        Task = 59
         ''' <summary>
         ''' Called during auto scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperMulti_TVShow = 57
+        ScraperMulti_TVShow = 60
         ''' <summary>
         ''' Called during manual scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperSingle_TVShow = 58
+        ScraperSingle_TVShow = 61
         ''' <summary>
         ''' Called during auto scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperMulti_TVSeason = 59
+        ScraperMulti_TVSeason = 62
         ''' <summary>
         ''' Called during manual scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperSingle_TVSeason = 60
-        DuringUpdateDB_TV = 61
-    End Enum
-
-    Public Enum ScraperEventType As Integer
-        BannerItem = 0
-        CharacterArtItem = 1
-        ClearArtItem = 2
-        ClearLogoItem = 3
-        DiscArtItem = 4
-        ExtrafanartsItem = 5
-        ExtrathumbsItem = 6
-        FanartItem = 7
-        LandscapeItem = 8
-        NFOItem = 9
-        PosterItem = 10
-        ThemeItem = 11
-        TrailerItem = 12
+        ScraperSingle_TVSeason = 63
+        DuringUpdateDB_TV = 64
     End Enum
     ''' <summary>
     ''' Enum representing valid TV series ordering.
     ''' </summary>
     ''' <remarks></remarks>
-    Public Enum Ordering As Integer
+    Public Enum EpisodeOrdering As Integer
         Standard = 0
         DVD = 1
         Absolute = 2
@@ -817,37 +814,6 @@ Public Class Enums
     Public Enum EpisodeSorting As Integer
         Episode = 0
         Aired = 1
-    End Enum
-    ''' <summary>
-    ''' Enum representing which Movies/TVShows should be scraped,
-    ''' and whether results should be automatically chosen or asked of the user.
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Enum ScrapeType As Integer
-        AllAuto = 0
-        AllAsk = 1
-        AllSkip = 2
-        MissingAuto = 3
-        MissingAsk = 4
-        MissingSkip = 5
-        CleanFolders = 6
-        NewAuto = 7
-        NewAsk = 8
-        NewSkip = 9
-        MarkedAuto = 10
-        MarkedAsk = 11
-        MarkedSkip = 12
-        FilterAuto = 13
-        FilterAsk = 14
-        FilterSkip = 15
-        CopyBackdrops = 16
-        SingleScrape = 17
-        SingleField = 18
-        SingleAuto = 19
-        SelectedAuto = 20
-        SelectedAsk = 21
-        SelectedSkip = 22
-        None = 99
     End Enum
 
     Public Enum MovieBannerSize As Integer
@@ -870,6 +836,69 @@ Public Class Enums
         HD1500 = 2
         HD1426 = 3
         Any = 99
+    End Enum
+
+    Public Enum ScannerEventType As Integer
+        AddedMovie = 0
+        AddedTVEpisode = 1
+        CleaningDatabase = 2
+        PreliminaryTasks = 3
+    End Enum
+
+    Public Enum ScraperEventType As Integer
+        BannerItem = 0
+        CharacterArtItem = 1
+        ClearArtItem = 2
+        ClearLogoItem = 3
+        DiscArtItem = 4
+        ExtrafanartsItem = 5
+        ExtrathumbsItem = 6
+        FanartItem = 7
+        LandscapeItem = 8
+        NFOItem = 9
+        PosterItem = 10
+        ThemeItem = 11
+        TrailerItem = 12
+    End Enum
+    ''' <summary>
+    ''' Enum representing which Movies/TVShows should be scraped,
+    ''' and whether results should be automatically chosen or asked of the user.
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Enum ScrapeType As Integer
+        AllAuto = 0
+        AllAsk = 1
+        AllSkip = 2
+        MissingAuto = 3
+        MissingAsk = 4
+        MissingSkip = 5
+        NewAuto = 6
+        NewAsk = 7
+        NewSkip = 8
+        MarkedAuto = 9
+        MarkedAsk = 10
+        MarkedSkip = 11
+        FilterAuto = 12
+        FilterAsk = 13
+        FilterSkip = 14
+        SingleScrape = 15
+        SingleField = 16
+        SingleAuto = 17
+        SelectedAuto = 18
+        SelectedAsk = 19
+        SelectedSkip = 20
+        None = 99
+    End Enum
+
+    Public Enum TaskManagerEventType As Integer
+        RefreshRow = 0
+        SimpleMessage = 1
+    End Enum
+
+    Public Enum TaskManagerType As Integer
+        CopyBackdrops = 0
+        Reload = 1
+        SetWatchedState = 2
     End Enum
 
     Public Enum TVBannerSize As Integer
@@ -1102,6 +1131,17 @@ Public Class Functions
         Dim origin As DateTime = New DateTime(1970, 1, 1, 0, 0, 0, 0)
         Dim diff As System.TimeSpan = data - origin
         Return Math.Floor(diff.TotalSeconds)
+    End Function
+
+    Public Shared Function ConvertToProperDateTime(ByVal strDateTime As String) As String
+        If String.IsNullOrEmpty(strDateTime) Then Return String.Empty
+
+        Dim parsedDateTime As DateTime
+        If DateTime.TryParse(strDateTime, parsedDateTime) Then
+            Return parsedDateTime.ToString("yyyy-MM-dd HH:mm:ss")
+        Else
+            Return String.Empty
+        End If
     End Function
     ''' <summary>
     ''' Create a collection of default Movie and TV scrape options

@@ -58,13 +58,22 @@ Public Class frmSettingsHolder
     ''' 2015/06/26 Cocotus - First implementation
     ''' </remarks>
     Sub SetUp()
-        gbSettingsGeneral.Text = Master.eLang.GetString(420, "Settings")
         btnAddHost.Text = Master.eLang.GetString(28, "Add")
+        btnEditHost.Text = Master.eLang.GetString(1440, "Edit")
         btnRemoveHost.Text = Master.eLang.GetString(30, "Remove")
         chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        btnEditHost.Text = Master.eLang.GetString(1440, "Edit")
+        chkGetWatchedState.Text = String.Concat(Master.eLang.GetString(1454, "Get Watched State from"), ":")
+        chkGetWatchedStateBeforeEdit_Movie.Text = Master.eLang.GetString(1055, "Before Edit")
+        chkGetWatchedStateBeforeEdit_TVEpisode.Text = Master.eLang.GetString(1055, "Before Edit")
+        chkGetWatchedStateScraperMulti_Movie.Text = Master.eLang.GetString(1056, "During Multi-Scraping")
+        chkGetWatchedStateScraperMulti_TVEpisode.Text = Master.eLang.GetString(1056, "During Multi-Scraping")
+        chkGetWatchedStateScraperSingle_Movie.Text = Master.eLang.GetString(1057, "During Single-Scraping")
+        chkGetWatchedStateScraperSingle_TVEpisode.Text = Master.eLang.GetString(1057, "During Single-Scraping")
         chkNotification.Text = Master.eLang.GetString(1441, "Send Notifications")
-        chkPlayCount.Text = Master.eLang.GetString(1454, "Retrieve PlayCount from") & ":"
+        gbGetWatchedState.Text = Master.eLang.GetString(1071, "Watched State")
+        gbGetWatchedStateMovies.Text = Master.eLang.GetString(36, "Movies")
+        gbGetWatchedStateTVEpisodes.Text = Master.eLang.GetString(682, "Episodes")
+        gbHosts.Text = Master.eLang.GetString(420, "Settings")
     End Sub
 
     ''' <summary>
@@ -87,19 +96,19 @@ Public Class frmSettingsHolder
     ''' </remarks>
     Private Sub ReloadKodiHosts()
         Dim oldPlayCountHost As String = String.Empty
-        If cbPlayCountHost.Items.Count > 0 AndAlso cbPlayCountHost.SelectedItem IsNot Nothing Then
-            oldPlayCountHost = cbPlayCountHost.SelectedItem.ToString
+        If cbGetWatchedStateHost.Items.Count > 0 AndAlso cbGetWatchedStateHost.SelectedItem IsNot Nothing Then
+            oldPlayCountHost = cbGetWatchedStateHost.SelectedItem.ToString
         End If
         btnEditHost.Enabled = False
         btnRemoveHost.Enabled = False
-        cbPlayCountHost.Items.Clear()
+        cbGetWatchedStateHost.Items.Clear()
         lbHosts.Items.Clear()
         For Each host In HostList
             lbHosts.Items.Add(host.Label)
-            cbPlayCountHost.Items.Add(host.Label)
+            cbGetWatchedStateHost.Items.Add(host.Label)
         Next
-        If cbPlayCountHost.Items.Contains(oldPlayCountHost) Then
-            cbPlayCountHost.SelectedItem = oldPlayCountHost
+        If cbGetWatchedStateHost.Items.Contains(oldPlayCountHost) Then
+            cbGetWatchedStateHost.SelectedItem = oldPlayCountHost
         End If
     End Sub
 
@@ -194,25 +203,28 @@ Public Class frmSettingsHolder
     End Sub
 
     ''' <summary>
-    '''  Setting "SendNotification" enabled/disabled
-    ''' </summary>
-    ''' <param name="sender">"Notification"-checkbox in Form</param>
-    ''' <remarks>
-    ''' 2015/06/27 Cocotus - First implementation
-    ''' </remarks>
-    Private Sub chkNotification_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkNotification.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    ''' <summary>
     '''  Setting "Sync Playcount" enabled/disabled
     ''' </summary>
     ''' <param name="sender">"Sync Playcount"-checkbox in Form</param>
     ''' <remarks>
     ''' 2015/07/08 Cocotus - First implementation
     ''' </remarks>
-    Private Sub chkPlayCount_CheckedChanged(sender As Object, e As EventArgs) Handles chkPlayCount.CheckedChanged
-        cbPlayCountHost.Enabled = chkPlayCount.Checked
+    Private Sub chkGetWatchedState_CheckedChanged(sender As Object, e As EventArgs) Handles chkGetWatchedState.CheckedChanged
+        cbGetWatchedStateHost.Enabled = chkGetWatchedState.Checked
+        gbGetWatchedStateMovies.Enabled = chkGetWatchedState.Checked
+        gbGetWatchedStateTVEpisodes.Enabled = chkGetWatchedState.Checked
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub EnableApplyButton() Handles cbGetWatchedStateHost.SelectedIndexChanged,
+        chkGetWatchedStateBeforeEdit_Movie.CheckedChanged,
+        chkGetWatchedStateBeforeEdit_TVEpisode.CheckedChanged,
+        chkGetWatchedStateScraperMulti_Movie.CheckedChanged,
+        chkGetWatchedStateScraperMulti_TVEpisode.CheckedChanged,
+        chkGetWatchedStateScraperSingle_Movie.CheckedChanged,
+        chkGetWatchedStateScraperSingle_TVEpisode.CheckedChanged,
+        chkNotification.CheckedChanged
+
         RaiseEvent ModuleSettingsChanged()
     End Sub
 

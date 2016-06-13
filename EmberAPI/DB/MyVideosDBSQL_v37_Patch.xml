@@ -1,0 +1,159 @@
+<?xml version="1.0"?>
+<CommandFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <transaction name="MyVideosDBSQL_v37_to_v38">
+    <command type="DB">
+      <description>add field bSingle to table tvshowsource</description>
+      <execute>
+        ALTER TABLE tvshowsource
+        ADD COLUMN bSingle boolean NOT NULL DEFAULT 0;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>changed default value for strLanguage to 'en-US' in table moviesource</description>
+      <execute>
+        CREATE TABLE moviesource01(
+        idSource,
+        strName,
+        strPath,
+        bRecursive,
+        bFoldername,
+        bSingle,
+        strLastScan,
+        bExclude,
+        bGetYear,
+        strLanguage
+        );
+
+        INSERT INTO moviesource01
+        SELECT
+        idSource,
+        strName,
+        strPath,
+        bRecursive,
+        bFoldername,
+        bSingle,
+        strLastScan,
+        bExclude,
+        bGetYear,
+        strLanguage
+        FROM moviesource;
+
+        DROP TABLE moviesource;
+
+        CREATE TABLE moviesource (
+        idSource     integer PRIMARY KEY AUTOINCREMENT,
+        strName      text NOT NULL,
+        strPath      text NOT NULL,
+        bRecursive   bool NOT NULL DEFAULT 0,
+        bFoldername  bool NOT NULL DEFAULT 0,
+        bSingle      bool NOT NULL DEFAULT 0,
+        strLastScan  text NOT NULL DEFAULT '1900/01/01',
+        bExclude     bool NOT NULL DEFAULT 0,
+        bGetYear     bool NOT NULL DEFAULT 1,
+        strLanguage  text NOT NULL DEFAULT 'en-US'
+        );
+
+        INSERT INTO moviesource
+        (idSource,
+        strName,
+        strPath,
+        bRecursive,
+        bFoldername,
+        bSingle,
+        strLastScan,
+        bExclude,
+        bGetYear,
+        strLanguage)
+        SELECT
+        idSource,
+        strName,
+        strPath,
+        bRecursive,
+        bFoldername,
+        bSingle,
+        strLastScan,
+        bExclude,
+        bGetYear,
+        strLanguage
+        FROM moviesource01;
+
+        DROP TABLE moviesource01;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>changed default value for strLanguage to 'en-US' in table tvshowsource</description>
+      <execute>
+        CREATE TABLE tvshowsource01(
+        idSource,
+        strName,
+        strPath,
+        strLastScan,
+        strLanguage,
+        iOrdering,
+        bExclude,
+        iEpisodeSorting,
+        bSingle
+        );
+
+        INSERT INTO tvshowsource01
+        SELECT
+        idSource,
+        strName,
+        strPath,
+        strLastScan,
+        strLanguage,
+        iOrdering,
+        bExclude,
+        iEpisodeSorting,
+        bSingle
+        FROM tvshowsource;
+
+        DROP TABLE tvshowsource;
+
+        CREATE TABLE tvshowsource (
+        idSource         integer PRIMARY KEY AUTOINCREMENT,
+        strName          text NOT NULL,
+        strPath          text NOT NULL,
+        strLastScan      text NOT NULL DEFAULT '1900/01/01',
+        strLanguage      text NOT NULL DEFAULT 'en-US',
+        iOrdering        integer NOT NULL DEFAULT 0,
+        bExclude         bool NOT NULL DEFAULT 0,
+        iEpisodeSorting  integer NOT NULL DEFAULT 0,
+        bSingle          boolean NOT NULL DEFAULT 0
+        );
+
+        INSERT INTO tvshowsource
+        (idSource,
+        strName,
+        strPath,
+        strLastScan,
+        strLanguage,
+        iOrdering,
+        bExclude,
+        iEpisodeSorting,
+        bSingle)
+        SELECT
+        idSource,
+        strName,
+        strPath,
+        strLastScan,
+        strLanguage,
+        iOrdering,
+        bExclude,
+        iEpisodeSorting,
+        bSingle
+        FROM tvshowsource01;
+
+        DROP TABLE tvshowsource01;
+      </execute>
+    </command>
+  </transaction>
+  <noTransaction type="">
+  </noTransaction>
+<!-- 
+  <noTransaction type="DB">
+    <description>nd1</description>
+    <execute>ne1</execute>
+  </noTransaction>
+-->
+</CommandFile>

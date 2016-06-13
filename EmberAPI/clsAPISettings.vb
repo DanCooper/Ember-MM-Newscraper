@@ -97,7 +97,7 @@ Public Class Settings
             Return Settings._XMLSettings.MovieGeneralLanguage
         End Get
         Set(ByVal value As String)
-            Settings._XMLSettings.MovieGeneralLanguage = If(String.IsNullOrEmpty(value), "en", value)
+            Settings._XMLSettings.MovieGeneralLanguage = If(String.IsNullOrEmpty(value), "en-US", value)
         End Set
     End Property
 
@@ -106,16 +106,7 @@ Public Class Settings
             Return Settings._XMLSettings.TVGeneralLanguage
         End Get
         Set(ByVal value As String)
-            Settings._XMLSettings.TVGeneralLanguage = If(String.IsNullOrEmpty(value), "en", value)
-        End Set
-    End Property
-
-    Public Property TVGeneralLanguages() As clsXMLTVDBLanguages
-        Get
-            Return Settings._XMLSettings.TVGeneralLanguages
-        End Get
-        Set(ByVal value As clsXMLTVDBLanguages)
-            Settings._XMLSettings.TVGeneralLanguages = value
+            Settings._XMLSettings.TVGeneralLanguage = If(String.IsNullOrEmpty(value), "en-US", value)
         End Set
     End Property
 
@@ -407,11 +398,11 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVScraperOptionsOrdering() As Enums.Ordering
+    Public Property TVScraperOptionsOrdering() As Enums.EpisodeOrdering
         Get
             Return Settings._XMLSettings.TVScraperOptionsOrdering
         End Get
-        Set(ByVal value As Enums.Ordering)
+        Set(ByVal value As Enums.EpisodeOrdering)
             Settings._XMLSettings.TVScraperOptionsOrdering = value
         End Set
     End Property
@@ -4427,12 +4418,21 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieImagesPrefLanguage() As String
+    Public Property MovieImagesForcedLanguage() As String
         Get
-            Return Settings._XMLSettings.MovieImagesPrefLanguage
+            Return Settings._XMLSettings.MovieImagesForcedLanguage
         End Get
         Set(ByVal value As String)
-            Settings._XMLSettings.MovieImagesPrefLanguage = value
+            Settings._XMLSettings.MovieImagesForcedLanguage = value
+        End Set
+    End Property
+
+    Public Property MovieImagesForceLanguage() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieImagesForceLanguage
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieImagesForceLanguage = value
         End Set
     End Property
 
@@ -4442,6 +4442,24 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.MovieImagesMediaLanguageOnly = value
+        End Set
+    End Property
+
+    Public Property MovieSetImagesForcedLanguage() As String
+        Get
+            Return Settings._XMLSettings.MovieSetImagesForcedLanguage
+        End Get
+        Set(ByVal value As String)
+            Settings._XMLSettings.MovieSetImagesForcedLanguage = value
+        End Set
+    End Property
+
+    Public Property MovieSetImagesForceLanguage() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieSetImagesForceLanguage
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieSetImagesForceLanguage = value
         End Set
     End Property
 
@@ -4490,12 +4508,21 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVImagesPrefLanguage() As String
+    Public Property TVImagesForceLanguage() As Boolean
         Get
-            Return Settings._XMLSettings.TVImagesPrefLanguage
+            Return Settings._XMLSettings.TVImagesForceLanguage
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVImagesForceLanguage = value
+        End Set
+    End Property
+
+    Public Property TVImagesForcedLanguage() As String
+        Get
+            Return Settings._XMLSettings.TVImagesForcedLanguage
         End Get
         Set(ByVal value As String)
-            Settings._XMLSettings.TVImagesPrefLanguage = value
+            Settings._XMLSettings.TVImagesForcedLanguage = value
         End Set
     End Property
 
@@ -6740,10 +6767,6 @@ Public Class Settings
 
         SetDefaultsForLists(Enums.DefaultType.All, False)
 
-        If Master.eSettings.TVGeneralLanguages Is Nothing OrElse Master.eSettings.TVGeneralLanguages.Language.Count <= 0 Then
-            LoadTVLanguages()
-        End If
-
         ' Fix added to avoid to have no movie NFO saved
         If Not (Master.eSettings.MovieUseBoxee Or Master.eSettings.MovieUseEden Or Master.eSettings.MovieUseExpert Or Master.eSettings.MovieUseFrodo Or Master.eSettings.MovieUseNMJ Or Master.eSettings.MovieUseYAMJ) Then
             Master.eSettings.MovieUseFrodo = True
@@ -6775,24 +6798,6 @@ Public Class Settings
             Master.eSettings.TVShowNFOFrodo = True
             Master.eSettings.TVShowPosterFrodo = True
         End If
-    End Sub
-
-    Public Sub LoadTVLanguages()
-        Try
-            Dim configpath As String = FileUtils.Common.ReturnSettingsFile("Defaults", "DefaultTVLanguages.xml")
-
-            Dim objStreamReader As New StreamReader(configpath)
-            Dim xXMLSettings As New XmlSerializer(_XMLSettings.GetType)
-            Dim tSettings As New clsXMLSettings
-
-            tSettings = CType(xXMLSettings.Deserialize(objStreamReader), clsXMLSettings)
-            objStreamReader.Close()
-
-            _XMLSettings.TVGeneralLanguages = tSettings.TVGeneralLanguages
-
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
     End Sub
 
     Public Sub Save()
@@ -6881,6 +6886,8 @@ Public Class Settings
         GeneralSplitterDistanceTVShow = 200
         GeneralTVEpisodeTheme = "Default"
         GeneralTVShowTheme = "Default"
+        GeneralWindowLoc = New Point(10, 10)
+        GeneralWindowSize = New Size(1024, 768)
         GeneralWindowState = FormWindowState.Maximized
         MovieActorThumbsExtExpertBDMV = ".jpg"
         MovieActorThumbsExtExpertMulti = ".jpg"
@@ -6943,16 +6950,17 @@ Public Class Settings
         MovieGeneralCustomScrapeButtonScrapeType = Enums.ScrapeType.NewSkip
         MovieGeneralFlagLang = String.Empty
         MovieGeneralIgnoreLastScan = True
-        MovieGeneralLanguage = "en"
+        MovieGeneralLanguage = "en-US"
         MovieGeneralMarkNew = False
         MovieGeneralMediaListSorting = New List(Of ListSorting)
         MovieImagesCacheEnabled = False
         MovieImagesDisplayImageSelect = True
+        MovieImagesForcedLanguage = "en"
+        MovieImagesForceLanguage = False
         MovieImagesGetBlankImages = False
         MovieImagesGetEnglishImages = False
         MovieImagesMediaLanguageOnly = False
         MovieImagesNotSaveURLToNfo = False
-        MovieImagesPrefLanguage = "en"
         MovieIMDBURL = String.Empty
         MovieLandscapeKeepExisting = False
         MovieLevTolerance = 0
@@ -7071,6 +7079,8 @@ Public Class Settings
         MovieSetGeneralMediaListSorting = New List(Of ListSorting)
         MovieSetImagesCacheEnabled = False
         MovieSetImagesDisplayImageSelect = True
+        MovieSetImagesForcedLanguage = "en"
+        MovieSetImagesForceLanguage = False
         MovieSetImagesGetBlankImages = False
         MovieSetImagesGetEnglishImages = False
         MovieSetImagesMediaLanguageOnly = False
@@ -7170,18 +7180,18 @@ Public Class Settings
         TVGeneralEpisodeListSorting = New List(Of ListSorting)
         TVGeneralFlagLang = String.Empty
         TVGeneralIgnoreLastScan = True
-        TVGeneralLanguage = "en"
-        TVGeneralLanguages = New clsXMLTVDBLanguages
+        TVGeneralLanguage = "en-US"
         TVGeneralMarkNewEpisodes = False
         TVGeneralMarkNewShows = False
         TVGeneralSeasonListSorting = New List(Of ListSorting)
         TVGeneralShowListSorting = New List(Of ListSorting)
         TVImagesCacheEnabled = True
         TVImagesDisplayImageSelect = True
+        TVImagesForcedLanguage = "en"
+        TVImagesForceLanguage = False
         TVImagesGetBlankImages = False
         TVImagesGetEnglishImages = False
         TVImagesMediaLanguageOnly = False
-        TVImagesPrefLanguage = "en"
         TVLockEpisodeActors = False
         TVLockEpisodeAired = False
         TVLockEpisodeCredits = False
@@ -7225,7 +7235,7 @@ Public Class Settings
         TVScraperEpisodeRuntime = True
         TVScraperEpisodeTitle = True
         TVScraperMetaDataScan = True
-        TVScraperOptionsOrdering = Enums.Ordering.Standard
+        TVScraperOptionsOrdering = Enums.EpisodeOrdering.Standard
         TVScraperSeasonAired = True
         TVScraperSeasonPlot = True
         TVScraperSeasonTitle = False
@@ -7333,8 +7343,6 @@ Public Class Settings
         TVSortTokensIsEmpty = False
         Username = String.Empty
         Version = String.Empty
-
-        LoadTVLanguages()
     End Sub
 
     Public Sub SetDefaultsForLists(ByVal Type As Enums.DefaultType, ByVal Force As Boolean)
@@ -7826,92 +7834,6 @@ Public Class Settings
         Return TVShowThemeTvTunesEnable AndAlso (TVShowThemeTvTunesShowPath OrElse (TVShowThemeTvTunesCustom AndAlso Not String.IsNullOrEmpty(TVShowThemeTvTunesCustomPath) OrElse (TVShowThemeTvTunesSub AndAlso Not String.IsNullOrEmpty(TVShowThemeTvTunesSubDir))))
     End Function
 
-    Private Shared Function CompareLanguagesLong(
-        ByVal x As TVDBLanguagesLanguage, ByVal y As TVDBLanguagesLanguage) As Integer
-
-        If x Is Nothing Then
-            If y Is Nothing Then
-                ' If x is Nothing and y is Nothing, they're
-                ' equal.
-                Return 0
-            Else
-                ' If x is Nothing and y is not Nothing, y
-                ' is greater.
-                Return -1
-            End If
-        Else
-            ' If x is not Nothing...
-            '
-            If y Is Nothing Then
-                ' ...and y is Nothing, x is greater.
-                Return 1
-            Else
-                ' ...and y is not Nothing, compare the
-                ' lengths of the two strings.
-                '
-
-                'Dim retval As Integer = _
-                '    x.LongLang.Length.CompareTo(y.LongLang.Length)
-
-                'If retval <> 0 Then
-                '    ' If the strings are not of equal length,
-                '    ' the longer string is greater.
-                '    '
-                '    Return retval
-                'Else
-                '    ' If the strings are of equal length,
-                '    ' sort them with ordinary string comparison.
-                '    '
-                Return x.name.CompareTo(y.name)
-                'End If
-            End If
-        End If
-
-    End Function
-
-    Private Shared Function CompareLanguagesShort(
-        ByVal x As TVDBLanguagesLanguage, ByVal y As TVDBLanguagesLanguage) As Integer
-
-        If x Is Nothing Then
-            If y Is Nothing Then
-                ' If x is Nothing and y is Nothing, they're
-                ' equal.
-                Return 0
-            Else
-                ' If x is Nothing and y is not Nothing, y
-                ' is greater.
-                Return -1
-            End If
-        Else
-            ' If x is not Nothing...
-            '
-            If y Is Nothing Then
-                ' ...and y is Nothing, x is greater.
-                Return 1
-            Else
-                ' ...and y is not Nothing, compare the
-                ' lengths of the two strings.
-                '
-
-                'Dim retval As Integer = _
-                '    x.ShortLang.Length.CompareTo(y.ShortLang.Length)
-
-                'If retval <> 0 Then
-                '    ' If the strings are not of equal length,
-                '    ' the longer string is greater.
-                '    '
-                '    Return retval
-                'Else
-                '    ' If the strings are of equal length,
-                '    ' sort them with ordinary string comparison.
-                '    '
-                Return x.abbreviation.CompareTo(y.abbreviation)
-                'End If
-            End If
-        End If
-
-    End Function
-
 #End Region 'Methods
 
 #Region "Nested Types"
@@ -7921,7 +7843,7 @@ Public Class Settings
 #Region "Fields"
 
         Private _filetype As String
-        Private _metadata As MediaInfo.Fileinfo
+        Private _metadata As MediaContainers.Fileinfo
 
 #End Region 'Fields
 
@@ -7944,11 +7866,11 @@ Public Class Settings
             End Set
         End Property
 
-        Public Property MetaData() As MediaInfo.Fileinfo
+        Public Property MetaData() As MediaContainers.Fileinfo
             Get
                 Return _metadata
             End Get
-            Set(ByVal value As MediaInfo.Fileinfo)
+            Set(ByVal value As MediaContainers.Fileinfo)
                 _metadata = value
             End Set
         End Property
@@ -7959,7 +7881,7 @@ Public Class Settings
 
         Public Sub Clear()
             _filetype = String.Empty
-            _metadata = New MediaInfo.Fileinfo
+            _metadata = New MediaContainers.Fileinfo
         End Sub
 
 #End Region 'Methods

@@ -79,7 +79,7 @@ Namespace IMDb
                     Dim tPattern As String = "imdb\/(vi[0-9]+)"                                                                                 'Specific trailer website
                     Dim dPattern As String = "class=""vp-video-name"">(?<TITLE>.*?)<.*?class=""duration title-hover"">\((?<DURATION>.*?)\)"     'Trailer title and duration
 
-                    SearchURL = String.Concat(BaseURL, "/title/tt", strIMDBID, "/videogallery/content_type-trailer") 'IMDb trailer website of a specific movie, filtered by trailers only
+                    SearchURL = String.Concat(BaseURL, "/title/", strIMDBID, "/videogallery/content_type-trailer") 'IMDb trailer website of a specific movie, filtered by trailers only
 
                     'download trailer website
                     ImdbTrailerPage = sHTTP.DownloadData(SearchURL)

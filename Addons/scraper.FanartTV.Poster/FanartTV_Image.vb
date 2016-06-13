@@ -532,7 +532,7 @@ Public Class FanartTV_Image
         logger.Trace("[FanartTV_Image] [Scraper_Movie] [Start]")
 
         LoadSettings_Movie()
-        Dim _scraper As New FanartTVs.Scraper(_SpecialSettings_Movie)
+        Dim _scraper As New Scraper(_SpecialSettings_Movie)
 
         Dim FilteredModifiers As Structures.ScrapeModifiers = Functions.ScrapeModifiersAndAlso(ScrapeModifiers, ConfigModifier_Movie)
 

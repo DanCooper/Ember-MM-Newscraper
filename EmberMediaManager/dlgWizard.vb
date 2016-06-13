@@ -62,16 +62,6 @@ Public Class dlgWizard
         End Select
     End Sub
 
-    Private Sub btnTVGeneralLangFetch_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTVGeneralLangFetch.Click
-        Master.eSettings.TVGeneralLanguages = ModulesManager.Instance.GetTVLanguages()
-        cbTVGeneralLang.Items.Clear()
-        cbTVGeneralLang.Items.AddRange((From lLang In Master.eSettings.TVGeneralLanguages.Language Select lLang.name).ToArray)
-
-        If cbTVGeneralLang.Items.Count > 0 Then
-            cbTVGeneralLang.Text = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.TVGeneralLanguage).name
-        End If
-    End Sub
-
     Private Sub btnMovieAddFolders_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMovieAddFolder.Click
         Using dSource As New dlgSourceMovie()
             If dSource.ShowDialog(tmppath) = DialogResult.OK Then
@@ -153,7 +143,7 @@ Public Class dlgWizard
     End Sub
     Private Sub cbTVGeneralLang_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbTVGeneralLang.SelectedIndexChanged
         If Not String.IsNullOrEmpty(cbTVGeneralLang.Text) Then
-            Master.eSettings.TVGeneralLanguage = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = cbTVGeneralLang.Text).abbreviation
+            Master.eSettings.TVGeneralLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = cbTVGeneralLang.Text).Abbreviation
         End If
     End Sub
 
@@ -676,9 +666,9 @@ Public Class dlgWizard
         With Master.eSettings
 
             cbTVGeneralLang.Items.Clear()
-            cbTVGeneralLang.Items.AddRange((From lLang In .TVGeneralLanguages.Language Select lLang.name).ToArray)
+            cbTVGeneralLang.Items.AddRange((From lLang In APIXML.ScraperLanguagesXML.Languages Select lLang.Description).ToArray)
             If cbTVGeneralLang.Items.Count > 0 Then
-                cbTVGeneralLang.Text = .TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = .TVGeneralLanguage).name
+                cbTVGeneralLang.Text = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = .TVGeneralLanguage).Description
             End If
 
 
@@ -994,8 +984,8 @@ Public Class dlgWizard
                     lvItem = New ListViewItem(SQLreader("idSource").ToString)
                     lvItem.SubItems.Add(SQLreader("strName").ToString)
                     lvItem.SubItems.Add(SQLreader("strPath").ToString)
-                    lvItem.SubItems.Add(Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.abbreviation = SQLreader("strLanguage").ToString).name)
-                    lvItem.SubItems.Add(DirectCast(Convert.ToInt32(SQLreader("iOrdering")), Enums.Ordering).ToString)
+                    lvItem.SubItems.Add(APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = SQLreader("strLanguage").ToString).Description)
+                    lvItem.SubItems.Add(DirectCast(Convert.ToInt32(SQLreader("iOrdering")), Enums.EpisodeOrdering).ToString)
                     lvItem.SubItems.Add(If(Convert.ToBoolean(SQLreader("bExclude")), Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
                     lvItem.SubItems.Add(DirectCast(Convert.ToInt32(SQLreader("iEpisodeSorting")), Enums.EpisodeSorting).ToString)
                     tmppath = SQLreader("strPath").ToString
@@ -1012,7 +1002,7 @@ Public Class dlgWizard
 
                 Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                     Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                        Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.UInt64, 0, "idSource")
+                        Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.Int64, 0, "idSource")
                         While lvMovies.SelectedItems.Count > 0
                             parSource.Value = lvMovies.SelectedItems(0).SubItems(0).Text
                             SQLcommand.CommandText = String.Concat("DELETE FROM moviesource WHERE idSource = (?);")
@@ -1037,7 +1027,7 @@ Public Class dlgWizard
 
                 Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                     Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                        Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.UInt64, 0, "idSource")
+                        Dim parSource As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parSource", DbType.Int64, 0, "idSource")
                         While lvTVSources.SelectedItems.Count > 0
                             parSource.Value = lvTVSources.SelectedItems(0).SubItems(0).Text
                             SQLcommand.CommandText = String.Concat("DELETE FROM tvshowsource WHERE idSource = (?);")
@@ -1061,15 +1051,15 @@ Public Class dlgWizard
 
             .GeneralLanguage = tLang
 
-            If Master.eSettings.TVGeneralLanguages.Language.Count > 0 Then
-                Dim tvLang As String = Master.eSettings.TVGeneralLanguages.Language.FirstOrDefault(Function(l) l.name = cbTVGeneralLang.Text).abbreviation
+            If APIXML.ScraperLanguagesXML.Languages.Count > 0 Then
+                Dim tvLang As String = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = cbTVGeneralLang.Text).Abbreviation
                 If Not String.IsNullOrEmpty(tvLang) Then
                     .TVGeneralLanguage = tvLang
                 Else
-                    .TVGeneralLanguage = "en"
+                    .TVGeneralLanguage = "en-US"
                 End If
             Else
-                .TVGeneralLanguage = "en"
+                .TVGeneralLanguage = "en-US"
             End If
 
             'Workaround for tvdb scraper language (TODO: proper solution)
@@ -1479,7 +1469,6 @@ Public Class dlgWizard
         btnMovieRem.Text = Master.eLang.GetString(30, "Remove")
         btnNext.Text = Master.eLang.GetString(404, "Next >")
         btnTVAddSource.Text = btnMovieAddFolder.Text
-        btnTVGeneralLangFetch.Text = Master.eLang.GetString(742, "Fetch Available Languages")
         btnTVRemoveSource.Text = btnMovieRem.Text
         colFolder.Text = Master.eLang.GetString(412, "Use Folder Name")
         colName.Text = Master.eLang.GetString(232, "Name")
