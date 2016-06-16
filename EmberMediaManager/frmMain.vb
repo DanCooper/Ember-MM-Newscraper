@@ -15893,7 +15893,7 @@ Public Class frmMain
             clbFilterCountries_Movies.Items.AddRange(mCountry)
 
             clbFilterDataFields_Movies.Items.Clear()
-            clbFilterDataFields_Movies.Items.AddRange(New Object() {"Certification", "Credits", "Director", "Imdb", "MPAA", "OriginalTitle", "Outline", "Plot", "Rating", "ReleaseDate", "Runtime", "SortTitle", "Studio", "TMDB", "TMDBColID", "Tagline", "Title", "Trailer", "VideoSource", "Votes", "Year"})
+            clbFilterDataFields_Movies.Items.AddRange(New Object() {"Certification", "Credits", "Director", "Imdb", "MPAA", "OriginalTitle", "Outline", "Plot", "Rating", "ReleaseDate", "Runtime", "SortTitle", "Studio", "TMDB", "TMDBColID", "Tag", "Tagline", "Title", "Top250", "Trailer", "VideoSource", "Votes", "Year"})
 
             Dim SortMethods As New Dictionary(Of String, Enums.SortMethod_MovieSet)
             SortMethods.Add(Master.eLang.GetString(278, "Year"), Enums.SortMethod_MovieSet.Year)
