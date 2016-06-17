@@ -43,6 +43,12 @@ Public Class Database
 
 #End Region 'Fields
 
+#Region "Events"
+
+    Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
+
+#End Region 'Events
+
 #Region "Properties"
 
     Public ReadOnly Property MyVideosDBConn() As SQLiteConnection
@@ -1815,16 +1821,17 @@ Public Class Database
 
         'MovieSets
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLcommand.CommandText = String.Concat("SELECT A.idMovie, A.idSet, A.iOrder, B.idSet, B.SetName FROM setlinkmovie ",
+            SQLcommand.CommandText = String.Concat("SELECT A.idMovie, A.idSet, A.iOrder, B.idSet, B.Plot, B.SetName, B.TMDBColID FROM setlinkmovie ",
                                                    "AS A INNER JOIN sets AS B ON (A.idSet = B.idSet) WHERE A.idMovie = ", _movieDB.ID, ";")
             Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
-                Dim sets As MediaContainers.Set
                 While SQLreader.Read
-                    sets = New MediaContainers.Set
-                    If Not DBNull.Value.Equals(SQLreader("idSet")) Then sets.ID = Convert.ToInt64(SQLreader("idSet"))
-                    If Not DBNull.Value.Equals(SQLreader("iOrder")) Then sets.Order = CInt(SQLreader("iOrder"))
-                    If Not DBNull.Value.Equals(SQLreader("SetName")) Then sets.Title = SQLreader("SetName").ToString
-                    _movieDB.Movie.Sets.Add(sets)
+                    Dim tSet As New MediaContainers.SetDetails
+                    If Not DBNull.Value.Equals(SQLreader("idSet")) Then tSet.ID = Convert.ToInt64(SQLreader("idSet"))
+                    If Not DBNull.Value.Equals(SQLreader("iOrder")) Then tSet.Order = CInt(SQLreader("iOrder"))
+                    If Not DBNull.Value.Equals(SQLreader("Plot")) Then tSet.Plot = SQLreader("Plot").ToString
+                    If Not DBNull.Value.Equals(SQLreader("SetName")) Then tSet.Title = SQLreader("SetName").ToString
+                    If Not DBNull.Value.Equals(SQLreader("TMDBColID")) Then tSet.TMDB = SQLreader("TMDBColID").ToString
+                    _movieDB.Movie.Sets.Add(tSet)
                 End While
             End Using
         End Using
@@ -1924,28 +1931,32 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("Plot")) Then .Plot = SQLreader("Plot").ToString
                         If Not DBNull.Value.Equals(SQLreader("SetName")) Then .Title = SQLreader("SetName").ToString
                         .OldTitle = .Title
-                        .OldTMDB = .TMDB
                     End With
                 End If
             End Using
         End Using
 
+        'Movies in Set
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
-            If Not (Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJCompatibleSets) Then
+            If Not Master.eSettings.MovieScraperCollectionsYAMJCompatibleSets Then
                 If _moviesetDB.SortMethod = Enums.SortMethod_MovieSet.Year Then
-                    SQLcommand.CommandText = String.Concat("SELECT setlinkmovie.idMovie FROM setlinkmovie INNER JOIN movie ON (setlinkmovie.idMovie = movie.idMovie) ",
+                    SQLcommand.CommandText = String.Concat("SELECT setlinkmovie.idMovie, setlinkmovie.iOrder FROM setlinkmovie INNER JOIN movie ON (setlinkmovie.idMovie = movie.idMovie) ",
                                                            "WHERE idSet = ", _moviesetDB.ID, " ORDER BY movie.Year;")
                 ElseIf _moviesetDB.SortMethod = Enums.SortMethod_MovieSet.Title Then
-                    SQLcommand.CommandText = String.Concat("SELECT setlinkmovie.idMovie FROM setlinkmovie INNER JOIN movielist ON (setlinkmovie.idMovie = movielist.idMovie) ",
+                    SQLcommand.CommandText = String.Concat("SELECT setlinkmovie.idMovie, setlinkmovie.iOrder FROM setlinkmovie INNER JOIN movielist ON (setlinkmovie.idMovie = movielist.idMovie) ",
                                                            "WHERE idSet = ", _moviesetDB.ID, " ORDER BY movielist.SortedTitle COLLATE NOCASE;")
                 End If
             Else
-                SQLcommand.CommandText = String.Concat("SELECT setlinkmovie.idMovie FROM setlinkmovie ",
+                SQLcommand.CommandText = String.Concat("SELECT setlinkmovie.idMovie, setlinkmovie.iOrder FROM setlinkmovie ",
                                                        "WHERE idSet = ", _moviesetDB.ID, " ORDER BY iOrder;")
             End If
             Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
+                Dim i As Integer = 0
                 While SQLreader.Read
-                    _moviesetDB.MovieList.Add(Load_Movie(Convert.ToInt64(SQLreader("idMovie"))))
+                    _moviesetDB.MoviesInSet.Add(New MediaContainers.MovieInSet With {
+                                                .DBMovie = Load_Movie(Convert.ToInt64(SQLreader("idMovie"))),
+                                                .Order = i})
+                    i += 1
                 End While
             End Using
         End Using
@@ -3483,7 +3494,7 @@ Public Class Database
                 par_movie_FanartURL.Value = String.Empty
             End If
 
-            par_movie_HasSet.Value = _movieDB.Movie.Sets.Count > 0
+            par_movie_HasSet.Value = _movieDB.Movie.SetsSpecified
             If _movieDB.Subtitles Is Nothing = False Then
                 par_movie_HasSub.Value = _movieDB.Subtitles.Count > 0 OrElse _movieDB.Movie.FileInfo.StreamDetails.Subtitle.Count > 0
             Else
@@ -3748,7 +3759,7 @@ Public Class Database
                 End Using
 
                 Dim IsNewSet As Boolean
-                For Each s As MediaContainers.Set In _movieDB.Movie.Sets
+                For Each s As MediaContainers.SetDetails In _movieDB.Movie.Sets
                     If s.TitleSpecified Then
                         IsNewSet = Not s.ID > 0
                         If Not IsNewSet Then
@@ -3767,15 +3778,16 @@ Public Class Database
                             End Using
                         Else
                             'first check if a Set with same TMDBColID is already existing
-                            If Not String.IsNullOrEmpty(s.TMDBColID) Then
+                            If s.TMDBSpecified Then
                                 Using SQLcommand_sets As SQLiteCommand = _myvideosDBConn.CreateCommand()
-                                    SQLcommand_sets.CommandText = String.Concat("SELECT idSet, SetName ",
-                                                                               "FROM sets WHERE TMDBColID LIKE """, s.TMDBColID, """;")
+                                    SQLcommand_sets.CommandText = String.Concat("SELECT idSet, SetName, Plot ",
+                                                                               "FROM sets WHERE TMDBColID LIKE """, s.TMDB, """;")
                                     Using SQLreader As SQLiteDataReader = SQLcommand_sets.ExecuteReader()
                                         If SQLreader.HasRows Then
                                             SQLreader.Read()
                                             If Not DBNull.Value.Equals(SQLreader("idSet")) Then s.ID = CInt(SQLreader("idSet"))
                                             If Not DBNull.Value.Equals(SQLreader("SetName")) Then s.Title = CStr(SQLreader("SetName"))
+                                            If Not DBNull.Value.Equals(SQLreader("Plot")) Then s.Plot = CStr(SQLreader("Plot"))
                                             IsNewSet = False
                                             NFO.SaveToNFO_Movie(_movieDB, False) 'to save the "new" SetName
                                         Else
@@ -3788,13 +3800,15 @@ Public Class Database
                             If IsNewSet Then
                                 'secondly check if a Set with same name is already existing
                                 Using SQLcommand_sets As SQLiteCommand = _myvideosDBConn.CreateCommand()
-                                    SQLcommand_sets.CommandText = String.Concat("SELECT idSet ",
+                                    SQLcommand_sets.CommandText = String.Concat("SELECT idSet, Plot ",
                                                                                "FROM sets WHERE SetName LIKE """, s.Title, """;")
                                     Using SQLreader As SQLiteDataReader = SQLcommand_sets.ExecuteReader()
                                         If SQLreader.HasRows Then
                                             SQLreader.Read()
                                             If Not DBNull.Value.Equals(SQLreader("idSet")) Then s.ID = CInt(SQLreader("idSet"))
+                                            If Not DBNull.Value.Equals(SQLreader("Plot")) Then s.Plot = CStr(SQLreader("Plot"))
                                             IsNewSet = False
+                                            NFO.SaveToNFO_Movie(_movieDB, False) 'to save the "new" Plot
                                         Else
                                             IsNewSet = True
                                         End If
@@ -3821,8 +3835,8 @@ Public Class Database
                                 'update existing set with latest TMDB Collection ID
                                 Using SQLcommand_sets As SQLiteCommand = _myvideosDBConn.CreateCommand()
                                     SQLcommand_sets.CommandText = String.Format("UPDATE sets SET TMDBColID=? WHERE idSet={0}", s.ID)
-                                    Dim par_sets_TMDBColID As SQLiteParameter = SQLcommand_sets.Parameters.Add("parSets_TMDBColID", DbType.String, 0, "strThumb")
-                                    par_sets_TMDBColID.Value = s.TMDBColID
+                                    Dim par_sets_TMDBColID As SQLiteParameter = SQLcommand_sets.Parameters.Add("parSets_TMDBColID", DbType.String, 0, "TMDBColID")
+                                    par_sets_TMDBColID.Value = s.TMDB
                                     SQLcommand_sets.ExecuteNonQuery()
                                 End Using
                             Else
@@ -3845,8 +3859,8 @@ Public Class Database
 
                                     par_sets_SetName.Value = s.Title
                                     par_sets_ListTitle.Value = StringUtils.SortTokens_MovieSet(s.Title)
-                                    par_sets_TMDBColID.Value = s.TMDBColID
-                                    par_sets_Plot.Value = String.Empty
+                                    par_sets_TMDBColID.Value = s.TMDB
+                                    par_sets_Plot.Value = s.Plot
                                     par_sets_NfoPath.Value = String.Empty
                                     par_sets_New.Value = True
                                     par_sets_Lock.Value = False
@@ -4002,35 +4016,75 @@ Public Class Database
         If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.Landscape.LocalFilePath) Then SetArtForItem(_moviesetDB.ID, "set", "landscape", _moviesetDB.ImagesContainer.Landscape.LocalFilePath)
         If Not String.IsNullOrEmpty(_moviesetDB.ImagesContainer.Poster.LocalFilePath) Then SetArtForItem(_moviesetDB.ID, "set", "poster", _moviesetDB.ImagesContainer.Poster.LocalFilePath)
 
-        If _moviesetDB.MovieSet.TitleHasChanged OrElse _moviesetDB.MovieSet.TMDBHasChanged Then
-            Dim MoviesInSet As New List(Of MovieInSet)
+        'save set informations to movies
+        For Each tMovie In _moviesetDB.MoviesInSet
+            tMovie.DBMovie.Movie.AddSet(New MediaContainers.SetDetails With {
+                                                .ID = _moviesetDB.ID,
+                                                .Order = tMovie.Order,
+                                                .Plot = _moviesetDB.MovieSet.Plot,
+                                                .Title = _moviesetDB.MovieSet.Title,
+                                                .TMDB = _moviesetDB.MovieSet.TMDB})
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, Nothing, False, tMovie.DBMovie)
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_Movie, Nothing, Nothing, False, tMovie.DBMovie)
+            Save_Movie(tMovie.DBMovie, BatchMode, True, False, False)
+            RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {tMovie.DBMovie.ID}))
+        Next
 
-            'get all movies linked to this MovieSet
-            Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
-                SQLcommand.CommandText = String.Concat("SELECT idMovie, idSet, iOrder FROM setlinkmovie ",
+        'remove set-information from movies which are no longer assigned to this set
+        Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = String.Concat("SELECT idMovie, idSet FROM setlinkmovie ",
                                                        "WHERE idSet = ", _moviesetDB.ID, ";")
-                Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
-                    While SQLreader.Read
-                        Dim movieToSave As New MovieInSet
-                        If Not DBNull.Value.Equals(SQLreader("idMovie")) Then
-                            movieToSave.DBMovie = Load_Movie(Convert.ToInt64(SQLreader("idMovie")))
-                        End If
-                        If Not DBNull.Value.Equals(SQLreader("iOrder")) Then
-                            movieToSave.Order = CInt(SQLreader("iOrder"))
-                        End If
-                        MoviesInSet.Add(movieToSave)
-                    End While
-                End Using
+            Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    Dim rMovie = _moviesetDB.MoviesInSet.FirstOrDefault(Function(f) f.DBMovie.ID = Convert.ToInt64(SQLreader("idMovie")))
+                    If rMovie Is Nothing Then
+                        'movie is no longer a part of this set
+                        Dim tMovie As Database.DBElement = Load_Movie(Convert.ToInt64(SQLreader("idMovie")))
+                        tMovie.Movie.RemoveSet(_moviesetDB.ID)
+                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, Nothing, False, tMovie)
+                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_Movie, Nothing, Nothing, False, tMovie)
+                        Save_Movie(tMovie, BatchMode, True, False, False)
+                        RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {tMovie.ID}))
+                    End If
+                End While
             End Using
+        End Using
 
-            'write new movie NFOs
-            If MoviesInSet.Count > 0 Then
-                For Each tMovie In MoviesInSet
-                    tMovie.DBMovie.Movie.AddSet(_moviesetDB.ID, _moviesetDB.MovieSet.Title, tMovie.Order, _moviesetDB.MovieSet.TMDB)
-                    Master.DB.Save_Movie(tMovie.DBMovie, BatchMode, True, False, False)
-                Next
-            End If
-        End If
+
+        ''''''''''old 
+        'Dim MoviesInSet As New List(Of MovieInSet)
+        'Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+        '    SQLcommand.CommandText = String.Concat("SELECT idMovie, idSet, iOrder FROM setlinkmovie ",
+        '                                               "WHERE idSet = ", _moviesetDB.ID, ";")
+        '    Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
+        '        While SQLreader.Read
+        '            Dim movieToSave As New MovieInSet
+        '            If Not DBNull.Value.Equals(SQLreader("idMovie")) Then
+        '                movieToSave.DBMovie = Load_Movie(Convert.ToInt64(SQLreader("idMovie")))
+        '            End If
+        '            If Not DBNull.Value.Equals(SQLreader("iOrder")) Then
+        '                movieToSave.Order = CInt(SQLreader("iOrder"))
+        '            End If
+        '            MoviesInSet.Add(movieToSave)
+        '        End While
+        '    End Using
+        'End Using
+
+        ''write new movie NFOs
+        'If MoviesInSet.Count > 0 Then
+        '    For Each tMovie In MoviesInSet
+        '        tMovie.DBMovie.Movie.AddSet(New MediaContainers.SetDetails With {
+        '                                        .ID = _moviesetDB.ID,
+        '                                        .Order = tMovie.Order,
+        '                                        .Plot = _moviesetDB.MovieSet.Plot,
+        '                                        .Title = _moviesetDB.MovieSet.Title,
+        '                                        .TMDB = _moviesetDB.MovieSet.TMDB})
+        '        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, Nothing, False, tMovie.DBMovie)
+        '        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_Movie, Nothing, Nothing, False, tMovie.DBMovie)
+        '        Save_Movie(tMovie.DBMovie, BatchMode, True, False, False)
+        '        RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {tMovie.DBMovie.ID}))
+        '    Next
+        'End If
 
         If Not BatchMode Then SQLtransaction.Commit()
 
@@ -5074,83 +5128,6 @@ Public Class Database
 
     End Structure
 
-    Friend Class MovieInSet
-        Implements IComparable(Of MovieInSet)
-
-#Region "Fields"
-
-        Private _dbmovie As DBElement
-        Private _id As Long
-        Private _listtitle As String
-        Private _order As Integer
-
-#End Region 'Fields
-
-#Region "Constructors"
-
-        Public Sub New()
-            Clear()
-        End Sub
-
-#End Region 'Constructors
-
-#Region "Properties"
-
-        Public Property DBMovie() As DBElement
-            Get
-                Return _dbmovie
-            End Get
-            Set(ByVal value As DBElement)
-                _dbmovie = value
-            End Set
-        End Property
-
-        Public Property ID() As Long
-            Get
-                Return _id
-            End Get
-            Set(ByVal value As Long)
-                _id = value
-            End Set
-        End Property
-
-        Public Property ListTitle() As String
-            Get
-                Return _listtitle
-            End Get
-            Set(ByVal value As String)
-                _listtitle = value
-            End Set
-        End Property
-
-        Public Property Order() As Integer
-            Get
-                Return _order
-            End Get
-            Set(ByVal value As Integer)
-                _order = value
-            End Set
-        End Property
-
-#End Region 'Properties
-
-#Region "Methods"
-
-        Public Sub Clear()
-            _dbmovie = New DBElement(Enums.ContentType.Movie)
-            _id = -1
-            _order = 0
-            _listtitle = String.Empty
-        End Sub
-
-        Public Function CompareTo(ByVal other As MovieInSet) As Integer Implements IComparable(Of MovieInSet).CompareTo
-            Return (Order).CompareTo(other.Order)
-        End Function
-
-#End Region 'Methods
-
-    End Class
-
     Public Class SQLViewProperty
 
 #Region "Fields"
@@ -5229,8 +5206,8 @@ Public Class Database
         Private _language As String
         Private _listtitle As String
         Private _movie As MediaContainers.Movie
-        Private _movielist As List(Of DBElement)
         Private _movieset As MediaContainers.MovieSet
+        Private _moviesinset As List(Of MediaContainers.MovieInSet)
         Private _nfopath As String
         Private _ordering As Enums.EpisodeOrdering
         Private _outoftolerance As Boolean
@@ -5530,18 +5507,18 @@ Public Class Database
             End Get
         End Property
 
-        Public Property MovieList() As List(Of DBElement)
+        Public Property MoviesInSet() As List(Of MediaContainers.MovieInSet)
             Get
-                Return _movielist
+                Return _moviesinset
             End Get
-            Set(ByVal value As List(Of DBElement))
-                _movielist = value
+            Set(ByVal value As List(Of MediaContainers.MovieInSet))
+                _moviesinset = value
             End Set
         End Property
 
-        Public ReadOnly Property MovieListSpecified() As Boolean
+        Public ReadOnly Property MoviesInSetSpecified() As Boolean
             Get
-                Return _movielist.Count > 0
+                Return _moviesinset.Count > 0
             End Get
         End Property
 
@@ -5790,8 +5767,8 @@ Public Class Database
             _language = String.Empty
             _listtitle = String.Empty
             _movie = Nothing
-            _movielist = New List(Of DBElement)
             _movieset = Nothing
+            _moviesinset = New List(Of MediaContainers.MovieInSet)
             _nfopath = String.Empty
             _ordering = Enums.EpisodeOrdering.Standard
             _outoftolerance = False

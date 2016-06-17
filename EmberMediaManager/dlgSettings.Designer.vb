@@ -470,7 +470,6 @@ Partial Class dlgSettings
         Me.gbMovieSourcesFilenamingNMTOptionalOpts = New System.Windows.Forms.GroupBox()
         Me.tblMovieSourcesFileNamingNMTOptionalOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.btnMovieYAMJWatchedFilesBrowse = New System.Windows.Forms.Button()
-        Me.chkMovieYAMJCompatibleSets = New System.Windows.Forms.CheckBox()
         Me.txtMovieYAMJWatchedFolder = New System.Windows.Forms.TextBox()
         Me.chkMovieYAMJWatchedFile = New System.Windows.Forms.CheckBox()
         Me.tpMovieSourcesFileNamingBoxee = New System.Windows.Forms.TabPage()
@@ -730,6 +729,7 @@ Partial Class dlgSettings
         Me.colTVSourcesOrdering = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colTVSourcesExclude = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colTVSourcesSorting = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colTVSourcesSingle = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.gbTVSourcesFilenamingOpts = New System.Windows.Forms.GroupBox()
         Me.tcTVSourcesFileNaming = New System.Windows.Forms.TabControl()
         Me.tpTVSourcesFileNamingKodi = New System.Windows.Forms.TabPage()
@@ -1356,7 +1356,6 @@ Partial Class dlgSettings
         Me.gbMovieScraperMiscOpts = New System.Windows.Forms.GroupBox()
         Me.tblMovieScraperMiscOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.chkMovieScraperCleanPlotOutline = New System.Windows.Forms.CheckBox()
-        Me.chkMovieScraperCollectionsAuto = New System.Windows.Forms.CheckBox()
         Me.chkMovieScraperCleanFields = New System.Windows.Forms.CheckBox()
         Me.chkMovieScraperStudioWithImg = New System.Windows.Forms.CheckBox()
         Me.chkMovieScraperCastWithImg = New System.Windows.Forms.CheckBox()
@@ -1364,6 +1363,7 @@ Partial Class dlgSettings
         Me.chkMovieScraperPlotForOutline = New System.Windows.Forms.CheckBox()
         Me.chkMovieScraperXBMCTrailerFormat = New System.Windows.Forms.CheckBox()
         Me.chkMovieScraperPlotForOutlineIfEmpty = New System.Windows.Forms.CheckBox()
+        Me.chkMovieScraperCollectionsAuto = New System.Windows.Forms.CheckBox()
         Me.gbMovieScraperCertificationOpts = New System.Windows.Forms.GroupBox()
         Me.tblMovieScraperCertificationOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.chkMovieScraperCertOnlyValue = New System.Windows.Forms.CheckBox()
@@ -1374,6 +1374,9 @@ Partial Class dlgSettings
         Me.lblMovieScraperMPAANotRated = New System.Windows.Forms.Label()
         Me.pnlMovieScraper = New System.Windows.Forms.Panel()
         Me.tblMovieScraper = New System.Windows.Forms.TableLayoutPanel()
+        Me.gbMovieScraperCollectionOpts = New System.Windows.Forms.GroupBox()
+        Me.tblMovieScraperCollectionOpts = New System.Windows.Forms.TableLayoutPanel()
+        Me.chkMovieScraperCollectionsExtendedInfo = New System.Windows.Forms.CheckBox()
         Me.tsSettingsTopMenu = New System.Windows.Forms.ToolStrip()
         Me.pnlSettingsMain = New System.Windows.Forms.Panel()
         Me.gbSettingsHelp = New System.Windows.Forms.GroupBox()
@@ -1616,7 +1619,7 @@ Partial Class dlgSettings
         Me.scSettingsBody = New System.Windows.Forms.SplitContainer()
         Me.scSettingsMain = New System.Windows.Forms.SplitContainer()
         Me.tblSettingsFooter = New System.Windows.Forms.TableLayoutPanel()
-        Me.colTVSourcesSingle = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.chkMovieScraperCollectionsYAMJCompatibleSets = New System.Windows.Forms.CheckBox()
         Me.gbGeneralMiscOpts.SuspendLayout()
         Me.tblGeneralMisc.SuspendLayout()
         Me.gbGeneralThemes.SuspendLayout()
@@ -1938,6 +1941,8 @@ Partial Class dlgSettings
         Me.tblMovieScraperCertificationOpts.SuspendLayout()
         Me.pnlMovieScraper.SuspendLayout()
         Me.tblMovieScraper.SuspendLayout()
+        Me.gbMovieScraperCollectionOpts.SuspendLayout()
+        Me.tblMovieScraperCollectionOpts.SuspendLayout()
         Me.gbSettingsHelp.SuspendLayout()
         CType(Me.pbSettingsHelpLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlSettingsHelp.SuspendLayout()
@@ -7812,7 +7817,7 @@ Partial Class dlgSettings
         Me.gbMovieSourcesFilenamingNMTOptionalOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.gbMovieSourcesFilenamingNMTOptionalOpts.Location = New System.Drawing.Point(151, 3)
         Me.gbMovieSourcesFilenamingNMTOptionalOpts.Name = "gbMovieSourcesFilenamingNMTOptionalOpts"
-        Me.gbMovieSourcesFilenamingNMTOptionalOpts.Size = New System.Drawing.Size(261, 95)
+        Me.gbMovieSourcesFilenamingNMTOptionalOpts.Size = New System.Drawing.Size(261, 72)
         Me.gbMovieSourcesFilenamingNMTOptionalOpts.TabIndex = 18
         Me.gbMovieSourcesFilenamingNMTOptionalOpts.TabStop = False
         Me.gbMovieSourcesFilenamingNMTOptionalOpts.Text = "Optional Settings"
@@ -7824,19 +7829,18 @@ Partial Class dlgSettings
         Me.tblMovieSourcesFileNamingNMTOptionalOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSourcesFileNamingNMTOptionalOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSourcesFileNamingNMTOptionalOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMovieSourcesFileNamingNMTOptionalOpts.Controls.Add(Me.btnMovieYAMJWatchedFilesBrowse, 1, 2)
-        Me.tblMovieSourcesFileNamingNMTOptionalOpts.Controls.Add(Me.chkMovieYAMJCompatibleSets, 0, 0)
-        Me.tblMovieSourcesFileNamingNMTOptionalOpts.Controls.Add(Me.txtMovieYAMJWatchedFolder, 0, 2)
-        Me.tblMovieSourcesFileNamingNMTOptionalOpts.Controls.Add(Me.chkMovieYAMJWatchedFile, 0, 1)
+        Me.tblMovieSourcesFileNamingNMTOptionalOpts.Controls.Add(Me.btnMovieYAMJWatchedFilesBrowse, 1, 1)
+        Me.tblMovieSourcesFileNamingNMTOptionalOpts.Controls.Add(Me.txtMovieYAMJWatchedFolder, 0, 1)
+        Me.tblMovieSourcesFileNamingNMTOptionalOpts.Controls.Add(Me.chkMovieYAMJWatchedFile, 0, 0)
         Me.tblMovieSourcesFileNamingNMTOptionalOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMovieSourcesFileNamingNMTOptionalOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblMovieSourcesFileNamingNMTOptionalOpts.Name = "tblMovieSourcesFileNamingNMTOptionalOpts"
-        Me.tblMovieSourcesFileNamingNMTOptionalOpts.RowCount = 4
+        Me.tblMovieSourcesFileNamingNMTOptionalOpts.RowCount = 3
         Me.tblMovieSourcesFileNamingNMTOptionalOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSourcesFileNamingNMTOptionalOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSourcesFileNamingNMTOptionalOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieSourcesFileNamingNMTOptionalOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieSourcesFileNamingNMTOptionalOpts.Size = New System.Drawing.Size(255, 74)
+        Me.tblMovieSourcesFileNamingNMTOptionalOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblMovieSourcesFileNamingNMTOptionalOpts.Size = New System.Drawing.Size(255, 51)
         Me.tblMovieSourcesFileNamingNMTOptionalOpts.TabIndex = 20
         '
         'btnMovieYAMJWatchedFilesBrowse
@@ -7844,32 +7848,19 @@ Partial Class dlgSettings
         Me.btnMovieYAMJWatchedFilesBrowse.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.btnMovieYAMJWatchedFilesBrowse.Enabled = False
         Me.btnMovieYAMJWatchedFilesBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnMovieYAMJWatchedFilesBrowse.Location = New System.Drawing.Point(227, 49)
+        Me.btnMovieYAMJWatchedFilesBrowse.Location = New System.Drawing.Point(227, 26)
         Me.btnMovieYAMJWatchedFilesBrowse.Name = "btnMovieYAMJWatchedFilesBrowse"
         Me.btnMovieYAMJWatchedFilesBrowse.Size = New System.Drawing.Size(25, 22)
         Me.btnMovieYAMJWatchedFilesBrowse.TabIndex = 2
         Me.btnMovieYAMJWatchedFilesBrowse.Text = "..."
         Me.btnMovieYAMJWatchedFilesBrowse.UseVisualStyleBackColor = True
         '
-        'chkMovieYAMJCompatibleSets
-        '
-        Me.chkMovieYAMJCompatibleSets.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieYAMJCompatibleSets.AutoSize = True
-        Me.tblMovieSourcesFileNamingNMTOptionalOpts.SetColumnSpan(Me.chkMovieYAMJCompatibleSets, 2)
-        Me.chkMovieYAMJCompatibleSets.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.chkMovieYAMJCompatibleSets.Location = New System.Drawing.Point(3, 3)
-        Me.chkMovieYAMJCompatibleSets.Name = "chkMovieYAMJCompatibleSets"
-        Me.chkMovieYAMJCompatibleSets.Size = New System.Drawing.Size(138, 17)
-        Me.chkMovieYAMJCompatibleSets.TabIndex = 3
-        Me.chkMovieYAMJCompatibleSets.Text = "YAMJ Compatible Sets"
-        Me.chkMovieYAMJCompatibleSets.UseVisualStyleBackColor = True
-        '
         'txtMovieYAMJWatchedFolder
         '
         Me.txtMovieYAMJWatchedFolder.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.txtMovieYAMJWatchedFolder.Enabled = False
         Me.txtMovieYAMJWatchedFolder.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.txtMovieYAMJWatchedFolder.Location = New System.Drawing.Point(3, 49)
+        Me.txtMovieYAMJWatchedFolder.Location = New System.Drawing.Point(3, 26)
         Me.txtMovieYAMJWatchedFolder.Name = "txtMovieYAMJWatchedFolder"
         Me.txtMovieYAMJWatchedFolder.Size = New System.Drawing.Size(218, 22)
         Me.txtMovieYAMJWatchedFolder.TabIndex = 1
@@ -7881,7 +7872,7 @@ Partial Class dlgSettings
         Me.tblMovieSourcesFileNamingNMTOptionalOpts.SetColumnSpan(Me.chkMovieYAMJWatchedFile, 2)
         Me.chkMovieYAMJWatchedFile.Enabled = False
         Me.chkMovieYAMJWatchedFile.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.chkMovieYAMJWatchedFile.Location = New System.Drawing.Point(3, 26)
+        Me.chkMovieYAMJWatchedFile.Location = New System.Drawing.Point(3, 3)
         Me.chkMovieYAMJWatchedFile.Name = "chkMovieYAMJWatchedFile"
         Me.chkMovieYAMJWatchedFile.Size = New System.Drawing.Size(121, 17)
         Me.chkMovieYAMJWatchedFile.TabIndex = 0
@@ -11064,6 +11055,10 @@ Partial Class dlgSettings
         'colTVSourcesSorting
         '
         Me.colTVSourcesSorting.Text = "Sorting"
+        '
+        'colTVSourcesSingle
+        '
+        Me.colTVSourcesSingle.Text = "Single TV Show"
         '
         'gbTVSourcesFilenamingOpts
         '
@@ -18014,7 +18009,7 @@ Partial Class dlgSettings
         Me.gbMovieScraperMetaDataOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbMovieScraperMetaDataOpts.Location = New System.Drawing.Point(252, 3)
         Me.gbMovieScraperMetaDataOpts.Name = "gbMovieScraperMetaDataOpts"
-        Me.gbMovieScraperMetaDataOpts.Size = New System.Drawing.Size(447, 211)
+        Me.gbMovieScraperMetaDataOpts.Size = New System.Drawing.Size(447, 163)
         Me.gbMovieScraperMetaDataOpts.TabIndex = 63
         Me.gbMovieScraperMetaDataOpts.TabStop = False
         Me.gbMovieScraperMetaDataOpts.Text = "Meta Data"
@@ -18039,7 +18034,7 @@ Partial Class dlgSettings
         Me.tblMovieScraperMetaDataOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieScraperMetaDataOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieScraperMetaDataOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieScraperMetaDataOpts.Size = New System.Drawing.Size(441, 190)
+        Me.tblMovieScraperMetaDataOpts.Size = New System.Drawing.Size(441, 142)
         Me.tblMovieScraperMetaDataOpts.TabIndex = 78
         '
         'gbMovieScraperDefFIExtOpts
@@ -18050,7 +18045,7 @@ Partial Class dlgSettings
         Me.gbMovieScraperDefFIExtOpts.Location = New System.Drawing.Point(257, 3)
         Me.gbMovieScraperDefFIExtOpts.Name = "gbMovieScraperDefFIExtOpts"
         Me.tblMovieScraperMetaDataOpts.SetRowSpan(Me.gbMovieScraperDefFIExtOpts, 4)
-        Me.gbMovieScraperDefFIExtOpts.Size = New System.Drawing.Size(180, 184)
+        Me.gbMovieScraperDefFIExtOpts.Size = New System.Drawing.Size(180, 136)
         Me.gbMovieScraperDefFIExtOpts.TabIndex = 8
         Me.gbMovieScraperDefFIExtOpts.TabStop = False
         Me.gbMovieScraperDefFIExtOpts.Text = "Defaults by File Type"
@@ -18078,7 +18073,7 @@ Partial Class dlgSettings
         Me.tblMovieScraperDefFIExtOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblMovieScraperDefFIExtOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieScraperDefFIExtOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieScraperDefFIExtOpts.Size = New System.Drawing.Size(174, 163)
+        Me.tblMovieScraperDefFIExtOpts.Size = New System.Drawing.Size(174, 115)
         Me.tblMovieScraperDefFIExtOpts.TabIndex = 78
         '
         'btnMovieScraperDefFIExtRemove
@@ -18086,7 +18081,7 @@ Partial Class dlgSettings
         Me.btnMovieScraperDefFIExtRemove.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.btnMovieScraperDefFIExtRemove.Enabled = False
         Me.btnMovieScraperDefFIExtRemove.Image = CType(resources.GetObject("btnMovieScraperDefFIExtRemove.Image"), System.Drawing.Image)
-        Me.btnMovieScraperDefFIExtRemove.Location = New System.Drawing.Point(148, 137)
+        Me.btnMovieScraperDefFIExtRemove.Location = New System.Drawing.Point(148, 89)
         Me.btnMovieScraperDefFIExtRemove.Name = "btnMovieScraperDefFIExtRemove"
         Me.btnMovieScraperDefFIExtRemove.Size = New System.Drawing.Size(23, 23)
         Me.btnMovieScraperDefFIExtRemove.TabIndex = 31
@@ -18096,7 +18091,7 @@ Partial Class dlgSettings
         '
         Me.txtMovieScraperDefFIExt.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.txtMovieScraperDefFIExt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtMovieScraperDefFIExt.Location = New System.Drawing.Point(3, 137)
+        Me.txtMovieScraperDefFIExt.Location = New System.Drawing.Point(3, 89)
         Me.txtMovieScraperDefFIExt.Name = "txtMovieScraperDefFIExt"
         Me.txtMovieScraperDefFIExt.Size = New System.Drawing.Size(80, 22)
         Me.txtMovieScraperDefFIExt.TabIndex = 33
@@ -18107,7 +18102,7 @@ Partial Class dlgSettings
         Me.btnMovieScraperDefFIExtEdit.Enabled = False
         Me.btnMovieScraperDefFIExtEdit.Image = CType(resources.GetObject("btnMovieScraperDefFIExtEdit.Image"), System.Drawing.Image)
         Me.btnMovieScraperDefFIExtEdit.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnMovieScraperDefFIExtEdit.Location = New System.Drawing.Point(118, 137)
+        Me.btnMovieScraperDefFIExtEdit.Location = New System.Drawing.Point(118, 89)
         Me.btnMovieScraperDefFIExtEdit.Name = "btnMovieScraperDefFIExtEdit"
         Me.btnMovieScraperDefFIExtEdit.Size = New System.Drawing.Size(23, 23)
         Me.btnMovieScraperDefFIExtEdit.TabIndex = 30
@@ -18122,7 +18117,7 @@ Partial Class dlgSettings
         Me.lstMovieScraperDefFIExt.FormattingEnabled = True
         Me.lstMovieScraperDefFIExt.Location = New System.Drawing.Point(3, 3)
         Me.lstMovieScraperDefFIExt.Name = "lstMovieScraperDefFIExt"
-        Me.lstMovieScraperDefFIExt.Size = New System.Drawing.Size(168, 108)
+        Me.lstMovieScraperDefFIExt.Size = New System.Drawing.Size(168, 60)
         Me.lstMovieScraperDefFIExt.TabIndex = 34
         '
         'btnMovieScraperDefFIExtAdd
@@ -18131,7 +18126,7 @@ Partial Class dlgSettings
         Me.btnMovieScraperDefFIExtAdd.Enabled = False
         Me.btnMovieScraperDefFIExtAdd.Image = CType(resources.GetObject("btnMovieScraperDefFIExtAdd.Image"), System.Drawing.Image)
         Me.btnMovieScraperDefFIExtAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnMovieScraperDefFIExtAdd.Location = New System.Drawing.Point(89, 137)
+        Me.btnMovieScraperDefFIExtAdd.Location = New System.Drawing.Point(89, 89)
         Me.btnMovieScraperDefFIExtAdd.Name = "btnMovieScraperDefFIExtAdd"
         Me.btnMovieScraperDefFIExtAdd.Size = New System.Drawing.Size(23, 23)
         Me.btnMovieScraperDefFIExtAdd.TabIndex = 29
@@ -18144,7 +18139,7 @@ Partial Class dlgSettings
         Me.lblMovieScraperDefFIExt.AutoSize = True
         Me.tblMovieScraperDefFIExtOpts.SetColumnSpan(Me.lblMovieScraperDefFIExt, 4)
         Me.lblMovieScraperDefFIExt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblMovieScraperDefFIExt.Location = New System.Drawing.Point(3, 117)
+        Me.lblMovieScraperDefFIExt.Location = New System.Drawing.Point(3, 69)
         Me.lblMovieScraperDefFIExt.Name = "lblMovieScraperDefFIExt"
         Me.lblMovieScraperDefFIExt.Size = New System.Drawing.Size(54, 13)
         Me.lblMovieScraperDefFIExt.TabIndex = 32
@@ -18246,8 +18241,8 @@ Partial Class dlgSettings
         Me.gbMovieScraperGlobalOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbMovieScraperGlobalOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbMovieScraperGlobalOpts.Name = "gbMovieScraperGlobalOpts"
-        Me.tblMovieScraper.SetRowSpan(Me.gbMovieScraperGlobalOpts, 3)
-        Me.gbMovieScraperGlobalOpts.Size = New System.Drawing.Size(243, 597)
+        Me.tblMovieScraper.SetRowSpan(Me.gbMovieScraperGlobalOpts, 4)
+        Me.gbMovieScraperGlobalOpts.Size = New System.Drawing.Size(243, 622)
         Me.gbMovieScraperGlobalOpts.TabIndex = 1
         Me.gbMovieScraperGlobalOpts.TabStop = False
         Me.gbMovieScraperGlobalOpts.Text = "Scraper Fields - Global"
@@ -18367,7 +18362,7 @@ Partial Class dlgSettings
         Me.tblMovieScraperGlobalOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieScraperGlobalOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieScraperGlobalOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieScraperGlobalOpts.Size = New System.Drawing.Size(237, 576)
+        Me.tblMovieScraperGlobalOpts.Size = New System.Drawing.Size(237, 601)
         Me.tblMovieScraperGlobalOpts.TabIndex = 0
         '
         'chkMovieLockCollectionID
@@ -19187,9 +19182,9 @@ Partial Class dlgSettings
         Me.gbMovieScraperMiscOpts.Controls.Add(Me.tblMovieScraperMiscOpts)
         Me.gbMovieScraperMiscOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieScraperMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbMovieScraperMiscOpts.Location = New System.Drawing.Point(252, 220)
+        Me.gbMovieScraperMiscOpts.Location = New System.Drawing.Point(252, 172)
         Me.gbMovieScraperMiscOpts.Name = "gbMovieScraperMiscOpts"
-        Me.gbMovieScraperMiscOpts.Size = New System.Drawing.Size(447, 233)
+        Me.gbMovieScraperMiscOpts.Size = New System.Drawing.Size(447, 210)
         Me.gbMovieScraperMiscOpts.TabIndex = 0
         Me.gbMovieScraperMiscOpts.TabStop = False
         Me.gbMovieScraperMiscOpts.Text = "Miscellaneous"
@@ -19203,7 +19198,6 @@ Partial Class dlgSettings
         Me.tblMovieScraperMiscOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieScraperMiscOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieScraperMiscOpts.Controls.Add(Me.chkMovieScraperCleanPlotOutline, 0, 6)
-        Me.tblMovieScraperMiscOpts.Controls.Add(Me.chkMovieScraperCollectionsAuto, 0, 7)
         Me.tblMovieScraperMiscOpts.Controls.Add(Me.chkMovieScraperCleanFields, 0, 0)
         Me.tblMovieScraperMiscOpts.Controls.Add(Me.chkMovieScraperStudioWithImg, 0, 3)
         Me.tblMovieScraperMiscOpts.Controls.Add(Me.chkMovieScraperCastWithImg, 0, 2)
@@ -19211,12 +19205,12 @@ Partial Class dlgSettings
         Me.tblMovieScraperMiscOpts.Controls.Add(Me.lblMovieScraperOutlineLimit, 1, 4)
         Me.tblMovieScraperMiscOpts.Controls.Add(Me.txtMovieScraperOutlineLimit, 2, 4)
         Me.tblMovieScraperMiscOpts.Controls.Add(Me.chkMovieScraperPlotForOutline, 0, 4)
-        Me.tblMovieScraperMiscOpts.Controls.Add(Me.chkMovieScraperXBMCTrailerFormat, 0, 8)
+        Me.tblMovieScraperMiscOpts.Controls.Add(Me.chkMovieScraperXBMCTrailerFormat, 0, 7)
         Me.tblMovieScraperMiscOpts.Controls.Add(Me.chkMovieScraperPlotForOutlineIfEmpty, 0, 5)
         Me.tblMovieScraperMiscOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMovieScraperMiscOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblMovieScraperMiscOpts.Name = "tblMovieScraperMiscOpts"
-        Me.tblMovieScraperMiscOpts.RowCount = 10
+        Me.tblMovieScraperMiscOpts.RowCount = 9
         Me.tblMovieScraperMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieScraperMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieScraperMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
@@ -19226,8 +19220,7 @@ Partial Class dlgSettings
         Me.tblMovieScraperMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieScraperMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieScraperMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieScraperMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieScraperMiscOpts.Size = New System.Drawing.Size(441, 212)
+        Me.tblMovieScraperMiscOpts.Size = New System.Drawing.Size(441, 189)
         Me.tblMovieScraperMiscOpts.TabIndex = 78
         '
         'chkMovieScraperCleanPlotOutline
@@ -19242,20 +19235,6 @@ Partial Class dlgSettings
         Me.chkMovieScraperCleanPlotOutline.TabIndex = 76
         Me.chkMovieScraperCleanPlotOutline.Text = "Clean Plot/Outline"
         Me.chkMovieScraperCleanPlotOutline.UseVisualStyleBackColor = True
-        '
-        'chkMovieScraperCollectionsAuto
-        '
-        Me.chkMovieScraperCollectionsAuto.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieScraperCollectionsAuto.AutoSize = True
-        Me.tblMovieScraperMiscOpts.SetColumnSpan(Me.chkMovieScraperCollectionsAuto, 3)
-        Me.chkMovieScraperCollectionsAuto.Enabled = False
-        Me.chkMovieScraperCollectionsAuto.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieScraperCollectionsAuto.Location = New System.Drawing.Point(3, 169)
-        Me.chkMovieScraperCollectionsAuto.Name = "chkMovieScraperCollectionsAuto"
-        Me.chkMovieScraperCollectionsAuto.Size = New System.Drawing.Size(226, 17)
-        Me.chkMovieScraperCollectionsAuto.TabIndex = 80
-        Me.chkMovieScraperCollectionsAuto.Text = "Add Movie automatically to Collections"
-        Me.chkMovieScraperCollectionsAuto.UseVisualStyleBackColor = True
         '
         'chkMovieScraperCleanFields
         '
@@ -19325,7 +19304,7 @@ Partial Class dlgSettings
         Me.chkMovieScraperXBMCTrailerFormat.AutoSize = True
         Me.tblMovieScraperMiscOpts.SetColumnSpan(Me.chkMovieScraperXBMCTrailerFormat, 3)
         Me.chkMovieScraperXBMCTrailerFormat.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.chkMovieScraperXBMCTrailerFormat.Location = New System.Drawing.Point(3, 192)
+        Me.chkMovieScraperXBMCTrailerFormat.Location = New System.Drawing.Point(3, 169)
         Me.chkMovieScraperXBMCTrailerFormat.Name = "chkMovieScraperXBMCTrailerFormat"
         Me.chkMovieScraperXBMCTrailerFormat.Size = New System.Drawing.Size(304, 17)
         Me.chkMovieScraperXBMCTrailerFormat.TabIndex = 83
@@ -19345,13 +19324,26 @@ Partial Class dlgSettings
         Me.chkMovieScraperPlotForOutlineIfEmpty.Text = "Only if Plot Outline is empty"
         Me.chkMovieScraperPlotForOutlineIfEmpty.UseVisualStyleBackColor = True
         '
+        'chkMovieScraperCollectionsAuto
+        '
+        Me.chkMovieScraperCollectionsAuto.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkMovieScraperCollectionsAuto.AutoSize = True
+        Me.chkMovieScraperCollectionsAuto.Enabled = False
+        Me.chkMovieScraperCollectionsAuto.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieScraperCollectionsAuto.Location = New System.Drawing.Point(3, 3)
+        Me.chkMovieScraperCollectionsAuto.Name = "chkMovieScraperCollectionsAuto"
+        Me.chkMovieScraperCollectionsAuto.Size = New System.Drawing.Size(226, 17)
+        Me.chkMovieScraperCollectionsAuto.TabIndex = 0
+        Me.chkMovieScraperCollectionsAuto.Text = "Add Movie automatically to Collections"
+        Me.chkMovieScraperCollectionsAuto.UseVisualStyleBackColor = True
+        '
         'gbMovieScraperCertificationOpts
         '
         Me.gbMovieScraperCertificationOpts.AutoSize = True
         Me.gbMovieScraperCertificationOpts.Controls.Add(Me.tblMovieScraperCertificationOpts)
         Me.gbMovieScraperCertificationOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieScraperCertificationOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gbMovieScraperCertificationOpts.Location = New System.Drawing.Point(252, 459)
+        Me.gbMovieScraperCertificationOpts.Location = New System.Drawing.Point(252, 388)
         Me.gbMovieScraperCertificationOpts.Name = "gbMovieScraperCertificationOpts"
         Me.gbMovieScraperCertificationOpts.Size = New System.Drawing.Size(447, 141)
         Me.gbMovieScraperCertificationOpts.TabIndex = 77
@@ -19467,7 +19459,7 @@ Partial Class dlgSettings
         Me.pnlMovieScraper.Controls.Add(Me.tblMovieScraper)
         Me.pnlMovieScraper.Location = New System.Drawing.Point(900, 900)
         Me.pnlMovieScraper.Name = "pnlMovieScraper"
-        Me.pnlMovieScraper.Size = New System.Drawing.Size(702, 626)
+        Me.pnlMovieScraper.Size = New System.Drawing.Size(733, 656)
         Me.pnlMovieScraper.TabIndex = 14
         Me.pnlMovieScraper.Visible = False
         '
@@ -19483,16 +19475,62 @@ Partial Class dlgSettings
         Me.tblMovieScraper.Controls.Add(Me.gbMovieScraperCertificationOpts, 1, 2)
         Me.tblMovieScraper.Controls.Add(Me.gbMovieScraperMiscOpts, 1, 1)
         Me.tblMovieScraper.Controls.Add(Me.gbMovieScraperMetaDataOpts, 1, 0)
+        Me.tblMovieScraper.Controls.Add(Me.gbMovieScraperCollectionOpts, 1, 3)
         Me.tblMovieScraper.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMovieScraper.Location = New System.Drawing.Point(0, 0)
         Me.tblMovieScraper.Name = "tblMovieScraper"
-        Me.tblMovieScraper.RowCount = 4
+        Me.tblMovieScraper.RowCount = 5
         Me.tblMovieScraper.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieScraper.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieScraper.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieScraper.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieScraper.Size = New System.Drawing.Size(702, 626)
+        Me.tblMovieScraper.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMovieScraper.Size = New System.Drawing.Size(733, 656)
         Me.tblMovieScraper.TabIndex = 69
+        '
+        'gbMovieScraperCollectionOpts
+        '
+        Me.gbMovieScraperCollectionOpts.AutoSize = True
+        Me.gbMovieScraperCollectionOpts.Controls.Add(Me.tblMovieScraperCollectionOpts)
+        Me.gbMovieScraperCollectionOpts.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbMovieScraperCollectionOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbMovieScraperCollectionOpts.Location = New System.Drawing.Point(252, 535)
+        Me.gbMovieScraperCollectionOpts.Name = "gbMovieScraperCollectionOpts"
+        Me.gbMovieScraperCollectionOpts.Size = New System.Drawing.Size(447, 90)
+        Me.gbMovieScraperCollectionOpts.TabIndex = 78
+        Me.gbMovieScraperCollectionOpts.TabStop = False
+        Me.gbMovieScraperCollectionOpts.Text = "Collection"
+        '
+        'tblMovieScraperCollectionOpts
+        '
+        Me.tblMovieScraperCollectionOpts.AutoSize = True
+        Me.tblMovieScraperCollectionOpts.ColumnCount = 2
+        Me.tblMovieScraperCollectionOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMovieScraperCollectionOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMovieScraperCollectionOpts.Controls.Add(Me.chkMovieScraperCollectionsYAMJCompatibleSets, 0, 2)
+        Me.tblMovieScraperCollectionOpts.Controls.Add(Me.chkMovieScraperCollectionsAuto, 0, 0)
+        Me.tblMovieScraperCollectionOpts.Controls.Add(Me.chkMovieScraperCollectionsExtendedInfo, 0, 1)
+        Me.tblMovieScraperCollectionOpts.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblMovieScraperCollectionOpts.Location = New System.Drawing.Point(3, 18)
+        Me.tblMovieScraperCollectionOpts.Name = "tblMovieScraperCollectionOpts"
+        Me.tblMovieScraperCollectionOpts.RowCount = 4
+        Me.tblMovieScraperCollectionOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMovieScraperCollectionOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMovieScraperCollectionOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMovieScraperCollectionOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMovieScraperCollectionOpts.Size = New System.Drawing.Size(441, 69)
+        Me.tblMovieScraperCollectionOpts.TabIndex = 0
+        '
+        'chkMovieScraperCollectionsExtendedInfo
+        '
+        Me.chkMovieScraperCollectionsExtendedInfo.AutoSize = True
+        Me.chkMovieScraperCollectionsExtendedInfo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieScraperCollectionsExtendedInfo.Location = New System.Drawing.Point(3, 26)
+        Me.chkMovieScraperCollectionsExtendedInfo.Name = "chkMovieScraperCollectionsExtendedInfo"
+        Me.chkMovieScraperCollectionsExtendedInfo.Size = New System.Drawing.Size(416, 17)
+        Me.chkMovieScraperCollectionsExtendedInfo.TabIndex = 1
+        Me.chkMovieScraperCollectionsExtendedInfo.Text = "Save extended Collection informations to NFO (Kodi 16.0 ""Jarvis"" and newer)"
+        Me.chkMovieScraperCollectionsExtendedInfo.UseVisualStyleBackColor = True
         '
         'tsSettingsTopMenu
         '
@@ -22653,9 +22691,18 @@ Partial Class dlgSettings
         Me.tblSettingsFooter.Size = New System.Drawing.Size(1207, 74)
         Me.tblSettingsFooter.TabIndex = 0
         '
-        'colTVSourcesSingle
+        'chkMovieYAMJCompatibleSets
         '
-        Me.colTVSourcesSingle.Text = "Single TV Show"
+        Me.chkMovieScraperCollectionsYAMJCompatibleSets.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkMovieScraperCollectionsYAMJCompatibleSets.AutoSize = True
+        Me.tblMovieScraperCollectionOpts.SetColumnSpan(Me.chkMovieScraperCollectionsYAMJCompatibleSets, 2)
+        Me.chkMovieScraperCollectionsYAMJCompatibleSets.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.chkMovieScraperCollectionsYAMJCompatibleSets.Location = New System.Drawing.Point(3, 49)
+        Me.chkMovieScraperCollectionsYAMJCompatibleSets.Name = "chkMovieYAMJCompatibleSets"
+        Me.chkMovieScraperCollectionsYAMJCompatibleSets.Size = New System.Drawing.Size(204, 17)
+        Me.chkMovieScraperCollectionsYAMJCompatibleSets.TabIndex = 2
+        Me.chkMovieScraperCollectionsYAMJCompatibleSets.Text = "Save YAMJ Compatible Sets to NFO"
+        Me.chkMovieScraperCollectionsYAMJCompatibleSets.UseVisualStyleBackColor = True
         '
         'dlgSettings
         '
@@ -23308,6 +23355,10 @@ Partial Class dlgSettings
         Me.pnlMovieScraper.PerformLayout()
         Me.tblMovieScraper.ResumeLayout(False)
         Me.tblMovieScraper.PerformLayout()
+        Me.gbMovieScraperCollectionOpts.ResumeLayout(False)
+        Me.gbMovieScraperCollectionOpts.PerformLayout()
+        Me.tblMovieScraperCollectionOpts.ResumeLayout(False)
+        Me.tblMovieScraperCollectionOpts.PerformLayout()
         Me.gbSettingsHelp.ResumeLayout(False)
         CType(Me.pbSettingsHelpLogo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlSettingsHelp.ResumeLayout(False)
@@ -24116,7 +24167,6 @@ End Sub
     Friend WithEvents lblTVScraperDurationRuntimeFormat As System.Windows.Forms.Label
     Friend WithEvents txtMovieExtrafanartsLimit As System.Windows.Forms.TextBox
     Friend WithEvents txtMovieExtrathumbsLimit As System.Windows.Forms.TextBox
-    Friend WithEvents chkMovieYAMJCompatibleSets As System.Windows.Forms.CheckBox
     Friend WithEvents lblMovieExtrafanartsLimit As System.Windows.Forms.Label
     Friend WithEvents lblMovieExtrathumbsLimit As System.Windows.Forms.Label
     Friend WithEvents gbTVImagesAllSeasonsLandscapeOpts As System.Windows.Forms.GroupBox
@@ -25064,4 +25114,8 @@ End Sub
     Friend WithEvents chkMovieSetImagesForceLanguage As CheckBox
     Friend WithEvents cbMovieSetImagesForcedLanguage As ComboBox
     Friend WithEvents colTVSourcesSingle As ColumnHeader
+    Friend WithEvents gbMovieScraperCollectionOpts As GroupBox
+    Friend WithEvents tblMovieScraperCollectionOpts As TableLayoutPanel
+    Friend WithEvents chkMovieScraperCollectionsExtendedInfo As CheckBox
+    Friend WithEvents chkMovieScraperCollectionsYAMJCompatibleSets As CheckBox
 End Class

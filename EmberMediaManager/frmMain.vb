@@ -1679,21 +1679,21 @@ Public Class frmMain
         Dim Posters As New List(Of MovieInSetPoster)
 
         Try
-            If currMovieSet.MovieList IsNot Nothing AndAlso currMovieSet.MovieList.Count > 0 Then
+            If currMovieSet.MoviesInSet IsNot Nothing AndAlso currMovieSet.MoviesInSet.Count > 0 Then
                 Try
-                    For Each Movie As Database.DBElement In currMovieSet.MovieList
+                    For Each tMovieInSet As MediaContainers.MovieInSet In currMovieSet.MoviesInSet
                         If bwLoadMovieSetPosters.CancellationPending Then
                             e.Cancel = True
                             Return
                         End If
 
                         Dim ResImg As Image
-                        If Movie.ImagesContainer.Poster.LoadAndCache(Enums.ContentType.Movie, True, True) Then
-                            ResImg = Movie.ImagesContainer.Poster.ImageOriginal.Image
+                        If tMovieInSet.DBMovie.ImagesContainer.Poster.LoadAndCache(Enums.ContentType.Movie, True, True) Then
+                            ResImg = tMovieInSet.DBMovie.ImagesContainer.Poster.ImageOriginal.Image
                             ImageUtils.ResizeImage(ResImg, 59, 88, True, Color.White.ToArgb())
-                            Posters.Add(New MovieInSetPoster With {.MoviePoster = ResImg, .MovieTitle = Movie.Movie.Title, .MovieYear = Movie.Movie.Year})
+                            Posters.Add(New MovieInSetPoster With {.MoviePoster = ResImg, .MovieTitle = tMovieInSet.DBMovie.Movie.Title, .MovieYear = tMovieInSet.DBMovie.Movie.Year})
                         Else
-                            Posters.Add(New MovieInSetPoster With {.MoviePoster = My.Resources.noposter, .MovieTitle = Movie.Movie.Title, .MovieYear = Movie.Movie.Year})
+                            Posters.Add(New MovieInSetPoster With {.MoviePoster = My.Resources.noposter, .MovieTitle = tMovieInSet.DBMovie.Movie.Title, .MovieYear = tMovieInSet.DBMovie.Movie.Year})
                         End If
                     Next
                 Catch ex As Exception
@@ -9502,8 +9502,8 @@ Public Class frmMain
     Private Sub FillScreenInfoWith_MovieSet()
         Try
             SuspendLayout()
-            If currMovieSet.MovieSet.TitleSpecified AndAlso currMovieSet.MovieList IsNot Nothing AndAlso currMovieSet.MovieList.Count > 0 Then
-                lblTitle.Text = String.Format("{0} ({1})", currMovieSet.MovieSet.Title, currMovieSet.MovieList.Count)
+            If currMovieSet.MovieSet.TitleSpecified AndAlso currMovieSet.MoviesInSet IsNot Nothing AndAlso currMovieSet.MoviesInSet.Count > 0 Then
+                lblTitle.Text = String.Format("{0} ({1})", currMovieSet.MovieSet.Title, currMovieSet.MoviesInSet.Count)
             ElseIf currMovieSet.MovieSet.TitleSpecified Then
                 lblTitle.Text = currMovieSet.MovieSet.Title
             Else
@@ -9512,7 +9512,7 @@ Public Class frmMain
 
             txtPlot.Text = currMovieSet.MovieSet.Plot
 
-            If currMovieSet.MovieList IsNot Nothing AndAlso currMovieSet.MovieList.Count > 0 Then
+            If currMovieSet.MoviesInSet IsNot Nothing AndAlso currMovieSet.MoviesInSet.Count > 0 Then
                 bwLoadMovieSetPosters.WorkerSupportsCancellation = True
                 bwLoadMovieSetPosters.RunWorkerAsync()
             End If
@@ -10222,6 +10222,7 @@ Public Class frmMain
         AddHandler fTaskManager.ProgressUpdate, AddressOf TaskManagerProgressUpdate
         'AddHandler fTaskManager.TaskManagerDone, AddressOf ScanningCompleted
         AddHandler ModulesManager.Instance.GenericEvent, AddressOf GenericRunCallBack
+        AddHandler Master.DB.GenericEvent, AddressOf GenericRunCallBack
 
         Functions.DGVDoubleBuffer(dgvMovies)
         Functions.DGVDoubleBuffer(dgvMovieSets)

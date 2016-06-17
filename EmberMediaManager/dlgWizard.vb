@@ -732,7 +732,7 @@ Public Class dlgWizard
             chkMovieTrailerNMJ.Checked = .MovieTrailerNMJ
 
             '************** NMT optional settings **************
-            chkMovieYAMJCompatibleSets.Checked = .MovieYAMJCompatibleSets
+            chkMovieYAMJCompatibleSets.Checked = .MovieScraperCollectionsYAMJCompatibleSets
             chkMovieYAMJWatchedFile.Checked = .MovieYAMJWatchedFile
             txtMovieYAMJWatchedFolder.Text = .MovieYAMJWatchedFolder
 
@@ -1126,7 +1126,7 @@ Public Class dlgWizard
             .MovieTrailerNMJ = chkMovieTrailerNMJ.Checked
 
             '************** NMJ optional settings *************
-            .MovieYAMJCompatibleSets = chkMovieYAMJCompatibleSets.Checked
+            .MovieScraperCollectionsYAMJCompatibleSets = chkMovieYAMJCompatibleSets.Checked
             .MovieYAMJWatchedFile = chkMovieYAMJWatchedFile.Checked
             .MovieYAMJWatchedFolder = txtMovieYAMJWatchedFolder.Text
 
