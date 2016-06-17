@@ -924,54 +924,6 @@ Namespace MediaContainers
     End Class
 
     <Serializable()>
-    <XmlRoot("kset")>
-    Public Class KSet
-
-#Region "Fields"
-
-        Private _plot As String
-        Private _title As String
-        Private _tmdb As String
-
-#End Region 'Fields
-
-#Region "Properties"
-
-        <XmlElement("name")>
-        Property Title() As String
-            Get
-                Return _title
-            End Get
-            Set(ByVal value As String)
-                _title = value
-            End Set
-        End Property
-
-        <XmlElement("overview")>
-        Property Plot() As String
-            Get
-                Return _plot
-            End Get
-            Set(ByVal value As String)
-                _plot = value
-            End Set
-        End Property
-
-        <XmlElement("tmdb")>
-        Property TMDB() As String
-            Get
-                Return _tmdb
-            End Get
-            Set(ByVal value As String)
-                _tmdb = value
-            End Set
-        End Property
-
-#End Region 'Properties
-
-    End Class
-
-    <Serializable()>
     <XmlRoot("movie")>
     Public Class Movie
         Implements ICloneable
@@ -979,7 +931,7 @@ Namespace MediaContainers
 
 #Region "Fields"
 
-        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
         Private _actors As New List(Of Person)
         Private _certifications As New List(Of String)
@@ -1003,6 +955,7 @@ Namespace MediaContainers
         Private _releaseDate As String
         Private _runtime As String
         Private _scrapersource As String
+        Private _sets As New List(Of SetDetails)
         Private _sorttitle As String
         Private _studios As New List(Of String)
         Private _tagline As String
@@ -1015,12 +968,15 @@ Namespace MediaContainers
         Private _trailer As String
         Private _videosource As String
         Private _votes As String
-        Private _sets As New List(Of SetDetails)
         Private _year As String
 
 #End Region 'Fields
 
 #Region "Constructors"
+
+        Public Sub New()
+            Clear()
+        End Sub
 
         Public Sub New(ByVal sID As String, ByVal sTitle As String, ByVal sYear As String, ByVal iLev As Integer)
             Clear()
@@ -1028,10 +984,6 @@ Namespace MediaContainers
             _title = sTitle
             _year = sYear
             _lev = iLev
-        End Sub
-
-        Sub New()
-            Clear()
         End Sub
 
 #End Region 'Constructors
@@ -1642,8 +1594,8 @@ Namespace MediaContainers
             Get
                 Return _sets
             End Get
-            Set(ByVal value As List(Of SetDetails))
-                _sets = value
+            Set(value As List(Of SetDetails))
+                AddSet(value)
             End Set
         End Property
 
@@ -1664,15 +1616,15 @@ Namespace MediaContainers
             End Set
         End Property
 
-        '<XmlElement("sets")>
-        'Public Property Sets_YAMJ() As SetContainer
-        '    Get
-        '        Return _sets
-        '    End Get
-        '    Set(ByVal value As SetContainer)
-        '        _set_y = value
-        '    End Set
-        'End Property
+        <XmlElement("sets")>
+        Public Property Sets_YAMJ() As SetContainer
+            Get
+                Return CreateSetYAMJ()
+            End Get
+            Set(ByVal value As SetContainer)
+                AddSet(value)
+            End Set
+        End Property
 
         <XmlElement("fileinfo")>
         Public Property FileInfo() As Fileinfo
@@ -1808,6 +1760,23 @@ Namespace MediaContainers
 #End Region 'Properties
 
 #Region "Methods"
+
+        Public Sub AddSet(ByVal tSetDetails As SetDetails)
+            If tSetDetails IsNot Nothing AndAlso tSetDetails.TitleSpecified Then
+                Dim tSet = From bSet As SetDetails In Sets Where bSet.ID = tSetDetails.ID
+                Dim iSet = From bset As SetDetails In Sets Where bset.TMDB = tSetDetails.TMDB
+
+                If tSet.Count > 0 Then
+                    _sets.Remove(tSet(0))
+                End If
+
+                If iSet.Count > 0 Then
+                    _sets.Remove(iSet(0))
+                End If
+
+                _sets.Add(tSetDetails)
+            End If
+        End Sub
         ''' <summary>
         ''' converts both versions of moviesets declaration in movie.nfo to a proper Sets object
         ''' </summary>
@@ -1841,26 +1810,19 @@ Namespace MediaContainers
                                 nSetInfo.Title = xNode.InnerText
                         End Select
                     Next
-                    If nSetInfo.TitleSpecified Then Sets.Add(nSetInfo)
+                    If nSetInfo.TitleSpecified Then AddSet(nSetInfo)
                 End If
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         End Sub
 
-        Public Sub AddSet(ByVal SetID As Long, ByVal SetName As String, ByVal Order As Integer, ByVal SetTMDBColID As String, ByVal strPlot As String)
-            Dim tSet = From bSet As SetDetails In Sets Where bSet.ID = SetID
-            Dim iSet = From bset As SetDetails In Sets Where bset.TMDB = SetTMDBColID
-
-            If tSet.Count > 0 Then
-                Sets.Remove(tSet(0))
+        Public Sub AddSet(ByVal tSetContainer As SetContainer)
+            If tSetContainer IsNot Nothing AndAlso tSetContainer.SetsSpecified Then
+                For Each xSetDetail As SetDetails In tSetContainer.Sets.Where(Function(f) f.TitleSpecified)
+                    AddSet(xSetDetail)
+                Next
             End If
-
-            If iSet.Count > 0 Then
-                Sets.Remove(iSet(0))
-            End If
-
-            Sets.Add(New SetDetails With {.ID = SetID, .Title = SetName, .Order = Order, .Plot = strPlot, .TMDB = SetTMDBColID})
         End Sub
 
         Public Sub AddTag(ByVal value As String)
@@ -2053,7 +2015,7 @@ Namespace MediaContainers
             If _sets.Count > 0 AndAlso _sets.Item(0).TitleSpecified Then
                 Dim firstSet As SetDetails = _sets.Item(0)
 
-                If Master.eSettings.MovieUseFrodo Then
+                If Master.eSettings.MovieScraperCollectionsExtendedInfo Then
                     'creates a set node like:
                     '<set> 
                     '  <name>Die Hard Collection</name>
@@ -2117,6 +2079,14 @@ Namespace MediaContainers
             End If
         End Function
 
+        Public Function CreateSetYAMJ() As SetContainer
+            If Master.eSettings.MovieScraperCollectionsYAMJCompatibleSets AndAlso Sets.Count > 0 Then
+                Return New SetContainer With {.Sets = Sets}
+            Else
+                Return Nothing
+            End If
+        End Function
+
         Public Function CompareTo(ByVal other As Movie) As Integer Implements IComparable(Of Movie).CompareTo
             Dim retVal As Integer = (Lev).CompareTo(other.Lev)
             If retVal = 0 Then
@@ -2153,13 +2123,74 @@ Namespace MediaContainers
     End Class
 
     <Serializable()>
+    Public Class MovieInSet
+        Implements IComparable(Of MovieInSet)
+
+#Region "Fields"
+
+        Private _dbmovie As Database.DBElement
+        Private _order As Integer
+
+#End Region 'Fields
+
+#Region "Constructors"
+
+        Public Sub New()
+            Clear()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Properties"
+
+        Public Property DBMovie() As Database.DBElement
+            Get
+                Return _dbmovie
+            End Get
+            Set(ByVal value As Database.DBElement)
+                _dbmovie = value
+            End Set
+        End Property
+
+        Public ReadOnly Property ListTitle() As String
+            Get
+                Return _dbmovie.ListTitle
+            End Get
+        End Property
+
+        Public Property Order() As Integer
+            Get
+                Return _order
+            End Get
+            Set(ByVal value As Integer)
+                _order = value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub Clear()
+            _dbmovie = New Database.DBElement(Enums.ContentType.Movie)
+            _order = 0
+        End Sub
+
+        Public Function CompareTo(ByVal other As MovieInSet) As Integer Implements IComparable(Of MovieInSet).CompareTo
+            Return (Order).CompareTo(other.Order)
+        End Function
+
+#End Region 'Methods
+
+    End Class
+
+    <Serializable()>
     <XmlRoot("movieset")>
     Public Class MovieSet
 
 #Region "Fields"
 
         Private _oldtitle As String
-        Private _oldtmdb As String
         Private _plot As String
         Private _title As String
         Private _tmdb As String
@@ -2246,19 +2277,6 @@ Namespace MediaContainers
                 _oldtitle = value
             End Set
         End Property
-        ''' <summary>
-        ''' Old TMDB ID before edit or scraping. Needed to recognize if all linked movies has to be changed or not.
-        ''' </summary>
-        ''' <returns></returns>
-        <XmlIgnore()>
-        Public Property OldTMDB() As String
-            Get
-                Return _oldtmdb
-            End Get
-            Set(ByVal value As String)
-                _oldtmdb = value
-            End Set
-        End Property
 
         <XmlIgnore()>
         Public ReadOnly Property AnyUniqueIDSpecified() As Boolean
@@ -2274,20 +2292,12 @@ Namespace MediaContainers
             End Get
         End Property
 
-        <XmlIgnore()>
-        Public ReadOnly Property TMDBHasChanged() As Boolean
-            Get
-                Return Not _oldtmdb = _tmdb
-            End Get
-        End Property
-
 #End Region 'Properties
 
 #Region "Methods"
 
         Public Sub Clear()
             _oldtitle = String.Empty
-            _oldtmdb = String.Empty
             _plot = String.Empty
             _title = String.Empty
             _tmdb = String.Empty
@@ -5137,7 +5147,9 @@ Namespace MediaContainers
 #End Region 'Nested Types
 
     End Class
-
+    ''' <summary>
+    ''' Container for YAMJ sets
+    ''' </summary>
     <Serializable()>
     Public Class SetContainer
 
@@ -5220,6 +5232,13 @@ Namespace MediaContainers
         End Property
 
         <XmlIgnore()>
+        Public ReadOnly Property IDSpecified() As Boolean
+            Get
+                Return Not _id = -1
+            End Get
+        End Property
+
+        <XmlAttribute("order")>
         Public Property Order() As Integer
             Get
                 Return _order

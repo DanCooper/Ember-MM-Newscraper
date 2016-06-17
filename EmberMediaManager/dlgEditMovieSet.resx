@@ -196,7 +196,7 @@
         rF8NAmuYs9yj6f7TkBz8PaBrBGE6gSXBx3H+XtFX6tk/D1D7N8KIODAtE3hQAAAAAElFTkSuQmCC
 </value>
   </data>
-  <metadata name="ofdImage.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="ofdLocalFiles.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
   <data name="btnRescrape.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
@@ -219,7 +219,7 @@
 </value>
   </data>
   <metadata name="tmrDelay.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>121, 17</value>
+    <value>139, 17</value>
   </metadata>
   <data name="btnSetFanartDL.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -1950,20 +1950,6 @@
         kU1kjOWO/TBQxJvp31A7PxNn+ruBkrB4LpGweC6RsHjugEH/B6e1dHr2M+x9AAAAAElFTkSuQmCC
 </value>
   </data>
-  <data name="btnMovieReAdd.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
-        JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAArpAAAK6QH9dc7TAAABnElE
-        QVQ4T6XSS0sCYRQG4BEXERG46UI3yCRNnZmw/AGZFUagJO2rZSFEJi6MFtFNhAxBBSlokW7NQIlIKLvJ
-        FyJtBKEoqKCCfsPpO2pD1repFs9wfM87x81wAPAvzBDt3QxYdvOibzcv+KI3pjFWBzFDtJPrfQyTRgiT
-        BtjOia+sDmKGKER0xa2rJkB0vmd1EDNEgWxvwXfRCiiQFe9YHSQNQWLqC5FhW5AMWUPXFqv/yvi0lukA
-        tHnZ/xImo9YgGaZGbOHrEWPVAe+5oXk100PL+goeVk41sHyiKsEZs8/9akYL62f6FunAUlrftZhWw0+a
-        L6p3nuNulXTAc2Rsc6Z0MJ/USpypalW7pA7ch2K7dADNHRjsjoTgohbQbJx/m4nrAdH53bFPc5TgXbQ7
-        ESU7pfekA99NxYTCZIyHMuGW1UHMENkjQnE8wkOZ8PvvwOwXHwb9PCCzX3hmdRAn50oUVCeloXgZx6m1
-        U8oNg7sni3TTSi9muKt0sKsoHcAH/SGnaqhaqo6qp3dl0r8AJ8OsssMOduXSgb8D7gMxXmeO6KXG2gAA
-        AABJRU5ErkJggg==
-</value>
-  </data>
   <data name="btnMovieAdd.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
@@ -2028,13 +2014,13 @@
 </value>
   </data>
   <metadata name="tmrKeyBuffer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>222, 17</value>
+    <value>240, 17</value>
   </metadata>
   <metadata name="tmrSearch_Movies.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>345, 17</value>
+    <value>363, 17</value>
   </metadata>
   <metadata name="tmrSearchWait_Movies.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>496, 17</value>
+    <value>514, 17</value>
   </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>63</value>

@@ -3025,6 +3025,8 @@ Public Class dlgSettings
             chkMovieScraperCleanPlotOutline.Checked = .MovieScraperCleanPlotOutline
             chkMovieScraperCollectionID.Checked = .MovieScraperCollectionID
             chkMovieScraperCollectionsAuto.Checked = .MovieScraperCollectionsAuto
+            chkMovieScraperCollectionsExtendedInfo.Checked = .MovieScraperCollectionsExtendedInfo
+            chkMovieScraperCollectionsYAMJCompatibleSets.Checked = .MovieScraperCollectionsYAMJCompatibleSets
             chkMovieScraperCountry.Checked = .MovieScraperCountry
             chkMovieScraperDirector.Checked = .MovieScraperDirector
             chkMovieScraperGenre.Checked = .MovieScraperGenre
@@ -3560,7 +3562,6 @@ Public Class dlgSettings
             chkMovieTrailerNMJ.Checked = .MovieTrailerNMJ
 
             '************** NMT optional settings **************
-            chkMovieYAMJCompatibleSets.Checked = .MovieYAMJCompatibleSets
             chkMovieYAMJWatchedFile.Checked = .MovieYAMJWatchedFile
             txtMovieYAMJWatchedFolder.Text = .MovieYAMJWatchedFolder
 
@@ -5101,6 +5102,8 @@ Public Class dlgSettings
             .MovieScraperCleanPlotOutline = chkMovieScraperCleanPlotOutline.Checked
             .MovieScraperCollectionID = chkMovieScraperCollectionID.Checked
             .MovieScraperCollectionsAuto = chkMovieScraperCollectionsAuto.Checked
+            .MovieScraperCollectionsExtendedInfo = chkMovieScraperCollectionsExtendedInfo.Checked
+            .MovieScraperCollectionsYAMJCompatibleSets = chkMovieScraperCollectionsYAMJCompatibleSets.Checked
             .MovieScraperCountry = chkMovieScraperCountry.Checked
             .MovieScraperDirector = chkMovieScraperDirector.Checked
             .MovieScraperDurationRuntimeFormat = txtMovieScraperDurationRuntimeFormat.Text
@@ -5491,7 +5494,6 @@ Public Class dlgSettings
             .MovieTrailerNMJ = chkMovieTrailerNMJ.Checked
 
             '************** NMJ optional settings *************
-            .MovieYAMJCompatibleSets = chkMovieYAMJCompatibleSets.Checked
             .MovieYAMJWatchedFile = chkMovieYAMJWatchedFile.Checked
             .MovieYAMJWatchedFolder = txtMovieYAMJWatchedFolder.Text
 
@@ -6857,7 +6859,7 @@ Public Class dlgSettings
         chkMovieScraperStudioWithImg.Text = Master.eLang.GetString(1280, "Scrape Only Studios With Images")
         chkMovieScraperUseMDDuration.Text = Master.eLang.GetString(516, "Use Duration for Runtime")
         chkMovieScraperXBMCTrailerFormat.Text = Master.eLang.GetString(1187, "Save YouTube-Trailer-Links in XBMC compatible format")
-        chkMovieYAMJCompatibleSets.Text = Master.eLang.GetString(561, "YAMJ Compatible Sets")
+        chkMovieScraperCollectionsYAMJCompatibleSets.Text = Master.eLang.GetString(561, "Save YAMJ Compatible Sets to NFO")
         chkMovieSkipStackedSizeCheck.Text = Master.eLang.GetString(538, "Skip Size Check of Stacked Files")
         chkMovieSortBeforeScan.Text = Master.eLang.GetString(712, "Sort files into folder before each library update")
         chkMovieStackExpertMulti.Text = String.Format(Master.eLang.GetString(1178, "Stack {0}filename{1}"), "<", ">")
@@ -8199,7 +8201,6 @@ Public Class dlgSettings
         chkMovieUseBaseDirectoryExpertBDMV.CheckedChanged,
         chkMovieUseBaseDirectoryExpertVTS.CheckedChanged,
         chkMovieXBMCProtectVTSBDMV.CheckedChanged,
-        chkMovieYAMJCompatibleSets.CheckedChanged,
         chkTVAllSeasonsBannerKeepExisting.CheckedChanged,
         chkTVAllSeasonsBannerPrefSizeOnly.CheckedChanged,
         chkTVAllSeasonsFanartKeepExisting.CheckedChanged,
@@ -8390,6 +8391,8 @@ Public Class dlgSettings
         txtMoviePosterHeight.TextChanged,
         txtMoviePosterWidth.TextChanged,
         txtMovieScraperCastLimit.TextChanged,
+        chkMovieScraperCollectionsExtendedInfo.CheckedChanged,
+        chkMovieScraperCollectionsYAMJCompatibleSets.CheckedChanged,
         txtMovieScraperDurationRuntimeFormat.TextChanged,
         txtMovieScraperGenreLimit.TextChanged,
         txtMovieScraperMPAANotRated.TextChanged,

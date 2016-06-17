@@ -551,15 +551,13 @@ Public Class FanartTV_Image
     Function Scraper_MovieSet(ByRef DBMovieset As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_MovieSet.Scraper
         logger.Trace("[FanartTV_Image] [Scraper_MovieSet] [Start]")
 
-        If String.IsNullOrEmpty(DBMovieset.MovieSet.TMDB) Then
-            If DBMovieset.MovieList IsNot Nothing AndAlso DBMovieset.MovieList.Count > 0 Then
-                DBMovieset.MovieSet.TMDB = ModulesManager.Instance.GetMovieCollectionID(DBMovieset.MovieList.Item(0).Movie.ID)
-            End If
+        If String.IsNullOrEmpty(DBMovieset.MovieSet.TMDB) AndAlso DBMovieset.MoviesInSetSpecified Then
+            DBMovieset.MovieSet.TMDB = ModulesManager.Instance.GetMovieCollectionID(DBMovieset.MoviesInSet.Item(0).DBMovie.Movie.ID)
         End If
 
         If Not String.IsNullOrEmpty(DBMovieset.MovieSet.TMDB) Then
             LoadSettings_MovieSet()
-            Dim _scraper As New FanartTVs.Scraper(_SpecialSettings_MovieSet)
+            Dim _scraper As New Scraper(_SpecialSettings_MovieSet)
 
             Dim FilteredModifiers As Structures.ScrapeModifiers = Functions.ScrapeModifiersAndAlso(ScrapeModifiers, ConfigModifier_MovieSet)
 
@@ -574,7 +572,7 @@ Public Class FanartTV_Image
         logger.Trace("[FanartTV_Image] [Scraper_TV] [Start]")
 
         LoadSettings_TV()
-        Dim _scraper As New FanartTVs.Scraper(_SpecialSettings_TV)
+        Dim _scraper As New Scraper(_SpecialSettings_TV)
 
         Dim FilteredModifiers As Structures.ScrapeModifiers = Functions.ScrapeModifiersAndAlso(ScrapeModifiers, ConfigModifier_TV)
 

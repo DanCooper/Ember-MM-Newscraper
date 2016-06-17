@@ -804,6 +804,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieScraperCollectionsExtendedInfo() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieScraperCollectionsExtendedInfo
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieScraperCollectionsExtendedInfo = value
+        End Set
+    End Property
+
     Public Property MovieScraperCountry() As Boolean
         Get
             Return Settings._XMLSettings.MovieScraperCountry
@@ -4967,12 +4976,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieYAMJCompatibleSets() As Boolean
+    Public Property MovieScraperCollectionsYAMJCompatibleSets() As Boolean
         Get
-            Return Settings._XMLSettings.MovieYAMJCompatibleSets
+            Return Settings._XMLSettings.MovieScraperCollectionsYAMJCompatibleSets
         End Get
         Set(ByVal value As Boolean)
-            Settings._XMLSettings.MovieYAMJCompatibleSets = value
+            Settings._XMLSettings.MovieScraperCollectionsYAMJCompatibleSets = value
         End Set
     End Property
 
@@ -7021,6 +7030,8 @@ Public Class Settings
         MovieScraperCleanPlotOutline = False
         MovieScraperCollectionID = True
         MovieScraperCollectionsAuto = True
+        MovieScraperCollectionsExtendedInfo = False
+        MovieScraperCollectionsYAMJCompatibleSets = False
         MovieScraperCountry = True
         MovieScraperDirector = True
         MovieScraperDurationRuntimeFormat = "<m>"

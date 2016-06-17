@@ -163,8 +163,8 @@ Public Class NFO
             End If
 
             'Collections
-            If (DBMovie.Movie.Sets.Count = 0 OrElse Not Master.eSettings.MovieLockCollections) AndAlso
-                scrapedmovie.Sets.Count > 0 AndAlso Master.eSettings.MovieScraperCollectionsAuto AndAlso Not new_Collections Then
+            If (Not DBMovie.Movie.SetsSpecified OrElse Not Master.eSettings.MovieLockCollections) AndAlso
+                scrapedmovie.SetsSpecified AndAlso Master.eSettings.MovieScraperCollectionsAuto AndAlso Not new_Collections Then
                 DBMovie.Movie.Sets.Clear()
                 For Each movieset In scrapedmovie.Sets
                     If Not String.IsNullOrEmpty(movieset.Title) Then
@@ -1269,7 +1269,7 @@ Public Class NFO
                     Next
                 End If
             End If
-            If mNFO.Sets.Count > 0 Then
+            If mNFO.SetsSpecified Then
                 For i = mNFO.Sets.Count - 1 To 0 Step -1
                     If Not mNFO.Sets(i).TitleSpecified Then
                         mNFO.Sets.RemoveAt(i)
