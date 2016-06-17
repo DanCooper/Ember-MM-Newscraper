@@ -3308,6 +3308,8 @@ Public Class Database
     ''' <param name="ToDisk">Save Images, Themes and Trailers to disk</param>
     ''' <returns>Database.DBElement object</returns>
     Public Function Save_Movie(ByVal _movieDB As DBElement, ByVal BatchMode As Boolean, ByVal ToNFO As Boolean, ByVal ToDisk As Boolean, ByVal ForceFileCleanup As Boolean) As DBElement
+        If _movieDB.Movie Is Nothing Then Return _movieDB
+
         Dim SQLtransaction As SQLiteTransaction = Nothing
         If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
         Using SQLcommand_movie As SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -3921,6 +3923,8 @@ Public Class Database
     ''' <param name="ToDisk">Create NFO and Images</param>
     ''' <returns>Database.DBElement object</returns>
     Public Function Save_MovieSet(ByVal _moviesetDB As DBElement, ByVal BatchMode As Boolean, ByVal toDisk As Boolean) As DBElement
+        If _moviesetDB.MovieSet Is Nothing Then Return _moviesetDB
+
         Dim SQLtransaction As SQLiteTransaction = Nothing
         If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -4181,6 +4185,8 @@ Public Class Database
     ''' <param name="BatchMode">Is the function already part of a transaction?</param>
     ''' <param name="ToDisk">Create NFO and Images</param>
     Public Function Save_TVEpisode(ByVal _episode As DBElement, ByVal BatchMode As Boolean, ByVal ToNFO As Boolean, ByVal ToDisk As Boolean, ByVal doSeasonCheck As Boolean, ByVal bDoSync As Boolean, Optional ByVal bForceIsNewFlag As Boolean = False) As DBElement
+        If _episode.TVEpisode Is Nothing Then Return _episode
+
         Dim SQLtransaction As SQLiteTransaction = Nothing
         If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
 
@@ -4576,6 +4582,8 @@ Public Class Database
     ''' <param name="BatchMode"></param>
     ''' <remarks>Note that this stores the season information, not the individual episodes within that season</remarks>
     Public Function Save_TVSeason(ByRef _season As DBElement, ByVal BatchMode As Boolean, ByVal ToDisk As Boolean, ByVal bDoSync As Boolean) As DBElement
+        If _season.TVSeason Is Nothing Then Return _season
+
         Dim doesExist As Boolean = False
         Dim ID As Long = -1
 
@@ -4672,6 +4680,8 @@ Public Class Database
     ''' <param name="BatchMode">Is the function already part of a transaction?</param>
     ''' <param name="ToDisk">Create NFO and Images</param>
     Public Function Save_TVShow(ByRef _show As DBElement, ByVal BatchMode As Boolean, ByVal ToNFO As Boolean, ByVal ToDisk As Boolean, ByVal withEpisodes As Boolean) As DBElement
+        If _show.TVShow Is Nothing Then Return _show
+
         Dim SQLtransaction As SQLiteTransaction = Nothing
 
         If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()

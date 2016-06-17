@@ -65,6 +65,8 @@ Public Class Scanner
     ''' <param name="DBMovie">Database.DBElement object</param>
     ''' <param name="bForced">Enable ALL known file naming schemas. Should only be used to search files and not to save files!</param>
     Public Sub GetFolderContents_Movie(ByRef DBMovie As Database.DBElement, Optional ByVal bForced As Boolean = False)
+        If String.IsNullOrEmpty(DBMovie.Filename) Then Return
+
         Dim currname As String = String.Empty
         Dim atList As New List(Of String)   'actor thumbs list
         Dim efList As New List(Of String)   'extrafanart list
@@ -337,6 +339,8 @@ Public Class Scanner
     End Sub
 
     Public Sub GetFolderContents_TVEpisode(ByRef DBTVEpisode As Database.DBElement)
+        If String.IsNullOrEmpty(DBTVEpisode.Filename) Then Return
+
         Dim fName As String = String.Empty
         Dim fList As New List(Of String)
 
