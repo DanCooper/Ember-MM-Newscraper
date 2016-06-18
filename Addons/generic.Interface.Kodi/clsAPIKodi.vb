@@ -771,11 +771,11 @@ Namespace Kodi
                     Next
 
                     'compare by movies inside movieset
-                    For Each tMovie In tDBElement.MovieList
+                    For Each tMovie In tDBElement.MoviesInSet
                         logger.Trace(String.Format("[APIKodi] [{0}] SearchMovieSetByDetails: ""{1}"" | NOT found in database, trying to find the movieset by movies...", _currenthost.Label, tDBElement.MovieSet.Title))
                         'search movie ID in Kodi DB
                         Dim MovieID As Integer = -1
-                        Dim KodiMovie = Await SearchMovie(tMovie).ConfigureAwait(False)
+                        Dim KodiMovie = Await SearchMovie(tMovie.DBMovie).ConfigureAwait(False)
                         If KodiMovie IsNot Nothing Then
                             For Each tMovieSet In kMovieSets.sets
                                 If tMovieSet.setid = KodiMovie.setid Then
@@ -1027,7 +1027,7 @@ Namespace Kodi
                     Dim mOriginalTitle As String = mDBElement.Movie.OriginalTitle
                     Dim mOutline As String = mDBElement.Movie.Outline
                     Dim mPlot As String = mDBElement.Movie.Plot
-                    Dim mSet As String = If(mDBElement.Movie.Sets.Count > 0, mDBElement.Movie.Sets.Item(0).Title, String.Empty)
+                    Dim mSet As String = If(mDBElement.Movie.SetsSpecified, mDBElement.Movie.Sets.Item(0).Title, String.Empty)
                     Dim mSortTitle As String = mDBElement.Movie.SortTitle
                     Dim mTagline As String = mDBElement.Movie.Tagline
                     Dim mTitle As String = mDBElement.Movie.Title

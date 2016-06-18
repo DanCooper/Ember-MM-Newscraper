@@ -556,7 +556,7 @@ Public Class FileFolderRenamer
         End If
 
         'MovieSets
-        If _tmpMovie.Movie.Sets IsNot Nothing AndAlso _tmpMovie.Movie.Sets.Count > 0 Then
+        If _tmpMovie.Movie.SetsSpecified Then
             MovieFile.Collection = _tmpMovie.Movie.Sets.Item(0).Title
         End If
 
@@ -587,13 +587,13 @@ Public Class FileFolderRenamer
         MovieFile.IsSingle = _tmpMovie.IsSingle
 
         'ListTitle
-        If _tmpMovie.ListTitle IsNot Nothing Then
+        If _tmpMovie.ListTitleSpecified Then
             MovieFile.ListTitle = _tmpMovie.ListTitle
         End If
 
         'MPAA
         If _tmpMovie.Movie.MPAASpecified Then
-            MovieFile.MPAA = FileFolderRenamer.SelectMPAA(_tmpMovie.Movie.MPAA)
+            MovieFile.MPAA = SelectMPAA(_tmpMovie.Movie.MPAA)
         End If
 
         'OriginalTitle
@@ -999,7 +999,7 @@ Public Class FileFolderRenamer
 
         'MPAA
         If _tmpTVShow.TVShow.MPAASpecified Then
-            ShowFile.MPAA = FileFolderRenamer.SelectMPAA(_tmpTVShow.TVShow.MPAA)
+            ShowFile.MPAA = SelectMPAA(_tmpTVShow.TVShow.MPAA)
         End If
 
         'Rating

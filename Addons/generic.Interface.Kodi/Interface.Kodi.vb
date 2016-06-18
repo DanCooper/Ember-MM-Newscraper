@@ -587,7 +587,7 @@ Public Class KodiInterface
 
                     'Sync MovieSet
                 Case Enums.ModuleEventType.Sync_MovieSet
-                    If mDBElement.MovieListSpecified Then
+                    If mDBElement.MoviesInSetSpecified Then
                         If mHost IsNot Nothing Then
                             Dim _APIKodi As New Kodi.APIKodi(mHost)
 

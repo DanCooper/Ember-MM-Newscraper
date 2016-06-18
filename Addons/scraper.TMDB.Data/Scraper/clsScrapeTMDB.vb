@@ -295,11 +295,21 @@ Namespace TMDB
             If FilteredOptions.bMainCollectionID Then
                 If Result.BelongsToCollection Is Nothing Then
                     If _SpecialSettings.FallBackEng AndAlso ResultE.BelongsToCollection IsNot Nothing Then
-                        nMovie.AddSet(Nothing, ResultE.BelongsToCollection.Name, Nothing, CStr(ResultE.BelongsToCollection.Id))
+                        nMovie.AddSet(New MediaContainers.SetDetails With {
+                                      .ID = -1,
+                                      .Order = -1,
+                                      .Plot = String.Empty,
+                                      .Title = ResultE.BelongsToCollection.Name,
+                                      .TMDB = CStr(ResultE.BelongsToCollection.Id)})
                         nMovie.TMDBColID = CStr(ResultE.BelongsToCollection.Id)
                     End If
                 Else
-                    nMovie.AddSet(Nothing, Result.BelongsToCollection.Name, Nothing, CStr(ResultE.BelongsToCollection.Id))
+                    nMovie.AddSet(New MediaContainers.SetDetails With {
+                                  .ID = -1,
+                                  .Order = -1,
+                                  .Plot = String.Empty,
+                                  .Title = ResultE.BelongsToCollection.Name,
+                                  .TMDB = CStr(ResultE.BelongsToCollection.Id)})
                     nMovie.TMDBColID = CStr(Result.BelongsToCollection.Id)
                 End If
             End If
@@ -880,7 +890,7 @@ Namespace TMDB
             Dim APIResult As Task(Of TMDbLib.Objects.TvShows.TvEpisode)
             APIResult = Task.Run(Function() _TMDBApi.GetTvEpisodeAsync(tmdbID, SeasonNumber, EpisodeNumber, TMDbLib.Objects.TvShows.TvEpisodeMethods.Credits Or TMDbLib.Objects.TvShows.TvEpisodeMethods.ExternalIds))
 
-            If APIResult IsNot Nothing AndAlso APIResult.Result IsNot Nothing Then
+            If APIResult IsNot Nothing AndAlso APIResult.Exception Is Nothing AndAlso APIResult.Result IsNot Nothing Then
                 Dim EpisodeInfo As TMDbLib.Objects.TvShows.TvEpisode = APIResult.Result
 
                 If EpisodeInfo Is Nothing OrElse EpisodeInfo.Id Is Nothing OrElse Not EpisodeInfo.Id > 0 Then
@@ -1005,7 +1015,7 @@ Namespace TMDB
             Dim APIResult As Task(Of TMDbLib.Objects.TvShows.TvSeason)
             APIResult = Task.Run(Function() _TMDBApi.GetTvSeasonAsync(ShowID, SeasonNumber, TMDbLib.Objects.TvShows.TvSeasonMethods.Credits Or TMDbLib.Objects.TvShows.TvSeasonMethods.ExternalIds))
 
-            If APIResult IsNot Nothing AndAlso APIResult.Result IsNot Nothing Then
+            If APIResult IsNot Nothing AndAlso APIResult.Exception Is Nothing AndAlso APIResult.Result IsNot Nothing Then
                 Dim SeasonInfo As TMDbLib.Objects.TvShows.TvSeason = APIResult.Result
 
                 nSeason.TMDB = CStr(SeasonInfo.Id)
@@ -1064,7 +1074,7 @@ Namespace TMDB
             Dim APIResult As Task(Of TMDbLib.Objects.TvShows.TvSeason)
             APIResult = Task.Run(Function() _TMDBApi.GetTvSeasonAsync(tmdbID, SeasonNumber, TMDbLib.Objects.TvShows.TvSeasonMethods.Credits Or TMDbLib.Objects.TvShows.TvSeasonMethods.ExternalIds))
 
-            If APIResult IsNot Nothing AndAlso APIResult.Result IsNot Nothing Then
+            If APIResult IsNot Nothing AndAlso APIResult.Exception Is Nothing AndAlso APIResult.Result IsNot Nothing Then
                 Dim SeasonInfo As TMDbLib.Objects.TvShows.TvSeason = APIResult.Result
 
                 If SeasonInfo Is Nothing OrElse SeasonInfo.Id Is Nothing OrElse Not SeasonInfo.Id > 0 Then
@@ -1134,7 +1144,7 @@ Namespace TMDB
                 Dim APIResult As Task(Of TMDbLib.Objects.Find.FindContainer)
                 APIResult = Task.Run(Function() _TMDBApi.FindAsync(TMDbLib.Objects.Find.FindExternalSource.Imdb, imdbID))
 
-                If APIResult IsNot Nothing AndAlso APIResult.Result IsNot Nothing AndAlso
+                If APIResult IsNot Nothing AndAlso APIResult.Exception Is Nothing AndAlso APIResult.Result IsNot Nothing AndAlso
                     APIResult.Result.TvResults IsNot Nothing AndAlso APIResult.Result.TvResults.Count > 0 Then
                     tmdbID = APIResult.Result.TvResults.Item(0).Id.ToString
                 End If
@@ -1153,7 +1163,7 @@ Namespace TMDB
                 Dim APIResult As Task(Of TMDbLib.Objects.Find.FindContainer)
                 APIResult = Task.Run(Function() _TMDBApi.FindAsync(TMDbLib.Objects.Find.FindExternalSource.TvDb, tvdbID))
 
-                If APIResult IsNot Nothing AndAlso APIResult.Result IsNot Nothing AndAlso
+                If APIResult IsNot Nothing AndAlso APIResult.Exception Is Nothing AndAlso APIResult.Result IsNot Nothing AndAlso
                     APIResult.Result.TvResults IsNot Nothing AndAlso APIResult.Result.TvResults.Count > 0 Then
                     tmdbID = APIResult.Result.TvResults.Item(0).Id.ToString
                 End If
