@@ -26,7 +26,7 @@ Public Class frmSettingsHolder
 
 #Region "Fields"
 
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
     Private SettingsHasChanged As Boolean = False
 
 #End Region 'Fields
@@ -42,46 +42,46 @@ Public Class frmSettingsHolder
     End Sub
 
     Private Sub SetUp()
-        Me.chkCascade.Text = Master.eLang.GetString(1397, "Cascade context menu")
-        Me.chkEnable.Text = Master.eLang.GetString(1396, "Integrate Ember Media Manager to shell context menu")
-        Me.chkScanFolder.Text = Master.eLang.GetString(1399, "Scan folder for new content")
-        Me.chkAddMovieSource.Text = String.Concat(Master.eLang.GetString(1400, "Add folder as a new movie source"), "...")
-        Me.chkAddTVShowSource.Text = String.Concat(Master.eLang.GetString(1401, "Add folder as a new tv show source"), "...")
-        Me.gbItems.Text = String.Concat(Master.eLang.GetString(1398, "Context menu items"), ":")
+        chkCascade.Text = Master.eLang.GetString(1397, "Cascade context menu")
+        chkEnable.Text = Master.eLang.GetString(1396, "Integrate Ember Media Manager to shell context menu")
+        chkScanFolder.Text = Master.eLang.GetString(1399, "Scan folder for new content")
+        chkAddMovieSource.Text = String.Concat(Master.eLang.GetString(1400, "Add folder as a new movie source"), "...")
+        chkAddTVShowSource.Text = String.Concat(Master.eLang.GetString(1401, "Add folder as a new tv show source"), "...")
+        gbItems.Text = String.Concat(Master.eLang.GetString(1398, "Context menu items"), ":")
     End Sub
 
     Private Sub FillSettings()
-        RemoveHandler Me.chkCascade.CheckedChanged, AddressOf chkCascade_CheckedChanged
-        RemoveHandler Me.chkScanFolder.CheckedChanged, AddressOf chkScanFolder_CheckedChanged
-        RemoveHandler Me.chkAddMovieSource.CheckedChanged, AddressOf chkAddMovieSource_CheckedChanged
-        RemoveHandler Me.chkAddTVShowSource.CheckedChanged, AddressOf chkAddTVShowSource_CheckedChanged
+        RemoveHandler chkCascade.CheckedChanged, AddressOf chkCascade_CheckedChanged
+        RemoveHandler chkScanFolder.CheckedChanged, AddressOf chkScanFolder_CheckedChanged
+        RemoveHandler chkAddMovieSource.CheckedChanged, AddressOf chkAddMovieSource_CheckedChanged
+        RemoveHandler chkAddTVShowSource.CheckedChanged, AddressOf chkAddTVShowSource_CheckedChanged
 
-        If RegistryCascadeGroupIsEnabled() Then Me.chkCascade.Checked = True
-        If RegistryCascadeScanFolderIsEnabled() OrElse RegistryScanFolderIsEnabled() Then Me.chkScanFolder.Checked = True
-        If RegistryCascadeAddMovieSourceIsEnabled() OrElse RegistryAddMovieSourceIsEnabled() Then Me.chkAddMovieSource.Checked = True
-        If RegistryCascadeAddTVShowSourceIsEnabled() OrElse RegistryAddTVShowSourceIsEnabled() Then Me.chkAddTVShowSource.Checked = True
+        If RegistryCascadeGroupIsEnabled() Then chkCascade.Checked = True
+        If RegistryCascadeScanFolderIsEnabled() OrElse RegistryScanFolderIsEnabled() Then chkScanFolder.Checked = True
+        If RegistryCascadeAddMovieSourceIsEnabled() OrElse RegistryAddMovieSourceIsEnabled() Then chkAddMovieSource.Checked = True
+        If RegistryCascadeAddTVShowSourceIsEnabled() OrElse RegistryAddTVShowSourceIsEnabled() Then chkAddTVShowSource.Checked = True
 
-        AddHandler Me.chkCascade.CheckedChanged, AddressOf chkCascade_CheckedChanged
-        AddHandler Me.chkScanFolder.CheckedChanged, AddressOf chkScanFolder_CheckedChanged
-        AddHandler Me.chkAddMovieSource.CheckedChanged, AddressOf chkAddMovieSource_CheckedChanged
-        AddHandler Me.chkAddTVShowSource.CheckedChanged, AddressOf chkAddTVShowSource_CheckedChanged
+        AddHandler chkCascade.CheckedChanged, AddressOf chkCascade_CheckedChanged
+        AddHandler chkScanFolder.CheckedChanged, AddressOf chkScanFolder_CheckedChanged
+        AddHandler chkAddMovieSource.CheckedChanged, AddressOf chkAddMovieSource_CheckedChanged
+        AddHandler chkAddTVShowSource.CheckedChanged, AddressOf chkAddTVShowSource_CheckedChanged
 
-        If Me.chkCascade.Checked OrElse Me.chkScanFolder.Checked OrElse Me.chkAddMovieSource.Checked OrElse Me.chkAddTVShowSource.Checked Then Me.chkEnable.Checked = True
+        If chkCascade.Checked OrElse chkScanFolder.Checked OrElse chkAddMovieSource.Checked OrElse chkAddTVShowSource.Checked Then chkEnable.Checked = True
     End Sub
 
     Private Sub chkEnable_CheckedChanged(sender As Object, e As EventArgs) Handles chkEnable.CheckedChanged
-        If Not Me.chkEnable.Checked Then
-            Me.chkCascade.Checked = False
-            Me.chkScanFolder.Checked = False
-            Me.chkAddMovieSource.Checked = False
-            Me.chkAddTVShowSource.Checked = False
+        If Not chkEnable.Checked Then
+            chkCascade.Checked = False
+            chkScanFolder.Checked = False
+            chkAddMovieSource.Checked = False
+            chkAddTVShowSource.Checked = False
         End If
-        Me.chkCascade.Enabled = Me.chkEnable.Checked
-        Me.gbItems.Enabled = Me.chkEnable.Checked
+        chkCascade.Enabled = chkEnable.Checked
+        gbItems.Enabled = chkEnable.Checked
     End Sub
 
     Private Sub chkCascade_CheckedChanged(sender As Object, e As EventArgs) Handles chkCascade.CheckedChanged
-        If Me.chkCascade.Checked Then
+        If chkCascade.Checked Then
             Cascade_Group_Add()
             Flat_AddMovieSource_Remove()
             Flat_AddTVShowSource_Remove()
@@ -92,9 +92,9 @@ Public Class frmSettingsHolder
     End Sub
 
     Private Sub chkAddMovieSource_CheckedChanged(sender As Object, e As EventArgs) Handles chkAddMovieSource.CheckedChanged
-        If Me.chkCascade.Checked Then
+        If chkCascade.Checked Then
             Cascade_Group_Add()
-        ElseIf Me.chkAddMovieSource.Checked Then
+        ElseIf chkAddMovieSource.Checked Then
             Flat_AddMovieSource_Add()
         Else
             Flat_AddMovieSource_Remove()
@@ -102,9 +102,9 @@ Public Class frmSettingsHolder
     End Sub
 
     Private Sub chkAddTVShowSource_CheckedChanged(sender As Object, e As EventArgs) Handles chkAddTVShowSource.CheckedChanged
-        If Me.chkCascade.Checked Then
+        If chkCascade.Checked Then
             Cascade_Group_Add()
-        ElseIf Me.chkAddTVShowSource.Checked Then
+        ElseIf chkAddTVShowSource.Checked Then
             Flat_AddTVShowSource_Add()
         Else
             Flat_AddTVShowSource_Remove()
@@ -112,9 +112,9 @@ Public Class frmSettingsHolder
     End Sub
 
     Private Sub chkScanFolder_CheckedChanged(sender As Object, e As EventArgs) Handles chkScanFolder.CheckedChanged
-        If Me.chkCascade.Checked Then
+        If chkCascade.Checked Then
             Cascade_Group_Add()
-        ElseIf Me.chkScanFolder.Checked Then
+        ElseIf chkScanFolder.Checked Then
             Flat_ScanFolder_Add()
         Else
             Flat_ScanFolder_Remove()
@@ -129,7 +129,7 @@ Public Class frmSettingsHolder
             Cascade_Group_Remove()
         End If
 
-        If Me.chkAddMovieSource.Checked OrElse Me.chkAddTVShowSource.Checked OrElse Me.chkScanFolder.Checked Then
+        If chkAddMovieSource.Checked OrElse chkAddTVShowSource.Checked OrElse chkScanFolder.Checked Then
             regKey = Registry.CurrentUser.CreateSubKey("Software\\Classes\\Directory\\shell\\EmberMediaManager")
             regKey.SetValue("ExtendedSubCommandsKey", "Directory\shell\EmberMediaManager\menus")
             regKey.SetValue("Icon", String.Concat(Application.ExecutablePath, ",0").Replace("\", "\\"))
@@ -138,17 +138,17 @@ Public Class frmSettingsHolder
             regKey.CreateSubKey("menus\\shell")
 
             'add a separator (empty SubKey with a name between two submenu names (ascending))
-            If (Me.chkAddMovieSource.Checked OrElse Me.chkAddTVShowSource.Checked) AndAlso Me.chkScanFolder.Checked Then
+            If Not Functions.GetWindowsClientVersion() = "Win10" AndAlso (chkAddMovieSource.Checked OrElse chkAddTVShowSource.Checked) AndAlso chkScanFolder.Checked Then
                 regKey.CreateSubKey("menus\\shell\s-separator")
             End If
 
-            If Me.chkAddMovieSource.Checked Then
+            If chkAddMovieSource.Checked Then
                 Cascade_AddMovieSource_Add()
             End If
-            If Me.chkAddTVShowSource.Checked Then
+            If chkAddTVShowSource.Checked Then
                 Cascade_AddTVShowSource_Add()
             End If
-            If Me.chkScanFolder.Checked Then
+            If chkScanFolder.Checked Then
                 Cascade_ScanFolder_Add()
             End If
         End If

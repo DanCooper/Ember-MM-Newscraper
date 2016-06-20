@@ -61,7 +61,7 @@ Public Class clsAPITrakt
         End Try
     End Sub
 
-    Private Function CheckConnection() As Boolean
+    Public Function CheckConnection() As Boolean
         If String.IsNullOrEmpty(TraktSettings.Token) Then
             CreateToken(_SpecialSettings.Username, _SpecialSettings.Password, String.Empty)
         End If

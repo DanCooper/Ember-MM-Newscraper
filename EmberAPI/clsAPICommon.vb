@@ -1390,6 +1390,41 @@ Public Class Functions
         'no matches
         Return String.Empty
     End Function
+
+    Public Shared Function GetWindowsClientVersion() As String
+        Dim major As Integer = System.Environment.OSVersion.Version.Major
+        Dim minor As Integer = System.Environment.OSVersion.Version.Minor
+        Dim build As Integer = System.Environment.OSVersion.Version.Build
+        If major = 4 AndAlso minor = 0 AndAlso build = 950 Then
+            Return "Win95 Release 1"
+        ElseIf major = 4 AndAlso minor = 0 AndAlso build = 1111 Then
+            Return "Win95 Release 2"
+        ElseIf major = 4 AndAlso minor = 3 AndAlso (build = 1212 OrElse build = 1213 OrElse build = 1214) Then
+            Return "Win95 Release 2.1"
+        ElseIf major = 4 AndAlso minor = 10 AndAlso build = 1998 Then
+            Return "Win98"
+        ElseIf major = 4 AndAlso minor = 10 AndAlso build = 2222 Then
+            Return "Win98 Second Edition"
+        ElseIf major = 4 AndAlso minor = 90 Then
+            Return "WinMe"
+        ElseIf major = 5 AndAlso minor = 0 Then
+            Return "Win2000"
+        ElseIf major = 5 AndAlso minor = 1 AndAlso build = 2600 Then
+            Return "WinXP"
+        ElseIf major = 6 AndAlso minor = 0 Then
+            Return "Vista"
+        ElseIf major = 6 AndAlso minor = 1 Then
+            Return "Win7"
+        ElseIf major = 6 AndAlso minor = 2 AndAlso build = 9200 Then
+            Return "Win8"
+        ElseIf major = 6 AndAlso minor = 2 AndAlso build = 9600 Then
+            Return "Win8"
+        ElseIf major = 10 AndAlso minor = 0 AndAlso build = 10240 Then
+            Return "Win10"
+        Else
+            Return "Can not find os version."
+        End If
+    End Function
     ''' <summary>
     ''' Determine whether the supplied path is already defined as a TV Show season subdirectory
     ''' </summary>

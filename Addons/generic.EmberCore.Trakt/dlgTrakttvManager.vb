@@ -47,7 +47,6 @@ Public Class dlgTrakttvManager
 
     Private _myWatchedProgressTVShows As New List(Of TraktAPI.Model.TraktShowWatchedProgress)
 
-
     Private _traktToken As String
 
     'datatable which contains all tags in Ember database
@@ -93,12 +92,13 @@ Public Class dlgTrakttvManager
 
 #Region "Constructors"
 
-    Sub New()
+    Sub New(ByRef TraktAPI As clsAPITrakt)
         ' This call is required by the Windows Form Designer.
         InitializeComponent()
         Left = Master.AppPos.Left + (Master.AppPos.Width - Width) \ 2
         Top = Master.AppPos.Top + (Master.AppPos.Height - Height) \ 2
         StartPosition = FormStartPosition.Manual
+        _TraktAPI = TraktAPI
         SetUp()
     End Sub
 
@@ -118,18 +118,8 @@ Public Class dlgTrakttvManager
     ''' </remarks>
     Sub SetUp()
         Try
-            'set trakt.tv authentification data on start
-            _MySettings.GetShowProgress = CBool(clsAdvancedSettings.GetSetting("GetShowProgress", "False"))
-            _MySettings.Password = clsAdvancedSettings.GetSetting("Password", String.Empty)
-            _MySettings.Token = clsAdvancedSettings.GetSetting("Token", String.Empty)
-            _MySettings.Username = clsAdvancedSettings.GetSetting("Username", String.Empty)
-
             'if there's missing data we can't use any trakt.tv API calls -> block GUI
-            If String.IsNullOrEmpty(_MySettings.Username) OrElse String.IsNullOrEmpty(_MySettings.Password) Then
-                tbTrakt.Enabled = False
-            Else
-                _TraktAPI = New clsAPITrakt(_MySettings)
-            End If
+            If _TraktAPI Is Nothing OrElse _TraktAPI.Token Is Nothing Then tbTrakt.Enabled = False
 
             lblTopTitle.Text = Text
             Text = Master.eLang.GetString(871, "Trakt.tv Manager")
