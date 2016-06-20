@@ -69,14 +69,14 @@ Public Class Images
     ''' <remarks>
     ''' 2013/11/25 Dekker500 - Disposed old image before replacing
     ''' </remarks>
-    Public Sub UpdateMSfromImg(nImage As Image)
+    Public Sub UpdateMSfromImg(nImage As Image, Optional iQuality As Integer = 100)
 
         Try
             Dim ICI As ImageCodecInfo = GetEncoderInfo(ImageFormat.Jpeg)
 
             Dim EncPars As EncoderParameters = New EncoderParameters(2)
             EncPars.Param(0) = New EncoderParameter(Encoder.RenderMethod, EncoderValue.RenderNonProgressive)
-            EncPars.Param(1) = New EncoderParameter(Encoder.Quality, 100)
+            EncPars.Param(1) = New EncoderParameter(Encoder.Quality, iQuality)
 
             'Write the supplied image into the MemoryStream
             If Not _ms Is Nothing Then _ms.Dispose()
@@ -387,28 +387,34 @@ Public Class Images
         Dim doResize As Boolean = False
         Dim bResizeEnabled As Boolean = False
         Dim intHeight As Integer = -1
+        Dim intQuality As Integer = 100
         Dim intWidth As Integer = -1
 
         Select Case tImageType
             Case Enums.ModifierType.MainBanner
                 bResizeEnabled = Master.eSettings.MovieBannerResize
                 intHeight = Master.eSettings.MovieBannerHeight
+                intQuality = CInt(clsAdvancedSettings.GetSetting("BannerQuality", "100", , Enums.ContentType.Movie))
                 intWidth = Master.eSettings.MovieBannerWidth
             Case Enums.ModifierType.MainExtrafanarts
                 bResizeEnabled = Master.eSettings.MovieExtrafanartsResize
                 intHeight = Master.eSettings.MovieExtrafanartsHeight
+                intQuality = CInt(clsAdvancedSettings.GetSetting("ExtrafanartsQuality", "100", , Enums.ContentType.Movie))
                 intWidth = Master.eSettings.MovieExtrafanartsWidth
             Case Enums.ModifierType.MainExtrathumbs
                 bResizeEnabled = Master.eSettings.MovieExtrathumbsResize
                 intHeight = Master.eSettings.MovieExtrathumbsHeight
+                intQuality = CInt(clsAdvancedSettings.GetSetting("ExtrathumbsQuality", "100", , Enums.ContentType.Movie))
                 intWidth = Master.eSettings.MovieExtrathumbsWidth
             Case Enums.ModifierType.MainFanart
                 bResizeEnabled = Master.eSettings.MovieFanartResize
                 intHeight = Master.eSettings.MovieFanartHeight
+                intQuality = CInt(clsAdvancedSettings.GetSetting("FanartQuality", "100", , Enums.ContentType.Movie))
                 intWidth = Master.eSettings.MovieFanartWidth
             Case Enums.ModifierType.MainPoster
                 bResizeEnabled = Master.eSettings.MoviePosterResize
                 intHeight = Master.eSettings.MoviePosterHeight
+                intQuality = CInt(clsAdvancedSettings.GetSetting("PosterQuality", "100", , Enums.ContentType.Movie))
                 intWidth = Master.eSettings.MoviePosterWidth
         End Select
 
@@ -423,7 +429,7 @@ Public Class Images
             If doResize Then
                 ImageUtils.ResizeImage(_image, intWidth, intHeight)
                 'need to align _immage and _ms
-                UpdateMSfromImg(_image)
+                UpdateMSfromImg(_image, intQuality)
             End If
 
             For Each a In FileUtils.GetFilenameList.Movie(tDBElement, tImageType)
@@ -455,20 +461,24 @@ Public Class Images
         Dim doResize As Boolean = False
         Dim bResizeEnabled As Boolean = False
         Dim intHeight As Integer = -1
+        Dim intQuality As Integer = 100
         Dim intWidth As Integer = -1
 
         Select Case tImageType
             Case Enums.ModifierType.MainBanner
                 bResizeEnabled = Master.eSettings.MovieSetBannerResize
                 intHeight = Master.eSettings.MovieSetBannerHeight
+                intQuality = CInt(clsAdvancedSettings.GetSetting("BannerQuality", "100", , Enums.ContentType.MovieSet))
                 intWidth = Master.eSettings.MovieSetBannerWidth
             Case Enums.ModifierType.MainFanart
                 bResizeEnabled = Master.eSettings.MovieSetFanartResize
                 intHeight = Master.eSettings.MovieSetFanartHeight
+                intQuality = CInt(clsAdvancedSettings.GetSetting("FanartQuality", "100", , Enums.ContentType.MovieSet))
                 intWidth = Master.eSettings.MovieSetFanartWidth
             Case Enums.ModifierType.MainPoster
                 bResizeEnabled = Master.eSettings.MovieSetPosterResize
                 intHeight = Master.eSettings.MovieSetPosterHeight
+                intQuality = CInt(clsAdvancedSettings.GetSetting("PosterQuality", "100", , Enums.ContentType.MovieSet))
                 intWidth = Master.eSettings.MovieSetPosterWidth
         End Select
 
@@ -483,7 +493,7 @@ Public Class Images
             If doResize Then
                 ImageUtils.ResizeImage(_image, intWidth, intHeight)
                 'need to align _immage and _ms
-                UpdateMSfromImg(_image)
+                UpdateMSfromImg(_image, intQuality)
             End If
 
             For Each a In FileUtils.GetFilenameList.MovieSet(tDBElement, tImageType)
@@ -510,20 +520,24 @@ Public Class Images
         Dim doResize As Boolean = False
         Dim bResizeEnabled As Boolean = False
         Dim intHeight As Integer = -1
+        Dim intQuality As Integer = 100
         Dim intWidth As Integer = -1
 
         Select Case tImageType
             Case Enums.ModifierType.AllSeasonsBanner
                 bResizeEnabled = Master.eSettings.TVAllSeasonsBannerResize
                 intHeight = Master.eSettings.TVAllSeasonsBannerHeight
+                intQuality = CInt(clsAdvancedSettings.GetSetting("BannerQuality", "100", , Enums.ContentType.TVSeason))
                 intWidth = Master.eSettings.TVAllSeasonsBannerWidth
             Case Enums.ModifierType.SeasonFanart
                 bResizeEnabled = Master.eSettings.TVAllSeasonsFanartResize
                 intHeight = Master.eSettings.TVAllSeasonsFanartHeight
+                intQuality = CInt(clsAdvancedSettings.GetSetting("FanartQuality", "100", , Enums.ContentType.TVSeason))
                 intWidth = Master.eSettings.TVAllSeasonsFanartWidth
             Case Enums.ModifierType.SeasonPoster
                 bResizeEnabled = Master.eSettings.TVAllSeasonsPosterResize
                 intHeight = Master.eSettings.TVAllSeasonsPosterHeight
+                intQuality = CInt(clsAdvancedSettings.GetSetting("PosterQuality", "100", , Enums.ContentType.TVSeason))
                 intWidth = Master.eSettings.TVAllSeasonsPosterWidth
         End Select
 
@@ -538,7 +552,7 @@ Public Class Images
             If doResize Then
                 ImageUtils.ResizeImage(_image, intWidth, intHeight)
                 'need to align _immage and _ms
-                UpdateMSfromImg(_image)
+                UpdateMSfromImg(_image, intQuality)
             End If
 
             For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, tImageType)
@@ -565,16 +579,19 @@ Public Class Images
         Dim doResize As Boolean = False
         Dim bResizeEnabled As Boolean = False
         Dim intHeight As Integer = -1
+        Dim intQuality As Integer = 100
         Dim intWidth As Integer = -1
 
         Select Case tImageType
             Case Enums.ModifierType.EpisodeFanart
                 bResizeEnabled = Master.eSettings.TVEpisodeFanartResize
                 intHeight = Master.eSettings.TVEpisodeFanartHeight
+                intQuality = CInt(clsAdvancedSettings.GetSetting("FanartQuality", "100", , Enums.ContentType.TVEpisode))
                 intWidth = Master.eSettings.TVEpisodeFanartWidth
             Case Enums.ModifierType.EpisodePoster
                 bResizeEnabled = Master.eSettings.TVEpisodePosterResize
                 intHeight = Master.eSettings.TVEpisodePosterHeight
+                intQuality = CInt(clsAdvancedSettings.GetSetting("PosterQuality", "100", , Enums.ContentType.TVEpisode))
                 intWidth = Master.eSettings.TVEpisodePosterWidth
         End Select
 
@@ -589,7 +606,7 @@ Public Class Images
             If doResize Then
                 ImageUtils.ResizeImage(_image, intWidth, intHeight)
                 'need to align _immage and _ms
-                UpdateMSfromImg(_image)
+                UpdateMSfromImg(_image, intQuality)
             End If
 
             For Each a In FileUtils.GetFilenameList.TVEpisode(tDBElement, tImageType)
@@ -616,20 +633,24 @@ Public Class Images
         Dim doResize As Boolean = False
         Dim bResizeEnabled As Boolean = False
         Dim intHeight As Integer = -1
+        Dim intQuality As Integer = 100
         Dim intWidth As Integer = -1
 
         Select Case tImageType
             Case Enums.ModifierType.SeasonBanner
                 bResizeEnabled = Master.eSettings.TVSeasonBannerResize
                 intHeight = Master.eSettings.TVSeasonBannerHeight
+                intQuality = CInt(clsAdvancedSettings.GetSetting("BannerQuality", "100", , Enums.ContentType.TVSeason))
                 intWidth = Master.eSettings.TVSeasonBannerWidth
             Case Enums.ModifierType.SeasonFanart
                 bResizeEnabled = Master.eSettings.TVSeasonFanartResize
                 intHeight = Master.eSettings.TVSeasonFanartHeight
+                intQuality = CInt(clsAdvancedSettings.GetSetting("FanartQuality", "100", , Enums.ContentType.TVSeason))
                 intWidth = Master.eSettings.TVSeasonFanartWidth
             Case Enums.ModifierType.SeasonPoster
                 bResizeEnabled = Master.eSettings.TVSeasonPosterResize
                 intHeight = Master.eSettings.TVSeasonPosterHeight
+                intQuality = CInt(clsAdvancedSettings.GetSetting("PosterQuality", "100", , Enums.ContentType.TVSeason))
                 intWidth = Master.eSettings.TVSeasonPosterWidth
         End Select
 
@@ -644,7 +665,7 @@ Public Class Images
             If doResize Then
                 ImageUtils.ResizeImage(_image, intWidth, intHeight)
                 'need to align _immage and _ms
-                UpdateMSfromImg(_image)
+                UpdateMSfromImg(_image, intQuality)
             End If
 
             For Each a In FileUtils.GetFilenameList.TVSeason(tDBElement, tImageType)
@@ -671,24 +692,29 @@ Public Class Images
         Dim doResize As Boolean = False
         Dim bResizeEnabled As Boolean = False
         Dim intHeight As Integer = -1
+        Dim intQuality As Integer = 100
         Dim intWidth As Integer = -1
 
         Select Case tImageType
             Case Enums.ModifierType.MainBanner
                 bResizeEnabled = Master.eSettings.TVShowBannerResize
                 intHeight = Master.eSettings.TVShowBannerHeight
+                intQuality = CInt(clsAdvancedSettings.GetSetting("BannerQuality", "100", , Enums.ContentType.TVShow))
                 intWidth = Master.eSettings.TVShowBannerWidth
             Case Enums.ModifierType.MainExtrafanarts
                 bResizeEnabled = Master.eSettings.TVShowExtrafanartsResize
                 intHeight = Master.eSettings.TVShowExtrafanartsHeight
+                intQuality = CInt(clsAdvancedSettings.GetSetting("ExtrafanartsQuality", "100", , Enums.ContentType.TVShow))
                 intWidth = Master.eSettings.TVShowExtrafanartsWidth
             Case Enums.ModifierType.MainFanart
                 bResizeEnabled = Master.eSettings.TVShowFanartResize
                 intHeight = Master.eSettings.TVShowFanartHeight
+                intQuality = CInt(clsAdvancedSettings.GetSetting("FanartQuality", "100", , Enums.ContentType.TVShow))
                 intWidth = Master.eSettings.TVShowFanartWidth
             Case Enums.ModifierType.MainPoster
                 bResizeEnabled = Master.eSettings.TVShowPosterResize
                 intHeight = Master.eSettings.TVShowPosterHeight
+                intQuality = CInt(clsAdvancedSettings.GetSetting("PosterQuality", "100", , Enums.ContentType.TVShow))
                 intWidth = Master.eSettings.TVShowPosterWidth
         End Select
 
@@ -703,7 +729,7 @@ Public Class Images
             If doResize Then
                 ImageUtils.ResizeImage(_image, intWidth, intHeight)
                 'need to align _immage and _ms
-                UpdateMSfromImg(_image)
+                UpdateMSfromImg(_image, intQuality)
             End If
 
             For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, tImageType)
