@@ -10579,6 +10579,21 @@ Public Class frmMain
             Case Enums.ModuleEventType.AfterEdit_TVShow
                 RefreshRow_TVShow(Convert.ToInt64(_params(0)))
 
+            Case Enums.ModuleEventType.Remove_Movie
+                RemoveRow_Movie(Convert.ToInt64(_params(0)))
+
+            Case Enums.ModuleEventType.Remove_MovieSet
+                RemoveRow_MovieSet(Convert.ToInt64(_params(0)))
+
+            Case Enums.ModuleEventType.Remove_TVEpisode
+                RemoveRow_TVEpisode(Convert.ToInt64(_params(0)))
+
+            Case Enums.ModuleEventType.Remove_TVSeason
+                RemoveRow_TVSeason(Convert.ToInt64(_params(0)))
+
+            Case Enums.ModuleEventType.Remove_TVShow
+                RemoveRow_TVShow(Convert.ToInt64(_params(0)))
+
             Case Else
                 logger.Warn("Callback for <{0}> with no handler.", mType)
         End Select

@@ -944,7 +944,7 @@ Public Class Database
     Public Function Delete_Movie(ByVal ID As Long, ByVal BatchMode As Boolean) As Boolean
         If ID < 0 Then Throw New ArgumentOutOfRangeException("idMovie", "Value must be >= 0, was given: " & ID)
 
-        Dim _movieDB As Database.DBElement = Load_Movie(ID)
+        Dim _movieDB As DBElement = Load_Movie(ID)
         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Remove_Movie, Nothing, Nothing, False, _movieDB)
 
         Try
@@ -955,6 +955,8 @@ Public Class Database
                 SQLcommand.ExecuteNonQuery()
             End Using
             If Not BatchMode Then SQLtransaction.Commit()
+
+            RaiseEvent GenericEvent(Enums.ModuleEventType.Remove_Movie, New List(Of Object)(New Object() {_movieDB.ID}))
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
             Return False
@@ -1264,6 +1266,8 @@ Public Class Database
                 SQLcommand.ExecuteNonQuery()
             End Using
             If Not BatchMode Then SQLtransaction.Commit()
+
+            RaiseEvent GenericEvent(Enums.ModuleEventType.Remove_TVShow, New List(Of Object)(New Object() {_tvshowDB.ID}))
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
             Return False
@@ -1278,8 +1282,8 @@ Public Class Database
     ''' <param name="Command">SQL Command to process</param>
     Public Sub FillDataTable(ByRef dTable As DataTable, ByVal Command As String)
         dTable.Clear()
-        Dim sqlDA As New SQLite.SQLiteDataAdapter(Command, _myvideosDBConn)
-        Dim sqlCB As New SQLite.SQLiteCommandBuilder(sqlDA)
+        Dim sqlDA As New SQLiteDataAdapter(Command, _myvideosDBConn)
+        Dim sqlCB As New SQLiteCommandBuilder(sqlDA)
         sqlDA.Fill(dTable)
     End Sub
     ''' <summary>
