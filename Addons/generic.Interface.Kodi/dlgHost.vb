@@ -37,6 +37,7 @@ Public Class dlgHost
     Private JsonHostversion As String = String.Empty
     'List of all show and movie sources in Ember
     Private LocalSources As New Dictionary(Of String, Enums.ContentType)
+    Private RemoteSources As New List(Of String)
 
 #End Region 'Fields
 
@@ -103,34 +104,36 @@ Public Class dlgHost
     ''' 2015/06/26 Cocotus - First implementation
     ''' </remarks>
     Private Sub Setup()
-        lblCompiling.Text = Master.eLang.GetString(326, "Loading...")
+        lblLoading.Text = Master.eLang.GetString(326, "Loading. Please wait...")
         Text = Master.eLang.GetString(1422, "Kodi Interface")
         btnOK.Text = Master.eLang.GetString(179, "OK")
         btnCancel.Text = Master.eLang.GetString(167, "Cancel")
-        btnHostCheck.Text = Master.eLang.GetString(1423, "Check Connection")
+        btnCustomRemotePath.Text = Master.eLang.GetString(28, "Add")
+        btnHostConnectionCheck.Text = Master.eLang.GetString(1423, "Check Connection")
         btnHostPopulateSources.Text = Master.eLang.GetString(1424, "Populate Sources")
 
         gbHostDetails.Text = Master.eLang.GetString(1425, "Kodi Host")
         gbHostMoviesetPath.Text = "Kodi " & Master.eLang.GetString(986, "MovieSet Artwork Folder")
 
         chkHostRealTimeSync.Text = Master.eLang.GetString(1429, "Enable Real Time synchronization")
-        lblHostLabel.Text = Master.eLang.GetString(232, "Name") & ":"
-        lblHostIP.Text = Master.eLang.GetString(1430, "Kodi IP") & ":"
+        lblCustomRemotePath.Text = String.Concat(Master.eLang.GetString(1074, "Add Custom Kodi Source"), ":")
+        lblHostLabel.Text = String.Concat(Master.eLang.GetString(232, "Name"), ":")
+        lblHostIP.Text = String.Concat(Master.eLang.GetString(1430, "Kodi IP"), ":")
         lblHostPassword.Text = Master.eLang.GetString(426, "Password:")
         lblHostUsername.Text = Master.eLang.GetString(425, "Username:")
-        lblHostWebserverPort.Text = Master.eLang.GetString(1431, "Kodi Port") & ":"
+        lblHostWebserverPort.Text = String.Concat(Master.eLang.GetString(1431, "Kodi Port"), ":")
 
         colHostEmberSource.HeaderText = Master.eLang.GetString(1432, "Ember Source")
-        colHostSource.HeaderText = Master.eLang.GetString(1433, "Kodi Source")
-        colHostType.HeaderText = Master.eLang.GetString(1288, "Type")
+        colHostRemoteSource.HeaderText = Master.eLang.GetString(1433, "Kodi Source")
+        colHostContentType.HeaderText = Master.eLang.GetString(1288, "Type")
 
         Dim SourceType As New Dictionary(Of String, Enums.ContentType)
         SourceType.Add(Master.eLang.None, Enums.ContentType.None)
         SourceType.Add(Master.eLang.GetString(36, "Movies"), Enums.ContentType.Movie)
         SourceType.Add(Master.eLang.GetString(653, "TV Shows"), Enums.ContentType.TV)
-        colHostType.DataSource = SourceType.ToList
-        colHostType.DisplayMember = "Key"
-        colHostType.ValueMember = "Value"
+        colHostContentType.DataSource = SourceType.ToList
+        colHostContentType.DisplayMember = "Key"
+        colHostContentType.ValueMember = "Value"
     End Sub
 
     ''' <summary>
@@ -152,6 +155,14 @@ Public Class dlgHost
             LocalSources.Add(showsources.Path, Enums.ContentType.TV)
         Next
 
+        'add all remote sources from XML into list
+        RemoteSources.Add(String.Empty)
+        For Each rSource In _currentHost.Sources
+            RemoteSources.Add(rSource.RemotePath)
+        Next
+        RemoteSources.Sort()
+        colHostRemoteSource.DataSource = RemoteSources.ToArray
+
         For Each s As KeyValuePair(Of String, Enums.ContentType) In LocalSources
             sPath = s.Key
             Dim i As Integer = dgvHostSources.Rows.Add(sPath)
@@ -169,7 +180,7 @@ Public Class dlgHost
                     End If
                 Next
             End If
-            dcbRemotePaths.DataSource = l.ToArray
+            'dcbRemotePaths.DataSource = l.ToArray
 
             'try to load corresponding remotepath and type for current Ember Source from host settings
             If _currentHost.Sources.Count > 0 Then
@@ -186,6 +197,48 @@ Public Class dlgHost
         dgvHostSources.ResumeLayout()
         dgvHostSources.Enabled = True
     End Sub
+
+    Private Sub btnCancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancel.Click
+        DialogResult = DialogResult.Cancel
+    End Sub
+
+    Private Sub btnCustomRemotePath_Click(sender As Object, e As EventArgs) Handles btnCustomRemotePath.Click
+        If Not String.IsNullOrEmpty(txtCustomRemotePath.Text) Then
+            If Not RemoteSources.Contains(txtCustomRemotePath.Text) Then RemoteSources.Add(txtCustomRemotePath.Text)
+            RemoteSources.Sort()
+            colHostRemoteSource.DataSource = RemoteSources.ToArray
+            txtCustomRemotePath.Text = String.Empty
+            txtCustomRemotePath.Focus()
+        End If
+    End Sub
+    ''' <summary>
+    ''' API request: Check connection to current host
+    ''' </summary>
+    ''' <remarks>
+    ''' 2015/06/26 Cocotus - First implementation
+    ''' Send JSON API request to Kodi to check if entered host data is correct
+    ''' </remarks>
+    Private Sub btnHostConnectionCheck_Click(sender As Object, e As EventArgs) Handles btnHostConnectionCheck.Click
+        lblLoading.Text = String.Concat(Master.eLang.GetString(1423, "Check Connection"), " ...")
+        SetControlsEnabled(False)
+        SetInfo()
+
+        JsonHostversion = String.Empty
+        'start backgroundworker: check for JSONversion
+        bwLoadInfo.RunWorkerAsync(2)
+        While bwLoadInfo.IsBusy
+            Application.DoEvents()
+            Threading.Thread.Sleep(50)
+        End While
+
+        SetControlsEnabled(True)
+
+        If String.IsNullOrEmpty(JsonHostversion) Then
+            MessageBox.Show(Master.eLang.GetString(1434, "There was a problem communicating with host."), Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+        Else
+            MessageBox.Show(Master.eLang.GetString(1435, "Connection to host successful!") & Environment.NewLine & "API-Version: " & JsonHostversion, "", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        End If
+    End Sub
     ''' <summary>
     ''' Get available sources of host
     ''' </summary>
@@ -196,6 +249,7 @@ Public Class dlgHost
     ''' request will be executed in backgroundworker
     ''' </remarks>
     Private Sub btnHostPopulateSources_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnHostPopulateSources.Click
+        lblLoading.Text = Master.eLang.GetString(326, "Loading. Please wait...")
         SetControlsEnabled(False)
         SetInfo()
 
@@ -203,22 +257,39 @@ Public Class dlgHost
         bwLoadInfo.RunWorkerAsync(1)
         While bwLoadInfo.IsBusy
             Application.DoEvents()
-            Threading.Thread.Sleep(50)
         End While
 
-        'check if any sources were retrieved
+        'add new sources from host
         If currentHostRemoteSources IsNot Nothing AndAlso currentHostRemoteSources.Count > 0 Then
-            Dim lstKodiSources As New List(Of String)
-            lstKodiSources.Add(String.Empty)
             For Each source In currentHostRemoteSources
-                lstKodiSources.Add(source.file)
+                If Not RemoteSources.Contains(source.file) Then RemoteSources.Add(source.file)
             Next
-            colHostSource.DataSource = lstKodiSources.ToArray
+            RemoteSources.Sort()
+            colHostRemoteSource.DataSource = RemoteSources.ToArray
         Else
             MessageBox.Show(Master.eLang.GetString(1022, "There was a problem communicating with host or there are no sources configured in Kodi"), Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
         End If
 
         SetControlsEnabled(True)
+    End Sub
+
+    Private Sub btnOK_Click(sender As Object, e As EventArgs) Handles btnOK.Click
+        If String.IsNullOrEmpty(txtLabel.Text) Then
+            MessageBox.Show(Master.eLang.GetString(1436, "Please enter a unique name for host!"), Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            Exit Sub
+        End If
+        If String.IsNullOrEmpty(txtHostIP.Text) Then
+            MessageBox.Show(Master.eLang.GetString(1437, "You must enter an IP for this host!"), Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            Exit Sub
+        End If
+        If String.IsNullOrEmpty(txtPort.Text) Then
+            MessageBox.Show(Master.eLang.GetString(1438, "You must enter a port for this host!"), Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            Exit Sub
+        End If
+
+        SetInfo()
+
+        DialogResult = DialogResult.OK
     End Sub
 
     Private Sub SetControlsEnabled(ByVal isEnabled As Boolean)
@@ -263,66 +334,6 @@ Public Class dlgHost
         End Select
     End Sub
 
-    ''' <summary>
-    ''' API request: Check connection to current host
-    ''' </summary>
-    ''' <remarks>
-    ''' 2015/06/26 Cocotus - First implementation
-    ''' Send JSON API request to Kodi to check if entered host data is correct
-    ''' </remarks>
-    Private Sub btnHostCheck_Click(sender As Object, e As EventArgs) Handles btnHostCheck.Click
-        SetControlsEnabled(False)
-        SetInfo()
-
-        JsonHostversion = String.Empty
-        'start backgroundworker: check for JSONversion
-        bwLoadInfo.RunWorkerAsync(2)
-        While bwLoadInfo.IsBusy
-            Application.DoEvents()
-            Threading.Thread.Sleep(50)
-        End While
-
-        If String.IsNullOrEmpty(JsonHostversion) Then
-            MessageBox.Show(Master.eLang.GetString(1434, "There was a problem communicating with host."), Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-        Else
-            MessageBox.Show(Master.eLang.GetString(1435, "Connection to host successful!") & Environment.NewLine & "API-Version: " & JsonHostversion, "", MessageBoxButtons.OK, MessageBoxIcon.Information)
-        End If
-
-        SetControlsEnabled(True)
-    End Sub
-
-    ''' <summary>
-    '''  Close dialog
-    ''' </summary>
-    ''' <param name="sender">"Cancel" button in dialog</param>
-    ''' <remarks>
-    ''' 2015/06/27 Cocotus - First implementation
-    ''' </remarks>
-    Private Sub btnCancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancel.Click
-        DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Close()
-    End Sub
-
-    Private Sub btnOK_Click(sender As Object, e As EventArgs) Handles btnOK.Click
-        If String.IsNullOrEmpty(txtLabel.Text) Then
-            MessageBox.Show(Master.eLang.GetString(1436, "Please enter a unique name for host!"), Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            Exit Sub
-        End If
-        If String.IsNullOrEmpty(txtHostIP.Text) Then
-            MessageBox.Show(Master.eLang.GetString(1437, "You must enter an IP for this host!"), Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            Exit Sub
-        End If
-        If String.IsNullOrEmpty(txtPort.Text) Then
-            MessageBox.Show(Master.eLang.GetString(1438, "You must enter a port for this host!"), Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            Exit Sub
-        End If
-
-        SetInfo()
-
-        DialogResult = System.Windows.Forms.DialogResult.OK
-        Close()
-    End Sub
-
     Private Sub SetInfo()
         _currentHost.Address = txtHostIP.Text
         _currentHost.Label = txtLabel.Text
@@ -343,6 +354,10 @@ Public Class dlgHost
                 End If
             Next
         End If
+    End Sub
+
+    Private Sub txtCustomRemotePath_TextChanged(sender As Object, e As EventArgs) Handles txtCustomRemotePath.TextChanged
+        btnCustomRemotePath.Enabled = Not String.IsNullOrEmpty(txtCustomRemotePath.Text) AndAlso Not RemoteSources.Contains(txtCustomRemotePath.Text)
     End Sub
 
 #End Region 'Methods
