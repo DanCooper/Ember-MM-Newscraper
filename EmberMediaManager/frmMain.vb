@@ -5719,7 +5719,7 @@ Public Class frmMain
             End If
 
         ElseIf Master.eSettings.MovieClickScrape AndAlso colName = "HasSet" AndAlso Not bwMovieScraper.IsBusy Then
-            Dim objCell As DataGridViewCell = CType(dgvMovies.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
+            Dim objCell As DataGridViewCell = dgvMovies.Rows(e.RowIndex).Cells(e.ColumnIndex)
 
             dgvMovies.ClearSelection()
             dgvMovies.Rows(objCell.RowIndex).Selected = True
@@ -5737,7 +5737,7 @@ Public Class frmMain
             colName = "FanartPath" OrElse colName = "LandscapePath" OrElse colName = "NfoPath" OrElse
             colName = "PosterPath" OrElse colName = "ThemePath" OrElse colName = "TrailerPath") AndAlso
             Not bwMovieScraper.IsBusy Then
-            Dim objCell As DataGridViewCell = CType(dgvMovies.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
+            Dim objCell As DataGridViewCell = dgvMovies.Rows(e.RowIndex).Cells(e.ColumnIndex)
 
             'EMM not able to scrape subtitles yet.
             'So don't set status for it, but leave the option open for the future.
@@ -5797,10 +5797,7 @@ Public Class frmMain
 
     Private Sub dgvMovies_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovies.CellEnter
         Dim currMainTabTag As Structures.MainTabType = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
-        If Not currMainTabTag.ContentType = Enums.ContentType.Movie Then
-            Debug.WriteLine("[dgvMovies_CellEnter] Return")
-            Return
-        End If
+        If Not currMainTabTag.ContentType = Enums.ContentType.Movie Then Return
 
         tmrWait_TVShow.Stop()
         tmrWait_TVSeason.Stop()
@@ -5811,11 +5808,9 @@ Public Class frmMain
         tmrLoad_TVSeason.Stop()
         tmrLoad_TVEpisode.Stop()
         tmrLoad_MovieSet.Stop()
-        Debug.WriteLine("[dgvMovies_CellEnter] tmrLoad_Movie.Stop()")
         tmrLoad_Movie.Stop()
 
         currRow_Movie = e.RowIndex
-        Debug.WriteLine("[dgvMovies_CellEnter] tmrWait_Movie.Start()")
         tmrWait_Movie.Start()
     End Sub
 
@@ -6345,7 +6340,7 @@ Public Class frmMain
         ElseIf Master.eSettings.MovieSetClickScrape AndAlso
             (colName = "BannerPath" OrElse colName = "ClearArtPath" OrElse colName = "ClearLogoPath" OrElse colName = "DiscArtPath" OrElse
              colName = "FanartPath" OrElse colName = "LandscapePath" OrElse colName = "NfoPath" OrElse colName = "PosterPath") AndAlso Not bwMovieSetScraper.IsBusy Then
-            Dim objCell As DataGridViewCell = CType(dgvMovieSets.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
+            Dim objCell As DataGridViewCell = dgvMovieSets.Rows(e.RowIndex).Cells(e.ColumnIndex)
 
             dgvMovieSets.ClearSelection()
             dgvMovieSets.Rows(objCell.RowIndex).Selected = True
@@ -6400,7 +6395,6 @@ Public Class frmMain
         tmrLoad_TVShow.Stop()
         tmrLoad_TVSeason.Stop()
         tmrLoad_TVEpisode.Stop()
-        Debug.WriteLine("[dgvMovieSets_CellEnter] tmrLoad_Movie.Stop()")
         tmrLoad_Movie.Stop()
         tmrLoad_MovieSet.Stop()
 
@@ -6789,7 +6783,7 @@ Public Class frmMain
         ElseIf Master.eSettings.TVGeneralClickScrape AndAlso
             (colName = "FanartPath" OrElse colName = "NfoPath" OrElse colName = "PosterPath") AndAlso
             Not bwTVEpisodeScraper.IsBusy Then
-            Dim objCell As DataGridViewCell = CType(dgvTVEpisodes.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
+            Dim objCell As DataGridViewCell = dgvTVEpisodes.Rows(e.RowIndex).Cells(e.ColumnIndex)
 
             'EMM not able to scrape subtitles yet.
             'So don't set status for it, but leave the option open for the future.
@@ -6841,7 +6835,6 @@ Public Class frmMain
         tmrWait_TVEpisode.Stop()
         tmrLoad_TVShow.Stop()
         tmrLoad_TVSeason.Stop()
-        Debug.WriteLine("[dgvTVEpisodes_CellEnter] tmrLoad_Movie.Stop()")
         tmrLoad_Movie.Stop()
         tmrLoad_MovieSet.Stop()
         tmrLoad_TVEpisode.Stop()
@@ -7243,7 +7236,7 @@ Public Class frmMain
             (colName = "BannerPath" OrElse colName = "FanartPath" OrElse
              colName = "LandscapePath" OrElse colName = "PosterPath") AndAlso
             Not bwTVSeasonScraper.IsBusy Then
-            Dim objCell As DataGridViewCell = CType(dgvTVSeasons.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
+            Dim objCell As DataGridViewCell = dgvTVSeasons.Rows(e.RowIndex).Cells(e.ColumnIndex)
 
             'EMM not able to scrape subtitles yet.
             'So don't set status for it, but leave the option open for the future.
@@ -7291,7 +7284,6 @@ Public Class frmMain
         tmrWait_TVEpisode.Stop()
         tmrWait_TVSeason.Stop()
         tmrLoad_TVShow.Stop()
-        Debug.WriteLine("[dgvTVSeasons_CellEnter] tmrLoad_Movie.Stop()")
         tmrLoad_Movie.Stop()
         tmrLoad_MovieSet.Stop()
         tmrLoad_TVEpisode.Stop()
@@ -7615,7 +7607,7 @@ Public Class frmMain
             colName = "ClearLogoPath" OrElse colName = "EFanartsPath" OrElse colName = "FanartPath" OrElse
             colName = "LandscapePath" OrElse colName = "NfoPath" OrElse colName = "PosterPath" OrElse
             colName = "ThemePath") AndAlso Not bwTVScraper.IsBusy Then
-            Dim objCell As DataGridViewCell = CType(dgvTVShows.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewCell)
+            Dim objCell As DataGridViewCell = dgvTVShows.Rows(e.RowIndex).Cells(e.ColumnIndex)
 
             'EMM not able to scrape subtitles yet.
             'So don't set status for it, but leave the option open for the future.
@@ -7674,7 +7666,6 @@ Public Class frmMain
         tmrWait_TVSeason.Stop()
         tmrWait_TVEpisode.Stop()
         tmrWait_TVShow.Stop()
-        Debug.WriteLine("[dgvTVShows_CellEnter] tmrLoad_Movie.Stop()")
         tmrLoad_Movie.Stop()
         tmrLoad_MovieSet.Stop()
         tmrLoad_TVSeason.Stop()
@@ -8224,7 +8215,7 @@ Public Class frmMain
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
                         CreateScrapeList_Movie(Enums.ScrapeType.SingleScrape, Master.DefaultOptions_Movie, ScrapeModifiers)
                     Case Else
-                        If InfoCleared Then LoadInfo_Movie(CInt(DBMovie.ID), DBMovie.Filename, True)
+                        If InfoCleared Then LoadInfo_Movie(DBMovie.ID)
                 End Select
                 RemoveHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
             End Using
@@ -11015,26 +11006,23 @@ Public Class frmMain
         pnlFilterSources_Shows.Tag = String.Empty
     End Sub
 
-    Private Sub LoadInfo_Movie(ByVal ID As Long, ByVal sPath As String, ByVal doInfo As Boolean)
+    Private Sub LoadInfo_Movie(ByVal ID As Long)
         dgvMovies.SuspendLayout()
         SetControlsEnabled(False)
         ShowNoInfo(False)
+        ClearInfo()
 
-        If doInfo Then
-            ClearInfo()
-
-            If bwLoadMovieInfo.IsBusy AndAlso Not bwLoadMovieInfo.CancellationPending Then
-                bwLoadMovieInfo.CancelAsync()
-            End If
-
-            While bwLoadMovieInfo.IsBusy
-                Application.DoEvents()
-            End While
-
-            bwLoadMovieInfo = New ComponentModel.BackgroundWorker
-            bwLoadMovieInfo.WorkerSupportsCancellation = True
-            bwLoadMovieInfo.RunWorkerAsync(New Arguments With {.ID = ID})
+        If bwLoadMovieInfo.IsBusy AndAlso Not bwLoadMovieInfo.CancellationPending Then
+            bwLoadMovieInfo.CancelAsync()
         End If
+
+        While bwLoadMovieInfo.IsBusy
+            Application.DoEvents()
+        End While
+
+        bwLoadMovieInfo = New ComponentModel.BackgroundWorker
+        bwLoadMovieInfo.WorkerSupportsCancellation = True
+        bwLoadMovieInfo.RunWorkerAsync(New Arguments With {.ID = ID})
     End Sub
 
     Private Sub LoadInfo_MovieSet(ByVal ID As Long, ByVal doInfo As Boolean)
@@ -15481,7 +15469,7 @@ Public Class frmMain
                 String.IsNullOrEmpty(dgvMovies.Item("EFanartsPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(dgvMovies.Item("EThumbsPath", iRow).Value.ToString) AndAlso
                 String.IsNullOrEmpty(dgvMovies.Item("FanartPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(dgvMovies.Item("LandscapePath", iRow).Value.ToString) AndAlso
                 String.IsNullOrEmpty(dgvMovies.Item("NfoPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(dgvMovies.Item("PosterPath", iRow).Value.ToString) Then
-                ShowNoInfo(True, 0)
+                ShowNoInfo(True, Enums.ContentType.Movie)
                 currMovie = Master.DB.Load_Movie(Convert.ToInt64(dgvMovies.Item("idMovie", iRow).Value))
                 FillScreenInfoWith_Movie()
 
@@ -15489,7 +15477,7 @@ Public Class frmMain
                     cmnuMovie.Enabled = True
                 End If
             Else
-                LoadInfo_Movie(Convert.ToInt64(dgvMovies.Item("idMovie", iRow).Value), dgvMovies.Item("MoviePath", iRow).Value.ToString, True)
+                LoadInfo_Movie(Convert.ToInt64(dgvMovies.Item("idMovie", iRow).Value))
             End If
         End If
     End Sub
