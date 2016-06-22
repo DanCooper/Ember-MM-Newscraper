@@ -712,8 +712,6 @@ Public Class frmMain
 
         tTheme.ApplyTheme(tType)
 
-        tmrAni.Stop()
-
         Dim currMainTabTag As Structures.MainTabType = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
 
         Select Case If(currMainTabTag.ContentType = Enums.ContentType.Movie, InfoPanelState_Movie, If(currMainTabTag.ContentType = Enums.ContentType.MovieSet, InfoPanelState_MovieSet, InfoPanelState_TVShow))
@@ -847,7 +845,7 @@ Public Class frmMain
         ElseIf currMainTabTag.ContentType = Enums.ContentType.TV Then
             InfoPanelState_TVShow = 0
         End If
-        tmrAni.Start()
+        MoveInfoPanel()
     End Sub
 
     Private Sub btnFilterDown_Movies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilterDown_Movies.Click
@@ -915,7 +913,7 @@ Public Class frmMain
         ElseIf currMainTabTag.ContentType = Enums.ContentType.TV Then
             InfoPanelState_TVShow = 1
         End If
-        tmrAni.Start()
+        MoveInfoPanel()
     End Sub
 
     Private Sub btnMIRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMetaDataRefresh.Click
@@ -1160,7 +1158,7 @@ Public Class frmMain
         ElseIf currMainTabTag.ContentType = Enums.ContentType.TV Then
             InfoPanelState_TVShow = 2
         End If
-        tmrAni.Start()
+        MoveInfoPanel()
     End Sub
 
     Private Sub BuildStars(ByVal sinRating As Single)
@@ -2238,7 +2236,6 @@ Public Class frmMain
             pnlCancel.Visible = False
             SetControlsEnabled(True)
         Else
-            'Me.FillList(False, False, False)
             If dgvTVShows.SelectedRows.Count > 0 Then
                 SelectRow_TVShow(dgvTVShows.SelectedRows(0).Index)
             Else
@@ -2394,7 +2391,6 @@ Public Class frmMain
             pnlCancel.Visible = False
             SetControlsEnabled(True)
         Else
-            'Me.FillList(False, False, False)
             If dgvTVEpisodes.SelectedRows.Count > 0 Then
                 SelectRow_TVEpisode(dgvTVShows.SelectedRows(0).Index)
             Else
@@ -2540,7 +2536,6 @@ Public Class frmMain
             pnlCancel.Visible = False
             SetControlsEnabled(True)
         Else
-            'Me.FillList(False, False, False)
             If dgvTVSeasons.SelectedRows.Count > 0 Then
                 SelectRow_TVSeason(dgvTVSeasons.SelectedRows(0).Index)
             Else
@@ -5167,7 +5162,6 @@ Public Class frmMain
         For Each sRow As DataGridViewRow In dgvMovieSets.SelectedRows
             lItemsToRemove.Add(Convert.ToInt64(sRow.Cells("idSet").Value))
         Next
-
 
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             For Each tID As Long In lItemsToRemove
@@ -15159,8 +15153,8 @@ Public Class frmMain
                 End If
 
                 ClearInfo()
-                prevRow_Movie = -2
                 currRow_Movie = -1
+                prevRow_Movie = -2
                 dgvMovies.ClearSelection()
                 dgvMovies.CurrentCell = Nothing
                 'in case there are no results for custom filter, don't display any movies by creating dummy filter
@@ -15181,8 +15175,8 @@ Public Class frmMain
 
             ClearInfo()
 
-            prevRow_Movie = -2
             currRow_Movie = -1
+            prevRow_Movie = -2
             dgvMovies.ClearSelection()
             dgvMovies.CurrentCell = Nothing
 
@@ -15217,8 +15211,8 @@ Public Class frmMain
 
             ClearInfo()
 
-            prevRow_MovieSet = -2
             currRow_MovieSet = -1
+            prevRow_MovieSet = -2
             dgvMovieSets.ClearSelection()
             dgvMovieSets.CurrentCell = Nothing
 
@@ -15249,8 +15243,8 @@ Public Class frmMain
 
             ClearInfo()
 
-            prevRow_TVShow = -2
             currRow_TVShow = -1
+            prevRow_TVShow = -2
             currList = 0
             dgvTVShows.ClearSelection()
             dgvTVShows.CurrentCell = Nothing
@@ -15495,7 +15489,6 @@ Public Class frmMain
     Private Sub SelectRow_TVEpisode(ByVal iRow As Integer)
         While tmrKeyBuffer.Enabled
             Application.DoEvents()
-            Threading.Thread.Sleep(50)
         End While
 
         ClearInfo()
@@ -15523,7 +15516,6 @@ Public Class frmMain
     Private Sub SelectRow_TVSeason(ByVal iRow As Integer)
         While tmrKeyBuffer.Enabled
             Application.DoEvents()
-            Threading.Thread.Sleep(50)
         End While
 
         ClearInfo()
@@ -15557,7 +15549,6 @@ Public Class frmMain
     Private Sub SelectRow_TVShow(ByVal iRow As Integer)
         While tmrKeyBuffer.Enabled
             Application.DoEvents()
-            Threading.Thread.Sleep(50)
         End While
 
         ClearInfo()
@@ -17123,51 +17114,43 @@ Public Class frmMain
         End Select
     End Sub
 
-    Private Sub tmrAni_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrAni.Tick
-        Try
-            Dim currMainTabTag As Structures.MainTabType = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
-            Select Case If(currMainTabTag.ContentType = Enums.ContentType.Movie, InfoPanelState_Movie, If(currMainTabTag.ContentType = Enums.ContentType.MovieSet, InfoPanelState_MovieSet, InfoPanelState_TVShow))
-                Case 0
-                    pnlInfoPanel.Height = 25
+    Private Sub MoveInfoPanel()
+        Dim currMainTabTag As Structures.MainTabType = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
+        Select Case If(currMainTabTag.ContentType = Enums.ContentType.Movie, InfoPanelState_Movie, If(currMainTabTag.ContentType = Enums.ContentType.MovieSet, InfoPanelState_MovieSet, InfoPanelState_TVShow))
+            Case 0
+                pnlInfoPanel.Height = 25
 
-                Case 1
-                    pnlInfoPanel.Height = IPMid
+            Case 1
+                pnlInfoPanel.Height = IPMid
 
-                Case 2
-                    pnlInfoPanel.Height = IPUp
-            End Select
+            Case 2
+                pnlInfoPanel.Height = IPUp
+        End Select
 
-            MoveGenres()
-            MoveMPAA()
+        MoveGenres()
+        MoveMPAA()
 
-            Dim aType As Integer = If(currMainTabTag.ContentType = Enums.ContentType.Movie, InfoPanelState_Movie, If(currMainTabTag.ContentType = Enums.ContentType.MovieSet, InfoPanelState_MovieSet, InfoPanelState_TVShow))
-            Select Case aType
-                Case 0
-                    If pnlInfoPanel.Height = 25 Then
-                        tmrAni.Stop()
-                        btnDown.Enabled = False
-                        btnMid.Enabled = True
-                        btnUp.Enabled = True
-                    End If
-                Case 1
-                    If pnlInfoPanel.Height = IPMid Then
-                        tmrAni.Stop()
-                        btnMid.Enabled = False
-                        btnDown.Enabled = True
-                        btnUp.Enabled = True
-                    End If
-                Case 2
-                    If pnlInfoPanel.Height = IPUp Then
-                        tmrAni.Stop()
-                        btnUp.Enabled = False
-                        btnDown.Enabled = True
-                        btnMid.Enabled = True
-                    End If
-            End Select
-
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
+        Dim aType As Integer = If(currMainTabTag.ContentType = Enums.ContentType.Movie, InfoPanelState_Movie, If(currMainTabTag.ContentType = Enums.ContentType.MovieSet, InfoPanelState_MovieSet, InfoPanelState_TVShow))
+        Select Case aType
+            Case 0
+                If pnlInfoPanel.Height = 25 Then
+                    btnDown.Enabled = False
+                    btnMid.Enabled = True
+                    btnUp.Enabled = True
+                End If
+            Case 1
+                If pnlInfoPanel.Height = IPMid Then
+                    btnMid.Enabled = False
+                    btnDown.Enabled = True
+                    btnUp.Enabled = True
+                End If
+            Case 2
+                If pnlInfoPanel.Height = IPUp Then
+                    btnUp.Enabled = False
+                    btnDown.Enabled = True
+                    btnMid.Enabled = True
+                End If
+        End Select
     End Sub
 
     Private Sub FilterMovement_Movies()
