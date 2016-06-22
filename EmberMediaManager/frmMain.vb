@@ -605,7 +605,7 @@ Public Class frmMain
 
             Application.DoEvents()
 
-            ClearInfo()
+            'ClearInfo()
             'ClearFilters_Movies()
             ClearFilters_MovieSets()
             ClearFilters_Shows()
@@ -8556,7 +8556,6 @@ Public Class frmMain
         If doMovies Then
             bsMovies.DataSource = Nothing
             dgvMovies.DataSource = Nothing
-            ClearInfo()
 
             If Not String.IsNullOrEmpty(filSearch_Movies) AndAlso cbSearchMovies.Text = Master.eLang.GetString(100, "Actor") Then
                 Master.DB.FillDataTable(dtMovies, String.Concat("SELECT DISTINCT '", currList_Movies, "'.* FROM actors ",
@@ -8584,7 +8583,6 @@ Public Class frmMain
         If doMovieSets Then
             bsMovieSets.DataSource = Nothing
             dgvMovieSets.DataSource = Nothing
-            ClearInfo()
             Master.DB.FillDataTable(dtMovieSets, String.Concat("SELECT * FROM '", currList_MovieSets, "' ",
                                                                   "ORDER BY ListTitle COLLATE NOCASE;"))
         End If
@@ -8596,7 +8594,6 @@ Public Class frmMain
             dgvTVSeasons.DataSource = Nothing
             bsTVEpisodes.DataSource = Nothing
             dgvTVEpisodes.DataSource = Nothing
-            ClearInfo()
             Master.DB.FillDataTable(dtTVShows, String.Concat("SELECT * FROM '", currList_TVShows, "' ",
                                                               "ORDER BY ListTitle COLLATE NOCASE;"))
         End If
@@ -10182,10 +10179,12 @@ Public Class frmMain
         End While
 
 
+        RemoveHandler dgvMovies.CellEnter, AddressOf dgvMovies_CellEnter
         RemoveHandler dgvMovies.RowsAdded, AddressOf dgvMovies_RowsAdded
         RemoveHandler dgvMovieSets.RowsAdded, AddressOf dgvMovieSets_RowsAdded
         RemoveHandler dgvTVShows.RowsAdded, AddressOf dgvTVShows_RowsAdded
         FillList(True, True, True)
+        AddHandler dgvMovies.CellEnter, AddressOf dgvMovies_CellEnter
         AddHandler dgvMovies.RowsAdded, AddressOf dgvMovies_RowsAdded
         AddHandler dgvMovieSets.RowsAdded, AddressOf dgvMovieSets_RowsAdded
         AddHandler dgvTVShows.RowsAdded, AddressOf dgvTVShows_RowsAdded
@@ -14582,11 +14581,45 @@ Public Class frmMain
         dRow.ItemArray = newRow.ItemArray
 
         If newRow IsNot Nothing Then
+            RemoveHandler dgvMovies.CellEnter, AddressOf dgvMovies_CellEnter
             If InvokeRequired Then
                 Invoke(myDelegate, New Object() {dtMovies, dRow})
             Else
                 dtMovies.Rows.Add(dRow)
             End If
+            AddHandler dgvMovies.CellEnter, AddressOf dgvMovies_CellEnter
+            currRow_Movie = -1
+        End If
+    End Sub
+    ''' <summary>
+    ''' Adds a new single MovieSet row with informations from DB
+    ''' </summary>
+    ''' <param name="lngID"></param>
+    ''' <remarks></remarks>
+    Private Sub AddRow_MovieSet(ByVal lngID As Long)
+        If lngID = -1 Then Return
+
+        Dim myDelegate As New Delegate_dtListAddRow(AddressOf dtListAddRow)
+        Dim newRow As DataRow = Nothing
+        Dim newTable As New DataTable
+
+        Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM setslist WHERE idSet={0}", lngID))
+        If newTable.Rows.Count = 1 Then
+            newRow = newTable.Rows.Item(0)
+        End If
+
+        Dim dRow = dtMovieSets.NewRow()
+        dRow.ItemArray = newRow.ItemArray
+
+        If newRow IsNot Nothing Then
+            RemoveHandler dgvMovieSets.CellEnter, AddressOf dgvMovieSets_CellEnter
+            If InvokeRequired Then
+                Invoke(myDelegate, New Object() {dtMovieSets, dRow})
+            Else
+                dtMovieSets.Rows.Add(dRow)
+            End If
+            AddHandler dgvMovieSets.CellEnter, AddressOf dgvMovieSets_CellEnter
+            currRow_MovieSet = -1
         End If
     End Sub
     ''' <summary>
@@ -14887,6 +14920,7 @@ Public Class frmMain
             End If
         End If
         currRow_Movie = -1
+        prevRow_Movie = -2
     End Sub
     ''' <summary>
     ''' Removes a single MovieSet row from list
@@ -14906,6 +14940,7 @@ Public Class frmMain
             End If
         End If
         currRow_MovieSet = -1
+        prevRow_MovieSet = -2
     End Sub
     ''' <summary>
     ''' Removes a single TVEpisode row from list
@@ -14925,6 +14960,7 @@ Public Class frmMain
             End If
         End If
         currRow_TVEpisode = -1
+        prevRow_TVEpisode = -2
     End Sub
     ''' <summary>
     ''' Removes a single TVSeason row from list
@@ -14944,6 +14980,7 @@ Public Class frmMain
             End If
         End If
         currRow_TVSeason = -1
+        prevRow_TVSeason = -2
     End Sub
     ''' <summary>
     ''' Removes a single TVShow row from list
@@ -14963,6 +15000,7 @@ Public Class frmMain
             End If
         End If
         currRow_TVShow = -1
+        prevRow_TVShow = -2
     End Sub
     ''' <summary>
     ''' Load existing movie content and save it again with all selected filenames
