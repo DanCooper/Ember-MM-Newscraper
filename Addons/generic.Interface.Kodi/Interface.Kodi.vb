@@ -177,11 +177,14 @@ Public Class KodiInterface
     ''' </remarks>
     Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
         If Not Master.isCL AndAlso (
-            mType = Enums.ModuleEventType.Sync_Movie OrElse
-            mType = Enums.ModuleEventType.Sync_MovieSet OrElse
-            mType = Enums.ModuleEventType.Sync_TVEpisode OrElse
-            mType = Enums.ModuleEventType.Sync_TVSeason OrElse
-            mType = Enums.ModuleEventType.Sync_TVShow) Then
+                mType = Enums.ModuleEventType.Remove_Movie OrElse
+                mType = Enums.ModuleEventType.Remove_TVEpisode OrElse
+                mType = Enums.ModuleEventType.Remove_TVShow OrElse
+                mType = Enums.ModuleEventType.Sync_Movie OrElse
+                mType = Enums.ModuleEventType.Sync_MovieSet OrElse
+                mType = Enums.ModuleEventType.Sync_TVEpisode OrElse
+                mType = Enums.ModuleEventType.Sync_TVSeason OrElse
+                mType = Enums.ModuleEventType.Sync_TVShow) Then
             'add job to tasklist and get everything done
             AddTask(New KodiTask With {.mType = mType, .mDBElement = _dbelement})
             Return New Interfaces.ModuleResult With {.breakChain = False}
