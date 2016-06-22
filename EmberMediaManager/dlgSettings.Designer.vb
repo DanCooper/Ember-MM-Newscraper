@@ -1376,6 +1376,7 @@ Partial Class dlgSettings
         Me.tblMovieScraper = New System.Windows.Forms.TableLayoutPanel()
         Me.gbMovieScraperCollectionOpts = New System.Windows.Forms.GroupBox()
         Me.tblMovieScraperCollectionOpts = New System.Windows.Forms.TableLayoutPanel()
+        Me.chkMovieScraperCollectionsYAMJCompatibleSets = New System.Windows.Forms.CheckBox()
         Me.chkMovieScraperCollectionsExtendedInfo = New System.Windows.Forms.CheckBox()
         Me.tsSettingsTopMenu = New System.Windows.Forms.ToolStrip()
         Me.pnlSettingsMain = New System.Windows.Forms.Panel()
@@ -1619,7 +1620,6 @@ Partial Class dlgSettings
         Me.scSettingsBody = New System.Windows.Forms.SplitContainer()
         Me.scSettingsMain = New System.Windows.Forms.SplitContainer()
         Me.tblSettingsFooter = New System.Windows.Forms.TableLayoutPanel()
-        Me.chkMovieScraperCollectionsYAMJCompatibleSets = New System.Windows.Forms.CheckBox()
         Me.gbGeneralMiscOpts.SuspendLayout()
         Me.tblGeneralMisc.SuspendLayout()
         Me.gbGeneralThemes.SuspendLayout()
@@ -19521,15 +19521,28 @@ Partial Class dlgSettings
         Me.tblMovieScraperCollectionOpts.Size = New System.Drawing.Size(441, 69)
         Me.tblMovieScraperCollectionOpts.TabIndex = 0
         '
+        'chkMovieScraperCollectionsYAMJCompatibleSets
+        '
+        Me.chkMovieScraperCollectionsYAMJCompatibleSets.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkMovieScraperCollectionsYAMJCompatibleSets.AutoSize = True
+        Me.tblMovieScraperCollectionOpts.SetColumnSpan(Me.chkMovieScraperCollectionsYAMJCompatibleSets, 2)
+        Me.chkMovieScraperCollectionsYAMJCompatibleSets.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.chkMovieScraperCollectionsYAMJCompatibleSets.Location = New System.Drawing.Point(3, 49)
+        Me.chkMovieScraperCollectionsYAMJCompatibleSets.Name = "chkMovieScraperCollectionsYAMJCompatibleSets"
+        Me.chkMovieScraperCollectionsYAMJCompatibleSets.Size = New System.Drawing.Size(204, 17)
+        Me.chkMovieScraperCollectionsYAMJCompatibleSets.TabIndex = 2
+        Me.chkMovieScraperCollectionsYAMJCompatibleSets.Text = "Save YAMJ Compatible Sets to NFO"
+        Me.chkMovieScraperCollectionsYAMJCompatibleSets.UseVisualStyleBackColor = True
+        '
         'chkMovieScraperCollectionsExtendedInfo
         '
         Me.chkMovieScraperCollectionsExtendedInfo.AutoSize = True
         Me.chkMovieScraperCollectionsExtendedInfo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkMovieScraperCollectionsExtendedInfo.Location = New System.Drawing.Point(3, 26)
         Me.chkMovieScraperCollectionsExtendedInfo.Name = "chkMovieScraperCollectionsExtendedInfo"
-        Me.chkMovieScraperCollectionsExtendedInfo.Size = New System.Drawing.Size(416, 17)
+        Me.chkMovieScraperCollectionsExtendedInfo.Size = New System.Drawing.Size(411, 17)
         Me.chkMovieScraperCollectionsExtendedInfo.TabIndex = 1
-        Me.chkMovieScraperCollectionsExtendedInfo.Text = "Save extended Collection informations to NFO (Kodi 16.0 ""Jarvis"" and newer)"
+        Me.chkMovieScraperCollectionsExtendedInfo.Text = "Save extended Collection information to NFO (Kodi 16.0 ""Jarvis"" and newer)"
         Me.chkMovieScraperCollectionsExtendedInfo.UseVisualStyleBackColor = True
         '
         'tsSettingsTopMenu
@@ -22690,19 +22703,6 @@ Partial Class dlgSettings
         Me.tblSettingsFooter.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.tblSettingsFooter.Size = New System.Drawing.Size(1207, 74)
         Me.tblSettingsFooter.TabIndex = 0
-        '
-        'chkMovieYAMJCompatibleSets
-        '
-        Me.chkMovieScraperCollectionsYAMJCompatibleSets.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieScraperCollectionsYAMJCompatibleSets.AutoSize = True
-        Me.tblMovieScraperCollectionOpts.SetColumnSpan(Me.chkMovieScraperCollectionsYAMJCompatibleSets, 2)
-        Me.chkMovieScraperCollectionsYAMJCompatibleSets.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.chkMovieScraperCollectionsYAMJCompatibleSets.Location = New System.Drawing.Point(3, 49)
-        Me.chkMovieScraperCollectionsYAMJCompatibleSets.Name = "chkMovieYAMJCompatibleSets"
-        Me.chkMovieScraperCollectionsYAMJCompatibleSets.Size = New System.Drawing.Size(204, 17)
-        Me.chkMovieScraperCollectionsYAMJCompatibleSets.TabIndex = 2
-        Me.chkMovieScraperCollectionsYAMJCompatibleSets.Text = "Save YAMJ Compatible Sets to NFO"
-        Me.chkMovieScraperCollectionsYAMJCompatibleSets.UseVisualStyleBackColor = True
         '
         'dlgSettings
         '

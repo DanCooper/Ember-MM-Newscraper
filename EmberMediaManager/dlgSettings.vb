@@ -6633,6 +6633,10 @@ Public Class dlgSettings
         lblMovieScraperGlobalRuntime.Text = strRuntime
         lblTVScraperGlobalRuntime.Text = strRuntime
 
+        'Save extended Collection information to NFO (Kodi 16.0 "Jarvis" and newer)
+        Dim strSaveExtended As String = Master.eLang.GetString(1075, "Save extended Collection information to NFO (Kodi 16.0 ""Jarvis"" and newer)")
+        chkMovieScraperCollectionsExtendedInfo.Text = strSaveExtended
+
         'Scraper Fields - Global
         Dim strScraperGlobal As String = Master.eLang.GetString(577, "Scraper Fields - Global")
         gbMovieScraperGlobalOpts.Text = strScraperGlobal
