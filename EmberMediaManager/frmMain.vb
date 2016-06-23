@@ -92,7 +92,6 @@ Public Class frmMain
     Private pbGenre() As PictureBox = Nothing
     Private pnlGenre() As Panel = Nothing
     Private ReportDownloadPercent As Boolean = False
-    Private ScraperDone As Boolean = False
     Private sHTTP As New HTTP
 
     'Loading Delays
@@ -175,7 +174,6 @@ Public Class frmMain
     Private _ipup As Integer = 500
     Private CloseApp As Boolean = False
 
-    Private _SelectedScrapeOption As String = String.Empty
     Private _SelectedScrapeType As String = String.Empty
     Private _SelectedScrapeTypeMode As String = String.Empty
     Private _SelectedContentType As String = String.Empty
@@ -1806,9 +1804,6 @@ Public Class frmMain
 
     Private Sub bwMovieScraper_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwMovieScraper.RunWorkerCompleted
         Dim Res As Results = DirectCast(e.Result, Results)
-        If Master.isCL Then
-            ScraperDone = True
-        End If
 
         If Res.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Not Res.Cancelled Then
             InfoDownloaded_Movie(Res.DBElement)
@@ -2031,9 +2026,6 @@ Public Class frmMain
 
     Private Sub bwMovieSetScraper_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwMovieSetScraper.RunWorkerCompleted
         Dim Res As Results = DirectCast(e.Result, Results)
-        If Master.isCL Then
-            ScraperDone = True
-        End If
 
         If Res.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Not Res.Cancelled Then
             InfoDownloaded_MovieSet(Res.DBElement)
@@ -2193,9 +2185,6 @@ Public Class frmMain
 
     Private Sub bwTVScraper_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwTVScraper.RunWorkerCompleted
         Dim Res As Results = DirectCast(e.Result, Results)
-        If Master.isCL Then
-            ScraperDone = True
-        End If
 
         If Res.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Not Res.Cancelled Then
             InfoDownloaded_TV(Res.DBElement)
@@ -2348,9 +2337,6 @@ Public Class frmMain
 
     Private Sub bwTVEpisodeScraper_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwTVEpisodeScraper.RunWorkerCompleted
         Dim Res As Results = DirectCast(e.Result, Results)
-        If Master.isCL Then
-            ScraperDone = True
-        End If
 
         If Res.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Not Res.Cancelled Then
             InfoDownloaded_TVEpisode(Res.DBElement)
@@ -2493,9 +2479,6 @@ Public Class frmMain
 
     Private Sub bwTVSeasonScraper_Completed(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwTVSeasonScraper.RunWorkerCompleted
         Dim Res As Results = DirectCast(e.Result, Results)
-        If Master.isCL Then
-            ScraperDone = True
-        End If
 
         If Res.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Not Res.Cancelled Then
             InfoDownloaded_TVSeason(Res.DBElement)
@@ -4136,7 +4119,7 @@ Public Class frmMain
             If SeasonsToDelete.Count > 0 Then
                 Using dlg As New dlgDeleteConfirm
                     If dlg.ShowDialog(SeasonsToDelete, Enums.ContentType.TVSeason) = DialogResult.OK Then
-                        FillSeasons(Convert.ToInt64(dgvTVSeasons.Item("idShow", currRow_TVSeason).Value))
+                        FillTVSeasons(Convert.ToInt64(dgvTVSeasons.Item("idShow", currRow_TVSeason).Value))
                         SetTVCount()
                     End If
                 End Using
@@ -4163,7 +4146,7 @@ Public Class frmMain
             If EpsToDelete.Count > 0 Then
                 Using dlg As New dlgDeleteConfirm
                     If dlg.ShowDialog(EpsToDelete, Enums.ContentType.TVEpisode) = DialogResult.OK Then
-                        FillEpisodes(Convert.ToInt64(dgvTVSeasons.Item("idShow", currRow_TVSeason).Value), Convert.ToInt32(dgvTVSeasons.Item("Season", currRow_TVSeason).Value))
+                        FillTVEpisodes(Convert.ToInt64(dgvTVSeasons.Item("idShow", currRow_TVSeason).Value), Convert.ToInt32(dgvTVSeasons.Item("Season", currRow_TVSeason).Value))
                         SetTVCount()
                     End If
                 End Using
@@ -5176,7 +5159,7 @@ Public Class frmMain
         dgvTVEpisodes.Cursor = Cursors.Default
         SetControlsEnabled(True)
 
-        If doFill Then FillEpisodes(Convert.ToInt64(dgvTVEpisodes.SelectedRows(0).Cells("idEpisode").Value), Convert.ToInt32(dgvTVEpisodes.SelectedRows(0).Cells("Season").Value))
+        If doFill Then FillTVEpisodes(Convert.ToInt64(dgvTVEpisodes.SelectedRows(0).Cells("idEpisode").Value), Convert.ToInt32(dgvTVEpisodes.SelectedRows(0).Cells("Season").Value))
     End Sub
 
     Private Sub cmnuSeasonReload_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuSeasonReload.Click
@@ -5218,7 +5201,7 @@ Public Class frmMain
         dgvTVEpisodes.Cursor = Cursors.Default
         SetControlsEnabled(True)
 
-        If doFill Then FillSeasons(Convert.ToInt64(dgvTVSeasons.SelectedRows(0).Cells("idShow").Value))
+        If doFill Then FillTVSeasons(Convert.ToInt64(dgvTVSeasons.SelectedRows(0).Cells("idShow").Value))
     End Sub
 
     Private Sub cmnuSeasonReloadFull_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuSeasonReloadFull.Click
@@ -5260,7 +5243,7 @@ Public Class frmMain
         dgvTVEpisodes.Cursor = Cursors.Default
         SetControlsEnabled(True)
 
-        If doFill Then FillSeasons(Convert.ToInt64(dgvTVSeasons.SelectedRows(0).Cells("idShow").Value))
+        If doFill Then FillTVSeasons(Convert.ToInt64(dgvTVSeasons.SelectedRows(0).Cells("idShow").Value))
     End Sub
 
     Private Sub cmnuShowReload_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowReload.Click
@@ -5640,22 +5623,9 @@ Public Class frmMain
             Return
         End If
 
-        If colName = "ListTitle" OrElse colName = "Playcount" OrElse Not Master.eSettings.MovieClickScrape Then
-            If Not colName = "Playcount" Then
-                If dgvMovies.SelectedRows.Count > 0 Then
-                    If dgvMovies.RowCount > 0 Then
-                        If dgvMovies.SelectedRows.Count > 1 Then
-                            SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), dgvMovies.SelectedRows.Count))
-                        ElseIf dgvMovies.SelectedRows.Count = 1 Then
-                            SetStatus(dgvMovies.SelectedRows(0).Cells("MoviePath").Value.ToString)
-                        End If
-                    End If
-                    currRow_Movie = dgvMovies.SelectedRows(0).Index
-                End If
-            Else
-                SetWatchedState_Movie(If(Not String.IsNullOrEmpty(dgvMovies.Rows(e.RowIndex).Cells("Playcount").Value.ToString) AndAlso
-                                      Not dgvMovies.Rows(e.RowIndex).Cells("Playcount").Value.ToString = "0", False, True))
-            End If
+        If colName = "Playcount" Then
+            SetWatchedState_Movie(If(Not String.IsNullOrEmpty(dgvMovies.Rows(e.RowIndex).Cells("Playcount").Value.ToString) AndAlso
+                                  Not dgvMovies.Rows(e.RowIndex).Cells("Playcount").Value.ToString = "0", False, True))
 
         ElseIf Master.eSettings.MovieClickScrape AndAlso colName = "HasSet" AndAlso Not bwMovieScraper.IsBusy Then
             Dim objCell As DataGridViewCell = dgvMovies.Rows(e.RowIndex).Cells(e.ColumnIndex)
@@ -6189,6 +6159,19 @@ Public Class frmMain
         SetMovieCount()
     End Sub
 
+    Private Sub dgvMovies_SelectionChanged(sender As Object, e As EventArgs) Handles dgvMovies.SelectionChanged
+        If dgvMovies.SelectedRows.Count > 0 Then
+            If dgvMovies.SelectedRows.Count > 1 Then
+                SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), dgvMovies.SelectedRows.Count))
+            ElseIf dgvMovies.SelectedRows.Count = 1 Then
+                SetStatus(dgvMovies.SelectedRows(0).Cells("MoviePath").Value.ToString)
+            End If
+            currRow_Movie = dgvMovies.SelectedRows(0).Index
+        Else
+            currRow_Movie = -3
+        End If
+    End Sub
+
     Private Sub dgvMovies_Sorted(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvMovies.Sorted
         prevRow_Movie = -1
         If dgvMovies.RowCount > 0 Then
@@ -6264,19 +6247,7 @@ Public Class frmMain
             Return
         End If
 
-        If colName = "ListTitle" OrElse Not Master.eSettings.MovieSetClickScrape Then
-            If dgvMovieSets.SelectedRows.Count > 0 Then
-                If dgvMovieSets.RowCount > 0 Then
-                    If dgvMovieSets.SelectedRows.Count > 1 Then
-                        SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), dgvMovieSets.SelectedRows.Count))
-                    ElseIf dgvMovieSets.SelectedRows.Count = 1 Then
-                        SetStatus(dgvMovieSets.SelectedRows(0).Cells("SetName").Value.ToString)
-                    End If
-                End If
-                currRow_MovieSet = dgvMovieSets.SelectedRows(0).Index
-            End If
-
-        ElseIf Master.eSettings.MovieSetClickScrape AndAlso
+        If Master.eSettings.MovieSetClickScrape AndAlso
             (colName = "BannerPath" OrElse colName = "ClearArtPath" OrElse colName = "ClearLogoPath" OrElse colName = "DiscArtPath" OrElse
              colName = "FanartPath" OrElse colName = "LandscapePath" OrElse colName = "NfoPath" OrElse colName = "PosterPath") AndAlso Not bwMovieSetScraper.IsBusy Then
             Dim objCell As DataGridViewCell = dgvMovieSets.Rows(e.RowIndex).Cells(e.ColumnIndex)
@@ -6677,6 +6648,19 @@ Public Class frmMain
         SetMovieSetCount()
     End Sub
 
+    Private Sub dgvMovieSets_SelectionChanged(sender As Object, e As EventArgs) Handles dgvMovieSets.SelectionChanged
+        If dgvMovieSets.SelectedRows.Count > 0 Then
+            If dgvMovieSets.SelectedRows.Count > 1 Then
+                SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), dgvMovieSets.SelectedRows.Count))
+            ElseIf dgvMovieSets.SelectedRows.Count = 1 Then
+                SetStatus(dgvMovieSets.SelectedRows(0).Cells("SetName").Value.ToString)
+            End If
+            currRow_MovieSet = dgvMovieSets.SelectedRows(0).Index
+        Else
+            currRow_MovieSet = -3
+        End If
+    End Sub
+
     Private Sub dgvMovieSets_Sorted(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvMovieSets.Sorted
         prevRow_MovieSet = -1
         If dgvMovieSets.RowCount > 0 Then
@@ -6697,27 +6681,9 @@ Public Class frmMain
             Return
         End If
 
-        If colName = "Title" OrElse colName = "Playcount" OrElse Not Master.eSettings.TVGeneralClickScrape Then
-            If Not colName = "Playcount" Then
-                If dgvTVEpisodes.SelectedRows.Count > 0 Then
-                    If dgvTVEpisodes.RowCount > 0 Then
-                        If dgvTVEpisodes.SelectedRows.Count > 1 Then
-                            SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), dgvTVEpisodes.SelectedRows.Count))
-                        ElseIf dgvTVEpisodes.SelectedRows.Count = 1 Then
-                            SetStatus(dgvTVEpisodes.SelectedRows(0).Cells("Title").Value.ToString)
-                        End If
-                    End If
-                    currRow_TVEpisode = dgvTVEpisodes.SelectedRows(0).Index
-                    If Not currList = 2 Then
-                        currList = 2
-                        prevRow_TVEpisode = -1
-                        SelectRow_TVEpisode(dgvTVEpisodes.SelectedRows(0).Index)
-                    End If
-                End If
-            Else
-                SetWatchedState_TVEpisode(If(Not String.IsNullOrEmpty(dgvTVEpisodes.Rows(e.RowIndex).Cells("Playcount").Value.ToString) AndAlso
+        If colName = "Playcount" Then
+            SetWatchedState_TVEpisode(If(Not String.IsNullOrEmpty(dgvTVEpisodes.Rows(e.RowIndex).Cells("Playcount").Value.ToString) AndAlso
                                       Not dgvTVEpisodes.Rows(e.RowIndex).Cells("Playcount").Value.ToString = "0", False, True))
-            End If
 
         ElseIf Master.eSettings.TVGeneralClickScrape AndAlso
             (colName = "FanartPath" OrElse colName = "NfoPath" OrElse colName = "PosterPath") AndAlso
@@ -7130,6 +7096,24 @@ Public Class frmMain
         ResizeTVLists(3)
     End Sub
 
+    Private Sub dgvTVEpisodes_SelectionChanged(sender As Object, e As EventArgs) Handles dgvTVEpisodes.SelectionChanged
+        If dgvTVEpisodes.SelectedRows.Count > 0 Then
+            If dgvTVEpisodes.SelectedRows.Count > 1 Then
+                SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), dgvTVEpisodes.SelectedRows.Count))
+            ElseIf dgvTVEpisodes.SelectedRows.Count = 1 Then
+                SetStatus(dgvTVEpisodes.SelectedRows(0).Cells("strFilePath").Value.ToString)
+            End If
+            currRow_TVEpisode = dgvTVEpisodes.SelectedRows(0).Index
+            If Not currList = 2 Then
+                currList = 2
+                prevRow_TVEpisode = -1
+                SelectRow_TVEpisode(dgvTVEpisodes.SelectedRows(0).Index)
+            End If
+        Else
+            currRow_TVEpisode = -3
+        End If
+    End Sub
+
     Private Sub dgvTVEpisodes_Sorted(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvTVEpisodes.Sorted
         prevRow_TVEpisode = -1
         If dgvTVEpisodes.RowCount > 0 Then
@@ -7148,27 +7132,9 @@ Public Class frmMain
             Return
         End If
 
-        If colName = "SeasonText" OrElse colName = "HasWatched" OrElse Not Master.eSettings.TVGeneralClickScrape Then
-            If Not colName = "HasWatched" Then
-                If dgvTVSeasons.SelectedRows.Count > 0 Then
-                    If dgvTVSeasons.RowCount > 0 Then
-                        If dgvTVSeasons.SelectedRows.Count > 1 Then
-                            SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), dgvTVSeasons.SelectedRows.Count))
-                        ElseIf dgvTVSeasons.SelectedRows.Count = 1 Then
-                            SetStatus(dgvTVSeasons.SelectedRows(0).Cells("SeasonText").Value.ToString)
-                        End If
-                    End If
-                    currRow_TVSeason = dgvTVSeasons.SelectedRows(0).Index
-                    If Not currList = 1 Then
-                        currList = 1
-                        prevRow_TVSeason = -1
-                        SelectRow_TVSeason(dgvTVSeasons.SelectedRows(0).Index)
-                    End If
-                End If
-            Else
-                If Not CInt(dgvTVSeasons.Rows(e.RowIndex).Cells("Season").Value) = 999 Then
-                    SetWatchedState_TVSeason(If(CBool(dgvTVSeasons.Rows(e.RowIndex).Cells("HasWatched").Value), False, True))
-                End If
+        If colName = "HasWatched" Then
+            If Not CInt(dgvTVSeasons.Rows(e.RowIndex).Cells("Season").Value) = 999 Then
+                SetWatchedState_TVSeason(If(CBool(dgvTVSeasons.Rows(e.RowIndex).Cells("HasWatched").Value), False, True))
             End If
 
         ElseIf Master.eSettings.TVGeneralClickScrape AndAlso
@@ -7497,6 +7463,28 @@ Public Class frmMain
         End If
     End Sub
 
+    Private Sub dgvTVSeason_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvTVSeasons.Resize
+        ResizeTVLists(2)
+    End Sub
+
+    Private Sub dgvTVSeasons_SelectionChanged(sender As Object, e As EventArgs) Handles dgvTVSeasons.SelectionChanged
+        If dgvTVSeasons.SelectedRows.Count > 0 Then
+            If dgvTVSeasons.SelectedRows.Count > 1 Then
+                SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), dgvTVSeasons.SelectedRows.Count))
+            ElseIf dgvTVSeasons.SelectedRows.Count = 1 Then
+                SetStatus(dgvTVSeasons.SelectedRows(0).Cells("SeasonText").Value.ToString)
+            End If
+            currRow_TVSeason = dgvTVSeasons.SelectedRows(0).Index
+            If Not currList = 1 Then
+                currList = 1
+                prevRow_TVSeason = -1
+                SelectRow_TVSeason(dgvTVSeasons.SelectedRows(0).Index)
+            End If
+        Else
+            currRow_TVSeason = -3
+        End If
+    End Sub
+
     Private Sub dgvTVSeasons_Sorted(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvTVSeasons.Sorted
         prevRow_TVSeason = -1
         If dgvTVSeasons.RowCount > 0 Then
@@ -7507,10 +7495,6 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub dgvTVSeason_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvTVSeasons.Resize
-        ResizeTVLists(2)
-    End Sub
-
     Private Sub dgvTVShows_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVShows.CellClick
         If e.RowIndex < 0 Then Exit Sub
 
@@ -7519,27 +7503,8 @@ Public Class frmMain
             Return
         End If
 
-        If colName = "ListTitle" OrElse colName = "HasWatched" OrElse Not Master.eSettings.TVGeneralClickScrape Then
-            If Not colName = "HasWatched" Then
-                If dgvTVShows.SelectedRows.Count > 0 Then
-                    If dgvTVShows.RowCount > 0 Then
-                        If dgvTVShows.SelectedRows.Count > 1 Then
-                            SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), dgvTVShows.SelectedRows.Count))
-                        ElseIf dgvTVShows.SelectedRows.Count = 1 Then
-                            SetStatus(dgvTVShows.SelectedRows(0).Cells("TVShowPath").Value.ToString)
-                        End If
-                    End If
-
-                    currRow_TVShow = dgvTVShows.SelectedRows(0).Index
-                    If Not currList = 0 Then
-                        currList = 0
-                        prevRow_TVShow = -1
-                        SelectRow_TVShow(dgvTVShows.SelectedRows(0).Index)
-                    End If
-                End If
-            Else
-                SetWatchedState_TVShow(If(CBool(dgvTVShows.Rows(e.RowIndex).Cells("HasWatched").Value), False, True))
-            End If
+        If colName = "HasWatched" Then
+            SetWatchedState_TVShow(If(CBool(dgvTVShows.Rows(e.RowIndex).Cells("HasWatched").Value), False, True))
 
         ElseIf Master.eSettings.TVGeneralClickScrape AndAlso
             (colName = "BannerPath" OrElse colName = "CharacterArtPath" OrElse colName = "ClearArtPath" OrElse
@@ -7994,6 +7959,24 @@ Public Class frmMain
         SetTVCount()
     End Sub
 
+    Private Sub dgvTVShows_SelectionChanged(sender As Object, e As EventArgs) Handles dgvTVShows.SelectionChanged
+        If dgvTVShows.SelectedRows.Count > 0 Then
+            If dgvTVShows.SelectedRows.Count > 1 Then
+                SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), dgvTVShows.SelectedRows.Count))
+            ElseIf dgvTVShows.SelectedRows.Count = 1 Then
+                SetStatus(dgvTVShows.SelectedRows(0).Cells("TVShowPath").Value.ToString)
+            End If
+            currRow_TVShow = dgvTVShows.SelectedRows(0).Index
+            If Not currList = 0 Then
+                currList = 0
+                prevRow_TVShow = -1
+                SelectRow_TVShow(dgvTVShows.SelectedRows(0).Index)
+            End If
+        Else
+            currRow_TVShow = -3
+        End If
+    End Sub
+
     Private Sub dgvTVShows_Sorted(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvTVShows.Sorted
         prevRow_TVShow = -1
         If dgvTVShows.RowCount > 0 Then
@@ -8386,7 +8369,8 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub FillEpisodes(ByVal ShowID As Long, ByVal Season As Integer)
+    Private Sub FillTVEpisodes(ByVal ShowID As Long, ByVal Season As Integer)
+        RemoveHandler dgvTVEpisodes.SelectionChanged, AddressOf dgvTVEpisodes_SelectionChanged
         Dim sEpisodeSorting As Enums.EpisodeSorting = Master.DB.GetTVShowEpisodeSorting(ShowID)
 
         bsTVEpisodes.DataSource = Nothing
@@ -8402,112 +8386,110 @@ Public Class frmMain
 
         If dtTVEpisodes.Rows.Count > 0 Then
 
-            With Me
-                .bsTVEpisodes.DataSource = .dtTVEpisodes
-                .dgvTVEpisodes.DataSource = .bsTVEpisodes
+            bsTVEpisodes.DataSource = dtTVEpisodes
+            dgvTVEpisodes.DataSource = bsTVEpisodes
 
-                Try
-                    If Master.eSettings.TVGeneralEpisodeListSorting.Count > 0 Then
-                        For Each mColumn In Master.eSettings.TVGeneralEpisodeListSorting
-                            dgvTVEpisodes.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
-                        Next
-                    End If
-                Catch ex As Exception
-                    logger.Warn("default list for episode list sorting has been loaded")
-                    Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVEpisodeListSorting, True)
-                    If Master.eSettings.TVGeneralEpisodeListSorting.Count > 0 Then
-                        For Each mColumn In Master.eSettings.TVGeneralEpisodeListSorting
-                            dgvTVEpisodes.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
-                        Next
-                    End If
-                End Try
+            Try
+                If Master.eSettings.TVGeneralEpisodeListSorting.Count > 0 Then
+                    For Each mColumn In Master.eSettings.TVGeneralEpisodeListSorting
+                        dgvTVEpisodes.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
+                    Next
+                End If
+            Catch ex As Exception
+                logger.Warn("default list for episode list sorting has been loaded")
+                Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVEpisodeListSorting, True)
+                If Master.eSettings.TVGeneralEpisodeListSorting.Count > 0 Then
+                    For Each mColumn In Master.eSettings.TVGeneralEpisodeListSorting
+                        dgvTVEpisodes.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
+                    Next
+                End If
+            End Try
 
-                dgvTVEpisodes.Columns("Season").DisplayIndex = 0
-                dgvTVEpisodes.Columns("Episode").DisplayIndex = 1
-                dgvTVEpisodes.Columns("Aired").DisplayIndex = 2
+            dgvTVEpisodes.Columns("Season").DisplayIndex = 0
+            dgvTVEpisodes.Columns("Episode").DisplayIndex = 1
+            dgvTVEpisodes.Columns("Aired").DisplayIndex = 2
 
-                For i As Integer = 0 To .dgvTVEpisodes.Columns.Count - 1
-                    .dgvTVEpisodes.Columns(i).Visible = False
-                Next
+            For i As Integer = 0 To dgvTVEpisodes.Columns.Count - 1
+                dgvTVEpisodes.Columns(i).Visible = False
+            Next
 
-                .dgvTVEpisodes.Columns("Aired").Resizable = DataGridViewTriState.False
-                .dgvTVEpisodes.Columns("Aired").Width = 80
-                .dgvTVEpisodes.Columns("Aired").ReadOnly = True
-                .dgvTVEpisodes.Columns("Aired").SortMode = DataGridViewColumnSortMode.Automatic
-                .dgvTVEpisodes.Columns("Aired").Visible = sEpisodeSorting = Enums.EpisodeSorting.Aired
-                .dgvTVEpisodes.Columns("Aired").ToolTipText = Master.eLang.GetString(728, "Aired")
-                .dgvTVEpisodes.Columns("Aired").HeaderText = Master.eLang.GetString(728, "Aired")
-                .dgvTVEpisodes.Columns("Episode").Resizable = DataGridViewTriState.False
-                .dgvTVEpisodes.Columns("Episode").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader
-                .dgvTVEpisodes.Columns("Episode").ReadOnly = True
-                .dgvTVEpisodes.Columns("Episode").MinimumWidth = If(Season = 999, 35, 70)
-                .dgvTVEpisodes.Columns("Episode").SortMode = DataGridViewColumnSortMode.Automatic
-                .dgvTVEpisodes.Columns("Episode").Visible = Not sEpisodeSorting = Enums.EpisodeSorting.Aired
-                .dgvTVEpisodes.Columns("Episode").ToolTipText = Master.eLang.GetString(755, "Episode #")
-                .dgvTVEpisodes.Columns("Episode").HeaderText = "#"
-                .dgvTVEpisodes.Columns("Episode").DefaultCellStyle.Format = "00"
-                .dgvTVEpisodes.Columns("FanartPath").Width = 20
-                .dgvTVEpisodes.Columns("FanartPath").Resizable = DataGridViewTriState.False
-                .dgvTVEpisodes.Columns("FanartPath").ReadOnly = True
-                .dgvTVEpisodes.Columns("FanartPath").SortMode = DataGridViewColumnSortMode.Automatic
-                .dgvTVEpisodes.Columns("FanartPath").Visible = Not CheckColumnHide_TVEpisodes("FanartPath")
-                .dgvTVEpisodes.Columns("FanartPath").ToolTipText = Master.eLang.GetString(149, "Fanart")
-                .dgvTVEpisodes.Columns("HasSub").Width = 20
-                .dgvTVEpisodes.Columns("HasSub").Resizable = DataGridViewTriState.False
-                .dgvTVEpisodes.Columns("HasSub").ReadOnly = True
-                .dgvTVEpisodes.Columns("HasSub").SortMode = DataGridViewColumnSortMode.Automatic
-                .dgvTVEpisodes.Columns("HasSub").Visible = Not CheckColumnHide_TVEpisodes("HasSub")
-                .dgvTVEpisodes.Columns("HasSub").ToolTipText = Master.eLang.GetString(152, "Subtitles")
-                .dgvTVEpisodes.Columns("NfoPath").Width = 20
-                .dgvTVEpisodes.Columns("NfoPath").Resizable = DataGridViewTriState.False
-                .dgvTVEpisodes.Columns("NfoPath").ReadOnly = True
-                .dgvTVEpisodes.Columns("NfoPath").SortMode = DataGridViewColumnSortMode.Automatic
-                .dgvTVEpisodes.Columns("NfoPath").Visible = Not CheckColumnHide_TVEpisodes("NfoPath")
-                .dgvTVEpisodes.Columns("NfoPath").ToolTipText = Master.eLang.GetString(150, "Nfo")
-                .dgvTVEpisodes.Columns("Playcount").Width = 20
-                .dgvTVEpisodes.Columns("Playcount").Resizable = DataGridViewTriState.False
-                .dgvTVEpisodes.Columns("Playcount").ReadOnly = True
-                .dgvTVEpisodes.Columns("Playcount").SortMode = DataGridViewColumnSortMode.Automatic
-                .dgvTVEpisodes.Columns("Playcount").Visible = Not CheckColumnHide_TVEpisodes("Playcount")
-                .dgvTVEpisodes.Columns("Playcount").ToolTipText = Master.eLang.GetString(981, "Watched")
-                .dgvTVEpisodes.Columns("PosterPath").Width = 20
-                .dgvTVEpisodes.Columns("PosterPath").Resizable = DataGridViewTriState.False
-                .dgvTVEpisodes.Columns("PosterPath").ReadOnly = True
-                .dgvTVEpisodes.Columns("PosterPath").SortMode = DataGridViewColumnSortMode.Automatic
-                .dgvTVEpisodes.Columns("PosterPath").Visible = Not CheckColumnHide_TVEpisodes("PosterPath")
-                .dgvTVEpisodes.Columns("PosterPath").ToolTipText = Master.eLang.GetString(148, "Poster")
-                .dgvTVEpisodes.Columns("Season").MinimumWidth = 35
-                .dgvTVEpisodes.Columns("Season").Resizable = DataGridViewTriState.False
-                .dgvTVEpisodes.Columns("Season").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader
-                .dgvTVEpisodes.Columns("Season").ReadOnly = True
-                .dgvTVEpisodes.Columns("Season").SortMode = DataGridViewColumnSortMode.Automatic
-                .dgvTVEpisodes.Columns("Season").Visible = Season = 999
-                .dgvTVEpisodes.Columns("Season").ToolTipText = Master.eLang.GetString(659, "Season #")
-                .dgvTVEpisodes.Columns("Season").HeaderText = "#"
-                .dgvTVEpisodes.Columns("Season").DefaultCellStyle.Format = "00"
-                .dgvTVEpisodes.Columns("Title").Resizable = DataGridViewTriState.True
-                .dgvTVEpisodes.Columns("Title").ReadOnly = True
-                .dgvTVEpisodes.Columns("Title").MinimumWidth = 83
-                .dgvTVEpisodes.Columns("Title").SortMode = DataGridViewColumnSortMode.Automatic
-                .dgvTVEpisodes.Columns("Title").Visible = True
-                .dgvTVEpisodes.Columns("Title").ToolTipText = Master.eLang.GetString(21, "Title")
-                .dgvTVEpisodes.Columns("Title").HeaderText = Master.eLang.GetString(21, "Title")
+            dgvTVEpisodes.Columns("Aired").Resizable = DataGridViewTriState.False
+            dgvTVEpisodes.Columns("Aired").Width = 80
+            dgvTVEpisodes.Columns("Aired").ReadOnly = True
+            dgvTVEpisodes.Columns("Aired").SortMode = DataGridViewColumnSortMode.Automatic
+            dgvTVEpisodes.Columns("Aired").Visible = sEpisodeSorting = Enums.EpisodeSorting.Aired
+            dgvTVEpisodes.Columns("Aired").ToolTipText = Master.eLang.GetString(728, "Aired")
+            dgvTVEpisodes.Columns("Aired").HeaderText = Master.eLang.GetString(728, "Aired")
+            dgvTVEpisodes.Columns("Episode").Resizable = DataGridViewTriState.False
+            dgvTVEpisodes.Columns("Episode").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader
+            dgvTVEpisodes.Columns("Episode").ReadOnly = True
+            dgvTVEpisodes.Columns("Episode").MinimumWidth = If(Season = 999, 35, 70)
+            dgvTVEpisodes.Columns("Episode").SortMode = DataGridViewColumnSortMode.Automatic
+            dgvTVEpisodes.Columns("Episode").Visible = Not sEpisodeSorting = Enums.EpisodeSorting.Aired
+            dgvTVEpisodes.Columns("Episode").ToolTipText = Master.eLang.GetString(755, "Episode #")
+            dgvTVEpisodes.Columns("Episode").HeaderText = "#"
+            dgvTVEpisodes.Columns("Episode").DefaultCellStyle.Format = "00"
+            dgvTVEpisodes.Columns("FanartPath").Width = 20
+            dgvTVEpisodes.Columns("FanartPath").Resizable = DataGridViewTriState.False
+            dgvTVEpisodes.Columns("FanartPath").ReadOnly = True
+            dgvTVEpisodes.Columns("FanartPath").SortMode = DataGridViewColumnSortMode.Automatic
+            dgvTVEpisodes.Columns("FanartPath").Visible = Not CheckColumnHide_TVEpisodes("FanartPath")
+            dgvTVEpisodes.Columns("FanartPath").ToolTipText = Master.eLang.GetString(149, "Fanart")
+            dgvTVEpisodes.Columns("HasSub").Width = 20
+            dgvTVEpisodes.Columns("HasSub").Resizable = DataGridViewTriState.False
+            dgvTVEpisodes.Columns("HasSub").ReadOnly = True
+            dgvTVEpisodes.Columns("HasSub").SortMode = DataGridViewColumnSortMode.Automatic
+            dgvTVEpisodes.Columns("HasSub").Visible = Not CheckColumnHide_TVEpisodes("HasSub")
+            dgvTVEpisodes.Columns("HasSub").ToolTipText = Master.eLang.GetString(152, "Subtitles")
+            dgvTVEpisodes.Columns("NfoPath").Width = 20
+            dgvTVEpisodes.Columns("NfoPath").Resizable = DataGridViewTriState.False
+            dgvTVEpisodes.Columns("NfoPath").ReadOnly = True
+            dgvTVEpisodes.Columns("NfoPath").SortMode = DataGridViewColumnSortMode.Automatic
+            dgvTVEpisodes.Columns("NfoPath").Visible = Not CheckColumnHide_TVEpisodes("NfoPath")
+            dgvTVEpisodes.Columns("NfoPath").ToolTipText = Master.eLang.GetString(150, "Nfo")
+            dgvTVEpisodes.Columns("Playcount").Width = 20
+            dgvTVEpisodes.Columns("Playcount").Resizable = DataGridViewTriState.False
+            dgvTVEpisodes.Columns("Playcount").ReadOnly = True
+            dgvTVEpisodes.Columns("Playcount").SortMode = DataGridViewColumnSortMode.Automatic
+            dgvTVEpisodes.Columns("Playcount").Visible = Not CheckColumnHide_TVEpisodes("Playcount")
+            dgvTVEpisodes.Columns("Playcount").ToolTipText = Master.eLang.GetString(981, "Watched")
+            dgvTVEpisodes.Columns("PosterPath").Width = 20
+            dgvTVEpisodes.Columns("PosterPath").Resizable = DataGridViewTriState.False
+            dgvTVEpisodes.Columns("PosterPath").ReadOnly = True
+            dgvTVEpisodes.Columns("PosterPath").SortMode = DataGridViewColumnSortMode.Automatic
+            dgvTVEpisodes.Columns("PosterPath").Visible = Not CheckColumnHide_TVEpisodes("PosterPath")
+            dgvTVEpisodes.Columns("PosterPath").ToolTipText = Master.eLang.GetString(148, "Poster")
+            dgvTVEpisodes.Columns("Season").MinimumWidth = 35
+            dgvTVEpisodes.Columns("Season").Resizable = DataGridViewTriState.False
+            dgvTVEpisodes.Columns("Season").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader
+            dgvTVEpisodes.Columns("Season").ReadOnly = True
+            dgvTVEpisodes.Columns("Season").SortMode = DataGridViewColumnSortMode.Automatic
+            dgvTVEpisodes.Columns("Season").Visible = Season = 999
+            dgvTVEpisodes.Columns("Season").ToolTipText = Master.eLang.GetString(659, "Season #")
+            dgvTVEpisodes.Columns("Season").HeaderText = "#"
+            dgvTVEpisodes.Columns("Season").DefaultCellStyle.Format = "00"
+            dgvTVEpisodes.Columns("Title").Resizable = DataGridViewTriState.True
+            dgvTVEpisodes.Columns("Title").ReadOnly = True
+            dgvTVEpisodes.Columns("Title").MinimumWidth = 83
+            dgvTVEpisodes.Columns("Title").SortMode = DataGridViewColumnSortMode.Automatic
+            dgvTVEpisodes.Columns("Title").Visible = True
+            dgvTVEpisodes.Columns("Title").ToolTipText = Master.eLang.GetString(21, "Title")
+            dgvTVEpisodes.Columns("Title").HeaderText = Master.eLang.GetString(21, "Title")
 
-                .dgvTVEpisodes.Columns("idEpisode").ValueType = GetType(Int32)
-                .dgvTVEpisodes.Columns("idShow").ValueType = GetType(Int32)
-                .dgvTVEpisodes.Columns("Episode").ValueType = GetType(Int32)
-                .dgvTVEpisodes.Columns("Season").ValueType = GetType(Int32)
+            dgvTVEpisodes.Columns("idEpisode").ValueType = GetType(Int32)
+            dgvTVEpisodes.Columns("idShow").ValueType = GetType(Int32)
+            dgvTVEpisodes.Columns("Episode").ValueType = GetType(Int32)
+            dgvTVEpisodes.Columns("Season").ValueType = GetType(Int32)
 
-                If Master.isWindows Then .dgvTVEpisodes.Columns("Title").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-                ResizeTVLists(.dgvTVEpisodes.Columns("Title").Index)
+            If Master.isWindows Then dgvTVEpisodes.Columns("Title").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+            ResizeTVLists(dgvTVEpisodes.Columns("Title").Index)
 
-                .dgvTVEpisodes.ClearSelection()
-                .dgvTVEpisodes.CurrentCell = Nothing
-
-            End With
+            dgvTVEpisodes.ClearSelection()
+            dgvTVEpisodes.CurrentCell = Nothing
         End If
 
         dgvTVEpisodes.Enabled = True
+        AddHandler dgvTVEpisodes.SelectionChanged, AddressOf dgvTVEpisodes_SelectionChanged
     End Sub
     ''' <summary>
     ''' Reloads the DB and refresh the lists
@@ -9401,8 +9383,6 @@ Public Class frmMain
             pnlGenre(i).Visible = True
         Next
 
-        SetStatus(currMovie.Filename)
-
         ResumeLayout()
     End Sub
 
@@ -9759,7 +9739,8 @@ Public Class frmMain
         ResumeLayout()
     End Sub
 
-    Private Sub FillSeasons(ByVal ShowID As Long)
+    Private Sub FillTVSeasons(ByVal ShowID As Long)
+        RemoveHandler dgvTVSeasons.SelectionChanged, AddressOf dgvTVSeasons_SelectionChanged
         bsTVSeasons.DataSource = Nothing
         dgvTVSeasons.DataSource = Nothing
         bsTVEpisodes.DataSource = Nothing
@@ -9777,90 +9758,89 @@ Public Class frmMain
 
         If dtTVSeasons.Rows.Count > 0 Then
 
-            With Me
-                .bsTVSeasons.DataSource = .dtTVSeasons
-                .dgvTVSeasons.DataSource = .bsTVSeasons
+            bsTVSeasons.DataSource = dtTVSeasons
+            dgvTVSeasons.DataSource = bsTVSeasons
 
-                If dgvTVSeasons.Columns.Count > 0 Then
-                    Try
-                        If Master.eSettings.TVGeneralSeasonListSorting.Count > 0 Then
-                            For Each mColumn In Master.eSettings.TVGeneralSeasonListSorting
-                                dgvTVSeasons.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
-                            Next
-                        End If
-                    Catch ex As Exception
-                        logger.Warn("default list for season list sorting has been loaded")
-                        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVSeasonListSorting, True)
-                        If Master.eSettings.TVGeneralSeasonListSorting.Count > 0 Then
-                            For Each mColumn In Master.eSettings.TVGeneralSeasonListSorting
-                                dgvTVSeasons.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
-                            Next
-                        End If
-                    End Try
-                End If
+            If dgvTVSeasons.Columns.Count > 0 Then
+                Try
+                    If Master.eSettings.TVGeneralSeasonListSorting.Count > 0 Then
+                        For Each mColumn In Master.eSettings.TVGeneralSeasonListSorting
+                            dgvTVSeasons.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
+                        Next
+                    End If
+                Catch ex As Exception
+                    logger.Warn("default list for season list sorting has been loaded")
+                    Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVSeasonListSorting, True)
+                    If Master.eSettings.TVGeneralSeasonListSorting.Count > 0 Then
+                        For Each mColumn In Master.eSettings.TVGeneralSeasonListSorting
+                            dgvTVSeasons.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
+                        Next
+                    End If
+                End Try
+            End If
 
-                For i As Integer = 0 To .dgvTVSeasons.Columns.Count - 1
-                    .dgvTVSeasons.Columns(i).Visible = False
-                Next
+            For i As Integer = 0 To dgvTVSeasons.Columns.Count - 1
+                dgvTVSeasons.Columns(i).Visible = False
+            Next
 
-                .dgvTVSeasons.Columns("BannerPath").Width = 20
-                .dgvTVSeasons.Columns("BannerPath").Resizable = DataGridViewTriState.False
-                .dgvTVSeasons.Columns("BannerPath").ReadOnly = True
-                .dgvTVSeasons.Columns("BannerPath").SortMode = DataGridViewColumnSortMode.Automatic
-                .dgvTVSeasons.Columns("BannerPath").Visible = Not CheckColumnHide_TVSeasons("BannerPath")
-                .dgvTVSeasons.Columns("BannerPath").ToolTipText = Master.eLang.GetString(838, "Banner")
-                .dgvTVSeasons.Columns("Episodes").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader
-                .dgvTVSeasons.Columns("Episodes").MinimumWidth = 30
-                .dgvTVSeasons.Columns("Episodes").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
-                .dgvTVSeasons.Columns("Episodes").Resizable = DataGridViewTriState.False
-                .dgvTVSeasons.Columns("Episodes").ReadOnly = True
-                .dgvTVSeasons.Columns("Episodes").SortMode = DataGridViewColumnSortMode.Automatic
-                .dgvTVSeasons.Columns("Episodes").Visible = Not CheckColumnHide_TVSeasons("Episodes")
-                .dgvTVSeasons.Columns("Episodes").ToolTipText = Master.eLang.GetString(682, "Episodes")
-                .dgvTVSeasons.Columns("Episodes").HeaderText = String.Empty
-                .dgvTVSeasons.Columns("FanartPath").Width = 20
-                .dgvTVSeasons.Columns("FanartPath").Resizable = DataGridViewTriState.False
-                .dgvTVSeasons.Columns("FanartPath").ReadOnly = True
-                .dgvTVSeasons.Columns("FanartPath").SortMode = DataGridViewColumnSortMode.Automatic
-                .dgvTVSeasons.Columns("FanartPath").Visible = Not CheckColumnHide_TVSeasons("FanartPath")
-                .dgvTVSeasons.Columns("FanartPath").ToolTipText = Master.eLang.GetString(149, "Fanart")
-                .dgvTVSeasons.Columns("HasWatched").Width = 20
-                .dgvTVSeasons.Columns("HasWatched").Resizable = DataGridViewTriState.False
-                .dgvTVSeasons.Columns("HasWatched").ReadOnly = True
-                .dgvTVSeasons.Columns("HasWatched").SortMode = DataGridViewColumnSortMode.Automatic
-                .dgvTVSeasons.Columns("HasWatched").Visible = Not CheckColumnHide_TVSeasons("HasWatched")
-                .dgvTVSeasons.Columns("HasWatched").ToolTipText = Master.eLang.GetString(981, "Watched")
-                .dgvTVSeasons.Columns("LandscapePath").Width = 20
-                .dgvTVSeasons.Columns("LandscapePath").Resizable = DataGridViewTriState.False
-                .dgvTVSeasons.Columns("LandscapePath").ReadOnly = True
-                .dgvTVSeasons.Columns("LandscapePath").SortMode = DataGridViewColumnSortMode.Automatic
-                .dgvTVSeasons.Columns("LandscapePath").Visible = Not CheckColumnHide_TVSeasons("LandscapePath")
-                .dgvTVSeasons.Columns("LandscapePath").ToolTipText = Master.eLang.GetString(1035, "Landscape")
-                .dgvTVSeasons.Columns("PosterPath").Width = 20
-                .dgvTVSeasons.Columns("PosterPath").Resizable = DataGridViewTriState.False
-                .dgvTVSeasons.Columns("PosterPath").ReadOnly = True
-                .dgvTVSeasons.Columns("PosterPath").SortMode = DataGridViewColumnSortMode.Automatic
-                .dgvTVSeasons.Columns("PosterPath").Visible = Not CheckColumnHide_TVSeasons("PosterPath")
-                .dgvTVSeasons.Columns("PosterPath").ToolTipText = Master.eLang.GetString(148, "Poster")
-                .dgvTVSeasons.Columns("SeasonText").Resizable = DataGridViewTriState.True
-                .dgvTVSeasons.Columns("SeasonText").ReadOnly = True
-                .dgvTVSeasons.Columns("SeasonText").MinimumWidth = 83
-                .dgvTVSeasons.Columns("SeasonText").SortMode = DataGridViewColumnSortMode.Automatic
-                .dgvTVSeasons.Columns("SeasonText").Visible = True
-                .dgvTVSeasons.Columns("SeasonText").ToolTipText = Master.eLang.GetString(650, "Season")
-                .dgvTVSeasons.Columns("SeasonText").HeaderText = Master.eLang.GetString(650, "Season")
+            dgvTVSeasons.Columns("BannerPath").Width = 20
+            dgvTVSeasons.Columns("BannerPath").Resizable = DataGridViewTriState.False
+            dgvTVSeasons.Columns("BannerPath").ReadOnly = True
+            dgvTVSeasons.Columns("BannerPath").SortMode = DataGridViewColumnSortMode.Automatic
+            dgvTVSeasons.Columns("BannerPath").Visible = Not CheckColumnHide_TVSeasons("BannerPath")
+            dgvTVSeasons.Columns("BannerPath").ToolTipText = Master.eLang.GetString(838, "Banner")
+            dgvTVSeasons.Columns("Episodes").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader
+            dgvTVSeasons.Columns("Episodes").MinimumWidth = 30
+            dgvTVSeasons.Columns("Episodes").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
+            dgvTVSeasons.Columns("Episodes").Resizable = DataGridViewTriState.False
+            dgvTVSeasons.Columns("Episodes").ReadOnly = True
+            dgvTVSeasons.Columns("Episodes").SortMode = DataGridViewColumnSortMode.Automatic
+            dgvTVSeasons.Columns("Episodes").Visible = Not CheckColumnHide_TVSeasons("Episodes")
+            dgvTVSeasons.Columns("Episodes").ToolTipText = Master.eLang.GetString(682, "Episodes")
+            dgvTVSeasons.Columns("Episodes").HeaderText = String.Empty
+            dgvTVSeasons.Columns("FanartPath").Width = 20
+            dgvTVSeasons.Columns("FanartPath").Resizable = DataGridViewTriState.False
+            dgvTVSeasons.Columns("FanartPath").ReadOnly = True
+            dgvTVSeasons.Columns("FanartPath").SortMode = DataGridViewColumnSortMode.Automatic
+            dgvTVSeasons.Columns("FanartPath").Visible = Not CheckColumnHide_TVSeasons("FanartPath")
+            dgvTVSeasons.Columns("FanartPath").ToolTipText = Master.eLang.GetString(149, "Fanart")
+            dgvTVSeasons.Columns("HasWatched").Width = 20
+            dgvTVSeasons.Columns("HasWatched").Resizable = DataGridViewTriState.False
+            dgvTVSeasons.Columns("HasWatched").ReadOnly = True
+            dgvTVSeasons.Columns("HasWatched").SortMode = DataGridViewColumnSortMode.Automatic
+            dgvTVSeasons.Columns("HasWatched").Visible = Not CheckColumnHide_TVSeasons("HasWatched")
+            dgvTVSeasons.Columns("HasWatched").ToolTipText = Master.eLang.GetString(981, "Watched")
+            dgvTVSeasons.Columns("LandscapePath").Width = 20
+            dgvTVSeasons.Columns("LandscapePath").Resizable = DataGridViewTriState.False
+            dgvTVSeasons.Columns("LandscapePath").ReadOnly = True
+            dgvTVSeasons.Columns("LandscapePath").SortMode = DataGridViewColumnSortMode.Automatic
+            dgvTVSeasons.Columns("LandscapePath").Visible = Not CheckColumnHide_TVSeasons("LandscapePath")
+            dgvTVSeasons.Columns("LandscapePath").ToolTipText = Master.eLang.GetString(1035, "Landscape")
+            dgvTVSeasons.Columns("PosterPath").Width = 20
+            dgvTVSeasons.Columns("PosterPath").Resizable = DataGridViewTriState.False
+            dgvTVSeasons.Columns("PosterPath").ReadOnly = True
+            dgvTVSeasons.Columns("PosterPath").SortMode = DataGridViewColumnSortMode.Automatic
+            dgvTVSeasons.Columns("PosterPath").Visible = Not CheckColumnHide_TVSeasons("PosterPath")
+            dgvTVSeasons.Columns("PosterPath").ToolTipText = Master.eLang.GetString(148, "Poster")
+            dgvTVSeasons.Columns("SeasonText").Resizable = DataGridViewTriState.True
+            dgvTVSeasons.Columns("SeasonText").ReadOnly = True
+            dgvTVSeasons.Columns("SeasonText").MinimumWidth = 83
+            dgvTVSeasons.Columns("SeasonText").SortMode = DataGridViewColumnSortMode.Automatic
+            dgvTVSeasons.Columns("SeasonText").Visible = True
+            dgvTVSeasons.Columns("SeasonText").ToolTipText = Master.eLang.GetString(650, "Season")
+            dgvTVSeasons.Columns("SeasonText").HeaderText = Master.eLang.GetString(650, "Season")
 
-                .dgvTVSeasons.Columns("idSeason").ValueType = GetType(Int32)
-                .dgvTVSeasons.Columns("idShow").ValueType = GetType(Int32)
+            dgvTVSeasons.Columns("idSeason").ValueType = GetType(Int32)
+            dgvTVSeasons.Columns("idShow").ValueType = GetType(Int32)
 
-                If Master.isWindows Then .dgvTVSeasons.Columns("SeasonText").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-                ResizeTVLists(.dgvTVSeasons.Columns("SeasonText").Index)
+            If Master.isWindows Then dgvTVSeasons.Columns("SeasonText").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+            ResizeTVLists(dgvTVSeasons.Columns("SeasonText").Index)
 
-                .dgvTVSeasons.Sort(.dgvTVSeasons.Columns("SeasonText"), System.ComponentModel.ListSortDirection.Ascending)
+            dgvTVSeasons.Sort(dgvTVSeasons.Columns("SeasonText"), System.ComponentModel.ListSortDirection.Ascending)
 
-                FillEpisodes(ShowID, Convert.ToInt32(.dgvTVSeasons.Item("Season", 0).Value))
-            End With
+            FillTVEpisodes(ShowID, Convert.ToInt32(dgvTVSeasons.Item("Season", 0).Value))
         End If
+        AddHandler dgvTVSeasons.SelectionChanged, AddressOf dgvTVSeasons_SelectionChanged
     End Sub
 
     Private Sub frmMain_FormClosed(sender As Object, e As FormClosedEventArgs) Handles Me.FormClosed
@@ -10943,7 +10923,7 @@ Public Class frmMain
         bwLoadImages_TVShow.WorkerSupportsCancellation = True
         bwLoadImages_TVShow.RunWorkerAsync()
 
-        FillSeasons(ID)
+        FillTVSeasons(ID)
     End Sub
 
     Private Sub lstActors_SelectedValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles lstActors.SelectedValueChanged
@@ -15445,10 +15425,10 @@ Public Class frmMain
                 If Not currThemeType = Theming.ThemeType.Show Then ApplyTheme(Theming.ThemeType.Show)
                 ShowNoInfo(True, Enums.ContentType.TVSeason)
                 currTV = Master.DB.Load_TVSeason(Convert.ToInt64(dgvTVSeasons.Item("idSeason", iRow).Value), True, False)
-                FillEpisodes(Convert.ToInt64(dgvTVSeasons.Item("idShow", iRow).Value), Convert.ToInt32(dgvTVSeasons.Item("Season", iRow).Value))
+                FillTVEpisodes(Convert.ToInt64(dgvTVSeasons.Item("idShow", iRow).Value), Convert.ToInt32(dgvTVSeasons.Item("Season", iRow).Value))
             Else
                 LoadInfo_TVSeason(Convert.ToInt64(dgvTVSeasons.Item("idSeason", iRow).Value))
-                FillEpisodes(Convert.ToInt64(dgvTVSeasons.Item("idShow", iRow).Value), Convert.ToInt32(dgvTVSeasons.Item("Season", iRow).Value))
+                FillTVEpisodes(Convert.ToInt64(dgvTVSeasons.Item("idShow", iRow).Value), Convert.ToInt32(dgvTVSeasons.Item("Season", iRow).Value))
             End If
 
             If Not bwMovieScraper.IsBusy AndAlso Not bwMovieSetScraper.IsBusy AndAlso Not fScanner.IsBusy AndAlso
@@ -15477,7 +15457,7 @@ Public Class frmMain
                 String.IsNullOrEmpty(dgvTVShows.Item("PosterPath", iRow).Value.ToString) Then
                 ShowNoInfo(True, Enums.ContentType.TVShow)
                 currTV = Master.DB.Load_TVShow(Convert.ToInt64(dgvTVShows.Item("idShow", iRow).Value), False, False)
-                FillSeasons(Convert.ToInt64(dgvTVShows.Item("idShow", iRow).Value))
+                FillTVSeasons(Convert.ToInt64(dgvTVShows.Item("idShow", iRow).Value))
             Else
                 LoadInfo_TVShow(Convert.ToInt64(dgvTVShows.Item("idShow", iRow).Value))
             End If
@@ -17127,84 +17107,39 @@ Public Class frmMain
         dgvTVShows.Invalidate()
     End Sub
 
-    Private Sub tmrLoad_TVEpisode_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrLoad_TVEpisode.Tick
-        tmrWait_TVEpisode.Stop()
-        tmrLoad_TVEpisode.Stop()
-
-        If dgvTVEpisodes.SelectedRows.Count > 0 Then
-
-            If dgvTVEpisodes.SelectedRows.Count > 1 Then
-                SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), dgvTVEpisodes.SelectedRows.Count))
-            ElseIf dgvTVEpisodes.SelectedRows.Count = 1 Then
-                SetStatus(dgvTVEpisodes.SelectedRows(0).Cells("Title").Value.ToString)
-            End If
-
-            SelectRow_TVEpisode(dgvTVEpisodes.SelectedRows(0).Index)
-        End If
-    End Sub
-
-    Private Sub tmrLoad_TVSeason_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrLoad_TVSeason.Tick
-        tmrWait_TVSeason.Stop()
-        tmrLoad_TVSeason.Stop()
-
-        If dgvTVSeasons.SelectedRows.Count > 0 Then
-
-            If dgvTVSeasons.SelectedRows.Count > 1 Then
-                SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), dgvTVSeasons.SelectedRows.Count))
-            ElseIf dgvMovies.SelectedRows.Count = 1 Then
-                SetStatus(dgvTVSeasons.SelectedRows(0).Cells("SeasonText").Value.ToString)
-            End If
-
-            SelectRow_TVSeason(dgvTVSeasons.SelectedRows(0).Index)
-        End If
-    End Sub
-
-    Private Sub tmrLoad_TVShow_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrLoad_TVShow.Tick
-        tmrWait_TVShow.Stop()
-        tmrLoad_TVShow.Stop()
-
-        If dgvTVShows.SelectedRows.Count > 0 Then
-
-            If dgvTVShows.SelectedRows.Count > 1 Then
-                SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), dgvTVShows.SelectedRows.Count))
-            ElseIf dgvTVShows.SelectedRows.Count = 1 Then
-                SetStatus(dgvTVShows.SelectedRows(0).Cells("TVShowPath").Value.ToString)
-            End If
-
-            SelectRow_TVShow(dgvTVShows.SelectedRows(0).Index)
-        End If
-    End Sub
-
     Private Sub tmrLoad_Movie_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrLoad_Movie.Tick
         tmrWait_Movie.Stop()
         tmrLoad_Movie.Stop()
 
-        If dgvMovies.SelectedRows.Count > 0 Then
-
-            If dgvMovies.SelectedRows.Count > 1 Then
-                SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), dgvMovies.SelectedRows.Count))
-            ElseIf dgvMovies.SelectedRows.Count = 1 Then
-                SetStatus(dgvMovies.SelectedRows(0).Cells("MoviePath").Value.ToString)
-            End If
-
-            SelectRow_Movie(dgvMovies.SelectedRows(0).Index)
-        End If
+        If dgvMovies.SelectedRows.Count > 0 Then SelectRow_Movie(dgvMovies.SelectedRows(0).Index)
     End Sub
 
     Private Sub tmrLoad_MovieSet_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrLoad_MovieSet.Tick
         tmrWait_MovieSet.Stop()
         tmrLoad_MovieSet.Stop()
 
-        If dgvMovieSets.SelectedRows.Count > 0 Then
+        If dgvMovieSets.SelectedRows.Count > 0 Then SelectRow_MovieSet(dgvMovieSets.SelectedRows(0).Index)
+    End Sub
 
-            If dgvMovieSets.SelectedRows.Count > 1 Then
-                SetStatus(String.Format(Master.eLang.GetString(627, "Selected Items: {0}"), dgvMovieSets.SelectedRows.Count))
-            ElseIf dgvMovieSets.SelectedRows.Count = 1 Then
-                SetStatus(dgvMovieSets.SelectedRows(0).Cells("SetName").Value.ToString)
-            End If
+    Private Sub tmrLoad_TVEpisode_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrLoad_TVEpisode.Tick
+        tmrWait_TVEpisode.Stop()
+        tmrLoad_TVEpisode.Stop()
 
-            SelectRow_MovieSet(dgvMovieSets.SelectedRows(0).Index)
-        End If
+        If dgvTVEpisodes.SelectedRows.Count > 0 Then SelectRow_TVEpisode(dgvTVEpisodes.SelectedRows(0).Index)
+    End Sub
+
+    Private Sub tmrLoad_TVSeason_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrLoad_TVSeason.Tick
+        tmrWait_TVSeason.Stop()
+        tmrLoad_TVSeason.Stop()
+
+        If dgvTVSeasons.SelectedRows.Count > 0 Then SelectRow_TVSeason(dgvTVSeasons.SelectedRows(0).Index)
+    End Sub
+
+    Private Sub tmrLoad_TVShow_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles tmrLoad_TVShow.Tick
+        tmrWait_TVShow.Stop()
+        tmrLoad_TVShow.Stop()
+
+        If dgvTVShows.SelectedRows.Count > 0 Then SelectRow_TVShow(dgvTVShows.SelectedRows(0).Index)
     End Sub
 
     Private Sub tmrRunTasks_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrRunTasks.Tick
