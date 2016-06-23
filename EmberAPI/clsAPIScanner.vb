@@ -916,6 +916,11 @@ Public Class Scanner
                     DBTVShow.TVShow = New MediaContainers.TVShow
                 End If
 
+                'IMDB ID
+                If Not DBTVShow.TVShow.IMDBSpecified Then
+                    DBTVShow.TVShow.IMDB = StringUtils.FilterIMDBIDFromPath(DBTVShow.ShowPath)
+                End If
+
                 'Title
                 If Not DBTVShow.TVShow.TitleSpecified Then
                     'no title so assume it's an invalid nfo, clear nfo path if exists
