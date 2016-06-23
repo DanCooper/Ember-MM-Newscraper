@@ -8476,8 +8476,8 @@ Public Class frmMain
             dgvTVEpisodes.Columns("Title").ToolTipText = Master.eLang.GetString(21, "Title")
             dgvTVEpisodes.Columns("Title").HeaderText = Master.eLang.GetString(21, "Title")
 
-            dgvTVEpisodes.Columns("idEpisode").ValueType = GetType(Int32)
-            dgvTVEpisodes.Columns("idShow").ValueType = GetType(Int32)
+            dgvTVEpisodes.Columns("idEpisode").ValueType = GetType(Int64)
+            dgvTVEpisodes.Columns("idShow").ValueType = GetType(Int64)
             dgvTVEpisodes.Columns("Episode").ValueType = GetType(Int32)
             dgvTVEpisodes.Columns("Season").ValueType = GetType(Int32)
 
@@ -8716,7 +8716,7 @@ Public Class frmMain
                         .dgvMovies.Columns("Year").HeaderText = Master.eLang.GetString(278, "Year")
                         .dgvMovies.Columns("Year").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
 
-                        .dgvMovies.Columns("idMovie").ValueType = GetType(Int32)
+                        .dgvMovies.Columns("idMovie").ValueType = GetType(Int64)
 
                         If Master.isWindows Then .dgvMovies.Columns("ListTitle").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                         ResizeMoviesList()
@@ -8808,7 +8808,7 @@ Public Class frmMain
                         .dgvMovieSets.Columns("PosterPath").Visible = Not CheckColumnHide_MovieSets("PosterPath")
                         .dgvMovieSets.Columns("PosterPath").ToolTipText = Master.eLang.GetString(148, "Poster")
 
-                        .dgvMovieSets.Columns("idSet").ValueType = GetType(Int32)
+                        .dgvMovieSets.Columns("idSet").ValueType = GetType(Int64)
 
                         If Master.isWindows Then .dgvMovieSets.Columns("ListTitle").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                         ResizeMovieSetsList()
@@ -8946,7 +8946,7 @@ Public Class frmMain
                         .dgvTVShows.Columns("ThemePath").Visible = Not CheckColumnHide_TVShows("ThemePath")
                         .dgvTVShows.Columns("ThemePath").ToolTipText = Master.eLang.GetString(1118, "Theme")
 
-                        .dgvTVShows.Columns("idShow").ValueType = GetType(Int32)
+                        .dgvTVShows.Columns("idShow").ValueType = GetType(Int64)
 
                         If Master.isWindows Then .dgvTVShows.Columns("ListTitle").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
                         ResizeTVLists(.dgvTVShows.Columns("ListTitle").Index)
@@ -9830,8 +9830,8 @@ Public Class frmMain
             dgvTVSeasons.Columns("SeasonText").ToolTipText = Master.eLang.GetString(650, "Season")
             dgvTVSeasons.Columns("SeasonText").HeaderText = Master.eLang.GetString(650, "Season")
 
-            dgvTVSeasons.Columns("idSeason").ValueType = GetType(Int32)
-            dgvTVSeasons.Columns("idShow").ValueType = GetType(Int32)
+            dgvTVSeasons.Columns("idSeason").ValueType = GetType(Int64)
+            dgvTVSeasons.Columns("idShow").ValueType = GetType(Int64)
 
             If Master.isWindows Then dgvTVSeasons.Columns("SeasonText").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
             ResizeTVLists(dgvTVSeasons.Columns("SeasonText").Index)
