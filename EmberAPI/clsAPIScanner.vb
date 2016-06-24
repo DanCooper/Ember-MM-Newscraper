@@ -708,7 +708,6 @@ Public Class Scanner
     End Sub
 
     Public Sub Load_MovieSet(ByRef DBMovieSet As Database.DBElement, ByVal Batchmode As Boolean)
-        Dim ToNfo As Boolean = False
         Dim OldTitle As String = DBMovieSet.MovieSet.Title
 
         GetFolderContents_MovieSet(DBMovieSet)
@@ -904,10 +903,9 @@ Public Class Scanner
     Public Sub Load_TVShow(ByRef DBTVShow As Database.DBElement, ByVal isNew As Boolean, ByVal Batchmode As Boolean, ByVal ReportProgress As Boolean)
         Dim newEpisodesList As New List(Of Database.DBElement)
         Dim newSeasonsIndex As New List(Of Integer)
-        Dim toNfo As Boolean = False
 
         If DBTVShow.EpisodesSpecified OrElse DBTVShow.IDSpecified Then
-            If Not TVShowPaths.ContainsKey(DBTVShow.ShowPath.ToLower) Then
+            If Not TVShowPaths.ContainsKey(DBTVShow.ShowPath.ToLower) OrElse (DBTVShow.IDSpecified AndAlso Not isNew) Then
                 GetFolderContents_TVShow(DBTVShow)
 
                 If DBTVShow.NfoPathSpecified Then
@@ -966,12 +964,12 @@ Public Class Scanner
                         Dim SeasonAndEpisodesList As SeasonAndEpisodeItems = Load_TVEpisode(DBTVEpisode, isNew, Batchmode, ReportProgress)
 
                         'add new episodes
-                        For Each iEpisode In SeasonAndEpisodesList.Episodes
+                        For Each iEpisode As Database.DBElement In SeasonAndEpisodesList.Episodes
                             newEpisodesList.Add(iEpisode)
                         Next
 
                         'add seasons
-                        For Each iSeason In SeasonAndEpisodesList.Seasons
+                        For Each iSeason As Integer In SeasonAndEpisodesList.Seasons
                             Dim tmpSeason As Database.DBElement = DBTVShow.Seasons.FirstOrDefault(Function(f) f.TVSeason.Season = iSeason)
                             If tmpSeason Is Nothing OrElse tmpSeason.TVSeason Is Nothing Then
                                 tmpSeason = New Database.DBElement(Enums.ContentType.TVSeason)
