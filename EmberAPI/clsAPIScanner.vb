@@ -1673,7 +1673,7 @@ Public Class Scanner
                                     parID.Value = sSource.ID
                                     SQLUpdatecommand.ExecuteNonQuery()
                                     Try
-                                        If Master.eSettings.MovieSortBeforeScan Then
+                                        If Master.eSettings.MovieSortBeforeScan OrElse sSource.IsSingle Then
                                             FileUtils.FileSorter.SortFiles(SQLreader("strPath").ToString)
                                         End If
                                     Catch ex As Exception
