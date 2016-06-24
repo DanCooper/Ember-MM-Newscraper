@@ -457,7 +457,7 @@ Public Class frmMain
         pnlDiscArt.Visible = False
         MainDiscArt.Clear()
 
-        'remove all the current genres
+        'remove all current genres
         Try
             For iDel As Integer = 0 To pnlGenre.Count - 1
                 scMain.Panel2.Controls.Remove(pbGenre(iDel))
@@ -1922,9 +1922,8 @@ Public Class frmMain
                                     Images.SetPreferredImages(DBScrapeMovie, dImgSelect.Result)
                                 End If
                             End Using
-
+                        Else
                             'autoscraping
-                        ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
                             Images.SetPreferredImages(DBScrapeMovie, SearchResultsContainer, tScrapeItem.ScrapeModifiers, IsAutoScraper:=True)
                         End If
                     End If
@@ -2144,9 +2143,8 @@ Public Class frmMain
                                     Images.SetPreferredImages(DBScrapeMovieSet, dImgSelect.Result)
                                 End If
                             End Using
-
+                        Else
                             'autoscraping
-                        ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
                             Images.SetPreferredImages(DBScrapeMovieSet, SearchResultsContainer, tScrapeItem.ScrapeModifiers, IsAutoScraper:=True)
                         End If
                     End If
@@ -2282,9 +2280,8 @@ Public Class frmMain
                                 Images.SetPreferredImages(DBScrapeShow, dImgSelect.Result)
                             End If
                         End Using
-
+                    Else
                         'autoscraping
-                    ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
                         Images.SetPreferredImages(DBScrapeShow, SearchResultsContainer, tScrapeItem.ScrapeModifiers, IsAutoScraper:=True)
                     End If
                 End If
@@ -2438,9 +2435,8 @@ Public Class frmMain
                                     Images.SetPreferredImages(DBScrapeEpisode, dImgSelect.Result)
                                 End If
                             End Using
-
+                        Else
                             'autoscraping
-                        ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
                             Images.SetPreferredImages(DBScrapeEpisode, SearchResultsContainer, tScrapeItem.ScrapeModifiers, IsAutoScraper:=True)
                         End If
                     End If
@@ -2572,9 +2568,8 @@ Public Class frmMain
                                     Images.SetPreferredImages(DBScrapeSeason, dImgSelect.Result)
                                 End If
                             End Using
-
+                        Else
                             'autoscraping
-                        ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
                             Images.SetPreferredImages(DBScrapeSeason, SearchResultsContainer, tScrapeItem.ScrapeModifiers, IsAutoScraper:=True)
                         End If
                     End If
