@@ -9228,6 +9228,7 @@ Public Class frmMain
             End If
         End If
         If pbBanner.Image IsNot Nothing Then pnlBanner.Visible = True
+        If pbCharacterArt.Image IsNot Nothing Then pnlCharacterArt.Visible = True
         If pbClearArt.Image IsNot Nothing Then pnlClearArt.Visible = True
         If pbClearLogo.Image IsNot Nothing Then pnlClearLogo.Visible = True
         If pbDiscArt.Image IsNot Nothing Then pnlDiscArt.Visible = True
