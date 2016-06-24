@@ -8044,7 +8044,7 @@ Public Class frmMain
         SaveFilter_Shows()
     End Sub
 
-    Private Sub DonateToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainDonate.Click
+    Private Sub mnuMainDonate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainDonate.Click
         If Master.isWindows Then
             Process.Start("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=VWVJCUV3KAUX2&lc=CH&item_name=Ember%2dTeam%3a%20DanCooper%2c%20m%2esavazzi%20%26%20Cocotus&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted")
         Else
@@ -8349,11 +8349,11 @@ Public Class frmMain
         If dlgErrorViewer.Visible Then dlgErrorViewer.UpdateLog()
     End Sub
 
-    Private Sub ErrorToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainError.Click
+    Private Sub mnuMainError_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainError.Click
         dlgErrorViewer.Show(Me)
     End Sub
 
-    Private Sub ExitToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainFileExit.Click, cmnuTrayExit.Click
+    Private Sub mnuMainFileExit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainFileExit.Click, cmnuTrayExit.Click
         If Master.isCL Then
             'fLoading.SetLoadingMesg("Canceling ...")
             Master.fLoading.SetLoadingMesg(Master.eLang.GetString(370, "Canceling Load..."))
