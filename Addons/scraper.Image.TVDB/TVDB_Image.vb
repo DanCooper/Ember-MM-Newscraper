@@ -151,19 +151,19 @@ Public Class TVDB_Image
     End Function
 
     Sub LoadSettings()
-        ConfigModifier.EpisodePoster = clsAdvancedSettings.GetBooleanSetting("DoEpisodePoster", True)
-        ConfigModifier.SeasonBanner = clsAdvancedSettings.GetBooleanSetting("DoSeasonBanner", True)
-        ConfigModifier.SeasonPoster = clsAdvancedSettings.GetBooleanSetting("DoSeasonPoster", True)
-        ConfigModifier.MainBanner = clsAdvancedSettings.GetBooleanSetting("DoShowBanner", True)
-        ConfigModifier.MainFanart = clsAdvancedSettings.GetBooleanSetting("DoShowFanart", True)
-        ConfigModifier.MainPoster = clsAdvancedSettings.GetBooleanSetting("DoShowPoster", True)
+        ConfigModifier.EpisodePoster = AdvancedSettings.GetBooleanSetting("DoEpisodePoster", True)
+        ConfigModifier.SeasonBanner = AdvancedSettings.GetBooleanSetting("DoSeasonBanner", True)
+        ConfigModifier.SeasonPoster = AdvancedSettings.GetBooleanSetting("DoSeasonPoster", True)
+        ConfigModifier.MainBanner = AdvancedSettings.GetBooleanSetting("DoShowBanner", True)
+        ConfigModifier.MainFanart = AdvancedSettings.GetBooleanSetting("DoShowFanart", True)
+        ConfigModifier.MainPoster = AdvancedSettings.GetBooleanSetting("DoShowPoster", True)
 
-        strPrivateAPIKey = clsAdvancedSettings.GetSetting("ApiKey", "")
+        strPrivateAPIKey = AdvancedSettings.GetSetting("ApiKey", "")
         _SpecialSettings.ApiKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "353783CE455412FD", strPrivateAPIKey)
     End Sub
 
     Sub SaveSettings()
-        Using settings = New clsAdvancedSettings()
+        Using settings = New AdvancedSettings()
             settings.SetBooleanSetting("DoEpisodePoster", ConfigModifier.EpisodePoster)
             settings.SetBooleanSetting("DoSeasonBanner", ConfigModifier.SeasonBanner)
             settings.SetBooleanSetting("DoSeasonPoster", ConfigModifier.SeasonPoster)

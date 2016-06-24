@@ -1976,7 +1976,7 @@ Public Class frmMain
                             Using dTrailerSelect As New dlgTrailerSelect
                                 'note msavazzi why is always False with Player? If dTrailerSelect.ShowDialog(DBScrapeMovie, SearchResults, False, True, False) = DialogResult.OK Then
                                 'DanCooper: the VLC COM interface is/was not able to call in multithread
-                                If dTrailerSelect.ShowDialog(DBScrapeMovie, SearchResults, False, True, clsAdvancedSettings.GetBooleanSetting("UseAsVideoPlayer", False, "generic.EmberCore.VLCPlayer")) = DialogResult.OK Then
+                                If dTrailerSelect.ShowDialog(DBScrapeMovie, SearchResults, False, True, AdvancedSettings.GetBooleanSetting("UseAsVideoPlayer", False, "generic.EmberCore.VLCPlayer")) = DialogResult.OK Then
                                     DBScrapeMovie.Trailer = dTrailerSelect.Result
                                 End If
                             End Using
@@ -9338,7 +9338,7 @@ Public Class frmMain
             pbStudio.Tag = String.Empty
         End If
 
-        If clsAdvancedSettings.GetBooleanSetting("StudioTagAlwaysOn", False) Then
+        If AdvancedSettings.GetBooleanSetting("StudioTagAlwaysOn", False) Then
             lblStudio.Text = pbStudio.Tag.ToString
         End If
 
@@ -9505,7 +9505,7 @@ Public Class frmMain
             pbStudio.Image = APIXML.GetStudioImage("####")
             pbStudio.Tag = String.Empty
         End If
-        If clsAdvancedSettings.GetBooleanSetting("StudioTagAlwaysOn", False) Then
+        If AdvancedSettings.GetBooleanSetting("StudioTagAlwaysOn", False) Then
             lblStudio.Text = pbStudio.Tag.ToString
         End If
         If Master.eSettings.TVScraperMetaDataScan AndAlso Not String.IsNullOrEmpty(currTV.Filename) Then
@@ -9958,7 +9958,7 @@ Public Class frmMain
 
         AddHandler AppDomain.CurrentDomain.AssemblyResolve, AddressOf MyResolveEventHandler
 
-        clsAdvancedSettings.Start()
+        AdvancedSettings.Start()
 
         'Create Modules Folders
         Dim sPath = String.Concat(Functions.AppPath, "Modules")
@@ -15859,7 +15859,7 @@ Public Class frmMain
                 cbFilterVideoSource_Movies.Items.Add(Master.eLang.All)
                 'Cocotus 2014/10/11 Automatically populate available videosources from user settings to sourcefilter instead of using hardcoded list here!
                 Dim mySources As New List(Of AdvancedSettingsComplexSettingsTableItem)
-                mySources = clsAdvancedSettings.GetComplexSetting("MovieSources")
+                mySources = AdvancedSettings.GetComplexSetting("MovieSources")
                 If Not mySources Is Nothing Then
                     For Each k In mySources
                         If cbFilterVideoSource_Movies.Items.Contains(k.Value) = False Then
@@ -17597,13 +17597,13 @@ Public Class frmMain
     End Sub
 
     Private Sub pbStudio_MouseEnter(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStudio.MouseEnter
-        If Not clsAdvancedSettings.GetBooleanSetting("StudioTagAlwaysOn", False) AndAlso pbStudio.Tag IsNot Nothing AndAlso Not String.IsNullOrEmpty(pbStudio.Tag.ToString) Then
+        If Not AdvancedSettings.GetBooleanSetting("StudioTagAlwaysOn", False) AndAlso pbStudio.Tag IsNot Nothing AndAlso Not String.IsNullOrEmpty(pbStudio.Tag.ToString) Then
             lblStudio.Text = pbStudio.Tag.ToString
         End If
     End Sub
 
     Private Sub pbStudio_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStudio.MouseLeave
-        If Not clsAdvancedSettings.GetBooleanSetting("StudioTagAlwaysOn", False) Then lblStudio.Text = String.Empty
+        If Not AdvancedSettings.GetBooleanSetting("StudioTagAlwaysOn", False) Then lblStudio.Text = String.Empty
     End Sub
 
     Private Sub tmrKeyBuffer_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrKeyBuffer.Tick

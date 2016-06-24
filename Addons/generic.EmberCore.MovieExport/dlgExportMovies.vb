@@ -295,8 +295,8 @@ Public Class dlgExportMovies
     Private Sub dlgExportMovies_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         SetUp()
 
-        bExportMissingEpisodes = clsAdvancedSettings.GetBooleanSetting("ExportMissingEpisodes", False)
-        txtExportPath.Text = clsAdvancedSettings.GetSetting("ExportPath", String.Empty)
+        bExportMissingEpisodes = AdvancedSettings.GetBooleanSetting("ExportMissingEpisodes", False)
+        txtExportPath.Text = AdvancedSettings.GetSetting("ExportPath", String.Empty)
 
         Dim di As DirectoryInfo = New DirectoryInfo(String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, "html"))
         If di.Exists Then

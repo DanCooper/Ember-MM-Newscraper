@@ -1613,8 +1613,8 @@ Public Class dlgEditMovie
             If Not String.IsNullOrEmpty(vSource) Then
                 tmpDBElement.VideoSource = vSource
                 tmpDBElement.Movie.VideoSource = tmpDBElement.VideoSource
-            ElseIf String.IsNullOrEmpty(tmpDBElement.VideoSource) AndAlso clsAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
-                tmpDBElement.VideoSource = clsAdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(tmpDBElement.Filename)), String.Empty, "*EmberAPP")
+            ElseIf String.IsNullOrEmpty(tmpDBElement.VideoSource) AndAlso AdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
+                tmpDBElement.VideoSource = AdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(tmpDBElement.Filename)), String.Empty, "*EmberAPP")
                 tmpDBElement.Movie.VideoSource = tmpDBElement.VideoSource
             ElseIf Not String.IsNullOrEmpty(tmpDBElement.Movie.VideoSource) Then
                 tmpDBElement.VideoSource = tmpDBElement.Movie.VideoSource

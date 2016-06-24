@@ -169,7 +169,7 @@
     <Import Include="System.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="clsAdvancedSettings.vb" />
+    <Compile Include="clsAPIAdvancedSettings.vb" />
     <Compile Include="clsAPIApple.vb" />
     <Compile Include="clsAPICommandLine.vb" />
     <Compile Include="clsAPIFFmpeg.vb" />

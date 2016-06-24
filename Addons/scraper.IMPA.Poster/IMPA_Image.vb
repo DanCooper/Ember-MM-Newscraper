@@ -126,7 +126,7 @@ Public Class IMPA_Image
     End Function
 
     Sub LoadSettings()
-        ConfigScrapeModifiers.MainPoster = clsAdvancedSettings.GetBooleanSetting("DoPoster", True)
+        ConfigScrapeModifiers.MainPoster = AdvancedSettings.GetBooleanSetting("DoPoster", True)
     End Sub
 
     Function Scraper(ByRef DBMovie As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifier As Structures.ScrapeModifiers) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_Movie.Scraper
@@ -139,7 +139,7 @@ Public Class IMPA_Image
     End Function
 
     Sub SaveSettings()
-        Using settings = New clsAdvancedSettings()
+        Using settings = New AdvancedSettings()
             settings.SetBooleanSetting("DoPoster", ConfigScrapeModifiers.MainPoster)
         End Using
     End Sub

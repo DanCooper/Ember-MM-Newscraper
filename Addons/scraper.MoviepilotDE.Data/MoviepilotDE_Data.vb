@@ -115,13 +115,13 @@ Public Class MoviepilotDE_Data
     End Function
 
     Sub LoadSettings()
-        ConfigScrapeOptions.bMainOutline = clsAdvancedSettings.GetBooleanSetting("DoOutline", True)
-        ConfigScrapeOptions.bMainPlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", True)
-        ConfigScrapeOptions.bMainCertifications = clsAdvancedSettings.GetBooleanSetting("DoCert", True)
+        ConfigScrapeOptions.bMainOutline = AdvancedSettings.GetBooleanSetting("DoOutline", True)
+        ConfigScrapeOptions.bMainPlot = AdvancedSettings.GetBooleanSetting("DoPlot", True)
+        ConfigScrapeOptions.bMainCertifications = AdvancedSettings.GetBooleanSetting("DoCert", True)
     End Sub
 
     Sub SaveSettings()
-        Using settings = New clsAdvancedSettings()
+        Using settings = New AdvancedSettings()
             settings.SetBooleanSetting("DoOutline", ConfigScrapeOptions.bMainOutline)
             settings.SetBooleanSetting("DoPlot", ConfigScrapeOptions.bMainPlot)
             settings.SetBooleanSetting("DoCert", ConfigScrapeOptions.bMainCertifications)

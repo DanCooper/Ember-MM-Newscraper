@@ -121,11 +121,11 @@ Public Class GoEar_Theme
     End Function
 
     Sub LoadSettings()
-        ConfigScrapeModifiers.MainTheme = clsAdvancedSettings.GetBooleanSetting("DoTheme", True)
+        ConfigScrapeModifiers.MainTheme = AdvancedSettings.GetBooleanSetting("DoTheme", True)
     End Sub
 
     Sub SaveSettings()
-        Using settings = New clsAdvancedSettings()
+        Using settings = New AdvancedSettings()
             settings.SetBooleanSetting("DoTheme", ConfigScrapeModifiers.MainTheme)
         End Using
     End Sub

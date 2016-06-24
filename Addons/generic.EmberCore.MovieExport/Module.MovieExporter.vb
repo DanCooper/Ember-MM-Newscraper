@@ -238,9 +238,9 @@ Public Class MovieExporterModule
     End Sub
 
     Sub LoadSettings()
-        MySettings.DefaultTemplate = clsAdvancedSettings.GetSetting("DefaultTemplate", "template")
-        MySettings.ExportPath = clsAdvancedSettings.GetSetting("ExportPath", String.Empty)
-        MySettings.ExportMissingEpisodes = clsAdvancedSettings.GetBooleanSetting("ExportMissingEpisodes", False)
+        MySettings.DefaultTemplate = AdvancedSettings.GetSetting("DefaultTemplate", "template")
+        MySettings.ExportPath = AdvancedSettings.GetSetting("ExportPath", String.Empty)
+        MySettings.ExportMissingEpisodes = AdvancedSettings.GetBooleanSetting("ExportMissingEpisodes", False)
     End Sub
 
     Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
@@ -256,7 +256,7 @@ Public Class MovieExporterModule
     End Sub
 
     Sub SaveSettings()
-        Using settings = New clsAdvancedSettings()
+        Using settings = New AdvancedSettings()
             settings.SetSetting("DefaultTemplate", MySettings.DefaultTemplate)
             settings.SetSetting("ExportPath", MySettings.ExportPath)
             settings.SetBooleanSetting("ExportMissingEpisodes", MySettings.ExportMissingEpisodes)

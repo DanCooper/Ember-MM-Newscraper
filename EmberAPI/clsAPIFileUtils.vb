@@ -544,10 +544,10 @@ Namespace FileUtils
         ''' </remarks>
         Public Shared Function RemoveStackingMarkers(ByVal strPath As String, Optional ByVal Asterix As Boolean = False) As String
             'Don't do anything if DisableMultiPartMedia is True or sPath is String.Empty
-            If clsAdvancedSettings.GetBooleanSetting("DisableMultiPartMedia", False) OrElse String.IsNullOrEmpty(strPath) Then Return strPath
+            If AdvancedSettings.GetBooleanSetting("DisableMultiPartMedia", False) OrElse String.IsNullOrEmpty(strPath) Then Return strPath
 
-            Dim FilePattern As String = clsAdvancedSettings.GetSetting("FileStacking", "(.*?)([ _.-]*(?:cd|dvd|p(?:ar)?t|dis[ck])[ _.-]*[0-9]+)(.*?)(\.[^.]+)$")
-            Dim FolderPattern As String = clsAdvancedSettings.GetSetting("FolderStacking", "((cd|dvd|dis[ck])[0-9]+)$")
+            Dim FilePattern As String = AdvancedSettings.GetSetting("FileStacking", "(.*?)([ _.-]*(?:cd|dvd|p(?:ar)?t|dis[ck])[ _.-]*[0-9]+)(.*?)(\.[^.]+)$")
+            Dim FolderPattern As String = AdvancedSettings.GetSetting("FolderStacking", "((cd|dvd|dis[ck])[0-9]+)$")
 
             Dim FileStacking = Regex.Match(strPath, FilePattern, RegexOptions.IgnoreCase)
             If FileStacking.Success Then

@@ -1063,7 +1063,7 @@ Public Class dlgWizard
             End If
 
             'Workaround for tvdb scraper language (TODO: proper solution)
-            Using settings = New clsAdvancedSettings()
+            Using settings = New AdvancedSettings()
                 settings.SetSetting("TVDBLanguage", .TVGeneralLanguage, "scraper.TVDB")
             End Using
 

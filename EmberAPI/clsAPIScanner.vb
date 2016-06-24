@@ -594,10 +594,10 @@ Public Class Scanner
             If(dInfo.FullName.IndexOf("\") >= 0, dInfo.FullName.Remove(0, dInfo.FullName.IndexOf("\")).Contains(":"), False) Then
                 Return False
             End If
-            For Each s As String In clsAdvancedSettings.GetSetting("NotValidDirIs", ".actors|extrafanarts|extrathumbs|video_ts|bdmv|audio_ts|recycler|subs|subtitles|.trashes").Split(New String() {"|"}, StringSplitOptions.RemoveEmptyEntries)
+            For Each s As String In AdvancedSettings.GetSetting("NotValidDirIs", ".actors|extrafanarts|extrathumbs|video_ts|bdmv|audio_ts|recycler|subs|subtitles|.trashes").Split(New String() {"|"}, StringSplitOptions.RemoveEmptyEntries)
                 If dInfo.Name.ToLower = s Then Return False
             Next
-            For Each s As String In clsAdvancedSettings.GetSetting("NotValidDirContains", "-trailer|[trailer|temporary files|(noscan)|$recycle.bin|lost+found|system volume information|sample").Split(New String() {"|"}, StringSplitOptions.RemoveEmptyEntries)
+            For Each s As String In AdvancedSettings.GetSetting("NotValidDirContains", "-trailer|[trailer|temporary files|(noscan)|$recycle.bin|lost+found|system volume information|sample").Split(New String() {"|"}, StringSplitOptions.RemoveEmptyEntries)
                 If dInfo.Name.ToLower.Contains(s) Then Return False
             Next
 
@@ -680,8 +680,8 @@ Public Class Scanner
             If Not String.IsNullOrEmpty(vSource) Then
                 DBMovie.VideoSource = vSource
                 DBMovie.Movie.VideoSource = vSource
-            ElseIf Not DBMovie.VideoSourceSpecified AndAlso clsAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
-                vSource = clsAdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(DBMovie.Filename)), String.Empty, "*EmberAPP")
+            ElseIf Not DBMovie.VideoSourceSpecified AndAlso AdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
+                vSource = AdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(DBMovie.Filename)), String.Empty, "*EmberAPP")
                 If Not String.IsNullOrEmpty(vSource) Then
                     DBMovie.VideoSource = vSource
                     DBMovie.Movie.VideoSource = vSource
@@ -849,8 +849,8 @@ Public Class Scanner
             If Not String.IsNullOrEmpty(vSource) Then
                 cEpisode.VideoSource = vSource
                 cEpisode.TVEpisode.VideoSource = vSource
-            ElseIf Not cEpisode.VideoSourceSpecified AndAlso clsAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
-                vSource = clsAdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(cEpisode.Filename)), String.Empty, "*EmberAPP")
+            ElseIf Not cEpisode.VideoSourceSpecified AndAlso AdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
+                vSource = AdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(cEpisode.Filename)), String.Empty, "*EmberAPP")
                 If Not String.IsNullOrEmpty(vSource) Then
                     cEpisode.VideoSource = vSource
                     cEpisode.TVEpisode.VideoSource = vSource
@@ -1301,7 +1301,7 @@ Public Class Scanner
                 Else
                     Dim HasFile As Boolean = False
                     Dim tList As IOrderedEnumerable(Of FileInfo) = lFi.Where(Function(f) Master.eSettings.FileSystemValidExts.Contains(f.Extension.ToLower) AndAlso
-                             Not Regex.IsMatch(f.Name, String.Concat("[^\w\s]\s?(", clsAdvancedSettings.GetSetting("NotValidFileContains", "trailer|sample"), ")"), RegexOptions.IgnoreCase) AndAlso ((Master.eSettings.MovieSkipStackedSizeCheck AndAlso
+                             Not Regex.IsMatch(f.Name, String.Concat("[^\w\s]\s?(", AdvancedSettings.GetSetting("NotValidFileContains", "trailer|sample"), ")"), RegexOptions.IgnoreCase) AndAlso ((Master.eSettings.MovieSkipStackedSizeCheck AndAlso
                             FileUtils.Common.isStacked(f.FullName)) OrElse (Not Convert.ToInt32(Master.eSettings.MovieSkipLessThan) > 0 OrElse f.Length >= Master.eSettings.MovieSkipLessThan * 1048576))).OrderBy(Function(f) f.FullName)
 
                     If tList.Count > 1 AndAlso sSource.IsSingle Then
@@ -1361,10 +1361,10 @@ Public Class Scanner
 
         For Each lFile As FileInfo In di.GetFiles.OrderBy(Function(s) s.Name)
             If Not TVEpisodePaths.Contains(lFile.FullName.ToLower) AndAlso Master.eSettings.FileSystemValidExts.Contains(lFile.Extension.ToLower) AndAlso
-                Not Regex.IsMatch(lFile.Name, String.Concat("[^\w\s]\s?(", clsAdvancedSettings.GetSetting("NotValidFileContains", "trailer|sample"), ")"), RegexOptions.IgnoreCase) AndAlso
+                Not Regex.IsMatch(lFile.Name, String.Concat("[^\w\s]\s?(", AdvancedSettings.GetSetting("NotValidFileContains", "trailer|sample"), ")"), RegexOptions.IgnoreCase) AndAlso
                 (Not Convert.ToInt32(Master.eSettings.TVSkipLessThan) > 0 OrElse lFile.Length >= Master.eSettings.TVSkipLessThan * 1048576) Then
                 tShow.Episodes.Add(New Database.DBElement(Enums.ContentType.TVEpisode) With {.Filename = lFile.FullName, .TVEpisode = New MediaContainers.EpisodeDetails})
-            ElseIf Regex.IsMatch(lFile.Name, String.Concat("[^\w\s]\s?(", clsAdvancedSettings.GetSetting("NotValidFileContains", "trailer|sample"), ")"), RegexOptions.IgnoreCase) AndAlso Master.eSettings.FileSystemValidExts.Contains(lFile.Extension.ToLower) Then
+            ElseIf Regex.IsMatch(lFile.Name, String.Concat("[^\w\s]\s?(", AdvancedSettings.GetSetting("NotValidFileContains", "trailer|sample"), ")"), RegexOptions.IgnoreCase) AndAlso Master.eSettings.FileSystemValidExts.Contains(lFile.Extension.ToLower) Then
                 logger.Info(String.Format("[Sanner] [ScanForTVFiles] File {0} has been ignored (ignore list)", lFile.FullName))
             End If
         Next

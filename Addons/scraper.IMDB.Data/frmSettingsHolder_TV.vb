@@ -76,7 +76,7 @@ Public Class frmSettingsHolder_TV
     Public Sub New()
         _api = String.Empty
         _language = String.Empty
-        _getadultitems = clsAdvancedSettings.GetBooleanSetting("GetAdultItems", False)
+        _getadultitems = AdvancedSettings.GetBooleanSetting("GetAdultItems", False)
         InitializeComponent()
         SetUp()
     End Sub

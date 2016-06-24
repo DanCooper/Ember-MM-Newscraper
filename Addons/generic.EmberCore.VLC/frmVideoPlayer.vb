@@ -107,7 +107,7 @@ Public Class frmVideoPlayer
         If Not File.Exists(Path.Combine(aP, "libvlc.dll")) Then
             Using fbdDialog As New FolderBrowserDialog()
                 fbdDialog.Description = Master.eLang.GetString(1477, "Select VLC Path")
-                fbdDialog.SelectedPath = clsAdvancedSettings.GetSetting("VLCPath", String.Empty, "generic.EmberCore.VLCPlayer")
+                fbdDialog.SelectedPath = AdvancedSettings.GetSetting("VLCPath", String.Empty, "generic.EmberCore.VLCPlayer")
 
                 If fbdDialog.ShowDialog() = DialogResult.OK Then
                     e.VlcLibDirectory = New DirectoryInfo(fbdDialog.SelectedPath)

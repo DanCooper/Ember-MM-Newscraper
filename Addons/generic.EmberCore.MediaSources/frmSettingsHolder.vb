@@ -39,11 +39,11 @@ Public Class frmMediaSources
             LoadSources()
 
             dgvByFile.Rows.Clear()
-            For Each sett As AdvancedSettingsSetting In clsAdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MediaSourcesByExtension:"))
+            For Each sett As AdvancedSettingsSetting In AdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MediaSourcesByExtension:"))
                 Dim i As Integer = dgvByFile.Rows.Add(New Object() {sett.Name.Substring(24), sett.Value})
             Next
             SetByFileStatus(False)
-            chkMapByFile.Checked = clsAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP")
+            chkMapByFile.Checked = AdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP")
         Catch ex As Exception
         End Try
         SetUp()
@@ -51,7 +51,7 @@ Public Class frmMediaSources
 
     Private Sub LoadSources()
         dgvSources.Rows.Clear()
-        Dim sources As List(Of AdvancedSettingsComplexSettingsTableItem) = clsAdvancedSettings.GetComplexSetting("MovieSources", "*EmberAPP")
+        Dim sources As List(Of AdvancedSettingsComplexSettingsTableItem) = AdvancedSettings.GetComplexSetting("MovieSources", "*EmberAPP")
         If sources IsNot Nothing Then
             For Each sett In sources
                 Dim i As Integer = dgvSources.Rows.Add(New Object() {sett.Name, sett.Value})
@@ -111,10 +111,10 @@ Public Class frmMediaSources
 
     Public Sub SaveChanges()
         Dim deleteitem As New List(Of String)
-        For Each sett As AdvancedSettingsSetting In clsAdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MediaSourcesByExtension:"))
+        For Each sett As AdvancedSettingsSetting In AdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MediaSourcesByExtension:"))
             deleteitem.Add(sett.Name)
         Next
-        Using settings = New clsAdvancedSettings()
+        Using settings = New AdvancedSettings()
             For Each s As String In deleteitem
                 settings.CleanSetting(s, "*EmberAPP")
             Next
@@ -138,7 +138,7 @@ Public Class frmMediaSources
     End Sub
 
     Private Sub btnSetDefaults_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetDefaults.Click
-        Using settings = New clsAdvancedSettings()
+        Using settings = New AdvancedSettings()
             settings.SetDefaults("MovieSources")
         End Using
         LoadSources()

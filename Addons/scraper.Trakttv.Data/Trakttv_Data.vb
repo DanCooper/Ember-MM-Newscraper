@@ -198,22 +198,22 @@ Public Class Trakttv_Data
     End Function
 
     Sub LoadSettings_Movie()
-        ConfigScrapeOptions_Movie.bMainRating = clsAdvancedSettings.GetBooleanSetting("DoRating", True)
-        _SpecialSettings_Movie.TrakttvUserName = clsAdvancedSettings.GetSetting("Username", String.Empty, , Enums.ContentType.Movie)
-        _SpecialSettings_Movie.TrakttvPassword = clsAdvancedSettings.GetSetting("Password", String.Empty, , Enums.ContentType.Movie)
-        _SpecialSettings_Movie.UsePersonalRatings = clsAdvancedSettings.GetBooleanSetting("UsePersonalRatings", False, , Enums.ContentType.Movie)
+        ConfigScrapeOptions_Movie.bMainRating = AdvancedSettings.GetBooleanSetting("DoRating", True)
+        _SpecialSettings_Movie.TrakttvUserName = AdvancedSettings.GetSetting("Username", String.Empty, , Enums.ContentType.Movie)
+        _SpecialSettings_Movie.TrakttvPassword = AdvancedSettings.GetSetting("Password", String.Empty, , Enums.ContentType.Movie)
+        _SpecialSettings_Movie.UsePersonalRatings = AdvancedSettings.GetBooleanSetting("UsePersonalRatings", False, , Enums.ContentType.Movie)
     End Sub
 
     Sub LoadSettings_TV()
-        ConfigScrapeOptions_TV.bEpisodeRating = clsAdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.ContentType.TVEpisode)
-        ConfigScrapeOptions_TV.bMainRating = clsAdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.ContentType.TVShow)
-        _SpecialSettings_TV.TrakttvUserName = clsAdvancedSettings.GetSetting("Username", String.Empty, , Enums.ContentType.TV)
-        _SpecialSettings_TV.TrakttvPassword = clsAdvancedSettings.GetSetting("Password", String.Empty, , Enums.ContentType.TV)
-        _SpecialSettings_TV.UsePersonalRatings = clsAdvancedSettings.GetBooleanSetting("UsePersonalRatings", False, , Enums.ContentType.TV)
+        ConfigScrapeOptions_TV.bEpisodeRating = AdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.ContentType.TVEpisode)
+        ConfigScrapeOptions_TV.bMainRating = AdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.ContentType.TVShow)
+        _SpecialSettings_TV.TrakttvUserName = AdvancedSettings.GetSetting("Username", String.Empty, , Enums.ContentType.TV)
+        _SpecialSettings_TV.TrakttvPassword = AdvancedSettings.GetSetting("Password", String.Empty, , Enums.ContentType.TV)
+        _SpecialSettings_TV.UsePersonalRatings = AdvancedSettings.GetBooleanSetting("UsePersonalRatings", False, , Enums.ContentType.TV)
     End Sub
 
     Sub SaveSettings_Movie()
-        Using settings = New clsAdvancedSettings()
+        Using settings = New AdvancedSettings()
             settings.SetBooleanSetting("DoRating", ConfigScrapeOptions_Movie.bMainRating, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("UsePersonalRatings", _SpecialSettings_Movie.UsePersonalRatings, , , Enums.ContentType.Movie)
             settings.SetSetting("Username", _setup_Movie.txtTraktUser.Text, , , Enums.ContentType.Movie)
@@ -222,7 +222,7 @@ Public Class Trakttv_Data
     End Sub
 
     Sub SaveSettings_TV()
-        Using settings = New clsAdvancedSettings()
+        Using settings = New AdvancedSettings()
             settings.SetBooleanSetting("DoRating", ConfigScrapeOptions_TV.bEpisodeRating, , , Enums.ContentType.TVEpisode)
             settings.SetBooleanSetting("DoRating", ConfigScrapeOptions_TV.bMainRating, , , Enums.ContentType.TVShow)
             settings.SetBooleanSetting("UsePersonalRatings", _SpecialSettings_TV.UsePersonalRatings, , , Enums.ContentType.TV)
