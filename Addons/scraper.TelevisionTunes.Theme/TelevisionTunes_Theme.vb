@@ -171,21 +171,21 @@ Public Class TelevisionTunes_Theme
     End Function
 
     Sub LoadSettings_Movie()
-        ConfigScrapeModifier_Movie.MainTheme = clsAdvancedSettings.GetBooleanSetting("DoTheme", True, , Enums.ContentType.Movie)
+        ConfigScrapeModifier_Movie.MainTheme = AdvancedSettings.GetBooleanSetting("DoTheme", True, , Enums.ContentType.Movie)
     End Sub
 
     Sub LoadSettings_TV()
-        ConfigScrapeModifier_TV.MainTheme = clsAdvancedSettings.GetBooleanSetting("DoTheme", True, , Enums.ContentType.TV)
+        ConfigScrapeModifier_TV.MainTheme = AdvancedSettings.GetBooleanSetting("DoTheme", True, , Enums.ContentType.TV)
     End Sub
 
     Sub SaveSettings_Movie()
-        Using settings = New clsAdvancedSettings()
+        Using settings = New AdvancedSettings()
             settings.SetBooleanSetting("DoTheme", ConfigScrapeModifier_Movie.MainTheme, , , Enums.ContentType.Movie)
         End Using
     End Sub
 
     Sub SaveSettings_TV()
-        Using settings = New clsAdvancedSettings()
+        Using settings = New AdvancedSettings()
             settings.SetBooleanSetting("DoTheme", ConfigScrapeModifier_TV.MainTheme, , , Enums.ContentType.TV)
         End Using
     End Sub

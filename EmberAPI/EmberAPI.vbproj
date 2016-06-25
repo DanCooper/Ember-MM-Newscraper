@@ -169,7 +169,7 @@
     <Import Include="System.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="clsAdvancedSettings.vb" />
+    <Compile Include="clsAPIAdvancedSettings.vb" />
     <Compile Include="clsAPIApple.vb" />
     <Compile Include="clsAPICommandLine.vb" />
     <Compile Include="clsAPIFFmpeg.vb" />
@@ -516,6 +516,13 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="DB\MyVideosDBSQL_v37_Patch.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="DB\MyVideosDBSQL_v39.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="DB\MyVideosDBSQL_v38_Patch.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

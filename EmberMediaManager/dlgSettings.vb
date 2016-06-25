@@ -2738,7 +2738,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub FillMovieSetScraperTitleRenamer()
-        For Each sett As AdvancedSettingsSetting In clsAdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MovieSetTitleRenamer:"))
+        For Each sett As AdvancedSettingsSetting In AdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MovieSetTitleRenamer:"))
             Dim i As Integer = dgvMovieSetScraperTitleRenamer.Rows.Add(New Object() {sett.Name.Substring(21), sett.Value})
             If Not sett.DefaultValue = String.Empty Then
                 dgvMovieSetScraperTitleRenamer.Rows(i).Tag = True
@@ -2753,11 +2753,11 @@ Public Class dlgSettings
 
     Private Sub SaveMovieSetScraperTitleRenamer()
         Dim deleteitem As New List(Of String)
-        For Each sett As AdvancedSettingsSetting In clsAdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MovieSetTitleRenamer:"))
+        For Each sett As AdvancedSettingsSetting In AdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MovieSetTitleRenamer:"))
             deleteitem.Add(sett.Name)
         Next
 
-        Using settings = New clsAdvancedSettings()
+        Using settings = New AdvancedSettings()
             For Each s As String In deleteitem
                 settings.CleanSetting(s, "*EmberAPP")
             Next
@@ -6632,6 +6632,10 @@ Public Class dlgSettings
         Dim strRuntime As String = Master.eLang.GetString(396, "Runtime")
         lblMovieScraperGlobalRuntime.Text = strRuntime
         lblTVScraperGlobalRuntime.Text = strRuntime
+
+        'Save extended Collection information to NFO (Kodi 16.0 "Jarvis" and newer)
+        Dim strSaveExtended As String = Master.eLang.GetString(1075, "Save extended Collection information to NFO (Kodi 16.0 ""Jarvis"" and newer)")
+        chkMovieScraperCollectionsExtendedInfo.Text = strSaveExtended
 
         'Scraper Fields - Global
         Dim strScraperGlobal As String = Master.eLang.GetString(577, "Scraper Fields - Global")

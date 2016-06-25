@@ -176,7 +176,7 @@ Public Class frmSettingsHolder
             Dim oldHost As KodiInterface.Host = HostList.FirstOrDefault(Function(f) f.Label = lbHosts.SelectedItem.ToString)
             If oldHost IsNot Nothing Then
                 Dim dlgNew As New dlgHost(oldHost)
-                If dlgNew.ShowDialog = Windows.Forms.DialogResult.OK Then
+                If dlgNew.ShowDialog = DialogResult.OK Then
                     oldHost = dlgNew.Result
                     ReloadKodiHosts()
                 End If

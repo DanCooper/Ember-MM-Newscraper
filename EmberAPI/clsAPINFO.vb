@@ -168,7 +168,7 @@ Public Class NFO
                 DBMovie.Movie.Sets.Clear()
                 For Each movieset In scrapedmovie.Sets
                     If Not String.IsNullOrEmpty(movieset.Title) Then
-                        For Each sett As AdvancedSettingsSetting In clsAdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MovieSetTitleRenamer:"))
+                        For Each sett As AdvancedSettingsSetting In AdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MovieSetTitleRenamer:"))
                             movieset.Title = movieset.Title.Replace(sett.Name.Substring(21), sett.Value)
                         Next
                     End If
@@ -438,7 +438,7 @@ Public Class NFO
         Next
 
         'set Title
-        For Each sett As AdvancedSettingsSetting In clsAdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MovieSetTitleRenamer:"))
+        For Each sett As AdvancedSettingsSetting In AdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MovieSetTitleRenamer:"))
             DBMovieSet.MovieSet.Title = DBMovieSet.MovieSet.Title.Replace(sett.Name.Substring(21), sett.Value)
         Next
 

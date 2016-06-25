@@ -153,13 +153,13 @@ Public Class VLCPlayer
     End Function
 
     Sub LoadSettings()
-        _MySettings.UseAsAudioPlayer = clsAdvancedSettings.GetBooleanSetting("UseAsAudioPlayer", False)
-        _MySettings.UseAsVideoPlayer = clsAdvancedSettings.GetBooleanSetting("UseAsVideoPlayer", False)
-        _MySettings.VLCPath = clsAdvancedSettings.GetSetting("VLCPath", Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "VideoLAN\VLC"))
+        _MySettings.UseAsAudioPlayer = AdvancedSettings.GetBooleanSetting("UseAsAudioPlayer", False)
+        _MySettings.UseAsVideoPlayer = AdvancedSettings.GetBooleanSetting("UseAsVideoPlayer", False)
+        _MySettings.VLCPath = AdvancedSettings.GetSetting("VLCPath", Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "VideoLAN\VLC"))
     End Sub
 
     Sub SaveSettings()
-        Using settings = New clsAdvancedSettings()
+        Using settings = New AdvancedSettings()
             settings.SetBooleanSetting("UseAsAudioPlayer", _MySettings.UseAsAudioPlayer)
             settings.SetBooleanSetting("UseAsVideoPlayer", _MySettings.UseAsVideoPlayer)
             settings.SetSetting("VLCPath", _MySettings.VLCPath)

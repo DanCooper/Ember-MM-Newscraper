@@ -133,7 +133,7 @@ Public Class IMDB_Image
     End Function
 
     Sub LoadSettings()
-        ConfigModifier.MainPoster = clsAdvancedSettings.GetBooleanSetting("DoPoster", True)
+        ConfigModifier.MainPoster = AdvancedSettings.GetBooleanSetting("DoPoster", True)
     End Sub
 
     Function Scraper(ByRef DBMovie As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_Movie.Scraper
@@ -147,7 +147,7 @@ Public Class IMDB_Image
     End Function
 
     Sub SaveSettings()
-        Using settings = New clsAdvancedSettings()
+        Using settings = New AdvancedSettings()
             settings.SetBooleanSetting("DoPoster", ConfigModifier.MainPoster)
         End Using
     End Sub

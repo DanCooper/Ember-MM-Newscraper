@@ -137,20 +137,20 @@ Public Class FileManagerExternalModule
 
     Public Sub LoadSettings()
         eSettings.ModuleSettings.Clear()
-        Dim eMovies As List(Of AdvancedSettingsComplexSettingsTableItem) = clsAdvancedSettings.GetComplexSetting("MoviePaths")
+        Dim eMovies As List(Of AdvancedSettingsComplexSettingsTableItem) = AdvancedSettings.GetComplexSetting("MoviePaths")
         If eMovies IsNot Nothing Then
             For Each sett In eMovies
                 eSettings.ModuleSettings.Add(New SettingItem With {.Name = sett.Name, .FolderPath = sett.Value, .Type = Enums.ContentType.Movie})
             Next
         End If
-        Dim eShows As List(Of AdvancedSettingsComplexSettingsTableItem) = clsAdvancedSettings.GetComplexSetting("ShowPaths")
+        Dim eShows As List(Of AdvancedSettingsComplexSettingsTableItem) = AdvancedSettings.GetComplexSetting("ShowPaths")
         If eShows IsNot Nothing Then
             For Each sett In eShows
                 eSettings.ModuleSettings.Add(New SettingItem With {.Name = sett.Name, .FolderPath = sett.Value, .Type = Enums.ContentType.TVShow})
             Next
         End If
-        _MySettings.TeraCopy = clsAdvancedSettings.GetBooleanSetting("TeraCopy", False)
-        _MySettings.TeraCopyPath = clsAdvancedSettings.GetSetting("TeraCopyPath", String.Empty)
+        _MySettings.TeraCopy = AdvancedSettings.GetBooleanSetting("TeraCopy", False)
+        _MySettings.TeraCopyPath = AdvancedSettings.GetSetting("TeraCopyPath", String.Empty)
     End Sub
 
     Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
@@ -158,7 +158,7 @@ Public Class FileManagerExternalModule
     End Function
 
     Public Sub SaveSettings()
-        Using settings = New clsAdvancedSettings()
+        Using settings = New AdvancedSettings()
             settings.SetBooleanSetting("TeraCopy", _MySettings.TeraCopy)
             settings.SetSetting("TeraCopyPath", _MySettings.TeraCopyPath)
 

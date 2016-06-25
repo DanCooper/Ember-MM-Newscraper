@@ -314,33 +314,33 @@ Public Class TMDB_Image
     End Function
 
     Sub LoadSettings_Movie()
-        strPrivateAPIKey = clsAdvancedSettings.GetSetting("APIKey", "", , Enums.ContentType.Movie)
+        strPrivateAPIKey = AdvancedSettings.GetSetting("APIKey", "", , Enums.ContentType.Movie)
         _SpecialSettings_Movie.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
 
-        ConfigModifier_Movie.MainPoster = clsAdvancedSettings.GetBooleanSetting("DoPoster", True, , Enums.ContentType.Movie)
-        ConfigModifier_Movie.MainFanart = clsAdvancedSettings.GetBooleanSetting("DoFanart", True, , Enums.ContentType.Movie)
+        ConfigModifier_Movie.MainPoster = AdvancedSettings.GetBooleanSetting("DoPoster", True, , Enums.ContentType.Movie)
+        ConfigModifier_Movie.MainFanart = AdvancedSettings.GetBooleanSetting("DoFanart", True, , Enums.ContentType.Movie)
         ConfigModifier_Movie.MainExtrafanarts = ConfigModifier_Movie.MainFanart
         ConfigModifier_Movie.MainExtrathumbs = ConfigModifier_Movie.MainFanart
     End Sub
 
     Sub LoadSettings_MovieSet()
-        strPrivateAPIKey = clsAdvancedSettings.GetSetting("APIKey", "", , Enums.ContentType.MovieSet)
+        strPrivateAPIKey = AdvancedSettings.GetSetting("APIKey", "", , Enums.ContentType.MovieSet)
         _SpecialSettings_MovieSet.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
 
-        ConfigModifier_MovieSet.MainPoster = clsAdvancedSettings.GetBooleanSetting("DoPoster", True, , Enums.ContentType.MovieSet)
-        ConfigModifier_MovieSet.MainFanart = clsAdvancedSettings.GetBooleanSetting("DoFanart", True, , Enums.ContentType.MovieSet)
+        ConfigModifier_MovieSet.MainPoster = AdvancedSettings.GetBooleanSetting("DoPoster", True, , Enums.ContentType.MovieSet)
+        ConfigModifier_MovieSet.MainFanart = AdvancedSettings.GetBooleanSetting("DoFanart", True, , Enums.ContentType.MovieSet)
         ConfigModifier_MovieSet.MainExtrafanarts = ConfigModifier_MovieSet.MainFanart
         ConfigModifier_MovieSet.MainExtrathumbs = ConfigModifier_MovieSet.MainFanart
     End Sub
 
     Sub LoadSettings_TV()
-        strPrivateAPIKey = clsAdvancedSettings.GetSetting("APIKey", "", , Enums.ContentType.TV)
+        strPrivateAPIKey = AdvancedSettings.GetSetting("APIKey", "", , Enums.ContentType.TV)
         _SpecialSettings_TV.APIKey = If(String.IsNullOrEmpty(strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", strPrivateAPIKey)
 
-        ConfigModifier_TV.EpisodePoster = clsAdvancedSettings.GetBooleanSetting("DoEpisodePoster", True, , Enums.ContentType.TV)
-        ConfigModifier_TV.SeasonPoster = clsAdvancedSettings.GetBooleanSetting("DoSeasonPoster", True, , Enums.ContentType.TV)
-        ConfigModifier_TV.MainFanart = clsAdvancedSettings.GetBooleanSetting("DoShowFanart", True, , Enums.ContentType.TV)
-        ConfigModifier_TV.MainPoster = clsAdvancedSettings.GetBooleanSetting("DoShowPoster", True, , Enums.ContentType.TV)
+        ConfigModifier_TV.EpisodePoster = AdvancedSettings.GetBooleanSetting("DoEpisodePoster", True, , Enums.ContentType.TV)
+        ConfigModifier_TV.SeasonPoster = AdvancedSettings.GetBooleanSetting("DoSeasonPoster", True, , Enums.ContentType.TV)
+        ConfigModifier_TV.MainFanart = AdvancedSettings.GetBooleanSetting("DoShowFanart", True, , Enums.ContentType.TV)
+        ConfigModifier_TV.MainPoster = AdvancedSettings.GetBooleanSetting("DoShowPoster", True, , Enums.ContentType.TV)
         ConfigModifier_TV.MainExtrafanarts = ConfigModifier_TV.MainFanart
     End Sub
 
@@ -440,7 +440,7 @@ Public Class TMDB_Image
     End Function
 
     Sub SaveSettings_Movie()
-        Using settings = New clsAdvancedSettings()
+        Using settings = New AdvancedSettings()
             settings.SetBooleanSetting("DoPoster", ConfigModifier_Movie.MainPoster, , , Enums.ContentType.Movie)
             settings.SetBooleanSetting("DoFanart", ConfigModifier_Movie.MainFanart, , , Enums.ContentType.Movie)
 
@@ -449,7 +449,7 @@ Public Class TMDB_Image
     End Sub
 
     Sub SaveSettings_MovieSet()
-        Using settings = New clsAdvancedSettings()
+        Using settings = New AdvancedSettings()
             settings.SetBooleanSetting("DoPoster", ConfigModifier_MovieSet.MainPoster, , , Enums.ContentType.MovieSet)
             settings.SetBooleanSetting("DoFanart", ConfigModifier_MovieSet.MainFanart, , , Enums.ContentType.MovieSet)
 
@@ -458,7 +458,7 @@ Public Class TMDB_Image
     End Sub
 
     Sub SaveSettings_TV()
-        Using settings = New clsAdvancedSettings()
+        Using settings = New AdvancedSettings()
             settings.SetBooleanSetting("DoEpisodePoster", ConfigModifier_TV.EpisodePoster, , , Enums.ContentType.TV)
             settings.SetBooleanSetting("DoSeasonPoster", ConfigModifier_TV.SeasonPoster, , , Enums.ContentType.TV)
             settings.SetBooleanSetting("DoShowFanart", ConfigModifier_TV.MainFanart, , , Enums.ContentType.TV)

@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<CommandFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <transaction name="MyVideosDBSQL_v38_to_v39">
+    <command type="DB">
+      <description>add field FilePath to view episodelist</description>
+      <execute>
+        DROP VIEW episodelist;
+
+        CREATE VIEW episodelist
+        AS
+        SELECT
+        episode.*,
+        files.strFilename AS strFilePath,
+        source.strName AS Source,
+        fanart.url AS FanartPath,
+        poster.url AS PosterPath,
+        GROUP_CONCAT(DISTINCT credits.strActor) AS Credits,
+        GROUP_CONCAT(DISTINCT directors.strActor) AS Director,
+        CASE WHEN episode.idFile IS -1 THEN 1 ELSE 0 END AS Missing
+        FROM
+        episode
+        LEFT OUTER JOIN files ON (files.idFile = episode.idFile)
+        LEFT OUTER JOIN tvshowsource AS source ON (source.idSource = episode.idSource)
+        LEFT OUTER JOIN art AS fanart ON (fanart.media_id = episode.idEpisode)
+        AND (fanart.media_type = 'episode')
+        AND (fanart.type = 'fanart')
+        LEFT OUTER JOIN art AS poster ON (poster.media_id = episode.idEpisode)
+        AND (poster.media_type = 'episode')
+        AND (poster.type = 'thumb')
+        LEFT OUTER JOIN writerlinkepisode AS writerlink ON (writerlink.idEpisode = episode.idEpisode)
+        LEFT OUTER JOIN actors AS credits ON (credits.idActor = writerlink.idWriter)
+        LEFT OUTER JOIN directorlinkepisode AS directorlink ON (directorlink.idEpisode = episode.idEpisode)
+        LEFT OUTER JOIN actors AS directors ON (directors.idActor = directorlink.idDirector)
+        GROUP BY episode.idEpisode;
+      </execute>
+    </command>
+  </transaction>
+  <noTransaction type="">
+  </noTransaction>
+<!-- 
+  <noTransaction type="DB">
+    <description>nd1</description>
+    <execute>ne1</execute>
+  </noTransaction>
+-->
+</CommandFile>

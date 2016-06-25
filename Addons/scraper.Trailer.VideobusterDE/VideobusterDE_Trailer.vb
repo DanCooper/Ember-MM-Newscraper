@@ -116,7 +116,7 @@ Public Class VideobusterDE_Trailer
 
     Sub LoadSettings()
 
-        ConfigScrapeModifiers.MainTrailer = clsAdvancedSettings.GetBooleanSetting("DoTrailer", True)
+        ConfigScrapeModifiers.MainTrailer = AdvancedSettings.GetBooleanSetting("DoTrailer", True)
 
     End Sub
 
@@ -142,7 +142,7 @@ Public Class VideobusterDE_Trailer
     End Function
 
     Sub SaveSettings()
-        Using settings = New clsAdvancedSettings()
+        Using settings = New AdvancedSettings()
             settings.SetBooleanSetting("DoTrailer", ConfigScrapeModifiers.MainTrailer)
         End Using
     End Sub

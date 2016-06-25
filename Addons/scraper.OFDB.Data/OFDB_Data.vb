@@ -127,15 +127,15 @@ Public Class OFDB_Data
     End Function
 
     Sub LoadSettings()
-        ConfigScrapeOptions.bMainTitle = clsAdvancedSettings.GetBooleanSetting("DoTitle", True)
-        ConfigScrapeOptions.bMainOutline = clsAdvancedSettings.GetBooleanSetting("DoOutline", True)
-        ConfigScrapeOptions.bMainPlot = clsAdvancedSettings.GetBooleanSetting("DoPlot", True)
-        ConfigScrapeOptions.bMainGenres = clsAdvancedSettings.GetBooleanSetting("DoGenres", True)
-        ConfigScrapeOptions.bMainCertifications = clsAdvancedSettings.GetBooleanSetting("DoCert", False)
+        ConfigScrapeOptions.bMainTitle = AdvancedSettings.GetBooleanSetting("DoTitle", True)
+        ConfigScrapeOptions.bMainOutline = AdvancedSettings.GetBooleanSetting("DoOutline", True)
+        ConfigScrapeOptions.bMainPlot = AdvancedSettings.GetBooleanSetting("DoPlot", True)
+        ConfigScrapeOptions.bMainGenres = AdvancedSettings.GetBooleanSetting("DoGenres", True)
+        ConfigScrapeOptions.bMainCertifications = AdvancedSettings.GetBooleanSetting("DoCert", False)
     End Sub
 
     Sub SaveSettings()
-        Using settings = New clsAdvancedSettings()
+        Using settings = New AdvancedSettings()
             settings.SetBooleanSetting("DoTitle", ConfigScrapeOptions.bMainTitle)
             settings.SetBooleanSetting("DoOutline", ConfigScrapeOptions.bMainOutline)
             settings.SetBooleanSetting("DoPlot", ConfigScrapeOptions.bMainPlot)

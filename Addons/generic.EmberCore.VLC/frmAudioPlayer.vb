@@ -52,7 +52,7 @@ Public Class frmAudioPlayer
     Public Sub New()
 
         ' This call is required by the designer.
-        Me.myVlcControl.VlcLibDirectory = New DirectoryInfo(clsAdvancedSettings.GetSetting("VLCPath", String.Empty, "generic.EmberCore.VLCPlayer"))
+        Me.myVlcControl.VlcLibDirectory = New DirectoryInfo(AdvancedSettings.GetSetting("VLCPath", String.Empty, "generic.EmberCore.VLCPlayer"))
         InitializeComponent()
         Me.SetUp()
         ' Add any initialization after the InitializeComponent() call.
@@ -86,7 +86,7 @@ Public Class frmAudioPlayer
     Private Sub OnVlcControlNeedLibDirectory(sender As Object, e As Vlc.DotNet.Forms.VlcLibDirectoryNeededEventArgs) Handles myVlcControl.VlcLibDirectoryNeeded
         Using fbdDialog As New FolderBrowserDialog()
             fbdDialog.Description = Master.eLang.GetString(1482, "Select VLC Path")
-            fbdDialog.SelectedPath = clsAdvancedSettings.GetSetting("VLCPath", String.Empty)
+            fbdDialog.SelectedPath = AdvancedSettings.GetSetting("VLCPath", String.Empty)
 
             If fbdDialog.ShowDialog() = DialogResult.OK Then
                 myVlcControl.VlcLibDirectory = New DirectoryInfo(fbdDialog.SelectedPath)

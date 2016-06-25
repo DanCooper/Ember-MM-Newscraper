@@ -133,7 +133,7 @@ Public Class genericMediaListEditor
     End Sub
 
     Sub Enable()
-        Dim CustomTabs As List(Of AdvancedSettingsComplexSettingsTableItem) = clsAdvancedSettings.GetComplexSetting("CustomTabs", "*EmberAPP")
+        Dim CustomTabs As List(Of AdvancedSettingsComplexSettingsTableItem) = AdvancedSettings.GetComplexSetting("CustomTabs", "*EmberAPP")
         If CustomTabs IsNot Nothing Then
             Dim tabc As New TabControl
             Dim NewCustomTabs As New List(Of TabPage)

@@ -84,7 +84,7 @@ Namespace Apple
 
             Dim BaseURL As String = "http://www.google.ch/search?q=apple+trailer+"
             Dim DownloadURL As String = "http://trailers.apple.com/trailers/"
-            Dim prevQual As String = clsAdvancedSettings.GetSetting("TrailerPrefQual", "1080p", "scraper.Apple.Trailer")
+            Dim prevQual As String = AdvancedSettings.GetSetting("TrailerPrefQual", "1080p", "scraper.Apple.Trailer")
             Dim urlHD As String = "/includes/extralarge.html"
             Dim urlHQ As String = "/includes/large.html"
 

@@ -628,12 +628,30 @@ Public Class dlgImgSelect
         If pnlImgSelectMain.Controls.Count > 0 Then
             For iIndex As Integer = 0 To pnlListImage_Panel.Count - 1
                 If pnlListImage_Panel(iIndex) IsNot Nothing Then
-                    If lblListImage_DiscType(iIndex) IsNot Nothing AndAlso pnlListImage_Panel(iIndex).Contains(lblListImage_DiscType(iIndex)) Then pnlListImage_Panel(iIndex).Controls.Remove(lblListImage_DiscType(iIndex))
-                    If lblListImage_Language(iIndex) IsNot Nothing AndAlso pnlListImage_Panel(iIndex).Contains(lblListImage_Language(iIndex)) Then pnlListImage_Panel(iIndex).Controls.Remove(lblListImage_Language(iIndex))
-                    If lblListImageList_Resolution(iIndex) IsNot Nothing AndAlso pnlListImage_Panel(iIndex).Contains(lblListImageList_Resolution(iIndex)) Then pnlListImage_Panel(iIndex).Controls.Remove(lblListImageList_Resolution(iIndex))
-                    If lblListImage_Scraper(iIndex) IsNot Nothing AndAlso pnlListImage_Panel(iIndex).Contains(lblListImage_Scraper(iIndex)) Then pnlListImage_Panel(iIndex).Controls.Remove(lblListImage_Scraper(iIndex))
-                    If pbListImage_Image(iIndex) IsNot Nothing AndAlso pnlListImage_Panel(iIndex).Contains(pbListImage_Image(iIndex)) Then pnlListImage_Panel(iIndex).Controls.Remove(pbListImage_Image(iIndex))
-                    If pnlImgSelectMain.Contains(pnlListImage_Panel(iIndex)) Then pnlImgSelectMain.Controls.Remove(pnlListImage_Panel(iIndex))
+                    If lblListImage_DiscType(iIndex) IsNot Nothing AndAlso pnlListImage_Panel(iIndex).Contains(lblListImage_DiscType(iIndex)) Then
+                        lblListImage_DiscType(iIndex).Dispose()
+                        pnlListImage_Panel(iIndex).Controls.Remove(lblListImage_DiscType(iIndex))
+                    End If
+                    If lblListImage_Language(iIndex) IsNot Nothing AndAlso pnlListImage_Panel(iIndex).Contains(lblListImage_Language(iIndex)) Then
+                        lblListImage_Language(iIndex).Dispose()
+                        pnlListImage_Panel(iIndex).Controls.Remove(lblListImage_Language(iIndex))
+                    End If
+                    If lblListImageList_Resolution(iIndex) IsNot Nothing AndAlso pnlListImage_Panel(iIndex).Contains(lblListImageList_Resolution(iIndex)) Then
+                        lblListImageList_Resolution(iIndex).Dispose()
+                        pnlListImage_Panel(iIndex).Controls.Remove(lblListImageList_Resolution(iIndex))
+                    End If
+                    If lblListImage_Scraper(iIndex) IsNot Nothing AndAlso pnlListImage_Panel(iIndex).Contains(lblListImage_Scraper(iIndex)) Then
+                        lblListImage_Scraper(iIndex).Dispose()
+                        pnlListImage_Panel(iIndex).Controls.Remove(lblListImage_Scraper(iIndex))
+                    End If
+                    If pbListImage_Image(iIndex) IsNot Nothing AndAlso pnlListImage_Panel(iIndex).Contains(pbListImage_Image(iIndex)) Then
+                        pbListImage_Image(iIndex).Dispose()
+                        pnlListImage_Panel(iIndex).Controls.Remove(pbListImage_Image(iIndex))
+                    End If
+                    If pnlImgSelectMain.Contains(pnlListImage_Panel(iIndex)) Then
+                        pnlListImage_Panel(iIndex).Dispose()
+                        pnlImgSelectMain.Controls.Remove(pnlListImage_Panel(iIndex))
+                    End If
                 End If
             Next
         End If
@@ -648,9 +666,18 @@ Public Class dlgImgSelect
         If pnlSubImages.Controls.Count > 0 Then
             For iIndex As Integer = 0 To pnlSubImage_Panel.Count - 1
                 If pnlSubImage_Panel(iIndex) IsNot Nothing Then
-                    If lblSubImage_Resolution(iIndex) IsNot Nothing AndAlso pnlSubImage_Panel(iIndex).Contains(lblSubImage_Resolution(iIndex)) Then pnlSubImage_Panel(iIndex).Controls.Remove(lblSubImage_Resolution(iIndex))
-                    If pbSubImage_Image(iIndex) IsNot Nothing AndAlso pnlSubImage_Panel(iIndex).Contains(pbSubImage_Image(iIndex)) Then pnlSubImage_Panel(iIndex).Controls.Remove(pbSubImage_Image(iIndex))
-                    If pnlSubImages.Contains(pnlSubImage_Panel(iIndex)) Then pnlSubImages.Controls.Remove(pnlSubImage_Panel(iIndex))
+                    If lblSubImage_Resolution(iIndex) IsNot Nothing AndAlso pnlSubImage_Panel(iIndex).Contains(lblSubImage_Resolution(iIndex)) Then
+                        lblSubImage_Resolution(iIndex).Dispose()
+                        pnlSubImage_Panel(iIndex).Controls.Remove(lblSubImage_Resolution(iIndex))
+                    End If
+                    If pbSubImage_Image(iIndex) IsNot Nothing AndAlso pnlSubImage_Panel(iIndex).Contains(pbSubImage_Image(iIndex)) Then
+                        pbSubImage_Image(iIndex).Dispose()
+                        pnlSubImage_Panel(iIndex).Controls.Remove(pbSubImage_Image(iIndex))
+                    End If
+                    If pnlSubImages.Contains(pnlSubImage_Panel(iIndex)) Then
+                        pnlSubImage_Panel(iIndex).Dispose()
+                        pnlSubImages.Controls.Remove(pnlSubImage_Panel(iIndex))
+                    End If
                 End If
             Next
         End If

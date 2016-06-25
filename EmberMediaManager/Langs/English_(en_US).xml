@@ -1163,8 +1163,8 @@
   <string id="1071">Watched State</string>
   <string id="1072">Mark as Watched</string>
   <string id="1073">Mark as Unwatched</string>
-  <string id="1074"></string>
-  <string id="1075"></string>
+  <string id="1074">Add Custom Kodi Source</string>
+  <string id="1075">Save extended Collection information to NFO (Kodi 16.0 "Jarvis" and newer)</string>
   <string id="1076"></string>
   <string id="1077">Select the folder where you wish to store your themes...</string>
   <string id="1078">The theme could not be played. This could due be you don't have the proper player to play the theme type.</string>

@@ -157,10 +157,10 @@ Public Class frmSettingsHolder
 
     Public Sub SaveChanges()
         Dim deleteitem As New List(Of String)
-        For Each sett As AdvancedSettingsSetting In clsAdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("CustomTabs:"))
+        For Each sett As AdvancedSettingsSetting In AdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("CustomTabs:"))
             deleteitem.Add(sett.Name)
         Next
-        Using settings = New clsAdvancedSettings()
+        Using settings = New AdvancedSettings()
             For Each s As String In deleteitem
                 settings.CleanSetting(s, "*EmberAPP")
             Next
@@ -179,7 +179,7 @@ Public Class frmSettingsHolder
 
     Private Sub LoadCustomTabs()
         dgvCustomTab.Rows.Clear()
-        Dim CustomTabs As List(Of AdvancedSettingsComplexSettingsTableItem) = clsAdvancedSettings.GetComplexSetting("CustomTabs", "*EmberAPP")
+        Dim CustomTabs As List(Of AdvancedSettingsComplexSettingsTableItem) = AdvancedSettings.GetComplexSetting("CustomTabs", "*EmberAPP")
         If CustomTabs IsNot Nothing Then
             For Each sett In CustomTabs
                 If colCustomTabList.Items.Contains(sett.Value) Then

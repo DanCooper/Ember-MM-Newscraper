@@ -22,7 +22,7 @@ Imports System.IO
 Imports NLog
 Imports System.Xml.Serialization
 
-Public Class clsAdvancedSettings
+Public Class AdvancedSettings
     Implements IDisposable
 
 #Region "Fields"
@@ -243,21 +243,21 @@ Public Class clsAdvancedSettings
         End Try
 
         'Add complex settings to general advancedsettings.xml if those settings don't exist
-        Dim formatconversions As List(Of AdvancedSettingsComplexSettingsTableItem) = clsAdvancedSettings.GetComplexSetting("VideoFormatConverts", "*EmberAPP")
+        Dim formatconversions As List(Of AdvancedSettingsComplexSettingsTableItem) = EmberAPI.AdvancedSettings.GetComplexSetting("VideoFormatConverts", "*EmberAPP")
         If formatconversions Is Nothing Then
-            Using settings = New clsAdvancedSettings()
+            Using settings = New AdvancedSettings()
                 settings.SetDefaults("VideoFormatConverts")
             End Using
         End If
-        formatconversions = clsAdvancedSettings.GetComplexSetting("AudioFormatConverts", "*EmberAPP")
+        formatconversions = EmberAPI.AdvancedSettings.GetComplexSetting("AudioFormatConverts", "*EmberAPP")
         If formatconversions Is Nothing Then
-            Using settings = New clsAdvancedSettings()
+            Using settings = New AdvancedSettings()
                 settings.SetDefaults("AudioFormatConverts")
             End Using
         End If
-        formatconversions = clsAdvancedSettings.GetComplexSetting("MovieSources", "*EmberAPP")
+        formatconversions = EmberAPI.AdvancedSettings.GetComplexSetting("MovieSources", "*EmberAPP")
         If formatconversions Is Nothing Then
-            Using settings = New clsAdvancedSettings()
+            Using settings = New AdvancedSettings()
                 settings.SetDefaults("MovieSources")
             End Using
         End If
