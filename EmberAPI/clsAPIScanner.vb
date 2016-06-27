@@ -905,7 +905,7 @@ Public Class Scanner
         Dim newSeasonsIndex As New List(Of Integer)
 
         If DBTVShow.EpisodesSpecified OrElse DBTVShow.IDSpecified Then
-            If Not TVShowPaths.ContainsKey(DBTVShow.ShowPath.ToLower) OrElse (DBTVShow.IDSpecified AndAlso Not isNew) Then
+            If (Not TVShowPaths.ContainsKey(DBTVShow.ShowPath.ToLower) AndAlso isNew) OrElse (DBTVShow.IDSpecified AndAlso Not isNew) Then
                 GetFolderContents_TVShow(DBTVShow)
 
                 If DBTVShow.NfoPathSpecified Then
