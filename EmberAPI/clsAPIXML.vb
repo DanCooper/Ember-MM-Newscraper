@@ -479,6 +479,7 @@ Public Class APIXML
         For Each mGenre In GenreXML.Genres
             retGenre.Add(mGenre.Name)
         Next
+        retGenre.Sort()
         Return retGenre.ToArray
     End Function
 
