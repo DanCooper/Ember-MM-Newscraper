@@ -1092,8 +1092,7 @@ Public Class dlgCustomScraper
         chkMainOptionsOriginalTitle.Click,
         chkMainOptionsOutline.Click,
         chkMainOptionsPlot.Click,
-        chkMainOptionsPremiered.Click, _
- _
+        chkMainOptionsPremiered.Click,
         chkMainOptionsRating.Click,
         chkMainOptionsReleaseDate.Click,
         chkMainOptionsRuntime.Click,
