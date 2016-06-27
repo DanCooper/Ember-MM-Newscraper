@@ -7433,8 +7433,11 @@ Public Class frmMain
                     cmnuSeasonEdit.Enabled = Convert.ToInt32(dgvTVSeasons.Item("Season", dgvHTI.RowIndex).Value) >= 0
 
                     'Watched / Unwatched menu
-                    Dim bIsWatched As Boolean = Convert.ToBoolean(dgvTVSeasons.Item("HasWatched", dgvHTI.RowIndex).Value)
+                    Dim bIsWatched As Boolean = False
                     Dim bIsAllSeasons As Boolean = CInt(dgvTVSeasons.Item("Season", dgvHTI.RowIndex).Value) = 999
+                    If Not bIsAllSeasons Then
+                        bIsWatched = Convert.ToBoolean(dgvTVSeasons.Item("HasWatched", dgvHTI.RowIndex).Value)
+                    End If
                     cmnuSeasonUnwatched.Enabled = bIsWatched AndAlso Not bIsAllSeasons
                     cmnuSeasonUnwatched.Visible = bIsWatched AndAlso Not bIsAllSeasons
                     cmnuSeasonWatched.Enabled = Not bIsWatched AndAlso Not bIsAllSeasons
