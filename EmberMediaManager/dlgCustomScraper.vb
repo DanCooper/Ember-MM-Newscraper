@@ -742,6 +742,9 @@ Public Class dlgCustomScraper
                     chkMainModifierAll.Checked = True
                     chkMainOptionsAll.Checked = True
 
+                    rbScrapeType_Selected.Enabled = ModulesManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows.Count > 0
+                    rbScrapeType_Selected.Text = String.Format(String.Concat(Master.eLang.GetString(1076, "Selected"), " ({0})"), ModulesManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows.Count)
+
                 Case Enums.ContentType.MovieSet
                     NameID = "idSet"
                     NameTable = "sets"
@@ -817,6 +820,9 @@ Public Class dlgCustomScraper
                     chkMainModifierAll.Checked = True
                     chkMainOptionsAll.Checked = True
 
+                    rbScrapeType_Selected.Enabled = ModulesManager.Instance.RuntimeObjects.MediaListMovieSets.SelectedRows.Count > 0
+                    rbScrapeType_Selected.Text = String.Format(String.Concat(Master.eLang.GetString(1076, "Selected"), " ({0})"), ModulesManager.Instance.RuntimeObjects.MediaListMovieSets.SelectedRows.Count)
+
                 Case Enums.ContentType.TV
                     NameID = "idShow"
                     NameTable = "tvshow"
@@ -891,6 +897,9 @@ Public Class dlgCustomScraper
                     chkEpisodeOptionsAll.Checked = True
                     chkSeasonModifierAll.Checked = True
                     chkSeasonOptionsAll.Checked = True
+
+                    rbScrapeType_Selected.Enabled = ModulesManager.Instance.RuntimeObjects.MediaListTVShows.SelectedRows.Count > 0
+                    rbScrapeType_Selected.Text = String.Format(String.Concat(Master.eLang.GetString(1076, "Selected"), " ({0})"), ModulesManager.Instance.RuntimeObjects.MediaListTVShows.SelectedRows.Count)
             End Select
         End With
 
@@ -901,12 +910,14 @@ Public Class dlgCustomScraper
                 Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     SQLcount.Read()
                     rbScrapeType_New.Enabled = Convert.ToInt32(SQLcount("ncount")) > 0
+                    rbScrapeType_New.Text = String.Format(String.Concat(Master.eLang.GetString(47, "New"), " ({0})"), Convert.ToInt32(SQLcount("ncount")))
                 End Using
 
                 SQLNewcommand.CommandText = String.Format("SELECT COUNT({0}) AS mcount FROM {1} WHERE mark = 1;", NameID, NameTable)
                 Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                     SQLcount.Read()
                     rbScrapeType_Marked.Enabled = Convert.ToInt32(SQLcount("mcount")) > 0
+                    rbScrapeType_Marked.Text = String.Format(String.Concat(Master.eLang.GetString(48, "Marked"), " ({0})"), Convert.ToInt32(SQLcount("mcount")))
                 End Using
             End Using
         End If
@@ -956,6 +967,17 @@ Public Class dlgCustomScraper
         End Select
     End Sub
 
+    Private Sub rbUpdateModifier_Selected_CheckedChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles rbScrapeType_Selected.CheckedChanged
+        Select Case True
+            Case rbScrapeType_Ask.Checked
+                CustomUpdater.ScrapeType = Enums.ScrapeType.SelectedAsk
+            Case rbScrapeType_Auto.Checked
+                CustomUpdater.ScrapeType = Enums.ScrapeType.SelectedAuto
+            Case rbScrapeType_Skip.Checked
+                CustomUpdater.ScrapeType = Enums.ScrapeType.SelectedSkip
+        End Select
+    End Sub
+
     Private Sub rbUpdate_Ask_CheckedChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles rbScrapeType_Ask.CheckedChanged
         Select Case True
             Case rbScrapeType_All.Checked
@@ -966,6 +988,8 @@ Public Class dlgCustomScraper
                 CustomUpdater.ScrapeType = Enums.ScrapeType.MissingAsk
             Case rbScrapeType_New.Checked
                 CustomUpdater.ScrapeType = Enums.ScrapeType.NewAsk
+            Case rbScrapeType_Selected.Checked
+                CustomUpdater.ScrapeType = Enums.ScrapeType.SelectedAsk
         End Select
     End Sub
 
@@ -979,6 +1003,8 @@ Public Class dlgCustomScraper
                 CustomUpdater.ScrapeType = Enums.ScrapeType.MissingAuto
             Case rbScrapeType_New.Checked
                 CustomUpdater.ScrapeType = Enums.ScrapeType.NewAuto
+            Case rbScrapeType_Selected.Checked
+                CustomUpdater.ScrapeType = Enums.ScrapeType.SelectedAuto
         End Select
     End Sub
 
@@ -992,6 +1018,8 @@ Public Class dlgCustomScraper
                 CustomUpdater.ScrapeType = Enums.ScrapeType.MissingSkip
             Case rbScrapeType_New.Checked
                 CustomUpdater.ScrapeType = Enums.ScrapeType.NewSkip
+            Case rbScrapeType_Selected.Checked
+                CustomUpdater.ScrapeType = Enums.ScrapeType.SelectedSkip
         End Select
     End Sub
 
@@ -1216,6 +1244,7 @@ Public Class dlgCustomScraper
         rbScrapeType_New.Text = Master.eLang.GetString(47, "New")
         rbScrapeType_Ask.Text = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
         rbScrapeType_Auto.Text = Master.eLang.GetString(69, "Automatic (Force Best Match)")
+        rbScrapeType_Selected.Text = Master.eLang.GetString(1076, "Selected")
         rbScrapeType_Skip.Text = Master.eLang.GetString(1041, "Skip (Skip If More Than One Match)")
     End Sub
 

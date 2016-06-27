@@ -183,6 +183,7 @@ Partial Class dlgCustomScraper
         Me.chkSeasonOptionsAired = New System.Windows.Forms.CheckBox()
         Me.chkSeasonOptionsPlot = New System.Windows.Forms.CheckBox()
         Me.chkSeasonOptionsTitle = New System.Windows.Forms.CheckBox()
+        Me.rbScrapeType_Selected = New System.Windows.Forms.RadioButton()
         Me.pnlTop.SuspendLayout()
         Me.tblTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -327,6 +328,7 @@ Partial Class dlgCustomScraper
         Me.tblScrapeType_Filter.Controls.Add(Me.rbScrapeType_Marked, 1, 1)
         Me.tblScrapeType_Filter.Controls.Add(Me.rbScrapeType_New, 0, 1)
         Me.tblScrapeType_Filter.Controls.Add(Me.rbScrapeType_Missing, 1, 0)
+        Me.tblScrapeType_Filter.Controls.Add(Me.rbScrapeType_Selected, 0, 2)
         Me.tblScrapeType_Filter.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblScrapeType_Filter.Location = New System.Drawing.Point(3, 18)
         Me.tblScrapeType_Filter.Name = "tblScrapeType_Filter"
@@ -1685,6 +1687,19 @@ Partial Class dlgCustomScraper
         Me.chkSeasonOptionsTitle.Text = "Title"
         Me.chkSeasonOptionsTitle.UseVisualStyleBackColor = True
         '
+        'rbScrapeType_Selected
+        '
+        Me.rbScrapeType_Selected.AutoSize = True
+        Me.tblScrapeType_Filter.SetColumnSpan(Me.rbScrapeType_Selected, 2)
+        Me.rbScrapeType_Selected.Enabled = False
+        Me.rbScrapeType_Selected.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.rbScrapeType_Selected.Location = New System.Drawing.Point(3, 49)
+        Me.rbScrapeType_Selected.Name = "rbScrapeType_Selected"
+        Me.rbScrapeType_Selected.Size = New System.Drawing.Size(68, 17)
+        Me.rbScrapeType_Selected.TabIndex = 1
+        Me.rbScrapeType_Selected.Text = "Selected"
+        Me.rbScrapeType_Selected.UseVisualStyleBackColor = True
+        '
         'dlgCustomScraper
         '
         Me.AcceptButton = Me.btnOK
@@ -1827,6 +1842,7 @@ Partial Class dlgCustomScraper
     Friend WithEvents chkEpisodeModifierActorThumbs As System.Windows.Forms.CheckBox
     Friend WithEvents chkEpisodeModifierMetaData As System.Windows.Forms.CheckBox
     Friend WithEvents chkSeasonOptionsTitle As System.Windows.Forms.CheckBox
+    Friend WithEvents rbScrapeType_Selected As RadioButton
 
 #End Region 'Methods
 
