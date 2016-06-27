@@ -742,6 +742,8 @@ Public Class dlgCustomScraper
                     chkMainModifierAll.Checked = True
                     chkMainOptionsAll.Checked = True
 
+                    rbScrapeType_Filter.Enabled = ModulesManager.Instance.RuntimeObjects.MediaListMovies.Rows.Count > 0
+                    rbScrapeType_Filter.Text = String.Format(String.Concat(Master.eLang.GetString(624, "Current Filter"), " ({0})"), ModulesManager.Instance.RuntimeObjects.MediaListMovies.Rows.Count)
                     rbScrapeType_Selected.Enabled = ModulesManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows.Count > 0
                     rbScrapeType_Selected.Text = String.Format(String.Concat(Master.eLang.GetString(1076, "Selected"), " ({0})"), ModulesManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows.Count)
 
@@ -820,6 +822,8 @@ Public Class dlgCustomScraper
                     chkMainModifierAll.Checked = True
                     chkMainOptionsAll.Checked = True
 
+                    rbScrapeType_Filter.Enabled = ModulesManager.Instance.RuntimeObjects.MediaListMovieSets.Rows.Count > 0
+                    rbScrapeType_Filter.Text = String.Format(String.Concat(Master.eLang.GetString(624, "Current Filter"), " ({0})"), ModulesManager.Instance.RuntimeObjects.MediaListMovieSets.Rows.Count)
                     rbScrapeType_Selected.Enabled = ModulesManager.Instance.RuntimeObjects.MediaListMovieSets.SelectedRows.Count > 0
                     rbScrapeType_Selected.Text = String.Format(String.Concat(Master.eLang.GetString(1076, "Selected"), " ({0})"), ModulesManager.Instance.RuntimeObjects.MediaListMovieSets.SelectedRows.Count)
 
@@ -898,6 +902,8 @@ Public Class dlgCustomScraper
                     chkSeasonModifierAll.Checked = True
                     chkSeasonOptionsAll.Checked = True
 
+                    rbScrapeType_Filter.Enabled = ModulesManager.Instance.RuntimeObjects.MediaListTVShows.Rows.Count > 0
+                    rbScrapeType_Filter.Text = String.Format(String.Concat(Master.eLang.GetString(624, "Current Filter"), " ({0})"), ModulesManager.Instance.RuntimeObjects.MediaListTVShows.Rows.Count)
                     rbScrapeType_Selected.Enabled = ModulesManager.Instance.RuntimeObjects.MediaListTVShows.SelectedRows.Count > 0
                     rbScrapeType_Selected.Text = String.Format(String.Concat(Master.eLang.GetString(1076, "Selected"), " ({0})"), ModulesManager.Instance.RuntimeObjects.MediaListTVShows.SelectedRows.Count)
             End Select
@@ -931,6 +937,17 @@ Public Class dlgCustomScraper
                 CustomUpdater.ScrapeType = Enums.ScrapeType.AllAuto
             Case rbScrapeType_Skip.Checked
                 CustomUpdater.ScrapeType = Enums.ScrapeType.AllSkip
+        End Select
+    End Sub
+
+    Private Sub rbUpdateModifier_Filter_CheckedChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles rbScrapeType_Filter.CheckedChanged
+        Select Case True
+            Case rbScrapeType_Ask.Checked
+                CustomUpdater.ScrapeType = Enums.ScrapeType.FilterAsk
+            Case rbScrapeType_Auto.Checked
+                CustomUpdater.ScrapeType = Enums.ScrapeType.FilterAuto
+            Case rbScrapeType_Skip.Checked
+                CustomUpdater.ScrapeType = Enums.ScrapeType.FilterSkip
         End Select
     End Sub
 
@@ -982,6 +999,8 @@ Public Class dlgCustomScraper
         Select Case True
             Case rbScrapeType_All.Checked
                 CustomUpdater.ScrapeType = Enums.ScrapeType.AllAsk
+            Case rbScrapeType_Filter.Checked
+                CustomUpdater.ScrapeType = Enums.ScrapeType.FilterAsk
             Case rbScrapeType_Marked.Checked
                 CustomUpdater.ScrapeType = Enums.ScrapeType.MarkedAsk
             Case rbScrapeType_Missing.Checked
@@ -997,6 +1016,8 @@ Public Class dlgCustomScraper
         Select Case True
             Case rbScrapeType_All.Checked
                 CustomUpdater.ScrapeType = Enums.ScrapeType.AllAuto
+            Case rbScrapeType_Filter.Checked
+                CustomUpdater.ScrapeType = Enums.ScrapeType.FilterAuto
             Case rbScrapeType_Marked.Checked
                 CustomUpdater.ScrapeType = Enums.ScrapeType.MarkedAuto
             Case rbScrapeType_Missing.Checked
@@ -1012,6 +1033,8 @@ Public Class dlgCustomScraper
         Select Case True
             Case rbScrapeType_All.Checked
                 CustomUpdater.ScrapeType = Enums.ScrapeType.AllSkip
+            Case rbScrapeType_Filter.Checked
+                CustomUpdater.ScrapeType = Enums.ScrapeType.FilterSkip
             Case rbScrapeType_Marked.Checked
                 CustomUpdater.ScrapeType = Enums.ScrapeType.MarkedSkip
             Case rbScrapeType_Missing.Checked
@@ -1239,6 +1262,7 @@ Public Class dlgCustomScraper
         gbScrapeType_Mode.Text = Master.eLang.GetString(387, "Update Mode")
         lblTopDescription.Text = Master.eLang.GetString(385, "Create a custom scraper")
         lblTopTitle.Text = Text
+        rbScrapeType_Filter.Text = Master.eLang.GetString(624, "Current Filter")
         rbScrapeType_Marked.Text = Master.eLang.GetString(48, "Marked")
         rbScrapeType_Missing.Text = Master.eLang.GetString(40, "Missing Items")
         rbScrapeType_New.Text = Master.eLang.GetString(47, "New")

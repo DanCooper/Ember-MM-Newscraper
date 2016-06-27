@@ -83,6 +83,7 @@ Partial Class dlgCustomScraper
         Me.rbScrapeType_Marked = New System.Windows.Forms.RadioButton()
         Me.rbScrapeType_New = New System.Windows.Forms.RadioButton()
         Me.rbScrapeType_Missing = New System.Windows.Forms.RadioButton()
+        Me.rbScrapeType_Selected = New System.Windows.Forms.RadioButton()
         Me.gbScrapeType_Mode = New System.Windows.Forms.GroupBox()
         Me.tblScrapeType_Mode = New System.Windows.Forms.TableLayoutPanel()
         Me.rbScrapeType_Auto = New System.Windows.Forms.RadioButton()
@@ -183,7 +184,7 @@ Partial Class dlgCustomScraper
         Me.chkSeasonOptionsAired = New System.Windows.Forms.CheckBox()
         Me.chkSeasonOptionsPlot = New System.Windows.Forms.CheckBox()
         Me.chkSeasonOptionsTitle = New System.Windows.Forms.CheckBox()
-        Me.rbScrapeType_Selected = New System.Windows.Forms.RadioButton()
+        Me.rbScrapeType_Filter = New System.Windows.Forms.RadioButton()
         Me.pnlTop.SuspendLayout()
         Me.tblTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -328,7 +329,8 @@ Partial Class dlgCustomScraper
         Me.tblScrapeType_Filter.Controls.Add(Me.rbScrapeType_Marked, 1, 1)
         Me.tblScrapeType_Filter.Controls.Add(Me.rbScrapeType_New, 0, 1)
         Me.tblScrapeType_Filter.Controls.Add(Me.rbScrapeType_Missing, 1, 0)
-        Me.tblScrapeType_Filter.Controls.Add(Me.rbScrapeType_Selected, 0, 2)
+        Me.tblScrapeType_Filter.Controls.Add(Me.rbScrapeType_Selected, 1, 2)
+        Me.tblScrapeType_Filter.Controls.Add(Me.rbScrapeType_Filter, 0, 2)
         Me.tblScrapeType_Filter.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblScrapeType_Filter.Location = New System.Drawing.Point(3, 18)
         Me.tblScrapeType_Filter.Name = "tblScrapeType_Filter"
@@ -344,7 +346,7 @@ Partial Class dlgCustomScraper
         Me.rbScrapeType_Marked.AutoSize = True
         Me.rbScrapeType_Marked.Enabled = False
         Me.rbScrapeType_Marked.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.rbScrapeType_Marked.Location = New System.Drawing.Point(57, 26)
+        Me.rbScrapeType_Marked.Location = New System.Drawing.Point(102, 26)
         Me.rbScrapeType_Marked.Name = "rbScrapeType_Marked"
         Me.rbScrapeType_Marked.Size = New System.Drawing.Size(64, 17)
         Me.rbScrapeType_Marked.TabIndex = 3
@@ -359,7 +361,7 @@ Partial Class dlgCustomScraper
         Me.rbScrapeType_New.Location = New System.Drawing.Point(3, 26)
         Me.rbScrapeType_New.Name = "rbScrapeType_New"
         Me.rbScrapeType_New.Size = New System.Drawing.Size(48, 17)
-        Me.rbScrapeType_New.TabIndex = 1
+        Me.rbScrapeType_New.TabIndex = 2
         Me.rbScrapeType_New.Text = "New"
         Me.rbScrapeType_New.UseVisualStyleBackColor = True
         '
@@ -367,12 +369,25 @@ Partial Class dlgCustomScraper
         '
         Me.rbScrapeType_Missing.AutoSize = True
         Me.rbScrapeType_Missing.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.rbScrapeType_Missing.Location = New System.Drawing.Point(57, 3)
+        Me.rbScrapeType_Missing.Location = New System.Drawing.Point(102, 3)
         Me.rbScrapeType_Missing.Name = "rbScrapeType_Missing"
         Me.rbScrapeType_Missing.Size = New System.Drawing.Size(95, 17)
-        Me.rbScrapeType_Missing.TabIndex = 2
+        Me.rbScrapeType_Missing.TabIndex = 1
         Me.rbScrapeType_Missing.Text = "Missing Items"
         Me.rbScrapeType_Missing.UseVisualStyleBackColor = True
+        '
+        'rbScrapeType_Selected
+        '
+        Me.rbScrapeType_Selected.AutoSize = True
+        Me.tblScrapeType_Filter.SetColumnSpan(Me.rbScrapeType_Selected, 2)
+        Me.rbScrapeType_Selected.Enabled = False
+        Me.rbScrapeType_Selected.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.rbScrapeType_Selected.Location = New System.Drawing.Point(102, 49)
+        Me.rbScrapeType_Selected.Name = "rbScrapeType_Selected"
+        Me.rbScrapeType_Selected.Size = New System.Drawing.Size(68, 17)
+        Me.rbScrapeType_Selected.TabIndex = 5
+        Me.rbScrapeType_Selected.Text = "Selected"
+        Me.rbScrapeType_Selected.UseVisualStyleBackColor = True
         '
         'gbScrapeType_Mode
         '
@@ -1687,18 +1702,17 @@ Partial Class dlgCustomScraper
         Me.chkSeasonOptionsTitle.Text = "Title"
         Me.chkSeasonOptionsTitle.UseVisualStyleBackColor = True
         '
-        'rbScrapeType_Selected
+        'rbScrapeType_Filter
         '
-        Me.rbScrapeType_Selected.AutoSize = True
-        Me.tblScrapeType_Filter.SetColumnSpan(Me.rbScrapeType_Selected, 2)
-        Me.rbScrapeType_Selected.Enabled = False
-        Me.rbScrapeType_Selected.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.rbScrapeType_Selected.Location = New System.Drawing.Point(3, 49)
-        Me.rbScrapeType_Selected.Name = "rbScrapeType_Selected"
-        Me.rbScrapeType_Selected.Size = New System.Drawing.Size(68, 17)
-        Me.rbScrapeType_Selected.TabIndex = 1
-        Me.rbScrapeType_Selected.Text = "Selected"
-        Me.rbScrapeType_Selected.UseVisualStyleBackColor = True
+        Me.rbScrapeType_Filter.AutoSize = True
+        Me.rbScrapeType_Filter.Enabled = False
+        Me.rbScrapeType_Filter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.rbScrapeType_Filter.Location = New System.Drawing.Point(3, 49)
+        Me.rbScrapeType_Filter.Name = "rbScrapeType_Filter"
+        Me.rbScrapeType_Filter.Size = New System.Drawing.Size(93, 17)
+        Me.rbScrapeType_Filter.TabIndex = 4
+        Me.rbScrapeType_Filter.Text = "Current Filter"
+        Me.rbScrapeType_Filter.UseVisualStyleBackColor = True
         '
         'dlgCustomScraper
         '
@@ -1843,6 +1857,7 @@ Partial Class dlgCustomScraper
     Friend WithEvents chkEpisodeModifierMetaData As System.Windows.Forms.CheckBox
     Friend WithEvents chkSeasonOptionsTitle As System.Windows.Forms.CheckBox
     Friend WithEvents rbScrapeType_Selected As RadioButton
+    Friend WithEvents rbScrapeType_Filter As RadioButton
 
 #End Region 'Methods
 
