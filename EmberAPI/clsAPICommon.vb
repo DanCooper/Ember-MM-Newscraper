@@ -570,8 +570,9 @@ Public Class Enums
     ''' <remarks></remarks>
     Public Enum DateTime As Integer
         Now = 0
-        mtime = 1
-        Newer = 2
+        ctime = 1
+        mtime = 2
+        Newer = 3
     End Enum
 
     Public Enum DefaultType As Integer

@@ -4171,6 +4171,7 @@ Public Class dlgSettings
     Private Sub LoadGeneralDateTime()
         Dim items As New Dictionary(Of String, Enums.DateTime)
         items.Add(Master.eLang.GetString(1210, "Current DateTime when adding"), Enums.DateTime.Now)
+        items.Add(Master.eLang.GetString(1227, "ctime (fallback to mtime)"), Enums.DateTime.ctime)
         items.Add(Master.eLang.GetString(1211, "mtime (fallback to ctime)"), Enums.DateTime.mtime)
         items.Add(Master.eLang.GetString(1212, "Newer of mtime and ctime"), Enums.DateTime.Newer)
         cbGeneralDateTime.DataSource = items.ToList
