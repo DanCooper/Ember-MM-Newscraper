@@ -35,7 +35,7 @@ Public Class HTTP
 
 
 #Region "Fields"
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     Private dThread As New Threading.Thread(AddressOf DownloadImage)
     Private wrRequest As HttpWebRequest
@@ -55,7 +55,7 @@ Public Class HTTP
     ''' Base constructor
     ''' </summary>
     Public Sub New()
-        Me.Clear()
+        Clear()
     End Sub
 
 
@@ -70,34 +70,34 @@ Public Class HTTP
 #Region "Properties"
     Public ReadOnly Property Image() As Image
         Get
-            Return Me._image
+            Return _image
         End Get
     End Property
 
     Public ReadOnly Property isJPG() As Boolean
         Get
-            Return Me._isJPG
+            Return _isJPG
         End Get
     End Property
 
     Public ReadOnly Property isPNG() As Boolean
         Get
-            Return Me._isPNG
+            Return _isPNG
         End Get
     End Property
 
     Public ReadOnly Property ms() As MemoryStream
         Get
-            Return Me._ms
+            Return _ms
         End Get
     End Property
 
     Public Property ResponseUri() As String
         Get
-            Return Me._responseuri
+            Return _responseuri
         End Get
         Set(ByVal value As String)
-            Me._responseuri = value
+            _responseuri = value
         End Set
     End Property
 
@@ -110,19 +110,19 @@ Public Class HTTP
     ''' </summary>
     ''' <remarks></remarks>
     Public Sub Cancel()
-        Me._cancelRequested = True
-        If Me.wrRequest IsNot Nothing Then Me.wrRequest.Abort()
+        _cancelRequested = True
+        If wrRequest IsNot Nothing Then wrRequest.Abort()
     End Sub
     ''' <summary>
     ''' Clears this instance and makes it ready for re-use
     ''' </summary>
     ''' <remarks></remarks>
     Public Sub Clear()
-        Me._responseuri = String.Empty
-        If Me._image IsNot Nothing Then Me._image.Dispose()
+        _responseuri = String.Empty
+        If _image IsNot Nothing Then _image.Dispose()
         Me._image = Nothing
         Cancel()    'Explicitely stop any in-progress requests
-        Me._cancelRequested = False
+        _cancelRequested = False
     End Sub
     ''' <summary>
     ''' Download the data from the given <paramref name="URL"/>
@@ -135,17 +135,17 @@ Public Class HTTP
         Dim sResponse As String = String.Empty
         Dim cEncoding As System.Text.Encoding
 
-        Me.Clear()
+        Clear()
 
         Try
-            Me.wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
-            Me.wrRequest.Timeout = _defaultRequestTimeout
-            Me.wrRequest.Headers.Add("Accept-Encoding", "gzip,deflate")
-            Me.wrRequest.KeepAlive = False
+            wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
+            wrRequest.Timeout = _defaultRequestTimeout
+            wrRequest.Headers.Add("Accept-Encoding", "gzip,deflate")
+            wrRequest.KeepAlive = False
 
             PrepareProxy()
 
-            Using wrResponse As HttpWebResponse = DirectCast(Me.wrRequest.GetResponse(), HttpWebResponse)
+            Using wrResponse As HttpWebResponse = DirectCast(wrRequest.GetResponse(), HttpWebResponse)
                 Select Case True
                     'for our purposes I think it's safe to assume that all xmls we will be dealing with will be UTF-8 encoded
                     Case wrResponse.ContentType.ToLower.Contains("/xml") OrElse wrResponse.ContentType.ToLower.Contains("charset=utf-8")
@@ -162,7 +162,7 @@ Public Class HTTP
                         sResponse = New StreamReader(Ms, cEncoding, True).ReadToEnd
                     End If
                 End Using
-                Me._responseuri = wrResponse.ResponseUri.ToString
+                _responseuri = wrResponse.ResponseUri.ToString
             End Using
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & URL & ">")
@@ -198,7 +198,7 @@ Public Class HTTP
         Dim Idboundary As String = Convert.ToInt64(Functions.ConvertToUnixTimestamp(DateTime.Now)).ToString
         Dim Boundary As String = String.Format("--{0}", Idboundary)
         Dim postDataBytes As New List(Of Byte())
-        Me.Clear()
+        Clear()
         System.Net.ServicePointManager.Expect100Continue = False
         Try
             For Each s() As String In postDataList
@@ -214,26 +214,26 @@ Public Class HTTP
             Next
             postDataBytes.Add(System.Text.Encoding.UTF8.GetBytes(String.Concat(Boundary, vbCrLf)))
 
-            Me.wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
-            Me.wrRequest.Timeout = _defaultRequestTimeout
-            Me.wrRequest.Headers.Add("Accept-Encoding", "gzip,deflate")
+            wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
+            wrRequest.Timeout = _defaultRequestTimeout
+            wrRequest.Headers.Add("Accept-Encoding", "gzip,deflate")
             PrepareProxy()
 
-            Me.wrRequest.Method = "POST"
-            Me.wrRequest.ContentType = String.Concat("multipart/form-data;boundary=", Idboundary)
+            wrRequest.Method = "POST"
+            wrRequest.ContentType = String.Concat("multipart/form-data;boundary=", Idboundary)
             Dim size As Integer = 0
             For i As Integer = 0 To postDataBytes.Count - 1
                 size += postDataBytes(i).Length
             Next
-            Me.wrRequest.ContentLength = size
-            Using newStream As Stream = Me.wrRequest.GetRequestStream()
+            wrRequest.ContentLength = size
+            Using newStream As Stream = wrRequest.GetRequestStream()
                 For i As Integer = 0 To postDataBytes.Count - 1
                     newStream.Write(postDataBytes(i), 0, postDataBytes(i).Length)
                 Next
                 newStream.Close()
             End Using
 
-            Using wrResponse As HttpWebResponse = DirectCast(Me.wrRequest.GetResponse(), HttpWebResponse)
+            Using wrResponse As HttpWebResponse = DirectCast(wrRequest.GetResponse(), HttpWebResponse)
                 Select Case True
                     Case wrResponse.ContentType.ToLower.Contains("/xml") OrElse wrResponse.ContentType.ToLower.Contains("charset=utf-8")
                         cEncoding = System.Text.Encoding.UTF8
@@ -250,7 +250,7 @@ Public Class HTTP
                     End If
                     Ms.Close()
                 End Using
-                Me._responseuri = wrResponse.ResponseUri.ToString
+                _responseuri = wrResponse.ResponseUri.ToString
             End Using
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & URL & ">")
@@ -275,7 +275,7 @@ Public Class HTTP
         Dim urlExt As String = String.Empty
         Dim urlExtWeb As String = String.Empty
 
-        Me._cancelRequested = False
+        _cancelRequested = False
         Try
             If URL.Contains("goear") Then
                 'GoEar needs a existing connection to download files, otherwise you will be blocked
@@ -288,17 +288,17 @@ Public Class HTTP
                 End If
             End If
 
-            Me.wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
-            Me.wrRequest.Timeout = _defaultRequestTimeout
+            wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
+            wrRequest.Timeout = _defaultRequestTimeout
 
             'needed for apple trailer website
             If URL.Contains("apple") Then
-                Me.wrRequest.UserAgent = "QuickTime/7.2 (qtver=7.2;os=Windows NT 5.1Service Pack 3)"
+                wrRequest.UserAgent = "QuickTime/7.2 (qtver=7.2;os=Windows NT 5.1Service Pack 3)"
             End If
 
             PrepareProxy()
 
-            Using wrResponse As HttpWebResponse = DirectCast(Me.wrRequest.GetResponse(), HttpWebResponse)
+            Using wrResponse As HttpWebResponse = DirectCast(wrRequest.GetResponse(), HttpWebResponse)
 
                 Try
                     urlExt = Path.GetExtension(URL)
@@ -348,7 +348,7 @@ Public Class HTTP
                                             RaiseEvent ProgressUpdated(iProgress)
                                         End If
                                     End If
-                                Loop While BlockSize > 0 AndAlso Not Me._cancelRequested
+                                Loop While BlockSize > 0 AndAlso Not _cancelRequested
                                 'this is not necessary because of using block
                                 'StreamBuffer = Nothing
                                 'mStream.Close()
@@ -371,11 +371,11 @@ Public Class HTTP
                                 End If
                             Loop Until bytesRead = count
                             Ms.Close()
-                            Me._ms.Close()
-                            Me._ms = New MemoryStream()
+                            _ms.Close()
+                            _ms = New MemoryStream()
 
-                            Me._ms.Write(buffer, 0, bytesRead)
-                            Me._ms.Flush()
+                            _ms.Write(buffer, 0, bytesRead)
+                            _ms.Flush()
 
                         End If
                         Ms.Close()
@@ -384,7 +384,7 @@ Public Class HTTP
             End Using
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & URL & ">")
-            outFile = ""
+            outFile = String.Empty
         End Try
 
         Return outFile
@@ -396,45 +396,39 @@ Public Class HTTP
     ''' <remarks>This method is intended to be called in its own thread</remarks>
     Public Sub DownloadImage()
         Try
-            Me._isJPG = False
-            Me._isPNG = False
-            If StringUtils.isValidURL(Me._URL) Then
-                Me.wrRequest = DirectCast(HttpWebRequest.Create(Me._URL), HttpWebRequest)
-                Me.wrRequest.Timeout = _defaultRequestTimeout
+            _isJPG = False
+            _isPNG = False
+            If StringUtils.isValidURL(_URL) Then
+                wrRequest = DirectCast(HttpWebRequest.Create(_URL), HttpWebRequest)
+                wrRequest.Timeout = _defaultRequestTimeout
 
-                If Me._cancelRequested Then Return
+                If _cancelRequested Then Return
 
                 PrepareProxy()
 
-                If Me._cancelRequested Then Return
+                If _cancelRequested Then Return
 
-                Using wrResponse As WebResponse = Me.wrRequest.GetResponse()
-                    If Me._cancelRequested Then Return
+                Using wrResponse As WebResponse = wrRequest.GetResponse()
+                    If _cancelRequested Then Return
                     Dim temp As String = wrResponse.ContentType.ToString
                     If wrResponse.ContentType.ToLower.Contains("image") Then
-                        If Me._cancelRequested Then Return
+                        If _cancelRequested Then Return
                         If wrResponse.ContentType.ToLower.Contains("jpeg") Then
                             _isJPG = True
-                        End If
-                        If wrResponse.ContentType.ToLower.Contains("png") Then
+                        ElseIf wrResponse.ContentType.ToLower.Contains("png") Then
                             _isPNG = True
                         End If
-                        Using SourceStream As System.IO.Stream = wrResponse.GetResponseStream()
-                            'Optimized HTTP Code: simplify download process to use .net 4.X methods("copyto" instead of loop)
-                            Dim count = Convert.ToInt32(wrResponse.ContentLength)
-                            If Not count = -1 Then
-                                Me._ms.Close()
-                                Me._ms = New MemoryStream(count)
-                                SourceStream.CopyTo(Me._ms)
-                                Me._image = New Bitmap(Me._ms)
-                            End If
-                        End Using
-                        'Me._image = Image.FromStream(wrResponse.GetResponseStream)
+                        Dim SourceStream As Stream = wrResponse.GetResponseStream()
+                        _ms.Close()
+                        _ms = New MemoryStream()
+                        SourceStream.CopyTo(_ms)
+                        _image = New Bitmap(_ms)
+                        SourceStream.Close()
                     End If
                 End Using
             End If
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & Me._URL & ">")
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & _URL & ">")
         End Try
     End Sub
 
@@ -447,14 +441,14 @@ Public Class HTTP
     ''' <remarks>Note that there is no processing done on the returned file to ensure
     ''' that it is indeed a ZIP file.</remarks>
     Public Function DownloadZip(ByVal URL As String) As Byte()
-        Me.wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
+        wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
 
         Try
-            Me.wrRequest.Timeout = _defaultRequestTimeout
+            wrRequest.Timeout = _defaultRequestTimeout
 
             PrepareProxy()
 
-            Using wrResponse As HttpWebResponse = DirectCast(Me.wrRequest.GetResponse(), HttpWebResponse)
+            Using wrResponse As HttpWebResponse = DirectCast(wrRequest.GetResponse(), HttpWebResponse)
                 Return Functions.ReadStreamToEnd(wrResponse.GetResponseStream)
             End Using
         Catch ex As Exception
@@ -469,7 +463,7 @@ Public Class HTTP
     ''' <returns><c>True</c> if the thread is still working</returns>
     ''' <remarks></remarks>
     Public Function IsDownloading() As Boolean
-        Return Me.dThread.IsAlive
+        Return dThread.IsAlive
     End Function
     ''' <summary>
     ''' Convenience function to prepare the <see cref="wrRequest"/>.Proxy if so defined.
@@ -480,13 +474,13 @@ Public Class HTTP
             Dim wProxy As New WebProxy(Master.eSettings.ProxyURI, Master.eSettings.ProxyPort)
             wProxy.BypassProxyOnLocal = True
             'TODO Dekker500 - Verify if this Password/empty clause is required. Proxies can have usernames but blank passwords, no?
-            If Not String.IsNullOrEmpty(Master.eSettings.ProxyCredentials.UserName) AndAlso _
+            If Not String.IsNullOrEmpty(Master.eSettings.ProxyCredentials.UserName) AndAlso
             Not String.IsNullOrEmpty(Master.eSettings.ProxyCredentials.Password) Then
                 wProxy.Credentials = Master.eSettings.ProxyCredentials
             Else
                 wProxy.Credentials = CredentialCache.DefaultCredentials
             End If
-            Me.wrRequest.Proxy = wProxy
+            wrRequest.Proxy = wProxy
         End If
     End Sub
     ''' <summary>
@@ -500,14 +494,14 @@ Public Class HTTP
     Public Function IsValidURL(ByVal URL As String) As Boolean
         Dim wrResponse As WebResponse
         Try
-            Me.wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
+            wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
 
             PrepareProxy()
 
-            Dim noCachePolicy As System.Net.Cache.HttpRequestCachePolicy = New System.Net.Cache.HttpRequestCachePolicy(System.Net.Cache.HttpRequestCacheLevel.NoCacheNoStore)
-            Me.wrRequest.CachePolicy = noCachePolicy
-            Me.wrRequest.Timeout = _defaultRequestTimeout   'Master.eSettings.TrailerTimeout * 1000 * 2
-            wrResponse = Me.wrRequest.GetResponse()
+            Dim noCachePolicy As Cache.HttpRequestCachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.NoCacheNoStore)
+            wrRequest.CachePolicy = noCachePolicy
+            wrRequest.Timeout = _defaultRequestTimeout   'Master.eSettings.TrailerTimeout * 1000 * 2
+            wrResponse = wrRequest.GetResponse()
         Catch ex As Exception
             Return False
         End Try
@@ -521,11 +515,11 @@ Public Class HTTP
     ''' <param name="sURL">URL containing the desired image</param>
     ''' <remarks>Once the download is complete, the url will be stored in <see cref="_image"/></remarks>
     Public Sub StartDownloadImage(ByVal sURL As String)
-        Me.Clear()
-        Me._URL = sURL
-        Me.dThread = New Threading.Thread(AddressOf DownloadImage)
-        Me.dThread.IsBackground = True
-        Me.dThread.Start()
+        Clear()
+        _URL = sURL
+        dThread = New Threading.Thread(AddressOf DownloadImage)
+        dThread.IsBackground = True
+        dThread.Start()
     End Sub
 
 #End Region 'Methods
@@ -535,20 +529,20 @@ Public Class HTTP
 
     ' IDisposable
     Protected Overridable Sub Dispose(disposing As Boolean)
-        If Not Me.disposedValue Then
+        If Not disposedValue Then
             If disposing Then
-                If Me._image IsNot Nothing Then Me._image.Dispose()
-                If Me.wrRequest IsNot Nothing Then Me.wrRequest.Abort() 'Explicitely cancel any pending requests
+                If _image IsNot Nothing Then _image.Dispose()
+                If wrRequest IsNot Nothing Then wrRequest.Abort() 'Explicitely cancel any pending requests
             End If
 
-            If Me._ms IsNot Nothing Then
+            If _ms IsNot Nothing Then
                 'Make sure the stream is indeed closed so it can be disposed of properly
-                Me._ms.Close()
+                _ms.Close()
             End If
             Me._image = Nothing
             Me.wrRequest = Nothing
 
-            Me.disposedValue = True
+            disposedValue = True
         End If
     End Sub
 
