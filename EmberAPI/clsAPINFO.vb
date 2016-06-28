@@ -330,7 +330,7 @@ Public Class NFO
                 DBMovie.Movie.Top250 = scrapedmovie.Top250
                 new_Top250 = True
             ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperTop250 AndAlso Not Master.eSettings.MovieLockTop250 Then
-                DBMovie.Movie.Top250 = String.Empty
+                DBMovie.Movie.Top250 = 0
             End If
 
             'Trailer

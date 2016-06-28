@@ -1035,11 +1035,11 @@ Public Class dlgEditTVEpisode
     End Sub
 
     Private Sub txtEpisode_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtEpisode.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar, True) AndAlso Not e.KeyChar = "-"
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub txtSeason_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtSeason.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar, True) AndAlso Not e.KeyChar = "-"
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
     Sub GenericRunCallBack(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))

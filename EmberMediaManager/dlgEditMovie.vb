@@ -1548,7 +1548,7 @@ Public Class dlgEditMovie
         txtStudio.Text = String.Join(" / ", tmpDBElement.Movie.Studios.ToArray)
         txtTagline.Text = tmpDBElement.Movie.Tagline
         txtTitle.Text = tmpDBElement.Movie.Title
-        txtTop250.Text = tmpDBElement.Movie.Top250
+        txtTop250.Text = tmpDBElement.Movie.Top250.ToString
         txtVideoSource.Text = tmpDBElement.Movie.VideoSource
         txtVotes.Text = tmpDBElement.Movie.Votes
         txtYear.Text = tmpDBElement.Movie.Year
@@ -2331,7 +2331,7 @@ Public Class dlgEditMovie
         tmpDBElement.Movie.Votes = txtVotes.Text.Trim
         tmpDBElement.Movie.Outline = txtOutline.Text.Trim
         tmpDBElement.Movie.Plot = txtPlot.Text.Trim
-        tmpDBElement.Movie.Top250 = txtTop250.Text.Trim
+        tmpDBElement.Movie.Top250 = If(Integer.TryParse(txtTop250.Text.Trim, 0), CInt(txtTop250.Text.Trim), 0)
         tmpDBElement.Movie.AddCountriesFromString(txtCountries.Text.Trim)
         tmpDBElement.Movie.AddDirectorsFromString(txtDirectors.Text.Trim)
         tmpDBElement.Movie.Title = txtTitle.Text.Trim
@@ -2544,12 +2544,8 @@ Public Class dlgEditMovie
         TrailerStop()
     End Sub
 
-    Private Sub txtThumbCount_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs)
+    Private Sub txtTop250_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtTop250.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtThumbCount_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs)
-        AcceptButton = OK_Button
     End Sub
 
     Private Sub txtTrailer_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTrailer.TextChanged

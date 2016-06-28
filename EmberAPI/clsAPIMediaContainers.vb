@@ -964,7 +964,7 @@ Namespace MediaContainers
         Private _thumbposter As New Image
         Private _title As String
         Private _tmdbcolid As String
-        Private _top250 As String
+        Private _top250 As Integer
         Private _trailer As String
         Private _videosource As String
         Private _votes As String
@@ -1146,11 +1146,11 @@ Namespace MediaContainers
         End Property
 
         <XmlElement("top250")>
-        Public Property Top250() As String
+        Public Property Top250() As Integer
             Get
                 Return _top250
             End Get
-            Set(ByVal value As String)
+            Set(ByVal value As Integer)
                 _top250 = value
             End Set
         End Property
@@ -1158,7 +1158,7 @@ Namespace MediaContainers
         <XmlIgnore()>
         Public ReadOnly Property Top250Specified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_top250)
+                Return _top250 > 0
             End Get
         End Property
 
@@ -1981,7 +1981,7 @@ Namespace MediaContainers
             _thumbposter = New Image
             _title = String.Empty
             _tmdbcolid = String.Empty
-            _top250 = String.Empty
+            _top250 = 0
             _trailer = String.Empty
             _videosource = String.Empty
             _votes = String.Empty

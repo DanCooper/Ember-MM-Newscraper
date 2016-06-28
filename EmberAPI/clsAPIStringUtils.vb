@@ -258,6 +258,10 @@ Public Class StringUtils
 
         Return sReturn.Trim
     End Function
+
+    Public Shared Function ConvertToValidFilterString(ByVal strInput As String) As String
+        Return strInput.Replace("["c, "[[]").Replace("'"c, "''").Replace("%"c, "[%]")
+    End Function
     ''' <summary>
     ''' Determine the Levenshtein Distance between the two supplied strings.
     ''' In essence, it indicates how closely matched two strings are.
@@ -579,10 +583,6 @@ Public Class StringUtils
         End If
         Return False
     End Function
-
-    Public Shared Function isValidFilterChar(ByVal KeyChar As Char) As Boolean
-        Return Not KeyChar = Convert.ToChar(39) AndAlso Not KeyChar = Convert.ToChar(91)
-    End Function
     ''' <summary>
     ''' Determine whether the format of the supplied URL is valid. No actual Internet query is made to see if
     ''' the URL is actually responsive.
@@ -636,7 +636,7 @@ Public Class StringUtils
     ''' </remarks>
     Public Shared Function NumericOnly(ByVal KeyChar As Char, Optional ByVal isIP As Boolean = False) As Boolean
         'TODO Dekker500 - This method is horribly named. It should be something like "IsInvalidNumericChar". Also, why are we allowing control chars, whitespace, or period?
-        If Char.IsNumber(KeyChar) OrElse Char.IsControl(KeyChar) OrElse Char.IsWhiteSpace(KeyChar) OrElse (isIP AndAlso Convert.ToInt32(KeyChar) = 46) Then
+        If Char.IsNumber(KeyChar) OrElse Char.IsControl(KeyChar) OrElse (isIP AndAlso Convert.ToInt32(KeyChar) = 46) Then
             Return False
         Else
             Return True
