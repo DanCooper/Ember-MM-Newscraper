@@ -10934,6 +10934,8 @@ Public Class frmMain
         If Master.eSettings.TVGeneralCustomScrapeButtonEnabled Then
             Dim ScrapeModifiers As New Structures.ScrapeModifiers
             Functions.SetScrapeModifiers(ScrapeModifiers, Master.eSettings.TVGeneralCustomScrapeButtonModifierType, True)
+            Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.withEpisodes, True)
+            Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.withSeasons, True)
             CreateScrapeList_TV(Master.eSettings.TVGeneralCustomScrapeButtonScrapeType, Master.DefaultOptions_TV, ScrapeModifiers)
         Else
             mnuScrapeTVShows.ShowDropDown()
