@@ -925,12 +925,12 @@ Namespace FileUtils
                 Dim baseURL As String = parseBaseURL(clipboardHtml)
 
                 If (imageSrc.ToLower().IndexOf("http://") = 0) Or (imageSrc.ToLower().IndexOf("https://") = 0) Then
-                    tImage.ImageOriginal.LoadFromWeb(imageSrc)
+                    tImage.ImageOriginal.LoadFromWeb(imageSrc, True)
                     If tImage.ImageOriginal.Image IsNot Nothing Then
                         Return tImage
                     End If
                 Else
-                    tImage.ImageOriginal.LoadFromWeb(baseURL + imageSrc.Substring(1))
+                    tImage.ImageOriginal.LoadFromWeb(baseURL + imageSrc.Substring(1), True)
                     If tImage.ImageOriginal.Image IsNot Nothing Then
                         Return tImage
                     End If

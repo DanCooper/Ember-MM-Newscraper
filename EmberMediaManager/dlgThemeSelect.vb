@@ -25,7 +25,8 @@ Imports NLog
 Public Class dlgThemeSelect
 
 #Region "Fields"
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     Friend WithEvents bwDownloadTheme As New System.ComponentModel.BackgroundWorker
 
@@ -123,19 +124,15 @@ Public Class dlgThemeSelect
     End Function
 
     Private Sub lvThemes_DoubleClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvThemes.DoubleClick
-        Dim tURL As String = lvThemes.SelectedItems(0).SubItems(1).Text.ToString
-        Dim tWebURL As String = lvThemes.SelectedItems(0).SubItems(6).Text.ToString
-        'Me.vlcPlayer.playlist.stop()
-
-        If tURL.Contains("goear") Then
-            'GoEar needs a existing connection to download files, otherwise you will be blocked
-            Dim dummyclient As New WebClient
-            dummyclient.OpenRead(tWebURL)
-            dummyclient.Dispose()
+        If Master.isWindows Then
+            Process.Start(lvThemes.SelectedItems(0).SubItems(6).Text.ToString)
+        Else
+            Using Explorer As New Process
+                Explorer.StartInfo.FileName = "xdg-open"
+                Explorer.StartInfo.Arguments = lvThemes.SelectedItems(0).SubItems(6).Text.ToString
+                Explorer.Start()
+            End Using
         End If
-        'Me.vlcPlayer.playlist.items.clear()
-        'Me.vlcPlayer.playlist.add(tURL)
-        'Me.vlcPlayer.playlist.play()
     End Sub
 
     Private Sub OK_Button_Click(sender As Object, e As EventArgs) Handles OK_Button.Click
@@ -157,7 +154,7 @@ Public Class dlgThemeSelect
             bwDownloadTheme.WorkerSupportsCancellation = True
             bwDownloadTheme.RunWorkerAsync(New Arguments With {.Parameter = tTheme, .bType = True})
         Else
-            DialogResult = System.Windows.Forms.DialogResult.Cancel
+            DialogResult = DialogResult.Cancel
             Close()
         End If
     End Sub
@@ -194,8 +191,7 @@ Public Class dlgThemeSelect
     Private Sub bwDownloadTheme_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDownloadTheme.RunWorkerCompleted
         If Not e.Cancelled Then
             If Convert.ToBoolean(e.Result) Then
-                DialogResult = System.Windows.Forms.DialogResult.OK
-                Close()
+                DialogResult = DialogResult.OK
             Else
                 pnlStatus.Visible = False
                 'Me.SetControlsEnabled(True)
@@ -222,9 +218,8 @@ Public Class dlgThemeSelect
             Threading.Thread.Sleep(50)
         End While
 
-        DialogResult = System.Windows.Forms.DialogResult.Cancel
+        DialogResult = DialogResult.Cancel
         Me.Results = Nothing
-        Close()
     End Sub
 
 #End Region 'Methods

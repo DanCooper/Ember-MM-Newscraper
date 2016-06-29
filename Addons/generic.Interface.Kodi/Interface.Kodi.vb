@@ -379,7 +379,7 @@ Public Class KodiInterface
                             'connection test
                             If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                 If mDBElement.Episodes IsNot Nothing Then
-                                    For Each tEpisode In mDBElement.Episodes
+                                    For Each tEpisode In mDBElement.Episodes.Where(Function(f) f.FilenameSpecified)
                                         If tEpisode.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(tEpisode, True) Then
                                             If tEpisode.NfoPathSpecified Then
                                                 'run task

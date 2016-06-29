@@ -228,7 +228,7 @@ Public Class dlgMovieDataScraperPreview
 
                     'Top250
                     If scraperresult.Top250Specified Then
-                        .txtTOP250IMDB.Text = scraperresult.Top250
+                        .txtTOP250IMDB.Text = scraperresult.Top250.ToString
                         tbTOP250.SelectedTab = tbTOP250IMDB
                     Else
                         tbTOP250.TabPages.Remove(tbTOP250IMDB)
@@ -396,7 +396,7 @@ Public Class dlgMovieDataScraperPreview
 
                     'Top250
                     If scraperresult.Top250Specified Then
-                        .txtTOP250TMDB.Text = scraperresult.Top250
+                        .txtTOP250TMDB.Text = scraperresult.Top250.ToString
                         tbTOP250.SelectedTab = tbTOP250TMDB
                     Else
                         tbTOP250.TabPages.Remove(tbTOP250TMDB)
@@ -563,7 +563,7 @@ Public Class dlgMovieDataScraperPreview
 
                     'Top250
                     If scraperresult.Top250Specified Then
-                        .txtTOP250OFDB.Text = scraperresult.Top250
+                        .txtTOP250OFDB.Text = scraperresult.Top250.ToString
                         tbTOP250.SelectedTab = tbTOP250OFDB
                     Else
                         tbTOP250.TabPages.Remove(tbTOP250OFDB)
@@ -730,7 +730,7 @@ Public Class dlgMovieDataScraperPreview
 
                     'Top250
                     If scraperresult.Top250Specified Then
-                        .txtTOP250Moviepilot.Text = scraperresult.Top250
+                        .txtTOP250Moviepilot.Text = scraperresult.Top250.ToString
                         tbTOP250.SelectedTab = tbTOP250Moviepilot
                     Else
                         tbTOP250.TabPages.Remove(tbTOP250Moviepilot)

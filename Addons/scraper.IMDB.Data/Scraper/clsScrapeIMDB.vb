@@ -348,7 +348,11 @@ Namespace IMDB
                 'Top250
                 'ie: <a href="/chart/top?tt0167260">Top 250: #13</a>
                 If FilteredOptions.bMainTop250 Then
-                    nMovie.Top250 = Regex.Match(HTML, String.Concat("/chart/top\?", nMovie.ID, """>Top 250: #([0-9]+)</a>")).Groups(1).Value.Trim
+                    Dim strTop250 As String = Regex.Match(HTML, String.Concat("/chart/top\?", nMovie.ID, """>Top 250: #([0-9]+)</a>")).Groups(1).Value.Trim
+                    Dim iTop250 As Integer = 0
+                    If Integer.TryParse(strTop250, iTop250) Then
+                        nMovie.Top250 = iTop250
+                    End If
                 End If
 
                 If bwIMDB.CancellationPending Then Return Nothing

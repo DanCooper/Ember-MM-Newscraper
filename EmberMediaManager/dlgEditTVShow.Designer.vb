@@ -1190,7 +1190,6 @@ Partial Class dlgEditTVShow
         Me.clbGenre.Location = New System.Drawing.Point(7, 245)
         Me.clbGenre.Name = "clbGenre"
         Me.clbGenre.Size = New System.Drawing.Size(192, 212)
-        Me.clbGenre.Sorted = True
         Me.clbGenre.TabIndex = 6
         '
         'lblStudio

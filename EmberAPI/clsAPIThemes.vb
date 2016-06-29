@@ -46,7 +46,7 @@ Public Class Themes
 #Region "Constructors"
 
     Public Sub New()
-        Me.Clear()
+        Clear()
     End Sub
 
 #End Region 'Constructors
@@ -165,8 +165,8 @@ Public Class Themes
 
     Private Sub Clear()
         If _ms IsNot Nothing Then
-            Me.Dispose(True)
-            Me.disposedValue = False    'Since this is not a real Dispose call...
+            Dispose(True)
+            disposedValue = False    'Since this is not a real Dispose call...
         End If
 
         _ext = String.Empty
@@ -253,23 +253,23 @@ Public Class Themes
     ''' <param name="sPath">Path to the theme file</param>
     ''' <remarks></remarks>
     Public Sub FromFile(ByVal sPath As String)
-        If Me._ms IsNot Nothing Then
-            Me._ms.Dispose()
+        If _ms IsNot Nothing Then
+            _ms.Dispose()
         End If
         If Not String.IsNullOrEmpty(sPath) AndAlso File.Exists(sPath) Then
             Try
-                Me._ms = New MemoryStream()
+                _ms = New MemoryStream()
                 Using fsImage As New FileStream(sPath, FileMode.Open, FileAccess.Read)
                     Dim StreamBuffer(Convert.ToInt32(fsImage.Length - 1)) As Byte
 
                     fsImage.Read(StreamBuffer, 0, StreamBuffer.Length)
-                    Me._ms.Write(StreamBuffer, 0, StreamBuffer.Length)
+                    _ms.Write(StreamBuffer, 0, StreamBuffer.Length)
 
                     StreamBuffer = Nothing
-                    Me._ms.Flush()
+                    _ms.Flush()
 
-                    Me._ext = Path.GetExtension(sPath)
-                    Me._url = sPath
+                    _ext = Path.GetExtension(sPath)
+                    _url = sPath
                 End Using
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sPath & ">")
@@ -288,20 +288,20 @@ Public Class Themes
         AddHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
 
         Try
-            tTheme = WebPage.DownloadFile(sURL, "", True, "theme", webURL)
+            tTheme = WebPage.DownloadFile(sURL, String.Empty, True, "theme", webURL)
             If Not String.IsNullOrEmpty(tTheme) Then
 
-                If Me._ms IsNot Nothing Then
-                    Me._ms.Dispose()
+                If _ms IsNot Nothing Then
+                    _ms.Dispose()
                 End If
-                Me._ms = New MemoryStream()
+                _ms = New MemoryStream()
 
                 Dim retSave() As Byte
                 retSave = WebPage.ms.ToArray
-                Me._ms.Write(retSave, 0, retSave.Length)
+                _ms.Write(retSave, 0, retSave.Length)
 
-                Me._ext = Path.GetExtension(tTheme)
-                Me._url = sURL
+                _ext = Path.GetExtension(tTheme)
+                _url = sURL
                 logger.Debug("Theme downloaded: " & sURL)
             Else
                 logger.Warn("Theme NOT downloaded: " & sURL)
@@ -324,7 +324,7 @@ Public Class Themes
             Catch ex As Exception
             End Try
 
-            Dim fExt As String = Path.GetExtension(Me._ext)
+            Dim fExt As String = Path.GetExtension(_ext)
             For Each a In FileUtils.GetFilenameList.Movie(mMovie, Enums.ModifierType.MainTheme)
                 If Not File.Exists(String.Concat(a, fExt)) OrElse (isEdit OrElse Master.eSettings.MovieThemeKeepExisting) Then
                     Save(String.Concat(a, fExt))
@@ -341,7 +341,7 @@ Public Class Themes
     Public Sub Save(ByVal sPath As String)
         Dim retSave() As Byte
         Try
-            retSave = Me._ms.ToArray
+            retSave = _ms.ToArray
 
             'make sure directory exists
             Directory.CreateDirectory(Directory.GetParent(sPath).FullName)
@@ -388,7 +388,7 @@ Public Class Themes
 
     ' IDisposable
     Protected Overridable Sub Dispose(disposing As Boolean)
-        If Not Me.disposedValue Then
+        If Not disposedValue Then
             If disposing Then
                 ' dispose managed state (managed objects).
                 If _ms IsNot Nothing Then
@@ -402,7 +402,7 @@ Public Class Themes
             ' set large fields to null.
             _ms = Nothing
         End If
-        Me.disposedValue = True
+        disposedValue = True
     End Sub
 
     ' TODO: override Finalize() only if Dispose(ByVal disposing As Boolean) above has code to free unmanaged resources.

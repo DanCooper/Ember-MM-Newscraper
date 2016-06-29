@@ -1165,7 +1165,7 @@
   <string id="1073">Mark as Unwatched</string>
   <string id="1074">Add Custom Kodi Source</string>
   <string id="1075">Save extended Collection information to NFO (Kodi 16.0 "Jarvis" and newer)</string>
-  <string id="1076"></string>
+  <string id="1076">Selected</string>
   <string id="1077">Select the folder where you wish to store your themes...</string>
   <string id="1078">The theme could not be played. This could due be you don't have the proper player to play the theme type.</string>
   <string id="1079">Error Playing Theme</string>
@@ -1316,7 +1316,7 @@
   <string id="1224">Scraping Media (Marked MovieSets - Ask):</string>
   <string id="1225">Scraping Media (Marked MovieSets - Auto):</string>
   <string id="1226">Scraping Media (Marked MovieSets - Skip):</string>
-  <string id="1227"></string>
+  <string id="1227">ctime (fallback to mtime)</string>
   <string id="1228"></string>
   <string id="1229"></string>
   <string id="1230"></string>

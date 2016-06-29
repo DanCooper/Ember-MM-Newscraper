@@ -1662,7 +1662,7 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("Rating")) Then .Rating = SQLreader("Rating").ToString
                         If Not DBNull.Value.Equals(SQLreader("Votes")) Then .Votes = SQLreader("Votes").ToString
                         If Not DBNull.Value.Equals(SQLreader("MPAA")) Then .MPAA = SQLreader("MPAA").ToString
-                        If Not DBNull.Value.Equals(SQLreader("Top250")) Then .Top250 = SQLreader("Top250").ToString
+                        If Not DBNull.Value.Equals(SQLreader("Top250")) AndAlso Integer.TryParse(SQLreader("Top250").ToString, 0) Then .Top250 = Convert.ToInt32(SQLreader("Top250"))
                         If Not DBNull.Value.Equals(SQLreader("Outline")) Then .Outline = SQLreader("Outline").ToString
                         If Not DBNull.Value.Equals(SQLreader("Plot")) Then .Plot = SQLreader("Plot").ToString
                         If Not DBNull.Value.Equals(SQLreader("Tagline")) Then .Tagline = SQLreader("Tagline").ToString
@@ -3403,6 +3403,14 @@ Public Class Database
                     Select Case Master.eSettings.GeneralDateTime
                         Case Enums.DateTime.Now
                             par_movie_DateAdded.Value = If(Not _movieDB.IDSpecified, Functions.ConvertToUnixTimestamp(Date.Now), _movieDB.DateAdded)
+                        Case Enums.DateTime.ctime
+                            Dim ctime As Date = File.GetCreationTime(_movieDB.Filename)
+                            If ctime.Year > 1601 Then
+                                par_movie_DateAdded.Value = Functions.ConvertToUnixTimestamp(ctime)
+                            Else
+                                Dim mtime As Date = File.GetLastWriteTime(_movieDB.Filename)
+                                par_movie_DateAdded.Value = Functions.ConvertToUnixTimestamp(mtime)
+                            End If
                         Case Enums.DateTime.mtime
                             Dim mtime As Date = File.GetLastWriteTime(_movieDB.Filename)
                             If mtime.Year > 1601 Then
@@ -4347,6 +4355,14 @@ Public Class Database
                     Select Case Master.eSettings.GeneralDateTime
                         Case Enums.DateTime.Now
                             parDateAdded.Value = If(Not _episode.IDSpecified, Functions.ConvertToUnixTimestamp(Date.Now), _episode.DateAdded)
+                        Case Enums.DateTime.ctime
+                            Dim ctime As Date = File.GetCreationTime(_episode.Filename)
+                            If ctime.Year > 1601 Then
+                                parDateAdded.Value = Functions.ConvertToUnixTimestamp(ctime)
+                            Else
+                                Dim mtime As Date = File.GetLastWriteTime(_episode.Filename)
+                                parDateAdded.Value = Functions.ConvertToUnixTimestamp(mtime)
+                            End If
                         Case Enums.DateTime.mtime
                             Dim mtime As Date = File.GetLastWriteTime(_episode.Filename)
                             If mtime.Year > 1601 Then
