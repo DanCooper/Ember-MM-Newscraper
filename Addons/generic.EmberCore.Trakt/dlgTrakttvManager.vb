@@ -1850,13 +1850,13 @@ Public Class dlgTrakttvManager
             Return Nothing
         End If
         'Imdbid
-        If Not String.IsNullOrEmpty(DBMovie.Movie.IMDBID) AndAlso Integer.TryParse(DBMovie.Movie.IMDBID, 0) Then
-            If Not DBMovie.Movie.IMDBID.StartsWith("tt") Then
+        If Not String.IsNullOrEmpty(DBMovie.Movie.IMDB) AndAlso Integer.TryParse(DBMovie.Movie.IMDB, 0) Then
+            If Not DBMovie.Movie.IMDB.StartsWith("tt") Then
                 traktlistitem.Movie.Ids = New TraktAPI.Model.TraktMovieBase
-                traktlistitem.Movie.Ids.Imdb = "tt" & DBMovie.Movie.IMDBID
+                traktlistitem.Movie.Ids.Imdb = "tt" & DBMovie.Movie.IMDB
             Else
                 traktlistitem.Movie.Ids = New TraktAPI.Model.TraktMovieBase
-                traktlistitem.Movie.Ids.Imdb = DBMovie.Movie.IMDBID
+                traktlistitem.Movie.Ids.Imdb = DBMovie.Movie.IMDB
             End If
         Else
             Return Nothing

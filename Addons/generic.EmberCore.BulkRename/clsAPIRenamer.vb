@@ -576,8 +576,8 @@ Public Class FileFolderRenamer
         End If
 
         'IMDBID
-        If _tmpMovie.Movie.IMDBIDSpecified Then
-            MovieFile.IMDBID = _tmpMovie.Movie.IMDBID
+        If _tmpMovie.Movie.IMDBSpecified Then
+            MovieFile.IMDB = _tmpMovie.Movie.IMDB
         End If
 
         'IsLock
@@ -1252,7 +1252,7 @@ Public Class FileFolderRenamer
                         strCond = ApplyPattern(strCond, "F", f.FileName.Replace("\", String.Empty))
                         '                                G   Genres
                         strCond = ApplyPattern(strCond, "H", f.VideoCodec)
-                        strCond = ApplyPattern(strCond, "I", If(Not String.IsNullOrEmpty(f.IMDBID), String.Concat("tt", f.IMDBID), String.Empty))
+                        strCond = ApplyPattern(strCond, "I", If(Not String.IsNullOrEmpty(f.IMDB), String.Concat("tt", f.IMDB), String.Empty))
                         strCond = ApplyPattern(strCond, "J", f.AudioCodec)
                         '                                K   Season
                         strCond = ApplyPattern(strCond, "L", f.ListTitle)
@@ -1344,7 +1344,7 @@ Public Class FileFolderRenamer
                 pattern = ApplyPattern(pattern, "F", f.FileName.Replace("\", String.Empty))
                 '                                G   Genres
                 pattern = ApplyPattern(pattern, "H", f.VideoCodec)
-                pattern = ApplyPattern(pattern, "I", If(Not String.IsNullOrEmpty(f.IMDBID), String.Concat("tt", f.IMDBID), String.Empty))
+                pattern = ApplyPattern(pattern, "I", If(Not String.IsNullOrEmpty(f.IMDB), String.Concat("tt", f.IMDB), String.Empty))
                 pattern = ApplyPattern(pattern, "J", f.AudioCodec)
                 '                                K   Season
                 pattern = ApplyPattern(pattern, "L", f.ListTitle)
@@ -1835,7 +1835,7 @@ Public Class FileFolderRenamer
         Private _fileName As String
         Private _genre As String
         Private _id As Integer
-        Private _imdbid As String
+        Private _imdb As String
         Private _ismultiepisode As Boolean
         Private _isRenamed As Boolean
         Private _isSingle As Boolean
@@ -2231,12 +2231,12 @@ Public Class FileFolderRenamer
             End Set
         End Property
 
-        Public Property IMDBID() As String
+        Public Property IMDB() As String
             Get
-                Return _imdbid
+                Return _imdb
             End Get
             Set(ByVal value As String)
-                _imdbid = value.Trim
+                _imdb = value.Trim
             End Set
         End Property
 
@@ -2290,7 +2290,7 @@ Public Class FileFolderRenamer
             _videosource = String.Empty
             _genre = String.Empty
             _id = -1
-            _imdbid = String.Empty
+            _imdb = String.Empty
             _ismultiepisode = False
             _isRenamed = False
             _isSingle = False

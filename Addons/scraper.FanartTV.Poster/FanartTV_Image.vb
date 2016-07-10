@@ -536,10 +536,10 @@ Public Class FanartTV_Image
 
         Dim FilteredModifiers As Structures.ScrapeModifiers = Functions.ScrapeModifiersAndAlso(ScrapeModifiers, ConfigModifier_Movie)
 
-        If Not String.IsNullOrEmpty(DBMovie.Movie.ID) Then
-            ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovie.Movie.ID, FilteredModifiers)
-        ElseIf Not String.IsNullOrEmpty(DBMovie.Movie.TMDBID) Then
-            ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovie.Movie.TMDBID, FilteredModifiers)
+        If Not String.IsNullOrEmpty(DBMovie.Movie.IMDB) Then
+            ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovie.Movie.IMDB, FilteredModifiers)
+        ElseIf Not String.IsNullOrEmpty(DBMovie.Movie.TMDB) Then
+            ImagesContainer = _scraper.GetImages_Movie_MovieSet(DBMovie.Movie.TMDB, FilteredModifiers)
         Else
             logger.Trace(String.Concat("[FanartTV_Image] [Scraper_Movie] [Abort] No IMDB and TMDB ID exist to search: ", DBMovie.ListTitle))
         End If
@@ -552,7 +552,7 @@ Public Class FanartTV_Image
         logger.Trace("[FanartTV_Image] [Scraper_MovieSet] [Start]")
 
         If String.IsNullOrEmpty(DBMovieset.MovieSet.TMDB) AndAlso DBMovieset.MoviesInSetSpecified Then
-            DBMovieset.MovieSet.TMDB = ModulesManager.Instance.GetMovieCollectionID(DBMovieset.MoviesInSet.Item(0).DBMovie.Movie.ID)
+            DBMovieset.MovieSet.TMDB = ModulesManager.Instance.GetMovieCollectionID(DBMovieset.MoviesInSet.Item(0).DBMovie.Movie.IMDB)
         End If
 
         If Not String.IsNullOrEmpty(DBMovieset.MovieSet.TMDB) Then

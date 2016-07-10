@@ -193,8 +193,8 @@ Public Class clsAPITrakt
         If tDBElement Is Nothing OrElse Not tDBElement.ContentType = Enums.ContentType.Movie Then Return False
 
         Dim tmpMovie As New TraktAPI.Model.TraktMovie With {.Ids = New TraktAPI.Model.TraktMovieBase}
-        tmpMovie.Ids.Imdb = tDBElement.Movie.ID
-        tmpMovie.Ids.Tmdb = If(tDBElement.Movie.TMDBIDSpecified, CInt(tDBElement.Movie.TMDBID), Nothing)
+        tmpMovie.Ids.Imdb = tDBElement.Movie.IMDB
+        tmpMovie.Ids.Tmdb = If(tDBElement.Movie.TMDBSpecified, CInt(tDBElement.Movie.TMDB), Nothing)
         tmpMovie.Title = tDBElement.Movie.Title
         tmpMovie.Year = If(tDBElement.Movie.YearSpecified, CInt(tDBElement.Movie.Year), Nothing)
 
@@ -331,9 +331,9 @@ Public Class clsAPITrakt
         If Not tDBElement.Movie.AnyUniqueIDSpecified Then Return False
 
         If CheckConnection() Then
-            Dim strIMDBID As String = tDBElement.Movie.ID
+            Dim strIMDBID As String = tDBElement.Movie.IMDB
             Dim intTMDBID As Integer = -1
-            Integer.TryParse(tDBElement.Movie.TMDBID, intTMDBID)
+            Integer.TryParse(tDBElement.Movie.TMDB, intTMDBID)
 
             Dim lWatchedMovies As IEnumerable(Of TraktAPI.Model.TraktMovieWatched) = GetWatched_Movies()
             If lWatchedMovies IsNot Nothing AndAlso lWatchedMovies.Count > 0 Then

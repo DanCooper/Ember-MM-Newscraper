@@ -178,13 +178,13 @@ Public Class OFDB_Data
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions)
 
         'datascraper needs imdb of movie!
-        If String.IsNullOrEmpty(oDBMovie.Movie.ID) Then
+        If String.IsNullOrEmpty(oDBMovie.Movie.IMDB) Then
             logger.Trace("[OFDB_Data] [Scraper_Movie] [Abort] IMDB-ID of movie is needed, but not availaible")
             Return New Interfaces.ModuleResult_Data_Movie With {.Result = Nothing}
         End If
 
         If Modifier.MainNFO Then
-            nMovie = _scraper.GetMovieInfo(oDBMovie.Movie.ID, FilteredOptions)
+            nMovie = _scraper.GetMovieInfo(oDBMovie.Movie.IMDB, FilteredOptions)
         End If
 
         logger.Trace("[OFDB_Data] [Scraper_Movie] [Done]")

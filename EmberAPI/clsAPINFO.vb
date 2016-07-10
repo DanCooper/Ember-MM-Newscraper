@@ -79,12 +79,11 @@ Public Class NFO
         For Each scrapedmovie In ScrapedList
 
             'IDs
-            If scrapedmovie.IMDBIDSpecified Then
-                DBMovie.Movie.IMDBID = scrapedmovie.IMDBID
-                DBMovie.Movie.ID = scrapedmovie.ID
+            If scrapedmovie.IMDBSpecified Then
+                DBMovie.Movie.IMDB = scrapedmovie.IMDB
             End If
-            If scrapedmovie.TMDBIDSpecified Then
-                DBMovie.Movie.TMDBID = scrapedmovie.TMDBID
+            If scrapedmovie.TMDBSpecified Then
+                DBMovie.Movie.TMDB = scrapedmovie.TMDB
             End If
 
             'Actors
@@ -1905,13 +1904,13 @@ Public Class NFO
                     If Not String.IsNullOrEmpty(sPath) Then
                         Dim sReturn As New NonConf
                         sReturn = GetIMDBFromNonConf(sPath, isSingle)
-                        xmlMov.IMDBID = sReturn.IMDBID
+                        xmlMov.IMDB = sReturn.IMDBID
                         Try
                             If Not String.IsNullOrEmpty(sReturn.Text) Then
                                 Using xmlSTR As StringReader = New StringReader(sReturn.Text)
                                     xmlSer = New XmlSerializer(GetType(MediaContainers.Movie))
                                     xmlMov = DirectCast(xmlSer.Deserialize(xmlSTR), MediaContainers.Movie)
-                                    xmlMov.IMDBID = sReturn.IMDBID
+                                    xmlMov.IMDB = sReturn.IMDBID
                                     xmlMov = CleanNFO_Movies(xmlMov)
                                 End Using
                             End If
@@ -1933,13 +1932,13 @@ Public Class NFO
 
                     Dim sReturn As New NonConf
                     sReturn = GetIMDBFromNonConf(sPath, isSingle)
-                    xmlMov.IMDBID = sReturn.IMDBID
+                    xmlMov.IMDB = sReturn.IMDBID
                     Try
                         If Not String.IsNullOrEmpty(sReturn.Text) Then
                             Using xmlSTR As StringReader = New StringReader(sReturn.Text)
                                 xmlSer = New XmlSerializer(GetType(MediaContainers.Movie))
                                 xmlMov = DirectCast(xmlSer.Deserialize(xmlSTR), MediaContainers.Movie)
-                                xmlMov.IMDBID = sReturn.IMDBID
+                                xmlMov.IMDB = sReturn.IMDBID
                                 xmlMov = CleanNFO_Movies(xmlMov)
                             End Using
                         End If
@@ -2283,8 +2282,8 @@ Public Class NFO
 
                 'YAMJ support
                 If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieNFOYAMJ Then
-                    If tMovie.TMDBIDSpecified Then
-                        tMovie.TMDBID = String.Empty
+                    If tMovie.TMDBSpecified Then
+                        tMovie.TMDB = String.Empty
                     End If
                 End If
 

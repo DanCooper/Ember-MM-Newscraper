@@ -631,8 +631,8 @@ Public Class Scanner
         End If
 
         'IMDB ID
-        If Not DBMovie.Movie.IMDBIDSpecified Then
-            DBMovie.Movie.IMDBID = StringUtils.FilterIMDBIDFromPath(DBMovie.Filename)
+        If Not DBMovie.Movie.IMDBSpecified Then
+            DBMovie.Movie.IMDB = StringUtils.FilterIMDBIDFromPath(DBMovie.Filename)
         End If
 
         'Title

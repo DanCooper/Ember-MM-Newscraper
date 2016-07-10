@@ -935,11 +935,8 @@ Public Class ModulesManager
                         ScrapedList.Add(ret.Result)
 
                         'set new informations for following scrapers
-                        If ret.Result.IDSpecified Then
-                            oDBMovie.Movie.ID = ret.Result.ID
-                        End If
-                        If ret.Result.IMDBIDSpecified Then
-                            oDBMovie.Movie.IMDBID = ret.Result.IMDBID
+                        If ret.Result.IMDBSpecified Then
+                            oDBMovie.Movie.IMDB = ret.Result.IMDB
                         End If
                         If ret.Result.OriginalTitleSpecified Then
                             oDBMovie.Movie.OriginalTitle = ret.Result.OriginalTitle
@@ -947,8 +944,8 @@ Public Class ModulesManager
                         If ret.Result.TitleSpecified Then
                             oDBMovie.Movie.Title = ret.Result.Title
                         End If
-                        If ret.Result.TMDBIDSpecified Then
-                            oDBMovie.Movie.TMDBID = ret.Result.TMDBID
+                        If ret.Result.TMDBSpecified Then
+                            oDBMovie.Movie.TMDB = ret.Result.TMDB
                         End If
                         If ret.Result.YearSpecified Then
                             oDBMovie.Movie.Year = ret.Result.Year

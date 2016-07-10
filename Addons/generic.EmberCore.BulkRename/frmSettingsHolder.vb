@@ -55,7 +55,7 @@ Public Class frmSettingsHolder
         _fDummyMultiEpisode.FileName = "OldFileName"
         _fDummyMultiEpisode.Genre = "Comedy / Lovestory"
         _fDummyMultiEpisode.ID = -1
-        _fDummyMultiEpisode.IMDBID = ""
+        _fDummyMultiEpisode.IMDB = ""
         _fDummyMultiEpisode.IsBDMV = False
         _fDummyMultiEpisode.IsLocked = False
         _fDummyMultiEpisode.IsMultiEpisode = True
@@ -102,7 +102,7 @@ Public Class frmSettingsHolder
         _fDummyMultiSeason.FileName = "OldFileName"
         _fDummyMultiSeason.Genre = "Comedy / Lovestory"
         _fDummyMultiSeason.ID = -1
-        _fDummyMultiSeason.IMDBID = ""
+        _fDummyMultiSeason.IMDB = ""
         _fDummyMultiSeason.IsBDMV = False
         _fDummyMultiSeason.IsLocked = False
         _fDummyMultiSeason.IsMultiEpisode = True
@@ -155,7 +155,7 @@ Public Class frmSettingsHolder
         _fDummySingleEpisode.FileName = "OldFileName"
         _fDummySingleEpisode.Genre = "Comedy / Lovestory"
         _fDummySingleEpisode.ID = -1
-        _fDummySingleEpisode.IMDBID = ""
+        _fDummySingleEpisode.IMDB = ""
         _fDummySingleEpisode.IsBDMV = False
         _fDummySingleEpisode.IsLocked = False
         _fDummySingleEpisode.IsMultiEpisode = False
@@ -200,7 +200,7 @@ Public Class frmSettingsHolder
         _fDummySingleMovie.FileName = "OldFileName"
         _fDummySingleMovie.Genre = "Action / Sci-Fi"
         _fDummySingleMovie.ID = -1
-        _fDummySingleMovie.IMDBID = "0848228"
+        _fDummySingleMovie.IMDB = "0848228"
         _fDummySingleMovie.IsBDMV = False
         _fDummySingleMovie.IsLocked = False
         _fDummySingleMovie.IsMultiEpisode = False
