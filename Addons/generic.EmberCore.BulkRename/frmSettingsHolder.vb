@@ -82,7 +82,7 @@ Public Class frmSettingsHolder
         _fDummyMultiEpisode.TVDBID = "58056"
         _fDummyMultiEpisode.VideoCodec = "xvid"
         _fDummyMultiEpisode.VideoSource = "dvd"
-        _fDummyMultiEpisode.Year = ""
+        _fDummyMultiEpisode.Year = "2007"
         Dim dMEpisode1 As New FileFolderRenamer.Episode With {.ID = 1, .Episode = 1, .Title = "Pilot"}
         Dim dMEpisode2 As New FileFolderRenamer.Episode With {.ID = 2, .Episode = 2, .Title = "The Big Bran Hypothesis"}
         Dim dMEpisodeList As New List(Of FileFolderRenamer.Episode)
@@ -129,7 +129,7 @@ Public Class frmSettingsHolder
         _fDummyMultiSeason.TVDBID = "58056"
         _fDummyMultiSeason.VideoCodec = "xvid"
         _fDummyMultiSeason.VideoSource = "dvd"
-        _fDummyMultiSeason.Year = ""
+        _fDummyMultiSeason.Year = "2007"
         Dim dMSEpisode1 As New FileFolderRenamer.Episode With {.ID = 1, .Episode = 1, .Title = "Pilot"}
         Dim dMSEpisode2 As New FileFolderRenamer.Episode With {.ID = 2, .Episode = 2, .Title = "The Big Bran Hypothesis"}
         Dim dMSEpisode3 As New FileFolderRenamer.Episode With {.ID = 3, .Episode = 1, .Title = "The Bad Fish Paradigm"}
@@ -182,7 +182,7 @@ Public Class frmSettingsHolder
         _fDummySingleEpisode.TVDBID = "58056"
         _fDummySingleEpisode.VideoCodec = "xvid"
         _fDummySingleEpisode.VideoSource = "dvd"
-        _fDummySingleEpisode.Year = ""
+        _fDummySingleEpisode.Year = "2007"
         Dim dSEpisode As New FileFolderRenamer.Episode With {.ID = 1, .Episode = 1, .Title = "Pilot"}
         Dim dSEpisodeList As New List(Of FileFolderRenamer.Episode)
         dSEpisodeList.Add(dSEpisode)

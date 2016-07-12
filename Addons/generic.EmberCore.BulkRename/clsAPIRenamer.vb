@@ -1007,6 +1007,14 @@ Public Class FileFolderRenamer
             ShowFile.Rating = _tmpTVShow.TVShow.Rating
         End If
 
+        'Year
+        If _tmpTVShow.TVShow.PremieredSpecified Then
+            Dim tmpDate As Date
+            If Date.TryParse(_tmpTVShow.TVShow.Premiered, tmpDate) Then
+                ShowFile.Year = tmpDate.Year.ToString
+            End If
+        End If
+
         Dim mFolders As New List(Of String)
         Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
             SQLNewcommand.CommandText = String.Concat("SELECT strPath FROM tvshowsource;")
@@ -1252,7 +1260,7 @@ Public Class FileFolderRenamer
                         strCond = ApplyPattern(strCond, "F", f.FileName.Replace("\", String.Empty))
                         '                                G   Genres
                         strCond = ApplyPattern(strCond, "H", f.VideoCodec)
-                        strCond = ApplyPattern(strCond, "I", If(Not String.IsNullOrEmpty(f.IMDB), String.Concat("tt", f.IMDB), String.Empty))
+                        strCond = ApplyPattern(strCond, "I", f.IMDB)
                         strCond = ApplyPattern(strCond, "J", f.AudioCodec)
                         '                                K   Season
                         strCond = ApplyPattern(strCond, "L", f.ListTitle)
