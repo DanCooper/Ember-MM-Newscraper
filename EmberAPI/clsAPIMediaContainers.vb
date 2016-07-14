@@ -5027,7 +5027,9 @@ Namespace MediaContainers
                 FilteredList.AddRange(ImagesList.Where(Function(f) f.ShortLang = cSettings.ForcedLanguage))
             End If
 
-            FilteredList.AddRange(ImagesList.Where(Function(f) f.ShortLang = cSettings.MediaLanguage))
+            If Not (cSettings.ForceLanguage AndAlso cSettings.ForcedLanguage = cSettings.MediaLanguage) Then
+                FilteredList.AddRange(ImagesList.Where(Function(f) f.ShortLang = cSettings.MediaLanguage))
+            End If
 
             If (cSettings.GetEnglishImages OrElse Not cSettings.MediaLanguageOnly) AndAlso
                 Not (cSettings.ForceLanguage AndAlso cSettings.ForcedLanguage = "en") AndAlso
