@@ -46,7 +46,7 @@ Public Class Trailers
 #Region "Constructors"
 
     Public Sub New()
-        Me.Clear()
+        Clear()
     End Sub
 
 #End Region 'Constructors
@@ -94,8 +94,8 @@ Public Class Trailers
 
     Private Sub Clear()
         If _ms IsNot Nothing Then
-            Me.Dispose(True)
-            Me.disposedValue = False    'Since this is not a real Dispose call...
+            Dispose(True)
+            disposedValue = False    'Since this is not a real Dispose call...
         End If
 
         _ext = String.Empty
@@ -154,22 +154,22 @@ Public Class Trailers
     ''' <param name="sPath">Path to the trailer file</param>
     ''' <remarks></remarks>
     Public Sub FromFile(ByVal sPath As String)
-        If Me._ms IsNot Nothing Then
-            Me._ms.Dispose()
+        If _ms IsNot Nothing Then
+            _ms.Dispose()
         End If
         If Not String.IsNullOrEmpty(sPath) AndAlso File.Exists(sPath) Then
             Try
-                Me._ms = New MemoryStream()
+                _ms = New MemoryStream()
                 Using fsImage As New FileStream(sPath, FileMode.Open, FileAccess.Read)
                     Dim StreamBuffer(Convert.ToInt32(fsImage.Length - 1)) As Byte
 
                     fsImage.Read(StreamBuffer, 0, StreamBuffer.Length)
-                    Me._ms.Write(StreamBuffer, 0, StreamBuffer.Length)
+                    _ms.Write(StreamBuffer, 0, StreamBuffer.Length)
 
                     StreamBuffer = Nothing
-                    Me._ms.Flush()
+                    _ms.Flush()
 
-                    Me._ext = Path.GetExtension(sPath)
+                    _ext = Path.GetExtension(sPath)
                 End Using
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sPath & ">")
@@ -224,22 +224,22 @@ Public Class Trailers
             End Using
 
             If Not String.IsNullOrEmpty(tTrailerVideo) AndAlso File.Exists(tTrailerOutput) Then
-                Me.FromFile(tTrailerOutput)
+                FromFile(tTrailerOutput)
             End If
         Else
             Try
                 tTrailerOutput = WebPage.DownloadFile(sTrailerLinksContainer.VideoURL, "", True, "trailer")
                 If Not String.IsNullOrEmpty(tTrailerOutput) Then
-                    If Me._ms IsNot Nothing Then
-                        Me._ms.Dispose()
+                    If _ms IsNot Nothing Then
+                        _ms.Dispose()
                     End If
-                    Me._ms = New MemoryStream()
+                    _ms = New MemoryStream()
 
                     Dim retSave() As Byte
                     retSave = WebPage.ms.ToArray
-                    Me._ms.Write(retSave, 0, retSave.Length)
+                    _ms.Write(retSave, 0, retSave.Length)
 
-                    Me._ext = Path.GetExtension(tTrailerOutput)
+                    _ext = Path.GetExtension(tTrailerOutput)
                     logger.Debug("Trailer downloaded: " & sTrailerLinksContainer.VideoURL)
                 Else
                     logger.Warn("Trailer NOT downloaded: " & sTrailerLinksContainer.VideoURL)
@@ -300,23 +300,23 @@ Public Class Trailers
             End Using
 
             If Not String.IsNullOrEmpty(tTrailerOutput) AndAlso File.Exists(tTrailerOutput) Then
-                Me.FromFile(tTrailerOutput)
+                FromFile(tTrailerOutput)
             End If
         Else
             Try
                 tTrailerOutput = WebPage.DownloadFile(sTrailer.URLVideoStream, "", True, "trailer")
                 If Not String.IsNullOrEmpty(tTrailerOutput) Then
 
-                    If Me._ms IsNot Nothing Then
-                        Me._ms.Dispose()
+                    If _ms IsNot Nothing Then
+                        _ms.Dispose()
                     End If
-                    Me._ms = New MemoryStream()
+                    _ms = New MemoryStream()
 
                     Dim retSave() As Byte
                     retSave = WebPage.ms.ToArray
-                    Me._ms.Write(retSave, 0, retSave.Length)
+                    _ms.Write(retSave, 0, retSave.Length)
 
-                    Me._ext = Path.GetExtension(tTrailerOutput)
+                    _ext = Path.GetExtension(tTrailerOutput)
                     logger.Debug("Trailer downloaded: " & sTrailer.URLVideoStream)
                 Else
                     logger.Warn("Trailer NOT downloaded: " & sTrailer.URLVideoStream)
@@ -342,14 +342,14 @@ Public Class Trailers
         Try
             tTrailer = WebPage.DownloadFile(sURL, "", True, "trailer")
             If Not String.IsNullOrEmpty(tTrailer) Then
-                If Me._ms IsNot Nothing Then
-                    Me._ms.Dispose()
+                If _ms IsNot Nothing Then
+                    _ms.Dispose()
                 End If
-                Me._ms = New MemoryStream()
+                _ms = New MemoryStream()
                 Dim retSave() As Byte
                 retSave = WebPage.ms.ToArray
-                Me._ms.Write(retSave, 0, retSave.Length)
-                Me._ext = Path.GetExtension(tTrailer)
+                _ms.Write(retSave, 0, retSave.Length)
+                _ext = Path.GetExtension(tTrailer)
                 logger.Debug("Trailer downloaded: " & sURL)
             Else
                 logger.Warn("Trailer NOT downloaded: " & sURL)
@@ -778,6 +778,8 @@ Public Class Trailers
     End Function
 
     Public Function SaveAsMovieTrailer(ByVal mMovie As Database.DBElement) As String
+        If Not mMovie.Trailer.TrailerOriginal.hasMemoryStream Then Return String.Empty
+
         Dim strReturn As String = String.Empty
 
         Try
@@ -787,7 +789,7 @@ Public Class Trailers
             Catch ex As Exception
             End Try
 
-            Dim fExt As String = Path.GetExtension(Me._ext)
+            Dim fExt As String = Path.GetExtension(_ext)
             If Not String.IsNullOrEmpty(fExt) Then
                 DeleteMovieTrailers(mMovie)
             End If
@@ -809,7 +811,7 @@ Public Class Trailers
     Public Sub Save(ByVal sPath As String)
         Dim retSave() As Byte
         Try
-            retSave = Me._ms.ToArray
+            retSave = _ms.ToArray
 
             'make sure directory exists
             Directory.CreateDirectory(Directory.GetParent(sPath).FullName)
@@ -860,7 +862,7 @@ Public Class Trailers
 
     ' IDisposable
     Protected Overridable Sub Dispose(disposing As Boolean)
-        If Not Me.disposedValue Then
+        If Not disposedValue Then
             If disposing Then
                 ' dispose managed state (managed objects).
                 If _ms IsNot Nothing Then
@@ -874,7 +876,7 @@ Public Class Trailers
             ' set large fields to null.
             _ms = Nothing
         End If
-        Me.disposedValue = True
+        disposedValue = True
     End Sub
 
     ' TODO: override Finalize() only if Dispose(ByVal disposing As Boolean) above has code to free unmanaged resources.
@@ -908,28 +910,28 @@ Public Class TrailerLinksContainer
 
     Public Property AudioURL() As String
         Get
-            Return Me._audiourl
+            Return _audiourl
         End Get
         Set(ByVal value As String)
-            Me._audiourl = value
+            _audiourl = value
         End Set
     End Property
 
     Public Property isDash() As Boolean
         Get
-            Return Me._isDash
+            Return _isDash
         End Get
         Set(ByVal value As Boolean)
-            Me._isDash = value
+            _isDash = value
         End Set
     End Property
 
     Public Property VideoURL() As String
         Get
-            Return Me._videourl
+            Return _videourl
         End Get
         Set(ByVal value As String)
-            Me._videourl = value
+            _videourl = value
         End Set
     End Property
 
