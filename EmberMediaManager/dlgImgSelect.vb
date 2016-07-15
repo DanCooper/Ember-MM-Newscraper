@@ -49,12 +49,15 @@ Public Class dlgImgSelect
     Private iListImage_Size_Panel As Size = New Size(180, 200)
     Private iListImage_Size_Resolution As Size = New Size(174, 15)
     Private iListImage_Size_Scraper As Size = New Size(174, 15)
+    Private iListImage_Size_Select As Size = New Size(16, 16)
+    Private iListImage_Location_Select As Point = New Point(iListImage_Size_Panel.Width - iListImage_Size_Select.Width - 5, 5)
 
     Private lblListImage_DiscType() As Label
     Private lblListImage_Language() As Label
     Private lblListImageList_Resolution() As Label
     Private lblListImage_Scraper() As Label
     Private pbListImage_Image() As PictureBox
+    Private pbListImage_Select() As PictureBox
     Private pnlListImage_Panel() As Panel
 
     'SubImage
@@ -275,10 +278,11 @@ Public Class dlgImgSelect
     End Sub
 
     Private Sub AddListImage(ByRef tImage As MediaContainers.Image, ByVal iIndex As Integer, ByVal ModifierType As Enums.ModifierType, Optional ByVal iSeason As Integer = -1)
-        Dim tTag As iTag = CreateImageTag(tImage, ModifierType, iSeason)
+        Dim tTag As iTag = CreateImageTag(tImage, ModifierType, iSeason, iIndex)
 
         ReDim Preserve pnlListImage_Panel(iIndex)
         ReDim Preserve pbListImage_Image(iIndex)
+        ReDim Preserve pbListImage_Select(iIndex)
         ReDim Preserve lblListImage_DiscType(iIndex)
         ReDim Preserve lblListImage_Language(iIndex)
         ReDim Preserve lblListImageList_Resolution(iIndex)
@@ -286,10 +290,17 @@ Public Class dlgImgSelect
 
         pnlListImage_Panel(iIndex) = New Panel()
         pbListImage_Image(iIndex) = New PictureBox()
+        pbListImage_Select(iIndex) = New PictureBox()
         lblListImage_DiscType(iIndex) = New Label()
         lblListImage_Language(iIndex) = New Label()
         lblListImageList_Resolution(iIndex) = New Label()
         lblListImage_Scraper(iIndex) = New Label()
+
+        pbListImage_Select(iIndex).Image = My.Resources.menuAdd
+        pbListImage_Select(iIndex).Location = iListImage_Location_Select
+        pbListImage_Select(iIndex).Size = iListImage_Size_Select
+        pbListImage_Select(iIndex).Tag = tTag
+        pbListImage_Select(iIndex).Visible = False
 
         lblListImage_DiscType(iIndex).AutoSize = False
         lblListImage_DiscType(iIndex).BackColor = Color.White
@@ -355,6 +366,7 @@ Public Class dlgImgSelect
         pnlListImage_Panel(iIndex).Top = iListImage_NextTop
 
         pnlImgSelectMain.Controls.Add(pnlListImage_Panel(iIndex))
+        pnlListImage_Panel(iIndex).Controls.Add(pbListImage_Select(iIndex))
         pnlListImage_Panel(iIndex).Controls.Add(pbListImage_Image(iIndex))
         pnlListImage_Panel(iIndex).Controls.Add(lblListImage_DiscType(iIndex))
         pnlListImage_Panel(iIndex).Controls.Add(lblListImage_Language(iIndex))
@@ -364,16 +376,24 @@ Public Class dlgImgSelect
 
         AddHandler pbListImage_Image(iIndex).DoubleClick, AddressOf pbAnyImage_DoubleClick
         AddHandler pbListImage_Image(iIndex).MouseDown, AddressOf pbListImage_MouseDown
+        AddHandler pbListImage_Image(iIndex).MouseEnter, AddressOf pbListImage_MouseEnter
+        AddHandler pbListImage_Select(iIndex).Click, AddressOf pbSelect_Click
         AddHandler pnlListImage_Panel(iIndex).DoubleClick, AddressOf pnlAnyImage_DoubleClick
         AddHandler pnlListImage_Panel(iIndex).MouseDown, AddressOf pnlListImage_MouseDown
+        AddHandler pnlListImage_Panel(iIndex).MouseEnter, AddressOf pnlListImage_MouseEnter
+        AddHandler pnlListImage_Panel(iIndex).MouseLeave, AddressOf pnlListImage_MouseLeave
         AddHandler lblListImage_DiscType(iIndex).DoubleClick, AddressOf lblAnyImage_DoubleClick
         AddHandler lblListImage_DiscType(iIndex).MouseDown, AddressOf lblListImage_MouseDown
+        AddHandler lblListImage_DiscType(iIndex).MouseEnter, AddressOf lblListImage_MouseEnter
         AddHandler lblListImage_Language(iIndex).DoubleClick, AddressOf lblAnyImage_DoubleClick
         AddHandler lblListImage_Language(iIndex).MouseDown, AddressOf lblListImage_MouseDown
+        AddHandler lblListImage_Language(iIndex).MouseEnter, AddressOf lblListImage_MouseEnter
         AddHandler lblListImageList_Resolution(iIndex).DoubleClick, AddressOf lblAnyImage_DoubleClick
         AddHandler lblListImageList_Resolution(iIndex).MouseDown, AddressOf lblListImage_MouseDown
+        AddHandler lblListImageList_Resolution(iIndex).MouseEnter, AddressOf lblListImage_MouseEnter
         AddHandler lblListImage_Scraper(iIndex).DoubleClick, AddressOf lblAnyImage_DoubleClick
         AddHandler lblListImage_Scraper(iIndex).MouseDown, AddressOf lblListImage_MouseDown
+        AddHandler lblListImage_Scraper(iIndex).MouseEnter, AddressOf lblListImage_MouseEnter
 
         If iListImage_NextLeft + iListImage_Size_Panel.Width + iListImage_DistanceLeft + iListImage_Size_Panel.Width > pnlImgSelectMain.Width - 20 Then
             iListImage_NextLeft = iListImage_DistanceLeft
@@ -980,8 +1000,8 @@ Public Class dlgImgSelect
             End If
         End If
 
-        'Index (only needed for Extrathumbs)
-        If ModifierType = Enums.ModifierType.MainExtrathumbs Then
+        'Index
+        If Not iIndex = -1 Then
             nTag.iIndex = iIndex
         End If
 
@@ -1961,6 +1981,11 @@ Public Class dlgImgSelect
         cmnuListImageSelectAll.Enabled = currSubImageSelectedType = Enums.ModifierType.MainExtrafanarts OrElse currSubImageSelectedType = Enums.ModifierType.MainExtrathumbs
     End Sub
 
+    Private Sub lblListImage_MouseEnter(sender As Object, e As EventArgs)
+        Dim iIndex As Integer = DirectCast(DirectCast(sender, Label).Tag, iTag).iIndex
+        pbListImage_Select(iIndex).Visible = True
+    End Sub
+
     Private Sub lblSubImage_MouseDown(sender As Object, e As MouseEventArgs)
         DoSelectSubImage(Convert.ToInt32(DirectCast(sender, Label).Name), DirectCast(DirectCast(sender, Label).Tag, iTag))
         cmnuSubImageRemoveAll.Enabled = currSubImageSelectedType = Enums.ModifierType.MainExtrafanarts OrElse currSubImageSelectedType = Enums.ModifierType.MainExtrathumbs
@@ -1990,9 +2015,19 @@ Public Class dlgImgSelect
         Cursor.Current = Cursors.Default
     End Sub
 
+    Private Sub pbSelect_Click(sender As Object, e As EventArgs)
+        Dim tImage As iTag = DirectCast(DirectCast(sender, PictureBox).Tag, iTag)
+        SetImage(tImage)
+    End Sub
+
     Private Sub pbListImage_MouseDown(sender As Object, e As MouseEventArgs)
         DoSelectListImage(Convert.ToInt32(DirectCast(sender, PictureBox).Name), DirectCast(DirectCast(sender, PictureBox).Tag, iTag))
         cmnuListImageSelectAll.Enabled = currSubImageSelectedType = Enums.ModifierType.MainExtrafanarts OrElse currSubImageSelectedType = Enums.ModifierType.MainExtrathumbs
+    End Sub
+
+    Private Sub pbListImage_MouseEnter(sender As Object, e As EventArgs)
+        Dim iIndex As Integer = DirectCast(DirectCast(sender, PictureBox).Tag, iTag).iIndex
+        pbListImage_Select(iIndex).Visible = True
     End Sub
 
     Private Sub pbSubImage_MouseDown(sender As Object, e As MouseEventArgs)
@@ -2018,6 +2053,16 @@ Public Class dlgImgSelect
     Private Sub pnlListImage_MouseDown(sender As Object, e As MouseEventArgs)
         DoSelectListImage(Convert.ToInt32(DirectCast(sender, Panel).Name), DirectCast(DirectCast(sender, Panel).Tag, iTag))
         cmnuListImageSelectAll.Enabled = currSubImageSelectedType = Enums.ModifierType.MainExtrafanarts OrElse currSubImageSelectedType = Enums.ModifierType.MainExtrathumbs
+    End Sub
+
+    Private Sub pnlListImage_MouseEnter(sender As Object, e As EventArgs)
+        Dim iIndex As Integer = DirectCast(DirectCast(sender, Panel).Tag, iTag).iIndex
+        pbListImage_Select(iIndex).Visible = True
+    End Sub
+
+    Private Sub pnlListImage_MouseLeave(sender As Object, e As EventArgs)
+        Dim iIndex As Integer = DirectCast(DirectCast(sender, Panel).Tag, iTag).iIndex
+        pbListImage_Select(iIndex).Visible = False
     End Sub
 
     Private Sub pnlSubImage_MouseDown(sender As Object, e As MouseEventArgs)
