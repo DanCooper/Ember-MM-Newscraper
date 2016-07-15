@@ -30,7 +30,7 @@ Partial Class dlgSourceTVShow
         Me.lblSourcePath = New System.Windows.Forms.Label()
         Me.txtSourcePath = New System.Windows.Forms.TextBox()
         Me.btnBrowse = New System.Windows.Forms.Button()
-        Me.pbValid = New System.Windows.Forms.PictureBox()
+        Me.pbValidSourceName = New System.Windows.Forms.PictureBox()
         Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog()
         Me.tmrWait = New System.Windows.Forms.Timer(Me.components)
         Me.tmrName = New System.Windows.Forms.Timer(Me.components)
@@ -47,23 +47,25 @@ Partial Class dlgSourceTVShow
         Me.lblSourceOrdering = New System.Windows.Forms.Label()
         Me.cbSourceOrdering = New System.Windows.Forms.ComboBox()
         Me.cbSourceLanguage = New System.Windows.Forms.ComboBox()
+        Me.chkSingle = New System.Windows.Forms.CheckBox()
         Me.pnlBottom = New System.Windows.Forms.Panel()
         Me.tblBottom = New System.Windows.Forms.TableLayoutPanel()
-        Me.chkSingle = New System.Windows.Forms.CheckBox()
-        CType(Me.pbValid, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.pbValidSourcePath = New System.Windows.Forms.PictureBox()
+        CType(Me.pbValidSourceName, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlMain.SuspendLayout()
         Me.tblMain.SuspendLayout()
         Me.gbSourceOptions.SuspendLayout()
         Me.tblSourceOptions.SuspendLayout()
         Me.pnlBottom.SuspendLayout()
         Me.tblBottom.SuspendLayout()
+        CType(Me.pbValidSourcePath, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'OK_Button
         '
         Me.OK_Button.Enabled = False
         Me.OK_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.OK_Button.Location = New System.Drawing.Point(285, 3)
+        Me.OK_Button.Location = New System.Drawing.Point(307, 3)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
         Me.OK_Button.TabIndex = 7
@@ -73,7 +75,7 @@ Partial Class dlgSourceTVShow
         '
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.Cancel_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Cancel_Button.Location = New System.Drawing.Point(358, 3)
+        Me.Cancel_Button.Location = New System.Drawing.Point(380, 3)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
         Me.Cancel_Button.TabIndex = 8
@@ -121,22 +123,22 @@ Partial Class dlgSourceTVShow
         'btnBrowse
         '
         Me.btnBrowse.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnBrowse.Location = New System.Drawing.Point(388, 74)
+        Me.btnBrowse.Location = New System.Drawing.Point(410, 74)
         Me.btnBrowse.Name = "btnBrowse"
         Me.btnBrowse.Size = New System.Drawing.Size(26, 23)
         Me.btnBrowse.TabIndex = 2
         Me.btnBrowse.Text = "..."
         Me.btnBrowse.UseVisualStyleBackColor = True
         '
-        'pbValid
+        'pbValidSourceName
         '
-        Me.pbValid.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.pbValid.Image = Global.Ember_Media_Manager.My.Resources.Resources.invalid
-        Me.pbValid.Location = New System.Drawing.Point(142, 29)
-        Me.pbValid.Name = "pbValid"
-        Me.pbValid.Size = New System.Drawing.Size(16, 16)
-        Me.pbValid.TabIndex = 7
-        Me.pbValid.TabStop = False
+        Me.pbValidSourceName.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.pbValidSourceName.Image = Global.Ember_Media_Manager.My.Resources.Resources.invalid
+        Me.pbValidSourceName.Location = New System.Drawing.Point(142, 29)
+        Me.pbValidSourceName.Name = "pbValidSourceName"
+        Me.pbValidSourceName.Size = New System.Drawing.Size(16, 16)
+        Me.pbValidSourceName.TabIndex = 7
+        Me.pbValidSourceName.TabStop = False
         '
         'fbdBrowse
         '
@@ -166,13 +168,14 @@ Partial Class dlgSourceTVShow
         Me.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlMain.Location = New System.Drawing.Point(0, 0)
         Me.pnlMain.Name = "pnlMain"
-        Me.pnlMain.Size = New System.Drawing.Size(428, 267)
+        Me.pnlMain.Size = New System.Drawing.Size(450, 267)
         Me.pnlMain.TabIndex = 2
         '
         'tblMain
         '
         Me.tblMain.AutoSize = True
-        Me.tblMain.ColumnCount = 4
+        Me.tblMain.ColumnCount = 5
+        Me.tblMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -180,11 +183,12 @@ Partial Class dlgSourceTVShow
         Me.tblMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblMain.Controls.Add(Me.lblSourceName, 0, 0)
         Me.tblMain.Controls.Add(Me.txtSourceName, 0, 1)
-        Me.tblMain.Controls.Add(Me.pbValid, 1, 1)
+        Me.tblMain.Controls.Add(Me.pbValidSourceName, 1, 1)
         Me.tblMain.Controls.Add(Me.lblSourcePath, 0, 2)
         Me.tblMain.Controls.Add(Me.txtSourcePath, 0, 3)
-        Me.tblMain.Controls.Add(Me.btnBrowse, 2, 3)
+        Me.tblMain.Controls.Add(Me.btnBrowse, 3, 3)
         Me.tblMain.Controls.Add(Me.gbSourceOptions, 0, 4)
+        Me.tblMain.Controls.Add(Me.pbValidSourcePath, 2, 3)
         Me.tblMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMain.Location = New System.Drawing.Point(0, 0)
         Me.tblMain.Name = "tblMain"
@@ -196,19 +200,19 @@ Partial Class dlgSourceTVShow
         Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMain.Size = New System.Drawing.Size(428, 267)
+        Me.tblMain.Size = New System.Drawing.Size(450, 267)
         Me.tblMain.TabIndex = 16
         '
         'gbSourceOptions
         '
         Me.gbSourceOptions.AutoSize = True
-        Me.tblMain.SetColumnSpan(Me.gbSourceOptions, 3)
+        Me.tblMain.SetColumnSpan(Me.gbSourceOptions, 4)
         Me.gbSourceOptions.Controls.Add(Me.tblSourceOptions)
         Me.gbSourceOptions.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbSourceOptions.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbSourceOptions.Location = New System.Drawing.Point(6, 103)
         Me.gbSourceOptions.Name = "gbSourceOptions"
-        Me.gbSourceOptions.Size = New System.Drawing.Size(408, 148)
+        Me.gbSourceOptions.Size = New System.Drawing.Size(430, 148)
         Me.gbSourceOptions.TabIndex = 13
         Me.gbSourceOptions.TabStop = False
         Me.gbSourceOptions.Text = "Source Options"
@@ -238,7 +242,7 @@ Partial Class dlgSourceTVShow
         Me.tblSourceOptions.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSourceOptions.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSourceOptions.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSourceOptions.Size = New System.Drawing.Size(402, 127)
+        Me.tblSourceOptions.Size = New System.Drawing.Size(424, 127)
         Me.tblSourceOptions.TabIndex = 4
         '
         'chkExclude
@@ -318,6 +322,18 @@ Partial Class dlgSourceTVShow
         Me.cbSourceLanguage.Size = New System.Drawing.Size(172, 21)
         Me.cbSourceLanguage.TabIndex = 4
         '
+        'chkSingle
+        '
+        Me.chkSingle.AutoSize = True
+        Me.tblSourceOptions.SetColumnSpan(Me.chkSingle, 2)
+        Me.chkSingle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkSingle.Location = New System.Drawing.Point(3, 3)
+        Me.chkSingle.Name = "chkSingle"
+        Me.chkSingle.Size = New System.Drawing.Size(240, 17)
+        Me.chkSingle.TabIndex = 15
+        Me.chkSingle.Text = "Selected folder contains a single TV Show"
+        Me.chkSingle.UseVisualStyleBackColor = True
+        '
         'pnlBottom
         '
         Me.pnlBottom.AutoSize = True
@@ -325,7 +341,7 @@ Partial Class dlgSourceTVShow
         Me.pnlBottom.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.pnlBottom.Location = New System.Drawing.Point(0, 267)
         Me.pnlBottom.Name = "pnlBottom"
-        Me.pnlBottom.Size = New System.Drawing.Size(428, 29)
+        Me.pnlBottom.Size = New System.Drawing.Size(450, 29)
         Me.pnlBottom.TabIndex = 3
         '
         'tblBottom
@@ -343,20 +359,18 @@ Partial Class dlgSourceTVShow
         Me.tblBottom.RowCount = 1
         Me.tblBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblBottom.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblBottom.Size = New System.Drawing.Size(428, 29)
+        Me.tblBottom.Size = New System.Drawing.Size(450, 29)
         Me.tblBottom.TabIndex = 0
         '
-        'chkSingle
+        'pbValidSourcePath
         '
-        Me.chkSingle.AutoSize = True
-        Me.tblSourceOptions.SetColumnSpan(Me.chkSingle, 2)
-        Me.chkSingle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkSingle.Location = New System.Drawing.Point(3, 3)
-        Me.chkSingle.Name = "chkSingle"
-        Me.chkSingle.Size = New System.Drawing.Size(240, 17)
-        Me.chkSingle.TabIndex = 15
-        Me.chkSingle.Text = "Selected folder contains a single TV Show"
-        Me.chkSingle.UseVisualStyleBackColor = True
+        Me.pbValidSourcePath.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.pbValidSourcePath.Image = Global.Ember_Media_Manager.My.Resources.Resources.invalid
+        Me.pbValidSourcePath.Location = New System.Drawing.Point(388, 77)
+        Me.pbValidSourcePath.Name = "pbValidSourcePath"
+        Me.pbValidSourcePath.Size = New System.Drawing.Size(16, 16)
+        Me.pbValidSourcePath.TabIndex = 7
+        Me.pbValidSourcePath.TabStop = False
         '
         'dlgSourceTVShow
         '
@@ -366,7 +380,7 @@ Partial Class dlgSourceTVShow
         Me.AutoSize = True
         Me.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(428, 296)
+        Me.ClientSize = New System.Drawing.Size(450, 296)
         Me.Controls.Add(Me.pnlMain)
         Me.Controls.Add(Me.pnlBottom)
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -376,7 +390,7 @@ Partial Class dlgSourceTVShow
         Me.Name = "dlgSourceTVShow"
         Me.ShowInTaskbar = False
         Me.Text = "TV Source"
-        CType(Me.pbValid, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbValidSourceName, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlMain.ResumeLayout(False)
         Me.pnlMain.PerformLayout()
         Me.tblMain.ResumeLayout(False)
@@ -388,6 +402,7 @@ Partial Class dlgSourceTVShow
         Me.pnlBottom.ResumeLayout(False)
         Me.pnlBottom.PerformLayout()
         Me.tblBottom.ResumeLayout(False)
+        CType(Me.pbValidSourcePath, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -399,7 +414,7 @@ Partial Class dlgSourceTVShow
     Friend WithEvents lblSourcePath As System.Windows.Forms.Label
     Friend WithEvents txtSourcePath As System.Windows.Forms.TextBox
     Friend WithEvents btnBrowse As System.Windows.Forms.Button
-    Friend WithEvents pbValid As System.Windows.Forms.PictureBox
+    Friend WithEvents pbValidSourceName As System.Windows.Forms.PictureBox
     Friend WithEvents fbdBrowse As System.Windows.Forms.FolderBrowserDialog
     Friend WithEvents tmrWait As System.Windows.Forms.Timer
     Friend WithEvents tmrName As System.Windows.Forms.Timer
@@ -419,4 +434,5 @@ Partial Class dlgSourceTVShow
     Friend WithEvents pnlBottom As System.Windows.Forms.Panel
     Friend WithEvents tblBottom As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents chkSingle As CheckBox
+    Friend WithEvents pbValidSourcePath As PictureBox
 End Class
