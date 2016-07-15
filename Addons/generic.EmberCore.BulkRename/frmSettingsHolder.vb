@@ -52,7 +52,7 @@ Public Class frmSettingsHolder
         _fDummyMultiEpisode.Director = ""
         _fDummyMultiEpisode.DirExist = False
         _fDummyMultiEpisode.FileExist = False
-        _fDummyMultiEpisode.FileName = "OldFileName"
+        _fDummyMultiEpisode.OldFileName = "OldFileName"
         _fDummyMultiEpisode.Genre = "Comedy / Lovestory"
         _fDummyMultiEpisode.ID = -1
         _fDummyMultiEpisode.IMDB = ""
@@ -99,7 +99,7 @@ Public Class frmSettingsHolder
         _fDummyMultiSeason.Director = ""
         _fDummyMultiSeason.DirExist = False
         _fDummyMultiSeason.FileExist = False
-        _fDummyMultiSeason.FileName = "OldFileName"
+        _fDummyMultiSeason.OldFileName = "OldFileName"
         _fDummyMultiSeason.Genre = "Comedy / Lovestory"
         _fDummyMultiSeason.ID = -1
         _fDummyMultiSeason.IMDB = ""
@@ -152,7 +152,7 @@ Public Class frmSettingsHolder
         _fDummySingleEpisode.Director = ""
         _fDummySingleEpisode.DirExist = False
         _fDummySingleEpisode.FileExist = False
-        _fDummySingleEpisode.FileName = "OldFileName"
+        _fDummySingleEpisode.OldFileName = "OldFileName"
         _fDummySingleEpisode.Genre = "Comedy / Lovestory"
         _fDummySingleEpisode.ID = -1
         _fDummySingleEpisode.IMDB = ""
@@ -197,7 +197,7 @@ Public Class frmSettingsHolder
         _fDummySingleMovie.Director = "Joss Whedon"
         _fDummySingleMovie.DirExist = False
         _fDummySingleMovie.FileExist = False
-        _fDummySingleMovie.FileName = "OldFileName"
+        _fDummySingleMovie.OldFileName = "OldFileName"
         _fDummySingleMovie.Genre = "Action / Sci-Fi"
         _fDummySingleMovie.ID = -1
         _fDummySingleMovie.IMDB = "0848228"

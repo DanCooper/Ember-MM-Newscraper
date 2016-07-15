@@ -96,7 +96,7 @@ Public Class Scanner
 
         'first add files to filelists
         If FileUtils.Common.isVideoTS(DBMovie.Filename) Then
-            parPath = Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName
+            parPath = FileUtils.Common.GetMainPath(DBMovie.Filename).FullName
 
             Try
                 fList.AddRange(Directory.GetFiles(Directory.GetParent(DBMovie.Filename).FullName))
@@ -108,7 +108,7 @@ Public Class Scanner
                 logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         ElseIf FileUtils.Common.isBDRip(DBMovie.Filename) Then
-            parPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName).FullName
+            parPath = FileUtils.Common.GetMainPath(DBMovie.Filename).FullName
 
             Try
                 fList.AddRange(Directory.GetFiles(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName))
@@ -120,7 +120,7 @@ Public Class Scanner
                 logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         Else
-            parPath = Directory.GetParent(DBMovie.Filename).FullName
+            parPath = FileUtils.Common.GetMainPath(DBMovie.Filename).FullName
 
             If DBMovie.IsSingle Then
                 fList.AddRange(Directory.GetFiles(parPath))

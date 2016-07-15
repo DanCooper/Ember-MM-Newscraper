@@ -1723,15 +1723,13 @@ Namespace Kodi
 
             Select Case tDBElement.ContentType
                 Case Enums.ContentType.Movie
-                    If FileUtils.Common.isBDRip(tDBElement.Filename) Then
-                        strLocalPath = Directory.GetParent(Directory.GetParent(Directory.GetParent(tDBElement.Filename).FullName).FullName).FullName
-                    ElseIf FileUtils.Common.isVideoTS(tDBElement.Filename) Then
-                        strLocalPath = Directory.GetParent(Directory.GetParent(tDBElement.Filename).FullName).FullName
+                    If FileUtils.Common.isBDRip(tDBElement.Filename) OrElse FileUtils.Common.isVideoTS(tDBElement.Filename) Then
+                        strLocalPath = FileUtils.Common.GetMainPath(tDBElement.Filename).FullName
                     Else
                         If Path.GetFileNameWithoutExtension(tDBElement.Filename).ToLower = "video_ts" Then
                             strLocalPath = Directory.GetParent(Directory.GetParent(tDBElement.Filename).FullName).FullName
                         Else
-                            strLocalPath = Directory.GetParent(tDBElement.Filename).FullName
+                            strLocalPath = FileUtils.Common.GetMainPath(tDBElement.Filename).FullName
                         End If
                     End If
                 Case Enums.ContentType.TVEpisode, Enums.ContentType.TVSeason, Enums.ContentType.TVShow

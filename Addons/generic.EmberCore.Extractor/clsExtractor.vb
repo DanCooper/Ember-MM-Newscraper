@@ -139,7 +139,7 @@ Public Class ThumbGenerator
             Try
                 Dim pExt As String = Path.GetExtension(_movie.Filename).ToLower
                 Dim eMovieFile As String = String.Empty
-                If Not pExt = ".rar" AndAlso Not pExt = ".iso" AndAlso Not pExt = ".img" AndAlso _
+                If Not pExt = ".rar" AndAlso Not pExt = ".iso" AndAlso Not pExt = ".img" AndAlso
                 Not pExt = ".bin" AndAlso Not pExt = ".cue" Then
 
                     Dim intSeconds As Integer = 0
@@ -152,13 +152,13 @@ Public Class ThumbGenerator
                         eMovieFile = _movie.Filename
                     Else 'TODO: chek VIDEO_TS parent
                         If FileUtils.Common.isVideoTS(_movie.Filename) Then
-                            tPath = Path.Combine(Directory.GetParent(Directory.GetParent(_movie.Filename).FullName).FullName, "extrathumbs")
+                            tPath = Path.Combine(FileUtils.Common.GetMainPath(_movie.Filename).FullName, "extrathumbs")
                             eMovieFile = FileUtils.Common.GetLongestFromRip(_movie.Filename)
                         ElseIf FileUtils.Common.isBDRip(_movie.Filename) Then
-                            tPath = Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(_movie.Filename).FullName).FullName).FullName, "extrathumbs")
+                            tPath = Path.Combine(FileUtils.Common.GetMainPath(_movie.Filename).FullName, "extrathumbs")
                             eMovieFile = FileUtils.Common.GetLongestFromRip(_movie.Filename)
                         Else
-                            tPath = Path.Combine(Directory.GetParent(_movie.Filename).FullName, "extrathumbs")
+                            tPath = Path.Combine(FileUtils.Common.GetMainPath(_movie.Filename).FullName, "extrathumbs")
                             If FileUtils.Common.isVideoTS(_movie.Filename) OrElse FileUtils.Common.isBDRip(_movie.Filename) Then
                                 eMovieFile = FileUtils.Common.GetLongestFromRip(_movie.Filename)
                             Else
