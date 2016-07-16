@@ -99,7 +99,7 @@ Public Class dlgSourceMovie
 
     Private Sub CheckConditions()
         Dim bIsValid_SourceName As Boolean = False
-        Dim bIsValid_SourcePath As Boolean = False
+        Dim bIsValid_SourcePath As Boolean = True
 
         If String.IsNullOrEmpty(txtSourceName.Text) Then
             pbValidSourceName.Image = My.Resources.invalid
@@ -120,6 +120,7 @@ Public Class dlgSourceMovie
         End If
 
         If String.IsNullOrEmpty(txtSourcePath.Text) OrElse Not Directory.Exists(txtSourcePath.Text.Trim) Then
+            bIsValid_SourcePath = False
             pbValidSourcePath.Image = My.Resources.invalid
         Else
             For Each tSource In Master.MovieSources.Where(Function(f) Not f.ID = _id)
@@ -148,10 +149,10 @@ Public Class dlgSourceMovie
                     pbValidSourcePath.Image = My.Resources.invalid
                     Exit For
                 End If
-                bIsValid_SourcePath = True
-                pbValidSourcePath.Image = My.Resources.valid
             Next
         End If
+
+        If bIsValid_SourcePath Then pbValidSourcePath.Image = My.Resources.valid
 
         If Not String.IsNullOrEmpty(txtSourcePath.Text) AndAlso Directory.Exists(txtSourcePath.Text.Trim) AndAlso
             Not String.IsNullOrEmpty(cbSourceLanguage.Text) AndAlso bIsValid_SourceName AndAlso bIsValid_SourcePath Then
