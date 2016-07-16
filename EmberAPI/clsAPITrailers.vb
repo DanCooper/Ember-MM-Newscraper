@@ -818,32 +818,6 @@ Public Class Trailers
             logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
-    ''' <summary>
-    ''' Determines whether a trailer is allowed to be downloaded. This is determined
-    ''' by a combination of the Master.eSettings.LockTrailer settings,
-    ''' whether the path is valid, and whether the Master.eSettings.OverwriteTrailer
-    ''' flag is set. 
-    ''' </summary>
-    ''' <param name="mMovie">The intended path to save the trailer</param>
-    ''' <returns><c>True</c> if a download is allowed, <c>False</c> otherwise</returns>
-    ''' <remarks></remarks>
-    Public Function IsAllowedToDownload(ByVal mMovie As Database.DBElement) As Boolean
-        Try
-            With Master.eSettings
-                If (String.IsNullOrEmpty(mMovie.Trailer.LocalFilePath) OrElse .MovieTrailerKeepExisting) AndAlso
-                    (.MovieTrailerEden OrElse .MovieTrailerFrodo OrElse .MovieTrailerNMJ OrElse .MovieTrailerYAMJ) OrElse
-                    (.MovieUseExpert AndAlso (Not String.IsNullOrEmpty(.MovieTrailerExpertBDMV) OrElse Not String.IsNullOrEmpty(.MovieTrailerExpertMulti) OrElse
-                            Not String.IsNullOrEmpty(.MovieTrailerExpertMulti) OrElse Not String.IsNullOrEmpty(.MovieTrailerExpertSingle))) Then
-                    Return True
-                Else
-                    Return False
-                End If
-            End With
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-            Return False
-        End Try
-    End Function
 
 #End Region 'Methods
 
