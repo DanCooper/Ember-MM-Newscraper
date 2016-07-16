@@ -789,15 +789,10 @@ Public Class Trailers
             Catch ex As Exception
             End Try
 
-            Dim fExt As String = Path.GetExtension(_ext)
-            If Not String.IsNullOrEmpty(fExt) Then
-                DeleteMovieTrailers(mMovie)
-            End If
-
             For Each a In FileUtils.GetFilenameList.Movie(mMovie, Enums.ModifierType.MainTrailer)
-                If Not File.Exists(String.Concat(a, fExt)) OrElse (isEdit OrElse Master.eSettings.MovieTrailerKeepExisting) Then
-                    Save(String.Concat(a, fExt))
-                    strReturn = (String.Concat(a, fExt))
+                If Not File.Exists(String.Concat(a, _ext)) OrElse (isEdit OrElse Master.eSettings.MovieTrailerKeepExisting) Then
+                    Save(String.Concat(a, _ext))
+                    strReturn = (String.Concat(a, _ext))
                 End If
             Next
 
