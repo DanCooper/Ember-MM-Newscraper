@@ -18,13 +18,8 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System
 Imports System.IO
-Imports System.Net
-Imports System.Text
 Imports System.Text.RegularExpressions
-Imports System.Xml
-Imports EmberAPI
 Imports NLog
 
 <Serializable()> _
@@ -33,13 +28,12 @@ Public Class Trailers
 
 #Region "Fields"
 
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     Private _ext As String
     Private _isEdit As Boolean
 
     Private _ms As MemoryStream
-    Private Ret As Byte()
 
 #End Region 'Fields
 
@@ -123,13 +117,13 @@ Public Class Trailers
     ''' <summary>
     ''' Delete the movie trailers
     ''' </summary>
-    ''' <param name="mMovie"><c>DBMovie</c> structure representing the movie on which we should operate</param>
+    ''' <param name="tDBElement"><c>tDBElement</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
-    Public Shared Sub DeleteMovieTrailers(ByVal mMovie As Database.DBElement)
-        If String.IsNullOrEmpty(mMovie.Filename) Then Return
+    Public Shared Sub Delete_Movie(ByVal tDBElement As Database.DBElement, ByVal ForceFileCleanup As Boolean)
+        If String.IsNullOrEmpty(tDBElement.Filename) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.Movie(mMovie, Enums.ModifierType.MainTrailer)
+            For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainTrailer, ForceFileCleanup)
                 For Each t As String In Master.eSettings.FileSystemValidExts
                     If File.Exists(String.Concat(a, t)) Then
                         Delete(String.Concat(a, t))
@@ -137,7 +131,7 @@ Public Class Trailers
                 Next
             Next
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & mMovie.Filename & ">")
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & tDBElement.Filename & ">")
         End Try
     End Sub
     ''' <summary>
@@ -147,217 +141,6 @@ Public Class Trailers
     ''' <remarks></remarks>
     Public Shared Sub DownloadProgressUpdated(ByVal iPercent As Integer)
         RaiseEvent ProgressUpdated(iPercent, String.Empty)
-    End Sub
-    ''' <summary>
-    ''' Loads this trailer from the contents of the supplied file
-    ''' </summary>
-    ''' <param name="sPath">Path to the trailer file</param>
-    ''' <remarks></remarks>
-    Public Sub FromFile(ByVal sPath As String)
-        If _ms IsNot Nothing Then
-            _ms.Dispose()
-        End If
-        If Not String.IsNullOrEmpty(sPath) AndAlso File.Exists(sPath) Then
-            Try
-                _ms = New MemoryStream()
-                Using fsImage As New FileStream(sPath, FileMode.Open, FileAccess.Read)
-                    Dim StreamBuffer(Convert.ToInt32(fsImage.Length - 1)) As Byte
-
-                    fsImage.Read(StreamBuffer, 0, StreamBuffer.Length)
-                    _ms.Write(StreamBuffer, 0, StreamBuffer.Length)
-
-                    StreamBuffer = Nothing
-                    _ms.Flush()
-
-                    _ext = Path.GetExtension(sPath)
-                End Using
-            Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sPath & ">")
-            End Try
-        End If
-    End Sub
-    ''' <summary>
-    ''' Loads this trailer from the supplied URL
-    ''' </summary>
-    ''' <param name="sTrailerLinksContainer">TrailerLinksContainer</param>
-    ''' <remarks></remarks>
-    Public Sub FromWeb(ByVal sTrailerLinksContainer As TrailerLinksContainer)
-        Dim WebPage As New HTTP
-        Dim tmpPath As String = Path.Combine(Master.TempPath, "DashTrailer")
-        Dim tURL As String = String.Empty
-        Dim tTrailerAudio As String = String.Empty
-        Dim tTrailerVideo As String = String.Empty
-        Dim tTrailerOutput As String = String.Empty
-        AddHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
-
-        If sTrailerLinksContainer.isDash Then
-            tTrailerOutput = Path.Combine(tmpPath, "output.mkv")
-            If Directory.Exists(tmpPath) Then
-                Directory.Delete(tmpPath, True)
-            End If
-            Directory.CreateDirectory(tmpPath)
-            RaiseEvent ProgressUpdated(-1, Master.eLang.GetString(1334, "Downloading Dash Audio..."))
-            tTrailerAudio = WebPage.DownloadFile(sTrailerLinksContainer.AudioURL, Path.Combine(tmpPath, "traileraudio"), True, "trailer")
-            RaiseEvent ProgressUpdated(-1, Master.eLang.GetString(1335, "Downloading Dash Video..."))
-            tTrailerVideo = WebPage.DownloadFile(sTrailerLinksContainer.VideoURL, Path.Combine(tmpPath, "trailervideo"), True, "trailer")
-            RaiseEvent ProgressUpdated(-2, Master.eLang.GetString(1336, "Merging Trailer..."))
-            Using ffmpeg As New Process()
-                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-                '                                                ffmpeg info                                                     '
-                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-                ' -r      = fps                                                                                                  '
-                ' -an     = disable audio recording                                                                              '
-                ' -i      = creating a video from many images                                                                    '
-                ' -q:v n  = constant qualitiy(:video) (but a variable bitrate), "n" 1 (excellent quality) and 31 (worst quality) '
-                ' -b:v n  = bitrate(:video)                                                                                      '
-                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-                ffmpeg.StartInfo.FileName = Functions.GetFFMpeg
-                ffmpeg.EnableRaisingEvents = False
-                ffmpeg.StartInfo.UseShellExecute = False
-                ffmpeg.StartInfo.CreateNoWindow = True
-                ffmpeg.StartInfo.RedirectStandardOutput = True
-                'ffmpeg.StartInfo.RedirectStandardError = True     <----- if activated, ffmpeg can not finish the building process 
-                ffmpeg.StartInfo.Arguments = String.Format(" -i ""{0}"" -i ""{1}"" -vcodec copy -acodec copy ""{2}""", tTrailerVideo, tTrailerAudio, tTrailerOutput)
-                ffmpeg.Start()
-                ffmpeg.WaitForExit()
-                ffmpeg.Close()
-            End Using
-
-            If Not String.IsNullOrEmpty(tTrailerVideo) AndAlso File.Exists(tTrailerOutput) Then
-                FromFile(tTrailerOutput)
-            End If
-        Else
-            Try
-                tTrailerOutput = WebPage.DownloadFile(sTrailerLinksContainer.VideoURL, "", True, "trailer")
-                If Not String.IsNullOrEmpty(tTrailerOutput) Then
-                    If _ms IsNot Nothing Then
-                        _ms.Dispose()
-                    End If
-                    _ms = New MemoryStream()
-
-                    Dim retSave() As Byte
-                    retSave = WebPage.ms.ToArray
-                    _ms.Write(retSave, 0, retSave.Length)
-
-                    _ext = Path.GetExtension(tTrailerOutput)
-                    logger.Debug("Trailer downloaded: " & sTrailerLinksContainer.VideoURL)
-                Else
-                    logger.Warn("Trailer NOT downloaded: " & sTrailerLinksContainer.VideoURL)
-                End If
-
-            Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sTrailerLinksContainer.VideoURL & ">")
-            End Try
-        End If
-
-        RemoveHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
-    End Sub
-    ''' <summary>
-    ''' Loads this trailer from the supplied URL
-    ''' </summary>
-    ''' <param name="sTrailer">Trailer container</param>
-    ''' <remarks></remarks>
-    Public Sub FromWeb(ByVal sTrailer As MediaContainers.Trailer)
-        Dim WebPage As New HTTP
-        Dim tmpPath As String = Path.Combine(Master.TempPath, "DashTrailer")
-        Dim tURL As String = String.Empty
-        Dim tTrailerAudio As String = String.Empty
-        Dim tTrailerVideo As String = String.Empty
-        Dim tTrailerOutput As String = String.Empty
-        AddHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
-
-        If sTrailer.isDash Then
-            tTrailerOutput = Path.Combine(tmpPath, "output.mkv")
-            If Directory.Exists(tmpPath) Then
-                Directory.Delete(tmpPath, True)
-            End If
-            Directory.CreateDirectory(tmpPath)
-            RaiseEvent ProgressUpdated(-1, Master.eLang.GetString(1334, "Downloading Dash Audio..."))
-            tTrailerAudio = WebPage.DownloadFile(sTrailer.URLAudioStream, Path.Combine(tmpPath, "traileraudio"), True, "trailer")
-            RaiseEvent ProgressUpdated(-1, Master.eLang.GetString(1335, "Downloading Dash Video..."))
-            tTrailerVideo = WebPage.DownloadFile(sTrailer.URLVideoStream, Path.Combine(tmpPath, "trailervideo"), True, "trailer")
-            RaiseEvent ProgressUpdated(-2, Master.eLang.GetString(1336, "Merging Trailer..."))
-            Using ffmpeg As New Process()
-                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-                '                                                ffmpeg info                                                     '
-                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-                ' -r      = fps                                                                                                  '
-                ' -an     = disable audio recording                                                                              '
-                ' -i      = creating a video from many images                                                                    '
-                ' -q:v n  = constant qualitiy(:video) (but a variable bitrate), "n" 1 (excellent quality) and 31 (worst quality) '
-                ' -b:v n  = bitrate(:video)                                                                                      '
-                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-                ffmpeg.StartInfo.FileName = Functions.GetFFMpeg
-                ffmpeg.EnableRaisingEvents = False
-                ffmpeg.StartInfo.UseShellExecute = False
-                ffmpeg.StartInfo.CreateNoWindow = True
-                ffmpeg.StartInfo.RedirectStandardOutput = True
-                'ffmpeg.StartInfo.RedirectStandardError = True     <----- if activated, ffmpeg can not finish the building process 
-                ffmpeg.StartInfo.Arguments = String.Format(" -i ""{0}"" -i ""{1}"" -vcodec copy -acodec copy ""{2}""", tTrailerVideo, tTrailerAudio, tTrailerOutput)
-                ffmpeg.Start()
-                ffmpeg.WaitForExit()
-                ffmpeg.Close()
-            End Using
-
-            If Not String.IsNullOrEmpty(tTrailerOutput) AndAlso File.Exists(tTrailerOutput) Then
-                FromFile(tTrailerOutput)
-            End If
-        Else
-            Try
-                tTrailerOutput = WebPage.DownloadFile(sTrailer.URLVideoStream, "", True, "trailer")
-                If Not String.IsNullOrEmpty(tTrailerOutput) Then
-
-                    If _ms IsNot Nothing Then
-                        _ms.Dispose()
-                    End If
-                    _ms = New MemoryStream()
-
-                    Dim retSave() As Byte
-                    retSave = WebPage.ms.ToArray
-                    _ms.Write(retSave, 0, retSave.Length)
-
-                    _ext = Path.GetExtension(tTrailerOutput)
-                    logger.Debug("Trailer downloaded: " & sTrailer.URLVideoStream)
-                Else
-                    logger.Warn("Trailer NOT downloaded: " & sTrailer.URLVideoStream)
-                End If
-
-            Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sTrailer.URLVideoStream & ">")
-            End Try
-        End If
-
-        RemoveHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
-    End Sub
-    ''' <summary>
-    ''' Loads this trailer from the supplied URL
-    ''' </summary>
-    ''' <param name="sURL">URL to the trailer</param>
-    ''' <remarks></remarks>
-    Public Sub FromWeb(ByVal sURL As String)
-        Dim WebPage As New HTTP
-        Dim tURL As String = String.Empty
-        Dim tTrailer As String = String.Empty
-        AddHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
-        Try
-            tTrailer = WebPage.DownloadFile(sURL, "", True, "trailer")
-            If Not String.IsNullOrEmpty(tTrailer) Then
-                If _ms IsNot Nothing Then
-                    _ms.Dispose()
-                End If
-                _ms = New MemoryStream()
-                Dim retSave() As Byte
-                retSave = WebPage.ms.ToArray
-                _ms.Write(retSave, 0, retSave.Length)
-                _ext = Path.GetExtension(tTrailer)
-                logger.Debug("Trailer downloaded: " & sURL)
-            Else
-                logger.Warn("Trailer NOT downloaded: " & sURL)
-            End If
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sURL & ">")
-        End Try
-        RemoveHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
     End Sub
 
     Public Shared Function GetPreferredMovieTrailer(ByRef TrailerList As List(Of MediaContainers.Trailer), ByRef trlResult As MediaContainers.Trailer) As Boolean
@@ -776,47 +559,257 @@ Public Class Trailers
             Return False
         End If
     End Function
+    ''' <summary>
+    ''' Loads this trailer from the contents of the supplied file
+    ''' </summary>
+    ''' <param name="sPath">Path to the trailer file</param>
+    ''' <remarks></remarks>
+    Public Sub LoadFromFile(ByVal sPath As String)
+        If Not String.IsNullOrEmpty(sPath) AndAlso File.Exists(sPath) Then
+            _ms = New MemoryStream()
+            Using fsTrailer As FileStream = File.OpenRead(sPath)
+                Dim memStream As New MemoryStream
+                memStream.SetLength(fsTrailer.Length)
+                fsTrailer.Read(memStream.GetBuffer, 0, CInt(Fix(fsTrailer.Length)))
+                _ms.Write(memStream.GetBuffer, 0, CInt(Fix(fsTrailer.Length)))
+                _ms.Flush()
+            End Using
+            _ext = Path.GetExtension(sPath)
+        Else
+            _ms = New MemoryStream
+        End If
+    End Sub
+    ''' <summary>
+    ''' Loads this trailer from the supplied URL
+    ''' </summary>
+    ''' <param name="sTrailerLinksContainer">TrailerLinksContainer</param>
+    ''' <remarks></remarks>
+    Public Sub LoadFromWeb(ByVal sTrailerLinksContainer As TrailerLinksContainer)
+        Dim WebPage As New HTTP
+        Dim tmpPath As String = Path.Combine(Master.TempPath, "DashTrailer")
+        Dim tURL As String = String.Empty
+        Dim tTrailerAudio As String = String.Empty
+        Dim tTrailerVideo As String = String.Empty
+        Dim tTrailerOutput As String = String.Empty
+        AddHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
 
-    Public Function SaveAsMovieTrailer(ByVal mMovie As Database.DBElement) As String
-        If Not mMovie.Trailer.TrailerOriginal.hasMemoryStream Then Return String.Empty
+        If sTrailerLinksContainer.isDash Then
+            tTrailerOutput = Path.Combine(tmpPath, "output.mkv")
+            If Directory.Exists(tmpPath) Then
+                Directory.Delete(tmpPath, True)
+            End If
+            Directory.CreateDirectory(tmpPath)
+            RaiseEvent ProgressUpdated(-1, Master.eLang.GetString(1334, "Downloading Dash Audio..."))
+            tTrailerAudio = WebPage.DownloadFile(sTrailerLinksContainer.AudioURL, Path.Combine(tmpPath, "traileraudio"), True, "trailer")
+            RaiseEvent ProgressUpdated(-1, Master.eLang.GetString(1335, "Downloading Dash Video..."))
+            tTrailerVideo = WebPage.DownloadFile(sTrailerLinksContainer.VideoURL, Path.Combine(tmpPath, "trailervideo"), True, "trailer")
+            RaiseEvent ProgressUpdated(-2, Master.eLang.GetString(1336, "Merging Trailer..."))
+            Using ffmpeg As New Process()
+                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                '                                                ffmpeg info                                                     '
+                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                ' -r      = fps                                                                                                  '
+                ' -an     = disable audio recording                                                                              '
+                ' -i      = creating a video from many images                                                                    '
+                ' -q:v n  = constant qualitiy(:video) (but a variable bitrate), "n" 1 (excellent quality) and 31 (worst quality) '
+                ' -b:v n  = bitrate(:video)                                                                                      '
+                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                ffmpeg.StartInfo.FileName = Functions.GetFFMpeg
+                ffmpeg.EnableRaisingEvents = False
+                ffmpeg.StartInfo.UseShellExecute = False
+                ffmpeg.StartInfo.CreateNoWindow = True
+                ffmpeg.StartInfo.RedirectStandardOutput = True
+                'ffmpeg.StartInfo.RedirectStandardError = True     <----- if activated, ffmpeg can not finish the building process 
+                ffmpeg.StartInfo.Arguments = String.Format(" -i ""{0}"" -i ""{1}"" -vcodec copy -acodec copy ""{2}""", tTrailerVideo, tTrailerAudio, tTrailerOutput)
+                ffmpeg.Start()
+                ffmpeg.WaitForExit()
+                ffmpeg.Close()
+            End Using
+
+            If Not String.IsNullOrEmpty(tTrailerVideo) AndAlso File.Exists(tTrailerOutput) Then
+                LoadFromFile(tTrailerOutput)
+            End If
+        Else
+            Try
+                tTrailerOutput = WebPage.DownloadFile(sTrailerLinksContainer.VideoURL, String.Empty, True, "trailer")
+                If Not String.IsNullOrEmpty(tTrailerOutput) Then
+                    If _ms IsNot Nothing Then
+                        _ms.Dispose()
+                    End If
+                    _ms = New MemoryStream()
+
+                    Dim retSave() As Byte
+                    retSave = WebPage.ms.ToArray
+                    _ms.Write(retSave, 0, retSave.Length)
+
+                    _ext = Path.GetExtension(tTrailerOutput)
+                    logger.Debug("Trailer downloaded: " & sTrailerLinksContainer.VideoURL)
+                Else
+                    logger.Warn("Trailer NOT downloaded: " & sTrailerLinksContainer.VideoURL)
+                End If
+
+            Catch ex As Exception
+                logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sTrailerLinksContainer.VideoURL & ">")
+            End Try
+        End If
+
+        RemoveHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
+    End Sub
+    ''' <summary>
+    ''' Loads this trailer from the supplied URL
+    ''' </summary>
+    ''' <param name="sTrailer">Trailer container</param>
+    ''' <remarks></remarks>
+    Public Sub LoadFromWeb(ByVal sTrailer As MediaContainers.Trailer)
+        Dim WebPage As New HTTP
+        Dim tmpPath As String = Path.Combine(Master.TempPath, "DashTrailer")
+        Dim tURL As String = String.Empty
+        Dim tTrailerAudio As String = String.Empty
+        Dim tTrailerVideo As String = String.Empty
+        Dim tTrailerOutput As String = String.Empty
+        AddHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
+
+        If sTrailer.isDash Then
+            tTrailerOutput = Path.Combine(tmpPath, "output.mkv")
+            If Directory.Exists(tmpPath) Then
+                Directory.Delete(tmpPath, True)
+            End If
+            Directory.CreateDirectory(tmpPath)
+            RaiseEvent ProgressUpdated(-1, Master.eLang.GetString(1334, "Downloading Dash Audio..."))
+            tTrailerAudio = WebPage.DownloadFile(sTrailer.URLAudioStream, Path.Combine(tmpPath, "traileraudio"), True, "trailer")
+            RaiseEvent ProgressUpdated(-1, Master.eLang.GetString(1335, "Downloading Dash Video..."))
+            tTrailerVideo = WebPage.DownloadFile(sTrailer.URLVideoStream, Path.Combine(tmpPath, "trailervideo"), True, "trailer")
+            RaiseEvent ProgressUpdated(-2, Master.eLang.GetString(1336, "Merging Trailer..."))
+            Using ffmpeg As New Process()
+                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                '                                                ffmpeg info                                                     '
+                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                ' -r      = fps                                                                                                  '
+                ' -an     = disable audio recording                                                                              '
+                ' -i      = creating a video from many images                                                                    '
+                ' -q:v n  = constant qualitiy(:video) (but a variable bitrate), "n" 1 (excellent quality) and 31 (worst quality) '
+                ' -b:v n  = bitrate(:video)                                                                                      '
+                ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+                ffmpeg.StartInfo.FileName = Functions.GetFFMpeg
+                ffmpeg.EnableRaisingEvents = False
+                ffmpeg.StartInfo.UseShellExecute = False
+                ffmpeg.StartInfo.CreateNoWindow = True
+                ffmpeg.StartInfo.RedirectStandardOutput = True
+                'ffmpeg.StartInfo.RedirectStandardError = True     <----- if activated, ffmpeg can not finish the building process 
+                ffmpeg.StartInfo.Arguments = String.Format(" -i ""{0}"" -i ""{1}"" -vcodec copy -acodec copy ""{2}""", tTrailerVideo, tTrailerAudio, tTrailerOutput)
+                ffmpeg.Start()
+                ffmpeg.WaitForExit()
+                ffmpeg.Close()
+            End Using
+
+            If Not String.IsNullOrEmpty(tTrailerOutput) AndAlso File.Exists(tTrailerOutput) Then
+                LoadFromFile(tTrailerOutput)
+            End If
+        Else
+            Try
+                tTrailerOutput = WebPage.DownloadFile(sTrailer.URLVideoStream, String.Empty, True, "trailer")
+                If Not String.IsNullOrEmpty(tTrailerOutput) Then
+
+                    If _ms IsNot Nothing Then
+                        _ms.Dispose()
+                    End If
+                    _ms = New MemoryStream()
+
+                    Dim retSave() As Byte
+                    retSave = WebPage.ms.ToArray
+                    _ms.Write(retSave, 0, retSave.Length)
+
+                    _ext = Path.GetExtension(tTrailerOutput)
+                    logger.Debug("Trailer downloaded: " & sTrailer.URLVideoStream)
+                Else
+                    logger.Warn("Trailer NOT downloaded: " & sTrailer.URLVideoStream)
+                End If
+
+            Catch ex As Exception
+                logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sTrailer.URLVideoStream & ">")
+            End Try
+        End If
+
+        RemoveHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
+    End Sub
+    ''' <summary>
+    ''' Loads this trailer from the supplied URL
+    ''' </summary>
+    ''' <param name="sURL">URL to the trailer</param>
+    ''' <remarks></remarks>
+    Public Sub LoadFromWeb(ByVal sURL As String)
+        Dim WebPage As New HTTP
+        Dim tURL As String = String.Empty
+        Dim tTrailer As String = String.Empty
+        AddHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
+        Try
+            tTrailer = WebPage.DownloadFile(sURL, String.Empty, True, "trailer")
+            If Not String.IsNullOrEmpty(tTrailer) Then
+                If _ms IsNot Nothing Then
+                    _ms.Dispose()
+                End If
+                _ms = New MemoryStream()
+                Dim retSave() As Byte
+                retSave = WebPage.ms.ToArray
+                _ms.Write(retSave, 0, retSave.Length)
+                _ext = Path.GetExtension(tTrailer)
+                logger.Debug("Trailer downloaded: " & sURL)
+            Else
+                logger.Warn("Trailer NOT downloaded: " & sURL)
+            End If
+        Catch ex As Exception
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sURL & ">")
+        End Try
+        RemoveHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
+    End Sub
+
+    Public Function Save_Movie(ByVal tDBElement As Database.DBElement) As String
+        If Not tDBElement.Trailer.TrailerOriginal.hasMemoryStream Then Return String.Empty
 
         Dim strReturn As String = String.Empty
 
         Try
             Try
-                Dim params As New List(Of Object)(New Object() {mMovie})
+                Dim params As New List(Of Object)(New Object() {tDBElement})
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnTrailerSave_Movie, params, False)
             Catch ex As Exception
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
 
-            For Each a In FileUtils.GetFilenameList.Movie(mMovie, Enums.ModifierType.MainTrailer)
-                If Not File.Exists(String.Concat(a, _ext)) OrElse (isEdit OrElse Master.eSettings.MovieTrailerKeepExisting) Then
-                    Save(String.Concat(a, _ext))
-                    strReturn = (String.Concat(a, _ext))
-                End If
+            For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainTrailer)
+                SaveToFile(String.Concat(a, _ext))
+                strReturn = (String.Concat(a, _ext))
             Next
 
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
+        Clear() 'Dispose to save memory
         Return strReturn
     End Function
 
-    Public Sub Save(ByVal sPath As String)
-        Dim retSave() As Byte
-        Try
-            retSave = _ms.ToArray
+    Public Sub SaveToFile(ByVal sPath As String)
+        If _ms.Length > 0 Then
+            Dim retSave() As Byte
+            Try
+                retSave = _ms.ToArray
 
-            'make sure directory exists
-            Directory.CreateDirectory(Directory.GetParent(sPath).FullName)
-            Using FileStream As Stream = File.OpenWrite(sPath)
-                FileStream.Write(retSave, 0, retSave.Length)
-            End Using
-
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
+                'make sure directory exists
+                Directory.CreateDirectory(Directory.GetParent(sPath).FullName)
+                If sPath.Length <= 260 Then
+                    Using fs As New FileStream(sPath, FileMode.Create, FileAccess.Write)
+                        fs.Write(retSave, 0, retSave.Length)
+                        fs.Flush()
+                        fs.Close()
+                    End Using
+                End If
+            Catch ex As Exception
+                logger.Error(ex, New StackFrame().GetMethod().Name)
+            End Try
+        Else
+            Throw New ArgumentOutOfRangeException("Looks like MemoryStream is empty")
+        End If
     End Sub
 
 #End Region 'Methods

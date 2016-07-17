@@ -5436,7 +5436,7 @@ Namespace MediaContainers
     End Class
 
     <Serializable()>
-    Public Class [Theme]
+    Public Class Theme
 
 #Region "Constructors"
 
@@ -5468,7 +5468,7 @@ Namespace MediaContainers
     End Class
 
     <Serializable()>
-    Public Class [Trailer]
+    Public Class Trailer
 
 #Region "Fields"
 
@@ -5666,24 +5666,36 @@ Namespace MediaContainers
             _urlwebsite = String.Empty
         End Sub
 
-        Public Sub SaveAllTrailers(ByRef DBElement As Database.DBElement)
-            Dim tContentType As Enums.ContentType = DBElement.ContentType
+        Public Function LoadAndCache() As Boolean
 
-            With DBElement
+            If Not TrailerOriginal.hasMemoryStream Then
+                If File.Exists(LocalFilePath) Then
+                    TrailerOriginal.LoadFromFile(LocalFilePath)
+                Else
+                    TrailerOriginal.LoadFromWeb(Me)
+                End If
+            End If
+
+            If TrailerOriginal.hasMemoryStream Then
+                Return True
+            Else
+                Return False
+            End If
+        End Function
+
+        Public Sub SaveAllTrailers(ByRef tDBElement As Database.DBElement, ByVal ForceFileCleanup As Boolean)
+            Dim tContentType As Enums.ContentType = tDBElement.ContentType
+
+            With tDBElement
                 Select Case tContentType
                     Case Enums.ContentType.Movie
 
                         'Movie Trailer
-                        If .Trailer.TrailerOriginal IsNot Nothing AndAlso .Trailer.TrailerOriginal.hasMemoryStream Then
-                            .Trailer.LocalFilePath = .Trailer.TrailerOriginal.SaveAsMovieTrailer(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.Trailer.URLVideoStream) Then
-                            .Trailer.TrailerOriginal.FromWeb(.Trailer)
-                            .Trailer.LocalFilePath = .Trailer.TrailerOriginal.SaveAsMovieTrailer(DBElement)
-                        ElseIf Not String.IsNullOrEmpty(.Trailer.LocalFilePath) Then
-                            .Trailer.TrailerOriginal.FromFile(.Trailer.LocalFilePath)
-                            .Trailer.LocalFilePath = .Trailer.TrailerOriginal.SaveAsMovieTrailer(DBElement)
+                        If .Trailer.LoadAndCache() Then
+                            If ForceFileCleanup Then Trailers.Delete_Movie(tDBElement, ForceFileCleanup)
+                            .Trailer.LocalFilePath = .Trailer.TrailerOriginal.Save_Movie(tDBElement)
                         Else
-                            Trailers.DeleteMovieTrailers(DBElement)
+                            Trailers.Delete_Movie(tDBElement, ForceFileCleanup)
                             .Trailer = New Trailer
                         End If
                 End Select

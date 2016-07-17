@@ -3520,7 +3520,7 @@ Public Class Database
             If ToDisk Then
                 _movieDB.ImagesContainer.SaveAllImages(_movieDB, ForceFileCleanup)
                 _movieDB.Movie.SaveAllActorThumbs(_movieDB)
-                _movieDB.Trailer.SaveAllTrailers(_movieDB)
+                _movieDB.Trailer.SaveAllTrailers(_movieDB, ForceFileCleanup)
             End If
 
             par_movie_MoviePath.Value = _movieDB.Filename

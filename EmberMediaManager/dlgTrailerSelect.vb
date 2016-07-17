@@ -159,7 +159,7 @@ Public Class dlgTrailerSelect
                     If _noDownload Then
                         Result.URLWebsite = txtLocalTrailer.Text
                     Else
-                        Result.TrailerOriginal.FromFile(txtLocalTrailer.Text)
+                        Result.TrailerOriginal.LoadFromFile(txtLocalTrailer.Text)
                     End If
 
                     DialogResult = DialogResult.OK
@@ -400,7 +400,7 @@ Public Class dlgTrailerSelect
     Private Sub bwDownloadTrailer_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadTrailer.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Try
-            Result.TrailerOriginal.FromWeb(Args.Parameter)
+            Result.TrailerOriginal.LoadFromWeb(Args.Parameter)
             Result.URLWebsite = Args.Parameter.VideoURL
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)

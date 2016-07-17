@@ -1100,7 +1100,7 @@ Public Class dlgEditMovie
         End With
 
         If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
-            tmpDBElement.Trailer.TrailerOriginal.FromFile(ofdLocalFiles.FileName)
+            tmpDBElement.Trailer.TrailerOriginal.LoadFromFile(ofdLocalFiles.FileName)
             tmpDBElement.Trailer.TrailerOriginal.isEdit = True
             TrailerPlaylistAdd(tmpDBElement.Trailer)
         End If
