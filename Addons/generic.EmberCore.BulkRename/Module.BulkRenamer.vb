@@ -153,16 +153,6 @@ Public Class BulkRenamerModule
                 If MySettings.RenameSingle_Shows AndAlso Not String.IsNullOrEmpty(MySettings.FoldersPattern_Shows) AndAlso Not String.IsNullOrEmpty(MySettings.FoldersPattern_Seasons) AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Episodes) Then
                     FileFolderRenamer.RenameSingle_TVShow(_dbelement, MySettings.FoldersPattern_Shows, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, False, False, False)
                 End If
-                'Case Enums.ModuleEventType.AfterUpdateDB_TV
-                '    If MySettings.RenameUpdate_Episodes AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Episodes) Then
-                '        Dim BatchMode As Boolean = DirectCast(_params(0), Boolean)
-                '        Dim ToNFO As Boolean = DirectCast(_params(1), Boolean)
-                '        Dim ShowErrors As Boolean = DirectCast(_params(2), Boolean)
-                '        Dim ToDB As Boolean = DirectCast(_params(3), Boolean)
-                '        Dim SourceID As Long = DirectCast(_params(4), Int64)
-                '        Dim FFRenamer As New FileFolderRenamer
-                '        FFRenamer.RenameAfterUpdateDB_TV(SourceID, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, BatchMode, ToNFO, ShowErrors, ToDB)
-                '    End If
         End Select
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
@@ -185,7 +175,7 @@ Public Class BulkRenamerModule
             Dim DBElement As Database.DBElement = Master.DB.Load_TVEpisode(Convert.ToInt64(sRow.Cells("idEpisode").Value), True)
             If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(DBElement, True) Then
                 FileFolderRenamer.RenameSingle_TVEpisode(DBElement, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, False, True, True)
-                RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {Convert.ToInt64(sRow.Cells("idEpisode").Value)}))
+                RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {Convert.ToInt64(sRow.Cells("idEpisode").Value)})) 'TODO: should be idFile (MultiEpisode handling)
             End If
         Next
         Cursor.Current = Cursors.Default
@@ -194,7 +184,7 @@ Public Class BulkRenamerModule
     Private Sub cmnuRenamerAuto_TVShow_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuRenamerAuto_TVShow.Click
         Cursor.Current = Cursors.WaitCursor
         For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListTVShows.SelectedRows
-            Dim DBElement As Database.DBElement = Master.DB.Load_TVShow(Convert.ToInt64(sRow.Cells("idShow").Value), True, True)
+            Dim DBElement As Database.DBElement = Master.DB.Load_TVShow(Convert.ToInt64(sRow.Cells("idShow").Value), True, True, True)
             If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBElement, True) Then
                 FileFolderRenamer.RenameSingle_TVShow(DBElement, MySettings.FoldersPattern_Shows, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, False, True, True)
                 RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVShow, New List(Of Object)(New Object() {Convert.ToInt64(sRow.Cells("idShow").Value)}))
@@ -238,7 +228,7 @@ Public Class BulkRenamerModule
     Private Sub cmnuRenamerManual_TVShow_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuRenamerManual_TVShows.Click
         Cursor.Current = Cursors.WaitCursor
         For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListTVShows.SelectedRows
-            Dim DBElement As Database.DBElement = Master.DB.Load_TVShow(Convert.ToInt64(sRow.Cells("idShow").Value), True, True)
+            Dim DBElement As Database.DBElement = Master.DB.Load_TVShow(Convert.ToInt64(sRow.Cells("idShow").Value), True, True, True)
             If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBElement, True) Then
                 Using dRenameManual As New dlgRenameManual_TVShow(DBElement)
                     Select Case dRenameManual.ShowDialog()
