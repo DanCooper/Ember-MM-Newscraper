@@ -170,15 +170,23 @@ Namespace TMDB
         End Sub
 
         Public Sub GetMovieID(ByVal DBMovie As Database.DBElement)
-            Dim Movie As TMDbLib.Objects.Movies.Movie
+            Dim strUniqueID As String = String.Empty
+            If DBMovie.Movie.TMDBSpecified Then
+                strUniqueID = DBMovie.Movie.TMDB
+            ElseIf DBMovie.Movie.IMDBSpecified Then
+                strUniqueID = DBMovie.Movie.IMDB
+            End If
 
-            Dim APIResult As Task(Of TMDbLib.Objects.Movies.Movie)
-            APIResult = Task.Run(Function() _TMDBApi.GetMovieAsync(DBMovie.Movie.ID))
+            If Not String.IsNullOrEmpty(strUniqueID) Then
+                Dim Movie As TMDbLib.Objects.Movies.Movie
+                Dim APIResult As Task(Of TMDbLib.Objects.Movies.Movie)
+                APIResult = Task.Run(Function() _TMDBApi.GetMovieAsync(strUniqueID))
 
-            Movie = APIResult.Result
-            If Movie Is Nothing OrElse Movie.Id = 0 Then Return
+                Movie = APIResult.Result
+                If Movie Is Nothing OrElse Movie.Id = 0 Then Return
 
-            DBMovie.Movie.TMDBID = CStr(Movie.Id)
+                DBMovie.Movie.TMDB = CStr(Movie.Id)
+            End If
         End Sub
 
         Public Function GetMovieID(ByVal imdbID As String) As String
@@ -254,8 +262,8 @@ Namespace TMDB
             nMovie.Scrapersource = "TMDB"
 
             'IDs
-            nMovie.TMDBID = CStr(Result.Id)
-            If Result.ImdbId IsNot Nothing Then nMovie.ID = Result.ImdbId
+            nMovie.TMDB = CStr(Result.Id)
+            If Result.ImdbId IsNot Nothing Then nMovie.IMDB = Result.ImdbId
 
             If bwTMDB.CancellationPending Or Result Is Nothing Then Return Nothing
 
@@ -1206,12 +1214,12 @@ Namespace TMDB
             Select Case eType
                 Case Enums.ScrapeType.AllAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MissingAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SingleField
                     If r.Matches.Count = 1 Then
-                        Return GetMovieInfo(r.Matches.Item(0).TMDBID, FilteredOptions, False)
+                        Return GetMovieInfo(r.Matches.Item(0).TMDB, FilteredOptions, False)
                     Else
                         Using dlgSearch As New dlgTMDBSearchResults_Movie(_SpecialSettings, Me)
                             If dlgSearch.ShowDialog(r, strMovieName, oDBMovie.Filename) = DialogResult.OK Then
-                                If Not String.IsNullOrEmpty(dlgSearch.Result.TMDBID) Then
-                                    Return GetMovieInfo(dlgSearch.Result.TMDBID, FilteredOptions, False)
+                                If Not String.IsNullOrEmpty(dlgSearch.Result.TMDB) Then
+                                    Return GetMovieInfo(dlgSearch.Result.TMDB, FilteredOptions, False)
                                 End If
                             End If
                         End Using
@@ -1219,12 +1227,12 @@ Namespace TMDB
 
                 Case Enums.ScrapeType.AllSkip, Enums.ScrapeType.FilterSkip, Enums.ScrapeType.MarkedSkip, Enums.ScrapeType.MissingSkip, Enums.ScrapeType.NewSkip, Enums.ScrapeType.SelectedSkip
                     If r.Matches.Count = 1 Then
-                        Return GetMovieInfo(r.Matches.Item(0).TMDBID, FilteredOptions, False)
+                        Return GetMovieInfo(r.Matches.Item(0).TMDB, FilteredOptions, False)
                     End If
 
                 Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SingleScrape
                     If r.Matches.Count > 0 Then
-                        Return GetMovieInfo(r.Matches.Item(0).TMDBID, FilteredOptions, False)
+                        Return GetMovieInfo(r.Matches.Item(0).TMDB, FilteredOptions, False)
                     End If
             End Select
 
@@ -1485,7 +1493,7 @@ Namespace TMDB
                                                                                                      .Plot = tPlot,
                                                                                                      .Title = tTitle,
                                                                                                      .ThumbPoster = tThumbPoster,
-                                                                                                     .TMDBID = CStr(aMovie.Id),
+                                                                                                     .TMDB = CStr(aMovie.Id),
                                                                                                      .Year = tYear}
                             R.Matches.Add(lNewMovie)
                         Next

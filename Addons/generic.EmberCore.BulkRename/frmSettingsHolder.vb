@@ -52,16 +52,16 @@ Public Class frmSettingsHolder
         _fDummyMultiEpisode.Director = ""
         _fDummyMultiEpisode.DirExist = False
         _fDummyMultiEpisode.FileExist = False
-        _fDummyMultiEpisode.FileName = "OldFileName"
+        _fDummyMultiEpisode.OldFileName = "OldFileName"
         _fDummyMultiEpisode.Genre = "Comedy / Lovestory"
         _fDummyMultiEpisode.ID = -1
-        _fDummyMultiEpisode.IMDBID = ""
+        _fDummyMultiEpisode.IMDB = ""
         _fDummyMultiEpisode.IsBDMV = False
-        _fDummyMultiEpisode.IsLocked = False
+        _fDummyMultiEpisode.IsLock = False
         _fDummyMultiEpisode.IsMultiEpisode = True
-        _fDummyMultiEpisode.IsRenamed = False
+        _fDummyMultiEpisode.DoRename = False
         _fDummyMultiEpisode.IsSingle = True
-        _fDummyMultiEpisode.IsVideo_TS = False
+        _fDummyMultiEpisode.IsVideoTS = False
         _fDummyMultiEpisode.ListTitle = "Big Bang Theory, The"
         _fDummyMultiEpisode.MPAA = "TV-14"
         _fDummyMultiEpisode.MultiViewCount = "3d"
@@ -82,7 +82,7 @@ Public Class frmSettingsHolder
         _fDummyMultiEpisode.TVDBID = "58056"
         _fDummyMultiEpisode.VideoCodec = "xvid"
         _fDummyMultiEpisode.VideoSource = "dvd"
-        _fDummyMultiEpisode.Year = ""
+        _fDummyMultiEpisode.Year = "2007"
         Dim dMEpisode1 As New FileFolderRenamer.Episode With {.ID = 1, .Episode = 1, .Title = "Pilot"}
         Dim dMEpisode2 As New FileFolderRenamer.Episode With {.ID = 2, .Episode = 2, .Title = "The Big Bran Hypothesis"}
         Dim dMEpisodeList As New List(Of FileFolderRenamer.Episode)
@@ -99,16 +99,16 @@ Public Class frmSettingsHolder
         _fDummyMultiSeason.Director = ""
         _fDummyMultiSeason.DirExist = False
         _fDummyMultiSeason.FileExist = False
-        _fDummyMultiSeason.FileName = "OldFileName"
+        _fDummyMultiSeason.OldFileName = "OldFileName"
         _fDummyMultiSeason.Genre = "Comedy / Lovestory"
         _fDummyMultiSeason.ID = -1
-        _fDummyMultiSeason.IMDBID = ""
+        _fDummyMultiSeason.IMDB = ""
         _fDummyMultiSeason.IsBDMV = False
-        _fDummyMultiSeason.IsLocked = False
+        _fDummyMultiSeason.IsLock = False
         _fDummyMultiSeason.IsMultiEpisode = True
-        _fDummyMultiSeason.IsRenamed = False
+        _fDummyMultiSeason.DoRename = False
         _fDummyMultiSeason.IsSingle = True
-        _fDummyMultiSeason.IsVideo_TS = False
+        _fDummyMultiSeason.IsVideoTS = False
         _fDummyMultiSeason.ListTitle = "Big Bang Theory, The"
         _fDummyMultiSeason.MPAA = "TV-14"
         _fDummyMultiSeason.MultiViewCount = "3d"
@@ -129,7 +129,7 @@ Public Class frmSettingsHolder
         _fDummyMultiSeason.TVDBID = "58056"
         _fDummyMultiSeason.VideoCodec = "xvid"
         _fDummyMultiSeason.VideoSource = "dvd"
-        _fDummyMultiSeason.Year = ""
+        _fDummyMultiSeason.Year = "2007"
         Dim dMSEpisode1 As New FileFolderRenamer.Episode With {.ID = 1, .Episode = 1, .Title = "Pilot"}
         Dim dMSEpisode2 As New FileFolderRenamer.Episode With {.ID = 2, .Episode = 2, .Title = "The Big Bran Hypothesis"}
         Dim dMSEpisode3 As New FileFolderRenamer.Episode With {.ID = 3, .Episode = 1, .Title = "The Bad Fish Paradigm"}
@@ -152,16 +152,16 @@ Public Class frmSettingsHolder
         _fDummySingleEpisode.Director = ""
         _fDummySingleEpisode.DirExist = False
         _fDummySingleEpisode.FileExist = False
-        _fDummySingleEpisode.FileName = "OldFileName"
+        _fDummySingleEpisode.OldFileName = "OldFileName"
         _fDummySingleEpisode.Genre = "Comedy / Lovestory"
         _fDummySingleEpisode.ID = -1
-        _fDummySingleEpisode.IMDBID = ""
+        _fDummySingleEpisode.IMDB = ""
         _fDummySingleEpisode.IsBDMV = False
-        _fDummySingleEpisode.IsLocked = False
+        _fDummySingleEpisode.IsLock = False
         _fDummySingleEpisode.IsMultiEpisode = False
-        _fDummySingleEpisode.IsRenamed = False
+        _fDummySingleEpisode.DoRename = False
         _fDummySingleEpisode.IsSingle = True
-        _fDummySingleEpisode.IsVideo_TS = False
+        _fDummySingleEpisode.IsVideoTS = False
         _fDummySingleEpisode.ListTitle = "Big Bang Theory, The"
         _fDummySingleEpisode.MPAA = "TV-14"
         _fDummySingleEpisode.MultiViewCount = "3d"
@@ -182,7 +182,7 @@ Public Class frmSettingsHolder
         _fDummySingleEpisode.TVDBID = "58056"
         _fDummySingleEpisode.VideoCodec = "xvid"
         _fDummySingleEpisode.VideoSource = "dvd"
-        _fDummySingleEpisode.Year = ""
+        _fDummySingleEpisode.Year = "2007"
         Dim dSEpisode As New FileFolderRenamer.Episode With {.ID = 1, .Episode = 1, .Title = "Pilot"}
         Dim dSEpisodeList As New List(Of FileFolderRenamer.Episode)
         dSEpisodeList.Add(dSEpisode)
@@ -197,16 +197,16 @@ Public Class frmSettingsHolder
         _fDummySingleMovie.Director = "Joss Whedon"
         _fDummySingleMovie.DirExist = False
         _fDummySingleMovie.FileExist = False
-        _fDummySingleMovie.FileName = "OldFileName"
+        _fDummySingleMovie.OldFileName = "OldFileName"
         _fDummySingleMovie.Genre = "Action / Sci-Fi"
         _fDummySingleMovie.ID = -1
-        _fDummySingleMovie.IMDBID = "0848228"
+        _fDummySingleMovie.IMDB = "0848228"
         _fDummySingleMovie.IsBDMV = False
-        _fDummySingleMovie.IsLocked = False
+        _fDummySingleMovie.IsLock = False
         _fDummySingleMovie.IsMultiEpisode = False
-        _fDummySingleMovie.IsRenamed = False
+        _fDummySingleMovie.DoRename = False
         _fDummySingleMovie.IsSingle = True
-        _fDummySingleMovie.IsVideo_TS = False
+        _fDummySingleMovie.IsVideoTS = False
         _fDummySingleMovie.ListTitle = "Avengers, The"
         _fDummySingleMovie.MPAA = "13"
         _fDummySingleMovie.MultiViewCount = "3d"

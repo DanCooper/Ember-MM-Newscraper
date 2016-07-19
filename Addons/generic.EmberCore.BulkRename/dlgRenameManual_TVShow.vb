@@ -49,12 +49,10 @@ Public Class dlgRenameManual_TVShow
     Private Sub bwRename_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwRename.RunWorkerCompleted
         Cursor.Current = Cursors.Default
         DialogResult = DialogResult.OK
-        Close()
     End Sub
 
-    Private Sub Cancel_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Cancel_Button.Click
+    Private Sub Cancel_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancel.Click
         DialogResult = DialogResult.Cancel
-        Close()
     End Sub
 
     Private Sub dlgRenameManual_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
@@ -68,10 +66,10 @@ Public Class dlgRenameManual_TVShow
         txtFolder.Text = tFolder.Trim
     End Sub
 
-    Private Sub OK_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles OK_Button.Click
+    Private Sub OK_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnOK.Click
         Cursor.Current = Cursors.WaitCursor
-        OK_Button.Enabled = False
-        Cancel_Button.Enabled = False
+        btnOK.Enabled = False
+        btnCancel.Enabled = False
         txtFolder.Enabled = False
         pnlStatus.Visible = True
         Application.DoEvents()
@@ -82,19 +80,15 @@ Public Class dlgRenameManual_TVShow
     Sub SetUp()
         Text = String.Concat(Master.eLang.GetString(263, "Manual Rename"), " | ", _DBElement.TVShow.Title)
         lblFolder.Text = Master.eLang.GetString(13, "Folder Name")
-        OK_Button.Text = Master.eLang.GetString(179, "OK")
-        Cancel_Button.Text = Master.eLang.GetString(19, "Close")
+        btnOK.Text = Master.eLang.GetString(179, "OK")
+        btnCancel.Text = Master.eLang.GetString(19, "Close")
         lblTitle.Text = Master.eLang.GetString(246, "Title:")
         lblStatus.Text = Master.eLang.GetString(272, "Renaming Directory/Files...")
         txtTitle.Text = _DBElement.TVShow.Title
     End Sub
 
     Private Sub txtFolder_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtFolder.TextChanged
-        If Not String.IsNullOrEmpty(txtFolder.Text) Then
-            OK_Button.Enabled = True
-        Else
-            OK_Button.Enabled = False
-        End If
+        btnOK.Enabled = Not String.IsNullOrEmpty(txtFolder.Text)
     End Sub
 
 #End Region 'Methods

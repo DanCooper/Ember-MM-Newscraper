@@ -291,7 +291,7 @@ Public Class dlgTagManager
                             If Not _tag.Movies Is Nothing Then
                                 Dim alreadyintag As Boolean = False
                                 For Each movie In _tag.Movies
-                                    If movie.Movie.Title = tmpMovie.Movie.Title AndAlso movie.Movie.IMDBID = tmpMovie.Movie.IMDBID Then
+                                    If movie.Movie.Title = tmpMovie.Movie.Title AndAlso movie.Movie.IMDB = tmpMovie.Movie.IMDB Then
                                         alreadyintag = True
                                     End If
                                 Next

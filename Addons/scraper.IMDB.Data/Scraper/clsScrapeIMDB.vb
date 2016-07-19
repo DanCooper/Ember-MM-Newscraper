@@ -234,7 +234,7 @@ Namespace IMDB
                 intHTTP.Dispose()
                 intHTTP = Nothing
 
-                nMovie.ID = strID
+                nMovie.IMDB = strID
                 nMovie.Scrapersource = "IMDB"
 
                 If bwIMDB.CancellationPending Then Return Nothing
@@ -333,7 +333,7 @@ Namespace IMDB
                 'Trailer
                 If FilteredOptions.bMainTrailer Then
                     'Get first IMDB trailer if possible
-                    Dim TrailerList As List(Of MediaContainers.Trailer) = EmberAPI.IMDb.Scraper.GetMovieTrailersByIMDBID(nMovie.ID)
+                    Dim TrailerList As List(Of MediaContainers.Trailer) = EmberAPI.IMDb.Scraper.GetMovieTrailersByIMDBID(nMovie.IMDB)
                     If TrailerList.Count > 0 Then
                         Dim sIMDb As New EmberAPI.IMDb.Scraper
                         sIMDb.GetVideoLinks(TrailerList.Item(0).URLWebsite)
@@ -348,7 +348,7 @@ Namespace IMDB
                 'Top250
                 'ie: <a href="/chart/top?tt0167260">Top 250: #13</a>
                 If FilteredOptions.bMainTop250 Then
-                    Dim strTop250 As String = Regex.Match(HTML, String.Concat("/chart/top\?", nMovie.ID, """>Top 250: #([0-9]+)</a>")).Groups(1).Value.Trim
+                    Dim strTop250 As String = Regex.Match(HTML, String.Concat("/chart/top\?", nMovie.IMDB, """>Top 250: #([0-9]+)</a>")).Groups(1).Value.Trim
                     Dim iTop250 As Integer = 0
                     If Integer.TryParse(strTop250, iTop250) Then
                         nMovie.Top250 = iTop250
@@ -1183,16 +1183,16 @@ mPlot:          'Plot
                 Select Case ScrapeType
                     Case Enums.ScrapeType.AllAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MissingAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SingleField
                         If r.ExactMatches.Count = 1 Then
-                            Return GetMovieInfo(r.ExactMatches.Item(0).ID, False, FilteredOptions)
+                            Return GetMovieInfo(r.ExactMatches.Item(0).IMDB, False, FilteredOptions)
                         ElseIf r.PopularTitles.Count = 1 AndAlso r.PopularTitles(0).Lev <= 5 Then
-                            Return GetMovieInfo(r.PopularTitles.Item(0).ID, False, FilteredOptions)
+                            Return GetMovieInfo(r.PopularTitles.Item(0).IMDB, False, FilteredOptions)
                         ElseIf r.ExactMatches.Count = 1 AndAlso r.ExactMatches(0).Lev <= 5 Then
-                            Return GetMovieInfo(r.ExactMatches.Item(0).ID, False, FilteredOptions)
+                            Return GetMovieInfo(r.ExactMatches.Item(0).IMDB, False, FilteredOptions)
                         Else
                             Using dlgSearch As New dlgIMDBSearchResults_Movie(_SpecialSettings, Me)
                                 If dlgSearch.ShowDialog(r, sMovieName, oDBElement.Filename) = DialogResult.OK Then
-                                    If Not String.IsNullOrEmpty(dlgSearch.Result.ID) Then
-                                        Return GetMovieInfo(dlgSearch.Result.ID, False, FilteredOptions)
+                                    If Not String.IsNullOrEmpty(dlgSearch.Result.IMDB) Then
+                                        Return GetMovieInfo(dlgSearch.Result.IMDB, False, FilteredOptions)
                                     End If
                                 End If
                             End Using
@@ -1200,7 +1200,7 @@ mPlot:          'Plot
 
                     Case Enums.ScrapeType.AllSkip, Enums.ScrapeType.FilterSkip, Enums.ScrapeType.MarkedSkip, Enums.ScrapeType.MissingSkip, Enums.ScrapeType.NewSkip, Enums.ScrapeType.SelectedSkip
                         If r.ExactMatches.Count = 1 Then
-                            Return GetMovieInfo(r.ExactMatches.Item(0).ID, False, FilteredOptions)
+                            Return GetMovieInfo(r.ExactMatches.Item(0).IMDB, False, FilteredOptions)
                         End If
 
                     Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SingleScrape
@@ -1224,17 +1224,17 @@ mPlot:          'Plot
                         '    b = GetMovieInfo(r.PartialMatches.Item(0).ID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Options, True)
                         'End If
                         If r.ExactMatches.Count = 1 Then
-                            Return GetMovieInfo(r.ExactMatches.Item(0).ID, False, FilteredOptions)
+                            Return GetMovieInfo(r.ExactMatches.Item(0).IMDB, False, FilteredOptions)
                         ElseIf r.ExactMatches.Count > 1 AndAlso exactHaveYear >= 0 Then
-                            Return GetMovieInfo(r.ExactMatches.Item(exactHaveYear).ID, False, FilteredOptions)
+                            Return GetMovieInfo(r.ExactMatches.Item(exactHaveYear).IMDB, False, FilteredOptions)
                         ElseIf r.PopularTitles.Count > 0 AndAlso popularHaveYear >= 0 Then
-                            Return GetMovieInfo(r.PopularTitles.Item(popularHaveYear).ID, False, FilteredOptions)
+                            Return GetMovieInfo(r.PopularTitles.Item(popularHaveYear).IMDB, False, FilteredOptions)
                         ElseIf r.ExactMatches.Count > 0 AndAlso (r.ExactMatches(0).Lev <= 5 OrElse useAnyway) Then
-                            Return GetMovieInfo(r.ExactMatches.Item(0).ID, False, FilteredOptions)
+                            Return GetMovieInfo(r.ExactMatches.Item(0).IMDB, False, FilteredOptions)
                         ElseIf r.PopularTitles.Count > 0 AndAlso (r.PopularTitles(0).Lev <= 5 OrElse useAnyway) Then
-                            Return GetMovieInfo(r.PopularTitles.Item(0).ID, False, FilteredOptions)
+                            Return GetMovieInfo(r.PopularTitles.Item(0).IMDB, False, FilteredOptions)
                         ElseIf r.PartialMatches.Count > 0 AndAlso (r.PartialMatches(0).Lev <= 5 OrElse useAnyway) Then
-                            Return GetMovieInfo(r.PartialMatches.Item(0).ID, False, FilteredOptions)
+                            Return GetMovieInfo(r.PartialMatches.Item(0).IMDB, False, FilteredOptions)
                         End If
                 End Select
 
@@ -1488,7 +1488,7 @@ mPlot:          'Plot
         End Function
 
         Private Function GetMovieID(ByVal strObj As String) As String
-            Return Regex.Match(strObj, IMDB_ID_REGEX).ToString.Replace("tt", String.Empty)
+            Return Regex.Match(strObj, IMDB_ID_REGEX).ToString
         End Function
 
         Private Function SearchMovie(ByVal sMovieTitle As String, ByVal sMovieYear As String) As SearchResults_Movie

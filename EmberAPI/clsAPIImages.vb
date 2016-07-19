@@ -268,7 +268,6 @@ Public Class Images
     ''' <remarks></remarks>
     Public Sub LoadFromFile(ByVal sPath As String, Optional LoadBitmap As Boolean = False)
         If Not String.IsNullOrEmpty(sPath) AndAlso File.Exists(sPath) Then
-            'Try
             _ms = New MemoryStream()
             Using fsImage As FileStream = File.OpenRead(sPath)
                 Dim memStream As New MemoryStream

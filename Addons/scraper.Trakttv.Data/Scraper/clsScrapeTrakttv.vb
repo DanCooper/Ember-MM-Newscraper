@@ -80,15 +80,15 @@ Namespace TrakttvScraper
                         Case Enums.ContentType.Movie
                             If oDBElement IsNot Nothing Then
                                 'make sure we set correct ID of DBElement for trakt.tv queries (need IMDBID oder traktID)
-                                If Not String.IsNullOrEmpty(oDBElement.Movie.IMDBID) Then
-                                    If oDBElement.Movie.IMDBID.StartsWith("tt") = False Then
-                                        _TrakttvDBElementIMDBID = "tt" & oDBElement.Movie.IMDBID
+                                If Not String.IsNullOrEmpty(oDBElement.Movie.IMDB) Then
+                                    If oDBElement.Movie.IMDB.StartsWith("tt") = False Then
+                                        _TrakttvDBElementIMDBID = "tt" & oDBElement.Movie.IMDB
                                     Else
-                                        _TrakttvDBElementIMDBID = oDBElement.Movie.IMDBID
+                                        _TrakttvDBElementIMDBID = oDBElement.Movie.IMDB
                                     End If
-                                ElseIf oDBElement.Movie.TMDBIDSpecified Then
-                                    _TrakttvDBElementTMDBID = oDBElement.Movie.TMDBID
-                                    TraktResult = GetIDs(oDBElement.Movie.TMDBID, "tmdb")
+                                ElseIf oDBElement.Movie.TMDBSpecified Then
+                                    _TrakttvDBElementTMDBID = oDBElement.Movie.TMDB
+                                    TraktResult = GetIDs(oDBElement.Movie.TMDB, "tmdb")
                                     If TraktResult IsNot Nothing AndAlso TraktResult.Movie IsNot Nothing AndAlso TraktResult.Movie.Ids IsNot Nothing AndAlso TraktResult.Movie.Ids.Trakt IsNot Nothing Then
                                         _TrakttvDBElementTRAKTID = CStr(TraktResult.Movie.Ids.Trakt)
                                         If TraktResult.Movie.Ids.Imdb IsNot Nothing Then
@@ -177,8 +177,8 @@ Namespace TrakttvScraper
             Dim nMovie As New MediaContainers.Movie
             Try
                 nMovie.Scrapersource = "TRAKTTV"
-                nMovie.IMDBID = _TrakttvDBElementIMDBID
-                nMovie.TMDBID = _TrakttvDBElementTMDBID
+                nMovie.IMDB = _TrakttvDBElementIMDBID
+                nMovie.TMDB = _TrakttvDBElementTMDBID
 
                 If String.IsNullOrEmpty(_Token) Then
                     logger.Error(String.Concat("[GetMovieInfo] Can't login to trakt.tv account! Current movieID: ", If(String.IsNullOrEmpty(_TrakttvDBElementTRAKTID), _TrakttvDBElementIMDBID, _TrakttvDBElementTRAKTID)))
@@ -202,7 +202,7 @@ Namespace TrakttvScraper
                                 For Each ratedMovie As TraktAPI.Model.TraktMovieRated In _traktRatedMovies
                                     If Not ratedMovie.Movie.Ids Is Nothing Then
                                         'Check if information is stored...
-                                        If (Not String.IsNullOrEmpty(nMovie.IMDBID) AndAlso Not ratedMovie.Movie.Ids.Imdb Is Nothing AndAlso ((ratedMovie.Movie.Ids.Imdb = _TrakttvDBElementIMDBID) OrElse (ratedMovie.Movie.Ids.Trakt.ToString = _TrakttvDBElementTRAKTID))) Then
+                                        If (Not String.IsNullOrEmpty(nMovie.IMDB) AndAlso Not ratedMovie.Movie.Ids.Imdb Is Nothing AndAlso ((ratedMovie.Movie.Ids.Imdb = _TrakttvDBElementIMDBID) OrElse (ratedMovie.Movie.Ids.Trakt.ToString = _TrakttvDBElementTRAKTID))) Then
                                             nMovie.Rating = CStr(ratedMovie.Rating)
                                             Exit For
                                         End If

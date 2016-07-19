@@ -399,11 +399,11 @@ Public Class StringUtils
         'get raw title from path
         Dim strRawTitle As String = String.Empty
         If FileUtils.Common.isVideoTS(strPath) Then
-            strRawTitle = Directory.GetParent(Directory.GetParent(strPath).FullName).Name
+            strRawTitle = FileUtils.Common.GetMainPath(strPath).Name
         ElseIf FileUtils.Common.isBDRip(strPath) Then
-            strRawTitle = Directory.GetParent(Directory.GetParent(Directory.GetParent(strPath).FullName).FullName).Name
+            strRawTitle = FileUtils.Common.GetMainPath(strPath).Name
         Else
-            strRawTitle = If(IsSingle AndAlso UseForderName, Directory.GetParent(strPath).Name, Path.GetFileNameWithoutExtension(strPath))
+            strRawTitle = If(IsSingle AndAlso UseForderName, FileUtils.Common.GetMainPath(strPath).Name, Path.GetFileNameWithoutExtension(strPath))
         End If
 
         'filter raw title by filter list
@@ -507,11 +507,11 @@ Public Class StringUtils
         'get raw string to get year from
         Dim strRawString As String = String.Empty
         If FileUtils.Common.isVideoTS(strPath) Then
-            strRawString = Directory.GetParent(Directory.GetParent(strPath).FullName).Name
+            strRawString = FileUtils.Common.GetMainPath(strPath).Name
         ElseIf FileUtils.Common.isBDRip(strPath) Then
-            strRawString = Directory.GetParent(Directory.GetParent(Directory.GetParent(strPath).FullName).FullName).Name
+            strRawString = FileUtils.Common.GetMainPath(strPath).Name
         Else
-            strRawString = If(IsSingle AndAlso UseForderName, Directory.GetParent(strPath).Name, Path.GetFileNameWithoutExtension(strPath))
+            strRawString = If(IsSingle AndAlso UseForderName, FileUtils.Common.GetMainPath(strPath).Name, Path.GetFileNameWithoutExtension(strPath))
         End If
 
         Return Regex.Match(strRawString, "((19|20)\d{2})", RegexOptions.RightToLeft).Value.Trim

@@ -89,7 +89,6 @@ Public Class dlgSourceMovie
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
         DialogResult = DialogResult.Cancel
-        Close()
     End Sub
 
     Private Sub cbSourceLanguage_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbSourceLanguage.SelectedIndexChanged
@@ -99,32 +98,64 @@ Public Class dlgSourceMovie
     End Sub
 
     Private Sub CheckConditions()
-        Dim isValid As Boolean = False
+        Dim bIsValid_SourceName As Boolean = False
+        Dim bIsValid_SourcePath As Boolean = True
 
         If String.IsNullOrEmpty(txtSourceName.Text) Then
-            pbValid.Image = My.Resources.invalid
+            pbValidSourceName.Image = My.Resources.invalid
         Else
+            'check duplicate source names
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                 SQLcommand.CommandText = String.Concat("SELECT idSource FROM moviesource WHERE strName LIKE """, txtSourceName.Text.Trim, """ AND idSource != ", _id, ";")
                 Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
                     If SQLreader.HasRows Then
-                        SQLreader.Read()
-                        If String.IsNullOrEmpty(SQLreader("idSource").ToString) Then
-                            pbValid.Image = My.Resources.invalid
-                        Else
-                            pbValid.Image = My.Resources.valid
-                            isValid = True
-                        End If
+                        pbValidSourceName.Image = My.Resources.invalid
+                        bIsValid_SourceName = False
                     Else
-                        pbValid.Image = My.Resources.valid
-                        isValid = True
+                        pbValidSourceName.Image = My.Resources.valid
+                        bIsValid_SourceName = True
                     End If
                 End Using
             End Using
         End If
 
+        If String.IsNullOrEmpty(txtSourcePath.Text) OrElse Not Directory.Exists(txtSourcePath.Text.Trim) Then
+            bIsValid_SourcePath = False
+            pbValidSourcePath.Image = My.Resources.invalid
+        Else
+            For Each tSource In Master.MovieSources.Where(Function(f) Not f.ID = _id)
+                'check if the path contains another source or is inside another source
+
+                Dim strOtherSource As String = tSource.Path.ToLower
+                Dim strCurrentSource As String = txtSourcePath.Text.Trim.ToLower
+                'add a directory separator at the end of the path to distinguish between
+                'D:\Movies
+                'D:\Movies Shared
+                '(needed for "LocalPath.ToLower.StartsWith(tLocalSource)"
+                If strOtherSource.Contains(Path.DirectorySeparatorChar) Then
+                    strOtherSource = If(strOtherSource.EndsWith(Path.DirectorySeparatorChar), strOtherSource, String.Concat(strOtherSource, Path.DirectorySeparatorChar)).Trim
+                ElseIf strOtherSource.Contains(Path.AltDirectorySeparatorChar) Then
+                    strOtherSource = If(strOtherSource.EndsWith(Path.AltDirectorySeparatorChar), strOtherSource, String.Concat(strOtherSource, Path.AltDirectorySeparatorChar)).Trim
+                End If
+                If strCurrentSource.Contains(Path.DirectorySeparatorChar) Then
+                    strCurrentSource = If(strCurrentSource.EndsWith(Path.DirectorySeparatorChar), strCurrentSource, String.Concat(strCurrentSource, Path.DirectorySeparatorChar)).Trim
+                ElseIf strCurrentSource.Contains(Path.AltDirectorySeparatorChar) Then
+                    strCurrentSource = If(strCurrentSource.EndsWith(Path.AltDirectorySeparatorChar), strCurrentSource, String.Concat(strCurrentSource, Path.AltDirectorySeparatorChar)).Trim
+                End If
+
+                If strOtherSource.StartsWith(strCurrentSource) OrElse
+                    strCurrentSource.Contains(strOtherSource) Then
+                    bIsValid_SourcePath = False
+                    pbValidSourcePath.Image = My.Resources.invalid
+                    Exit For
+                End If
+            Next
+        End If
+
+        If bIsValid_SourcePath Then pbValidSourcePath.Image = My.Resources.valid
+
         If Not String.IsNullOrEmpty(txtSourcePath.Text) AndAlso Directory.Exists(txtSourcePath.Text.Trim) AndAlso
-            Not String.IsNullOrEmpty(cbSourceLanguage.Text) AndAlso isValid Then
+            Not String.IsNullOrEmpty(cbSourceLanguage.Text) AndAlso bIsValid_SourceName AndAlso bIsValid_SourcePath Then
             OK_Button.Enabled = True
         End If
     End Sub
@@ -195,6 +226,11 @@ Public Class dlgSourceMovie
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
 
+        Dim strSourcePath As String = Regex.Replace(txtSourcePath.Text.Trim, "^(\\)+\\\\", "\\")
+        While strSourcePath.EndsWith(Path.DirectorySeparatorChar) OrElse strSourcePath.EndsWith(Path.AltDirectorySeparatorChar)
+            strSourcePath = strSourcePath.Remove(strSourcePath.Length - 1)
+        End While
+
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                 If Not _id = -1 Then
@@ -212,7 +248,7 @@ Public Class dlgSourceMovie
                 Dim parGetYear As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parGetYear", DbType.Boolean, 0, "bGetYear")
                 Dim parLanguage As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parLanguage", DbType.String, 0, "strLanguage")
                 parName.Value = txtSourceName.Text.Trim
-                parPath.Value = Regex.Replace(txtSourcePath.Text.Trim, "^(\\)+\\\\", "\\")
+                parPath.Value = strSourcePath
                 parRecur.Value = chkScanRecursive.Checked
                 parFolder.Value = chkUseFolderName.Checked
                 parSingle.Value = chkSingle.Checked
@@ -233,7 +269,6 @@ Public Class dlgSourceMovie
         Functions.GetListOfSources()
 
         DialogResult = DialogResult.OK
-        Close()
     End Sub
 
     Private Sub SetUp()

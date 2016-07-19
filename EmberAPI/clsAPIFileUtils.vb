@@ -82,11 +82,11 @@ Namespace FileUtils
                         If String.IsNullOrEmpty(Master.eSettings.MovieBackdropsPath) Then Return
 
                         If isVideoTS(strSourceFilename) Then
-                            strDestinationFilename = Path.Combine(Master.eSettings.MovieBackdropsPath, String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(strSourceFilename).FullName).FullName, Directory.GetParent(Directory.GetParent(strSourceFilename).FullName).Name), "-fanart.jpg"))
+                            strDestinationFilename = Path.Combine(Master.eSettings.MovieBackdropsPath, String.Concat(Path.Combine(GetMainPath(strSourceFilename).FullName, GetMainPath(strSourceFilename).Name), "-fanart.jpg"))
                         ElseIf isBDRip(strSourceFilename) Then
-                            strDestinationFilename = Path.Combine(Master.eSettings.MovieBackdropsPath, String.Concat(Directory.GetParent(Directory.GetParent(Directory.GetParent(strSourceFilename).FullName).FullName).Name, "-fanart.jpg"))
+                            strDestinationFilename = Path.Combine(Master.eSettings.MovieBackdropsPath, String.Concat(GetMainPath(strSourceFilename).Name, "-fanart.jpg"))
                         Else
-                            strDestinationFilename = Path.Combine(Master.eSettings.MovieBackdropsPath, String.Concat(Directory.GetParent(strSourceFilename).Name, "-fanart.jpg"))
+                            strDestinationFilename = Path.Combine(Master.eSettings.MovieBackdropsPath, String.Concat(GetMainPath(strSourceFilename).Name, "-fanart.jpg"))
                         End If
                 End Select
 
@@ -233,25 +233,39 @@ Namespace FileUtils
             'Return filename/path of the largest file
             Return lFileList.OrderByDescending(Function(s) s.Length).Select(Function(s) s.FullName).FirstOrDefault
         End Function
+        ''' <summary>
+        ''' Returned the main folder that contains the file
+        ''' </summary>
+        ''' <param name="strFilenameFullPath">File name with full path</param>
+        ''' <returns></returns>
+        Public Shared Function GetMainPath(ByVal strFilenameFullPath As String) As DirectoryInfo
+            If isBDRip(strFilenameFullPath) Then
+                Return Directory.GetParent(Directory.GetParent(Directory.GetParent(strFilenameFullPath).FullName).FullName)
+            ElseIf isVideoTS(strFilenameFullPath) Then
+                Return Directory.GetParent(Directory.GetParent(strFilenameFullPath).FullName)
+            Else
+                Return Directory.GetParent(strFilenameFullPath)
+            End If
+        End Function
 
         ''' <summary>
         ''' Determine whether the path provided contains a Blu-Ray image
         ''' </summary>
-        ''' <param name="sPath">Path to be evaluated</param>
+        ''' <param name="strPath">Path to be evaluated</param>
         ''' <returns><c>True</c> if the supplied path is determined to be a Blu-Ray path. <c>False</c> otherwise</returns>
         ''' <remarks>Two tests are performed. If the supplied path has an extension (such as if a .m2ts file was provided), check 
         ''' that the parent directory is "stream" and its parent is "bdmv"</remarks>
-        Public Shared Function isBDRip(ByVal sPath As String) As Boolean
+        Public Shared Function isBDRip(ByVal strPath As String) As Boolean
             'TODO Kludge. Consider FileSystemInfo.Attributes to detect if path is a file or directory, and proceed from there
-            If String.IsNullOrEmpty(sPath) Then Return False
-            If sPath.EndsWith(Path.DirectorySeparatorChar) OrElse sPath.EndsWith(Path.AltDirectorySeparatorChar) Then
+            If String.IsNullOrEmpty(strPath) Then Return False
+            If strPath.EndsWith(Path.DirectorySeparatorChar) OrElse strPath.EndsWith(Path.AltDirectorySeparatorChar) Then
                 'The current/parent directory comparisons can't handle paths ending with a directory separator. Therefore, strip them out
-                Return isBDRip(sPath.Substring(0, sPath.Length - 1))
+                Return isBDRip(strPath.Substring(0, strPath.Length - 1))
             End If
-            If Path.HasExtension(sPath) Then
-                Return Directory.GetParent(sPath).Name.ToLower = "stream" AndAlso Directory.GetParent(Directory.GetParent(sPath).FullName).Name.ToLower = "bdmv"
+            If Path.HasExtension(strPath) Then
+                Return Directory.GetParent(strPath).Name.ToLower = "stream" AndAlso Directory.GetParent(Directory.GetParent(strPath).FullName).Name.ToLower = "bdmv"
             Else
-                Return GetDirectory(sPath).ToLower = "stream" AndAlso Directory.GetParent(sPath).Name.ToLower = "bdmv"
+                Return GetDirectory(strPath).ToLower = "stream" AndAlso Directory.GetParent(strPath).Name.ToLower = "bdmv"
             End If
         End Function
         ''' <summary>
@@ -271,16 +285,16 @@ Namespace FileUtils
         ''' <summary>
         ''' Deermine whether the path provided contains a DVD image
         ''' </summary>
-        ''' <param name="sPath">Path to be evaluated</param>
+        ''' <param name="strPath">Path to be evaluated</param>
         ''' <returns><c>True</c> if the supplied path is determined to be a Blu-Ray path. <c>False</c> otherwise</returns>
         ''' <remarks>If the path is a file, check if parent is video_ts. Otherwise, it should be a directory, so see if it is video_ts</remarks>
-        Public Shared Function isVideoTS(ByVal sPath As String) As Boolean
+        Public Shared Function isVideoTS(ByVal strPath As String) As Boolean
             'TODO Kludge. Consider FileSystemInfo.Attributes to detect if path is a file or directory, and proceed from there
-            If String.IsNullOrEmpty(sPath) Then Return False
-            If Path.HasExtension(sPath) Then
-                Return Directory.GetParent(sPath).Name.ToLower = "video_ts"
+            If String.IsNullOrEmpty(strPath) Then Return False
+            If Path.HasExtension(strPath) Then
+                Return Directory.GetParent(strPath).Name.ToLower = "video_ts"
             Else
-                Return GetDirectory(sPath).ToLower = "video_ts"
+                Return GetDirectory(strPath).ToLower = "video_ts"
             End If
         End Function
         ''' <summary>
@@ -310,19 +324,19 @@ Namespace FileUtils
         ''' <summary>
         ''' Get the entire path and filename of a file, but without the extension
         ''' </summary>
-        ''' <param name="sPath">Full path to file.</param>
+        ''' <param name="strPath">Full path to file.</param>
         ''' <returns>Path and filename of a file, without the extension</returns>
         ''' <remarks>No validation is made on whether the path/file actually exists.</remarks>
-        Public Shared Function RemoveExtFromPath(ByVal sPath As String) As String
+        Public Shared Function RemoveExtFromPath(ByVal strPath As String) As String
             'TODO Dekker500 This method needs serious work. Invalid paths are not consistently handled. Need analysis on how to handle these properly
-            If String.IsNullOrEmpty(sPath) Then Return String.Empty
+            If String.IsNullOrEmpty(strPath) Then Return String.Empty
             Try
                 'If the path has no directories (only the root), short-circuit the routine and just return
-                If sPath.Equals(Directory.GetDirectoryRoot(sPath)) Then Return sPath
-                Return Path.Combine(Path.GetDirectoryName(sPath), Path.GetFileNameWithoutExtension(sPath))
+                If strPath.Equals(Directory.GetDirectoryRoot(strPath)) Then Return strPath
+                Return Path.Combine(Path.GetDirectoryName(strPath), Path.GetFileNameWithoutExtension(strPath))
                 'Return Path.Combine(Directory.GetParent(sPath).FullName, Path.GetFileNameWithoutExtension(sPath))
             Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Source: <" & sPath & ">")
+                logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Source: <" & strPath & ">")
                 Return String.Empty
             End Try
         End Function
@@ -734,11 +748,11 @@ Namespace FileUtils
                         Dim tPath As String = String.Empty
                         If Not String.IsNullOrEmpty(fPath) AndAlso File.Exists(fPath) Then
                             If Common.isVideoTS(fPath) Then
-                                tPath = Path.Combine(Master.eSettings.MovieBackdropsPath, String.Concat(Path.Combine(Directory.GetParent(Directory.GetParent(fPath).FullName).FullName, Directory.GetParent(Directory.GetParent(fPath).FullName).Name), "-fanart.jpg"))
+                                tPath = Path.Combine(Master.eSettings.MovieBackdropsPath, String.Concat(Path.Combine(Common.GetMainPath(fPath).FullName, Common.GetMainPath(fPath).Name), "-fanart.jpg"))
                             ElseIf Common.isBDRip(fPath) Then
-                                tPath = Path.Combine(Master.eSettings.MovieBackdropsPath, String.Concat(Directory.GetParent(Directory.GetParent(Directory.GetParent(fPath).FullName).FullName).Name, "-fanart.jpg"))
+                                tPath = Path.Combine(Master.eSettings.MovieBackdropsPath, String.Concat(Common.GetMainPath(fPath).Name, "-fanart.jpg"))
                             Else
-                                tPath = Path.Combine(Master.eSettings.MovieBackdropsPath, String.Concat(Directory.GetParent(fPath).Name, "-fanart.jpg"))
+                                tPath = Path.Combine(Master.eSettings.MovieBackdropsPath, String.Concat(Common.GetMainPath(fPath).Name, "-fanart.jpg"))
                             End If
                         End If
                         If Not String.IsNullOrEmpty(tPath) Then
@@ -1001,8 +1015,7 @@ Namespace FileUtils
             Dim isBDRip As Boolean = Common.isBDRip(fPath)
             Dim isVideoTSFile As Boolean = fileName.ToLower = "video_ts"
 
-            If isVideoTS Then basePath = Directory.GetParent(Directory.GetParent(fPath).FullName).FullName
-            If isBDRip Then basePath = Directory.GetParent(Directory.GetParent(Directory.GetParent(fPath).FullName).FullName).FullName
+            If isVideoTS OrElse isBDRip Then basePath = Common.GetMainPath(fPath).FullName
 
             Select Case mType
                 Case Enums.ModifierType.MainActorThumbs
@@ -2032,6 +2045,15 @@ Namespace FileUtils
                             If .TVUseFrodo AndAlso .TVSeasonFanartFrodo Then FilenameList.Add(Path.Combine(fShowPath, "season-specials-banner.jpg"))
                             If .TVUseYAMJ AndAlso .TVSeasonBannerYAMJ AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, String.Concat(fSeasonFolder, ".banner.jpg")))
                             If .TVUseYAMJ AndAlso .TVSeasonBannerYAMJ AndAlso Not bInside AndAlso Not String.IsNullOrEmpty(fEpisodePath) Then FilenameList.Add(String.Concat(fEpisodePath, ".banner.jpg"))
+                            If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVSeasonBannerExpert) Then
+                                For Each a In .TVSeasonBannerExpert.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
+                                    If Not (a.Contains("<seasonpath>") AndAlso Not bInside) Then
+                                        Dim sPath As String = a.Replace("<seasonpath>", fSeasonPath)
+                                        sPath = String.Format(sPath, sSeason, DBElement.TVSeason.Season, sSeason) 'Season# padding: {0} = 01; {1} = 1; {2} = 01
+                                        FilenameList.Add(Path.Combine(fShowPath, sPath))
+                                    End If
+                                Next
+                            End If
                         Else
                             If .TVUseFrodo AndAlso .TVSeasonBannerFrodo Then FilenameList.Add(Path.Combine(fShowPath, String.Format("season{0}-banner.jpg", sSeason)))
                             If .TVUseYAMJ AndAlso .TVSeasonBannerYAMJ AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, String.Concat(fSeasonFolder, ".banner.jpg")))
@@ -2054,6 +2076,15 @@ Namespace FileUtils
                             If .TVUseFrodo AndAlso .TVSeasonFanartFrodo Then FilenameList.Add(Path.Combine(fShowPath, "season-specials-fanart.jpg"))
                             If .TVUseYAMJ AndAlso .TVSeasonFanartYAMJ AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, String.Concat(fSeasonFolder, ".fanart.jpg")))
                             If .TVUseYAMJ AndAlso .TVSeasonFanartYAMJ AndAlso Not bInside AndAlso Not String.IsNullOrEmpty(fEpisodePath) Then FilenameList.Add(String.Concat(fEpisodePath, ".fanart.jpg"))
+                            If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVSeasonFanartExpert) Then
+                                For Each a In .TVSeasonFanartExpert.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
+                                    If Not (a.Contains("<seasonpath>") AndAlso Not bInside) Then
+                                        Dim sPath As String = a.Replace("<seasonpath>", fSeasonPath)
+                                        sPath = String.Format(sPath, sSeason, DBElement.TVSeason.Season, sSeason) 'Season# padding: {0} = 01; {1} = 1; {2} = 01
+                                        FilenameList.Add(Path.Combine(fShowPath, sPath))
+                                    End If
+                                Next
+                            End If
                         Else
                             If .TVUseFrodo AndAlso .TVSeasonFanartFrodo Then FilenameList.Add(Path.Combine(fShowPath, String.Format("season{0}-fanart.jpg", sSeason)))
                             If .TVUseYAMJ AndAlso .TVSeasonFanartYAMJ AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, String.Concat(fSeasonFolder, ".fanart.jpg")))
@@ -2075,6 +2106,15 @@ Namespace FileUtils
                         If DBElement.TVSeason.Season = 0 Then 'season specials
                             If .TVUseAD AndAlso .TVSeasonLandscapeAD Then FilenameList.Add(Path.Combine(fShowPath, "season-specials-landscape.jpg"))
                             If .TVUseExtended AndAlso .TVSeasonLandscapeExtended Then FilenameList.Add(Path.Combine(fShowPath, "season-specials-landscape.jpg"))
+                            If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVSeasonLandscapeExpert) Then
+                                For Each a In .TVSeasonLandscapeExpert.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
+                                    If Not (a.Contains("<seasonpath>") AndAlso Not bInside) Then
+                                        Dim sPath As String = a.Replace("<seasonpath>", fSeasonPath)
+                                        sPath = String.Format(sPath, sSeason, DBElement.TVSeason.Season, sSeason) 'Season# padding: {0} = 01; {1} = 1; {2} = 01
+                                        FilenameList.Add(Path.Combine(fShowPath, sPath))
+                                    End If
+                                Next
+                            End If
                         Else
                             If .TVUseAD AndAlso .TVSeasonLandscapeAD Then FilenameList.Add(Path.Combine(fShowPath, String.Format("season{0}-landscape.jpg", sSeason)))
                             If .TVUseExtended AndAlso .TVSeasonLandscapeExtended Then FilenameList.Add(Path.Combine(fShowPath, String.Format("season{0}-landscape.jpg", sSeason)))
@@ -2097,6 +2137,15 @@ Namespace FileUtils
                             If .TVUseFrodo AndAlso .TVSeasonPosterFrodo Then FilenameList.Add(Path.Combine(fShowPath, "season-specials-poster.jpg"))
                             If .TVUseYAMJ AndAlso .TVSeasonPosterYAMJ AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, String.Concat(fSeasonFolder, ".jpg")))
                             If .TVUseYAMJ AndAlso .TVSeasonPosterYAMJ AndAlso Not bInside AndAlso Not String.IsNullOrEmpty(fEpisodePath) Then FilenameList.Add(String.Concat(fEpisodePath, ".jpg"))
+                            If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVSeasonPosterExpert) Then
+                                For Each a In .TVSeasonPosterExpert.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
+                                    If Not (a.Contains("<seasonpath>") AndAlso Not bInside) Then
+                                        Dim sPath As String = a.Replace("<seasonpath>", fSeasonPath)
+                                        sPath = String.Format(sPath, sSeason, DBElement.TVSeason.Season, sSeason) 'Season# padding: {0} = 01; {1} = 1; {2} = 01
+                                        FilenameList.Add(Path.Combine(fShowPath, sPath))
+                                    End If
+                                Next
+                            End If
                         Else
                             If .TVUseBoxee AndAlso .TVSeasonPosterBoxee AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, "poster.jpg"))
                             If .TVUseFrodo AndAlso .TVSeasonPosterFrodo Then FilenameList.Add(Path.Combine(fShowPath, String.Format("season{0}-poster.jpg", sSeason)))

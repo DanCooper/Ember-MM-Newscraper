@@ -252,11 +252,11 @@ Public Class dlgTMDBSearchResults_Movie
             lblDirectors.Text = String.Join(" / ", _tmpMovie.Directors.ToArray)
             lblGenre.Text = String.Join(" / ", _tmpMovie.Genres.ToArray)
             txtPlot.Text = StringUtils.ShortenOutline(_tmpMovie.Plot, 410)
-            lblTMDBID.Text = _tmpMovie.TMDBID
+            lblTMDBID.Text = _tmpMovie.TMDB
 
-            If _PosterCache.ContainsKey(_tmpMovie.TMDBID) Then
+            If _PosterCache.ContainsKey(_tmpMovie.TMDB) Then
                 'just set it
-                pbPoster.Image = _PosterCache(_tmpMovie.TMDBID)
+                pbPoster.Image = _PosterCache(_tmpMovie.TMDB)
             Else
                 'go download it, if available
                 If Not String.IsNullOrEmpty(sPoster) Then
@@ -266,14 +266,14 @@ Public Class dlgTMDBSearchResults_Movie
                     pnlPicStatus.Visible = True
                     bwDownloadPic = New System.ComponentModel.BackgroundWorker
                     bwDownloadPic.WorkerSupportsCancellation = True
-                    bwDownloadPic.RunWorkerAsync(New Arguments With {.pURL = sPoster, .IMDBId = _tmpMovie.TMDBID})
+                    bwDownloadPic.RunWorkerAsync(New Arguments With {.pURL = sPoster, .IMDBId = _tmpMovie.TMDB})
                 End If
 
             End If
 
             'store clone of tmpmovie
-            If Not _InfoCache.ContainsKey(_tmpMovie.TMDBID) Then
-                _InfoCache.Add(_tmpMovie.TMDBID, GetMovieClone(_tmpMovie))
+            If Not _InfoCache.ContainsKey(_tmpMovie.TMDB) Then
+                _InfoCache.Add(_tmpMovie.TMDB, GetMovieClone(_tmpMovie))
             End If
 
 
@@ -291,7 +291,7 @@ Public Class dlgTMDBSearchResults_Movie
         ClearInfo()
         If M IsNot Nothing AndAlso M.Matches.Count > 0 Then
             For Each Movie As MediaContainers.Movie In M.Matches
-                tvResults.Nodes.Add(New TreeNode() With {.Text = String.Concat(Movie.Title, If(Not String.IsNullOrEmpty(Movie.Year), String.Format(" ({0})", Movie.Year), String.Empty)), .Tag = Movie.TMDBID})
+                tvResults.Nodes.Add(New TreeNode() With {.Text = String.Concat(Movie.Title, If(Not String.IsNullOrEmpty(Movie.Year), String.Format(" ({0})", Movie.Year), String.Empty)), .Tag = Movie.TMDB})
             Next
             tvResults.SelectedNode = tvResults.Nodes(0)
 

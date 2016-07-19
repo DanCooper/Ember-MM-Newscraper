@@ -23,7 +23,7 @@ Partial Class dlgRenameManual_Movie
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
-        Me.OK_Button = New System.Windows.Forms.Button()
+        Me.btnOK = New System.Windows.Forms.Button()
         Me.Cancel_Button = New System.Windows.Forms.Button()
         Me.txtFolder = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -48,7 +48,7 @@ Partial Class dlgRenameManual_Movie
         Me.TableLayoutPanel1.ColumnCount = 2
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.btnOK, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
         Me.TableLayoutPanel1.Location = New System.Drawing.Point(271, 101)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
@@ -59,14 +59,14 @@ Partial Class dlgRenameManual_Movie
         '
         'OK_Button
         '
-        Me.OK_Button.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.OK_Button.Enabled = False
-        Me.OK_Button.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.OK_Button.Location = New System.Drawing.Point(3, 3)
-        Me.OK_Button.Name = "OK_Button"
-        Me.OK_Button.Size = New System.Drawing.Size(67, 23)
-        Me.OK_Button.TabIndex = 0
-        Me.OK_Button.Text = "OK"
+        Me.btnOK.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.btnOK.Enabled = False
+        Me.btnOK.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnOK.Location = New System.Drawing.Point(3, 3)
+        Me.btnOK.Name = "OK_Button"
+        Me.btnOK.Size = New System.Drawing.Size(67, 23)
+        Me.btnOK.TabIndex = 0
+        Me.btnOK.Text = "OK"
         '
         'Cancel_Button
         '
@@ -194,7 +194,7 @@ Partial Class dlgRenameManual_Movie
         '
         'dlgRenameManual_Movie
         '
-        Me.AcceptButton = Me.OK_Button
+        Me.AcceptButton = Me.btnOK
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
@@ -217,7 +217,7 @@ Partial Class dlgRenameManual_Movie
 
     End Sub
     Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents OK_Button As System.Windows.Forms.Button
+    Friend WithEvents btnOK As System.Windows.Forms.Button
     Friend WithEvents Cancel_Button As System.Windows.Forms.Button
     Friend WithEvents txtFolder As System.Windows.Forms.TextBox
     Friend WithEvents Label1 As System.Windows.Forms.Label

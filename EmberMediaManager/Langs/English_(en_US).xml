@@ -1173,9 +1173,9 @@
   <string id="1081">Valid Theme Extensions</string>
   <string id="1082">Enable Theme Support</string>
   <string id="1083">Video Titles ({0})</string>
-  <string id="1084"></string>
-  <string id="1085"></string>
-  <string id="1086"></string>
+  <string id="1084">File already exists</string>
+  <string id="1085">Directory already exists or is not empty</string>
+  <string id="1086">The directory can not be renamed because the directory is specified as the source.</string>
   <string id="1087"></string>
   <string id="1088"></string>
   <string id="1089"></string>

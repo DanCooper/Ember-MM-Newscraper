@@ -161,7 +161,7 @@ Public Class Apple_Trailer
             tTitle = DBMovie.Movie.OriginalTitle
         End If
 
-        Dim tAppleTrailer As New Apple.Scraper(tTitle, DBMovie.Movie.IMDBID)
+        Dim tAppleTrailer As New Apple.Scraper(tTitle, DBMovie.Movie.IMDB)
 
         If tAppleTrailer.TrailerList.Count > 0 Then
             TrailerList = tAppleTrailer.TrailerList
