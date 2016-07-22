@@ -323,11 +323,11 @@ Public Class NFO
                 DBMovie.Movie.Title = String.Empty
             End If
 
-            'Top250
+            'Top250 (special handling: no check if "scrapedmovie.Top250Specified" and only set "new_Top250 = True" if a value over 0 has been set)
             If (Not DBMovie.Movie.Top250Specified OrElse Not Master.eSettings.MovieLockTop250) AndAlso ScrapeOptions.bMainTop250 AndAlso
-                scrapedmovie.Top250Specified AndAlso Master.eSettings.MovieScraperTop250 AndAlso Not new_Top250 Then
+                Master.eSettings.MovieScraperTop250 AndAlso Not new_Top250 Then
                 DBMovie.Movie.Top250 = scrapedmovie.Top250
-                new_Top250 = True
+                new_Top250 = If(scrapedmovie.Top250Specified, True, False)
             ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperTop250 AndAlso Not Master.eSettings.MovieLockTop250 Then
                 DBMovie.Movie.Top250 = 0
             End If
