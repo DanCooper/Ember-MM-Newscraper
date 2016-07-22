@@ -2845,7 +2845,7 @@ Public Class frmMain
                 If .MovieMissingTheme Then lstMissingFilter.Add("ThemePath IS NULL OR ThemePath=''")
                 If .MovieMissingTrailer Then lstMissingFilter.Add("TrailerPath IS NULL OR TrailerPath=''")
             End With
-            filMissing_Movies = Microsoft.VisualBasic.Strings.Join(lstMissingFilter.ToArray, " OR ")
+            filMissing_Movies = String.Join(" OR ", lstMissingFilter.ToArray)
             If filMissing_Movies IsNot Nothing Then FilterArray_Movies.Add(filMissing_Movies)
         End If
         RunFilter_Movies()
@@ -2865,7 +2865,7 @@ Public Class frmMain
                 If .MovieSetMissingNFO Then lstMissingFilter.Add("NfoPath IS NULL OR NfoPath=''")
                 If .MovieSetMissingPoster Then lstMissingFilter.Add("PosterPath IS NULL OR PosterPath=''")
             End With
-            filMissing_MovieSets = Microsoft.VisualBasic.Strings.Join(lstMissingFilter.ToArray, " OR ")
+            filMissing_MovieSets = String.Join(" OR ", lstMissingFilter.ToArray)
             If filMissing_MovieSets IsNot Nothing Then FilterArray_MovieSets.Add(filMissing_MovieSets)
         End If
         RunFilter_MovieSets()
@@ -2887,7 +2887,7 @@ Public Class frmMain
                 If .TVShowMissingPoster Then lstMissingFilter.Add("PosterPath IS NULL OR PosterPath=''")
                 If .TVShowMissingTheme Then lstMissingFilter.Add("ThemePath IS NULL OR ThemePath=''")
             End With
-            filMissing_TVShows = Microsoft.VisualBasic.Strings.Join(lstMissingFilter.ToArray, " OR ")
+            filMissing_TVShows = String.Join(" OR ", lstMissingFilter.ToArray)
             If filMissing_TVShows IsNot Nothing Then FilterArray_TVShows.Add(filMissing_TVShows)
         End If
         RunFilter_Shows()
@@ -3445,9 +3445,9 @@ Public Class frmMain
             lstGenres.AddRange(clbFilterGenres_Movies.CheckedItems.OfType(Of String).ToList)
 
             If rbFilterAnd_Movies.Checked Then
-                txtFilterGenre_Movies.Text = Microsoft.VisualBasic.Strings.Join(lstGenres.ToArray, " AND ")
+                txtFilterGenre_Movies.Text = String.Join(" AND ", lstGenres.ToArray)
             Else
-                txtFilterGenre_Movies.Text = Microsoft.VisualBasic.Strings.Join(lstGenres.ToArray, " OR ")
+                txtFilterGenre_Movies.Text = String.Join(" OR ", lstGenres.ToArray)
             End If
 
             For i As Integer = 0 To lstGenres.Count - 1
@@ -3459,9 +3459,9 @@ Public Class frmMain
             Next
 
             If rbFilterAnd_Movies.Checked Then
-                filGenre_Movies = String.Format("({0})", Microsoft.VisualBasic.Strings.Join(lstGenres.ToArray, " AND "))
+                filGenre_Movies = String.Format("({0})", String.Join(" AND ", lstGenres.ToArray))
             Else
-                filGenre_Movies = String.Format("({0})", Microsoft.VisualBasic.Strings.Join(lstGenres.ToArray, " OR "))
+                filGenre_Movies = String.Format("({0})", String.Join(" OR ", lstGenres.ToArray))
             End If
 
             FilterArray_Movies.Add(filGenre_Movies)
@@ -3488,9 +3488,9 @@ Public Class frmMain
             lstGenres.AddRange(clbFilterGenres_Shows.CheckedItems.OfType(Of String).ToList)
 
             If rbFilterAnd_Shows.Checked Then
-                txtFilterGenre_Shows.Text = Microsoft.VisualBasic.Strings.Join(lstGenres.ToArray, " AND ")
+                txtFilterGenre_Shows.Text = String.Join(" AND ", lstGenres.ToArray)
             Else
-                txtFilterGenre_Shows.Text = Microsoft.VisualBasic.Strings.Join(lstGenres.ToArray, " OR ")
+                txtFilterGenre_Shows.Text = String.Join(" OR ", lstGenres.ToArray)
             End If
 
             For i As Integer = 0 To lstGenres.Count - 1
@@ -3502,9 +3502,9 @@ Public Class frmMain
             Next
 
             If rbFilterAnd_Shows.Checked Then
-                filGenre_TVShows = String.Format("({0})", Microsoft.VisualBasic.Strings.Join(lstGenres.ToArray, " AND "))
+                filGenre_TVShows = String.Format("({0})", String.Join(" AND ", lstGenres.ToArray))
             Else
-                filGenre_TVShows = String.Format("({0})", Microsoft.VisualBasic.Strings.Join(lstGenres.ToArray, " OR "))
+                filGenre_TVShows = String.Format("({0})", String.Join(" OR ", lstGenres.ToArray))
             End If
 
             FilterArray_TVShows.Add(filGenre_TVShows)
@@ -3531,9 +3531,9 @@ Public Class frmMain
             lstCountries.AddRange(clbFilterCountries_Movies.CheckedItems.OfType(Of String).ToList)
 
             If rbFilterAnd_Movies.Checked Then
-                txtFilterCountry_Movies.Text = Microsoft.VisualBasic.Strings.Join(lstCountries.ToArray, " AND ")
+                txtFilterCountry_Movies.Text = String.Join(" AND ", lstCountries.ToArray)
             Else
-                txtFilterCountry_Movies.Text = Microsoft.VisualBasic.Strings.Join(lstCountries.ToArray, " OR ")
+                txtFilterCountry_Movies.Text = String.Join(" OR ", lstCountries.ToArray)
             End If
 
             For i As Integer = 0 To lstCountries.Count - 1
@@ -3545,9 +3545,9 @@ Public Class frmMain
             Next
 
             If rbFilterAnd_Movies.Checked Then
-                filCountry_Movies = String.Format("({0})", Microsoft.VisualBasic.Strings.Join(lstCountries.ToArray, " AND "))
+                filCountry_Movies = String.Format("({0})", String.Join(" AND ", lstCountries.ToArray))
             Else
-                filCountry_Movies = String.Format("({0})", Microsoft.VisualBasic.Strings.Join(lstCountries.ToArray, " OR "))
+                filCountry_Movies = String.Format("({0})", String.Join(" OR ", lstCountries.ToArray))
             End If
 
             FilterArray_Movies.Add(filCountry_Movies)
@@ -3574,9 +3574,9 @@ Public Class frmMain
             lstDataFields.AddRange(clbFilterDataFields_Movies.CheckedItems.OfType(Of String).ToList)
 
             If rbFilterAnd_Movies.Checked Then
-                txtFilterDataField_Movies.Text = Microsoft.VisualBasic.Strings.Join(lstDataFields.ToArray, " AND ")
+                txtFilterDataField_Movies.Text = String.Join(" AND ", lstDataFields.ToArray)
             Else
-                txtFilterDataField_Movies.Text = Microsoft.VisualBasic.Strings.Join(lstDataFields.ToArray, " OR ")
+                txtFilterDataField_Movies.Text = String.Join(" OR ", lstDataFields.ToArray)
             End If
 
             For i As Integer = 0 To lstDataFields.Count - 1
@@ -3588,9 +3588,9 @@ Public Class frmMain
             Next
 
             If rbFilterAnd_Movies.Checked Then
-                filDataField_Movies = String.Format("({0})", Microsoft.VisualBasic.Strings.Join(lstDataFields.ToArray, " AND "))
+                filDataField_Movies = String.Format("({0})", String.Join(" AND ", lstDataFields.ToArray))
             Else
-                filDataField_Movies = String.Format("({0})", Microsoft.VisualBasic.Strings.Join(lstDataFields.ToArray, " OR "))
+                filDataField_Movies = String.Format("({0})", String.Join(" OR ", lstDataFields.ToArray))
             End If
 
             FilterArray_Movies.Add(filDataField_Movies)
@@ -3616,13 +3616,13 @@ Public Class frmMain
             Dim lstSource As New List(Of String)
             lstSource.AddRange(clbFilterSources_Movies.CheckedItems.OfType(Of String).ToList)
 
-            txtFilterSource_Movies.Text = Microsoft.VisualBasic.Strings.Join(lstSource.ToArray, " | ")
+            txtFilterSource_Movies.Text = String.Join(" | ", lstSource.ToArray)
 
             For i As Integer = 0 To lstSource.Count - 1
                 lstSource.Item(i) = String.Format("Source = '{0}'", StringUtils.ConvertToValidFilterString(lstSource.Item(i)))
             Next
 
-            filSource_Movies = String.Format("({0})", Microsoft.VisualBasic.Strings.Join(lstSource.ToArray, " OR "))
+            filSource_Movies = String.Format("({0})", String.Join(" OR ", lstSource.ToArray))
 
             FilterArray_Movies.Add(filSource_Movies)
             RunFilter_Movies()
@@ -3647,13 +3647,13 @@ Public Class frmMain
             Dim lstSource As New List(Of String)
             lstSource.AddRange(clbFilterSource_Shows.CheckedItems.OfType(Of String).ToList)
 
-            txtFilterSource_Shows.Text = Microsoft.VisualBasic.Strings.Join(lstSource.ToArray, " | ")
+            txtFilterSource_Shows.Text = String.Join(" | ", lstSource.ToArray)
 
             For i As Integer = 0 To lstSource.Count - 1
                 lstSource.Item(i) = String.Format("Source = '{0}'", StringUtils.ConvertToValidFilterString(lstSource.Item(i)))
             Next
 
-            filSource_TVShows = String.Format("({0})", Microsoft.VisualBasic.Strings.Join(lstSource.ToArray, " OR "))
+            filSource_TVShows = String.Format("({0})", String.Join(" OR ", lstSource.ToArray))
 
             FilterArray_TVShows.Add(filSource_TVShows)
             RunFilter_Shows()
@@ -14021,7 +14021,7 @@ Public Class frmMain
             Dim lstGenres As New List(Of String)
             lstGenres.AddRange(clbFilterGenres_Movies.CheckedItems.OfType(Of String).ToList)
 
-            txtFilterGenre_Movies.Text = Microsoft.VisualBasic.Strings.Join(lstGenres.ToArray, " AND ")
+            txtFilterGenre_Movies.Text = String.Join(" AND ", lstGenres.ToArray)
 
             For i As Integer = 0 To lstGenres.Count - 1
                 If lstGenres.Item(i) = Master.eLang.None Then
@@ -14031,7 +14031,7 @@ Public Class frmMain
                 End If
             Next
 
-            filGenre_Movies = Microsoft.VisualBasic.Strings.Join(lstGenres.ToArray, " AND ")
+            filGenre_Movies = String.Join(" AND ", lstGenres.ToArray)
 
             FilterArray_Movies.Add(filGenre_Movies)
         End If
@@ -14043,7 +14043,7 @@ Public Class frmMain
             Dim lstCountries As New List(Of String)
             lstCountries.AddRange(clbFilterCountries_Movies.CheckedItems.OfType(Of String).ToList)
 
-            txtFilterCountry_Movies.Text = Microsoft.VisualBasic.Strings.Join(lstCountries.ToArray, " AND ")
+            txtFilterCountry_Movies.Text = String.Join(" AND ", lstCountries.ToArray)
 
             For i As Integer = 0 To lstCountries.Count - 1
                 If lstCountries.Item(i) = Master.eLang.None Then
@@ -14053,7 +14053,7 @@ Public Class frmMain
                 End If
             Next
 
-            filCountry_Movies = Microsoft.VisualBasic.Strings.Join(lstCountries.ToArray, " AND ")
+            filCountry_Movies = String.Join(" AND ", lstCountries.ToArray)
 
             FilterArray_Movies.Add(filCountry_Movies)
         End If
@@ -14065,7 +14065,7 @@ Public Class frmMain
             Dim lstDataFields As New List(Of String)
             lstDataFields.AddRange(clbFilterDataFields_Movies.CheckedItems.OfType(Of String).ToList)
 
-            txtFilterDataField_Movies.Text = Microsoft.VisualBasic.Strings.Join(lstDataFields.ToArray, " AND ")
+            txtFilterDataField_Movies.Text = String.Join(" AND ", lstDataFields.ToArray)
 
             For i As Integer = 0 To lstDataFields.Count - 1
                 If cbFilterDataField_Movies.SelectedIndex = 0 Then
@@ -14075,7 +14075,7 @@ Public Class frmMain
                 End If
             Next
 
-            filDataField_Movies = Microsoft.VisualBasic.Strings.Join(lstDataFields.ToArray, " AND ")
+            filDataField_Movies = String.Join(" AND ", lstDataFields.ToArray)
 
             FilterArray_Movies.Add(filDataField_Movies)
         End If
@@ -14103,7 +14103,7 @@ Public Class frmMain
             Dim lstGenres As New List(Of String)
             lstGenres.AddRange(clbFilterGenres_Shows.CheckedItems.OfType(Of String).ToList)
 
-            txtFilterGenre_Shows.Text = Microsoft.VisualBasic.Strings.Join(lstGenres.ToArray, " AND ")
+            txtFilterGenre_Shows.Text = String.Join(" AND ", lstGenres.ToArray)
 
             For i As Integer = 0 To lstGenres.Count - 1
                 If lstGenres.Item(i) = Master.eLang.None Then
@@ -14113,32 +14113,10 @@ Public Class frmMain
                 End If
             Next
 
-            filGenre_TVShows = Microsoft.VisualBasic.Strings.Join(lstGenres.ToArray, " AND ")
+            filGenre_TVShows = String.Join(" AND ", lstGenres.ToArray)
 
             FilterArray_TVShows.Add(filGenre_TVShows)
         End If
-
-        'If clbFilterCountries_Movies.CheckedItems.Count > 0 Then
-        '    Me.txtFilterCountry_Movies.Text = String.Empty
-        '    Me.FilterArray_Movies.Remove(Me.filCountry_Movies)
-
-        '    Dim alCountries As New List(Of String)
-        '    alCountries.AddRange(clbFilterCountries_Movies.CheckedItems.OfType(Of String).ToList)
-
-        '    Me.txtFilterCountry_Movies.Text = Microsoft.VisualBasic.Strings.Join(alCountries.ToArray, " AND ")
-
-        '    For i As Integer = 0 To alCountries.Count - 1
-        '        If alCountries.Item(i) = Master.eLang.None Then
-        '            alCountries.Item(i) = "Country LIKE ''"
-        '        Else
-        '            alCountries.Item(i) = String.Format("Country LIKE '%{0}%'", alCountries.Item(i))
-        '        End If
-        '    Next
-
-        '    Me.filCountry_Movies = Microsoft.VisualBasic.Strings.Join(alCountries.ToArray, " AND ")
-
-        '    Me.FilterArray_Movies.Add(Me.filCountry_Movies)
-        'End If
 
         If clbFilterGenres_Shows.CheckedItems.Count > 0 OrElse chkFilterMark_Shows.Checked OrElse chkFilterNewEpisodes_Shows.Checked OrElse
             chkFilterNewShows_Shows.Checked OrElse chkFilterLock_Shows.Checked OrElse Not clbFilterSource_Shows.CheckedItems.Count > 0 OrElse
@@ -14153,7 +14131,7 @@ Public Class frmMain
             Dim lstGenres As New List(Of String)
             lstGenres.AddRange(clbFilterGenres_Movies.CheckedItems.OfType(Of String).ToList)
 
-            txtFilterGenre_Movies.Text = Microsoft.VisualBasic.Strings.Join(lstGenres.ToArray, " OR ")
+            txtFilterGenre_Movies.Text = String.Join(" OR ", lstGenres.ToArray)
 
             For i As Integer = 0 To lstGenres.Count - 1
                 If lstGenres.Item(i) = Master.eLang.None Then
@@ -14163,7 +14141,7 @@ Public Class frmMain
                 End If
             Next
 
-            filGenre_Movies = Microsoft.VisualBasic.Strings.Join(lstGenres.ToArray, " OR ")
+            filGenre_Movies = String.Join(" OR ", lstGenres.ToArray)
 
             FilterArray_Movies.Add(filGenre_Movies)
         End If
@@ -14175,7 +14153,7 @@ Public Class frmMain
             Dim lstCountries As New List(Of String)
             lstCountries.AddRange(clbFilterCountries_Movies.CheckedItems.OfType(Of String).ToList)
 
-            txtFilterCountry_Movies.Text = Microsoft.VisualBasic.Strings.Join(lstCountries.ToArray, " OR ")
+            txtFilterCountry_Movies.Text = String.Join(" OR ", lstCountries.ToArray)
 
             For i As Integer = 0 To lstCountries.Count - 1
                 If lstCountries.Item(i) = Master.eLang.None Then
@@ -14185,7 +14163,7 @@ Public Class frmMain
                 End If
             Next
 
-            filCountry_Movies = Microsoft.VisualBasic.Strings.Join(lstCountries.ToArray, " OR ")
+            filCountry_Movies = String.Join(" OR ", lstCountries.ToArray)
 
             FilterArray_Movies.Add(filCountry_Movies)
         End If
@@ -14197,7 +14175,7 @@ Public Class frmMain
             Dim lstDataFields As New List(Of String)
             lstDataFields.AddRange(clbFilterDataFields_Movies.CheckedItems.OfType(Of String).ToList)
 
-            txtFilterDataField_Movies.Text = Microsoft.VisualBasic.Strings.Join(lstDataFields.ToArray, " OR ")
+            txtFilterDataField_Movies.Text = String.Join(" OR ", lstDataFields.ToArray)
 
             For i As Integer = 0 To lstDataFields.Count - 1
                 If cbFilterDataField_Movies.SelectedIndex = 0 Then
@@ -14207,7 +14185,7 @@ Public Class frmMain
                 End If
             Next
 
-            filDataField_Movies = Microsoft.VisualBasic.Strings.Join(lstDataFields.ToArray, " OR ")
+            filDataField_Movies = String.Join(" OR ", lstDataFields.ToArray)
 
             FilterArray_Movies.Add(filDataField_Movies)
         End If
@@ -14235,7 +14213,7 @@ Public Class frmMain
             Dim lstGenres As New List(Of String)
             lstGenres.AddRange(clbFilterGenres_Shows.CheckedItems.OfType(Of String).ToList)
 
-            txtFilterGenre_Shows.Text = Microsoft.VisualBasic.Strings.Join(lstGenres.ToArray, " OR ")
+            txtFilterGenre_Shows.Text = String.Join(" OR ", lstGenres.ToArray)
 
             For i As Integer = 0 To lstGenres.Count - 1
                 If lstGenres.Item(i) = Master.eLang.None Then
@@ -14245,32 +14223,10 @@ Public Class frmMain
                 End If
             Next
 
-            filGenre_TVShows = Microsoft.VisualBasic.Strings.Join(lstGenres.ToArray, " OR ")
+            filGenre_TVShows = String.Join(" OR ", lstGenres.ToArray)
 
             FilterArray_TVShows.Add(filGenre_TVShows)
         End If
-
-        'If clbFilterCountries_Movies.CheckedItems.Count > 0 Then
-        '    Me.txtFilterCountry_Movies.Text = String.Empty
-        '    Me.FilterArray_Movies.Remove(Me.filCountry_Movies)
-
-        '    Dim alCountries As New List(Of String)
-        '    alCountries.AddRange(clbFilterCountries_Movies.CheckedItems.OfType(Of String).ToList)
-
-        '    Me.txtFilterCountry_Movies.Text = Microsoft.VisualBasic.Strings.Join(alCountries.ToArray, " OR ")
-
-        '    For i As Integer = 0 To alCountries.Count - 1
-        '        If alCountries.Item(i) = Master.eLang.None Then
-        '            alCountries.Item(i) = "Country LIKE ''"
-        '        Else
-        '            alCountries.Item(i) = String.Format("Country LIKE '%{0}%'", alCountries.Item(i))
-        '        End If
-        '    Next
-
-        '    Me.filCountry_Movies = Microsoft.VisualBasic.Strings.Join(alCountries.ToArray, " OR ")
-
-        '    Me.FilterArray_Movies.Add(Me.filCountry_Movies)
-        'End If
 
         If clbFilterGenres_Shows.CheckedItems.Count > 0 OrElse chkFilterMark_Shows.Checked OrElse chkFilterNewEpisodes_Shows.Checked OrElse
             chkFilterNewShows_Shows.Checked OrElse chkFilterLock_Shows.Checked OrElse Not clbFilterSource_Shows.CheckedItems.Count > 0 OrElse
@@ -14967,9 +14923,9 @@ Public Class frmMain
                 Dim strFilterString As String = String.Empty
 
                 If rbFilterAnd_Movies.Checked Then
-                    strFilterString = Microsoft.VisualBasic.Strings.Join(FilterArray_Movies.ToArray, " AND ")
+                    strFilterString = String.Join(" AND ", FilterArray_Movies.ToArray)
                 Else
-                    strFilterString = Microsoft.VisualBasic.Strings.Join(FilterArray_Movies.ToArray, " OR ")
+                    strFilterString = String.Join(" OR ", FilterArray_Movies.ToArray)
                 End If
 
                 bsMovies.Filter = strFilterString
@@ -15003,9 +14959,9 @@ Public Class frmMain
                 Dim strFilterString As String = String.Empty
 
                 If rbFilterAnd_MovieSets.Checked Then
-                    strFilterString = Microsoft.VisualBasic.Strings.Join(FilterArray_MovieSets.ToArray, " AND ")
+                    strFilterString = String.Join(" AND ", FilterArray_MovieSets.ToArray)
                 Else
-                    strFilterString = Microsoft.VisualBasic.Strings.Join(FilterArray_MovieSets.ToArray, " OR ")
+                    strFilterString = String.Join(" OR ", FilterArray_MovieSets.ToArray)
                 End If
 
                 bsMovieSets.Filter = strFilterString
@@ -15046,9 +15002,9 @@ Public Class frmMain
                 Dim strFilterString As String = String.Empty
 
                 If rbFilterAnd_Shows.Checked Then
-                    strFilterString = Microsoft.VisualBasic.Strings.Join(FilterArray_TVShows.ToArray, " AND ")
+                    strFilterString = String.Join(" AND ", FilterArray_TVShows.ToArray)
                 Else
-                    strFilterString = Microsoft.VisualBasic.Strings.Join(FilterArray_TVShows.ToArray, " OR ")
+                    strFilterString = String.Join(" OR ", FilterArray_TVShows.ToArray)
                 End If
 
                 bsTVShows.Filter = strFilterString
