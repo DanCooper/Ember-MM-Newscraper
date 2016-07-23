@@ -1052,7 +1052,7 @@ Namespace Kodi
                     If mDBElement.Movie.RuntimeSpecified AndAlso Integer.TryParse(mDBElement.Movie.Runtime, 0) Then
                         mRuntime = CType(mDBElement.Movie.Runtime, Integer) * 60 'API requires runtime in seconds
                     End If
-                    Dim mTop250 As Integer = If(mDBElement.Movie.Top250Specified, CType(mDBElement.Movie.Top250, Integer), 0)
+                    Dim mTop250 As Integer = mDBElement.Movie.Top250
                     Dim mYear As Integer = If(mDBElement.Movie.YearSpecified, CType(mDBElement.Movie.Year, Integer), 0)
 
                     'arrays

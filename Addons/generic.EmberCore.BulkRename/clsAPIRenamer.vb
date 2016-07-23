@@ -1327,7 +1327,7 @@ Public Class FileFolderRenamer
                 pattern = ApplyPattern(pattern, "F", f.OldFileName.Replace("\", String.Empty))
                 '                                G   Genres
                 pattern = ApplyPattern(pattern, "H", f.VideoCodec)
-                pattern = ApplyPattern(pattern, "I", If(Not String.IsNullOrEmpty(f.IMDB), String.Concat("tt", f.IMDB), String.Empty))
+                pattern = ApplyPattern(pattern, "I", f.IMDB)
                 pattern = ApplyPattern(pattern, "J", f.AudioCodec)
                 '                                K   Season
                 pattern = ApplyPattern(pattern, "L", f.ListTitle)
