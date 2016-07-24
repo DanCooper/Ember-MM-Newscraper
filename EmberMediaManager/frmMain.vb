@@ -9874,8 +9874,10 @@ Public Class frmMain
                 Master.eSettings.GeneralSplitterDistanceMain = scMain.SplitterDistance
                 Master.eSettings.GeneralSplitterDistanceTVSeason = scTVSeasonsEpisodes.SplitterDistance
                 Master.eSettings.GeneralSplitterDistanceTVShow = scTV.SplitterDistance
-                Master.eSettings.GeneralWindowLoc = Location
-                Master.eSettings.GeneralWindowSize = Size
+                If WindowState = FormWindowState.Normal Then
+                    Master.eSettings.GeneralWindowLoc = Location
+                    Master.eSettings.GeneralWindowSize = Size
+                End If
                 Master.eSettings.GeneralWindowState = WindowState
                 Master.eSettings.Save()
             End If
