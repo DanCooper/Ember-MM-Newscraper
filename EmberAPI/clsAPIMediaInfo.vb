@@ -300,7 +300,7 @@ Public Class MediaInfo
                 '  ElseIf StringUtils.IsStacked(Path.GetFileNameWithoutExtension(sPath), True) OrElse FileUtils.Common.isVideoTS(sPath) OrElse FileUtils.Common.isBDRip(sPath) Then
             ElseIf FileUtils.Common.isStacked(sPath) Then
                 Try
-                    Dim oFile As String = FileUtils.Common.RemoveStackingMarkers(sPath, False)
+                    Dim oFile As String = FileUtils.Common.RemoveStackingMarkers(sPath)
                     Dim sFile As New List(Of String)
                     Dim bIsVTS As Boolean = False
 
@@ -320,7 +320,7 @@ Public Class MediaInfo
                         End Try
                     Else
                         Try
-                            sFile.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, String.Concat(Path.GetFileNameWithoutExtension(FileUtils.Common.RemoveStackingMarkers(sPath, True)), "*")))
+                            sFile.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, String.Concat(Path.GetFileNameWithoutExtension(FileUtils.Common.RemoveStackingMarkers(sPath)), "*")))
                         Catch
                         End Try
                     End If

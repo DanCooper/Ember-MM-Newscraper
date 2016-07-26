@@ -126,7 +126,7 @@ Public Class Scanner
                 fList.AddRange(Directory.GetFiles(parPath))
             Else
                 Try
-                    Dim sName As String = Path.GetFileNameWithoutExtension(FileUtils.Common.RemoveStackingMarkers(DBMovie.Filename, True))
+                    Dim sName As String = Path.GetFileNameWithoutExtension(FileUtils.Common.RemoveStackingMarkers(DBMovie.Filename))
                     fList.AddRange(Directory.GetFiles(parPath, String.Concat(sName, "*")))
                 Catch ex As Exception
                     logger.Error(ex, New StackFrame().GetMethod().Name)
@@ -1216,9 +1216,9 @@ Public Class Scanner
     ''' <summary>
     ''' Find all related files in a directory.
     ''' </summary>
-    ''' <param name="sPath">Full path of the directory.</param>
+    ''' <param name="strPath">Full path of the directory.</param>
     ''' <param name="sSource">Structures.Source</param>
-    Public Sub ScanForFiles_Movie(ByVal sPath As String, ByVal sSource As Database.DBSource)
+    Public Sub ScanForFiles_Movie(ByVal strPath As String, ByVal sSource As Database.DBSource)
         Dim currMovieContainer As Database.DBElement
         Dim di As DirectoryInfo
         Dim lFi As New List(Of FileInfo)
@@ -1230,21 +1230,21 @@ Public Class Scanner
         Dim autoCheck As Boolean = False
 
         Try
-
-            If Directory.Exists(Path.Combine(sPath, "VIDEO_TS")) Then
-                di = New DirectoryInfo(Path.Combine(sPath, "VIDEO_TS"))
+            If Directory.Exists(Path.Combine(strPath, "VIDEO_TS")) Then
+                di = New DirectoryInfo(Path.Combine(strPath, "VIDEO_TS"))
                 sSource.IsSingle = True
-            ElseIf Directory.Exists(Path.Combine(sPath, String.Concat("BDMV", Path.DirectorySeparatorChar, "STREAM"))) Then
-                di = New DirectoryInfo(Path.Combine(sPath, String.Concat("BDMV", Path.DirectorySeparatorChar, "STREAM")))
+            ElseIf Directory.Exists(Path.Combine(strPath, String.Concat("BDMV", Path.DirectorySeparatorChar, "STREAM"))) Then
+                di = New DirectoryInfo(Path.Combine(strPath, String.Concat("BDMV", Path.DirectorySeparatorChar, "STREAM")))
                 sSource.IsSingle = True
             Else
-                di = New DirectoryInfo(sPath)
+                di = New DirectoryInfo(strPath)
                 autoCheck = True
             End If
 
             Try
                 lFi.AddRange(di.GetFiles)
-            Catch
+            Catch ex As Exception
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
 
             If lFi.Count > 0 Then
@@ -1252,7 +1252,7 @@ Public Class Scanner
                 If Master.eSettings.MovieRecognizeVTSExpertVTS AndAlso autoCheck Then
                     If lFi.Where(Function(s) s.Name.ToLower = "index.bdmv").Count > 0 Then
                         bdmvSingle = True
-                        tFile = FileUtils.Common.GetLongestFromRip(sPath, True)
+                        tFile = FileUtils.Common.GetLongestFromRip(strPath, True)
                         If bwPrelim.CancellationPending Then Return
                     End If
                 End If
@@ -1343,10 +1343,6 @@ Public Class Scanner
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
-
-        di = Nothing
-        lFi = Nothing
-        fList = Nothing
     End Sub
 
     ''' <summary>
@@ -1366,44 +1362,44 @@ Public Class Scanner
                 logger.Info(String.Format("[Sanner] [ScanForTVFiles] File {0} has been ignored (ignore list)", lFile.FullName))
             End If
         Next
-
-        di = Nothing
     End Sub
 
     ''' <summary>
     ''' Get all directories/movies in the parent directory
     ''' </summary>
     ''' <param name="sSource"></param>
-    ''' <param name="sPath">Specific Path to scan</param>
-    Public Sub ScanSourceDirectory_Movie(ByVal sSource As Database.DBSource, ByVal doScan As Boolean, Optional ByVal sPath As String = "")
-        Dim ScanPath As String = String.Empty
+    ''' <param name="strPath">Specific Path to scan</param>
+    Public Sub ScanSourceDirectory_Movie(ByVal sSource As Database.DBSource, ByVal doScan As Boolean, Optional ByVal strPath As String = "")
+        Dim strScanPath As String = String.Empty
 
-        If Not String.IsNullOrEmpty(sPath) Then
-            ScanPath = sPath
+        If Not String.IsNullOrEmpty(strPath) Then
+            strScanPath = strPath
         Else
-            ScanPath = sSource.Path
+            strScanPath = sSource.Path
         End If
 
-        If Directory.Exists(ScanPath) Then
-            Dim sMoviePath As String = String.Empty
+        If Directory.Exists(strScanPath) Then
+            Dim strMoviePath As String = String.Empty
 
-            Dim dInfo As New DirectoryInfo(ScanPath)
+            Dim dInfo As New DirectoryInfo(strScanPath)
             Dim dList As IEnumerable(Of DirectoryInfo) = Nothing
 
             Try
 
-                'check if there are any movies in the parent folder
-                If doScan Then ScanForFiles_Movie(ScanPath, sSource)
+                'check if there are any movies in this directory
+                If doScan Then ScanForFiles_Movie(strScanPath, sSource)
 
                 If Master.eSettings.MovieScanOrderModify Then
                     Try
                         dList = dInfo.GetDirectories.Where(Function(s) (Master.eSettings.MovieGeneralIgnoreLastScan OrElse sSource.Recursive OrElse s.LastWriteTime > SourceLastScan) AndAlso IsValidDir(s, False)).OrderBy(Function(d) d.LastWriteTime)
-                    Catch
+                    Catch ex As Exception
+                        logger.Error(ex, New StackFrame().GetMethod().Name)
                     End Try
                 Else
                     Try
                         dList = dInfo.GetDirectories.Where(Function(s) (Master.eSettings.MovieGeneralIgnoreLastScan OrElse sSource.Recursive OrElse s.LastWriteTime > SourceLastScan) AndAlso IsValidDir(s, False)).OrderBy(Function(d) d.Name)
-                    Catch
+                    Catch ex As Exception
+                        logger.Error(ex, New StackFrame().GetMethod().Name)
                     End Try
                 End If
 
@@ -1418,8 +1414,6 @@ Public Class Scanner
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
-
-            dInfo = Nothing
         End If
     End Sub
 
@@ -1457,12 +1451,14 @@ Public Class Scanner
                 If Master.eSettings.TVScanOrderModify Then
                     Try
                         inList = dInfo.GetDirectories.Where(Function(d) (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso IsValidDir(d, True)).OrderBy(Function(d) d.LastWriteTime)
-                    Catch
+                    Catch ex As Exception
+                        logger.Error(ex, New StackFrame().GetMethod().Name)
                     End Try
                 Else
                     Try
                         inList = dInfo.GetDirectories.Where(Function(d) (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso IsValidDir(d, True)).OrderBy(Function(d) d.Name)
-                    Catch
+                    Catch ex As Exception
+                        logger.Error(ex, New StackFrame().GetMethod().Name)
                     End Try
                 End If
 
@@ -1505,9 +1501,6 @@ Public Class Scanner
                 Next
 
             End If
-
-            dInfo = Nothing
-            inInfo = Nothing
         End If
     End Sub
 

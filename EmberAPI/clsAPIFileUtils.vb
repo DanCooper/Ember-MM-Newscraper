@@ -532,8 +532,8 @@ Namespace FileUtils
         ''' </list>
         ''' Note that text after the stacking marker are left untouched.
         ''' </remarks>
-        Public Shared Function RemoveStackingMarkers(ByVal strPath As String, Optional ByVal Asterix As Boolean = False) As String
-            'Don't do anything if DisableMultiPartMedia is True or sPath is String.Empty
+        Public Shared Function RemoveStackingMarkers(ByVal strPath As String) As String
+            'Don't do anything if DisableMultiPartMedia is True or strPath is String.Empty
             If AdvancedSettings.GetBooleanSetting("DisableMultiPartMedia", False) OrElse String.IsNullOrEmpty(strPath) Then Return strPath
 
             Dim FilePattern As String = AdvancedSettings.GetSetting("FileStacking", "(.*?)([ _.-]*(?:cd|dvd|p(?:ar)?t|dis[ck])[ _.-]*[0-9]+)(.*?)(\.[^.]+)$")
