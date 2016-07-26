@@ -298,30 +298,6 @@ Namespace FileUtils
             End If
         End Function
         ''' <summary>
-        ''' Copy a file from one location to another using a stream/buffer
-        ''' </summary>
-        ''' <param name="sPathFrom">Old path of file to move.</param>
-        ''' <param name="sPathTo">New path of file to move.</param>
-        Public Shared Sub MoveFileWithStream(ByVal sPathFrom As String, ByVal sPathTo As String)
-            'TODO Inefficient. Why not use system-provided FileInfo.MoveTo method. Instantaneous if on same system volume as a bonus.
-            'TODO Should do validation checking on input parameters. Should handle Empty or invalid files. Should perhaps handle directory (and content) moves intelligently
-            'TODO Badly named. Should instead be CopyFileWithStream, and use FileInfo.CopyTo method. 
-            Try
-                Using SourceStream As FileStream = New FileStream(String.Concat("", sPathFrom, ""), FileMode.Open, FileAccess.Read)
-                    Using DestinationStream As FileStream = New FileStream(String.Concat("", sPathTo, ""), FileMode.Create, FileAccess.Write)
-                        Dim StreamBuffer(Convert.ToInt32(SourceStream.Length - 1)) As Byte
-
-                        SourceStream.Read(StreamBuffer, 0, StreamBuffer.Length)
-                        DestinationStream.Write(StreamBuffer, 0, StreamBuffer.Length)
-
-                        StreamBuffer = Nothing
-                    End Using
-                End Using
-            Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name)
-            End Try
-        End Sub
-        ''' <summary>
         ''' Get the entire path and filename of a file, but without the extension
         ''' </summary>
         ''' <param name="strPath">Full path to file.</param>
