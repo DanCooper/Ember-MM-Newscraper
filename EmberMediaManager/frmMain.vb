@@ -5327,8 +5327,11 @@ Public Class frmMain
                     Master.DB.Delete_TVEpisode(tID.Key, True, False, True) 'remove the "missing episode" from DB
                     RemoveRow_TVEpisode(tID.Key)
                 Else
-                    Master.DB.Delete_TVEpisode(tID.Key, False, False, True) 'set the episode as "missing episode"
-                    RefreshRow_TVEpisode(tID.Key)
+                    If Master.DB.Delete_TVEpisode(tID.Key, False, False, True) Then 'set the episode as "missing episode"
+                        RemoveRow_TVEpisode(tID.Key)
+                    Else
+                        RefreshRow_TVEpisode(tID.Key)
+                    End If
                 End If
             Next
 

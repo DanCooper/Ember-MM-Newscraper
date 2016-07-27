@@ -1103,10 +1103,11 @@ Public Class Database
     ''' </summary>
     ''' <param name="lTVEpisodeID">ID of the episode to remove, as stored in the database.</param>
     ''' <param name="BatchMode">Is this function already part of a transaction?</param>
-    ''' <returns>True if successful, false if deletion failed.</returns>
+    ''' <returns><c>True</c> if has been removed, <c>False</c> if has been changed to missing</returns>
     Public Function Delete_TVEpisode(ByVal lTVEpisodeID As Long, ByVal Force As Boolean, ByVal DoCleanSeasons As Boolean, ByVal BatchMode As Boolean) As Boolean
         Dim SQLtransaction As SQLiteTransaction = Nothing
         Dim doesExist As Boolean = False
+        Dim bHasRemoved As Boolean = False
 
         Dim _tvepisodeDB As Database.DBElement = Load_TVEpisode(lTVEpisodeID, True)
         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Remove_TVEpisode, Nothing, Nothing, False, _tvepisodeDB)
@@ -1135,6 +1136,7 @@ Public Class Database
                             SQLECommand.ExecuteNonQuery()
 
                             If DoCleanSeasons Then Master.DB.Delete_Empty_TVSeasons(Convert.ToInt64(SQLReader("idShow")), True)
+                            bHasRemoved = True
                         ElseIf Not Convert.ToInt64(SQLReader("idFile")) = -1 Then 'already marked as missing, no need for another query
                             'check if there is another episode that use the same idFile
                             Dim multiEpisode As Boolean = False
@@ -1172,14 +1174,14 @@ Public Class Database
             SQLtransaction.Commit()
         End If
 
-        Return True
+        Return bHasRemoved
     End Function
 
-    Public Function Delete_TVEpisode(ByVal sPath As String, ByVal Force As Boolean, ByVal BatchMode As Boolean) As Boolean
+    Public Function Delete_TVEpisode(ByVal strPath As String, ByVal Force As Boolean, ByVal BatchMode As Boolean) As Boolean
         Dim SQLtransaction As SQLiteTransaction = Nothing
         If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
         Using SQLPCommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
-            SQLPCommand.CommandText = String.Concat("SELECT idFile FROM files WHERE strFilename = """, sPath, """;")
+            SQLPCommand.CommandText = String.Concat("SELECT idFile FROM files WHERE strFilename = """, strPath, """;")
             Using SQLPReader As SQLiteDataReader = SQLPCommand.ExecuteReader
                 While SQLPReader.Read
                     Using SQLCommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
