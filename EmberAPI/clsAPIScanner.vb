@@ -589,17 +589,26 @@ Public Class Scanner
     Public Function IsValidDir(ByVal dInfo As DirectoryInfo, ByVal bIsTV As Boolean) As Boolean
         Try
             For Each s As String In Master.ExcludeDirs
-                If dInfo.FullName.ToLower = s.ToLower Then Return False
+                If dInfo.FullName.ToLower = s.ToLower Then
+                    logger.Info(String.Format("[Sanner] [IsValidDir] [ExcludeDirs] Path ""{0}"" has been skipped (path is in ""exclude directory"" list)", dInfo.FullName, s))
+                    Return False
+                End If
             Next
             If (Not bIsTV AndAlso dInfo.Name.ToLower = "extras") OrElse
             If(dInfo.FullName.IndexOf("\") >= 0, dInfo.FullName.Remove(0, dInfo.FullName.IndexOf("\")).Contains(":"), False) Then
                 Return False
             End If
             For Each s As String In AdvancedSettings.GetSetting("NotValidDirIs", ".actors|extrafanarts|extrathumbs|video_ts|bdmv|audio_ts|recycler|subs|subtitles|.trashes").Split(New String() {"|"}, StringSplitOptions.RemoveEmptyEntries)
-                If dInfo.Name.ToLower = s Then Return False
+                If dInfo.Name.ToLower = s Then
+                    logger.Info(String.Format("[Sanner] [IsValidDir] [NotValidDirIs] Path ""{0}"" has been skipped (path name is ""{1}"")", dInfo.FullName, s))
+                    Return False
+                End If
             Next
             For Each s As String In AdvancedSettings.GetSetting("NotValidDirContains", "-trailer|[trailer|temporary files|(noscan)|$recycle.bin|lost+found|system volume information|sample").Split(New String() {"|"}, StringSplitOptions.RemoveEmptyEntries)
-                If dInfo.Name.ToLower.Contains(s) Then Return False
+                If dInfo.Name.ToLower.Contains(s) Then
+                    logger.Info(String.Format("[Sanner] [IsValidDir] [NotValidDirContains] Path ""{0}"" has been skipped (path contains ""{1}"")", dInfo.FullName, s))
+                    Return False
+                End If
             Next
 
         Catch ex As Exception
