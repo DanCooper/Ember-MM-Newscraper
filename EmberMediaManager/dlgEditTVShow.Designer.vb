@@ -29,7 +29,7 @@ Partial Class dlgEditTVShow
         Me.pbTopLogo = New System.Windows.Forms.PictureBox()
         Me.Cancel_Button = New System.Windows.Forms.Button()
         Me.OK_Button = New System.Windows.Forms.Button()
-        Me.ofdImage = New System.Windows.Forms.OpenFileDialog()
+        Me.ofdLocalFiles = New System.Windows.Forms.OpenFileDialog()
         Me.cbOrdering = New System.Windows.Forms.ComboBox()
         Me.lblOrdering = New System.Windows.Forms.Label()
         Me.cbEpisodeSorting = New System.Windows.Forms.ComboBox()
@@ -141,6 +141,17 @@ Partial Class dlgEditTVShow
         Me.tcEdit = New System.Windows.Forms.TabControl()
         Me.lblLanguage = New System.Windows.Forms.Label()
         Me.cbSourceLanguage = New System.Windows.Forms.ComboBox()
+        Me.tpTheme = New System.Windows.Forms.TabPage()
+        Me.pnlThemePreview = New System.Windows.Forms.Panel()
+        Me.pnlThemePreviewNoPlayer = New System.Windows.Forms.Panel()
+        Me.tblThemePreviewNoPlayer = New System.Windows.Forms.TableLayoutPanel()
+        Me.lblThemePreviewNoPlayer = New System.Windows.Forms.Label()
+        Me.btnSetThemeDL = New System.Windows.Forms.Button()
+        Me.btnRemoveTheme = New System.Windows.Forms.Button()
+        Me.btnSetThemeScrape = New System.Windows.Forms.Button()
+        Me.btnSetThemeLocal = New System.Windows.Forms.Button()
+        Me.btnLocalThemePlay = New System.Windows.Forms.Button()
+        Me.txtLocalTheme = New System.Windows.Forms.TextBox()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpExtrafanarts.SuspendLayout()
@@ -172,6 +183,10 @@ Partial Class dlgEditTVShow
         CType(Me.pbStar2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbStar1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEdit.SuspendLayout()
+        Me.tpTheme.SuspendLayout()
+        Me.pnlThemePreview.SuspendLayout()
+        Me.pnlThemePreviewNoPlayer.SuspendLayout()
+        Me.tblThemePreviewNoPlayer.SuspendLayout()
         Me.SuspendLayout()
         '
         'pnlTop
@@ -224,8 +239,9 @@ Partial Class dlgEditTVShow
         '
         'Cancel_Button
         '
+        Me.Cancel_Button.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.Cancel_Button.Location = New System.Drawing.Point(781, 565)
+        Me.Cancel_Button.Location = New System.Drawing.Point(781, 592)
         Me.Cancel_Button.Name = "Cancel_Button"
         Me.Cancel_Button.Size = New System.Drawing.Size(67, 23)
         Me.Cancel_Button.TabIndex = 1
@@ -233,7 +249,8 @@ Partial Class dlgEditTVShow
         '
         'OK_Button
         '
-        Me.OK_Button.Location = New System.Drawing.Point(708, 565)
+        Me.OK_Button.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.OK_Button.Location = New System.Drawing.Point(708, 592)
         Me.OK_Button.Name = "OK_Button"
         Me.OK_Button.Size = New System.Drawing.Size(67, 23)
         Me.OK_Button.TabIndex = 0
@@ -241,18 +258,20 @@ Partial Class dlgEditTVShow
         '
         'cbOrdering
         '
+        Me.cbOrdering.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.cbOrdering.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbOrdering.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbOrdering.FormattingEnabled = True
-        Me.cbOrdering.Location = New System.Drawing.Point(142, 565)
+        Me.cbOrdering.Location = New System.Drawing.Point(142, 592)
         Me.cbOrdering.Name = "cbOrdering"
         Me.cbOrdering.Size = New System.Drawing.Size(166, 21)
         Me.cbOrdering.TabIndex = 5
         '
         'lblOrdering
         '
+        Me.lblOrdering.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.lblOrdering.AutoSize = True
-        Me.lblOrdering.Location = New System.Drawing.Point(5, 570)
+        Me.lblOrdering.Location = New System.Drawing.Point(5, 597)
         Me.lblOrdering.Name = "lblOrdering"
         Me.lblOrdering.Size = New System.Drawing.Size(101, 13)
         Me.lblOrdering.TabIndex = 4
@@ -260,18 +279,20 @@ Partial Class dlgEditTVShow
         '
         'cbEpisodeSorting
         '
+        Me.cbEpisodeSorting.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.cbEpisodeSorting.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbEpisodeSorting.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.cbEpisodeSorting.FormattingEnabled = True
-        Me.cbEpisodeSorting.Location = New System.Drawing.Point(142, 592)
+        Me.cbEpisodeSorting.Location = New System.Drawing.Point(142, 619)
         Me.cbEpisodeSorting.Name = "cbEpisodeSorting"
         Me.cbEpisodeSorting.Size = New System.Drawing.Size(166, 21)
         Me.cbEpisodeSorting.TabIndex = 5
         '
         'lblEpisodeSorting
         '
+        Me.lblEpisodeSorting.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.lblEpisodeSorting.AutoSize = True
-        Me.lblEpisodeSorting.Location = New System.Drawing.Point(5, 595)
+        Me.lblEpisodeSorting.Location = New System.Drawing.Point(5, 622)
         Me.lblEpisodeSorting.Name = "lblEpisodeSorting"
         Me.lblEpisodeSorting.Size = New System.Drawing.Size(103, 13)
         Me.lblEpisodeSorting.TabIndex = 4
@@ -288,7 +309,7 @@ Partial Class dlgEditTVShow
         Me.tpExtrafanarts.Controls.Add(Me.pbExtrafanarts)
         Me.tpExtrafanarts.Location = New System.Drawing.Point(4, 22)
         Me.tpExtrafanarts.Name = "tpExtrafanarts"
-        Me.tpExtrafanarts.Size = New System.Drawing.Size(836, 463)
+        Me.tpExtrafanarts.Size = New System.Drawing.Size(836, 490)
         Me.tpExtrafanarts.TabIndex = 12
         Me.tpExtrafanarts.Text = "Extrafanarts"
         Me.tpExtrafanarts.UseVisualStyleBackColor = True
@@ -376,7 +397,7 @@ Partial Class dlgEditTVShow
         Me.tpFanart.Controls.Add(Me.pbFanart)
         Me.tpFanart.Location = New System.Drawing.Point(4, 22)
         Me.tpFanart.Name = "tpFanart"
-        Me.tpFanart.Size = New System.Drawing.Size(836, 463)
+        Me.tpFanart.Size = New System.Drawing.Size(836, 490)
         Me.tpFanart.TabIndex = 2
         Me.tpFanart.Text = "Fanart"
         Me.tpFanart.UseVisualStyleBackColor = True
@@ -440,7 +461,7 @@ Partial Class dlgEditTVShow
         Me.btnSetFanartLocal.Name = "btnSetFanartLocal"
         Me.btnSetFanartLocal.Size = New System.Drawing.Size(96, 83)
         Me.btnSetFanartLocal.TabIndex = 1
-        Me.btnSetFanartLocal.Text = "Local"
+        Me.btnSetFanartLocal.Text = "Local Browse"
         Me.btnSetFanartLocal.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnSetFanartLocal.UseVisualStyleBackColor = True
         '
@@ -465,7 +486,7 @@ Partial Class dlgEditTVShow
         Me.tpClearLogo.Controls.Add(Me.pbClearLogo)
         Me.tpClearLogo.Location = New System.Drawing.Point(4, 22)
         Me.tpClearLogo.Name = "tpClearLogo"
-        Me.tpClearLogo.Size = New System.Drawing.Size(836, 463)
+        Me.tpClearLogo.Size = New System.Drawing.Size(836, 490)
         Me.tpClearLogo.TabIndex = 11
         Me.tpClearLogo.Text = "ClearLogo"
         Me.tpClearLogo.UseVisualStyleBackColor = True
@@ -554,7 +575,7 @@ Partial Class dlgEditTVShow
         Me.tpClearArt.Controls.Add(Me.pbClearArt)
         Me.tpClearArt.Location = New System.Drawing.Point(4, 22)
         Me.tpClearArt.Name = "tpClearArt"
-        Me.tpClearArt.Size = New System.Drawing.Size(836, 463)
+        Me.tpClearArt.Size = New System.Drawing.Size(836, 490)
         Me.tpClearArt.TabIndex = 10
         Me.tpClearArt.Text = "ClearArt"
         Me.tpClearArt.UseVisualStyleBackColor = True
@@ -643,7 +664,7 @@ Partial Class dlgEditTVShow
         Me.tpCharacterArt.Controls.Add(Me.pbCharacterArt)
         Me.tpCharacterArt.Location = New System.Drawing.Point(4, 22)
         Me.tpCharacterArt.Name = "tpCharacterArt"
-        Me.tpCharacterArt.Size = New System.Drawing.Size(836, 463)
+        Me.tpCharacterArt.Size = New System.Drawing.Size(836, 490)
         Me.tpCharacterArt.TabIndex = 9
         Me.tpCharacterArt.Text = "CharacterArt"
         Me.tpCharacterArt.UseVisualStyleBackColor = True
@@ -732,7 +753,7 @@ Partial Class dlgEditTVShow
         Me.tpLandscape.Controls.Add(Me.pbLandscape)
         Me.tpLandscape.Location = New System.Drawing.Point(4, 22)
         Me.tpLandscape.Name = "tpLandscape"
-        Me.tpLandscape.Size = New System.Drawing.Size(836, 463)
+        Me.tpLandscape.Size = New System.Drawing.Size(836, 490)
         Me.tpLandscape.TabIndex = 7
         Me.tpLandscape.Text = "Landscape"
         Me.tpLandscape.UseVisualStyleBackColor = True
@@ -796,7 +817,7 @@ Partial Class dlgEditTVShow
         Me.btnSetLandscapeLocal.Name = "btnSetLandscapeLocal"
         Me.btnSetLandscapeLocal.Size = New System.Drawing.Size(96, 83)
         Me.btnSetLandscapeLocal.TabIndex = 7
-        Me.btnSetLandscapeLocal.Text = "Local"
+        Me.btnSetLandscapeLocal.Text = "Local Browse"
         Me.btnSetLandscapeLocal.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnSetLandscapeLocal.UseVisualStyleBackColor = True
         '
@@ -821,7 +842,7 @@ Partial Class dlgEditTVShow
         Me.tpBanner.Controls.Add(Me.pbBanner)
         Me.tpBanner.Location = New System.Drawing.Point(4, 22)
         Me.tpBanner.Name = "tpBanner"
-        Me.tpBanner.Size = New System.Drawing.Size(836, 463)
+        Me.tpBanner.Size = New System.Drawing.Size(836, 490)
         Me.tpBanner.TabIndex = 4
         Me.tpBanner.Text = "Banner"
         Me.tpBanner.UseVisualStyleBackColor = True
@@ -885,7 +906,7 @@ Partial Class dlgEditTVShow
         Me.btnSetBannerLocal.Name = "btnSetBannerLocal"
         Me.btnSetBannerLocal.Size = New System.Drawing.Size(96, 83)
         Me.btnSetBannerLocal.TabIndex = 7
-        Me.btnSetBannerLocal.Text = "Local"
+        Me.btnSetBannerLocal.Text = "Local Browse"
         Me.btnSetBannerLocal.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnSetBannerLocal.UseVisualStyleBackColor = True
         '
@@ -911,7 +932,7 @@ Partial Class dlgEditTVShow
         Me.tpPoster.Location = New System.Drawing.Point(4, 22)
         Me.tpPoster.Name = "tpPoster"
         Me.tpPoster.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpPoster.Size = New System.Drawing.Size(836, 463)
+        Me.tpPoster.Size = New System.Drawing.Size(836, 490)
         Me.tpPoster.TabIndex = 1
         Me.tpPoster.Text = "Poster"
         Me.tpPoster.UseVisualStyleBackColor = True
@@ -975,7 +996,7 @@ Partial Class dlgEditTVShow
         Me.btnSetPosterLocal.Name = "btnSetPosterLocal"
         Me.btnSetPosterLocal.Size = New System.Drawing.Size(96, 83)
         Me.btnSetPosterLocal.TabIndex = 1
-        Me.btnSetPosterLocal.Text = "Local"
+        Me.btnSetPosterLocal.Text = "Local Browse"
         Me.btnSetPosterLocal.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnSetPosterLocal.UseVisualStyleBackColor = True
         '
@@ -1037,7 +1058,7 @@ Partial Class dlgEditTVShow
         Me.tpDetails.Location = New System.Drawing.Point(4, 22)
         Me.tpDetails.Name = "tpDetails"
         Me.tpDetails.Padding = New System.Windows.Forms.Padding(3)
-        Me.tpDetails.Size = New System.Drawing.Size(836, 463)
+        Me.tpDetails.Size = New System.Drawing.Size(836, 490)
         Me.tpDetails.TabIndex = 0
         Me.tpDetails.Text = "Details"
         Me.tpDetails.UseVisualStyleBackColor = True
@@ -1455,17 +1476,19 @@ Partial Class dlgEditTVShow
         Me.tcEdit.Controls.Add(Me.tpClearLogo)
         Me.tcEdit.Controls.Add(Me.tpFanart)
         Me.tcEdit.Controls.Add(Me.tpExtrafanarts)
+        Me.tcEdit.Controls.Add(Me.tpTheme)
         Me.tcEdit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.tcEdit.Location = New System.Drawing.Point(4, 70)
         Me.tcEdit.Name = "tcEdit"
         Me.tcEdit.SelectedIndex = 0
-        Me.tcEdit.Size = New System.Drawing.Size(844, 489)
+        Me.tcEdit.Size = New System.Drawing.Size(844, 516)
         Me.tcEdit.TabIndex = 3
         '
         'lblLanguage
         '
+        Me.lblLanguage.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.lblLanguage.AutoSize = True
-        Me.lblLanguage.Location = New System.Drawing.Point(339, 570)
+        Me.lblLanguage.Location = New System.Drawing.Point(339, 597)
         Me.lblLanguage.Name = "lblLanguage"
         Me.lblLanguage.Size = New System.Drawing.Size(61, 13)
         Me.lblLanguage.TabIndex = 4
@@ -1473,12 +1496,146 @@ Partial Class dlgEditTVShow
         '
         'cbSourceLanguage
         '
+        Me.cbSourceLanguage.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.cbSourceLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbSourceLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cbSourceLanguage.Location = New System.Drawing.Point(418, 565)
+        Me.cbSourceLanguage.Location = New System.Drawing.Point(418, 592)
         Me.cbSourceLanguage.Name = "cbSourceLanguage"
         Me.cbSourceLanguage.Size = New System.Drawing.Size(172, 21)
         Me.cbSourceLanguage.TabIndex = 9
+        '
+        'tpTheme
+        '
+        Me.tpTheme.Controls.Add(Me.pnlThemePreview)
+        Me.tpTheme.Controls.Add(Me.btnSetThemeDL)
+        Me.tpTheme.Controls.Add(Me.btnRemoveTheme)
+        Me.tpTheme.Controls.Add(Me.btnSetThemeScrape)
+        Me.tpTheme.Controls.Add(Me.btnSetThemeLocal)
+        Me.tpTheme.Controls.Add(Me.btnLocalThemePlay)
+        Me.tpTheme.Controls.Add(Me.txtLocalTheme)
+        Me.tpTheme.Location = New System.Drawing.Point(4, 22)
+        Me.tpTheme.Name = "tpTheme"
+        Me.tpTheme.Padding = New System.Windows.Forms.Padding(3)
+        Me.tpTheme.Size = New System.Drawing.Size(836, 490)
+        Me.tpTheme.TabIndex = 13
+        Me.tpTheme.Text = "Theme"
+        Me.tpTheme.UseVisualStyleBackColor = True
+        '
+        'pnlThemePreview
+        '
+        Me.pnlThemePreview.BackColor = System.Drawing.Color.DimGray
+        Me.pnlThemePreview.Controls.Add(Me.pnlThemePreviewNoPlayer)
+        Me.pnlThemePreview.Location = New System.Drawing.Point(6, 6)
+        Me.pnlThemePreview.Name = "pnlThemePreview"
+        Me.pnlThemePreview.Size = New System.Drawing.Size(724, 440)
+        Me.pnlThemePreview.TabIndex = 61
+        '
+        'pnlThemePreviewNoPlayer
+        '
+        Me.pnlThemePreviewNoPlayer.BackColor = System.Drawing.Color.White
+        Me.pnlThemePreviewNoPlayer.Controls.Add(Me.tblThemePreviewNoPlayer)
+        Me.pnlThemePreviewNoPlayer.Location = New System.Drawing.Point(285, 203)
+        Me.pnlThemePreviewNoPlayer.Name = "pnlThemePreviewNoPlayer"
+        Me.pnlThemePreviewNoPlayer.Size = New System.Drawing.Size(242, 56)
+        Me.pnlThemePreviewNoPlayer.TabIndex = 0
+        '
+        'tblThemePreviewNoPlayer
+        '
+        Me.tblThemePreviewNoPlayer.AutoSize = True
+        Me.tblThemePreviewNoPlayer.ColumnCount = 1
+        Me.tblThemePreviewNoPlayer.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.tblThemePreviewNoPlayer.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblThemePreviewNoPlayer.Controls.Add(Me.lblThemePreviewNoPlayer, 0, 0)
+        Me.tblThemePreviewNoPlayer.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblThemePreviewNoPlayer.Location = New System.Drawing.Point(0, 0)
+        Me.tblThemePreviewNoPlayer.Name = "tblThemePreviewNoPlayer"
+        Me.tblThemePreviewNoPlayer.RowCount = 1
+        Me.tblThemePreviewNoPlayer.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.tblThemePreviewNoPlayer.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 56.0!))
+        Me.tblThemePreviewNoPlayer.Size = New System.Drawing.Size(242, 56)
+        Me.tblThemePreviewNoPlayer.TabIndex = 0
+        '
+        'lblThemePreviewNoPlayer
+        '
+        Me.lblThemePreviewNoPlayer.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.lblThemePreviewNoPlayer.AutoSize = True
+        Me.lblThemePreviewNoPlayer.Location = New System.Drawing.Point(52, 21)
+        Me.lblThemePreviewNoPlayer.Name = "lblThemePreviewNoPlayer"
+        Me.lblThemePreviewNoPlayer.Size = New System.Drawing.Size(137, 13)
+        Me.lblThemePreviewNoPlayer.TabIndex = 0
+        Me.lblThemePreviewNoPlayer.Text = "no Media Player enabled"
+        '
+        'btnSetThemeDL
+        '
+        Me.btnSetThemeDL.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetThemeDL.Image = CType(resources.GetObject("btnSetThemeDL.Image"), System.Drawing.Image)
+        Me.btnSetThemeDL.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetThemeDL.Location = New System.Drawing.Point(735, 180)
+        Me.btnSetThemeDL.Name = "btnSetThemeDL"
+        Me.btnSetThemeDL.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetThemeDL.TabIndex = 59
+        Me.btnSetThemeDL.Text = "Download"
+        Me.btnSetThemeDL.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetThemeDL.UseVisualStyleBackColor = True
+        '
+        'btnRemoveTheme
+        '
+        Me.btnRemoveTheme.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnRemoveTheme.Image = CType(resources.GetObject("btnRemoveTheme.Image"), System.Drawing.Image)
+        Me.btnRemoveTheme.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnRemoveTheme.Location = New System.Drawing.Point(735, 363)
+        Me.btnRemoveTheme.Name = "btnRemoveTheme"
+        Me.btnRemoveTheme.Size = New System.Drawing.Size(96, 83)
+        Me.btnRemoveTheme.TabIndex = 60
+        Me.btnRemoveTheme.Text = "Remove"
+        Me.btnRemoveTheme.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnRemoveTheme.UseVisualStyleBackColor = True
+        '
+        'btnSetThemeScrape
+        '
+        Me.btnSetThemeScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetThemeScrape.Image = CType(resources.GetObject("btnSetThemeScrape.Image"), System.Drawing.Image)
+        Me.btnSetThemeScrape.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetThemeScrape.Location = New System.Drawing.Point(735, 93)
+        Me.btnSetThemeScrape.Name = "btnSetThemeScrape"
+        Me.btnSetThemeScrape.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetThemeScrape.TabIndex = 58
+        Me.btnSetThemeScrape.Text = "Scrape"
+        Me.btnSetThemeScrape.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetThemeScrape.UseVisualStyleBackColor = True
+        '
+        'btnSetThemeLocal
+        '
+        Me.btnSetThemeLocal.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSetThemeLocal.Image = CType(resources.GetObject("btnSetThemeLocal.Image"), System.Drawing.Image)
+        Me.btnSetThemeLocal.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnSetThemeLocal.Location = New System.Drawing.Point(735, 6)
+        Me.btnSetThemeLocal.Name = "btnSetThemeLocal"
+        Me.btnSetThemeLocal.Size = New System.Drawing.Size(96, 83)
+        Me.btnSetThemeLocal.TabIndex = 57
+        Me.btnSetThemeLocal.Text = "Local Browse"
+        Me.btnSetThemeLocal.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnSetThemeLocal.UseVisualStyleBackColor = True
+        '
+        'btnLocalThemePlay
+        '
+        Me.btnLocalThemePlay.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnLocalThemePlay.Enabled = False
+        Me.btnLocalThemePlay.Image = Global.Ember_Media_Manager.My.Resources.Resources.Play_Icon
+        Me.btnLocalThemePlay.Location = New System.Drawing.Point(707, 452)
+        Me.btnLocalThemePlay.Name = "btnLocalThemePlay"
+        Me.btnLocalThemePlay.Size = New System.Drawing.Size(23, 22)
+        Me.btnLocalThemePlay.TabIndex = 63
+        Me.btnLocalThemePlay.UseVisualStyleBackColor = True
+        '
+        'txtLocalTheme
+        '
+        Me.txtLocalTheme.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtLocalTheme.Location = New System.Drawing.Point(6, 452)
+        Me.txtLocalTheme.Name = "txtLocalTheme"
+        Me.txtLocalTheme.ReadOnly = True
+        Me.txtLocalTheme.Size = New System.Drawing.Size(695, 22)
+        Me.txtLocalTheme.TabIndex = 62
         '
         'dlgEditTVShow
         '
@@ -1486,7 +1643,7 @@ Partial Class dlgEditTVShow
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(853, 621)
+        Me.ClientSize = New System.Drawing.Size(853, 648)
         Me.Controls.Add(Me.cbSourceLanguage)
         Me.Controls.Add(Me.lblEpisodeSorting)
         Me.Controls.Add(Me.cbEpisodeSorting)
@@ -1537,6 +1694,13 @@ Partial Class dlgEditTVShow
         CType(Me.pbStar2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbStar1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.tcEdit.ResumeLayout(False)
+        Me.tpTheme.ResumeLayout(False)
+        Me.tpTheme.PerformLayout()
+        Me.pnlThemePreview.ResumeLayout(False)
+        Me.pnlThemePreviewNoPlayer.ResumeLayout(False)
+        Me.pnlThemePreviewNoPlayer.PerformLayout()
+        Me.tblThemePreviewNoPlayer.ResumeLayout(False)
+        Me.tblThemePreviewNoPlayer.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1547,7 +1711,7 @@ Partial Class dlgEditTVShow
     Friend WithEvents pbTopLogo As System.Windows.Forms.PictureBox
     Friend WithEvents Cancel_Button As System.Windows.Forms.Button
     Friend WithEvents OK_Button As System.Windows.Forms.Button
-    Friend WithEvents ofdImage As System.Windows.Forms.OpenFileDialog
+    Friend WithEvents ofdLocalFiles As System.Windows.Forms.OpenFileDialog
     Friend WithEvents cbOrdering As System.Windows.Forms.ComboBox
     Friend WithEvents lblOrdering As System.Windows.Forms.Label
     Friend WithEvents cbEpisodeSorting As System.Windows.Forms.ComboBox
@@ -1659,5 +1823,15 @@ Partial Class dlgEditTVShow
     Friend WithEvents lblOriginalTitle As System.Windows.Forms.Label
     Friend WithEvents lblLanguage As System.Windows.Forms.Label
     Friend WithEvents cbSourceLanguage As System.Windows.Forms.ComboBox
-
+    Friend WithEvents tpTheme As TabPage
+    Friend WithEvents pnlThemePreview As Panel
+    Friend WithEvents pnlThemePreviewNoPlayer As Panel
+    Friend WithEvents tblThemePreviewNoPlayer As TableLayoutPanel
+    Friend WithEvents lblThemePreviewNoPlayer As Label
+    Friend WithEvents btnSetThemeDL As Button
+    Friend WithEvents btnRemoveTheme As Button
+    Friend WithEvents btnSetThemeScrape As Button
+    Friend WithEvents btnSetThemeLocal As Button
+    Friend WithEvents btnLocalThemePlay As Button
+    Friend WithEvents txtLocalTheme As TextBox
 End Class

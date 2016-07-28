@@ -5438,6 +5438,20 @@ Namespace MediaContainers
     <Serializable()>
     Public Class Theme
 
+#Region "Fields"
+
+        Private _bitrate As String
+        Private _description As String
+        Private _duration As String
+        Private _localfilepath As String
+        Private _scraper As String
+        Private _source As String
+        Private _themeoriginal As New Themes
+        Private _urlaudiostream As String
+        Private _urlwebsite As String
+
+#End Region 'Fields
+
 #Region "Constructors"
 
         Public Sub New()
@@ -5447,20 +5461,173 @@ Namespace MediaContainers
 #End Region 'Constructors
 
 #Region "Properties"
-        Public Property Quality As String
-        Public Property URL As String ' path to image (local or url)
-        Public Property WebTheme As Themes
-        Public Property ShortLang As String
-        Public Property LongLang As String
+
+        Public Property Bitrate() As String
+            Get
+                Return _bitrate
+            End Get
+            Set(ByVal value As String)
+                _bitrate = value
+            End Set
+        End Property
+
+        Public Property Description() As String
+            Get
+                Return _description
+            End Get
+            Set(ByVal value As String)
+                _description = value
+            End Set
+        End Property
+
+        Public Property Duration() As String
+            Get
+                Return _duration
+            End Get
+            Set(ByVal value As String)
+                _duration = value
+            End Set
+        End Property
+
+        Public Property LocalFilePath() As String
+            Get
+                Return _localfilepath
+            End Get
+            Set(ByVal value As String)
+                _localfilepath = value
+            End Set
+        End Property
+
+        Public ReadOnly Property LocalFilePathSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(_localfilepath)
+            End Get
+        End Property
+
+        Public Property Scraper() As String
+            Get
+                Return _scraper
+            End Get
+            Set(ByVal value As String)
+                _scraper = value
+            End Set
+        End Property
+
+        Public Property Source() As String
+            Get
+                Return _source
+            End Get
+            Set(ByVal value As String)
+                _source = value
+            End Set
+        End Property
+        ''' <summary>
+        ''' Download audio URL of the theme
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Property URLAudioStream() As String
+            Get
+                Return _urlaudiostream
+            End Get
+            Set(ByVal value As String)
+                _urlaudiostream = value
+            End Set
+        End Property
+
+        Public ReadOnly Property URLAudioStreamSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(_urlaudiostream)
+            End Get
+        End Property
+        ''' <summary>
+        ''' Website URL of the theme for preview in browser
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Property URLWebsite() As String
+            Get
+                Return _urlwebsite
+            End Get
+            Set(ByVal value As String)
+                _urlwebsite = value
+            End Set
+        End Property
+
+        Public ReadOnly Property URLWebsiteSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(_urlwebsite)
+            End Get
+        End Property
+
+        Public Property ThemeOriginal() As Themes
+            Get
+                Return _themeoriginal
+            End Get
+            Set(ByVal value As Themes)
+                _themeoriginal = value
+            End Set
+        End Property
 
 #End Region 'Properties
 
 #Region "Methods"
 
         Public Sub Clear()
-            _URL = String.Empty
-            _Quality = String.Empty
-            _WebTheme = New Themes
+            _bitrate = String.Empty
+            _description = String.Empty
+            _duration = String.Empty
+            _localfilepath = String.Empty
+            _scraper = String.Empty
+            _source = String.Empty
+            _themeoriginal = New Themes
+            _urlaudiostream = String.Empty
+            _urlwebsite = String.Empty
+        End Sub
+
+        Public Function LoadAndCache() As Boolean
+
+            If Not ThemeOriginal.hasMemoryStream Then
+                If File.Exists(LocalFilePath) Then
+                    ThemeOriginal.LoadFromFile(LocalFilePath)
+                Else
+                    ThemeOriginal.LoadFromWeb(Me)
+                End If
+            End If
+
+            If ThemeOriginal.hasMemoryStream Then
+                Return True
+            Else
+                Return False
+            End If
+        End Function
+
+        Public Sub SaveAllThemes(ByRef tDBElement As Database.DBElement, ByVal ForceFileCleanup As Boolean)
+            Dim tContentType As Enums.ContentType = tDBElement.ContentType
+
+            With tDBElement
+                Select Case tContentType
+                    Case Enums.ContentType.Movie
+                        If .Theme.LoadAndCache() Then
+                            If ForceFileCleanup Then Trailers.Delete_Movie(tDBElement, ForceFileCleanup)
+                            .Theme.LocalFilePath = .Theme.ThemeOriginal.Save_Movie(tDBElement)
+                        Else
+                            Themes.Delete_Movie(tDBElement, ForceFileCleanup)
+                            .Theme = New Theme
+                        End If
+
+                    Case Enums.ContentType.TVShow
+                        If .Theme.LoadAndCache() Then
+                            If ForceFileCleanup Then Themes.Delete_TVShow(tDBElement) ', ForceFileCleanup)
+                            .Theme.LocalFilePath = .Theme.ThemeOriginal.Save_TVShow(tDBElement)
+                        Else
+                            Themes.Delete_TVShow(tDBElement) ', ForceFileCleanup)
+                            .Theme = New Theme
+                        End If
+                End Select
+            End With
         End Sub
 
 #End Region 'Methods
@@ -5529,6 +5696,12 @@ Namespace MediaContainers
             Set(ByVal value As String)
                 _localfilepath = value
             End Set
+        End Property
+
+        Public ReadOnly Property LocalFilePathSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(_localfilepath)
+            End Get
         End Property
 
         Public Property LongLang() As String
@@ -5621,6 +5794,12 @@ Namespace MediaContainers
                 _urlvideostream = value
             End Set
         End Property
+
+        Public ReadOnly Property URLVideoStreamSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(_urlvideostream)
+            End Get
+        End Property
         ''' <summary>
         ''' Website URL of the trailer for preview in browser
         ''' </summary>
@@ -5634,6 +5813,12 @@ Namespace MediaContainers
             Set(ByVal value As String)
                 _urlwebsite = value
             End Set
+        End Property
+
+        Public ReadOnly Property URLWebsiteSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(_urlwebsite)
+            End Get
         End Property
 
         Public Property TrailerOriginal() As Trailers

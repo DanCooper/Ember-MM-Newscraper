@@ -33,7 +33,7 @@ Namespace ThemeLibrary
 
         Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
-        Private _themelist As New List(Of Themes)
+        Private _themelist As New List(Of MediaContainers.Theme)
 
 #End Region 'Fields
 
@@ -48,11 +48,11 @@ Namespace ThemeLibrary
 
 #Region "Properties"
 
-        Public Property ThemeList() As List(Of Themes)
+        Public Property ThemeList() As List(Of MediaContainers.Theme)
             Get
                 Return _themelist
             End Get
-            Set(ByVal value As List(Of Themes))
+            Set(ByVal value As List(Of MediaContainers.Theme))
                 _themelist = value
             End Set
         End Property
@@ -62,7 +62,7 @@ Namespace ThemeLibrary
 #Region "Methods"
 
         Private Sub Clear()
-            _themelist = New List(Of Themes)
+            _themelist = New List(Of MediaContainers.Theme)
         End Sub
 
         Private Sub GetThemes(ByVal tDBElement As Database.DBElement)
@@ -118,7 +118,7 @@ Namespace ThemeLibrary
                         For ctr As Integer = 0 To sResult.Count - 1
                             If Master.eSettings.FileSystemValidThemeExts.Contains(Path.GetExtension(sResult.Item(ctr).Groups("URL").Value.Trim)) Then
                                 Dim strURL As String = String.Concat(strSearchURL, "/", sResult.Item(ctr).Groups("URL").Value.Trim)
-                                _themelist.Add(New Themes With {.Title = tInfo.Name, .URL = strURL, .WebURL = strURL})
+                                _themelist.Add(New MediaContainers.Theme With {.Description = tInfo.Name, .URLAudioStream = strURL, .URLWebsite = strURL, .Scraper = "ThemeLibrary"})
                             End If
                         Next
                     End If

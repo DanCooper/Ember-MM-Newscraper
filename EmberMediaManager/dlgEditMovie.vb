@@ -31,7 +31,7 @@ Public Class dlgEditMovie
 
 #Region "Fields"
 
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     Private tmpDBElement As Database.DBElement
 
@@ -41,7 +41,6 @@ Public Class dlgEditMovie
     Private lvwActorSorter As ListViewColumnSorter
     Private pResults As New Containers.ImgResult
     Private PreviousFrameValue As Integer
-    Private MovieTheme As New Themes With {.isEdit = True}
     Private tmpRating As String = String.Empty
     Private AnyThemePlayerEnabled As Boolean = False
     Private AnyTrailerPlayerEnabled As Boolean = False
@@ -382,8 +381,8 @@ Public Class dlgEditMovie
 
             Dim tPath As String = String.Empty
 
-            If Not String.IsNullOrEmpty(tmpDBElement.ThemePath) Then
-                tPath = String.Concat("""", tmpDBElement.ThemePath, """")
+            If Not String.IsNullOrEmpty(tmpDBElement.Theme.LocalFilePath) Then
+                tPath = String.Concat("""", tmpDBElement.Theme.LocalFilePath, """")
             End If
 
             If Not String.IsNullOrEmpty(tPath) Then
@@ -466,14 +465,15 @@ Public Class dlgEditMovie
     Private Sub btnRemoveTheme_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveTheme.Click
         ThemeStop()
         'axVLCTheme.playlist.items.clear()
-        MovieTheme.Dispose()
-        MovieTheme.toRemove = True
+        tmpDBElement.Theme = New MediaContainers.Theme
+        txtLocalTheme.Text = String.Empty
     End Sub
 
     Private Sub btnRemoveTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveTrailer.Click
         TrailerStop()
         TrailerPlaylistClear()
         tmpDBElement.Trailer = New MediaContainers.Trailer
+        txtLocalTrailer.Text = String.Empty
     End Sub
 
     Private Sub btnExtrafanartsRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExtrafanartsRemove.Click
@@ -1032,17 +1032,16 @@ Public Class dlgEditMovie
     'End Sub
 
     Private Sub btnSetThemeScrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetThemeScrape.Click
-        Dim dlgThmS As dlgThemeSelect
-        Dim aUrlList As New List(Of Themes)
+        Dim dThemeSelect As dlgThemeSelect
+        Dim tList As New List(Of MediaContainers.Theme)
 
         ThemeStop()
-        If Not ModulesManager.Instance.ScrapeTheme_Movie(tmpDBElement, aUrlList) Then
-            If aUrlList.Count > 0 Then
-                dlgThmS = New dlgThemeSelect()
-                If dlgThmS.ShowDialog(tmpDBElement, aUrlList) = DialogResult.OK Then
-                    MovieTheme = dlgThmS.Results.WebTheme
-                    MovieTheme.isEdit = True
-                    ThemeAddToPlayer(MovieTheme)
+        If Not ModulesManager.Instance.ScrapeTheme_Movie(tmpDBElement, Enums.ModifierType.MainTheme, tList) Then
+            If tList.Count > 0 Then
+                dThemeSelect = New dlgThemeSelect()
+                If dThemeSelect.ShowDialog(tmpDBElement, tList, True) = DialogResult.OK Then
+                    tmpDBElement.Theme = dThemeSelect.Result
+                    LoadTheme(tmpDBElement.Theme)
                 End If
             Else
                 MessageBox.Show(Master.eLang.GetString(1163, "No Themes found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -1053,15 +1052,15 @@ Public Class dlgEditMovie
     Private Sub btnSetThemeLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetThemeLocal.Click
         ThemeStop()
         With ofdLocalFiles
-                .InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
-                .Filter = Master.eLang.GetString(1285, "Themes") + "|*.mp3;*.wav"
-                .FilterIndex = 0
-            End With
+            .InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
+            .Filter = FileUtils.Common.GetOpenFileDialogFilter_Theme()
+            .FilterIndex = 0
+        End With
 
         If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
-            MovieTheme.FromFile(ofdLocalFiles.FileName)
-            MovieTheme.isEdit = True
-            ThemeAddToPlayer(MovieTheme)
+            tmpDBElement.Theme = New MediaContainers.Theme With {.LocalFilePath = ofdLocalFiles.FileName}
+            tmpDBElement.Theme.LoadAndCache()
+            LoadTheme(tmpDBElement.Theme)
         End If
     End Sub
 
@@ -1075,7 +1074,7 @@ Public Class dlgEditMovie
         If dlgTrlS.ShowDialog(tmpDBElement, tList, False, True, True) = DialogResult.OK Then
             tResults = dlgTrlS.Result
             tmpDBElement.Trailer = tResults
-            TrailerPlaylistAdd(tmpDBElement.Trailer)
+            LoadTrailer(tmpDBElement.Trailer)
         End If
     End Sub
 
@@ -1084,25 +1083,26 @@ Public Class dlgEditMovie
         Dim tList As New List(Of MediaContainers.Trailer)
 
         TrailerStop()
-            dlgTrlS = New dlgTrailerSelect()
+        dlgTrlS = New dlgTrailerSelect()
         If dlgTrlS.ShowDialog(tmpDBElement, tList, False, True, True) = DialogResult.OK Then
             tmpDBElement.Trailer = dlgTrlS.Result
-            TrailerPlaylistAdd(tmpDBElement.Trailer)
+            LoadTrailer(tmpDBElement.Trailer)
         End If
     End Sub
 
     Private Sub btnSetTrailerLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetTrailerLocal.Click
         TrailerStop()
+        Dim strValidExtesions As String() = Master.eSettings.FileSystemValidExts.ToArray
         With ofdLocalFiles
             .InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
-            .Filter = Master.eLang.GetString(1195, "Trailers") + "|*.mp4;*.avi"
+            .Filter = FileUtils.Common.GetOpenFileDialogFilter_Video(Master.eLang.GetString(1195, "Trailers"))
             .FilterIndex = 0
         End With
 
         If ofdLocalFiles.ShowDialog() = DialogResult.OK Then
-            tmpDBElement.Trailer.TrailerOriginal.LoadFromFile(ofdLocalFiles.FileName)
-            tmpDBElement.Trailer.TrailerOriginal.isEdit = True
-            TrailerPlaylistAdd(tmpDBElement.Trailer)
+            tmpDBElement.Trailer = New MediaContainers.Trailer With {.LocalFilePath = ofdLocalFiles.FileName}
+            tmpDBElement.Trailer.LoadAndCache()
+            LoadTrailer(tmpDBElement.Trailer)
         End If
     End Sub
 
@@ -1138,13 +1138,18 @@ Public Class dlgEditMovie
         'btnThemePlay.Text = "Play"
     End Sub
 
-    Private Sub ThemeAddToPlayer(ByVal Theme As Themes)
-        'Dim Link As String = String.Empty
-        'axVLCTheme.playlist.stop()
-        'axVLCTheme.playlist.items.clear()
+    Private Sub LoadTheme(ByVal Theme As MediaContainers.Theme)
+        txtLocalTheme.Text =
+            If(Theme.LocalFilePathSpecified, Theme.LocalFilePath,
+            If(Theme.URLAudioStreamSpecified, Theme.URLAudioStream,
+            If(Theme.URLWebsiteSpecified, Theme.URLWebsite, String.Empty)))
     End Sub
 
-    Private Sub TrailerPlaylistAdd(ByVal Trailer As MediaContainers.Trailer)
+    Private Sub LoadTrailer(ByVal Trailer As MediaContainers.Trailer)
+        txtLocalTrailer.Text =
+            If(Trailer.LocalFilePathSpecified, Trailer.LocalFilePath,
+            If(Trailer.URLVideoStreamSpecified, Trailer.URLVideoStream,
+            If(Trailer.URLWebsiteSpecified, Trailer.URLWebsite, String.Empty)))
         If AnyTrailerPlayerEnabled Then
             Dim paramsTrailerPreview As New List(Of Object)(New String() {Trailer.URLVideoStream})
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MediaPlayerPlaylistAdd_Video, paramsTrailerPreview, Nothing, True)
@@ -1436,11 +1441,6 @@ Public Class dlgEditMovie
         'GrabTheFrame()
     End Sub
 
-    Private Sub dlgEditMovie_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
-        MovieTheme.Dispose()
-        MovieTheme = Nothing
-    End Sub
-
     Private Sub dlgEditMovie_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         pbBanner.AllowDrop = True
         pbClearArt.AllowDrop = True
@@ -1564,12 +1564,6 @@ Public Class dlgEditMovie
         End If
 
         SelectMPAA()
-
-        If String.IsNullOrEmpty(tmpDBElement.ThemePath) Then
-            '.btnPlayTheme.Enabled = False
-        End If
-
-        '.btnDLTheme.Enabled = Master.eSettings.MovieThemeEnable AndAlso Master.eSettings.MovieThemeAnyEnabled AndAlso ModulesManager.Instance.QueryTrailerScraperCapabilities(Enums.ScraperCapabilities.Theme)
 
         If Not String.IsNullOrEmpty(tmpDBElement.Movie.Trailer) Then
             txtTrailer.Text = tmpDBElement.Movie.Trailer
@@ -1799,22 +1793,18 @@ Public Class dlgEditMovie
             End With
 
             'Theme
-            If Not Master.eSettings.MovieThemeAnyEnabled Then
+            If Master.eSettings.MovieThemeAnyEnabled Then
+                If Not String.IsNullOrEmpty(tmpDBElement.Theme.LocalFilePath) OrElse Not String.IsNullOrEmpty(tmpDBElement.Theme.URLAudioStream) Then
+                    LoadTheme(tmpDBElement.Theme)
+                End If
+            Else
                 tcEdit.TabPages.Remove(tpTheme)
-            End If
-
-            If Not String.IsNullOrEmpty(tmpDBElement.ThemePath) AndAlso tmpDBElement.ThemePath.Substring(0, 1) = ":" Then
-                MovieTheme.FromWeb(tmpDBElement.ThemePath.Substring(1, tmpDBElement.ThemePath.Length - 1))
-                ThemeAddToPlayer(MovieTheme)
-            ElseIf Not String.IsNullOrEmpty(tmpDBElement.ThemePath) Then
-                MovieTheme.FromFile(tmpDBElement.ThemePath)
-                ThemeAddToPlayer(MovieTheme)
             End If
 
             'Trailer
             If Master.eSettings.MovieTrailerAnyEnabled Then
                 If Not String.IsNullOrEmpty(tmpDBElement.Trailer.LocalFilePath) OrElse Not String.IsNullOrEmpty(tmpDBElement.Trailer.URLVideoStream) Then
-                    TrailerPlaylistAdd(tmpDBElement.Trailer)
+                    LoadTrailer(tmpDBElement.Trailer)
                 End If
             Else
                 tcEdit.TabPages.Remove(tpTrailer)
@@ -2394,14 +2384,6 @@ Public Class dlgEditMovie
             Next
         End If
 
-        If Not String.IsNullOrEmpty(MovieTheme.Extention) AndAlso Not MovieTheme.toRemove Then 'TODO: proper check, extention check is only a woraround
-            Dim tPath As String = MovieTheme.SaveAsMovieTheme(tmpDBElement)
-            tmpDBElement.ThemePath = tPath
-        Else
-            Themes.DeleteMovieTheme(tmpDBElement)
-            tmpDBElement.ThemePath = String.Empty
-        End If
-
         If Path.GetExtension(tmpDBElement.Filename) = ".disc" Then
             Dim StubFile As String = tmpDBElement.Filename
             Dim Title As String = txtMediaStubTitle.Text
@@ -2718,6 +2700,62 @@ Public Class dlgEditMovie
                 End If
             Next
         End If
+    End Sub
+
+    Private Sub btnLocalThemePlay_Click(sender As Object, e As EventArgs) Handles btnLocalThemePlay.Click
+        Try
+            Dim tPath As String = String.Empty
+
+            If Not String.IsNullOrEmpty(txtLocalTheme.Text) Then
+                tPath = String.Concat("""", txtLocalTheme.Text, """")
+            End If
+
+            If Not String.IsNullOrEmpty(tPath) Then
+                If Master.isWindows Then
+                    Process.Start(tPath)
+                Else
+                    Using Explorer As New Process
+                        Explorer.StartInfo.FileName = "xdg-open"
+                        Explorer.StartInfo.Arguments = tPath
+                        Explorer.Start()
+                    End Using
+                End If
+            End If
+        Catch
+            MessageBox.Show(Master.eLang.GetString(270, "The trailer could not be played. This could be due to an invalid URI or you do not have the proper player to play the trailer type."), Master.eLang.GetString(271, "Error Playing Trailer"), MessageBoxButtons.OK, MessageBoxIcon.Warning)
+        End Try
+    End Sub
+
+    Private Sub btnLocalTrailerPlay_Click(sender As Object, e As EventArgs) Handles btnLocalTrailerPlay.Click
+        Try
+            Dim tPath As String = String.Empty
+
+            If Not String.IsNullOrEmpty(txtLocalTrailer.Text) Then
+                tPath = String.Concat("""", txtLocalTrailer.Text, """")
+            End If
+
+            If Not String.IsNullOrEmpty(tPath) Then
+                If Master.isWindows Then
+                    Process.Start(tPath)
+                Else
+                    Using Explorer As New Process
+                        Explorer.StartInfo.FileName = "xdg-open"
+                        Explorer.StartInfo.Arguments = tPath
+                        Explorer.Start()
+                    End Using
+                End If
+            End If
+        Catch
+            MessageBox.Show(Master.eLang.GetString(270, "The trailer could not be played. This could be due to an invalid URI or you do not have the proper player to play the trailer type."), Master.eLang.GetString(271, "Error Playing Trailer"), MessageBoxButtons.OK, MessageBoxIcon.Warning)
+        End Try
+    End Sub
+
+    Private Sub txtLocalTheme_TextChanged(sender As Object, e As EventArgs) Handles txtLocalTheme.TextChanged
+        btnLocalThemePlay.Enabled = Not String.IsNullOrEmpty(txtLocalTheme.Text)
+    End Sub
+
+    Private Sub txtLocalTrailer_TextChanged(sender As Object, e As EventArgs) Handles txtLocalTrailer.TextChanged
+        btnLocalTrailerPlay.Enabled = Not String.IsNullOrEmpty(txtLocalTrailer.Text)
     End Sub
 
 #End Region 'Methods

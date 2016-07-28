@@ -1639,7 +1639,7 @@ Public Class Database
                     If Not DBNull.Value.Equals(SQLreader("NfoPath")) Then _movieDB.NfoPath = SQLreader("NfoPath").ToString
                     If Not DBNull.Value.Equals(SQLreader("EThumbsPath")) Then _movieDB.ExtrathumbsPath = SQLreader("EThumbsPath").ToString
                     If Not DBNull.Value.Equals(SQLreader("EFanartsPath")) Then _movieDB.ExtrafanartsPath = SQLreader("EFanartsPath").ToString
-                    If Not DBNull.Value.Equals(SQLreader("ThemePath")) Then _movieDB.ThemePath = SQLreader("ThemePath").ToString
+                    If Not DBNull.Value.Equals(SQLreader("ThemePath")) Then _movieDB.Theme.LocalFilePath = SQLreader("ThemePath").ToString
 
                     _movieDB.Source = Load_Source_Movie(Convert.ToInt64(SQLreader("idSource")))
 
@@ -2507,7 +2507,7 @@ Public Class Database
                     If Not DBNull.Value.Equals(SQLreader("Language")) Then _TVDB.Language = SQLreader("Language").ToString
                     If Not DBNull.Value.Equals(SQLreader("NfoPath")) Then _TVDB.NfoPath = SQLreader("NfoPath").ToString
                     If Not DBNull.Value.Equals(SQLreader("TVShowPath")) Then _TVDB.ShowPath = SQLreader("TVShowPath").ToString
-                    If Not DBNull.Value.Equals(SQLreader("ThemePath")) Then _TVDB.ThemePath = SQLreader("ThemePath").ToString
+                    If Not DBNull.Value.Equals(SQLreader("ThemePath")) Then _TVDB.Theme.LocalFilePath = SQLreader("ThemePath").ToString
 
                     _TVDB.Source = Load_Source_TVShow(Convert.ToInt64(SQLreader("idSource")))
 
@@ -3545,6 +3545,7 @@ Public Class Database
             If ToDisk Then
                 _movieDB.ImagesContainer.SaveAllImages(_movieDB, ForceFileCleanup)
                 _movieDB.Movie.SaveAllActorThumbs(_movieDB)
+                _movieDB.Theme.SaveAllThemes(_movieDB, ForceFileCleanup)
                 _movieDB.Trailer.SaveAllTrailers(_movieDB, ForceFileCleanup)
             End If
 
@@ -3555,7 +3556,7 @@ Public Class Database
             par_movie_ExtrafanartsPath.Value = _movieDB.ExtrafanartsPath
             par_movie_ExtrathumbsPath.Value = _movieDB.ExtrathumbsPath
             par_movie_NfoPath.Value = _movieDB.NfoPath
-            par_movie_ThemePath.Value = _movieDB.ThemePath
+            par_movie_ThemePath.Value = If(Not String.IsNullOrEmpty(_movieDB.Theme.LocalFilePath), _movieDB.Theme.LocalFilePath, String.Empty)
             par_movie_TrailerPath.Value = If(Not String.IsNullOrEmpty(_movieDB.Trailer.LocalFilePath), _movieDB.Trailer.LocalFilePath, String.Empty)
 
             If Not Master.eSettings.MovieImagesNotSaveURLToNfo Then
@@ -4888,13 +4889,14 @@ Public Class Database
             If ToNFO Then NFO.SaveToNFO_TVShow(_show)
             If ToDisk Then
                 _show.ImagesContainer.SaveAllImages(_show, False)
+                _show.Theme.SaveAllThemes(_show, False)
                 _show.TVShow.SaveAllActorThumbs(_show)
             End If
 
             parExtrafanartsPath.Value = _show.ExtrafanartsPath
             parNfoPath.Value = _show.NfoPath
             parTVShowPath.Value = _show.ShowPath
-            parThemePath.Value = _show.ThemePath
+            parThemePath.Value = If(Not String.IsNullOrEmpty(_show.Theme.LocalFilePath), _show.Theme.LocalFilePath, String.Empty)
 
             parNew.Value = Not _show.IDSpecified
             parListTitle.Value = _show.ListTitle
@@ -5297,7 +5299,7 @@ Public Class Database
         Private _sortmethod As Enums.SortMethod_MovieSet
         Private _source As New DBSource
         Private _subtitles As New List(Of MediaContainers.Subtitle)
-        Private _themepath As String
+        Private _theme As New MediaContainers.Theme
         Private _trailer As New MediaContainers.Trailer
         Private _tvepisode As MediaContainers.EpisodeDetails
         Private _tvseason As MediaContainers.SeasonDetails
@@ -5734,18 +5736,18 @@ Public Class Database
             End Get
         End Property
 
-        Public Property ThemePath() As String
+        Public Property Theme() As MediaContainers.Theme
             Get
-                Return _themepath
+                Return _theme
             End Get
-            Set(ByVal value As String)
-                _themepath = value
+            Set(ByVal value As MediaContainers.Theme)
+                _theme = value
             End Set
         End Property
 
-        Public ReadOnly Property ThemePathSpecified() As Boolean
+        Public ReadOnly Property ThemeSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_themepath)
+                Return _theme.ThemeOriginal IsNot Nothing AndAlso _theme.ThemeOriginal.hasMemoryStream
             End Get
         End Property
 
@@ -5858,7 +5860,7 @@ Public Class Database
             _sortmethod = Enums.SortMethod_MovieSet.Year
             _source = New DBSource
             _subtitles = New List(Of MediaContainers.Subtitle)
-            _themepath = String.Empty
+            _theme = New MediaContainers.Theme
             _trailer = New MediaContainers.Trailer
             _tvepisode = Nothing
             _tvseason = Nothing

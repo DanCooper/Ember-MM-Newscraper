@@ -1207,7 +1207,7 @@ Public Class ModulesManager
                 DBElement.ImagesContainer = New MediaContainers.ImagesContainer
                 DBElement.NfoPath = String.Empty
                 DBElement.Seasons.Clear()
-                DBElement.ThemePath = String.Empty
+                DBElement.Theme = New MediaContainers.Theme
                 DBElement.TVShow = New MediaContainers.TVShow
 
                 DBElement.TVShow.Title = StringUtils.FilterTitleFromPath_TVShow(DBElement.ShowPath)
@@ -1485,15 +1485,14 @@ Public Class ModulesManager
     ''' Request that enabled movie theme scrapers perform their functions on the supplied movie
     ''' </summary>
     ''' <param name="DBElement">Movie to be scraped. Scraper will directly manipulate this structure</param>
-    ''' <param name="URLList">List of Themes objects that the scraper will append to. Note that only the URL is returned, 
-    ''' not the full content of the trailer</param>
+    ''' <param name="Type">NOT ACTUALLY USED!</param>
+    ''' <param name="ThemeList">List of Theme objects that the scraper will append to.</param>
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks></remarks>
-    Public Function ScrapeTheme_Movie(ByRef DBElement As Database.DBElement, ByRef URLList As List(Of Themes)) As Boolean
+    Public Function ScrapeTheme_Movie(ByRef DBElement As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef ThemeList As List(Of MediaContainers.Theme)) As Boolean
         logger.Trace(String.Format("[ModulesManager] [ScrapeTheme_Movie] [Start] {0}", DBElement.Filename))
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Theme_Movie) = externalScrapersModules_Theme_Movie.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
         Dim ret As Interfaces.ModuleResult
-        Dim aList As List(Of Themes)
 
         While Not ModulesLoaded
             Application.DoEvents()
@@ -1505,18 +1504,51 @@ Public Class ModulesManager
             For Each _externalScraperModule As _externalScraperModuleClass_Theme_Movie In modules
                 logger.Trace(String.Format("[ModulesManager] [ScrapeTheme_Movie] [Using] {0}", _externalScraperModule.ProcessorModule.ModuleName))
                 AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie
-                aList = New List(Of Themes)
-                ret = _externalScraperModule.ProcessorModule.Scraper(DBElement, aList)
-                If aList IsNot Nothing AndAlso aList.Count > 0 Then
-                    For Each aIm In aList
-                        URLList.Add(aIm)
-                    Next
+                Dim aList As New List(Of MediaContainers.Theme)
+                ret = _externalScraperModule.ProcessorModule.Scraper(DBElement, Type, aList)
+                If aList IsNot Nothing Then
+                    ThemeList.AddRange(aList)
                 End If
                 RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie
                 If ret.breakChain Then Exit For
             Next
         End If
         logger.Trace(String.Format("[ModulesManager] [ScrapeTheme_Movie] [Done] {0}", DBElement.Filename))
+        Return ret.Cancelled
+    End Function
+    ''' <summary>
+    ''' Request that enabled tvshow theme scrapers perform their functions on the supplied tv show
+    ''' </summary>
+    ''' <param name="DBElement">TV Show to be scraped. Scraper will directly manipulate this structure</param>
+    ''' <param name="Type">NOT ACTUALLY USED!</param>
+    ''' <param name="ThemeList">List of Theme objects that the scraper will append to.</param>
+    ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
+    ''' <remarks></remarks>
+    Public Function ScrapeTheme_TVShow(ByRef DBElement As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef ThemeList As List(Of MediaContainers.Theme)) As Boolean
+        logger.Trace(String.Format("[ModulesManager] [ScrapeTheme_TVShow] [Start] {0}", DBElement.TVShow.Title))
+        Dim modules As IEnumerable(Of _externalScraperModuleClass_Theme_TV) = externalScrapersModules_Theme_TV.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
+        Dim ret As Interfaces.ModuleResult
+
+        While Not ModulesLoaded
+            Application.DoEvents()
+        End While
+
+        If (modules.Count() <= 0) Then
+            logger.Warn("[ModulesManager] [ScrapeTheme_TVShow] [Abort] No scrapers enabled")
+        Else
+            For Each _externalScraperModule As _externalScraperModuleClass_Theme_TV In modules
+                logger.Trace(String.Format("[ModulesManager] [ScrapeTheme_TVShow] [Using] {0}", _externalScraperModule.ProcessorModule.ModuleName))
+                AddHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
+                Dim aList As New List(Of MediaContainers.Theme)
+                ret = _externalScraperModule.ProcessorModule.Scraper(DBElement, Type, aList)
+                If aList IsNot Nothing Then
+                    ThemeList.AddRange(aList)
+                End If
+                RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
+                If ret.breakChain Then Exit For
+            Next
+        End If
+        logger.Trace(String.Format("[ModulesManager] [ScrapeTheme_TVShow] [Done] {0}", DBElement.TVShow.Title))
         Return ret.Cancelled
     End Function
     ''' <summary>

@@ -1934,32 +1934,20 @@ Public Class frmMain
                 'Theme
                 If tScrapeItem.ScrapeModifiers.MainTheme Then
                     bwMovieScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(266, "Scraping Themes"), ":"))
-                    If Not (Args.ScrapeType = Enums.ScrapeType.SingleScrape) Then
-                        tURL = String.Empty
-                        If Theme.WebTheme.IsAllowedToDownload(DBScrapeMovie) Then
-                            If Not ModulesManager.Instance.ScrapeTheme_Movie(DBScrapeMovie, tUrlList) Then
-                                If tUrlList.Count > 0 Then
-                                    If Not (Args.ScrapeType = Enums.ScrapeType.SingleScrape) Then
-                                        Theme.WebTheme.FromWeb(tUrlList.Item(0).URL, tUrlList.Item(0).WebURL)
-                                        If Theme.WebTheme IsNot Nothing Then 'TODO: fix check
-                                            tURL = Theme.WebTheme.SaveAsMovieTheme(DBScrapeMovie)
-                                            If Not String.IsNullOrEmpty(tURL) Then
-                                                DBScrapeMovie.ThemePath = tURL
-                                            End If
-                                        End If
-                                        'ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk  OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
-                                        '    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk  OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
-                                        '        MsgBox(Master.eLang.GetString(930, "Trailer of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size:"))
-                                        '    End If
-                                        '    Using dThemeSelect As New dlgThemeSelect()
-                                        '        tURL = dThemeSelect.ShowDialog(DBScrapeMovie, tUrlList)
-                                        '        If Not String.IsNullOrEmpty(tURL) Then
-                                        '            DBScrapeMovie.ThemePath = tURL
-                                        '            MovieScraperEvent(Enums.MovieScraperEventType.ThemeItem, DBScrapeMovie.ThemePath )
-                                        '        End If
-                                        '    End Using
-                                    End If
+                    Dim SearchResults As New List(Of MediaContainers.Theme)
+                    If Not ModulesManager.Instance.ScrapeTheme_Movie(DBScrapeMovie, Enums.ModifierType.MainTheme, SearchResults) Then
+                        If Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
+                            Using dThemeSelect As New dlgThemeSelect
+                                If dThemeSelect.ShowDialog(DBScrapeMovie, SearchResults, AdvancedSettings.GetBooleanSetting("UseAsVideoPlayer", False, "generic.EmberCore.VLCPlayer")) = DialogResult.OK Then
+                                    DBScrapeMovie.Theme = dThemeSelect.Result
                                 End If
+                            End Using
+
+                            'autoscraping
+                        ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
+                            Dim newPreferredTheme As New MediaContainers.Theme
+                            If Themes.GetPreferredMovieTheme(SearchResults, newPreferredTheme) Then
+                                DBScrapeMovie.Theme = newPreferredTheme
                             End If
                         End If
                     End If
@@ -2220,7 +2208,7 @@ Public Class frmMain
         logger.Trace(String.Format("[TVScraper] [Start] TV Shows Count [{0}]", Args.ScrapeList.Count.ToString))
 
         For Each tScrapeItem As ScrapeItem In Args.ScrapeList
-            Dim ShowTheme As New MediaContainers.Theme
+            Dim Theme As New MediaContainers.Theme
             Dim tURL As String = String.Empty
             Dim tUrlList As New List(Of Themes)
             Dim OldListTitle As String = String.Empty
@@ -2291,6 +2279,23 @@ Public Class frmMain
                 'Theme
                 If tScrapeItem.ScrapeModifiers.MainTheme Then
                     bwTVScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(266, "Scraping Themes"), ":"))
+                    Dim SearchResults As New List(Of MediaContainers.Theme)
+                    If Not ModulesManager.Instance.ScrapeTheme_TVShow(DBScrapeShow, Enums.ModifierType.MainTheme, SearchResults) Then
+                        If Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
+                            Using dThemeSelect As New dlgThemeSelect
+                                If dThemeSelect.ShowDialog(DBScrapeShow, SearchResults, AdvancedSettings.GetBooleanSetting("UseAsVideoPlayer", False, "generic.EmberCore.VLCPlayer")) = DialogResult.OK Then
+                                    DBScrapeShow.Theme = dThemeSelect.Result
+                                End If
+                            End Using
+
+                            'autoscraping
+                        ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
+                            Dim newPreferredTheme As New MediaContainers.Theme
+                            If Themes.GetPreferredTVShowTheme(SearchResults, newPreferredTheme) Then
+                                DBScrapeShow.Theme = newPreferredTheme
+                            End If
+                        End If
+                    End If
                 End If
 
                 If bwTVScraper.CancellationPending Then Exit For

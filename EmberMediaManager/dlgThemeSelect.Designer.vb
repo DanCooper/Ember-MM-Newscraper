@@ -30,6 +30,15 @@ Partial Class dlgThemeSelect
         Me.pnlStatus = New System.Windows.Forms.Panel()
         Me.lblStatus = New System.Windows.Forms.Label()
         Me.pbStatus = New System.Windows.Forms.ProgressBar()
+        Me.colNumber = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colURL = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colWebURL = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colDescription = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colDuration = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colSource = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colScraper = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colBitrate = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colExtension = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.gbSelectTheme.SuspendLayout()
         Me.pnlStatus.SuspendLayout()
         Me.SuspendLayout()
@@ -65,6 +74,7 @@ Partial Class dlgThemeSelect
         '
         'lvThemes
         '
+        Me.lvThemes.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colNumber, Me.colURL, Me.colWebURL, Me.colDescription, Me.colBitrate, Me.colDuration, Me.colExtension, Me.colSource, Me.colScraper})
         Me.lvThemes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lvThemes.Location = New System.Drawing.Point(6, 19)
         Me.lvThemes.Name = "lvThemes"
@@ -105,6 +115,53 @@ Partial Class dlgThemeSelect
         Me.pbStatus.Style = System.Windows.Forms.ProgressBarStyle.Marquee
         Me.pbStatus.TabIndex = 1
         '
+        'colNumber
+        '
+        Me.colNumber.Text = "#"
+        Me.colNumber.Width = 20
+        '
+        'colURL
+        '
+        Me.colURL.Text = "URL"
+        Me.colURL.Width = 0
+        '
+        'colWebURL
+        '
+        Me.colWebURL.Text = "WebURL"
+        Me.colWebURL.Width = 0
+        '
+        'colDescription
+        '
+        Me.colDescription.Text = "Description"
+        Me.colDescription.Width = 180
+        '
+        'colDuration
+        '
+        Me.colDuration.DisplayIndex = 4
+        Me.colDuration.Text = "Duration"
+        '
+        'colSource
+        '
+        Me.colSource.DisplayIndex = 5
+        Me.colSource.Text = "Source"
+        Me.colSource.Width = 80
+        '
+        'colScraper
+        '
+        Me.colScraper.DisplayIndex = 6
+        Me.colScraper.Text = "Scraper"
+        Me.colScraper.Width = 80
+        '
+        'colBitrate
+        '
+        Me.colBitrate.DisplayIndex = 7
+        Me.colBitrate.Text = "Bitrate"
+        '
+        'colExtension
+        '
+        Me.colExtension.DisplayIndex = 8
+        Me.colExtension.Text = "Extension"
+        '
         'dlgThemeSelect
         '
         Me.AcceptButton = Me.OK_Button
@@ -135,4 +192,13 @@ Partial Class dlgThemeSelect
     Friend WithEvents pnlStatus As System.Windows.Forms.Panel
     Friend WithEvents lblStatus As System.Windows.Forms.Label
     Friend WithEvents pbStatus As System.Windows.Forms.ProgressBar
+    Friend WithEvents colNumber As ColumnHeader
+    Friend WithEvents colURL As ColumnHeader
+    Friend WithEvents colWebURL As ColumnHeader
+    Friend WithEvents colDescription As ColumnHeader
+    Friend WithEvents colBitrate As ColumnHeader
+    Friend WithEvents colDuration As ColumnHeader
+    Friend WithEvents colExtension As ColumnHeader
+    Friend WithEvents colSource As ColumnHeader
+    Friend WithEvents colScraper As ColumnHeader
 End Class

@@ -248,6 +248,26 @@ Namespace FileUtils
             End If
         End Function
 
+        Public Shared Function GetOpenFileDialogFilter_Theme() As String
+            Dim lstValidExtensions As New List(Of String)
+
+            For Each nExtension In Master.eSettings.FileSystemValidThemeExts
+                lstValidExtensions.Add(String.Concat("*", nExtension))
+            Next
+
+            Return String.Concat(Master.eLang.GetString(1285, "Themes"), "|", String.Join(";", lstValidExtensions.ToArray))
+        End Function
+
+        Public Shared Function GetOpenFileDialogFilter_Video(ByVal strDescription As String) As String
+            Dim lstValidExtensions As New List(Of String)
+
+            For Each nExtension In Master.eSettings.FileSystemValidExts
+                lstValidExtensions.Add(String.Concat("*", nExtension))
+            Next
+
+            Return String.Concat(strDescription, "|", String.Join(";", lstValidExtensions.ToArray))
+        End Function
+
         ''' <summary>
         ''' Determine whether the path provided contains a Blu-Ray image
         ''' </summary>

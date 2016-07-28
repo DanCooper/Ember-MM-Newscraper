@@ -208,7 +208,7 @@ Public Class TelevisionTunes_Theme
         End If
     End Sub
 
-    Function Scraper_Movie(ByVal DBMovie As Database.DBElement, ByRef ThemeList As List(Of Themes)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Theme_Movie.Scraper
+    Function Scraper_Movie(ByRef DBMovie As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef ThemeList As List(Of MediaContainers.Theme)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Theme_Movie.Scraper
         logger.Trace("[TelevisionTunes_Theme] [Scraper_Movie] [Start]")
 
         Dim tTelevisionTunes As New TelevisionTunes.Scraper(DBMovie.Movie.OriginalTitle)
@@ -221,7 +221,7 @@ Public Class TelevisionTunes_Theme
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Function Scraper_TV(ByVal DBTV As Database.DBElement, ByRef ThemeList As List(Of Themes)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Theme_TV.Scraper
+    Function Scraper_TV(ByRef DBTV As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef ThemeList As List(Of MediaContainers.Theme)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Theme_TV.Scraper
         logger.Trace("[TelevisionTunes_Theme] [Scraper_TV] [Start]")
 
         Dim tTelevisionTunes As New TelevisionTunes.Scraper(DBTV.TVShow.Title)

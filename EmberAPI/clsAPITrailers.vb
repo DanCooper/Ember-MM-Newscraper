@@ -31,8 +31,6 @@ Public Class Trailers
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     Private _ext As String
-    Private _isEdit As Boolean
-
     Private _ms As MemoryStream
 
 #End Region 'Fields
@@ -67,15 +65,6 @@ Public Class Trailers
         End Get
     End Property
 
-    Public Property isEdit() As Boolean
-        Get
-            Return _isEdit
-        End Get
-        Set(ByVal value As Boolean)
-            _isEdit = value
-        End Set
-    End Property
-
 #End Region 'Properties
 
 #Region "Events"
@@ -93,7 +82,6 @@ Public Class Trailers
         End If
 
         _ext = String.Empty
-        _isEdit = False
     End Sub
 
     Public Sub Cancel()

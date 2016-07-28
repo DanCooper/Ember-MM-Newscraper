@@ -91,7 +91,7 @@ Public Class Scanner
         DBMovie.ImagesContainer = New MediaContainers.ImagesContainer
         DBMovie.NfoPath = String.Empty
         DBMovie.Subtitles = New List(Of MediaContainers.Subtitle)
-        DBMovie.ThemePath = String.Empty
+        DBMovie.Theme = New MediaContainers.Theme
         DBMovie.Trailer = New MediaContainers.Trailer
 
         'first add files to filelists
@@ -246,12 +246,14 @@ Public Class Scanner
         Next
 
         'theme
-        For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainTheme, bForced)
-            For Each t As String In Master.eSettings.FileSystemValidThemeExts
-                DBMovie.ThemePath = tList.FirstOrDefault(Function(s) s.ToLower = String.Concat(a.ToLower, t.ToLower))
-                If Not String.IsNullOrEmpty(DBMovie.ThemePath) Then Exit For
+        If String.IsNullOrEmpty(DBMovie.Theme.LocalFilePath) Then
+            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainTheme, bForced)
+                For Each t As String In Master.eSettings.FileSystemValidThemeExts
+                    DBMovie.Theme.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = String.Concat(a.ToLower, t.ToLower))
+                    If Not String.IsNullOrEmpty(DBMovie.Theme.LocalFilePath) Then Exit For
+                Next
             Next
-        Next
+        End If
 
         'trailer
         If String.IsNullOrEmpty(DBMovie.Trailer.LocalFilePath) Then
@@ -487,7 +489,7 @@ Public Class Scanner
         DBTVShow.ExtrafanartsPath = String.Empty
         DBTVShow.ImagesContainer = New MediaContainers.ImagesContainer
         DBTVShow.NfoPath = String.Empty
-        DBTVShow.ThemePath = String.Empty
+        DBTVShow.Theme = New MediaContainers.Theme
 
         Try
             fList.AddRange(Directory.GetFiles(DBTVShow.ShowPath))
@@ -569,10 +571,9 @@ Public Class Scanner
         'show theme
         For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, Enums.ModifierType.MainTheme)
             For Each t As String In Master.eSettings.FileSystemValidThemeExts
-                DBTVShow.ThemePath = fList.FirstOrDefault(Function(s) s.ToLower = String.Concat(a.ToLower, t.ToLower))
-                If Not String.IsNullOrEmpty(DBTVShow.ThemePath) Then Exit For
+                DBTVShow.Theme.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = String.Concat(a.ToLower, t.ToLower))
+                If Not String.IsNullOrEmpty(DBTVShow.Theme.LocalFilePath) Then Exit For
             Next
-            If Not String.IsNullOrEmpty(DBTVShow.ThemePath) Then Exit For
         Next
     End Sub
 
