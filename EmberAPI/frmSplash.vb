@@ -50,13 +50,14 @@ Public Class frmSplash
             Invoke(New DelegateTo_SetLoadingMesg(AddressOf SetVersionMesg))
             Exit Sub
         End If
-        VersionNumber.Text = System.String.Format(
-         message,
-         My.Application.Info.Version.Major,
-         My.Application.Info.Version.Minor,
-         My.Application.Info.Version.Build,
-         My.Application.Info.Version.Revision,
-         bits)
+        VersionNumber.Text = String.Format("{0} {1}", message, bits)
+        'VersionNumber.Text = String.Format(
+        ' message,
+        ' My.Application.Info.Version.Major,
+        ' My.Application.Info.Version.Minor,
+        ' My.Application.Info.Version.Build,
+        ' My.Application.Info.Version.Revision,
+        ' bits)
         Application.DoEvents()
     End Sub
 
