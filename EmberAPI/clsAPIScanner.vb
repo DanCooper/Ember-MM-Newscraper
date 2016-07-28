@@ -603,7 +603,7 @@ Public Class Scanner
             Next
 
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
+            logger.Error(String.Format("[Sanner] [IsValidDir] Path ""{0}"" has been skipped ({1})", dInfo.Name, ex.Message))
             Return False
         End Try
         Return True 'This is the Else
