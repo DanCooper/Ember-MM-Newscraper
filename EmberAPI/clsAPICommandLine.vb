@@ -312,6 +312,15 @@ Public Class CommandLine
         For i As Integer = iStartPos + 1 To Args.Count - 1
             Select Case Args(i).ToLower
                 Case "all"
+                    ScrapeModifiers.AllSeasonsBanner = True
+                    ScrapeModifiers.AllSeasonsFanart = True
+                    ScrapeModifiers.AllSeasonsLandscape = True
+                    ScrapeModifiers.AllSeasonsPoster = True
+                    ScrapeModifiers.EpisodeActorThumbs = True
+                    ScrapeModifiers.EpisodeFanart = True
+                    ScrapeModifiers.EpisodeMeta = True
+                    ScrapeModifiers.EpisodeNFO = True
+                    ScrapeModifiers.EpisodePoster = True
                     ScrapeModifiers.MainActorthumbs = True
                     ScrapeModifiers.MainBanner = True
                     ScrapeModifiers.MainCharacterArt = True
@@ -328,6 +337,35 @@ Public Class CommandLine
                     ScrapeModifiers.MainSubtitles = True
                     ScrapeModifiers.MainTheme = True
                     ScrapeModifiers.MainTrailer = True
+                    ScrapeModifiers.SeasonBanner = True
+                    ScrapeModifiers.SeasonFanart = True
+                    ScrapeModifiers.SeasonLandscape = True
+                    ScrapeModifiers.SeasonNFO = True
+                    ScrapeModifiers.SeasonPoster = True
+                    ScrapeModifiers.withEpisodes = True
+                    ScrapeModifiers.withSeasons = True
+                Case "episodeall"
+                    ScrapeModifiers.EpisodeActorThumbs = True
+                    ScrapeModifiers.EpisodeFanart = True
+                    ScrapeModifiers.EpisodeMeta = True
+                    ScrapeModifiers.EpisodeNFO = True
+                    ScrapeModifiers.EpisodePoster = True
+                    ScrapeModifiers.withEpisodes = True
+                Case "episodeactorthumbs"
+                    ScrapeModifiers.EpisodeActorThumbs = True
+                    ScrapeModifiers.withEpisodes = True
+                Case "episodefanart"
+                    ScrapeModifiers.EpisodeFanart = True
+                    ScrapeModifiers.withEpisodes = True
+                Case "episodemeta"
+                    ScrapeModifiers.EpisodeMeta = True
+                    ScrapeModifiers.withEpisodes = True
+                Case "episodenfo"
+                    ScrapeModifiers.EpisodeNFO = True
+                    ScrapeModifiers.withEpisodes = True
+                Case "episodeposter"
+                    ScrapeModifiers.EpisodePoster = True
+                    ScrapeModifiers.withEpisodes = True
                 Case "actorthumbs"
                     ScrapeModifiers.MainActorthumbs = True
                 Case "banner"
@@ -360,6 +398,28 @@ Public Class CommandLine
                     ScrapeModifiers.MainTheme = True
                 Case "trailer"
                     ScrapeModifiers.MainTrailer = True
+                Case "seasonall"
+                    ScrapeModifiers.SeasonBanner = True
+                    ScrapeModifiers.SeasonFanart = True
+                    ScrapeModifiers.SeasonLandscape = True
+                    ScrapeModifiers.SeasonNFO = True
+                    ScrapeModifiers.SeasonPoster = True
+                    ScrapeModifiers.withSeasons = True
+                Case "seasonbanner"
+                    ScrapeModifiers.SeasonBanner = True
+                    ScrapeModifiers.withSeasons = True
+                Case "seasonfanart"
+                    ScrapeModifiers.SeasonFanart = True
+                    ScrapeModifiers.withSeasons = True
+                Case "seasonlandscape"
+                    ScrapeModifiers.SeasonLandscape = True
+                    ScrapeModifiers.withSeasons = True
+                Case "seasonnfo"
+                    ScrapeModifiers.SeasonNFO = True
+                    ScrapeModifiers.withSeasons = True
+                Case "seasonposter"
+                    ScrapeModifiers.SeasonPoster = True
+                    ScrapeModifiers.withSeasons = True
                 Case Else
                     Return i - 1
             End Select
