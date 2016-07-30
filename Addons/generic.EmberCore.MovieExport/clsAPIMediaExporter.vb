@@ -541,7 +541,8 @@ Public Class MediaExporter
                         End Try
                     Else
                         Try
-                            sFile.AddRange(Directory.GetFiles(Directory.GetParent(fPath).FullName, FileUtils.Common.RemoveStackingMarkers(Path.GetFileName(fPath), True)))
+                            Dim strName As String = Path.GetFileNameWithoutExtension(FileUtils.Common.RemoveStackingMarkers(fPath))
+                            sFile.AddRange(Directory.GetFiles(Directory.GetParent(fPath).FullName, String.Concat(strName, "*")))
                         Catch
                         End Try
                     End If

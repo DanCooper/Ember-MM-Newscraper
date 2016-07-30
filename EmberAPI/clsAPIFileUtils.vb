@@ -248,6 +248,26 @@ Namespace FileUtils
             End If
         End Function
 
+        Public Shared Function GetOpenFileDialogFilter_Theme() As String
+            Dim lstValidExtensions As New List(Of String)
+
+            For Each nExtension In Master.eSettings.FileSystemValidThemeExts
+                lstValidExtensions.Add(String.Concat("*", nExtension))
+            Next
+
+            Return String.Concat(Master.eLang.GetString(1285, "Themes"), "|", String.Join(";", lstValidExtensions.ToArray))
+        End Function
+
+        Public Shared Function GetOpenFileDialogFilter_Video(ByVal strDescription As String) As String
+            Dim lstValidExtensions As New List(Of String)
+
+            For Each nExtension In Master.eSettings.FileSystemValidExts
+                lstValidExtensions.Add(String.Concat("*", nExtension))
+            Next
+
+            Return String.Concat(strDescription, "|", String.Join(";", lstValidExtensions.ToArray))
+        End Function
+
         ''' <summary>
         ''' Determine whether the path provided contains a Blu-Ray image
         ''' </summary>
@@ -297,30 +317,6 @@ Namespace FileUtils
                 Return GetDirectory(strPath).ToLower = "video_ts"
             End If
         End Function
-        ''' <summary>
-        ''' Copy a file from one location to another using a stream/buffer
-        ''' </summary>
-        ''' <param name="sPathFrom">Old path of file to move.</param>
-        ''' <param name="sPathTo">New path of file to move.</param>
-        Public Shared Sub MoveFileWithStream(ByVal sPathFrom As String, ByVal sPathTo As String)
-            'TODO Inefficient. Why not use system-provided FileInfo.MoveTo method. Instantaneous if on same system volume as a bonus.
-            'TODO Should do validation checking on input parameters. Should handle Empty or invalid files. Should perhaps handle directory (and content) moves intelligently
-            'TODO Badly named. Should instead be CopyFileWithStream, and use FileInfo.CopyTo method. 
-            Try
-                Using SourceStream As FileStream = New FileStream(String.Concat("", sPathFrom, ""), FileMode.Open, FileAccess.Read)
-                    Using DestinationStream As FileStream = New FileStream(String.Concat("", sPathTo, ""), FileMode.Create, FileAccess.Write)
-                        Dim StreamBuffer(Convert.ToInt32(SourceStream.Length - 1)) As Byte
-
-                        SourceStream.Read(StreamBuffer, 0, StreamBuffer.Length)
-                        DestinationStream.Write(StreamBuffer, 0, StreamBuffer.Length)
-
-                        StreamBuffer = Nothing
-                    End Using
-                End Using
-            Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name)
-            End Try
-        End Sub
         ''' <summary>
         ''' Get the entire path and filename of a file, but without the extension
         ''' </summary>
@@ -556,8 +552,8 @@ Namespace FileUtils
         ''' </list>
         ''' Note that text after the stacking marker are left untouched.
         ''' </remarks>
-        Public Shared Function RemoveStackingMarkers(ByVal strPath As String, Optional ByVal Asterix As Boolean = False) As String
-            'Don't do anything if DisableMultiPartMedia is True or sPath is String.Empty
+        Public Shared Function RemoveStackingMarkers(ByVal strPath As String) As String
+            'Don't do anything if DisableMultiPartMedia is True or strPath is String.Empty
             If AdvancedSettings.GetBooleanSetting("DisableMultiPartMedia", False) OrElse String.IsNullOrEmpty(strPath) Then Return strPath
 
             Dim FilePattern As String = AdvancedSettings.GetSetting("FileStacking", "(.*?)([ _.-]*(?:cd|dvd|p(?:ar)?t|dis[ck])[ _.-]*[0-9]+)(.*?)(\.[^.]+)$")

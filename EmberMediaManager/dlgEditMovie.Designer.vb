@@ -188,6 +188,8 @@ Partial Class dlgEditMovie
         Me.btnSetSubtitleScrape = New System.Windows.Forms.Button()
         Me.btnSetSubtitleLocal = New System.Windows.Forms.Button()
         Me.tpTrailer = New System.Windows.Forms.TabPage()
+        Me.btnLocalTrailerPlay = New System.Windows.Forms.Button()
+        Me.txtLocalTrailer = New System.Windows.Forms.TextBox()
         Me.pnlTrailerPreview = New System.Windows.Forms.Panel()
         Me.pnlTrailerPreviewNoPlayer = New System.Windows.Forms.Panel()
         Me.tblTrailerPreviewNoPlayer = New System.Windows.Forms.TableLayoutPanel()
@@ -197,6 +199,8 @@ Partial Class dlgEditMovie
         Me.btnSetTrailerScrape = New System.Windows.Forms.Button()
         Me.btnSetTrailerLocal = New System.Windows.Forms.Button()
         Me.tpTheme = New System.Windows.Forms.TabPage()
+        Me.btnLocalThemePlay = New System.Windows.Forms.Button()
+        Me.txtLocalTheme = New System.Windows.Forms.TextBox()
         Me.pnlThemePreview = New System.Windows.Forms.Panel()
         Me.pnlThemePreviewNoPlayer = New System.Windows.Forms.Panel()
         Me.tblThemePreviewNoPlayer = New System.Windows.Forms.TableLayoutPanel()
@@ -2079,6 +2083,8 @@ Partial Class dlgEditMovie
         '
         'tpTrailer
         '
+        Me.tpTrailer.Controls.Add(Me.btnLocalTrailerPlay)
+        Me.tpTrailer.Controls.Add(Me.txtLocalTrailer)
         Me.tpTrailer.Controls.Add(Me.pnlTrailerPreview)
         Me.tpTrailer.Controls.Add(Me.btnSetTrailerDL)
         Me.tpTrailer.Controls.Add(Me.btnRemoveTrailer)
@@ -2090,6 +2096,26 @@ Partial Class dlgEditMovie
         Me.tpTrailer.TabIndex = 13
         Me.tpTrailer.Text = "Trailer"
         Me.tpTrailer.UseVisualStyleBackColor = True
+        '
+        'btnLocalTrailerPlay
+        '
+        Me.btnLocalTrailerPlay.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnLocalTrailerPlay.Enabled = False
+        Me.btnLocalTrailerPlay.Image = Global.Ember_Media_Manager.My.Resources.Resources.Play_Icon
+        Me.btnLocalTrailerPlay.Location = New System.Drawing.Point(783, 462)
+        Me.btnLocalTrailerPlay.Name = "btnLocalTrailerPlay"
+        Me.btnLocalTrailerPlay.Size = New System.Drawing.Size(23, 22)
+        Me.btnLocalTrailerPlay.TabIndex = 53
+        Me.btnLocalTrailerPlay.UseVisualStyleBackColor = True
+        '
+        'txtLocalTrailer
+        '
+        Me.txtLocalTrailer.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtLocalTrailer.Location = New System.Drawing.Point(6, 462)
+        Me.txtLocalTrailer.Name = "txtLocalTrailer"
+        Me.txtLocalTrailer.ReadOnly = True
+        Me.txtLocalTrailer.Size = New System.Drawing.Size(771, 22)
+        Me.txtLocalTrailer.TabIndex = 15
         '
         'pnlTrailerPreview
         '
@@ -2189,6 +2215,8 @@ Partial Class dlgEditMovie
         '
         'tpTheme
         '
+        Me.tpTheme.Controls.Add(Me.btnLocalThemePlay)
+        Me.tpTheme.Controls.Add(Me.txtLocalTheme)
         Me.tpTheme.Controls.Add(Me.pnlThemePreview)
         Me.tpTheme.Controls.Add(Me.btnSetThemeDL)
         Me.tpTheme.Controls.Add(Me.btnRemoveTheme)
@@ -2200,6 +2228,26 @@ Partial Class dlgEditMovie
         Me.tpTheme.TabIndex = 14
         Me.tpTheme.Text = "Theme"
         Me.tpTheme.UseVisualStyleBackColor = True
+        '
+        'btnLocalThemePlay
+        '
+        Me.btnLocalThemePlay.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnLocalThemePlay.Enabled = False
+        Me.btnLocalThemePlay.Image = Global.Ember_Media_Manager.My.Resources.Resources.Play_Icon
+        Me.btnLocalThemePlay.Location = New System.Drawing.Point(783, 462)
+        Me.btnLocalThemePlay.Name = "btnLocalThemePlay"
+        Me.btnLocalThemePlay.Size = New System.Drawing.Size(23, 22)
+        Me.btnLocalThemePlay.TabIndex = 56
+        Me.btnLocalThemePlay.UseVisualStyleBackColor = True
+        '
+        'txtLocalTheme
+        '
+        Me.txtLocalTheme.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtLocalTheme.Location = New System.Drawing.Point(6, 462)
+        Me.txtLocalTheme.Name = "txtLocalTheme"
+        Me.txtLocalTheme.ReadOnly = True
+        Me.txtLocalTheme.Size = New System.Drawing.Size(771, 22)
+        Me.txtLocalTheme.TabIndex = 55
         '
         'pnlThemePreview
         '
@@ -2529,12 +2577,14 @@ Partial Class dlgEditMovie
         Me.tpSubtitles.ResumeLayout(False)
         Me.tpSubtitles.PerformLayout()
         Me.tpTrailer.ResumeLayout(False)
+        Me.tpTrailer.PerformLayout()
         Me.pnlTrailerPreview.ResumeLayout(False)
         Me.pnlTrailerPreviewNoPlayer.ResumeLayout(False)
         Me.pnlTrailerPreviewNoPlayer.PerformLayout()
         Me.tblTrailerPreviewNoPlayer.ResumeLayout(False)
         Me.tblTrailerPreviewNoPlayer.PerformLayout()
         Me.tpTheme.ResumeLayout(False)
+        Me.tpTheme.PerformLayout()
         Me.pnlThemePreview.ResumeLayout(False)
         Me.pnlThemePreviewNoPlayer.ResumeLayout(False)
         Me.pnlThemePreviewNoPlayer.PerformLayout()
@@ -2746,5 +2796,8 @@ Partial Class dlgEditMovie
     Friend WithEvents btnSetExtrathumbsScrape As System.Windows.Forms.Button
     Friend WithEvents cbSourceLanguage As System.Windows.Forms.ComboBox
     Friend WithEvents lblLanguage As System.Windows.Forms.Label
-
+    Friend WithEvents btnLocalTrailerPlay As Button
+    Friend WithEvents txtLocalTrailer As TextBox
+    Friend WithEvents btnLocalThemePlay As Button
+    Friend WithEvents txtLocalTheme As TextBox
 End Class

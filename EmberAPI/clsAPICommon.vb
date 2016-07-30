@@ -1581,6 +1581,7 @@ Public Class Functions
         FilteredModifiers.SeasonBanner = Options.SeasonBanner AndAlso Options2.SeasonBanner
         FilteredModifiers.SeasonFanart = Options.SeasonFanart AndAlso Options2.SeasonFanart
         FilteredModifiers.SeasonLandscape = Options.SeasonLandscape AndAlso Options2.SeasonLandscape
+        FilteredModifiers.SeasonNFO = Options.SeasonNFO AndAlso Options2.SeasonNFO
         FilteredModifiers.SeasonPoster = Options.SeasonPoster AndAlso Options2.SeasonPoster
         FilteredModifiers.withEpisodes = Options.withEpisodes AndAlso Options2.withEpisodes
         FilteredModifiers.withSeasons = Options.withSeasons AndAlso Options2.withSeasons

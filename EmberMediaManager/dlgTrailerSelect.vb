@@ -37,7 +37,6 @@ Public Class dlgTrailerSelect
     Private _result As New MediaContainers.Trailer
     Private tArray As New List(Of String)
     Private tURL As String = String.Empty
-    Private sPath As String
     Private nList As New List(Of MediaContainers.Trailer)
     Private _noDownload As Boolean
     Private _withPlayer As Boolean
@@ -100,7 +99,6 @@ Public Class dlgTrailerSelect
         txtYouTubeSearch.Text = String.Concat(DBMovie.Movie.Title, " ", Master.eSettings.MovieTrailerDefaultSearch)
 
         tmpDBElement = DBMovie
-        sPath = DBMovie.Filename
 
         AddTrailersToList(tURLList)
 
@@ -280,7 +278,7 @@ Public Class dlgTrailerSelect
         Try
             With ofdTrailer
                 .InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
-                .Filter = String.Concat("Supported Trailer Formats|*", Functions.ListToStringWithSeparator(Master.eSettings.FileSystemValidExts.ToArray(), ";*"))
+                .Filter = FileUtils.Common.GetOpenFileDialogFilter_Video(Master.eLang.GetString(1195, "Trailers"))
                 .FilterIndex = 0
             End With
 

@@ -3,7 +3,7 @@
   <ComplexSettings>
     <Table Section="*EmberAPP" Name="MovieSources">
       <Item Name="(?i)[\W_](b[dr][-\s]?rip|blu[-\s]?ray)[\W_]">bluray</Item>
-      <Item Name="(?i)[\W_](sd[-\s]?)?dvd[\W_]">dvd</Item>
+      <Item Name="(?i)[\W_](sd[-\s]?)?dvd([-\s]?rip)?[\W_]">dvd</Item>
       <Item Name="(?i)[\W_]hd[-\s]?tv[\W_]">hdtv</Item>
       <Item Name="(?i)[\W_]sd[-\s]?tv[\W_]">sdtv</Item>
       <Item Name="(?i)[\W_]hd[-\s]?dvd[\W_]">hddvd</Item>

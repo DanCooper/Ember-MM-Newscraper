@@ -1934,32 +1934,20 @@ Public Class frmMain
                 'Theme
                 If tScrapeItem.ScrapeModifiers.MainTheme Then
                     bwMovieScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(266, "Scraping Themes"), ":"))
-                    If Not (Args.ScrapeType = Enums.ScrapeType.SingleScrape) Then
-                        tURL = String.Empty
-                        If Theme.WebTheme.IsAllowedToDownload(DBScrapeMovie) Then
-                            If Not ModulesManager.Instance.ScrapeTheme_Movie(DBScrapeMovie, tUrlList) Then
-                                If tUrlList.Count > 0 Then
-                                    If Not (Args.ScrapeType = Enums.ScrapeType.SingleScrape) Then
-                                        Theme.WebTheme.FromWeb(tUrlList.Item(0).URL, tUrlList.Item(0).WebURL)
-                                        If Theme.WebTheme IsNot Nothing Then 'TODO: fix check
-                                            tURL = Theme.WebTheme.SaveAsMovieTheme(DBScrapeMovie)
-                                            If Not String.IsNullOrEmpty(tURL) Then
-                                                DBScrapeMovie.ThemePath = tURL
-                                            End If
-                                        End If
-                                        'ElseIf Args.scrapeType = Enums.ScrapeType.SingleScrape OrElse Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk  OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
-                                        '    If Args.scrapeType = Enums.ScrapeType.FullAsk OrElse Args.scrapeType = Enums.ScrapeType.NewAsk OrElse Args.scrapeType = Enums.ScrapeType.MarkAsk  OrElse Args.scrapeType = Enums.ScrapeType.UpdateAsk Then
-                                        '        MsgBox(Master.eLang.GetString(930, "Trailer of your preferred size could not be found. Please choose another."), MsgBoxStyle.Information, Master.eLang.GetString(929, "No Preferred Size:"))
-                                        '    End If
-                                        '    Using dThemeSelect As New dlgThemeSelect()
-                                        '        tURL = dThemeSelect.ShowDialog(DBScrapeMovie, tUrlList)
-                                        '        If Not String.IsNullOrEmpty(tURL) Then
-                                        '            DBScrapeMovie.ThemePath = tURL
-                                        '            MovieScraperEvent(Enums.MovieScraperEventType.ThemeItem, DBScrapeMovie.ThemePath )
-                                        '        End If
-                                        '    End Using
-                                    End If
+                    Dim SearchResults As New List(Of MediaContainers.Theme)
+                    If Not ModulesManager.Instance.ScrapeTheme_Movie(DBScrapeMovie, Enums.ModifierType.MainTheme, SearchResults) Then
+                        If Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
+                            Using dThemeSelect As New dlgThemeSelect
+                                If dThemeSelect.ShowDialog(DBScrapeMovie, SearchResults, AdvancedSettings.GetBooleanSetting("UseAsVideoPlayer", False, "generic.EmberCore.VLCPlayer")) = DialogResult.OK Then
+                                    DBScrapeMovie.Theme = dThemeSelect.Result
                                 End If
+                            End Using
+
+                            'autoscraping
+                        ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
+                            Dim newPreferredTheme As New MediaContainers.Theme
+                            If Themes.GetPreferredMovieTheme(SearchResults, newPreferredTheme) Then
+                                DBScrapeMovie.Theme = newPreferredTheme
                             End If
                         End If
                     End If
@@ -2220,7 +2208,7 @@ Public Class frmMain
         logger.Trace(String.Format("[TVScraper] [Start] TV Shows Count [{0}]", Args.ScrapeList.Count.ToString))
 
         For Each tScrapeItem As ScrapeItem In Args.ScrapeList
-            Dim ShowTheme As New MediaContainers.Theme
+            Dim Theme As New MediaContainers.Theme
             Dim tURL As String = String.Empty
             Dim tUrlList As New List(Of Themes)
             Dim OldListTitle As String = String.Empty
@@ -2291,6 +2279,23 @@ Public Class frmMain
                 'Theme
                 If tScrapeItem.ScrapeModifiers.MainTheme Then
                     bwTVScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(266, "Scraping Themes"), ":"))
+                    Dim SearchResults As New List(Of MediaContainers.Theme)
+                    If Not ModulesManager.Instance.ScrapeTheme_TVShow(DBScrapeShow, Enums.ModifierType.MainTheme, SearchResults) Then
+                        If Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
+                            Using dThemeSelect As New dlgThemeSelect
+                                If dThemeSelect.ShowDialog(DBScrapeShow, SearchResults, AdvancedSettings.GetBooleanSetting("UseAsVideoPlayer", False, "generic.EmberCore.VLCPlayer")) = DialogResult.OK Then
+                                    DBScrapeShow.Theme = dThemeSelect.Result
+                                End If
+                            End Using
+
+                            'autoscraping
+                        ElseIf Not Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
+                            Dim newPreferredTheme As New MediaContainers.Theme
+                            If Themes.GetPreferredTVShowTheme(SearchResults, newPreferredTheme) Then
+                                DBScrapeShow.Theme = newPreferredTheme
+                            End If
+                        End If
+                    End If
                 End If
 
                 If bwTVScraper.CancellationPending Then Exit For
@@ -5327,8 +5332,11 @@ Public Class frmMain
                     Master.DB.Delete_TVEpisode(tID.Key, True, False, True) 'remove the "missing episode" from DB
                     RemoveRow_TVEpisode(tID.Key)
                 Else
-                    Master.DB.Delete_TVEpisode(tID.Key, False, False, True) 'set the episode as "missing episode"
-                    RefreshRow_TVEpisode(tID.Key)
+                    If Master.DB.Delete_TVEpisode(tID.Key, False, False, True) Then 'set the episode as "missing episode"
+                        RemoveRow_TVEpisode(tID.Key)
+                    Else
+                        RefreshRow_TVEpisode(tID.Key)
+                    End If
                 End If
             Next
 
@@ -9874,8 +9882,10 @@ Public Class frmMain
                 Master.eSettings.GeneralSplitterDistanceMain = scMain.SplitterDistance
                 Master.eSettings.GeneralSplitterDistanceTVSeason = scTVSeasonsEpisodes.SplitterDistance
                 Master.eSettings.GeneralSplitterDistanceTVShow = scTV.SplitterDistance
-                Master.eSettings.GeneralWindowLoc = Location
-                Master.eSettings.GeneralWindowSize = Size
+                If WindowState = FormWindowState.Normal Then
+                    Master.eSettings.GeneralWindowLoc = Location
+                    Master.eSettings.GeneralWindowSize = Size
+                End If
                 Master.eSettings.GeneralWindowState = WindowState
                 Master.eSettings.Save()
             End If
@@ -10291,6 +10301,15 @@ Public Class frmMain
                         Dim ScrapeModifiers As Structures.ScrapeModifiers = CType(_params(2), Structures.ScrapeModifiers)
                         CreateScrapeList_Movie(CType(_params(1), Enums.ScrapeType), Master.DefaultOptions_Movie, ScrapeModifiers)
                         While bwMovieScraper.IsBusy
+                            Application.DoEvents()
+                            Threading.Thread.Sleep(50)
+                        End While
+                    Case "scrapemoviesets"
+                        Master.fLoading.SetProgressBarStyle(ProgressBarStyle.Marquee)
+                        Master.fLoading.SetLoadingMesg(Master.eLang.GetString(861, "Command Line Scraping..."))
+                        Dim ScrapeModifiers As Structures.ScrapeModifiers = CType(_params(2), Structures.ScrapeModifiers)
+                        CreateScrapeList_MovieSet(CType(_params(1), Enums.ScrapeType), Master.DefaultOptions_MovieSet, ScrapeModifiers)
+                        While bwMovieSetScraper.IsBusy
                             Application.DoEvents()
                             Threading.Thread.Sleep(50)
                         End While
@@ -17486,41 +17505,42 @@ Public Class frmMain
     End Sub
 
     Private Sub bwCheckVersion_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCheckVersion.DoWork
-        Try
-            Dim sHTTP As New EmberAPI.HTTP
-            'Pull Assembly version info from current Ember repo on github
-            Dim HTML As String
-            HTML = sHTTP.DownloadData("https://raw.github.com/DanCooper/Ember-MM-Newscraper/master/EmberMediaManager/My%20Project/AssemblyInfo.vb")
-            sHTTP = Nothing
-            Dim aBit As String = "x64"
-            If Master.is32Bit Then
-                aBit = "x86"
-            End If
-            Dim VersionNumber As String = System.String.Format(Master.eLang.GetString(865, "Version {0}.{1}.{2}.{3} {4}"), My.Application.Info.Version.Major, My.Application.Info.Version.Minor, My.Application.Info.Version.Build, My.Application.Info.Version.Revision, aBit)
-            ' Not localized as is the Assembly file version
-            Dim VersionNumberO As String = System.String.Format("{0}.{1}.{2}.{3}", My.Application.Info.Version.Major, My.Application.Info.Version.Minor, My.Application.Info.Version.Build, My.Application.Info.Version.Revision)
-            If Not String.IsNullOrEmpty(HTML) Then
-                'Example: AssemblyFileVersion("1.3.0.18")>
-                Dim mc As MatchCollection = System.Text.RegularExpressions.Regex.Matches(HTML, "AssemblyFileVersion([^<]+)>")
-                'check to see if at least one entry was found
-                If mc.Count > 0 Then
-                    'just use the first match if more are found and compare with running Ember Version
-                    If mc(0).Value.ToString <> "AssemblyFileVersion(""" & VersionNumberO & """)>" Then
-                        'means that running Ember version is outdated!
-                        Invoke(New UpdatemnuVersionDel(AddressOf UpdatemnuVersion), System.String.Format(Master.eLang.GetString(1009, "{0} - (New version available!)"), VersionNumber), Color.DarkRed)
-                    Else
-                        'Ember already up to date!
-                        Invoke(New UpdatemnuVersionDel(AddressOf UpdatemnuVersion), VersionNumber, Color.DarkGreen)
-                    End If
-                End If
-                'if no github query possible, than simply display Ember version on form
-            Else
-                Invoke(New UpdatemnuVersionDel(AddressOf UpdatemnuVersion), VersionNumber, Color.DarkBlue)
-            End If
+        Invoke(New UpdatemnuVersionDel(AddressOf UpdatemnuVersion), Master.strVersionOverwrite, Color.Green)
+        'Try
+        '    Dim sHTTP As New EmberAPI.HTTP
+        '    'Pull Assembly version info from current Ember repo on github
+        '    Dim HTML As String
+        '    HTML = sHTTP.DownloadData("https://raw.github.com/DanCooper/Ember-MM-Newscraper/master/EmberMediaManager/My%20Project/AssemblyInfo.vb")
+        '    sHTTP = Nothing
+        '    Dim aBit As String = "x64"
+        '    If Master.is32Bit Then
+        '        aBit = "x86"
+        '    End If
+        '    Dim VersionNumber As String = System.String.Format(Master.eLang.GetString(865, "Version {0}.{1}.{2}.{3} {4}"), My.Application.Info.Version.Major, My.Application.Info.Version.Minor, My.Application.Info.Version.Build, My.Application.Info.Version.Revision, aBit)
+        '    ' Not localized as is the Assembly file version
+        '    Dim VersionNumberO As String = System.String.Format("{0}.{1}.{2}.{3}", My.Application.Info.Version.Major, My.Application.Info.Version.Minor, My.Application.Info.Version.Build, My.Application.Info.Version.Revision)
+        '    If Not String.IsNullOrEmpty(HTML) Then
+        '        'Example: AssemblyFileVersion("1.3.0.18")>
+        '        Dim mc As MatchCollection = System.Text.RegularExpressions.Regex.Matches(HTML, "AssemblyFileVersion([^<]+)>")
+        '        'check to see if at least one entry was found
+        '        If mc.Count > 0 Then
+        '            'just use the first match if more are found and compare with running Ember Version
+        '            If mc(0).Value.ToString <> "AssemblyFileVersion(""" & VersionNumberO & """)>" Then
+        '                'means that running Ember version is outdated!
+        '                Invoke(New UpdatemnuVersionDel(AddressOf UpdatemnuVersion), System.String.Format(Master.eLang.GetString(1009, "{0} - (New version available!)"), VersionNumber), Color.DarkRed)
+        '            Else
+        '                'Ember already up to date!
+        '                Invoke(New UpdatemnuVersionDel(AddressOf UpdatemnuVersion), VersionNumber, Color.DarkGreen)
+        '            End If
+        '        End If
+        '        'if no github query possible, than simply display Ember version on form
+        '    Else
+        '        Invoke(New UpdatemnuVersionDel(AddressOf UpdatemnuVersion), VersionNumber, Color.DarkBlue)
+        '    End If
 
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
+        'Catch ex As Exception
+        '    logger.Error(ex, New StackFrame().GetMethod().Name)
+        'End Try
     End Sub
 
     Public Delegate Sub UpdatemnuVersionDel(sText As String, sForeColor As Color)

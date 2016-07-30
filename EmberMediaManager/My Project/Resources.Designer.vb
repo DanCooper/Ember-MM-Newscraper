@@ -899,7 +899,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die http://forum.kodi.tv/showthread.php?tid=191781 ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die http://forum.kodi.tv/showthread.php?tid=259449 ähnelt.
         '''</summary>
         Friend ReadOnly Property urlReleaseThread() As String
             Get

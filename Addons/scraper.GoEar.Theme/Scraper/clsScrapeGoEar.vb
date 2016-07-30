@@ -34,7 +34,7 @@ Namespace GoEar
         Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
         Private originaltitle As String
         Private listtitle As String
-        Private _themelist As New List(Of Themes)
+        Private _themelist As New List(Of MediaContainers.Theme)
 
 #End Region 'Fields
 
@@ -51,11 +51,11 @@ Namespace GoEar
 
 #Region "Properties"
 
-        Public Property ThemeList() As List(Of Themes)
+        Public Property ThemeList() As List(Of MediaContainers.Theme)
             Get
                 Return _themelist
             End Get
-            Set(ByVal value As List(Of Themes))
+            Set(ByVal value As List(Of MediaContainers.Theme))
                 _themelist = value
             End Set
         End Property
@@ -65,7 +65,7 @@ Namespace GoEar
 #Region "Methods"
 
         Private Sub Clear()
-            _themelist = New List(Of Themes)
+            _themelist = New List(Of MediaContainers.Theme)
         End Sub
 
         Private Sub GetMovieThemes()
@@ -119,7 +119,7 @@ Namespace GoEar
                             tURL = String.Concat(DownloadURL, tID).Trim
 
                             If Not String.IsNullOrEmpty(tID) Then
-                                _themelist.Add(New Themes With {.Title = tTitle, .ID = tID, .URL = tURL, .Description = tDescription, .Duration = tDuration, .Bitrate = tBitrate, .WebURL = tWebURL})
+                                _themelist.Add(New MediaContainers.Theme With {.URLAudioStream = tURL, .Description = tTitle, .Duration = tDuration, .Bitrate = tBitrate, .URLWebsite = tWebURL, .Scraper = "GoEar"})
                             End If
                         Next
                     End If

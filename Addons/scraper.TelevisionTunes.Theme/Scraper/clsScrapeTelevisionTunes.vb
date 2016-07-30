@@ -31,9 +31,9 @@ Namespace TelevisionTunes
     Public Class Scraper
 
 #Region "Fields"
-        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Shared logger As Logger = LogManager.GetCurrentClassLogger()
         Private originaltitle As String
-        Private _themelist As New List(Of Themes)
+        Private _themelist As New List(Of MediaContainers.Theme)
 
 #End Region 'Fields
 
@@ -49,11 +49,11 @@ Namespace TelevisionTunes
 
 #Region "Properties"
 
-        Public Property ThemeList() As List(Of Themes)
+        Public Property ThemeList() As List(Of MediaContainers.Theme)
             Get
                 Return _themelist
             End Get
-            Set(ByVal value As List(Of Themes))
+            Set(ByVal value As List(Of MediaContainers.Theme))
                 _themelist = value
             End Set
         End Property
@@ -63,7 +63,7 @@ Namespace TelevisionTunes
 #Region "Methods"
 
         Private Sub Clear()
-            _themelist = New List(Of Themes)
+            _themelist = New List(Of MediaContainers.Theme)
         End Sub
 
         Private Sub GetThemes()
@@ -85,7 +85,6 @@ Namespace TelevisionTunes
                     Dim tID As String = String.Empty
                     Dim tWebURL As String = String.Empty
                     Dim tURL As String = String.Empty
-                    Dim tDescription As String = String.Empty
                     Dim tLength As String = String.Empty
                     Dim tBitrate As String = String.Empty
 
@@ -105,7 +104,7 @@ Namespace TelevisionTunes
                             tURL = GetDownloadURL(tWebURL)
 
                             If Not String.IsNullOrEmpty(tURL) Then
-                                _themelist.Add(New Themes With {.Title = tTitle, .URL = tURL, .Description = tDescription, .Duration = tLength, .Bitrate = tBitrate, .WebURL = tWebURL})
+                                _themelist.Add(New MediaContainers.Theme With {.URLAudioStream = tURL, .Description = tTitle, .Duration = tLength, .Bitrate = tBitrate, .URLWebsite = tWebURL, .Scraper = "TelevisionTunes"})
                             End If
                         Next
 

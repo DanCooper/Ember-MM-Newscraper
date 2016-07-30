@@ -18,17 +18,16 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.IO
 Imports EmberAPI
 Imports NLog
 
-Public Class TelevisionTunes_Theme
+Public Class ThemeLibrary_Theme
     Implements Interfaces.ScraperModule_Theme_Movie
     Implements Interfaces.ScraperModule_Theme_TV
 
 
 #Region "Fields"
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     Public Shared ConfigScrapeModifier_Movie As New Structures.ScrapeModifiers
     Public Shared ConfigScrapeModifier_TV As New Structures.ScrapeModifiers
@@ -40,7 +39,7 @@ Public Class TelevisionTunes_Theme
     ''' <remarks></remarks>
     Private _MySettings_Movie As New sMySettings
     Private _MySettings_TV As New sMySettings
-    Private _Name As String = "TelevisionTunes_Theme"
+    Private _Name As String = "ThemeLibrary_Theme"
     Private _ScraperEnabled_Movie As Boolean = False
     Private _ScraperEnabled_TV As Boolean = False
     Private _setup_Movie As frmSettingsHolder_Movie
@@ -110,12 +109,12 @@ Public Class TelevisionTunes_Theme
 
     Private Sub Handle_SetupScraperChanged_Movie(ByVal state As Boolean, ByVal difforder As Integer)
         ScraperEnabled_Movie = state
-        RaiseEvent SetupScraperChanged_Movie(String.Concat(Me._Name, "_Movie"), state, difforder)
+        RaiseEvent SetupScraperChanged_Movie(String.Concat(_Name, "_Movie"), state, difforder)
     End Sub
 
     Private Sub Handle_SetupScraperChanged_TV(ByVal state As Boolean, ByVal difforder As Integer)
         ScraperEnabled_TV = state
-        RaiseEvent SetupScraperChanged_TV(String.Concat(Me._Name, "_TV"), state, difforder)
+        RaiseEvent SetupScraperChanged_TV(String.Concat(_Name, "_TV"), state, difforder)
     End Sub
 
     Sub Init_Movie(ByVal sAssemblyName As String) Implements Interfaces.ScraperModule_Theme_Movie.Init
@@ -136,9 +135,9 @@ Public Class TelevisionTunes_Theme
 
         _setup_Movie.orderChanged()
 
-        SPanel.Name = String.Concat(Me._Name, "_Movie")
-        SPanel.Text = "TelevisionTunes"
-        SPanel.Prefix = "TelevisionTunesTVTheme_"
+        SPanel.Name = String.Concat(_Name, "_Movie")
+        SPanel.Text = "ThemeLibrary"
+        SPanel.Prefix = "ThemeLibraryMovieThemes_"
         SPanel.Order = 110
         SPanel.Parent = "pnlMovieTheme"
         SPanel.Type = Master.eLang.GetString(36, "Movies")
@@ -157,9 +156,9 @@ Public Class TelevisionTunes_Theme
 
         _setup_TV.orderChanged()
 
-        SPanel.Name = String.Concat(Me._Name, "_TV")
-        SPanel.Text = "TelevisionTunes"
-        SPanel.Prefix = "TelevisionTunesTVTheme_"
+        SPanel.Name = String.Concat(_Name, "_TV")
+        SPanel.Text = "ThemeLibrary"
+        SPanel.Prefix = "ThemeLibraryTVThemes_"
         SPanel.Order = 110
         SPanel.Parent = "pnlTVTheme"
         SPanel.Type = Master.eLang.GetString(653, "TV Shows")
@@ -209,36 +208,36 @@ Public Class TelevisionTunes_Theme
     End Sub
 
     Function Scraper_Movie(ByRef DBMovie As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef ThemeList As List(Of MediaContainers.Theme)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Theme_Movie.Scraper
-        logger.Trace("[TelevisionTunes_Theme] [Scraper_Movie] [Start]")
+        logger.Trace("[ThemeLibrary_Theme] [Scraper_Movie] [Start]")
 
-        Dim tTelevisionTunes As New TelevisionTunes.Scraper(DBMovie.Movie.OriginalTitle)
+        Dim tScraper As New ThemeLibrary.Scraper(DBMovie)
 
-        If tTelevisionTunes.ThemeList.Count > 0 Then
-            ThemeList = tTelevisionTunes.ThemeList
+        If tScraper.ThemeList.Count > 0 Then
+            ThemeList = tScraper.ThemeList
         End If
 
-        logger.Trace("[TelevisionTunes_Theme] [Scraper_Movie] [Done]")
+        logger.Trace("[ThemeLibrary_Theme] [Scraper_Movie] [Done]")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
     Function Scraper_TV(ByRef DBTV As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef ThemeList As List(Of MediaContainers.Theme)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Theme_TV.Scraper
-        logger.Trace("[TelevisionTunes_Theme] [Scraper_TV] [Start]")
+        logger.Trace("[ThemeLibrary_Theme] [Scraper_TV] [Start]")
 
-        Dim tTelevisionTunes As New TelevisionTunes.Scraper(DBTV.TVShow.Title)
+        Dim tScraper As New ThemeLibrary.Scraper(DBTV)
 
-        If tTelevisionTunes.ThemeList.Count > 0 Then
-            ThemeList = tTelevisionTunes.ThemeList
+        If tScraper.ThemeList.Count > 0 Then
+            ThemeList = tScraper.ThemeList
         End If
 
-        logger.Trace("[TelevisionTunes_Theme] [Scraper_TV] [Done]")
+        logger.Trace("[ThemeLibrary_Theme] [Scraper_TV] [Done]")
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Public Sub ScraperOrderChanged_Movie() Implements EmberAPI.Interfaces.ScraperModule_Theme_Movie.ScraperOrderChanged
+    Public Sub ScraperOrderChanged_Movie() Implements Interfaces.ScraperModule_Theme_Movie.ScraperOrderChanged
         _setup_Movie.orderChanged()
     End Sub
 
-    Public Sub ScraperOrderChanged_TV() Implements EmberAPI.Interfaces.ScraperModule_Theme_TV.ScraperOrderChanged
+    Public Sub ScraperOrderChanged_TV() Implements Interfaces.ScraperModule_Theme_TV.ScraperOrderChanged
         _setup_TV.orderChanged()
     End Sub
 
