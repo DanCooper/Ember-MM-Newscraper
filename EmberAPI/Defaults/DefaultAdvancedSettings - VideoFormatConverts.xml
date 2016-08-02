@@ -5,6 +5,8 @@
       <Item Name="avc">h264</Item>
       <Item Name="v_mpeg4/iso/avc">h264</Item>
       <Item Name="v_mpegh/iso/hevc">hevc</Item>
+      <Item Name="v_ms/vfw/fourcc / dx50">dx50</Item>
+      <Item Name="v_ms/vfw/fourcc / xvid">xvid</Item>
       <Item Name="v_vp7">vp7</Item>
       <Item Name="v_vp8">vp8</Item>
       <Item Name="v_vp9">vp9</Item>

@@ -91,11 +91,13 @@ Namespace YouTube
             If UrlUtils.IsYouTubeURL(strURL) Then
                 Dim raw_video_info As String = GetVideoDetails(UrlUtils.GetVideoID(strURL))
                 Dim rawAllData As Dictionary(Of String, String) = ToStringTable(raw_video_info).ToDictionary(Function(entry) entry(0), Function(entry) entry(1))
-                Try
+                If rawAllData.ContainsKey("title") Then
                     Return HttpUtility.UrlDecode(rawAllData("title"))
-                Catch ex As Exception
+                ElseIf rawAllData.ContainsKey("reason") Then
                     Return HttpUtility.UrlDecode(rawAllData("reason"))
-                End Try
+                Else
+                    Return "Error while parsing Title"
+                End If
             End If
             Return String.Empty
         End Function

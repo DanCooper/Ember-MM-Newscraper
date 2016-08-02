@@ -4026,6 +4026,9 @@ Public Class frmMain
                 Dim dlgChangeEp As New dlgTVChangeEp(tmpShow)
                 If dlgChangeEp.ShowDialog = DialogResult.OK Then
                     If dlgChangeEp.Result.Count > 0 Then
+                        If Master.eSettings.TVScraperMetaDataScan Then
+                            MediaInfo.UpdateTVMediaInfo(tmpEpisode)
+                        End If
                         Master.DB.Change_TVEpisode(tmpEpisode, dlgChangeEp.Result, False)
                     End If
                 End If
