@@ -706,6 +706,7 @@ Public Class Scanner
                 DBMovie.Language = DBMovie.Movie.Language
             Else
                 DBMovie.Language = DBMovie.Source.Language
+                DBMovie.Movie.Language = DBMovie.Source.Language
             End If
 
             'Do the Save
@@ -738,6 +739,11 @@ Public Class Scanner
             DBMovieSet.ListTitle = tTitle
         Else
             DBMovieSet.ListTitle = OldTitle
+        End If
+
+        'Language
+        If DBMovieSet.MovieSet.LanguageSpecified Then
+            DBMovieSet.Language = DBMovieSet.MovieSet.Language
         End If
 
         DBMovieSet = Master.DB.Save_MovieSet(DBMovieSet, Batchmode, False)
@@ -957,6 +963,7 @@ Public Class Scanner
                         DBTVShow.Language = DBTVShow.TVShow.Language
                     Else
                         DBTVShow.Language = DBTVShow.Source.Language
+                        DBTVShow.TVShow.Language = DBTVShow.Source.Language
                     End If
 
                     Master.DB.Save_TVShow(DBTVShow, Batchmode, False, False, False)

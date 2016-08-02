@@ -2309,8 +2309,10 @@ Public Class dlgEditMovie
 
         If Not String.IsNullOrEmpty(cbSourceLanguage.Text) Then
             tmpDBElement.Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = cbSourceLanguage.Text).Abbreviation
+            tmpDBElement.Movie.Language = tmpDBElement.Language
         Else
             tmpDBElement.Language = "en-US"
+            tmpDBElement.Movie.Language = tmpDBElement.Language
         End If
 
         tmpDBElement.IsMark = chkMark.Checked

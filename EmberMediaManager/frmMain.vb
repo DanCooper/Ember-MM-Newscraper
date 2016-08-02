@@ -10575,6 +10575,7 @@ Public Class frmMain
                         For Each sRow As DataGridViewRow In dgvMovieSets.SelectedRows
                             Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(Convert.ToInt64(sRow.Cells("idSet").Value))
                             tmpDBElement.Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = strLanguage).Abbreviation
+                            tmpDBElement.MovieSet.Language = tmpDBElement.Language
                             Master.DB.Save_MovieSet(tmpDBElement, True, True)
                             RefreshRow_MovieSet(tmpDBElement.ID)
                         Next

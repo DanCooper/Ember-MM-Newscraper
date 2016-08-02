@@ -2117,6 +2117,7 @@ Namespace MediaContainers
 
 #Region "Fields"
 
+        Private _language As String
         Private _oldtitle As String
         Private _plot As String
         Private _title As String
@@ -2189,6 +2190,23 @@ Namespace MediaContainers
         Public ReadOnly Property PlotSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(_plot)
+            End Get
+        End Property
+
+        <XmlElement("language")>
+        Public Property Language() As String
+            Get
+                Return _language
+            End Get
+            Set(ByVal value As String)
+                _language = value
+            End Set
+        End Property
+
+        <XmlIgnore()>
+        Public ReadOnly Property LanguageSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(_language)
             End Get
         End Property
         ''' <summary>

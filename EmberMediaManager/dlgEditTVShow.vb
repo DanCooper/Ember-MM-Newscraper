@@ -1883,8 +1883,10 @@ Public Class dlgEditTVShow
 
         If Not String.IsNullOrEmpty(cbSourceLanguage.Text) Then
             tmpDBElement.Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = cbSourceLanguage.Text).Abbreviation
+            tmpDBElement.TVShow.Language = tmpDBElement.Language
         Else
             tmpDBElement.Language = "en-US"
+            tmpDBElement.TVShow.Language = tmpDBElement.Language
         End If
 
         tmpDBElement.TVShow.Title = txtTitle.Text.Trim
