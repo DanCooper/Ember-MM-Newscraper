@@ -1025,7 +1025,7 @@ Public Class dlgEditTVEpisode
         lblTitle.Text = Master.eLang.GetString(246, "Title:")
         lblTopDetails.Text = Master.eLang.GetString(656, "Edit the details for the selected episode.")
         lblTopTitle.Text = Master.eLang.GetString(657, "Edit Episode")
-        lblVideoSource.Text = Master.eLang.GetString(824, "Video Source:")
+        lblVideoSource.Text = String.Concat(Master.eLang.GetString(824, "Video Source"), ":")
         lblVotes.Text = Master.eLang.GetString(244, "Votes:")
         tpFanart.Text = Master.eLang.GetString(149, "Fanart")
         tpPoster.Text = Master.eLang.GetString(148, "Poster")

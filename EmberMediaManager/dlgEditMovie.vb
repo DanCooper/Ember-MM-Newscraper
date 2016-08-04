@@ -2484,7 +2484,7 @@ Public Class dlgEditMovie
         lblCountries.Text = String.Concat(Master.eLang.GetString(237, "Countries"), ":")
         lblCredits.Text = Master.eLang.GetString(228, "Credits:")
         lblDirectors.Text = String.Concat(Master.eLang.GetString(940, "Directors"), ":")
-        lblVideoSource.Text = Master.eLang.GetString(824, "Video Source:")
+        lblVideoSource.Text = String.Concat(Master.eLang.GetString(824, "Video Source"), ":")
         lblGenre.Text = Master.eLang.GetString(51, "Genre(s):")
         lblLanguage.Text = Master.eLang.GetString(610, "Language")
         lblMPAA.Text = Master.eLang.GetString(235, "MPAA Rating:")

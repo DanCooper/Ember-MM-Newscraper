@@ -198,7 +198,6 @@ Partial Class frmMain
         Me.mnuGenresAdd = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuGenresSet = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuGenresRemove = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuShowEditGenres = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieEditTags = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuTags = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.mnuTagsTitleSelect = New System.Windows.Forms.ToolStripMenuItem()
@@ -211,6 +210,9 @@ Partial Class frmMain
         Me.mnuTagsSet = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuTagsRemove = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuShowEditTags = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuMovieEditDataField = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuDataField = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.mnuDataFieldVideosource = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieRescrapeSeparator = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuMovieScrape = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieScrapeSelected = New System.Windows.Forms.ToolStripMenuItem()
@@ -235,7 +237,7 @@ Partial Class frmMain
         Me.mnuScrapeModifierTrailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeTypeSkip = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeTypeAsk = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuScrapeSubmenuFilter = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeSubmenuMarked = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieScrapeSingleDataField = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeOption = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.mnuScrapeOptionActors = New System.Windows.Forms.ToolStripMenuItem()
@@ -264,7 +266,6 @@ Partial Class frmMain
         Me.mnuScrapeOptionTrailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeOptionWriters = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeOptionYear = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuEpisodeScrapeSingleDataField = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieChange = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieChangeAuto = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieLanguage = New System.Windows.Forms.ToolStripMenuItem()
@@ -318,6 +319,7 @@ Partial Class frmMain
         Me.cmnuShowLock = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuShowEditSeparator = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuShowEdit = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuShowEditGenres = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuShowScrapeSeparator = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuShowScrape = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuShowScrapeSelected = New System.Windows.Forms.ToolStripMenuItem()
@@ -376,9 +378,11 @@ Partial Class frmMain
         Me.cmnuEpisodeLock = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuEpisodeEditSeparator = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuEpisodeEdit = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuEpisodeEditDataField = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuEpisodeScrapeSeparator = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuEpisodeScrape = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuEpisodeScrapeSelected = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuEpisodeScrapeSingleDataField = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuEpisodeChange = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuEpisodeSep3 = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuEpisodeBrowseIMDB = New System.Windows.Forms.ToolStripMenuItem()
@@ -711,16 +715,16 @@ Partial Class frmMain
         Me.mnuScrapeSubmenuAll = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeSubmenuMissing = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeSubmenuNew = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuScrapeSubmenuMarked = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeSubmenuFilter = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeSubmenuCustom = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayScrapeMovies = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayScrapeTVShows = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeMovieSets = New System.Windows.Forms.ToolStripSplitButton()
         Me.mnuScrapeTVShows = New System.Windows.Forms.ToolStripSplitButton()
         Me.mnuUpdate = New System.Windows.Forms.ToolStripSplitButton()
         Me.mnuUpdateMovies = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuUpdateShows = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayScrapeMovies = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayScrapeMovieSets = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayScrapeTVShows = New System.Windows.Forms.ToolStripMenuItem()
         Me.ilColumnIcons = New System.Windows.Forms.ImageList(Me.components)
         Me.tmrWait_Movie = New System.Windows.Forms.Timer(Me.components)
         Me.tmrLoad_Movie = New System.Windows.Forms.Timer(Me.components)
@@ -821,6 +825,7 @@ Partial Class frmMain
         Me.cmnuMovie.SuspendLayout()
         Me.mnuGenres.SuspendLayout()
         Me.mnuTags.SuspendLayout()
+        Me.mnuDataField.SuspendLayout()
         Me.mnuScrapeType.SuspendLayout()
         Me.mnuScrapeModifier.SuspendLayout()
         Me.mnuScrapeOption.SuspendLayout()
@@ -1212,7 +1217,7 @@ Partial Class frmMain
         Me.mnuMainTools.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMainToolsCleanFiles, Me.mnuMainToolsSortFiles, Me.mnuMainToolsBackdrops, Me.mnuMainToolsSeparator0, Me.mnuMainToolsOfflineHolder, Me.mnuMainToolsSeparator1, Me.mnuMainToolsClearCache, Me.mnuMainToolsCleanDB, Me.ToolStripSeparator2, Me.mnuMainToolsReloadMovies, Me.mnuMainToolsReloadMovieSets, Me.mnuMainToolsReloadTVShows, Me.ToolStripSeparator3, Me.mnuMainToolsRewriteMovieContent, Me.mnuMainToolsSeparator2, Me.mnuMainToolsExport})
         Me.mnuMainTools.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.mnuMainTools.Name = "mnuMainTools"
-        Me.mnuMainTools.Size = New System.Drawing.Size(46, 20)
+        Me.mnuMainTools.Size = New System.Drawing.Size(45, 20)
         Me.mnuMainTools.Text = "&Tools"
         '
         'mnuMainToolsCleanFiles
@@ -1221,7 +1226,7 @@ Partial Class frmMain
         Me.mnuMainToolsCleanFiles.Name = "mnuMainToolsCleanFiles"
         Me.mnuMainToolsCleanFiles.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
             Or System.Windows.Forms.Keys.C), System.Windows.Forms.Keys)
-        Me.mnuMainToolsCleanFiles.Size = New System.Drawing.Size(352, 22)
+        Me.mnuMainToolsCleanFiles.Size = New System.Drawing.Size(351, 22)
         Me.mnuMainToolsCleanFiles.Text = "&Clean Files"
         '
         'mnuMainToolsSortFiles
@@ -1230,7 +1235,7 @@ Partial Class frmMain
         Me.mnuMainToolsSortFiles.Name = "mnuMainToolsSortFiles"
         Me.mnuMainToolsSortFiles.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
             Or System.Windows.Forms.Keys.S), System.Windows.Forms.Keys)
-        Me.mnuMainToolsSortFiles.Size = New System.Drawing.Size(352, 22)
+        Me.mnuMainToolsSortFiles.Size = New System.Drawing.Size(351, 22)
         Me.mnuMainToolsSortFiles.Text = "&Sort Files Into Folders"
         '
         'mnuMainToolsBackdrops
@@ -1239,13 +1244,13 @@ Partial Class frmMain
         Me.mnuMainToolsBackdrops.Name = "mnuMainToolsBackdrops"
         Me.mnuMainToolsBackdrops.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
             Or System.Windows.Forms.Keys.B), System.Windows.Forms.Keys)
-        Me.mnuMainToolsBackdrops.Size = New System.Drawing.Size(352, 22)
+        Me.mnuMainToolsBackdrops.Size = New System.Drawing.Size(351, 22)
         Me.mnuMainToolsBackdrops.Text = "Copy Existing Fanart To &Backdrops Folder"
         '
         'mnuMainToolsSeparator0
         '
         Me.mnuMainToolsSeparator0.Name = "mnuMainToolsSeparator0"
-        Me.mnuMainToolsSeparator0.Size = New System.Drawing.Size(349, 6)
+        Me.mnuMainToolsSeparator0.Size = New System.Drawing.Size(348, 6)
         '
         'mnuMainToolsOfflineHolder
         '
@@ -1254,14 +1259,14 @@ Partial Class frmMain
         Me.mnuMainToolsOfflineHolder.ShortcutKeyDisplayString = ""
         Me.mnuMainToolsOfflineHolder.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
             Or System.Windows.Forms.Keys.O), System.Windows.Forms.Keys)
-        Me.mnuMainToolsOfflineHolder.Size = New System.Drawing.Size(352, 22)
+        Me.mnuMainToolsOfflineHolder.Size = New System.Drawing.Size(351, 22)
         Me.mnuMainToolsOfflineHolder.Text = "&Offline Media Manager"
         Me.mnuMainToolsOfflineHolder.Visible = False
         '
         'mnuMainToolsSeparator1
         '
         Me.mnuMainToolsSeparator1.Name = "mnuMainToolsSeparator1"
-        Me.mnuMainToolsSeparator1.Size = New System.Drawing.Size(349, 6)
+        Me.mnuMainToolsSeparator1.Size = New System.Drawing.Size(348, 6)
         '
         'mnuMainToolsClearCache
         '
@@ -1269,7 +1274,7 @@ Partial Class frmMain
         Me.mnuMainToolsClearCache.Name = "mnuMainToolsClearCache"
         Me.mnuMainToolsClearCache.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
             Or System.Windows.Forms.Keys.A), System.Windows.Forms.Keys)
-        Me.mnuMainToolsClearCache.Size = New System.Drawing.Size(352, 22)
+        Me.mnuMainToolsClearCache.Size = New System.Drawing.Size(351, 22)
         Me.mnuMainToolsClearCache.Text = "Clear &All Caches"
         '
         'mnuMainToolsCleanDB
@@ -1278,13 +1283,13 @@ Partial Class frmMain
         Me.mnuMainToolsCleanDB.Name = "mnuMainToolsCleanDB"
         Me.mnuMainToolsCleanDB.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
             Or System.Windows.Forms.Keys.D), System.Windows.Forms.Keys)
-        Me.mnuMainToolsCleanDB.Size = New System.Drawing.Size(352, 22)
+        Me.mnuMainToolsCleanDB.Size = New System.Drawing.Size(351, 22)
         Me.mnuMainToolsCleanDB.Text = "Clean &Database"
         '
         'ToolStripSeparator2
         '
         Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
-        Me.ToolStripSeparator2.Size = New System.Drawing.Size(349, 6)
+        Me.ToolStripSeparator2.Size = New System.Drawing.Size(348, 6)
         '
         'mnuMainToolsReloadMovies
         '
@@ -1292,7 +1297,7 @@ Partial Class frmMain
         Me.mnuMainToolsReloadMovies.Name = "mnuMainToolsReloadMovies"
         Me.mnuMainToolsReloadMovies.ShortcutKeys = CType(((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Alt) _
             Or System.Windows.Forms.Keys.L), System.Windows.Forms.Keys)
-        Me.mnuMainToolsReloadMovies.Size = New System.Drawing.Size(352, 22)
+        Me.mnuMainToolsReloadMovies.Size = New System.Drawing.Size(351, 22)
         Me.mnuMainToolsReloadMovies.Tag = ""
         Me.mnuMainToolsReloadMovies.Text = "Re&load All Movies"
         '
@@ -1300,40 +1305,40 @@ Partial Class frmMain
         '
         Me.mnuMainToolsReloadMovieSets.Image = CType(resources.GetObject("mnuMainToolsReloadMovieSets.Image"), System.Drawing.Image)
         Me.mnuMainToolsReloadMovieSets.Name = "mnuMainToolsReloadMovieSets"
-        Me.mnuMainToolsReloadMovieSets.Size = New System.Drawing.Size(352, 22)
+        Me.mnuMainToolsReloadMovieSets.Size = New System.Drawing.Size(351, 22)
         Me.mnuMainToolsReloadMovieSets.Text = "Reload All MovieSets"
         '
         'mnuMainToolsReloadTVShows
         '
         Me.mnuMainToolsReloadTVShows.Image = CType(resources.GetObject("mnuMainToolsReloadTVShows.Image"), System.Drawing.Image)
         Me.mnuMainToolsReloadTVShows.Name = "mnuMainToolsReloadTVShows"
-        Me.mnuMainToolsReloadTVShows.Size = New System.Drawing.Size(352, 22)
+        Me.mnuMainToolsReloadTVShows.Size = New System.Drawing.Size(351, 22)
         Me.mnuMainToolsReloadTVShows.Tag = ""
         Me.mnuMainToolsReloadTVShows.Text = "Reload All TV Shows"
         '
         'ToolStripSeparator3
         '
         Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
-        Me.ToolStripSeparator3.Size = New System.Drawing.Size(349, 6)
+        Me.ToolStripSeparator3.Size = New System.Drawing.Size(348, 6)
         '
         'mnuMainToolsRewriteMovieContent
         '
         Me.mnuMainToolsRewriteMovieContent.Image = CType(resources.GetObject("mnuMainToolsRewriteMovieContent.Image"), System.Drawing.Image)
         Me.mnuMainToolsRewriteMovieContent.Name = "mnuMainToolsRewriteMovieContent"
-        Me.mnuMainToolsRewriteMovieContent.Size = New System.Drawing.Size(352, 22)
+        Me.mnuMainToolsRewriteMovieContent.Size = New System.Drawing.Size(351, 22)
         Me.mnuMainToolsRewriteMovieContent.Text = "Rewrite All Movie Content"
         '
         'mnuMainToolsSeparator2
         '
         Me.mnuMainToolsSeparator2.Name = "mnuMainToolsSeparator2"
-        Me.mnuMainToolsSeparator2.Size = New System.Drawing.Size(349, 6)
+        Me.mnuMainToolsSeparator2.Size = New System.Drawing.Size(348, 6)
         '
         'mnuMainToolsExport
         '
         Me.mnuMainToolsExport.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMainToolsExportMovies, Me.mnuMainToolsExportTvShows})
         Me.mnuMainToolsExport.Image = Global.Ember_Media_Manager.My.Resources.Resources.modules
         Me.mnuMainToolsExport.Name = "mnuMainToolsExport"
-        Me.mnuMainToolsExport.Size = New System.Drawing.Size(352, 22)
+        Me.mnuMainToolsExport.Size = New System.Drawing.Size(351, 22)
         Me.mnuMainToolsExport.Text = "Export"
         '
         'mnuMainToolsExportMovies
@@ -1370,7 +1375,7 @@ Partial Class frmMain
         '
         Me.mnuVersion.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
         Me.mnuVersion.Name = "mnuVersion"
-        Me.mnuVersion.Size = New System.Drawing.Size(83, 20)
+        Me.mnuVersion.Size = New System.Drawing.Size(82, 20)
         Me.mnuVersion.Text = "mnuVersion"
         '
         'scMain
@@ -1963,7 +1968,7 @@ Partial Class frmMain
         Me.chkMovieMissingTrailer.AutoSize = True
         Me.chkMovieMissingTrailer.Location = New System.Drawing.Point(3, 279)
         Me.chkMovieMissingTrailer.Name = "chkMovieMissingTrailer"
-        Me.chkMovieMissingTrailer.Size = New System.Drawing.Size(57, 17)
+        Me.chkMovieMissingTrailer.Size = New System.Drawing.Size(56, 17)
         Me.chkMovieMissingTrailer.TabIndex = 0
         Me.chkMovieMissingTrailer.Text = "Trailer"
         Me.chkMovieMissingTrailer.UseVisualStyleBackColor = True
@@ -2692,9 +2697,9 @@ Partial Class frmMain
         '
         'cmnuMovie
         '
-        Me.cmnuMovie.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieTitle, Me.cmnuMovieDatabaseSeparator, Me.cmnuMovieReload, Me.cmnuMovieMark, Me.cmnuMovieMarkAs, Me.cmnuMovieWatched, Me.cmnuMovieUnwatched, Me.cmnuMovieLock, Me.cmnuMovieEditSeparator, Me.cmnuMovieEdit, Me.cmnuMovieEditMetaData, Me.cmnuMovieEditGenres, Me.cmnuMovieEditTags, Me.cmnuMovieRescrapeSeparator, Me.cmnuMovieScrape, Me.cmnuMovieScrapeSelected, Me.cmnuMovieScrapeSingleDataField, Me.cmnuMovieChange, Me.cmnuMovieChangeAuto, Me.cmnuMovieLanguage, Me.cmnuMovieSep3, Me.cmnuMovieBrowseIMDB, Me.cmnuMovieBrowseTMDB, Me.cmnuMovieOpenFolder, Me.cmnuMovieRemoveSeparator, Me.cmnuMovieRemove})
+        Me.cmnuMovie.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuMovieTitle, Me.cmnuMovieDatabaseSeparator, Me.cmnuMovieReload, Me.cmnuMovieMark, Me.cmnuMovieMarkAs, Me.cmnuMovieWatched, Me.cmnuMovieUnwatched, Me.cmnuMovieLock, Me.cmnuMovieEditSeparator, Me.cmnuMovieEdit, Me.cmnuMovieEditMetaData, Me.cmnuMovieEditGenres, Me.cmnuMovieEditTags, Me.cmnuMovieEditDataField, Me.cmnuMovieRescrapeSeparator, Me.cmnuMovieScrape, Me.cmnuMovieScrapeSelected, Me.cmnuMovieScrapeSingleDataField, Me.cmnuMovieChange, Me.cmnuMovieChangeAuto, Me.cmnuMovieLanguage, Me.cmnuMovieSep3, Me.cmnuMovieBrowseIMDB, Me.cmnuMovieBrowseTMDB, Me.cmnuMovieOpenFolder, Me.cmnuMovieRemoveSeparator, Me.cmnuMovieRemove})
         Me.cmnuMovie.Name = "mnuMediaList"
-        Me.cmnuMovie.Size = New System.Drawing.Size(249, 496)
+        Me.cmnuMovie.Size = New System.Drawing.Size(249, 518)
         '
         'cmnuMovieTitle
         '
@@ -2820,7 +2825,7 @@ Partial Class frmMain
         '
         Me.mnuGenres.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuGenresTitleSelect, Me.mnuGenresGenre, Me.mnuGenresSep1, Me.mnuGenresTitleNew, Me.mnuGenresNew, Me.mnuGenresSep2, Me.mnuGenresAdd, Me.mnuGenresSet, Me.mnuGenresRemove})
         Me.mnuGenres.Name = "mnuGenres"
-        Me.mnuGenres.OwnerItem = Me.cmnuMovieEditGenres
+        Me.mnuGenres.OwnerItem = Me.cmnuShowEditGenres
         Me.mnuGenres.Size = New System.Drawing.Size(196, 178)
         '
         'mnuGenresTitleSelect
@@ -2877,15 +2882,6 @@ Partial Class frmMain
         Me.mnuGenresRemove.Name = "mnuGenresRemove"
         Me.mnuGenresRemove.Size = New System.Drawing.Size(195, 22)
         Me.mnuGenresRemove.Text = "Remove"
-        '
-        'cmnuShowEditGenres
-        '
-        Me.cmnuShowEditGenres.DropDown = Me.mnuGenres
-        Me.cmnuShowEditGenres.Image = Global.Ember_Media_Manager.My.Resources.Resources.heart
-        Me.cmnuShowEditGenres.Name = "cmnuShowEditGenres"
-        Me.cmnuShowEditGenres.Size = New System.Drawing.Size(248, 22)
-        Me.cmnuShowEditGenres.Tag = "tvshow"
-        Me.cmnuShowEditGenres.Text = "Edit Genres"
         '
         'cmnuMovieEditTags
         '
@@ -2968,6 +2964,27 @@ Partial Class frmMain
         Me.cmnuShowEditTags.Tag = "tvshow"
         Me.cmnuShowEditTags.Text = "Edit Tags"
         '
+        'cmnuMovieEditDataField
+        '
+        Me.cmnuMovieEditDataField.DropDown = Me.mnuDataField
+        Me.cmnuMovieEditDataField.Name = "cmnuMovieEditDataField"
+        Me.cmnuMovieEditDataField.Size = New System.Drawing.Size(248, 22)
+        Me.cmnuMovieEditDataField.Tag = "movie"
+        Me.cmnuMovieEditDataField.Text = "Edit Data Field"
+        '
+        'mnuDataField
+        '
+        Me.mnuDataField.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuDataFieldVideosource})
+        Me.mnuDataField.Name = "mnuScrapeOption"
+        Me.mnuDataField.Size = New System.Drawing.Size(153, 48)
+        '
+        'mnuDataFieldVideosource
+        '
+        Me.mnuDataFieldVideosource.Name = "mnuDataFieldVideosource"
+        Me.mnuDataFieldVideosource.Size = New System.Drawing.Size(152, 22)
+        Me.mnuDataFieldVideosource.Tag = "videosource"
+        Me.mnuDataFieldVideosource.Text = "Video Source"
+        '
         'cmnuMovieRescrapeSeparator
         '
         Me.cmnuMovieRescrapeSeparator.Name = "cmnuMovieRescrapeSeparator"
@@ -2994,7 +3011,7 @@ Partial Class frmMain
         '
         Me.mnuScrapeType.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuScrapeTypeAuto, Me.mnuScrapeTypeAsk, Me.mnuScrapeTypeSkip})
         Me.mnuScrapeType.Name = "mnuScrapeType"
-        Me.mnuScrapeType.OwnerItem = Me.mnuScrapeSubmenuMarked
+        Me.mnuScrapeType.OwnerItem = Me.mnuScrapeSubmenuFilter
         Me.mnuScrapeType.Size = New System.Drawing.Size(272, 70)
         '
         'mnuScrapeTypeAuto
@@ -3155,13 +3172,13 @@ Partial Class frmMain
         Me.mnuScrapeTypeAsk.Tag = "ask"
         Me.mnuScrapeTypeAsk.Text = "Ask (Require Input If No Exact Match)"
         '
-        'mnuScrapeSubmenuFilter
+        'mnuScrapeSubmenuMarked
         '
-        Me.mnuScrapeSubmenuFilter.DropDown = Me.mnuScrapeType
-        Me.mnuScrapeSubmenuFilter.Name = "mnuScrapeSubmenuFilter"
-        Me.mnuScrapeSubmenuFilter.Size = New System.Drawing.Size(167, 22)
-        Me.mnuScrapeSubmenuFilter.Tag = "filter"
-        Me.mnuScrapeSubmenuFilter.Text = "Current Filter"
+        Me.mnuScrapeSubmenuMarked.DropDown = Me.mnuScrapeType
+        Me.mnuScrapeSubmenuMarked.Name = "mnuScrapeSubmenuMarked"
+        Me.mnuScrapeSubmenuMarked.Size = New System.Drawing.Size(167, 22)
+        Me.mnuScrapeSubmenuMarked.Tag = "marked"
+        Me.mnuScrapeSubmenuMarked.Text = "Marked"
         '
         'cmnuMovieScrapeSingleDataField
         '
@@ -3175,7 +3192,7 @@ Partial Class frmMain
         '
         Me.mnuScrapeOption.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuScrapeOptionActors, Me.mnuScrapeOptionAired, Me.mnuScrapeOptionCertifications, Me.mnuScrapeOptionCollectionID, Me.mnuScrapeOptionCreators, Me.mnuScrapeOptionCountries, Me.mnuScrapeOptionDirectors, Me.mnuScrapeOptionEpiGuideURL, Me.mnuScrapeOptionGenres, Me.mnuScrapeOptionGuestStars, Me.mnuScrapeOptionMPAA, Me.mnuScrapeOptionOriginalTitle, Me.mnuScrapeOptionPlot, Me.mnuScrapeOptionOutline, Me.mnuScrapeOptionPremiered, Me.mnuScrapeOptionRating, Me.mnuScrapeOptionReleaseDate, Me.mnuScrapeOptionRuntime, Me.mnuScrapeOptionStatus, Me.mnuScrapeOptionStudios, Me.mnuScrapeOptionTagline, Me.mnuScrapeOptionTitle, Me.mnuScrapeOptionTop250, Me.mnuScrapeOptionTrailer, Me.mnuScrapeOptionWriters, Me.mnuScrapeOptionYear})
         Me.mnuScrapeOption.Name = "mnuScrapeOption"
-        Me.mnuScrapeOption.OwnerItem = Me.cmnuSeasonScrapeSingleDataField
+        Me.mnuScrapeOption.OwnerItem = Me.cmnuEpisodeScrapeSingleDataField
         Me.mnuScrapeOption.Size = New System.Drawing.Size(174, 576)
         '
         'mnuScrapeOptionActors
@@ -3359,14 +3376,6 @@ Partial Class frmMain
         Me.mnuScrapeOptionYear.Size = New System.Drawing.Size(173, 22)
         Me.mnuScrapeOptionYear.Tag = "year"
         Me.mnuScrapeOptionYear.Text = "Year"
-        '
-        'cmnuEpisodeScrapeSingleDataField
-        '
-        Me.cmnuEpisodeScrapeSingleDataField.DropDown = Me.mnuScrapeOption
-        Me.cmnuEpisodeScrapeSingleDataField.Name = "cmnuEpisodeScrapeSingleDataField"
-        Me.cmnuEpisodeScrapeSingleDataField.Size = New System.Drawing.Size(248, 22)
-        Me.cmnuEpisodeScrapeSingleDataField.Tag = "tvepisode"
-        Me.cmnuEpisodeScrapeSingleDataField.Text = "(Re)Scrape Single Data Field"
         '
         'cmnuMovieChange
         '
@@ -3798,6 +3807,15 @@ Partial Class frmMain
         Me.cmnuShowEdit.Size = New System.Drawing.Size(248, 22)
         Me.cmnuShowEdit.Text = "Edit Show"
         '
+        'cmnuShowEditGenres
+        '
+        Me.cmnuShowEditGenres.DropDown = Me.mnuGenres
+        Me.cmnuShowEditGenres.Image = Global.Ember_Media_Manager.My.Resources.Resources.heart
+        Me.cmnuShowEditGenres.Name = "cmnuShowEditGenres"
+        Me.cmnuShowEditGenres.Size = New System.Drawing.Size(248, 22)
+        Me.cmnuShowEditGenres.Tag = "tvshow"
+        Me.cmnuShowEditGenres.Text = "Edit Genres"
+        '
         'cmnuShowScrapeSeparator
         '
         Me.cmnuShowScrapeSeparator.Name = "cmnuShowScrapeSeparator"
@@ -4196,9 +4214,9 @@ Partial Class frmMain
         '
         'cmnuEpisode
         '
-        Me.cmnuEpisode.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuEpisodeTitle, Me.cmnuEpisodeDatabaseSeparator, Me.cmnuEpisodeReload, Me.cmnuEpisodeMark, Me.cmnuEpisodeWatched, Me.cmnuEpisodeUnwatched, Me.cmnuEpisodeLock, Me.cmnuEpisodeEditSeparator, Me.cmnuEpisodeEdit, Me.cmnuEpisodeScrapeSeparator, Me.cmnuEpisodeScrape, Me.cmnuEpisodeScrapeSelected, Me.cmnuEpisodeScrapeSingleDataField, Me.cmnuEpisodeChange, Me.cmnuEpisodeSep3, Me.cmnuEpisodeBrowseIMDB, Me.cmnuEpisodeBrowseTMDB, Me.cmnuEpisodeBrowseTVDB, Me.cmnuEpisodeOpenFolder, Me.cmnuEpisodeRemoveSeparator, Me.cmnuEpisodeRemove})
+        Me.cmnuEpisode.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.cmnuEpisodeTitle, Me.cmnuEpisodeDatabaseSeparator, Me.cmnuEpisodeReload, Me.cmnuEpisodeMark, Me.cmnuEpisodeWatched, Me.cmnuEpisodeUnwatched, Me.cmnuEpisodeLock, Me.cmnuEpisodeEditSeparator, Me.cmnuEpisodeEdit, Me.cmnuEpisodeEditDataField, Me.cmnuEpisodeScrapeSeparator, Me.cmnuEpisodeScrape, Me.cmnuEpisodeScrapeSelected, Me.cmnuEpisodeScrapeSingleDataField, Me.cmnuEpisodeChange, Me.cmnuEpisodeSep3, Me.cmnuEpisodeBrowseIMDB, Me.cmnuEpisodeBrowseTMDB, Me.cmnuEpisodeBrowseTVDB, Me.cmnuEpisodeOpenFolder, Me.cmnuEpisodeRemoveSeparator, Me.cmnuEpisodeRemove})
         Me.cmnuEpisode.Name = "mnuEpisodes"
-        Me.cmnuEpisode.Size = New System.Drawing.Size(249, 386)
+        Me.cmnuEpisode.Size = New System.Drawing.Size(249, 408)
         '
         'cmnuEpisodeTitle
         '
@@ -4267,6 +4285,14 @@ Partial Class frmMain
         Me.cmnuEpisodeEdit.Size = New System.Drawing.Size(248, 22)
         Me.cmnuEpisodeEdit.Text = "Edit Episode"
         '
+        'cmnuEpisodeEditDataField
+        '
+        Me.cmnuEpisodeEditDataField.DropDown = Me.mnuDataField
+        Me.cmnuEpisodeEditDataField.Name = "cmnuEpisodeEditDataField"
+        Me.cmnuEpisodeEditDataField.Size = New System.Drawing.Size(248, 22)
+        Me.cmnuEpisodeEditDataField.Tag = "tvepisode"
+        Me.cmnuEpisodeEditDataField.Text = "Edit Data Field"
+        '
         'cmnuEpisodeScrapeSeparator
         '
         Me.cmnuEpisodeScrapeSeparator.Name = "cmnuEpisodeScrapeSeparator"
@@ -4288,6 +4314,14 @@ Partial Class frmMain
         Me.cmnuEpisodeScrapeSelected.Size = New System.Drawing.Size(248, 22)
         Me.cmnuEpisodeScrapeSelected.Tag = "tvepisode"
         Me.cmnuEpisodeScrapeSelected.Text = "(Re)Scrape Selected Episodes"
+        '
+        'cmnuEpisodeScrapeSingleDataField
+        '
+        Me.cmnuEpisodeScrapeSingleDataField.DropDown = Me.mnuScrapeOption
+        Me.cmnuEpisodeScrapeSingleDataField.Name = "cmnuEpisodeScrapeSingleDataField"
+        Me.cmnuEpisodeScrapeSingleDataField.Size = New System.Drawing.Size(248, 22)
+        Me.cmnuEpisodeScrapeSingleDataField.Tag = "tvepisode"
+        Me.cmnuEpisodeScrapeSingleDataField.Text = "(Re)Scrape Single Data Field"
         '
         'cmnuEpisodeChange
         '
@@ -4641,7 +4675,7 @@ Partial Class frmMain
         Me.gbFilterGeneral_Movies.Location = New System.Drawing.Point(3, 57)
         Me.gbFilterGeneral_Movies.Name = "gbFilterGeneral_Movies"
         Me.tblFilter_Movies.SetRowSpan(Me.gbFilterGeneral_Movies, 2)
-        Me.gbFilterGeneral_Movies.Size = New System.Drawing.Size(124, 90)
+        Me.gbFilterGeneral_Movies.Size = New System.Drawing.Size(123, 90)
         Me.gbFilterGeneral_Movies.TabIndex = 3
         Me.gbFilterGeneral_Movies.TabStop = False
         Me.gbFilterGeneral_Movies.Text = "General"
@@ -4665,7 +4699,7 @@ Partial Class frmMain
         Me.tblFilterGeneral_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFilterGeneral_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFilterGeneral_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblFilterGeneral_Movies.Size = New System.Drawing.Size(118, 69)
+        Me.tblFilterGeneral_Movies.Size = New System.Drawing.Size(117, 69)
         Me.tblFilterGeneral_Movies.TabIndex = 40
         '
         'chkFilterTolerance_Movies
@@ -4675,7 +4709,7 @@ Partial Class frmMain
         Me.chkFilterTolerance_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.chkFilterTolerance_Movies.Location = New System.Drawing.Point(3, 49)
         Me.chkFilterTolerance_Movies.Name = "chkFilterTolerance_Movies"
-        Me.chkFilterTolerance_Movies.Size = New System.Drawing.Size(112, 17)
+        Me.chkFilterTolerance_Movies.Size = New System.Drawing.Size(111, 17)
         Me.chkFilterTolerance_Movies.TabIndex = 2
         Me.chkFilterTolerance_Movies.Text = "Out of Tolerance"
         Me.chkFilterTolerance_Movies.UseVisualStyleBackColor = True
@@ -4712,7 +4746,7 @@ Partial Class frmMain
         Me.btnFilterMissing_Movies.Location = New System.Drawing.Point(21, 0)
         Me.btnFilterMissing_Movies.Margin = New System.Windows.Forms.Padding(0)
         Me.btnFilterMissing_Movies.Name = "btnFilterMissing_Movies"
-        Me.btnFilterMissing_Movies.Size = New System.Drawing.Size(97, 23)
+        Me.btnFilterMissing_Movies.Size = New System.Drawing.Size(96, 23)
         Me.btnFilterMissing_Movies.TabIndex = 3
         Me.btnFilterMissing_Movies.Text = "Missing Items"
         Me.btnFilterMissing_Movies.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -4726,7 +4760,7 @@ Partial Class frmMain
         Me.gbFilterSorting_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbFilterSorting_Movies.Location = New System.Drawing.Point(3, 153)
         Me.gbFilterSorting_Movies.Name = "gbFilterSorting_Movies"
-        Me.gbFilterSorting_Movies.Size = New System.Drawing.Size(124, 136)
+        Me.gbFilterSorting_Movies.Size = New System.Drawing.Size(123, 136)
         Me.gbFilterSorting_Movies.TabIndex = 4
         Me.gbFilterSorting_Movies.TabStop = False
         Me.gbFilterSorting_Movies.Text = "Extra Sorting"
@@ -4752,7 +4786,7 @@ Partial Class frmMain
         Me.tblFilterSorting_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFilterSorting_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFilterSorting_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblFilterSorting_Movies.Size = New System.Drawing.Size(118, 115)
+        Me.tblFilterSorting_Movies.Size = New System.Drawing.Size(117, 115)
         Me.tblFilterSorting_Movies.TabIndex = 8
         '
         'btnFilterSortYear_Movies
@@ -4765,7 +4799,7 @@ Partial Class frmMain
         Me.btnFilterSortYear_Movies.Location = New System.Drawing.Point(0, 92)
         Me.btnFilterSortYear_Movies.Margin = New System.Windows.Forms.Padding(0)
         Me.btnFilterSortYear_Movies.Name = "btnFilterSortYear_Movies"
-        Me.btnFilterSortYear_Movies.Size = New System.Drawing.Size(118, 23)
+        Me.btnFilterSortYear_Movies.Size = New System.Drawing.Size(117, 23)
         Me.btnFilterSortYear_Movies.TabIndex = 3
         Me.btnFilterSortYear_Movies.Text = "Year"
         Me.btnFilterSortYear_Movies.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -4781,7 +4815,7 @@ Partial Class frmMain
         Me.btnFilterSortRating_Movies.Location = New System.Drawing.Point(0, 69)
         Me.btnFilterSortRating_Movies.Margin = New System.Windows.Forms.Padding(0)
         Me.btnFilterSortRating_Movies.Name = "btnFilterSortRating_Movies"
-        Me.btnFilterSortRating_Movies.Size = New System.Drawing.Size(118, 23)
+        Me.btnFilterSortRating_Movies.Size = New System.Drawing.Size(117, 23)
         Me.btnFilterSortRating_Movies.TabIndex = 2
         Me.btnFilterSortRating_Movies.Text = "Rating"
         Me.btnFilterSortRating_Movies.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -4797,7 +4831,7 @@ Partial Class frmMain
         Me.btnFilterSortDateAdded_Movies.Location = New System.Drawing.Point(0, 0)
         Me.btnFilterSortDateAdded_Movies.Margin = New System.Windows.Forms.Padding(0)
         Me.btnFilterSortDateAdded_Movies.Name = "btnFilterSortDateAdded_Movies"
-        Me.btnFilterSortDateAdded_Movies.Size = New System.Drawing.Size(118, 23)
+        Me.btnFilterSortDateAdded_Movies.Size = New System.Drawing.Size(117, 23)
         Me.btnFilterSortDateAdded_Movies.TabIndex = 0
         Me.btnFilterSortDateAdded_Movies.Text = "Date Added"
         Me.btnFilterSortDateAdded_Movies.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -4813,7 +4847,7 @@ Partial Class frmMain
         Me.btnFilterSortTitle_Movies.Location = New System.Drawing.Point(0, 46)
         Me.btnFilterSortTitle_Movies.Margin = New System.Windows.Forms.Padding(0)
         Me.btnFilterSortTitle_Movies.Name = "btnFilterSortTitle_Movies"
-        Me.btnFilterSortTitle_Movies.Size = New System.Drawing.Size(118, 23)
+        Me.btnFilterSortTitle_Movies.Size = New System.Drawing.Size(117, 23)
         Me.btnFilterSortTitle_Movies.TabIndex = 1
         Me.btnFilterSortTitle_Movies.Text = "Sort Title"
         Me.btnFilterSortTitle_Movies.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -4829,7 +4863,7 @@ Partial Class frmMain
         Me.btnFilterSortDateModified_Movies.Location = New System.Drawing.Point(0, 23)
         Me.btnFilterSortDateModified_Movies.Margin = New System.Windows.Forms.Padding(0)
         Me.btnFilterSortDateModified_Movies.Name = "btnFilterSortDateModified_Movies"
-        Me.btnFilterSortDateModified_Movies.Size = New System.Drawing.Size(118, 23)
+        Me.btnFilterSortDateModified_Movies.Size = New System.Drawing.Size(117, 23)
         Me.btnFilterSortDateModified_Movies.TabIndex = 1
         Me.btnFilterSortDateModified_Movies.Text = "Date Modified"
         Me.btnFilterSortDateModified_Movies.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -4841,7 +4875,7 @@ Partial Class frmMain
         Me.btnClearFilters_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnClearFilters_Movies.Image = CType(resources.GetObject("btnClearFilters_Movies.Image"), System.Drawing.Image)
         Me.btnClearFilters_Movies.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnClearFilters_Movies.Location = New System.Drawing.Point(19, 295)
+        Me.btnClearFilters_Movies.Location = New System.Drawing.Point(18, 295)
         Me.btnClearFilters_Movies.Margin = New System.Windows.Forms.Padding(3, 3, 3, 10)
         Me.btnClearFilters_Movies.Name = "btnClearFilters_Movies"
         Me.btnClearFilters_Movies.Size = New System.Drawing.Size(92, 20)
@@ -4856,10 +4890,10 @@ Partial Class frmMain
         Me.gbFilterSpecific_Movies.Controls.Add(Me.tblFilterSpecific_Movies)
         Me.gbFilterSpecific_Movies.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbFilterSpecific_Movies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbFilterSpecific_Movies.Location = New System.Drawing.Point(133, 57)
+        Me.gbFilterSpecific_Movies.Location = New System.Drawing.Point(132, 57)
         Me.gbFilterSpecific_Movies.Name = "gbFilterSpecific_Movies"
         Me.tblFilter_Movies.SetRowSpan(Me.gbFilterSpecific_Movies, 4)
-        Me.gbFilterSpecific_Movies.Size = New System.Drawing.Size(405, 265)
+        Me.gbFilterSpecific_Movies.Size = New System.Drawing.Size(406, 265)
         Me.gbFilterSpecific_Movies.TabIndex = 6
         Me.gbFilterSpecific_Movies.TabStop = False
         Me.gbFilterSpecific_Movies.Text = "Specific"
@@ -4894,7 +4928,7 @@ Partial Class frmMain
         Me.tblFilterSpecific_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFilterSpecific_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFilterSpecific_Movies.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblFilterSpecific_Movies.Size = New System.Drawing.Size(399, 244)
+        Me.tblFilterSpecific_Movies.Size = New System.Drawing.Size(400, 244)
         Me.tblFilterSpecific_Movies.TabIndex = 40
         '
         'gbFilterModifier_Movies
@@ -5153,7 +5187,7 @@ Partial Class frmMain
         Me.lblFilterYear_Movies.Location = New System.Drawing.Point(3, 103)
         Me.lblFilterYear_Movies.Name = "lblFilterYear_Movies"
         Me.tblFilterSpecificData_Movies.SetRowSpan(Me.lblFilterYear_Movies, 2)
-        Me.lblFilterYear_Movies.Size = New System.Drawing.Size(31, 13)
+        Me.lblFilterYear_Movies.Size = New System.Drawing.Size(30, 13)
         Me.lblFilterYear_Movies.TabIndex = 5
         Me.lblFilterYear_Movies.Text = "Year:"
         '
@@ -8569,7 +8603,7 @@ Partial Class frmMain
         '
         Me.mnuScrapeSubmenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuScrapeSubmenuAll, Me.mnuScrapeSubmenuMissing, Me.mnuScrapeSubmenuNew, Me.mnuScrapeSubmenuMarked, Me.mnuScrapeSubmenuFilter, Me.mnuScrapeSubmenuCustom})
         Me.mnuScrapeSubmenu.Name = "mnuScrapeSubmenu"
-        Me.mnuScrapeSubmenu.OwnerItem = Me.cmnuTrayScrapeTVShows
+        Me.mnuScrapeSubmenu.OwnerItem = Me.cmnuTrayScrapeMovieSets
         Me.mnuScrapeSubmenu.Size = New System.Drawing.Size(168, 136)
         '
         'mnuScrapeSubmenuAll
@@ -8596,13 +8630,13 @@ Partial Class frmMain
         Me.mnuScrapeSubmenuNew.Tag = "new"
         Me.mnuScrapeSubmenuNew.Text = "New"
         '
-        'mnuScrapeSubmenuMarked
+        'mnuScrapeSubmenuFilter
         '
-        Me.mnuScrapeSubmenuMarked.DropDown = Me.mnuScrapeType
-        Me.mnuScrapeSubmenuMarked.Name = "mnuScrapeSubmenuMarked"
-        Me.mnuScrapeSubmenuMarked.Size = New System.Drawing.Size(167, 22)
-        Me.mnuScrapeSubmenuMarked.Tag = "marked"
-        Me.mnuScrapeSubmenuMarked.Text = "Marked"
+        Me.mnuScrapeSubmenuFilter.DropDown = Me.mnuScrapeType
+        Me.mnuScrapeSubmenuFilter.Name = "mnuScrapeSubmenuFilter"
+        Me.mnuScrapeSubmenuFilter.Size = New System.Drawing.Size(167, 22)
+        Me.mnuScrapeSubmenuFilter.Tag = "filter"
+        Me.mnuScrapeSubmenuFilter.Text = "Current Filter"
         '
         'mnuScrapeSubmenuCustom
         '
@@ -8611,14 +8645,14 @@ Partial Class frmMain
         Me.mnuScrapeSubmenuCustom.Tag = "custom"
         Me.mnuScrapeSubmenuCustom.Text = "Custom Scraper..."
         '
-        'cmnuTrayScrapeMovies
+        'cmnuTrayScrapeTVShows
         '
-        Me.cmnuTrayScrapeMovies.DropDown = Me.mnuScrapeSubmenu
-        Me.cmnuTrayScrapeMovies.Image = CType(resources.GetObject("cmnuTrayScrapeMovies.Image"), System.Drawing.Image)
-        Me.cmnuTrayScrapeMovies.Name = "cmnuTrayScrapeMovies"
-        Me.cmnuTrayScrapeMovies.Size = New System.Drawing.Size(194, 22)
-        Me.cmnuTrayScrapeMovies.Tag = "movie"
-        Me.cmnuTrayScrapeMovies.Text = "Scrape Movies"
+        Me.cmnuTrayScrapeTVShows.DropDown = Me.mnuScrapeSubmenu
+        Me.cmnuTrayScrapeTVShows.Image = CType(resources.GetObject("cmnuTrayScrapeTVShows.Image"), System.Drawing.Image)
+        Me.cmnuTrayScrapeTVShows.Name = "cmnuTrayScrapeTVShows"
+        Me.cmnuTrayScrapeTVShows.Size = New System.Drawing.Size(194, 22)
+        Me.cmnuTrayScrapeTVShows.Tag = "tvshow"
+        Me.cmnuTrayScrapeTVShows.Text = "Scrape TV Shows"
         '
         'mnuScrapeMovieSets
         '
@@ -8666,6 +8700,15 @@ Partial Class frmMain
         Me.mnuUpdateShows.Size = New System.Drawing.Size(123, 22)
         Me.mnuUpdateShows.Text = "TV Shows"
         '
+        'cmnuTrayScrapeMovies
+        '
+        Me.cmnuTrayScrapeMovies.DropDown = Me.mnuScrapeSubmenu
+        Me.cmnuTrayScrapeMovies.Image = CType(resources.GetObject("cmnuTrayScrapeMovies.Image"), System.Drawing.Image)
+        Me.cmnuTrayScrapeMovies.Name = "cmnuTrayScrapeMovies"
+        Me.cmnuTrayScrapeMovies.Size = New System.Drawing.Size(194, 22)
+        Me.cmnuTrayScrapeMovies.Tag = "movie"
+        Me.cmnuTrayScrapeMovies.Text = "Scrape Movies"
+        '
         'cmnuTrayScrapeMovieSets
         '
         Me.cmnuTrayScrapeMovieSets.DropDown = Me.mnuScrapeSubmenu
@@ -8674,15 +8717,6 @@ Partial Class frmMain
         Me.cmnuTrayScrapeMovieSets.Size = New System.Drawing.Size(194, 22)
         Me.cmnuTrayScrapeMovieSets.Tag = "movieset"
         Me.cmnuTrayScrapeMovieSets.Text = "Scrape MovieSets"
-        '
-        'cmnuTrayScrapeTVShows
-        '
-        Me.cmnuTrayScrapeTVShows.DropDown = Me.mnuScrapeSubmenu
-        Me.cmnuTrayScrapeTVShows.Image = CType(resources.GetObject("cmnuTrayScrapeTVShows.Image"), System.Drawing.Image)
-        Me.cmnuTrayScrapeTVShows.Name = "cmnuTrayScrapeTVShows"
-        Me.cmnuTrayScrapeTVShows.Size = New System.Drawing.Size(194, 22)
-        Me.cmnuTrayScrapeTVShows.Tag = "tvshow"
-        Me.cmnuTrayScrapeTVShows.Text = "Scrape TV Shows"
         '
         'ilColumnIcons
         '
@@ -9100,6 +9134,7 @@ Partial Class frmMain
         Me.mnuGenres.PerformLayout()
         Me.mnuTags.ResumeLayout(False)
         Me.mnuTags.PerformLayout()
+        Me.mnuDataField.ResumeLayout(False)
         Me.mnuScrapeType.ResumeLayout(False)
         Me.mnuScrapeModifier.ResumeLayout(False)
         Me.mnuScrapeOption.ResumeLayout(False)
@@ -10150,4 +10185,8 @@ End Sub
     Friend WithEvents btnTrailerPlay As Button
     Friend WithEvents txtTrailerPath As TextBox
     Friend WithEvents lblTrailerPathHeader As Label
+    Friend WithEvents mnuDataFieldVideosource As ToolStripMenuItem
+    Friend WithEvents mnuDataField As ContextMenuStrip
+    Friend WithEvents cmnuMovieEditDataField As ToolStripMenuItem
+    Friend WithEvents cmnuEpisodeEditDataField As ToolStripMenuItem
 End Class

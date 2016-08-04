@@ -6959,9 +6959,9 @@ Public Class frmMain
 
                         ShowEpisodeMenuItems(True)
 
-                        cmnuEpisodeEditSeparator.Visible = False
+                        cmnuEpisodeEditSeparator.Visible = True
                         cmnuEpisodeEdit.Visible = False
-                        cmnuEpisodeScrapeSeparator.Visible = False
+                        cmnuEpisodeScrapeSeparator.Visible = True
                         cmnuEpisodeScrape.Visible = False
                         cmnuEpisodeChange.Visible = False
                         cmnuEpisodeSep3.Visible = False
@@ -10511,6 +10511,37 @@ Public Class frmMain
         End If
     End Sub
 
+    Private Sub mnuDataFieldVideosource_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuDataFieldVideosource.Click
+        Dim strVideosource As String = String.Empty
+
+        Using dEditDataField As New dlgEditDataField
+            If dEditDataField.ShowDialog(Master.eLang.GetString(824, "Video Source")) = DialogResult.OK Then
+                strVideosource = dEditDataField.Result
+                Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                    Select Case _SelectedContentType
+                        Case "movie"
+                            For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
+                                Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value))
+                                tmpDBElement.VideoSource = strVideosource
+                                tmpDBElement.Movie.VideoSource = strVideosource
+                                Master.DB.Save_Movie(tmpDBElement, True, True, False, False)
+                                RefreshRow_Movie(tmpDBElement.ID)
+                            Next
+                        Case "tvepisode"
+                            For Each sRow As DataGridViewRow In dgvTVEpisodes.SelectedRows
+                                Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVEpisode(Convert.ToInt64(sRow.Cells("idEpisode").Value), True)
+                                tmpDBElement.VideoSource = strVideosource
+                                tmpDBElement.TVEpisode.VideoSource = strVideosource
+                                Master.DB.Save_TVEpisode(tmpDBElement, True, True, False, False, True)
+                                RefreshRow_TVEpisode(tmpDBElement.ID)
+                            Next
+                    End Select
+                    SQLtransaction.Commit()
+                End Using
+            End If
+        End Using
+    End Sub
+
     Private Sub mnuGenresSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuGenresSet.Click
         Dim strGenre As String = String.Empty
         If Not String.IsNullOrEmpty(mnuGenresNew.Text) Then
@@ -10934,7 +10965,7 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub mnuContextMenuStrip_Opened(sender As Object, e As EventArgs) Handles mnuGenres.Opened, mnuLanguages.Opened, mnuTags.Opened, mnuScrapeSubmenu.Opened
+    Private Sub mnuContextMenuStrip_Opened(sender As Object, e As EventArgs) Handles mnuGenres.Opened, mnuLanguages.Opened, mnuTags.Opened, mnuScrapeSubmenu.Opened, mnuDataField.Opened
         Dim tContextMenuStrip As ContextMenuStrip = CType(sender, ContextMenuStrip)
         If tContextMenuStrip IsNot Nothing AndAlso tContextMenuStrip.OwnerItem IsNot Nothing AndAlso tContextMenuStrip.OwnerItem.Tag IsNot Nothing Then
             _SelectedContentType = tContextMenuStrip.OwnerItem.Tag.ToString
@@ -16162,6 +16193,11 @@ Public Class frmMain
                 Dim strDiscArtOnly As String = Master.eLang.GetString(1124, "DiscArt Only")
                 .mnuScrapeModifierDiscArt.Text = strDiscArtOnly
 
+                'Edit Data Field
+                Dim strEditDataField As String = Master.eLang.GetString(1087, "Edit Data Field")
+                cmnuMovieEditDataField.Text = strEditDataField
+                cmnuEpisodeEditDataField.Text = strEditDataField
+
                 'Edit Genres
                 Dim strEditGenres As String = Master.eLang.GetString(1051, "Edit Genres")
                 .cmnuMovieEditGenres.Text = strEditGenres
@@ -16272,6 +16308,14 @@ Public Class frmMain
                 Dim strSelectTag As String = Master.eLang.GetString(1021, "Select Tag")
                 .mnuTagsTitleSelect.Text = String.Concat(">> ", strSelectTag, " <<")
 
+                'Theme Only
+                Dim strThemeOnly As String = Master.eLang.GetString(1125, "Theme Only")
+                .mnuScrapeModifierTheme.Text = strThemeOnly
+
+                'Trailer Only
+                Dim strTrailerOnly As String = Master.eLang.GetString(75, "Trailer Only")
+                .mnuScrapeModifierTrailer.Text = strTrailerOnly
+
                 'Update Single Data Field
                 Dim strUpdateSingelDataField As String = Master.eLang.GetString(1126, "(Re)Scrape Single Data Field")
                 .cmnuEpisodeScrapeSingleDataField.Text = strUpdateSingelDataField
@@ -16280,13 +16324,9 @@ Public Class frmMain
                 .cmnuSeasonScrapeSingleDataField.Text = strUpdateSingelDataField
                 .cmnuShowScrapeSingleDataField.Text = strUpdateSingelDataField
 
-                'Theme Only
-                Dim strThemeOnly As String = Master.eLang.GetString(1125, "Theme Only")
-                .mnuScrapeModifierTheme.Text = strThemeOnly
-
-                'Trailer Only
-                Dim strTrailerOnly As String = Master.eLang.GetString(75, "Trailer Only")
-                .mnuScrapeModifierTrailer.Text = strTrailerOnly
+                'Video Source
+                Dim strVideoSource As String = Master.eLang.GetString(824, "Video Source")
+                mnuDataFieldVideosource.Text = strVideoSource
 
                 ' others
                 .btnCancel.Text = Master.eLang.GetString(54, "Cancel Scraper")
@@ -16542,7 +16582,7 @@ Public Class frmMain
                 .lblFilterCountries_Movies.Text = Master.eLang.GetString(237, "Countries")
                 .lblFilterCountriesClose_Movies.Text = Master.eLang.GetString(19, "Close")
                 .lblFilterCountry_Movies.Text = String.Concat(Master.eLang.GetString(237, "Countries"), ":")
-                .lblFilterVideoSource_Movies.Text = Master.eLang.GetString(824, "Video Source:")
+                .lblFilterVideoSource_Movies.Text = String.Concat(Master.eLang.GetString(824, "Video Source"), ":")
                 .lblFilterGenre_Movies.Text = String.Concat(Master.eLang.GetString(725, "Genres"), ":")
                 .lblFilterGenre_Shows.Text = .lblFilterGenre_Movies.Text
                 .lblFilterGenres_Movies.Text = Master.eLang.GetString(725, "Genres")
