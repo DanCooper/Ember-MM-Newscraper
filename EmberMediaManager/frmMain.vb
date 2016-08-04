@@ -10511,27 +10511,49 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub mnuDataFieldVideosource_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuDataFieldVideosource.Click
-        Dim strVideosource As String = String.Empty
+    Private Sub mnuDataFieldTrailerURL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuDataFieldTrailerURL.Click
+        Dim strNewValue As String = String.Empty
 
         Using dEditDataField As New dlgEditDataField
-            If dEditDataField.ShowDialog(Master.eLang.GetString(824, "Video Source")) = DialogResult.OK Then
-                strVideosource = dEditDataField.Result
+            If dEditDataField.ShowDialog(Master.eLang.GetString(227, "Trailer URL")) = DialogResult.OK Then
+                strNewValue = dEditDataField.Result
                 Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                     Select Case _SelectedContentType
                         Case "movie"
                             For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
                                 Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value))
-                                tmpDBElement.VideoSource = strVideosource
-                                tmpDBElement.Movie.VideoSource = strVideosource
+                                tmpDBElement.Movie.Trailer = strNewValue
+                                Master.DB.Save_Movie(tmpDBElement, True, True, False, False)
+                                RefreshRow_Movie(tmpDBElement.ID)
+                            Next
+                    End Select
+                    SQLtransaction.Commit()
+                End Using
+            End If
+        End Using
+    End Sub
+
+    Private Sub mnuDataFieldVideosource_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuDataFieldVideosource.Click
+        Dim strNewValue As String = String.Empty
+
+        Using dEditDataField As New dlgEditDataField
+            If dEditDataField.ShowDialog(Master.eLang.GetString(824, "Video Source")) = DialogResult.OK Then
+                strNewValue = dEditDataField.Result
+                Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                    Select Case _SelectedContentType
+                        Case "movie"
+                            For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
+                                Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value))
+                                tmpDBElement.VideoSource = strNewValue
+                                tmpDBElement.Movie.VideoSource = strNewValue
                                 Master.DB.Save_Movie(tmpDBElement, True, True, False, False)
                                 RefreshRow_Movie(tmpDBElement.ID)
                             Next
                         Case "tvepisode"
                             For Each sRow As DataGridViewRow In dgvTVEpisodes.SelectedRows
                                 Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVEpisode(Convert.ToInt64(sRow.Cells("idEpisode").Value), True)
-                                tmpDBElement.VideoSource = strVideosource
-                                tmpDBElement.TVEpisode.VideoSource = strVideosource
+                                tmpDBElement.VideoSource = strNewValue
+                                tmpDBElement.TVEpisode.VideoSource = strNewValue
                                 Master.DB.Save_TVEpisode(tmpDBElement, True, True, False, False, True)
                                 RefreshRow_TVEpisode(tmpDBElement.ID)
                             Next
@@ -10965,7 +10987,7 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub mnuContextMenuStrip_Opened(sender As Object, e As EventArgs) Handles mnuGenres.Opened, mnuLanguages.Opened, mnuTags.Opened, mnuScrapeSubmenu.Opened, mnuDataField.Opened
+    Private Sub mnuContextMenuStrip_Opened(sender As Object, e As EventArgs) Handles mnuGenres.Opened, mnuLanguages.Opened, mnuTags.Opened, mnuScrapeSubmenu.Opened
         Dim tContextMenuStrip As ContextMenuStrip = CType(sender, ContextMenuStrip)
         If tContextMenuStrip IsNot Nothing AndAlso tContextMenuStrip.OwnerItem IsNot Nothing AndAlso tContextMenuStrip.OwnerItem.Tag IsNot Nothing Then
             _SelectedContentType = tContextMenuStrip.OwnerItem.Tag.ToString
@@ -11002,6 +11024,26 @@ Public Class frmMain
         Else
             mnuScrapeTVShows.ShowDropDown()
         End If
+    End Sub
+
+    Private Sub mnuDataField_Opened(sender As Object, e As EventArgs) Handles mnuDataField.Opened
+        _SelectedContentType = mnuDataField.OwnerItem.Tag.ToString
+
+        Select Case _SelectedContentType
+            Case "movie"
+                mnuDataFieldTrailerURL.Enabled = True
+                mnuDataFieldTrailerURL.Visible = True
+                mnuDataFieldVideosource.Enabled = True
+                mnuDataFieldVideosource.Visible = True
+            Case "movieset"
+            Case "tvepisode"
+                mnuDataFieldTrailerURL.Enabled = False
+                mnuDataFieldTrailerURL.Visible = False
+                mnuDataFieldVideosource.Enabled = True
+                mnuDataFieldVideosource.Visible = True
+            Case "tvseason"
+            Case "tvshow"
+        End Select
     End Sub
 
     Private Sub mnuScrapeOption_Opened(sender As Object, e As EventArgs) Handles mnuScrapeOption.Opened
@@ -16315,6 +16357,10 @@ Public Class frmMain
                 'Trailer Only
                 Dim strTrailerOnly As String = Master.eLang.GetString(75, "Trailer Only")
                 .mnuScrapeModifierTrailer.Text = strTrailerOnly
+
+                'Trailer URL
+                Dim strTrailerURL As String = Master.eLang.GetString(227, "Trailer URL")
+                mnuDataFieldTrailerURL.Text = strTrailerURL
 
                 'Update Single Data Field
                 Dim strUpdateSingelDataField As String = Master.eLang.GetString(1126, "(Re)Scrape Single Data Field")

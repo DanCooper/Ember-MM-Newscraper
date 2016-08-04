@@ -2502,7 +2502,7 @@ Public Class dlgEditMovie
         lblTop250.Text = Master.eLang.GetString(240, "Top 250:")
         lblTopDetails.Text = Master.eLang.GetString(224, "Edit the details for the selected movie.")
         lblTopTitle.Text = Master.eLang.GetString(25, "Edit Movie")
-        lblTrailerURL.Text = Master.eLang.GetString(227, "Trailer URL:")
+        lblTrailerURL.Text = String.Concat(Master.eLang.GetString(227, "Trailer URL"), ":")
         lblVotes.Text = Master.eLang.GetString(244, "Votes:")
         lblYear.Text = Master.eLang.GetString(49, "Year:")
         tpBanner.Text = Master.eLang.GetString(838, "Banner")

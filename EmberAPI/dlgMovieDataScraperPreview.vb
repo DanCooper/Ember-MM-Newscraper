@@ -80,7 +80,7 @@ Public Class dlgMovieDataScraperPreview
         lblTop250.Text = Master.eLang.GetString(240, "Top 250:")
         lblTopDetails.Text = Master.eLang.GetString(1254, "Only data in selected tabs will be used!")
         lblTopTitle.Text = Master.eLang.GetString(1253, "Scraperresults")
-        lblTrailerURL.Text = Master.eLang.GetString(227, "Trailer URL:")
+        lblTrailerURL.Text = String.Concat(Master.eLang.GetString(227, "Trailer URL"), ":")
         lblVotes.Text = Master.eLang.GetString(244, "Votes:")
         lblYear.Text = Master.eLang.GetString(49, "Year:")
     End Sub
