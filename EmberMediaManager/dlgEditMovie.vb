@@ -2309,8 +2309,10 @@ Public Class dlgEditMovie
 
         If Not String.IsNullOrEmpty(cbSourceLanguage.Text) Then
             tmpDBElement.Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = cbSourceLanguage.Text).Abbreviation
+            tmpDBElement.Movie.Language = tmpDBElement.Language
         Else
             tmpDBElement.Language = "en-US"
+            tmpDBElement.Movie.Language = tmpDBElement.Language
         End If
 
         tmpDBElement.IsMark = chkMark.Checked
@@ -2482,7 +2484,7 @@ Public Class dlgEditMovie
         lblCountries.Text = String.Concat(Master.eLang.GetString(237, "Countries"), ":")
         lblCredits.Text = Master.eLang.GetString(228, "Credits:")
         lblDirectors.Text = String.Concat(Master.eLang.GetString(940, "Directors"), ":")
-        lblVideoSource.Text = Master.eLang.GetString(824, "Video Source:")
+        lblVideoSource.Text = String.Concat(Master.eLang.GetString(824, "Video Source"), ":")
         lblGenre.Text = Master.eLang.GetString(51, "Genre(s):")
         lblLanguage.Text = Master.eLang.GetString(610, "Language")
         lblMPAA.Text = Master.eLang.GetString(235, "MPAA Rating:")
@@ -2500,7 +2502,7 @@ Public Class dlgEditMovie
         lblTop250.Text = Master.eLang.GetString(240, "Top 250:")
         lblTopDetails.Text = Master.eLang.GetString(224, "Edit the details for the selected movie.")
         lblTopTitle.Text = Master.eLang.GetString(25, "Edit Movie")
-        lblTrailerURL.Text = Master.eLang.GetString(227, "Trailer URL:")
+        lblTrailerURL.Text = String.Concat(Master.eLang.GetString(227, "Trailer URL"), ":")
         lblVotes.Text = Master.eLang.GetString(244, "Votes:")
         lblYear.Text = Master.eLang.GetString(49, "Year:")
         tpBanner.Text = Master.eLang.GetString(838, "Banner")

@@ -225,7 +225,7 @@
   <string id="224">Edit the details for the selected movie.</string>
   <string id="225">No Trailers found</string>
   <string id="226">Studios</string>
-  <string id="227">Trailer URL:</string>
+  <string id="227">Trailer URL</string>
   <string id="228">Credits:</string>
   <string id="229">MPAA Rating Description:</string>
   <string id="230">Manual Edit</string>
@@ -822,7 +822,7 @@
   <string id="821">You have manually entered an IMDB ID but have not verified it is correct.</string>
   <string id="822">Extended Images</string>
   <string id="823">Continue without verification?</string>
-  <string id="824">Video Source:</string>
+  <string id="824">Video Source</string>
   <string id="825">Unable to retrieve movie details for the entered IMDB ID. Please check your entry and try again.</string>
   <string id="826">Verification Failed</string>
   <string id="827">Partial Matches ({0})</string>
@@ -1176,8 +1176,8 @@
   <string id="1084">File already exists</string>
   <string id="1085">Directory already exists or is not empty</string>
   <string id="1086">The directory can not be renamed because the directory is specified as the source.</string>
-  <string id="1087"></string>
-  <string id="1088"></string>
+  <string id="1087">Edit Data Field</string>
+  <string id="1088">New value for "{0}"</string>
   <string id="1089"></string>
   <string id="1090"></string>
   <string id="1091"></string>
