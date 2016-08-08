@@ -603,34 +603,13 @@ Public Class frmMain
 
             Application.DoEvents()
 
-            'ClearInfo()
-            'ClearFilters_Movies()
-            ClearFilters_MovieSets()
-            ClearFilters_Shows()
-            'EnableFilters_Movies(False)
-            EnableFilters_MovieSets(False)
-            EnableFilters_Shows(False)
-
             SetControlsEnabled(False)
-            'txtSearchMovies.Text = String.Empty
-            txtSearchMovieSets.Text = String.Empty
-            txtSearchShows.Text = String.Empty
 
             fScanner.CancelAndWait()
 
             If Scan.MovieSets Then
                 prevRow_MovieSet = -1
                 dgvMovieSets.DataSource = Nothing
-            End If
-
-            If Scan.TV Then
-                currList = 0
-                prevRow_TVShow = -1
-                prevRow_TVSeason = -1
-                prevRow_TVEpisode = -1
-                dgvTVShows.DataSource = Nothing
-                dgvTVSeasons.DataSource = Nothing
-                dgvTVEpisodes.DataSource = Nothing
             End If
 
             fScanner.Start(Scan, SourceID, Folder)
@@ -15217,22 +15196,24 @@ Public Class frmMain
 
     Private Sub ScannerUpdated(ByVal eProgressValue As Scanner.ProgressValue)
         Select Case eProgressValue.Type
-            Case Enums.ScannerEventType.AddedMovie
+            Case Enums.ScannerEventType.Added_Movie
                 SetStatus(String.Concat(Master.eLang.GetString(815, "Added Movie:"), " ", eProgressValue.Message))
                 AddRow_Movie(eProgressValue.ID)
-            Case Enums.ScannerEventType.AddedTVEpisode
+            Case Enums.ScannerEventType.Added_TVEpisode
                 SetStatus(String.Concat(Master.eLang.GetString(814, "Added Episode:"), " ", eProgressValue.Message))
             Case Enums.ScannerEventType.CleaningDatabase
                 SetStatus(Master.eLang.GetString(644, "Cleaning Database..."))
             Case Enums.ScannerEventType.PreliminaryTasks
                 SetStatus(Master.eLang.GetString(116, "Performing Preliminary Tasks (Gathering Data)..."))
+            Case Enums.ScannerEventType.Refresh_TVShow
+                RefreshRow_TVShow(eProgressValue.ID)
         End Select
     End Sub
 
     Private Sub ScanningCompleted()
         If Not Master.isCL Then
             SetStatus(String.Empty)
-            FillList(False, True, True)
+            FillList(False, True, False)
             tspbLoading.Visible = False
             tslLoading.Visible = False
             LoadingDone = True
