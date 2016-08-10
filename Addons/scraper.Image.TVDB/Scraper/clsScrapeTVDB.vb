@@ -212,7 +212,7 @@ Namespace TVDBs
 
                 'EpisodePoster
                 If FilteredModifiers.EpisodePoster AndAlso Results.Series.Episodes IsNot Nothing Then
-                    For Each tEpisode As TVDB.Model.Episode In Results.Series.Episodes.Where(Function(f) f.SeasonNumber = iSeason And f.CombinedEpisodeNumber = iEpisode)
+                    For Each tEpisode As TVDB.Model.Episode In Results.Series.Episodes.Where(Function(f) f.SeasonNumber = iSeason And f.Number = iEpisode)
                         Dim img As New MediaContainers.Image With {
                             .Episode = tEpisode.Number,
                             .Height = CStr(tEpisode.ThumbHeight),
