@@ -5474,11 +5474,8 @@ Public Class frmMain
     Private Sub mnuMainToolsSortFiles_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsSortFiles.Click, cmnuTrayToolsSortFiles.Click
         SetControlsEnabled(False)
         Using dSortFiles As New dlgSortFiles
-            If dSortFiles.ShowDialog() = DialogResult.OK Then
-                LoadMedia(New Structures.ScanOrClean With {.Movies = True})
-            Else
-                SetControlsEnabled(True)
-            End If
+            dSortFiles.ShowDialog()
+            SetControlsEnabled(True)
         End Using
     End Sub
 
