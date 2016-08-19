@@ -5010,13 +5010,17 @@ Public Class frmMain
 
     Private Sub cmnuMovieSetNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetNew.Click
         dgvMovieSets.ClearSelection()
+        ClearInfo()
 
         Dim tmpDBMovieSet = New Database.DBElement(Enums.ContentType.MovieSet) With {.MovieSet = New MediaContainers.MovieSet}
 
         Using dNewSet As New dlgNewSet()
             If dNewSet.ShowDialog(tmpDBMovieSet) = DialogResult.OK Then
                 tmpDBMovieSet = Master.DB.Save_MovieSet(dNewSet.Result, False, False)
-                FillList(False, True, False)
+                Dim iNewRowIndex = AddRow_MovieSet(tmpDBMovieSet.ID)
+                If Not iNewRowIndex = -1 Then
+                    dgvMovieSets.Rows(iNewRowIndex).Selected = True
+                End If
                 Edit_MovieSet(tmpDBMovieSet)
             End If
         End Using
@@ -14480,8 +14484,8 @@ Public Class frmMain
     ''' </summary>
     ''' <param name="lngID"></param>
     ''' <remarks></remarks>
-    Private Sub AddRow_MovieSet(ByVal lngID As Long)
-        If lngID = -1 Then Return
+    Private Function AddRow_MovieSet(ByVal lngID As Long) As Integer
+        If lngID = -1 Then Return -1
 
         Dim myDelegate As New Delegate_dtListAddRow(AddressOf dtListAddRow)
         Dim newRow As DataRow = Nothing
@@ -14505,7 +14509,9 @@ Public Class frmMain
             AddHandler dgvMovieSets.CellEnter, AddressOf dgvMovieSets_CellEnter
             currRow_MovieSet = -1
         End If
-    End Sub
+
+        Return bsMovieSets.Find("idSet", lngID)
+    End Function
     ''' <summary>
     ''' Refresh a single Movie row with informations from DB
     ''' </summary>
