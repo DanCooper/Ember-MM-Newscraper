@@ -14508,14 +14508,9 @@ Public Class frmMain
             End If
             AddHandler dgvMovieSets.CellEnter, AddressOf dgvMovieSets_CellEnter
             currRow_MovieSet = -1
-            For Each drvRow As DataGridViewRow In dgvMovieSets.Rows
-                If CLng(drvRow.Cells("idSet").Value) = lngID Then
-                    Return drvRow.Index
-                End If
-            Next
         End If
 
-        Return -1
+        Return bsMovieSets.Find("idSet", lngID)
     End Function
     ''' <summary>
     ''' Refresh a single Movie row with informations from DB
