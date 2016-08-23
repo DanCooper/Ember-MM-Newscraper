@@ -236,7 +236,6 @@ Public Class dlgTMDBSearchResults_Movie
 
     Private Sub OK_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles OK_Button.Click
         DialogResult = DialogResult.OK
-        Close()
     End Sub
 
     Private Sub SearchMovieInfoDownloaded(ByVal sPoster As String, ByVal sInfo As MediaContainers.Movie)

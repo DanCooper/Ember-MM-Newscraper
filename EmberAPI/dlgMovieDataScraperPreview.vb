@@ -1014,12 +1014,10 @@ Public Class dlgMovieDataScraperPreview
     Private Sub OK_Button_Click(sender As Object, e As EventArgs) Handles OK_Button.Click
         Try
             SaveSelectedScraperData()
-            DialogResult = System.Windows.Forms.DialogResult.OK
-            Close()
+            DialogResult = DialogResult.OK
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
-            DialogResult = System.Windows.Forms.DialogResult.OK
-            Close()
+            DialogResult = DialogResult.OK
         End Try
     End Sub
 

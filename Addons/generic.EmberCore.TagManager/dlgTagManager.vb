@@ -58,9 +58,9 @@ Public Class dlgTagManager
     Sub New()
         ' This call is required by the Windows Form Designer.
         InitializeComponent()
-        Me.Left = Master.AppPos.Left + (Master.AppPos.Width - Me.Width) \ 2
-        Me.Top = Master.AppPos.Top + (Master.AppPos.Height - Me.Height) \ 2
-        Me.StartPosition = FormStartPosition.Manual
+        Left = Master.AppPos.Left + (Master.AppPos.Width - Width) \ 2
+        Top = Master.AppPos.Top + (Master.AppPos.Height - Height) \ 2
+        StartPosition = FormStartPosition.Manual
         SetUp()
     End Sub
 
@@ -79,20 +79,20 @@ Public Class dlgTagManager
     ''' 2015/03/01 Cocotus - First implementation
     ''' </remarks>
     Sub SetUp()
-        Me.lblTopTitle.Text = Me.Text
-        Me.OK_Button.Text = Master.eLang.GetString(19, "Close")
-        Me.lblCompiling.Text = Master.eLang.GetString(326, "Loading...")
-        Me.lblCanceling.Text = Master.eLang.GetString(370, "Canceling Load...")
-        Me.btnCancel.Text = Master.eLang.GetString(167, "Cancel")
-        Me.lblCurrentTag.Text = Master.eLang.GetString(368, "None Selected")
+        lblTopTitle.Text = Text
+        OK_Button.Text = Master.eLang.GetString(19, "Close")
+        lblCompiling.Text = Master.eLang.GetString(326, "Loading...")
+        lblCanceling.Text = Master.eLang.GetString(370, "Canceling Load...")
+        btnCancel.Text = Master.eLang.GetString(167, "Cancel")
+        lblCurrentTag.Text = Master.eLang.GetString(368, "None Selected")
         gbMovies.Text = Master.eLang.GetString(36, "Movies")
-        Me.lblTopDetails.Text = Master.eLang.GetString(1374, "Manage XBMC tags")
+        lblTopDetails.Text = Master.eLang.GetString(1374, "Manage XBMC tags")
         gbTags.Text = Master.eLang.GetString(9999, "Tags")
         gbMoviesInTag.Text = Master.eLang.GetString(1375, "Movies in tag")
-        Me.rdMoviesAll.Text = Master.eLang.GetString(1461, "All movies")
-        Me.rdMoviesFiltered.Text = Master.eLang.GetString(1462, "Filtered movies")
-        Me.rdMoviesSelected.Text = Master.eLang.GetString(1463, "Selected movies")
-        Me.gbMoviesFilter.Text = Master.eLang.GetString(330, "Filter")
+        rdMoviesAll.Text = Master.eLang.GetString(1461, "All movies")
+        rdMoviesFiltered.Text = Master.eLang.GetString(1462, "Filtered movies")
+        rdMoviesSelected.Text = Master.eLang.GetString(1463, "Selected movies")
+        gbMoviesFilter.Text = Master.eLang.GetString(330, "Filter")
 
         'load current movielist-view/selection
         For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListMovies.Rows
@@ -114,8 +114,7 @@ Public Class dlgTagManager
     ''' 2015/03/01 Cocotus - First implementation
     ''' </remarks>
     Private Sub OK_Button_Click(sender As Object, e As EventArgs) Handles OK_Button.Click
-        Me.DialogResult = System.Windows.Forms.DialogResult.OK
-        Me.Close()
+        DialogResult = DialogResult.OK
     End Sub
 
     ''' <summary>
@@ -133,15 +132,15 @@ Public Class dlgTagManager
         pnlMain.Enabled = False
 
         'load existing tags from database into datatable
-        Master.DB.FillDataTable(Me.dtMovieTags, String.Concat("SELECT * FROM tag ",
+        Master.DB.FillDataTable(dtMovieTags, String.Concat("SELECT * FROM tag ",
                                                              "ORDER BY strTag COLLATE NOCASE;"))
 
         'fill movie datagridview
         If dgvMovies.Rows.Count = 0 Then
-            Me.dgvMovies.SuspendLayout()
+            dgvMovies.SuspendLayout()
             Me.bsMovies.DataSource = Nothing
             Me.dgvMovies.DataSource = Nothing
-            If Me.lstFilteredMovies.Count > 0 Then
+            If lstFilteredMovies.Count > 0 Then
                 '  If Me.dtMovies.Rows.Count > 0 Then
                 With Me
                     .bsMovies.DataSource = .lstFilteredMovies
@@ -160,7 +159,7 @@ Public Class dlgTagManager
                     .dgvMovies.Columns("ID").ValueType = GetType(Int64)
                 End With
             End If
-            Me.dgvMovies.ResumeLayout()
+            dgvMovies.ResumeLayout()
         End If
 
         'fill listbox of tags
@@ -177,7 +176,7 @@ Public Class dlgTagManager
                 End If
             Next
             'select first item in listbox
-            If Me.lbTags.Items.Count > 0 Then
+            If lbTags.Items.Count > 0 Then
                 lbTags.SelectedIndex = 0
             End If
         End If
@@ -187,7 +186,7 @@ Public Class dlgTagManager
         pnlMain.Enabled = True
         lbTags.Enabled = True
         btnNewTag.Enabled = True
-        Me.lbMoviesInTag.Enabled = True
+        lbMoviesInTag.Enabled = True
     End Sub
 
     ''' <summary>
@@ -197,22 +196,22 @@ Public Class dlgTagManager
     ''' 2015/03/01 Cocotus - First implementation
     ''' </remarks>
     Private Sub LoadMoviesOfSelectedTag()
-        Me.lbMoviesInTag.SuspendLayout()
-        Me.lbMoviesInTag.Items.Clear()
+        lbMoviesInTag.SuspendLayout()
+        lbMoviesInTag.Items.Clear()
 
         For Each movielist In globalMovieTags
-            If movielist.Name = Me.lbTags.SelectedItem.ToString Then
+            If movielist.Name = lbTags.SelectedItem.ToString Then
                 For Each tMovie In movielist.Movies
                     lbMoviesInTag.Items.Add(tMovie.Movie.Title)
                 Next
                 If lbMoviesInTag.Items.Count > 0 Then
-                    Me.btnRemoveMovie.Enabled = True
+                    btnRemoveMovie.Enabled = True
                 End If
                 Exit For
             End If
         Next
 
-        Me.lbMoviesInTag.ResumeLayout()
+        lbMoviesInTag.ResumeLayout()
     End Sub
 
     ''' <summary>
@@ -223,23 +222,23 @@ Public Class dlgTagManager
     ''' 2015/03/01 Cocotus - First implementation
     ''' </remarks>
     Private Sub LoadLists()
-        Me.lbTags.SuspendLayout()
+        lbTags.SuspendLayout()
         'first clear all listboxes before adding information again
-        Me.lbTags.Items.Clear()
-        Me.lbMoviesInTag.Items.Clear()
-        Me.lblCurrentTag.Text = Master.eLang.GetString(368, "None Selected")
+        lbTags.Items.Clear()
+        lbMoviesInTag.Items.Clear()
+        lblCurrentTag.Text = Master.eLang.GetString(368, "None Selected")
         'add tag to listbox (if its not marked for delete!)
         For Each tmptag In globalMovieTags
             If tmptag.IsDeleted = False Then
                 lbTags.Items.Add(tmptag.Name)
             End If
         Next
-        Me.btnEditTag.Enabled = False
-        Me.btnRemoveTag.Enabled = False
-        Me.btnAddMovie.Enabled = False
-        Me.btnRemoveMovie.Enabled = False
+        btnEditTag.Enabled = False
+        btnRemoveTag.Enabled = False
+        btnAddMovie.Enabled = False
+        btnRemoveMovie.Enabled = False
         txtEditTag.Text = ""
-        Me.lbTags.ResumeLayout()
+        lbTags.ResumeLayout()
     End Sub
 
     ''' <summary>
@@ -251,11 +250,11 @@ Public Class dlgTagManager
     ''' 2015/03/01 Cocotus - First implementation
     ''' </remarks>
     Private Sub btnRemoveMovie_Click(sender As Object, e As EventArgs) Handles btnRemoveMovie.Click
-        If Me.lbMoviesInTag.SelectedItems.Count > 0 Then
-            For Each selectedmovie In Me.lbMoviesInTag.SelectedItems
+        If lbMoviesInTag.SelectedItems.Count > 0 Then
+            For Each selectedmovie In lbMoviesInTag.SelectedItems
                 'update globaltaglist
                 For Each _tag In globalMovieTags
-                    If _tag.Name = Me.lbTags.SelectedItem.ToString Then
+                    If _tag.Name = lbTags.SelectedItem.ToString Then
                         For Each movie In _tag.Movies
                             If movie.Movie.Title = selectedmovie.ToString Then
                                 _tag.IsModified = True
@@ -265,7 +264,7 @@ Public Class dlgTagManager
                     End If
                 Next
             Next
-            Me.LoadMoviesOfSelectedTag()
+            LoadMoviesOfSelectedTag()
         End If
     End Sub
 
@@ -279,15 +278,15 @@ Public Class dlgTagManager
     ''' 2015/03/01 Cocotus - First implementation
     ''' </remarks>
     Private Sub btnAddMovie_Click(sender As Object, e As EventArgs) Handles btnAddMovie.Click
-        If Me.dgvMovies.SelectedRows.Count > 0 Then
-            For Each sRow As DataGridViewRow In Me.dgvMovies.SelectedRows
+        If dgvMovies.SelectedRows.Count > 0 Then
+            For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
                 Dim tmpMovie As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells("ID").Value))
 
 
                 If Not String.IsNullOrEmpty(tmpMovie.Movie.Title) Then
                     'add new movie to tag in globaltaglist
                     For Each _tag In globalMovieTags
-                        If _tag.Name = Me.lbTags.SelectedItem.ToString Then
+                        If _tag.Name = lbTags.SelectedItem.ToString Then
                             If Not _tag.Movies Is Nothing Then
                                 Dim alreadyintag As Boolean = False
                                 For Each movie In _tag.Movies
@@ -310,9 +309,9 @@ Public Class dlgTagManager
 
                 End If
             Next
-            Me.dgvMovies.ClearSelection()
+            dgvMovies.ClearSelection()
             Me.dgvMovies.CurrentCell = Nothing
-            Me.LoadMoviesOfSelectedTag()
+            LoadMoviesOfSelectedTag()
         End If
     End Sub
 
@@ -326,48 +325,48 @@ Public Class dlgTagManager
     ''' </remarks>
     Private Sub lbTags_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lbTags.SelectedIndexChanged
         'clear movieintag-listbox since we select another tag
-        Me.lbMoviesInTag.Items.Clear()
+        lbMoviesInTag.Items.Clear()
 
         'check if tag was selected
-        If Me.lbTags.SelectedItems.Count > 0 Then
+        If lbTags.SelectedItems.Count > 0 Then
             'display tagtitle in label
-            Me.lblCurrentTag.Text = Me.lbTags.SelectedItem.ToString
+            lblCurrentTag.Text = lbTags.SelectedItem.ToString
             Dim foundlist As Boolean = False
             'search selected tag in globaltags
             For Each movieinlist In globalMovieTags
-                If movieinlist.Name = Me.lbTags.SelectedItem.ToString Then
+                If movieinlist.Name = lbTags.SelectedItem.ToString Then
 
                     'add all movies from tag into listbox
-                    Me.LoadMoviesOfSelectedTag()
+                    LoadMoviesOfSelectedTag()
 
                     'Enable remove/edit list buttons
-                    Me.btnEditTag.Enabled = True
-                    Me.btnRemoveTag.Enabled = True
-                    Me.btnAddMovie.Enabled = True
+                    btnEditTag.Enabled = True
+                    btnRemoveTag.Enabled = True
+                    btnAddMovie.Enabled = True
                     txtEditTag.Enabled = True
-                    txtEditTag.Text = Me.lbTags.SelectedItem.ToString
+                    txtEditTag.Text = lbTags.SelectedItem.ToString
                     foundlist = True
                     Exit For
                 End If
             Next
 
             If foundlist = False Then
-                logger.Info("[" & Me.lbTags.SelectedItem.ToString & "] No tag selected!")
-                Me.lblCurrentTag.Text = Master.eLang.GetString(368, "None Selected")
-                Me.btnEditTag.Enabled = False
-                Me.btnRemoveTag.Enabled = False
-                Me.btnAddMovie.Enabled = False
-                Me.btnRemoveMovie.Enabled = False
+                logger.Info("[" & lbTags.SelectedItem.ToString & "] No tag selected!")
+                lblCurrentTag.Text = Master.eLang.GetString(368, "None Selected")
+                btnEditTag.Enabled = False
+                btnRemoveTag.Enabled = False
+                btnAddMovie.Enabled = False
+                btnRemoveMovie.Enabled = False
                 txtEditTag.Text = ""
             End If
 
             ' no tag selected, disable remove/edit tag buttons, reset label
         Else
-            Me.lblCurrentTag.Text = Master.eLang.GetString(368, "None Selected")
-            Me.btnEditTag.Enabled = False
-            Me.btnRemoveTag.Enabled = False
-            Me.btnAddMovie.Enabled = False
-            Me.btnRemoveMovie.Enabled = False
+            lblCurrentTag.Text = Master.eLang.GetString(368, "None Selected")
+            btnEditTag.Enabled = False
+            btnRemoveTag.Enabled = False
+            btnAddMovie.Enabled = False
+            btnRemoveMovie.Enabled = False
             txtEditTag.Text = ""
         End If
     End Sub
@@ -382,8 +381,8 @@ Public Class dlgTagManager
     ''' 2015/03/01 Cocotus - First implementation
     ''' </remarks>
     Private Sub btnRemoveTag_Click(sender As Object, e As EventArgs) Handles btnRemoveTag.Click
-        If Me.lbTags.SelectedItems.Count > 0 Then
-            Dim strtag As String = Me.lbTags.SelectedItem.ToString
+        If lbTags.SelectedItems.Count > 0 Then
+            Dim strtag As String = lbTags.SelectedItem.ToString
             For Each _tag In globalMovieTags
                 If _tag.Name = strtag Then
                     _tag.IsDeleted = True
@@ -395,7 +394,7 @@ Public Class dlgTagManager
                 End If
             Next
             'since globaltaglist was updated, we need to load globaltaglist again to reflect changes
-            Me.LoadLists()
+            LoadLists()
         End If
     End Sub
 
@@ -410,13 +409,13 @@ Public Class dlgTagManager
     ''' </remarks>
     Private Sub btnEditTag_Click(sender As Object, e As EventArgs) Handles btnEditTag.Click
         'check if tag is selected (we need one to edit)
-        If Me.lbTags.SelectedItems.Count > 0 Then
+        If lbTags.SelectedItems.Count > 0 Then
             'currenttagname
-            Dim strtag As String = Me.lbTags.SelectedItem.ToString
+            Dim strtag As String = lbTags.SelectedItem.ToString
             'newtagname (from textbox)
-            Dim newtagname As String = Me.txtEditTag.Text
+            Dim newtagname As String = txtEditTag.Text
             'only update if both names(old and new) are available, also don't edit if newname is already a used tagname
-            If Not String.IsNullOrEmpty(strtag) AndAlso Not String.IsNullOrEmpty(newtagname) AndAlso Not Me.lbTags.Items.Contains(newtagname) Then
+            If Not String.IsNullOrEmpty(strtag) AndAlso Not String.IsNullOrEmpty(newtagname) AndAlso Not lbTags.Items.Contains(newtagname) Then
                 'update listname in globallist
                 For Each _tag In globalMovieTags
                     If _tag.Name = strtag Then
@@ -427,7 +426,7 @@ Public Class dlgTagManager
                     End If
                 Next
                 'since globaltaglist was updated, we need to load globaltaglist again to reflect changes
-                Me.LoadLists()
+                LoadLists()
             End If
         End If
     End Sub
@@ -548,7 +547,7 @@ Public Class dlgTagManager
     End Sub
 
     Private Sub tbpglobalMovieTags_Enter(sender As Object, e As EventArgs)
-        Me.Activate()
+        Activate()
     End Sub
 
 #End Region 'Methods
@@ -591,7 +590,7 @@ Public Class dlgTagManager
             lstFilteredMovies.Clear()
             'load current movielist-view/selection
             Dim dtmovies As New DataTable
-            Master.DB.FillDataTable(dtmovies, String.Concat("SELECT * FROM movielist ", _
+            Master.DB.FillDataTable(dtmovies, String.Concat("SELECT * FROM movielist ",
                                                                 "ORDER BY ListTitle COLLATE NOCASE;"))
             For Each sRow As DataRow In dtmovies.Rows
                 Dim DBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow("idMovie")))
@@ -621,17 +620,17 @@ Friend Class SyncTag
 
 #Region "Constructors"
     Public Sub New()
-        Me.Clear()
+        Clear()
     End Sub
 #End Region
 
 #Region "Properties"
     Public Property Movies() As List(Of Database.DBElement)
         Get
-            Return _Movies
+            Return _movies
         End Get
         Set(ByVal value As List(Of Database.DBElement))
-            _Movies = value
+            _movies = value
         End Set
     End Property
 
@@ -683,16 +682,16 @@ Friend Class SyncTag
 #End Region
 #Region "Methods"
     Public Sub Clear()
-        Me._Movies = New List(Of Database.DBElement)
-        Me._idTag = -1
-        Me._strTag = String.Empty
-        Me._newTag = False
-        Me._deletedTag = False
-        Me._modifiedTag = False
+        _movies = New List(Of Database.DBElement)
+        _idTag = -1
+        _strTag = String.Empty
+        _newTag = False
+        _deletedTag = False
+        _modifiedTag = False
     End Sub
 
     Public Function CompareTo(ByVal other As SyncTag) As Integer Implements IComparable(Of SyncTag).CompareTo
-        Return (Me.ID).CompareTo(other.ID)
+        Return (ID).CompareTo(other.ID)
     End Function
 #End Region 'Methods
 

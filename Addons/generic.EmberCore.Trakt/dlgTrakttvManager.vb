@@ -395,8 +395,7 @@ Public Class dlgTrakttvManager
     ''' 2014/10/12 Cocotus - First implementation
     ''' </remarks>
     Private Sub OK_Button_Click(sender As Object, e As EventArgs) Handles OK_Button.Click
-        DialogResult = System.Windows.Forms.DialogResult.OK
-        Close()
+        DialogResult = DialogResult.OK
     End Sub
 
     ''' <summary>

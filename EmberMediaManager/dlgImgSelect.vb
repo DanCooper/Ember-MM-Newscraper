@@ -550,7 +550,6 @@ Public Class dlgImgSelect
         End While
 
         DialogResult = DialogResult.Cancel
-        Close()
     End Sub
 
     Private Sub btnExtrafanarts_Click(sender As Object, e As EventArgs) Handles btnExtrafanarts.Click

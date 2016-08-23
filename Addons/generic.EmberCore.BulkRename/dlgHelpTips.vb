@@ -13,12 +13,10 @@ Public Class dlgHelpTips
 
     Private Sub OK_Button_Click(ByVal sender As Object, ByVal e As EventArgs)
         DialogResult = DialogResult.OK
-        Close()
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As Object, ByVal e As EventArgs)
         DialogResult = DialogResult.Cancel
-        Close()
     End Sub
 
 End Class

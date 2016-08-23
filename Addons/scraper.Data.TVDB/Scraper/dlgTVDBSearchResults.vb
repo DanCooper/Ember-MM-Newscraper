@@ -172,7 +172,6 @@ Public Class dlgTVDBSearchResults
         _tmpTVShow.Clear()
 
         DialogResult = DialogResult.Cancel
-        Close()
     End Sub
 
     Private Sub chkManual_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkManual.CheckedChanged

@@ -102,16 +102,15 @@ Public Class dlgFileInfo
     End Sub
 
     Private Sub btnRemoveSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveSet.Click
-        Me.DeleteStream()
+        DeleteStream()
     End Sub
 
     Private Sub btnClose_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClose.Click
         If NeedToRefresh Then
-            Me.DialogResult = DialogResult.OK
+            DialogResult = DialogResult.OK
         Else
-            Me.DialogResult = DialogResult.Cancel
+            DialogResult = DialogResult.Cancel
         End If
-        Me.Close()
     End Sub
 
     Private Sub cbStreamType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbStreamType.SelectedIndexChanged
@@ -167,7 +166,7 @@ Public Class dlgFileInfo
     End Sub
 
     Private Sub dlgFileInfo_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
-        Me.Activate()
+        Activate()
     End Sub
 
     Private Sub EditStream()
@@ -351,7 +350,7 @@ Public Class dlgFileInfo
     End Sub
 
     Private Sub lvStreams_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles lvStreams.KeyDown
-        If e.KeyCode = Keys.Delete Then Me.DeleteStream()
+        If e.KeyCode = Keys.Delete Then DeleteStream()
     End Sub
 
     Private Sub lvStreams_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lvStreams.SelectedIndexChanged
@@ -380,9 +379,9 @@ Public Class dlgFileInfo
         cbStreamType.Items.Add(Master.eLang.GetString(595, "Video Streams"))
         cbStreamType.Items.Add(Master.eLang.GetString(596, "Audio Streams"))
         cbStreamType.Items.Add(Master.eLang.GetString(597, "Subtitle Streams"))
-        Me.Text = Master.eLang.GetString(594, "Meta Data Editor")
-        Me.lblStreamType.Text = Master.eLang.GetString(598, "Stream Type")
-        Me.btnClose.Text = Master.eLang.GetString(19, "Close")
+        Text = Master.eLang.GetString(594, "Meta Data Editor")
+        lblStreamType.Text = Master.eLang.GetString(598, "Stream Type")
+        btnClose.Text = Master.eLang.GetString(19, "Close")
     End Sub
 
 #End Region 'Methods

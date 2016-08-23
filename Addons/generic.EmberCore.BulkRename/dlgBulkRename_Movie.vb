@@ -76,7 +76,6 @@ Public Class dlgBulkRenamer_Movie
     Private Sub bwDoRename_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDoRename.RunWorkerCompleted
         pnlCancel.Visible = False
         DialogResult = DialogResult.OK
-        Close()
     End Sub
 
     Private Sub bwDoRename_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDoRename.DoWork
@@ -205,8 +204,6 @@ Public Class dlgBulkRenamer_Movie
         Else
             DialogResult = DialogResult.Cancel
         End If
-
-        Close()
     End Sub
 
     Private Sub cmsMovieList_Opening(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles cmsMovieList.Opening

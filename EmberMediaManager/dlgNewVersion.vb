@@ -49,8 +49,7 @@ Public Class dlgNewVersion
                 Explorer.Start()
             End Using
         End If
-        DialogResult = Windows.Forms.DialogResult.Abort
-        Close()
+        DialogResult = DialogResult.Abort
     End Sub
 
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUpgrade.Click

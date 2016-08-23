@@ -50,12 +50,10 @@ Public Class dlgTVRegExProfiles
         Catch ex As Exception
         End Try
         DialogResult = DialogResult.OK
-        Close()
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
         DialogResult = DialogResult.Cancel
-        Close()
     End Sub
 
     Private Sub dlgTVRegExProfiles_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
