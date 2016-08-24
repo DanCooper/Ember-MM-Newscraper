@@ -116,7 +116,6 @@ Public Class dlgTagManager
     Private Sub OK_Button_Click(sender As Object, e As EventArgs) Handles OK_Button.Click
         DialogResult = DialogResult.OK
     End Sub
-
     ''' <summary>
     ''' Fill listboxes/datagrid (tags and movies from database) and display in listbox
     ''' </summary>
@@ -188,7 +187,6 @@ Public Class dlgTagManager
         btnNewTag.Enabled = True
         lbMoviesInTag.Enabled = True
     End Sub
-
     ''' <summary>
     ''' Add corresponding movies of selected tag to movielistbox 
     ''' </summary>
@@ -213,7 +211,6 @@ Public Class dlgTagManager
 
         lbMoviesInTag.ResumeLayout()
     End Sub
-
     ''' <summary>
     ''' Add all tags from globaltaglist to listbox
     ''' </summary>
@@ -240,7 +237,6 @@ Public Class dlgTagManager
         txtEditTag.Text = ""
         lbTags.ResumeLayout()
     End Sub
-
     ''' <summary>
     ''' Remove selected movie(s) from selected tag
     ''' </summary>
@@ -267,8 +263,6 @@ Public Class dlgTagManager
             LoadMoviesOfSelectedTag()
         End If
     End Sub
-
-
     ''' <summary>
     ''' Add selected movie to selected tag
     ''' </summary>
@@ -314,7 +308,6 @@ Public Class dlgTagManager
             LoadMoviesOfSelectedTag()
         End If
     End Sub
-
     ''' <summary>
     ''' Add corresponding movies of selected tag to movielistbox 
     ''' </summary>
@@ -370,8 +363,6 @@ Public Class dlgTagManager
             txtEditTag.Text = ""
         End If
     End Sub
-
-
     ''' <summary>
     ''' Delete selected tag
     ''' </summary>
@@ -397,8 +388,6 @@ Public Class dlgTagManager
             LoadLists()
         End If
     End Sub
-
-
     ''' <summary>
     ''' Change name of existing/selected tag
     ''' </summary>
@@ -430,7 +419,6 @@ Public Class dlgTagManager
             End If
         End If
     End Sub
-
     ''' <summary>
     ''' Add empty tag
     ''' </summary>
@@ -457,8 +445,6 @@ Public Class dlgTagManager
             logger.Info("New tag could not be created!")
         End If
     End Sub
-
-
     ''' <summary>
     ''' Create empty tag object
     ''' </summary>
@@ -607,24 +593,31 @@ Public Class dlgTagManager
 End Class
 
 #Region "Nested Types"
+
 Friend Class SyncTag
     Implements IComparable(Of SyncTag)
+
 #Region "Fields"
+
     Private _idTag As Long
     Private _strTag As String
     Private _newTag As Boolean
     Private _modifiedTag As Boolean
     Private _deletedTag As Boolean
     Private _movies As New List(Of Database.DBElement)
+
 #End Region 'Fields
 
 #Region "Constructors"
+
     Public Sub New()
         Clear()
     End Sub
+
 #End Region
 
 #Region "Properties"
+
     Public Property Movies() As List(Of Database.DBElement)
         Get
             Return _movies
@@ -680,7 +673,9 @@ Friend Class SyncTag
     End Property
 
 #End Region
+
 #Region "Methods"
+
     Public Sub Clear()
         _movies = New List(Of Database.DBElement)
         _idTag = -1
@@ -693,8 +688,10 @@ Friend Class SyncTag
     Public Function CompareTo(ByVal other As SyncTag) As Integer Implements IComparable(Of SyncTag).CompareTo
         Return (ID).CompareTo(other.ID)
     End Function
+
 #End Region 'Methods
 
 End Class
+
 #End Region
 

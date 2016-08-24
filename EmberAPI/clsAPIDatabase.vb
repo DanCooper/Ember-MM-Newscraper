@@ -809,7 +809,7 @@ Public Class Database
     Public Function Connect_MyVideos() As Boolean
 
         'set database version
-        Dim MyVideosDBVersion As Integer = 41
+        Dim MyVideosDBVersion As Integer = 42
 
         'set database filename
         Dim MyVideosDB As String = String.Format("MyVideos{0}.emm", MyVideosDBVersion)
@@ -2910,6 +2910,15 @@ Public Class Database
                 SQLtransaction.Commit()
             End Using
 
+            Using SQLtransaction As SQLiteTransaction = _myvideosDBConn.BeginTransaction()
+                Select Case Args.currVersion
+                    Case Is < 42
+                        Prepare_OrphanedLinks(True)
+                End Select
+
+                SQLtransaction.Commit()
+            End Using
+
             _myvideosDBConn.Close()
             File.Move(tempName, Args.newDBPath)
         Catch ex As Exception
@@ -3281,6 +3290,63 @@ Public Class Database
                     End If
                 End While
             End Using
+        End Using
+
+        If Not BatchMode Then SQLtransaction.Commit()
+    End Sub
+
+    Private Sub Prepare_OrphanedLinks(ByVal BatchMode As Boolean)
+        bwPatchDB.ReportProgress(-1, "Removing orphaned links...")
+
+        Dim SQLtransaction As SQLiteTransaction = Nothing
+        If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
+
+        Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+            bwPatchDB.ReportProgress(-1, "Cleaning movie table")
+            SQLcommand.CommandText = "DELETE FROM movie WHERE idSource NOT IN (SELECT idSource FROM moviesource);"
+            SQLcommand.ExecuteNonQuery()
+            bwPatchDB.ReportProgress(-1, "Cleaning tvshow table")
+            SQLcommand.CommandText = "DELETE FROM tvshow WHERE idSource NOT IN (SELECT idSource FROM tvshowsource);"
+            SQLcommand.ExecuteNonQuery()
+            bwPatchDB.ReportProgress(-1, "Cleaning actorlinkmovie table")
+            SQLcommand.CommandText = "DELETE FROM actorlinkmovie WHERE idMovie NOT IN (SELECT idMovie FROM movie);"
+            SQLcommand.ExecuteNonQuery()
+            bwPatchDB.ReportProgress(-1, "Cleaning art table")
+            SQLcommand.CommandText = "DELETE FROM art WHERE media_id NOT IN (SELECT idMovie FROM movie) AND media_type = 'movie';"
+            SQLcommand.ExecuteNonQuery()
+            bwPatchDB.ReportProgress(-1, "Cleaning countrylinkmovie table")
+            SQLcommand.CommandText = "DELETE FROM countrylinkmovie WHERE idMovie NOT IN (SELECT idMovie FROM movie);"
+            SQLcommand.ExecuteNonQuery()
+            bwPatchDB.ReportProgress(-1, "Cleaning directorlinkmovie table")
+            SQLcommand.CommandText = "DELETE FROM directorlinkmovie WHERE idMovie NOT IN (SELECT idMovie FROM movie);"
+            SQLcommand.ExecuteNonQuery()
+            bwPatchDB.ReportProgress(-1, "Cleaning genrelinkmovie table")
+            SQLcommand.CommandText = "DELETE FROM genrelinkmovie WHERE idMovie NOT IN (SELECT idMovie FROM movie);"
+            SQLcommand.ExecuteNonQuery()
+            bwPatchDB.ReportProgress(-1, "Cleaning movielinktvshow table")
+            SQLcommand.CommandText = "DELETE FROM movielinktvshow WHERE idMovie NOT IN (SELECT idMovie FROM movie);"
+            SQLcommand.ExecuteNonQuery()
+            bwPatchDB.ReportProgress(-1, "Cleaning setlinkmovie table")
+            SQLcommand.CommandText = "DELETE FROM setlinkmovie WHERE idMovie NOT IN (SELECT idMovie FROM movie);"
+            SQLcommand.ExecuteNonQuery()
+            bwPatchDB.ReportProgress(-1, "Cleaning studiolinkmovie table")
+            SQLcommand.CommandText = "DELETE FROM studiolinkmovie WHERE idMovie NOT IN (SELECT idMovie FROM movie);"
+            SQLcommand.ExecuteNonQuery()
+            bwPatchDB.ReportProgress(-1, "Cleaning taglinks table")
+            SQLcommand.CommandText = "DELETE FROM taglinks WHERE idMedia NOT IN (SELECT idMovie FROM movie) AND media_type = 'movie';"
+            SQLcommand.ExecuteNonQuery()
+            bwPatchDB.ReportProgress(-1, "Cleaning writerlinkmovie table")
+            SQLcommand.CommandText = "DELETE FROM writerlinkmovie WHERE idMovie NOT IN (SELECT idMovie FROM movie);"
+            SQLcommand.ExecuteNonQuery()
+            bwPatchDB.ReportProgress(-1, "Cleaning MoviesAStreams table")
+            SQLcommand.CommandText = "DELETE FROM MoviesAStreams WHERE MovieID NOT IN (SELECT idMovie FROM movie);"
+            SQLcommand.ExecuteNonQuery()
+            bwPatchDB.ReportProgress(-1, "Cleaning MoviesSubs table")
+            SQLcommand.CommandText = "DELETE FROM MoviesSubs WHERE MovieID NOT IN (SELECT idMovie FROM movie);"
+            SQLcommand.ExecuteNonQuery()
+            bwPatchDB.ReportProgress(-1, "Cleaning MoviesVStreams table")
+            SQLcommand.CommandText = "DELETE FROM MoviesVStreams WHERE MovieID NOT IN (SELECT idMovie FROM movie);"
+            SQLcommand.ExecuteNonQuery()
         End Using
 
         If Not BatchMode Then SQLtransaction.Commit()

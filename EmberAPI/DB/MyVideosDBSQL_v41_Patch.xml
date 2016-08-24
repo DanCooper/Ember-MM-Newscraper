@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<CommandFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <transaction name="MyVideosDBSQL_v41_to_v42">
+    <command type="DB">
+      <description>fixing missing triggers</description>
+      <execute>
+        DROP TRIGGER IF EXISTS delete_movie;
+
+        CREATE TRIGGER delete_movie
+        AFTER DELETE
+        ON movie
+        BEGIN
+        DELETE FROM actorlinkmovie WHERE idMovie=old.idMovie;
+        DELETE FROM art WHERE media_id=old.idMovie AND media_type='movie';
+        DELETE FROM countrylinkmovie WHERE idMovie=old.idMovie;
+        DELETE FROM directorlinkmovie WHERE idMovie=old.idMovie;
+        DELETE FROM genrelinkmovie WHERE idMovie=old.idMovie;
+        DELETE FROM movielinktvshow WHERE idMovie=old.idMovie;
+        DELETE FROM setlinkmovie WHERE idMovie=old.idMovie;
+        DELETE FROM studiolinkmovie WHERE idMovie=old.idMovie;
+        DELETE FROM taglinks WHERE idMedia=old.idMovie AND media_type='movie';
+        DELETE FROM writerlinkmovie WHERE idMovie=old.idMovie;
+        DELETE FROM MoviesAStreams WHERE MovieID=old.idMovie;
+        DELETE FROM MoviesSubs WHERE MovieID=old.idMovie;
+        DELETE FROM MoviesVStreams WHERE MovieID=old.idMovie;
+        END;
+
+        DROP TRIGGER IF EXISTS delete_moviesource;
+
+        CREATE TRIGGER delete_moviesource
+        AFTER DELETE
+        ON moviesource
+        BEGIN
+        DELETE FROM movie WHERE idSource=old.idSource;
+        END;
+
+        DROP TRIGGER IF EXISTS delete_tvshowsource;
+
+        CREATE TRIGGER delete_tvshowsource
+        AFTER DELETE
+        ON tvshowsource
+        BEGIN
+        DELETE FROM tvshow WHERE idSource=old.idSource;
+        END;
+      </execute>
+    </command>
+  </transaction>
+  <noTransaction type="">
+  </noTransaction>
+<!-- 
+  <noTransaction type="DB">
+    <description>nd1</description>
+    <execute>ne1</execute>
+  </noTransaction>
+-->
+</CommandFile>
