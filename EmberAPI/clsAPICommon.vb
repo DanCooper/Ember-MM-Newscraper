@@ -840,12 +840,13 @@ Public Class Enums
     End Enum
 
     Public Enum ScannerEventType As Integer
-        Added_Movie = 0
-        Added_TVEpisode = 1
-        Added_TVShow = 2
-        CleaningDatabase = 3
-        PreliminaryTasks = 4
-        Refresh_TVShow = 5
+        None = 0
+        Added_Movie = 1
+        Added_TVEpisode = 2
+        Added_TVShow = 3
+        CleaningDatabase = 4
+        PreliminaryTasks = 5
+        Refresh_TVShow = 6
     End Enum
 
     Public Enum ScraperEventType As Integer

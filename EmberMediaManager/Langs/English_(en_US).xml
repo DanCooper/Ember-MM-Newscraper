@@ -812,8 +812,8 @@
   <string id="811">PasteBin URL:</string>
   <string id="812">Old Title: {0} | New Title: {1}</string>
   <string id="813">Movie Scraped</string>
-  <string id="814">Added Episode:</string>
-  <string id="815">Added Movie:</string>
+  <string id="814">Added Episode</string>
+  <string id="815">Added Movie</string>
   <string id="816">An Error Has Occurred</string>
   <string id="817">New Movie Added</string>
   <string id="818">New Episode Added</string>
@@ -1178,7 +1178,7 @@
   <string id="1086">The directory can not be renamed because the directory is specified as the source.</string>
   <string id="1087">Edit Data Field</string>
   <string id="1088">New value for "{0}"</string>
-  <string id="1089"></string>
+  <string id="1089">Added TV Show</string>
   <string id="1090"></string>
   <string id="1091"></string>
   <string id="1092"></string>

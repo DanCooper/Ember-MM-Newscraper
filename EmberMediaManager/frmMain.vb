@@ -14513,6 +14513,37 @@ Public Class frmMain
         Return bsMovieSets.Find("idSet", lngID)
     End Function
     ''' <summary>
+    ''' Adds a new single TV Show row with informations from DB
+    ''' </summary>
+    ''' <param name="lngID"></param>
+    ''' <remarks></remarks>
+    Private Sub AddRow_TVShow(ByVal lngID As Long)
+        If lngID = -1 Then Return
+
+        Dim myDelegate As New Delegate_dtListAddRow(AddressOf dtListAddRow)
+        Dim newRow As DataRow = Nothing
+        Dim newTable As New DataTable
+
+        Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM tvshowlist WHERE idShow={0}", lngID))
+        If newTable.Rows.Count = 1 Then
+            newRow = newTable.Rows.Item(0)
+        End If
+
+        Dim dRow = dtTVShows.NewRow()
+        dRow.ItemArray = newRow.ItemArray
+
+        If newRow IsNot Nothing Then
+            RemoveHandler dgvTVShows.CellEnter, AddressOf dgvTVShows_CellEnter
+            If InvokeRequired Then
+                Invoke(myDelegate, New Object() {dtTVShows, dRow})
+            Else
+                dtTVShows.Rows.Add(dRow)
+            End If
+            AddHandler dgvTVShows.CellEnter, AddressOf dgvTVShows_CellEnter
+            currRow_TVShow = -1
+        End If
+    End Sub
+    ''' <summary>
     ''' Refresh a single Movie row with informations from DB
     ''' </summary>
     ''' <param name="MovieID"></param>
@@ -15200,16 +15231,19 @@ Public Class frmMain
     Private Sub ScannerUpdated(ByVal eProgressValue As Scanner.ProgressValue)
         Select Case eProgressValue.Type
             Case Enums.ScannerEventType.Added_Movie
-                SetStatus(String.Concat(Master.eLang.GetString(815, "Added Movie:"), " ", eProgressValue.Message))
+                SetStatus(String.Concat(String.Concat(Master.eLang.GetString(815, "Added Movie"), ":"), " ", eProgressValue.Message))
                 AddRow_Movie(eProgressValue.ID)
             Case Enums.ScannerEventType.Added_TVEpisode
-                SetStatus(String.Concat(Master.eLang.GetString(814, "Added Episode:"), " ", eProgressValue.Message))
+                SetStatus(String.Concat(String.Concat(Master.eLang.GetString(814, "Added Episode"), ":"), " ", eProgressValue.Message))
+            Case Enums.ScannerEventType.Added_TVShow
+                SetStatus(String.Concat(String.Concat(Master.eLang.GetString(1089, "Added TV Show"), ":"), " ", eProgressValue.Message))
+                AddRow_TVShow(eProgressValue.ID)
             Case Enums.ScannerEventType.CleaningDatabase
                 SetStatus(Master.eLang.GetString(644, "Cleaning Database..."))
             Case Enums.ScannerEventType.PreliminaryTasks
                 SetStatus(Master.eLang.GetString(116, "Performing Preliminary Tasks (Gathering Data)..."))
             Case Enums.ScannerEventType.Refresh_TVShow
-                RefreshRow_TVShow(eProgressValue.ID)
+                RefreshRow_TVShow(eProgressValue.ID, True)
         End Select
     End Sub
 
