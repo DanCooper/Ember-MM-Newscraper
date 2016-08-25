@@ -161,7 +161,6 @@ Public Class dlgTrailerSelect
                     End If
 
                     DialogResult = DialogResult.OK
-                    Close()
                 Else
                     Process.Start(String.Concat("""", txtLocalTrailer.Text, """"))
                     didCancel = True
@@ -179,7 +178,6 @@ Public Class dlgTrailerSelect
             If _noDownload Then
                 Result.URLWebsite = sFormat.VideoURL
                 DialogResult = DialogResult.OK
-                Close()
             Else
                 If sFormat IsNot Nothing AndAlso Not String.IsNullOrEmpty(sFormat.VideoURL) Then
                     bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
@@ -205,7 +203,6 @@ Public Class dlgTrailerSelect
             If _noDownload Then
                 Result.URLWebsite = txtManualTrailerLink.Text
                 DialogResult = DialogResult.OK
-                Close()
             Else
                 Dim ManualTrailer As New TrailerLinksContainer With {.VideoURL = txtManualTrailerLink.Text}
                 bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
@@ -218,7 +215,6 @@ Public Class dlgTrailerSelect
                 If _noDownload Then
                     Result.URLWebsite = lvTrailers.SelectedItems(0).SubItems(2).Text.ToString
                     DialogResult = DialogResult.OK
-                    Close()
                 Else
                     Dim sFormat As New TrailerLinksContainer
                     Using dFormats As New dlgTrailerFormat
@@ -241,7 +237,6 @@ Public Class dlgTrailerSelect
                 If _noDownload Then
                     Result.URLWebsite = lvTrailers.SelectedItems(0).SubItems(2).Text.ToString
                     DialogResult = DialogResult.OK
-                    Close()
                 Else
                     If sFormat IsNot Nothing AndAlso Not String.IsNullOrEmpty(sFormat.VideoURL) Then
                         bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
@@ -256,7 +251,6 @@ Public Class dlgTrailerSelect
                 If _noDownload Then
                     Result.URLWebsite = lvTrailers.SelectedItems(0).SubItems(1).Text.ToString
                     DialogResult = DialogResult.OK
-                    Close()
                 Else
                     Dim SelectedTrailer As New TrailerLinksContainer With {.VideoURL = lvTrailers.SelectedItems(0).SubItems(1).Text.ToString}
                     bwDownloadTrailer = New System.ComponentModel.BackgroundWorker
@@ -428,7 +422,6 @@ Public Class dlgTrailerSelect
         If Not e.Cancelled Then
             If Convert.ToBoolean(e.Result) Then
                 DialogResult = DialogResult.OK
-                Close()
             Else
                 pnlStatus.Visible = False
                 SetControlsEnabled(True)
@@ -445,9 +438,8 @@ Public Class dlgTrailerSelect
             Threading.Thread.Sleep(50)
         End While
 
+        Result = Nothing
         DialogResult = DialogResult.Cancel
-        Me.Result = Nothing
-        Close()
     End Sub
 
     Private Sub DownloadProgressUpdated(ByVal iProgress As Integer, ByVal strInfo As String)

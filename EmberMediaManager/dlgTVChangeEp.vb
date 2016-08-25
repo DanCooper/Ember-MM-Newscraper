@@ -56,7 +56,6 @@ Public Class dlgTVChangeEp
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
         DialogResult = DialogResult.Cancel
-        Close()
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
@@ -67,7 +66,6 @@ Public Class dlgTVChangeEp
         End If
 
         DialogResult = DialogResult.OK
-        Close()
     End Sub
 
     Private Sub ClearInfo()

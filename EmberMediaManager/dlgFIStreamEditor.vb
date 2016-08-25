@@ -143,8 +143,7 @@ Public Class dlgFIStreamEditor
     End Function
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
-        DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Close()
+        DialogResult = DialogResult.Cancel
     End Sub
 
     Private Sub cbAudioCodec_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbAudioCodec.SelectedIndexChanged
@@ -164,8 +163,7 @@ Public Class dlgFIStreamEditor
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
-        DialogResult = System.Windows.Forms.DialogResult.OK
-        Close()
+        DialogResult = DialogResult.OK
     End Sub
 
     Private Sub SetUp()

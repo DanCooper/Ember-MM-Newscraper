@@ -175,7 +175,6 @@ Public Class dlgIMDBSearchResults_TV
         _tmpTVShow = New MediaContainers.TVShow
 
         DialogResult = DialogResult.Cancel
-        Close()
     End Sub
 
     Private Sub btnOpenFolder_Click(sender As Object, e As EventArgs) Handles btnOpenFolder.Click
@@ -275,7 +274,6 @@ Public Class dlgIMDBSearchResults_TV
         End If
 
         DialogResult = DialogResult.OK
-        Close()
     End Sub
 
     Private Sub SearchInfoDownloaded(ByVal sPoster As String, ByVal sInfo As MediaContainers.TVShow)

@@ -28,18 +28,18 @@ Public Class Tag_Generic
 
 #Region "Delegates"
 
-    Public Delegate Sub Delegate_AddToolsStripItem(control As System.Windows.Forms.ToolStripMenuItem, value As System.Windows.Forms.ToolStripItem)
-    Public Delegate Sub Delegate_RemoveToolsStripItem(control As System.Windows.Forms.ToolStripMenuItem, value As System.Windows.Forms.ToolStripItem)
+    Public Delegate Sub Delegate_AddToolsStripItem(control As ToolStripMenuItem, value As System.Windows.Forms.ToolStripItem)
+    Public Delegate Sub Delegate_RemoveToolsStripItem(control As ToolStripMenuItem, value As System.Windows.Forms.ToolStripItem)
 
 #End Region 'Delegates
 
 #Region "Fields"
 
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
     Private _setup As frmSettingsHolder
     Private _AssemblyName As String = String.Empty
-    Private WithEvents mnuMainToolsTag As New System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents cmnuTrayToolsTag As New System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents mnuMainToolsTag As New ToolStripMenuItem
+    Private WithEvents cmnuTrayToolsTag As New ToolStripMenuItem
     Private _enabled As Boolean = False
     Private _Name As String = "Tag Manager"
 
@@ -47,13 +47,10 @@ Public Class Tag_Generic
 
 #Region "Events"
 
-    Public Event GenericEvent(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object)) Implements EmberAPI.Interfaces.GenericModule.GenericEvent
-
+    Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) Implements Interfaces.GenericModule.GenericEvent
     Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.GenericModule.ModuleSetupChanged
-
-    Public Event ModuleSettingsChanged() Implements EmberAPI.Interfaces.GenericModule.ModuleSettingsChanged
-
-    Public Event SetupNeedsRestart() Implements EmberAPI.Interfaces.GenericModule.SetupNeedsRestart
+    Public Event ModuleSettingsChanged() Implements Interfaces.GenericModule.ModuleSettingsChanged
+    Public Event SetupNeedsRestart() Implements Interfaces.GenericModule.SetupNeedsRestart
 
 #End Region 'Events
 
@@ -111,6 +108,7 @@ Public Class Tag_Generic
     Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
+
     Sub Disable()
         Dim tsi As New ToolStripMenuItem
 
@@ -123,7 +121,7 @@ Public Class Tag_Generic
         RemoveToolsStripItem(tsi, cmnuTrayToolsTag)
     End Sub
 
-    Public Sub RemoveToolsStripItem(control As System.Windows.Forms.ToolStripMenuItem, value As System.Windows.Forms.ToolStripItem)
+    Public Sub RemoveToolsStripItem(control As ToolStripMenuItem, value As System.Windows.Forms.ToolStripItem)
         If control.Owner.InvokeRequired Then
             control.Owner.Invoke(New Delegate_RemoveToolsStripItem(AddressOf RemoveToolsStripItem), New Object() {control, value})
         Else
@@ -147,7 +145,7 @@ Public Class Tag_Generic
         AddToolsStripItem(tsi, cmnuTrayToolsTag)
     End Sub
 
-    Public Sub AddToolsStripItem(control As System.Windows.Forms.ToolStripMenuItem, value As System.Windows.Forms.ToolStripItem)
+    Public Sub AddToolsStripItem(control As ToolStripMenuItem, value As System.Windows.Forms.ToolStripItem)
         If control.Owner.InvokeRequired Then
             control.Owner.Invoke(New Delegate_AddToolsStripItem(AddressOf AddToolsStripItem), New Object() {control, value})
         Else
@@ -156,8 +154,9 @@ Public Class Tag_Generic
     End Sub
 
     Private Sub Handle_ModuleEnabledChanged(ByVal State As Boolean)
-        RaiseEvent ModuleEnabledChanged(Me._Name, State, 0)
+        RaiseEvent ModuleEnabledChanged(_Name, State, 0)
     End Sub
+
     Private Sub Handle_ModuleSettingsChanged()
         RaiseEvent ModuleSettingsChanged()
     End Sub
@@ -166,19 +165,20 @@ Public Class Tag_Generic
         _AssemblyName = sAssemblyName
         LoadSettings()
     End Sub
+
     Function InjectSetup() As Containers.SettingsPanel Implements Interfaces.GenericModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
-        Me._setup = New frmSettingsHolder
-        Me._setup.chkEnabled.Checked = Me._enabled
-        SPanel.Name = Me._Name
+        _setup = New frmSettingsHolder
+        _setup.chkEnabled.Checked = _enabled
+        SPanel.Name = _Name
         SPanel.Text = Master.eLang.GetString(868, "Tag Manager")
         SPanel.Prefix = "TagManager_"
         SPanel.Type = Master.eLang.GetString(802, "Modules")
-        SPanel.ImageIndex = If(Me._enabled, 9, 10)
+        SPanel.ImageIndex = If(_enabled, 9, 10)
         SPanel.Order = 100
-        SPanel.Panel = Me._setup.pnlSettings
-        AddHandler Me._setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
-        AddHandler Me._setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+        SPanel.Panel = _setup.pnlSettings
+        AddHandler _setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
+        AddHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         Return SPanel
     End Function
 
@@ -193,12 +193,13 @@ Public Class Tag_Generic
     End Sub
     Sub LoadSettings()
     End Sub
+
     Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
-        Me.Enabled = Me._setup.chkEnabled.Checked
+        Enabled = _setup.chkEnabled.Checked
         SaveSettings()
         If DoDispose Then
-            RemoveHandler Me._setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
-            RemoveHandler Me._setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+            RemoveHandler _setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
+            RemoveHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
             _setup.Dispose()
         End If
     End Sub
@@ -209,6 +210,7 @@ Public Class Tag_Generic
 #End Region 'Methods
 
 #Region "Nested Types"
+
 #End Region 'Nested Types
 
 End Class

@@ -55,7 +55,6 @@ Public Class dlgStudioSelect
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
         DialogResult = DialogResult.Cancel
-        Close()
     End Sub
 
     Private Sub dlgStudioSelect_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -84,7 +83,6 @@ Public Class dlgStudioSelect
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         DialogResult = DialogResult.OK
-        Close()
     End Sub
 
     Private Sub SetUp()

@@ -75,7 +75,6 @@ Public Class dlgBulkRenamer_TV
     Private Sub bwDoRename_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwDoRename.RunWorkerCompleted
         pnlCancel.Visible = False
         DialogResult = DialogResult.OK
-        Close()
     End Sub
 
     Private Sub bwDoRename_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDoRename.DoWork
@@ -203,8 +202,6 @@ Public Class dlgBulkRenamer_TV
         Else
             DialogResult = DialogResult.Cancel
         End If
-
-        Close()
     End Sub
 
     Private Sub cmsEpisodeList_Opening(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles cmsEpisodeList.Opening

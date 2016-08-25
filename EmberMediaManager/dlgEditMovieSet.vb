@@ -247,8 +247,7 @@ Public Class dlgEditMovieSet
     End Sub
 
     Private Sub btnRescrape_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRescrape.Click
-        DialogResult = System.Windows.Forms.DialogResult.Retry
-        Close()
+        DialogResult = DialogResult.Retry
     End Sub
 
     Private Sub btnSetBannerDL_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetBannerDL.Click
@@ -835,8 +834,7 @@ Public Class dlgEditMovieSet
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles Cancel_Button.Click
-        DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Close()
+        DialogResult = DialogResult.Cancel
     End Sub
 
     Private Sub dlgEditMovie_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load

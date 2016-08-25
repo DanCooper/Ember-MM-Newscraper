@@ -162,7 +162,6 @@ Public Class dlgTMDBSearchResults_MovieSet
         _tmpMovieSet.Clear()
 
         DialogResult = DialogResult.Cancel
-        Close()
     End Sub
 
     Private Sub chkManual_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkManual.CheckedChanged
@@ -226,7 +225,6 @@ Public Class dlgTMDBSearchResults_MovieSet
 
     Private Sub OK_Button_Click(ByVal sender As Object, ByVal e As EventArgs) Handles OK_Button.Click
         DialogResult = DialogResult.OK
-        Close()
     End Sub
 
     Private Sub SearchMovieSetInfoDownloaded(ByVal sPoster As String, ByVal sInfo As MediaContainers.MovieSet)

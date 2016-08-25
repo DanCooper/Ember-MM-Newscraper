@@ -173,7 +173,6 @@ Public Class dlgIMDBSearchResults_Movie
         _tmpMovie.Clear()
 
         DialogResult = DialogResult.Cancel
-        Close()
     End Sub
 
     Private Sub btnOpenFolder_Click(sender As Object, e As EventArgs) Handles btnOpenFolder.Click

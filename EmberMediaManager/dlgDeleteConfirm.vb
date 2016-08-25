@@ -80,7 +80,6 @@ Public Class dlgDeleteConfirm
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
         DialogResult = DialogResult.Cancel
-        Close()
     End Sub
 
     Private Function DeleteSelectedItems() As Boolean
@@ -143,7 +142,6 @@ Public Class dlgDeleteConfirm
         Else
             DialogResult = DialogResult.Cancel
         End If
-        Close()
     End Sub
 
     Private Sub Populate_FileList(ByVal ItemsToDelete As Dictionary(Of Long, Long))
