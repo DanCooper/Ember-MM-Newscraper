@@ -47,7 +47,7 @@ Public Class Master
     Public Shared is32Bit As Boolean
     Public Shared isWindows As Boolean = Functions.CheckIfWindows
 
-    Public Shared strVersionOverwrite As String = "1.4.8.0 Alpha 21"
+    Public Shared strVersionOverwrite As String = "1.4.8.0 Alpha 22"
 
 #End Region 'Fields
 
