@@ -1,0 +1,237 @@
+
+html, body{
+	margin: 0;
+	padding: 0;
+	background: #EFEFEF;
+	font-family: 'LatoWeb';
+	font-size: 9pt;
+	font-style: normal;
+	text-align: center;
+}
+
+a{
+	text-decoration: none;
+	color: #2196f3;
+}
+
+
+
+/* Nav */
+.navbar{
+	top:0;
+	width:100%; 
+	position: fixed; 
+	background: rgba(30, 30, 30, 0.9);
+	border:0;
+	border-radius: 0;
+}
+
+.navbar-default .navbar-brand, 
+.navbar-default .navbar-brand:hover {
+	color: #fff;
+}
+.navbar-default .navbar-nav > li > a{
+
+    font-family: 'LatoWebLight';
+	color: #fff;
+	font-size: 13px;
+    /*text-transform: uppercase;*/
+}
+
+.navbar-default .navbar-nav > li > a:hover, 
+.navbar-default .navbar-nav > li > a:focus,
+.navbar-default .navbar-nav > li.active > a, 
+.navbar-default .navbar-nav > li.active > a:hover, 
+.navbar-default .navbar-nav > li.active > a:focus
+{
+	transition: all 0.25s ease 0s;
+	color: #ddd;
+	background: none;
+	text-decoration: none;
+}
+
+
+/* Headline Section*/
+
+.headline-container{
+	color: #333;
+	margin: 70px 25px 20px;
+	text-align: left;
+}
+
+.headline-container > h1{
+	margin-bottom: 0;
+	font-size: 30px;
+	color: #919191;
+	padding: 10px;
+	text-align: center;
+}
+
+.headline-container > div > span{
+	text-transform: uppercase;
+	font-size: 12px;
+}
+.headline-container > div > span:nth-child(odd){
+	/* string */
+	color: #9e9e9e;
+	margin-left: 10px;
+}
+.headline-container > div > span:nth-child(even){
+	/* value */
+	color: #1e88e5;
+	margin-right: 15px;
+}
+
+
+/* Control */
+
+.control{
+	float: right;
+	margin-top: 11px;
+	margin-right: 7px;
+}
+.control > a{
+	font-size: 20px;
+	padding: 10px;
+	color: #fff;
+}
+
+/* Movie Boxdesign */
+
+.box{
+	margin: 12px;
+	box-shadow: 0 0 5px #555;
+	display: inline-block;
+	border-radius: 3px;
+	overflow: hidden;
+	text-align: left;
+}
+
+.box > img{
+	height: 230px;
+	width: 153px;
+}
+
+/* Big Img */
+
+.big-img > img{
+	height: 300px;
+	width: 200px;
+}
+
+
+/* Wall */
+.wall-container > .movie-info{
+	display: none;
+}
+
+.wall-container .box{
+	height: 230px;
+	width: 153px;
+}
+.wall-container .big-img{
+	height: 300px;
+	width: 200px;
+}
+/* Card */
+.card-container > .movie-info{
+	float: left;
+	height: 230px;
+    padding: 10px;
+    width: 295px;
+    background: #F8F8F8;
+    color:#333333;
+}
+.card-container > .movie-info > p{
+	color: #9e9e9e;
+	max-height: 153px;
+	overflow: hidden;
+}
+
+.card-container > img{
+	float: left;
+}
+
+.box .card-container {
+	border-radius: 5px;
+	height: 230px;
+	width: 440px;
+}
+
+
+
+
+/* Modal View*/
+.modal{
+	text-align: left;
+}
+
+/* mini Hack für den Serienstatus */
+.tv_episode_missing_status_false,
+.non_status{
+	display: none;
+}
+
+.modal-header {
+	background: rgba(30, 30, 30, 0.7) none repeat scroll 0 0;
+	color: #f9f9f9;
+}
+.modal-header > p{
+	margin: 0;
+	margin-top: 7px;
+}
+
+.table > tbody > tr:first-child > td {
+	border: 0 none;
+}
+
+.close{
+	color: #ffffff;
+	text-shadow: 0 1px 0 #ffffff;
+	opacity: 1;
+}
+
+.in_modal_img{
+	float: left;
+	border-radius: 7px;
+	width: 150px;
+}
+
+
+/* Spezial CSS*/
+.in_modal_plot{
+	float: left;
+	max-width: 415px;
+	padding: 10px 15px;
+}
+
+.tv_episode_plot{
+	max-height:0px;
+	overflow:hidden;
+	transition: max-height 1s ease-in-out 0.5s;
+}
+
+.tv_episode_plot > div {
+	height: 15px;
+	width: 100%;
+}
+
+tr:hover > td > .tv_episode_plot{
+	max-height: 500px;
+}
+
+.tv_episode_missing_true{
+	color: #aaa;
+}
+
+
+/* Footer */
+
+footer {  
+	box-sizing: border-box;
+	padding: 40px 100px 40px 0;
+	width: 100%;
+	font-size: 15px;
+	text-align: right;
+	color: #9e9e9e;
+}

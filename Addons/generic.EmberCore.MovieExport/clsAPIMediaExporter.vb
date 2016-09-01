@@ -33,16 +33,16 @@ Public Class MediaExporter
 
     Public Delegate Function ShowProgress(ByVal title As String, ByVal operation As String) As Boolean
 
-    Private tCounter_Global As Integer
-    Private tCounter_TVEpisode As Integer
-    Private tCounter_TVSeason As Integer
-    Private tBuildPath As String = Path.Combine(Master.TempPath, "Export")
-    Private tExportSettings As New ExportSettings
-    Private tMovieList As List(Of Database.DBElement)
-    Private tTotal_Movies As Integer
-    Private tTotal_TVEpisodes As Integer
-    Private tTotal_TVShows As Integer
-    Private tTVShowList As List(Of Database.DBElement)
+    Private _iCounter_Global As Integer
+    Private _iCounter_TVEpisode As Integer
+    Private _iCounter_TVSeason As Integer
+    Private _iTotal_Movies As Integer
+    Private _iTotal_TVEpisodes As Integer
+    Private _iTotal_TVShows As Integer
+    Private _strBuildPath As String = Path.Combine(Master.TempPath, "Export")
+    Private _tExportSettings As New ExportSettings
+    Private _tMovieList As List(Of Database.DBElement)
+    Private _tTVShowList As List(Of Database.DBElement)
 
 #End Region 'Fields
 
@@ -141,47 +141,47 @@ Public Class MediaExporter
             If part.isLooped Then
                 'Movies
                 If part.ContentType = Enums.ContentType.Movie Then
-                    For Each tMovie As Database.DBElement In tMovieList
+                    For Each tMovie As Database.DBElement In _tMovieList
                         If Not sfunction Is Nothing Then
                             If Not sfunction(tMovie.Movie.Title, String.Empty) Then Return Nothing
                         End If
                         HTMLBodyPart.Append(ProcessPattern_Movie(part, sfunction, tMovie))
-                        tCounter_Global += 1
+                        _iCounter_Global += 1
                     Next
 
                     'TV Shows
                 ElseIf part.ContentType = Enums.ContentType.TVShow Then
-                    For Each tShow As Database.DBElement In tTVShowList
+                    For Each tShow As Database.DBElement In _tTVShowList
                         If Not sfunction Is Nothing Then
                             If Not sfunction(tShow.TVShow.Title, String.Empty) Then Return Nothing
                         End If
                         HTMLBodyPart.Append(ProcessPattern_TVShow(part, tShow, sfunction))
-                        tCounter_Global += 1
+                        _iCounter_Global += 1
                     Next
 
                     'TV Seasons
                 ElseIf part.ContentType = Enums.ContentType.TVSeason Then
                     If tTVShow IsNot Nothing Then
-                        tCounter_TVSeason = 1
+                        _iCounter_TVSeason = 1
                         For Each tSeason As Database.DBElement In tTVShow.Seasons.Where(Function(f) Not f.TVSeason.Season = 999)
                             If Not sfunction Is Nothing Then
                                 If Not sfunction(tTVShow.TVShow.Title, tSeason.TVSeason.Title) Then Return Nothing
                             End If
                             HTMLBodyPart.Append(ProcessPattern_TVSeason(part, sfunction, tTVShow, tSeason))
-                            tCounter_TVSeason += 1
+                            _iCounter_TVSeason += 1
                         Next
                     End If
 
                     'TV Episodes
                 ElseIf part.ContentType = Enums.ContentType.TVEpisode Then
                     If tTVShow IsNot Nothing AndAlso tTVSeason IsNot Nothing Then
-                        tCounter_TVEpisode = 1
+                        _iCounter_TVEpisode = 1
                         For Each tEpisode As Database.DBElement In tTVShow.Episodes.Where(Function(f) f.TVEpisode.Season = tTVSeason.TVSeason.Season)
                             If Not sfunction Is Nothing Then
                                 If Not sfunction(tTVShow.TVShow.Title, tEpisode.TVEpisode.Title) Then Return Nothing
                             End If
                             HTMLBodyPart.Append(ProcessPattern_TVEpisode(part, sfunction, tTVShow, tEpisode))
-                            tCounter_TVEpisode += 1
+                            _iCounter_TVEpisode += 1
                         Next
                     End If
                 End If
@@ -193,29 +193,28 @@ Public Class MediaExporter
         Return HTMLBodyPart
     End Function
 
-    Public Function CreateTemplate(ByVal TemplateName As String, ByVal MovieList As List(Of Database.DBElement), ByVal TVShowList As List(Of Database.DBElement), Optional ByVal BuildPath As String = "", Optional ByVal sfunction As ShowProgress = Nothing) As String
-        tMovieList = MovieList
-        tTVShowList = TVShowList
+    Public Function CreateTemplate(ByVal strTemplatePath As String, ByVal MovieList As List(Of Database.DBElement), ByVal TVShowList As List(Of Database.DBElement), Optional ByVal BuildPath As String = "", Optional ByVal sfunction As ShowProgress = Nothing) As String
+        _tMovieList = MovieList
+        _tTVShowList = TVShowList
 
-        tTotal_Movies = tMovieList.Count
-        tTotal_TVShows = tTVShowList.Count
-        For Each tShow As Database.DBElement In tTVShowList
-            tTotal_TVEpisodes += tShow.Episodes.Count
+        _iTotal_Movies = _tMovieList.Count
+        _iTotal_TVShows = _tTVShowList.Count
+        For Each tShow As Database.DBElement In _tTVShowList
+            _iTotal_TVEpisodes += tShow.Episodes.Count
         Next
 
-
         If Not String.IsNullOrEmpty(BuildPath) Then
-            tBuildPath = BuildPath
+            _strBuildPath = BuildPath
         Else
-            tBuildPath = Path.Combine(Master.TempPath, "Export")
+            _strBuildPath = Path.Combine(Master.TempPath, "Export")
         End If
 
-        FileUtils.Delete.DeleteDirectory(tBuildPath)
-        Directory.CreateDirectory(tBuildPath)
+        FileUtils.Delete.DeleteDirectory(_strBuildPath)
+        Directory.CreateDirectory(_strBuildPath)
 
-        Dim htmlPath As String = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, TemplateName, Path.DirectorySeparatorChar, Master.eSettings.GeneralLanguage, ".html")
+        Dim htmlPath As String = Path.Combine(strTemplatePath, String.Concat(Master.eSettings.GeneralLanguage, ".html"))
         If Not File.Exists(htmlPath) Then
-            htmlPath = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, "html", Path.DirectorySeparatorChar, TemplateName, Path.DirectorySeparatorChar, "English_(en_US).html")
+            htmlPath = Path.Combine(strTemplatePath, String.Concat("English_(en_US).html"))
         End If
         If Not File.Exists(htmlPath) Then
             logger.Warn(String.Concat("Can't find template """, htmlPath, """"))
@@ -228,14 +227,14 @@ Public Class MediaExporter
 
         Dim ContentPartMap As List(Of ContentPart) = Build_ContentPartMap(pattern)
 
-        tCounter_Global = 1
-        tCounter_TVEpisode = 1
-        tCounter_TVSeason = 1
+        _iCounter_Global = 1
+        _iCounter_TVEpisode = 1
+        _iCounter_TVSeason = 1
         Dim HTMLBody As New StringBuilder
         HTMLBody = Build_HTML(ContentPartMap, sfunction)
 
-        If HTMLBody IsNot Nothing AndAlso SaveAll(Directory.GetParent(htmlPath).FullName, HTMLBody) Then
-            Return Path.Combine(tBuildPath, "index.htm")
+        If HTMLBody IsNot Nothing Then
+            Return SaveAll(Directory.GetParent(htmlPath).FullName, HTMLBody)
         Else
             Return String.Empty
         End If
@@ -247,183 +246,183 @@ Public Class MediaExporter
         If File.Exists(tImage.LocalFilePath) Then
             Select Case tImageType
                 Case Enums.ModifierType.EpisodeFanart
-                    If tExportSettings.EpisodeFanarts Then
-                        If Not tExportSettings.EpisodeFanarts_MaxHeight = -1 OrElse Not tExportSettings.EpisodeFanarts_MaxWidth = -1 Then
+                    If _tExportSettings.EpisodeFanarts Then
+                        If Not _tExportSettings.EpisodeFanarts_MaxHeight = -1 OrElse Not _tExportSettings.EpisodeFanarts_MaxWidth = -1 Then
                             If tImage.LoadAndCache(Enums.ContentType.TV, True, True) Then
                                 Dim nImg As Image = tImage.ImageOriginal.Image
-                                ImageUtils.ResizeImage(nImg, tExportSettings.EpisodeFanarts_MaxWidth, tExportSettings.EpisodeFanarts_MaxHeight)
+                                ImageUtils.ResizeImage(nImg, _tExportSettings.EpisodeFanarts_MaxWidth, _tExportSettings.EpisodeFanarts_MaxHeight)
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
-                                strPath = String.Format("images/{0}/{1}/{2}-fanart.jpg", tCounter_Global, tCounter_TVSeason, tCounter_TVEpisode)
-                                tImage.ImageOriginal.SaveToFile(Path.Combine(tBuildPath, strPath))
+                                strPath = String.Format("exportdata/{0}/{1}/{2}-fanart.jpg", _iCounter_Global, _iCounter_TVSeason, _iCounter_TVEpisode)
+                                tImage.ImageOriginal.SaveToFile(Path.Combine(_strBuildPath, strPath))
                                 tImage.ImageOriginal.Clear()  'Dispose to save memory
                             End If
                         Else
-                            strPath = String.Format("images/{0}/{1}/{2}-fanart.jpg", tCounter_Global, tCounter_TVSeason, tCounter_TVEpisode)
-                            File.Copy(tImage.LocalFilePath, Path.Combine(tBuildPath, strPath), True)
+                            strPath = String.Format("exportdata/{0}/{1}/{2}-fanart.jpg", _iCounter_Global, _iCounter_TVSeason, _iCounter_TVEpisode)
+                            File.Copy(tImage.LocalFilePath, Path.Combine(_strBuildPath, strPath), True)
                         End If
                     End If
                 Case Enums.ModifierType.EpisodePoster
-                    If tExportSettings.EpisodePosters Then
-                        If Not tExportSettings.EpisodePosters_MaxHeight = -1 OrElse Not tExportSettings.EpisodePosters_MaxWidth = -1 Then
+                    If _tExportSettings.EpisodePosters Then
+                        If Not _tExportSettings.EpisodePosters_MaxHeight = -1 OrElse Not _tExportSettings.EpisodePosters_MaxWidth = -1 Then
                             If tImage.LoadAndCache(Enums.ContentType.TV, True, True) Then
                                 Dim nImg As Image = tImage.ImageOriginal.Image
-                                ImageUtils.ResizeImage(nImg, tExportSettings.EpisodePosters_MaxWidth, tExportSettings.EpisodePosters_MaxHeight)
+                                ImageUtils.ResizeImage(nImg, _tExportSettings.EpisodePosters_MaxWidth, _tExportSettings.EpisodePosters_MaxHeight)
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
-                                strPath = String.Format("images/{0}/{1}/{2}-poster.jpg", tCounter_Global, tCounter_TVSeason, tCounter_TVEpisode)
-                                tImage.ImageOriginal.SaveToFile(Path.Combine(tBuildPath, strPath))
+                                strPath = String.Format("exportdata/{0}/{1}/{2}-poster.jpg", _iCounter_Global, _iCounter_TVSeason, _iCounter_TVEpisode)
+                                tImage.ImageOriginal.SaveToFile(Path.Combine(_strBuildPath, strPath))
                                 tImage.ImageOriginal.Clear() 'Dispose to save memory
                             End If
                         Else
-                            strPath = String.Format("images/{0}/{1}/{2}-poster.jpg", tCounter_Global, tCounter_TVSeason, tCounter_TVEpisode)
-                            File.Copy(tImage.LocalFilePath, Path.Combine(tBuildPath, strPath), True)
+                            strPath = String.Format("exportdata/{0}/{1}/{2}-poster.jpg", _iCounter_Global, _iCounter_TVSeason, _iCounter_TVEpisode)
+                            File.Copy(tImage.LocalFilePath, Path.Combine(_strBuildPath, strPath), True)
                         End If
                     End If
                 Case Enums.ModifierType.MainBanner
-                    If tExportSettings.MainBanners Then
-                        If Not tExportSettings.MainBanners_MaxHeight = -1 OrElse Not tExportSettings.MainBanners_MaxWidth = -1 Then
+                    If _tExportSettings.MainBanners Then
+                        If Not _tExportSettings.MainBanners_MaxHeight = -1 OrElse Not _tExportSettings.MainBanners_MaxWidth = -1 Then
                             If tImage.LoadAndCache(Enums.ContentType.Movie, True, True) Then
                                 Dim nImg As Image = tImage.ImageOriginal.Image
-                                ImageUtils.ResizeImage(nImg, tExportSettings.MainBanners_MaxWidth, tExportSettings.MainBanners_MaxHeight)
+                                ImageUtils.ResizeImage(nImg, _tExportSettings.MainBanners_MaxWidth, _tExportSettings.MainBanners_MaxHeight)
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
-                                strPath = String.Format("images/{0}-banner.jpg", tCounter_Global)
-                                tImage.ImageOriginal.SaveToFile(Path.Combine(tBuildPath, strPath))
+                                strPath = String.Format("exportdata/{0}-banner.jpg", _iCounter_Global)
+                                tImage.ImageOriginal.SaveToFile(Path.Combine(_strBuildPath, strPath))
                                 tImage.ImageOriginal.Clear() 'Dispose to save memory
                             End If
                         Else
-                            strPath = String.Format("images/{0}-banner.jpg", tCounter_Global)
-                            File.Copy(tImage.LocalFilePath, Path.Combine(tBuildPath, strPath), True)
+                            strPath = String.Format("exportdata/{0}-banner.jpg", _iCounter_Global)
+                            File.Copy(tImage.LocalFilePath, Path.Combine(_strBuildPath, strPath), True)
                         End If
                     End If
                 Case Enums.ModifierType.MainCharacterArt
-                    If tExportSettings.MainCharacterarts Then
-                        strPath = String.Format("images/{0}-characterart.png", tCounter_Global)
-                        File.Copy(tImage.LocalFilePath, Path.Combine(tBuildPath, strPath), True)
+                    If _tExportSettings.MainCharacterarts Then
+                        strPath = String.Format("exportdata/{0}-characterart.png", _iCounter_Global)
+                        File.Copy(tImage.LocalFilePath, Path.Combine(_strBuildPath, strPath), True)
                     End If
                 Case Enums.ModifierType.MainClearArt
-                    If tExportSettings.MainClearArts Then
-                        strPath = String.Format("images/{0}-clearart.png", tCounter_Global)
-                        File.Copy(tImage.LocalFilePath, Path.Combine(tBuildPath, strPath), True)
+                    If _tExportSettings.MainClearArts Then
+                        strPath = String.Format("exportdata/{0}-clearart.png", _iCounter_Global)
+                        File.Copy(tImage.LocalFilePath, Path.Combine(_strBuildPath, strPath), True)
                     End If
                 Case Enums.ModifierType.MainClearLogo
-                    If tExportSettings.MainClearLogos Then
-                        strPath = String.Format("images/{0}-clearlogo.png", tCounter_Global)
-                        File.Copy(tImage.LocalFilePath, Path.Combine(tBuildPath, strPath), True)
+                    If _tExportSettings.MainClearLogos Then
+                        strPath = String.Format("exportdata/{0}-clearlogo.png", _iCounter_Global)
+                        File.Copy(tImage.LocalFilePath, Path.Combine(_strBuildPath, strPath), True)
                     End If
                 Case Enums.ModifierType.MainDiscArt
-                    If tExportSettings.MainClearArts Then
-                        strPath = String.Format("images/{0}-discart.png", tCounter_Global)
-                        File.Copy(tImage.LocalFilePath, Path.Combine(tBuildPath, strPath), True)
+                    If _tExportSettings.MainClearArts Then
+                        strPath = String.Format("exportdata/{0}-discart.png", _iCounter_Global)
+                        File.Copy(tImage.LocalFilePath, Path.Combine(_strBuildPath, strPath), True)
                     End If
                 Case Enums.ModifierType.MainFanart
-                    If tExportSettings.MainFanarts Then
-                        If Not tExportSettings.MainFanarts_MaxHeight = -1 OrElse Not tExportSettings.MainFanarts_MaxWidth = -1 Then
+                    If _tExportSettings.MainFanarts Then
+                        If Not _tExportSettings.MainFanarts_MaxHeight = -1 OrElse Not _tExportSettings.MainFanarts_MaxWidth = -1 Then
                             If tImage.LoadAndCache(Enums.ContentType.Movie, True, True) Then
                                 Dim nImg As Image = tImage.ImageOriginal.Image
-                                ImageUtils.ResizeImage(nImg, tExportSettings.MainFanarts_MaxWidth, tExportSettings.MainFanarts_MaxHeight)
+                                ImageUtils.ResizeImage(nImg, _tExportSettings.MainFanarts_MaxWidth, _tExportSettings.MainFanarts_MaxHeight)
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
-                                strPath = String.Format("images/{0}-fanart.jpg", tCounter_Global)
-                                tImage.ImageOriginal.SaveToFile(Path.Combine(tBuildPath, strPath))
+                                strPath = String.Format("exportdata/{0}-fanart.jpg", _iCounter_Global)
+                                tImage.ImageOriginal.SaveToFile(Path.Combine(_strBuildPath, strPath))
                                 tImage.ImageOriginal.Clear() 'Dispose to save memory
                             End If
                         Else
-                            strPath = String.Format("images/{0}-fanart.jpg", tCounter_Global)
-                            File.Copy(tImage.LocalFilePath, Path.Combine(tBuildPath, strPath), True)
+                            strPath = String.Format("exportdata/{0}-fanart.jpg", _iCounter_Global)
+                            File.Copy(tImage.LocalFilePath, Path.Combine(_strBuildPath, strPath), True)
                         End If
                     End If
                 Case Enums.ModifierType.MainLandscape
-                    If tExportSettings.MainLandscapes Then
-                        If Not tExportSettings.MainLandscapes_MaxHeight = -1 OrElse Not tExportSettings.MainLandscapes_MaxWidth = -1 Then
+                    If _tExportSettings.MainLandscapes Then
+                        If Not _tExportSettings.MainLandscapes_MaxHeight = -1 OrElse Not _tExportSettings.MainLandscapes_MaxWidth = -1 Then
                             If tImage.LoadAndCache(Enums.ContentType.Movie, True, True) Then
                                 Dim nImg As Image = tImage.ImageOriginal.Image
-                                ImageUtils.ResizeImage(nImg, tExportSettings.MainLandscapes_MaxWidth, tExportSettings.MainLandscapes_MaxHeight)
+                                ImageUtils.ResizeImage(nImg, _tExportSettings.MainLandscapes_MaxWidth, _tExportSettings.MainLandscapes_MaxHeight)
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
-                                strPath = String.Format("images/{0}-landscape.jpg", tCounter_Global)
-                                tImage.ImageOriginal.SaveToFile(Path.Combine(tBuildPath, strPath))
+                                strPath = String.Format("exportdata/{0}-landscape.jpg", _iCounter_Global)
+                                tImage.ImageOriginal.SaveToFile(Path.Combine(_strBuildPath, strPath))
                                 tImage.ImageOriginal.Clear() 'Dispose to save memory
                             End If
                         Else
-                            strPath = String.Format("images/{0}-landscape.jpg", tCounter_Global)
-                            File.Copy(tImage.LocalFilePath, Path.Combine(tBuildPath, strPath), True)
+                            strPath = String.Format("exportdata/{0}-landscape.jpg", _iCounter_Global)
+                            File.Copy(tImage.LocalFilePath, Path.Combine(_strBuildPath, strPath), True)
                         End If
                     End If
                 Case Enums.ModifierType.MainPoster
-                    If tExportSettings.MainPosters Then
-                        If Not tExportSettings.MainPosters_MaxHeight = -1 OrElse Not tExportSettings.MainPosters_MaxWidth = -1 Then
+                    If _tExportSettings.MainPosters Then
+                        If Not _tExportSettings.MainPosters_MaxHeight = -1 OrElse Not _tExportSettings.MainPosters_MaxWidth = -1 Then
                             If tImage.LoadAndCache(Enums.ContentType.TV, True, True) Then
                                 Dim nImg As Image = tImage.ImageOriginal.Image
-                                ImageUtils.ResizeImage(nImg, tExportSettings.MainPosters_MaxWidth, tExportSettings.MainPosters_MaxHeight)
+                                ImageUtils.ResizeImage(nImg, _tExportSettings.MainPosters_MaxWidth, _tExportSettings.MainPosters_MaxHeight)
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
-                                strPath = String.Format("images/{0}-poster.jpg", tCounter_Global)
-                                tImage.ImageOriginal.SaveToFile(Path.Combine(tBuildPath, strPath))
+                                strPath = String.Format("exportdata/{0}-poster.jpg", _iCounter_Global)
+                                tImage.ImageOriginal.SaveToFile(Path.Combine(_strBuildPath, strPath))
                                 tImage.ImageOriginal.Clear() 'Dispose to save memory
                             End If
                         Else
-                            strPath = String.Format("images/{0}-poster.jpg", tCounter_Global)
-                            File.Copy(tImage.LocalFilePath, Path.Combine(tBuildPath, strPath), True)
+                            strPath = String.Format("exportdata/{0}-poster.jpg", _iCounter_Global)
+                            File.Copy(tImage.LocalFilePath, Path.Combine(_strBuildPath, strPath), True)
                         End If
                     End If
                 Case Enums.ModifierType.SeasonBanner
-                    If tExportSettings.SeasonBanners Then
-                        If Not tExportSettings.SeasonBanners_MaxHeight = -1 OrElse Not tExportSettings.SeasonBanners_MaxWidth = -1 Then
+                    If _tExportSettings.SeasonBanners Then
+                        If Not _tExportSettings.SeasonBanners_MaxHeight = -1 OrElse Not _tExportSettings.SeasonBanners_MaxWidth = -1 Then
                             If tImage.LoadAndCache(Enums.ContentType.TV, True, True) Then
                                 Dim nImg As Image = tImage.ImageOriginal.Image
-                                ImageUtils.ResizeImage(nImg, tExportSettings.SeasonBanners_MaxWidth, tExportSettings.SeasonBanners_MaxHeight)
+                                ImageUtils.ResizeImage(nImg, _tExportSettings.SeasonBanners_MaxWidth, _tExportSettings.SeasonBanners_MaxHeight)
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
-                                strPath = String.Format("images/{0}/{1}-banner.jpg", tCounter_Global, tCounter_TVSeason)
-                                tImage.ImageOriginal.SaveToFile(Path.Combine(tBuildPath, strPath))
+                                strPath = String.Format("exportdata/{0}/{1}-banner.jpg", _iCounter_Global, _iCounter_TVSeason)
+                                tImage.ImageOriginal.SaveToFile(Path.Combine(_strBuildPath, strPath))
                                 tImage.ImageOriginal.Clear() 'Dispose to save memory
                             End If
                         Else
-                            strPath = String.Format("images/{0}/{1}-banner.jpg", tCounter_Global, tCounter_TVSeason)
-                            File.Copy(tImage.LocalFilePath, Path.Combine(tBuildPath, strPath), True)
+                            strPath = String.Format("exportdata/{0}/{1}-banner.jpg", _iCounter_Global, _iCounter_TVSeason)
+                            File.Copy(tImage.LocalFilePath, Path.Combine(_strBuildPath, strPath), True)
                         End If
                     End If
                 Case Enums.ModifierType.SeasonFanart
-                    If tExportSettings.SeasonFanarts Then
-                        If Not tExportSettings.SeasonFanarts_MaxHeight = -1 OrElse Not tExportSettings.SeasonFanarts_MaxWidth = -1 Then
+                    If _tExportSettings.SeasonFanarts Then
+                        If Not _tExportSettings.SeasonFanarts_MaxHeight = -1 OrElse Not _tExportSettings.SeasonFanarts_MaxWidth = -1 Then
                             If tImage.LoadAndCache(Enums.ContentType.TV, True, True) Then
                                 Dim nImg As Image = tImage.ImageOriginal.Image
-                                ImageUtils.ResizeImage(nImg, tExportSettings.SeasonFanarts_MaxWidth, tExportSettings.SeasonFanarts_MaxHeight)
+                                ImageUtils.ResizeImage(nImg, _tExportSettings.SeasonFanarts_MaxWidth, _tExportSettings.SeasonFanarts_MaxHeight)
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
-                                strPath = String.Format("images/{0}/{1}-fanart.jpg", tCounter_Global, tCounter_TVSeason)
-                                tImage.ImageOriginal.SaveToFile(Path.Combine(tBuildPath, strPath))
+                                strPath = String.Format("exportdata/{0}/{1}-fanart.jpg", _iCounter_Global, _iCounter_TVSeason)
+                                tImage.ImageOriginal.SaveToFile(Path.Combine(_strBuildPath, strPath))
                                 tImage.ImageOriginal.Clear() 'Dispose to save memory
                             End If
                         Else
-                            strPath = String.Format("images/{0}/{1}-fanart.jpg", tCounter_Global, tCounter_TVSeason)
-                            File.Copy(tImage.LocalFilePath, Path.Combine(tBuildPath, strPath), True)
+                            strPath = String.Format("exportdata/{0}/{1}-fanart.jpg", _iCounter_Global, _iCounter_TVSeason)
+                            File.Copy(tImage.LocalFilePath, Path.Combine(_strBuildPath, strPath), True)
                         End If
                     End If
                 Case Enums.ModifierType.SeasonLandscape
-                    If tExportSettings.SeasonLandscapes Then
-                        If Not tExportSettings.SeasonLandscapes_MaxHeight = -1 OrElse Not tExportSettings.SeasonLandscapes_MaxWidth = -1 Then
+                    If _tExportSettings.SeasonLandscapes Then
+                        If Not _tExportSettings.SeasonLandscapes_MaxHeight = -1 OrElse Not _tExportSettings.SeasonLandscapes_MaxWidth = -1 Then
                             If tImage.LoadAndCache(Enums.ContentType.TV, True, True) Then
                                 Dim nImg As Image = tImage.ImageOriginal.Image
-                                ImageUtils.ResizeImage(nImg, tExportSettings.SeasonLandscapes_MaxWidth, tExportSettings.SeasonLandscapes_MaxHeight)
+                                ImageUtils.ResizeImage(nImg, _tExportSettings.SeasonLandscapes_MaxWidth, _tExportSettings.SeasonLandscapes_MaxHeight)
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
-                                strPath = String.Format("images/{0}/{1}-landscape.jpg", tCounter_Global, tCounter_TVSeason)
-                                tImage.ImageOriginal.SaveToFile(Path.Combine(tBuildPath, strPath))
+                                strPath = String.Format("exportdata/{0}/{1}-landscape.jpg", _iCounter_Global, _iCounter_TVSeason)
+                                tImage.ImageOriginal.SaveToFile(Path.Combine(_strBuildPath, strPath))
                                 tImage.ImageOriginal.Clear() 'Dispose to save memory
                             End If
                         Else
-                            strPath = String.Format("images/{0}/{1}-landscape.jpg", tCounter_Global, tCounter_TVSeason)
-                            File.Copy(tImage.LocalFilePath, Path.Combine(tBuildPath, strPath), True)
+                            strPath = String.Format("exportdata/{0}/{1}-landscape.jpg", _iCounter_Global, _iCounter_TVSeason)
+                            File.Copy(tImage.LocalFilePath, Path.Combine(_strBuildPath, strPath), True)
                         End If
                     End If
                 Case Enums.ModifierType.SeasonPoster
-                    If tExportSettings.SeasonPosters Then
-                        If Not tExportSettings.SeasonPosters_MaxHeight = -1 OrElse Not tExportSettings.SeasonPosters_MaxWidth = -1 Then
+                    If _tExportSettings.SeasonPosters Then
+                        If Not _tExportSettings.SeasonPosters_MaxHeight = -1 OrElse Not _tExportSettings.SeasonPosters_MaxWidth = -1 Then
                             If tImage.LoadAndCache(Enums.ContentType.TV, True, True) Then
                                 Dim nImg As Image = tImage.ImageOriginal.Image
-                                ImageUtils.ResizeImage(nImg, tExportSettings.SeasonPosters_MaxWidth, tExportSettings.SeasonPosters_MaxHeight)
+                                ImageUtils.ResizeImage(nImg, _tExportSettings.SeasonPosters_MaxWidth, _tExportSettings.SeasonPosters_MaxHeight)
                                 tImage.ImageOriginal.UpdateMSfromImg(nImg)
-                                strPath = String.Format("images/{0}/{1}-poster.jpg", tCounter_Global, tCounter_TVSeason)
-                                tImage.ImageOriginal.SaveToFile(Path.Combine(tBuildPath, strPath))
+                                strPath = String.Format("exportdata/{0}/{1}-poster.jpg", _iCounter_Global, _iCounter_TVSeason)
+                                tImage.ImageOriginal.SaveToFile(Path.Combine(_strBuildPath, strPath))
                                 tImage.ImageOriginal.Clear() 'Dispose to save memory
                             End If
                         Else
-                            strPath = String.Format("images/{0}/{1}-poster.jpg", tCounter_Global, tCounter_TVSeason)
-                            File.Copy(tImage.LocalFilePath, Path.Combine(tBuildPath, strPath), True)
+                            strPath = String.Format("exportdata/{0}/{1}-poster.jpg", _iCounter_Global, _iCounter_TVSeason)
+                            File.Copy(tImage.LocalFilePath, Path.Combine(_strBuildPath, strPath), True)
                         End If
                     End If
             End Select
@@ -694,9 +693,9 @@ Public Class MediaExporter
         Dim strRow As String = tContentPart.Content
 
         'Special Strings
-        strRow = strRow.Replace("<$TOTAL_MOVIES>", tTotal_Movies.ToString)
-        strRow = strRow.Replace("<$TOTAL_TVEPISODES>", tTotal_TVEpisodes.ToString)
-        strRow = strRow.Replace("<$TOTAL_TVSHOWS>", tTotal_TVShows.ToString)
+        strRow = strRow.Replace("<$TOTAL_MOVIES>", _iTotal_Movies.ToString)
+        strRow = strRow.Replace("<$TOTAL_TVEPISODES>", _iTotal_TVEpisodes.ToString)
+        strRow = strRow.Replace("<$TOTAL_TVSHOWS>", _iTotal_TVShows.ToString)
 
         Return strRow
     End Function
@@ -705,11 +704,11 @@ Public Class MediaExporter
         Dim strRow As String = tContentPart.Content
 
         'Special Strings
-        strRow = strRow.Replace("<$COUNT>", tCounter_Global.ToString)
+        strRow = strRow.Replace("<$COUNT>", _iCounter_Global.ToString)
         strRow = strRow.Replace("<$DIRNAME>", StringUtils.HtmlEncode(Path.GetDirectoryName(tMovie.Filename)))
         strRow = strRow.Replace("<$FILENAME>", StringUtils.HtmlEncode(Path.GetFileName(tMovie.Filename)))
         strRow = strRow.Replace("<$FILESIZE>", StringUtils.HtmlEncode(GetFileSize(tMovie.Filename)))
-        strRow = strRow.Replace("<$NOW>", System.DateTime.Now.ToLongDateString) 'Save Build Date. might be useful info!
+        strRow = strRow.Replace("<$NOW>", Date.Now.ToLongDateString) 'Save Build Date. might be useful info!
         strRow = strRow.Replace("<$PATH>", StringUtils.HtmlEncode(tMovie.Filename))
 
         'Images
@@ -814,14 +813,14 @@ Public Class MediaExporter
     End Function
 
     Private Function ProcessPattern_Settings(ByVal strPattern As String) As String
-        tExportSettings.Clear()
+        _tExportSettings.Clear()
 
         Dim regSettings As Match = Regex.Match(strPattern, "<exportsettings>.*?</exportsettings>", RegexOptions.Singleline)
         If regSettings.Success Then
             Dim xmlSer As XmlSerializer = Nothing
             Using xmlSR As TextReader = New StringReader(regSettings.Value)
                 xmlSer = New XmlSerializer(GetType(ExportSettings))
-                tExportSettings = DirectCast(xmlSer.Deserialize(xmlSR), ExportSettings)
+                _tExportSettings = DirectCast(xmlSer.Deserialize(xmlSR), ExportSettings)
             End Using
             strPattern = strPattern.Replace(regSettings.Value, String.Empty)
         End If
@@ -833,9 +832,9 @@ Public Class MediaExporter
         Dim strRow As String = tContentPart.Content
 
         'Special Strings
-        strRow = strRow.Replace("<$COUNT>", tCounter_Global.ToString)
-        strRow = strRow.Replace("<$COUNT_TVSEASON>", tCounter_TVSeason.ToString)
-        strRow = strRow.Replace("<$COUNT_TVEPISODE>", tCounter_TVEpisode.ToString)
+        strRow = strRow.Replace("<$COUNT>", _iCounter_Global.ToString)
+        strRow = strRow.Replace("<$COUNT_TVSEASON>", _iCounter_TVSeason.ToString)
+        strRow = strRow.Replace("<$COUNT_TVEPISODE>", _iCounter_TVEpisode.ToString)
         strRow = strRow.Replace("<$FILENAME>", StringUtils.HtmlEncode(Path.GetFileName(tEpisode.Filename)))
         strRow = strRow.Replace("<$FILESIZE>", StringUtils.HtmlEncode(GetFileSize(tEpisode.Filename)))
         strRow = strRow.Replace("<$MISSING>", If(tEpisode.FilenameID = -1, "true", "false"))
@@ -930,8 +929,8 @@ Public Class MediaExporter
         End If
 
         'Special Strings
-        strRow = strRow.Replace("<$COUNT>", tCounter_Global.ToString)
-        strRow = strRow.Replace("<$COUNT_TVSEASON>", tCounter_TVSeason.ToString)
+        strRow = strRow.Replace("<$COUNT>", _iCounter_Global.ToString)
+        strRow = strRow.Replace("<$COUNT_TVSEASON>", _iCounter_TVSeason.ToString)
         strRow = strRow.Replace("<$EPISODES>", StringUtils.HtmlEncode(CStr(tShow.Episodes.Where(Function(f) f.TVEpisode.Season = tSeason.TVSeason.Season).Count)))
 
         'Images
@@ -961,9 +960,9 @@ Public Class MediaExporter
         End If
 
         'Special Strings
-        strRow = strRow.Replace("<$COUNT>", tCounter_Global.ToString)
+        strRow = strRow.Replace("<$COUNT>", _iCounter_Global.ToString)
         strRow = strRow.Replace("<$EPISODES>", StringUtils.HtmlEncode(CStr(tShow.Episodes.Count)))
-        strRow = strRow.Replace("<$NOW>", System.DateTime.Now.ToLongDateString) 'Save Build Date. might be useful info!
+        strRow = strRow.Replace("<$NOW>", Date.Now.ToLongDateString) 'Save Build Date. might be useful info!
         strRow = strRow.Replace("<$PATH>", StringUtils.HtmlEncode(tShow.ShowPath))
 
         'Images
@@ -1020,29 +1019,29 @@ Public Class MediaExporter
         Return strRow
     End Function
 
-    Private Function SaveAll(ByVal TemplateSource As String, ByVal HTMLBody As StringBuilder) As Boolean
+    Private Function SaveAll(ByVal TemplateSource As String, ByVal HTMLBody As StringBuilder) As String
         Try
-            CopyDirectory(TemplateSource, tBuildPath, True)
+            CopyDirectory(TemplateSource, _strBuildPath, True)
 
-            If tExportSettings.Flags Then
-                Directory.CreateDirectory(Path.Combine(tBuildPath, "flags"))
+            If _tExportSettings.Flags Then
+                Directory.CreateDirectory(Path.Combine(_strBuildPath, "exportdata", "flags"))
                 Dim FlagSource As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Flags", Path.DirectorySeparatorChar)
-                CopyDirectory(FlagSource, Path.Combine(tBuildPath, "flags"), True)
+                CopyDirectory(FlagSource, Path.Combine(_strBuildPath, "exportdata", "flags"), True)
             End If
 
-            Dim IndexFile As String = Path.Combine(tBuildPath, "index.htm")
-            If File.Exists(IndexFile) Then
-                File.Delete(IndexFile)
+            Dim strIndexFile As String = Path.Combine(_strBuildPath, If(Not String.IsNullOrEmpty(_tExportSettings.Filename), _tExportSettings.Filename, "index.html"))
+            If File.Exists(strIndexFile) Then
+                File.Delete(strIndexFile)
             End If
-            Dim myStream As Stream = File.OpenWrite(IndexFile)
+            Dim myStream As Stream = File.OpenWrite(strIndexFile)
             If myStream IsNot Nothing Then
                 myStream.Write(Encoding.ASCII.GetBytes(HTMLBody.ToString), 0, HTMLBody.ToString.Length)
                 myStream.Close()
             End If
-            Return True
+            Return strIndexFile
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
-            Return False
+            Return String.Empty
         End Try
     End Function
 
@@ -1356,6 +1355,7 @@ Public Class MediaExporter
         Private _episodefanarts As Boolean
         Private _episodefanarts_maxheight As Integer
         Private _episodefanarts_maxwidth As Integer
+        Private _filename As String
         Private _flags As Boolean
         Private _info As String
         Private _mainbanners As Boolean
@@ -1448,6 +1448,16 @@ Public Class MediaExporter
             End Get
             Set(ByVal value As Integer)
                 _episodeposters_maxwidth = value
+            End Set
+        End Property
+
+        <XmlElement("filename")>
+        Public Property Filename() As String
+            Get
+                Return _filename
+            End Get
+            Set(ByVal value As String)
+                _filename = value
             End Set
         End Property
 
@@ -1770,6 +1780,7 @@ Public Class MediaExporter
             _episodeposters = False
             _episodeposters_maxheight = -1
             _episodeposters_maxwidth = -1
+            _filename = "index.html"
             _flags = False
             _info = String.Empty
             _mainbanners = False

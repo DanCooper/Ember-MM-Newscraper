@@ -1,0 +1,262 @@
+﻿<exportsettings>
+	<mainposters>true</mainposters>
+	<mainposters_maxheight>300</mainposters_maxheight>
+	<mainposters_maxwidth>200</mainposters_maxwidth>
+
+	<seasonposters>true</seasonposters>
+	<seasonposters_maxheight>225</seasonposters_maxheight>
+	<seasonposters_maxwidth>150</seasonposters_maxwidth>
+</exportsettings>
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Medienbibliothek</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=9">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<link href="latofonts.css" rel="stylesheet">
+		<link href="font-awesome.css" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="style.css">
+
+		<script type="text/javascript">
+
+			function set_view_class(class_name){
+				var x = document.getElementsByClassName("box");
+				for (i = 0; i < x.length; i++) {
+					x[i].className = "box "+class_name;
+				}
+			}
+
+			function show_season_info(count, season_count){
+				show_multi_modal('#modal_info_'+count, '#modal_info_'+count+'_'+season_count);
+			}
+
+			function show_multi_modal(parent_id, child_id){
+				$(parent_id).modal('hide');
+
+				$(parent_id).on('hidden.bs.modal', function (e) {
+					$(parent_id).off('hidden.bs.modal');
+					$(child_id).modal('show');
+				});
+
+				$(child_id).on('hidden.bs.modal', function (e) {
+					$(child_id).off('hidden.bs.modal');
+					$(parent_id).modal('show');
+				});
+			}
+
+
+
+		</script>
+	</head>
+	<body>
+		<nav class="navbar navbar-default navbar-static-top">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="">Medienbibliothek</a>
+			</div>
+			<div id="navbar" class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li class=""><a href="#">Filme (<span id="total_movies"><$TOTAL_MOVIES></span>)</a></li>
+					<li class=""><a href="#tvshow">Serien (<span id="total_tv_shows"><$TOTAL_TVSHOWS></span> / <span id="total_tv_episode"><$TOTAL_TVEPISODES></span>)</a></li>
+				</ul>
+
+				<div class="control">
+					<a href="javascript:set_view_class('wall-container')"><i class="fa fa-th"></i></a>
+					<a href="javascript:set_view_class('wall-container big-img')"><i class="fa fa-th-large"></i></a>
+					<a href="javascript:set_view_class('card-container')"><i class="fa fa-th-list"></i></a>
+				</div>
+			</div>
+		</nav>
+
+
+		<div class="headline-container">
+			<h1>Filme</h1>
+		</div>
+
+
+	<$$MOVIE>	
+		<a href="" data-toggle="modal" data-target="#modal_info_<$COUNT>">
+		<div class="box wall-container" >
+			<img src="./<$POSTER>" alt="Kein Foto Verfügbar" onError="this.src='default-poster.png';"/>
+			<div class="movie-info">
+				<h4 class="modal-title"><$TITLE> (<$YEAR>)</h4>
+				<p><$TAGLINE></p>
+				<p><$PLOT></p>
+			</div>
+		</div>
+		</a>
+
+		<div class="modal fade" id="modal_info_<$COUNT>"  role="dialog" >
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title"><$TITLE> (<$YEAR>)</h4>
+						<p><$TAGLINE></p>
+					</div>
+					<div class="modal-body">
+						<p><$PLOT></p>
+						<br><br>
+						<table class="table table-striped">
+							<tr>
+								<td>Schauspieler</td>
+								<td><$ACTORS></td>
+							</tr>
+							<tr>
+								<td>Genres</td>
+								<td><$GENRES></td>
+							</tr>
+							<tr>
+								<td>Laufzeit</td>
+								<td><$RUNTIME> min</td>
+							</tr>
+							<tr>
+								<td>MPAA</td>
+								<td><$MPAA></td>
+							</tr>
+							<tr>
+								<td>Bewertung</td>
+								<td><$RATING> (<$VOTES> Stimmen)</td>
+							</tr>
+							<tr>
+								<td>Video</td>
+								<td><$VIDEO></td>
+							</tr>
+							<tr>
+								<td>Audio</td>
+								<td><$AUDIO></td>
+							</tr>
+							<tr>
+								<td>Dateigr&ouml;&szlig;e</td>
+								<td><$FILESIZE></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</$$MOVIE>
+		<div id="tvshow"></div>
+		<div class="headline-container">
+			<h1>Serien</h1>
+		</div>
+
+	<$$TVSHOW>
+
+		<a href="" data-toggle="modal" data-target="#modal_info_<$COUNT>">
+		<div class="box wall-container" >
+			<img src="./<$POSTER>" alt="Kein Foto Verfügbar" onError="this.src='default-poster.png';"/>
+			<div class="movie-info">
+				<h4 class="modal-title"><$TITLE><span class="non_status<$STATUS>"> (<$STATUS>)</span></h4>
+				<p><$ORIGINALTITLE></p>
+				<p><$PLOT></p>
+			</div>
+		</div>
+		</a>
+
+		<div class="modal fade" id="modal_info_<$COUNT>"  role="dialog" >
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title"><$TITLE><span class="non_status<$STATUS>"> (<$STATUS>)</span></h4>
+						<p><$ORIGINALTITLE></p>
+					</div>
+
+					<div class="modal-body">
+						<p><$PLOT></p>
+						<br><br>
+						<table class="table table-striped">
+							<tr>
+								<td>Schauspieler</td>
+								<td><$ACTORS></td>
+							</tr>
+							<tr>
+								<td>Genres</td>
+								<td><$GENRES></td>
+							</tr>
+							<tr>
+								<td>MPAA</td>
+								<td><$MPAA></td>
+							</tr>
+							<tr>
+								<td>Bewertung</td>
+								<td><$RATING> (<$VOTES> Stimmen)</td>
+							</tr>
+						</table>
+						<br><br>
+						<h4>Staffeln:</h4>
+						<table class="table table-striped">
+							<tr>
+								<td>Titel</td>
+								<td>Episoden</td>
+							</tr>
+							<$$TVSEASON>
+							<tr>
+								<td><a href="javascript:show_season_info(<$COUNT>,<$COUNT_TVSEASON>);"><$TITLE></a></td>
+								<td><$EPISODES></td>
+							</tr>
+							</$$TVSEASON>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
+
+		<$$TVSEASON>
+		<div class="modal fade" id="modal_info_<$COUNT>_<$COUNT_TVSEASON>"  role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title"><$TITLE><span class="non_status<$STATUS>"> (<$STATUS>)</span></h4>
+						<p><$ORIGINALTITLE></p>
+					</div>
+
+					<div class="modal-body">
+						<img src="./<$POSTER>" alt="Kein Foto Verfügbar" class="in_modal_img" onError="this.src='default-poster.png';"/>
+						<p class="in_modal_plot"><$PLOT></p>
+						<div class="clearfix"></div>
+						<br><br>
+						<table class="table table-striped">
+							<tr>
+								<td>Nr.</td>
+								<td>Name</td>
+								<td style="min-width:75px;">Laufzeit</td>
+								<td style="min-width:90px;">Bewertung (Stimmen)</td>
+							</tr>
+							<$$TVEPISODE>
+							<tr class="tv_episode_missing_<$MISSING>">
+								<td><$EPISODE></td>
+								<td>
+									<$TITLE><span class="tv_episode_missing_status_<$MISSING>"> (Missing)</span>
+									<div class="tv_episode_plot"><div></div><$PLOT></div>
+								</td>
+								<td><$RUNTIME> min</td>
+								<td><$RATING> (<$VOTES>)</td>
+							</tr>
+
+							</$$TVEPISODE>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		</$$TVSEASON>
+
+	</$$TVSHOW>
+
+		<footer>
+			Theme made with <i class="fa fa-heart" style="color: #EF7171;"></i> by Marcel Hencke			
+		</footer>
+
+		<!-- jQuery (wird für Bootstrap JavaScript-Plugins benötigt) -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<!-- Binde alle kompilierten Plugins zusammen ein (wie hier unten) oder such dir einzelne Dateien nach Bedarf aus -->
+		<script src="bootstrap/js/bootstrap.min.js"></script>
+	</body>
+</html>
