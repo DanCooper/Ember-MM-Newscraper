@@ -43,7 +43,7 @@ Public Class dlgExportMovies
     Private strCurrList_Movies As String = "movielist"
     Private strCurrList_TVShows As String = "tvshowlist"
     Private strTempPath As String = Path.Combine(Master.TempPath, "Export")
-    Private strTemplateName As String
+    Private strTemplatePath As String
 
 #End Region 'Fields
 
@@ -55,6 +55,9 @@ Public Class dlgExportMovies
         Left = Master.AppPos.Left + (Master.AppPos.Width - Width) \ 2
         Top = Master.AppPos.Top + (Master.AppPos.Height - Height) \ 2
         StartPosition = FormStartPosition.Manual
+        If Not Directory.Exists(Path.Combine(Master.SettingsPath, "Templates")) Then
+            Directory.CreateDirectory(Path.Combine(Master.SettingsPath, "Templates"))
+        End If
     End Sub
 
     Private Sub btnBuild_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnBuild.Click
@@ -164,9 +167,9 @@ Public Class dlgExportMovies
         If e.ProgressPercentage >= 0 Then
             tspbStatus.Value = e.ProgressPercentage
             tslblFile.Text = e.UserState.ToString
-        ElseIf e.ProgressPercentage = -1
+        ElseIf e.ProgressPercentage = -1 Then
             tspbStatus.Maximum = Convert.ToInt32(e.UserState)
-        ElseIf e.ProgressPercentage = -2
+        ElseIf e.ProgressPercentage = -2 Then
             tslblStatus.Text = e.UserState.ToString
         End If
     End Sub
@@ -183,8 +186,8 @@ Public Class dlgExportMovies
 
     Private Sub bwCreateTemplate_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCreateTemplate.DoWork
         Dim MExporter As New MediaExporter
-        Dim TempIndexFile As String = MExporter.CreateTemplate(strTemplateName, lstMovieList, lstTVShowList, String.Empty, AddressOf ShowProgressCreateTemplate)
-        e.Result = TempIndexFile
+        Dim strTempIndexFile As String = MExporter.CreateTemplate(strTemplatePath, lstMovieList, lstTVShowList, String.Empty, AddressOf ShowProgressCreateTemplate)
+        e.Result = strTempIndexFile
     End Sub
 
     Private Sub bwCreateTemplate_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwCreateTemplate.ProgressChanged
@@ -219,7 +222,7 @@ Public Class dlgExportMovies
     End Sub
 
     Private Sub cbTemplate_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cbTemplate.SelectedIndexChanged
-        strTemplateName = cbTemplate.SelectedItem.ToString
+        strTemplatePath = CType(cbTemplate.SelectedItem, KeyValuePair(Of String, String)).Value
         btnBuild.Enabled = True
     End Sub
 
@@ -298,16 +301,34 @@ Public Class dlgExportMovies
         bExportMissingEpisodes = AdvancedSettings.GetBooleanSetting("ExportMissingEpisodes", False)
         txtExportPath.Text = AdvancedSettings.GetSetting("ExportPath", String.Empty)
 
-        Dim di As DirectoryInfo = New DirectoryInfo(String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, "html"))
-        If di.Exists Then
-            For Each i As DirectoryInfo In di.GetDirectories
+        Dim items As New Dictionary(Of String, String)
+
+        'loading Ember custom templates
+        Dim diCustom As DirectoryInfo = New DirectoryInfo(Path.Combine(Master.SettingsPath, "Templates"))
+        If diCustom.Exists Then
+            For Each i As DirectoryInfo In diCustom.GetDirectories
                 If Not (i.Attributes And FileAttributes.Hidden) = FileAttributes.Hidden Then
-                    cbTemplate.Items.Add(i.Name)
+                    items.Add(i.Name, i.FullName)
                 End If
             Next
-            If cbTemplate.Items.Count > 0 Then
-                cbTemplate.SelectedIndex = 0
-            End If
+        End If
+
+        'loading Ember default templates
+        Dim diDefault As DirectoryInfo = New DirectoryInfo(Path.Combine(Functions.AppPath, "Modules", "Templates"))
+        If diDefault.Exists Then
+            For Each i As DirectoryInfo In diDefault.GetDirectories
+                If Not (i.Attributes And FileAttributes.Hidden) = FileAttributes.Hidden Then
+                    items.Add(i.Name, i.FullName)
+                End If
+            Next
+        End If
+
+        'load all Templates to list
+        cbTemplate.DataSource = items.ToList
+        cbTemplate.DisplayMember = "Key"
+        cbTemplate.ValueMember = "Value"
+        If cbTemplate.Items.Count > 0 Then
+            cbTemplate.SelectedIndex = 0
         End If
 
         dicListViews_Movies.Clear()

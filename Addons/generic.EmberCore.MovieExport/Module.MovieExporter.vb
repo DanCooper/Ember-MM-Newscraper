@@ -25,15 +25,15 @@ Public Class MovieExporterModule
     Implements Interfaces.GenericModule
 
 #Region "Delegates"
-    Public Delegate Sub Delegate_AddToolsStripItem(control As System.Windows.Forms.ToolStripMenuItem, value As System.Windows.Forms.ToolStripItem)
-    Public Delegate Sub Delegate_RemoveToolsStripItem(control As System.Windows.Forms.ToolStripMenuItem, value As System.Windows.Forms.ToolStripItem)
+    Public Delegate Sub Delegate_AddToolsStripItem(control As ToolStripMenuItem, value As ToolStripItem)
+    Public Delegate Sub Delegate_RemoveToolsStripItem(control As ToolStripMenuItem, value As ToolStripItem)
 
 #End Region 'Fields
 
 #Region "Fields"
 
-    Private WithEvents mnuMainToolsExporter As New System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents cmnuTrayToolsExporter As New System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents mnuMainToolsExporter As New ToolStripMenuItem
+    Private WithEvents cmnuTrayToolsExporter As New ToolStripMenuItem
     Private _AssemblyName As String = String.Empty
     Private _enabled As Boolean = False
     Private _Name As String = "MovieListExporter"
@@ -99,7 +99,7 @@ Public Class MovieExporterModule
     Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
         Select Case mType
             Case Enums.ModuleEventType.CommandLine
-                Dim TemplateName As String = String.Empty
+                Dim strTemplatePath As String = String.Empty
                 Dim BuildPath As String = String.Empty
 
                 If _params IsNot Nothing Then
@@ -108,7 +108,27 @@ Public Class MovieExporterModule
                         If Not String.IsNullOrEmpty(Path.GetPathRoot(tParameter.ToString)) Then
                             BuildPath = tParameter.ToString
                         Else
-                            TemplateName = tParameter.ToString
+                            'search in Ember custom templates
+                            Dim diCustom As DirectoryInfo = New DirectoryInfo(Path.Combine(Master.SettingsPath, "Templates"))
+                            If diCustom.Exists Then
+                                For Each i As DirectoryInfo In diCustom.GetDirectories
+                                    If Not (i.Attributes And FileAttributes.Hidden) = FileAttributes.Hidden AndAlso i.Name = tParameter.ToString Then
+                                        strTemplatePath = i.FullName
+                                    End If
+                                Next
+                            End If
+
+                            If String.IsNullOrEmpty(strTemplatePath) Then
+                                'search in Ember default templates
+                                Dim diDefault As DirectoryInfo = New DirectoryInfo(Path.Combine(Functions.AppPath, "Modules", "Templates"))
+                                If diDefault.Exists Then
+                                    For Each i As DirectoryInfo In diDefault.GetDirectories
+                                        If Not (i.Attributes And FileAttributes.Hidden) = FileAttributes.Hidden AndAlso i.Name = tParameter.ToString Then
+                                            strTemplatePath = i.FullName
+                                        End If
+                                    Next
+                                End If
+                            End If
                         End If
                     Next
                 End If
@@ -117,8 +137,8 @@ Public Class MovieExporterModule
                     BuildPath = MySettings.ExportPath
                 End If
 
-                If String.IsNullOrEmpty(TemplateName) Then
-                    TemplateName = MySettings.DefaultTemplate
+                If String.IsNullOrEmpty(strTemplatePath) Then
+                    strTemplatePath = MySettings.DefaultTemplate
                 End If
 
                 Dim MovieList As New List(Of Database.DBElement)
@@ -144,7 +164,7 @@ Public Class MovieExporterModule
                 End Using
 
                 Dim MExporter As New MediaExporter
-                MExporter.CreateTemplate(TemplateName, MovieList, TVShowList, BuildPath, Nothing)
+                MExporter.CreateTemplate(strTemplatePath, MovieList, TVShowList, BuildPath, Nothing)
         End Select
 
         Return New Interfaces.ModuleResult With {.breakChain = False}
@@ -162,7 +182,7 @@ Public Class MovieExporterModule
         RemoveToolsStripItem(tsi, cmnuTrayToolsExporter)
     End Sub
 
-    Public Sub RemoveToolsStripItem(control As System.Windows.Forms.ToolStripMenuItem, value As System.Windows.Forms.ToolStripItem)
+    Public Sub RemoveToolsStripItem(control As ToolStripMenuItem, value As ToolStripItem)
         If control.Owner.InvokeRequired Then
             control.Owner.Invoke(New Delegate_RemoveToolsStripItem(AddressOf RemoveToolsStripItem), New Object() {control, value})
         Else
@@ -186,7 +206,7 @@ Public Class MovieExporterModule
         AddToolsStripItem(tsi, cmnuTrayToolsExporter)
     End Sub
 
-    Public Sub AddToolsStripItem(control As System.Windows.Forms.ToolStripMenuItem, value As System.Windows.Forms.ToolStripItem)
+    Public Sub AddToolsStripItem(control As ToolStripMenuItem, value As ToolStripItem)
         If control.Owner.InvokeRequired Then
             control.Owner.Invoke(New Delegate_AddToolsStripItem(AddressOf AddToolsStripItem), New Object() {control, value})
         Else
@@ -195,7 +215,7 @@ Public Class MovieExporterModule
     End Sub
 
     Private Sub Handle_ModuleEnabledChanged(ByVal State As Boolean)
-        RaiseEvent ModuleEnabledChanged(Me._Name, State, 0)
+        RaiseEvent ModuleEnabledChanged(_Name, State, 0)
     End Sub
 
     Private Sub Handle_ModuleSettingsChanged()
@@ -208,22 +228,22 @@ Public Class MovieExporterModule
     End Sub
 
     Function InjectSetup() As Containers.SettingsPanel Implements Interfaces.GenericModule.InjectSetup
-        Me._setup = New frmSettingsHolder
-        Me._setup.cbEnabled.Checked = Me._enabled
+        _setup = New frmSettingsHolder
+        _setup.cbEnabled.Checked = _enabled
         Dim SPanel As New Containers.SettingsPanel
 
         _setup.txtExportPath.Text = MySettings.ExportPath
         _setup.chkExportMissingEpisodes.Checked = MySettings.ExportMissingEpisodes
 
-        SPanel.Name = Me._Name
+        SPanel.Name = _Name
         SPanel.Text = Master.eLang.GetString(335, "Movie List Exporter")
         SPanel.Prefix = "Exporter_"
         SPanel.Type = Master.eLang.GetString(802, "Modules")
-        SPanel.ImageIndex = If(Me._enabled, 9, 10)
+        SPanel.ImageIndex = If(_enabled, 9, 10)
         SPanel.Order = 100
-        SPanel.Panel = Me._setup.pnlSettings
-        AddHandler Me._setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
-        AddHandler Me._setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+        SPanel.Panel = _setup.pnlSettings
+        AddHandler _setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
+        AddHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         Return SPanel
     End Function
 
@@ -244,13 +264,13 @@ Public Class MovieExporterModule
     End Sub
 
     Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
-        Me.Enabled = Me._setup.cbEnabled.Checked
+        Enabled = _setup.cbEnabled.Checked
         MySettings.ExportPath = _setup.txtExportPath.Text
         MySettings.ExportMissingEpisodes = _setup.chkExportMissingEpisodes.Checked
         SaveSettings()
         If DoDispose Then
-            RemoveHandler Me._setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
-            RemoveHandler Me._setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
+            RemoveHandler _setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
+            RemoveHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
             _setup.Dispose()
         End If
     End Sub
