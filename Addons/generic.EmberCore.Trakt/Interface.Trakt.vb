@@ -498,8 +498,6 @@ Public Class TraktInterface
 #End Region 'Methods
 
     End Class
-
-
     ''' <summary>
     ''' structure used to read setting file of Kodi Interface
     ''' </summary>
@@ -565,7 +563,9 @@ Public Class TraktInterface
 
     <Serializable()>
     Class Host
+
 #Region "Fields"
+
         Private _address As String
         Private _label As String
         Private _moviesetartworkspath As String
@@ -574,9 +574,11 @@ Public Class TraktInterface
         Private _realtimesync As Boolean
         Private _sources As New List(Of Source)
         Private _username As String
+
 #End Region 'Fields
 
 #Region "Properties"
+
         <XmlElement("label")>
         Public Property Label() As String
             Get
@@ -656,18 +658,25 @@ Public Class TraktInterface
                 _sources = value
             End Set
         End Property
+
 #End Region 'Properties
+
     End Class
 
 
     <Serializable()>
     Class Source
+
 #Region "Fields"
+
         Private _contenttype As Enums.ContentType
         Private _localpath As String
         Private _remotepath As String
+
 #End Region 'Fields
+
 #Region "Properties"
+
         <XmlElement("contenttype")>
         Public Property ContentType() As Enums.ContentType
             Get
@@ -697,7 +706,9 @@ Public Class TraktInterface
                 _remotepath = value
             End Set
         End Property
+
 #End Region 'Properties
+
     End Class
 
 #End Region 'Nested Types

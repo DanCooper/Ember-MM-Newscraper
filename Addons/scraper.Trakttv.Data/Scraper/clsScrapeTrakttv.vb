@@ -18,9 +18,6 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.IO
-Imports System.IO.Compression
-Imports System.Text.RegularExpressions
 Imports EmberAPI
 Imports NLog
 Imports Trakttv
@@ -31,377 +28,255 @@ Namespace TrakttvScraper
 
 #Region "Fields"
 
-        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
-        Friend WithEvents bwTrakttv As New System.ComponentModel.BackgroundWorker
-        'special settings of trakt.tv module like "User personal ratings"
+        Shared logger As Logger = LogManager.GetCurrentClassLogger()
         Private _SpecialSettings As Trakttv_Data.SpecialSettings
-        'Token generated after successfull login to trakt.tv account - without a token no scraping is possible
-        Private _Token As String = String.Empty
-        'Notice: IMDBID or queried traktID of scraped show/movie is needed! - without ID scraping is not possible
-        '(at the moment IMDBID or traktID of show(movie is required to query stats on trakt.tv -> may change in future)
-        'TRAKTID of current scraped DBElement
-        Private _TrakttvDBElementTRAKTID As String = String.Empty
-        'IMDBID of current scraped DBElement
-        Private _TrakttvDBElementIMDBID As String = String.Empty
-        'TMDBID of current scraped DBElement
-        Private _TrakttvDBElementTMDBID As String = String.Empty
-        'collection of all rated movies on trakt.tv
-        Private _traktRatedMovies As IEnumerable(Of TraktAPI.Model.TraktMovieRated) = Nothing
-        'collection of all rated epsiodes on trakt.tv
-        Private _traktRatedEpisodes As IEnumerable(Of TraktAPI.Model.TraktEpisodeRated) = Nothing
 
 #End Region 'Fields
 
+#Region "Properties"
+
+        ReadOnly Property Token() As String
+            Get
+                Return _SpecialSettings.Token
+            End Get
+        End Property
+
+#End Region 'Properties
+
 #Region "Methods"
 
-        ''' <summary>
-        '''  Login to trakttv and retrieve personal video data
-        ''' </summary>
-        ''' <param name="SpecialSettings">Special settings of trakttv scraper module</param>
-        ''' <param name="oDBElement">DBElement which is going to be scraped</param>
-        ''' <remarks>
-        ''' 2015/11/18 Cocotus - First implementation
-        ''' Constructor for trakt.tv data scraper - use this to do things that only needs to be done one time
-        ''' Connect to trakt.tv and scrape personal video data (personal ratings, last played) only once to minimize amount of queries to trakt.tv server
-        ''' </remarks>
-        Public Sub New(ByVal SpecialSettings As Trakttv_Data.SpecialSettings, ByVal oDBElement As Database.DBElement)
+        Public Sub New(ByRef SpecialSettings As Trakttv_Data.SpecialSettings)
+            _SpecialSettings = SpecialSettings
             Try
-                _SpecialSettings = SpecialSettings
-                _Token = TraktMethods.LoginToTrakt(_SpecialSettings.TrakttvUserName, _SpecialSettings.TrakttvPassword)
-                _TrakttvDBElementIMDBID = String.Empty
-                _TrakttvDBElementTMDBID = String.Empty
-                _TrakttvDBElementTRAKTID = String.Empty
-                If String.IsNullOrEmpty(_Token) Then
-                    logger.Error(String.Format("[New] Can't login to trakt.tv account. Could not scrape trakt.tv data for DBElement: {0}", oDBElement.ListTitle))
-                Else
-                    Dim TraktResult As New TraktAPI.Model.TraktSearchResult
-                    'Movie Mode
-                    Select Case oDBElement.ContentType
-                        Case Enums.ContentType.Movie
-                            If oDBElement IsNot Nothing Then
-                                'make sure we set correct ID of DBElement for trakt.tv queries (need IMDBID oder traktID)
-                                If Not String.IsNullOrEmpty(oDBElement.Movie.IMDB) Then
-                                    If oDBElement.Movie.IMDB.StartsWith("tt") = False Then
-                                        _TrakttvDBElementIMDBID = "tt" & oDBElement.Movie.IMDB
-                                    Else
-                                        _TrakttvDBElementIMDBID = oDBElement.Movie.IMDB
-                                    End If
-                                ElseIf oDBElement.Movie.TMDBSpecified Then
-                                    _TrakttvDBElementTMDBID = oDBElement.Movie.TMDB
-                                    TraktResult = GetIDs(oDBElement.Movie.TMDB, "tmdb")
-                                    If TraktResult IsNot Nothing AndAlso TraktResult.Movie IsNot Nothing AndAlso TraktResult.Movie.Ids IsNot Nothing AndAlso TraktResult.Movie.Ids.Trakt IsNot Nothing Then
-                                        _TrakttvDBElementTRAKTID = CStr(TraktResult.Movie.Ids.Trakt)
-                                        If TraktResult.Movie.Ids.Imdb IsNot Nothing Then
-                                            _TrakttvDBElementIMDBID = TraktResult.Movie.Ids.Imdb
-                                        End If
-                                    End If
-                                End If
-                                If String.IsNullOrEmpty(_TrakttvDBElementIMDBID) OrElse String.IsNullOrEmpty(_TrakttvDBElementTRAKTID) Then
-                                    logger.Error(String.Format("[New] No IMDBID/TraktID is available for element: {0}. Leave trakt.tv scraper!", oDBElement.ListTitle))
-                                    Return
-                                End If
-                            End If
-                            'Retrieve at scraper startup all user video data on trakt.tv like ratings (only need to do this once and NOT for every scraped movie/show)
-                            If _SpecialSettings.UsePersonalRatings Then
-                                _traktRatedMovies = TrakttvAPI.GetRatedMovies
-                                If _traktRatedMovies Is Nothing Then
-                                    logger.Error(String.Format("[New] Could not scrape personal trakt.tv ratings for element: {0}. Leave trakt.tv scraper!", oDBElement.ListTitle))
-                                End If
-                            End If
-
-                            'TV Mode
-                        Case Enums.ContentType.TV, Enums.ContentType.TVEpisode, Enums.ContentType.TVSeason, Enums.ContentType.TVShow
-                            If oDBElement IsNot Nothing Then
-                                'at the moment IMDBID of show is required to query show stats on trakt.tv -> may change in future!
-                                'API: http://docs.trakt.apiary.io/#reference/shows/ratings/get-show-ratings
-                                If Not String.IsNullOrEmpty(oDBElement.TVShow.IMDB) Then
-                                    If Not oDBElement.TVShow.IMDB.StartsWith("tt") Then
-                                        _TrakttvDBElementIMDBID = "tt" & oDBElement.TVShow.IMDB
-                                    Else
-                                        _TrakttvDBElementIMDBID = oDBElement.TVShow.IMDB
-                                    End If
-                                ElseIf oDBElement.TVShow.TMDBSpecified Then
-                                    _TrakttvDBElementTMDBID = oDBElement.TVShow.TMDB
-                                    TraktResult = GetIDs(oDBElement.TVShow.TMDB, "tmdb")
-                                    If TraktResult IsNot Nothing AndAlso TraktResult.Show IsNot Nothing AndAlso TraktResult.Show.Ids IsNot Nothing AndAlso TraktResult.Show.Ids.Trakt IsNot Nothing Then
-                                        _TrakttvDBElementTRAKTID = CStr(TraktResult.Show.Ids.Trakt)
-                                        If TraktResult.Show.Ids.Imdb IsNot Nothing Then
-                                            _TrakttvDBElementIMDBID = TraktResult.Show.Ids.Imdb
-                                        End If
-                                    End If
-                                ElseIf oDBElement.TVShow.TVDBSpecified Then
-                                    TraktResult = GetIDs(oDBElement.TVShow.TVDB, "tvdb")
-                                    If TraktResult IsNot Nothing AndAlso TraktResult.Show IsNot Nothing AndAlso TraktResult.Show.Ids IsNot Nothing AndAlso TraktResult.Show.Ids.Trakt IsNot Nothing Then
-                                        _TrakttvDBElementTRAKTID = CStr(TraktResult.Show.Ids.Trakt)
-                                        If TraktResult.Show.Ids.Imdb IsNot Nothing Then
-                                            _TrakttvDBElementIMDBID = TraktResult.Show.Ids.Imdb
-                                        End If
-                                        If TraktResult.Show.Ids.Tmdb IsNot Nothing Then
-                                            _TrakttvDBElementTMDBID = CStr(TraktResult.Show.Ids.Tmdb)
-                                        End If
-                                    End If
-                                End If
-                                If String.IsNullOrEmpty(_TrakttvDBElementIMDBID) AndAlso String.IsNullOrEmpty(_TrakttvDBElementTRAKTID) Then
-                                    logger.Error(String.Format("[New] No IMDBID/TraktID is available for element: {0}. Leave trakt.tv scraper!", oDBElement.ListTitle))
-                                    Return
-                                End If
-                            End If
-                            'Retrieve at scraper startup all user video data on trakt.tv like ratings (only need to do this once and NOT for every scraped movie/show)
-                            If _SpecialSettings.UsePersonalRatings Then
-                                _traktRatedEpisodes = TrakttvAPI.GetRatedEpisodes
-                                If _traktRatedEpisodes Is Nothing Then
-                                    logger.Error(String.Format("[New] Could not scrape personal trakt.tv ratings for element: {0}. Leave trakt.tv scraper!", oDBElement.ListTitle))
-                                End If
-                            End If
-                    End Select
-                End If
+                CreateToken(_SpecialSettings.Username, _SpecialSettings.Password, _SpecialSettings.Token)
+                SpecialSettings.Token = _SpecialSettings.Token
             Catch ex As Exception
-                logger.Error(ex)
+                logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         End Sub
 
+        Public Function CheckConnection() As Boolean
+            If String.IsNullOrEmpty(TraktSettings.Token) Then
+                CreateToken(_SpecialSettings.Username, _SpecialSettings.Password, String.Empty)
+            End If
+            If Not String.IsNullOrEmpty(TraktSettings.Token) Then
+                Return True
+            Else
+                Return False
+            End If
+        End Function
         ''' <summary>
-        '''  Scrape MovieDetails from trakttv
+        '''  Trakt-Login process for using v2 API (Token based authentification) 
         ''' </summary>
-        ''' <param name="FilteredOptions">Module settings<param>
-        ''' <param name="IsSearch">Not used at moment</param>
-        ''' <returns>True: success, false: no success</returns>
+        ''' <param name="strUsername">trakt.tv Username</param>
+        ''' <param name="strUsername">trakt.tv Password</param>
+        ''' <param name="strToken">trakt.tv Token, may be empty (then it will be generated)</param>
+        ''' <returns>(new) trakt.tv Token</returns>
         ''' <remarks>
-        ''' 2015/11/18 Cocotus - First implementation
-        ''' For now only retrieve trakt.tv exklusive data like playcount, lastplayed, rating and votes
-        ''' IMDBID/TraktID of movie to be scraped is needed!
+        ''' 2015/01/17 Cocotus - First implementation of new V2 Authentification process for trakt.tv API
         ''' </remarks>
-        Public Function GetMovieInfo(ByVal FilteredOptions As Structures.ScrapeOptions, ByVal IsSearch As Boolean) As MediaContainers.Movie
-            If String.IsNullOrEmpty(_TrakttvDBElementIMDBID) OrElse String.IsNullOrEmpty(_TrakttvDBElementTRAKTID) Then Return Nothing
+        Private Function CreateToken(ByVal strUsername As String, ByVal strPassword As String, ByRef strToken As String) As String
+            ' Use Trakttv wrapper
+            Dim account As New TraktAPI.Model.TraktAuthentication
+            account.Username = strUsername
+            account.Password = strPassword
+            TraktSettings.Password = strPassword
+            TraktSettings.Username = strUsername
+            TraktSettings.Token = strToken
+
+            If String.IsNullOrEmpty(strToken) Then
+                Dim response = TraktMethods.LoginToAccount(account)
+                strToken = TraktSettings.Token
+            End If
+
+            Return TraktSettings.Token
+        End Function
+
+        Public Function GetInfo_Movie(ByVal intTraktID As Integer, ByVal tFilteredOptions As Structures.ScrapeOptions) As MediaContainers.Movie
+            If intTraktID = -1 Then Return Nothing
 
             Dim nMovie As New MediaContainers.Movie
-            Try
-                nMovie.Scrapersource = "TRAKTTV"
-                nMovie.IMDB = _TrakttvDBElementIMDBID
-                nMovie.TMDB = _TrakttvDBElementTMDBID
+            nMovie.Scrapersource = "TRAKTTV"
 
-                If String.IsNullOrEmpty(_Token) Then
-                    logger.Error(String.Concat("[GetMovieInfo] Can't login to trakt.tv account! Current movieID: ", If(String.IsNullOrEmpty(_TrakttvDBElementTRAKTID), _TrakttvDBElementIMDBID, _TrakttvDBElementTRAKTID)))
-                    Return Nothing
-                End If
-
-                'Rating / Votes
-                If FilteredOptions.bMainRating Then
-                    If Not String.IsNullOrEmpty(_Token) Then
-                        'scrape community rating and votes
-                        Dim traktrating As TraktAPI.Model.TraktRating = TrakttvAPI.GetMovieRating(If(String.IsNullOrEmpty(_TrakttvDBElementTRAKTID), _TrakttvDBElementIMDBID, _TrakttvDBElementTRAKTID))
-                        If Not traktrating Is Nothing AndAlso Not traktrating.Rating Is Nothing AndAlso Not traktrating.Votes Is Nothing Then
-                            nMovie.Rating = CStr(Math.Round(traktrating.Rating.Value, 1)) ' traktrating.Rating.ToString
-                            nMovie.Votes = traktrating.Votes.ToString
-                        Else
-                            logger.Info("[GetMovieInfo] Could not scrape community rating/votes from trakt.tv! Current movieID: " & If(String.IsNullOrEmpty(_TrakttvDBElementTRAKTID), _TrakttvDBElementIMDBID, _TrakttvDBElementTRAKTID))
-                        End If
-                        'instead of community rating use personal rating if available?
-                        If _SpecialSettings.UsePersonalRatings Then
-                            If _traktRatedMovies Is Nothing = False Then
-                                For Each ratedMovie As TraktAPI.Model.TraktMovieRated In _traktRatedMovies
-                                    If Not ratedMovie.Movie.Ids Is Nothing Then
-                                        'Check if information is stored...
-                                        If (Not String.IsNullOrEmpty(nMovie.IMDB) AndAlso Not ratedMovie.Movie.Ids.Imdb Is Nothing AndAlso ((ratedMovie.Movie.Ids.Imdb = _TrakttvDBElementIMDBID) OrElse (ratedMovie.Movie.Ids.Trakt.ToString = _TrakttvDBElementTRAKTID))) Then
-                                            nMovie.Rating = CStr(ratedMovie.Rating)
-                                            Exit For
-                                        End If
-                                    End If
-                                Next
-                            Else
-                                logger.Info("[GetMovieInfo] No ratings of movies scraped from trakt.tv! Current movieID: " & If(String.IsNullOrEmpty(_TrakttvDBElementTRAKTID), _TrakttvDBElementIMDBID, _TrakttvDBElementTRAKTID))
+            If CheckConnection() Then
+                If tFilteredOptions.bMainRating Then
+                    If _SpecialSettings.UsePersonalRating Then
+                        Dim nPersonalRatedMovies As IEnumerable(Of TraktAPI.Model.TraktMovieRated) = TrakttvAPI.GetRatedMovies
+                        If nPersonalRatedMovies IsNot Nothing AndAlso nPersonalRatedMovies.Count > 0 Then
+                            Dim tMovie = nPersonalRatedMovies.FirstOrDefault(Function(f) CInt(f.Movie.Ids.Trakt) = intTraktID)
+                            If tMovie IsNot Nothing Then
+                                nMovie.Rating = CStr(tMovie.Rating)
+                                nMovie.Votes = "1"
+                                Return nMovie
                             End If
                         End If
                     End If
-                End If
 
-            Catch ex As Exception
-                logger.Error(ex)
-                Return Nothing
-            End Try
-
-            Return nMovie
-        End Function
-
-        ''' <summary>
-        '''  Scrape TV Show details from trakttv
-        ''' </summary>
-        ''' <param name="FilteredOptions">Module settings<param>
-        ''' <param name="ScrapeModifiers">More options - scrape episode/season infos?</param>
-        ''' <param name="oDBElement">DBElement/Show which is going to be scraped</param>
-        ''' <returns>True: success, false: no success</returns>
-        ''' <remarks>
-        ''' 2015/11/18 Cocotus - First implementation
-        ''' trakt.tv API supports ONLY IMDB
-        ''' IMDBID/TraktID of tv show to be scraped is needed!
-        ''' </remarks>
-        Public Function GetTVShowInfo(ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByVal FilteredOptions As Structures.ScrapeOptions, ByVal oDBElement As Database.DBElement) As MediaContainers.TVShow
-            If String.IsNullOrEmpty(_TrakttvDBElementIMDBID) AndAlso String.IsNullOrEmpty(_TrakttvDBElementTRAKTID) Then Return Nothing
-
-            Dim nTVShow As New MediaContainers.TVShow
-
-            If bwTrakttv.CancellationPending Then Return Nothing
-            nTVShow.IMDB = _TrakttvDBElementIMDBID
-            nTVShow.TMDB = _TrakttvDBElementTMDBID
-            nTVShow.Scrapersource = "TRAKTTV"
-
-            'Rating
-            If FilteredOptions.bMainRating Then
-                Dim traktrating As TraktAPI.Model.TraktRating = TrakttvAPI.GetShowRating(If(String.IsNullOrEmpty(_TrakttvDBElementTRAKTID), _TrakttvDBElementIMDBID, _TrakttvDBElementTRAKTID))
-                If Not traktrating Is Nothing AndAlso Not traktrating.Rating Is Nothing AndAlso Not traktrating.Votes Is Nothing Then
-                    nTVShow.Rating = CStr(Math.Round(traktrating.Rating.Value, 1)) ' traktrating.Rating.ToString
-                    nTVShow.Votes = traktrating.Votes.ToString
-                Else
-                    logger.Info("[GetTVShowInfo] Could not scrape community rating/votes from trakt.tv! Current showID: " & If(String.IsNullOrEmpty(_TrakttvDBElementTRAKTID), _TrakttvDBElementIMDBID, _TrakttvDBElementTRAKTID))
-                End If
-            End If
-
-            If bwTrakttv.CancellationPending Then Return Nothing
-
-            'Seasons and Episodes?
-            If ScrapeModifiers.withEpisodes OrElse ScrapeModifiers.withSeasons Then
-                'since we don't scrape any episode info with trakt.tv scraper, copy episodes info of current DBElement to scrape for trakt.tv ratings
-                Dim nlistEpisode As New List(Of Integer)
-                For Each aSeason As MediaContainers.SeasonDetails In oDBElement.TVShow.Seasons.Seasons
-                    nlistEpisode.Clear()
-                    For Each episode In oDBElement.Episodes
-                        If episode.TVEpisode.Season = aSeason.Season Then
-                            nlistEpisode.Add(episode.TVEpisode.Episode)
-                        End If
-                    Next
-                    GetTVSeasonInfo(nTVShow, aSeason.Season, nlistEpisode, ScrapeModifiers, FilteredOptions)
-                Next
-            End If
-
-            Return nTVShow
-        End Function
-        Public Sub GetTVSeasonInfo(ByRef nTVShow As MediaContainers.TVShow, ByVal SeasonNumber As Integer, ByVal Episodes As List(Of Integer), ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef FilteredOptions As Structures.ScrapeOptions)
-            If String.IsNullOrEmpty(_TrakttvDBElementIMDBID) AndAlso String.IsNullOrEmpty(_TrakttvDBElementTRAKTID) Then Exit Sub
-            If ScrapeModifiers.withSeasons Then
-                Dim nSeason As New MediaContainers.SeasonDetails
-                nSeason.TMDB = _TrakttvDBElementTMDBID
-                'nSeason.IMDB = _TrakttvDBElementIMDBID
-                nSeason.Scrapersource = "TRAKTTV"
-                nTVShow.KnownSeasons.Add(nSeason)
-            End If
-            If ScrapeModifiers.withEpisodes Then
-                For Each episode In Episodes
-                    nTVShow.KnownEpisodes.Add(GetTVEpisodeInfo(SeasonNumber, episode, FilteredOptions))
-                Next
-            End If
-        End Sub
-
-        ''' <summary>
-        '''  Scrape TV Season details from trakttv
-        ''' </summary>
-        ''' <param name="SeasonNumber">Number of season to scrape</param>
-        ''' <param name="FilteredOptions">Module settings<param>
-        ''' <returns>Season details</returns>
-        ''' <remarks>
-        ''' 2015/11/18 Cocotus - First implementation
-        ''' Not used in moment, since theres no rating/votes field in season database!
-        ''' IMDBID/TraktID of tv show to be scraped is needed!
-        ''' </remarks>
-        Public Function GetTVSeasonInfo(ByVal SeasonNumber As Integer, ByRef FilteredOptions As Structures.ScrapeOptions) As MediaContainers.SeasonDetails
-            If String.IsNullOrEmpty(_TrakttvDBElementIMDBID) AndAlso String.IsNullOrEmpty(_TrakttvDBElementTRAKTID) Then Return Nothing
-            Dim nSeason As New MediaContainers.SeasonDetails
-            nSeason.TMDB = _TrakttvDBElementTMDBID
-            'nSeason.IMDB = _TrakttvDBElementIMDBID
-            nSeason.Scrapersource = "TRAKTTV"
-            Return nSeason
-        End Function
-
-        ''' <summary>
-        '''  Scrape TV Epsiode details from trakttv
-        ''' </summary>
-        ''' <param name="SeasonNumber">Number of season to scrape</param>
-        ''' <param name="EpisodeNumber">Number of episode to scrape</param>
-        ''' <param name="FilteredOptions">Module settings<param>
-        ''' <returns>Season details</returns>
-        ''' <remarks>
-        ''' 2015/11/18 Cocotus - First implementation
-        ''' IMDBID/TraktID of tv show to be scraped is needed!
-        ''' </remarks>
-        Public Function GetTVEpisodeInfo(ByVal SeasonNumber As Integer, ByVal EpisodeNumber As Integer, ByRef FilteredOptions As Structures.ScrapeOptions) As MediaContainers.EpisodeDetails
-            If String.IsNullOrEmpty(_TrakttvDBElementIMDBID) AndAlso String.IsNullOrEmpty(_TrakttvDBElementTRAKTID) Then Return Nothing
-            Dim nEpisode As New MediaContainers.EpisodeDetails
-
-            nEpisode.Scrapersource = "TRAKTTV"
-            nEpisode.IMDB = _TrakttvDBElementIMDBID
-            nEpisode.TMDB = _TrakttvDBElementTMDBID
-            nEpisode.Episode = EpisodeNumber
-            nEpisode.Season = SeasonNumber
-
-            If String.IsNullOrEmpty(_Token) Then
-                logger.Error(String.Concat("[GetTVEpisodeInfo] Can't login to trakt.tv account! Current showID: " & If(String.IsNullOrEmpty(_TrakttvDBElementTRAKTID), _TrakttvDBElementIMDBID, _TrakttvDBElementTRAKTID)))
-                Return Nothing
-            End If
-
-            'Rating / Votes
-            If FilteredOptions.bEpisodeRating Then
-                If Not String.IsNullOrEmpty(_Token) Then
-                    'scrape community rating and votes
-                    Dim traktrating As TraktAPI.Model.TraktRating = TrakttvAPI.GetEpisodeRating(If(String.IsNullOrEmpty(_TrakttvDBElementTRAKTID), _TrakttvDBElementIMDBID, _TrakttvDBElementTRAKTID), SeasonNumber, EpisodeNumber)
-                    If Not traktrating Is Nothing AndAlso Not traktrating.Rating Is Nothing AndAlso Not traktrating.Votes Is Nothing Then
-                        nEpisode.Rating = CStr(Math.Round(traktrating.Rating.Value, 1)) ' traktrating.Rating.ToString
-                        nEpisode.Votes = traktrating.Votes.ToString
-                    Else
-                        logger.Info("[GetTVEpisodeInfo] Could not scrape community rating/votes from trakt.tv! Current showID: " & If(String.IsNullOrEmpty(_TrakttvDBElementTRAKTID), _TrakttvDBElementIMDBID, _TrakttvDBElementTRAKTID))
-                    End If
-
-                    'instead of community rating use personal rating if available?
-                    If _SpecialSettings.UsePersonalRatings Then
-                        If _traktRatedEpisodes Is Nothing = False Then
-                            For Each ratedEpisode As TraktAPI.Model.TraktEpisodeRated In _traktRatedEpisodes
-                                If Not ratedEpisode Is Nothing AndAlso Not ratedEpisode.Show Is Nothing AndAlso Not ratedEpisode.Show.Ids Is Nothing AndAlso Not ratedEpisode.Episode Is Nothing Then
-                                    'Check if information is stored...
-                                    If (ratedEpisode.Show.Ids.Imdb.ToString = _TrakttvDBElementIMDBID OrElse ratedEpisode.Show.Ids.Trakt.ToString = _TrakttvDBElementTRAKTID) AndAlso ratedEpisode.Episode.Number = EpisodeNumber AndAlso ratedEpisode.Episode.Season = SeasonNumber Then
-                                        nEpisode.Rating = ratedEpisode.Rating.ToString
-                                        Exit For
-                                    End If
-                                End If
-                            Next
+                    If _SpecialSettings.FallbackToGlobalRating OrElse Not _SpecialSettings.UsePersonalRating Then
+                        Dim nGlobalRating As TraktAPI.Model.TraktRating = TrakttvAPI.GetMovieRating(CStr(intTraktID))
+                        If Not nGlobalRating Is Nothing AndAlso Not nGlobalRating.Rating Is Nothing AndAlso Not nGlobalRating.Votes Is Nothing Then
+                            nMovie.Rating = CStr(Math.Round(nGlobalRating.Rating.Value, 1)) ' traktrating.Rating.ToString
+                            nMovie.Votes = CStr(nGlobalRating.Votes)
+                            Return nMovie
                         Else
-                            logger.Info("[GetTVEpisodeInfo] No ratings of episodes scraped from trakt.tv! Current showID: ", If(String.IsNullOrEmpty(_TrakttvDBElementTRAKTID), _TrakttvDBElementIMDBID, _TrakttvDBElementTRAKTID))
+                            logger.Info(String.Format("[GetMovieInfo] Could not scrape community rating/votes from trakt.tv! Current TraktID: {0}", intTraktID))
                         End If
                     End If
-                Else
-                    Return Nothing
                 End If
             End If
-            Return nEpisode
-        End Function
 
-        ''' <summary>
-        '''  Scrape IDs(IDs of TVDB TMDB IMDB TraktID and TVRage) for item(movie/episode/show)
-        ''' </summary>
-        ''' <param name="ID">TVDBID/IMDBID/TMDBID/TraktID of item</param>
-        ''' <param name="IDType">Type of ID to lookup. Possible values: trakt-movie , trakt-show , trakt-episode , imdb , tmdb , tvdb , tvrage</param>
-        ''' <returns>SearchResult-Container which contains Ids of TVDB TMDB IMDB TraktID and TVRage</returns>
-        ''' <remarks>
-        ''' 2016/02/02 Cocotus - First implementation
-        ''' </remarks>
-        Public Function GetIDs(ByVal ID As String, ByVal IDType As String) As TraktAPI.Model.TraktSearchResult
-            If Not String.IsNullOrEmpty(ID) Then
-                If String.IsNullOrEmpty(_Token) Then
-                    logger.Error(String.Concat("[GetIDs] Can't login to trakt.tv account! Current ID: ", ID))
-                    Return Nothing
-                End If
-                'search on trakt.tv
-                Dim traktsearchresult = TrakttvAPI.SearchById(IDType, ID)
-                If Not traktsearchresult Is Nothing AndAlso Not traktsearchresult.Count = 1 Then
-                    Return traktsearchresult(0)
-                Else
-                    logger.Info("[GetIDs] Could not scrape TraktID from trakt.tv! ID: ", ID)
-                End If
-            End If
             Return Nothing
         End Function
 
+        Public Function GetInfo_TVEpisode(ByVal intTVShowTraktID As Integer, ByVal intSeason As Integer, ByVal intEpisode As Integer, ByVal tFilteredOptions As Structures.ScrapeOptions) As MediaContainers.EpisodeDetails
+            If intTVShowTraktID = -1 Then Return Nothing
+
+            Dim nTVEpisode As New MediaContainers.EpisodeDetails
+            nTVEpisode.Scrapersource = "TRAKTTV"
+            nTVEpisode.Episode = intEpisode
+            nTVEpisode.Season = intSeason
+
+            If CheckConnection() Then
+                If tFilteredOptions.bEpisodeRating Then
+                    If _SpecialSettings.UsePersonalRating Then
+                        Dim nPersonalRatedTVEpisodes As IEnumerable(Of TraktAPI.Model.TraktEpisodeRated) = TrakttvAPI.GetRatedEpisodes
+                        If nPersonalRatedTVEpisodes IsNot Nothing AndAlso nPersonalRatedTVEpisodes.Count > 0 Then
+                            Dim tTVEpisode = nPersonalRatedTVEpisodes.FirstOrDefault(Function(f) CInt(f.Show.Ids.Trakt) = intTVShowTraktID AndAlso
+                                                                                         f.Episode.Number = intEpisode AndAlso
+                                                                                         f.Episode.Season = intSeason)
+                            If tTVEpisode IsNot Nothing Then
+                                nTVEpisode.Rating = CStr(tTVEpisode.Rating)
+                                nTVEpisode.Votes = "1"
+                                Return nTVEpisode
+                            End If
+                        End If
+                    End If
+
+                    If _SpecialSettings.FallbackToGlobalRating OrElse Not _SpecialSettings.UsePersonalRating Then
+                        If Not intTVShowTraktID = 0 Then
+                            Dim nGlobalRating As TraktAPI.Model.TraktRating = TrakttvAPI.GetEpisodeRating(CStr(intTVShowTraktID), intSeason, intEpisode)
+                            If Not nGlobalRating Is Nothing AndAlso Not nGlobalRating.Rating Is Nothing AndAlso Not nGlobalRating.Votes Is Nothing Then
+                                nTVEpisode.Rating = CStr(Math.Round(nGlobalRating.Rating.Value, 1)) ' traktrating.Rating.ToString
+                                nTVEpisode.Votes = CStr(nGlobalRating.Votes)
+                                Return nTVEpisode
+                            Else
+                                logger.Info(String.Format("[GetInfo_TVEpisode] Could not scrape community rating/votes from trakt.tv! Current TraktID: {0} S{1}E{2}", intTVShowTraktID, intSeason, intEpisode))
+                            End If
+                        End If
+                    End If
+                End If
+            End If
+
+            Return Nothing
+        End Function
+
+        Public Function GetInfo_TVShow(ByVal intTraktID As Integer, ByVal tScrapeModifiers As Structures.ScrapeModifiers, ByVal FilteredOptions As Structures.ScrapeOptions, ByRef lstEpisodes As List(Of Database.DBElement)) As MediaContainers.TVShow
+            If intTraktID = -1 Then Return Nothing
+
+            Dim nTVShow As New MediaContainers.TVShow
+            nTVShow.Scrapersource = "TRAKTTV"
+
+            If CheckConnection() Then
+                If FilteredOptions.bMainRating Then
+                    Dim bRated_TVShow As Boolean = False
+
+                    If _SpecialSettings.UsePersonalRating Then
+                        Dim nPersonalRatedTVShows As IEnumerable(Of TraktAPI.Model.TraktShowRated) = TrakttvAPI.GetRatedShows
+                        If nPersonalRatedTVShows IsNot Nothing AndAlso nPersonalRatedTVShows.Count > 0 Then
+                            Dim tTVShow = nPersonalRatedTVShows.FirstOrDefault(Function(f) (CInt(f.Show.Ids.Trakt) = intTraktID))
+                            If tTVShow IsNot Nothing Then
+                                nTVShow.Rating = CStr(tTVShow.Rating)
+                                nTVShow.Votes = "1"
+                                bRated_TVShow = True
+                            End If
+                        End If
+                    End If
+
+                    If Not bRated_TVShow AndAlso (_SpecialSettings.FallbackToGlobalRating OrElse Not _SpecialSettings.UsePersonalRating) Then
+                        Dim nGlobalRating As TraktAPI.Model.TraktRating = TrakttvAPI.GetShowRating(CStr(intTraktID))
+                        If Not nGlobalRating Is Nothing AndAlso Not nGlobalRating.Rating Is Nothing AndAlso Not nGlobalRating.Votes Is Nothing Then
+                            nTVShow.Rating = CStr(Math.Round(nGlobalRating.Rating.Value, 1)) ' traktrating.Rating.ToString
+                            nTVShow.Votes = CStr(nGlobalRating.Votes)
+                        Else
+                            logger.Info(String.Format("[GetInfo_TVShow] Could not scrape community rating/votes from trakt.tv! Current TraktID: {0}", intTraktID))
+                        End If
+                    End If
+                End If
+
+                If tScrapeModifiers.withEpisodes AndAlso FilteredOptions.bEpisodeRating AndAlso lstEpisodes.Count > 0 Then
+                    'looks like there is no way to get all episodes for a tv show. so we scrape only local existing episodes
+                    For Each nDBElement As Database.DBElement In lstEpisodes
+                        Dim nEpisode As MediaContainers.EpisodeDetails = GetInfo_TVEpisode(intTraktID, nDBElement.TVEpisode.Season, nDBElement.TVEpisode.Episode, FilteredOptions)
+                        If nEpisode IsNot Nothing Then
+                            nTVShow.KnownEpisodes.Add(nEpisode)
+                        End If
+                    Next
+                End If
+
+                Return nTVShow
+            End If
+
+            Return Nothing
+        End Function
+
+        Public Function GetTraktID(ByVal tDBElement As Database.DBElement, Optional bForceTVShowID As Boolean = False) As Integer
+            Dim nSearchResults As IEnumerable(Of TraktAPI.Model.TraktSearchResult) = Nothing
+            Dim nContentType As Enums.ContentType = If(bForceTVShowID, Enums.ContentType.TVShow, tDBElement.ContentType)
+
+            If CheckConnection() Then
+                Select Case nContentType
+                    Case Enums.ContentType.Movie
+                        If tDBElement.Movie.IMDBSpecified Then
+                            nSearchResults = TrakttvAPI.SearchById("imdb", tDBElement.Movie.IMDB)
+                        End If
+                        If nSearchResults Is Nothing OrElse nSearchResults.Where(Function(f) f.Type = "movie").Count = 0 AndAlso tDBElement.Movie.TMDBSpecified Then
+                            nSearchResults = TrakttvAPI.SearchById("tmdb", tDBElement.Movie.TMDB)
+                        End If
+                        If nSearchResults IsNot Nothing AndAlso nSearchResults.Where(Function(f) f.Type = "movie").Count = 1 Then
+                            Return CInt(nSearchResults.Where(Function(f) f.Type = "movie")(0).Movie.Ids.Trakt)
+                        Else
+                            logger.Info(String.Format("[GetIDs] Could not scrape TraktID from trakt.tv! IMDB: {0} / TMDB: {1}", tDBElement.Movie.IMDB, tDBElement.Movie.TMDB))
+                        End If
+                    Case Enums.ContentType.TVEpisode
+                        If tDBElement.TVEpisode.IMDBSpecified Then
+                            nSearchResults = TrakttvAPI.SearchById("imdb", tDBElement.TVEpisode.IMDB)
+                        End If
+                        If nSearchResults Is Nothing OrElse nSearchResults.Where(Function(f) f.Type = "episode").Count = 0 AndAlso tDBElement.TVEpisode.TMDBSpecified Then
+                            nSearchResults = TrakttvAPI.SearchById("tmdb", tDBElement.TVEpisode.TMDB)
+                        End If
+                        If nSearchResults Is Nothing OrElse nSearchResults.Where(Function(f) f.Type = "episode").Count = 0 AndAlso tDBElement.TVEpisode.TVDBSpecified Then
+                            nSearchResults = TrakttvAPI.SearchById("tvdb", tDBElement.TVEpisode.TVDB)
+                        End If
+                        If nSearchResults IsNot Nothing AndAlso nSearchResults.Where(Function(f) f.Type = "episode").Count = 1 Then
+                            Return CInt(nSearchResults.Where(Function(f) f.Type = "episode")(0).Episode.Ids.Trakt)
+                        Else
+                            logger.Info(String.Format("[GetIDs] Could not scrape TraktID from trakt.tv! IMDB: {0} / TMDB: {1} / TVDB: {2}", tDBElement.TVEpisode.IMDB, tDBElement.TVEpisode.TMDB, tDBElement.TVEpisode.TVDB))
+                        End If
+                    Case Enums.ContentType.TVShow
+                        If tDBElement.TVShow.IMDBSpecified Then
+                            nSearchResults = TrakttvAPI.SearchById("imdb", tDBElement.TVShow.IMDB)
+                        End If
+                        If nSearchResults Is Nothing OrElse nSearchResults.Where(Function(f) f.Type = "show").Count = 0 AndAlso tDBElement.TVShow.TMDBSpecified Then
+                            nSearchResults = TrakttvAPI.SearchById("tmdb", tDBElement.TVShow.TMDB)
+                        End If
+                        If nSearchResults Is Nothing OrElse nSearchResults.Where(Function(f) f.Type = "show").Count = 0 AndAlso tDBElement.TVShow.TVDBSpecified Then
+                            nSearchResults = TrakttvAPI.SearchById("tvdb", tDBElement.TVShow.TVDB)
+                        End If
+                        If nSearchResults IsNot Nothing AndAlso nSearchResults.Where(Function(f) f.Type = "show").Count = 1 Then
+                            Return CInt(nSearchResults.Where(Function(f) f.Type = "show")(0).Show.Ids.Trakt)
+                        Else
+                            logger.Info(String.Format("[GetIDs] Could not scrape TraktID from trakt.tv! IMDB: {0} / TMDB: {1} / TVDB: {2}", tDBElement.TVShow.IMDB, tDBElement.TVShow.TMDB, tDBElement.TVShow.TVDB))
+                        End If
+                End Select
+            End If
+
+            Return -1
+        End Function
 
 #End Region 'Methods
 
 #Region "Nested Types"
+
 #End Region 'Nested Types
 
     End Class

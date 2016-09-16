@@ -28,7 +28,6 @@ Public Class clsAPITrakt
 #Region "Fields"
 
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
-
     Private _SpecialSettings As New TraktInterface.SpecialSettings
 
 #End Region 'Fields
