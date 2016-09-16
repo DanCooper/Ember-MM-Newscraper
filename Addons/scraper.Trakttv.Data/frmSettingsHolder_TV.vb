@@ -18,7 +18,6 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.IO
 Imports EmberAPI
 
 Public Class frmSettingsHolder_TV
@@ -64,19 +63,27 @@ Public Class frmSettingsHolder_TV
     Private Sub chkScraperEpRating_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperEpisodeRating.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
+
     Private Sub txtTraktUser_TextChanged(sender As Object, e As EventArgs) Handles txtTraktUser.TextChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
+
     Private Sub txtTraktPassword_TextChanged(sender As Object, e As EventArgs) Handles txtTraktPassword.TextChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
-    Private Sub chkUsePersonalRatings_CheckedChanged(sender As Object, e As EventArgs) Handles chkUsePersonalRatings.CheckedChanged
+
+    Private Sub chkFallbackToGlobalRating_CheckedChanged(sender As Object, e As EventArgs) Handles chkFallbackToGlobalRating.CheckedChanged, chkFallbackToGlobalRating.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub chkUsePersonalRatings_CheckedChanged(sender As Object, e As EventArgs) Handles chkUsePersonalRating.CheckedChanged, chkFallbackToGlobalRating.CheckedChanged
+        RaiseEvent ModuleSettingsChanged()
+        chkFallbackToGlobalRating.Enabled = chkUsePersonalRating.Checked
     End Sub
 
     Public Sub New()
         InitializeComponent()
-        Me.SetUp()
+        SetUp()
     End Sub
 
     Sub orderChanged()
@@ -91,19 +98,20 @@ Public Class frmSettingsHolder_TV
     End Sub
 
     Private Sub SetUp()
-        Me.chkScraperShowRating.Text = Master.eLang.GetString(400, "Rating")
-        Me.chkScraperEpisodeRating.Text = Master.eLang.GetString(400, "Rating")
-        Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        Me.lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), Environment.NewLine)
-        Me.lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
-        Me.chkUsePersonalRatings.Text = Master.eLang.GetString(1464, "Use personal rating (if available)")
-        Me.lblTraktPassword.Text = Master.eLang.GetString(426, "Password")
-        Me.lblTraktUser.Text = Master.eLang.GetString(425, "Username")
-        Me.txtTraktPassword.PasswordChar = "*"c
-        Me.gbScraperFieldsOpts.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
-        Me.gbScraperOpts.Text = Master.eLang.GetString(1186, "Scraper Options")
-        Me.gbScraperFieldsEpisode.Text = Master.eLang.GetString(727, "Episode")
-        Me.gbScraperFieldsShow.Text = Master.eLang.GetString(743, "Show")
+        chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
+        chkFallbackToGlobalRating.Text = Master.eLang.GetString(1467, "Fallback to global rating")
+        chkScraperEpisodeRating.Text = Master.eLang.GetString(400, "Rating")
+        chkScraperShowRating.Text = Master.eLang.GetString(400, "Rating")
+        chkUsePersonalRating.Text = Master.eLang.GetString(1464, "Use personal rating")
+        gbScraperFieldsEpisode.Text = Master.eLang.GetString(727, "Episode")
+        gbScraperFieldsOpts.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
+        gbScraperFieldsShow.Text = Master.eLang.GetString(743, "Show")
+        gbScraperOpts.Text = Master.eLang.GetString(1186, "Scraper Options")
+        lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), Environment.NewLine)
+        lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
+        lblTraktPassword.Text = Master.eLang.GetString(426, "Password")
+        lblTraktUser.Text = Master.eLang.GetString(425, "Username")
+        txtTraktPassword.PasswordChar = "*"c
     End Sub
 
 #End Region 'Methods

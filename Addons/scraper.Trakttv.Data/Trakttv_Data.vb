@@ -18,16 +18,9 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.IO
-
 Imports EmberAPI
 Imports NLog
-Imports Trakttv
 
-''' <summary>
-''' Native Scraper
-''' </summary>
-''' <remarks></remarks>
 Public Class Trakttv_Data
     Implements Interfaces.ScraperModule_Data_Movie
     Implements Interfaces.ScraperModule_Data_TV
@@ -78,7 +71,7 @@ Public Class Trakttv_Data
 
     ReadOnly Property ModuleVersion() As String Implements Interfaces.ScraperModule_Data_Movie.ModuleVersion, Interfaces.ScraperModule_Data_TV.ModuleVersion
         Get
-            Return System.Diagnostics.FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location).FileVersion.ToString
+            Return FileVersionInfo.GetVersionInfo(Reflection.Assembly.GetExecutingAssembly.Location).FileVersion.ToString
         End Get
     End Property
 
@@ -122,12 +115,12 @@ Public Class Trakttv_Data
 
     Private Sub Handle_SetupScraperChanged_Movie(ByVal state As Boolean, ByVal difforder As Integer)
         ScraperEnabled_Movie = state
-        RaiseEvent ScraperSetupChanged_Movie(String.Concat(Me._Name, "_Movie"), state, difforder)
+        RaiseEvent ScraperSetupChanged_Movie(String.Concat(_Name, "_Movie"), state, difforder)
     End Sub
 
     Private Sub Handle_SetupScraperChanged_TV(ByVal state As Boolean, ByVal difforder As Integer)
         ScraperEnabled_TV = state
-        RaiseEvent ScraperSetupChanged_TV(String.Concat(Me._Name, "_TV"), state, difforder)
+        RaiseEvent ScraperSetupChanged_TV(String.Concat(_Name, "_TV"), state, difforder)
     End Sub
 
     Sub Init_Movie(ByVal sAssemblyName As String) Implements Interfaces.ScraperModule_Data_Movie.Init
@@ -146,15 +139,15 @@ Public Class Trakttv_Data
         LoadSettings_Movie()
         _setup_Movie.chkEnabled.Checked = _ScraperEnabled_Movie
 
+        _setup_Movie.chkFallbackToGlobalRating.Checked = _SpecialSettings_Movie.FallbackToGlobalRating
         _setup_Movie.chkRating.Checked = ConfigScrapeOptions_Movie.bMainRating
-
-        _setup_Movie.txtTraktPassword.Text = _SpecialSettings_Movie.TrakttvPassword
-        _setup_Movie.txtTraktUser.Text = _SpecialSettings_Movie.TrakttvUserName
-        _setup_Movie.chkUsePersonalRatings.Checked = _SpecialSettings_Movie.UsePersonalRatings
+        _setup_Movie.chkUsePersonalRating.Checked = _SpecialSettings_Movie.UsePersonalRating
+        _setup_Movie.txtTraktPassword.Text = _SpecialSettings_Movie.Password
+        _setup_Movie.txtTraktUser.Text = _SpecialSettings_Movie.Username
 
         _setup_Movie.orderChanged()
 
-        SPanel.Name = String.Concat(Me._Name, "_Movie")
+        SPanel.Name = String.Concat(_Name, "_Movie")
         SPanel.Text = "Trakttv"
         SPanel.Prefix = "TrakttvMovieInfo_"
         SPanel.Order = 110
@@ -174,16 +167,16 @@ Public Class Trakttv_Data
         LoadSettings_TV()
         _setup_TV.chkEnabled.Checked = _ScraperEnabled_TV
 
+        _setup_TV.chkFallbackToGlobalRating.Checked = _SpecialSettings_TV.FallbackToGlobalRating
         _setup_TV.chkScraperShowRating.Checked = ConfigScrapeOptions_TV.bMainRating
         _setup_TV.chkScraperEpisodeRating.Checked = ConfigScrapeOptions_TV.bEpisodeRating
-
-        _setup_TV.txtTraktPassword.Text = _SpecialSettings_TV.TrakttvPassword
-        _setup_TV.txtTraktUser.Text = _SpecialSettings_TV.TrakttvUserName
-        _setup_TV.chkUsePersonalRatings.Checked = _SpecialSettings_TV.UsePersonalRatings
+        _setup_TV.txtTraktPassword.Text = _SpecialSettings_TV.Password
+        _setup_TV.txtTraktUser.Text = _SpecialSettings_TV.Username
+        _setup_TV.chkUsePersonalRating.Checked = _SpecialSettings_TV.UsePersonalRating
 
         _setup_TV.orderChanged()
 
-        SPanel.Name = String.Concat(Me._Name, "_TV")
+        SPanel.Name = String.Concat(_Name, "_TV")
         SPanel.Text = "Trakttv"
         SPanel.Prefix = "TrakttvTVInfo_"
         SPanel.Order = 110
@@ -199,23 +192,26 @@ Public Class Trakttv_Data
 
     Sub LoadSettings_Movie()
         ConfigScrapeOptions_Movie.bMainRating = AdvancedSettings.GetBooleanSetting("DoRating", True)
-        _SpecialSettings_Movie.TrakttvUserName = AdvancedSettings.GetSetting("Username", String.Empty, , Enums.ContentType.Movie)
-        _SpecialSettings_Movie.TrakttvPassword = AdvancedSettings.GetSetting("Password", String.Empty, , Enums.ContentType.Movie)
-        _SpecialSettings_Movie.UsePersonalRatings = AdvancedSettings.GetBooleanSetting("UsePersonalRatings", False, , Enums.ContentType.Movie)
+        _SpecialSettings_Movie.FallbackToGlobalRating = AdvancedSettings.GetBooleanSetting("FallbackToGlobalRating", False, , Enums.ContentType.Movie)
+        _SpecialSettings_Movie.Password = AdvancedSettings.GetSetting("Password", String.Empty, , Enums.ContentType.Movie)
+        _SpecialSettings_Movie.UsePersonalRating = AdvancedSettings.GetBooleanSetting("UsePersonalRating", False, , Enums.ContentType.Movie)
+        _SpecialSettings_Movie.Username = AdvancedSettings.GetSetting("Username", String.Empty, , Enums.ContentType.Movie)
     End Sub
 
     Sub LoadSettings_TV()
         ConfigScrapeOptions_TV.bEpisodeRating = AdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.ContentType.TVEpisode)
         ConfigScrapeOptions_TV.bMainRating = AdvancedSettings.GetBooleanSetting("DoRating", True, , Enums.ContentType.TVShow)
-        _SpecialSettings_TV.TrakttvUserName = AdvancedSettings.GetSetting("Username", String.Empty, , Enums.ContentType.TV)
-        _SpecialSettings_TV.TrakttvPassword = AdvancedSettings.GetSetting("Password", String.Empty, , Enums.ContentType.TV)
-        _SpecialSettings_TV.UsePersonalRatings = AdvancedSettings.GetBooleanSetting("UsePersonalRatings", False, , Enums.ContentType.TV)
+        _SpecialSettings_TV.FallbackToGlobalRating = AdvancedSettings.GetBooleanSetting("FallbackToGlobalRating", False, , Enums.ContentType.TV)
+        _SpecialSettings_TV.Password = AdvancedSettings.GetSetting("Password", String.Empty, , Enums.ContentType.TV)
+        _SpecialSettings_TV.UsePersonalRating = AdvancedSettings.GetBooleanSetting("UsePersonalRating", False, , Enums.ContentType.TV)
+        _SpecialSettings_TV.Username = AdvancedSettings.GetSetting("Username", String.Empty, , Enums.ContentType.TV)
     End Sub
 
     Sub SaveSettings_Movie()
         Using settings = New AdvancedSettings()
             settings.SetBooleanSetting("DoRating", ConfigScrapeOptions_Movie.bMainRating, , , Enums.ContentType.Movie)
-            settings.SetBooleanSetting("UsePersonalRatings", _SpecialSettings_Movie.UsePersonalRatings, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("FallbackToGlobalRating", _SpecialSettings_Movie.FallbackToGlobalRating, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("UsePersonalRating", _SpecialSettings_Movie.UsePersonalRating, , , Enums.ContentType.Movie)
             settings.SetSetting("Username", _setup_Movie.txtTraktUser.Text, , , Enums.ContentType.Movie)
             settings.SetSetting("Password", _setup_Movie.txtTraktPassword.Text, , , Enums.ContentType.Movie)
         End Using
@@ -225,7 +221,8 @@ Public Class Trakttv_Data
         Using settings = New AdvancedSettings()
             settings.SetBooleanSetting("DoRating", ConfigScrapeOptions_TV.bEpisodeRating, , , Enums.ContentType.TVEpisode)
             settings.SetBooleanSetting("DoRating", ConfigScrapeOptions_TV.bMainRating, , , Enums.ContentType.TVShow)
-            settings.SetBooleanSetting("UsePersonalRatings", _SpecialSettings_TV.UsePersonalRatings, , , Enums.ContentType.TV)
+            settings.SetBooleanSetting("FallbackToGlobalRating", _SpecialSettings_TV.FallbackToGlobalRating, , , Enums.ContentType.TV)
+            settings.SetBooleanSetting("UsePersonalRating", _SpecialSettings_TV.UsePersonalRating, , , Enums.ContentType.TV)
             settings.SetSetting("Username", _setup_TV.txtTraktUser.Text, , , Enums.ContentType.TV)
             settings.SetSetting("Password", _setup_TV.txtTraktPassword.Text, , , Enums.ContentType.TV)
         End Using
@@ -233,9 +230,10 @@ Public Class Trakttv_Data
 
     Sub SaveSetupScraper_Movie(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Data_Movie.SaveSetupScraper
         ConfigScrapeOptions_Movie.bMainRating = _setup_Movie.chkRating.Checked
-        _SpecialSettings_Movie.TrakttvPassword = _setup_Movie.txtTraktPassword.Text
-        _SpecialSettings_Movie.TrakttvUserName = _setup_Movie.txtTraktUser.Text
-        _SpecialSettings_Movie.UsePersonalRatings = _setup_Movie.chkUsePersonalRatings.Checked
+        _SpecialSettings_Movie.FallbackToGlobalRating = _setup_Movie.chkFallbackToGlobalRating.Checked
+        _SpecialSettings_Movie.Password = _setup_Movie.txtTraktPassword.Text
+        _SpecialSettings_Movie.Username = _setup_Movie.txtTraktUser.Text
+        _SpecialSettings_Movie.UsePersonalRating = _setup_Movie.chkUsePersonalRating.Checked
 
         SaveSettings_Movie()
         If DoDispose Then
@@ -248,9 +246,10 @@ Public Class Trakttv_Data
     Sub SaveSetupScraper_TV(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Data_TV.SaveSetupScraper
         ConfigScrapeOptions_TV.bEpisodeRating = _setup_TV.chkScraperEpisodeRating.Checked
         ConfigScrapeOptions_TV.bMainRating = _setup_TV.chkScraperShowRating.Checked
-        _SpecialSettings_TV.TrakttvPassword = _setup_TV.txtTraktPassword.Text
-        _SpecialSettings_TV.TrakttvUserName = _setup_TV.txtTraktUser.Text
-        _SpecialSettings_TV.UsePersonalRatings = _setup_TV.chkUsePersonalRatings.Checked
+        _SpecialSettings_TV.FallbackToGlobalRating = _setup_TV.chkFallbackToGlobalRating.Checked
+        _SpecialSettings_TV.Password = _setup_TV.txtTraktPassword.Text
+        _SpecialSettings_TV.Username = _setup_TV.txtTraktUser.Text
+        _SpecialSettings_TV.UsePersonalRating = _setup_TV.chkUsePersonalRating.Checked
 
         SaveSettings_TV()
         If DoDispose Then
@@ -272,12 +271,17 @@ Public Class Trakttv_Data
     Function Scraper_Movie(ByRef oDBElement As Database.DBElement, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_Movie Implements Interfaces.ScraperModule_Data_Movie.Scraper_Movie
         logger.Trace("[Tracktv_Data] [Scraper_Movie] [Start]")
 
-        Dim nMovie As New MediaContainers.Movie
+        Dim nMovie As MediaContainers.Movie = Nothing
+
         If ScrapeModifiers.MainNFO Then
             LoadSettings_Movie()
-            Dim _scraper As New TrakttvScraper.Scraper(_SpecialSettings_Movie, oDBElement)
+
+            Dim _scraper As New TrakttvScraper.Scraper(_SpecialSettings_Movie)
+            _SpecialSettings_Movie.Token = _scraper.Token
+
             Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions_Movie)
-            nMovie = _scraper.GetMovieInfo(FilteredOptions, False)
+
+            nMovie = _scraper.GetInfo_Movie(_scraper.GetTraktID(oDBElement), FilteredOptions)
         End If
 
         logger.Trace("[Tracktv_Data] [Scraper_Movie] [Done]")
@@ -296,11 +300,16 @@ Public Class Trakttv_Data
         logger.Trace("[Tracktv_Data] [Scraper_TV] [Start]")
 
         Dim nTVShow As New MediaContainers.TVShow
+
         If ScrapeModifiers.MainNFO Then
             LoadSettings_TV()
-            Dim _scraper As New TrakttvScraper.Scraper(_SpecialSettings_TV, oDBElement)
+
+            Dim _scraper As New TrakttvScraper.Scraper(_SpecialSettings_TV)
+            _SpecialSettings_TV.Token = _scraper.Token
+
             Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions_TV)
-            nTVShow = _scraper.GetTVShowInfo(ScrapeModifiers, FilteredOptions, oDBElement)
+
+            nTVShow = _scraper.GetInfo_TVShow(_scraper.GetTraktID(oDBElement), ScrapeModifiers, FilteredOptions, oDBElement.Episodes)
         End If
 
         logger.Trace("[Tracktv_Data] [Scraper_TV] [Done]")
@@ -317,22 +326,16 @@ Public Class Trakttv_Data
     Public Function Scraper_TVEpisode(ByRef oDBElement As Database.DBElement, ByVal ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_TVEpisode Implements Interfaces.ScraperModule_Data_TV.Scraper_TVEpisode
         logger.Trace("[Tracktv_Data] [Scraper_TVEpisode] [Start]")
 
-        If oDBElement.TVEpisode.Episode = -1 OrElse oDBElement.TVEpisode.Season = -1 Then
-            Return New Interfaces.ModuleResult_Data_TVEpisode With {.Result = Nothing}
-        End If
+        Dim nTVEpisode As New MediaContainers.EpisodeDetails
 
         LoadSettings_TV()
 
-        Dim nTVEpisode As New MediaContainers.EpisodeDetails
-        Dim _scraper As New TrakttvScraper.Scraper(_SpecialSettings_TV, oDBElement)
-        Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions_TV)
-        nTVEpisode = _scraper.GetTVEpisodeInfo(oDBElement.TVEpisode.Season, oDBElement.TVEpisode.Episode, FilteredOptions)
+        Dim _scraper As New TrakttvScraper.Scraper(_SpecialSettings_TV)
+        _SpecialSettings_TV.Token = _scraper.Token
 
-        'Set basic Episode setting (correct seaonnumber, epiodenumber) here because otherwise result will not be handled in MergeDataScraperResults_TVEpisode_Single
-        If nTVEpisode IsNot Nothing Then
-            nTVEpisode.Episode = oDBElement.TVEpisode.Episode
-            nTVEpisode.Season = oDBElement.TVEpisode.Season
-        End If
+        Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions_TV)
+
+        nTVEpisode = _scraper.GetInfo_TVEpisode(_scraper.GetTraktID(oDBElement, True), oDBElement.TVEpisode.Season, oDBElement.TVEpisode.Episode, FilteredOptions)
 
         logger.Trace("[Tracktv_Data] [Scraper_TVEpisode] [Done]")
         Return New Interfaces.ModuleResult_Data_TVEpisode With {.Result = nTVEpisode}
@@ -363,11 +366,11 @@ Public Class Trakttv_Data
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function
 
-    Public Sub ScraperOrderChanged_Movie() Implements EmberAPI.Interfaces.ScraperModule_Data_Movie.ScraperOrderChanged
+    Public Sub ScraperOrderChanged_Movie() Implements Interfaces.ScraperModule_Data_Movie.ScraperOrderChanged
         _setup_Movie.orderChanged()
     End Sub
 
-    Public Sub ScraperOrderChanged_tv() Implements EmberAPI.Interfaces.ScraperModule_Data_TV.ScraperOrderChanged
+    Public Sub ScraperOrderChanged_TV() Implements Interfaces.ScraperModule_Data_TV.ScraperOrderChanged
         _setup_TV.orderChanged()
     End Sub
 
@@ -378,14 +381,17 @@ Public Class Trakttv_Data
     Structure SpecialSettings
 
 #Region "Fields"
-        Dim UsePersonalRatings As Boolean
-        Dim TrakttvUserName As String
-        Dim TrakttvPassword As String
+
+        Dim UsePersonalRating As Boolean
+        Dim FallbackToGlobalRating As Boolean
+        Dim Password As String
         Dim TrakttvDBElementID As String
+        Dim Username As String
+        Dim Token As String
+
 #End Region 'Fields
 
     End Structure
-
 
 #End Region 'Nested Types
 
