@@ -16175,7 +16175,10 @@ Public Class frmMain
         Dim currTag As Structures.MainTabType = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
         If currTag.ContentType = Enums.ContentType.TV Then
             If dgvTVShows.RowCount > 0 Then
-                Dim epCount As Integer = Master.DB.GetViewMediaCount(currList_TVShows, True)
+                Dim epCount As Integer = 0
+                For i As Integer = 0 To dgvTVShows.Rows.Count - 1
+                    epCount += CInt(dgvTVShows.Rows(i).Cells("Episodes").Value)
+                Next
                 tcMain.SelectedTab.Text = String.Format("{0} ({1}/{2})", currTag.ContentName, dgvTVShows.RowCount, epCount)
             Else
                 tcMain.SelectedTab.Text = currTag.ContentName
