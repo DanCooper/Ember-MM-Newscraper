@@ -4545,7 +4545,7 @@ Partial Class frmMain
         Me.txtSearchMovies.Size = New System.Drawing.Size(424, 22)
         Me.txtSearchMovies.TabIndex = 0
         Me.txtSearchMovies.WatermarkColor = System.Drawing.Color.Gray
-        Me.txtSearchMovies.WatermarkText = "Ctrl + F"
+        Me.txtSearchMovies.WatermarkText = "Ctrl+F"
         '
         'pnlSearchMovieSets
         '
@@ -4593,7 +4593,7 @@ Partial Class frmMain
         Me.txtSearchMovieSets.Size = New System.Drawing.Size(424, 22)
         Me.txtSearchMovieSets.TabIndex = 0
         Me.txtSearchMovieSets.WatermarkColor = System.Drawing.Color.Gray
-        Me.txtSearchMovieSets.WatermarkText = "Ctrl + F"
+        Me.txtSearchMovieSets.WatermarkText = "Ctrl+F"
         '
         'pnlSearchTVShows
         '
@@ -4641,7 +4641,7 @@ Partial Class frmMain
         Me.txtSearchShows.Size = New System.Drawing.Size(424, 22)
         Me.txtSearchShows.TabIndex = 0
         Me.txtSearchShows.WatermarkColor = System.Drawing.Color.Gray
-        Me.txtSearchShows.WatermarkText = "Ctrl + F"
+        Me.txtSearchShows.WatermarkText = "Ctrl+F"
         '
         'pnlFilter_Movies
         '
