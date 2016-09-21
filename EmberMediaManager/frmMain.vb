@@ -17638,7 +17638,7 @@ Public Class frmMain
     End Sub
 
     Private Sub bwCheckVersion_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCheckVersion.DoWork
-        Invoke(New UpdatemnuVersionDel(AddressOf UpdatemnuVersion), Master.strVersionOverwrite, Color.Green)
+        Invoke(New UpdatemnuVersionDel(AddressOf UpdatemnuVersion), String.Concat(Master.strVersionOverwrite, " ", If(Master.is32Bit, "x86", "x64")), Color.Green)
         'Try
         '    Dim sHTTP As New EmberAPI.HTTP
         '    'Pull Assembly version info from current Ember repo on github
