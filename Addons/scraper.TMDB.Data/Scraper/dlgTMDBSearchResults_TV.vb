@@ -81,7 +81,7 @@ Public Class dlgTMDBSearchResults_TV
         txtFileName.Text = sShowPath
         chkManual.Enabled = False
 
-        _TMDB.SearchTVShowAsync(sShowTitle, _filterOptions)
+        _TMDB.SearchAsync_TVShow(sShowTitle, _filterOptions)
 
         Return ShowDialog()
     End Function
@@ -112,7 +112,7 @@ Public Class dlgTMDBSearchResults_TV
             chkManual.Enabled = False
             _TMDB.CancelAsync()
 
-            _TMDB.SearchTVShowAsync(txtSearch.Text, _filterOptions)
+            _TMDB.SearchAsync_TVShow(txtSearch.Text, _filterOptions)
         End If
     End Sub
 

@@ -81,7 +81,7 @@ Public Class dlgTMDBSearchResults_MovieSet
         txtSearch.Text = sMovieSetTitle
         txtFileName.Text = String.Empty
         chkManual.Enabled = False
-        _TMDB.SearchMovieSetAsync(sMovieSetTitle, _filterOptions)
+        _TMDB.SearchAsync_MovieSet(sMovieSetTitle, _filterOptions)
 
         Return ShowDialog()
     End Function
@@ -112,7 +112,7 @@ Public Class dlgTMDBSearchResults_MovieSet
             chkManual.Enabled = False
             _TMDB.CancelAsync()
             'IMDB.IMDBURL = IMDBURL
-            _TMDB.SearchMovieSetAsync(txtSearch.Text, _filterOptions)
+            _TMDB.SearchAsync_MovieSet(txtSearch.Text, _filterOptions)
         End If
     End Sub
 
