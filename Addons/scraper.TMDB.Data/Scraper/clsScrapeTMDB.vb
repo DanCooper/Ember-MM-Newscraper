@@ -281,7 +281,7 @@ Namespace TMDB
         ''' <param name="GetPoster">Scrape posters for the movie?</param>
         ''' <returns>True: success, false: no success</returns>
         Public Function GetInfo_Movie(ByVal strID As String, ByVal FilteredOptions As Structures.ScrapeOptions, ByVal GetPoster As Boolean) As MediaContainers.Movie
-            If String.IsNullOrEmpty(strID) OrElse strID.Length < 2 Then Return Nothing
+            If String.IsNullOrEmpty(strID) Then Return Nothing
 
             Dim nMovie As New MediaContainers.Movie
 
@@ -290,7 +290,7 @@ Namespace TMDB
             Dim APIResult As Task(Of TMDbLib.Objects.Movies.Movie)
             Dim APIResultE As Task(Of TMDbLib.Objects.Movies.Movie)
 
-            If strID.Substring(0, 2).ToLower = "tt" Then
+            If strID.ToLower.StartsWith("tt") Then
                 'search movie by IMDB ID
                 APIResult = Task.Run(Function() _TMDBApi.GetMovieAsync(strID, TMDbLib.Objects.Movies.MovieMethods.Credits Or TMDbLib.Objects.Movies.MovieMethods.Releases Or TMDbLib.Objects.Movies.MovieMethods.Videos))
                 If _SpecialSettings.FallBackEng Then
@@ -668,7 +668,7 @@ Namespace TMDB
         ''' <param name="GetPoster">Scrape posters for the movie?</param>
         ''' <returns>True: success, false: no success</returns>
         Public Function GetInfo_TVShow(ByVal strID As String, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef FilteredOptions As Structures.ScrapeOptions, ByVal GetPoster As Boolean) As MediaContainers.TVShow
-            If String.IsNullOrEmpty(strID) OrElse strID.Length < 2 Then Return Nothing
+            If String.IsNullOrEmpty(strID) Then Return Nothing
 
             Dim nTVShow As New MediaContainers.TVShow
 
@@ -1241,20 +1241,22 @@ Namespace TMDB
         End Function
 
         Public Function GetMovieStudios(ByVal strID As String) As List(Of String)
-            If String.IsNullOrEmpty(strID) OrElse strID.Length > 2 Then Return New List(Of String)
+            If String.IsNullOrEmpty(strID) Then Return New List(Of String)
 
             Dim alStudio As New List(Of String)
-            Dim Movie As TMDbLib.Objects.Movies.Movie
+            Dim Movie As TMDbLib.Objects.Movies.Movie = Nothing
 
-            Dim APIResult As Task(Of TMDbLib.Objects.Movies.Movie)
+            Dim APIResult As Task(Of TMDbLib.Objects.Movies.Movie) = Nothing
 
-            If strID.Substring(0, 2).ToLower = "tt" Then
+            If strID.ToLower.StartsWith("tt") Then
                 APIResult = Task.Run(Function() _TMDBApi.GetMovieAsync(strID))
-            Else
+            ElseIf Integer.TryParse(strID, 0) Then
                 APIResult = Task.Run(Function() _TMDBApi.GetMovieAsync(CInt(strID)))
             End If
 
-            Movie = APIResult.Result
+            If APIResult IsNot Nothing AndAlso APIResult.Result IsNot Nothing Then
+                Movie = APIResult.Result
+            End If
 
             If Movie IsNot Nothing AndAlso Movie.ProductionCompanies IsNot Nothing AndAlso Movie.ProductionCompanies.Count > 0 Then
                 For Each cStudio In Movie.ProductionCompanies
