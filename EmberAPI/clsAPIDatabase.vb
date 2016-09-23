@@ -809,7 +809,7 @@ Public Class Database
     Public Function Connect_MyVideos() As Boolean
 
         'set database version
-        Dim MyVideosDBVersion As Integer = 42
+        Dim MyVideosDBVersion As Integer = 43
 
         'set database filename
         Dim MyVideosDB As String = String.Format("MyVideos{0}.emm", MyVideosDBVersion)
@@ -846,7 +846,7 @@ Public Class Database
 
         Try
             If isNew Then
-                Dim sqlCommand As String = File.ReadAllText(FileUtils.Common.ReturnSettingsFile("DB", String.Format("MyVideosDBSQL_v{0}.txt", MyVideosDBVersion)))
+                Dim sqlCommand As String = File.ReadAllText(FileUtils.Common.ReturnSettingsFile("DB", "MyVideosDBSQL.txt"))
 
                 Using transaction As SQLiteTransaction = _myvideosDBConn.BeginTransaction()
                     Using command As SQLiteCommand = _myvideosDBConn.CreateCommand()
