@@ -41,9 +41,9 @@ Partial Class frmSplash
         '
         Me.VersionNumber.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.VersionNumber.BackColor = System.Drawing.Color.Transparent
-        Me.VersionNumber.Location = New System.Drawing.Point(237, 341)
+        Me.VersionNumber.Location = New System.Drawing.Point(229, 341)
         Me.VersionNumber.Name = "VersionNumber"
-        Me.VersionNumber.Size = New System.Drawing.Size(135, 13)
+        Me.VersionNumber.Size = New System.Drawing.Size(143, 13)
         Me.VersionNumber.TabIndex = 1
         Me.VersionNumber.Text = "Version {0}.{1}.{2}.{3}"
         Me.VersionNumber.TextAlign = System.Drawing.ContentAlignment.TopRight
@@ -53,7 +53,7 @@ Partial Class frmSplash
         Me.LoadingMesg.BackColor = System.Drawing.Color.Transparent
         Me.LoadingMesg.Location = New System.Drawing.Point(4, 341)
         Me.LoadingMesg.Name = "LoadingMesg"
-        Me.LoadingMesg.Size = New System.Drawing.Size(227, 13)
+        Me.LoadingMesg.Size = New System.Drawing.Size(219, 13)
         Me.LoadingMesg.TabIndex = 0
         Me.LoadingMesg.Text = "Loading..."
         '

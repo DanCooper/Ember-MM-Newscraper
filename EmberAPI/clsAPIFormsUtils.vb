@@ -43,7 +43,7 @@ Namespace FormUtils
             'Assign Values To the Variables
             WaterText = "Default Watermark"
             WaterColor = Color.Gray
-            WaterFont = New Font(Me.Font, FontStyle.Italic)
+            WaterFont = New Font(Font, FontStyle.Italic)
             WaterBrush = New SolidBrush(WaterColor)
 
             CreateWatermark()
@@ -54,36 +54,37 @@ Namespace FormUtils
 
         Private Sub CreateWatermark()
             WaterContainer = New Panel
-            Me.Controls.Add(WaterContainer)
+            Controls.Add(WaterContainer)
             AddHandler WaterContainer.Click, AddressOf Clicked
             AddHandler WaterContainer.Paint, AddressOf Painted
         End Sub
 
         Private Sub RemoveWatermark()
-            Me.Controls.Remove(WaterContainer)
+            Controls.Remove(WaterContainer)
         End Sub
 
         Private Sub ChangeText(sender As Object, e As EventArgs)
-            If Me.TextLength <= 0 Then
+            If TextLength <= 0 Then
                 CreateWatermark()
-            ElseIf Me.TextLength > 0 Then
+            ElseIf TextLength > 0 Then
                 RemoveWatermark()
             End If
         End Sub
 
         Private Sub ChangeFont(sender As Object, e As EventArgs)
-            WaterFont = New Font(Me.Font, FontStyle.Italic)
+            WaterFont = New Font(Font, FontStyle.Italic)
         End Sub
 
         Private Sub Clicked(sender As Object, e As EventArgs)
-            Me.Focus()
+            Focus()
         End Sub
 
         Private Sub Painted(sender As Object, e As PaintEventArgs)
-            WaterContainer.Location = New Point(2, 0)
+            Dim bHasBorder As Boolean = Not BorderStyle = BorderStyle.None
+            WaterContainer.Location = New Point(If(bHasBorder, 3, 2), If(bHasBorder, 1, 0))
             WaterContainer.Anchor = AnchorStyles.Left Or AnchorStyles.Right
-            WaterContainer.Height = Me.Height
-            WaterContainer.Width = Me.Width
+            WaterContainer.Height = Height - If(bHasBorder, 2, 0)
+            WaterContainer.Width = Width - If(bHasBorder, 4, 1)
             WaterBrush = New SolidBrush(WaterColor)
 
             Dim Graphic As Graphics = e.Graphics
@@ -101,7 +102,7 @@ Namespace FormUtils
             End Get
             Set(value As String)
                 WaterText = value
-                Me.Invalidate()
+                Invalidate()
             End Set
         End Property
 
@@ -111,7 +112,7 @@ Namespace FormUtils
             End Get
             Set(value As Color)
                 WaterColor = value
-                Me.Invalidate()
+                Invalidate()
             End Set
         End Property
     End Class

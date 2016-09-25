@@ -83,7 +83,7 @@ Public Class dlgTMDBSearchResults_Movie
         txtYear.Text = sMovieYear
         chkManual.Enabled = False
 
-        _TMDB.SearchMovieAsync(sMovieTitle, _filterOptions, sMovieYear)
+        _TMDB.SearchAsync_Movie(sMovieTitle, _filterOptions, sMovieYear)
 
         Return ShowDialog()
     End Function
@@ -114,7 +114,7 @@ Public Class dlgTMDBSearchResults_Movie
             chkManual.Enabled = False
             _TMDB.CancelAsync()
 
-            _TMDB.SearchMovieAsync(txtSearch.Text, _filterOptions, txtYear.Text)
+            _TMDB.SearchAsync_Movie(txtSearch.Text, _filterOptions, txtYear.Text)
         End If
     End Sub
 
