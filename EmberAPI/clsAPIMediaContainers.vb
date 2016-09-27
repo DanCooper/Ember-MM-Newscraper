@@ -164,6 +164,7 @@ Namespace MediaContainers
         Private _gueststars As New List(Of Person)
         Private _imdb As String
         Private _lastplayed As String
+        Private _locked As Boolean
         Private _playcount As Integer
         Private _plot As String
         Private _rating As String
@@ -612,6 +613,16 @@ Namespace MediaContainers
             End Get
         End Property
 
+        <XmlElement("locked")>
+        Public Property Locked() As Boolean
+            Get
+                Return _locked
+            End Get
+            Set(ByVal value As Boolean)
+                _locked = value
+            End Set
+        End Property
+
         <XmlIgnore()>
         Public Property Scrapersource() As String
             Get
@@ -699,6 +710,7 @@ Namespace MediaContainers
             _gueststars.Clear()
             _imdb = String.Empty
             _lastplayed = String.Empty
+            _locked = False
             _playcount = 0
             _plot = String.Empty
             _rating = String.Empty
@@ -947,6 +959,7 @@ Namespace MediaContainers
         Private _language As String
         Private _lastplayed As String
         Private _lev As Integer
+        Private _locked As Boolean
         Private _mpaa As String
         Private _originaltitle As String
         Private _outline As String
@@ -1683,6 +1696,16 @@ Namespace MediaContainers
             End Get
         End Property
 
+        <XmlElement("locked")>
+        Public Property Locked() As Boolean
+            Get
+                Return _locked
+            End Get
+            Set(ByVal value As Boolean)
+                _locked = value
+            End Set
+        End Property
+
 #End Region 'Properties
 
 #Region "Methods"
@@ -1889,6 +1912,7 @@ Namespace MediaContainers
             _imdb = String.Empty
             _language = String.Empty
             _lev = 0
+            _locked = False
             _mpaa = String.Empty
             _originaltitle = String.Empty
             _outline = String.Empty
@@ -2118,6 +2142,7 @@ Namespace MediaContainers
 #Region "Fields"
 
         Private _language As String
+        Private _locked As Boolean
         Private _oldtitle As String
         Private _plot As String
         Private _title As String
@@ -2209,6 +2234,16 @@ Namespace MediaContainers
                 Return Not String.IsNullOrEmpty(_language)
             End Get
         End Property
+
+        <XmlElement("locked")>
+        Public Property Locked() As Boolean
+            Get
+                Return _locked
+            End Get
+            Set(ByVal value As Boolean)
+                _locked = value
+            End Set
+        End Property
         ''' <summary>
         ''' Old Title before edit or scraping. Needed to remove no longer valid images and NFO.
         ''' </summary>
@@ -2242,6 +2277,7 @@ Namespace MediaContainers
 #Region "Methods"
 
         Public Sub Clear()
+            _locked = False
             _oldtitle = String.Empty
             _plot = String.Empty
             _title = String.Empty
@@ -2460,6 +2496,7 @@ Namespace MediaContainers
 #Region "Fields"
 
         Private _aired As String
+        Private _locked As Boolean
         Private _plot As String
         Private _scrapersource As String
         Private _season As Integer
@@ -2591,6 +2628,16 @@ Namespace MediaContainers
             End Get
         End Property
 
+        <XmlElement("locked")>
+        Public Property Locked() As Boolean
+            Get
+                Return _locked
+            End Get
+            Set(ByVal value As Boolean)
+                _locked = value
+            End Set
+        End Property
+
         <XmlIgnore()>
         Public ReadOnly Property AnyUniqueIDSpecified() As Boolean
             Get
@@ -2604,6 +2651,7 @@ Namespace MediaContainers
 
         Public Sub Clear()
             _aired = String.Empty
+            _locked = False
             _plot = String.Empty
             _scrapersource = String.Empty
             _season = -1
@@ -2720,6 +2768,7 @@ Namespace MediaContainers
         Private _knownepisodes As New List(Of EpisodeDetails)
         Private _knownseasons As New List(Of SeasonDetails)
         Private _language As String
+        Private _locked As Boolean
         Private _mpaa As String
         Private _originaltitle As String
         Private _plot As String
@@ -3208,6 +3257,16 @@ Namespace MediaContainers
             End Set
         End Property
 
+        <XmlElement("locked")>
+        Public Property Locked() As Boolean
+            Get
+                Return _locked
+            End Get
+            Set(ByVal value As Boolean)
+                _locked = value
+            End Set
+        End Property
+
         <XmlIgnore()>
         Public ReadOnly Property SeasonsSpecified() As Boolean
             Get
@@ -3351,6 +3410,7 @@ Namespace MediaContainers
             _knownepisodes.Clear()
             _knownseasons.Clear()
             _language = String.Empty
+            _locked = False
             _mpaa = String.Empty
             _originaltitle = String.Empty
             _plot = String.Empty

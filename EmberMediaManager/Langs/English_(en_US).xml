@@ -1181,8 +1181,8 @@
   <string id="1089">Added TV Show</string>
   <string id="1090">Active</string>
   <string id="1091">Inactive</string>
-  <string id="1092"></string>
-  <string id="1093"></string>
+  <string id="1092">Open TVDB-Page</string>
+  <string id="1093">Open Fanart.tv-Page</string>
   <string id="1094"></string>
   <string id="1095"></string>
   <string id="1096">ClearArt</string>
@@ -1450,8 +1450,8 @@
   <string id="1358">Scraping Media (Selected MovieSets - Ask):</string>
   <string id="1359">Scraping Media (Selected MovieSets - Auto):</string>
   <string id="1360">Scraping Media (Selected MovieSets - Skip):</string>
-  <string id="1361">New Episode(s)</string>
-  <string id="1362">New Show(s)</string>
+  <string id="1361"></string>
+  <string id="1362"></string>
   <string id="1363">No Banners found</string>
   <string id="1364">Movies removed from trakt.tv watchlist!</string>
   <string id="1365">No changes made!</string>

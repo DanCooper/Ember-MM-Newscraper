@@ -800,7 +800,7 @@ Public Class KodiInterface
                                                     If Result IsNot Nothing Then
                                                         mDBElement.Movie.LastPlayed = Result.LastPlayed
                                                         mDBElement.Movie.PlayCount = Result.PlayCount
-                                                        Master.DB.Save_Movie(mDBElement, False, True, False, False)
+                                                        Master.DB.Save_Movie(mDBElement, False, True, False, True, False)
                                                         RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {mDBElement.ID}))
                                                         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.Movie.Title), New Bitmap(My.Resources.logo)}))
                                                     End If
