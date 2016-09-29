@@ -85,11 +85,11 @@ Namespace TrakttvScraper
         End Function
 
         Private Sub CreateAPI()
-            'Default lifetime of a AccessToken is 90 days. So we set the default CreatedAt age to 91 days.
+            Dim bIsExpired As Boolean = True
+            'Default lifetime of an AccessToken is 90 days. So we set the default CreatedAt age to 91 days to get shure that the default value is to old and a new AccessToken has to be created.
             Dim dCreatedAt As Date = Date.Today.AddDays(-91)
             Dim iCreatedAt As Long = 0
             Dim iExpiresIn As Integer = 0
-            Dim bIsExpired As Boolean = True
 
             Integer.TryParse(_SpecialSettings.ExpiresIn, iExpiresIn)
             If Long.TryParse(_SpecialSettings.CreatedAt, iCreatedAt) Then
