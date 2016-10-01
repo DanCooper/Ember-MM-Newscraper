@@ -18,8 +18,9 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.IO
 Imports NLog
+Imports System.IO
+Imports System.Text.RegularExpressions
 Imports System.Xml.Serialization
 
 Public Class AdvancedSettings
@@ -86,7 +87,7 @@ Public Class AdvancedSettings
         Try
             Dim Assembly As String = cAssembly
             If Assembly = String.Empty Then
-                Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
+                Assembly = Path.GetFileNameWithoutExtension(Reflection.Assembly.GetCallingAssembly().Location)
                 If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
                     Assembly = "*EmberAPP"
                 End If
@@ -110,7 +111,7 @@ Public Class AdvancedSettings
         Dim Assembly As String = cAssembly
         Try
             If Assembly = String.Empty Then
-                Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
+                Assembly = Path.GetFileNameWithoutExtension(Reflection.Assembly.GetCallingAssembly().Location)
                 If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
                     Assembly = "*EmberAPP"
                 End If
@@ -136,7 +137,7 @@ Public Class AdvancedSettings
         End If
         Dim Assembly As String = cAssembly
         If Assembly = String.Empty Then
-            Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
+            Assembly = Path.GetFileNameWithoutExtension(Reflection.Assembly.GetCallingAssembly().Location)
             If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
                 Assembly = "*EmberAPP"
             End If
@@ -155,7 +156,7 @@ Public Class AdvancedSettings
         Try
             Dim Assembly As String = cAssembly
             If Assembly = String.Empty Then
-                Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
+                Assembly = Path.GetFileNameWithoutExtension(Reflection.Assembly.GetCallingAssembly().Location)
                 If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
                     Assembly = "*EmberAPP"
                 End If
@@ -170,7 +171,7 @@ Public Class AdvancedSettings
         Try
             Dim Assembly As String = cAssembly
             If Assembly = String.Empty Then
-                Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
+                Assembly = Path.GetFileNameWithoutExtension(Reflection.Assembly.GetCallingAssembly().Location)
                 If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
                     Assembly = "*EmberAPP"
                 End If
@@ -190,7 +191,7 @@ Public Class AdvancedSettings
         Try
             Dim Assembly As String = cAssembly
             If Assembly = String.Empty Then
-                Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
+                Assembly = Path.GetFileNameWithoutExtension(Reflection.Assembly.GetCallingAssembly().Location)
                 If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
                     Assembly = "*EmberAPP"
                 End If
@@ -202,7 +203,6 @@ Public Class AdvancedSettings
                 _AdvancedSettings.ComplexSettings.FirstOrDefault(Function(f) f.Table.Name = key AndAlso f.Table.Section = Assembly).Table.Item = value
             End If
 
-            'If Not _DoNotSave Then Save()
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
@@ -225,9 +225,9 @@ Public Class AdvancedSettings
                 Using srAdvancedSettings As New StreamReader(fname)
                     Dim sAdvancedSettings As String = srAdvancedSettings.ReadToEnd
                     'old ContentTypes
-                    sAdvancedSettings = System.Text.RegularExpressions.Regex.Replace(sAdvancedSettings, "Content=""Episode""", "Content=""TVEpisode""")
-                    sAdvancedSettings = System.Text.RegularExpressions.Regex.Replace(sAdvancedSettings, "Content=""Season""", "Content=""TVSeason""")
-                    sAdvancedSettings = System.Text.RegularExpressions.Regex.Replace(sAdvancedSettings, "Content=""Show""", "Content=""TVShow""")
+                    sAdvancedSettings = Regex.Replace(sAdvancedSettings, "Content=""Episode""", "Content=""TVEpisode""")
+                    sAdvancedSettings = Regex.Replace(sAdvancedSettings, "Content=""Season""", "Content=""TVSeason""")
+                    sAdvancedSettings = Regex.Replace(sAdvancedSettings, "Content=""Show""", "Content=""TVShow""")
 
                     Dim xXMLSettings As New XmlSerializer(_AdvancedSettings.GetType)
                     Using reader As TextReader = New StringReader(sAdvancedSettings)
@@ -243,19 +243,19 @@ Public Class AdvancedSettings
         End Try
 
         'Add complex settings to general advancedsettings.xml if those settings don't exist
-        Dim formatconversions As List(Of AdvancedSettingsComplexSettingsTableItem) = EmberAPI.AdvancedSettings.GetComplexSetting("VideoFormatConverts", "*EmberAPP")
+        Dim formatconversions As List(Of AdvancedSettingsComplexSettingsTableItem) = GetComplexSetting("VideoFormatConverts", "*EmberAPP")
         If formatconversions Is Nothing Then
             Using settings = New AdvancedSettings()
                 settings.SetDefaults("VideoFormatConverts")
             End Using
         End If
-        formatconversions = EmberAPI.AdvancedSettings.GetComplexSetting("AudioFormatConverts", "*EmberAPP")
+        formatconversions = GetComplexSetting("AudioFormatConverts", "*EmberAPP")
         If formatconversions Is Nothing Then
             Using settings = New AdvancedSettings()
                 settings.SetDefaults("AudioFormatConverts")
             End Using
         End If
-        formatconversions = EmberAPI.AdvancedSettings.GetComplexSetting("MovieSources", "*EmberAPP")
+        formatconversions = GetComplexSetting("MovieSources", "*EmberAPP")
         If formatconversions Is Nothing Then
             Using settings = New AdvancedSettings()
                 settings.SetDefaults("MovieSources")
@@ -301,7 +301,7 @@ Public Class AdvancedSettings
         Try
             Dim Assembly As String = cAssembly
             If Assembly = String.Empty Then
-                Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
+                Assembly = Path.GetFileNameWithoutExtension(Reflection.Assembly.GetCallingAssembly().Location)
                 If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
                     Assembly = "*EmberAPP"
                 End If
@@ -339,7 +339,7 @@ Public Class AdvancedSettings
         Try
             Dim Assembly As String = cAssembly
             If Assembly = String.Empty Then
-                Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
+                Assembly = Path.GetFileNameWithoutExtension(Reflection.Assembly.GetCallingAssembly().Location)
                 If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" Then
                     Assembly = "*EmberAPP"
                 End If
