@@ -4250,42 +4250,6 @@ Public Class Database
             End Using
         End Using
 
-
-        ''''''''''old 
-        'Dim MoviesInSet As New List(Of MovieInSet)
-        'Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
-        '    SQLcommand.CommandText = String.Concat("SELECT idMovie, idSet, iOrder FROM setlinkmovie ",
-        '                                               "WHERE idSet = ", _moviesetDB.ID, ";")
-        '    Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
-        '        While SQLreader.Read
-        '            Dim movieToSave As New MovieInSet
-        '            If Not DBNull.Value.Equals(SQLreader("idMovie")) Then
-        '                movieToSave.DBMovie = Load_Movie(Convert.ToInt64(SQLreader("idMovie")))
-        '            End If
-        '            If Not DBNull.Value.Equals(SQLreader("iOrder")) Then
-        '                movieToSave.Order = CInt(SQLreader("iOrder"))
-        '            End If
-        '            MoviesInSet.Add(movieToSave)
-        '        End While
-        '    End Using
-        'End Using
-
-        ''write new movie NFOs
-        'If MoviesInSet.Count > 0 Then
-        '    For Each tMovie In MoviesInSet
-        '        tMovie.DBMovie.Movie.AddSet(New MediaContainers.SetDetails With {
-        '                                        .ID = _moviesetDB.ID,
-        '                                        .Order = tMovie.Order,
-        '                                        .Plot = _moviesetDB.MovieSet.Plot,
-        '                                        .Title = _moviesetDB.MovieSet.Title,
-        '                                        .TMDB = _moviesetDB.MovieSet.TMDB})
-        '        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, Nothing, False, tMovie.DBMovie)
-        '        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_Movie, Nothing, Nothing, False, tMovie.DBMovie)
-        '        Save_Movie(tMovie.DBMovie, BatchMode, True, False, False)
-        '        RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {tMovie.DBMovie.ID}))
-        '    Next
-        'End If
-
         If Not BatchMode Then SQLtransaction.Commit()
 
         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_MovieSet, Nothing, Nothing, False, _moviesetDB)
