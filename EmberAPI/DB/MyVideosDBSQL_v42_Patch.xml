@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<CommandFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <transaction name="MyVideosDBSQL_v42_to_v43">
+    <command type="DB">
+      <description>adding MarkedEpisodes to view tvshowlist</description>
+      <execute>
+        DROP VIEW tvshowlist;
+
+        CREATE VIEW tvshowlist
+        AS
+        SELECT
+        tvshow.*,
+        CASE WHEN tvshow.SortTitle IS NOT '' THEN tvshow.SortTitle ELSE tvshow.ListTitle END AS SortedTitle,
+        source.strName AS Source,
+        banner.url AS BannerPath,
+        characterart.url AS CharacterArtPath,
+        clearart.url AS ClearArtPath,
+        clearlogo.url AS ClearLogoPath,
+        fanart.url AS FanartPath,
+        landscape.url AS LandscapePath,
+        poster.url AS PosterPath,
+        GROUP_CONCAT(DISTINCT countries.strCountry) AS Country,
+        GROUP_CONCAT(DISTINCT creators.strActor) AS Creator,
+        GROUP_CONCAT(DISTINCT directors.strActor) AS Director,
+        GROUP_CONCAT(DISTINCT genres.strGenre) AS Genre,
+        GROUP_CONCAT(DISTINCT studios.strStudio) AS Studio,
+        GROUP_CONCAT(DISTINCT tags.strTag) AS Tag,
+        COUNT(DISTINCT episodelist.idEpisode) AS Episodes,
+        COUNT(DISTINCT CASE WHEN episodelist.Playcount IS NOT NULL THEN episodelist.idEpisode ELSE NULL END) AS Playcount,
+        CASE WHEN COUNT(DISTINCT episodelist.idEpisode) IS NOT 0 AND COUNT(DISTINCT episodelist.idEpisode) = COUNT(DISTINCT CASE WHEN episodelist.Playcount IS NOT NULL THEN episodelist.idEpisode ELSE NULL END) THEN 1 ELSE 0 END AS HasWatched,
+        COUNT(DISTINCT CASE WHEN episodelist.New IS 1 THEN episodelist.idEpisode ELSE NULL END) AS NewEpisodes,
+        COUNT(DISTINCT CASE WHEN episodelist.Mark IS 1 THEN episodelist.idEpisode ELSE NULL END) AS MarkedEpisodes,
+        COUNT(DISTINCT CASE WHEN episodelist.Lock IS 1 THEN episodelist.idEpisode ELSE NULL END) AS LockedEpisodes
+        FROM
+        tvshow
+        LEFT OUTER JOIN tvshowsource AS source ON (source.idSource = tvshow.idSource)
+        LEFT OUTER JOIN art AS banner ON (banner.media_id = tvshow.idShow)
+        AND (banner.media_type = 'tvshow')
+        AND (banner.type = 'banner')
+        LEFT OUTER JOIN art AS characterart ON (characterart.media_id = tvshow.idShow)
+        AND (characterart.media_type = 'tvshow')
+        AND (characterart.type = 'characterart')
+        LEFT OUTER JOIN art AS clearart ON (clearart.media_id = tvshow.idShow)
+        AND (clearart.media_type = 'tvshow')
+        AND (clearart.type = 'clearart')
+        LEFT OUTER JOIN art AS clearlogo ON (clearlogo.media_id = tvshow.idShow)
+        AND (clearlogo.media_type = 'tvshow')
+        AND (clearlogo.type = 'clearlogo')
+        LEFT OUTER JOIN art AS fanart ON (fanart.media_id = tvshow.idShow)
+        AND (fanart.media_type = 'tvshow')
+        AND (fanart.type = 'fanart')
+        LEFT OUTER JOIN art AS landscape ON (landscape.media_id = tvshow.idShow)
+        AND (landscape.media_type = 'tvshow')
+        AND (landscape.type = 'landscape')
+        LEFT OUTER JOIN art AS poster ON (poster.media_id = tvshow.idShow)
+        AND (poster.media_type = 'tvshow')
+        AND (poster.type = 'poster')
+        LEFT OUTER JOIN countrylinktvshow AS countrylink ON (countrylink.idShow = tvshow.idShow)
+        LEFT OUTER JOIN country AS countries ON (countries.idCountry = countrylink.idCountry)
+        LEFT OUTER JOIN creatorlinktvshow AS creatorlink ON (creatorlink.idShow = tvshow.idShow)
+        LEFT OUTER JOIN actors AS creators ON (creators.idActor = creatorlink.idActor)
+        LEFT OUTER JOIN directorlinktvshow AS directorlink ON (directorlink.idShow = tvshow.idShow)
+        LEFT OUTER JOIN actors AS directors ON (directors.idActor = directorlink.idDirector)
+        LEFT OUTER JOIN genrelinktvshow AS genrelink ON (genrelink.idShow = tvshow.idShow)
+        LEFT OUTER JOIN genre AS genres ON (genres.idGenre = genrelink.idGenre)
+        LEFT OUTER JOIN studiolinktvshow AS studiolink ON (studiolink.idShow = tvshow.idShow)
+        LEFT OUTER JOIN studio AS studios ON (studios.idStudio = studiolink.idStudio)
+        LEFT OUTER JOIN taglinks AS taglink ON (taglink.idMedia = tvshow.idShow)
+        AND (taglink.media_type = 'tvshow')
+        LEFT OUTER JOIN tag AS tags ON (tags.idTag = taglink.idTag)
+        LEFT OUTER JOIN episodelist ON (tvshow.idShow = episodelist.idShow)
+        AND (episodelist.Missing = 0)
+        GROUP BY
+        tvshow.idShow;
+      </execute>
+    </command>
+  </transaction>
+  <noTransaction type="">
+  </noTransaction>
+<!-- 
+  <noTransaction type="DB">
+    <description>nd1</description>
+    <execute>ne1</execute>
+  </noTransaction>
+-->
+</CommandFile>

@@ -88,7 +88,7 @@ Public Class dlgFileInfo
                             If _isEpisode Then
                                 Master.DB.Save_TVEpisode(_DBElement, False, True, False, False, True)
                             Else
-                                Master.DB.Save_Movie(_DBElement, False, True, False, False)
+                                Master.DB.Save_Movie(_DBElement, False, True, False, True, False)
                             End If
                         End If
                         NeedToRefresh = True
@@ -146,7 +146,7 @@ Public Class dlgFileInfo
                     If _isEpisode Then
                         Master.DB.Save_TVEpisode(_DBElement, False, True, False, False, True)
                     Else
-                        Master.DB.Save_Movie(_DBElement, False, True, False, False)
+                        Master.DB.Save_Movie(_DBElement, False, True, False, True, False)
                     End If
                 End If
                 NeedToRefresh = True
@@ -196,7 +196,7 @@ Public Class dlgFileInfo
                             If _isEpisode Then
                                 Master.DB.Save_TVEpisode(_DBElement, False, True, False, False, True)
                             Else
-                                Master.DB.Save_Movie(_DBElement, False, True, False, False)
+                                Master.DB.Save_Movie(_DBElement, False, True, False, True, False)
                             End If
                         End If
                         NeedToRefresh = True

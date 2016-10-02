@@ -50,7 +50,7 @@ Namespace FileUtils
                             Dim tmpMovie As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt32(SQLReader("idMovie")))
                             Dim fScanner As New Scanner
                             fScanner.GetFolderContents_Movie(tmpMovie, True)
-                            Master.DB.Save_Movie(tmpMovie, True, True, True, True)
+                            Master.DB.Save_Movie(tmpMovie, True, True, True, True, True)
                         End While
                     End Using
                 End Using

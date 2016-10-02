@@ -70,6 +70,18 @@ Public Class TaskManager
                 Case Enums.TaskManagerType.CopyBackdrops
                     CopyBackdrops(currTask)
 
+                Case Enums.TaskManagerType.SetLockedState
+                    Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                        SetLockedState(currTask)
+                        SQLtransaction.Commit()
+                    End Using
+
+                Case Enums.TaskManagerType.SetMarkedState
+                    Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                        SetMarkedState(currTask)
+                        SQLtransaction.Commit()
+                    End Using
+
                 Case Enums.TaskManagerType.SetWatchedState
                     Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                         SetWatchedState(currTask)
@@ -118,6 +130,397 @@ Public Class TaskManager
         End Select
     End Sub
 
+    Private Sub SetLockedState(ByVal tTaskItem As TaskItem)
+        Select Case tTaskItem.ContentType
+
+            Case Enums.ContentType.Movie
+                For Each tID In tTaskItem.ListOfID
+                    If bwTaskManager.CancellationPending Then Return
+                    Dim bHasChanged As Boolean = False
+                    Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(tID)
+
+                    If tTaskItem.CommonBoolean Then
+                        If Not tmpDBElement.IsLock Then
+                            tmpDBElement.IsLock = True
+                            bHasChanged = True
+                        End If
+                    Else
+                        If tmpDBElement.IsLock Then
+                            tmpDBElement.IsLock = False
+                            bHasChanged = True
+                        End If
+                    End If
+
+                    If bHasChanged Then
+                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                             .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                             .Message = tmpDBElement.Movie.Title})
+
+                        Master.DB.Save_Movie(tmpDBElement, True, True, False, False, False)
+
+                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                     .ContentType = Enums.ContentType.Movie,
+                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                     .ID = tmpDBElement.ID})
+                    End If
+                Next
+
+            Case Enums.ContentType.MovieSet
+                For Each tID In tTaskItem.ListOfID
+                    If bwTaskManager.CancellationPending Then Return
+                    Dim bHasChanged As Boolean = False
+                    Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(tID)
+
+                    If tTaskItem.CommonBoolean Then
+                        If Not tmpDBElement.IsLock Then
+                            tmpDBElement.IsLock = True
+                            bHasChanged = True
+                        End If
+                    Else
+                        If tmpDBElement.IsLock Then
+                            tmpDBElement.IsLock = False
+                            bHasChanged = True
+                        End If
+                    End If
+
+                    If bHasChanged Then
+                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                             .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                             .Message = tmpDBElement.MovieSet.Title})
+
+                        Master.DB.Save_MovieSet(tmpDBElement, True, True, False)
+
+                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                     .ContentType = Enums.ContentType.MovieSet,
+                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                     .ID = tmpDBElement.ID})
+                    End If
+                Next
+
+            Case Enums.ContentType.TVEpisode
+                For Each tID In tTaskItem.ListOfID
+                    If bwTaskManager.CancellationPending Then Return
+                    Dim bHasChanged As Boolean = False
+                    Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVEpisode(tID, True)
+
+                    If tTaskItem.CommonBoolean Then
+                        If Not tmpDBElement.IsLock Then
+                            tmpDBElement.IsLock = True
+                            bHasChanged = True
+                        End If
+                    Else
+                        If tmpDBElement.IsLock Then
+                            tmpDBElement.IsLock = False
+                            bHasChanged = True
+                        End If
+                    End If
+
+                    If bHasChanged Then
+                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                             .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                             .Message = tmpDBElement.TVEpisode.Title})
+
+                        Master.DB.Save_TVEpisode(tmpDBElement, True, True, False, False, False)
+
+                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                     .ContentType = Enums.ContentType.TVEpisode,
+                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                     .ID = tmpDBElement.ID})
+                    End If
+                Next
+
+            Case Enums.ContentType.TVSeason
+                For Each tID In tTaskItem.ListOfID
+                    If bwTaskManager.CancellationPending Then Return
+                    Dim bHasChanged As Boolean = False
+                    Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVSeason(tID, True, False)
+
+                    If tTaskItem.CommonBoolean Then
+                        If Not tmpDBElement.IsLock Then
+                            tmpDBElement.IsLock = True
+                            bHasChanged = True
+                        End If
+                    Else
+                        If tmpDBElement.IsLock Then
+                            tmpDBElement.IsLock = False
+                            bHasChanged = True
+                        End If
+                    End If
+
+                    If bHasChanged Then
+                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                             .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                             .Message = String.Format("{0}: {1} {2}", tmpDBElement.TVShow.Title, Master.eLang.GetString(650, "Season"), tmpDBElement.TVSeason.Season.ToString)})
+
+                        Master.DB.Save_TVSeason(tmpDBElement, True, True, False)
+
+                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                     .ContentType = Enums.ContentType.TVSeason,
+                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                     .ID = tmpDBElement.ID})
+                    End If
+                Next
+
+            Case Enums.ContentType.TVShow
+                For Each tID In tTaskItem.ListOfID
+                    If bwTaskManager.CancellationPending Then Return
+                    Dim bHasChanged As Boolean = False
+                    Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(tID, True, True)
+
+                    If tTaskItem.CommonBoolean Then
+                        If Not tmpDBElement.IsLock Then
+                            tmpDBElement.IsLock = True
+                            bHasChanged = True
+                        End If
+                    Else
+                        If tmpDBElement.IsLock Then
+                            tmpDBElement.IsLock = False
+                            bHasChanged = True
+                        End If
+                    End If
+
+                    'Season handling
+                    Dim lstSeasonsIDs As New List(Of Long)
+                    For Each nTVSeason As Database.DBElement In tmpDBElement.Seasons
+                        lstSeasonsIDs.Add(nTVSeason.ID)
+                        'overwrite the season Locked state to save it in tvshow.nfo
+                        nTVSeason.IsLock = tmpDBElement.IsLock
+                    Next
+                    If lstSeasonsIDs.Count > 0 Then
+                        SetLockedState(New TaskItem With {.CommonBoolean = tmpDBElement.IsLock, .ContentType = Enums.ContentType.TVSeason, .ListOfID = lstSeasonsIDs, .TaskType = Enums.TaskManagerType.SetLockedState})
+                    End If
+
+                    'Episode handling
+                    Dim lstEpisodeIDs As New List(Of Long)
+                    For Each nTVEpisode As Database.DBElement In tmpDBElement.Episodes
+                        lstEpisodeIDs.Add(nTVEpisode.ID)
+                    Next
+                    If lstEpisodeIDs.Count > 0 Then
+                        SetLockedState(New TaskItem With {.CommonBoolean = tmpDBElement.IsLock, .ContentType = Enums.ContentType.TVEpisode, .ListOfID = lstEpisodeIDs, .TaskType = Enums.TaskManagerType.SetLockedState})
+                    End If
+
+                    If bHasChanged Then
+                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                             .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                             .Message = tmpDBElement.TVShow.Title})
+
+                        Master.DB.Save_TVShow(tmpDBElement, True, True, False, False)
+
+                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                     .ContentType = Enums.ContentType.TVShow,
+                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                     .ID = tmpDBElement.ID})
+                    End If
+                Next
+
+        End Select
+    End Sub
+
+    Private Sub SetMarkedState(ByVal tTaskItem As TaskItem)
+        Select Case tTaskItem.ContentType
+
+            Case Enums.ContentType.Movie
+                For Each tID In tTaskItem.ListOfID
+                    If bwTaskManager.CancellationPending Then Return
+                    Dim bHasChanged As Boolean = False
+                    Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(tID)
+
+
+                    'Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                    '    Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                    '        Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "Mark")
+                    '        Dim parID As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parID", DbType.Int64, 0, "idMovie")
+                    '        SQLcommand.CommandText = "UPDATE movie SET Mark = (?) WHERE idMovie = (?);"
+                    '        For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
+                    '            parMark.Value = If(dgvMovies.SelectedRows.Count > 1, setMark, Not Convert.ToBoolean(sRow.Cells("Mark").Value))
+                    '            parID.Value = sRow.Cells("idMovie").Value
+                    '            SQLcommand.ExecuteNonQuery()
+                    '            sRow.Cells("Mark").Value = parMark.Value
+                    '        Next
+                    '    End Using
+                    '    SQLtransaction.Commit()
+                    'End Using
+
+
+
+
+                    If tTaskItem.CommonBoolean Then
+                        If Not tmpDBElement.IsMark Then
+                            tmpDBElement.IsMark = True
+                            bHasChanged = True
+                        End If
+                    Else
+                        If tmpDBElement.IsMark Then
+                            tmpDBElement.IsMark = False
+                            bHasChanged = True
+                        End If
+                    End If
+
+                    If bHasChanged Then
+                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                             .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                             .Message = tmpDBElement.Movie.Title})
+
+                        Master.DB.Save_Movie(tmpDBElement, True, False, False, False, False)
+
+                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                     .ContentType = Enums.ContentType.Movie,
+                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                     .ID = tmpDBElement.ID})
+                    End If
+                Next
+
+            Case Enums.ContentType.MovieSet
+                For Each tID In tTaskItem.ListOfID
+                    If bwTaskManager.CancellationPending Then Return
+                    Dim bHasChanged As Boolean = False
+                    Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(tID)
+
+                    If tTaskItem.CommonBoolean Then
+                        If Not tmpDBElement.IsLock Then
+                            tmpDBElement.IsLock = True
+                            bHasChanged = True
+                        End If
+                    Else
+                        If tmpDBElement.IsLock Then
+                            tmpDBElement.IsLock = False
+                            bHasChanged = True
+                        End If
+                    End If
+
+                    If bHasChanged Then
+                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                             .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                             .Message = tmpDBElement.MovieSet.Title})
+
+                        Master.DB.Save_MovieSet(tmpDBElement, True, True, False)
+
+                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                     .ContentType = Enums.ContentType.MovieSet,
+                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                     .ID = tmpDBElement.ID})
+                    End If
+                Next
+
+            Case Enums.ContentType.TVEpisode
+                For Each tID In tTaskItem.ListOfID
+                    If bwTaskManager.CancellationPending Then Return
+                    Dim bHasChanged As Boolean = False
+                    Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVEpisode(tID, True)
+
+                    If tTaskItem.CommonBoolean Then
+                        If Not tmpDBElement.IsLock Then
+                            tmpDBElement.IsLock = True
+                            bHasChanged = True
+                        End If
+                    Else
+                        If tmpDBElement.IsLock Then
+                            tmpDBElement.IsLock = False
+                            bHasChanged = True
+                        End If
+                    End If
+
+                    If bHasChanged Then
+                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                             .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                             .Message = tmpDBElement.TVEpisode.Title})
+
+                        Master.DB.Save_TVEpisode(tmpDBElement, True, True, False, False, False)
+
+                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                     .ContentType = Enums.ContentType.TVEpisode,
+                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                     .ID = tmpDBElement.ID})
+                    End If
+                Next
+
+            Case Enums.ContentType.TVSeason
+                For Each tID In tTaskItem.ListOfID
+                    If bwTaskManager.CancellationPending Then Return
+                    Dim bHasChanged As Boolean = False
+                    Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVSeason(tID, True, False)
+
+                    If tTaskItem.CommonBoolean Then
+                        If Not tmpDBElement.IsLock Then
+                            tmpDBElement.IsLock = True
+                            bHasChanged = True
+                        End If
+                    Else
+                        If tmpDBElement.IsLock Then
+                            tmpDBElement.IsLock = False
+                            bHasChanged = True
+                        End If
+                    End If
+
+                    If bHasChanged Then
+                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                             .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                             .Message = String.Format("{0}: {1} {2}", tmpDBElement.TVShow.Title, Master.eLang.GetString(650, "Season"), tmpDBElement.TVSeason.Season.ToString)})
+
+                        Master.DB.Save_TVSeason(tmpDBElement, True, True, False)
+
+                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                     .ContentType = Enums.ContentType.TVSeason,
+                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                     .ID = tmpDBElement.ID})
+                    End If
+                Next
+
+            Case Enums.ContentType.TVShow
+                For Each tID In tTaskItem.ListOfID
+                    If bwTaskManager.CancellationPending Then Return
+                    Dim bHasChanged As Boolean = False
+                    Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(tID, True, True)
+
+                    If tTaskItem.CommonBoolean Then
+                        If Not tmpDBElement.IsLock Then
+                            tmpDBElement.IsLock = True
+                            bHasChanged = True
+                        End If
+                    Else
+                        If tmpDBElement.IsLock Then
+                            tmpDBElement.IsLock = False
+                            bHasChanged = True
+                        End If
+                    End If
+
+                    'Season handling
+                    Dim lstSeasonsIDs As New List(Of Long)
+                    For Each nTVSeason As Database.DBElement In tmpDBElement.Seasons
+                        lstSeasonsIDs.Add(nTVSeason.ID)
+                        'overwrite the season Locked state to save it in tvshow.nfo
+                        nTVSeason.IsLock = tmpDBElement.IsLock
+                    Next
+                    If lstSeasonsIDs.Count > 0 Then
+                        SetLockedState(New TaskItem With {.CommonBoolean = tmpDBElement.IsLock, .ContentType = Enums.ContentType.TVSeason, .ListOfID = lstSeasonsIDs, .TaskType = Enums.TaskManagerType.SetLockedState})
+                    End If
+
+                    'Episode handling
+                    Dim lstEpisodeIDs As New List(Of Long)
+                    For Each nTVEpisode As Database.DBElement In tmpDBElement.Episodes
+                        lstEpisodeIDs.Add(nTVEpisode.ID)
+                    Next
+                    If lstEpisodeIDs.Count > 0 Then
+                        SetLockedState(New TaskItem With {.CommonBoolean = tmpDBElement.IsLock, .ContentType = Enums.ContentType.TVEpisode, .ListOfID = lstEpisodeIDs, .TaskType = Enums.TaskManagerType.SetLockedState})
+                    End If
+
+                    If bHasChanged Then
+                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                             .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                             .Message = tmpDBElement.TVShow.Title})
+
+                        Master.DB.Save_TVShow(tmpDBElement, True, True, False, False)
+
+                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                     .ContentType = Enums.ContentType.TVShow,
+                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                     .ID = tmpDBElement.ID})
+                    End If
+                Next
+
+        End Select
+    End Sub
+
     Private Sub SetWatchedState(ByVal tTaskItem As TaskItem)
         Select Case tTaskItem.ContentType
 
@@ -146,7 +549,7 @@ Public Class TaskManager
                                                          .EventType = Enums.TaskManagerEventType.SimpleMessage,
                                                          .Message = tmpDBElement.Movie.Title})
 
-                        Master.DB.Save_Movie(tmpDBElement, True, True, False, False)
+                        Master.DB.Save_Movie(tmpDBElement, True, True, False, True, False)
 
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .ContentType = Enums.ContentType.Movie,
@@ -193,47 +596,50 @@ Public Class TaskManager
                 For Each tID In tTaskItem.ListOfID
                     If bwTaskManager.CancellationPending Then Return
                     Dim tmpDBElement_TVSeason As Database.DBElement = Master.DB.Load_TVSeason(tID, True, True)
-                    For Each tmpDBElement As Database.DBElement In tmpDBElement_TVSeason.Episodes.OrderBy(Function(f) f.TVEpisode.Episode)
-                        If bwTaskManager.CancellationPending Then Exit For
-                        Dim bHasChanged As Boolean = False
+                    'exclude "* All Seasons" entry from changing WatchedState
+                    If Not tmpDBElement_TVSeason.TVSeason.Season = 999 Then
+                        For Each tmpDBElement As Database.DBElement In tmpDBElement_TVSeason.Episodes.OrderBy(Function(f) f.TVEpisode.Episode)
+                            If bwTaskManager.CancellationPending Then Exit For
+                            Dim bHasChanged As Boolean = False
 
-                        If tTaskItem.CommonBoolean Then
-                            If Not tmpDBElement.TVEpisode.LastPlayedSpecified OrElse Not tmpDBElement.TVEpisode.PlaycountSpecified Then
-                                tmpDBElement.TVEpisode.LastPlayed = If(tmpDBElement.TVEpisode.LastPlayedSpecified, tmpDBElement.TVEpisode.LastPlayed, Date.Now.ToString("yyyy-MM-dd HH:mm:ss"))
-                                tmpDBElement.TVEpisode.Playcount = If(tmpDBElement.TVEpisode.PlaycountSpecified, tmpDBElement.TVEpisode.Playcount, 1)
-                                bHasChanged = True
+                            If tTaskItem.CommonBoolean Then
+                                If Not tmpDBElement.TVEpisode.LastPlayedSpecified OrElse Not tmpDBElement.TVEpisode.PlaycountSpecified Then
+                                    tmpDBElement.TVEpisode.LastPlayed = If(tmpDBElement.TVEpisode.LastPlayedSpecified, tmpDBElement.TVEpisode.LastPlayed, Date.Now.ToString("yyyy-MM-dd HH:mm:ss"))
+                                    tmpDBElement.TVEpisode.Playcount = If(tmpDBElement.TVEpisode.PlaycountSpecified, tmpDBElement.TVEpisode.Playcount, 1)
+                                    bHasChanged = True
+                                End If
+                            Else
+                                If tmpDBElement.TVEpisode.LastPlayedSpecified OrElse tmpDBElement.TVEpisode.PlaycountSpecified Then
+                                    tmpDBElement.TVEpisode.LastPlayed = String.Empty
+                                    tmpDBElement.TVEpisode.Playcount = 0
+                                    bHasChanged = True
+                                End If
                             End If
-                        Else
-                            If tmpDBElement.TVEpisode.LastPlayedSpecified OrElse tmpDBElement.TVEpisode.PlaycountSpecified Then
-                                tmpDBElement.TVEpisode.LastPlayed = String.Empty
-                                tmpDBElement.TVEpisode.Playcount = 0
-                                bHasChanged = True
+
+                            If bHasChanged Then
+                                bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                             .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                             .Message = tmpDBElement.TVEpisode.Title})
+
+                                Master.DB.Save_TVEpisode(tmpDBElement, True, True, False, False, True)
+
+                                bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                         .ContentType = Enums.ContentType.TVEpisode,
+                                                         .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                         .ID = tmpDBElement.ID})
                             End If
-                        End If
+                        Next
 
-                        If bHasChanged Then
-                            bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                         .EventType = Enums.TaskManagerEventType.SimpleMessage,
-                                                         .Message = tmpDBElement.TVEpisode.Title})
+                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                         .ContentType = Enums.ContentType.TVSeason,
+                                                         .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                         .ID = tmpDBElement_TVSeason.ID})
 
-                            Master.DB.Save_TVEpisode(tmpDBElement, True, True, False, False, True)
-
-                            bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                     .ContentType = Enums.ContentType.TVEpisode,
-                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
-                                                     .ID = tmpDBElement.ID})
-                        End If
-                    Next
-
-                    bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                     .ContentType = Enums.ContentType.TVSeason,
-                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
-                                                     .ID = tmpDBElement_TVSeason.ID})
-
-                    bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                     .ContentType = Enums.ContentType.TVShow,
-                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
-                                                     .ID = tmpDBElement_TVSeason.ShowID})
+                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                         .ContentType = Enums.ContentType.TVShow,
+                                                         .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                         .ID = tmpDBElement_TVSeason.ShowID})
+                    End If
                 Next
 
             Case Enums.ContentType.TVShow

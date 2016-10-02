@@ -683,6 +683,19 @@ Public Class Scanner
                 Next
             End If
 
+            'Language
+            If DBMovie.Movie.LanguageSpecified Then
+                DBMovie.Language = DBMovie.Movie.Language
+            Else
+                DBMovie.Language = DBMovie.Source.Language
+                DBMovie.Movie.Language = DBMovie.Source.Language
+            End If
+
+            'Lock state
+            If DBMovie.Movie.Locked Then
+                DBMovie.IsLock = DBMovie.Movie.Locked
+            End If
+
             'VideoSource
             Dim vSource As String = APIXML.GetVideoSource(DBMovie.Filename, False)
             DBMovie.VideoSource = String.Empty
@@ -700,19 +713,11 @@ Public Class Scanner
                 DBMovie.VideoSource = DBMovie.Movie.VideoSource
             End If
 
-            'Language
-            If DBMovie.Movie.LanguageSpecified Then
-                DBMovie.Language = DBMovie.Movie.Language
-            Else
-                DBMovie.Language = DBMovie.Source.Language
-                DBMovie.Movie.Language = DBMovie.Source.Language
-            End If
-
             'Do the Save
             If ToNfo AndAlso DBMovie.NfoPathSpecified Then
-                DBMovie = Master.DB.Save_Movie(DBMovie, Batchmode, True, False, False)
+                DBMovie = Master.DB.Save_Movie(DBMovie, Batchmode, True, False, True, False)
             Else
-                DBMovie = Master.DB.Save_Movie(DBMovie, Batchmode, False, False, False)
+                DBMovie = Master.DB.Save_Movie(DBMovie, Batchmode, False, False, True, False)
             End If
         End If
     End Sub
@@ -745,7 +750,12 @@ Public Class Scanner
             DBMovieSet.Language = DBMovieSet.MovieSet.Language
         End If
 
-        DBMovieSet = Master.DB.Save_MovieSet(DBMovieSet, Batchmode, False)
+        'Lock state
+        If DBMovieSet.MovieSet.Locked Then
+            DBMovieSet.IsLock = DBMovieSet.MovieSet.Locked
+        End If
+
+        DBMovieSet = Master.DB.Save_MovieSet(DBMovieSet, Batchmode, False, False)
     End Sub
 
     Public Function Load_TVEpisode(ByVal DBTVEpisode As Database.DBElement, ByVal isNew As Boolean, ByVal Batchmode As Boolean, ReportProgress As Boolean) As SeasonAndEpisodeItems
@@ -855,6 +865,11 @@ Public Class Scanner
                                                        cEpisode.TVEpisode.Episode.ToString.PadLeft(2, Convert.ToChar("0")),
                                                        If(cEpisode.TVEpisode.SubEpisodeSpecified, String.Concat(".", cEpisode.TVEpisode.SubEpisode), String.Empty))
                 End If
+            End If
+
+            'Lock state
+            If cEpisode.TVEpisode.Locked Then
+                cEpisode.IsLock = cEpisode.TVEpisode.Locked
             End If
 
             'VideoSource
@@ -967,6 +982,11 @@ Public Class Scanner
                     Else
                         DBTVShow.Language = DBTVShow.Source.Language
                         DBTVShow.TVShow.Language = DBTVShow.Source.Language
+                    End If
+
+                    'Lock state
+                    If DBTVShow.TVShow.Locked Then
+                        DBTVShow.IsLock = DBTVShow.TVShow.Locked
                     End If
 
                     Master.DB.Save_TVShow(DBTVShow, Batchmode, False, False, False)
