@@ -5435,9 +5435,8 @@ Public Class frmMain
             Return
         End If
 
-        If colName = "Playcount" Then
-            SetItemState(Enums.ContentType.Movie, Enums.TaskManagerType.SetWatchedState, If(Not String.IsNullOrEmpty(dgvMovies.Rows(e.RowIndex).Cells("Playcount").Value.ToString) AndAlso
-                                  Not dgvMovies.Rows(e.RowIndex).Cells("Playcount").Value.ToString = "0", False, True))
+        If colName = "iLastPlayed" Then
+            SetItemState(Enums.ContentType.Movie, Enums.TaskManagerType.SetWatchedState, If(String.IsNullOrEmpty(dgvMovies.Rows(e.RowIndex).Cells("iLastPlayed").Value.ToString), True, False))
 
         ElseIf Master.eSettings.MovieClickScrape AndAlso colName = "HasSet" AndAlso Not bwMovieScraper.IsBusy Then
             Dim objCell As DataGridViewCell = dgvMovies.Rows(e.RowIndex).Cells(e.ColumnIndex)
@@ -5543,7 +5542,7 @@ Public Class frmMain
 
         dgvMovies.ShowCellToolTips = True
 
-        If colName = "Playcount" AndAlso e.RowIndex >= 0 Then
+        If colName = "iLastPlayed" AndAlso e.RowIndex >= 0 Then
             oldStatus = GetStatus()
             SetStatus(Master.eLang.GetString(885, "Change Watched Status"))
         ElseIf (colName = "BannerPath" OrElse colName = "ClearArtPath" OrElse colName = "ClearLogoPath" OrElse
@@ -5626,7 +5625,7 @@ Public Class frmMain
             colName = "DiscArtPath" OrElse colName = "EFanartsPath" OrElse colName = "EThumbsPath" OrElse
             colName = "FanartPath" OrElse colName = "LandscapePath" OrElse colName = "NfoPath" OrElse
             colName = "PosterPath" OrElse colName = "ThemePath" OrElse colName = "TrailerPath" OrElse
-            colName = "HasSet" OrElse colName = "HasSub" OrElse colName = "Playcount") AndAlso e.RowIndex = -1 Then
+            colName = "HasSet" OrElse colName = "HasSub" OrElse colName = "iLastPlayed") AndAlso e.RowIndex = -1 Then
             e.PaintBackground(e.ClipBounds, False)
 
             Dim pt As Point = e.CellBounds.Location
@@ -5663,7 +5662,7 @@ Public Class frmMain
                 ilColumnIcons.Draw(e.Graphics, pt, 13)
             ElseIf colName = "HasSub" Then
                 ilColumnIcons.Draw(e.Graphics, pt, 14)
-            ElseIf colName = "Playcount" Then
+            ElseIf colName = "iLastPlayed" Then
                 ilColumnIcons.Draw(e.Graphics, pt, 17)
             End If
 
@@ -5735,8 +5734,8 @@ Public Class frmMain
                 e.Handled = True
             End If
 
-            'playcount field
-            If colName = "Playcount" Then
+            'LastPlayed field
+            If colName = "iLastPlayed" Then
                 e.PaintBackground(e.ClipBounds, True)
 
                 Dim pt As Point = e.CellBounds.Location
@@ -5744,7 +5743,7 @@ Public Class frmMain
 
                 pt.X += offset
                 pt.Y = e.CellBounds.Top + 3
-                ilColumnIcons.Draw(e.Graphics, pt, If(Not String.IsNullOrEmpty(e.Value.ToString) AndAlso Not e.Value.ToString = "0", 0, 1))
+                ilColumnIcons.Draw(e.Graphics, pt, If(Not String.IsNullOrEmpty(e.Value.ToString), 0, 1))
                 e.Handled = True
             End If
 
@@ -5966,7 +5965,7 @@ Public Class frmMain
                     mnuTagsSet.Enabled = False
 
                     'Watched / Unwatched menu
-                    Dim bIsWatched As Boolean = Not String.IsNullOrEmpty(dgvMovies.Item("Playcount", dgvHTI.RowIndex).Value.ToString) AndAlso Not dgvMovies.Item("Playcount", dgvHTI.RowIndex).Value.ToString = "0"
+                    Dim bIsWatched As Boolean = Not String.IsNullOrEmpty(dgvMovies.Item("iLastPlayed", dgvHTI.RowIndex).Value.ToString)
                     cmnuMovieWatched.Visible = Not bIsWatched
                     cmnuMovieUnwatched.Visible = bIsWatched
                 End If
@@ -8482,6 +8481,12 @@ Public Class frmMain
                     dgvMovies.Columns("HasSub").SortMode = DataGridViewColumnSortMode.Automatic
                     dgvMovies.Columns("HasSub").Visible = Not CheckColumnHide_Movies("HasSub")
                     dgvMovies.Columns("HasSub").ToolTipText = Master.eLang.GetString(152, "Subtitles")
+                    dgvMovies.Columns("iLastPlayed").Width = 20
+                    dgvMovies.Columns("iLastPlayed").Resizable = DataGridViewTriState.False
+                    dgvMovies.Columns("iLastPlayed").ReadOnly = True
+                    dgvMovies.Columns("iLastPlayed").SortMode = DataGridViewColumnSortMode.Automatic
+                    dgvMovies.Columns("iLastPlayed").Visible = Not CheckColumnHide_Movies("iLastPlayed")
+                    dgvMovies.Columns("iLastPlayed").ToolTipText = Master.eLang.GetString(981, "Watched")
                     dgvMovies.Columns("Imdb").Resizable = DataGridViewTriState.False
                     dgvMovies.Columns("Imdb").ReadOnly = True
                     dgvMovies.Columns("Imdb").SortMode = DataGridViewColumnSortMode.Automatic
@@ -8523,12 +8528,6 @@ Public Class frmMain
                     dgvMovies.Columns("OriginalTitle").ToolTipText = Master.eLang.GetString(302, "Original Title")
                     dgvMovies.Columns("OriginalTitle").HeaderText = Master.eLang.GetString(302, "Original Title")
                     dgvMovies.Columns("OriginalTitle").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
-                    dgvMovies.Columns("Playcount").Width = 20
-                    dgvMovies.Columns("Playcount").Resizable = DataGridViewTriState.False
-                    dgvMovies.Columns("Playcount").ReadOnly = True
-                    dgvMovies.Columns("Playcount").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvMovies.Columns("Playcount").Visible = Not CheckColumnHide_Movies("Playcount")
-                    dgvMovies.Columns("Playcount").ToolTipText = Master.eLang.GetString(981, "Watched")
                     dgvMovies.Columns("PosterPath").Width = 20
                     dgvMovies.Columns("PosterPath").Resizable = DataGridViewTriState.False
                     dgvMovies.Columns("PosterPath").ReadOnly = True
@@ -14906,7 +14905,7 @@ Public Class frmMain
                 If(CheckColumnHide_Movies("HasSub"), 20, 0) -
                 If(CheckColumnHide_Movies("ThemePath"), 20, 0) -
                 If(CheckColumnHide_Movies("TrailerPath"), 20, 0) -
-                If(CheckColumnHide_Movies("Playcount"), 20, 0) -
+                If(CheckColumnHide_Movies("iLastPlayed"), 20, 0) -
                 If(dgvMovies.DisplayRectangle.Height > dgvMovies.ClientRectangle.Height, 0, SystemInformation.VerticalScrollBarWidth)
             End If
         End If
@@ -15845,12 +15844,12 @@ Public Class frmMain
                 dgvMovies.Columns("FanartPath").Visible = Not CheckColumnHide_Movies("FanartPath")
                 dgvMovies.Columns("HasSet").Visible = Not CheckColumnHide_Movies("HasSet")
                 dgvMovies.Columns("HasSub").Visible = Not CheckColumnHide_Movies("HasSub")
+                dgvMovies.Columns("iLastPlayed").Visible = Not CheckColumnHide_Movies("iLastPlayed")
                 dgvMovies.Columns("Imdb").Visible = Not CheckColumnHide_Movies("Imdb")
                 dgvMovies.Columns("LandscapePath").Visible = Not CheckColumnHide_Movies("LandscapePath")
                 dgvMovies.Columns("MPAA").Visible = Not CheckColumnHide_Movies("MPAA")
                 dgvMovies.Columns("NfoPath").Visible = Not CheckColumnHide_Movies("NfoPath")
                 dgvMovies.Columns("OriginalTitle").Visible = Not CheckColumnHide_Movies("OriginalTitle")
-                dgvMovies.Columns("Playcount").Visible = Not CheckColumnHide_Movies("Playcount")
                 dgvMovies.Columns("PosterPath").Visible = Not CheckColumnHide_Movies("PosterPath")
                 dgvMovies.Columns("Rating").Visible = Not CheckColumnHide_Movies("Rating")
                 dgvMovies.Columns("ThemePath").Visible = Not CheckColumnHide_Movies("ThemePath")
