@@ -4083,6 +4083,20 @@ Public Class frmMain
         SetControlsEnabled(True)
     End Sub
 
+    Private Sub cmnuShowGetMissingEpisodes_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowGetMissingEpisodes.Click
+        If dgvTVShows.SelectedRows.Count > 0 Then
+            Dim lItemsToChange As New List(Of Long)
+            For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
+                lItemsToChange.Add(Convert.ToInt64(sRow.Cells("idShow").Value))
+            Next
+
+            fTaskManager.AddTask(New TaskManager.TaskItem With {
+                                 .ListOfID = lItemsToChange,
+                                 .ContentType = Enums.ContentType.TVShow,
+                                 .TaskType = Enums.TaskManagerType.GetMissingEpisodes})
+        End If
+    End Sub
+
     Private Sub cmnuShowChange_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuShowChange.Click
         If dgvTVShows.SelectedRows.Count = 1 Then
             Dim ScrapeModifiers As New Structures.ScrapeModifiers
@@ -5229,11 +5243,6 @@ Public Class frmMain
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
             CreateScrapeList_TVEpisode(Enums.ScrapeType.SingleScrape, Master.DefaultOptions_TV, ScrapeModifiers)
         End If
-    End Sub
-
-    Private Sub cmnuShowRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowScrapeRefreshData.Click
-        'Me.SetControlsEnabled(False, True)
-        'RefreshData_TVShow()
     End Sub
 
     Private Sub cmnuMovieRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieScrape.Click
@@ -16596,7 +16605,7 @@ Public Class frmMain
         cmnuShowRemove.Text = Master.eLang.GetString(30, "Remove")
         cmnuShowRemoveFromDB.Text = Master.eLang.GetString(646, "Remove from Database")
         cmnuShowRemoveFromDisk.Text = Master.eLang.GetString(768, "Delete TV Show")
-        cmnuShowScrapeRefreshData.Text = Master.eLang.GetString(1066, "Refresh Data")
+        cmnuShowGetMissingEpisodes.Text = Master.eLang.GetString(1099, "Get Missing Episodes")
         cmnuShowScrape.Text = Master.eLang.GetString(766, "(Re)Scrape Show")
         cmnuTrayExit.Text = Master.eLang.GetString(2, "E&xit")
         cmnuTraySettings.Text = Master.eLang.GetString(4, "&Settings...")

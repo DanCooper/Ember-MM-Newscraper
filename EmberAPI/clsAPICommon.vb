@@ -901,10 +901,11 @@ Public Class Enums
 
     Public Enum TaskManagerType As Integer
         CopyBackdrops = 0
-        Reload = 1
-        SetLockedState = 2
-        SetMarkedState = 3
-        SetWatchedState = 4
+        GetMissingEpisodes = 1
+        Reload = 2
+        SetLockedState = 3
+        SetMarkedState = 4
+        SetWatchedState = 5
     End Enum
 
     Public Enum TVBannerSize As Integer
