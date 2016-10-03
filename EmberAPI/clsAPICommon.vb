@@ -558,21 +558,16 @@ Public Class Enums
 
 #Region "Enumerations"
 
-    Public Enum SortMethod_MovieSet As Integer
-        Year = 0    'default in Kodi, so have to be on the first position of enumeration
-        Title = 1
-    End Enum
-    ''' <summary>
-    ''' 0 results in using the current datetime when adding a video
-    ''' 1 results in prefering to use the files mtime (if it's valid) and only using the file's ctime if the mtime isn't valid
-    ''' 2 results in using the newer datetime of the file's mtime and ctime
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Enum DateTime As Integer
-        Now = 0
-        ctime = 1
-        mtime = 2
-        Newer = 3
+    Public Enum ContentType As Integer
+        None = 0
+        Generic = 1
+        Movie = 2
+        MovieSet = 3
+        Music = 4
+        TV = 5
+        TVEpisode = 6
+        TVSeason = 7
+        TVShow = 8
     End Enum
 
     Public Enum DefaultType As Integer
@@ -594,17 +589,35 @@ Public Class Enums
         MovieSetSortTokens = 15
         TVSortTokens = 16
     End Enum
-
-    Public Enum ContentType As Integer
-        None = 0
-        Generic = 1
-        Movie = 2
-        MovieSet = 3
-        Music = 4
-        TV = 5
-        TVEpisode = 6
-        TVSeason = 7
-        TVShow = 8
+    ''' <summary>
+    ''' 0 results in using the current datetime when adding a video
+    ''' 1 results in prefering to use the files mtime (if it's valid) and only using the file's ctime if the mtime isn't valid
+    ''' 2 results in using the newer datetime of the file's mtime and ctime
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Enum DateTime As Integer
+        Now = 0
+        ctime = 1
+        mtime = 2
+        Newer = 3
+    End Enum
+    ''' <summary>
+    ''' Enum representing valid TV series ordering.
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Enum EpisodeOrdering As Integer
+        Standard = 0
+        DVD = 1
+        Absolute = 2
+        DayOfYear = 3
+    End Enum
+    ''' <summary>
+    ''' Enum representing Order of displaying Episodes
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Enum EpisodeSorting As Integer
+        Episode = 0
+        Aired = 1
     End Enum
 
     Public Enum ModifierType As Integer
@@ -798,24 +811,6 @@ Public Class Enums
         ScraperSingle_TVSeason = 63
         DuringUpdateDB_TV = 64
     End Enum
-    ''' <summary>
-    ''' Enum representing valid TV series ordering.
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Enum EpisodeOrdering As Integer
-        Standard = 0
-        DVD = 1
-        Absolute = 2
-        DayOfYear = 3
-    End Enum
-    ''' <summary>
-    ''' Enum representing Order of displaying Episodes
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Enum EpisodeSorting As Integer
-        Episode = 0
-        Aired = 1
-    End Enum
 
     Public Enum MovieBannerSize As Integer
         HD185 = 0       'Fanart.tv has only 1000x185
@@ -894,6 +889,11 @@ Public Class Enums
         None = 99
     End Enum
 
+    Public Enum SortMethod_MovieSet As Integer
+        Year = 0    'default in Kodi, so have to be on the first position of enumeration
+        Title = 1
+    End Enum
+
     Public Enum TaskManagerEventType As Integer
         RefreshRow = 0
         SimpleMessage = 1
@@ -920,6 +920,14 @@ Public Class Enums
         Any = 99
     End Enum
 
+    Public Enum TVEpisodePosterSize As Integer
+        UHD2160 = 0
+        HD1080 = 1
+        HD720 = 2
+        SD225 = 3      'TVDB has only 400 x 300 (400x225 for 16:9 images)
+        Any = 99
+    End Enum
+
     Public Enum TVFanartSize As Integer
         UHD2160 = 0
         QHD1440 = 1
@@ -933,14 +941,6 @@ Public Class Enums
         HD1500 = 1
         HD1426 = 2      'Fanart.tv has only 1000x1426
         HD1000 = 3      'TVDB has only 680x1000
-        Any = 99
-    End Enum
-
-    Public Enum TVEpisodePosterSize As Integer
-        UHD2160 = 0
-        HD1080 = 1
-        HD720 = 2
-        SD225 = 3      'TVDB has only 400 x 300 (400x225 for 16:9 images)
         Any = 99
     End Enum
 
