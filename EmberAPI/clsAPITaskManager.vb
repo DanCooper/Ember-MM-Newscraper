@@ -70,6 +70,12 @@ Public Class TaskManager
                 Case Enums.TaskManagerType.CopyBackdrops
                     CopyBackdrops(currTask)
 
+                Case Enums.TaskManagerType.GetMissingEpisodes
+                    Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                        GetMissingEpisodes(currTask)
+                        SQLtransaction.Commit()
+                    End Using
+
                 Case Enums.TaskManagerType.SetLockedState
                     Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                         SetLockedState(currTask)
@@ -127,6 +133,42 @@ Public Class TaskManager
                         End While
                     End Using
                 End Using
+        End Select
+    End Sub
+
+    Private Sub GetMissingEpisodes(ByVal tTaskItem As TaskItem)
+        Select Case tTaskItem.ContentType
+            Case Enums.ContentType.TVShow
+                For Each tID In tTaskItem.ListOfID
+                    If bwTaskManager.CancellationPending Then Return
+                    Dim bNewSeasons As Boolean = False
+                    Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(tID, True, True, True)
+
+                    bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                 .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                 .Message = tmpDBElement.TVShow.Title})
+
+                    Dim ScrapeModifiers As New Structures.ScrapeModifiers
+                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainNFO, True)
+                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.withEpisodes, True)
+                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.withSeasons, True)
+
+                    If Not ModulesManager.Instance.ScrapeData_TVShow(tmpDBElement, ScrapeModifiers, Enums.ScrapeType.SingleScrape, Master.DefaultOptions_TV, True) Then
+                        For Each nMissingSeason In tmpDBElement.Seasons.Where(Function(f) Not f.IDSpecified)
+                            Master.DB.Save_TVSeason(nMissingSeason, True, False, False)
+                            bNewSeasons = True
+                        Next
+                        For Each nMissingEpisode In tmpDBElement.Episodes.Where(Function(f) Not f.FilenameSpecified)
+                            Master.DB.Save_TVEpisode(nMissingEpisode, True, False, False, False, False)
+                        Next
+                    End If
+
+                    bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                 .ContentType = Enums.ContentType.TVShow,
+                                                 .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                 .ID = tmpDBElement.ID})
+
+                Next
         End Select
     End Sub
 
