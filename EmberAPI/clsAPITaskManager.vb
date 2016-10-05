@@ -35,7 +35,6 @@ Public Class TaskManager
 #Region "Events"
 
     Public Event ProgressUpdate(ByVal eProgressValue As ProgressValue)
-    Public Event TaskManagerDone()
 
 #End Region 'Events
 
@@ -61,7 +60,6 @@ Public Class TaskManager
     End Sub
 
     Private Sub bwTaskManager_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwTaskManager.DoWork
-        RaiseEvent ProgressUpdate(New ProgressValue With {.EventType = Enums.TaskManagerEventType.TaskManagerStarted, .Message = "TaskManager is running"})
         While TaskList.Count > 0
             If bwTaskManager.CancellationPending Then Return
 
@@ -102,7 +100,6 @@ Public Class TaskManager
                     End Using
             End Select
         End While
-        RaiseEvent ProgressUpdate(New ProgressValue With {.EventType = Enums.TaskManagerEventType.TaskManagerEnded})
     End Sub
 
     Private Sub bwTaskManager_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwTaskManager.ProgressChanged
@@ -111,7 +108,7 @@ Public Class TaskManager
     End Sub
 
     Private Sub bwTaskManager_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwTaskManager.RunWorkerCompleted
-        RaiseEvent TaskManagerDone()
+        RaiseEvent ProgressUpdate(New ProgressValue With {.EventType = Enums.TaskManagerEventType.TaskManagerEnded})
     End Sub
 
     Public Sub Cancel()
@@ -820,6 +817,7 @@ Public Class TaskManager
         While bwTaskManager.IsBusy
             Threading.Thread.Sleep(50)
         End While
+        RaiseEvent ProgressUpdate(New ProgressValue With {.EventType = Enums.TaskManagerEventType.TaskManagerStarted, .Message = "TaskManager is running"})
         bwTaskManager = New System.ComponentModel.BackgroundWorker
         bwTaskManager.WorkerReportsProgress = True
         bwTaskManager.WorkerSupportsCancellation = True
