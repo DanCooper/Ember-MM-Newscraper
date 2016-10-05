@@ -85,7 +85,7 @@
   <string id="84">Scrape/download data from the internet for multiple movies.</string>
   <string id="85">Scans sources for new content and cleans database.</string>
   <string id="86">Sends a command to XBMC to begin its internal "Update Library" process.</string>
-  <string id="87">Mark or Unmark all movies in the list.</string>
+  <string id="87">Mark all items in the list</string>
   <string id="88">Search the movie titles by entering text here.</string>
   <string id="89">Play the movie file with the system default media player.</string>
   <string id="90">Rescan and save the meta data for the selected movie.</string>
@@ -1189,7 +1189,7 @@
   <string id="1097">ClearLogo</string>
   <string id="1098">DiscArt</string>
   <string id="1099">Get Missing Episodes</string>
-  <string id="1100"></string>
+  <string id="1100">Unmark all items in the list</string>
   <string id="1101"></string>
   <string id="1102">No ClearArts found</string>
   <string id="1103">No ClearLogos found</string>

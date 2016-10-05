@@ -866,28 +866,14 @@ Public Class frmMain
         FilterMovement_Shows()
     End Sub
 
-
-
     Private Sub btnMarkAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMarkAll.Click
-        Try
-            Dim MarkAll As Boolean = Not btnMarkAll.Text = Master.eLang.GetString(105, "Unmark All")
-            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    Dim parMark As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
-                    SQLcommand.CommandText = "UPDATE movie SET mark = (?);"
-                    parMark.Value = MarkAll
-                    SQLcommand.ExecuteNonQuery()
-                End Using
-                SQLtransaction.Commit()
-            End Using
-            For Each drvRow As DataRow In dtMovies.Rows
-                drvRow.Item("Mark") = MarkAll
-            Next
-            dgvMovies.Refresh()
-            btnMarkAll.Text = If(Not MarkAll, Master.eLang.GetString(35, "Mark All"), Master.eLang.GetString(105, "Unmark All"))
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
+        Dim currMainTabTag = ModulesManager.Instance.RuntimeObjects.MediaTabSelected
+        CreateTask(currMainTabTag.ContentType, Enums.SelectionType.All, Enums.TaskManagerType.SetMarkedState, True, String.Empty)
+    End Sub
+
+    Private Sub btnUnmarkAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUnmarkAll.Click
+        Dim currMainTabTag = ModulesManager.Instance.RuntimeObjects.MediaTabSelected
+        CreateTask(currMainTabTag.ContentType, Enums.SelectionType.All, Enums.TaskManagerType.SetMarkedState, False, String.Empty)
     End Sub
 
     Private Sub btnMid_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMid.Click
@@ -2172,7 +2158,7 @@ Public Class frmMain
 
                 If Not (Args.ScrapeType = Enums.ScrapeType.SingleScrape) Then
                     bwMovieSetScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":"))
-                    Master.DB.Save_MovieSet(DBScrapeMovieSet, True, True, True)
+                    Master.DB.Save_MovieSet(DBScrapeMovieSet, True, True, True, True)
                     bwMovieSetScraper.ReportProgress(-2, DBScrapeMovieSet.ID)
                     bwMovieSetScraper.ReportProgress(-1, If(Not OldListTitle = NewListTitle, String.Format(Master.eLang.GetString(812, "Old Title: {0} | New Title: {1}"), OldListTitle, NewListTitle), NewListTitle))
                 End If
@@ -4266,115 +4252,115 @@ Public Class frmMain
     End Sub
 
     Private Sub cmnuMovieLock_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieLock.Click
-        CreateTask(Enums.ContentType.Movie, Enums.TaskManagerType.SetLockedState, True, String.Empty)
+        CreateTask(Enums.ContentType.Movie, Enums.SelectionType.Selected, Enums.TaskManagerType.SetLockedState, True, String.Empty)
     End Sub
 
     Private Sub cmnuMovieUnlock_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUnlock.Click
-        CreateTask(Enums.ContentType.Movie, Enums.TaskManagerType.SetLockedState, False, String.Empty)
+        CreateTask(Enums.ContentType.Movie, Enums.SelectionType.Selected, Enums.TaskManagerType.SetLockedState, False, String.Empty)
     End Sub
 
     Private Sub cmnuMovieMark_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieMark.Click
-        CreateTask(Enums.ContentType.Movie, Enums.TaskManagerType.SetMarkedState, True, String.Empty)
+        CreateTask(Enums.ContentType.Movie, Enums.SelectionType.Selected, Enums.TaskManagerType.SetMarkedState, True, String.Empty)
     End Sub
 
     Private Sub cmnuMovieUnmark_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUnmark.Click
-        CreateTask(Enums.ContentType.Movie, Enums.TaskManagerType.SetMarkedState, False, String.Empty)
+        CreateTask(Enums.ContentType.Movie, Enums.SelectionType.Selected, Enums.TaskManagerType.SetMarkedState, False, String.Empty)
     End Sub
 
     Private Sub cmnuMovieWatched_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieWatched.Click
-        CreateTask(Enums.ContentType.Movie, Enums.TaskManagerType.SetWatchedState, True, String.Empty)
+        CreateTask(Enums.ContentType.Movie, Enums.SelectionType.Selected, Enums.TaskManagerType.SetWatchedState, True, String.Empty)
     End Sub
 
     Private Sub cmnuMovieUnwatched_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieUnwatched.Click
-        CreateTask(Enums.ContentType.Movie, Enums.TaskManagerType.SetWatchedState, False, String.Empty)
+        CreateTask(Enums.ContentType.Movie, Enums.SelectionType.Selected, Enums.TaskManagerType.SetWatchedState, False, String.Empty)
     End Sub
 
     Private Sub cmnuMovieSetLock_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetLock.Click
-        CreateTask(Enums.ContentType.MovieSet, Enums.TaskManagerType.SetLockedState, True, String.Empty)
+        CreateTask(Enums.ContentType.MovieSet, Enums.SelectionType.Selected, Enums.TaskManagerType.SetLockedState, True, String.Empty)
     End Sub
 
     Private Sub cmnuMovieSetUnlock_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetUnlock.Click
-        CreateTask(Enums.ContentType.MovieSet, Enums.TaskManagerType.SetLockedState, False, String.Empty)
+        CreateTask(Enums.ContentType.MovieSet, Enums.SelectionType.Selected, Enums.TaskManagerType.SetLockedState, False, String.Empty)
     End Sub
 
     Private Sub cmnuMovieSetMark_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetMark.Click
-        CreateTask(Enums.ContentType.MovieSet, Enums.TaskManagerType.SetMarkedState, True, String.Empty)
+        CreateTask(Enums.ContentType.MovieSet, Enums.SelectionType.Selected, Enums.TaskManagerType.SetMarkedState, True, String.Empty)
     End Sub
 
     Private Sub cmnuMovieSetUnmark_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetUnmark.Click
-        CreateTask(Enums.ContentType.MovieSet, Enums.TaskManagerType.SetMarkedState, False, String.Empty)
+        CreateTask(Enums.ContentType.MovieSet, Enums.SelectionType.Selected, Enums.TaskManagerType.SetMarkedState, False, String.Empty)
     End Sub
 
     Private Sub cmnuEpisodeLock_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeLock.Click
-        CreateTask(Enums.ContentType.TVEpisode, Enums.TaskManagerType.SetLockedState, True, String.Empty)
+        CreateTask(Enums.ContentType.TVEpisode, Enums.SelectionType.Selected, Enums.TaskManagerType.SetLockedState, True, String.Empty)
     End Sub
 
     Private Sub cmnuEpisodeUnlock_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeUnlock.Click
-        CreateTask(Enums.ContentType.TVEpisode, Enums.TaskManagerType.SetLockedState, False, String.Empty)
+        CreateTask(Enums.ContentType.TVEpisode, Enums.SelectionType.Selected, Enums.TaskManagerType.SetLockedState, False, String.Empty)
     End Sub
 
     Private Sub cmnuEpisodeMark_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeMark.Click
-        CreateTask(Enums.ContentType.TVEpisode, Enums.TaskManagerType.SetMarkedState, True, String.Empty)
+        CreateTask(Enums.ContentType.TVEpisode, Enums.SelectionType.Selected, Enums.TaskManagerType.SetMarkedState, True, String.Empty)
     End Sub
 
     Private Sub cmnuEpisodeUnmark_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeUnmark.Click
-        CreateTask(Enums.ContentType.TVEpisode, Enums.TaskManagerType.SetMarkedState, False, String.Empty)
+        CreateTask(Enums.ContentType.TVEpisode, Enums.SelectionType.Selected, Enums.TaskManagerType.SetMarkedState, False, String.Empty)
     End Sub
 
     Private Sub cmnuEpisodeWatched_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeWatched.Click
-        CreateTask(Enums.ContentType.TVEpisode, Enums.TaskManagerType.SetWatchedState, True, String.Empty)
+        CreateTask(Enums.ContentType.TVEpisode, Enums.SelectionType.Selected, Enums.TaskManagerType.SetWatchedState, True, String.Empty)
     End Sub
 
     Private Sub cmnuEpisodeUnwatched_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeUnwatched.Click
-        CreateTask(Enums.ContentType.TVEpisode, Enums.TaskManagerType.SetWatchedState, False, String.Empty)
+        CreateTask(Enums.ContentType.TVEpisode, Enums.SelectionType.Selected, Enums.TaskManagerType.SetWatchedState, False, String.Empty)
     End Sub
 
     Private Sub cmnuSeasonLock_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuSeasonLock.Click
-        CreateTask(Enums.ContentType.TVSeason, Enums.TaskManagerType.SetLockedState, True, String.Empty)
+        CreateTask(Enums.ContentType.TVSeason, Enums.SelectionType.Selected, Enums.TaskManagerType.SetLockedState, True, String.Empty)
     End Sub
 
     Private Sub cmnuSeasonUnlock_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuSeasonUnlock.Click
-        CreateTask(Enums.ContentType.TVSeason, Enums.TaskManagerType.SetLockedState, False, String.Empty)
+        CreateTask(Enums.ContentType.TVSeason, Enums.SelectionType.Selected, Enums.TaskManagerType.SetLockedState, False, String.Empty)
     End Sub
 
     Private Sub cmnuSeasonMark_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuSeasonMark.Click
-        CreateTask(Enums.ContentType.TVSeason, Enums.TaskManagerType.SetMarkedState, True, String.Empty)
+        CreateTask(Enums.ContentType.TVSeason, Enums.SelectionType.Selected, Enums.TaskManagerType.SetMarkedState, True, String.Empty)
     End Sub
 
     Private Sub cmnuSeasonUnmark_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuSeasonUnmark.Click
-        CreateTask(Enums.ContentType.TVSeason, Enums.TaskManagerType.SetMarkedState, False, String.Empty)
+        CreateTask(Enums.ContentType.TVSeason, Enums.SelectionType.Selected, Enums.TaskManagerType.SetMarkedState, False, String.Empty)
     End Sub
 
     Private Sub cmnuSeasonWatched_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuSeasonWatched.Click
-        CreateTask(Enums.ContentType.TVSeason, Enums.TaskManagerType.SetWatchedState, True, String.Empty)
+        CreateTask(Enums.ContentType.TVSeason, Enums.SelectionType.Selected, Enums.TaskManagerType.SetWatchedState, True, String.Empty)
     End Sub
 
     Private Sub cmnuSeasonUnwatched_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuSeasonUnwatched.Click
-        CreateTask(Enums.ContentType.TVSeason, Enums.TaskManagerType.SetWatchedState, False, String.Empty)
+        CreateTask(Enums.ContentType.TVSeason, Enums.SelectionType.Selected, Enums.TaskManagerType.SetWatchedState, False, String.Empty)
     End Sub
 
     Private Sub cmnuShowLock_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowLock.Click
-        CreateTask(Enums.ContentType.TVShow, Enums.TaskManagerType.SetLockedState, True, String.Empty)
+        CreateTask(Enums.ContentType.TVShow, Enums.SelectionType.Selected, Enums.TaskManagerType.SetLockedState, True, String.Empty)
     End Sub
 
     Private Sub cmnuShowUnlock_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowUnlock.Click
-        CreateTask(Enums.ContentType.TVShow, Enums.TaskManagerType.SetLockedState, False, String.Empty)
+        CreateTask(Enums.ContentType.TVShow, Enums.SelectionType.Selected, Enums.TaskManagerType.SetLockedState, False, String.Empty)
     End Sub
 
     Private Sub cmnuShowMark_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowMark.Click
-        CreateTask(Enums.ContentType.TVShow, Enums.TaskManagerType.SetMarkedState, True, String.Empty)
+        CreateTask(Enums.ContentType.TVShow, Enums.SelectionType.Selected, Enums.TaskManagerType.SetMarkedState, True, String.Empty)
     End Sub
 
     Private Sub cmnuShowUnmark_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowUnmark.Click
-        CreateTask(Enums.ContentType.TVShow, Enums.TaskManagerType.SetMarkedState, False, String.Empty)
+        CreateTask(Enums.ContentType.TVShow, Enums.SelectionType.Selected, Enums.TaskManagerType.SetMarkedState, False, String.Empty)
     End Sub
 
     Private Sub cmnuShowWatched_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowWatched.Click
-        CreateTask(Enums.ContentType.TVShow, Enums.TaskManagerType.SetWatchedState, True, String.Empty)
+        CreateTask(Enums.ContentType.TVShow, Enums.SelectionType.Selected, Enums.TaskManagerType.SetWatchedState, True, String.Empty)
     End Sub
 
     Private Sub cmnuShowUnwatched_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowUnwatched.Click
-        CreateTask(Enums.ContentType.TVShow, Enums.TaskManagerType.SetWatchedState, False, String.Empty)
+        CreateTask(Enums.ContentType.TVShow, Enums.SelectionType.Selected, Enums.TaskManagerType.SetWatchedState, False, String.Empty)
     End Sub
 
     'Private Sub cmnuEpisodeMark_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeMark.Click, cmnuEpisodeUnmark.Click
@@ -4905,7 +4891,7 @@ Public Class frmMain
 
         Using dNewSet As New dlgNewSet()
             If dNewSet.ShowDialog(tmpDBMovieSet) = DialogResult.OK Then
-                tmpDBMovieSet = Master.DB.Save_MovieSet(dNewSet.Result, False, False, False)
+                tmpDBMovieSet = Master.DB.Save_MovieSet(dNewSet.Result, False, False, False, False)
                 Dim iNewRowIndex = AddRow_MovieSet(tmpDBMovieSet.ID)
                 If Not iNewRowIndex = -1 Then
                     dgvMovieSets.Rows(iNewRowIndex).Selected = True
@@ -5446,7 +5432,11 @@ Public Class frmMain
         End If
 
         If colName = "iLastPlayed" Then
-            CreateTask(Enums.ContentType.Movie, Enums.TaskManagerType.SetWatchedState, If(String.IsNullOrEmpty(dgvMovies.Rows(e.RowIndex).Cells("iLastPlayed").Value.ToString), True, False), String.Empty)
+            CreateTask(Enums.ContentType.Movie,
+                       Enums.SelectionType.Selected,
+                       Enums.TaskManagerType.SetWatchedState,
+                       If(String.IsNullOrEmpty(dgvMovies.Rows(e.RowIndex).Cells("iLastPlayed").Value.ToString), True, False),
+                       String.Empty)
 
         ElseIf Master.eSettings.MovieClickScrape AndAlso colName = "HasSet" AndAlso Not bwMovieScraper.IsBusy Then
             Dim objCell As DataGridViewCell = dgvMovies.Rows(e.RowIndex).Cells(e.ColumnIndex)
@@ -6535,7 +6525,7 @@ Public Class frmMain
         End If
 
         If colName = "Playcount" Then
-            CreateTask(Enums.ContentType.TVEpisode, Enums.TaskManagerType.SetWatchedState, If(Not String.IsNullOrEmpty(dgvTVEpisodes.Rows(e.RowIndex).Cells("Playcount").Value.ToString) AndAlso
+            CreateTask(Enums.ContentType.TVEpisode, Enums.SelectionType.Selected, Enums.TaskManagerType.SetWatchedState, If(Not String.IsNullOrEmpty(dgvTVEpisodes.Rows(e.RowIndex).Cells("Playcount").Value.ToString) AndAlso
                                       Not dgvTVEpisodes.Rows(e.RowIndex).Cells("Playcount").Value.ToString = "0", False, True), String.Empty)
 
         ElseIf Master.eSettings.TVGeneralClickScrape AndAlso
@@ -6992,7 +6982,11 @@ Public Class frmMain
 
         If colName = "HasWatched" Then
             If Not CInt(dgvTVSeasons.Rows(e.RowIndex).Cells("Season").Value) = 999 Then
-                CreateTask(Enums.ContentType.TVSeason, Enums.TaskManagerType.SetWatchedState, If(CBool(dgvTVSeasons.Rows(e.RowIndex).Cells("HasWatched").Value), False, True), String.Empty)
+                CreateTask(Enums.ContentType.TVSeason,
+                           Enums.SelectionType.Selected,
+                           Enums.TaskManagerType.SetWatchedState,
+                           If(CBool(dgvTVSeasons.Rows(e.RowIndex).Cells("HasWatched").Value), False, True),
+                           String.Empty)
             End If
 
         ElseIf Master.eSettings.TVGeneralClickScrape AndAlso
@@ -7363,7 +7357,11 @@ Public Class frmMain
         End If
 
         If colName = "HasWatched" Then
-            CreateTask(Enums.ContentType.TVShow, Enums.TaskManagerType.SetWatchedState, If(CBool(dgvTVShows.Rows(e.RowIndex).Cells("HasWatched").Value), False, True), String.Empty)
+            CreateTask(Enums.ContentType.TVShow,
+                       Enums.SelectionType.Selected,
+                       Enums.TaskManagerType.SetWatchedState,
+                       If(CBool(dgvTVShows.Rows(e.RowIndex).Cells("HasWatched").Value), False, True),
+                       String.Empty)
 
         ElseIf Master.eSettings.TVGeneralClickScrape AndAlso
             (colName = "BannerPath" OrElse colName = "CharacterArtPath" OrElse colName = "ClearArtPath" OrElse
@@ -7921,49 +7919,9 @@ Public Class frmMain
     End Sub
 
     Private Sub DoTitleCheck()
-        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-            Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                SQLcommand.CommandText = "UPDATE movie SET OutOfTolerance = (?) WHERE idMovie = (?);"
-                Dim parOutOfTolerance As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parOutOfTolerance", DbType.Boolean, 0, "OutOfTolerance")
-                Dim par_idMovie As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("par_idMovie", DbType.Int64, 0, "idMovie")
-                Dim LevFail As Boolean = False
-                Dim bIsSingle As Boolean = False
-                Dim bUseFolderName As Boolean = False
-                For Each drvRow As DataGridViewRow In dgvMovies.Rows
-
-                    bIsSingle = CBool(drvRow.Cells("Type").Value)
-
-                    Using SQLcommand_source As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                        SQLcommand.CommandText = String.Concat("SELECT * FROM moviesource WHERE idSource = ", Convert.ToInt64(drvRow.Cells("idSource").Value), ";")
-                        Using SQLreader As SQLite.SQLiteDataReader = SQLcommand.ExecuteReader()
-                            If SQLreader.HasRows Then
-                                SQLreader.Read()
-                                bUseFolderName = Convert.ToBoolean(SQLreader("bFoldername"))
-                            Else
-                                bUseFolderName = False
-                            End If
-                        End Using
-                    End Using
-
-                    If Master.eSettings.MovieLevTolerance > 0 Then
-                        LevFail = StringUtils.ComputeLevenshtein(drvRow.Cells("Title").Value.ToString, StringUtils.FilterTitleFromPath_Movie(drvRow.Cells("MoviePath").Value.ToString, bIsSingle, bUseFolderName)) > Master.eSettings.MovieLevTolerance
-
-                        parOutOfTolerance.Value = LevFail
-                        drvRow.Cells("OutOfTolerance").Value = LevFail
-                        par_idMovie.Value = drvRow.Cells("idMovie").Value
-                    Else
-                        parOutOfTolerance.Value = False
-                        drvRow.Cells("OutOfTolerance").Value = False
-                        par_idMovie.Value = drvRow.Cells("idMovie").Value
-                    End If
-                    SQLcommand.ExecuteNonQuery()
-                Next
-            End Using
-
-            SQLtransaction.Commit()
-        End Using
-
-        dgvMovies.Invalidate()
+        fTaskManager.AddTask(New TaskManager.TaskItem With {
+                             .ContentType = Enums.ContentType.Movie,
+                             .TaskType = Enums.TaskManagerType.DoTitleCheck})
     End Sub
 
     Sub dtListAddRow(ByVal dTable As DataTable, ByVal dRow As DataRow)
@@ -8020,7 +7978,7 @@ Public Class frmMain
                     DBMovieSet = dEditMovieSet.Result
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_MovieSet, Nothing, Nothing, False, DBMovieSet)
                     tslLoading.Text = String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":")
-                    Master.DB.Save_MovieSet(DBMovieSet, False, True, True)
+                    Master.DB.Save_MovieSet(DBMovieSet, False, True, True, True)
                     RefreshRow_MovieSet(DBMovieSet.ID)
                 Case DialogResult.Retry
                     Dim ScrapeModifier As New Structures.ScrapeModifiers
@@ -10556,11 +10514,11 @@ Public Class frmMain
         If Not String.IsNullOrEmpty(strLanguage) Then
             Select Case _SelectedContentType
                 Case "movie"
-                    CreateTask(Enums.ContentType.Movie, Enums.TaskManagerType.SetLanguage, False, strLanguage)
+                    CreateTask(Enums.ContentType.Movie, Enums.SelectionType.Selected, Enums.TaskManagerType.SetLanguage, False, strLanguage)
                 Case "movieset"
-                    CreateTask(Enums.ContentType.MovieSet, Enums.TaskManagerType.SetLanguage, False, strLanguage)
+                    CreateTask(Enums.ContentType.MovieSet, Enums.SelectionType.Selected, Enums.TaskManagerType.SetLanguage, False, strLanguage)
                 Case "tvshow"
-                    CreateTask(Enums.ContentType.TVShow, Enums.TaskManagerType.SetLanguage, False, strLanguage)
+                    CreateTask(Enums.ContentType.TVShow, Enums.SelectionType.Selected, Enums.TaskManagerType.SetLanguage, False, strLanguage)
             End Select
         End If
     End Sub
@@ -13155,7 +13113,7 @@ Public Class frmMain
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
-                                    Master.DB.Save_MovieSet(tmpDBElement, False, True, True)
+                                    Master.DB.Save_MovieSet(tmpDBElement, False, True, True, True)
                                     RefreshRow_MovieSet(ID)
                                 End If
                             Else
@@ -13346,7 +13304,7 @@ Public Class frmMain
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.ClearArt = dlgImgS.Result.ImagesContainer.ClearArt
-                                    Master.DB.Save_MovieSet(tmpDBElement, False, False, True)
+                                    Master.DB.Save_MovieSet(tmpDBElement, False, False, True, True)
                                     RefreshRow_MovieSet(ID)
                                 End If
                             Else
@@ -13451,7 +13409,7 @@ Public Class frmMain
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.ClearLogo = dlgImgS.Result.ImagesContainer.ClearLogo
-                                    Master.DB.Save_MovieSet(tmpDBElement, False, False, True)
+                                    Master.DB.Save_MovieSet(tmpDBElement, False, False, True, True)
                                     RefreshRow_MovieSet(ID)
                                 End If
                             Else
@@ -13556,7 +13514,7 @@ Public Class frmMain
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.DiscArt = dlgImgS.Result.ImagesContainer.DiscArt
-                                    Master.DB.Save_MovieSet(tmpDBElement, False, False, True)
+                                    Master.DB.Save_MovieSet(tmpDBElement, False, False, True, True)
                                     RefreshRow_MovieSet(ID)
                                 End If
                             Else
@@ -13647,7 +13605,7 @@ Public Class frmMain
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
-                                    Master.DB.Save_MovieSet(tmpDBElement, False, False, True)
+                                    Master.DB.Save_MovieSet(tmpDBElement, False, False, True, True)
                                     RefreshRow_MovieSet(ID)
                                 End If
                             Else
@@ -13802,7 +13760,7 @@ Public Class frmMain
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
-                                    Master.DB.Save_MovieSet(tmpDBElement, False, False, True)
+                                    Master.DB.Save_MovieSet(tmpDBElement, False, False, True, True)
                                     RefreshRow_MovieSet(ID)
                                 End If
                             Else
@@ -13934,7 +13892,7 @@ Public Class frmMain
                                 Dim dlgImgS As New dlgImgSelect()
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
-                                    Master.DB.Save_MovieSet(tmpDBElement, False, False, True)
+                                    Master.DB.Save_MovieSet(tmpDBElement, False, False, True, True)
                                     RefreshRow_MovieSet(ID)
                                 End If
                             Else
@@ -15509,6 +15467,7 @@ Public Class frmMain
         tcMain.Enabled = isEnabled
         btnMarkAll.Enabled = isEnabled
         btnMetaDataRefresh.Enabled = isEnabled
+        btnUnmarkAll.Enabled = isEnabled
         scMain.IsSplitterFixed = Not isEnabled
         scTV.IsSplitterFixed = Not isEnabled
         scTVSeasonsEpisodes.IsSplitterFixed = Not isEnabled
@@ -15538,7 +15497,7 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub CreateTask(ByVal tContentType As Enums.ContentType, ByVal tTaskType As Enums.TaskManagerType, ByVal bBooleanValue As Boolean, ByVal strStringValue As String)
+    Private Sub CreateTask(ByVal tContentType As Enums.ContentType, ByVal tSelectionType As Enums.SelectionType, ByVal tTaskType As Enums.TaskManagerType, ByVal bBooleanValue As Boolean, ByVal strStringValue As String)
         Dim lItemsToChange As New List(Of Long)
         Dim nDataGridView As DataGridView = Nothing
         Dim strIDName As String = String.Empty
@@ -15556,24 +15515,41 @@ Public Class frmMain
             Case Enums.ContentType.TVSeason
                 nDataGridView = dgvTVSeasons
                 strIDName = "idSeason"
-            Case Enums.ContentType.TVShow
+            Case Enums.ContentType.TVShow, Enums.ContentType.TV
                 nDataGridView = dgvTVShows
                 strIDName = "idShow"
         End Select
 
         If nDataGridView IsNot Nothing AndAlso Not String.IsNullOrEmpty(strIDName) Then
-            If nDataGridView.SelectedRows.Count > 0 Then
-                For Each sRow As DataGridViewRow In nDataGridView.SelectedRows
-                    lItemsToChange.Add(Convert.ToInt64(sRow.Cells(strIDName).Value))
-                Next
+            Select Case tSelectionType
+                Case Enums.SelectionType.All
+                    If nDataGridView.Rows.Count > 0 Then
+                        For Each sRow As DataGridViewRow In nDataGridView.Rows
+                            lItemsToChange.Add(Convert.ToInt64(sRow.Cells(strIDName).Value))
+                        Next
 
-                fTaskManager.AddTask(New TaskManager.TaskItem With {
-                                     .CommonBoolean = bBooleanValue,
-                                     .CommonString = strStringValue,
-                                     .ListOfID = lItemsToChange,
-                                     .ContentType = tContentType,
-                                     .TaskType = tTaskType})
-            End If
+                        fTaskManager.AddTask(New TaskManager.TaskItem With {
+                                             .CommonBoolean = bBooleanValue,
+                                             .CommonString = strStringValue,
+                                             .ListOfID = lItemsToChange,
+                                             .ContentType = tContentType,
+                                             .TaskType = tTaskType})
+                    End If
+
+                Case Enums.SelectionType.Selected
+                    If nDataGridView.SelectedRows.Count > 0 Then
+                        For Each sRow As DataGridViewRow In nDataGridView.SelectedRows
+                            lItemsToChange.Add(Convert.ToInt64(sRow.Cells(strIDName).Value))
+                        Next
+
+                        fTaskManager.AddTask(New TaskManager.TaskItem With {
+                                             .CommonBoolean = bBooleanValue,
+                                             .CommonString = strStringValue,
+                                             .ListOfID = lItemsToChange,
+                                             .ContentType = tContentType,
+                                             .TaskType = tTaskType})
+                    End If
+            End Select
         End If
     End Sub
 
@@ -15582,7 +15558,7 @@ Public Class frmMain
             For Each sRow As DataGridViewRow In dgvMovieSets.SelectedRows
                 Dim tmpDBMovieSet As Database.DBElement = Master.DB.Load_MovieSet(Convert.ToInt64(sRow.Cells("idSet").Value))
                 tmpDBMovieSet.SortMethod = CType(cmnuMovieSetEditSortMethodMethods.ComboBox.SelectedValue, Enums.SortMethod_MovieSet)
-                Master.DB.Save_MovieSet(tmpDBMovieSet, True, True, False)
+                Master.DB.Save_MovieSet(tmpDBMovieSet, True, True, False, False)
                 RefreshRow_MovieSet(tmpDBMovieSet.ID)
             Next
             SQLtransaction.Commit()
@@ -15611,18 +15587,6 @@ Public Class frmMain
 
             ' for future use
             mnuMainToolsClearCache.Enabled = False
-
-            Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                SQLNewcommand.CommandText = String.Concat("SELECT COUNT(idMovie) AS mcount FROM movie WHERE mark = 1;")
-                Using SQLcount As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
-                    SQLcount.Read()
-                    If SQLcount.HasRows AndAlso Convert.ToInt32(SQLcount("mcount")) > 0 Then
-                        btnMarkAll.Text = Master.eLang.GetString(105, "Unmark All")
-                    Else
-                        btnMarkAll.Text = Master.eLang.GetString(35, "Mark All")
-                    End If
-                End Using
-            End Using
 
             mnuUpdateMovies.DropDownItems.Clear()
             cmnuTrayUpdateMovies.DropDownItems.Clear()
@@ -16432,6 +16396,7 @@ Public Class frmMain
         btnClearFilters_MovieSets.Text = btnClearFilters_Movies.Text
         btnClearFilters_Shows.Text = btnClearFilters_Movies.Text
         btnMarkAll.Text = Master.eLang.GetString(35, "Mark All")
+        btnUnmarkAll.Text = Master.eLang.GetString(105, "Unmark All")
         btnMetaDataRefresh.Text = Master.eLang.GetString(58, "Refresh")
         btnFilterSortDateAdded_Movies.Tag = String.Empty
         btnFilterSortDateAdded_Movies.Text = Master.eLang.GetString(601, "Date Added")
@@ -16765,7 +16730,8 @@ Public Class frmMain
         mnuScrapeMovieSets.ToolTipText = Master.eLang.GetString(1214, "Scrape/download data from the internet for multiple moviesets.")
         mnuScrapeTVShows.ToolTipText = Master.eLang.GetString(1235, "Scrape/download data from the internet for multiple tv shows.")
         mnuUpdate.ToolTipText = Master.eLang.GetString(85, "Scans sources for new content and cleans database.")
-        TT.SetToolTip(btnMarkAll, Master.eLang.GetString(87, "Mark or Unmark all movies in the list."))
+        TT.SetToolTip(btnMarkAll, Master.eLang.GetString(87, "Mark all items in the list"))
+        TT.SetToolTip(btnUnmarkAll, Master.eLang.GetString(1100, "Unmark all items in the list"))
         TT.SetToolTip(txtSearchMovies, Master.eLang.GetString(88, "Search the movie titles by entering text here."))
         TT.SetToolTip(txtSearchMovieSets, Master.eLang.GetString(1267, "Search the movie titles by entering text here."))
         TT.SetToolTip(txtSearchShows, Master.eLang.GetString(1268, "Search the tv show titles by entering text here."))
@@ -16905,7 +16871,6 @@ Public Class frmMain
                 pnlSearchMovies.Visible = True
                 pnlSearchMovieSets.Visible = False
                 pnlSearchTVShows.Visible = False
-                btnMarkAll.Visible = True
                 dgvMovieSets.Visible = False
                 dgvMovies.Visible = True
                 ApplyTheme(Theming.ThemeType.Movie)
@@ -16947,7 +16912,6 @@ Public Class frmMain
                 pnlSearchMovies.Visible = False
                 pnlSearchMovieSets.Visible = True
                 pnlSearchTVShows.Visible = False
-                btnMarkAll.Visible = False
                 dgvMovies.Visible = False
                 dgvMovieSets.Visible = True
                 ApplyTheme(Theming.ThemeType.MovieSet)
@@ -16990,7 +16954,6 @@ Public Class frmMain
                 pnlSearchMovies.Visible = False
                 pnlSearchMovieSets.Visible = False
                 pnlSearchTVShows.Visible = True
-                btnMarkAll.Visible = False
                 ApplyTheme(Theming.ThemeType.Show)
                 If bwLoadImages_Movie.IsBusy Then bwLoadImages_Movie.CancelAsync()
                 If bwLoadImages_MovieSet.IsBusy Then bwLoadImages_MovieSet.CancelAsync()

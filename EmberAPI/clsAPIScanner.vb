@@ -755,7 +755,7 @@ Public Class Scanner
             DBMovieSet.IsLock = DBMovieSet.MovieSet.Locked
         End If
 
-        DBMovieSet = Master.DB.Save_MovieSet(DBMovieSet, Batchmode, False, False)
+        DBMovieSet = Master.DB.Save_MovieSet(DBMovieSet, Batchmode, False, False, True)
     End Sub
 
     Public Function Load_TVEpisode(ByVal DBTVEpisode As Database.DBElement, ByVal isNew As Boolean, ByVal Batchmode As Boolean, ReportProgress As Boolean) As SeasonAndEpisodeItems
