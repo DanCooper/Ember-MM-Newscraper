@@ -56,11 +56,12 @@ Public Class TaskManager
         If Not bwTaskManager.IsBusy Then
             RunTaskManager()
         Else
-            'ChangeTaskManagerStatus(lblTaskManagerStatus, String.Concat("Pending Tasks: ", (TaskList.Count + 1).ToString))
+            'update number of tasks
         End If
     End Sub
 
     Private Sub bwTaskManager_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwTaskManager.DoWork
+        RaiseEvent ProgressUpdate(New ProgressValue With {.EventType = Enums.TaskManagerEventType.TaskManagerStarted, .Message = "TaskManager is running"})
         While TaskList.Count > 0
             If bwTaskManager.CancellationPending Then Return
 
@@ -101,6 +102,7 @@ Public Class TaskManager
                     End Using
             End Select
         End While
+        RaiseEvent ProgressUpdate(New ProgressValue With {.EventType = Enums.TaskManagerEventType.TaskManagerEnded})
     End Sub
 
     Private Sub bwTaskManager_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwTaskManager.ProgressChanged

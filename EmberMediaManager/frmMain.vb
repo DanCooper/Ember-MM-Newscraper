@@ -198,6 +198,16 @@ Public Class frmMain
     Delegate Sub Delegate_dtListRemoveRow(ByVal dTable As DataTable, ByVal dRow As DataRow)
     Delegate Sub Delegate_dtListUpdateRow(ByVal dRow As DataRow, ByVal v As DataRow)
 
+    Delegate Sub Delegate_ChangeToolStripLabel(control As ToolStripLabel,
+                                               bVisible As Boolean,
+                                               strValue As String)
+    Delegate Sub Delegate_ChangeToolStripProgressBar(control As ToolStripProgressBar,
+                                                     bVisible As Boolean,
+                                                     iMaximum As Integer,
+                                                     iMinimum As Integer,
+                                                     iValue As Integer,
+                                                     tStyle As ProgressBarStyle)
+
     Delegate Sub MySettingsShow(ByVal dlg As dlgSettings)
 
 #End Region 'Delegates
@@ -9876,7 +9886,6 @@ Public Class frmMain
         AddHandler fScanner.ScannerUpdated, AddressOf ScannerUpdated
         AddHandler fScanner.ScanningCompleted, AddressOf ScanningCompleted
         AddHandler fTaskManager.ProgressUpdate, AddressOf TaskManagerProgressUpdate
-        'AddHandler fTaskManager.TaskManagerDone, AddressOf ScanningCompleted
         AddHandler ModulesManager.Instance.GenericEvent, AddressOf GenericRunCallBack
         AddHandler Master.DB.GenericEvent, AddressOf GenericRunCallBack
 
@@ -10287,9 +10296,43 @@ Public Class frmMain
                 SetStatus(eProgressValue.Message)
                 'tspbLoading.Value = e.ProgressPercentage
 
+            Case Enums.TaskManagerEventType.TaskManagerEnded
+                ChangeToolStripLabel(tslLoading, False, String.Empty)
+                ChangeToolStripProgressBar(tspbLoading, False, 0, 0, 0, ProgressBarStyle.Marquee)
+
+            Case Enums.TaskManagerEventType.TaskManagerStarted
+                ChangeToolStripLabel(tslLoading, True, eProgressValue.Message)
+                ChangeToolStripProgressBar(tspbLoading, True, 100, 0, 0, ProgressBarStyle.Marquee)
+
             Case Else
                 logger.Warn("Callback for <{0}> with no handler.", eProgressValue.EventType)
         End Select
+    End Sub
+
+    Public Sub ChangeToolStripLabel(control As ToolStripLabel, bVisible As Boolean, strValue As String)
+        If control.Owner.InvokeRequired Then
+            control.Owner.BeginInvoke(New Delegate_ChangeToolStripLabel(AddressOf ChangeToolStripLabel), New Object() {control, bVisible, strValue})
+        Else
+            control.Text = strValue
+            control.Visible = bVisible
+        End If
+    End Sub
+
+    Private Sub ChangeToolStripProgressBar(control As ToolStripProgressBar,
+                                           bVisible As Boolean,
+                                           iMaximum As Integer,
+                                           iMinimum As Integer,
+                                           iValue As Integer,
+                                           tStyle As ProgressBarStyle)
+        If control.Owner.InvokeRequired Then
+            control.Owner.BeginInvoke(New Delegate_ChangeToolStripProgressBar(AddressOf ChangeToolStripProgressBar), New Object() {control, bVisible, iMaximum, iMinimum, iValue, tStyle})
+        Else
+            control.Maximum = iMaximum
+            control.Minimum = iMinimum
+            control.Style = tStyle
+            control.Value = iValue
+            control.Visible = bVisible
+        End If
     End Sub
 
     Private Sub mnuGenresAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuGenresAdd.Click

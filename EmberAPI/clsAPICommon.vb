@@ -897,6 +897,8 @@ Public Class Enums
     Public Enum TaskManagerEventType As Integer
         RefreshRow = 0
         SimpleMessage = 1
+        TaskManagerEnded = 2
+        TaskManagerStarted = 3
     End Enum
 
     Public Enum TaskManagerType As Integer
