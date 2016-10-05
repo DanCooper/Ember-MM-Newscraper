@@ -76,6 +76,12 @@ Public Class TaskManager
                         SQLtransaction.Commit()
                     End Using
 
+                Case Enums.TaskManagerType.SetLanguage
+                    Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                        SetLanguage(currTask)
+                        SQLtransaction.Commit()
+                    End Using
+
                 Case Enums.TaskManagerType.SetLockedState
                     Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                         SetLockedState(currTask)
@@ -170,6 +176,78 @@ Public Class TaskManager
 
                 Next
         End Select
+    End Sub
+
+    Private Sub SetLanguage(ByVal tTaskItem As TaskItem)
+        If String.IsNullOrEmpty(tTaskItem.CommonString) Then Return
+
+        Dim nLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = tTaskItem.CommonString)
+        If nLanguage IsNot Nothing AndAlso Not String.IsNullOrEmpty(nLanguage.Abbreviation) Then
+            Dim strNewLanguage As String = nLanguage.Abbreviation
+            Select Case tTaskItem.ContentType
+
+                Case Enums.ContentType.Movie
+                    For Each tID In tTaskItem.ListOfID
+                        If bwTaskManager.CancellationPending Then Return
+                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(tID)
+
+                        If Not tmpDBElement.Language = strNewLanguage Then
+                            tmpDBElement.Language = strNewLanguage
+                            bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                                 .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                                 .Message = tmpDBElement.Movie.Title})
+
+                            Master.DB.Save_Movie(tmpDBElement, True, True, False, False, False)
+
+                            bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                         .ContentType = Enums.ContentType.Movie,
+                                                         .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                         .ID = tmpDBElement.ID})
+                        End If
+                    Next
+
+                Case Enums.ContentType.MovieSet
+                    For Each tID In tTaskItem.ListOfID
+                        If bwTaskManager.CancellationPending Then Return
+                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(tID)
+
+                        If Not tmpDBElement.Language = strNewLanguage Then
+                            tmpDBElement.Language = strNewLanguage
+                            bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                                 .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                                 .Message = tmpDBElement.MovieSet.Title})
+
+                            Master.DB.Save_MovieSet(tmpDBElement, True, True, False)
+
+                            bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                         .ContentType = Enums.ContentType.MovieSet,
+                                                         .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                         .ID = tmpDBElement.ID})
+                        End If
+                    Next
+
+                Case Enums.ContentType.TVShow
+                    For Each tID In tTaskItem.ListOfID
+                        If bwTaskManager.CancellationPending Then Return
+                        Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(tID, False, False)
+
+                        If Not tmpDBElement.Language = strNewLanguage Then
+                            tmpDBElement.Language = strNewLanguage
+                            bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                                 .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                                 .Message = tmpDBElement.TVShow.Title})
+
+                            Master.DB.Save_TVShow(tmpDBElement, True, True, False, False)
+
+                            bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                         .ContentType = Enums.ContentType.TVShow,
+                                                         .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                         .ID = tmpDBElement.ID})
+                        End If
+                    Next
+
+            End Select
+        End If
     End Sub
 
     Private Sub SetLockedState(ByVal tTaskItem As TaskItem)
@@ -768,6 +846,7 @@ Public Class TaskManager
 #Region "Fields"
 
         Dim CommonBoolean As Boolean
+        Dim CommonString As String
         Dim ContentType As Enums.ContentType
         Dim ListOfID As List(Of Long)
         Dim TaskType As Enums.TaskManagerType

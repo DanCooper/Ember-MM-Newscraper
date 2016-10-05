@@ -903,9 +903,10 @@ Public Class Enums
         CopyBackdrops = 0
         GetMissingEpisodes = 1
         Reload = 2
-        SetLockedState = 3
-        SetMarkedState = 4
-        SetWatchedState = 5
+        SetLanguage = 3
+        SetLockedState = 4
+        SetMarkedState = 5
+        SetWatchedState = 6
     End Enum
 
     Public Enum TVBannerSize As Integer
