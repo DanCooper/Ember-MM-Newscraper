@@ -15529,8 +15529,8 @@ Public Class frmMain
                         Next
 
                         fTaskManager.AddTask(New TaskManager.TaskItem With {
-                                             .CommonBoolean = bBooleanValue,
-                                             .CommonString = strStringValue,
+                                             .CommonBooleanValue = bBooleanValue,
+                                             .CommonStringValue = strStringValue,
                                              .ListOfID = lItemsToChange,
                                              .ContentType = tContentType,
                                              .TaskType = tTaskType})
@@ -15543,8 +15543,8 @@ Public Class frmMain
                         Next
 
                         fTaskManager.AddTask(New TaskManager.TaskItem With {
-                                             .CommonBoolean = bBooleanValue,
-                                             .CommonString = strStringValue,
+                                             .CommonBooleanValue = bBooleanValue,
+                                             .CommonStringValue = strStringValue,
                                              .ListOfID = lItemsToChange,
                                              .ContentType = tContentType,
                                              .TaskType = tTaskType})

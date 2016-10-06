@@ -246,9 +246,9 @@ Public Class TaskManager
     End Sub
 
     Private Sub SetLanguage(ByVal tTaskItem As TaskItem)
-        If String.IsNullOrEmpty(tTaskItem.CommonString) Then Return
+        If String.IsNullOrEmpty(tTaskItem.CommonStringValue) Then Return
 
-        Dim nLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = tTaskItem.CommonString)
+        Dim nLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = tTaskItem.CommonStringValue)
         If nLanguage IsNot Nothing AndAlso Not String.IsNullOrEmpty(nLanguage.Abbreviation) Then
             Dim strNewLanguage As String = nLanguage.Abbreviation
             Select Case tTaskItem.ContentType
@@ -326,7 +326,7 @@ Public Class TaskManager
                     Dim bHasChanged As Boolean = False
                     Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(tID)
 
-                    If tTaskItem.CommonBoolean Then
+                    If tTaskItem.CommonBooleanValue Then
                         If Not tmpDBElement.IsLock Then
                             tmpDBElement.IsLock = True
                             bHasChanged = True
@@ -358,7 +358,7 @@ Public Class TaskManager
                     Dim bHasChanged As Boolean = False
                     Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(tID)
 
-                    If tTaskItem.CommonBoolean Then
+                    If tTaskItem.CommonBooleanValue Then
                         If Not tmpDBElement.IsLock Then
                             tmpDBElement.IsLock = True
                             bHasChanged = True
@@ -390,7 +390,7 @@ Public Class TaskManager
                     Dim bHasChanged As Boolean = False
                     Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVEpisode(tID, True)
 
-                    If tTaskItem.CommonBoolean Then
+                    If tTaskItem.CommonBooleanValue Then
                         If Not tmpDBElement.IsLock Then
                             tmpDBElement.IsLock = True
                             bHasChanged = True
@@ -422,7 +422,7 @@ Public Class TaskManager
                     Dim bHasChanged As Boolean = False
                     Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVSeason(tID, True, False)
 
-                    If tTaskItem.CommonBoolean Then
+                    If tTaskItem.CommonBooleanValue Then
                         If Not tmpDBElement.IsLock Then
                             tmpDBElement.IsLock = True
                             bHasChanged = True
@@ -454,7 +454,7 @@ Public Class TaskManager
                     Dim bHasChanged As Boolean = False
                     Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(tID, True, True)
 
-                    If tTaskItem.CommonBoolean Then
+                    If tTaskItem.CommonBooleanValue Then
                         If Not tmpDBElement.IsLock Then
                             tmpDBElement.IsLock = True
                             bHasChanged = True
@@ -475,7 +475,7 @@ Public Class TaskManager
                     Next
                     If lstSeasonsIDs.Count > 0 Then
                         SetLockedState(New TaskItem With {
-                                       .CommonBoolean = tmpDBElement.IsLock,
+                                       .CommonBooleanValue = tmpDBElement.IsLock,
                                        .ContentType = Enums.ContentType.TVSeason,
                                        .ListOfID = lstSeasonsIDs,
                                        .TaskType = Enums.TaskManagerType.SetLockedState})
@@ -488,7 +488,7 @@ Public Class TaskManager
                     Next
                     If lstEpisodeIDs.Count > 0 Then
                         SetLockedState(New TaskItem With {
-                                       .CommonBoolean = tmpDBElement.IsLock,
+                                       .CommonBooleanValue = tmpDBElement.IsLock,
                                        .ContentType = Enums.ContentType.TVEpisode,
                                        .ListOfID = lstEpisodeIDs,
                                        .TaskType = Enums.TaskManagerType.SetLockedState})
@@ -520,7 +520,7 @@ Public Class TaskManager
                     Dim bHasChanged As Boolean = False
                     Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(tID)
 
-                    If tTaskItem.CommonBoolean Then
+                    If tTaskItem.CommonBooleanValue Then
                         If Not tmpDBElement.IsMark Then
                             tmpDBElement.IsMark = True
                             bHasChanged = True
@@ -552,7 +552,7 @@ Public Class TaskManager
                     Dim bHasChanged As Boolean = False
                     Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(tID)
 
-                    If tTaskItem.CommonBoolean Then
+                    If tTaskItem.CommonBooleanValue Then
                         If Not tmpDBElement.IsMark Then
                             tmpDBElement.IsMark = True
                             bHasChanged = True
@@ -569,7 +569,7 @@ Public Class TaskManager
                                                      .EventType = Enums.TaskManagerEventType.SimpleMessage,
                                                      .Message = tmpDBElement.MovieSet.Title})
 
-                        Master.DB.Save_MovieSet(tmpDBElement, True, True, False, False)
+                        Master.DB.Save_MovieSet(tmpDBElement, True, False, False, False)
 
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .ContentType = Enums.ContentType.MovieSet,
@@ -584,7 +584,7 @@ Public Class TaskManager
                     Dim bHasChanged As Boolean = False
                     Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVEpisode(tID, True)
 
-                    If tTaskItem.CommonBoolean Then
+                    If tTaskItem.CommonBooleanValue Then
                         If Not tmpDBElement.IsMark Then
                             tmpDBElement.IsMark = True
                             bHasChanged = True
@@ -601,7 +601,7 @@ Public Class TaskManager
                                                      .EventType = Enums.TaskManagerEventType.SimpleMessage,
                                                      .Message = tmpDBElement.TVEpisode.Title})
 
-                        Master.DB.Save_TVEpisode(tmpDBElement, True, True, False, False, False)
+                        Master.DB.Save_TVEpisode(tmpDBElement, True, False, False, False, False)
 
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .ContentType = Enums.ContentType.TVEpisode,
@@ -616,7 +616,7 @@ Public Class TaskManager
                     Dim bHasChanged As Boolean = False
                     Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVSeason(tID, True, False)
 
-                    If tTaskItem.CommonBoolean Then
+                    If tTaskItem.CommonBooleanValue Then
                         If Not tmpDBElement.IsMark Then
                             tmpDBElement.IsMark = True
                             bHasChanged = True
@@ -633,7 +633,7 @@ Public Class TaskManager
                                                      .EventType = Enums.TaskManagerEventType.SimpleMessage,
                                                      .Message = String.Format("{0}: {1} {2}", tmpDBElement.TVShow.Title, Master.eLang.GetString(650, "Season"), tmpDBElement.TVSeason.Season.ToString)})
 
-                        Master.DB.Save_TVSeason(tmpDBElement, True, True, False)
+                        Master.DB.Save_TVSeason(tmpDBElement, True, False, False)
 
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .ContentType = Enums.ContentType.TVSeason,
@@ -648,7 +648,7 @@ Public Class TaskManager
                     Dim bHasChanged As Boolean = False
                     Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(tID, True, True)
 
-                    If tTaskItem.CommonBoolean Then
+                    If tTaskItem.CommonBooleanValue Then
                         If Not tmpDBElement.IsMark Then
                             tmpDBElement.IsMark = True
                             bHasChanged = True
@@ -669,7 +669,7 @@ Public Class TaskManager
                     Next
                     If lstSeasonsIDs.Count > 0 Then
                         SetMarkedState(New TaskItem With {
-                                       .CommonBoolean = tmpDBElement.IsMark,
+                                       .CommonBooleanValue = tmpDBElement.IsMark,
                                        .ContentType = Enums.ContentType.TVSeason,
                                        .ListOfID = lstSeasonsIDs,
                                        .TaskType = Enums.TaskManagerType.SetMarkedState})
@@ -682,7 +682,7 @@ Public Class TaskManager
                     Next
                     If lstEpisodeIDs.Count > 0 Then
                         SetMarkedState(New TaskItem With {
-                                       .CommonBoolean = tmpDBElement.IsMark,
+                                       .CommonBooleanValue = tmpDBElement.IsMark,
                                        .ContentType = Enums.ContentType.TVEpisode,
                                        .ListOfID = lstEpisodeIDs,
                                        .TaskType = Enums.TaskManagerType.SetMarkedState})
@@ -693,7 +693,7 @@ Public Class TaskManager
                                                      .EventType = Enums.TaskManagerEventType.SimpleMessage,
                                                      .Message = tmpDBElement.TVShow.Title})
 
-                        Master.DB.Save_TVShow(tmpDBElement, True, True, False, False)
+                        Master.DB.Save_TVShow(tmpDBElement, True, False, False, False)
 
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .ContentType = Enums.ContentType.TVShow,
@@ -714,7 +714,7 @@ Public Class TaskManager
                     Dim bHasChanged As Boolean = False
                     Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(tID)
 
-                    If tTaskItem.CommonBoolean Then
+                    If tTaskItem.CommonBooleanValue Then
                         If Not tmpDBElement.Movie.LastPlayedSpecified OrElse Not tmpDBElement.Movie.PlayCountSpecified Then
                             tmpDBElement.Movie.LastPlayed = If(tmpDBElement.Movie.LastPlayedSpecified, tmpDBElement.Movie.LastPlayed, Date.Now.ToString("yyyy-MM-dd HH:mm:ss"))
                             tmpDBElement.Movie.PlayCount = If(tmpDBElement.Movie.PlayCountSpecified, tmpDBElement.Movie.PlayCount, 1)
@@ -748,7 +748,7 @@ Public Class TaskManager
                     Dim bHasChanged As Boolean = False
                     Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVEpisode(tID, True)
 
-                    If tTaskItem.CommonBoolean Then
+                    If tTaskItem.CommonBooleanValue Then
                         If Not tmpDBElement.TVEpisode.LastPlayedSpecified OrElse Not tmpDBElement.TVEpisode.PlaycountSpecified Then
                             tmpDBElement.TVEpisode.LastPlayed = If(tmpDBElement.TVEpisode.LastPlayedSpecified, tmpDBElement.TVEpisode.LastPlayed, Date.Now.ToString("yyyy-MM-dd HH:mm:ss"))
                             tmpDBElement.TVEpisode.Playcount = If(tmpDBElement.TVEpisode.PlaycountSpecified, tmpDBElement.TVEpisode.Playcount, 1)
@@ -786,7 +786,7 @@ Public Class TaskManager
                             If bwTaskManager.CancellationPending Then Exit For
                             Dim bHasChanged As Boolean = False
 
-                            If tTaskItem.CommonBoolean Then
+                            If tTaskItem.CommonBooleanValue Then
                                 If Not tmpDBElement.TVEpisode.LastPlayedSpecified OrElse Not tmpDBElement.TVEpisode.PlaycountSpecified Then
                                     tmpDBElement.TVEpisode.LastPlayed = If(tmpDBElement.TVEpisode.LastPlayedSpecified, tmpDBElement.TVEpisode.LastPlayed, Date.Now.ToString("yyyy-MM-dd HH:mm:ss"))
                                     tmpDBElement.TVEpisode.Playcount = If(tmpDBElement.TVEpisode.PlaycountSpecified, tmpDBElement.TVEpisode.Playcount, 1)
@@ -834,7 +834,7 @@ Public Class TaskManager
                         If bwTaskManager.CancellationPending Then Exit For
                         Dim bHasChanged As Boolean = False
 
-                        If tTaskItem.CommonBoolean Then
+                        If tTaskItem.CommonBooleanValue Then
                             If Not tmpDBElement.TVEpisode.LastPlayedSpecified OrElse Not tmpDBElement.TVEpisode.PlaycountSpecified Then
                                 tmpDBElement.TVEpisode.LastPlayed = If(tmpDBElement.TVEpisode.LastPlayedSpecified, tmpDBElement.TVEpisode.LastPlayed, Date.Now.ToString("yyyy-MM-dd HH:mm:ss"))
                                 tmpDBElement.TVEpisode.Playcount = If(tmpDBElement.TVEpisode.PlaycountSpecified, tmpDBElement.TVEpisode.Playcount, 1)
@@ -910,8 +910,8 @@ Public Class TaskManager
 
 #Region "Fields"
 
-        Dim CommonBoolean As Boolean
-        Dim CommonString As String
+        Dim CommonBooleanValue As Boolean
+        Dim CommonStringValue As String
         Dim ContentType As Enums.ContentType
         Dim ListOfID As List(Of Long)
         Dim TaskType As Enums.TaskManagerType
