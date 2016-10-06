@@ -523,189 +523,196 @@ Public Class TaskManager
             Case Enums.ContentType.Movie
                 For Each tID In tTaskItem.ListOfID
                     If bwTaskManager.CancellationPending Then Return
-                    Dim bHasChanged As Boolean = False
-                    Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(tID)
 
-                    If tTaskItem.CommonBooleanValue Then
-                        If Not tmpDBElement.IsMark Then
-                            tmpDBElement.IsMark = True
-                            bHasChanged = True
-                        End If
-                    Else
-                        If tmpDBElement.IsMark Then
-                            tmpDBElement.IsMark = False
-                            bHasChanged = True
-                        End If
-                    End If
+                    Using SQLCommand_Update As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                        SQLCommand_Update.CommandText = "UPDATE movie SET Mark = (?) WHERE idMovie = (?);"
+                        Dim par_Mark As SQLite.SQLiteParameter = SQLCommand_Update.Parameters.Add("par_Mark", DbType.Boolean, 0, "Mark")
+                        Dim par_ID As SQLite.SQLiteParameter = SQLCommand_Update.Parameters.Add("par_ID", DbType.Int64, 0, "idMovie")
 
-                    If bHasChanged Then
-                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                     .EventType = Enums.TaskManagerEventType.SimpleMessage,
-                                                     .Message = tmpDBElement.Movie.Title})
-
-                        Master.DB.Save_Movie(tmpDBElement, True, False, False, False, False)
-
-                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                     .ContentType = Enums.ContentType.Movie,
-                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
-                                                     .ID = tmpDBElement.ID})
-                    End If
+                        Using SQLCommand_Get As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                            SQLCommand_Get.CommandText = String.Format("SELECT * FROM movie WHERE idMovie = {0} AND Mark = {1};", tID, If(tTaskItem.CommonBooleanValue, 0, 1))
+                            Using SQLReader_Get As SQLite.SQLiteDataReader = SQLCommand_Get.ExecuteReader()
+                                While SQLReader_Get.Read
+                                    bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                                 .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                                 .Message = SQLReader_Get("Title").ToString})
+                                    par_ID.Value = tID
+                                    par_Mark.Value = tTaskItem.CommonBooleanValue
+                                    SQLCommand_Update.ExecuteNonQuery()
+                                    bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                                 .ContentType = Enums.ContentType.Movie,
+                                                                 .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                                 .ID = tID})
+                                End While
+                            End Using
+                        End Using
+                    End Using
                 Next
 
             Case Enums.ContentType.MovieSet
                 For Each tID In tTaskItem.ListOfID
                     If bwTaskManager.CancellationPending Then Return
-                    Dim bHasChanged As Boolean = False
-                    Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(tID)
 
-                    If tTaskItem.CommonBooleanValue Then
-                        If Not tmpDBElement.IsMark Then
-                            tmpDBElement.IsMark = True
-                            bHasChanged = True
-                        End If
-                    Else
-                        If tmpDBElement.IsMark Then
-                            tmpDBElement.IsMark = False
-                            bHasChanged = True
-                        End If
-                    End If
+                    Using SQLCommand_Update As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                        SQLCommand_Update.CommandText = "UPDATE sets SET Mark = (?) WHERE idSet = (?);"
+                        Dim par_Mark As SQLite.SQLiteParameter = SQLCommand_Update.Parameters.Add("par_Mark", DbType.Boolean, 0, "Mark")
+                        Dim par_ID As SQLite.SQLiteParameter = SQLCommand_Update.Parameters.Add("par_ID", DbType.Int64, 0, "idSet")
 
-                    If bHasChanged Then
-                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                     .EventType = Enums.TaskManagerEventType.SimpleMessage,
-                                                     .Message = tmpDBElement.MovieSet.Title})
-
-                        Master.DB.Save_MovieSet(tmpDBElement, True, False, False, False)
-
-                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                     .ContentType = Enums.ContentType.MovieSet,
-                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
-                                                     .ID = tmpDBElement.ID})
-                    End If
+                        Using SQLCommand_Get As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                            SQLCommand_Get.CommandText = String.Format("SELECT * FROM sets WHERE idSet = {0} AND Mark = {1};", tID, If(tTaskItem.CommonBooleanValue, 0, 1))
+                            Using SQLReader_Get As SQLite.SQLiteDataReader = SQLCommand_Get.ExecuteReader()
+                                While SQLReader_Get.Read
+                                    bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                                 .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                                 .Message = SQLReader_Get("SetName").ToString})
+                                    par_ID.Value = tID
+                                    par_Mark.Value = tTaskItem.CommonBooleanValue
+                                    SQLCommand_Update.ExecuteNonQuery()
+                                    bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                                 .ContentType = Enums.ContentType.MovieSet,
+                                                                 .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                                 .ID = tID})
+                                End While
+                            End Using
+                        End Using
+                    End Using
                 Next
 
             Case Enums.ContentType.TVEpisode
                 For Each tID In tTaskItem.ListOfID
                     If bwTaskManager.CancellationPending Then Return
-                    Dim bHasChanged As Boolean = False
-                    Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVEpisode(tID, True)
 
-                    If tTaskItem.CommonBooleanValue Then
-                        If Not tmpDBElement.IsMark Then
-                            tmpDBElement.IsMark = True
-                            bHasChanged = True
-                        End If
-                    Else
-                        If tmpDBElement.IsMark Then
-                            tmpDBElement.IsMark = False
-                            bHasChanged = True
-                        End If
-                    End If
+                    Using SQLCommand_Update As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                        SQLCommand_Update.CommandText = "UPDATE episode SET Mark = (?) WHERE idEpisode = (?);"
+                        Dim par_Mark As SQLite.SQLiteParameter = SQLCommand_Update.Parameters.Add("par_Mark", DbType.Boolean, 0, "Mark")
+                        Dim par_ID As SQLite.SQLiteParameter = SQLCommand_Update.Parameters.Add("par_ID", DbType.Int64, 0, "idEpisode")
 
-                    If bHasChanged Then
-                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                     .EventType = Enums.TaskManagerEventType.SimpleMessage,
-                                                     .Message = tmpDBElement.TVEpisode.Title})
-
-                        Master.DB.Save_TVEpisode(tmpDBElement, True, False, False, False, False)
-
-                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                     .ContentType = Enums.ContentType.TVEpisode,
-                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
-                                                     .ID = tmpDBElement.ID})
-                    End If
+                        Using SQLCommand_Get As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                            SQLCommand_Get.CommandText = String.Format("SELECT * FROM episode WHERE idEpisode = {0} AND Mark = {1};", tID, If(tTaskItem.CommonBooleanValue, 0, 1))
+                            Using SQLReader_Get As SQLite.SQLiteDataReader = SQLCommand_Get.ExecuteReader()
+                                While SQLReader_Get.Read
+                                    bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                                 .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                                 .Message = SQLReader_Get("Title").ToString})
+                                    par_ID.Value = tID
+                                    par_Mark.Value = tTaskItem.CommonBooleanValue
+                                    SQLCommand_Update.ExecuteNonQuery()
+                                    bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                                 .ContentType = Enums.ContentType.TVEpisode,
+                                                                 .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                                 .ID = tID})
+                                End While
+                            End Using
+                        End Using
+                    End Using
                 Next
 
             Case Enums.ContentType.TVSeason
                 For Each tID In tTaskItem.ListOfID
                     If bwTaskManager.CancellationPending Then Return
-                    Dim bHasChanged As Boolean = False
-                    Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVSeason(tID, True, False)
 
-                    If tTaskItem.CommonBooleanValue Then
-                        If Not tmpDBElement.IsMark Then
-                            tmpDBElement.IsMark = True
-                            bHasChanged = True
-                        End If
-                    Else
-                        If tmpDBElement.IsMark Then
-                            tmpDBElement.IsMark = False
-                            bHasChanged = True
-                        End If
+                    'first proceed all episodes in this season
+                    Dim intSeason As Integer = -1
+                    Dim lngShowID As Long = -1
+                    Dim nTaskItem As New TaskItem With {
+                        .CommonBooleanValue = tTaskItem.CommonBooleanValue,
+                        .ContentType = Enums.ContentType.TVEpisode,
+                        .ListOfID = New List(Of Long),
+                        .TaskType = Enums.TaskManagerType.SetMarkedState}
+
+                    Using SQLCommand_Get As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                        SQLCommand_Get.CommandText = String.Format("SELECT idShow, Season FROM seasons WHERE idSeason = {0};", tID)
+                        Using SQLReader_Get As SQLite.SQLiteDataReader = SQLCommand_Get.ExecuteReader()
+                            While SQLReader_Get.Read
+                                intSeason = CInt(SQLReader_Get("Season"))
+                                lngShowID = CLng(SQLReader_Get("idShow"))
+                            End While
+                        End Using
+                    End Using
+
+                    If Not intSeason = -1 AndAlso Not lngShowID = -1 Then
+                        Using SQLCommand_Get As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                            SQLCommand_Get.CommandText = String.Format("SELECT idEpisode FROM episode WHERE idShow = {0} AND Season = {1};", lngShowID, intSeason)
+                            Using SQLReader_Get As SQLite.SQLiteDataReader = SQLCommand_Get.ExecuteReader()
+                                While SQLReader_Get.Read
+                                    nTaskItem.ListOfID.Add(CLng(SQLReader_Get("idEpisode")))
+                                End While
+                            End Using
+                        End Using
+                        SetMarkedState(nTaskItem)
                     End If
 
-                    If bHasChanged Then
-                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                     .EventType = Enums.TaskManagerEventType.SimpleMessage,
-                                                     .Message = String.Format("{0}: {1} {2}", tmpDBElement.TVShow.Title, Master.eLang.GetString(650, "Season"), tmpDBElement.TVSeason.Season.ToString)})
+                    'now proceed the season
+                    Using SQLCommand_Update As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                        SQLCommand_Update.CommandText = "UPDATE seasons SET Mark = (?) WHERE idSeason = (?);"
+                        Dim par_Mark As SQLite.SQLiteParameter = SQLCommand_Update.Parameters.Add("par_Mark", DbType.Boolean, 0, "Mark")
+                        Dim par_ID As SQLite.SQLiteParameter = SQLCommand_Update.Parameters.Add("par_ID", DbType.Int64, 0, "idSeason")
 
-                        Master.DB.Save_TVSeason(tmpDBElement, True, False, False)
-
-                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                     .ContentType = Enums.ContentType.TVSeason,
-                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
-                                                     .ID = tmpDBElement.ID})
-                    End If
+                        Using SQLCommand_Get As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                            SQLCommand_Get.CommandText = String.Format("SELECT * FROM seasons WHERE idSeason = {0} AND Mark = {1};", tID, If(tTaskItem.CommonBooleanValue, 0, 1))
+                            Using SQLReader_Get As SQLite.SQLiteDataReader = SQLCommand_Get.ExecuteReader()
+                                While SQLReader_Get.Read
+                                    bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                                 .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                                 .Message = SQLReader_Get("SeasonText").ToString})
+                                    par_ID.Value = tID
+                                    par_Mark.Value = tTaskItem.CommonBooleanValue
+                                    SQLCommand_Update.ExecuteNonQuery()
+                                    bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                                 .ContentType = Enums.ContentType.TVSeason,
+                                                                 .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                                 .ID = tID})
+                                End While
+                            End Using
+                        End Using
+                    End Using
                 Next
 
             Case Enums.ContentType.TVShow, Enums.ContentType.TV
                 For Each tID In tTaskItem.ListOfID
                     If bwTaskManager.CancellationPending Then Return
-                    Dim bHasChanged As Boolean = False
-                    Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(tID, True, True)
 
-                    If tTaskItem.CommonBooleanValue Then
-                        If Not tmpDBElement.IsMark Then
-                            tmpDBElement.IsMark = True
-                            bHasChanged = True
-                        End If
-                    Else
-                        If tmpDBElement.IsMark Then
-                            tmpDBElement.IsMark = False
-                            bHasChanged = True
-                        End If
-                    End If
+                    'first proceed all seasons in this tv show (episodes will be handled by seasons)
+                    Dim nTaskItem As New TaskItem With {
+                        .CommonBooleanValue = tTaskItem.CommonBooleanValue,
+                        .ContentType = Enums.ContentType.TVSeason,
+                        .ListOfID = New List(Of Long),
+                        .TaskType = Enums.TaskManagerType.SetMarkedState}
 
-                    'Season handling
-                    Dim lstSeasonsIDs As New List(Of Long)
-                    For Each nTVSeason As Database.DBElement In tmpDBElement.Seasons
-                        lstSeasonsIDs.Add(nTVSeason.ID)
-                        'overwrite the season Marked state to save it in tvshow.nfo
-                        nTVSeason.IsMark = tmpDBElement.IsMark
-                    Next
-                    If lstSeasonsIDs.Count > 0 Then
-                        SetMarkedState(New TaskItem With {
-                                       .CommonBooleanValue = tmpDBElement.IsMark,
-                                       .ContentType = Enums.ContentType.TVSeason,
-                                       .ListOfID = lstSeasonsIDs,
-                                       .TaskType = Enums.TaskManagerType.SetMarkedState})
-                    End If
+                    Using SQLCommand_Get As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                        SQLCommand_Get.CommandText = String.Format("SELECT idSeason FROM seasons WHERE idShow = {0};", tID)
+                        Using SQLReader_Get As SQLite.SQLiteDataReader = SQLCommand_Get.ExecuteReader()
+                            While SQLReader_Get.Read
+                                nTaskItem.ListOfID.Add(CLng(SQLReader_Get("idSeason")))
+                            End While
+                        End Using
+                    End Using
+                    SetMarkedState(nTaskItem)
 
-                    'Episode handling
-                    Dim lstEpisodeIDs As New List(Of Long)
-                    For Each nTVEpisode As Database.DBElement In tmpDBElement.Episodes
-                        lstEpisodeIDs.Add(nTVEpisode.ID)
-                    Next
-                    If lstEpisodeIDs.Count > 0 Then
-                        SetMarkedState(New TaskItem With {
-                                       .CommonBooleanValue = tmpDBElement.IsMark,
-                                       .ContentType = Enums.ContentType.TVEpisode,
-                                       .ListOfID = lstEpisodeIDs,
-                                       .TaskType = Enums.TaskManagerType.SetMarkedState})
-                    End If
+                    'now proceed the tv show
+                    Using SQLCommand_Update As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                        SQLCommand_Update.CommandText = "UPDATE tvshow SET Mark = (?) WHERE idShow = (?);"
+                        Dim par_Mark As SQLite.SQLiteParameter = SQLCommand_Update.Parameters.Add("par_Mark", DbType.Boolean, 0, "Mark")
+                        Dim par_ID As SQLite.SQLiteParameter = SQLCommand_Update.Parameters.Add("par_ID", DbType.Int64, 0, "idShow")
 
-                    If bHasChanged Then
-                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                     .EventType = Enums.TaskManagerEventType.SimpleMessage,
-                                                     .Message = tmpDBElement.TVShow.Title})
-
-                        Master.DB.Save_TVShow(tmpDBElement, True, False, False, False)
-
-                        bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                     .ContentType = Enums.ContentType.TVShow,
-                                                     .EventType = Enums.TaskManagerEventType.RefreshRow,
-                                                     .ID = tmpDBElement.ID})
-                    End If
+                        Using SQLCommand_Get As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                            SQLCommand_Get.CommandText = String.Format("SELECT * FROM tvshow WHERE idShow = {0} AND Mark = {1};", tID, If(tTaskItem.CommonBooleanValue, 0, 1))
+                            Using SQLReader_Get As SQLite.SQLiteDataReader = SQLCommand_Get.ExecuteReader()
+                                While SQLReader_Get.Read
+                                    bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                                 .EventType = Enums.TaskManagerEventType.SimpleMessage,
+                                                                 .Message = SQLReader_Get("Title").ToString})
+                                    par_ID.Value = tID
+                                    par_Mark.Value = tTaskItem.CommonBooleanValue
+                                    SQLCommand_Update.ExecuteNonQuery()
+                                    bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                                 .ContentType = Enums.ContentType.TVShow,
+                                                                 .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                                 .ID = tID})
+                                End While
+                            End Using
+                        End Using
+                    End Using
                 Next
 
         End Select
