@@ -70,36 +70,39 @@ Public Class TaskManager
                     CopyBackdrops(currTask)
 
                 Case Enums.TaskManagerType.DoTitleCheck
-                    DoTitleCheck(currTask)
+                    Using SQLTransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                        DoTitleCheck(currTask)
+                        SQLTransaction.Commit()
+                    End Using
 
                 Case Enums.TaskManagerType.GetMissingEpisodes
-                    Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                    Using SQLTransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                         GetMissingEpisodes(currTask)
-                        SQLtransaction.Commit()
+                        SQLTransaction.Commit()
                     End Using
 
                 Case Enums.TaskManagerType.SetLanguage
-                    Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                    Using SQLTransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                         SetLanguage(currTask)
-                        SQLtransaction.Commit()
+                        SQLTransaction.Commit()
                     End Using
 
                 Case Enums.TaskManagerType.SetLockedState
-                    Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                    Using SQLTransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                         SetLockedState(currTask)
-                        SQLtransaction.Commit()
+                        SQLTransaction.Commit()
                     End Using
 
                 Case Enums.TaskManagerType.SetMarkedState
-                    Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                    Using SQLTransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                         SetMarkedState(currTask)
-                        SQLtransaction.Commit()
+                        SQLTransaction.Commit()
                     End Using
 
                 Case Enums.TaskManagerType.SetWatchedState
-                    Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                    Using SQLTransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                         SetWatchedState(currTask)
-                        SQLtransaction.Commit()
+                        SQLTransaction.Commit()
                     End Using
             End Select
         End While
@@ -127,6 +130,7 @@ Public Class TaskManager
 
     Private Sub CopyBackdrops(ByVal currTask As TaskItem)
         Select Case currTask.ContentType
+
             Case Enums.ContentType.Movie
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     SQLcommand.CommandText = "SELECT ListTitle, FanartPath FROM movielist WHERE FanartPath IS NOT NULL AND NOT FanartPath='' ORDER BY ListTitle;"
@@ -141,6 +145,7 @@ Public Class TaskManager
                         End While
                     End Using
                 End Using
+
         End Select
     End Sub
 
@@ -148,69 +153,67 @@ Public Class TaskManager
         Select Case tTaskItem.ContentType
 
             Case Enums.ContentType.Movie
-                Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-                    Using SQLCommand_Update As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                        SQLCommand_Update.CommandText = "UPDATE movie SET OutOfTolerance = (?) WHERE idMovie = (?);"
-                        Dim par_OutOfTolerance As SQLite.SQLiteParameter = SQLCommand_Update.Parameters.Add("par_OutOfTolerance", DbType.Boolean, 0, "OutOfTolerance")
-                        Dim par_idMovie As SQLite.SQLiteParameter = SQLCommand_Update.Parameters.Add("par_idMovie", DbType.Int64, 0, "idMovie")
+                Using SQLCommand_Update As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                    SQLCommand_Update.CommandText = "UPDATE movie SET OutOfTolerance = (?) WHERE idMovie = (?);"
+                    Dim par_OutOfTolerance As SQLite.SQLiteParameter = SQLCommand_Update.Parameters.Add("par_OutOfTolerance", DbType.Boolean, 0, "OutOfTolerance")
+                    Dim par_idMovie As SQLite.SQLiteParameter = SQLCommand_Update.Parameters.Add("par_idMovie", DbType.Int64, 0, "idMovie")
 
-                        Using SQLCommand_GetMovies As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                            SQLCommand_GetMovies.CommandText = String.Concat("SELECT * FROM movie;")
-                            Using SQLReader_GetMovies As SQLite.SQLiteDataReader = SQLCommand_GetMovies.ExecuteReader()
-                                While SQLReader_GetMovies.Read
-                                    Dim bLevFail_OldValue = CBool(SQLReader_GetMovies("OutOfTolerance"))
+                    Using SQLCommand_GetMovies As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                        SQLCommand_GetMovies.CommandText = String.Concat("SELECT * FROM movie;")
+                        Using SQLReader_GetMovies As SQLite.SQLiteDataReader = SQLCommand_GetMovies.ExecuteReader()
+                            While SQLReader_GetMovies.Read
+                                Dim bLevFail_OldValue = CBool(SQLReader_GetMovies("OutOfTolerance"))
 
-                                    If Master.eSettings.MovieLevTolerance > 0 Then
-                                        Dim bIsSingle As Boolean = False
-                                        Dim bLevFail_NewValue As Boolean = False
-                                        Dim bUseFolderName As Boolean = False
+                                If Master.eSettings.MovieLevTolerance > 0 Then
+                                    Dim bIsSingle As Boolean = False
+                                    Dim bLevFail_NewValue As Boolean = False
+                                    Dim bUseFolderName As Boolean = False
 
-                                        bIsSingle = CBool(SQLReader_GetMovies("Type"))
+                                    bIsSingle = CBool(SQLReader_GetMovies("Type"))
 
-                                        Using SQLCommand_Source As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                                            SQLCommand_Source.CommandText = String.Concat("SELECT * FROM moviesource WHERE idSource = ", Convert.ToInt64(SQLReader_GetMovies("idSource")), ";")
-                                            Using SQLreader_GetSource As SQLite.SQLiteDataReader = SQLCommand_Source.ExecuteReader()
-                                                If SQLreader_GetSource.HasRows Then
-                                                    SQLreader_GetSource.Read()
-                                                    bUseFolderName = CBool(SQLreader_GetSource("bFoldername"))
-                                                Else
-                                                    bUseFolderName = False
-                                                End If
-                                            End Using
+                                    Using SQLCommand_Source As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                                        SQLCommand_Source.CommandText = String.Concat("SELECT * FROM moviesource WHERE idSource = ", Convert.ToInt64(SQLReader_GetMovies("idSource")), ";")
+                                        Using SQLreader_GetSource As SQLite.SQLiteDataReader = SQLCommand_Source.ExecuteReader()
+                                            If SQLreader_GetSource.HasRows Then
+                                                SQLreader_GetSource.Read()
+                                                bUseFolderName = CBool(SQLreader_GetSource("bFoldername"))
+                                            Else
+                                                bUseFolderName = False
+                                            End If
                                         End Using
+                                    End Using
 
-                                        bLevFail_NewValue = StringUtils.ComputeLevenshtein(SQLReader_GetMovies("Title").ToString, StringUtils.FilterTitleFromPath_Movie(SQLReader_GetMovies("MoviePath").ToString, bIsSingle, bUseFolderName)) > Master.eSettings.MovieLevTolerance
+                                    bLevFail_NewValue = StringUtils.ComputeLevenshtein(SQLReader_GetMovies("Title").ToString, StringUtils.FilterTitleFromPath_Movie(SQLReader_GetMovies("MoviePath").ToString, bIsSingle, bUseFolderName)) > Master.eSettings.MovieLevTolerance
 
-                                        If Not bLevFail_OldValue = bLevFail_NewValue Then
-                                            par_OutOfTolerance.Value = bLevFail_NewValue
-                                            par_idMovie.Value = CLng(SQLReader_GetMovies("idMovie"))
-                                            SQLCommand_Update.ExecuteNonQuery()
-                                            bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                                         .ContentType = Enums.ContentType.Movie,
-                                                                         .EventType = Enums.TaskManagerEventType.RefreshRow,
-                                                                         .ID = CLng(SQLReader_GetMovies("idMovie"))})
-                                        End If
-                                    ElseIf bLevFail_OldValue Then
-                                        par_OutOfTolerance.Value = False
+                                    If Not bLevFail_OldValue = bLevFail_NewValue Then
+                                        par_OutOfTolerance.Value = bLevFail_NewValue
                                         par_idMovie.Value = CLng(SQLReader_GetMovies("idMovie"))
                                         SQLCommand_Update.ExecuteNonQuery()
                                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
+                                                                         .ContentType = Enums.ContentType.Movie,
+                                                                         .EventType = Enums.TaskManagerEventType.RefreshRow,
+                                                                         .ID = CLng(SQLReader_GetMovies("idMovie"))})
+                                    End If
+                                ElseIf bLevFail_OldValue Then
+                                    par_OutOfTolerance.Value = False
+                                    par_idMovie.Value = CLng(SQLReader_GetMovies("idMovie"))
+                                    SQLCommand_Update.ExecuteNonQuery()
+                                    bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                                      .ContentType = Enums.ContentType.Movie,
                                                                      .EventType = Enums.TaskManagerEventType.RefreshRow,
                                                                      .ID = CLng(SQLReader_GetMovies("idMovie"))})
-                                    End If
-                                End While
-                            End Using
+                                End If
+                            End While
                         End Using
                     End Using
-
-                    SQLtransaction.Commit()
                 End Using
+
         End Select
     End Sub
 
     Private Sub GetMissingEpisodes(ByVal tTaskItem As TaskItem)
         Select Case tTaskItem.ContentType
+
             Case Enums.ContentType.TVShow
                 For Each tID In tTaskItem.ListOfID
                     If bwTaskManager.CancellationPending Then Return
@@ -242,6 +245,7 @@ Public Class TaskManager
                                                  .ID = tmpDBElement.ID})
 
                 Next
+
         End Select
     End Sub
 
@@ -251,6 +255,7 @@ Public Class TaskManager
         Dim nLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = tTaskItem.CommonStringValue)
         If nLanguage IsNot Nothing AndAlso Not String.IsNullOrEmpty(nLanguage.Abbreviation) Then
             Dim strNewLanguage As String = nLanguage.Abbreviation
+
             Select Case tTaskItem.ContentType
 
                 Case Enums.ContentType.Movie
@@ -314,6 +319,7 @@ Public Class TaskManager
                     Next
 
             End Select
+
         End If
     End Sub
 
