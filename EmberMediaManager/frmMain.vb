@@ -9903,8 +9903,7 @@ Public Class frmMain
         pbGenre(0) = New PictureBox()
 
         AddHandler fCommandLine.TaskEvent, AddressOf TaskRunCallBack
-        AddHandler fScanner.ScannerUpdated, AddressOf ScannerUpdated
-        AddHandler fScanner.ScanningCompleted, AddressOf ScanningCompleted
+        AddHandler fScanner.ProgressUpdate, AddressOf ScannerProgressUpdate
         AddHandler fTaskManager.ProgressUpdate, AddressOf TaskManagerProgressUpdate
         AddHandler ModulesManager.Instance.GenericEvent, AddressOf GenericRunCallBack
         AddHandler Master.DB.GenericEvent, AddressOf GenericRunCallBack
@@ -15366,8 +15365,8 @@ Public Class frmMain
         Master.eSettings.GeneralMainFilterSortOrder_Shows = Order
     End Sub
 
-    Private Sub ScannerUpdated(ByVal eProgressValue As Scanner.ProgressValue)
-        Select Case eProgressValue.Type
+    Private Sub ScannerProgressUpdate(ByVal eProgressValue As Scanner.ProgressValue)
+        Select Case eProgressValue.EventType
             Case Enums.ScannerEventType.Added_Movie
                 SetStatus(String.Concat(String.Concat(Master.eLang.GetString(815, "Added Movie"), ":"), " ", eProgressValue.Message))
                 AddRow_Movie(eProgressValue.ID)
@@ -15382,20 +15381,18 @@ Public Class frmMain
                 SetStatus(Master.eLang.GetString(116, "Performing Preliminary Tasks (Gathering Data)..."))
             Case Enums.ScannerEventType.Refresh_TVShow
                 RefreshRow_TVShow(eProgressValue.ID, True)
+            Case Enums.ScannerEventType.ScannerEnded
+                If Not Master.isCL Then
+                    SetStatus(String.Empty)
+                    FillList(False, True, False)
+                    tspbLoading.Visible = False
+                    tslLoading.Visible = False
+                    LoadingDone = True
+                Else
+                    FillList(True, True, True)
+                    LoadingDone = True
+                End If
         End Select
-    End Sub
-
-    Private Sub ScanningCompleted()
-        If Not Master.isCL Then
-            SetStatus(String.Empty)
-            FillList(False, True, False)
-            tspbLoading.Visible = False
-            tslLoading.Visible = False
-            LoadingDone = True
-        Else
-            FillList(True, True, True)
-            LoadingDone = True
-        End If
     End Sub
 
     Private Sub scMain_SplitterMoved(ByVal sender As System.Object, ByVal e As System.Windows.Forms.SplitterEventArgs) Handles scMain.SplitterMoved

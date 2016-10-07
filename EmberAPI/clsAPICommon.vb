@@ -842,6 +842,8 @@ Public Class Enums
         CleaningDatabase = 4
         PreliminaryTasks = 5
         Refresh_TVShow = 6
+        ScannerEnded = 7
+        ScannerStarted = 8
     End Enum
 
     Public Enum ScraperEventType As Integer
