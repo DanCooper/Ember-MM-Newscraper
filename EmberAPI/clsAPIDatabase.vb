@@ -442,6 +442,8 @@ Public Class Database
         Dim tPath As String = String.Empty
         Dim sPath As String = String.Empty
 
+        logger.Info("Cleaning videodatabase started")
+
         Using SQLtransaction As SQLiteTransaction = _myvideosDBConn.BeginTransaction()
             If CleanMovies Then
                 logger.Info("Cleaning movies started")
@@ -646,13 +648,16 @@ Public Class Database
             logger.Info("Cleaning global tables done")
 
             SQLtransaction.Commit()
-            logger.Info("Cleaning videodatabase done")
         End Using
+
+        logger.Info("Cleaning videodatabase done")
 
         ' Housekeeping - consolidate and pack database using vacuum command http://www.sqlite.org/lang_vacuum.html
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+            logger.Info("Rebulding videodatabase started")
             SQLcommand.CommandText = "VACUUM;"
             SQLcommand.ExecuteNonQuery()
+            logger.Info("Rebulding videodatabase done")
         End Using
     End Sub
 
