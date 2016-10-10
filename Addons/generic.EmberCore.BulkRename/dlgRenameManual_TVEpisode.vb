@@ -18,8 +18,8 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.IO
 Imports EmberAPI
+Imports System.IO
 
 Public Class dlgRenameManual_TVEpisode
 
