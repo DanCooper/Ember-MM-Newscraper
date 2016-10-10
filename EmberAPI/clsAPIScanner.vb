@@ -641,7 +641,7 @@ Public Class Scanner
 
         'IMDB ID
         If Not DBMovie.Movie.IMDBSpecified Then
-            DBMovie.Movie.IMDB = StringUtils.FilterIMDBIDFromPath(DBMovie.Filename)
+            DBMovie.Movie.IMDB = StringUtils.FilterIMDBIDFromPath(DBMovie.Filename, True)
         End If
 
         'Title
@@ -935,7 +935,7 @@ Public Class Scanner
 
                 'IMDB ID
                 If Not DBTVShow.TVShow.IMDBSpecified Then
-                    DBTVShow.TVShow.IMDB = StringUtils.FilterIMDBIDFromPath(DBTVShow.ShowPath)
+                    DBTVShow.TVShow.IMDB = StringUtils.FilterIMDBIDFromPath(DBTVShow.ShowPath, True)
                 End If
 
                 'Title
