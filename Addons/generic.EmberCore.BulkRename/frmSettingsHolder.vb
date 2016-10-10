@@ -35,7 +35,6 @@ Public Class frmSettingsHolder
 #Region "Events"
 
     Public Event ModuleEnabledChanged(ByVal State As Boolean)
-
     Public Event ModuleSettingsChanged()
 
 #End Region 'Events
@@ -200,7 +199,7 @@ Public Class frmSettingsHolder
         _fDummySingleMovie.OldFileName = "OldFileName"
         _fDummySingleMovie.Genre = "Action / Sci-Fi"
         _fDummySingleMovie.ID = -1
-        _fDummySingleMovie.IMDB = "0848228"
+        _fDummySingleMovie.IMDB = "tt0848228"
         _fDummySingleMovie.IsBDMV = False
         _fDummySingleMovie.IsLock = False
         _fDummySingleMovie.IsMultiEpisode = False
