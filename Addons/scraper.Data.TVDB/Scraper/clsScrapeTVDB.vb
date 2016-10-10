@@ -341,7 +341,7 @@ Namespace TVDBs
             Return nTVShow
         End Function
 
-        Public Function GetTVEpisodeInfo(ByVal tvdbID As Integer, ByVal SeasonNumber As Integer, ByVal EpisodeNumber As Integer, ByRef FilteredOptions As Structures.ScrapeOptions) As MediaContainers.EpisodeDetails
+        Public Function GetTVEpisodeInfo(ByVal tvdbID As Integer, ByVal SeasonNumber As Integer, ByVal EpisodeNumber As Integer, ByVal tEpisodeOrdering As Enums.EpisodeOrdering, ByRef FilteredOptions As Structures.ScrapeOptions) As MediaContainers.EpisodeDetails
             Try
                 Dim APIResult As Task(Of TVDB.Model.SeriesDetails) = Task.Run(Function() GetFullSeriesById(CInt(tvdbID)))
                 If APIResult Is Nothing OrElse APIResult.Result Is Nothing Then
@@ -349,7 +349,17 @@ Namespace TVDBs
                 End If
                 Dim TVShowInfo = APIResult.Result
 
-                Dim EpisodeInfo As TVDB.Model.Episode = TVShowInfo.Series.Episodes.FirstOrDefault(Function(f) f.Number = EpisodeNumber AndAlso f.SeasonNumber = SeasonNumber)
+                Dim EpisodeInfo As TVDB.Model.Episode = Nothing
+
+                Select Case tEpisodeOrdering
+                    Case Enums.EpisodeOrdering.Absolute
+                        EpisodeInfo = TVShowInfo.Series.Episodes.FirstOrDefault(Function(f) f.AbsoluteNumber = EpisodeNumber)
+                    Case Enums.EpisodeOrdering.DVD
+                        EpisodeInfo = TVShowInfo.Series.Episodes.FirstOrDefault(Function(f) f.DVDEpisodeNumber = EpisodeNumber AndAlso f.DVDSeason = SeasonNumber)
+                    Case Enums.EpisodeOrdering.Standard
+                        EpisodeInfo = TVShowInfo.Series.Episodes.FirstOrDefault(Function(f) f.Number = EpisodeNumber AndAlso f.SeasonNumber = SeasonNumber)
+                End Select
+
                 If Not EpisodeInfo Is Nothing Then
                     Dim nEpisode As MediaContainers.EpisodeDetails = GetTVEpisodeInfo(EpisodeInfo, TVShowInfo, FilteredOptions)
                     Return nEpisode

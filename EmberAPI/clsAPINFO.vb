@@ -833,6 +833,7 @@ Public Class NFO
                 Dim strAiredDate As String = aKnownEpisode.AiredDate
                 If DBTV.Ordering = Enums.EpisodeOrdering.Absolute Then
                     iEpisode = aKnownEpisode.EpisodeAbsolute
+                    iSeason = 1
                 ElseIf DBTV.Ordering = Enums.EpisodeOrdering.DVD Then
                     iEpisode = CInt(aKnownEpisode.EpisodeDVD)
                     iSeason = aKnownEpisode.SeasonDVD
@@ -1207,6 +1208,7 @@ Public Class NFO
             Dim strAiredDate As String = KnownEpisodesIndex.Item(0).AiredDate
             If DBTVEpisode.Ordering = Enums.EpisodeOrdering.Absolute Then
                 iEpisode = KnownEpisodesIndex.Item(0).EpisodeAbsolute
+                iSeason = 1
             ElseIf DBTVEpisode.Ordering = Enums.EpisodeOrdering.DVD Then
                 iEpisode = CInt(KnownEpisodesIndex.Item(0).EpisodeDVD)
                 iSeason = KnownEpisodesIndex.Item(0).SeasonDVD
@@ -1677,7 +1679,7 @@ Public Class NFO
         For Each sFile As String In lFiles
             Using srInfo As New StreamReader(sFile)
                 Dim sInfo As String = srInfo.ReadToEnd
-                Dim sIMDBID As String = Regex.Match(sInfo, "tt\d\d\d\d\d\d\d", RegexOptions.Multiline Or RegexOptions.Singleline Or RegexOptions.IgnoreCase).ToString
+                Dim sIMDBID As String = Regex.Match(sInfo, "tt\d\d\d\d\d\d\d*", RegexOptions.Multiline Or RegexOptions.Singleline Or RegexOptions.IgnoreCase).ToString
 
                 If Not String.IsNullOrEmpty(sIMDBID) Then
                     tNonConf.IMDBID = sIMDBID
@@ -1687,7 +1689,7 @@ Public Class NFO
                     End If
                     Exit For
                 Else
-                    sIMDBID = Regex.Match(sPath, "tt\d\d\d\d\d\d\d", RegexOptions.Multiline Or RegexOptions.Singleline Or RegexOptions.IgnoreCase).ToString
+                    sIMDBID = Regex.Match(sPath, "tt\d\d\d\d\d\d\d*", RegexOptions.Multiline Or RegexOptions.Singleline Or RegexOptions.IgnoreCase).ToString
                     If Not String.IsNullOrEmpty(sIMDBID) Then
                         tNonConf.IMDBID = sIMDBID
                     End If
