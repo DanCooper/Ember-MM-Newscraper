@@ -379,10 +379,10 @@ Public Class StringUtils
         Return Result
     End Function
 
-    Public Shared Function FilterIMDBIDFromPath(ByVal strPath As String) As String
+    Public Shared Function FilterIMDBIDFromPath(ByVal strPath As String, Optional ByVal bRightToLeft As Boolean = False) As String
         If String.IsNullOrEmpty(strPath) Then Return String.Empty
 
-        Return Regex.Match(strPath, "tt\d*").Value.Trim
+        Return Regex.Match(strPath, "tt\d{6}\d*", If(bRightToLeft, RegexOptions.RightToLeft, RegexOptions.None)).Value.Trim
     End Function
     ''' <summary>
     ''' Cleans up a movie path by stripping it down to the basic title with no additional decorations.

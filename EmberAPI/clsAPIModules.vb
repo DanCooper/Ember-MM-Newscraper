@@ -777,7 +777,8 @@ Public Class ModulesManager
                         logger.Trace("[ModulesManager] [RunGeneric] Run generic module <{0}>", _externalGenericModule.ProcessorModule.ModuleName)
                         ret = _externalGenericModule.ProcessorModule.RunGeneric(mType, _params, _singleobjekt, DBElement)
                     Catch ex As Exception
-                        logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Keys.Tab) & "Error scraping movies images using <" & _externalGenericModule.ProcessorModule.ModuleName & ">")
+                        logger.Error("[ModulesManager] [RunGeneric] Run generic module <{0}>", _externalGenericModule.ProcessorModule.ModuleName)
+                        logger.Error(ex, New StackFrame().GetMethod().Name)
                     End Try
                     If ret.breakChain OrElse RunOnlyOne Then Exit For
                 Next

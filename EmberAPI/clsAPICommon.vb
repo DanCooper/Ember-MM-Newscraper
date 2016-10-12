@@ -842,6 +842,8 @@ Public Class Enums
         CleaningDatabase = 4
         PreliminaryTasks = 5
         Refresh_TVShow = 6
+        ScannerEnded = 7
+        ScannerStarted = 8
     End Enum
 
     Public Enum ScraperEventType As Integer
@@ -889,6 +891,11 @@ Public Class Enums
         None = 99
     End Enum
 
+    Public Enum SelectionType As Integer
+        All = 0
+        Selected = 1
+    End Enum
+
     Public Enum SortMethod_MovieSet As Integer
         Year = 0    'default in Kodi, so have to be on the first position of enumeration
         Title = 1
@@ -897,15 +904,19 @@ Public Class Enums
     Public Enum TaskManagerEventType As Integer
         RefreshRow = 0
         SimpleMessage = 1
+        TaskManagerEnded = 2
+        TaskManagerStarted = 3
     End Enum
 
     Public Enum TaskManagerType As Integer
         CopyBackdrops = 0
-        GetMissingEpisodes = 1
-        Reload = 2
-        SetLockedState = 3
-        SetMarkedState = 4
-        SetWatchedState = 5
+        DoTitleCheck = 1
+        GetMissingEpisodes = 2
+        Reload = 3
+        SetLanguage = 4
+        SetLockedState = 5
+        SetMarkedState = 6
+        SetWatchedState = 7
     End Enum
 
     Public Enum TVBannerSize As Integer

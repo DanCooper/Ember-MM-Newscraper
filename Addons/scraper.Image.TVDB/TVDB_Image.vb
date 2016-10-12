@@ -202,7 +202,7 @@ Public Class TVDB_Image
         Select Case DBTV.ContentType
             Case Enums.ContentType.TVEpisode
                 If Not String.IsNullOrEmpty(DBTV.TVShow.TVDB) Then
-                    ImagesContainer = _scraper.GetImages_TVEpisode(DBTV.TVShow.TVDB, DBTV.TVEpisode.Season, DBTV.TVEpisode.Episode, FilteredModifiers)
+                    ImagesContainer = _scraper.GetImages_TVEpisode(DBTV.TVShow.TVDB, DBTV.TVEpisode.Season, DBTV.TVEpisode.Episode, DBTV.Ordering, FilteredModifiers)
                     If FilteredModifiers.MainFanart Then
                         ImagesContainer.MainFanarts = _scraper.GetImages_TV(DBTV.TVShow.TVDB, FilteredModifiers).MainFanarts
                     End If
