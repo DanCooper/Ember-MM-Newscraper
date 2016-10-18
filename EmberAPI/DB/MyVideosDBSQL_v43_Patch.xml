@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<CommandFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <transaction name="MyVideosDBSQL_v43_to_v44">
+    <command type="DB">
+      <description>adding column iUserRating to table movie / episode / tvshow</description>
+      <execute>
+        ALTER TABLE movie
+        ADD COLUMN iUserRating INTEGER NOT NULL DEFAULT 0;
+        ALTER TABLE episode
+        ADD COLUMN iUserRating INTEGER NOT NULL DEFAULT 0;
+        ALTER TABLE tvshow
+        ADD COLUMN iUserRating INTEGER NOT NULL DEFAULT 0;
+      </execute>
+    </command>
+  </transaction>
+  <noTransaction type="">
+  </noTransaction>
+<!-- 
+  <noTransaction type="DB">
+    <description>nd1</description>
+    <execute>ne1</execute>
+  </noTransaction>
+-->
+</CommandFile>

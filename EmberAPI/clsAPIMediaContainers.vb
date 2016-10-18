@@ -178,6 +178,7 @@ Namespace MediaContainers
         Private _title As String
         Private _tmdb As String
         Private _tvdb As String
+        Private _userrating As Integer
         Private _videosource As String
         Private _votes As String
 
@@ -261,23 +262,6 @@ Namespace MediaContainers
             End Get
         End Property
 
-        <XmlElement("videosource")>
-        Public Property VideoSource() As String
-            Get
-                Return _videosource
-            End Get
-            Set(ByVal value As String)
-                _videosource = value
-            End Set
-        End Property
-
-        <XmlIgnore()>
-        Public ReadOnly Property VideoSourceSpecified() As Boolean
-            Get
-                Return Not String.IsNullOrEmpty(_videosource)
-            End Get
-        End Property
-
         <XmlElement("votes")>
         Public Property Votes() As String
             Get
@@ -292,6 +276,40 @@ Namespace MediaContainers
         Public ReadOnly Property VotesSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(_votes) AndAlso Not String.IsNullOrEmpty(_rating)
+            End Get
+        End Property
+
+        <XmlElement("userrating")>
+        Public Property UserRating() As Integer
+            Get
+                Return _userrating
+            End Get
+            Set(ByVal value As Integer)
+                _userrating = value
+            End Set
+        End Property
+
+        <XmlIgnore()>
+        Public ReadOnly Property UserRatingSpecified() As Boolean
+            Get
+                Return Not _userrating = 0
+            End Get
+        End Property
+
+        <XmlElement("videosource")>
+        Public Property VideoSource() As String
+            Get
+                Return _videosource
+            End Get
+            Set(ByVal value As String)
+                _videosource = value
+            End Set
+        End Property
+
+        <XmlIgnore()>
+        Public ReadOnly Property VideoSourceSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(_videosource)
             End Get
         End Property
 
@@ -724,6 +742,7 @@ Namespace MediaContainers
             _tmdb = String.Empty
             _tvdb = String.Empty
             _title = String.Empty
+            _userrating = 0
             _videosource = String.Empty
             _votes = String.Empty
         End Sub
@@ -981,6 +1000,7 @@ Namespace MediaContainers
         Private _tmdbcolid As String
         Private _top250 As Integer
         Private _trailer As String
+        Private _userrating As Integer
         Private _videosource As String
         Private _votes As String
         Private _year As String
@@ -1209,6 +1229,23 @@ Namespace MediaContainers
         Public ReadOnly Property VotesSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(_votes) AndAlso Not String.IsNullOrEmpty(_rating)
+            End Get
+        End Property
+
+        <XmlElement("userrating")>
+        Public Property UserRating() As Integer
+            Get
+                Return _userrating
+            End Get
+            Set(ByVal value As Integer)
+                _userrating = value
+            End Set
+        End Property
+
+        <XmlIgnore()>
+        Public ReadOnly Property UserRatingSpecified() As Boolean
+            Get
+                Return Not _userrating = 0
             End Get
         End Property
 
@@ -1934,6 +1971,7 @@ Namespace MediaContainers
             _tmdbcolid = String.Empty
             _top250 = 0
             _trailer = String.Empty
+            _userrating = 0
             _videosource = String.Empty
             _votes = String.Empty
             _year = String.Empty
@@ -2784,6 +2822,7 @@ Namespace MediaContainers
         Private _title As String
         Private _tmdb As String
         Private _tvdb As String
+        Private _userrating As Integer
         Private _votes As String
 
 #End Region 'Fields
@@ -2989,6 +3028,23 @@ Namespace MediaContainers
         Public ReadOnly Property VotesSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(_votes) AndAlso Not String.IsNullOrEmpty(_rating)
+            End Get
+        End Property
+
+        <XmlElement("userrating")>
+        Public Property UserRating() As Integer
+            Get
+                Return _userrating
+            End Get
+            Set(ByVal value As Integer)
+                _userrating = value
+            End Set
+        End Property
+
+        <XmlIgnore()>
+        Public ReadOnly Property UserRatingSpecified() As Boolean
+            Get
+                Return Not _userrating = 0
             End Get
         End Property
 
@@ -3425,6 +3481,7 @@ Namespace MediaContainers
             _tags.Clear()
             _title = String.Empty
             _tmdb = String.Empty
+            _userrating = 0
             _votes = String.Empty
         End Sub
 
