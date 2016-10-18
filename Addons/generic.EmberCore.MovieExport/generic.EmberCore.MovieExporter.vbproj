@@ -346,180 +346,180 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\icon.png" />
-    <Content Include="Templates\template modernWallCard\bootstrap\css\bootstrap-theme.css">
+    <None Include="Templates\template modernWallCard\bootstrap\css\bootstrap-theme.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template modernWallCard\bootstrap\css\bootstrap-theme.min.css">
+    </None>
+    <None Include="Templates\template modernWallCard\bootstrap\css\bootstrap-theme.min.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template modernWallCard\bootstrap\css\bootstrap.css">
+    </None>
+    <None Include="Templates\template modernWallCard\bootstrap\css\bootstrap.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template modernWallCard\bootstrap\css\bootstrap.min.css">
+    </None>
+    <None Include="Templates\template modernWallCard\bootstrap\css\bootstrap.min.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template modernWallCard\bootstrap\fonts\glyphicons-halflings-regular.svg">
+    </None>
+    <None Include="Templates\template modernWallCard\bootstrap\fonts\glyphicons-halflings-regular.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template modernWallCard\bootstrap\js\bootstrap.js">
+    </None>
+    <None Include="Templates\template modernWallCard\bootstrap\js\bootstrap.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template modernWallCard\bootstrap\js\bootstrap.min.js">
+    </None>
+    <None Include="Templates\template modernWallCard\bootstrap\js\bootstrap.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template modernWallCard\bootstrap\js\npm.js">
+    </None>
+    <None Include="Templates\template modernWallCard\bootstrap\js\npm.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template modernWallCard\default-poster.png">
+    </None>
+    <None Include="Templates\template modernWallCard\default-poster.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template modernWallCard\German_%28de_DE%29.html">
+    </None>
+    <None Include="Templates\template modernWallCard\German_%28de_DE%29.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template modernWallCard\English_%28en_US%29.html">
+    </None>
+    <None Include="Templates\template modernWallCard\English_%28en_US%29.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template modernWallCard\font-awesome.css">
+    </None>
+    <None Include="Templates\template modernWallCard\font-awesome.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template modernWallCard\font\fa-icon\fontawesome-webfont.svg">
+    </None>
+    <None Include="Templates\template modernWallCard\font\fa-icon\fontawesome-webfont.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template modernWallCard\latofonts.css">
+    </None>
+    <None Include="Templates\template modernWallCard\latofonts.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template modernWallCard\style.css">
+    </None>
+    <None Include="Templates\template modernWallCard\style.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template MovieHomepage\English_%28en_US%29.html">
+    </None>
+    <None Include="Templates\template MovieHomepage\English_%28en_US%29.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template MovieHomepage\function.js">
+    </None>
+    <None Include="Templates\template MovieHomepage\function.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template MovieHomepage\German_%28de_DE%29.html">
+    </None>
+    <None Include="Templates\template MovieHomepage\German_%28de_DE%29.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template MovieHomepage\images\default.jpg">
+    </None>
+    <None Include="Templates\template MovieHomepage\images\default.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template MovieHomepage\images\dvd.jpg">
+    </None>
+    <None Include="Templates\template MovieHomepage\images\dvd.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template MovieHomepage\images\haken.png">
+    </None>
+    <None Include="Templates\template MovieHomepage\images\haken.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template MovieHomepage\images\hd.jpg">
+    </None>
+    <None Include="Templates\template MovieHomepage\images\hd.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template MovieHomepage\images\imdb.jpg">
+    </None>
+    <None Include="Templates\template MovieHomepage\images\imdb.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template MovieHomepage\images\movie_folder.png">
+    </None>
+    <None Include="Templates\template MovieHomepage\images\movie_folder.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template MovieHomepage\images\youtube.jpg">
+    </None>
+    <None Include="Templates\template MovieHomepage\images\youtube.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template MovieHomepage\style.css">
+    </None>
+    <None Include="Templates\template MovieHomepage\style.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template2\English_%28en_US%29.html">
+    </None>
+    <None Include="Templates\template2\English_%28en_US%29.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template2\jquery.js">
+    </None>
+    <None Include="Templates\template2\jquery.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template3\English_%28en_US%29.html">
+    </None>
+    <None Include="Templates\template3\English_%28en_US%29.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template3\jquery.js">
+    </None>
+    <None Include="Templates\template3\jquery.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template4\English_%28en_US%29.html">
+    </None>
+    <None Include="Templates\template4\English_%28en_US%29.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template4\jquery.js">
+    </None>
+    <None Include="Templates\template4\jquery.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template4\prettyPhoto.css">
+    </None>
+    <None Include="Templates\template4\prettyPhoto.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template4\prettyPhoto.js">
+    </None>
+    <None Include="Templates\template4\prettyPhoto.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template5\English_%28en_US%29.html">
+    </None>
+    <None Include="Templates\template5\English_%28en_US%29.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template6\English_%28en_US%29.html">
+    </None>
+    <None Include="Templates\template6\English_%28en_US%29.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template6\jquery.js">
+    </None>
+    <None Include="Templates\template6\jquery.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template6\prettyPhoto.css">
+    </None>
+    <None Include="Templates\template6\prettyPhoto.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template6\prettyPhoto.js">
+    </None>
+    <None Include="Templates\template6\prettyPhoto.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template6\prettyPhoto\dark_rounded\btnNext.png">
+    </None>
+    <None Include="Templates\template6\prettyPhoto\dark_rounded\btnNext.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template6\prettyPhoto\dark_rounded\btnPrevious.png">
+    </None>
+    <None Include="Templates\template6\prettyPhoto\dark_rounded\btnPrevious.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template6\prettyPhoto\dark_rounded\contentPattern.png">
+    </None>
+    <None Include="Templates\template6\prettyPhoto\dark_rounded\contentPattern.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template6\prettyPhoto\dark_rounded\loader.gif">
+    </None>
+    <None Include="Templates\template6\prettyPhoto\dark_rounded\loader.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template6\prettyPhoto\dark_rounded\sprite.png">
+    </None>
+    <None Include="Templates\template6\prettyPhoto\dark_rounded\sprite.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template6\prettyPhoto\dark_square\btnNext.png">
+    </None>
+    <None Include="Templates\template6\prettyPhoto\dark_square\btnNext.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template6\prettyPhoto\dark_square\btnPrevious.png">
+    </None>
+    <None Include="Templates\template6\prettyPhoto\dark_square\btnPrevious.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template6\prettyPhoto\dark_square\contentPattern.png">
+    </None>
+    <None Include="Templates\template6\prettyPhoto\dark_square\contentPattern.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template6\prettyPhoto\dark_square\loader.gif">
+    </None>
+    <None Include="Templates\template6\prettyPhoto\dark_square\loader.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template6\prettyPhoto\dark_square\sprite.png">
+    </None>
+    <None Include="Templates\template6\prettyPhoto\dark_square\sprite.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template6\prettyPhoto\light_rounded\btnNext.png">
+    </None>
+    <None Include="Templates\template6\prettyPhoto\light_rounded\btnNext.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template6\prettyPhoto\light_rounded\btnPrevious.png">
+    </None>
+    <None Include="Templates\template6\prettyPhoto\light_rounded\btnPrevious.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template6\prettyPhoto\light_rounded\loader.gif">
+    </None>
+    <None Include="Templates\template6\prettyPhoto\light_rounded\loader.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template6\prettyPhoto\light_rounded\sprite.png">
+    </None>
+    <None Include="Templates\template6\prettyPhoto\light_rounded\sprite.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template6\prettyPhoto\light_square\btnNext.png">
+    </None>
+    <None Include="Templates\template6\prettyPhoto\light_square\btnNext.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template6\prettyPhoto\light_square\btnPrevious.png">
+    </None>
+    <None Include="Templates\template6\prettyPhoto\light_square\btnPrevious.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template6\prettyPhoto\light_square\loader.gif">
+    </None>
+    <None Include="Templates\template6\prettyPhoto\light_square\loader.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template6\prettyPhoto\light_square\sprite.png">
+    </None>
+    <None Include="Templates\template6\prettyPhoto\light_square\sprite.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Templates\template\English_%28en_US%29.html">
+    </None>
+    <None Include="Templates\template\English_%28en_US%29.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
