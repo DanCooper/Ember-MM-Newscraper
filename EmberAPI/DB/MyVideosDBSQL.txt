@@ -195,7 +195,8 @@ CREATE TABLE episode (
         iLastPlayed     integer,
         strIMDB         text,
         strTMDB         text,
-        strTVDB         text
+        strTVDB         text,
+        iUserRating		integer NOT NULL DEFAULT 0
         );
 
         CREATE TRIGGER delete_episode
@@ -329,7 +330,8 @@ CREATE TABLE movie (
         MarkCustom4     bool NOT NULL DEFAULT 0,
         HasSet          bool NOT NULL DEFAULT 0,
         iLastPlayed     integer,
-        Language        text
+        Language        text,
+        iUserRating		integer NOT NULL DEFAULT 0
         );
 
         CREATE TRIGGER delete_movie
@@ -443,34 +445,35 @@ CREATE TABLE studiolinktvshow (
         (idShow, idStudio);
 
 CREATE TABLE tvshow (
-        idShow            integer PRIMARY KEY AUTOINCREMENT,
-        idSource          integer NOT NULL,
-        ListTitle         text,
-        "New"             bool DEFAULT 0,
-        Mark              bool NOT NULL DEFAULT 0,
-        TVShowPath        text NOT NULL,
-        TVDB              text,
-        Lock              bool NOT NULL DEFAULT 0,
-        EpisodeGuide      text,
-        Plot              text,
-        Premiered         text,
-        MPAA              text,
-        Rating            text,
-        NfoPath           text,
-        Language          text,
-        Ordering          integer NOT NULL DEFAULT 0,
-        Status            text,
-        ThemePath         text,
-        EFanartsPath      text,
-        Runtime           text,
-        Title             text,
-        Votes             text,
-        EpisodeSorting    integer NOT NULL DEFAULT 0,
-        SortTitle         text,
-        strIMDB           text,
-        strTMDB           text,
-        strOriginalTitle  text
-        );
+		idShow				integer PRIMARY KEY AUTOINCREMENT,
+		idSource			integer NOT NULL,
+		ListTitle			text,
+		"New"				bool DEFAULT 0,
+		Mark				bool NOT NULL DEFAULT 0,
+		TVShowPath			text NOT NULL,
+		TVDB				text,
+		Lock				bool NOT NULL DEFAULT 0,
+		EpisodeGuide		text,
+		Plot				text,
+		Premiered			text,
+		MPAA				text,
+		Rating				text,
+		NfoPath				text,
+		Language			text,
+		Ordering			integer NOT NULL DEFAULT 0,
+		Status				text,
+		ThemePath			text,
+		EFanartsPath		text,
+		Runtime				text,
+		Title				text,
+		Votes				text,
+		EpisodeSorting		integer NOT NULL DEFAULT 0,
+		SortTitle			text,
+		strIMDB				text,
+		strTMDB				text,
+		strOriginalTitle	text,
+		iUserRating			integer NOT NULL DEFAULT 0
+		);
 
         CREATE UNIQUE INDEX UniqueTVShowPath
         ON tvshow
