@@ -21,9 +21,10 @@
 Imports EmberAPI
 Imports generic.Interface.Kodi.KodiInterface
 Imports NLog
+Imports XBMCRPC
 Imports System.IO
 Imports System.Text.RegularExpressions
-Imports XBMCRPC
+Imports System.Web
 
 Namespace Kodi
 
@@ -511,6 +512,11 @@ Namespace Kodi
             Next
 
             If String.IsNullOrEmpty(strRemotePath) Then logger.Error(String.Format("[APIKodi] [{0}] GetRemotePath: ""{1}"" | Source not mapped!", _currenthost.Label, strLocalPath))
+
+            'Path encoding if needed
+            If Regex.IsMatch(strRemotePath, "davs?:\/\/") Then
+                strRemotePath = HttpUtility.UrlEncode(strRemotePath)
+            End If
 
             Return strRemotePath
         End Function
