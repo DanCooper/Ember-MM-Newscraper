@@ -33,7 +33,6 @@ Namespace YouTube
 #Region "Fields"
 
         Shared logger As Logger = LogManager.GetCurrentClassLogger()
-
         Private _youtubelinks As YouTubeLinkItemCollection
 
 #End Region 'Fields
@@ -235,236 +234,236 @@ Namespace YouTube
                 Dim aLink As New AudioLinkItem
                 Dim vLink As New VideoLinkItem
 
-                Select Case tStream.ITag.ToString
+                Select Case tStream.ITag
                     ' **********************************************************************
                     ' see all itags http://en.wikipedia.org/wiki/YouTube#Quality_and_codecs
                     ' **********************************************************************
-                    Case "5"
+                    Case 5
                         vLink.Description = "240p (FLV, H.263)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.FLV
                         vLink.FormatQuality = Enums.TrailerVideoQuality.SQ240p
                         vLink.isDash = False
-                    Case "6" 'Discontinued
+                    Case 6 'Discontinued
                         vLink.Description = "270p (FLV, H.263)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.FLV
                         vLink.FormatQuality = Enums.TrailerVideoQuality.UNKNOWN
                         vLink.isDash = False
-                    Case "13" 'Discontinued
+                    Case 13 'Discontinued
                         vLink.Description = "144p (3GP, MPEG-4)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.v3GP
                         vLink.FormatQuality = Enums.TrailerVideoQuality.SQ144p
                         vLink.isDash = False
-                    Case "17"
+                    Case 17
                         vLink.Description = "144p (3GP, MPEG-4)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.v3GP
                         vLink.FormatQuality = Enums.TrailerVideoQuality.SQ144p
                         vLink.isDash = False
-                    Case "18"
+                    Case 18
                         vLink.Description = "360p (MP4, H.264)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.MP4
                         vLink.FormatQuality = Enums.TrailerVideoQuality.SQ360p
                         vLink.isDash = False
-                    Case "22"
+                    Case 22
                         vLink.Description = "720p (MP4, H.264)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.MP4
                         vLink.FormatQuality = Enums.TrailerVideoQuality.HD720p
                         vLink.isDash = False
-                    Case "34" 'Discontinued
+                    Case 34 'Discontinued
                         vLink.Description = "360p (FLV, H.264)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.FLV
                         vLink.FormatQuality = Enums.TrailerVideoQuality.SQ360p
                         vLink.isDash = False
-                    Case "35" 'Discontinued
+                    Case 35 'Discontinued
                         vLink.Description = "480p (FLV, H.264)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.FLV
                         vLink.FormatQuality = Enums.TrailerVideoQuality.HQ480p
                         vLink.isDash = False
-                    Case "36"
+                    Case 36
                         vLink.Description = "240p (3GP, MPEG-4)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.v3GP
                         vLink.FormatQuality = Enums.TrailerVideoQuality.SQ240p
                         vLink.isDash = False
-                    Case "37" 'Discontinued
+                    Case 37 'Discontinued
                         vLink.Description = "1080p (MP4, H.264)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.MP4
                         vLink.FormatQuality = Enums.TrailerVideoQuality.HD1080p
                         vLink.isDash = False
-                    Case "38" 'Discontinued
+                    Case 38 'Discontinued
                         vLink.Description = "1536p (MP4, H.264)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.MP4
                         vLink.FormatQuality = Enums.TrailerVideoQuality.UNKNOWN
                         vLink.isDash = False
-                    Case "43"
+                    Case 43
                         vLink.Description = "360p (WebM, VP8)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.WebM
                         vLink.FormatQuality = Enums.TrailerVideoQuality.SQ360p
                         vLink.isDash = False
-                    Case "44" 'Discontinued
+                    Case 44 'Discontinued
                         vLink.Description = "480p (WebM, VP8)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.WebM
                         vLink.FormatQuality = Enums.TrailerVideoQuality.HQ480p
                         vLink.isDash = False
-                    Case "45" 'Discontinued
+                    Case 45 'Discontinued
                         vLink.Description = "720p (WebM, VP8)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.WebM
                         vLink.FormatQuality = Enums.TrailerVideoQuality.HD720p
                         vLink.isDash = False
-                    Case "46" 'Discontinued
+                    Case 46 'Discontinued
                         vLink.Description = "1080p (WebM, VP8)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.WebM
                         vLink.FormatQuality = Enums.TrailerVideoQuality.HD1080p
                         vLink.isDash = False
-                    Case "82"
+                    Case 82
                         vLink.Description = "3D 360p (MP4, H.264)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.MP4
                         vLink.FormatQuality = Enums.TrailerVideoQuality.SQ360p
                         vLink.isDash = False
-                    Case "83"
+                    Case 83
                         vLink.Description = "3D 480p (MP4, H.264)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.MP4
                         vLink.FormatQuality = Enums.TrailerVideoQuality.HQ480p
                         vLink.isDash = False
-                    Case "84"
+                    Case 84
                         vLink.Description = "3D 720p (MP4, H.264)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.MP4
                         vLink.FormatQuality = Enums.TrailerVideoQuality.HD720p
                         vLink.isDash = False
-                    Case "85"
+                    Case 85
                         vLink.Description = "3D 520p (MP4, H.264)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.MP4
                         vLink.FormatQuality = Enums.TrailerVideoQuality.UNKNOWN
                         vLink.isDash = False
-                    Case "100"
+                    Case 100
                         vLink.Description = "3D 360p (WebM, VP8)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.WebM
                         vLink.FormatQuality = Enums.TrailerVideoQuality.SQ360p
                         vLink.isDash = False
-                    Case "101" 'Discontinued
+                    Case 101 'Discontinued
                         vLink.Description = "3D 480p (WebM, VP8)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.WebM
                         vLink.FormatQuality = Enums.TrailerVideoQuality.HQ480p
                         vLink.isDash = False
-                    Case "102" 'Discontinued
+                    Case 102 'Discontinued
                         vLink.Description = "3D 720p (WebM, VP8)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.WebM
                         vLink.FormatQuality = Enums.TrailerVideoQuality.HD720p
                         vLink.isDash = False
-                    Case "133" 'DASH (video only)
+                    Case 133 'DASH (video only)
                         vLink.Description = "240p (MP4, H.264)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.MP4
                         vLink.FormatQuality = Enums.TrailerVideoQuality.SQ240p
                         vLink.isDash = True
-                    Case "134" 'DASH (video only)
+                    Case 134 'DASH (video only)
                         vLink.Description = "360p (MP4, H.264)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.MP4
                         vLink.FormatQuality = Enums.TrailerVideoQuality.SQ360p
                         vLink.isDash = True
-                    Case "135" 'DASH (video only)
+                    Case 135 'DASH (video only)
                         vLink.Description = "480p (MP4, H.264)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.MP4
                         vLink.FormatQuality = Enums.TrailerVideoQuality.HQ480p
                         vLink.isDash = True
-                    Case "136" 'DASH (video only)
+                    Case 136 'DASH (video only)
                         vLink.Description = "720p (MP4, H.264)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.MP4
                         vLink.FormatQuality = Enums.TrailerVideoQuality.HD720p
                         vLink.isDash = True
-                    Case "137" 'DASH (video only)
+                    Case 137 'DASH (video only)
                         vLink.Description = "1080p (MP4, H.264)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.MP4
                         vLink.FormatQuality = Enums.TrailerVideoQuality.HD1080p
                         vLink.isDash = True
-                    Case "139" 'DASH (audio only)
+                    Case 139 'DASH (audio only)
                         aLink.Description = "48 kbit/s (MP4, AAC)"
                         aLink.FormatCodec = Enums.TrailerAudioCodec.MP4
                         aLink.FormatQuality = Enums.TrailerAudioQuality.AAC48kbps
-                    Case "140" 'DASH (audio only)
+                    Case 140 'DASH (audio only)
                         aLink.Description = "128 kbit/s (MP4, AAC)"
                         aLink.FormatCodec = Enums.TrailerAudioCodec.MP4
                         aLink.FormatQuality = Enums.TrailerAudioQuality.AAC128kbps
-                    Case "141" 'DASH (audio only)
+                    Case 141 'DASH (audio only)
                         aLink.Description = "256 kbit/s (MP4, AAC)"
                         aLink.FormatCodec = Enums.TrailerAudioCodec.MP4
                         aLink.FormatQuality = Enums.TrailerAudioQuality.AAC256kbps
-                    Case "160" 'DASH (video only, 15 FPS)
+                    Case 160 'DASH (video only, 15 FPS)
                         vLink.Description = "144p (MP4, H.264, 15 FPS)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.MP4
                         vLink.FormatQuality = Enums.TrailerVideoQuality.SQ144p15fps
                         vLink.isDash = True
-                    Case "171" 'DASH (audio only)
+                    Case 171 'DASH (audio only)
                         aLink.Description = "128 kbit/s (WebM, Vorbis)"
                         aLink.FormatCodec = Enums.TrailerAudioCodec.WebM
                         aLink.FormatQuality = Enums.TrailerAudioQuality.Vorbis128kbps
-                    Case "172" 'DASH (audio only)
+                    Case 172 'DASH (audio only)
                         aLink.Description = "192 kbit/s (WebM, Vorbis)"
                         aLink.FormatCodec = Enums.TrailerAudioCodec.WebM
                         aLink.FormatQuality = Enums.TrailerAudioQuality.Vorbis192kbps
-                    Case "242" 'DASH (video only)
+                    Case 242 'DASH (video only)
                         vLink.Description = "240p (WebM, VP9)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.WebM
                         vLink.FormatQuality = Enums.TrailerVideoQuality.SQ240p
                         vLink.isDash = True
-                    Case "243" 'DASH (video only)
+                    Case 243 'DASH (video only)
                         vLink.Description = "360p (WebM, VP9)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.WebM
                         vLink.FormatQuality = Enums.TrailerVideoQuality.SQ360p
                         vLink.isDash = True
-                    Case "244" 'DASH (video only)
+                    Case 244 'DASH (video only)
                         vLink.Description = "480p (WebM, VP9)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.WebM
                         vLink.FormatQuality = Enums.TrailerVideoQuality.HQ480p
                         vLink.isDash = True
-                    Case "247" 'DASH (video only)
+                    Case 247 'DASH (video only)
                         vLink.Description = "720p (WebM, VP9)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.WebM
                         vLink.FormatQuality = Enums.TrailerVideoQuality.HD720p
                         vLink.isDash = True
-                    Case "248" 'DASH (video only)
+                    Case 248 'DASH (video only)
                         vLink.Description = "1080p (WebM, VP9)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.WebM
                         vLink.FormatQuality = Enums.TrailerVideoQuality.HD1080p
                         vLink.isDash = True
-                    Case "264" 'DASH (video only)
+                    Case 264 'DASH (video only)
                         vLink.Description = "1140p (MP4, H.264)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.MP4
                         vLink.FormatQuality = Enums.TrailerVideoQuality.HD1440p
                         vLink.isDash = True
-                    Case "266" 'DASH (video only)
+                    Case 266 'DASH (video only)
                         vLink.Description = "2160p (MP4, H.264)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.MP4
                         vLink.FormatQuality = Enums.TrailerVideoQuality.HD2160p
                         vLink.isDash = True
-                    Case "271" 'DASH (video only)
+                    Case 271 'DASH (video only)
                         vLink.Description = "1140p (WebM, VP9)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.WebM
                         vLink.FormatQuality = Enums.TrailerVideoQuality.HD1440p
                         vLink.isDash = True
-                    Case "272" 'DASH (video only)
+                    Case 272 'DASH (video only)
                         vLink.Description = "2160p (WebM, VP9)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.WebM
                         vLink.FormatQuality = Enums.TrailerVideoQuality.HD2160p
                         vLink.isDash = True
-                    Case "278" 'DASH (video only)
+                    Case 278 'DASH (video only)
                         vLink.Description = "144p (WebM, VP9)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.WebM
                         vLink.FormatQuality = Enums.TrailerVideoQuality.SQ144p
                         vLink.isDash = True
-                    Case "298" 'DASH (video only, 60 FPS)
+                    Case 298 'DASH (video only, 60 FPS)
                         vLink.Description = "720p (MP4, H.264, 60 FPS)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.MP4
                         vLink.FormatQuality = Enums.TrailerVideoQuality.HD720p60fps
                         vLink.isDash = True
-                    Case "299" 'DASH (video only, 60 FPS)
+                    Case 299 'DASH (video only, 60 FPS)
                         vLink.Description = "1080p (MP4, H.264, 60 FPS)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.MP4
                         vLink.FormatQuality = Enums.TrailerVideoQuality.HD1080p60fps
                         vLink.isDash = True
-                    Case "302" 'DASH (video only, 60 FPS)
+                    Case 302 'DASH (video only, 60 FPS)
                         vLink.Description = "720p (WebM, VP9, 60 FPS)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.WebM
                         vLink.FormatQuality = Enums.TrailerVideoQuality.HD720p60fps
                         vLink.isDash = True
-                    Case "303" 'DASH (video only, 60 FPS)
+                    Case 303 'DASH (video only, 60 FPS)
                         vLink.Description = "1080p (WebM, VP9, 60 FPS)"
                         vLink.FormatCodec = Enums.TrailerVideoCodec.WebM
                         vLink.FormatQuality = Enums.TrailerVideoQuality.HD1080p60fps
@@ -506,6 +505,8 @@ Namespace YouTube
 
 #Region "Fields"
 
+        Shared logger As Logger = LogManager.GetCurrentClassLogger()
+
         Private m_Bitrate As String
         Private m_Clen As String
         Private m_Fallback_Host As String
@@ -517,6 +518,7 @@ Namespace YouTube
         Private m_ProjectionType As String
         Private m_Quality As String
         Private m_QualityLabel As String
+        Private m_S As String
         Private m_Sig As String
         Private m_Size As String
         Private m_Stereo3D As String
@@ -644,6 +646,15 @@ Namespace YouTube
             End Set
         End Property
 
+        Public Property S() As String
+            Get
+                Return m_S
+            End Get
+            Set(value As String)
+                m_S = value
+            End Set
+        End Property
+
         Public Property Sig() As String
             Get
                 Return m_Sig
@@ -700,7 +711,11 @@ Namespace YouTube
             Dim properties = infoType.GetProperties().ToDictionary(Function(item) item.Name.ToLower())
 
             For Each entry In table
-                properties(entry(0).ToLower()).SetValue(info, Convert.ChangeType(entry(1), properties(entry(0).ToLower()).PropertyType))
+                Try
+                    properties(entry(0).ToLower()).SetValue(info, Convert.ChangeType(entry(1), properties(entry(0).ToLower()).PropertyType))
+                Catch ex As Exception
+                    logger.Error(ex, New StackFrame().GetMethod().Name)
+                End Try
             Next
 
             Return info
