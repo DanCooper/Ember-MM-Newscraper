@@ -11901,7 +11901,9 @@ Public Class frmMain
                     If Not String.IsNullOrEmpty(drvRow.Item("ThemePath").ToString) Then sModifier.MainTheme = False
                     If Not String.IsNullOrEmpty(drvRow.Item("TrailerPath").ToString) Then sModifier.MainTrailer = False
             End Select
-            ScrapeList.Add(New ScrapeItem With {.DataRow = drvRow, .ScrapeModifiers = sModifier})
+            If Functions.ScrapeModifiersAnyEnabled(sModifier) Then
+                ScrapeList.Add(New ScrapeItem With {.DataRow = drvRow, .ScrapeModifiers = sModifier})
+            End If
         Next
 
         If Not ScrapeList.Count = 0 Then
@@ -12062,7 +12064,9 @@ Public Class frmMain
                     If Not String.IsNullOrEmpty(drvRow.Item("NfoPath").ToString) Then sModifier.MainNFO = False
                     If Not String.IsNullOrEmpty(drvRow.Item("PosterPath").ToString) Then sModifier.MainPoster = False
             End Select
-            ScrapeList.Add(New ScrapeItem With {.DataRow = drvRow, .ScrapeModifiers = sModifier})
+            If Functions.ScrapeModifiersAnyEnabled(sModifier) Then
+                ScrapeList.Add(New ScrapeItem With {.DataRow = drvRow, .ScrapeModifiers = sModifier})
+            End If
         Next
 
         If Not ScrapeList.Count = 0 Then
@@ -12259,7 +12263,9 @@ Public Class frmMain
                     If Not String.IsNullOrEmpty(drvRow.Item("PosterPath").ToString) Then sModifier.MainPoster = False
                     If Not String.IsNullOrEmpty(drvRow.Item("ThemePath").ToString) Then sModifier.MainTheme = False
             End Select
-            ScrapeList.Add(New ScrapeItem With {.DataRow = drvRow, .ScrapeModifiers = sModifier})
+            If Functions.ScrapeModifiersAnyEnabled(sModifier) Then
+                ScrapeList.Add(New ScrapeItem With {.DataRow = drvRow, .ScrapeModifiers = sModifier})
+            End If
         Next
 
         If Not ScrapeList.Count = 0 Then
@@ -12409,7 +12415,9 @@ Public Class frmMain
                     If Not String.IsNullOrEmpty(drvRow.Item("NfoPath").ToString) Then sModifier.EpisodeNFO = False
                     If Not String.IsNullOrEmpty(drvRow.Item("PosterPath").ToString) Then sModifier.EpisodePoster = False
             End Select
-            ScrapeList.Add(New ScrapeItem With {.DataRow = drvRow, .ScrapeModifiers = sModifier})
+            If Functions.ScrapeModifiersAnyEnabled(sModifier) Then
+                ScrapeList.Add(New ScrapeItem With {.DataRow = drvRow, .ScrapeModifiers = sModifier})
+            End If
         Next
 
         If Not ScrapeList.Count = 0 Then
@@ -12568,7 +12576,9 @@ Public Class frmMain
                     If Not String.IsNullOrEmpty(drvRow.Item("LandscapePath").ToString) Then sModifier.SeasonLandscape = False
                     If Not String.IsNullOrEmpty(drvRow.Item("PosterPath").ToString) Then sModifier.SeasonPoster = False
             End Select
-            ScrapeList.Add(New ScrapeItem With {.DataRow = drvRow, .ScrapeModifiers = sModifier})
+            If Functions.ScrapeModifiersAnyEnabled(sModifier) Then
+                ScrapeList.Add(New ScrapeItem With {.DataRow = drvRow, .ScrapeModifiers = sModifier})
+            End If
         Next
 
         If Not ScrapeList.Count = 0 Then

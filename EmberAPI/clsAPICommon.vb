@@ -1591,6 +1591,48 @@ Public Class Functions
         Return FilteredModifiers
     End Function
 
+    Public Shared Function ScrapeModifiersAnyEnabled(ByVal Options As Structures.ScrapeModifiers) As Boolean
+        With Options
+            If .AllSeasonsBanner OrElse
+                .AllSeasonsFanart OrElse
+                .AllSeasonsLandscape OrElse
+                .AllSeasonsPoster OrElse
+                .EpisodeActorThumbs OrElse
+                .EpisodeFanart OrElse
+                .EpisodeMeta OrElse
+                .EpisodeNFO OrElse
+                .EpisodePoster OrElse
+                .EpisodeSubtitles OrElse
+                .EpisodeWatchedFile OrElse
+                .MainActorthumbs OrElse
+                .MainBanner OrElse
+                .MainCharacterArt OrElse
+                .MainClearArt OrElse
+                .MainClearLogo OrElse
+                .MainDiscArt OrElse
+                .MainExtrafanarts OrElse
+                .MainExtrathumbs OrElse
+                .MainFanart OrElse
+                .MainLandscape OrElse
+                .MainMeta OrElse
+                .MainNFO OrElse
+                .MainPoster OrElse
+                .MainSubtitles OrElse
+                .MainTheme OrElse
+                .MainTrailer OrElse
+                .MainWatchedFile OrElse
+                .SeasonBanner OrElse
+                .SeasonFanart OrElse
+                .SeasonLandscape OrElse
+                .SeasonNFO OrElse
+                .SeasonPoster Then
+                Return True
+            End If
+        End With
+
+        Return False
+    End Function
+
     Public Shared Sub SetScrapeModifiers(ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByVal MType As Enums.ModifierType, ByVal MValue As Boolean)
         With ScrapeModifiers
             Select Case MType
