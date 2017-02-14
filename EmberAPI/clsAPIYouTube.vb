@@ -199,26 +199,26 @@ Namespace YouTube
         Public Shared Function SearchOnYouTube(ByVal mName As String) As List(Of MediaContainers.Trailer)
             Dim tHTTP As New HTTP
             Dim tList As New List(Of MediaContainers.Trailer)
-            Dim tLength As String = String.Empty
-            Dim tLink As String = String.Empty
-            Dim tName As String = String.Empty
+            Dim strDuration As String = String.Empty
+            Dim strURL As String = String.Empty
+            Dim strTitle As String = String.Empty
 
-            Dim Html As String = tHTTP.DownloadData("http://www.youtube.com/results?search_query=" & Web.HttpUtility.UrlEncode(mName))
+            Dim Html As String = tHTTP.DownloadData(String.Concat("http://www.youtube.com/results?search_query=", HttpUtility.UrlEncode(mName), "&sp=EgIQAQ%253D%253D"))
             If Html.ToLower.Contains("page not found") Then
                 Html = String.Empty
             End If
 
-            Dim Pattern As String = AdvancedSettings.GetSetting("SearchOnYouTube", "<\/div><span class=""video-time.*?>(?<TIME>.*?)<.*?<a href=""(?<LINK>.*?)"".*?title=""(?<NAME>.*?)""")
+            Dim Pattern As String = AdvancedSettings.GetSetting("SearchOnYouTube", "<\/div><div class=""yt-lockup-content"">.*?<a href=""(?<URL>.*?)"".*?title=""(?<TITLE>.*?)"".*?true"">(?<DURATION>.*?)<")
 
             Try
                 Dim Result As MatchCollection = Regex.Matches(Html, Pattern, RegexOptions.Singleline, TimeSpan.FromSeconds(1))
 
                 For ctr As Integer = 0 To Result.Count - 1
-                    tLength = Result.Item(ctr).Groups(1).Value
-                    tLink = String.Concat("http://www.youtube.com", Result.Item(ctr).Groups(2).Value)
-                    tName = HttpUtility.HtmlDecode(Result.Item(ctr).Groups(3).Value)
-                    If Not tName = "__title__" AndAlso Not tName = "__channel_name__" Then
-                        tList.Add(New MediaContainers.Trailer With {.URLWebsite = tLink, .Title = tName, .Duration = tLength, .Source = "YouTube"})
+                    strDuration = Result.Item(ctr).Groups("DURATION").Value
+                    strURL = String.Concat("http://www.youtube.com", Result.Item(ctr).Groups("URL").Value)
+                    strTitle = HttpUtility.HtmlDecode(Result.Item(ctr).Groups("TITLE").Value)
+                    If Not strTitle = "__title__" AndAlso Not strTitle = "__channel_name__" Then
+                        tList.Add(New MediaContainers.Trailer With {.URLWebsite = strURL, .Title = strTitle, .Duration = strDuration, .Source = "YouTube"})
                     End If
                 Next
             Catch ex As TimeoutException
