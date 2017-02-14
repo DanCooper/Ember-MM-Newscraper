@@ -306,8 +306,10 @@ Public Class KodiInterface
                                         'run task
                                         Dim Result = Await Task.Run(Function() _APIKodi.GetPlaycount_Movie(mDBElement, GenericSubEventProgressAsync, GenericEventProcess))
                                         If Result IsNot Nothing Then
-                                            mDBElement.Movie.LastPlayed = Result.LastPlayed
-                                            mDBElement.Movie.PlayCount = Result.PlayCount
+                                            If Not Result.AlreadyInSync Then
+                                                mDBElement.Movie.LastPlayed = Result.LastPlayed
+                                                mDBElement.Movie.PlayCount = Result.PlayCount
+                                            End If
                                             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.Movie.Title), New Bitmap(My.Resources.logo)}))
                                         Else
                                             logger.Warn(String.Concat("[KodiInterface] [", mHost.Label, "] [GenericRunCallBack] | Sync Failed:  ", mDBElement.Movie.Title))
@@ -345,8 +347,10 @@ Public Class KodiInterface
                                         'run task
                                         Dim Result = Await Task.Run(Function() _APIKodi.GetPlaycount_TVEpisode(mDBElement, GenericSubEventProgressAsync, GenericEventProcess))
                                         If Result IsNot Nothing Then
-                                            mDBElement.TVEpisode.LastPlayed = Result.LastPlayed
-                                            mDBElement.TVEpisode.Playcount = Result.PlayCount
+                                            If Not Result.AlreadyInSync Then
+                                                mDBElement.TVEpisode.LastPlayed = Result.LastPlayed
+                                                mDBElement.TVEpisode.Playcount = Result.PlayCount
+                                            End If
                                             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.TVEpisode.Title), New Bitmap(My.Resources.logo)}))
                                         Else
                                             logger.Warn(String.Concat("[KodiInterface] [", mHost.Label, "] [GenericRunCallBack] | Sync Failed:  ", mDBElement.TVEpisode.Title))
@@ -385,8 +389,10 @@ Public Class KodiInterface
                                                 'run task
                                                 Dim Result = Await Task.Run(Function() _APIKodi.GetPlaycount_TVEpisode(tEpisode, GenericSubEventProgressAsync, GenericEventProcess))
                                                 If Result IsNot Nothing Then
-                                                    tEpisode.TVEpisode.LastPlayed = Result.LastPlayed
-                                                    tEpisode.TVEpisode.Playcount = Result.PlayCount
+                                                    If Not Result.AlreadyInSync Then
+                                                        tEpisode.TVEpisode.LastPlayed = Result.LastPlayed
+                                                        tEpisode.TVEpisode.Playcount = Result.PlayCount
+                                                    End If
                                                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", tEpisode.TVEpisode.Title), New Bitmap(My.Resources.logo)}))
                                                 Else
                                                     logger.Warn(String.Concat("[KodiInterface] [", mHost.Label, "] [GenericRunCallBack] | Sync Failed:  ", tEpisode.TVEpisode.Title))
@@ -798,10 +804,12 @@ Public Class KodiInterface
                                                     'run task
                                                     Dim Result = Await Task.Run(Function() _APIKodi.GetPlaycount_Movie(mDBElement, GenericSubEventProgressAsync, GenericEventProcess))
                                                     If Result IsNot Nothing Then
-                                                        mDBElement.Movie.LastPlayed = Result.LastPlayed
-                                                        mDBElement.Movie.PlayCount = Result.PlayCount
-                                                        Master.DB.Save_Movie(mDBElement, False, True, False, False)
-                                                        RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {mDBElement.ID}))
+                                                        If Not Result.AlreadyInSync Then
+                                                            mDBElement.Movie.LastPlayed = Result.LastPlayed
+                                                            mDBElement.Movie.PlayCount = Result.PlayCount
+                                                            Master.DB.Save_Movie(mDBElement, False, True, False, False)
+                                                            RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {mDBElement.ID}))
+                                                        End If
                                                         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.Movie.Title), New Bitmap(My.Resources.logo)}))
                                                     End If
                                                 Else
@@ -821,10 +829,12 @@ Public Class KodiInterface
                                                     'run task
                                                     Dim Result = Await Task.Run(Function() _APIKodi.GetPlaycount_TVEpisode(mDBElement, GenericSubEventProgressAsync, GenericEventProcess))
                                                     If Result IsNot Nothing Then
-                                                        mDBElement.TVEpisode.LastPlayed = Result.LastPlayed
-                                                        mDBElement.TVEpisode.Playcount = Result.PlayCount
-                                                        Master.DB.Save_TVEpisode(mDBElement, False, True, False, False, True)
-                                                        RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {mDBElement.ID}))
+                                                        If Not Result.AlreadyInSync Then
+                                                            mDBElement.TVEpisode.LastPlayed = Result.LastPlayed
+                                                            mDBElement.TVEpisode.Playcount = Result.PlayCount
+                                                            Master.DB.Save_TVEpisode(mDBElement, False, True, False, False, True)
+                                                            RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {mDBElement.ID}))
+                                                        End If
                                                         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.TVEpisode.Title), New Bitmap(My.Resources.logo)}))
                                                     End If
                                                 Else
@@ -846,10 +856,12 @@ Public Class KodiInterface
                                                             'run task
                                                             Dim Result = Await Task.Run(Function() _APIKodi.GetPlaycount_TVEpisode(tEpisode, GenericSubEventProgressAsync, GenericEventProcess))
                                                             If Result IsNot Nothing Then
-                                                                tEpisode.TVEpisode.LastPlayed = Result.LastPlayed
-                                                                tEpisode.TVEpisode.Playcount = Result.PlayCount
-                                                                Master.DB.Save_TVEpisode(tEpisode, False, True, False, False, True)
-                                                                RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {tEpisode.ID}))
+                                                                If Not Result.AlreadyInSync Then
+                                                                    tEpisode.TVEpisode.LastPlayed = Result.LastPlayed
+                                                                    tEpisode.TVEpisode.Playcount = Result.PlayCount
+                                                                    Master.DB.Save_TVEpisode(tEpisode, False, True, False, False, True)
+                                                                    RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {tEpisode.ID}))
+                                                                End If
                                                                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", tEpisode.TVEpisode.Title), New Bitmap(My.Resources.logo)}))
                                                             End If
                                                         Else
