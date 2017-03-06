@@ -1755,6 +1755,12 @@ Namespace Kodi
                     Return False
             End Select
 
+            If strLocalPath.Contains(Path.DirectorySeparatorChar) AndAlso Not strLocalPath.EndsWith(Path.DirectorySeparatorChar) Then
+                strLocalPath = String.Concat(strLocalPath, Path.DirectorySeparatorChar)
+            ElseIf strLocalPath.Contains(Path.AltDirectorySeparatorChar) AndAlso Not strLocalPath.EndsWith(Path.AltDirectorySeparatorChar) Then
+                strLocalPath = String.Concat(strLocalPath, Path.AltDirectorySeparatorChar)
+            End If
+
             Dim strRemotePath As String = GetRemotePath(strLocalPath)
             If String.IsNullOrEmpty(strRemotePath) Then
                 Return False
