@@ -1059,12 +1059,8 @@ Public Class FileFolderRenamer
         Return dtEpisodes
     End Function
 
-    Public Shared Function HaveBase(ByVal fPattern As String) As Boolean
-        If fPattern.Contains("$B") Then
-            Return True
-        Else
-            Return False
-        End If
+    Public Shared Function HaveBase(ByVal strPattern As String) As Boolean
+        Return strPattern.Contains("$B")
     End Function
 
     Public Shared Sub Process_Movie(ByRef MovieFile As FileRename, ByVal folderPattern As String, ByVal filePattern As String)
@@ -1106,7 +1102,7 @@ Public Class FileFolderRenamer
             Dim newFullDirPath As String = Path.Combine(MovieFile.BasePath, MovieFile.NewPath)
             Dim newDirInfo As New DirectoryInfo(newFullDirPath)
             MovieFile.FileExist = File.Exists(newFullFileName) AndAlso Not (newFullFileName.ToLower = MovieFile.OldFullFileName.ToLower)
-            MovieFile.DirExist = newDirInfo.Exists AndAlso Not If(newFullDirPath.ToLower = MovieFile.OldFullPath.ToLower, True, newDirInfo.GetFileSystemInfos.Count = 0) OrElse Not MovieFile.IsSingle
+            MovieFile.DirExist = MovieFile.IsSingle AndAlso newDirInfo.Exists AndAlso Not If(newFullDirPath.ToLower = MovieFile.OldFullPath.ToLower, True, newDirInfo.GetFileSystemInfos.Count = 0)
             MovieFile.DoRename = Not MovieFile.NewPath = MovieFile.Path OrElse Not MovieFile.NewFileName = MovieFile.OldFileName
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
