@@ -14581,7 +14581,7 @@ Public Class frmMain
             End If
         End If
 
-        If dgvMovies.SelectedRows.Count > 0 AndAlso CInt(dgvMovies.SelectedRows(0).Cells("idMovie").Value) = MovieID Then
+        If dgvMovies.Visible AndAlso dgvMovies.SelectedRows.Count > 0 AndAlso CInt(dgvMovies.SelectedRows(0).Cells("idMovie").Value) = MovieID Then
             SelectRow_Movie(dgvMovies.SelectedRows(0).Index)
         End If
     End Sub
@@ -14610,7 +14610,7 @@ Public Class frmMain
             End If
         End If
 
-        If dgvMovieSets.SelectedRows.Count > 0 AndAlso CInt(dgvMovieSets.SelectedRows(0).Cells("idSet").Value) = MovieSetID Then
+        If dgvMovieSets.Visible AndAlso dgvMovieSets.SelectedRows.Count > 0 AndAlso CInt(dgvMovieSets.SelectedRows(0).Cells("idSet").Value) = MovieSetID Then
             SelectRow_MovieSet(dgvMovieSets.SelectedRows(0).Index)
         End If
     End Sub
@@ -14639,7 +14639,7 @@ Public Class frmMain
             End If
         End If
 
-        If dgvTVEpisodes.SelectedRows.Count > 0 AndAlso CInt(dgvTVEpisodes.SelectedRows(0).Cells("idEpisode").Value) = EpisodeID AndAlso currList = 2 Then
+        If dgvTVEpisodes.Visible AndAlso dgvTVEpisodes.SelectedRows.Count > 0 AndAlso CInt(dgvTVEpisodes.SelectedRows(0).Cells("idEpisode").Value) = EpisodeID AndAlso currList = 2 Then
             SelectRow_TVEpisode(dgvTVEpisodes.SelectedRows(0).Index)
         End If
     End Sub
@@ -14668,7 +14668,7 @@ Public Class frmMain
             End If
         End If
 
-        If dgvTVSeasons.SelectedRows.Count > 0 AndAlso CInt(dgvTVSeasons.SelectedRows(0).Cells("idSeason").Value) = SeasonID AndAlso currList = 1 Then
+        If dgvTVSeasons.Visible AndAlso dgvTVSeasons.SelectedRows.Count > 0 AndAlso CInt(dgvTVSeasons.SelectedRows(0).Cells("idSeason").Value) = SeasonID AndAlso currList = 1 Then
             SelectRow_TVSeason(dgvTVSeasons.SelectedRows(0).Index)
         End If
     End Sub
@@ -14709,7 +14709,7 @@ Public Class frmMain
             End If
         End If
 
-        If dgvTVShows.SelectedRows.Count > 0 AndAlso CInt(dgvTVShows.SelectedRows(0).Cells("idShow").Value) = ShowID AndAlso (currList = 0 OrElse Force) Then
+        If dgvTVShows.Visible AndAlso dgvTVShows.SelectedRows.Count > 0 AndAlso CInt(dgvTVShows.SelectedRows(0).Cells("idShow").Value) = ShowID AndAlso (currList = 0 OrElse Force) Then
             SelectRow_TVShow(dgvTVShows.SelectedRows(0).Index)
         End If
     End Sub
