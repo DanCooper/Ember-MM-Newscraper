@@ -227,9 +227,6 @@ Public Class dlgSourceMovie
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
 
         Dim strSourcePath As String = Regex.Replace(txtSourcePath.Text.Trim, "^(\\)+\\\\", "\\")
-        While strSourcePath.EndsWith(Path.DirectorySeparatorChar) OrElse strSourcePath.EndsWith(Path.AltDirectorySeparatorChar)
-            strSourcePath = strSourcePath.Remove(strSourcePath.Length - 1)
-        End While
 
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
