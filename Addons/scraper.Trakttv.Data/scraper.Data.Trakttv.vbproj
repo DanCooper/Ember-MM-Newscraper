@@ -119,10 +119,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NLog.4.2.3\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
@@ -151,12 +147,6 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="frmAuthorize.Designer.vb">
-      <DependentUpon>frmAuthorize.vb</DependentUpon>
-    </Compile>
-    <Compile Include="frmAuthorize.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="frmSettingsHolder_Movie.Designer.vb">
       <DependentUpon>frmSettingsHolder_Movie.vb</DependentUpon>
     </Compile>
@@ -188,9 +178,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="frmAuthorize.resx">
-      <DependentUpon>frmAuthorize.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="frmSettingsHolder_Movie.resx">
       <DependentUpon>frmSettingsHolder_Movie.vb</DependentUpon>
     </EmbeddedResource>
@@ -240,9 +227,10 @@
       <Name>EmberAPI</Name>
       <Private>False</Private>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\logo.png" />
+    <ProjectReference Include="..\..\Trakttv\Trakttv.csproj">
+      <Project>{857e14f3-060a-467e-9195-6165996d7ba3}</Project>
+      <Name>Trakttv</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

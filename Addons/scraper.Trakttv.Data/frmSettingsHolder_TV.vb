@@ -64,6 +64,14 @@ Public Class frmSettingsHolder_TV
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
+    Private Sub txtTraktUser_TextChanged(sender As Object, e As EventArgs) Handles txtTraktUser.TextChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
+    Private Sub txtTraktPassword_TextChanged(sender As Object, e As EventArgs) Handles txtTraktPassword.TextChanged
+        RaiseEvent ModuleSettingsChanged()
+    End Sub
+
     Private Sub chkFallbackToGlobalRating_CheckedChanged(sender As Object, e As EventArgs) Handles chkFallbackToGlobalRating.CheckedChanged, chkFallbackToGlobalRating.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
@@ -101,8 +109,12 @@ Public Class frmSettingsHolder_TV
         gbScraperOpts.Text = Master.eLang.GetString(1186, "Scraper Options")
         lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), Environment.NewLine)
         lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
+        lblTraktPassword.Text = Master.eLang.GetString(426, "Password")
+        lblTraktUser.Text = Master.eLang.GetString(425, "Username")
+        txtTraktPassword.PasswordChar = "*"c
     End Sub
 
 #End Region 'Methods
+
 
 End Class
