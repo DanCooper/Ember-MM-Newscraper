@@ -342,6 +342,16 @@ Public Class dlgSourceMovie
         tmrWait.Enabled = True
     End Sub
 
+    Private Sub txtSourcePath_Leave(sender As Object, e As EventArgs) Handles txtSourcePath.Leave
+        Try
+            Dim dInfo As DirectoryInfo = New DirectoryInfo(txtSourcePath.Text)
+            If Not txtSourcePath.Text = dInfo.FullName Then
+                txtSourcePath.Text = dInfo.FullName
+            End If
+        Catch ex As Exception
+        End Try
+    End Sub
+
     Private Sub txtSourcePath_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSourcePath.TextChanged
         OK_Button.Enabled = False
         strCurrPath = txtSourcePath.Text
