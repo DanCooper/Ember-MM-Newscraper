@@ -223,6 +223,10 @@
       <Name>EmberAPI</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\..\Trakttv\Trakttv.csproj">
+      <Project>{857e14f3-060a-467e-9195-6165996d7ba3}</Project>
+      <Name>Trakttv</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
