@@ -137,6 +137,8 @@ Section "Ember Media Manager" SecEmberMediaManager
   SetOutPath "$INSTDIR\Modules"
   File /r /x *.so "${emm_root}\${emm_folder}\Modules\*.dll"
   File /r /x *.so "${emm_root}\${emm_folder}\Modules\*.xml"
+  SetOutPath "$INSTDIR\Modules\Templates"
+  File /r /x *.so "${emm_root}\${emm_folder}\Modules\Templates\*.*"
   SetOutPath "$INSTDIR\Modules\x64"
   File /r /x *.so "${emm_root}\${emm_folder}\Modules\x64\*.*"
   SetOutPath "$INSTDIR\Modules\x86"

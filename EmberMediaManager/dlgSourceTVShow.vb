@@ -29,13 +29,13 @@ Public Class dlgSourceTVShow
 
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Private currNameText As String = String.Empty
-    Private currPathText As String = String.Empty
-    Private prevNameText As String = String.Empty
-    Private prevPathText As String = String.Empty
+    Private bAutoName As Boolean = True
+    Private strCurrName As String = String.Empty
+    Private strCurrPath As String = String.Empty
+    Private strPrevName As String = String.Empty
+    Private strPrevPath As String = String.Empty
+    Private strTmpPath As String
     Private _id As Integer = -1
-    Private autoName As Boolean = True
-    Private tmppath As String
 
 #End Region 'Fields
 
@@ -59,13 +59,13 @@ Public Class dlgSourceTVShow
     End Function
 
     Public Overloads Function ShowDialog(ByVal strSearchPath As String) As DialogResult
-        tmppath = strSearchPath
+        strTmpPath = strSearchPath
 
         Return ShowDialog()
     End Function
 
     Public Overloads Function ShowDialog(ByVal strSearchPath As String, ByVal strFolderPath As String) As DialogResult
-        tmppath = strSearchPath
+        strTmpPath = strSearchPath
         txtSourcePath.Text = strFolderPath
 
         Return ShowDialog()
@@ -76,7 +76,7 @@ Public Class dlgSourceTVShow
             If Not String.IsNullOrEmpty(txtSourcePath.Text) Then
                 .SelectedPath = txtSourcePath.Text
             Else
-                .SelectedPath = tmppath
+                .SelectedPath = strTmpPath
             End If
             If .ShowDialog = DialogResult.OK Then
                 If Not String.IsNullOrEmpty(.SelectedPath) Then
@@ -178,7 +178,7 @@ Public Class dlgSourceTVShow
         If Not _id = -1 Then
             Dim s As Database.DBSource = Master.TVShowSources.FirstOrDefault(Function(y) y.ID = _id)
             If s IsNot Nothing Then
-                autoName = False
+                bAutoName = False
                 If cbSourceLanguage.Items.Count > 0 Then
                     Dim tLanguage As languageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = s.Language)
                     If tLanguage IsNot Nothing Then
@@ -226,9 +226,6 @@ Public Class dlgSourceTVShow
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
 
         Dim strSourcePath As String = Regex.Replace(txtSourcePath.Text.Trim, "^(\\)+\\\\", "\\")
-        While strSourcePath.EndsWith(Path.DirectorySeparatorChar) OrElse strSourcePath.EndsWith(Path.AltDirectorySeparatorChar)
-            strSourcePath = strSourcePath.Remove(strSourcePath.Length - 1)
-        End While
 
         Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
             Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
@@ -303,14 +300,24 @@ Public Class dlgSourceTVShow
     End Sub
 
     Private Sub tmrPathWait_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrPathWait.Tick
-        If prevPathText = currPathText Then
+        If strPrevPath = strCurrPath Then
             tmrPath.Enabled = True
         Else
-            If String.IsNullOrEmpty(txtSourceName.Text) OrElse autoName Then
-                txtSourceName.Text = FileUtils.Common.GetDirectory(txtSourcePath.Text)
-                autoName = True
+            If String.IsNullOrEmpty(txtSourceName.Text) OrElse bAutoName Then
+                Try
+                    If Not String.IsNullOrEmpty(txtSourcePath.Text) Then
+                        Dim dInfo As DirectoryInfo = New DirectoryInfo(txtSourcePath.Text)
+                        If dInfo IsNot Nothing AndAlso Not String.IsNullOrEmpty(dInfo.Name) Then
+                            txtSourceName.Text = dInfo.Name
+                            bAutoName = True
+                        End If
+                    End If
+                Catch ex As Exception
+                    txtSourceName.Text = String.Empty
+                    bAutoName = True
+                End Try
             End If
-            prevPathText = currPathText
+            strPrevPath = strCurrPath
         End If
     End Sub
 
@@ -321,28 +328,38 @@ Public Class dlgSourceTVShow
     End Sub
 
     Private Sub tmrWait_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrWait.Tick
-        If prevNameText = currNameText Then
+        If strPrevName = strCurrName Then
             tmrName.Enabled = True
         Else
-            prevNameText = currNameText
+            strPrevName = strCurrName
         End If
     End Sub
 
     Private Sub txtSourceName_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtSourceName.KeyPress
-        autoName = False
+        bAutoName = False
     End Sub
 
     Private Sub txtSourceName_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSourceName.TextChanged
         OK_Button.Enabled = False
-        currNameText = txtSourceName.Text
+        strCurrName = txtSourceName.Text
 
         tmrWait.Enabled = False
         tmrWait.Enabled = True
     End Sub
 
+    Private Sub txtSourcePath_Leave(sender As Object, e As EventArgs) Handles txtSourcePath.Leave
+        Try
+            Dim dInfo As DirectoryInfo = New DirectoryInfo(txtSourcePath.Text)
+            If Not txtSourcePath.Text = dInfo.FullName Then
+                txtSourcePath.Text = dInfo.FullName
+            End If
+        Catch ex As Exception
+        End Try
+    End Sub
+
     Private Sub txtSourcePath_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSourcePath.TextChanged
         OK_Button.Enabled = False
-        currPathText = txtSourcePath.Text
+        strCurrPath = txtSourcePath.Text
         tmrPathWait.Enabled = False
         tmrPathWait.Enabled = True
     End Sub

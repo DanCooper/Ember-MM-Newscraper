@@ -2942,6 +2942,16 @@ Public Class Database
                 SQLtransaction.Commit()
             End Using
 
+            Using SQLtransaction As SQLiteTransaction = _myvideosDBConn.BeginTransaction()
+                Select Case Args.currVersion
+                    Case Is < 44
+                        Prepare_Sources("moviesource", True)
+                        Prepare_Sources("tvshowsource", True)
+                End Select
+
+                SQLtransaction.Commit()
+            End Using
+
             _myvideosDBConn.Close()
             File.Move(tempName, Args.newDBPath)
         Catch ex As Exception
@@ -3440,6 +3450,29 @@ Public Class Database
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand.CommandText = String.Format("UPDATE {0} SET SortTitle = '' WHERE SortTitle IS NULL OR SortTitle = """";", table)
             SQLcommand.ExecuteNonQuery()
+        End Using
+
+        If Not BatchMode Then SQLtransaction.Commit()
+    End Sub
+
+    Private Sub Prepare_Sources(ByVal table As String, ByVal BatchMode As Boolean)
+        bwPatchDB.ReportProgress(-1, "Fixing sources...")
+
+        Dim SQLtransaction As SQLiteTransaction = Nothing
+        If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
+
+        Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = String.Format("SELECT idSource, strPath FROM {0};", table)
+            Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
+                While SQLreader.Read
+                    If Regex.Match(SQLreader("strPath").ToString, "([a-z]:|[A-Z]:)$").Success Then
+                        Using SQLcommand_update_votes As SQLiteCommand = _myvideosDBConn.CreateCommand()
+                            SQLcommand_update_votes.CommandText = String.Format("UPDATE {0} SET strPath=""{1}\"" WHERE idSource={2}", table, SQLreader("strPath").ToString, SQLreader("idSource").ToString)
+                            SQLcommand_update_votes.ExecuteNonQuery()
+                        End Using
+                    End If
+                End While
+            End Using
         End Using
 
         If Not BatchMode Then SQLtransaction.Commit()

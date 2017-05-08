@@ -252,7 +252,7 @@ Public Class dlgExportMovies
             ' copy all the files of the current directory
             Dim ChildFile As FileInfo
             For Each ChildFile In SourceDir.GetFiles()
-                If (ChildFile.Attributes And FileAttributes.Hidden) = FileAttributes.Hidden OrElse Path.GetExtension(ChildFile.FullName) = ".html" Then Continue For
+                If (ChildFile.Attributes And FileAttributes.Hidden) = FileAttributes.Hidden Then Continue For
                 If Overwrite Then
                     ChildFile.CopyTo(Path.Combine(DestDir.FullName, ChildFile.Name), True)
                 Else

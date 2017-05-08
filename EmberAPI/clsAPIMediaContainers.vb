@@ -5746,7 +5746,7 @@ Namespace MediaContainers
                 Select Case tContentType
                     Case Enums.ContentType.Movie
                         If .Theme.LoadAndCache() Then
-                            If ForceFileCleanup Then Trailers.Delete_Movie(tDBElement, ForceFileCleanup)
+                            Trailers.Delete_Movie(tDBElement, ForceFileCleanup)
                             .Theme.LocalFilePath = .Theme.ThemeOriginal.Save_Movie(tDBElement)
                         Else
                             Themes.Delete_Movie(tDBElement, ForceFileCleanup)
@@ -5755,7 +5755,7 @@ Namespace MediaContainers
 
                     Case Enums.ContentType.TVShow
                         If .Theme.LoadAndCache() Then
-                            If ForceFileCleanup Then Themes.Delete_TVShow(tDBElement) ', ForceFileCleanup)
+                            Themes.Delete_TVShow(tDBElement) ', ForceFileCleanup)
                             .Theme.LocalFilePath = .Theme.ThemeOriginal.Save_TVShow(tDBElement)
                         Else
                             Themes.Delete_TVShow(tDBElement) ', ForceFileCleanup)
@@ -6012,7 +6012,7 @@ Namespace MediaContainers
 
                         'Movie Trailer
                         If .Trailer.LoadAndCache() Then
-                            If ForceFileCleanup Then Trailers.Delete_Movie(tDBElement, ForceFileCleanup)
+                            Trailers.Delete_Movie(tDBElement, ForceFileCleanup)
                             .Trailer.LocalFilePath = .Trailer.TrailerOriginal.Save_Movie(tDBElement)
                         Else
                             Trailers.Delete_Movie(tDBElement, ForceFileCleanup)
