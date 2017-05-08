@@ -27,15 +27,15 @@ Public Class dlgSourceMovie
 
 #Region "Fields"
 
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Private currNameText As String = String.Empty
-    Private currPathText As String = String.Empty
-    Private prevNameText As String = String.Empty
-    Private prevPathText As String = String.Empty
+    Private bAutoName As Boolean = True
+    Private strCurrName As String = String.Empty
+    Private strCurrPath As String = String.Empty
+    Private strPrevName As String = String.Empty
+    Private strPrevPath As String = String.Empty
+    Private strTempPath As String
     Private _id As Long = -1
-    Private autoName As Boolean = True
-    Private tmppath As String
 
 #End Region 'Fields
 
@@ -60,13 +60,13 @@ Public Class dlgSourceMovie
     End Function
 
     Public Overloads Function ShowDialog(ByVal strSearchPath As String) As DialogResult
-        tmppath = strSearchPath
+        strTempPath = strSearchPath
 
         Return ShowDialog()
     End Function
 
     Public Overloads Function ShowDialog(ByVal strSearchPath As String, ByVal strFolderPath As String) As DialogResult
-        tmppath = strSearchPath
+        strTempPath = strSearchPath
         txtSourcePath.Text = strFolderPath
 
         Return ShowDialog()
@@ -77,7 +77,7 @@ Public Class dlgSourceMovie
             If Not String.IsNullOrEmpty(txtSourcePath.Text) Then
                 .SelectedPath = txtSourcePath.Text
             Else
-                .SelectedPath = tmppath
+                .SelectedPath = strTempPath
             End If
             If .ShowDialog = DialogResult.OK Then
                 If Not String.IsNullOrEmpty(.SelectedPath) Then
@@ -180,7 +180,7 @@ Public Class dlgSourceMovie
         If Not _id = -1 Then
             Dim s As Database.DBSource = Master.MovieSources.FirstOrDefault(Function(y) y.ID = _id)
             If s IsNot Nothing Then
-                autoName = False
+                bAutoName = False
                 If cbSourceLanguage.Items.Count > 0 Then
                     Dim tLanguage As languageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = s.Language)
                     If tLanguage IsNot Nothing Then
@@ -295,14 +295,24 @@ Public Class dlgSourceMovie
     End Sub
 
     Private Sub tmrPathWait_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrPathWait.Tick
-        If prevPathText = currPathText Then
+        If strPrevPath = strCurrPath Then
             tmrPath.Enabled = True
         Else
-            If String.IsNullOrEmpty(txtSourceName.Text) OrElse autoName Then
-                txtSourceName.Text = FileUtils.Common.GetDirectory(txtSourcePath.Text)
-                autoName = True
+            If String.IsNullOrEmpty(txtSourceName.Text) OrElse bAutoName Then
+                Try
+                    If Not String.IsNullOrEmpty(txtSourcePath.Text) Then
+                        Dim dInfo As DirectoryInfo = New DirectoryInfo(txtSourcePath.Text)
+                        If dInfo IsNot Nothing AndAlso Not String.IsNullOrEmpty(dInfo.Name) Then
+                            txtSourceName.Text = dInfo.Name
+                            bAutoName = True
+                        End If
+                    End If
+                Catch ex As Exception
+                    txtSourceName.Text = String.Empty
+                    bAutoName = True
+                End Try
             End If
-            prevPathText = currPathText
+            strPrevPath = strCurrPath
         End If
     End Sub
 
@@ -313,20 +323,20 @@ Public Class dlgSourceMovie
     End Sub
 
     Private Sub tmrWait_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrWait.Tick
-        If prevNameText = currNameText Then
+        If strPrevName = strCurrName Then
             tmrName.Enabled = True
         Else
-            prevNameText = currNameText
+            strPrevName = strCurrName
         End If
     End Sub
 
     Private Sub txtSourceName_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtSourceName.KeyPress
-        autoName = False
+        bAutoName = False
     End Sub
 
     Private Sub txtSourceName_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSourceName.TextChanged
         OK_Button.Enabled = False
-        currNameText = txtSourceName.Text
+        strCurrName = txtSourceName.Text
 
         tmrWait.Enabled = False
         tmrWait.Enabled = True
@@ -334,7 +344,7 @@ Public Class dlgSourceMovie
 
     Private Sub txtSourcePath_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSourcePath.TextChanged
         OK_Button.Enabled = False
-        currPathText = txtSourcePath.Text
+        strCurrPath = txtSourcePath.Text
         tmrPathWait.Enabled = False
         tmrPathWait.Enabled = True
     End Sub
