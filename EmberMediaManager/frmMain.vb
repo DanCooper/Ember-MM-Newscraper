@@ -1440,7 +1440,7 @@ Public Class frmMain
         SetStatus(String.Empty)
         tspbLoading.Visible = False
 
-        FillList(True, True, True)
+        FillList_Main(True, True, True)
     End Sub
 
     Private Sub bwDownloadPic_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwDownloadPic.DoWork
@@ -1836,7 +1836,7 @@ Public Class frmMain
             pnlCancel.Visible = False
             SetControlsEnabled(True)
         Else
-            FillList(False, True, False)
+            FillList_Main(False, True, False)
             If dgvMovies.SelectedRows.Count > 0 Then
                 SelectRow_Movie(dgvMovies.SelectedRows(0).Index)
             Else
@@ -2669,7 +2669,7 @@ Public Class frmMain
         tslLoading.Visible = False
 
         If Res.doFill Then
-            FillList(True, True, False)
+            FillList_Main(True, True, False)
         Else
             DoTitleCheck()
             SetControlsEnabled(True)
@@ -2718,7 +2718,7 @@ Public Class frmMain
         tslLoading.Visible = False
 
         If Res.doFill Then
-            FillList(False, True, False)
+            FillList_Main(False, True, False)
         Else
             DoTitleCheck()
             SetControlsEnabled(True)
@@ -2768,7 +2768,7 @@ Public Class frmMain
         tslLoading.Visible = False
 
         If Res.doFill Then
-            FillList(False, False, True)
+            FillList_Main(False, False, True)
         Else
             SetControlsEnabled(True)
         End If
@@ -2808,7 +2808,7 @@ Public Class frmMain
         prbCanceling.Visible = False
         pnlCancel.Visible = False
 
-        FillList(True, True, True)
+        FillList_Main(True, True, True)
     End Sub
 
     Private Sub cbFilterVideoSource_Movies_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbFilterVideoSource_Movies.SelectedIndexChanged
@@ -2829,7 +2829,7 @@ Public Class frmMain
         If Not currList_Movies = CType(cbFilterLists_Movies.SelectedItem, KeyValuePair(Of String, String)).Value Then
             currList_Movies = CType(cbFilterLists_Movies.SelectedItem, KeyValuePair(Of String, String)).Value
             ModulesManager.Instance.RuntimeObjects.ListMovies = currList_Movies
-            FillList(True, False, False)
+            FillList_Main(True, False, False)
         End If
     End Sub
 
@@ -2837,7 +2837,7 @@ Public Class frmMain
         If Not currList_MovieSets = CType(cbFilterLists_MovieSets.SelectedItem, KeyValuePair(Of String, String)).Value Then
             currList_MovieSets = CType(cbFilterLists_MovieSets.SelectedItem, KeyValuePair(Of String, String)).Value
             ModulesManager.Instance.RuntimeObjects.ListMovieSets = currList_MovieSets
-            FillList(False, True, False)
+            FillList_Main(False, True, False)
         End If
     End Sub
 
@@ -2845,7 +2845,7 @@ Public Class frmMain
         If Not currList_TVShows = CType(cbFilterLists_Shows.SelectedItem, KeyValuePair(Of String, String)).Value Then
             currList_TVShows = CType(cbFilterLists_Shows.SelectedItem, KeyValuePair(Of String, String)).Value
             ModulesManager.Instance.RuntimeObjects.ListTVShows = currList_TVShows
-            FillList(False, False, True)
+            FillList_Main(False, False, True)
         End If
     End Sub
 
@@ -3979,7 +3979,7 @@ Public Class frmMain
         End If
         AddHandler cbFilterVideoSource_Movies.SelectedIndexChanged, AddressOf cbFilterVideoSource_Movies_SelectedIndexChanged
 
-        If Reload Then FillList(True, False, False)
+        If Reload Then FillList_Main(True, False, False)
 
         ModulesManager.Instance.RuntimeObjects.FilterMovies = String.Empty
     End Sub
@@ -4008,7 +4008,7 @@ Public Class frmMain
         rbFilterAnd_MovieSets.Checked = True
         rbFilterOr_MovieSets.Checked = False
 
-        If Reload Then FillList(False, True, False)
+        If Reload Then FillList_Main(False, True, False)
     End Sub
 
     Private Sub ClearFilters_Shows(Optional ByVal Reload As Boolean = False)
@@ -4052,7 +4052,7 @@ Public Class frmMain
             clbFilterTags_Shows.SetItemChecked(i, False)
         Next
 
-        If Reload Then FillList(False, False, True)
+        If Reload Then FillList_Main(False, False, True)
 
         ModulesManager.Instance.RuntimeObjects.FilterTVShows = String.Empty
     End Sub
@@ -4185,7 +4185,7 @@ Public Class frmMain
             If SeasonsToDelete.Count > 0 Then
                 Using dlg As New dlgDeleteConfirm
                     If dlg.ShowDialog(SeasonsToDelete, Enums.ContentType.TVSeason) = DialogResult.OK Then
-                        FillTVSeasons(Convert.ToInt64(dgvTVSeasons.Item("idShow", currRow_TVSeason).Value))
+                        FillList_TVSeasons(Convert.ToInt64(dgvTVSeasons.Item("idShow", currRow_TVSeason).Value))
                         SetTVCount()
                     End If
                 End Using
@@ -4212,7 +4212,7 @@ Public Class frmMain
             If EpsToDelete.Count > 0 Then
                 Using dlg As New dlgDeleteConfirm
                     If dlg.ShowDialog(EpsToDelete, Enums.ContentType.TVEpisode) = DialogResult.OK Then
-                        FillTVEpisodes(Convert.ToInt64(dgvTVSeasons.Item("idShow", currRow_TVSeason).Value), Convert.ToInt32(dgvTVSeasons.Item("Season", currRow_TVSeason).Value))
+                        FillList_TVEpisodes(Convert.ToInt64(dgvTVSeasons.Item("idShow", currRow_TVSeason).Value), Convert.ToInt32(dgvTVSeasons.Item("Season", currRow_TVSeason).Value))
                         SetTVCount()
                     End If
                 End Using
@@ -4240,7 +4240,7 @@ Public Class frmMain
             If ShowsToDelete.Count > 0 Then
                 Using dlg As New dlgDeleteConfirm
                     If dlg.ShowDialog(ShowsToDelete, Enums.ContentType.TVShow) = DialogResult.OK Then
-                        FillList(False, False, True)
+                        FillList_Main(False, False, True)
                     End If
                 End Using
             End If
@@ -4930,7 +4930,7 @@ Public Class frmMain
         SetControlsEnabled(True)
 
         If doFill Then
-            FillList(True, True, False)
+            FillList_Main(True, True, False)
         Else
             DoTitleCheck()
         End If
@@ -4984,7 +4984,7 @@ Public Class frmMain
         dgvMovieSets.Cursor = Cursors.Default
         SetControlsEnabled(True)
 
-        If doFill Then FillList(False, True, False)
+        If doFill Then FillList_Main(False, True, False)
     End Sub
 
     Private Sub cmnuMovieSetRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetRemove.Click
@@ -5003,7 +5003,7 @@ Public Class frmMain
             SQLtransaction.Commit()
         End Using
 
-        FillList(True, False, False)
+        FillList_Main(True, False, False)
     End Sub
 
     Private Sub cmnuEpisodeReload_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeReload.Click
@@ -5034,7 +5034,7 @@ Public Class frmMain
         dgvTVEpisodes.Cursor = Cursors.Default
         SetControlsEnabled(True)
 
-        If doFill Then FillTVEpisodes(Convert.ToInt64(dgvTVEpisodes.SelectedRows(0).Cells("idEpisode").Value), Convert.ToInt32(dgvTVEpisodes.SelectedRows(0).Cells("Season").Value))
+        If doFill Then FillList_TVEpisodes(Convert.ToInt64(dgvTVEpisodes.SelectedRows(0).Cells("idEpisode").Value), Convert.ToInt32(dgvTVEpisodes.SelectedRows(0).Cells("Season").Value))
     End Sub
 
     Private Sub cmnuSeasonReload_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuSeasonReload.Click
@@ -5076,7 +5076,7 @@ Public Class frmMain
         dgvTVEpisodes.Cursor = Cursors.Default
         SetControlsEnabled(True)
 
-        If doFill Then FillTVSeasons(Convert.ToInt64(dgvTVSeasons.SelectedRows(0).Cells("idShow").Value))
+        If doFill Then FillList_TVSeasons(Convert.ToInt64(dgvTVSeasons.SelectedRows(0).Cells("idShow").Value))
     End Sub
 
     Private Sub cmnuSeasonReloadFull_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuSeasonReloadFull.Click
@@ -5118,7 +5118,7 @@ Public Class frmMain
         dgvTVEpisodes.Cursor = Cursors.Default
         SetControlsEnabled(True)
 
-        If doFill Then FillTVSeasons(Convert.ToInt64(dgvTVSeasons.SelectedRows(0).Cells("idShow").Value))
+        If doFill Then FillList_TVSeasons(Convert.ToInt64(dgvTVSeasons.SelectedRows(0).Cells("idShow").Value))
     End Sub
 
     Private Sub cmnuShowReload_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowReload.Click
@@ -5166,7 +5166,7 @@ Public Class frmMain
         dgvTVEpisodes.Cursor = Cursors.Default
         SetControlsEnabled(True)
 
-        If doFill Then FillList(False, False, True)
+        If doFill Then FillList_Main(False, False, True)
     End Sub
 
     Private Sub cmnuShowReloadFull_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowReloadFull.Click
@@ -5214,7 +5214,7 @@ Public Class frmMain
         dgvTVEpisodes.Cursor = Cursors.Default
         SetControlsEnabled(True)
 
-        If doFill Then FillList(False, False, True)
+        If doFill Then FillList_Main(False, False, True)
     End Sub
 
     Private Sub cmnuSeasonRemoveFromDB_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonRemoveFromDB.Click
@@ -5479,7 +5479,7 @@ Public Class frmMain
         If MoviesToDelete.Count > 0 Then
             Using dlg As New dlgDeleteConfirm
                 If dlg.ShowDialog(MoviesToDelete, Enums.ContentType.Movie) = DialogResult.OK Then
-                    FillList(True, True, False)
+                    FillList_Main(True, True, False)
                 End If
             End Using
         End If
@@ -8252,128 +8252,6 @@ Public Class frmMain
             Application.Exit()
         End If
     End Sub
-
-    Private Sub FillTVEpisodes(ByVal ShowID As Long, ByVal Season As Integer)
-        RemoveHandler dgvTVEpisodes.SelectionChanged, AddressOf dgvTVEpisodes_SelectionChanged
-        Dim sEpisodeSorting As Enums.EpisodeSorting = Master.DB.GetTVShowEpisodeSorting(ShowID)
-
-        bsTVEpisodes.DataSource = Nothing
-        dgvTVEpisodes.DataSource = Nothing
-
-        dgvTVEpisodes.Enabled = False
-
-        If Season = 999 Then
-            Master.DB.FillDataTable(dtTVEpisodes, String.Concat("SELECT * FROM episodelist WHERE idShow = ", ShowID, If(Master.eSettings.TVDisplayMissingEpisodes, String.Empty, " AND Missing = 0"), " ORDER BY Season, Episode;"))
-        Else
-            Master.DB.FillDataTable(dtTVEpisodes, String.Concat("SELECT * FROM episodelist WHERE idShow = ", ShowID, " AND Season = ", Season, If(Master.eSettings.TVDisplayMissingEpisodes, String.Empty, " AND Missing = 0"), " ORDER BY Episode;"))
-        End If
-
-        If dtTVEpisodes.Rows.Count > 0 Then
-            bsTVEpisodes.DataSource = dtTVEpisodes
-            dgvTVEpisodes.DataSource = bsTVEpisodes
-
-            Try
-                If Master.eSettings.TVGeneralEpisodeListSorting.Count > 0 Then
-                    For Each mColumn In Master.eSettings.TVGeneralEpisodeListSorting
-                        dgvTVEpisodes.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
-                    Next
-                End If
-            Catch ex As Exception
-                logger.Warn("default list for episode list sorting has been loaded")
-                Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVEpisodeListSorting, True)
-                If Master.eSettings.TVGeneralEpisodeListSorting.Count > 0 Then
-                    For Each mColumn In Master.eSettings.TVGeneralEpisodeListSorting
-                        dgvTVEpisodes.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
-                    Next
-                End If
-            End Try
-
-            dgvTVEpisodes.Columns("Season").DisplayIndex = 0
-            dgvTVEpisodes.Columns("Episode").DisplayIndex = 1
-            dgvTVEpisodes.Columns("Aired").DisplayIndex = 2
-
-            For i As Integer = 0 To dgvTVEpisodes.Columns.Count - 1
-                dgvTVEpisodes.Columns(i).Visible = False
-            Next
-
-            dgvTVEpisodes.Columns("Aired").Resizable = DataGridViewTriState.False
-            dgvTVEpisodes.Columns("Aired").Width = 80
-            dgvTVEpisodes.Columns("Aired").ReadOnly = True
-            dgvTVEpisodes.Columns("Aired").SortMode = DataGridViewColumnSortMode.Automatic
-            dgvTVEpisodes.Columns("Aired").Visible = sEpisodeSorting = Enums.EpisodeSorting.Aired
-            dgvTVEpisodes.Columns("Aired").ToolTipText = Master.eLang.GetString(728, "Aired")
-            dgvTVEpisodes.Columns("Aired").HeaderText = Master.eLang.GetString(728, "Aired")
-            dgvTVEpisodes.Columns("Episode").Resizable = DataGridViewTriState.False
-            dgvTVEpisodes.Columns("Episode").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader
-            dgvTVEpisodes.Columns("Episode").ReadOnly = True
-            dgvTVEpisodes.Columns("Episode").MinimumWidth = If(Season = 999, 35, 70)
-            dgvTVEpisodes.Columns("Episode").SortMode = DataGridViewColumnSortMode.Automatic
-            dgvTVEpisodes.Columns("Episode").Visible = Not sEpisodeSorting = Enums.EpisodeSorting.Aired
-            dgvTVEpisodes.Columns("Episode").ToolTipText = Master.eLang.GetString(755, "Episode #")
-            dgvTVEpisodes.Columns("Episode").HeaderText = "#"
-            dgvTVEpisodes.Columns("Episode").DefaultCellStyle.Format = "00"
-            dgvTVEpisodes.Columns("FanartPath").Width = 20
-            dgvTVEpisodes.Columns("FanartPath").Resizable = DataGridViewTriState.False
-            dgvTVEpisodes.Columns("FanartPath").ReadOnly = True
-            dgvTVEpisodes.Columns("FanartPath").SortMode = DataGridViewColumnSortMode.Automatic
-            dgvTVEpisodes.Columns("FanartPath").Visible = Not CheckColumnHide_TVEpisodes("FanartPath")
-            dgvTVEpisodes.Columns("FanartPath").ToolTipText = Master.eLang.GetString(149, "Fanart")
-            dgvTVEpisodes.Columns("HasSub").Width = 20
-            dgvTVEpisodes.Columns("HasSub").Resizable = DataGridViewTriState.False
-            dgvTVEpisodes.Columns("HasSub").ReadOnly = True
-            dgvTVEpisodes.Columns("HasSub").SortMode = DataGridViewColumnSortMode.Automatic
-            dgvTVEpisodes.Columns("HasSub").Visible = Not CheckColumnHide_TVEpisodes("HasSub")
-            dgvTVEpisodes.Columns("HasSub").ToolTipText = Master.eLang.GetString(152, "Subtitles")
-            dgvTVEpisodes.Columns("NfoPath").Width = 20
-            dgvTVEpisodes.Columns("NfoPath").Resizable = DataGridViewTriState.False
-            dgvTVEpisodes.Columns("NfoPath").ReadOnly = True
-            dgvTVEpisodes.Columns("NfoPath").SortMode = DataGridViewColumnSortMode.Automatic
-            dgvTVEpisodes.Columns("NfoPath").Visible = Not CheckColumnHide_TVEpisodes("NfoPath")
-            dgvTVEpisodes.Columns("NfoPath").ToolTipText = Master.eLang.GetString(150, "Nfo")
-            dgvTVEpisodes.Columns("Playcount").Width = 20
-            dgvTVEpisodes.Columns("Playcount").Resizable = DataGridViewTriState.False
-            dgvTVEpisodes.Columns("Playcount").ReadOnly = True
-            dgvTVEpisodes.Columns("Playcount").SortMode = DataGridViewColumnSortMode.Automatic
-            dgvTVEpisodes.Columns("Playcount").Visible = Not CheckColumnHide_TVEpisodes("Playcount")
-            dgvTVEpisodes.Columns("Playcount").ToolTipText = Master.eLang.GetString(981, "Watched")
-            dgvTVEpisodes.Columns("PosterPath").Width = 20
-            dgvTVEpisodes.Columns("PosterPath").Resizable = DataGridViewTriState.False
-            dgvTVEpisodes.Columns("PosterPath").ReadOnly = True
-            dgvTVEpisodes.Columns("PosterPath").SortMode = DataGridViewColumnSortMode.Automatic
-            dgvTVEpisodes.Columns("PosterPath").Visible = Not CheckColumnHide_TVEpisodes("PosterPath")
-            dgvTVEpisodes.Columns("PosterPath").ToolTipText = Master.eLang.GetString(148, "Poster")
-            dgvTVEpisodes.Columns("Season").MinimumWidth = 35
-            dgvTVEpisodes.Columns("Season").Resizable = DataGridViewTriState.False
-            dgvTVEpisodes.Columns("Season").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader
-            dgvTVEpisodes.Columns("Season").ReadOnly = True
-            dgvTVEpisodes.Columns("Season").SortMode = DataGridViewColumnSortMode.Automatic
-            dgvTVEpisodes.Columns("Season").Visible = Season = 999
-            dgvTVEpisodes.Columns("Season").ToolTipText = Master.eLang.GetString(659, "Season #")
-            dgvTVEpisodes.Columns("Season").HeaderText = "#"
-            dgvTVEpisodes.Columns("Season").DefaultCellStyle.Format = "00"
-            dgvTVEpisodes.Columns("Title").Resizable = DataGridViewTriState.True
-            dgvTVEpisodes.Columns("Title").ReadOnly = True
-            dgvTVEpisodes.Columns("Title").MinimumWidth = 83
-            dgvTVEpisodes.Columns("Title").SortMode = DataGridViewColumnSortMode.Automatic
-            dgvTVEpisodes.Columns("Title").Visible = True
-            dgvTVEpisodes.Columns("Title").ToolTipText = Master.eLang.GetString(21, "Title")
-            dgvTVEpisodes.Columns("Title").HeaderText = Master.eLang.GetString(21, "Title")
-
-            dgvTVEpisodes.Columns("idEpisode").ValueType = GetType(Long)
-            dgvTVEpisodes.Columns("idShow").ValueType = GetType(Long)
-            dgvTVEpisodes.Columns("Episode").ValueType = GetType(Integer)
-            dgvTVEpisodes.Columns("Season").ValueType = GetType(Integer)
-
-            If Master.isWindows Then dgvTVEpisodes.Columns("Title").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-            ResizeTVLists(dgvTVEpisodes.Columns("Title").Index)
-
-            dgvTVEpisodes.ClearSelection()
-            dgvTVEpisodes.CurrentCell = Nothing
-        End If
-
-        dgvTVEpisodes.Enabled = True
-        AddHandler dgvTVEpisodes.SelectionChanged, AddressOf dgvTVEpisodes_SelectionChanged
-    End Sub
     ''' <summary>
     ''' Reloads the DB and refresh the lists
     ''' </summary>
@@ -8381,7 +8259,7 @@ Public Class frmMain
     ''' <param name="doMovieSets">reload moviesets</param>
     ''' <param name="doTVShows">reload tv shows</param>
     ''' <remarks></remarks>
-    Private Sub FillList(ByVal doMovies As Boolean, ByVal doMovieSets As Boolean, ByVal doTVShows As Boolean)
+    Private Sub FillList_Main(ByVal doMovies As Boolean, ByVal doMovieSets As Boolean, ByVal doTVShows As Boolean)
         If doMovies Then
             bsMovies.DataSource = Nothing
             dgvMovies.DataSource = Nothing
@@ -8433,275 +8311,270 @@ Public Class frmMain
         Else
             If doMovies Then
                 prevRow_Movie = -2
-                If dtMovies.Rows.Count > 0 Then
-                    bsMovies.DataSource = dtMovies
-                    dgvMovies.DataSource = bsMovies
+                bsMovies.DataSource = dtMovies
+                dgvMovies.DataSource = bsMovies
 
-                    Try
-                        If Master.eSettings.MovieGeneralMediaListSorting.Count > 0 Then
-                            For Each mColumn In Master.eSettings.MovieGeneralMediaListSorting
-                                dgvMovies.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
-                            Next
-                        End If
-                    Catch ex As Exception
-                        logger.Warn("default list for movie list sorting has been loaded")
-                        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieListSorting, True)
-                        If Master.eSettings.MovieGeneralMediaListSorting.Count > 0 Then
-                            For Each mColumn In Master.eSettings.MovieGeneralMediaListSorting
-                                dgvMovies.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
-                            Next
-                        End If
-                    End Try
+                Try
+                    If Master.eSettings.MovieGeneralMediaListSorting.Count > 0 Then
+                        For Each mColumn In Master.eSettings.MovieGeneralMediaListSorting
+                            dgvMovies.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
+                        Next
+                    End If
+                Catch ex As Exception
+                    logger.Warn("default list for movie list sorting has been loaded")
+                    Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieListSorting, True)
+                    If Master.eSettings.MovieGeneralMediaListSorting.Count > 0 Then
+                        For Each mColumn In Master.eSettings.MovieGeneralMediaListSorting
+                            dgvMovies.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
+                        Next
+                    End If
+                End Try
 
-                    For i As Integer = 0 To dgvMovies.Columns.Count - 1
-                        dgvMovies.Columns(i).Visible = False
-                    Next
+                For i As Integer = 0 To dgvMovies.Columns.Count - 1
+                    dgvMovies.Columns(i).Visible = False
+                Next
 
-                    dgvMovies.Columns("BannerPath").Width = 20
-                    dgvMovies.Columns("BannerPath").Resizable = DataGridViewTriState.False
-                    dgvMovies.Columns("BannerPath").ReadOnly = True
-                    dgvMovies.Columns("BannerPath").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvMovies.Columns("BannerPath").Visible = Not CheckColumnHide_Movies("BannerPath")
-                    dgvMovies.Columns("BannerPath").ToolTipText = Master.eLang.GetString(838, "Banner")
-                    dgvMovies.Columns("ClearArtPath").Width = 20
-                    dgvMovies.Columns("ClearArtPath").Resizable = DataGridViewTriState.False
-                    dgvMovies.Columns("ClearArtPath").ReadOnly = True
-                    dgvMovies.Columns("ClearArtPath").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvMovies.Columns("ClearArtPath").Visible = Not CheckColumnHide_Movies("ClearArtPath")
-                    dgvMovies.Columns("ClearArtPath").ToolTipText = Master.eLang.GetString(1096, "ClearArt")
-                    dgvMovies.Columns("ClearLogoPath").Width = 20
-                    dgvMovies.Columns("ClearLogoPath").Resizable = DataGridViewTriState.False
-                    dgvMovies.Columns("ClearLogoPath").ReadOnly = True
-                    dgvMovies.Columns("ClearLogoPath").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvMovies.Columns("ClearLogoPath").Visible = Not CheckColumnHide_Movies("ClearLogoPath")
-                    dgvMovies.Columns("ClearLogoPath").ToolTipText = Master.eLang.GetString(1097, "ClearLogo")
-                    dgvMovies.Columns("DiscArtPath").Width = 20
-                    dgvMovies.Columns("DiscArtPath").Resizable = DataGridViewTriState.False
-                    dgvMovies.Columns("DiscArtPath").ReadOnly = True
-                    dgvMovies.Columns("DiscArtPath").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvMovies.Columns("DiscArtPath").Visible = Not CheckColumnHide_Movies("DiscArtPath")
-                    dgvMovies.Columns("DiscArtPath").ToolTipText = Master.eLang.GetString(1098, "DiscArt")
-                    dgvMovies.Columns("EFanartsPath").Width = 20
-                    dgvMovies.Columns("EFanartsPath").Resizable = DataGridViewTriState.False
-                    dgvMovies.Columns("EFanartsPath").ReadOnly = True
-                    dgvMovies.Columns("EFanartsPath").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvMovies.Columns("EFanartsPath").Visible = Not CheckColumnHide_Movies("EFanartsPath")
-                    dgvMovies.Columns("EFanartsPath").ToolTipText = Master.eLang.GetString(992, "Extrafanarts")
-                    dgvMovies.Columns("EThumbsPath").Width = 20
-                    dgvMovies.Columns("EThumbsPath").Resizable = DataGridViewTriState.False
-                    dgvMovies.Columns("EThumbsPath").ReadOnly = True
-                    dgvMovies.Columns("EThumbsPath").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvMovies.Columns("EThumbsPath").Visible = Not CheckColumnHide_Movies("EThumbsPath")
-                    dgvMovies.Columns("EThumbsPath").ToolTipText = Master.eLang.GetString(153, "Extrathumbs")
-                    dgvMovies.Columns("FanartPath").Width = 20
-                    dgvMovies.Columns("FanartPath").Resizable = DataGridViewTriState.False
-                    dgvMovies.Columns("FanartPath").ReadOnly = True
-                    dgvMovies.Columns("FanartPath").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvMovies.Columns("FanartPath").Visible = Not CheckColumnHide_Movies("FanartPath")
-                    dgvMovies.Columns("FanartPath").ToolTipText = Master.eLang.GetString(149, "Fanart")
-                    dgvMovies.Columns("HasSet").Width = 20
-                    dgvMovies.Columns("HasSet").Resizable = DataGridViewTriState.False
-                    dgvMovies.Columns("HasSet").ReadOnly = True
-                    dgvMovies.Columns("HasSet").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvMovies.Columns("HasSet").Visible = Not CheckColumnHide_Movies("HasSet")
-                    dgvMovies.Columns("HasSet").ToolTipText = Master.eLang.GetString(1295, "Part of a MovieSet")
-                    dgvMovies.Columns("HasSub").Width = 20
-                    dgvMovies.Columns("HasSub").Resizable = DataGridViewTriState.False
-                    dgvMovies.Columns("HasSub").ReadOnly = True
-                    dgvMovies.Columns("HasSub").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvMovies.Columns("HasSub").Visible = Not CheckColumnHide_Movies("HasSub")
-                    dgvMovies.Columns("HasSub").ToolTipText = Master.eLang.GetString(152, "Subtitles")
-                    dgvMovies.Columns("iLastPlayed").Width = 20
-                    dgvMovies.Columns("iLastPlayed").Resizable = DataGridViewTriState.False
-                    dgvMovies.Columns("iLastPlayed").ReadOnly = True
-                    dgvMovies.Columns("iLastPlayed").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvMovies.Columns("iLastPlayed").Visible = Not CheckColumnHide_Movies("iLastPlayed")
-                    dgvMovies.Columns("iLastPlayed").ToolTipText = Master.eLang.GetString(981, "Watched")
-                    dgvMovies.Columns("Imdb").Resizable = DataGridViewTriState.False
-                    dgvMovies.Columns("Imdb").ReadOnly = True
-                    dgvMovies.Columns("Imdb").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvMovies.Columns("Imdb").Visible = Not CheckColumnHide_Movies("Imdb")
-                    dgvMovies.Columns("Imdb").ToolTipText = Master.eLang.GetString(61, "IMDB ID")
-                    dgvMovies.Columns("Imdb").HeaderText = Master.eLang.GetString(61, "IMDB ID")
-                    dgvMovies.Columns("Imdb").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
-                    dgvMovies.Columns("LandscapePath").Width = 20
-                    dgvMovies.Columns("LandscapePath").Resizable = DataGridViewTriState.False
-                    dgvMovies.Columns("LandscapePath").ReadOnly = True
-                    dgvMovies.Columns("LandscapePath").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvMovies.Columns("LandscapePath").Visible = Not CheckColumnHide_Movies("LandscapePath")
-                    dgvMovies.Columns("LandscapePath").ToolTipText = Master.eLang.GetString(1035, "Landscape")
-                    dgvMovies.Columns("ListTitle").Resizable = DataGridViewTriState.True
-                    dgvMovies.Columns("ListTitle").ReadOnly = True
-                    dgvMovies.Columns("ListTitle").MinimumWidth = 83
-                    dgvMovies.Columns("ListTitle").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvMovies.Columns("ListTitle").Visible = True
-                    dgvMovies.Columns("ListTitle").ToolTipText = Master.eLang.GetString(21, "Title")
-                    dgvMovies.Columns("ListTitle").HeaderText = Master.eLang.GetString(21, "Title")
-                    dgvMovies.Columns("MPAA").Resizable = DataGridViewTriState.False
-                    dgvMovies.Columns("MPAA").Width = 70
-                    dgvMovies.Columns("MPAA").ReadOnly = True
-                    dgvMovies.Columns("MPAA").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvMovies.Columns("MPAA").Visible = Not CheckColumnHide_Movies("MPAA")
-                    dgvMovies.Columns("MPAA").ToolTipText = Master.eLang.GetString(401, "MPAA")
-                    dgvMovies.Columns("MPAA").HeaderText = Master.eLang.GetString(401, "MPAA")
-                    'dgvMovies.Columns("MPAA").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
-                    dgvMovies.Columns("NfoPath").Width = 20
-                    dgvMovies.Columns("NfoPath").Resizable = DataGridViewTriState.False
-                    dgvMovies.Columns("NfoPath").ReadOnly = True
-                    dgvMovies.Columns("NfoPath").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvMovies.Columns("NfoPath").Visible = Not CheckColumnHide_Movies("NfoPath")
-                    dgvMovies.Columns("NfoPath").ToolTipText = Master.eLang.GetString(150, "Nfo")
-                    dgvMovies.Columns("OriginalTitle").Resizable = DataGridViewTriState.False
-                    dgvMovies.Columns("OriginalTitle").ReadOnly = True
-                    dgvMovies.Columns("OriginalTitle").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvMovies.Columns("OriginalTitle").Visible = Not CheckColumnHide_Movies("OriginalTitle")
-                    dgvMovies.Columns("OriginalTitle").ToolTipText = Master.eLang.GetString(302, "Original Title")
-                    dgvMovies.Columns("OriginalTitle").HeaderText = Master.eLang.GetString(302, "Original Title")
-                    dgvMovies.Columns("OriginalTitle").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
-                    dgvMovies.Columns("PosterPath").Width = 20
-                    dgvMovies.Columns("PosterPath").Resizable = DataGridViewTriState.False
-                    dgvMovies.Columns("PosterPath").ReadOnly = True
-                    dgvMovies.Columns("PosterPath").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvMovies.Columns("PosterPath").Visible = Not CheckColumnHide_Movies("PosterPath")
-                    dgvMovies.Columns("PosterPath").ToolTipText = Master.eLang.GetString(148, "Poster")
-                    dgvMovies.Columns("Rating").Resizable = DataGridViewTriState.False
-                    dgvMovies.Columns("Rating").ReadOnly = True
-                    dgvMovies.Columns("Rating").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvMovies.Columns("Rating").Visible = Not CheckColumnHide_Movies("Rating")
-                    dgvMovies.Columns("Rating").ToolTipText = Master.eLang.GetString(400, "Rating")
-                    dgvMovies.Columns("Rating").HeaderText = Master.eLang.GetString(400, "Rating")
-                    dgvMovies.Columns("Rating").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
-                    dgvMovies.Columns("ThemePath").Width = 20
-                    dgvMovies.Columns("ThemePath").Resizable = DataGridViewTriState.False
-                    dgvMovies.Columns("ThemePath").ReadOnly = True
-                    dgvMovies.Columns("ThemePath").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvMovies.Columns("ThemePath").Visible = Not CheckColumnHide_Movies("ThemePath")
-                    dgvMovies.Columns("ThemePath").ToolTipText = Master.eLang.GetString(1118, "Theme")
-                    dgvMovies.Columns("TMDB").Resizable = DataGridViewTriState.False
-                    dgvMovies.Columns("TMDB").ReadOnly = True
-                    dgvMovies.Columns("TMDB").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvMovies.Columns("TMDB").Visible = Not CheckColumnHide_Movies("TMDB")
-                    dgvMovies.Columns("TMDB").ToolTipText = Master.eLang.GetString(933, "TMDB ID")
-                    dgvMovies.Columns("TMDB").HeaderText = Master.eLang.GetString(933, "TMDB ID")
-                    dgvMovies.Columns("TMDB").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
-                    dgvMovies.Columns("Top250").Resizable = DataGridViewTriState.False
-                    dgvMovies.Columns("Top250").ReadOnly = True
-                    dgvMovies.Columns("Top250").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvMovies.Columns("Top250").Visible = Not CheckColumnHide_Movies("Top250")
-                    dgvMovies.Columns("Top250").ToolTipText = "Top250"
-                    dgvMovies.Columns("Top250").HeaderText = "Top250"
-                    dgvMovies.Columns("Top250").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
-                    dgvMovies.Columns("TrailerPath").Width = 20
-                    dgvMovies.Columns("TrailerPath").Resizable = DataGridViewTriState.False
-                    dgvMovies.Columns("TrailerPath").ReadOnly = True
-                    dgvMovies.Columns("TrailerPath").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvMovies.Columns("TrailerPath").Visible = Not CheckColumnHide_Movies("TrailerPath")
-                    dgvMovies.Columns("TrailerPath").ToolTipText = Master.eLang.GetString(151, "Trailer")
-                    dgvMovies.Columns("Year").Resizable = DataGridViewTriState.False
-                    dgvMovies.Columns("Year").ReadOnly = True
-                    dgvMovies.Columns("Year").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvMovies.Columns("Year").Visible = Not CheckColumnHide_Movies("Year")
-                    dgvMovies.Columns("Year").ToolTipText = Master.eLang.GetString(278, "Year")
-                    dgvMovies.Columns("Year").HeaderText = Master.eLang.GetString(278, "Year")
-                    dgvMovies.Columns("Year").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
+                dgvMovies.Columns("BannerPath").Width = 20
+                dgvMovies.Columns("BannerPath").Resizable = DataGridViewTriState.False
+                dgvMovies.Columns("BannerPath").ReadOnly = True
+                dgvMovies.Columns("BannerPath").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns("BannerPath").Visible = Not CheckColumnHide_Movies("BannerPath")
+                dgvMovies.Columns("BannerPath").ToolTipText = Master.eLang.GetString(838, "Banner")
+                dgvMovies.Columns("ClearArtPath").Width = 20
+                dgvMovies.Columns("ClearArtPath").Resizable = DataGridViewTriState.False
+                dgvMovies.Columns("ClearArtPath").ReadOnly = True
+                dgvMovies.Columns("ClearArtPath").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns("ClearArtPath").Visible = Not CheckColumnHide_Movies("ClearArtPath")
+                dgvMovies.Columns("ClearArtPath").ToolTipText = Master.eLang.GetString(1096, "ClearArt")
+                dgvMovies.Columns("ClearLogoPath").Width = 20
+                dgvMovies.Columns("ClearLogoPath").Resizable = DataGridViewTriState.False
+                dgvMovies.Columns("ClearLogoPath").ReadOnly = True
+                dgvMovies.Columns("ClearLogoPath").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns("ClearLogoPath").Visible = Not CheckColumnHide_Movies("ClearLogoPath")
+                dgvMovies.Columns("ClearLogoPath").ToolTipText = Master.eLang.GetString(1097, "ClearLogo")
+                dgvMovies.Columns("DiscArtPath").Width = 20
+                dgvMovies.Columns("DiscArtPath").Resizable = DataGridViewTriState.False
+                dgvMovies.Columns("DiscArtPath").ReadOnly = True
+                dgvMovies.Columns("DiscArtPath").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns("DiscArtPath").Visible = Not CheckColumnHide_Movies("DiscArtPath")
+                dgvMovies.Columns("DiscArtPath").ToolTipText = Master.eLang.GetString(1098, "DiscArt")
+                dgvMovies.Columns("EFanartsPath").Width = 20
+                dgvMovies.Columns("EFanartsPath").Resizable = DataGridViewTriState.False
+                dgvMovies.Columns("EFanartsPath").ReadOnly = True
+                dgvMovies.Columns("EFanartsPath").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns("EFanartsPath").Visible = Not CheckColumnHide_Movies("EFanartsPath")
+                dgvMovies.Columns("EFanartsPath").ToolTipText = Master.eLang.GetString(992, "Extrafanarts")
+                dgvMovies.Columns("EThumbsPath").Width = 20
+                dgvMovies.Columns("EThumbsPath").Resizable = DataGridViewTriState.False
+                dgvMovies.Columns("EThumbsPath").ReadOnly = True
+                dgvMovies.Columns("EThumbsPath").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns("EThumbsPath").Visible = Not CheckColumnHide_Movies("EThumbsPath")
+                dgvMovies.Columns("EThumbsPath").ToolTipText = Master.eLang.GetString(153, "Extrathumbs")
+                dgvMovies.Columns("FanartPath").Width = 20
+                dgvMovies.Columns("FanartPath").Resizable = DataGridViewTriState.False
+                dgvMovies.Columns("FanartPath").ReadOnly = True
+                dgvMovies.Columns("FanartPath").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns("FanartPath").Visible = Not CheckColumnHide_Movies("FanartPath")
+                dgvMovies.Columns("FanartPath").ToolTipText = Master.eLang.GetString(149, "Fanart")
+                dgvMovies.Columns("HasSet").Width = 20
+                dgvMovies.Columns("HasSet").Resizable = DataGridViewTriState.False
+                dgvMovies.Columns("HasSet").ReadOnly = True
+                dgvMovies.Columns("HasSet").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns("HasSet").Visible = Not CheckColumnHide_Movies("HasSet")
+                dgvMovies.Columns("HasSet").ToolTipText = Master.eLang.GetString(1295, "Part of a MovieSet")
+                dgvMovies.Columns("HasSub").Width = 20
+                dgvMovies.Columns("HasSub").Resizable = DataGridViewTriState.False
+                dgvMovies.Columns("HasSub").ReadOnly = True
+                dgvMovies.Columns("HasSub").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns("HasSub").Visible = Not CheckColumnHide_Movies("HasSub")
+                dgvMovies.Columns("HasSub").ToolTipText = Master.eLang.GetString(152, "Subtitles")
+                dgvMovies.Columns("iLastPlayed").Width = 20
+                dgvMovies.Columns("iLastPlayed").Resizable = DataGridViewTriState.False
+                dgvMovies.Columns("iLastPlayed").ReadOnly = True
+                dgvMovies.Columns("iLastPlayed").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns("iLastPlayed").Visible = Not CheckColumnHide_Movies("iLastPlayed")
+                dgvMovies.Columns("iLastPlayed").ToolTipText = Master.eLang.GetString(981, "Watched")
+                dgvMovies.Columns("Imdb").Resizable = DataGridViewTriState.False
+                dgvMovies.Columns("Imdb").ReadOnly = True
+                dgvMovies.Columns("Imdb").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns("Imdb").Visible = Not CheckColumnHide_Movies("Imdb")
+                dgvMovies.Columns("Imdb").ToolTipText = Master.eLang.GetString(61, "IMDB ID")
+                dgvMovies.Columns("Imdb").HeaderText = Master.eLang.GetString(61, "IMDB ID")
+                dgvMovies.Columns("Imdb").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
+                dgvMovies.Columns("LandscapePath").Width = 20
+                dgvMovies.Columns("LandscapePath").Resizable = DataGridViewTriState.False
+                dgvMovies.Columns("LandscapePath").ReadOnly = True
+                dgvMovies.Columns("LandscapePath").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns("LandscapePath").Visible = Not CheckColumnHide_Movies("LandscapePath")
+                dgvMovies.Columns("LandscapePath").ToolTipText = Master.eLang.GetString(1035, "Landscape")
+                dgvMovies.Columns("ListTitle").Resizable = DataGridViewTriState.True
+                dgvMovies.Columns("ListTitle").ReadOnly = True
+                dgvMovies.Columns("ListTitle").MinimumWidth = 83
+                dgvMovies.Columns("ListTitle").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns("ListTitle").Visible = True
+                dgvMovies.Columns("ListTitle").ToolTipText = Master.eLang.GetString(21, "Title")
+                dgvMovies.Columns("ListTitle").HeaderText = Master.eLang.GetString(21, "Title")
+                dgvMovies.Columns("MPAA").Resizable = DataGridViewTriState.False
+                dgvMovies.Columns("MPAA").Width = 70
+                dgvMovies.Columns("MPAA").ReadOnly = True
+                dgvMovies.Columns("MPAA").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns("MPAA").Visible = Not CheckColumnHide_Movies("MPAA")
+                dgvMovies.Columns("MPAA").ToolTipText = Master.eLang.GetString(401, "MPAA")
+                dgvMovies.Columns("MPAA").HeaderText = Master.eLang.GetString(401, "MPAA")
+                dgvMovies.Columns("NfoPath").Width = 20
+                dgvMovies.Columns("NfoPath").Resizable = DataGridViewTriState.False
+                dgvMovies.Columns("NfoPath").ReadOnly = True
+                dgvMovies.Columns("NfoPath").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns("NfoPath").Visible = Not CheckColumnHide_Movies("NfoPath")
+                dgvMovies.Columns("NfoPath").ToolTipText = Master.eLang.GetString(150, "Nfo")
+                dgvMovies.Columns("OriginalTitle").Resizable = DataGridViewTriState.False
+                dgvMovies.Columns("OriginalTitle").ReadOnly = True
+                dgvMovies.Columns("OriginalTitle").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns("OriginalTitle").Visible = Not CheckColumnHide_Movies("OriginalTitle")
+                dgvMovies.Columns("OriginalTitle").ToolTipText = Master.eLang.GetString(302, "Original Title")
+                dgvMovies.Columns("OriginalTitle").HeaderText = Master.eLang.GetString(302, "Original Title")
+                dgvMovies.Columns("OriginalTitle").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
+                dgvMovies.Columns("PosterPath").Width = 20
+                dgvMovies.Columns("PosterPath").Resizable = DataGridViewTriState.False
+                dgvMovies.Columns("PosterPath").ReadOnly = True
+                dgvMovies.Columns("PosterPath").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns("PosterPath").Visible = Not CheckColumnHide_Movies("PosterPath")
+                dgvMovies.Columns("PosterPath").ToolTipText = Master.eLang.GetString(148, "Poster")
+                dgvMovies.Columns("Rating").Resizable = DataGridViewTriState.False
+                dgvMovies.Columns("Rating").ReadOnly = True
+                dgvMovies.Columns("Rating").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns("Rating").Visible = Not CheckColumnHide_Movies("Rating")
+                dgvMovies.Columns("Rating").ToolTipText = Master.eLang.GetString(400, "Rating")
+                dgvMovies.Columns("Rating").HeaderText = Master.eLang.GetString(400, "Rating")
+                dgvMovies.Columns("Rating").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
+                dgvMovies.Columns("ThemePath").Width = 20
+                dgvMovies.Columns("ThemePath").Resizable = DataGridViewTriState.False
+                dgvMovies.Columns("ThemePath").ReadOnly = True
+                dgvMovies.Columns("ThemePath").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns("ThemePath").Visible = Not CheckColumnHide_Movies("ThemePath")
+                dgvMovies.Columns("ThemePath").ToolTipText = Master.eLang.GetString(1118, "Theme")
+                dgvMovies.Columns("TMDB").Resizable = DataGridViewTriState.False
+                dgvMovies.Columns("TMDB").ReadOnly = True
+                dgvMovies.Columns("TMDB").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns("TMDB").Visible = Not CheckColumnHide_Movies("TMDB")
+                dgvMovies.Columns("TMDB").ToolTipText = Master.eLang.GetString(933, "TMDB ID")
+                dgvMovies.Columns("TMDB").HeaderText = Master.eLang.GetString(933, "TMDB ID")
+                dgvMovies.Columns("TMDB").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
+                dgvMovies.Columns("Top250").Resizable = DataGridViewTriState.False
+                dgvMovies.Columns("Top250").ReadOnly = True
+                dgvMovies.Columns("Top250").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns("Top250").Visible = Not CheckColumnHide_Movies("Top250")
+                dgvMovies.Columns("Top250").ToolTipText = "Top250"
+                dgvMovies.Columns("Top250").HeaderText = "Top250"
+                dgvMovies.Columns("Top250").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
+                dgvMovies.Columns("TrailerPath").Width = 20
+                dgvMovies.Columns("TrailerPath").Resizable = DataGridViewTriState.False
+                dgvMovies.Columns("TrailerPath").ReadOnly = True
+                dgvMovies.Columns("TrailerPath").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns("TrailerPath").Visible = Not CheckColumnHide_Movies("TrailerPath")
+                dgvMovies.Columns("TrailerPath").ToolTipText = Master.eLang.GetString(151, "Trailer")
+                dgvMovies.Columns("Year").Resizable = DataGridViewTriState.False
+                dgvMovies.Columns("Year").ReadOnly = True
+                dgvMovies.Columns("Year").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns("Year").Visible = Not CheckColumnHide_Movies("Year")
+                dgvMovies.Columns("Year").ToolTipText = Master.eLang.GetString(278, "Year")
+                dgvMovies.Columns("Year").HeaderText = Master.eLang.GetString(278, "Year")
+                dgvMovies.Columns("Year").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
 
-                    dgvMovies.Columns("idMovie").ValueType = GetType(Long)
+                dgvMovies.Columns("idMovie").ValueType = GetType(Long)
 
-                    If Master.isWindows Then dgvMovies.Columns("ListTitle").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-                    ResizeMoviesList()
-                End If
+                If Master.isWindows Then dgvMovies.Columns("ListTitle").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                ResizeMoviesList()
             End If
 
             If doMovieSets Then
                 prevRow_MovieSet = -2
                 dgvMovieSets.Enabled = False
-                If dtMovieSets.Rows.Count > 0 Then
-                    bsMovieSets.DataSource = dtMovieSets
-                    dgvMovieSets.DataSource = bsMovieSets
+                bsMovieSets.DataSource = dtMovieSets
+                dgvMovieSets.DataSource = bsMovieSets
 
-                    Try
-                        If Master.eSettings.MovieSetGeneralMediaListSorting.Count > 0 Then
-                            For Each mColumn In Master.eSettings.MovieSetGeneralMediaListSorting
-                                dgvMovieSets.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
-                            Next
-                        End If
-                    Catch ex As Exception
-                        logger.Warn("default list for movieset list sorting has been loaded")
-                        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieSetListSorting, True)
-                        If Master.eSettings.MovieSetGeneralMediaListSorting.Count > 0 Then
-                            For Each mColumn In Master.eSettings.MovieSetGeneralMediaListSorting
-                                dgvMovieSets.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
-                            Next
-                        End If
-                    End Try
+                Try
+                    If Master.eSettings.MovieSetGeneralMediaListSorting.Count > 0 Then
+                        For Each mColumn In Master.eSettings.MovieSetGeneralMediaListSorting
+                            dgvMovieSets.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
+                        Next
+                    End If
+                Catch ex As Exception
+                    logger.Warn("default list for movieset list sorting has been loaded")
+                    Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieSetListSorting, True)
+                    If Master.eSettings.MovieSetGeneralMediaListSorting.Count > 0 Then
+                        For Each mColumn In Master.eSettings.MovieSetGeneralMediaListSorting
+                            dgvMovieSets.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
+                        Next
+                    End If
+                End Try
 
-                    For i As Integer = 0 To dgvMovieSets.Columns.Count - 1
-                        dgvMovieSets.Columns(i).Visible = False
-                    Next
+                For i As Integer = 0 To dgvMovieSets.Columns.Count - 1
+                    dgvMovieSets.Columns(i).Visible = False
+                Next
 
-                    dgvMovieSets.Columns("BannerPath").Width = 20
-                    dgvMovieSets.Columns("BannerPath").Resizable = DataGridViewTriState.False
-                    dgvMovieSets.Columns("BannerPath").ReadOnly = True
-                    dgvMovieSets.Columns("BannerPath").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvMovieSets.Columns("BannerPath").Visible = Not CheckColumnHide_MovieSets("BannerPath")
-                    dgvMovieSets.Columns("BannerPath").ToolTipText = Master.eLang.GetString(838, "Banner")
-                    dgvMovieSets.Columns("ClearArtPath").Width = 20
-                    dgvMovieSets.Columns("ClearArtPath").Resizable = DataGridViewTriState.False
-                    dgvMovieSets.Columns("ClearArtPath").ReadOnly = True
-                    dgvMovieSets.Columns("ClearArtPath").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvMovieSets.Columns("ClearArtPath").Visible = Not CheckColumnHide_MovieSets("ClearArtPath")
-                    dgvMovieSets.Columns("ClearArtPath").ToolTipText = Master.eLang.GetString(1096, "ClearArt")
-                    dgvMovieSets.Columns("ClearLogoPath").Width = 20
-                    dgvMovieSets.Columns("ClearLogoPath").Resizable = DataGridViewTriState.False
-                    dgvMovieSets.Columns("ClearLogoPath").ReadOnly = True
-                    dgvMovieSets.Columns("ClearLogoPath").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvMovieSets.Columns("ClearLogoPath").Visible = Not CheckColumnHide_MovieSets("ClearLogoPath")
-                    dgvMovieSets.Columns("ClearLogoPath").ToolTipText = Master.eLang.GetString(1097, "ClearLogo")
-                    dgvMovieSets.Columns("DiscArtPath").Width = 20
-                    dgvMovieSets.Columns("DiscArtPath").Resizable = DataGridViewTriState.False
-                    dgvMovieSets.Columns("DiscArtPath").ReadOnly = True
-                    dgvMovieSets.Columns("DiscArtPath").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvMovieSets.Columns("DiscArtPath").Visible = Not CheckColumnHide_MovieSets("DiscArtPath")
-                    dgvMovieSets.Columns("DiscArtPath").ToolTipText = Master.eLang.GetString(1098, "DiscArt")
-                    dgvMovieSets.Columns("FanartPath").Width = 20
-                    dgvMovieSets.Columns("FanartPath").Resizable = DataGridViewTriState.False
-                    dgvMovieSets.Columns("FanartPath").ReadOnly = True
-                    dgvMovieSets.Columns("FanartPath").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvMovieSets.Columns("FanartPath").Visible = Not CheckColumnHide_MovieSets("FanartPath")
-                    dgvMovieSets.Columns("FanartPath").ToolTipText = Master.eLang.GetString(149, "Fanart")
-                    dgvMovieSets.Columns("LandscapePath").Width = 20
-                    dgvMovieSets.Columns("LandscapePath").Resizable = DataGridViewTriState.False
-                    dgvMovieSets.Columns("LandscapePath").ReadOnly = True
-                    dgvMovieSets.Columns("LandscapePath").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvMovieSets.Columns("LandscapePath").Visible = Not CheckColumnHide_MovieSets("LandscapePath")
-                    dgvMovieSets.Columns("LandscapePath").ToolTipText = Master.eLang.GetString(1035, "Landscape")
-                    dgvMovieSets.Columns("ListTitle").Resizable = DataGridViewTriState.True
-                    dgvMovieSets.Columns("ListTitle").ReadOnly = True
-                    dgvMovieSets.Columns("ListTitle").MinimumWidth = 83
-                    dgvMovieSets.Columns("ListTitle").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvMovieSets.Columns("ListTitle").Visible = True
-                    dgvMovieSets.Columns("ListTitle").ToolTipText = Master.eLang.GetString(21, "Title")
-                    dgvMovieSets.Columns("ListTitle").HeaderText = Master.eLang.GetString(21, "Title")
-                    dgvMovieSets.Columns("NfoPath").Width = 20
-                    dgvMovieSets.Columns("NfoPath").Resizable = DataGridViewTriState.False
-                    dgvMovieSets.Columns("NfoPath").ReadOnly = True
-                    dgvMovieSets.Columns("NfoPath").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvMovieSets.Columns("NfoPath").Visible = Not CheckColumnHide_MovieSets("NfoPath")
-                    dgvMovieSets.Columns("NfoPath").ToolTipText = Master.eLang.GetString(150, "Nfo")
-                    dgvMovieSets.Columns("PosterPath").Width = 20
-                    dgvMovieSets.Columns("PosterPath").Resizable = DataGridViewTriState.False
-                    dgvMovieSets.Columns("PosterPath").ReadOnly = True
-                    dgvMovieSets.Columns("PosterPath").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvMovieSets.Columns("PosterPath").Visible = Not CheckColumnHide_MovieSets("PosterPath")
-                    dgvMovieSets.Columns("PosterPath").ToolTipText = Master.eLang.GetString(148, "Poster")
+                dgvMovieSets.Columns("BannerPath").Width = 20
+                dgvMovieSets.Columns("BannerPath").Resizable = DataGridViewTriState.False
+                dgvMovieSets.Columns("BannerPath").ReadOnly = True
+                dgvMovieSets.Columns("BannerPath").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovieSets.Columns("BannerPath").Visible = Not CheckColumnHide_MovieSets("BannerPath")
+                dgvMovieSets.Columns("BannerPath").ToolTipText = Master.eLang.GetString(838, "Banner")
+                dgvMovieSets.Columns("ClearArtPath").Width = 20
+                dgvMovieSets.Columns("ClearArtPath").Resizable = DataGridViewTriState.False
+                dgvMovieSets.Columns("ClearArtPath").ReadOnly = True
+                dgvMovieSets.Columns("ClearArtPath").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovieSets.Columns("ClearArtPath").Visible = Not CheckColumnHide_MovieSets("ClearArtPath")
+                dgvMovieSets.Columns("ClearArtPath").ToolTipText = Master.eLang.GetString(1096, "ClearArt")
+                dgvMovieSets.Columns("ClearLogoPath").Width = 20
+                dgvMovieSets.Columns("ClearLogoPath").Resizable = DataGridViewTriState.False
+                dgvMovieSets.Columns("ClearLogoPath").ReadOnly = True
+                dgvMovieSets.Columns("ClearLogoPath").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovieSets.Columns("ClearLogoPath").Visible = Not CheckColumnHide_MovieSets("ClearLogoPath")
+                dgvMovieSets.Columns("ClearLogoPath").ToolTipText = Master.eLang.GetString(1097, "ClearLogo")
+                dgvMovieSets.Columns("DiscArtPath").Width = 20
+                dgvMovieSets.Columns("DiscArtPath").Resizable = DataGridViewTriState.False
+                dgvMovieSets.Columns("DiscArtPath").ReadOnly = True
+                dgvMovieSets.Columns("DiscArtPath").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovieSets.Columns("DiscArtPath").Visible = Not CheckColumnHide_MovieSets("DiscArtPath")
+                dgvMovieSets.Columns("DiscArtPath").ToolTipText = Master.eLang.GetString(1098, "DiscArt")
+                dgvMovieSets.Columns("FanartPath").Width = 20
+                dgvMovieSets.Columns("FanartPath").Resizable = DataGridViewTriState.False
+                dgvMovieSets.Columns("FanartPath").ReadOnly = True
+                dgvMovieSets.Columns("FanartPath").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovieSets.Columns("FanartPath").Visible = Not CheckColumnHide_MovieSets("FanartPath")
+                dgvMovieSets.Columns("FanartPath").ToolTipText = Master.eLang.GetString(149, "Fanart")
+                dgvMovieSets.Columns("LandscapePath").Width = 20
+                dgvMovieSets.Columns("LandscapePath").Resizable = DataGridViewTriState.False
+                dgvMovieSets.Columns("LandscapePath").ReadOnly = True
+                dgvMovieSets.Columns("LandscapePath").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovieSets.Columns("LandscapePath").Visible = Not CheckColumnHide_MovieSets("LandscapePath")
+                dgvMovieSets.Columns("LandscapePath").ToolTipText = Master.eLang.GetString(1035, "Landscape")
+                dgvMovieSets.Columns("ListTitle").Resizable = DataGridViewTriState.True
+                dgvMovieSets.Columns("ListTitle").ReadOnly = True
+                dgvMovieSets.Columns("ListTitle").MinimumWidth = 83
+                dgvMovieSets.Columns("ListTitle").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovieSets.Columns("ListTitle").Visible = True
+                dgvMovieSets.Columns("ListTitle").ToolTipText = Master.eLang.GetString(21, "Title")
+                dgvMovieSets.Columns("ListTitle").HeaderText = Master.eLang.GetString(21, "Title")
+                dgvMovieSets.Columns("NfoPath").Width = 20
+                dgvMovieSets.Columns("NfoPath").Resizable = DataGridViewTriState.False
+                dgvMovieSets.Columns("NfoPath").ReadOnly = True
+                dgvMovieSets.Columns("NfoPath").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovieSets.Columns("NfoPath").Visible = Not CheckColumnHide_MovieSets("NfoPath")
+                dgvMovieSets.Columns("NfoPath").ToolTipText = Master.eLang.GetString(150, "Nfo")
+                dgvMovieSets.Columns("PosterPath").Width = 20
+                dgvMovieSets.Columns("PosterPath").Resizable = DataGridViewTriState.False
+                dgvMovieSets.Columns("PosterPath").ReadOnly = True
+                dgvMovieSets.Columns("PosterPath").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovieSets.Columns("PosterPath").Visible = Not CheckColumnHide_MovieSets("PosterPath")
+                dgvMovieSets.Columns("PosterPath").ToolTipText = Master.eLang.GetString(148, "Poster")
 
-                    dgvMovieSets.Columns("idSet").ValueType = GetType(Long)
+                dgvMovieSets.Columns("idSet").ValueType = GetType(Long)
 
-                    If Master.isWindows Then dgvMovieSets.Columns("ListTitle").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-                    ResizeMovieSetsList()
+                If Master.isWindows Then dgvMovieSets.Columns("ListTitle").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                ResizeMovieSetsList()
 
-                    dgvMovieSets.Enabled = True
-                End If
+                dgvMovieSets.Enabled = True
             End If
 
             If doTVShows Then
@@ -8710,134 +8583,132 @@ Public Class frmMain
                 prevRow_TVSeason = -2
                 prevRow_TVShow = -2
                 dgvTVShows.Enabled = False
-                If dtTVShows.Rows.Count > 0 Then
-                    bsTVShows.DataSource = dtTVShows
-                    dgvTVShows.DataSource = bsTVShows
+                bsTVShows.DataSource = dtTVShows
+                dgvTVShows.DataSource = bsTVShows
 
-                    Try
-                        If Master.eSettings.TVGeneralShowListSorting.Count > 0 Then
-                            For Each mColumn In Master.eSettings.TVGeneralShowListSorting
-                                dgvTVShows.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
-                            Next
-                        End If
-                    Catch ex As Exception
-                        logger.Warn("default list for tv show list sorting has been loaded")
-                        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVShowListSorting, True)
-                        If Master.eSettings.TVGeneralShowListSorting.Count > 0 Then
-                            For Each mColumn In Master.eSettings.TVGeneralShowListSorting
-                                dgvTVShows.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
-                            Next
-                        End If
-                    End Try
+                Try
+                    If Master.eSettings.TVGeneralShowListSorting.Count > 0 Then
+                        For Each mColumn In Master.eSettings.TVGeneralShowListSorting
+                            dgvTVShows.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
+                        Next
+                    End If
+                Catch ex As Exception
+                    logger.Warn("default list for tv show list sorting has been loaded")
+                    Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVShowListSorting, True)
+                    If Master.eSettings.TVGeneralShowListSorting.Count > 0 Then
+                        For Each mColumn In Master.eSettings.TVGeneralShowListSorting
+                            dgvTVShows.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
+                        Next
+                    End If
+                End Try
 
-                    For i As Integer = 0 To dgvTVShows.Columns.Count - 1
-                        dgvTVShows.Columns(i).Visible = False
-                    Next
+                For i As Integer = 0 To dgvTVShows.Columns.Count - 1
+                    dgvTVShows.Columns(i).Visible = False
+                Next
 
-                    dgvTVShows.Columns("BannerPath").Width = 20
-                    dgvTVShows.Columns("BannerPath").Resizable = DataGridViewTriState.False
-                    dgvTVShows.Columns("BannerPath").ReadOnly = True
-                    dgvTVShows.Columns("BannerPath").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvTVShows.Columns("BannerPath").Visible = Not CheckColumnHide_TVShows("BannerPath")
-                    dgvTVShows.Columns("BannerPath").ToolTipText = Master.eLang.GetString(838, "Banner")
-                    dgvTVShows.Columns("CharacterArtPath").Width = 20
-                    dgvTVShows.Columns("CharacterArtPath").Resizable = DataGridViewTriState.False
-                    dgvTVShows.Columns("CharacterArtPath").ReadOnly = True
-                    dgvTVShows.Columns("CharacterArtPath").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvTVShows.Columns("CharacterArtPath").Visible = Not CheckColumnHide_TVShows("CharacterArtPath")
-                    dgvTVShows.Columns("CharacterArtPath").ToolTipText = Master.eLang.GetString(1140, "CharacterArt")
-                    dgvTVShows.Columns("ClearArtPath").Width = 20
-                    dgvTVShows.Columns("ClearArtPath").Resizable = DataGridViewTriState.False
-                    dgvTVShows.Columns("ClearArtPath").ReadOnly = True
-                    dgvTVShows.Columns("ClearArtPath").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvTVShows.Columns("ClearArtPath").Visible = Not CheckColumnHide_TVShows("ClearArtPath")
-                    dgvTVShows.Columns("ClearArtPath").ToolTipText = Master.eLang.GetString(1096, "ClearArt")
-                    dgvTVShows.Columns("ClearLogoPath").Width = 20
-                    dgvTVShows.Columns("ClearLogoPath").Resizable = DataGridViewTriState.False
-                    dgvTVShows.Columns("ClearLogoPath").ReadOnly = True
-                    dgvTVShows.Columns("ClearLogoPath").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvTVShows.Columns("ClearLogoPath").Visible = Not CheckColumnHide_TVShows("ClearLogoPath")
-                    dgvTVShows.Columns("ClearLogoPath").ToolTipText = Master.eLang.GetString(1097, "ClearLogo")
-                    dgvTVShows.Columns("EFanartsPath").Width = 20
-                    dgvTVShows.Columns("EFanartsPath").Resizable = DataGridViewTriState.False
-                    dgvTVShows.Columns("EFanartsPath").ReadOnly = True
-                    dgvTVShows.Columns("EFanartsPath").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvTVShows.Columns("EFanartsPath").Visible = Not CheckColumnHide_TVShows("EFanartsPath")
-                    dgvTVShows.Columns("EFanartsPath").ToolTipText = Master.eLang.GetString(992, "Extrafanarts")
-                    dgvTVShows.Columns("Episodes").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader
-                    dgvTVShows.Columns("Episodes").MinimumWidth = 30
-                    dgvTVShows.Columns("Episodes").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
-                    dgvTVShows.Columns("Episodes").Resizable = DataGridViewTriState.False
-                    dgvTVShows.Columns("Episodes").ReadOnly = True
-                    dgvTVShows.Columns("Episodes").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvTVShows.Columns("Episodes").Visible = Not CheckColumnHide_TVShows("Episodes")
-                    dgvTVShows.Columns("Episodes").ToolTipText = Master.eLang.GetString(682, "Episodes")
-                    dgvTVShows.Columns("Episodes").HeaderText = String.Empty
-                    dgvTVShows.Columns("FanartPath").Width = 20
-                    dgvTVShows.Columns("FanartPath").Resizable = DataGridViewTriState.False
-                    dgvTVShows.Columns("FanartPath").ReadOnly = True
-                    dgvTVShows.Columns("FanartPath").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvTVShows.Columns("FanartPath").Visible = Not CheckColumnHide_TVShows("FanartPath")
-                    dgvTVShows.Columns("FanartPath").ToolTipText = Master.eLang.GetString(149, "Fanart")
-                    dgvTVShows.Columns("HasWatched").Width = 20
-                    dgvTVShows.Columns("HasWatched").Resizable = DataGridViewTriState.False
-                    dgvTVShows.Columns("HasWatched").ReadOnly = True
-                    dgvTVShows.Columns("HasWatched").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvTVShows.Columns("HasWatched").Visible = Not CheckColumnHide_TVShows("HasWatched")
-                    dgvTVShows.Columns("HasWatched").ToolTipText = Master.eLang.GetString(981, "Watched")
-                    dgvTVShows.Columns("LandscapePath").Width = 20
-                    dgvTVShows.Columns("LandscapePath").Resizable = DataGridViewTriState.False
-                    dgvTVShows.Columns("LandscapePath").ReadOnly = True
-                    dgvTVShows.Columns("LandscapePath").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvTVShows.Columns("LandscapePath").Visible = Not CheckColumnHide_TVShows("LandscapePath")
-                    dgvTVShows.Columns("LandscapePath").ToolTipText = Master.eLang.GetString(1035, "Landscape")
-                    dgvTVShows.Columns("ListTitle").Resizable = DataGridViewTriState.True
-                    dgvTVShows.Columns("ListTitle").ReadOnly = True
-                    dgvTVShows.Columns("ListTitle").MinimumWidth = 83
-                    dgvTVShows.Columns("ListTitle").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvTVShows.Columns("ListTitle").Visible = True
-                    dgvTVShows.Columns("ListTitle").ToolTipText = Master.eLang.GetString(21, "Title")
-                    dgvTVShows.Columns("ListTitle").HeaderText = Master.eLang.GetString(21, "Title")
-                    dgvTVShows.Columns("NfoPath").Width = 20
-                    dgvTVShows.Columns("NfoPath").Resizable = DataGridViewTriState.False
-                    dgvTVShows.Columns("NfoPath").ReadOnly = True
-                    dgvTVShows.Columns("NfoPath").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvTVShows.Columns("NfoPath").Visible = Not CheckColumnHide_TVShows("NfoPath")
-                    dgvTVShows.Columns("NfoPath").ToolTipText = Master.eLang.GetString(150, "Nfo")
-                    dgvTVShows.Columns("PosterPath").Width = 20
-                    dgvTVShows.Columns("PosterPath").Resizable = DataGridViewTriState.False
-                    dgvTVShows.Columns("PosterPath").ReadOnly = True
-                    dgvTVShows.Columns("PosterPath").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvTVShows.Columns("PosterPath").Visible = Not CheckColumnHide_TVShows("PosterPath")
-                    dgvTVShows.Columns("PosterPath").ToolTipText = Master.eLang.GetString(148, "Poster")
-                    dgvTVShows.Columns("Status").Resizable = DataGridViewTriState.False
-                    dgvTVShows.Columns("Status").ReadOnly = True
-                    dgvTVShows.Columns("Status").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvTVShows.Columns("Status").Visible = Not CheckColumnHide_TVShows("Status")
-                    dgvTVShows.Columns("Status").ToolTipText = Master.eLang.GetString(215, "Status")
-                    dgvTVShows.Columns("Status").HeaderText = Master.eLang.GetString(215, "Status")
-                    dgvTVShows.Columns("Status").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
-                    dgvTVShows.Columns("strOriginalTitle").Resizable = DataGridViewTriState.False
-                    dgvTVShows.Columns("strOriginalTitle").ReadOnly = True
-                    dgvTVShows.Columns("strOriginalTitle").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvTVShows.Columns("strOriginalTitle").Visible = Not CheckColumnHide_TVShows("strOriginalTitle")
-                    dgvTVShows.Columns("strOriginalTitle").ToolTipText = Master.eLang.GetString(302, "Original Title")
-                    dgvTVShows.Columns("strOriginalTitle").HeaderText = Master.eLang.GetString(302, "Original Title")
-                    dgvTVShows.Columns("strOriginalTitle").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
-                    dgvTVShows.Columns("ThemePath").Width = 20
-                    dgvTVShows.Columns("ThemePath").Resizable = DataGridViewTriState.False
-                    dgvTVShows.Columns("ThemePath").ReadOnly = True
-                    dgvTVShows.Columns("ThemePath").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvTVShows.Columns("ThemePath").Visible = Not CheckColumnHide_TVShows("ThemePath")
-                    dgvTVShows.Columns("ThemePath").ToolTipText = Master.eLang.GetString(1118, "Theme")
+                dgvTVShows.Columns("BannerPath").Width = 20
+                dgvTVShows.Columns("BannerPath").Resizable = DataGridViewTriState.False
+                dgvTVShows.Columns("BannerPath").ReadOnly = True
+                dgvTVShows.Columns("BannerPath").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvTVShows.Columns("BannerPath").Visible = Not CheckColumnHide_TVShows("BannerPath")
+                dgvTVShows.Columns("BannerPath").ToolTipText = Master.eLang.GetString(838, "Banner")
+                dgvTVShows.Columns("CharacterArtPath").Width = 20
+                dgvTVShows.Columns("CharacterArtPath").Resizable = DataGridViewTriState.False
+                dgvTVShows.Columns("CharacterArtPath").ReadOnly = True
+                dgvTVShows.Columns("CharacterArtPath").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvTVShows.Columns("CharacterArtPath").Visible = Not CheckColumnHide_TVShows("CharacterArtPath")
+                dgvTVShows.Columns("CharacterArtPath").ToolTipText = Master.eLang.GetString(1140, "CharacterArt")
+                dgvTVShows.Columns("ClearArtPath").Width = 20
+                dgvTVShows.Columns("ClearArtPath").Resizable = DataGridViewTriState.False
+                dgvTVShows.Columns("ClearArtPath").ReadOnly = True
+                dgvTVShows.Columns("ClearArtPath").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvTVShows.Columns("ClearArtPath").Visible = Not CheckColumnHide_TVShows("ClearArtPath")
+                dgvTVShows.Columns("ClearArtPath").ToolTipText = Master.eLang.GetString(1096, "ClearArt")
+                dgvTVShows.Columns("ClearLogoPath").Width = 20
+                dgvTVShows.Columns("ClearLogoPath").Resizable = DataGridViewTriState.False
+                dgvTVShows.Columns("ClearLogoPath").ReadOnly = True
+                dgvTVShows.Columns("ClearLogoPath").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvTVShows.Columns("ClearLogoPath").Visible = Not CheckColumnHide_TVShows("ClearLogoPath")
+                dgvTVShows.Columns("ClearLogoPath").ToolTipText = Master.eLang.GetString(1097, "ClearLogo")
+                dgvTVShows.Columns("EFanartsPath").Width = 20
+                dgvTVShows.Columns("EFanartsPath").Resizable = DataGridViewTriState.False
+                dgvTVShows.Columns("EFanartsPath").ReadOnly = True
+                dgvTVShows.Columns("EFanartsPath").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvTVShows.Columns("EFanartsPath").Visible = Not CheckColumnHide_TVShows("EFanartsPath")
+                dgvTVShows.Columns("EFanartsPath").ToolTipText = Master.eLang.GetString(992, "Extrafanarts")
+                dgvTVShows.Columns("Episodes").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader
+                dgvTVShows.Columns("Episodes").MinimumWidth = 30
+                dgvTVShows.Columns("Episodes").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
+                dgvTVShows.Columns("Episodes").Resizable = DataGridViewTriState.False
+                dgvTVShows.Columns("Episodes").ReadOnly = True
+                dgvTVShows.Columns("Episodes").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvTVShows.Columns("Episodes").Visible = Not CheckColumnHide_TVShows("Episodes")
+                dgvTVShows.Columns("Episodes").ToolTipText = Master.eLang.GetString(682, "Episodes")
+                dgvTVShows.Columns("Episodes").HeaderText = String.Empty
+                dgvTVShows.Columns("FanartPath").Width = 20
+                dgvTVShows.Columns("FanartPath").Resizable = DataGridViewTriState.False
+                dgvTVShows.Columns("FanartPath").ReadOnly = True
+                dgvTVShows.Columns("FanartPath").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvTVShows.Columns("FanartPath").Visible = Not CheckColumnHide_TVShows("FanartPath")
+                dgvTVShows.Columns("FanartPath").ToolTipText = Master.eLang.GetString(149, "Fanart")
+                dgvTVShows.Columns("HasWatched").Width = 20
+                dgvTVShows.Columns("HasWatched").Resizable = DataGridViewTriState.False
+                dgvTVShows.Columns("HasWatched").ReadOnly = True
+                dgvTVShows.Columns("HasWatched").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvTVShows.Columns("HasWatched").Visible = Not CheckColumnHide_TVShows("HasWatched")
+                dgvTVShows.Columns("HasWatched").ToolTipText = Master.eLang.GetString(981, "Watched")
+                dgvTVShows.Columns("LandscapePath").Width = 20
+                dgvTVShows.Columns("LandscapePath").Resizable = DataGridViewTriState.False
+                dgvTVShows.Columns("LandscapePath").ReadOnly = True
+                dgvTVShows.Columns("LandscapePath").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvTVShows.Columns("LandscapePath").Visible = Not CheckColumnHide_TVShows("LandscapePath")
+                dgvTVShows.Columns("LandscapePath").ToolTipText = Master.eLang.GetString(1035, "Landscape")
+                dgvTVShows.Columns("ListTitle").Resizable = DataGridViewTriState.True
+                dgvTVShows.Columns("ListTitle").ReadOnly = True
+                dgvTVShows.Columns("ListTitle").MinimumWidth = 83
+                dgvTVShows.Columns("ListTitle").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvTVShows.Columns("ListTitle").Visible = True
+                dgvTVShows.Columns("ListTitle").ToolTipText = Master.eLang.GetString(21, "Title")
+                dgvTVShows.Columns("ListTitle").HeaderText = Master.eLang.GetString(21, "Title")
+                dgvTVShows.Columns("NfoPath").Width = 20
+                dgvTVShows.Columns("NfoPath").Resizable = DataGridViewTriState.False
+                dgvTVShows.Columns("NfoPath").ReadOnly = True
+                dgvTVShows.Columns("NfoPath").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvTVShows.Columns("NfoPath").Visible = Not CheckColumnHide_TVShows("NfoPath")
+                dgvTVShows.Columns("NfoPath").ToolTipText = Master.eLang.GetString(150, "Nfo")
+                dgvTVShows.Columns("PosterPath").Width = 20
+                dgvTVShows.Columns("PosterPath").Resizable = DataGridViewTriState.False
+                dgvTVShows.Columns("PosterPath").ReadOnly = True
+                dgvTVShows.Columns("PosterPath").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvTVShows.Columns("PosterPath").Visible = Not CheckColumnHide_TVShows("PosterPath")
+                dgvTVShows.Columns("PosterPath").ToolTipText = Master.eLang.GetString(148, "Poster")
+                dgvTVShows.Columns("Status").Resizable = DataGridViewTriState.False
+                dgvTVShows.Columns("Status").ReadOnly = True
+                dgvTVShows.Columns("Status").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvTVShows.Columns("Status").Visible = Not CheckColumnHide_TVShows("Status")
+                dgvTVShows.Columns("Status").ToolTipText = Master.eLang.GetString(215, "Status")
+                dgvTVShows.Columns("Status").HeaderText = Master.eLang.GetString(215, "Status")
+                dgvTVShows.Columns("Status").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
+                dgvTVShows.Columns("strOriginalTitle").Resizable = DataGridViewTriState.False
+                dgvTVShows.Columns("strOriginalTitle").ReadOnly = True
+                dgvTVShows.Columns("strOriginalTitle").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvTVShows.Columns("strOriginalTitle").Visible = Not CheckColumnHide_TVShows("strOriginalTitle")
+                dgvTVShows.Columns("strOriginalTitle").ToolTipText = Master.eLang.GetString(302, "Original Title")
+                dgvTVShows.Columns("strOriginalTitle").HeaderText = Master.eLang.GetString(302, "Original Title")
+                dgvTVShows.Columns("strOriginalTitle").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
+                dgvTVShows.Columns("ThemePath").Width = 20
+                dgvTVShows.Columns("ThemePath").Resizable = DataGridViewTriState.False
+                dgvTVShows.Columns("ThemePath").ReadOnly = True
+                dgvTVShows.Columns("ThemePath").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvTVShows.Columns("ThemePath").Visible = Not CheckColumnHide_TVShows("ThemePath")
+                dgvTVShows.Columns("ThemePath").ToolTipText = Master.eLang.GetString(1118, "Theme")
 
-                    dgvTVShows.Columns("idShow").ValueType = GetType(Long)
+                dgvTVShows.Columns("idShow").ValueType = GetType(Long)
 
-                    If Master.isWindows Then dgvTVShows.Columns("ListTitle").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-                    ResizeTVLists(dgvTVShows.Columns("ListTitle").Index)
+                If Master.isWindows Then dgvTVShows.Columns("ListTitle").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                ResizeTVLists(dgvTVShows.Columns("ListTitle").Index)
 
-                    dgvTVShows.Enabled = True
-                End If
+                dgvTVShows.Enabled = True
             End If
 
             If dgvMovies.RowCount > 0 OrElse dgvMovieSets.RowCount > 0 OrElse dgvTVShows.RowCount > 0 Then
@@ -8877,6 +8748,228 @@ Public Class frmMain
                 UpdateMainTabCounts()
             End If
         End If
+    End Sub
+
+    Private Sub FillList_TVEpisodes(ByVal ShowID As Long, ByVal Season As Integer)
+        RemoveHandler dgvTVEpisodes.SelectionChanged, AddressOf dgvTVEpisodes_SelectionChanged
+        Dim sEpisodeSorting As Enums.EpisodeSorting = Master.DB.GetTVShowEpisodeSorting(ShowID)
+
+        bsTVEpisodes.DataSource = Nothing
+        dgvTVEpisodes.DataSource = Nothing
+
+        dgvTVEpisodes.Enabled = False
+
+        If Season = 999 Then
+            Master.DB.FillDataTable(dtTVEpisodes, String.Concat("SELECT * FROM episodelist WHERE idShow = ", ShowID, If(Master.eSettings.TVDisplayMissingEpisodes, String.Empty, " AND Missing = 0"), " ORDER BY Season, Episode;"))
+        Else
+            Master.DB.FillDataTable(dtTVEpisodes, String.Concat("SELECT * FROM episodelist WHERE idShow = ", ShowID, " AND Season = ", Season, If(Master.eSettings.TVDisplayMissingEpisodes, String.Empty, " AND Missing = 0"), " ORDER BY Episode;"))
+        End If
+
+        bsTVEpisodes.DataSource = dtTVEpisodes
+        dgvTVEpisodes.DataSource = bsTVEpisodes
+
+        Try
+            If Master.eSettings.TVGeneralEpisodeListSorting.Count > 0 Then
+                For Each mColumn In Master.eSettings.TVGeneralEpisodeListSorting
+                    dgvTVEpisodes.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
+                Next
+            End If
+        Catch ex As Exception
+            logger.Warn("default list for episode list sorting has been loaded")
+            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVEpisodeListSorting, True)
+            If Master.eSettings.TVGeneralEpisodeListSorting.Count > 0 Then
+                For Each mColumn In Master.eSettings.TVGeneralEpisodeListSorting
+                    dgvTVEpisodes.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
+                Next
+            End If
+        End Try
+
+        dgvTVEpisodes.Columns("Season").DisplayIndex = 0
+        dgvTVEpisodes.Columns("Episode").DisplayIndex = 1
+        dgvTVEpisodes.Columns("Aired").DisplayIndex = 2
+
+        For i As Integer = 0 To dgvTVEpisodes.Columns.Count - 1
+            dgvTVEpisodes.Columns(i).Visible = False
+        Next
+
+        dgvTVEpisodes.Columns("Aired").Resizable = DataGridViewTriState.False
+        dgvTVEpisodes.Columns("Aired").Width = 80
+        dgvTVEpisodes.Columns("Aired").ReadOnly = True
+        dgvTVEpisodes.Columns("Aired").SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVEpisodes.Columns("Aired").Visible = sEpisodeSorting = Enums.EpisodeSorting.Aired
+        dgvTVEpisodes.Columns("Aired").ToolTipText = Master.eLang.GetString(728, "Aired")
+        dgvTVEpisodes.Columns("Aired").HeaderText = Master.eLang.GetString(728, "Aired")
+        dgvTVEpisodes.Columns("Episode").Resizable = DataGridViewTriState.False
+        dgvTVEpisodes.Columns("Episode").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader
+        dgvTVEpisodes.Columns("Episode").ReadOnly = True
+        dgvTVEpisodes.Columns("Episode").MinimumWidth = If(Season = 999, 35, 70)
+        dgvTVEpisodes.Columns("Episode").SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVEpisodes.Columns("Episode").Visible = Not sEpisodeSorting = Enums.EpisodeSorting.Aired
+        dgvTVEpisodes.Columns("Episode").ToolTipText = Master.eLang.GetString(755, "Episode #")
+        dgvTVEpisodes.Columns("Episode").HeaderText = "#"
+        dgvTVEpisodes.Columns("Episode").DefaultCellStyle.Format = "00"
+        dgvTVEpisodes.Columns("FanartPath").Width = 20
+        dgvTVEpisodes.Columns("FanartPath").Resizable = DataGridViewTriState.False
+        dgvTVEpisodes.Columns("FanartPath").ReadOnly = True
+        dgvTVEpisodes.Columns("FanartPath").SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVEpisodes.Columns("FanartPath").Visible = Not CheckColumnHide_TVEpisodes("FanartPath")
+        dgvTVEpisodes.Columns("FanartPath").ToolTipText = Master.eLang.GetString(149, "Fanart")
+        dgvTVEpisodes.Columns("HasSub").Width = 20
+        dgvTVEpisodes.Columns("HasSub").Resizable = DataGridViewTriState.False
+        dgvTVEpisodes.Columns("HasSub").ReadOnly = True
+        dgvTVEpisodes.Columns("HasSub").SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVEpisodes.Columns("HasSub").Visible = Not CheckColumnHide_TVEpisodes("HasSub")
+        dgvTVEpisodes.Columns("HasSub").ToolTipText = Master.eLang.GetString(152, "Subtitles")
+        dgvTVEpisodes.Columns("NfoPath").Width = 20
+        dgvTVEpisodes.Columns("NfoPath").Resizable = DataGridViewTriState.False
+        dgvTVEpisodes.Columns("NfoPath").ReadOnly = True
+        dgvTVEpisodes.Columns("NfoPath").SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVEpisodes.Columns("NfoPath").Visible = Not CheckColumnHide_TVEpisodes("NfoPath")
+        dgvTVEpisodes.Columns("NfoPath").ToolTipText = Master.eLang.GetString(150, "Nfo")
+        dgvTVEpisodes.Columns("Playcount").Width = 20
+        dgvTVEpisodes.Columns("Playcount").Resizable = DataGridViewTriState.False
+        dgvTVEpisodes.Columns("Playcount").ReadOnly = True
+        dgvTVEpisodes.Columns("Playcount").SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVEpisodes.Columns("Playcount").Visible = Not CheckColumnHide_TVEpisodes("Playcount")
+        dgvTVEpisodes.Columns("Playcount").ToolTipText = Master.eLang.GetString(981, "Watched")
+        dgvTVEpisodes.Columns("PosterPath").Width = 20
+        dgvTVEpisodes.Columns("PosterPath").Resizable = DataGridViewTriState.False
+        dgvTVEpisodes.Columns("PosterPath").ReadOnly = True
+        dgvTVEpisodes.Columns("PosterPath").SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVEpisodes.Columns("PosterPath").Visible = Not CheckColumnHide_TVEpisodes("PosterPath")
+        dgvTVEpisodes.Columns("PosterPath").ToolTipText = Master.eLang.GetString(148, "Poster")
+        dgvTVEpisodes.Columns("Season").MinimumWidth = 35
+        dgvTVEpisodes.Columns("Season").Resizable = DataGridViewTriState.False
+        dgvTVEpisodes.Columns("Season").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader
+        dgvTVEpisodes.Columns("Season").ReadOnly = True
+        dgvTVEpisodes.Columns("Season").SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVEpisodes.Columns("Season").Visible = Season = 999
+        dgvTVEpisodes.Columns("Season").ToolTipText = Master.eLang.GetString(659, "Season #")
+        dgvTVEpisodes.Columns("Season").HeaderText = "#"
+        dgvTVEpisodes.Columns("Season").DefaultCellStyle.Format = "00"
+        dgvTVEpisodes.Columns("Title").Resizable = DataGridViewTriState.True
+        dgvTVEpisodes.Columns("Title").ReadOnly = True
+        dgvTVEpisodes.Columns("Title").MinimumWidth = 83
+        dgvTVEpisodes.Columns("Title").SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVEpisodes.Columns("Title").Visible = True
+        dgvTVEpisodes.Columns("Title").ToolTipText = Master.eLang.GetString(21, "Title")
+        dgvTVEpisodes.Columns("Title").HeaderText = Master.eLang.GetString(21, "Title")
+
+        dgvTVEpisodes.Columns("idEpisode").ValueType = GetType(Long)
+        dgvTVEpisodes.Columns("idShow").ValueType = GetType(Long)
+        dgvTVEpisodes.Columns("Episode").ValueType = GetType(Integer)
+        dgvTVEpisodes.Columns("Season").ValueType = GetType(Integer)
+
+        If Master.isWindows Then dgvTVEpisodes.Columns("Title").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+        ResizeTVLists(dgvTVEpisodes.Columns("Title").Index)
+
+        dgvTVEpisodes.ClearSelection()
+        dgvTVEpisodes.CurrentCell = Nothing
+
+        dgvTVEpisodes.Enabled = True
+        AddHandler dgvTVEpisodes.SelectionChanged, AddressOf dgvTVEpisodes_SelectionChanged
+    End Sub
+
+    Private Sub FillList_TVSeasons(ByVal ShowID As Long)
+        RemoveHandler dgvTVSeasons.SelectionChanged, AddressOf dgvTVSeasons_SelectionChanged
+        bsTVSeasons.DataSource = Nothing
+        dgvTVSeasons.DataSource = Nothing
+        bsTVEpisodes.DataSource = Nothing
+        dgvTVEpisodes.DataSource = Nothing
+
+        If Master.eSettings.TVDisplayMissingEpisodes Then
+            Master.DB.FillDataTable(dtTVSeasons, String.Concat("SELECT * FROM seasonslist WHERE idShow = ", ShowID, " ORDER BY Season;"))
+        Else
+            Master.DB.FillDataTable(dtTVSeasons, String.Concat("SELECT DISTINCT seasonslist.* ",
+                                                                "FROM seasonslist ",
+                                                                "LEFT OUTER JOIN episodelist ON (seasonslist.idShow = episodelist.idShow) AND (seasonslist.Season = episodelist.Season) ",
+                                                                "WHERE seasonslist.idShow = ", ShowID, " AND (episodelist.Missing = 0 OR seasonslist.Season = 999) ",
+                                                                "ORDER BY seasonslist.Season;"))
+        End If
+
+        bsTVSeasons.DataSource = dtTVSeasons
+        dgvTVSeasons.DataSource = bsTVSeasons
+
+        If dgvTVSeasons.Columns.Count > 0 Then
+            Try
+                If Master.eSettings.TVGeneralSeasonListSorting.Count > 0 Then
+                    For Each mColumn In Master.eSettings.TVGeneralSeasonListSorting
+                        dgvTVSeasons.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
+                    Next
+                End If
+            Catch ex As Exception
+                logger.Warn("default list for season list sorting has been loaded")
+                Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVSeasonListSorting, True)
+                If Master.eSettings.TVGeneralSeasonListSorting.Count > 0 Then
+                    For Each mColumn In Master.eSettings.TVGeneralSeasonListSorting
+                        dgvTVSeasons.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
+                    Next
+                End If
+            End Try
+        End If
+
+        For i As Integer = 0 To dgvTVSeasons.Columns.Count - 1
+            dgvTVSeasons.Columns(i).Visible = False
+        Next
+
+        dgvTVSeasons.Columns("BannerPath").Width = 20
+        dgvTVSeasons.Columns("BannerPath").Resizable = DataGridViewTriState.False
+        dgvTVSeasons.Columns("BannerPath").ReadOnly = True
+        dgvTVSeasons.Columns("BannerPath").SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVSeasons.Columns("BannerPath").Visible = Not CheckColumnHide_TVSeasons("BannerPath")
+        dgvTVSeasons.Columns("BannerPath").ToolTipText = Master.eLang.GetString(838, "Banner")
+        dgvTVSeasons.Columns("Episodes").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader
+        dgvTVSeasons.Columns("Episodes").MinimumWidth = 30
+        dgvTVSeasons.Columns("Episodes").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
+        dgvTVSeasons.Columns("Episodes").Resizable = DataGridViewTriState.False
+        dgvTVSeasons.Columns("Episodes").ReadOnly = True
+        dgvTVSeasons.Columns("Episodes").SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVSeasons.Columns("Episodes").Visible = Not CheckColumnHide_TVSeasons("Episodes")
+        dgvTVSeasons.Columns("Episodes").ToolTipText = Master.eLang.GetString(682, "Episodes")
+        dgvTVSeasons.Columns("Episodes").HeaderText = String.Empty
+        dgvTVSeasons.Columns("FanartPath").Width = 20
+        dgvTVSeasons.Columns("FanartPath").Resizable = DataGridViewTriState.False
+        dgvTVSeasons.Columns("FanartPath").ReadOnly = True
+        dgvTVSeasons.Columns("FanartPath").SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVSeasons.Columns("FanartPath").Visible = Not CheckColumnHide_TVSeasons("FanartPath")
+        dgvTVSeasons.Columns("FanartPath").ToolTipText = Master.eLang.GetString(149, "Fanart")
+        dgvTVSeasons.Columns("HasWatched").Width = 20
+        dgvTVSeasons.Columns("HasWatched").Resizable = DataGridViewTriState.False
+        dgvTVSeasons.Columns("HasWatched").ReadOnly = True
+        dgvTVSeasons.Columns("HasWatched").SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVSeasons.Columns("HasWatched").Visible = Not CheckColumnHide_TVSeasons("HasWatched")
+        dgvTVSeasons.Columns("HasWatched").ToolTipText = Master.eLang.GetString(981, "Watched")
+        dgvTVSeasons.Columns("LandscapePath").Width = 20
+        dgvTVSeasons.Columns("LandscapePath").Resizable = DataGridViewTriState.False
+        dgvTVSeasons.Columns("LandscapePath").ReadOnly = True
+        dgvTVSeasons.Columns("LandscapePath").SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVSeasons.Columns("LandscapePath").Visible = Not CheckColumnHide_TVSeasons("LandscapePath")
+        dgvTVSeasons.Columns("LandscapePath").ToolTipText = Master.eLang.GetString(1035, "Landscape")
+        dgvTVSeasons.Columns("PosterPath").Width = 20
+        dgvTVSeasons.Columns("PosterPath").Resizable = DataGridViewTriState.False
+        dgvTVSeasons.Columns("PosterPath").ReadOnly = True
+        dgvTVSeasons.Columns("PosterPath").SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVSeasons.Columns("PosterPath").Visible = Not CheckColumnHide_TVSeasons("PosterPath")
+        dgvTVSeasons.Columns("PosterPath").ToolTipText = Master.eLang.GetString(148, "Poster")
+        dgvTVSeasons.Columns("SeasonText").Resizable = DataGridViewTriState.True
+        dgvTVSeasons.Columns("SeasonText").ReadOnly = True
+        dgvTVSeasons.Columns("SeasonText").MinimumWidth = 83
+        dgvTVSeasons.Columns("SeasonText").SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVSeasons.Columns("SeasonText").Visible = True
+        dgvTVSeasons.Columns("SeasonText").ToolTipText = Master.eLang.GetString(650, "Season")
+        dgvTVSeasons.Columns("SeasonText").HeaderText = Master.eLang.GetString(650, "Season")
+
+        dgvTVSeasons.Columns("idSeason").ValueType = GetType(Long)
+        dgvTVSeasons.Columns("idShow").ValueType = GetType(Long)
+
+        If Master.isWindows Then dgvTVSeasons.Columns("SeasonText").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+        ResizeTVLists(dgvTVSeasons.Columns("SeasonText").Index)
+
+        dgvTVSeasons.Sort(dgvTVSeasons.Columns("SeasonText"), System.ComponentModel.ListSortDirection.Ascending)
+
+        FillList_TVEpisodes(ShowID, Convert.ToInt32(dgvTVSeasons.Item("Season", 0).Value))
+
+        AddHandler dgvTVSeasons.SelectionChanged, AddressOf dgvTVSeasons_SelectionChanged
     End Sub
 
     Private Sub FillScreenInfoWithImages()
@@ -9624,109 +9717,6 @@ Public Class frmMain
         ResumeLayout()
     End Sub
 
-    Private Sub FillTVSeasons(ByVal ShowID As Long)
-        RemoveHandler dgvTVSeasons.SelectionChanged, AddressOf dgvTVSeasons_SelectionChanged
-        bsTVSeasons.DataSource = Nothing
-        dgvTVSeasons.DataSource = Nothing
-        bsTVEpisodes.DataSource = Nothing
-        dgvTVEpisodes.DataSource = Nothing
-
-        If Master.eSettings.TVDisplayMissingEpisodes Then
-            Master.DB.FillDataTable(dtTVSeasons, String.Concat("SELECT * FROM seasonslist WHERE idShow = ", ShowID, " ORDER BY Season;"))
-        Else
-            Master.DB.FillDataTable(dtTVSeasons, String.Concat("SELECT DISTINCT seasonslist.* ",
-                                                                "FROM seasonslist ",
-                                                                "LEFT OUTER JOIN episodelist ON (seasonslist.idShow = episodelist.idShow) AND (seasonslist.Season = episodelist.Season) ",
-                                                                "WHERE seasonslist.idShow = ", ShowID, " AND (episodelist.Missing = 0 OR seasonslist.Season = 999) ",
-                                                                "ORDER BY seasonslist.Season;"))
-        End If
-
-        If dtTVSeasons.Rows.Count > 0 Then
-            bsTVSeasons.DataSource = dtTVSeasons
-            dgvTVSeasons.DataSource = bsTVSeasons
-
-            If dgvTVSeasons.Columns.Count > 0 Then
-                Try
-                    If Master.eSettings.TVGeneralSeasonListSorting.Count > 0 Then
-                        For Each mColumn In Master.eSettings.TVGeneralSeasonListSorting
-                            dgvTVSeasons.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
-                        Next
-                    End If
-                Catch ex As Exception
-                    logger.Warn("default list for season list sorting has been loaded")
-                    Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVSeasonListSorting, True)
-                    If Master.eSettings.TVGeneralSeasonListSorting.Count > 0 Then
-                        For Each mColumn In Master.eSettings.TVGeneralSeasonListSorting
-                            dgvTVSeasons.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
-                        Next
-                    End If
-                End Try
-            End If
-
-            For i As Integer = 0 To dgvTVSeasons.Columns.Count - 1
-                dgvTVSeasons.Columns(i).Visible = False
-            Next
-
-            dgvTVSeasons.Columns("BannerPath").Width = 20
-            dgvTVSeasons.Columns("BannerPath").Resizable = DataGridViewTriState.False
-            dgvTVSeasons.Columns("BannerPath").ReadOnly = True
-            dgvTVSeasons.Columns("BannerPath").SortMode = DataGridViewColumnSortMode.Automatic
-            dgvTVSeasons.Columns("BannerPath").Visible = Not CheckColumnHide_TVSeasons("BannerPath")
-            dgvTVSeasons.Columns("BannerPath").ToolTipText = Master.eLang.GetString(838, "Banner")
-            dgvTVSeasons.Columns("Episodes").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader
-            dgvTVSeasons.Columns("Episodes").MinimumWidth = 30
-            dgvTVSeasons.Columns("Episodes").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
-            dgvTVSeasons.Columns("Episodes").Resizable = DataGridViewTriState.False
-            dgvTVSeasons.Columns("Episodes").ReadOnly = True
-            dgvTVSeasons.Columns("Episodes").SortMode = DataGridViewColumnSortMode.Automatic
-            dgvTVSeasons.Columns("Episodes").Visible = Not CheckColumnHide_TVSeasons("Episodes")
-            dgvTVSeasons.Columns("Episodes").ToolTipText = Master.eLang.GetString(682, "Episodes")
-            dgvTVSeasons.Columns("Episodes").HeaderText = String.Empty
-            dgvTVSeasons.Columns("FanartPath").Width = 20
-            dgvTVSeasons.Columns("FanartPath").Resizable = DataGridViewTriState.False
-            dgvTVSeasons.Columns("FanartPath").ReadOnly = True
-            dgvTVSeasons.Columns("FanartPath").SortMode = DataGridViewColumnSortMode.Automatic
-            dgvTVSeasons.Columns("FanartPath").Visible = Not CheckColumnHide_TVSeasons("FanartPath")
-            dgvTVSeasons.Columns("FanartPath").ToolTipText = Master.eLang.GetString(149, "Fanart")
-            dgvTVSeasons.Columns("HasWatched").Width = 20
-            dgvTVSeasons.Columns("HasWatched").Resizable = DataGridViewTriState.False
-            dgvTVSeasons.Columns("HasWatched").ReadOnly = True
-            dgvTVSeasons.Columns("HasWatched").SortMode = DataGridViewColumnSortMode.Automatic
-            dgvTVSeasons.Columns("HasWatched").Visible = Not CheckColumnHide_TVSeasons("HasWatched")
-            dgvTVSeasons.Columns("HasWatched").ToolTipText = Master.eLang.GetString(981, "Watched")
-            dgvTVSeasons.Columns("LandscapePath").Width = 20
-            dgvTVSeasons.Columns("LandscapePath").Resizable = DataGridViewTriState.False
-            dgvTVSeasons.Columns("LandscapePath").ReadOnly = True
-            dgvTVSeasons.Columns("LandscapePath").SortMode = DataGridViewColumnSortMode.Automatic
-            dgvTVSeasons.Columns("LandscapePath").Visible = Not CheckColumnHide_TVSeasons("LandscapePath")
-            dgvTVSeasons.Columns("LandscapePath").ToolTipText = Master.eLang.GetString(1035, "Landscape")
-            dgvTVSeasons.Columns("PosterPath").Width = 20
-            dgvTVSeasons.Columns("PosterPath").Resizable = DataGridViewTriState.False
-            dgvTVSeasons.Columns("PosterPath").ReadOnly = True
-            dgvTVSeasons.Columns("PosterPath").SortMode = DataGridViewColumnSortMode.Automatic
-            dgvTVSeasons.Columns("PosterPath").Visible = Not CheckColumnHide_TVSeasons("PosterPath")
-            dgvTVSeasons.Columns("PosterPath").ToolTipText = Master.eLang.GetString(148, "Poster")
-            dgvTVSeasons.Columns("SeasonText").Resizable = DataGridViewTriState.True
-            dgvTVSeasons.Columns("SeasonText").ReadOnly = True
-            dgvTVSeasons.Columns("SeasonText").MinimumWidth = 83
-            dgvTVSeasons.Columns("SeasonText").SortMode = DataGridViewColumnSortMode.Automatic
-            dgvTVSeasons.Columns("SeasonText").Visible = True
-            dgvTVSeasons.Columns("SeasonText").ToolTipText = Master.eLang.GetString(650, "Season")
-            dgvTVSeasons.Columns("SeasonText").HeaderText = Master.eLang.GetString(650, "Season")
-
-            dgvTVSeasons.Columns("idSeason").ValueType = GetType(Long)
-            dgvTVSeasons.Columns("idShow").ValueType = GetType(Long)
-
-            If Master.isWindows Then dgvTVSeasons.Columns("SeasonText").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-            ResizeTVLists(dgvTVSeasons.Columns("SeasonText").Index)
-
-            dgvTVSeasons.Sort(dgvTVSeasons.Columns("SeasonText"), System.ComponentModel.ListSortDirection.Ascending)
-
-            FillTVEpisodes(ShowID, Convert.ToInt32(dgvTVSeasons.Item("Season", 0).Value))
-        End If
-        AddHandler dgvTVSeasons.SelectionChanged, AddressOf dgvTVSeasons_SelectionChanged
-    End Sub
-
     Private Sub frmMain_FormClosed(sender As Object, e As FormClosedEventArgs) Handles Me.FormClosed
         logger.Info("====Ember Media Manager exiting====")
     End Sub
@@ -9934,7 +9924,7 @@ Public Class frmMain
         RemoveHandler dgvMovies.RowsAdded, AddressOf dgvMovies_RowsAdded
         RemoveHandler dgvMovieSets.RowsAdded, AddressOf dgvMovieSets_RowsAdded
         RemoveHandler dgvTVShows.RowsAdded, AddressOf dgvTVShows_RowsAdded
-        FillList(True, True, True)
+        FillList_Main(True, True, True)
         AddHandler dgvMovies.CellEnter, AddressOf dgvMovies_CellEnter
         AddHandler dgvMovies.RowsAdded, AddressOf dgvMovies_RowsAdded
         AddHandler dgvMovieSets.RowsAdded, AddressOf dgvMovieSets_RowsAdded
@@ -10257,7 +10247,7 @@ Public Class frmMain
                     Case "controlsenabled"
                         SetControlsEnabled(Convert.ToBoolean(_params(1)), If(_params.Count = 3, Convert.ToBoolean(_params(2)), False))
                     Case "filllist"
-                        FillList(CBool(_params(1)), CBool(_params(2)), CBool(_params(3)))
+                        FillList_Main(CBool(_params(1)), CBool(_params(2)), CBool(_params(3)))
                 End Select
             Case Enums.ModuleEventType.Notification
                 Select Case _params(0).ToString
@@ -10897,7 +10887,7 @@ Public Class frmMain
         bwLoadImages_TVShow.WorkerSupportsCancellation = True
         bwLoadImages_TVShow.RunWorkerAsync()
 
-        FillTVSeasons(ID)
+        FillList_TVSeasons(ID)
     End Sub
 
     Private Sub lstActors_SelectedValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles lstActors.SelectedValueChanged
@@ -15087,7 +15077,7 @@ Public Class frmMain
             SQLtransaction.Commit()
         End Using
 
-        FillList(False, True, False)
+        FillList_Main(False, True, False)
     End Sub
 
     Private Sub ResizeMoviesList()
@@ -15210,7 +15200,7 @@ Public Class frmMain
             End If
 
             If doFill Then
-                FillList(True, False, False)
+                FillList_Main(True, False, False)
                 ModulesManager.Instance.RuntimeObjects.FilterMoviesSearch = StringUtils.ConvertToValidFilterString(txtSearchMovies.Text)
                 ModulesManager.Instance.RuntimeObjects.FilterMoviesType = cbSearchMovies.Text
             Else
@@ -15248,7 +15238,7 @@ Public Class frmMain
             End If
 
             If doFill Then
-                FillList(False, True, False)
+                FillList_Main(False, True, False)
             Else
                 txtSearchMovieSets.Focus()
             End If
@@ -15297,7 +15287,7 @@ Public Class frmMain
             End If
 
             If doFill Then
-                FillList(False, False, True)
+                FillList_Main(False, False, True)
                 ModulesManager.Instance.RuntimeObjects.FilterTVShowsSearch = StringUtils.ConvertToValidFilterString(txtSearchShows.Text)
                 ModulesManager.Instance.RuntimeObjects.FilterTVShowsType = cbSearchShows.Text
             Else
@@ -15394,12 +15384,12 @@ Public Class frmMain
             Case Enums.ScannerEventType.ScannerEnded
                 If Not Master.isCL Then
                     SetStatus(String.Empty)
-                    FillList(False, True, False)
+                    FillList_Main(False, True, False)
                     tspbLoading.Visible = False
                     tslLoading.Visible = False
                     LoadingDone = True
                 Else
-                    FillList(True, True, True)
+                    FillList_Main(True, True, True)
                     LoadingDone = True
                 End If
         End Select
@@ -15557,10 +15547,10 @@ Public Class frmMain
                 If Not currThemeType = Theming.ThemeType.Show Then ApplyTheme(Theming.ThemeType.Show)
                 ShowNoInfo(True, Enums.ContentType.TVSeason)
                 currTV = Master.DB.Load_TVSeason(Convert.ToInt64(dgvTVSeasons.Item("idSeason", iRow).Value), True, False)
-                FillTVEpisodes(Convert.ToInt64(dgvTVSeasons.Item("idShow", iRow).Value), Convert.ToInt32(dgvTVSeasons.Item("Season", iRow).Value))
+                FillList_TVEpisodes(Convert.ToInt64(dgvTVSeasons.Item("idShow", iRow).Value), Convert.ToInt32(dgvTVSeasons.Item("Season", iRow).Value))
             Else
                 LoadInfo_TVSeason(Convert.ToInt64(dgvTVSeasons.Item("idSeason", iRow).Value))
-                FillTVEpisodes(Convert.ToInt64(dgvTVSeasons.Item("idShow", iRow).Value), Convert.ToInt32(dgvTVSeasons.Item("Season", iRow).Value))
+                FillList_TVEpisodes(Convert.ToInt64(dgvTVSeasons.Item("idShow", iRow).Value), Convert.ToInt32(dgvTVSeasons.Item("Season", iRow).Value))
             End If
 
             If Not bwMovieScraper.IsBusy AndAlso Not bwMovieSetScraper.IsBusy AndAlso Not fScanner.IsBusy AndAlso
@@ -15589,7 +15579,7 @@ Public Class frmMain
                 String.IsNullOrEmpty(dgvTVShows.Item("PosterPath", iRow).Value.ToString) Then
                 ShowNoInfo(True, Enums.ContentType.TVShow)
                 currTV = Master.DB.Load_TVShow(Convert.ToInt64(dgvTVShows.Item("idShow", iRow).Value), False, False)
-                FillTVSeasons(Convert.ToInt64(dgvTVShows.Item("idShow", iRow).Value))
+                FillList_TVSeasons(Convert.ToInt64(dgvTVShows.Item("idShow", iRow).Value))
             Else
                 LoadInfo_TVShow(Convert.ToInt64(dgvTVShows.Item("idShow", iRow).Value))
             End If
@@ -16175,7 +16165,7 @@ Public Class frmMain
             If Not fScanner.IsBusy AndAlso Not bwLoadImages_Movie.IsBusy AndAlso Not bwMovieScraper.IsBusy AndAlso Not bwReload_Movies.IsBusy AndAlso
                     Not bwLoadImages_MovieSet.IsBusy AndAlso Not bwMovieSetScraper.IsBusy AndAlso Not bwReload_MovieSets.IsBusy AndAlso
                     Not bwLoadImages_TVEpisode.IsBusy AndAlso Not bwLoadImages_TVSeason.IsBusy AndAlso Not bwLoadImages_TVShow.IsBusy AndAlso Not bwReload_TVShows.IsBusy AndAlso Not bwCleanDB.IsBusy Then
-                FillList(True, True, True)
+                FillList_Main(True, True, True)
             End If
 
             SetMenus(True)
@@ -17073,7 +17063,7 @@ Public Class frmMain
                 currList_Movies = currMainTabTag.DefaultList
                 cbFilterLists_Movies.SelectedValue = currList_Movies
                 ModulesManager.Instance.RuntimeObjects.ListMovies = currList_Movies
-                FillList(True, False, False)
+                FillList_Main(True, False, False)
                 mnuMainTools.Enabled = True
                 cmnuTrayTools.Enabled = True
                 mnuScrapeMovies.Visible = True
@@ -17114,7 +17104,7 @@ Public Class frmMain
                 currList_MovieSets = currMainTabTag.DefaultList
                 cbFilterLists_MovieSets.SelectedValue = currList_MovieSets
                 ModulesManager.Instance.RuntimeObjects.ListMovieSets = currList_MovieSets
-                FillList(False, True, False)
+                FillList_Main(False, True, False)
                 mnuMainTools.Enabled = True
                 cmnuTrayTools.Enabled = True
                 mnuScrapeMovies.Visible = False
@@ -17154,7 +17144,7 @@ Public Class frmMain
                 currList_TVShows = currMainTabTag.DefaultList
                 cbFilterLists_Shows.SelectedValue = currList_TVShows
                 ModulesManager.Instance.RuntimeObjects.ListTVShows = currList_TVShows
-                FillList(False, False, True)
+                FillList_Main(False, False, True)
                 mnuMainTools.Enabled = True
                 cmnuTrayTools.Enabled = True
                 mnuScrapeMovies.Visible = False
