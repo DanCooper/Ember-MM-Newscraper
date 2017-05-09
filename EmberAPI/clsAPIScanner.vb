@@ -704,8 +704,8 @@ Public Class Scanner
             If Not String.IsNullOrEmpty(vSource) Then
                 DBMovie.VideoSource = vSource
                 DBMovie.Movie.VideoSource = vSource
-            ElseIf Not DBMovie.VideoSourceSpecified AndAlso AdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
-                vSource = AdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(DBMovie.Filename)), String.Empty, "*EmberAPP")
+            ElseIf Not DBMovie.VideoSourceSpecified AndAlso AdvancedSettings.GetBooleanSetting("VideoSourceByExtension", False, "*EmberAPP") Then
+                vSource = AdvancedSettings.GetSetting(String.Concat("VideoSourceByExtension:", Path.GetExtension(DBMovie.Filename)), String.Empty, "*EmberAPP")
                 If Not String.IsNullOrEmpty(vSource) Then
                     DBMovie.VideoSource = vSource
                     DBMovie.Movie.VideoSource = vSource

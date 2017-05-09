@@ -763,7 +763,7 @@
   <string id="762">Verifying TV Episode Details:</string>
   <string id="763">Search String</string>
   <string id="764">Source Name</string>
-  <string id="765">Map Media Source by File Extension</string>
+  <string id="765">Map Video Source by File Extension</string>
   <string id="766">(Re)Scrape Show</string>
   <string id="767">Change Show</string>
   <string id="768">Delete TV Show</string>
@@ -782,7 +782,7 @@
   <string id="781">Get watched episodes</string>
   <string id="782">Genre Manager</string>
   <string id="783">Plot Summary:</string>
-  <string id="784">Media Sources Editor</string>
+  <string id="784">Video Source Mapping</string>
   <string id="785">Audio &amp; Video Codec Mapping</string>
   <string id="786">Default List</string>
   <string id="787">Get your API Key from fanart.tv</string>

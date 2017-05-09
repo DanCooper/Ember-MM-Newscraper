@@ -15964,7 +15964,7 @@ Public Class frmMain
                 cbFilterVideoSource_Movies.Items.Add(Master.eLang.All)
                 'Cocotus 2014/10/11 Automatically populate available videosources from user settings to sourcefilter instead of using hardcoded list here!
                 Dim mySources As New List(Of AdvancedSettingsComplexSettingsTableItem)
-                mySources = AdvancedSettings.GetComplexSetting("MovieSources")
+                mySources = AdvancedSettings.GetComplexSetting("VideoSources")
                 If Not mySources Is Nothing Then
                     For Each k In mySources
                         If cbFilterVideoSource_Movies.Items.Contains(k.Value) = False Then

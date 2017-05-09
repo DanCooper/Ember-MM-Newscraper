@@ -432,7 +432,7 @@ Public Class APIXML
                     sourceCheck = If(Master.eSettings.GeneralSourceFromFolder, String.Concat(Directory.GetParent(sPath).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(sPath).ToLower), Path.GetFileName(sPath).ToLower)
                 End If
                 Dim mySources As New List(Of AdvancedSettingsComplexSettingsTableItem)
-                mySources = AdvancedSettings.GetComplexSetting("MovieSources")
+                mySources = AdvancedSettings.GetComplexSetting("VideoSourceMapping")
                 If Not mySources Is Nothing Then
                     For Each k In mySources
                         If Regex.IsMatch(sourceCheck, k.Name) Then

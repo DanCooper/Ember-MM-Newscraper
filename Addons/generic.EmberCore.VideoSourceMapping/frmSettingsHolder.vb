@@ -21,7 +21,7 @@
 Imports System.Windows.Forms
 Imports EmberAPI
 
-Public Class frmMediaSources
+Public Class frmSettingsHolder
 
 #Region "Events"
 
@@ -39,11 +39,11 @@ Public Class frmMediaSources
             LoadSources()
 
             dgvByFile.Rows.Clear()
-            For Each sett As AdvancedSettingsSetting In AdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MediaSourcesByExtension:"))
+            For Each sett As AdvancedSettingsSetting In AdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("VideoSourceByExtension:"))
                 Dim i As Integer = dgvByFile.Rows.Add(New Object() {sett.Name.Substring(24), sett.Value})
             Next
             SetByFileStatus(False)
-            chkMapByFile.Checked = AdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP")
+            chkMapByFile.Checked = AdvancedSettings.GetBooleanSetting("VideoSourceByExtension", False, "*EmberAPP")
         Catch ex As Exception
         End Try
         SetUp()
@@ -51,7 +51,7 @@ Public Class frmMediaSources
 
     Private Sub LoadSources()
         dgvSources.Rows.Clear()
-        Dim sources As List(Of AdvancedSettingsComplexSettingsTableItem) = AdvancedSettings.GetComplexSetting("MovieSources", "*EmberAPP")
+        Dim sources As List(Of AdvancedSettingsComplexSettingsTableItem) = AdvancedSettings.GetComplexSetting("VideoSourceMapping", "*EmberAPP")
         If sources IsNot Nothing Then
             For Each sett In sources
                 Dim i As Integer = dgvSources.Rows.Add(New Object() {sett.Name, sett.Value})
@@ -104,14 +104,14 @@ Public Class frmMediaSources
         Label1.Text = Master.eLang.GetString(602, "Sources")
         Me.dgvSources.Columns(0).HeaderText = Master.eLang.GetString(763, "Search String")
         Me.dgvSources.Columns(1).HeaderText = Master.eLang.GetString(764, "Source Name")
-        Me.chkMapByFile.Text = Master.eLang.GetString(765, "Map Media Source by File Extension")
+        Me.chkMapByFile.Text = Master.eLang.GetString(765, "Map Video Source by File Extension")
         Me.dgvByFile.Columns(0).HeaderText = Master.eLang.GetString(775, "File Extension")
         Me.dgvByFile.Columns(1).HeaderText = Master.eLang.GetString(764, "Source Name")
     End Sub
 
     Public Sub SaveChanges()
         Dim deleteitem As New List(Of String)
-        For Each sett As AdvancedSettingsSetting In AdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MediaSourcesByExtension:"))
+        For Each sett As AdvancedSettingsSetting In AdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("VideoSourceByExtension:"))
             deleteitem.Add(sett.Name)
         Next
         Using settings = New AdvancedSettings()
@@ -126,12 +126,12 @@ Public Class frmMediaSources
                 End If
             Next
             If sources IsNot Nothing Then
-                settings.SetComplexSetting("MovieSources", sources, "*EmberAPP")
+                settings.SetComplexSetting("VideoSourceMapping", sources, "*EmberAPP")
             End If
-            settings.SetBooleanSetting("MediaSourcesByExtension", chkMapByFile.Checked, "*EmberAPP")
+            settings.SetBooleanSetting("VideoSourceByExtension", chkMapByFile.Checked, "*EmberAPP")
             For Each r As DataGridViewRow In dgvByFile.Rows
                 If Not String.IsNullOrEmpty(r.Cells(0).Value.ToString) AndAlso (sources.FindIndex(Function(f) f.Name = r.Cells(0).Value.ToString) = -1) Then
-                    settings.SetSetting(String.Concat("MediaSourcesByExtension:", r.Cells(0).Value.ToString), r.Cells(1).Value.ToString, "*EmberAPP")
+                    settings.SetSetting(String.Concat("VideoSourceByExtension:", r.Cells(0).Value.ToString), r.Cells(1).Value.ToString, "*EmberAPP")
                 End If
             Next
         End Using
@@ -139,7 +139,7 @@ Public Class frmMediaSources
 
     Private Sub btnSetDefaults_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetDefaults.Click
         Using settings = New AdvancedSettings()
-            settings.SetDefaults("MovieSources")
+            settings.SetDefaults("VideoSourceMapping")
         End Using
         LoadSources()
         RaiseEvent ModuleSettingsChanged()

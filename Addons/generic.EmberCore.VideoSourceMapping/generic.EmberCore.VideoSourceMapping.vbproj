@@ -133,7 +133,7 @@
     <Compile Include="frmSettingsHolder.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="genericMediaSources.vb" />
+    <Compile Include="genericVideoSourceMapping.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>

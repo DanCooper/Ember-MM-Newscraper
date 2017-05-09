@@ -20,12 +20,12 @@
 
 Imports EmberAPI
 
-Public Class genericMediaSources
+Public Class genericVideoSourceMapping
     Implements Interfaces.GenericModule
 
 #Region "Fields"
 
-    Private _setup As frmMediaSources
+    Private _setup As frmSettingsHolder
     Private _AssemblyName As String = String.Empty
 
 #End Region 'Fields
@@ -87,10 +87,10 @@ Public Class genericMediaSources
 
     Public Function InjectSetup() As EmberAPI.Containers.SettingsPanel Implements Interfaces.GenericModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
-        _setup = New frmMediaSources
-        SPanel.Name = Master.eLang.GetString(784, "Media Sources Editor")
-        SPanel.Text = Master.eLang.GetString(784, "Media Sources Editor")
-        SPanel.Prefix = "MediaSourcesEditor_"
+        _setup = New frmSettingsHolder
+        SPanel.Name = Master.eLang.GetString(784, "Video Source Mapping")
+        SPanel.Text = Master.eLang.GetString(784, "Video Source Mapping")
+        SPanel.Prefix = "VideoSourceMapping_"
         SPanel.Type = Master.eLang.GetString(429, "Miscellaneous")
         SPanel.ImageIndex = -1
         SPanel.Image = My.Resources.MediaSourcesEditor
