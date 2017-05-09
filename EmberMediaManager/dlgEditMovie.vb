@@ -1549,6 +1549,7 @@ Public Class dlgEditMovie
         txtTagline.Text = tmpDBElement.Movie.Tagline
         txtTitle.Text = tmpDBElement.Movie.Title
         txtTop250.Text = tmpDBElement.Movie.Top250.ToString
+        txtUserRating.Text = tmpDBElement.Movie.UserRating.ToString
         txtVideoSource.Text = tmpDBElement.Movie.VideoSource
         txtVotes.Text = tmpDBElement.Movie.Votes
         txtYear.Text = tmpDBElement.Movie.Year
@@ -2337,6 +2338,7 @@ Public Class dlgEditMovie
         tmpDBElement.VideoSource = txtVideoSource.Text.Trim
         tmpDBElement.Movie.VideoSource = txtVideoSource.Text.Trim
         tmpDBElement.Movie.Trailer = txtTrailer.Text.Trim
+        tmpDBElement.Movie.UserRating = If(Integer.TryParse(txtUserRating.Text.Trim, 0), CInt(txtUserRating.Text.Trim), 0)
         tmpDBElement.ListTitle = StringUtils.ListTitle_Movie(txtTitle.Text, txtYear.Text)
 
         If Not tmpRating.Trim = String.Empty AndAlso tmpRating.Trim <> "0" Then
@@ -2503,6 +2505,7 @@ Public Class dlgEditMovie
         lblTopDetails.Text = Master.eLang.GetString(224, "Edit the details for the selected movie.")
         lblTopTitle.Text = Master.eLang.GetString(25, "Edit Movie")
         lblTrailerURL.Text = String.Concat(Master.eLang.GetString(227, "Trailer URL"), ":")
+        lblUserRating.Text = String.Concat(Master.eLang.GetString(1467, "User Rating"), ":")
         lblVotes.Text = Master.eLang.GetString(244, "Votes:")
         lblYear.Text = Master.eLang.GetString(49, "Year:")
         tpBanner.Text = Master.eLang.GetString(838, "Banner")
@@ -2758,6 +2761,22 @@ Public Class dlgEditMovie
 
     Private Sub txtLocalTrailer_TextChanged(sender As Object, e As EventArgs) Handles txtLocalTrailer.TextChanged
         btnLocalTrailerPlay.Enabled = Not String.IsNullOrEmpty(txtLocalTrailer.Text)
+    End Sub
+
+    Private Sub txtUserRating_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtUserRating.KeyPress
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
+    End Sub
+
+    Private Sub txtUserRating_TextChanged(sender As Object, e As EventArgs) Handles txtUserRating.TextChanged
+        If Not String.IsNullOrEmpty(txtUserRating.Text) Then
+            Dim iUserRating As Integer
+            If Integer.TryParse(txtUserRating.Text, iUserRating) Then
+                If iUserRating > 10 Then
+                    txtUserRating.Text = "10"
+                    txtUserRating.Select(txtUserRating.Text.Length, 0)
+                End If
+            End If
+        End If
     End Sub
 
 #End Region 'Methods

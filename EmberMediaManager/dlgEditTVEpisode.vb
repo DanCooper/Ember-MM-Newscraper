@@ -480,6 +480,7 @@ Public Class dlgEditTVEpisode
         txtRuntime.Text = tmpDBElement.TVEpisode.Runtime
         txtSeason.Text = tmpDBElement.TVEpisode.Season.ToString
         txtTitle.Text = tmpDBElement.TVEpisode.Title
+        txtUserRating.Text = tmpDBElement.TVEpisode.UserRating.ToString
         txtVotes.Text = tmpDBElement.TVEpisode.Votes
 
         If Not String.IsNullOrEmpty(tmpDBElement.VideoSource) Then
@@ -934,6 +935,7 @@ Public Class dlgEditTVEpisode
         tmpDBElement.TVEpisode.Title = txtTitle.Text.Trim
         tmpDBElement.TVEpisode.Votes = txtVotes.Text.Trim
         tmpDBElement.TVEpisode.VideoSource = txtVideoSource.Text.Trim
+        tmpDBElement.TVEpisode.UserRating = If(Integer.TryParse(txtUserRating.Text.Trim, 0), CInt(txtUserRating.Text.Trim), 0)
         tmpDBElement.VideoSource = txtVideoSource.Text.Trim
 
         'Actors
@@ -1025,6 +1027,7 @@ Public Class dlgEditTVEpisode
         lblTitle.Text = Master.eLang.GetString(246, "Title:")
         lblTopDetails.Text = Master.eLang.GetString(656, "Edit the details for the selected episode.")
         lblTopTitle.Text = Master.eLang.GetString(657, "Edit Episode")
+        lblUserRating.Text = String.Concat(Master.eLang.GetString(1467, "User Rating"), ":")
         lblVideoSource.Text = String.Concat(Master.eLang.GetString(824, "Video Source"), ":")
         lblVotes.Text = Master.eLang.GetString(244, "Votes:")
         tpFanart.Text = Master.eLang.GetString(149, "Fanart")
@@ -1345,6 +1348,22 @@ Public Class dlgEditTVEpisode
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
+    End Sub
+
+    Private Sub txtUserRating_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtUserRating.KeyPress
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
+    End Sub
+
+    Private Sub txtUserRating_TextChanged(sender As Object, e As EventArgs) Handles txtUserRating.TextChanged
+        If Not String.IsNullOrEmpty(txtUserRating.Text) Then
+            Dim iUserRating As Integer
+            If Integer.TryParse(txtUserRating.Text, iUserRating) Then
+                If iUserRating > 10 Then
+                    txtUserRating.Text = "10"
+                    txtUserRating.Select(txtUserRating.Text.Length, 0)
+                End If
+            End If
+        End If
     End Sub
 
 #End Region 'Methods

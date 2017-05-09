@@ -112,6 +112,8 @@ Partial Class dlgEditTVEpisode
         Me.StatusStrip = New System.Windows.Forms.StatusStrip()
         Me.tsFilename = New System.Windows.Forms.ToolStripStatusLabel()
         Me.txtLastPlayed = New System.Windows.Forms.TextBox()
+        Me.lblUserRating = New System.Windows.Forms.Label()
+        Me.txtUserRating = New System.Windows.Forms.TextBox()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEdit.SuspendLayout()
@@ -205,7 +207,9 @@ Partial Class dlgEditTVEpisode
         '
         Me.tpDetails.Controls.Add(Me.txtVideoSource)
         Me.tpDetails.Controls.Add(Me.lblVideoSource)
+        Me.tpDetails.Controls.Add(Me.txtUserRating)
         Me.tpDetails.Controls.Add(Me.txtVotes)
+        Me.tpDetails.Controls.Add(Me.lblUserRating)
         Me.tpDetails.Controls.Add(Me.lblVotes)
         Me.tpDetails.Controls.Add(Me.lblRuntime)
         Me.tpDetails.Controls.Add(Me.txtRuntime)
@@ -427,20 +431,20 @@ Partial Class dlgEditTVEpisode
         Me.txtCredits.Size = New System.Drawing.Size(355, 22)
         Me.txtCredits.TabIndex = 14
         '
-        'btnEditActor
+        'btnActorEdit
         '
-        Me.btnActorEdit.Image = CType(resources.GetObject("btnEditActor.Image"), System.Drawing.Image)
+        Me.btnActorEdit.Image = CType(resources.GetObject("btnActorEdit.Image"), System.Drawing.Image)
         Me.btnActorEdit.Location = New System.Drawing.Point(35, 423)
-        Me.btnActorEdit.Name = "btnEditActor"
+        Me.btnActorEdit.Name = "btnActorEdit"
         Me.btnActorEdit.Size = New System.Drawing.Size(23, 23)
         Me.btnActorEdit.TabIndex = 18
         Me.btnActorEdit.UseVisualStyleBackColor = True
         '
-        'btnAddActor
+        'btnActorAdd
         '
-        Me.btnActorAdd.Image = CType(resources.GetObject("btnAddActor.Image"), System.Drawing.Image)
+        Me.btnActorAdd.Image = CType(resources.GetObject("btnActorAdd.Image"), System.Drawing.Image)
         Me.btnActorAdd.Location = New System.Drawing.Point(6, 423)
-        Me.btnActorAdd.Name = "btnAddActor"
+        Me.btnActorAdd.Name = "btnActorAdd"
         Me.btnActorAdd.Size = New System.Drawing.Size(23, 23)
         Me.btnActorAdd.TabIndex = 17
         Me.btnActorAdd.UseVisualStyleBackColor = True
@@ -455,11 +459,11 @@ Partial Class dlgEditTVEpisode
         Me.btnManual.Text = "Manual Edit"
         Me.btnManual.UseVisualStyleBackColor = True
         '
-        'btnRemove
+        'btnActorRemove
         '
-        Me.btnActorRemove.Image = CType(resources.GetObject("btnRemove.Image"), System.Drawing.Image)
+        Me.btnActorRemove.Image = CType(resources.GetObject("btnActorRemove.Image"), System.Drawing.Image)
         Me.btnActorRemove.Location = New System.Drawing.Point(602, 423)
-        Me.btnActorRemove.Name = "btnRemove"
+        Me.btnActorRemove.Name = "btnActorRemove"
         Me.btnActorRemove.Size = New System.Drawing.Size(23, 23)
         Me.btnActorRemove.TabIndex = 21
         Me.btnActorRemove.UseVisualStyleBackColor = True
@@ -1019,6 +1023,25 @@ Partial Class dlgEditTVEpisode
         Me.txtLastPlayed.Size = New System.Drawing.Size(118, 22)
         Me.txtLastPlayed.TabIndex = 75
         '
+        'lblUserRating
+        '
+        Me.lblUserRating.AutoSize = True
+        Me.lblUserRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblUserRating.Location = New System.Drawing.Point(645, 188)
+        Me.lblUserRating.Name = "lblUserRating"
+        Me.lblUserRating.Size = New System.Drawing.Size(70, 13)
+        Me.lblUserRating.TabIndex = 85
+        Me.lblUserRating.Text = "User Rating:"
+        '
+        'txtUserRating
+        '
+        Me.txtUserRating.BackColor = System.Drawing.SystemColors.Window
+        Me.txtUserRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtUserRating.Location = New System.Drawing.Point(648, 203)
+        Me.txtUserRating.Name = "txtUserRating"
+        Me.txtUserRating.Size = New System.Drawing.Size(66, 22)
+        Me.txtUserRating.TabIndex = 86
+        '
         'dlgEditTVEpisode
         '
         Me.AcceptButton = Me.OK_Button
@@ -1157,5 +1180,6 @@ Partial Class dlgEditTVEpisode
     Friend WithEvents btnSetSubtitleLocal As System.Windows.Forms.Button
     Friend WithEvents colID As System.Windows.Forms.ColumnHeader
     Friend WithEvents txtLastPlayed As System.Windows.Forms.TextBox
-
+    Friend WithEvents txtUserRating As TextBox
+    Friend WithEvents lblUserRating As Label
 End Class

@@ -139,8 +139,6 @@ Partial Class dlgEditTVShow
         Me.lblSortTitle = New System.Windows.Forms.Label()
         Me.lblTitle = New System.Windows.Forms.Label()
         Me.tcEdit = New System.Windows.Forms.TabControl()
-        Me.lblLanguage = New System.Windows.Forms.Label()
-        Me.cbSourceLanguage = New System.Windows.Forms.ComboBox()
         Me.tpTheme = New System.Windows.Forms.TabPage()
         Me.pnlThemePreview = New System.Windows.Forms.Panel()
         Me.pnlThemePreviewNoPlayer = New System.Windows.Forms.Panel()
@@ -152,6 +150,10 @@ Partial Class dlgEditTVShow
         Me.btnSetThemeLocal = New System.Windows.Forms.Button()
         Me.btnLocalThemePlay = New System.Windows.Forms.Button()
         Me.txtLocalTheme = New System.Windows.Forms.TextBox()
+        Me.lblLanguage = New System.Windows.Forms.Label()
+        Me.cbSourceLanguage = New System.Windows.Forms.ComboBox()
+        Me.lblUserRating = New System.Windows.Forms.Label()
+        Me.txtUserRating = New System.Windows.Forms.TextBox()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpExtrafanarts.SuspendLayout()
@@ -1014,11 +1016,13 @@ Partial Class dlgEditTVShow
         'tpDetails
         '
         Me.tpDetails.Controls.Add(Me.txtMPAA)
+        Me.tpDetails.Controls.Add(Me.txtUserRating)
         Me.tpDetails.Controls.Add(Me.txtVotes)
         Me.tpDetails.Controls.Add(Me.txtRuntime)
         Me.tpDetails.Controls.Add(Me.txtStatus)
         Me.tpDetails.Controls.Add(Me.txtPremiered)
         Me.tpDetails.Controls.Add(Me.txtStudio)
+        Me.tpDetails.Controls.Add(Me.lblUserRating)
         Me.tpDetails.Controls.Add(Me.lblVotes)
         Me.tpDetails.Controls.Add(Me.lblRuntime)
         Me.tpDetails.Controls.Add(Me.pbStar10)
@@ -1076,7 +1080,7 @@ Partial Class dlgEditTVShow
         '
         Me.txtVotes.BackColor = System.Drawing.SystemColors.Window
         Me.txtVotes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtVotes.Location = New System.Drawing.Point(738, 403)
+        Me.txtVotes.Location = New System.Drawing.Point(268, 188)
         Me.txtVotes.Name = "txtVotes"
         Me.txtVotes.Size = New System.Drawing.Size(66, 22)
         Me.txtVotes.TabIndex = 81
@@ -1118,7 +1122,7 @@ Partial Class dlgEditTVShow
         '
         Me.lblVotes.AutoSize = True
         Me.lblVotes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblVotes.Location = New System.Drawing.Point(735, 388)
+        Me.lblVotes.Location = New System.Drawing.Point(265, 173)
         Me.lblVotes.Name = "lblVotes"
         Me.lblVotes.Size = New System.Drawing.Size(38, 13)
         Me.lblVotes.TabIndex = 80
@@ -1484,26 +1488,6 @@ Partial Class dlgEditTVShow
         Me.tcEdit.Size = New System.Drawing.Size(844, 516)
         Me.tcEdit.TabIndex = 3
         '
-        'lblLanguage
-        '
-        Me.lblLanguage.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.lblLanguage.AutoSize = True
-        Me.lblLanguage.Location = New System.Drawing.Point(339, 597)
-        Me.lblLanguage.Name = "lblLanguage"
-        Me.lblLanguage.Size = New System.Drawing.Size(61, 13)
-        Me.lblLanguage.TabIndex = 4
-        Me.lblLanguage.Text = "Language:"
-        '
-        'cbSourceLanguage
-        '
-        Me.cbSourceLanguage.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.cbSourceLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbSourceLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cbSourceLanguage.Location = New System.Drawing.Point(418, 592)
-        Me.cbSourceLanguage.Name = "cbSourceLanguage"
-        Me.cbSourceLanguage.Size = New System.Drawing.Size(172, 21)
-        Me.cbSourceLanguage.TabIndex = 9
-        '
         'tpTheme
         '
         Me.tpTheme.Controls.Add(Me.pnlThemePreview)
@@ -1636,6 +1620,45 @@ Partial Class dlgEditTVShow
         Me.txtLocalTheme.ReadOnly = True
         Me.txtLocalTheme.Size = New System.Drawing.Size(695, 22)
         Me.txtLocalTheme.TabIndex = 62
+        '
+        'lblLanguage
+        '
+        Me.lblLanguage.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.lblLanguage.AutoSize = True
+        Me.lblLanguage.Location = New System.Drawing.Point(339, 597)
+        Me.lblLanguage.Name = "lblLanguage"
+        Me.lblLanguage.Size = New System.Drawing.Size(61, 13)
+        Me.lblLanguage.TabIndex = 4
+        Me.lblLanguage.Text = "Language:"
+        '
+        'cbSourceLanguage
+        '
+        Me.cbSourceLanguage.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.cbSourceLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbSourceLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbSourceLanguage.Location = New System.Drawing.Point(418, 592)
+        Me.cbSourceLanguage.Name = "cbSourceLanguage"
+        Me.cbSourceLanguage.Size = New System.Drawing.Size(172, 21)
+        Me.cbSourceLanguage.TabIndex = 9
+        '
+        'lblUserRating
+        '
+        Me.lblUserRating.AutoSize = True
+        Me.lblUserRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblUserRating.Location = New System.Drawing.Point(354, 173)
+        Me.lblUserRating.Name = "lblUserRating"
+        Me.lblUserRating.Size = New System.Drawing.Size(70, 13)
+        Me.lblUserRating.TabIndex = 80
+        Me.lblUserRating.Text = "User Rating:"
+        '
+        'txtUserRating
+        '
+        Me.txtUserRating.BackColor = System.Drawing.SystemColors.Window
+        Me.txtUserRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtUserRating.Location = New System.Drawing.Point(357, 188)
+        Me.txtUserRating.Name = "txtUserRating"
+        Me.txtUserRating.Size = New System.Drawing.Size(66, 22)
+        Me.txtUserRating.TabIndex = 81
         '
         'dlgEditTVShow
         '
@@ -1834,4 +1857,6 @@ Partial Class dlgEditTVShow
     Friend WithEvents btnSetThemeLocal As Button
     Friend WithEvents btnLocalThemePlay As Button
     Friend WithEvents txtLocalTheme As TextBox
+    Friend WithEvents txtUserRating As TextBox
+    Friend WithEvents lblUserRating As Label
 End Class

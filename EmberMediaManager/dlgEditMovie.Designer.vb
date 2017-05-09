@@ -83,7 +83,9 @@ Partial Class dlgEditMovie
         Me.lblMPAA = New System.Windows.Forms.Label()
         Me.lblDirectors = New System.Windows.Forms.Label()
         Me.txtDirectors = New System.Windows.Forms.TextBox()
+        Me.txtUserRating = New System.Windows.Forms.TextBox()
         Me.txtTop250 = New System.Windows.Forms.TextBox()
+        Me.lblUserRating = New System.Windows.Forms.Label()
         Me.lblTop250 = New System.Windows.Forms.Label()
         Me.lblPlot = New System.Windows.Forms.Label()
         Me.txtPlot = New System.Windows.Forms.TextBox()
@@ -417,7 +419,9 @@ Partial Class dlgEditMovie
         Me.tpDetails.Controls.Add(Me.lblMPAA)
         Me.tpDetails.Controls.Add(Me.lblDirectors)
         Me.tpDetails.Controls.Add(Me.txtDirectors)
+        Me.tpDetails.Controls.Add(Me.txtUserRating)
         Me.tpDetails.Controls.Add(Me.txtTop250)
+        Me.tpDetails.Controls.Add(Me.lblUserRating)
         Me.tpDetails.Controls.Add(Me.lblTop250)
         Me.tpDetails.Controls.Add(Me.lblPlot)
         Me.tpDetails.Controls.Add(Me.txtPlot)
@@ -894,20 +898,39 @@ Partial Class dlgEditMovie
         Me.txtDirectors.Size = New System.Drawing.Size(252, 22)
         Me.txtDirectors.TabIndex = 22
         '
+        'txtUserRating
+        '
+        Me.txtUserRating.BackColor = System.Drawing.SystemColors.Window
+        Me.txtUserRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtUserRating.Location = New System.Drawing.Point(199, 305)
+        Me.txtUserRating.Name = "txtUserRating"
+        Me.txtUserRating.Size = New System.Drawing.Size(45, 22)
+        Me.txtUserRating.TabIndex = 20
+        '
         'txtTop250
         '
         Me.txtTop250.BackColor = System.Drawing.SystemColors.Window
         Me.txtTop250.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtTop250.Location = New System.Drawing.Point(156, 305)
+        Me.txtTop250.Location = New System.Drawing.Point(132, 305)
         Me.txtTop250.Name = "txtTop250"
-        Me.txtTop250.Size = New System.Drawing.Size(43, 22)
+        Me.txtTop250.Size = New System.Drawing.Size(45, 22)
         Me.txtTop250.TabIndex = 20
+        '
+        'lblUserRating
+        '
+        Me.lblUserRating.AutoSize = True
+        Me.lblUserRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblUserRating.Location = New System.Drawing.Point(185, 290)
+        Me.lblUserRating.Name = "lblUserRating"
+        Me.lblUserRating.Size = New System.Drawing.Size(70, 13)
+        Me.lblUserRating.TabIndex = 19
+        Me.lblUserRating.Text = "User Rating:"
         '
         'lblTop250
         '
         Me.lblTop250.AutoSize = True
         Me.lblTop250.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblTop250.Location = New System.Drawing.Point(153, 290)
+        Me.lblTop250.Location = New System.Drawing.Point(129, 290)
         Me.lblTop250.Name = "lblTop250"
         Me.lblTop250.Size = New System.Drawing.Size(50, 13)
         Me.lblTop250.TabIndex = 19
@@ -1022,7 +1045,7 @@ Partial Class dlgEditMovie
         Me.txtVotes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.txtVotes.Location = New System.Drawing.Point(81, 305)
         Me.txtVotes.Name = "txtVotes"
-        Me.txtVotes.Size = New System.Drawing.Size(66, 22)
+        Me.txtVotes.Size = New System.Drawing.Size(45, 22)
         Me.txtVotes.TabIndex = 18
         '
         'lblVotes
@@ -2800,4 +2823,6 @@ Partial Class dlgEditMovie
     Friend WithEvents txtLocalTrailer As TextBox
     Friend WithEvents btnLocalThemePlay As Button
     Friend WithEvents txtLocalTheme As TextBox
+    Friend WithEvents txtUserRating As TextBox
+    Friend WithEvents lblUserRating As Label
 End Class
