@@ -1188,6 +1188,7 @@ Public Class Functions
             .bMainTitle = Master.eSettings.MovieScraperTitle
             .bMainTop250 = Master.eSettings.MovieScraperTop250
             .bMainTrailer = Master.eSettings.MovieScraperTrailer
+            .bMainUserRating = Master.eSettings.MovieScraperUserRating
             .bMainWriters = Master.eSettings.MovieScraperCredits
             .bMainYear = Master.eSettings.MovieScraperYear
         End With
@@ -1207,6 +1208,7 @@ Public Class Functions
             .bEpisodeRating = Master.eSettings.TVScraperEpisodeRating
             .bEpisodeRuntime = Master.eSettings.TVScraperEpisodeRuntime
             .bEpisodeTitle = Master.eSettings.TVScraperEpisodeTitle
+            .bEpisodeUserRating = Master.eSettings.TVScraperEpisodeUserRating
             .bMainActors = Master.eSettings.TVScraperShowActors
             .bMainCertifications = Master.eSettings.TVScraperShowCert
             .bMainCountries = Master.eSettings.TVScraperShowCountry
@@ -1222,6 +1224,7 @@ Public Class Functions
             .bMainStatus = Master.eSettings.TVScraperShowStatus
             .bMainStudios = Master.eSettings.TVScraperShowStudio
             .bMainTitle = Master.eSettings.TVScraperShowTitle
+            .bMainUserRating = Master.eSettings.TVScraperShowUserRating
             .bSeasonAired = Master.eSettings.TVScraperSeasonAired
             .bSeasonPlot = Master.eSettings.TVScraperSeasonPlot
             .bSeasonTitle = Master.eSettings.TVScraperSeasonTitle
@@ -1535,6 +1538,7 @@ Public Class Functions
         FilteredOptions.bEpisodeRating = Options.bEpisodeRating AndAlso Options2.bEpisodeRating
         FilteredOptions.bEpisodeRuntime = Options.bEpisodeRuntime AndAlso Options2.bEpisodeRuntime
         FilteredOptions.bEpisodeTitle = Options.bEpisodeTitle AndAlso Options2.bEpisodeTitle
+        FilteredOptions.bEpisodeUserRating = Options.bEpisodeUserRating AndAlso Options2.bEpisodeUserRating
         FilteredOptions.bMainActors = Options.bMainActors AndAlso Options2.bMainActors
         FilteredOptions.bMainCertifications = Options.bMainCertifications AndAlso Options2.bMainCertifications
         FilteredOptions.bMainCollectionID = Options.bMainCollectionID AndAlso Options2.bMainCollectionID
@@ -1557,6 +1561,7 @@ Public Class Functions
         FilteredOptions.bMainTitle = Options.bMainTitle AndAlso Options2.bMainTitle
         FilteredOptions.bMainTop250 = Options.bMainTop250 AndAlso Options2.bMainTop250
         FilteredOptions.bMainTrailer = Options.bMainTrailer AndAlso Options2.bMainTrailer
+        FilteredOptions.bMainUserRating = Options.bMainUserRating AndAlso Options2.bMainUserRating
         FilteredOptions.bMainWriters = Options.bMainWriters AndAlso Options2.bMainWriters
         FilteredOptions.bMainYear = Options.bMainYear AndAlso Options2.bMainYear
         FilteredOptions.bSeasonAired = Options.bSeasonAired AndAlso Options2.bSeasonAired
@@ -1983,6 +1988,7 @@ Public Class Structures
         Dim bEpisodeRating As Boolean
         Dim bEpisodeRuntime As Boolean
         Dim bEpisodeTitle As Boolean
+        Dim bEpisodeUserRating As Boolean
         Dim bMainActors As Boolean
         Dim bMainCertifications As Boolean
         Dim bMainCollectionID As Boolean
@@ -2006,6 +2012,7 @@ Public Class Structures
         Dim bMainCountries As Boolean
         Dim bMainTags As Boolean
         Dim bMainTrailer As Boolean
+        Dim bMainUserRating As Boolean
         Dim bMainWriters As Boolean
         Dim bMainYear As Boolean
         Dim bSeasonAired As Boolean

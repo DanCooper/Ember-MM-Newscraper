@@ -535,6 +535,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVLockEpisodeUserRating() As Boolean
+        Get
+            Return Settings._XMLSettings.TVLockEpisodeUserRating
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVLockEpisodeUserRating = value
+        End Set
+    End Property
+
     Public Property TVLockEpisodeRuntime() As Boolean
         Get
             Return Settings._XMLSettings.TVLockEpisodeRuntime
@@ -985,6 +994,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieScraperUserRating() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieScraperUserRating
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieScraperUserRating = value
+        End Set
+    End Property
+
     Public Property MovieScraperCredits() As Boolean
         Get
             Return Settings._XMLSettings.MovieScraperCredits
@@ -1366,6 +1384,14 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.MovieLockTrailer = value
+        End Set
+    End Property
+    Public Property MovieLockUserRating() As Boolean
+        Get
+            Return Settings._XMLSettings.MovieLockUserRating
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.MovieLockUserRating = value
         End Set
     End Property
 
@@ -3356,6 +3382,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVScraperEpisodeUserRating() As Boolean
+        Get
+            Return Settings._XMLSettings.TVScraperEpisodeUserRating
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVScraperEpisodeUserRating = value
+        End Set
+    End Property
+
     Public Property TVScraperSeasonAired() As Boolean
         Get
             Return Settings._XMLSettings.TVScraperSeasonAired
@@ -3533,6 +3568,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.TVScraperShowTitle = value
+        End Set
+    End Property
+
+    Public Property TVScraperShowUserRating() As Boolean
+        Get
+            Return Settings._XMLSettings.TVScraperShowUserRating
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVScraperShowUserRating = value
         End Set
     End Property
 
@@ -3830,6 +3874,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             Settings._XMLSettings.TVLockShowTitle = value
+        End Set
+    End Property
+
+    Public Property TVLockShowUserRating() As Boolean
+        Get
+            Return Settings._XMLSettings.TVLockShowUserRating
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVLockShowUserRating = value
         End Set
     End Property
 
@@ -6995,6 +7048,7 @@ Public Class Settings
         MovieLockTitle = False
         MovieLockTop250 = False
         MovieLockTrailer = False
+        MovieLockUserRating = False
         MovieLockCredits = False
         MovieLockYear = False
         MovieMetadataPerFileType = New List(Of MetadataPerType)
@@ -7060,6 +7114,7 @@ Public Class Settings
         MovieScraperTrailer = True
         MovieScraperUseDetailView = False
         MovieScraperUseMDDuration = True
+        MovieScraperUserRating = True
         MovieScraperCertFSK = False
         MovieScraperCredits = True
         MovieScraperXBMCTrailerFormat = False
@@ -7214,6 +7269,7 @@ Public Class Settings
         TVLockEpisodeRating = False
         TVLockEpisodeRuntime = False
         TVLockEpisodeTitle = False
+        TVLockEpisodeUserRating = False
         TVLockSeasonPlot = False
         TVLockSeasonTitle = False
         TVLockShowActors = False
@@ -7230,6 +7286,7 @@ Public Class Settings
         TVLockShowStatus = False
         TVLockShowStudio = False
         TVLockShowTitle = False
+        TVLockShowUserRating = False
         TVMetadataPerFileType = New List(Of MetadataPerType)
         TVMultiPartMatching = "^[-_ex]+([0-9]+(?:(?:[a-i]|\.[1-9])(?![0-9]))?)"
         TVScanOrderModify = False
@@ -7245,6 +7302,7 @@ Public Class Settings
         TVScraperEpisodeRating = True
         TVScraperEpisodeRuntime = True
         TVScraperEpisodeTitle = True
+        TVScraperEpisodeUserRating = True
         TVScraperMetaDataScan = True
         TVScraperOptionsOrdering = Enums.EpisodeOrdering.Standard
         TVScraperSeasonAired = True
@@ -7271,6 +7329,7 @@ Public Class Settings
         TVScraperShowStatus = True
         TVScraperShowStudio = True
         TVScraperShowTitle = True
+        TVScraperShowUserRating = True
         TVScraperUseDisplaySeasonEpisode = True
         TVScraperUseMDDuration = True
         TVScraperUseSRuntimeForEp = True

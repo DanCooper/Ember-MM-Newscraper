@@ -11040,6 +11040,8 @@ Public Class frmMain
                     mnuScrapeOptionTop250.Visible = True
                     mnuScrapeOptionTrailer.Enabled = .MovieScraperTrailer
                     mnuScrapeOptionTrailer.Visible = True
+                    mnuScrapeOptionUserRating.Enabled = .MovieScraperUserRating
+                    mnuScrapeOptionUserRating.Visible = True
                     mnuScrapeOptionWriters.Enabled = .MovieScraperCredits
                     mnuScrapeOptionWriters.Visible = True
                     mnuScrapeOptionYear.Enabled = .MovieScraperYear
@@ -11093,6 +11095,8 @@ Public Class frmMain
                     mnuScrapeOptionTop250.Visible = False
                     mnuScrapeOptionTrailer.Enabled = False
                     mnuScrapeOptionTrailer.Visible = False
+                    mnuScrapeOptionUserRating.Enabled = False
+                    mnuScrapeOptionUserRating.Visible = False
                     mnuScrapeOptionWriters.Enabled = False
                     mnuScrapeOptionWriters.Visible = False
                     mnuScrapeOptionYear.Enabled = False
@@ -11146,6 +11150,8 @@ Public Class frmMain
                     mnuScrapeOptionTop250.Visible = False
                     mnuScrapeOptionTrailer.Enabled = False
                     mnuScrapeOptionTrailer.Visible = False
+                    mnuScrapeOptionUserRating.Enabled = .TVScraperEpisodeUserRating
+                    mnuScrapeOptionUserRating.Visible = True
                     mnuScrapeOptionWriters.Enabled = .TVScraperEpisodeCredits
                     mnuScrapeOptionWriters.Visible = True
                     mnuScrapeOptionYear.Enabled = False
@@ -11199,6 +11205,8 @@ Public Class frmMain
                     mnuScrapeOptionTop250.Visible = False
                     mnuScrapeOptionTrailer.Enabled = False
                     mnuScrapeOptionTrailer.Visible = False
+                    mnuScrapeOptionUserRating.Enabled = False
+                    mnuScrapeOptionUserRating.Visible = True
                     mnuScrapeOptionWriters.Enabled = False
                     mnuScrapeOptionWriters.Visible = False
                     mnuScrapeOptionYear.Enabled = False
@@ -11252,6 +11260,8 @@ Public Class frmMain
                     mnuScrapeOptionTop250.Visible = False
                     mnuScrapeOptionTrailer.Enabled = False
                     mnuScrapeOptionTrailer.Visible = False
+                    mnuScrapeOptionUserRating.Enabled = .TVScraperShowUserRating
+                    mnuScrapeOptionUserRating.Visible = True
                     mnuScrapeOptionWriters.Enabled = False
                     mnuScrapeOptionWriters.Visible = False
                     mnuScrapeOptionYear.Enabled = False
@@ -11633,6 +11643,7 @@ Public Class frmMain
         mnuScrapeOptionTitle.Click,
         mnuScrapeOptionTop250.Click,
         mnuScrapeOptionTrailer.Click,
+        mnuScrapeOptionUserRating.Click,
         mnuScrapeOptionWriters.Click,
         mnuScrapeOptionYear.Click
 
@@ -11703,6 +11714,9 @@ Public Class frmMain
                 ScrapeOptions.bMainTop250 = True
             Case "trailer"
                 ScrapeOptions.bMainTrailer = True
+            Case "userrating"
+                ScrapeOptions.bEpisodeUserRating = True
+                ScrapeOptions.bMainUserRating = True
             Case "writers"
                 ScrapeOptions.bEpisodeCredits = True
                 ScrapeOptions.bMainWriters = True
@@ -16899,6 +16913,7 @@ Public Class frmMain
         mnuScrapeOptionTitle.Text = Master.eLang.GetString(21, "Title")
         mnuScrapeOptionTop250.Text = Master.eLang.GetString(591, "Top 250")
         mnuScrapeOptionTrailer.Text = Master.eLang.GetString(151, "Trailer")
+        mnuScrapeOptionUserRating.Text = Master.eLang.GetString(1467, "User Rating")
         mnuScrapeOptionWriters.Text = Master.eLang.GetString(777, "Writer")
         mnuScrapeOptionYear.Text = Master.eLang.GetString(278, "Year")
         mnuUpdate.Text = Master.eLang.GetString(82, "Update Library")

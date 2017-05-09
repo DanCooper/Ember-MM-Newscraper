@@ -99,33 +99,30 @@ Namespace TrakttvScraper
             nMovie.Scrapersource = "TRAKTTV"
 
             If CheckConnection() Then
+                'Rating
                 If tFilteredOptions.bMainRating Then
-                    If _SpecialSettings.UsePersonalRating Then
-                        Dim nPersonalRatedMovies As IEnumerable(Of TraktAPI.Model.TraktMovieRated) = TrakttvAPI.GetRatedMovies
-                        If nPersonalRatedMovies IsNot Nothing AndAlso nPersonalRatedMovies.Count > 0 Then
-                            Dim tMovie = nPersonalRatedMovies.FirstOrDefault(Function(f) CInt(f.Movie.Ids.Trakt) = intTraktID)
-                            If tMovie IsNot Nothing Then
-                                nMovie.Rating = CStr(tMovie.Rating)
-                                nMovie.Votes = "1"
-                                Return nMovie
-                            End If
-                        End If
+                    Dim nGlobalRating As TraktAPI.Model.TraktRating = TrakttvAPI.GetMovieRating(CStr(intTraktID))
+                    If Not nGlobalRating Is Nothing AndAlso Not nGlobalRating.Rating Is Nothing AndAlso Not nGlobalRating.Votes Is Nothing Then
+                        nMovie.Rating = CStr(Math.Round(nGlobalRating.Rating.Value, 1))
+                        nMovie.Votes = CStr(nGlobalRating.Votes)
+                    Else
+                        logger.Info(String.Format("[GetMovieInfo] Could not scrape community rating/votes from trakt.tv! Current TraktID: {0}", intTraktID))
                     End If
+                End If
 
-                    If _SpecialSettings.FallbackToGlobalRating OrElse Not _SpecialSettings.UsePersonalRating Then
-                        Dim nGlobalRating As TraktAPI.Model.TraktRating = TrakttvAPI.GetMovieRating(CStr(intTraktID))
-                        If Not nGlobalRating Is Nothing AndAlso Not nGlobalRating.Rating Is Nothing AndAlso Not nGlobalRating.Votes Is Nothing Then
-                            nMovie.Rating = CStr(Math.Round(nGlobalRating.Rating.Value, 1)) ' traktrating.Rating.ToString
-                            nMovie.Votes = CStr(nGlobalRating.Votes)
-                            Return nMovie
-                        Else
-                            logger.Info(String.Format("[GetMovieInfo] Could not scrape community rating/votes from trakt.tv! Current TraktID: {0}", intTraktID))
+                'User Rating
+                If tFilteredOptions.bMainUserRating Then
+                    Dim nPersonalRatedMovies As IEnumerable(Of TraktAPI.Model.TraktMovieRated) = TrakttvAPI.GetRatedMovies
+                    If nPersonalRatedMovies IsNot Nothing AndAlso nPersonalRatedMovies.Count > 0 Then
+                        Dim tMovie = nPersonalRatedMovies.FirstOrDefault(Function(f) CInt(f.Movie.Ids.Trakt) = intTraktID)
+                        If tMovie IsNot Nothing Then
+                            nMovie.UserRating = tMovie.Rating
                         End If
                     End If
                 End If
             End If
 
-            Return Nothing
+            Return nMovie
         End Function
 
         Public Function GetInfo_TVEpisode(ByVal intTVShowTraktID As Integer, ByVal intSeason As Integer, ByVal intEpisode As Integer, ByVal tFilteredOptions As Structures.ScrapeOptions) As MediaContainers.EpisodeDetails
@@ -137,37 +134,34 @@ Namespace TrakttvScraper
             nTVEpisode.Season = intSeason
 
             If CheckConnection() Then
+                'Rating
                 If tFilteredOptions.bEpisodeRating Then
-                    If _SpecialSettings.UsePersonalRating Then
-                        Dim nPersonalRatedTVEpisodes As IEnumerable(Of TraktAPI.Model.TraktEpisodeRated) = TrakttvAPI.GetRatedEpisodes
-                        If nPersonalRatedTVEpisodes IsNot Nothing AndAlso nPersonalRatedTVEpisodes.Count > 0 Then
-                            Dim tTVEpisode = nPersonalRatedTVEpisodes.FirstOrDefault(Function(f) CInt(f.Show.Ids.Trakt) = intTVShowTraktID AndAlso
-                                                                                         f.Episode.Number = intEpisode AndAlso
-                                                                                         f.Episode.Season = intSeason)
-                            If tTVEpisode IsNot Nothing Then
-                                nTVEpisode.Rating = CStr(tTVEpisode.Rating)
-                                nTVEpisode.Votes = "1"
-                                Return nTVEpisode
-                            End If
+                    If Not intTVShowTraktID = 0 Then
+                        Dim nGlobalRating As TraktAPI.Model.TraktRating = TrakttvAPI.GetEpisodeRating(CStr(intTVShowTraktID), intSeason, intEpisode)
+                        If Not nGlobalRating Is Nothing AndAlso Not nGlobalRating.Rating Is Nothing AndAlso Not nGlobalRating.Votes Is Nothing Then
+                            nTVEpisode.Rating = CStr(Math.Round(nGlobalRating.Rating.Value, 1))
+                            nTVEpisode.Votes = CStr(nGlobalRating.Votes)
+                        Else
+                            logger.Info(String.Format("[GetInfo_TVEpisode] Could not scrape community rating/votes from trakt.tv! Current TraktID: {0} S{1}E{2}", intTVShowTraktID, intSeason, intEpisode))
                         End If
                     End If
+                End If
 
-                    If _SpecialSettings.FallbackToGlobalRating OrElse Not _SpecialSettings.UsePersonalRating Then
-                        If Not intTVShowTraktID = 0 Then
-                            Dim nGlobalRating As TraktAPI.Model.TraktRating = TrakttvAPI.GetEpisodeRating(CStr(intTVShowTraktID), intSeason, intEpisode)
-                            If Not nGlobalRating Is Nothing AndAlso Not nGlobalRating.Rating Is Nothing AndAlso Not nGlobalRating.Votes Is Nothing Then
-                                nTVEpisode.Rating = CStr(Math.Round(nGlobalRating.Rating.Value, 1)) ' traktrating.Rating.ToString
-                                nTVEpisode.Votes = CStr(nGlobalRating.Votes)
-                                Return nTVEpisode
-                            Else
-                                logger.Info(String.Format("[GetInfo_TVEpisode] Could not scrape community rating/votes from trakt.tv! Current TraktID: {0} S{1}E{2}", intTVShowTraktID, intSeason, intEpisode))
-                            End If
+                'User Rating
+                If tFilteredOptions.bEpisodeUserRating Then
+                    Dim nPersonalRatedTVEpisodes As IEnumerable(Of TraktAPI.Model.TraktEpisodeRated) = TrakttvAPI.GetRatedEpisodes
+                    If nPersonalRatedTVEpisodes IsNot Nothing AndAlso nPersonalRatedTVEpisodes.Count > 0 Then
+                        Dim tTVEpisode = nPersonalRatedTVEpisodes.FirstOrDefault(Function(f) CInt(f.Show.Ids.Trakt) = intTVShowTraktID AndAlso
+                                                                                     f.Episode.Number = intEpisode AndAlso
+                                                                                     f.Episode.Season = intSeason)
+                        If tTVEpisode IsNot Nothing Then
+                            nTVEpisode.UserRating = tTVEpisode.Rating
                         End If
                     End If
                 End If
             End If
 
-            Return Nothing
+            Return nTVEpisode
         End Function
 
         Public Function GetInfo_TVShow(ByVal intTraktID As Integer, ByVal tScrapeModifiers As Structures.ScrapeModifiers, ByVal FilteredOptions As Structures.ScrapeOptions, ByRef lstEpisodes As List(Of Database.DBElement)) As MediaContainers.TVShow
@@ -177,33 +171,30 @@ Namespace TrakttvScraper
             nTVShow.Scrapersource = "TRAKTTV"
 
             If CheckConnection() Then
+                'Rating
                 If FilteredOptions.bMainRating Then
-                    Dim bRated_TVShow As Boolean = False
-
-                    If _SpecialSettings.UsePersonalRating Then
-                        Dim nPersonalRatedTVShows As IEnumerable(Of TraktAPI.Model.TraktShowRated) = TrakttvAPI.GetRatedShows
-                        If nPersonalRatedTVShows IsNot Nothing AndAlso nPersonalRatedTVShows.Count > 0 Then
-                            Dim tTVShow = nPersonalRatedTVShows.FirstOrDefault(Function(f) (CInt(f.Show.Ids.Trakt) = intTraktID))
-                            If tTVShow IsNot Nothing Then
-                                nTVShow.Rating = CStr(tTVShow.Rating)
-                                nTVShow.Votes = "1"
-                                bRated_TVShow = True
-                            End If
-                        End If
+                    Dim nGlobalRating As TraktAPI.Model.TraktRating = TrakttvAPI.GetShowRating(CStr(intTraktID))
+                    If Not nGlobalRating Is Nothing AndAlso Not nGlobalRating.Rating Is Nothing AndAlso Not nGlobalRating.Votes Is Nothing Then
+                        nTVShow.Rating = CStr(Math.Round(nGlobalRating.Rating.Value, 1))
+                        nTVShow.Votes = CStr(nGlobalRating.Votes)
+                    Else
+                        logger.Info(String.Format("[GetInfo_TVShow] Could not scrape community rating/votes from trakt.tv! Current TraktID: {0}", intTraktID))
                     End If
+                End If
 
-                    If Not bRated_TVShow AndAlso (_SpecialSettings.FallbackToGlobalRating OrElse Not _SpecialSettings.UsePersonalRating) Then
-                        Dim nGlobalRating As TraktAPI.Model.TraktRating = TrakttvAPI.GetShowRating(CStr(intTraktID))
-                        If Not nGlobalRating Is Nothing AndAlso Not nGlobalRating.Rating Is Nothing AndAlso Not nGlobalRating.Votes Is Nothing Then
-                            nTVShow.Rating = CStr(Math.Round(nGlobalRating.Rating.Value, 1)) ' traktrating.Rating.ToString
-                            nTVShow.Votes = CStr(nGlobalRating.Votes)
-                        Else
-                            logger.Info(String.Format("[GetInfo_TVShow] Could not scrape community rating/votes from trakt.tv! Current TraktID: {0}", intTraktID))
+                'User Rating
+                If FilteredOptions.bMainUserRating Then
+                    Dim nPersonalRatedTVShows As IEnumerable(Of TraktAPI.Model.TraktShowRated) = TrakttvAPI.GetRatedShows
+                    If nPersonalRatedTVShows IsNot Nothing AndAlso nPersonalRatedTVShows.Count > 0 Then
+                        Dim tTVShow = nPersonalRatedTVShows.FirstOrDefault(Function(f) (CInt(f.Show.Ids.Trakt) = intTraktID))
+                        If tTVShow IsNot Nothing Then
+                            nTVShow.UserRating = tTVShow.Rating
                         End If
                     End If
                 End If
 
-                If tScrapeModifiers.withEpisodes AndAlso FilteredOptions.bEpisodeRating AndAlso lstEpisodes.Count > 0 Then
+                'Episode Rating / User Rating
+                If tScrapeModifiers.withEpisodes AndAlso (FilteredOptions.bEpisodeRating OrElse FilteredOptions.bEpisodeUserRating) AndAlso lstEpisodes.Count > 0 Then
                     'looks like there is no way to get all episodes for a tv show. so we scrape only local existing episodes
                     For Each nDBElement As Database.DBElement In lstEpisodes
                         Dim nEpisode As MediaContainers.EpisodeDetails = GetInfo_TVEpisode(intTraktID, nDBElement.TVEpisode.Season, nDBElement.TVEpisode.Episode, FilteredOptions)
@@ -212,11 +203,9 @@ Namespace TrakttvScraper
                         End If
                     Next
                 End If
-
-                Return nTVShow
             End If
 
-            Return Nothing
+            Return nTVShow
         End Function
 
         Public Function GetTraktID(ByVal tDBElement As Database.DBElement, Optional bForceTVShowID As Boolean = False) As Integer

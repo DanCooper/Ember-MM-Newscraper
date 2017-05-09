@@ -1552,10 +1552,10 @@
   <string id="1461">All movies</string>
   <string id="1462">Filtered movies</string>
   <string id="1463">Selected movies</string>
-  <string id="1464">Use personal rating</string>
+  <string id="1464"></string>
   <string id="1465">Export to Kodi playlist</string>
   <string id="1466">Send list to playlist in Kodi</string>
-  <string id="1467">Fallback to global rating</string>
+  <string id="1467">User Rating</string>
   <string id="1468"></string>
   <string id="1469"></string>
   <string id="1470"></string>

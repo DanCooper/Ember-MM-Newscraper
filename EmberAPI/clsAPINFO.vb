@@ -69,6 +69,7 @@ Public Class NFO
         Dim new_Title As Boolean = False
         Dim new_Top250 As Boolean = False
         Dim new_Trailer As Boolean = False
+        Dim new_UserRating As Boolean = False
         Dim new_Year As Boolean = False
 
         'If "Use Preview Datascraperresults" option is enabled, a preview window which displays all datascraperresults will be opened before showing the Edit Movie page!
@@ -345,6 +346,15 @@ Public Class NFO
                 DBMovie.Movie.Trailer = String.Empty
             End If
 
+            'User Rating
+            If (Not DBMovie.Movie.UserRatingSpecified OrElse Not Master.eSettings.MovieLockUserRating) AndAlso ScrapeOptions.bMainUserRating AndAlso
+                scrapedmovie.UserRatingSpecified AndAlso Master.eSettings.MovieScraperUserRating AndAlso Not new_UserRating Then
+                DBMovie.Movie.UserRating = scrapedmovie.UserRating
+                new_UserRating = True
+            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperUserRating AndAlso Not Master.eSettings.MovieLockUserRating Then
+                DBMovie.Movie.UserRating = 0
+            End If
+
             'Year
             If (Not DBMovie.Movie.YearSpecified OrElse Not Master.eSettings.MovieLockYear) AndAlso ScrapeOptions.bMainYear AndAlso
                 scrapedmovie.YearSpecified AndAlso Master.eSettings.MovieScraperYear AndAlso Not new_Year Then
@@ -495,6 +505,7 @@ Public Class NFO
         Dim new_Title As Boolean = False
         Dim new_OriginalTitle As Boolean = False
         Dim new_Trailer As Boolean = False
+        Dim new_UserRating As Boolean = False
 
         Dim KnownEpisodesIndex As New List(Of KnownEpisode)
         Dim KnownSeasonsIndex As New List(Of Integer)
@@ -660,15 +671,6 @@ Public Class NFO
                 DBTV.TVShow.Votes = String.Empty
             End If
 
-            'Runtime
-            If (Not DBTV.TVShow.RuntimeSpecified OrElse DBTV.TVShow.Runtime = "0" OrElse Not Master.eSettings.TVLockShowRuntime) AndAlso ScrapeOptions.bMainRuntime AndAlso
-                scrapedshow.RuntimeSpecified AndAlso Not scrapedshow.Runtime = "0" AndAlso Master.eSettings.TVScraperShowRuntime AndAlso Not new_Runtime Then
-                DBTV.TVShow.Runtime = scrapedshow.Runtime
-                new_Runtime = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowRuntime AndAlso Not Master.eSettings.TVLockShowRuntime Then
-                DBTV.TVShow.Runtime = String.Empty
-            End If
-
             'Status
             If (DBTV.TVShow.StatusSpecified OrElse Not Master.eSettings.TVLockShowStatus) AndAlso ScrapeOptions.bMainStatus AndAlso
                 scrapedshow.StatusSpecified AndAlso Master.eSettings.TVScraperShowStatus AndAlso Not new_Status Then
@@ -728,6 +730,15 @@ Public Class NFO
             '    ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperCredits AndAlso Not Master.eSettings.MovieLockCredits Then
             '        DBTV.Movie.Credits.Clear()
             '    End If
+
+            'User Rating
+            If (Not DBTV.TVShow.UserRatingSpecified OrElse Not Master.eSettings.TVLockShowUserRating) AndAlso ScrapeOptions.bMainUserRating AndAlso
+                scrapedshow.UserRatingSpecified AndAlso Master.eSettings.TVScraperShowUserRating AndAlso Not new_UserRating Then
+                DBTV.TVShow.UserRating = scrapedshow.UserRating
+                new_UserRating = True
+            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowUserRating AndAlso Not Master.eSettings.TVLockShowUserRating Then
+                DBTV.TVShow.UserRating = 0
+            End If
 
             'Create KnowSeasons index
             For Each kSeason As MediaContainers.SeasonDetails In scrapedshow.KnownSeasons
@@ -995,6 +1006,7 @@ Public Class NFO
         Dim new_Season As Boolean = False
         Dim new_ThumbPoster As Boolean = False
         Dim new_Title As Boolean = False
+        Dim new_UserRating As Boolean = False
 
         ''If "Use Preview Datascraperresults" option is enabled, a preview window which displays all datascraperresults will be opened before showing the Edit Movie page!
         'If (ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleScrape OrElse ScrapeType = Enums.ScrapeType_Movie_MovieSet_TV.SingleField) AndAlso Master.eSettings.MovieScraperUseDetailView AndAlso ScrapedList.Count > 0 Then
@@ -1133,6 +1145,15 @@ Public Class NFO
             ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeRating AndAlso Not Master.eSettings.TVLockEpisodeRating Then
                 DBTVEpisode.TVEpisode.Rating = String.Empty
                 DBTVEpisode.TVEpisode.Votes = String.Empty
+            End If
+
+            'User Rating
+            If (Not DBTVEpisode.TVEpisode.UserRatingSpecified OrElse Not Master.eSettings.TVLockEpisodeUserRating) AndAlso ScrapeOptions.bEpisodeUserRating AndAlso
+                scrapedepisode.UserRatingSpecified AndAlso Master.eSettings.TVScraperEpisodeUserRating AndAlso Not new_UserRating Then
+                DBTVEpisode.TVEpisode.UserRating = scrapedepisode.UserRating
+                new_UserRating = True
+            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeUserRating AndAlso Not Master.eSettings.TVLockEpisodeUserRating Then
+                DBTVEpisode.TVEpisode.UserRating = 0
             End If
 
             'Runtime

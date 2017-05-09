@@ -56,7 +56,7 @@ Public Class frmSettingsHolder_Movie
         RaiseEvent SetupScraperChanged(chkEnabled.Checked, 0)
     End Sub
 
-    Private Sub chkRating_CheckedChanged(sender As Object, e As EventArgs) Handles chkRating.CheckedChanged
+    Private Sub SettingsChanged(sender As Object, e As EventArgs) Handles chkRating.CheckedChanged, chkUserRating.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
@@ -66,15 +66,6 @@ Public Class frmSettingsHolder_Movie
 
     Private Sub txtTraktPassword_TextChanged(sender As Object, e As EventArgs) Handles txtTraktPassword.TextChanged
         RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkFallbackToGlobalRating_CheckedChanged(sender As Object, e As EventArgs) Handles chkFallbackToGlobalRating.CheckedChanged, chkFallbackToGlobalRating.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkUsePersonalRating_CheckedChanged(sender As Object, e As EventArgs) Handles chkUsePersonalRating.CheckedChanged, chkFallbackToGlobalRating.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-        chkFallbackToGlobalRating.Enabled = chkUsePersonalRating.Checked
     End Sub
 
     Public Sub New()
@@ -95,9 +86,8 @@ Public Class frmSettingsHolder_Movie
 
     Private Sub SetUp()
         chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        chkFallbackToGlobalRating.Text = Master.eLang.GetString(1467, "Fallback to global rating")
         chkRating.Text = Master.eLang.GetString(400, "Rating")
-        chkUsePersonalRating.Text = Master.eLang.GetString(1464, "Use personal rating")
+        chkUserRating.Text = Master.eLang.GetString(1467, "User Rating")
         gbScraperFieldsOpts.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
         gbScraperOpts.Text = Master.eLang.GetString(1186, "Scraper Options")
         lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), Environment.NewLine)
