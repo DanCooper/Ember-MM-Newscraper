@@ -881,6 +881,62 @@ Public Class KodiInterface
                                 End If
                             End If
 
+                            'Get WatchedState of all movies
+                        Case InternalType.GetPlaycount_AllMovies
+                            If mHost IsNot Nothing Then
+                                Dim _APIKodi As New Kodi.APIKodi(mHost)
+
+                                'connection test
+                                If Await Task.Run(Function() _APIKodi.GetConnectionToHost) Then
+                                    'run task
+                                    Dim Result = Await Task.Run(Function() _APIKodi.GetPlaycount_AllMovies(GenericSubEventProgressAsync, GenericEventProcess))
+                                    If Result IsNot Nothing AndAlso Result.movies IsNot Nothing AndAlso Result.movies.Count > 0 Then
+                                        Using SQLTransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                                            Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                                                SQLNewcommand.CommandText = "SELECT idMovie, MoviePath, PlayCount, iLastPlayed, Title FROM movielist ORDER BY Title ASC;"
+                                                Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                                                    If SQLreader.HasRows Then
+                                                        While SQLreader.Read()
+                                                            Try
+                                                                Dim nMovieToSync = Result.movies.FirstOrDefault(Function(f) f.file = _APIKodi.GetRemotePath(SQLreader("MoviePath").ToString))
+                                                                If nMovieToSync IsNot Nothing Then
+                                                                    Dim intLastPlayed As String = Nothing
+                                                                    Dim intPlaycount As Integer = 0
+                                                                    If Not DBNull.Value.Equals(SQLreader("iLastPlayed")) Then intLastPlayed = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(SQLreader("iLastPlayed"))).ToString("yyyy-MM-dd HH:mm:ss")
+                                                                    If Not DBNull.Value.Equals(SQLreader("PlayCount")) Then intPlaycount = Convert.ToInt32(SQLreader("PlayCount"))
+                                                                    If Not intPlaycount = nMovieToSync.playcount OrElse Not intLastPlayed = nMovieToSync.lastplayed Then
+                                                                        Dim nDBElement = Master.DB.Load_Movie(Convert.ToInt64(SQLreader("idMovie")))
+                                                                        nDBElement.Movie.LastPlayed = nMovieToSync.lastplayed
+                                                                        nDBElement.Movie.PlayCount = nMovieToSync.playcount
+                                                                        Master.DB.Save_Movie(nDBElement, True, True, False, False, False)
+                                                                        RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {nDBElement.ID}))
+                                                                        logger.Trace(String.Format("[APIKodi] [{0}] GetPlaycount_AllMovies: ""{1}"" | Synced to Ember", mHost.Label, SQLreader("Title").ToString))
+                                                                    Else
+                                                                        logger.Trace(String.Format("[APIKodi] [{0}] GetPlaycount_AllMovies: ""{1}"" | Nothing to sync", mHost.Label, SQLreader("Title").ToString))
+                                                                    End If
+                                                                End If
+                                                            Catch ex As Exception
+                                                                logger.Error(ex, New StackFrame().GetMethod().Name)
+                                                            End Try
+                                                        End While
+                                                    End If
+                                                End Using
+                                            End Using
+                                            SQLTransaction.Commit()
+                                        End Using
+                                    End If
+                                Else
+                                    logger.Warn("[KodiInterface] [GenericRunCallBack]: Not online!")
+                                    getError = True
+                                End If
+                            End If
+
+                            'Get WatchedState of all tv shows
+                        Case InternalType.GetPlaycount_AllTVShows
+                            If mHost IsNot Nothing Then
+
+                            End If
+
                             'Clean Video Library
                         Case InternalType.VideoLibrary_Clean
                             If mHost IsNot Nothing Then
@@ -1108,8 +1164,6 @@ Public Class KodiInterface
     End Sub
 
     Private Sub CreateToolsMenu(ByRef tMenu As ToolStripMenuItem)
-        Dim mnuHostSyncPlaycounts As New ToolStripMenuItem
-        mnuHostSyncPlaycounts.Text = "Sync Playcount"
         If _SpecialSettings.Hosts IsNot Nothing AndAlso _SpecialSettings.Hosts.Count = 1 Then
             Dim mnuHostScanVideoLibrary As New ToolStripMenuItem
             mnuHostScanVideoLibrary.Image = New Bitmap(My.Resources.menuSync)
@@ -1142,6 +1196,32 @@ Public Class KodiInterface
                 mnuHost.DropDownItems.Add(mnuHostCleanVideoLibrary)
                 tMenu.DropDownItems.Add(mnuHost)
             Next
+            If _SpecialSettings.GetWatchedState AndAlso Not String.IsNullOrEmpty(_SpecialSettings.GetWatchedStateHost) Then
+                Dim mHost As Host = _SpecialSettings.Hosts.FirstOrDefault(Function(f) f.Label = _SpecialSettings.GetWatchedStateHost)
+                If mHost IsNot Nothing Then
+                    tMenu.DropDownItems.Add(New ToolStripSeparator)
+
+                    Dim mnuHostGetPlaycount_Movies As New ToolStripMenuItem
+                    mnuHostGetPlaycount_Movies.Image = New Bitmap(My.Resources.menuWatchedState)
+                    mnuHostGetPlaycount_Movies.Tag = mHost
+                    mnuHostGetPlaycount_Movies.Text = String.Format("{0} ({1}) - {2}",
+                                                                    Master.eLang.GetString(1070, "Get Watched State"),
+                                                                    _SpecialSettings.GetWatchedStateHost,
+                                                                    Master.eLang.GetString(36, "Movies"))
+                    AddHandler mnuHostGetPlaycount_Movies.Click, AddressOf mnuHostGetPlaycount_Movies_Click
+                    tMenu.DropDownItems.Add(mnuHostGetPlaycount_Movies)
+
+                    Dim mnuHostGetPlaycount_TVShows As New ToolStripMenuItem
+                    mnuHostGetPlaycount_TVShows.Image = New Bitmap(My.Resources.menuWatchedState)
+                    mnuHostGetPlaycount_TVShows.Tag = mHost
+                    mnuHostGetPlaycount_TVShows.Text = String.Format("{0} ({1}) - {2}",
+                                                                    Master.eLang.GetString(1070, "Get Watched State"),
+                                                                    _SpecialSettings.GetWatchedStateHost,
+                                                                    Master.eLang.GetString(653, "TV Shows"))
+                    AddHandler mnuHostGetPlaycount_TVShows.Click, AddressOf mnuHostGetPlaycount_TVShows_Click
+                    tMenu.DropDownItems.Add(mnuHostGetPlaycount_TVShows)
+                End If
+            End If
         Else
             Dim mnuDummy As New ToolStripMenuItem
             mnuDummy.Enabled = False
@@ -1715,6 +1795,42 @@ Public Class KodiInterface
         End If
     End Sub
     ''' <summary>
+    '''  Get WatchedState of all movies of submitted host
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <remarks>
+    ''' </remarks>
+    Private Sub mnuHostGetPlaycount_Movies_Click(ByVal sender As Object, ByVal e As EventArgs)
+        Dim Host As Host = DirectCast(DirectCast(sender, ToolStripMenuItem).Tag, Host)
+        If Host IsNot Nothing Then
+            Dim _APIKodi As New Kodi.APIKodi(Host)
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Host.Label & " | " & Master.eLang.GetString(1303, "Sync Playcount") & "...", New Bitmap(My.Resources.logo)}))
+
+            'add job to tasklist and get everything done
+            AddTask(New KodiTask With {.mHost = Host, .mInternalType = InternalType.GetPlaycount_AllMovies, .mType = Enums.ModuleEventType.Task})
+        Else
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
+        End If
+    End Sub
+    ''' <summary>
+    '''  Get WatchedState of all tv shows of submitted host
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <remarks>
+    ''' </remarks>
+    Private Sub mnuHostGetPlaycount_TVShows_Click(ByVal sender As Object, ByVal e As EventArgs)
+        Dim Host As Host = DirectCast(DirectCast(sender, ToolStripMenuItem).Tag, Host)
+        If Host IsNot Nothing Then
+            Dim _APIKodi As New Kodi.APIKodi(Host)
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Host.Label & " | " & Master.eLang.GetString(1303, "Sync Playcount") & "...", New Bitmap(My.Resources.logo)}))
+
+            'add job to tasklist and get everything done
+            AddTask(New KodiTask With {.mHost = Host, .mInternalType = InternalType.GetPlaycount_AllTVShows, .mType = Enums.ModuleEventType.Task})
+        Else
+            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
+        End If
+    End Sub
+    ''' <summary>
     '''  Scan video library of submitted host
     ''' </summary>
     ''' <param name="sender"></param>
@@ -1728,24 +1844,6 @@ Public Class KodiInterface
 
             'add job to tasklist and get everything done
             AddTask(New KodiTask With {.mHost = Host, .mInternalType = InternalType.VideoLibrary_Update, .mType = Enums.ModuleEventType.Task})
-        Else
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
-        End If
-    End Sub
-    ''' <summary>
-    '''  Scan video library of submitted host
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <remarks>
-    ''' </remarks>
-    Private Sub mnuHostGetPlaycount_Click(ByVal sender As Object, ByVal e As EventArgs)
-        Dim Host As Host = DirectCast(DirectCast(sender, ToolStripMenuItem).Tag, Host)
-        If Host IsNot Nothing Then
-            Dim _APIKodi As New Kodi.APIKodi(Host)
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Host.Label & " | " & Master.eLang.GetString(1448, "Updating Video Library..."), New Bitmap(My.Resources.logo)}))
-
-            'add job to tasklist and get everything done
-            AddTask(New KodiTask With {.mHost = Host, .mInternalType = InternalType.GetPlaycount, .mType = Enums.ModuleEventType.Task})
         Else
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
         End If
@@ -1892,12 +1990,12 @@ Public Class KodiInterface
     End Structure
 
     Private Enum InternalType
-
         None = 0
         GetPlaycount = 1
-        VideoLibrary_Clean = 2
-        VideoLibrary_Update = 3
-
+        GetPlaycount_AllMovies = 2
+        GetPlaycount_AllTVShows = 3
+        VideoLibrary_Clean = 4
+        VideoLibrary_Update = 5
     End Enum
     ''' <summary>
     ''' structure used to store Update Movie/TV/Movieset-Tasks for Kodi Interface

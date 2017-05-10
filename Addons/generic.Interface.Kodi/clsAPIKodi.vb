@@ -360,6 +360,29 @@ Namespace Kodi
         ''' <returns>true=Update successfull, false=error or movie not found in KodiDB</returns>
         ''' <remarks>
         ''' </remarks>
+        Public Async Function GetPlaycount_AllMovies(ByVal GenericSubEvent As IProgress(Of GenericSubEventCallBackAsync), ByVal GenericMainEvent As IProgress(Of GenericEventCallBackAsync)) As Task(Of VideoLibrary.GetMoviesResponse)
+            If _kodi Is Nothing Then
+                logger.Error("[APIKodi] GetPlaycount_AllMovies: No host initialized! Abort!")
+                Return Nothing
+            End If
+
+            Try
+                logger.Trace(String.Format("[APIKodi] [{0}] GetPlaycount_AllMovies | Start process...", _currenthost.Label))
+                'get informations for all movies
+                Return Await GetAllMovies()
+
+            Catch ex As Exception
+                logger.Error(ex, New StackFrame().GetMethod().Name)
+                Return Nothing
+            End Try
+        End Function
+        ''' <summary>
+        ''' Get movie playcount from Host
+        ''' </summary>
+        ''' <param name="mDBElement">Movie as DBElement</param>
+        ''' <returns>true=Update successfull, false=error or movie not found in KodiDB</returns>
+        ''' <remarks>
+        ''' </remarks>
         Public Async Function GetPlaycount_Movie(ByVal mDBElement As Database.DBElement, ByVal GenericSubEvent As IProgress(Of GenericSubEventCallBackAsync), ByVal GenericMainEvent As IProgress(Of GenericEventCallBackAsync)) As Task(Of WatchedState)
             If _kodi Is Nothing Then
                 logger.Error("[APIKodi] GetPlaycount_Movie: No host initialized! Abort!")
@@ -485,7 +508,7 @@ Namespace Kodi
         ''' <param name="LocalPath"></param>
         ''' <returns></returns>
         ''' <remarks>ATTENTION: It's not allowed to use "Remotepath.ToLower" (Kodi can't find UNC sources with wrong case)</remarks>
-        Private Function GetRemotePath(ByVal strLocalPath As String) As String
+        Public Function GetRemotePath(ByVal strLocalPath As String) As String
             Dim strRemotePath As String = String.Empty
             Dim bRemoteIsUNC As Boolean = False
 
