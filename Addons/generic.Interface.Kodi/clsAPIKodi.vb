@@ -34,7 +34,7 @@ Namespace Kodi
 
         Shared logger As Logger = LogManager.GetCurrentClassLogger()
         'current selected host, Kodi Host type already declared in EmberAPI (XML serialization) -> no MySettings declaration needed here
-        Private _currenthost As New KodiInterface.Host
+        Private _currenthost As New Host
         'current selected client
         Private _kodi As Client
         'helper object, needed for communication client (notification, eventhandler support)
@@ -270,13 +270,13 @@ Namespace Kodi
         ''' <remarks>
         ''' 2015/06/29 Cocotus - First implementation
         ''' </remarks>
-        Public Shared Function GetHostJSONVersion(ByVal kHost As KodiInterface.Host) As String
+        Public Shared Function GetHostJSONVersion(ByVal kHost As Host) As APIVersionInfo
             Try
-                Dim _APIKodi As New Kodi.APIKodi(kHost)
+                Dim _APIKodi As New APIKodi(kHost)
                 Return _APIKodi.GetHostJSONVersion.Result
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)
-                Return String.Empty
+                Return Nothing
             End Try
         End Function
         ''' <summary>
@@ -286,7 +286,7 @@ Namespace Kodi
         ''' <remarks>
         ''' 2015/06/27 Cocotus - First implementation
         ''' </remarks>
-        Private Async Function GetHostJSONVersion() As Task(Of String)
+        Private Async Function GetHostJSONVersion() As Task(Of APIVersionInfo)
             If _kodi Is Nothing Then
                 logger.Error("[APIKodi] GetHostJSONVersion: No host initialized! Abort!")
                 Return Nothing
@@ -294,28 +294,35 @@ Namespace Kodi
 
             Try
                 Dim response = Await _kodi.JSONRPC.Version.ConfigureAwait(False)
-                Dim codename As String = ""
+                Dim nAPIVersionInfo As New APIVersionInfo With {
+                    .Codename = "unknown",
+                    .Major = response.version.major,
+                    .Minor = response.version.minor,
+                    .Patch = response.version.patch}
+
                 'see codename table here: http://kodi.wiki/view/JSON-RPC_API
-                Select Case response.version.major.ToString & response.version.minor
-                    Case "2"
-                        codename = "Dharma "
-                    Case "4"
-                        codename = "Eden "
+                Select Case String.Concat(nAPIVersionInfo.Major.ToString, nAPIVersionInfo.Minor)
+                    Case "20"
+                        nAPIVersionInfo.Codename = "Dharma "
+                    Case "40"
+                        nAPIVersionInfo.Codename = "Eden "
                     Case "60"
-                        codename = "Frodo "
+                        nAPIVersionInfo.Codename = "Frodo "
                     Case "614"
-                        codename = "Gotham "
+                        nAPIVersionInfo.Codename = "Gotham "
                     Case "621"
-                        codename = "Helix "
+                        nAPIVersionInfo.Codename = "Helix "
                     Case "625"
-                        codename = "Isengard "
+                        nAPIVersionInfo.Codename = "Isengard "
                     Case "632"
-                        codename = "Jarvis "
+                        nAPIVersionInfo.Codename = "Jarvis "
+                    Case "80"
+                        nAPIVersionInfo.Codename = "Krypton "
                 End Select
-                Return codename & response.version.major.ToString & "." & response.version.minor
+                Return nAPIVersionInfo
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)
-                Return ""
+                Return Nothing
             End Try
         End Function
         ''' <summary>
@@ -973,7 +980,19 @@ Namespace Kodi
             End If
         End Function
 
-        Public Async Function TestConnectionToHost() As Task(Of Boolean)
+        Public Async Function GetConnectionToHost() As Task(Of Boolean)
+            Try
+                Dim Response = Await _kodi.JSONRPC.Ping
+                _currenthost.APIVersionInfo = Await GetHostJSONVersion()
+                Return True
+            Catch ex As Exception
+                logger.Error(ex, New StackFrame().GetMethod().Name)
+                logger.Error(String.Format("[APIKodi] [{0}] TestConnectionToHost | No connection to Host!", _currenthost.Label))
+                Return False
+            End Try
+        End Function
+
+        Public Async Function TestConnectionToHostd() As Task(Of Boolean)
             Try
                 Dim Response = Await _kodi.JSONRPC.Ping
                 Return True
@@ -1059,6 +1078,7 @@ Namespace Kodi
                         mRuntime = CType(mDBElement.Movie.Runtime, Integer) * 60 'API requires runtime in seconds
                     End If
                     Dim mTop250 As Integer = mDBElement.Movie.Top250
+                    Dim mUserRating As Integer = mDBElement.Movie.UserRating
                     Dim mYear As Integer = If(mDBElement.Movie.YearSpecified, CType(mDBElement.Movie.Year, Integer), 0)
 
                     'arrays
@@ -1096,43 +1116,83 @@ Namespace Kodi
                                                   GetRemotePath(mDBElement.ImagesContainer.Landscape.LocalFilePath), Nothing)
                     Dim mPoster As String = If(mDBElement.ImagesContainer.Poster.LocalFilePathSpecified,
                                                   GetRemotePath(mDBElement.ImagesContainer.Poster.LocalFilePath), Nothing)
+                    Dim mIMDB As String = If(mDBElement.Movie.IMDBSpecified, mDBElement.Movie.IMDB, Nothing)
+                    Dim mTMDB As String = If(mDBElement.Movie.TMDBSpecified, mDBElement.Movie.TMDB, Nothing)
 
                     'all image paths will be set in artwork object
-                    Dim artwork As New Media.Artwork.Set
-                    artwork.banner = mBanner
-                    artwork.clearart = mClearArt
-                    artwork.clearlogo = mClearLogo
-                    artwork.discart = mDiscArt
-                    artwork.fanart = mFanart
-                    artwork.landscape = mLandscape
-                    artwork.poster = mPoster
+                    Dim mArtwork As New Media.Artwork.Set
+                    mArtwork.banner = mBanner
+                    mArtwork.clearart = mClearArt
+                    mArtwork.clearlogo = mClearLogo
+                    mArtwork.discart = mDiscArt
+                    mArtwork.fanart = mFanart
+                    mArtwork.landscape = mLandscape
+                    mArtwork.poster = mPoster
                     'artwork.thumb = mPoster ' not supported in Ember?!
 
-                    Dim response = Await _kodi.VideoLibrary.SetMovieDetails(KodiElement.movieid,
-                                                                        title:=mTitle,
-                                                                        playcount:=mPlaycount,
-                                                                        runtime:=mRuntime,
-                                                                        director:=mDirectorList,
-                                                                        studio:=mStudioList,
-                                                                        year:=mYear,
-                                                                        plot:=mPlot,
-                                                                        genre:=mGenreList,
-                                                                        rating:=mRating,
-                                                                        mpaa:=mMPAA,
-                                                                        imdbnumber:=mImdbnumber,
-                                                                        votes:=mVotes,
-                                                                        lastplayed:=mLastPlayed,
-                                                                        originaltitle:=mOriginalTitle,
-                                                                        trailer:=mTrailer,
-                                                                        tagline:=mTagline,
-                                                                        plotoutline:=mOutline,
-                                                                        writer:=mWriterList,
-                                                                        country:=mCountryList,
-                                                                        top250:=mTop250,
-                                                                        sorttitle:=mSortTitle,
-                                                                        set:=mSet,
-                                                                        tag:=mTagList,
-                                                                        art:=artwork).ConfigureAwait(False)
+                    Dim mUniqueID As New Media.UniqueID.Set
+                    mUniqueID.imdb = mIMDB
+                    mUniqueID.tmdb = mTMDB
+
+                    Dim response As String = String.Empty
+
+                    If _currenthost.APIVersionInfo.Major >= 8 Then
+                        Await _kodi.VideoLibrary.SetMovieDetailsNew(KodiElement.movieid,
+                                                                    title:=mTitle,
+                                                                    playcount:=mPlaycount,
+                                                                    runtime:=mRuntime,
+                                                                    director:=mDirectorList,
+                                                                    studio:=mStudioList,
+                                                                    year:=mYear,
+                                                                    plot:=mPlot,
+                                                                    genre:=mGenreList,
+                                                                    rating:=mRating,
+                                                                    mpaa:=mMPAA,
+                                                                    imdbnumber:=mImdbnumber,
+                                                                    votes:=mVotes,
+                                                                    lastplayed:=mLastPlayed,
+                                                                    originaltitle:=mOriginalTitle,
+                                                                    trailer:=mTrailer,
+                                                                    tagline:=mTagline,
+                                                                    plotoutline:=mOutline,
+                                                                    writer:=mWriterList,
+                                                                    country:=mCountryList,
+                                                                    top250:=mTop250,
+                                                                    sorttitle:=mSortTitle,
+                                                                    set:=mSet,
+                                                                    tag:=mTagList,
+                                                                    art:=mArtwork,
+                                                                    userrating:=mUserRating,
+                                                                    dateadded:=mDateAdded,
+                                                                    uniqueid:=mUniqueID).ConfigureAwait(False)
+                    Else
+                        Await _kodi.VideoLibrary.SetMovieDetails(KodiElement.movieid,
+                                                                 title:=mTitle,
+                                                                 playcount:=mPlaycount,
+                                                                 runtime:=mRuntime,
+                                                                 director:=mDirectorList,
+                                                                 studio:=mStudioList,
+                                                                 year:=mYear,
+                                                                 plot:=mPlot,
+                                                                 genre:=mGenreList,
+                                                                 rating:=mRating,
+                                                                 mpaa:=mMPAA,
+                                                                 imdbnumber:=mImdbnumber,
+                                                                 votes:=mVotes,
+                                                                 lastplayed:=mLastPlayed,
+                                                                 originaltitle:=mOriginalTitle,
+                                                                 trailer:=mTrailer,
+                                                                 tagline:=mTagline,
+                                                                 plotoutline:=mOutline,
+                                                                 writer:=mWriterList,
+                                                                 country:=mCountryList,
+                                                                 top250:=mTop250,
+                                                                 sorttitle:=mSortTitle,
+                                                                 set:=mSet,
+                                                                 tag:=mTagList,
+                                                                 art:=mArtwork).ConfigureAwait(False)
+                    End If
+
                     'not supported right now in Ember
                     'showlink:=mshowlink, _     
                     'thumbnail:=mposter, _
@@ -1202,6 +1262,7 @@ Namespace Kodi
                 If KodiElement IsNot Nothing Then
                     'string or string.empty
                     Dim mTitle As String = mDBElement.MovieSet.Title
+                    Dim mPlot As String = mDBElement.MovieSet.Plot
 
                     'string or null/nothing
                     Dim mBanner As String = If(mDBElement.ImagesContainer.Banner.LocalFilePathSpecified,
@@ -1229,10 +1290,9 @@ Namespace Kodi
                     artwork.landscape = mLandscape
                     artwork.poster = mPoster
 
-                    Dim response = Await _kodi.VideoLibrary.SetMovieSetDetails(KodiElement.setid,
-                                                                        title:=mTitle,
-                                                                        art:=artwork).ConfigureAwait(False)
-
+                    Dim response As String = Await _kodi.VideoLibrary.SetMovieSetDetails(KodiElement.setid,
+                                                                                         title:=mTitle,
+                                                                                         art:=artwork).ConfigureAwait(False)
 
                     If response.Contains("error") Then
                         logger.Error(String.Format("[APIKodi] [{0}] UpdateInfo_MovieSet: {1}", _currenthost.Label, response))
@@ -2163,10 +2223,10 @@ Namespace Kodi
         ''' <remarks>
         ''' 2015/06/27 Cocotus - First implementation
         ''' </remarks>
-        Public Async Function GetJSONHost() As Task(Of String)
+        Public Async Function GetJSONHost() As Task(Of JSONRPC.IntrospectResponse)
             Try
-                Dim response = Await _kodi.JSONRPC.Introspect().ConfigureAwait(False)
-                Return response.ToString
+                Dim response = Await _kodi.JSONRPC.Introspect(True, True, False).ConfigureAwait(False)
+                Return response
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)
                 Return Nothing
@@ -2215,6 +2275,19 @@ Namespace Kodi
 #End Region 'Methods
 
 #Region "Nested Types"
+
+        Public Class APIVersionInfo
+            Public Codename As String = String.Empty
+            Public Major As Integer
+            Public Minor As Integer
+            Public Patch As Integer
+
+            Public ReadOnly Property ReadingFriendly() As String
+                Get
+                    Return String.Format("{0} {1}.{2}.{3}", Codename, Major, Minor, Patch).Trim
+                End Get
+            End Property
+        End Class
 
         Structure PathAndFilename
             Dim bIsMultiPart As Boolean

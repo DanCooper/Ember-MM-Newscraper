@@ -34,7 +34,7 @@ Public Class dlgHost
     'all sources of current host
     Private currentHostRemoteSources As New List(Of XBMCRPC.List.Items.SourcesItem)
     'JSONRPC version of host - may be retrieved manually if user hits "Check Connection" button
-    Private JsonHostversion As String = String.Empty
+    Private JsonHostVersionInfo As Kodi.APIKodi.APIVersionInfo
     'List of all show and movie sources in Ember
     Private LocalSources As New Dictionary(Of String, Enums.ContentType)
     Private RemoteSources As New List(Of String)
@@ -223,7 +223,7 @@ Public Class dlgHost
         SetControlsEnabled(False)
         SetInfo()
 
-        JsonHostversion = String.Empty
+        JsonHostVersionInfo = New Kodi.APIKodi.APIVersionInfo
         'start backgroundworker: check for JSONversion
         bwLoadInfo.RunWorkerAsync(2)
         While bwLoadInfo.IsBusy
@@ -233,10 +233,10 @@ Public Class dlgHost
 
         SetControlsEnabled(True)
 
-        If String.IsNullOrEmpty(JsonHostversion) Then
+        If JsonHostVersionInfo IsNot Nothing Then
             MessageBox.Show(Master.eLang.GetString(1434, "There was a problem communicating with host."), Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
         Else
-            MessageBox.Show(Master.eLang.GetString(1435, "Connection to host successful!") & Environment.NewLine & "API-Version: " & JsonHostversion, "", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            MessageBox.Show(Master.eLang.GetString(1435, "Connection to host successful!") & Environment.NewLine & "API-Version: " & JsonHostVersionInfo.ReadingFriendly, "", MessageBoxButtons.OK, MessageBoxIcon.Information)
         End If
     End Sub
     ''' <summary>
@@ -330,7 +330,7 @@ Public Class dlgHost
                 currentHostRemoteSources = Kodi.APIKodi.GetSources(_currentHost)
             Case 2
                 'API request: Get JSONRPC version of host
-                JsonHostversion = Kodi.APIKodi.GetHostJSONVersion(_currentHost)
+                JsonHostVersionInfo = Kodi.APIKodi.GetHostJSONVersion(_currentHost)
         End Select
     End Sub
 

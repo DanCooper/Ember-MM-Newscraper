@@ -2004,9 +2004,216 @@ namespace XBMCRPC.Methods
             return await _client.GetData<string>("VideoLibrary.SetMovieDetails", jArgs);
         }
 
-                /// <summary>
-                /// Update the given movie set with the given details
-                /// </summary>
+        /// <summary>
+        /// Update the given movie with the given details
+        /// </summary>
+        public async Task<string> SetMovieDetailsNew(
+            int movieid = 0,
+            string title = null, 
+            int? playcount = null, 
+            int? runtime = null, 
+            global::System.Collections.Generic.List<string> director = null, 
+            global::System.Collections.Generic.List<string> studio = null, 
+            int? year = null, 
+            string plot = null, 
+            global::System.Collections.Generic.List<string> genre = null, 
+            double? rating = null, 
+            string mpaa = null, 
+            string imdbnumber = null, 
+            string votes = null, 
+            string lastplayed = null, 
+            string originaltitle = null, 
+            string trailer = null, 
+            string tagline = null, 
+            string plotoutline = null, 
+            global::System.Collections.Generic.List<string> writer = null, 
+            global::System.Collections.Generic.List<string> country = null, 
+            int? top250 = null, 
+            string sorttitle = null, 
+            string set = null, 
+            global::System.Collections.Generic.List<string> showlink = null, 
+            string thumbnail = null, 
+            string fanart = null, 
+            global::System.Collections.Generic.List<string> tag = null, 
+            Media.Artwork.Set art = null, 
+            Video.Resume resume = null, 
+            int? userrating = null,
+            string dateadded = null,
+            string premiered = null,
+            Media.UniqueID.Set uniqueid = null)
+        {
+            var jArgs = new JObject();
+            if (movieid != null)
+            {
+                var jpropmovieid = JToken.FromObject(movieid, _client.Serializer);
+                jArgs.Add(new JProperty("movieid", jpropmovieid));
+            }
+            if (title != null)
+            {
+                var jproptitle = JToken.FromObject(title, _client.Serializer);
+                jArgs.Add(new JProperty("title", jproptitle));
+            }
+            if (playcount != null)
+            {
+                var jpropplaycount = JToken.FromObject(playcount, _client.Serializer);
+                jArgs.Add(new JProperty("playcount", jpropplaycount));
+            }
+            if (runtime != null)
+            {
+                var jpropruntime = JToken.FromObject(runtime, _client.Serializer);
+                jArgs.Add(new JProperty("runtime", jpropruntime));
+            }
+            if (director != null)
+            {
+                var jpropdirector = JToken.FromObject(director, _client.Serializer);
+                jArgs.Add(new JProperty("director", jpropdirector));
+            }
+            if (studio != null)
+            {
+                var jpropstudio = JToken.FromObject(studio, _client.Serializer);
+                jArgs.Add(new JProperty("studio", jpropstudio));
+            }
+            if (year != null)
+            {
+                var jpropyear = JToken.FromObject(year, _client.Serializer);
+                jArgs.Add(new JProperty("year", jpropyear));
+            }
+            if (plot != null)
+            {
+                var jpropplot = JToken.FromObject(plot, _client.Serializer);
+                jArgs.Add(new JProperty("plot", jpropplot));
+            }
+            if (genre != null)
+            {
+                var jpropgenre = JToken.FromObject(genre, _client.Serializer);
+                jArgs.Add(new JProperty("genre", jpropgenre));
+            }
+            if (rating != null)
+            {
+                var jproprating = JToken.FromObject(rating, _client.Serializer);
+                jArgs.Add(new JProperty("rating", jproprating));
+            }
+            if (mpaa != null)
+            {
+                var jpropmpaa = JToken.FromObject(mpaa, _client.Serializer);
+                jArgs.Add(new JProperty("mpaa", jpropmpaa));
+            }
+            if (imdbnumber != null)
+            {
+                var jpropimdbnumber = JToken.FromObject(imdbnumber, _client.Serializer);
+                jArgs.Add(new JProperty("imdbnumber", jpropimdbnumber));
+            }
+            if (votes != null)
+            {
+                var jpropvotes = JToken.FromObject(votes, _client.Serializer);
+                jArgs.Add(new JProperty("votes", jpropvotes));
+            }
+            if (lastplayed != null)
+            {
+                var jproplastplayed = JToken.FromObject(lastplayed, _client.Serializer);
+                jArgs.Add(new JProperty("lastplayed", jproplastplayed));
+            }
+            if (originaltitle != null)
+            {
+                var jproporiginaltitle = JToken.FromObject(originaltitle, _client.Serializer);
+                jArgs.Add(new JProperty("originaltitle", jproporiginaltitle));
+            }
+            if (trailer != null)
+            {
+                var jproptrailer = JToken.FromObject(trailer, _client.Serializer);
+                jArgs.Add(new JProperty("trailer", jproptrailer));
+            }
+            if (tagline != null)
+            {
+                var jproptagline = JToken.FromObject(tagline, _client.Serializer);
+                jArgs.Add(new JProperty("tagline", jproptagline));
+            }
+            if (plotoutline != null)
+            {
+                var jpropplotoutline = JToken.FromObject(plotoutline, _client.Serializer);
+                jArgs.Add(new JProperty("plotoutline", jpropplotoutline));
+            }
+            if (writer != null)
+            {
+                var jpropwriter = JToken.FromObject(writer, _client.Serializer);
+                jArgs.Add(new JProperty("writer", jpropwriter));
+            }
+            if (country != null)
+            {
+                var jpropcountry = JToken.FromObject(country, _client.Serializer);
+                jArgs.Add(new JProperty("country", jpropcountry));
+            }
+            if (top250 != null)
+            {
+                var jproptop250 = JToken.FromObject(top250, _client.Serializer);
+                jArgs.Add(new JProperty("top250", jproptop250));
+            }
+            if (sorttitle != null)
+            {
+                var jpropsorttitle = JToken.FromObject(sorttitle, _client.Serializer);
+                jArgs.Add(new JProperty("sorttitle", jpropsorttitle));
+            }
+            if (set != null)
+            {
+                var jpropset = JToken.FromObject(set, _client.Serializer);
+                jArgs.Add(new JProperty("set", jpropset));
+            }
+            if (showlink != null)
+            {
+                var jpropshowlink = JToken.FromObject(showlink, _client.Serializer);
+                jArgs.Add(new JProperty("showlink", jpropshowlink));
+            }
+            if (thumbnail != null)
+            {
+                var jpropthumbnail = JToken.FromObject(thumbnail, _client.Serializer);
+                jArgs.Add(new JProperty("thumbnail", jpropthumbnail));
+            }
+            if (fanart != null)
+            {
+                var jpropfanart = JToken.FromObject(fanart, _client.Serializer);
+                jArgs.Add(new JProperty("fanart", jpropfanart));
+            }
+            if (tag != null)
+            {
+                var jproptag = JToken.FromObject(tag, _client.Serializer);
+                jArgs.Add(new JProperty("tag", jproptag));
+            }
+            if (art != null)
+            {
+                var jpropart = JToken.FromObject(art, _client.Serializer);
+                jArgs.Add(new JProperty("art", jpropart));
+            }
+            if (resume != null)
+            {
+                var jpropresume = JToken.FromObject(resume, _client.Serializer);
+                jArgs.Add(new JProperty("resume", jpropresume));
+            }
+            if (userrating != null)
+            {
+                var jpropuserrating = JToken.FromObject(userrating, _client.Serializer);
+                jArgs.Add(new JProperty("userrating", jpropuserrating));
+            }
+            if (dateadded != null)
+            {
+                var jpropdateadded = JToken.FromObject(dateadded, _client.Serializer);
+                jArgs.Add(new JProperty("dateadded", jpropdateadded));
+            }
+            if (premiered != null)
+            {
+                var jproppremiered = JToken.FromObject(premiered, _client.Serializer);
+                jArgs.Add(new JProperty("premiered", jproppremiered));
+            }
+            if (uniqueid != null)
+            {
+                var jpropuniqueid = JToken.FromObject(uniqueid, _client.Serializer);
+                jArgs.Add(new JProperty("uniqueid", jpropuniqueid));
+            }
+            return await _client.GetData<string>("VideoLibrary.SetMovieDetails", jArgs);
+        }
+
+        /// <summary>
+        /// Update the given movie set with the given details
+        /// </summary>
         public async Task<string> SetMovieSetDetails(int setid=0, string title=null, XBMCRPC.Media.Artwork.Set art=null)
         {
             var jArgs = new JObject();
@@ -2028,9 +2235,9 @@ namespace XBMCRPC.Methods
             return await _client.GetData<string>("VideoLibrary.SetMovieSetDetails", jArgs);
         }
 
-                /// <summary>
-                /// Update the given music video with the given details
-                /// </summary>
+        /// <summary>
+        /// Update the given music video with the given details
+        /// </summary>
         public async Task<string> SetMusicVideoDetails(int musicvideoid=0, string title=null, int? playcount=null, int? runtime=null, global::System.Collections.Generic.List<string> director=null, global::System.Collections.Generic.List<string> studio=null, int? year=null, string plot=null, string album=null, global::System.Collections.Generic.List<string> artist=null, global::System.Collections.Generic.List<string> genre=null, int? track=null, string lastplayed=null, string thumbnail=null, string fanart=null, global::System.Collections.Generic.List<string> tag=null, XBMCRPC.Media.Artwork.Set art=null, XBMCRPC.Video.Resume resume=null)
         {
             var jArgs = new JObject();

@@ -285,6 +285,7 @@
     <Compile Include="XBMCRPC\XBMCRPC\List\Sort_order.cs" />
     <Compile Include="XBMCRPC\XBMCRPC\Media\Artwork.cs" />
     <Compile Include="XBMCRPC\XBMCRPC\Media\Details\Base.cs" />
+    <Compile Include="XBMCRPC\XBMCRPC\Media\UniqueID.cs" />
     <Compile Include="XBMCRPC\XBMCRPC\Notifications\Item1.cs" />
     <Compile Include="XBMCRPC\XBMCRPC\Notifications\Item2.cs" />
     <Compile Include="XBMCRPC\XBMCRPC\Notifications\Item3.cs" />
