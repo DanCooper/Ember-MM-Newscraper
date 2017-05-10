@@ -303,21 +303,21 @@ Namespace Kodi
                 'see codename table here: http://kodi.wiki/view/JSON-RPC_API
                 Select Case String.Concat(nAPIVersionInfo.Major.ToString, nAPIVersionInfo.Minor)
                     Case "20"
-                        nAPIVersionInfo.Codename = "Dharma "
+                        nAPIVersionInfo.Codename = "Dharma"
                     Case "40"
-                        nAPIVersionInfo.Codename = "Eden "
+                        nAPIVersionInfo.Codename = "Eden"
                     Case "60"
-                        nAPIVersionInfo.Codename = "Frodo "
+                        nAPIVersionInfo.Codename = "Frodo"
                     Case "614"
-                        nAPIVersionInfo.Codename = "Gotham "
+                        nAPIVersionInfo.Codename = "Gotham"
                     Case "621"
-                        nAPIVersionInfo.Codename = "Helix "
+                        nAPIVersionInfo.Codename = "Helix"
                     Case "625"
-                        nAPIVersionInfo.Codename = "Isengard "
+                        nAPIVersionInfo.Codename = "Isengard"
                     Case "632"
-                        nAPIVersionInfo.Codename = "Jarvis "
+                        nAPIVersionInfo.Codename = "Jarvis"
                     Case "80"
-                        nAPIVersionInfo.Codename = "Krypton "
+                        nAPIVersionInfo.Codename = "Krypton"
                 End Select
                 Return nAPIVersionInfo
             Catch ex As Exception
@@ -1137,60 +1137,62 @@ Namespace Kodi
                     Dim response As String = String.Empty
 
                     If _currenthost.APIVersionInfo.Major >= 8 Then
-                        Await _kodi.VideoLibrary.SetMovieDetailsNew(KodiElement.movieid,
-                                                                    title:=mTitle,
-                                                                    playcount:=mPlaycount,
-                                                                    runtime:=mRuntime,
-                                                                    director:=mDirectorList,
-                                                                    studio:=mStudioList,
-                                                                    year:=mYear,
-                                                                    plot:=mPlot,
-                                                                    genre:=mGenreList,
-                                                                    rating:=mRating,
-                                                                    mpaa:=mMPAA,
-                                                                    imdbnumber:=mImdbnumber,
-                                                                    votes:=mVotes,
-                                                                    lastplayed:=mLastPlayed,
-                                                                    originaltitle:=mOriginalTitle,
-                                                                    trailer:=mTrailer,
-                                                                    tagline:=mTagline,
-                                                                    plotoutline:=mOutline,
-                                                                    writer:=mWriterList,
-                                                                    country:=mCountryList,
-                                                                    top250:=mTop250,
-                                                                    sorttitle:=mSortTitle,
-                                                                    set:=mSet,
-                                                                    tag:=mTagList,
-                                                                    art:=mArtwork,
-                                                                    userrating:=mUserRating,
-                                                                    dateadded:=mDateAdded,
-                                                                    uniqueid:=mUniqueID).ConfigureAwait(False)
+                        Await _kodi.VideoLibrary.SetMovieDetailsNew(
+                            KodiElement.movieid,
+                            title:=mTitle,
+                            playcount:=mPlaycount,
+                            runtime:=mRuntime,
+                            director:=mDirectorList,
+                            studio:=mStudioList,
+                            year:=mYear,
+                            plot:=mPlot,
+                            genre:=mGenreList,
+                            rating:=mRating,
+                            mpaa:=mMPAA,
+                            imdbnumber:=mImdbnumber,
+                            votes:=mVotes,
+                            lastplayed:=mLastPlayed,
+                            originaltitle:=mOriginalTitle,
+                            trailer:=mTrailer,
+                            tagline:=mTagline,
+                            plotoutline:=mOutline,
+                            writer:=mWriterList,
+                            country:=mCountryList,
+                            top250:=mTop250,
+                            sorttitle:=mSortTitle,
+                            set:=mSet,
+                            tag:=mTagList,
+                            art:=mArtwork,
+                            userrating:=mUserRating,
+                            dateadded:=mDateAdded,
+                            uniqueid:=mUniqueID).ConfigureAwait(False)
                     Else
-                        Await _kodi.VideoLibrary.SetMovieDetails(KodiElement.movieid,
-                                                                 title:=mTitle,
-                                                                 playcount:=mPlaycount,
-                                                                 runtime:=mRuntime,
-                                                                 director:=mDirectorList,
-                                                                 studio:=mStudioList,
-                                                                 year:=mYear,
-                                                                 plot:=mPlot,
-                                                                 genre:=mGenreList,
-                                                                 rating:=mRating,
-                                                                 mpaa:=mMPAA,
-                                                                 imdbnumber:=mImdbnumber,
-                                                                 votes:=mVotes,
-                                                                 lastplayed:=mLastPlayed,
-                                                                 originaltitle:=mOriginalTitle,
-                                                                 trailer:=mTrailer,
-                                                                 tagline:=mTagline,
-                                                                 plotoutline:=mOutline,
-                                                                 writer:=mWriterList,
-                                                                 country:=mCountryList,
-                                                                 top250:=mTop250,
-                                                                 sorttitle:=mSortTitle,
-                                                                 set:=mSet,
-                                                                 tag:=mTagList,
-                                                                 art:=mArtwork).ConfigureAwait(False)
+                        Await _kodi.VideoLibrary.SetMovieDetails(
+                            KodiElement.movieid,
+                            title:=mTitle,
+                            playcount:=mPlaycount,
+                            runtime:=mRuntime,
+                            director:=mDirectorList,
+                            studio:=mStudioList,
+                            year:=mYear,
+                            plot:=mPlot,
+                            genre:=mGenreList,
+                            rating:=mRating,
+                            mpaa:=mMPAA,
+                            imdbnumber:=mImdbnumber,
+                            votes:=mVotes,
+                            lastplayed:=mLastPlayed,
+                            originaltitle:=mOriginalTitle,
+                            trailer:=mTrailer,
+                            tagline:=mTagline,
+                            plotoutline:=mOutline,
+                            writer:=mWriterList,
+                            country:=mCountryList,
+                            top250:=mTop250,
+                            sorttitle:=mSortTitle,
+                            set:=mSet,
+                            tag:=mTagList,
+                            art:=mArtwork).ConfigureAwait(False)
                     End If
 
                     'not supported right now in Ember
@@ -1290,9 +1292,10 @@ Namespace Kodi
                     artwork.landscape = mLandscape
                     artwork.poster = mPoster
 
-                    Dim response As String = Await _kodi.VideoLibrary.SetMovieSetDetails(KodiElement.setid,
-                                                                                         title:=mTitle,
-                                                                                         art:=artwork).ConfigureAwait(False)
+                    Dim response As String = Await _kodi.VideoLibrary.SetMovieSetDetails(
+                        KodiElement.setid,
+                        title:=mTitle,
+                        art:=artwork).ConfigureAwait(False)
 
                     If response.Contains("error") Then
                         logger.Error(String.Format("[APIKodi] [{0}] UpdateInfo_MovieSet: {1}", _currenthost.Label, response))
@@ -1361,6 +1364,7 @@ Namespace Kodi
                 If KodiElement IsNot Nothing Then
 
                     'string or string.empty
+                    Dim mAired As String = mDBElement.TVEpisode.Aired
                     Dim mDateAdded As String = mDBElement.TVEpisode.DateAdded
                     Dim mLastPlayed As String = mDBElement.TVEpisode.LastPlayed
                     Dim mPlot As String = mDBElement.TVEpisode.Plot
@@ -1384,6 +1388,7 @@ Namespace Kodi
                     If mDBElement.TVEpisode.RuntimeSpecified AndAlso Integer.TryParse(mDBElement.TVEpisode.Runtime, 0) Then
                         mRuntime = CType(mDBElement.TVEpisode.Runtime, Integer) * 60 'API requires runtime in seconds
                     End If
+                    Dim mUserRating As Integer = mDBElement.TVEpisode.UserRating
 
                     'arrays
                     'Directors
@@ -1397,23 +1402,54 @@ Namespace Kodi
                                                  GetRemotePath(mDBElement.ImagesContainer.Fanart.LocalFilePath), Nothing)
                     Dim mPoster As String = If(mDBElement.ImagesContainer.Poster.LocalFilePathSpecified,
                                                   GetRemotePath(mDBElement.ImagesContainer.Poster.LocalFilePath), Nothing)
+                    Dim mIMDB As String = If(mDBElement.TVEpisode.IMDBSpecified, mDBElement.TVEpisode.IMDB, Nothing)
+                    Dim mTMDB As String = If(mDBElement.TVEpisode.TMDBSpecified, mDBElement.TVEpisode.TMDB, Nothing)
+                    Dim mTVDB As String = If(mDBElement.TVEpisode.TVDBSpecified, mDBElement.TVEpisode.TVDB, Nothing)
 
                     'all image paths will be set in artwork object
                     Dim artwork As New Media.Artwork.Set
                     artwork.fanart = mFanart
                     artwork.thumb = mPoster
 
-                    Dim response = Await _kodi.VideoLibrary.SetEpisodeDetails(KodiElement.episodeid,
-                                                                        title:=mTitle,
-                                                                        playcount:=mPlaycount,
-                                                                        runtime:=mRuntime,
-                                                                        director:=mDirectorList,
-                                                                        plot:=mPlot,
-                                                                        rating:=mRating,
-                                                                        votes:=mVotes,
-                                                                        lastplayed:=mLastPlayed,
-                                                                        writer:=mWriterList,
-                                                                        art:=artwork).ConfigureAwait(False)
+                    Dim mUniqueID As New Media.UniqueID.Set
+                    mUniqueID.imdb = mIMDB
+                    mUniqueID.tmdb = mTMDB
+                    mUniqueID.tvdb = mTVDB
+
+                    Dim response As String = String.Empty
+
+                    If _currenthost.APIVersionInfo.Major >= 8 Then
+                        response = Await _kodi.VideoLibrary.SetEpisodeDetailsNew(
+                            KodiElement.episodeid,
+                            title:=mTitle,
+                            playcount:=mPlaycount,
+                            runtime:=mRuntime,
+                            director:=mDirectorList,
+                            plot:=mPlot,
+                            rating:=mRating,
+                            votes:=mVotes,
+                            lastplayed:=mLastPlayed,
+                            writer:=mWriterList,
+                            art:=artwork,
+                            firstaired:=mAired,
+                            userrating:=mUserRating,
+                            dateadded:=mDateAdded,
+                            uniqueid:=mUniqueID).ConfigureAwait(False)
+                    Else
+                        response = Await _kodi.VideoLibrary.SetEpisodeDetails(
+                            KodiElement.episodeid,
+                            title:=mTitle,
+                            playcount:=mPlaycount,
+                            runtime:=mRuntime,
+                            director:=mDirectorList,
+                            plot:=mPlot,
+                            rating:=mRating,
+                            votes:=mVotes,
+                            lastplayed:=mLastPlayed,
+                            writer:=mWriterList,
+                            art:=artwork,
+                            firstaired:=mAired).ConfigureAwait(False)
+                    End If
                     'not supported right now in Ember
                     'originaltitle:=moriginaltitle, _    
                     'firstaired:=mfirstaired, _    
@@ -1509,8 +1545,9 @@ Namespace Kodi
                     artwork.landscape = mLandscape
                     artwork.poster = mPoster
 
-                    Dim response = Await _kodi.VideoLibrary.SetSeasonDetails(KodiElement.seasonid,
-                                                                             art:=artwork).ConfigureAwait(False)
+                    Dim response = Await _kodi.VideoLibrary.SetSeasonDetails(
+                        KodiElement.seasonid,
+                        art:=artwork).ConfigureAwait(False)
 
                     If response.Contains("error") Then
                         logger.Error(String.Format("[APIKodi] [{0}] UpdateInfo_TVSeason: {1}", _currenthost.Label, response))
@@ -1599,6 +1636,7 @@ Namespace Kodi
                     Dim mPlot As String = mDBElement.TVShow.Plot
                     Dim mPremiered As String = mDBElement.TVShow.Premiered
                     Dim mSortTitle As String = mDBElement.TVShow.SortTitle
+                    Dim mStatus As String = mDBElement.TVShow.Status
                     Dim mTitle As String = mDBElement.TVShow.Title
 
                     'digit grouping symbol for Votes count
@@ -1615,6 +1653,7 @@ Namespace Kodi
                     'integer or 0
                     Dim mRating As Double = If(mDBElement.TVShow.RatingSpecified, CType(Double.Parse(mDBElement.TVShow.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture), Double), 0)
                     Dim mRuntime As Integer = If(mDBElement.TVShow.RuntimeSpecified, CType(mDBElement.TVShow.Runtime, Integer), 0)
+                    Dim mUserRating As Integer = mDBElement.TVShow.UserRating
 
                     'arrays
                     'Genres
@@ -1641,6 +1680,9 @@ Namespace Kodi
                                               GetRemotePath(mDBElement.ImagesContainer.Landscape.LocalFilePath), Nothing)
                     Dim mPoster As String = If(mDBElement.ImagesContainer.Poster.LocalFilePathSpecified,
                                                  GetRemotePath(mDBElement.ImagesContainer.Poster.LocalFilePath), Nothing)
+                    Dim mIMDB As String = If(mDBElement.TVShow.IMDBSpecified, mDBElement.TVShow.IMDB, Nothing)
+                    Dim mTMDB As String = If(mDBElement.TVShow.TMDBSpecified, mDBElement.TVShow.TMDB, Nothing)
+                    Dim mTVDB As String = If(mDBElement.TVShow.TVDBSpecified, mDBElement.TVShow.TVDB, Nothing)
 
                     'all image paths will be set in artwork object
                     Dim artwork As New Media.Artwork.Set
@@ -1652,21 +1694,53 @@ Namespace Kodi
                     artwork.landscape = mLandscape
                     artwork.poster = mPoster
 
-                    Dim response = Await _kodi.VideoLibrary.SetTVShowDetails(KodiElement.tvshowid,
-                                                                        title:=mTitle,
-                                                                        studio:=mStudioList,
-                                                                        plot:=mPlot,
-                                                                        genre:=mGenreList,
-                                                                        rating:=mRating,
-                                                                        mpaa:=mMPAA,
-                                                                        imdbnumber:=mImdbnumber,
-                                                                        premiered:=mPremiered,
-                                                                        votes:=mVotes,
-                                                                        originaltitle:=mOriginalTitle,
-                                                                        sorttitle:=mSortTitle,
-                                                                        episodeguide:=mEpisodeGuide,
-                                                                        tag:=mTagList,
-                                                                        art:=artwork).ConfigureAwait(False)
+                    Dim mUniqueID As New Media.UniqueID.Set
+                    mUniqueID.imdb = mIMDB
+                    mUniqueID.tmdb = mTMDB
+                    mUniqueID.tvdb = mTVDB
+
+                    Dim response As String = String.Empty
+
+                    If _currenthost.APIVersionInfo.Major >= 8 Then
+                        response = Await _kodi.VideoLibrary.SetTVShowDetailsNew(
+                            KodiElement.tvshowid,
+                            title:=mTitle,
+                            studio:=mStudioList,
+                            plot:=mPlot,
+                            genre:=mGenreList,
+                            rating:=mRating,
+                            mpaa:=mMPAA,
+                            imdbnumber:=mImdbnumber,
+                            premiered:=mPremiered,
+                            votes:=mVotes,
+                            originaltitle:=mOriginalTitle,
+                            sorttitle:=mSortTitle,
+                            episodeguide:=mEpisodeGuide,
+                            tag:=mTagList,
+                            art:=artwork,
+                            runtime:=mRuntime,
+                            status:=mStatus,
+                            uniqueid:=mUniqueID,
+                            userrating:=mUserRating).ConfigureAwait(False)
+                    Else
+                        response = Await _kodi.VideoLibrary.SetTVShowDetails(
+                            KodiElement.tvshowid,
+                            title:=mTitle,
+                            studio:=mStudioList,
+                            plot:=mPlot,
+                            genre:=mGenreList,
+                            rating:=mRating,
+                            mpaa:=mMPAA,
+                            imdbnumber:=mImdbnumber,
+                            premiered:=mPremiered,
+                            votes:=mVotes,
+                            originaltitle:=mOriginalTitle,
+                            sorttitle:=mSortTitle,
+                            episodeguide:=mEpisodeGuide,
+                            tag:=mTagList,
+                            art:=artwork).ConfigureAwait(False)
+                    End If
+
                     'not supported right now in Ember
                     'thumbnail:=mposter, _
                     'fanart:=mFanart, _

@@ -233,7 +233,7 @@ Public Class dlgHost
 
         SetControlsEnabled(True)
 
-        If JsonHostVersionInfo IsNot Nothing Then
+        If JsonHostVersionInfo Is Nothing Then
             MessageBox.Show(Master.eLang.GetString(1434, "There was a problem communicating with host."), Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
         Else
             MessageBox.Show(Master.eLang.GetString(1435, "Connection to host successful!") & Environment.NewLine & "API-Version: " & JsonHostVersionInfo.ReadingFriendly, "", MessageBoxButtons.OK, MessageBoxIcon.Information)
