@@ -223,11 +223,13 @@ Public Class clsAPITrakt
             nWatchedRatedMovie.Plays = tWatchedMovie.Plays
 
             'get rating
-            Dim nRatedMovie As TraktAPI.Model.TraktMovieRated = RatedMovies.FirstOrDefault(Function(f) (f.Movie.Ids.Imdb IsNot Nothing AndAlso f.Movie.Ids.Imdb = tWatchedMovie.Movie.Ids.Imdb) OrElse
+            If RatedMovies IsNot Nothing AndAlso RatedMovies.Count > 0 Then
+                Dim nRatedMovie As TraktAPI.Model.TraktMovieRated = RatedMovies.FirstOrDefault(Function(f) (f.Movie.Ids.Imdb IsNot Nothing AndAlso f.Movie.Ids.Imdb = tWatchedMovie.Movie.Ids.Imdb) OrElse
                                                                                                (f.Movie.Ids.Tmdb IsNot Nothing AndAlso CInt(f.Movie.Ids.Tmdb) = CInt(tWatchedMovie.Movie.Ids.Tmdb)))
-            If nRatedMovie IsNot Nothing Then
-                nWatchedRatedMovie.RatedAt = Functions.ConvertToProperDateTime(nRatedMovie.RatedAt)
-                nWatchedRatedMovie.Rating = nRatedMovie.Rating
+                If nRatedMovie IsNot Nothing Then
+                    nWatchedRatedMovie.RatedAt = Functions.ConvertToProperDateTime(nRatedMovie.RatedAt)
+                    nWatchedRatedMovie.Rating = nRatedMovie.Rating
+                End If
             End If
 
             lWatchedRatedMovies.Add(nWatchedRatedMovie)
