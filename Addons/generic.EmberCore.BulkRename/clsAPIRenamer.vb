@@ -1275,7 +1275,7 @@ Public Class FileFolderRenamer
                         If Not joinIndex = -1 Then
                             If strCond.Length > joinIndex + 2 Then
                                 strJoin = strCond.Substring(joinIndex + 2, 1)
-                                If Not ". -".IndexOf(strJoin) = -1 Then
+                                If Not ". -,".IndexOf(strJoin) = -1 Then
                                     strCond = ApplyPattern(strCond, String.Concat("G", strJoin), f.Genre.Replace(" / ", strJoin))
                                 Else
                                     strCond = ApplyPattern(strCond, "G", f.Genre.Replace(" / ", " "))
@@ -1305,7 +1305,7 @@ Public Class FileFolderRenamer
                         If Not joinIndex = -1 Then
                             If strCond.Length > joinIndex + 2 Then
                                 strJoin = strCond.Substring(joinIndex + 2, 1)
-                                If Not ". -".IndexOf(strJoin) = -1 Then
+                                If Not ". -,".IndexOf(strJoin) = -1 Then
                                     strCond = ApplyPattern(strCond, String.Concat("U", strJoin), f.Country.Replace(" / ", strJoin))
                                 Else
                                     strCond = ApplyPattern(strCond, "U", f.Country.Replace(" / ", " "))
@@ -1315,7 +1315,7 @@ Public Class FileFolderRenamer
                             End If
                         End If
 
-                        strNoFlags = Regex.Replace(strNoFlags, "\$((?:OO|[12ABCDEFHIJKLMNOPQRSTVWY]|G[. -]|U[. -]?))", String.Empty) '"(?i)\$([DFTYRAS])"  "\$((?i:[DFTYRAS]))"
+                        strNoFlags = Regex.Replace(strNoFlags, "\$((?:OO|[12ABCDEFHIJKLMNOPQRSTVWY]|G[. -,]|U[. -,]?))", String.Empty) '"(?i)\$([DFTYRAS])"  "\$((?i:[DFTYRAS]))"
                         If strCond.Trim = strNoFlags.Trim Then
                             strCond = String.Empty
                         Else
@@ -1563,7 +1563,7 @@ Public Class FileFolderRenamer
                 If Not nextC = -1 Then
                     If pattern.Length > nextC + 2 Then
                         strCond = pattern.Substring(nextC + 2, 1)
-                        If Not ". -".IndexOf(strCond) = -1 Then
+                        If Not ". -,".IndexOf(strCond) = -1 Then
                             pattern = ApplyPattern(pattern, String.Concat("G", strCond), f.Genre.Replace(" / ", strCond))
                         Else
                             pattern = ApplyPattern(pattern, "G", f.Genre.Replace(" / ", " "))
@@ -1578,7 +1578,7 @@ Public Class FileFolderRenamer
                 If Not nextC = -1 Then
                     If pattern.Length > nextC + 2 Then
                         strCond = pattern.Substring(nextC + 2, 1)
-                        If Not ". -".IndexOf(strCond) = -1 Then
+                        If Not ". -,".IndexOf(strCond) = -1 Then
                             pattern = ApplyPattern(pattern, String.Concat("U", strCond), f.Country.Replace(" / ", strCond))
                         Else
                             pattern = ApplyPattern(pattern, "U", f.Country.Replace(" / ", " "))
