@@ -216,12 +216,11 @@ Public Class APIXML
                 If vresFlag IsNot Nothing Then
                     iReturn(0) = vresFlag.Image
                 Else
-                    vresFlag = lFlags.FirstOrDefault(Function(f) f.Name = "defaultscreen" AndAlso f.Type = FlagType.VideoResolution)
+                    vresFlag = lFlags.FirstOrDefault(Function(f) f.Name = "unknown" AndAlso f.Type = FlagType.VideoResolution)
                     If vresFlag IsNot Nothing Then
                         iReturn(0) = vresFlag.Image
                     Else
-                        iReturn(0) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultScreen.png"))
-
+                        iReturn(0) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "questionmark.png"))
                     End If
                 End If
 
@@ -230,11 +229,11 @@ Public Class APIXML
                 If vSourceFlag IsNot Nothing Then
                     iReturn(1) = vSourceFlag.Image
                 Else
-                    vSourceFlag = lFlags.FirstOrDefault(Function(f) f.Name = "defaultscreen" AndAlso f.Type = FlagType.VideoSource)
+                    vSourceFlag = lFlags.FirstOrDefault(Function(f) f.Name = "unknown" AndAlso f.Type = FlagType.VideoSource)
                     If vSourceFlag IsNot Nothing Then
                         iReturn(1) = vSourceFlag.Image
                     Else
-                        iReturn(1) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultScreen.png"))
+                        iReturn(1) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "questionmark.png"))
                     End If
                 End If
 
@@ -242,11 +241,11 @@ Public Class APIXML
                 If vcodecFlag IsNot Nothing Then
                     iReturn(2) = vcodecFlag.Image
                 Else
-                    vcodecFlag = lFlags.FirstOrDefault(Function(f) f.Name = "defaultscreen" AndAlso f.Type = FlagType.VideoCodec)
+                    vcodecFlag = lFlags.FirstOrDefault(Function(f) f.Name = "unknown" AndAlso f.Type = FlagType.VideoCodec)
                     If vcodecFlag IsNot Nothing Then
                         iReturn(2) = vcodecFlag.Image
                     Else
-                        iReturn(2) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultScreen.png"))
+                        iReturn(2) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "questionmark.png"))
                     End If
                 End If
 
@@ -259,7 +258,7 @@ Public Class APIXML
                         iReturn(3) = acodecFlag.Image
                     End If
                 Else
-                    acodecFlag = lFlags.FirstOrDefault(Function(f) f.Name = "defaultaudio" AndAlso f.Type = FlagType.AudioCodec)
+                    acodecFlag = lFlags.FirstOrDefault(Function(f) f.Name = "unknown" AndAlso f.Type = FlagType.AudioCodec)
                     If acodecFlag IsNot Nothing Then
                         If tAudio.HasPreferred Then
                             Dim acodecFlagTemp As Image = acodecFlag.Image
@@ -269,9 +268,9 @@ Public Class APIXML
                         End If
                     Else
                         If tAudio.HasPreferred Then
-                            iReturn(3) = ImageUtils.SetOverlay(Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultSound.png")), 64, 44, Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "HasLanguage.png")), 4)
+                            iReturn(3) = ImageUtils.SetOverlay(Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "unknown.png")), 64, 44, Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "HasLanguage.png")), 4)
                         Else
-                            iReturn(3) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultSound.png"))
+                            iReturn(3) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "questionmark.png"))
                         End If
                     End If
                 End If
@@ -280,11 +279,11 @@ Public Class APIXML
                 If achanFlag IsNot Nothing Then
                     iReturn(4) = achanFlag.Image
                 Else
-                    achanFlag = lFlags.FirstOrDefault(Function(f) f.Name = "defaultaudio" AndAlso f.Type = FlagType.AudioChan)
+                    achanFlag = lFlags.FirstOrDefault(Function(f) f.Name = "unknown" AndAlso f.Type = FlagType.AudioChan)
                     If achanFlag IsNot Nothing Then
                         iReturn(4) = achanFlag.Image
                     Else
-                        iReturn(4) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultSound.png"))
+                        iReturn(4) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "questionmark.png"))
                     End If
                 End If
 
@@ -366,15 +365,15 @@ Public Class APIXML
                 logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         Else
-            iReturn(0) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultScreen.png"))
-            iReturn(1) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultScreen.png"))
-            iReturn(2) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultScreen.png"))
+            iReturn(0) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "questionmark.png"))
+            iReturn(1) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "questionmark.png"))
+            iReturn(2) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "questionmark.png"))
             If tAudio.HasPreferred Then
-                iReturn(3) = ImageUtils.SetOverlay(Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultSound.png")), 64, 44, Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "HasLanguage.png")), 4)
+                iReturn(3) = ImageUtils.SetOverlay(Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "questionmark.png")), 64, 44, Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "HasLanguage.png")), 4)
             Else
-                iReturn(3) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultSound.png"))
+                iReturn(3) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "questionmark.png"))
             End If
-            iReturn(4) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultSound.png"))
+            iReturn(4) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "questionmark.png"))
             'Audio Language Flags
             iReturn(5) = Nothing
             iReturn(6) = Nothing
@@ -559,7 +558,7 @@ Public Class APIXML
             End Using
         End If
 
-        If imgStudio Is Nothing Then imgStudio = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "DefaultScreen.png"))
+        If imgStudio Is Nothing Then imgStudio = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "questionmark.png"))
 
         Return imgStudio
     End Function

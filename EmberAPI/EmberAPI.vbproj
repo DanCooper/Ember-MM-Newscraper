@@ -467,16 +467,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Images\Defaults\DefaultScreen.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Images\Defaults\DefaultSound.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Images\Defaults\HasLanguage.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -502,6 +492,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Images\Defaults\questionmark.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="NLog Notes.txt" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
