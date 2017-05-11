@@ -22,7 +22,7 @@
       <Item Name="(?i)[\W_]azhd[\W_]">amazon</Item>
       <Item Name="(?i)[\W_]ithd[\W_]">itunes</Item>
       <Item Name="(?i)[\W_]nfu?hd[\W_]">netflix</Item>
-      <Item Name="(?i)[\W_]hddl[\W_]">web-dl</Item>
+      <Item Name="(?i)[\W_]hddl[\W_]">webdl</Item>
     </Table>
   </ComplexSettings>
 </AdvancedSettings>
