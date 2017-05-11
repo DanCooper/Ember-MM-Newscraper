@@ -908,7 +908,7 @@ Public Class KodiInterface
                                                                         Dim nDBElement = Master.DB.Load_Movie(Convert.ToInt64(SQLreader("idMovie")))
                                                                         nDBElement.Movie.LastPlayed = nMovieToSync.lastplayed
                                                                         nDBElement.Movie.PlayCount = nMovieToSync.playcount
-                                                                        Master.DB.Save_Movie(nDBElement, True, True, False, False, False)
+                                                                        Master.DB.Save_Movie(nDBElement, True, True, False, True, False)
                                                                         RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {nDBElement.ID}))
                                                                         logger.Trace(String.Format("[APIKodi] [{0}] GetPlaycount_AllMovies: ""{1}"" | Synced to Ember", mHost.Label, SQLreader("Title").ToString))
                                                                     Else
@@ -960,7 +960,7 @@ Public Class KodiInterface
                                                                         If Not queShowID.Contains(nDBElement.ShowID) Then queShowID.Enqueue(nDBElement.ShowID)
                                                                         nDBElement.TVEpisode.LastPlayed = nEpisodeToSync.lastplayed
                                                                         nDBElement.TVEpisode.Playcount = nEpisodeToSync.playcount
-                                                                        Master.DB.Save_TVEpisode(nDBElement, True, True, False, False, False, False)
+                                                                        Master.DB.Save_TVEpisode(nDBElement, True, True, False, False, True, False)
                                                                         RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {nDBElement.ID}))
                                                                         logger.Trace(String.Format("[APIKodi] [{0}] GetPlaycount_AllTVEpisodes: ""{1}"" | Synced to Ember", mHost.Label, SQLreader("Title").ToString))
                                                                     Else
