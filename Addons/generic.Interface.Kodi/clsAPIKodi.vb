@@ -117,6 +117,61 @@ Namespace Kodi
             End Try
         End Function
 
+        Private Async Function GetAllTVEpisodes() As Task(Of VideoLibrary.GetEpisodesResponse)
+            If _kodi Is Nothing Then
+                logger.Error("[APIKodi] GetAllTVEpisodes: No host initialized! Abort!")
+                Return Nothing
+            End If
+
+            Dim response_TVShows = Await GetAllTVShows().ConfigureAwait(False)
+            If response_TVShows IsNot Nothing AndAlso response_TVShows.tvshows IsNot Nothing AndAlso response_TVShows.tvshows.Count > 0 Then
+                Dim lstTVEpisodes As New VideoLibrary.GetEpisodesResponse With {.episodes = New List(Of Video.Details.Episode)}
+                For Each nTVShow In response_TVShows.tvshows
+                    Dim response_TVEpisodes = Await GetAllTVEpisodes(nTVShow.tvshowid)
+                    If response_TVEpisodes IsNot Nothing AndAlso response_TVEpisodes.episodes.Count > 0 Then
+                        lstTVEpisodes.episodes.AddRange(response_TVEpisodes.episodes)
+                    End If
+                Next
+                Return lstTVEpisodes
+            End If
+            Return Nothing
+        End Function
+
+        Private Async Function GetAllTVEpisodes(ByVal ShowID As Integer) As Task(Of VideoLibrary.GetEpisodesResponse)
+            If _kodi Is Nothing Then
+                logger.Error("[APIKodi] GetAllTVEpisodes: No host initialized! Abort!")
+                Return Nothing
+            End If
+
+            Dim response_TVSeasons = Await GetAllTVSeasons(ShowID).ConfigureAwait(False)
+            If response_TVSeasons IsNot Nothing AndAlso response_TVSeasons.seasons IsNot Nothing AndAlso response_TVSeasons.seasons.Count > 0 Then
+                Dim lstTVEpisodes As New VideoLibrary.GetEpisodesResponse With {.episodes = New List(Of Video.Details.Episode)}
+                For Each nTVSeason In response_TVSeasons.seasons
+                    Dim response_TVEpisodes = Await GetAllTVEpisodes(ShowID, nTVSeason.season)
+                    If response_TVEpisodes IsNot Nothing AndAlso response_TVEpisodes.episodes IsNot Nothing AndAlso response_TVEpisodes.episodes.Count > 0 Then
+                        lstTVEpisodes.episodes.AddRange(response_TVEpisodes.episodes)
+                    End If
+                Next
+                Return lstTVEpisodes
+            End If
+            Return Nothing
+        End Function
+
+        Private Async Function GetAllTVEpisodes(ByVal ShowID As Integer, ByVal intSeason As Integer) As Task(Of VideoLibrary.GetEpisodesResponse)
+            If _kodi Is Nothing Then
+                logger.Error("[APIKodi] GetAllTVEpisodes: No host initialized! Abort!")
+                Return Nothing
+            End If
+
+            Try
+                Dim response = Await _kodi.VideoLibrary.GetEpisodes(ShowID, intSeason, Video.Fields.Episode.AllFields).ConfigureAwait(False)
+                Return response
+            Catch ex As Exception
+                logger.Error(ex, New StackFrame().GetMethod().Name)
+                Return Nothing
+            End Try
+        End Function
+
         Private Async Function GetAllTVSeasons(ByVal ShowID As Integer) As Task(Of VideoLibrary.GetSeasonsResponse)
             If _kodi Is Nothing Then
                 logger.Warn("[APIKodi] GetAllTVSeasons: No host initialized! Abort!")
@@ -370,6 +425,29 @@ Namespace Kodi
                 logger.Trace(String.Format("[APIKodi] [{0}] GetPlaycount_AllMovies | Start process...", _currenthost.Label))
                 'get informations for all movies
                 Return Await GetAllMovies()
+
+            Catch ex As Exception
+                logger.Error(ex, New StackFrame().GetMethod().Name)
+                Return Nothing
+            End Try
+        End Function
+        ''' <summary>
+        ''' Get movie playcount from Host
+        ''' </summary>
+        ''' <param name="mDBElement">Movie as DBElement</param>
+        ''' <returns>true=Update successfull, false=error or movie not found in KodiDB</returns>
+        ''' <remarks>
+        ''' </remarks>
+        Public Async Function GetPlaycount_AllTVEpisodes(ByVal GenericSubEvent As IProgress(Of GenericSubEventCallBackAsync), ByVal GenericMainEvent As IProgress(Of GenericEventCallBackAsync)) As Task(Of VideoLibrary.GetEpisodesResponse)
+            If _kodi Is Nothing Then
+                logger.Error("[APIKodi] GetPlaycount_AllTVEpisodes: No host initialized! Abort!")
+                Return Nothing
+            End If
+
+            Try
+                logger.Trace(String.Format("[APIKodi] [{0}] GetPlaycount_AllTVEpisodes | Start process...", _currenthost.Label))
+                'get informations for all movies
+                Return Await GetAllTVEpisodes()
 
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)

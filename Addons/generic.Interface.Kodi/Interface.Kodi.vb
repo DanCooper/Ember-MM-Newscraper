@@ -931,10 +931,64 @@ Public Class KodiInterface
                                 End If
                             End If
 
-                            'Get WatchedState of all tv shows
-                        Case InternalType.GetPlaycount_AllTVShows
+                            'Get WatchedState of all episodes
+                        Case InternalType.GetPlaycount_AllTVEpisodes
                             If mHost IsNot Nothing Then
+                                Dim _APIKodi As New Kodi.APIKodi(mHost)
 
+                                'connection test
+                                If Await Task.Run(Function() _APIKodi.GetConnectionToHost) Then
+                                    'run task
+                                    Dim Result = Await Task.Run(Function() _APIKodi.GetPlaycount_AllTVEpisodes(GenericSubEventProgressAsync, GenericEventProcess))
+                                    If Result IsNot Nothing AndAlso Result.episodes IsNot Nothing AndAlso Result.episodes.Count > 0 Then
+                                        Using SQLTransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                                            Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                                                SQLNewcommand.CommandText = "SELECT idEpisode, strFilePath, PlayCount, iLastPlayed, Title FROM episodelist WHERE Missing=0 ORDER BY idShow ASC;"
+                                                Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                                                    If SQLreader.HasRows Then
+                                                        Dim queShowID As New Queue(Of Long)
+                                                        While SQLreader.Read()
+                                                            Try
+                                                                Dim nEpisodeToSync = Result.episodes.FirstOrDefault(Function(f) f.file = _APIKodi.GetRemotePath(SQLreader("strFilePath").ToString))
+                                                                If nEpisodeToSync IsNot Nothing Then
+                                                                    Dim intLastPlayed As String = Nothing
+                                                                    Dim intPlaycount As Integer = 0
+                                                                    If Not DBNull.Value.Equals(SQLreader("iLastPlayed")) Then intLastPlayed = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(SQLreader("iLastPlayed"))).ToString("yyyy-MM-dd HH:mm:ss")
+                                                                    If Not DBNull.Value.Equals(SQLreader("PlayCount")) Then intPlaycount = Convert.ToInt32(SQLreader("PlayCount"))
+                                                                    If Not intPlaycount = nEpisodeToSync.playcount OrElse Not intLastPlayed = nEpisodeToSync.lastplayed Then
+                                                                        Dim nDBElement = Master.DB.Load_TVEpisode(Convert.ToInt64(SQLreader("idEpisode")), True)
+                                                                        If Not queShowID.Contains(nDBElement.ShowID) Then queShowID.Enqueue(nDBElement.ShowID)
+                                                                        nDBElement.TVEpisode.LastPlayed = nEpisodeToSync.lastplayed
+                                                                        nDBElement.TVEpisode.Playcount = nEpisodeToSync.playcount
+                                                                        Master.DB.Save_TVEpisode(nDBElement, True, True, False, False, False, False)
+                                                                        RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {nDBElement.ID}))
+                                                                        logger.Trace(String.Format("[APIKodi] [{0}] GetPlaycount_AllTVEpisodes: ""{1}"" | Synced to Ember", mHost.Label, SQLreader("Title").ToString))
+                                                                    Else
+                                                                        logger.Trace(String.Format("[APIKodi] [{0}] GetPlaycount_AllTVEpisodes: ""{1}"" | Nothing to sync", mHost.Label, SQLreader("Title").ToString))
+                                                                    End If
+                                                                    If queShowID.Count > 1 Then
+                                                                        Dim intShowID = queShowID.Dequeue
+                                                                        RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVShow, New List(Of Object)(New Object() {intShowID}))
+                                                                    End If
+                                                                End If
+                                                            Catch ex As Exception
+                                                                logger.Error(ex, New StackFrame().GetMethod().Name)
+                                                            End Try
+                                                        End While
+                                                        If queShowID.Count > 0 Then
+                                                            Dim intShowID = queShowID.Dequeue
+                                                            RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_TVShow, New List(Of Object)(New Object() {intShowID}))
+                                                        End If
+                                                    End If
+                                                End Using
+                                            End Using
+                                            SQLTransaction.Commit()
+                                        End Using
+                                    End If
+                                Else
+                                    logger.Warn("[KodiInterface] [GenericRunCallBack]: Not online!")
+                                    getError = True
+                                End If
                             End If
 
                             'Clean Video Library
@@ -1177,6 +1231,30 @@ Public Class KodiInterface
             mnuHostCleanVideoLibrary.Text = Master.eLang.GetString(709, "Clean Database")
             AddHandler mnuHostCleanVideoLibrary.Click, AddressOf mnuHostCleanVideoLibrary_Click
             tMenu.DropDownItems.Add(mnuHostCleanVideoLibrary)
+            If _SpecialSettings.GetWatchedState AndAlso Not String.IsNullOrEmpty(_SpecialSettings.GetWatchedStateHost) Then
+                Dim mHost As Host = _SpecialSettings.Hosts.FirstOrDefault(Function(f) f.Label = _SpecialSettings.GetWatchedStateHost)
+                If mHost IsNot Nothing Then
+                    tMenu.DropDownItems.Add(New ToolStripSeparator)
+
+                    Dim mnuHostGetPlaycount_Movies As New ToolStripMenuItem
+                    mnuHostGetPlaycount_Movies.Image = New Bitmap(My.Resources.menuWatchedState)
+                    mnuHostGetPlaycount_Movies.Tag = mHost
+                    mnuHostGetPlaycount_Movies.Text = String.Format("{0} - {1}",
+                                                                    Master.eLang.GetString(1070, "Get Watched State"),
+                                                                    Master.eLang.GetString(36, "Movies"))
+                    AddHandler mnuHostGetPlaycount_Movies.Click, AddressOf mnuHostGetPlaycount_Movies_Click
+                    tMenu.DropDownItems.Add(mnuHostGetPlaycount_Movies)
+
+                    Dim mnuHostGetPlaycount_TVEpisodes As New ToolStripMenuItem
+                    mnuHostGetPlaycount_TVEpisodes.Image = New Bitmap(My.Resources.menuWatchedState)
+                    mnuHostGetPlaycount_TVEpisodes.Tag = mHost
+                    mnuHostGetPlaycount_TVEpisodes.Text = String.Format("{0} - {1}",
+                                                                    Master.eLang.GetString(1070, "Get Watched State"),
+                                                                    Master.eLang.GetString(682, "Episodes"))
+                    AddHandler mnuHostGetPlaycount_TVEpisodes.Click, AddressOf mnuHostGetPlaycount_TVEpisodes_Click
+                    tMenu.DropDownItems.Add(mnuHostGetPlaycount_TVEpisodes)
+                End If
+            End If
         ElseIf _SpecialSettings.Hosts IsNot Nothing AndAlso _SpecialSettings.Hosts.Count > 1 Then
             For Each kHost As Host In _SpecialSettings.Hosts
                 Dim mnuHost As New ToolStripMenuItem
@@ -1211,15 +1289,15 @@ Public Class KodiInterface
                     AddHandler mnuHostGetPlaycount_Movies.Click, AddressOf mnuHostGetPlaycount_Movies_Click
                     tMenu.DropDownItems.Add(mnuHostGetPlaycount_Movies)
 
-                    Dim mnuHostGetPlaycount_TVShows As New ToolStripMenuItem
-                    mnuHostGetPlaycount_TVShows.Image = New Bitmap(My.Resources.menuWatchedState)
-                    mnuHostGetPlaycount_TVShows.Tag = mHost
-                    mnuHostGetPlaycount_TVShows.Text = String.Format("{0} ({1}) - {2}",
+                    Dim mnuHostGetPlaycount_TVEpisodes As New ToolStripMenuItem
+                    mnuHostGetPlaycount_TVEpisodes.Image = New Bitmap(My.Resources.menuWatchedState)
+                    mnuHostGetPlaycount_TVEpisodes.Tag = mHost
+                    mnuHostGetPlaycount_TVEpisodes.Text = String.Format("{0} ({1}) - {2}",
                                                                     Master.eLang.GetString(1070, "Get Watched State"),
                                                                     _SpecialSettings.GetWatchedStateHost,
-                                                                    Master.eLang.GetString(653, "TV Shows"))
-                    AddHandler mnuHostGetPlaycount_TVShows.Click, AddressOf mnuHostGetPlaycount_TVShows_Click
-                    tMenu.DropDownItems.Add(mnuHostGetPlaycount_TVShows)
+                                                                    Master.eLang.GetString(682, "Episodes"))
+                    AddHandler mnuHostGetPlaycount_TVEpisodes.Click, AddressOf mnuHostGetPlaycount_TVEpisodes_Click
+                    tMenu.DropDownItems.Add(mnuHostGetPlaycount_TVEpisodes)
                 End If
             End If
         Else
@@ -1818,14 +1896,14 @@ Public Class KodiInterface
     ''' <param name="sender"></param>
     ''' <remarks>
     ''' </remarks>
-    Private Sub mnuHostGetPlaycount_TVShows_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub mnuHostGetPlaycount_TVEpisodes_Click(ByVal sender As Object, ByVal e As EventArgs)
         Dim Host As Host = DirectCast(DirectCast(sender, ToolStripMenuItem).Tag, Host)
         If Host IsNot Nothing Then
             Dim _APIKodi As New Kodi.APIKodi(Host)
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Host.Label & " | " & Master.eLang.GetString(1303, "Sync Playcount") & "...", New Bitmap(My.Resources.logo)}))
 
             'add job to tasklist and get everything done
-            AddTask(New KodiTask With {.mHost = Host, .mInternalType = InternalType.GetPlaycount_AllTVShows, .mType = Enums.ModuleEventType.Task})
+            AddTask(New KodiTask With {.mHost = Host, .mInternalType = InternalType.GetPlaycount_AllTVEpisodes, .mType = Enums.ModuleEventType.Task})
         Else
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
         End If
@@ -1993,7 +2071,7 @@ Public Class KodiInterface
         None = 0
         GetPlaycount = 1
         GetPlaycount_AllMovies = 2
-        GetPlaycount_AllTVShows = 3
+        GetPlaycount_AllTVEpisodes = 3
         VideoLibrary_Clean = 4
         VideoLibrary_Update = 5
     End Enum
