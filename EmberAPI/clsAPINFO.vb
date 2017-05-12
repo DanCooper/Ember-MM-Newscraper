@@ -1736,71 +1736,88 @@ Public Class NFO
     ''' <returns></returns>
     Public Shared Function GetResFromDimensions(ByVal fiRes As MediaContainers.Video) As String
         Dim resOut As String = String.Empty
-        Try
-            If Not String.IsNullOrEmpty(fiRes.Width) AndAlso Not String.IsNullOrEmpty(fiRes.Height) AndAlso Not String.IsNullOrEmpty(fiRes.Aspect) Then
-                Dim iWidth As Integer = Convert.ToInt32(fiRes.Width)
-                Dim iHeight As Integer = Convert.ToInt32(fiRes.Height)
-                Dim sinADR As Single = NumUtils.ConvertToSingle(fiRes.Aspect)
+
+        If Not String.IsNullOrEmpty(fiRes.Width) AndAlso Not String.IsNullOrEmpty(fiRes.Height) AndAlso Not String.IsNullOrEmpty(fiRes.Aspect) Then
+            Dim iWidth As Integer = Convert.ToInt32(fiRes.Width)
+            Dim iHeight As Integer = Convert.ToInt32(fiRes.Height)
+
+            If Integer.TryParse(fiRes.Width, iWidth) AndAlso Integer.TryParse(fiRes.Height, iHeight) Then
 
                 Select Case True
-                    Case iWidth < 640
-                        resOut = "SD"
                     'exact
-                    Case (iWidth = 3840 AndAlso iHeight = 2160) OrElse (iWidth = 3996 AndAlso iHeight = 2160) OrElse (iWidth = 4096 AndAlso iHeight = 2160) OrElse (iWidth = 5120 AndAlso iHeight = 2160)
+                    Case iWidth = 7680 AndAlso iHeight = 4320   'UHD 8K
+                        resOut = "4320"
+                    Case iWidth = 4096 AndAlso iHeight = 2160   'UHD 4K (cinema)
                         resOut = "2160"
-                    Case (iWidth = 2560 AndAlso iHeight = 1440)
-                        resOut = "1440"
-                    Case (iWidth = 1920 AndAlso (iHeight = 1080 OrElse iHeight = 800)) OrElse (iWidth = 1440 AndAlso iHeight = 1080) OrElse (iWidth = 1280 AndAlso iHeight = 1080)
-                        resOut = "1080"
-                    Case (iWidth = 1366 AndAlso iHeight = 768) OrElse (iWidth = 1024 AndAlso iHeight = 768)
-                        resOut = "768"
-                    Case (iWidth = 960 AndAlso iHeight = 720) OrElse (iWidth = 1280 AndAlso (iHeight = 720 OrElse iHeight = 544))
-                        resOut = "720"
-                    Case (iWidth = 1024 AndAlso iHeight = 576) OrElse (iWidth = 720 AndAlso iHeight = 576)
-                        resOut = "576"
-                    Case (iWidth = 720 OrElse iWidth = 960) AndAlso iHeight = 540
-                        resOut = "540"
-                    Case (iWidth = 852 OrElse iWidth = 720 OrElse iWidth = 704 OrElse iWidth = 640) AndAlso iHeight = 480
-                        resOut = "480"
-                    'by ADR
-                    Case sinADR >= 1.4 AndAlso iWidth = 3840
+                    Case iWidth = 3840 AndAlso iHeight = 2160   'UHD 4K
                         resOut = "2160"
-                    Case sinADR >= 1.4 AndAlso iWidth = 2560
+                    Case iWidth = 2560 AndAlso iHeight = 1600   'WQXGA (16:10)
+                        resOut = "1600"
+                    Case iWidth = 2560 AndAlso iHeight = 1440   'WQHD (16:9)
                         resOut = "1440"
-                    Case sinADR >= 1.4 AndAlso iWidth = 1920
+                    Case iWidth = 1920 AndAlso iHeight = 1200   'WUXGA (16:10)
+                        resOut = "1200"
+                    Case iWidth = 1920 AndAlso iHeight = 1080   'HD1080 (16:9)
                         resOut = "1080"
-                    Case sinADR >= 1.4 AndAlso iWidth = 1366
-                        resOut = "768"
-                    Case sinADR >= 1.4 AndAlso iWidth = 1280
+                    Case iWidth = 1680 AndAlso iHeight = 1050   'WSXGA+ (16:10)
+                        resOut = "1050"
+                    Case iWidth = 1600 AndAlso iHeight = 900    'HD+ (16:9)
+                        resOut = "900"
+                    Case iWidth = 1280 AndAlso iHeight = 720    'HD720 / WXGA (16:9)
                         resOut = "720"
-                    Case sinADR >= 1.4 AndAlso iWidth = 1024
-                        resOut = "576"
-                    Case sinADR >= 1.4 AndAlso iWidth = 960
-                        resOut = "540"
-                    Case sinADR >= 1.4 AndAlso iWidth = 852
+                    Case iWidth = 800 AndAlso iHeight = 480     'Rec. 601 plus a quarter (5:3)
                         resOut = "480"
-                    'loose
-                    Case iWidth > 2560 AndAlso iHeight > 1440
+                    Case iWidth = 768 AndAlso iHeight = 576     'PAL
+                        resOut = "576"
+                    Case iWidth = 720 AndAlso iHeight = 480     'Rec. 601 (3:2)
+                        resOut = "480"
+                    Case iWidth = 720 AndAlso iHeight = 576     'PAL (DV)
+                        resOut = "576"
+                    Case iWidth = 720 AndAlso iHeight = 540
+                        resOut = "540"
+                    Case iWidth = 640 AndAlso iHeight = 480     'VGA (4:3)
+                        resOut = "480"
+                    Case iWidth = 640 AndAlso iHeight = 360     'Wide 360p (16:9)
+                        resOut = "360"
+                    Case iWidth = 480 AndAlso iHeight = 360     '360p (4:3, uncommon)
+                        resOut = "360"
+                    Case iWidth = 426 AndAlso iHeight = 240     'NTSC widescreen (16:9)
+                        resOut = "240"
+                    Case iWidth = 352 AndAlso iHeight = 240     'NTSC-standard VCD / super-long-play DVD (4:3)
+                        resOut = "240"
+                    Case iWidth = 320 AndAlso iHeight = 240     'CGA / NTSC square pixel (4:3)
+                        resOut = "240"
+
+                    'by horizontal resolution
+                    Case iWidth = 7680
+                        resOut = "4320"
+                    Case iWidth = 4096
                         resOut = "2160"
-                    Case iWidth > 1920 AndAlso iHeight > 1080
+                    Case iWidth = 3840
+                        resOut = "2160"
+                    Case iWidth = 2560
                         resOut = "1440"
-                    Case iWidth >= 1200 AndAlso iHeight > 768
+                    Case iWidth = 1920
                         resOut = "1080"
-                    Case iWidth >= 1000 AndAlso iHeight > 720
+                    Case iWidth = 1366
                         resOut = "768"
-                    Case iWidth >= 1000 AndAlso iHeight > 500
+                    Case iWidth = 1280
                         resOut = "720"
-                    Case iWidth >= 700 AndAlso iHeight > 540
+                    Case iWidth = 1024
                         resOut = "576"
-                    Case iWidth >= 700 AndAlso iHeight > 480
+                    Case iWidth = 960
                         resOut = "540"
-                    Case Else
+                    Case iWidth = 852
                         resOut = "480"
+                    Case iWidth = 720
+                        resOut = "480"
+                    Case iWidth = 640
+                        resOut = "480"
+                    Case iWidth = 480
+                        resOut = "360"
                 End Select
             End If
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
+        End If
 
         If Not String.IsNullOrEmpty(resOut) Then
             If String.IsNullOrEmpty(fiRes.Scantype) Then
