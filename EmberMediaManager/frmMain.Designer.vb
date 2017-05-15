@@ -24,11 +24,11 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel()
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel()
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel()
@@ -285,6 +285,7 @@ Partial Class frmMain
         Me.mnuScrapeOptionUserRating = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeOptionWriters = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeOptionYear = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuSeasonScrapeSingleDataField = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieChange = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieChangeAuto = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieLanguage = New System.Windows.Forms.ToolStripMenuItem()
@@ -382,7 +383,6 @@ Partial Class frmMain
         Me.cmnuSeasonScrapeSeparator = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuSeasonScrape = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuSeasonScrapeSelected = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuSeasonScrapeSingleDataField = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuSeasonSep3 = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuSeasonBrowseIMDB = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuSeasonBrowseTMDB = New System.Windows.Forms.ToolStripMenuItem()
@@ -718,27 +718,30 @@ Partial Class frmMain
         Me.lblRuntime = New System.Windows.Forms.Label()
         Me.lblRating = New System.Windows.Forms.Label()
         Me.pnlInfoIcons = New System.Windows.Forms.Panel()
-        Me.pbSubtitleLang6 = New System.Windows.Forms.PictureBox()
-        Me.pbSubtitleLang5 = New System.Windows.Forms.PictureBox()
-        Me.pbSubtitleLang4 = New System.Windows.Forms.PictureBox()
-        Me.pbSubtitleLang3 = New System.Windows.Forms.PictureBox()
-        Me.pbSubtitleLang2 = New System.Windows.Forms.PictureBox()
-        Me.pbSubtitleLang1 = New System.Windows.Forms.PictureBox()
+        Me.tblInfoIcons = New System.Windows.Forms.TableLayoutPanel()
+        Me.tblSubtitleLang = New System.Windows.Forms.TableLayoutPanel()
         Me.pbSubtitleLang0 = New System.Windows.Forms.PictureBox()
-        Me.pbAudioLang6 = New System.Windows.Forms.PictureBox()
-        Me.pbAudioLang5 = New System.Windows.Forms.PictureBox()
-        Me.pbAudioLang4 = New System.Windows.Forms.PictureBox()
-        Me.pbAudioLang3 = New System.Windows.Forms.PictureBox()
-        Me.pbAudioLang2 = New System.Windows.Forms.PictureBox()
-        Me.pbAudioLang1 = New System.Windows.Forms.PictureBox()
+        Me.pbSubtitleLang1 = New System.Windows.Forms.PictureBox()
+        Me.pbSubtitleLang6 = New System.Windows.Forms.PictureBox()
+        Me.pbSubtitleLang2 = New System.Windows.Forms.PictureBox()
+        Me.pbSubtitleLang5 = New System.Windows.Forms.PictureBox()
+        Me.pbSubtitleLang3 = New System.Windows.Forms.PictureBox()
+        Me.pbSubtitleLang4 = New System.Windows.Forms.PictureBox()
+        Me.tblAudioLang = New System.Windows.Forms.TableLayoutPanel()
         Me.pbAudioLang0 = New System.Windows.Forms.PictureBox()
-        Me.lblStudio = New System.Windows.Forms.Label()
-        Me.pbVideoCodec = New System.Windows.Forms.PictureBox()
-        Me.pbStudio = New System.Windows.Forms.PictureBox()
+        Me.pbAudioLang1 = New System.Windows.Forms.PictureBox()
+        Me.pbAudioLang2 = New System.Windows.Forms.PictureBox()
+        Me.pbAudioLang3 = New System.Windows.Forms.PictureBox()
+        Me.pbAudioLang4 = New System.Windows.Forms.PictureBox()
+        Me.pbAudioLang5 = New System.Windows.Forms.PictureBox()
+        Me.pbAudioLang6 = New System.Windows.Forms.PictureBox()
         Me.pbVideoSource = New System.Windows.Forms.PictureBox()
-        Me.pbAudioCodec = New System.Windows.Forms.PictureBox()
+        Me.pbVideoCodec = New System.Windows.Forms.PictureBox()
         Me.pbVideoResolution = New System.Windows.Forms.PictureBox()
+        Me.pbAudioCodec = New System.Windows.Forms.PictureBox()
         Me.pbAudioChannels = New System.Windows.Forms.PictureBox()
+        Me.pbStudio = New System.Windows.Forms.PictureBox()
+        Me.lblStudio = New System.Windows.Forms.Label()
         Me.pbPosterCache = New System.Windows.Forms.PictureBox()
         Me.pbFanartSmallCache = New System.Windows.Forms.PictureBox()
         Me.pbLandscapeCache = New System.Windows.Forms.PictureBox()
@@ -755,14 +758,14 @@ Partial Class frmMain
         Me.mnuScrapeSubmenuNew = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeSubmenuFilter = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeSubmenuCustom = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayScrapeMovieSets = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayScrapeMovies = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeMovieSets = New System.Windows.Forms.ToolStripSplitButton()
         Me.mnuScrapeTVShows = New System.Windows.Forms.ToolStripSplitButton()
         Me.mnuUpdate = New System.Windows.Forms.ToolStripSplitButton()
         Me.mnuUpdateMovies = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuUpdateShows = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayScrapeMovies = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayScrapeTVShows = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayScrapeMovieSets = New System.Windows.Forms.ToolStripMenuItem()
         Me.ilColumnIcons = New System.Windows.Forms.ImageList(Me.components)
         Me.tmrWait_Movie = New System.Windows.Forms.Timer(Me.components)
         Me.tmrLoad_Movie = New System.Windows.Forms.Timer(Me.components)
@@ -814,9 +817,6 @@ Partial Class frmMain
         Me.tmrSearchWait_Shows = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch_Shows = New System.Windows.Forms.Timer(Me.components)
         Me.tmrRunTasks = New System.Windows.Forms.Timer(Me.components)
-        Me.tblInfoIcons = New System.Windows.Forms.TableLayoutPanel()
-        Me.tblAudioLang = New System.Windows.Forms.TableLayoutPanel()
-        Me.tblSubtitleLang = New System.Windows.Forms.TableLayoutPanel()
         Me.StatusStrip.SuspendLayout()
         Me.mnuMain.SuspendLayout()
         CType(Me.scMain, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -1047,26 +1047,29 @@ Partial Class frmMain
         CType(Me.pbStar2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbStar1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlInfoIcons.SuspendLayout()
-        CType(Me.pbSubtitleLang6, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbSubtitleLang5, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbSubtitleLang4, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbSubtitleLang3, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbSubtitleLang2, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbSubtitleLang1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.tblInfoIcons.SuspendLayout()
+        Me.tblSubtitleLang.SuspendLayout()
         CType(Me.pbSubtitleLang0, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbAudioLang6, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbAudioLang5, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbAudioLang4, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbAudioLang3, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbAudioLang2, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbAudioLang1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbSubtitleLang1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbSubtitleLang6, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbSubtitleLang2, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbSubtitleLang5, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbSubtitleLang3, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbSubtitleLang4, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.tblAudioLang.SuspendLayout()
         CType(Me.pbAudioLang0, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbVideoCodec, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbStudio, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbAudioLang1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbAudioLang2, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbAudioLang3, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbAudioLang4, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbAudioLang5, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbAudioLang6, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbVideoSource, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbAudioCodec, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbVideoCodec, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbVideoResolution, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbAudioCodec, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbAudioChannels, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbStudio, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbPosterCache, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbFanartSmallCache, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbLandscapeCache, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -1081,9 +1084,6 @@ Partial Class frmMain
         Me.pnlLoadSettingsBG.SuspendLayout()
         CType(Me.pbLoadSettings, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlLoadSettings.SuspendLayout()
-        Me.tblInfoIcons.SuspendLayout()
-        Me.tblAudioLang.SuspendLayout()
-        Me.tblSubtitleLang.SuspendLayout()
         Me.SuspendLayout()
         '
         'BottomToolStripPanel
@@ -2924,8 +2924,8 @@ Partial Class frmMain
         Me.dgvMovies.AllowUserToAddRows = False
         Me.dgvMovies.AllowUserToDeleteRows = False
         Me.dgvMovies.AllowUserToResizeRows = False
-        DataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvMovies.BackgroundColor = System.Drawing.Color.White
         Me.dgvMovies.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvMovies.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -3668,6 +3668,14 @@ Partial Class frmMain
         Me.mnuScrapeOptionYear.Tag = "year"
         Me.mnuScrapeOptionYear.Text = "Year"
         '
+        'cmnuSeasonScrapeSingleDataField
+        '
+        Me.cmnuSeasonScrapeSingleDataField.DropDown = Me.mnuScrapeOption
+        Me.cmnuSeasonScrapeSingleDataField.Name = "cmnuSeasonScrapeSingleDataField"
+        Me.cmnuSeasonScrapeSingleDataField.Size = New System.Drawing.Size(248, 22)
+        Me.cmnuSeasonScrapeSingleDataField.Tag = "tvseason"
+        Me.cmnuSeasonScrapeSingleDataField.Text = "(Re)Scrape Single Data Field"
+        '
         'cmnuMovieChange
         '
         Me.cmnuMovieChange.Image = CType(resources.GetObject("cmnuMovieChange.Image"), System.Drawing.Image)
@@ -3792,8 +3800,8 @@ Partial Class frmMain
         Me.dgvMovieSets.AllowUserToAddRows = False
         Me.dgvMovieSets.AllowUserToDeleteRows = False
         Me.dgvMovieSets.AllowUserToResizeRows = False
-        DataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvMovieSets.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvMovieSets.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
         Me.dgvMovieSets.BackgroundColor = System.Drawing.Color.White
         Me.dgvMovieSets.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvMovieSets.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -4003,8 +4011,8 @@ Partial Class frmMain
         Me.dgvTVShows.AllowUserToAddRows = False
         Me.dgvTVShows.AllowUserToDeleteRows = False
         Me.dgvTVShows.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvTVShows.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvTVShows.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle3
         Me.dgvTVShows.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVShows.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvTVShows.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -4309,8 +4317,8 @@ Partial Class frmMain
         Me.dgvTVSeasons.AllowUserToAddRows = False
         Me.dgvTVSeasons.AllowUserToDeleteRows = False
         Me.dgvTVSeasons.AllowUserToResizeRows = False
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvTVSeasons.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvTVSeasons.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle4
         Me.dgvTVSeasons.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVSeasons.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvTVSeasons.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -4451,14 +4459,6 @@ Partial Class frmMain
         Me.cmnuSeasonScrapeSelected.Tag = "tvseason"
         Me.cmnuSeasonScrapeSelected.Text = "(Re)Scrape Selected Seasons"
         '
-        'cmnuSeasonScrapeSingleDataField
-        '
-        Me.cmnuSeasonScrapeSingleDataField.DropDown = Me.mnuScrapeOption
-        Me.cmnuSeasonScrapeSingleDataField.Name = "cmnuSeasonScrapeSingleDataField"
-        Me.cmnuSeasonScrapeSingleDataField.Size = New System.Drawing.Size(248, 22)
-        Me.cmnuSeasonScrapeSingleDataField.Tag = "tvseason"
-        Me.cmnuSeasonScrapeSingleDataField.Text = "(Re)Scrape Single Data Field"
-        '
         'cmnuSeasonSep3
         '
         Me.cmnuSeasonSep3.Name = "cmnuSeasonSep3"
@@ -4527,8 +4527,8 @@ Partial Class frmMain
         Me.dgvTVEpisodes.AllowUserToAddRows = False
         Me.dgvTVEpisodes.AllowUserToDeleteRows = False
         Me.dgvTVEpisodes.AllowUserToResizeRows = False
-        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvTVEpisodes.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvTVEpisodes.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle5
         Me.dgvTVEpisodes.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVEpisodes.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvTVEpisodes.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -8800,70 +8800,67 @@ Partial Class frmMain
         Me.pnlInfoIcons.BackColor = System.Drawing.Color.Transparent
         Me.pnlInfoIcons.Controls.Add(Me.tblInfoIcons)
         Me.pnlInfoIcons.Dock = System.Windows.Forms.DockStyle.Right
-        Me.pnlInfoIcons.Location = New System.Drawing.Point(450, 0)
+        Me.pnlInfoIcons.Location = New System.Drawing.Point(430, 0)
         Me.pnlInfoIcons.Name = "pnlInfoIcons"
-        Me.pnlInfoIcons.Size = New System.Drawing.Size(480, 96)
+        Me.pnlInfoIcons.Size = New System.Drawing.Size(500, 96)
         Me.pnlInfoIcons.TabIndex = 31
         '
-        'pbSubtitleLang6
+        'tblInfoIcons
         '
-        Me.pbSubtitleLang6.Location = New System.Drawing.Point(150, 0)
-        Me.pbSubtitleLang6.Margin = New System.Windows.Forms.Padding(0)
-        Me.pbSubtitleLang6.Name = "pbSubtitleLang6"
-        Me.pbSubtitleLang6.Size = New System.Drawing.Size(25, 25)
-        Me.pbSubtitleLang6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbSubtitleLang6.TabIndex = 53
-        Me.pbSubtitleLang6.TabStop = False
+        Me.tblInfoIcons.AutoSize = True
+        Me.tblInfoIcons.ColumnCount = 6
+        Me.tblInfoIcons.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblInfoIcons.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblInfoIcons.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblInfoIcons.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblInfoIcons.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblInfoIcons.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblInfoIcons.Controls.Add(Me.tblSubtitleLang, 0, 2)
+        Me.tblInfoIcons.Controls.Add(Me.tblAudioLang, 3, 2)
+        Me.tblInfoIcons.Controls.Add(Me.pbVideoSource, 0, 1)
+        Me.tblInfoIcons.Controls.Add(Me.pbVideoCodec, 1, 1)
+        Me.tblInfoIcons.Controls.Add(Me.pbVideoResolution, 2, 1)
+        Me.tblInfoIcons.Controls.Add(Me.pbAudioCodec, 3, 1)
+        Me.tblInfoIcons.Controls.Add(Me.pbAudioChannels, 4, 1)
+        Me.tblInfoIcons.Controls.Add(Me.pbStudio, 5, 1)
+        Me.tblInfoIcons.Controls.Add(Me.lblStudio, 0, 0)
+        Me.tblInfoIcons.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblInfoIcons.Location = New System.Drawing.Point(0, 0)
+        Me.tblInfoIcons.Name = "tblInfoIcons"
+        Me.tblInfoIcons.RowCount = 4
+        Me.tblInfoIcons.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblInfoIcons.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblInfoIcons.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblInfoIcons.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblInfoIcons.Size = New System.Drawing.Size(500, 96)
+        Me.tblInfoIcons.TabIndex = 54
         '
-        'pbSubtitleLang5
+        'tblSubtitleLang
         '
-        Me.pbSubtitleLang5.Location = New System.Drawing.Point(125, 0)
-        Me.pbSubtitleLang5.Margin = New System.Windows.Forms.Padding(0)
-        Me.pbSubtitleLang5.Name = "pbSubtitleLang5"
-        Me.pbSubtitleLang5.Size = New System.Drawing.Size(25, 25)
-        Me.pbSubtitleLang5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbSubtitleLang5.TabIndex = 52
-        Me.pbSubtitleLang5.TabStop = False
-        '
-        'pbSubtitleLang4
-        '
-        Me.pbSubtitleLang4.Location = New System.Drawing.Point(100, 0)
-        Me.pbSubtitleLang4.Margin = New System.Windows.Forms.Padding(0)
-        Me.pbSubtitleLang4.Name = "pbSubtitleLang4"
-        Me.pbSubtitleLang4.Size = New System.Drawing.Size(25, 25)
-        Me.pbSubtitleLang4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbSubtitleLang4.TabIndex = 51
-        Me.pbSubtitleLang4.TabStop = False
-        '
-        'pbSubtitleLang3
-        '
-        Me.pbSubtitleLang3.Location = New System.Drawing.Point(75, 0)
-        Me.pbSubtitleLang3.Margin = New System.Windows.Forms.Padding(0)
-        Me.pbSubtitleLang3.Name = "pbSubtitleLang3"
-        Me.pbSubtitleLang3.Size = New System.Drawing.Size(25, 25)
-        Me.pbSubtitleLang3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbSubtitleLang3.TabIndex = 50
-        Me.pbSubtitleLang3.TabStop = False
-        '
-        'pbSubtitleLang2
-        '
-        Me.pbSubtitleLang2.Location = New System.Drawing.Point(50, 0)
-        Me.pbSubtitleLang2.Margin = New System.Windows.Forms.Padding(0)
-        Me.pbSubtitleLang2.Name = "pbSubtitleLang2"
-        Me.pbSubtitleLang2.Size = New System.Drawing.Size(25, 25)
-        Me.pbSubtitleLang2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbSubtitleLang2.TabIndex = 49
-        Me.pbSubtitleLang2.TabStop = False
-        '
-        'pbSubtitleLang1
-        '
-        Me.pbSubtitleLang1.Location = New System.Drawing.Point(25, 0)
-        Me.pbSubtitleLang1.Margin = New System.Windows.Forms.Padding(0)
-        Me.pbSubtitleLang1.Name = "pbSubtitleLang1"
-        Me.pbSubtitleLang1.Size = New System.Drawing.Size(25, 25)
-        Me.pbSubtitleLang1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbSubtitleLang1.TabIndex = 48
-        Me.pbSubtitleLang1.TabStop = False
+        Me.tblSubtitleLang.AutoSize = True
+        Me.tblSubtitleLang.ColumnCount = 7
+        Me.tblInfoIcons.SetColumnSpan(Me.tblSubtitleLang, 3)
+        Me.tblSubtitleLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSubtitleLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSubtitleLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSubtitleLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSubtitleLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSubtitleLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSubtitleLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSubtitleLang.Controls.Add(Me.pbSubtitleLang0, 0, 0)
+        Me.tblSubtitleLang.Controls.Add(Me.pbSubtitleLang1, 1, 0)
+        Me.tblSubtitleLang.Controls.Add(Me.pbSubtitleLang6, 6, 0)
+        Me.tblSubtitleLang.Controls.Add(Me.pbSubtitleLang2, 2, 0)
+        Me.tblSubtitleLang.Controls.Add(Me.pbSubtitleLang5, 5, 0)
+        Me.tblSubtitleLang.Controls.Add(Me.pbSubtitleLang3, 3, 0)
+        Me.tblSubtitleLang.Controls.Add(Me.pbSubtitleLang4, 4, 0)
+        Me.tblSubtitleLang.Location = New System.Drawing.Point(0, 60)
+        Me.tblSubtitleLang.Margin = New System.Windows.Forms.Padding(0)
+        Me.tblSubtitleLang.Name = "tblSubtitleLang"
+        Me.tblSubtitleLang.RowCount = 1
+        Me.tblSubtitleLang.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSubtitleLang.Size = New System.Drawing.Size(175, 25)
+        Me.tblSubtitleLang.TabIndex = 55
         '
         'pbSubtitleLang0
         '
@@ -8875,65 +8872,92 @@ Partial Class frmMain
         Me.pbSubtitleLang0.TabIndex = 47
         Me.pbSubtitleLang0.TabStop = False
         '
-        'pbAudioLang6
+        'pbSubtitleLang1
         '
-        Me.pbAudioLang6.Location = New System.Drawing.Point(150, 0)
-        Me.pbAudioLang6.Margin = New System.Windows.Forms.Padding(0)
-        Me.pbAudioLang6.Name = "pbAudioLang6"
-        Me.pbAudioLang6.Size = New System.Drawing.Size(25, 25)
-        Me.pbAudioLang6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbAudioLang6.TabIndex = 46
-        Me.pbAudioLang6.TabStop = False
+        Me.pbSubtitleLang1.Location = New System.Drawing.Point(25, 0)
+        Me.pbSubtitleLang1.Margin = New System.Windows.Forms.Padding(0)
+        Me.pbSubtitleLang1.Name = "pbSubtitleLang1"
+        Me.pbSubtitleLang1.Size = New System.Drawing.Size(25, 25)
+        Me.pbSubtitleLang1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbSubtitleLang1.TabIndex = 48
+        Me.pbSubtitleLang1.TabStop = False
         '
-        'pbAudioLang5
+        'pbSubtitleLang6
         '
-        Me.pbAudioLang5.Location = New System.Drawing.Point(125, 0)
-        Me.pbAudioLang5.Margin = New System.Windows.Forms.Padding(0)
-        Me.pbAudioLang5.Name = "pbAudioLang5"
-        Me.pbAudioLang5.Size = New System.Drawing.Size(25, 25)
-        Me.pbAudioLang5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbAudioLang5.TabIndex = 45
-        Me.pbAudioLang5.TabStop = False
+        Me.pbSubtitleLang6.Location = New System.Drawing.Point(150, 0)
+        Me.pbSubtitleLang6.Margin = New System.Windows.Forms.Padding(0)
+        Me.pbSubtitleLang6.Name = "pbSubtitleLang6"
+        Me.pbSubtitleLang6.Size = New System.Drawing.Size(25, 25)
+        Me.pbSubtitleLang6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbSubtitleLang6.TabIndex = 53
+        Me.pbSubtitleLang6.TabStop = False
         '
-        'pbAudioLang4
+        'pbSubtitleLang2
         '
-        Me.pbAudioLang4.Location = New System.Drawing.Point(100, 0)
-        Me.pbAudioLang4.Margin = New System.Windows.Forms.Padding(0)
-        Me.pbAudioLang4.Name = "pbAudioLang4"
-        Me.pbAudioLang4.Size = New System.Drawing.Size(25, 25)
-        Me.pbAudioLang4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbAudioLang4.TabIndex = 44
-        Me.pbAudioLang4.TabStop = False
+        Me.pbSubtitleLang2.Location = New System.Drawing.Point(50, 0)
+        Me.pbSubtitleLang2.Margin = New System.Windows.Forms.Padding(0)
+        Me.pbSubtitleLang2.Name = "pbSubtitleLang2"
+        Me.pbSubtitleLang2.Size = New System.Drawing.Size(25, 25)
+        Me.pbSubtitleLang2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbSubtitleLang2.TabIndex = 49
+        Me.pbSubtitleLang2.TabStop = False
         '
-        'pbAudioLang3
+        'pbSubtitleLang5
         '
-        Me.pbAudioLang3.Location = New System.Drawing.Point(75, 0)
-        Me.pbAudioLang3.Margin = New System.Windows.Forms.Padding(0)
-        Me.pbAudioLang3.Name = "pbAudioLang3"
-        Me.pbAudioLang3.Size = New System.Drawing.Size(25, 25)
-        Me.pbAudioLang3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbAudioLang3.TabIndex = 43
-        Me.pbAudioLang3.TabStop = False
+        Me.pbSubtitleLang5.Location = New System.Drawing.Point(125, 0)
+        Me.pbSubtitleLang5.Margin = New System.Windows.Forms.Padding(0)
+        Me.pbSubtitleLang5.Name = "pbSubtitleLang5"
+        Me.pbSubtitleLang5.Size = New System.Drawing.Size(25, 25)
+        Me.pbSubtitleLang5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbSubtitleLang5.TabIndex = 52
+        Me.pbSubtitleLang5.TabStop = False
         '
-        'pbAudioLang2
+        'pbSubtitleLang3
         '
-        Me.pbAudioLang2.Location = New System.Drawing.Point(50, 0)
-        Me.pbAudioLang2.Margin = New System.Windows.Forms.Padding(0)
-        Me.pbAudioLang2.Name = "pbAudioLang2"
-        Me.pbAudioLang2.Size = New System.Drawing.Size(25, 25)
-        Me.pbAudioLang2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbAudioLang2.TabIndex = 42
-        Me.pbAudioLang2.TabStop = False
+        Me.pbSubtitleLang3.Location = New System.Drawing.Point(75, 0)
+        Me.pbSubtitleLang3.Margin = New System.Windows.Forms.Padding(0)
+        Me.pbSubtitleLang3.Name = "pbSubtitleLang3"
+        Me.pbSubtitleLang3.Size = New System.Drawing.Size(25, 25)
+        Me.pbSubtitleLang3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbSubtitleLang3.TabIndex = 50
+        Me.pbSubtitleLang3.TabStop = False
         '
-        'pbAudioLang1
+        'pbSubtitleLang4
         '
-        Me.pbAudioLang1.Location = New System.Drawing.Point(25, 0)
-        Me.pbAudioLang1.Margin = New System.Windows.Forms.Padding(0)
-        Me.pbAudioLang1.Name = "pbAudioLang1"
-        Me.pbAudioLang1.Size = New System.Drawing.Size(25, 25)
-        Me.pbAudioLang1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbAudioLang1.TabIndex = 41
-        Me.pbAudioLang1.TabStop = False
+        Me.pbSubtitleLang4.Location = New System.Drawing.Point(100, 0)
+        Me.pbSubtitleLang4.Margin = New System.Windows.Forms.Padding(0)
+        Me.pbSubtitleLang4.Name = "pbSubtitleLang4"
+        Me.pbSubtitleLang4.Size = New System.Drawing.Size(25, 25)
+        Me.pbSubtitleLang4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbSubtitleLang4.TabIndex = 51
+        Me.pbSubtitleLang4.TabStop = False
+        '
+        'tblAudioLang
+        '
+        Me.tblAudioLang.AutoSize = True
+        Me.tblAudioLang.ColumnCount = 7
+        Me.tblInfoIcons.SetColumnSpan(Me.tblAudioLang, 3)
+        Me.tblAudioLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblAudioLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblAudioLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblAudioLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblAudioLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblAudioLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblAudioLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblAudioLang.Controls.Add(Me.pbAudioLang0, 0, 0)
+        Me.tblAudioLang.Controls.Add(Me.pbAudioLang1, 1, 0)
+        Me.tblAudioLang.Controls.Add(Me.pbAudioLang2, 2, 0)
+        Me.tblAudioLang.Controls.Add(Me.pbAudioLang3, 3, 0)
+        Me.tblAudioLang.Controls.Add(Me.pbAudioLang4, 4, 0)
+        Me.tblAudioLang.Controls.Add(Me.pbAudioLang5, 5, 0)
+        Me.tblAudioLang.Controls.Add(Me.pbAudioLang6, 6, 0)
+        Me.tblAudioLang.Location = New System.Drawing.Point(260, 60)
+        Me.tblAudioLang.Margin = New System.Windows.Forms.Padding(0)
+        Me.tblAudioLang.Name = "tblAudioLang"
+        Me.tblAudioLang.RowCount = 1
+        Me.tblAudioLang.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblAudioLang.Size = New System.Drawing.Size(175, 25)
+        Me.tblAudioLang.TabIndex = 55
         '
         'pbAudioLang0
         '
@@ -8945,40 +8969,65 @@ Partial Class frmMain
         Me.pbAudioLang0.TabIndex = 40
         Me.pbAudioLang0.TabStop = False
         '
-        'lblStudio
+        'pbAudioLang1
         '
-        Me.lblStudio.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.lblStudio.AutoSize = True
-        Me.tblInfoIcons.SetColumnSpan(Me.lblStudio, 6)
-        Me.lblStudio.Location = New System.Drawing.Point(431, 3)
-        Me.lblStudio.Name = "lblStudio"
-        Me.lblStudio.Size = New System.Drawing.Size(46, 13)
-        Me.lblStudio.TabIndex = 37
-        Me.lblStudio.Text = "Studios"
-        Me.lblStudio.TextAlign = System.Drawing.ContentAlignment.TopRight
-        Me.lblStudio.UseMnemonic = False
+        Me.pbAudioLang1.Location = New System.Drawing.Point(25, 0)
+        Me.pbAudioLang1.Margin = New System.Windows.Forms.Padding(0)
+        Me.pbAudioLang1.Name = "pbAudioLang1"
+        Me.pbAudioLang1.Size = New System.Drawing.Size(25, 25)
+        Me.pbAudioLang1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbAudioLang1.TabIndex = 41
+        Me.pbAudioLang1.TabStop = False
         '
-        'pbVideoCodec
+        'pbAudioLang2
         '
-        Me.pbVideoCodec.BackColor = System.Drawing.Color.Transparent
-        Me.pbVideoCodec.Location = New System.Drawing.Point(100, 20)
-        Me.pbVideoCodec.Margin = New System.Windows.Forms.Padding(0)
-        Me.pbVideoCodec.Name = "pbVideoCodec"
-        Me.pbVideoCodec.Size = New System.Drawing.Size(80, 40)
-        Me.pbVideoCodec.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
-        Me.pbVideoCodec.TabIndex = 36
-        Me.pbVideoCodec.TabStop = False
+        Me.pbAudioLang2.Location = New System.Drawing.Point(50, 0)
+        Me.pbAudioLang2.Margin = New System.Windows.Forms.Padding(0)
+        Me.pbAudioLang2.Name = "pbAudioLang2"
+        Me.pbAudioLang2.Size = New System.Drawing.Size(25, 25)
+        Me.pbAudioLang2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbAudioLang2.TabIndex = 42
+        Me.pbAudioLang2.TabStop = False
         '
-        'pbStudio
+        'pbAudioLang3
         '
-        Me.pbStudio.BackColor = System.Drawing.Color.Transparent
-        Me.pbStudio.Location = New System.Drawing.Point(400, 20)
-        Me.pbStudio.Margin = New System.Windows.Forms.Padding(0)
-        Me.pbStudio.Name = "pbStudio"
-        Me.pbStudio.Size = New System.Drawing.Size(80, 40)
-        Me.pbStudio.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbStudio.TabIndex = 31
-        Me.pbStudio.TabStop = False
+        Me.pbAudioLang3.Location = New System.Drawing.Point(75, 0)
+        Me.pbAudioLang3.Margin = New System.Windows.Forms.Padding(0)
+        Me.pbAudioLang3.Name = "pbAudioLang3"
+        Me.pbAudioLang3.Size = New System.Drawing.Size(25, 25)
+        Me.pbAudioLang3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbAudioLang3.TabIndex = 43
+        Me.pbAudioLang3.TabStop = False
+        '
+        'pbAudioLang4
+        '
+        Me.pbAudioLang4.Location = New System.Drawing.Point(100, 0)
+        Me.pbAudioLang4.Margin = New System.Windows.Forms.Padding(0)
+        Me.pbAudioLang4.Name = "pbAudioLang4"
+        Me.pbAudioLang4.Size = New System.Drawing.Size(25, 25)
+        Me.pbAudioLang4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbAudioLang4.TabIndex = 44
+        Me.pbAudioLang4.TabStop = False
+        '
+        'pbAudioLang5
+        '
+        Me.pbAudioLang5.Location = New System.Drawing.Point(125, 0)
+        Me.pbAudioLang5.Margin = New System.Windows.Forms.Padding(0)
+        Me.pbAudioLang5.Name = "pbAudioLang5"
+        Me.pbAudioLang5.Size = New System.Drawing.Size(25, 25)
+        Me.pbAudioLang5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbAudioLang5.TabIndex = 45
+        Me.pbAudioLang5.TabStop = False
+        '
+        'pbAudioLang6
+        '
+        Me.pbAudioLang6.Location = New System.Drawing.Point(150, 0)
+        Me.pbAudioLang6.Margin = New System.Windows.Forms.Padding(0)
+        Me.pbAudioLang6.Name = "pbAudioLang6"
+        Me.pbAudioLang6.Size = New System.Drawing.Size(25, 25)
+        Me.pbAudioLang6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbAudioLang6.TabIndex = 46
+        Me.pbAudioLang6.TabStop = False
         '
         'pbVideoSource
         '
@@ -8991,16 +9040,16 @@ Partial Class frmMain
         Me.pbVideoSource.TabIndex = 33
         Me.pbVideoSource.TabStop = False
         '
-        'pbAudioCodec
+        'pbVideoCodec
         '
-        Me.pbAudioCodec.BackColor = System.Drawing.Color.Transparent
-        Me.pbAudioCodec.Location = New System.Drawing.Point(260, 20)
-        Me.pbAudioCodec.Margin = New System.Windows.Forms.Padding(0)
-        Me.pbAudioCodec.Name = "pbAudioCodec"
-        Me.pbAudioCodec.Size = New System.Drawing.Size(100, 40)
-        Me.pbAudioCodec.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
-        Me.pbAudioCodec.TabIndex = 35
-        Me.pbAudioCodec.TabStop = False
+        Me.pbVideoCodec.BackColor = System.Drawing.Color.Transparent
+        Me.pbVideoCodec.Location = New System.Drawing.Point(100, 20)
+        Me.pbVideoCodec.Margin = New System.Windows.Forms.Padding(0)
+        Me.pbVideoCodec.Name = "pbVideoCodec"
+        Me.pbVideoCodec.Size = New System.Drawing.Size(80, 40)
+        Me.pbVideoCodec.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
+        Me.pbVideoCodec.TabIndex = 36
+        Me.pbVideoCodec.TabStop = False
         '
         'pbVideoResolution
         '
@@ -9013,16 +9062,51 @@ Partial Class frmMain
         Me.pbVideoResolution.TabIndex = 34
         Me.pbVideoResolution.TabStop = False
         '
+        'pbAudioCodec
+        '
+        Me.pbAudioCodec.BackColor = System.Drawing.Color.Transparent
+        Me.pbAudioCodec.Location = New System.Drawing.Point(260, 20)
+        Me.pbAudioCodec.Margin = New System.Windows.Forms.Padding(0)
+        Me.pbAudioCodec.Name = "pbAudioCodec"
+        Me.pbAudioCodec.Size = New System.Drawing.Size(100, 40)
+        Me.pbAudioCodec.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
+        Me.pbAudioCodec.TabIndex = 35
+        Me.pbAudioCodec.TabStop = False
+        '
         'pbAudioChannels
         '
         Me.pbAudioChannels.BackColor = System.Drawing.Color.Transparent
         Me.pbAudioChannels.Location = New System.Drawing.Point(360, 20)
         Me.pbAudioChannels.Margin = New System.Windows.Forms.Padding(0)
         Me.pbAudioChannels.Name = "pbAudioChannels"
-        Me.pbAudioChannels.Size = New System.Drawing.Size(40, 40)
+        Me.pbAudioChannels.Size = New System.Drawing.Size(60, 40)
         Me.pbAudioChannels.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
         Me.pbAudioChannels.TabIndex = 32
         Me.pbAudioChannels.TabStop = False
+        '
+        'pbStudio
+        '
+        Me.pbStudio.BackColor = System.Drawing.Color.Transparent
+        Me.pbStudio.Location = New System.Drawing.Point(420, 20)
+        Me.pbStudio.Margin = New System.Windows.Forms.Padding(0)
+        Me.pbStudio.Name = "pbStudio"
+        Me.pbStudio.Size = New System.Drawing.Size(80, 40)
+        Me.pbStudio.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.pbStudio.TabIndex = 31
+        Me.pbStudio.TabStop = False
+        '
+        'lblStudio
+        '
+        Me.lblStudio.Anchor = System.Windows.Forms.AnchorStyles.Right
+        Me.lblStudio.AutoSize = True
+        Me.tblInfoIcons.SetColumnSpan(Me.lblStudio, 6)
+        Me.lblStudio.Location = New System.Drawing.Point(451, 3)
+        Me.lblStudio.Name = "lblStudio"
+        Me.lblStudio.Size = New System.Drawing.Size(46, 13)
+        Me.lblStudio.TabIndex = 37
+        Me.lblStudio.Text = "Studios"
+        Me.lblStudio.TextAlign = System.Drawing.ContentAlignment.TopRight
+        Me.lblStudio.UseMnemonic = False
         '
         'pbPosterCache
         '
@@ -9129,7 +9213,7 @@ Partial Class frmMain
         '
         Me.mnuScrapeSubmenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuScrapeSubmenuAll, Me.mnuScrapeSubmenuMissing, Me.mnuScrapeSubmenuNew, Me.mnuScrapeSubmenuMarked, Me.mnuScrapeSubmenuFilter, Me.mnuScrapeSubmenuCustom})
         Me.mnuScrapeSubmenu.Name = "mnuScrapeSubmenu"
-        Me.mnuScrapeSubmenu.OwnerItem = Me.cmnuTrayScrapeTVShows
+        Me.mnuScrapeSubmenu.OwnerItem = Me.cmnuTrayScrapeMovieSets
         Me.mnuScrapeSubmenu.Size = New System.Drawing.Size(168, 136)
         '
         'mnuScrapeSubmenuAll
@@ -9171,14 +9255,14 @@ Partial Class frmMain
         Me.mnuScrapeSubmenuCustom.Tag = "custom"
         Me.mnuScrapeSubmenuCustom.Text = "Custom Scraper..."
         '
-        'cmnuTrayScrapeMovieSets
+        'cmnuTrayScrapeMovies
         '
-        Me.cmnuTrayScrapeMovieSets.DropDown = Me.mnuScrapeSubmenu
-        Me.cmnuTrayScrapeMovieSets.Image = CType(resources.GetObject("cmnuTrayScrapeMovieSets.Image"), System.Drawing.Image)
-        Me.cmnuTrayScrapeMovieSets.Name = "cmnuTrayScrapeMovieSets"
-        Me.cmnuTrayScrapeMovieSets.Size = New System.Drawing.Size(194, 22)
-        Me.cmnuTrayScrapeMovieSets.Tag = "movieset"
-        Me.cmnuTrayScrapeMovieSets.Text = "Scrape MovieSets"
+        Me.cmnuTrayScrapeMovies.DropDown = Me.mnuScrapeSubmenu
+        Me.cmnuTrayScrapeMovies.Image = CType(resources.GetObject("cmnuTrayScrapeMovies.Image"), System.Drawing.Image)
+        Me.cmnuTrayScrapeMovies.Name = "cmnuTrayScrapeMovies"
+        Me.cmnuTrayScrapeMovies.Size = New System.Drawing.Size(194, 22)
+        Me.cmnuTrayScrapeMovies.Tag = "movie"
+        Me.cmnuTrayScrapeMovies.Text = "Scrape Movies"
         '
         'mnuScrapeMovieSets
         '
@@ -9226,15 +9310,6 @@ Partial Class frmMain
         Me.mnuUpdateShows.Size = New System.Drawing.Size(123, 22)
         Me.mnuUpdateShows.Text = "TV Shows"
         '
-        'cmnuTrayScrapeMovies
-        '
-        Me.cmnuTrayScrapeMovies.DropDown = Me.mnuScrapeSubmenu
-        Me.cmnuTrayScrapeMovies.Image = CType(resources.GetObject("cmnuTrayScrapeMovies.Image"), System.Drawing.Image)
-        Me.cmnuTrayScrapeMovies.Name = "cmnuTrayScrapeMovies"
-        Me.cmnuTrayScrapeMovies.Size = New System.Drawing.Size(194, 22)
-        Me.cmnuTrayScrapeMovies.Tag = "movie"
-        Me.cmnuTrayScrapeMovies.Text = "Scrape Movies"
-        '
         'cmnuTrayScrapeTVShows
         '
         Me.cmnuTrayScrapeTVShows.DropDown = Me.mnuScrapeSubmenu
@@ -9243,6 +9318,15 @@ Partial Class frmMain
         Me.cmnuTrayScrapeTVShows.Size = New System.Drawing.Size(194, 22)
         Me.cmnuTrayScrapeTVShows.Tag = "tvshow"
         Me.cmnuTrayScrapeTVShows.Text = "Scrape TV Shows"
+        '
+        'cmnuTrayScrapeMovieSets
+        '
+        Me.cmnuTrayScrapeMovieSets.DropDown = Me.mnuScrapeSubmenu
+        Me.cmnuTrayScrapeMovieSets.Image = CType(resources.GetObject("cmnuTrayScrapeMovieSets.Image"), System.Drawing.Image)
+        Me.cmnuTrayScrapeMovieSets.Name = "cmnuTrayScrapeMovieSets"
+        Me.cmnuTrayScrapeMovieSets.Size = New System.Drawing.Size(194, 22)
+        Me.cmnuTrayScrapeMovieSets.Tag = "movieset"
+        Me.cmnuTrayScrapeMovieSets.Text = "Scrape MovieSets"
         '
         'ilColumnIcons
         '
@@ -9554,90 +9638,6 @@ Partial Class frmMain
         '
         'tmrRunTasks
         '
-        '
-        'tblInfoIcons
-        '
-        Me.tblInfoIcons.AutoSize = True
-        Me.tblInfoIcons.ColumnCount = 6
-        Me.tblInfoIcons.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblInfoIcons.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblInfoIcons.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblInfoIcons.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblInfoIcons.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblInfoIcons.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblInfoIcons.Controls.Add(Me.tblSubtitleLang, 3, 2)
-        Me.tblInfoIcons.Controls.Add(Me.tblAudioLang, 0, 2)
-        Me.tblInfoIcons.Controls.Add(Me.pbVideoSource, 0, 1)
-        Me.tblInfoIcons.Controls.Add(Me.pbVideoCodec, 1, 1)
-        Me.tblInfoIcons.Controls.Add(Me.pbVideoResolution, 2, 1)
-        Me.tblInfoIcons.Controls.Add(Me.pbAudioCodec, 3, 1)
-        Me.tblInfoIcons.Controls.Add(Me.pbAudioChannels, 4, 1)
-        Me.tblInfoIcons.Controls.Add(Me.pbStudio, 5, 1)
-        Me.tblInfoIcons.Controls.Add(Me.lblStudio, 0, 0)
-        Me.tblInfoIcons.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblInfoIcons.Location = New System.Drawing.Point(0, 0)
-        Me.tblInfoIcons.Name = "tblInfoIcons"
-        Me.tblInfoIcons.RowCount = 4
-        Me.tblInfoIcons.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblInfoIcons.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblInfoIcons.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblInfoIcons.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblInfoIcons.Size = New System.Drawing.Size(480, 96)
-        Me.tblInfoIcons.TabIndex = 54
-        '
-        'tblAudioLang
-        '
-        Me.tblAudioLang.AutoSize = True
-        Me.tblAudioLang.ColumnCount = 7
-        Me.tblInfoIcons.SetColumnSpan(Me.tblAudioLang, 3)
-        Me.tblAudioLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblAudioLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblAudioLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblAudioLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblAudioLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblAudioLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblAudioLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblAudioLang.Controls.Add(Me.pbAudioLang0, 0, 0)
-        Me.tblAudioLang.Controls.Add(Me.pbAudioLang1, 1, 0)
-        Me.tblAudioLang.Controls.Add(Me.pbAudioLang2, 2, 0)
-        Me.tblAudioLang.Controls.Add(Me.pbAudioLang3, 3, 0)
-        Me.tblAudioLang.Controls.Add(Me.pbAudioLang4, 4, 0)
-        Me.tblAudioLang.Controls.Add(Me.pbAudioLang5, 5, 0)
-        Me.tblAudioLang.Controls.Add(Me.pbAudioLang6, 6, 0)
-        Me.tblAudioLang.Location = New System.Drawing.Point(0, 60)
-        Me.tblAudioLang.Margin = New System.Windows.Forms.Padding(0)
-        Me.tblAudioLang.Name = "tblAudioLang"
-        Me.tblAudioLang.RowCount = 1
-        Me.tblAudioLang.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblAudioLang.Size = New System.Drawing.Size(175, 25)
-        Me.tblAudioLang.TabIndex = 55
-        '
-        'tblSubtitleLang
-        '
-        Me.tblSubtitleLang.AutoSize = True
-        Me.tblSubtitleLang.ColumnCount = 7
-        Me.tblInfoIcons.SetColumnSpan(Me.tblSubtitleLang, 3)
-        Me.tblSubtitleLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSubtitleLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSubtitleLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSubtitleLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSubtitleLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSubtitleLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSubtitleLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSubtitleLang.Controls.Add(Me.pbSubtitleLang0, 0, 0)
-        Me.tblSubtitleLang.Controls.Add(Me.pbSubtitleLang1, 1, 0)
-        Me.tblSubtitleLang.Controls.Add(Me.pbSubtitleLang6, 6, 0)
-        Me.tblSubtitleLang.Controls.Add(Me.pbSubtitleLang2, 2, 0)
-        Me.tblSubtitleLang.Controls.Add(Me.pbSubtitleLang5, 5, 0)
-        Me.tblSubtitleLang.Controls.Add(Me.pbSubtitleLang3, 3, 0)
-        Me.tblSubtitleLang.Controls.Add(Me.pbSubtitleLang4, 4, 0)
-        Me.tblSubtitleLang.Location = New System.Drawing.Point(260, 60)
-        Me.tblSubtitleLang.Margin = New System.Windows.Forms.Padding(0)
-        Me.tblSubtitleLang.Name = "tblSubtitleLang"
-        Me.tblSubtitleLang.RowCount = 1
-        Me.tblSubtitleLang.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSubtitleLang.Size = New System.Drawing.Size(175, 25)
-        Me.tblSubtitleLang.TabIndex = 55
         '
         'frmMain
         '
@@ -10034,26 +10034,30 @@ Partial Class frmMain
         CType(Me.pbStar1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlInfoIcons.ResumeLayout(False)
         Me.pnlInfoIcons.PerformLayout()
-        CType(Me.pbSubtitleLang6, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbSubtitleLang5, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbSubtitleLang4, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbSubtitleLang3, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbSubtitleLang2, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbSubtitleLang1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.tblInfoIcons.ResumeLayout(False)
+        Me.tblInfoIcons.PerformLayout()
+        Me.tblSubtitleLang.ResumeLayout(False)
         CType(Me.pbSubtitleLang0, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbAudioLang6, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbAudioLang5, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbAudioLang4, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbAudioLang3, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbAudioLang2, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbAudioLang1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbSubtitleLang1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbSubtitleLang6, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbSubtitleLang2, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbSubtitleLang5, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbSubtitleLang3, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbSubtitleLang4, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.tblAudioLang.ResumeLayout(False)
         CType(Me.pbAudioLang0, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbVideoCodec, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbStudio, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbAudioLang1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbAudioLang2, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbAudioLang3, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbAudioLang4, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbAudioLang5, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbAudioLang6, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbVideoSource, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbAudioCodec, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbVideoCodec, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbVideoResolution, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbAudioCodec, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbAudioChannels, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbStudio, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbPosterCache, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbFanartSmallCache, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbLandscapeCache, System.ComponentModel.ISupportInitialize).EndInit()
@@ -10070,10 +10074,6 @@ Partial Class frmMain
         Me.pnlLoadSettingsBG.ResumeLayout(False)
         CType(Me.pbLoadSettings, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlLoadSettings.ResumeLayout(False)
-        Me.tblInfoIcons.ResumeLayout(False)
-        Me.tblInfoIcons.PerformLayout()
-        Me.tblAudioLang.ResumeLayout(False)
-        Me.tblSubtitleLang.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout
 
