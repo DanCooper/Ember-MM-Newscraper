@@ -255,10 +255,10 @@ Public Class AdvancedSettings
                 settings.SetDefaults("AudioFormatConverts")
             End Using
         End If
-        formatconversions = GetComplexSetting("MovieSources", "*EmberAPP")
+        formatconversions = GetComplexSetting("VideoSourceMapping", "*EmberAPP")
         If formatconversions Is Nothing Then
             Using settings = New AdvancedSettings()
-                settings.SetDefaults("MovieSources")
+                settings.SetDefaults("VideoSourceMapping")
             End Using
         End If
         _DoNotSave = False
