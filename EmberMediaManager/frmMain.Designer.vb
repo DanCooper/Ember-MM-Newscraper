@@ -24,11 +24,11 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.BottomToolStripPanel = New System.Windows.Forms.ToolStripPanel()
         Me.TopToolStripPanel = New System.Windows.Forms.ToolStripPanel()
         Me.RightToolStripPanel = New System.Windows.Forms.ToolStripPanel()
@@ -214,7 +214,6 @@ Partial Class frmMain
         Me.mnuGenresAdd = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuGenresSet = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuGenresRemove = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuShowEditGenres = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieEditTags = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuTags = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.mnuTagsTitleSelect = New System.Windows.Forms.ToolStripMenuItem()
@@ -226,10 +225,12 @@ Partial Class frmMain
         Me.mnuTagsAdd = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuTagsSet = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuTagsRemove = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuShowEditTags = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieEditDataField = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuDataField = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.mnuDataFieldTrailerURL = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuDataFieldVideosource = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuEpisodeEditDataField = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieRescrapeSeparator = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuMovieScrape = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieScrapeSelected = New System.Windows.Forms.ToolStripMenuItem()
@@ -252,9 +253,9 @@ Partial Class frmMain
         Me.mnuScrapeModifierPoster = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeModifierTheme = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeModifierTrailer = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuScrapeTypeAsk = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeTypeSkip = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuScrapeSubmenuFilter = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeTypeAsk = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeSubmenuMarked = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieScrapeSingleDataField = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeOption = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.mnuScrapeOptionActors = New System.Windows.Forms.ToolStripMenuItem()
@@ -281,9 +282,9 @@ Partial Class frmMain
         Me.mnuScrapeOptionTitle = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeOptionTop250 = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeOptionTrailer = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeOptionUserRating = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeOptionWriters = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeOptionYear = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuEpisodeScrapeSingleDataField = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieChange = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieChangeAuto = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieLanguage = New System.Windows.Forms.ToolStripMenuItem()
@@ -292,7 +293,7 @@ Partial Class frmMain
         Me.mnuLanguagesLanguage = New System.Windows.Forms.ToolStripComboBox()
         Me.mnuLanguagesSep1 = New System.Windows.Forms.ToolStripSeparator()
         Me.mnuLanguagesSet = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuShowLanguage = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuMovieSetLanguage = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieSep3 = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuMovieBrowseIMDB = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieBrowseTMDB = New System.Windows.Forms.ToolStripMenuItem()
@@ -321,7 +322,6 @@ Partial Class frmMain
         Me.cmnuMovieSetScrape = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieSetScrapeSelected = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieSetScrapeSingleDataField = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuMovieSetLanguage = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieSetSep3 = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuMovieSetBrowseTMDB = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuMovieSetRemoveSeparator = New System.Windows.Forms.ToolStripSeparator()
@@ -341,13 +341,14 @@ Partial Class frmMain
         Me.cmnuShowUnlock = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuShowEditSeparator = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuShowEdit = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuShowEditTags = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuShowEditGenres = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuShowScrapeSeparator = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuShowScrape = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuShowScrapeSelected = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuShowScrapeSingleDataField = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuShowGetMissingEpisodes = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuShowChange = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuShowLanguage = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuShowSep3 = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuShowBrowseIMDB = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuShowBrowseTMDB = New System.Windows.Forms.ToolStripMenuItem()
@@ -404,10 +405,10 @@ Partial Class frmMain
         Me.cmnuEpisodeUnlock = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuEpisodeEditSeparator = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuEpisodeEdit = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuEpisodeEditDataField = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuEpisodeScrapeSeparator = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuEpisodeScrape = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuEpisodeScrapeSelected = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuEpisodeScrapeSingleDataField = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuEpisodeChange = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuEpisodeSep3 = New System.Windows.Forms.ToolStripSeparator()
         Me.cmnuEpisodeBrowseIMDB = New System.Windows.Forms.ToolStripMenuItem()
@@ -699,7 +700,7 @@ Partial Class frmMain
         Me.tblPosterTop = New System.Windows.Forms.TableLayoutPanel()
         Me.lblPosterTitle = New System.Windows.Forms.Label()
         Me.pnlTop = New System.Windows.Forms.Panel()
-        Me.tlpHeader = New System.Windows.Forms.TableLayoutPanel()
+        Me.tblHeader = New System.Windows.Forms.TableLayoutPanel()
         Me.lblTitle = New System.Windows.Forms.Label()
         Me.lblOriginalTitle = New System.Windows.Forms.Label()
         Me.pnlRating = New System.Windows.Forms.Panel()
@@ -732,12 +733,12 @@ Partial Class frmMain
         Me.pbAudioLang1 = New System.Windows.Forms.PictureBox()
         Me.pbAudioLang0 = New System.Windows.Forms.PictureBox()
         Me.lblStudio = New System.Windows.Forms.Label()
-        Me.pbVType = New System.Windows.Forms.PictureBox()
+        Me.pbVideoCodec = New System.Windows.Forms.PictureBox()
         Me.pbStudio = New System.Windows.Forms.PictureBox()
-        Me.pbVideo = New System.Windows.Forms.PictureBox()
-        Me.pbAudio = New System.Windows.Forms.PictureBox()
-        Me.pbResolution = New System.Windows.Forms.PictureBox()
-        Me.pbChannels = New System.Windows.Forms.PictureBox()
+        Me.pbVideoSource = New System.Windows.Forms.PictureBox()
+        Me.pbAudioCodec = New System.Windows.Forms.PictureBox()
+        Me.pbVideoResolution = New System.Windows.Forms.PictureBox()
+        Me.pbAudioChannels = New System.Windows.Forms.PictureBox()
         Me.pbPosterCache = New System.Windows.Forms.PictureBox()
         Me.pbFanartSmallCache = New System.Windows.Forms.PictureBox()
         Me.pbLandscapeCache = New System.Windows.Forms.PictureBox()
@@ -752,16 +753,16 @@ Partial Class frmMain
         Me.mnuScrapeSubmenuAll = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeSubmenuMissing = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeSubmenuNew = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuScrapeSubmenuMarked = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuScrapeSubmenuFilter = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeSubmenuCustom = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayScrapeMovies = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayScrapeMovieSets = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuScrapeMovieSets = New System.Windows.Forms.ToolStripSplitButton()
         Me.mnuScrapeTVShows = New System.Windows.Forms.ToolStripSplitButton()
         Me.mnuUpdate = New System.Windows.Forms.ToolStripSplitButton()
         Me.mnuUpdateMovies = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuUpdateShows = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmnuTrayScrapeMovies = New System.Windows.Forms.ToolStripMenuItem()
         Me.cmnuTrayScrapeTVShows = New System.Windows.Forms.ToolStripMenuItem()
-        Me.cmnuTrayScrapeMovieSets = New System.Windows.Forms.ToolStripMenuItem()
         Me.ilColumnIcons = New System.Windows.Forms.ImageList(Me.components)
         Me.tmrWait_Movie = New System.Windows.Forms.Timer(Me.components)
         Me.tmrLoad_Movie = New System.Windows.Forms.Timer(Me.components)
@@ -813,7 +814,9 @@ Partial Class frmMain
         Me.tmrSearchWait_Shows = New System.Windows.Forms.Timer(Me.components)
         Me.tmrSearch_Shows = New System.Windows.Forms.Timer(Me.components)
         Me.tmrRunTasks = New System.Windows.Forms.Timer(Me.components)
-        Me.mnuScrapeOptionUserRating = New System.Windows.Forms.ToolStripMenuItem()
+        Me.tblInfoIcons = New System.Windows.Forms.TableLayoutPanel()
+        Me.tblAudioLang = New System.Windows.Forms.TableLayoutPanel()
+        Me.tblSubtitleLang = New System.Windows.Forms.TableLayoutPanel()
         Me.StatusStrip.SuspendLayout()
         Me.mnuMain.SuspendLayout()
         CType(Me.scMain, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -1031,7 +1034,7 @@ Partial Class frmMain
         Me.pnlPosterTop.SuspendLayout()
         Me.tblPosterTop.SuspendLayout()
         Me.pnlTop.SuspendLayout()
-        Me.tlpHeader.SuspendLayout()
+        Me.tblHeader.SuspendLayout()
         Me.pnlRating.SuspendLayout()
         CType(Me.pbStar10, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbStar9, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -1058,12 +1061,12 @@ Partial Class frmMain
         CType(Me.pbAudioLang2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbAudioLang1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbAudioLang0, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbVType, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbVideoCodec, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbStudio, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbVideo, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbAudio, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbResolution, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbChannels, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbVideoSource, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbAudioCodec, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbVideoResolution, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbAudioChannels, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbPosterCache, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbFanartSmallCache, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbLandscapeCache, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -1078,6 +1081,9 @@ Partial Class frmMain
         Me.pnlLoadSettingsBG.SuspendLayout()
         CType(Me.pbLoadSettings, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlLoadSettings.SuspendLayout()
+        Me.tblInfoIcons.SuspendLayout()
+        Me.tblAudioLang.SuspendLayout()
+        Me.tblSubtitleLang.SuspendLayout()
         Me.SuspendLayout()
         '
         'BottomToolStripPanel
@@ -1215,7 +1221,7 @@ Partial Class frmMain
         Me.StatusStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tslStatus, Me.tsSpring, Me.tslLoading, Me.tspbLoading})
         Me.StatusStrip.Location = New System.Drawing.Point(5, 923)
         Me.StatusStrip.Name = "StatusStrip"
-        Me.StatusStrip.Size = New System.Drawing.Size(1344, 22)
+        Me.StatusStrip.Size = New System.Drawing.Size(1503, 22)
         Me.StatusStrip.TabIndex = 6
         Me.StatusStrip.Text = "StatusStrip"
         '
@@ -1228,7 +1234,7 @@ Partial Class frmMain
         'tsSpring
         '
         Me.tsSpring.Name = "tsSpring"
-        Me.tsSpring.Size = New System.Drawing.Size(1329, 17)
+        Me.tsSpring.Size = New System.Drawing.Size(1488, 17)
         Me.tsSpring.Spring = True
         Me.tsSpring.Text = "  "
         '
@@ -1258,7 +1264,7 @@ Partial Class frmMain
         Me.mnuMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuMainFile, Me.mnuMainEdit, Me.mnuMainTools, Me.mnuMainHelp, Me.mnuMainDonate, Me.mnuMainError, Me.mnuVersion})
         Me.mnuMain.Location = New System.Drawing.Point(5, 0)
         Me.mnuMain.Name = "mnuMain"
-        Me.mnuMain.Size = New System.Drawing.Size(1344, 24)
+        Me.mnuMain.Size = New System.Drawing.Size(1503, 24)
         Me.mnuMain.TabIndex = 0
         Me.mnuMain.Text = "MenuStrip"
         '
@@ -1492,7 +1498,7 @@ Partial Class frmMain
         Me.scMain.Panel2.Controls.Add(Me.pbFanart)
         Me.scMain.Panel2.Controls.Add(Me.tsMain)
         Me.scMain.Panel2.Margin = New System.Windows.Forms.Padding(3)
-        Me.scMain.Size = New System.Drawing.Size(1344, 899)
+        Me.scMain.Size = New System.Drawing.Size(1503, 899)
         Me.scMain.SplitterDistance = 567
         Me.scMain.TabIndex = 7
         Me.scMain.TabStop = False
@@ -2918,8 +2924,8 @@ Partial Class frmMain
         Me.dgvMovies.AllowUserToAddRows = False
         Me.dgvMovies.AllowUserToDeleteRows = False
         Me.dgvMovies.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle5
         Me.dgvMovies.BackgroundColor = System.Drawing.Color.White
         Me.dgvMovies.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvMovies.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -3087,7 +3093,7 @@ Partial Class frmMain
         '
         Me.mnuGenres.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuGenresTitleSelect, Me.mnuGenresGenre, Me.mnuGenresSep1, Me.mnuGenresTitleNew, Me.mnuGenresNew, Me.mnuGenresSep2, Me.mnuGenresAdd, Me.mnuGenresSet, Me.mnuGenresRemove})
         Me.mnuGenres.Name = "mnuGenres"
-        Me.mnuGenres.OwnerItem = Me.cmnuMovieEditGenres
+        Me.mnuGenres.OwnerItem = Me.cmnuShowEditGenres
         Me.mnuGenres.Size = New System.Drawing.Size(196, 178)
         '
         'mnuGenresTitleSelect
@@ -3145,15 +3151,6 @@ Partial Class frmMain
         Me.mnuGenresRemove.Size = New System.Drawing.Size(195, 22)
         Me.mnuGenresRemove.Text = "Remove"
         '
-        'cmnuShowEditGenres
-        '
-        Me.cmnuShowEditGenres.DropDown = Me.mnuGenres
-        Me.cmnuShowEditGenres.Image = Global.Ember_Media_Manager.My.Resources.Resources.heart
-        Me.cmnuShowEditGenres.Name = "cmnuShowEditGenres"
-        Me.cmnuShowEditGenres.Size = New System.Drawing.Size(248, 22)
-        Me.cmnuShowEditGenres.Tag = "tvshow"
-        Me.cmnuShowEditGenres.Text = "Edit Genres"
-        '
         'cmnuMovieEditTags
         '
         Me.cmnuMovieEditTags.DropDown = Me.mnuTags
@@ -3167,7 +3164,7 @@ Partial Class frmMain
         '
         Me.mnuTags.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuTagsTitleSelect, Me.mnuTagsTag, Me.mnuTagsSep1, Me.mnuTagsTitleNew, Me.mnuTagsNew, Me.mnuTagsSep2, Me.mnuTagsAdd, Me.mnuTagsSet, Me.mnuTagsRemove})
         Me.mnuTags.Name = "mnuTags"
-        Me.mnuTags.OwnerItem = Me.cmnuShowEditTags
+        Me.mnuTags.OwnerItem = Me.cmnuMovieEditTags
         Me.mnuTags.Size = New System.Drawing.Size(196, 178)
         '
         'mnuTagsTitleSelect
@@ -3226,6 +3223,15 @@ Partial Class frmMain
         Me.mnuTagsRemove.Size = New System.Drawing.Size(195, 22)
         Me.mnuTagsRemove.Text = "Remove"
         '
+        'cmnuShowEditTags
+        '
+        Me.cmnuShowEditTags.DropDown = Me.mnuTags
+        Me.cmnuShowEditTags.Image = Global.Ember_Media_Manager.My.Resources.Resources.MovieSet
+        Me.cmnuShowEditTags.Name = "cmnuShowEditTags"
+        Me.cmnuShowEditTags.Size = New System.Drawing.Size(248, 22)
+        Me.cmnuShowEditTags.Tag = "tvshow"
+        Me.cmnuShowEditTags.Text = "Edit Tags"
+        '
         'cmnuMovieEditDataField
         '
         Me.cmnuMovieEditDataField.DropDown = Me.mnuDataField
@@ -3238,7 +3244,7 @@ Partial Class frmMain
         '
         Me.mnuDataField.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuDataFieldTrailerURL, Me.mnuDataFieldVideosource})
         Me.mnuDataField.Name = "mnuScrapeOption"
-        Me.mnuDataField.OwnerItem = Me.cmnuEpisodeEditDataField
+        Me.mnuDataField.OwnerItem = Me.cmnuMovieEditDataField
         Me.mnuDataField.Size = New System.Drawing.Size(144, 48)
         '
         'mnuDataFieldTrailerURL
@@ -3254,6 +3260,14 @@ Partial Class frmMain
         Me.mnuDataFieldVideosource.Size = New System.Drawing.Size(143, 22)
         Me.mnuDataFieldVideosource.Tag = "videosource"
         Me.mnuDataFieldVideosource.Text = "Video Source"
+        '
+        'cmnuEpisodeEditDataField
+        '
+        Me.cmnuEpisodeEditDataField.DropDown = Me.mnuDataField
+        Me.cmnuEpisodeEditDataField.Name = "cmnuEpisodeEditDataField"
+        Me.cmnuEpisodeEditDataField.Size = New System.Drawing.Size(248, 22)
+        Me.cmnuEpisodeEditDataField.Tag = "tvepisode"
+        Me.cmnuEpisodeEditDataField.Text = "Edit Data Field"
         '
         'cmnuMovieRescrapeSeparator
         '
@@ -3281,7 +3295,7 @@ Partial Class frmMain
         '
         Me.mnuScrapeType.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuScrapeTypeAuto, Me.mnuScrapeTypeAsk, Me.mnuScrapeTypeSkip})
         Me.mnuScrapeType.Name = "mnuScrapeType"
-        Me.mnuScrapeType.OwnerItem = Me.mnuScrapeSubmenuMarked
+        Me.mnuScrapeType.OwnerItem = Me.mnuScrapeSubmenuFilter
         Me.mnuScrapeType.Size = New System.Drawing.Size(272, 70)
         '
         'mnuScrapeTypeAuto
@@ -3296,7 +3310,7 @@ Partial Class frmMain
         '
         Me.mnuScrapeModifier.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuScrapeModifierAll, Me.mnuScrapeModifierActorthumbs, Me.mnuScrapeModifierBanner, Me.mnuScrapeModifierCharacterArt, Me.mnuScrapeModifierClearArt, Me.mnuScrapeModifierClearLogo, Me.mnuScrapeModifierDiscArt, Me.mnuScrapeModifierExtrafanarts, Me.mnuScrapeModifierExtrathumbs, Me.mnuScrapeModifierFanart, Me.mnuScrapeModifierLandscape, Me.mnuScrapeModifierMetaData, Me.mnuScrapeModifierNFO, Me.mnuScrapeModifierPoster, Me.mnuScrapeModifierTheme, Me.mnuScrapeModifierTrailer})
         Me.mnuScrapeModifier.Name = "mnuScrapeModifier"
-        Me.mnuScrapeModifier.OwnerItem = Me.mnuScrapeTypeSkip
+        Me.mnuScrapeModifier.OwnerItem = Me.mnuScrapeTypeAsk
         Me.mnuScrapeModifier.Size = New System.Drawing.Size(179, 356)
         '
         'mnuScrapeModifierAll
@@ -3426,14 +3440,6 @@ Partial Class frmMain
         Me.mnuScrapeModifierTrailer.Tag = "trailer"
         Me.mnuScrapeModifierTrailer.Text = "Trailer Only"
         '
-        'mnuScrapeTypeAsk
-        '
-        Me.mnuScrapeTypeAsk.DropDown = Me.mnuScrapeModifier
-        Me.mnuScrapeTypeAsk.Name = "mnuScrapeTypeAsk"
-        Me.mnuScrapeTypeAsk.Size = New System.Drawing.Size(271, 22)
-        Me.mnuScrapeTypeAsk.Tag = "ask"
-        Me.mnuScrapeTypeAsk.Text = "Ask (Require Input If No Exact Match)"
-        '
         'mnuScrapeTypeSkip
         '
         Me.mnuScrapeTypeSkip.DropDown = Me.mnuScrapeModifier
@@ -3442,13 +3448,21 @@ Partial Class frmMain
         Me.mnuScrapeTypeSkip.Tag = "skip"
         Me.mnuScrapeTypeSkip.Text = "Skip (Skip If More Than One Match)"
         '
-        'mnuScrapeSubmenuFilter
+        'mnuScrapeTypeAsk
         '
-        Me.mnuScrapeSubmenuFilter.DropDown = Me.mnuScrapeType
-        Me.mnuScrapeSubmenuFilter.Name = "mnuScrapeSubmenuFilter"
-        Me.mnuScrapeSubmenuFilter.Size = New System.Drawing.Size(167, 22)
-        Me.mnuScrapeSubmenuFilter.Tag = "filter"
-        Me.mnuScrapeSubmenuFilter.Text = "Current Filter"
+        Me.mnuScrapeTypeAsk.DropDown = Me.mnuScrapeModifier
+        Me.mnuScrapeTypeAsk.Name = "mnuScrapeTypeAsk"
+        Me.mnuScrapeTypeAsk.Size = New System.Drawing.Size(271, 22)
+        Me.mnuScrapeTypeAsk.Tag = "ask"
+        Me.mnuScrapeTypeAsk.Text = "Ask (Require Input If No Exact Match)"
+        '
+        'mnuScrapeSubmenuMarked
+        '
+        Me.mnuScrapeSubmenuMarked.DropDown = Me.mnuScrapeType
+        Me.mnuScrapeSubmenuMarked.Name = "mnuScrapeSubmenuMarked"
+        Me.mnuScrapeSubmenuMarked.Size = New System.Drawing.Size(167, 22)
+        Me.mnuScrapeSubmenuMarked.Tag = "marked"
+        Me.mnuScrapeSubmenuMarked.Text = "Marked"
         '
         'cmnuMovieScrapeSingleDataField
         '
@@ -3462,7 +3476,8 @@ Partial Class frmMain
         '
         Me.mnuScrapeOption.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuScrapeOptionActors, Me.mnuScrapeOptionAired, Me.mnuScrapeOptionCertifications, Me.mnuScrapeOptionCollectionID, Me.mnuScrapeOptionCreators, Me.mnuScrapeOptionCountries, Me.mnuScrapeOptionDirectors, Me.mnuScrapeOptionEpiGuideURL, Me.mnuScrapeOptionGenres, Me.mnuScrapeOptionGuestStars, Me.mnuScrapeOptionMPAA, Me.mnuScrapeOptionOriginalTitle, Me.mnuScrapeOptionPlot, Me.mnuScrapeOptionOutline, Me.mnuScrapeOptionPremiered, Me.mnuScrapeOptionRating, Me.mnuScrapeOptionReleaseDate, Me.mnuScrapeOptionRuntime, Me.mnuScrapeOptionStatus, Me.mnuScrapeOptionStudios, Me.mnuScrapeOptionTagline, Me.mnuScrapeOptionTitle, Me.mnuScrapeOptionTop250, Me.mnuScrapeOptionTrailer, Me.mnuScrapeOptionUserRating, Me.mnuScrapeOptionWriters, Me.mnuScrapeOptionYear})
         Me.mnuScrapeOption.Name = "mnuScrapeOption"
-        Me.mnuScrapeOption.Size = New System.Drawing.Size(174, 620)
+        Me.mnuScrapeOption.OwnerItem = Me.cmnuEpisodeScrapeSingleDataField
+        Me.mnuScrapeOption.Size = New System.Drawing.Size(174, 598)
         '
         'mnuScrapeOptionActors
         '
@@ -3632,6 +3647,13 @@ Partial Class frmMain
         Me.mnuScrapeOptionTrailer.Tag = "trailer"
         Me.mnuScrapeOptionTrailer.Text = "Trailer"
         '
+        'mnuScrapeOptionUserRating
+        '
+        Me.mnuScrapeOptionUserRating.Name = "mnuScrapeOptionUserRating"
+        Me.mnuScrapeOptionUserRating.Size = New System.Drawing.Size(173, 22)
+        Me.mnuScrapeOptionUserRating.Tag = "userrating"
+        Me.mnuScrapeOptionUserRating.Text = "User Rating"
+        '
         'mnuScrapeOptionWriters
         '
         Me.mnuScrapeOptionWriters.Name = "mnuScrapeOptionWriters"
@@ -3645,14 +3667,6 @@ Partial Class frmMain
         Me.mnuScrapeOptionYear.Size = New System.Drawing.Size(173, 22)
         Me.mnuScrapeOptionYear.Tag = "year"
         Me.mnuScrapeOptionYear.Text = "Year"
-        '
-        'cmnuEpisodeScrapeSingleDataField
-        '
-        Me.cmnuEpisodeScrapeSingleDataField.DropDown = Me.mnuScrapeOption
-        Me.cmnuEpisodeScrapeSingleDataField.Name = "cmnuEpisodeScrapeSingleDataField"
-        Me.cmnuEpisodeScrapeSingleDataField.Size = New System.Drawing.Size(248, 22)
-        Me.cmnuEpisodeScrapeSingleDataField.Tag = "tvepisode"
-        Me.cmnuEpisodeScrapeSingleDataField.Text = "(Re)Scrape Single Data Field"
         '
         'cmnuMovieChange
         '
@@ -3681,7 +3695,7 @@ Partial Class frmMain
         '
         Me.mnuLanguages.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuLanguagesTitleSelect, Me.mnuLanguagesLanguage, Me.mnuLanguagesSep1, Me.mnuLanguagesSet})
         Me.mnuLanguages.Name = "mnuLanguages"
-        Me.mnuLanguages.OwnerItem = Me.cmnuMovieSetLanguage
+        Me.mnuLanguages.OwnerItem = Me.cmnuShowLanguage
         Me.mnuLanguages.Size = New System.Drawing.Size(199, 81)
         '
         'mnuLanguagesTitleSelect
@@ -3709,13 +3723,13 @@ Partial Class frmMain
         Me.mnuLanguagesSet.Size = New System.Drawing.Size(198, 22)
         Me.mnuLanguagesSet.Text = "Set"
         '
-        'cmnuShowLanguage
+        'cmnuMovieSetLanguage
         '
-        Me.cmnuShowLanguage.DropDown = Me.mnuLanguages
-        Me.cmnuShowLanguage.Name = "cmnuShowLanguage"
-        Me.cmnuShowLanguage.Size = New System.Drawing.Size(248, 22)
-        Me.cmnuShowLanguage.Tag = "tvshow"
-        Me.cmnuShowLanguage.Text = "Change Language"
+        Me.cmnuMovieSetLanguage.DropDown = Me.mnuLanguages
+        Me.cmnuMovieSetLanguage.Name = "cmnuMovieSetLanguage"
+        Me.cmnuMovieSetLanguage.Size = New System.Drawing.Size(234, 22)
+        Me.cmnuMovieSetLanguage.Tag = "movieset"
+        Me.cmnuMovieSetLanguage.Text = "Change Language"
         '
         'cmnuMovieSep3
         '
@@ -3778,8 +3792,8 @@ Partial Class frmMain
         Me.dgvMovieSets.AllowUserToAddRows = False
         Me.dgvMovieSets.AllowUserToDeleteRows = False
         Me.dgvMovieSets.AllowUserToResizeRows = False
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvMovieSets.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvMovieSets.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle6
         Me.dgvMovieSets.BackgroundColor = System.Drawing.Color.White
         Me.dgvMovieSets.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvMovieSets.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -3936,14 +3950,6 @@ Partial Class frmMain
         Me.cmnuMovieSetScrapeSingleDataField.Tag = "movieset"
         Me.cmnuMovieSetScrapeSingleDataField.Text = "(Re)Scrape Single Data Field"
         '
-        'cmnuMovieSetLanguage
-        '
-        Me.cmnuMovieSetLanguage.DropDown = Me.mnuLanguages
-        Me.cmnuMovieSetLanguage.Name = "cmnuMovieSetLanguage"
-        Me.cmnuMovieSetLanguage.Size = New System.Drawing.Size(234, 22)
-        Me.cmnuMovieSetLanguage.Tag = "movieset"
-        Me.cmnuMovieSetLanguage.Text = "Change Language"
-        '
         'cmnuMovieSetSep3
         '
         Me.cmnuMovieSetSep3.Name = "cmnuMovieSetSep3"
@@ -3997,8 +4003,8 @@ Partial Class frmMain
         Me.dgvTVShows.AllowUserToAddRows = False
         Me.dgvTVShows.AllowUserToDeleteRows = False
         Me.dgvTVShows.AllowUserToResizeRows = False
-        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvTVShows.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvTVShows.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvTVShows.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVShows.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvTVShows.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -4117,14 +4123,14 @@ Partial Class frmMain
         Me.cmnuShowEdit.Size = New System.Drawing.Size(248, 22)
         Me.cmnuShowEdit.Text = "Edit Show"
         '
-        'cmnuShowEditTags
+        'cmnuShowEditGenres
         '
-        Me.cmnuShowEditTags.DropDown = Me.mnuTags
-        Me.cmnuShowEditTags.Image = Global.Ember_Media_Manager.My.Resources.Resources.MovieSet
-        Me.cmnuShowEditTags.Name = "cmnuShowEditTags"
-        Me.cmnuShowEditTags.Size = New System.Drawing.Size(248, 22)
-        Me.cmnuShowEditTags.Tag = "tvshow"
-        Me.cmnuShowEditTags.Text = "Edit Tags"
+        Me.cmnuShowEditGenres.DropDown = Me.mnuGenres
+        Me.cmnuShowEditGenres.Image = Global.Ember_Media_Manager.My.Resources.Resources.heart
+        Me.cmnuShowEditGenres.Name = "cmnuShowEditGenres"
+        Me.cmnuShowEditGenres.Size = New System.Drawing.Size(248, 22)
+        Me.cmnuShowEditGenres.Tag = "tvshow"
+        Me.cmnuShowEditGenres.Text = "Edit Genres"
         '
         'cmnuShowScrapeSeparator
         '
@@ -4170,6 +4176,14 @@ Partial Class frmMain
         Me.cmnuShowChange.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.C), System.Windows.Forms.Keys)
         Me.cmnuShowChange.Size = New System.Drawing.Size(248, 22)
         Me.cmnuShowChange.Text = "Change Show"
+        '
+        'cmnuShowLanguage
+        '
+        Me.cmnuShowLanguage.DropDown = Me.mnuLanguages
+        Me.cmnuShowLanguage.Name = "cmnuShowLanguage"
+        Me.cmnuShowLanguage.Size = New System.Drawing.Size(248, 22)
+        Me.cmnuShowLanguage.Tag = "tvshow"
+        Me.cmnuShowLanguage.Text = "Change Language"
         '
         'cmnuShowSep3
         '
@@ -4295,8 +4309,8 @@ Partial Class frmMain
         Me.dgvTVSeasons.AllowUserToAddRows = False
         Me.dgvTVSeasons.AllowUserToDeleteRows = False
         Me.dgvTVSeasons.AllowUserToResizeRows = False
-        DataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvTVSeasons.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvTVSeasons.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
         Me.dgvTVSeasons.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVSeasons.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvTVSeasons.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -4513,8 +4527,8 @@ Partial Class frmMain
         Me.dgvTVEpisodes.AllowUserToAddRows = False
         Me.dgvTVEpisodes.AllowUserToDeleteRows = False
         Me.dgvTVEpisodes.AllowUserToResizeRows = False
-        DataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvTVEpisodes.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvTVEpisodes.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle3
         Me.dgvTVEpisodes.BackgroundColor = System.Drawing.Color.White
         Me.dgvTVEpisodes.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.dgvTVEpisodes.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
@@ -4625,14 +4639,6 @@ Partial Class frmMain
         Me.cmnuEpisodeEdit.Size = New System.Drawing.Size(248, 22)
         Me.cmnuEpisodeEdit.Text = "Edit Episode"
         '
-        'cmnuEpisodeEditDataField
-        '
-        Me.cmnuEpisodeEditDataField.DropDown = Me.mnuDataField
-        Me.cmnuEpisodeEditDataField.Name = "cmnuEpisodeEditDataField"
-        Me.cmnuEpisodeEditDataField.Size = New System.Drawing.Size(248, 22)
-        Me.cmnuEpisodeEditDataField.Tag = "tvepisode"
-        Me.cmnuEpisodeEditDataField.Text = "Edit Data Field"
-        '
         'cmnuEpisodeScrapeSeparator
         '
         Me.cmnuEpisodeScrapeSeparator.Name = "cmnuEpisodeScrapeSeparator"
@@ -4654,6 +4660,14 @@ Partial Class frmMain
         Me.cmnuEpisodeScrapeSelected.Size = New System.Drawing.Size(248, 22)
         Me.cmnuEpisodeScrapeSelected.Tag = "tvepisode"
         Me.cmnuEpisodeScrapeSelected.Text = "(Re)Scrape Selected Episodes"
+        '
+        'cmnuEpisodeScrapeSingleDataField
+        '
+        Me.cmnuEpisodeScrapeSingleDataField.DropDown = Me.mnuScrapeOption
+        Me.cmnuEpisodeScrapeSingleDataField.Name = "cmnuEpisodeScrapeSingleDataField"
+        Me.cmnuEpisodeScrapeSingleDataField.Size = New System.Drawing.Size(248, 22)
+        Me.cmnuEpisodeScrapeSingleDataField.Tag = "tvepisode"
+        Me.cmnuEpisodeScrapeSingleDataField.Text = "(Re)Scrape Single Data Field"
         '
         'cmnuEpisodeChange
         '
@@ -6936,7 +6950,7 @@ Partial Class frmMain
         Me.pnlInfoPanel.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.pnlInfoPanel.Location = New System.Drawing.Point(0, 557)
         Me.pnlInfoPanel.Name = "pnlInfoPanel"
-        Me.pnlInfoPanel.Size = New System.Drawing.Size(773, 342)
+        Me.pnlInfoPanel.Size = New System.Drawing.Size(932, 342)
         Me.pnlInfoPanel.TabIndex = 10
         '
         'pnlMoviesInSet
@@ -6945,7 +6959,7 @@ Partial Class frmMain
         Me.pnlMoviesInSet.BackColor = System.Drawing.Color.Gainsboro
         Me.pnlMoviesInSet.Controls.Add(Me.lvMoviesInSet)
         Me.pnlMoviesInSet.Controls.Add(Me.lblMoviesInSetHeader)
-        Me.pnlMoviesInSet.Location = New System.Drawing.Point(0, 493)
+        Me.pnlMoviesInSet.Location = New System.Drawing.Point(159, 493)
         Me.pnlMoviesInSet.Name = "pnlMoviesInSet"
         Me.pnlMoviesInSet.Size = New System.Drawing.Size(773, 244)
         Me.pnlMoviesInSet.TabIndex = 41
@@ -6988,7 +7002,7 @@ Partial Class frmMain
         Me.txtCertifications.Location = New System.Drawing.Point(231, 208)
         Me.txtCertifications.Name = "txtCertifications"
         Me.txtCertifications.ReadOnly = True
-        Me.txtCertifications.Size = New System.Drawing.Size(223, 22)
+        Me.txtCertifications.Size = New System.Drawing.Size(382, 22)
         Me.txtCertifications.TabIndex = 3
         Me.txtCertifications.TabStop = False
         '
@@ -7002,7 +7016,7 @@ Partial Class frmMain
         Me.lblCertificationsHeader.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblCertificationsHeader.Location = New System.Drawing.Point(231, 188)
         Me.lblCertificationsHeader.Name = "lblCertificationsHeader"
-        Me.lblCertificationsHeader.Size = New System.Drawing.Size(223, 17)
+        Me.lblCertificationsHeader.Size = New System.Drawing.Size(382, 17)
         Me.lblCertificationsHeader.TabIndex = 2
         Me.lblCertificationsHeader.Text = "Certifications"
         Me.lblCertificationsHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -7012,7 +7026,7 @@ Partial Class frmMain
         Me.lblReleaseDate.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lblReleaseDate.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblReleaseDate.ForeColor = System.Drawing.Color.Black
-        Me.lblReleaseDate.Location = New System.Drawing.Point(288, 48)
+        Me.lblReleaseDate.Location = New System.Drawing.Point(447, 48)
         Me.lblReleaseDate.Name = "lblReleaseDate"
         Me.lblReleaseDate.Size = New System.Drawing.Size(105, 16)
         Me.lblReleaseDate.TabIndex = 39
@@ -7025,7 +7039,7 @@ Partial Class frmMain
         Me.lblReleaseDateHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lblReleaseDateHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblReleaseDateHeader.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblReleaseDateHeader.Location = New System.Drawing.Point(288, 27)
+        Me.lblReleaseDateHeader.Location = New System.Drawing.Point(447, 27)
         Me.lblReleaseDateHeader.Name = "lblReleaseDateHeader"
         Me.lblReleaseDateHeader.Size = New System.Drawing.Size(105, 17)
         Me.lblReleaseDateHeader.TabIndex = 38
@@ -7036,7 +7050,7 @@ Partial Class frmMain
         '
         Me.btnMid.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnMid.BackColor = System.Drawing.SystemColors.Control
-        Me.btnMid.Location = New System.Drawing.Point(702, 1)
+        Me.btnMid.Location = New System.Drawing.Point(861, 1)
         Me.btnMid.Name = "btnMid"
         Me.btnMid.Size = New System.Drawing.Size(30, 22)
         Me.btnMid.TabIndex = 37
@@ -7049,7 +7063,7 @@ Partial Class frmMain
         '
         Me.pbMILoading.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.pbMILoading.Image = CType(resources.GetObject("pbMILoading.Image"), System.Drawing.Image)
-        Me.pbMILoading.Location = New System.Drawing.Point(604, 374)
+        Me.pbMILoading.Location = New System.Drawing.Point(763, 374)
         Me.pbMILoading.Name = "pbMILoading"
         Me.pbMILoading.Size = New System.Drawing.Size(41, 39)
         Me.pbMILoading.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -7060,7 +7074,7 @@ Partial Class frmMain
         'btnMetaDataRefresh
         '
         Me.btnMetaDataRefresh.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnMetaDataRefresh.Location = New System.Drawing.Point(691, 278)
+        Me.btnMetaDataRefresh.Location = New System.Drawing.Point(850, 278)
         Me.btnMetaDataRefresh.Name = "btnMetaDataRefresh"
         Me.btnMetaDataRefresh.Size = New System.Drawing.Size(75, 23)
         Me.btnMetaDataRefresh.TabIndex = 9
@@ -7075,7 +7089,7 @@ Partial Class frmMain
         Me.lblMetaDataHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.lblMetaDataHeader.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblMetaDataHeader.ForeColor = System.Drawing.SystemColors.HighlightText
-        Me.lblMetaDataHeader.Location = New System.Drawing.Point(467, 282)
+        Me.lblMetaDataHeader.Location = New System.Drawing.Point(626, 282)
         Me.lblMetaDataHeader.Name = "lblMetaDataHeader"
         Me.lblMetaDataHeader.Size = New System.Drawing.Size(294, 17)
         Me.lblMetaDataHeader.TabIndex = 8
@@ -7089,7 +7103,7 @@ Partial Class frmMain
         Me.txtMetaData.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.txtMetaData.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtMetaData.ForeColor = System.Drawing.Color.Black
-        Me.txtMetaData.Location = New System.Drawing.Point(467, 303)
+        Me.txtMetaData.Location = New System.Drawing.Point(626, 303)
         Me.txtMetaData.Multiline = True
         Me.txtMetaData.Name = "txtMetaData"
         Me.txtMetaData.ReadOnly = True
@@ -7102,7 +7116,7 @@ Partial Class frmMain
         '
         Me.btnTrailerPlay.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnTrailerPlay.Image = Global.Ember_Media_Manager.My.Resources.Resources.Play_Icon
-        Me.btnTrailerPlay.Location = New System.Drawing.Point(434, 254)
+        Me.btnTrailerPlay.Location = New System.Drawing.Point(593, 254)
         Me.btnTrailerPlay.Name = "btnTrailerPlay"
         Me.btnTrailerPlay.Size = New System.Drawing.Size(20, 20)
         Me.btnTrailerPlay.TabIndex = 6
@@ -7127,7 +7141,7 @@ Partial Class frmMain
         Me.txtTrailerPath.Location = New System.Drawing.Point(231, 254)
         Me.txtTrailerPath.Name = "txtTrailerPath"
         Me.txtTrailerPath.ReadOnly = True
-        Me.txtTrailerPath.Size = New System.Drawing.Size(200, 22)
+        Me.txtTrailerPath.Size = New System.Drawing.Size(359, 22)
         Me.txtTrailerPath.TabIndex = 5
         Me.txtTrailerPath.TabStop = False
         '
@@ -7151,7 +7165,7 @@ Partial Class frmMain
         Me.lblTrailerPathHeader.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblTrailerPathHeader.Location = New System.Drawing.Point(231, 234)
         Me.lblTrailerPathHeader.Name = "lblTrailerPathHeader"
-        Me.lblTrailerPathHeader.Size = New System.Drawing.Size(222, 17)
+        Me.lblTrailerPathHeader.Size = New System.Drawing.Size(381, 17)
         Me.lblTrailerPathHeader.TabIndex = 4
         Me.lblTrailerPathHeader.Text = "Trailer Path"
         Me.lblTrailerPathHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -7223,7 +7237,7 @@ Partial Class frmMain
         Me.lblDirectors.ForeColor = System.Drawing.Color.Black
         Me.lblDirectors.Location = New System.Drawing.Point(3, 48)
         Me.lblDirectors.Name = "lblDirectors"
-        Me.lblDirectors.Size = New System.Drawing.Size(280, 16)
+        Me.lblDirectors.Size = New System.Drawing.Size(439, 16)
         Me.lblDirectors.TabIndex = 27
         Me.lblDirectors.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.lblDirectors.UseMnemonic = False
@@ -7238,7 +7252,7 @@ Partial Class frmMain
         Me.lblDirectorsHeader.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblDirectorsHeader.Location = New System.Drawing.Point(3, 27)
         Me.lblDirectorsHeader.Name = "lblDirectorsHeader"
-        Me.lblDirectorsHeader.Size = New System.Drawing.Size(279, 17)
+        Me.lblDirectorsHeader.Size = New System.Drawing.Size(438, 17)
         Me.lblDirectorsHeader.TabIndex = 21
         Me.lblDirectorsHeader.Text = "Directors"
         Me.lblDirectorsHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -7251,7 +7265,7 @@ Partial Class frmMain
         Me.pnlActors.Controls.Add(Me.lstActors)
         Me.pnlActors.Controls.Add(Me.pbActors)
         Me.pnlActors.Controls.Add(Me.lblActorsHeader)
-        Me.pnlActors.Location = New System.Drawing.Point(466, 29)
+        Me.pnlActors.Location = New System.Drawing.Point(625, 29)
         Me.pnlActors.Name = "pnlActors"
         Me.pnlActors.Size = New System.Drawing.Size(302, 244)
         Me.pnlActors.TabIndex = 19
@@ -7313,7 +7327,7 @@ Partial Class frmMain
         Me.lblOutlineHeader.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblOutlineHeader.Location = New System.Drawing.Point(3, 81)
         Me.lblOutlineHeader.Name = "lblOutlineHeader"
-        Me.lblOutlineHeader.Size = New System.Drawing.Size(451, 17)
+        Me.lblOutlineHeader.Size = New System.Drawing.Size(610, 17)
         Me.lblOutlineHeader.TabIndex = 17
         Me.lblOutlineHeader.Text = "Plot Outline"
         Me.lblOutlineHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -7331,7 +7345,7 @@ Partial Class frmMain
         Me.txtOutline.Name = "txtOutline"
         Me.txtOutline.ReadOnly = True
         Me.txtOutline.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtOutline.Size = New System.Drawing.Size(451, 78)
+        Me.txtOutline.Size = New System.Drawing.Size(610, 78)
         Me.txtOutline.TabIndex = 16
         Me.txtOutline.TabStop = False
         '
@@ -7340,7 +7354,7 @@ Partial Class frmMain
         Me.pnlTop250.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.pnlTop250.Controls.Add(Me.lblTop250)
         Me.pnlTop250.Controls.Add(Me.pbTop250)
-        Me.pnlTop250.Location = New System.Drawing.Point(397, 27)
+        Me.pnlTop250.Location = New System.Drawing.Point(556, 27)
         Me.pnlTop250.Name = "pnlTop250"
         Me.pnlTop250.Size = New System.Drawing.Size(56, 48)
         Me.pnlTop250.TabIndex = 15
@@ -7377,7 +7391,7 @@ Partial Class frmMain
         Me.lblPlotHeader.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblPlotHeader.Location = New System.Drawing.Point(3, 282)
         Me.lblPlotHeader.Name = "lblPlotHeader"
-        Me.lblPlotHeader.Size = New System.Drawing.Size(451, 17)
+        Me.lblPlotHeader.Size = New System.Drawing.Size(610, 17)
         Me.lblPlotHeader.TabIndex = 6
         Me.lblPlotHeader.Text = "Plot"
         Me.lblPlotHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -7395,7 +7409,7 @@ Partial Class frmMain
         Me.txtPlot.Name = "txtPlot"
         Me.txtPlot.ReadOnly = True
         Me.txtPlot.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtPlot.Size = New System.Drawing.Size(451, 184)
+        Me.txtPlot.Size = New System.Drawing.Size(610, 184)
         Me.txtPlot.TabIndex = 7
         Me.txtPlot.TabStop = False
         '
@@ -7403,7 +7417,7 @@ Partial Class frmMain
         '
         Me.btnDown.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnDown.BackColor = System.Drawing.SystemColors.Control
-        Me.btnDown.Location = New System.Drawing.Point(733, 1)
+        Me.btnDown.Location = New System.Drawing.Point(892, 1)
         Me.btnDown.Name = "btnDown"
         Me.btnDown.Size = New System.Drawing.Size(30, 22)
         Me.btnDown.TabIndex = 6
@@ -7417,7 +7431,7 @@ Partial Class frmMain
         Me.btnUp.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnUp.BackColor = System.Drawing.SystemColors.Control
         Me.btnUp.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnUp.Location = New System.Drawing.Point(670, 1)
+        Me.btnUp.Location = New System.Drawing.Point(829, 1)
         Me.btnUp.Name = "btnUp"
         Me.btnUp.Size = New System.Drawing.Size(30, 22)
         Me.btnUp.TabIndex = 1
@@ -7436,7 +7450,7 @@ Partial Class frmMain
         Me.lblInfoPanelHeader.ForeColor = System.Drawing.SystemColors.HighlightText
         Me.lblInfoPanelHeader.Location = New System.Drawing.Point(3, 3)
         Me.lblInfoPanelHeader.Name = "lblInfoPanelHeader"
-        Me.lblInfoPanelHeader.Size = New System.Drawing.Size(765, 17)
+        Me.lblInfoPanelHeader.Size = New System.Drawing.Size(924, 17)
         Me.lblInfoPanelHeader.TabIndex = 0
         Me.lblInfoPanelHeader.Text = "Info"
         Me.lblInfoPanelHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -8571,46 +8585,46 @@ Partial Class frmMain
         '
         Me.pnlTop.BackColor = System.Drawing.Color.Gainsboro
         Me.pnlTop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlTop.Controls.Add(Me.tlpHeader)
+        Me.pnlTop.Controls.Add(Me.tblHeader)
         Me.pnlTop.Controls.Add(Me.pnlInfoIcons)
         Me.pnlTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlTop.Location = New System.Drawing.Point(0, 25)
         Me.pnlTop.Name = "pnlTop"
-        Me.pnlTop.Size = New System.Drawing.Size(773, 98)
+        Me.pnlTop.Size = New System.Drawing.Size(932, 98)
         Me.pnlTop.TabIndex = 9
         '
-        'tlpHeader
+        'tblHeader
         '
-        Me.tlpHeader.AutoSize = True
-        Me.tlpHeader.ColumnCount = 3
-        Me.tlpHeader.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 250.0!))
-        Me.tlpHeader.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tlpHeader.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tlpHeader.Controls.Add(Me.lblTitle, 0, 0)
-        Me.tlpHeader.Controls.Add(Me.lblOriginalTitle, 0, 1)
-        Me.tlpHeader.Controls.Add(Me.pnlRating, 0, 2)
-        Me.tlpHeader.Controls.Add(Me.lblTagline, 0, 3)
-        Me.tlpHeader.Controls.Add(Me.lblRuntime, 2, 2)
-        Me.tlpHeader.Controls.Add(Me.lblRating, 1, 2)
-        Me.tlpHeader.Dock = System.Windows.Forms.DockStyle.Left
-        Me.tlpHeader.Location = New System.Drawing.Point(0, 0)
-        Me.tlpHeader.Name = "tlpHeader"
-        Me.tlpHeader.RowCount = 4
-        Me.tlpHeader.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tlpHeader.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tlpHeader.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tlpHeader.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tlpHeader.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tlpHeader.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tlpHeader.Size = New System.Drawing.Size(346, 96)
-        Me.tlpHeader.TabIndex = 39
+        Me.tblHeader.AutoSize = True
+        Me.tblHeader.ColumnCount = 3
+        Me.tblHeader.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 250.0!))
+        Me.tblHeader.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblHeader.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblHeader.Controls.Add(Me.lblTitle, 0, 0)
+        Me.tblHeader.Controls.Add(Me.lblOriginalTitle, 0, 1)
+        Me.tblHeader.Controls.Add(Me.pnlRating, 0, 2)
+        Me.tblHeader.Controls.Add(Me.lblTagline, 0, 3)
+        Me.tblHeader.Controls.Add(Me.lblRuntime, 2, 2)
+        Me.tblHeader.Controls.Add(Me.lblRating, 1, 2)
+        Me.tblHeader.Dock = System.Windows.Forms.DockStyle.Left
+        Me.tblHeader.Location = New System.Drawing.Point(0, 0)
+        Me.tblHeader.Name = "tblHeader"
+        Me.tblHeader.RowCount = 4
+        Me.tblHeader.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblHeader.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblHeader.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblHeader.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblHeader.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblHeader.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblHeader.Size = New System.Drawing.Size(346, 96)
+        Me.tblHeader.TabIndex = 39
         '
         'lblTitle
         '
         Me.lblTitle.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTitle.AutoSize = True
         Me.lblTitle.BackColor = System.Drawing.Color.Transparent
-        Me.tlpHeader.SetColumnSpan(Me.lblTitle, 3)
+        Me.tblHeader.SetColumnSpan(Me.lblTitle, 3)
         Me.lblTitle.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTitle.ForeColor = System.Drawing.Color.Black
         Me.lblTitle.Location = New System.Drawing.Point(3, 0)
@@ -8626,7 +8640,7 @@ Partial Class frmMain
         Me.lblOriginalTitle.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblOriginalTitle.AutoSize = True
         Me.lblOriginalTitle.BackColor = System.Drawing.Color.Transparent
-        Me.tlpHeader.SetColumnSpan(Me.lblOriginalTitle, 3)
+        Me.tblHeader.SetColumnSpan(Me.lblOriginalTitle, 3)
         Me.lblOriginalTitle.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
         Me.lblOriginalTitle.ForeColor = System.Drawing.Color.Black
         Me.lblOriginalTitle.Location = New System.Drawing.Point(3, 22)
@@ -8742,7 +8756,7 @@ Partial Class frmMain
         '
         Me.lblTagline.AutoSize = True
         Me.lblTagline.BackColor = System.Drawing.Color.Transparent
-        Me.tlpHeader.SetColumnSpan(Me.lblTagline, 3)
+        Me.tblHeader.SetColumnSpan(Me.lblTagline, 3)
         Me.lblTagline.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblTagline.ForeColor = System.Drawing.Color.Black
         Me.lblTagline.Location = New System.Drawing.Point(3, 72)
@@ -8782,37 +8796,19 @@ Partial Class frmMain
         '
         'pnlInfoIcons
         '
+        Me.pnlInfoIcons.AutoSize = True
         Me.pnlInfoIcons.BackColor = System.Drawing.Color.Transparent
-        Me.pnlInfoIcons.Controls.Add(Me.pbSubtitleLang6)
-        Me.pnlInfoIcons.Controls.Add(Me.pbSubtitleLang5)
-        Me.pnlInfoIcons.Controls.Add(Me.pbSubtitleLang4)
-        Me.pnlInfoIcons.Controls.Add(Me.pbSubtitleLang3)
-        Me.pnlInfoIcons.Controls.Add(Me.pbSubtitleLang2)
-        Me.pnlInfoIcons.Controls.Add(Me.pbSubtitleLang1)
-        Me.pnlInfoIcons.Controls.Add(Me.pbSubtitleLang0)
-        Me.pnlInfoIcons.Controls.Add(Me.pbAudioLang6)
-        Me.pnlInfoIcons.Controls.Add(Me.pbAudioLang5)
-        Me.pnlInfoIcons.Controls.Add(Me.pbAudioLang4)
-        Me.pnlInfoIcons.Controls.Add(Me.pbAudioLang3)
-        Me.pnlInfoIcons.Controls.Add(Me.pbAudioLang2)
-        Me.pnlInfoIcons.Controls.Add(Me.pbAudioLang1)
-        Me.pnlInfoIcons.Controls.Add(Me.pbAudioLang0)
-        Me.pnlInfoIcons.Controls.Add(Me.lblStudio)
-        Me.pnlInfoIcons.Controls.Add(Me.pbVType)
-        Me.pnlInfoIcons.Controls.Add(Me.pbStudio)
-        Me.pnlInfoIcons.Controls.Add(Me.pbVideo)
-        Me.pnlInfoIcons.Controls.Add(Me.pbAudio)
-        Me.pnlInfoIcons.Controls.Add(Me.pbResolution)
-        Me.pnlInfoIcons.Controls.Add(Me.pbChannels)
+        Me.pnlInfoIcons.Controls.Add(Me.tblInfoIcons)
         Me.pnlInfoIcons.Dock = System.Windows.Forms.DockStyle.Right
-        Me.pnlInfoIcons.Location = New System.Drawing.Point(381, 0)
+        Me.pnlInfoIcons.Location = New System.Drawing.Point(450, 0)
         Me.pnlInfoIcons.Name = "pnlInfoIcons"
-        Me.pnlInfoIcons.Size = New System.Drawing.Size(390, 96)
+        Me.pnlInfoIcons.Size = New System.Drawing.Size(480, 96)
         Me.pnlInfoIcons.TabIndex = 31
         '
         'pbSubtitleLang6
         '
-        Me.pbSubtitleLang6.Location = New System.Drawing.Point(351, 70)
+        Me.pbSubtitleLang6.Location = New System.Drawing.Point(150, 0)
+        Me.pbSubtitleLang6.Margin = New System.Windows.Forms.Padding(0)
         Me.pbSubtitleLang6.Name = "pbSubtitleLang6"
         Me.pbSubtitleLang6.Size = New System.Drawing.Size(25, 25)
         Me.pbSubtitleLang6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -8821,7 +8817,8 @@ Partial Class frmMain
         '
         'pbSubtitleLang5
         '
-        Me.pbSubtitleLang5.Location = New System.Drawing.Point(325, 70)
+        Me.pbSubtitleLang5.Location = New System.Drawing.Point(125, 0)
+        Me.pbSubtitleLang5.Margin = New System.Windows.Forms.Padding(0)
         Me.pbSubtitleLang5.Name = "pbSubtitleLang5"
         Me.pbSubtitleLang5.Size = New System.Drawing.Size(25, 25)
         Me.pbSubtitleLang5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -8830,7 +8827,8 @@ Partial Class frmMain
         '
         'pbSubtitleLang4
         '
-        Me.pbSubtitleLang4.Location = New System.Drawing.Point(299, 70)
+        Me.pbSubtitleLang4.Location = New System.Drawing.Point(100, 0)
+        Me.pbSubtitleLang4.Margin = New System.Windows.Forms.Padding(0)
         Me.pbSubtitleLang4.Name = "pbSubtitleLang4"
         Me.pbSubtitleLang4.Size = New System.Drawing.Size(25, 25)
         Me.pbSubtitleLang4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -8839,7 +8837,8 @@ Partial Class frmMain
         '
         'pbSubtitleLang3
         '
-        Me.pbSubtitleLang3.Location = New System.Drawing.Point(273, 70)
+        Me.pbSubtitleLang3.Location = New System.Drawing.Point(75, 0)
+        Me.pbSubtitleLang3.Margin = New System.Windows.Forms.Padding(0)
         Me.pbSubtitleLang3.Name = "pbSubtitleLang3"
         Me.pbSubtitleLang3.Size = New System.Drawing.Size(25, 25)
         Me.pbSubtitleLang3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -8848,7 +8847,8 @@ Partial Class frmMain
         '
         'pbSubtitleLang2
         '
-        Me.pbSubtitleLang2.Location = New System.Drawing.Point(247, 70)
+        Me.pbSubtitleLang2.Location = New System.Drawing.Point(50, 0)
+        Me.pbSubtitleLang2.Margin = New System.Windows.Forms.Padding(0)
         Me.pbSubtitleLang2.Name = "pbSubtitleLang2"
         Me.pbSubtitleLang2.Size = New System.Drawing.Size(25, 25)
         Me.pbSubtitleLang2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -8857,7 +8857,8 @@ Partial Class frmMain
         '
         'pbSubtitleLang1
         '
-        Me.pbSubtitleLang1.Location = New System.Drawing.Point(221, 70)
+        Me.pbSubtitleLang1.Location = New System.Drawing.Point(25, 0)
+        Me.pbSubtitleLang1.Margin = New System.Windows.Forms.Padding(0)
         Me.pbSubtitleLang1.Name = "pbSubtitleLang1"
         Me.pbSubtitleLang1.Size = New System.Drawing.Size(25, 25)
         Me.pbSubtitleLang1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -8866,7 +8867,8 @@ Partial Class frmMain
         '
         'pbSubtitleLang0
         '
-        Me.pbSubtitleLang0.Location = New System.Drawing.Point(195, 70)
+        Me.pbSubtitleLang0.Location = New System.Drawing.Point(0, 0)
+        Me.pbSubtitleLang0.Margin = New System.Windows.Forms.Padding(0)
         Me.pbSubtitleLang0.Name = "pbSubtitleLang0"
         Me.pbSubtitleLang0.Size = New System.Drawing.Size(25, 25)
         Me.pbSubtitleLang0.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -8875,7 +8877,8 @@ Partial Class frmMain
         '
         'pbAudioLang6
         '
-        Me.pbAudioLang6.Location = New System.Drawing.Point(156, 70)
+        Me.pbAudioLang6.Location = New System.Drawing.Point(150, 0)
+        Me.pbAudioLang6.Margin = New System.Windows.Forms.Padding(0)
         Me.pbAudioLang6.Name = "pbAudioLang6"
         Me.pbAudioLang6.Size = New System.Drawing.Size(25, 25)
         Me.pbAudioLang6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -8884,7 +8887,8 @@ Partial Class frmMain
         '
         'pbAudioLang5
         '
-        Me.pbAudioLang5.Location = New System.Drawing.Point(130, 70)
+        Me.pbAudioLang5.Location = New System.Drawing.Point(125, 0)
+        Me.pbAudioLang5.Margin = New System.Windows.Forms.Padding(0)
         Me.pbAudioLang5.Name = "pbAudioLang5"
         Me.pbAudioLang5.Size = New System.Drawing.Size(25, 25)
         Me.pbAudioLang5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -8893,7 +8897,8 @@ Partial Class frmMain
         '
         'pbAudioLang4
         '
-        Me.pbAudioLang4.Location = New System.Drawing.Point(104, 70)
+        Me.pbAudioLang4.Location = New System.Drawing.Point(100, 0)
+        Me.pbAudioLang4.Margin = New System.Windows.Forms.Padding(0)
         Me.pbAudioLang4.Name = "pbAudioLang4"
         Me.pbAudioLang4.Size = New System.Drawing.Size(25, 25)
         Me.pbAudioLang4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -8902,7 +8907,8 @@ Partial Class frmMain
         '
         'pbAudioLang3
         '
-        Me.pbAudioLang3.Location = New System.Drawing.Point(78, 70)
+        Me.pbAudioLang3.Location = New System.Drawing.Point(75, 0)
+        Me.pbAudioLang3.Margin = New System.Windows.Forms.Padding(0)
         Me.pbAudioLang3.Name = "pbAudioLang3"
         Me.pbAudioLang3.Size = New System.Drawing.Size(25, 25)
         Me.pbAudioLang3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -8911,7 +8917,8 @@ Partial Class frmMain
         '
         'pbAudioLang2
         '
-        Me.pbAudioLang2.Location = New System.Drawing.Point(52, 70)
+        Me.pbAudioLang2.Location = New System.Drawing.Point(50, 0)
+        Me.pbAudioLang2.Margin = New System.Windows.Forms.Padding(0)
         Me.pbAudioLang2.Name = "pbAudioLang2"
         Me.pbAudioLang2.Size = New System.Drawing.Size(25, 25)
         Me.pbAudioLang2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -8920,7 +8927,8 @@ Partial Class frmMain
         '
         'pbAudioLang1
         '
-        Me.pbAudioLang1.Location = New System.Drawing.Point(26, 70)
+        Me.pbAudioLang1.Location = New System.Drawing.Point(25, 0)
+        Me.pbAudioLang1.Margin = New System.Windows.Forms.Padding(0)
         Me.pbAudioLang1.Name = "pbAudioLang1"
         Me.pbAudioLang1.Size = New System.Drawing.Size(25, 25)
         Me.pbAudioLang1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -8929,7 +8937,8 @@ Partial Class frmMain
         '
         'pbAudioLang0
         '
-        Me.pbAudioLang0.Location = New System.Drawing.Point(0, 70)
+        Me.pbAudioLang0.Location = New System.Drawing.Point(0, 0)
+        Me.pbAudioLang0.Margin = New System.Windows.Forms.Padding(0)
         Me.pbAudioLang0.Name = "pbAudioLang0"
         Me.pbAudioLang0.Size = New System.Drawing.Size(25, 25)
         Me.pbAudioLang0.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -8938,74 +8947,82 @@ Partial Class frmMain
         '
         'lblStudio
         '
-        Me.lblStudio.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lblStudio.Location = New System.Drawing.Point(220, 5)
+        Me.lblStudio.Anchor = System.Windows.Forms.AnchorStyles.Right
+        Me.lblStudio.AutoSize = True
+        Me.tblInfoIcons.SetColumnSpan(Me.lblStudio, 6)
+        Me.lblStudio.Location = New System.Drawing.Point(431, 3)
         Me.lblStudio.Name = "lblStudio"
-        Me.lblStudio.Size = New System.Drawing.Size(167, 18)
+        Me.lblStudio.Size = New System.Drawing.Size(46, 13)
         Me.lblStudio.TabIndex = 37
         Me.lblStudio.Text = "Studios"
         Me.lblStudio.TextAlign = System.Drawing.ContentAlignment.TopRight
         Me.lblStudio.UseMnemonic = False
         '
-        'pbVType
+        'pbVideoCodec
         '
-        Me.pbVType.BackColor = System.Drawing.Color.Transparent
-        Me.pbVType.Location = New System.Drawing.Point(65, 26)
-        Me.pbVType.Name = "pbVType"
-        Me.pbVType.Size = New System.Drawing.Size(64, 44)
-        Me.pbVType.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbVType.TabIndex = 36
-        Me.pbVType.TabStop = False
+        Me.pbVideoCodec.BackColor = System.Drawing.Color.Transparent
+        Me.pbVideoCodec.Location = New System.Drawing.Point(100, 20)
+        Me.pbVideoCodec.Margin = New System.Windows.Forms.Padding(0)
+        Me.pbVideoCodec.Name = "pbVideoCodec"
+        Me.pbVideoCodec.Size = New System.Drawing.Size(80, 40)
+        Me.pbVideoCodec.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
+        Me.pbVideoCodec.TabIndex = 36
+        Me.pbVideoCodec.TabStop = False
         '
         'pbStudio
         '
         Me.pbStudio.BackColor = System.Drawing.Color.Transparent
-        Me.pbStudio.Location = New System.Drawing.Point(325, 26)
+        Me.pbStudio.Location = New System.Drawing.Point(400, 20)
+        Me.pbStudio.Margin = New System.Windows.Forms.Padding(0)
         Me.pbStudio.Name = "pbStudio"
-        Me.pbStudio.Size = New System.Drawing.Size(64, 44)
+        Me.pbStudio.Size = New System.Drawing.Size(80, 40)
         Me.pbStudio.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.pbStudio.TabIndex = 31
         Me.pbStudio.TabStop = False
         '
-        'pbVideo
+        'pbVideoSource
         '
-        Me.pbVideo.BackColor = System.Drawing.Color.Transparent
-        Me.pbVideo.Location = New System.Drawing.Point(0, 26)
-        Me.pbVideo.Name = "pbVideo"
-        Me.pbVideo.Size = New System.Drawing.Size(64, 44)
-        Me.pbVideo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbVideo.TabIndex = 33
-        Me.pbVideo.TabStop = False
+        Me.pbVideoSource.BackColor = System.Drawing.Color.Transparent
+        Me.pbVideoSource.Location = New System.Drawing.Point(0, 20)
+        Me.pbVideoSource.Margin = New System.Windows.Forms.Padding(0)
+        Me.pbVideoSource.Name = "pbVideoSource"
+        Me.pbVideoSource.Size = New System.Drawing.Size(100, 40)
+        Me.pbVideoSource.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
+        Me.pbVideoSource.TabIndex = 33
+        Me.pbVideoSource.TabStop = False
         '
-        'pbAudio
+        'pbAudioCodec
         '
-        Me.pbAudio.BackColor = System.Drawing.Color.Transparent
-        Me.pbAudio.Location = New System.Drawing.Point(195, 26)
-        Me.pbAudio.Name = "pbAudio"
-        Me.pbAudio.Size = New System.Drawing.Size(64, 44)
-        Me.pbAudio.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbAudio.TabIndex = 35
-        Me.pbAudio.TabStop = False
+        Me.pbAudioCodec.BackColor = System.Drawing.Color.Transparent
+        Me.pbAudioCodec.Location = New System.Drawing.Point(260, 20)
+        Me.pbAudioCodec.Margin = New System.Windows.Forms.Padding(0)
+        Me.pbAudioCodec.Name = "pbAudioCodec"
+        Me.pbAudioCodec.Size = New System.Drawing.Size(100, 40)
+        Me.pbAudioCodec.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
+        Me.pbAudioCodec.TabIndex = 35
+        Me.pbAudioCodec.TabStop = False
         '
-        'pbResolution
+        'pbVideoResolution
         '
-        Me.pbResolution.BackColor = System.Drawing.Color.Transparent
-        Me.pbResolution.Location = New System.Drawing.Point(130, 26)
-        Me.pbResolution.Name = "pbResolution"
-        Me.pbResolution.Size = New System.Drawing.Size(64, 44)
-        Me.pbResolution.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbResolution.TabIndex = 34
-        Me.pbResolution.TabStop = False
+        Me.pbVideoResolution.BackColor = System.Drawing.Color.Transparent
+        Me.pbVideoResolution.Location = New System.Drawing.Point(180, 20)
+        Me.pbVideoResolution.Margin = New System.Windows.Forms.Padding(0)
+        Me.pbVideoResolution.Name = "pbVideoResolution"
+        Me.pbVideoResolution.Size = New System.Drawing.Size(80, 40)
+        Me.pbVideoResolution.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
+        Me.pbVideoResolution.TabIndex = 34
+        Me.pbVideoResolution.TabStop = False
         '
-        'pbChannels
+        'pbAudioChannels
         '
-        Me.pbChannels.BackColor = System.Drawing.Color.Transparent
-        Me.pbChannels.Location = New System.Drawing.Point(260, 26)
-        Me.pbChannels.Name = "pbChannels"
-        Me.pbChannels.Size = New System.Drawing.Size(64, 44)
-        Me.pbChannels.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.pbChannels.TabIndex = 32
-        Me.pbChannels.TabStop = False
+        Me.pbAudioChannels.BackColor = System.Drawing.Color.Transparent
+        Me.pbAudioChannels.Location = New System.Drawing.Point(360, 20)
+        Me.pbAudioChannels.Margin = New System.Windows.Forms.Padding(0)
+        Me.pbAudioChannels.Name = "pbAudioChannels"
+        Me.pbAudioChannels.Size = New System.Drawing.Size(40, 40)
+        Me.pbAudioChannels.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage
+        Me.pbAudioChannels.TabIndex = 32
+        Me.pbAudioChannels.TabStop = False
         '
         'pbPosterCache
         '
@@ -9076,7 +9093,7 @@ Partial Class frmMain
         '
         Me.pbFanart.Anchor = System.Windows.Forms.AnchorStyles.Top
         Me.pbFanart.BackColor = System.Drawing.Color.DimGray
-        Me.pbFanart.Location = New System.Drawing.Point(38, 123)
+        Me.pbFanart.Location = New System.Drawing.Point(118, 123)
         Me.pbFanart.Name = "pbFanart"
         Me.pbFanart.Size = New System.Drawing.Size(696, 250)
         Me.pbFanart.TabIndex = 1
@@ -9093,7 +9110,7 @@ Partial Class frmMain
         Me.tsMain.Location = New System.Drawing.Point(0, 0)
         Me.tsMain.Name = "tsMain"
         Me.tsMain.Padding = New System.Windows.Forms.Padding(0)
-        Me.tsMain.Size = New System.Drawing.Size(773, 25)
+        Me.tsMain.Size = New System.Drawing.Size(932, 25)
         Me.tsMain.Stretch = True
         Me.tsMain.TabIndex = 6
         '
@@ -9112,7 +9129,7 @@ Partial Class frmMain
         '
         Me.mnuScrapeSubmenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuScrapeSubmenuAll, Me.mnuScrapeSubmenuMissing, Me.mnuScrapeSubmenuNew, Me.mnuScrapeSubmenuMarked, Me.mnuScrapeSubmenuFilter, Me.mnuScrapeSubmenuCustom})
         Me.mnuScrapeSubmenu.Name = "mnuScrapeSubmenu"
-        Me.mnuScrapeSubmenu.OwnerItem = Me.cmnuTrayScrapeMovieSets
+        Me.mnuScrapeSubmenu.OwnerItem = Me.cmnuTrayScrapeTVShows
         Me.mnuScrapeSubmenu.Size = New System.Drawing.Size(168, 136)
         '
         'mnuScrapeSubmenuAll
@@ -9139,13 +9156,13 @@ Partial Class frmMain
         Me.mnuScrapeSubmenuNew.Tag = "new"
         Me.mnuScrapeSubmenuNew.Text = "New"
         '
-        'mnuScrapeSubmenuMarked
+        'mnuScrapeSubmenuFilter
         '
-        Me.mnuScrapeSubmenuMarked.DropDown = Me.mnuScrapeType
-        Me.mnuScrapeSubmenuMarked.Name = "mnuScrapeSubmenuMarked"
-        Me.mnuScrapeSubmenuMarked.Size = New System.Drawing.Size(167, 22)
-        Me.mnuScrapeSubmenuMarked.Tag = "marked"
-        Me.mnuScrapeSubmenuMarked.Text = "Marked"
+        Me.mnuScrapeSubmenuFilter.DropDown = Me.mnuScrapeType
+        Me.mnuScrapeSubmenuFilter.Name = "mnuScrapeSubmenuFilter"
+        Me.mnuScrapeSubmenuFilter.Size = New System.Drawing.Size(167, 22)
+        Me.mnuScrapeSubmenuFilter.Tag = "filter"
+        Me.mnuScrapeSubmenuFilter.Text = "Current Filter"
         '
         'mnuScrapeSubmenuCustom
         '
@@ -9154,14 +9171,14 @@ Partial Class frmMain
         Me.mnuScrapeSubmenuCustom.Tag = "custom"
         Me.mnuScrapeSubmenuCustom.Text = "Custom Scraper..."
         '
-        'cmnuTrayScrapeMovies
+        'cmnuTrayScrapeMovieSets
         '
-        Me.cmnuTrayScrapeMovies.DropDown = Me.mnuScrapeSubmenu
-        Me.cmnuTrayScrapeMovies.Image = CType(resources.GetObject("cmnuTrayScrapeMovies.Image"), System.Drawing.Image)
-        Me.cmnuTrayScrapeMovies.Name = "cmnuTrayScrapeMovies"
-        Me.cmnuTrayScrapeMovies.Size = New System.Drawing.Size(194, 22)
-        Me.cmnuTrayScrapeMovies.Tag = "movie"
-        Me.cmnuTrayScrapeMovies.Text = "Scrape Movies"
+        Me.cmnuTrayScrapeMovieSets.DropDown = Me.mnuScrapeSubmenu
+        Me.cmnuTrayScrapeMovieSets.Image = CType(resources.GetObject("cmnuTrayScrapeMovieSets.Image"), System.Drawing.Image)
+        Me.cmnuTrayScrapeMovieSets.Name = "cmnuTrayScrapeMovieSets"
+        Me.cmnuTrayScrapeMovieSets.Size = New System.Drawing.Size(194, 22)
+        Me.cmnuTrayScrapeMovieSets.Tag = "movieset"
+        Me.cmnuTrayScrapeMovieSets.Text = "Scrape MovieSets"
         '
         'mnuScrapeMovieSets
         '
@@ -9209,6 +9226,15 @@ Partial Class frmMain
         Me.mnuUpdateShows.Size = New System.Drawing.Size(123, 22)
         Me.mnuUpdateShows.Text = "TV Shows"
         '
+        'cmnuTrayScrapeMovies
+        '
+        Me.cmnuTrayScrapeMovies.DropDown = Me.mnuScrapeSubmenu
+        Me.cmnuTrayScrapeMovies.Image = CType(resources.GetObject("cmnuTrayScrapeMovies.Image"), System.Drawing.Image)
+        Me.cmnuTrayScrapeMovies.Name = "cmnuTrayScrapeMovies"
+        Me.cmnuTrayScrapeMovies.Size = New System.Drawing.Size(194, 22)
+        Me.cmnuTrayScrapeMovies.Tag = "movie"
+        Me.cmnuTrayScrapeMovies.Text = "Scrape Movies"
+        '
         'cmnuTrayScrapeTVShows
         '
         Me.cmnuTrayScrapeTVShows.DropDown = Me.mnuScrapeSubmenu
@@ -9217,15 +9243,6 @@ Partial Class frmMain
         Me.cmnuTrayScrapeTVShows.Size = New System.Drawing.Size(194, 22)
         Me.cmnuTrayScrapeTVShows.Tag = "tvshow"
         Me.cmnuTrayScrapeTVShows.Text = "Scrape TV Shows"
-        '
-        'cmnuTrayScrapeMovieSets
-        '
-        Me.cmnuTrayScrapeMovieSets.DropDown = Me.mnuScrapeSubmenu
-        Me.cmnuTrayScrapeMovieSets.Image = CType(resources.GetObject("cmnuTrayScrapeMovieSets.Image"), System.Drawing.Image)
-        Me.cmnuTrayScrapeMovieSets.Name = "cmnuTrayScrapeMovieSets"
-        Me.cmnuTrayScrapeMovieSets.Size = New System.Drawing.Size(194, 22)
-        Me.cmnuTrayScrapeMovieSets.Tag = "movieset"
-        Me.cmnuTrayScrapeMovieSets.Text = "Scrape MovieSets"
         '
         'ilColumnIcons
         '
@@ -9538,18 +9555,95 @@ Partial Class frmMain
         'tmrRunTasks
         '
         '
-        'mnuScrapeOptionUserRating
+        'tblInfoIcons
         '
-        Me.mnuScrapeOptionUserRating.Name = "mnuScrapeOptionUserRating"
-        Me.mnuScrapeOptionUserRating.Size = New System.Drawing.Size(173, 22)
-        Me.mnuScrapeOptionUserRating.Tag = "userrating"
-        Me.mnuScrapeOptionUserRating.Text = "User Rating"
+        Me.tblInfoIcons.AutoSize = True
+        Me.tblInfoIcons.ColumnCount = 6
+        Me.tblInfoIcons.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblInfoIcons.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblInfoIcons.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblInfoIcons.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblInfoIcons.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblInfoIcons.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblInfoIcons.Controls.Add(Me.tblSubtitleLang, 3, 2)
+        Me.tblInfoIcons.Controls.Add(Me.tblAudioLang, 0, 2)
+        Me.tblInfoIcons.Controls.Add(Me.pbVideoSource, 0, 1)
+        Me.tblInfoIcons.Controls.Add(Me.pbVideoCodec, 1, 1)
+        Me.tblInfoIcons.Controls.Add(Me.pbVideoResolution, 2, 1)
+        Me.tblInfoIcons.Controls.Add(Me.pbAudioCodec, 3, 1)
+        Me.tblInfoIcons.Controls.Add(Me.pbAudioChannels, 4, 1)
+        Me.tblInfoIcons.Controls.Add(Me.pbStudio, 5, 1)
+        Me.tblInfoIcons.Controls.Add(Me.lblStudio, 0, 0)
+        Me.tblInfoIcons.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblInfoIcons.Location = New System.Drawing.Point(0, 0)
+        Me.tblInfoIcons.Name = "tblInfoIcons"
+        Me.tblInfoIcons.RowCount = 4
+        Me.tblInfoIcons.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblInfoIcons.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblInfoIcons.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblInfoIcons.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblInfoIcons.Size = New System.Drawing.Size(480, 96)
+        Me.tblInfoIcons.TabIndex = 54
+        '
+        'tblAudioLang
+        '
+        Me.tblAudioLang.AutoSize = True
+        Me.tblAudioLang.ColumnCount = 7
+        Me.tblInfoIcons.SetColumnSpan(Me.tblAudioLang, 3)
+        Me.tblAudioLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblAudioLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblAudioLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblAudioLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblAudioLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblAudioLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblAudioLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblAudioLang.Controls.Add(Me.pbAudioLang0, 0, 0)
+        Me.tblAudioLang.Controls.Add(Me.pbAudioLang1, 1, 0)
+        Me.tblAudioLang.Controls.Add(Me.pbAudioLang2, 2, 0)
+        Me.tblAudioLang.Controls.Add(Me.pbAudioLang3, 3, 0)
+        Me.tblAudioLang.Controls.Add(Me.pbAudioLang4, 4, 0)
+        Me.tblAudioLang.Controls.Add(Me.pbAudioLang5, 5, 0)
+        Me.tblAudioLang.Controls.Add(Me.pbAudioLang6, 6, 0)
+        Me.tblAudioLang.Location = New System.Drawing.Point(0, 60)
+        Me.tblAudioLang.Margin = New System.Windows.Forms.Padding(0)
+        Me.tblAudioLang.Name = "tblAudioLang"
+        Me.tblAudioLang.RowCount = 1
+        Me.tblAudioLang.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblAudioLang.Size = New System.Drawing.Size(175, 25)
+        Me.tblAudioLang.TabIndex = 55
+        '
+        'tblSubtitleLang
+        '
+        Me.tblSubtitleLang.AutoSize = True
+        Me.tblSubtitleLang.ColumnCount = 7
+        Me.tblInfoIcons.SetColumnSpan(Me.tblSubtitleLang, 3)
+        Me.tblSubtitleLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSubtitleLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSubtitleLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSubtitleLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSubtitleLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSubtitleLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSubtitleLang.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSubtitleLang.Controls.Add(Me.pbSubtitleLang0, 0, 0)
+        Me.tblSubtitleLang.Controls.Add(Me.pbSubtitleLang1, 1, 0)
+        Me.tblSubtitleLang.Controls.Add(Me.pbSubtitleLang6, 6, 0)
+        Me.tblSubtitleLang.Controls.Add(Me.pbSubtitleLang2, 2, 0)
+        Me.tblSubtitleLang.Controls.Add(Me.pbSubtitleLang5, 5, 0)
+        Me.tblSubtitleLang.Controls.Add(Me.pbSubtitleLang3, 3, 0)
+        Me.tblSubtitleLang.Controls.Add(Me.pbSubtitleLang4, 4, 0)
+        Me.tblSubtitleLang.Location = New System.Drawing.Point(260, 60)
+        Me.tblSubtitleLang.Margin = New System.Windows.Forms.Padding(0)
+        Me.tblSubtitleLang.Name = "tblSubtitleLang"
+        Me.tblSubtitleLang.RowCount = 1
+        Me.tblSubtitleLang.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSubtitleLang.Size = New System.Drawing.Size(175, 25)
+        Me.tblSubtitleLang.TabIndex = 55
         '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-        Me.ClientSize = New System.Drawing.Size(1354, 945)
+        Me.ClientSize = New System.Drawing.Size(1513, 945)
         Me.Controls.Add(Me.pnlLoadSettings)
         Me.Controls.Add(Me.scMain)
         Me.Controls.Add(Me.StatusStrip)
@@ -9925,8 +10019,8 @@ Partial Class frmMain
         Me.tblPosterTop.PerformLayout()
         Me.pnlTop.ResumeLayout(False)
         Me.pnlTop.PerformLayout()
-        Me.tlpHeader.ResumeLayout(False)
-        Me.tlpHeader.PerformLayout()
+        Me.tblHeader.ResumeLayout(False)
+        Me.tblHeader.PerformLayout()
         Me.pnlRating.ResumeLayout(False)
         CType(Me.pbStar10, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbStar9, System.ComponentModel.ISupportInitialize).EndInit()
@@ -9939,6 +10033,7 @@ Partial Class frmMain
         CType(Me.pbStar2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbStar1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlInfoIcons.ResumeLayout(False)
+        Me.pnlInfoIcons.PerformLayout()
         CType(Me.pbSubtitleLang6, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbSubtitleLang5, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbSubtitleLang4, System.ComponentModel.ISupportInitialize).EndInit()
@@ -9953,12 +10048,12 @@ Partial Class frmMain
         CType(Me.pbAudioLang2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbAudioLang1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbAudioLang0, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbVType, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbVideoCodec, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbStudio, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbVideo, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbAudio, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbResolution, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbChannels, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbVideoSource, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbAudioCodec, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbVideoResolution, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbAudioChannels, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbPosterCache, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbFanartSmallCache, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbLandscapeCache, System.ComponentModel.ISupportInitialize).EndInit()
@@ -9975,6 +10070,10 @@ Partial Class frmMain
         Me.pnlLoadSettingsBG.ResumeLayout(False)
         CType(Me.pbLoadSettings, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlLoadSettings.ResumeLayout(False)
+        Me.tblInfoIcons.ResumeLayout(False)
+        Me.tblInfoIcons.PerformLayout()
+        Me.tblAudioLang.ResumeLayout(False)
+        Me.tblSubtitleLang.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout
 
@@ -10236,12 +10335,12 @@ End Sub
     Friend WithEvents lblTitle As System.Windows.Forms.Label
     Friend WithEvents pnlInfoIcons As System.Windows.Forms.Panel
     Friend WithEvents lblStudio As System.Windows.Forms.Label
-    Friend WithEvents pbVType As System.Windows.Forms.PictureBox
+    Friend WithEvents pbVideoCodec As System.Windows.Forms.PictureBox
     Friend WithEvents pbStudio As System.Windows.Forms.PictureBox
-    Friend WithEvents pbVideo As System.Windows.Forms.PictureBox
-    Friend WithEvents pbAudio As System.Windows.Forms.PictureBox
-    Friend WithEvents pbResolution As System.Windows.Forms.PictureBox
-    Friend WithEvents pbChannels As System.Windows.Forms.PictureBox
+    Friend WithEvents pbVideoSource As System.Windows.Forms.PictureBox
+    Friend WithEvents pbAudioCodec As System.Windows.Forms.PictureBox
+    Friend WithEvents pbVideoResolution As System.Windows.Forms.PictureBox
+    Friend WithEvents pbAudioChannels As System.Windows.Forms.PictureBox
     Friend WithEvents lblRuntime As System.Windows.Forms.Label
     Friend WithEvents lblTagline As System.Windows.Forms.Label
     Friend WithEvents pnlRating As System.Windows.Forms.Panel
@@ -10387,7 +10486,7 @@ End Sub
     Friend WithEvents pbAudioLang3 As System.Windows.Forms.PictureBox
     Friend WithEvents pbAudioLang2 As System.Windows.Forms.PictureBox
     Friend WithEvents pbAudioLang1 As System.Windows.Forms.PictureBox
-    Friend WithEvents tlpHeader As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents tblHeader As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents pbSubtitleLang6 As System.Windows.Forms.PictureBox
     Friend WithEvents pbSubtitleLang5 As System.Windows.Forms.PictureBox
     Friend WithEvents pbSubtitleLang4 As System.Windows.Forms.PictureBox
@@ -10765,4 +10864,7 @@ End Sub
     Friend WithEvents lblFilterTag_Shows As Label
     Friend WithEvents txtFilterTag_Shows As TextBox
     Friend WithEvents mnuScrapeOptionUserRating As ToolStripMenuItem
+    Friend WithEvents tblInfoIcons As TableLayoutPanel
+    Friend WithEvents tblSubtitleLang As TableLayoutPanel
+    Friend WithEvents tblAudioLang As TableLayoutPanel
 End Class

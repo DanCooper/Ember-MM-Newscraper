@@ -9,10 +9,13 @@
       <Item Name="a_truehd">truehd</Item>
       <Item Name="a_vorbis">vorbis</Item>
       <Item Name="ac-3">ac3</Item>
-      <Item Name="atmos / truehd / ac-3">truehd</Item>
+      <Item Name="atmos / truehd / ac-3">truehd_atmos</Item>
+      <Item Name="atmos / truehd">truehd_atmos</Item>
       <Item Name="e-ac-3">eac3</Item>
       <Item Name="hra / core">dtshd_hra</Item>
       <Item Name="ma / core">dtshd_ma</Item>
+      <Item Name="x / hra / core">dtshd_hra_x</Item>
+      <Item Name="x / ma / core">dtshd_ma_x</Item>
       <Item Name="truehd / ac-3">truehd</Item>
     </Table>
   </ComplexSettings>
