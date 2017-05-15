@@ -16,8 +16,8 @@
       <Item Name="(?i)[\W_]ntsc[\W_]">sdtv</Item>
       <Item Name="(?i)[\W_]dvd5[\W_]">dvd</Item>
       <Item Name="(?i)[\W_]dvd9[\W_]">dvd</Item>
-      <Item Name="(?i)[\W_]web-dl[\W_]">web-dl</Item>
-      <Item Name="(?i)[\W_]webrip[\W_]">web-dl</Item>
+      <Item Name="(?i)[\W_]web-dl[\W_]">webdl</Item>
+      <Item Name="(?i)[\W_]webrip[\W_]">webdl</Item>
       <Item Name="(?i)[\W_]3dbd[\W_]">3dbd</Item>
       <Item Name="(?i)[\W_]azhd[\W_]">amazon</Item>
       <Item Name="(?i)[\W_]ithd[\W_]">itunes</Item>
