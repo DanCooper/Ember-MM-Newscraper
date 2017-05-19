@@ -4423,6 +4423,7 @@ Public Class Database
                 newEpisode.ID = -1
                 newEpisode.TVEpisode = tEpisode
                 newEpisode.TVEpisode.FileInfo = _episode.TVEpisode.FileInfo
+                newEpisode.TVEpisode.VideoSource = newEpisode.VideoSource
                 Save_TVEpisode(newEpisode, True, True, True, True, False)
                 newEpisodesList.Add(newEpisode)
             Next
