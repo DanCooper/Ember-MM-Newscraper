@@ -375,7 +375,7 @@ Namespace Kodi
                         Return WatchedState
                     Else
                         logger.Trace(String.Format("[APIKodi] [{0}] GetPlaycount_Movie: ""{1}"" | Nothing to sync", _currenthost.Label, mDBElement.Movie.Title))
-                        Return Nothing
+                        Return New WatchedState With {.AlreadyInSync = True}
                     End If
                 Else
                     logger.Error(String.Format("[APIKodi] [{0}] GetPlaycount_Movie: ""{1}"" | NOT found on host! Abort!", _currenthost.Label, mDBElement.Movie.Title))
@@ -416,7 +416,7 @@ Namespace Kodi
                         Return WatchedState
                     Else
                         logger.Trace(String.Format("[APIKodi] [{0}] GetPlaycount_TVEpisode: ""{1}"" | Nothing to sync", _currenthost.Label, mDBElement.TVEpisode.Title))
-                        Return Nothing
+                        Return New WatchedState With {.AlreadyInSync = True}
                     End If
                 Else
                     logger.Error(String.Format("[APIKodi] [{0}] GetPlaycount_TVEpisode: ""{1}"" | NOT found on host! Abort!", _currenthost.Label, mDBElement.TVEpisode.Title))
@@ -1405,6 +1405,11 @@ Namespace Kodi
 
             Dim bIsNew As Boolean = False
 
+            If mDBElement.TVSeason.Season = 999 Then
+                logger.Info(String.Format("[APIKodi] [{0}] UpdateInfo_TVSeason: ""{1}: Season {2}"" | Skip syncing process (* All Seasons entry can't be synced)", _currenthost.Label, mDBElement.ShowPath, mDBElement.TVSeason.Season))
+                Return True
+            End If
+
             Try
                 logger.Trace(String.Format("[APIKodi] [{0}] UpdateInfo_TVSeason: ""{1}: Season {2}"" | Start syncing process...", _currenthost.Label, mDBElement.ShowPath, mDBElement.TVSeason.Season))
 
@@ -1749,6 +1754,12 @@ Namespace Kodi
                     logger.Warn(String.Format("[APIKodi] [{0}] VideoLibrary_ScanPath: No videotype specified! Abort!", _currenthost.Label))
                     Return False
             End Select
+
+            If strLocalPath.Contains(Path.DirectorySeparatorChar) AndAlso Not strLocalPath.EndsWith(Path.DirectorySeparatorChar) Then
+                strLocalPath = String.Concat(strLocalPath, Path.DirectorySeparatorChar)
+            ElseIf strLocalPath.Contains(Path.AltDirectorySeparatorChar) AndAlso Not strLocalPath.EndsWith(Path.AltDirectorySeparatorChar) Then
+                strLocalPath = String.Concat(strLocalPath, Path.AltDirectorySeparatorChar)
+            End If
 
             Dim strRemotePath As String = GetRemotePath(strLocalPath)
             If String.IsNullOrEmpty(strRemotePath) Then
@@ -2215,12 +2226,23 @@ Namespace Kodi
 
 #Region "Fields"
 
+            Private _alreadyinsync As Boolean
             Private _lastplayed As String
             Private _playcount As Integer
 
 #End Region 'Fields
 
 #Region "Properties"
+
+            Public Property AlreadyInSync() As Boolean
+                Get
+                    Return _alreadyinsync
+                End Get
+                Set(ByVal value As Boolean)
+                    _alreadyinsync = value
+                End Set
+            End Property
+
             Public Property LastPlayed() As String
                 Get
                     Return _lastplayed
@@ -2252,6 +2274,7 @@ Namespace Kodi
 #Region "Methods"
 
             Public Sub Clear()
+                _alreadyinsync = False
                 _lastplayed = String.Empty
                 _playcount = 0
             End Sub

@@ -362,7 +362,7 @@ Namespace IMDB
                     'Find all cast of the movie
                     'Match the table only 1 time
                     Dim ActorsTable As String = Regex.Match(HTML, ACTORTABLE_PATTERN).ToString
-                    Dim ThumbsSize = AdvancedSettings.GetSetting("ActorThumbsSize", "SY275_SX400")
+                    Dim ThumbsSize = AdvancedSettings.GetSetting("ActorThumbsSize", "SX1000_SY1000")
 
                     Dim rCast As MatchCollection = Regex.Matches(ActorsTable, TR_PATTERN)
 
