@@ -1567,17 +1567,16 @@ mPlot:          'Plot
             End If
 
             'tv titles
-            D = HTMLt.IndexOf("<table class=""results"">")
-            If Not D <= 0 Then
-                W = HTMLt.IndexOf("</table>", D) + 8
-
-                Dim Table As String = HTMLt.Substring(D, W - D).ToString
-                Dim qtvmovie = From Mtr In Regex.Matches(Table, TvTITLE_PATTERN)
-                               Where Not DirectCast(Mtr, Match).Groups("name").ToString.Contains("<img") AndAlso Not DirectCast(Mtr, Match).Groups("type").ToString.Contains("VG")
-                               Select New MediaContainers.Movie(GetMovieID(DirectCast(Mtr, Match).Groups("url").ToString),
-                                                HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString), HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString), StringUtils.ComputeLevenshtein(StringUtils.FilterYear(sMovie).ToLower, StringUtils.FilterYear(HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString)).ToLower))
-
-                R.TvTitles = qtvmovie.ToList
+            Dim mResultList = Regex.Match(HTMLt, "<div class=""lister-list"">.*?<div class=""nav"">", RegexOptions.IgnoreCase Or RegexOptions.Singleline)
+            If mResultList.Success Then
+                Dim mResults = Regex.Matches(mResultList.Value, "<h3 class=""lister-item-header"">.*?<a\shref=""\/title\/(?<imdb>tt\d{6}\d*)\/.*?"".>(?<title>.*?)<\/a", RegexOptions.IgnoreCase Or RegexOptions.Singleline)
+                If mResults.Count > 0 Then
+                    For Each nMovie As Match In mResults
+                        R.TvTitles.Add(New MediaContainers.Movie With {
+                                       .IMDB = nMovie.Groups("imdb").Value,
+                                       .Title = nMovie.Groups("title").Value})
+                    Next
+                End If
             End If
 
             'video titles
