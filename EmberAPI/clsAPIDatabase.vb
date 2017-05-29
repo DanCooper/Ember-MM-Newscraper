@@ -1685,6 +1685,20 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("iLastPlayed")) Then .LastPlayed = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(SQLreader("iLastPlayed"))).ToString("yyyy-MM-dd HH:mm:ss")
                         If Not DBNull.Value.Equals(SQLreader("Language")) Then .Language = SQLreader("Language").ToString
                         If Not DBNull.Value.Equals(SQLreader("iUserRating")) Then .UserRating = Convert.ToInt32(SQLreader("iUserRating"))
+
+                        'UniqueIDs
+                        If .IMDBSpecified Then
+                            .UniqueIDs.Add(New MediaContainers.Uniqueid With {
+                                           .IsDefault = True,
+                                           .Type = "imdb",
+                                           .Value = _movieDB.Movie.IMDB})
+                        End If
+                        If .TMDBSpecified Then
+                            .UniqueIDs.Add(New MediaContainers.Uniqueid With {
+                                           .IsDefault = False,
+                                           .Type = "tmdb",
+                                           .Value = _movieDB.Movie.TMDB})
+                        End If
                     End With
                 End If
             End Using
@@ -2234,6 +2248,26 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("strTMDB")) Then .TMDB = SQLreader("strTMDB").ToString
                         If Not DBNull.Value.Equals(SQLreader("strTVDB")) Then .TVDB = SQLreader("strTVDB").ToString
                         If Not DBNull.Value.Equals(SQLreader("iUserRating")) Then .UserRating = Convert.ToInt32(SQLreader("iUserRating"))
+
+                        'UniqueIDs
+                        If .TVDBSpecified Then
+                            .UniqueIDs.Add(New MediaContainers.Uniqueid With {
+                                           .IsDefault = True,
+                                           .Type = "tvdb",
+                                           .Value = _TVDB.TVEpisode.TVDB})
+                        End If
+                        If .IMDBSpecified Then
+                            .UniqueIDs.Add(New MediaContainers.Uniqueid With {
+                                           .IsDefault = False,
+                                           .Type = "imdb",
+                                           .Value = _TVDB.TVEpisode.IMDB})
+                        End If
+                        If .TMDBSpecified Then
+                            .UniqueIDs.Add(New MediaContainers.Uniqueid With {
+                                           .IsDefault = False,
+                                           .Type = "tmdb",
+                                           .Value = _TVDB.TVEpisode.TMDB})
+                        End If
                     End With
                 End If
             End Using
@@ -2545,6 +2579,26 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("Language")) Then .Language = SQLreader("Language").ToString
                         If Not DBNull.Value.Equals(SQLreader("strOriginalTitle")) Then .OriginalTitle = SQLreader("strOriginalTitle").ToString
                         If Not DBNull.Value.Equals(SQLreader("iUserRating")) Then .UserRating = Convert.ToInt32(SQLreader("iUserRating"))
+
+                        'UniqueIDs
+                        If .TVDBSpecified Then
+                            .UniqueIDs.Add(New MediaContainers.Uniqueid With {
+                                           .IsDefault = True,
+                                           .Type = "tvdb",
+                                           .Value = _TVDB.TVShow.TVDB})
+                        End If
+                        If .IMDBSpecified Then
+                            .UniqueIDs.Add(New MediaContainers.Uniqueid With {
+                                           .IsDefault = False,
+                                           .Type = "imdb",
+                                           .Value = _TVDB.TVShow.IMDB})
+                        End If
+                        If .TMDBSpecified Then
+                            .UniqueIDs.Add(New MediaContainers.Uniqueid With {
+                                           .IsDefault = False,
+                                           .Type = "tmdb",
+                                           .Value = _TVDB.TVShow.TMDB})
+                        End If
                     End With
                 End If
             End Using

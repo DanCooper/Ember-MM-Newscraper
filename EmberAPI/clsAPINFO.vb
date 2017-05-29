@@ -375,6 +375,21 @@ Public Class NFO
 
         Next
 
+        'UniqueIDs
+        DBMovie.Movie.UniqueIDs.Clear()
+        If DBMovie.Movie.IMDBSpecified Then
+            DBMovie.Movie.UniqueIDs.Add(New MediaContainers.Uniqueid With {
+                                        .IsDefault = True,
+                                        .Type = "imdb",
+                                        .Value = DBMovie.Movie.IMDB})
+        End If
+        If DBMovie.Movie.TMDBSpecified Then
+            DBMovie.Movie.UniqueIDs.Add(New MediaContainers.Uniqueid With {
+                                        .IsDefault = False,
+                                        .Type = "tmdb",
+                                        .Value = DBMovie.Movie.TMDB})
+        End If
+
         'Certification for MPAA
         If DBMovie.Movie.CertificationsSpecified AndAlso Master.eSettings.MovieScraperCertForMPAA AndAlso
             (Not Master.eSettings.MovieScraperCertForMPAAFallback AndAlso (Not DBMovie.Movie.MPAASpecified OrElse Not Master.eSettings.MovieLockMPAA) OrElse
@@ -775,6 +790,27 @@ Public Class NFO
                 Next
             End If
         Next
+
+        'UniqueIDs
+        DBTV.TVShow.UniqueIDs.Clear()
+        If DBTV.TVShow.TVDBSpecified Then
+            DBTV.TVShow.UniqueIDs.Add(New MediaContainers.Uniqueid With {
+                                        .IsDefault = True,
+                                        .Type = "tvdb",
+                                        .Value = DBTV.TVShow.TVDB})
+        End If
+        If DBTV.TVShow.IMDBSpecified Then
+            DBTV.TVShow.UniqueIDs.Add(New MediaContainers.Uniqueid With {
+                                        .IsDefault = False,
+                                        .Type = "imdb",
+                                        .Value = DBTV.TVShow.IMDB})
+        End If
+        If DBTV.TVShow.TMDBSpecified Then
+            DBTV.TVShow.UniqueIDs.Add(New MediaContainers.Uniqueid With {
+                                        .IsDefault = False,
+                                        .Type = "tmdb",
+                                        .Value = DBTV.TVShow.TMDB})
+        End If
 
         'Certification for MPAA
         If DBTV.TVShow.CertificationsSpecified AndAlso Master.eSettings.TVScraperShowCertForMPAA AndAlso
@@ -1180,6 +1216,27 @@ Public Class NFO
                 DBTVEpisode.TVEpisode.Title = String.Empty
             End If
         Next
+
+        'UniqueIDs
+        DBTVEpisode.TVEpisode.UniqueIDs.Clear()
+        If DBTVEpisode.TVEpisode.TVDBSpecified Then
+            DBTVEpisode.TVEpisode.UniqueIDs.Add(New MediaContainers.Uniqueid With {
+                                        .IsDefault = True,
+                                        .Type = "tvdb",
+                                        .Value = DBTVEpisode.TVEpisode.TVDB})
+        End If
+        If DBTVEpisode.TVEpisode.IMDBSpecified Then
+            DBTVEpisode.TVEpisode.UniqueIDs.Add(New MediaContainers.Uniqueid With {
+                                        .IsDefault = False,
+                                        .Type = "imdb",
+                                        .Value = DBTVEpisode.TVEpisode.IMDB})
+        End If
+        If DBTVEpisode.TVEpisode.TMDBSpecified Then
+            DBTVEpisode.TVEpisode.UniqueIDs.Add(New MediaContainers.Uniqueid With {
+                                        .IsDefault = False,
+                                        .Type = "tmdb",
+                                        .Value = DBTVEpisode.TVEpisode.TMDB})
+        End If
 
         'Add GuestStars to Actors
         If DBTVEpisode.TVEpisode.GuestStarsSpecified AndAlso Master.eSettings.TVScraperEpisodeGuestStarsToActors AndAlso Not Master.eSettings.TVLockEpisodeActors Then
