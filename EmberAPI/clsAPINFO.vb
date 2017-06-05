@@ -1830,7 +1830,7 @@ Public Class NFO
                         resOut = "480"
                     Case iWidth = 720 AndAlso iHeight = 576     'PAL (DV)
                         resOut = "576"
-                    Case iWidth = 720 AndAlso iHeight = 540
+                    Case iWidth = 720 AndAlso iHeight = 540     'half of 1080p (16:9)
                         resOut = "540"
                     Case iWidth = 640 AndAlso iHeight = 480     'VGA (4:3)
                         resOut = "480"
@@ -1844,6 +1844,8 @@ Public Class NFO
                         resOut = "240"
                     Case iWidth = 320 AndAlso iHeight = 240     'CGA / NTSC square pixel (4:3)
                         resOut = "240"
+                    Case iWidth = 256 AndAlso iHeight = 144     'One tenth of 1440p (16:9)
+                        resOut = "144"
 
                     'by horizontal resolution
                     Case iWidth = 7680
