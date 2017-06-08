@@ -1183,8 +1183,8 @@
   <string id="1091">Inactive</string>
   <string id="1092">Open TVDB-Page</string>
   <string id="1093">Open Fanart.tv-Page</string>
-  <string id="1094"></string>
-  <string id="1095"></string>
+  <string id="1094">Rewrite MovieSet Content</string>
+  <string id="1095">Rewrite TV Show Content</string>
   <string id="1096">ClearArt</string>
   <string id="1097">ClearLogo</string>
   <string id="1098">DiscArt</string>
@@ -1387,7 +1387,7 @@
   <string id="1295">Part of a MovieSet</string>
   <string id="1296"></string>
   <string id="1297">Rewriting Media:</string>
-  <string id="1298">Rewrite All Movie Content</string>
+  <string id="1298">Rewrite Movie Content</string>
   <string id="1299">Cancel Rewriting</string>
   <string id="1300">Canceling Rewriting...</string>
   <string id="1301">Mark New MovieSets</string>

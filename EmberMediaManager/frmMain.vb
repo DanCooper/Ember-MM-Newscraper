@@ -43,7 +43,7 @@ Public Class frmMain
     Friend WithEvents bwReload_Movies As New ComponentModel.BackgroundWorker
     Friend WithEvents bwReload_MovieSets As New ComponentModel.BackgroundWorker
     Friend WithEvents bwReload_TVShows As New ComponentModel.BackgroundWorker
-    Friend WithEvents bwRewrite_Movies As New ComponentModel.BackgroundWorker
+    Friend WithEvents bwRewriteContent As New ComponentModel.BackgroundWorker
     Friend WithEvents bwTVScraper As New ComponentModel.BackgroundWorker
     Friend WithEvents bwTVEpisodeScraper As New ComponentModel.BackgroundWorker
     Friend WithEvents bwTVSeasonScraper As New ComponentModel.BackgroundWorker
@@ -800,12 +800,12 @@ Public Class frmMain
         If bwReload_Movies.IsBusy Then bwReload_Movies.CancelAsync()
         If bwReload_MovieSets.IsBusy Then bwReload_MovieSets.CancelAsync()
         If bwReload_TVShows.IsBusy Then bwReload_TVShows.CancelAsync()
-        If bwRewrite_Movies.IsBusy Then bwRewrite_Movies.CancelAsync()
+        If bwRewriteContent.IsBusy Then bwRewriteContent.CancelAsync()
         If bwTVEpisodeScraper.IsBusy Then bwTVEpisodeScraper.CancelAsync()
         If bwTVScraper.IsBusy Then bwTVScraper.CancelAsync()
         If bwTVSeasonScraper.IsBusy Then bwTVSeasonScraper.CancelAsync()
         While bwMovieScraper.IsBusy OrElse bwReload_Movies.IsBusy OrElse bwMovieSetScraper.IsBusy OrElse bwReload_MovieSets.IsBusy OrElse
-            bwReload_TVShows.IsBusy OrElse bwRewrite_Movies.IsBusy OrElse bwTVEpisodeScraper.IsBusy OrElse bwTVScraper.IsBusy OrElse
+            bwReload_TVShows.IsBusy OrElse bwRewriteContent.IsBusy OrElse bwTVEpisodeScraper.IsBusy OrElse bwTVScraper.IsBusy OrElse
             bwTVSeasonScraper.IsBusy
             Application.DoEvents()
             Threading.Thread.Sleep(50)
@@ -2775,31 +2775,63 @@ Public Class frmMain
         Cursor = Cursors.Default
     End Sub
 
-    Private Sub bwRewrite_Movies_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwRewrite_Movies.DoWork
+    Private Sub bwRewriteContent_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwRewriteContent.DoWork
+        Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Dim iCount As Integer = 0
-        Dim MovieIDs As New Dictionary(Of Long, String)
+        Dim dicIDs As New Dictionary(Of Long, String)
 
-        For Each sRow As DataRow In dtMovies.Rows
-            MovieIDs.Add(Convert.ToInt64(sRow.Item("idMovie")), sRow.Item("ListTitle").ToString)
-        Next
+        Select Case Args.ContentType
+            Case Enums.ContentType.Movie
+                For Each sRow As DataRow In dtMovies.Rows
+                    dicIDs.Add(Convert.ToInt64(sRow.Item("idMovie")), sRow.Item("ListTitle").ToString)
+                Next
 
-        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-            For Each KVP As KeyValuePair(Of Long, String) In MovieIDs
-                If bwRewrite_Movies.CancellationPending Then Return
-                bwRewrite_Movies.ReportProgress(iCount, KVP.Value)
-                RewriteMovie(KVP.Key, True)
-                iCount += 1
-            Next
-            SQLtransaction.Commit()
-        End Using
+                Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                    For Each KVP As KeyValuePair(Of Long, String) In dicIDs
+                        If bwRewriteContent.CancellationPending Then Return
+                        bwRewriteContent.ReportProgress(iCount, KVP.Value)
+                        RewriteMovie(KVP.Key, True, Args.Trigger)
+                        iCount += 1
+                    Next
+                    SQLtransaction.Commit()
+                End Using
+            Case Enums.ContentType.MovieSet
+                For Each sRow As DataRow In dtMovieSets.Rows
+                    dicIDs.Add(Convert.ToInt64(sRow.Item("idSet")), sRow.Item("ListTitle").ToString)
+                Next
+
+                Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                    For Each KVP As KeyValuePair(Of Long, String) In dicIDs
+                        If bwRewriteContent.CancellationPending Then Return
+                        bwRewriteContent.ReportProgress(iCount, KVP.Value)
+                        RewriteMovieSet(KVP.Key, True, Args.Trigger)
+                        iCount += 1
+                    Next
+                    SQLtransaction.Commit()
+                End Using
+            Case Enums.ContentType.TV
+                For Each sRow As DataRow In dtTVShows.Rows
+                    dicIDs.Add(Convert.ToInt64(sRow.Item("idShow")), sRow.Item("ListTitle").ToString)
+                Next
+
+                Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+                    For Each KVP As KeyValuePair(Of Long, String) In dicIDs
+                        If bwRewriteContent.CancellationPending Then Return
+                        bwRewriteContent.ReportProgress(iCount, KVP.Value)
+                        RewriteTVShow(KVP.Key, True, Args.Trigger)
+                        iCount += 1
+                    Next
+                    SQLtransaction.Commit()
+                End Using
+        End Select
     End Sub
 
-    Private Sub bwRewrite_Movies_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwRewrite_Movies.ProgressChanged
+    Private Sub bwRewriteContent_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwRewriteContent.ProgressChanged
         SetStatus(e.UserState.ToString)
         tspbLoading.Value = e.ProgressPercentage
     End Sub
 
-    Private Sub bwRewrite_Movies_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwRewrite_Movies.RunWorkerCompleted
+    Private Sub bwRewriteContent_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwRewriteContent.RunWorkerCompleted
         tslLoading.Text = String.Empty
         tslLoading.Visible = False
         tspbLoading.Visible = False
@@ -5569,7 +5601,7 @@ Public Class frmMain
     Private Sub dgvMovies_CellDoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovies.CellDoubleClick
         If e.RowIndex < 0 Then Exit Sub
 
-        If fScanner.IsBusy OrElse bwLoadImages_Movie.IsBusy OrElse bwReload_Movies.IsBusy OrElse bwRewrite_Movies.IsBusy OrElse bwMovieScraper.IsBusy OrElse bwCleanDB.IsBusy Then Return
+        If fScanner.IsBusy OrElse bwLoadImages_Movie.IsBusy OrElse bwReload_Movies.IsBusy OrElse bwRewriteContent.IsBusy OrElse bwMovieScraper.IsBusy OrElse bwCleanDB.IsBusy Then Return
 
         Dim indX As Integer = dgvMovies.SelectedRows(0).Index
         Dim ID As Long = Convert.ToInt64(dgvMovies.Item("idMovie", indX).Value)
@@ -5845,7 +5877,7 @@ Public Class frmMain
             ElseIf e.KeyChar = Convert.ToChar(Keys.Enter) Then
                 If fScanner.IsBusy OrElse bwLoadImages_Movie.IsBusy OrElse
                 bwDownloadPic.IsBusy OrElse bwMovieScraper.IsBusy OrElse bwReload_Movies.IsBusy _
-                OrElse bwCleanDB.IsBusy OrElse bwRewrite_Movies.IsBusy Then Return
+                OrElse bwCleanDB.IsBusy OrElse bwRewriteContent.IsBusy Then Return
 
                 SetStatus(currMovie.Filename)
 
@@ -6626,7 +6658,7 @@ Public Class frmMain
         If e.RowIndex < 0 Then Exit Sub
 
         If fScanner.IsBusy OrElse bwLoadImages_TVShow.IsBusy OrElse bwLoadImages_TVEpisode.IsBusy OrElse bwReload_Movies.IsBusy OrElse bwReload_MovieSets.IsBusy _
-            OrElse bwRewrite_Movies.IsBusy OrElse bwMovieScraper.IsBusy OrElse bwMovieSetScraper.IsBusy OrElse bwCleanDB.IsBusy Then Return
+            OrElse bwRewriteContent.IsBusy OrElse bwMovieScraper.IsBusy OrElse bwMovieSetScraper.IsBusy OrElse bwCleanDB.IsBusy Then Return
 
         Dim indX As Integer = dgvTVEpisodes.SelectedRows(0).Index
         Dim ID As Long = Convert.ToInt64(dgvTVEpisodes.Item("idEpisode", indX).Value)
@@ -10079,7 +10111,7 @@ Public Class frmMain
                 mnuMainToolsReloadMovies.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfTabMovies = True, .IfTabMovieSets = True, .IfTabTVShows = True}
                 mnuMainToolsReloadMovieSets.Tag = New Structures.ModulesMenus With {.ForMovieSets = True, .IfTabMovies = True, .IfTabMovieSets = True, .IfTabTVShows = True}
                 mnuMainToolsReloadTVShows.Tag = New Structures.ModulesMenus With {.ForTVShows = True, .IfTabMovies = True, .IfTabMovieSets = True, .IfTabTVShows = True}
-                mnuMainToolsRewriteMovieContent.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfTabMovies = True, .IfTabMovieSets = True, .IfTabTVShows = True}
+                mnuMainToolsRewriteContentMovie.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfTabMovies = True, .IfTabMovieSets = True, .IfTabTVShows = True}
                 mnuMainToolsSortFiles.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfNoMovies = True, .IfTabMovies = True, .IfTabMovieSets = True, .IfTabTVShows = True}
 
                 Master.fLoading.SetLoadingMesg(Master.eLang.GetString(1165, "Initializing Main Form. Please wait..."))
@@ -14529,7 +14561,7 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub RewriteAll_Movie()
+    Private Sub RewriteAll_Movie(ByVal bRewriteAll As Boolean)
         If dtMovies.Rows.Count > 0 Then
             SetControlsEnabled(False)
             tspbLoading.Style = ProgressBarStyle.Continuous
@@ -14550,9 +14582,67 @@ Public Class frmMain
             tspbLoading.Visible = True
             tslLoading.Visible = True
             Application.DoEvents()
-            bwRewrite_Movies.WorkerReportsProgress = True
-            bwRewrite_Movies.WorkerSupportsCancellation = True
-            bwRewrite_Movies.RunWorkerAsync()
+            bwRewriteContent.WorkerReportsProgress = True
+            bwRewriteContent.WorkerSupportsCancellation = True
+            bwRewriteContent.RunWorkerAsync(New Arguments With {.ContentType = Enums.ContentType.Movie, .Trigger = bRewriteAll})
+        Else
+            SetControlsEnabled(True)
+        End If
+    End Sub
+
+    Private Sub RewriteAll_MovieSet(ByVal bRewriteAll As Boolean)
+        If dtMovieSets.Rows.Count > 0 Then
+            SetControlsEnabled(False)
+            tspbLoading.Style = ProgressBarStyle.Continuous
+            EnableFilters_Movies(False)
+            EnableFilters_MovieSets(False)
+            EnableFilters_Shows(False)
+
+            btnCancel.Text = Master.eLang.GetString(1299, "Cancel Rewriting")
+            lblCanceling.Text = Master.eLang.GetString(1300, "Canceling Rewriting...")
+            btnCancel.Visible = True
+            lblCanceling.Visible = False
+            prbCanceling.Visible = False
+            pnlCancel.Visible = True
+
+            tspbLoading.Maximum = dtMovieSets.Rows.Count + 1
+            tspbLoading.Value = 0
+            tslLoading.Text = Master.eLang.GetString(1297, "Rewriting Media:")
+            tspbLoading.Visible = True
+            tslLoading.Visible = True
+            Application.DoEvents()
+            bwRewriteContent.WorkerReportsProgress = True
+            bwRewriteContent.WorkerSupportsCancellation = True
+            bwRewriteContent.RunWorkerAsync(New Arguments With {.ContentType = Enums.ContentType.MovieSet, .Trigger = bRewriteAll})
+        Else
+            SetControlsEnabled(True)
+        End If
+    End Sub
+
+    Private Sub RewriteAll_TVShow(ByVal bRewriteAll As Boolean)
+        If dtTVShows.Rows.Count > 0 Then
+            SetControlsEnabled(False)
+            tspbLoading.Style = ProgressBarStyle.Continuous
+            EnableFilters_Movies(False)
+            EnableFilters_MovieSets(False)
+            EnableFilters_Shows(False)
+
+            btnCancel.Text = Master.eLang.GetString(1299, "Cancel Rewriting")
+            lblCanceling.Text = Master.eLang.GetString(1300, "Canceling Rewriting...")
+            btnCancel.Visible = True
+            lblCanceling.Visible = False
+            prbCanceling.Visible = False
+            pnlCancel.Visible = True
+
+            tspbLoading.Maximum = dtTVShows.Rows.Count + 1
+            tspbLoading.Value = 0
+            tslLoading.Text = Master.eLang.GetString(1297, "Rewriting Media:")
+            tspbLoading.Visible = True
+            tslLoading.Visible = True
+            Application.DoEvents()
+            bwRewriteContent.WorkerReportsProgress = True
+            bwRewriteContent.WorkerSupportsCancellation = True
+            bwRewriteContent.RunWorkerAsync(New Arguments With {.ContentType = Enums.ContentType.TV, .Trigger = bRewriteAll})
         Else
             SetControlsEnabled(True)
         End If
@@ -14570,8 +14660,28 @@ Public Class frmMain
         ReloadAll_TVShow(True)
     End Sub
 
-    Private Sub mnuMainToolsRewriteMovieContent_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsRewriteMovieContent.Click
-        RewriteAll_Movie()
+    Private Sub mnuMainToolsRewriteContentMovieAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsRewriteContentMovieAll.Click
+        RewriteAll_Movie(True)
+    End Sub
+
+    Private Sub mnuMainToolsRewriteContentMovieNFO_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsRewriteContentMovieNFO.Click
+        RewriteAll_Movie(False)
+    End Sub
+
+    Private Sub mnuMainToolsRewriteContentMovieSetAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsRewriteContentMovieSetAll.Click
+        RewriteAll_MovieSet(True)
+    End Sub
+
+    Private Sub mnuMainToolsRewriteContentMovieSetNFO_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsRewriteContentMovieSetNFO.Click
+        RewriteAll_MovieSet(False)
+    End Sub
+
+    Private Sub mnuMainToolsRewriteContentTVShowAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsRewriteContentTVShowAll.Click
+        RewriteAll_TVShow(True)
+    End Sub
+
+    Private Sub mnuMainToolsRewriteContentTVShowNFO_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsRewriteContentTVShowNFO.Click
+        RewriteAll_TVShow(False)
     End Sub
     ''' <summary>
     ''' Adds a new single Movie row with informations from DB
@@ -15064,11 +15174,43 @@ Public Class frmMain
     ''' <param name="ID">Movie ID</param>
     ''' <returns>reload list from database?</returns>
     ''' <remarks></remarks>
-    Private Function RewriteMovie(ByVal ID As Long, ByVal BatchMode As Boolean) As Boolean
-        Dim tmpMovieDB As Database.DBElement = Master.DB.Load_Movie(ID)
+    Private Function RewriteMovie(ByVal ID As Long, ByVal BatchMode As Boolean, ByVal bRewriteAll As Boolean) As Boolean
+        Dim tmpDBElement As Database.DBElement = Master.DB.Load_Movie(ID)
 
-        If tmpMovieDB.IsOnline Then
-            Master.DB.Save_Movie(tmpMovieDB, BatchMode, True, True, True, False)
+        If tmpDBElement.IsOnline Then
+            Master.DB.Save_Movie(tmpDBElement, BatchMode, True, bRewriteAll, True, False)
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+    ''' <summary>
+    ''' Load existing movieset content and save it again with all selected filenames
+    ''' </summary>
+    ''' <param name="ID">MovieSet ID</param>
+    ''' <returns>reload list from database?</returns>
+    ''' <remarks></remarks>
+    Private Function RewriteMovieSet(ByVal ID As Long, ByVal BatchMode As Boolean, ByVal bRewriteAll As Boolean) As Boolean
+        Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
+
+        If tmpDBElement.IsOnline Then
+            Master.DB.Save_MovieSet(tmpDBElement, BatchMode, True, bRewriteAll, True)
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+    ''' <summary>
+    ''' Load existing movieset content and save it again with all selected filenames
+    ''' </summary>
+    ''' <param name="ID">MovieSet ID</param>
+    ''' <returns>reload list from database?</returns>
+    ''' <remarks></remarks>
+    Private Function RewriteTVShow(ByVal ID As Long, ByVal BatchMode As Boolean, ByVal bRewriteAll As Boolean) As Boolean
+        Dim tmpDBElement As Database.DBElement = Master.DB.Load_TVShow(ID, True, True, False)
+
+        If tmpDBElement.IsOnline Then
+            Master.DB.Save_TVShow(tmpDBElement, BatchMode, True, bRewriteAll, True)
             Return True
         Else
             Return False
@@ -16308,6 +16450,9 @@ Public Class frmMain
         'All Items
         Dim strAllItems As String = Master.eLang.GetString(70, "All Items")
         mnuScrapeModifierAll.Text = strAllItems
+        mnuMainToolsRewriteContentMovieAll.Text = strAllItems
+        mnuMainToolsRewriteContentMovieSetAll.Text = strAllItems
+        mnuMainToolsRewriteContentTVShowAll.Text = strAllItems
 
         'Ask (Require Input If No Exact Match)
         Dim strAsk As String = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
@@ -16482,6 +16627,9 @@ Public Class frmMain
         'NFO Only
         Dim strNFOOnly As String = Master.eLang.GetString(71, "NFO Only")
         mnuScrapeModifierNFO.Text = strNFOOnly
+        mnuMainToolsRewriteContentMovieNFO.Text = strNFOOnly
+        mnuMainToolsRewriteContentMovieSetNFO.Text = strNFOOnly
+        mnuMainToolsRewriteContentTVShowNFO.Text = strNFOOnly
 
         'Open Fanart.tv-Page
         Dim strOpenFanartTVPage As String = Master.eLang.GetString(1093, "Open Fanart.tv-Page")
@@ -16888,7 +17036,9 @@ Public Class frmMain
         mnuMainToolsCleanFiles.Text = Master.eLang.GetString(9, "&Clean Files")
         mnuMainToolsClearCache.Text = Master.eLang.GetString(17, "Clear &All Caches")
         mnuMainToolsOfflineHolder.Text = Master.eLang.GetString(524, "&Offline Media Manager")
-        mnuMainToolsRewriteMovieContent.Text = Master.eLang.GetString(1298, "Rewrite All Movie Content")
+        mnuMainToolsRewriteContentMovie.Text = Master.eLang.GetString(1298, "Rewrite Movie Content")
+        mnuMainToolsRewriteContentMovieSet.Text = Master.eLang.GetString(1094, "Rewrite MovieSet Content")
+        mnuMainToolsRewriteContentTVShow.Text = Master.eLang.GetString(1095, "Rewrite TV Show Content")
         mnuMainToolsSortFiles.Text = Master.eLang.GetString(10, "&Sort Files Into Folders")
         mnuScrapeOptionActors.Text = Master.eLang.GetString(231, "Actors")
         mnuScrapeOptionAired.Text = Master.eLang.GetString(728, "Aired")
@@ -18011,6 +18161,7 @@ Public Class frmMain
 
 #Region "Fields"
 
+        Dim ContentType As Enums.ContentType
         Dim ID As Long
         Dim IsTV As Boolean
         Dim DBElement As Database.DBElement
@@ -18023,6 +18174,7 @@ Public Class frmMain
         Dim setEnabled As Boolean
         Dim SetName As String
         Dim TaskType As Enums.TaskManagerType
+        Dim Trigger As Boolean
         Dim withEpisodes As Boolean
         Dim withSeasons As Boolean
 
