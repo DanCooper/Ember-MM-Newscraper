@@ -5797,7 +5797,7 @@ Namespace MediaContainers
             If Not ThemeOriginal.hasMemoryStream Then
                 If File.Exists(LocalFilePath) Then
                     ThemeOriginal.LoadFromFile(LocalFilePath)
-                Else
+                ElseIf URLAudioStreamSpecified Then
                     ThemeOriginal.LoadFromWeb(Me)
                 End If
             End If
@@ -6061,7 +6061,7 @@ Namespace MediaContainers
             If Not TrailerOriginal.hasMemoryStream Then
                 If File.Exists(LocalFilePath) Then
                     TrailerOriginal.LoadFromFile(LocalFilePath)
-                Else
+                ElseIf URLVideoStreamSpecified Then
                     TrailerOriginal.LoadFromWeb(Me)
                 End If
             End If

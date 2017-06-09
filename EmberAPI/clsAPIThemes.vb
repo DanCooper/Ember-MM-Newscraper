@@ -201,6 +201,8 @@ Public Class Themes
     ''' <param name="sURL">URL to the theme file</param>
     ''' <remarks></remarks>
     Public Sub LoadFromWeb(ByVal sURL As String, Optional ByVal webURL As String = "")
+        If String.IsNullOrEmpty(sURL) Then Return
+
         Dim WebPage As New HTTP
         Dim tURL As String = String.Empty
         Dim tTheme As String = String.Empty
@@ -217,7 +219,6 @@ Public Class Themes
                 retSave = WebPage.ms.ToArray
                 _ms.Write(retSave, 0, retSave.Length)
                 _ext = Path.GetExtension(tTheme)
-                logger.Debug("Theme downloaded: " & sURL)
             Else
                 logger.Warn("Theme NOT downloaded: " & sURL)
             End If

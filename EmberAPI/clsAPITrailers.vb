@@ -573,6 +573,8 @@ Public Class Trailers
     ''' <param name="sTrailerLinksContainer">TrailerLinksContainer</param>
     ''' <remarks></remarks>
     Public Sub LoadFromWeb(ByVal sTrailerLinksContainer As TrailerLinksContainer)
+        If String.IsNullOrEmpty(sTrailerLinksContainer.VideoURL) Then Return
+
         Dim WebPage As New HTTP
         Dim tmpPath As String = Path.Combine(Master.TempPath, "DashTrailer")
         Dim tURL As String = String.Empty
@@ -581,7 +583,7 @@ Public Class Trailers
         Dim tTrailerOutput As String = String.Empty
         AddHandler WebPage.ProgressUpdated, AddressOf DownloadProgressUpdated
 
-        If sTrailerLinksContainer.isDash Then
+        If sTrailerLinksContainer.isDash AndAlso Not String.IsNullOrEmpty(sTrailerLinksContainer.AudioURL) Then
             tTrailerOutput = Path.Combine(tmpPath, "output.mkv")
             If Directory.Exists(tmpPath) Then
                 Directory.Delete(tmpPath, True)
@@ -631,7 +633,6 @@ Public Class Trailers
                     _ms.Write(retSave, 0, retSave.Length)
 
                     _ext = Path.GetExtension(tTrailerOutput)
-                    logger.Debug("Trailer downloaded: " & sTrailerLinksContainer.VideoURL)
                 Else
                     logger.Warn("Trailer NOT downloaded: " & sTrailerLinksContainer.VideoURL)
                 End If
@@ -649,6 +650,8 @@ Public Class Trailers
     ''' <param name="sTrailer">Trailer container</param>
     ''' <remarks></remarks>
     Public Sub LoadFromWeb(ByVal sTrailer As MediaContainers.Trailer)
+        If Not sTrailer.URLVideoStreamSpecified Then Return
+
         Dim WebPage As New HTTP
         Dim tmpPath As String = Path.Combine(Master.TempPath, "DashTrailer")
         Dim tURL As String = String.Empty
@@ -708,7 +711,6 @@ Public Class Trailers
                     _ms.Write(retSave, 0, retSave.Length)
 
                     _ext = Path.GetExtension(tTrailerOutput)
-                    logger.Debug("Trailer downloaded: " & sTrailer.URLVideoStream)
                 Else
                     logger.Warn("Trailer NOT downloaded: " & sTrailer.URLVideoStream)
                 End If
@@ -726,6 +728,8 @@ Public Class Trailers
     ''' <param name="sURL">URL to the trailer</param>
     ''' <remarks></remarks>
     Public Sub LoadFromWeb(ByVal sURL As String)
+        If String.IsNullOrEmpty(sURL) Then Return
+
         Dim WebPage As New HTTP
         Dim tURL As String = String.Empty
         Dim tTrailer As String = String.Empty
@@ -741,7 +745,6 @@ Public Class Trailers
                 retSave = WebPage.ms.ToArray
                 _ms.Write(retSave, 0, retSave.Length)
                 _ext = Path.GetExtension(tTrailer)
-                logger.Debug("Trailer downloaded: " & sURL)
             Else
                 logger.Warn("Trailer NOT downloaded: " & sURL)
             End If
