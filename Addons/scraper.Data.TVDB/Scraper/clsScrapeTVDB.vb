@@ -373,13 +373,16 @@ Namespace TVDBs
         End Function
 
         Public Function GetTVEpisodeInfo(ByVal tvdbID As Integer, ByVal Aired As String, ByRef FilteredOptions As Structures.ScrapeOptions) As MediaContainers.EpisodeDetails
-            Dim APIResult As Task(Of TVDB.Model.SeriesDetails) = Task.Run(Function() GetFullSeriesById(CInt(tvdbID)))
+            Dim dAired As New Date
+            If Not Date.TryParse(Aired, dAired) Then Return Nothing
+
+            Dim APIResult As Task(Of TVDB.Model.SeriesDetails) = Task.Run(Function() GetFullSeriesById(tvdbID))
             If APIResult Is Nothing OrElse APIResult.Result Is Nothing Then
                 Return Nothing
             End If
             Dim TVShowInfo = APIResult.Result
 
-            Dim EpisodeList As IEnumerable(Of TVDB.Model.Episode) = TVShowInfo.Series.Episodes.Where(Function(f) f.FirstAired = CDate(Aired))
+            Dim EpisodeList As IEnumerable(Of TVDB.Model.Episode) = TVShowInfo.Series.Episodes.Where(Function(f) f.FirstAired = dAired)
             If EpisodeList IsNot Nothing AndAlso EpisodeList.Count = 1 Then
                 Dim nEpisode As MediaContainers.EpisodeDetails = GetTVEpisodeInfo(EpisodeList(0), TVShowInfo, FilteredOptions)
                 Return nEpisode
