@@ -600,13 +600,13 @@ Public Class Scanner
                 Return False
             End If
             For Each s As String In AdvancedSettings.GetSetting("NotValidDirIs", ".actors|extrafanarts|extrathumbs|video_ts|bdmv|audio_ts|recycler|subs|subtitles|.trashes").Split(New String() {"|"}, StringSplitOptions.RemoveEmptyEntries)
-                If dInfo.Name.ToLower = s Then
+                If dInfo.Name.ToLower = s.ToLower Then
                     logger.Info(String.Format("[Sanner] [IsValidDir] [NotValidDirIs] Path ""{0}"" has been skipped (path name is ""{1}"")", dInfo.FullName, s))
                     Return False
                 End If
             Next
             For Each s As String In AdvancedSettings.GetSetting("NotValidDirContains", "-trailer|[trailer|temporary files|(noscan)|$recycle.bin|lost+found|system volume information|sample").Split(New String() {"|"}, StringSplitOptions.RemoveEmptyEntries)
-                If dInfo.Name.ToLower.Contains(s) Then
+                If dInfo.Name.ToLower.Contains(s.ToLower) Then
                     logger.Info(String.Format("[Sanner] [IsValidDir] [NotValidDirContains] Path ""{0}"" has been skipped (path contains ""{1}"")", dInfo.FullName, s))
                     Return False
                 End If
