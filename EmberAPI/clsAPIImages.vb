@@ -263,23 +263,43 @@ Public Class Images
     ''' <summary>
     ''' Loads this Image from the contents of the supplied file
     ''' </summary>
-    ''' <param name="sPath">Path to the image file</param>
-    ''' <param name="LoadBitmap">Create bitmap from memorystream</param>
+    ''' <param name="strPath">Path to the image file</param>
+    ''' <param name="bLoadBitmap">Create bitmap from memorystream</param>
     ''' <remarks></remarks>
-    Public Sub LoadFromFile(ByVal sPath As String, Optional LoadBitmap As Boolean = False)
-        If Not String.IsNullOrEmpty(sPath) AndAlso File.Exists(sPath) Then
-            _ms = New MemoryStream()
-            Using fsImage As FileStream = File.OpenRead(sPath)
-                Dim memStream As New MemoryStream
-                memStream.SetLength(fsImage.Length)
-                fsImage.Read(memStream.GetBuffer, 0, CInt(Fix(fsImage.Length)))
-                _ms.Write(memStream.GetBuffer, 0, CInt(Fix(fsImage.Length)))
-                _ms.Flush()
-                If LoadBitmap Then
-                    _image = New Bitmap(_ms)
-                End If
-            End Using
+    Public Sub LoadFromFile(ByVal strPath As String, Optional bLoadBitmap As Boolean = False)
+        If Not String.IsNullOrEmpty(strPath) Then
+            Dim fiImage = New FileInfo(strPath)
+
+            If Not fiImage.Exists Then
+                logger.Error(String.Format("[APIImages] [LoadFromFile]: File ""{0}"" not found", strPath))
+                _ms = New MemoryStream
+                _image = Nothing
+            ElseIf fiImage.Length > 0 Then
+                _ms = New MemoryStream()
+                _image = Nothing
+                Using fsImage As FileStream = File.OpenRead(strPath)
+                    Dim memStream As New MemoryStream
+                    memStream.SetLength(fsImage.Length)
+                    fsImage.Read(memStream.GetBuffer, 0, CInt(Fix(fsImage.Length)))
+                    _ms.Write(memStream.GetBuffer, 0, CInt(Fix(fsImage.Length)))
+                    _ms.Flush()
+                    If _ms.Length > 0 Then
+                        If bLoadBitmap Then
+                            _image = New Bitmap(_ms)
+                        End If
+                    Else
+                        logger.Error(String.Format("[APIImages] [LoadFromFile]: File ""{0}"" is empty", strPath))
+                        _ms = New MemoryStream
+                        _image = Nothing
+                    End If
+                End Using
+            Else
+                logger.Error(String.Format("[APIImages] [LoadFromFile]: File ""{0}"" is empty", strPath))
+                _ms = New MemoryStream
+                _image = Nothing
+            End If
         Else
+            logger.Error("[APIImages] [LoadFromFile]: Path is empty")
             _ms = New MemoryStream
             _image = Nothing
         End If
