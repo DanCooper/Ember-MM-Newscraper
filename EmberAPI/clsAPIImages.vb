@@ -70,7 +70,6 @@ Public Class Images
     ''' 2013/11/25 Dekker500 - Disposed old image before replacing
     ''' </remarks>
     Public Sub UpdateMSfromImg(nImage As Image, Optional iQuality As Integer = 100)
-
         Try
             Dim ICI As ImageCodecInfo = GetEncoderInfo(ImageFormat.Jpeg)
 
@@ -111,7 +110,7 @@ Public Class Images
             Try
                 File.Delete(sPath)
             Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Param: <" & sPath & ">")
+                logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Keys.Tab) & "Param: <" & sPath & ">")
             End Try
         End If
     End Sub
@@ -143,7 +142,7 @@ Public Class Images
                 End Select
             Next
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovie.Filename & ">")
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Keys.Tab) & "<" & DBMovie.Filename & ">")
         End Try
     End Sub
     ''' <summary>
@@ -162,7 +161,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovieSet.MovieSet.Title & ">")
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Keys.Tab) & "<" & DBMovieSet.MovieSet.Title & ">")
         End Try
     End Sub
     ''' <summary>
@@ -181,7 +180,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVShow.ShowPath & ">")
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Keys.Tab) & "<" & DBTVShow.ShowPath & ">")
         End Try
     End Sub
     ''' <summary>
@@ -208,7 +207,7 @@ Public Class Images
                 End Select
             Next
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVEpisode.ShowPath & ">")
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Keys.Tab) & "<" & DBTVEpisode.ShowPath & ">")
         End Try
     End Sub
     ''' <summary>
@@ -227,7 +226,7 @@ Public Class Images
                 End If
             Next
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVSeason.ShowPath & ">")
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Keys.Tab) & "<" & DBTVSeason.ShowPath & ">")
         End Try
     End Sub
     ''' <summary>
@@ -257,7 +256,7 @@ Public Class Images
                 End Select
             Next
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVShow.ShowPath & ">")
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Keys.Tab) & "<" & DBTVShow.ShowPath & ">")
         End Try
     End Sub
     ''' <summary>
@@ -353,7 +352,7 @@ Public Class Images
             End If
 
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sURL & ">")
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Keys.Tab) & "<" & sURL & ">")
         End Try
     End Sub
 

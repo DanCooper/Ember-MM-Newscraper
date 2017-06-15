@@ -313,7 +313,7 @@ Public Class HTTP
             _isJPG = False
             _isPNG = False
             If StringUtils.isValidURL(_URL) Then
-                wrRequest = DirectCast(HttpWebRequest.Create(_URL), HttpWebRequest)
+                wrRequest = DirectCast(WebRequest.Create(_URL), HttpWebRequest)
                 wrRequest.Timeout = _defaultRequestTimeout
 
                 If _cancelRequested Then Return
@@ -324,7 +324,6 @@ Public Class HTTP
 
                 Using wrResponse As WebResponse = wrRequest.GetResponse()
                     If _cancelRequested Then Return
-                    Dim temp As String = wrResponse.ContentType.ToString
                     If wrResponse.ContentType.ToLower.Contains("image") Then
                         If _cancelRequested Then Return
                         If wrResponse.ContentType.ToLower.Contains("jpeg") Then

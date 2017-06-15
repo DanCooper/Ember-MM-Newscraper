@@ -127,12 +127,10 @@ Namespace IMDB
 
         Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
-        Friend WithEvents bwIMDB As New System.ComponentModel.BackgroundWorker
+        Friend WithEvents bwIMDB As New ComponentModel.BackgroundWorker
 
-        Private Const LINK_PATTERN As String = "<a[\s]+[^>]*?href[\s]?=[\s\""\']*(?<url>.*?)[\""\']*.*?>(?<name>[^<]+|.*?)?<\/a>"
         Private Const ACTORTABLE_PATTERN As String = "<table class=""cast"">(.*?)</table>"
         Private Const HREF_PATTERN As String = "<a.*?href=[""'](?<url>.*?)[""'].*?>(?<name>.*?)</a>"
-        Private Const HREF_PATTERN_2 As String = "<a\shref=[""""'](?<url>.*?)[""""'].*?>(?<name>.*?)</a>"
         Private Const HREF_PATTERN_3 As String = "<a href=""/search/title\?certificates=[^""]*"">([^<]*):([^<]*)</a>[^<]*(<i>([^<]*)</i>)?"
         Private Const HREF_PATTERN_4 As String = "<a.*?href=[""']/(title/tt\d{7}/|name/nm\d{7}/)[""'].*?>(?<text>.*?)</a>"
         Private Const IMDB_ID_REGEX As String = "tt\d\d\d\d\d\d\d"
