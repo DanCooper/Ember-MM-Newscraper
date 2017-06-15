@@ -35,6 +35,7 @@ Public Class HTTP
 
 
 #Region "Fields"
+
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     Private dThread As New Threading.Thread(AddressOf DownloadImage)
@@ -47,6 +48,7 @@ Public Class HTTP
     Private _isJPG As Boolean = False
     Private _isPNG As Boolean = False
     Private _defaultRequestTimeout As Integer = 20000  'request timeout in milliseconds
+
 #End Region 'Fields
 
 #Region "Constructors"
@@ -68,6 +70,7 @@ Public Class HTTP
 #End Region 'Events
 
 #Region "Properties"
+
     Public ReadOnly Property Image() As Image
         Get
             Return _image
@@ -104,7 +107,6 @@ Public Class HTTP
 #End Region 'Properties
 
 #Region "Methods"
-
     ''' <summary>
     ''' Cancel any pending request
     ''' </summary>
@@ -120,7 +122,7 @@ Public Class HTTP
     Public Sub Clear()
         _responseuri = String.Empty
         If _image IsNot Nothing Then _image.Dispose()
-        Me._image = Nothing
+        _image = Nothing
         Cancel()    'Explicitely stop any in-progress requests
         _cancelRequested = False
     End Sub
@@ -161,94 +163,6 @@ Public Class HTTP
                     Else
                         sResponse = New StreamReader(Ms, cEncoding, True).ReadToEnd
                     End If
-                End Using
-                _responseuri = wrResponse.ResponseUri.ToString
-            End Using
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & URL & ">")
-        End Try
-
-        Return sResponse
-    End Function
-    ''' <summary>
-    ''' Assembles Post field Text from parameters
-    ''' </summary>
-    ''' <param name="Boundary"></param>
-    ''' <param name="name"></param>
-    ''' <param name="value"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Private Function MakePostFieldText(ByVal Boundary As String, ByVal name As String, ByVal value As String) As String
-        Return String.Concat(Boundary, vbCrLf, String.Format("Content-Disposition:form-data;name=""{0}""", name), vbCrLf, vbCrLf, value, vbCrLf)
-    End Function
-    ''' <summary>
-    ''' Assembles Post field File from parameters
-    ''' </summary>
-    ''' <param name="Boundary"></param>
-    ''' <param name="name"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Private Function MakePostFieldFile(ByVal Boundary As String, ByVal name As String) As String
-        Return String.Concat(Boundary, vbCrLf, String.Format("Content-Disposition:form-data;name=""file"";filename=""{0}""", name), vbCrLf, "Content-Type: application/octet-stream", vbCrLf, vbCrLf)
-    End Function
-
-    Public Function PostDownloadData(ByVal URL As String, ByVal postDataList As List(Of String())) As String
-        Dim sResponse As String = String.Empty
-        Dim cEncoding As System.Text.Encoding
-        Dim Idboundary As String = Convert.ToInt64(Functions.ConvertToUnixTimestamp(DateTime.Now)).ToString
-        Dim Boundary As String = String.Format("--{0}", Idboundary)
-        Dim postDataBytes As New List(Of Byte())
-        Clear()
-        System.Net.ServicePointManager.Expect100Continue = False
-        Try
-            For Each s() As String In postDataList
-                If s.Count = 2 Then postDataBytes.Add(System.Text.Encoding.UTF8.GetBytes(String.Concat(MakePostFieldText(Boundary, s(0), s(1)))))
-                If s.Count = 3 Then
-                    Select Case s(2)
-                        Case "file"  'array in list is {filename,filepath,"file"}
-                            postDataBytes.Add(System.Text.Encoding.UTF8.GetBytes(String.Concat(MakePostFieldFile(Boundary, s(0)))))
-                            postDataBytes.Add(File.ReadAllBytes(s(1)))
-                            postDataBytes.Add(System.Text.Encoding.UTF8.GetBytes(String.Concat(vbCrLf, Boundary, vbCrLf)))
-                    End Select
-                End If
-            Next
-            postDataBytes.Add(System.Text.Encoding.UTF8.GetBytes(String.Concat(Boundary, vbCrLf)))
-
-            wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
-            wrRequest.Timeout = _defaultRequestTimeout
-            wrRequest.Headers.Add("Accept-Encoding", "gzip,deflate")
-            PrepareProxy()
-
-            wrRequest.Method = "POST"
-            wrRequest.ContentType = String.Concat("multipart/form-data;boundary=", Idboundary)
-            Dim size As Integer = 0
-            For i As Integer = 0 To postDataBytes.Count - 1
-                size += postDataBytes(i).Length
-            Next
-            wrRequest.ContentLength = size
-            Using newStream As Stream = wrRequest.GetRequestStream()
-                For i As Integer = 0 To postDataBytes.Count - 1
-                    newStream.Write(postDataBytes(i), 0, postDataBytes(i).Length)
-                Next
-                newStream.Close()
-            End Using
-
-            Using wrResponse As HttpWebResponse = DirectCast(wrRequest.GetResponse(), HttpWebResponse)
-                Select Case True
-                    Case wrResponse.ContentType.ToLower.Contains("/xml") OrElse wrResponse.ContentType.ToLower.Contains("charset=utf-8")
-                        cEncoding = System.Text.Encoding.UTF8
-                    Case Else
-                        cEncoding = System.Text.Encoding.GetEncoding(28591)
-                End Select
-                Using Ms As Stream = wrResponse.GetResponseStream
-                    If wrResponse.ContentEncoding.ToLower = "gzip" Then
-                        sResponse = New StreamReader(New GZipStream(Ms, CompressionMode.Decompress), cEncoding, True).ReadToEnd
-                    ElseIf wrResponse.ContentEncoding.ToLower = "deflate" Then
-                        sResponse = New StreamReader(New DeflateStream(Ms, CompressionMode.Decompress), cEncoding, True).ReadToEnd
-                    Else
-                        sResponse = New StreamReader(Ms, cEncoding, True).ReadToEnd
-                    End If
-                    Ms.Close()
                 End Using
                 _responseuri = wrResponse.ResponseUri.ToString
             End Using
@@ -431,32 +345,6 @@ Public Class HTTP
             logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & _URL & ">")
         End Try
     End Sub
-
-    ''' <summary>
-    ''' Download the file from the given <paramref name="URL"/> and 
-    ''' return it as an array of <c>Byte</c>s
-    ''' </summary>
-    ''' <param name="URL"><c>String</c> URL from which to get file</param>
-    ''' <returns>Array of <c>Byte</c>s representing the response from the <paramref name="URL"/></returns>
-    ''' <remarks>Note that there is no processing done on the returned file to ensure
-    ''' that it is indeed a ZIP file.</remarks>
-    Public Function DownloadZip(ByVal URL As String) As Byte()
-        wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
-
-        Try
-            wrRequest.Timeout = _defaultRequestTimeout
-
-            PrepareProxy()
-
-            Using wrResponse As HttpWebResponse = DirectCast(wrRequest.GetResponse(), HttpWebResponse)
-                Return Functions.ReadStreamToEnd(wrResponse.GetResponseStream)
-            End Using
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & URL & ">")
-        End Try
-
-        Return Nothing
-    End Function
     ''' <summary>
     ''' Convenience flag to indicate whether the thread is in fact still doing something
     ''' </summary>
@@ -484,32 +372,6 @@ Public Class HTTP
         End If
     End Sub
     ''' <summary>
-    ''' Tests the given <paramref name="URL"/> to see if it is valid
-    ''' </summary>
-    ''' <param name="URL">The URL to test</param>
-    ''' <returns></returns>
-    ''' <remarks>The URL is tested by querying the URL, and if any response is returned, it is flagged as valid.
-    ''' Note URLs that return a response code of 2XX (see http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html) are
-    ''' considered valid. Anything else (such as 404) are flagged as not valid. </remarks>
-    Public Function IsValidURL(ByVal URL As String) As Boolean
-        Dim wrResponse As WebResponse
-        Try
-            wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
-
-            PrepareProxy()
-
-            Dim noCachePolicy As Cache.HttpRequestCachePolicy = New Cache.HttpRequestCachePolicy(Cache.HttpRequestCacheLevel.NoCacheNoStore)
-            wrRequest.CachePolicy = noCachePolicy
-            wrRequest.Timeout = _defaultRequestTimeout   'Master.eSettings.TrailerTimeout * 1000 * 2
-            wrResponse = wrRequest.GetResponse()
-        Catch ex As Exception
-            Return False
-        End Try
-        wrResponse.Close()
-        wrResponse = Nothing
-        Return True
-    End Function
-    ''' <summary>
     ''' Commands a thread to be spawned to download the image contained at the given URL
     ''' </summary>
     ''' <param name="sURL">URL containing the desired image</param>
@@ -525,6 +387,7 @@ Public Class HTTP
 #End Region 'Methods
 
 #Region "IDisposable Support"
+
     Private disposedValue As Boolean ' To detect redundant calls
 
     ' IDisposable
@@ -539,8 +402,8 @@ Public Class HTTP
                 'Make sure the stream is indeed closed so it can be disposed of properly
                 _ms.Close()
             End If
-            Me._image = Nothing
-            Me.wrRequest = Nothing
+            _image = Nothing
+            wrRequest = Nothing
 
             disposedValue = True
         End If
@@ -559,6 +422,7 @@ Public Class HTTP
         Dispose(True)
         GC.SuppressFinalize(Me)
     End Sub
+
 #End Region
 
 End Class
