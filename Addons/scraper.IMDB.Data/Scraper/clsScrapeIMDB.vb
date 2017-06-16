@@ -18,6 +18,7 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
+Imports HtmlAgilityPack
 Imports System.IO
 Imports System.Text.RegularExpressions
 Imports EmberAPI
@@ -224,6 +225,10 @@ Namespace IMDB
                 intHTTP.Dispose()
                 intHTTP = Nothing
 
+                '#####
+                Dim webCombined As New HtmlWeb
+                Dim htmlCombined As HtmlDocument = webCombined.Load(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/", strID, "/combined"))
+
                 If bwIMDB.CancellationPending Then Return Nothing
 
                 Dim PlotHtml As String
@@ -306,11 +311,25 @@ Namespace IMDB
 
                 'Release Date
                 If FilteredOptions.bMainRelease Then
-                    Dim RelDate As Date
-                    Dim sRelDate As MatchCollection = Regex.Matches(HTML, "<h5>Release Date:</h5>.*?(?<DATE>\d+\s\w+\s\d\d\d\d\s)", RegexOptions.Singleline)
-                    If sRelDate.Count > 0 Then
-                        If Date.TryParse(sRelDate.Item(0).Groups(1).Value, RelDate) Then
-                            nMovie.ReleaseDate = RelDate.ToString("yyyy-MM-dd")
+                    'Dim RelDate As Date
+                    'Dim sRelDate As MatchCollection = Regex.Matches(HTML, "<h5>Release Date:</h5>.*?(?<DATE>\d+\s\w+\s\d\d\d\d\s)", RegexOptions.Singleline)
+                    'If sRelDate.Count > 0 Then
+                    '    If Date.TryParse(sRelDate.Item(0).Groups(1).Value, RelDate) Then
+                    '        nMovie.ReleaseDate = RelDate.ToString("yyyy-MM-dd")
+                    '    End If
+                    'End If
+
+                    '#######
+                    Dim selNode = htmlCombined.DocumentNode.SelectNodes("//h5").First(Function(f) f.InnerText.ToLower = "release date:")
+                    If selNode IsNot Nothing AndAlso selNode.NextSibling IsNot Nothing AndAlso selNode.NextSibling.NextSibling IsNot Nothing Then
+                        Dim RelDate As Date
+                        Dim sRelDate = Regex.Match(selNode.NextSibling.NextSibling.InnerText,
+                                                                        "\d+\s\w+\s\d\d\d\d\s",
+                                                                        RegexOptions.Singleline)
+                        If sRelDate.Success Then
+                            If Date.TryParse(sRelDate.Value, RelDate) Then
+                                nMovie.ReleaseDate = RelDate.ToString("yyyy-MM-dd")
+                            End If
                         End If
                     End If
                 End If
@@ -319,10 +338,20 @@ Namespace IMDB
 
                 'Rating
                 If FilteredOptions.bMainRating Then
-                    Dim RegexRating As String = Regex.Match(HTML, "\b\d\W\d/\d\d").ToString
-                    If Not String.IsNullOrEmpty(RegexRating) Then
-                        nMovie.Rating = RegexRating.Split(Convert.ToChar("/")).First.Trim
-                        nMovie.Votes = Regex.Match(HTML, "class=""tn15more"">([0-9,]+) votes</a>").Groups(1).Value.Trim
+                    'Dim RegexRating As String = Regex.Match(HTML, "\b\d\W\d/\d\d").ToString
+                    'If Not String.IsNullOrEmpty(RegexRating) Then
+                    '    nMovie.Rating = RegexRating.Split(Convert.ToChar("/")).First.Trim
+                    '    nMovie.Votes = Regex.Match(HTML, "class=""tn15more"">([0-9,]+) votes</a>").Groups(1).Value.Trim
+                    'End If
+
+                    '#######
+                    Dim selNode = htmlCombined.DocumentNode.SelectSingleNode("//div[@class=""starbar-meta""]")
+                    If selNode IsNot Nothing Then
+                        If selNode.SelectSingleNode("b") IsNot Nothing AndAlso
+                            selNode.SelectSingleNode("a") IsNot Nothing Then
+                            nMovie.Rating = Regex.Match(selNode.SelectSingleNode("b").InnerText.Trim, "\d\.\d").Value
+                            nMovie.Votes = Regex.Match(selNode.SelectSingleNode("a").InnerText.Trim, "[0-9,]+").Value
+                        End If
                     End If
                 End If
 
@@ -346,10 +375,22 @@ Namespace IMDB
                 'Top250
                 'ie: <a href="/chart/top?tt0167260">Top 250: #13</a>
                 If FilteredOptions.bMainTop250 Then
-                    Dim strTop250 As String = Regex.Match(HTML, String.Concat("/chart/top\?", nMovie.IMDB, """>Top 250: #([0-9]+)</a>")).Groups(1).Value.Trim
-                    Dim iTop250 As Integer = 0
-                    If Integer.TryParse(strTop250, iTop250) Then
-                        nMovie.Top250 = iTop250
+                    'Dim strTop250 As String = Regex.Match(HTML, String.Concat("/chart/top\?", nMovie.IMDB, """>Top 250: #([0-9]+)</a>")).Groups(1).Value.Trim
+                    'Dim iTop250 As Integer = 0
+                    'If Integer.TryParse(strTop250, iTop250) Then
+                    '    nMovie.Top250 = iTop250
+                    'End If
+
+                    '########
+                    Dim selNode = htmlCombined.DocumentNode.SelectSingleNode("//div[@class=""starbar-special""]")
+                    If selNode IsNot Nothing Then
+                        If selNode.SelectSingleNode("a") IsNot Nothing Then
+                            Dim strTop250 As String = Regex.Match(selNode.SelectSingleNode("a").InnerText.Trim, "Top 250: #([0-9]+)").Value
+                            Dim iTop250 As Integer = 0
+                            If Integer.TryParse(strTop250, iTop250) Then
+                                nMovie.Top250 = iTop250
+                            End If
+                        End If
                     End If
                 End If
 
