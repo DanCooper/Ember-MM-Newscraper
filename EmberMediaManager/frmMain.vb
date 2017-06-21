@@ -8060,7 +8060,19 @@ Public Class frmMain
         SaveFilter_Shows()
     End Sub
 
-    Private Sub mnuMainDonate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainDonate.Click
+    Private Sub mnuMainDonatePatreon_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainDonatePatreon.Click
+        If Master.isWindows Then
+            Process.Start("https://www.patreon.com/embermediamanager")
+        Else
+            Using Explorer As New Process
+                Explorer.StartInfo.FileName = "xdg-open"
+                Explorer.StartInfo.Arguments = "https://www.patreon.com/embermediamanager"
+                Explorer.Start()
+            End Using
+        End If
+    End Sub
+
+    Private Sub mnuMainDonatePayPal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainDonatePayPal.Click
         If Master.isWindows Then
             Process.Start("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=VWVJCUV3KAUX2&lc=CH&item_name=Ember%2dTeam%3a%20DanCooper%2c%20m%2esavazzi%20%26%20Cocotus&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted")
         Else
