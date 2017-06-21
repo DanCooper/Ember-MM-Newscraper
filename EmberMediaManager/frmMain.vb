@@ -5921,8 +5921,8 @@ Public Class frmMain
                     cmnuMovieScrape.Visible = False
 
                     For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
-                        'if any one item is set as unlocked, show menu "Mark"
-                        'if any one item is set as locked, show menu "Unmark"
+                        'if any one item is set as unmarked, show menu "Mark"
+                        'if any one item is set as marked, show menu "Unmark"
                         If Not Convert.ToBoolean(sRow.Cells("Mark").Value) Then
                             bShowMark = True
                             If bShowUnmark AndAlso bShowLock AndAlso bShowUnlock AndAlso bShowWatched AndAlso bShowUnwatched Then Exit For
@@ -6433,9 +6433,10 @@ Public Class frmMain
 
             If dgvHTI.Type = DataGridViewHitTestType.Cell Then
                 If dgvMovieSets.SelectedRows.Count > 1 AndAlso dgvMovieSets.Rows(dgvHTI.RowIndex).Selected Then
-                    Dim setMark As Boolean = False
-                    Dim bEnableLock As Boolean = False
-                    Dim bEnableUnlock As Boolean = False
+                    Dim bShowMark As Boolean = False
+                    Dim bShowUnmark As Boolean = False
+                    Dim bShowLock As Boolean = False
+                    Dim bShowUnlock As Boolean = False
 
                     cmnuMovieSet.Enabled = True
                     cmnuMovieSetBrowseTMDB.Visible = True
@@ -6459,20 +6460,23 @@ Public Class frmMain
                     cmnuMovieSetTitle.Visible = True
 
                     For Each sRow As DataGridViewRow In dgvMovieSets.SelectedRows
-                        'if any one item is set as unmarked, set menu to mark
-                        'else they are all marked, so set menu to unmark
+                        'if any one item is set as unmarked, show menu "Mark"
+                        'if any one item is set as marked, show menu "Unmark"
                         If Not Convert.ToBoolean(sRow.Cells("Mark").Value) Then
-                            setMark = True
-                            If bEnableLock AndAlso bEnableUnlock Then Exit For
-                        End If
-                        'if any one item is set as unlocked, enable menu "Lock"
-                        'if any one item is set as locked, enable menu "Unlock"
-                        If Not Convert.ToBoolean(sRow.Cells("Lock").Value) Then
-                            bEnableLock = True
-                            If setMark AndAlso bEnableUnlock Then Exit For
+                            bShowMark = True
+                            If bShowUnmark AndAlso bShowLock AndAlso bShowUnlock Then Exit For
                         Else
-                            bEnableUnlock = True
-                            If setMark AndAlso bEnableLock Then Exit For
+                            bShowUnmark = True
+                            If bShowMark AndAlso bShowLock AndAlso bShowUnlock Then Exit For
+                        End If
+                        'if any one item is set as unlocked, show menu "Lock"
+                        'if any one item is set as locked, show menu "Unlock"
+                        If Not Convert.ToBoolean(sRow.Cells("Lock").Value) Then
+                            bShowLock = True
+                            If bShowUnlock AndAlso bShowMark AndAlso bShowUnmark Then Exit For
+                        Else
+                            bShowUnlock = True
+                            If bShowLock AndAlso bShowMark AndAlso bShowUnmark Then Exit For
                         End If
                     Next
 
@@ -6490,8 +6494,12 @@ Public Class frmMain
                     mnuLanguagesSet.Enabled = False
 
                     'Lock / Unlock menu
-                    cmnuMovieSetUnlock.Visible = bEnableUnlock
-                    cmnuMovieSetLock.Visible = bEnableLock
+                    cmnuMovieSetLock.Visible = bShowLock
+                    cmnuMovieSetUnlock.Visible = bShowUnlock
+
+                    'Mark / Unmark menu
+                    cmnuMovieSetMark.Visible = bShowMark
+                    cmnuMovieSetUnmark.Visible = bShowUnmark
                 Else
                     cmnuMovieSetBrowseTMDB.Visible = True
                     cmnuMovieSetDatabaseSeparator.Visible = True
@@ -6526,6 +6534,7 @@ Public Class frmMain
                         cmnuMovieSet.Enabled = True
                     End If
 
+                    'SortMethod submenu
                     Dim SortMethod As Integer = CInt(dgvMovieSets.Item("SortMethod", dgvHTI.RowIndex).Value)
                     cmnuMovieSetEditSortMethodMethods.Text = DirectCast(CInt(dgvMovieSets.Item("SortMethod", dgvHTI.RowIndex).Value), Enums.SortMethod_MovieSet).ToString
                     cmnuMovieSetEditSortMethodSet.Enabled = False
@@ -6545,8 +6554,13 @@ Public Class frmMain
 
                     'Lock / Unlock menu
                     Dim bIsLocked As Boolean = Convert.ToBoolean(dgvMovieSets.Item("Lock", dgvHTI.RowIndex).Value)
-                    cmnuMovieSetUnlock.Visible = bIsLocked
                     cmnuMovieSetLock.Visible = Not bIsLocked
+                    cmnuMovieSetUnlock.Visible = bIsLocked
+
+                    'Mark / Unmark menu
+                    Dim bIsMarked As Boolean = Convert.ToBoolean(dgvMovieSets.Item("Mark", dgvHTI.RowIndex).Value)
+                    cmnuMovieSetMark.Visible = Not bIsMarked
+                    cmnuMovieSetUnmark.Visible = bIsMarked
                 End If
             Else
                 cmnuMovieSet.Enabled = True
@@ -6916,8 +6930,8 @@ Public Class frmMain
             cmnuEpisode.Enabled = False
 
             Dim dgvHTI As DataGridView.HitTestInfo = dgvTVEpisodes.HitTest(e.X, e.Y)
-            If dgvHTI.Type = DataGridViewHitTestType.Cell Then
 
+            If dgvHTI.Type = DataGridViewHitTestType.Cell Then
                 If dgvTVEpisodes.SelectedRows.Count > 1 AndAlso dgvTVEpisodes.Rows(dgvHTI.RowIndex).Selected Then
                     cmnuEpisode.Enabled = True
 
@@ -6933,11 +6947,12 @@ Public Class frmMain
                     If hasMissing Then
                         ShowEpisodeMenuItems(False)
                     Else
-                        Dim setMark As Boolean = False
-                        Dim bEnableLock As Boolean = False
-                        Dim bEnableUnlock As Boolean = False
-                        Dim bEnableUnwatched As Boolean = False
-                        Dim bEnableWatched As Boolean = False
+                        Dim bShowMark As Boolean = False
+                        Dim bShowUnmark As Boolean = False
+                        Dim bShowLock As Boolean = False
+                        Dim bShowUnlock As Boolean = False
+                        Dim bShowUnwatched As Boolean = False
+                        Dim bShowWatched As Boolean = False
 
                         ShowEpisodeMenuItems(True)
 
@@ -6950,39 +6965,46 @@ Public Class frmMain
                         cmnuEpisodeOpenFolder.Visible = False
 
                         For Each sRow As DataGridViewRow In dgvTVEpisodes.SelectedRows
-                            'if any one item is set as unmarked, set menu to mark
-                            'else they are all marked, so set menu to unmark
+                            'if any one item is set as unmarked, show menu "Mark"
+                            'if any one item is set as marked, show menu "Unmark"
                             If Not Convert.ToBoolean(sRow.Cells("Mark").Value) Then
-                                setMark = True
-                                If bEnableLock AndAlso bEnableUnlock AndAlso bEnableUnwatched AndAlso bEnableWatched Then Exit For
+                                bShowMark = True
+                                If bShowUnmark AndAlso bShowLock AndAlso bShowUnlock AndAlso bShowWatched AndAlso bShowUnwatched Then Exit For
+                            Else
+                                bShowUnmark = True
+                                If bShowMark AndAlso bShowLock AndAlso bShowUnlock AndAlso bShowWatched AndAlso bShowUnwatched Then Exit For
                             End If
-                            'if any one item is set as unlocked, enable menu "Lock"
-                            'if any one item is set as locked, enable menu "Unlock"
+                            'if any one item is set as unlocked, show menu "Lock"
+                            'if any one item is set as locked, show menu "Unlock"
                             If Not Convert.ToBoolean(sRow.Cells("Lock").Value) Then
-                                bEnableLock = True
-                                If setMark AndAlso bEnableUnlock AndAlso bEnableUnwatched AndAlso bEnableWatched Then Exit For
+                                bShowLock = True
+                                If bShowUnlock AndAlso bShowMark AndAlso bShowUnmark AndAlso bShowWatched AndAlso bShowUnwatched Then Exit For
                             Else
-                                bEnableUnlock = True
-                                If setMark AndAlso bEnableLock AndAlso bEnableUnwatched AndAlso bEnableWatched Then Exit For
+                                bShowUnlock = True
+                                If bShowLock AndAlso bShowMark AndAlso bShowUnmark AndAlso bShowWatched AndAlso bShowUnwatched Then Exit For
                             End If
-                            'if any one item is set as unwatched, enable menu "Mark as Watched"
-                            'if any one item is set as watched, enable menu "Mark as Unwatched"
+                            'if any one item is set as unwatched, show menu "Mark as Watched"
+                            'if any one item is set as watched, show menu "Mark as Unwatched"
                             If String.IsNullOrEmpty(sRow.Cells("Playcount").Value.ToString) OrElse sRow.Cells("Playcount").Value.ToString = "0" Then
-                                bEnableWatched = True
-                                If bEnableLock AndAlso bEnableUnlock AndAlso setMark AndAlso bEnableUnwatched Then Exit For
+                                bShowWatched = True
+                                If bShowLock AndAlso bShowUnlock AndAlso bShowMark AndAlso bShowUnmark AndAlso bShowUnwatched Then Exit For
                             Else
-                                bEnableUnwatched = True
-                                If bEnableLock AndAlso bEnableUnlock AndAlso setMark AndAlso bEnableWatched Then Exit For
+                                bShowUnwatched = True
+                                If bShowLock AndAlso bShowUnlock AndAlso bShowMark AndAlso bShowUnmark AndAlso bShowWatched Then Exit For
                             End If
                         Next
 
                         'Lock / Unlock menu
-                        cmnuEpisodeUnlock.Visible = bEnableUnlock
-                        cmnuEpisodeLock.Visible = bEnableLock
+                        cmnuEpisodeLock.Visible = bShowLock
+                        cmnuEpisodeUnlock.Visible = bShowUnlock
+
+                        'Mark / Unmark menu
+                        cmnuEpisodeMark.Visible = bShowMark
+                        cmnuEpisodeUnmark.Visible = bShowUnmark
 
                         'Watched / Unwatched menu
-                        cmnuEpisodeUnwatched.Visible = bEnableUnwatched
-                        cmnuEpisodeWatched.Visible = bEnableWatched
+                        cmnuEpisodeWatched.Visible = bShowWatched
+                        cmnuEpisodeUnwatched.Visible = bShowUnwatched
                     End If
                 Else
                     cmnuEpisodeTitle.Text = String.Concat(">> ", dgvTVEpisodes.Item("Title", dgvHTI.RowIndex).Value, " <<")
@@ -7017,13 +7039,18 @@ Public Class frmMain
 
                         'Lock / Unlock menu
                         Dim bIsLocked As Boolean = Convert.ToBoolean(dgvTVEpisodes.Item("Lock", dgvHTI.RowIndex).Value)
-                        cmnuEpisodeUnlock.Visible = bIsLocked
                         cmnuEpisodeLock.Visible = Not bIsLocked
+                        cmnuEpisodeUnlock.Visible = bIsLocked
+
+                        'Mark / Unmark menu
+                        Dim bIsMarked As Boolean = Convert.ToBoolean(dgvTVEpisodes.Item("Mark", dgvHTI.RowIndex).Value)
+                        cmnuEpisodeMark.Visible = Not bIsMarked
+                        cmnuEpisodeUnmark.Visible = bIsMarked
 
                         'Watched / Unwatched menu
                         Dim bIsWatched As Boolean = Not String.IsNullOrEmpty(dgvTVEpisodes.Item("Playcount", dgvHTI.RowIndex).Value.ToString) AndAlso Not dgvTVEpisodes.Item("Playcount", dgvHTI.RowIndex).Value.ToString = "0"
-                        cmnuEpisodeUnwatched.Visible = bIsWatched
                         cmnuEpisodeWatched.Visible = Not bIsWatched
+                        cmnuEpisodeUnwatched.Visible = bIsWatched
                     End If
 
                 End If
@@ -7329,10 +7356,12 @@ Public Class frmMain
             If dgvHTI.Type = DataGridViewHitTestType.Cell Then
 
                 If dgvTVSeasons.SelectedRows.Count > 1 AndAlso dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected Then
-                    Dim setMark As Boolean = False
-                    Dim setLock As Boolean = False
-                    Dim bEnableUnwatched As Boolean = False
-                    Dim bEnableWatched As Boolean = False
+                    Dim bShowMark As Boolean = False
+                    Dim bShowUnmark As Boolean = False
+                    Dim bShowLock As Boolean = False
+                    Dim bShowUnlock As Boolean = False
+                    Dim bShowUnwatched As Boolean = False
+                    Dim bShowWatched As Boolean = False
 
                     cmnuSeason.Enabled = True
                     cmnuSeasonEdit.Visible = False
@@ -7340,57 +7369,56 @@ Public Class frmMain
                     cmnuSeasonScrape.Visible = False
 
                     For Each sRow As DataGridViewRow In dgvTVSeasons.SelectedRows
-                        'if any one item is set as unmarked, set menu to mark
-                        'else they are all marked, so set menu to unmark
+                        'if any one item is set as unmarked, show menu "Mark"
+                        'if any one item is set as marked, show menu "Unmark"
                         If Not Convert.ToBoolean(sRow.Cells("Mark").Value) Then
-                            setMark = True
-                            If setLock AndAlso bEnableUnwatched AndAlso bEnableWatched Then Exit For
-                        End If
-                        'if any one item is set as unlocked, set menu to lock
-                        'else they are all locked so set menu to unlock
-                        If Not Convert.ToBoolean(sRow.Cells("Lock").Value) Then
-                            setLock = True
-                            If setMark AndAlso bEnableUnwatched AndAlso bEnableWatched Then Exit For
-                        End If
-                        'if any one item is set as unwatched, enable menu "Mark as Watched"
-                        'if any one item is set as watched, enable menu "Mark as Unwatched"
-                        If Not CInt(sRow.Cells("Season").Value) = 999 AndAlso Not Convert.ToBoolean(sRow.Cells("HasWatched").Value) Then
-                            bEnableWatched = True
-                            If setLock AndAlso setMark AndAlso bEnableUnwatched Then Exit For
+                            bShowMark = True
+                            If bShowUnmark AndAlso bShowLock AndAlso bShowUnlock AndAlso bShowWatched AndAlso bShowUnwatched Then Exit For
                         Else
-                            bEnableUnwatched = True
-                            If setLock AndAlso setMark AndAlso bEnableWatched Then Exit For
+                            bShowUnmark = True
+                            If bShowMark AndAlso bShowLock AndAlso bShowUnlock AndAlso bShowWatched AndAlso bShowUnwatched Then Exit For
+                        End If
+                        'if any one item is set as unlocked, show menu "Lock"
+                        'if any one item is set as locked, show menu "Unlock"
+                        If Not Convert.ToBoolean(sRow.Cells("Lock").Value) Then
+                            bShowLock = True
+                            If bShowUnlock AndAlso bShowMark AndAlso bShowUnmark AndAlso bShowWatched AndAlso bShowUnwatched Then Exit For
+                        Else
+                            bShowUnlock = True
+                            If bShowLock AndAlso bShowMark AndAlso bShowUnmark AndAlso bShowWatched AndAlso bShowUnwatched Then Exit For
+                        End If
+                        'if any one item is set as unlocked, show menu "Lock"
+                        'if any one item is set as locked, show menu "Unlock"
+                        If Not CInt(sRow.Cells("Season").Value) = 999 AndAlso Not Convert.ToBoolean(sRow.Cells("HasWatched").Value) Then
+                            bShowWatched = True
+                            If bShowLock AndAlso bShowUnlock AndAlso bShowMark AndAlso bShowUnmark AndAlso bShowUnwatched Then Exit For
+                        Else
+                            bShowUnwatched = True
+                            If bShowLock AndAlso bShowUnlock AndAlso bShowMark AndAlso bShowUnmark AndAlso bShowWatched Then Exit For
                         End If
                     Next
 
                     cmnuSeasonTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
 
+                    'Lock / Unlock menu
+                    cmnuSeasonLock.Visible = bShowLock
+                    cmnuSeasonUnlock.Visible = bShowUnlock
+
+                    'Mark / Unmark menu
+                    cmnuSeasonMark.Visible = bShowMark
+                    cmnuSeasonUnmark.Visible = bShowUnmark
+
                     'Watched / Unwatched menu
-                    cmnuSeasonUnwatched.Enabled = bEnableUnwatched
-                    cmnuSeasonUnwatched.Visible = bEnableUnwatched
-                    cmnuSeasonWatched.Enabled = bEnableWatched
-                    cmnuSeasonWatched.Visible = bEnableWatched
+                    cmnuSeasonWatched.Visible = bShowWatched
+                    cmnuSeasonUnwatched.Visible = bShowUnwatched
 
                 Else
                     cmnuSeasonEdit.Visible = True
                     cmnuSeasonEditSeparator.Visible = True
                     cmnuSeasonScrape.Visible = True
 
-                    cmnuSeasonMark.Text = If(Convert.ToBoolean(dgvTVSeasons.Item("Mark", dgvHTI.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
-                    cmnuSeasonLock.Text = If(Convert.ToBoolean(dgvTVSeasons.Item("Lock", dgvHTI.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
                     cmnuSeasonTitle.Text = String.Concat(">> ", dgvTVSeasons.Item("SeasonText", dgvHTI.RowIndex).Value, " <<")
                     cmnuSeasonEdit.Enabled = Convert.ToInt32(dgvTVSeasons.Item("Season", dgvHTI.RowIndex).Value) >= 0
-
-                    'Watched / Unwatched menu
-                    Dim bIsWatched As Boolean = False
-                    Dim bIsAllSeasons As Boolean = CInt(dgvTVSeasons.Item("Season", dgvHTI.RowIndex).Value) = 999
-                    If Not bIsAllSeasons Then
-                        bIsWatched = Convert.ToBoolean(dgvTVSeasons.Item("HasWatched", dgvHTI.RowIndex).Value)
-                    End If
-                    cmnuSeasonUnwatched.Enabled = bIsWatched AndAlso Not bIsAllSeasons
-                    cmnuSeasonUnwatched.Visible = bIsWatched AndAlso Not bIsAllSeasons
-                    cmnuSeasonWatched.Enabled = Not bIsWatched AndAlso Not bIsAllSeasons
-                    cmnuSeasonWatched.Visible = Not bIsWatched AndAlso Not bIsAllSeasons
 
                     If Not dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected OrElse Not currList = 1 Then
                         prevRow_TVSeason = -1
@@ -7402,6 +7430,25 @@ Public Class frmMain
                     Else
                         cmnuSeason.Enabled = True
                     End If
+
+                    'Lock / Unlock menu
+                    Dim bIsLocked As Boolean = Convert.ToBoolean(dgvTVSeasons.Item("Lock", dgvHTI.RowIndex).Value)
+                    cmnuSeasonLock.Visible = Not bIsLocked
+                    cmnuSeasonUnlock.Visible = bIsLocked
+
+                    'Mark / Unmark menu
+                    Dim bIsMarked As Boolean = Convert.ToBoolean(dgvTVSeasons.Item("Mark", dgvHTI.RowIndex).Value)
+                    cmnuSeasonMark.Visible = Not bIsMarked
+                    cmnuSeasonUnmark.Visible = bIsMarked
+
+                    'Watched / Unwatched menu
+                    Dim bIsWatched As Boolean = False
+                    Dim bIsAllSeasons As Boolean = CInt(dgvTVSeasons.Item("Season", dgvHTI.RowIndex).Value) = 999
+                    If Not bIsAllSeasons Then
+                        bIsWatched = Convert.ToBoolean(dgvTVSeasons.Item("HasWatched", dgvHTI.RowIndex).Value)
+                    End If
+                    cmnuSeasonWatched.Visible = Not bIsWatched AndAlso Not bIsAllSeasons
+                    cmnuSeasonUnwatched.Visible = bIsWatched AndAlso Not bIsAllSeasons
                 End If
             Else
                 cmnuSeason.Enabled = False
@@ -7743,11 +7790,12 @@ Public Class frmMain
 
             If dgvHTI.Type = DataGridViewHitTestType.Cell Then
                 If dgvTVShows.SelectedRows.Count > 1 AndAlso dgvTVShows.Rows(dgvHTI.RowIndex).Selected Then
-                    Dim setMark As Boolean = False
-                    Dim bEnableLock As Boolean = False
-                    Dim bEnableUnlock As Boolean = False
-                    Dim bEnableUnwatched As Boolean = False
-                    Dim bEnableWatched As Boolean = False
+                    Dim bShowMark As Boolean = False
+                    Dim bShowUnmark As Boolean = False
+                    Dim bShowLock As Boolean = False
+                    Dim bShowUnlock As Boolean = False
+                    Dim bShowUnwatched As Boolean = False
+                    Dim bShowWatched As Boolean = False
 
                     cmnuShow.Enabled = True
                     cmnuShowChange.Visible = False
@@ -7755,29 +7803,32 @@ Public Class frmMain
                     cmnuShowScrape.Visible = False
 
                     For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
-                        'if any one item is set as unmarked, set menu to mark
-                        'else they are all marked, so set menu to unmark
+                        'if any one item is set as unmarked, show menu "Mark"
+                        'if any one item is set as marked, show menu "Unmark"
                         If Not Convert.ToBoolean(sRow.Cells("Mark").Value) Then
-                            setMark = True
-                            If bEnableLock AndAlso bEnableUnlock AndAlso bEnableUnwatched AndAlso bEnableWatched Then Exit For
+                            bShowMark = True
+                            If bShowUnmark AndAlso bShowLock AndAlso bShowUnlock AndAlso bShowWatched AndAlso bShowUnwatched Then Exit For
+                        Else
+                            bShowUnmark = True
+                            If bShowMark AndAlso bShowLock AndAlso bShowUnlock AndAlso bShowWatched AndAlso bShowUnwatched Then Exit For
                         End If
-                        'if any one item is set as unlocked, enable menu "Lock"
-                        'if any one item is set as locked, enable menu "Unlock"
+                        'if any one item is set as unlocked, show menu "Lock"
+                        'if any one item is set as locked, show menu "Unlock"
                         If Not Convert.ToBoolean(sRow.Cells("Lock").Value) Then
-                            bEnableLock = True
-                            If setMark AndAlso bEnableUnlock AndAlso bEnableUnwatched AndAlso bEnableWatched Then Exit For
+                            bShowLock = True
+                            If bShowUnlock AndAlso bShowMark AndAlso bShowUnmark AndAlso bShowWatched AndAlso bShowUnwatched Then Exit For
                         Else
-                            bEnableUnlock = True
-                            If setMark AndAlso bEnableLock AndAlso bEnableUnwatched AndAlso bEnableWatched Then Exit For
+                            bShowUnlock = True
+                            If bShowLock AndAlso bShowMark AndAlso bShowUnmark AndAlso bShowWatched AndAlso bShowUnwatched Then Exit For
                         End If
-                        'if any one item is set as unwatched, enable menu "Mark as Watched"
-                        'if any one item is set as watched, enable menu "Mark as Unwatched"
+                        'if any one item is set as unwatched, show menu "Mark as Watched"
+                        'if any one item is set as watched, show menu "Mark as Unwatched"
                         If Not Convert.ToBoolean(sRow.Cells("HasWatched").Value) Then
-                            bEnableWatched = True
-                            If bEnableLock AndAlso bEnableUnlock AndAlso setMark AndAlso bEnableUnwatched Then Exit For
+                            bShowWatched = True
+                            If bShowLock AndAlso bShowUnlock AndAlso bShowMark AndAlso bShowUnmark AndAlso bShowUnwatched Then Exit For
                         Else
-                            bEnableUnwatched = True
-                            If bEnableLock AndAlso bEnableUnlock AndAlso setMark AndAlso bEnableWatched Then Exit For
+                            bShowUnwatched = True
+                            If bShowLock AndAlso bShowUnlock AndAlso bShowMark AndAlso bShowUnmark AndAlso bShowWatched Then Exit For
                         End If
                     Next
 
@@ -7803,8 +7854,12 @@ Public Class frmMain
                     mnuLanguagesSet.Enabled = False
 
                     'Lock / Unlock menu
-                    cmnuShowUnlock.Visible = bEnableUnlock
-                    cmnuShowLock.Visible = bEnableLock
+                    cmnuShowLock.Visible = bShowLock
+                    cmnuShowUnlock.Visible = bShowUnlock
+
+                    'Mark / Unmark menu
+                    cmnuShowMark.Visible = bShowMark
+                    cmnuShowUnmark.Visible = bShowUnmark
 
                     'Tag submenu
                     mnuTagsTag.Tag = String.Empty
@@ -7818,14 +7873,26 @@ Public Class frmMain
                     mnuTagsSet.Enabled = False
 
                     'Watched / Unwatched menu
-                    cmnuShowUnwatched.Visible = bEnableUnwatched
-                    cmnuShowWatched.Visible = bEnableWatched
+                    cmnuShowWatched.Visible = bShowWatched
+                    cmnuShowUnwatched.Visible = bShowUnwatched
                 Else
                     cmnuShowChange.Visible = True
                     cmnuShowEdit.Visible = True
                     cmnuShowScrape.Visible = True
 
                     cmnuShowTitle.Text = String.Concat(">> ", dgvTVShows.Item("Title", dgvHTI.RowIndex).Value, " <<")
+
+                    If Not dgvTVShows.Rows(dgvHTI.RowIndex).Selected OrElse Not currList = 0 Then
+                        prevRow_TVShow = -1
+                        currList = 0
+                        dgvTVShows.CurrentCell = Nothing
+                        dgvTVShows.ClearSelection()
+                        dgvTVShows.Rows(dgvHTI.RowIndex).Selected = True
+                        dgvTVShows.CurrentCell = dgvTVShows.Item("ListTitle", dgvHTI.RowIndex)
+                        'cmnuShow.Enabled = True
+                    Else
+                        cmnuShow.Enabled = True
+                    End If
 
                     'Genre submenu
                     mnuGenresGenre.Tag = dgvTVShows.Item("Genre", dgvHTI.RowIndex).Value
@@ -7853,8 +7920,13 @@ Public Class frmMain
 
                     'Lock / Unlock menu
                     Dim bIsLocked As Boolean = Convert.ToBoolean(dgvTVShows.Item("Lock", dgvHTI.RowIndex).Value)
-                    cmnuShowUnlock.Visible = bIsLocked
                     cmnuShowLock.Visible = Not bIsLocked
+                    cmnuShowUnlock.Visible = bIsLocked
+
+                    'Mark / Unmark menu
+                    Dim bIsMarked As Boolean = Convert.ToBoolean(dgvTVShows.Item("Mark", dgvHTI.RowIndex).Value)
+                    cmnuShowMark.Visible = Not bIsMarked
+                    cmnuShowUnmark.Visible = bIsMarked
 
                     'Tag submenu
                     mnuTagsTag.Tag = dgvTVShows.Item("Tag", dgvHTI.RowIndex).Value
@@ -7869,20 +7941,8 @@ Public Class frmMain
 
                     'Watched / Unwatched menu
                     Dim bIsWatched As Boolean = Convert.ToBoolean(dgvTVShows.Item("HasWatched", dgvHTI.RowIndex).Value)
-                    cmnuShowUnwatched.Visible = bIsWatched
                     cmnuShowWatched.Visible = Not bIsWatched
-
-                    If Not dgvTVShows.Rows(dgvHTI.RowIndex).Selected OrElse Not currList = 0 Then
-                        prevRow_TVShow = -1
-                        currList = 0
-                        dgvTVShows.CurrentCell = Nothing
-                        dgvTVShows.ClearSelection()
-                        dgvTVShows.Rows(dgvHTI.RowIndex).Selected = True
-                        dgvTVShows.CurrentCell = dgvTVShows.Item("ListTitle", dgvHTI.RowIndex)
-                        'cmnuShow.Enabled = True
-                    Else
-                        cmnuShow.Enabled = True
-                    End If
+                    cmnuShowUnwatched.Visible = bIsWatched
                 End If
             Else
                 cmnuShow.Enabled = False
