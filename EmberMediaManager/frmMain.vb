@@ -5719,7 +5719,8 @@ Public Class frmMain
             colName = "DiscArtPath" OrElse colName = "EFanartsPath" OrElse colName = "EThumbsPath" OrElse
             colName = "FanartPath" OrElse colName = "LandscapePath" OrElse colName = "NfoPath" OrElse
             colName = "PosterPath" OrElse colName = "ThemePath" OrElse colName = "TrailerPath" OrElse
-            colName = "HasSet" OrElse colName = "HasSub" OrElse colName = "iLastPlayed") AndAlso e.RowIndex = -1 Then
+            colName = "HasSet" OrElse colName = "HasSub" OrElse colName = "iLastPlayed" OrElse
+            colName = "Rating" OrElse colName = "iUserRating") AndAlso e.RowIndex = -1 Then
             e.PaintBackground(e.ClipBounds, False)
 
             Dim pt As Point = e.CellBounds.Location
@@ -5758,6 +5759,10 @@ Public Class frmMain
                 ilColumnIcons.Draw(e.Graphics, pt, 14)
             ElseIf colName = "iLastPlayed" Then
                 ilColumnIcons.Draw(e.Graphics, pt, 17)
+            ElseIf colName = "Rating" Then
+                ilColumnIcons.Draw(e.Graphics, pt, 18)
+            ElseIf colName = "iUserRating" Then
+                ilColumnIcons.Draw(e.Graphics, pt, 19)
             End If
 
             e.Handled = True
@@ -5769,27 +5774,21 @@ Public Class frmMain
             colName = "Rating" OrElse colName = "TMDB" OrElse colName = "Year") AndAlso e.RowIndex >= 0 Then
             If Convert.ToBoolean(dgvMovies.Item("Mark", e.RowIndex).Value) Then
                 e.CellStyle.ForeColor = Color.Crimson
-                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                 e.CellStyle.SelectionForeColor = Color.Crimson
             ElseIf Convert.ToBoolean(dgvMovies.Item("New", e.RowIndex).Value) Then
                 e.CellStyle.ForeColor = Color.Green
-                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                 e.CellStyle.SelectionForeColor = Color.Green
             ElseIf Convert.ToBoolean(dgvMovies.Item("MarkCustom1", e.RowIndex).Value) Then
                 e.CellStyle.ForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker1Color)
-                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                 e.CellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker1Color)
             ElseIf Convert.ToBoolean(dgvMovies.Item("MarkCustom2", e.RowIndex).Value) Then
                 e.CellStyle.ForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker2Color)
-                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                 e.CellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker2Color)
             ElseIf Convert.ToBoolean(dgvMovies.Item("MarkCustom3", e.RowIndex).Value) Then
                 e.CellStyle.ForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker3Color)
-                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                 e.CellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker3Color)
             ElseIf Convert.ToBoolean(dgvMovies.Item("MarkCustom4", e.RowIndex).Value) Then
                 e.CellStyle.ForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker4Color)
-                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                 e.CellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker4Color)
             Else
                 e.CellStyle.ForeColor = Color.Black
@@ -6348,11 +6347,9 @@ Public Class frmMain
         If (colName = "ListTitle") AndAlso e.RowIndex >= 0 Then
             If Convert.ToBoolean(dgvMovieSets.Item("Mark", e.RowIndex).Value) Then
                 e.CellStyle.ForeColor = Color.Crimson
-                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                 e.CellStyle.SelectionForeColor = Color.Crimson
             ElseIf Convert.ToBoolean(dgvMovieSets.Item("New", e.RowIndex).Value) Then
                 e.CellStyle.ForeColor = Color.Green
-                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                 e.CellStyle.SelectionForeColor = Color.Green
             Else
                 e.CellStyle.ForeColor = Color.Black
@@ -6764,7 +6761,8 @@ Public Class frmMain
 
         'icons for column header
         If (colName = "FanartPath" OrElse colName = "NfoPath" OrElse colName = "PosterPath" OrElse
-            colName = "HasSub" OrElse colName = "Playcount") AndAlso e.RowIndex = -1 Then
+            colName = "HasSub" OrElse colName = "Playcount" OrElse colName = "Rating" OrElse
+            colName = "iUserRating") AndAlso e.RowIndex = -1 Then
             e.PaintBackground(e.ClipBounds, False)
 
             Dim pt As Point = e.CellBounds.Location
@@ -6783,6 +6781,10 @@ Public Class frmMain
                 ilColumnIcons.Draw(e.Graphics, pt, 14)
             ElseIf colName = "Playcount" Then
                 ilColumnIcons.Draw(e.Graphics, pt, 17)
+            ElseIf colName = "Rating" Then
+                ilColumnIcons.Draw(e.Graphics, pt, 18)
+            ElseIf colName = "iUserRating" Then
+                ilColumnIcons.Draw(e.Graphics, pt, 19)
             End If
 
             e.Handled = True
@@ -6791,18 +6793,15 @@ Public Class frmMain
 
         'text fields
         If (colName = "Aired" OrElse colName = "Episode" OrElse colName = "Season" OrElse
-            colName = "Title") AndAlso e.RowIndex >= 0 Then
+            colName = "Title" OrElse colName = "Rating" OrElse colName = "iUserRating") AndAlso e.RowIndex >= 0 Then
             If Convert.ToInt64(dgvTVEpisodes.Item("idFile", e.RowIndex).Value) = -1 Then
                 e.CellStyle.ForeColor = Color.Gray
-                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Regular)
                 e.CellStyle.SelectionForeColor = Color.LightGray
             ElseIf Convert.ToBoolean(dgvTVEpisodes.Item("Mark", e.RowIndex).Value) Then
                 e.CellStyle.ForeColor = Color.Crimson
-                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                 e.CellStyle.SelectionForeColor = Color.Crimson
             ElseIf Convert.ToBoolean(dgvTVEpisodes.Item("New", e.RowIndex).Value) Then
                 e.CellStyle.ForeColor = Color.Green
-                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                 e.CellStyle.SelectionForeColor = Color.Green
             Else
                 e.CellStyle.ForeColor = Color.Black
@@ -7263,16 +7262,13 @@ Public Class frmMain
         If (colName = "SeasonText" OrElse colName = "Episodes") AndAlso e.RowIndex >= 0 Then
             If Convert.ToBoolean(dgvTVSeasons.Item("Missing", e.RowIndex).Value) AndAlso Not CInt(dgvTVSeasons.Item("Season", e.RowIndex).Value) = 999 Then
                 e.CellStyle.ForeColor = Color.Gray
-                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Regular)
                 e.CellStyle.SelectionForeColor = Color.LightGray
             ElseIf Convert.ToBoolean(dgvTVSeasons.Item("Mark", e.RowIndex).Value) Then
                 e.CellStyle.ForeColor = Color.Crimson
-                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                 e.CellStyle.SelectionForeColor = Color.Crimson
             ElseIf Convert.ToBoolean(dgvTVSeasons.Item("New", e.RowIndex).Value) OrElse
                 Not String.IsNullOrEmpty(dgvTVSeasons.Item("NewEpisodes", e.RowIndex).Value.ToString) AndAlso CInt(dgvTVSeasons.Item("NewEpisodes", e.RowIndex).Value) > 0 Then
                 e.CellStyle.ForeColor = Color.Green
-                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                 e.CellStyle.SelectionForeColor = Color.Green
             Else
                 e.CellStyle.ForeColor = Color.Black
@@ -7657,7 +7653,8 @@ Public Class frmMain
         If (colName = "BannerPath" OrElse colName = "CharacterArtPath" OrElse colName = "ClearArtPath" OrElse
             colName = "ClearLogoPath" OrElse colName = "EFanartsPath" OrElse colName = "FanartPath" OrElse
             colName = "LandscapePath" OrElse colName = "NfoPath" OrElse colName = "PosterPath" OrElse
-            colName = "ThemePath" OrElse colName = "HasWatched") AndAlso e.RowIndex = -1 Then
+            colName = "ThemePath" OrElse colName = "HasWatched" OrElse colName = "Rating" OrElse
+            colName = "iUserRating") AndAlso e.RowIndex = -1 Then
             e.PaintBackground(e.ClipBounds, False)
 
             Dim pt As Point = e.CellBounds.Location
@@ -7688,6 +7685,10 @@ Public Class frmMain
                 ilColumnIcons.Draw(e.Graphics, pt, 15)
             ElseIf colName = "HasWatched" Then
                 ilColumnIcons.Draw(e.Graphics, pt, 17)
+            ElseIf colName = "Rating" Then
+                ilColumnIcons.Draw(e.Graphics, pt, 18)
+            ElseIf colName = "iUserRating" Then
+                ilColumnIcons.Draw(e.Graphics, pt, 19)
             End If
 
             e.Handled = True
@@ -7695,15 +7696,14 @@ Public Class frmMain
         End If
 
         'text fields
-        If (colName = "ListTitle" OrElse colName = "Status") AndAlso e.RowIndex >= 0 Then
+        If (colName = "ListTitle" OrElse colName = "Episodes" OrElse colName = "strOriginalTitle" OrElse colName = "Status" OrElse
+            colName = "Rating" OrElse colName = "iUserRating") AndAlso e.RowIndex >= 0 Then
             If Convert.ToBoolean(dgvTVShows.Item("Mark", e.RowIndex).Value) Then
                 e.CellStyle.ForeColor = Color.Crimson
-                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                 e.CellStyle.SelectionForeColor = Color.Crimson
             ElseIf Convert.ToBoolean(dgvTVShows.Item("New", e.RowIndex).Value) OrElse
                 Not String.IsNullOrEmpty(dgvTVShows.Item("NewEpisodes", e.RowIndex).Value.ToString) AndAlso CInt(dgvTVShows.Item("NewEpisodes", e.RowIndex).Value) > 0 Then
                 e.CellStyle.ForeColor = Color.Green
-                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                 e.CellStyle.SelectionForeColor = Color.Green
             Else
                 e.CellStyle.ForeColor = Color.Black
@@ -8498,13 +8498,14 @@ Public Class frmMain
                 dgvMovies.Columns("iLastPlayed").SortMode = DataGridViewColumnSortMode.Automatic
                 dgvMovies.Columns("iLastPlayed").Visible = Not CheckColumnHide_Movies("iLastPlayed")
                 dgvMovies.Columns("iLastPlayed").ToolTipText = Master.eLang.GetString(981, "Watched")
+                dgvMovies.Columns("Imdb").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
+                dgvMovies.Columns("Imdb").MinimumWidth = 45
                 dgvMovies.Columns("Imdb").Resizable = DataGridViewTriState.False
                 dgvMovies.Columns("Imdb").ReadOnly = True
                 dgvMovies.Columns("Imdb").SortMode = DataGridViewColumnSortMode.Automatic
                 dgvMovies.Columns("Imdb").Visible = Not CheckColumnHide_Movies("Imdb")
-                dgvMovies.Columns("Imdb").ToolTipText = Master.eLang.GetString(61, "IMDB ID")
-                dgvMovies.Columns("Imdb").HeaderText = Master.eLang.GetString(61, "IMDB ID")
-                dgvMovies.Columns("Imdb").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
+                dgvMovies.Columns("Imdb").ToolTipText = "IMDB ID"
+                dgvMovies.Columns("Imdb").HeaderText = "IMDB"
                 dgvMovies.Columns("LandscapePath").Width = 20
                 dgvMovies.Columns("LandscapePath").Resizable = DataGridViewTriState.False
                 dgvMovies.Columns("LandscapePath").ReadOnly = True
@@ -8518,8 +8519,9 @@ Public Class frmMain
                 dgvMovies.Columns("ListTitle").Visible = True
                 dgvMovies.Columns("ListTitle").ToolTipText = Master.eLang.GetString(21, "Title")
                 dgvMovies.Columns("ListTitle").HeaderText = Master.eLang.GetString(21, "Title")
+                dgvMovies.Columns("MPAA").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
+                dgvMovies.Columns("MPAA").MinimumWidth = 45
                 dgvMovies.Columns("MPAA").Resizable = DataGridViewTriState.False
-                dgvMovies.Columns("MPAA").Width = 70
                 dgvMovies.Columns("MPAA").ReadOnly = True
                 dgvMovies.Columns("MPAA").SortMode = DataGridViewColumnSortMode.Automatic
                 dgvMovies.Columns("MPAA").Visible = Not CheckColumnHide_Movies("MPAA")
@@ -8531,59 +8533,68 @@ Public Class frmMain
                 dgvMovies.Columns("NfoPath").SortMode = DataGridViewColumnSortMode.Automatic
                 dgvMovies.Columns("NfoPath").Visible = Not CheckColumnHide_Movies("NfoPath")
                 dgvMovies.Columns("NfoPath").ToolTipText = Master.eLang.GetString(150, "Nfo")
+                dgvMovies.Columns("OriginalTitle").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
                 dgvMovies.Columns("OriginalTitle").Resizable = DataGridViewTriState.False
                 dgvMovies.Columns("OriginalTitle").ReadOnly = True
                 dgvMovies.Columns("OriginalTitle").SortMode = DataGridViewColumnSortMode.Automatic
                 dgvMovies.Columns("OriginalTitle").Visible = Not CheckColumnHide_Movies("OriginalTitle")
                 dgvMovies.Columns("OriginalTitle").ToolTipText = Master.eLang.GetString(302, "Original Title")
                 dgvMovies.Columns("OriginalTitle").HeaderText = Master.eLang.GetString(302, "Original Title")
-                dgvMovies.Columns("OriginalTitle").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
                 dgvMovies.Columns("PosterPath").Width = 20
                 dgvMovies.Columns("PosterPath").Resizable = DataGridViewTriState.False
                 dgvMovies.Columns("PosterPath").ReadOnly = True
                 dgvMovies.Columns("PosterPath").SortMode = DataGridViewColumnSortMode.Automatic
                 dgvMovies.Columns("PosterPath").Visible = Not CheckColumnHide_Movies("PosterPath")
                 dgvMovies.Columns("PosterPath").ToolTipText = Master.eLang.GetString(148, "Poster")
+                dgvMovies.Columns("Rating").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
+                dgvMovies.Columns("Rating").MinimumWidth = 30
                 dgvMovies.Columns("Rating").Resizable = DataGridViewTriState.False
                 dgvMovies.Columns("Rating").ReadOnly = True
                 dgvMovies.Columns("Rating").SortMode = DataGridViewColumnSortMode.Automatic
                 dgvMovies.Columns("Rating").Visible = Not CheckColumnHide_Movies("Rating")
                 dgvMovies.Columns("Rating").ToolTipText = Master.eLang.GetString(400, "Rating")
-                dgvMovies.Columns("Rating").HeaderText = Master.eLang.GetString(400, "Rating")
-                dgvMovies.Columns("Rating").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
                 dgvMovies.Columns("ThemePath").Width = 20
                 dgvMovies.Columns("ThemePath").Resizable = DataGridViewTriState.False
                 dgvMovies.Columns("ThemePath").ReadOnly = True
                 dgvMovies.Columns("ThemePath").SortMode = DataGridViewColumnSortMode.Automatic
                 dgvMovies.Columns("ThemePath").Visible = Not CheckColumnHide_Movies("ThemePath")
                 dgvMovies.Columns("ThemePath").ToolTipText = Master.eLang.GetString(1118, "Theme")
+                dgvMovies.Columns("TMDB").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
+                dgvMovies.Columns("TMDB").MinimumWidth = 45
                 dgvMovies.Columns("TMDB").Resizable = DataGridViewTriState.False
                 dgvMovies.Columns("TMDB").ReadOnly = True
                 dgvMovies.Columns("TMDB").SortMode = DataGridViewColumnSortMode.Automatic
                 dgvMovies.Columns("TMDB").Visible = Not CheckColumnHide_Movies("TMDB")
-                dgvMovies.Columns("TMDB").ToolTipText = Master.eLang.GetString(933, "TMDB ID")
-                dgvMovies.Columns("TMDB").HeaderText = Master.eLang.GetString(933, "TMDB ID")
-                dgvMovies.Columns("TMDB").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
+                dgvMovies.Columns("TMDB").ToolTipText = "TMDB ID"
+                dgvMovies.Columns("TMDB").HeaderText = "TMDB"
+                dgvMovies.Columns("Top250").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
+                dgvMovies.Columns("Top250").MinimumWidth = 35
                 dgvMovies.Columns("Top250").Resizable = DataGridViewTriState.False
                 dgvMovies.Columns("Top250").ReadOnly = True
                 dgvMovies.Columns("Top250").SortMode = DataGridViewColumnSortMode.Automatic
                 dgvMovies.Columns("Top250").Visible = Not CheckColumnHide_Movies("Top250")
-                dgvMovies.Columns("Top250").ToolTipText = "Top250"
-                dgvMovies.Columns("Top250").HeaderText = "Top250"
-                dgvMovies.Columns("Top250").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
+                dgvMovies.Columns("Top250").ToolTipText = "Top 250"
+                dgvMovies.Columns("Top250").HeaderText = "250"
                 dgvMovies.Columns("TrailerPath").Width = 20
                 dgvMovies.Columns("TrailerPath").Resizable = DataGridViewTriState.False
                 dgvMovies.Columns("TrailerPath").ReadOnly = True
                 dgvMovies.Columns("TrailerPath").SortMode = DataGridViewColumnSortMode.Automatic
                 dgvMovies.Columns("TrailerPath").Visible = Not CheckColumnHide_Movies("TrailerPath")
                 dgvMovies.Columns("TrailerPath").ToolTipText = Master.eLang.GetString(151, "Trailer")
+                dgvMovies.Columns("iUserRating").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
+                dgvMovies.Columns("iUserRating").MinimumWidth = 30
+                dgvMovies.Columns("iUserRating").Resizable = DataGridViewTriState.False
+                dgvMovies.Columns("iUserRating").ReadOnly = True
+                dgvMovies.Columns("iUserRating").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns("iUserRating").Visible = Not CheckColumnHide_Movies("iUserRating")
+                dgvMovies.Columns("iUserRating").ToolTipText = Master.eLang.GetString(1467, "User Rating")
+                dgvMovies.Columns("Year").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
                 dgvMovies.Columns("Year").Resizable = DataGridViewTriState.False
                 dgvMovies.Columns("Year").ReadOnly = True
                 dgvMovies.Columns("Year").SortMode = DataGridViewColumnSortMode.Automatic
                 dgvMovies.Columns("Year").Visible = Not CheckColumnHide_Movies("Year")
                 dgvMovies.Columns("Year").ToolTipText = Master.eLang.GetString(278, "Year")
                 dgvMovies.Columns("Year").HeaderText = Master.eLang.GetString(278, "Year")
-                dgvMovies.Columns("Year").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
 
                 dgvMovies.Columns("idMovie").ValueType = GetType(Long)
 
@@ -8786,26 +8797,40 @@ Public Class frmMain
                 dgvTVShows.Columns("PosterPath").SortMode = DataGridViewColumnSortMode.Automatic
                 dgvTVShows.Columns("PosterPath").Visible = Not CheckColumnHide_TVShows("PosterPath")
                 dgvTVShows.Columns("PosterPath").ToolTipText = Master.eLang.GetString(148, "Poster")
+                dgvTVShows.Columns("Rating").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
+                dgvTVShows.Columns("Rating").MinimumWidth = 30
+                dgvTVShows.Columns("Rating").Resizable = DataGridViewTriState.False
+                dgvTVShows.Columns("Rating").ReadOnly = True
+                dgvTVShows.Columns("Rating").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvTVShows.Columns("Rating").Visible = Not CheckColumnHide_TVShows("Rating")
+                dgvTVShows.Columns("Rating").ToolTipText = Master.eLang.GetString(400, "Rating")
+                dgvTVShows.Columns("Status").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
                 dgvTVShows.Columns("Status").Resizable = DataGridViewTriState.False
                 dgvTVShows.Columns("Status").ReadOnly = True
                 dgvTVShows.Columns("Status").SortMode = DataGridViewColumnSortMode.Automatic
                 dgvTVShows.Columns("Status").Visible = Not CheckColumnHide_TVShows("Status")
                 dgvTVShows.Columns("Status").ToolTipText = Master.eLang.GetString(215, "Status")
                 dgvTVShows.Columns("Status").HeaderText = Master.eLang.GetString(215, "Status")
-                dgvTVShows.Columns("Status").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
+                dgvTVShows.Columns("strOriginalTitle").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
                 dgvTVShows.Columns("strOriginalTitle").Resizable = DataGridViewTriState.False
                 dgvTVShows.Columns("strOriginalTitle").ReadOnly = True
                 dgvTVShows.Columns("strOriginalTitle").SortMode = DataGridViewColumnSortMode.Automatic
                 dgvTVShows.Columns("strOriginalTitle").Visible = Not CheckColumnHide_TVShows("strOriginalTitle")
                 dgvTVShows.Columns("strOriginalTitle").ToolTipText = Master.eLang.GetString(302, "Original Title")
                 dgvTVShows.Columns("strOriginalTitle").HeaderText = Master.eLang.GetString(302, "Original Title")
-                dgvTVShows.Columns("strOriginalTitle").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
                 dgvTVShows.Columns("ThemePath").Width = 20
                 dgvTVShows.Columns("ThemePath").Resizable = DataGridViewTriState.False
                 dgvTVShows.Columns("ThemePath").ReadOnly = True
                 dgvTVShows.Columns("ThemePath").SortMode = DataGridViewColumnSortMode.Automatic
                 dgvTVShows.Columns("ThemePath").Visible = Not CheckColumnHide_TVShows("ThemePath")
                 dgvTVShows.Columns("ThemePath").ToolTipText = Master.eLang.GetString(1118, "Theme")
+                dgvTVShows.Columns("iUserRating").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
+                dgvTVShows.Columns("iUserRating").MinimumWidth = 30
+                dgvTVShows.Columns("iUserRating").Resizable = DataGridViewTriState.False
+                dgvTVShows.Columns("iUserRating").ReadOnly = True
+                dgvTVShows.Columns("iUserRating").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvTVShows.Columns("iUserRating").Visible = Not CheckColumnHide_TVShows("iUserRating")
+                dgvTVShows.Columns("iUserRating").ToolTipText = Master.eLang.GetString(1467, "User Rating")
 
                 dgvTVShows.Columns("idShow").ValueType = GetType(Long)
 
@@ -8903,8 +8928,8 @@ Public Class frmMain
         dgvTVEpisodes.Columns("Aired").Visible = sEpisodeSorting = Enums.EpisodeSorting.Aired
         dgvTVEpisodes.Columns("Aired").ToolTipText = Master.eLang.GetString(728, "Aired")
         dgvTVEpisodes.Columns("Aired").HeaderText = Master.eLang.GetString(728, "Aired")
-        dgvTVEpisodes.Columns("Episode").Resizable = DataGridViewTriState.False
         dgvTVEpisodes.Columns("Episode").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader
+        dgvTVEpisodes.Columns("Episode").Resizable = DataGridViewTriState.False
         dgvTVEpisodes.Columns("Episode").ReadOnly = True
         dgvTVEpisodes.Columns("Episode").MinimumWidth = If(Season = 999, 35, 70)
         dgvTVEpisodes.Columns("Episode").SortMode = DataGridViewColumnSortMode.Automatic
@@ -8942,9 +8967,16 @@ Public Class frmMain
         dgvTVEpisodes.Columns("PosterPath").SortMode = DataGridViewColumnSortMode.Automatic
         dgvTVEpisodes.Columns("PosterPath").Visible = Not CheckColumnHide_TVEpisodes("PosterPath")
         dgvTVEpisodes.Columns("PosterPath").ToolTipText = Master.eLang.GetString(148, "Poster")
+        dgvTVEpisodes.Columns("Rating").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
+        dgvTVEpisodes.Columns("Rating").MinimumWidth = 30
+        dgvTVEpisodes.Columns("Rating").Resizable = DataGridViewTriState.False
+        dgvTVEpisodes.Columns("Rating").ReadOnly = True
+        dgvTVEpisodes.Columns("Rating").SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVEpisodes.Columns("Rating").Visible = Not CheckColumnHide_TVEpisodes("Rating")
+        dgvTVEpisodes.Columns("Rating").ToolTipText = Master.eLang.GetString(400, "Rating")
+        dgvTVEpisodes.Columns("Season").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader
         dgvTVEpisodes.Columns("Season").MinimumWidth = 35
         dgvTVEpisodes.Columns("Season").Resizable = DataGridViewTriState.False
-        dgvTVEpisodes.Columns("Season").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader
         dgvTVEpisodes.Columns("Season").ReadOnly = True
         dgvTVEpisodes.Columns("Season").SortMode = DataGridViewColumnSortMode.Automatic
         dgvTVEpisodes.Columns("Season").Visible = Season = 999
@@ -8958,6 +8990,13 @@ Public Class frmMain
         dgvTVEpisodes.Columns("Title").Visible = True
         dgvTVEpisodes.Columns("Title").ToolTipText = Master.eLang.GetString(21, "Title")
         dgvTVEpisodes.Columns("Title").HeaderText = Master.eLang.GetString(21, "Title")
+        dgvTVEpisodes.Columns("iUserRating").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
+        dgvTVEpisodes.Columns("iUserRating").MinimumWidth = 30
+        dgvTVEpisodes.Columns("iUserRating").Resizable = DataGridViewTriState.False
+        dgvTVEpisodes.Columns("iUserRating").ReadOnly = True
+        dgvTVEpisodes.Columns("iUserRating").SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVEpisodes.Columns("iUserRating").Visible = Not CheckColumnHide_TVEpisodes("iUserRating")
+        dgvTVEpisodes.Columns("iUserRating").ToolTipText = Master.eLang.GetString(1467, "User Rating")
 
         dgvTVEpisodes.Columns("idEpisode").ValueType = GetType(Long)
         dgvTVEpisodes.Columns("idShow").ValueType = GetType(Long)
