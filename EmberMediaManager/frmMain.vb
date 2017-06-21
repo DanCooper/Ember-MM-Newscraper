@@ -16416,6 +16416,14 @@ Public Class frmMain
         End If
     End Sub
 
+    Private Sub mnuMainEdit_DropDownOpening(sender As Object, e As EventArgs) Handles mnuMainEdit.DropDownOpening
+        mnuMainEditSettings.Enabled = Not ModulesManager.Instance.QueryAnyGenericIsBusy
+    End Sub
+
+    Private Sub cmnuTray_Opening(sender As Object, e As EventArgs) Handles cmnuTray.Opening
+        cmnuTraySettings.Enabled = Not ModulesManager.Instance.QueryAnyGenericIsBusy
+    End Sub
+
     Private Sub mnuMainEditSettings_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainEditSettings.Click, cmnuTraySettings.Click
         Try
             SetControlsEnabled(False)
