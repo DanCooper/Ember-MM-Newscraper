@@ -8785,6 +8785,14 @@ Public Class frmMain
                 dgvTVShows.Columns("ListTitle").Visible = True
                 dgvTVShows.Columns("ListTitle").ToolTipText = Master.eLang.GetString(21, "Title")
                 dgvTVShows.Columns("ListTitle").HeaderText = Master.eLang.GetString(21, "Title")
+                dgvTVShows.Columns("MPAA").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
+                dgvTVShows.Columns("MPAA").MinimumWidth = 45
+                dgvTVShows.Columns("MPAA").Resizable = DataGridViewTriState.False
+                dgvTVShows.Columns("MPAA").ReadOnly = True
+                dgvTVShows.Columns("MPAA").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvTVShows.Columns("MPAA").Visible = Not CheckColumnHide_TVShows("MPAA")
+                dgvTVShows.Columns("MPAA").ToolTipText = Master.eLang.GetString(401, "MPAA")
+                dgvTVShows.Columns("MPAA").HeaderText = Master.eLang.GetString(401, "MPAA")
                 dgvTVShows.Columns("NfoPath").Width = 20
                 dgvTVShows.Columns("NfoPath").Resizable = DataGridViewTriState.False
                 dgvTVShows.Columns("NfoPath").ReadOnly = True
