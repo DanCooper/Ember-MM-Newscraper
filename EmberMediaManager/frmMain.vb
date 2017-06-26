@@ -538,6 +538,7 @@ Public Class frmMain
             pbMPAA.Image = Nothing
         End If
         pbStudio.Image = Nothing
+        pbVideoChannels.Image = Nothing
         pbVideoSource.Image = Nothing
         pbVideoCodec.Image = Nothing
         pbAudioCodec.Image = Nothing
@@ -9478,8 +9479,8 @@ Public Class frmMain
 
         If Master.eSettings.MovieScraperMetaDataScan Then
             SetAVImages(APIXML.GetAVImages(currMovie.Movie.FileInfo, currMovie.Filename, False, currMovie.Movie.VideoSource))
-            pnlInfoIcons.Width = pbVideoSource.Width + pbVideoCodec.Width + pbVideoResolution.Width + pbAudioCodec.Width + pbAudioChannels.Width + pbStudio.Width + 6
-            pbStudio.Left = pbVideoSource.Width + pbVideoCodec.Width + pbVideoResolution.Width + pbAudioCodec.Width + pbAudioChannels.Width + 5
+            pnlInfoIcons.Width = pbVideoChannels.Width + pbVideoSource.Width + pbVideoCodec.Width + pbVideoResolution.Width + pbAudioCodec.Width + pbAudioChannels.Width + pbStudio.Width + 6
+            pbStudio.Left = pbVideoChannels.Width + pbVideoSource.Width + pbVideoCodec.Width + pbVideoResolution.Width + pbAudioCodec.Width + pbAudioChannels.Width + 5
         Else
             pnlInfoIcons.Width = pbStudio.Width + 1
             pbStudio.Left = 0
@@ -9644,8 +9645,8 @@ Public Class frmMain
         End If
         If Master.eSettings.TVScraperMetaDataScan AndAlso Not String.IsNullOrEmpty(currTV.Filename) Then
             SetAVImages(APIXML.GetAVImages(currTV.TVEpisode.FileInfo, currTV.Filename, True, currTV.TVEpisode.VideoSource))
-            pnlInfoIcons.Width = pbVideoSource.Width + pbVideoCodec.Width + pbVideoResolution.Width + pbAudioCodec.Width + pbAudioChannels.Width + pbStudio.Width + 6
-            pbStudio.Left = pbVideoSource.Width + pbVideoCodec.Width + pbVideoResolution.Width + pbAudioCodec.Width + pbAudioChannels.Width + 5
+            pnlInfoIcons.Width = pbVideoChannels.Width + pbVideoSource.Width + pbVideoCodec.Width + pbVideoResolution.Width + pbAudioCodec.Width + pbAudioChannels.Width + pbStudio.Width + 6
+            pbStudio.Left = pbVideoChannels.Width + pbVideoSource.Width + pbVideoCodec.Width + pbVideoResolution.Width + pbAudioCodec.Width + pbAudioChannels.Width + 5
         Else
             pnlInfoIcons.Width = pbStudio.Width + 1
             pbStudio.Left = 0
@@ -15886,6 +15887,7 @@ Public Class frmMain
         pbSubtitleLang4.Image = aImage(16)
         pbSubtitleLang5.Image = aImage(17)
         pbSubtitleLang6.Image = aImage(18)
+        pbVideoChannels.Image = aImage(19)
 
         ToolTips.SetToolTip(pbAudioLang0, If(pbAudioLang0.Image IsNot Nothing, pbAudioLang0.Image.Tag.ToString, String.Empty))
         ToolTips.SetToolTip(pbAudioLang1, If(pbAudioLang1.Image IsNot Nothing, pbAudioLang1.Image.Tag.ToString, String.Empty))
