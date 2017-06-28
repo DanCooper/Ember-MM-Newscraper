@@ -1254,7 +1254,7 @@ Public Class dlgTrakttvManager
     ''' 2015/02/21 Cocotus - First implementation
     ''' Edit rating and store new value in globalwatchedMovieData
     Private Sub dgvPlaycount_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvPlaycount.CellEndEdit
-        If e.RowIndex > -1 AndAlso e.ColumnIndex = 4 AndAlso dgvPlaycount.CurrentCell.RowIndex > -1 AndAlso _myWatchedRatedMovies IsNot Nothing Then
+        If e.RowIndex > -1 AndAlso e.ColumnIndex = 5 AndAlso dgvPlaycount.CurrentCell.RowIndex > -1 AndAlso _myWatchedRatedMovies IsNot Nothing Then
             Dim intNewRating As Integer = -1
             If Integer.TryParse(dgvPlaycount.Rows(dgvPlaycount.CurrentCell.RowIndex).Cells("colPlaycountRating").Value.ToString, intNewRating) AndAlso intNewRating >= 0 AndAlso intNewRating <= 10 Then
                 'search by TraktID
@@ -1266,6 +1266,8 @@ Public Class dlgTrakttvManager
                     nMovie.Modified = True
                     btnPlaycountSyncRating.Enabled = True
                 End If
+                'rewrite the new value to change the object type from String to Integer
+                dgvPlaycount.Rows(dgvPlaycount.CurrentCell.RowIndex).Cells("colPlaycountRating").Value = intNewRating
             Else
                 dgvPlaycount.Rows(dgvPlaycount.CurrentCell.RowIndex).Cells("colPlaycountRating").Value = 0
             End If
