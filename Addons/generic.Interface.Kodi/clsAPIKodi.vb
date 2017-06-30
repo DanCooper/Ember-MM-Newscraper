@@ -559,8 +559,10 @@ Namespace Kodi
                         Next
                         tPathAndFilename.strPath = Directory.GetParent(Directory.GetParent(tDBElement.Filename).FullName).FullName
                     Else
-                        If FileUtils.Common.isStacked(tDBElement.Filename) Then
-                            tPathAndFilename.bIsMultiPart = True
+                        If FileUtils.Common.isStacked(tDBElement.Filename) OrElse
+                            Path.GetExtension(tDBElement.Filename).ToLower = ".rar" OrElse
+                            Path.GetExtension(tDBElement.Filename).ToLower = ".zip" Then
+                            tPathAndFilename.bSpecialHandling = True
                             tPathAndFilename.strFilename = tDBElement.Filename
                             tPathAndFilename.strPath = Directory.GetParent(tDBElement.Filename).FullName
                         Else
@@ -622,8 +624,13 @@ Namespace Kodi
             If String.IsNullOrEmpty(strRemotePath) Then logger.Error(String.Format("[APIKodi] [{0}] GetRemotePath: ""{1}"" | Source not mapped!", _currenthost.Label, strLocalPath))
 
             'Path encoding if needed
-            If Regex.IsMatch(strRemotePath, "davs?:\/\/") Then
-                strRemotePath = HttpUtility.UrlEncode(strRemotePath)
+            If Regex.IsMatch(strRemotePath, "davs?:\/\/") OrElse
+                Path.GetExtension(strRemotePath).ToLower = ".rar" OrElse
+                Path.GetExtension(strRemotePath).ToLower = ".zip" Then
+                'HttpUtility.UrlEncode does escape SPACE as + and not as %20, so we have to use Uri.EscapeDataString.
+                'Uri.EscapeDataString use upper case for all escaped chars, Kodi use lower case. But it works, so it
+                'looks like Kodi use .ToLower for comparing
+                strRemotePath = Uri.EscapeDataString(strRemotePath)
             End If
 
             Return strRemotePath
@@ -815,7 +822,7 @@ Namespace Kodi
             Dim kMovies As VideoLibrary.GetMoviesResponse
 
             Dim tPathAndFilename As PathAndFilename = GetPathAndFilename(tDBElement)
-            Dim strFilename As String = If(tPathAndFilename.bIsMultiPart, GetRemotePath(tPathAndFilename.strFilename), tPathAndFilename.strFilename)
+            Dim strFilename As String = If(tPathAndFilename.bSpecialHandling, GetRemotePath(tPathAndFilename.strFilename), tPathAndFilename.strFilename)
             Dim strRemotePath As String = GetRemotePath(tPathAndFilename.strPath)
 
             If Not String.IsNullOrEmpty(strRemotePath) Then
@@ -828,7 +835,7 @@ Namespace Kodi
                     filter.and.Add(filterRule_Path)
                     Dim filterRule_Filename As New List.Filter.Rule.Movies
                     filterRule_Filename.field = List.Filter.Fields.Movies.filename
-                    filterRule_Filename.Operator = If(tPathAndFilename.bIsMultiPart, List.Filter.Operators.contains, List.Filter.Operators.Is)
+                    filterRule_Filename.Operator = If(tPathAndFilename.bSpecialHandling, List.Filter.Operators.contains, List.Filter.Operators.Is)
                     filterRule_Filename.value = strFilename
                     filter.and.Add(filterRule_Filename)
 
@@ -931,7 +938,7 @@ Namespace Kodi
             Dim kTVEpisodes As VideoLibrary.GetEpisodesResponse
 
             Dim tPathAndFilename As PathAndFilename = GetPathAndFilename(tDBElement)
-            Dim strFilename As String = If(tPathAndFilename.bIsMultiPart, GetRemotePath(tPathAndFilename.strFilename), tPathAndFilename.strFilename)
+            Dim strFilename As String = If(tPathAndFilename.bSpecialHandling, GetRemotePath(tPathAndFilename.strFilename), tPathAndFilename.strFilename)
             Dim strRemotePath As String = GetRemotePath(tPathAndFilename.strPath)
 
             If Not String.IsNullOrEmpty(strRemotePath) Then
@@ -2465,7 +2472,7 @@ Namespace Kodi
         End Class
 
         Structure PathAndFilename
-            Dim bIsMultiPart As Boolean
+            Dim bSpecialHandling As Boolean
             Dim strPath As String
             Dim strFilename As String
         End Structure
