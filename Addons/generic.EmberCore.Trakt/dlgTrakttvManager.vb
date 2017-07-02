@@ -782,6 +782,8 @@ Public Class dlgTrakttvManager
             dgvPlaycount.AutoGenerateColumns = True
             btnSaveWatchedStateToEmber.Enabled = True
             btnPlaycountSyncWatched_Movies.Enabled = True
+            dgvPlaycount.Columns("colPlaycountProgress").Visible = False
+            dgvPlaycount.Columns("colPlaycountRating").Visible = True
             'we map to dgv manually
             dgvPlaycount.AutoGenerateColumns = False
             'fill rows
@@ -817,13 +819,15 @@ Public Class dlgTrakttvManager
             dgvPlaycount.Rows.Clear()
             btnSaveWatchedStateToEmber.Enabled = False
             btnPlaycountSyncWatched_Movies.Enabled = True
-            logger.Info("No watched movies scraped from trakt.tv!")
+            logger.Info("No watched episodes scraped from trakt.tv!")
             Exit Sub
         Else
             _myWatchedProgressTVShows = _TraktAPI.GetWatchedProgress_TVShows(_myWatchedTVEpisodes)
             dgvPlaycount.AutoGenerateColumns = True
             btnSaveWatchedStateToEmber.Enabled = True
             btnPlaycountSyncWatched_TVShows.Enabled = True
+            dgvPlaycount.Columns("colPlaycountProgress").Visible = _bGetShowProgress
+            dgvPlaycount.Columns("colPlaycountRating").Visible = False
             'we map to dgv manually
             dgvPlaycount.AutoGenerateColumns = False
             'fill rows
@@ -849,54 +853,52 @@ Public Class dlgTrakttvManager
     Private Sub btnPlaycountSyncRating_Click(sender As Object, e As EventArgs) Handles btnPlaycountSyncRating.Click
         Dim response As String = Master.eLang.GetString(1371, "Submit ratings to trakt.tv") & "? " & Master.eLang.GetString(36, "Movies") & ":" & Environment.NewLine
         Dim postRatings As Boolean = False
-        'Add movies with ratings > 0 
-        Dim tmpAddRating As New TraktAPI.Model.TraktSyncMoviesRated With {.Movies = New List(Of TraktAPI.Model.TraktSyncMovieRated)}
-        For Each tMovie In _myWatchedRatedMovies.Where(Function(f) f.Modified AndAlso f.Rating > 0)
-            tmpAddRating.Movies.Add(New TraktAPI.Model.TraktSyncMovieRated With {
-                                    .Ids = tMovie.Movie.Ids,
-                                    .RatedAt = tMovie.RatedAt,
-                                    .Rating = tMovie.Rating,
-                                    .Title = tMovie.Movie.Title,
-                                    .Year = tMovie.Movie.Year})
-            postRatings = True
-            response = response & tMovie.Movie.Title & Environment.NewLine
-        Next
-        'Remove movies with ratings = 0 
-        Dim tmpRemoveRating As New TraktAPI.Model.TraktSyncMovies With {.Movies = New List(Of TraktAPI.Model.TraktMovie)}
-        For Each tMovie In _myWatchedRatedMovies.Where(Function(f) f.Modified AndAlso f.Rating = 0)
-            tmpRemoveRating.Movies.Add(New TraktAPI.Model.TraktSyncMovieRated With {
-                                       .Ids = tMovie.Movie.Ids,
-                                       .RatedAt = tMovie.RatedAt,
-                                       .Rating = tMovie.Rating,
-                                       .Title = tMovie.Movie.Title,
-                                       .Year = tMovie.Movie.Year})
-            postRatings = True
-            response = response & tMovie.Movie.Title & Environment.NewLine
-        Next
-        If postRatings Then
-            If MessageBox.Show(response, Master.eLang.GetString(356, "Warning"), MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) = DialogResult.Yes Then
-                Dim iAdded As Integer
-                Dim iRemoved As Integer
-                If tmpAddRating.Movies.Count > 0 Then
-                    Dim traktResponse = _TraktAPI.Rating_AddMovies(tmpAddRating)
-                    If traktResponse IsNot Nothing Then
-                        iAdded = traktResponse.Added.Movies
+        If _myWatchedMovies IsNot Nothing Then
+            'Add movies with rating > 0 
+            Dim tmpAddRating As New TraktAPI.Model.TraktSyncMoviesRated With {.Movies = New List(Of TraktAPI.Model.TraktSyncMovieRated)}
+            For Each tMovie In _myWatchedRatedMovies.Where(Function(f) f.Modified AndAlso f.Rating > 0)
+                tmpAddRating.Movies.Add(New TraktAPI.Model.TraktSyncMovieRated With {
+                                        .Ids = tMovie.Movie.Ids,
+                                        .RatedAt = tMovie.RatedAt,
+                                        .Rating = tMovie.Rating,
+                                        .Title = tMovie.Movie.Title,
+                                        .Year = tMovie.Movie.Year})
+                postRatings = True
+                response = response & tMovie.Movie.Title & Environment.NewLine
+            Next
+            'Remove movies with rating = 0 
+            Dim tmpRemoveRating As New TraktAPI.Model.TraktSyncMovies With {.Movies = New List(Of TraktAPI.Model.TraktMovie)}
+            For Each tMovie In _myWatchedRatedMovies.Where(Function(f) f.Modified AndAlso f.Rating = 0)
+                tmpRemoveRating.Movies.Add(New TraktAPI.Model.TraktMovie With {
+                                           .Ids = tMovie.Movie.Ids})
+                postRatings = True
+                response = response & tMovie.Movie.Title & Environment.NewLine
+            Next
+            If postRatings Then
+                If MessageBox.Show(response, Master.eLang.GetString(356, "Warning"), MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) = DialogResult.Yes Then
+                    Dim iAdded As Integer
+                    Dim iRemoved As Integer
+                    If tmpAddRating.Movies.Count > 0 Then
+                        Dim traktResponse = _TraktAPI.Rating_AddMovies(tmpAddRating)
+                        If traktResponse IsNot Nothing Then
+                            iAdded = traktResponse.Added.Movies
+                        End If
                     End If
-                End If
-                If tmpRemoveRating.Movies.Count > 0 Then
-                    Dim traktResponse = _TraktAPI.Rating_RemoveMovies(tmpRemoveRating)
-                    If traktResponse IsNot Nothing Then
-                        iRemoved = traktResponse.Deleted.Movies
+                    If tmpRemoveRating.Movies.Count > 0 Then
+                        Dim traktResponse = _TraktAPI.Rating_RemoveMovies(tmpRemoveRating)
+                        If traktResponse IsNot Nothing Then
+                            iRemoved = traktResponse.Deleted.Movies
+                        End If
                     End If
+                    If iAdded > 0 OrElse iRemoved > 0 Then
+                        logger.Info("Added Ratings to trakt.tv!")
+                        response = Master.eLang.GetString(1372, "Added Ratings to trakt.tv!")
+                    Else
+                        logger.Info("No Ratings submitted!")
+                        response = Master.eLang.GetString(1373, "No Ratings submitted!")
+                    End If
+                    MessageBox.Show(response, Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1)
                 End If
-                If iAdded > 0 OrElse iRemoved > 0 Then
-                    logger.Info("Added Ratings to trakt.tv!")
-                    response = Master.eLang.GetString(1372, "Added Ratings to trakt.tv!")
-                Else
-                    logger.Info("No Ratings submitted!")
-                    response = Master.eLang.GetString(1373, "No Ratings submitted!")
-                End If
-                MessageBox.Show(response, Master.eLang.GetString(356, "Warning"), MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1)
             End If
         End If
     End Sub

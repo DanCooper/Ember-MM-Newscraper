@@ -284,8 +284,7 @@ Public Class clsAPITrakt
 
     Public Function Rating_RemoveMovies(ByVal tMovies As TraktAPI.Model.TraktSyncMovies) As TraktAPI.Model.TraktResponse
         If CheckConnection() Then
-            'TODO: fix removing
-            'Return TrakttvAPI.RemoveMoviesFromRatings(tMovies)
+            Return TrakttvAPI.RemoveMoviesFromRatings(tMovies)
             Return Nothing
         Else
             Return Nothing
