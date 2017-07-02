@@ -255,7 +255,7 @@ Public Class TraktInterface
     Private Sub MyMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsTrakt.Click, cmnuTrayToolsTrakt.Click
         RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", False}))
 
-        Using dTrakttvManager As New dlgTrakttvManager(_TraktAPI)
+        Using dTrakttvManager As New dlgTrakttvManager(_TraktAPI, _SpecialSettings.GetShowProgress)
             dTrakttvManager.ShowDialog()
         End Using
 

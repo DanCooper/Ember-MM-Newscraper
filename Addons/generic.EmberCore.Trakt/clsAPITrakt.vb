@@ -46,6 +46,12 @@ Public Class clsAPITrakt
         End Get
     End Property
 
+    ReadOnly Property Username() As String
+        Get
+            Return _SpecialSettings.Username
+        End Get
+    End Property
+
 #End Region 'Properties
 
 #Region "Methods"
@@ -97,12 +103,83 @@ Public Class clsAPITrakt
         Return TraktSettings.Token
     End Function
 
+    Public Function AddToWatchedHistory_Movies(ByVal tMovies As TraktAPI.Model.TraktSyncMoviesWatched) As TraktAPI.Model.TraktResponse
+        If CheckConnection() Then
+            Return TrakttvAPI.AddMoviesToWatchedHistory(tMovies)
+        Else
+            Return Nothing
+        End If
+    End Function
+
+    Public Function AddToWatchedHistoryEx_TVShows(ByVal tTVShows As TraktAPI.Model.TraktSyncShowsWatchedEx) As TraktAPI.Model.TraktResponse
+        If CheckConnection() Then
+            Return TrakttvAPI.AddShowsToWatchedHistoryEx(tTVShows)
+        Else
+            Return Nothing
+        End If
+    End Function
+
+    Public Function AddToWatchlist_Movies(ByVal tMovies As TraktAPI.Model.TraktSyncMovies) As TraktAPI.Model.TraktResponse
+        If CheckConnection() Then
+            Return TrakttvAPI.RemoveMoviesFromWatchlist(tMovies)
+        Else
+            Return Nothing
+        End If
+    End Function
+
+    Public Function Comment_AddMovie(ByVal tMovie As TraktAPI.Model.TraktCommentMovie) As TraktAPI.Model.TraktComment
+        If CheckConnection() Then
+            Return TrakttvAPI.AddCommentForMovie(tMovie)
+        Else
+            Return Nothing
+        End If
+    End Function
+
+    Public Function Comment_GetComments(ByVal strCommentType As String, ByVal strType As String) As IEnumerable(Of TraktAPI.Model.TraktCommentItem)
+        If CheckConnection() Then
+            Return TrakttvAPI.GetComments(Username, strCommentType, strType)
+        Else
+            Return Nothing
+        End If
+    End Function
+
+    Public Function Comment_Remove(ByVal iCommentID As Integer) As Boolean
+        If CheckConnection() Then
+            Return TrakttvAPI.RemoveCommentOrReply(iCommentID)
+        Else
+            Return False
+        End If
+    End Function
+
+    Public Function Comment_Update(ByVal iCommentID As String, ByVal st As TraktAPI.Model.TraktCommentBase) As TraktAPI.Model.TraktComment
+        If CheckConnection() Then
+            Return TrakttvAPI.UpdateComment(iCommentID, st)
+        Else
+            Return Nothing
+        End If
+    End Function
+
+    Public Function GetNetworkFriends() As IEnumerable(Of TraktAPI.Model.TraktNetworkFriend)
+        If CheckConnection() Then
+            Return TrakttvAPI.GetNetworkFriends()
+        Else
+            Return Nothing
+        End If
+    End Function
+
+    Public Function GetNetworkFollowing() As IEnumerable(Of TraktAPI.Model.TraktNetworkUser)
+        If CheckConnection() Then
+            Return TrakttvAPI.GetNetworkFollowing()
+        Else
+            Return Nothing
+        End If
+    End Function
+
     Public Function GetProcess_TVShow(ByVal strTraktID As String) As TraktAPI.Model.TraktShowProgress
         If String.IsNullOrEmpty(strTraktID) Then Return Nothing
 
         If CheckConnection() Then
-            Dim tProgressTVShow As TraktAPI.Model.TraktShowProgress = TrakttvAPI.GetProgressShow(strTraktID)
-            Return tProgressTVShow
+            Return TrakttvAPI.GetProgressShow(strTraktID)
         Else
             Return Nothing
         End If
@@ -110,8 +187,7 @@ Public Class clsAPITrakt
 
     Public Function GetRated_Movies() As IEnumerable(Of TraktAPI.Model.TraktMovieRated)
         If CheckConnection() Then
-            Dim lRatedMovies As IEnumerable(Of TraktAPI.Model.TraktMovieRated) = TrakttvAPI.GetRatedMovies
-            Return lRatedMovies
+            Return TrakttvAPI.GetRatedMovies
         Else
             Return Nothing
         End If
@@ -119,8 +195,7 @@ Public Class clsAPITrakt
 
     Public Function GetRated_TVEpisodes() As IEnumerable(Of TraktAPI.Model.TraktEpisodeRated)
         If CheckConnection() Then
-            Dim lRatedTVEpisodes As IEnumerable(Of TraktAPI.Model.TraktEpisodeRated) = TrakttvAPI.GetRatedEpisodes
-            Return lRatedTVEpisodes
+            Return TrakttvAPI.GetRatedEpisodes
         Else
             Return Nothing
         End If
@@ -128,8 +203,7 @@ Public Class clsAPITrakt
 
     Public Function GetWatched_Movies() As IEnumerable(Of TraktAPI.Model.TraktMovieWatched)
         If CheckConnection() Then
-            Dim lWatchedMovies As IEnumerable(Of TraktAPI.Model.TraktMovieWatched) = TrakttvAPI.GetWatchedMovies
-            Return lWatchedMovies
+            Return TrakttvAPI.GetWatchedMovies
         Else
             Return Nothing
         End If
@@ -137,16 +211,30 @@ Public Class clsAPITrakt
 
     Public Function GetWatched_TVEpisodes() As IEnumerable(Of TraktAPI.Model.TraktEpisodeWatched)
         If CheckConnection() Then
-            Dim lWatchedTVEpisodes As IEnumerable(Of TraktAPI.Model.TraktEpisodeWatched) = TrakttvAPI.GetWatchedEpisodes
-            Return lWatchedTVEpisodes
+            Return TrakttvAPI.GetWatchedEpisodes
+        Else
+            Return Nothing
+        End If
+    End Function
+
+    Public Function GetWatchedHistory_Movies() As List(Of TraktAPI.Model.TraktMovieHistory)
+        If CheckConnection() Then
+            Return TrakttvAPI.GetUsersMovieWatchedHistory(Username)
+        Else
+            Return Nothing
+        End If
+    End Function
+
+    Public Function GetWatchList_Movies() As IEnumerable(Of TraktAPI.Model.TraktMovieWatchList)
+        If CheckConnection() Then
+            Return TrakttvAPI.GetWatchListMovies(Username)
         Else
             Return Nothing
         End If
     End Function
 
     Public Function GetWatchedProcess_TVShows() As List(Of TraktAPI.Model.TraktShowWatchedProgress)
-        Dim WatchedTVShows = GetWatched_TVEpisodes()
-        Return GetWatchedProgress_TVShows(WatchedTVShows)
+        Return GetWatchedProgress_TVShows(GetWatched_TVEpisodes())
     End Function
 
     Public Function GetWatchedProgress_TVShows(ByVal WatchedTVEpisodes As IEnumerable(Of TraktAPI.Model.TraktEpisodeWatched)) As List(Of TraktAPI.Model.TraktShowWatchedProgress)
@@ -183,9 +271,25 @@ Public Class clsAPITrakt
     End Function
 
     Public Function GetWatchedRated_Movies() As List(Of TraktAPI.Model.TraktMovieWatchedRated)
-        Dim WatchedMovies = GetWatched_Movies()
-        Dim RatedMovies = GetRated_Movies()
-        Return GetWatchedRated_Movies(WatchedMovies, RatedMovies)
+        Return GetWatchedRated_Movies(GetWatched_Movies(), GetRated_Movies())
+    End Function
+
+    Public Function Rating_AddMovies(ByVal tMovies As TraktAPI.Model.TraktSyncMoviesRated) As TraktAPI.Model.TraktResponse
+        If CheckConnection() Then
+            Return TrakttvAPI.AddMoviesToRatings(tMovies)
+        Else
+            Return Nothing
+        End If
+    End Function
+
+    Public Function Rating_RemoveMovies(ByVal tMovies As TraktAPI.Model.TraktSyncMovies) As TraktAPI.Model.TraktResponse
+        If CheckConnection() Then
+            'TODO: fix removing
+            'Return TrakttvAPI.RemoveMoviesFromRatings(tMovies)
+            Return Nothing
+        Else
+            Return Nothing
+        End If
     End Function
 
     Public Function RemoveFromCollection_Movie(ByVal tDBElement As Database.DBElement) As Boolean
@@ -208,6 +312,30 @@ Public Class clsAPITrakt
             End If
         Else
             logger.Error(Master.eLang.GetString(1134, "Error!"))
+        End If
+    End Function
+
+    Public Function RemoveFromWatchedHistory_ByHistoryID(ByVal tHistoryID As TraktAPI.Model.TraktSyncHistoryID) As TraktAPI.Model.TraktResponse
+        If CheckConnection() Then
+            Return TrakttvAPI.RemoveHistoryIDFromWatchedHistory(tHistoryID)
+        Else
+            Return Nothing
+        End If
+    End Function
+
+    Public Function RemoveFromWatchedHistory_Movies(ByVal tMovies As TraktAPI.Model.TraktSyncMovies) As TraktAPI.Model.TraktResponse
+        If CheckConnection() Then
+            Return TrakttvAPI.RemoveMoviesFromWatchedHistory(tMovies)
+        Else
+            Return Nothing
+        End If
+    End Function
+
+    Public Function RemoveFromWatchlist_Movies(ByVal tMovies As TraktAPI.Model.TraktSyncMovies) As TraktAPI.Model.TraktResponse
+        If CheckConnection() Then
+            Return TrakttvAPI.RemoveMoviesFromWatchlist(tMovies)
+        Else
+            Return Nothing
         End If
     End Function
 
@@ -416,6 +544,58 @@ Public Class clsAPITrakt
             SaveWatchedStateToEmber_TVEpisodes(WatchedTVEpisodes, sfunction)
         End If
     End Sub
+
+    Public Function UserList_AddList(ByVal tList As TraktAPI.Model.TraktList) As TraktAPI.Model.TraktListDetail
+        If CheckConnection() Then
+            Return TrakttvAPI.AddUserList(tList, Username)
+        Else
+            Return Nothing
+        End If
+    End Function
+
+    Public Function UserList_AddItems(ByVal strSlug As String, ByVal tList As TraktAPI.Model.TraktSynchronize) As TraktAPI.Model.TraktResponse
+        If CheckConnection() Then
+            Return TrakttvAPI.AddItemsToList(Username, strSlug, tList)
+        Else
+            Return Nothing
+        End If
+    End Function
+
+    Public Function UserList_GetItems(ByVal strList As String) As IEnumerable(Of TraktAPI.Model.TraktListItem)
+        If CheckConnection() Then
+            Return TrakttvAPI.GetUserListItems(Username, strList)
+        Else
+            Return Nothing
+        End If
+    End Function
+
+    Public Function UserList_GetItems(ByVal strUsername As String, ByVal strList As String, ByVal strParam As String) As IEnumerable(Of TraktAPI.Model.TraktListItem)
+        If CheckConnection() Then
+            Return TrakttvAPI.GetUserListItems(strUsername, strList, strParam)
+        Else
+            Return Nothing
+        End If
+    End Function
+
+    Public Function UserList_GetLists() As IEnumerable(Of TraktAPI.Model.TraktListDetail)
+        Return UserList_GetLists(Username)
+    End Function
+
+    Public Function UserList_GetLists(ByVal strUsername As String) As IEnumerable(Of TraktAPI.Model.TraktListDetail)
+        If CheckConnection() Then
+            Return TrakttvAPI.GetUserLists(strUsername)
+        Else
+            Return Nothing
+        End If
+    End Function
+
+    Public Function UserList_RemoveList(ByVal strSlug As String) As Boolean
+        If CheckConnection() Then
+            Return TrakttvAPI.RemoveUserList(Username, strSlug)
+        Else
+            Return False
+        End If
+    End Function
 
 #End Region 'Methods
 
