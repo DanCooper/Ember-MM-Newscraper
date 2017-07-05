@@ -76,7 +76,7 @@ Namespace OFDB
             Try
                 If Not String.IsNullOrEmpty(HTML) Then
                     Dim strFSKPattern As String = "Freigabe: FSK (?<FSK>.*?)"""
-                    FSK = Web.HttpUtility.HtmlDecode(Regex.Match(HTML, strFSKPattern, RegexOptions.Singleline).Groups(1).Value).Trim
+                    FSK = HttpUtility.HtmlDecode(Regex.Match(HTML, strFSKPattern, RegexOptions.Singleline).Groups(1).Value).Trim
 
                     If FSK.Contains("18") Then
                         FSK = "18"
@@ -110,7 +110,7 @@ Namespace OFDB
                     If Not String.IsNullOrEmpty(HTML) Then
                         Dim strPlot As String = String.Empty
                         Dim strPlotPattern = "Eine Inhaltsangabe.*?<br><br>(?<PLOT>.*?)<\/font>"
-                        strPlot = Web.HttpUtility.HtmlDecode(Regex.Match(HTML, strPlotPattern, RegexOptions.Singleline).Groups(1).Value).Trim
+                        strPlot = HttpUtility.HtmlDecode(Regex.Match(HTML, strPlotPattern, RegexOptions.Singleline).Groups(1).Value).Trim
                         FullPlot = StringUtils.CleanPlotOutline(strPlot)
                     End If
                 End If
@@ -121,10 +121,11 @@ Namespace OFDB
             Return FullPlot
         End Function
 
-        Public Function GetMovieInfo(ByVal strIMDBID As String, ByVal FilteredOptions As Structures.ScrapeOptions) As MediaContainers.Movie
+        Public Function GetMovieInfo(ByVal strIMDBID As String, ByVal FilteredOptions As Structures.ScrapeOptions, ByVal strLanguage As String) As MediaContainers.Movie
             Try
-                Dim nMovie As New MediaContainers.Movie
+                Dim bIsScraperLanguage As Boolean = strLanguage.ToLower.StartsWith("de")
 
+                Dim nMovie As New MediaContainers.Movie
                 nMovie.Scrapersource = "OFDB"
 
                 Dim sURL As String = SearchMovie(strIMDBID)
@@ -146,32 +147,32 @@ Namespace OFDB
                             Dim strGenrePattern As String = "itemprop=""genre"">(?<GENRE>.*?)<\/span>"
                             Dim gResult As MatchCollection = Regex.Matches(HTML, strGenrePattern, RegexOptions.Singleline)
                             For ctr As Integer = 0 To gResult.Count - 1
-                                nMovie.Genres.Add(Web.HttpUtility.HtmlDecode(gResult.Item(ctr).Groups(1).Value.Trim))
+                                nMovie.Genres.Add(HttpUtility.HtmlDecode(gResult.Item(ctr).Groups(1).Value.Trim))
                             Next
                         End If
 
                         'Original Title
                         If FilteredOptions.bMainOriginalTitle Then
                             Dim strOriginalTitlePattern As String = "Originaltitel:.*?<b>(?<OTITLE>.*?)<\/b>"
-                            nMovie.OriginalTitle = CleanTitle(Web.HttpUtility.HtmlDecode(Regex.Match(HTML, strOriginalTitlePattern, RegexOptions.Singleline).Groups(1).Value.ToString.Trim))
+                            nMovie.OriginalTitle = CleanTitle(HttpUtility.HtmlDecode(Regex.Match(HTML, strOriginalTitlePattern, RegexOptions.Singleline).Groups(1).Value.ToString.Trim))
                         End If
 
                         'Outline
-                        If FilteredOptions.bMainOutline Then
+                        If FilteredOptions.bMainOutline AndAlso bIsScraperLanguage Then
                             Dim strOutlinePattern As String = "Inhalt:.*?"">(?<OUTLINE>.*?)<a"
-                            nMovie.Outline = Web.HttpUtility.HtmlDecode(Regex.Match(HTML, strOutlinePattern, RegexOptions.Singleline).Groups(1).Value.ToString.Trim)
+                            nMovie.Outline = HttpUtility.HtmlDecode(Regex.Match(HTML, strOutlinePattern, RegexOptions.Singleline).Groups(1).Value.ToString.Trim)
                         End If
 
                         'Plot
-                        If FilteredOptions.bMainPlot Then
+                        If FilteredOptions.bMainPlot AndAlso bIsScraperLanguage Then
                             Dim strPlotPattern As String = "<a href=""(?<URL>plot.*?)"""
                             nMovie.Plot = GetFullPlot(String.Concat("http://www.ofdb.de/", Regex.Match(HTML, strPlotPattern, RegexOptions.Singleline).Groups(1).Value))
                         End If
 
                         'Title
-                        If FilteredOptions.bMainTitle Then
+                        If FilteredOptions.bMainTitle AndAlso bIsScraperLanguage Then
                             Dim strTitlePattern As String = "<td width=""99\%""><h1 itemprop=""name""><font face=""Arial,Helvetica,sans-serif"" size=""3""><b>([^<]+)</b></font></h1></td>"
-                            nMovie.Title = CleanTitle(Web.HttpUtility.HtmlDecode(Regex.Match(HTML, strTitlePattern, RegexOptions.Singleline).Groups(1).Value.ToString.Trim))
+                            nMovie.Title = CleanTitle(HttpUtility.HtmlDecode(Regex.Match(HTML, strTitlePattern, RegexOptions.Singleline).Groups(1).Value.ToString.Trim))
                         End If
                     End If
                 End If

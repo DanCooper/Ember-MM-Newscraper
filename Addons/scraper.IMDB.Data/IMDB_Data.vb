@@ -448,6 +448,7 @@ Public Class IMDB_Data
         LoadSettings_Movie()
 
         Dim nMovie As MediaContainers.Movie = Nothing
+        _SpecialSettings_Movie.PrefLanguage = oDBElement.Language
         Dim _scraper As New IMDB.Scraper(_SpecialSettings_Movie)
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions_Movie)
 
@@ -588,6 +589,7 @@ Public Class IMDB_Data
 
         Dim FallBackWorldwide As Boolean
         Dim ForceTitleLanguage As String
+        Dim PrefLanguage As String
         Dim SearchPartialTitles As Boolean
         Dim SearchPopularTitles As Boolean
         Dim SearchTvTitles As Boolean

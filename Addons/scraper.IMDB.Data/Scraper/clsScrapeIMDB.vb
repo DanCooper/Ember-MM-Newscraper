@@ -217,6 +217,8 @@ Namespace IMDB
             Try
                 If bwIMDB.CancellationPending Then Return Nothing
 
+                Dim bIsScraperLanguage As Boolean = _SpecialSettings.PrefLanguage.ToLower.StartsWith("en")
+
                 Dim nMovie As New MediaContainers.Movie
 
                 Dim webCombined As New HtmlWeb
@@ -370,7 +372,7 @@ Namespace IMDB
                 If bwIMDB.CancellationPending Then Return Nothing
 
                 'Outline
-                If FilteredOptions.bMainOutline Then
+                If FilteredOptions.bMainOutline AndAlso bIsScraperLanguage Then
                     'Dim D, W, tempD As Integer
                     'Try
                     '    If nMovie.Title.Contains("(VG)") Then
@@ -414,7 +416,7 @@ Namespace IMDB
                 If bwIMDB.CancellationPending Then Return Nothing
 
                 'Plot
-                If FilteredOptions.bMainPlot Then
+                If FilteredOptions.bMainPlot AndAlso bIsScraperLanguage Then
                     'Dim FullPlotS As String = Regex.Match(PlotHtml, "<p class=""plotSummary"">(.*?)</p>", RegexOptions.Singleline Or RegexOptions.IgnoreCase Or RegexOptions.Multiline).Groups(1).Value.ToString.Trim
                     'Dim FullPlotO As String = Regex.Match(PlotHtml, "<li class=""odd"">\s*<p>(.*?)<br/>", RegexOptions.Singleline Or RegexOptions.IgnoreCase Or RegexOptions.Multiline).Groups(1).Value.ToString.Trim
                     'Dim FullPlotE As String = Regex.Match(PlotHtml, "<li class=""even"">\s*<p>(.*?)<br/>", RegexOptions.Singleline Or RegexOptions.IgnoreCase Or RegexOptions.Multiline).Groups(1).Value.ToString.Trim
@@ -490,7 +492,7 @@ Namespace IMDB
                 If bwIMDB.CancellationPending Then Return Nothing
 
                 'Tagline
-                If FilteredOptions.bMainTagline Then
+                If FilteredOptions.bMainTagline AndAlso bIsScraperLanguage Then
                     Dim selNode = htmldCombined.DocumentNode.SelectNodes("//div[@class=""info""]").Where(
                         Function(f) f.ChildNodes.Contains(htmldCombined.DocumentNode.SelectNodes("//h5").FirstOrDefault(
                         Function(c) c.InnerText.ToLower = "tagline:"))).FirstOrDefault
