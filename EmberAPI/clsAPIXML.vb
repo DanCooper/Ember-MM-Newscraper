@@ -205,7 +205,7 @@ Public Class APIXML
     End Sub
 
     Public Shared Function GetAVImages(ByVal fiAV As MediaContainers.Fileinfo, ByVal fName As String, ByVal ForTV As Boolean, ByVal videoSource As String) As Image()
-        Dim iReturn(18) As Image
+        Dim iReturn(19) As Image
         Dim tVideo As MediaContainers.Video = NFO.GetBestVideo(fiAV)
         Dim tAudio As MediaContainers.Audio = NFO.GetBestAudio(fiAV, ForTV)
 
@@ -246,6 +246,13 @@ Public Class APIXML
                         iReturn(2) = vcodecFlag.Image
                     Else
                         iReturn(2) = Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "questionmark.png"))
+                    End If
+                End If
+
+                If tVideo.MultiViewCountSpecified Then
+                    Dim vchanFlag As Flag = lFlags.FirstOrDefault(Function(f) f.Name = tVideo.MultiViewCount AndAlso f.Type = FlagType.VideoChan)
+                    If vchanFlag IsNot Nothing Then
+                        iReturn(19) = vchanFlag.Image
                     End If
                 End If
 
@@ -604,6 +611,8 @@ Public Class APIXML
 
     Public Shared Function GetFlagTypeFromString(ByVal sType As String) As FlagType
         Select Case sType
+            Case "vchan"
+                Return FlagType.VideoChan
             Case "vcodec"
                 Return FlagType.VideoCodec
             Case "vres"
@@ -624,12 +633,13 @@ Public Class APIXML
 #Region "Nested Types"
 
     Public Enum FlagType
-        VideoCodec = 0
-        VideoResolution = 1
-        VideoSource = 3
-        AudioCodec = 4
-        AudioChan = 5
-        Unknown = 6
+        AudioChan
+        AudioCodec
+        Unknown
+        VideoChan
+        VideoCodec
+        VideoResolution
+        VideoSource
     End Enum
 
     Public Class Flag

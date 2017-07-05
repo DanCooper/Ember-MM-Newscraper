@@ -538,6 +538,7 @@ Public Class frmMain
             pbMPAA.Image = Nothing
         End If
         pbStudio.Image = Nothing
+        pbVideoChannels.Image = Nothing
         pbVideoSource.Image = Nothing
         pbVideoCodec.Image = Nothing
         pbAudioCodec.Image = Nothing
@@ -5719,7 +5720,8 @@ Public Class frmMain
             colName = "DiscArtPath" OrElse colName = "EFanartsPath" OrElse colName = "EThumbsPath" OrElse
             colName = "FanartPath" OrElse colName = "LandscapePath" OrElse colName = "NfoPath" OrElse
             colName = "PosterPath" OrElse colName = "ThemePath" OrElse colName = "TrailerPath" OrElse
-            colName = "HasSet" OrElse colName = "HasSub" OrElse colName = "iLastPlayed") AndAlso e.RowIndex = -1 Then
+            colName = "HasSet" OrElse colName = "HasSub" OrElse colName = "iLastPlayed" OrElse
+            colName = "Rating" OrElse colName = "iUserRating") AndAlso e.RowIndex = -1 Then
             e.PaintBackground(e.ClipBounds, False)
 
             Dim pt As Point = e.CellBounds.Location
@@ -5758,6 +5760,10 @@ Public Class frmMain
                 ilColumnIcons.Draw(e.Graphics, pt, 14)
             ElseIf colName = "iLastPlayed" Then
                 ilColumnIcons.Draw(e.Graphics, pt, 17)
+            ElseIf colName = "Rating" Then
+                ilColumnIcons.Draw(e.Graphics, pt, 18)
+            ElseIf colName = "iUserRating" Then
+                ilColumnIcons.Draw(e.Graphics, pt, 19)
             End If
 
             e.Handled = True
@@ -5769,27 +5775,21 @@ Public Class frmMain
             colName = "Rating" OrElse colName = "TMDB" OrElse colName = "Year") AndAlso e.RowIndex >= 0 Then
             If Convert.ToBoolean(dgvMovies.Item("Mark", e.RowIndex).Value) Then
                 e.CellStyle.ForeColor = Color.Crimson
-                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                 e.CellStyle.SelectionForeColor = Color.Crimson
             ElseIf Convert.ToBoolean(dgvMovies.Item("New", e.RowIndex).Value) Then
                 e.CellStyle.ForeColor = Color.Green
-                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                 e.CellStyle.SelectionForeColor = Color.Green
             ElseIf Convert.ToBoolean(dgvMovies.Item("MarkCustom1", e.RowIndex).Value) Then
                 e.CellStyle.ForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker1Color)
-                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                 e.CellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker1Color)
             ElseIf Convert.ToBoolean(dgvMovies.Item("MarkCustom2", e.RowIndex).Value) Then
                 e.CellStyle.ForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker2Color)
-                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                 e.CellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker2Color)
             ElseIf Convert.ToBoolean(dgvMovies.Item("MarkCustom3", e.RowIndex).Value) Then
                 e.CellStyle.ForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker3Color)
-                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                 e.CellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker3Color)
             ElseIf Convert.ToBoolean(dgvMovies.Item("MarkCustom4", e.RowIndex).Value) Then
                 e.CellStyle.ForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker4Color)
-                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                 e.CellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker4Color)
             Else
                 e.CellStyle.ForeColor = Color.Black
@@ -5921,8 +5921,8 @@ Public Class frmMain
                     cmnuMovieScrape.Visible = False
 
                     For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
-                        'if any one item is set as unlocked, show menu "Mark"
-                        'if any one item is set as locked, show menu "Unmark"
+                        'if any one item is set as unmarked, show menu "Mark"
+                        'if any one item is set as marked, show menu "Unmark"
                         If Not Convert.ToBoolean(sRow.Cells("Mark").Value) Then
                             bShowMark = True
                             If bShowUnmark AndAlso bShowLock AndAlso bShowUnlock AndAlso bShowWatched AndAlso bShowUnwatched Then Exit For
@@ -6348,11 +6348,9 @@ Public Class frmMain
         If (colName = "ListTitle") AndAlso e.RowIndex >= 0 Then
             If Convert.ToBoolean(dgvMovieSets.Item("Mark", e.RowIndex).Value) Then
                 e.CellStyle.ForeColor = Color.Crimson
-                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                 e.CellStyle.SelectionForeColor = Color.Crimson
             ElseIf Convert.ToBoolean(dgvMovieSets.Item("New", e.RowIndex).Value) Then
                 e.CellStyle.ForeColor = Color.Green
-                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                 e.CellStyle.SelectionForeColor = Color.Green
             Else
                 e.CellStyle.ForeColor = Color.Black
@@ -6433,9 +6431,10 @@ Public Class frmMain
 
             If dgvHTI.Type = DataGridViewHitTestType.Cell Then
                 If dgvMovieSets.SelectedRows.Count > 1 AndAlso dgvMovieSets.Rows(dgvHTI.RowIndex).Selected Then
-                    Dim setMark As Boolean = False
-                    Dim bEnableLock As Boolean = False
-                    Dim bEnableUnlock As Boolean = False
+                    Dim bShowMark As Boolean = False
+                    Dim bShowUnmark As Boolean = False
+                    Dim bShowLock As Boolean = False
+                    Dim bShowUnlock As Boolean = False
 
                     cmnuMovieSet.Enabled = True
                     cmnuMovieSetBrowseTMDB.Visible = True
@@ -6459,20 +6458,23 @@ Public Class frmMain
                     cmnuMovieSetTitle.Visible = True
 
                     For Each sRow As DataGridViewRow In dgvMovieSets.SelectedRows
-                        'if any one item is set as unmarked, set menu to mark
-                        'else they are all marked, so set menu to unmark
+                        'if any one item is set as unmarked, show menu "Mark"
+                        'if any one item is set as marked, show menu "Unmark"
                         If Not Convert.ToBoolean(sRow.Cells("Mark").Value) Then
-                            setMark = True
-                            If bEnableLock AndAlso bEnableUnlock Then Exit For
-                        End If
-                        'if any one item is set as unlocked, enable menu "Lock"
-                        'if any one item is set as locked, enable menu "Unlock"
-                        If Not Convert.ToBoolean(sRow.Cells("Lock").Value) Then
-                            bEnableLock = True
-                            If setMark AndAlso bEnableUnlock Then Exit For
+                            bShowMark = True
+                            If bShowUnmark AndAlso bShowLock AndAlso bShowUnlock Then Exit For
                         Else
-                            bEnableUnlock = True
-                            If setMark AndAlso bEnableLock Then Exit For
+                            bShowUnmark = True
+                            If bShowMark AndAlso bShowLock AndAlso bShowUnlock Then Exit For
+                        End If
+                        'if any one item is set as unlocked, show menu "Lock"
+                        'if any one item is set as locked, show menu "Unlock"
+                        If Not Convert.ToBoolean(sRow.Cells("Lock").Value) Then
+                            bShowLock = True
+                            If bShowUnlock AndAlso bShowMark AndAlso bShowUnmark Then Exit For
+                        Else
+                            bShowUnlock = True
+                            If bShowLock AndAlso bShowMark AndAlso bShowUnmark Then Exit For
                         End If
                     Next
 
@@ -6490,8 +6492,12 @@ Public Class frmMain
                     mnuLanguagesSet.Enabled = False
 
                     'Lock / Unlock menu
-                    cmnuMovieSetUnlock.Visible = bEnableUnlock
-                    cmnuMovieSetLock.Visible = bEnableLock
+                    cmnuMovieSetLock.Visible = bShowLock
+                    cmnuMovieSetUnlock.Visible = bShowUnlock
+
+                    'Mark / Unmark menu
+                    cmnuMovieSetMark.Visible = bShowMark
+                    cmnuMovieSetUnmark.Visible = bShowUnmark
                 Else
                     cmnuMovieSetBrowseTMDB.Visible = True
                     cmnuMovieSetDatabaseSeparator.Visible = True
@@ -6526,6 +6532,7 @@ Public Class frmMain
                         cmnuMovieSet.Enabled = True
                     End If
 
+                    'SortMethod submenu
                     Dim SortMethod As Integer = CInt(dgvMovieSets.Item("SortMethod", dgvHTI.RowIndex).Value)
                     cmnuMovieSetEditSortMethodMethods.Text = DirectCast(CInt(dgvMovieSets.Item("SortMethod", dgvHTI.RowIndex).Value), Enums.SortMethod_MovieSet).ToString
                     cmnuMovieSetEditSortMethodSet.Enabled = False
@@ -6545,8 +6552,13 @@ Public Class frmMain
 
                     'Lock / Unlock menu
                     Dim bIsLocked As Boolean = Convert.ToBoolean(dgvMovieSets.Item("Lock", dgvHTI.RowIndex).Value)
-                    cmnuMovieSetUnlock.Visible = bIsLocked
                     cmnuMovieSetLock.Visible = Not bIsLocked
+                    cmnuMovieSetUnlock.Visible = bIsLocked
+
+                    'Mark / Unmark menu
+                    Dim bIsMarked As Boolean = Convert.ToBoolean(dgvMovieSets.Item("Mark", dgvHTI.RowIndex).Value)
+                    cmnuMovieSetMark.Visible = Not bIsMarked
+                    cmnuMovieSetUnmark.Visible = bIsMarked
                 End If
             Else
                 cmnuMovieSet.Enabled = True
@@ -6750,7 +6762,8 @@ Public Class frmMain
 
         'icons for column header
         If (colName = "FanartPath" OrElse colName = "NfoPath" OrElse colName = "PosterPath" OrElse
-            colName = "HasSub" OrElse colName = "Playcount") AndAlso e.RowIndex = -1 Then
+            colName = "HasSub" OrElse colName = "Playcount" OrElse colName = "Rating" OrElse
+            colName = "iUserRating") AndAlso e.RowIndex = -1 Then
             e.PaintBackground(e.ClipBounds, False)
 
             Dim pt As Point = e.CellBounds.Location
@@ -6769,6 +6782,10 @@ Public Class frmMain
                 ilColumnIcons.Draw(e.Graphics, pt, 14)
             ElseIf colName = "Playcount" Then
                 ilColumnIcons.Draw(e.Graphics, pt, 17)
+            ElseIf colName = "Rating" Then
+                ilColumnIcons.Draw(e.Graphics, pt, 18)
+            ElseIf colName = "iUserRating" Then
+                ilColumnIcons.Draw(e.Graphics, pt, 19)
             End If
 
             e.Handled = True
@@ -6777,18 +6794,15 @@ Public Class frmMain
 
         'text fields
         If (colName = "Aired" OrElse colName = "Episode" OrElse colName = "Season" OrElse
-            colName = "Title") AndAlso e.RowIndex >= 0 Then
+            colName = "Title" OrElse colName = "Rating" OrElse colName = "iUserRating") AndAlso e.RowIndex >= 0 Then
             If Convert.ToInt64(dgvTVEpisodes.Item("idFile", e.RowIndex).Value) = -1 Then
                 e.CellStyle.ForeColor = Color.Gray
-                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Regular)
                 e.CellStyle.SelectionForeColor = Color.LightGray
             ElseIf Convert.ToBoolean(dgvTVEpisodes.Item("Mark", e.RowIndex).Value) Then
                 e.CellStyle.ForeColor = Color.Crimson
-                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                 e.CellStyle.SelectionForeColor = Color.Crimson
             ElseIf Convert.ToBoolean(dgvTVEpisodes.Item("New", e.RowIndex).Value) Then
                 e.CellStyle.ForeColor = Color.Green
-                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                 e.CellStyle.SelectionForeColor = Color.Green
             Else
                 e.CellStyle.ForeColor = Color.Black
@@ -6916,8 +6930,8 @@ Public Class frmMain
             cmnuEpisode.Enabled = False
 
             Dim dgvHTI As DataGridView.HitTestInfo = dgvTVEpisodes.HitTest(e.X, e.Y)
-            If dgvHTI.Type = DataGridViewHitTestType.Cell Then
 
+            If dgvHTI.Type = DataGridViewHitTestType.Cell Then
                 If dgvTVEpisodes.SelectedRows.Count > 1 AndAlso dgvTVEpisodes.Rows(dgvHTI.RowIndex).Selected Then
                     cmnuEpisode.Enabled = True
 
@@ -6933,11 +6947,12 @@ Public Class frmMain
                     If hasMissing Then
                         ShowEpisodeMenuItems(False)
                     Else
-                        Dim setMark As Boolean = False
-                        Dim bEnableLock As Boolean = False
-                        Dim bEnableUnlock As Boolean = False
-                        Dim bEnableUnwatched As Boolean = False
-                        Dim bEnableWatched As Boolean = False
+                        Dim bShowMark As Boolean = False
+                        Dim bShowUnmark As Boolean = False
+                        Dim bShowLock As Boolean = False
+                        Dim bShowUnlock As Boolean = False
+                        Dim bShowUnwatched As Boolean = False
+                        Dim bShowWatched As Boolean = False
 
                         ShowEpisodeMenuItems(True)
 
@@ -6950,39 +6965,46 @@ Public Class frmMain
                         cmnuEpisodeOpenFolder.Visible = False
 
                         For Each sRow As DataGridViewRow In dgvTVEpisodes.SelectedRows
-                            'if any one item is set as unmarked, set menu to mark
-                            'else they are all marked, so set menu to unmark
+                            'if any one item is set as unmarked, show menu "Mark"
+                            'if any one item is set as marked, show menu "Unmark"
                             If Not Convert.ToBoolean(sRow.Cells("Mark").Value) Then
-                                setMark = True
-                                If bEnableLock AndAlso bEnableUnlock AndAlso bEnableUnwatched AndAlso bEnableWatched Then Exit For
+                                bShowMark = True
+                                If bShowUnmark AndAlso bShowLock AndAlso bShowUnlock AndAlso bShowWatched AndAlso bShowUnwatched Then Exit For
+                            Else
+                                bShowUnmark = True
+                                If bShowMark AndAlso bShowLock AndAlso bShowUnlock AndAlso bShowWatched AndAlso bShowUnwatched Then Exit For
                             End If
-                            'if any one item is set as unlocked, enable menu "Lock"
-                            'if any one item is set as locked, enable menu "Unlock"
+                            'if any one item is set as unlocked, show menu "Lock"
+                            'if any one item is set as locked, show menu "Unlock"
                             If Not Convert.ToBoolean(sRow.Cells("Lock").Value) Then
-                                bEnableLock = True
-                                If setMark AndAlso bEnableUnlock AndAlso bEnableUnwatched AndAlso bEnableWatched Then Exit For
+                                bShowLock = True
+                                If bShowUnlock AndAlso bShowMark AndAlso bShowUnmark AndAlso bShowWatched AndAlso bShowUnwatched Then Exit For
                             Else
-                                bEnableUnlock = True
-                                If setMark AndAlso bEnableLock AndAlso bEnableUnwatched AndAlso bEnableWatched Then Exit For
+                                bShowUnlock = True
+                                If bShowLock AndAlso bShowMark AndAlso bShowUnmark AndAlso bShowWatched AndAlso bShowUnwatched Then Exit For
                             End If
-                            'if any one item is set as unwatched, enable menu "Mark as Watched"
-                            'if any one item is set as watched, enable menu "Mark as Unwatched"
+                            'if any one item is set as unwatched, show menu "Mark as Watched"
+                            'if any one item is set as watched, show menu "Mark as Unwatched"
                             If String.IsNullOrEmpty(sRow.Cells("Playcount").Value.ToString) OrElse sRow.Cells("Playcount").Value.ToString = "0" Then
-                                bEnableWatched = True
-                                If bEnableLock AndAlso bEnableUnlock AndAlso setMark AndAlso bEnableUnwatched Then Exit For
+                                bShowWatched = True
+                                If bShowLock AndAlso bShowUnlock AndAlso bShowMark AndAlso bShowUnmark AndAlso bShowUnwatched Then Exit For
                             Else
-                                bEnableUnwatched = True
-                                If bEnableLock AndAlso bEnableUnlock AndAlso setMark AndAlso bEnableWatched Then Exit For
+                                bShowUnwatched = True
+                                If bShowLock AndAlso bShowUnlock AndAlso bShowMark AndAlso bShowUnmark AndAlso bShowWatched Then Exit For
                             End If
                         Next
 
                         'Lock / Unlock menu
-                        cmnuEpisodeUnlock.Visible = bEnableUnlock
-                        cmnuEpisodeLock.Visible = bEnableLock
+                        cmnuEpisodeLock.Visible = bShowLock
+                        cmnuEpisodeUnlock.Visible = bShowUnlock
+
+                        'Mark / Unmark menu
+                        cmnuEpisodeMark.Visible = bShowMark
+                        cmnuEpisodeUnmark.Visible = bShowUnmark
 
                         'Watched / Unwatched menu
-                        cmnuEpisodeUnwatched.Visible = bEnableUnwatched
-                        cmnuEpisodeWatched.Visible = bEnableWatched
+                        cmnuEpisodeWatched.Visible = bShowWatched
+                        cmnuEpisodeUnwatched.Visible = bShowUnwatched
                     End If
                 Else
                     cmnuEpisodeTitle.Text = String.Concat(">> ", dgvTVEpisodes.Item("Title", dgvHTI.RowIndex).Value, " <<")
@@ -7017,13 +7039,18 @@ Public Class frmMain
 
                         'Lock / Unlock menu
                         Dim bIsLocked As Boolean = Convert.ToBoolean(dgvTVEpisodes.Item("Lock", dgvHTI.RowIndex).Value)
-                        cmnuEpisodeUnlock.Visible = bIsLocked
                         cmnuEpisodeLock.Visible = Not bIsLocked
+                        cmnuEpisodeUnlock.Visible = bIsLocked
+
+                        'Mark / Unmark menu
+                        Dim bIsMarked As Boolean = Convert.ToBoolean(dgvTVEpisodes.Item("Mark", dgvHTI.RowIndex).Value)
+                        cmnuEpisodeMark.Visible = Not bIsMarked
+                        cmnuEpisodeUnmark.Visible = bIsMarked
 
                         'Watched / Unwatched menu
                         Dim bIsWatched As Boolean = Not String.IsNullOrEmpty(dgvTVEpisodes.Item("Playcount", dgvHTI.RowIndex).Value.ToString) AndAlso Not dgvTVEpisodes.Item("Playcount", dgvHTI.RowIndex).Value.ToString = "0"
-                        cmnuEpisodeUnwatched.Visible = bIsWatched
                         cmnuEpisodeWatched.Visible = Not bIsWatched
+                        cmnuEpisodeUnwatched.Visible = bIsWatched
                     End If
 
                 End If
@@ -7236,16 +7263,13 @@ Public Class frmMain
         If (colName = "SeasonText" OrElse colName = "Episodes") AndAlso e.RowIndex >= 0 Then
             If Convert.ToBoolean(dgvTVSeasons.Item("Missing", e.RowIndex).Value) AndAlso Not CInt(dgvTVSeasons.Item("Season", e.RowIndex).Value) = 999 Then
                 e.CellStyle.ForeColor = Color.Gray
-                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Regular)
                 e.CellStyle.SelectionForeColor = Color.LightGray
             ElseIf Convert.ToBoolean(dgvTVSeasons.Item("Mark", e.RowIndex).Value) Then
                 e.CellStyle.ForeColor = Color.Crimson
-                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                 e.CellStyle.SelectionForeColor = Color.Crimson
             ElseIf Convert.ToBoolean(dgvTVSeasons.Item("New", e.RowIndex).Value) OrElse
                 Not String.IsNullOrEmpty(dgvTVSeasons.Item("NewEpisodes", e.RowIndex).Value.ToString) AndAlso CInt(dgvTVSeasons.Item("NewEpisodes", e.RowIndex).Value) > 0 Then
                 e.CellStyle.ForeColor = Color.Green
-                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                 e.CellStyle.SelectionForeColor = Color.Green
             Else
                 e.CellStyle.ForeColor = Color.Black
@@ -7329,10 +7353,12 @@ Public Class frmMain
             If dgvHTI.Type = DataGridViewHitTestType.Cell Then
 
                 If dgvTVSeasons.SelectedRows.Count > 1 AndAlso dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected Then
-                    Dim setMark As Boolean = False
-                    Dim setLock As Boolean = False
-                    Dim bEnableUnwatched As Boolean = False
-                    Dim bEnableWatched As Boolean = False
+                    Dim bShowMark As Boolean = False
+                    Dim bShowUnmark As Boolean = False
+                    Dim bShowLock As Boolean = False
+                    Dim bShowUnlock As Boolean = False
+                    Dim bShowUnwatched As Boolean = False
+                    Dim bShowWatched As Boolean = False
 
                     cmnuSeason.Enabled = True
                     cmnuSeasonEdit.Visible = False
@@ -7340,57 +7366,56 @@ Public Class frmMain
                     cmnuSeasonScrape.Visible = False
 
                     For Each sRow As DataGridViewRow In dgvTVSeasons.SelectedRows
-                        'if any one item is set as unmarked, set menu to mark
-                        'else they are all marked, so set menu to unmark
+                        'if any one item is set as unmarked, show menu "Mark"
+                        'if any one item is set as marked, show menu "Unmark"
                         If Not Convert.ToBoolean(sRow.Cells("Mark").Value) Then
-                            setMark = True
-                            If setLock AndAlso bEnableUnwatched AndAlso bEnableWatched Then Exit For
-                        End If
-                        'if any one item is set as unlocked, set menu to lock
-                        'else they are all locked so set menu to unlock
-                        If Not Convert.ToBoolean(sRow.Cells("Lock").Value) Then
-                            setLock = True
-                            If setMark AndAlso bEnableUnwatched AndAlso bEnableWatched Then Exit For
-                        End If
-                        'if any one item is set as unwatched, enable menu "Mark as Watched"
-                        'if any one item is set as watched, enable menu "Mark as Unwatched"
-                        If Not CInt(sRow.Cells("Season").Value) = 999 AndAlso Not Convert.ToBoolean(sRow.Cells("HasWatched").Value) Then
-                            bEnableWatched = True
-                            If setLock AndAlso setMark AndAlso bEnableUnwatched Then Exit For
+                            bShowMark = True
+                            If bShowUnmark AndAlso bShowLock AndAlso bShowUnlock AndAlso bShowWatched AndAlso bShowUnwatched Then Exit For
                         Else
-                            bEnableUnwatched = True
-                            If setLock AndAlso setMark AndAlso bEnableWatched Then Exit For
+                            bShowUnmark = True
+                            If bShowMark AndAlso bShowLock AndAlso bShowUnlock AndAlso bShowWatched AndAlso bShowUnwatched Then Exit For
+                        End If
+                        'if any one item is set as unlocked, show menu "Lock"
+                        'if any one item is set as locked, show menu "Unlock"
+                        If Not Convert.ToBoolean(sRow.Cells("Lock").Value) Then
+                            bShowLock = True
+                            If bShowUnlock AndAlso bShowMark AndAlso bShowUnmark AndAlso bShowWatched AndAlso bShowUnwatched Then Exit For
+                        Else
+                            bShowUnlock = True
+                            If bShowLock AndAlso bShowMark AndAlso bShowUnmark AndAlso bShowWatched AndAlso bShowUnwatched Then Exit For
+                        End If
+                        'if any one item is set as unlocked, show menu "Lock"
+                        'if any one item is set as locked, show menu "Unlock"
+                        If Not CInt(sRow.Cells("Season").Value) = 999 AndAlso Not Convert.ToBoolean(sRow.Cells("HasWatched").Value) Then
+                            bShowWatched = True
+                            If bShowLock AndAlso bShowUnlock AndAlso bShowMark AndAlso bShowUnmark AndAlso bShowUnwatched Then Exit For
+                        Else
+                            bShowUnwatched = True
+                            If bShowLock AndAlso bShowUnlock AndAlso bShowMark AndAlso bShowUnmark AndAlso bShowWatched Then Exit For
                         End If
                     Next
 
                     cmnuSeasonTitle.Text = Master.eLang.GetString(106, ">> Multiple <<")
 
+                    'Lock / Unlock menu
+                    cmnuSeasonLock.Visible = bShowLock
+                    cmnuSeasonUnlock.Visible = bShowUnlock
+
+                    'Mark / Unmark menu
+                    cmnuSeasonMark.Visible = bShowMark
+                    cmnuSeasonUnmark.Visible = bShowUnmark
+
                     'Watched / Unwatched menu
-                    cmnuSeasonUnwatched.Enabled = bEnableUnwatched
-                    cmnuSeasonUnwatched.Visible = bEnableUnwatched
-                    cmnuSeasonWatched.Enabled = bEnableWatched
-                    cmnuSeasonWatched.Visible = bEnableWatched
+                    cmnuSeasonWatched.Visible = bShowWatched
+                    cmnuSeasonUnwatched.Visible = bShowUnwatched
 
                 Else
                     cmnuSeasonEdit.Visible = True
                     cmnuSeasonEditSeparator.Visible = True
                     cmnuSeasonScrape.Visible = True
 
-                    cmnuSeasonMark.Text = If(Convert.ToBoolean(dgvTVSeasons.Item("Mark", dgvHTI.RowIndex).Value), Master.eLang.GetString(107, "Unmark"), Master.eLang.GetString(23, "Mark"))
-                    cmnuSeasonLock.Text = If(Convert.ToBoolean(dgvTVSeasons.Item("Lock", dgvHTI.RowIndex).Value), Master.eLang.GetString(108, "Unlock"), Master.eLang.GetString(24, "Lock"))
                     cmnuSeasonTitle.Text = String.Concat(">> ", dgvTVSeasons.Item("SeasonText", dgvHTI.RowIndex).Value, " <<")
                     cmnuSeasonEdit.Enabled = Convert.ToInt32(dgvTVSeasons.Item("Season", dgvHTI.RowIndex).Value) >= 0
-
-                    'Watched / Unwatched menu
-                    Dim bIsWatched As Boolean = False
-                    Dim bIsAllSeasons As Boolean = CInt(dgvTVSeasons.Item("Season", dgvHTI.RowIndex).Value) = 999
-                    If Not bIsAllSeasons Then
-                        bIsWatched = Convert.ToBoolean(dgvTVSeasons.Item("HasWatched", dgvHTI.RowIndex).Value)
-                    End If
-                    cmnuSeasonUnwatched.Enabled = bIsWatched AndAlso Not bIsAllSeasons
-                    cmnuSeasonUnwatched.Visible = bIsWatched AndAlso Not bIsAllSeasons
-                    cmnuSeasonWatched.Enabled = Not bIsWatched AndAlso Not bIsAllSeasons
-                    cmnuSeasonWatched.Visible = Not bIsWatched AndAlso Not bIsAllSeasons
 
                     If Not dgvTVSeasons.Rows(dgvHTI.RowIndex).Selected OrElse Not currList = 1 Then
                         prevRow_TVSeason = -1
@@ -7402,6 +7427,25 @@ Public Class frmMain
                     Else
                         cmnuSeason.Enabled = True
                     End If
+
+                    'Lock / Unlock menu
+                    Dim bIsLocked As Boolean = Convert.ToBoolean(dgvTVSeasons.Item("Lock", dgvHTI.RowIndex).Value)
+                    cmnuSeasonLock.Visible = Not bIsLocked
+                    cmnuSeasonUnlock.Visible = bIsLocked
+
+                    'Mark / Unmark menu
+                    Dim bIsMarked As Boolean = Convert.ToBoolean(dgvTVSeasons.Item("Mark", dgvHTI.RowIndex).Value)
+                    cmnuSeasonMark.Visible = Not bIsMarked
+                    cmnuSeasonUnmark.Visible = bIsMarked
+
+                    'Watched / Unwatched menu
+                    Dim bIsWatched As Boolean = False
+                    Dim bIsAllSeasons As Boolean = CInt(dgvTVSeasons.Item("Season", dgvHTI.RowIndex).Value) = 999
+                    If Not bIsAllSeasons Then
+                        bIsWatched = Convert.ToBoolean(dgvTVSeasons.Item("HasWatched", dgvHTI.RowIndex).Value)
+                    End If
+                    cmnuSeasonWatched.Visible = Not bIsWatched AndAlso Not bIsAllSeasons
+                    cmnuSeasonUnwatched.Visible = bIsWatched AndAlso Not bIsAllSeasons
                 End If
             Else
                 cmnuSeason.Enabled = False
@@ -7610,7 +7654,8 @@ Public Class frmMain
         If (colName = "BannerPath" OrElse colName = "CharacterArtPath" OrElse colName = "ClearArtPath" OrElse
             colName = "ClearLogoPath" OrElse colName = "EFanartsPath" OrElse colName = "FanartPath" OrElse
             colName = "LandscapePath" OrElse colName = "NfoPath" OrElse colName = "PosterPath" OrElse
-            colName = "ThemePath" OrElse colName = "HasWatched") AndAlso e.RowIndex = -1 Then
+            colName = "ThemePath" OrElse colName = "HasWatched" OrElse colName = "Rating" OrElse
+            colName = "iUserRating") AndAlso e.RowIndex = -1 Then
             e.PaintBackground(e.ClipBounds, False)
 
             Dim pt As Point = e.CellBounds.Location
@@ -7641,6 +7686,10 @@ Public Class frmMain
                 ilColumnIcons.Draw(e.Graphics, pt, 15)
             ElseIf colName = "HasWatched" Then
                 ilColumnIcons.Draw(e.Graphics, pt, 17)
+            ElseIf colName = "Rating" Then
+                ilColumnIcons.Draw(e.Graphics, pt, 18)
+            ElseIf colName = "iUserRating" Then
+                ilColumnIcons.Draw(e.Graphics, pt, 19)
             End If
 
             e.Handled = True
@@ -7648,15 +7697,14 @@ Public Class frmMain
         End If
 
         'text fields
-        If (colName = "ListTitle" OrElse colName = "Status") AndAlso e.RowIndex >= 0 Then
+        If (colName = "ListTitle" OrElse colName = "Episodes" OrElse colName = "strOriginalTitle" OrElse colName = "Status" OrElse
+            colName = "Rating" OrElse colName = "iUserRating") AndAlso e.RowIndex >= 0 Then
             If Convert.ToBoolean(dgvTVShows.Item("Mark", e.RowIndex).Value) Then
                 e.CellStyle.ForeColor = Color.Crimson
-                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                 e.CellStyle.SelectionForeColor = Color.Crimson
             ElseIf Convert.ToBoolean(dgvTVShows.Item("New", e.RowIndex).Value) OrElse
                 Not String.IsNullOrEmpty(dgvTVShows.Item("NewEpisodes", e.RowIndex).Value.ToString) AndAlso CInt(dgvTVShows.Item("NewEpisodes", e.RowIndex).Value) > 0 Then
                 e.CellStyle.ForeColor = Color.Green
-                e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                 e.CellStyle.SelectionForeColor = Color.Green
             Else
                 e.CellStyle.ForeColor = Color.Black
@@ -7743,11 +7791,12 @@ Public Class frmMain
 
             If dgvHTI.Type = DataGridViewHitTestType.Cell Then
                 If dgvTVShows.SelectedRows.Count > 1 AndAlso dgvTVShows.Rows(dgvHTI.RowIndex).Selected Then
-                    Dim setMark As Boolean = False
-                    Dim bEnableLock As Boolean = False
-                    Dim bEnableUnlock As Boolean = False
-                    Dim bEnableUnwatched As Boolean = False
-                    Dim bEnableWatched As Boolean = False
+                    Dim bShowMark As Boolean = False
+                    Dim bShowUnmark As Boolean = False
+                    Dim bShowLock As Boolean = False
+                    Dim bShowUnlock As Boolean = False
+                    Dim bShowUnwatched As Boolean = False
+                    Dim bShowWatched As Boolean = False
 
                     cmnuShow.Enabled = True
                     cmnuShowChange.Visible = False
@@ -7755,29 +7804,32 @@ Public Class frmMain
                     cmnuShowScrape.Visible = False
 
                     For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
-                        'if any one item is set as unmarked, set menu to mark
-                        'else they are all marked, so set menu to unmark
+                        'if any one item is set as unmarked, show menu "Mark"
+                        'if any one item is set as marked, show menu "Unmark"
                         If Not Convert.ToBoolean(sRow.Cells("Mark").Value) Then
-                            setMark = True
-                            If bEnableLock AndAlso bEnableUnlock AndAlso bEnableUnwatched AndAlso bEnableWatched Then Exit For
+                            bShowMark = True
+                            If bShowUnmark AndAlso bShowLock AndAlso bShowUnlock AndAlso bShowWatched AndAlso bShowUnwatched Then Exit For
+                        Else
+                            bShowUnmark = True
+                            If bShowMark AndAlso bShowLock AndAlso bShowUnlock AndAlso bShowWatched AndAlso bShowUnwatched Then Exit For
                         End If
-                        'if any one item is set as unlocked, enable menu "Lock"
-                        'if any one item is set as locked, enable menu "Unlock"
+                        'if any one item is set as unlocked, show menu "Lock"
+                        'if any one item is set as locked, show menu "Unlock"
                         If Not Convert.ToBoolean(sRow.Cells("Lock").Value) Then
-                            bEnableLock = True
-                            If setMark AndAlso bEnableUnlock AndAlso bEnableUnwatched AndAlso bEnableWatched Then Exit For
+                            bShowLock = True
+                            If bShowUnlock AndAlso bShowMark AndAlso bShowUnmark AndAlso bShowWatched AndAlso bShowUnwatched Then Exit For
                         Else
-                            bEnableUnlock = True
-                            If setMark AndAlso bEnableLock AndAlso bEnableUnwatched AndAlso bEnableWatched Then Exit For
+                            bShowUnlock = True
+                            If bShowLock AndAlso bShowMark AndAlso bShowUnmark AndAlso bShowWatched AndAlso bShowUnwatched Then Exit For
                         End If
-                        'if any one item is set as unwatched, enable menu "Mark as Watched"
-                        'if any one item is set as watched, enable menu "Mark as Unwatched"
+                        'if any one item is set as unwatched, show menu "Mark as Watched"
+                        'if any one item is set as watched, show menu "Mark as Unwatched"
                         If Not Convert.ToBoolean(sRow.Cells("HasWatched").Value) Then
-                            bEnableWatched = True
-                            If bEnableLock AndAlso bEnableUnlock AndAlso setMark AndAlso bEnableUnwatched Then Exit For
+                            bShowWatched = True
+                            If bShowLock AndAlso bShowUnlock AndAlso bShowMark AndAlso bShowUnmark AndAlso bShowUnwatched Then Exit For
                         Else
-                            bEnableUnwatched = True
-                            If bEnableLock AndAlso bEnableUnlock AndAlso setMark AndAlso bEnableWatched Then Exit For
+                            bShowUnwatched = True
+                            If bShowLock AndAlso bShowUnlock AndAlso bShowMark AndAlso bShowUnmark AndAlso bShowWatched Then Exit For
                         End If
                     Next
 
@@ -7803,8 +7855,12 @@ Public Class frmMain
                     mnuLanguagesSet.Enabled = False
 
                     'Lock / Unlock menu
-                    cmnuShowUnlock.Visible = bEnableUnlock
-                    cmnuShowLock.Visible = bEnableLock
+                    cmnuShowLock.Visible = bShowLock
+                    cmnuShowUnlock.Visible = bShowUnlock
+
+                    'Mark / Unmark menu
+                    cmnuShowMark.Visible = bShowMark
+                    cmnuShowUnmark.Visible = bShowUnmark
 
                     'Tag submenu
                     mnuTagsTag.Tag = String.Empty
@@ -7818,14 +7874,26 @@ Public Class frmMain
                     mnuTagsSet.Enabled = False
 
                     'Watched / Unwatched menu
-                    cmnuShowUnwatched.Visible = bEnableUnwatched
-                    cmnuShowWatched.Visible = bEnableWatched
+                    cmnuShowWatched.Visible = bShowWatched
+                    cmnuShowUnwatched.Visible = bShowUnwatched
                 Else
                     cmnuShowChange.Visible = True
                     cmnuShowEdit.Visible = True
                     cmnuShowScrape.Visible = True
 
                     cmnuShowTitle.Text = String.Concat(">> ", dgvTVShows.Item("Title", dgvHTI.RowIndex).Value, " <<")
+
+                    If Not dgvTVShows.Rows(dgvHTI.RowIndex).Selected OrElse Not currList = 0 Then
+                        prevRow_TVShow = -1
+                        currList = 0
+                        dgvTVShows.CurrentCell = Nothing
+                        dgvTVShows.ClearSelection()
+                        dgvTVShows.Rows(dgvHTI.RowIndex).Selected = True
+                        dgvTVShows.CurrentCell = dgvTVShows.Item("ListTitle", dgvHTI.RowIndex)
+                        'cmnuShow.Enabled = True
+                    Else
+                        cmnuShow.Enabled = True
+                    End If
 
                     'Genre submenu
                     mnuGenresGenre.Tag = dgvTVShows.Item("Genre", dgvHTI.RowIndex).Value
@@ -7853,8 +7921,13 @@ Public Class frmMain
 
                     'Lock / Unlock menu
                     Dim bIsLocked As Boolean = Convert.ToBoolean(dgvTVShows.Item("Lock", dgvHTI.RowIndex).Value)
-                    cmnuShowUnlock.Visible = bIsLocked
                     cmnuShowLock.Visible = Not bIsLocked
+                    cmnuShowUnlock.Visible = bIsLocked
+
+                    'Mark / Unmark menu
+                    Dim bIsMarked As Boolean = Convert.ToBoolean(dgvTVShows.Item("Mark", dgvHTI.RowIndex).Value)
+                    cmnuShowMark.Visible = Not bIsMarked
+                    cmnuShowUnmark.Visible = bIsMarked
 
                     'Tag submenu
                     mnuTagsTag.Tag = dgvTVShows.Item("Tag", dgvHTI.RowIndex).Value
@@ -7869,20 +7942,8 @@ Public Class frmMain
 
                     'Watched / Unwatched menu
                     Dim bIsWatched As Boolean = Convert.ToBoolean(dgvTVShows.Item("HasWatched", dgvHTI.RowIndex).Value)
-                    cmnuShowUnwatched.Visible = bIsWatched
                     cmnuShowWatched.Visible = Not bIsWatched
-
-                    If Not dgvTVShows.Rows(dgvHTI.RowIndex).Selected OrElse Not currList = 0 Then
-                        prevRow_TVShow = -1
-                        currList = 0
-                        dgvTVShows.CurrentCell = Nothing
-                        dgvTVShows.ClearSelection()
-                        dgvTVShows.Rows(dgvHTI.RowIndex).Selected = True
-                        dgvTVShows.CurrentCell = dgvTVShows.Item("ListTitle", dgvHTI.RowIndex)
-                        'cmnuShow.Enabled = True
-                    Else
-                        cmnuShow.Enabled = True
-                    End If
+                    cmnuShowUnwatched.Visible = bIsWatched
                 End If
             Else
                 cmnuShow.Enabled = False
@@ -8000,7 +8061,19 @@ Public Class frmMain
         SaveFilter_Shows()
     End Sub
 
-    Private Sub mnuMainDonate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainDonate.Click
+    Private Sub mnuMainDonatePatreon_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainDonatePatreon.Click
+        If Master.isWindows Then
+            Process.Start("https://www.patreon.com/embermediamanager")
+        Else
+            Using Explorer As New Process
+                Explorer.StartInfo.FileName = "xdg-open"
+                Explorer.StartInfo.Arguments = "https://www.patreon.com/embermediamanager"
+                Explorer.Start()
+            End Using
+        End If
+    End Sub
+
+    Private Sub mnuMainDonatePayPal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainDonatePayPal.Click
         If Master.isWindows Then
             Process.Start("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=VWVJCUV3KAUX2&lc=CH&item_name=Ember%2dTeam%3a%20DanCooper%2c%20m%2esavazzi%20%26%20Cocotus&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted")
         Else
@@ -8426,13 +8499,14 @@ Public Class frmMain
                 dgvMovies.Columns("iLastPlayed").SortMode = DataGridViewColumnSortMode.Automatic
                 dgvMovies.Columns("iLastPlayed").Visible = Not CheckColumnHide_Movies("iLastPlayed")
                 dgvMovies.Columns("iLastPlayed").ToolTipText = Master.eLang.GetString(981, "Watched")
+                dgvMovies.Columns("Imdb").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
+                dgvMovies.Columns("Imdb").MinimumWidth = 45
                 dgvMovies.Columns("Imdb").Resizable = DataGridViewTriState.False
                 dgvMovies.Columns("Imdb").ReadOnly = True
                 dgvMovies.Columns("Imdb").SortMode = DataGridViewColumnSortMode.Automatic
                 dgvMovies.Columns("Imdb").Visible = Not CheckColumnHide_Movies("Imdb")
-                dgvMovies.Columns("Imdb").ToolTipText = Master.eLang.GetString(61, "IMDB ID")
-                dgvMovies.Columns("Imdb").HeaderText = Master.eLang.GetString(61, "IMDB ID")
-                dgvMovies.Columns("Imdb").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
+                dgvMovies.Columns("Imdb").ToolTipText = "IMDB ID"
+                dgvMovies.Columns("Imdb").HeaderText = "IMDB"
                 dgvMovies.Columns("LandscapePath").Width = 20
                 dgvMovies.Columns("LandscapePath").Resizable = DataGridViewTriState.False
                 dgvMovies.Columns("LandscapePath").ReadOnly = True
@@ -8446,8 +8520,9 @@ Public Class frmMain
                 dgvMovies.Columns("ListTitle").Visible = True
                 dgvMovies.Columns("ListTitle").ToolTipText = Master.eLang.GetString(21, "Title")
                 dgvMovies.Columns("ListTitle").HeaderText = Master.eLang.GetString(21, "Title")
+                dgvMovies.Columns("MPAA").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
+                dgvMovies.Columns("MPAA").MinimumWidth = 45
                 dgvMovies.Columns("MPAA").Resizable = DataGridViewTriState.False
-                dgvMovies.Columns("MPAA").Width = 70
                 dgvMovies.Columns("MPAA").ReadOnly = True
                 dgvMovies.Columns("MPAA").SortMode = DataGridViewColumnSortMode.Automatic
                 dgvMovies.Columns("MPAA").Visible = Not CheckColumnHide_Movies("MPAA")
@@ -8459,59 +8534,68 @@ Public Class frmMain
                 dgvMovies.Columns("NfoPath").SortMode = DataGridViewColumnSortMode.Automatic
                 dgvMovies.Columns("NfoPath").Visible = Not CheckColumnHide_Movies("NfoPath")
                 dgvMovies.Columns("NfoPath").ToolTipText = Master.eLang.GetString(150, "Nfo")
+                dgvMovies.Columns("OriginalTitle").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
                 dgvMovies.Columns("OriginalTitle").Resizable = DataGridViewTriState.False
                 dgvMovies.Columns("OriginalTitle").ReadOnly = True
                 dgvMovies.Columns("OriginalTitle").SortMode = DataGridViewColumnSortMode.Automatic
                 dgvMovies.Columns("OriginalTitle").Visible = Not CheckColumnHide_Movies("OriginalTitle")
                 dgvMovies.Columns("OriginalTitle").ToolTipText = Master.eLang.GetString(302, "Original Title")
                 dgvMovies.Columns("OriginalTitle").HeaderText = Master.eLang.GetString(302, "Original Title")
-                dgvMovies.Columns("OriginalTitle").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
                 dgvMovies.Columns("PosterPath").Width = 20
                 dgvMovies.Columns("PosterPath").Resizable = DataGridViewTriState.False
                 dgvMovies.Columns("PosterPath").ReadOnly = True
                 dgvMovies.Columns("PosterPath").SortMode = DataGridViewColumnSortMode.Automatic
                 dgvMovies.Columns("PosterPath").Visible = Not CheckColumnHide_Movies("PosterPath")
                 dgvMovies.Columns("PosterPath").ToolTipText = Master.eLang.GetString(148, "Poster")
+                dgvMovies.Columns("Rating").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
+                dgvMovies.Columns("Rating").MinimumWidth = 30
                 dgvMovies.Columns("Rating").Resizable = DataGridViewTriState.False
                 dgvMovies.Columns("Rating").ReadOnly = True
                 dgvMovies.Columns("Rating").SortMode = DataGridViewColumnSortMode.Automatic
                 dgvMovies.Columns("Rating").Visible = Not CheckColumnHide_Movies("Rating")
                 dgvMovies.Columns("Rating").ToolTipText = Master.eLang.GetString(400, "Rating")
-                dgvMovies.Columns("Rating").HeaderText = Master.eLang.GetString(400, "Rating")
-                dgvMovies.Columns("Rating").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
                 dgvMovies.Columns("ThemePath").Width = 20
                 dgvMovies.Columns("ThemePath").Resizable = DataGridViewTriState.False
                 dgvMovies.Columns("ThemePath").ReadOnly = True
                 dgvMovies.Columns("ThemePath").SortMode = DataGridViewColumnSortMode.Automatic
                 dgvMovies.Columns("ThemePath").Visible = Not CheckColumnHide_Movies("ThemePath")
                 dgvMovies.Columns("ThemePath").ToolTipText = Master.eLang.GetString(1118, "Theme")
+                dgvMovies.Columns("TMDB").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
+                dgvMovies.Columns("TMDB").MinimumWidth = 45
                 dgvMovies.Columns("TMDB").Resizable = DataGridViewTriState.False
                 dgvMovies.Columns("TMDB").ReadOnly = True
                 dgvMovies.Columns("TMDB").SortMode = DataGridViewColumnSortMode.Automatic
                 dgvMovies.Columns("TMDB").Visible = Not CheckColumnHide_Movies("TMDB")
-                dgvMovies.Columns("TMDB").ToolTipText = Master.eLang.GetString(933, "TMDB ID")
-                dgvMovies.Columns("TMDB").HeaderText = Master.eLang.GetString(933, "TMDB ID")
-                dgvMovies.Columns("TMDB").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
+                dgvMovies.Columns("TMDB").ToolTipText = "TMDB ID"
+                dgvMovies.Columns("TMDB").HeaderText = "TMDB"
+                dgvMovies.Columns("Top250").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
+                dgvMovies.Columns("Top250").MinimumWidth = 35
                 dgvMovies.Columns("Top250").Resizable = DataGridViewTriState.False
                 dgvMovies.Columns("Top250").ReadOnly = True
                 dgvMovies.Columns("Top250").SortMode = DataGridViewColumnSortMode.Automatic
                 dgvMovies.Columns("Top250").Visible = Not CheckColumnHide_Movies("Top250")
-                dgvMovies.Columns("Top250").ToolTipText = "Top250"
-                dgvMovies.Columns("Top250").HeaderText = "Top250"
-                dgvMovies.Columns("Top250").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
+                dgvMovies.Columns("Top250").ToolTipText = "Top 250"
+                dgvMovies.Columns("Top250").HeaderText = "250"
                 dgvMovies.Columns("TrailerPath").Width = 20
                 dgvMovies.Columns("TrailerPath").Resizable = DataGridViewTriState.False
                 dgvMovies.Columns("TrailerPath").ReadOnly = True
                 dgvMovies.Columns("TrailerPath").SortMode = DataGridViewColumnSortMode.Automatic
                 dgvMovies.Columns("TrailerPath").Visible = Not CheckColumnHide_Movies("TrailerPath")
                 dgvMovies.Columns("TrailerPath").ToolTipText = Master.eLang.GetString(151, "Trailer")
+                dgvMovies.Columns("iUserRating").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
+                dgvMovies.Columns("iUserRating").MinimumWidth = 30
+                dgvMovies.Columns("iUserRating").Resizable = DataGridViewTriState.False
+                dgvMovies.Columns("iUserRating").ReadOnly = True
+                dgvMovies.Columns("iUserRating").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvMovies.Columns("iUserRating").Visible = Not CheckColumnHide_Movies("iUserRating")
+                dgvMovies.Columns("iUserRating").ToolTipText = Master.eLang.GetString(1467, "User Rating")
+                dgvMovies.Columns("Year").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
                 dgvMovies.Columns("Year").Resizable = DataGridViewTriState.False
                 dgvMovies.Columns("Year").ReadOnly = True
                 dgvMovies.Columns("Year").SortMode = DataGridViewColumnSortMode.Automatic
                 dgvMovies.Columns("Year").Visible = Not CheckColumnHide_Movies("Year")
                 dgvMovies.Columns("Year").ToolTipText = Master.eLang.GetString(278, "Year")
                 dgvMovies.Columns("Year").HeaderText = Master.eLang.GetString(278, "Year")
-                dgvMovies.Columns("Year").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
 
                 dgvMovies.Columns("idMovie").ValueType = GetType(Long)
 
@@ -8702,6 +8786,14 @@ Public Class frmMain
                 dgvTVShows.Columns("ListTitle").Visible = True
                 dgvTVShows.Columns("ListTitle").ToolTipText = Master.eLang.GetString(21, "Title")
                 dgvTVShows.Columns("ListTitle").HeaderText = Master.eLang.GetString(21, "Title")
+                dgvTVShows.Columns("MPAA").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
+                dgvTVShows.Columns("MPAA").MinimumWidth = 45
+                dgvTVShows.Columns("MPAA").Resizable = DataGridViewTriState.False
+                dgvTVShows.Columns("MPAA").ReadOnly = True
+                dgvTVShows.Columns("MPAA").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvTVShows.Columns("MPAA").Visible = Not CheckColumnHide_TVShows("MPAA")
+                dgvTVShows.Columns("MPAA").ToolTipText = Master.eLang.GetString(401, "MPAA")
+                dgvTVShows.Columns("MPAA").HeaderText = Master.eLang.GetString(401, "MPAA")
                 dgvTVShows.Columns("NfoPath").Width = 20
                 dgvTVShows.Columns("NfoPath").Resizable = DataGridViewTriState.False
                 dgvTVShows.Columns("NfoPath").ReadOnly = True
@@ -8714,26 +8806,40 @@ Public Class frmMain
                 dgvTVShows.Columns("PosterPath").SortMode = DataGridViewColumnSortMode.Automatic
                 dgvTVShows.Columns("PosterPath").Visible = Not CheckColumnHide_TVShows("PosterPath")
                 dgvTVShows.Columns("PosterPath").ToolTipText = Master.eLang.GetString(148, "Poster")
+                dgvTVShows.Columns("Rating").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
+                dgvTVShows.Columns("Rating").MinimumWidth = 30
+                dgvTVShows.Columns("Rating").Resizable = DataGridViewTriState.False
+                dgvTVShows.Columns("Rating").ReadOnly = True
+                dgvTVShows.Columns("Rating").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvTVShows.Columns("Rating").Visible = Not CheckColumnHide_TVShows("Rating")
+                dgvTVShows.Columns("Rating").ToolTipText = Master.eLang.GetString(400, "Rating")
+                dgvTVShows.Columns("Status").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
                 dgvTVShows.Columns("Status").Resizable = DataGridViewTriState.False
                 dgvTVShows.Columns("Status").ReadOnly = True
                 dgvTVShows.Columns("Status").SortMode = DataGridViewColumnSortMode.Automatic
                 dgvTVShows.Columns("Status").Visible = Not CheckColumnHide_TVShows("Status")
                 dgvTVShows.Columns("Status").ToolTipText = Master.eLang.GetString(215, "Status")
                 dgvTVShows.Columns("Status").HeaderText = Master.eLang.GetString(215, "Status")
-                dgvTVShows.Columns("Status").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
+                dgvTVShows.Columns("strOriginalTitle").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
                 dgvTVShows.Columns("strOriginalTitle").Resizable = DataGridViewTriState.False
                 dgvTVShows.Columns("strOriginalTitle").ReadOnly = True
                 dgvTVShows.Columns("strOriginalTitle").SortMode = DataGridViewColumnSortMode.Automatic
                 dgvTVShows.Columns("strOriginalTitle").Visible = Not CheckColumnHide_TVShows("strOriginalTitle")
                 dgvTVShows.Columns("strOriginalTitle").ToolTipText = Master.eLang.GetString(302, "Original Title")
                 dgvTVShows.Columns("strOriginalTitle").HeaderText = Master.eLang.GetString(302, "Original Title")
-                dgvTVShows.Columns("strOriginalTitle").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
                 dgvTVShows.Columns("ThemePath").Width = 20
                 dgvTVShows.Columns("ThemePath").Resizable = DataGridViewTriState.False
                 dgvTVShows.Columns("ThemePath").ReadOnly = True
                 dgvTVShows.Columns("ThemePath").SortMode = DataGridViewColumnSortMode.Automatic
                 dgvTVShows.Columns("ThemePath").Visible = Not CheckColumnHide_TVShows("ThemePath")
                 dgvTVShows.Columns("ThemePath").ToolTipText = Master.eLang.GetString(1118, "Theme")
+                dgvTVShows.Columns("iUserRating").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
+                dgvTVShows.Columns("iUserRating").MinimumWidth = 30
+                dgvTVShows.Columns("iUserRating").Resizable = DataGridViewTriState.False
+                dgvTVShows.Columns("iUserRating").ReadOnly = True
+                dgvTVShows.Columns("iUserRating").SortMode = DataGridViewColumnSortMode.Automatic
+                dgvTVShows.Columns("iUserRating").Visible = Not CheckColumnHide_TVShows("iUserRating")
+                dgvTVShows.Columns("iUserRating").ToolTipText = Master.eLang.GetString(1467, "User Rating")
 
                 dgvTVShows.Columns("idShow").ValueType = GetType(Long)
 
@@ -8831,8 +8937,8 @@ Public Class frmMain
         dgvTVEpisodes.Columns("Aired").Visible = sEpisodeSorting = Enums.EpisodeSorting.Aired
         dgvTVEpisodes.Columns("Aired").ToolTipText = Master.eLang.GetString(728, "Aired")
         dgvTVEpisodes.Columns("Aired").HeaderText = Master.eLang.GetString(728, "Aired")
-        dgvTVEpisodes.Columns("Episode").Resizable = DataGridViewTriState.False
         dgvTVEpisodes.Columns("Episode").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader
+        dgvTVEpisodes.Columns("Episode").Resizable = DataGridViewTriState.False
         dgvTVEpisodes.Columns("Episode").ReadOnly = True
         dgvTVEpisodes.Columns("Episode").MinimumWidth = If(Season = 999, 35, 70)
         dgvTVEpisodes.Columns("Episode").SortMode = DataGridViewColumnSortMode.Automatic
@@ -8870,9 +8976,16 @@ Public Class frmMain
         dgvTVEpisodes.Columns("PosterPath").SortMode = DataGridViewColumnSortMode.Automatic
         dgvTVEpisodes.Columns("PosterPath").Visible = Not CheckColumnHide_TVEpisodes("PosterPath")
         dgvTVEpisodes.Columns("PosterPath").ToolTipText = Master.eLang.GetString(148, "Poster")
+        dgvTVEpisodes.Columns("Rating").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
+        dgvTVEpisodes.Columns("Rating").MinimumWidth = 30
+        dgvTVEpisodes.Columns("Rating").Resizable = DataGridViewTriState.False
+        dgvTVEpisodes.Columns("Rating").ReadOnly = True
+        dgvTVEpisodes.Columns("Rating").SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVEpisodes.Columns("Rating").Visible = Not CheckColumnHide_TVEpisodes("Rating")
+        dgvTVEpisodes.Columns("Rating").ToolTipText = Master.eLang.GetString(400, "Rating")
+        dgvTVEpisodes.Columns("Season").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader
         dgvTVEpisodes.Columns("Season").MinimumWidth = 35
         dgvTVEpisodes.Columns("Season").Resizable = DataGridViewTriState.False
-        dgvTVEpisodes.Columns("Season").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader
         dgvTVEpisodes.Columns("Season").ReadOnly = True
         dgvTVEpisodes.Columns("Season").SortMode = DataGridViewColumnSortMode.Automatic
         dgvTVEpisodes.Columns("Season").Visible = Season = 999
@@ -8886,6 +8999,13 @@ Public Class frmMain
         dgvTVEpisodes.Columns("Title").Visible = True
         dgvTVEpisodes.Columns("Title").ToolTipText = Master.eLang.GetString(21, "Title")
         dgvTVEpisodes.Columns("Title").HeaderText = Master.eLang.GetString(21, "Title")
+        dgvTVEpisodes.Columns("iUserRating").AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
+        dgvTVEpisodes.Columns("iUserRating").MinimumWidth = 30
+        dgvTVEpisodes.Columns("iUserRating").Resizable = DataGridViewTriState.False
+        dgvTVEpisodes.Columns("iUserRating").ReadOnly = True
+        dgvTVEpisodes.Columns("iUserRating").SortMode = DataGridViewColumnSortMode.Automatic
+        dgvTVEpisodes.Columns("iUserRating").Visible = Not CheckColumnHide_TVEpisodes("iUserRating")
+        dgvTVEpisodes.Columns("iUserRating").ToolTipText = Master.eLang.GetString(1467, "User Rating")
 
         dgvTVEpisodes.Columns("idEpisode").ValueType = GetType(Long)
         dgvTVEpisodes.Columns("idShow").ValueType = GetType(Long)
@@ -9359,8 +9479,8 @@ Public Class frmMain
 
         If Master.eSettings.MovieScraperMetaDataScan Then
             SetAVImages(APIXML.GetAVImages(currMovie.Movie.FileInfo, currMovie.Filename, False, currMovie.Movie.VideoSource))
-            pnlInfoIcons.Width = pbVideoSource.Width + pbVideoCodec.Width + pbVideoResolution.Width + pbAudioCodec.Width + pbAudioChannels.Width + pbStudio.Width + 6
-            pbStudio.Left = pbVideoSource.Width + pbVideoCodec.Width + pbVideoResolution.Width + pbAudioCodec.Width + pbAudioChannels.Width + 5
+            pnlInfoIcons.Width = pbVideoChannels.Width + pbVideoSource.Width + pbVideoCodec.Width + pbVideoResolution.Width + pbAudioCodec.Width + pbAudioChannels.Width + pbStudio.Width + 6
+            pbStudio.Left = pbVideoChannels.Width + pbVideoSource.Width + pbVideoCodec.Width + pbVideoResolution.Width + pbAudioCodec.Width + pbAudioChannels.Width + 5
         Else
             pnlInfoIcons.Width = pbStudio.Width + 1
             pbStudio.Left = 0
@@ -9525,8 +9645,8 @@ Public Class frmMain
         End If
         If Master.eSettings.TVScraperMetaDataScan AndAlso Not String.IsNullOrEmpty(currTV.Filename) Then
             SetAVImages(APIXML.GetAVImages(currTV.TVEpisode.FileInfo, currTV.Filename, True, currTV.TVEpisode.VideoSource))
-            pnlInfoIcons.Width = pbVideoSource.Width + pbVideoCodec.Width + pbVideoResolution.Width + pbAudioCodec.Width + pbAudioChannels.Width + pbStudio.Width + 6
-            pbStudio.Left = pbVideoSource.Width + pbVideoCodec.Width + pbVideoResolution.Width + pbAudioCodec.Width + pbAudioChannels.Width + 5
+            pnlInfoIcons.Width = pbVideoChannels.Width + pbVideoSource.Width + pbVideoCodec.Width + pbVideoResolution.Width + pbAudioCodec.Width + pbAudioChannels.Width + pbStudio.Width + 6
+            pbStudio.Left = pbVideoChannels.Width + pbVideoSource.Width + pbVideoCodec.Width + pbVideoResolution.Width + pbAudioCodec.Width + pbAudioChannels.Width + 5
         Else
             pnlInfoIcons.Width = pbStudio.Width + 1
             pbStudio.Left = 0
@@ -15767,6 +15887,7 @@ Public Class frmMain
         pbSubtitleLang4.Image = aImage(16)
         pbSubtitleLang5.Image = aImage(17)
         pbSubtitleLang6.Image = aImage(18)
+        pbVideoChannels.Image = aImage(19)
 
         ToolTips.SetToolTip(pbAudioLang0, If(pbAudioLang0.Image IsNot Nothing, pbAudioLang0.Image.Tag.ToString, String.Empty))
         ToolTips.SetToolTip(pbAudioLang1, If(pbAudioLang1.Image IsNot Nothing, pbAudioLang1.Image.Tag.ToString, String.Empty))
@@ -16342,6 +16463,14 @@ Public Class frmMain
             SetMenus(False)
             SetControlsEnabled(True)
         End If
+    End Sub
+
+    Private Sub mnuMainEdit_DropDownOpening(sender As Object, e As EventArgs) Handles mnuMainEdit.DropDownOpening
+        mnuMainEditSettings.Enabled = Not ModulesManager.Instance.QueryAnyGenericIsBusy
+    End Sub
+
+    Private Sub cmnuTray_Opening(sender As Object, e As EventArgs) Handles cmnuTray.Opening
+        cmnuTraySettings.Enabled = Not ModulesManager.Instance.QueryAnyGenericIsBusy
     End Sub
 
     Private Sub mnuMainEditSettings_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainEditSettings.Click, cmnuTraySettings.Click

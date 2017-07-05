@@ -805,6 +805,9 @@
     <Content Include="Images\Flags\acodec_truehd_atmos.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\Flags\vchan_2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\Flags\vcodec_hevc.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -892,6 +895,8 @@
     <None Include="Resources\hasSet.png" />
     <None Include="Resources\ad.png" />
     <None Include="Resources\heart.png" />
+    <None Include="Resources\colRating.png" />
+    <None Include="Resources\colUserRating.png" />
     <Content Include="Resources\movieset-Default.xml" />
     <Content Include="Resources\msaa.png" />
     <None Include="Resources\starempty.png" />

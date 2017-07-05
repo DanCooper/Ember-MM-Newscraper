@@ -1792,101 +1792,90 @@ Public Class NFO
     ''' <param name="fiRes"></param>
     ''' <returns></returns>
     Public Shared Function GetResFromDimensions(ByVal fiRes As MediaContainers.Video) As String
+        Dim iWidth As Integer
+        Dim iHeight As Integer
         Dim resOut As String = String.Empty
 
-        If Not String.IsNullOrEmpty(fiRes.Width) AndAlso Not String.IsNullOrEmpty(fiRes.Height) AndAlso Not String.IsNullOrEmpty(fiRes.Aspect) Then
-            Dim iWidth As Integer = Convert.ToInt32(fiRes.Width)
-            Dim iHeight As Integer = Convert.ToInt32(fiRes.Height)
-
-            If Integer.TryParse(fiRes.Width, iWidth) AndAlso Integer.TryParse(fiRes.Height, iHeight) Then
-
-                Select Case True
+        If Integer.TryParse(fiRes.Width, iWidth) AndAlso Integer.TryParse(fiRes.Height, iHeight) Then
+            Select Case True
                     'exact
-                    Case iWidth = 7680 AndAlso iHeight = 4320   'UHD 8K
-                        resOut = "4320"
-                    Case iWidth = 4096 AndAlso iHeight = 2160   'UHD 4K (cinema)
-                        resOut = "2160"
-                    Case iWidth = 3840 AndAlso iHeight = 2160   'UHD 4K
-                        resOut = "2160"
-                    Case iWidth = 2560 AndAlso iHeight = 1600   'WQXGA (16:10)
-                        resOut = "1600"
-                    Case iWidth = 2560 AndAlso iHeight = 1440   'WQHD (16:9)
-                        resOut = "1440"
-                    Case iWidth = 1920 AndAlso iHeight = 1200   'WUXGA (16:10)
-                        resOut = "1200"
-                    Case iWidth = 1920 AndAlso iHeight = 1080   'HD1080 (16:9)
-                        resOut = "1080"
-                    Case iWidth = 1680 AndAlso iHeight = 1050   'WSXGA+ (16:10)
-                        resOut = "1050"
-                    Case iWidth = 1600 AndAlso iHeight = 900    'HD+ (16:9)
-                        resOut = "900"
-                    Case iWidth = 1280 AndAlso iHeight = 720    'HD720 / WXGA (16:9)
-                        resOut = "720"
-                    Case iWidth = 800 AndAlso iHeight = 480     'Rec. 601 plus a quarter (5:3)
-                        resOut = "480"
-                    Case iWidth = 768 AndAlso iHeight = 576     'PAL
-                        resOut = "576"
-                    Case iWidth = 720 AndAlso iHeight = 480     'Rec. 601 (3:2)
-                        resOut = "480"
-                    Case iWidth = 720 AndAlso iHeight = 576     'PAL (DV)
-                        resOut = "576"
-                    Case iWidth = 720 AndAlso iHeight = 540     'half of 1080p (16:9)
-                        resOut = "540"
-                    Case iWidth = 640 AndAlso iHeight = 480     'VGA (4:3)
-                        resOut = "480"
-                    Case iWidth = 640 AndAlso iHeight = 360     'Wide 360p (16:9)
-                        resOut = "360"
-                    Case iWidth = 480 AndAlso iHeight = 360     '360p (4:3, uncommon)
-                        resOut = "360"
-                    Case iWidth = 426 AndAlso iHeight = 240     'NTSC widescreen (16:9)
-                        resOut = "240"
-                    Case iWidth = 352 AndAlso iHeight = 240     'NTSC-standard VCD / super-long-play DVD (4:3)
-                        resOut = "240"
-                    Case iWidth = 320 AndAlso iHeight = 240     'CGA / NTSC square pixel (4:3)
-                        resOut = "240"
-                    Case iWidth = 256 AndAlso iHeight = 144     'One tenth of 1440p (16:9)
-                        resOut = "144"
+                Case iWidth = 7680 AndAlso iHeight = 4320   'UHD 8K
+                    resOut = "4320"
+                Case iWidth = 4096 AndAlso iHeight = 2160   'UHD 4K (cinema)
+                    resOut = "2160"
+                Case iWidth = 3840 AndAlso iHeight = 2160   'UHD 4K
+                    resOut = "2160"
+                Case iWidth = 2560 AndAlso iHeight = 1600   'WQXGA (16:10)
+                    resOut = "1600"
+                Case iWidth = 2560 AndAlso iHeight = 1440   'WQHD (16:9)
+                    resOut = "1440"
+                Case iWidth = 1920 AndAlso iHeight = 1200   'WUXGA (16:10)
+                    resOut = "1200"
+                Case iWidth = 1920 AndAlso iHeight = 1080   'HD1080 (16:9)
+                    resOut = "1080"
+                Case iWidth = 1680 AndAlso iHeight = 1050   'WSXGA+ (16:10)
+                    resOut = "1050"
+                Case iWidth = 1600 AndAlso iHeight = 900    'HD+ (16:9)
+                    resOut = "900"
+                Case iWidth = 1280 AndAlso iHeight = 720    'HD720 / WXGA (16:9)
+                    resOut = "720"
+                Case iWidth = 800 AndAlso iHeight = 480     'Rec. 601 plus a quarter (5:3)
+                    resOut = "480"
+                Case iWidth = 768 AndAlso iHeight = 576     'PAL
+                    resOut = "576"
+                Case iWidth = 720 AndAlso iHeight = 480     'Rec. 601 (3:2)
+                    resOut = "480"
+                Case iWidth = 720 AndAlso iHeight = 576     'PAL (DVD)
+                    resOut = "576"
+                Case iWidth = 720 AndAlso iHeight = 540     'half of 1080p (16:9)
+                    resOut = "540"
+                Case iWidth = 640 AndAlso iHeight = 480     'VGA (4:3)
+                    resOut = "480"
+                Case iWidth = 640 AndAlso iHeight = 360     'Wide 360p (16:9)
+                    resOut = "360"
+                Case iWidth = 480 AndAlso iHeight = 360     '360p (4:3, uncommon)
+                    resOut = "360"
+                Case iWidth = 426 AndAlso iHeight = 240     'NTSC widescreen (16:9)
+                    resOut = "240"
+                Case iWidth = 352 AndAlso iHeight = 240     'NTSC-standard VCD / super-long-play DVD (4:3)
+                    resOut = "240"
+                Case iWidth = 320 AndAlso iHeight = 240     'CGA / NTSC square pixel (4:3)
+                    resOut = "240"
+                Case iWidth = 256 AndAlso iHeight = 144     'One tenth of 1440p (16:9)
+                    resOut = "144"
+                Case Else
+                    '
+                    ' MAM: simple version, totally sufficient. Add new res at the end of the list if they become available (before "99999999" of course!)
+                    ' Warning: this list needs to be sorted from lowest to highes resolution, else the search routine will go nuts!
+                    '
+                    Dim aVres() = New Dictionary(Of Integer, String) From
+                        {
+                        {426, "240"},
+                        {480, "360"},
+                        {640, "480"},
+                        {720, "576"},
+                        {1280, "720"},
+                        {1920, "1080"},
+                        {4096, "2160"},
+                        {7680, "4320"},
+                        {99999999, String.Empty}
+                    }.ToArray
+                    '
+                    ' search appropriate horizontal resolution
+                    ' Note: Array's last entry must be a ridiculous high number, else this loop will surely crash!
+                    '
+                    Dim i As Integer
+                    While (aVres(i).Key < iWidth)
+                        i = i + 1
+                    End While
+                    resOut = aVres(i).Value
+            End Select
 
-                    'by horizontal resolution
-                    Case iWidth = 7680
-                        resOut = "4320"
-                    Case iWidth = 4096
-                        resOut = "2160"
-                    Case iWidth = 3840
-                        resOut = "2160"
-                    Case iWidth = 2560
-                        resOut = "1440"
-                    Case iWidth = 1920
-                        resOut = "1080"
-                    Case iWidth = 1366
-                        resOut = "768"
-                    Case iWidth = 1280
-                        resOut = "720"
-                    Case iWidth = 1024
-                        resOut = "576"
-                    Case iWidth = 960
-                        resOut = "540"
-                    Case iWidth = 852
-                        resOut = "480"
-                    Case iWidth = 720
-                        resOut = "480"
-                    Case iWidth = 640
-                        resOut = "480"
-                    Case iWidth = 480
-                        resOut = "360"
-                End Select
-            End If
-        End If
-
-        If Not String.IsNullOrEmpty(resOut) Then
-            If String.IsNullOrEmpty(fiRes.Scantype) Then
-                Return String.Concat(resOut)
-            Else
+            If Not String.IsNullOrEmpty(resOut) AndAlso Not String.IsNullOrEmpty(fiRes.Scantype) Then
                 Return String.Concat(resOut, If(fiRes.Scantype.ToLower = "progressive", "p", "i"))
             End If
-        Else
-            Return String.Empty
         End If
+        Return resOut
     End Function
 
     Public Shared Function IsConformingNFO_Movie(ByVal sPath As String) As Boolean
