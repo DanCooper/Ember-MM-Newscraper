@@ -14905,21 +14905,21 @@ Public Class frmMain
     ''' <remarks></remarks>
     Private Sub RefreshRow_Movie(ByVal MovieID As Long)
         Dim myDelegate As New Delegate_dtListUpdateRow(AddressOf dtListUpdateRow)
-        Dim newRow As DataRow = Nothing
+        Dim newDRow As DataRow = Nothing
         Dim newTable As New DataTable
 
         Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM movielist WHERE idMovie={0}", MovieID))
         If newTable.Rows.Count > 0 Then
-            newRow = newTable.Rows.Item(0)
+            newDRow = newTable.Rows.Item(0)
         End If
 
-        Dim dRow = From drvRow In dtMovies.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item("idMovie")) = MovieID Select drvRow
+        Dim oldDRow As DataRow = dtMovies.Select(String.Format("idMovie = {0}", MovieID.ToString)).FirstOrDefault()
 
-        If dRow(0) IsNot Nothing AndAlso newRow IsNot Nothing Then
+        If oldDRow IsNot Nothing AndAlso newDRow IsNot Nothing Then
             If InvokeRequired Then
-                Invoke(myDelegate, New Object() {dRow(0), newRow})
+                Invoke(myDelegate, New Object() {oldDRow, newDRow})
             Else
-                DirectCast(dRow(0), DataRow).ItemArray = newRow.ItemArray
+                oldDRow.ItemArray = newDRow.ItemArray
             End If
         End If
 
@@ -14936,21 +14936,21 @@ Public Class frmMain
     ''' <remarks></remarks>
     Private Sub RefreshRow_MovieSet(ByVal MovieSetID As Long)
         Dim myDelegate As New Delegate_dtListUpdateRow(AddressOf dtListUpdateRow)
-        Dim newRow As DataRow = Nothing
+        Dim newDRow As DataRow = Nothing
         Dim newTable As New DataTable
 
         Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM setslist WHERE idSet={0}", MovieSetID))
         If newTable.Rows.Count > 0 Then
-            newRow = newTable.Rows.Item(0)
+            newDRow = newTable.Rows.Item(0)
         End If
 
-        Dim dRow = From drvRow In dtMovieSets.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item("idSet")) = MovieSetID Select drvRow
+        Dim oldDRow As DataRow = dtMovieSets.Select(String.Format("idSet = {0}", MovieSetID.ToString)).FirstOrDefault()
 
-        If dRow(0) IsNot Nothing AndAlso newRow IsNot Nothing Then
+        If oldDRow IsNot Nothing AndAlso newDRow IsNot Nothing Then
             If InvokeRequired Then
-                Invoke(myDelegate, New Object() {dRow(0), newRow})
+                Invoke(myDelegate, New Object() {oldDRow, newDRow})
             Else
-                DirectCast(dRow(0), DataRow).ItemArray = newRow.ItemArray
+                oldDRow.ItemArray = newDRow.ItemArray
             End If
         End If
 
@@ -14967,22 +14967,26 @@ Public Class frmMain
     ''' <remarks></remarks>
     Private Sub RefreshRow_TVEpisode(ByVal EpisodeID As Long)
         Dim myDelegate As New Delegate_dtListUpdateRow(AddressOf dtListUpdateRow)
-        Dim newRow As DataRow = Nothing
+        Dim newDRow As DataRow = Nothing
         Dim newTable As New DataTable
 
         Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM episodelist WHERE idEpisode={0}", EpisodeID))
         If newTable.Rows.Count > 0 Then
-            newRow = newTable.Rows.Item(0)
+            newDRow = newTable.Rows.Item(0)
         End If
 
-        Dim dRow = From drvRow In dtTVEpisodes.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item("idEpisode")) = EpisodeID Select drvRow
+        Dim oldDRow As DataRow = dtTVEpisodes.Select(String.Format("idEpisode = {0}", EpisodeID.ToString)).FirstOrDefault()
 
-        If dRow(0) IsNot Nothing AndAlso newRow IsNot Nothing Then
-            If InvokeRequired Then
-                Invoke(myDelegate, New Object() {dRow(0), newRow})
-            Else
-                DirectCast(dRow(0), DataRow).ItemArray = newRow.ItemArray
-            End If
+        If oldDRow IsNot Nothing AndAlso newDRow IsNot Nothing Then
+            Try
+                If InvokeRequired Then
+                    Invoke(myDelegate, New Object() {oldDRow, newDRow})
+                Else
+                    oldDRow.ItemArray = newDRow.ItemArray
+                End If
+            Catch ex As Exception
+                'catch the situation in which the tvshow row has been removed at the same time we try to refresh the episode row (it's nothing to do)
+            End Try
         End If
 
         If dgvTVEpisodes.Visible AndAlso dgvTVEpisodes.SelectedRows.Count > 0 AndAlso CInt(dgvTVEpisodes.SelectedRows(0).Cells("idEpisode").Value) = EpisodeID AndAlso currList = 2 Then
@@ -14998,22 +15002,26 @@ Public Class frmMain
     ''' <remarks></remarks>
     Private Sub RefreshRow_TVSeason(ByVal SeasonID As Long)
         Dim myDelegate As New Delegate_dtListUpdateRow(AddressOf dtListUpdateRow)
-        Dim newRow As DataRow = Nothing
+        Dim newDRow As DataRow = Nothing
         Dim newTable As New DataTable
 
         Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM seasonslist WHERE idSeason={0}", SeasonID))
         If newTable.Rows.Count > 0 Then
-            newRow = newTable.Rows.Item(0)
+            newDRow = newTable.Rows.Item(0)
         End If
 
-        Dim dRow = From drvRow In dtTVSeasons.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item("idSeason")) = SeasonID Select drvRow
+        Dim oldDRow As DataRow = dtTVSeasons.Select(String.Format("idSeason = {0}", SeasonID.ToString)).FirstOrDefault()
 
-        If dRow(0) IsNot Nothing AndAlso newRow IsNot Nothing Then
-            If InvokeRequired Then
-                Invoke(myDelegate, New Object() {dRow(0), newRow})
-            Else
-                DirectCast(dRow(0), DataRow).ItemArray = newRow.ItemArray
-            End If
+        If oldDRow IsNot Nothing AndAlso newDRow IsNot Nothing Then
+            Try
+                If InvokeRequired Then
+                    Invoke(myDelegate, New Object() {oldDRow, newDRow})
+                Else
+                    oldDRow.ItemArray = newDRow.ItemArray
+                End If
+            Catch ex As Exception
+                'catch the situation in which the tvshow row has been removed at the same time we try to refresh the season row (it's nothing to do)
+            End Try
         End If
 
         If dgvTVSeasons.Visible AndAlso dgvTVSeasons.SelectedRows.Count > 0 AndAlso CInt(dgvTVSeasons.SelectedRows(0).Cells("idSeason").Value) = SeasonID AndAlso currList = 1 Then
@@ -15041,21 +15049,21 @@ Public Class frmMain
     ''' <remarks></remarks>
     Private Sub RefreshRow_TVShow(ByVal ShowID As Long, Optional ByVal Force As Boolean = False)
         Dim myDelegate As New Delegate_dtListUpdateRow(AddressOf dtListUpdateRow)
-        Dim newRow As DataRow = Nothing
+        Dim newDRow As DataRow = Nothing
         Dim newTable As New DataTable
 
         Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM tvshowlist WHERE idShow={0}", ShowID))
         If newTable.Rows.Count > 0 Then
-            newRow = newTable.Rows.Item(0)
+            newDRow = newTable.Rows.Item(0)
         End If
 
-        Dim dRow = From drvRow In dtTVShows.Rows Where Convert.ToInt64(DirectCast(drvRow, DataRow).Item("idShow")) = ShowID Select drvRow
+        Dim oldDRow As DataRow = dtTVShows.Select(String.Format("idShow = {0}", ShowID.ToString)).FirstOrDefault()
 
-        If dRow(0) IsNot Nothing AndAlso newRow IsNot Nothing Then
+        If oldDRow IsNot Nothing AndAlso newDRow IsNot Nothing Then
             If InvokeRequired Then
-                Invoke(myDelegate, New Object() {dRow(0), newRow})
+                Invoke(myDelegate, New Object() {oldDRow, newDRow})
             Else
-                DirectCast(dRow(0), DataRow).ItemArray = newRow.ItemArray
+                oldDRow.ItemArray = newDRow.ItemArray
             End If
         End If
 
