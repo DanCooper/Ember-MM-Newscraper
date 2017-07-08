@@ -6,6 +6,7 @@
       <Item Name="a_ac3">ac3</Item>
       <Item Name="a_dts">dca</Item>
       <Item Name="a_eac3">eac3</Item>
+      <Item Name="a_flac">flac</Item>
       <Item Name="a_mpeg/l3">mp3</Item>
       <Item Name="a_truehd">truehd</Item>
       <Item Name="a_vorbis">vorbis</Item>
