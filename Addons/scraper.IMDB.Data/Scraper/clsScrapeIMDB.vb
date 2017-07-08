@@ -18,11 +18,11 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
+Imports EmberAPI
 Imports HtmlAgilityPack
+Imports NLog
 Imports System.IO
 Imports System.Text.RegularExpressions
-Imports EmberAPI
-Imports NLog
 
 Namespace IMDB
 
@@ -133,7 +133,6 @@ Namespace IMDB
         Private Const ACTORTABLE_PATTERN As String = "<table class=""cast"">(.*?)</table>"
         Private Const HREF_PATTERN As String = "<a.*?href=[""'](?<url>.*?)[""'].*?>(?<name>.*?)</a>"
         Private Const HREF_PATTERN_3 As String = "<a href=""/search/title\?certificates=[^""]*"">([^<]*):([^<]*)</a>[^<]*(<i>([^<]*)</i>)?"
-        Private Const HREF_PATTERN_4 As String = "<a.*?href=[""']/(title/tt\d{7}/|name/nm\d{7}/)[""'].*?>(?<text>.*?)</a>"
         Private Const IMDB_ID_REGEX As String = "tt\d\d\d\d\d\d\d"
         Private Const IMG_PATTERN As String = "<img src=""(?<thumb>.*?)"" width=""\d{1,3}"" height=""\d{1,3}"" border="".{1,3}"">"
         Private Const MOVIE_TITLE_PATTERN As String = "(?<=<(title)>).*(?=<\/\1>)"
@@ -221,9 +220,9 @@ Namespace IMDB
 
                 Dim nMovie As New MediaContainers.Movie
 
-                Dim webCombined As New HtmlWeb
-                Dim htmldCombined As HtmlDocument = webCombined.Load(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/", strID, "/combined"))
-                Dim htmldPlotsummary As HtmlDocument = webCombined.Load(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/", strID, "/plotsummary"))
+                Dim webParsing As New HtmlWeb
+                Dim htmldCombined As HtmlDocument = webParsing.Load(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/", strID, "/combined"))
+                Dim htmldPlotSummary As HtmlDocument = webParsing.Load(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/", strID, "/plotsummary"))
 
                 If bwIMDB.CancellationPending Then Return Nothing
 
@@ -236,7 +235,8 @@ Namespace IMDB
                 Dim strOriginalTitle As String = String.Empty
                 Dim ndOriginalTitle = htmldCombined.DocumentNode.SelectSingleNode("//head/title")
                 If ndOriginalTitle IsNot Nothing Then
-                    strOriginalTitle = CleanTitle(Regex.Match(ndOriginalTitle.InnerText, ".*(?=\s\(\d+.*?\))").ToString).Trim
+                    'remove year in brakets
+                    strOriginalTitle = Regex.Match(ndOriginalTitle.InnerText, ".*(?=\s\(\d+.*?\))").ToString.Trim
                 End If
 
                 'Actors
@@ -269,9 +269,9 @@ Namespace IMDB
                     Dim ndCertification = ncInfo.FirstOrDefault(Function(f) f.Descendants("h5").Where(Function(s) s.InnerText.ToLower = "certification:").Count > 0)
 
                     If ndCertification IsNot Nothing Then
-                        Dim test = ndCertification.Descendants("div")
-                        If test IsNot Nothing Then
-                            Dim rCert As MatchCollection = Regex.Matches(test(0).InnerHtml, HREF_PATTERN_3)
+                        Dim selNodes = ndCertification.Descendants("div")
+                        If selNodes IsNot Nothing Then
+                            Dim rCert As MatchCollection = Regex.Matches(selNodes(0).InnerHtml, HREF_PATTERN_3)
                             If rCert.Count > 0 Then
                                 Dim Certs = From M In rCert Select N = String.Format("{0}:{1}", DirectCast(M, Match).Groups(1).ToString.Trim, DirectCast(M, Match).Groups(2).ToString.Trim) Order By N Ascending
                                 For Each tCert In Certs
@@ -373,60 +373,25 @@ Namespace IMDB
 
                 'Outline
                 If FilteredOptions.bMainOutline AndAlso bIsScraperLanguage Then
-                    'Dim D, W, tempD As Integer
-                    'Try
-                    '    If nMovie.Title.Contains("(VG)") Then
-                    '        D = If(HTML.IndexOf("<h5>Plot Summary:</h5>") > 0, HTML.IndexOf("<h5>Plot Summary:</h5>"), HTML.IndexOf("<h5>Tagline:</h5>"))
-                    '        If D > 0 Then W = HTML.IndexOf("</div>", D)
-                    '    Else
-                    '        tempD = If(HTML.IndexOf("<h5>Plot:</h5>") > 0, HTML.IndexOf("<h5>Plot:</h5>"), HTML.IndexOf("<h5>Plot Summary:</h5>"))
-                    '        D = If(tempD > 0, HTML.IndexOf("<div class=""info-content"">", tempD), 0)
-                    '        If D <= 0 Then D = HTML.IndexOf("<h5>Plot Synopsis:</h5>")
-                    '        If D > 0 Then
-                    '            W = HTML.IndexOf("<a class=", D)
-                    '            If W > 0 Then
-                    '                W = HTML.IndexOf("</div>", D)
-                    '            Else
-                    '                '   IMnMovie.Outline = String.Empty
-                    '                GoTo mPlot
-                    '            End If
-                    '        Else
-                    '            'IMnMovie.Outline = String.Empty
-                    '            GoTo mPlot 'This plot synopsis is empty
-                    '        End If
-                    '    End If
-
-                    '    Dim PlotOutline As String = HTML.Substring(D, W - D).Remove(0, 26)
-
-                    '    PlotOutline = HttpUtility.HtmlDecode(If(PlotOutline.Contains("is empty") OrElse PlotOutline.Contains("View full synopsis") _
-                    '                       , String.Empty, PlotOutline.Replace("|", String.Empty).Replace("&raquo;", String.Empty)).Trim)
-                    '    'only update nMovie if scraped result is not empty/nothing!
-                    '    If Not String.IsNullOrEmpty(PlotOutline) Then
-                    '        'check if outline has links to other IMDB entry
-                    '        For Each rMatch As Match In Regex.Matches(PlotOutline, HREF_PATTERN_4)
-                    '            PlotOutline = PlotOutline.Replace(rMatch.Value, rMatch.Groups("text").Value.Trim)
-                    '        Next
-                    '        nMovie.Outline = Regex.Replace(PlotOutline, HREF_PATTERN, String.Empty).Trim
-                    '    End If
-
-                    'Catch ex As Exception
-                    'End Try
+                    Dim selNode = htmldCombined.DocumentNode.SelectNodes("//div[@class=""info""]").Where(
+                        Function(f) f.ChildNodes.Contains(htmldCombined.DocumentNode.SelectNodes("//h5").FirstOrDefault(
+                        Function(c) c.InnerText.ToLower = "plot:"))).FirstOrDefault
+                    If selNode IsNot Nothing Then
+                        Dim ndPlot = selNode.Descendants("div").FirstOrDefault
+                        If ndPlot IsNot Nothing Then
+                            nMovie.Outline = HttpUtility.HtmlDecode(ndPlot.ChildNodes(0).InnerText)
+                        End If
+                    End If
                 End If
 
                 If bwIMDB.CancellationPending Then Return Nothing
 
                 'Plot
                 If FilteredOptions.bMainPlot AndAlso bIsScraperLanguage Then
-                    'Dim FullPlotS As String = Regex.Match(PlotHtml, "<p class=""plotSummary"">(.*?)</p>", RegexOptions.Singleline Or RegexOptions.IgnoreCase Or RegexOptions.Multiline).Groups(1).Value.ToString.Trim
-                    'Dim FullPlotO As String = Regex.Match(PlotHtml, "<li class=""odd"">\s*<p>(.*?)<br/>", RegexOptions.Singleline Or RegexOptions.IgnoreCase Or RegexOptions.Multiline).Groups(1).Value.ToString.Trim
-                    'Dim FullPlotE As String = Regex.Match(PlotHtml, "<li class=""even"">\s*<p>(.*?)<br/>", RegexOptions.Singleline Or RegexOptions.IgnoreCase Or RegexOptions.Multiline).Groups(1).Value.ToString.Trim
-                    'Dim FullPlot As String = If(Not String.IsNullOrEmpty(FullPlotS), FullPlotS, If(Not String.IsNullOrEmpty(FullPlotO), FullPlotO, FullPlotE))
-                    'FullPlot = Regex.Replace(FullPlot, "<a(.*?)>", "")
-                    'FullPlot = Regex.Replace(FullPlot, "</a>", "")
-                    ''only update nMovie if scraped result is not empty/nothing!
-                    'If Not String.IsNullOrEmpty(FullPlot) Then
-                    '    nMovie.Plot = FullPlot
-                    'End If
+                    Dim selNode = htmldPlotSummary.DocumentNode.SelectSingleNode("//p[@class=""plotSummary""]")
+                    If selNode IsNot Nothing Then
+                        nMovie.Plot = HttpUtility.HtmlDecode(selNode.InnerText)
+                    End If
                 End If
 
                 If bwIMDB.CancellationPending Then Return Nothing

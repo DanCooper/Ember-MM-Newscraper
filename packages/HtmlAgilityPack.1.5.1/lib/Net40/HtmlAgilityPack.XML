@@ -297,6 +297,12 @@
             Defines if a checksum must be computed for the document while parsing. Default is false.
             </summary>
         </member>
+        <member name="F:HtmlAgilityPack.HtmlDocument.OptionEmptyCollection">
+            <summary>
+            Defines if SelectNodes method will return null or empty collection when no node matched the XPath expression.
+            Setting this to true will return empty collection and false will return null. Default is false.
+            </summary>
+        </member>
         <member name="F:HtmlAgilityPack.HtmlDocument.OptionDefaultStreamEncoding">
             <summary>
             Defines the default stream encoding to use. Default is System.Text.Encoding.Default.
@@ -1121,6 +1127,58 @@
             </summary>
             <returns>The saved string.</returns>
         </member>
+        <member name="M:HtmlAgilityPack.HtmlNode.AddClass(System.String)">
+            <summary>
+            Adds one or more classes to this node.
+            </summary>
+            <param name="name">The node list to add. May not be null.</param>
+        </member>
+        <member name="M:HtmlAgilityPack.HtmlNode.AddClass(System.String,System.Boolean)">
+            <summary>
+            Adds one or more classes to this node.
+            </summary>
+            <param name="name">The node list to add. May not be null.</param>
+            <param name="throwError">true to throw Error if class name exists, false otherwise.</param>
+        </member>
+        <member name="M:HtmlAgilityPack.HtmlNode.RemoveClass">
+            <summary>
+            Removes the class attribute from the node.
+            </summary>
+        </member>
+        <member name="M:HtmlAgilityPack.HtmlNode.RemoveClass(System.Boolean)">
+            <summary>
+            Removes the class attribute from the node.
+            </summary>
+            <param name="throwError">true to throw Error if class name doesn't exist, false otherwise.</param>
+        </member>
+        <member name="M:HtmlAgilityPack.HtmlNode.RemoveClass(System.String)">
+            <summary>
+            Removes the specified class from the node.
+            </summary>
+            <param name="name">The class being removed. May not be <c>null</c>.</param>
+        </member>
+        <member name="M:HtmlAgilityPack.HtmlNode.RemoveClass(System.String,System.Boolean)">
+            <summary>
+            Removes the specified class from the node.
+            </summary>
+            <param name="name">The class being removed. May not be <c>null</c>.</param>
+            <param name="throwError">true to throw Error if class name doesn't exist, false otherwise.</param>
+        </member>
+        <member name="M:HtmlAgilityPack.HtmlNode.ReplaceClass(System.String,System.String)">
+            <summary>
+            Replaces the class name oldClass with newClass name.
+            </summary>
+            <param name="newClass">The new class name.</param>
+            <param name="oldClass">The class being replaced.</param>
+        </member>
+        <member name="M:HtmlAgilityPack.HtmlNode.ReplaceClass(System.String,System.String,System.Boolean)">
+            <summary>
+            Replaces the class name oldClass with newClass name.
+            </summary>
+            <param name="newClass">The new class name.</param>
+            <param name="oldClass">The class being replaced.</param>
+            <param name="throwError">true to throw Error if class name doesn't exist, false otherwise.</param>
+        </member>
         <member name="T:HtmlAgilityPack.HtmlNodeCollection">
             <summary>
             Represents a combined list and collection of HTML nodes.
@@ -1656,6 +1714,33 @@
             <param name="htmlUrl">The requested URL, such as "http://Myserver/Mypath/Myfile.asp".</param>
             <param name="writer">The XmlTextWriter to which you want to save to.</param>
         </member>
+        <member name="P:HtmlAgilityPack.HtmlWeb.BrowserTimeout">
+            <summary>Gets or sets the web browser timeout.</summary>
+            
+        </member>
+        <member name="P:HtmlAgilityPack.HtmlWeb.BrowserDelay">
+            <summary>Gets or sets the web browser delay.</summary>
+        </member>
+        <member name="M:HtmlAgilityPack.HtmlWeb.LoadFromBrowser(System.String)">
+            <summary>Loads HTML using a WebBrowser and Application.DoEvents.</summary>
+            <exception cref="T:System.Exception">Thrown when an exception error condition occurs.</exception>
+            <param name="url">The requested URL, such as "http://html-agility-pack.net/".</param>
+            <returns>A new HTML document.</returns>
+        </member>
+        <member name="M:HtmlAgilityPack.HtmlWeb.LoadFromBrowser(System.String,System.Func{System.String,System.Boolean})">
+            <summary>Loads HTML using a WebBrowser and Application.DoEvents.</summary>
+            <exception cref="T:System.Exception">Thrown when an exception error condition occurs.</exception>
+            <param name="url">The requested URL, such as "http://html-agility-pack.net/".</param>
+            <param name="isBrowserScriptCompleted">(Optional) Check if the browser script has all been run and completed.</param>
+            <returns>A new HTML document.</returns>
+        </member>
+        <member name="M:HtmlAgilityPack.HtmlWeb.LoadFromBrowser(System.String,System.Func{System.Object,System.Boolean})">
+            <summary>Loads HTML using a WebBrowser and Application.DoEvents.</summary>
+            <exception cref="T:System.Exception">Thrown when an exception error condition occurs.</exception>
+            <param name="url">The requested URL, such as "http://html-agility-pack.net/".</param>
+            <param name="isBrowserScriptCompleted">(Optional) Check if the browser script has all been run and completed.</param>
+            <returns>A new HTML document.</returns>
+        </member>
         <member name="T:HtmlAgilityPack.HtmlWebException">
             <summary>
             Represents an exception thrown by the HtmlWeb utility class.
@@ -1884,6 +1969,11 @@
         <member name="P:HtmlAgilityPack.HtmlAttribute.Value">
             <summary>
             Gets or sets the value of the attribute.
+            </summary>
+        </member>
+        <member name="P:HtmlAgilityPack.HtmlAttribute.DeEntitizeValue">
+            <summary>
+            Gets the DeEntitized value of the attribute.
             </summary>
         </member>
         <member name="P:HtmlAgilityPack.HtmlAttribute.XPath">
