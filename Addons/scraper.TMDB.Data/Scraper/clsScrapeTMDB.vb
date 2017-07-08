@@ -361,22 +361,28 @@ Namespace TMDB
             If FilteredOptions.bMainCollectionID Then
                 If Result.BelongsToCollection Is Nothing Then
                     If _SpecialSettings.FallBackEng AndAlso ResultE.BelongsToCollection IsNot Nothing Then
+                        Dim nFullMovieSetInfo = GetInfo_MovieSet(ResultE.BelongsToCollection.Id.ToString,
+                                                                 New Structures.ScrapeOptions With {.bMainPlot = True, .bMainTitle = True},
+                                                                 False)
                         nMovie.AddSet(New MediaContainers.SetDetails With {
                                       .ID = -1,
                                       .Order = -1,
-                                      .Plot = String.Empty,
-                                      .Title = ResultE.BelongsToCollection.Name,
-                                      .TMDB = CStr(ResultE.BelongsToCollection.Id)})
-                        nMovie.TMDBColID = CStr(ResultE.BelongsToCollection.Id)
+                                      .Plot = nFullMovieSetInfo.Plot,
+                                      .Title = nFullMovieSetInfo.Title,
+                                      .TMDB = nFullMovieSetInfo.TMDB})
+                        nMovie.TMDBColID = nFullMovieSetInfo.TMDB
                     End If
                 Else
+                    Dim nFullMovieSetInfo = GetInfo_MovieSet(Result.BelongsToCollection.Id.ToString,
+                                                             New Structures.ScrapeOptions With {.bMainPlot = True, .bMainTitle = True},
+                                                             False)
                     nMovie.AddSet(New MediaContainers.SetDetails With {
                                   .ID = -1,
                                   .Order = -1,
-                                  .Plot = String.Empty,
-                                  .Title = ResultE.BelongsToCollection.Name,
-                                  .TMDB = CStr(ResultE.BelongsToCollection.Id)})
-                    nMovie.TMDBColID = CStr(Result.BelongsToCollection.Id)
+                                  .Plot = nFullMovieSetInfo.Plot,
+                                  .Title = nFullMovieSetInfo.Title,
+                                  .TMDB = nFullMovieSetInfo.TMDB})
+                    nMovie.TMDBColID = nFullMovieSetInfo.TMDB
                 End If
             End If
 
