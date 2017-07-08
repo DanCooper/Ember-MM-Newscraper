@@ -4052,11 +4052,11 @@ Public Class Database
                     SQLcommand_setlinkmovie.ExecuteNonQuery()
                 End Using
 
-                Dim IsNewSet As Boolean
+                Dim bIsNewSet As Boolean
                 For Each s As MediaContainers.SetDetails In _movieDB.Movie.Sets
                     If s.TitleSpecified Then
-                        IsNewSet = Not s.ID > 0
-                        If Not IsNewSet Then
+                        bIsNewSet = s.ID = -1
+                        If Not bIsNewSet Then
                             Using SQLcommand_setlinkmovie As SQLiteCommand = _myvideosDBConn.CreateCommand()
                                 SQLcommand_setlinkmovie.CommandText = String.Concat("INSERT OR REPLACE INTO setlinkmovie (",
                              "idMovie, idSet, iOrder",
@@ -4081,17 +4081,18 @@ Public Class Database
                                             SQLreader.Read()
                                             If Not DBNull.Value.Equals(SQLreader("idSet")) Then s.ID = CInt(SQLreader("idSet"))
                                             If Not DBNull.Value.Equals(SQLreader("SetName")) Then s.Title = CStr(SQLreader("SetName"))
-                                            If Not DBNull.Value.Equals(SQLreader("Plot")) Then s.Plot = CStr(SQLreader("Plot"))
-                                            IsNewSet = False
-                                            NFO.SaveToNFO_Movie(_movieDB, False) 'to save the "new" SetName
+                                            If Not DBNull.Value.Equals(SQLreader("Plot")) AndAlso
+                                                Not String.IsNullOrEmpty(CStr(SQLreader("Plot"))) Then s.Plot = CStr(SQLreader("Plot"))
+                                            bIsNewSet = False
+                                            NFO.SaveToNFO_Movie(_movieDB, False) 'to save the "new" SetName and/or SetPlot
                                         Else
-                                            IsNewSet = True
+                                            bIsNewSet = True
                                         End If
                                     End Using
                                 End Using
                             End If
 
-                            If IsNewSet Then
+                            If bIsNewSet Then
                                 'secondly check if a Set with same name is already existing
                                 Using SQLcommand_sets As SQLiteCommand = _myvideosDBConn.CreateCommand()
                                     SQLcommand_sets.CommandText = String.Concat("SELECT idSet, Plot ",
@@ -4100,17 +4101,18 @@ Public Class Database
                                         If SQLreader.HasRows Then
                                             SQLreader.Read()
                                             If Not DBNull.Value.Equals(SQLreader("idSet")) Then s.ID = CInt(SQLreader("idSet"))
-                                            If Not DBNull.Value.Equals(SQLreader("Plot")) Then s.Plot = CStr(SQLreader("Plot"))
-                                            IsNewSet = False
-                                            NFO.SaveToNFO_Movie(_movieDB, False) 'to save the "new" Plot
+                                            If Not DBNull.Value.Equals(SQLreader("Plot")) AndAlso
+                                                Not String.IsNullOrEmpty(CStr(SQLreader("Plot"))) Then s.Plot = CStr(SQLreader("Plot"))
+                                            bIsNewSet = False
+                                            NFO.SaveToNFO_Movie(_movieDB, False) 'to save the "new" SetName and/or SetPlot
                                         Else
-                                            IsNewSet = True
+                                            bIsNewSet = True
                                         End If
                                     End Using
                                 End Using
                             End If
 
-                            If Not IsNewSet Then
+                            If Not bIsNewSet Then
                                 'create new setlinkmovie with existing SetID
                                 Using SQLcommand_setlinkmovie As SQLiteCommand = _myvideosDBConn.CreateCommand()
                                     SQLcommand_setlinkmovie.CommandText = String.Concat("INSERT OR REPLACE INTO setlinkmovie (",
@@ -4126,11 +4128,13 @@ Public Class Database
                                     SQLcommand_setlinkmovie.ExecuteNonQuery()
                                 End Using
 
-                                'update existing set with latest TMDB Collection ID
+                                'update existing set with latest TMDB Collection ID and SetPlot
                                 Using SQLcommand_sets As SQLiteCommand = _myvideosDBConn.CreateCommand()
-                                    SQLcommand_sets.CommandText = String.Format("UPDATE sets SET TMDBColID=? WHERE idSet={0}", s.ID)
+                                    SQLcommand_sets.CommandText = String.Format("UPDATE sets SET TMDBColID=?, Plot=? WHERE idSet={0}", s.ID)
                                     Dim par_sets_TMDBColID As SQLiteParameter = SQLcommand_sets.Parameters.Add("parSets_TMDBColID", DbType.String, 0, "TMDBColID")
+                                    Dim par_sets_Plot As SQLiteParameter = SQLcommand_sets.Parameters.Add("parSets_Plot", DbType.String, 0, "Plot")
                                     par_sets_TMDBColID.Value = s.TMDB
+                                    par_sets_Plot.Value = s.Plot
                                     SQLcommand_sets.ExecuteNonQuery()
                                 End Using
                             Else
