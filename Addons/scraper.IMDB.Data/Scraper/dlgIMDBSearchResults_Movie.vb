@@ -334,7 +334,7 @@ Public Class dlgIMDBSearchResults_Movie
         End Try
     End Sub
 
-    Private Sub SearchResultsDownloaded(ByVal M As IMDB.SearchResults_Movie)
+    Private Sub SearchResultsDownloaded(ByVal tSearchResults As IMDB.SearchResults_Movie)
         '//
         ' Process the results that IMDB gave us
         '\\
@@ -342,14 +342,19 @@ Public Class dlgIMDBSearchResults_Movie
         Try
             tvResults.Nodes.Clear()
             ClearInfo()
-            If M IsNot Nothing Then
-                If M.PartialMatches.Count > 0 OrElse M.PopularTitles.Count > 0 OrElse M.TvTitles.Count > 0 OrElse M.ExactMatches.Count > 0 OrElse M.VideoTitles.Count > 0 OrElse M.ShortTitles.Count > 0 Then
-                    Dim TnP As New TreeNode(String.Format(Master.eLang.GetString(827, "Partial Matches ({0})"), M.PartialMatches.Count))
+            If tSearchResults IsNot Nothing Then
+                If tSearchResults.PartialMatches.Count > 0 OrElse
+                    tSearchResults.PopularTitles.Count > 0 OrElse
+                    tSearchResults.TvTitles.Count > 0 OrElse
+                    tSearchResults.ExactMatches.Count > 0 OrElse
+                    tSearchResults.VideoTitles.Count > 0 OrElse
+                    tSearchResults.ShortTitles.Count > 0 Then
+                    Dim TnP As New TreeNode(String.Format(Master.eLang.GetString(827, "Partial Matches ({0})"), tSearchResults.PartialMatches.Count))
                     Dim selNode As New TreeNode
 
-                    If M.PartialMatches.Count > 0 Then
-                        M.PartialMatches.Sort()
-                        For Each Movie As MediaContainers.Movie In M.PartialMatches
+                    If tSearchResults.PartialMatches.Count > 0 Then
+                        'tSearchResults.PartialMatches.Sort()
+                        For Each Movie As MediaContainers.Movie In tSearchResults.PartialMatches
                             TnP.Nodes.Add(New TreeNode() With {.Text = String.Concat(Movie.Title, If(Not String.IsNullOrEmpty(Movie.Year), String.Format(" ({0})", Movie.Year), String.Empty)), .Tag = Movie.IMDB})
                         Next
                         TnP.Expand()
@@ -357,13 +362,13 @@ Public Class dlgIMDBSearchResults_Movie
                         selNode = TnP.FirstNode
                     End If
 
-                    If M.TvTitles.Count > 0 Then
-                        M.TvTitles.Sort()
-                        If M.PartialMatches.Count > 0 Then
+                    If tSearchResults.TvTitles.Count > 0 Then
+                        'tSearchResults.TvTitles.Sort()
+                        If tSearchResults.PartialMatches.Count > 0 Then
                             tvResults.Nodes(TnP.Index).Collapse()
                         End If
-                        TnP = New TreeNode(String.Format(Master.eLang.GetString(1006, "TV Movie Titles ({0})"), M.TvTitles.Count))
-                        For Each Movie As MediaContainers.Movie In M.TvTitles
+                        TnP = New TreeNode(String.Format(Master.eLang.GetString(1006, "TV Movie Titles ({0})"), tSearchResults.TvTitles.Count))
+                        For Each Movie As MediaContainers.Movie In tSearchResults.TvTitles
                             TnP.Nodes.Add(New TreeNode() With {.Text = String.Concat(Movie.Title, If(Not String.IsNullOrEmpty(Movie.Year), String.Format(" ({0})", Movie.Year), String.Empty)), .Tag = Movie.IMDB})
                         Next
                         TnP.Expand()
@@ -371,13 +376,13 @@ Public Class dlgIMDBSearchResults_Movie
                         selNode = TnP.FirstNode
                     End If
 
-                    If M.VideoTitles.Count > 0 Then
-                        M.VideoTitles.Sort()
-                        If M.PartialMatches.Count > 0 Then
+                    If tSearchResults.VideoTitles.Count > 0 Then
+                        'tSearchResults.VideoTitles.Sort()
+                        If tSearchResults.PartialMatches.Count > 0 Then
                             tvResults.Nodes(TnP.Index).Collapse()
                         End If
-                        TnP = New TreeNode(String.Format(Master.eLang.GetString(1083, "Video Titles ({0})"), M.VideoTitles.Count))
-                        For Each Movie As MediaContainers.Movie In M.VideoTitles
+                        TnP = New TreeNode(String.Format(Master.eLang.GetString(1083, "Video Titles ({0})"), tSearchResults.VideoTitles.Count))
+                        For Each Movie As MediaContainers.Movie In tSearchResults.VideoTitles
                             TnP.Nodes.Add(New TreeNode() With {.Text = String.Concat(Movie.Title, If(Not String.IsNullOrEmpty(Movie.Year), String.Format(" ({0})", Movie.Year), String.Empty)), .Tag = Movie.IMDB})
                         Next
                         TnP.Expand()
@@ -385,13 +390,13 @@ Public Class dlgIMDBSearchResults_Movie
                         selNode = TnP.FirstNode
                     End If
 
-                    If M.ShortTitles.Count > 0 Then
-                        M.ShortTitles.Sort()
-                        If M.PartialMatches.Count > 0 Then
+                    If tSearchResults.ShortTitles.Count > 0 Then
+                        'tSearchResults.ShortTitles.Sort()
+                        If tSearchResults.PartialMatches.Count > 0 Then
                             tvResults.Nodes(TnP.Index).Collapse()
                         End If
-                        TnP = New TreeNode(String.Format(Master.eLang.GetString(1389, "Short Titles ({0})"), M.ShortTitles.Count))
-                        For Each Movie As MediaContainers.Movie In M.ShortTitles
+                        TnP = New TreeNode(String.Format(Master.eLang.GetString(1389, "Short Titles ({0})"), tSearchResults.ShortTitles.Count))
+                        For Each Movie As MediaContainers.Movie In tSearchResults.ShortTitles
                             TnP.Nodes.Add(New TreeNode() With {.Text = String.Concat(Movie.Title, If(Not String.IsNullOrEmpty(Movie.Year), String.Format(" ({0})", Movie.Year), String.Empty)), .Tag = Movie.IMDB})
                         Next
                         TnP.Expand()
@@ -399,13 +404,13 @@ Public Class dlgIMDBSearchResults_Movie
                         selNode = TnP.FirstNode
                     End If
 
-                    If M.PopularTitles.Count > 0 Then
-                        M.PopularTitles.Sort()
-                        If M.PartialMatches.Count > 0 OrElse M.TvTitles.Count > 0 Then
+                    If tSearchResults.PopularTitles.Count > 0 Then
+                        'tSearchResults.PopularTitles.Sort()
+                        If tSearchResults.PartialMatches.Count > 0 OrElse tSearchResults.TvTitles.Count > 0 Then
                             tvResults.Nodes(TnP.Index).Collapse()
                         End If
-                        TnP = New TreeNode(String.Format(Master.eLang.GetString(829, "Popular Titles ({0})"), M.PopularTitles.Count))
-                        For Each Movie As MediaContainers.Movie In M.PopularTitles
+                        TnP = New TreeNode(String.Format(Master.eLang.GetString(829, "Popular Titles ({0})"), tSearchResults.PopularTitles.Count))
+                        For Each Movie As MediaContainers.Movie In tSearchResults.PopularTitles
                             TnP.Nodes.Add(New TreeNode() With {.Text = String.Concat(Movie.Title, If(Not String.IsNullOrEmpty(Movie.Year), String.Format(" ({0})", Movie.Year), String.Empty)), .Tag = Movie.IMDB})
                         Next
                         TnP.Expand()
@@ -413,13 +418,13 @@ Public Class dlgIMDBSearchResults_Movie
                         selNode = TnP.FirstNode
                     End If
 
-                    If M.ExactMatches.Count > 0 Then
-                        M.ExactMatches.Sort()
-                        If M.PartialMatches.Count > 0 OrElse M.TvTitles.Count > 0 OrElse M.PopularTitles.Count > 0 Then
+                    If tSearchResults.ExactMatches.Count > 0 Then
+                        'tSearchResults.ExactMatches.Sort()
+                        If tSearchResults.PartialMatches.Count > 0 OrElse tSearchResults.TvTitles.Count > 0 OrElse tSearchResults.PopularTitles.Count > 0 Then
                             tvResults.Nodes(TnP.Index).Collapse()
                         End If
-                        TnP = New TreeNode(String.Format(Master.eLang.GetString(831, "Exact Matches ({0})"), M.ExactMatches.Count))
-                        For Each Movie As MediaContainers.Movie In M.ExactMatches
+                        TnP = New TreeNode(String.Format(Master.eLang.GetString(831, "Exact Matches ({0})"), tSearchResults.ExactMatches.Count))
+                        For Each Movie As MediaContainers.Movie In tSearchResults.ExactMatches
                             TnP.Nodes.Add(New TreeNode() With {.Text = String.Concat(Movie.Title, If(Not String.IsNullOrEmpty(Movie.Year), String.Format(" ({0})", Movie.Year), String.Empty)), .Tag = Movie.IMDB})
                         Next
                         TnP.Expand()
@@ -429,17 +434,17 @@ Public Class dlgIMDBSearchResults_Movie
                     _prevnode = -2
 
                     'determine if we automatically start downloading info for selected node
-                    If M.ExactMatches.Count > 0 Then
+                    If tSearchResults.ExactMatches.Count > 0 Then
                         tvResults.SelectedNode = selNode
-                    ElseIf M.PopularTitles.Count > 0 Then
+                    ElseIf tSearchResults.PopularTitles.Count > 0 Then
                         tvResults.SelectedNode = selNode
-                    ElseIf M.TvTitles.Count > 0 Then
+                    ElseIf tSearchResults.TvTitles.Count > 0 Then
                         tvResults.SelectedNode = selNode
-                    ElseIf M.VideoTitles.Count > 0 Then
+                    ElseIf tSearchResults.VideoTitles.Count > 0 Then
                         tvResults.SelectedNode = selNode
-                    ElseIf M.ShortTitles.Count > 0 Then
+                    ElseIf tSearchResults.ShortTitles.Count > 0 Then
                         tvResults.SelectedNode = selNode
-                    ElseIf M.PartialMatches.Count > 0 Then
+                    ElseIf tSearchResults.PartialMatches.Count > 0 Then
                         tvResults.SelectedNode = selNode
                     Else
                         tvResults.SelectedNode = Nothing
