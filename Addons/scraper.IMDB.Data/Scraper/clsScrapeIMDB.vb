@@ -18,10 +18,11 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
+Imports EmberAPI
+Imports HtmlAgilityPack
+Imports NLog
 Imports System.IO
 Imports System.Text.RegularExpressions
-Imports EmberAPI
-Imports NLog
 
 Namespace IMDB
 
@@ -132,7 +133,6 @@ Namespace IMDB
         Private Const ACTORTABLE_PATTERN As String = "<table class=""cast"">(.*?)</table>"
         Private Const HREF_PATTERN As String = "<a.*?href=[""'](?<url>.*?)[""'].*?>(?<name>.*?)</a>"
         Private Const HREF_PATTERN_3 As String = "<a href=""/search/title\?certificates=[^""]*"">([^<]*):([^<]*)</a>[^<]*(<i>([^<]*)</i>)?"
-        Private Const HREF_PATTERN_4 As String = "<a.*?href=[""']/(title/tt\d{7}/|name/nm\d{7}/)[""'].*?>(?<text>.*?)</a>"
         Private Const IMDB_ID_REGEX As String = "tt\d\d\d\d\d\d\d"
         Private Const IMG_PATTERN As String = "<img src=""(?<thumb>.*?)"" width=""\d{1,3}"" height=""\d{1,3}"" border="".{1,3}"">"
         Private Const MOVIE_TITLE_PATTERN As String = "(?<=<(title)>).*(?=<\/\1>)"
@@ -151,7 +151,7 @@ Namespace IMDB
         Private Const TVEPISODE_SEASON_EPISODE As String = "<h5>Original Air Date:<\/h5>.*?\(Season (?<SEASON>\d+), Episode (?<EPISODE>\d+)\).*?<\/div>"
         Private Const TVEPISODE_CREDITS As String = "<a.*?href=[""'](?<URL>.*?)[""'].*?>(?<NAME>.*?).?<\/a>.*?<td class=""credit"">.*?\((?<CLASS>.*?)\).*?<\/td>"
 
-        Private sPoster As String
+        Private strPosterURL As String = String.Empty
         Private intHTTP As HTTP = Nothing
 
         Private _SpecialSettings As IMDB_Data.SpecialSettings
@@ -216,77 +216,132 @@ Namespace IMDB
             Try
                 If bwIMDB.CancellationPending Then Return Nothing
 
+                Dim bIsScraperLanguage As Boolean = _SpecialSettings.PrefLanguage.ToLower.StartsWith("en")
+
+                strPosterURL = String.Empty
                 Dim nMovie As New MediaContainers.Movie
 
-                Dim HTML As String
-                intHTTP = New HTTP
-                HTML = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/", strID, "/combined"))
-                intHTTP.Dispose()
-                intHTTP = Nothing
+                Dim webParsing As New HtmlWeb
+                Dim htmldCombined As HtmlDocument = webParsing.Load(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/", strID, "/combined"))
+                Dim htmldPlotSummary As HtmlDocument = webParsing.Load(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/", strID, "/plotsummary"))
 
                 If bwIMDB.CancellationPending Then Return Nothing
-
-                Dim PlotHtml As String
-                intHTTP = New HTTP
-                PlotHtml = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/", strID, "/plotsummary"))
-                intHTTP.Dispose()
-                intHTTP = Nothing
 
                 nMovie.IMDB = strID
                 nMovie.Scrapersource = "IMDB"
 
                 If bwIMDB.CancellationPending Then Return Nothing
 
-                Dim scrapedresult As String = String.Empty
-
-                Dim OriginalTitle As String = Regex.Match(HTML, MOVIE_TITLE_PATTERN).ToString
-
-
-                'Original Title
-                If FilteredOptions.bMainOriginalTitle Then
-                    nMovie.OriginalTitle = CleanTitle(HttpUtility.HtmlDecode(Regex.Match(OriginalTitle, ".*(?=\s\(\d+.*?\))").ToString)).Trim
+                'get clean OriginalTitle
+                Dim strOriginalTitle As String = String.Empty
+                Dim ndOriginalTitle = htmldCombined.DocumentNode.SelectSingleNode("//head/title")
+                If ndOriginalTitle IsNot Nothing Then
+                    'remove year in brakets
+                    strOriginalTitle = Regex.Match(ndOriginalTitle.InnerText, ".*(?=\s\(\d+.*?\))").ToString.Trim
                 End If
 
-                If bwIMDB.CancellationPending Then Return Nothing
-
-                'Title
-                If FilteredOptions.bMainTitle Then
-                    If Not String.IsNullOrEmpty(_SpecialSettings.ForceTitleLanguage) Then
-                        nMovie.Title = GetForcedTitle(strID, nMovie.OriginalTitle)
+                'Actors
+                If FilteredOptions.bMainActors Then
+                    Dim ThumbsSize = AdvancedSettings.GetSetting("ActorThumbsSize", "SX1000_SY1000")
+                    Dim ncCast = htmldCombined.DocumentNode.SelectNodes("//table[@class=""cast""]/tr[@class]")
+                    If ncCast IsNot Nothing Then
+                        For Each nCast In ncCast
+                            Dim nActor As New MediaContainers.Person
+                            Dim ndActorthumb = nCast.Descendants("img").FirstOrDefault
+                            If ndActorthumb IsNot Nothing AndAlso
+                                ndActorthumb.Attributes("src") IsNot Nothing AndAlso
+                                Not String.IsNullOrEmpty(ndActorthumb.Attributes("src").Value) AndAlso
+                                Not ndActorthumb.Attributes("src").Value.Contains("no_photo") AndAlso
+                                Not ndActorthumb.Attributes("src").Value.Contains("thumb") AndAlso
+                                Not ndActorthumb.Attributes("src").Value.Contains("addtiny") Then
+                                nActor.Thumb.URLOriginal = ndActorthumb.Attributes("src").Value.Replace("._SX23_SY30_.jpg", String.Concat("._", ThumbsSize, "_.jpg"))
+                            End If
+                            If Not String.IsNullOrEmpty(nCast.ChildNodes(1).InnerText) Then nActor.Name = HttpUtility.HtmlDecode(nCast.ChildNodes(1).InnerText)
+                            If Not String.IsNullOrEmpty(nCast.ChildNodes(3).InnerText) Then nActor.Role = HttpUtility.HtmlDecode(nCast.ChildNodes(3).InnerText)
+                            nMovie.Actors.Add(nActor)
+                        Next
                     Else
-                        nMovie.Title = CleanTitle(HttpUtility.HtmlDecode(Regex.Match(OriginalTitle, ".*(?=\s\(\d+.*?\))").ToString)).Trim
+                        logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Actors", strID))
                     End If
-                End If
-
-                If bwIMDB.CancellationPending Then Return Nothing
-
-                'Poster for search result
-                If GetPoster Then
-                    sPoster = Regex.Match(Regex.Match(HTML, "(?<=\b(name=""poster"")).*\b[</a>]\b").ToString, "(?<=\b(src=)).*\b(?=[</a>])").ToString.Replace("""", String.Empty).Replace("/></", String.Empty)
-                End If
-
-                If bwIMDB.CancellationPending Then Return Nothing
-
-                'Year
-                If FilteredOptions.bMainYear Then
-                    nMovie.Year = Regex.Match(OriginalTitle, "(?<=\()\d+(?=.*\))", RegexOptions.RightToLeft).ToString
                 End If
 
                 If bwIMDB.CancellationPending Then Return Nothing
 
                 'Certifications
                 If FilteredOptions.bMainCertifications Then
-                    Dim D, W As Integer
-                    D = HTML.IndexOf("<h5>Certification:</h5>")
-                    If D > 0 Then
-                        W = HTML.IndexOf("</div>", D)
-                        Dim rCert As MatchCollection = Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN_3)
-
+                    Dim selNode = htmldCombined.DocumentNode.SelectSingleNode("//div[@class=""info""]/h5[.='Certification:']")
+                    If selNode IsNot Nothing AndAlso selNode.NextSibling IsNot Nothing Then
+                        Dim rCert As MatchCollection = Regex.Matches(selNode.NextSibling.InnerHtml, HREF_PATTERN_3)
                         If rCert.Count > 0 Then
                             Dim Certs = From M In rCert Select N = String.Format("{0}:{1}", DirectCast(M, Match).Groups(1).ToString.Trim, DirectCast(M, Match).Groups(2).ToString.Trim) Order By N Ascending
                             For Each tCert In Certs
                                 nMovie.Certifications.Add(tCert.ToString.Replace("West", String.Empty).Trim)
                             Next
+                        End If
+                    Else
+                        logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Certifications", strID))
+                    End If
+                End If
+
+                If bwIMDB.CancellationPending Then Return Nothing
+
+                'Countries
+                If FilteredOptions.bMainCountries Then
+                    Dim selNode = htmldCombined.DocumentNode.SelectSingleNode("//div[@class=""info""]/h5[.='Country:']")
+                    If selNode IsNot Nothing Then
+                        Dim ncCountries = selNode.ParentNode.Descendants("a")
+                        If ncCountries IsNot Nothing Then
+                            Dim lstCountries = ncCountries.Select(Function(f) HttpUtility.HtmlDecode(f.InnerText)).Distinct.ToList
+                            If Not _SpecialSettings.CountryAbbreviation Then
+                                For i As Integer = 0 To lstCountries.Count - 1
+                                    lstCountries(i) = lstCountries(i).Replace("USA", "United States of America")
+                                    lstCountries(i) = lstCountries(i).Replace("UK", "United Kingdom")
+                                Next
+                            End If
+                            nMovie.Countries.AddRange(lstCountries)
+                        End If
+                    End If
+                End If
+
+                If bwIMDB.CancellationPending Then Return Nothing
+
+                'Director
+                If FilteredOptions.bMainDirectors Then
+                    Dim ncCast = htmldCombined.DocumentNode.SelectSingleNode("//a[@class=""glossary""][@name=""directors""]")
+                    If ncCast IsNot Nothing Then
+                        Dim nTable = ncCast.Ancestors("table").FirstOrDefault
+                        If nTable IsNot Nothing Then
+                            Dim nDirectors = nTable.Descendants("a").Where(
+                                Function(f) f.Attributes.Contains("href") AndAlso
+                                Not f.Attributes.Contains("class"))
+                            If nDirectors IsNot Nothing Then
+                                nMovie.Directors.AddRange(nDirectors.Select(Function(f) HttpUtility.HtmlDecode(f.InnerText)).Distinct.ToList)
+                            End If
+                        End If
+                    Else
+                        logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Directors", strID))
+                    End If
+                End If
+
+                If bwIMDB.CancellationPending Then Return Nothing
+
+                'Duration
+                If FilteredOptions.bMainRuntime Then
+                    Dim selNode = htmldCombined.DocumentNode.SelectSingleNode("//div[@class=""info""]/h5[.='Runtime:']")
+                    If selNode IsNot Nothing AndAlso selNode.NextSibling IsNot Nothing Then
+                        nMovie.Runtime = HttpUtility.HtmlDecode(selNode.NextSibling.InnerText)
+                    End If
+                End If
+
+                If bwIMDB.CancellationPending Then Return Nothing
+
+                'Genres
+                If FilteredOptions.bMainGenres Then
+                    Dim selNode = htmldCombined.DocumentNode.SelectSingleNode("//div[@class=""info""]/h5[.='Genre:']")
+                    If selNode IsNot Nothing Then
+                        Dim ncGenres = selNode.ParentNode.Descendants("a").Where(Function(f) Not f.InnerText.ToLower = "see more")
+                        If ncGenres IsNot Nothing Then
+                            nMovie.Genres.AddRange(ncGenres.Select(Function(f) HttpUtility.HtmlDecode(f.InnerText)).Distinct.ToList)
                         End If
                     End If
                 End If
@@ -295,22 +350,55 @@ Namespace IMDB
 
                 'MPAA
                 If FilteredOptions.bMainMPAA Then
-                    Dim D, W, tempD As Integer
-                    tempD = If(HTML.IndexOf("<h5><a href=""/mpaa"">MPAA</a>:</h5>") > 0, HTML.IndexOf("<h5><a href=""/mpaa"">MPAA</a>:</h5>"), 0)
-                    D = If(tempD > 0, HTML.IndexOf("<div class=""info-content"">", tempD), 0)
-                    W = If(D > 0, HTML.IndexOf("</div", D), 0)
-                    nMovie.MPAA = If(D > 0 AndAlso W > 0, HttpUtility.HtmlDecode(HTML.Substring(D, W - D).Remove(0, 26)).Trim(), String.Empty)
+                    Dim selNode = htmldCombined.DocumentNode.SelectSingleNode("//div[@class=""info""]/h5[.='MPAA:']")
+                    If selNode IsNot Nothing AndAlso selNode.NextSibling IsNot Nothing Then
+                        nMovie.MPAA = HttpUtility.HtmlDecode(selNode.NextSibling.InnerText)
+                    Else
+                        logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse MPAA", strID))
+                    End If
                 End If
 
                 If bwIMDB.CancellationPending Then Return Nothing
 
-                'Release Date
-                If FilteredOptions.bMainRelease Then
-                    Dim RelDate As Date
-                    Dim sRelDate As MatchCollection = Regex.Matches(HTML, "<h5>Release Date:</h5>.*?(?<DATE>\d+\s\w+\s\d\d\d\d\s)", RegexOptions.Singleline)
-                    If sRelDate.Count > 0 Then
-                        If Date.TryParse(sRelDate.Item(0).Groups(1).Value, RelDate) Then
-                            nMovie.ReleaseDate = RelDate.ToString("yyyy-MM-dd")
+                'Original Title
+                If FilteredOptions.bMainOriginalTitle Then
+                    nMovie.OriginalTitle = strOriginalTitle
+                End If
+
+                If bwIMDB.CancellationPending Then Return Nothing
+
+                'Outline
+                If FilteredOptions.bMainOutline AndAlso bIsScraperLanguage Then
+                    Dim selNode = htmldCombined.DocumentNode.SelectSingleNode("//div[@class=""info""]/h5[.='Plot:']")
+                    If selNode IsNot Nothing Then
+                        Dim ndPlot = selNode.ParentNode.Descendants("div").FirstOrDefault
+                        If ndPlot IsNot Nothing AndAlso ndPlot.FirstChild IsNot Nothing Then
+                            nMovie.Outline = HttpUtility.HtmlDecode(ndPlot.FirstChild.InnerText)
+                        End If
+                    End If
+                End If
+
+                If bwIMDB.CancellationPending Then Return Nothing
+
+                'Plot
+                If FilteredOptions.bMainPlot AndAlso bIsScraperLanguage Then
+                    Dim selNode = htmldPlotSummary.DocumentNode.SelectSingleNode("//p[@class=""plotSummary""]")
+                    If selNode IsNot Nothing Then
+                        nMovie.Plot = HttpUtility.HtmlDecode(selNode.InnerText)
+                    Else
+                        logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Plot", strID))
+                    End If
+                End If
+
+                If bwIMDB.CancellationPending Then Return Nothing
+
+                'Poster for search result
+                If GetPoster Then
+                    Dim selNode = htmldCombined.DocumentNode.SelectSingleNode("//a[@name=""poster""]/img")
+                    If selNode IsNot Nothing Then
+                        Dim attSource = selNode.Attributes("src")
+                        If attSource IsNot Nothing Then
+                            strPosterURL = attSource.Value
                         End If
                     End If
                 End If
@@ -319,10 +407,93 @@ Namespace IMDB
 
                 'Rating
                 If FilteredOptions.bMainRating Then
-                    Dim RegexRating As String = Regex.Match(HTML, "\b\d\W\d/\d\d").ToString
-                    If Not String.IsNullOrEmpty(RegexRating) Then
-                        nMovie.Rating = RegexRating.Split(Convert.ToChar("/")).First.Trim
-                        nMovie.Votes = Regex.Match(HTML, "class=""tn15more"">([0-9,]+) votes</a>").Groups(1).Value.Trim
+                    Dim selNodeRating = htmldCombined.DocumentNode.SelectSingleNode("//div[@class=""starbar-meta""]/b")
+                    Dim selNodeVotes = htmldCombined.DocumentNode.SelectSingleNode("//div[@class=""starbar-meta""]/a")
+                    If selNodeRating IsNot Nothing AndAlso
+                        selNodeVotes IsNot Nothing Then
+                        nMovie.Rating = Regex.Match(selNodeRating.InnerText.Trim, "\d\.\d").Value
+                        nMovie.Votes = Regex.Match(selNodeVotes.InnerText.Trim, "[0-9,]+").Value
+                    Else
+                        logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Rating", strID))
+                    End If
+                End If
+
+                If bwIMDB.CancellationPending Then Return Nothing
+
+                'ReleaseDate / Year
+                If FilteredOptions.bMainRelease OrElse FilteredOptions.bMainYear Then
+                    Dim selNode = htmldCombined.DocumentNode.SelectSingleNode("//div[@class=""info""]/h5[.='Release Date:']")
+                    If selNode IsNot Nothing AndAlso selNode.NextSibling IsNot Nothing AndAlso selNode.NextSibling.NextSibling IsNot Nothing Then
+                        Dim RelDate As Date
+                        Dim sRelDate = Regex.Match(selNode.NextSibling.NextSibling.InnerText,
+                                                   "\d+\s\w+\s\d\d\d\d\s",
+                                                   RegexOptions.Singleline)
+                        If sRelDate.Success Then
+                            If Date.TryParse(sRelDate.Value, RelDate) Then
+                                If FilteredOptions.bMainRelease Then nMovie.ReleaseDate = RelDate.ToString("yyyy-MM-dd")
+                                If FilteredOptions.bMainYear Then nMovie.Year = RelDate.Year.ToString
+                            End If
+                        End If
+                    Else
+                        logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse ReleaseDate/Year", strID))
+                    End If
+                End If
+
+                If bwIMDB.CancellationPending Then Return Nothing
+
+                'Studios
+                If FilteredOptions.bMainStudios Then
+                    Dim selNode = htmldCombined.DocumentNode.SelectSingleNode("//b[@class=""blackcatheader""][.='Production Companies']")
+                    If selNode IsNot Nothing Then
+                        nMovie.Studios.AddRange(selNode.NextSibling.Descendants("a").Select(Function(f) HttpUtility.HtmlDecode(f.InnerText)).Distinct.ToList)
+                    Else
+                        logger.Warn(String.Format("[IMDB] [GetMovieInfo] [ID:""{0}""] can't parse Studios", strID))
+                    End If
+
+                    If _SpecialSettings.StudiowithDistributors Then
+                        Dim selNodeD = htmldCombined.DocumentNode.SelectSingleNode("//b[@class=""blackcatheader""][.='Distributors']")
+                        If selNodeD IsNot Nothing Then
+                            nMovie.Studios.AddRange(selNodeD.NextSibling.Descendants("a").Select(Function(f) HttpUtility.HtmlDecode(f.InnerText)).Distinct.ToList)
+                            nMovie.Studios = nMovie.Studios.Distinct.ToList
+                        End If
+                    End If
+                End If
+
+                If bwIMDB.CancellationPending Then Return Nothing
+
+                'Tagline
+                If FilteredOptions.bMainTagline AndAlso bIsScraperLanguage Then
+                    Dim selNode = htmldCombined.DocumentNode.SelectSingleNode("//div[@class=""info""]/h5[.='Tagline:']")
+                    If selNode IsNot Nothing Then
+                        Dim ndTagline = selNode.ParentNode.Descendants("div").FirstOrDefault
+                        If ndTagline IsNot Nothing AndAlso ndTagline.FirstChild IsNot Nothing Then
+                            nMovie.Tagline = HttpUtility.HtmlDecode(ndTagline.FirstChild.InnerText)
+                        End If
+                    End If
+                End If
+
+                If bwIMDB.CancellationPending Then Return Nothing
+
+                'Title
+                If FilteredOptions.bMainTitle Then
+                    If Not String.IsNullOrEmpty(_SpecialSettings.ForceTitleLanguage) Then
+                        nMovie.Title = GetForcedTitle(strID, strOriginalTitle)
+                    Else
+                        nMovie.Title = strOriginalTitle
+                    End If
+                End If
+
+                If bwIMDB.CancellationPending Then Return Nothing
+
+                'Top250
+                If FilteredOptions.bMainTop250 Then
+                    Dim selNode = htmldCombined.DocumentNode.SelectSingleNode("//div[@class=""starbar-special""]/a")
+                    If selNode IsNot Nothing Then
+                        Dim strTop250 As String = Regex.Match(selNode.InnerText.Trim, "#([0-9]+)").Groups(1).Value
+                        Dim iTop250 As Integer = 0
+                        If Integer.TryParse(strTop250, iTop250) Then
+                            nMovie.Top250 = iTop250
+                        End If
                     End If
                 End If
 
@@ -343,272 +514,25 @@ Namespace IMDB
 
                 If bwIMDB.CancellationPending Then Return Nothing
 
-                'Top250
-                'ie: <a href="/chart/top?tt0167260">Top 250: #13</a>
-                If FilteredOptions.bMainTop250 Then
-                    Dim strTop250 As String = Regex.Match(HTML, String.Concat("/chart/top\?", nMovie.IMDB, """>Top 250: #([0-9]+)</a>")).Groups(1).Value.Trim
-                    Dim iTop250 As Integer = 0
-                    If Integer.TryParse(strTop250, iTop250) Then
-                        nMovie.Top250 = iTop250
-                    End If
-                End If
-
-                If bwIMDB.CancellationPending Then Return Nothing
-
-                'Actors
-                If FilteredOptions.bMainActors Then
-                    'Find all cast of the movie
-                    'Match the table only 1 time
-                    Dim ActorsTable As String = Regex.Match(HTML, ACTORTABLE_PATTERN).ToString
-                    Dim ThumbsSize = AdvancedSettings.GetSetting("ActorThumbsSize", "SX1000_SY1000")
-
-                    Dim rCast As MatchCollection = Regex.Matches(ActorsTable, TR_PATTERN)
-
-                    For Each tCast In rCast
-                        Dim tActor As New MediaContainers.Person
-                        Dim t1 = Regex.Match(Regex.Match(tCast.ToString, TD_PATTERN_1).ToString, HREF_PATTERN)
-                        Dim t2 = Regex.Match(Regex.Match(tCast.ToString, TD_PATTERN_2).ToString, HREF_PATTERN)
-                        If Not t2.Success Then
-                            t2 = Regex.Match(tCast.ToString, TD_PATTERN_2)
-                        End If
-                        Dim t3 = Regex.Match(Regex.Match(tCast.ToString, TD_PATTERN_3).ToString, IMG_PATTERN)
-                        tActor.Name = HttpUtility.HtmlDecode(t1.Groups("name").ToString.Trim)
-                        tActor.Role = HttpUtility.HtmlDecode(t2.Groups("name").ToString.Trim)
-                        tActor.URLOriginal = If(t3.Groups("thumb").ToString.IndexOf("addtiny") > 0 OrElse t3.Groups("thumb").ToString.IndexOf("no_photo") > 0, String.Empty, HttpUtility.HtmlDecode(t3.Groups("thumb").ToString.Trim).Replace("._SX23_SY30_.jpg", String.Concat("._", ThumbsSize, "_.jpg")))
-                        nMovie.Actors.Add(tActor)
-                    Next
-                End If
-
-                If bwIMDB.CancellationPending Then Return Nothing
-
-                'Tagline
-                If FilteredOptions.bMainTagline Then
-                    Dim D, W, tempD As Integer
-                    tempD = If(HTML.IndexOf("<h5>Tagline:</h5>") > 0, HTML.IndexOf("<h5>Tagline:</h5>"), 0)
-                    D = If(tempD > 0, HTML.IndexOf("<div class=""info-content"">", tempD), 0)
-                    Dim lHtmlIndexOf As Integer = If(D > 0, HTML.IndexOf("<a class=""tn15more inline""", D), 0)
-                    Dim TagLineEnd As Integer = If(lHtmlIndexOf > 0, lHtmlIndexOf, 0)
-                    If D > 0 Then W = If(TagLineEnd > 0, TagLineEnd, HTML.IndexOf("</div>", D))
-                    nMovie.Tagline = If(D > 0 AndAlso W > 0, HttpUtility.HtmlDecode(HTML.Substring(D, W - D).Replace("<h5>Tagline:</h5>", String.Empty).Split(Environment.NewLine.ToCharArray)(1)).Trim, String.Empty)
-                End If
-
-                If bwIMDB.CancellationPending Then Return Nothing
-
-                'Director
-                If FilteredOptions.bMainDirectors Then
-                    Dim D, W As Integer
-                    'Get the directors
-                    D = If(HTML.IndexOf("<h5>Director:</h5>") > 0, HTML.IndexOf("<h5>Director:</h5>"), HTML.IndexOf("<h5>Directors:</h5>"))
-                    W = If(D > 0, HTML.IndexOf("</div>", D), 0)
-                    'got any director(s) ?
-                    If D > 0 AndAlso Not W <= 0 Then
-                        'get only the first director's name
-                        Dim rDir As MatchCollection = Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN)
-                        Dim Dir = From M In rDir Where Not DirectCast(M, Match).Groups("name").ToString.Contains("more")
-                                  Select HttpUtility.HtmlDecode(DirectCast(M, Match).Groups("name").ToString)
-                        'only update nMovie if scraped result is not empty/nothing!
-                        If Dir.Count > 0 Then
-                            ' nMovie.Director = Strings.Join(Dir.ToArray, " / ").Trim
-                            nMovie.Directors.AddRange(Dir.ToList)
-                        End If
-                    End If
-                End If
-
-                If bwIMDB.CancellationPending Then Return Nothing
-
-                'Countries
-                If FilteredOptions.bMainCountries Then
-                    Dim D, W As Integer
-                    D = If(HTML.IndexOf("<h5>Country:</h5>") > 0, HTML.IndexOf("<h5>Country:</h5>"), HTML.IndexOf("<h5>Countries:</h5>"))
-                    W = If(D > 0, HTML.IndexOf("</div>", D), 0)
-                    'got any country ?
-                    If D > 0 AndAlso Not W <= 0 Then
-                        'get only the first country's name
-                        Dim rCou As MatchCollection = Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN)
-                        Dim Cou = From M In rCou Where Not DirectCast(M, Match).Groups("name").ToString.Contains("more")
-                                  Select HttpUtility.HtmlDecode(DirectCast(M, Match).Groups("name").ToString)
-
-                        'only update nMovie if scraped result is not empty/nothing!
-                        If Cou.Count > 0 Then
-                            If _SpecialSettings.CountryAbbreviation = False Then
-                                For Each entry In Cou
-                                    entry = entry.Replace("USA", "United States of America")
-                                    entry = entry.Replace("UK", "United Kingdom")
-                                    nMovie.Countries.Add(entry)
-                                Next
-                            Else
-                                nMovie.Countries.AddRange(Cou.ToList)
-                            End If
-
-                        End If
-                    End If
-                End If
-
-                If bwIMDB.CancellationPending Then Return Nothing
-
-                'Genres
-                If FilteredOptions.bMainGenres Then
-                    Dim D, W As Integer
-                    D = HTML.IndexOf("<h5>Genre:</h5>")
-                    'Check if doesnt find genres
-                    If D > 0 Then
-                        W = HTML.IndexOf("</div>", D)
-
-                        If W > 0 Then
-                            Dim rGenres As MatchCollection = Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN)
-                            Dim Gen = From M In rGenres
-                                      Select N = HttpUtility.HtmlDecode(DirectCast(M, Match).Groups("name").ToString) Where Not N.Contains("more") Take 999999
-                            If Gen.Count > 0 Then
-                                nMovie.Genres.AddRange(Gen.ToList)
-                            End If
-                        End If
-                    End If
-                End If
-
-                If bwIMDB.CancellationPending Then Return Nothing
-
-                'Outline
-                If FilteredOptions.bMainOutline Then
-                    Dim D, W, tempD As Integer
-                    Try
-                        If nMovie.Title.Contains("(VG)") Then
-                            D = If(HTML.IndexOf("<h5>Plot Summary:</h5>") > 0, HTML.IndexOf("<h5>Plot Summary:</h5>"), HTML.IndexOf("<h5>Tagline:</h5>"))
-                            If D > 0 Then W = HTML.IndexOf("</div>", D)
-                        Else
-                            tempD = If(HTML.IndexOf("<h5>Plot:</h5>") > 0, HTML.IndexOf("<h5>Plot:</h5>"), HTML.IndexOf("<h5>Plot Summary:</h5>"))
-                            D = If(tempD > 0, HTML.IndexOf("<div class=""info-content"">", tempD), 0)
-                            If D <= 0 Then D = HTML.IndexOf("<h5>Plot Synopsis:</h5>")
-                            If D > 0 Then
-                                W = HTML.IndexOf("<a class=", D)
-                                If W > 0 Then
-                                    W = HTML.IndexOf("</div>", D)
-                                Else
-                                    '   IMnMovie.Outline = String.Empty
-                                    GoTo mPlot
-                                End If
-                            Else
-                                'IMnMovie.Outline = String.Empty
-                                GoTo mPlot 'This plot synopsis is empty
-                            End If
-                        End If
-
-                        Dim PlotOutline As String = HTML.Substring(D, W - D).Remove(0, 26)
-
-                        PlotOutline = HttpUtility.HtmlDecode(If(PlotOutline.Contains("is empty") OrElse PlotOutline.Contains("View full synopsis") _
-                                           , String.Empty, PlotOutline.Replace("|", String.Empty).Replace("&raquo;", String.Empty)).Trim)
-                        'only update nMovie if scraped result is not empty/nothing!
-                        If Not String.IsNullOrEmpty(PlotOutline) Then
-                            'check if outline has links to other IMDB entry
-                            For Each rMatch As Match In Regex.Matches(PlotOutline, HREF_PATTERN_4)
-                                PlotOutline = PlotOutline.Replace(rMatch.Value, rMatch.Groups("text").Value.Trim)
-                            Next
-                            nMovie.Outline = Regex.Replace(PlotOutline, HREF_PATTERN, String.Empty).Trim
-                        End If
-
-                    Catch ex As Exception
-                    End Try
-                End If
-
-                If bwIMDB.CancellationPending Then Return Nothing
-
-mPlot:          'Plot
-                If FilteredOptions.bMainPlot Then
-                    Dim FullPlotS As String = Regex.Match(PlotHtml, "<p class=""plotSummary"">(.*?)</p>", RegexOptions.Singleline Or RegexOptions.IgnoreCase Or RegexOptions.Multiline).Groups(1).Value.ToString.Trim
-                    Dim FullPlotO As String = Regex.Match(PlotHtml, "<li class=""odd"">\s*<p>(.*?)<br/>", RegexOptions.Singleline Or RegexOptions.IgnoreCase Or RegexOptions.Multiline).Groups(1).Value.ToString.Trim
-                    Dim FullPlotE As String = Regex.Match(PlotHtml, "<li class=""even"">\s*<p>(.*?)<br/>", RegexOptions.Singleline Or RegexOptions.IgnoreCase Or RegexOptions.Multiline).Groups(1).Value.ToString.Trim
-                    Dim FullPlot As String = If(Not String.IsNullOrEmpty(FullPlotS), FullPlotS, If(Not String.IsNullOrEmpty(FullPlotO), FullPlotO, FullPlotE))
-                    FullPlot = Regex.Replace(FullPlot, "<a(.*?)>", "")
-                    FullPlot = Regex.Replace(FullPlot, "</a>", "")
-                    'only update nMovie if scraped result is not empty/nothing!
-                    If Not String.IsNullOrEmpty(FullPlot) Then
-                        nMovie.Plot = FullPlot
-                    End If
-                End If
-
-                If bwIMDB.CancellationPending Then Return Nothing
-
-                'Duration
-                If FilteredOptions.bMainRuntime Then
-                    scrapedresult = HttpUtility.HtmlDecode(Regex.Match(HTML, "<h5>Runtime:</h5>[^0-9]*([^<]*)").Groups(1).Value.Trim)
-                    'only update nMovie if scraped result is not empty/nothing!
-                    If Not String.IsNullOrEmpty(scrapedresult) Then
-                        'examples:
-                        ' <h5>Runtime:</h5><div class="info-content">93 min </div> OR
-                        ' <h5>Runtime:</h5><div class="info-content">"94 min  | USA:102 min (unrated version)</div>
-                        ' <h5>Runtime:</h5><div class="info-content">Thailand: 89 min  | USA:93 min </div>
-                        '  scrapedresult = Web.HttpUtility.HtmlDecode(Regex.Match(HTML, "<h5>Runtime:</h5>[^0-9]*([^<]*)").Groups(1).Value.Trim)
-                        Dim Match As Match = Regex.Match(HTML, "Runtime:(\s*<((?<!>).)+)+(?<length>\d+|((?!</div|<h).)+)", RegexOptions.IgnoreCase)
-                        If Match.Success Then
-                            If Regex.IsMatch(Match.Groups("length").Value, "^\d+$") Then
-                                scrapedresult = Match.Groups("length").Value
-                            ElseIf Regex.IsMatch(Match.Groups("length").Value, "\d+") Then
-                                scrapedresult = Regex.Match(Match.Groups("length").Value, "\d+").Value
-                            End If
-                            nMovie.Runtime = scrapedresult
-                        End If
-                    End If
-                End If
-
-                'Studios
-                If FilteredOptions.bMainStudios Then
-                    Dim D, W As Integer
-                    D = HTML.IndexOf("<b class=""blackcatheader"">Production Companies</b>")
-                    If D > 0 Then W = HTML.IndexOf("</ul>", D)
-                    If D > 0 AndAlso W > 0 Then
-                        'only get the first one
-                        Dim Ps = From P1 In Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN)
-                                 Where Not DirectCast(P1, Match).Groups("name").ToString = String.Empty
-                                 Select Studio = HttpUtility.HtmlDecode(DirectCast(P1, Match).Groups("name").ToString)
-                        '  nMovie.Studio = Ps(0).ToString.Trim
-                        'only update nMovie if scraped result is not empty/nothing!
-                        If Ps.Count > 0 Then
-                            nMovie.Studios.AddRange(Ps.ToList)
-                        End If
-                    End If
-                    If _SpecialSettings.StudiowithDistributors Then
-                        D = HTML.IndexOf("<b class=""blackcatheader"">Distributors</b>")
-                        If D > 0 Then W = HTML.IndexOf("</ul>", D)
-                        If D > 0 AndAlso W > 0 Then
-                            Dim distributor_pattern As String = "<a.*?href=[""'](?<url>.*?)[""'].*?>(?<name>.*?)</a>(?<releaseinfo>.*?)</li>"
-                            'example of DISTRIBUTOR_PATTERN input string: 
-                            '<li><a href="/company/co0015030/">Alfa Films</a> (2015) (Argentina) (theatrical)</li>
-                            '<li><a href="/company/co0481930/">Bravos Pictures</a> (2015) (Hong Kong) (theatrical)</li><li>
-                            Dim Ps = From P1 In Regex.Matches(HTML.Substring(D, W - D), distributor_pattern)
-                                     Where Not DirectCast(P1, Match).Groups("name").ToString = String.Empty AndAlso DirectCast(P1, Match).Groups("releaseinfo").ToString.Contains(_SpecialSettings.ForceTitleLanguage)
-                                     Select Studio = HttpUtility.HtmlDecode(DirectCast(P1, Match).Groups("name").ToString)
-                            '  nMovie.Studio = Ps(0).ToString.Trim
-                            'only update nMovie if scraped result is not empty/nothing!
-                            If Ps.Count > 0 Then
-                                For Each item In Ps.ToList
-                                    If nMovie.Studios.Contains(item) = False Then
-                                        nMovie.Studios.Add(item)
-                                    End If
-                                Next
-                            End If
-                        End If
-                    End If
-                End If
-
-                If bwIMDB.CancellationPending Then Return Nothing
-
                 'Writers
                 If FilteredOptions.bMainWriters Then
-                    Dim D, W As Integer
-                    D = HTML.IndexOf("<h5>Writer")
-                    If D > 0 Then W = HTML.IndexOf("</div>", D)
-                    If D > 0 AndAlso W > 0 Then
-                        Dim q = From M In Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN)
-                                Where Not DirectCast(M, Match).Groups("name").ToString.Trim = "more" _
-                                AndAlso Not DirectCast(M, Match).Groups("name").ToString.Trim = "(more)" _
-                                AndAlso Not DirectCast(M, Match).Groups("name").ToString.Trim = "WGA" _
-                                AndAlso Not DirectCast(M, Match).Groups("name").ToString.Trim.Contains("see more")
-                                Select Writer = HttpUtility.HtmlDecode(DirectCast(M, Match).Groups("name").ToString)
-
-                        'only update nMovie if scraped result is not empty/nothing!
-                        If q.Count > 0 Then
-                            nMovie.Credits.AddRange(q.ToList) 'Strings.Join(q.ToArray, " / ").Trim
+                    Dim selNode = htmldCombined.DocumentNode.SelectSingleNode("//a[@class=""glossary""][@name=""writers""]")
+                    If selNode IsNot Nothing Then
+                        Dim nTable = selNode.Ancestors("table").FirstOrDefault
+                        If nTable IsNot Nothing Then
+                            Dim nWriters = nTable.Descendants("a").Where(
+                                Function(f) f.Attributes.Contains("href") AndAlso
+                                Not f.Attributes.Contains("class"))
+                            If nWriters IsNot Nothing Then
+                                nMovie.Credits.AddRange(nWriters.Select(Function(f) HttpUtility.HtmlDecode(f.InnerText)).Distinct.ToList)
+                            End If
                         End If
                     End If
+                End If
+
+                'Year (fallback if ReleaseDate can't be parsed)
+                If FilteredOptions.bMainYear AndAlso Not nMovie.YearSpecified AndAlso ndOriginalTitle IsNot Nothing Then
+                    nMovie.Year = Regex.Match(ndOriginalTitle.InnerText, "\((\d{4})").Groups(1).ToString.Trim
                 End If
 
                 Return nMovie
@@ -623,6 +547,7 @@ mPlot:          'Plot
 
             If bwIMDB.CancellationPending Then Return Nothing
 
+            strPosterURL = String.Empty
             Dim nTVEpisode As New MediaContainers.EpisodeDetails
 
             nTVEpisode.Scrapersource = "IMDB"
@@ -854,6 +779,7 @@ mPlot:          'Plot
             If String.IsNullOrEmpty(strID) OrElse strID.Length < 2 Then Return Nothing
 
             Try
+                strPosterURL = String.Empty
                 Dim nTVShow As New MediaContainers.TVShow
 
                 nTVShow.IMDB = strID
@@ -1013,7 +939,7 @@ mPlot:          'Plot
 
                 'Poster for search result
                 If GetPoster Then
-                    sPoster = Regex.Match(Regex.Match(HTML, "(?<=\b(name=""poster"")).*\b[</a>]\b").ToString, "(?<=\b(src=)).*\b(?=[</a>])").ToString.Replace("""", String.Empty).Replace("/></", String.Empty)
+                    strPosterURL = Regex.Match(Regex.Match(HTML, "(?<=\b(name=""poster"")).*\b[</a>]\b").ToString, "(?<=\b(src=)).*\b(?=[</a>])").ToString.Replace("""", String.Empty).Replace("/></", String.Empty)
                 End If
 
                 If bwIMDB.CancellationPending Then Return Nothing
@@ -1410,11 +1336,11 @@ mPlot:          'Plot
 
                 Case SearchType.SearchDetails_Movie
                     Dim movieInfo As MediaContainers.Movie = DirectCast(Res.Result, MediaContainers.Movie)
-                    RaiseEvent SearchInfoDownloaded_Movie(sPoster, movieInfo)
+                    RaiseEvent SearchInfoDownloaded_Movie(strPosterURL, movieInfo)
 
                 Case SearchType.SearchDetails_TVShow
                     Dim showInfo As MediaContainers.TVShow = DirectCast(Res.Result, MediaContainers.TVShow)
-                    RaiseEvent SearchInfoDownloaded_TV(sPoster, showInfo)
+                    RaiseEvent SearchInfoDownloaded_TV(strPosterURL, showInfo)
             End Select
         End Sub
 
@@ -1451,38 +1377,34 @@ mPlot:          'Plot
             End If
         End Function
 
-        Private Function GetForcedTitle(ByVal strID As String, ByVal oTitle As String) As String
-            Dim fTitle As String = oTitle
+        Private Function GetForcedTitle(ByVal strID As String, ByVal strOriginalTitle As String) As String
+            If bwIMDB.CancellationPending Then Return String.Empty
 
-            If bwIMDB.CancellationPending Then Return Nothing
-            Dim HTML As String
-            intHTTP = New HTTP
-            HTML = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/", strID, "/releaseinfo#akas"))
-            intHTTP.Dispose()
-            intHTTP = Nothing
+            Dim webParsing As New HtmlWeb
+            Dim htmldAKA As HtmlDocument = webParsing.Load(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/", strID, "/releaseinfo#akas"))
 
-            Dim D, W As Integer
+            Dim selNodes = htmldAKA.DocumentNode.SelectNodes(String.Format("//table[@id=""akas""]/tr/td[contains(text(), '{0}')]", _SpecialSettings.ForceTitleLanguage))
+            If selNodes IsNot Nothing Then
+                Dim filteredTitles = selNodes.Where(Function(f) Not HttpUtility.HtmlDecode(f.InnerText).ToLower.Contains("working title") AndAlso
+                                                        Not HttpUtility.HtmlDecode(f.InnerText).ToLower.Contains("fake working title"))
+                If filteredTitles IsNot Nothing Then Return HttpUtility.HtmlDecode(filteredTitles(0).NextSibling.NextSibling.InnerText)
+            End If
 
-            D = HTML.IndexOf("<h4 class=""li_group"">Also Known As (AKA)&nbsp;</h4>")
-
-            If D > 0 Then
-                W = HTML.IndexOf("</table>", D)
-                Dim rTitles As MatchCollection = Regex.Matches(HTML.Substring(D, W - D), TD_PATTERN_4, RegexOptions.Multiline Or RegexOptions.IgnorePatternWhitespace)
-
-                If rTitles.Count > 0 Then
-                    For i As Integer = 0 To rTitles.Count - 1 Step 2
-                        If rTitles(i).Value.ToString.Contains(_SpecialSettings.ForceTitleLanguage) AndAlso Not rTitles(i).Value.ToString.Contains(String.Concat(_SpecialSettings.ForceTitleLanguage, " (working title)")) AndAlso Not rTitles(i).Value.ToString.Contains(String.Concat(_SpecialSettings.ForceTitleLanguage, " (fake working title)")) Then
-                            fTitle = CleanTitle(HttpUtility.HtmlDecode(rTitles(i + 1).Groups("title").Value.ToString.Trim))
-                            Exit For
-                            'if Setting WorldWide Title Fallback is enabled then instead of returning originaltitle (when force title language isn't found), use english/worldwide title instead (i.e. avoid asian original titles)
-                        ElseIf _SpecialSettings.FallBackWorldwide AndAlso (rTitles(i).Value.ToString.ToUpper.Contains("WORLD-WIDE") OrElse rTitles(i).Value.ToString.ToUpper.Contains("ENGLISH")) Then
-                            fTitle = CleanTitle(HttpUtility.HtmlDecode(rTitles(i + 1).Groups("title").Value.ToString.Trim))
+            'fallback
+            If _SpecialSettings.FallBackWorldwide Then
+                Dim selFallback = htmldAKA.DocumentNode.SelectNodes("//table[@id=""akas""]/tr/td")
+                If selFallback IsNot Nothing Then
+                    For Each nNode In selFallback
+                        If HttpUtility.HtmlDecode(nNode.InnerText).ToLower.Contains("world-wide") OrElse
+                            HttpUtility.HtmlDecode(nNode.InnerText).ToLower.Contains("english") Then
+                            Return HttpUtility.HtmlDecode(nNode.NextSibling.NextSibling.InnerText)
                         End If
                     Next
                 End If
             End If
 
-            Return fTitle
+            'return OriginalTitle if no forced and no fallback title has been found
+            Return strOriginalTitle
         End Function
 
         Private Function GetMovieID(ByVal strObj As String) As String
@@ -1491,133 +1413,205 @@ mPlot:          'Plot
 
         Private Function SearchMovie(ByVal sMovieTitle As String, ByVal sMovieYear As String) As SearchResults_Movie
 
-            Dim sMovie As String = String.Concat(sMovieTitle, " ", If(Not String.IsNullOrEmpty(sMovieYear), String.Concat("(", sMovieYear, ")"), String.Empty))
+            Dim strMovie As String = String.Concat(sMovieTitle, " ", If(Not String.IsNullOrEmpty(sMovieYear), String.Concat("(", sMovieYear, ")"), String.Empty)).Trim
 
-            Dim D, W As Integer
             Dim R As New SearchResults_Movie
 
-            Dim HTML As String = String.Empty
-            Dim HTMLt As String = String.Empty
-            Dim HTMLp As String = String.Empty
-            Dim HTMLm As String = String.Empty
-            Dim HTMLe As String = String.Empty
-            Dim HTMLv As String = String.Empty
-            Dim HTMLs As String = String.Empty
-            Dim rUri As String = String.Empty
+            Dim htmldResultsPartialTitles As HtmlDocument = Nothing
+            Dim htmldResultsPopularTitles As HtmlDocument = Nothing
+            Dim htmldResultsShortTitles As HtmlDocument = Nothing
+            Dim htmldResultsTvTitles As HtmlDocument = Nothing
+            Dim htmldResultsVideoTitles As HtmlDocument = Nothing
 
-            intHTTP = New HTTP
-            HTML = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/find?q=", HttpUtility.UrlEncode(sMovie), "&s=tt&ttype=ft"))
-            HTMLe = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/find?q=", HttpUtility.UrlEncode(sMovie), "&s=tt&ttype=ft&exact=true&ref_=fn_tt_ex"))
-            rUri = intHTTP.ResponseUri
+            Dim webParsing As New HtmlWeb
+            Dim htmldResultStandard As HtmlDocument = webParsing.Load(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/find?q=", HttpUtility.UrlEncode(strMovie), "&s=tt&ttype=ft"))
+            Dim htmldResultsExact As HtmlDocument = webParsing.Load(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/find?q=", HttpUtility.UrlEncode(strMovie), "&s=tt&ttype=ft&exact=true&ref_=fn_tt_ex"))
+            Dim strResponseUri = webParsing.ResponseUri.ToString
 
             If _SpecialSettings.SearchTvTitles Then
-                HTMLt = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/search/title?title=", HttpUtility.UrlEncode(sMovie), "&title_type=tv_movie"))
+                htmldResultsTvTitles = webParsing.Load(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/search/title?title=", HttpUtility.UrlEncode(strMovie), "&title_type=tv_movie&view=simple"))
             End If
             If _SpecialSettings.SearchVideoTitles Then
-                HTMLv = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/search/title?title=", HttpUtility.UrlEncode(sMovie), "&title_type=video"))
+                htmldResultsVideoTitles = webParsing.Load(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/search/title?title=", HttpUtility.UrlEncode(strMovie), "&title_type=video&view=simple"))
             End If
             If _SpecialSettings.SearchShortTitles Then
-                HTMLs = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/search/title?title=", HttpUtility.UrlEncode(sMovie), "&title_type=short"))
+                htmldResultsShortTitles = webParsing.Load(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/search/title?title=", HttpUtility.UrlEncode(strMovie), "&title_type=short&view=simple"))
             End If
             If _SpecialSettings.SearchPartialTitles Then
-                HTMLm = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/find?q=", HttpUtility.UrlEncode(sMovie), "&s=tt&ttype=ft&ref_=fn_ft"))
+                htmldResultsPartialTitles = webParsing.Load(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/find?q=", HttpUtility.UrlEncode(strMovie), "&s=tt&ttype=ft&ref_=fn_ft"))
             End If
             If _SpecialSettings.SearchPopularTitles Then
-                HTMLp = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/find?q=", HttpUtility.UrlEncode(sMovie), "&s=tt&ttype=ft&ref_=fn_tt_pop"))
+                htmldResultsPopularTitles = webParsing.Load(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/find?q=", HttpUtility.UrlEncode(strMovie), "&s=tt&ttype=ft&ref_=fn_tt_pop"))
             End If
-            intHTTP.Dispose()
-            intHTTP = Nothing
 
             'Check if we've been redirected straight to the movie page
-            If Regex.IsMatch(rUri, IMDB_ID_REGEX) Then
-                Dim lNewMovie As MediaContainers.Movie = New MediaContainers.Movie(Regex.Match(rUri, IMDB_ID_REGEX).ToString,
-                    StringUtils.ConvertToProperCase(sMovie), Regex.Match(Regex.Match(HTML, MOVIE_TITLE_PATTERN).ToString, "(?<=\()\d+(?=.*\))").ToString, 0)
-                R.ExactMatches.Add(lNewMovie)
+            If Regex.IsMatch(strResponseUri, IMDB_ID_REGEX) Then
+                'Dim lNewMovie As MediaContainers.Movie = New MediaContainers.Movie(Regex.Match(strResponseUri, IMDB_ID_REGEX).ToString,
+                'StringUtils.ConvertToProperCase(strMovie), Regex.Match(Regex.Match(htmldResults, MOVIE_TITLE_PATTERN).ToString, "(?<=\()\d+(?=.*\))").ToString, 0)
+                'R.ExactMatches.Add(lNewMovie)
                 Return R
             End If
 
             'popular titles
-            D = HTMLp.IndexOf("</a>Titles</h3>")
-            If Not D <= 0 Then
-                W = HTMLp.IndexOf("</table>", D) + 8
-
-                Dim Table As String = Regex.Match(HTML.Substring(D, W - D), TABLE_PATTERN).ToString
-                Dim qPopular = From Mtr In Regex.Matches(Table, TITLE_PATTERN)
-                               Where Not DirectCast(Mtr, Match).Groups("name").ToString.Contains("<img") AndAlso Not DirectCast(Mtr, Match).Groups("type").ToString.Contains("VG")
-                               Select New MediaContainers.Movie(GetMovieID(DirectCast(Mtr, Match).Groups("url").ToString),
-                                                HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString), HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString), StringUtils.ComputeLevenshtein(StringUtils.FilterYear(sMovie).ToLower, StringUtils.FilterYear(HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString)).ToLower))
-
-                R.PopularTitles = qPopular.ToList
-            End If
-
-            'partial titles
-            D = HTMLm.IndexOf("</a>Titles</h3>")
-            If Not D <= 0 Then
-                W = HTMLm.IndexOf("</table>", D) + 8
-
-                Dim Table As String = Regex.Match(HTMLm.Substring(D, W - D), TABLE_PATTERN).ToString
-                Dim qpartial = From Mtr In Regex.Matches(Table, TITLE_PATTERN)
-                               Where Not DirectCast(Mtr, Match).Groups("name").ToString.Contains("<img") AndAlso Not DirectCast(Mtr, Match).Groups("type").ToString.Contains("VG")
-                               Select New MediaContainers.Movie(GetMovieID(DirectCast(Mtr, Match).Groups("url").ToString),
-                                                HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString), HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString), StringUtils.ComputeLevenshtein(StringUtils.FilterYear(sMovie).ToLower, StringUtils.FilterYear(HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString)).ToLower))
-
-                R.PartialMatches = qpartial.ToList
-            End If
-
-            'tv titles
-            Dim mResultList = Regex.Match(HTMLt, "<div class=""lister-list"">.*?<div class=""nav"">", RegexOptions.IgnoreCase Or RegexOptions.Singleline)
-            If mResultList.Success Then
-                Dim mResults = Regex.Matches(mResultList.Value, "<h3 class=""lister-item-header"">.*?<a\shref=""\/title\/(?<imdb>tt\d{6}\d*)\/.*?"".>(?<title>.*?)<\/a", RegexOptions.IgnoreCase Or RegexOptions.Singleline)
-                If mResults.Count > 0 Then
-                    For Each nMovie As Match In mResults
-                        R.TvTitles.Add(New MediaContainers.Movie With {
-                                       .IMDB = nMovie.Groups("imdb").Value,
-                                       .Title = nMovie.Groups("title").Value})
+            If htmldResultsPopularTitles IsNot Nothing Then
+                Dim searchResults = htmldResultsPopularTitles.DocumentNode.SelectNodes("//table[@class=""findList""]/tr[@class]/td[2]")
+                If searchResults IsNot Nothing Then
+                    For Each nResult In searchResults
+                        R.PopularTitles.Add(New MediaContainers.Movie With {
+                                            .IMDB = GetMovieID(nResult.OuterHtml),
+                                            .Lev = StringUtils.ComputeLevenshtein(StringUtils.FilterYear(strMovie).ToLower, nResult.SelectSingleNode("a").InnerText),
+                                            .Title = nResult.SelectSingleNode("a").InnerText,
+                                            .Year = Regex.Match(nResult.InnerText, "\((\d{4})").Groups(1).Value
+                                            })
                     Next
                 End If
             End If
+            'D = htmldResultPopularTitles.IndexOf("</a>Titles</h3>")
+            'If Not D <= 0 Then
+            '    W = htmldResultPopularTitles.IndexOf("</table>", D) + 8
+
+            '    Dim Table As String = Regex.Match(htmldResults.Substring(D, W - D), TABLE_PATTERN).ToString
+            '    Dim qPopular = From Mtr In Regex.Matches(Table, TITLE_PATTERN)
+            '                   Where Not DirectCast(Mtr, Match).Groups("name").ToString.Contains("<img") AndAlso Not DirectCast(Mtr, Match).Groups("type").ToString.Contains("VG")
+            '                   Select New MediaContainers.Movie(GetMovieID(DirectCast(Mtr, Match).Groups("url").ToString),
+            '                                    HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString), HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString), StringUtils.ComputeLevenshtein(StringUtils.FilterYear(sMovie).ToLower, StringUtils.FilterYear(HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString)).ToLower))
+
+            '    R.PopularTitles = qPopular.ToList
+            'End If
+
+            'partial titles
+            If htmldResultsPartialTitles IsNot Nothing Then
+                Dim searchResults = htmldResultsPartialTitles.DocumentNode.SelectNodes("//table[@class=""findList""]/tr[@class]/td[2]")
+                If searchResults IsNot Nothing Then
+                    For Each nResult In searchResults
+                        R.PartialMatches.Add(New MediaContainers.Movie With {
+                                             .IMDB = GetMovieID(nResult.OuterHtml),
+                                             .Lev = StringUtils.ComputeLevenshtein(StringUtils.FilterYear(strMovie).ToLower, nResult.SelectSingleNode("a").InnerText),
+                                             .Title = nResult.SelectSingleNode("a").InnerText,
+                                             .Year = Regex.Match(nResult.InnerText, "\((\d{4})").Groups(1).Value
+                                             })
+                    Next
+                End If
+            End If
+            'D = htmldResultPartialTitles.IndexOf("</a>Titles</h3>")
+            'If Not D <= 0 Then
+            '    W = htmldResultPartialTitles.IndexOf("</table>", D) + 8
+
+            '    Dim Table As String = Regex.Match(htmldResultPartialTitles.Substring(D, W - D), TABLE_PATTERN).ToString
+            '    Dim qpartial = From Mtr In Regex.Matches(Table, TITLE_PATTERN)
+            '                   Where Not DirectCast(Mtr, Match).Groups("name").ToString.Contains("<img") AndAlso Not DirectCast(Mtr, Match).Groups("type").ToString.Contains("VG")
+            '                   Select New MediaContainers.Movie(GetMovieID(DirectCast(Mtr, Match).Groups("url").ToString),
+            '                                    HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString), HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString), StringUtils.ComputeLevenshtein(StringUtils.FilterYear(sMovie).ToLower, StringUtils.FilterYear(HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString)).ToLower))
+
+            '    R.PartialMatches = qpartial.ToList
+            'End If
+
+            'tv titles
+            If htmldResultsTvTitles IsNot Nothing Then
+                Dim searchResults = htmldResultsTvTitles.DocumentNode.SelectNodes("//span[@title]")
+                If searchResults IsNot Nothing Then
+                    For Each nResult In searchResults
+                        R.TvTitles.Add(New MediaContainers.Movie With {
+                                       .IMDB = GetMovieID(nResult.InnerHtml),
+                                       .Lev = StringUtils.ComputeLevenshtein(StringUtils.FilterYear(strMovie).ToLower, nResult.SelectSingleNode("a").InnerText),
+                                       .Title = nResult.SelectSingleNode("a").InnerText,
+                                       .Year = Regex.Match(nResult.SelectSingleNode("span").InnerText, "\((\d{4})").Groups(1).Value
+                                       })
+                    Next
+                End If
+            End If
+            'Dim mResultList = Regex.Match(htmldResultTvTitles, "<div class=""lister-list"">.*?<div class=""nav"">", RegexOptions.IgnoreCase Or RegexOptions.Singleline)
+            'If mResultList.Success Then
+            '    Dim mResults = Regex.Matches(mResultList.Value, "<h3 class=""lister-item-header"">.*?<a\shref=""\/title\/(?<imdb>tt\d{6}\d*)\/.*?"".>(?<title>.*?)<\/a", RegexOptions.IgnoreCase Or RegexOptions.Singleline)
+            '    If mResults.Count > 0 Then
+            '        For Each nMovie As Match In mResults
+            '            R.TvTitles.Add(New MediaContainers.Movie With {
+            '                           .IMDB = nMovie.Groups("imdb").Value,
+            '                           .Title = nMovie.Groups("title").Value})
+            '        Next
+            '    End If
+            'End If
 
             'video titles
-            D = HTMLv.IndexOf("<table class=""results"">")
-            If Not D <= 0 Then
-                W = HTMLv.IndexOf("</table>", D) + 8
-
-                Dim Table As String = HTMLv.Substring(D, W - D).ToString
-                Dim qvideo = From Mtr In Regex.Matches(Table, TvTITLE_PATTERN)
-                             Where Not DirectCast(Mtr, Match).Groups("name").ToString.Contains("<img") AndAlso Not DirectCast(Mtr, Match).Groups("type").ToString.Contains("VG")
-                             Select New MediaContainers.Movie(GetMovieID(DirectCast(Mtr, Match).Groups("url").ToString),
-                                              HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString), HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString), StringUtils.ComputeLevenshtein(StringUtils.FilterYear(sMovie).ToLower, StringUtils.FilterYear(HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString)).ToLower))
-
-                R.VideoTitles = qvideo.ToList
+            If htmldResultsVideoTitles IsNot Nothing Then
+                Dim searchResults = htmldResultsVideoTitles.DocumentNode.SelectNodes("//span[@title]")
+                If searchResults IsNot Nothing Then
+                    For Each nResult In searchResults
+                        R.VideoTitles.Add(New MediaContainers.Movie With {
+                                          .IMDB = GetMovieID(nResult.InnerHtml),
+                                          .Lev = StringUtils.ComputeLevenshtein(StringUtils.FilterYear(strMovie).ToLower, nResult.SelectSingleNode("a").InnerText),
+                                          .Title = nResult.SelectSingleNode("a").InnerText,
+                                          .Year = Regex.Match(nResult.SelectSingleNode("span").InnerText, "\((\d{4})").Groups(1).Value
+                                          })
+                    Next
+                End If
             End If
+            'D = htmldResultVideoTitles.IndexOf("<table class=""results"">")
+            'If Not D <= 0 Then
+            '    W = htmldResultVideoTitles.IndexOf("</table>", D) + 8
+
+            '    Dim Table As String = htmldResultVideoTitles.Substring(D, W - D).ToString
+            '    Dim qvideo = From Mtr In Regex.Matches(Table, TvTITLE_PATTERN)
+            '                 Where Not DirectCast(Mtr, Match).Groups("name").ToString.Contains("<img") AndAlso Not DirectCast(Mtr, Match).Groups("type").ToString.Contains("VG")
+            '                 Select New MediaContainers.Movie(GetMovieID(DirectCast(Mtr, Match).Groups("url").ToString),
+            '                                  HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString), HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString), StringUtils.ComputeLevenshtein(StringUtils.FilterYear(sMovie).ToLower, StringUtils.FilterYear(HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString)).ToLower))
+
+            '    R.VideoTitles = qvideo.ToList
+            'End If
 
             'short titles
-            D = HTMLs.IndexOf("<table class=""results"">")
-            If Not D <= 0 Then
-                W = HTMLs.IndexOf("</table>", D) + 8
-
-                Dim Table As String = HTMLs.Substring(D, W - D).ToString
-                Dim qshort = From Mtr In Regex.Matches(Table, TvTITLE_PATTERN)
-                             Where Not DirectCast(Mtr, Match).Groups("name").ToString.Contains("<img") AndAlso Not DirectCast(Mtr, Match).Groups("type").ToString.Contains("VG")
-                             Select New MediaContainers.Movie(GetMovieID(DirectCast(Mtr, Match).Groups("url").ToString),
-                                              HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString), HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString), StringUtils.ComputeLevenshtein(StringUtils.FilterYear(sMovie).ToLower, StringUtils.FilterYear(HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString)).ToLower))
-
-                R.ShortTitles = qshort.ToList
+            If htmldResultsShortTitles IsNot Nothing Then
+                Dim searchResults = htmldResultsShortTitles.DocumentNode.SelectNodes("//span[@title]")
+                If searchResults IsNot Nothing Then
+                    For Each nResult In searchResults
+                        R.ShortTitles.Add(New MediaContainers.Movie With {
+                                          .IMDB = GetMovieID(nResult.InnerHtml),
+                                          .Lev = StringUtils.ComputeLevenshtein(StringUtils.FilterYear(strMovie).ToLower, nResult.SelectSingleNode("a").InnerText),
+                                          .Title = nResult.SelectSingleNode("a").InnerText,
+                                          .Year = Regex.Match(nResult.SelectSingleNode("span").InnerText, "\((\d{4})").Groups(1).Value
+                                          })
+                    Next
+                End If
             End If
+            'D = htmldResultShortTitles.IndexOf("<table class=""results"">")
+            'If Not D <= 0 Then
+            '    W = htmldResultShortTitles.IndexOf("</table>", D) + 8
+
+            '    Dim Table As String = htmldResultShortTitles.Substring(D, W - D).ToString
+            '    Dim qshort = From Mtr In Regex.Matches(Table, TvTITLE_PATTERN)
+            '                 Where Not DirectCast(Mtr, Match).Groups("name").ToString.Contains("<img") AndAlso Not DirectCast(Mtr, Match).Groups("type").ToString.Contains("VG")
+            '                 Select New MediaContainers.Movie(GetMovieID(DirectCast(Mtr, Match).Groups("url").ToString),
+            '                                  HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString), HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString), StringUtils.ComputeLevenshtein(StringUtils.FilterYear(sMovie).ToLower, StringUtils.FilterYear(HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString)).ToLower))
+
+            '    R.ShortTitles = qshort.ToList
+            'End If
 
             'exact titles
-            D = HTMLe.IndexOf("</a>Titles</h3>")
-            If Not D <= 0 Then
-                W = HTMLe.IndexOf("</table>", D) + 8
-
-                Dim Table As String = Regex.Match(HTMLe.Substring(D, W - D), TABLE_PATTERN).ToString
-                Dim qExact = From Mtr In Regex.Matches(Table, TITLE_PATTERN)
-                             Where Not DirectCast(Mtr, Match).Groups("name").ToString.Contains("<img") AndAlso Not DirectCast(Mtr, Match).Groups("type").ToString.Contains("VG")
-                             Select New MediaContainers.Movie(GetMovieID(DirectCast(Mtr, Match).Groups("url").ToString),
-                          HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString.ToString), HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString), StringUtils.ComputeLevenshtein(StringUtils.FilterYear(sMovie).ToLower, StringUtils.FilterYear(HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString)).ToLower))
-
-                R.ExactMatches = qExact.ToList
+            If htmldResultsExact IsNot Nothing Then
+                Dim searchResults = htmldResultsExact.DocumentNode.SelectNodes("//table[@class=""findList""]/tr[@class]/td[2]")
+                If searchResults IsNot Nothing Then
+                    For Each nResult In searchResults
+                        R.ExactMatches.Add(New MediaContainers.Movie With {
+                                           .IMDB = GetMovieID(nResult.OuterHtml),
+                                           .Lev = StringUtils.ComputeLevenshtein(StringUtils.FilterYear(strMovie).ToLower, nResult.SelectSingleNode("a").InnerText),
+                                           .Title = nResult.SelectSingleNode("a").InnerText,
+                                           .Year = Regex.Match(nResult.InnerText, "\((\d{4})").Groups(1).Value
+                                           })
+                    Next
+                End If
             End If
+            'D = htmldResultsE.IndexOf("</a>Titles</h3>")
+            'If Not D <= 0 Then
+            '    W = htmldResultsE.IndexOf("</table>", D) + 8
+
+            '    Dim Table As String = Regex.Match(htmldResultsE.Substring(D, W - D), TABLE_PATTERN).ToString
+            '    Dim qExact = From Mtr In Regex.Matches(Table, TITLE_PATTERN)
+            '                 Where Not DirectCast(Mtr, Match).Groups("name").ToString.Contains("<img") AndAlso Not DirectCast(Mtr, Match).Groups("type").ToString.Contains("VG")
+            '                 Select New MediaContainers.Movie(GetMovieID(DirectCast(Mtr, Match).Groups("url").ToString),
+            '              HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString.ToString), HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString), StringUtils.ComputeLevenshtein(StringUtils.FilterYear(sMovie).ToLower, StringUtils.FilterYear(HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString)).ToLower))
+
+            '    R.ExactMatches = qExact.ToList
+            'End If
 
             Return R
         End Function

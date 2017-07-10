@@ -184,7 +184,7 @@ Public Class OFDB_Data
         End If
 
         If Modifier.MainNFO Then
-            nMovie = _scraper.GetMovieInfo(oDBMovie.Movie.IMDB, FilteredOptions)
+            nMovie = _scraper.GetMovieInfo(oDBMovie.Movie.IMDB, FilteredOptions, oDBMovie.Language)
         End If
 
         logger.Trace("[OFDB_Data] [Scraper_Movie] [Done]")

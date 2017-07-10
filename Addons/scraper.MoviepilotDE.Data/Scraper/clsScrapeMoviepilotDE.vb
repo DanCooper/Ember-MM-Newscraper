@@ -45,13 +45,13 @@ Namespace MoviepilotDE
             Try
                 If Not String.IsNullOrEmpty(HTML) Then
                     Dim strFSKPattern As String = "FSK (?<FSK>\d?\d)"
-                    FSK = Web.HttpUtility.HtmlDecode(Regex.Match(HTML, strFSKPattern, RegexOptions.Singleline).Groups(1).Value).Trim
+                    FSK = HttpUtility.HtmlDecode(Regex.Match(HTML, strFSKPattern, RegexOptions.Singleline).Groups(1).Value).Trim
                     If String.IsNullOrEmpty(FSK) Then
                         'example:
                         '<a href='/filme/beste/fsk-18'>
                         '<span itemprop='contentRating'>18</span>   "class=""h3"" href=""(?<URL>.*?)"".*?>(?<TITLE>.*?)<\/a>.*?"
                         strFSKPattern = "Rating'>(?<FSK>.*?)<.*?"
-                        FSK = Web.HttpUtility.HtmlDecode(Regex.Match(HTML, strFSKPattern, RegexOptions.Singleline).Groups(1).Value).Trim
+                        FSK = HttpUtility.HtmlDecode(Regex.Match(HTML, strFSKPattern, RegexOptions.Singleline).Groups(1).Value).Trim
                     End If
 
                     If Not Integer.TryParse(FSK, 0) Then
@@ -66,10 +66,17 @@ Namespace MoviepilotDE
             Return FSK
         End Function
 
-        Public Function GetMovieInfo(ByVal strOriginalTitle As String, ByVal strTitle As String, ByVal strYear As String, ByVal FilteredOptions As Structures.ScrapeOptions) As MediaContainers.Movie
+        Public Function GetMovieInfo(ByVal strOriginalTitle As String,
+                                     ByVal strTitle As String,
+                                     ByVal strYear As String,
+                                     ByVal FilteredOptions As Structures.ScrapeOptions,
+                                     ByVal strLanguage As String) As MediaContainers.Movie
             Try
+                Dim bIsScraperLanguage As Boolean = strLanguage.ToLower.StartsWith("de")
+
                 Dim nMovie As New MediaContainers.Movie
                 nMovie.Scrapersource = "MOVIEPILOT"
+
 
                 Dim sURL As String = SearchMovie(strOriginalTitle, strYear)
                 'if theres no link with originaltitle, try with title
@@ -89,7 +96,7 @@ Namespace MoviepilotDE
                             nMovie.Certifications.Add(GetCertification(HTML))
                         End If
 
-                        If FilteredOptions.bMainOutline OrElse FilteredOptions.bMainPlot Then
+                        If (FilteredOptions.bMainOutline OrElse FilteredOptions.bMainPlot) AndAlso bIsScraperLanguage Then
                             Dim aResult As Results = GetPlotAndOutline(HTML)
                             If FilteredOptions.bMainOutline Then
                                 nMovie.Outline = aResult.strOutline
@@ -145,8 +152,8 @@ Namespace MoviepilotDE
                         Dim vResult As MatchCollection = Regex.Matches(strDescription, vPattern, RegexOptions.Singleline)
 
                         If vResult.Count > 0 Then
-                            strOutline = Web.HttpUtility.HtmlDecode(vResult.Item(0).Groups(1).Value)
-                            strPlot = Web.HttpUtility.HtmlDecode(vResult.Item(0).Groups(3).Value)
+                            strOutline = HttpUtility.HtmlDecode(vResult.Item(0).Groups(1).Value)
+                            strPlot = HttpUtility.HtmlDecode(vResult.Item(0).Groups(3).Value)
                         Else
                             'mPattern if website has Outline and Plot
                             'like http://www.moviepilot.de/movies/hellboy-ii-die-goldene-armee
@@ -154,8 +161,8 @@ Namespace MoviepilotDE
                             Dim mResult As MatchCollection = Regex.Matches(strDescription, mPattern, RegexOptions.Singleline)
 
                             If mResult.Count > 0 Then
-                                strOutline = Web.HttpUtility.HtmlDecode(mResult.Item(0).Groups(1).Value)
-                                strPlot = Web.HttpUtility.HtmlDecode(mResult.Item(0).Groups(2).Value)
+                                strOutline = HttpUtility.HtmlDecode(mResult.Item(0).Groups(1).Value)
+                                strPlot = HttpUtility.HtmlDecode(mResult.Item(0).Groups(2).Value)
                             Else
                                 'sPattern if website has only Plot
                                 'like http://www.moviepilot.de/movies/mission-impossible
@@ -163,7 +170,7 @@ Namespace MoviepilotDE
                                 Dim sResult As MatchCollection = Regex.Matches(strDescription, sPattern, RegexOptions.Singleline)
 
                                 If sResult.Count > 0 Then
-                                    strPlot = Web.HttpUtility.HtmlDecode(sResult.Item(0).Groups(1).Value)
+                                    strPlot = HttpUtility.HtmlDecode(sResult.Item(0).Groups(1).Value)
                                 End If
                             End If
                         End If
@@ -173,7 +180,7 @@ Namespace MoviepilotDE
                         descPattern = "<div class='movie--teaser(?<DUMMY>.*?)<p>(?<OUTLINE>.*?)<\/p>"
                         descResult = Regex.Matches(HTML, descPattern, RegexOptions.Singleline)
                         If descResult.Count > 0 AndAlso descResult.Item(0).Groups.Count = 3 Then
-                            strOutline = Web.HttpUtility.HtmlDecode(descResult.Item(0).Groups(2).Value.Trim)
+                            strOutline = HttpUtility.HtmlDecode(descResult.Item(0).Groups(2).Value.Trim)
                         End If
                     End If
                 End If

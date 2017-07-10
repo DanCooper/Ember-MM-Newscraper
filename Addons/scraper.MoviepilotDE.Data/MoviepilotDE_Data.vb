@@ -159,7 +159,7 @@ Public Class MoviepilotDE_Data
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions)
 
         If ScrapeModifiers.MainNFO Then
-            nMovie = _scraper.GetMovieInfo(oDBMovie.Movie.OriginalTitle, oDBMovie.Movie.Title, oDBMovie.Movie.Year, FilteredOptions)
+            nMovie = _scraper.GetMovieInfo(oDBMovie.Movie.OriginalTitle, oDBMovie.Movie.Title, oDBMovie.Movie.Year, FilteredOptions, oDBMovie.Language)
         End If
 
         logger.Trace("[MoviepilotDE_Data] [Scraper_Movie] [Done]")

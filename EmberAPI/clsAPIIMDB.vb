@@ -95,7 +95,6 @@ Namespace IMDb
 
                         If VideoGallery.Success Then
                             'search all trailer on trailer website
-                            Dim test = VideoGallery.Groups.Item(0).ToString
                             Trailers = Regex.Matches(VideoGallery.Groups.Item(0).ToString, tPattern)
                             Dim linksCollection As String() = From m As Object In Trailers Select CType(m, Match).Value Distinct.ToArray()
 
@@ -108,7 +107,13 @@ Namespace IMDb
                                 TrailerDetails = Regex.Match(TrailerDetailsPage, dPattern, RegexOptions.IgnoreCase Or RegexOptions.Singleline)
                                 TrailerTitle = TrailerDetails.Groups("TITLE").Value.ToString.Trim
                                 TrailerDuration = TrailerDetails.Groups("DURATION").Value.ToString.Trim
-                                TrailerList.Add(New MediaContainers.Trailer With {.Title = TrailerTitle, .URLWebsite = URLWebsite, .Duration = TrailerDuration, .Scraper = "IMDB", .Source = "IMDB"})
+                                TrailerList.Add(New MediaContainers.Trailer With {
+                                                .Title = TrailerTitle,
+                                                .URLWebsite = URLWebsite,
+                                                .Duration = TrailerDuration,
+                                                .Scraper = "IMDB",
+                                                .Source = "IMDB"
+                                                })
                             Next
                         End If
                     End If
@@ -225,6 +230,10 @@ Namespace IMDb
                                     Link.Description = "720p (MP4)"
                                     Link.FormatCodec = Enums.TrailerVideoCodec.MP4
                                     Link.FormatQuality = Enums.TrailerVideoQuality.HD720p
+                                Case "1080p"
+                                    Link.Description = "1080p (MP4)"
+                                    Link.FormatCodec = Enums.TrailerVideoCodec.MP4
+                                    Link.FormatQuality = Enums.TrailerVideoQuality.HD1080p
                                 Case Else
                                     Link.FormatQuality = Enums.TrailerVideoQuality.UNKNOWN
                             End Select
