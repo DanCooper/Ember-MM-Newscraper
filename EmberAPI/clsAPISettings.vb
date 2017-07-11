@@ -164,6 +164,15 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property TVScraperCastWithImgOnly() As Boolean
+        Get
+            Return Settings._XMLSettings.TVScraperCastWithImgOnly
+        End Get
+        Set(ByVal value As Boolean)
+            Settings._XMLSettings.TVScraperCastWithImgOnly = value
+        End Set
+    End Property
+
     Public Property MovieScraperCertLang() As String
         Get
             Return Settings._XMLSettings.MovieScraperCertLang
@@ -7290,6 +7299,7 @@ Public Class Settings
         TVMetadataPerFileType = New List(Of MetadataPerType)
         TVMultiPartMatching = "^[-_ex]+([0-9]+(?:(?:[a-i]|\.[1-9])(?![0-9]))?)"
         TVScanOrderModify = False
+        TVScraperCastWithImgOnly = False
         TVScraperCleanFields = False
         TVScraperDurationRuntimeFormat = "<m>"
         TVScraperEpisodeActors = True

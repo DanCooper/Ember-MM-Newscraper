@@ -417,6 +417,7 @@ Partial Public Class clsXMLSettings
     Private _tvmetadataperfiletype As List(Of MetadataPerType)
     Private _tvmultipartmatching As String
     Private _tvscanordermodify As Boolean
+    Private _tvscrapercastwithimgonly As Boolean
     Private _tvscrapercleanfields As Boolean
     Private _tvscraperdurationruntimeformat As String
     Private _tvscraperepisodeactors As Boolean
@@ -1112,6 +1113,15 @@ Partial Public Class clsXMLSettings
         End Get
         Set(ByVal value As Boolean)
             Me._moviescrapercastwithimgonly = value
+        End Set
+    End Property
+
+    Public Property TVScraperCastWithImgOnly() As Boolean
+        Get
+            Return Me._tvscrapercastwithimgonly
+        End Get
+        Set(ByVal value As Boolean)
+            Me._tvscrapercastwithimgonly = value
         End Set
     End Property
 
