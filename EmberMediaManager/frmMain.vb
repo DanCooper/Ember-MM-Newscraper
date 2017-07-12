@@ -18147,6 +18147,10 @@ Public Class frmMain
         ModulesManager.Instance.GetVersions()
     End Sub
 
+    Private Sub mnuMainHelpBugTracker_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainHelpBugTracker.Click
+        Functions.Launch(My.Resources.urlEmberBugTracker)
+    End Sub
+
     Private Sub mnuMainHelpWiki_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainHelpWiki.Click
         Functions.Launch(My.Resources.urlEmberWiki)
     End Sub
