@@ -43,6 +43,7 @@ Public Class Master
     Public Shared TVShowSources As New List(Of Database.DBSource)
     Public Shared TempPath As String = Path.Combine(Functions.AppPath, "Temp")
     Public Shared eLang As New Localization
+    Public Shared eProfiles As New Profiles
     Public Shared eSettings As New Settings
     Public Shared is32Bit As Boolean
     Public Shared isWindows As Boolean = Functions.CheckIfWindows

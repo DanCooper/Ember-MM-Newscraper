@@ -25,16 +25,16 @@ Partial Class dlgProfileSelect
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgProfileSelect))
         Me.pnlTop = New System.Windows.Forms.Panel()
         Me.pnlMain = New System.Windows.Forms.Panel()
-        Me.lbDirectories = New System.Windows.Forms.ListBox()
+        Me.tblMain = New System.Windows.Forms.TableLayoutPanel()
+        Me.clbDirectories = New System.Windows.Forms.CheckedListBox()
         Me.pnlBottom = New System.Windows.Forms.Panel()
         Me.tblBottom = New System.Windows.Forms.TableLayoutPanel()
         Me.btnOK = New System.Windows.Forms.Button()
         Me.btnCancel = New System.Windows.Forms.Button()
-        Me.tblMain = New System.Windows.Forms.TableLayoutPanel()
         Me.pnlMain.SuspendLayout()
+        Me.tblMain.SuspendLayout()
         Me.pnlBottom.SuspendLayout()
         Me.tblBottom.SuspendLayout()
-        Me.tblMain.SuspendLayout()
         Me.SuspendLayout()
         '
         'pnlTop
@@ -54,14 +54,29 @@ Partial Class dlgProfileSelect
         Me.pnlMain.Size = New System.Drawing.Size(284, 177)
         Me.pnlMain.TabIndex = 1
         '
-        'lbDirectories
+        'tblMain
         '
-        Me.lbDirectories.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.lbDirectories.FormattingEnabled = True
-        Me.lbDirectories.Location = New System.Drawing.Point(3, 3)
-        Me.lbDirectories.Name = "lbDirectories"
-        Me.lbDirectories.Size = New System.Drawing.Size(278, 171)
-        Me.lbDirectories.TabIndex = 0
+        Me.tblMain.AutoScroll = True
+        Me.tblMain.AutoSize = True
+        Me.tblMain.ColumnCount = 1
+        Me.tblMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMain.Controls.Add(Me.clbDirectories, 0, 0)
+        Me.tblMain.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblMain.Location = New System.Drawing.Point(0, 0)
+        Me.tblMain.Name = "tblMain"
+        Me.tblMain.RowCount = 1
+        Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMain.Size = New System.Drawing.Size(284, 177)
+        Me.tblMain.TabIndex = 1
+        '
+        'clbDirectories
+        '
+        Me.clbDirectories.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.clbDirectories.FormattingEnabled = True
+        Me.clbDirectories.Location = New System.Drawing.Point(3, 3)
+        Me.clbDirectories.Name = "clbDirectories"
+        Me.clbDirectories.Size = New System.Drawing.Size(278, 171)
+        Me.clbDirectories.TabIndex = 0
         '
         'pnlBottom
         '
@@ -110,23 +125,6 @@ Partial Class dlgProfileSelect
         Me.btnCancel.Text = "Cancel"
         Me.btnCancel.UseVisualStyleBackColor = True
         '
-        'tblMain
-        '
-        Me.tblMain.AutoScroll = True
-        Me.tblMain.AutoSize = True
-        Me.tblMain.ColumnCount = 1
-        Me.tblMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblMain.Controls.Add(Me.lbDirectories, 0, 0)
-        Me.tblMain.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblMain.Location = New System.Drawing.Point(0, 0)
-        Me.tblMain.Name = "tblMain"
-        Me.tblMain.RowCount = 1
-        Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblMain.Size = New System.Drawing.Size(284, 177)
-        Me.tblMain.TabIndex = 1
-        '
         'dlgProfileSelect
         '
         Me.AcceptButton = Me.btnOK
@@ -146,10 +144,10 @@ Partial Class dlgProfileSelect
         Me.Text = "Select Profile"
         Me.pnlMain.ResumeLayout(False)
         Me.pnlMain.PerformLayout()
+        Me.tblMain.ResumeLayout(False)
         Me.pnlBottom.ResumeLayout(False)
         Me.pnlBottom.PerformLayout()
         Me.tblBottom.ResumeLayout(False)
-        Me.tblMain.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -161,6 +159,6 @@ Partial Class dlgProfileSelect
     Friend WithEvents tblBottom As TableLayoutPanel
     Friend WithEvents btnOK As Button
     Friend WithEvents btnCancel As Button
-    Friend WithEvents lbDirectories As ListBox
     Friend WithEvents tblMain As TableLayoutPanel
+    Friend WithEvents clbDirectories As CheckedListBox
 End Class

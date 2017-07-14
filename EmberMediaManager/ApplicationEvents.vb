@@ -84,6 +84,7 @@ Namespace My
 
             Master.fLoading.SetLoadingMesg("Select Profile")
 
+            Master.eProfiles.LoadSettings()
             If Not Directory.Exists(Path.Combine(Functions.AppPath, "Profiles")) Then
                 Directory.CreateDirectory(Path.Combine(Functions.AppPath, "Profiles"))
             End If
@@ -129,6 +130,10 @@ Namespace My
                     logger.Info("[CommandLine] Using profile ""Default"".")
                     Master.SettingsPath = Path.Combine(Functions.AppPath, "Profiles\Default")
                 End If
+            ElseIf Master.eProfiles.DefaultProfileSpecified AndAlso
+                Directory.Exists(Path.Combine(Functions.AppPath, String.Concat("Profiles\", Master.eProfiles.DefaultProfile))) AndAlso
+                Master.eProfiles.Autoload Then
+                Master.SettingsPath = Path.Combine(Functions.AppPath, String.Concat("Profiles\", Master.eProfiles.DefaultProfile))
             Else
                 'show Profile Select dialog
                 Using dProfileSelect As New dlgProfileSelect

@@ -77,9 +77,14 @@ Public Class dlgProfileSelect
     End Function
 
     Private Sub PopulateDirectoryList()
-        lbDirectories.Items.Clear()
-        lbDirectories.Items.AddRange(_folderlist.ToArray)
-        lbDirectories.SelectedItem = "Default"
+        clbDirectories.Items.Clear()
+        clbDirectories.Items.AddRange(_folderlist.ToArray)
+        If Master.eProfiles.DefaultProfileSpecified Then
+            clbDirectories.SelectedItem = Master.eProfiles.DefaultProfile
+            clbDirectories.SetItemChecked(clbDirectories.SelectedIndex, True)
+        Else
+            clbDirectories.SelectedItem = "Default"
+        End If
     End Sub
 
     Private Sub SetUp()
@@ -89,8 +94,32 @@ Public Class dlgProfileSelect
         'btnCancel.Text = Master.eLang.GetString(167, "Cancel")
     End Sub
 
-    Private Sub lbDirectories_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lbDirectories.SelectedIndexChanged
-        _selectedprofile = lbDirectories.SelectedItem.ToString
+    Private Sub clbDirectories_SelectedIndexChanged(sender As Object, e As EventArgs) Handles clbDirectories.SelectedIndexChanged
+        _selectedprofile = clbDirectories.SelectedItem.ToString
+    End Sub
+
+    Private Sub clbDirectories_ItemCheck(sender As Object, e As EventArgs) Handles clbDirectories.ItemCheck
+        RemoveHandler clbDirectories.ItemCheck, AddressOf clbDirectories_ItemCheck
+        ' Cycle through every item and check every other.
+        Dim iCurrent As Integer = DirectCast(sender, CheckedListBox).SelectedIndex
+
+        ' Set flag to true to know when this code is being executed. Used in the ItemCheck
+        ' event handler.
+        'insideCheckEveryOther = True
+
+        For i = 0 To clbDirectories.Items.Count - 1
+            clbDirectories.SetItemChecked(i, i = iCurrent)
+        Next
+
+        'insideCheckEveryOther = False
+        AddHandler clbDirectories.ItemCheck, AddressOf clbDirectories_ItemCheck
+    End Sub
+
+    Private Sub btnOK_Click(sender As Object, e As EventArgs) Handles btnOK.Click
+        If clbDirectories.CheckedItems.Count > 0 Then
+            Master.eProfiles.DefaultProfile = clbDirectories.CheckedItems(0).ToString
+            Master.eProfiles.SaveSettings()
+        End If
     End Sub
 
 #End Region 'Methods
