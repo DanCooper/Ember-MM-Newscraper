@@ -9937,11 +9937,7 @@ Public Class frmMain
 
             Master.eSettings.Version = Master.Version
 
-            If Not Master.isCL AndAlso Not WindowState = FormWindowState.Minimized Then
-                'disable filters to proper save TV Show/Season SplitterDistance
-                pnlFilter_Movies.Visible = False
-                pnlFilter_MovieSets.Visible = False
-                pnlFilter_Shows.Visible = False
+            If Not Master.isCL Then
                 Application.DoEvents()
                 Master.eSettings.GeneralFilterPanelIsRaisedMovie = FilterPanelIsRaised_Movie
                 Master.eSettings.GeneralFilterPanelIsRaisedMovieSet = FilterPanelIsRaised_MovieSet
@@ -9950,15 +9946,16 @@ Public Class frmMain
                 Master.eSettings.GeneralInfoPanelStateMovieSet = InfoPanelState_MovieSet
                 Master.eSettings.GeneralInfoPanelStateTVShow = InfoPanelState_TVShow
                 Master.eSettings.GeneralSplitterDistanceMain = scMain.SplitterDistance
-                Master.eSettings.GeneralSplitterDistanceTVSeason = scTVSeasonsEpisodes.SplitterDistance
-                Master.eSettings.GeneralSplitterDistanceTVShow = scTV.SplitterDistance
+                'Master.eSettings.GeneralSplitterDistanceTVShow and Master.eSettings.GeneralSplitterDistanceTVSeason will not be saved at this point
                 If WindowState = FormWindowState.Normal Then
                     Master.eSettings.GeneralWindowLoc = Location
                     Master.eSettings.GeneralWindowSize = Size
                 End If
-                Master.eSettings.GeneralWindowState = WindowState
-                Master.eSettings.Save()
+                If Not WindowState = FormWindowState.Minimized Then
+                    Master.eSettings.GeneralWindowState = WindowState
+                End If
             End If
+            Master.eSettings.Save()
 
         Catch ex As Exception
             ' If we got here, then some of the above not run. Application.Exit can not be used. 
@@ -10150,8 +10147,7 @@ Public Class frmMain
                 'SplitterDistance
                 Try ' On error just ignore this a let it use default
                     scMain.SplitterDistance = Master.eSettings.GeneralSplitterDistanceMain
-                    scTV.SplitterDistance = Master.eSettings.GeneralSplitterDistanceTVShow
-                    scTVSeasonsEpisodes.SplitterDistance = Master.eSettings.GeneralSplitterDistanceTVSeason
+                    'Master.eSettings.GeneralSplitterDistanceTVShow and Master.eSettings.GeneralSplitterDistanceTVSeason will not be loaded at this point
                 Catch ex As Exception
                     logger.Error(ex, New StackFrame().GetMethod().Name)
                 End Try
@@ -10182,12 +10178,10 @@ Public Class frmMain
                 'Filter panels
                 FilterPanelIsRaised_Movie = Master.eSettings.GeneralFilterPanelIsRaisedMovie
                 If FilterPanelIsRaised_Movie Then
-                    'Me.pnlFilter_Movies.Height = Functions.Quantize(Me.gbFilterSpecific_Movies.Height + Me.lblFilter_Movies.Height + 15, 5)
                     pnlFilter_Movies.AutoSize = True
                     btnFilterDown_Movies.Enabled = True
                     btnFilterUp_Movies.Enabled = False
                 Else
-                    'Me.pnlFilter_Movies.Height = 25
                     pnlFilter_Movies.AutoSize = False
                     pnlFilter_Movies.Height = pnlFilterTop_Movies.Height
                     btnFilterDown_Movies.Enabled = False
@@ -10196,12 +10190,10 @@ Public Class frmMain
 
                 FilterPanelIsRaised_MovieSet = Master.eSettings.GeneralFilterPanelIsRaisedMovieSet
                 If FilterPanelIsRaised_MovieSet Then
-                    'Me.pnlFilter_MovieSets.Height = Functions.Quantize(Me.gbFilterSpecific_MovieSets.Height + Me.lblFilter_MovieSets.Height + 15, 5)
                     pnlFilter_MovieSets.AutoSize = True
                     btnFilterDown_MovieSets.Enabled = True
                     btnFilterUp_MovieSets.Enabled = False
                 Else
-                    'Me.pnlFilter_MovieSets.Height = 25
                     pnlFilter_MovieSets.AutoSize = False
                     pnlFilter_MovieSets.Height = pnlFilterTop_MovieSets.Height
                     btnFilterDown_MovieSets.Enabled = False
@@ -10210,12 +10202,10 @@ Public Class frmMain
 
                 FilterPanelIsRaised_TVShow = Master.eSettings.GeneralFilterPanelIsRaisedTVShow
                 If FilterPanelIsRaised_TVShow Then
-                    'Me.pnlFilter_Shows.Height = Functions.Quantize(Me.gbFilterSpecific_Shows.Height + Me.lblFilter_Shows.Height + 15, 5)
                     pnlFilter_Shows.AutoSize = True
                     btnFilterDown_Shows.Enabled = True
                     btnFilterUp_Shows.Enabled = False
                 Else
-                    'Me.pnlFilter_Shows.Height = 25
                     pnlFilter_Shows.AutoSize = False
                     pnlFilter_Shows.Height = pnlFilterTop_Shows.Height
                     btnFilterDown_Shows.Enabled = False
@@ -17383,6 +17373,10 @@ Public Class frmMain
         ModulesManager.Instance.RuntimeObjects.MediaTabSelected = currMainTabTag
         Select Case currMainTabTag.ContentType
             Case Enums.ContentType.Movie
+                'fixing TV-Splitter issues
+                RemoveHandler scTV.SplitterMoved, AddressOf TVSplitterMoved
+                RemoveHandler scTVSeasonsEpisodes.SplitterMoved, AddressOf TVSplitterMoved
+
                 currList_Movies = currMainTabTag.DefaultList
                 cbFilterLists_Movies.SelectedValue = currList_Movies
                 ModulesManager.Instance.RuntimeObjects.ListMovies = currList_Movies
@@ -17424,6 +17418,10 @@ Public Class frmMain
                 End If
 
             Case Enums.ContentType.MovieSet
+                'fixing TV-Splitter issues
+                RemoveHandler scTV.SplitterMoved, AddressOf TVSplitterMoved
+                RemoveHandler scTVSeasonsEpisodes.SplitterMoved, AddressOf TVSplitterMoved
+
                 currList_MovieSets = currMainTabTag.DefaultList
                 cbFilterLists_MovieSets.SelectedValue = currList_MovieSets
                 ModulesManager.Instance.RuntimeObjects.ListMovieSets = currList_MovieSets
@@ -17484,6 +17482,13 @@ Public Class frmMain
                 pnlSearchMovies.Visible = False
                 pnlSearchMovieSets.Visible = False
                 pnlSearchTVShows.Visible = True
+
+                'fixing TV-Splitter issues
+                scTV.SplitterDistance = Master.eSettings.GeneralSplitterDistanceTVShow
+                scTVSeasonsEpisodes.SplitterDistance = Master.eSettings.GeneralSplitterDistanceTVSeason
+                AddHandler scTV.SplitterMoved, AddressOf TVSplitterMoved
+                AddHandler scTVSeasonsEpisodes.SplitterMoved, AddressOf TVSplitterMoved
+
                 ApplyTheme(Theming.ThemeType.Show)
                 If bwLoadImages_Movie.IsBusy Then bwLoadImages_Movie.CancelAsync()
                 If bwLoadImages_MovieSet.IsBusy Then bwLoadImages_MovieSet.CancelAsync()
@@ -17503,6 +17508,12 @@ Public Class frmMain
                     SetControlsEnabled(True)
                 End If
         End Select
+    End Sub
+
+    Private Sub TVSplitterMoved(sender As Object, e As SplitterEventArgs)
+        'fixing TV-Splitter issues
+        Master.eSettings.GeneralSplitterDistanceTVShow = scTV.SplitterDistance
+        Master.eSettings.GeneralSplitterDistanceTVSeason = scTVSeasonsEpisodes.SplitterDistance
     End Sub
 
     Private Sub MoveInfoPanel()
