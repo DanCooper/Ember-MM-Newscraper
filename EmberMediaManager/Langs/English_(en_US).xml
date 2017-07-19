@@ -863,7 +863,7 @@
   <string id="862">Loading translations...</string>
   <string id="863">Positioning controls...</string>
   <string id="864">Setting menus...</string>
-  <string id="865">Version {0}.{1}.{2}.{3} {4}</string>
+  <string id="865"></string>
   <string id="866">Metadata</string>
   <string id="867">XBMC Frodo</string>
   <string id="868">Tag Manager</string>
@@ -1098,7 +1098,7 @@
   <string id="1006">TV Movie Titles ({0})</string>
   <string id="1007">You've changed a setting that makes it necessary that the database is cleaned up.Please make sure that all sources are available!{0}{0}Should the process be continued?</string>
   <string id="1008">Sync Full</string>
-  <string id="1009">Ember {0} - (New version available!)</string>
+  <string id="1009">New version available</string>
   <string id="1010">TV Show Landscape</string>
   <string id="1011">TV Show CharacterArt</string>
   <string id="1012">TV Show ClearLogo</string>

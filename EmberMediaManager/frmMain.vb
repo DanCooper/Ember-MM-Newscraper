@@ -18246,35 +18246,38 @@ Public Class frmMain
 
     Private Sub bwCheckVersion_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCheckVersion.DoWork
         Try
-            Dim sHTTP As New HTTP
             'Pull Assembly version info from current Ember repo on github
-            Dim HTML As String
-            HTML = sHTTP.DownloadData("https://raw.github.com/DanCooper/Ember-MM-Newscraper/master/EmberMediaManager/My%20Project/AssemblyInfo.vb")
-            sHTTP = Nothing
-            Dim aBit As String = "x64"
-            If Master.is32Bit Then
-                aBit = "x86"
-            End If
-            Dim VersionNumber As String = String.Format(Master.eLang.GetString(865, "Version {0}.{1}.{2}.{3} {4}"), My.Application.Info.Version.Major, My.Application.Info.Version.Minor, My.Application.Info.Version.Build, My.Application.Info.Version.Revision, aBit)
-            ' Not localized as is the Assembly file version
-            Dim VersionNumberO As String = String.Format("{0}.{1}.{2}.{3}", My.Application.Info.Version.Major, My.Application.Info.Version.Minor, My.Application.Info.Version.Build, My.Application.Info.Version.Revision)
+            Dim HTML As String = HTTP.GetLatestVersionInfo
+
             If Not String.IsNullOrEmpty(HTML) Then
                 'Example: AssemblyFileVersion("1.3.0.18")>
-                Dim mc As MatchCollection = Regex.Matches(HTML, "AssemblyFileVersion([^<]+)>")
+                Dim regVersion = Regex.Match(HTML, "AssemblyFileVersion\(""(\d*)\.(\d*)\.(\d*)(?>\.(\d*))?""\)>", RegexOptions.Singleline)
                 'check to see if at least one entry was found
-                If mc.Count > 0 Then
+                If regVersion.Success Then
                     'just use the first match if more are found and compare with running Ember Version
-                    If mc(0).Value.ToString <> "AssemblyFileVersion(""" & VersionNumberO & """)>" Then
+                    Dim iMajor As Integer
+                    Dim iMinor As Integer
+                    Dim iBuild As Integer
+                    Dim iRevision As Integer
+
+                    Integer.TryParse(regVersion.Groups(1).Value, iMajor)
+                    Integer.TryParse(regVersion.Groups(2).Value, iMinor)
+                    Integer.TryParse(regVersion.Groups(3).Value, iBuild)
+                    Integer.TryParse(regVersion.Groups(4).Value, iRevision)
+
+                    If iMajor > My.Application.Info.Version.Major OrElse
+                       iMinor > My.Application.Info.Version.Minor OrElse
+                       iBuild > My.Application.Info.Version.Build Then
                         'means that running Ember version is outdated!
-                        Invoke(New UpdatemnuVersionDel(AddressOf UpdatemnuVersion), String.Format(Master.eLang.GetString(1009, "{0} - (New version available!)"), VersionNumber), Color.DarkRed)
+                        Invoke(New UpdatemnuVersionDel(AddressOf UpdatemnuVersion), String.Format("{0} - {1}", Master.Version, Master.eLang.GetString(1009, "New version available")), Color.DarkRed)
                     Else
                         'Ember already up to date!
-                        Invoke(New UpdatemnuVersionDel(AddressOf UpdatemnuVersion), VersionNumber, Color.DarkGreen)
+                        Invoke(New UpdatemnuVersionDel(AddressOf UpdatemnuVersion), Master.Version, Color.DarkGreen)
                     End If
                 End If
                 'if no github query possible, than simply display Ember version on form
             Else
-                Invoke(New UpdatemnuVersionDel(AddressOf UpdatemnuVersion), VersionNumber, Color.DarkBlue)
+                Invoke(New UpdatemnuVersionDel(AddressOf UpdatemnuVersion), Master.Version, Color.DarkBlue)
             End If
 
         Catch ex As Exception

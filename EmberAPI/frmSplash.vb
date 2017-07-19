@@ -24,7 +24,7 @@ Public Class frmSplash
 
 #Region "Delegates"
 
-    Delegate Sub DelegateTo_SetLoadingMesg(message As String, bits As String)
+    Delegate Sub DelegateTo_SetLoadingMesg(strVersion As String)
     Delegate Sub DelegateTo_SetProgressBarStyle(style As ProgressBarStyle)
     Delegate Sub DelegateTo_SetProgressBarSize(size As Integer)
     Delegate Sub DelegateTo_Close()
@@ -45,19 +45,12 @@ Public Class frmSplash
         Application.DoEvents()
     End Sub
 
-    Public Sub SetVersionMesg(message As String, bits As String)
+    Public Sub SetVersionMesg(strVersion As String)
         If (InvokeRequired) Then
             Invoke(New DelegateTo_SetLoadingMesg(AddressOf SetVersionMesg))
             Exit Sub
         End If
-        VersionNumber.Text = String.Format("{0} {1}", message, bits)
-        'VersionNumber.Text = String.Format(
-        ' message,
-        ' My.Application.Info.Version.Major,
-        ' My.Application.Info.Version.Minor,
-        ' My.Application.Info.Version.Build,
-        ' My.Application.Info.Version.Revision,
-        ' bits)
+        VersionNumber.Text = strVersion
         Application.DoEvents()
     End Sub
 

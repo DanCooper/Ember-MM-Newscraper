@@ -39,19 +39,9 @@ Namespace My
         ''' Process/load information before beginning the main application.
         ''' </summary>
         Private Sub MyApplication_Startup(ByVal sender As Object, ByVal e As Microsoft.VisualBasic.ApplicationServices.StartupEventArgs) Handles Me.Startup
-            Master.is32Bit = (IntPtr.Size = 4)
-            Dim aBit As String = "x64"
-            If Master.is32Bit Then
-                aBit = "x86"
-            End If
-
             logger.Info("====Ember Media Manager starting up====")
-            logger.Info(String.Format("====Version {0}.{1}.{2}.{3}==== {4}",
-                                      Application.Info.Version.Major,
-                                      Application.Info.Version.Minor,
-                                      Application.Info.Version.Build,
-                                      Application.Info.Version.Revision,
-                                      aBit))
+            logger.Info(String.Format("===={0}", Master.Version))
+
             Master.fLoading = New frmSplash
             Master.appArgs = e
 
@@ -70,12 +60,7 @@ Namespace My
                 Master.fLoading.Show()
             End If
 
-            Master.fLoading.SetVersionMesg(String.Format("Version {0}.{1}.{2}.{3}",
-                                                         Application.Info.Version.Major,
-                                                         Application.Info.Version.Minor,
-                                                         Application.Info.Version.Build,
-                                                         Application.Info.Version.Revision),
-                                                         aBit)
+            Master.fLoading.SetVersionMesg(Master.Version)
 
             Application.DoEvents()
 

@@ -44,9 +44,28 @@ Public Class Master
     Public Shared TempPath As String = Path.Combine(Functions.AppPath, "Temp")
     Public Shared eLang As New Localization
     Public Shared eSettings As New Settings
-    Public Shared is32Bit As Boolean
     Public Shared isWindows As Boolean = Functions.CheckIfWindows
 
 #End Region 'Fields
+
+#Region "Properties"
+
+    Public Shared ReadOnly Property is32Bit() As Boolean
+        Get
+            Return IntPtr.Size = 4
+        End Get
+    End Property
+
+    Public Shared ReadOnly Property Version() As String
+        Get
+            Return String.Format("Version {0}.{1}.{2} {3}",
+                                 My.Application.Info.Version.Major,
+                                 My.Application.Info.Version.Minor,
+                                 My.Application.Info.Version.Build,
+                                 If(is32Bit, "x86", "x64"))
+        End Get
+    End Property
+
+#End Region 'Properties
 
 End Class

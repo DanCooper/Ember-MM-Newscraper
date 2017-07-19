@@ -344,6 +344,18 @@ Public Class HTTP
             logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & _URL & ">")
         End Try
     End Sub
+
+    Public Shared Function GetLatestVersionInfo() As String
+        Try
+            Dim address As String = "https://raw.github.com/DanCooper/Ember-MM-Newscraper/master/EmberMediaManager/My%20Project/AssemblyInfo.vb"
+            Dim client As WebClient = New WebClient()
+            Dim reader As StreamReader = New StreamReader(client.OpenRead(address))
+            Return reader.ReadToEnd
+        Catch ex As Exception
+            logger.Error(ex, New StackFrame().GetMethod().Name)
+            Return String.Empty
+        End Try
+    End Function
     ''' <summary>
     ''' Convenience flag to indicate whether the thread is in fact still doing something
     ''' </summary>
